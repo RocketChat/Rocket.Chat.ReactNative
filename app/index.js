@@ -730,7 +730,7 @@ export default class Root extends React.Component {
 					>
 						<ActionSheetProvider>
 							{content}
-						  <TwoFactor />
+							<TwoFactor />
 						</ActionSheetProvider>
 					</ThemeContext.Provider>
 				</Provider>

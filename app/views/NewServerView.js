@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
 import DocumentPicker from 'react-native-document-picker';
 import { connectActionSheet } from '@expo/react-native-action-sheet';
-import isEqual from 'deep-equal';
 import RNUserDefaults from 'rn-user-defaults';
 import { encode } from 'base-64';
 import parse from 'url-parse';
