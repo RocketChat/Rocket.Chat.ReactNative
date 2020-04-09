@@ -195,8 +195,18 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 						iconLeft='edit'
 						returnKeyType='done'
 						onSubmitEditing={({ nativeEvent: { text } }) => {
-							setTags([...tagParam.filter(t => t !== text), text]);
-							inputs.tags.clear();
+							if (text.length) {
+								setTags([...tagParam.filter(t => t !== text), text]);
+								inputs.tags.clear();
+							} else {
+								const keys = Object.keys(livechat?.livechatData || {});
+								if (keys.length > 0) {
+									const key = keys.pop();
+									inputs[key].focus();
+								} else {
+									submit();
+								}
+							}
 						}}
 						theme={theme}
 					/>
