@@ -22,7 +22,6 @@ const loginSettings = [
 	'Accounts_ManuallyApproveNewUsers',
 	'Accounts_ShowFormLogin',
 	'Site_Url',
-	'Assets_favicon_512',
 	'Accounts_RegistrationForm',
 	'Accounts_RegistrationForm_LinkReplacementText',
 	'Accounts_EmailOrUsernamePlaceholder',
