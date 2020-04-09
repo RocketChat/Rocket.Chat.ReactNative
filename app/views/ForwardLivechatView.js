@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
 import I18n from '../i18n';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import RocketChat from '../lib/rocketchat';
-import ListItem from '../containers/ListItem';
 import OnboardingSeparator from '../containers/OnboardingSeparator';
 import { showErrorAlert } from '../utils/info';
+import Input from '../containers/UIKit/MultiSelect/Input';
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1
-	},
-	content: {
-		marginVertical: 10
+		flex: 1,
+		padding: 16
 	}
 });
 
@@ -108,18 +106,18 @@ const ForwardLivechatView = ({ navigation, theme }) => {
 		}
 	}, [departmentId, userId]);
 
-	const onPressDepartment = (title) => {
+	const onPressDepartment = () => {
 		navigation.navigate('PickerView', {
-			title,
+			title: I18n.t('Forward_to_department'),
 			value: 1,
 			data: departments,
 			onChangeValue: setDepartment
 		});
 	};
 
-	const onPressUser = (title) => {
+	const onPressUser = () => {
 		navigation.navigate('PickerView', {
-			title,
+			title: I18n.t('Forward_to_user'),
 			data: users,
 			onChangeValue: setUser,
 			onChangeText: getUsers
@@ -128,19 +126,17 @@ const ForwardLivechatView = ({ navigation, theme }) => {
 
 	return (
 		<View style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-			<ScrollView style={styles.content}>
-				<ListItem
-					title={I18n.t('Forward_to_department')}
-					onPress={title => onPressDepartment(title)}
-					theme={theme}
-				/>
-				<OnboardingSeparator theme={theme} />
-				<ListItem
-					title={I18n.t('Forward_to_user')}
-					onPress={title => onPressUser(title)}
-					theme={theme}
-				/>
-			</ScrollView>
+			<Input
+				onPress={title => onPressDepartment(title)}
+				placeholder={I18n.t('Select_a_Department')}
+				theme={theme}
+			/>
+			<OnboardingSeparator theme={theme} />
+			<Input
+				onPress={title => onPressUser(title)}
+				placeholder={I18n.t('Select_an_User')}
+				theme={theme}
+			/>
 		</View>
 	);
 };
