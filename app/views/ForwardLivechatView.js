@@ -6,7 +6,7 @@ import I18n from '../i18n';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import RocketChat from '../lib/rocketchat';
-import OnboardingSeparator from '../containers/OnboardingSeparator';
+import OrSeparator from '../containers/OrSeparator';
 import { showErrorAlert } from '../utils/info';
 import Input from '../containers/UIKit/MultiSelect/Input';
 
@@ -131,7 +131,7 @@ const ForwardLivechatView = ({ navigation, theme }) => {
 				placeholder={I18n.t('Select_a_Department')}
 				theme={theme}
 			/>
-			<OnboardingSeparator theme={theme} />
+			<OrSeparator theme={theme} />
 			<Input
 				onPress={title => onPressUser(title)}
 				placeholder={I18n.t('Select_an_User')}
