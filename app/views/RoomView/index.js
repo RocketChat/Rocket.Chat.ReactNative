@@ -390,10 +390,10 @@ class RoomView extends React.Component {
 		const { t } = room;
 
 		if (t === 'd' && !RocketChat.isGroupChat(room)) {
-			const { user, navigation } = this.props;
+			const { navigation } = this.props;
 
 			try {
-				const roomUserId = RocketChat.getUidDirectMessage(room, user.id);
+				const roomUserId = RocketChat.getUidDirectMessage(room);
 
 				navigation.setParams({ roomUserId });
 
