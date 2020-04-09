@@ -408,14 +408,14 @@ class RoomActionsView extends React.Component {
 			sections[2].data = [];
 
 			sections[2].data.push({
-				icon: 'close',
+				icon: 'circle-cross',
 				name: I18n.t('Close'),
 				event: this.closeLivechat
 			});
 
 			if (canForwardGuest) {
 				sections[2].data.push({
-					icon: 'forward',
+					icon: 'reply',
 					name: I18n.t('Forward'),
 					route: 'ForwardLivechatView',
 					params: { rid }
@@ -424,14 +424,14 @@ class RoomActionsView extends React.Component {
 
 			if (canReturnQueue) {
 				sections[2].data.push({
-					icon: 'return',
+					icon: 'back',
 					name: I18n.t('Return'),
 					event: this.returnLivechat
 				});
 			}
 
 			sections[2].data.push({
-				icon: 'nav',
+				icon: 'reload',
 				name: I18n.t('Navigation_history'),
 				route: 'VisitorNavigationView',
 				params: { rid }
