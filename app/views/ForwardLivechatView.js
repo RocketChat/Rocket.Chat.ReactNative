@@ -79,13 +79,15 @@ const ForwardLivechatView = ({ navigation, theme }) => {
 			transferData.departmentId = departmentId;
 		}
 
-		const { error, result } = await RocketChat.forwardLivechat(transferData);
-		if (error) {
-			showErrorAlert(error, I18n.t('Oops'));
-		} else if (result) {
-			// forward successfully
-		} else {
-			showErrorAlert(I18n.t('No_available_agents_to_transfer'), I18n.t('Oops'));
+		try {
+			const result = await RocketChat.forwardLivechat(transferData);
+			if (!result?.result) {
+				showErrorAlert(I18n.t('No_available_agents_to_transfer'), I18n.t('Oops'));
+			} else {
+				// forward successfully
+			}
+		} catch (e) {
+			showErrorAlert(e.reason, I18n.t('Oops'));
 		}
 	};
 

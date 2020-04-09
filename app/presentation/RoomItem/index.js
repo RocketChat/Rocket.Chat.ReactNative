@@ -105,7 +105,7 @@ const RoomItem = React.memo(({
 						<TypeIcon
 							type={type}
 							prid={prid}
-							status={type === 'l' ? visitor.status : status}
+							status={type === 'l' ? visitor?.status : status}
 							isGroupChat={isGroupChat}
 							theme={theme}
 						/>
