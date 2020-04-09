@@ -83,9 +83,17 @@ const Livechat = ({ room, navigation, theme }) => {
 		}
 	};
 
-	const getRoom = () => {
-		getVisitor(room.visitor._id);
-		getDepartment(room.departmentId);
+	const getRoom = async() => {
+		if (room.visitor?._id && room.departmentId) {
+			getVisitor(room.visitor._id);
+			getDepartment(room.departmentId);
+		} else {
+			const result = await RocketChat.getRoomInfo(room.rid);
+			if (result.success) {
+				getVisitor(result.room.v._id);
+				getDepartment(result.room.departmentId);
+			}
+		}
 	};
 
 	useEffect(() => { getRoom(); }, []);
