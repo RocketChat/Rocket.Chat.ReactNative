@@ -30,19 +30,21 @@ const handleInviteLink = function* handleInviteLink({ params, requireLogin = fal
 const navigate = function* navigate({ params }) {
 	yield put(appStart('inside'));
 	if (params.path) {
-		const room = yield RocketChat.canOpenRoom(params);
 		const [type, name] = params.path.split('/');
-		if (room) {
-			yield Navigation.navigate('RoomsListView');
-			Navigation.navigate('RoomView', {
-				name,
-				t: roomTypes[type],
-				roomUserId: RocketChat.getUidDirectMessage(room),
-				...room
-			});
+		if (type !== 'invite') {
+			const room = yield RocketChat.canOpenRoom(params);
+			if (room) {
+				yield Navigation.navigate('RoomsListView');
+				Navigation.navigate('RoomView', {
+					name,
+					t: roomTypes[type],
+					roomUserId: RocketChat.getUidDirectMessage(room),
+					...room
+				});
+			}
+		} else {
+			yield handleInviteLink({ params });
 		}
-	} else {
-		yield handleInviteLink({ params });
 	}
 };
 
