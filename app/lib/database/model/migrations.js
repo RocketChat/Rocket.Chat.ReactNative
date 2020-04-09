@@ -51,6 +51,29 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 6,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [
+						{ name: 'sys_mes', type: 'string', isOptional: true }
+					]
+				})
+			]
+		},
+		{
+			toVersion: 7,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [
+						{ name: 'uids', type: 'string', isOptional: true },
+						{ name: 'usernames', type: 'string', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });

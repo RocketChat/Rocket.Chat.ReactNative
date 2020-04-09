@@ -4,7 +4,8 @@ import { MAX_SCREEN_CONTENT_WIDTH, MAX_CONTENT_WIDTH } from '../constants/tablet
 
 export default StyleSheet.create({
 	container: {
-		flex: 1
+		flex: 1,
+		flexDirection: 'column'
 	},
 	containerScrollView: {
 		padding: 15,
@@ -18,6 +19,7 @@ export default StyleSheet.create({
 		maxWidth: MAX_CONTENT_WIDTH
 	},
 	tabletScreenContent: {
+		justifyContent: 'center',
 		alignSelf: 'center',
 		width: MAX_SCREEN_CONTENT_WIDTH
 	},

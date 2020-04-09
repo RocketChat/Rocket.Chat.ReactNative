@@ -12,10 +12,11 @@ import * as actions from '../actions';
 import {
 	serverFailure, selectServerRequest, selectServerSuccess, selectServerFailure
 } from '../actions/server';
+import { clearSettings } from '../actions/settings';
 import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
-import log from '../utils/log';
+import log, { logServerVersion } from '../utils/log';
 import { extractHostname } from '../utils/server';
 import I18n from '../i18n';
 import { SERVERS, TOKEN, SERVER_URL } from '../constants/userDefaults';
@@ -37,7 +38,10 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 			return;
 		}
 
-		const validVersion = semver.coerce(serverInfo.version);
+		let serverVersion = semver.valid(serverInfo.version);
+		if (!serverVersion) {
+			({ version: serverVersion } = semver.coerce(serverInfo.version));
+		}
 
 		const serversDB = database.servers;
 		const serversCollection = serversDB.collections.get('servers');
@@ -45,12 +49,12 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 			try {
 				const serverRecord = await serversCollection.find(server);
 				await serverRecord.update((record) => {
-					record.version = validVersion;
+					record.version = serverVersion;
 				});
 			} catch (e) {
 				await serversCollection.create((record) => {
 					record._raw = sanitizedRaw({ id: server }, serversCollection.schema);
-					record.version = validVersion;
+					record.version = serverVersion;
 				});
 			}
 		});
@@ -78,6 +82,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 					name: userRecord.name,
 					language: userRecord.language,
 					status: userRecord.status,
+					statusText: userRecord.statusText,
 					roles: userRecord.roles
 				};
 			} catch (e) {
@@ -94,6 +99,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		setBasicAuth(basicAuth);
 
 		if (user) {
+			yield put(clearSettings());
 			yield RocketChat.connect({ server, user, logoutOnError: true });
 			yield put(setUser(user));
 			yield put(actions.appStart('inside'));
@@ -113,7 +119,11 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		}
 
 		// Return server version even when offline
-		yield put(selectServerSuccess(server, (serverInfo && serverInfo.version) || version));
+		const serverVersion = (serverInfo && serverInfo.version) || version;
+
+		// we'll set serverVersion as metadata for bugsnag
+		logServerVersion(serverVersion);
+		yield put(selectServerSuccess(server, serverVersion));
 	} catch (e) {
 		yield put(selectServerFailure());
 		log(e);
@@ -129,13 +139,9 @@ const handleServerRequest = function* handleServerRequest({ server, certificate 
 		const serverInfo = yield getServerInfo({ server });
 
 		if (serverInfo) {
-			const showFormLogin = yield RocketChat.getSetting({ server, setting: 'Accounts_ShowFormLogin' });
-			const loginServicesLength = yield RocketChat.getLoginServices(server);
-			if (loginServicesLength === 0 && showFormLogin) {
-				Navigation.navigate('LoginView');
-			} else {
-				Navigation.navigate('LoginSignupView');
-			}
+			yield RocketChat.getLoginServices(server);
+			yield RocketChat.getLoginSettings({ server });
+			Navigation.navigate('WorkspaceView');
 			yield put(selectServerRequest(server, serverInfo.version, false));
 		}
 	} catch (e) {

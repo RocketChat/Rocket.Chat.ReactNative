@@ -8,7 +8,7 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 
 const Item = React.memo(({
-	left, text, onPress, testID, current, theme
+	left, right, text, onPress, testID, current, theme
 }) => (
 	<Touch
 		key={testID}
@@ -17,7 +17,7 @@ const Item = React.memo(({
 		theme={theme}
 		style={[styles.item, current && { backgroundColor: themes[theme].borderColor }]}
 	>
-		<View style={styles.itemLeft}>
+		<View style={styles.itemHorizontal}>
 			{left}
 		</View>
 		<View style={styles.itemCenter}>
@@ -25,11 +25,15 @@ const Item = React.memo(({
 				{text}
 			</Text>
 		</View>
+		<View style={styles.itemHorizontal}>
+			{right}
+		</View>
 	</Touch>
 ));
 
 Item.propTypes = {
 	left: PropTypes.element,
+	right: PropTypes.element,
 	text: PropTypes.string,
 	current: PropTypes.bool,
 	onPress: PropTypes.func,

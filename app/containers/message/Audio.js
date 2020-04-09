@@ -74,7 +74,6 @@ class Audio extends React.Component {
 		file: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
 		user: PropTypes.object.isRequired,
-		useMarkdown: PropTypes.bool,
 		theme: PropTypes.string,
 		split: PropTypes.bool,
 		getCustomEmoji: PropTypes.func
@@ -157,7 +156,7 @@ class Audio extends React.Component {
 			uri, paused, currentTime, duration
 		} = this.state;
 		const {
-			user, baseUrl, file, getCustomEmoji, useMarkdown, split, theme
+			user, baseUrl, file, getCustomEmoji, split, theme
 		} = this.props;
 		const { description } = file;
 
@@ -182,6 +181,7 @@ class Audio extends React.Component {
 						onEnd={this.onEnd}
 						paused={paused}
 						repeat={false}
+						ignoreSilentSwitch='ignore'
 					/>
 					<Button paused={paused} onPress={this.togglePlayPause} theme={theme} />
 					<Slider
@@ -199,7 +199,7 @@ class Audio extends React.Component {
 					/>
 					<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{this.duration}</Text>
 				</View>
-				<Markdown msg={description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} theme={theme} />
+				<Markdown msg={description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 			</>
 		);
 	}

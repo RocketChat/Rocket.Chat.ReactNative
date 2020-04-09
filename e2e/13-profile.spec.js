@@ -1,11 +1,18 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { takeScreenshot } = require('./helpers/screenshot');
-const { logout, navigateToLogin, login } = require('./helpers/app');
+const { logout, navigateToLogin, login, sleep } = require('./helpers/app');
 const data = require('./data');
 
 const scrollDown = 200;
+
+async function waitForToast() {
+	// await waitFor(element(by.id('toast'))).toBeVisible().withTimeout(10000);
+	// await expect(element(by.id('toast'))).toBeVisible();
+	// await waitFor(element(by.id('toast'))).toBeNotVisible().withTimeout(10000);
+	// await expect(element(by.id('toast'))).toBeNotVisible();
+	await sleep(5000);
+}
 
 describe('Profile screen', () => {
 	before(async() => {
@@ -25,6 +32,10 @@ describe('Profile screen', () => {
 
 		it('should have avatar', async() => {
 			await expect(element(by.id('profile-view-avatar')).atIndex(0)).toExist();
+		});
+
+		it('should have custom status', async() => {
+			await expect(element(by.id('profile-view-custom-status'))).toExist();
 		});
 
 		it('should have name', async() => {
@@ -66,50 +77,45 @@ describe('Profile screen', () => {
 			await waitFor(element(by.id('profile-view-submit'))).toExist().whileElement(by.id('profile-view-list')).scroll(scrollDown, 'down');
 			await expect(element(by.id('profile-view-submit'))).toExist();
 		});
-
-		after(async() => {
-			takeScreenshot();
-		});
 	});
 
 	describe('Usage', async() => {
+		it('should change custom status', async() => {
+			await element(by.type('UIScrollView')).atIndex(1).swipe('down');
+			await element(by.id('profile-view-custom-status')).replaceText(`${ data.user }new`);
+			await sleep(1000);
+			await element(by.type('UIScrollView')).atIndex(1).swipe('up');
+			await sleep(1000);
+			await element(by.id('profile-view-submit')).tap();
+			await waitForToast();
+		});
+
 		it('should change name and username', async() => {
-			await element(by.id('profile-view-list')).swipe('down');
+			await element(by.type('UIScrollView')).atIndex(1).swipe('down');
 			await element(by.id('profile-view-name')).replaceText(`${ data.user }new`);
 			await element(by.id('profile-view-username')).replaceText(`${ data.user }new`);
-			await element(by.id('profile-view-list')).swipe('up');
+			await sleep(1000);
+			await element(by.type('UIScrollView')).atIndex(1).swipe('up');
+			await sleep(1000);
 			await element(by.id('profile-view-submit')).tap();
-			await waitFor(element(by.text('Profile saved successfully!'))).toBeVisible().withTimeout(10000);
-			// await expect(element(by.text('Profile saved successfully!'))).toBeVisible();
-			await waitFor(element(by.text('Profile saved successfully!'))).toBeNotVisible().withTimeout(10000);
-			await expect(element(by.text('Profile saved successfully!'))).toBeNotVisible();
+			await waitForToast();
 		});
 
 		it('should change email and password', async() => {
 			await element(by.id('profile-view-email')).replaceText(`diego.mello+e2e${ data.random }test@rocket.chat`);
 			await element(by.id('profile-view-new-password')).replaceText(`${ data.password }new`);
 			await element(by.id('profile-view-submit')).tap();
-			await waitFor(element(by.id('profile-view-typed-password'))).toBeVisible().withTimeout(10000);
-			await expect(element(by.id('profile-view-typed-password'))).toBeVisible();
-			await element(by.id('profile-view-typed-password')).replaceText(`${ data.password }`);
-			await element(by.text('Save')).tap();
-			await waitFor(element(by.text('Profile saved successfully!'))).toBeVisible().withTimeout(10000);
-			// await expect(element(by.text('Profile saved successfully!'))).toBeVisible();
-			await waitFor(element(by.text('Profile saved successfully!'))).toBeNotVisible().withTimeout(10000);
-			await expect(element(by.text('Profile saved successfully!'))).toBeNotVisible();
+			await element(by.type('_UIAlertControllerTextField')).replaceText(`${ data.password }`)
+			// For some reason, replaceText does some type of submit, which submits the alert for us
+			// await element(by.label('Save').and(by.type('_UIAlertControllerActionView'))).tap();
+			await waitForToast();
 		});
 
 		it('should reset avatar', async() => {
-			await element(by.id('profile-view-list')).swipe('up');
+			await element(by.type('UIScrollView')).atIndex(1).swipe('up');
+			await sleep(1000);
 			await element(by.id('profile-view-reset-avatar')).tap();
-			await waitFor(element(by.text('Avatar changed successfully!'))).toBeVisible().withTimeout(10000);
-			// await expect(element(by.text('Avatar changed successfully!'))).toBeVisible();
-			await waitFor(element(by.text('Avatar changed successfully!'))).toBeNotVisible().withTimeout(10000);
-			await expect(element(by.text('Avatar changed successfully!'))).toBeNotVisible();
-		});
-
-		after(async() => {
-			takeScreenshot();
+			await waitForToast();
 		});
 	});
 });

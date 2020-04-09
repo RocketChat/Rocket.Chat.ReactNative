@@ -30,7 +30,7 @@ public class Ejson {
 
     public String serverURL() {
         String url = this.host;
-        if (url.endsWith("/")) {
+        if (url != null && url.endsWith("/")) {
             url = url.substring(0, url.length() - 1);
         }
         return url;

@@ -30,16 +30,18 @@ export default StyleSheet.create({
 	},
 	pickerText: {
 		...sharedStyles.textRegular,
+		paddingLeft: 6,
 		fontSize: 16
 	},
 	item: {
 		height: 48,
+		maxWidth: '85%',
 		alignItems: 'center',
 		flexDirection: 'row'
 	},
 	input: {
 		minHeight: 48,
-		padding: 8,
+		paddingHorizontal: 8,
 		paddingBottom: 0,
 		borderWidth: StyleSheet.hairlineWidth,
 		borderRadius: 2,
@@ -57,9 +59,10 @@ export default StyleSheet.create({
 		height: 226
 	},
 	chips: {
+		paddingTop: 8,
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		marginRight: 16
+		marginRight: 50
 	},
 	chip: {
 		flexDirection: 'row',
@@ -72,6 +75,7 @@ export default StyleSheet.create({
 	},
 	chipText: {
 		paddingHorizontal: 8,
+		flexShrink: 1,
 		...sharedStyles.textMedium,
 		fontSize: 14
 	},
@@ -80,5 +84,11 @@ export default StyleSheet.create({
 		borderRadius: 2,
 		width: 20,
 		height: 20
+	},
+	itemImage: {
+		marginRight: 8,
+		borderRadius: 2,
+		width: 24,
+		height: 24
 	}
 });

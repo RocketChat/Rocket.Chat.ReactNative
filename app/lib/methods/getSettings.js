@@ -2,9 +2,9 @@ import { InteractionManager } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
+import { addSettings, clearSettings } from '../../actions/settings';
 import RocketChat from '../rocketchat';
 import reduxStore from '../createStore';
-import * as actions from '../../actions';
 import settings from '../../constants/settings';
 import log from '../../utils/log';
 import database from '../database';
@@ -12,6 +12,22 @@ import protectedFunction from './helpers/protectedFunction';
 import fetch from '../../utils/fetch';
 
 const serverInfoKeys = ['Site_Name', 'UI_Use_Real_Name', 'FileUpload_MediaTypeWhiteList', 'FileUpload_MaxFileSize'];
+
+// these settings are used only on onboarding process
+const loginSettings = [
+	'API_Gitlab_URL',
+	'CAS_enabled',
+	'CAS_login_url',
+	'Accounts_EmailVerification',
+	'Accounts_ManuallyApproveNewUsers',
+	'Accounts_ShowFormLogin',
+	'Site_Url',
+	'Accounts_RegistrationForm',
+	'Accounts_RegistrationForm_LinkReplacementText',
+	'Accounts_EmailOrUsernamePlaceholder',
+	'Accounts_PasswordPlaceholder',
+	'Accounts_PasswordReset'
+];
 
 const serverInfoUpdate = async(serverInfo, iconSetting) => {
 	const serversDB = database.servers;
@@ -52,21 +68,18 @@ const serverInfoUpdate = async(serverInfo, iconSetting) => {
 	});
 };
 
-export function getSetting({ server, setting }) {
-	return new Promise(async(resolve, reject) => {
-		try {
-			const result = await fetch(`${ server }/api/v1/settings.public?query={"_id":{"$in":["${ setting }"]}}`).then(response => response.json());
+export async function getLoginSettings({ server }) {
+	try {
+		const settingsParams = JSON.stringify(loginSettings);
+		const result = await fetch(`${ server }/api/v1/settings.public?query={"_id":{"$in":${ settingsParams }}}`).then(response => response.json());
 
-			if (result.success && result.settings.length) {
-				const [{ value }] = result.settings;
-				return resolve(value);
-			}
-		} catch (e) {
-			log(e);
+		if (result.success && result.settings.length) {
+			reduxStore.dispatch(clearSettings());
+			reduxStore.dispatch(addSettings(this.parseSettings(this._prepareSettings(result.settings))));
 		}
-
-		return reject();
-	});
+	} catch (e) {
+		log(e);
+	}
 }
 
 export async function setSettings() {
@@ -81,13 +94,13 @@ export async function setSettings() {
 		valueAsArray: item.valueAsArray,
 		_updatedAt: item._updatedAt
 	}));
-	reduxStore.dispatch(actions.setAllSettings(RocketChat.parseSettings(parsed.slice(0, parsed.length))));
+	reduxStore.dispatch(addSettings(RocketChat.parseSettings(parsed.slice(0, parsed.length))));
 }
 
 export default async function() {
 	try {
 		const db = database.active;
-		const settingsParams = JSON.stringify(Object.keys(settings));
+		const settingsParams = JSON.stringify(Object.keys(settings).filter(key => !loginSettings.includes(key)));
 		// RC 0.60.0
 		const result = await fetch(`${ this.sdk.client.host }/api/v1/settings.public?query={"_id":{"$in":${ settingsParams }}}`).then(response => response.json());
 
@@ -95,10 +108,10 @@ export default async function() {
 			return;
 		}
 		const data = result.settings || [];
-		const filteredSettings = this._prepareSettings(data.filter(item => item._id !== 'Assets_favicon_512'));
+		const filteredSettings = this._prepareSettings(data);
 		const filteredSettingsIds = filteredSettings.map(s => s._id);
 
-		reduxStore.dispatch(actions.addSettings(this.parseSettings(filteredSettings)));
+		reduxStore.dispatch(addSettings(this.parseSettings(filteredSettings)));
 		InteractionManager.runAfterInteractions(async() => {
 			// filter server info
 			const serverInfo = filteredSettings.filter(i1 => serverInfoKeys.includes(i1._id));

@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, FlatList } from 'react-native';
 import PropTypes from 'prop-types';
 import Touchable from 'react-native-platform-touchable';
+import FastImage from 'react-native-fast-image';
 
 import Separator from '../../Separator';
 import Check from '../../Check';
@@ -26,6 +27,7 @@ const Item = ({
 		]}
 	>
 		<>
+			{item.imageUrl ? <FastImage style={styles.itemImage} source={{ uri: item.imageUrl }} /> : null}
 			<Text style={{ color: themes[theme].titleText }}>{textParser([item.text])}</Text>
 			{selected ? <Check theme={theme} /> : null}
 		</>

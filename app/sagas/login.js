@@ -21,6 +21,7 @@ import database from '../lib/database';
 import EventEmitter from '../utils/events';
 import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../utils/info';
+import { setActiveUsers } from '../actions/activeUsers';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -71,14 +72,17 @@ const registerPushToken = function* registerPushToken() {
 	yield RocketChat.registerPushToken();
 };
 
-const fetchUserPresence = function* fetchUserPresence() {
-	yield RocketChat.getUserPresence();
+const fetchUsersPresence = function* fetchUserPresence() {
+	yield RocketChat.getUsersPresence();
+	RocketChat.subscribeUsersPresence();
 };
 
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
 		const adding = yield select(state => state.server.adding);
 		yield RNUserDefaults.set(RocketChat.TOKEN_KEY, user.token);
+
+		RocketChat.getUserPresence(user.id);
 
 		const server = yield select(getServer);
 		yield put(roomsRequest());
@@ -87,7 +91,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchRoles);
 		yield fork(fetchSlashCommands);
 		yield fork(registerPushToken);
-		yield fork(fetchUserPresence);
+		yield fork(fetchUsersPresence);
 
 		I18n.locale = user.language;
 		moment.locale(toMomentLocale(user.language));
@@ -100,6 +104,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			name: user.name,
 			language: user.language,
 			status: user.status,
+			statusText: user.statusText,
 			roles: user.roles
 		};
 		yield serversDB.action(async() => {
@@ -147,7 +152,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 };
 
 const handleLogout = function* handleLogout({ forcedByServer }) {
-	yield put(appStart('loading'));
+	yield put(appStart('loading', I18n.t('Logging_out')));
 	const server = yield select(getServer);
 	if (server) {
 		try {
@@ -166,10 +171,12 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 
 				// see if there're other logged in servers and selects first one
 				if (servers.length > 0) {
-					const newServer = servers[0].id;
-					const token = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
-					if (token) {
-						return yield put(selectServerRequest(newServer));
+					for (let i = 0; i < servers.length; i += 1) {
+						const newServer = servers[i].id;
+						const token = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
+						if (token) {
+							return yield put(selectServerRequest(newServer));
+						}
 					}
 				}
 				// if there's no servers, go outside
@@ -182,10 +189,15 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 	}
 };
 
-const handleSetUser = function handleSetUser({ user }) {
+const handleSetUser = function* handleSetUser({ user }) {
 	if (user && user.language) {
 		I18n.locale = user.language;
 		moment.locale(toMomentLocale(user.language));
+	}
+
+	if (user && user.status) {
+		const userId = yield select(state => state.login.user.id);
+		yield put(setActiveUsers({ [userId]: user }));
 	}
 };
 

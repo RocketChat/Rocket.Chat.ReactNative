@@ -1,29 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, StyleSheet, ScrollView, TouchableOpacity
+	View, Text, StyleSheet, TouchableOpacity
 } from 'react-native';
-import removeMarkdown from 'remove-markdown';
 
-import shortnameToUnicode from '../../../utils/shortnameToUnicode';
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
 import { isAndroid, isTablet } from '../../../utils/deviceInfo';
 import Icon from './Icon';
 import { themes } from '../../../constants/colors';
+import Markdown from '../../../containers/markdown';
 
-const androidMarginLeft = isTablet ? 0 : 10;
+const androidMarginLeft = isTablet ? 0 : 4;
 
 const TITLE_SIZE = 16;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		height: '100%',
 		marginRight: isAndroid ? 15 : 5,
-		marginLeft: isAndroid ? androidMarginLeft : -12
+		marginLeft: isAndroid ? androidMarginLeft : -10
 	},
 	titleContainer: {
-		flex: 6,
+		alignItems: 'center',
 		flexDirection: 'row'
 	},
 	threadContainer: {
@@ -36,110 +34,136 @@ const styles = StyleSheet.create({
 	scroll: {
 		alignItems: 'center'
 	},
-	typing: {
+	subtitle: {
 		...sharedStyles.textRegular,
-		fontSize: 12,
-		flex: 4
+		fontSize: 12
 	},
 	typingUsers: {
 		...sharedStyles.textSemibold
 	}
 });
 
-const Typing = React.memo(({ usersTyping, theme }) => {
-	let usersText;
-	if (!usersTyping.length) {
+const SubTitle = React.memo(({ usersTyping, subtitle, theme }) => {
+	if (!subtitle && !usersTyping.length) {
 		return null;
-	} else if (usersTyping.length === 2) {
-		usersText = usersTyping.join(` ${ I18n.t('and') } `);
-	} else {
-		usersText = usersTyping.join(', ');
 	}
-	return (
-		<Text style={[styles.typing, { color: themes[theme].headerTitleColor }]} numberOfLines={1}>
-			<Text style={styles.typingUsers}>{usersText} </Text>
-			{ usersTyping.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing') }...
-		</Text>
-	);
+
+	// typing
+	if (usersTyping.length) {
+		let usersText;
+		if (usersTyping.length === 2) {
+			usersText = usersTyping.join(` ${ I18n.t('and') } `);
+		} else {
+			usersText = usersTyping.join(', ');
+		}
+		return (
+			<Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
+				<Text style={styles.typingUsers}>{usersText} </Text>
+				{ usersTyping.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing') }...
+			</Text>
+		);
+	}
+
+	// subtitle
+	if (subtitle) {
+		return (
+			<Markdown
+				preview
+				msg={subtitle}
+				style={[styles.subtitle, { color: themes[theme].auxiliaryText }]}
+				numberOfLines={1}
+				theme={theme}
+			/>
+		);
+	}
 });
 
-Typing.propTypes = {
+SubTitle.propTypes = {
 	usersTyping: PropTypes.array,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	subtitle: PropTypes.string
 };
 
 const HeaderTitle = React.memo(({
-	title, scale, connecting, theme
+	title, tmid, prid, scale, connecting, theme
 }) => {
 	if (connecting) {
 		title = I18n.t('Connecting');
 	}
+
+	if (!tmid && !prid) {
+		return (
+			<Text
+				style={[styles.title, { fontSize: TITLE_SIZE * scale, color: themes[theme].headerTitleColor }]}
+				numberOfLines={1}
+				testID={`room-view-title-${ title }`}
+			>
+				{title}
+			</Text>
+		);
+	}
+
 	return (
-		<Text
+		<Markdown
+			preview
+			msg={title}
 			style={[styles.title, { fontSize: TITLE_SIZE * scale, color: themes[theme].headerTitleColor }]}
 			numberOfLines={1}
+			theme={theme}
 			testID={`room-view-title-${ title }`}
-		>{title}
-		</Text>
+		/>
 	);
 });
 
 HeaderTitle.propTypes = {
 	title: PropTypes.string,
+	tmid: PropTypes.string,
+	prid: PropTypes.string,
 	scale: PropTypes.number,
 	connecting: PropTypes.bool,
 	theme: PropTypes.string
 };
 
 const Header = React.memo(({
-	title, type, status, usersTyping, width, height, prid, tmid, widthOffset, connecting, goRoomActionsView, theme
+	title, subtitle, type, status, usersTyping, width, height, prid, tmid, widthOffset, connecting, goRoomActionsView, roomUserId, theme
 }) => {
 	const portrait = height > width;
 	let scale = 1;
 
 	if (!portrait && !tmid) {
-		if (usersTyping.length > 0) {
+		if (usersTyping.length > 0 || subtitle) {
 			scale = 0.8;
 		}
 	}
-	if (title) {
-		title = shortnameToUnicode(title);
-		if (tmid) {
-			title = removeMarkdown(title);
-		}
-	}
 
-	const onPress = () => {
-		if (!tmid) {
-			goRoomActionsView();
-		}
-	};
+	const onPress = () => goRoomActionsView();
 
 	return (
-		<TouchableOpacity onPress={onPress} style={[styles.container, { width: width - widthOffset }]}>
+		<TouchableOpacity
+			testID='room-view-header-actions'
+			onPress={onPress}
+			style={[styles.container, { width: width - widthOffset }]}
+			disabled={tmid}
+		>
 			<View style={[styles.titleContainer, tmid && styles.threadContainer]}>
-				<ScrollView
-					showsHorizontalScrollIndicator={false}
-					horizontal
-					bounces={false}
-					contentContainerStyle={styles.scroll}
-				>
-					<Icon type={prid ? 'discussion' : type} status={status} theme={theme} />
-					<HeaderTitle
-						title={title}
-						scale={scale}
-						connecting={connecting}
-						theme={theme}
-					/>
-				</ScrollView>
+				<Icon type={prid ? 'discussion' : type} status={status} roomUserId={roomUserId} theme={theme} />
+				<HeaderTitle
+					title={title}
+					tmid={tmid}
+					prid={prid}
+					scale={scale}
+					connecting={connecting}
+					theme={theme}
+				/>
 			</View>
-			{type === 'thread' ? null : <Typing usersTyping={usersTyping} theme={theme} />}
+			{tmid ? null : <SubTitle usersTyping={usersTyping} subtitle={subtitle} theme={theme} />}
 		</TouchableOpacity>
 	);
 });
 
 Header.propTypes = {
 	title: PropTypes.string.isRequired,
+	subtitle: PropTypes.string,
 	type: PropTypes.string.isRequired,
 	width: PropTypes.number.isRequired,
 	height: PropTypes.number.isRequired,
@@ -150,6 +174,7 @@ Header.propTypes = {
 	usersTyping: PropTypes.array,
 	widthOffset: PropTypes.number,
 	connecting: PropTypes.bool,
+	roomUserId: PropTypes.string,
 	goRoomActionsView: PropTypes.func
 };
 

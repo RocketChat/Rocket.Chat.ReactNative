@@ -31,10 +31,11 @@ export const ROOMS = createRequestTypes('ROOMS', [
 	'OPEN_SEARCH_HEADER',
 	'CLOSE_SEARCH_HEADER'
 ]);
-export const ROOM = createRequestTypes('ROOM', ['LEAVE', 'ERASE', 'USER_TYPING']);
+export const ROOM = createRequestTypes('ROOM', ['LEAVE', 'DELETE', 'REMOVED', 'USER_TYPING']);
 export const APP = createRequestTypes('APP', ['START', 'READY', 'INIT', 'INIT_LOCAL_SETTINGS']);
 export const MESSAGES = createRequestTypes('MESSAGES', ['REPLY_BROADCAST']);
 export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [...defaultTypes]);
+export const CREATE_DISCUSSION = createRequestTypes('CREATE_DISCUSSION', [...defaultTypes]);
 export const SELECTED_USERS = createRequestTypes('SELECTED_USERS', ['ADD_USER', 'REMOVE_USER', 'RESET', 'SET_LOADING']);
 export const SERVER = createRequestTypes('SERVER', [
 	...defaultTypes,
@@ -50,7 +51,6 @@ export const SNIPPETED_MESSAGES = createRequestTypes('SNIPPETED_MESSAGES', ['OPE
 export const DEEP_LINKING = createRequestTypes('DEEP_LINKING', ['OPEN']);
 export const SORT_PREFERENCES = createRequestTypes('SORT_PREFERENCES', ['SET_ALL', 'SET']);
 export const NOTIFICATION = createRequestTypes('NOTIFICATION', ['RECEIVED', 'REMOVE']);
-export const TOGGLE_MARKDOWN = 'TOGGLE_MARKDOWN';
 export const TOGGLE_CRASH_REPORT = 'TOGGLE_CRASH_REPORT';
 export const SET_CUSTOM_EMOJIS = 'SET_CUSTOM_EMOJIS';
 export const SET_ACTIVE_USERS = 'SET_ACTIVE_USERS';
@@ -63,3 +63,4 @@ export const INVITE_LINKS = createRequestTypes('INVITE_LINKS', [
 	'CLEAR',
 	...defaultTypes
 ]);
+export const SETTINGS = createRequestTypes('SETTINGS', ['CLEAR', 'ADD']);

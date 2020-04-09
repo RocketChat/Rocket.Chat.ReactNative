@@ -43,6 +43,7 @@ import { KEY_COMMAND } from './commands';
 import Tablet, { initTabletNav } from './tablet';
 import sharedStyles from './views/Styles';
 import { SplitContext } from './split';
+import TwoFactor from './containers/TwoFactor';
 
 import RoomsListView from './views/RoomsListView';
 import RoomView from './views/RoomView';
@@ -75,8 +76,8 @@ const OutsideStack = createStackNavigator({
 	NewServerView: {
 		getScreen: () => require('./views/NewServerView').default
 	},
-	LoginSignupView: {
-		getScreen: () => require('./views/LoginSignupView').default
+	WorkspaceView: {
+		getScreen: () => require('./views/WorkspaceView').default
 	},
 	LoginView: {
 		getScreen: () => require('./views/LoginView').default
@@ -165,6 +166,9 @@ const ChatsStack = createStackNavigator({
 	},
 	NotificationPrefView: {
 		getScreen: () => require('./views/NotificationPreferencesView').default
+	},
+	PickerView: {
+		getScreen: () => require('./views/PickerView').default
 	},
 	...RoomRoutes
 }, {
@@ -290,11 +294,31 @@ const ModalBlockStack = createStackNavigator({
 	cardStyle
 });
 
+const CreateDiscussionStack = createStackNavigator({
+	CreateDiscussionView: {
+		getScreen: () => require('./views/CreateDiscussionView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
+});
+
+const StatusStack = createStackNavigator({
+	StatusView: {
+		getScreen: () => require('./views/StatusView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
+});
+
 const InsideStackModal = createStackNavigator({
 	Main: ChatsDrawer,
 	NewMessageStack,
 	AttachmentStack,
 	ModalBlockStack,
+	StatusStack,
+	CreateDiscussionStack,
 	JitsiMeetView: {
 		getScreen: () => require('./views/JitsiMeetView').default
 	}
@@ -386,6 +410,9 @@ const SidebarStack = createStackNavigator({
 	},
 	AdminPanelView: {
 		getScreen: () => require('./views/AdminPanelView').default
+	},
+	StatusView: {
+		getScreen: () => require('./views/StatusView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader,
@@ -425,6 +452,9 @@ const RoomActionsStack = createStackNavigator({
 	},
 	AttachmentView: {
 		getScreen: () => require('./views/AttachmentView').default
+	},
+	PickerView: {
+		getScreen: () => require('./views/PickerView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader,
@@ -439,6 +469,7 @@ const ModalSwitch = createSwitchNavigator({
 	RoomActionsStack,
 	SettingsStack,
 	ModalBlockStack,
+	CreateDiscussionStack,
 	AuthLoading: () => null
 },
 {
@@ -470,7 +501,7 @@ class CustomModalStack extends React.Component {
 			closeModal();
 			return true;
 		}
-		if (state && state.routes[state.index] && state.routes[state.index].routes.length > 1) {
+		if (state && state.routes[state.index] && state.routes[state.index].routes && state.routes[state.index].routes.length > 1) {
 			navigation.goBack();
 		}
 		return false;
@@ -606,9 +637,6 @@ export default class Root extends React.Component {
 	}
 
 	init = async() => {
-		if (isIOS) {
-			await RNUserDefaults.setName('group.ios.chat.rocket');
-		}
 		RNUserDefaults.objectForKey(THEME_PREFERENCES_KEY).then(this.setTheme);
 		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
@@ -702,6 +730,7 @@ export default class Root extends React.Component {
 					>
 						<ActionSheetProvider>
 							{content}
+						  <TwoFactor />
 						</ActionSheetProvider>
 					</ThemeContext.Provider>
 				</Provider>
