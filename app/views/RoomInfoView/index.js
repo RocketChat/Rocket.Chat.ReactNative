@@ -48,11 +48,11 @@ const getRoomTitle = (room, type, name, username, statusText, theme) => (type ==
 
 class RoomInfoView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
-		const showEdit = navigation.getParam('showEdit');
-		const livechat = navigation.getParam('livechat');
-		const visitor = navigation.getParam('visitor');
-		const rid = navigation.getParam('rid');
 		const t = navigation.getParam('t');
+		const rid = navigation.getParam('rid');
+		const visitor = navigation.getParam('visitor');
+		const livechat = navigation.getParam('livechat');
+		const showEdit = navigation.getParam('showEdit', t === 'l');
 		return {
 			title: t === 'd' ? I18n.t('User_Info') : I18n.t('Room_Info'),
 			...themedHeader(screenProps.theme),

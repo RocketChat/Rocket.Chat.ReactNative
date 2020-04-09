@@ -74,7 +74,6 @@ class RoomActionsView extends React.Component {
 			canAutoTranslate: false,
 			canAddUser: false,
 			canInviteUser: false,
-			canCloseRoom: false,
 			canForwardGuest: false,
 			canReturnQueue: false
 		};
@@ -126,7 +125,6 @@ class RoomActionsView extends React.Component {
 
 		// livechat permissions
 		if (room.t === 'l') {
-			this.canCloseRoom();
 			this.canForwardGuest();
 			this.canReturnQueue();
 		}
@@ -198,20 +196,6 @@ class RoomActionsView extends React.Component {
 		return result;
 	}
 
-	canCloseRoom = async() => {
-		const { room } = this.state;
-		const { rid } = room;
-		let result = true;
-
-		const closeOthersLivechatRoom = 'close-others-livechat-room';
-		const permissions = await RocketChat.hasPermission([closeOthersLivechatRoom], rid);
-		if (!permissions[closeOthersLivechatRoom]) {
-			result = false;
-		}
-
-		this.setState({ canCloseRoom: result });
-	}
-
 	canForwardGuest = async() => {
 		const { room } = this.state;
 		const { rid } = room;
@@ -237,7 +221,7 @@ class RoomActionsView extends React.Component {
 
 	get sections() {
 		const {
-			room, member, membersCount, canViewMembers, canAddUser, canInviteUser, joined, canAutoTranslate, canCloseRoom, canForwardGuest, canReturnQueue
+			room, member, membersCount, canViewMembers, canAddUser, canInviteUser, joined, canAutoTranslate, canForwardGuest, canReturnQueue
 		} = this.state;
 		const { jitsiEnabled } = this.props;
 		const {
@@ -424,13 +408,11 @@ class RoomActionsView extends React.Component {
 		} else if (t === 'l') {
 			sections[2].data = [];
 
-			if (canCloseRoom) {
-				sections[2].data.push({
-					icon: 'close',
-					name: I18n.t('Close'),
-					event: this.closeLivechat
-				});
-			}
+			sections[2].data.push({
+				icon: 'close',
+				name: I18n.t('Close'),
+				event: this.closeLivechat
+			});
 
 			if (canForwardGuest) {
 				sections[2].data.push({

@@ -42,7 +42,7 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 	const livechat = navigation.getParam('livechat', {});
 	const visitor = navigation.getParam('visitor', {});
 
-	const [tagParam, setTags] = useState(livechat.tags || []);
+	const [tagParam, setTags] = useState(livechat?.tags || []);
 
 	useEffect(() => {
 		setTags([...tagParam, ...availableUserTags]);
@@ -58,7 +58,7 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 	};
 
 	const getAgentDepartments = async() => {
-		const result = await RocketChat.getAgentDepartments(visitor._id);
+		const result = await RocketChat.getAgentDepartments(visitor?._id);
 		if (result.success) {
 			const agentDepartments = result.departments.map(dept => dept.departmentId);
 			getTagsList(agentDepartments);
@@ -68,7 +68,7 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 	useEffect(() => { getAgentDepartments(); }, []);
 
 	const submit = async() => {
-		const userData = { _id: visitor._id };
+		const userData = { _id: visitor?._id };
 
 		const { _id, sms } = livechat;
 		const roomData = { _id };
@@ -84,7 +84,7 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 		}
 
 		userData.livechatData = {};
-		Object.entries(visitor.livechatData).forEach(([key]) => {
+		Object.entries(visitor?.livechatData || {}).forEach(([key]) => {
 			if (params[key] || params[key] === '') {
 				userData.livechatData[key] = params[key];
 			}
@@ -97,7 +97,7 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 		roomData.tags = tagParam;
 
 		roomData.livechatData = {};
-		Object.entries(livechat.livechatData).forEach(([key]) => {
+		Object.entries(livechat?.livechatData || {}).forEach(([key]) => {
 			if (params[key] || params[key] === '') {
 				roomData.livechatData[key] = params[key];
 			}
@@ -127,12 +127,12 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 			<ScrollView style={sharedStyles.containerScrollView} {...scrollPersistTaps}>
 				<SafeAreaView style={sharedStyles.container} forceInset={{ vertical: 'never' }}>
 					<Title
-						title={visitor.username}
+						title={visitor?.username}
 						theme={theme}
 					/>
 					<TextInput
 						label={I18n.t('Name')}
-						defaultValue={visitor.name}
+						defaultValue={visitor?.name}
 						onChangeText={text => onChangeText('name', text)}
 						onSubmitEditing={() => { inputs.name.focus(); }}
 						theme={theme}
@@ -140,7 +140,7 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 					<TextInput
 						label={I18n.t('Email')}
 						inputRef={(e) => { inputs.name = e; }}
-						defaultValue={visitor.visitorEmails[0]?.address}
+						defaultValue={visitor?.visitorEmails[0]?.address}
 						onChangeText={text => onChangeText('email', text)}
 						onSubmitEditing={() => { inputs.phone.focus(); }}
 						theme={theme}
@@ -148,10 +148,10 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 					<TextInput
 						label={I18n.t('Phone')}
 						inputRef={(e) => { inputs.phone = e; }}
-						defaultValue={visitor.phone[0]?.phoneNumber}
+						defaultValue={visitor?.phone[0]?.phoneNumber}
 						onChangeText={text => onChangeText('phone', text)}
 						onSubmitEditing={() => {
-							const keys = Object.keys(visitor.livechatData);
+							const keys = Object.keys(visitor?.livechatData || {});
 							if (keys.length > 0) {
 								const key = keys.pop();
 								inputs[key].focus();
@@ -161,7 +161,7 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 						}}
 						theme={theme}
 					/>
-					{Object.entries(visitor.livechatData).map(([key, value], index, array) => (
+					{Object.entries(visitor?.livechatData || {}).map(([key, value], index, array) => (
 						<TextInput
 							label={key}
 							defaultValue={value}
@@ -183,7 +183,7 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 					<TextInput
 						label={I18n.t('Topic')}
 						inputRef={(e) => { inputs.topic = e; }}
-						defaultValue={livechat.topic}
+						defaultValue={livechat?.topic}
 						onChangeText={text => onChangeText('topic', text)}
 						onSubmitEditing={() => inputs.tags.focus()}
 						theme={theme}
@@ -206,7 +206,7 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 						theme={theme}
 					/>
 
-					{Object.entries(livechat.livechatData).map(([key, value], index, array) => (
+					{Object.entries(livechat?.livechatData || {}).map(([key, value], index, array) => (
 						<TextInput
 							label={key}
 							defaultValue={value}

@@ -39,12 +39,12 @@ const Livechat = ({ room, navigation, theme }) => {
 
 			const visitorCustomFields = customFields
 				.filter(field => field.visibility !== 'hidden' && field.scope === 'visitor')
-				.map(field => ({ [field._id]: user.livechatData[field._id] || '' }))
+				.map(field => ({ [field._id]: (user.livechatData && user.livechatData[field._id]) || '' }))
 				.reduce((ret, field) => ({ [field]: field, ...ret }));
 
 			const livechatCustomFields = customFields
 				.filter(field => field.visibility !== 'hidden' && field.scope === 'room')
-				.map(field => ({ [field._id]: room.livechatData[field._id] || '' }))
+				.map(field => ({ [field._id]: (room.livechatData && room.livechatData[field._id]) || '' }))
 				.reduce((ret, field) => ({ [field]: field, ...ret }));
 
 			navigation.setParams({ visitor: { ...user, livechatData: visitorCustomFields } });
