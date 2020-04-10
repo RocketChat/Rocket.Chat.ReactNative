@@ -33,7 +33,8 @@ class AttachmentView extends React.Component {
 		const attachment = navigation.getParam('attachment');
 		const from = navigation.getParam('from');
 		const handleSave = navigation.getParam('handleSave', () => {});
-		const { title, video_url } = attachment;
+		const { title: encodedTitle, video_url } = attachment;
+		const title = decodeURI(encodedTitle);
 		const options = {
 			title,
 			...themedHeader(theme),
