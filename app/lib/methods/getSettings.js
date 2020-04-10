@@ -13,6 +13,22 @@ import fetch from '../../utils/fetch';
 
 const serverInfoKeys = ['Site_Name', 'UI_Use_Real_Name', 'FileUpload_MediaTypeWhiteList', 'FileUpload_MaxFileSize'];
 
+// these settings are used only on onboarding process
+const loginSettings = [
+	'API_Gitlab_URL',
+	'CAS_enabled',
+	'CAS_login_url',
+	'Accounts_EmailVerification',
+	'Accounts_ManuallyApproveNewUsers',
+	'Accounts_ShowFormLogin',
+	'Site_Url',
+	'Accounts_RegistrationForm',
+	'Accounts_RegistrationForm_LinkReplacementText',
+	'Accounts_EmailOrUsernamePlaceholder',
+	'Accounts_PasswordPlaceholder',
+	'Accounts_PasswordReset'
+];
+
 const serverInfoUpdate = async(serverInfo, iconSetting) => {
 	const serversDB = database.servers;
 	const serverId = reduxStore.getState().server.server;
@@ -54,7 +70,7 @@ const serverInfoUpdate = async(serverInfo, iconSetting) => {
 
 export async function getLoginSettings({ server }) {
 	try {
-		const settingsParams = JSON.stringify(['Accounts_ShowFormLogin', 'Accounts_RegistrationForm']);
+		const settingsParams = JSON.stringify(loginSettings);
 		const result = await fetch(`${ server }/api/v1/settings.public?query={"_id":{"$in":${ settingsParams }}}`).then(response => response.json());
 
 		if (result.success && result.settings.length) {
@@ -84,7 +100,7 @@ export async function setSettings() {
 export default async function() {
 	try {
 		const db = database.active;
-		const settingsParams = JSON.stringify(Object.keys(settings));
+		const settingsParams = JSON.stringify(Object.keys(settings).filter(key => !loginSettings.includes(key)));
 		// RC 0.60.0
 		const result = await fetch(`${ this.sdk.client.host }/api/v1/settings.public?query={"_id":{"$in":${ settingsParams }}}`).then(response => response.json());
 

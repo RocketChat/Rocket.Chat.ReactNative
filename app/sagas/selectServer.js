@@ -12,8 +12,8 @@ import * as actions from '../actions';
 import {
 	serverFailure, selectServerRequest, selectServerSuccess, selectServerFailure
 } from '../actions/server';
-import { setUser } from '../actions/login';
 import { clearSettings } from '../actions/settings';
+import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
 import log, { logServerVersion } from '../utils/log';
@@ -98,9 +98,8 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		const basicAuth = yield RNUserDefaults.get(`${ BASIC_AUTH_KEY }-${ server }`);
 		setBasicAuth(basicAuth);
 
-		yield put(clearSettings());
-
 		if (user) {
+			yield put(clearSettings());
 			yield RocketChat.connect({ server, user, logoutOnError: true });
 			yield put(setUser(user));
 			yield put(actions.appStart('inside'));
