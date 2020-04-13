@@ -80,7 +80,8 @@ class AuthenticationWebView extends React.PureComponent {
 			const { navigation } = this.props;
 			const ssoToken = navigation.getParam('ssoToken');
 			const parsedUrl = parse(url, true);
-			if (parsedUrl.pathname?.includes('ticket') || parsedUrl.pathname?.includes('validate') || parsedUrl.query?.saml_idp_credentialToken) {
+			// ticket -> cas / validate & saml_idp_credentialToken -> saml
+			if (parsedUrl.pathname?.includes('validate') || parsedUrl.query?.ticket || parsedUrl.query?.saml_idp_credentialToken) {
 				let payload;
 				if (this.authType === 'saml') {
 					const token = parsedUrl.query?.saml_idp_credentialToken || ssoToken;
