@@ -48,6 +48,7 @@ const TwoFactor = React.memo(({ theme, split }) => {
 
 	useDeepCompareEffect(() => {
 		if (!_.isEmpty(data)) {
+			setCode('');
 			setVisible(true);
 		} else {
 			setVisible(false);
@@ -94,7 +95,7 @@ const TwoFactor = React.memo(({ theme, split }) => {
 			<View style={styles.container}>
 				<View style={[styles.content, split && [sharedStyles.modal, sharedStyles.modalFormSheet], { backgroundColor: themes[theme].backgroundColor }]}>
 					<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
-					<Text style={[styles.subtitle, { color }]}>{I18n.t(method?.text)}</Text>
+					{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
 					<TextInput
 						value={code}
 						theme={theme}
