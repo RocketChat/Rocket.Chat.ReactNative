@@ -17,7 +17,7 @@ import EventEmitter from '../utils/events';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import { getUserSelector } from '../selectors/login';
 import Chips from '../containers/UIKit/MultiSelect/Chips';
-import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
+import Button from '../containers/Button';
 
 const styles = StyleSheet.create({
 	container: {
@@ -119,10 +119,7 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 
 	const onChangeText = (key, text) => { params[key] = text; };
 
-	useEffect(() => {
-		getAgentDepartments();
-		navigation.setParams({ submit });
-	}, []);
+	useEffect(() => { getAgentDepartments(); }, []);
 
 	return (
 		<KeyboardView
@@ -237,6 +234,12 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 							theme={theme}
 						/>
 					))}
+
+					<Button
+						title={I18n.t('Save')}
+						onPress={submit}
+						theme={theme}
+					/>
 				</SafeAreaView>
 			</ScrollView>
 		</KeyboardView>
@@ -247,13 +250,8 @@ LivechatEditView.propTypes = {
 	navigation: PropTypes.object,
 	theme: PropTypes.string
 };
-LivechatEditView.navigationOptions = ({ navigation }) => ({
-	title: I18n.t('Livechat_edit'),
-	headerRight: (
-		<CustomHeaderButtons>
-			<Item title={I18n.t('Submit')} onPress={navigation.getParam('submit', () => {})} />
-		</CustomHeaderButtons>
-	)
+LivechatEditView.navigationOptions = ({
+	title: I18n.t('Livechat_edit')
 });
 
 const mapStateToProps = state => ({
