@@ -199,7 +199,6 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 						inputRef={(e) => { inputs.tags = e; }}
 						label={I18n.t('Tags')}
 						iconLeft='edit'
-						returnKeyType='done'
 						onSubmitEditing={({ nativeEvent: { text } }) => {
 							if (text.length) {
 								setTags([...tagParam.filter(t => t !== text), text]);
