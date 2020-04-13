@@ -69,10 +69,6 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 		setTags([...tagParam, ...availableUserTags]);
 	}, [availableUserTags]);
 
-	useEffect(() => {
-		getCustomFields();
-	}, []);
-
 	const getTagsList = async(agentDepartments) => {
 		const tags = await RocketChat.getTagsList();
 		const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles.includes(role));
@@ -141,7 +137,10 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 
 	const onChangeText = (key, text) => { params[key] = text; };
 
-	useEffect(() => { getAgentDepartments(); }, []);
+	useEffect(() => {
+		getAgentDepartments();
+		getCustomFields();
+	}, []);
 
 	return (
 		<KeyboardView
