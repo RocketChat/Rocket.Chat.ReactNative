@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
 
 import I18n from '../i18n';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import RocketChat from '../lib/rocketchat';
 import OrSeparator from '../containers/OrSeparator';
-import { showErrorAlert } from '../utils/info';
 import Input from '../containers/UIKit/MultiSelect/Input';
+import { forwardRoom as forwardRoomAction } from '../actions/room';
 
 const styles = StyleSheet.create({
 	container: {
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ForwardLivechatView = ({ navigation, theme }) => {
+const ForwardLivechatView = ({ forwardRoom, navigation, theme }) => {
 	const [departments, setDepartments] = useState([]);
 	const [departmentId, setDepartment] = useState();
 	const [users, setUsers] = useState([]);
@@ -64,7 +65,7 @@ const ForwardLivechatView = ({ navigation, theme }) => {
 		}
 	};
 
-	const submit = async() => {
+	const submit = () => {
 		const transferData = { roomId: rid };
 
 		if (!departmentId && !userId) {
@@ -77,16 +78,7 @@ const ForwardLivechatView = ({ navigation, theme }) => {
 			transferData.departmentId = departmentId;
 		}
 
-		try {
-			const result = await RocketChat.forwardLivechat(transferData);
-			if (!result?.result) {
-				showErrorAlert(I18n.t('No_available_agents_to_transfer'), I18n.t('Oops'));
-			} else {
-				// forward successfully
-			}
-		} catch (e) {
-			showErrorAlert(e.reason, I18n.t('Oops'));
-		}
+		forwardRoom(rid, transferData);
 	};
 
 	useEffect(() => {
@@ -111,7 +103,8 @@ const ForwardLivechatView = ({ navigation, theme }) => {
 			title: I18n.t('Forward_to_department'),
 			value: 1,
 			data: departments,
-			onChangeValue: setDepartment
+			onChangeValue: setDepartment,
+			goBack: false
 		});
 	};
 
@@ -120,7 +113,8 @@ const ForwardLivechatView = ({ navigation, theme }) => {
 			title: I18n.t('Forward_to_user'),
 			data: users,
 			onChangeValue: setUser,
-			onChangeText: getUsers
+			onChangeText: getUsers,
+			goBack: false
 		});
 	};
 
@@ -141,6 +135,7 @@ const ForwardLivechatView = ({ navigation, theme }) => {
 	);
 };
 ForwardLivechatView.propTypes = {
+	forwardRoom: PropTypes.func,
 	navigation: PropTypes.object,
 	theme: PropTypes.string
 };
@@ -148,4 +143,8 @@ ForwardLivechatView.navigationOptions = {
 	title: I18n.t('Forward_Chat')
 };
 
-export default withTheme(ForwardLivechatView);
+const mapDispatchToProps = dispatch => ({
+	forwardRoom: (rid, transferData) => dispatch(forwardRoomAction(rid, transferData))
+});
+
+export default connect(null, mapDispatchToProps)(withTheme(ForwardLivechatView));

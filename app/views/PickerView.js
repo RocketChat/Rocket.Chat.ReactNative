@@ -78,9 +78,12 @@ class PickerView extends React.PureComponent {
 
 	onChangeValue = (value) => {
 		const { navigation } = this.props;
+		const goBack = navigation.getParam('goBack', true);
 		const onChange = navigation.getParam('onChangeValue', () => {});
 		onChange(value);
-		navigation.goBack();
+		if (goBack) {
+			navigation.goBack();
+		}
 	}
 
 	onChangeText = debounce(async(text) => {

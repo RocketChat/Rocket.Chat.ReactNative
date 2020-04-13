@@ -23,6 +23,14 @@ export function closeRoom(rid) {
 	};
 }
 
+export function forwardRoom(rid, transferData) {
+	return {
+		type: types.ROOM.FORWARD,
+		transferData,
+		rid
+	};
+}
+
 export function removedRoom() {
 	return {
 		type: types.ROOM.REMOVED

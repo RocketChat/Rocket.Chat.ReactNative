@@ -10,6 +10,7 @@ import { removedRoom } from '../actions/room';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import I18n from '../i18n';
+import { showErrorAlert } from '../utils/info';
 
 const watchUserTyping = function* watchUserTyping({ rid, status }) {
 	const auth = yield select(state => state.login.isAuthenticated);
@@ -100,10 +101,24 @@ const handleCloseRoom = function* handleCloseRoom({ rid }) {
 	);
 };
 
+const handleForwardRoom = function* handleForwardRoom({ transferData }) {
+	try {
+		const result = yield RocketChat.forwardLivechat(transferData);
+		if (result === true) {
+			Navigation.navigate('RoomsListView');
+		} else {
+			showErrorAlert(I18n.t('No_available_agents_to_transfer'), I18n.t('Oops'));
+		}
+	} catch (e) {
+		showErrorAlert(e.reason, I18n.t('Oops'));
+	}
+};
+
 const root = function* root() {
 	yield takeLatest(types.ROOM.USER_TYPING, watchUserTyping);
 	yield takeLatest(types.ROOM.LEAVE, handleLeaveRoom);
 	yield takeLatest(types.ROOM.DELETE, handleDeleteRoom);
 	yield takeLatest(types.ROOM.CLOSE, handleCloseRoom);
+	yield takeLatest(types.ROOM.FORWARD, handleForwardRoom);
 };
 export default root;
