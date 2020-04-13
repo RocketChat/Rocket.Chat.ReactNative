@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import equal from 'deep-equal';
 import { withNavigation } from 'react-navigation';
 import RNUserDefaults from 'rn-user-defaults';
+import * as LocalAuthentication from 'expo-local-authentication';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
@@ -147,7 +148,12 @@ class ServerDropdown extends Component {
 					}, ANIMATION_DURATION);
 				}, ANIMATION_DURATION);
 			} else {
-				selectServerRequest(server);
+				const authResult = await LocalAuthentication.authenticateAsync();
+				if (authResult?.success) {
+					selectServerRequest(server);
+				} else {
+					alert('cancelled')
+				}
 			}
 		}
 	}
