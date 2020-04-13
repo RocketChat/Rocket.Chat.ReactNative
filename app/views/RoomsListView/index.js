@@ -174,6 +174,7 @@ class RoomsListView extends React.Component {
 		roomsRequest: PropTypes.func,
 		closeServerDropdown: PropTypes.func,
 		useRealName: PropTypes.bool,
+		connected: PropTypes.bool,
 		split: PropTypes.bool
 	};
 
@@ -302,6 +303,7 @@ class RoomsListView extends React.Component {
 			showFavorites,
 			showUnread,
 			appState,
+			connected,
 			roomsRequest
 		} = this.props;
 
@@ -317,6 +319,7 @@ class RoomsListView extends React.Component {
 		} else if (
 			appState === 'foreground'
 			&& appState !== prevProps.appState
+			&& connected
 		) {
 			roomsRequest();
 		}
@@ -528,10 +531,7 @@ class RoomsListView extends React.Component {
 
 	getUserPresence = uid => RocketChat.getUserPresence(uid)
 
-	getUidDirectMessage = (room) => {
-		const { user: { id } } = this.props;
-		return RocketChat.getUidDirectMessage(room, id);
-	}
+	getUidDirectMessage = room => RocketChat.getUidDirectMessage(room);
 
 	goRoom = (item) => {
 		const { navigation } = this.props;
@@ -895,6 +895,7 @@ class RoomsListView extends React.Component {
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
 	server: state.server.server,
+	connected: state.server.connected,
 	searchText: state.rooms.searchText,
 	loadingServer: state.server.loading,
 	showServerDropdown: state.rooms.showServerDropdown,

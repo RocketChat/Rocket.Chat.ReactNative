@@ -230,10 +230,13 @@ class RoomView extends React.Component {
 			if (this.tmid) {
 				navigation.setParams({ toggleFollowThread: this.toggleFollowThread, goRoomActionsView: this.goRoomActionsView });
 			}
-			if (isAuthenticated && this.rid) {
-				this.init();
-			} else if (this.rid) {
-				EventEmitter.addEventListener('connected', this.handleConnected);
+			if (this.rid) {
+				this.sub.subscribe();
+				if (isAuthenticated) {
+					this.init();
+				} else {
+					EventEmitter.addEventListener('connected', this.handleConnected);
+				}
 			}
 			if (isIOS && this.rid) {
 				this.updateUnreadCount();
@@ -398,7 +401,6 @@ class RoomView extends React.Component {
 						this.setLastOpen(null);
 					}
 					RocketChat.readMessages(room.rid, newLastOpen, true).catch(e => console.log(e));
-					this.sub.subscribe();
 				}
 			}
 
@@ -425,10 +427,10 @@ class RoomView extends React.Component {
 		const { t } = room;
 
 		if (t === 'd' && !RocketChat.isGroupChat(room)) {
-			const { user, navigation } = this.props;
+			const { navigation } = this.props;
 
 			try {
-				const roomUserId = RocketChat.getUidDirectMessage(room, user.id);
+				const roomUserId = RocketChat.getUidDirectMessage(room);
 
 				navigation.setParams({ roomUserId });
 
@@ -705,7 +707,6 @@ class RoomView extends React.Component {
 	// eslint-disable-next-line react/sort-comp
 	fetchThreadName = async(tmid, messageId) => {
 		try {
-			const { room } = this.state;
 			const db = database.active;
 			const threadCollection = db.collections.get('threads');
 			const messageCollection = db.collections.get('messages');
@@ -728,7 +729,7 @@ class RoomView extends React.Component {
 					await db.batch(
 						threadCollection.prepareCreate((t) => {
 							t._raw = sanitizedRaw({ id: thread._id }, threadCollection.schema);
-							t.subscription.set(room);
+							t.subscription.id = this.rid;
 							Object.assign(t, thread);
 						}),
 						messageRecord.prepareUpdate((m) => {
@@ -738,7 +739,7 @@ class RoomView extends React.Component {
 				});
 			}
 		} catch (e) {
-			log(e);
+			// log(e);
 		}
 	}
 
