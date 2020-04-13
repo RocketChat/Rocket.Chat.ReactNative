@@ -337,8 +337,8 @@ const RocketChat = {
 				if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
 					const { details } = e.data;
 					try {
-						await twoFactor({ method: details?.method, invalid: e.data.error === 'totp-invalid' });
-						return resolve(this.loginTOTP(params));
+						const code = await twoFactor({ method: details?.method || 'totp', invalid: e.data.error === 'totp-invalid' });
+						return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }));
 					} catch {
 						// twoFactor was canceled
 						return reject();
