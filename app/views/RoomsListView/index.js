@@ -533,7 +533,7 @@ class RoomsListView extends React.Component {
 
 	getUidDirectMessage = room => RocketChat.getUidDirectMessage(room);
 
-	goRoom = (item) => {
+	goRoom = async(item) => {
 		const { navigation } = this.props;
 		this.cancelSearch();
 		this.item = item;

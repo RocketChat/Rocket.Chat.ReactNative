@@ -24,6 +24,9 @@ PODS:
     - React-Core
     - UMCore
     - UMImageLoaderInterface
+  - EXLocalAuthentication (9.0.0):
+    - UMConstantsInterface
+    - UMCore
   - EXPermissions (8.1.0):
     - UMCore
     - UMPermissionsInterface
@@ -439,6 +442,7 @@ DEPENDENCIES:
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXHaptics (from `../node_modules/expo-haptics/ios`)
   - EXImageLoader (from `../node_modules/expo-image-loader/ios`)
+  - EXLocalAuthentication (from `../node_modules/expo-local-authentication/ios`)
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
   - EXWebBrowser (from `../node_modules/expo-web-browser/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -551,6 +555,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-haptics/ios"
   EXImageLoader:
     :path: "../node_modules/expo-image-loader/ios"
+  EXLocalAuthentication:
+    :path: "../node_modules/expo-local-authentication/ios"
   EXPermissions:
     :path: "../node_modules/expo-permissions/ios"
   EXWebBrowser:
@@ -707,6 +713,7 @@ SPEC CHECKSUMS:
   EXFileSystem: cf4232ba7c62dc49b78c2d36005f97b6fddf0b01
   EXHaptics: 013b5065946d4dd7b46ea547b58072d45a206dbd
   EXImageLoader: 5ad6896fa1ef2ee814b551873cbf7a7baccc694a
+  EXLocalAuthentication: bbf1026cc289d729da4f29240dd7a8f6a14e4b20
   EXPermissions: 24b97f734ce9172d245a5be38ad9ccfcb6135964
   EXWebBrowser: 4118b18d151fd03c935bd9de4cd312d2b33ec2c5
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74

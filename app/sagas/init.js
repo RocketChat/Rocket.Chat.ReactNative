@@ -3,6 +3,7 @@ import { put, takeLatest, all } from 'redux-saga/effects';
 import RNUserDefaults from 'rn-user-defaults';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import RNBootSplash from 'react-native-bootsplash';
+import * as LocalAuthentication from 'expo-local-authentication';
 
 import * as actions from '../actions';
 import { selectServerRequest } from '../actions/server';
@@ -99,8 +100,15 @@ const restore = function* restore() {
 		} else {
 			const serversDB = database.servers;
 			const serverCollections = serversDB.collections.get('servers');
-			const serverObj = yield serverCollections.find(server);
-			yield put(selectServerRequest(server, serverObj && serverObj.version));
+
+			const authResult = yield LocalAuthentication.authenticateAsync();
+			if (authResult?.success) {
+				const serverObj = yield serverCollections.find(server);
+				yield put(selectServerRequest(server, serverObj && serverObj.version));
+			} else {
+				alert('Cancelled by the user')
+				// TODO: close the app
+			}
 		}
 
 		yield put(actions.appReady({}));
