@@ -219,8 +219,10 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 						iconRight='plus'
 						onIconRightPress={() => {
 							const lastText = inputs.tags._lastNativeText || '';
-							setTags([...tagParam.filter(t => t !== lastText), lastText]);
-							inputs.tags.clear();
+							if (lastText.length) {
+								setTags([...tagParam.filter(t => t !== lastText), lastText]);
+								inputs.tags.clear();
+							}
 						}}
 						onSubmitEditing={() => {
 							const keys = Object.keys(customFields?.livechat || {});
