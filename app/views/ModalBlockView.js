@@ -67,7 +67,7 @@ class ModalBlockView extends React.Component {
 		return {
 			title: textParser([title]),
 			...themedHeader(theme),
-			headerLeft: (
+			headerLeft: close ? (
 				<CustomHeaderButtons>
 					<Item
 						title={textParser([close.text])}
@@ -76,8 +76,8 @@ class ModalBlockView extends React.Component {
 						testID='close-modal-uikit'
 					/>
 				</CustomHeaderButtons>
-			),
-			headerRight: (
+			) : null,
+			headerRight: submit ? (
 				<CustomHeaderButtons>
 					<Item
 						title={textParser([submit.text])}
@@ -86,7 +86,7 @@ class ModalBlockView extends React.Component {
 						testID='submit-modal-uikit'
 					/>
 				</CustomHeaderButtons>
-			)
+			) : null
 		};
 	}
 
@@ -136,7 +136,7 @@ class ModalBlockView extends React.Component {
 		const { navigation } = this.props;
 		const oldData = prevProps.navigation.getParam('data', {});
 		const newData = navigation.getParam('data', {});
-		if (!isEqual(oldData, newData)) {
+		if (oldData.viewId !== newData.viewId) {
 			navigation.push('ModalBlockView', { data: newData });
 		}
 	}
@@ -148,12 +148,14 @@ class ModalBlockView extends React.Component {
 	}
 
 	handleUpdate = ({ type, ...data }) => {
+		const { navigation } = this.props;
 		if ([MODAL_ACTIONS.ERRORS].includes(type)) {
 			const { errors } = data;
 			this.setState({ errors });
 		} else {
 			this.setState({ data });
 		}
+		navigation.setParams({ data });
 	};
 
 	cancel = async({ closeModal }) => {

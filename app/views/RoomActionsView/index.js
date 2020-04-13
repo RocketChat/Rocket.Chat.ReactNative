@@ -384,11 +384,10 @@ class RoomActionsView extends React.Component {
 
 	updateRoomMember = async() => {
 		const { room } = this.state;
-		const { user } = this.props;
 
 		try {
 			if (!RocketChat.isGroupChat(room)) {
-				const roomUserId = RocketChat.getUidDirectMessage(room, user.id);
+				const roomUserId = RocketChat.getUidDirectMessage(room);
 				const result = await RocketChat.getUserInfo(roomUserId);
 				if (result.success) {
 					this.setState({ member: result.user });

@@ -289,14 +289,11 @@ const RocketChat = {
 				user = {
 					id: userRecord.id,
 					token: userRecord.token,
-					username: userRecord.username
+					username: userRecord.username,
+					roles: userRecord.roles
 				};
 			}
-			reduxStore.dispatch(shareSetUser({
-				id: user.id,
-				token: user.token,
-				username: user.username
-			}));
+			reduxStore.dispatch(shareSetUser(user));
 			await RocketChat.login({ resume: user.token });
 		} catch (e) {
 			log(e);
@@ -308,6 +305,8 @@ const RocketChat = {
 			this.shareSDK = null;
 		}
 		database.share = null;
+
+		reduxStore.dispatch(shareSetUser(null));
 	},
 
 	updateJitsiTimeout(rid) {
@@ -338,8 +337,8 @@ const RocketChat = {
 				if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
 					const { details } = e.data;
 					try {
-						await twoFactor({ method: details?.method, invalid: e.data.error === 'totp-invalid' });
-						return resolve(this.loginTOTP(params));
+						const code = await twoFactor({ method: details?.method || 'totp', invalid: e.data.error === 'totp-invalid' });
+						return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }));
 					} catch {
 						// twoFactor was canceled
 						return reject();
@@ -580,6 +579,19 @@ const RocketChat = {
 		}
 		data = data.slice(0, 7);
 
+		data = data.map((sub) => {
+			if (sub.t !== 'd') {
+				return ({
+					rid: sub.rid,
+					name: sub.name,
+					fname: sub.fname,
+					t: sub.t,
+					search: true
+				});
+			}
+			return sub;
+		});
+
 		const usernames = data.map(sub => sub.name);
 		try {
 			if (data.length < 7) {
@@ -812,7 +824,9 @@ const RocketChat = {
 		return this.sdk.get('rooms.info', { roomId });
 	},
 
-	getUidDirectMessage(room, userId) {
+	getUidDirectMessage(room) {
+		const { id: userId } = reduxStore.getState().login.user;
+
 		// legacy method
 		if (!room.uids && room.rid && room.t === 'd') {
 			return room.rid.replace(userId, '').trim();
@@ -949,7 +963,7 @@ const RocketChat = {
 			// get the room from database
 			const room = await subsCollection.find(rid);
 			// get room roles
-			roomRoles = room.roles;
+			roomRoles = room.roles || [];
 		} catch (error) {
 			console.log('hasPermission -> Room not found');
 			return permissions.reduce((result, permission) => {
@@ -960,8 +974,10 @@ const RocketChat = {
 		// get permissions from database
 		try {
 			const permissionsFiltered = await permissionsCollection.query(Q.where('id', Q.oneOf(permissions))).fetch();
+			const shareUser = reduxStore.getState().share.user;
+			const loginUser = reduxStore.getState().login.user;
 			// get user roles on the server from redux
-			const userRoles = (reduxStore.getState().login.user && reduxStore.getState().login.user.roles) || [];
+			const userRoles = (shareUser.roles || loginUser.roles) || [];
 			// merge both roles
 			const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
 
