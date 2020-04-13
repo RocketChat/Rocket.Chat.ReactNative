@@ -120,7 +120,7 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 
 	return (
 		<KeyboardView
-			style={{ backgroundColor: themes[theme].backgroundColor }}
+			style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 			contentContainerStyle={sharedStyles.container}
 			keyboardVerticalOffset={128}
 		>
@@ -213,6 +213,7 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 					<Chips
 						items={tagParam.map(tag => ({ text: { text: tag }, value: tag }))}
 						onSelect={tag => setTags(tagParam.filter(t => t !== tag.value) || [])}
+						style={{ backgroundColor: themes[theme].backgroundColor }}
 						theme={theme}
 					/>
 
