@@ -216,19 +216,19 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 					<TextInput
 						inputRef={(e) => { inputs.tags = e; }}
 						label={I18n.t('Tags')}
-						iconLeft='edit'
-						onSubmitEditing={({ nativeEvent: { text } }) => {
-							if (text.length) {
-								setTags([...tagParam.filter(t => t !== text), text]);
-								inputs.tags.clear();
+						iconRight='plus'
+						onIconRightPress={() => {
+							const lastText = inputs.tags._lastNativeText || '';
+							setTags([...tagParam.filter(t => t !== lastText), lastText]);
+							inputs.tags.clear();
+						}}
+						onSubmitEditing={() => {
+							const keys = Object.keys(customFields?.livechat || {});
+							if (keys.length > 0) {
+								const key = keys.pop();
+								inputs[key].focus();
 							} else {
-								const keys = Object.keys(customFields?.livechat || {});
-								if (keys.length > 0) {
-									const key = keys.pop();
-									inputs[key].focus();
-								} else {
-									submit();
-								}
+								submit();
 							}
 						}}
 						theme={theme}
