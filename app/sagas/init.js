@@ -106,8 +106,7 @@ const restore = function* restore() {
 				const serverObj = yield serverCollections.find(server);
 				yield put(selectServerRequest(server, serverObj && serverObj.version));
 			} else {
-				alert('Cancelled by the user')
-				// TODO: close the app
+				yield put(actions.appStart('locked'));
 			}
 		}
 
@@ -127,6 +126,8 @@ const start = function* start({ root, text }) {
 		yield Navigation.navigate('OutsideStack');
 	} else if (root === 'loading') {
 		yield Navigation.navigate('AuthLoading', { text });
+	} else if (root === 'locked') {
+		yield Navigation.navigate('ScreenLocked');
 	}
 	RNBootSplash.hide();
 };

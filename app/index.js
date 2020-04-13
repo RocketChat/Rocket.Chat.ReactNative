@@ -569,6 +569,9 @@ export const App = createAppContainer(createSwitchNavigator(
 		AuthLoading: {
 			getScreen: () => require('./views/AuthLoadingView').default
 		},
+		ScreenLocked: {
+			getScreen: () => require('./views/ScreenLockedView').default
+		},
 		SetUsernameStack
 	},
 	{
