@@ -543,8 +543,9 @@ class RoomsListView extends React.Component {
 			name: this.getRoomTitle(item),
 			t: item.t,
 			prid: item.prid,
-			roomUserId: this.getUidDirectMessage(item),
-			room: item
+			room: item,
+			search: item.search,
+			roomUserId: this.getUidDirectMessage(item)
 		});
 	}
 
