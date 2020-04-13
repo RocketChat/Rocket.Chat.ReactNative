@@ -12,14 +12,17 @@ import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
 
 import sharedStyles from './Styles';
-import Button from '../containers/Button';
 import { LISTENER } from '../containers/Toast';
 import EventEmitter from '../utils/events';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import { getUserSelector } from '../selectors/login';
 import Chips from '../containers/UIKit/MultiSelect/Chips';
+import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
 
 const styles = StyleSheet.create({
+	container: {
+		padding: 16
+	},
 	title: {
 		fontSize: 20,
 		paddingVertical: 10,
@@ -36,8 +39,8 @@ Title.propTypes = {
 const LivechatEditView = ({ user, navigation, theme }) => {
 	const [availableUserTags, setAvailableUserTags] = useState([]);
 
-	const inputs = {};
 	const params = {};
+	const inputs = {};
 
 	const livechat = navigation.getParam('livechat', {});
 	const visitor = navigation.getParam('visitor', {});
@@ -64,8 +67,6 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 			getTagsList(agentDepartments);
 		}
 	};
-
-	useEffect(() => { getAgentDepartments(); }, []);
 
 	const submit = async() => {
 		const userData = { _id: visitor?._id };
@@ -118,14 +119,19 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 
 	const onChangeText = (key, text) => { params[key] = text; };
 
+	useEffect(() => {
+		getAgentDepartments();
+		navigation.setParams({ submit });
+	}, []);
+
 	return (
 		<KeyboardView
 			style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 			contentContainerStyle={sharedStyles.container}
 			keyboardVerticalOffset={128}
 		>
-			<ScrollView style={sharedStyles.containerScrollView} {...scrollPersistTaps}>
-				<SafeAreaView style={sharedStyles.container} forceInset={{ vertical: 'never' }}>
+			<ScrollView {...scrollPersistTaps}>
+				<SafeAreaView style={[sharedStyles.container, styles.container]} forceInset={{ vertical: 'never' }}>
 					<Title
 						title={visitor?.username}
 						theme={theme}
@@ -232,11 +238,6 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 							theme={theme}
 						/>
 					))}
-					<Button
-						title={I18n.t('Save')}
-						onPress={submit}
-						theme={theme}
-					/>
 				</SafeAreaView>
 			</ScrollView>
 		</KeyboardView>
@@ -247,9 +248,14 @@ LivechatEditView.propTypes = {
 	navigation: PropTypes.object,
 	theme: PropTypes.string
 };
-LivechatEditView.navigationOptions = {
-	title: I18n.t('Livechat_edit')
-};
+LivechatEditView.navigationOptions = ({ navigation }) => ({
+	title: I18n.t('Livechat_edit'),
+	headerRight: (
+		<CustomHeaderButtons>
+			<Item title={I18n.t('Submit')} onPress={navigation.getParam('submit', () => {})} />
+		</CustomHeaderButtons>
+	)
+});
 
 const mapStateToProps = state => ({
 	server: state.server.server,
