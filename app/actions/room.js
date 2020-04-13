@@ -16,6 +16,13 @@ export function deleteRoom(rid, t) {
 	};
 }
 
+export function closeRoom(rid) {
+	return {
+		type: types.ROOM.CLOSE,
+		rid
+	};
+}
+
 export function removedRoom() {
 	return {
 		type: types.ROOM.REMOVED
