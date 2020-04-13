@@ -13,7 +13,8 @@ import styles from './styles';
 import TextInput from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
-import { isReadOnly, isBlocked } from '../../utils/room';
+import { isBlocked } from '../../utils/room';
+import { isReadOnly } from '../../utils/isReadOnly';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 
