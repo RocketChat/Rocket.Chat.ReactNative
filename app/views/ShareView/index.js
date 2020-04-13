@@ -69,18 +69,29 @@ class ShareView extends React.Component {
 			fileInfo,
 			room,
 			loading: false,
+			readOnly: false,
 			file: {
 				name: fileInfo ? fileInfo.name : '',
 				description: ''
 			}
 		};
+
+		this.setReadOnly();
 	}
 
 	componentDidMount() {
+		const { navigation } = this.props;
+		navigation.setParams({ sendMessage: this._sendMessage });
+	}
+
+	setReadOnly = async() => {
 		const { room } = this.state;
 		const { navigation, user } = this.props;
 		const { username } = user;
-		navigation.setParams({ sendMessage: this._sendMessage, canSend: !(isReadOnly(room, { username }) || isBlocked(room)) });
+		const readOnly = await isReadOnly(room, { username });
+
+		this.setState({ readOnly });
+		navigation.setParams({ canSend: !(readOnly || isBlocked(room)) });
 	}
 
 	bytesToSize = bytes => `${ (bytes / 1048576).toFixed(2) }MB`;
@@ -237,8 +248,9 @@ class ShareView extends React.Component {
 
 	renderError = () => {
 		const { room } = this.state;
+		const { theme } = this.props;
 		return (
-			<View style={[styles.container, styles.centered]}>
+			<View style={[styles.container, styles.centered, { backgroundColor: themes[theme].backgroundColor }]}>
 				<Text style={styles.title}>
 					{
 						isBlocked(room) ? I18n.t('This_room_is_blocked') : I18n.t('This_room_is_read_only')
@@ -249,13 +261,12 @@ class ShareView extends React.Component {
 	}
 
 	render() {
-		const { user, theme } = this.props;
-		const { username } = user;
+		const { theme } = this.props;
 		const {
-			name, loading, isMedia, room
+			name, loading, isMedia, room, readOnly
 		} = this.state;
 
-		if (isReadOnly(room, { username }) || isBlocked(room)) {
+		if (readOnly || isBlocked(room)) {
 			return this.renderError();
 		}
 
