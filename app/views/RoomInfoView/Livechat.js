@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text, StyleSheet } from 'react-native';
-import useDeepCompareEffect from 'use-deep-compare-effect';
 import PropTypes from 'prop-types';
-import UAParser from 'ua-parser-js';
-import _ from 'lodash';
 
 import RocketChat from '../../lib/rocketchat';
 import { withTheme } from '../../theme';
@@ -28,51 +25,9 @@ Title.propTypes = {
 	theme: PropTypes.string
 };
 
-const Livechat = ({ room, navigation, theme }) => {
-	const [user, setUser] = useState({});
+const Livechat = ({ room, roomUser, theme }) => {
 	const [department, setDepartment] = useState({});
 
-	const getCustomFields = async() => {
-		const result = await RocketChat.getCustomFields();
-		if (result.success) {
-			const { customFields } = result;
-
-			const visitorCustomFields = customFields
-				.filter(field => field.visibility !== 'hidden' && field.scope === 'visitor')
-				.map(field => ({ [field._id]: (user.livechatData && user.livechatData[field._id]) || '' }))
-				.reduce((ret, field) => ({ [field]: field, ...ret }));
-
-			const livechatCustomFields = customFields
-				.filter(field => field.visibility !== 'hidden' && field.scope === 'room')
-				.map(field => ({ [field._id]: (room.livechatData && room.livechatData[field._id]) || '' }))
-				.reduce((ret, field) => ({ [field]: field, ...ret }));
-
-			navigation.setParams({ visitor: { ...user, livechatData: visitorCustomFields } });
-			navigation.setParams({
-				livechat: {
-					_id: room.rid, topic: room.topic, tags: room.tags, livechatData: livechatCustomFields
-				}
-			});
-		}
-	};
-
-	const getVisitor = async(id) => {
-		if (id) {
-			const result = await RocketChat.getVisitorInfo(id);
-			if (result.success) {
-				const { visitor } = result;
-
-				if (visitor.userAgent) {
-					const ua = new UAParser();
-					ua.setUA(visitor.userAgent);
-					visitor.os = `${ ua.getOS().name } ${ ua.getOS().version }`;
-					visitor.browser = `${ ua.getBrowser().name } ${ ua.getBrowser().version }`;
-				}
-
-				setUser(visitor);
-			}
-		}
-	};
 
 	const getDepartment = async(id) => {
 		if (id) {
@@ -83,28 +38,13 @@ const Livechat = ({ room, navigation, theme }) => {
 		}
 	};
 
-	const getRoom = async() => {
-		if (room.visitor?._id && room.departmentId) {
-			getVisitor(room.visitor._id);
+	const getRoom = () => {
+		if (room.departmentId) {
 			getDepartment(room.departmentId);
-		} else {
-			const result = await RocketChat.getRoomInfo(room.rid);
-			if (result.success) {
-				getVisitor(result.room.v._id);
-				getDepartment(result.room.departmentId);
-			}
 		}
 	};
 
 	useEffect(() => { getRoom(); }, []);
-	useDeepCompareEffect(() => {
-		if (!_.isEmpty(room)) {
-			getRoom();
-			if (!_.isEmpty(user)) {
-				getCustomFields();
-			}
-		}
-	}, [room, user]);
 
 	return (
 		<>
@@ -113,36 +53,36 @@ const Livechat = ({ room, navigation, theme }) => {
 				theme={theme}
 			/>
 			<Timezone
-				utcOffset={user.utc}
+				utcOffset={roomUser.utc}
 				theme={theme}
 			/>
 			<Item
 				label={I18n.t('Email')}
-				content={user.visitorEmails?.map(email => email.address).reduce((ret, item) => `${ ret }${ item }\n`)}
+				content={roomUser.visitorEmails?.map(email => email.address).reduce((ret, item) => `${ ret }${ item }\n`)}
 				theme={theme}
 			/>
 			<Item
 				label={I18n.t('Phone')}
-				content={user.phone?.map(phone => phone.phoneNumber).reduce((ret, item) => `${ ret }${ item }\n`)}
+				content={roomUser.phone?.map(phone => phone.phoneNumber).reduce((ret, item) => `${ ret }${ item }\n`)}
 				theme={theme}
 			/>
 			<Item
 				label={I18n.t('IP')}
-				content={user.ip}
+				content={roomUser.ip}
 				theme={theme}
 			/>
 			<Item
 				label={I18n.t('OS')}
-				content={user.os}
+				content={roomUser.os}
 				theme={theme}
 			/>
 			<Item
 				label={I18n.t('Browser')}
-				content={user.browser}
+				content={roomUser.browser}
 				theme={theme}
 			/>
 			<CustomFields
-				customFields={user.livechatData}
+				customFields={roomUser.livechatData}
 				theme={theme}
 			/>
 			<Title
@@ -188,7 +128,7 @@ const Livechat = ({ room, navigation, theme }) => {
 };
 Livechat.propTypes = {
 	room: PropTypes.object,
-	navigation: PropTypes.object,
+	roomUser: PropTypes.object,
 	theme: PropTypes.string
 };
 

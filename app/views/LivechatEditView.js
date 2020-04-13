@@ -30,26 +30,48 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Title = ({ title, theme }) => <Text style={[styles.title, { color: themes[theme].titleText }]}>{title}</Text>;
+const Title = ({ title, theme }) => (title ? <Text style={[styles.title, { color: themes[theme].titleText }]}>{title}</Text> : null);
 Title.propTypes = {
 	title: PropTypes.string,
 	theme: PropTypes.string
 };
 
 const LivechatEditView = ({ user, navigation, theme }) => {
+	const [customFields, setCustomFields] = useState({});
 	const [availableUserTags, setAvailableUserTags] = useState([]);
 
 	const params = {};
 	const inputs = {};
 
-	const livechat = navigation.getParam('livechat', {});
-	const visitor = navigation.getParam('visitor', {});
+	const livechat = navigation.getParam('room', {});
+	const visitor = navigation.getParam('roomUser', {});
+
+	const getCustomFields = async() => {
+		const result = await RocketChat.getCustomFields();
+		if (result.success) {
+			const visitorCustomFields = result.customFields
+				.filter(field => field.visibility !== 'hidden' && field.scope === 'visitor')
+				.map(field => ({ [field._id]: (visitor.livechatData && visitor.livechatData[field._id]) || '' }))
+				.reduce((ret, field) => ({ [field]: field, ...ret }));
+
+			const livechatCustomFields = result.customFields
+				.filter(field => field.visibility !== 'hidden' && field.scope === 'room')
+				.map(field => ({ [field._id]: (livechat.livechatData && livechat.livechatData[field._id]) || '' }))
+				.reduce((ret, field) => ({ [field]: field, ...ret }));
+
+			return setCustomFields({ visitor: visitorCustomFields, livechat: livechatCustomFields });
+		}
+	};
 
 	const [tagParam, setTags] = useState(livechat?.tags || []);
 
 	useEffect(() => {
 		setTags([...tagParam, ...availableUserTags]);
 	}, [availableUserTags]);
+
+	useEffect(() => {
+		getCustomFields();
+	}, []);
 
 	const getTagsList = async(agentDepartments) => {
 		const tags = await RocketChat.getTagsList();
@@ -71,8 +93,8 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 	const submit = async() => {
 		const userData = { _id: visitor?._id };
 
-		const { _id, sms } = livechat;
-		const roomData = { _id };
+		const { rid, sms } = livechat;
+		const roomData = { _id: rid };
 
 		if (params.name) {
 			userData.name = params.name;
@@ -85,7 +107,7 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 		}
 
 		userData.livechatData = {};
-		Object.entries(visitor?.livechatData || {}).forEach(([key]) => {
+		Object.entries(customFields?.visitor || {}).forEach(([key]) => {
 			if (params[key] || params[key] === '') {
 				userData.livechatData[key] = params[key];
 			}
@@ -98,7 +120,7 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 		roomData.tags = tagParam;
 
 		roomData.livechatData = {};
-		Object.entries(livechat?.livechatData || {}).forEach(([key]) => {
+		Object.entries(customFields?.livechat || {}).forEach(([key]) => {
 			if (params[key] || params[key] === '') {
 				roomData.livechatData[key] = params[key];
 			}
@@ -154,7 +176,7 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 						defaultValue={visitor?.phone[0]?.phoneNumber}
 						onChangeText={text => onChangeText('phone', text)}
 						onSubmitEditing={() => {
-							const keys = Object.keys(visitor?.livechatData || {});
+							const keys = Object.keys(customFields?.visitor || {});
 							if (keys.length > 0) {
 								const key = keys.pop();
 								inputs[key].focus();
@@ -164,7 +186,7 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 						}}
 						theme={theme}
 					/>
-					{Object.entries(visitor?.livechatData || {}).map(([key, value], index, array) => (
+					{Object.entries(customFields?.visitor || {}).map(([key, value], index, array) => (
 						<TextInput
 							label={key}
 							defaultValue={value}
@@ -201,7 +223,7 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 								setTags([...tagParam.filter(t => t !== text), text]);
 								inputs.tags.clear();
 							} else {
-								const keys = Object.keys(livechat?.livechatData || {});
+								const keys = Object.keys(customFields?.livechat || {});
 								if (keys.length > 0) {
 									const key = keys.pop();
 									inputs[key].focus();
@@ -219,7 +241,7 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 						theme={theme}
 					/>
 
-					{Object.entries(livechat?.livechatData || {}).map(([key, value], index, array) => (
+					{Object.entries(customFields?.livechat || {}).map(([key, value], index, array) => (
 						<TextInput
 							label={key}
 							defaultValue={value}

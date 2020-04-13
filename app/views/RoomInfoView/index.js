@@ -4,6 +4,7 @@ import { View, Text, ScrollView } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
+import UAParser from 'ua-parser-js';
 import _ from 'lodash';
 
 import database from '../../lib/database';
@@ -50,8 +51,8 @@ class RoomInfoView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const t = navigation.getParam('t');
 		const rid = navigation.getParam('rid');
-		const visitor = navigation.getParam('visitor');
-		const livechat = navigation.getParam('livechat');
+		const room = navigation.getParam('room');
+		const roomUser = navigation.getParam('roomUser');
 		const showEdit = navigation.getParam('showEdit', t === 'l');
 		return {
 			title: t === 'd' ? I18n.t('User_Info') : I18n.t('Room_Info'),
@@ -61,7 +62,7 @@ class RoomInfoView extends React.Component {
 					<CustomHeaderButtons>
 						<Item
 							iconName='edit'
-							onPress={() => navigation.navigate(t === 'l' ? 'LivechatEditView' : 'RoomInfoEditView', { rid, visitor, livechat })}
+							onPress={() => navigation.navigate(t === 'l' ? 'LivechatEditView' : 'RoomInfoEditView', { rid, room, roomUser })}
 							testID='room-info-view-edit-button'
 						/>
 					</CustomHeaderButtons>
@@ -93,25 +94,37 @@ class RoomInfoView extends React.Component {
 	}
 
 	componentDidMount() {
-		if (!this.isDirect && !this.isLivechat) {
-			this.loadRoom();
-		} else if (this.isDirect) {
+		if (this.isDirect) {
 			this.loadUser();
+		} else {
+			this.loadRoom();
 		}
+
+		const { navigation } = this.props;
+		this.willFocusListener = navigation.addListener('willFocus', () => {
+			if (this.isLivechat) {
+				this.loadVisitor();
+			}
+		});
 	}
 
 	componentWillUnmount() {
 		if (this.subscription && this.subscription.unsubscribe) {
 			this.subscription.unsubscribe();
 		}
+		if (this.willFocusListener && this.willFocusListener.remove) {
+			this.willFocusListener.remove();
+		}
 	}
 
 	get isDirect() {
-		return this.t === 'd';
+		const { room } = this.state;
+		return room.t === 'd';
 	}
 
 	get isLivechat() {
-		return this.t === 't';
+		const { room } = this.state;
+		return room.t === 'l';
 	}
 
 	getRoleDescription = async(id) => {
@@ -127,6 +140,26 @@ class RoomInfoView extends React.Component {
 			return null;
 		}
 	};
+
+	loadVisitor = async() => {
+		const { room } = this.state;
+		const { navigation } = this.props;
+
+		const result = await RocketChat.getVisitorInfo(room.visitor._id);
+		if (result.success) {
+			const { visitor } = result;
+
+			if (visitor.userAgent) {
+				const ua = new UAParser();
+				ua.setUA(visitor.userAgent);
+				visitor.os = `${ ua.getOS().name } ${ ua.getOS().version }`;
+				visitor.browser = `${ ua.getBrowser().name } ${ ua.getBrowser().version }`;
+			}
+
+			this.setState({ roomUser: visitor });
+			navigation.setParams({ roomUser: visitor });
+		}
+	}
 
 	loadUser = async() => {
 		const { room: roomState, roomUser } = this.state;
@@ -163,6 +196,7 @@ class RoomInfoView extends React.Component {
 			this.subscription = this.roomObservable
 				.subscribe((changes) => {
 					this.setState({ room: changes });
+					navigation.setParams({ room: changes });
 				});
 		} else {
 			try {
@@ -255,12 +289,12 @@ class RoomInfoView extends React.Component {
 
 	renderContent = () => {
 		const { room, roomUser } = this.state;
-		const { navigation, theme } = this.props;
+		const { theme } = this.props;
 
 		if (this.isDirect) {
 			return <Direct roomUser={roomUser} theme={theme} />;
 		} else if (this.t === 'l') {
-			return <Livechat room={room} navigation={navigation} theme={theme} />;
+			return <Livechat room={room} roomUser={roomUser} theme={theme} />;
 		}
 		return <Channel room={room} theme={theme} />;
 	}
