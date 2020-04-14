@@ -1,0 +1,44 @@
+diff --git a/node_modules/redux-enhancer-react-native-appstate/index.js b/node_modules/redux-enhancer-react-native-appstate/index.js
+index 769e39c..db9e993 100644
+--- a/node_modules/redux-enhancer-react-native-appstate/index.js
++++ b/node_modules/redux-enhancer-react-native-appstate/index.js
+@@ -10,22 +10,25 @@ export default () => (createStore) => (...args) => {
+   let currentState = '';
+ 
+   const handleAppStateChange = (nextAppState) => {
+-    if (currentState !== nextAppState) {
+-      let type;
+-      if (nextAppState === 'active') {
+-        type = FOREGROUND;
+-      } else if (nextAppState === 'background') {
+-        type = BACKGROUND;
+-      } else if (nextAppState === 'inactive') {
+-        type = INACTIVE;
+-      }
+-      if (type) {
+-        store.dispatch({
+-          type,
+-        });
++    if (nextAppState !== 'inactive') {
++      if (currentState !== nextAppState) {
++        let type;
++        if (nextAppState === 'active') {
++          type = FOREGROUND;
++        } else if (nextAppState === 'background') {
++          type = BACKGROUND;
++        } 
++        // else if (nextAppState === 'inactive') {
++        //   type = INACTIVE;
++        // }
++        if (type) {
++          store.dispatch({
++            type,
++          });
++        }
+       }
++      currentState = nextAppState;
+     }
+-    currentState = nextAppState;
+   };
+ 
+   AppState.addEventListener('change', handleAppStateChange);
