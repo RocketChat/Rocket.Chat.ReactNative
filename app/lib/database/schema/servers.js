@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 3,
+	version: 4,
 	tables: [
 		tableSchema({
 			name: 'users',
@@ -24,7 +24,8 @@ export default appSchema({
 				{ name: 'file_upload_media_type_white_list', type: 'string', isOptional: true },
 				{ name: 'file_upload_max_file_size', type: 'number', isOptional: true },
 				{ name: 'rooms_updated_at', type: 'number', isOptional: true },
-				{ name: 'version', type: 'string', isOptional: true }
+				{ name: 'version', type: 'string', isOptional: true },
+				{ name: 'last_local_authenticated_session', type: 'number', isOptional: true }
 			]
 		})
 	]

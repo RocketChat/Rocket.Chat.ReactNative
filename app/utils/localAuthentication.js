@@ -14,6 +14,10 @@ const localAuthenticate = async(server) => {
 		return Promise.reject();
 	}
 
+	// if (serverRecord?.lastLocalAuthenticatedSession) {
+
+	// }
+
 	const authResult = await LocalAuthentication.authenticateAsync();
 	return Promise.resolve(authResult?.success);
 };

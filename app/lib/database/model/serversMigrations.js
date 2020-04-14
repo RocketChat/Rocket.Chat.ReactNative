@@ -12,6 +12,17 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 4,
+			steps: [
+				addColumns({
+					table: 'servers',
+					columns: [
+						{ name: 'last_local_authenticated_session', type: 'number', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });
