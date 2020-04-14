@@ -18,7 +18,7 @@ import {
 import { isIOS } from '../utils/deviceInfo';
 import database from '../lib/database';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
-import localAuthenticate from '../utils/localAuthentication';
+import { localAuthenticate } from '../utils/localAuthentication';
 
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = yield RocketChat.getSortPreferences();

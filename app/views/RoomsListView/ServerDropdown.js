@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import equal from 'deep-equal';
 import { withNavigation } from 'react-navigation';
 import RNUserDefaults from 'rn-user-defaults';
-import * as LocalAuthentication from 'expo-local-authentication';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
@@ -23,7 +22,7 @@ import { withTheme } from '../../theme';
 import { KEY_COMMAND, handleCommandSelectServer } from '../../commands';
 import { isTablet } from '../../utils/deviceInfo';
 import { withSplit } from '../../split';
-import localAuthenticate from '../../utils/localAuthentication';
+import { localAuthenticate } from '../../utils/localAuthentication';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;

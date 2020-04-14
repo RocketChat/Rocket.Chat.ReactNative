@@ -4,7 +4,7 @@ import { FOREGROUND, BACKGROUND } from 'redux-enhancer-react-native-appstate';
 import RocketChat from '../lib/rocketchat';
 import { setBadgeCount } from '../notifications/push';
 import log from '../utils/log';
-import localAuthenticate from '../utils/localAuthentication';
+import { localAuthenticate, saveLastLocalAuthenticationSession } from '../utils/localAuthentication';
 import * as actions from '../actions';
 
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
@@ -39,7 +39,10 @@ const appHasComeBackToBackground = function* appHasComeBackToBackground() {
 		return;
 	}
 	try {
-		return yield RocketChat.setUserPresenceAway();
+		yield RocketChat.setUserPresenceAway();
+
+		const server = yield select(state => state.server.server);
+		yield saveLastLocalAuthenticationSession(server);
 	} catch (e) {
 		log(e);
 	}
