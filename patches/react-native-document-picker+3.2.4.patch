@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-document-picker/ios/RNDocumentPicker/RNDocumentPicker.m b/node_modules/react-native-document-picker/ios/RNDocumentPicker/RNDocumentPicker.m
+index 1cb8b4b..f04f315 100644
+--- a/node_modules/react-native-document-picker/ios/RNDocumentPicker/RNDocumentPicker.m
++++ b/node_modules/react-native-document-picker/ios/RNDocumentPicker/RNDocumentPicker.m
+@@ -58,7 +58,7 @@ - (dispatch_queue_t)methodQueue
+                   rejecter:(RCTPromiseRejectBlock)reject)
+ {
+     NSArray *allowedUTIs = [RCTConvert NSArray:options[OPTION_TYPE]];
+-    UIDocumentPickerViewController *documentPicker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:(NSArray *)allowedUTIs inMode:UIDocumentPickerModeImport];
++    UIDocumentPickerViewController *documentPicker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:(NSArray *)allowedUTIs inMode:UIDocumentPickerModeOpen];
+     
+     [composeResolvers addObject:resolve];
+     [composeRejecters addObject:reject];
