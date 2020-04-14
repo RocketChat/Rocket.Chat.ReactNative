@@ -23,6 +23,7 @@ import { withTheme } from '../../theme';
 import { KEY_COMMAND, handleCommandSelectServer } from '../../commands';
 import { isTablet } from '../../utils/deviceInfo';
 import { withSplit } from '../../split';
+import localAuthenticate from '../../utils/localAuthentication';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
@@ -148,11 +149,9 @@ class ServerDropdown extends Component {
 					}, ANIMATION_DURATION);
 				}, ANIMATION_DURATION);
 			} else {
-				const authResult = await LocalAuthentication.authenticateAsync();
-				if (authResult?.success) {
+				const localAuthResult = await localAuthenticate(server);
+				if (localAuthResult) {
 					selectServerRequest(server);
-				} else {
-					alert('cancelled')
 				}
 			}
 		}

@@ -3,7 +3,6 @@ import { put, takeLatest, all } from 'redux-saga/effects';
 import RNUserDefaults from 'rn-user-defaults';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import RNBootSplash from 'react-native-bootsplash';
-import * as LocalAuthentication from 'expo-local-authentication';
 
 import * as actions from '../actions';
 import { selectServerRequest } from '../actions/server';
@@ -19,6 +18,7 @@ import {
 import { isIOS } from '../utils/deviceInfo';
 import database from '../lib/database';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
+import localAuthenticate from '../utils/localAuthentication';
 
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = yield RocketChat.getSortPreferences();
@@ -101,8 +101,8 @@ const restore = function* restore() {
 			const serversDB = database.servers;
 			const serverCollections = serversDB.collections.get('servers');
 
-			const authResult = yield LocalAuthentication.authenticateAsync();
-			if (authResult?.success) {
+			const localAuthResult = yield localAuthenticate(server);
+			if (localAuthResult) {
 				const serverObj = yield serverCollections.find(server);
 				yield put(selectServerRequest(server, serverObj && serverObj.version));
 			} else {
