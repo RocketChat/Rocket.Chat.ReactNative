@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
-index e72e943..b3a6a00 100644
+index e72e943..c63843e 100644
 --- a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
 +++ b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
 @@ -10,6 +10,7 @@
@@ -15,7 +15,7 @@ index e72e943..b3a6a00 100644
  }
  
 +-(void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler {
-+  NSURLCredential *credential = [UrlCredentials getUrlCredential:challenge];
++  NSURLCredential *credential = [UrlCredentials getUrlCredential];
 +
 +  completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
 +}
