@@ -513,7 +513,7 @@ export default {
 	Voice_call: 'Sprachanruf',
 	Websocket_disabled: 'Websockets sind auf diesem Server nicht aktiviert.\n{{contact}}',
 	Welcome: 'Herzlich willkommen',
-	What_are_you_doing_right_now: 'Was machst du gerade??',
+	What_are_you_doing_right_now: 'Was machst du gerade?',
 	Whats_your_2fa: 'Wie lautet Ihr 2FA-Code?',
 	Without_Servers: 'Ohne Server',
 	Workspaces: 'Arbeitsbereiche',
