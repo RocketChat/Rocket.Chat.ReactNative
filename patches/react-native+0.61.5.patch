@@ -1,156 +1,52 @@
 diff --git a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
-index e72e943..ee0c7a1 100644
+index e72e943..b3a6a00 100644
 --- a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
 +++ b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
 @@ -10,6 +10,7 @@
  #import <mutex>
  
  #import <React/RCTNetworking.h>
-+#import "RNUserDefaults.h"
++#import "UrlCredentials.h"
  
  @interface RCTHTTPRequestHandler () <NSURLSessionDataDelegate>
  
-@@ -55,6 +56,59 @@ - (BOOL)canHandleRequest:(NSURLRequest *)request
-   return [schemes containsObject:request.URL.scheme.lowercaseString];
- }
- 
-+-(NSURLCredential *)getUrlCredential:(NSURLAuthenticationChallenge *)challenge path:(NSString *)path password:(NSString *)password
-+{
-+  NSString *authMethod = [[challenge protectionSpace] authenticationMethod];
-+  SecTrustRef serverTrust = challenge.protectionSpace.serverTrust;
-+
-+  if ([authMethod isEqualToString:NSURLAuthenticationMethodServerTrust] || path == nil || password == nil) {
-+    return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
-+  } else if (path && password) {
-+    NSMutableArray *policies = [NSMutableArray array];
-+    [policies addObject:(__bridge_transfer id)SecPolicyCreateSSL(true, (__bridge CFStringRef)challenge.protectionSpace.host)];
-+    SecTrustSetPolicies(serverTrust, (__bridge CFArrayRef)policies);
-+
-+    SecTrustResultType result;
-+    SecTrustEvaluate(serverTrust, &result);
-+
-+    if (![[NSFileManager defaultManager] fileExistsAtPath:path])
-+    {
-+      return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
-+    }
-+
-+    NSData *p12data = [NSData dataWithContentsOfFile:path];
-+    NSDictionary* options = @{ (id)kSecImportExportPassphrase:password };
-+    CFArrayRef rawItems = NULL;
-+    OSStatus status = SecPKCS12Import((__bridge CFDataRef)p12data,
-+                                      (__bridge CFDictionaryRef)options,
-+                                      &rawItems);
-+
-+    if (status != noErr) {
-+      return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
-+    }
-+
-+    NSArray* items = (NSArray*)CFBridgingRelease(rawItems);
-+    NSDictionary* firstItem = nil;
-+    if ((status == errSecSuccess) && ([items count]>0)) {
-+        firstItem = items[0];
-+    }
-+    
-+    SecIdentityRef identity = (SecIdentityRef)CFBridgingRetain(firstItem[(id)kSecImportItemIdentity]);
-+    SecCertificateRef certificate = NULL;
-+    if (identity) {
-+        SecIdentityCopyCertificate(identity, &certificate);
-+        if (certificate) { CFRelease(certificate); }
-+    }
-+    
-+    NSMutableArray *certificates = [[NSMutableArray alloc] init];
-+    [certificates addObject:CFBridgingRelease(certificate)];
-+    
-+    return [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
-+  }
-+    
-+  return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
-+}
-+
- - (NSURLSessionDataTask *)sendRequest:(NSURLRequest *)request
-                          withDelegate:(id<RCTURLRequestDelegate>)delegate
- {
-@@ -171,4 +225,20 @@ - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didComp
+@@ -171,4 +172,10 @@ - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didComp
    [delegate URLRequest:task didCompleteWithError:error];
  }
  
 +-(void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler {
-+
-+  NSString *host = challenge.protectionSpace.host;
-+  NSDictionary *clientSSL = [[RNUserDefaults getDefaultUser] objectForKey:host];
-+
-+  NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
-+
-+  if (clientSSL != (id)[NSNull null]) {
-+    NSString *path = [clientSSL objectForKey:@"path"];
-+    NSString *password = [clientSSL objectForKey:@"password"];
-+    credential = [self getUrlCredential:challenge path:path password:password];
-+  }
++  NSURLCredential *credential = [UrlCredentials getUrlCredential:challenge];
 +
 +  completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
 +}
 +
  @end
 diff --git a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
-index a134d2e..1526d60 100644
+index a134d2e..1a4fd9b 100644
 --- a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
 +++ b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
 @@ -27,6 +27,8 @@
  #import <React/RCTAssert.h>
  #import <React/RCTLog.h>
  
-+#import "RNUserDefaults.h"
++#import "UrlCredentials.h"
 +
  typedef NS_ENUM(NSInteger, RCTSROpCode)  {
    RCTSROpCodeTextFrame = 0x1,
    RCTSROpCodeBinaryFrame = 0x2,
-@@ -481,6 +483,29 @@ - (void)didConnect
-   [self _readHTTPHeader];
- }
- 
-+- (void)setClientSSL:(NSString *)path password:(NSString *)password options:(NSMutableDictionary *)options;
-+{    
-+    if ([[NSFileManager defaultManager] fileExistsAtPath:path])
-+    {
-+      NSData *pkcs12data = [[NSData alloc] initWithContentsOfFile:path];
-+      NSDictionary* certOptions = @{ (id)kSecImportExportPassphrase:password };
-+      CFArrayRef keyref = NULL;
-+      OSStatus sanityChesk = SecPKCS12Import((__bridge CFDataRef)pkcs12data,
-+                                              (__bridge CFDictionaryRef)certOptions,
-+                                              &keyref);
-+      if (sanityChesk == noErr) {
-+        CFDictionaryRef identityDict = CFArrayGetValueAtIndex(keyref, 0);
-+        SecIdentityRef identityRef = (SecIdentityRef)CFDictionaryGetValue(identityDict, kSecImportItemIdentity);
-+        SecCertificateRef cert = NULL;
-+        OSStatus status = SecIdentityCopyCertificate(identityRef, &cert);
-+        if (!status) {
-+          NSArray *certificates = [[NSArray alloc] initWithObjects:(__bridge id)identityRef, (__bridge id)cert, nil];
-+          [options setObject:certificates forKey:(NSString *)kCFStreamSSLCertificates];
-+        }
-+      }
-+    }
-+}
-+
- - (void)_initializeStreams;
- {
-   assert(_url.port.unsignedIntValue <= UINT32_MAX);
-@@ -518,6 +543,15 @@ - (void)_initializeStreams;
+@@ -518,6 +520,11 @@ - (void)_initializeStreams;
      RCTLogInfo(@"SocketRocket: In debug mode.  Allowing connection to any root cert");
  #endif
  
-+    // SSL Pinning
-+    NSDictionary *clientSSL = [[RNUserDefaults getDefaultUser] objectForKey:host];
-+    if (clientSSL != (id)[NSNull null]) {
-+      NSString *path = [clientSSL objectForKey:@"path"];
-+      NSString *password = [clientSSL objectForKey:@"password"];
-+
-+      [self setClientSSL:path password:password options:SSLOptions];
++    NSArray* certificates = [UrlCredentials getCertificates];
++    if (certificates != nil) {
++      [SSLOptions setObject:certificates forKey:(NSString *)kCFStreamSSLCertificates];
 +    }
 +
      [_outputStream setProperty:SSLOptions
                          forKey:(__bridge id)kCFStreamPropertySSLSettings];
    }
-@@ -597,6 +631,7 @@ - (void)closeWithCode:(NSInteger)code reason:(NSString *)reason;
+@@ -597,6 +604,7 @@ - (void)closeWithCode:(NSInteger)code reason:(NSString *)reason;
        }
      }
  
