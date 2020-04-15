@@ -25,7 +25,9 @@ export default appSchema({
 				{ name: 'file_upload_max_file_size', type: 'number', isOptional: true },
 				{ name: 'rooms_updated_at', type: 'number', isOptional: true },
 				{ name: 'version', type: 'string', isOptional: true },
-				{ name: 'last_local_authenticated_session', type: 'number', isOptional: true }
+				{ name: 'last_local_authenticated_session', type: 'number', isOptional: true },
+				{ name: 'auto_lock', type: 'boolean', isOptional: true },
+				{ name: 'auto_lock_time', type: 'number', isOptional: true }
 			]
 		})
 	]

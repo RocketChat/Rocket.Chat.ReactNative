@@ -34,14 +34,16 @@ export const localAuthenticate = async(server) => {
 
 	const diffToLastSession = moment().diff(serverRecord?.lastLocalAuthenticatedSession, 'seconds');
   console.log('localAuthenticate -> diffToLastSession', diffToLastSession);
-	if (diffToLastSession >= 5) {
-		const authResult = await LocalAuthentication.authenticateAsync();
-		if (authResult?.success) {
-			await saveLastLocalAuthenticationSession(server);
-		}
-		return Promise.resolve(authResult?.success);
-	} else {
-		await saveLastLocalAuthenticationSession(server);
-	}
+	// if (diffToLastSession >= 5) {
+	// 	const supported = await LocalAuthentication.supportedAuthenticationTypesAsync()
+  //   console.log('localAuthenticate -> supported', supported);
+	// 	const authResult = await LocalAuthentication.authenticateAsync();
+	// 	if (authResult?.success) {
+	// 		await saveLastLocalAuthenticationSession(server);
+	// 	}
+	// 	return Promise.resolve(authResult?.success);
+	// } else {
+	// 	await saveLastLocalAuthenticationSession(server);
+	// }
 	return Promise.resolve(true);
 };

@@ -19,4 +19,8 @@ export default class Server extends Model {
 	@field('version') version;
 
 	@date('last_local_authenticated_session') lastLocalAuthenticatedSession;
+
+	@field('auto_lock') autoLock;
+
+	@field('auto_lock_time') autoLockTime;
 }

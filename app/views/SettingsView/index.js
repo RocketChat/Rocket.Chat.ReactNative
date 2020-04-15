@@ -273,6 +273,15 @@ class SettingsView extends React.Component {
 						right={this.renderDisclosure}
 						theme={theme}
 					/>
+					<Separator theme={theme} />
+					<ListItem
+						title={I18n.t('Screen_lock')}
+						showActionIndicator
+						onPress={() => this.navigateToScreen('ScreenLockConfigView')}
+						// testID='settings-view-theme'
+						right={this.renderDisclosure}
+						theme={theme}
+					/>
 
 					<SectionSeparator theme={theme} />
 
