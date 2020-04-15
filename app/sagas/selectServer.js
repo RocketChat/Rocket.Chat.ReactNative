@@ -139,6 +139,9 @@ const handleServerRequest = function* handleServerRequest({ server, certificate 
 		if (certificate) {
 			yield UrlCredentials.setCertificate(certificate);
 			yield RNUserDefaults.setObjectForKey(extractHostname(server), certificate);
+		} else {
+			const savedCertificate = yield RNUserDefaults.objectForKey(extractHostname(server));
+			yield UrlCredentials.setCertificate(savedCertificate);
 		}
 
 		const serverInfo = yield getServerInfo({ server });
