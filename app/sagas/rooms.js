@@ -12,7 +12,6 @@ import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRo
 import RocketChat from '../lib/rocketchat';
 import buildMessage from '../lib/methods/helpers/buildMessage';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
-import { BACKGROUND, INACTIVE } from '../lib/appStateMiddleware';
 
 const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 	const serversDB = database.servers;
@@ -109,8 +108,7 @@ const root = function* root() {
 				roomsSuccess: take(types.ROOMS.SUCCESS),
 				roomsFailure: take(types.ROOMS.FAILURE),
 				serverReq: take(types.SERVER.SELECT_REQUEST),
-				background: take(BACKGROUND),
-				inactive: take(INACTIVE),
+				background: take(types.APP_STATE.BACKGROUND),
 				logout: take(types.LOGOUT),
 				timeout: delay(30000)
 			});

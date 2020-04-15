@@ -1,11 +1,11 @@
 import { takeLatest, select, put } from 'redux-saga/effects';
 
-import { FOREGROUND, BACKGROUND } from '../lib/appStateMiddleware';
 import RocketChat from '../lib/rocketchat';
 import { setBadgeCount } from '../notifications/push';
 import log from '../utils/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../utils/localAuthentication';
 import * as actions from '../actions';
+import { APP_STATE } from '../actions/actionsTypes';
 
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	const appRoot = yield select(state => state.app.root);
@@ -49,18 +49,8 @@ const appHasComeBackToBackground = function* appHasComeBackToBackground() {
 };
 
 const root = function* root() {
-	yield takeLatest(
-		FOREGROUND,
-		appHasComeBackToForeground
-	);
-	yield takeLatest(
-		BACKGROUND,
-		appHasComeBackToBackground
-	);
-	// yield takeLatest(
-	// 	INACTIVE,
-	// 	appHasComeBackToBackground
-	// );
+	yield takeLatest(APP_STATE.FOREGROUND, appHasComeBackToForeground);
+	yield takeLatest(APP_STATE.BACKGROUND, appHasComeBackToBackground);
 };
 
 export default root;

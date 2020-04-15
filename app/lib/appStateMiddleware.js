@@ -1,9 +1,7 @@
 // https://github.com/bamlab/redux-enhancer-react-native-appstate
 import { AppState } from 'react-native';
 
-export const FOREGROUND = 'APP_STATE.FOREGROUND';
-export const BACKGROUND = 'APP_STATE.BACKGROUND';
-export const INACTIVE = 'APP_STATE.INACTIVE';
+import { APP_STATE } from '../actions/actionsTypes';
 
 export default () => createStore => (...args) => {
 	const store = createStore(...args);
@@ -15,9 +13,9 @@ export default () => createStore => (...args) => {
 			if (currentState !== nextAppState) {
 				let type;
 				if (nextAppState === 'active') {
-					type = FOREGROUND;
+					type = APP_STATE.FOREGROUND;
 				} else if (nextAppState === 'background') {
-					type = BACKGROUND;
+					type = APP_STATE.BACKGROUND;
 				}
 				if (type) {
 					store.dispatch({
