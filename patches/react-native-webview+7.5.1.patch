@@ -1,0 +1,22 @@
+diff --git a/node_modules/react-native-webview/ios/RNCWebView.m b/node_modules/react-native-webview/ios/RNCWebView.m
+index 589a3b0..6686762 100644
+--- a/node_modules/react-native-webview/ios/RNCWebView.m
++++ b/node_modules/react-native-webview/ios/RNCWebView.m
+@@ -13,6 +13,8 @@
+ 
+ #import "objc/runtime.h"
+ 
++#import "UrlCredentials.h"
++
+ static NSTimer *keyboardTimer;
+ static NSString *const MessageHandlerName = @"ReactNativeWebView";
+ static NSURLCredential* clientAuthenticationCredential;
+@@ -683,7 +685,7 @@ - (void)                    webView:(WKWebView *)webView
+         host = webView.URL.host;
+     }
+     if ([[challenge protectionSpace] authenticationMethod] == NSURLAuthenticationMethodClientCertificate) {
+-        completionHandler(NSURLSessionAuthChallengeUseCredential, clientAuthenticationCredential);
++        completionHandler(NSURLSessionAuthChallengeUseCredential, [UrlCredentials getUrlCredential]);
+         return;
+     }
+     if ([[challenge protectionSpace] serverTrust] != nil && customCertificatesForHost != nil && host != nil) {

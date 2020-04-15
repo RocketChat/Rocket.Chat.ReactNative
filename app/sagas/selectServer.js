@@ -68,6 +68,9 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }) {
 	try {
+		const certificate = yield RNUserDefaults.objectForKey(extractHostname(server));
+		yield UrlCredentials.setCertificate(certificate);
+
 		const serversDB = database.servers;
 		yield RNUserDefaults.set('currentServer', server);
 		const userId = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
