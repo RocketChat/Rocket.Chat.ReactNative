@@ -229,7 +229,7 @@ class MessageContainer extends React.Component {
 			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, showAttachment, timeFormat, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme
 		} = this.props;
 		const {
-			id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, blocks, autoTranslate: autoTranslateMessage
+			id, msg, ts, attachments, urls, reactions, t, avatar, emoji, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, blocks, autoTranslate: autoTranslateMessage
 		} = item;
 
 		let message = msg;
@@ -253,6 +253,7 @@ class MessageContainer extends React.Component {
 				reactions={reactions}
 				alias={alias}
 				avatar={avatar}
+				emoji={emoji}
 				user={user}
 				timeFormat={timeFormat}
 				customThreadTimeFormat={customThreadTimeFormat}

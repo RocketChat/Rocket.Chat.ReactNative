@@ -6,7 +6,7 @@ import Avatar from '../Avatar';
 import styles from './styles';
 
 const MessageAvatar = React.memo(({
-	isHeader, avatar, author, baseUrl, user, small, navToRoomInfo
+	isHeader, avatar, author, baseUrl, user, small, navToRoomInfo, getCustomEmoji, theme, emoji
 }) => {
 	if (isHeader && author) {
 		const navParam = {
@@ -24,9 +24,12 @@ const MessageAvatar = React.memo(({
 					size={small ? 20 : 36}
 					borderRadius={small ? 2 : 4}
 					avatar={avatar}
+					emoji={emoji}
+					theme={theme}
 					baseUrl={baseUrl}
 					userId={user.id}
 					token={user.token}
+					getCustomEmoji={getCustomEmoji}
 				/>
 			</TouchableOpacity>
 		);
@@ -37,11 +40,14 @@ const MessageAvatar = React.memo(({
 MessageAvatar.propTypes = {
 	isHeader: PropTypes.bool,
 	avatar: PropTypes.string,
+	emoji: PropTypes.string,
+	theme: PropTypes.string,
 	author: PropTypes.obj,
 	baseUrl: PropTypes.string,
 	user: PropTypes.obj,
 	small: PropTypes.bool,
-	navToRoomInfo: PropTypes.func
+	navToRoomInfo: PropTypes.func,
+	getCustomEmoji: PropTypes.func
 };
 MessageAvatar.displayName = 'MessageAvatar';
 

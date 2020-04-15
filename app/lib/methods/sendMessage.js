@@ -52,7 +52,7 @@ export async function sendMessageCall(message) {
 		// RC 0.60.0
 		const result = await sdk.post('chat.sendMessage', {
 			message: {
-				_id, rid, msg, tmid
+				_id, rid, msg, tmid, emoji: ':smirk:'
 			}
 		});
 		if (result.success) {

@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 7,
+	version: 8,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -66,6 +66,7 @@ export default appSchema({
 				{ name: 'parse_urls', type: 'string' },
 				{ name: 'groupable', type: 'boolean', isOptional: true },
 				{ name: 'avatar', type: 'string', isOptional: true },
+				{ name: 'emoji', type: 'string', isOptional: true },
 				{ name: 'attachments', type: 'string', isOptional: true },
 				{ name: 'urls', type: 'string', isOptional: true },
 				{ name: '_updated_at', type: 'number' },
@@ -104,6 +105,7 @@ export default appSchema({
 				{ name: 'parse_urls', type: 'string', isOptional: true },
 				{ name: 'groupable', type: 'boolean', isOptional: true },
 				{ name: 'avatar', type: 'string', isOptional: true },
+				{ name: 'emoji', type: 'string', isOptional: true },
 				{ name: 'attachments', type: 'string', isOptional: true },
 				{ name: 'urls', type: 'string', isOptional: true },
 				{ name: 'status', type: 'number', isOptional: true },
@@ -140,6 +142,7 @@ export default appSchema({
 				{ name: 'parse_urls', type: 'string', isOptional: true },
 				{ name: 'groupable', type: 'boolean', isOptional: true },
 				{ name: 'avatar', type: 'string', isOptional: true },
+				{ name: 'emoji', type: 'string', isOptional: true },
 				{ name: 'attachments', type: 'string', isOptional: true },
 				{ name: 'urls', type: 'string', isOptional: true },
 				{ name: 'status', type: 'number', isOptional: true },

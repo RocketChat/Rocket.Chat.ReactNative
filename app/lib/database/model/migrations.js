@@ -74,6 +74,29 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 8,
+			steps: [
+				addColumns({
+					table: 'messages',
+					columns: [
+						{ name: 'emoji', type: 'string', isOptional: true }
+					]
+				}),
+				addColumns({
+					table: 'thread_messages',
+					columns: [
+						{ name: 'emoji', type: 'string', isOptional: true }
+					]
+				}),
+				addColumns({
+					table: 'threads',
+					columns: [
+						{ name: 'emoji', type: 'string', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });
