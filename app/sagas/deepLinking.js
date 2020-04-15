@@ -2,6 +2,7 @@ import {
 	takeLatest, take, select, put, all, delay
 } from 'redux-saga/effects';
 import RNUserDefaults from 'rn-user-defaults';
+import UrlCredentials from 'react-native-url-credentials';
 
 import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
@@ -11,6 +12,7 @@ import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';
 import { appStart } from '../actions';
+import { extractHostname } from '../utils/server';
 
 const roomTypes = {
 	channel: 'c', direct: 'd', group: 'p', channels: 'l'
@@ -61,6 +63,9 @@ const handleOpen = function* handleOpen({ params }) {
 	if (host.slice(-1) === '/') {
 		host = host.slice(0, host.length - 1);
 	}
+
+	const certificate = yield RNUserDefaults.objectForKey(extractHostname(host));
+	yield UrlCredentials.setCertificate(certificate);
 
 	const [server, user] = yield all([
 		RNUserDefaults.get('currentServer'),

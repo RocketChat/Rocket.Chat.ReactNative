@@ -4,6 +4,7 @@ import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import RNUserDefaults from 'rn-user-defaults';
 import { Q } from '@nozbe/watermelondb';
 import * as FileSystem from 'expo-file-system';
+import UrlCredentials from 'react-native-url-credentials';
 
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
@@ -274,6 +275,9 @@ const RocketChat = {
 		const useSsl = !/http:\/\//.test(server);
 
 		this.shareSDK = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
+
+		const certificate = await RNUserDefaults.objectForKey(extractHostname(server));
+		await UrlCredentials.setCertificate(certificate);
 
 		// set Server
 		const serversDB = database.servers;

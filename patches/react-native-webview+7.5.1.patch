@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-webview/ios/RNCWebView.m b/node_modules/react-native-webview/ios/RNCWebView.m
-index 589a3b0..6686762 100644
+index 589a3b0..0143afb 100644
 --- a/node_modules/react-native-webview/ios/RNCWebView.m
 +++ b/node_modules/react-native-webview/ios/RNCWebView.m
 @@ -13,6 +13,8 @@
@@ -16,7 +16,7 @@ index 589a3b0..6686762 100644
      }
      if ([[challenge protectionSpace] authenticationMethod] == NSURLAuthenticationMethodClientCertificate) {
 -        completionHandler(NSURLSessionAuthChallengeUseCredential, clientAuthenticationCredential);
-+        completionHandler(NSURLSessionAuthChallengeUseCredential, [UrlCredentials getUrlCredential]);
++        completionHandler(NSURLSessionAuthChallengeUseCredential, [UrlCredentials getUrlCredential:challenge]);
          return;
      }
      if ([[challenge protectionSpace] serverTrust] != nil && customCertificatesForHost != nil && host != nil) {
