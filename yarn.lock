@@ -10119,8 +10119,8 @@ react-native-unimodules@0.5.3:
     unimodules-task-manager-interface "~3.0.0"
 
 react-native-url-credentials@djorkaeffalexandre/react-native-url-credentials:
-  version "1.2.0"
-  resolved "https://codeload.github.com/djorkaeffalexandre/react-native-url-credentials/tar.gz/d1751734cc65fc6e23bdded7a8880012519b4a38"
+  version "1.2.1"
+  resolved "https://codeload.github.com/djorkaeffalexandre/react-native-url-credentials/tar.gz/209d232fe428fbdea1190a0a4d50315f0aad2d15"
 
 react-native-vector-icons@6.6.0:
   version "6.6.0"
