@@ -5,6 +5,7 @@ import { Alert } from 'react-native';
 import RNUserDefaults from 'rn-user-defaults';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import semver from 'semver';
+import UrlCredentials from 'react-native-url-credentials';
 
 import Navigation from '../lib/Navigation';
 import { SERVER } from '../actions/actionsTypes';
@@ -133,6 +134,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 const handleServerRequest = function* handleServerRequest({ server, certificate }) {
 	try {
 		if (certificate) {
+			yield UrlCredentials.setCertificate(certificate);
 			yield RNUserDefaults.setObjectForKey(extractHostname(server), certificate);
 		}
 
