@@ -10513,11 +10513,6 @@ redent@^1.0.0:
     indent-string "^2.1.0"
     strip-indent "^1.0.1"
 
-redux-enhancer-react-native-appstate@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/redux-enhancer-react-native-appstate/-/redux-enhancer-react-native-appstate-0.3.1.tgz#2fb7b99963cc63b4d7765e485c4f452cccbb34c4"
-  integrity sha1-L7e5mWPMY7TXdl5IXE9FLMy7NMQ=
-
 redux-immutable-state-invariant@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/redux-immutable-state-invariant/-/redux-immutable-state-invariant-2.1.0.tgz#308fd3cc7415a0e7f11f51ec997b6379c7055ce1"

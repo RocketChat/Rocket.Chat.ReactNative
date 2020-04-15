@@ -1,10 +1,9 @@
 import {
 	put, select, race, take, fork, cancel, delay
 } from 'redux-saga/effects';
-import { BACKGROUND, INACTIVE } from 'redux-enhancer-react-native-appstate';
 import { Q } from '@nozbe/watermelondb';
-
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+
 import * as types from '../actions/actionsTypes';
 import { roomsSuccess, roomsFailure, roomsRefresh } from '../actions/rooms';
 import database from '../lib/database';
@@ -13,6 +12,7 @@ import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRo
 import RocketChat from '../lib/rocketchat';
 import buildMessage from '../lib/methods/helpers/buildMessage';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
+import { BACKGROUND, INACTIVE } from '../lib/appStateMiddleware';
 
 const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 	const serversDB = database.servers;

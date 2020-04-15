@@ -1,6 +1,6 @@
 import { takeLatest, select, put } from 'redux-saga/effects';
-import { FOREGROUND, BACKGROUND } from 'redux-enhancer-react-native-appstate';
 
+import { FOREGROUND, BACKGROUND } from '../lib/appStateMiddleware';
 import RocketChat from '../lib/rocketchat';
 import { setBadgeCount } from '../notifications/push';
 import log from '../utils/log';
