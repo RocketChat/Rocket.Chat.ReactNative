@@ -6,6 +6,7 @@ import {
 import { connect } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
 import DocumentPicker from 'react-native-document-picker';
+import UrlCredentials from 'react-native-url-credentials';
 import ActionSheet from 'react-native-action-sheet';
 import prompt from 'react-native-prompt-android';
 import RNUserDefaults from 'rn-user-defaults';
@@ -188,24 +189,30 @@ class NewServerView extends React.Component {
 
 	chooseCertificate = async() => {
 		try {
-			const res = await DocumentPicker.pick({
-				type: [isIOS ? 'com.rsa.pkcs-12' : 'application/x-pkcs12']
-			});
-			const { uri: path, name } = res;
-			prompt(
-				I18n.t('Certificate_password'),
-				I18n.t('Whats_the_password_for_your_certificate'),
-				[
+			if (isIOS) {
+				const res = await DocumentPicker.pick({
+					type: [isIOS ? 'com.rsa.pkcs-12' : 'application/x-pkcs12']
+				});
+				const { uri: path, name } = res;
+				prompt(
+					I18n.t('Certificate_password'),
+					I18n.t('Whats_the_password_for_your_certificate'),
+					[
+						{
+							text: 'OK',
+							onPress: password => this.saveCertificate({ path, name, password })
+						}
+					],
 					{
-						text: 'OK',
-						onPress: password => this.saveCertificate({ path, name, password })
+						type: 'secure-text',
+						cancelable: false
 					}
-				],
-				{
-					type: 'secure-text',
-					cancelable: false
-				}
-			);
+				);
+			} else {
+				const res = await UrlCredentials.pickCertificate();
+				const { uri: path = '', name } = res;
+				this.saveCertificate({ path, name });
+			}
 		} catch (e) {
 			if (!DocumentPicker.isCancel(e)) {
 				log(e);
