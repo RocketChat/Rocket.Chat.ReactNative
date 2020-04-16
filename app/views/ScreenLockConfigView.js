@@ -16,11 +16,12 @@ import Separator from '../containers/Separator';
 import ListItem from '../containers/ListItem';
 import { CustomIcon } from '../lib/Icons';
 import database from '../lib/database';
+import { supportedAuthenticationLabel } from '../utils/localAuthentication';
 
 const DEFAULT_AUTO_LOCK = [
 	{
 		title: 'After 1 minute',
-		value: 60
+		value: 0
 	},
 	{
 		title: 'After 5 minutes',
@@ -80,7 +81,8 @@ class ScreenLockConfigView extends React.Component {
 		this.state = {
 			autoLock: false,
 			autoLockTime: null,
-			supported: []
+			supported: [],
+			autoLockLabel: ''
 		};
 		this.init();
 	}
@@ -95,6 +97,9 @@ class ScreenLockConfigView extends React.Component {
 		} catch (error) {
 			// TODO: raise error in case server wasn't found and pop?
 		}
+
+		const autoLockLabel = await supportedAuthenticationLabel();
+		this.setState({ autoLockLabel });
 	}
 
 	save = async() => {
@@ -175,7 +180,7 @@ class ScreenLockConfigView extends React.Component {
 	}
 
 	render() {
-		const { autoLock, supported } = this.state;
+		const { autoLock, supported, autoLockLabel } = this.state;
 		const { theme } = this.props;
 		return (
 			<SafeAreaView
@@ -190,7 +195,7 @@ class ScreenLockConfigView extends React.Component {
 				>
 					<Separator theme={theme} />
 					<ListItem
-						title='Unlock with METHODHERE'
+						title={`Unlock with ${ autoLockLabel }`}
 						right={() => this.renderSwitch()}
 						theme={theme}
 					/>
