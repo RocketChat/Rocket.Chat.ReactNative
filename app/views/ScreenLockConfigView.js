@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	StyleSheet, View, Switch, ScrollView
+	StyleSheet, View, Switch, ScrollView, Text
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -48,8 +48,25 @@ const styles = StyleSheet.create({
 	sectionSeparatorBorder: {
 		...sharedStyles.separatorVertical,
 		height: 36
+	},
+	infoContainer: {
+		padding: 15
+	},
+	infoText: {
+		fontSize: 14,
+		...sharedStyles.textRegular
 	}
 });
+
+const ItemInfo = React.memo(({ info, theme }) => (
+	<View style={[styles.infoContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+		<Text style={[styles.infoText, { color: themes[theme].infoText }]}>{info}</Text>
+	</View>
+));
+ItemInfo.propTypes = {
+	info: PropTypes.string,
+	theme: PropTypes.string
+};
 
 const SectionSeparator = React.memo(({ theme }) => (
 	<View
@@ -195,11 +212,20 @@ class ScreenLockConfigView extends React.Component {
 				>
 					<Separator theme={theme} />
 					<ListItem
-						title={`Unlock with ${ autoLockLabel }`}
+						title='Unlock with Passcode'
 						right={() => this.renderSwitch()}
 						theme={theme}
 					/>
 					<Separator theme={theme} />
+					<ListItem
+						title='Change Passcode'
+						theme={theme}
+					/>
+					<Separator theme={theme} />
+					<ItemInfo
+						info={'Note: if you forget the passcode, you\'ll need to delete and reinstall the app.'}
+						theme={theme}
+					/>
 					{this.renderAutoLockItems()}
 				</ScrollView>
 			</SafeAreaView>

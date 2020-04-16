@@ -560,5 +560,6 @@ export default {
 	Clear: 'Clear',
 	This_will_clear_all_your_offline_data: 'This will clear all your offline data.',
 	Mark_unread: 'Mark Unread',
-	Wait_activation_warning: 'Before you can login, your account must be manually activated by an administrator.'
+	Wait_activation_warning: 'Before you can login, your account must be manually activated by an administrator.',
+	Screen_lock: 'Screen lock'
 };

@@ -33,14 +33,16 @@ export const localAuthenticate = async(server) => {
 		return Promise.reject();
 	}
 
+	const isEnrolled = await LocalAuthentication.isEnrolledAsync();
+	console.log('localAuthenticate -> isEnrolled', isEnrolled);
 	console.log('localAuthenticate -> serverRecord', serverRecord);
-	if (serverRecord?.autoLock) {
+	if (serverRecord?.autoLock && isEnrolled) {
 		const diffToLastSession = moment().diff(serverRecord?.lastLocalAuthenticatedSession, 'seconds');
 		console.log('localAuthenticate -> diffToLastSession', diffToLastSession);
 		if (diffToLastSession >= serverRecord?.autoLockTime) {
 			const supported = await LocalAuthentication.supportedAuthenticationTypesAsync();
       console.log('localAuthenticate -> supported', supported);
-			const authResult = await LocalAuthentication.authenticateAsync();
+			const authResult = await LocalAuthentication.authenticateAsync({ disableDeviceFallback: true });
 			if (authResult?.success) {
 				await saveLastLocalAuthenticationSession(server);
 			}
