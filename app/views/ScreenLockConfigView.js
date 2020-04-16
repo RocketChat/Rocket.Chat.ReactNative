@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	StyleSheet, FlatList, View, Text, Linking, Switch, ScrollView
+	StyleSheet, View, Switch, ScrollView
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
+import { connect } from 'react-redux';
 
 import I18n from '../i18n';
 import { themedHeader } from '../utils/navigation';
@@ -15,7 +16,6 @@ import Separator from '../containers/Separator';
 import ListItem from '../containers/ListItem';
 import { CustomIcon } from '../lib/Icons';
 import database from '../lib/database';
-import { connect } from 'react-redux';
 
 const DEFAULT_AUTO_LOCK = [
 	{
@@ -44,19 +44,10 @@ const styles = StyleSheet.create({
 	listPadding: {
 		paddingVertical: 36
 	},
-	info: {
-		paddingTop: 25,
-		paddingBottom: 18,
-		paddingHorizontal: 16
-	},
-	infoText: {
-		fontSize: 16,
-		...sharedStyles.textRegular
-	},
 	sectionSeparatorBorder: {
 		...sharedStyles.separatorVertical,
 		height: 36
-	},
+	}
 });
 
 const SectionSeparator = React.memo(({ theme }) => (
