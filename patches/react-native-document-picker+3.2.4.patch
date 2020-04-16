@@ -1,8 +1,17 @@
 diff --git a/node_modules/react-native-document-picker/ios/RNDocumentPicker/RNDocumentPicker.m b/node_modules/react-native-document-picker/ios/RNDocumentPicker/RNDocumentPicker.m
-index 1cb8b4b..4a9a1ac 100644
+index 1cb8b4b..43f2cc6 100644
 --- a/node_modules/react-native-document-picker/ios/RNDocumentPicker/RNDocumentPicker.m
 +++ b/node_modules/react-native-document-picker/ios/RNDocumentPicker/RNDocumentPicker.m
-@@ -58,7 +58,7 @@ - (dispatch_queue_t)methodQueue
+@@ -10,6 +10,8 @@
+ #import "RCTBridge.h"
+ #endif
+ 
++#import <React/RCTLog.h>
++
+ static NSString *const E_DOCUMENT_PICKER_CANCELED = @"DOCUMENT_PICKER_CANCELED";
+ static NSString *const E_INVALID_DATA_RETURNED = @"INVALID_DATA_RETURNED";
+ 
+@@ -58,7 +60,7 @@ - (dispatch_queue_t)methodQueue
                    rejecter:(RCTPromiseRejectBlock)reject)
  {
      NSArray *allowedUTIs = [RCTConvert NSArray:options[OPTION_TYPE]];
@@ -11,7 +20,7 @@ index 1cb8b4b..4a9a1ac 100644
      
      [composeResolvers addObject:resolve];
      [composeRejecters addObject:reject];
-@@ -92,7 +92,6 @@ - (NSMutableDictionary *)getMetadataForUrl:(NSURL *)url error:(NSError **)error
+@@ -92,7 +94,6 @@ - (NSMutableDictionary *)getMetadataForUrl:(NSURL *)url error:(NSError **)error
      [coordinator coordinateReadingItemAtURL:url options:NSFileCoordinatorReadingResolvesSymbolicLink error:&fileError byAccessor:^(NSURL *newURL) {
          
          if (!fileError) {
@@ -19,26 +28,20 @@ index 1cb8b4b..4a9a1ac 100644
              [result setValue:[newURL lastPathComponent] forKey:FIELD_NAME];
              
              NSError *attributesError = nil;
-@@ -103,6 +102,9 @@ - (NSMutableDictionary *)getMetadataForUrl:(NSURL *)url error:(NSError **)error
-                 NSLog(@"%@", attributesError);
-             }
- 
-+            NSString *temp = [NSTemporaryDirectory() stringByAppendingPathComponent:newURL.lastPathComponent];
-+            [[NSFileManager defaultManager] copyItemAtPath:newURL.path toPath:temp error:nil];
-+            
-             if ( newURL.pathExtension != nil ) {
-                 CFStringRef extension = (__bridge CFStringRef)[newURL pathExtension];
-                 CFStringRef uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, extension, NULL);
-@@ -112,6 +114,8 @@ - (NSMutableDictionary *)getMetadataForUrl:(NSURL *)url error:(NSError **)error
+@@ -112,6 +113,12 @@ - (NSMutableDictionary *)getMetadataForUrl:(NSURL *)url error:(NSError **)error
                  NSString *mimeTypeString = (__bridge_transfer NSString *)mimeType;
                  [result setValue:mimeTypeString forKey:FIELD_TYPE];
              }
 +
-+            [result setValue:[@"file://" stringByAppendingString:temp] forKey:FIELD_URI];
++            NSString *path = [NSTemporaryDirectory() stringByAppendingPathComponent:newURL.lastPathComponent];
++            NSData *data = [NSData dataWithContentsOfURL:newURL];
++            [data writeToFile:path atomically:YES];
++
++            [result setValue:[@"file://" stringByAppendingString:path] forKey:FIELD_URI];
          }
      }];
      
-@@ -127,7 +131,7 @@ - (NSMutableDictionary *)getMetadataForUrl:(NSURL *)url error:(NSError **)error
+@@ -127,7 +134,7 @@ - (NSMutableDictionary *)getMetadataForUrl:(NSURL *)url error:(NSError **)error
  
  - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url
  {
@@ -47,7 +50,7 @@ index 1cb8b4b..4a9a1ac 100644
          RCTPromiseResolveBlock resolve = [composeResolvers lastObject];
          RCTPromiseRejectBlock reject = [composeRejecters lastObject];
          [composeResolvers removeLastObject];
-@@ -146,7 +150,7 @@ - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocum
+@@ -146,7 +153,7 @@ - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocum
  
  - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray<NSURL *> *)urls
  {
