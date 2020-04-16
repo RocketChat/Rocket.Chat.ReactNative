@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, Keyboard, StyleSheet, TouchableOpacity, View
+	Text, Keyboard, StyleSheet, TouchableOpacity, View, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
 import DocumentPicker from 'react-native-document-picker';
 import ActionSheet from 'react-native-action-sheet';
-import prompt from 'react-native-prompt-android';
 import RNUserDefaults from 'rn-user-defaults';
 import { encode } from 'base-64';
 import parse from 'url-parse';
@@ -189,10 +188,10 @@ class NewServerView extends React.Component {
 	chooseCertificate = async() => {
 		try {
 			const res = await DocumentPicker.pick({
-				type: [isIOS ? 'com.rsa.pkcs-12' : 'application/x-pkcs12']
+				type: ['com.rsa.pkcs-12']
 			});
 			const { uri: path, name } = res;
-			prompt(
+			Alert.prompt(
 				I18n.t('Certificate_password'),
 				I18n.t('Whats_the_password_for_your_certificate'),
 				[
@@ -201,10 +200,7 @@ class NewServerView extends React.Component {
 						onPress: password => this.saveCertificate({ path, name, password })
 					}
 				],
-				{
-					type: 'secure-text',
-					cancelable: false
-				}
+				'secure-text'
 			);
 		} catch (e) {
 			if (!DocumentPicker.isCancel(e)) {
@@ -329,7 +325,7 @@ class NewServerView extends React.Component {
 						theme={theme}
 					/>
 				</FormContainerInner>
-				{this.renderCertificatePicker()}
+				{ isIOS ? this.renderCertificatePicker() : null }
 			</FormContainer>
 		);
 	}
