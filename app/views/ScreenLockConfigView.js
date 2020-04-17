@@ -21,7 +21,7 @@ import { supportedAuthenticationLabel } from '../utils/localAuthentication';
 const DEFAULT_AUTO_LOCK = [
 	{
 		title: 'After 1 minute',
-		value: 0
+		value: 15
 	},
 	{
 		title: 'After 5 minutes',

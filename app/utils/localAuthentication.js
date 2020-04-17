@@ -3,14 +3,17 @@ import moment from 'moment';
 
 import database from '../lib/database';
 import { isIOS } from './deviceInfo';
+import EventEmitter from './events';
+import { LOCAL_AUTHENTICATE } from '../views/ScreenLockedView';
 
-export const saveLastLocalAuthenticationSession = async(server) => {
-  console.log('saveLastLocalAuthenticationSession -> server', server);
+export const saveLastLocalAuthenticationSession = async(server, serverRecord) => {
 	const serversDB = database.servers;
 	const serversCollection = serversDB.collections.get('servers');
 	await serversDB.action(async() => {
 		try {
-			const serverRecord = await serversCollection.find(server);
+			if (!serverRecord) {
+				serverRecord = await serversCollection.find(server);
+			}
       console.log('saveLastLocalAuthenticationSession -> serverRecord', serverRecord);
 			await serverRecord.update((record) => {
 				record.lastLocalAuthenticatedSession = new Date();
@@ -20,6 +23,14 @@ export const saveLastLocalAuthenticationSession = async(server) => {
 		}
 	});
 };
+
+export const localPasscode = () => new Promise((resolve, reject) => {
+	EventEmitter.emit(LOCAL_AUTHENTICATE, {
+		cancel: () => reject(),
+		submit: () => resolve()
+	});
+});
+
 
 export const localAuthenticate = async(server) => {
 	const serversDB = database.servers;
@@ -33,25 +44,31 @@ export const localAuthenticate = async(server) => {
 		return Promise.reject();
 	}
 
-	const isEnrolled = await LocalAuthentication.isEnrolledAsync();
-	console.log('localAuthenticate -> isEnrolled', isEnrolled);
-	console.log('localAuthenticate -> serverRecord', serverRecord);
-	if (serverRecord?.autoLock && isEnrolled) {
+	// if screen lock is enabled
+	if (serverRecord?.autoLock) {
+		// diff to last authenticated session
 		const diffToLastSession = moment().diff(serverRecord?.lastLocalAuthenticatedSession, 'seconds');
 		console.log('localAuthenticate -> diffToLastSession', diffToLastSession);
+
+		// if last authenticated session is older than configured auto lock time, authentication is required
 		if (diffToLastSession >= serverRecord?.autoLockTime) {
-			const supported = await LocalAuthentication.supportedAuthenticationTypesAsync();
-      console.log('localAuthenticate -> supported', supported);
-			const authResult = await LocalAuthentication.authenticateAsync({ disableDeviceFallback: true });
-			if (authResult?.success) {
-				await saveLastLocalAuthenticationSession(server);
+			const isEnrolled = await LocalAuthentication.isEnrolledAsync();
+			const isSupported = await LocalAuthentication.supportedAuthenticationTypesAsync();
+
+			// if biometry is enabled and enrolled on OS
+			if (isEnrolled && isSupported) {
+				// opens biometry prompt
+				const authResult = await LocalAuthentication.authenticateAsync({ disableDeviceFallback: true });
+				if (authResult?.success) {
+					await saveLastLocalAuthenticationSession(server, serverRecord);
+				} else {
+					await localPasscode();
+				}
+			} else {
+				await localPasscode();
 			}
-			return Promise.resolve(authResult?.success);
-		} else {
-			await saveLastLocalAuthenticationSession(server);
 		}
 	}
-	return Promise.resolve(true);
 };
 
 export const supportedAuthenticationLabel = async() => {

@@ -46,6 +46,7 @@ import TwoFactor from './containers/TwoFactor';
 
 import RoomsListView from './views/RoomsListView';
 import RoomView from './views/RoomView';
+import ScreenLockedView from './views/ScreenLockedView';
 
 if (isIOS) {
 	const RNScreens = require('react-native-screens');
@@ -572,9 +573,6 @@ export const App = createAppContainer(createSwitchNavigator(
 		AuthLoading: {
 			getScreen: () => require('./views/AuthLoadingView').default
 		},
-		ScreenLocked: {
-			getScreen: () => require('./views/ScreenLockedView').default
-		},
 		SetUsernameStack
 	},
 	{
@@ -735,6 +733,7 @@ export default class Root extends React.Component {
 					>
 						{content}
 						<TwoFactor />
+						<ScreenLockedView />
 					</ThemeContext.Provider>
 				</Provider>
 			</AppearanceProvider>

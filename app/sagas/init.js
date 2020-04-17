@@ -101,13 +101,9 @@ const restore = function* restore() {
 			const serversDB = database.servers;
 			const serverCollections = serversDB.collections.get('servers');
 
-			const localAuthResult = yield localAuthenticate(server);
-			if (localAuthResult) {
-				const serverObj = yield serverCollections.find(server);
-				yield put(selectServerRequest(server, serverObj && serverObj.version));
-			} else {
-				yield put(actions.appStart('locked'));
-			}
+			yield localAuthenticate(server);
+			const serverObj = yield serverCollections.find(server);
+			yield put(selectServerRequest(server, serverObj && serverObj.version));
 		}
 
 		yield put(actions.appReady({}));

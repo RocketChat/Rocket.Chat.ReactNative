@@ -148,10 +148,8 @@ class ServerDropdown extends Component {
 					}, ANIMATION_DURATION);
 				}, ANIMATION_DURATION);
 			} else {
-				const localAuthResult = await localAuthenticate(server);
-				if (localAuthResult) {
-					selectServerRequest(server);
-				}
+				await localAuthenticate(server);
+				selectServerRequest(server);
 			}
 		}
 	}

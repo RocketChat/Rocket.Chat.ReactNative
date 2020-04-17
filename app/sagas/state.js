@@ -18,10 +18,7 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	}
 	try {
 		const server = yield select(state => state.server.server);
-		const localAuthResult = yield localAuthenticate(server);
-		if (!localAuthResult) {
-			yield put(actions.appStart('locked'));
-		}
+		yield localAuthenticate(server);
 		setBadgeCount();
 		return yield RocketChat.setUserPresenceOnline();
 	} catch (e) {
