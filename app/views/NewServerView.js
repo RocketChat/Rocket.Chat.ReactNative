@@ -1,14 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, Keyboard, StyleSheet, TouchableOpacity, View
+	Text, Keyboard, StyleSheet, TouchableOpacity, View, Alert, Clipboard
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
-import DocumentPicker from 'react-native-document-picker';
 import UrlCredentials from 'react-native-url-credentials';
 import ActionSheet from 'react-native-action-sheet';
-import prompt from 'react-native-prompt-android';
 import RNUserDefaults from 'rn-user-defaults';
 import { encode } from 'base-64';
 import parse from 'url-parse';
@@ -24,7 +22,6 @@ import TextInput from '../containers/TextInput';
 import OnboardingSeparator from '../containers/OnboardingSeparator';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import I18n from '../i18n';
-import { isIOS } from '../utils/deviceInfo';
 import { themes } from '../constants/colors';
 import log from '../utils/log';
 import { animateNextTransition } from '../utils/layoutAnimation';
@@ -32,6 +29,7 @@ import { withTheme } from '../theme';
 import { setBasicAuth, BASIC_AUTH_KEY } from '../utils/fetch';
 import { themedHeader } from '../utils/navigation';
 import { CloseModalButton } from '../containers/HeaderButton';
+import { isIOS } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	title: {
@@ -143,11 +141,11 @@ class NewServerView extends React.Component {
 	submit = async() => {
 		const { text, certificate } = this.state;
 		const { connectServer } = this.props;
-		let cert = null;
+		let cert = certificate;
 
 		this.setState({ connectingOpen: false });
 
-		if (certificate) {
+		if (certificate.path) {
 			const certificatePath = `${ FileSystem.documentDirectory }/${ certificate.name }`;
 			try {
 				await FileSystem.copyAsync({ from: certificate.path, to: certificatePath });
@@ -189,12 +187,18 @@ class NewServerView extends React.Component {
 
 	chooseCertificate = async() => {
 		try {
+			const res = await UrlCredentials.pickCertificate();
+			const { uri: path = '', name } = res;
+
 			if (isIOS) {
-				const res = await DocumentPicker.pick({
-					type: [isIOS ? 'com.rsa.pkcs-12' : 'application/x-pkcs12']
-				});
-				const { uri: path, name } = res;
-				prompt(
+				// files from purebred or other providers contains
+				// a .icloud on their names
+				if (name.includes('.icloud')) {
+					const pw = await Clipboard.getString();
+					return this.saveCertificate({ path, name, password: pw });
+				}
+
+				Alert.prompt(
 					I18n.t('Certificate_password'),
 					I18n.t('Whats_the_password_for_your_certificate'),
 					[
@@ -203,20 +207,13 @@ class NewServerView extends React.Component {
 							onPress: password => this.saveCertificate({ path, name, password })
 						}
 					],
-					{
-						type: 'secure-text',
-						cancelable: false
-					}
+					'secure-text'
 				);
 			} else {
-				const res = await UrlCredentials.pickCertificate();
-				const { uri: path = '', name } = res;
 				this.saveCertificate({ path, name });
 			}
-		} catch (e) {
-			if (!DocumentPicker.isCancel(e)) {
-				log(e);
-			}
+		} catch {
+			// do nothing
 		}
 	}
 
