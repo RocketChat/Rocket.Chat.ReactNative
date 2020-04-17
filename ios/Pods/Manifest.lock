@@ -309,7 +309,7 @@ PODS:
     - React
   - react-native-slider (2.0.5):
     - React
-  - react-native-url-credentials (1.2.0):
+  - react-native-url-credentials (1.5.4):
     - React
   - react-native-video (5.0.2):
     - React
@@ -764,7 +764,7 @@ SPEC CHECKSUMS:
   react-native-notifications: 163ddedac6fcc8d850ea15b06abdadcacdff00f1
   react-native-orientation-locker: 23918c400376a7043e752c639c122fcf6bce8f1c
   react-native-slider: 39208600e44f885e2d2c0510b5c6435a0f62d087
-  react-native-url-credentials: 3cc0f81061189d8df156ff019144a7077ad2df60
+  react-native-url-credentials: 96e6480a7f2489c401852573c1bfd46db57f48d6
   react-native-video: d01ed7ff1e38fa7dcc6c15c94cf505e661b7bfd0
   react-native-webview: 2aadbfef6b9eaa9e89b306ae3e31e6e870a6306d
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76

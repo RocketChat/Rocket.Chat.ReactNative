@@ -141,28 +141,14 @@ class NewServerView extends React.Component {
 	submit = async() => {
 		const { text, certificate } = this.state;
 		const { connectServer } = this.props;
-		let cert = certificate;
 
 		this.setState({ connectingOpen: false });
-
-		if (certificate.path) {
-			const certificatePath = `${ FileSystem.documentDirectory }/${ certificate.name }`;
-			try {
-				await FileSystem.copyAsync({ from: certificate.path, to: certificatePath });
-			} catch (e) {
-				log(e);
-			}
-			cert = {
-				path: this.uriToPath(certificatePath), // file:// isn't allowed by obj-C
-				password: certificate.password
-			};
-		}
 
 		if (text) {
 			Keyboard.dismiss();
 			const server = this.completeUrl(text);
 			await this.basicAuth(server, text);
-			connectServer(server, cert);
+			connectServer(server, certificate);
 		}
 	}
 
@@ -187,31 +173,8 @@ class NewServerView extends React.Component {
 
 	chooseCertificate = async() => {
 		try {
-			const res = await UrlCredentials.pickCertificate();
-			const { uri: path = '', name } = res;
-
-			if (isIOS) {
-				// files from purebred or other providers contains
-				// a .icloud on their names
-				if (name.includes('.icloud')) {
-					const pw = await Clipboard.getString();
-					return this.saveCertificate({ path, name, password: pw });
-				}
-
-				Alert.prompt(
-					I18n.t('Certificate_password'),
-					I18n.t('Whats_the_password_for_your_certificate'),
-					[
-						{
-							text: 'OK',
-							onPress: password => this.saveCertificate({ path, name, password })
-						}
-					],
-					'secure-text'
-				);
-			} else {
-				this.saveCertificate({ path, name });
-			}
+			const alias = await UrlCredentials.pickCertificate();
+			this.saveCertificate(alias);
 		} catch {
 			// do nothing
 		}
@@ -283,7 +246,7 @@ class NewServerView extends React.Component {
 							{ color: themes[theme].tintColor }
 						]}
 					>
-						{certificate ? certificate.name : I18n.t('Apply_Your_Certificate')}
+						{certificate || I18n.t('Apply_Your_Certificate')}
 					</Text>
 				</TouchableOpacity>
 			</View>
