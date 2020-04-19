@@ -449,9 +449,6 @@ const RoomActionsStack = createStackNavigator({
 	NotificationPrefView: {
 		getScreen: () => require('./views/NotificationPreferencesView').default
 	},
-	AttachmentView: {
-		getScreen: () => require('./views/AttachmentView').default
-	},
 	PickerView: {
 		getScreen: () => require('./views/PickerView').default
 	}
@@ -469,6 +466,7 @@ const ModalSwitch = createSwitchNavigator({
 	SettingsStack,
 	ModalBlockStack,
 	CreateDiscussionStack,
+	AttachmentStack,
 	AuthLoading: () => null
 },
 {
@@ -524,7 +522,7 @@ class CustomModalStack extends React.Component {
 			</View>
 		);
 
-		if (isAndroid) {
+		if (isAndroid && !pageSheet) {
 			content = (
 				<ScrollView overScrollMode='never'>
 					{content}
