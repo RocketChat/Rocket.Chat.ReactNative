@@ -201,6 +201,62 @@ index 8f8f19b..150bcfe 100644
  
  - (BOOL)isKeyCommandRegisteredForInput:(NSString *)input
                           modifierFlags:(UIKeyModifierFlags)flags
+diff --git a/node_modules/react-native/ReactAndroid/src/debug/java/com/facebook/flipper/ReactNativeFlipper.java b/node_modules/react-native/ReactAndroid/src/debug/java/com/facebook/flipper/ReactNativeFlipper.java
+index c2973ad..8edbbb2 100644
+--- a/node_modules/react-native/ReactAndroid/src/debug/java/com/facebook/flipper/ReactNativeFlipper.java
++++ b/node_modules/react-native/ReactAndroid/src/debug/java/com/facebook/flipper/ReactNativeFlipper.java
+@@ -20,6 +20,7 @@ import com.facebook.flipper.plugins.react.ReactFlipperPlugin;
+ import com.facebook.flipper.plugins.sharedpreferences.SharedPreferencesFlipperPlugin;
+ import com.facebook.react.BuildConfig;
+ import com.facebook.react.modules.network.NetworkingModule;
++import com.facebook.react.modules.network.CustomClientBuilder;
+ import okhttp3.OkHttpClient;
+ 
+ public class ReactNativeFlipper {
+@@ -37,7 +38,7 @@ public class ReactNativeFlipper {
+ 
+       NetworkFlipperPlugin networkFlipperPlugin = new NetworkFlipperPlugin();
+       NetworkingModule.setCustomClientBuilder(
+-          new NetworkingModule.CustomClientBuilder() {
++          new CustomClientBuilder() {
+             @Override
+             public void apply(OkHttpClient.Builder builder) {
+               builder.addNetworkInterceptor(new FlipperOkhttpInterceptor(networkFlipperPlugin));
+diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/network/CustomClientBuilder.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/network/CustomClientBuilder.java
+new file mode 100644
+index 0000000..db81d65
+--- /dev/null
++++ b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/network/CustomClientBuilder.java
+@@ -0,0 +1,14 @@
++/*
++ * Copyright (c) Facebook, Inc. and its affiliates.
++ *
++ * This source code is licensed under the MIT license found in the
++ * LICENSE file in the root directory of this source tree.
++ */
++
++package com.facebook.react.modules.network;
++
++import okhttp3.OkHttpClient;
++
++public interface CustomClientBuilder {
++  public void apply(OkHttpClient.Builder builder);
++}
+diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/network/NetworkingModule.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/network/NetworkingModule.java
+index 84244d6..810a0e5 100644
+--- a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/network/NetworkingModule.java
++++ b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/network/NetworkingModule.java
+@@ -168,10 +168,6 @@ public final class NetworkingModule extends ReactContextBaseJavaModule {
+     customClientBuilder = ccb;
+   }
+ 
+-  public static interface CustomClientBuilder {
+-    public void apply(OkHttpClient.Builder builder);
+-  }
+-
+   private static void applyCustomBuilder(OkHttpClient.Builder builder) {
+     if (customClientBuilder != null) {
+       customClientBuilder.apply(builder);
 diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java
 index ef2ae93..2795802 100644
 --- a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/systeminfo/AndroidInfoModule.java
@@ -214,3 +270,61 @@ index ef2ae93..2795802 100644
        return true;
      } catch (ClassNotFoundException ignored) {
        return false;
+diff --git a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/websocket/WebSocketModule.java b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/websocket/WebSocketModule.java
+index bfc83f6..59d8018 100644
+--- a/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/websocket/WebSocketModule.java
++++ b/node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/modules/websocket/WebSocketModule.java
+@@ -22,6 +22,8 @@ import com.facebook.react.common.ReactConstants;
+ import com.facebook.react.module.annotations.ReactModule;
+ import com.facebook.react.modules.core.DeviceEventManagerModule;
+ import com.facebook.react.modules.network.ForwardingCookieHandler;
++import com.facebook.react.modules.network.OkHttpClientProvider;
++import com.facebook.react.modules.network.CustomClientBuilder;
+ import java.io.IOException;
+ import java.net.URI;
+ import java.net.URISyntaxException;
+@@ -53,6 +55,8 @@ public final class WebSocketModule extends ReactContextBaseJavaModule {
+   private ReactContext mReactContext;
+   private ForwardingCookieHandler mCookieHandler;
+ 
++  private static @Nullable CustomClientBuilder customClientBuilder = null;
++
+   public WebSocketModule(ReactApplicationContext context) {
+     super(context);
+     mReactContext = context;
+@@ -65,6 +69,16 @@ public final class WebSocketModule extends ReactContextBaseJavaModule {
+         .emit(eventName, params);
+   }
+ 
++  public static void setCustomClientBuilder(CustomClientBuilder ccb) {
++    customClientBuilder = ccb;
++  }
++
++  private static void applyCustomBuilder(OkHttpClient.Builder builder) {
++    if (customClientBuilder != null) {
++      customClientBuilder.apply(builder);
++    }
++  }
++
+   @Override
+   public String getName() {
+     return NAME;
+@@ -84,12 +98,15 @@ public final class WebSocketModule extends ReactContextBaseJavaModule {
+       @Nullable final ReadableArray protocols,
+       @Nullable final ReadableMap options,
+       final int id) {
+-    OkHttpClient client =
++    OkHttpClient.Builder okHttpBuilder =
+         new OkHttpClient.Builder()
+             .connectTimeout(10, TimeUnit.SECONDS)
+             .writeTimeout(10, TimeUnit.SECONDS)
+-            .readTimeout(0, TimeUnit.MINUTES) // Disable timeouts for read
+-            .build();
++            .readTimeout(0, TimeUnit.MINUTES); // Disable timeouts for read
++
++    applyCustomBuilder(okHttpBuilder);
++
++    OkHttpClient client = okHttpBuilder.build();
+ 
+     Request.Builder builder = new Request.Builder().tag(id).url(url);
+ 
