@@ -76,12 +76,14 @@ export const localAuthenticate = async(server) => {
 	}
 };
 
-export const supportedAuthenticationLabel = async() => {
-	const supported = await LocalAuthentication.supportedAuthenticationTypesAsync();
-	console.log('supportedAuthenticationLabel -> supported', supported);
-	
+export const supportedBiometryLabel = async() => {
 	const enrolled = await LocalAuthentication.isEnrolledAsync();
-  console.log('supportedAuthenticationLabel -> enrolled', enrolled);
+
+	if (!enrolled) {
+		return null;
+	}
+
+	const supported = await LocalAuthentication.supportedAuthenticationTypesAsync();
 
 	if (supported.includes(LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION)) {
 		return isIOS ? 'FaceID' : 'facial recognition';

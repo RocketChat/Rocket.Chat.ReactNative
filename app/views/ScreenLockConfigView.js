@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
+import RNUserDefaults from 'rn-user-defaults';
 
 import I18n from '../i18n';
 import { themedHeader } from '../utils/navigation';
@@ -16,10 +17,8 @@ import Separator from '../containers/Separator';
 import ListItem from '../containers/ListItem';
 import { CustomIcon } from '../lib/Icons';
 import database from '../lib/database';
-import { supportedAuthenticationLabel } from '../utils/localAuthentication';
+import { supportedBiometryLabel } from '../utils/localAuthentication';
 import { DisclosureImage } from '../containers/DisclosureIndicator';
-import EventEmitter from '../utils/events';
-import RNUserDefaults from 'rn-user-defaults';
 import { PASSCODE_KEY } from '../constants/passcode';
 
 // RNUserDefaults.set(PASSCODE_KEY, '')
@@ -96,7 +95,9 @@ class ScreenLockConfigView extends React.Component {
 	})
 
 	static propTypes = {
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		server: PropTypes.string,
+		navigation: PropTypes.object
 	}
 
 	constructor(props) {
@@ -105,7 +106,8 @@ class ScreenLockConfigView extends React.Component {
 			autoLock: false,
 			autoLockTime: null,
 			supported: [],
-			autoLockLabel: ''
+			biometry: true,
+			biometryLabel: null
 		};
 		this.init();
 	}
@@ -116,22 +118,27 @@ class ScreenLockConfigView extends React.Component {
 		const serversCollection = serversDB.collections.get('servers');
 		try {
 			this.serverRecord = await serversCollection.find(server);
-			this.setState({ autoLock: this.serverRecord?.autoLock, autoLockTime: this.serverRecord?.autoLockTime });
+			this.setState({
+				autoLock: this.serverRecord?.autoLock,
+				autoLockTime: this.serverRecord?.autoLockTime || 1800,
+				biometry: this.serverRecord?.biometry || true
+			});
 		} catch (error) {
 			// TODO: raise error in case server wasn't found and pop?
 		}
 
-		const autoLockLabel = await supportedAuthenticationLabel();
-		this.setState({ autoLockLabel });
+		const biometryLabel = await supportedBiometryLabel();
+		this.setState({ biometryLabel });
 	}
 
 	save = async() => {
-		const { autoLock, autoLockTime } = this.state;
+		const { autoLock, autoLockTime, biometry } = this.state;
 		const serversDB = database.servers;
 		await serversDB.action(async() => {
 			await this.serverRecord?.update((record) => {
 				record.autoLock = autoLock;
 				record.autoLockTime = autoLockTime;
+				record.biometry = biometry;
 			});
 		});
 	}
@@ -152,6 +159,10 @@ class ScreenLockConfigView extends React.Component {
 			this.save();
 			this.setPasscode();
 		});
+	}
+
+	toggleBiometry = () => {
+		this.setState(({ biometry }) => ({ biometry: !biometry }), () => this.save());
 	}
 
 	isSelected = (value) => {
@@ -194,14 +205,24 @@ class ScreenLockConfigView extends React.Component {
 		);
 	}
 
-	renderSwitch = () => {
-		// const { allowCrashReport } = this.props;
+	renderAutoLockSwitch = () => {
 		const { autoLock } = this.state;
 		return (
 			<Switch
 				value={autoLock}
 				trackColor={SWITCH_TRACK_COLOR}
 				onValueChange={this.autoLock}
+			/>
+		);
+	}
+
+	renderBiometrySwitch = () => {
+		const { biometry } = this.state;
+		return (
+			<Switch
+				value={biometry}
+				trackColor={SWITCH_TRACK_COLOR}
+				onValueChange={this.toggleBiometry}
 			/>
 		);
 	}
@@ -226,14 +247,32 @@ class ScreenLockConfigView extends React.Component {
 		return <DisclosureImage theme={theme} />;
 	}
 
+	renderBiometry = () => {
+		const { autoLock, biometryLabel } = this.state;
+		const { theme } = this.props;
+		if (!autoLock || !biometryLabel) {
+			return null;
+		}
+		return (
+			<>
+				<Separator theme={theme} />
+				<ListItem
+					title={`Unlock with ${ biometryLabel }`}
+					right={() => this.renderBiometrySwitch()}
+					theme={theme}
+				/>
+				<Separator theme={theme} />
+			</>
+		);
+	}
+
 	render() {
-		const { autoLock, supported, autoLockLabel } = this.state;
+		const { autoLock } = this.state;
 		const { theme } = this.props;
 		return (
 			<SafeAreaView
 				style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
 				forceInset={{ vertical: 'never' }}
-				testID='default-browser-view'
 			>
 				<StatusBar theme={theme} />
 				<ScrollView
@@ -243,7 +282,7 @@ class ScreenLockConfigView extends React.Component {
 					<Separator theme={theme} />
 					<ListItem
 						title='Unlock with Passcode'
-						right={() => this.renderSwitch()}
+						right={() => this.renderAutoLockSwitch()}
 						theme={theme}
 					/>
 					{autoLock
@@ -265,6 +304,7 @@ class ScreenLockConfigView extends React.Component {
 						info={'Note: if you forget the passcode, you\'ll need to delete and reinstall the app.'}
 						theme={theme}
 					/>
+					{this.renderBiometry()}
 					{this.renderAutoLockItems()}
 				</ScrollView>
 			</SafeAreaView>
