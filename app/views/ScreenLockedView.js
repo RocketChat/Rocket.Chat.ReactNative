@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import {
-	View, Text, StyleSheet, TextInput
+	View, StyleSheet
 } from 'react-native';
-import { connect } from 'react-redux';
 import PINCode from '@haskkor/react-native-pincode';
 import Modal from 'react-native-modal';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import _ from 'lodash';
+import RNUserDefaults from 'rn-user-defaults';
 
-import { appInit as appInitAction } from '../actions';
 import I18n from '../i18n';
-import StatusBar from '../containers/StatusBar';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import EventEmitter from '../utils/events';
 
 import sharedStyles from './Styles';
 import { withSplit } from '../split';
+import { PASSCODE_KEY, PASSCODE_LENGTH } from '../constants/passcode';
 
 export const LOCAL_AUTHENTICATE = 'LOCAL_AUTHENTICATE';
 
@@ -35,7 +34,7 @@ const styles = StyleSheet.create({
 });
 
 const ScreenLockedView = React.memo(withTheme(({ theme, split }) => {
-
+	const [passcode, setPasscode] = useState('');
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState({});
 
@@ -47,18 +46,26 @@ const ScreenLockedView = React.memo(withTheme(({ theme, split }) => {
 		}
 	}, [data]);
 
-	const showScreenLock = args => setData(args);
+	const fetchPasscode = async() => {
+		const storedPin = await RNUserDefaults.get(PASSCODE_KEY);
+		setPasscode(storedPin);
+	};
+
+	const showScreenLock = (args) => {
+		setData(args);
+		fetchPasscode();
+	};
 
 	useEffect(() => {
 		EventEmitter.addEventListener(LOCAL_AUTHENTICATE, showScreenLock);
-
+		fetchPasscode();
 		return () => EventEmitter.removeListener(LOCAL_AUTHENTICATE);
 	}, []);
 
 	const onSubmit = () => {
 		const { submit } = data;
 		if (submit) {
-			submit()
+			submit();
 		}
 		setData({});
 	};
@@ -72,16 +79,13 @@ const ScreenLockedView = React.memo(withTheme(({ theme, split }) => {
 		>
 			<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
 				<PINCode
-					status={'enter'}
-					passwordLength={6}
+					status='enter'
+					passwordLength={PASSCODE_LENGTH}
 					customBackSpaceIcon={() => null}
-					// endProcessFunction={console.log}
 					finishProcess={onSubmit}
-					// onFail={() => alert('fail')}
-					storedPin='111111'
-					maxAttempts={3}
+					storedPin={passcode}
+					// maxAttempts={3}
 				/>
-				{/* <Text onPress={onSubmit}>VAI</Text> */}
 			</View>
 		</Modal>
 	);

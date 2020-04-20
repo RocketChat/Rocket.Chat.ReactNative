@@ -5,6 +5,7 @@ import database from '../lib/database';
 import { isIOS } from './deviceInfo';
 import EventEmitter from './events';
 import { LOCAL_AUTHENTICATE } from '../views/ScreenLockedView';
+import RNBootSplash from 'react-native-bootsplash';
 
 export const saveLastLocalAuthenticationSession = async(server, serverRecord) => {
 	const serversDB = database.servers;
@@ -46,12 +47,16 @@ export const localAuthenticate = async(server) => {
 
 	// if screen lock is enabled
 	if (serverRecord?.autoLock) {
+
 		// diff to last authenticated session
 		const diffToLastSession = moment().diff(serverRecord?.lastLocalAuthenticatedSession, 'seconds');
 		console.log('localAuthenticate -> diffToLastSession', diffToLastSession);
 
 		// if last authenticated session is older than configured auto lock time, authentication is required
 		if (diffToLastSession >= serverRecord?.autoLockTime) {
+			// Make sure splash screen has been hidden
+			RNBootSplash.hide();
+
 			const isEnrolled = await LocalAuthentication.isEnrolledAsync();
 			const isSupported = await LocalAuthentication.supportedAuthenticationTypesAsync();
 

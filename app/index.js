@@ -228,6 +228,9 @@ const SettingsStack = createStackNavigator({
 	},
 	ScreenLockConfigView: {
 		getScreen: () => require('./views/ScreenLockConfigView').default
+	},
+	ChangePasscodeView: {
+		getScreen: () => require('./views/ChangePasscodeView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader,
@@ -324,6 +327,9 @@ const InsideStackModal = createStackNavigator({
 	CreateDiscussionStack,
 	JitsiMeetView: {
 		getScreen: () => require('./views/JitsiMeetView').default
+	},
+	ChangePasscodeViewModal: {
+		getScreen: () => require('./views/ChangePasscodeView').default
 	}
 },
 {

@@ -17,11 +17,17 @@ import ListItem from '../containers/ListItem';
 import { CustomIcon } from '../lib/Icons';
 import database from '../lib/database';
 import { supportedAuthenticationLabel } from '../utils/localAuthentication';
+import { DisclosureImage } from '../containers/DisclosureIndicator';
+import EventEmitter from '../utils/events';
+import RNUserDefaults from 'rn-user-defaults';
+import { PASSCODE_KEY } from '../constants/passcode';
+
+// RNUserDefaults.set(PASSCODE_KEY, '')
 
 const DEFAULT_AUTO_LOCK = [
 	{
 		title: 'After 1 minute',
-		value: 15
+		value: 5
 	},
 	{
 		title: 'After 5 minutes',
@@ -130,8 +136,22 @@ class ScreenLockConfigView extends React.Component {
 		});
 	}
 
+	setPasscode = async() => {
+		const { autoLock } = this.state;
+		const { navigation } = this.props;
+		if (autoLock) {
+			const storedPasscode = await RNUserDefaults.get(PASSCODE_KEY);
+			if (!storedPasscode) {
+				navigation.navigate('ChangePasscodeView', { forceSetPasscode: true });
+			}
+		}
+	}
+
 	autoLock = () => {
-		this.setState(({ autoLock }) => ({ autoLock: !autoLock }), () => this.save());
+		this.setState(({ autoLock }) => ({ autoLock: !autoLock }), () => {
+			this.save();
+			this.setPasscode();
+		});
 	}
 
 	isSelected = (value) => {
@@ -141,6 +161,11 @@ class ScreenLockConfigView extends React.Component {
 
 	changeAutoLockTime = (autoLockTime) => {
 		this.setState({ autoLockTime }, () => this.save());
+	}
+
+	changePasscode = () => {
+		const { navigation } = this.props;
+		navigation.navigate('ChangePasscodeView');
 	}
 
 	renderSeparator = () => {
@@ -196,6 +221,11 @@ class ScreenLockConfigView extends React.Component {
 		);
 	}
 
+	renderDisclosure = () => {
+		const { theme } = this.props;
+		return <DisclosureImage theme={theme} />;
+	}
+
 	render() {
 		const { autoLock, supported, autoLockLabel } = this.state;
 		const { theme } = this.props;
@@ -216,11 +246,20 @@ class ScreenLockConfigView extends React.Component {
 						right={() => this.renderSwitch()}
 						theme={theme}
 					/>
-					<Separator theme={theme} />
-					<ListItem
-						title='Change Passcode'
-						theme={theme}
-					/>
+					{autoLock
+						? (
+							<>
+								<Separator theme={theme} />
+								<ListItem
+									title='Change Passcode'
+									theme={theme}
+									right={this.renderDisclosure}
+									onPress={this.changePasscode}
+								/>
+							</>
+						)
+						: null
+					}
 					<Separator theme={theme} />
 					<ItemInfo
 						info={'Note: if you forget the passcode, you\'ll need to delete and reinstall the app.'}
