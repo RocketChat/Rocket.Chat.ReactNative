@@ -77,7 +77,7 @@ const ScreenLockedView = React.memo(withTheme(({ theme, split }) => {
 			hideModalContentWhileAnimating
 			style={{ margin: 0 }}
 		>
-			<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
+			<View style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 				<PINCode
 					status={PinStatus.enter}
 					passwordLength={PASSCODE_LENGTH}
@@ -88,6 +88,23 @@ const ScreenLockedView = React.memo(withTheme(({ theme, split }) => {
 					touchIDDisabled
 					vibrationEnabled={false}
 					timeLocked={30000}
+					colorCircleButtons={themes[theme].backgroundColor}
+					colorPassword={themes[theme].titleText}
+					colorPasswordEmpty={themes[theme].titleText}
+					colorPasswordError={themes[theme].dangerColor}
+					numbersButtonOverlayColor={themes[theme].bannerBackground}
+					stylePinCodeButtonNumber={themes[theme].bodyText}
+					stylePinCodeButtonNumberPressed={themes[theme].bodyText}
+					stylePinCodeColorTitle={themes[theme].titleText}
+					stylePinCodeColorSubtitle={themes[theme].titleText}
+					stylePinCodeColorSubtitleError={themes[theme].dangerColor}
+					stylePinCodeButtonCircle={{ borderWidth: 1, borderColor: themes[theme].borderColor }}
+					stylePinCodeTextTitle={{ ...sharedStyles.textRegular, fontWeight: '400' }}
+					stylePinCodeTextSubtitle={{ ...sharedStyles.textRegular, fontWeight: '300' }}
+					stylePinCodeTextButtonCircle={{ ...sharedStyles.textRegular, fontWeight: '100' }}
+					stylePinCodeHiddenPasswordSizeEmpty={8}
+					stylePinCodeHiddenPasswordSizeFull={12}
+					titleEnter='Enter your passcode'
 				/>
 			</View>
 		</Modal>

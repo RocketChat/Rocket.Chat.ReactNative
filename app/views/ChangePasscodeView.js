@@ -27,6 +27,25 @@ const ScreenLockConfigView = React.memo(({ navigation, theme }) => {
 				customBackSpaceIcon={() => null}
 				storePin={savePasscode}
 				touchIDDisabled
+				colorCircleButtons={themes[theme].backgroundColor}
+				colorPassword={themes[theme].titleText}
+				colorPasswordEmpty={themes[theme].titleText}
+				colorPasswordError={themes[theme].dangerColor}
+				numbersButtonOverlayColor={themes[theme].bannerBackground}
+				stylePinCodeButtonNumber={themes[theme].bodyText}
+				stylePinCodeButtonNumberPressed={themes[theme].bodyText}
+				stylePinCodeColorTitle={themes[theme].titleText}
+				stylePinCodeColorSubtitle={themes[theme].titleText}
+				stylePinCodeColorSubtitleError={themes[theme].dangerColor}
+				stylePinCodeButtonCircle={{ borderWidth: 1, borderColor: themes[theme].borderColor }}
+				stylePinCodeTextTitle={{ ...sharedStyles.textRegular, fontWeight: '400' }}
+				stylePinCodeTextSubtitle={{ ...sharedStyles.textRegular, fontWeight: '300' }}
+				stylePinCodeTextButtonCircle={{ ...sharedStyles.textRegular, fontWeight: '100' }}
+				stylePinCodeHiddenPasswordSizeEmpty={8}
+				stylePinCodeHiddenPasswordSizeFull={12}
+				titleChoose='Enter your new passcode'
+				titleConfirm='Confirm your passcode'
+				subtitleChoose=''
 			/>
 		</SafeAreaView>
 	);
