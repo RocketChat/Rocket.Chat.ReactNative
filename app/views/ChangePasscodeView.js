@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { SafeAreaView } from 'react-navigation';
-import PINCode from '@haskkor/react-native-pincode';
+import PINCode, { PinStatus } from '@haskkor/react-native-pincode';
 import RNUserDefaults from 'rn-user-defaults';
 
 import I18n from '../i18n';
@@ -22,10 +22,11 @@ const ScreenLockConfigView = React.memo(({ navigation, theme }) => {
 			style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
 		>
 			<PINCode
-				status='choose'
+				status={PinStatus.choose}
 				passwordLength={PASSCODE_LENGTH}
 				customBackSpaceIcon={() => null}
 				storePin={savePasscode}
+				touchIDDisabled
 			/>
 		</SafeAreaView>
 	);

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
 	View, StyleSheet
 } from 'react-native';
-import PINCode from '@haskkor/react-native-pincode';
+import PINCode, { PinStatus } from '@haskkor/react-native-pincode';
 import Modal from 'react-native-modal';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import _ from 'lodash';
@@ -79,12 +79,13 @@ const ScreenLockedView = React.memo(withTheme(({ theme, split }) => {
 		>
 			<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
 				<PINCode
-					status='enter'
+					status={PinStatus.enter}
 					passwordLength={PASSCODE_LENGTH}
 					customBackSpaceIcon={() => null}
 					finishProcess={onSubmit}
 					storedPin={passcode}
-					// maxAttempts={3}
+					maxAttempts={3}
+					touchIDDisabled
 				/>
 			</View>
 		</Modal>
