@@ -334,11 +334,11 @@ const RocketChat = {
 				const result = await this.login(params);
 				return resolve(result);
 			} catch (e) {
-				if (e.data.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
+				if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
 					const { details } = e.data;
 					try {
-						const code = await twoFactor({ method: details.method || 'totp', invalid: e.data.error === 'totp-invalid' });
-						return resolve(this.loginTOTP({ ...params, code: code.twoFactorCode }));
+						const code = await twoFactor({ method: details?.method || 'totp', invalid: e.data.error === 'totp-invalid' });
+						return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }));
 					} catch {
 						// twoFactor was canceled
 						return reject();
@@ -894,7 +894,7 @@ const RocketChat = {
 				if (e.data && (e.data.errorType === 'totp-required' || e.data.errorType === 'totp-invalid')) {
 					const { details } = e.data;
 					try {
-						await twoFactor({ method: details.method, invalid: e.data.errorType === 'totp-invalid' });
+						await twoFactor({ method: details?.method, invalid: e.data.errorType === 'totp-invalid' });
 						return resolve(this.post(...args));
 					} catch {
 						// twoFactor was canceled
@@ -915,7 +915,7 @@ const RocketChat = {
 				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
 					const { details } = e;
 					try {
-						this.code = await twoFactor({ method: details.method, invalid: e.error === 'totp-invalid' });
+						this.code = await twoFactor({ method: details?.method, invalid: e.error === 'totp-invalid' });
 						return resolve(this.methodCall(...args));
 					} catch {
 						// twoFactor was canceled
