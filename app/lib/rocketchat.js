@@ -1,9 +1,10 @@
-import { AsyncStorage, InteractionManager } from 'react-native';
+import { InteractionManager } from 'react-native';
 import semver from 'semver';
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import RNUserDefaults from 'rn-user-defaults';
 import { Q } from '@nozbe/watermelondb';
 import * as FileSystem from 'expo-file-system';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';

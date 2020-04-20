@@ -1,10 +1,11 @@
 import React from 'react';
 import {
-	View, Linking, ScrollView, AsyncStorage, Switch, Text, Share, Clipboard
+	View, Linking, ScrollView, Switch, Text, Share, Clipboard
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import { logout as logoutAction } from '../../actions/login';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';

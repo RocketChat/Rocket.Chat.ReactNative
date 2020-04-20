@@ -84,8 +84,10 @@ const ScreenLockedView = React.memo(withTheme(({ theme, split }) => {
 					customBackSpaceIcon={() => null}
 					finishProcess={onSubmit}
 					storedPin={passcode}
-					maxAttempts={3}
+					// maxAttempts={3}
 					touchIDDisabled
+					vibrationEnabled={false}
+					timeLocked={30000}
 				/>
 			</View>
 		</Modal>

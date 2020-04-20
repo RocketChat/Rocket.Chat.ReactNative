@@ -1,8 +1,8 @@
-import { AsyncStorage } from 'react-native';
 import { put, takeLatest, all } from 'redux-saga/effects';
 import RNUserDefaults from 'rn-user-defaults';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import RNBootSplash from 'react-native-bootsplash';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import * as actions from '../actions';
 import { selectServerRequest } from '../actions/server';
