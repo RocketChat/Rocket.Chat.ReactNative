@@ -1,0 +1,14 @@
+diff --git a/node_modules/expo-local-authentication/android/src/main/java/expo/modules/localauthentication/LocalAuthenticationModule.java b/node_modules/expo-local-authentication/android/src/main/java/expo/modules/localauthentication/LocalAuthenticationModule.java
+index babaf55..ecf8ad3 100644
+--- a/node_modules/expo-local-authentication/android/src/main/java/expo/modules/localauthentication/LocalAuthenticationModule.java
++++ b/node_modules/expo-local-authentication/android/src/main/java/expo/modules/localauthentication/LocalAuthenticationModule.java
+@@ -139,7 +139,8 @@ public class LocalAuthenticationModule extends ExportedModule {
+         BiometricPrompt biometricPrompt = new BiometricPrompt(fragmentActivity, executor, mAuthenticationCallback);
+ 
+         BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+-                .setDeviceCredentialAllowed(true)
++                .setDeviceCredentialAllowed(false)
++                .setNegativeButtonText("Use Passcode")
+                 .setTitle("Authenticate")
+                 .build();
+         biometricPrompt.authenticate(promptInfo);
