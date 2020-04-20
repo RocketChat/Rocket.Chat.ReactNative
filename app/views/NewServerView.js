@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, Keyboard, StyleSheet, TouchableOpacity, View, Alert, Clipboard
+	Text, Keyboard, StyleSheet, TouchableOpacity, View
 } from 'react-native';
 import { connect } from 'react-redux';
-import * as FileSystem from 'expo-file-system';
 import UrlCredentials from 'react-native-url-credentials';
 import ActionSheet from 'react-native-action-sheet';
 import RNUserDefaults from 'rn-user-defaults';
@@ -23,13 +22,11 @@ import OnboardingSeparator from '../containers/OnboardingSeparator';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import I18n from '../i18n';
 import { themes } from '../constants/colors';
-import log from '../utils/log';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
 import { setBasicAuth, BASIC_AUTH_KEY } from '../utils/fetch';
 import { themedHeader } from '../utils/navigation';
 import { CloseModalButton } from '../containers/HeaderButton';
-import { isIOS } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	title: {
