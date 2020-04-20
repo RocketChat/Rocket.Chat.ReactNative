@@ -417,6 +417,7 @@ class MessageBox extends Component {
 	getUsers = debounce(async(keyword) => {
 		let res = await RocketChat.search({ text: keyword, filterRooms: false, filterUsers: true });
 		res = [...this.getFixedMentions(keyword), ...res];
+		res = res.filter(item => !RocketChat.isGroupChat(item));
 		this.setState({ mentions: res });
 	}, 300)
 
