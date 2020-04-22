@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { SafeAreaView } from 'react-navigation';
 import PINCode, { PinStatus } from '@haskkor/react-native-pincode';
 import RNUserDefaults from 'rn-user-defaults';
+import Orientation from 'react-native-orientation-locker';
 
 import I18n from '../i18n';
 import { themedHeader } from '../utils/navigation';
@@ -10,12 +11,24 @@ import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import sharedStyles from './Styles';
 import { PASSCODE_KEY, PASSCODE_LENGTH } from '../constants/localAuthentication';
+import { isTablet } from '../utils/deviceInfo';
 
 const ScreenLockConfigView = React.memo(({ navigation, theme }) => {
 	const savePasscode = async(passcode) => {
 		await RNUserDefaults.set(PASSCODE_KEY, passcode);
 		navigation.pop();
 	};
+
+	useEffect(() => {
+		if (!isTablet) {
+			Orientation.lockToPortrait();
+		}
+		return (() => {
+			if (!isTablet) {
+				Orientation.unlockAllOrientations();
+			}
+		});
+	}, []);
 
 	return (
 		<SafeAreaView

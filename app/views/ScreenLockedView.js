@@ -21,6 +21,8 @@ import {
 	PASSCODE_KEY, PASSCODE_LENGTH, LOCAL_AUTHENTICATE_EMITTER, LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY
 } from '../constants/localAuthentication';
 import { resetAttempts } from '../utils/localAuthentication';
+import { isTablet } from '../utils/deviceInfo';
+import Orientation from 'react-native-orientation-locker';
 
 const MAX_ATTEMPTS = 6;
 const TIME_TO_LOCK = 30000;
@@ -130,6 +132,9 @@ const ScreenLockedView = ({ theme }) => {
 	const showScreenLock = (args) => {
 		setData(args);
 		fetchPasscode();
+		if (!isTablet) {
+			Orientation.lockToPortrait();
+		}
 	};
 
 	const checkOldSession = async() => {

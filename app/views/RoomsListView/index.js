@@ -208,7 +208,6 @@ class RoomsListView extends React.Component {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
 		Dimensions.addEventListener('change', this.onDimensionsChange);
-		Orientation.unlockAllOrientations();
 		this.willFocusListener = navigation.addListener('willFocus', () => {
 			// Check if there were changes while not focused (it's set on sCU)
 			if (this.shouldUpdate) {
@@ -218,6 +217,7 @@ class RoomsListView extends React.Component {
 			}
 		});
 		this.didFocusListener = navigation.addListener('didFocus', () => {
+			Orientation.unlockAllOrientations();
 			this.animated = true;
 			this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 		});
