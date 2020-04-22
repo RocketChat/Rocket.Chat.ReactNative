@@ -9,7 +9,7 @@ import { themedHeader } from '../utils/navigation';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import sharedStyles from './Styles';
-import { PASSCODE_KEY, PASSCODE_LENGTH } from '../constants/passcode';
+import { PASSCODE_KEY, PASSCODE_LENGTH } from '../constants/localAuthentication';
 
 const ScreenLockConfigView = React.memo(({ navigation, theme }) => {
 	const savePasscode = async(passcode) => {

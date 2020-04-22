@@ -1,11 +1,12 @@
 import * as LocalAuthentication from 'expo-local-authentication';
 import moment from 'moment';
+import RNBootSplash from 'react-native-bootsplash';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import database from '../lib/database';
 import { isIOS } from './deviceInfo';
 import EventEmitter from './events';
-import { LOCAL_AUTHENTICATE } from '../views/ScreenLockedView';
-import RNBootSplash from 'react-native-bootsplash';
+import { LOCAL_AUTHENTICATE_EMITTER, LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY } from '../constants/localAuthentication';
 
 export const saveLastLocalAuthenticationSession = async(server, serverRecord) => {
 	const serversDB = database.servers;
@@ -25,8 +26,10 @@ export const saveLastLocalAuthenticationSession = async(server, serverRecord) =>
 	});
 };
 
+export const resetAttempts = () => AsyncStorage.multiRemove([LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY]);
+
 export const localPasscode = () => new Promise((resolve, reject) => {
-	EventEmitter.emit(LOCAL_AUTHENTICATE, {
+	EventEmitter.emit(LOCAL_AUTHENTICATE_EMITTER, {
 		cancel: () => reject(),
 		submit: () => resolve()
 	});
@@ -65,6 +68,7 @@ export const localAuthenticate = async(server) => {
 				// opens biometry prompt
 				const authResult = await LocalAuthentication.authenticateAsync({ disableDeviceFallback: true });
 				if (authResult?.success) {
+					await resetAttempts();
 					await saveLastLocalAuthenticationSession(server, serverRecord);
 				} else {
 					await localPasscode();

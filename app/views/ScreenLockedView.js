@@ -15,15 +15,13 @@ import I18n from '../i18n';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import EventEmitter from '../utils/events';
-
 import sharedStyles from './Styles';
 import { withSplit } from '../split';
-import { PASSCODE_KEY, PASSCODE_LENGTH } from '../constants/passcode';
+import {
+	PASSCODE_KEY, PASSCODE_LENGTH, LOCAL_AUTHENTICATE_EMITTER, LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY
+} from '../constants/localAuthentication';
+import { resetAttempts } from '../utils/localAuthentication';
 
-export const LOCAL_AUTHENTICATE = 'LOCAL_AUTHENTICATE';
-
-const LOCKED_OUT_TIMER_KEY = 'kLockedOutTimer';
-const ATTEMPTS_KEY = 'kAttempts';
 const MAX_ATTEMPTS = 6;
 const TIME_TO_LOCK = 30000;
 
@@ -68,14 +66,12 @@ const Timer = ({ time, theme, changeStatus }) => {
 	};
 
 	const [timeLeft, setTimeLeft] = useState(calcTimeLeft());
-	const { removeItem } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
 
 	useEffect(() => {
 		setTimeout(() => {
 			setTimeLeft(calcTimeLeft());
 			if (timeLeft <= 1) {
-				removeItem(LOCKED_OUT_TIMER_KEY);
-				removeItem(ATTEMPTS_KEY);
+				resetAttempts();
 				changeStatus(PinStatus.initial);
 			}
 		}, 1000);
@@ -116,7 +112,7 @@ const ScreenLockedView = ({ theme }) => {
 	const [passcode, setPasscode] = useState('');
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState({});
-	const { getItem, removeItem } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
+	const { getItem } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
 
 	useDeepCompareEffect(() => {
 		if (!_.isEmpty(data)) {
@@ -141,16 +137,15 @@ const ScreenLockedView = ({ theme }) => {
 		const lockedUntil = getLockedUntil(time);
 		const diff = getDiff(lockedUntil);
 		if (diff <= 1) {
-			removeItem(LOCKED_OUT_TIMER_KEY);
-			removeItem(ATTEMPTS_KEY);
+			resetAttempts();
 		}
 	};
 
 	useEffect(() => {
-		EventEmitter.addEventListener(LOCAL_AUTHENTICATE, showScreenLock);
+		EventEmitter.addEventListener(LOCAL_AUTHENTICATE_EMITTER, showScreenLock);
 		fetchPasscode();
 		checkOldSession();
-		return () => EventEmitter.removeListener(LOCAL_AUTHENTICATE);
+		return () => EventEmitter.removeListener(LOCAL_AUTHENTICATE_EMITTER);
 	}, []);
 
 	const onSubmit = () => {

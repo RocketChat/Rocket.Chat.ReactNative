@@ -19,7 +19,7 @@ import { CustomIcon } from '../lib/Icons';
 import database from '../lib/database';
 import { supportedBiometryLabel } from '../utils/localAuthentication';
 import { DisclosureImage } from '../containers/DisclosureIndicator';
-import { PASSCODE_KEY } from '../constants/passcode';
+import { PASSCODE_KEY } from '../constants/localAuthentication';
 
 // RNUserDefaults.set(PASSCODE_KEY, '')
 
