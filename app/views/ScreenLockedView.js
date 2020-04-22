@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import {
-	View, StyleSheet
+	View, StyleSheet, Text
 } from 'react-native';
+import PropTypes from 'prop-types';
 import PINCode, { PinStatus } from '@haskkor/react-native-pincode';
 import Modal from 'react-native-modal';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import _ from 'lodash';
 import RNUserDefaults from 'rn-user-defaults';
+import { useAsyncStorage } from '@react-native-community/async-storage';
+import moment from 'moment';
 
 import I18n from '../i18n';
 import { withTheme } from '../theme';
@@ -19,24 +22,101 @@ import { PASSCODE_KEY, PASSCODE_LENGTH } from '../constants/passcode';
 
 export const LOCAL_AUTHENTICATE = 'LOCAL_AUTHENTICATE';
 
+const LOCKED_OUT_TIMER_KEY = 'kLockedOutTimer';
+const ATTEMPTS_KEY = 'kAttempts';
+const MAX_ATTEMPTS = 6;
+const TIME_TO_LOCK = 30000;
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: 'center',
-		alignItems: 'center'
+		width: '100%'
 	},
-	text: {
-		fontSize: 16,
-		paddingTop: 10,
+	title: {
 		...sharedStyles.textRegular,
-		...sharedStyles.textAlignCenter
+		fontSize: 20,
+		fontWeight: '400',
+		marginBottom: 10,
+		textAlign: 'center'
+	},
+	subtitle: {
+		...sharedStyles.textRegular,
+		fontSize: 16,
+		fontWeight: '400',
+		textAlign: 'center'
+	},
+	circleButtonText: {
+		...sharedStyles.textRegular,
+		fontWeight: '100'
+	},
+	circleButton: {
+		borderWidth: 1
 	}
 });
 
-const ScreenLockedView = React.memo(withTheme(({ theme, split }) => {
+const getLockedUntil = t => moment(t).add(TIME_TO_LOCK);
+
+const getDiff = t => new Date(t) - new Date();
+
+const Timer = ({ time, theme, changeStatus }) => {
+	const calcTimeLeft = () => {
+		const diff = getDiff(time);
+		if (diff > 0) {
+			return Math.floor((diff / 1000) % 60);
+		}
+	};
+
+	const [timeLeft, setTimeLeft] = useState(calcTimeLeft());
+	const { removeItem } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
+
+	useEffect(() => {
+		setTimeout(() => {
+			setTimeLeft(calcTimeLeft());
+			if (timeLeft <= 1) {
+				removeItem(LOCKED_OUT_TIMER_KEY);
+				removeItem(ATTEMPTS_KEY);
+				changeStatus(PinStatus.initial);
+			}
+		}, 1000);
+	});
+
+	if (!timeLeft) {
+		return null;
+	}
+
+	return (
+		<Text style={[styles.subtitle, { color: themes[theme].bodyText }]}>Try again in {timeLeft} seconds</Text>
+	);
+};
+
+// `changeStatus` prop is injected from react-native-pincode
+const AppLocked = withTheme(({ theme, changeStatus }) => {
+	const [lockedUntil, setLockedUntil] = useState(null);
+	const { getItem } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
+
+	const readItemFromStorage = async() => {
+		const item = await getItem();
+		setLockedUntil(getLockedUntil(item));
+	};
+
+	useEffect(() => {
+		readItemFromStorage();
+	}, []);
+
+	return (
+		<View style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+			<Text style={[styles.title, { color: themes[theme].titleText }]}>App locked</Text>
+			<Timer theme={theme} time={lockedUntil} changeStatus={changeStatus} />
+		</View>
+	);
+});
+
+const ScreenLockedView = ({ theme }) => {
 	const [passcode, setPasscode] = useState('');
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState({});
+	const { getItem, removeItem } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
 
 	useDeepCompareEffect(() => {
 		if (!_.isEmpty(data)) {
@@ -56,9 +136,20 @@ const ScreenLockedView = React.memo(withTheme(({ theme, split }) => {
 		fetchPasscode();
 	};
 
+	const checkOldSession = async() => {
+		const time = await getItem();
+		const lockedUntil = getLockedUntil(time);
+		const diff = getDiff(lockedUntil);
+		if (diff <= 1) {
+			removeItem(LOCKED_OUT_TIMER_KEY);
+			removeItem(ATTEMPTS_KEY);
+		}
+	};
+
 	useEffect(() => {
 		EventEmitter.addEventListener(LOCAL_AUTHENTICATE, showScreenLock);
 		fetchPasscode();
+		checkOldSession();
 		return () => EventEmitter.removeListener(LOCAL_AUTHENTICATE);
 	}, []);
 
@@ -84,10 +175,10 @@ const ScreenLockedView = React.memo(withTheme(({ theme, split }) => {
 					customBackSpaceIcon={() => null}
 					finishProcess={onSubmit}
 					storedPin={passcode}
-					// maxAttempts={3}
+					maxAttempts={MAX_ATTEMPTS}
 					touchIDDisabled
 					vibrationEnabled={false}
-					timeLocked={30000}
+					timeLocked={TIME_TO_LOCK}
 					colorCircleButtons={themes[theme].backgroundColor}
 					colorPassword={themes[theme].titleText}
 					colorPasswordEmpty={themes[theme].titleText}
@@ -98,17 +189,37 @@ const ScreenLockedView = React.memo(withTheme(({ theme, split }) => {
 					stylePinCodeColorTitle={themes[theme].titleText}
 					stylePinCodeColorSubtitle={themes[theme].titleText}
 					stylePinCodeColorSubtitleError={themes[theme].dangerColor}
-					stylePinCodeButtonCircle={{ borderWidth: 1, borderColor: themes[theme].borderColor }}
-					stylePinCodeTextTitle={{ ...sharedStyles.textRegular, fontWeight: '400' }}
-					stylePinCodeTextSubtitle={{ ...sharedStyles.textRegular, fontWeight: '300' }}
-					stylePinCodeTextButtonCircle={{ ...sharedStyles.textRegular, fontWeight: '100' }}
+					stylePinCodeButtonCircle={[styles.circleButton, { borderColor: themes[theme].borderColor }]}
+					stylePinCodeTextTitle={styles.title}
+					stylePinCodeTextSubtitle={styles.subtitle}
+					stylePinCodeTextButtonCircle={styles.circleButtonText}
 					stylePinCodeHiddenPasswordSizeEmpty={8}
 					stylePinCodeHiddenPasswordSizeFull={12}
 					titleEnter='Enter your passcode'
+					timePinLockedAsyncStorageName={LOCKED_OUT_TIMER_KEY}
+					pinAttemptsAsyncStorageName={ATTEMPTS_KEY}
+					lockedPage={<AppLocked />}
 				/>
 			</View>
 		</Modal>
 	);
-}));
+};
+
+Timer.propTypes = {
+	time: PropTypes.string,
+	theme: PropTypes.string,
+	changeStatus: PropTypes.func
+};
+
+AppLocked.propTypes = {
+	theme: PropTypes.string,
+	changeStatus: PropTypes.func
+};
+
+ScreenLockedView.propTypes = {
+	theme: PropTypes.string,
+	// eslint-disable-next-line react/no-unused-prop-types
+	split: PropTypes.bool // TODO: need it?
+};
 
 export default withSplit(withTheme(ScreenLockedView));

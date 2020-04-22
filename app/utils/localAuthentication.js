@@ -40,7 +40,7 @@ export const localAuthenticate = async(server) => {
 	let serverRecord;
 	try {
 		serverRecord = await serversCollection.find(server);
-		console.log('localAuthenticate -> serverRecord', serverRecord);
+		// console.log('localAuthenticate -> serverRecord', serverRecord);
 	} catch (error) {
 		return Promise.reject();
 	}
@@ -50,7 +50,7 @@ export const localAuthenticate = async(server) => {
 
 		// diff to last authenticated session
 		const diffToLastSession = moment().diff(serverRecord?.lastLocalAuthenticatedSession, 'seconds');
-		console.log('localAuthenticate -> diffToLastSession', diffToLastSession);
+		// console.log('localAuthenticate -> diffToLastSession', diffToLastSession);
 
 		// if last authenticated session is older than configured auto lock time, authentication is required
 		if (diffToLastSession >= serverRecord?.autoLockTime) {
