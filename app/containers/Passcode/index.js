@@ -1,85 +1,71 @@
-import React, { useState } from 'react';
-import { View } from 'react-native';
-import { Col, Row, Grid } from 'react-native-easy-grid';
-import _ from 'lodash';
+import React, { useEffect, useRef, useState } from 'react';
+import { useAsyncStorage } from '@react-native-community/async-storage';
+import RNUserDefaults from 'rn-user-defaults';
 
-import styles from './styles';
-import Button from './Button';
-import Dots from './Dots';
-import Title from './Title';
-import Subtitle from './Subtitle';
+import Base from './Base';
+import Locked from './Locked';
+import { TYPE } from './constants';
+import { ATTEMPTS_KEY, LOCKED_OUT_TIMER_KEY, PASSCODE_KEY } from '../../constants/localAuthentication';
+console.log('LOCKED_OUT_TIMER_KEY', LOCKED_OUT_TIMER_KEY);
 
-const PASSCODE_LENGTH = 6;
+const MAX_ATTEMPTS = 2;
 
-const Passcode = ({ theme }) => {
-	const [passcode, setPasscode] = useState('');
+const PasscodeEnter = ({
+	theme, type, finishProcess
+}) => {
+	const ref = useRef(null);
+	let attempts = 0;
+	let isLocked = false;
+	let passcode = null;
+	const [status, setStatus] = useState(type);
+  console.log('status', status);
+	// const [attempts, setAttempts] = useState(null);
+  // console.log('PasscodeEnter -> attempts', attempts);
+	// const [isLocked, setIsLocked] = useState(null);
+	// console.log('PasscodeEnter -> isLocked', isLocked);
+	// const [passcode, setPasscode] = useState('');
+  // console.log('passcode', passcode);
+	const { getItem: getAttempts, setItem: setAttempts } = useAsyncStorage(ATTEMPTS_KEY);
+	const { getItem: getIsLocked, setItem: setIsLocked } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
 
-	const handleEnd = () => {
-		alert('END')
+	const fetchPasscode = async() => {
+		passcode = await RNUserDefaults.get(PASSCODE_KEY);
 	};
 
-	const onPressNumber = text => setPasscode((p) => {
-		const newPasscode = p + text;
-		if (newPasscode?.length === PASSCODE_LENGTH) {
-			handleEnd();
-			return '';
-		}
-		return newPasscode;
-	});
+	const readStorage = async() => {
+		isLocked = await getIsLocked();
+		attempts = await getAttempts();
+		fetchPasscode();
+	};
 
-	const onPressDelete = () => setPasscode((p) => {
-		if (p?.length > 0) {
-			const newPasscode = p.slice(0, -1);
-			return newPasscode;
-		}
-		return '';
-	});
+	useEffect(() => {
+		readStorage();
+	}, []);
 
-	return (
-		<View style={styles.container}>
-			<View style={styles.container}>
-				<View style={styles.viewTitle}>
-					<Title theme={theme} />
-					<Subtitle theme={theme} />
-				</View>
-				<View style={styles.flexCirclePasscode}>
-					<Dots passcode={passcode} theme={theme} length={PASSCODE_LENGTH} />
-				</View>
-				<Grid style={styles.grid}>
-					<Row style={styles.row}>
-						{_.range(1, 4).map(i => (
-							<Col key={i} style={styles.colButtonCircle}>
-								<Button text={i} theme={theme} onPress={onPressNumber} />
-							</Col>
-						))}
-					</Row>
-					<Row style={styles.row}>
-						{_.range(4, 7).map(i => (
-							<Col key={i} style={styles.colButtonCircle}>
-								<Button text={i} theme={theme} onPress={onPressNumber} />
-							</Col>
-						))}
-					</Row>
-					<Row style={styles.row}>
-						{_.range(7, 10).map(i => (
-							<Col key={i} style={styles.colButtonCircle}>
-								<Button text={i} theme={theme} onPress={onPressNumber} />
-							</Col>
-						))}
-					</Row>
-					<Row style={styles.row}>
-						<Col style={styles.colButtonCircle} />
-						<Col style={styles.colButtonCircle}>
-							<Button text='0' theme={theme} onPress={onPressNumber} />
-						</Col>
-						<Col style={styles.colButtonCircle}>
-							<Button text='X' theme={theme} onPress={onPressDelete} />
-						</Col>
-					</Row>
-				</Grid>
-			</View>
-		</View>
-	);
+	const onEndProcess = (p) => {
+		if (p === passcode) {
+			finishProcess();
+		} else {
+			attempts += 1;
+			if (attempts >= MAX_ATTEMPTS) {
+				setStatus(TYPE.LOCKED);
+				setIsLocked(new Date().toISOString());
+			} else {
+				ref.current.wrongPasscode();
+				setAttempts(attempts?.toString());
+			}
+		}
+	};
+
+	finishProcess = () => {
+		alert('faz submit')
+	}
+
+	if (status === TYPE.LOCKED) {
+		return <Locked theme={theme} setStatus={setStatus} />;
+	}
+
+	return <Base ref={ref} theme={theme} type={TYPE.ENTER} onEndProcess={onEndProcess} />;
 };
 
-export default Passcode;
+export default PasscodeEnter;

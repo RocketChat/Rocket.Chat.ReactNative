@@ -24,6 +24,7 @@ import { resetAttempts } from '../utils/localAuthentication';
 import { isTablet } from '../utils/deviceInfo';
 import Orientation from 'react-native-orientation-locker';
 import Passcode from '../containers/Passcode';
+import { TYPE } from '../containers/Passcode/constants';
 
 const MAX_ATTEMPTS = 6;
 const TIME_TO_LOCK = 30000;
@@ -201,7 +202,7 @@ const ScreenLockedView = ({ theme }) => {
 					pinAttemptsAsyncStorageName={ATTEMPTS_KEY}
 					lockedPage={<AppLocked />}
 				/> */}
-				<Passcode theme={theme} />
+				<Passcode theme={theme} type={TYPE.ENTER} />
 			</View>
 		</Modal>
 	);
