@@ -3,8 +3,8 @@ import { Text } from 'react-native';
 import PropTypes from 'prop-types';
 
 import styles from './styles';
-import { themes } from '../../constants/colors';
-import Touch from '../../utils/touch';
+import { themes } from '../../../constants/colors';
+import Touch from '../../../utils/touch';
 
 const Button = ({
 	text, disabled, theme, onPress

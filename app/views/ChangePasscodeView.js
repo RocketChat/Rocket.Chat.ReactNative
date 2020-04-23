@@ -12,6 +12,8 @@ import { themes } from '../constants/colors';
 import sharedStyles from './Styles';
 import { PASSCODE_KEY, PASSCODE_LENGTH } from '../constants/localAuthentication';
 import { isTablet } from '../utils/deviceInfo';
+import { TYPE } from '../containers/Passcode/constants';
+import { PasscodeChoose } from '../containers/Passcode';
 
 const ScreenLockConfigView = React.memo(({ navigation, theme }) => {
 	const savePasscode = async(passcode) => {
@@ -34,7 +36,7 @@ const ScreenLockConfigView = React.memo(({ navigation, theme }) => {
 		<SafeAreaView
 			style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
 		>
-			<PINCode
+			{/* <PINCode
 				status={PinStatus.choose}
 				passwordLength={PASSCODE_LENGTH}
 				customBackSpaceIcon={() => null}
@@ -59,7 +61,8 @@ const ScreenLockConfigView = React.memo(({ navigation, theme }) => {
 				titleChoose='Enter your new passcode'
 				titleConfirm='Confirm your passcode'
 				subtitleChoose=''
-			/>
+			/> */}
+			<PasscodeChoose theme={theme} type={TYPE.choose} finishProcess={savePasscode} />
 		</SafeAreaView>
 	);
 });

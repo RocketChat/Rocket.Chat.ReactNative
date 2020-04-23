@@ -21,8 +21,6 @@ import { supportedBiometryLabel } from '../utils/localAuthentication';
 import { DisclosureImage } from '../containers/DisclosureIndicator';
 import { PASSCODE_KEY } from '../constants/localAuthentication';
 
-// RNUserDefaults.set(PASSCODE_KEY, '')
-
 const DEFAULT_AUTO_LOCK = [
 	{
 		title: 'After 1 minute',

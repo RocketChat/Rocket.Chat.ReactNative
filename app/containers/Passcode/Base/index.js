@@ -1,5 +1,5 @@
 import React, { useState, forwardRef, useImperativeHandle } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
@@ -7,14 +7,13 @@ import PropTypes from 'prop-types';
 import styles from './styles';
 import Button from './Button';
 import Dots from './Dots';
-import Title from './Title';
-import Subtitle from './Subtitle';
-import { TYPE } from './constants';
+import { TYPE } from '../constants';
+import { themes } from '../../../constants/colors';
 
 const PASSCODE_LENGTH = 6;
 
 const Base = forwardRef(({
-	theme, type, onEndProcess, previousPasscode
+	theme, type, onEndProcess, previousPasscode, title, subtitle
 }, ref) => {
 	const [passcode, setPasscode] = useState('');
 
@@ -36,6 +35,7 @@ const Base = forwardRef(({
 					// }
 					break;
 				case TYPE.CONFIRM:
+					console.log('currentPasscode', currentPasscode, previousPasscode);
 					if (currentPasscode !== previousPasscode) {
 						// this.showError();
 						alert('SHOW ERROR');
@@ -73,8 +73,8 @@ const Base = forwardRef(({
 		<View style={styles.container}>
 			<View style={styles.container}>
 				<View style={styles.viewTitle}>
-					<Title theme={theme} />
-					<Subtitle theme={theme} />
+					<Text style={[styles.textTitle, { color: themes[theme].titleText }]}>{title}</Text>
+					{subtitle ? <Text style={[styles.textSubtitle, { color: themes[theme].bodyText }]}>{subtitle}</Text> : null}
 				</View>
 				<View style={styles.flexCirclePasscode}>
 					<Dots passcode={passcode} theme={theme} length={PASSCODE_LENGTH} />

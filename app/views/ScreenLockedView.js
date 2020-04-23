@@ -17,7 +17,7 @@ import EventEmitter from '../utils/events';
 import { withSplit } from '../split';
 import { LOCAL_AUTHENTICATE_EMITTER } from '../constants/localAuthentication';
 import { isTablet } from '../utils/deviceInfo';
-import Passcode from '../containers/Passcode';
+import { PasscodeEnter } from '../containers/Passcode';
 import { TYPE } from '../containers/Passcode/constants';
 
 const styles = StyleSheet.create({
@@ -99,7 +99,7 @@ const ScreenLockedView = ({ theme }) => {
 					pinAttemptsAsyncStorageName={ATTEMPTS_KEY}
 					lockedPage={<AppLocked />}
 				/> */}
-				<Passcode theme={theme} type={TYPE.ENTER} finishProcess={onSubmit} />
+				<PasscodeEnter theme={theme} type={TYPE.ENTER} finishProcess={onSubmit} />
 			</View>
 		</Modal>
 	);
