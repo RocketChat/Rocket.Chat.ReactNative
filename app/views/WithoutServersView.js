@@ -5,7 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import ShareExtension from 'rn-extensions-share';
 
-import { CloseShareExtensionButton } from '../containers/HeaderButton';
+import { CancelModalButton } from '../containers/HeaderButton';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
 import { themes } from '../constants/colors';
@@ -34,7 +34,7 @@ class WithoutServerView extends React.Component {
 	static navigationOptions = ({ screenProps }) => ({
 		...themedHeader(screenProps.theme),
 		headerLeft: (
-			<CloseShareExtensionButton
+			<CancelModalButton
 				onPress={ShareExtension.close}
 				testID='share-extension-close'
 			/>

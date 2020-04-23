@@ -1,5 +1,5 @@
 import {
-	put, take, takeLatest, fork, cancel, race, select
+	put, take, takeLatest, fork, cancel, race
 } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 import RNUserDefaults from 'rn-user-defaults';
@@ -12,6 +12,7 @@ import * as actions from '../actions';
 import {
 	serverFailure, selectServerRequest, selectServerSuccess, selectServerFailure
 } from '../actions/server';
+import { clearSettings } from '../actions/settings';
 import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
@@ -37,7 +38,10 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 			return;
 		}
 
-		const validVersion = semver.coerce(serverInfo.version);
+		let serverVersion = semver.valid(serverInfo.version);
+		if (!serverVersion) {
+			({ version: serverVersion } = semver.coerce(serverInfo.version));
+		}
 
 		const serversDB = database.servers;
 		const serversCollection = serversDB.collections.get('servers');
@@ -45,12 +49,12 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 			try {
 				const serverRecord = await serversCollection.find(server);
 				await serverRecord.update((record) => {
-					record.version = validVersion;
+					record.version = serverVersion;
 				});
 			} catch (e) {
 				await serversCollection.create((record) => {
 					record._raw = sanitizedRaw({ id: server }, serversCollection.schema);
-					record.version = validVersion;
+					record.version = serverVersion;
 				});
 			}
 		});
@@ -78,6 +82,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 					name: userRecord.name,
 					language: userRecord.language,
 					status: userRecord.status,
+					statusText: userRecord.statusText,
 					roles: userRecord.roles
 				};
 			} catch (e) {
@@ -94,6 +99,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		setBasicAuth(basicAuth);
 
 		if (user) {
+			yield put(clearSettings());
 			yield RocketChat.connect({ server, user, logoutOnError: true });
 			yield put(setUser(user));
 			yield put(actions.appStart('inside'));
@@ -133,16 +139,9 @@ const handleServerRequest = function* handleServerRequest({ server, certificate 
 		const serverInfo = yield getServerInfo({ server });
 
 		if (serverInfo) {
-			const loginServicesLength = yield RocketChat.getLoginServices(server);
+			yield RocketChat.getLoginServices(server);
 			yield RocketChat.getLoginSettings({ server });
-
-			const showFormLogin = yield select(state => state.settings.Accounts_ShowFormLogin);
-
-			if (!loginServicesLength && showFormLogin) {
-				Navigation.navigate('LoginView');
-			} else {
-				Navigation.navigate('LoginSignupView');
-			}
+			Navigation.navigate('WorkspaceView');
 			yield put(selectServerRequest(server, serverInfo.version, false));
 		}
 	} catch (e) {

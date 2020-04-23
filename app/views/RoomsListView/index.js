@@ -174,6 +174,7 @@ class RoomsListView extends React.Component {
 		roomsRequest: PropTypes.func,
 		closeServerDropdown: PropTypes.func,
 		useRealName: PropTypes.bool,
+		connected: PropTypes.bool,
 		split: PropTypes.bool
 	};
 
@@ -302,6 +303,7 @@ class RoomsListView extends React.Component {
 			showFavorites,
 			showUnread,
 			appState,
+			connected,
 			roomsRequest
 		} = this.props;
 
@@ -317,6 +319,7 @@ class RoomsListView extends React.Component {
 		} else if (
 			appState === 'foreground'
 			&& appState !== prevProps.appState
+			&& connected
 		) {
 			roomsRequest();
 		}
@@ -412,7 +415,9 @@ class RoomsListView extends React.Component {
 				key: item._id,
 				rid: item.rid,
 				type: item.t,
-				prid: item.prid
+				prid: item.prid,
+				uids: item.uids,
+				usernames: item.usernames
 			}));
 
 			// unread
@@ -526,6 +531,8 @@ class RoomsListView extends React.Component {
 
 	getUserPresence = uid => RocketChat.getUserPresence(uid)
 
+	getUidDirectMessage = room => RocketChat.getUidDirectMessage(room);
+
 	goRoom = (item) => {
 		const { navigation } = this.props;
 		this.cancelSearch();
@@ -535,7 +542,9 @@ class RoomsListView extends React.Component {
 			name: this.getRoomTitle(item),
 			t: item.t,
 			prid: item.prid,
-			room: item
+			room: item,
+			search: item.search,
+			roomUserId: this.getUidDirectMessage(item)
 		});
 	}
 
@@ -706,7 +715,7 @@ class RoomsListView extends React.Component {
 		} else if (handleCommandShowNewMessage(event)) {
 			navigation.navigate('NewMessageView', { onPressItem: this._onPressItem });
 		} else if (handleCommandAddNewServer(event)) {
-			navigation.navigate('OnboardingView', { previousServer: server });
+			navigation.navigate('NewServerView', { previousServer: server });
 		}
 	};
 
@@ -764,7 +773,8 @@ class RoomsListView extends React.Component {
 			theme,
 			split
 		} = this.props;
-		const id = item.rid.replace(userId, '').trim();
+		const id = this.getUidDirectMessage(item);
+		const isGroupChat = RocketChat.isGroupChat(item);
 
 		return (
 			<RoomItem
@@ -797,6 +807,7 @@ class RoomsListView extends React.Component {
 				hideChannel={this.hideChannel}
 				useRealName={useRealName}
 				getUserPresence={this.getUserPresence}
+				isGroupChat={isGroupChat}
 			/>
 		);
 	};
@@ -884,6 +895,7 @@ class RoomsListView extends React.Component {
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
 	server: state.server.server,
+	connected: state.server.connected,
 	searchText: state.rooms.searchText,
 	loadingServer: state.server.loading,
 	showServerDropdown: state.rooms.showServerDropdown,

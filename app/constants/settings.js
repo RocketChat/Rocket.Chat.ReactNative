@@ -14,6 +14,9 @@ export default {
 	Accounts_AllowUserProfileChange: {
 		type: 'valueAsBoolean'
 	},
+	Accounts_AllowUserStatusMessageChange: {
+		type: 'valueAsBoolean'
+	},
 	Accounts_AllowUsernameChange: {
 		type: 'valueAsBoolean'
 	},
@@ -44,8 +47,17 @@ export default {
 	Accounts_ShowFormLogin: {
 		type: 'valueAsBoolean'
 	},
+	Accounts_ManuallyApproveNewUsers: {
+		type: 'valueAsBoolean'
+	},
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
+	},
+	DirectMesssage_maxUsers: {
+		type: 'valueAsNumber'
+	},
+	Accounts_Directory_DefaultView: {
+		type: 'valueAsString'
 	},
 	FEDERATION_Enabled: {
 		type: 'valueAsBoolean'
