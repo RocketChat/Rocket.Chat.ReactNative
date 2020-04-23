@@ -20,6 +20,7 @@ import { defaultHeader, onNavigationStateChange, cardStyle } from './utils/navig
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { ThemeContext } from './theme';
 import { localAuthenticate } from './utils/localAuthentication';
+import ScreenLockedView from './views/ScreenLockedView';
 
 const InsideNavigator = createStackNavigator({
 	ShareListView: {
@@ -122,6 +123,7 @@ class Root extends React.Component {
 								onNavigationStateChange={onNavigationStateChange}
 								screenProps={{ theme }}
 							/>
+							<ScreenLockedView />
 						</ThemeContext.Provider>
 					</Provider>
 				</View>
