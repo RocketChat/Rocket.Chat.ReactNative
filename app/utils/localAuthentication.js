@@ -64,18 +64,18 @@ export const localAuthenticate = async(server) => {
 			const isSupported = await LocalAuthentication.supportedAuthenticationTypesAsync();
 
 			// if biometry is enabled and enrolled on OS
-			if (isEnrolled && isSupported) {
-				// opens biometry prompt
-				const authResult = await LocalAuthentication.authenticateAsync({ disableDeviceFallback: true });
-				if (authResult?.success) {
-					await resetAttempts();
-					await saveLastLocalAuthenticationSession(server, serverRecord);
-				} else {
-					await localPasscode();
-				}
-			} else {
-				await localPasscode();
-			}
+			// if (isEnrolled && isSupported) {
+			// 	// opens biometry prompt
+			// 	const authResult = await LocalAuthentication.authenticateAsync({ disableDeviceFallback: true });
+			// 	if (authResult?.success) {
+			// 		await resetAttempts();
+			// 		await saveLastLocalAuthenticationSession(server, serverRecord);
+			// 	} else {
+			// 		await localPasscode();
+			// 	}
+			// } else {
+			await localPasscode();
+			// }
 		}
 	}
 };

@@ -23,6 +23,7 @@ import {
 import { resetAttempts } from '../utils/localAuthentication';
 import { isTablet } from '../utils/deviceInfo';
 import Orientation from 'react-native-orientation-locker';
+import Passcode from '../containers/Passcode';
 
 const MAX_ATTEMPTS = 6;
 const TIME_TO_LOCK = 30000;
@@ -169,7 +170,7 @@ const ScreenLockedView = ({ theme }) => {
 			style={{ margin: 0 }}
 		>
 			<View style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-				<PINCode
+				{/* <PINCode
 					status={PinStatus.enter}
 					passwordLength={PASSCODE_LENGTH}
 					customBackSpaceIcon={() => null}
@@ -199,7 +200,8 @@ const ScreenLockedView = ({ theme }) => {
 					timePinLockedAsyncStorageName={LOCKED_OUT_TIMER_KEY}
 					pinAttemptsAsyncStorageName={ATTEMPTS_KEY}
 					lockedPage={<AppLocked />}
-				/>
+				/> */}
+				<Passcode theme={theme} />
 			</View>
 		</Modal>
 	);
