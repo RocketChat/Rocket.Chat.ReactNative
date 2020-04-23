@@ -18,6 +18,7 @@ import { PASSCODE_LENGTH } from '../../../constants/localAuthentication';
 const Base = forwardRef(({
 	theme, type, onEndProcess, previousPasscode, title, subtitle, onError
 }, ref) => {
+	const rootRef = useRef();
 	const dotsRef = useRef();
 	const [passcode, setPasscode] = useState('');
 
@@ -25,6 +26,10 @@ const Base = forwardRef(({
 		setPasscode('');
 		dotsRef?.current?.shake(500);
 		Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+	};
+
+	const animate = (animation, duration = 500) => {
+		rootRef?.current?.[animation](duration);
 	};
 
 	const onPressNumber = text => setPasscode((p) => {
@@ -36,7 +41,6 @@ const Base = forwardRef(({
 					break;
 				case TYPE.CONFIRM:
 					if (currentPasscode !== previousPasscode) {
-						// alert('SHOW ERROR');
 						onError();
 					} else {
 						onEndProcess(currentPasscode);
@@ -62,11 +66,11 @@ const Base = forwardRef(({
 	});
 
 	useImperativeHandle(ref, () => ({
-		wrongPasscode
+		wrongPasscode, animate
 	}));
 
 	return (
-		<Animatable.View style={styles.container}>
+		<Animatable.View ref={rootRef} style={styles.container}>
 			<View style={styles.container}>
 				<View style={styles.viewTitle}>
 					<Text style={[styles.textTitle, { color: themes[theme].titleText }]}>{title}</Text>
