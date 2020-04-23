@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native';
+import PropTypes from 'prop-types';
 
 import styles from './styles';
 import { themes } from '../../constants/colors';
@@ -10,15 +11,15 @@ const Title = ({ theme }) => (
 			styles.textTitle,
 			{
 				color: themes[theme].titleText,
-				opacity: 1 //opacityTitle
 			}
 		]}
 	>
-		{/* {(attemptFailed && this.props.titleAttemptFailed) ||
-		(showError && this.props.titleConfirmFailed) ||
-		(showError && this.props.titleValidationFailed) ||
-		this.props.sentenceTitle} */}
 		Title
 	</Text>
 );
+
+Title.propTypes = {
+	theme: PropTypes.string
+};
+
 export default Title;

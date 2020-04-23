@@ -3,18 +3,12 @@ import {
 	View, StyleSheet, Text
 } from 'react-native';
 import PropTypes from 'prop-types';
-import moment from 'moment';
-import { useAsyncStorage } from '@react-native-community/async-storage';
 
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
-import {
-	PASSCODE_KEY, PASSCODE_LENGTH, LOCAL_AUTHENTICATE_EMITTER, LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY
-} from '../../constants/localAuthentication';
 import { resetAttempts } from '../../utils/localAuthentication';
 import { TYPE } from './constants';
-
-const TIME_TO_LOCK = 10000;
+import { getLockedUntil } from './utils';
 
 const styles = StyleSheet.create({
 	container: {
@@ -36,8 +30,6 @@ const styles = StyleSheet.create({
 		textAlign: 'center'
 	}
 });
-
-const getLockedUntil = t => moment(t).add(TIME_TO_LOCK);
 
 const getDiff = t => new Date(t) - new Date();
 
@@ -72,11 +64,10 @@ const Timer = ({ time, theme, setStatus }) => {
 
 const Locked = ({ theme, setStatus }) => {
 	const [lockedUntil, setLockedUntil] = useState(null);
-	const { getItem } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
 
 	const readItemFromStorage = async() => {
-		const item = await getItem();
-		setLockedUntil(getLockedUntil(item));
+		const l = await getLockedUntil();
+		setLockedUntil(l);
 	};
 
 	useEffect(() => {
@@ -89,6 +80,17 @@ const Locked = ({ theme, setStatus }) => {
 			<Timer theme={theme} time={lockedUntil} setStatus={setStatus} />
 		</View>
 	);
+};
+
+Locked.propTypes = {
+	theme: PropTypes.string,
+	setStatus: PropTypes.func
+};
+
+Timer.propTypes = {
+	time: PropTypes.string,
+	theme: PropTypes.string,
+	setStatus: PropTypes.func
 };
 
 export default Locked;

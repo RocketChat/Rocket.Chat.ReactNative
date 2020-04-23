@@ -1,44 +1,31 @@
 import React from 'react';
-import { TouchableHighlight, Text } from 'react-native';
+import { Text } from 'react-native';
+import PropTypes from 'prop-types';
 
 import styles from './styles';
 import { themes } from '../../constants/colors';
+import Touch from '../../utils/touch';
 
-const ButtonNumber = ({
+const Button = ({
 	text, disabled, theme, onPress
 }) => (
-	<TouchableHighlight
-		style={[
-			styles.buttonCircle,
-			{ backgroundColor: themes[theme].backgroundColor },
-			// this.props.styleButtonCircle,
-		]}
-		// underlayColor={this.props.numbersButtonOverlayColor}
+	<Touch
+		style={[styles.buttonCircle, { backgroundColor: themes[theme].backgroundColor, borderColor: themes[theme].borderColor }]}
 		disabled={disabled}
-		// onShowUnderlay={() => this.setState({ textButtonSelected: text })}
-		// onHideUnderlay={() => this.setState({ textButtonSelected: "" })}
-		// onPress={() => {
-		// 	this.onPressButtonNumber(text);
-		// }}
+		theme={theme}
 		onPress={() => onPress && onPress(text)}
-		// accessible
-		// accessibilityLabel={text}
 	>
-		<Text
-			style={[
-				styles.text,
-				// this.props.styleTextButton,
-				// {
-				// 	opacity: opacity,
-				// 	color: this.state.textButtonSelected === text
-				// 			? this.props.styleColorButtonTitleSelected
-				// 			: this.props.styleColorButtonTitle
-				// }
-			]}
-		>
+		<Text style={[styles.text, { color: themes[theme].titleText }]}>
 			{text}
 		</Text>
-	</TouchableHighlight>
+	</Touch>
 );
 
-export default ButtonNumber;
+Button.propTypes = {
+	text: PropTypes.string,
+	theme: PropTypes.string,
+	disabled: PropTypes.bool,
+	onPress: PropTypes.func
+};
+
+export default Button;

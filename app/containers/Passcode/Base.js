@@ -2,6 +2,7 @@ import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import { View } from 'react-native';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import _ from 'lodash';
+import PropTypes from 'prop-types';
 
 import styles from './styles';
 import Button from './Button';
@@ -16,10 +17,6 @@ const Base = forwardRef(({
 	theme, type, onEndProcess, previousPasscode
 }, ref) => {
 	const [passcode, setPasscode] = useState('');
-
-	const handleEnd = () => {
-		alert('END')
-	};
 
 	const wrongPasscode = () => {
 		setPasscode('');
@@ -118,5 +115,12 @@ const Base = forwardRef(({
 		</View>
 	);
 });
+
+Base.propTypes = {
+	theme: PropTypes.string,
+	type: PropTypes.string,
+	previousPasscode: PropTypes.string,
+	onEndProcess: PropTypes.string
+};
 
 export default Base;

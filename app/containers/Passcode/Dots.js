@@ -10,7 +10,6 @@ const SIZE_FULL = 12;
 
 const Dots = ({
 	passcode,
-	moveData,
 	showError,
 	changeScreen,
 	attemptFailed,

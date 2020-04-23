@@ -56,7 +56,8 @@ export default StyleSheet.create({
 		width: grid.unit * 4,
 		height: grid.unit * 4,
 		backgroundColor: 'rgb(242, 245, 251)',
-		borderRadius: grid.unit * 2
+		borderRadius: grid.unit * 2,
+		borderWidth: 1
 	},
 	textTitle: {
 		fontSize: 20,

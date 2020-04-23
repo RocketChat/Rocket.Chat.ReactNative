@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native';
+import PropTypes from 'prop-types';
 
 import styles from './styles';
 import { themes } from '../../constants/colors';
@@ -9,15 +10,16 @@ const Subtitle = ({ theme }) => (
 		style={[
 			styles.textSubtitle,
 			{
-				color: themes[theme].bodyText,
-				opacity: 1 //opacityTitle
+				color: themes[theme].bodyText
 			}
 		]}
 	>
-		{/* {attemptFailed || showError
-          ? this.props.subtitleError
-          : this.props.subtitle} */}
 		Subtitle
 	</Text>
 );
+
+Subtitle.propTypes = {
+	theme: PropTypes.string
+};
+
 export default Subtitle;
