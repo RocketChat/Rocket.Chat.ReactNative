@@ -5,28 +5,28 @@ import _ from 'lodash';
 import styles from './styles';
 import { themes } from '../../constants/colors';
 
-const PASSWORD_LENGTH = 6;
 const SIZE_EMPTY = 8;
 const SIZE_FULL = 12;
 
-const PasscodeDots = ({
-	password,
+const Dots = ({
+	passcode,
 	moveData,
 	showError,
 	changeScreen,
 	attemptFailed,
-	theme
+	theme,
+	length
 }) => (
-	<View style={[styles.topViewCirclePassword]}>
-		{_.range(PASSWORD_LENGTH).map((val) => {
-			const lengthSup = ((password.length >= val + 1 && !changeScreen) || showError) && !attemptFailed;
+	<View style={[styles.topViewCirclePasscode]}>
+		{_.range(length).map((val) => {
+			const lengthSup = ((passcode.length >= val + 1 && !changeScreen) || showError) && !attemptFailed;
 			const opacity = lengthSup ? 1 : 0.5;
 			const height = lengthSup ? SIZE_FULL : SIZE_EMPTY;
 			const width = lengthSup ? SIZE_FULL : SIZE_EMPTY;
 			let color = '';
 			if (showError) {
 				color = themes[theme].dangerColor;
-			} else if (lengthSup && password.length > 0) {
+			} else if (lengthSup && passcode.length > 0) {
 				color = themes[theme].titleText;
 			} else {
 				color = themes[theme].bodyText;
@@ -59,4 +59,4 @@ const PasscodeDots = ({
 	</View>
 );
 
-export default PasscodeDots;
+export default Dots;

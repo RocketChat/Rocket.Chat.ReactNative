@@ -68,12 +68,12 @@ export default StyleSheet.create({
 		fontWeight: '200',
 		textAlign: 'center'
 	},
-	flexCirclePassword: {
+	flexCirclePasscode: {
 		flex: 2,
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
-	topViewCirclePassword: {
+	topViewCirclePasscode: {
 		flexDirection: 'row',
 		height: 'auto',
 		justifyContent: 'center',

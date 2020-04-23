@@ -2,21 +2,25 @@ import React from 'react';
 import { TouchableHighlight, Text } from 'react-native';
 
 import styles from './styles';
+import { themes } from '../../constants/colors';
 
-const ButtonNumber = ({ text }) => (
+const ButtonNumber = ({
+	text, disabled, theme, onPress
+}) => (
 	<TouchableHighlight
 		style={[
 			styles.buttonCircle,
-			// { backgroundColor: this.props.colorCircleButtons },
+			{ backgroundColor: themes[theme].backgroundColor },
 			// this.props.styleButtonCircle,
 		]}
 		// underlayColor={this.props.numbersButtonOverlayColor}
-		// disabled={disabled}
+		disabled={disabled}
 		// onShowUnderlay={() => this.setState({ textButtonSelected: text })}
 		// onHideUnderlay={() => this.setState({ textButtonSelected: "" })}
 		// onPress={() => {
 		// 	this.onPressButtonNumber(text);
 		// }}
+		onPress={() => onPress && onPress(text)}
 		// accessible
 		// accessibilityLabel={text}
 	>
