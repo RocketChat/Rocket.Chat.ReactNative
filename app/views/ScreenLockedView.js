@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
-	View, StyleSheet, Text
+	View, StyleSheet
 } from 'react-native';
 import PropTypes from 'prop-types';
-// import PINCode, { PinStatus } from '@haskkor/react-native-pincode';
 import Modal from 'react-native-modal';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import _ from 'lodash';
@@ -68,37 +67,6 @@ const ScreenLockedView = ({ theme }) => {
 			style={{ margin: 0 }}
 		>
 			<View style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-				{/* <PINCode
-					status={PinStatus.enter}
-					passwordLength={PASSCODE_LENGTH}
-					customBackSpaceIcon={() => null}
-					finishProcess={onSubmit}
-					storedPin={passcode}
-					maxAttempts={MAX_ATTEMPTS}
-					touchIDDisabled
-					vibrationEnabled={false}
-					timeLocked={TIME_TO_LOCK}
-					colorCircleButtons={themes[theme].backgroundColor}
-					colorPassword={themes[theme].titleText}
-					colorPasswordEmpty={themes[theme].titleText}
-					colorPasswordError={themes[theme].dangerColor}
-					numbersButtonOverlayColor={themes[theme].bannerBackground}
-					stylePinCodeButtonNumber={themes[theme].bodyText}
-					stylePinCodeButtonNumberPressed={themes[theme].bodyText}
-					stylePinCodeColorTitle={themes[theme].titleText}
-					stylePinCodeColorSubtitle={themes[theme].titleText}
-					stylePinCodeColorSubtitleError={themes[theme].dangerColor}
-					stylePinCodeButtonCircle={[styles.circleButton, { borderColor: themes[theme].borderColor }]}
-					stylePinCodeTextTitle={styles.title}
-					stylePinCodeTextSubtitle={styles.subtitle}
-					stylePinCodeTextButtonCircle={styles.circleButtonText}
-					stylePinCodeHiddenPasswordSizeEmpty={8}
-					stylePinCodeHiddenPasswordSizeFull={12}
-					titleEnter='Enter your passcode'
-					timePinLockedAsyncStorageName={LOCKED_OUT_TIMER_KEY}
-					pinAttemptsAsyncStorageName={ATTEMPTS_KEY}
-					lockedPage={<AppLocked />}
-				/> */}
 				<PasscodeEnter theme={theme} type={TYPE.ENTER} finishProcess={onSubmit} />
 			</View>
 		</Modal>

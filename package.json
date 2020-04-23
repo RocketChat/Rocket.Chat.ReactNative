@@ -23,7 +23,6 @@
     }
   },
   "dependencies": {
-    "@haskkor/react-native-pincode": "RocketChat/react-native-pincode#master",
     "@nozbe/watermelondb": "^0.16.0-9",
     "@react-native-community/art": "^1.0.4",
     "@react-native-community/async-storage": "^1.9.0",
