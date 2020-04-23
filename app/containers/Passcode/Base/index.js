@@ -1,25 +1,30 @@
-import React, { useState, forwardRef, useImperativeHandle } from 'react';
+import React, {
+	useState, forwardRef, useImperativeHandle, useRef
+} from 'react';
 import { View, Text } from 'react-native';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import * as Animatable from 'react-native-animatable';
+import * as Haptics from 'expo-haptics';
 
 import styles from './styles';
 import Button from './Button';
 import Dots from './Dots';
 import { TYPE } from '../constants';
 import { themes } from '../../../constants/colors';
-
-const PASSCODE_LENGTH = 6;
+import { PASSCODE_LENGTH } from '../../../constants/localAuthentication';
 
 const Base = forwardRef(({
 	theme, type, onEndProcess, previousPasscode, title, subtitle
 }, ref) => {
+	const dotsRef = useRef();
 	const [passcode, setPasscode] = useState('');
 
 	const wrongPasscode = () => {
 		setPasscode('');
-		console.log('TODO: wrong animation and vibration');
+		dotsRef?.current?.shake(500);
+		Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
 	};
 
 	const onPressNumber = text => setPasscode((p) => {
@@ -27,27 +32,17 @@ const Base = forwardRef(({
 		if (currentPasscode?.length === PASSCODE_LENGTH) {
 			switch (type) {
 				case TYPE.CHOOSE:
-					// if (this.props.validationRegex && this.props.validationRegex.test(currentPasscode)) {
-					// 	this.showError(true);
-					// } else {
-					// 	// this.endProcess(currentPasscode);
 					onEndProcess(currentPasscode);
-					// }
 					break;
 				case TYPE.CONFIRM:
-					console.log('currentPasscode', currentPasscode, previousPasscode);
 					if (currentPasscode !== previousPasscode) {
-						// this.showError();
 						alert('SHOW ERROR');
 					} else {
-						// this.endProcess(currentPasscode);
 						onEndProcess(currentPasscode);
 					}
 					break;
 				case TYPE.ENTER:
-					// this.props.endProcess(currentPasscode);
 					onEndProcess(currentPasscode);
-					// await delay(300);
 					break;
 				default:
 					break;
@@ -76,9 +71,9 @@ const Base = forwardRef(({
 					<Text style={[styles.textTitle, { color: themes[theme].titleText }]}>{title}</Text>
 					{subtitle ? <Text style={[styles.textSubtitle, { color: themes[theme].bodyText }]}>{subtitle}</Text> : null}
 				</View>
-				<View style={styles.flexCirclePasscode}>
+				<Animatable.View ref={dotsRef} style={styles.flexCirclePasscode}>
 					<Dots passcode={passcode} theme={theme} length={PASSCODE_LENGTH} />
-				</View>
+				</Animatable.View>
 				<Grid style={styles.grid}>
 					<Row style={styles.row}>
 						{_.range(1, 4).map(i => (
