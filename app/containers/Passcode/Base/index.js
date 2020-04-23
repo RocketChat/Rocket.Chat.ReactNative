@@ -16,7 +16,7 @@ import { themes } from '../../../constants/colors';
 import { PASSCODE_LENGTH } from '../../../constants/localAuthentication';
 
 const Base = forwardRef(({
-	theme, type, onEndProcess, previousPasscode, title, subtitle
+	theme, type, onEndProcess, previousPasscode, title, subtitle, onError
 }, ref) => {
 	const dotsRef = useRef();
 	const [passcode, setPasscode] = useState('');
@@ -36,7 +36,8 @@ const Base = forwardRef(({
 					break;
 				case TYPE.CONFIRM:
 					if (currentPasscode !== previousPasscode) {
-						alert('SHOW ERROR');
+						// alert('SHOW ERROR');
+						onError();
 					} else {
 						onEndProcess(currentPasscode);
 					}
@@ -65,7 +66,7 @@ const Base = forwardRef(({
 	}));
 
 	return (
-		<View style={styles.container}>
+		<Animatable.View style={styles.container}>
 			<View style={styles.container}>
 				<View style={styles.viewTitle}>
 					<Text style={[styles.textTitle, { color: themes[theme].titleText }]}>{title}</Text>
@@ -107,7 +108,7 @@ const Base = forwardRef(({
 					</Row>
 				</Grid>
 			</View>
-		</View>
+		</Animatable.View>
 	);
 });
 
