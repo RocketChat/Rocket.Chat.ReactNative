@@ -23,6 +23,57 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 4,
+			steps: [
+				addColumns({
+					table: 'messages',
+					columns: [
+						{ name: 'blocks', type: 'string', isOptional: true }
+					]
+				}),
+				addColumns({
+					table: 'slash_commands',
+					columns: [
+						{ name: 'app_id', type: 'string', isOptional: true }
+					]
+				})
+			]
+		},
+		{
+			toVersion: 5,
+			steps: [
+				addColumns({
+					table: 'settings',
+					columns: [
+						{ name: 'value_as_array', type: 'string', isOptional: true }
+					]
+				})
+			]
+		},
+		{
+			toVersion: 6,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [
+						{ name: 'sys_mes', type: 'string', isOptional: true }
+					]
+				})
+			]
+		},
+		{
+			toVersion: 7,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [
+						{ name: 'uids', type: 'string', isOptional: true },
+						{ name: 'usernames', type: 'string', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });

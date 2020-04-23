@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	ScrollView, Text, View, FlatList, SafeAreaView
+	ScrollView, Text, View, SafeAreaView
 } from 'react-native';
 import { connect } from 'react-redux';
-import equal from 'deep-equal';
 import { Q } from '@nozbe/watermelondb';
 
-import Touch from '../../utils/touch';
-import { logout as logoutAction } from '../../actions/login';
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status/Status';
-import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
@@ -20,11 +16,10 @@ import styles from './styles';
 import SidebarItem from './SidebarItem';
 import { themes } from '../../constants/colors';
 import database from '../../lib/database';
-import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import { withSplit } from '../../split';
-
-const keyExtractor = item => item.id;
+import { getUserSelector } from '../../selectors/login';
+import Navigation from '../../lib/Navigation';
 
 const Separator = React.memo(({ theme }) => <View style={[styles.separator, { borderColor: themes[theme].separatorColor }]} />);
 Separator.propTypes = {
@@ -44,10 +39,11 @@ class Sidebar extends Component {
 		navigation: PropTypes.object,
 		Site_Name: PropTypes.string.isRequired,
 		user: PropTypes.object,
-		logout: PropTypes.func.isRequired,
 		activeItemKey: PropTypes.string,
 		theme: PropTypes.string,
 		loadingServer: PropTypes.bool,
+		useRealName: PropTypes.bool,
+		allowStatusMessage: PropTypes.bool,
 		split: PropTypes.bool
 	}
 
@@ -55,30 +51,25 @@ class Sidebar extends Component {
 		super(props);
 		this.state = {
 			showStatus: false,
-			isAdmin: false,
-			status: []
+			isAdmin: false
 		};
 	}
 
 	componentDidMount() {
-		this.setStatus();
 		this.setIsAdmin();
 	}
 
 	componentWillReceiveProps(nextProps) {
-		const { user, loadingServer } = this.props;
-		if (nextProps.user && user && user.language !== nextProps.user.language) {
-			this.setStatus();
-		}
+		const { loadingServer } = this.props;
 		if (loadingServer && nextProps.loadingServer !== loadingServer) {
 			this.setIsAdmin();
 		}
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { status, showStatus, isAdmin } = this.state;
+		const { showStatus, isAdmin } = this.state;
 		const {
-			Site_Name, user, baseUrl, activeItemKey, split, theme
+			Site_Name, user, baseUrl, activeItemKey, split, useRealName, theme
 		} = this.props;
 		if (nextState.showStatus !== showStatus) {
 			return true;
@@ -108,35 +99,20 @@ class Sidebar extends Component {
 			if (nextProps.user.username !== user.username) {
 				return true;
 			}
+			if (nextProps.user.statusText !== user.statusText) {
+				return true;
+			}
 		}
 		if (nextProps.split !== split) {
 			return true;
 		}
-		if (!equal(nextState.status, status)) {
+		if (nextProps.useRealName !== useRealName) {
 			return true;
 		}
 		if (nextState.isAdmin !== isAdmin) {
 			return true;
 		}
 		return false;
-	}
-
-	setStatus = () => {
-		this.setState({
-			status: [{
-				id: 'online',
-				name: I18n.t('Online')
-			}, {
-				id: 'busy',
-				name: I18n.t('Busy')
-			}, {
-				id: 'away',
-				name: I18n.t('Away')
-			}, {
-				id: 'offline',
-				name: I18n.t('Invisible')
-			}]
-		});
 	}
 
 	async setIsAdmin() {
@@ -157,40 +133,9 @@ class Sidebar extends Component {
 		}
 	}
 
-	logout = () => {
-		const { logout } = this.props;
-		logout();
-	}
-
 	sidebarNavigate = (route) => {
 		const { navigation } = this.props;
 		navigation.navigate(route);
-	}
-
-	toggleStatus = () => {
-		animateNextTransition();
-		this.setState(prevState => ({ showStatus: !prevState.showStatus }));
-	}
-
-	renderStatusItem = ({ item }) => {
-		const { user } = this.props;
-		return (
-			<SidebarItem
-				text={item.name}
-				left={<Status style={styles.status} size={12} status={item.id} />}
-				current={user.status === item.id}
-				onPress={() => {
-					this.toggleStatus();
-					if (user.status !== item.id) {
-						try {
-							RocketChat.setUserPresenceDefaultStatus(item.id);
-						} catch (e) {
-							log(e);
-						}
-					}
-				}}
-			/>
-		);
 	}
 
 	renderNavigation = () => {
@@ -228,34 +173,26 @@ class Sidebar extends Component {
 						current={activeItemKey === 'AdminPanelStack'}
 					/>
 				) : null}
-				<Separator theme={theme} />
-				<SidebarItem
-					text={I18n.t('Logout')}
-					left={<CustomIcon name='sign-out' size={20} color={themes[theme].titleText} />}
-					onPress={this.logout}
-					testID='sidebar-logout'
-				/>
 			</>
 		);
 	}
 
-	renderStatus = () => {
-		const { status } = this.state;
-		const { user } = this.props;
+	renderCustomStatus = () => {
+		const { user, theme } = this.props;
 		return (
-			<FlatList
-				data={status}
-				extraData={user}
-				renderItem={this.renderStatusItem}
-				keyExtractor={keyExtractor}
+			<SidebarItem
+				text={user.statusText || I18n.t('Edit_Status')}
+				left={<Status style={styles.status} size={12} status={user && user.status} />}
+				right={<CustomIcon name='edit' size={20} color={themes[theme].titleText} />}
+				onPress={() => Navigation.navigate('StatusView')}
+				testID='sidebar-custom-status'
 			/>
 		);
 	}
 
 	render() {
-		const { showStatus } = this.state;
 		const {
-			user, Site_Name, baseUrl, split, theme
+			user, Site_Name, baseUrl, useRealName, allowStatusMessage, split, theme
 		} = this.props;
 
 		if (!user) {
@@ -274,12 +211,7 @@ class Sidebar extends Component {
 					]}
 					{...scrollPersistTaps}
 				>
-					<Touch
-						onPress={this.toggleStatus}
-						testID='sidebar-toggle-status'
-						style={styles.header}
-						theme={theme}
-					>
+					<View style={styles.header} theme={theme}>
 						<Avatar
 							text={user.username}
 							size={30}
@@ -290,18 +222,22 @@ class Sidebar extends Component {
 						/>
 						<View style={styles.headerTextContainer}>
 							<View style={styles.headerUsername}>
-								<Status style={styles.status} size={12} status={user && user.status} />
-								<Text numberOfLines={1} style={[styles.username, { color: themes[theme].titleText }]}>{user.username}</Text>
+								<Text numberOfLines={1} style={[styles.username, { color: themes[theme].titleText }]}>{useRealName ? user.name : user.username}</Text>
 							</View>
 							<Text style={[styles.currentServerText, { color: themes[theme].titleText }]} numberOfLines={1}>{Site_Name}</Text>
 						</View>
-						<CustomIcon name='arrow-down' size={20} style={[styles.headerIcon, showStatus && styles.inverted, { color: themes[theme].titleText }]} />
-					</Touch>
+					</View>
 
-					{!split || showStatus ? <Separator theme={theme} /> : null}
+					<Separator theme={theme} />
 
-					{!showStatus && !split ? this.renderNavigation() : null}
-					{showStatus ? this.renderStatus() : null}
+					{allowStatusMessage ? this.renderCustomStatus() : null}
+					{!split ? (
+						<>
+							<Separator theme={theme} />
+							{this.renderNavigation()}
+							<Separator theme={theme} />
+						</>
+					) : null}
 				</ScrollView>
 			</SafeAreaView>
 		);
@@ -310,20 +246,11 @@ class Sidebar extends Component {
 
 const mapStateToProps = state => ({
 	Site_Name: state.settings.Site_Name,
-	user: {
-		id: state.login.user && state.login.user.id,
-		language: state.login.user && state.login.user.language,
-		status: state.login.user && state.login.user.status,
-		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token,
-		roles: state.login.user && state.login.user.roles
-	},
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	loadingServer: state.server.loading
+	user: getUserSelector(state),
+	baseUrl: state.server.server,
+	loadingServer: state.server.loading,
+	useRealName: state.settings.UI_Use_Real_Name,
+	allowStatusMessage: state.settings.Accounts_AllowUserStatusMessageChange
 });
 
-const mapDispatchToProps = dispatch => ({
-	logout: () => dispatch(logoutAction())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(withSplit(Sidebar)));
+export default connect(mapStateToProps)(withTheme(withSplit(Sidebar)));

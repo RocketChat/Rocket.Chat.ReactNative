@@ -56,16 +56,15 @@ Follow the [React Native Getting Started Guide](https://facebook.github.io/react
     ```bash
     $ git clone git@github.com:RocketChat/Rocket.Chat.ReactNative.git
     $ cd Rocket.Chat.ReactNative
-    $ yarn global add react-native-cli
     $ yarn
     ```
 
 - Run application
     ```bash
-    $ react-native run-ios
+    $ npx react-native run-ios
     ```
     ```bash
-    $ react-native run-android
+    $ npx react-native run-android
     ```
 
 ### Running single server
@@ -81,7 +80,7 @@ Readme will guide you on how to config.
 |---------------------------------------------------------------	|--------	|
 | Jitsi Integration                                             	| ✅    	|
 | Federation (Directory)                                        	| ✅    	|
-| Discussions                                                     | ❌    	|
+| Discussions                                                     | ✅    	|
 | Omnichannel                                                     | ❌    	|
 | Threads                                                       	| ✅    	|
 | Record Audio                                                  	| ✅    	|
@@ -103,10 +102,10 @@ Readme will guide you on how to config.
 | Custom Fields on Signup                                       	| ✅    	|
 | Report message                                                	| ✅    	|
 | Theming                                                       	| ✅    	|
-| Settings -> Review the App                                    	| ❌    	|
-| Settings -> Default Browser                                   	| ❌    	|
+| Settings -> Review the App                                    	| ✅    	|
+| Settings -> Default Browser                                   	| ✅    	|
 | Admin panel                                                   	| ✅    	|
-| Reply message from notification                               	| ❌    	|
+| Reply message from notification                               	| ✅    	|
 | Unread counter banner on message list                         	| ✅    	|
 | E2E Encryption                                                 	| ❌    	|
 | Join a Protected Room                                         	| ❌    	|
@@ -118,7 +117,7 @@ Readme will guide you on how to config.
 | Accessibility (Medium)                                        	| ❌    	|
 | Accessibility (Advanced)                                      	| ❌    	|
 | Authentication via Meteor                                     	| ❌    	|
-| Authentication via Wordpress                                  	| ❌    	|
+| Authentication via Wordpress                                  	| ✅    	|
 | Authentication via Custom OAuth                               	| ✅    	|
 | Add user to the room                                          	| ✅    	|
 | Send message                                                  	| ✅    	|

@@ -1,13 +1,13 @@
 {
   "name": "RNUserDefaults",
-  "version": "1.3.5",
-  "summary": "Use `UserDefaults` (iOS) with React Native and `AsyncStorage` on AndroidOS.",
-  "description": "Use `UserDefaults` (iOS) with React Native and `AsyncStorage` on AndroidOS.",
+  "version": "1.8.1",
+  "summary": "Use `UserDefaults` (iOS) with React Native and `SharedPreferences` on AndroidOS.",
+  "description": "Use `UserDefaults` (iOS) with React Native and `SharedPreferences` on AndroidOS.",
   "license": "MIT",
   "authors": "djorkaeffalexandre",
-  "homepage": "https://github.com/djorkaeffalexandre/rn-user-defaults",
+  "homepage": "https://github.com/RocketChat/rn-user-defaults.git",
   "source": {
-    "git": "https://github.com/djorkaeffalexandre/rn-user-defaults.git"
+    "git": "https://github.com/RocketChat/rn-user-defaults.git"
   },
   "requires_arc": true,
   "platforms": {

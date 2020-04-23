@@ -1,13 +1,12 @@
 import { AsyncStorage } from 'react-native';
 import { put, takeLatest, all } from 'redux-saga/effects';
-import SplashScreen from 'react-native-splash-screen';
 import RNUserDefaults from 'rn-user-defaults';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import RNBootSplash from 'react-native-bootsplash';
 
 import * as actions from '../actions';
 import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
-import { toggleMarkdown } from '../actions/markdown';
 import { toggleCrashReport } from '../actions/crashReport';
 import { APP } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
@@ -23,9 +22,6 @@ import protectedFunction from '../lib/methods/helpers/protectedFunction';
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = yield RocketChat.getSortPreferences();
 	yield put(setAllPreferences(sortPreferences));
-
-	const useMarkdown = yield RocketChat.getUseMarkdown();
-	yield put(toggleMarkdown(useMarkdown));
 
 	const allowCrashReport = yield RocketChat.getAllowCrashReport();
 	yield put(toggleCrashReport(allowCrashReport));
@@ -114,15 +110,17 @@ const restore = function* restore() {
 	}
 };
 
-const start = function* start({ root }) {
+const start = function* start({ root, text }) {
 	if (root === 'inside') {
 		yield Navigation.navigate('InsideStack');
 	} else if (root === 'setUsername') {
-		yield Navigation.navigate('SetUsernameView');
+		yield Navigation.navigate('SetUsernameStack');
 	} else if (root === 'outside') {
 		yield Navigation.navigate('OutsideStack');
+	} else if (root === 'loading') {
+		yield Navigation.navigate('AuthLoading', { text });
 	}
-	SplashScreen.hide();
+	RNBootSplash.hide();
 };
 
 const root = function* root() {

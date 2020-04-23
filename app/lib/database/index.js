@@ -23,6 +23,8 @@ import appSchema from './schema/app';
 
 import migrations from './model/migrations';
 
+import serversMigrations from './model/serversMigrations';
+
 import { isIOS } from '../../utils/deviceInfo';
 
 const appGroupPath = isIOS ? `${ RNFetchBlob.fs.syncPathAppGroup('group.ios.chat.rocket') }/` : '';
@@ -36,7 +38,8 @@ class DB {
 		serversDB: new Database({
 			adapter: new SQLiteAdapter({
 				dbName: `${ appGroupPath }default.db`,
-				schema: serversSchema
+				schema: serversSchema,
+				migrations: serversMigrations
 			}),
 			modelClasses: [Server, User],
 			actionsEnabled: true
@@ -60,7 +63,7 @@ class DB {
 	}
 
 	setShareDB(database = '') {
-		const path = database.replace(/(^\w+:|^)\/\//, '').replace(/\//, '.');
+		const path = database.replace(/(^\w+:|^)\/\//, '').replace(/\//g, '.');
 		const dbName = `${ appGroupPath }${ path }.db`;
 
 		const adapter = new SQLiteAdapter({
@@ -76,14 +79,15 @@ class DB {
 				Message,
 				Thread,
 				ThreadMessage,
-				Upload
+				Upload,
+				Permission
 			],
 			actionsEnabled: true
 		});
 	}
 
 	setActiveDB(database = '') {
-		const path = database.replace(/(^\w+:|^)\/\//, '').replace(/\//, '.');
+		const path = database.replace(/(^\w+:|^)\/\//, '').replace(/\//g, '.');
 		const dbName = `${ appGroupPath }${ path }.db`;
 
 		const adapter = new SQLiteAdapter({

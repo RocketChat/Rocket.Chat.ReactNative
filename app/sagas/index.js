@@ -8,6 +8,8 @@ import createChannel from './createChannel';
 import init from './init';
 import state from './state';
 import deepLinking from './deepLinking';
+import inviteLinks from './inviteLinks';
+import createDiscussion from './createDiscussion';
 
 const root = function* root() {
 	yield all([
@@ -19,7 +21,9 @@ const root = function* root() {
 		messages(),
 		selectServer(),
 		state(),
-		deepLinking()
+		deepLinking(),
+		inviteLinks(),
+		createDiscussion()
 	]);
 };
 

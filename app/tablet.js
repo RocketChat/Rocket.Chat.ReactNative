@@ -50,6 +50,11 @@ export const initTabletNav = (setState) => {
 				setState({ showModal: true });
 				return null;
 			}
+			if (routeName === 'AttachmentView') {
+				modalRef.dispatch(NavigationActions.navigate({ routeName, params }));
+				setState({ showModal: true });
+				return null;
+			}
 		}
 		if (action.type === 'Navigation/RESET' && isSplited()) {
 			const { params } = action.actions[action.index];
@@ -103,15 +108,30 @@ export const initTabletNav = (setState) => {
 					KeyCommands.deleteKeyCommands([...defaultCommands, ...keyCommands]);
 					setState({ inside: false, showModal: false });
 				}
-				if (routeName === 'OnboardingView') {
+				if (routeName === 'OnboardingView' || routeName === 'NewServerView') {
 					KeyCommands.deleteKeyCommands([...defaultCommands, ...keyCommands]);
 					setState({ inside: false, showModal: false });
 				}
-
+				if (routeName === 'ModalBlockView' || routeName === 'StatusView' || routeName === 'CreateDiscussionView') {
+					modalRef.dispatch(NavigationActions.navigate({ routeName, params }));
+					setState({ showModal: true });
+					return null;
+				}
 				if (routeName === 'RoomView') {
 					const resetAction = StackActions.reset({
 						index: 0,
 						actions: [NavigationActions.navigate({ routeName, params })]
+					});
+					roomRef.dispatch(resetAction);
+					notificationRef.dispatch(resetAction);
+					setState({ showModal: false });
+					return null;
+				}
+
+				if (routeName === 'RoomsListView') {
+					const resetAction = StackActions.reset({
+						index: 0,
+						actions: [NavigationActions.navigate({ routeName: 'RoomView', params: {} })]
 					});
 					roomRef.dispatch(resetAction);
 					notificationRef.dispatch(resetAction);

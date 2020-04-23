@@ -25,6 +25,26 @@ export default StyleSheet.create({
 		flexDirection: 'column',
 		overflow: 'hidden'
 	},
+	bannerContainer: {
+		paddingVertical: 12,
+		paddingHorizontal: 15,
+		alignItems: 'center'
+	},
+	bannerModalTitle: {
+		fontSize: 16,
+		...sharedStyles.textMedium
+	},
+	modalView: {
+		padding: 20,
+		justifyContent: 'center'
+	},
+	modalScrollView: {
+		maxHeight: 100,
+		marginVertical: 20
+	},
+	modalCloseButton: {
+		alignSelf: 'flex-end'
+	},
 	joinRoomContainer: {
 		justifyContent: 'flex-end',
 		alignItems: 'center',

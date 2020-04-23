@@ -14,6 +14,7 @@ import Navigation from '../lib/Navigation';
 import { getMessageTranslation } from './message/utils';
 import { LISTENER } from './Toast';
 import EventEmitter from '../utils/events';
+import { showConfirmationAlert } from '../utils/info';
 
 class MessageActions extends React.Component {
 	static propTypes = {
@@ -60,6 +61,16 @@ class MessageActions extends React.Component {
 		if (this.allowEdit(this.props)) {
 			this.options.push(I18n.t('Edit'));
 			this.EDIT_INDEX = this.options.length - 1;
+		}
+
+		// Create Discussion
+		this.options.push(I18n.t('Create_Discussion'));
+		this.CREATE_DISCUSSION_INDEX = this.options.length - 1;
+
+		// Mark as unread
+		if (message.u && message.u._id !== user.id) {
+			this.options.push(I18n.t('Mark_unread'));
+			this.UNREAD_INDEX = this.options.length - 1;
 		}
 
 		// Permalink
@@ -223,34 +234,47 @@ class MessageActions extends React.Component {
 	}
 
 	handleDelete = () => {
-		const { message } = this.props;
-		Alert.alert(
-			I18n.t('Are_you_sure_question_mark'),
-			I18n.t('You_will_not_be_able_to_recover_this_message'),
-			[
-				{
-					text: I18n.t('Cancel'),
-					style: 'cancel'
-				},
-				{
-					text: I18n.t('Yes_action_it', { action: 'delete' }),
-					style: 'destructive',
-					onPress: async() => {
-						try {
-							await RocketChat.deleteMessage(message.id, message.subscription.id);
-						} catch (e) {
-							log(e);
-						}
-					}
+		showConfirmationAlert({
+			message: I18n.t('You_will_not_be_able_to_recover_this_message'),
+			callToAction: I18n.t('Delete'),
+			onPress: async() => {
+				const { message } = this.props;
+				try {
+					await RocketChat.deleteMessage(message.id, message.subscription.id);
+				} catch (e) {
+					log(e);
 				}
-			],
-			{ cancelable: false }
-		);
+			}
+		});
 	}
 
 	handleEdit = () => {
 		const { message, editInit } = this.props;
 		editInit(message);
+	}
+
+	handleUnread = async() => {
+		const { message, room } = this.props;
+		const { id: messageId, ts } = message;
+		const { rid } = room;
+		try {
+			const db = database.active;
+			const result = await RocketChat.markAsUnread({ messageId });
+			if (result.success) {
+				const subCollection = db.collections.get('subscriptions');
+				const subRecord = await subCollection.find(rid);
+				await db.action(async() => {
+					try {
+						await subRecord.update(sub => sub.lastOpen = ts);
+					} catch {
+						// do nothing
+					}
+				});
+				Navigation.navigate('RoomsListView');
+			}
+		} catch (e) {
+			log(e);
+		}
 	}
 
 	handleCopy = async() => {
@@ -262,6 +286,9 @@ class MessageActions extends React.Component {
 	handleShare = async() => {
 		const { message } = this.props;
 		const permalink = await this.getPermalink(message);
+		if (!permalink) {
+			return;
+		}
 		Share.share({
 			message: permalink
 		});
@@ -271,6 +298,7 @@ class MessageActions extends React.Component {
 		const { message } = this.props;
 		try {
 			await RocketChat.toggleStarMessage(message.id, message.starred);
+			EventEmitter.emit(LISTENER, { message: message.starred ? I18n.t('Message_unstarred') : I18n.t('Message_starred') });
 		} catch (e) {
 			log(e);
 		}
@@ -347,6 +375,11 @@ class MessageActions extends React.Component {
 		}
 	}
 
+	handleCreateDiscussion = () => {
+		const { message, room: channel } = this.props;
+		Navigation.navigate('CreateDiscussionView', { message, channel });
+	}
+
 	handleActionPress = (actionIndex) => {
 		if (actionIndex) {
 			switch (actionIndex) {
@@ -355,6 +388,9 @@ class MessageActions extends React.Component {
 					break;
 				case this.EDIT_INDEX:
 					this.handleEdit();
+					break;
+				case this.UNREAD_INDEX:
+					this.handleUnread();
 					break;
 				case this.PERMALINK_INDEX:
 					this.handlePermalink();
@@ -385,6 +421,9 @@ class MessageActions extends React.Component {
 					break;
 				case this.READ_RECEIPT_INDEX:
 					this.handleReadReceipt();
+					break;
+				case this.CREATE_DISCUSSION_INDEX:
+					this.handleCreateDiscussion();
 					break;
 				case this.TOGGLE_TRANSLATION_INDEX:
 					this.handleToggleTranslation();

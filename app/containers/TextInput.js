@@ -7,6 +7,7 @@ import sharedStyles from '../views/Styles';
 import TextInput from '../presentation/TextInput';
 import { themes } from '../constants/colors';
 import { CustomIcon } from '../lib/Icons';
+import ActivityIndicator from './ActivityIndicator';
 
 const styles = StyleSheet.create({
 	error: {
@@ -56,6 +57,7 @@ export default class RCTextInput extends React.PureComponent {
 	static propTypes = {
 		label: PropTypes.string,
 		error: PropTypes.object,
+		loading: PropTypes.bool,
 		secureTextEntry: PropTypes.bool,
 		containerStyle: PropTypes.any,
 		inputStyle: PropTypes.object,
@@ -63,6 +65,7 @@ export default class RCTextInput extends React.PureComponent {
 		testID: PropTypes.string,
 		iconLeft: PropTypes.string,
 		placeholder: PropTypes.string,
+		left: PropTypes.element,
 		theme: PropTypes.string
 	}
 
@@ -102,6 +105,11 @@ export default class RCTextInput extends React.PureComponent {
 		);
 	}
 
+	get loading() {
+		const { theme } = this.props;
+		return <ActivityIndicator style={[styles.iconContainer, styles.iconRight, { color: themes[theme].bodyText }]} />;
+	}
+
 	tooglePassword = () => {
 		this.setState(prevState => ({ showPassword: !prevState.showPassword }));
 	}
@@ -109,7 +117,7 @@ export default class RCTextInput extends React.PureComponent {
 	render() {
 		const { showPassword } = this.state;
 		const {
-			label, error, secureTextEntry, containerStyle, inputRef, iconLeft, inputStyle, testID, placeholder, theme, ...inputProps
+			label, left, error, loading, secureTextEntry, containerStyle, inputRef, iconLeft, inputStyle, testID, placeholder, theme, ...inputProps
 		} = this.props;
 		const { dangerColor } = themes[theme];
 		return (
@@ -131,16 +139,16 @@ export default class RCTextInput extends React.PureComponent {
 					<TextInput
 						style={[
 							styles.input,
-							error.error && {
-								color: dangerColor,
-								borderColor: dangerColor
-							},
 							iconLeft && styles.inputIconLeft,
 							secureTextEntry && styles.inputIconRight,
 							{
 								backgroundColor: themes[theme].backgroundColor,
 								borderColor: themes[theme].separatorColor,
 								color: themes[theme].titleText
+							},
+							error.error && {
+								color: dangerColor,
+								borderColor: dangerColor
 							},
 							inputStyle
 						]}
@@ -158,8 +166,10 @@ export default class RCTextInput extends React.PureComponent {
 					/>
 					{iconLeft ? this.iconLeft : null}
 					{secureTextEntry ? this.iconPassword : null}
+					{loading ? this.loading : null}
+					{left}
 				</View>
-				{error.error ? <Text style={[styles.error, { color: dangerColor }]}>{error.reason}</Text> : null}
+				{error && error.reason ? <Text style={[styles.error, { color: dangerColor }]}>{error.reason}</Text> : null}
 			</View>
 		);
 	}

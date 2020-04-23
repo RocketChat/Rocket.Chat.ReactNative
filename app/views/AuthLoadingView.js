@@ -1,30 +1,40 @@
 import React from 'react';
-import { StyleSheet, Image } from 'react-native';
+import {
+	View, Text, StyleSheet, ActivityIndicator
+} from 'react-native';
 
+import I18n from '../i18n';
 import StatusBar from '../containers/StatusBar';
-import { isAndroid } from '../utils/deviceInfo';
 import { withTheme } from '../theme';
+import { themes } from '../constants/colors';
+
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
-	image: {
-		width: '100%',
-		height: '100%',
-		backgroundColor: 'white'
+	container: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	text: {
+		fontSize: 16,
+		paddingTop: 10,
+		...sharedStyles.textRegular,
+		...sharedStyles.textAlignCenter
 	}
 });
 
-export default React.memo(withTheme(({ theme }) => (
-	<>
-		<StatusBar theme={theme} />
-		{isAndroid
-			? (
-				<Image
-					source={{ uri: 'launch_screen' }}
-					style={styles.image}
-					resizeMode='contain'
-				/>
-			)
-			: null
-		}
-	</>
-)));
+export default React.memo(withTheme(({ theme, navigation }) => {
+	const text = navigation.getParam('text');
+	return (
+		<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
+			<StatusBar theme={theme} />
+			{text && (
+				<>
+					<ActivityIndicator color={themes[theme].auxiliaryText} size='large' />
+					<Text style={[styles.text, { color: themes[theme].bodyText }]}>{`${ text }\n${ I18n.t('Please_wait') }`}</Text>
+				</>
+			)}
+		</View>
+	);
+}));

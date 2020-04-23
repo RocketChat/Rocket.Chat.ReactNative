@@ -25,6 +25,7 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import ModalNavigation from '../../lib/ModalNavigation';
+import { getUserSelector } from '../../selectors/login';
 
 const Separator = React.memo(({ theme }) => <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />);
 Separator.propTypes = {
@@ -70,11 +71,9 @@ class ThreadMessagesView extends React.Component {
 	}
 
 	componentWillUnmount() {
+		console.countReset(`${ this.constructor.name }.render calls`);
 		if (this.mountInteraction && this.mountInteraction.cancel) {
 			this.mountInteraction.cancel();
-		}
-		if (this.loadInteraction && this.loadInteraction.cancel) {
-			this.loadInteraction.cancel();
 		}
 		if (this.syncInteraction && this.syncInteraction.cancel) {
 			this.syncInteraction.cancel();
@@ -88,13 +87,14 @@ class ThreadMessagesView extends React.Component {
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	subscribeData = () => {
+	subscribeData = async() => {
 		try {
 			const db = database.active;
-			this.subObservable = db.collections
+			const subscription = await db.collections
 				.get('subscriptions')
-				.findAndObserve(this.rid);
-			this.subSubscription = this.subObservable
+				.find(this.rid);
+			const observable = subscription.observe();
+			this.subSubscription = observable
 				.subscribe((data) => {
 					this.subscription = data;
 				});
@@ -115,14 +115,14 @@ class ThreadMessagesView extends React.Component {
 					}
 				});
 		} catch (e) {
-			log(e);
+			// Do nothing
 		}
 	}
 
 	// eslint-disable-next-line react/sort-comp
 	init = () => {
 		if (!this.subscription) {
-			return;
+			this.load();
 		}
 		try {
 			const lastThreadSync = new Date();
@@ -137,6 +137,13 @@ class ThreadMessagesView extends React.Component {
 	}
 
 	updateThreads = async({ update, remove, lastThreadSync }) => {
+		// if there's no subscription, manage data on this.state.messages
+		// note: sync will never be called without subscription
+		if (!this.subscription) {
+			this.setState(({ messages }) => ({ messages: [...messages, ...update] }));
+			return;
+		}
+
 		try {
 			const db = database.active;
 			const threadsCollection = db.collections.get('threads');
@@ -197,13 +204,10 @@ class ThreadMessagesView extends React.Component {
 				rid: this.rid, count: API_FETCH_COUNT, offset: messages.length
 			});
 			if (result.success) {
-				this.loadInteraction = InteractionManager.runAfterInteractions(() => {
-					this.updateThreads({ update: result.threads, lastThreadSync });
-
-					this.setState({
-						loading: false,
-						end: result.count < API_FETCH_COUNT
-					});
+				this.updateThreads({ update: result.threads, lastThreadSync });
+				this.setState({
+					loading: false,
+					end: result.count < API_FETCH_COUNT
 				});
 			}
 		} catch (e) {
@@ -251,6 +255,11 @@ class ThreadMessagesView extends React.Component {
 			return emoji;
 		}
 		return null;
+	}
+
+	showAttachment = (attachment) => {
+		const { navigation } = this.props;
+		navigation.navigate('AttachmentView', { attachment });
 	}
 
 	onThreadPress = debounce((item) => {
@@ -307,11 +316,13 @@ class ThreadMessagesView extends React.Component {
 				useRealName={useRealName}
 				getCustomEmoji={this.getCustomEmoji}
 				navToRoomInfo={this.navToRoomInfo}
+				showAttachment={this.showAttachment}
 			/>
 		);
 	}
 
 	render() {
+		console.count(`${ this.constructor.name }.render calls`);
 		const { loading, messages } = this.state;
 		const { theme } = this.props;
 
@@ -328,7 +339,7 @@ class ThreadMessagesView extends React.Component {
 					renderItem={this.renderItem}
 					style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 					contentContainerStyle={styles.contentContainer}
-					keyExtractor={item => item.id}
+					keyExtractor={item => item._id}
 					onEndReached={this.load}
 					onEndReachedThreshold={0.5}
 					maxToRenderPerBatch={5}
@@ -342,12 +353,8 @@ class ThreadMessagesView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	user: {
-		id: state.login.user && state.login.user.id,
-		username: state.login.user && state.login.user.username,
-		token: state.login.user && state.login.user.token
-	},
+	baseUrl: state.server.server,
+	user: getUserSelector(state),
 	useRealName: state.settings.UI_Use_Real_Name,
 	customEmojis: state.customEmojis
 });

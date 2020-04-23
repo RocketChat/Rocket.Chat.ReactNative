@@ -16,12 +16,13 @@ import KeyboardView from '../presentation/KeyboardView';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 import UserItem from '../presentation/UserItem';
-import { showErrorAlert } from '../utils/info';
 import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { SWITCH_TRACK_COLOR, themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
+import { Review } from '../utils/review';
+import { getUserSelector } from '../selectors/login';
 
 const styles = StyleSheet.create({
 	container: {
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
 		fontSize: 17,
 		...sharedStyles.textRegular
 	},
-	swithContainer: {
+	switchContainer: {
 		height: 54,
 		alignItems: 'center',
 		justifyContent: 'space-between',
@@ -98,7 +99,6 @@ class CreateChannelView extends React.Component {
 		error: PropTypes.object,
 		failure: PropTypes.bool,
 		isFetching: PropTypes.bool,
-		result: PropTypes.object,
 		users: PropTypes.array.isRequired,
 		user: PropTypes.shape({
 			id: PropTypes.string,
@@ -123,9 +123,7 @@ class CreateChannelView extends React.Component {
 		const {
 			channelName, type, readOnly, broadcast
 		} = this.state;
-		const {
-			error, failure, isFetching, result, users, theme
-		} = this.props;
+		const { users, isFetching, theme } = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
 		}
@@ -141,41 +139,13 @@ class CreateChannelView extends React.Component {
 		if (nextState.broadcast !== broadcast) {
 			return true;
 		}
-		if (nextProps.failure !== failure) {
-			return true;
-		}
 		if (nextProps.isFetching !== isFetching) {
-			return true;
-		}
-		if (!equal(nextProps.error, error)) {
-			return true;
-		}
-		if (!equal(nextProps.result, result)) {
 			return true;
 		}
 		if (!equal(nextProps.users, users)) {
 			return true;
 		}
 		return false;
-	}
-
-	componentDidUpdate(prevProps) {
-		const {
-			isFetching, failure, error, result, navigation
-		} = this.props;
-
-		if (!isFetching && isFetching !== prevProps.isFetching) {
-			setTimeout(() => {
-				if (failure) {
-					const msg = error.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_channel') });
-					showErrorAlert(msg);
-				} else {
-					const { type } = this.state;
-					const { rid, name } = result;
-					navigation.navigate('RoomView', { rid, name, t: type ? 'p' : 'c' });
-				}
-			}, 300);
-		}
 	}
 
 	onChangeText = (channelName) => {
@@ -201,13 +171,12 @@ class CreateChannelView extends React.Component {
 		create({
 			name: channelName, users, type, readOnly, broadcast
 		});
+
+		Review.pushPositiveEvent();
 	}
 
 	removeUser = (user) => {
-		const { users, removeUser } = this.props;
-		if (users.length === 1) {
-			return;
-		}
+		const { removeUser } = this.props;
 		removeUser(user);
 	}
 
@@ -216,7 +185,7 @@ class CreateChannelView extends React.Component {
 	}) => {
 		const { theme } = this.props;
 		return (
-			<View style={[styles.swithContainer, { backgroundColor: themes[theme].backgroundColor }]}>
+			<View style={[styles.switchContainer, { backgroundColor: themes[theme].backgroundColor }]}>
 				<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t(label)}</Text>
 				<Switch
 					value={value}
@@ -281,6 +250,7 @@ class CreateChannelView extends React.Component {
 				username={item.name}
 				onPress={() => this.removeUser(item)}
 				testID={`create-channel-view-item-${ item.name }`}
+				icon='check'
 				baseUrl={baseUrl}
 				user={user}
 				theme={theme}
@@ -362,16 +332,10 @@ class CreateChannelView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.settings.Site_Url || state.server ? state.server.server : '',
-	error: state.createChannel.error,
-	failure: state.createChannel.failure,
+	baseUrl: state.server.server,
 	isFetching: state.createChannel.isFetching,
-	result: state.createChannel.result,
 	users: state.selectedUsers.users,
-	user: {
-		id: state.login.user && state.login.user.id,
-		token: state.login.user && state.login.user.token
-	}
+	user: getUserSelector(state)
 });
 
 const mapDispatchToProps = dispatch => ({

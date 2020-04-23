@@ -1,6 +1,7 @@
 import EJSON from 'ejson';
 
 import normalizeMessage from './normalizeMessage';
+import findSubscriptionsRooms from './findSubscriptionsRooms';
 // TODO: delete and update
 
 export const merge = (subscription, room) => {
@@ -21,6 +22,8 @@ export const merge = (subscription, room) => {
 			subscription.archived = room.archived || false;
 			subscription.joinCodeRequired = room.joinCodeRequired;
 			subscription.jitsiTimeout = room.jitsiTimeout;
+			subscription.usernames = room.usernames;
+			subscription.uids = room.uids;
 		}
 		subscription.ro = room.ro;
 		subscription.broadcast = room.broadcast;
@@ -32,6 +35,7 @@ export const merge = (subscription, room) => {
 		} else {
 			subscription.muted = [];
 		}
+		subscription.sysMes = room.sysMes;
 	}
 
 	if (!subscription.name) {
@@ -43,11 +47,14 @@ export const merge = (subscription, room) => {
 	return subscription;
 };
 
-export default (subscriptions = [], rooms = []) => {
+export default async(subscriptions = [], rooms = []) => {
 	if (subscriptions.update) {
 		subscriptions = subscriptions.update;
 		rooms = rooms.update;
 	}
+
+	({ subscriptions, rooms } = await findSubscriptionsRooms(subscriptions, rooms));
+
 	return {
 		subscriptions: subscriptions.map((s) => {
 			const index = rooms.findIndex(({ _id }) => _id === s.rid);

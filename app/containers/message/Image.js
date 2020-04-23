@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
 import equal from 'deep-equal';
 import Touchable from 'react-native-platform-touchable';
+import { createImageProgress } from 'react-native-image-progress';
+import * as Progress from 'react-native-progress';
 
 import Markdown from '../markdown';
 import styles from './styles';
@@ -11,6 +13,8 @@ import { formatAttachmentUrl } from '../../lib/utils';
 import { withSplit } from '../../split';
 import { themes } from '../../constants/colors';
 import sharedStyles from '../../views/Styles';
+
+const ImageProgress = createImageProgress(FastImage);
 
 const Button = React.memo(({
 	children, onPress, split, theme
@@ -24,30 +28,34 @@ const Button = React.memo(({
 	</Touchable>
 ));
 
-const Image = React.memo(({ img, theme }) => (
-	<FastImage
+export const MessageImage = React.memo(({ img, theme }) => (
+	<ImageProgress
 		style={[styles.image, { borderColor: themes[theme].borderColor }]}
 		source={{ uri: encodeURI(img) }}
 		resizeMode={FastImage.resizeMode.cover}
+		indicator={Progress.Pie}
+		indicatorProps={{
+			color: themes[theme].actionTintColor
+		}}
 	/>
 ));
 
 const ImageContainer = React.memo(({
-	file, baseUrl, user, useMarkdown, onOpenFileModal, getCustomEmoji, split, theme
+	file, imageUrl, baseUrl, user, showAttachment, getCustomEmoji, split, theme
 }) => {
-	const img = formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
+	const img = imageUrl || formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
 	if (!img) {
 		return null;
 	}
 
-	const onPress = () => onOpenFileModal(file);
+	const onPress = () => showAttachment(file);
 
 	if (file.description) {
 		return (
 			<Button split={split} theme={theme} onPress={onPress}>
 				<View>
-					<Image img={img} theme={theme} />
-					<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} useMarkdown={useMarkdown} theme={theme} />
+					<MessageImage img={img} theme={theme} />
+					<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 				</View>
 			</Button>
 		);
@@ -55,24 +63,24 @@ const ImageContainer = React.memo(({
 
 	return (
 		<Button split={split} theme={theme} onPress={onPress}>
-			<Image img={img} theme={theme} />
+			<MessageImage img={img} theme={theme} />
 		</Button>
 	);
 }, (prevProps, nextProps) => equal(prevProps.file, nextProps.file) && prevProps.split === nextProps.split && prevProps.theme === nextProps.theme);
 
 ImageContainer.propTypes = {
 	file: PropTypes.object,
+	imageUrl: PropTypes.string,
 	baseUrl: PropTypes.string,
 	user: PropTypes.object,
-	useMarkdown: PropTypes.bool,
-	onOpenFileModal: PropTypes.func,
+	showAttachment: PropTypes.func,
 	theme: PropTypes.string,
 	getCustomEmoji: PropTypes.func,
 	split: PropTypes.bool
 };
 ImageContainer.displayName = 'MessageImageContainer';
 
-Image.propTypes = {
+MessageImage.propTypes = {
 	img: PropTypes.string,
 	theme: PropTypes.string
 };

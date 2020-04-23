@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" android:opacity="opaque">
+  <!-- the background color. it can be a system color or a custom one defined in colors.xml -->
+  <item android:drawable="@color/splashBackground" />
+  <item>
+    <!-- the app logo, centered horizontally and vertically -->
+    <bitmap
+      android:src="@drawable/splash"
+      android:gravity="center" />
+  </item>
+</layer-list>
