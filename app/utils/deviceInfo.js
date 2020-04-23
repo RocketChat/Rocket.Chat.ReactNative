@@ -3,7 +3,15 @@ import DeviceInfo from 'react-native-device-info';
 
 import { MIN_WIDTH_SPLIT_LAYOUT } from '../constants/tablet';
 
-const NOTCH_DEVICES = ['iPhone X', 'iPhone XS', 'iPhone XS Max', 'iPhone XR'];
+const NOTCH_DEVICES = [
+	'iPhone X',
+	'iPhone XS',
+	'iPhone XS Max',
+	'iPhone XR',
+	'iPhone 11',
+	'iPhone 11 Pro',
+	'iPhone 11 Pro Max'
+];
 
 export const isNotch = NOTCH_DEVICES.includes(DeviceInfo.getModel());
 export const isIOS = Platform.OS === 'ios';
