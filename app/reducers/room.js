@@ -7,6 +7,16 @@ const initialState = {
 
 export default function(state = initialState, action) {
 	switch (action.type) {
+		case ROOM.SUBSCRIBE:
+			return {
+				...state,
+				rid: action.rid
+			};
+		case ROOM.UNSUBSCRIBE:
+			return {
+				...state,
+				rid: null
+			};
 		case ROOM.LEAVE:
 			return {
 				...state,

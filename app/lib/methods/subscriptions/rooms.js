@@ -141,7 +141,8 @@ const createOrUpdateSubscription = async(subscription, room) => {
 				}
 			}
 
-			if (tmp.lastMessage) {
+			const roomState = store.getState().room;
+			if (tmp.lastMessage && roomState.rid !== tmp.rid) {
 				const lastMessage = buildMessage(tmp.lastMessage);
 				const messagesCollection = db.collections.get('messages');
 				let messageRecord;
