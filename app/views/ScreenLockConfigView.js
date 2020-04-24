@@ -22,29 +22,6 @@ import { supportedBiometryLabel } from '../utils/localAuthentication';
 import { DisclosureImage } from '../containers/DisclosureIndicator';
 import { PASSCODE_KEY } from '../constants/localAuthentication';
 
-const DEFAULT_AUTO_LOCK = [
-	{
-		title: 'After 1 minute',
-		value: 5
-	},
-	{
-		title: 'After 5 minutes',
-		value: 300
-	},
-	{
-		title: 'After 15 minutes',
-		value: 900
-	},
-	{
-		title: 'After 30 minutes',
-		value: 1800
-	},
-	{
-		title: 'After 1 hour',
-		value: 3600
-	}
-];
-
 const styles = StyleSheet.create({
 	listPadding: {
 		paddingVertical: 36
@@ -63,12 +40,34 @@ class ScreenLockConfigView extends React.Component {
 		navigation: PropTypes.object
 	}
 
+	defaultAutoLockOptions = [
+		{
+			title: I18n.t('Local_authentication_auto_lock_60'),
+			value: 60
+		},
+		{
+			title: I18n.t('Local_authentication_auto_lock_300'),
+			value: 300
+		},
+		{
+			title: I18n.t('Local_authentication_auto_lock_900'),
+			value: 900
+		},
+		{
+			title: I18n.t('Local_authentication_auto_lock_1800'),
+			value: 1800
+		},
+		{
+			title: I18n.t('Local_authentication_auto_lock_3600'),
+			value: 3600
+		}
+	];
+
 	constructor(props) {
 		super(props);
 		this.state = {
 			autoLock: false,
 			autoLockTime: null,
-			supported: [],
 			biometry: true,
 			biometryLabel: null
 		};
@@ -191,7 +190,7 @@ class ScreenLockConfigView extends React.Component {
 	}
 
 	renderAutoLockItems = () => {
-		const { autoLock, supported } = this.state;
+		const { autoLock } = this.state;
 		const { theme } = this.props;
 		if (!autoLock) {
 			return null;
@@ -200,7 +199,7 @@ class ScreenLockConfigView extends React.Component {
 			<>
 				<View style={{ height: 36 }} />
 				<Separator theme={theme} />
-				{autoLock ? DEFAULT_AUTO_LOCK.concat(supported).map(item => this.renderItem({ item })) : null}
+				{autoLock ? this.defaultAutoLockOptions.map(item => this.renderItem({ item })) : null}
 			</>
 		);
 	}
@@ -220,7 +219,7 @@ class ScreenLockConfigView extends React.Component {
 			<>
 				<Separator theme={theme} />
 				<ListItem
-					title={`Unlock with ${ biometryLabel }`}
+					title={I18n.t('Local_authentication_unlock_with_label', { label: biometryLabel })}
 					right={() => this.renderBiometrySwitch()}
 					theme={theme}
 				/>
@@ -244,7 +243,7 @@ class ScreenLockConfigView extends React.Component {
 				>
 					<Separator theme={theme} />
 					<ListItem
-						title='Unlock with Passcode'
+						title={I18n.t('Local_authentication_unlock_option')}
 						right={() => this.renderAutoLockSwitch()}
 						theme={theme}
 					/>
@@ -253,7 +252,7 @@ class ScreenLockConfigView extends React.Component {
 							<>
 								<Separator theme={theme} />
 								<ListItem
-									title='Change Passcode'
+									title={I18n.t('Local_authentication_change_passcode')}
 									theme={theme}
 									right={this.renderDisclosure}
 									onPress={this.changePasscode}
@@ -264,7 +263,7 @@ class ScreenLockConfigView extends React.Component {
 					}
 					<Separator theme={theme} />
 					<ItemInfo
-						info={'Note: if you forget the passcode, you\'ll need to delete and reinstall the app.'}
+						info={I18n.t('Local_authentication_info')}
 						theme={theme}
 					/>
 					{this.renderBiometry()}

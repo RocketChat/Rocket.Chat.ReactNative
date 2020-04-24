@@ -8,7 +8,6 @@ import useDeepCompareEffect from 'use-deep-compare-effect';
 import _ from 'lodash';
 import Orientation from 'react-native-orientation-locker';
 
-// import I18n from '../i18n';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import EventEmitter from '../utils/events';
