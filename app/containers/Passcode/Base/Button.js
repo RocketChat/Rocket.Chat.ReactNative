@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import styles from './styles';
 import { themes } from '../../../constants/colors';
 import Touch from '../../../utils/touch';
+import I18n from '../../../i18n';
 
 const Button = ({
 	text, disabled, theme, onPress, del
@@ -19,7 +20,7 @@ const Button = ({
 			del
 				? (
 					<Text style={[styles.deleteText, { color: themes[theme].titleText }]}>
-						del
+						{I18n.t('Passcode_del')}
 					</Text>
 				)
 				: (

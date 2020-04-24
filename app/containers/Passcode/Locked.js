@@ -9,6 +9,7 @@ import { themes } from '../../constants/colors';
 import { resetAttempts } from '../../utils/localAuthentication';
 import { TYPE } from './constants';
 import { getLockedUntil } from './utils';
+import I18n from '../../i18n';
 
 const styles = StyleSheet.create({
 	container: {
@@ -58,7 +59,7 @@ const Timer = ({ time, theme, setStatus }) => {
 	}
 
 	return (
-		<Text style={[styles.subtitle, { color: themes[theme].bodyText }]}>Try again in {timeLeft} seconds</Text>
+		<Text style={[styles.subtitle, { color: themes[theme].bodyText }]}>{I18n.t('Passcode_app_locked_subtitle', { timeLeft })}</Text>
 	);
 };
 
@@ -76,7 +77,7 @@ const Locked = ({ theme, setStatus }) => {
 
 	return (
 		<View style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-			<Text style={[styles.title, { color: themes[theme].titleText }]}>App locked</Text>
+			<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Passcode_app_locked_title')}</Text>
 			<Timer theme={theme} time={lockedUntil} setStatus={setStatus} />
 		</View>
 	);

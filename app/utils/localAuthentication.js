@@ -7,6 +7,7 @@ import database from '../lib/database';
 import { isIOS } from './deviceInfo';
 import EventEmitter from './events';
 import { LOCAL_AUTHENTICATE_EMITTER, LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY } from '../constants/localAuthentication';
+import I18n from '../i18n';
 
 export const saveLastLocalAuthenticationSession = async(server, serverRecord) => {
 	const serversDB = database.servers;
@@ -42,7 +43,6 @@ export const localAuthenticate = async(server) => {
 	let serverRecord;
 	try {
 		serverRecord = await serversCollection.find(server);
-		// console.log('localAuthenticate -> serverRecord', serverRecord);
 	} catch (error) {
 		return Promise.reject();
 	}
@@ -51,7 +51,6 @@ export const localAuthenticate = async(server) => {
 	if (serverRecord?.autoLock) {
 		// diff to last authenticated session
 		const diffToLastSession = moment().diff(serverRecord?.lastLocalAuthenticatedSession, 'seconds');
-		// console.log('localAuthenticate -> diffToLastSession', diffToLastSession);
 
 		// if last authenticated session is older than configured auto lock time, authentication is required
 		if (diffToLastSession >= serverRecord?.autoLockTime) {
@@ -88,10 +87,10 @@ export const supportedBiometryLabel = async() => {
 	const supported = await LocalAuthentication.supportedAuthenticationTypesAsync();
 
 	if (supported.includes(LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION)) {
-		return isIOS ? 'FaceID' : 'facial recognition'; // TODO: I18n
+		return isIOS ? 'FaceID' : I18n.t('Local_authentication_facial_recognition');
 	}
 	if (supported.includes(LocalAuthentication.AuthenticationType.FINGERPRINT)) {
-		return isIOS ? 'TouchID' : 'fingerprint'; // TODO: I18n
+		return isIOS ? 'TouchID' : I18n.t('Local_authentication_fingerprint');
 	}
 	return null;
 };

@@ -561,5 +561,14 @@ export default {
 	This_will_clear_all_your_offline_data: 'This will clear all your offline data.',
 	Mark_unread: 'Mark Unread',
 	Wait_activation_warning: 'Before you can login, your account must be manually activated by an administrator.',
-	Screen_lock: 'Screen lock'
+	Screen_lock: 'Screen lock',
+	Local_authentication_facial_recognition: 'facial_recognition',
+	Local_authentication_fingerprint: 'fingerprint',
+	Passcode_del: 'del',
+	Passcode_enter_title: 'Enter your passcode',
+	Passcode_choose_title: 'Choose your new passcode',
+	Passcode_choose_confirm_title: 'Confirm your new passcode',
+	Passcode_choose_error: 'Passcodes don\'t match. Try again.',
+	Passcode_app_locked_title: 'App locked',
+	Passcode_app_locked_subtitle: 'Try again in {{timeLeft}} seconds'
 };

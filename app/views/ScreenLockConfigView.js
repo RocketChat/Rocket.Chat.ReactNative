@@ -87,7 +87,7 @@ class ScreenLockConfigView extends React.Component {
 				biometry: this.serverRecord?.biometry || true
 			});
 		} catch (error) {
-			// TODO: raise error in case server wasn't found and pop?
+			// Do nothing
 		}
 
 		const biometryLabel = await supportedBiometryLabel();

@@ -11,6 +11,7 @@ import {
 } from '../../constants/localAuthentication';
 import { resetAttempts } from '../../utils/localAuthentication';
 import { getLockedUntil, getDiff } from './utils';
+import I18n from '../../i18n';
 
 const PasscodeEnter = ({
 	theme, type, finishProcess
@@ -64,7 +65,7 @@ const PasscodeEnter = ({
 		return <Locked theme={theme} setStatus={setStatus} />;
 	}
 
-	return <Base ref={ref} theme={theme} type={TYPE.ENTER} onEndProcess={onEndProcess} title='Enter your passcode' />;
+	return <Base ref={ref} theme={theme} type={TYPE.ENTER} onEndProcess={onEndProcess} title={I18n.t('Passcode_enter_title')} />;
 };
 
 PasscodeEnter.propTypes = {

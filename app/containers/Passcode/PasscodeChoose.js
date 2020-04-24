@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Base from './Base';
 import { TYPE } from './constants';
+import I18n from '../../i18n';
 
 const PasscodeEnter = ({
 	theme, type, finishProcess
@@ -21,7 +22,7 @@ const PasscodeEnter = ({
 
 	const onError = () => {
 		setStatus(TYPE.CHOOSE);
-		setSubtitle('Passcodes don\'t match. Try again.');
+		setSubtitle(I18n.t('Passcode_choose_error'));
 		confirmRef?.current?.animate('shake');
 	};
 
@@ -33,7 +34,7 @@ const PasscodeEnter = ({
 				type={TYPE.CONFIRM}
 				onEndProcess={changePasscode}
 				previousPasscode={previousPasscode}
-				title='Confirm your new passcode'
+				title={I18n.t('Passcode_choose_confirm_title')}
 				onError={onError}
 			/>
 		);
@@ -44,7 +45,7 @@ const PasscodeEnter = ({
 			theme={theme}
 			type={TYPE.CHOOSE}
 			onEndProcess={firstStep}
-			title='Choose your new passcode'
+			title={I18n.t('Passcode_choose_title')}
 			subtitle={subtitle}
 		/>
 	);
