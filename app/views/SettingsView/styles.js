@@ -9,12 +9,5 @@ export default StyleSheet.create({
 	},
 	listPadding: {
 		paddingVertical: 36
-	},
-	infoContainer: {
-		padding: 15
-	},
-	infoText: {
-		fontSize: 14,
-		...sharedStyles.textRegular
 	}
 });

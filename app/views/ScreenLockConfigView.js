@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	StyleSheet, View, Switch, ScrollView, Text
+	StyleSheet, View, Switch, ScrollView
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -15,6 +15,7 @@ import sharedStyles from './Styles';
 import StatusBar from '../containers/StatusBar';
 import Separator from '../containers/Separator';
 import ListItem from '../containers/ListItem';
+import ItemInfo from '../containers/ItemInfo';
 import { CustomIcon } from '../lib/Icons';
 import database from '../lib/database';
 import { supportedBiometryLabel } from '../utils/localAuthentication';
@@ -47,25 +48,8 @@ const DEFAULT_AUTO_LOCK = [
 const styles = StyleSheet.create({
 	listPadding: {
 		paddingVertical: 36
-	},
-	infoContainer: {
-		padding: 15
-	},
-	infoText: {
-		fontSize: 14,
-		...sharedStyles.textRegular
 	}
 });
-
-const ItemInfo = React.memo(({ info, theme }) => (
-	<View style={[styles.infoContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-		<Text style={[styles.infoText, { color: themes[theme].infoText }]}>{info}</Text>
-	</View>
-));
-ItemInfo.propTypes = {
-	info: PropTypes.string,
-	theme: PropTypes.string
-};
 
 class ScreenLockConfigView extends React.Component {
 	static navigationOptions = ({ screenProps }) => ({
