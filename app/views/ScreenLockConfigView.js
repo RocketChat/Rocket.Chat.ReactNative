@@ -83,7 +83,7 @@ class ScreenLockConfigView extends React.Component {
 			this.setState({
 				autoLock: this.serverRecord?.autoLock,
 				autoLockTime: this.serverRecord?.autoLockTime || 1800,
-				biometry: this.serverRecord?.biometry || true
+				biometry: this.serverRecord.biometry === null ? true : this.serverRecord.biometry
 			});
 		} catch (error) {
 			// Do nothing
@@ -100,7 +100,7 @@ class ScreenLockConfigView extends React.Component {
 			await this.serverRecord?.update((record) => {
 				record.autoLock = autoLock;
 				record.autoLockTime = autoLockTime;
-				record.biometry = biometry;
+				record.biometry = biometry === null ? true : biometry;
 			});
 		});
 	}

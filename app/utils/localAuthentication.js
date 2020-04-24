@@ -57,16 +57,26 @@ export const localAuthenticate = async(server) => {
 			// Make sure splash screen has been hidden
 			RNBootSplash.hide();
 
-			const isEnrolled = await LocalAuthentication.isEnrolledAsync();
-			const isSupported = await LocalAuthentication.supportedAuthenticationTypesAsync();
+			// if biometry is enabled on the app
+			if (serverRecord?.biometry) {
+				const isEnrolled = await LocalAuthentication.isEnrolledAsync();
+				const isSupported = await LocalAuthentication.supportedAuthenticationTypesAsync();
 
-			// if biometry is enabled and enrolled on OS
-			if (isEnrolled && isSupported) {
-				// opens biometry prompt
-				const authResult = await LocalAuthentication.authenticateAsync({ disableDeviceFallback: true });
-				if (authResult?.success) {
-					await resetAttempts();
-					await saveLastLocalAuthenticationSession(server, serverRecord);
+				// if biometry is enabled and enrolled on OS
+				if (isEnrolled && isSupported?.length) {
+					// opens biometry prompt
+					let authResult;
+					try {
+						authResult = await LocalAuthentication.authenticateAsync({ disableDeviceFallback: true });
+					} catch (e) {
+						// Do nothing
+					}
+					if (authResult?.success) {
+						await resetAttempts();
+						await saveLastLocalAuthenticationSession(server, serverRecord);
+					} else {
+						await localPasscode();
+					}
 				} else {
 					await localPasscode();
 				}
