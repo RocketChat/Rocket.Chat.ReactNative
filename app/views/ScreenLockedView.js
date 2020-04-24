@@ -65,6 +65,8 @@ const ScreenLockedView = ({ theme }) => {
 			isVisible={visible}
 			hideModalContentWhileAnimating
 			style={{ margin: 0 }}
+			animationIn='fadeIn'
+			animationOut='fadeOut'
 		>
 			<View style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 				<PasscodeEnter theme={theme} type={TYPE.ENTER} finishProcess={onSubmit} />
