@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
+import * as Haptics from 'expo-haptics';
 
 import Base from './Base';
 import { TYPE } from './constants';
@@ -22,6 +23,7 @@ const PasscodeEnter = ({ theme, finishProcess }) => {
 		setStatus(TYPE.CHOOSE);
 		setSubtitle(I18n.t('Passcode_choose_error'));
 		confirmRef?.current?.animate('shake');
+		Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
 	};
 
 	if (status === TYPE.CONFIRM) {
