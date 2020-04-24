@@ -6,4 +6,4 @@ export const LOCAL_AUTHENTICATE_EMITTER = 'LOCAL_AUTHENTICATE';
 
 export const PASSCODE_LENGTH = 6;
 export const MAX_ATTEMPTS = 6;
-export const TIME_TO_LOCK = 10000;
+export const TIME_TO_LOCK = 30000;

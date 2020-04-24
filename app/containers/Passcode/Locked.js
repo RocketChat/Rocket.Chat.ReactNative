@@ -8,7 +8,7 @@ import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import { resetAttempts } from '../../utils/localAuthentication';
 import { TYPE } from './constants';
-import { getLockedUntil } from './utils';
+import { getLockedUntil, getDiff } from './utils';
 import I18n from '../../i18n';
 
 const styles = StyleSheet.create({
@@ -31,8 +31,6 @@ const styles = StyleSheet.create({
 		textAlign: 'center'
 	}
 });
-
-const getDiff = t => new Date(t) - new Date();
 
 const Timer = ({ time, theme, setStatus }) => {
 	const calcTimeLeft = () => {
