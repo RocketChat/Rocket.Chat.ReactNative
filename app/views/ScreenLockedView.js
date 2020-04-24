@@ -15,7 +15,6 @@ import { withSplit } from '../split';
 import { LOCAL_AUTHENTICATE_EMITTER } from '../constants/localAuthentication';
 import { isTablet } from '../utils/deviceInfo';
 import { PasscodeEnter } from '../containers/Passcode';
-import { TYPE } from '../containers/Passcode/constants';
 
 const styles = StyleSheet.create({
 	container: {
@@ -67,7 +66,7 @@ const ScreenLockedView = ({ theme }) => {
 			animationOut='fadeOut'
 		>
 			<View style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-				<PasscodeEnter theme={theme} type={TYPE.ENTER} finishProcess={onSubmit} />
+				<PasscodeEnter theme={theme} finishProcess={onSubmit} />
 			</View>
 		</Modal>
 	);

@@ -5,12 +5,10 @@ import Base from './Base';
 import { TYPE } from './constants';
 import I18n from '../../i18n';
 
-const PasscodeEnter = ({
-	theme, type, finishProcess
-}) => {
+const PasscodeEnter = ({ theme, finishProcess }) => {
 	const confirmRef = useRef(null);
 	const [subtitle, setSubtitle] = useState(null);
-	const [status, setStatus] = useState(type);
+	const [status, setStatus] = useState(TYPE.CHOOSE);
 	const [previousPasscode, setPreviouPasscode] = useState(null);
 
 	const firstStep = (p) => {
@@ -53,7 +51,6 @@ const PasscodeEnter = ({
 
 PasscodeEnter.propTypes = {
 	theme: PropTypes.string,
-	type: PropTypes.string,
 	finishProcess: PropTypes.func
 };
 

@@ -13,14 +13,12 @@ import { resetAttempts } from '../../utils/localAuthentication';
 import { getLockedUntil, getDiff } from './utils';
 import I18n from '../../i18n';
 
-const PasscodeEnter = ({
-	theme, type, finishProcess
-}) => {
+const PasscodeEnter = ({ theme, finishProcess }) => {
 	const ref = useRef(null);
 	let attempts = 0;
 	let lockedUntil = false;
 	let passcode = null;
-	const [status, setStatus] = useState(type);
+	const [status, setStatus] = useState(TYPE.ENTER);
 	const { getItem: getAttempts, setItem: setAttempts } = useAsyncStorage(ATTEMPTS_KEY);
 	const { setItem: setLockedUntil } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
 
@@ -70,7 +68,6 @@ const PasscodeEnter = ({
 
 PasscodeEnter.propTypes = {
 	theme: PropTypes.string,
-	type: PropTypes.string,
 	finishProcess: PropTypes.func
 };
 
