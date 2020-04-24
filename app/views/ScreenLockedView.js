@@ -12,7 +12,6 @@ import Orientation from 'react-native-orientation-locker';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import EventEmitter from '../utils/events';
-// import sharedStyles from './Styles';
 import { withSplit } from '../split';
 import { LOCAL_AUTHENTICATE_EMITTER } from '../constants/localAuthentication';
 import { isTablet } from '../utils/deviceInfo';

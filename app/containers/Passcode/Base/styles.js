@@ -20,10 +20,6 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		height: grid.unit * 5.5
 	},
-	rowWithEmpty: {
-		flexShrink: 0,
-		justifyContent: 'flex-end'
-	},
 	colButtonCircle: {
 		flex: 0,
 		marginLeft: grid.unit / 2,
@@ -31,19 +27,6 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		width: grid.unit * 4,
 		height: grid.unit * 4
-	},
-	colEmpty: {
-		flex: 0,
-		marginLeft: grid.unit / 2,
-		marginRight: grid.unit / 2,
-		width: grid.unit * 4,
-		height: grid.unit * 4
-	},
-	colIcon: {
-		alignSelf: 'center',
-		justifyContent: 'center',
-		alignItems: 'center',
-		flexDirection: 'column'
 	},
 	text: {
 		fontSize: grid.unit * 2,
@@ -85,10 +68,6 @@ export default StyleSheet.create({
 	viewCircles: {
 		justifyContent: 'center',
 		alignItems: 'center'
-	},
-	textDeleteButton: {
-		fontWeight: '200',
-		marginTop: 5
 	},
 	grid: {
 		justifyContent: 'flex-start',

@@ -1,10 +1,9 @@
-import { takeLatest, select, put } from 'redux-saga/effects';
+import { takeLatest, select } from 'redux-saga/effects';
 
 import RocketChat from '../lib/rocketchat';
 import { setBadgeCount } from '../notifications/push';
 import log from '../utils/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../utils/localAuthentication';
-import * as actions from '../actions';
 import { APP_STATE } from '../actions/actionsTypes';
 
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {

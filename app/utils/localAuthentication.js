@@ -16,7 +16,6 @@ export const saveLastLocalAuthenticationSession = async(server, serverRecord) =>
 			if (!serverRecord) {
 				serverRecord = await serversCollection.find(server);
 			}
-      console.log('saveLastLocalAuthenticationSession -> serverRecord', serverRecord);
 			await serverRecord.update((record) => {
 				record.lastLocalAuthenticatedSession = new Date();
 			});
@@ -50,7 +49,6 @@ export const localAuthenticate = async(server) => {
 
 	// if screen lock is enabled
 	if (serverRecord?.autoLock) {
-
 		// diff to last authenticated session
 		const diffToLastSession = moment().diff(serverRecord?.lastLocalAuthenticatedSession, 'seconds');
 		// console.log('localAuthenticate -> diffToLastSession', diffToLastSession);
@@ -64,18 +62,18 @@ export const localAuthenticate = async(server) => {
 			const isSupported = await LocalAuthentication.supportedAuthenticationTypesAsync();
 
 			// if biometry is enabled and enrolled on OS
-			// if (isEnrolled && isSupported) {
-			// 	// opens biometry prompt
-			// 	const authResult = await LocalAuthentication.authenticateAsync({ disableDeviceFallback: true });
-			// 	if (authResult?.success) {
-			// 		await resetAttempts();
-			// 		await saveLastLocalAuthenticationSession(server, serverRecord);
-			// 	} else {
-			// 		await localPasscode();
-			// 	}
-			// } else {
-			await localPasscode();
-			// }
+			if (isEnrolled && isSupported) {
+				// opens biometry prompt
+				const authResult = await LocalAuthentication.authenticateAsync({ disableDeviceFallback: true });
+				if (authResult?.success) {
+					await resetAttempts();
+					await saveLastLocalAuthenticationSession(server, serverRecord);
+				} else {
+					await localPasscode();
+				}
+			} else {
+				await localPasscode();
+			}
 		}
 	}
 };
@@ -90,10 +88,10 @@ export const supportedBiometryLabel = async() => {
 	const supported = await LocalAuthentication.supportedAuthenticationTypesAsync();
 
 	if (supported.includes(LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION)) {
-		return isIOS ? 'FaceID' : 'facial recognition';
+		return isIOS ? 'FaceID' : 'facial recognition'; // TODO: I18n
 	}
 	if (supported.includes(LocalAuthentication.AuthenticationType.FINGERPRINT)) {
-		return isIOS ? 'TouchID' : 'fingerprint';
+		return isIOS ? 'TouchID' : 'fingerprint'; // TODO: I18n
 	}
 	return null;
 };

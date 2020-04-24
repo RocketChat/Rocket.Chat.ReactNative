@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-navigation';
 import RNUserDefaults from 'rn-user-defaults';
 import Orientation from 'react-native-orientation-locker';
 
-import I18n from '../i18n';
+// import I18n from '../i18n';
 import { themedHeader } from '../utils/navigation';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';

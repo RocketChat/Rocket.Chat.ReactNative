@@ -48,10 +48,6 @@ const styles = StyleSheet.create({
 	listPadding: {
 		paddingVertical: 36
 	},
-	sectionSeparatorBorder: {
-		...sharedStyles.separatorVertical,
-		height: 36
-	},
 	infoContainer: {
 		padding: 15
 	},
@@ -68,21 +64,6 @@ const ItemInfo = React.memo(({ info, theme }) => (
 ));
 ItemInfo.propTypes = {
 	info: PropTypes.string,
-	theme: PropTypes.string
-};
-
-const SectionSeparator = React.memo(({ theme }) => (
-	<View
-		style={[
-			styles.sectionSeparatorBorder,
-			{
-				borderColor: themes[theme].separatorColor,
-				backgroundColor: themes[theme].auxiliaryBackground
-			}
-		]}
-	/>
-));
-SectionSeparator.propTypes = {
 	theme: PropTypes.string
 };
 

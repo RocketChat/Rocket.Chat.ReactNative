@@ -120,7 +120,10 @@ Base.propTypes = {
 	theme: PropTypes.string,
 	type: PropTypes.string,
 	previousPasscode: PropTypes.string,
-	onEndProcess: PropTypes.string
+	title: PropTypes.string,
+	subtitle: PropTypes.string,
+	onEndProcess: PropTypes.func,
+	onError: PropTypes.func
 };
 
 export default Base;
