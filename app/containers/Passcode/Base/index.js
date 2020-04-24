@@ -107,7 +107,7 @@ const Base = forwardRef(({
 							<Button text='0' theme={theme} onPress={onPressNumber} />
 						</Col>
 						<Col style={styles.colButtonCircle}>
-							<Button text='X' theme={theme} onPress={onPressDelete} />
+							<Button del theme={theme} onPress={onPressDelete} />
 						</Col>
 					</Row>
 				</Grid>

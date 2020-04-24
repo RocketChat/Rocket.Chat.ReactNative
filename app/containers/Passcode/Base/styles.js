@@ -6,8 +6,7 @@ export default StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: 'center',
-		alignItems: 'center',
-		// width: '100%'
+		alignItems: 'center'
 	},
 	viewTitle: {
 		flexDirection: 'column',
@@ -50,12 +49,15 @@ export default StyleSheet.create({
 		fontSize: grid.unit * 2,
 		fontWeight: '200'
 	},
+	deleteText: {
+		fontSize: grid.unit * 1.2,
+		fontWeight: '200'
+	},
 	buttonCircle: {
 		alignItems: 'center',
 		justifyContent: 'center',
 		width: grid.unit * 4,
 		height: grid.unit * 4,
-		backgroundColor: 'rgb(242, 245, 251)',
 		borderRadius: grid.unit * 2,
 		borderWidth: 1
 	},

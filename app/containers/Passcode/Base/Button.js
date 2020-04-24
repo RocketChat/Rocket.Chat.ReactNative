@@ -7,7 +7,7 @@ import { themes } from '../../../constants/colors';
 import Touch from '../../../utils/touch';
 
 const Button = ({
-	text, disabled, theme, onPress
+	text, disabled, theme, onPress, del
 }) => (
 	<Touch
 		style={[styles.buttonCircle, { backgroundColor: themes[theme].backgroundColor, borderColor: themes[theme].borderColor }]}
@@ -15,9 +15,19 @@ const Button = ({
 		theme={theme}
 		onPress={() => onPress && onPress(text)}
 	>
-		<Text style={[styles.text, { color: themes[theme].titleText }]}>
-			{text}
-		</Text>
+		{
+			del
+				? (
+					<Text style={[styles.deleteText, { color: themes[theme].titleText }]}>
+						del
+					</Text>
+				)
+				: (
+					<Text style={[styles.text, { color: themes[theme].titleText }]}>
+						{text}
+					</Text>
+				)
+		}
 	</Touch>
 );
 
@@ -25,6 +35,7 @@ Button.propTypes = {
 	text: PropTypes.string,
 	theme: PropTypes.string,
 	disabled: PropTypes.bool,
+	del: PropTypes.bool,
 	onPress: PropTypes.func
 };
 
