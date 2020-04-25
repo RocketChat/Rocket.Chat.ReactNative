@@ -10,7 +10,6 @@ import RNUserDefaults from 'rn-user-defaults';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
-import { appStart as appStartAction } from '../../actions';
 import styles from './styles';
 import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
@@ -35,8 +34,7 @@ class ServerDropdown extends Component {
 		server: PropTypes.string,
 		theme: PropTypes.string,
 		toggleServerDropdown: PropTypes.func,
-		selectServerRequest: PropTypes.func,
-		appStart: PropTypes.func
+		selectServerRequest: PropTypes.func
 	}
 
 	constructor(props) {
@@ -132,7 +130,7 @@ class ServerDropdown extends Component {
 
 	select = async(server) => {
 		const {
-			server: currentServer, selectServerRequest, appStart, navigation, split
+			server: currentServer, selectServerRequest, navigation, split
 		} = this.props;
 
 		this.close();
@@ -142,10 +140,12 @@ class ServerDropdown extends Component {
 				navigation.navigate('RoomView');
 			}
 			if (!userId) {
-				appStart();
-				this.newServerTimeout = setTimeout(() => {
-					EventEmitter.emit('NewServer', { server });
-				}, 1000);
+				setTimeout(() => {
+					navigation.navigate('NewServerView', { previousServer: currentServer });
+					this.newServerTimeout = setTimeout(() => {
+						EventEmitter.emit('NewServer', { server });
+					}, ANIMATION_DURATION);
+				}, ANIMATION_DURATION);
 			} else {
 				selectServerRequest(server);
 			}
@@ -267,8 +267,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	toggleServerDropdown: () => dispatch(toggleServerDropdownAction()),
-	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
-	appStart: () => dispatch(appStartAction('outside'))
+	selectServerRequest: server => dispatch(selectServerRequestAction(server))
 });
 
 export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(withTheme(withSplit(ServerDropdown))));

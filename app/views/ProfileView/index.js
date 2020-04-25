@@ -243,10 +243,10 @@ class ProfileView extends React.Component {
 				} else {
 					setUser({ ...params });
 				}
-				this.setState({ saving: false });
 				EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
 				this.init();
 			}
+			this.setState({ saving: false });
 		} catch (e) {
 			if (e.data && e.data.error.includes('[error-password-policy-not-met-minLength]')) {
 				showErrorAlert(I18n.t('error-password-policy-not-met-minLength'), I18n.t('Oops'));

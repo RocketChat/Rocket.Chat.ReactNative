@@ -63,3 +63,4 @@ export const INVITE_LINKS = createRequestTypes('INVITE_LINKS', [
 	'CLEAR',
 	...defaultTypes
 ]);
+export const SETTINGS = createRequestTypes('SETTINGS', ['CLEAR', 'ADD']);

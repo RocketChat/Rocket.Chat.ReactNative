@@ -154,6 +154,7 @@ class CreateChannelView extends React.Component {
 							containerStyle={styles.inputStyle}
 							defaultValue={name}
 							onChangeText={text => this.setState({ name: text })}
+							theme={theme}
 						/>
 						<SelectUsers
 							server={server}
@@ -165,6 +166,7 @@ class CreateChannelView extends React.Component {
 						/>
 						<TextInput
 							multiline
+							textAlignVertical='top'
 							label={I18n.t('Your_message')}
 							inputStyle={styles.multiline}
 							theme={theme}

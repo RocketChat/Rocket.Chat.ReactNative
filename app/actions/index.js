@@ -34,13 +34,6 @@ export function setCurrentServer(server) {
 	};
 }
 
-export function addSettings(settings) {
-	return {
-		type: types.ADD_SETTINGS,
-		payload: settings
-	};
-}
-
 export function login() {
 	return {
 		type: 'LOGIN'

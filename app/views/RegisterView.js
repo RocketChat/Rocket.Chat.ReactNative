@@ -22,6 +22,7 @@ import RocketChat from '../lib/rocketchat';
 import { loginRequest as loginRequestAction } from '../actions/login';
 import openLink from '../utils/openLink';
 import LoginServices from '../containers/LoginServices';
+import { getShowLoginButton } from '../selectors/login';
 
 const styles = StyleSheet.create({
 	title: {
@@ -77,9 +78,10 @@ class RegisterView extends React.Component {
 		Accounts_Password_Policy_ForbidRepeatingCharactersCount: PropTypes.number,
 		theme: PropTypes.string,
     Site_Name: PropTypes.string,
-		loginRequest: PropTypes.func
-
-	}
+		loginRequest: PropTypes.func,
+    Accounts_ManuallyApproveNewUsers: PropTypes.bool,
+		showLoginButton: PropTypes.bool
+ }
 
 	constructor(props) {
 		super(props);
@@ -165,7 +167,15 @@ class RegisterView extends React.Component {
 		const {
 			name, email, password, username, customFields
 		} = this.state;
-		const { loginRequest, Accounts_EmailVerification, navigation } = this.props;
+
+		const {
+			loginRequest,
+			Accounts_EmailVerification,
+			navigation,
+			Accounts_ManuallyApproveNewUsers
+		} = this.props;
+
+
 		try {
 			await RocketChat.register({
 				name, email, pass: password, username, ...customFields
@@ -173,7 +183,10 @@ class RegisterView extends React.Component {
 
 			if (Accounts_EmailVerification) {
 				await navigation.goBack();
-				showErrorAlert(I18n.t('Verify_email_desc'), I18n.t('Verify_email_title'));
+				showErrorAlert(I18n.t('Verify_email_desc'), I18n.t('Registration_Succeeded'));
+			} else if (Accounts_ManuallyApproveNewUsers) {
+				await navigation.goBack();
+				showErrorAlert(I18n.t('Wait_activation_warning'), I18n.t('Registration_Succeeded'));
 			} else {
 				await loginRequest({ user: email, password });
 			}
@@ -271,7 +284,7 @@ class RegisterView extends React.Component {
 
 	render() {
 		const { saving } = this.state;
-		const { theme } = this.props;
+		const { theme, showLoginButton } = this.props;
 		return (
 			<FormContainer theme={theme}>
 				<FormContainerInner>
@@ -352,14 +365,17 @@ class RegisterView extends React.Component {
 						</Text>
 					</View>
 
-					<View style={styles.bottomContainer}>
-						<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Do_you_have_an_account')}</Text>
-						<Text
-							style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
-							onPress={this.login}
-						>{I18n.t('Login')}
-						</Text>
-					</View>
+					{showLoginButton
+						? (
+							<View style={styles.bottomContainer}>
+								<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Do_you_have_an_account')}</Text>
+								<Text
+									style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
+									onPress={this.login}
+								>{I18n.t('Login')}
+								</Text>
+							</View>
+						) : null}
 				</FormContainerInner>
 			</FormContainer>
 		);
@@ -374,7 +390,7 @@ const mapStateToProps = state => ({
 	CAS_login_url: state.settings.CAS_login_url,
 	Accounts_CustomFields: state.settings.Accounts_CustomFields,
 	Accounts_EmailVerification: state.settings.Accounts_EmailVerification,
-	Accounts_Password_Policy_Enabled: state.settings.Accounts_Password_Policy_Enabled,
+  Accounts_Password_Policy_Enabled: state.settings.Accounts_Password_Policy_Enabled,
 	Accounts_Password_Policy_MinLength: state.settings.Accounts_Password_Policy_MinLength,
 	Accounts_Password_Policy_MaxLength: state.settings.Accounts_Password_Policy_MaxLength,
 	Accounts_Password_Policy_ForbidRepeatingCharacters: state.settings.Accounts_Password_Policy_ForbidRepeatingCharacters,
@@ -383,6 +399,8 @@ const mapStateToProps = state => ({
 	Accounts_Password_Policy_AtLeastOneUppercase: state.settings.Accounts_Password_Policy_AtLeastOneUppercase,
 	Accounts_Password_Policy_AtLeastOneSpecialCharacter: state.settings.Accounts_Password_Policy_AtLeastOneSpecialCharacter,
 	Accounts_Password_Policy_AtLeastOneNumber: state.settings.Accounts_Password_Policy_AtLeastOneNumber
+	Accounts_ManuallyApproveNewUsers: state.settings.Accounts_ManuallyApproveNewUsers,
+	showLoginButton: getShowLoginButton(state)
 });
 
 const mapDispatchToProps = dispatch => ({

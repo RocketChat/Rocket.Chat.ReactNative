@@ -16,7 +16,6 @@ import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import TextInput from '../containers/TextInput';
-import { animateNextTransition } from '../utils/layoutAnimation';
 import { loginRequest as loginRequestAction } from '../actions/login';
 import LoginServices from '../containers/LoginServices';
 
@@ -81,20 +80,13 @@ class LoginView extends React.Component {
 		super(props);
 		this.state = {
 			user: '',
-			password: '',
-			code: '',
-			showTOTP: false
+			password: ''
 		};
 	}
 
 	componentWillReceiveProps(nextProps) {
 		const { error } = this.props;
 		if (nextProps.failure && !equal(error, nextProps.error)) {
-			if (nextProps.error && nextProps.error.error === 'totp-required') {
-				animateNextTransition();
-				this.setState({ showTOTP: true });
-				return;
-			}
 			Alert.alert(I18n.t('Oops'), I18n.t('Login_error'));
 		}
 	}
@@ -115,12 +107,7 @@ class LoginView extends React.Component {
 	}
 
 	valid = () => {
-		const {
-			user, password, code, showTOTP
-		} = this.state;
-		if (showTOTP) {
-			return code.trim();
-		}
+		const { user, password } = this.state;
 		return user.trim() && password.trim();
 	}
 
@@ -129,10 +116,10 @@ class LoginView extends React.Component {
 			return;
 		}
 
-		const { user, password, code } = this.state;
+		const { user, password } = this.state;
 		const { loginRequest } = this.props;
 		Keyboard.dismiss();
-		loginRequest({ user, password, code });
+		loginRequest({ user, password });
 		analytics().logEvent('login');
 	}
 
@@ -211,50 +198,13 @@ class LoginView extends React.Component {
 		);
 	}
 
-	renderTOTP = () => {
-		const { isFetching, theme } = this.props;
-		return (
-			<>
-				<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Two_Factor_Authentication')}</Text>
-				<Text
-					style={[sharedStyles.loginSubtitle, sharedStyles.textRegular, { color: themes[theme].titleText }]}
-				>
-					{I18n.t('Whats_your_2fa')}
-				</Text>
-				<TextInput
-					inputRef={ref => this.codeInput = ref}
-					autoFocus
-					onChangeText={value => this.setState({ code: value })}
-					keyboardType='numeric'
-					returnKeyType='send'
-					autoCapitalize='none'
-					onSubmitEditing={this.submit}
-					testID='login-view-totp'
-					containerStyle={sharedStyles.inputLastChild}
-					theme={theme}
-				/>
-				<Button
-					title={I18n.t('Confirm')}
-					type='primary'
-					onPress={this.submit}
-					testID='login-view-submit'
-					loading={isFetching}
-					disabled={!this.valid()}
-					theme={theme}
-				/>
-			</>
-		);
-	}
-
 	render() {
-		const { showTOTP } = this.state;
 		const { Accounts_ShowFormLogin, theme } = this.props;
 		return (
 			<FormContainer theme={theme}>
 				<FormContainerInner>
-					{!showTOTP ? <LoginServices separator={Accounts_ShowFormLogin} /> : null}
-					{!showTOTP ? this.renderUserForm() : null}
-					{showTOTP ? this.renderTOTP() : null}
+					<LoginServices separator={Accounts_ShowFormLogin} />
+					{this.renderUserForm()}
 				</FormContainerInner>
 			</FormContainer>
 		);
