@@ -6,6 +6,7 @@ import Modal from 'react-native-modal';
 
 import Markdown from '../../containers/markdown';
 
+import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 import styles from './styles';
 
@@ -24,12 +25,22 @@ const Banner = React.memo(({
 					testID='room-view-banner'
 					onPress={toggleModal}
 				>
-					<Markdown
-						msg={text}
-						theme={theme}
-						numberOfLines={1}
-						preview
-					/>
+					<View style={styles.textContainer}>
+						<Markdown
+							msg={text}
+							theme={theme}
+							numberOfLines={1}
+							preview
+						/>
+					</View>
+					<BorderlessButton>
+						<CustomIcon
+							style={styles.icon}
+							color={themes[theme].bannerIcon}
+							name='cross'
+							size={20}
+						/>
+					</BorderlessButton>
 				</BorderlessButton>
 				<Modal
 					onBackdropPress={toggleModal}

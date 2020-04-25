@@ -46,7 +46,8 @@ export const themes = {
 		messageboxBackground: '#ffffff',
 		searchboxBackground: '#E6E6E7',
 		buttonBackground: '#414852',
-		buttonText: '#ffffff'
+		buttonText: '#ffffff',
+		bannerIcon: '#6d6d72'
 	},
 	dark: {
 		backgroundColor: '#030b1b',
@@ -81,7 +82,8 @@ export const themes = {
 		messageboxBackground: '#0b182c',
 		searchboxBackground: '#192d4d',
 		buttonBackground: '#414852',
-		buttonText: '#ffffff'
+		buttonText: '#ffffff',
+		bannerIcon: '#ffffff'
 	},
 	black: {
 		backgroundColor: '#000000',
@@ -116,6 +118,7 @@ export const themes = {
 		messageboxBackground: '#0d0d0d',
 		searchboxBackground: '#1f1f1f',
 		buttonBackground: '#414852',
-		buttonText: '#ffffff'
+		buttonText: '#ffffff',
+		bannerIcon: '#ffffff'
 	}
 };
