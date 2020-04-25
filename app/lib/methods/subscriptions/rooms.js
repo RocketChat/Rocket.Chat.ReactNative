@@ -57,6 +57,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					lastOpen: s.lastOpen,
 					description: s.description,
 					announcement: s.announcement,
+					bannerClosed: s.bannerClosed,
 					topic: s.topic,
 					blocked: s.blocked,
 					blocker: s.blocker,

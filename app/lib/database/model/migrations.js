@@ -74,6 +74,17 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 8,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [
+						{ name: 'banner_closed', type: 'boolean', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });
