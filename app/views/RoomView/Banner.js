@@ -10,13 +10,13 @@ import { themes } from '../../constants/colors';
 import styles from './styles';
 
 const Banner = React.memo(({
-	text, title, theme
+	text, title, theme, bannerClosed
 }) => {
 	const [showModal, openModal] = useState(false);
 
 	const toggleModal = () => openModal(prevState => !prevState);
 
-	if (text) {
+	if (text && !bannerClosed) {
 		return (
 			<>
 				<BorderlessButton
@@ -54,12 +54,13 @@ const Banner = React.memo(({
 	}
 
 	return null;
-}, (prevProps, nextProps) => prevProps.text === nextProps.text && prevProps.theme === nextProps.theme);
+}, (prevProps, nextProps) => prevProps.text === nextProps.text && prevProps.theme === nextProps.theme && prevProps.bannerClosed === nextProps.bannerClosed);
 
 Banner.propTypes = {
 	text: PropTypes.string,
 	title: PropTypes.string,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	bannerClosed: PropTypes.bool
 };
 
 export default Banner;
