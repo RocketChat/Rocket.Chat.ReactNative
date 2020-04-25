@@ -11,7 +11,7 @@ import { themes } from '../../constants/colors';
 import styles from './styles';
 
 const Banner = React.memo(({
-	text, title, theme, bannerClosed
+	text, title, theme, bannerClosed, closeBanner
 }) => {
 	const [showModal, openModal] = useState(false);
 
@@ -33,7 +33,9 @@ const Banner = React.memo(({
 							preview
 						/>
 					</View>
-					<BorderlessButton>
+					<BorderlessButton
+						onPress={closeBanner}
+					>
 						<CustomIcon
 							style={styles.icon}
 							color={themes[theme].bannerIcon}
@@ -71,7 +73,8 @@ Banner.propTypes = {
 	text: PropTypes.string,
 	title: PropTypes.string,
 	theme: PropTypes.string,
-	bannerClosed: PropTypes.bool
+	bannerClosed: PropTypes.bool,
+	closeBanner: PropTypes.func
 };
 
 export default Banner;

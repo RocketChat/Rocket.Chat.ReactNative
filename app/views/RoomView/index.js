@@ -815,6 +815,23 @@ class RoomView extends React.Component {
 		}
 	});
 
+	closeBanner = async() => {
+		const { room } = this.state;
+		const { rid } = room;
+		try {
+			const db = database.active;
+			const subCollection = db.collections.get('subscriptions');
+			const newRoom = await subCollection.find(rid);
+			await db.action(async() => {
+				await newRoom.update((r) => {
+					r.bannerClosed = true;
+				});
+			});
+		} catch {
+			// do nothing
+		}
+	};
+
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
@@ -1012,6 +1029,7 @@ class RoomView extends React.Component {
 					title={I18n.t('Announcement')}
 					text={announcement}
 					bannerClosed={bannerClosed}
+					closeBanner={this.closeBanner}
 					theme={theme}
 				/>
 				<List
