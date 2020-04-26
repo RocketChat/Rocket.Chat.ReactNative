@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, StyleSheet, TouchableOpacity
+	View, Text, StyleSheet, TouchableOpacity, Dimensions
 } from 'react-native';
 import moment from 'moment';
 
@@ -11,6 +11,8 @@ import { withTheme } from '../../theme';
 import MessageError from './MessageError';
 import sharedStyles from '../../views/Styles';
 import messageStyles from './styles';
+
+const { width } = Dimensions.get('window'); 
 
 const styles = StyleSheet.create({
 	container: {
@@ -26,7 +28,8 @@ const styles = StyleSheet.create({
 	titleContainer: {
 		flex: 1,
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		width: width * .63
 	},
 	alias: {
 		fontSize: 14,
