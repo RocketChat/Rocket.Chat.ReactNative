@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		width: width * .63
+		maxWidth: width * .63
 	},
 	alias: {
 		fontSize: 14,
