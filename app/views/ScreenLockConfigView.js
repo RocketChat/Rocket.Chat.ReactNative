@@ -119,7 +119,7 @@ class ScreenLockConfigView extends React.Component {
 		}
 	}
 
-	autoLock = () => {
+	toggleAutoLock = () => {
 		this.setState(({ autoLock }) => ({ autoLock: !autoLock }), () => {
 			this.save();
 			this.setPasscode();
@@ -176,7 +176,7 @@ class ScreenLockConfigView extends React.Component {
 			<Switch
 				value={autoLock}
 				trackColor={SWITCH_TRACK_COLOR}
-				onValueChange={this.autoLock}
+				onValueChange={this.toggleAutoLock}
 			/>
 		);
 	}
