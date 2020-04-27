@@ -24,7 +24,14 @@ const Avatar = React.memo(({
 		type, text, size, userId, token, avatar, baseUrl
 	});
 
-	let image = emoji ? (<Markdown getCustomEmoji={getCustomEmoji} baseUrl={baseUrl} msg={emoji} theme={theme} />) : (
+	let image = emoji ? (
+		<Markdown
+			msg={emoji}
+			baseUrl={baseUrl}
+			getCustomEmoji={getCustomEmoji}
+			theme={theme}
+		/>
+	) : (
 		<FastImage
 			style={avatarStyle}
 			source={{
