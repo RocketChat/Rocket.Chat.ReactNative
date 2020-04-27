@@ -64,7 +64,7 @@
     "react-native-easy-toast": "^1.2.0",
     "react-native-fast-image": "^7.0.2",
     "react-native-firebase": "^5.5.5",
-    "react-native-gesture-handler": "1.5.0",
+    "react-native-gesture-handler": "^1.6.1",
     "react-native-image-crop-picker": "RocketChat/react-native-image-crop-picker",
     "react-native-image-progress": "^1.1.1",
     "react-native-image-zoom-viewer": "^2.2.26",

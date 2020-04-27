@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useAsyncStorage } from '@react-native-community/async-storage';
 import RNUserDefaults from 'rn-user-defaults';
 import PropTypes from 'prop-types';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import Base from './Base';
 import Locked from './Locked';
@@ -71,4 +72,4 @@ PasscodeEnter.propTypes = {
 	finishProcess: PropTypes.func
 };
 
-export default PasscodeEnter;
+export default gestureHandlerRootHOC(PasscodeEnter);
