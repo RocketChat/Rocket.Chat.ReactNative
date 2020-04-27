@@ -19,13 +19,14 @@ const PasscodeEnter = ({ theme, finishProcess }) => {
 	const ref = useRef(null);
 	let attempts = 0;
 	let lockedUntil = false;
-	let passcode = null;
+	const [passcode, setPasscode] = useState(null);
 	const [status, setStatus] = useState(TYPE.ENTER);
 	const { getItem: getAttempts, setItem: setAttempts } = useAsyncStorage(ATTEMPTS_KEY);
 	const { setItem: setLockedUntil } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
 
 	const fetchPasscode = async() => {
-		passcode = await RNUserDefaults.get(PASSCODE_KEY);
+		const p = await RNUserDefaults.get(PASSCODE_KEY);
+		setPasscode(p);
 	};
 
 	const readStorage = async() => {
