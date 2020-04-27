@@ -22,8 +22,10 @@ const Base = forwardRef(({
 	const dotsRef = useRef();
 	const [passcode, setPasscode] = useState('');
 
+	const clearPasscode = () => setPasscode('');
+
 	const wrongPasscode = () => {
-		setPasscode('');
+		clearPasscode();
 		dotsRef?.current?.shake(500);
 		Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
 	};
@@ -52,7 +54,6 @@ const Base = forwardRef(({
 				default:
 					break;
 			}
-			return '';
 		}
 		return currentPasscode;
 	});
@@ -66,7 +67,7 @@ const Base = forwardRef(({
 	});
 
 	useImperativeHandle(ref, () => ({
-		wrongPasscode, animate
+		wrongPasscode, animate, clearPasscode
 	}));
 
 	return (
