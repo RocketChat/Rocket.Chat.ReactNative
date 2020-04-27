@@ -508,6 +508,7 @@ export default {
 	Local_authentication_facial_recognition: 'reconhecimento facial',
 	Local_authentication_fingerprint: 'impressão digital',
 	Local_authentication_unlock_with_label: 'Desbloquear com {{label}}',
+	Local_authentication_auto_lock_0: 'Imediatamente',
 	Local_authentication_auto_lock_60: 'Após 1 minuto',
 	Local_authentication_auto_lock_300: 'Após 5 minutos',
 	Local_authentication_auto_lock_900: 'Após 15 minutos',

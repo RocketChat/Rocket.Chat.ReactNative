@@ -6,6 +6,7 @@ import {
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import RNUserDefaults from 'rn-user-defaults';
+import { sha256 } from 'js-sha256';
 
 import I18n from '../i18n';
 import { themedHeader } from '../utils/navigation';
@@ -31,6 +32,9 @@ const styles = StyleSheet.create({
 	}
 });
 
+const DEFAULT_AUTO_LOCK = 1800;
+const DEFAULT_BIOMETRY = true;
+
 class ScreenLockConfigView extends React.Component {
 	static navigationOptions = ({ screenProps }) => ({
 		title: I18n.t('Screen_lock'),
@@ -44,6 +48,10 @@ class ScreenLockConfigView extends React.Component {
 	}
 
 	defaultAutoLockOptions = [
+		{
+			title: I18n.t('Local_authentication_auto_lock_0'),
+			value: 0
+		},
 		{
 			title: I18n.t('Local_authentication_auto_lock_60'),
 			value: 60
@@ -85,8 +93,8 @@ class ScreenLockConfigView extends React.Component {
 			this.serverRecord = await serversCollection.find(server);
 			this.setState({
 				autoLock: this.serverRecord?.autoLock,
-				autoLockTime: this.serverRecord?.autoLockTime || 1800,
-				biometry: this.serverRecord.biometry === null ? true : this.serverRecord.biometry
+				autoLockTime: this.serverRecord?.autoLockTime === null ? DEFAULT_AUTO_LOCK : this.serverRecord?.autoLockTime,
+				biometry: this.serverRecord.biometry === null ? DEFAULT_BIOMETRY : this.serverRecord.biometry
 			});
 		} catch (error) {
 			// Do nothing
@@ -102,27 +110,36 @@ class ScreenLockConfigView extends React.Component {
 		await serversDB.action(async() => {
 			await this.serverRecord?.update((record) => {
 				record.autoLock = autoLock;
-				record.autoLockTime = autoLockTime;
-				record.biometry = biometry === null ? true : biometry;
+				record.autoLockTime = autoLockTime === null ? DEFAULT_AUTO_LOCK : autoLockTime;
+				record.biometry = biometry === null ? DEFAULT_BIOMETRY : biometry;
 			});
 		});
 	}
 
-	setPasscode = async() => {
-		const { autoLock } = this.state;
+	getPasscode = ({ force = false }) => new Promise((resolve) => {
 		const { navigation } = this.props;
-		if (autoLock) {
-			const storedPasscode = await RNUserDefaults.get(PASSCODE_KEY);
-			if (!storedPasscode) {
-				navigation.navigate('ChangePasscodeView', { forceSetPasscode: true });
-			}
+		navigation.navigate('ChangePasscodeView', { forceSetPasscode: force, getPasscode: passcode => resolve(passcode) });
+	});
+
+	changePasscode = async({ force }) => {
+		const passcode = await this.getPasscode({ force });
+		await RNUserDefaults.set(PASSCODE_KEY, sha256(passcode));
+	}
+
+	checkHasPasscode = async() => {
+		const storedPasscode = await RNUserDefaults.get(PASSCODE_KEY);
+		if (!storedPasscode) {
+			await this.changePasscode({ force: true });
 		}
 	}
 
 	toggleAutoLock = () => {
-		this.setState(({ autoLock }) => ({ autoLock: !autoLock }), () => {
+		this.setState(({ autoLock }) => ({ autoLock: !autoLock }), async() => {
+			const { autoLock } = this.state;
+			if (autoLock) {
+				await this.checkHasPasscode();
+			}
 			this.save();
-			this.setPasscode();
 		});
 	}
 
@@ -137,11 +154,6 @@ class ScreenLockConfigView extends React.Component {
 
 	changeAutoLockTime = (autoLockTime) => {
 		this.setState({ autoLockTime }, () => this.save());
-	}
-
-	changePasscode = () => {
-		const { navigation } = this.props;
-		navigation.navigate('ChangePasscodeView');
 	}
 
 	renderSeparator = () => {

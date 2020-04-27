@@ -1,23 +1,21 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { SafeAreaView } from 'react-navigation';
-import RNUserDefaults from 'rn-user-defaults';
 import Orientation from 'react-native-orientation-locker';
-import { sha256 } from 'js-sha256';
 
 import { themedHeader } from '../utils/navigation';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import sharedStyles from './Styles';
-import { PASSCODE_KEY } from '../constants/localAuthentication';
 import { isTablet } from '../utils/deviceInfo';
 import { TYPE } from '../containers/Passcode/constants';
 import { PasscodeChoose } from '../containers/Passcode';
 
-const ScreenLockConfigView = React.memo(({ navigation, theme }) => {
-	const savePasscode = async(passcode) => {
-		await RNUserDefaults.set(PASSCODE_KEY, sha256(passcode));
+const ChangePasscodeView = React.memo(({ navigation, theme }) => {
+	const getPasscode = (passcode) => {
 		navigation.pop();
+		const get = navigation.getParam('getPasscode', () => {});
+		get(passcode);
 	};
 
 	useEffect(() => {
@@ -35,12 +33,12 @@ const ScreenLockConfigView = React.memo(({ navigation, theme }) => {
 		<SafeAreaView
 			style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
 		>
-			<PasscodeChoose theme={theme} type={TYPE.choose} finishProcess={savePasscode} />
+			<PasscodeChoose theme={theme} type={TYPE.choose} finishProcess={getPasscode} />
 		</SafeAreaView>
 	);
 });
 
-ScreenLockConfigView.navigationOptions = ({ screenProps, navigation }) => {
+ChangePasscodeView.navigationOptions = ({ screenProps, navigation }) => {
 	const forceSetPasscode = navigation.getParam('forceSetPasscode', false);
 	if (forceSetPasscode) {
 		return {
@@ -54,9 +52,9 @@ ScreenLockConfigView.navigationOptions = ({ screenProps, navigation }) => {
 	};
 };
 
-ScreenLockConfigView.propTypes = {
+ChangePasscodeView.propTypes = {
 	navigation: PropTypes.object,
 	theme: PropTypes.string
 };
 
-export default withTheme(ScreenLockConfigView);
+export default withTheme(ChangePasscodeView);
