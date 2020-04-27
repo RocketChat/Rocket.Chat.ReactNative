@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { SafeAreaView } from 'react-navigation';
 import RNUserDefaults from 'rn-user-defaults';
 import Orientation from 'react-native-orientation-locker';
+import { sha256 } from 'js-sha256';
 
-// import I18n from '../i18n';
 import { themedHeader } from '../utils/navigation';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
@@ -16,7 +16,7 @@ import { PasscodeChoose } from '../containers/Passcode';
 
 const ScreenLockConfigView = React.memo(({ navigation, theme }) => {
 	const savePasscode = async(passcode) => {
-		await RNUserDefaults.set(PASSCODE_KEY, passcode);
+		await RNUserDefaults.set(PASSCODE_KEY, sha256(passcode));
 		navigation.pop();
 	};
 

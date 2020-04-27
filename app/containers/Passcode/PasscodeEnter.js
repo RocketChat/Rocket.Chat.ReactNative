@@ -4,6 +4,8 @@ import RNUserDefaults from 'rn-user-defaults';
 import PropTypes from 'prop-types';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import * as LocalAuthentication from 'expo-local-authentication';
+import * as Haptics from 'expo-haptics';
+import { sha256 } from 'js-sha256';
 
 import Base from './Base';
 import Locked from './Locked';
@@ -63,18 +65,22 @@ const PasscodeEnter = ({ theme, finishProcess }) => {
 	}, []);
 
 	const onEndProcess = (p) => {
-		if (p === passcode) {
-			finishProcess();
-		} else {
-			attempts += 1;
-			if (attempts >= MAX_ATTEMPTS) {
-				setStatus(TYPE.LOCKED);
-				setLockedUntil(new Date().toISOString());
+		setTimeout(() => {
+			if (sha256(p) === passcode) {
+				finishProcess();
 			} else {
-				ref.current.wrongPasscode();
-				setAttempts(attempts?.toString());
+				attempts += 1;
+				if (attempts >= MAX_ATTEMPTS) {
+					setStatus(TYPE.LOCKED);
+					setLockedUntil(new Date().toISOString());
+					Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+				} else {
+					ref.current.wrongPasscode();
+					setAttempts(attempts?.toString());
+					Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+				}
 			}
-		}
+		}, 200);
 	};
 
 	if (status === TYPE.LOCKED) {
