@@ -71,10 +71,7 @@ export const localAuthenticate = async(server) => {
 					} catch (e) {
 						// Do nothing
 					}
-					if (authResult?.success) {
-						await resetAttempts();
-						await saveLastLocalAuthenticationSession(server, serverRecord);
-					} else {
+					if (!authResult?.success) {
 						await localPasscode();
 					}
 				} else {
@@ -83,6 +80,10 @@ export const localAuthenticate = async(server) => {
 			} else {
 				await localPasscode();
 			}
+
+			//
+			await resetAttempts();
+			await saveLastLocalAuthenticationSession(server, serverRecord);
 		}
 	}
 };
