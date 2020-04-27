@@ -80,11 +80,11 @@ export const localAuthenticate = async(server) => {
 			} else {
 				await localPasscode();
 			}
-
-			//
-			await resetAttempts();
-			await saveLastLocalAuthenticationSession(server, serverRecord);
 		}
+
+		//
+		await resetAttempts();
+		await saveLastLocalAuthenticationSession(server, serverRecord);
 	}
 };
 
