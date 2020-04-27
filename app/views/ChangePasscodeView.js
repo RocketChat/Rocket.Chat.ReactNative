@@ -44,7 +44,8 @@ ScreenLockConfigView.navigationOptions = ({ screenProps, navigation }) => {
 	const forceSetPasscode = navigation.getParam('forceSetPasscode', false);
 	if (forceSetPasscode) {
 		return {
-			header: null
+			header: null,
+			...themedHeader(screenProps.theme)
 		};
 	}
 	return {
