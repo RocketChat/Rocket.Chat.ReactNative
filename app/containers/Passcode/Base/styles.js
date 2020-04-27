@@ -46,12 +46,12 @@ export default StyleSheet.create({
 	},
 	textTitle: {
 		fontSize: 20,
-		fontWeight: '200',
+		fontWeight: '300',
 		lineHeight: UNIT * 2.5
 	},
 	textSubtitle: {
 		fontSize: UNIT,
-		fontWeight: '200',
+		fontWeight: '300',
 		textAlign: 'center'
 	},
 	flexCirclePasscode: {

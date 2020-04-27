@@ -21,6 +21,7 @@ const PasscodeEnter = ({ theme, finishProcess }) => {
 	let lockedUntil = false;
 	const [passcode, setPasscode] = useState(null);
 	const [status, setStatus] = useState(TYPE.ENTER);
+	const [hasBiometry, setHasBiometry] = useState(false);
 	const { getItem: getAttempts, setItem: setAttempts } = useAsyncStorage(ATTEMPTS_KEY);
 	const { setItem: setLockedUntil } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
 
@@ -43,6 +44,11 @@ const PasscodeEnter = ({ theme, finishProcess }) => {
 		fetchPasscode();
 	};
 
+	const checkBiometry = async() => {
+		const b = await LocalAuthentication.isEnrolledAsync();
+		setHasBiometry(b);
+	};
+
 	const biometry = async() => {
 		const result = await LocalAuthentication.authenticateAsync({ disableDeviceFallback: true });
 		if (result?.success) {
@@ -52,6 +58,7 @@ const PasscodeEnter = ({ theme, finishProcess }) => {
 
 	useEffect(() => {
 		readStorage();
+		checkBiometry();
 		biometry();
 	}, []);
 
@@ -74,7 +81,17 @@ const PasscodeEnter = ({ theme, finishProcess }) => {
 		return <Locked theme={theme} setStatus={setStatus} />;
 	}
 
-	return <Base ref={ref} theme={theme} type={TYPE.ENTER} onEndProcess={onEndProcess} title={I18n.t('Passcode_enter_title')} />;
+	return (
+		<Base
+			ref={ref}
+			theme={theme}
+			type={TYPE.ENTER}
+			title={I18n.t('Passcode_enter_title')}
+			showBiometry={hasBiometry}
+			onEndProcess={onEndProcess}
+			onBiometryPress={biometry}
+		/>
+	);
 };
 
 PasscodeEnter.propTypes = {

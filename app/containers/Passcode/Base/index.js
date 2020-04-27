@@ -16,7 +16,7 @@ import { themes } from '../../../constants/colors';
 import { PASSCODE_LENGTH } from '../../../constants/localAuthentication';
 
 const Base = forwardRef(({
-	theme, type, onEndProcess, previousPasscode, title, subtitle, onError
+	theme, type, onEndProcess, previousPasscode, title, subtitle, onError, showBiometry, onBiometryPress
 }, ref) => {
 	const rootRef = useRef();
 	const dotsRef = useRef();
@@ -102,7 +102,13 @@ const Base = forwardRef(({
 						))}
 					</Row>
 					<Row style={styles.row}>
-						<Col style={styles.colButtonCircle} />
+						{showBiometry
+							? (
+								<Col style={styles.colButtonCircle}>
+									<Button text='B' theme={theme} onPress={onBiometryPress} />
+								</Col>
+							)
+							: <Col style={styles.colButtonCircle} />}
 						<Col style={styles.colButtonCircle}>
 							<Button text='0' theme={theme} onPress={onPressNumber} />
 						</Col>
@@ -122,8 +128,10 @@ Base.propTypes = {
 	previousPasscode: PropTypes.string,
 	title: PropTypes.string,
 	subtitle: PropTypes.string,
+	showBiometry: PropTypes.string,
 	onEndProcess: PropTypes.func,
-	onError: PropTypes.func
+	onError: PropTypes.func,
+	onBiometryPress: PropTypes.func
 };
 
 export default Base;
