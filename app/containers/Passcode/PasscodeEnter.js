@@ -3,6 +3,7 @@ import { useAsyncStorage } from '@react-native-community/async-storage';
 import RNUserDefaults from 'rn-user-defaults';
 import PropTypes from 'prop-types';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
+import * as LocalAuthentication from 'expo-local-authentication';
 
 import Base from './Base';
 import Locked from './Locked';
@@ -41,8 +42,16 @@ const PasscodeEnter = ({ theme, finishProcess }) => {
 		fetchPasscode();
 	};
 
+	const biometry = async() => {
+		const result = await LocalAuthentication.authenticateAsync({ disableDeviceFallback: true });
+		if (result?.success) {
+			finishProcess();
+		}
+	};
+
 	useEffect(() => {
 		readStorage();
+		biometry();
 	}, []);
 
 	const onEndProcess = (p) => {
