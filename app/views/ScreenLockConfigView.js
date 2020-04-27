@@ -25,6 +25,9 @@ import { PASSCODE_KEY } from '../constants/localAuthentication';
 const styles = StyleSheet.create({
 	listPadding: {
 		paddingVertical: 36
+	},
+	emptySpace: {
+		height: 36
 	}
 });
 
@@ -197,7 +200,7 @@ class ScreenLockConfigView extends React.Component {
 		}
 		return (
 			<>
-				<View style={{ height: 36 }} />
+				<View style={styles.emptySpace} />
 				<Separator theme={theme} />
 				{autoLock ? this.defaultAutoLockOptions.map(item => this.renderItem({ item })) : null}
 			</>
