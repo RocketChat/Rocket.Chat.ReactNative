@@ -449,6 +449,9 @@ const RoomActionsStack = createStackNavigator({
 	NotificationPrefView: {
 		getScreen: () => require('./views/NotificationPreferencesView').default
 	},
+	AttachmentView: {
+		getScreen: () => require('./views/AttachmentView').default
+	},
 	PickerView: {
 		getScreen: () => require('./views/PickerView').default
 	}
@@ -466,7 +469,6 @@ const ModalSwitch = createSwitchNavigator({
 	SettingsStack,
 	ModalBlockStack,
 	CreateDiscussionStack,
-	AttachmentStack,
 	AuthLoading: () => null
 },
 {
@@ -512,7 +514,7 @@ class CustomModalStack extends React.Component {
 		const pageSheetViews = ['AttachmentView'];
 		const pageSheet = pageSheetViews.includes(getActiveRouteName(navigation.state));
 
-		const androidProps = isAndroid && {
+		const androidProps = isAndroid && !pageSheet && {
 			style: { marginBottom: 0 }
 		};
 

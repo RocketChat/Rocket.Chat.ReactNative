@@ -87,35 +87,37 @@ class RoomActionsView extends React.Component {
 	async componentDidMount() {
 		this.mounted = true;
 		const { room, member } = this.state;
-		if (!room.id) {
-			try {
-				const result = await RocketChat.getChannelInfo(room.rid);
-				if (result.success) {
-					this.setState({ room: { ...result.channel, rid: result.channel._id } });
+		if (room.rid) {
+			if (!room.id) {
+				try {
+					const result = await RocketChat.getChannelInfo(room.rid);
+					if (result.success) {
+						this.setState({ room: { ...result.channel, rid: result.channel._id } });
+					}
+				} catch (e) {
+					log(e);
 				}
-			} catch (e) {
-				log(e);
 			}
-		}
 
-		if (room && room.t !== 'd' && this.canViewMembers()) {
-			try {
-				const counters = await RocketChat.getRoomCounters(room.rid, room.t);
-				if (counters.success) {
-					this.setState({ membersCount: counters.members, joined: counters.joined });
+			if (room && room.t !== 'd' && this.canViewMembers()) {
+				try {
+					const counters = await RocketChat.getRoomCounters(room.rid, room.t);
+					if (counters.success) {
+						this.setState({ membersCount: counters.members, joined: counters.joined });
+					}
+				} catch (e) {
+					log(e);
 				}
-			} catch (e) {
-				log(e);
+			} else if (room.t === 'd' && _.isEmpty(member)) {
+				this.updateRoomMember();
 			}
-		} else if (room.t === 'd' && _.isEmpty(member)) {
-			this.updateRoomMember();
+
+			const canAutoTranslate = await RocketChat.canAutoTranslate();
+			this.setState({ canAutoTranslate });
+
+			this.canAddUser();
+			this.canInviteUser();
 		}
-
-		const canAutoTranslate = await RocketChat.canAutoTranslate();
-		this.setState({ canAutoTranslate });
-
-		this.canAddUser();
-		this.canInviteUser();
 	}
 
 	componentWillUnmount() {
