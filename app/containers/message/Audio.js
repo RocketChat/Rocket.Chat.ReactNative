@@ -18,7 +18,7 @@ import { withSplit } from '../../split';
 import ActivityIndicator from '../ActivityIndicator';
 
 const mode = {
-	allowsRecordingIOS: true,
+	allowsRecordingIOS: false,
 	playsInSilentModeIOS: true,
 	staysActiveInBackground: false,
 	shouldDuckAndroid: true,
