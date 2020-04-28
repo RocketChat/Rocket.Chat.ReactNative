@@ -495,7 +495,7 @@ class RoomActionsView extends React.Component {
 							numberOfLines={1}
 							theme={theme}
 						/>
-						{room.t === 'd' && <Markdown msg={member.statusText} style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]} preview theme={theme} />}
+						{room.t === 'd' && <Markdown msg={member.statusText} style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]} preview theme={theme} numberOfLines={1} />}
 					</View>
 					{!item.disabled && <DisclosureIndicator theme={theme} />}
 				</>

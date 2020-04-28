@@ -60,7 +60,7 @@ const Header = React.memo(({
 		>
 			<HeaderTitle connecting={connecting} isFetching={isFetching} theme={theme} />
 			<View style={styles.button}>
-				<Text style={[styles.server, { color: themes[theme].headerTintColor }]}>{serverName}</Text>
+				<Text style={[styles.server, { color: themes[theme].headerTintColor }]} numberOfLines={1}>{serverName}</Text>
 				<Image style={[styles.disclosure, showServerDropdown && styles.upsideDown]} source={{ uri: 'disclosure_indicator_server' }} />
 			</View>
 		</TouchableOpacity>
