@@ -17,6 +17,16 @@ import { isAndroid, isIOS } from '../../utils/deviceInfo';
 import { withSplit } from '../../split';
 import ActivityIndicator from '../ActivityIndicator';
 
+const mode = {
+	allowsRecordingIOS: true,
+	playsInSilentModeIOS: true,
+	staysActiveInBackground: false,
+	shouldDuckAndroid: true,
+	playThroughEarpieceAndroid: false,
+	interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+	interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX
+};
+
 const styles = StyleSheet.create({
 	audioContainer: {
 		flex: 1,
@@ -107,8 +117,8 @@ class MessageAudio extends React.Component {
 
 		this.setState({ loading: true });
 		try {
-			const status = await this.sound.loadAsync({ uri });
-			this.onLoad(status);
+			await Audio.setAudioModeAsync(mode);
+			await this.sound.loadAsync({ uri });
 		} catch {
 			// Do nothing
 		}
@@ -157,6 +167,7 @@ class MessageAudio extends React.Component {
 
 	onPlaybackStatusUpdate = (status) => {
 		if (status) {
+			this.onLoad(status);
 			this.onProgress(status);
 			this.onEnd(status);
 		}
@@ -178,7 +189,7 @@ class MessageAudio extends React.Component {
 	onEnd = async(data) => {
 		if (data.didJustFinish) {
 			try {
-				await this.sound.setPositionAsync(0);
+				await this.sound.stopAsync();
 				this.setState({ paused: true, currentTime: 0 });
 			} catch {
 				// do nothing
