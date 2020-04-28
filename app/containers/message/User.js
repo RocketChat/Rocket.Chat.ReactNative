@@ -50,14 +50,13 @@ const User = React.memo(({
 			<View style={styles.container}>
 				<TouchableOpacity
 					onPress={() => navToRoomInfo(navParam)}
+					style={styles.titleContainer}
 					disabled={author._id === user.id}
 				>
-					<View style={styles.titleContainer}>
-						<Text style={[styles.username, { color: themes[theme].titleText }]} numberOfLines={1}>
-							{alias || username}
-							{aliasUsername}
-						</Text>
-					</View>
+					<Text style={[styles.username, { color: themes[theme].titleText }]} numberOfLines={1}>
+						{alias || username}
+						{aliasUsername}
+					</Text>
 				</TouchableOpacity>
 				<Text style={[messageStyles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 				{ hasError && <MessageError hasError={hasError} theme={theme} {...props} /> }
