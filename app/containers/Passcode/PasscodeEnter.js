@@ -17,13 +17,12 @@ import { resetAttempts } from '../../utils/localAuthentication';
 import { getLockedUntil, getDiff } from './utils';
 import I18n from '../../i18n';
 
-const PasscodeEnter = ({ theme, finishProcess }) => {
+const PasscodeEnter = ({ theme, hasBiometry, finishProcess }) => {
 	const ref = useRef(null);
 	let attempts = 0;
 	let lockedUntil = false;
 	const [passcode, setPasscode] = useState(null);
-	const [status, setStatus] = useState(TYPE.ENTER);
-	const [hasBiometry, setHasBiometry] = useState(false);
+	const [status, setStatus] = useState(null);
 	const { getItem: getAttempts, setItem: setAttempts } = useAsyncStorage(ATTEMPTS_KEY);
 	const { setItem: setLockedUntil } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
 
@@ -32,41 +31,40 @@ const PasscodeEnter = ({ theme, finishProcess }) => {
 		setPasscode(p);
 	};
 
+	const biometry = async() => {
+		if (hasBiometry && status === TYPE.ENTER) {
+			const result = await LocalAuthentication.authenticateAsync({
+				disableDeviceFallback: true,
+				cancelLabel: I18n.t('Local_authentication_biometry_fallback'),
+				promptMessage: I18n.t('Local_authentication_biometry_title')
+			});
+			if (result?.success) {
+				finishProcess();
+			}
+		}
+	};
+
 	const readStorage = async() => {
 		lockedUntil = await getLockedUntil();
 		if (lockedUntil) {
 			const diff = getDiff(lockedUntil);
 			if (diff <= 1) {
-				resetAttempts();
+				await resetAttempts();
+				setStatus(TYPE.ENTER);
 			} else {
 				attempts = await getAttempts();
 				setStatus(TYPE.LOCKED);
 			}
+		} else {
+			setStatus(TYPE.ENTER);
 		}
-		fetchPasscode();
-	};
-
-	const checkBiometry = async() => {
-		const b = await LocalAuthentication.isEnrolledAsync();
-		setHasBiometry(b);
-	};
-
-	const biometry = async() => {
-		const result = await LocalAuthentication.authenticateAsync({
-			disableDeviceFallback: true,
-			cancelLabel: I18n.t('Local_authentication_biometry_fallback'),
-			promptMessage: I18n.t('Local_authentication_biometry_title')
-		});
-		if (result?.success) {
-			finishProcess();
-		}
+		await fetchPasscode();
+		biometry();
 	};
 
 	useEffect(() => {
 		readStorage();
-		checkBiometry();
-		biometry();
-	}, []);
+	}, [status]);
 
 	const onEndProcess = (p) => {
 		setTimeout(() => {
@@ -106,6 +104,7 @@ const PasscodeEnter = ({ theme, finishProcess }) => {
 
 PasscodeEnter.propTypes = {
 	theme: PropTypes.string,
+	hasBiometry: PropTypes.string,
 	finishProcess: PropTypes.func
 };
 

@@ -28,9 +28,10 @@ export const saveLastLocalAuthenticationSession = async(server, serverRecord) =>
 
 export const resetAttempts = () => AsyncStorage.multiRemove([LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY]);
 
-export const openModal = () => new Promise((resolve) => {
+export const openModal = hasBiometry => new Promise((resolve) => {
 	EventEmitter.emit(LOCAL_AUTHENTICATE_EMITTER, {
-		submit: () => resolve()
+		submit: () => resolve(),
+		hasBiometry
 	});
 });
 
@@ -56,8 +57,16 @@ export const localAuthenticate = async(server) => {
 			// Make sure splash screen has been hidden
 			RNBootSplash.hide();
 
+			let hasBiometry = false;
+
+			// if biometry is enabled on the app
+			if (serverRecord?.biometry) {
+				const isEnrolled = await LocalAuthentication.isEnrolledAsync();
+				hasBiometry = isEnrolled;
+			}
+
 			// Authenticate
-			await openModal();
+			await openModal(hasBiometry);
 		}
 
 		//
