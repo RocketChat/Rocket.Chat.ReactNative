@@ -817,13 +817,10 @@ class RoomView extends React.Component {
 
 	closeBanner = async() => {
 		const { room } = this.state;
-		const { rid } = room;
 		try {
 			const db = database.active;
-			const subCollection = db.collections.get('subscriptions');
-			const newRoom = await subCollection.find(rid);
 			await db.action(async() => {
-				await newRoom.update((r) => {
+				await room.update((r) => {
 					r.bannerClosed = true;
 				});
 			});

@@ -28,10 +28,9 @@ export default StyleSheet.create({
 	bannerContainer: {
 		paddingVertical: 12,
 		paddingHorizontal: 15,
-		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'space-between'
+		justifyContent: 'space-evenly'
 	},
 	bannerModalTitle: {
 		fontSize: 16,
@@ -70,12 +69,12 @@ export default StyleSheet.create({
 		fontSize: 16,
 		...sharedStyles.textMedium
 	},
-	icon: {
-		width: 22,
-		height: 22
-	},
 	textContainer: {
 		width: '90%',
 		height: '100%'
+	},
+	iconContainer: {
+		width: '10%',
+		alignItems: 'flex-end'
 	}
 });

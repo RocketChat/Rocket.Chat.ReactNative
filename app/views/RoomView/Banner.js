@@ -35,10 +35,10 @@ const Banner = React.memo(({
 					</View>
 					<BorderlessButton
 						onPress={closeBanner}
+						style={styles.iconContainer}
 					>
 						<CustomIcon
-							style={styles.icon}
-							color={themes[theme].bannerIcon}
+							color={themes[theme].auxiliaryText}
 							name='cross'
 							size={20}
 						/>
