@@ -63,7 +63,7 @@ export default class RoomSubscription {
 			clearTimeout(this.timer);
 		}
 
-		reduxStore.dispatch(unsubscribeRoom());
+		reduxStore.dispatch(unsubscribeRoom(this.rid));
 	}
 
 	removeListener = async(promise) => {

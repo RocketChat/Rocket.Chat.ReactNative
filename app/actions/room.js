@@ -7,9 +7,10 @@ export function subscribeRoom(rid) {
 	};
 }
 
-export function unsubscribeRoom() {
+export function unsubscribeRoom(rid) {
 	return {
-		type: types.ROOM.UNSUBSCRIBE
+		type: types.ROOM.UNSUBSCRIBE,
+		rid
 	};
 }
 

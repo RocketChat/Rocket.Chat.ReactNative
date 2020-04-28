@@ -2,7 +2,8 @@ import { ROOM } from '../actions/actionsTypes';
 
 const initialState = {
 	rid: null,
-	isDeleting: false
+	isDeleting: false,
+	rooms: []
 };
 
 export default function(state = initialState, action) {
@@ -10,12 +11,13 @@ export default function(state = initialState, action) {
 		case ROOM.SUBSCRIBE:
 			return {
 				...state,
-				rid: action.rid
+				rooms: [action.rid, ...state.rooms]
 			};
 		case ROOM.UNSUBSCRIBE:
 			return {
 				...state,
-				rid: null
+				rooms: state.rooms
+					.filter(room => room.rid === action.rid)
 			};
 		case ROOM.LEAVE:
 			return {
