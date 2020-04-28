@@ -35,6 +35,17 @@ export const openModal = hasBiometry => new Promise((resolve) => {
 	});
 });
 
+export const requireAuthentication = (serverRecord) => {
+	// if screen lock is enabled
+	if (serverRecord?.autoLock) {
+		// diff to last authenticated session
+		const diffToLastSession = moment().diff(serverRecord?.lastLocalAuthenticatedSession, 'seconds');
+
+		// if last authenticated session is older than configured auto lock time, authentication is required
+		return diffToLastSession >= serverRecord?.autoLockTime;
+	}
+	return false;
+};
 
 export const localAuthenticate = async(server) => {
 	const serversDB = database.servers;
@@ -47,32 +58,25 @@ export const localAuthenticate = async(server) => {
 		return Promise.reject();
 	}
 
-	// if screen lock is enabled
-	if (serverRecord?.autoLock) {
-		// diff to last authenticated session
-		const diffToLastSession = moment().diff(serverRecord?.lastLocalAuthenticatedSession, 'seconds');
+	if (requireAuthentication(serverRecord)) {
+		// Make sure splash screen has been hidden
+		RNBootSplash.hide();
 
-		// if last authenticated session is older than configured auto lock time, authentication is required
-		if (diffToLastSession >= serverRecord?.autoLockTime) {
-			// Make sure splash screen has been hidden
-			RNBootSplash.hide();
+		let hasBiometry = false;
 
-			let hasBiometry = false;
-
-			// if biometry is enabled on the app
-			if (serverRecord?.biometry) {
-				const isEnrolled = await LocalAuthentication.isEnrolledAsync();
-				hasBiometry = isEnrolled;
-			}
-
-			// Authenticate
-			await openModal(hasBiometry);
+		// if biometry is enabled on the app
+		if (serverRecord?.biometry) {
+			const isEnrolled = await LocalAuthentication.isEnrolledAsync();
+			hasBiometry = isEnrolled;
 		}
 
-		//
-		await resetAttempts();
-		await saveLastLocalAuthenticationSession(server, serverRecord);
+		// Authenticate
+		await openModal(hasBiometry);
 	}
+
+	//
+	await resetAttempts();
+	await saveLastLocalAuthenticationSession(server, serverRecord);
 };
 
 export const supportedBiometryLabel = async() => {
