@@ -43,7 +43,7 @@ const User = React.memo(({
 			rid: author._id
 		};
 		const username = (useRealName && author.name) || author.username;
-		const aliasUsername = alias ? (<Text style={[styles.alias, { color: themes[theme].auxiliaryText }]}> @{username}</Text>) : null;
+		const aliasUsername = (alias || useRealName) ? (<Text style={[styles.alias, { color: themes[theme].auxiliaryText }]}> @{author.username}</Text>) : null;
 		const time = moment(ts).format(timeFormat);
 
 		return (
