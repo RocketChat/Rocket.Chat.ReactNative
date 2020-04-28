@@ -502,6 +502,8 @@ export default {
 	Mark_unread: 'Marcar como não Lida',
 	Wait_activation_warning: 'Antes que você possa fazer o login, sua conta deve ser manualmente ativada por um administrador.',
 	Screen_lock: 'Bloqueio de Tela',
+	Local_authentication_biometry_title: 'Autenticar',
+	Local_authentication_biometry_fallback: 'Usar senha',
 	Local_authentication_unlock_option: 'Desbloquear com senha',
 	Local_authentication_change_passcode: 'Alterar senha',
 	Local_authentication_info: 'Nota: se você esquecer sua senha, terá de apagar e reinstalar o app.',

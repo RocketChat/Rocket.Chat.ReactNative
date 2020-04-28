@@ -562,6 +562,8 @@ export default {
 	Mark_unread: 'Mark Unread',
 	Wait_activation_warning: 'Before you can login, your account must be manually activated by an administrator.',
 	Screen_lock: 'Screen lock',
+	Local_authentication_biometry_title: 'Authenticate',
+	Local_authentication_biometry_fallback: 'Use passcode',
 	Local_authentication_unlock_option: 'Unlock with Passcode',
 	Local_authentication_change_passcode: 'Change Passcode',
 	Local_authentication_info: 'Note: if you forget the Passcode, you\'ll need to delete and reinstall the app.',

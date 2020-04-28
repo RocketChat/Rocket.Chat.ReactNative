@@ -52,7 +52,11 @@ const PasscodeEnter = ({ theme, finishProcess }) => {
 	};
 
 	const biometry = async() => {
-		const result = await LocalAuthentication.authenticateAsync({ disableDeviceFallback: true });
+		const result = await LocalAuthentication.authenticateAsync({
+			disableDeviceFallback: true,
+			cancelLabel: I18n.t('Local_authentication_biometry_fallback'),
+			promptMessage: I18n.t('Local_authentication_biometry_title')
+		});
 		if (result?.success) {
 			finishProcess();
 		}
