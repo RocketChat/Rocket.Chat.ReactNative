@@ -11,7 +11,9 @@ const Button = ({
 	text, disabled, theme, onPress, del
 }) => (
 	<Touch
-		style={[styles.buttonCircle, { backgroundColor: themes[theme].backgroundColor, borderColor: themes[theme].borderColor }]}
+		style={[styles.buttonCircle, { backgroundColor: 'transparent' }]}
+		underlayColor={themes[theme].passcodeButtonActive}
+		rippleColor={themes[theme].passcodeButtonActive}
 		disabled={disabled}
 		theme={theme}
 		onPress={() => onPress && onPress(text)}

@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+import sharedStyles from '../../../views/Styles';
+
 const UNIT = 16;
 
 export default StyleSheet.create({
@@ -12,25 +14,29 @@ export default StyleSheet.create({
 		flexDirection: 'column',
 		justifyContent: 'flex-end',
 		alignItems: 'center',
-		flex: 2
+		// flex: 2
 	},
 	row: {
 		flex: 0,
 		flexShrink: 1,
 		alignItems: 'center',
-		height: UNIT * 5.5
+		// height: UNIT * 5.5
+		height: 102
 	},
 	colButtonCircle: {
 		flex: 0,
-		marginLeft: UNIT / 2,
-		marginRight: UNIT / 2,
+		marginLeft: 12,
+		marginRight: 12,
+		// marginTop: 12,
+		// marginBottom: 12,
 		alignItems: 'center',
-		width: UNIT * 4,
-		height: UNIT * 4
+		width: 78,
+		height: 78
 	},
 	text: {
-		fontSize: UNIT * 2,
-		fontWeight: '200'
+		fontSize: 28,
+		...sharedStyles.textRegular,
+		fontWeight: '300'
 	},
 	deleteText: {
 		fontSize: UNIT * 1.2,
@@ -39,15 +45,19 @@ export default StyleSheet.create({
 	buttonCircle: {
 		alignItems: 'center',
 		justifyContent: 'center',
-		width: UNIT * 4,
-		height: UNIT * 4,
-		borderRadius: UNIT * 2,
-		borderWidth: 1
+		width: 78,
+		height: 78,
+		borderRadius: 4
+		// width: UNIT * 4,
+		// height: UNIT * 4,
+		// borderRadius: UNIT * 2,
+		// borderWidth: 1
 	},
 	textTitle: {
-		fontSize: 20,
+		fontSize: 22,
+		...sharedStyles.textRegular,
 		fontWeight: '300',
-		lineHeight: UNIT * 2.5
+		// lineHeight: UNIT * 2.5
 	},
 	textSubtitle: {
 		fontSize: UNIT,
@@ -55,7 +65,9 @@ export default StyleSheet.create({
 		textAlign: 'center'
 	},
 	flexCirclePasscode: {
-		flex: 2,
+		// flex: 2,
+		marginTop: 24,
+		marginBottom: 40,
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
@@ -67,11 +79,12 @@ export default StyleSheet.create({
 	},
 	viewCircles: {
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
+		height: 16
 	},
 	grid: {
 		justifyContent: 'flex-start',
 		width: '100%',
-		flex: 7
+		// flex: 7
 	}
 });

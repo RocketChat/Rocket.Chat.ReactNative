@@ -65,7 +65,7 @@ const ScreenLockedView = ({ theme }) => {
 			animationIn='fadeIn'
 			animationOut='fadeOut'
 		>
-			<View style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+			<View style={[styles.container, { backgroundColor: themes[theme].passcodeBackground }]}>
 				<PasscodeEnter theme={theme} hasBiometry={data?.hasBiometry} finishProcess={onSubmit} />
 			</View>
 		</Modal>

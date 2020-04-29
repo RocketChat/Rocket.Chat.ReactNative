@@ -46,7 +46,9 @@ export const themes = {
 		messageboxBackground: '#ffffff',
 		searchboxBackground: '#E6E6E7',
 		buttonBackground: '#414852',
-		buttonText: '#ffffff'
+		buttonText: '#ffffff',
+		passcodeBackground: '#EEEFF1',
+		passcodeButtonActive: '#E4E7EA',
 	},
 	dark: {
 		backgroundColor: '#030b1b',
@@ -81,7 +83,9 @@ export const themes = {
 		messageboxBackground: '#0b182c',
 		searchboxBackground: '#192d4d',
 		buttonBackground: '#414852',
-		buttonText: '#ffffff'
+		buttonText: '#ffffff',
+		passcodeBackground: '#030C1B',
+		passcodeButtonActive: '#0B182C',
 	},
 	black: {
 		backgroundColor: '#000000',
@@ -116,6 +120,8 @@ export const themes = {
 		messageboxBackground: '#0d0d0d',
 		searchboxBackground: '#1f1f1f',
 		buttonBackground: '#414852',
-		buttonText: '#ffffff'
+		buttonText: '#ffffff',
+		passcodeBackground: '#000000',
+		passcodeButtonActive: '#0E0D0D',
 	}
 };

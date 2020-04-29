@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 import styles from './styles';
 import { themes } from '../../../constants/colors';
 
-const SIZE_EMPTY = 8;
-const SIZE_FULL = 12;
+const SIZE_EMPTY = 12;
+const SIZE_FULL = 16;
 
 const Dots = ({ passcode, theme, length }) => (
 	<View style={[styles.topViewCirclePasscode]}>

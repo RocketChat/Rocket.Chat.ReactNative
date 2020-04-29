@@ -31,7 +31,7 @@ const ChangePasscodeView = React.memo(({ navigation, theme }) => {
 
 	return (
 		<SafeAreaView
-			style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
+			style={[sharedStyles.container, { backgroundColor: themes[theme].passcodeBackground }]}
 		>
 			<PasscodeChoose theme={theme} type={TYPE.choose} finishProcess={getPasscode} />
 		</SafeAreaView>
