@@ -16,6 +16,13 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		// flex: 2
 	},
+	viewSubtitle: {
+		flexDirection: 'column',
+		justifyContent: 'flex-end',
+		alignItems: 'center',
+		height: 30
+		// flex: 2
+	},
 	row: {
 		flex: 0,
 		flexShrink: 1,
@@ -60,8 +67,9 @@ export default StyleSheet.create({
 		// lineHeight: UNIT * 2.5
 	},
 	textSubtitle: {
-		fontSize: UNIT,
-		fontWeight: '300',
+		fontSize: 16,
+		...sharedStyles.textRegular,
+		// fontWeight: '300',
 		textAlign: 'center'
 	},
 	flexCirclePasscode: {

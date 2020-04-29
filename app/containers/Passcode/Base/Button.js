@@ -6,9 +6,10 @@ import styles from './styles';
 import { themes } from '../../../constants/colors';
 import Touch from '../../../utils/touch';
 import I18n from '../../../i18n';
+import { CustomIcon } from '../../../lib/Icons';
 
 const Button = ({
-	text, disabled, theme, onPress, del
+	text, disabled, theme, onPress, del, icon
 }) => (
 	<Touch
 		style={[styles.buttonCircle, { backgroundColor: 'transparent' }]}
@@ -19,14 +20,12 @@ const Button = ({
 		onPress={() => onPress && onPress(text)}
 	>
 		{
-			del
+			icon
 				? (
-					<Text style={[styles.deleteText, { color: themes[theme].titleText }]}>
-						{I18n.t('Passcode_del')}
-					</Text>
+					<CustomIcon name={icon} size={36} color={themes[theme].passcodePrimary} />
 				)
 				: (
-					<Text style={[styles.text, { color: themes[theme].titleText }]}>
+					<Text style={[styles.text, { color: themes[theme].passcodePrimary }]}>
 						{text}
 					</Text>
 				)

@@ -49,6 +49,11 @@ export const themes = {
 		buttonText: '#ffffff',
 		passcodeBackground: '#EEEFF1',
 		passcodeButtonActive: '#E4E7EA',
+		passcodeLockIcon: '#6C727A',
+		passcodePrimary: '#2F343D',
+		passcodeSecondary: '#6C727A',
+		passcodeDotEmpty: '#CBCED1',
+		passcodeDotFull: '#6C727A'
 	},
 	dark: {
 		backgroundColor: '#030b1b',

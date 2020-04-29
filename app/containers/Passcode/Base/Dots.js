@@ -18,9 +18,9 @@ const Dots = ({ passcode, theme, length }) => (
 			const width = lengthSup ? SIZE_FULL : SIZE_EMPTY;
 			let backgroundColor = '';
 			if (lengthSup && passcode.length > 0) {
-				backgroundColor = themes[theme].titleText;
+				backgroundColor = themes[theme].passcodeDotFull;
 			} else {
-				backgroundColor = themes[theme].bodyText;
+				backgroundColor = themes[theme].passcodeDotEmpty;
 			}
 			const borderRadius = lengthSup ? SIZE_FULL / 2 : SIZE_EMPTY / 2;
 			const marginRight = lengthSup ? 10 - (SIZE_FULL - SIZE_EMPTY) / 2 : 10;

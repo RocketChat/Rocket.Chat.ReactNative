@@ -14,6 +14,7 @@ import Dots from './Dots';
 import { TYPE } from '../constants';
 import { themes } from '../../../constants/colors';
 import { PASSCODE_LENGTH } from '../../../constants/localAuthentication';
+import { CustomIcon } from '../../../lib/Icons';
 
 const Base = forwardRef(({
 	theme, type, onEndProcess, previousPasscode, title, subtitle, onError, showBiometry, onBiometryPress
@@ -73,9 +74,14 @@ const Base = forwardRef(({
 	return (
 		<Animatable.View ref={rootRef} style={styles.container}>
 			<View style={styles.container}>
+				<View style={{ marginBottom: 16, marginTop: 40 }}>
+					<CustomIcon name='lock' size={40} color={themes[theme].passcodeLockIcon} />
+				</View>
 				<View style={styles.viewTitle}>
-					<Text style={[styles.textTitle, { color: themes[theme].titleText }]}>{title}</Text>
-					{subtitle ? <Text style={[styles.textSubtitle, { color: themes[theme].bodyText }]}>{subtitle}</Text> : null}
+					<Text style={[styles.textTitle, { color: themes[theme].passcodePrimary }]}>{title}</Text>
+				</View>
+				<View style={styles.viewSubtitle}>
+					{subtitle ? <Text style={[styles.textSubtitle, { color: themes[theme].passcodeSecondary }]}>{subtitle}</Text> : null}
 				</View>
 				<Animatable.View ref={dotsRef} style={styles.flexCirclePasscode}>
 					<Dots passcode={passcode} theme={theme} length={PASSCODE_LENGTH} />
@@ -106,7 +112,7 @@ const Base = forwardRef(({
 						{showBiometry
 							? (
 								<Col style={styles.colButtonCircle}>
-									<Button text='B' theme={theme} onPress={onBiometryPress} />
+									<Button icon='fingerprint' theme={theme} onPress={onBiometryPress} />
 								</Col>
 							)
 							: <Col style={styles.colButtonCircle} />}
@@ -114,7 +120,7 @@ const Base = forwardRef(({
 							<Button text='0' theme={theme} onPress={onPressNumber} />
 						</Col>
 						<Col style={styles.colButtonCircle}>
-							<Button del theme={theme} onPress={onPressDelete} />
+							<Button icon='backspace' theme={theme} onPress={onPressDelete} />
 						</Col>
 					</Row>
 				</Grid>
