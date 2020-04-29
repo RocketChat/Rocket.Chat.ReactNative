@@ -122,6 +122,7 @@ export default {
 	Cancel_editing: 'Cancel editing',
 	Cancel_recording: 'Cancel recording',
 	Cancel: 'Cancel',
+	Cant_get_public_settings: 'Can\'t get server public settings.\n{{contact}}',
 	changing_avatar: 'changing avatar',
 	creating_channel: 'creating channel',
 	creating_invite: 'creating invite',

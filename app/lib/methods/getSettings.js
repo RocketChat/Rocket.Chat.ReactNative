@@ -69,16 +69,12 @@ const serverInfoUpdate = async(serverInfo, iconSetting) => {
 };
 
 export async function getLoginSettings({ server }) {
-	try {
-		const settingsParams = JSON.stringify(loginSettings);
-		const result = await fetch(`${ server }/api/v1/settings.public?query={"_id":{"$in":${ settingsParams }}}`).then(response => response.json());
+	const settingsParams = JSON.stringify(loginSettings);
+	const result = await fetch(`${ server }/api/v1/settings.public?query={"_id":{"$in":${ settingsParams }}}`).then(response => response.json());
 
-		if (result.success && result.settings.length) {
-			reduxStore.dispatch(clearSettings());
-			reduxStore.dispatch(addSettings(this.parseSettings(this._prepareSettings(result.settings))));
-		}
-	} catch (e) {
-		log(e);
+	if (result.success && result.settings.length) {
+		reduxStore.dispatch(clearSettings());
+		reduxStore.dispatch(addSettings(this.parseSettings(this._prepareSettings(result.settings))));
 	}
 }
 

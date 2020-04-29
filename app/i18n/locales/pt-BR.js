@@ -123,6 +123,7 @@ export default {
 	Cancel_editing: 'Cancelar edição',
 	Cancel_recording: 'Cancelar gravação',
 	Cancel: 'Cancelar',
+	Cant_get_public_settings: 'Não é possível obter as configurações públicas do servidor.\n{{contact}}',
 	changing_avatar: 'trocando avatar',
 	creating_channel: 'criando canal',
 	creating_invite: 'criando convite',
