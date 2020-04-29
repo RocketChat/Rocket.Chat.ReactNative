@@ -4850,7 +4850,7 @@ expo-image-loader@~1.0.0:
   resolved "https://registry.yarnpkg.com/expo-image-loader/-/expo-image-loader-1.0.1.tgz#a83e336768df4dfcb8909aebb6d8152e256d7a72"
   integrity sha512-v7ziP+UGj+LArEmP//XTaqi9iFWRa8LAShNoFwwnpPS9huM8q3I+P16xK+GTo+4bQa1pPSIFBUZ8KqwAc+k8mQ==
 
-expo-local-authentication@^9.0.0:
+expo-local-authentication@9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/expo-local-authentication/-/expo-local-authentication-9.0.0.tgz#2e60f2a93424be93506bede11be7d2914503820b"
   integrity sha512-ciRRpmDCHG/RMbyaQso4xjHGAfOvr3KsJdUz4Jx2wDPPTN3qwan2Rjgs87Ngpr7T8lBt6DaMCydhRItlF3FOcA==
