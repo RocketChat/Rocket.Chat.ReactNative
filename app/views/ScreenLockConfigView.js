@@ -49,10 +49,6 @@ class ScreenLockConfigView extends React.Component {
 
 	defaultAutoLockOptions = [
 		{
-			title: I18n.t('Local_authentication_auto_lock_0'),
-			value: 0
-		},
-		{
 			title: I18n.t('Local_authentication_auto_lock_60'),
 			value: 60
 		},

@@ -570,7 +570,6 @@ export default {
 	Local_authentication_facial_recognition: 'facial recognition',
 	Local_authentication_fingerprint: 'fingerprint',
 	Local_authentication_unlock_with_label: 'Unlock with {{label}}',
-	Local_authentication_auto_lock_0: 'Immediately',
 	Local_authentication_auto_lock_60: 'After 1 minute',
 	Local_authentication_auto_lock_300: 'After 5 minutes',
 	Local_authentication_auto_lock_900: 'After 15 minutes',
