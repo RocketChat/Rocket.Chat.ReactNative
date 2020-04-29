@@ -9,20 +9,22 @@ export default () => createStore => (...args) => {
 	let currentState = '';
 
 	const handleAppStateChange = (nextAppState) => {
-		if (currentState !== nextAppState) {
-			let type;
-			if (nextAppState === 'active') {
-				type = APP_STATE.FOREGROUND;
-			} else if (nextAppState === 'background' || nextAppState === 'inactive') {
-				type = APP_STATE.BACKGROUND;
+		if (nextAppState !== 'inactive') {
+			if (currentState !== nextAppState) {
+				let type;
+				if (nextAppState === 'active') {
+					type = APP_STATE.FOREGROUND;
+				} else if (nextAppState === 'background') {
+					type = APP_STATE.BACKGROUND;
+				}
+				if (type) {
+					store.dispatch({
+						type
+					});
+				}
 			}
-			if (type) {
-				store.dispatch({
-					type
-				});
-			}
+			currentState = nextAppState;
 		}
-		currentState = nextAppState;
 	};
 
 	AppState.addEventListener('change', handleAppStateChange);

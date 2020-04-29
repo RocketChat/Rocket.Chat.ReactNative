@@ -47,7 +47,6 @@ import TwoFactor from './containers/TwoFactor';
 import RoomsListView from './views/RoomsListView';
 import RoomView from './views/RoomView';
 import ScreenLockedView from './views/ScreenLockedView';
-import BlurView from './views/BlurView';
 
 if (isIOS) {
 	const RNScreens = require('react-native-screens');
@@ -741,7 +740,6 @@ export default class Root extends React.Component {
 						{content}
 						<TwoFactor />
 						<ScreenLockedView />
-						<BlurView />
 					</ThemeContext.Provider>
 				</Provider>
 			</AppearanceProvider>
