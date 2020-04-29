@@ -515,7 +515,6 @@ export default {
 	Local_authentication_auto_lock_900: 'Após 15 minutos',
 	Local_authentication_auto_lock_1800: 'Após 30 minutos',
 	Local_authentication_auto_lock_3600: 'Após 1 hora',
-	Passcode_del: 'del',
 	Passcode_enter_title: 'Digite sua senha',
 	Passcode_choose_title: 'Insira sua nova senha',
 	Passcode_choose_confirm_title: 'Confirme sua nova senha',

@@ -9,11 +9,10 @@ import { themes } from '../../../constants/colors';
 const SIZE_EMPTY = 12;
 const SIZE_FULL = 16;
 
-const Dots = ({ passcode, theme, length }) => (
-	<View style={[styles.topViewCirclePasscode]}>
+const Dots = React.memo(({ passcode, theme, length }) => (
+	<View style={[styles.dotsContainer]}>
 		{_.range(length).map((val) => {
 			const lengthSup = (passcode.length >= val + 1);
-			const opacity = lengthSup ? 1 : 0.5;
 			const height = lengthSup ? SIZE_FULL : SIZE_EMPTY;
 			const width = lengthSup ? SIZE_FULL : SIZE_EMPTY;
 			let backgroundColor = '';
@@ -26,10 +25,9 @@ const Dots = ({ passcode, theme, length }) => (
 			const marginRight = lengthSup ? 10 - (SIZE_FULL - SIZE_EMPTY) / 2 : 10;
 			const marginLeft = lengthSup ? 10 - (SIZE_FULL - SIZE_EMPTY) / 2 : 10;
 			return (
-				<View style={styles.viewCircles}>
+				<View style={styles.dotsView}>
 					<View
 						style={[{
-							opacity,
 							height,
 							width,
 							borderRadius,
@@ -42,7 +40,7 @@ const Dots = ({ passcode, theme, length }) => (
 			);
 		})}
 	</View>
-);
+));
 
 Dots.propTypes = {
 	passcode: PropTypes.string,

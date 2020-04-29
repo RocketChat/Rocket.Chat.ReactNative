@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import {
-	View, StyleSheet
-} from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import useDeepCompareEffect from 'use-deep-compare-effect';
@@ -9,22 +6,11 @@ import _ from 'lodash';
 import Orientation from 'react-native-orientation-locker';
 
 import { withTheme } from '../theme';
-import { themes } from '../constants/colors';
 import EventEmitter from '../utils/events';
 import { withSplit } from '../split';
 import { LOCAL_AUTHENTICATE_EMITTER } from '../constants/localAuthentication';
 import { isTablet } from '../utils/deviceInfo';
 import { PasscodeEnter } from '../containers/Passcode';
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		width: '100%',
-		// paddingTop: 40
-	}
-});
 
 const ScreenLockedView = ({ theme }) => {
 	const [visible, setVisible] = useState(false);
@@ -67,9 +53,7 @@ const ScreenLockedView = ({ theme }) => {
 			animationIn='fadeIn'
 			animationOut='fadeOut'
 		>
-			<View style={[styles.container, { backgroundColor: themes[theme].passcodeBackground }]}>
-				<PasscodeEnter theme={theme} hasBiometry={data?.hasBiometry} finishProcess={onSubmit} />
-			</View>
+			<PasscodeEnter theme={theme} hasBiometry={data?.hasBiometry} finishProcess={onSubmit} />
 		</Modal>
 	);
 };

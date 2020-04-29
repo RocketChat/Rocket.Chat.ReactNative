@@ -91,6 +91,11 @@ export const themes = {
 		buttonText: '#ffffff',
 		passcodeBackground: '#030C1B',
 		passcodeButtonActive: '#0B182C',
+		passcodeLockIcon: '#6C727A',
+		passcodePrimary: '#FFFFFF',
+		passcodeSecondary: '#CBCED1',
+		passcodeDotEmpty: '#CBCED1',
+		passcodeDotFull: '#6C727A'
 	},
 	black: {
 		backgroundColor: '#000000',
@@ -128,5 +133,10 @@ export const themes = {
 		buttonText: '#ffffff',
 		passcodeBackground: '#000000',
 		passcodeButtonActive: '#0E0D0D',
+		passcodeLockIcon: '#6C727A',
+		passcodePrimary: '#FFFFFF',
+		passcodeSecondary: '#CBCED1',
+		passcodeDotEmpty: '#CBCED1',
+		passcodeDotFull: '#6C727A'
 	}
 };

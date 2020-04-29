@@ -1,12 +1,9 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
 
 import { themedHeader } from '../utils/navigation';
 import { withTheme } from '../theme';
-import { themes } from '../constants/colors';
-import sharedStyles from './Styles';
 import { isTablet } from '../utils/deviceInfo';
 import { TYPE } from '../containers/Passcode/constants';
 import { PasscodeChoose } from '../containers/Passcode';
@@ -29,13 +26,7 @@ const ChangePasscodeView = React.memo(({ navigation, theme }) => {
 		});
 	}, []);
 
-	return (
-		<SafeAreaView
-			style={[sharedStyles.container, { backgroundColor: themes[theme].passcodeBackground }]}
-		>
-			<PasscodeChoose theme={theme} type={TYPE.choose} finishProcess={getPasscode} />
-		</SafeAreaView>
-	);
+	return <PasscodeChoose theme={theme} type={TYPE.choose} finishProcess={getPasscode} />;
 });
 
 ChangePasscodeView.navigationOptions = ({ screenProps, navigation }) => {

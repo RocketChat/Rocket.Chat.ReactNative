@@ -575,7 +575,6 @@ export default {
 	Local_authentication_auto_lock_900: 'After 15 minutes',
 	Local_authentication_auto_lock_1800: 'After 30 minutes',
 	Local_authentication_auto_lock_3600: 'After 1 hour',
-	Passcode_del: 'del',
 	Passcode_enter_title: 'Enter your passcode',
 	Passcode_choose_title: 'Choose your new passcode',
 	Passcode_choose_confirm_title: 'Confirm your new passcode',

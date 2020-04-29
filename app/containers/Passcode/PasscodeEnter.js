@@ -8,7 +8,7 @@ import * as Haptics from 'expo-haptics';
 import { sha256 } from 'js-sha256';
 
 import Base from './Base';
-import Locked from './Locked';
+import Locked from './Base/Locked';
 import { TYPE } from './constants';
 import {
 	ATTEMPTS_KEY, LOCKED_OUT_TIMER_KEY, PASSCODE_KEY, MAX_ATTEMPTS
