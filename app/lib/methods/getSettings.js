@@ -11,7 +11,7 @@ import database from '../database';
 import protectedFunction from './helpers/protectedFunction';
 import fetch from '../../utils/fetch';
 
-const serverInfoKeys = ['Site_Name', 'UI_Use_Real_Name', 'FileUpload_MediaTypeWhiteList', 'FileUpload_MaxFileSize'];
+const serverInfoKeys = ['Site_Name', 'UI_Use_Real_Name', 'FileUpload_MediaTypeWhiteList', 'FileUpload_MaxFileSize', 'Force_Screen_Lock', 'Force_Screen_Lock_After'];
 
 // these settings are used only on onboarding process
 const loginSettings = [
@@ -46,6 +46,12 @@ const serverInfoUpdate = async(serverInfo, iconSetting) => {
 		if (setting._id === 'FileUpload_MaxFileSize') {
 			return { ...allSettings, FileUpload_MaxFileSize: setting.valueAsNumber };
 		}
+		// if (setting._id === 'Force_Screen_Lock') {
+		// 	return { ...allSettings, autoLock: setting.valueAsBoolean };
+		// }
+		// if (setting._id === 'Force_Screen_Lock_After') {
+		// 	return { ...allSettings, autoLockTime: setting.valueAsNumber };
+		// }
 		return allSettings;
 	}, {});
 
@@ -108,6 +114,14 @@ export default async function() {
 			return;
 		}
 		const data = result.settings || [];
+		// data.push({
+		// 	_id: 'Force_Screen_Lock',
+		// 	value: true
+		// });
+		// data.push({
+		// 	_id: 'Force_Screen_Lock_After',
+		// 	value: 10
+		// });
 		const filteredSettings = this._prepareSettings(data);
 		const filteredSettingsIds = filteredSettings.map(s => s._id);
 

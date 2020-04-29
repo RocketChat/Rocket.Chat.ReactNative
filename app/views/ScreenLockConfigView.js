@@ -5,8 +5,6 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
-import RNUserDefaults from 'rn-user-defaults';
-import { sha256 } from 'js-sha256';
 
 import I18n from '../i18n';
 import { themedHeader } from '../utils/navigation';
@@ -19,9 +17,8 @@ import ListItem from '../containers/ListItem';
 import ItemInfo from '../containers/ItemInfo';
 import { CustomIcon } from '../lib/Icons';
 import database from '../lib/database';
-import { supportedBiometryLabel } from '../utils/localAuthentication';
+import { supportedBiometryLabel, changePasscode, checkHasPasscode } from '../utils/localAuthentication';
 import { DisclosureImage } from '../containers/DisclosureIndicator';
-import { PASSCODE_KEY } from '../constants/localAuthentication';
 
 const styles = StyleSheet.create({
 	listPadding: {
@@ -43,14 +40,13 @@ class ScreenLockConfigView extends React.Component {
 
 	static propTypes = {
 		theme: PropTypes.string,
-		server: PropTypes.string,
-		navigation: PropTypes.object
+		server: PropTypes.string
 	}
 
 	defaultAutoLockOptions = [
 		{
 			title: I18n.t('Local_authentication_auto_lock_60'),
-			value: 5
+			value: 60
 		},
 		{
 			title: I18n.t('Local_authentication_auto_lock_300'),
@@ -112,28 +108,15 @@ class ScreenLockConfigView extends React.Component {
 		});
 	}
 
-	getPasscode = ({ force = false }) => new Promise((resolve) => {
-		const { navigation } = this.props;
-		navigation.navigate('ChangePasscodeView', { forceSetPasscode: force, getPasscode: passcode => resolve(passcode) });
-	});
-
 	changePasscode = async({ force }) => {
-		const passcode = await this.getPasscode({ force });
-		await RNUserDefaults.set(PASSCODE_KEY, sha256(passcode));
-	}
-
-	checkHasPasscode = async() => {
-		const storedPasscode = await RNUserDefaults.get(PASSCODE_KEY);
-		if (!storedPasscode) {
-			await this.changePasscode({ force: true });
-		}
+		await changePasscode({ force });
 	}
 
 	toggleAutoLock = () => {
 		this.setState(({ autoLock }) => ({ autoLock: !autoLock }), async() => {
 			const { autoLock } = this.state;
 			if (autoLock) {
-				await this.checkHasPasscode();
+				await checkHasPasscode();
 			}
 			this.save();
 		});

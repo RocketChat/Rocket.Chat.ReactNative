@@ -47,6 +47,7 @@ import TwoFactor from './containers/TwoFactor';
 import RoomsListView from './views/RoomsListView';
 import RoomView from './views/RoomView';
 import ScreenLockedView from './views/ScreenLockedView';
+import ChangePasscodeView from './views/ChangePasscodeView';
 
 if (isIOS) {
 	const RNScreens = require('react-native-screens');
@@ -228,9 +229,6 @@ const SettingsStack = createStackNavigator({
 	},
 	ScreenLockConfigView: {
 		getScreen: () => require('./views/ScreenLockConfigView').default
-	},
-	ChangePasscodeView: {
-		getScreen: () => require('./views/ChangePasscodeView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader,
@@ -327,9 +325,6 @@ const InsideStackModal = createStackNavigator({
 	CreateDiscussionStack,
 	JitsiMeetView: {
 		getScreen: () => require('./views/JitsiMeetView').default
-	},
-	ChangePasscodeViewModal: {
-		getScreen: () => require('./views/ChangePasscodeView').default
 	}
 },
 {
@@ -740,6 +735,7 @@ export default class Root extends React.Component {
 						{content}
 						<TwoFactor />
 						<ScreenLockedView />
+						<ChangePasscodeView />
 					</ThemeContext.Provider>
 				</Provider>
 			</AppearanceProvider>

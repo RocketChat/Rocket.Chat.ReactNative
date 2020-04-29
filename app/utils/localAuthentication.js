@@ -2,12 +2,18 @@ import * as LocalAuthentication from 'expo-local-authentication';
 import moment from 'moment';
 import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNUserDefaults from 'rn-user-defaults';
+import { sha256 } from 'js-sha256';
 
 import database from '../lib/database';
 import { isIOS } from './deviceInfo';
 import EventEmitter from './events';
-import { LOCAL_AUTHENTICATE_EMITTER, LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY } from '../constants/localAuthentication';
+import {
+	LOCAL_AUTHENTICATE_EMITTER, LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY, PASSCODE_KEY, CHANGE_PASSCODE_EMITTER
+} from '../constants/localAuthentication';
 import I18n from '../i18n';
+
+// RNUserDefaults.clear(PASSCODE_KEY)
 
 export const saveLastLocalAuthenticationSession = async(server, serverRecord) => {
 	const serversDB = database.servers;
@@ -28,13 +34,34 @@ export const saveLastLocalAuthenticationSession = async(server, serverRecord) =>
 
 export const resetAttempts = () => AsyncStorage.multiRemove([LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY]);
 
-export const openModal = hasBiometry => new Promise((resolve) => {
+const openModal = hasBiometry => new Promise((resolve) => {
 	EventEmitter.emit(LOCAL_AUTHENTICATE_EMITTER, {
 		submit: () => resolve(),
 		hasBiometry
 	});
 });
 
+const openChangePasscodeModal = ({ force }) => new Promise((resolve, reject) => {
+	EventEmitter.emit(CHANGE_PASSCODE_EMITTER, {
+		submit: passcode => resolve(passcode),
+		cancel: () => reject(),
+		force
+	});
+});
+
+export const changePasscode = async({ force = false }) => {
+	const passcode = await openChangePasscodeModal({ force });
+	await RNUserDefaults.set(PASSCODE_KEY, sha256(passcode));
+};
+
+export const checkHasPasscode = async() => {
+	const storedPasscode = await RNUserDefaults.get(PASSCODE_KEY);
+	if (!storedPasscode) {
+		await changePasscode({ force: true });
+		return Promise.resolve({ newPasscode: true });
+	}
+	return Promise.resolve();
+};
 
 export const localAuthenticate = async(server) => {
 	const serversDB = database.servers;
@@ -49,24 +76,30 @@ export const localAuthenticate = async(server) => {
 
 	// if screen lock is enabled
 	if (serverRecord?.autoLock) {
-		// diff to last authenticated session
-		const diffToLastSession = moment().diff(serverRecord?.lastLocalAuthenticatedSession, 'seconds');
+		// Make sure splash screen has been hidden
+		RNBootSplash.hide();
 
-		// if last authenticated session is older than configured auto lock time, authentication is required
-		if (diffToLastSession >= serverRecord?.autoLockTime) {
-			// Make sure splash screen has been hidden
-			RNBootSplash.hide();
+		// Check if the app has passcode
+		const result = await checkHasPasscode();
 
-			let hasBiometry = false;
+		// `checkHasPasscode` results newPasscode = true if a passcode has been set
+		if (!result?.newPasscode) {
+			// diff to last authenticated session
+			const diffToLastSession = moment().diff(serverRecord?.lastLocalAuthenticatedSession, 'seconds');
 
-			// if biometry is enabled on the app
-			if (serverRecord?.biometry) {
-				const isEnrolled = await LocalAuthentication.isEnrolledAsync();
-				hasBiometry = isEnrolled;
+			// if last authenticated session is older than configured auto lock time, authentication is required
+			if (diffToLastSession >= serverRecord?.autoLockTime) {
+				let hasBiometry = false;
+
+				// if biometry is enabled on the app
+				if (serverRecord?.biometry) {
+					const isEnrolled = await LocalAuthentication.isEnrolledAsync();
+					hasBiometry = isEnrolled;
+				}
+
+				// Authenticate
+				await openModal(hasBiometry);
 			}
-
-			// Authenticate
-			await openModal(hasBiometry);
 		}
 
 		//
