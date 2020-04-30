@@ -442,7 +442,7 @@ class RoomActionsView extends React.Component {
 
 		Alert.alert(
 			I18n.t('Are_you_sure_question_mark'),
-			I18n.t('Are_you_sure_you_want_to_leave_the_room', { room: room.t === 'd' ? room.fname : room.name }),
+			I18n.t('Are_you_sure_you_want_to_leave_the_room', { room: RocketChat.getRoomTitle(room) }),
 			[
 				{
 					text: I18n.t('Cancel'),
@@ -484,7 +484,7 @@ class RoomActionsView extends React.Component {
 							: (
 								<View style={styles.roomTitleRow}>
 									<RoomTypeIcon type={room.prid ? 'discussion' : room.t} theme={theme} />
-									<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{room.prid ? room.fname : room.name}</Text>
+									<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{RocketChat.getRoomTitle(room)}</Text>
 								</View>
 							)
 						}
