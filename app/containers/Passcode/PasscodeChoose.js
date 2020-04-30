@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import * as Haptics from 'expo-haptics';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import Base from './Base';
 import { TYPE } from './constants';
@@ -65,4 +66,4 @@ PasscodeEnter.propTypes = {
 	finishProcess: PropTypes.func
 };
 
-export default PasscodeEnter;
+export default gestureHandlerRootHOC(PasscodeEnter);
