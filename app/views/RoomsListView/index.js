@@ -549,6 +549,10 @@ class RoomsListView extends React.Component {
 	}
 
 	_onPressItem = async(item = {}) => {
+		const { navigation } = this.props;
+		if (!navigation.isFocused()) {
+			return;
+		}
 		if (!item.search) {
 			return this.goRoom(item);
 		}
