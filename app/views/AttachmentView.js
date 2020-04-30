@@ -33,11 +33,11 @@ class AttachmentView extends React.Component {
 		const attachment = navigation.getParam('attachment');
 		const from = navigation.getParam('from');
 		const handleSave = navigation.getParam('handleSave', () => {});
-		const { title, video_url } = attachment;
+		const { title } = attachment;
 		const options = {
 			title,
 			...themedHeader(theme),
-			headerRight: !video_url ? <SaveButton testID='save-image' onPress={handleSave} /> : null
+			headerRight: <SaveButton testID='save-image' onPress={handleSave} />
 		};
 		if (from !== 'MessagesView') {
 			options.gesturesEnabled = false;
@@ -84,8 +84,11 @@ class AttachmentView extends React.Component {
 	handleSave = async() => {
 		const { attachment } = this.state;
 		const { user, baseUrl } = this.props;
-		const { image_url, image_type } = attachment;
-		const img = formatAttachmentUrl(image_url, user.id, user.token, baseUrl);
+		const {
+			image_url, image_type, video_url, video_type
+		} = attachment;
+		const url = image_url || video_url;
+		const mediaAttachment = formatAttachmentUrl(url, user.id, user.token, baseUrl);
 
 		if (isAndroid) {
 			const rationale = {
@@ -100,13 +103,13 @@ class AttachmentView extends React.Component {
 
 		this.setState({ loading: true });
 		try {
-			const extension = `.${ mime.extension(image_type) || 'jpg' }`;
-			const file = `${ FileSystem.documentDirectory + SHA256(image_url) + extension }`;
-			const { uri } = await FileSystem.downloadAsync(img, file);
+			const extension = image_url ? `.${ mime.extension(image_type) || 'jpg' }` : `.${ mime.extension(video_type) || 'mp4' }`;
+			const file = `${ FileSystem.documentDirectory + SHA256(url) + extension }`;
+			const { uri } = await FileSystem.downloadAsync(mediaAttachment, file);
 			await CameraRoll.save(uri, { album: 'Rocket.Chat' });
 			EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
 		} catch (e) {
-			EventEmitter.emit(LISTENER, { message: I18n.t('error-save-image') });
+			EventEmitter.emit(LISTENER, { message: I18n.t(image_url ? 'error-save-image' : 'error-save-video') });
 		}
 		this.setState({ loading: false });
 	};
