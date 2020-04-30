@@ -1238,7 +1238,7 @@ const RocketChat = {
 	},
 	getRoomAvatar(room) {
 		if (RocketChat.isGroupChat(room)) {
-			return room.uids.length + room.usernames.join();
+			return room.uids?.length + room.usernames?.join();
 		}
 		return room.prid ? room.fname : room.name;
 	},
