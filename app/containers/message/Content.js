@@ -27,11 +27,11 @@ const Content = React.memo((props) => {
 	if (props.tmid && !props.msg) {
 		content = <Text style={[styles.text, { color: themes[props.theme].bodyText }]}>{I18n.t('Sent_an_attachment')}</Text>;
 	} else {
-		const { user } = useContext(MessageContext);
+		const { baseUrl, user } = useContext(MessageContext);
 		content = (
 			<Markdown
 				msg={props.msg}
-				baseUrl={props.baseUrl}
+				baseUrl={baseUrl}
 				getCustomEmoji={props.getCustomEmoji}
 				username={user.username}
 				isEdited={props.isEdited}
@@ -79,7 +79,6 @@ Content.propTypes = {
 	msg: PropTypes.string,
 	theme: PropTypes.string,
 	isEdited: PropTypes.bool,
-	baseUrl: PropTypes.string,
 	getCustomEmoji: PropTypes.func,
 	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
