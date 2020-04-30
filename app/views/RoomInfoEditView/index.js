@@ -125,13 +125,13 @@ class RoomInfoEditView extends React.Component {
 
 	init = (room) => {
 		const {
-			name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCodeRequired, sysMes
+			description, topic, announcement, t, ro, reactWhenReadOnly, joinCodeRequired, sysMes
 		} = room;
 		// fake password just to user knows about it
 		this.randomValue = random(15);
 		this.setState({
 			room,
-			name,
+			name: RocketChat.getRoomTitle(room),
 			description,
 			topic,
 			announcement,
