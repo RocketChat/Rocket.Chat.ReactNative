@@ -73,7 +73,7 @@ const ChangePasscodeView = React.memo(({ theme }) => {
 			<PasscodeChoose theme={theme} type={TYPE.choose} finishProcess={onSubmit} force={data?.force} />
 			{!data?.force
 				? (
-					<Touchable onPress={onCancel} style={{ top: hasNotch ? 60 : 30, left: 15, position: 'absolute' }}>
+					<Touchable onPress={onCancel} style={{ top: hasNotch ? 50 : 30, left: 15, position: 'absolute' }}>
 						<CustomIcon name='cross' color={themes[theme].passcodePrimary} size={30} />
 					</Touchable>
 				)

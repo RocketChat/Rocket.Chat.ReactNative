@@ -58,7 +58,7 @@
     "react-native-background-timer": "2.1.1",
     "react-native-bootsplash": "^2.1.0",
     "react-native-console-time-polyfill": "^1.2.1",
-    "react-native-device-info": "^2.3.0",
+    "react-native-device-info": "^5.5.6",
     "react-native-document-picker": "^3.2.4",
     "react-native-easy-grid": "^0.2.2",
     "react-native-easy-toast": "^1.2.0",
