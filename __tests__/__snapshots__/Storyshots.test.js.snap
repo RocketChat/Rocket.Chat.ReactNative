@@ -16315,7 +16315,6 @@ exports[`Storyshots Message list message 1`] = `
                   ]
                 }
               >
-                View
                 <View
                   accessible={true}
                   focusable={true}
@@ -16665,7 +16664,6 @@ exports[`Storyshots Message list message 1`] = `
                   ]
                 }
               >
-                View
                 <View
                   accessible={true}
                   focusable={true}
@@ -16888,7 +16886,6 @@ exports[`Storyshots Message list message 1`] = `
                   ]
                 }
               >
-                View
                 <View
                   accessible={true}
                   focusable={true}
@@ -17074,7 +17071,6 @@ exports[`Storyshots Message list message 1`] = `
                   ]
                 }
               >
-                View
                 <View
                   accessible={true}
                   focusable={true}

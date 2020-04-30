@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
 	View, StyleSheet, Text, Easing, Dimensions
 } from 'react-native';
-import Video from 'react-native-video';
+import { Audio } from 'expo-av';
 import Slider from '@react-native-community/slider';
 import moment from 'moment';
 import equal from 'deep-equal';
@@ -15,6 +15,17 @@ import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import { isAndroid, isIOS } from '../../utils/deviceInfo';
 import { withSplit } from '../../split';
+import ActivityIndicator from '../ActivityIndicator';
+
+const mode = {
+	allowsRecordingIOS: false,
+	playsInSilentModeIOS: true,
+	staysActiveInBackground: false,
+	shouldDuckAndroid: true,
+	playThroughEarpieceAndroid: false,
+	interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+	interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX
+};
 
 const styles = StyleSheet.create({
 	audioContainer: {
@@ -30,6 +41,9 @@ const styles = StyleSheet.create({
 		marginHorizontal: 10,
 		alignItems: 'center',
 		backgroundColor: 'transparent'
+	},
+	audioLoading: {
+		marginHorizontal: 8
 	},
 	slider: {
 		flex: 1
@@ -51,25 +65,32 @@ const sliderAnimationConfig = {
 	delay: 0
 };
 
-const Button = React.memo(({ paused, onPress, theme }) => (
+const Button = React.memo(({
+	loading, paused, onPress, theme
+}) => (
 	<Touchable
 		style={styles.playPauseButton}
 		onPress={onPress}
 		hitSlop={BUTTON_HIT_SLOP}
 		background={Touchable.SelectableBackgroundBorderless()}
 	>
-		<CustomIcon name={paused ? 'play' : 'pause'} size={36} color={themes[theme].tintColor} />
+		{
+			loading
+				? <ActivityIndicator style={[styles.playPauseButton, styles.audioLoading]} theme={theme} />
+				: <CustomIcon name={paused ? 'play' : 'pause'} size={36} color={themes[theme].tintColor} />
+		}
 	</Touchable>
 ));
 
 Button.propTypes = {
+	loading: PropTypes.bool,
 	paused: PropTypes.bool,
 	theme: PropTypes.string,
 	onPress: PropTypes.func
 };
 Button.displayName = 'MessageAudioButton';
 
-class Audio extends React.Component {
+class MessageAudio extends React.Component {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
 		baseUrl: PropTypes.string.isRequired,
@@ -83,16 +104,33 @@ class Audio extends React.Component {
 		super(props);
 		const { baseUrl, file, user } = props;
 		this.state = {
+			loading: false,
 			currentTime: 0,
 			duration: 0,
 			paused: true,
 			uri: `${ baseUrl }${ file.audio_url }?rc_uid=${ user.id }&rc_token=${ user.token }`
 		};
+
+		this.sound = new Audio.Sound();
+		this.sound.setOnPlaybackStatusUpdate(this.onPlaybackStatusUpdate);
+	}
+
+	async componentDidMount() {
+		const { uri } = this.state;
+
+		this.setState({ loading: true });
+		try {
+			await Audio.setAudioModeAsync(mode);
+			await this.sound.loadAsync({ uri });
+		} catch {
+			// Do nothing
+		}
+		this.setState({ loading: false });
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			currentTime, duration, paused, uri
+			currentTime, duration, paused, uri, loading
 		} = this.state;
 		const { file, split, theme } = this.props;
 		if (nextProps.theme !== theme) {
@@ -116,44 +154,87 @@ class Audio extends React.Component {
 		if (nextProps.split !== split) {
 			return true;
 		}
+		if (nextState.loading !== loading) {
+			return true;
+		}
 		return false;
 	}
 
+	async componentWillUnmount() {
+		try {
+			await this.sound.stopAsync();
+		} catch {
+			// Do nothing
+		}
+	}
+
+	onPlaybackStatusUpdate = (status) => {
+		if (status) {
+			this.onLoad(status);
+			this.onProgress(status);
+			this.onEnd(status);
+		}
+	}
+
 	onLoad = (data) => {
-		this.setState({ duration: data.duration > 0 ? data.duration : 0 });
+		const duration = data.durationMillis / 1000;
+		this.setState({ duration: duration > 0 ? duration : 0 });
 	}
 
 	onProgress = (data) => {
 		const { duration } = this.state;
-		if (data.currentTime <= duration) {
-			this.setState({ currentTime: data.currentTime });
+		const currentTime = data.positionMillis / 1000;
+		if (currentTime <= duration) {
+			this.setState({ currentTime });
 		}
 	}
 
-	onEnd = () => {
-		this.setState({ paused: true, currentTime: 0 });
-		requestAnimationFrame(() => {
-			this.player.seek(0);
-		});
+	onEnd = async(data) => {
+		if (data.didJustFinish) {
+			try {
+				await this.sound.stopAsync();
+				this.setState({ paused: true, currentTime: 0 });
+			} catch {
+				// do nothing
+			}
+		}
 	}
 
 	get duration() {
-		const { duration } = this.state;
-		return formatTime(duration);
+		const { currentTime, duration } = this.state;
+		return formatTime(currentTime || duration);
 	}
-
-	setRef = ref => this.player = ref;
 
 	togglePlayPause = () => {
 		const { paused } = this.state;
-		this.setState({ paused: !paused });
+		this.setState({ paused: !paused }, this.playPause);
 	}
 
-	onValueChange = value => this.setState({ currentTime: value });
+	playPause = async() => {
+		const { paused } = this.state;
+		try {
+			if (paused) {
+				await this.sound.pauseAsync();
+			} else {
+				await this.sound.playAsync();
+			}
+		} catch {
+			// Do nothing
+		}
+	}
+
+	onValueChange = async(value) => {
+		try {
+			this.setState({ currentTime: value });
+			await this.sound.setPositionAsync(value * 1000);
+		} catch {
+			// Do nothing
+		}
+	}
 
 	render() {
 		const {
-			uri, paused, currentTime, duration
+			loading, paused, currentTime, duration
 		} = this.state;
 		const {
 			user, baseUrl, file, getCustomEmoji, split, theme
@@ -173,17 +254,7 @@ class Audio extends React.Component {
 						split && sharedStyles.tabletContent
 					]}
 				>
-					<Video
-						ref={this.setRef}
-						source={{ uri }}
-						onLoad={this.onLoad}
-						onProgress={this.onProgress}
-						onEnd={this.onEnd}
-						paused={paused}
-						repeat={false}
-						ignoreSilentSwitch='ignore'
-					/>
-					<Button paused={paused} onPress={this.togglePlayPause} theme={theme} />
+					<Button loading={loading} paused={paused} onPress={this.togglePlayPause} theme={theme} />
 					<Slider
 						style={styles.slider}
 						value={currentTime}
@@ -205,4 +276,4 @@ class Audio extends React.Component {
 	}
 }
 
-export default withSplit(Audio);
+export default withSplit(MessageAudio);

@@ -59,7 +59,8 @@ export default class extends React.PureComponent {
 			SampleRate: 22050,
 			Channels: 1,
 			AudioQuality: 'Low',
-			AudioEncoding: 'aac'
+			AudioEncoding: 'aac',
+			OutputFormat: 'aac_adts'
 		});
 
 		AudioRecorder.onProgress = (data) => {
