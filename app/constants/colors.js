@@ -100,7 +100,7 @@ export const themes = {
 		infoText: '#6d6d72',
 		tintColor: '#1e9bfe',
 		auxiliaryTintColor: '#cdcdcd',
-		actionTintColor: '#1ea1fe',
+		actionTintColor: '#1e9bfe',
 		separatorColor: '#272728',
 		navbarBackground: '#0d0d0d',
 		headerBorder: '#323232',
