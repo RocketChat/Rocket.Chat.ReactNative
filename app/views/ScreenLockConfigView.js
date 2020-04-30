@@ -19,6 +19,7 @@ import { CustomIcon } from '../lib/Icons';
 import database from '../lib/database';
 import { supportedBiometryLabel, changePasscode, checkHasPasscode } from '../utils/localAuthentication';
 import { DisclosureImage } from '../containers/DisclosureIndicator';
+import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
 
 const styles = StyleSheet.create({
 	listPadding: {
@@ -29,7 +30,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-const DEFAULT_AUTO_LOCK = 1800;
 const DEFAULT_BIOMETRY = true;
 
 class ScreenLockConfigView extends React.Component {
@@ -46,7 +46,7 @@ class ScreenLockConfigView extends React.Component {
 	defaultAutoLockOptions = [
 		{
 			title: I18n.t('Local_authentication_auto_lock_60'),
-			value: 60
+			value: 5
 		},
 		{
 			title: I18n.t('Local_authentication_auto_lock_300'),
@@ -147,7 +147,7 @@ class ScreenLockConfigView extends React.Component {
 
 	renderItem = ({ item }) => {
 		const { theme } = this.props;
-		const { title, value } = item;
+		const { title, value, disabled } = item;
 		return (
 			<>
 				<ListItem
@@ -155,6 +155,7 @@ class ScreenLockConfigView extends React.Component {
 					onPress={() => this.changeAutoLockTime(value)}
 					right={this.isSelected(value) ? this.renderIcon : null}
 					theme={theme}
+					disabled={disabled}
 				/>
 				<Separator theme={theme} />
 			</>
@@ -163,11 +164,13 @@ class ScreenLockConfigView extends React.Component {
 
 	renderAutoLockSwitch = () => {
 		const { autoLock } = this.state;
+		const { Force_Screen_Lock } = this.props;
 		return (
 			<Switch
 				value={autoLock}
 				trackColor={SWITCH_TRACK_COLOR}
 				onValueChange={this.toggleAutoLock}
+				disabled={Force_Screen_Lock}
 			/>
 		);
 	}
@@ -185,15 +188,23 @@ class ScreenLockConfigView extends React.Component {
 
 	renderAutoLockItems = () => {
 		const { autoLock } = this.state;
-		const { theme } = this.props;
+		const { theme, Force_Screen_Lock_After } = this.props;
 		if (!autoLock) {
 			return null;
+		}
+		let items = this.defaultAutoLockOptions;
+		if (Force_Screen_Lock_After > 0) {
+			items = [{
+				title: `After ${ Force_Screen_Lock_After } seconds (set by admin)`,
+				value: Force_Screen_Lock_After,
+				disabled: true
+			}];
 		}
 		return (
 			<>
 				<View style={styles.emptySpace} />
 				<Separator theme={theme} />
-				{autoLock ? this.defaultAutoLockOptions.map(item => this.renderItem({ item })) : null}
+				{autoLock ? items.map(item => this.renderItem({ item })) : null}
 			</>
 		);
 	}
@@ -269,7 +280,9 @@ class ScreenLockConfigView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	server: state.server.server
+	server: state.server.server,
+	Force_Screen_Lock: state.settings.Force_Screen_Lock,
+	Force_Screen_Lock_After: state.settings.Force_Screen_Lock_After
 });
 
 export default connect(mapStateToProps)(withTheme(ScreenLockConfigView));

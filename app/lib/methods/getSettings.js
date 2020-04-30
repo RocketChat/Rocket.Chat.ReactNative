@@ -10,6 +10,7 @@ import log from '../../utils/log';
 import database from '../database';
 import protectedFunction from './helpers/protectedFunction';
 import fetch from '../../utils/fetch';
+import { DEFAULT_AUTO_LOCK } from '../../constants/localAuthentication';
 
 const serverInfoKeys = ['Site_Name', 'UI_Use_Real_Name', 'FileUpload_MediaTypeWhiteList', 'FileUpload_MaxFileSize', 'Force_Screen_Lock', 'Force_Screen_Lock_After'];
 
@@ -32,6 +33,8 @@ const loginSettings = [
 const serverInfoUpdate = async(serverInfo, iconSetting) => {
 	const serversDB = database.servers;
 	const serverId = reduxStore.getState().server.server;
+	const serversCollection = serversDB.collections.get('servers');
+	const server = await serversCollection.find(serverId);
 
 	let info = serverInfo.reduce((allSettings, setting) => {
 		if (setting._id === 'Site_Name') {
@@ -46,12 +49,19 @@ const serverInfoUpdate = async(serverInfo, iconSetting) => {
 		if (setting._id === 'FileUpload_MaxFileSize') {
 			return { ...allSettings, FileUpload_MaxFileSize: setting.valueAsNumber };
 		}
-		// if (setting._id === 'Force_Screen_Lock') {
-		// 	return { ...allSettings, autoLock: setting.valueAsBoolean };
-		// }
-		// if (setting._id === 'Force_Screen_Lock_After') {
-		// 	return { ...allSettings, autoLockTime: setting.valueAsNumber };
-		// }
+		if (setting._id === 'Force_Screen_Lock') {
+			return { ...allSettings, autoLock: setting.valueAsBoolean };
+		}
+		if (setting._id === 'Force_Screen_Lock_After') {
+			// if Force_Screen_Lock_After === 0 and autoLockTime is null, set app's default value
+			if (setting.valueAsNumber === 0 && !server.autoLockTime) {
+				return { ...allSettings, autoLockTime: DEFAULT_AUTO_LOCK };
+			}
+			// if Force_Screen_Lock_After > 0, use it
+			if (setting.valueAsNumber > 0) {
+				return { ...allSettings, autoLockTime: setting.valueAsNumber };
+			}
+		}
 		return allSettings;
 	}, {});
 
@@ -62,9 +72,6 @@ const serverInfoUpdate = async(serverInfo, iconSetting) => {
 
 	await serversDB.action(async() => {
 		try {
-			const serversCollection = serversDB.collections.get('servers');
-			const server = await serversCollection.find(serverId);
-
 			await server.update((record) => {
 				Object.assign(record, info);
 			});
@@ -114,14 +121,14 @@ export default async function() {
 			return;
 		}
 		const data = result.settings || [];
-		// data.push({
-		// 	_id: 'Force_Screen_Lock',
-		// 	value: true
-		// });
-		// data.push({
-		// 	_id: 'Force_Screen_Lock_After',
-		// 	value: 10
-		// });
+		data.push({
+			_id: 'Force_Screen_Lock',
+			value: true
+		});
+		data.push({
+			_id: 'Force_Screen_Lock_After',
+			value: 0
+		});
 		const filteredSettings = this._prepareSettings(data);
 		const filteredSettingsIds = filteredSettings.map(s => s._id);
 

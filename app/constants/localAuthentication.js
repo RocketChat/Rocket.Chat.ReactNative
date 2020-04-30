@@ -8,3 +8,5 @@ export const CHANGE_PASSCODE_EMITTER = 'CHANGE_PASSCODE';
 export const PASSCODE_LENGTH = 6;
 export const MAX_ATTEMPTS = 6;
 export const TIME_TO_LOCK = 30000;
+
+export const DEFAULT_AUTO_LOCK = 1800;
