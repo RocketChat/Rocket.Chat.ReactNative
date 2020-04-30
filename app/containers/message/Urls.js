@@ -4,9 +4,9 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
-import Touchable from 'react-native-platform-touchable';
 import isEqual from 'lodash/isEqual';
 
+import Touchable from './Touchable';
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';

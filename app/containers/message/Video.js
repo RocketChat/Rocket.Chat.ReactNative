@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 import isEqual from 'deep-equal';
 
+import Touchable from './Touchable';
 import Markdown from '../markdown';
 import openLink from '../../utils/openLink';
 import { isIOS, isTablet } from '../../utils/deviceInfo';

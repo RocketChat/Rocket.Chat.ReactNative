@@ -7,8 +7,8 @@ import Video from 'react-native-video';
 import Slider from '@react-native-community/slider';
 import moment from 'moment';
 import equal from 'deep-equal';
-import Touchable from 'react-native-platform-touchable';
 
+import Touchable from './Touchable';
 import Markdown from '../markdown';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';

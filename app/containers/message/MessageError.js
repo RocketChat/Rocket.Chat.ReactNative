@@ -1,7 +1,7 @@
 import React from 'react';
-import Touchable from 'react-native-platform-touchable';
 import PropTypes from 'prop-types';
 
+import Touchable from './Touchable';
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 import { BUTTON_HIT_SLOP } from './utils';

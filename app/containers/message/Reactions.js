@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 import PropTypes from 'prop-types';
 
+import Touchable from './Touchable';
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 import Emoji from './Emoji';

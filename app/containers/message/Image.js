@@ -3,10 +3,10 @@ import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
 import equal from 'deep-equal';
-import Touchable from 'react-native-platform-touchable';
 import { createImageProgress } from 'react-native-image-progress';
 import * as Progress from 'react-native-progress';
 
+import Touchable from './Touchable';
 import Markdown from '../markdown';
 import styles from './styles';
 import { formatAttachmentUrl } from '../../lib/utils';

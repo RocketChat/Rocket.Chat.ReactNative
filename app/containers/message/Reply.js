@@ -2,9 +2,9 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import Touchable from 'react-native-platform-touchable';
 import isEqual from 'deep-equal';
 
+import Touchable from './Touchable';
 import Markdown from '../markdown';
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
