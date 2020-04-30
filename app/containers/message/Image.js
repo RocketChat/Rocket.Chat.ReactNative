@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import FastImage from 'react-native-fast-image';
@@ -13,6 +13,7 @@ import { formatAttachmentUrl } from '../../lib/utils';
 import { withSplit } from '../../split';
 import { themes } from '../../constants/colors';
 import sharedStyles from '../../views/Styles';
+import MessageContext from './Context';
 
 const ImageProgress = createImageProgress(FastImage);
 
@@ -41,8 +42,9 @@ export const MessageImage = React.memo(({ img, theme }) => (
 ));
 
 const ImageContainer = React.memo(({
-	file, imageUrl, baseUrl, user, showAttachment, getCustomEmoji, split, theme
+	file, imageUrl, showAttachment, getCustomEmoji, split, theme
 }) => {
+	const { baseUrl, user } = useContext(MessageContext);
 	const img = imageUrl || formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
 	if (!img) {
 		return null;
@@ -71,8 +73,6 @@ const ImageContainer = React.memo(({
 ImageContainer.propTypes = {
 	file: PropTypes.object,
 	imageUrl: PropTypes.string,
-	baseUrl: PropTypes.string,
-	user: PropTypes.object,
 	showAttachment: PropTypes.func,
 	theme: PropTypes.string,
 	getCustomEmoji: PropTypes.func,

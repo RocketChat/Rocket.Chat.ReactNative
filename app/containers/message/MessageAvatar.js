@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import Avatar from '../Avatar';
 import styles from './styles';
+import MessageContext from './Context';
 
 const MessageAvatar = React.memo(({
-	isHeader, avatar, author, baseUrl, user, small, navToRoomInfo
+	isHeader, avatar, author, small, navToRoomInfo
 }) => {
+	const { baseUrl, user } = useContext(MessageContext);
 	if (isHeader && author) {
 		const navParam = {
 			t: 'd',
@@ -33,8 +35,6 @@ MessageAvatar.propTypes = {
 	isHeader: PropTypes.bool,
 	avatar: PropTypes.string,
 	author: PropTypes.obj,
-	baseUrl: PropTypes.string,
-	user: PropTypes.obj,
 	small: PropTypes.bool,
 	navToRoomInfo: PropTypes.func
 };

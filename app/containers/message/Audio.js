@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
 	View, StyleSheet, Text, Easing, Dimensions
@@ -15,6 +15,7 @@ import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import { isAndroid, isIOS } from '../../utils/deviceInfo';
 import { withSplit } from '../../split';
+import MessageContext from './Context';
 
 const styles = StyleSheet.create({
 	audioContainer: {
@@ -72,8 +73,6 @@ Button.displayName = 'MessageAudioButton';
 class Audio extends React.Component {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
-		baseUrl: PropTypes.string.isRequired,
-		user: PropTypes.object.isRequired,
 		theme: PropTypes.string,
 		split: PropTypes.bool,
 		getCustomEmoji: PropTypes.func
@@ -81,7 +80,8 @@ class Audio extends React.Component {
 
 	constructor(props) {
 		super(props);
-		const { baseUrl, file, user } = props;
+		const { file } = props;
+		const { baseUrl, user } = useContext(MessageContext);
 		this.state = {
 			currentTime: 0,
 			duration: 0,
@@ -156,9 +156,10 @@ class Audio extends React.Component {
 			uri, paused, currentTime, duration
 		} = this.state;
 		const {
-			user, baseUrl, file, getCustomEmoji, split, theme
+			file, getCustomEmoji, split, theme
 		} = this.props;
 		const { description } = file;
+		const { baseUrl, user } = useContext(MessageContext);
 
 		if (!baseUrl) {
 			return null;

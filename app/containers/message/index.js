@@ -243,7 +243,16 @@ class MessageContainer extends React.Component {
 		return (
 			<MessageContext.Provider
 				value={{
-					onLongPress: this.onLongPress
+					user,
+					baseUrl,
+					onPress: this.onPress,
+					onLongPress: this.onLongPress,
+					reactionInit: this.reactionInit,
+					onErrorPress: this.onErrorPress,
+					replyBroadcast: this.replyBroadcast,
+					onReactionPress: this.onReactionPress,
+					onDiscussionPress: this.onDiscussionPress,
+					onReactionLongPress: this.onReactionLongPress
 				}}
 			>
 				<Message
@@ -259,13 +268,11 @@ class MessageContainer extends React.Component {
 					reactions={reactions}
 					alias={alias}
 					avatar={avatar}
-					user={user}
 					timeFormat={timeFormat}
 					customThreadTimeFormat={customThreadTimeFormat}
 					style={style}
 					archived={archived}
 					broadcast={broadcast}
-					baseUrl={baseUrl}
 					useRealName={useRealName}
 					isReadReceiptEnabled={isReadReceiptEnabled}
 					unread={unread}
@@ -288,14 +295,6 @@ class MessageContainer extends React.Component {
 					isInfo={this.isInfo}
 					isTemp={this.isTemp}
 					hasError={this.hasError}
-					onErrorPress={this.onErrorPress}
-					onPress={this.onPress}
-					onLongPress={this.onLongPress}
-					onReactionLongPress={this.onReactionLongPress}
-					onReactionPress={this.onReactionPress}
-					replyBroadcast={this.replyBroadcast}
-					reactionInit={this.reactionInit}
-					onDiscussionPress={this.onDiscussionPress}
 					showAttachment={showAttachment}
 					getCustomEmoji={getCustomEmoji}
 					navToRoomInfo={navToRoomInfo}
