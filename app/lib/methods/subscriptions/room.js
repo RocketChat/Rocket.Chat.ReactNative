@@ -10,6 +10,7 @@ import reduxStore from '../../createStore';
 import { addUserTyping, removeUserTyping, clearUserTyping } from '../../../actions/usersTyping';
 import debounce from '../../../utils/debounce';
 import RocketChat from '../../rocketchat';
+import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
 
 const WINDOW_TIME = 1000;
 
@@ -38,6 +39,8 @@ export default class RoomSubscription {
 		if (!this.isAlive) {
 			this.unsubscribe();
 		}
+
+		reduxStore.dispatch(subscribeRoom(this.rid));
 	}
 
 	unsubscribe = async() => {
@@ -59,6 +62,8 @@ export default class RoomSubscription {
 		if (this.timer) {
 			clearTimeout(this.timer);
 		}
+
+		reduxStore.dispatch(unsubscribeRoom(this.rid));
 	}
 
 	removeListener = async(promise) => {
