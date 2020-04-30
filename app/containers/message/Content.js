@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import equal from 'deep-equal';
@@ -8,6 +8,7 @@ import styles from './styles';
 import Markdown from '../markdown';
 import { getInfoMessage } from './utils';
 import { themes } from '../../constants/colors';
+import MessageContext from './Context';
 
 const Content = React.memo((props) => {
 	if (props.isInfo) {
@@ -26,12 +27,13 @@ const Content = React.memo((props) => {
 	if (props.tmid && !props.msg) {
 		content = <Text style={[styles.text, { color: themes[props.theme].bodyText }]}>{I18n.t('Sent_an_attachment')}</Text>;
 	} else {
+		const { baseUrl, user } = useContext(MessageContext);
 		content = (
 			<Markdown
 				msg={props.msg}
-				baseUrl={props.baseUrl}
+				baseUrl={baseUrl}
 				getCustomEmoji={props.getCustomEmoji}
-				username={props.user.username}
+				username={user.username}
 				isEdited={props.isEdited}
 				numberOfLines={(props.tmid && !props.isThreadRoom) ? 1 : 0}
 				preview={props.tmid && !props.isThreadRoom}
@@ -77,8 +79,6 @@ Content.propTypes = {
 	msg: PropTypes.string,
 	theme: PropTypes.string,
 	isEdited: PropTypes.bool,
-	baseUrl: PropTypes.string,
-	user: PropTypes.object,
 	getCustomEmoji: PropTypes.func,
 	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),

@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import FastImage from 'react-native-fast-image';
+import Touchable from 'react-native-platform-touchable';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
-import Touch from '../utils/touch';
+
 import { avatarURL } from '../utils/avatar';
 
 const Avatar = React.memo(({
-	text, size, baseUrl, borderRadius, style, avatar, type, children, userId, token, onPress, theme
+	text, size, baseUrl, borderRadius, style, avatar, type, children, userId, token, onPress
 }) => {
 	const avatarStyle = {
 		width: size,
@@ -36,9 +37,9 @@ const Avatar = React.memo(({
 
 	if (onPress) {
 		image = (
-			<Touch onPress={onPress} theme={theme}>
+			<Touchable onPress={onPress}>
 				{image}
-			</Touch>
+			</Touchable>
 		);
 	}
 
@@ -61,7 +62,6 @@ Avatar.propTypes = {
 	children: PropTypes.object,
 	userId: PropTypes.string,
 	token: PropTypes.string,
-	theme: PropTypes.string,
 	onPress: PropTypes.func
 };
 
