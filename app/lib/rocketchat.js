@@ -909,7 +909,7 @@ const RocketChat = {
 	methodCall(...args) {
 		return new Promise(async(resolve, reject) => {
 			try {
-				const result = await this.sdk.methodCall(...args, this.code);
+				const result = await this.sdk.methodCall(...args, this.code || '');
 				return resolve(result);
 			} catch (e) {
 				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
