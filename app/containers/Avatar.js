@@ -5,7 +5,7 @@ import FastImage from 'react-native-fast-image';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import Touch from '../utils/touch';
 import { avatarURL } from '../utils/avatar';
-import Markdown from './markdown';
+import Emoji from './markdown/Emoji';
 
 const Avatar = React.memo(({
 	text, size, baseUrl, borderRadius, style, avatar, type, children, userId, token, onPress, theme, emoji, getCustomEmoji
@@ -25,11 +25,14 @@ const Avatar = React.memo(({
 	});
 
 	let image = emoji ? (
-		<Markdown
-			msg={emoji}
+		<Emoji
+			theme={theme}
 			baseUrl={baseUrl}
 			getCustomEmoji={getCustomEmoji}
-			theme={theme}
+			isMessageContainsOnlyEmoji
+			customEmojis
+			literal={emoji}
+			emojiName={emoji.replace(/:/g, '')}
 		/>
 	) : (
 		<FastImage
