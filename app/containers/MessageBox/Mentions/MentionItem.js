@@ -64,7 +64,7 @@ const MentionItem = ({
 		content = (
 			<>
 				<Text style={[styles.slash, { backgroundColor: themes[theme].borderColor, color: themes[theme].tintColor }]}>/</Text>
-				<Text style={[styles.mentionText, { color: themes[theme].titleText }]}>{ item.command}</Text>
+				<Text style={[styles.mentionText, { color: themes[theme].titleText }]}>{item.id}</Text>
 			</>
 		);
 	}
