@@ -18,6 +18,7 @@ export default {
 	'error-email-domain-blacklisted': 'The email domain is blacklisted',
 	'error-email-send-failed': 'Error trying to send email: {{message}}',
 	'error-save-image': 'Error while saving image',
+	'error-save-video': 'Error while saving video',
 	'error-field-unavailable': '{{field}} is already in use :(',
 	'error-file-too-large': 'File is too large',
 	'error-importer-not-defined': 'The importer was not defined correctly, it is missing the Import class.',
