@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TouchableOpacity } from 'react-native';
 
 import Avatar from '../Avatar';
 import styles from './styles';
@@ -14,21 +13,17 @@ const MessageAvatar = React.memo(({
 			rid: author._id
 		};
 		return (
-			<TouchableOpacity
-				onPress={() => navToRoomInfo(navParam)}
-				disabled={author._id === user.id}
-			>
-				<Avatar
-					style={small ? styles.avatarSmall : styles.avatar}
-					text={avatar ? '' : author.username}
-					size={small ? 20 : 36}
-					borderRadius={small ? 2 : 4}
-					avatar={avatar}
-					baseUrl={baseUrl}
-					userId={user.id}
-					token={user.token}
-				/>
-			</TouchableOpacity>
+			<Avatar
+				style={small ? styles.avatarSmall : styles.avatar}
+				text={avatar ? '' : author.username}
+				size={small ? 20 : 36}
+				borderRadius={small ? 2 : 4}
+				onPress={author._id === user.id ? undefined : () => navToRoomInfo(navParam)}
+				avatar={avatar}
+				baseUrl={baseUrl}
+				userId={user.id}
+				token={user.token}
+			/>
 		);
 	}
 	return null;
