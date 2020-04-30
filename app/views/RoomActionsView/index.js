@@ -87,35 +87,37 @@ class RoomActionsView extends React.Component {
 	async componentDidMount() {
 		this.mounted = true;
 		const { room, member } = this.state;
-		if (!room.id) {
-			try {
-				const result = await RocketChat.getChannelInfo(room.rid);
-				if (result.success) {
-					this.setState({ room: { ...result.channel, rid: result.channel._id } });
+		if (room.rid) {
+			if (!room.id) {
+				try {
+					const result = await RocketChat.getChannelInfo(room.rid);
+					if (result.success) {
+						this.setState({ room: { ...result.channel, rid: result.channel._id } });
+					}
+				} catch (e) {
+					log(e);
 				}
-			} catch (e) {
-				log(e);
 			}
-		}
 
-		if (room && room.t !== 'd' && this.canViewMembers()) {
-			try {
-				const counters = await RocketChat.getRoomCounters(room.rid, room.t);
-				if (counters.success) {
-					this.setState({ membersCount: counters.members, joined: counters.joined });
+			if (room && room.t !== 'd' && this.canViewMembers()) {
+				try {
+					const counters = await RocketChat.getRoomCounters(room.rid, room.t);
+					if (counters.success) {
+						this.setState({ membersCount: counters.members, joined: counters.joined });
+					}
+				} catch (e) {
+					log(e);
 				}
-			} catch (e) {
-				log(e);
+			} else if (room.t === 'd' && _.isEmpty(member)) {
+				this.updateRoomMember();
 			}
-		} else if (room.t === 'd' && _.isEmpty(member)) {
-			this.updateRoomMember();
+
+			const canAutoTranslate = await RocketChat.canAutoTranslate();
+			this.setState({ canAutoTranslate });
+
+			this.canAddUser();
+			this.canInviteUser();
 		}
-
-		const canAutoTranslate = await RocketChat.canAutoTranslate();
-		this.setState({ canAutoTranslate });
-
-		this.canAddUser();
-		this.canInviteUser();
 	}
 
 	componentWillUnmount() {
@@ -442,7 +444,7 @@ class RoomActionsView extends React.Component {
 
 		Alert.alert(
 			I18n.t('Are_you_sure_question_mark'),
-			I18n.t('Are_you_sure_you_want_to_leave_the_room', { room: room.t === 'd' ? room.fname : room.name }),
+			I18n.t('Are_you_sure_you_want_to_leave_the_room', { room: RocketChat.getRoomTitle(room) }),
 			[
 				{
 					text: I18n.t('Cancel'),
@@ -484,7 +486,7 @@ class RoomActionsView extends React.Component {
 							: (
 								<View style={styles.roomTitleRow}>
 									<RoomTypeIcon type={room.prid ? 'discussion' : room.t} theme={theme} />
-									<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{room.prid ? room.fname : room.name}</Text>
+									<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{RocketChat.getRoomTitle(room)}</Text>
 								</View>
 							)
 						}

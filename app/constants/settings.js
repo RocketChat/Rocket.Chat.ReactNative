@@ -125,6 +125,9 @@ export default {
 	uniqueID: {
 		type: 'valueAsString'
 	},
+	UI_Allow_room_names_with_special_chars: {
+		type: 'valueAsBoolean'
+	},
 	UI_Use_Real_Name: {
 		type: 'valueAsBoolean'
 	},

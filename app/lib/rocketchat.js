@@ -574,9 +574,9 @@ const RocketChat = {
 		).fetch();
 
 		if (filterUsers && !filterRooms) {
-			data = data.filter(item => item.t === 'd');
+			data = data.filter(item => item.t === 'd' && !RocketChat.isGroupChat(item));
 		} else if (!filterUsers && filterRooms) {
-			data = data.filter(item => item.t !== 'd');
+			data = data.filter(item => item.t !== 'd' || RocketChat.isGroupChat(item));
 		}
 		data = data.slice(0, 7);
 
@@ -910,7 +910,7 @@ const RocketChat = {
 	methodCall(...args) {
 		return new Promise(async(resolve, reject) => {
 			try {
-				const result = await this.sdk.methodCall(...args, this.code);
+				const result = await this.sdk.methodCall(...args, this.code || '');
 				return resolve(result);
 			} catch (e) {
 				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
@@ -1227,16 +1227,19 @@ const RocketChat = {
 		return this.methodCall('autoTranslate.translateMessage', message, targetLanguage);
 	},
 	getRoomTitle(room) {
-		const { UI_Use_Real_Name: useRealName } = reduxStore.getState().settings;
+		const { UI_Use_Real_Name: useRealName, UI_Allow_room_names_with_special_chars: allowSpecialChars } = reduxStore.getState().settings;
 		const { username } = reduxStore.getState().login.user;
 		if (RocketChat.isGroupChat(room) && !(room.name && room.name.length)) {
 			return room.usernames.filter(u => u !== username).sort((u1, u2) => u1.localeCompare(u2)).join(', ');
+		}
+		if (allowSpecialChars && room.t !== 'd') {
+			return room.fname || room.name;
 		}
 		return ((room.prid || useRealName) && room.fname) || room.name;
 	},
 	getRoomAvatar(room) {
 		if (RocketChat.isGroupChat(room)) {
-			return room.uids.length + room.usernames.join();
+			return room.uids?.length + room.usernames?.join();
 		}
 		return room.prid ? room.fname : room.name;
 	},
