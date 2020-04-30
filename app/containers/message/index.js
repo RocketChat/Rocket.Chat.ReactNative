@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { KeyboardUtils } from 'react-native-keyboard-input';
 
 import Message from './Message';
+import MessageContext from './Context';
 import debounce from '../../utils/debounce';
 import { SYSTEM_MESSAGES, getMessageTranslation } from './utils';
 import messagesStatus from '../../constants/messagesStatus';
@@ -240,63 +241,68 @@ class MessageContainer extends React.Component {
 		}
 
 		return (
-			<Message
-				id={id}
-				msg={message}
-				rid={rid}
-				author={u}
-				ts={ts}
-				type={t}
-				attachments={attachments}
-				blocks={blocks}
-				urls={urls}
-				reactions={reactions}
-				alias={alias}
-				avatar={avatar}
-				user={user}
-				timeFormat={timeFormat}
-				customThreadTimeFormat={customThreadTimeFormat}
-				style={style}
-				archived={archived}
-				broadcast={broadcast}
-				baseUrl={baseUrl}
-				useRealName={useRealName}
-				isReadReceiptEnabled={isReadReceiptEnabled}
-				unread={unread}
-				role={role}
-				drid={drid}
-				dcount={dcount}
-				dlm={dlm}
-				tmid={tmid}
-				tcount={tcount}
-				tlm={tlm}
-				tmsg={tmsg}
-				fetchThreadName={fetchThreadName}
-				mentions={mentions}
-				channels={channels}
-				isEdited={editedBy && !!editedBy.username}
-				isHeader={this.isHeader}
-				isThreadReply={this.isThreadReply}
-				isThreadSequential={this.isThreadSequential}
-				isThreadRoom={isThreadRoom}
-				isInfo={this.isInfo}
-				isTemp={this.isTemp}
-				hasError={this.hasError}
-				onErrorPress={this.onErrorPress}
-				onPress={this.onPress}
-				onLongPress={this.onLongPress}
-				onReactionLongPress={this.onReactionLongPress}
-				onReactionPress={this.onReactionPress}
-				replyBroadcast={this.replyBroadcast}
-				reactionInit={this.reactionInit}
-				onDiscussionPress={this.onDiscussionPress}
-				showAttachment={showAttachment}
-				getCustomEmoji={getCustomEmoji}
-				navToRoomInfo={navToRoomInfo}
-				callJitsi={callJitsi}
-				blockAction={blockAction}
-				theme={theme}
-			/>
+			<MessageContext.Provider
+				value={{
+					user,
+					baseUrl,
+					onPress: this.onPress,
+					onLongPress: this.onLongPress,
+					reactionInit: this.reactionInit,
+					onErrorPress: this.onErrorPress,
+					replyBroadcast: this.replyBroadcast,
+					onReactionPress: this.onReactionPress,
+					onDiscussionPress: this.onDiscussionPress,
+					onReactionLongPress: this.onReactionLongPress
+				}}
+			>
+				<Message
+					id={id}
+					msg={message}
+					rid={rid}
+					author={u}
+					ts={ts}
+					type={t}
+					attachments={attachments}
+					blocks={blocks}
+					urls={urls}
+					reactions={reactions}
+					alias={alias}
+					avatar={avatar}
+					timeFormat={timeFormat}
+					customThreadTimeFormat={customThreadTimeFormat}
+					style={style}
+					archived={archived}
+					broadcast={broadcast}
+					useRealName={useRealName}
+					isReadReceiptEnabled={isReadReceiptEnabled}
+					unread={unread}
+					role={role}
+					drid={drid}
+					dcount={dcount}
+					dlm={dlm}
+					tmid={tmid}
+					tcount={tcount}
+					tlm={tlm}
+					tmsg={tmsg}
+					fetchThreadName={fetchThreadName}
+					mentions={mentions}
+					channels={channels}
+					isEdited={editedBy && !!editedBy.username}
+					isHeader={this.isHeader}
+					isThreadReply={this.isThreadReply}
+					isThreadSequential={this.isThreadSequential}
+					isThreadRoom={isThreadRoom}
+					isInfo={this.isInfo}
+					isTemp={this.isTemp}
+					hasError={this.hasError}
+					showAttachment={showAttachment}
+					getCustomEmoji={getCustomEmoji}
+					navToRoomInfo={navToRoomInfo}
+					callJitsi={callJitsi}
+					blockAction={blockAction}
+					theme={theme}
+				/>
+			</MessageContext.Provider>
 		);
 	}
 }

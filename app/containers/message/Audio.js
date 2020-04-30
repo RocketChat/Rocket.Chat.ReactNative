@@ -7,14 +7,15 @@ import { Audio } from 'expo-av';
 import Slider from '@react-native-community/slider';
 import moment from 'moment';
 import equal from 'deep-equal';
-import Touchable from 'react-native-platform-touchable';
 
+import Touchable from './Touchable';
 import Markdown from '../markdown';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import { isAndroid, isIOS } from '../../utils/deviceInfo';
 import { withSplit } from '../../split';
+import MessageContext from './Context';
 import ActivityIndicator from '../ActivityIndicator';
 
 const mode = {
@@ -91,10 +92,10 @@ Button.propTypes = {
 Button.displayName = 'MessageAudioButton';
 
 class MessageAudio extends React.Component {
+	static contextType = MessageContext;
+
 	static propTypes = {
 		file: PropTypes.object.isRequired,
-		baseUrl: PropTypes.string.isRequired,
-		user: PropTypes.object.isRequired,
 		theme: PropTypes.string,
 		split: PropTypes.bool,
 		getCustomEmoji: PropTypes.func
@@ -102,13 +103,11 @@ class MessageAudio extends React.Component {
 
 	constructor(props) {
 		super(props);
-		const { baseUrl, file, user } = props;
 		this.state = {
 			loading: false,
 			currentTime: 0,
 			duration: 0,
-			paused: true,
-			uri: `${ baseUrl }${ file.audio_url }?rc_uid=${ user.id }&rc_token=${ user.token }`
+			paused: true
 		};
 
 		this.sound = new Audio.Sound();
@@ -116,12 +115,13 @@ class MessageAudio extends React.Component {
 	}
 
 	async componentDidMount() {
-		const { uri } = this.state;
+		const { file } = this.props;
+		const { baseUrl, user } = this.context;
 
 		this.setState({ loading: true });
 		try {
 			await Audio.setAudioModeAsync(mode);
-			await this.sound.loadAsync({ uri });
+			await this.sound.loadAsync({ uri: `${ baseUrl }${ file.audio_url }?rc_uid=${ user.id }&rc_token=${ user.token }` });
 		} catch {
 			// Do nothing
 		}
@@ -130,7 +130,7 @@ class MessageAudio extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			currentTime, duration, paused, uri, loading
+			currentTime, duration, paused, loading
 		} = this.state;
 		const { file, split, theme } = this.props;
 		if (nextProps.theme !== theme) {
@@ -143,9 +143,6 @@ class MessageAudio extends React.Component {
 			return true;
 		}
 		if (nextState.paused !== paused) {
-			return true;
-		}
-		if (nextState.uri !== uri) {
 			return true;
 		}
 		if (!equal(nextProps.file, file)) {
@@ -237,9 +234,10 @@ class MessageAudio extends React.Component {
 			loading, paused, currentTime, duration
 		} = this.state;
 		const {
-			user, baseUrl, file, getCustomEmoji, split, theme
+			file, getCustomEmoji, split, theme
 		} = this.props;
 		const { description } = file;
+		const { baseUrl, user } = this.context;
 
 		if (!baseUrl) {
 			return null;
