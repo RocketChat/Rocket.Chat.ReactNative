@@ -75,7 +75,7 @@
 	<key>NSRemindersUsageDescription</key>
 	<string>Allow $(PRODUCT_NAME) to access your reminders</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Allow $(PRODUCT_NAME) to prevent unauthenticated users from using the app</string>
+	<string>Unlock the app with FaceID</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>custom.ttf</string>
