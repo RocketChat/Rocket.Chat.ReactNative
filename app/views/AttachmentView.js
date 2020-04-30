@@ -35,7 +35,7 @@ class AttachmentView extends React.Component {
 		const handleSave = navigation.getParam('handleSave', () => {});
 		const { title } = attachment;
 		const options = {
-			title,
+			title: decodeURI(title),
 			...themedHeader(theme),
 			headerRight: <SaveButton testID='save-image' onPress={handleSave} />
 		};

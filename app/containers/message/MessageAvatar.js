@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { TouchableOpacity } from 'react-native';
 
 import Avatar from '../Avatar';
 import styles from './styles';
+import MessageContext from './Context';
 
 const MessageAvatar = React.memo(({
 	isHeader, avatar, author, baseUrl, user, small, navToRoomInfo, getCustomEmoji, theme, emoji
 }) => {
+	const { baseUrl, user } = useContext(MessageContext);
 	if (isHeader && author) {
 		const navParam = {
 			t: 'd',
@@ -43,8 +44,6 @@ MessageAvatar.propTypes = {
 	emoji: PropTypes.string,
 	theme: PropTypes.string,
 	author: PropTypes.obj,
-	baseUrl: PropTypes.string,
-	user: PropTypes.obj,
 	small: PropTypes.bool,
 	navToRoomInfo: PropTypes.func,
 	getCustomEmoji: PropTypes.func

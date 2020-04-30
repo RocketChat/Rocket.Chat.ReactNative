@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Text } from 'react-native';
 import PropTypes from 'prop-types';
 
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
+import MessageContext from './Context';
 
 const Emoji = React.memo(({
-	content, standardEmojiStyle, customEmojiStyle, baseUrl, getCustomEmoji
+	content, standardEmojiStyle, customEmojiStyle, getCustomEmoji
 }) => {
+	const { baseUrl } = useContext(MessageContext);
 	const parsedContent = content.replace(/^:|:$/g, '');
 	const emoji = getCustomEmoji(parsedContent);
 	if (emoji) {
@@ -20,7 +22,6 @@ Emoji.propTypes = {
 	content: PropTypes.string,
 	standardEmojiStyle: PropTypes.object,
 	customEmojiStyle: PropTypes.object,
-	baseUrl: PropTypes.string,
 	getCustomEmoji: PropTypes.func
 };
 Emoji.displayName = 'MessageEmoji';
