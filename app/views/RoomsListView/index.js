@@ -212,13 +212,17 @@ class RoomsListView extends React.Component {
 		this.willFocusListener = navigation.addListener('willFocus', () => {
 			// Check if there were changes while not focused (it's set on sCU)
 			if (this.shouldUpdate) {
-				// animateNextTransition();
 				this.forceUpdate();
 				this.shouldUpdate = false;
 			}
 		});
 		this.didFocusListener = navigation.addListener('didFocus', () => {
 			this.animated = true;
+			// Check if there were changes while not focused (it's set on sCU)
+			if (this.shouldUpdate) {
+				this.forceUpdate();
+				this.shouldUpdate = false;
+			}
 			this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 		});
 		this.willBlurListener = navigation.addListener('willBlur', () => {
@@ -549,6 +553,10 @@ class RoomsListView extends React.Component {
 	}
 
 	_onPressItem = async(item = {}) => {
+		const { navigation } = this.props;
+		if (!navigation.isFocused()) {
+			return;
+		}
 		if (!item.search) {
 			return this.goRoom(item);
 		}
