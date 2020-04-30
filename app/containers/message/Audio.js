@@ -42,6 +42,9 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		backgroundColor: 'transparent'
 	},
+	audioLoading: {
+		marginHorizontal: 8
+	},
 	slider: {
 		flex: 1
 	},
@@ -73,7 +76,7 @@ const Button = React.memo(({
 	>
 		{
 			loading
-				? <ActivityIndicator style={styles.playPauseButton} theme={theme} />
+				? <ActivityIndicator style={[styles.playPauseButton, styles.audioLoading]} theme={theme} />
 				: <CustomIcon name={paused ? 'play' : 'pause'} size={36} color={themes[theme].tintColor} />
 		}
 	</Touchable>
