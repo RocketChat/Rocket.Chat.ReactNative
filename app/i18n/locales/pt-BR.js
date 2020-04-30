@@ -519,6 +519,7 @@ export default {
 	Passcode_choose_title: 'Insira sua nova senha',
 	Passcode_choose_confirm_title: 'Confirme sua nova senha',
 	Passcode_choose_error: 'As senhas não coincidem. Tente novamente.',
+	Passcode_choose_force_set: 'Senha foi exigida pelo admin',
 	Passcode_app_locked_title: 'Aplicativo bloqueado',
 	Passcode_app_locked_subtitle: 'Tente novamente em {{timeLeft}} segundos'
 };

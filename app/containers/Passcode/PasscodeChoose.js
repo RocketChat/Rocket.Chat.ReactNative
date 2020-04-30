@@ -6,7 +6,7 @@ import Base from './Base';
 import { TYPE } from './constants';
 import I18n from '../../i18n';
 
-const PasscodeEnter = ({ theme, finishProcess }) => {
+const PasscodeEnter = ({ theme, finishProcess, force = false }) => {
 	const chooseRef = useRef(null);
 	const confirmRef = useRef(null);
 	const [subtitle, setSubtitle] = useState(null);
@@ -54,13 +54,14 @@ const PasscodeEnter = ({ theme, finishProcess }) => {
 			type={TYPE.CHOOSE}
 			onEndProcess={firstStep}
 			title={I18n.t('Passcode_choose_title')}
-			subtitle={subtitle}
+			subtitle={subtitle || (force ? I18n.t('Passcode_choose_force_set') : null)}
 		/>
 	);
 };
 
 PasscodeEnter.propTypes = {
 	theme: PropTypes.string,
+	force: PropTypes.bool,
 	finishProcess: PropTypes.func
 };
 

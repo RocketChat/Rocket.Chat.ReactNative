@@ -579,6 +579,7 @@ export default {
 	Passcode_choose_title: 'Choose your new passcode',
 	Passcode_choose_confirm_title: 'Confirm your new passcode',
 	Passcode_choose_error: 'Passcodes don\'t match. Try again.',
+	Passcode_choose_force_set: 'Passcode required by admin',
 	Passcode_app_locked_title: 'App locked',
 	Passcode_app_locked_subtitle: 'Try again in {{timeLeft}} seconds'
 };

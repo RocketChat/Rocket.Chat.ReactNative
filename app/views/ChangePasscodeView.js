@@ -70,7 +70,7 @@ const ChangePasscodeView = React.memo(({ theme }) => {
 			hideModalContentWhileAnimating
 			style={{ margin: 0 }}
 		>
-			<PasscodeChoose theme={theme} type={TYPE.choose} finishProcess={onSubmit} />
+			<PasscodeChoose theme={theme} type={TYPE.choose} finishProcess={onSubmit} force={data?.force} />
 			{!data?.force
 				? (
 					<Touchable onPress={onCancel} style={{ top: hasNotch ? 60 : 30, left: 15, position: 'absolute' }}>
