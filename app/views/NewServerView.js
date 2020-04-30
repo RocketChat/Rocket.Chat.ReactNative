@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, Keyboard, StyleSheet, TouchableOpacity, View, Alert
+	Text, Keyboard, StyleSheet, TouchableOpacity, View, Alert, BackHandler
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
@@ -105,6 +105,7 @@ class NewServerView extends React.Component {
 			certificate: null
 		};
 		EventEmitter.addEventListener('NewServer', this.handleNewServerEvent);
+		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
 	componentDidMount() {
@@ -116,6 +117,16 @@ class NewServerView extends React.Component {
 
 	componentWillUnmount() {
 		EventEmitter.removeListener('NewServer', this.handleNewServerEvent);
+		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+	}
+
+	handleBackPress = () => {
+		const { navigation } = this.props;
+		if (navigation.isFocused() && this.previousServer) {
+			this.close();
+			return true;
+		}
+		return false;
 	}
 
 	onChangeText = (text) => {
