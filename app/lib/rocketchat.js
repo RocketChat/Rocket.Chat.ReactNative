@@ -573,9 +573,9 @@ const RocketChat = {
 		).fetch();
 
 		if (filterUsers && !filterRooms) {
-			data = data.filter(item => item.t === 'd');
+			data = data.filter(item => item.t === 'd' && !RocketChat.isGroupChat(item));
 		} else if (!filterUsers && filterRooms) {
-			data = data.filter(item => item.t !== 'd');
+			data = data.filter(item => item.t !== 'd' || RocketChat.isGroupChat(item));
 		}
 		data = data.slice(0, 7);
 
@@ -909,7 +909,7 @@ const RocketChat = {
 	methodCall(...args) {
 		return new Promise(async(resolve, reject) => {
 			try {
-				const result = await this.sdk.methodCall(...args, this.code);
+				const result = await this.sdk.methodCall(...args, this.code || '');
 				return resolve(result);
 			} catch (e) {
 				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
@@ -1238,7 +1238,7 @@ const RocketChat = {
 	},
 	getRoomAvatar(room) {
 		if (RocketChat.isGroupChat(room)) {
-			return room.uids.length + room.usernames.join();
+			return room.uids?.length + room.usernames?.join();
 		}
 		return room.prid ? room.fname : room.name;
 	},
