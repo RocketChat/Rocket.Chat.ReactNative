@@ -514,7 +514,7 @@ class CustomModalStack extends React.Component {
 		const pageSheetViews = ['AttachmentView'];
 		const pageSheet = pageSheetViews.includes(getActiveRouteName(navigation.state));
 
-		const androidProps = isAndroid && {
+		const androidProps = isAndroid && !pageSheet && {
 			style: { marginBottom: 0 }
 		};
 
@@ -524,7 +524,7 @@ class CustomModalStack extends React.Component {
 			</View>
 		);
 
-		if (isAndroid) {
+		if (isAndroid && !pageSheet) {
 			content = (
 				<ScrollView overScrollMode='never'>
 					{content}
