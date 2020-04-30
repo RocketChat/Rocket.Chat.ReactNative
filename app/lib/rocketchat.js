@@ -573,9 +573,9 @@ const RocketChat = {
 		).fetch();
 
 		if (filterUsers && !filterRooms) {
-			data = data.filter(item => item.t === 'd');
+			data = data.filter(item => item.t === 'd' && !RocketChat.isGroupChat(item));
 		} else if (!filterUsers && filterRooms) {
-			data = data.filter(item => item.t !== 'd');
+			data = data.filter(item => item.t !== 'd' || RocketChat.isGroupChat(item));
 		}
 		data = data.slice(0, 7);
 
