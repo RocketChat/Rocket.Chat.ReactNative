@@ -3,7 +3,6 @@ import { useAsyncStorage } from '@react-native-community/async-storage';
 import RNUserDefaults from 'rn-user-defaults';
 import PropTypes from 'prop-types';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
-import * as LocalAuthentication from 'expo-local-authentication';
 import * as Haptics from 'expo-haptics';
 import { sha256 } from 'js-sha256';
 
@@ -13,7 +12,7 @@ import { TYPE } from './constants';
 import {
 	ATTEMPTS_KEY, LOCKED_OUT_TIMER_KEY, PASSCODE_KEY, MAX_ATTEMPTS
 } from '../../constants/localAuthentication';
-import { resetAttempts } from '../../utils/localAuthentication';
+import { resetAttempts, biometryAuth } from '../../utils/localAuthentication';
 import { getLockedUntil, getDiff } from './utils';
 import I18n from '../../i18n';
 
@@ -33,11 +32,7 @@ const PasscodeEnter = ({ theme, hasBiometry, finishProcess }) => {
 
 	const biometry = async() => {
 		if (hasBiometry && status === TYPE.ENTER) {
-			const result = await LocalAuthentication.authenticateAsync({
-				disableDeviceFallback: true,
-				cancelLabel: I18n.t('Local_authentication_biometry_fallback'),
-				promptMessage: I18n.t('Local_authentication_biometry_title')
-			});
+			const result = await biometryAuth();
 			if (result?.success) {
 				finishProcess();
 			}

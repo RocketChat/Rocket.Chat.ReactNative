@@ -63,6 +63,12 @@ export const checkHasPasscode = async() => {
 	return Promise.resolve();
 };
 
+export const biometryAuth = () => LocalAuthentication.authenticateAsync({
+	disableDeviceFallback: true,
+	cancelLabel: I18n.t('Local_authentication_biometry_fallback'),
+	promptMessage: I18n.t('Local_authentication_biometry_title')
+});
+
 export const localAuthenticate = async(server) => {
 	const serversDB = database.servers;
 	const serversCollection = serversDB.collections.get('servers');
