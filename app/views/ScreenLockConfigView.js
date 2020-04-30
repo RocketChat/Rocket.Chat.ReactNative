@@ -40,7 +40,9 @@ class ScreenLockConfigView extends React.Component {
 
 	static propTypes = {
 		theme: PropTypes.string,
-		server: PropTypes.string
+		server: PropTypes.string,
+		Force_Screen_Lock: PropTypes.string,
+		Force_Screen_Lock_After: PropTypes.string
 	}
 
 	defaultAutoLockOptions = [
