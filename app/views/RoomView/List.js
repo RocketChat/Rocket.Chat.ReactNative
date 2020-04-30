@@ -96,7 +96,7 @@ class List extends React.Component {
 			this.messagesSubscription = this.messagesObservable
 				.subscribe((data) => {
 					this.interaction = InteractionManager.runAfterInteractions(() => {
-						if (tmid) {
+						if (tmid && this.thread) {
 							data = [this.thread, ...data];
 						}
 						const messages = orderBy(data, ['ts'], ['desc']);
