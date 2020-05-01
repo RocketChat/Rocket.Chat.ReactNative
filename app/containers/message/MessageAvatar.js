@@ -1,12 +1,13 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import { TouchableOpacity } from 'react-native';
 
 import Avatar from '../Avatar';
 import styles from './styles';
 import MessageContext from './Context';
 
 const MessageAvatar = React.memo(({
-	isHeader, avatar, author, baseUrl, user, small, navToRoomInfo, getCustomEmoji, theme, emoji
+	isHeader, avatar, author, small, navToRoomInfo, getCustomEmoji, theme, emoji
 }) => {
 	const { baseUrl, user } = useContext(MessageContext);
 	if (isHeader && author) {

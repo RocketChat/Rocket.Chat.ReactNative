@@ -268,7 +268,7 @@ class MessageContainer extends React.Component {
 					reactions={reactions}
 					alias={alias}
 					avatar={avatar}
-          emoji={emoji}
+					emoji={emoji}
 					timeFormat={timeFormat}
 					customThreadTimeFormat={customThreadTimeFormat}
 					style={style}

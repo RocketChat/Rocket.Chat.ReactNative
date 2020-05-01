@@ -31,9 +31,7 @@ const Avatar = React.memo(({
 			baseUrl={baseUrl}
 			getCustomEmoji={getCustomEmoji}
 			isMessageContainsOnlyEmoji
-			customEmojis
 			literal={emoji}
-			emojiName={emoji.replace(/:/g, '')}
 		/>
 	) : (
 		<FastImage
