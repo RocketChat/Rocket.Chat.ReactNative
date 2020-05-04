@@ -48,7 +48,7 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 
 	const getCustomFields = async() => {
 		const result = await RocketChat.getCustomFields();
-		if (result.success) {
+		if (result.success && result.customFields?.length) {
 			const visitorCustomFields = result.customFields
 				.filter(field => field.visibility !== 'hidden' && field.scope === 'visitor')
 				.map(field => ({ [field._id]: (visitor.livechatData && visitor.livechatData[field._id]) || '' }))
@@ -164,7 +164,7 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 					<TextInput
 						label={I18n.t('Email')}
 						inputRef={(e) => { inputs.name = e; }}
-						defaultValue={visitor?.visitorEmails[0]?.address}
+						defaultValue={visitor?.visitorEmails && visitor?.visitorEmails[0]?.address}
 						onChangeText={text => onChangeText('email', text)}
 						onSubmitEditing={() => { inputs.phone.focus(); }}
 						theme={theme}
@@ -172,7 +172,7 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 					<TextInput
 						label={I18n.t('Phone')}
 						inputRef={(e) => { inputs.phone = e; }}
-						defaultValue={visitor?.phone[0]?.phoneNumber}
+						defaultValue={visitor?.phone && visitor?.phone[0]?.phoneNumber}
 						onChangeText={text => onChangeText('phone', text)}
 						onSubmitEditing={() => {
 							const keys = Object.keys(customFields?.visitor || {});

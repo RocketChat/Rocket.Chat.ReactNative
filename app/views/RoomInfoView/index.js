@@ -145,19 +145,21 @@ class RoomInfoView extends React.Component {
 		const { room } = this.state;
 		const { navigation } = this.props;
 
-		const result = await RocketChat.getVisitorInfo(room.visitor._id);
-		if (result.success) {
-			const { visitor } = result;
-
-			if (visitor.userAgent) {
-				const ua = new UAParser();
-				ua.setUA(visitor.userAgent);
-				visitor.os = `${ ua.getOS().name } ${ ua.getOS().version }`;
-				visitor.browser = `${ ua.getBrowser().name } ${ ua.getBrowser().version }`;
+		try {
+			const result = await RocketChat.getVisitorInfo(room?.visitor?._id);
+			if (result.success) {
+				const { visitor } = result;
+				if (visitor.userAgent) {
+					const ua = new UAParser();
+					ua.setUA(visitor.userAgent);
+					visitor.os = `${ ua.getOS().name } ${ ua.getOS().version }`;
+					visitor.browser = `${ ua.getBrowser().name } ${ ua.getBrowser().version }`;
+				}
+				this.setState({ roomUser: visitor });
+				navigation.setParams({ roomUser: visitor });
 			}
-
-			this.setState({ roomUser: visitor });
-			navigation.setParams({ roomUser: visitor });
+		} catch (error) {
+			// Do nothing
 		}
 	}
 
