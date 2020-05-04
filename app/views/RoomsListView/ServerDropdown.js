@@ -154,7 +154,7 @@ class ServerDropdown extends Component {
 	}
 
 	remove = server => showConfirmationAlert({
-		message: I18n.t('This_will_remove_all_data_of_this_server'),
+		message: I18n.t('This_will_remove_all_data_from_this_server'),
 		callToAction: I18n.t('Delete'),
 		onPress: async() => {
 			this.close();
