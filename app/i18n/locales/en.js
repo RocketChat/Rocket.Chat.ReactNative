@@ -18,6 +18,7 @@ export default {
 	'error-email-domain-blacklisted': 'The email domain is blacklisted',
 	'error-email-send-failed': 'Error trying to send email: {{message}}',
 	'error-save-image': 'Error while saving image',
+	'error-save-video': 'Error while saving video',
 	'error-field-unavailable': '{{field}} is already in use :(',
 	'error-file-too-large': 'File is too large',
 	'error-importer-not-defined': 'The importer was not defined correctly, it is missing the Import class.',
@@ -559,6 +560,7 @@ export default {
 	You_will_be_logged_out_of_this_application: 'You will be logged out of this application.',
 	Clear: 'Clear',
 	This_will_clear_all_your_offline_data: 'This will clear all your offline data.',
+	This_will_remove_all_data_from_this_server: 'This will remove all data from this server.',
 	Mark_unread: 'Mark Unread',
 	Wait_activation_warning: 'Before you can login, your account must be manually activated by an administrator.'
 };

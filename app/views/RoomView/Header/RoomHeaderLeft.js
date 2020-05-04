@@ -37,7 +37,6 @@ const RoomHeaderLeft = ({
 				style={styles.avatar}
 				userId={userId}
 				token={token}
-				theme={theme}
 				onPress={goRoomActionsView}
 			/>
 		);
