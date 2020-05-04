@@ -96,6 +96,7 @@ export async function removeServer({ server }) {
 export default async function logout({ server }) {
 	if (this.roomsSub) {
 		this.roomsSub.stop();
+		this.roomsSub = null;
 	}
 
 	if (this.activeUsersSubTimeout) {

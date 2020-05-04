@@ -109,7 +109,8 @@ class DB {
 				Message,
 				Thread,
 				ThreadMessage,
-				Upload
+				Upload,
+				Permission
 			],
 			actionsEnabled: true
 		});
