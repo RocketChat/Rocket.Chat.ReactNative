@@ -128,7 +128,7 @@ const ForwardLivechatView = ({ forwardRoom, navigation, theme }) => {
 			<OrSeparator theme={theme} />
 			<Input
 				onPress={onPressUser}
-				placeholder={I18n.t('Select_an_User')}
+				placeholder={I18n.t('Select_a_User')}
 				theme={theme}
 			/>
 		</View>

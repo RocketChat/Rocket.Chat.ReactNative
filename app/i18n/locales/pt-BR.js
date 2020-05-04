@@ -394,7 +394,7 @@ export default {
 	Select_a_Channel: 'Selecione um canal',
 	Select_a_Department: 'Selecione um Departamento',
 	Select_an_option: 'Selecione uma opção',
-	Select_an_User: 'Selecione um Usuário',
+	Select_a_User: 'Selecione um Usuário',
 	Send: 'Enviar',
 	Send_audio_message: 'Enviar mensagem de áudio',
 	Send_message: 'Enviar mensagem',

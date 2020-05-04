@@ -436,7 +436,7 @@ export default {
 	Select_a_Channel: 'Select a Channel',
 	Select_a_Department: 'Select a Department',
 	Select_an_option: 'Select an option',
-	Select_an_User: 'Select an User',
+	Select_a_User: 'Select a User',
 	Send: 'Send',
 	Send_audio_message: 'Send audio message',
 	Send_crash_report: 'Send crash report',
