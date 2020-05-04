@@ -499,6 +499,7 @@ export default {
 	You_will_be_logged_out_of_this_application: 'Você sairá deste aplicativo.',
 	Clear: 'Limpar',
 	This_will_clear_all_your_offline_data: 'Isto limpará todos os seus dados offline.',
+	This_will_remove_all_data_from_this_server: 'Isto removerá todos os dados desse servidor.',
 	Mark_unread: 'Marcar como não Lida',
 	Wait_activation_warning: 'Antes que você possa fazer o login, sua conta deve ser manualmente ativada por um administrador.'
 };
