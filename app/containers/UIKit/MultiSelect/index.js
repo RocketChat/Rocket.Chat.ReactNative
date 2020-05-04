@@ -43,14 +43,14 @@ export const MultiSelect = React.memo(({
 	inputStyle,
 	theme
 }) => {
-	const [selected, select] = useState(values || []);
+	const [selected, select] = useState(Array.isArray(values) ? values : []);
 	const [open, setOpen] = useState(false);
 	const [search, onSearchChange] = useState('');
 	const [currentValue, setCurrentValue] = useState('');
 	const [showContent, setShowContent] = useState(false);
 
 	useEffect(() => {
-		if (values) {
+		if (Array.isArray(values)) {
 			select(values);
 		}
 	}, [values]);
