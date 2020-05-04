@@ -8,7 +8,7 @@ const SendButton = React.memo(({ theme, onPress }) => (
 		onPress={onPress}
 		testID='messagebox-send-message'
 		accessibilityLabel='Send_message'
-		icon='send1'
+		icon='Send-active'
 		theme={theme}
 	/>
 ));
