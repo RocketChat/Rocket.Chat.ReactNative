@@ -102,10 +102,15 @@ const createOrUpdateSubscription = async(subscription, room) => {
 				// We have to create a plain obj so we can manipulate it on `merge`
 				// Can we do it in a better way?
 				room = {
-					customFields: r.customFields,
-					broadcast: r.broadcast,
+					v: r.v,
+					ro: r.ro,
+					tags: r.tags,
+					servedBy: r.servedBy,
 					encrypted: r.encrypted,
-					ro: r.ro
+					broadcast: r.broadcast,
+					customFields: r.customFields,
+					departmentId: r.departmentId,
+					livechatData: r.livechatData
 				};
 			} catch (error) {
 				// Do nothing
