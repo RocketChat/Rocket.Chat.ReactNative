@@ -7,3 +7,6 @@ export const isValidURL = (url) => {
 		+ '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
 	return !!pattern.test(url);
 };
+
+// Use useSsl: false only if server url starts with http://
+export const useSsl = url => !/http:\/\//.test(url);

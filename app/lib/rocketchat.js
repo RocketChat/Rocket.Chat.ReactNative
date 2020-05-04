@@ -3,7 +3,6 @@ import semver from 'semver';
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import RNUserDefaults from 'rn-user-defaults';
 import { Q } from '@nozbe/watermelondb';
-import * as FileSystem from 'expo-file-system';
 
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
@@ -11,8 +10,7 @@ import messagesStatus from '../constants/messagesStatus';
 import database from './database';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
-import { extractHostname } from '../utils/server';
-import fetch, { BASIC_AUTH_KEY } from '../utils/fetch';
+import fetch from '../utils/fetch';
 
 import { setUser, setLoginServices, loginRequest } from '../actions/login';
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
@@ -43,12 +41,13 @@ import sendMessage, { sendMessageCall } from './methods/sendMessage';
 import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFileMessage';
 
 import callJitsi from './methods/callJitsi';
+import logout, { removeServer } from './methods/logout';
 
 import { getDeviceToken } from '../notifications/push';
-import { SERVERS, SERVER_URL } from '../constants/userDefaults';
 import { setActiveUsers } from '../actions/activeUsers';
 import I18n from '../i18n';
 import { twoFactor } from '../utils/twoFactor';
+import { useSsl } from '../utils/url';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
@@ -86,10 +85,7 @@ const RocketChat = {
 		}
 	},
 	async getWebsocketInfo({ server }) {
-		// Use useSsl: false only if server url starts with http://
-		const useSsl = !/http:\/\//.test(server);
-
-		const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
+		const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
 
 		try {
 			await sdk.connect();
@@ -200,10 +196,7 @@ const RocketChat = {
 				this.code = null;
 			}
 
-			// Use useSsl: false only if server url starts with http://
-			const useSsl = !/http:\/\//.test(server);
-
-			this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
+			this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
 			this.getSettings();
 
 			const sdkConnect = () => this.sdk.connect()
@@ -270,10 +263,7 @@ const RocketChat = {
 			this.shareSDK = null;
 		}
 
-		// Use useSsl: false only if server url starts with http://
-		const useSsl = !/http:\/\//.test(server);
-
-		this.shareSDK = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
+		this.shareSDK = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
 
 		// set Server
 		const serversDB = database.servers;
@@ -408,73 +398,8 @@ const RocketChat = {
 			throw e;
 		}
 	},
-	async logout({ server }) {
-		if (this.roomsSub) {
-			this.roomsSub.stop();
-			this.roomsSub = null;
-		}
-
-		if (this.activeUsersSubTimeout) {
-			clearTimeout(this.activeUsersSubTimeout);
-			this.activeUsersSubTimeout = false;
-		}
-
-		try {
-			await this.removePushToken();
-		} catch (error) {
-			console.log('logout -> removePushToken -> catch -> error', error);
-		}
-		try {
-			// RC 0.60.0
-			await this.sdk.logout();
-		} catch (error) {
-			console.log('​logout -> api logout -> catch -> error', error);
-		}
-		this.sdk = null;
-
-		try {
-			const servers = await RNUserDefaults.objectForKey(SERVERS);
-			await RNUserDefaults.setObjectForKey(SERVERS, servers && servers.filter(srv => srv[SERVER_URL] !== server));
-			// clear certificate for server - SSL Pinning
-			const certificate = await RNUserDefaults.objectForKey(extractHostname(server));
-			if (certificate && certificate.path) {
-				await RNUserDefaults.clear(extractHostname(server));
-				await FileSystem.deleteAsync(certificate.path);
-			}
-		} catch (error) {
-			console.log('logout_rn_user_defaults', error);
-		}
-
-		const userId = await RNUserDefaults.get(`${ TOKEN_KEY }-${ server }`);
-
-		try {
-			const serversDB = database.servers;
-			await serversDB.action(async() => {
-				const usersCollection = serversDB.collections.get('users');
-				const userRecord = await usersCollection.find(userId);
-				const serverCollection = serversDB.collections.get('servers');
-				const serverRecord = await serverCollection.find(server);
-				await serversDB.batch(
-					userRecord.prepareDestroyPermanently(),
-					serverRecord.prepareDestroyPermanently()
-				);
-			});
-		} catch (error) {
-			// Do nothing
-		}
-
-		await RNUserDefaults.clear('currentServer');
-		await RNUserDefaults.clear(TOKEN_KEY);
-		await RNUserDefaults.clear(`${ TOKEN_KEY }-${ server }`);
-		await RNUserDefaults.clear(`${ BASIC_AUTH_KEY }-${ server }`);
-
-		try {
-			const db = database.active;
-			await db.action(() => db.unsafeResetDatabase());
-		} catch (error) {
-			console.log(error);
-		}
-	},
+	logout,
+	removeServer,
 	async clearCache({ server }) {
 		try {
 			const serversDB = database.servers;
