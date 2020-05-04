@@ -101,7 +101,7 @@ const ForwardLivechatView = ({ forwardRoom, navigation, theme }) => {
 	const onPressDepartment = () => {
 		navigation.navigate('PickerView', {
 			title: I18n.t('Forward_to_department'),
-			value: 1,
+			value: room?.departmentId,
 			data: departments,
 			onChangeValue: setDepartment,
 			goBack: false

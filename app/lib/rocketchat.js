@@ -825,6 +825,7 @@ const RocketChat = {
 	},
 
 	getVisitorInfo(visitorId) {
+		// RC 2.3.0
 		return this.sdk.get('livechat/visitors.info', { visitorId });
 	},
 	closeLivechat(rid, comment) {
@@ -840,15 +841,19 @@ const RocketChat = {
 		return this.methodCall('livechat:transfer', transferData);
 	},
 	getPagesLivechat(rid, offset) {
+		// RC 2.3.0
 		return this.sdk.get(`livechat/visitors.pagesVisited/${ rid }?count=50&offset=${ offset }`);
 	},
 	getDepartmentInfo(departmentId) {
+		// RC 2.2.0
 		return this.sdk.get(`livechat/department/${ departmentId }?includeAgents=false`);
 	},
 	getDepartments() {
+		// RC 2.2.0
 		return this.sdk.get('livechat/department');
 	},
 	usersAutoComplete(selector) {
+		// RC 2.4.0
 		return this.sdk.get('users.autocomplete', { selector });
 	},
 	getRoutingConfig() {
@@ -858,9 +863,11 @@ const RocketChat = {
 		return this.methodCall('livechat:getTagsList');
 	},
 	getAgentDepartments(uid) {
+		// RC 2.4.0
 		return this.sdk.get(`livechat/agents/${ uid }/departments`);
 	},
 	getCustomFields() {
+		// RC 2.2.0
 		return this.sdk.get('livechat/custom-fields');
 	},
 

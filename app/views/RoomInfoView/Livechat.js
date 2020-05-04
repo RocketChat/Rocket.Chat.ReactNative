@@ -57,6 +57,11 @@ const Livechat = ({ room, roomUser, theme }) => {
 				theme={theme}
 			/>
 			<Item
+				label={I18n.t('Username')}
+				content={roomUser.username}
+				theme={theme}
+			/>
+			<Item
 				label={I18n.t('Email')}
 				content={roomUser.visitorEmails?.map(email => email.address).reduce((ret, item) => `${ ret }${ item }\n`)}
 				theme={theme}
