@@ -190,7 +190,7 @@ class MessageBox extends Component {
 		});
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		const { isFocused, editing, replying } = this.props;
 		if (!isFocused()) {
 			return;
