@@ -419,3 +419,4 @@ Onboarding_join_open_description:'Joignez-vous à notre espace de travail pour d
 Onboarding_join_workspace:'Joindre un espace de travail',
 Join_your_workspace:'Joindre votre espace de travail',
 Join_our_open_workspace:'Joignez-vous à notre espace de travail',
+  };
