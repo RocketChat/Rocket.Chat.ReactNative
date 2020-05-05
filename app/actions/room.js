@@ -1,5 +1,19 @@
 import * as types from './actionsTypes';
 
+export function subscribeRoom(rid) {
+	return {
+		type: types.ROOM.SUBSCRIBE,
+		rid
+	};
+}
+
+export function unsubscribeRoom(rid) {
+	return {
+		type: types.ROOM.UNSUBSCRIBE,
+		rid
+	};
+}
+
 export function leaveRoom(rid, t) {
 	return {
 		type: types.ROOM.LEAVE,
@@ -8,17 +22,17 @@ export function leaveRoom(rid, t) {
 	};
 }
 
-export function deleteRoomInit(rid, t) {
+export function deleteRoom(rid, t) {
 	return {
-		type: types.ROOM.DELETE_INIT,
+		type: types.ROOM.DELETE,
 		rid,
 		t
 	};
 }
 
-export function deleteRoomFinish() {
+export function removedRoom() {
 	return {
-		type: types.ROOM.DELETE_FINISH
+		type: types.ROOM.REMOVED
 	};
 }
 

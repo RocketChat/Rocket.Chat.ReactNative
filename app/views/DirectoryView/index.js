@@ -45,7 +45,8 @@ class DirectoryView extends React.Component {
 			id: PropTypes.string,
 			token: PropTypes.string
 		}),
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		directoryDefaultView: PropTypes.string
 	};
 
 	constructor(props) {
@@ -57,7 +58,7 @@ class DirectoryView extends React.Component {
 			total: -1,
 			showOptionsDropdown: false,
 			globalUsers: true,
-			type: 'channels'
+			type: props.directoryDefaultView
 		};
 	}
 
@@ -124,10 +125,14 @@ class DirectoryView extends React.Component {
 		this.setState(({ showOptionsDropdown }) => ({ showOptionsDropdown: !showOptionsDropdown }));
 	}
 
-	goRoom = async({ rid, name, t }) => {
+	goRoom = async({
+		rid, name, t, search
+	}) => {
 		const { navigation } = this.props;
 		await navigation.navigate('RoomsListView');
-		navigation.navigate('RoomView', { rid, name, t });
+		navigation.navigate('RoomView', {
+			rid, name, t, search
+		});
 	}
 
 	onPressItem = async(item) => {
@@ -138,7 +143,9 @@ class DirectoryView extends React.Component {
 				this.goRoom({ rid: result.room._id, name: item.username, t: 'd' });
 			}
 		} else {
-			this.goRoom({ rid: item._id, name: item.name, t: 'c' });
+			this.goRoom({
+				rid: item._id, name: item.name, t: 'c', search: true
+			});
 		}
 	}
 
@@ -179,7 +186,10 @@ class DirectoryView extends React.Component {
 
 		let style;
 		if (index === data.length - 1) {
-			style = sharedStyles.separatorBottom;
+			style = {
+				...sharedStyles.separatorBottom,
+				borderColor: themes[theme].separatorColor
+			};
 		}
 
 		const commonProps = {
@@ -256,7 +266,8 @@ class DirectoryView extends React.Component {
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
-	isFederationEnabled: state.settings.FEDERATION_Enabled
+	isFederationEnabled: state.settings.FEDERATION_Enabled,
+	directoryDefaultView: state.settings.Accounts_Directory_DefaultView
 });
 
 export default connect(mapStateToProps)(withTheme(DirectoryView));

@@ -2,18 +2,36 @@ import { ROOM } from '../actions/actionsTypes';
 
 const initialState = {
 	rid: null,
-	isDeleting: false
+	isDeleting: false,
+	rooms: []
 };
 
 export default function(state = initialState, action) {
 	switch (action.type) {
-		case ROOM.DELETE_INIT:
+		case ROOM.SUBSCRIBE:
+			return {
+				...state,
+				rooms: [action.rid, ...state.rooms]
+			};
+		case ROOM.UNSUBSCRIBE:
+			return {
+				...state,
+				rooms: state.rooms
+					.filter(room => room.rid === action.rid)
+			};
+		case ROOM.LEAVE:
 			return {
 				...state,
 				rid: action.rid,
 				isDeleting: true
 			};
-		case ROOM.DELETE_FINISH:
+		case ROOM.DELETE:
+			return {
+				...state,
+				rid: action.rid,
+				isDeleting: true
+			};
+		case ROOM.REMOVED:
 			return {
 				...state,
 				isDeleting: false

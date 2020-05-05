@@ -22,7 +22,7 @@ const reducers = combineReducers({
 		}
 	}),
 	meteor: () => ({ connected: true }),
-	activeUsers: () => ({ abc: 'online' })
+	activeUsers: () => ({ abc: { status: 'online', statusText: 'dog' } })
 });
 const store = createStore(reducers);
 

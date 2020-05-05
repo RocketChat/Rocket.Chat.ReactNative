@@ -10,7 +10,6 @@ import RNUserDefaults from 'rn-user-defaults';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
-import { appStart as appStartAction } from '../../actions';
 import styles from './styles';
 import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
@@ -23,6 +22,8 @@ import { withTheme } from '../../theme';
 import { KEY_COMMAND, handleCommandSelectServer } from '../../commands';
 import { isTablet } from '../../utils/deviceInfo';
 import { withSplit } from '../../split';
+import LongPress from '../../utils/longPress';
+import { showConfirmationAlert } from '../../utils/info';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
@@ -35,8 +36,7 @@ class ServerDropdown extends Component {
 		server: PropTypes.string,
 		theme: PropTypes.string,
 		toggleServerDropdown: PropTypes.func,
-		selectServerRequest: PropTypes.func,
-		appStart: PropTypes.func
+		selectServerRequest: PropTypes.func
 	}
 
 	constructor(props) {
@@ -126,15 +126,14 @@ class ServerDropdown extends Component {
 
 		this.close();
 		setTimeout(() => {
-			navigation.navigate('OnboardingView', { previousServer: server });
+			navigation.navigate('NewServerView', { previousServer: server });
 		}, ANIMATION_DURATION);
 	}
 
 	select = async(server) => {
 		const {
-			server: currentServer, selectServerRequest, appStart, navigation, split
+			server: currentServer, selectServerRequest, navigation, split
 		} = this.props;
-
 		this.close();
 		if (currentServer !== server) {
 			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
@@ -142,15 +141,30 @@ class ServerDropdown extends Component {
 				navigation.navigate('RoomView');
 			}
 			if (!userId) {
-				appStart();
-				this.newServerTimeout = setTimeout(() => {
-					EventEmitter.emit('NewServer', { server });
-				}, 1000);
+				setTimeout(() => {
+					navigation.navigate('NewServerView', { previousServer: currentServer });
+					this.newServerTimeout = setTimeout(() => {
+						EventEmitter.emit('NewServer', { server });
+					}, ANIMATION_DURATION);
+				}, ANIMATION_DURATION);
 			} else {
 				selectServerRequest(server);
 			}
 		}
 	}
+
+	remove = server => showConfirmationAlert({
+		message: I18n.t('This_will_remove_all_data_from_this_server'),
+		callToAction: I18n.t('Delete'),
+		onPress: async() => {
+			this.close();
+			try {
+				await RocketChat.removeServer({ server });
+			} catch {
+				// do nothing
+			}
+		}
+	});
 
 	handleCommands = ({ event }) => {
 		const { servers } = this.state;
@@ -173,35 +187,37 @@ class ServerDropdown extends Component {
 		const { server, theme } = this.props;
 
 		return (
-			<Touch
-				onPress={() => this.select(item.id)}
-				testID={`rooms-list-header-server-${ item.id }`}
-				theme={theme}
-			>
-				<View style={styles.serverItemContainer}>
-					{item.iconURL
-						? (
-							<Image
-								source={{ uri: item.iconURL }}
-								defaultSource={{ uri: 'logo' }}
-								style={styles.serverIcon}
-								onError={() => console.warn('error loading serverIcon')}
-							/>
-						)
-						: (
-							<Image
-								source={{ uri: 'logo' }}
-								style={styles.serverIcon}
-							/>
-						)
-					}
-					<View style={styles.serverTextContainer}>
-						<Text style={[styles.serverName, { color: themes[theme].titleText }]}>{item.name || item.id}</Text>
-						<Text style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]}>{item.id}</Text>
+			<LongPress onLongPress={() => (item.id === server || this.remove(item.id))}>
+				<Touch
+					onPress={() => this.select(item.id)}
+					testID={`rooms-list-header-server-${ item.id }`}
+					theme={theme}
+				>
+					<View style={styles.serverItemContainer}>
+						{item.iconURL
+							? (
+								<Image
+									source={{ uri: item.iconURL }}
+									defaultSource={{ uri: 'logo' }}
+									style={styles.serverIcon}
+									onError={() => console.warn('error loading serverIcon')}
+								/>
+							)
+							: (
+								<Image
+									source={{ uri: 'logo' }}
+									style={styles.serverIcon}
+								/>
+							)
+						}
+						<View style={styles.serverTextContainer}>
+							<Text style={[styles.serverName, { color: themes[theme].titleText }]}>{item.name || item.id}</Text>
+							<Text style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]}>{item.id}</Text>
+						</View>
+						{item.id === server ? <Check theme={theme} /> : null}
 					</View>
-					{item.id === server ? <Check theme={theme} /> : null}
-				</View>
-			</Touch>
+				</Touch>
+			</LongPress>
 		);
 	}
 
@@ -267,8 +283,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	toggleServerDropdown: () => dispatch(toggleServerDropdownAction()),
-	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
-	appStart: () => dispatch(appStartAction('outside'))
+	selectServerRequest: server => dispatch(selectServerRequestAction(server))
 });
 
 export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(withTheme(withSplit(ServerDropdown))));

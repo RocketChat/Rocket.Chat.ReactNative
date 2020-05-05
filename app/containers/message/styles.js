@@ -61,7 +61,8 @@ export default StyleSheet.create({
 	},
 	reactionEmoji: {
 		fontSize: 13,
-		marginLeft: 7
+		marginLeft: 7,
+		color: '#ffffff'
 	},
 	reactionCustomEmoji: {
 		width: 19,
