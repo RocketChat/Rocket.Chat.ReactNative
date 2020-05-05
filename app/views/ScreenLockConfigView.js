@@ -17,7 +17,7 @@ import { CustomIcon } from '../lib/Icons';
 import database from '../lib/database';
 import { supportedBiometryLabel, changePasscode, checkHasPasscode } from '../utils/localAuthentication';
 import { DisclosureImage } from '../containers/DisclosureIndicator';
-import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
+import { DEFAULT_AUTO_LOCK_OPTIONS, DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
 
 const styles = StyleSheet.create({
 	listPadding: {
@@ -42,29 +42,6 @@ class ScreenLockConfigView extends React.Component {
 		Force_Screen_Lock: PropTypes.string,
 		Force_Screen_Lock_After: PropTypes.string
 	}
-
-	defaultAutoLockOptions = [
-		{
-			title: I18n.t('Local_authentication_auto_lock_60'),
-			value: 60
-		},
-		{
-			title: I18n.t('Local_authentication_auto_lock_300'),
-			value: 300
-		},
-		{
-			title: I18n.t('Local_authentication_auto_lock_900'),
-			value: 900
-		},
-		{
-			title: I18n.t('Local_authentication_auto_lock_1800'),
-			value: 1800
-		},
-		{
-			title: I18n.t('Local_authentication_auto_lock_3600'),
-			value: 3600
-		}
-	];
 
 	constructor(props) {
 		super(props);
@@ -196,7 +173,7 @@ class ScreenLockConfigView extends React.Component {
 		if (!autoLock) {
 			return null;
 		}
-		let items = this.defaultAutoLockOptions;
+		let items = DEFAULT_AUTO_LOCK_OPTIONS;
 		if (Force_Screen_Lock && Force_Screen_Lock_After > 0) {
 			items = [{
 				title: I18n.t('After_seconds_set_by_admin', { seconds: Force_Screen_Lock_After }),
@@ -207,7 +184,7 @@ class ScreenLockConfigView extends React.Component {
 		return (
 			<>
 				<Separator style={styles.emptySpace} theme={theme} />
-				{autoLock ? items.map(item => this.renderItem({ item })) : null}
+				{items.map(item => this.renderItem({ item }))}
 			</>
 		);
 	}
