@@ -1,5 +1,19 @@
 import * as types from './actionsTypes';
 
+export function subscribeRoom(rid) {
+	return {
+		type: types.ROOM.SUBSCRIBE,
+		rid
+	};
+}
+
+export function unsubscribeRoom(rid) {
+	return {
+		type: types.ROOM.UNSUBSCRIBE,
+		rid
+	};
+}
+
 export function leaveRoom(rid, t) {
 	return {
 		type: types.ROOM.LEAVE,

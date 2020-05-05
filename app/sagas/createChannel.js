@@ -28,7 +28,10 @@ const handleRequest = function* handleRequest({ data }) {
 
 		let sub;
 		if (data.group) {
-			sub = yield call(createGroupChat);
+			const result = yield call(createGroupChat);
+			if (result.success) {
+				({ room: sub } = result);
+			}
 		} else {
 			sub = yield call(createChannel, data);
 		}

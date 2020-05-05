@@ -10,8 +10,8 @@ import * as actions from '../actions';
 import {
 	serverFailure, selectServerRequest, selectServerSuccess, selectServerFailure
 } from '../actions/server';
-import { setUser } from '../actions/login';
 import { clearSettings } from '../actions/settings';
+import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
 import log, { logServerVersion } from '../utils/log';
@@ -36,7 +36,10 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 			return;
 		}
 
-		const validVersion = semver.coerce(serverInfo.version);
+		let serverVersion = semver.valid(serverInfo.version);
+		if (!serverVersion) {
+			({ version: serverVersion } = semver.coerce(serverInfo.version));
+		}
 
 		const serversDB = database.servers;
 		const serversCollection = serversDB.collections.get('servers');
@@ -44,12 +47,12 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 			try {
 				const serverRecord = await serversCollection.find(server);
 				await serverRecord.update((record) => {
-					record.version = validVersion;
+					record.version = serverVersion;
 				});
 			} catch (e) {
 				await serversCollection.create((record) => {
 					record._raw = sanitizedRaw({ id: server }, serversCollection.schema);
-					record.version = validVersion;
+					record.version = serverVersion;
 				});
 			}
 		});
@@ -93,11 +96,10 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		const basicAuth = yield RNUserDefaults.get(`${ BASIC_AUTH_KEY }-${ server }`);
 		setBasicAuth(basicAuth);
 
-		yield put(clearSettings());
-
 		RocketChat.abort();
 
 		if (user) {
+			yield put(clearSettings());
 			yield RocketChat.connect({ server, user, logoutOnError: true });
 			yield put(setUser(user));
 			yield put(actions.appStart('inside'));
