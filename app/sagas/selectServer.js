@@ -96,6 +96,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		const basicAuth = yield RNUserDefaults.get(`${ BASIC_AUTH_KEY }-${ server }`);
 		setBasicAuth(basicAuth);
 
+		// Check for running requests and abort them before connecting to the server
 		RocketChat.abort();
 
 		if (user) {

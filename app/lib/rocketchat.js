@@ -160,6 +160,7 @@ const RocketChat = {
 	stopListener(listener) {
 		return listener && listener.stop();
 	},
+	// Abort all requests and create a new AbortController
 	abort() {
 		if (this.controller) {
 			this.controller.abort();
