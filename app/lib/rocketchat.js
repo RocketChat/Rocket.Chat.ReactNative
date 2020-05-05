@@ -47,6 +47,7 @@ import { getDeviceToken } from '../notifications/push';
 import { setActiveUsers } from '../actions/activeUsers';
 import I18n from '../i18n';
 import { twoFactor } from '../utils/twoFactor';
+import { selectServerFailure } from '../actions/server';
 import { useSsl } from '../utils/url';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
@@ -142,6 +143,10 @@ const RocketChat = {
 			}
 			return result;
 		} catch (e) {
+			if (e.message === 'Aborted') {
+				reduxStore.dispatch(selectServerFailure());
+				throw e;
+			}
 			log(e);
 		}
 		return {
@@ -154,6 +159,16 @@ const RocketChat = {
 	},
 	stopListener(listener) {
 		return listener && listener.stop();
+	},
+	// Abort all requests and create a new AbortController
+	abort() {
+		if (this.controller) {
+			this.controller.abort();
+			if (this.sdk) {
+				this.sdk.abort();
+			}
+		}
+		this.controller = new AbortController();
 	},
 	connect({ server, user, logoutOnError = false }) {
 		return new Promise((resolve) => {
@@ -201,17 +216,21 @@ const RocketChat = {
 
 			const sdkConnect = () => this.sdk.connect()
 				.then(() => {
-					if (user && user.token) {
+					const { server: currentServer } = reduxStore.getState().server;
+					if (user && user.token && server === currentServer) {
 						reduxStore.dispatch(loginRequest({ resume: user.token }, logoutOnError));
 					}
 				})
 				.catch((err) => {
 					console.log('connect error', err);
 
-					// when `connect` raises an error, we try again in 10 seconds
-					this.connectTimeout = setTimeout(() => {
-						sdkConnect();
-					}, 10000);
+					const { server: currentServer } = reduxStore.getState().server;
+					if (server === currentServer) {
+						// when `connect` raises an error, we try again in 10 seconds
+						this.connectTimeout = setTimeout(() => {
+							sdkConnect();
+						}, 10000);
+					}
 				});
 
 			sdkConnect();
