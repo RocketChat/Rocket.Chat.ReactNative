@@ -52,20 +52,40 @@ export const changePasscode = async({ force = false }) => {
 	await RNUserDefaults.set(PASSCODE_KEY, sha256(passcode));
 };
 
-export const checkHasPasscode = async({ force = true }) => {
+export const biometryAuth = force => LocalAuthentication.authenticateAsync({
+	disableDeviceFallback: true,
+	cancelLabel: force ? I18n.t('Dont_activate') : I18n.t('Local_authentication_biometry_fallback'),
+	promptMessage: I18n.t('Local_authentication_biometry_title')
+});
+
+/*
+ * It'll help us to get the permission to use FaceID
+ * and enable/disable the biometry when user put their first passcode
+*/
+const checkBiometry = async(serverRecord) => {
+	const serversDB = database.servers;
+
+	const result = await biometryAuth(true);
+	await serversDB.action(async() => {
+		try {
+			await serverRecord.update((record) => {
+				record.biometry = !!result?.success;
+			});
+		} catch {
+			// Do nothing
+		}
+	});
+};
+
+export const checkHasPasscode = async({ force = true, serverRecord }) => {
 	const storedPasscode = await RNUserDefaults.get(PASSCODE_KEY);
 	if (!storedPasscode) {
 		await changePasscode({ force });
+		await checkBiometry(serverRecord);
 		return Promise.resolve({ newPasscode: true });
 	}
 	return Promise.resolve();
 };
-
-export const biometryAuth = () => LocalAuthentication.authenticateAsync({
-	disableDeviceFallback: true,
-	cancelLabel: I18n.t('Local_authentication_biometry_fallback'),
-	promptMessage: I18n.t('Local_authentication_biometry_title')
-});
 
 export const localAuthenticate = async(server) => {
 	const serversDB = database.servers;
@@ -84,7 +104,7 @@ export const localAuthenticate = async(server) => {
 		RNBootSplash.hide();
 
 		// Check if the app has passcode
-		const result = await checkHasPasscode({});
+		const result = await checkHasPasscode({ serverRecord });
 
 		// `checkHasPasscode` results newPasscode = true if a passcode has been set
 		if (!result?.newPasscode) {

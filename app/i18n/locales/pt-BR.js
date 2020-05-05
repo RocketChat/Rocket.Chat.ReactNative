@@ -523,5 +523,6 @@ export default {
 	Passcode_choose_force_set: 'Senha foi exigida pelo admin',
 	Passcode_app_locked_title: 'Aplicativo bloqueado',
 	Passcode_app_locked_subtitle: 'Tente novamente em {{timeLeft}} segundos',
-	After_seconds_set_by_admin: 'Após {{seconds}} segundos (Configurado pelo adm)'
+	After_seconds_set_by_admin: 'Após {{seconds}} segundos (Configurado pelo adm)',
+	Dont_activate: 'Não ativar agora'
 };

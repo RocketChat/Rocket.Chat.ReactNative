@@ -117,7 +117,7 @@ class ScreenLockConfigView extends React.Component {
 			const { autoLock } = this.state;
 			if (autoLock) {
 				try {
-					await checkHasPasscode({ force: false });
+					await checkHasPasscode({ force: false, serverRecord: this.serverRecord });
 				} catch {
 					this.toggleAutoLock();
 				}
