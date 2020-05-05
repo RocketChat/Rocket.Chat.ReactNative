@@ -50,7 +50,9 @@ const serverInfoUpdate = async(serverInfo, iconSetting) => {
 			return { ...allSettings, FileUpload_MaxFileSize: setting.valueAsNumber };
 		}
 		if (setting._id === 'Force_Screen_Lock') {
-			return { ...allSettings, autoLock: setting.valueAsBoolean };
+			// if this was disabled on server side we must keep this enabled on app
+			const autoLock = server.autoLock || setting.valueAsBoolean;
+			return { ...allSettings, autoLock };
 		}
 		if (setting._id === 'Force_Screen_Lock_After') {
 			// if Force_Screen_Lock_After === 0 and autoLockTime is null, set app's default value
