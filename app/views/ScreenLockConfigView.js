@@ -113,7 +113,7 @@ class ScreenLockConfigView extends React.Component {
 	}
 
 	toggleAutoLock = () => {
-		this.setState(({ autoLock }) => ({ autoLock: !autoLock }), async() => {
+		this.setState(({ autoLock }) => ({ autoLock: !autoLock, autoLockTime: DEFAULT_AUTO_LOCK }), async() => {
 			const { autoLock } = this.state;
 			if (autoLock) {
 				try {
