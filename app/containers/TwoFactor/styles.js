@@ -15,11 +15,12 @@ export default StyleSheet.create({
 	},
 	title: {
 		fontSize: 14,
+		paddingBottom: 8,
 		...sharedStyles.textBold
 	},
 	subtitle: {
 		fontSize: 14,
-		paddingVertical: 8,
+		paddingBottom: 8,
 		...sharedStyles.textRegular,
 		...sharedStyles.textAlignCenter
 	},

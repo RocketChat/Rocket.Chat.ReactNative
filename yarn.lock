@@ -2021,10 +2021,9 @@
   resolved "https://registry.yarnpkg.com/@redux-saga/types/-/types-1.1.0.tgz#0e81ce56b4883b4b2a3001ebe1ab298b84237204"
   integrity sha512-afmTuJrylUU/0OtqzaRkbyYFFNgCF73Bvel/sw90pvGrWIZ+vyoIJqA6eMSoA6+nb443kTmulmBtC9NerXboNg==
 
-"@rocket.chat/sdk@1.0.0-alpha.41":
-  version "1.0.0-alpha.41"
-  resolved "https://registry.yarnpkg.com/@rocket.chat/sdk/-/sdk-1.0.0-alpha.41.tgz#8fcae2885786bec56a56b6d9a8cccaa365b77364"
-  integrity sha512-jQ+/exEQMOv+bwH+yzPTC0oJGIKj/AlMc95IvWAn/vHDLjjS3aGzpIpZhBwsMOBVvb/5N8rnq6kEleCkEJk28g==
+"@rocket.chat/sdk@djorkaeffalexandre/Rocket.Chat.js.SDK#test.fix-ddp":
+  version "1.0.0-dj.15"
+  resolved "https://codeload.github.com/djorkaeffalexandre/Rocket.Chat.js.SDK/tar.gz/216de62f7e52dd4a9f73d7989d6943ced550a92a"
   dependencies:
     js-sha256 "^0.9.0"
     lru-cache "^4.1.1"
@@ -7774,11 +7773,6 @@ jszip@^3.1.5:
     pako "~1.0.2"
     readable-stream "~2.0.6"
 
-keymirror@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/keymirror/-/keymirror-0.1.1.tgz#918889ea13f8d0a42e7c557250eee713adc95c35"
-  integrity sha1-kYiJ6hP40KQufFVyUO7nE63JXDU=
-
 kind-of@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-1.1.0.tgz#140a3d2d41a36d2efcfa9377b62c24f8495a5c44"
@@ -8504,11 +8498,6 @@ mime-db@~1.23.0:
   version "1.23.0"
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.23.0.tgz#a31b4070adaea27d732ea333740a64d0ec9a6659"
   integrity sha1-oxtAcK2uon1zLqMzdApk0OyaZlk=
-
-mime-db@~1.25.0:
-  version "1.25.0"
-  resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.25.0.tgz#c18dbd7c73a5dbf6f44a024dc0d165a1e7b1c392"
-  integrity sha1-wY29fHOl2/b0SgJNwNFloeexw5I=
 
 mime-types@2.1.11:
   version "2.1.11"
@@ -10187,11 +10176,11 @@ react-native-localize@1.3.4:
   integrity sha512-ZVdapfTIcizCQ6nfbkTzjN/+D1eFb3aRtmOSC6d4LtjYRovUnv0QmNSg35CI/Q8Jy3nx4bHg6M9QyQ75MHzf7Q==
 
 react-native-mime-types@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/react-native-mime-types/-/react-native-mime-types-2.2.1.tgz#a9760e9916e4e7df03512c60516668f23543f2c0"
-  integrity sha512-2H0jjW5l2driXiiKx9PZsJDCFgS8LeMaVLVZPy3iRkBrNcstpQosEr6+YJfihLbW3WvFtmS2qcyFKB7mYw/iJg==
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-mime-types/-/react-native-mime-types-2.3.0.tgz#1278602c3da94ffb47c6400ef861901c4ebac420"
+  integrity sha512-9l/kkT1QM0i0xAKkOADkP6jIMhqiS+R/eSKBS/lsUmuMYMqboClyrwTFFZwUcaVIN0SpeH4wOKhYTqCnFgRsEw==
   dependencies:
-    mime-db "~1.25.0"
+    mime-db "~1.37.0"
 
 react-native-modal@11.5.6:
   version "11.5.6"
@@ -10349,15 +10338,6 @@ react-native-vector-icons@6.6.0:
     lodash "^4.0.0"
     prop-types "^15.6.2"
     yargs "^13.2.2"
-
-react-native-video@5.0.2:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/react-native-video/-/react-native-video-5.0.2.tgz#8f07da0cd85a1d4b316d115f3786409efc9e39fb"
-  integrity sha512-zbItbMH0uZYkK7xFKa41+950QjoTrIl60bY1vAP7gxTn20HGHvHZRw28h9A5npK5T0QuWMAkn8twaGzqcDkTug==
-  dependencies:
-    keymirror "^0.1.1"
-    prop-types "^15.5.10"
-    shaka-player "^2.4.4"
 
 react-native-webview@7.5.1:
   version "7.5.1"
@@ -11324,11 +11304,6 @@ setprototypeof@1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.1.0.tgz#d0bd85536887b6fe7c0d818cb962d9d91c54e656"
   integrity sha512-BvE/TwpZX4FXExxOxZyRGQQv651MSwmWKZGqvmPcRIjDqWub67kTKuIMx43cZZrS/cBBzwBcNDWoFxt2XEFIpQ==
-
-shaka-player@^2.4.4:
-  version "2.4.6"
-  resolved "https://registry.yarnpkg.com/shaka-player/-/shaka-player-2.4.6.tgz#2a373cfa7f2867d7ba78a53fcdb25fa19cdaf5c0"
-  integrity sha512-f9zWbTPfQYtAKNlL9jmT77XUKvylueu3oM5Vo9DSXwfJa3OE8Vv1R9DGUh1eHra8mVWzvwppkbYVFV/ewQIisw==
 
 shallow-clone@^0.1.2:
   version "0.1.2"

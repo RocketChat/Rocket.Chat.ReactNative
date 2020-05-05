@@ -52,7 +52,7 @@ const Button = React.memo(({
 	onPress, ...props
 }) => (
 	<Touch
-		onPress={onPress}
+		onPress={() => onPress(props.title)}
 		style={{ backgroundColor: themes[props.theme].backgroundColor }}
 		enabled={!props.disabled}
 		theme={props.theme}
@@ -89,6 +89,7 @@ Content.propTypes = {
 };
 
 Button.propTypes = {
+	title: PropTypes.string,
 	onPress: PropTypes.func,
 	disabled: PropTypes.bool,
 	theme: PropTypes.string

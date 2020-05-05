@@ -21,6 +21,7 @@ import database from '../lib/database';
 import EventEmitter from '../utils/events';
 import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../utils/info';
+import { setActiveUsers } from '../actions/activeUsers';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -73,13 +74,15 @@ const registerPushToken = function* registerPushToken() {
 
 const fetchUsersPresence = function* fetchUserPresence() {
 	yield RocketChat.getUsersPresence();
-	yield RocketChat.subscribeUsersPresence();
+	RocketChat.subscribeUsersPresence();
 };
 
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
 		const adding = yield select(state => state.server.adding);
 		yield RNUserDefaults.set(RocketChat.TOKEN_KEY, user.token);
+
+		RocketChat.getUserPresence(user.id);
 
 		const server = yield select(getServer);
 		yield put(roomsRequest());
@@ -186,10 +189,15 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 	}
 };
 
-const handleSetUser = function handleSetUser({ user }) {
+const handleSetUser = function* handleSetUser({ user }) {
 	if (user && user.language) {
 		I18n.locale = user.language;
 		moment.locale(toMomentLocale(user.language));
+	}
+
+	if (user && user.status) {
+		const userId = yield select(state => state.login.user.id);
+		yield put(setActiveUsers({ [userId]: user }));
 	}
 };
 

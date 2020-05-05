@@ -1,6 +1,4 @@
-import {
-	put, take, takeLatest, fork, cancel, race
-} from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 import RNUserDefaults from 'rn-user-defaults';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
@@ -12,8 +10,8 @@ import * as actions from '../actions';
 import {
 	serverFailure, selectServerRequest, selectServerSuccess, selectServerFailure
 } from '../actions/server';
-import { setUser } from '../actions/login';
 import { clearSettings } from '../actions/settings';
+import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
 import log, { logServerVersion } from '../utils/log';
@@ -38,7 +36,10 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 			return;
 		}
 
-		const validVersion = semver.coerce(serverInfo.version);
+		let serverVersion = semver.valid(serverInfo.version);
+		if (!serverVersion) {
+			({ version: serverVersion } = semver.coerce(serverInfo.version));
+		}
 
 		const serversDB = database.servers;
 		const serversCollection = serversDB.collections.get('servers');
@@ -46,12 +47,12 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 			try {
 				const serverRecord = await serversCollection.find(server);
 				await serverRecord.update((record) => {
-					record.version = validVersion;
+					record.version = serverVersion;
 				});
 			} catch (e) {
 				await serversCollection.create((record) => {
 					record._raw = sanitizedRaw({ id: server }, serversCollection.schema);
-					record.version = validVersion;
+					record.version = serverVersion;
 				});
 			}
 		});
@@ -95,9 +96,11 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		const basicAuth = yield RNUserDefaults.get(`${ BASIC_AUTH_KEY }-${ server }`);
 		setBasicAuth(basicAuth);
 
-		yield put(clearSettings());
+		// Check for running requests and abort them before connecting to the server
+		RocketChat.abort();
 
 		if (user) {
+			yield put(clearSettings());
 			yield RocketChat.connect({ server, user, logoutOnError: true });
 			yield put(setUser(user));
 			yield put(actions.appStart('inside'));
@@ -150,16 +153,6 @@ const handleServerRequest = function* handleServerRequest({ server, certificate 
 
 const root = function* root() {
 	yield takeLatest(SERVER.REQUEST, handleServerRequest);
-
-	while (true) {
-		const params = yield take(SERVER.SELECT_REQUEST);
-		const selectServerTask = yield fork(handleSelectServer, params);
-		yield race({
-			request: take(SERVER.SELECT_REQUEST),
-			success: take(SERVER.SELECT_SUCCESS),
-			failure: take(SERVER.SELECT_FAILURE)
-		});
-		yield cancel(selectServerTask);
-	}
+	yield takeLatest(SERVER.SELECT_REQUEST, handleSelectServer);
 };
 export default root;

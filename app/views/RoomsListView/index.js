@@ -174,6 +174,7 @@ class RoomsListView extends React.Component {
 		roomsRequest: PropTypes.func,
 		closeServerDropdown: PropTypes.func,
 		useRealName: PropTypes.bool,
+		connected: PropTypes.bool,
 		split: PropTypes.bool
 	};
 
@@ -211,13 +212,17 @@ class RoomsListView extends React.Component {
 		this.willFocusListener = navigation.addListener('willFocus', () => {
 			// Check if there were changes while not focused (it's set on sCU)
 			if (this.shouldUpdate) {
-				// animateNextTransition();
 				this.forceUpdate();
 				this.shouldUpdate = false;
 			}
 		});
 		this.didFocusListener = navigation.addListener('didFocus', () => {
 			this.animated = true;
+			// Check if there were changes while not focused (it's set on sCU)
+			if (this.shouldUpdate) {
+				this.forceUpdate();
+				this.shouldUpdate = false;
+			}
 			this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 		});
 		this.willBlurListener = navigation.addListener('willBlur', () => {
@@ -302,6 +307,7 @@ class RoomsListView extends React.Component {
 			showFavorites,
 			showUnread,
 			appState,
+			connected,
 			roomsRequest
 		} = this.props;
 
@@ -317,6 +323,7 @@ class RoomsListView extends React.Component {
 		} else if (
 			appState === 'foreground'
 			&& appState !== prevProps.appState
+			&& connected
 		) {
 			roomsRequest();
 		}
@@ -528,10 +535,7 @@ class RoomsListView extends React.Component {
 
 	getUserPresence = uid => RocketChat.getUserPresence(uid)
 
-	getUidDirectMessage = (room) => {
-		const { user: { id } } = this.props;
-		return RocketChat.getUidDirectMessage(room, id);
-	}
+	getUidDirectMessage = room => RocketChat.getUidDirectMessage(room);
 
 	goRoom = (item) => {
 		const { navigation } = this.props;
@@ -542,12 +546,17 @@ class RoomsListView extends React.Component {
 			name: this.getRoomTitle(item),
 			t: item.t,
 			prid: item.prid,
-			roomUserId: this.getUidDirectMessage(item),
-			room: item
+			room: item,
+			search: item.search,
+			roomUserId: this.getUidDirectMessage(item)
 		});
 	}
 
 	_onPressItem = async(item = {}) => {
+		const { navigation } = this.props;
+		if (!navigation.isFocused()) {
+			return;
+		}
 		if (!item.search) {
 			return this.goRoom(item);
 		}
@@ -894,6 +903,7 @@ class RoomsListView extends React.Component {
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
 	server: state.server.server,
+	connected: state.server.connected,
 	searchText: state.rooms.searchText,
 	loadingServer: state.server.loading,
 	showServerDropdown: state.rooms.showServerDropdown,
