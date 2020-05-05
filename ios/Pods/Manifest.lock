@@ -29,7 +29,7 @@ PODS:
   - EXPermissions (8.1.0):
     - UMCore
     - UMPermissionsInterface
-  - EXWebBrowser (8.1.0):
+  - EXWebBrowser (8.2.1):
     - UMCore
   - Fabric (1.10.2)
   - FBLazyVector (0.62.1)
@@ -345,18 +345,16 @@ PODS:
   - React-jsinspector (0.62.1)
   - react-native-appearance (0.3.1):
     - React
-  - react-native-background-timer (2.1.1):
+  - react-native-background-timer (2.2.0):
     - React
-  - react-native-cameraroll (1.3.0):
+  - react-native-cameraroll (1.6.0):
     - React
-  - react-native-document-picker (3.2.4):
+  - react-native-document-picker (3.3.3):
     - React
   - react-native-jitsi-meet (2.1.1):
     - JitsiMeetSDK (= 2.4.0)
     - React
   - react-native-keyboard-input (5.4.1):
-    - React
-  - react-native-keyboard-tracking-view (5.6.1):
     - React
   - react-native-notifications (2.1.7):
     - React
@@ -427,15 +425,17 @@ PODS:
     - ReactCommon/callinvoker (= 0.62.1)
   - ReactNativeART (1.2.0):
     - React
+  - ReactNativeKeyboardTrackingView (5.7.0):
+    - React
   - rn-extensions-share (2.3.10):
     - React
   - rn-fetch-blob (0.11.2):
     - React-Core
   - RNAudio (4.3.0):
     - React
-  - RNBootSplash (2.1.0):
+  - RNBootSplash (2.2.4):
     - React
-  - RNDateTimePicker (2.1.0):
+  - RNDateTimePicker (2.3.2):
     - React
   - RNDeviceInfo (2.3.2):
     - React
@@ -452,7 +452,7 @@ PODS:
     - Fabric
     - Firebase/Core
     - React
-  - RNGestureHandler (1.5.0):
+  - RNGestureHandler (1.6.1):
     - React
   - RNImageCropPicker (0.28.0):
     - React-Core
@@ -463,13 +463,13 @@ PODS:
     - React-Core
     - React-RCTImage
     - RSKImageCropper
-  - RNLocalize (1.3.4):
+  - RNLocalize (1.4.0):
     - React
-  - RNReanimated (1.4.0):
+  - RNReanimated (1.8.0):
     - React
   - RNRootView (1.0.3):
     - React
-  - RNScreens (2.0.0-alpha.3):
+  - RNScreens (2.7.0):
     - React
   - RNUserDefaults (1.8.1):
     - React
@@ -541,7 +541,6 @@ DEPENDENCIES:
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-jitsi-meet (from `../node_modules/react-native-jitsi-meet`)
   - react-native-keyboard-input (from `../node_modules/react-native-keyboard-input`)
-  - react-native-keyboard-tracking-view (from `../node_modules/react-native-keyboard-tracking-view`)
   - react-native-notifications (from `../node_modules/react-native-notifications`)
   - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
@@ -558,6 +557,7 @@ DEPENDENCIES:
   - ReactCommon/callinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "ReactNativeART (from `../node_modules/@react-native-community/art`)"
+  - ReactNativeKeyboardTrackingView (from `../node_modules/react-native-keyboard-tracking-view`)
   - rn-extensions-share (from `../node_modules/rn-extensions-share`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - RNAudio (from `../node_modules/react-native-audio`)
@@ -684,8 +684,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-jitsi-meet"
   react-native-keyboard-input:
     :path: "../node_modules/react-native-keyboard-input"
-  react-native-keyboard-tracking-view:
-    :path: "../node_modules/react-native-keyboard-tracking-view"
   react-native-notifications:
     :path: "../node_modules/react-native-notifications"
   react-native-orientation-locker:
@@ -716,6 +714,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   ReactNativeART:
     :path: "../node_modules/@react-native-community/art"
+  ReactNativeKeyboardTrackingView:
+    :path: "../node_modules/react-native-keyboard-tracking-view"
   rn-extensions-share:
     :path: "../node_modules/rn-extensions-share"
   rn-fetch-blob:
@@ -795,7 +795,7 @@ SPEC CHECKSUMS:
   EXHaptics: 013b5065946d4dd7b46ea547b58072d45a206dbd
   EXImageLoader: 5ad6896fa1ef2ee814b551873cbf7a7baccc694a
   EXPermissions: 24b97f734ce9172d245a5be38ad9ccfcb6135964
-  EXWebBrowser: 4118b18d151fd03c935bd9de4cd312d2b33ec2c5
+  EXWebBrowser: 5902f99ac5ac551e5c82ff46f13a337b323aa9ea
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   FBLazyVector: 95ee3e58937a6052f86b0e32f142388c22fa22c5
   FBReactNativeSpec: 26dd6459299e48cd64eb397c45635e466dba9f45
@@ -835,12 +835,11 @@ SPEC CHECKSUMS:
   React-jsiexecutor: e9698dee4fd43ceb44832baf15d5745f455b0157
   React-jsinspector: f74a62727e5604119abd4a1eda52c0a12144bcd5
   react-native-appearance: 368f9d1160e3f1d7ecb5945e704affe018deef46
-  react-native-background-timer: 1b6e6b4e10f1b74c367a1fdc3c72b67c619b222b
-  react-native-cameraroll: 463aff54e37cff27ea76eb792e6f1fa43b876320
-  react-native-document-picker: c36bf5f067a581657ecaf7124dcd921a8be19061
+  react-native-background-timer: 1f7d560647b40e6a60b01c452ba29c54bf581fc4
+  react-native-cameraroll: 02e60e9af9273a3cc3b641632bf651189830aaf8
+  react-native-document-picker: dd96ce05bf1453b110d7a3912097bf6d298d2cb6
   react-native-jitsi-meet: 29ed76cdc6142d9a6c013bb14dd6205df0b5452b
   react-native-keyboard-input: 775c2f00554869563b1d59c6bebd8f8a2aa54295
-  react-native-keyboard-tracking-view: 4bb67b89ccd327c7d9eab87f722880d2103a25a8
   react-native-notifications: ee8fd739853e72694f3af8b374c8ccb106b7b227
   react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
   react-native-slider: e51492f1264d882a8815b71c5870f8978e52887d
@@ -856,20 +855,21 @@ SPEC CHECKSUMS:
   React-RCTVibration: 072c3b427dd29e730c2ee5bfc509cf5054741a50
   ReactCommon: 3585806280c51d5c2c0d3aa5a99014c3badb629d
   ReactNativeART: 78edc68dd4a1e675338cd0cd113319cf3a65f2ab
+  ReactNativeKeyboardTrackingView: 02137fac3b2ebd330d74fa54ead48b14750a2306
   rn-extensions-share: 4bfee75806ad54aadeff1dfa535697a6345a50b8
   rn-fetch-blob: f525a73a78df9ed5d35e67ea65e79d53c15255bc
   RNAudio: cae2991f2dccb75163f260b60da8051717b959fa
-  RNBootSplash: fbf76a4bf1c03e9acd1dd08ce064847f26d6d8bf
-  RNDateTimePicker: 9db00606d689f5653f08aa601c81b9d3266a0a19
+  RNBootSplash: 7cb9b4fe7e94177edc0d11010f7631d79db2f5e9
+  RNDateTimePicker: 4bd49e09f91ca73d69119a9e1173b0d43b82f5e5
   RNDeviceInfo: 17e34f6dd902f08d88cbe2c0b7a01be948d43641
   RNFastImage: 9b0c22643872bb7494c8d87bbbb66cc4c0d9e7a2
   RNFirebase: 37daa9a346d070f9f6ee1f3b4aaf4c8e3b1d5d1c
-  RNGestureHandler: a4ddde1ffc6e590c8127b8b7eabfdade45475c74
+  RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNImageCropPicker: cf129d17e042ce3e96fb9ada967c28f21f977c82
-  RNLocalize: 215c419a17d7585eb7a63c748ebfd042e0cb2c3d
-  RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
+  RNLocalize: b6df30cc25ae736d37874f9bce13351db2f56796
+  RNReanimated: 955cf4068714003d2f1a6e2bae3fb1118f359aff
   RNRootView: 895a4813dedeaca82db2fa868ca1c333d790e494
-  RNScreens: 402a99b0a27c0c32f079cec12d3ccbd35e20cd7f
+  RNScreens: cf198f915f8a2bf163de94ca9f5bfc8d326c3706
   RNUserDefaults: c421fd97ad06b35c16608c5d0fe675db353f632d
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   RSKImageCropper: a446db0e8444a036b34f3c43db01b2373baa4b2a

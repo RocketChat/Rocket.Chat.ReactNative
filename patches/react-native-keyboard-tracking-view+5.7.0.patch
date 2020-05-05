@@ -1,8 +1,8 @@
 diff --git a/node_modules/react-native-keyboard-tracking-view/lib/KeyboardTrackingViewManager.m b/node_modules/react-native-keyboard-tracking-view/lib/KeyboardTrackingViewManager.m
-index 800bd35..8fcd559 100644
+index 1333a10..4a698c5 100644
 --- a/node_modules/react-native-keyboard-tracking-view/lib/KeyboardTrackingViewManager.m
 +++ b/node_modules/react-native-keyboard-tracking-view/lib/KeyboardTrackingViewManager.m
-@@ -49,6 +49,7 @@ @interface KeyboardTrackingView : UIView
+@@ -50,6 +50,7 @@ @interface KeyboardTrackingView : UIView
  @property (nonatomic) CGFloat originalHeight;
  @property (nonatomic) KeyboardTrackingScrollBehavior scrollBehavior;
  @property (nonatomic) BOOL addBottomView;
@@ -10,7 +10,7 @@ index 800bd35..8fcd559 100644
  @property (nonatomic) BOOL scrollToFocusedInput;
  @property (nonatomic) BOOL allowHitsOutsideBounds;
  
-@@ -79,6 +80,7 @@ -(instancetype)init
+@@ -80,6 +81,7 @@ -(instancetype)init
          _bottomViewHeight = kBottomViewHeight;
          
          self.addBottomView = NO;
@@ -18,7 +18,7 @@ index 800bd35..8fcd559 100644
          self.scrollToFocusedInput = NO;
          
          [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rctContentDidAppearNotification:) name:RCTContentDidAppearNotification object:nil];
-@@ -170,6 +172,7 @@ - (void)initializeAccessoryViewsAndHandleInsets
+@@ -171,6 +173,7 @@ - (void)initializeAccessoryViewsAndHandleInsets
      
      for (UIView* subview in allSubviews)
      {
@@ -26,7 +26,7 @@ index 800bd35..8fcd559 100644
          if(_manageScrollView)
          {
              if(_scrollViewToManage == nil)
-@@ -195,7 +198,7 @@ - (void)initializeAccessoryViewsAndHandleInsets
+@@ -196,7 +199,7 @@ - (void)initializeAccessoryViewsAndHandleInsets
              }
          }
          
@@ -35,7 +35,7 @@ index 800bd35..8fcd559 100644
          {
              UITextField *textField = nil;
              Ivar backedTextInputIvar = class_getInstanceVariable([subview class], "_backedTextInput");
-@@ -209,15 +212,15 @@ - (void)initializeAccessoryViewsAndHandleInsets
+@@ -210,15 +213,15 @@ - (void)initializeAccessoryViewsAndHandleInsets
              }
              [self setupTextField:textField];
          }
@@ -54,7 +54,7 @@ index 800bd35..8fcd559 100644
          {
              UITextView *textView = nil;
              Ivar backedTextInputIvar = class_getInstanceVariable([subview class], "_backedTextInput");
-@@ -231,7 +234,7 @@ - (void)initializeAccessoryViewsAndHandleInsets
+@@ -232,7 +235,7 @@ - (void)initializeAccessoryViewsAndHandleInsets
              }
              [self setupTextView:textView];
          }
@@ -63,7 +63,7 @@ index 800bd35..8fcd559 100644
          {
              [self setupTextView:(UITextView*)subview];
          }
-@@ -266,6 +269,13 @@ - (void)initializeAccessoryViewsAndHandleInsets
+@@ -267,6 +270,22 @@ - (void)initializeAccessoryViewsAndHandleInsets
      [self addBottomViewIfNecessary];
  }
  
@@ -74,13 +74,6 @@ index 800bd35..8fcd559 100644
 +    });
 +}
 +
- - (void)setupTextView:(UITextView*)textView
- {
-     if (textView != nil)
-@@ -442,12 +452,28 @@ -(void)setAddBottomView:(BOOL)addBottomView
-     [self addBottomViewIfNecessary];
- }
- 
 +-(UIColor *)colorFromHexString:(NSString *)hexString
 +{
 +    unsigned rgbValue = 0;
@@ -90,8 +83,10 @@ index 800bd35..8fcd559 100644
 +    return [UIColor colorWithRed:((rgbValue & 0xFF0000) >> 16)/255.0 green:((rgbValue & 0xFF00) >> 8)/255.0 blue:(rgbValue & 0xFF)/255.0 alpha:1.0];
 +}
 +
- -(void)addBottomViewIfNecessary
+ - (void)setupTextView:(UITextView*)textView
  {
+     if (textView != nil)
+@@ -448,7 +467,14 @@ -(void)addBottomViewIfNecessary
      if (self.addBottomView && _bottomView == nil)
      {
          _bottomView = [UIView new];
@@ -107,7 +102,7 @@ index 800bd35..8fcd559 100644
          [self addSubview:_bottomView];
          [self updateBottomViewFrame];
      }
-@@ -631,6 +657,7 @@ @implementation KeyboardTrackingViewManager
+@@ -632,6 +658,7 @@ @implementation KeyboardTrackingViewManager
  RCT_REMAP_VIEW_PROPERTY(manageScrollView, manageScrollView, BOOL)
  RCT_REMAP_VIEW_PROPERTY(requiresSameParentToManageScrollView, requiresSameParentToManageScrollView, BOOL)
  RCT_REMAP_VIEW_PROPERTY(addBottomView, addBottomView, BOOL)
@@ -115,7 +110,7 @@ index 800bd35..8fcd559 100644
  RCT_REMAP_VIEW_PROPERTY(scrollToFocusedInput, scrollToFocusedInput, BOOL)
  RCT_REMAP_VIEW_PROPERTY(allowHitsOutsideBounds, allowHitsOutsideBounds, BOOL)
  
-@@ -687,6 +714,21 @@ - (UIView *)view
+@@ -688,6 +715,21 @@ - (UIView *)view
       }];
  }
  
@@ -137,32 +132,6 @@ index 800bd35..8fcd559 100644
  #pragma mark - helper methods
  
  -(void)rejectPromise:(RCTPromiseRejectBlock)reject withErrorMessage:(NSString*)errorMessage errorCode:(NSInteger)errorCode
-diff --git a/node_modules/react-native-keyboard-tracking-view/react-native-keyboard-tracking-view.podspec b/node_modules/react-native-keyboard-tracking-view/react-native-keyboard-tracking-view.podspec
-new file mode 100644
-index 0000000..a6dbe01
---- /dev/null
-+++ b/node_modules/react-native-keyboard-tracking-view/react-native-keyboard-tracking-view.podspec
-@@ -0,0 +1,19 @@
-+require 'json'
-+
-+package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
-+
-+Pod::Spec.new do |s|
-+  s.name         = package['name']
-+  s.version      = package['version']
-+  s.summary      = package['description']
-+  s.license      = package['license']
-+
-+  s.authors      = package['author']
-+  s.homepage     = package['homepage']
-+  s.platform     = :ios, "9.0"
-+
-+  s.source       = { :git => "https://github.com/wix/react-native-keyboard-tracking-view.git", :tag => "v#{s.version}" }
-+  s.source_files  = "lib/**/*.{h,m}"
-+
-+  s.dependency 'React'
-+end
-\ No newline at end of file
 diff --git a/node_modules/react-native-keyboard-tracking-view/src/KeyboardTrackingView.android.js b/node_modules/react-native-keyboard-tracking-view/src/KeyboardTrackingView.android.js
 index af15edf..1e1bd35 100644
 --- a/node_modules/react-native-keyboard-tracking-view/src/KeyboardTrackingView.android.js
