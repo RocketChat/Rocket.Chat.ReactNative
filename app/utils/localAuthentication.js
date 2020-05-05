@@ -84,7 +84,7 @@ export const localAuthenticate = async(server) => {
 		RNBootSplash.hide();
 
 		// Check if the app has passcode
-		const result = await checkHasPasscode();
+		const result = await checkHasPasscode({});
 
 		// `checkHasPasscode` results newPasscode = true if a passcode has been set
 		if (!result?.newPasscode) {
