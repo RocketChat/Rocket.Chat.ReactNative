@@ -116,7 +116,11 @@ class ScreenLockConfigView extends React.Component {
 		this.setState(({ autoLock }) => ({ autoLock: !autoLock }), async() => {
 			const { autoLock } = this.state;
 			if (autoLock) {
-				await checkHasPasscode();
+				try {
+					await checkHasPasscode({ force: false });
+				} catch {
+					this.toggleAutoLock();
+				}
 			}
 			this.save();
 		});

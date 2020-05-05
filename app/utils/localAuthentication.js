@@ -52,10 +52,10 @@ export const changePasscode = async({ force = false }) => {
 	await RNUserDefaults.set(PASSCODE_KEY, sha256(passcode));
 };
 
-export const checkHasPasscode = async() => {
+export const checkHasPasscode = async({ force = true }) => {
 	const storedPasscode = await RNUserDefaults.get(PASSCODE_KEY);
 	if (!storedPasscode) {
-		await changePasscode({ force: true });
+		await changePasscode({ force });
 		return Promise.resolve({ newPasscode: true });
 	}
 	return Promise.resolve();
