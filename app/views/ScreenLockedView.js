@@ -7,7 +7,6 @@ import Orientation from 'react-native-orientation-locker';
 
 import { withTheme } from '../theme';
 import EventEmitter from '../utils/events';
-import { withSplit } from '../split';
 import { LOCAL_AUTHENTICATE_EMITTER } from '../constants/localAuthentication';
 import { isTablet } from '../utils/deviceInfo';
 import { PasscodeEnter } from '../containers/Passcode';
@@ -26,14 +25,19 @@ const ScreenLockedView = ({ theme }) => {
 
 	const showScreenLock = (args) => {
 		setData(args);
-		if (!isTablet) {
-			Orientation.lockToPortrait();
-		}
 	};
 
 	useEffect(() => {
+		if (!isTablet) {
+			Orientation.lockToPortrait();
+		}
 		EventEmitter.addEventListener(LOCAL_AUTHENTICATE_EMITTER, showScreenLock);
-		return () => EventEmitter.removeListener(LOCAL_AUTHENTICATE_EMITTER);
+		return (() => {
+			if (!isTablet) {
+				Orientation.unlockAllOrientations();
+			}
+			EventEmitter.removeListener(LOCAL_AUTHENTICATE_EMITTER);
+		});
 	}, []);
 
 	const onSubmit = () => {
@@ -59,9 +63,7 @@ const ScreenLockedView = ({ theme }) => {
 };
 
 ScreenLockedView.propTypes = {
-	theme: PropTypes.string,
-	// eslint-disable-next-line react/no-unused-prop-types
-	split: PropTypes.bool // TODO: need it?
+	theme: PropTypes.string
 };
 
-export default withSplit(withTheme(ScreenLockedView));
+export default withTheme(ScreenLockedView);

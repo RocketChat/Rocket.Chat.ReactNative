@@ -7,7 +7,7 @@ import Base from './Base';
 import { TYPE } from './constants';
 import I18n from '../../i18n';
 
-const PasscodeEnter = ({ theme, finishProcess, force = false }) => {
+const PasscodeChoose = ({ theme, finishProcess, force = false }) => {
 	const chooseRef = useRef(null);
 	const confirmRef = useRef(null);
 	const [subtitle, setSubtitle] = useState(null);
@@ -60,10 +60,10 @@ const PasscodeEnter = ({ theme, finishProcess, force = false }) => {
 	);
 };
 
-PasscodeEnter.propTypes = {
+PasscodeChoose.propTypes = {
 	theme: PropTypes.string,
 	force: PropTypes.bool,
 	finishProcess: PropTypes.func
 };
 
-export default gestureHandlerRootHOC(PasscodeEnter);
+export default gestureHandlerRootHOC(PasscodeChoose);

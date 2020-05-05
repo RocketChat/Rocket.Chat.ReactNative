@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	StyleSheet, View, Switch, ScrollView
-} from 'react-native';
+import { StyleSheet, Switch, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 
@@ -26,7 +24,7 @@ const styles = StyleSheet.create({
 		paddingVertical: 36
 	},
 	emptySpace: {
-		height: 36
+		marginTop: 36
 	}
 });
 
@@ -190,22 +188,21 @@ class ScreenLockConfigView extends React.Component {
 
 	renderAutoLockItems = () => {
 		const { autoLock } = this.state;
-		const { theme, Force_Screen_Lock_After } = this.props;
+		const { theme, Force_Screen_Lock_After, Force_Screen_Lock } = this.props;
 		if (!autoLock) {
 			return null;
 		}
 		let items = this.defaultAutoLockOptions;
-		if (Force_Screen_Lock_After > 0) {
+		if (Force_Screen_Lock && Force_Screen_Lock_After > 0) {
 			items = [{
-				title: `After ${ Force_Screen_Lock_After } seconds (set by admin)`,
+				title: I18n.t('After_seconds_set_by_admin', { seconds: Force_Screen_Lock_After }),
 				value: Force_Screen_Lock_After,
 				disabled: true
 			}];
 		}
 		return (
 			<>
-				<View style={styles.emptySpace} />
-				<Separator theme={theme} />
+				<Separator style={styles.emptySpace} theme={theme} />
 				{autoLock ? items.map(item => this.renderItem({ item })) : null}
 			</>
 		);

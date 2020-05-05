@@ -35,10 +35,10 @@ const appHasComeBackToBackground = function* appHasComeBackToBackground() {
 		return;
 	}
 	try {
-		yield RocketChat.setUserPresenceAway();
-
 		const server = yield select(state => state.server.server);
 		yield saveLastLocalAuthenticationSession(server);
+
+		yield RocketChat.setUserPresenceAway();
 	} catch (e) {
 		log(e);
 	}

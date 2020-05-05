@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import Orientation from 'react-native-orientation-locker';
 import useDeepCompareEffect from 'use-deep-compare-effect';
@@ -15,6 +16,17 @@ import { CustomIcon } from '../lib/Icons';
 import { CHANGE_PASSCODE_EMITTER } from '../constants/localAuthentication';
 import { themes } from '../constants/colors';
 
+const styles = StyleSheet.create({
+	modal: {
+		margin: 0
+	},
+	close: {
+		position: 'absolute',
+		top: hasNotch ? 50 : 30,
+		left: 15
+	}
+});
+
 const ChangePasscodeView = React.memo(({ theme }) => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState({});
@@ -29,9 +41,6 @@ const ChangePasscodeView = React.memo(({ theme }) => {
 
 	const showChangePasscode = (args) => {
 		setData(args);
-		if (!isTablet) {
-			Orientation.lockToPortrait();
-		}
 	};
 
 	const onSubmit = (passcode) => {
@@ -43,9 +52,9 @@ const ChangePasscodeView = React.memo(({ theme }) => {
 	};
 
 	const onCancel = () => {
-		const { reject } = data;
-		if (reject) {
-			reject();
+		const { cancel } = data;
+		if (cancel) {
+			cancel();
 		}
 		setData({});
 	};
@@ -68,12 +77,12 @@ const ChangePasscodeView = React.memo(({ theme }) => {
 			useNativeDriver
 			isVisible={visible}
 			hideModalContentWhileAnimating
-			style={{ margin: 0 }}
+			style={styles.modal}
 		>
 			<PasscodeChoose theme={theme} type={TYPE.choose} finishProcess={onSubmit} force={data?.force} />
 			{!data?.force
 				? (
-					<Touchable onPress={onCancel} style={{ top: hasNotch ? 50 : 30, left: 15, position: 'absolute' }}>
+					<Touchable onPress={onCancel} style={styles.close}>
 						<CustomIcon name='cross' color={themes[theme].passcodePrimary} size={30} />
 					</Touchable>
 				)

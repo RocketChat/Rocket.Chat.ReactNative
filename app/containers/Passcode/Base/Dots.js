@@ -10,7 +10,7 @@ const SIZE_EMPTY = 12;
 const SIZE_FULL = 16;
 
 const Dots = React.memo(({ passcode, theme, length }) => (
-	<View style={[styles.dotsContainer]}>
+	<View style={styles.dotsContainer}>
 		{_.range(length).map((val) => {
 			const lengthSup = (passcode.length >= val + 1);
 			const height = lengthSup ? SIZE_FULL : SIZE_EMPTY;
@@ -27,14 +27,14 @@ const Dots = React.memo(({ passcode, theme, length }) => (
 			return (
 				<View style={styles.dotsView}>
 					<View
-						style={[{
+						style={{
 							height,
 							width,
 							borderRadius,
 							backgroundColor,
 							marginRight,
 							marginLeft
-						}]}
+						}}
 					/>
 				</View>
 			);

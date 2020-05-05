@@ -13,8 +13,6 @@ import {
 } from '../constants/localAuthentication';
 import I18n from '../i18n';
 
-// RNUserDefaults.clear(PASSCODE_KEY)
-
 export const saveLastLocalAuthenticationSession = async(server, serverRecord) => {
 	const serversDB = database.servers;
 	const serversCollection = serversDB.collections.get('servers');
@@ -98,7 +96,7 @@ export const localAuthenticate = async(server) => {
 				let hasBiometry = false;
 
 				// if biometry is enabled on the app
-				if (serverRecord?.biometry) {
+				if (serverRecord.biometry) {
 					const isEnrolled = await LocalAuthentication.isEnrolledAsync();
 					hasBiometry = isEnrolled;
 				}
@@ -108,26 +106,29 @@ export const localAuthenticate = async(server) => {
 			}
 		}
 
-		//
 		await resetAttempts();
 		await saveLastLocalAuthenticationSession(server, serverRecord);
 	}
 };
 
 export const supportedBiometryLabel = async() => {
-	const enrolled = await LocalAuthentication.isEnrolledAsync();
+	try {
+		const enrolled = await LocalAuthentication.isEnrolledAsync();
 
-	if (!enrolled) {
-		return null;
-	}
+		if (!enrolled) {
+			return null;
+		}
 
-	const supported = await LocalAuthentication.supportedAuthenticationTypesAsync();
+		const supported = await LocalAuthentication.supportedAuthenticationTypesAsync();
 
-	if (supported.includes(LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION)) {
-		return isIOS ? 'FaceID' : I18n.t('Local_authentication_facial_recognition');
-	}
-	if (supported.includes(LocalAuthentication.AuthenticationType.FINGERPRINT)) {
-		return isIOS ? 'TouchID' : I18n.t('Local_authentication_fingerprint');
+		if (supported.includes(LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION)) {
+			return isIOS ? 'FaceID' : I18n.t('Local_authentication_facial_recognition');
+		}
+		if (supported.includes(LocalAuthentication.AuthenticationType.FINGERPRINT)) {
+			return isIOS ? 'TouchID' : I18n.t('Local_authentication_fingerprint');
+		}
+	} catch {
+		// Do nothing
 	}
 	return null;
 };

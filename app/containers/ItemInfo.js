@@ -6,9 +6,6 @@ import sharedStyles from '../views/Styles';
 import { themes } from '../constants/colors';
 
 const styles = StyleSheet.create({
-	listPadding: {
-		paddingVertical: 36
-	},
 	infoContainer: {
 		padding: 15
 	},

@@ -582,5 +582,6 @@ export default {
 	Passcode_choose_error: 'Passcodes don\'t match. Try again.',
 	Passcode_choose_force_set: 'Passcode required by admin',
 	Passcode_app_locked_title: 'App locked',
-	Passcode_app_locked_subtitle: 'Try again in {{timeLeft}} seconds'
+	Passcode_app_locked_subtitle: 'Try again in {{timeLeft}} seconds',
+	After_seconds_set_by_admin: 'After {{seconds}} seconds (set by admin)'
 };

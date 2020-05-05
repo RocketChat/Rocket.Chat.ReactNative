@@ -121,14 +121,6 @@ export default async function() {
 			return;
 		}
 		const data = result.settings || [];
-		data.push({
-			_id: 'Force_Screen_Lock',
-			value: true
-		});
-		data.push({
-			_id: 'Force_Screen_Lock_After',
-			value: 0
-		});
 		const filteredSettings = this._prepareSettings(data);
 		const filteredSettingsIds = filteredSettings.map(s => s._id);
 

@@ -17,7 +17,7 @@ const Button = React.memo(({
 			style={[styles.buttonView, { backgroundColor: 'transparent' }]}
 			underlayColor={themes[theme].passcodeButtonActive}
 			rippleColor={themes[theme].passcodeButtonActive}
-			disabled={disabled}
+			enabled={!disabled}
 			theme={theme}
 			onPress={press}
 		>
