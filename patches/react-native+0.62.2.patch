@@ -1,3 +1,16 @@
+diff --git a/node_modules/react-native/Libraries/Components/TextInput/TextInput.js b/node_modules/react-native/Libraries/Components/TextInput/TextInput.js
+index 02e1db6..f7d6281 100644
+--- a/node_modules/react-native/Libraries/Components/TextInput/TextInput.js
++++ b/node_modules/react-native/Libraries/Components/TextInput/TextInput.js
+@@ -957,6 +957,8 @@ function InternalTextInput(props: Props): React.Node {
+         ref.clear = clear;
+         ref.isFocused = isFocused;
+         ref.getNativeRef = getNativeRef;
++        ref.lastNativeSelection = lastNativeSelection;
++        ref.lastNativeText = lastNativeText;
+       }
+     },
+   });
 diff --git a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
 index 274f381..1fe2686 100644
 --- a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
