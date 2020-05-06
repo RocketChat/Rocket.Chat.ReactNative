@@ -39,6 +39,7 @@
     "expo-av": "^6.0.0",
     "expo-file-system": "^6.0.2",
     "expo-haptics": "6.0.0",
+    "expo-keep-awake": "^8.1.0",
     "expo-web-browser": "^6.0.0",
     "hoist-non-react-statics": "^3.3.0",
     "i18n-js": "3.5.0",
