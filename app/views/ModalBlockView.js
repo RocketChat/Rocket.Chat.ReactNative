@@ -154,8 +154,8 @@ class ModalBlockView extends React.Component {
 			this.setState({ errors });
 		} else {
 			this.setState({ data });
+			navigation.setParams({ data });
 		}
-		navigation.setParams({ data });
 	};
 
 	cancel = async({ closeModal }) => {
