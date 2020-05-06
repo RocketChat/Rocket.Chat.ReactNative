@@ -92,44 +92,56 @@ class DoOperator : public FlowableOperator<U, U> {
         : SuperSub(std::move(subscriber)), flowable_(std::move(flowable)) {}
 
     void onSubscribeImpl() override {
-      flowable_->onSubscribeFunc_();
-      SuperSub::onSubscribeImpl();
+      if (auto flowable = yarpl::atomic_load(&flowable_)) {
+        flowable->onSubscribeFunc_();
+        SuperSub::onSubscribeImpl();
+      }
     }
 
     void onNextImpl(U value) override {
-      const auto& valueRef = value;
-      flowable_->onNextFunc_(valueRef);
-      SuperSub::subscriberOnNext(std::move(value));
+      if (auto flowable = yarpl::atomic_load(&flowable_)) {
+        const auto& valueRef = value;
+        flowable->onNextFunc_(valueRef);
+        SuperSub::subscriberOnNext(std::move(value));
+      }
     }
 
     void onErrorImpl(folly::exception_wrapper ex) override {
-      const auto& exRef = ex;
-      flowable_->onErrorFunc_(exRef);
-      SuperSub::onErrorImpl(std::move(ex));
+      if (auto flowable = yarpl::atomic_load(&flowable_)) {
+        const auto& exRef = ex;
+        flowable->onErrorFunc_(exRef);
+        SuperSub::onErrorImpl(std::move(ex));
+      }
     }
 
     void onCompleteImpl() override {
-      flowable_->onCompleteFunc_();
-      SuperSub::onCompleteImpl();
+      if (auto flowable = yarpl::atomic_load(&flowable_)) {
+        flowable->onCompleteFunc_();
+        SuperSub::onCompleteImpl();
+      }
     }
 
     void cancel() override {
-      flowable_->onCancelFunc_();
-      SuperSub::cancel();
+      if (auto flowable = yarpl::atomic_load(&flowable_)) {
+        flowable->onCancelFunc_();
+        SuperSub::cancel();
+      }
     }
 
     void request(int64_t n) override {
-      flowable_->onRequestFunc_(n);
-      SuperSub::request(n);
+      if (auto flowable = yarpl::atomic_load(&flowable_)) {
+        flowable->onRequestFunc_(n);
+        SuperSub::request(n);
+      }
     }
 
     void onTerminateImpl() override {
-      flowable_.reset();
+      yarpl::atomic_exchange(&flowable_, nullptr);
       SuperSub::onTerminateImpl();
     }
 
    private:
-    std::shared_ptr<DoOperator> flowable_;
+    AtomicReference<DoOperator> flowable_;
   };
 
   std::shared_ptr<Flowable<U>> upstream_;

@@ -1,11 +1,11 @@
 /*
- * Copyright 2016-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -79,6 +79,10 @@ constexpr std::size_t checkOverflowOrNpos(std::size_t i, std::size_t max) {
       : (i <= max ? i : (void(assertOutOfBounds()), max));
 }
 
+constexpr std::size_t checkOverflowIfDebug(std::size_t i, std::size_t size) {
+  return kIsDebug ? checkOverflow(i, size) : i;
+}
+
 // Intentionally NOT constexpr. See note above for assertOutOfBounds
 [[noreturn]] inline void assertNotNullTerminated() noexcept {
   assert(!"Non-null terminated string used to initialize a BasicFixedString");
@@ -99,13 +103,6 @@ constexpr const Char (&checkNullTerminated(const Char (&a)[N]) noexcept)[N] {
       ? decltype(a)(a)
       : (assertNotNullTerminated(), decltype(a)(a));
 }
-
-// Rather annoyingly, GCC's -Warray-bounds warning issues false positives for
-// this code. See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61971
-#if defined(__GNUC__) && !defined(__clang__) && __GNUC__ <= 5
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Warray-bounds"
-#endif
 
 template <class Left, class Right>
 constexpr ordering compare_(
@@ -301,10 +298,6 @@ struct Helper {
     return that.data_;
   }
 };
-
-#if defined(__GNUC__) && !defined(__clang__) && __GNUC__ <= 4
-#pragma GCC diagnostic pop
-#endif
 
 template <class T>
 constexpr void constexpr_swap(T& a, T& b) noexcept(
@@ -1121,22 +1114,14 @@ class BasicFixedString : private detail::fixedstring::FixedStringBase {
    * \return `*(data() + i)`
    */
   constexpr Char& operator[](std::size_t i) noexcept {
-#ifdef NDEBUG
-    return data_[i];
-#else
-    return data_[detail::fixedstring::checkOverflow(i, size_)];
-#endif
+    return data_[detail::fixedstring::checkOverflowIfDebug(i, size_)];
   }
 
   /**
    * \overload
    */
   constexpr const Char& operator[](std::size_t i) const noexcept {
-#ifdef NDEBUG
-    return data_[i];
-#else
-    return data_[detail::fixedstring::checkOverflow(i, size_)];
-#endif
+    return data_[detail::fixedstring::checkOverflowIfDebug(i, size_)];
   }
 
   /**
@@ -1158,22 +1143,14 @@ class BasicFixedString : private detail::fixedstring::FixedStringBase {
    * \pre `!empty()`
    */
   constexpr Char& back() noexcept {
-#ifdef NDEBUG
-    return data_[size_ - 1u];
-#else
-    return data_[size_ - detail::fixedstring::checkOverflow(1u, size_)];
-#endif
+    return data_[size_ - detail::fixedstring::checkOverflowIfDebug(1u, size_)];
   }
 
   /**
    * \overload
    */
   constexpr const Char& back() const noexcept {
-#ifdef NDEBUG
-    return data_[size_ - 1u];
-#else
-    return data_[size_ - detail::fixedstring::checkOverflow(1u, size_)];
-#endif
+    return data_[size_ - detail::fixedstring::checkOverflowIfDebug(1u, size_)];
   }
 
   /**
@@ -3028,14 +3005,8 @@ constexpr const std::size_t& npos = detail::fixedstring::FixedStringBase::npos;
  */
 template <class Char, Char... Cs>
 constexpr BasicFixedString<Char, sizeof...(Cs)> operator"" _fs() noexcept {
-#if __cplusplus >= 201402L
   const Char a[] = {Cs..., Char(0)};
   return {+a, sizeof...(Cs)};
-#else
-  using A = const Char[sizeof...(Cs) + 1u];
-  // The `+` in `+A{etc}` forces the array type to decay to a pointer
-  return {+A{Cs..., Char(0)}, sizeof...(Cs)};
-#endif
 }
 
 #pragma GCC diagnostic pop

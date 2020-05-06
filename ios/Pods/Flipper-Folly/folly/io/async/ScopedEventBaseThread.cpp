@@ -1,11 +1,11 @@
 /*
- * Copyright 2015-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,7 +32,7 @@ static void run(
     EventBase* eb,
     folly::Baton<>* stop,
     const StringPiece& name) {
-  if (name.size()) {
+  if (!name.empty()) {
     folly::setThreadName(name);
   }
 
@@ -42,14 +42,14 @@ static void run(
   // must destruct in io thread for on-destruction callbacks
   eb->runOnDestruction([=] { ebm->clearEventBase(); });
   // wait until terminateLoopSoon() is complete
-  stop->wait();
+  stop->wait(folly::Baton<>::wait_options().logging_enabled(false));
   eb->~EventBase();
 }
 
 ScopedEventBaseThread::ScopedEventBaseThread()
     : ScopedEventBaseThread(nullptr, "") {}
 
-ScopedEventBaseThread::ScopedEventBaseThread(const StringPiece& name)
+ScopedEventBaseThread::ScopedEventBaseThread(StringPiece name)
     : ScopedEventBaseThread(nullptr, name) {}
 
 ScopedEventBaseThread::ScopedEventBaseThread(EventBaseManager* ebm)
@@ -57,9 +57,18 @@ ScopedEventBaseThread::ScopedEventBaseThread(EventBaseManager* ebm)
 
 ScopedEventBaseThread::ScopedEventBaseThread(
     EventBaseManager* ebm,
-    const StringPiece& name)
+    StringPiece name)
+    : ScopedEventBaseThread(
+          std::unique_ptr<EventBaseBackendBase>(),
+          ebm,
+          name) {}
+
+ScopedEventBaseThread::ScopedEventBaseThread(
+    std::unique_ptr<EventBaseBackendBase>&& backend,
+    EventBaseManager* ebm,
+    StringPiece name)
     : ebm_(ebm ? ebm : EventBaseManager::get()) {
-  new (&eb_) EventBase();
+  new (&eb_) EventBase(std::move(backend));
   th_ = thread(run, ebm_, &eb_, &stop_, name);
   eb_.waitUntilRunning();
 }

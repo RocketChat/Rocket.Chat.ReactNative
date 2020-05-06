@@ -1,11 +1,11 @@
 /*
- * Copyright 2017-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,14 +35,14 @@ class ThreadListHook {
   ~ThreadListHook();
 
  private:
-  ThreadListHook() {}
+  ThreadListHook() = default;
   ThreadPoolListHook* poolId_;
   std::thread::id threadId_;
 };
 
 class GlobalThreadPoolListImpl {
  public:
-  GlobalThreadPoolListImpl() {}
+  GlobalThreadPoolListImpl() = default;
 
   void registerThreadPool(ThreadPoolListHook* threadPoolId, std::string name);
 
@@ -89,7 +89,7 @@ class GlobalThreadPoolListImpl {
 
 class GlobalThreadPoolList {
  public:
-  GlobalThreadPoolList() {}
+  GlobalThreadPoolList() = default;
 
   static GlobalThreadPoolList& instance();
 
@@ -123,12 +123,12 @@ GlobalThreadPoolList& GlobalThreadPoolList::instance() {
 void GlobalThreadPoolList::registerThreadPool(
     ThreadPoolListHook* threadPoolId,
     std::string name) {
-  globalListImpl_->registerThreadPool(threadPoolId, name);
+  globalListImpl_.wlock()->registerThreadPool(threadPoolId, name);
 }
 
 void GlobalThreadPoolList::unregisterThreadPool(
     ThreadPoolListHook* threadPoolId) {
-  globalListImpl_->unregisterThreadPool(threadPoolId);
+  globalListImpl_.wlock()->unregisterThreadPool(threadPoolId);
 }
 
 void GlobalThreadPoolList::registerThreadPoolThread(
@@ -137,7 +137,7 @@ void GlobalThreadPoolList::registerThreadPoolThread(
   DCHECK(!threadHook_);
   threadHook_.reset(make_unique<ThreadListHook>(threadPoolId, threadId));
 
-  globalListImpl_->registerThreadPoolThread(threadPoolId, threadId);
+  globalListImpl_.wlock()->registerThreadPoolThread(threadPoolId, threadId);
 }
 
 void GlobalThreadPoolList::unregisterThreadPoolThread(
@@ -145,7 +145,7 @@ void GlobalThreadPoolList::unregisterThreadPoolThread(
     std::thread::id threadId) {
   (void)threadPoolId;
   (void)threadId;
-  globalListImpl_->unregisterThreadPoolThread(threadPoolId, threadId);
+  globalListImpl_.wlock()->unregisterThreadPoolThread(threadPoolId, threadId);
 }
 
 void GlobalThreadPoolListImpl::registerThreadPool(

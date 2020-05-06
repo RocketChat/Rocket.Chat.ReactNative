@@ -1,11 +1,11 @@
 /*
- * Copyright 2017-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -372,13 +372,8 @@ struct is_convertible_from_replaceable
           std::is_convertible<const Replaceable<T>&&, T>::value> {};
 } // namespace replaceable_detail
 
-// Type trait template to statically test whether a type is a specialization of
-// Replaceable
 template <class T>
-struct is_replaceable : std::false_type {};
-
-template <class T>
-struct is_replaceable<Replaceable<T>> : std::true_type {};
+using is_replaceable = detail::is_instantiation_of<Replaceable, T>;
 
 // Function to make a Replaceable with a type deduced from its input
 template <class T>
@@ -595,11 +590,8 @@ class alignas(T) Replaceable
 
   /**
    * `swap` just calls `swap(T&, T&)`.
-   *
-   * Should be `noexcept(std::is_nothrow_swappable<T>::value)` but we don't
-   * depend on C++17 features.
    */
-  void swap(Replaceable& other) {
+  void swap(Replaceable& other) noexcept(IsNothrowSwappable<Replaceable>{}) {
     using std::swap;
     swap(*(*this), *other);
   }
@@ -640,8 +632,7 @@ class alignas(T) Replaceable
   aligned_storage_for_t<T> storage_[1];
 };
 
-#if __cplusplus > 201402L
-// C++17 allows us to define a deduction guide:
+#if __cpp_deduction_guides >= 201703
 template <class T>
 Replaceable(T)->Replaceable<T>;
 #endif

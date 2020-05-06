@@ -1,11 +1,11 @@
 /*
- * Copyright 2017-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,11 +16,14 @@
 
 #include <folly/portability/PThread.h>
 
-#if !FOLLY_HAVE_PTHREAD && _WIN32
-#include <boost/thread/tss.hpp> // @manual
+#if !FOLLY_HAVE_PTHREAD && defined(_WIN32)
+#include <boost/thread/exceptions.hpp>
+#include <boost/thread/tss.hpp>
+#include <boost/version.hpp>
 
 #include <errno.h>
 
+#include <atomic>
 #include <chrono>
 #include <condition_variable>
 #include <exception>
@@ -683,7 +686,12 @@ int pthread_setspecific(pthread_key_t key, const void* value) {
     // function, which we don't want to do.
     boost::detail::set_tss_data(
         realKey,
+#if BOOST_VERSION >= 107000
+        boost::detail::thread::cleanup_caller_t(),
+        boost::detail::thread::cleanup_func_t(),
+#else
         boost::shared_ptr<boost::detail::tss_cleanup_function>(),
+#endif
         const_cast<void*>(value),
         false);
     return 0;

@@ -1,11 +1,11 @@
 /*
- * Copyright 2017-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,11 +18,17 @@
 
 #include <atomic>
 
+#include <folly/Portability.h>
 #include <folly/executors/IOExecutor.h>
 #include <folly/executors/ThreadPoolExecutor.h>
 #include <folly/io/async/EventBaseManager.h>
 
 namespace folly {
+
+FOLLY_PUSH_WARNING
+// Suppress "IOThreadPoolExecutor inherits DefaultKeepAliveExecutor
+// keepAliveAcquire/keepAliveRelease via dominance"
+FOLLY_MSVC_DISABLE_WARNING(4250)
 
 /**
  * A Thread Pool for IO bound tasks
@@ -73,8 +79,7 @@ class IOThreadPoolExecutor : public ThreadPoolExecutor, public IOExecutor {
   folly::EventBaseManager* getEventBaseManager();
 
  private:
-  struct alignas(hardware_destructive_interference_size) IOThread
-      : public Thread {
+  struct alignas(folly::cacheline_align_v) IOThread : public Thread {
     IOThread(IOThreadPoolExecutor* pool)
         : Thread(pool), shouldRun(true), pendingTasks(0) {}
     std::atomic<bool> shouldRun;
@@ -87,11 +92,13 @@ class IOThreadPoolExecutor : public ThreadPoolExecutor, public IOExecutor {
   std::shared_ptr<IOThread> pickThread();
   void threadRun(ThreadPtr thread) override;
   void stopThreads(size_t n) override;
-  size_t getPendingTaskCountImpl() override;
+  size_t getPendingTaskCountImpl() const override final;
 
   std::atomic<size_t> nextThread_;
   folly::ThreadLocal<std::shared_ptr<IOThread>> thisThread_;
   folly::EventBaseManager* eventBaseManager_;
 };
+
+FOLLY_POP_WARNING
 
 } // namespace folly

@@ -1,11 +1,11 @@
 /*
- * Copyright 2011-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -221,6 +221,12 @@ do_add(
         ptr.error().context->push_back(value);
         break;
       }
+      case res_err_code::other:
+      case res_err_code::index_out_of_bounds:
+      case res_err_code::index_not_numeric:
+      case res_err_code::index_has_leading_zero:
+      case res_err_code::element_not_object_or_array:
+      case res_err_code::json_pointer_out_of_bounds:
       default:
         return folly::makeUnexpected(app_err_code::other);
     }
@@ -237,7 +243,7 @@ json_patch::apply(dynamic& obj) {
   using error_code = patch_application_error_code;
   using error = patch_application_error;
 
-  for (auto&& it : enumerate(ops_)) {
+  for (auto it : enumerate(ops_)) {
     auto const index = it.index;
     auto const& op = *it;
     auto resolved_path = obj.try_get_ptr(op.path);
@@ -260,7 +266,7 @@ json_patch::apply(dynamic& obj) {
         break;
       }
       case op_code::add: {
-        DCHECK(op.value.hasValue());
+        DCHECK(op.value.has_value());
         auto ret = do_add(resolved_path, *op.value, op.path.tokens().back());
         if (ret.hasError()) {
           return makeUnexpected(error{ret.error(), index});
@@ -277,7 +283,7 @@ json_patch::apply(dynamic& obj) {
         break;
       }
       case op_code::move: {
-        DCHECK(op.from.hasValue());
+        DCHECK(op.from.has_value());
         auto resolved_from = obj.try_get_ptr(*op.from);
         if (!resolved_from.hasValue()) {
           return makeUnexpected(error{error_code::from_not_found, index});
@@ -298,7 +304,7 @@ json_patch::apply(dynamic& obj) {
         break;
       }
       case op_code::copy: {
-        DCHECK(op.from.hasValue());
+        DCHECK(op.from.has_value());
         auto const resolved_from = obj.try_get_ptr(*op.from);
         if (!resolved_from.hasValue()) {
           return makeUnexpected(error{error_code::from_not_found, index});

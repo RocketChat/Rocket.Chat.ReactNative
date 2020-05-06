@@ -1,11 +1,11 @@
 /*
- * Copyright 2016-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,6 +22,7 @@
 namespace folly {
 
 class EventBase;
+class EventBaseBackendBase;
 class EventBaseManager;
 class ScopedEventBaseThread;
 
@@ -32,9 +33,16 @@ class EventBaseThread {
       bool autostart,
       EventBaseManager* ebm = nullptr,
       folly::StringPiece threadName = folly::StringPiece());
+  EventBaseThread(
+      bool autostart,
+      std::unique_ptr<EventBaseBackendBase>&& evb,
+      EventBaseManager* ebm = nullptr,
+      folly::StringPiece threadName = folly::StringPiece());
   explicit EventBaseThread(EventBaseManager* ebm);
   ~EventBaseThread();
 
+  EventBaseThread(EventBaseThread const&) = delete;
+  EventBaseThread& operator=(EventBaseThread const&) = delete;
   EventBaseThread(EventBaseThread&&) noexcept;
   EventBaseThread& operator=(EventBaseThread&&) noexcept;
 
@@ -45,10 +53,8 @@ class EventBaseThread {
   void stop();
 
  private:
-  EventBaseThread(EventBaseThread const&) = default;
-  EventBaseThread& operator=(EventBaseThread const&) = default;
-
   EventBaseManager* ebm_;
+  std::unique_ptr<EventBaseBackendBase> evb_;
   std::unique_ptr<ScopedEventBaseThread> th_;
 };
 } // namespace folly

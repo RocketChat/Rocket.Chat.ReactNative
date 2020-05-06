@@ -1,11 +1,11 @@
 /*
- * Copyright 2016-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -74,7 +74,7 @@ TimeoutManager::TimeoutManager()
 bool TimeoutManager::scheduleTimeoutHighRes(
     AsyncTimeout* obj,
     timeout_type_high_res timeout) {
-  timeout_type timeout_ms = folly::chrono::round<timeout_type>(timeout);
+  timeout_type timeout_ms = folly::chrono::ceil<timeout_type>(timeout);
   return scheduleTimeout(obj, timeout_ms);
 }
 

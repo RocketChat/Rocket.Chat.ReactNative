@@ -1,11 +1,11 @@
 /*
- * Copyright 2014-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /*
  * Author: Eric Niebler <eniebler@fb.com>
  */
@@ -65,13 +66,12 @@ template <bool If, class T>
 using AddConstIf = std::conditional_t<If, const T, T>;
 
 template <class Fn, class A>
-FOLLY_ALWAYS_INLINE FOLLY_ATTR_VISIBILITY_HIDDEN auto fold(Fn&&, A&& a) {
+FOLLY_ERASE auto fold(Fn&&, A&& a) {
   return static_cast<A&&>(a);
 }
 
 template <class Fn, class A, class B, class... Bs>
-FOLLY_ALWAYS_INLINE FOLLY_ATTR_VISIBILITY_HIDDEN auto
-fold(Fn&& fn, A&& a, B&& b, Bs&&... bs) {
+FOLLY_ERASE auto fold(Fn&& fn, A&& a, B&& b, Bs&&... bs) {
   return fold(
       // This looks like a use of fn after a move of fn, but in reality, this is
       // just a cast and not a move. That's because regardless of which fold
@@ -498,7 +498,7 @@ class exception_wrapper final {
   //! \note The non-const overload of this function mutates `*this` to cache the
   //!     computed `std::exception_ptr`; that is, this function may cause
   //!     `has_exception_ptr()` to change from `false` to `true`.
-  std::exception_ptr const& to_exception_ptr() noexcept;
+  std::exception_ptr to_exception_ptr() noexcept;
   //! \overload
   std::exception_ptr to_exception_ptr() const noexcept;
 

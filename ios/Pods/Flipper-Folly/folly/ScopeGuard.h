@@ -1,11 +1,11 @@
 /*
- * Copyright 2011-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -140,7 +140,7 @@ using ScopeGuardImplDecay = ScopeGuardImpl<typename std::decay<F>::type, INE>;
 /**
  * ScopeGuard is a general implementation of the "Initialization is
  * Resource Acquisition" idiom.  Basically, it guarantees that a function
- * is executed upon leaving the currrent scope unless otherwise told.
+ * is executed upon leaving the current scope unless otherwise told.
  *
  * The makeGuard() function is used to create a new ScopeGuard object.
  * It can be instantiated with a lambda function, a std::function<void()>,

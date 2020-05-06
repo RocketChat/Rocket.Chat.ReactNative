@@ -1,11 +1,11 @@
 /*
- * Copyright 2016-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/Portability.h>
 #include <mutex>
 
 namespace folly {
@@ -39,7 +40,9 @@ namespace folly {
  * of std::unique_lock
  */
 template <typename Mutex, typename... Args>
-std::unique_lock<Mutex> make_unique_lock(Mutex& mutex, Args&&... args) {
+FOLLY_NODISCARD std::unique_lock<Mutex> make_unique_lock(
+    Mutex& mutex,
+    Args&&... args) {
   return std::unique_lock<Mutex>{mutex, std::forward<Args>(args)...};
 }
 

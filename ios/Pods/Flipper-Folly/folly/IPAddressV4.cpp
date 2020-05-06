@@ -1,11 +1,11 @@
 /*
- * Copyright 2014-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -78,7 +78,7 @@ uint32_t IPAddressV4::toLongHBO(StringPiece ip) {
 }
 
 // public default constructor
-IPAddressV4::IPAddressV4() {}
+IPAddressV4::IPAddressV4() = default;
 
 // ByteArray4 constructor
 IPAddressV4::IPAddressV4(const ByteArray4& src) noexcept : addr_(src) {}
@@ -90,7 +90,7 @@ IPAddressV4::IPAddressV4(StringPiece addr) : addr_() {
     throw IPAddressFormatException(
         to<std::string>("Invalid IPv4 address '", addr, "'"));
   }
-  *this = std::move(maybeIp.value());
+  *this = maybeIp.value();
 }
 
 Expected<IPAddressV4, IPAddressFormatError> IPAddressV4::tryFromString(
@@ -120,7 +120,7 @@ Expected<IPAddressV4, IPAddressFormatError> IPAddressV4::tryFromBinary(
   IPAddressV4 addr;
   auto setResult = addr.trySetFromBinary(bytes);
   if (setResult.hasError()) {
-    return makeUnexpected(std::move(setResult.error()));
+    return makeUnexpected(setResult.error());
   }
   return addr;
 }
@@ -279,7 +279,7 @@ uint8_t IPAddressV4::getNthMSByte(size_t byteIndex) const {
   return bytes()[byteIndex];
 }
 // protected
-const ByteArray4 IPAddressV4::fetchMask(size_t numBits) {
+ByteArray4 IPAddressV4::fetchMask(size_t numBits) {
   static const size_t bits = bitCount();
   if (numBits > bits) {
     throw IPAddressFormatException("IPv4 addresses are 32 bits");

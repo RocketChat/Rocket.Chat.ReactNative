@@ -1,11 +1,11 @@
 /*
- * Copyright 2013-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,15 +16,15 @@
 
 #include <folly/net/NetOps.h>
 
-#include <errno.h>
 #include <fcntl.h>
+#include <cerrno>
 
 #include <cstddef>
 
 #include <folly/Portability.h>
 #include <folly/net/detail/SocketFileDescriptorMap.h>
 
-#if _WIN32
+#ifdef _WIN32
 #include <event2/util.h> // @manual
 
 #include <MSWSock.h> // @manual
@@ -36,7 +36,7 @@ namespace folly {
 namespace netops {
 
 namespace {
-#if _WIN32
+#ifdef _WIN32
 // WSA has to be explicitly initialized.
 static struct WinSockInit {
   WinSockInit() {
@@ -61,7 +61,7 @@ int translate_wsa_error(int wsaErr) {
 template <class R, class F, class... Args>
 static R wrapSocketFunction(F f, NetworkSocket s, Args... args) {
   R ret = f(s.data, args...);
-#if _WIN32
+#ifdef _WIN32
   errno = translate_wsa_error(WSAGetLastError());
 #endif
   return ret;
@@ -93,7 +93,7 @@ int close(NetworkSocket s) {
 
 int connect(NetworkSocket s, const sockaddr* name, socklen_t namelen) {
   auto r = wrapSocketFunction<int>(::connect, s, name, namelen);
-#if _WIN32
+#ifdef _WIN32
   if (r == -1 && WSAGetLastError() == WSAEWOULDBLOCK) {
     errno = EINPROGRESS;
   }
@@ -117,7 +117,7 @@ int getsockopt(
     socklen_t* optlen) {
   auto ret = wrapSocketFunction<int>(
       ::getsockopt, s, level, optname, (char*)optval, optlen);
-#if _WIN32
+#ifdef _WIN32
   if (optname == TCP_NODELAY && *optlen == 1) {
     // Windows is weird about this value, and documents it as a
     // BOOL (ie. int) but expects the variable to be bool (1-byte),
@@ -169,8 +169,8 @@ int poll(PollDescriptor fds[], nfds_t nfds, int timeout) {
       "PollDescriptor.revents is the wrong size");
 
   // Pun it through
-  pollfd* files = reinterpret_cast<pollfd*>(reinterpret_cast<void*>(fds));
-#if _WIN32
+  auto files = reinterpret_cast<pollfd*>(reinterpret_cast<void*>(fds));
+#ifdef _WIN32
   return ::WSAPoll(files, (ULONG)nfds, timeout);
 #else
   return ::poll(files, nfds, timeout);
@@ -178,7 +178,7 @@ int poll(PollDescriptor fds[], nfds_t nfds, int timeout) {
 }
 
 ssize_t recv(NetworkSocket s, void* buf, size_t len, int flags) {
-#if _WIN32
+#ifdef _WIN32
   if ((flags & MSG_DONTWAIT) == MSG_DONTWAIT) {
     flags &= ~MSG_DONTWAIT;
 
@@ -211,7 +211,7 @@ ssize_t recvfrom(
     int flags,
     sockaddr* from,
     socklen_t* fromlen) {
-#if _WIN32
+#ifdef _WIN32
   if ((flags & MSG_TRUNC) == MSG_TRUNC) {
     SOCKET h = s.data;
 
@@ -266,7 +266,7 @@ ssize_t recvfrom(
 }
 
 ssize_t recvmsg(NetworkSocket s, msghdr* message, int flags) {
-#if _WIN32
+#ifdef _WIN32
   (void)flags;
   SOCKET h = s.data;
 
@@ -316,8 +316,34 @@ ssize_t recvmsg(NetworkSocket s, msghdr* message, int flags) {
 #endif
 }
 
+int recvmmsg(
+    NetworkSocket s,
+    mmsghdr* msgvec,
+    unsigned int vlen,
+    unsigned int flags,
+    timespec* timeout) {
+#if FOLLY_HAVE_RECVMMSG
+  return wrapSocketFunction<int>(::recvmmsg, s, msgvec, vlen, flags, timeout);
+#else
+  // implement via recvmsg
+  for (unsigned int i = 0; i < vlen; i++) {
+    ssize_t ret = recvmsg(s, &msgvec[i].msg_hdr, flags);
+    // in case of an error
+    // we return the number of msgs received if > 0
+    // or an error if no msg was sent
+    if (ret < 0) {
+      if (i) {
+        return static_cast<int>(i);
+      }
+      return static_cast<int>(ret);
+    }
+  }
+  return static_cast<int>(vlen);
+#endif
+}
+
 ssize_t send(NetworkSocket s, const void* buf, size_t len, int flags) {
-#if _WIN32
+#ifdef _WIN32
   return wrapSocketFunction<ssize_t>(
       ::send, s, (const char*)buf, (int)len, flags);
 #else
@@ -326,7 +352,7 @@ ssize_t send(NetworkSocket s, const void* buf, size_t len, int flags) {
 }
 
 ssize_t sendmsg(NetworkSocket socket, const msghdr* message, int flags) {
-#if _WIN32
+#ifdef _WIN32
   (void)flags;
   SOCKET h = socket.data;
 
@@ -400,7 +426,7 @@ ssize_t sendto(
     int flags,
     const sockaddr* to,
     socklen_t tolen) {
-#if _WIN32
+#ifdef _WIN32
   return wrapSocketFunction<ssize_t>(
       ::sendto, s, (const char*)buf, (int)len, flags, to, (int)tolen);
 #else
@@ -414,7 +440,7 @@ int setsockopt(
     int optname,
     const void* optval,
     socklen_t optlen) {
-#if _WIN32
+#ifdef _WIN32
   if (optname == SO_REUSEADDR) {
     // We don't have an equivelent to the Linux & OSX meaning of this
     // on Windows, so ignore it.
@@ -441,7 +467,7 @@ NetworkSocket socket(int af, int type, int protocol) {
 }
 
 int socketpair(int domain, int type, int protocol, NetworkSocket sv[2]) {
-#if _WIN32
+#ifdef _WIN32
   if (domain != PF_UNIX || type != SOCK_STREAM || protocol != 0) {
     return -1;
   }
@@ -466,7 +492,7 @@ int socketpair(int domain, int type, int protocol, NetworkSocket sv[2]) {
 }
 
 int set_socket_non_blocking(NetworkSocket s) {
-#if _WIN32
+#ifdef _WIN32
   u_long nonBlockingEnabled = 1;
   return ioctlsocket(s.data, FIONBIO, &nonBlockingEnabled);
 #else
@@ -479,7 +505,7 @@ int set_socket_non_blocking(NetworkSocket s) {
 }
 
 int set_socket_close_on_exec(NetworkSocket s) {
-#if _WIN32
+#ifdef _WIN32
   if (SetHandleInformation((HANDLE)s.data, HANDLE_FLAG_INHERIT, 0)) {
     return 0;
   }

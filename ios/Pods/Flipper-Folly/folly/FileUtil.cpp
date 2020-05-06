@@ -1,11 +1,11 @@
 /*
- * Copyright 2013-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -111,6 +111,10 @@ ssize_t readvNoInt(int fd, const iovec* iov, int count) {
   return wrapNoInt(readv, fd, iov, count);
 }
 
+ssize_t preadvNoInt(int fd, const iovec* iov, int count, off_t offset) {
+  return wrapNoInt(preadv, fd, iov, count, offset);
+}
+
 ssize_t writeNoInt(int fd, const void* buf, size_t count) {
   return wrapNoInt(write, fd, buf, count);
 }
@@ -121,6 +125,10 @@ ssize_t pwriteNoInt(int fd, const void* buf, size_t count, off_t offset) {
 
 ssize_t writevNoInt(int fd, const iovec* iov, int count) {
   return wrapNoInt(writev, fd, iov, count);
+}
+
+ssize_t pwritevNoInt(int fd, const iovec* iov, int count, off_t offset) {
+  return wrapNoInt(pwritev, fd, iov, count, offset);
 }
 
 ssize_t readFull(int fd, void* buf, size_t count) {
@@ -159,7 +167,8 @@ int writeFileAtomicNoThrow(
     StringPiece filename,
     iovec* iov,
     int count,
-    mode_t permissions) {
+    mode_t permissions,
+    SyncType syncType) {
   // We write the data to a temporary file name first, then atomically rename
   // it into place.  This ensures that the file contents will always be valid,
   // even if we crash or are killed partway through writing out data.
@@ -205,6 +214,15 @@ int writeFileAtomicNoThrow(
     return errno;
   }
 
+  // To guarantee atomicity across power failues on POSIX file systems,
+  // the temporary file must be explicitly sync'ed before the rename.
+  if (syncType == SyncType::WITH_SYNC) {
+    rc = fsyncNoInt(tmpFD);
+    if (rc == -1) {
+      return errno;
+    }
+  }
+
   // Close the file before renaming to make sure all data has
   // been successfully written.
   rc = close(tmpFD);
@@ -225,26 +243,32 @@ void writeFileAtomic(
     StringPiece filename,
     iovec* iov,
     int count,
-    mode_t permissions) {
-  auto rc = writeFileAtomicNoThrow(filename, iov, count, permissions);
+    mode_t permissions,
+    SyncType syncType) {
+  auto rc = writeFileAtomicNoThrow(filename, iov, count, permissions, syncType);
   if (rc != 0) {
     auto msg = std::string(__func__) + "() failed to update " + filename.str();
     throw std::system_error(rc, std::generic_category(), msg);
   }
 }
 
-void writeFileAtomic(StringPiece filename, ByteRange data, mode_t permissions) {
+void writeFileAtomic(
+    StringPiece filename,
+    ByteRange data,
+    mode_t permissions,
+    SyncType syncType) {
   iovec iov;
   iov.iov_base = const_cast<unsigned char*>(data.data());
   iov.iov_len = data.size();
-  writeFileAtomic(filename, &iov, 1, permissions);
+  writeFileAtomic(filename, &iov, 1, permissions, syncType);
 }
 
 void writeFileAtomic(
     StringPiece filename,
     StringPiece data,
-    mode_t permissions) {
-  writeFileAtomic(filename, ByteRange(data), permissions);
+    mode_t permissions,
+    SyncType syncType) {
+  writeFileAtomic(filename, ByteRange(data), permissions, syncType);
 }
 
 } // namespace folly

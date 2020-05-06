@@ -1,11 +1,11 @@
 /*
- * Copyright 2014-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -93,9 +93,11 @@ class IteratorFacade {
    * this and the `operator==(D const&) const` method above.
    */
 
-  template <class D2>
-  typename std::enable_if<std::is_convertible<D, D2>::value, bool>::type
-  operator==(D2 const& rhs) const {
+  template <
+      class D2,
+      std::enable_if_t<!std::is_same<D, D2>::value, int> = 0,
+      std::enable_if_t<std::is_convertible<D, D2>::value, int> = 0>
+  bool operator==(D2 const& rhs) const {
     return D2(asDerivedConst()) == rhs;
   }
 

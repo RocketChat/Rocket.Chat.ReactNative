@@ -1,11 +1,11 @@
 /*
- * Copyright 2017-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,15 +33,16 @@ struct FollyMemoryDetailTranslationUnitTag {};
 } // namespace
 namespace folly {
 namespace detail {
-void unsafeStringSetLargerSize(std::string& s, std::size_t n);
+template <typename T>
+void unsafeStringSetLargerSize(std::basic_string<T>& s, std::size_t n);
 template <typename T>
 void unsafeVectorSetLargerSize(std::vector<T>& v, std::size_t n);
 } // namespace detail
 
 /*
  * This file provides helper functions resizeWithoutInitialization()
- * that can resize std::string or std::vector without constructing or
- * initializing new elements.
+ * that can resize std::basic_string or std::vector without constructing
+ * or initializing new elements.
  *
  * IMPORTANT: These functions can be unsafe if used improperly.  If you
  * don't write to an element with index >= oldSize and < newSize, reading
@@ -81,9 +82,20 @@ void unsafeVectorSetLargerSize(std::vector<T>& v, std::size_t n);
  * any element added to the string by this method unless it has been
  * written to by an operation that follows this call.
  *
+ * Use the FOLLY_DECLARE_STRING_RESIZE_WITHOUT_INIT(T) macro to
+ * declare (and inline define) the internals required to call
+ * resizeWithoutInitialization for a std::basic_string<T>.
+ * See detailed description of a similar macro for std::vector<T> below.
+ *
  * IMPORTANT: Read the warning at the top of this header file.
  */
-inline void resizeWithoutInitialization(std::string& s, std::size_t n) {
+template <
+    typename T,
+    typename =
+        typename std::enable_if<std::is_trivially_destructible<T>::value>::type>
+inline void resizeWithoutInitialization(
+    std::basic_string<T>& s,
+    std::size_t n) {
   if (n <= s.size()) {
     s.resize(n);
   } else {
@@ -135,18 +147,26 @@ void resizeWithoutInitialization(std::vector<T>& v, std::size_t n) {
 
 namespace detail {
 
+// This machinery bridges template expansion and macro expansion
+#define FOLLY_DECLARE_STRING_RESIZE_WITHOUT_INIT_IMPL(TYPE)                    \
+  namespace folly {                                                            \
+  namespace detail {                                                           \
+  void unsafeStringSetLargerSizeImpl(std::basic_string<TYPE>& s, std::size_t); \
+  template <>                                                                  \
+  inline void unsafeStringSetLargerSize<TYPE>(                                 \
+      std::basic_string<TYPE> & s,                                             \
+      std::size_t n) {                                                         \
+    unsafeStringSetLargerSizeImpl(s, n);                                       \
+  }                                                                            \
+  }                                                                            \
+  }
+
 #if defined(_LIBCPP_STRING)
 // libc++
 
-} // namespace detail
-} // namespace folly
-template void std::string::__set_size(std::size_t);
-namespace folly {
-namespace detail {
-
 template <typename Tag, typename T, typename A, A Ptr__set_size>
 struct MakeUnsafeStringSetLargerSize {
-  friend void unsafeStringSetLargerSize(
+  friend void unsafeStringSetLargerSizeImpl(
       std::basic_string<T>& s,
       std::size_t n) {
     // s.__set_size(n);
@@ -154,63 +174,40 @@ struct MakeUnsafeStringSetLargerSize {
     (&s[0])[n] = '\0';
   }
 };
-template struct MakeUnsafeStringSetLargerSize<
-    FollyMemoryDetailTranslationUnitTag,
-    char,
-    void (std::string::*)(std::size_t),
-    &std::string::__set_size>;
 
-#elif defined(_GLIBCXX_USE_FB)
-// FBString
-
-template <typename Tag, typename T, typename A, A Ptrstore_>
-struct MakeUnsafeStringSetLargerSize {
-  friend void unsafeStringSetLargerSize(
-      std::basic_string<T>& s,
-      std::size_t n) {
-    // s.store_.expandNoinit(n - s.size(), false);
-    (s.*Ptrstore_).expandNoinit(n - s.size(), false);
-  }
-};
-template struct MakeUnsafeStringSetLargerSize<
-    FollyMemoryDetailTranslationUnitTag,
-    char,
-    std::fbstring_core<char>(std::string::*),
-    &std::string::store_>;
+#define FOLLY_DECLARE_STRING_RESIZE_WITHOUT_INIT(TYPE)            \
+  template void std::basic_string<TYPE>::__set_size(std::size_t); \
+  template struct folly::detail::MakeUnsafeStringSetLargerSize<   \
+      FollyMemoryDetailTranslationUnitTag,                        \
+      TYPE,                                                       \
+      void (std::basic_string<TYPE>::*)(std::size_t),             \
+      &std::basic_string<TYPE>::__set_size>;                      \
+  FOLLY_DECLARE_STRING_RESIZE_WITHOUT_INIT_IMPL(TYPE)
 
 #elif defined(_GLIBCXX_STRING) && _GLIBCXX_USE_CXX11_ABI
 // libstdc++ new implementation with SSO
 
-} // namespace detail
-} // namespace folly
-template void std::string::_M_set_length(std::size_t);
-namespace folly {
-namespace detail {
-
 template <typename Tag, typename T, typename A, A Ptr_M_set_length>
 struct MakeUnsafeStringSetLargerSize {
-  friend void unsafeStringSetLargerSize(
+  friend void unsafeStringSetLargerSizeImpl(
       std::basic_string<T>& s,
       std::size_t n) {
     // s._M_set_length(n);
     (s.*Ptr_M_set_length)(n);
   }
 };
-template struct MakeUnsafeStringSetLargerSize<
-    FollyMemoryDetailTranslationUnitTag,
-    char,
-    void (std::string::*)(std::size_t),
-    &std::string::_M_set_length>;
+
+#define FOLLY_DECLARE_STRING_RESIZE_WITHOUT_INIT(TYPE)               \
+  template void std::basic_string<TYPE>::_M_set_length(std::size_t); \
+  template struct folly::detail::MakeUnsafeStringSetLargerSize<      \
+      FollyMemoryDetailTranslationUnitTag,                           \
+      TYPE,                                                          \
+      void (std::basic_string<TYPE>::*)(std::size_t),                \
+      &std::basic_string<TYPE>::_M_set_length>;                      \
+  FOLLY_DECLARE_STRING_RESIZE_WITHOUT_INIT_IMPL(TYPE)
 
 #elif defined(_GLIBCXX_STRING)
 // libstdc++ old implementation
-
-} // namespace detail
-} // namespace folly
-template std::string::_Rep* std::string::_M_rep() const;
-template void std::string::_Rep::_M_set_length_and_sharable(std::size_t);
-namespace folly {
-namespace detail {
 
 template <
     typename Tag,
@@ -220,7 +217,7 @@ template <
     typename B,
     B Ptr_M_set_length_and_sharable>
 struct MakeUnsafeStringSetLargerSize {
-  friend void unsafeStringSetLargerSize(
+  friend void unsafeStringSetLargerSizeImpl(
       std::basic_string<T>& s,
       std::size_t n) {
     // s._M_rep()->_M_set_length_and_sharable(n);
@@ -228,24 +225,54 @@ struct MakeUnsafeStringSetLargerSize {
     (rep->*Ptr_M_set_length_and_sharable)(n);
   }
 };
-template struct MakeUnsafeStringSetLargerSize<
-    FollyMemoryDetailTranslationUnitTag,
-    char,
-    std::string::_Rep* (std::string::*)() const,
-    &std::string::_M_rep,
-    void (std::string::_Rep::*)(std::size_t),
-    &std::string::_Rep::_M_set_length_and_sharable>;
+
+#define FOLLY_DECLARE_STRING_RESIZE_WITHOUT_INIT(TYPE)                      \
+  template std::basic_string<TYPE>::_Rep* std::basic_string<TYPE>::_M_rep() \
+      const;                                                                \
+  template void std::basic_string<TYPE>::_Rep::_M_set_length_and_sharable(  \
+      std::size_t);                                                         \
+  template struct folly::detail::MakeUnsafeStringSetLargerSize<             \
+      FollyMemoryDetailTranslationUnitTag,                                  \
+      TYPE,                                                                 \
+      std::basic_string<TYPE>::_Rep* (std::basic_string<TYPE>::*)() const,  \
+      &std::basic_string<TYPE>::_M_rep,                                     \
+      void (std::basic_string<TYPE>::_Rep::*)(std::size_t),                 \
+      &std::basic_string<TYPE>::_Rep::_M_set_length_and_sharable>;          \
+  FOLLY_DECLARE_STRING_RESIZE_WITHOUT_INIT_IMPL(TYPE)
 
 #elif defined(_MSC_VER)
 // MSVC
 
-inline void unsafeStringSetLargerSize(std::string& s, std::size_t n) {
-  s._Eos(n);
-}
+template <typename Tag, typename T>
+struct MakeUnsafeStringSetLargerSize {
+  friend void unsafeStringSetLargerSizeImpl(
+      std::basic_string<T>& s,
+      std::size_t n) {
+    s._Eos(n);
+  }
+};
+
+#define FOLLY_DECLARE_STRING_RESIZE_WITHOUT_INIT(TYPE)          \
+  template struct folly::detail::MakeUnsafeStringSetLargerSize< \
+      FollyMemoryDetailTranslationUnitTag,                      \
+      TYPE>;                                                    \
+  FOLLY_DECLARE_STRING_RESIZE_WITHOUT_INIT_IMPL(TYPE)
 
 #else
-#warning "No implementation for resizeWithoutInitialization of std::string"
+#warning \
+    "No implementation for resizeWithoutInitialization of std::basic_string"
 #endif
+
+} // namespace detail
+} // namespace folly
+
+#if defined(FOLLY_DECLARE_STRING_RESIZE_WITHOUT_INIT)
+FOLLY_DECLARE_STRING_RESIZE_WITHOUT_INIT(char)
+FOLLY_DECLARE_STRING_RESIZE_WITHOUT_INIT(wchar_t)
+#endif
+
+namespace folly {
+namespace detail {
 
 // This machinery bridges template expansion and macro expansion
 #define FOLLY_DECLARE_VECTOR_RESIZE_WITHOUT_INIT_IMPL(TYPE)              \
@@ -264,7 +291,13 @@ inline void unsafeStringSetLargerSize(std::string& s, std::size_t n) {
 #if defined(_LIBCPP_VECTOR)
 // libc++
 
-template <typename Tag, typename T, typename A, A Ptr__end_>
+template <
+    typename Tag,
+    typename T,
+    typename A,
+    A Ptr__end_,
+    typename B,
+    B Ptr__annotate_contiguous_container_>
 struct MakeUnsafeVectorSetLargerSize {
   friend void unsafeVectorSetLargerSizeImpl(std::vector<T>& v, std::size_t n) {
     // v.__end_ += (n - v.size());
@@ -273,16 +306,31 @@ struct MakeUnsafeVectorSetLargerSize {
         std::is_standard_layout<std::vector<T>>::value &&
             sizeof(std::vector<T>) == sizeof(Base),
         "reinterpret_cast safety conditions not met");
+    const auto old_size = v.size();
     reinterpret_cast<Base&>(v).*Ptr__end_ += (n - v.size());
+
+    // libc++ contiguous containers use special annotation functions that help
+    // the address sanitizer to detect improper memory accesses. When ASAN is
+    // enabled we need to call the appropriate annotation functions in order to
+    // stop ASAN from reporting false positives. When ASAN is disabled, the
+    // annotation function is a no-op.
+    (v.*Ptr__annotate_contiguous_container_)(
+        v.data(),
+        v.data() + v.capacity(),
+        v.data() + old_size,
+        v.data() + v.size());
   }
 };
 
-#define FOLLY_DECLARE_VECTOR_RESIZE_WITHOUT_INIT(TYPE)          \
-  template struct folly::detail::MakeUnsafeVectorSetLargerSize< \
-      FollyMemoryDetailTranslationUnitTag,                      \
-      TYPE,                                                     \
-      TYPE*(std::__vector_base<TYPE, std::allocator<TYPE>>::*), \
-      &std::vector<TYPE>::__end_>;                              \
+#define FOLLY_DECLARE_VECTOR_RESIZE_WITHOUT_INIT(TYPE)               \
+  template struct folly::detail::MakeUnsafeVectorSetLargerSize<      \
+      FollyMemoryDetailTranslationUnitTag,                           \
+      TYPE,                                                          \
+      TYPE*(std::__vector_base<TYPE, std::allocator<TYPE>>::*),      \
+      &std::vector<TYPE>::__end_,                                    \
+      void (std::vector<TYPE>::*)(                                   \
+          const void*, const void*, const void*, const void*) const, \
+      &std::vector<TYPE>::__annotate_contiguous_container>;          \
   FOLLY_DECLARE_VECTOR_RESIZE_WITHOUT_INIT_IMPL(TYPE)
 
 #elif defined(_GLIBCXX_VECTOR)
@@ -306,10 +354,9 @@ struct MakeUnsafeVectorSetLargerSize : std::vector<T> {
   template struct folly::detail::MakeUnsafeVectorSetLargerSize< \
       FollyMemoryDetailTranslationUnitTag,                      \
       TYPE,                                                     \
-      std::vector<TYPE>::_Vector_impl(                          \
-          std::_Vector_base<TYPE, std::allocator<TYPE>>::*),    \
+      decltype(&std::vector<TYPE>::_M_impl),                    \
       &std::vector<TYPE>::_M_impl,                              \
-      TYPE*(std::vector<TYPE>::_Vector_impl::*),                \
+      decltype(&std::vector<TYPE>::_Vector_impl::_M_finish),    \
       &std::vector<TYPE>::_Vector_impl::_M_finish>;             \
   FOLLY_DECLARE_VECTOR_RESIZE_WITHOUT_INIT_IMPL(TYPE)
 

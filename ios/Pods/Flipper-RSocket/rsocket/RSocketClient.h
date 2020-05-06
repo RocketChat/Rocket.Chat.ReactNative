@@ -39,9 +39,9 @@ class RSocketClient {
   ~RSocketClient();
 
   RSocketClient(const RSocketClient&) = delete;
-  RSocketClient(RSocketClient&&) = default;
+  RSocketClient(RSocketClient&&) = delete;
   RSocketClient& operator=(const RSocketClient&) = delete;
-  RSocketClient& operator=(RSocketClient&&) = default;
+  RSocketClient& operator=(RSocketClient&&) = delete;
 
   friend class RSocket;
 

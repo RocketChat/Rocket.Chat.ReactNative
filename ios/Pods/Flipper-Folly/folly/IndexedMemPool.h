@@ -1,11 +1,11 @@
 /*
- * Copyright 2014-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -433,9 +433,13 @@ struct IndexedMemPool {
   void localPush(AtomicStruct<TaggedPtr, Atom>& head, uint32_t idx) {
     Slot& s = slot(idx);
     TaggedPtr h = head.load(std::memory_order_acquire);
+    bool recycled = false;
     while (true) {
       s.localNext.store(h.idx, std::memory_order_release);
-      Traits::onRecycle(&slot(idx).elem);
+      if (!recycled) {
+        Traits::onRecycle(&slot(idx).elem);
+        recycled = true;
+      }
 
       if (h.size() == LocalListLimit) {
         // push will overflow local list, steal it instead

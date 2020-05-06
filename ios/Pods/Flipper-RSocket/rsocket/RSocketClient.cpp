@@ -22,8 +22,6 @@
 #include "rsocket/internal/ClientResumeStatusCallback.h"
 #include "rsocket/internal/KeepaliveTimer.h"
 
-using namespace folly;
-
 namespace rsocket {
 
 RSocketClient::RSocketClient(
@@ -55,7 +53,8 @@ RSocketClient::~RSocketClient() {
   VLOG(3) << "~RSocketClient ..";
 
   evb_->runImmediatelyOrRunInEventBaseThreadAndWait([sm = stateMachine_] {
-    std::runtime_error exn{"RSocketClient is closing"};
+    auto exn = folly::make_exception_wrapper<std::runtime_error>(
+        "RSocketClient is closing");
     sm->close(std::move(exn), StreamCompletionSignal::CONNECTION_END);
   });
 }

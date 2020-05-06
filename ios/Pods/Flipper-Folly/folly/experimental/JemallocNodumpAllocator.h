@@ -1,11 +1,11 @@
 /*
- * Copyright 2016-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,11 +20,11 @@
 
 #include <folly/CPortability.h>
 #include <folly/portability/Config.h>
+#include <folly/portability/Malloc.h>
 
 #if defined(FOLLY_USE_JEMALLOC) && !FOLLY_SANITIZE
 
 #include <folly/portability/SysMman.h>
-#include <jemalloc/jemalloc.h>
 
 #if (JEMALLOC_VERSION_MAJOR > 3) && defined(MADV_DONTDUMP)
 #define FOLLY_JEMALLOC_NODUMP_ALLOCATOR_SUPPORTED 1

@@ -1,11 +1,11 @@
 /*
- * Copyright 2013-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -79,7 +79,12 @@ Uri::Uri(StringPiece str) : hasAuthority_(false), port_(0) {
 
     StringPiece port(authorityMatch[4].first, authorityMatch[4].second);
     if (!port.empty()) {
-      port_ = to<uint16_t>(port);
+      try {
+        port_ = to<uint16_t>(port);
+      } catch (ConversionError const& e) {
+        throw std::invalid_argument(
+            to<std::string>("invalid URI port: ", e.what()));
+      }
     }
 
     hasAuthority_ = true;
@@ -121,7 +126,7 @@ std::string Uri::authority() const {
 }
 
 std::string Uri::hostname() const {
-  if (host_.size() > 0 && host_[0] == '[') {
+  if (!host_.empty() && host_[0] == '[') {
     // If it starts with '[', then it should end with ']', this is ensured by
     // regex
     return host_.substr(1, host_.size() - 2);

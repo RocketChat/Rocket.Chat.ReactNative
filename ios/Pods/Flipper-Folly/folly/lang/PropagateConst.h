@@ -1,11 +1,11 @@
 /*
- * Copyright 2017-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,10 +39,8 @@ constexpr Pointer const& get_underlying(propagate_const<Pointer> const& obj) {
 }
 
 namespace detail {
-template <typename>
-struct is_propagate_const : std::false_type {};
-template <typename Pointer>
-struct is_propagate_const<propagate_const<Pointer>> : std::true_type {};
+template <class Pointer>
+using is_propagate_const = is_instantiation_of<propagate_const, Pointer>;
 template <typename T>
 using is_decay_propagate_const = is_propagate_const<std::decay_t<T>>;
 

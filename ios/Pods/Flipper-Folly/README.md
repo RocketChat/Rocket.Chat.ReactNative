@@ -66,7 +66,7 @@ is to look at the headers in [top level `folly/` directory](https://github.com/f
 check the [`docs` folder](folly/docs) for documentation, starting with the
 [overview](folly/docs/Overview.md).
 
-Folly is published on Github at https://github.com/facebook/folly
+Folly is published on GitHub at https://github.com/facebook/folly
 
 ### Build Notes
 
@@ -104,6 +104,11 @@ cmake \
   -DCMAKE_LIBRARY_PATH=/alt/lib/path1:/alt/lib/path2 ...
 ```
 
+#### Building tests
+
+By default, building the tests is disabled as part of the CMake `all` target.
+To build the tests, specify `-DBUILD_TESTS=ON` to CMake at configure time.
+
 #### Ubuntu 16.04 LTS
 
 The following packages are required (feel free to cut and paste the apt-get
@@ -127,7 +132,21 @@ sudo apt-get install \
     binutils-dev \
     libjemalloc-dev \
     libssl-dev \
-    pkg-config
+    pkg-config \
+    libunwind-dev
+```
+
+Folly relies on [fmt](https://github.com/fmtlib/fmt) which needs to be installed from source.
+The following commands will download, compile, and install fmt.
+
+```
+git clone https://github.com/fmtlib/fmt.git && cd fmt
+
+mkdir _build && cd _build
+cmake ..
+
+make -j$(nproc)
+sudo make install
 ```
 
 If advanced debugging functionality is required, use:

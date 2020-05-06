@@ -1,11 +1,11 @@
 /*
- * Copyright 2017-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -57,12 +57,12 @@ void SerialExecutor::keepAliveRelease() {
 }
 
 void SerialExecutor::add(Func func) {
-  queue_.enqueue(std::move(func));
+  queue_.enqueue(Task{std::move(func), RequestContext::saveContext()});
   parent_->add([keepAlive = getKeepAliveToken(this)] { keepAlive->run(); });
 }
 
 void SerialExecutor::addWithPriority(Func func, int8_t priority) {
-  queue_.enqueue(std::move(func));
+  queue_.enqueue(Task{std::move(func), RequestContext::saveContext()});
   parent_->addWithPriority(
       [keepAlive = getKeepAliveToken(this)] { keepAlive->run(); }, priority);
 }
@@ -75,10 +75,12 @@ void SerialExecutor::run() {
   }
 
   do {
-    Func func;
-    queue_.dequeue(func);
+    Task task;
+    queue_.dequeue(task);
 
     try {
+      folly::RequestContextScopeGuard ctxGuard(std::move(task.ctx));
+      auto func = std::move(task.func);
       func();
     } catch (std::exception const& ex) {
       LOG(ERROR) << "SerialExecutor: func threw unhandled exception "

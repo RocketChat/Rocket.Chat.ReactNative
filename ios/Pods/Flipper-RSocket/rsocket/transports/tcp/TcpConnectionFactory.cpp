@@ -22,8 +22,6 @@
 
 #include "rsocket/transports/tcp/TcpDuplexConnection.h"
 
-using namespace rsocket;
-
 namespace rsocket {
 
 namespace {

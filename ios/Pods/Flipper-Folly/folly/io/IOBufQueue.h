@@ -1,11 +1,11 @@
 /*
- * Copyright 2013-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -53,14 +53,14 @@ class IOBufQueue {
 
     WritableRangeCacheData(WritableRangeCacheData&& other)
         : cachedRange(other.cachedRange), attached(other.attached) {
-      other.cachedRange = {};
+      other.cachedRange = {nullptr, nullptr};
       other.attached = false;
     }
     WritableRangeCacheData& operator=(WritableRangeCacheData&& other) {
       cachedRange = other.cachedRange;
       attached = other.attached;
 
-      other.cachedRange = {};
+      other.cachedRange = {nullptr, nullptr};
       other.attached = false;
 
       return *this;
@@ -292,6 +292,7 @@ class IOBufQueue {
    * the chain topology unchanged.
    */
   void append(std::unique_ptr<folly::IOBuf>&& buf, bool pack = false);
+  void append(const folly::IOBuf& buf, bool pack = false);
 
   /**
    * Add a queue to the end of this queue. The queue takes ownership of
@@ -530,6 +531,8 @@ class IOBufQueue {
   /** Movable */
   IOBufQueue(IOBufQueue&&) noexcept;
   IOBufQueue& operator=(IOBufQueue&&);
+
+  static constexpr size_t kMaxPackCopy = 4096;
 
  private:
   std::unique_ptr<folly::IOBuf> split(size_t n, bool throwOnUnderflow);

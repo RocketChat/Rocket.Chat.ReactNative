@@ -1,11 +1,11 @@
 /*
- * Copyright 2018-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -98,10 +98,10 @@ constexpr poly_table<Deg> make_poly_table() {
   for (uint16_t x = 0; x < 256; x++) {
     FingerprintPolynomial<Deg> t;
     t.setHigh8Bits(uint8_t(x));
-    for (int i = 0; i < 8; i++) {
+    for (auto& entry : table) {
       t.mulXkmod(8, poly);
       for (size_t j = 0; j < poly_size(Deg); ++j) {
-        table[i][x][j] = t.get(j);
+        entry[x][j] = t.get(j);
       }
     }
   }

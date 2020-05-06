@@ -1,11 +1,11 @@
 /*
- * Copyright 2018-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -50,27 +50,17 @@ namespace folly {
  *
  * If binary isn't linked with jemalloc, the logic falls back to malloc / free.
  *
- * Note that the madvise call does not guarantee huge pages, it is best effort.
+ * Please note that as per kernel contract, page faults on an madvised region
+ * will block, so we pre-allocate all the huge pages by touching the pages.
+ * So, please only allocate as much you need as this will never be freed
+ * during the lifetime of the application. If we run out of the free huge pages,
+ * then huge page allocator falls back to the 4K regular pages.
  *
  * 1GB Huge Pages are not supported at this point.
  */
 class JemallocHugePageAllocator {
  public:
-  struct Options {
-    // Set decay time to 0, which will cause jemalloc to free memory
-    // back to kernel immediately. It can still be reclaimed later if
-    // the kernel hasn't reused it for something else.
-    // This is primarily useful for preventing RSS regressions, but
-    // can cause the number of available pages to shrink over time
-    // as the likelihood they get reused by the kernel is increased.
-    bool noDecay = false;
-  };
-
-  static bool init(int nr_pages) {
-    return init(nr_pages, Options());
-  }
-
-  static bool init(int nr_pages, const Options& options);
+  static bool init(int nr_pages);
 
   static void* allocate(size_t size) {
     // If uninitialized, flags_ will be 0 and the mallocx behavior

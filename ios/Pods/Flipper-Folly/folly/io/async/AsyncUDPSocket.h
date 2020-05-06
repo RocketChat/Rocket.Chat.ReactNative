@@ -1,11 +1,11 @@
 /*
- * Copyright 2014-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,6 +21,7 @@
 #include <folly/ScopeGuard.h>
 #include <folly/SocketAddress.h>
 #include <folly/io/IOBuf.h>
+#include <folly/io/SocketOptionMap.h>
 #include <folly/io/async/AsyncSocketBase.h>
 #include <folly/io/async/AsyncSocketException.h>
 #include <folly/io/async/EventBase.h>
@@ -39,6 +40,9 @@ class AsyncUDPSocket : public EventHandler {
 
   class ReadCallback {
    public:
+    struct OnDataAvailableParams {
+      int gro_ = -1;
+    };
     /**
      * Invoked when the socket becomes readable and we want buffer
      * to write to.
@@ -50,14 +54,34 @@ class AsyncUDPSocket : public EventHandler {
     virtual void getReadBuffer(void** buf, size_t* len) noexcept = 0;
 
     /**
-     * Invoked when a new datagraom is available on the socket. `len`
+     * Invoked when a new datagram is available on the socket. `len`
      * is the number of bytes read and `truncated` is true if we had
      * to drop few bytes because of running out of buffer space.
+     *  OnDataAvailableParams::gro is the GRO segment size
      */
     virtual void onDataAvailable(
         const folly::SocketAddress& client,
         size_t len,
-        bool truncated) noexcept = 0;
+        bool truncated,
+        OnDataAvailableParams params) noexcept = 0;
+
+    /**
+     * Notifies when data is available. This is only invoked when
+     * shouldNotifyOnly() returns true.
+     */
+    virtual void onNotifyDataAvailable(AsyncUDPSocket&) noexcept {}
+
+    /**
+     * Returns whether or not the read callback should only notify
+     * but not call getReadBuffer.
+     * If shouldNotifyOnly() returns true, AsyncUDPSocket will invoke
+     * onNotifyDataAvailable() instead of getReadBuffer().
+     * If shouldNotifyOnly() returns false, AsyncUDPSocket will invoke
+     * getReadBuffer() and onDataAvailable().
+     */
+    virtual bool shouldOnlyNotify() {
+      return false;
+    }
 
     /**
      * Invoked when there is an error reading from the socket.
@@ -147,7 +171,7 @@ class AsyncUDPSocket : public EventHandler {
   virtual int writem(
       const folly::SocketAddress& address,
       const std::unique_ptr<folly::IOBuf>* bufs,
-      size_t num);
+      size_t count);
 
   /**
    * Send the data in buffer to destination. Returns the return code from
@@ -164,18 +188,41 @@ class AsyncUDPSocket : public EventHandler {
       int gso);
 
   /**
+   * Send the data in buffers to destination. Returns the return code from
+   * ::sendmmsg.
+   * bufs is an array of std::unique_ptr<folly::IOBuf>
+   * of size num
+   * gso is an array with the generic segmentation offload values or nullptr
+   *  Before calling writeGSO with a positive value
+   *  verify GSO is supported on this platform by calling getGSO
+   */
+  virtual int writemGSO(
+      const folly::SocketAddress& address,
+      const std::unique_ptr<folly::IOBuf>* bufs,
+      size_t count,
+      const int* gso);
+
+  /**
    * Send data in iovec to destination. Returns the return code from sendmsg.
    */
   virtual ssize_t writev(
       const folly::SocketAddress& address,
       const struct iovec* vec,
-      size_t veclen,
+      size_t iovec_len,
       int gso);
 
   virtual ssize_t writev(
       const folly::SocketAddress& address,
       const struct iovec* vec,
-      size_t veclen);
+      size_t iovec_len);
+
+  virtual ssize_t recvmsg(struct msghdr* msg, int flags);
+
+  virtual int recvmmsg(
+      struct mmsghdr* msgvec,
+      unsigned int vlen,
+      unsigned int flags,
+      struct timespec* timeout);
 
   /**
    * Start reading datagrams
@@ -253,6 +300,16 @@ class AsyncUDPSocket : public EventHandler {
   virtual void dontFragment(bool df);
 
   /**
+   * Set Dont-Fragment (DF) but ignore Path MTU.
+   *
+   * On Linux, this sets  IP(V6)_MTU_DISCOVER to IP(V6)_PMTUDISC_PROBE.
+   * This essentially sets DF but ignores Path MTU for this socket.
+   * This may be desirable for apps that has its own PMTU Discovery mechanism.
+   * See http://man7.org/linux/man-pages/man7/ip.7.html for more info.
+   */
+  virtual void setDFAndTurnOffPMTU();
+
+  /**
    * Callback for receiving errors on the UDP sockets
    */
   virtual void setErrMessageCallback(ErrMessageCallback* errMessageCallback);
@@ -281,6 +338,10 @@ class AsyncUDPSocket : public EventHandler {
     return fd_ != NetworkSocket();
   }
 
+  virtual bool isReading() const {
+    return readCallback_ != nullptr;
+  }
+
   virtual void detachEventBase();
 
   virtual void attachEventBase(folly::EventBase* evb);
@@ -290,6 +351,18 @@ class AsyncUDPSocket : public EventHandler {
   int getGSO();
 
   bool setGSO(int val);
+
+  // generic receive offload get/set
+  // negative return value means GRO is not available
+  int getGRO();
+
+  bool setGRO(bool bVal);
+
+  void setTrafficClass(int tclass);
+
+  void applyOptions(
+      const SocketOptionMap& options,
+      SocketOptionKey::ApplyPos pos);
 
  protected:
   virtual ssize_t
@@ -312,13 +385,17 @@ class AsyncUDPSocket : public EventHandler {
       size_t count,
       struct mmsghdr* msgvec,
       struct iovec* iov,
-      size_t iov_count);
+      size_t iov_count,
+      const int* gso,
+      char* gsoControl);
 
   virtual int writeImpl(
       const folly::SocketAddress& address,
       const std::unique_ptr<folly::IOBuf>* bufs,
       size_t count,
-      struct mmsghdr* msgvec);
+      struct mmsghdr* msgvec,
+      const int* gso,
+      char* gsoControl);
 
   size_t handleErrMessages() noexcept;
 
@@ -346,6 +423,10 @@ class AsyncUDPSocket : public EventHandler {
   // Temp space to receive client address
   folly::SocketAddress clientAddress_;
 
+  // If the socket is connected.
+  folly::SocketAddress connectedAddress_;
+  bool connected_{false};
+
   bool reuseAddr_{false};
   bool reusePort_{false};
   int rcvBuf_{0};
@@ -355,6 +436,10 @@ class AsyncUDPSocket : public EventHandler {
   // generic segmentation offload value, if available
   // See https://lwn.net/Articles/188489/ for more details
   folly::Optional<int> gso_;
+
+  // generic receive offload value, if available
+  // See https://lwn.net/Articles/770978/ for more details
+  folly::Optional<int> gro_;
 
   ErrMessageCallback* errMessageCallback_{nullptr};
 };

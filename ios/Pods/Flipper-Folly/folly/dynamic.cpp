@@ -1,11 +1,11 @@
 /*
- * Copyright 2011-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,18 +30,17 @@ namespace folly {
 
 //////////////////////////////////////////////////////////////////////
 
-#define FOLLY_DYNAMIC_DEF_TYPEINFO(T)                 \
-  constexpr const char* dynamic::TypeInfo<T>::name;   \
-  constexpr dynamic::Type dynamic::TypeInfo<T>::type; \
+#define FOLLY_DYNAMIC_DEF_TYPEINFO(T, str)            \
+  const char* const dynamic::TypeInfo<T>::name = str; \
   //
 
-FOLLY_DYNAMIC_DEF_TYPEINFO(std::nullptr_t)
-FOLLY_DYNAMIC_DEF_TYPEINFO(bool)
-FOLLY_DYNAMIC_DEF_TYPEINFO(std::string)
-FOLLY_DYNAMIC_DEF_TYPEINFO(dynamic::Array)
-FOLLY_DYNAMIC_DEF_TYPEINFO(double)
-FOLLY_DYNAMIC_DEF_TYPEINFO(int64_t)
-FOLLY_DYNAMIC_DEF_TYPEINFO(dynamic::ObjectImpl)
+FOLLY_DYNAMIC_DEF_TYPEINFO(std::nullptr_t, "null")
+FOLLY_DYNAMIC_DEF_TYPEINFO(bool, "boolean")
+FOLLY_DYNAMIC_DEF_TYPEINFO(std::string, "string")
+FOLLY_DYNAMIC_DEF_TYPEINFO(dynamic::Array, "array")
+FOLLY_DYNAMIC_DEF_TYPEINFO(double, "double")
+FOLLY_DYNAMIC_DEF_TYPEINFO(int64_t, "int64")
+FOLLY_DYNAMIC_DEF_TYPEINFO(dynamic::ObjectImpl, "object")
 
 #undef FOLLY_DYNAMIC_DEF_TYPEINFO
 
@@ -292,12 +291,12 @@ std::size_t dynamic::hash() const {
       // Accumulate using addition instead of using hash_range (as in the ARRAY
       // case), as we need a commutative hash operation since unordered_map's
       // iteration order is unspecified.
-      auto h = std::hash<std::pair<dynamic, dynamic>>{};
+      auto h = std::hash<std::pair<dynamic const, dynamic>>{};
       return std::accumulate(
           items().begin(),
           items().end(),
           size_t{0x0B1EC7},
-          [&](auto acc, auto item) { return acc + h(item); });
+          [&](auto acc, auto const& item) { return acc + h(item); });
     }
     case ARRAY:
       return folly::hash::hash_range(begin(), end());
@@ -380,7 +379,7 @@ dynamic::try_get_ptr(json_pointer const& jsonPtr) const& {
   size_t curr_idx{0};
   StringPiece curr_key{};
 
-  for (auto&& it : enumerate(tokens)) {
+  for (auto it : enumerate(tokens)) {
     // hit bottom but pointer not exhausted yet
     if (!curr) {
       return makeUnexpected(
@@ -462,6 +461,7 @@ const dynamic* dynamic::get_ptr(json_pointer const& jsonPtr) const& {
       throw_exception<TypeError>("object/array", objType);
     case err_code::json_pointer_out_of_bounds:
       return nullptr;
+    case err_code::other:
     default:
       return nullptr;
   }

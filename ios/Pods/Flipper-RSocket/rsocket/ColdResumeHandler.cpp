@@ -18,7 +18,6 @@
 
 #include <folly/Conv.h>
 
-using namespace yarpl;
 using namespace yarpl::flowable;
 
 namespace rsocket {

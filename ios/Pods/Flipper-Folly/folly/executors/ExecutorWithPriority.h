@@ -1,11 +1,11 @@
 /*
- * Copyright 2017-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,30 +20,17 @@
 #include <atomic>
 
 namespace folly {
-
-class ExecutorWithPriority : public virtual Executor {
+class ExecutorWithPriority {
  public:
-  ExecutorWithPriority(ExecutorWithPriority const&) = delete;
-  ExecutorWithPriority& operator=(ExecutorWithPriority const&) = delete;
-  ExecutorWithPriority(ExecutorWithPriority&&) = delete;
-  ExecutorWithPriority& operator=(ExecutorWithPriority&&) = delete;
+  template <typename Callback>
+  static Executor::KeepAlive<> createDynamic(
+      Executor::KeepAlive<Executor> executor,
+      Callback&& callback);
 
-  static Executor::KeepAlive<ExecutorWithPriority> create(
-      KeepAlive<Executor> executor,
+  static Executor::KeepAlive<> create(
+      Executor::KeepAlive<Executor> executor,
       int8_t priority);
-
-  void add(Func func) override;
-
- protected:
-  bool keepAliveAcquire() override;
-  void keepAliveRelease() override;
-
- private:
-  ExecutorWithPriority(KeepAlive<Executor> executor, int8_t priority)
-      : executor_(std::move(executor)), priority_(priority) {}
-
-  std::atomic<ssize_t> keepAliveCounter_{1};
-  KeepAlive<Executor> executor_;
-  int8_t priority_;
 };
 } // namespace folly
+
+#include <folly/executors/ExecutorWithPriority-inl.h>

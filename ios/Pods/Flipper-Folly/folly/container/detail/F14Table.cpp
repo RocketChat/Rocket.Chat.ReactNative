@@ -1,11 +1,11 @@
 /*
- * Copyright 2017-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,7 +36,7 @@ EmptyTagVectorType kEmptyTagVector = {};
 
 //// Debug and ASAN stuff
 
-#if defined(FOLLY_TLS) && (!defined(NDEBUG) || FOLLY_ASAN_ENABLED)
+#if defined(FOLLY_TLS) && (!defined(NDEBUG) || FOLLY_LIBRARY_SANITIZE_ADDRESS)
 #define FOLLY_F14_DETAIL_TLS_SIZE_T FOLLY_TLS std::size_t
 #else
 #define FOLLY_F14_DETAIL_TLS_SIZE_T std::atomic<std::size_t>
@@ -59,7 +59,7 @@ std::size_t tlsMinstdRand(std::size_t n) {
   FOLLY_SAFE_DCHECK(n > 0, "");
 
   static FOLLY_F14_DETAIL_TLS_SIZE_T state{0};
-  uint32_t s = static_cast<uint32_t>(state);
+  auto s = static_cast<uint32_t>(state);
   if (s == 0) {
     uint64_t seed = static_cast<uint64_t>(
         std::chrono::steady_clock::now().time_since_epoch().count());

@@ -1,11 +1,11 @@
 /*
- * Copyright 2017-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #pragma once
 
 #include <folly/Optional.h>
@@ -24,10 +25,18 @@
 namespace folly {
 
 /**
- * Based on Java's ConcurrentHashMap
+ * Implementations of high-performance Concurrent Hashmaps that
+ * support erase and update.
  *
  * Readers are always wait-free.
  * Writers are sharded, but take a lock.
+ *
+ * Multithreaded performance beats anything except the lock-free
+ *      atomic maps (AtomicUnorderedMap, AtomicHashMap), BUT only
+ *      if you can perfectly size the atomic maps, and you don't
+ *      need erase().  If you don't know the size in advance or
+ *      your workload frequently calls erase(), this is the
+ *      better choice.
  *
  * The interface is as close to std::unordered_map as possible, but there
  * are a handful of changes:
@@ -53,22 +62,63 @@ namespace folly {
  *   std::unordered_map which iterates over a linked list of elements.
  *   If the table is sparse, this may be more expensive.
  *
- * * rehash policy is a power of two, using supplied factor.
- *
  * * Allocator must be stateless.
  *
- * * ValueTypes without copy constructors will work, but pessimize the
- *   implementation.
+ * 1: ConcurrentHashMap, based on Java's ConcurrentHashMap.
+ *    Very similar to std::unodered_map in performance.
  *
- * Comparisons:
- *      Single-threaded performance is extremely similar to std::unordered_map.
+ * 2: ConcurrentHashMapSIMD, based on F14ValueMap.  If the map is
+ *    larger than the cache size, it has superior performance due to
+ *    vectorized key lookup.
  *
- *      Multithreaded performance beats anything except the lock-free
- *           atomic maps (AtomicUnorderedMap, AtomicHashMap), BUT only
- *           if you can perfectly size the atomic maps, and you don't
- *           need erase().  If you don't know the size in advance or
- *           your workload frequently calls erase(), this is the
- *           better choice.
+ *
+ *
+ * USAGE FAQs
+ *
+ * Q: Is simultaneous iteration and erase() threadsafe?
+ *       Example:
+ *
+ *       ConcurrentHashMap<int, int> map;
+ *
+ *       Thread 1: auto it = map.begin();
+ *                   while (it != map.end()) {
+ *                      // Do something with it
+ *                      it++;
+ *                   }
+ *
+ *       Thread 2:    map.insert(2, 2);  map.erase(2);
+ *
+ * A: Yes, this is safe.  However, the iterating thread is not
+ * garanteed to see (or not see) concurrent insertions and erasures.
+ * Inserts may cause a rehash, but the old table is still valid as
+ * long as any iterator pointing to it exists.
+ *
+ * Q: How do I update an existing object atomically?
+ *
+ * A: assign_if_equal is the recommended way - readers will see the
+ * old value until the new value is completely constructed and
+ * inserted.
+ *
+ * Q: Why does map.erase() not actually destroy elements?
+ *
+ * A: Hazard Pointers are used to improve the performance of
+ * concurrent access.  They can be thought of as a simple Garbage
+ * Collector.  To reduce the GC overhead, a GC pass is only run after
+ * reaching a cetain memory bound.  erase() will remove the element
+ * from being accessed via the map, but actual destruction may happen
+ * later, after iterators that may point to it have been deleted.
+ *
+ * The only guarantee is that a GC pass will be run on map destruction
+ * - no elements will remain after map destruction.
+ *
+ * Q: Are pointers to values safe to access *without* holding an
+ * iterator?
+ *
+ * A: The SIMD version guarantees that references to elements are
+ * stable across rehashes, the non-SIMD version does *not*.  Note that
+ * unless you hold an iterator, you need to ensure there are no
+ * concurrent deletes/updates to that key if you are accessing it via
+ * reference.
  */
 
 template <
@@ -79,7 +129,16 @@ template <
     typename Allocator = std::allocator<uint8_t>,
     uint8_t ShardBits = 8,
     template <typename> class Atom = std::atomic,
-    class Mutex = std::mutex>
+    class Mutex = std::mutex,
+    template <
+        typename,
+        typename,
+        uint8_t,
+        typename,
+        typename,
+        typename,
+        template <typename> class,
+        class> class Impl = detail::concurrenthashmap::bucket::BucketTable>
 class ConcurrentHashMap {
   using SegmentT = detail::ConcurrentHashMapSegment<
       KeyType,
@@ -89,12 +148,12 @@ class ConcurrentHashMap {
       KeyEqual,
       Allocator,
       Atom,
-      Mutex>;
+      Mutex,
+      Impl>;
+
+  float load_factor_ = SegmentT::kDefaultLoadFactor;
+
   static constexpr uint64_t NumShards = (1 << ShardBits);
-  // Slightly higher than 1.0, in case hashing to shards isn't
-  // perfectly balanced, reserve(size) will still work without
-  // rehashing.
-  float load_factor_ = 1.05;
 
  public:
   class ConstIterator;
@@ -134,8 +193,8 @@ class ConcurrentHashMap {
           std::memory_order_relaxed);
       o.segments_[i].store(nullptr, std::memory_order_relaxed);
     }
-    batch_.store(o.batch(), std::memory_order_relaxed);
-    o.batch_.store(nullptr, std::memory_order_relaxed);
+    cohort_.store(o.cohort(), std::memory_order_relaxed);
+    o.cohort_.store(nullptr, std::memory_order_relaxed);
   }
 
   ConcurrentHashMap& operator=(ConcurrentHashMap&& o) {
@@ -152,9 +211,9 @@ class ConcurrentHashMap {
     }
     size_ = o.size_;
     max_size_ = o.max_size_;
-    batch_shutdown_cleanup();
-    batch_.store(o.batch(), std::memory_order_relaxed);
-    o.batch_.store(nullptr, std::memory_order_relaxed);
+    cohort_shutdown_cleanup();
+    cohort_.store(o.cohort(), std::memory_order_relaxed);
+    o.cohort_.store(nullptr, std::memory_order_relaxed);
     return *this;
   }
 
@@ -166,7 +225,7 @@ class ConcurrentHashMap {
         Allocator().deallocate((uint8_t*)seg, sizeof(SegmentT));
       }
     }
-    batch_shutdown_cleanup();
+    cohort_shutdown_cleanup();
   }
 
   bool empty() const noexcept {
@@ -246,7 +305,7 @@ class ConcurrentHashMap {
   std::pair<ConstIterator, bool> emplace(Args&&... args) {
     using Node = typename SegmentT::Node;
     auto node = (Node*)Allocator().allocate(sizeof(Node));
-    new (node) Node(ensureBatch(), std::forward<Args>(args)...);
+    new (node) Node(ensureCohort(), std::forward<Args>(args)...);
     auto segment = pickSegment(node->getItem().first);
     std::pair<ConstIterator, bool> res(
         std::piecewise_construct,
@@ -261,6 +320,11 @@ class ConcurrentHashMap {
     return res;
   }
 
+  /*
+   * The bool component will always be true if the map has been updated via
+   * either insertion or assignment. Note that this is different from the
+   * std::map::insert_or_assign interface.
+   */
   template <typename Key, typename Value>
   std::pair<ConstIterator, bool> insert_or_assign(Key&& k, Value&& v) {
     auto segment = pickSegment(k);
@@ -504,7 +568,7 @@ class ConcurrentHashMap {
   SegmentT* ensureSegment(uint64_t i) const {
     SegmentT* seg = segments_[i].load(std::memory_order_acquire);
     if (!seg) {
-      auto b = ensureBatch();
+      auto b = ensureCohort();
       SegmentT* newseg = (SegmentT*)Allocator().allocate(sizeof(SegmentT));
       newseg = new (newseg)
           SegmentT(size_ >> ShardBits, load_factor_, max_size_ >> ShardBits, b);
@@ -519,40 +583,59 @@ class ConcurrentHashMap {
     return seg;
   }
 
-  hazptr_obj_batch<Atom>* batch() const noexcept {
-    return batch_.load(std::memory_order_acquire);
+  hazptr_obj_cohort<Atom>* cohort() const noexcept {
+    return cohort_.load(std::memory_order_acquire);
   }
 
-  hazptr_obj_batch<Atom>* ensureBatch() const {
-    auto b = batch();
+  hazptr_obj_cohort<Atom>* ensureCohort() const {
+    auto b = cohort();
     if (!b) {
-      auto storage = Allocator().allocate(sizeof(hazptr_obj_batch<Atom>));
-      auto newbatch = new (storage) hazptr_obj_batch<Atom>();
-      if (batch_.compare_exchange_strong(b, newbatch)) {
-        b = newbatch;
+      auto storage = Allocator().allocate(sizeof(hazptr_obj_cohort<Atom>));
+      auto newcohort = new (storage) hazptr_obj_cohort<Atom>();
+      if (cohort_.compare_exchange_strong(b, newcohort)) {
+        b = newcohort;
       } else {
-        newbatch->shutdown_and_reclaim();
-        newbatch->~hazptr_obj_batch<Atom>();
-        Allocator().deallocate(storage, sizeof(hazptr_obj_batch<Atom>));
+        newcohort->~hazptr_obj_cohort<Atom>();
+        Allocator().deallocate(storage, sizeof(hazptr_obj_cohort<Atom>));
       }
     }
     return b;
   }
 
-  void batch_shutdown_cleanup() {
-    auto b = batch();
+  void cohort_shutdown_cleanup() {
+    auto b = cohort();
     if (b) {
-      b->shutdown_and_reclaim();
-      hazptr_cleanup_batch_tag(b);
-      b->~hazptr_obj_batch<Atom>();
-      Allocator().deallocate((uint8_t*)b, sizeof(hazptr_obj_batch<Atom>));
+      b->~hazptr_obj_cohort<Atom>();
+      Allocator().deallocate((uint8_t*)b, sizeof(hazptr_obj_cohort<Atom>));
     }
   }
 
   mutable Atom<SegmentT*> segments_[NumShards];
   size_t size_{0};
   size_t max_size_{0};
-  mutable Atom<hazptr_obj_batch<Atom>*> batch_{nullptr};
+  mutable Atom<hazptr_obj_cohort<Atom>*> cohort_{nullptr};
 };
+
+#if FOLLY_SSE_PREREQ(4, 2) && !FOLLY_MOBILE
+template <
+    typename KeyType,
+    typename ValueType,
+    typename HashFn = std::hash<KeyType>,
+    typename KeyEqual = std::equal_to<KeyType>,
+    typename Allocator = std::allocator<uint8_t>,
+    uint8_t ShardBits = 8,
+    template <typename> class Atom = std::atomic,
+    class Mutex = std::mutex>
+using ConcurrentHashMapSIMD = ConcurrentHashMap<
+    KeyType,
+    ValueType,
+    HashFn,
+    KeyEqual,
+    Allocator,
+    ShardBits,
+    Atom,
+    Mutex,
+    detail::concurrenthashmap::simd::SIMDTable>;
+#endif
 
 } // namespace folly

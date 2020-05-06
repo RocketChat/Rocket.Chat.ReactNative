@@ -15,6 +15,9 @@
 #pragma once
 
 #include <deque>
+
+#include <folly/lang/Assume.h>
+
 #include "rsocket/RSocketStats.h"
 #include "rsocket/ResumeManager.h"
 
@@ -76,10 +79,12 @@ class WarmResumeManager : public ResumeManager {
 
   const StreamResumeInfos& getStreamResumeInfos() const override {
     LOG(FATAL) << "Not Implemented for Warm Resumption";
+    folly::assume_unreachable();
   }
 
   StreamId getLargestUsedStreamId() const override {
     LOG(FATAL) << "Not Implemented for Warm Resumption";
+    folly::assume_unreachable();
   }
 
   size_t size() const {

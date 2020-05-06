@@ -23,8 +23,8 @@ constexpr const size_t FrameSerializerV1_0::kFrameHeaderSize;
 constexpr const size_t FrameSerializerV1_0::kMinBytesNeededForAutodetection;
 
 namespace {
-constexpr const auto kMedatadaLengthSize = 3; // bytes
-constexpr const auto kMaxMetadataLength = 0xFFFFFF; // 24bit max value
+constexpr const uint32_t kMedatadaLengthSize = 3u; // bytes
+constexpr const uint32_t kMaxMetadataLength = 0xFFFFFFu; // 24bit max value
 } // namespace
 
 ProtocolVersion FrameSerializerV1_0::protocolVersion() const {

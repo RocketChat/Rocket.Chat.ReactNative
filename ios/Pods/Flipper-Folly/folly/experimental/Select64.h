@@ -1,11 +1,11 @@
 /*
- * Copyright 2015-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -89,7 +89,7 @@ inline uint64_t select64(uint64_t x, uint64_t k) {
 template <>
 FOLLY_ALWAYS_INLINE uint64_t
 select64<compression::instructions::Haswell>(uint64_t x, uint64_t k) {
-#if defined(__GNUC__) || defined(__clang__)
+#if defined(__GNUC__)
   // GCC and Clang won't inline the intrinsics.
   uint64_t result = uint64_t(1) << k;
 

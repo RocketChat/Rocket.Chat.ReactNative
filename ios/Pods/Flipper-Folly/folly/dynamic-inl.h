@@ -1,11 +1,11 @@
 /*
- * Copyright 2011-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #pragma once
 
 #include <functional>
@@ -991,27 +992,32 @@ inline void dynamic::pop_back() {
   arr.pop_back();
 }
 
+inline const dynamic& dynamic::back() const {
+  auto& arr = get<Array>();
+  return arr.back();
+}
+
 //////////////////////////////////////////////////////////////////////
 
 inline dynamic::dynamic(Array&& r) : type_(ARRAY) {
   new (&u_.array) Array(std::move(r));
 }
 
-#define FOLLY_DYNAMIC_DEC_TYPEINFO(T, str, val) \
-  template <>                                   \
-  struct dynamic::TypeInfo<T> {                 \
-    static constexpr const char* name = str;    \
-    static constexpr dynamic::Type type = val;  \
-  };                                            \
+#define FOLLY_DYNAMIC_DEC_TYPEINFO(T, val)     \
+  template <>                                  \
+  struct dynamic::TypeInfo<T> {                \
+    static const char* const name;             \
+    static constexpr dynamic::Type type = val; \
+  };                                           \
   //
 
-FOLLY_DYNAMIC_DEC_TYPEINFO(std::nullptr_t, "null", dynamic::NULLT)
-FOLLY_DYNAMIC_DEC_TYPEINFO(bool, "boolean", dynamic::BOOL)
-FOLLY_DYNAMIC_DEC_TYPEINFO(std::string, "string", dynamic::STRING)
-FOLLY_DYNAMIC_DEC_TYPEINFO(dynamic::Array, "array", dynamic::ARRAY)
-FOLLY_DYNAMIC_DEC_TYPEINFO(double, "double", dynamic::DOUBLE)
-FOLLY_DYNAMIC_DEC_TYPEINFO(int64_t, "int64", dynamic::INT64)
-FOLLY_DYNAMIC_DEC_TYPEINFO(dynamic::ObjectImpl, "object", dynamic::OBJECT)
+FOLLY_DYNAMIC_DEC_TYPEINFO(std::nullptr_t, dynamic::NULLT)
+FOLLY_DYNAMIC_DEC_TYPEINFO(bool, dynamic::BOOL)
+FOLLY_DYNAMIC_DEC_TYPEINFO(std::string, dynamic::STRING)
+FOLLY_DYNAMIC_DEC_TYPEINFO(dynamic::Array, dynamic::ARRAY)
+FOLLY_DYNAMIC_DEC_TYPEINFO(double, dynamic::DOUBLE)
+FOLLY_DYNAMIC_DEC_TYPEINFO(int64_t, dynamic::INT64)
+FOLLY_DYNAMIC_DEC_TYPEINFO(dynamic::ObjectImpl, dynamic::OBJECT)
 
 #undef FOLLY_DYNAMIC_DEC_TYPEINFO
 
@@ -1026,6 +1032,9 @@ T dynamic::asImpl() const {
       return to<T>(*get_nothrow<bool>());
     case STRING:
       return to<T>(*get_nothrow<std::string>());
+    case NULLT:
+    case ARRAY:
+    case OBJECT:
     default:
       throw_exception<TypeError>("int/double/bool/string", type());
   }

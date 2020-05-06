@@ -19,8 +19,6 @@
 
 namespace rsocket {
 
-using namespace yarpl::flowable;
-
 namespace {
 
 constexpr auto kMaxFrameLength = 0xFFFFFF; // 24bit max value

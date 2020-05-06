@@ -1,11 +1,11 @@
 /*
- * Copyright 2016-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #include <folly/io/async/ssl/SSLErrors.h>
 
 #include <folly/Range.h>
@@ -44,7 +45,7 @@ std::string decodeOpenSSLError(
   }
 }
 
-const StringPiece getSSLErrorString(SSLError error) {
+StringPiece getSSLErrorString(SSLError error) {
   StringPiece ret;
   switch (error) {
     case SSLError::CLIENT_RENEGOTIATION:
@@ -93,6 +94,10 @@ AsyncSocketException::AsyncSocketExceptionType exTypefromSSLErr(SSLError err) {
       return AsyncSocketException::END_OF_FILE;
     case SSLError::NETWORK_ERROR:
       return AsyncSocketException::NETWORK_ERROR;
+    case SSLError::CLIENT_RENEGOTIATION:
+    case SSLError::INVALID_RENEGOTIATION:
+    case SSLError::EARLY_WRITE:
+    case SSLError::SSL_ERROR:
     default:
       // everything else is a SSL_ERROR
       return AsyncSocketException::SSL_ERROR;

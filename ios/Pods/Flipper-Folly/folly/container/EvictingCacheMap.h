@@ -1,11 +1,11 @@
 /*
- * Copyright 2014-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #pragma once
 
 #include <algorithm>
@@ -47,7 +48,7 @@ namespace folly {
  * callback and the hasher to hash the keys can all be supplied by the caller.
  *
  * If at a given state, N1 - N6 are the nodes in MRU to LRU order and hashing
- * to index keys as {(N1,N5)->H1, (N4,N5,N5)->H2, N3->Hi}, the datastructure
+ * to index keys as {(N1,N5)->H1, (N4,N2,N6)->H2, N3->Hi}, the datastructure
  * layout is as below. N1 .. N6 is a list threaded through the hash.
  * Assuming, each the number of nodes hashed to each index key is bounded, the
  * following operations run in constant time.
@@ -193,7 +194,7 @@ class EvictingCacheMap {
    * bad, e.g., the nIndexBuckets_ is still 100 after maxSize is updated to 1M.
    *
    * Calling this function with an arugment of 0 removes the limit on the cache
-   * size and elements are not evicted unless clients explictly call prune.
+   * size and elements are not evicted unless clients explicitly call prune.
    *
    * If you intend to resize dynamically using this, then picking an index size
    * that works well and initializing with corresponding maxSize is the only

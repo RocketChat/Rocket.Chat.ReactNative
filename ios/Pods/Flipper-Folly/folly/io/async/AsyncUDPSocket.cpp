@@ -1,11 +1,11 @@
 /*
- * Copyright 2014-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,13 +17,15 @@
 #include <folly/io/async/AsyncUDPSocket.h>
 
 #include <folly/Likely.h>
+#include <folly/Utility.h>
+#include <folly/io/SocketOptionMap.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/portability/Fcntl.h>
 #include <folly/portability/Sockets.h>
 #include <folly/portability/Unistd.h>
 
 #include <boost/preprocessor/control/if.hpp>
-#include <errno.h>
+#include <cerrno>
 
 // Due to the way kernel headers are included, this may or may not be defined.
 // Number pulled from 3.10 kernel headers.
@@ -56,8 +58,10 @@ AsyncUDPSocket::~AsyncUDPSocket() {
 }
 
 void AsyncUDPSocket::bind(const folly::SocketAddress& address) {
-  NetworkSocket socket =
-      netops::socket(address.getFamily(), SOCK_DGRAM, IPPROTO_UDP);
+  NetworkSocket socket = netops::socket(
+      address.getFamily(),
+      SOCK_DGRAM,
+      address.getFamily() != AF_UNIX ? IPPROTO_UDP : 0);
   if (socket == NetworkSocket()) {
     throw AsyncSocketException(
         AsyncSocketException::NOT_OPEN,
@@ -132,7 +136,7 @@ void AsyncUDPSocket::bind(const folly::SocketAddress& address) {
 
   if (sndBuf_ > 0) {
     // Set the size of the buffer for the sent messages in tx_queues.
-    int value = rcvBuf_;
+    int value = sndBuf_;
     if (netops::setsockopt(
             socket, SOL_SOCKET, SO_SNDBUF, &value, sizeof(value)) != 0) {
       throw AsyncSocketException(
@@ -171,7 +175,7 @@ void AsyncUDPSocket::bind(const folly::SocketAddress& address) {
   // attach to EventHandler
   EventHandler::changeHandlerFD(fd_);
 
-  if (address.getPort() != 0) {
+  if (address.getFamily() == AF_UNIX || address.getPort() != 0) {
     localAddress_ = address;
   } else {
     localAddress_.setFromLocalAddress(fd_);
@@ -201,6 +205,34 @@ void AsyncUDPSocket::dontFragment(bool df) {
       throw AsyncSocketException(
           AsyncSocketException::NOT_OPEN,
           "Failed to set DF with IPV6_MTU_DISCOVER",
+          errno);
+    }
+  }
+#endif
+}
+
+void AsyncUDPSocket::setDFAndTurnOffPMTU() {
+#if defined(IP_MTU_DISCOVER) && defined(IP_PMTUDISC_PROBE)
+  if (address().getFamily() == AF_INET) {
+    int v4 = IP_PMTUDISC_PROBE;
+    if (folly::netops::setsockopt(
+            fd_, IPPROTO_IP, IP_MTU_DISCOVER, &v4, sizeof(v4))) {
+      throw AsyncSocketException(
+          AsyncSocketException::NOT_OPEN,
+          "Failed to set PMTUDISC_PROBE with IP_MTU_DISCOVER",
+          errno);
+    }
+  }
+
+#endif
+#if defined(IPV6_MTU_DISCOVER) && defined(IPV6_PMTUDISC_PROBE)
+  if (address().getFamily() == AF_INET6) {
+    int v6 = IPV6_PMTUDISC_PROBE;
+    if (folly::netops::setsockopt(
+            fd_, IPPROTO_IPV6, IPV6_MTU_DISCOVER, &v6, sizeof(v6))) {
+      throw AsyncSocketException(
+          AsyncSocketException::NOT_OPEN,
+          "Failed to set PMTUDISC_PROBE with IPV6_MTU_DISCOVER",
           errno);
     }
   }
@@ -270,13 +302,21 @@ ssize_t AsyncUDPSocket::writev(
     size_t iovec_len,
     int gso) {
   CHECK_NE(NetworkSocket(), fd_) << "Socket not yet bound";
-
   sockaddr_storage addrStorage;
   address.getAddress(&addrStorage);
 
   struct msghdr msg;
-  msg.msg_name = reinterpret_cast<void*>(&addrStorage);
-  msg.msg_namelen = address.getActualSize();
+  if (!connected_) {
+    msg.msg_name = reinterpret_cast<void*>(&addrStorage);
+    msg.msg_namelen = address.getActualSize();
+  } else {
+    if (connectedAddress_ != address) {
+      errno = ENOTSUP;
+      return -1;
+    }
+    msg.msg_name = nullptr;
+    msg.msg_namelen = 0;
+  }
   msg.msg_iov = const_cast<struct iovec*>(vec);
   msg.msg_iovlen = iovec_len;
   msg.msg_control = nullptr;
@@ -293,7 +333,7 @@ ssize_t AsyncUDPSocket::writev(
     cm->cmsg_level = SOL_UDP;
     cm->cmsg_type = UDP_SEGMENT;
     cm->cmsg_len = CMSG_LEN(sizeof(uint16_t));
-    uint16_t gso_len = static_cast<uint16_t>(gso);
+    auto gso_len = static_cast<uint16_t>(gso);
     memcpy(CMSG_DATA(cm), &gso_len, sizeof(gso_len));
 
     return sendmsg(fd_, &msg, 0);
@@ -320,18 +360,47 @@ int AsyncUDPSocket::writem(
     const folly::SocketAddress& address,
     const std::unique_ptr<folly::IOBuf>* bufs,
     size_t count) {
+  return writemGSO(address, bufs, count, nullptr);
+}
+
+int AsyncUDPSocket::writemGSO(
+    const folly::SocketAddress& address,
+    const std::unique_ptr<folly::IOBuf>* bufs,
+    size_t count,
+    const int* gso) {
   int ret;
   constexpr size_t kSmallSizeMax = 8;
+  char* gsoControl = nullptr;
+#ifndef FOLLY_HAVE_MSG_ERRQUEUE
+  CHECK(!gso) << "GSO not supported";
+#endif
   if (count <= kSmallSizeMax) {
     // suppress "warning: variable length array 'vec' is used [-Wvla]"
     FOLLY_PUSH_WARNING
     FOLLY_GNU_DISABLE_WARNING("-Wvla")
     mmsghdr vec[BOOST_PP_IF(FOLLY_HAVE_VLA_01, count, kSmallSizeMax)];
+#ifdef FOLLY_HAVE_MSG_ERRQUEUE
+    // we will allocate this on the stack anyway even if we do not use it
+    char control
+        [(BOOST_PP_IF(FOLLY_HAVE_VLA_01, count, kSmallSizeMax)) *
+         (CMSG_SPACE(sizeof(uint16_t)))];
+
+    if (gso) {
+      gsoControl = control;
+    }
+#endif
     FOLLY_POP_WARNING
-    ret = writeImpl(address, bufs, count, vec);
+    ret = writeImpl(address, bufs, count, vec, gso, gsoControl);
   } else {
     std::unique_ptr<mmsghdr[]> vec(new mmsghdr[count]);
-    ret = writeImpl(address, bufs, count, vec.get());
+#ifdef FOLLY_HAVE_MSG_ERRQUEUE
+    std::unique_ptr<char[]> control(
+        gso ? (new char[count * (CMSG_SPACE(sizeof(uint16_t)))]) : nullptr);
+    if (gso) {
+      gsoControl = control.get();
+    }
+#endif
+    ret = writeImpl(address, bufs, count, vec.get(), gso, gsoControl);
   }
 
   return ret;
@@ -344,21 +413,43 @@ void AsyncUDPSocket::fillMsgVec(
     size_t count,
     struct mmsghdr* msgvec,
     struct iovec* iov,
-    size_t iov_count) {
+    size_t iov_count,
+    const int* gso,
+    char* gsoControl) {
   size_t remaining = iov_count;
 
   size_t iov_pos = 0;
   for (size_t i = 0; i < count; i++) {
     // we can use remaining here to avoid calling countChainElements() again
-    size_t iovec_len = bufs[i]->fillIov(&iov[iov_pos], remaining).numIovecs;
+    auto ret = bufs[i]->fillIov(&iov[iov_pos], remaining);
+    size_t iovec_len = ret.numIovecs;
     remaining -= iovec_len;
     auto& msg = msgvec[i].msg_hdr;
     msg.msg_name = reinterpret_cast<void*>(addr);
     msg.msg_namelen = addr_len;
     msg.msg_iov = &iov[iov_pos];
     msg.msg_iovlen = iovec_len;
+#ifdef FOLLY_HAVE_MSG_ERRQUEUE
+    if (gso && gso[i] > 0) {
+      msg.msg_control = &gsoControl[i * CMSG_SPACE(sizeof(uint16_t))];
+      msg.msg_controllen = CMSG_SPACE(sizeof(uint16_t));
+
+      struct cmsghdr* cm = CMSG_FIRSTHDR(&msg);
+      cm->cmsg_level = SOL_UDP;
+      cm->cmsg_type = UDP_SEGMENT;
+      cm->cmsg_len = CMSG_LEN(sizeof(uint16_t));
+      auto gso_len = static_cast<uint16_t>(gso[i]);
+      memcpy(CMSG_DATA(cm), &gso_len, sizeof(gso_len));
+    } else {
+      msg.msg_control = nullptr;
+      msg.msg_controllen = 0;
+    }
+#else
+    (void)gso;
+    (void)gsoControl;
     msg.msg_control = nullptr;
     msg.msg_controllen = 0;
+#endif
     msg.msg_flags = 0;
 
     msgvec[i].msg_len = 0;
@@ -371,7 +462,9 @@ int AsyncUDPSocket::writeImpl(
     const folly::SocketAddress& address,
     const std::unique_ptr<folly::IOBuf>* bufs,
     size_t count,
-    struct mmsghdr* msgvec) {
+    struct mmsghdr* msgvec,
+    const int* gso,
+    char* gsoControl) {
   sockaddr_storage addrStorage;
   address.getAddress(&addrStorage);
 
@@ -390,27 +483,43 @@ int AsyncUDPSocket::writeImpl(
     FOLLY_POP_WARNING
     fillMsgVec(
         &addrStorage,
-        address.getActualSize(),
+        folly::to_narrow(address.getActualSize()),
         bufs,
         count,
         msgvec,
         iov,
-        iov_count);
+        iov_count,
+        gso,
+        gsoControl);
     ret = sendmmsg(fd_, msgvec, count, 0);
   } else {
     std::unique_ptr<iovec[]> iov(new iovec[iov_count]);
     fillMsgVec(
         &addrStorage,
-        address.getActualSize(),
+        folly::to_narrow(address.getActualSize()),
         bufs,
         count,
         msgvec,
         iov.get(),
-        iov_count);
+        iov_count,
+        gso,
+        gsoControl);
     ret = sendmmsg(fd_, msgvec, count, 0);
   }
 
   return ret;
+}
+
+ssize_t AsyncUDPSocket::recvmsg(struct msghdr* msg, int flags) {
+  return netops::recvmsg(fd_, msg, flags);
+}
+
+int AsyncUDPSocket::recvmmsg(
+    struct mmsghdr* msgvec,
+    unsigned int vlen,
+    unsigned int flags,
+    struct timespec* timeout) {
+  return netops::recvmmsg(fd_, msgvec, vlen, flags, timeout);
 }
 
 void AsyncUDPSocket::resumeRead(ReadCallback* cob) {
@@ -531,8 +640,13 @@ int AsyncUDPSocket::connect(const folly::SocketAddress& address) {
   CHECK_NE(NetworkSocket(), fd_) << "Socket not yet bound";
   sockaddr_storage addrStorage;
   address.getAddress(&addrStorage);
-  return netops::connect(
+  int ret = netops::connect(
       fd_, reinterpret_cast<sockaddr*>(&addrStorage), address.getActualSize());
+  if (ret == 0) {
+    connected_ = true;
+    connectedAddress_ = address;
+  }
+  return ret;
 }
 
 void AsyncUDPSocket::handleRead() noexcept {
@@ -546,6 +660,9 @@ void AsyncUDPSocket::handleRead() noexcept {
   if (fd_ == NetworkSocket()) {
     // The socket may have been closed by the error callbacks.
     return;
+  }
+  if (readCallback_->shouldOnlyNotify()) {
+    return readCallback_->onNotifyDataAvailable(*this);
   }
 
   readCallback_->getReadBuffer(&buf, &len);
@@ -565,11 +682,51 @@ void AsyncUDPSocket::handleRead() noexcept {
   struct sockaddr_storage addrStorage;
   socklen_t addrLen = sizeof(addrStorage);
   memset(&addrStorage, 0, size_t(addrLen));
-  struct sockaddr* rawAddr = reinterpret_cast<sockaddr*>(&addrStorage);
+  auto rawAddr = reinterpret_cast<sockaddr*>(&addrStorage);
   rawAddr->sa_family = localAddress_.getFamily();
 
-  ssize_t bytesRead =
-      netops::recvfrom(fd_, buf, len, MSG_TRUNC, rawAddr, &addrLen);
+  ssize_t bytesRead;
+  ReadCallback::OnDataAvailableParams params;
+
+#ifdef FOLLY_HAVE_MSG_ERRQUEUE
+  if (gro_.has_value() && (gro_ != 0)) {
+    char control[CMSG_SPACE(sizeof(uint16_t))] = {};
+    struct msghdr msg = {};
+    struct iovec iov = {};
+    struct cmsghdr* cmsg;
+    uint16_t* grosizeptr;
+
+    iov.iov_base = buf;
+    iov.iov_len = len;
+
+    msg.msg_iov = &iov;
+    msg.msg_iovlen = 1;
+
+    msg.msg_name = rawAddr;
+    msg.msg_namelen = addrLen;
+
+    msg.msg_control = control;
+    msg.msg_controllen = sizeof(control);
+
+    bytesRead = netops::recvmsg(fd_, &msg, MSG_TRUNC);
+
+    if (bytesRead >= 0) {
+      addrLen = msg.msg_namelen;
+      for (cmsg = CMSG_FIRSTHDR(&msg); cmsg != nullptr;
+           cmsg = CMSG_NXTHDR(&msg, cmsg)) {
+        if (cmsg->cmsg_level == SOL_UDP && cmsg->cmsg_type == UDP_GRO) {
+          grosizeptr = (uint16_t*)CMSG_DATA(cmsg);
+          params.gro_ = *grosizeptr;
+          break;
+        }
+      }
+    }
+  } else {
+    bytesRead = netops::recvfrom(fd_, buf, len, MSG_TRUNC, rawAddr, &addrLen);
+  }
+#else
+  bytesRead = netops::recvfrom(fd_, buf, len, MSG_TRUNC, rawAddr, &addrLen);
+#endif
   if (bytesRead >= 0) {
     clientAddress_.setFromSockaddr(rawAddr, addrLen);
 
@@ -581,7 +738,7 @@ void AsyncUDPSocket::handleRead() noexcept {
       }
 
       readCallback_->onDataAvailable(
-          clientAddress_, size_t(bytesRead), truncated);
+          clientAddress_, size_t(bytesRead), truncated, params);
     }
   } else {
     if (errno == EAGAIN || errno == EWOULDBLOCK) {
@@ -628,7 +785,7 @@ bool AsyncUDPSocket::setGSO(int val) {
 
 int AsyncUDPSocket::getGSO() {
   // check if we can return the cached value
-  if (FOLLY_UNLIKELY(!gso_.hasValue())) {
+  if (FOLLY_UNLIKELY(!gso_.has_value())) {
 #ifdef FOLLY_HAVE_MSG_ERRQUEUE
     int gso = -1;
     socklen_t optlen = sizeof(gso);
@@ -643,6 +800,59 @@ int AsyncUDPSocket::getGSO() {
   }
 
   return gso_.value();
+}
+
+bool AsyncUDPSocket::setGRO(bool bVal) {
+#ifdef FOLLY_HAVE_MSG_ERRQUEUE
+  int val = bVal ? 1 : 0;
+  int ret = netops::setsockopt(fd_, SOL_UDP, UDP_GRO, &val, sizeof(val));
+
+  gro_ = ret ? -1 : val;
+
+  return !ret;
+#else
+  (void)bVal;
+  return false;
+#endif
+}
+
+int AsyncUDPSocket::getGRO() {
+  // check if we can return the cached value
+  if (FOLLY_UNLIKELY(!gro_.has_value())) {
+#ifdef FOLLY_HAVE_MSG_ERRQUEUE
+    int gro = -1;
+    socklen_t optlen = sizeof(gro);
+    if (!netops::getsockopt(fd_, SOL_UDP, UDP_GRO, &gro, &optlen)) {
+      gro_ = gro;
+    } else {
+      gro_ = -1;
+    }
+#else
+    gro_ = -1;
+#endif
+  }
+
+  return gro_.value();
+}
+
+void AsyncUDPSocket::setTrafficClass(int tclass) {
+  if (netops::setsockopt(
+          fd_, IPPROTO_IPV6, IPV6_TCLASS, &tclass, sizeof(int)) != 0) {
+    throw AsyncSocketException(
+        AsyncSocketException::NOT_OPEN, "Failed to set IPV6_TCLASS", errno);
+  }
+}
+
+void AsyncUDPSocket::applyOptions(
+    const SocketOptionMap& options,
+    SocketOptionKey::ApplyPos pos) {
+  auto result = applySocketOptions(fd_, options, pos);
+  if (result != 0) {
+    throw AsyncSocketException(
+        AsyncSocketException::INTERNAL_ERROR,
+        "failed to set socket option",
+        result);
+  }
 }
 
 void AsyncUDPSocket::detachEventBase() {

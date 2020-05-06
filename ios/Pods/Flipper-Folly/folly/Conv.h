@@ -1,11 +1,11 @@
 /*
- * Copyright 2011-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,10 +15,86 @@
  */
 
 /**
- * Converts anything to anything, with an emphasis on performance and
- * safety.
  *
- * @author Andrei Alexandrescu (andrei.alexandrescu@fb.com)
+ * This file provides a generic interface for converting objects to and from
+ * string-like types (std::string, fbstring, StringPiece), as well as
+ * range-checked conversions between numeric and enum types. The mechanisms are
+ * extensible, so that user-specified types can add folly::to support.
+ *
+ *******************************************************************************
+ * TYPE -> STRING CONVERSIONS
+ *******************************************************************************
+ * You can call the to<std::string> or to<fbstring>. These are variadic
+ * functions that convert their arguments to strings, and concatenate them to
+ * form a result. So, for example,
+ *
+ * auto str = to<std::string>(123, "456", 789);
+ *
+ * Sets str to "123456789".
+ *
+ * In addition to just concatenating the arguments, related functions can
+ * delimit them with some string: toDelim<std::string>(",", "123", 456, "789")
+ * will return the string "123,456,789".
+ *
+ * toAppend does not return a string; instead, it takes a pointer to a string as
+ * its last argument, and appends the result of the concatenation into it:
+ * std::string str = "123";
+ * toAppend(456, "789", &str); // Now str is "123456789".
+ *
+ * The toAppendFit function acts like toAppend, but it precalculates the size
+ * required to perform the append operation, and reserves that space in the
+ * output string before actually inserting its arguments. This can sometimes
+ * save on string expansion, but beware: appending to the same string many times
+ * with toAppendFit is likely a pessimization, since it will resize the string
+ * once per append.
+ *
+ * The combination of the append and delim variants also exist: toAppendDelim
+ * and toAppendDelimFit are defined, with the obvious semantics.
+ *
+ *******************************************************************************
+ * STRING -> TYPE CONVERSIONS
+ *******************************************************************************
+ * Going in the other direction, and parsing a string into a C++ type, is also
+ * supported:
+ * to<int>("123"); // Returns 123.
+ *
+ * Out of range (e.g. to<std::uint8_t>("1000")), or invalidly formatted (e.g.
+ * to<int>("four")) inputs will throw. If throw-on-error is undesirable (for
+ * instance: you're dealing with untrusted input, and want to protect yourself
+ * from users sending you down a very slow exception-throwing path), you can use
+ * tryTo<T>, which will return an Expected<T, ConversionCode>.
+ *
+ * There are overloads of to() and tryTo() that take a StringPiece*. These parse
+ * out a type from the beginning of a string, and modify the passed-in
+ * StringPiece to indicate the portion of the string not consumed.
+ *
+ *******************************************************************************
+ * NUMERIC / ENUM CONVERSIONS
+ *******************************************************************************
+ * Conv also supports a to<T>(S) overload, where T and S are numeric or enum
+ * types, that checks to see that the target type can represent its argument,
+ * and will throw if it cannot. This includes cases where a floating point ->
+ * integral conversion is attempted on a value with a non-zero fractional
+ * component, and integral -> floating point conversions that would lose
+ * precision. Enum conversions are range-checked for the underlying type of the
+ * enum, but there is no check that the input value is a valid choice of enum
+ * value.
+ *
+ *******************************************************************************
+ * CUSTOM TYPE CONVERSIONS
+ *******************************************************************************
+ * Users may customize the string conversion functionality for their own data
+ * types, . The key functions you should implement are:
+ * // Two functions to allow conversion to your type from a string.
+ * Expected<StringPiece, ConversionCode> parseTo(folly::StringPiece in,
+ *     YourType& out);
+ * YourErrorType makeConversionError(YourErrorType in, StringPiece in);
+ * // Two functions to allow conversion from your type to a string.
+ * template <class String>
+ * void toAppend(const YourType& in, String* out);
+ * size_t estimateSpaceNeeded(const YourType& in);
+ *
+ * These are documented below, inline.
  */
 
 #pragma once
@@ -111,7 +187,7 @@ class ConversionError : public ConversionErrorBase {
  *   return YourConversionError(messageString);
  * }
  ******************************************************************************/
-ConversionError makeConversionError(ConversionCode code, StringPiece sp);
+ConversionError makeConversionError(ConversionCode code, StringPiece input);
 
 namespace detail {
 /**
@@ -253,7 +329,12 @@ namespace detail {
 
 template <typename IntegerType>
 constexpr unsigned int digitsEnough() {
-  return (unsigned int)(ceil(sizeof(IntegerType) * CHAR_BIT * M_LN2 / M_LN10));
+  // digits10 returns the number of decimal digits that this type can represent,
+  // not the number of characters required for the max value, so we need to add
+  // one. ex: char digits10 returns 2, because 256-999 cannot be represented,
+  // but we need 3.
+  auto const digits10 = std::numeric_limits<IntegerType>::digits10;
+  return static_cast<unsigned int>(digits10) + 1;
 }
 
 inline size_t
@@ -373,7 +454,7 @@ inline uint32_t digits10(uint64_t v) {
  * Copies the ASCII base 10 representation of v into buffer and
  * returns the number of bytes written. Does NOT append a \0. Assumes
  * the buffer points to digits10(v) bytes of valid memory. Note that
- * uint64 needs at most 20 bytes, uint32_t needs at most 10 bytes,
+ * uint64_t needs at most 20 bytes, uint32_t needs at most 10 bytes,
  * uint16_t needs at most 5 bytes, and so on. Measurements suggest
  * that defining a separate overload for 32-bit integers is not
  * worthwhile.
@@ -650,13 +731,13 @@ template <class Tgt, class Src>
 typename std::enable_if<
     std::is_enum<Src>::value && IsSomeString<Tgt>::value>::type
 toAppend(Src value, Tgt* result) {
-  toAppend(to_underlying_type(value), result);
+  toAppend(to_underlying(value), result);
 }
 
 template <class Src>
 typename std::enable_if<std::is_enum<Src>::value, size_t>::type
 estimateSpaceNeeded(Src value) {
-  return estimateSpaceNeeded(to_underlying_type(value));
+  return estimateSpaceNeeded(to_underlying(value));
 }
 
 /*******************************************************************************
@@ -699,6 +780,7 @@ toAppend(
     case DoubleToStringConverter::FIXED:
       conv.ToFixed(value, int(numDigits), &builder);
       break;
+    case DoubleToStringConverter::PRECISION:
     default:
       assert(mode == DoubleToStringConverter::PRECISION);
       conv.ToPrecision(value, int(numDigits), &builder);
@@ -1547,7 +1629,7 @@ typename std::enable_if<
         !std::is_convertible<Tgt, StringPiece>::value,
     Expected<Tgt, ConversionCode>>::type
 tryTo(const Src& value) {
-  return tryTo<Tgt>(to_underlying_type(value));
+  return tryTo<Tgt>(to_underlying(value));
 }
 
 template <class Tgt, class Src>
@@ -1566,7 +1648,7 @@ typename std::enable_if<
         !std::is_convertible<Tgt, StringPiece>::value,
     Tgt>::type
 to(const Src& value) {
-  return to<Tgt>(to_underlying_type(value));
+  return to<Tgt>(to_underlying(value));
 }
 
 template <class Tgt, class Src>

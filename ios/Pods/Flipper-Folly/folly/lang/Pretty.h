@@ -1,11 +1,11 @@
 /*
- * Copyright 2019-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,6 +17,7 @@
 #pragma once
 
 #include <cstddef>
+#include <type_traits>
 
 #include <folly/Portability.h>
 
@@ -72,41 +73,58 @@ static constexpr std::size_t pretty_rfind(
   return ~std::size_t(0);
 }
 
+struct pretty_tag_msc {};
+struct pretty_tag_gcc {};
+
+using pretty_default_tag = std::conditional_t< //
+    kMscVer && !kIsClang,
+    pretty_tag_msc,
+    pretty_tag_gcc>;
+
 template <typename T>
-static constexpr auto pretty_raw() {
-#if _MSC_VER
+static constexpr auto pretty_raw(pretty_tag_msc) {
+#if defined(_MSC_VER)
   return pretty_carray_from(__FUNCSIG__);
-#else
+#endif
+}
+
+template <typename T>
+static constexpr auto pretty_raw(pretty_tag_gcc) {
+#if defined(__GNUC__) || defined(__clang__)
   return pretty_carray_from(__PRETTY_FUNCTION__);
 #endif
 }
 
 template <std::size_t S>
-static constexpr pretty_info pretty_parse_msc(char const (&name)[S]) {
-  //  void __cdecl folly::detail::pretty_raw<{...}>(void)
+static constexpr pretty_info pretty_parse(
+    pretty_tag_msc,
+    char const (&name)[S]) {
+  //  void __cdecl folly::detail::pretty_raw<{...}>(
+  //      folly::detail::pretty_tag_msc)
   auto const la = pretty_lfind(name, '<');
   auto const rp = pretty_rfind(name, '>');
   return pretty_info{la + 1, rp};
 }
 
 template <std::size_t S>
-static constexpr pretty_info pretty_parse_gcc(char const (&name)[S]) {
-  //  void folly::detail::pretty_raw() [T = {...}]
+static constexpr pretty_info pretty_parse(
+    pretty_tag_gcc,
+    char const (&name)[S]) {
+  //  void folly::detail::pretty_raw(
+  //      folly::detail::pretty_tag_gcc) [T = {...}]
   auto const eq = pretty_lfind(name, '=');
   auto const br = pretty_rfind(name, ']');
   return pretty_info{eq + 2, br};
 }
 
-template <std::size_t S>
-static constexpr pretty_info pretty_parse(char const (&name)[S]) {
-  return kMscVer ? detail::pretty_parse_msc(name)
-                 : detail::pretty_parse_gcc(name);
-}
-
-template <typename T>
+template <typename T, typename Tag>
 struct pretty_name_zarray {
-  static constexpr auto raw = pretty_raw<T>();
-  static constexpr auto info = pretty_parse(raw.data);
+  static constexpr auto raw_() {
+    constexpr auto const raw_ = pretty_raw<T>(Tag{});
+    return raw_;
+  }
+  static constexpr auto raw = raw_(); // indirection b/c of gcc-5.3 ice, gh#1105
+  static constexpr auto info = pretty_parse(Tag{}, raw.data);
   static constexpr auto size = info.e - info.b;
   static constexpr auto zarray_() {
     pretty_carray<size + 1> data{};
@@ -119,9 +137,9 @@ struct pretty_name_zarray {
   static constexpr pretty_carray<size + 1> zarray = zarray_();
 };
 
-template <typename T>
-constexpr pretty_carray<pretty_name_zarray<T>::size + 1>
-    pretty_name_zarray<T>::zarray;
+template <typename T, typename Tag>
+constexpr pretty_carray<pretty_name_zarray<T, Tag>::size + 1>
+    pretty_name_zarray<T, Tag>::zarray;
 
 } // namespace detail
 
@@ -135,7 +153,7 @@ constexpr pretty_carray<pretty_name_zarray<T>::size + 1>
 //  present in the type name as it would be symbolized.
 template <typename T>
 constexpr char const* pretty_name() {
-  return detail::pretty_name_zarray<T>::zarray.data;
+  return detail::pretty_name_zarray<T, detail::pretty_default_tag>::zarray.data;
 }
 
 } // namespace folly

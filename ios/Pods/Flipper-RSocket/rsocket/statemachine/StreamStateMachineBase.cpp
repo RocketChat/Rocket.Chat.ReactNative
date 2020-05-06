@@ -54,7 +54,7 @@ void StreamStateMachineBase::writeCancel() {
 
 void StreamStateMachineBase::writePayload(Payload&& payload, bool complete) {
   auto const flags =
-      FrameFlags::NEXT | (complete ? FrameFlags::COMPLETE : FrameFlags::EMPTY);
+      FrameFlags::NEXT | (complete ? FrameFlags::COMPLETE : FrameFlags::EMPTY_);
   Frame_PAYLOAD frame{streamId_, flags, std::move(payload)};
   writer_->writePayload(std::move(frame));
 }

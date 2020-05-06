@@ -1,11 +1,11 @@
 /*
- * Copyright 2012-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -79,7 +79,7 @@ vector<detail::BenchmarkRegistration>& benchmarks() {
 }
 
 #define FB_FOLLY_GLOBAL_BENCHMARK_BASELINE fbFollyGlobalBenchmarkBaseline
-#define FB_STRINGIZE_X2(x) FB_STRINGIZE(x)
+#define FB_STRINGIZE_X2(x) FOLLY_PP_STRINGIZE(x)
 
 // Add the global baseline
 BENCHMARK(FB_FOLLY_GLOBAL_BENCHMARK_BASELINE) {
@@ -107,10 +107,10 @@ size_t getGlobalBenchmarkBaselineIndex() {
 
 void detail::addBenchmarkImpl(
     const char* file,
-    const char* name,
+    StringPiece name,
     BenchmarkFun fun,
     bool useCounter) {
-  benchmarks().push_back({file, name, std::move(fun), useCounter});
+  benchmarks().push_back({file, name.str(), std::move(fun), useCounter});
 }
 
 static std::pair<double, UserCounters> runBenchmarkGetNSPerIteration(
@@ -335,8 +335,9 @@ class BenchmarkResultsPrinter {
                   int(name.length()),
                   metricReadable(ptr->value, 2).c_str());
               break;
+            case UserMetric::Type::CUSTOM:
             default:
-              printf("  %-*d", int(name.length()), ptr->value);
+              printf("  %-*" PRId64, int(name.length()), ptr->value);
           }
         } else {
           printf("  %-*s", int(name.length()), "NaN");
@@ -388,7 +389,19 @@ void benchmarkResultsToDynamic(
     dynamic& out) {
   out = dynamic::array;
   for (auto& datum : data) {
-    out.push_back(dynamic::array(datum.file, datum.name, datum.timeInNs));
+    if (!datum.counters.empty()) {
+      dynamic obj = dynamic::object;
+      for (auto& counter : datum.counters) {
+        dynamic counterInfo = dynamic::object;
+        counterInfo["value"] = counter.second.value;
+        counterInfo["type"] = static_cast<int>(counter.second.type);
+        obj[counter.first] = counterInfo;
+      }
+      out.push_back(
+          dynamic::array(datum.file, datum.name, datum.timeInNs, obj));
+    } else {
+      out.push_back(dynamic::array(datum.file, datum.name, datum.timeInNs));
+    }
   }
 }
 

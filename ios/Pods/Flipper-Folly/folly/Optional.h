@@ -1,11 +1,11 @@
 /*
- * Copyright 2012-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #pragma once
 
 /*
@@ -117,7 +118,7 @@ class Optional {
       std::is_nothrow_move_constructible<Value>::value) {
     if (src.hasValue()) {
       construct(std::move(src.value()));
-      src.clear();
+      src.reset();
     }
   }
 
@@ -132,25 +133,6 @@ class Optional {
       std::is_nothrow_copy_constructible<Value>::value) {
     construct(newValue);
   }
-
-  /**
-   * Explicitly disallow converting nullptr to non-pointer
-   * types. Optional used to support initialization from nullptr as if
-   * it were folly::none. Without this constructor,
-   * folly::Optional<bool> could be constructed from nullptr,
-   * producing {false} instead of {}. This would be a change in
-   * behavior from the old code, so explicitly disallow it. Note that
-   * std::optional<bool> can be constructed from nullptr, also
-   * producing {false}.
-   *
-   * This constructor is temporary and should be removed when all call
-   * sites are fixed.
-   */
-  template <typename Null = std::nullptr_t>
-  /* implicit */
-  Optional(typename std::enable_if<
-           std::is_convertible<Null, Value>::value,
-           Null>::type) noexcept = delete;
 
   template <typename... Args>
   constexpr explicit Optional(in_place_t, Args&&... args) noexcept(
@@ -175,16 +157,16 @@ class Optional {
   }
 
   void assign(const None&) {
-    clear();
+    reset();
   }
 
   void assign(Optional&& src) {
     if (this != &src) {
       if (src.hasValue()) {
         assign(std::move(src.value()));
-        src.clear();
+        src.reset();
       } else {
-        clear();
+        reset();
       }
     }
   }
@@ -193,7 +175,7 @@ class Optional {
     if (src.hasValue()) {
       assign(src.value());
     } else {
-      clear();
+      reset();
     }
   }
 
@@ -238,7 +220,7 @@ class Optional {
 
   template <class... Args>
   Value& emplace(Args&&... args) {
-    clear();
+    reset();
     construct(std::forward<Args>(args)...);
     return value();
   }
@@ -248,7 +230,7 @@ class Optional {
       std::is_constructible<Value, std::initializer_list<U>&, Args&&...>::value,
       Value&>::type
   emplace(std::initializer_list<U> ilist, Args&&... args) {
-    clear();
+    reset();
     construct(ilist, std::forward<Args>(args)...);
     return value();
   }
@@ -399,7 +381,8 @@ class Optional {
     };
     bool hasValue;
 
-    StorageTriviallyDestructible() : hasValue{false} {}
+    constexpr StorageTriviallyDestructible()
+        : emptyState('\0'), hasValue{false} {}
     void clear() {
       hasValue = false;
     }

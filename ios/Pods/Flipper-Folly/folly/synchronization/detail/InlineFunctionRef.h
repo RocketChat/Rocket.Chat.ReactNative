@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #pragma once
 
+#include <folly/Function.h>
 #include <folly/Traits.h>
 #include <folly/Utility.h>
 #include <folly/functional/Invoke.h>
@@ -66,14 +68,20 @@ class InlineFunctionRef;
 
 template <typename ReturnType, typename... Args, std::size_t Size>
 class InlineFunctionRef<ReturnType(Args...), Size> {
-  using Storage = std::aligned_storage_t<Size - 8, 8>;
-  using Call = ReturnType (*)(const Storage&, Args&&...);
+  template <typename Arg>
+  using CallArg = function::CallArg<Arg>;
+
+  using Storage =
+      std::aligned_storage_t<Size - sizeof(uintptr_t), sizeof(uintptr_t)>;
+  using Call = ReturnType (*)(CallArg<Args>..., const Storage&);
 
   struct InSituTag {};
   struct RefTag {};
 
-  static_assert((Size % 8) == 0, "Size has to be a multiple of 8");
-  static_assert(Size >= 16, "This doesn't work");
+  static_assert(
+      (Size % sizeof(uintptr_t)) == 0,
+      "Size has to be a multiple of sizeof(uintptr_t)");
+  static_assert(Size >= 2 * sizeof(uintptr_t), "This doesn't work");
   static_assert(alignof(Call) == alignof(Storage), "Mismatching alignments");
 
   // This defines a mode tag that is used in the construction of
@@ -127,7 +135,7 @@ class InlineFunctionRef<ReturnType(Args...), Size> {
       std::enable_if_t<
           !std::is_same<std::decay_t<Func>, InlineFunctionRef>{} &&
           !std::is_reference<Func>{} &&
-          folly::is_invocable_r<ReturnType, Func&&, Args&&...>{}>* = nullptr>
+          folly::is_invocable_r_v<ReturnType, Func&&, Args&&...>>* = nullptr>
   InlineFunctionRef(Func&& func) {
     // We disallow construction from lvalues, so assert that this is not a
     // reference type.  When invoked with an lvalue, Func is a lvalue
@@ -145,7 +153,7 @@ class InlineFunctionRef<ReturnType(Args...), Size> {
    * appropriate casting.
    */
   ReturnType operator()(Args... args) const {
-    return call_(storage_, static_cast<Args&&>(args)...);
+    return call_(static_cast<Args&&>(args)..., storage_);
   }
 
   /**
@@ -192,7 +200,7 @@ class InlineFunctionRef<ReturnType(Args...), Size> {
   }
 
   template <typename Func>
-  static ReturnType callInline(const Storage& object, Args&&... args) {
+  static ReturnType callInline(CallArg<Args>... args, const Storage& object) {
     // The only type of pointer allowed is a function pointer, no other
     // pointer types are invocable.
     static_assert(
@@ -205,7 +213,7 @@ class InlineFunctionRef<ReturnType(Args...), Size> {
   }
 
   template <typename Func>
-  static ReturnType callPointer(const Storage& object, Args&&... args) {
+  static ReturnType callPointer(CallArg<Args>... args, const Storage& object) {
     // When the function we were instantiated with was not trivial, the given
     // pointer points to a pointer, which pointers to the callable.  So we
     // cast to a pointer and then to the pointee.
@@ -216,7 +224,7 @@ class InlineFunctionRef<ReturnType(Args...), Size> {
   }
 
   Call call_;
-  Storage storage_;
+  Storage storage_{};
 };
 
 } // namespace detail

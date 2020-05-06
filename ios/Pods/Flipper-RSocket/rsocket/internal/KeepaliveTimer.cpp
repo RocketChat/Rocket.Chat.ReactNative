@@ -35,28 +35,32 @@ void KeepaliveTimer::schedule() {
   const auto scheduledGeneration = *generation_;
   const auto generation = generation_;
   eventBase_.runAfterDelay(
-      [this, generation, scheduledGeneration]() {
+      [this,
+       wpConnection = std::weak_ptr<FrameSink>(connection_),
+       generation,
+       scheduledGeneration]() {
+        auto spConnection = wpConnection.lock();
+        if (!spConnection) {
+          return;
+        }
         if (*generation == scheduledGeneration) {
-          sendKeepalive();
+          sendKeepalive(*spConnection);
         }
       },
       static_cast<uint32_t>(keepaliveTime().count()));
 }
 
-void KeepaliveTimer::sendKeepalive() {
+void KeepaliveTimer::sendKeepalive(FrameSink& sink) {
   if (pending_) {
-    // Make sure connection_ is not deleted (via external call to stop)
-    // while we still mid-operation
-    const auto localPtr = connection_;
     stop();
     // TODO: we need to use max lifetime from the setup frame for this
-    localPtr->disconnectOrCloseWithError(
+    sink.disconnectOrCloseWithError(
         Frame_ERROR::connectionError("no response to keepalive"));
   } else {
     // this must happen before sendKeepalive as it can potentially result in
     // stop() being called
     pending_ = true;
-    connection_->sendKeepalive();
+    sink.sendKeepalive();
     schedule();
   }
 }

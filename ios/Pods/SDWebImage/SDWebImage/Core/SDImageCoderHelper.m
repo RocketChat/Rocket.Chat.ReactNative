@@ -563,16 +563,20 @@ static const CGFloat kDestSeemOverlap = 2.0f;   // the numbers of pixels to over
 
 #pragma mark - Helper Fuction
 + (BOOL)shouldDecodeImage:(nullable UIImage *)image {
-    // Avoid extra decode
-    if (image.sd_isDecoded) {
-        return NO;
-    }
     // Prevent "CGBitmapContextCreateImage: invalid context 0x0" error
     if (image == nil) {
         return NO;
     }
+    // Avoid extra decode
+    if (image.sd_isDecoded) {
+        return NO;
+    }
     // do not decode animated images
     if (image.sd_isAnimated) {
+        return NO;
+    }
+    // do not decode vector images
+    if (image.sd_isVector) {
         return NO;
     }
     

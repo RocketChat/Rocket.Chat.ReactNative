@@ -1,11 +1,11 @@
 /*
- * Copyright 2016-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,12 +15,13 @@
  */
 
 #include <folly/ClockGettimeWrappers.h>
+#include <folly/CPortability.h>
 #include <folly/Likely.h>
 #include <folly/portability/Time.h>
 
 #include <chrono>
 
-#include <time.h>
+#include <ctime>
 
 #ifndef _WIN32
 #define _GNU_SOURCE 1
@@ -48,7 +49,9 @@ static int64_t clock_gettime_ns_fallback(clockid_t clock) {
 int (*clock_gettime)(clockid_t, timespec* ts) = &::clock_gettime;
 int64_t (*clock_gettime_ns)(clockid_t) = &clock_gettime_ns_fallback;
 
-#ifdef FOLLY_HAVE_LINUX_VDSO
+// In MSAN mode use glibc's versions as they are intercepted by the MSAN
+// runtime which properly tracks memory initialization.
+#if defined(FOLLY_HAVE_LINUX_VDSO) && !defined(FOLLY_SANITIZE_MEMORY)
 
 namespace {
 
@@ -81,7 +84,7 @@ struct VdsoInitializer {
   void* m_handle;
 };
 
-static const VdsoInitializer vdso_initializer;
+const VdsoInitializer vdso_initializer;
 } // namespace
 
 #endif

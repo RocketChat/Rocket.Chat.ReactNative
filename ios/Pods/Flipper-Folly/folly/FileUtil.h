@@ -1,11 +1,11 @@
 /*
- * Copyright 2013-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -51,13 +51,15 @@ int truncateNoInt(const char* path, off_t len);
 int flockNoInt(int fd, int operation);
 int shutdownNoInt(NetworkSocket fd, int how);
 
-ssize_t readNoInt(int fd, void* buf, size_t n);
-ssize_t preadNoInt(int fd, void* buf, size_t n, off_t offset);
+ssize_t readNoInt(int fd, void* buf, size_t count);
+ssize_t preadNoInt(int fd, void* buf, size_t count, off_t offset);
 ssize_t readvNoInt(int fd, const iovec* iov, int count);
+ssize_t preadvNoInt(int fd, const iovec* iov, int count, off_t offset);
 
-ssize_t writeNoInt(int fd, const void* buf, size_t n);
-ssize_t pwriteNoInt(int fd, const void* buf, size_t n, off_t offset);
+ssize_t writeNoInt(int fd, const void* buf, size_t count);
+ssize_t pwriteNoInt(int fd, const void* buf, size_t count, off_t offset);
 ssize_t writevNoInt(int fd, const iovec* iov, int count);
+ssize_t pwritevNoInt(int fd, const iovec* iov, int count, off_t offset);
 
 /**
  * Wrapper around read() (and pread()) that, in addition to retrying on
@@ -81,8 +83,9 @@ ssize_t writevNoInt(int fd, const iovec* iov, int count);
  * readv and preadv.  The contents of iov after these functions return
  * is unspecified.
  */
-FOLLY_NODISCARD ssize_t readFull(int fd, void* buf, size_t n);
-FOLLY_NODISCARD ssize_t preadFull(int fd, void* buf, size_t n, off_t offset);
+FOLLY_NODISCARD ssize_t readFull(int fd, void* buf, size_t count);
+FOLLY_NODISCARD ssize_t
+preadFull(int fd, void* buf, size_t count, off_t offset);
 FOLLY_NODISCARD ssize_t readvFull(int fd, iovec* iov, int count);
 FOLLY_NODISCARD ssize_t preadvFull(int fd, iovec* iov, int count, off_t offset);
 
@@ -103,8 +106,8 @@ FOLLY_NODISCARD ssize_t preadvFull(int fd, iovec* iov, int count, off_t offset);
  * These functions return -1 on error, or the total number of bytes written
  * (which is always the same as the number of requested bytes) on success.
  */
-ssize_t writeFull(int fd, const void* buf, size_t n);
-ssize_t pwriteFull(int fd, const void* buf, size_t n, off_t offset);
+ssize_t writeFull(int fd, const void* buf, size_t count);
+ssize_t pwriteFull(int fd, const void* buf, size_t count, off_t offset);
 ssize_t writevFull(int fd, iovec* iov, int count);
 ssize_t pwritevFull(int fd, iovec* iov, int count, off_t offset);
 
@@ -221,6 +224,12 @@ bool writeFile(
   return closeNoInt(fd) == 0 && ok;
 }
 
+/* For atomic writes, do we sync to guarantee ordering or not? */
+enum class SyncType {
+  WITH_SYNC,
+  WITHOUT_SYNC,
+};
+
 /**
  * Write file contents "atomically".
  *
@@ -231,20 +240,33 @@ bool writeFile(
  *
  * Note that on platforms that do not provide atomic filesystem rename
  * functionality (e.g., Windows) this behavior may not be truly atomic.
+ *
+ * The default implementation does not sync the data to storage before
+ * the rename.  Therefore, the write is *not* atomic in the event of a
+ * power failure or OS crash.  To guarantee atomicity in these cases,
+ * specify syncType = WITH_SYNC, which will incur a performance cost
+ * of waiting for the data to be persisted to storage.  Note that the
+ * return of the function does not guarantee the directory
+ * modifications have been written to disk; a further sync of the
+ * directory after the function returns is required to ensure the
+ * modification is durable.
  */
 void writeFileAtomic(
     StringPiece filename,
     iovec* iov,
     int count,
-    mode_t permissions = 0644);
+    mode_t permissions = 0644,
+    SyncType syncType = SyncType::WITHOUT_SYNC);
 void writeFileAtomic(
     StringPiece filename,
     ByteRange data,
-    mode_t permissions = 0644);
+    mode_t permissions = 0644,
+    SyncType syncType = SyncType::WITHOUT_SYNC);
 void writeFileAtomic(
     StringPiece filename,
     StringPiece data,
-    mode_t permissions = 0644);
+    mode_t permissions = 0644,
+    SyncType syncType = SyncType::WITHOUT_SYNC);
 
 /**
  * A version of writeFileAtomic() that returns an errno value instead of
@@ -256,6 +278,7 @@ int writeFileAtomicNoThrow(
     StringPiece filename,
     iovec* iov,
     int count,
-    mode_t permissions = 0644);
+    mode_t permissions = 0644,
+    SyncType syncType = SyncType::WITHOUT_SYNC);
 
 } // namespace folly

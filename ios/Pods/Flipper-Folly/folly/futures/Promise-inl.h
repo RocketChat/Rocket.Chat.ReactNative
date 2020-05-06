@@ -1,11 +1,11 @@
 /*
- * Copyright 2014-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -34,6 +34,10 @@ void coreDetachPromiseMaybeWithResult(Core<T>& core) {
     core.setResult(Try<T>(exception_wrapper(BrokenPromise(pretty_name<T>()))));
   }
   core.detachPromise();
+}
+template <typename T>
+void setTry(Promise<T>& p, Executor::KeepAlive<>&& ka, Try<T>&& t) {
+  p.setTry(std::move(ka), std::move(t));
 }
 } // namespace detail
 } // namespace futures
@@ -124,6 +128,12 @@ template <class T>
 void Promise<T>::setTry(Try<T>&& t) {
   throwIfFulfilled();
   core_->setResult(std::move(t));
+}
+
+template <class T>
+void Promise<T>::setTry(Executor::KeepAlive<>&& ka, Try<T>&& t) {
+  throwIfFulfilled();
+  core_->setResult(std::move(ka), std::move(t));
 }
 
 template <class T>

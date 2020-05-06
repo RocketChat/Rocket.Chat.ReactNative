@@ -1,11 +1,11 @@
 /*
- * Copyright 2013-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,7 +28,7 @@ namespace folly {
  * for explicitly converting to/from file descriptors, even on Windows.
  */
 struct NetworkSocket {
-#if _WIN32
+#ifdef _WIN32
   using native_handle_type = SOCKET;
   static constexpr native_handle_type invalid_handle_value = INVALID_SOCKET;
 #else
@@ -73,3 +73,12 @@ inline std::basic_ostream<CharT, Traits>& operator<<(
   return os;
 }
 } // namespace folly
+
+namespace std {
+template <>
+struct hash<folly::NetworkSocket> {
+  size_t operator()(const folly::NetworkSocket& s) const noexcept {
+    return std::hash<folly::NetworkSocket::native_handle_type>()(s.data);
+  }
+};
+} // namespace std

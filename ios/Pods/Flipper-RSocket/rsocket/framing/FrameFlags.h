@@ -18,10 +18,11 @@
 #include <iosfwd>
 
 namespace rsocket {
-
 enum class FrameFlags : uint16_t {
-  EMPTY = 0x000,
-  IGNORE = 0x200,
+  // Note that win32 defines EMPTY and IGNORE so we use a trailing
+  // underscore to avoid a collision
+  EMPTY_ = 0x000,
+  IGNORE_ = 0x200,
   METADATA = 0x100,
 
   // SETUP.

@@ -1,11 +1,11 @@
 /*
- * Copyright 2017-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -80,9 +80,11 @@ IOThreadPoolExecutor::IOThreadPoolExecutor(
       nextThread_(0),
       eventBaseManager_(ebm) {
   setNumThreads(numThreads);
+  registerThreadPoolExecutor(this);
 }
 
 IOThreadPoolExecutor::~IOThreadPoolExecutor() {
+  deregisterThreadPoolExecutor(this);
   stop();
 }
 
@@ -141,6 +143,9 @@ IOThreadPoolExecutor::pickThread() {
 EventBase* IOThreadPoolExecutor::getEventBase() {
   ensureActiveThreads();
   SharedMutex::ReadHolder r{&threadListLock_};
+  if (threadList_.get().empty()) {
+    throw std::runtime_error("No threads available");
+  }
   return pickThread()->eventBase;
 }
 
@@ -212,14 +217,14 @@ void IOThreadPoolExecutor::stopThreads(size_t n) {
       ioThread->eventBase->terminateLoopSoon();
     }
   }
-  for (auto thread : stoppedThreads) {
+  for (const auto& thread : stoppedThreads) {
     stoppedThreads_.add(thread);
     threadList_.remove(thread);
   }
 }
 
 // threadListLock_ is readlocked
-size_t IOThreadPoolExecutor::getPendingTaskCountImpl() {
+size_t IOThreadPoolExecutor::getPendingTaskCountImpl() const {
   size_t count = 0;
   for (const auto& thread : threadList_.get()) {
     auto ioThread = std::static_pointer_cast<IOThread>(thread);

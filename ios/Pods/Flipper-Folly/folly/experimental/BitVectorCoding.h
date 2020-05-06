@@ -1,11 +1,11 @@
 /*
- * Copyright 2015-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -264,9 +264,10 @@ class BitVectorReader : detail::ForwardPointers<Encoder::forwardQuantum>,
   }
 
   void reset() {
-    block_ = (bits_ != nullptr) ? folly::loadUnaligned<uint64_t>(bits_) : 0;
-    outer_ = 0;
-    position_ = -1;
+    // Pretend the bitvector is prefixed by a block of zeroes.
+    block_ = 0;
+    position_ = static_cast<SizeType>(-1);
+    outer_ = static_cast<SizeType>(-sizeof(uint64_t));
     value_ = kInvalidValue;
   }
 
@@ -288,7 +289,9 @@ class BitVectorReader : detail::ForwardPointers<Encoder::forwardQuantum>,
   }
 
   bool skip(SizeType n) {
-    CHECK_GT(n, 0);
+    if (n == 0) {
+      return valid();
+    }
 
     if (!kUnchecked && position() + n >= size_) {
       return setDone();
@@ -360,15 +363,15 @@ class BitVectorReader : detail::ForwardPointers<Encoder::forwardQuantum>,
     }
 
     // Find the value.
-    size_t outer = v / 64 * 8;
+    size_t outer = v / 64 * sizeof(uint64_t);
 
-    while (outer_ < outer) {
+    while (outer_ != outer) {
       position_ += Instructions::popcount(block_);
       outer_ += sizeof(uint64_t);
       block_ = folly::loadUnaligned<uint64_t>(bits_ + outer_);
+      DCHECK_LE(outer_, outer);
     }
 
-    DCHECK_EQ(outer_, outer);
     uint64_t mask = ~((uint64_t(1) << (v % 64)) - 1);
     position_ += Instructions::popcount(block_ & ~mask) + 1;
     block_ &= mask;
@@ -418,9 +421,8 @@ class BitVectorReader : detail::ForwardPointers<Encoder::forwardQuantum>,
   }
 
  private:
-  constexpr static ValueType kInvalidValue =
-      std::numeric_limits<ValueType>::max(); // Must hold kInvalidValue + 1 ==
-                                             // 0.
+  // Must hold kInvalidValue + 1 == 0.
+  constexpr static ValueType kInvalidValue = -1;
 
   bool setValue(size_t inner) {
     value_ = static_cast<ValueType>(8 * outer_ + inner);

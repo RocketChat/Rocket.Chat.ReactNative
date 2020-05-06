@@ -1,11 +1,11 @@
 /*
- * Copyright 2016-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #include <folly/portability/OpenSSL.h>
 #include <folly/ssl/detail/OpenSSLThreading.h>
 
@@ -62,6 +63,13 @@ int SSL_SESSION_up_ref(SSL_SESSION* session) {
 
 int X509_up_ref(X509* x) {
   return CRYPTO_add(&x->references, 1, CRYPTO_LOCK_X509);
+}
+
+void X509_STORE_CTX_set0_verified_chain(
+    X509_STORE_CTX* ctx,
+    STACK_OF(X509) * sk) {
+  sk_X509_pop_free(ctx->chain, X509_free);
+  ctx->chain = sk;
 }
 
 int X509_STORE_up_ref(X509_STORE* v) {
@@ -462,7 +470,7 @@ int OPENSSL_init_ssl(uint64_t, const OPENSSL_INIT_SETTINGS*) {
   // The caller should have used SSLContext::setLockTypes() prior to calling
   // this function.
   folly::ssl::detail::installThreadingLocks();
-  return 0;
+  return 1;
 }
 
 void OPENSSL_cleanup() {
@@ -482,11 +490,18 @@ const ASN1_TIME* X509_REVOKED_get0_revocationDate(const X509_REVOKED* r) {
 }
 
 uint32_t X509_get_extension_flags(X509* x) {
+  // Tells OpenSSL to load flags
+  X509_check_purpose(x, -1, -1);
   return x->ex_flags;
 }
 
 uint32_t X509_get_key_usage(X509* x) {
-  return x->ex_kusage;
+  // Call get_extension_flags rather than accessing directly to force loading
+  // of flags
+  if ((X509_get_extension_flags(x) & EXFLAG_KUSAGE) == EXFLAG_KUSAGE) {
+    return x->ex_kusage;
+  }
+  return UINT32_MAX;
 }
 
 uint32_t X509_get_extended_key_usage(X509* x) {

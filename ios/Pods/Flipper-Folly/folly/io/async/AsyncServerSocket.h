@@ -1,11 +1,11 @@
 /*
- * Copyright 2014-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -158,13 +158,8 @@ class AsyncServerSocket : public DelayedDestruction, public AsyncSocketBase {
      *                    remain valid until connectionAccepted() returns.
      */
     virtual void connectionAccepted(
-        int fd,
-        const SocketAddress& clientAddr) noexcept = 0;
-    void connectionAccepted(
         NetworkSocket fd,
-        const SocketAddress& clientAddr) noexcept {
-      connectionAccepted(fd.toFd(), clientAddr);
-    }
+        const SocketAddress& clientAddr) noexcept = 0;
 
     /**
      * acceptError() is called if an error occurs while accepting.
@@ -296,12 +291,9 @@ class AsyncServerSocket : public DelayedDestruction, public AsyncSocketBase {
    * listen on the file descriptor.  If so the caller should skip calling the
    * corresponding AsyncServerSocket::bind() and listen() methods.
    *
-   * On error a TTransportException will be thrown and the caller will retain
+   * On error a AsyncSocketException will be thrown and the caller will retain
    * ownership of the file descriptor.
    */
-  void useExistingSocket(int fd) {
-    useExistingSocket(NetworkSocket::fromFd(fd));
-  }
   void useExistingSocket(NetworkSocket fd);
   void useExistingSockets(const std::vector<NetworkSocket>& fds);
 
@@ -319,10 +311,6 @@ class AsyncServerSocket : public DelayedDestruction, public AsyncSocketBase {
   /**
    * Backwards compatible getSocket, warns if > 1 socket
    */
-  int getSocket() const {
-    return getNetworkSocket().toFd();
-  }
-
   NetworkSocket getNetworkSocket() const {
     if (sockets_.size() > 1) {
       VLOG(2) << "Warning: getSocket can return multiple fds, "
@@ -345,7 +333,7 @@ class AsyncServerSocket : public DelayedDestruction, public AsyncSocketBase {
    *
    * This must be called from the primary EventBase thread.
    *
-   * Throws TTransportException on error.
+   * Throws AsyncSocketException on error.
    */
   virtual void bind(const SocketAddress& address);
 
@@ -354,7 +342,7 @@ class AsyncServerSocket : public DelayedDestruction, public AsyncSocketBase {
    *
    * This must be called from the primary EventBase thread.
    *
-   * Throws TTransportException on error.
+   * Throws AsyncSocketException on error.
    */
   virtual void bind(const std::vector<IPAddress>& ipAddresses, uint16_t port);
 
@@ -363,21 +351,21 @@ class AsyncServerSocket : public DelayedDestruction, public AsyncSocketBase {
    *
    * This must be called from the primary EventBase thread.
    *
-   * Throws TTransportException on error.
+   * Throws AsyncSocketException on error.
    */
   virtual void bind(uint16_t port);
 
   /**
    * Get the local address to which the socket is bound.
    *
-   * Throws TTransportException on error.
+   * Throws AsyncSocketException on error.
    */
   void getAddress(SocketAddress* addressReturn) const override;
 
   /**
    * Get the local address to which the socket is bound.
    *
-   * Throws TTransportException on error.
+   * Throws AsyncSocketException on error.
    */
   SocketAddress getAddress() const {
     SocketAddress ret;
@@ -388,7 +376,7 @@ class AsyncServerSocket : public DelayedDestruction, public AsyncSocketBase {
   /**
    * Get all the local addresses to which the socket is bound.
    *
-   * Throws TTransportException on error.
+   * Throws AsyncSocketException on error.
    */
   std::vector<SocketAddress> getAddresses() const;
 
@@ -410,7 +398,7 @@ class AsyncServerSocket : public DelayedDestruction, public AsyncSocketBase {
    * bind() must be called before calling listen().
    * listen() must be called from the primary EventBase thread.
    *
-   * Throws TTransportException on error.
+   * Throws AsyncSocketException on error.
    */
   virtual void listen(int backlog);
 
@@ -678,9 +666,11 @@ class AsyncServerSocket : public DelayedDestruction, public AsyncSocketBase {
       if (netops::setsockopt(
               handler.socket_, SOL_SOCKET, SO_REUSEPORT, &val, sizeof(val)) !=
           0) {
+        auto errnoCopy = errno;
         LOG(ERROR) << "failed to set SO_REUSEPORT on async server socket "
-                   << errno;
-        folly::throwSystemError(errno, "failed to bind to async server socket");
+                   << errnoCopy;
+        folly::throwSystemErrorExplicit(
+            errnoCopy, "failed to set SO_REUSEPORT on async server socket");
       }
     }
   }
@@ -785,7 +775,7 @@ class AsyncServerSocket : public DelayedDestruction, public AsyncSocketBase {
     void start(EventBase* eventBase, uint32_t maxAtOnce, uint32_t maxInQueue);
     void stop(EventBase* eventBase, AcceptCallback* callback);
 
-    void messageAvailable(QueueMessage&& message) noexcept override;
+    void messageAvailable(QueueMessage&& msg) noexcept override;
 
     NotificationQueue<QueueMessage>* getQueue() {
       return &queue_;
@@ -814,10 +804,8 @@ class AsyncServerSocket : public DelayedDestruction, public AsyncSocketBase {
 
   class BackoffTimeout;
 
-  virtual void handlerReady(
-      uint16_t events,
-      NetworkSocket socket,
-      sa_family_t family) noexcept;
+  virtual void
+  handlerReady(uint16_t events, NetworkSocket fd, sa_family_t family) noexcept;
 
   NetworkSocket createSocket(int family);
   void setupSocket(NetworkSocket fd, int family);
@@ -907,6 +895,7 @@ class AsyncServerSocket : public DelayedDestruction, public AsyncSocketBase {
   std::weak_ptr<ShutdownSocketSet> wShutdownSocketSet_;
   ConnectionEventCallback* connectionEventCallback_{nullptr};
   bool tosReflect_{false};
+  bool zeroCopyVal_{false};
 };
 
 } // namespace folly

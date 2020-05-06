@@ -1,11 +1,11 @@
 /*
- * Copyright 2016-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -188,47 +188,52 @@ inline in_place_index_tag<I> in_place_index(in_place_index_tag<I> = {}) {
 struct initlist_construct_t {};
 constexpr initlist_construct_t initlist_construct{};
 
-/**
- * A generic tag type to indicate that some constructor or method accepts a
- * presorted container.
- *
- * Example:
- *
- *  void takes_numbers(std::vector<int> alist) {
- *    std::sort(alist.begin(), alist.end());
- *    takes_numbers(folly::presorted, alist);
- *  }
- *
- *  void takes_numbers(folly::presorted_t, std::vector<int> alist) {
- *    assert(std::is_sorted(alist.begin(), alist.end())); // debug mode only
- *    for (i : alist) {
- *      // some behavior which is defined and safe only when alist is sorted ...
- *    }
- *  }
- */
-struct presorted_t {};
-constexpr presorted_t presorted{};
+//  sorted_unique_t, sorted_unique
+//
+//  A generic tag type and value to indicate that some constructor or method
+//  accepts a container in which the values are sorted and unique.
+//
+//  Example:
+//
+//    void takes_numbers(folly::sorted_unique_t, std::vector<int> alist) {
+//      assert(std::is_sorted(alist.begin(), alist.end()));
+//      assert(std::unique(alist.begin(), alist.end()) == alist.end());
+//      for (i : alist) {
+//        // some behavior which safe only when alist is sorted and unique
+//      }
+//    }
+//    void takes_numbers(std::vector<int> alist) {
+//      std::sort(alist.begin(), alist.end());
+//      alist.erase(std::unique(alist.begin(), alist.end()), alist.end());
+//      takes_numbers(folly::sorted_unique, alist);
+//    }
+//
+//  mimic: std::sorted_unique_t, std::sorted_unique, p0429r6
+struct sorted_unique_t {};
+constexpr sorted_unique_t sorted_unique;
 
-/**
- * A generic tag type to indicate that some constructor or method accepts an
- * unsorted container. Useful in contexts which might have some reason to assume
- * a container to be sorted.
- *
- * Example:
- *
- *  void takes_numbers(std::vector<int> alist) {
- *    takes_numbers(folly::unsorted, alist);
- *  }
- *
- *  void takes_numbers(folly::unsorted_t, std::vector<int> alist) {
- *    std::sort(alist.begin(), alist.end());
- *    for (i : alist) {
- *      // some behavior which is defined and safe only when alist is sorted ...
- *    }
- *  }
- */
-struct unsorted_t {};
-constexpr unsorted_t unsorted{};
+//  sorted_equivalent_t, sorted_equivalent
+//
+//  A generic tag type and value to indicate that some constructor or method
+//  accepts a container in which the values are sorted but not necessarily
+//  unique.
+//
+//  Example:
+//
+//    void takes_numbers(folly::sorted_equivalent_t, std::vector<int> alist) {
+//      assert(std::is_sorted(alist.begin(), alist.end()));
+//      for (i : alist) {
+//        // some behavior which safe only when alist is sorted
+//      }
+//    }
+//    void takes_numbers(std::vector<int> alist) {
+//      std::sort(alist.begin(), alist.end());
+//      takes_numbers(folly::sorted_equivalent, alist);
+//    }
+//
+//  mimic: std::sorted_equivalent_t, std::sorted_equivalent, p0429r6
+struct sorted_equivalent_t {};
+constexpr sorted_equivalent_t sorted_equivalent;
 
 template <typename T>
 struct transparent : T {
@@ -290,8 +295,8 @@ constexpr auto to_signed(T const& t) -> typename std::make_signed<T>::type {
   // note: static_cast<S>(t) would be more straightforward, but it would also be
   // implementation-defined behavior and that is typically to be avoided; the
   // following code optimized into the same thing, though
-  return std::numeric_limits<S>::max() < t ? -static_cast<S>(~t) + S{-1}
-                                           : static_cast<S>(t);
+  constexpr auto m = static_cast<T>(std::numeric_limits<S>::max());
+  return m < t ? -static_cast<S>(~t) + S{-1} : static_cast<S>(t);
 }
 
 template <typename T>
@@ -300,8 +305,62 @@ constexpr auto to_unsigned(T const& t) -> typename std::make_unsigned<T>::type {
   return static_cast<U>(t);
 }
 
+template <typename Src>
+class to_narrow_convertible {
+ public:
+  static_assert(std::is_integral<Src>::value, "not an integer");
+
+  explicit constexpr to_narrow_convertible(Src const& value) noexcept
+      : value_(value) {}
+#if __cplusplus >= 201703L
+  explicit to_narrow_convertible(to_narrow_convertible const&) = default;
+  explicit to_narrow_convertible(to_narrow_convertible&&) = default;
+#else
+  to_narrow_convertible(to_narrow_convertible const&) = default;
+  to_narrow_convertible(to_narrow_convertible&&) = default;
+#endif
+  to_narrow_convertible& operator=(to_narrow_convertible const&) = default;
+  to_narrow_convertible& operator=(to_narrow_convertible&&) = default;
+
+  template <
+      typename Dst,
+      std::enable_if_t<
+          std::is_integral<Dst>::value &&
+              std::is_signed<Dst>::value == std::is_signed<Src>::value,
+          int> = 0>
+  /* implicit */ constexpr operator Dst() const noexcept {
+    FOLLY_PUSH_WARNING
+    FOLLY_MSVC_DISABLE_WARNING(4244) // lossy conversion: arguments
+    FOLLY_MSVC_DISABLE_WARNING(4267) // lossy conversion: variables
+    FOLLY_GNU_DISABLE_WARNING("-Wconversion")
+    return value_;
+    FOLLY_POP_WARNING
+  }
+
+ private:
+  Src value_;
+};
+
+//  to_narrow
+//
+//  A utility for performing explicit possibly-narrowing integral conversion
+//  without specifying the destination type. Does not permit changing signs.
+//  Sometimes preferable to static_cast<Dst>(src) to document the intended
+//  semantics of the cast.
+//
+//  Models explicit conversion with an elided destination type. Sits in between
+//  a stricter explicit conversion with a named destination type and a more
+//  lenient implicit conversion. Implemented with implicit conversion in order
+//  to take advantage of the undefined-behavior sanitizer's inspection of all
+//  implicit conversions - it checks for truncation, with suppressions in place
+//  for warnings which guard against narrowing implicit conversions.
+template <typename Src>
+constexpr auto to_narrow(Src const& src) -> to_narrow_convertible<Src> {
+  return to_narrow_convertible<Src>{src};
+}
+
 template <class E>
-constexpr std::underlying_type_t<E> to_underlying_type(E e) noexcept {
+constexpr std::underlying_type_t<E> to_underlying(E e) noexcept {
   static_assert(std::is_enum<E>::value, "not an enum type");
   return static_cast<std::underlying_type_t<E>>(e);
 }

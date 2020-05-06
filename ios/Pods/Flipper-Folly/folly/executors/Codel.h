@@ -1,11 +1,11 @@
 /*
- * Copyright 2017-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -56,7 +56,35 @@ namespace folly {
 /// 2. https://en.wikipedia.org/wiki/CoDel
 class Codel {
  public:
+  class Options {
+   public:
+    std::chrono::milliseconds interval() const {
+      return interval_;
+    }
+
+    Options& setInterval(std::chrono::milliseconds value) {
+      interval_ = value;
+      return *this;
+    }
+
+    std::chrono::milliseconds targetDelay() const {
+      return targetDelay_;
+    }
+
+    Options& setTargetDelay(std::chrono::milliseconds value) {
+      targetDelay_ = value;
+      return *this;
+    }
+
+   private:
+    std::chrono::milliseconds interval_;
+    std::chrono::milliseconds targetDelay_;
+  };
+
   Codel();
+
+  /// Preferable construction method
+  explicit Codel(const Options& options);
 
   /// Returns true if this request should be expired to reduce overload.
   /// In detail, this returns true if min_delay > target_delay for the
@@ -74,14 +102,39 @@ class Codel {
   /// Return:  0 = no delay, 100 = At the queueing limit
   int getLoad();
 
+  /// Update the target delay and interval parameters by passing them
+  /// in as an Options instance. Note that target delay must be strictly
+  /// smaller than the interval. This is a no-op if invalid arguments are
+  /// provided.
+  ///
+  /// NOTE : Calls to setOptions must be externally synchronized since there
+  /// is no internal locking for parameter updates. Codel only guarantees
+  /// internal synchronization between calls to getOptions() and other members
+  /// but not between concurrent calls to getOptions().
+  ///
+  /// Throws std::runtime_error if arguments are invalid.
+  void setOptions(Options const& options);
+
+  /// Return a consistent snapshot of the two parameters used by Codel. Since
+  /// parameters may be updated with the setOptions() method provided above,
+  /// it is necessary to ensure that reads of the parameters return a consistent
+  /// pair in which the invariant of targetDelay <= interval is guaranteed; the
+  /// targetDelay value that is returned is the minimum of targetDelay and
+  /// interval.
+  const Options getOptions() const;
+
   std::chrono::nanoseconds getMinDelay();
-  std::chrono::milliseconds getInterval();
-  std::chrono::milliseconds getTargetDelay();
-  std::chrono::milliseconds getSloughTimeout();
+
+  /// Returns the timeout condition for overload given a target delay period.
+  std::chrono::milliseconds getSloughTimeout(
+      std::chrono::milliseconds delay) const;
 
  private:
   std::atomic<uint64_t> codelMinDelayNs_;
   std::atomic<uint64_t> codelIntervalTimeNs_;
+
+  std::atomic<std::chrono::milliseconds> targetDelay_;
+  std::atomic<std::chrono::milliseconds> interval_;
 
   // flag to make overloaded() thread-safe, since we only want
   // to reset the delay once per time period

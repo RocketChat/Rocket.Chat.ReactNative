@@ -1,11 +1,11 @@
 /*
- * Copyright 2014-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,7 +30,6 @@
 namespace folly {
 //
 // For OpenSSL portability API
-using namespace folly::ssl;
 
 // SSLContext implementation
 SSLContext::SSLContext(SSLVersion version) {
@@ -53,6 +52,7 @@ SSLContext::SSLContext(SSLVersion version) {
       opt = SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_NO_TLSv1 |
           SSL_OP_NO_TLSv1_1;
       break;
+    case SSLv2:
     default:
       // do nothing
       break;
@@ -63,8 +63,8 @@ SSLContext::SSLContext(SSLVersion version) {
     // on getSession() returning a resumable session, SSL_CTX_set_ciphersuites,
     // etc.)
     //
-#if FOLLY_OPENSSL_HAS_TLS13
-  opt |= SSL_OP_NO_TLSv1_3;
+#if FOLLY_OPENSSL_IS_110
+  SSL_CTX_set_max_proto_version(ctx_, TLS1_2_VERSION);
 #endif
 
   int newOpt = SSL_CTX_set_options(ctx_, opt);
@@ -101,7 +101,7 @@ void SSLContext::ciphers(const std::string& ciphers) {
 
 void SSLContext::setClientECCurvesList(
     const std::vector<std::string>& ecCurves) {
-  if (ecCurves.size() == 0) {
+  if (ecCurves.empty()) {
     return;
   }
 #if OPENSSL_VERSION_NUMBER >= 0x1000200fL
@@ -140,6 +140,12 @@ void SSLContext::setServerECCurve(const std::string& curveName) {
 #else
   throw std::runtime_error("Elliptic curve encryption not allowed");
 #endif
+}
+
+SSLContext::SSLContext(SSL_CTX* ctx) : ctx_(ctx) {
+  if (SSL_CTX_up_ref(ctx) == 0) {
+    throw std::runtime_error("Failed to increment SSL_CTX refcount");
+  }
 }
 
 void SSLContext::setX509VerifyParam(
@@ -185,7 +191,7 @@ int SSLContext::getVerificationMode(
     case SSLVerifyPeerEnum::NO_VERIFY:
       mode = SSL_VERIFY_NONE;
       break;
-
+    case SSLVerifyPeerEnum::USE_CTX:
     default:
       break;
   }
@@ -391,7 +397,7 @@ void SSLContext::addClientHelloCallback(const ClientHelloCallback& cb) {
 }
 
 int SSLContext::baseServerNameOpenSSLCallback(SSL* ssl, int* al, void* data) {
-  SSLContext* context = (SSLContext*)data;
+  auto context = (SSLContext*)data;
 
   if (context == nullptr) {
     return SSL_TLSEXT_ERR_NOACK;
@@ -436,7 +442,7 @@ int SSLContext::alpnSelectCallback(
     const unsigned char* in,
     unsigned int inlen,
     void* data) {
-  SSLContext* context = (SSLContext*)data;
+  auto context = (SSLContext*)data;
   CHECK(context);
   if (context->advertisedNextProtocols_.empty()) {
     *out = nullptr;
@@ -465,12 +471,12 @@ bool SSLContext::setAdvertisedNextProtocols(
 bool SSLContext::setRandomizedAdvertisedNextProtocols(
     const std::list<NextProtocolsItem>& items) {
   unsetNextProtocols();
-  if (items.size() == 0) {
+  if (items.empty()) {
     return false;
   }
   int total_weight = 0;
   for (const auto& item : items) {
-    if (item.protocols.size() == 0) {
+    if (item.protocols.empty()) {
       continue;
     }
     AdvertisedNextProtocolsItem advertised_item;
@@ -490,7 +496,7 @@ bool SSLContext::setRandomizedAdvertisedNextProtocols(
     }
     unsigned char* dst = advertised_item.protocols;
     for (auto& proto : item.protocols) {
-      uint8_t protoLength = uint8_t(proto.length());
+      auto protoLength = uint8_t(proto.length());
       *dst++ = (unsigned char)protoLength;
       memcpy(dst, proto.data(), protoLength);
       dst += protoLength;
@@ -510,13 +516,10 @@ bool SSLContext::setRandomizedAdvertisedNextProtocols(
   // Client cannot really use randomized alpn
   // Note that this function reverses the typical return value convention
   // of openssl and returns 0 on success.
-  if (SSL_CTX_set_alpn_protos(
-          ctx_,
-          advertisedNextProtocols_[0].protocols,
-          advertisedNextProtocols_[0].length) != 0) {
-    return false;
-  }
-  return true;
+  return SSL_CTX_set_alpn_protos(
+             ctx_,
+             advertisedNextProtocols_[0].protocols,
+             advertisedNextProtocols_[0].length) == 0;
 }
 
 void SSLContext::deleteNextProtocolsStrings() {
@@ -594,7 +597,7 @@ bool SSLContext::matchName(const char* host, const char* pattern, int size) {
 }
 
 int SSLContext::passwordCallback(char* password, int size, int, void* data) {
-  SSLContext* context = (SSLContext*)data;
+  auto context = (SSLContext*)data;
   if (context == nullptr || context->passwordCollector() == nullptr) {
     return 0;
   }
@@ -644,6 +647,12 @@ std::string SSLContext::getErrors(int errnoCopy) {
     errors = "error code: " + folly::to<std::string>(errnoCopy);
   }
   return errors;
+}
+
+void SSLContext::enableTLS13() {
+#if FOLLY_OPENSSL_IS_110
+  SSL_CTX_set_max_proto_version(ctx_, 0);
+#endif
 }
 
 std::ostream& operator<<(std::ostream& os, const PasswordCollector& collector) {

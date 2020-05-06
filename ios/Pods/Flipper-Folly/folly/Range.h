@@ -1,11 +1,11 @@
 /*
- * Copyright 2011-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -188,9 +188,7 @@ class Range {
   // Works only for random-access iterators
   constexpr Range(Iter start, size_t size) : b_(start), e_(start + size) {}
 
-#if !__clang__ || __CLANG_PREREQ(3, 7) // Clang 3.6 crashes on this line
   /* implicit */ Range(std::nullptr_t) = delete;
-#endif
 
   constexpr /* implicit */ Range(Iter str)
       : b_(str), e_(str + constexpr_strlen(str)) {
@@ -421,12 +419,9 @@ class Range {
   }
 
   constexpr size_type size() const {
-    // It would be nice to assert(b_ <= e_) here.  This can be achieved even
-    // in a C++11 compatible constexpr function:
-    // http://ericniebler.com/2014/09/27/assert-and-constexpr-in-cxx11/
-    // Unfortunately current gcc versions have a bug causing it to reject
-    // this check in a constexpr function:
-    // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=71448
+#if __clang__ || !__GNUC__ || __GNUC__ >= 7
+    assert(b_ <= e_);
+#endif
     return size_type(e_ - b_);
   }
   constexpr size_type walk_size() const {
@@ -1528,6 +1523,14 @@ constexpr Range<char const*> operator"" _sp(
   return Range<char const*>(str, len);
 }
 
+#if __cpp_char8_t >= 201811L
+constexpr Range<char8_t const*> operator"" _sp(
+    char8_t const* str,
+    size_t len) noexcept {
+  return Range<char8_t const*>(str, len);
+}
+#endif
+
 constexpr Range<char16_t const*> operator"" _sp(
     char16_t const* str,
     size_t len) noexcept {
@@ -1553,3 +1556,13 @@ constexpr Range<wchar_t const*> operator"" _sp(
 FOLLY_POP_WARNING
 
 FOLLY_ASSUME_FBVECTOR_COMPATIBLE_1(folly::Range)
+
+// Tell the range-v3 library that this type should satisfy
+// the view concept (a lightweight, non-owning range).
+namespace ranges {
+template <class T>
+extern const bool enable_view;
+
+template <class Iter>
+FOLLY_INLINE_VARIABLE constexpr bool enable_view<::folly::Range<Iter>> = true;
+} // namespace ranges

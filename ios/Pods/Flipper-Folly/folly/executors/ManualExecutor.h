@@ -1,11 +1,11 @@
 /*
- * Copyright 2014-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -124,6 +124,17 @@ class ManualExecutor : public DrivableExecutor,
     return funcs.size() + scheduled_funcs.size();
   }
 
+  bool keepAliveAcquire() override {
+    keepAliveCount_.fetch_add(1, std::memory_order_relaxed);
+    return true;
+  }
+
+  void keepAliveRelease() override {
+    if (keepAliveCount_.fetch_sub(1, std::memory_order_acq_rel) == 1) {
+      add([] {});
+    }
+  }
+
  private:
   std::mutex lock_;
   std::queue<Func> funcs_;
@@ -156,6 +167,8 @@ class ManualExecutor : public DrivableExecutor,
   };
   std::priority_queue<ScheduledFunc> scheduledFuncs_;
   TimePoint now_ = TimePoint::min();
+
+  std::atomic<ssize_t> keepAliveCount_{0};
 };
 
 } // namespace folly

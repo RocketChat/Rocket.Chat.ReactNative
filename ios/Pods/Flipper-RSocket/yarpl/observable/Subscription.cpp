@@ -42,7 +42,7 @@ void Subscription::tieSubscription(std::shared_ptr<Subscription> subscription) {
   if (isCancelled()) {
     subscription->cancel();
   }
-  tiedSubscriptions_->push_back(std::move(subscription));
+  tiedSubscriptions_.wlock()->push_back(std::move(subscription));
 }
 
 std::shared_ptr<Subscription> Subscription::create(

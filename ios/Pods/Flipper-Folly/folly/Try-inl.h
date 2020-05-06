@@ -1,11 +1,11 @@
 /*
- * Copyright 2014-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -168,6 +168,7 @@ void Try<T>::throwIfFailed() const {
       return;
     case Contains::EXCEPTION:
       e_.throw_exception();
+    case Contains::NOTHING:
     default:
       throw_exception<UsingUninitializedTry>();
   }
@@ -219,10 +220,9 @@ void Try<void>::throwIfFailed() const {
 
 template <typename F>
 typename std::enable_if<
-    !std::is_same<invoke_result_t<F>, void>::value &&
-        !isTry<invoke_result_t<F>>::value,
+    !std::is_same<invoke_result_t<F>, void>::value,
     Try<invoke_result_t<F>>>::type
-makeTryWith(F&& f) {
+makeTryWithNoUnwrap(F&& f) {
   using ResultType = invoke_result_t<F>;
   try {
     return Try<ResultType>(f());
@@ -236,7 +236,7 @@ makeTryWith(F&& f) {
 template <typename F>
 typename std::
     enable_if<std::is_same<invoke_result_t<F>, void>::value, Try<void>>::type
-    makeTryWith(F&& f) {
+    makeTryWithNoUnwrap(F&& f) {
   try {
     f();
     return Try<void>();
@@ -245,6 +245,13 @@ typename std::
   } catch (...) {
     return Try<void>(exception_wrapper(std::current_exception()));
   }
+}
+
+template <typename F>
+typename std::
+    enable_if<!isTry<invoke_result_t<F>>::value, Try<invoke_result_t<F>>>::type
+    makeTryWith(F&& f) {
+  return makeTryWithNoUnwrap(std::forward<F>(f));
 }
 
 template <typename F>

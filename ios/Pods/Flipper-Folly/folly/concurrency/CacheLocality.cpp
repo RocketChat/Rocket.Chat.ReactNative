@@ -1,11 +1,11 @@
 /*
- * Copyright 2013-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -32,11 +32,11 @@ namespace folly {
 
 ///////////// CacheLocality
 
-/// Returns the best real CacheLocality information available
+/// Returns the CacheLocality information best for this machine
 static CacheLocality getSystemLocalityInfo() {
   if (kIsLinux) {
     try {
-      return CacheLocality::readFromSysfs();
+      return CacheLocality::readFromProcCpuinfo();
     } catch (...) {
       // keep trying
     }
@@ -112,7 +112,7 @@ CacheLocality CacheLocality::readFromSysfsTree(
           sformat("/sys/devices/system/cpu/cpu{}/cache/index{}/", cpu, index);
       auto cacheType = mapping(dir + "type");
       auto equivStr = mapping(dir + "shared_cpu_list");
-      if (cacheType.size() == 0 || equivStr.size() == 0) {
+      if (cacheType.empty() || equivStr.empty()) {
         // no more caches
         break;
       }
@@ -134,7 +134,7 @@ CacheLocality CacheLocality::readFromSysfsTree(
       }
     }
 
-    if (levels.size() == 0) {
+    if (levels.empty()) {
       // no levels at all for this cpu, we must be done
       break;
     }
@@ -142,7 +142,7 @@ CacheLocality CacheLocality::readFromSysfsTree(
     cpus.push_back(cpu);
   }
 
-  if (cpus.size() == 0) {
+  if (cpus.empty()) {
     throw std::runtime_error("unable to load cache sharing info");
   }
 
@@ -187,6 +187,96 @@ CacheLocality CacheLocality::readFromSysfs() {
   });
 }
 
+static bool procCpuinfoLineRelevant(std::string const& line) {
+  return line.size() > 4 && (line[0] == 'p' || line[0] == 'c');
+}
+
+CacheLocality CacheLocality::readFromProcCpuinfoLines(
+    std::vector<std::string> const& lines) {
+  size_t physicalId = 0;
+  size_t coreId = 0;
+  std::vector<std::tuple<size_t, size_t, size_t>> cpus;
+  size_t maxCpu = 0;
+  for (auto iter = lines.rbegin(); iter != lines.rend(); ++iter) {
+    auto& line = *iter;
+    if (!procCpuinfoLineRelevant(line)) {
+      continue;
+    }
+
+    auto sepIndex = line.find(':');
+    if (sepIndex == std::string::npos || sepIndex + 2 > line.size()) {
+      continue;
+    }
+    auto arg = line.substr(sepIndex + 2);
+
+    // "physical id" is socket, which is the most important locality
+    // context.  "core id" is a real core, so two "processor" entries with
+    // the same physical id and core id are hyperthreads of each other.
+    // "processor" is the top line of each record, so when we hit it in
+    // the reverse order then we can emit a record.
+    if (line.find("physical id") == 0) {
+      physicalId = parseLeadingNumber(arg);
+    } else if (line.find("core id") == 0) {
+      coreId = parseLeadingNumber(arg);
+    } else if (line.find("processor") == 0) {
+      auto cpu = parseLeadingNumber(arg);
+      maxCpu = std::max(cpu, maxCpu);
+      cpus.emplace_back(physicalId, coreId, cpu);
+    }
+  }
+
+  if (cpus.empty()) {
+    throw std::runtime_error("no CPUs parsed from /proc/cpuinfo");
+  }
+  if (maxCpu != cpus.size() - 1) {
+    throw std::runtime_error(
+        "offline CPUs not supported for /proc/cpuinfo cache locality source");
+  }
+
+  std::sort(cpus.begin(), cpus.end());
+  size_t cpusPerCore = 1;
+  while (cpusPerCore < cpus.size() &&
+         std::get<0>(cpus[cpusPerCore]) == std::get<0>(cpus[0]) &&
+         std::get<1>(cpus[cpusPerCore]) == std::get<1>(cpus[0])) {
+    ++cpusPerCore;
+  }
+
+  // we can't tell the real cache hierarchy from /proc/cpuinfo, but it
+  // works well enough to assume there are 3 levels, L1 and L2 per-core
+  // and L3 per socket
+  std::vector<size_t> numCachesByLevel;
+  numCachesByLevel.push_back(cpus.size() / cpusPerCore);
+  numCachesByLevel.push_back(cpus.size() / cpusPerCore);
+  numCachesByLevel.push_back(std::get<0>(cpus.back()) + 1);
+
+  std::vector<size_t> indexes(cpus.size());
+  for (size_t i = 0; i < cpus.size(); ++i) {
+    indexes[std::get<2>(cpus[i])] = i;
+  }
+
+  return CacheLocality{
+      cpus.size(), std::move(numCachesByLevel), std::move(indexes)};
+}
+
+CacheLocality CacheLocality::readFromProcCpuinfo() {
+  std::vector<std::string> lines;
+  {
+    std::ifstream xi("/proc/cpuinfo");
+    if (xi.fail()) {
+      throw std::runtime_error("unable to open /proc/cpuinfo");
+    }
+    char buf[8192];
+    while (xi.good() && lines.size() < 20000) {
+      xi.getline(buf, sizeof(buf));
+      std::string str(buf);
+      if (procCpuinfoLineRelevant(str)) {
+        lines.emplace_back(std::move(str));
+      }
+    }
+  }
+  return readFromProcCpuinfoLines(lines);
+}
+
 CacheLocality CacheLocality::uniform(size_t numCpus) {
   CacheLocality rv;
 
@@ -206,7 +296,7 @@ CacheLocality CacheLocality::uniform(size_t numCpus) {
 ////////////// Getcpu
 
 Getcpu::Func Getcpu::resolveVdsoFunc() {
-#if !FOLLY_HAVE_LINUX_VDSO
+#if !defined(FOLLY_HAVE_LINUX_VDSO) || defined(FOLLY_SANITIZE_MEMORY)
   return nullptr;
 #else
   void* h = dlopen("linux-vdso.so.1", RTLD_LAZY | RTLD_LOCAL | RTLD_NOLOAD);
@@ -227,7 +317,7 @@ Getcpu::Func Getcpu::resolveVdsoFunc() {
 #endif
 }
 
-#ifdef FOLLY_TLS
+#ifdef FOLLY_CL_USE_FOLLY_TLS
 /////////////// SequentialThreadId
 template struct SequentialThreadId<std::atomic>;
 #endif

@@ -1,11 +1,11 @@
 /*
- * Copyright 2017-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,6 +24,22 @@
 namespace folly {
 
 /**
+ * Return the global executor.
+ * The global executor is a CPU thread pool and is immutable.
+ *
+ * May return an invalid KeepAlive on shutdown.
+ */
+folly::Executor::KeepAlive<> getGlobalCPUExecutor();
+
+/**
+ * Return the global IO executor.
+ * The global executor is an IO thread pool and is immutable.
+ *
+ * May return an invalid KeepAlive on shutdown.
+ */
+folly::Executor::KeepAlive<> getGlobalIOExecutor();
+
+/**
  * Retrieve the global Executor. If there is none, a default InlineExecutor
  * will be constructed and returned. This is named CPUExecutor to distinguish
  * it from IOExecutor below and to hint that it's intended for CPU-bound tasks.
@@ -37,6 +53,12 @@ std::shared_ptr<folly::Executor> getCPUExecutor();
  * subsequent calls to getCPUExecutor().
  */
 void setCPUExecutor(std::weak_ptr<folly::Executor> executor);
+
+/**
+ * Set the CPU executor to the immutable default returned by
+ * getGlobalCPUExecutor.
+ */
+void setCPUExecutorToGlobalCPUExecutor();
 
 /**
  * Retrieve the global IOExecutor. If there is none, a default

@@ -1,11 +1,11 @@
 /*
- * Copyright 2013-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -60,6 +60,18 @@ void annotate_benign_race_sized_impl(
     const char* desc,
     const char* f,
     int l);
+
+void annotate_ignore_reads_begin_impl(const char* f, int l);
+
+void annotate_ignore_reads_end_impl(const char* f, int l);
+
+void annotate_ignore_writes_begin_impl(const char* f, int l);
+
+void annotate_ignore_writes_end_impl(const char* f, int l);
+
+void annotate_ignore_sync_begin_impl(const char* f, int l);
+
+void annotate_ignore_sync_end_impl(const char* f, int l);
 
 } // namespace detail
 
@@ -131,5 +143,76 @@ FOLLY_ALWAYS_INLINE static void annotate_benign_race_sized(
     detail::annotate_benign_race_sized_impl(addr, size, desc, f, l);
   }
 }
+
+FOLLY_ALWAYS_INLINE static void annotate_ignore_reads_begin(
+    const char* f,
+    int l) {
+  if (kIsSanitizeThread) {
+    detail::annotate_ignore_reads_begin_impl(f, l);
+  }
+}
+
+FOLLY_ALWAYS_INLINE static void annotate_ignore_reads_end(
+    const char* f,
+    int l) {
+  if (kIsSanitizeThread) {
+    detail::annotate_ignore_reads_end_impl(f, l);
+  }
+}
+
+FOLLY_ALWAYS_INLINE static void annotate_ignore_writes_begin(
+    const char* f,
+    int l) {
+  if (kIsSanitizeThread) {
+    detail::annotate_ignore_writes_begin_impl(f, l);
+  }
+}
+
+FOLLY_ALWAYS_INLINE static void annotate_ignore_writes_end(
+    const char* f,
+    int l) {
+  if (kIsSanitizeThread) {
+    detail::annotate_ignore_writes_end_impl(f, l);
+  }
+}
+
+FOLLY_ALWAYS_INLINE static void annotate_ignore_sync_begin(
+    const char* f,
+    int l) {
+  if (kIsSanitizeThread) {
+    detail::annotate_ignore_sync_begin_impl(f, l);
+  }
+}
+
+FOLLY_ALWAYS_INLINE static void annotate_ignore_sync_end(const char* f, int l) {
+  if (kIsSanitizeThread) {
+    detail::annotate_ignore_sync_end_impl(f, l);
+  }
+}
+
+class annotate_ignore_thread_sanitizer_guard {
+ public:
+  annotate_ignore_thread_sanitizer_guard(const char* file, int line)
+      : file_(file), line_(line) {
+    annotate_ignore_reads_begin(file_, line_);
+    annotate_ignore_writes_begin(file_, line_);
+    annotate_ignore_sync_begin(file_, line_);
+  }
+
+  annotate_ignore_thread_sanitizer_guard(
+      const annotate_ignore_thread_sanitizer_guard&) = delete;
+  annotate_ignore_thread_sanitizer_guard& operator=(
+      const annotate_ignore_thread_sanitizer_guard&) = delete;
+
+  ~annotate_ignore_thread_sanitizer_guard() {
+    annotate_ignore_reads_end(file_, line_);
+    annotate_ignore_writes_end(file_, line_);
+    annotate_ignore_sync_end(file_, line_);
+  }
+
+ private:
+  const char* file_;
+  int line_;
+};
 
 } // namespace folly

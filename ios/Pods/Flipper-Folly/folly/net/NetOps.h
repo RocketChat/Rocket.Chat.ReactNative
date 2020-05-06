@@ -1,11 +1,11 @@
 /*
- * Copyright 2013-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,6 +22,7 @@
 #include <folly/net/NetworkSocket.h>
 #include <folly/portability/IOVec.h>
 #include <folly/portability/SysTypes.h>
+#include <folly/portability/Time.h>
 #include <folly/portability/Windows.h>
 
 #ifndef _WIN32
@@ -68,15 +69,23 @@
 #define UDP_SEGMENT 103
 #endif
 
+#ifndef UDP_GRO
+#define UDP_GRO 104
+#endif
+
 #ifndef UDP_MAX_SEGMENTS
 #define UDP_MAX_SEGMENTS (1 << 6UL)
 #endif
 
-#if !(FOLLY_HAVE_RECVMMSG || FOLLY_HAVE_SENDMMSG)
+#if !defined(MSG_WAITFORONE) && !defined(__wasm32__)
 struct mmsghdr {
   struct msghdr msg_hdr;
   unsigned int msg_len;
 };
+#endif
+
+#ifndef IP_BIND_ADDRESS_NO_PORT
+#define IP_BIND_ADDRESS_NO_PORT 24
 #endif
 
 #else
@@ -91,6 +100,7 @@ using sa_family_t = ADDRESS_FAMILY;
 #define MSG_ZEROCOPY 0x0
 #define SOL_UDP 0x0
 #define UDP_SEGMENT 0x0
+#define IP_BIND_ADDRESS_NO_PORT 0
 
 // We don't actually support either of these flags
 // currently.
@@ -168,6 +178,12 @@ ssize_t recvfrom(
     sockaddr* from,
     socklen_t* fromlen);
 ssize_t recvmsg(NetworkSocket s, msghdr* message, int flags);
+int recvmmsg(
+    NetworkSocket s,
+    mmsghdr* msgvec,
+    unsigned int vlen,
+    unsigned int flags,
+    timespec* timeout);
 ssize_t send(NetworkSocket s, const void* buf, size_t len, int flags);
 ssize_t sendto(
     NetworkSocket s,

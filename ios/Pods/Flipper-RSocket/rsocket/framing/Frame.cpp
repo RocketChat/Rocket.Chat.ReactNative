@@ -26,7 +26,7 @@ namespace rsocket {
 namespace detail {
 
 FrameFlags getFlags(const Payload& p) {
-  return p.metadata ? FrameFlags::METADATA : FrameFlags::EMPTY;
+  return p.metadata ? FrameFlags::METADATA : FrameFlags::EMPTY_;
 }
 
 void checkFlags(const Payload& p, FrameFlags flags) {

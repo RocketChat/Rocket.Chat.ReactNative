@@ -1,11 +1,11 @@
 /*
- * Copyright 2015-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,6 +21,8 @@
  */
 
 #pragma once
+
+#include <folly/Portability.h>
 
 #ifndef __has_attribute
 #define FOLLY_HAS_ATTRIBUTE(x) 0
@@ -99,10 +101,19 @@
  *   }
  *   return nullptr;
  * }
+ *
+ * Ignores Clang's -Wnullability-extension since it correctly handles the case
+ * where the extension is not present.
  */
 #if FOLLY_HAS_EXTENSION(nullability)
-#define FOLLY_NULLABLE _Nullable
-#define FOLLY_NONNULL _Nonnull
+#define FOLLY_NULLABLE                                   \
+  FOLLY_PUSH_WARNING                                     \
+  FOLLY_CLANG_DISABLE_WARNING("-Wnullability-extension") \
+  _Nullable FOLLY_POP_WARNING
+#define FOLLY_NONNULL                                    \
+  FOLLY_PUSH_WARNING                                     \
+  FOLLY_CLANG_DISABLE_WARNING("-Wnullability-extension") \
+  _Nonnull FOLLY_POP_WARNING
 #else
 #define FOLLY_NULLABLE
 #define FOLLY_NONNULL
@@ -118,4 +129,29 @@
 #define FOLLY_COLD __attribute__((__cold__))
 #else
 #define FOLLY_COLD
+#endif
+
+/**
+ *  no_unique_address indicates that a member variable can be optimized to
+ * occupy no space, rather than the minimum 1-byte used by default.
+ *
+ *  class Empty {};
+ *
+ *  class NonEmpty1 {
+ *    FOLLY_NO_UNIQUE_ADDRESS Empty e;
+ *    int f;
+ *  };
+ *
+ *  class NonEmpty2 {
+ *    Empty e;
+ *    int f;
+ *  };
+ *
+ *  sizeof(NonEmpty1); // may be == sizeof(int)
+ *  sizeof(NonEmpty2); // must be > sizeof(int)
+ */
+#if FOLLY_HAS_CPP_ATTRIBUTE(no_unique_address)
+#define FOLLY_ATTR_NO_UNIQUE_ADDRESS [[no_unique_address]]
+#else
+#define FOLLY_ATTR_NO_UNIQUE_ADDRESS
 #endif

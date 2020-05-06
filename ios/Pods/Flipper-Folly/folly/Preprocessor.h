@@ -1,11 +1,11 @@
 /*
- * Copyright 2012-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -105,10 +105,10 @@
 #endif
 
 /**
- * Use FB_STRINGIZE(x) when you'd want to do what #x does inside
+ * Use FOLLY_PP_STRINGIZE(x) when you'd want to do what #x does inside
  * another macro expansion.
  */
-#define FB_STRINGIZE(x) #x
+#define FOLLY_PP_STRINGIZE(x) #x
 
 #define FOLLY_PP_DETAIL_NARGS_1(dummy, _7, _6, _5, _4, _3, _2, _1, _0, ...) _0
 #define FOLLY_PP_DETAIL_NARGS(...) \

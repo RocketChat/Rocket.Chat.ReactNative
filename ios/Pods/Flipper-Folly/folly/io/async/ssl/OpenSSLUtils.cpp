@@ -1,11 +1,11 @@
 /*
- * Copyright 2016-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -40,13 +40,10 @@ namespace ssl {
 bool OpenSSLUtils::getTLSMasterKey(
     const SSL_SESSION* session,
     MutableByteRange keyOut) {
-#if FOLLY_OPENSSL_IS_101 || FOLLY_OPENSSL_IS_102
-  if (session &&
-      session->master_key_length == static_cast<int>(keyOut.size())) {
-    auto masterKey = session->master_key;
-    std::copy(
-        masterKey, masterKey + session->master_key_length, keyOut.begin());
-    return true;
+#if FOLLY_OPENSSL_IS_110
+  auto size = SSL_SESSION_get_master_key(session, nullptr, 0);
+  if (size == keyOut.size()) {
+    return SSL_SESSION_get_master_key(session, keyOut.begin(), keyOut.size());
   }
 #else
   (void)session;
@@ -58,12 +55,10 @@ bool OpenSSLUtils::getTLSMasterKey(
 bool OpenSSLUtils::getTLSClientRandom(
     const SSL* ssl,
     MutableByteRange randomOut) {
-#if FOLLY_OPENSSL_IS_101 || FOLLY_OPENSSL_IS_102
-  if ((SSL_version(ssl) >> 8) == TLS1_VERSION_MAJOR && ssl->s3 &&
-      randomOut.size() == SSL3_RANDOM_SIZE) {
-    auto clientRandom = ssl->s3->client_random;
-    std::copy(clientRandom, clientRandom + SSL3_RANDOM_SIZE, randomOut.begin());
-    return true;
+#if FOLLY_OPENSSL_IS_110
+  auto size = SSL_get_client_random(ssl, nullptr, 0);
+  if (size == randomOut.size()) {
+    return SSL_get_client_random(ssl, randomOut.begin(), randomOut.size());
   }
 #else
   (void)ssl;
@@ -129,7 +124,7 @@ bool OpenSSLUtils::validatePeerCertNames(
     if ((addr4 != nullptr || addr6 != nullptr) && name->type == GEN_IPADD) {
       // Extra const-ness for paranoia
       unsigned char const* const rawIpStr = name->d.iPAddress->data;
-      size_t const rawIpLen = size_t(name->d.iPAddress->length);
+      auto const rawIpLen = size_t(name->d.iPAddress->length);
 
       if (rawIpLen == 4 && addr4 != nullptr) {
         if (::memcmp(rawIpStr, &addr4->sin_addr, rawIpLen) == 0) {
@@ -155,8 +150,10 @@ static std::unordered_map<uint16_t, std::string> getOpenSSLCipherNames() {
   SSL_CTX* ctx = nullptr;
   SSL* ssl = nullptr;
 
-  const SSL_METHOD* meth = SSLv23_server_method();
+  const SSL_METHOD* meth = TLS_server_method();
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
   OpenSSL_add_ssl_algorithms();
+#endif
 
   if ((ctx = SSL_CTX_new(meth)) == nullptr) {
     return ret;

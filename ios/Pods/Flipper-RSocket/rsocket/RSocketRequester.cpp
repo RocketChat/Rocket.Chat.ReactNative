@@ -22,7 +22,6 @@
 #include "yarpl/single/SingleSubscriptions.h"
 
 using namespace folly;
-using namespace yarpl;
 
 namespace rsocket {
 

@@ -1,11 +1,11 @@
 /*
- * Copyright 2017-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,6 +23,8 @@
 #define SCHED_FIFO 1
 #define SCHED_RR 2
 
+#include <folly/Portability.h>
+
 namespace folly {
 namespace portability {
 namespace sched {
@@ -36,5 +38,8 @@ int sched_get_priority_max(int policy);
 } // namespace portability
 } // namespace folly
 
+FOLLY_PUSH_WARNING
+FOLLY_CLANG_DISABLE_WARNING("-Wheader-hygiene")
 /* using override */ using namespace folly::portability::sched;
+FOLLY_POP_WARNING
 #endif

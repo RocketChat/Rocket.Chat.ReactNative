@@ -1,11 +1,11 @@
 /*
- * Copyright 2014-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #pragma once
 
 #include <folly/ExceptionWrapper.h>
@@ -598,10 +599,9 @@ struct isTry<Try<T>> : std::true_type {};
  */
 template <typename F>
 typename std::enable_if<
-    !std::is_same<invoke_result_t<F>, void>::value &&
-        !isTry<invoke_result_t<F>>::value,
+    !std::is_same<invoke_result_t<F>, void>::value,
     Try<invoke_result_t<F>>>::type
-makeTryWith(F&& f);
+makeTryWithNoUnwrap(F&& f);
 
 /*
  * Specialization of makeTryWith for void return
@@ -613,6 +613,16 @@ makeTryWith(F&& f);
 template <typename F>
 typename std::
     enable_if<std::is_same<invoke_result_t<F>, void>::value, Try<void>>::type
+    makeTryWithNoUnwrap(F&& f);
+
+/*
+ * @param f a function to execute and capture the result of (value or exception)
+ *
+ * @returns Try holding the result of f
+ */
+template <typename F>
+typename std::
+    enable_if<!isTry<invoke_result_t<F>>::value, Try<invoke_result_t<F>>>::type
     makeTryWith(F&& f);
 
 /*

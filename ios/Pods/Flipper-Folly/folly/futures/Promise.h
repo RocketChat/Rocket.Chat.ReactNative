@@ -1,11 +1,11 @@
 /*
- * Copyright 2014-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -58,6 +58,8 @@ template <class T>
 class SemiFuture;
 template <class T>
 class Future;
+template <class T>
+class Promise;
 
 namespace futures {
 namespace detail {
@@ -66,6 +68,8 @@ class FutureBase;
 struct EmptyConstruct {};
 template <typename T, typename F>
 class CoreCallbackState;
+template <typename T>
+void setTry(Promise<T>& p, Executor::KeepAlive<>&& ka, Try<T>&& t);
 } // namespace detail
 } // namespace futures
 
@@ -407,6 +411,10 @@ class Promise {
   friend class Future;
   template <class, class>
   friend class futures::detail::CoreCallbackState;
+  friend void futures::detail::setTry<T>(
+      Promise<T>& p,
+      Executor::KeepAlive<>&& ka,
+      Try<T>&& t);
 
   // Whether the Future has been retrieved (a one-time operation).
   bool retrieved_;
@@ -432,6 +440,10 @@ class Promise {
     }
     return *core;
   }
+
+  /// Fulfill the Promise with the specified Try (value or exception) and
+  /// propagate the completing executor.
+  void setTry(Executor::KeepAlive<>&& ka, Try<T>&& t);
 
   // shared core state object
   // usually you should use `getCore()` instead of directly accessing `core_`.

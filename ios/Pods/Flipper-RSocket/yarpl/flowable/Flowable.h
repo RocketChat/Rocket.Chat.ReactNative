@@ -86,10 +86,10 @@ class Flowable : public yarpl::enable_get_ref {
               value>::type>
   std::unique_ptr<Disposable> subscribe(
       Next&& next,
-      Error&& error,
+      Error&& e,
       int64_t batch = credits::kNoFlowControl) {
     auto subscriber = details::LambdaSubscriber<T>::create(
-        std::forward<Next>(next), std::forward<Error>(error), batch);
+        std::forward<Next>(next), std::forward<Error>(e), batch);
     subscribe(subscriber);
     return std::make_unique<details::BaseSubscriberDisposable<T>>(
         std::move(subscriber));
@@ -111,12 +111,12 @@ class Flowable : public yarpl::enable_get_ref {
           folly::is_invocable<std::decay_t<Complete>&>::value>::type>
   std::unique_ptr<Disposable> subscribe(
       Next&& next,
-      Error&& error,
+      Error&& e,
       Complete&& complete,
       int64_t batch = credits::kNoFlowControl) {
     auto subscriber = details::LambdaSubscriber<T>::create(
         std::forward<Next>(next),
-        std::forward<Error>(error),
+        std::forward<Error>(e),
         std::forward<Complete>(complete),
         batch);
     subscribe(subscriber);
@@ -156,9 +156,9 @@ class Flowable : public yarpl::enable_get_ref {
 
   static std::shared_ptr<Flowable<T>> just(T value) {
     auto lambda = [value = std::move(value)](
-                      Subscriber<T>& subscriber, int64_t requested) {
+                      Subscriber<T>& subscriber, int64_t requested) mutable {
       DCHECK_GT(requested, 0);
-      subscriber.onNext(value);
+      subscriber.onNext(std::move(value));
       subscriber.onComplete();
     };
 
@@ -403,9 +403,10 @@ class Flowable : public yarpl::enable_get_ref {
           OnSubscribe&&,
           std::shared_ptr<Subscriber<T>>>::value>::type>
   // TODO(lehecka): enable this warning once mobile code is clear
-  // FOLLY_DEPRECATED(
+  // [[deprecated(
   //     "Flowable<T>::fromPublisher is deprecated: Use PublishProcessor or "
-  //     "contact rsocket team if you can't figure out what to replace it with")
+  //     "contact rsocket team if you can't figure out what to replace it "
+  //     "with")]]
   static std::shared_ptr<Flowable<T>> fromPublisher(OnSubscribe&& function);
 };
 
@@ -733,13 +734,13 @@ template <typename T>
 template <typename ExceptionGenerator>
 std::shared_ptr<Flowable<T>> Flowable<T>::timeout(
     folly::EventBase& timerEvb,
-    std::chrono::milliseconds timeout,
+    std::chrono::milliseconds starvationTimeout,
     std::chrono::milliseconds initTimeout,
     ExceptionGenerator&& exnGen) {
   return std::make_shared<details::TimeoutOperator<T, ExceptionGenerator>>(
       ref_from_this(this),
       timerEvb,
-      timeout,
+      starvationTimeout,
       initTimeout,
       std::forward<ExceptionGenerator>(exnGen));
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2017-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,8 +19,10 @@
 #include <list>
 #include <mutex>
 
+#include <folly/ScopeGuard.h>
 #include <folly/lang/Exception.h>
 #include <folly/portability/PThread.h>
+#include <folly/synchronization/SanitizeThread.h>
 
 namespace folly {
 
@@ -29,7 +31,7 @@ namespace detail {
 namespace {
 
 struct AtForkTask {
-  void* object;
+  void const* handle;
   folly::Function<bool()> prepare;
   folly::Function<void()> parent;
   folly::Function<void()> child;
@@ -70,6 +72,13 @@ class AtForkList {
   }
 
   static void child() noexcept {
+    // if we fork a multithreaded process
+    // some of the TSAN mutexes might be locked
+    // so we just enable ignores for everything
+    // while handling the child callbacks
+    // This might still be an issue if we do not exec right away
+    annotate_ignore_thread_sanitizer_guard g(__FILE__, __LINE__);
+
     auto& tasks = instance().tasks;
     for (auto& task : tasks) {
       task.child();
@@ -106,20 +115,23 @@ void AtFork::init() {
 }
 
 void AtFork::registerHandler(
-    void* object,
+    void const* handle,
     folly::Function<bool()> prepare,
     folly::Function<void()> parent,
     folly::Function<void()> child) {
   std::lock_guard<std::mutex> lg(AtForkList::instance().tasksLock);
   AtForkList::instance().tasks.push_back(
-      {object, std::move(prepare), std::move(parent), std::move(child)});
+      {handle, std::move(prepare), std::move(parent), std::move(child)});
 }
 
-void AtFork::unregisterHandler(void* object) {
+void AtFork::unregisterHandler(void const* handle) {
+  if (!handle) {
+    return;
+  }
   auto& list = AtForkList::instance();
   std::lock_guard<std::mutex> lg(list.tasksLock);
   for (auto it = list.tasks.begin(); it != list.tasks.end(); ++it) {
-    if (it->object == object) {
+    if (it->handle == handle) {
       list.tasks.erase(it);
       return;
     }

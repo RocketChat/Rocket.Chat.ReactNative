@@ -1,11 +1,11 @@
 /*
- * Copyright 2014-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,6 +23,7 @@
 #include <thread>
 
 #include <folly/Likely.h>
+#include <folly/detail/AsyncTrace.h>
 #include <folly/detail/Futex.h>
 #include <folly/detail/MemoryIdler.h>
 #include <folly/portability/Asm.h>
@@ -263,6 +264,12 @@ class Baton {
   FOLLY_NOINLINE bool tryWaitSlow(
       const std::chrono::time_point<Clock, Duration>& deadline,
       const WaitOptions& opt) noexcept {
+    if (opt.logging_enabled()) {
+      folly::async_tracing::logBlockingOperation(
+          std::chrono::duration_cast<std::chrono::milliseconds>(
+              deadline - Clock::now()));
+    }
+
     switch (detail::spin_pause_until(deadline, opt, [=] { return ready(); })) {
       case detail::spin_result::success:
         return true;

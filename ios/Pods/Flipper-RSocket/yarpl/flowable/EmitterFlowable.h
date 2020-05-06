@@ -30,12 +30,13 @@ namespace flowable {
 namespace details {
 
 template <typename T>
-class EmiterBase {
+class EmitterBase {
  public:
-  virtual ~EmiterBase() = default;
+  virtual ~EmitterBase() = default;
 
-  virtual std::tuple<int64_t, bool> emit(std::shared_ptr<Subscriber<T>>,
-                                         int64_t) = 0;
+  virtual std::tuple<int64_t, bool> emit(
+      std::shared_ptr<Subscriber<T>>,
+      int64_t) = 0;
 };
 
 /**
@@ -53,9 +54,9 @@ class EmiterSubscription final : public Subscription,
 
  public:
   EmiterSubscription(
-      std::shared_ptr<EmiterBase<T>> emiter,
+      std::shared_ptr<EmitterBase<T>> emitter,
       std::shared_ptr<Subscriber<T>> subscriber)
-      : emiter_(std::move(emiter)), subscriber_(std::move(subscriber)) {}
+      : emitter_(std::move(emitter)), subscriber_(std::move(subscriber)) {}
 
   void init() {
     subscriber_->onSubscribe(this->ref_from_this(this));
@@ -109,7 +110,11 @@ class EmiterSubscription final : public Subscription,
 #ifndef NDEBUG
     DCHECK(!hasFinished_) << "onComplete() or onError() already called";
 #endif
-    subscriber_->onNext(std::move(value));
+    if (subscriber_) {
+      subscriber_->onNext(std::move(value));
+    } else {
+      DCHECK(requested_.load(std::memory_order_relaxed) == kCanceled);
+    }
   }
 
   void onComplete() override {
@@ -117,7 +122,11 @@ class EmiterSubscription final : public Subscription,
     DCHECK(!hasFinished_) << "onComplete() or onError() already called";
     hasFinished_ = true;
 #endif
-    subscriber_->onComplete();
+    if (subscriber_) {
+      subscriber_->onComplete();
+    } else {
+      DCHECK(requested_.load(std::memory_order_relaxed) == kCanceled);
+    }
   }
 
   void onError(folly::exception_wrapper error) override {
@@ -125,7 +134,11 @@ class EmiterSubscription final : public Subscription,
     DCHECK(!hasFinished_) << "onComplete() or onError() already called";
     hasFinished_ = true;
 #endif
-    subscriber_->onError(error);
+    if (subscriber_) {
+      subscriber_->onError(error);
+    } else {
+      DCHECK(requested_.load(std::memory_order_relaxed) == kCanceled);
+    }
   }
 
  private:
@@ -168,15 +181,28 @@ class EmiterSubscription final : public Subscription,
       int64_t emitted;
       bool done;
 
-      std::tie(emitted, done) = emiter_->emit(this_subscriber, current);
+      std::tie(emitted, done) = emitter_->emit(this_subscriber, current);
 
       while (true) {
         current = requested_.load(std::memory_order_relaxed);
-        if (current == kCanceled || (current == kNoFlowControl && !done)) {
+        if (current == kCanceled) {
           break;
         }
+        int64_t updated;
+        // generally speaking updated will be number of credits lefted over
+        // after emitter_->emit(), so updated = current - emitted
+        // need to handle case where done = true and avoid doing arithmetic
+        // operation on kNoFlowControl
 
-        auto updated = done ? kCanceled : current - emitted;
+        // in asynchrnous emitter cases, might have emitted=kNoFlowControl
+        // this means that emitter will take the responsibility to send the
+        // whole conext and credits lefted over should be set to 0.
+        if (current == kNoFlowControl) {
+          updated =
+              done ? kCanceled : emitted == kNoFlowControl ? 0 : kNoFlowControl;
+        } else {
+          updated = done ? kCanceled : current - emitted;
+        }
         if (requested_.compare_exchange_strong(current, updated)) {
           break;
         }
@@ -185,7 +211,7 @@ class EmiterSubscription final : public Subscription,
   }
 
   void release() {
-    emiter_.reset();
+    emitter_.reset();
     subscriber_.reset();
   }
 
@@ -202,7 +228,7 @@ class EmiterSubscription final : public Subscription,
   // We don't want to recursively invoke process(); one loop should do.
   std::atomic_bool processing_{false};
 
-  std::shared_ptr<EmiterBase<T>> emiter_;
+  std::shared_ptr<EmitterBase<T>> emitter_;
   std::shared_ptr<Subscriber<T>> subscriber_;
 };
 
@@ -262,7 +288,7 @@ class TrackingSubscriber : public Subscriber<T> {
 };
 
 template <typename T, typename Emitter>
-class EmitterWrapper : public EmiterBase<T>, public Flowable<T> {
+class EmitterWrapper : public EmitterBase<T>, public Flowable<T> {
   static_assert(
       std::is_same<std::decay_t<Emitter>, Emitter>::value,
       "undecayed");
@@ -277,8 +303,9 @@ class EmitterWrapper : public EmiterBase<T>, public Flowable<T> {
     ef->init();
   }
 
-  std::tuple<int64_t, bool> emit(std::shared_ptr<Subscriber<T>> subscriber,
-                                 int64_t requested) override {
+  std::tuple<int64_t, bool> emit(
+      std::shared_ptr<Subscriber<T>> subscriber,
+      int64_t requested) override {
     TrackingSubscriber<T> trackingSubscriber(*subscriber, requested);
     emitter_(trackingSubscriber, requested);
     return trackingSubscriber.getResult();

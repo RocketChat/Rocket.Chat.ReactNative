@@ -1,11 +1,11 @@
 /*
- * Copyright 2012-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /*
  * AtomicHashMap --
  *
- * A high-performance concurrent hash map with int32 or int64 keys. Supports
+ * A high-performance concurrent hash map with int32_t or int64_t keys. Supports
  * insert, find(key), findAt(index), erase(key), size, and more.  Memory cannot
  * be freed or reclaimed by erase.  Can grow to a maximum of about 18 times the
  * initial capacity, but performance degrades linearly with growth. Can also be
@@ -34,7 +35,7 @@
  *      (see findAt()).
  *
  * Disadvantages:
- *    - Keys must be native int32 or int64, or explicitly converted.
+ *    - Keys must be native int32_t or int64_t, or explicitly converted.
  *    - Must be able to specify unique empty, locked, and erased keys
  *    - Performance degrades linearly as size grows beyond initialization
  *      capacity.
@@ -63,7 +64,7 @@
  *   of the map is exceeded.
  *
  *   Benchmark performance with 8 simultaneous threads processing 1 million
- *   unique <int64, int64> entries on a 4-core, 2.5 GHz machine:
+ *   unique <int64_t, int64_t> entries on a 4-core, 2.5 GHz machine:
  *
  *     Load Factor   Mem Efficiency   usec/Insert   usec/Find
  *         50%             50%           0.19         0.05
@@ -80,8 +81,6 @@
 
 #pragma once
 #define FOLLY_ATOMICHASHMAP_H_
-
-#include <boost/iterator/iterator_facade.hpp>
 
 #include <atomic>
 #include <functional>

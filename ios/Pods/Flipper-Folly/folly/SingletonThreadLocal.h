@@ -1,11 +1,11 @@
 /*
- * Copyright 2016-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,46 +16,26 @@
 
 #pragma once
 
-#include <typeinfo>
-
-#include <boost/intrusive/list.hpp>
+#include <thread>
+#include <type_traits>
+#include <unordered_map>
+#include <unordered_set>
 
 #include <folly/ScopeGuard.h>
 #include <folly/ThreadLocal.h>
 #include <folly/detail/Iterators.h>
 #include <folly/detail/Singleton.h>
+#include <folly/detail/UniqueInstance.h>
 #include <folly/functional/Invoke.h>
 
+// we do not want to use FOLLY_TLS here for mobile
+#if !FOLLY_MOBILE && defined(FOLLY_TLS)
+#define FOLLY_STL_USE_FOLLY_TLS 1
+#else
+#undef FOLLY_STL_USE_FOLLY_TLS
+#endif
+
 namespace folly {
-
-namespace detail {
-
-class SingletonThreadLocalBase {
- public:
-  class UniqueBase {
-   public:
-    using Ptr = std::type_info const*;
-    using Ref = std::type_info const&;
-    struct Value {
-      bool init;
-      Ptr make;
-      Ptr tltag;
-    };
-
-    template <typename T, typename Tag, typename Make, typename TLTag>
-    explicit UniqueBase(TypeTuple<T, Tag, Make, TLTag>) noexcept
-        : UniqueBase(
-              typeid(T),
-              typeid(Tag),
-              typeid(Make),
-              typeid(TLTag),
-              detail::createGlobal<Value, TypeTuple<T, Tag, UniqueBase>>()) {}
-
-    UniqueBase(Ref type, Ref tag, Ref make, Ref tltag, Value& value) noexcept;
-  };
-};
-
-} // namespace detail
 
 /// SingletonThreadLocal
 ///
@@ -95,61 +75,68 @@ template <
     typename Make = detail::DefaultMake<T>,
     typename TLTag = std::
         conditional_t<std::is_same<Tag, detail::DefaultTag>::value, void, Tag>>
-class SingletonThreadLocal : private detail::SingletonThreadLocalBase {
+class SingletonThreadLocal {
  private:
-  struct Unique final : UniqueBase {
-    Unique() noexcept : UniqueBase(detail::TypeTuple<T, Tag, Make, TLTag>{}) {}
-  };
-  static Unique unique;
+  static detail::UniqueInstance unique;
 
   struct Wrapper;
 
-  using NodeBase = boost::intrusive::list_base_hook<
-      boost::intrusive::link_mode<boost::intrusive::auto_unlink>>;
-
-  struct Node : NodeBase {
-    Wrapper*& cache;
-    bool& stale;
-
-    Node(Wrapper*& cache_, bool& stale_) : cache(cache_), stale(stale_) {
-      auto& wrapper = getWrapper();
-      wrapper.caches.push_front(*this);
-      cache = &wrapper;
-    }
-    ~Node() {
-      clear();
-    }
-
-    void clear() {
-      cache = nullptr;
-      stale = true;
-    }
+  struct LocalCache {
+    Wrapper* cache;
   };
+  static_assert(std::is_pod<LocalCache>::value, "non-pod");
 
-  using List =
-      boost::intrusive::list<Node, boost::intrusive::constant_time_size<false>>;
+  struct LocalLifetime;
 
   struct Wrapper {
     using Object = invoke_result_t<Make>;
     static_assert(std::is_convertible<Object&, T&>::value, "inconvertible");
 
+    using LocalCacheSet = std::unordered_set<LocalCache*>;
+
     // keep as first field, to save 1 instr in the fast path
     Object object{Make{}()};
-    List caches;
+
+    // per-cache refcounts, the number of lifetimes tracking that cache
+    std::unordered_map<LocalCache*, size_t> caches;
+
+    // per-lifetime cache tracking; 1-M lifetimes may track 1-N caches
+    std::unordered_map<LocalLifetime*, LocalCacheSet> lifetimes;
 
     /* implicit */ operator T&() {
       return object;
     }
 
     ~Wrapper() {
-      for (auto& node : caches) {
-        node.clear();
+      for (auto& kvp : caches) {
+        kvp.first->cache = nullptr;
       }
-      caches.clear();
     }
   };
 
   using WrapperTL = ThreadLocal<Wrapper, TLTag>;
+
+  struct LocalLifetime {
+    ~LocalLifetime() {
+      auto& wrapper = getWrapper();
+      auto& lifetimes = wrapper.lifetimes[this];
+      for (auto cache : lifetimes) {
+        auto const it = wrapper.caches.find(cache);
+        if (!--it->second) {
+          wrapper.caches.erase(it);
+          cache->cache = nullptr;
+        }
+      }
+      wrapper.lifetimes.erase(this);
+    }
+
+    void track(LocalCache& cache) {
+      auto& wrapper = getWrapper();
+      cache.cache = &wrapper;
+      auto const inserted = wrapper.lifetimes[this].insert(&cache);
+      wrapper.caches[&cache] += inserted.second;
+    }
+  };
 
   SingletonThreadLocal() = delete;
 
@@ -158,25 +145,26 @@ class SingletonThreadLocal : private detail::SingletonThreadLocalBase {
   }
 
   FOLLY_NOINLINE static Wrapper& getWrapper() {
+    (void)unique; // force the object not to be thrown out as unused
     return *getWrapperTL();
   }
 
-#ifdef FOLLY_TLS
-  FOLLY_NOINLINE static T& getSlow(Wrapper*& cache) {
-    (void)unique; // force the object not to be thrown out as unused
-    static thread_local Wrapper** check = &cache;
-    CHECK_EQ(check, &cache) << "inline function static thread_local merging";
-    static thread_local bool stale;
-    static thread_local Node node(cache, stale);
-    return !stale && node.cache ? *node.cache : getWrapper();
+#ifdef FOLLY_STL_USE_FOLLY_TLS
+  FOLLY_NOINLINE static Wrapper& getSlow(LocalCache& cache) {
+    if (threadlocal_detail::StaticMetaBase::dying()) {
+      return getWrapper();
+    }
+    static thread_local LocalLifetime lifetime;
+    lifetime.track(cache); // idempotent
+    return FOLLY_LIKELY(!!cache.cache) ? *cache.cache : getWrapper();
   }
 #endif
 
  public:
   FOLLY_EXPORT FOLLY_ALWAYS_INLINE static T& get() {
-#ifdef FOLLY_TLS
-    static thread_local Wrapper* cache;
-    return FOLLY_LIKELY(!!cache) ? *cache : getSlow(cache);
+#ifdef FOLLY_STL_USE_FOLLY_TLS
+    static thread_local LocalCache cache;
+    return FOLLY_LIKELY(!!cache.cache) ? *cache.cache : getSlow(cache);
 #else
     return getWrapper();
 #endif
@@ -209,6 +197,14 @@ class SingletonThreadLocal : private detail::SingletonThreadLocalBase {
       T& dereference() const {
         return const_cast<Iterator*>(this)->base()->object;
       }
+
+      std::thread::id getThreadId() const {
+        return this->base().getThreadId();
+      }
+
+      uint64_t getOSThreadId() const {
+        return this->base().getOSThreadId();
+      }
     };
 
     Accessor(const Accessor&) = delete;
@@ -232,8 +228,10 @@ class SingletonThreadLocal : private detail::SingletonThreadLocalBase {
 };
 
 template <typename T, typename Tag, typename Make, typename TLTag>
-typename SingletonThreadLocal<T, Tag, Make, TLTag>::Unique
-    SingletonThreadLocal<T, Tag, Make, TLTag>::unique;
+detail::UniqueInstance SingletonThreadLocal<T, Tag, Make, TLTag>::unique{
+    "folly::SingletonThreadLocal",
+    tag_t<T, Tag>{},
+    tag_t<Make, TLTag>{}};
 
 } // namespace folly
 

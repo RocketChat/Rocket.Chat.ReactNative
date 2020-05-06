@@ -1,11 +1,11 @@
 /*
- * Copyright 2014-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,7 +26,7 @@ EventBaseManager* EventBaseManager::get() {
     return mgr;
   }
 
-  EventBaseManager* new_mgr = new EventBaseManager;
+  auto new_mgr = new EventBaseManager;
   bool exchanged = globalManager.compare_exchange_strong(mgr, new_mgr);
   if (!exchanged) {
     delete new_mgr;
@@ -66,7 +66,7 @@ EventBase* EventBaseManager::getEventBase() const {
   // have one?
   auto* info = localStore_.get();
   if (!info) {
-    info = new EventBaseInfo();
+    info = func_ ? new EventBaseInfo(func_()) : new EventBaseInfo();
     localStore_.reset(info);
 
     if (observer_) {

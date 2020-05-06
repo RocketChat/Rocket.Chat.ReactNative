@@ -1,11 +1,11 @@
 /*
- * Copyright 2014-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,10 +25,6 @@
 #include <vector>
 
 #include <glog/logging.h>
-
-#ifndef FOLLY_NO_CONFIG
-#include <folly/folly-config.h>
-#endif
 
 #include <folly/Function.h>
 #include <folly/Portability.h>
@@ -62,7 +58,7 @@ class PasswordCollector {
   /**
    * Return a description of this collector for logging purposes
    */
-  virtual std::string describe() const = 0;
+  virtual const std::string& describe() const = 0;
 };
 
 /**
@@ -144,6 +140,11 @@ class SSLContext {
    * @param version The lowest or oldest SSL version to support.
    */
   explicit SSLContext(SSLVersion version = TLSv1);
+  /**
+   * Constructor that helps ease migrations by directly wrapping a provided
+   * SSL_CTX*
+   */
+  explicit SSLContext(SSL_CTX* ctx);
   virtual ~SSLContext();
 
   /**
@@ -550,6 +551,13 @@ class SSLContext {
    * Helper to match a hostname versus a pattern.
    */
   static bool matchName(const char* host, const char* pattern, int size);
+
+  /**
+   * Temporary. Will be removed after TLS1.3 is enabled by default.
+   * Function to enable TLS1.3 in OpenSSL versions that support it.
+   * Used to migrate users to TLS1.3 piecemeal.
+   */
+  void enableTLS13();
 
   [[deprecated("Use folly::ssl::init")]] static void initializeOpenSSL();
 

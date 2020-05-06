@@ -1,11 +1,11 @@
 /*
- * Copyright 2016-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,12 +26,26 @@
 // These have to be this way because we define our own versions
 // of close(), because the normal Windows versions don't handle
 // sockets at all.
+
+// There are some ordering issues internally in the SDK; we need to ensure
+// stdio.h is included prior to including direct.h and io.h with internal names
+// disabled to ensure all of the normal names get declared properly.
+#include <stdio.h>
+
 #ifndef __STDC__
 /* nolint */
 #define __STDC__ 1
+#pragma push_macro("_CRT_DECLARE_NONSTDC_NAMES")
+#ifdef _CRT_DECLARE_NONSTDC_NAMES
+#undef _CRT_DECLARE_NONSTDC_NAMES
+#endif
+#pragma push_macro("_CRT_INTERNAL_NONSTDC_NAMES")
+#undef _CRT_INTERNAL_NONSTDC_NAMES
 #include <direct.h> // @manual nolint
 #include <io.h> // @manual nolint
 #undef __STDC__
+#pragma pop_macro("_CRT_INTERNAL_NONSTDC_NAMES")
+#pragma pop_macro("_CRT_DECLARE_NONSTDC_NAMES")
 #else
 #include <direct.h> // @manual nolint
 #include <io.h> // @manual nolint

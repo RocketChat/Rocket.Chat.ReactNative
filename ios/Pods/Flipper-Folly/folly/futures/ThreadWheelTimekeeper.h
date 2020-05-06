@@ -1,11 +1,11 @@
 /*
- * Copyright 2014-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,10 +33,7 @@ class ThreadWheelTimekeeper : public Timekeeper {
   ~ThreadWheelTimekeeper() override;
 
   /// Implement the Timekeeper interface
-  /// This future *does* complete on the timer thread. You should almost
-  /// certainly follow it with a via() call or the accuracy of other timers
-  /// will suffer.
-  Future<Unit> after(Duration) override;
+  SemiFuture<Unit> after(HighResDuration) override;
 
  protected:
   folly::EventBase eventBase_;

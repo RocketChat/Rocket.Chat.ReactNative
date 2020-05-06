@@ -1,11 +1,11 @@
 /*
- * Copyright 2011-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,30 +26,12 @@
 
 #include <folly/Conv.h>
 #include <folly/ExceptionString.h>
-#include <folly/FBString.h>
 #include <folly/Portability.h>
 #include <folly/Range.h>
 #include <folly/ScopeGuard.h>
 #include <folly/Traits.h>
 
-// Compatibility function, to make sure toStdString(s) can be called
-// to convert a std::string or fbstring variable s into type std::string
-// with very little overhead if s was already std::string
 namespace folly {
-
-inline std::string toStdString(const folly::fbstring& s) {
-  return std::string(s.data(), s.size());
-}
-
-inline const std::string& toStdString(const std::string& s) {
-  return s;
-}
-
-// If called with a temporary, the compiler will select this overload instead
-// of the above, so we don't return a (lvalue) reference to a temporary.
-inline std::string&& toStdString(std::string&& s) {
-  return std::move(s);
-}
 
 /**
  * C-Escape a string, making it suitable for representation as a C string
@@ -171,7 +153,7 @@ std::string stringPrintf(FOLLY_PRINTF_FORMAT const char* format, ...)
     FOLLY_PRINTF_FORMAT_ATTR(1, 2);
 
 /* Similar to stringPrintf, with different signature. */
-void stringPrintf(std::string* out, FOLLY_PRINTF_FORMAT const char* fmt, ...)
+void stringPrintf(std::string* out, FOLLY_PRINTF_FORMAT const char* format, ...)
     FOLLY_PRINTF_FORMAT_ATTR(2, 3);
 
 std::string& stringAppendf(
@@ -380,11 +362,11 @@ void hexDump(const void* ptr, size_t size, OutIt out);
 std::string hexDump(const void* ptr, size_t size);
 
 /**
- * Return a fbstring containing the description of the given errno value.
+ * Return a string containing the description of the given errno value.
  * Takes care not to overwrite the actual system errno, so calling
  * errnoStr(errno) is valid.
  */
-fbstring errnoStr(int err);
+std::string errnoStr(int err);
 
 /*
  * Split a string into a list of tokens by delimiter.
@@ -578,6 +560,41 @@ inline StringPiece trimWhitespace(StringPiece sp) {
  */
 inline StringPiece skipWhitespace(StringPiece sp) {
   return ltrimWhitespace(sp);
+}
+
+/**
+ * Returns a subpiece with all characters the provided @toTrim returns true
+ * for removed from the front of @sp.
+ */
+template <typename ToTrim>
+StringPiece ltrim(StringPiece sp, ToTrim toTrim) {
+  while (!sp.empty() && toTrim(sp.front())) {
+    sp.pop_front();
+  }
+
+  return sp;
+}
+
+/**
+ * Returns a subpiece with all characters the provided @toTrim returns true
+ * for removed from the back of @sp.
+ */
+template <typename ToTrim>
+StringPiece rtrim(StringPiece sp, ToTrim toTrim) {
+  while (!sp.empty() && toTrim(sp.back())) {
+    sp.pop_back();
+  }
+
+  return sp;
+}
+
+/**
+ * Returns a subpiece with all characters the provided @toTrim returns true
+ * for removed from the back and front of @sp.
+ */
+template <typename ToTrim>
+StringPiece trim(StringPiece sp, ToTrim toTrim) {
+  return ltrim(rtrim(sp, std::ref(toTrim)), std::ref(toTrim));
 }
 
 /**

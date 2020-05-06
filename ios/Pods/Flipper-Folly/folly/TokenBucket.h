@@ -1,11 +1,11 @@
 /*
- * Copyright 2015-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -106,9 +106,8 @@ class BasicDynamicTokenBucket {
    * Returns the current time in seconds since Epoch.
    */
   static double defaultClockNow() noexcept {
-    using dur = std::chrono::duration<double>;
     auto const now = Clock::now().time_since_epoch();
-    return std::chrono::duration_cast<dur>(now).count();
+    return std::chrono::duration<double>(now).count();
   }
 
   /**

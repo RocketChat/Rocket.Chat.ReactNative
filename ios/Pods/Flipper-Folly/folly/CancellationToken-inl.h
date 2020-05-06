@@ -1,11 +1,11 @@
 /*
- * Copyright 2018-present Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -193,6 +193,10 @@ inline CancellationSource& CancellationSource::operator=(
   return *this;
 }
 
+inline CancellationSource CancellationSource::invalid() noexcept {
+  return CancellationSource{detail::CancellationStateSourcePtr{}};
+}
+
 inline bool CancellationSource::isCancellationRequested() const noexcept {
   return state_ != nullptr && state_->isCancellationRequested();
 }
@@ -218,6 +222,10 @@ inline bool CancellationSource::requestCancellation() const noexcept {
 inline void CancellationSource::swap(CancellationSource& other) noexcept {
   std::swap(state_, other.state_);
 }
+
+inline CancellationSource::CancellationSource(
+    detail::CancellationStateSourcePtr&& state) noexcept
+    : state_(std::move(state)) {}
 
 template <
     typename Callable,
