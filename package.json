@@ -23,7 +23,7 @@
     }
   },
   "dependencies": {
-    "@nozbe/watermelondb": "^0.16.0-9",
+    "@nozbe/watermelondb": "0.16.0",
     "@react-native-community/art": "^1.2.0",
     "@react-native-community/cameraroll": "1.6.0",
     "@react-native-community/datetimepicker": "2.3.2",

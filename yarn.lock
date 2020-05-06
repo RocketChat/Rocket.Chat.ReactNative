@@ -2487,10 +2487,10 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
-"@nozbe/watermelondb@^0.16.0-9":
-  version "0.16.0-9"
-  resolved "https://registry.yarnpkg.com/@nozbe/watermelondb/-/watermelondb-0.16.0-9.tgz#0a8cf62d846b9d0f77179e3b41412d1fab181b53"
-  integrity sha512-6I2lr6hGM2VPtpy3treOpeRTxdMEHJHscPEA3WpWxLtrFH3dNpQ27yH2eoXt1N9mfkuF6MWJlqytit+KwXAE7A==
+"@nozbe/watermelondb@0.16.0":
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/@nozbe/watermelondb/-/watermelondb-0.16.0.tgz#4fa3f0e83442b889d8c805707ccd8ed89264451d"
+  integrity sha512-WzV7YL8iPUVZ6KLQqzY9z1g913z3laFt4ZWCejcIZMWon89kZ8K9NlniufNUBkTCKrt007U4HSJw6bmTHrDnQA==
   dependencies:
     lodash.clonedeep "^4.5.0"
     lokijs "git+https://github.com/Nozbe/LokiJS.git#d08f660"
