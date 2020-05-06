@@ -13329,10 +13329,10 @@ react-native-console-time-polyfill@^1.2.1:
   resolved "https://registry.yarnpkg.com/react-native-console-time-polyfill/-/react-native-console-time-polyfill-1.2.1.tgz#3bf9a1d1d1ce3a05325fe1f2e5c4e5a1c25d910f"
   integrity sha512-NKWZ1a/kzMOjPYAcCKEws2FAUnB9Eg70rbEhvdWU4Ure0H2v/ffqy47qooCZOWkrlAvlIR/sg1Apml4dzuE54A==
 
-react-native-device-info@^2.3.0:
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-2.3.2.tgz#db2b8f135aaf2515583e367ab791dcc7d2f0d14c"
-  integrity sha512-ccpPuUbwhw5uYdVwN1UJp6ykMZz6U/u82HNM3oJ7O6MP8RIMlMDkHbqR4O0sDtUSuRMGiqqRzFtmOLFYeQ0ODw==
+react-native-device-info@5.5.7:
+  version "5.5.7"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-5.5.7.tgz#aafe2581a702637a66fc04f333052980a4f9e8c5"
+  integrity sha512-0021blhx/N1+mWQPOW3QAMWhOjYdG0uC5n+P6sMXZD3pF9aiIeCKuw4JpBpfNXXpUmDmQ7qWgHZUZO7JBMRijw==
 
 react-native-document-picker@3.3.3:
   version "3.3.3"
