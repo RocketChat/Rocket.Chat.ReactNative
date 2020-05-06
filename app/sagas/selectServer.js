@@ -1,6 +1,4 @@
-import {
-	put, take, takeLatest, fork, cancel, race
-} from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 import RNUserDefaults from 'rn-user-defaults';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
@@ -98,6 +96,9 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		const basicAuth = yield RNUserDefaults.get(`${ BASIC_AUTH_KEY }-${ server }`);
 		setBasicAuth(basicAuth);
 
+		// Check for running requests and abort them before connecting to the server
+		RocketChat.abort();
+
 		if (user) {
 			yield put(clearSettings());
 			yield RocketChat.connect({ server, user, logoutOnError: true });
@@ -152,16 +153,6 @@ const handleServerRequest = function* handleServerRequest({ server, certificate 
 
 const root = function* root() {
 	yield takeLatest(SERVER.REQUEST, handleServerRequest);
-
-	while (true) {
-		const params = yield take(SERVER.SELECT_REQUEST);
-		const selectServerTask = yield fork(handleSelectServer, params);
-		yield race({
-			request: take(SERVER.SELECT_REQUEST),
-			success: take(SERVER.SELECT_SUCCESS),
-			failure: take(SERVER.SELECT_FAILURE)
-		});
-		yield cancel(selectServerTask);
-	}
+	yield takeLatest(SERVER.SELECT_REQUEST, handleSelectServer);
 };
 export default root;
