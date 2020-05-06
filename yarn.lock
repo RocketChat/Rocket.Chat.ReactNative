@@ -2707,10 +2707,10 @@
     tiny-events "^1.0.1"
     universal-websocket-client "^1.0.2"
 
-"@rocket.chat/ui-kit@^0.2.0-alpha.25":
-  version "0.2.0-alpha.26"
-  resolved "https://registry.yarnpkg.com/@rocket.chat/ui-kit/-/ui-kit-0.2.0-alpha.26.tgz#139e337bc8e751ecd5e61e7a07e563792c37d002"
-  integrity sha512-UBsuntc/W/s545WJGUZlG2TyrrCI59REhRWcgIR/Ueb3qkh/DuhdtK6zjVH1y0M+tLlkrIgtEAsoatj55nkWVA==
+"@rocket.chat/ui-kit@0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@rocket.chat/ui-kit/-/ui-kit-0.8.0.tgz#84d1614c0f3c7749511bfbd555c1592485d262b3"
+  integrity sha512-JNpwGcVQfBHjfG/sLJmMwau0BNvUWx210UAji4MnARAvfxBUslUYWzTRDkvxryKX0223dbTC91HOMt1HZDNNLQ==
 
 "@storybook/addon-actions@5.3.18":
   version "5.3.18"
@@ -3350,10 +3350,10 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@unimodules/core@~5.1.0":
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/@unimodules/core/-/core-5.1.0.tgz#eae3706e1ecc99d4b992ad39970c43d92418d394"
-  integrity sha512-gaamGkJ4PVwusWEfsZyPo4uhrVWPDE0BmHc/lTYfkZCv2oIAswC7gG/ULRdtZpYdwnYqFIZng+WQxwuVrJUNDw==
+"@unimodules/core@~5.1.2":
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/@unimodules/core/-/core-5.1.2.tgz#44de60184c9a50cf57bc8ec1cd024810a72ecf3e"
+  integrity sha512-iCWEbzsNHqDfL6p8FyCGPnL2EW7vdgMJsNNSlWtM/gl8kePdqZMI7aOxTC4cdRS2xm0wzxuDBtpfJkzZsKINZg==
   dependencies:
     compare-versions "^3.4.0"
 
@@ -13291,10 +13291,10 @@ react-native-animatable@1.3.3:
   dependencies:
     prop-types "^15.7.2"
 
-react-native-appearance@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/react-native-appearance/-/react-native-appearance-0.3.1.tgz#f8120222131767e9227c2c7ba3a9478f4c6a5ab7"
-  integrity sha512-humg0ddjWjMfiSQCjsAcJk5o/jLJVy7aDEJuqN29ypQTfEfMKC3kVZP7dgb5lhAfJT3gquvDlT9IalZ2B7n6CQ==
+react-native-appearance@0.3.4:
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/react-native-appearance/-/react-native-appearance-0.3.4.tgz#2cbcbc5142cdc1898c116684f519b16c879cbec2"
+  integrity sha512-Vz3zdJbAEiMDwuw6wH98TT1WVfBvWjvANutYtkIbl16KGRCigtSgt6IIiLsF3/TSS3y3FtHhWDelFeGw/rtuig==
   dependencies:
     fbemitter "^2.1.1"
     invariant "^2.2.4"
@@ -13549,12 +13549,12 @@ react-native-tab-view@^1.2.0:
   dependencies:
     prop-types "^15.6.1"
 
-react-native-unimodules@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/react-native-unimodules/-/react-native-unimodules-0.9.0.tgz#5ce642ac50d124b9d41c09ff7cb397e22f1110ea"
-  integrity sha512-zcdNo74d/x19d0JkNiKL+4d71OaivumgfKVdmOYPOGRMOlct6KL3177TvkxgmF7ddlJJIlfftSFtnPuiOfejQA==
+react-native-unimodules@0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/react-native-unimodules/-/react-native-unimodules-0.9.1.tgz#72e145a344e1b86baf513e9bfd96bbac227302b3"
+  integrity sha512-muYUo/GJVblBUnIwaL9ireayWEuCMg7S4Qn9W5g4geRwPTfL3vNSW8heLk2TD+vh5IoSc+dfBTYLw5NM9aVtQA==
   dependencies:
-    "@unimodules/core" "~5.1.0"
+    "@unimodules/core" "~5.1.2"
     "@unimodules/react-native-adapter" "~5.2.0"
     chalk "^2.4.2"
     expo-asset "~8.1.0"
@@ -13562,7 +13562,7 @@ react-native-unimodules@^0.9.0:
     expo-file-system "~8.1.0"
     expo-image-loader "~1.0.0"
     expo-permissions "~8.1.0"
-    unimodules-app-loader "~1.0.0"
+    unimodules-app-loader "~1.0.2"
     unimodules-barcode-scanner-interface "~5.1.0"
     unimodules-camera-interface "~5.1.0"
     unimodules-constants-interface "~5.1.0"
@@ -14341,10 +14341,10 @@ rn-extensions-share@^2.3.10:
   resolved "https://registry.yarnpkg.com/rn-extensions-share/-/rn-extensions-share-2.3.10.tgz#17b9cf101b325cfe4c150f4c2585ca1e78f965a5"
   integrity sha512-gff32w15VXnuKdGG9QfrysI+Cga4beSWT8xdp1DvVJ1HezJ7XsDR1ELj3Wajij5OlW31VAunO8g91HgUfplmSQ==
 
-rn-fetch-blob@0.11.2:
-  version "0.11.2"
-  resolved "https://registry.yarnpkg.com/rn-fetch-blob/-/rn-fetch-blob-0.11.2.tgz#bdc483bf1b0c3810d457983494a11fbada446679"
-  integrity sha512-oKszdNtA7vZ56d0Rfr+RDEUexwlZxu/HOqwULa36PRHhQsTO5ia7uKk+va3WzuwYxzhF9e0bY8n3k+GC6Df14A==
+rn-fetch-blob@0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/rn-fetch-blob/-/rn-fetch-blob-0.12.0.tgz#ec610d2f9b3f1065556b58ab9c106eeb256f3cba"
+  integrity sha512-+QnR7AsJ14zqpVVUbzbtAjq0iI8c9tCg49tIoKO2ezjzRunN7YL6zFSFSWZm6d+mE/l9r+OeDM3jmb2tBb2WbA==
   dependencies:
     base-64 "0.1.0"
     glob "7.0.6"
@@ -15955,10 +15955,10 @@ unicode-property-aliases-ecmascript@^1.0.4:
   resolved "https://registry.yarnpkg.com/unicode-property-aliases-ecmascript/-/unicode-property-aliases-ecmascript-1.0.4.tgz#5a533f31b4317ea76f17d807fa0d116546111dd0"
   integrity sha512-2WSLa6OdYd2ng8oqiGIWnJqyFArvhn+5vgx5GTxMbUYjCYKUcuKS62YLFF0R/BDGlB1yzXjQOLtPAfHsgirEpg==
 
-unimodules-app-loader@~1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/unimodules-app-loader/-/unimodules-app-loader-1.0.1.tgz#4358195cfa4d6026c71c7365362acf047f252bb0"
-  integrity sha512-GhPwdTp9WHRMRnM2ONQsHb0mciKU5tafohEX0+E4F7bSba89r+rJckWQnpDvHE7uyUaRtocLYcbk09vv2eg8ew==
+unimodules-app-loader@~1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/unimodules-app-loader/-/unimodules-app-loader-1.0.2.tgz#0af821db8ae5d7c09d2be3c62ca5aab571d6e9ac"
+  integrity sha512-ryRAqSndIkCnWAr5jzSL6yjOrCBeIihItELUTykzi4ZxYV9j4Yl0Sd5+VKl1v/UvB6UNdgIGY4oU7S1b173/FA==
 
 unimodules-barcode-scanner-interface@~5.1.0:
   version "5.1.0"
