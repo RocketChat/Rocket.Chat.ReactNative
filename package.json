@@ -93,7 +93,7 @@
     "react-navigation-header-buttons": "3.0.5",
     "react-navigation-stack": "^1.10.3",
     "react-redux": "7.2.0",
-    "reactotron-react-native": "3.6.4",
+    "reactotron-react-native": "5.0.0",
     "redux": "4.0.5",
     "redux-enhancer-react-native-appstate": "^0.3.1",
     "redux-immutable-state-invariant": "^2.1.0",
