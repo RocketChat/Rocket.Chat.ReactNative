@@ -3,7 +3,6 @@ import semver from 'semver';
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import RNUserDefaults from 'rn-user-defaults';
 import { Q } from '@nozbe/watermelondb';
-import * as FileSystem from 'expo-file-system';
 
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
@@ -11,8 +10,7 @@ import messagesStatus from '../constants/messagesStatus';
 import database from './database';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
-import { extractHostname } from '../utils/server';
-import fetch, { BASIC_AUTH_KEY } from '../utils/fetch';
+import fetch from '../utils/fetch';
 
 import { setUser, setLoginServices, loginRequest } from '../actions/login';
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
@@ -43,12 +41,14 @@ import sendMessage, { sendMessageCall } from './methods/sendMessage';
 import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFileMessage';
 
 import callJitsi from './methods/callJitsi';
+import logout, { removeServer } from './methods/logout';
 
 import { getDeviceToken } from '../notifications/push';
-import { SERVERS, SERVER_URL } from '../constants/userDefaults';
 import { setActiveUsers } from '../actions/activeUsers';
 import I18n from '../i18n';
 import { twoFactor } from '../utils/twoFactor';
+import { selectServerFailure } from '../actions/server';
+import { useSsl } from '../utils/url';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
@@ -86,10 +86,7 @@ const RocketChat = {
 		}
 	},
 	async getWebsocketInfo({ server }) {
-		// Use useSsl: false only if server url starts with http://
-		const useSsl = !/http:\/\//.test(server);
-
-		const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
+		const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
 
 		try {
 			await sdk.connect();
@@ -146,6 +143,10 @@ const RocketChat = {
 			}
 			return result;
 		} catch (e) {
+			if (e.message === 'Aborted') {
+				reduxStore.dispatch(selectServerFailure());
+				throw e;
+			}
 			log(e);
 		}
 		return {
@@ -158,6 +159,16 @@ const RocketChat = {
 	},
 	stopListener(listener) {
 		return listener && listener.stop();
+	},
+	// Abort all requests and create a new AbortController
+	abort() {
+		if (this.controller) {
+			this.controller.abort();
+			if (this.sdk) {
+				this.sdk.abort();
+			}
+		}
+		this.controller = new AbortController();
 	},
 	connect({ server, user, logoutOnError = false }) {
 		return new Promise((resolve) => {
@@ -200,25 +211,26 @@ const RocketChat = {
 				this.code = null;
 			}
 
-			// Use useSsl: false only if server url starts with http://
-			const useSsl = !/http:\/\//.test(server);
-
-			this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
+			this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
 			this.getSettings();
 
 			const sdkConnect = () => this.sdk.connect()
 				.then(() => {
-					if (user && user.token) {
+					const { server: currentServer } = reduxStore.getState().server;
+					if (user && user.token && server === currentServer) {
 						reduxStore.dispatch(loginRequest({ resume: user.token }, logoutOnError));
 					}
 				})
 				.catch((err) => {
 					console.log('connect error', err);
 
-					// when `connect` raises an error, we try again in 10 seconds
-					this.connectTimeout = setTimeout(() => {
-						sdkConnect();
-					}, 10000);
+					const { server: currentServer } = reduxStore.getState().server;
+					if (server === currentServer) {
+						// when `connect` raises an error, we try again in 10 seconds
+						this.connectTimeout = setTimeout(() => {
+							sdkConnect();
+						}, 10000);
+					}
 				});
 
 			sdkConnect();
@@ -270,10 +282,7 @@ const RocketChat = {
 			this.shareSDK = null;
 		}
 
-		// Use useSsl: false only if server url starts with http://
-		const useSsl = !/http:\/\//.test(server);
-
-		this.shareSDK = new RocketchatClient({ host: server, protocol: 'ddp', useSsl });
+		this.shareSDK = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
 
 		// set Server
 		const serversDB = database.servers;
@@ -289,14 +298,11 @@ const RocketChat = {
 				user = {
 					id: userRecord.id,
 					token: userRecord.token,
-					username: userRecord.username
+					username: userRecord.username,
+					roles: userRecord.roles
 				};
 			}
-			reduxStore.dispatch(shareSetUser({
-				id: user.id,
-				token: user.token,
-				username: user.username
-			}));
+			reduxStore.dispatch(shareSetUser(user));
 			await RocketChat.login({ resume: user.token });
 		} catch (e) {
 			log(e);
@@ -308,6 +314,8 @@ const RocketChat = {
 			this.shareSDK = null;
 		}
 		database.share = null;
+
+		reduxStore.dispatch(shareSetUser(null));
 	},
 
 	updateJitsiTimeout(rid) {
@@ -338,8 +346,8 @@ const RocketChat = {
 				if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
 					const { details } = e.data;
 					try {
-						await twoFactor({ method: details?.method, invalid: e.data.error === 'totp-invalid' });
-						return resolve(this.loginTOTP(params));
+						const code = await twoFactor({ method: details?.method || 'totp', invalid: e.data.error === 'totp-invalid' });
+						return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }));
 					} catch {
 						// twoFactor was canceled
 						return reject();
@@ -409,73 +417,8 @@ const RocketChat = {
 			throw e;
 		}
 	},
-	async logout({ server }) {
-		if (this.roomsSub) {
-			this.roomsSub.stop();
-			this.roomsSub = null;
-		}
-
-		if (this.activeUsersSubTimeout) {
-			clearTimeout(this.activeUsersSubTimeout);
-			this.activeUsersSubTimeout = false;
-		}
-
-		try {
-			await this.removePushToken();
-		} catch (error) {
-			console.log('logout -> removePushToken -> catch -> error', error);
-		}
-		try {
-			// RC 0.60.0
-			await this.sdk.logout();
-		} catch (error) {
-			console.log('​logout -> api logout -> catch -> error', error);
-		}
-		this.sdk = null;
-
-		try {
-			const servers = await RNUserDefaults.objectForKey(SERVERS);
-			await RNUserDefaults.setObjectForKey(SERVERS, servers && servers.filter(srv => srv[SERVER_URL] !== server));
-			// clear certificate for server - SSL Pinning
-			const certificate = await RNUserDefaults.objectForKey(extractHostname(server));
-			if (certificate && certificate.path) {
-				await RNUserDefaults.clear(extractHostname(server));
-				await FileSystem.deleteAsync(certificate.path);
-			}
-		} catch (error) {
-			console.log('logout_rn_user_defaults', error);
-		}
-
-		const userId = await RNUserDefaults.get(`${ TOKEN_KEY }-${ server }`);
-
-		try {
-			const serversDB = database.servers;
-			await serversDB.action(async() => {
-				const usersCollection = serversDB.collections.get('users');
-				const userRecord = await usersCollection.find(userId);
-				const serverCollection = serversDB.collections.get('servers');
-				const serverRecord = await serverCollection.find(server);
-				await serversDB.batch(
-					userRecord.prepareDestroyPermanently(),
-					serverRecord.prepareDestroyPermanently()
-				);
-			});
-		} catch (error) {
-			// Do nothing
-		}
-
-		await RNUserDefaults.clear('currentServer');
-		await RNUserDefaults.clear(TOKEN_KEY);
-		await RNUserDefaults.clear(`${ TOKEN_KEY }-${ server }`);
-		await RNUserDefaults.clear(`${ BASIC_AUTH_KEY }-${ server }`);
-
-		try {
-			const db = database.active;
-			await db.action(() => db.unsafeResetDatabase());
-		} catch (error) {
-			console.log(error);
-		}
-	},
+	logout,
+	removeServer,
 	async clearCache({ server }) {
 		try {
 			const serversDB = database.servers;
@@ -574,11 +517,24 @@ const RocketChat = {
 		).fetch();
 
 		if (filterUsers && !filterRooms) {
-			data = data.filter(item => item.t === 'd');
+			data = data.filter(item => item.t === 'd' && !RocketChat.isGroupChat(item));
 		} else if (!filterUsers && filterRooms) {
-			data = data.filter(item => item.t !== 'd');
+			data = data.filter(item => item.t !== 'd' || RocketChat.isGroupChat(item));
 		}
 		data = data.slice(0, 7);
+
+		data = data.map((sub) => {
+			if (sub.t !== 'd') {
+				return ({
+					rid: sub.rid,
+					name: sub.name,
+					fname: sub.fname,
+					t: sub.t,
+					search: true
+				});
+			}
+			return sub;
+		});
 
 		const usernames = data.map(sub => sub.name);
 		try {
@@ -769,12 +725,9 @@ const RocketChat = {
 	setUserPresenceOnline() {
 		return this.methodCall('UserPresence:online');
 	},
-	setUserPresenceDefaultStatus(status) {
-		return this.methodCall('UserPresence:setDefaultStatus', status);
-	},
-	setUserStatus(message) {
+	setUserStatus(status, message) {
 		// RC 1.2.0
-		return this.post('users.setStatus', { message });
+		return this.post('users.setStatus', { status, message });
 	},
 	setReaction(emoji, messageId) {
 		// RC 0.62.2
@@ -815,7 +768,9 @@ const RocketChat = {
 		return this.sdk.get('rooms.info', { roomId });
 	},
 
-	getUidDirectMessage(room, userId) {
+	getUidDirectMessage(room) {
+		const { id: userId } = reduxStore.getState().login.user;
+
 		// legacy method
 		if (!room.uids && room.rid && room.t === 'd') {
 			return room.rid.replace(userId, '').trim();
@@ -898,7 +853,7 @@ const RocketChat = {
 	methodCall(...args) {
 		return new Promise(async(resolve, reject) => {
 			try {
-				const result = await this.sdk.methodCall(...args, this.code);
+				const result = await this.sdk.methodCall(...args, this.code || '');
 				return resolve(result);
 			} catch (e) {
 				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
@@ -952,7 +907,7 @@ const RocketChat = {
 			// get the room from database
 			const room = await subsCollection.find(rid);
 			// get room roles
-			roomRoles = room.roles;
+			roomRoles = room.roles || [];
 		} catch (error) {
 			console.log('hasPermission -> Room not found');
 			return permissions.reduce((result, permission) => {
@@ -963,8 +918,10 @@ const RocketChat = {
 		// get permissions from database
 		try {
 			const permissionsFiltered = await permissionsCollection.query(Q.where('id', Q.oneOf(permissions))).fetch();
+			const shareUser = reduxStore.getState().share.user;
+			const loginUser = reduxStore.getState().login.user;
 			// get user roles on the server from redux
-			const userRoles = (reduxStore.getState().login.user && reduxStore.getState().login.user.roles) || [];
+			const userRoles = (shareUser.roles || loginUser.roles) || [];
 			// merge both roles
 			const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
 
@@ -1213,16 +1170,19 @@ const RocketChat = {
 		return this.methodCall('autoTranslate.translateMessage', message, targetLanguage);
 	},
 	getRoomTitle(room) {
-		const { UI_Use_Real_Name: useRealName } = reduxStore.getState().settings;
+		const { UI_Use_Real_Name: useRealName, UI_Allow_room_names_with_special_chars: allowSpecialChars } = reduxStore.getState().settings;
 		const { username } = reduxStore.getState().login.user;
 		if (RocketChat.isGroupChat(room) && !(room.name && room.name.length)) {
 			return room.usernames.filter(u => u !== username).sort((u1, u2) => u1.localeCompare(u2)).join(', ');
+		}
+		if (allowSpecialChars && room.t !== 'd') {
+			return room.fname || room.name;
 		}
 		return ((room.prid || useRealName) && room.fname) || room.name;
 	},
 	getRoomAvatar(room) {
 		if (RocketChat.isGroupChat(room)) {
-			return room.uids.length + room.usernames.join();
+			return room.uids?.length + room.usernames?.join();
 		}
 		return room.prid ? room.fname : room.name;
 	},

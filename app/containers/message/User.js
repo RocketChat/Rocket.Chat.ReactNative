@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
 	View, Text, StyleSheet, TouchableOpacity
@@ -11,6 +11,7 @@ import { withTheme } from '../../theme';
 import MessageError from './MessageError';
 import sharedStyles from '../../views/Styles';
 import messageStyles from './styles';
+import MessageContext from './Context';
 
 const styles = StyleSheet.create({
 	container: {
@@ -35,13 +36,14 @@ const styles = StyleSheet.create({
 });
 
 const User = React.memo(({
-	isHeader, useRealName, author, alias, ts, timeFormat, hasError, theme, navToRoomInfo, user, ...props
+	isHeader, useRealName, author, alias, ts, timeFormat, hasError, theme, navToRoomInfo, ...props
 }) => {
 	if (isHeader || hasError) {
 		const navParam = {
 			t: 'd',
 			rid: author._id
 		};
+		const { user } = useContext(MessageContext);
 		const username = (useRealName && author.name) || author.username;
 		const aliasUsername = alias ? (<Text style={[styles.alias, { color: themes[theme].auxiliaryText }]}> @{username}</Text>) : null;
 		const time = moment(ts).format(timeFormat);
@@ -49,15 +51,14 @@ const User = React.memo(({
 		return (
 			<View style={styles.container}>
 				<TouchableOpacity
+					style={styles.titleContainer}
 					onPress={() => navToRoomInfo(navParam)}
 					disabled={author._id === user.id}
 				>
-					<View style={styles.titleContainer}>
-						<Text style={[styles.username, { color: themes[theme].titleText }]} numberOfLines={1}>
-							{alias || username}
-							{aliasUsername}
-						</Text>
-					</View>
+					<Text style={[styles.username, { color: themes[theme].titleText }]} numberOfLines={1}>
+						{alias || username}
+						{aliasUsername}
+					</Text>
 				</TouchableOpacity>
 				<Text style={[messageStyles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 				{ hasError && <MessageError hasError={hasError} theme={theme} {...props} /> }
@@ -76,7 +77,6 @@ User.propTypes = {
 	ts: PropTypes.instanceOf(Date),
 	timeFormat: PropTypes.string,
 	theme: PropTypes.string,
-	user: PropTypes.obj,
 	navToRoomInfo: PropTypes.func
 };
 User.displayName = 'MessageUser';

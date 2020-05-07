@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 import isEqual from 'deep-equal';
 
+import Touchable from './Touchable';
 import Markdown from '../markdown';
 import openLink from '../../utils/openLink';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
@@ -11,6 +11,7 @@ import { CustomIcon } from '../../lib/Icons';
 import { formatAttachmentUrl } from '../../lib/utils';
 import { themes } from '../../constants/colors';
 import sharedStyles from '../../views/Styles';
+import MessageContext from './Context';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = type => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -27,12 +28,12 @@ const styles = StyleSheet.create({
 });
 
 const Video = React.memo(({
-	file, baseUrl, user, showAttachment, getCustomEmoji, theme
+	file, showAttachment, getCustomEmoji, theme
 }) => {
+	const { baseUrl, user } = useContext(MessageContext);
 	if (!baseUrl) {
 		return null;
 	}
-
 	const onPress = () => {
 		if (isTypeSupported(file.video_type)) {
 			return showAttachment(file);
@@ -61,8 +62,6 @@ const Video = React.memo(({
 
 Video.propTypes = {
 	file: PropTypes.object,
-	baseUrl: PropTypes.string,
-	user: PropTypes.object,
 	showAttachment: PropTypes.func,
 	getCustomEmoji: PropTypes.func,
 	theme: PropTypes.string

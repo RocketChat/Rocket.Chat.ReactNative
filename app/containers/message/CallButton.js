@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 import PropTypes from 'prop-types';
 
+import Touchable from './Touchable';
 import { formatLastMessage, BUTTON_HIT_SLOP } from './utils';
 import styles from './styles';
 import I18n from '../../i18n';
