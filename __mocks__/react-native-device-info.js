@@ -2,5 +2,6 @@ export default {
 	getModel: () => '',
 	getReadableVersion: () => '',
 	getBundleId: () => '',
-	isTablet: () => false
+	isTablet: () => false,
+	hasNotch: () => false
 };
