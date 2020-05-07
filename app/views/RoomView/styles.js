@@ -29,8 +29,10 @@ export default StyleSheet.create({
 		paddingVertical: 12,
 		paddingHorizontal: 15,
 		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'space-evenly'
+		alignItems: 'center'
+	},
+	bannerText: {
+		flex: 1
 	},
 	bannerModalTitle: {
 		fontSize: 16,
@@ -68,13 +70,5 @@ export default StyleSheet.create({
 	previewMode: {
 		fontSize: 16,
 		...sharedStyles.textMedium
-	},
-	textContainer: {
-		width: '90%',
-		height: '100%'
-	},
-	iconContainer: {
-		width: '10%',
-		alignItems: 'flex-end'
 	}
 });

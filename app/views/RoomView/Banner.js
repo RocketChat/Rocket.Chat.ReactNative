@@ -25,18 +25,14 @@ const Banner = React.memo(({
 					testID='room-view-banner'
 					onPress={toggleModal}
 				>
-					<View style={styles.textContainer}>
-						<Markdown
-							msg={text}
-							theme={theme}
-							numberOfLines={1}
-							preview
-						/>
-					</View>
-					<BorderlessButton
-						onPress={closeBanner}
-						style={styles.iconContainer}
-					>
+					<Markdown
+						msg={text}
+						theme={theme}
+						numberOfLines={1}
+						style={[styles.bannerText]}
+						preview
+					/>
+					<BorderlessButton onPress={closeBanner}>
 						<CustomIcon
 							color={themes[theme].auxiliaryText}
 							name='cross'
