@@ -235,8 +235,7 @@ jobs:
           name: Build Android App
           command: |
             if [[ $KEYSTORE ]]; then
-              # TODO: enable app bundle again
-              ./gradlew assembleRelease
+              ./gradlew bundleRelease
             else
               ./gradlew assembleDebug
             fi
