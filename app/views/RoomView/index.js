@@ -218,7 +218,7 @@ class RoomView extends React.Component {
 			} = this.props;
 			if ((room.id || room.rid) && !this.tmid) {
 				navigation.setParams({
-					name: this.getRoomTitle(room),
+					name: RocketChat.getRoomTitle(room),
 					subtitle: room.topic,
 					avatar: room.name,
 					t: room.t,
@@ -292,7 +292,7 @@ class RoomView extends React.Component {
 			}
 		}
 		if (((roomUpdate.fname !== prevState.roomUpdate.fname) || (roomUpdate.name !== prevState.roomUpdate.name)) && !this.tmid) {
-			navigation.setParams({ name: this.getRoomTitle(room) });
+			navigation.setParams({ name: RocketChat.getRoomTitle(room) });
 		}
 	}
 
@@ -456,7 +456,7 @@ class RoomView extends React.Component {
 			this.setState({ room });
 			if (!this.tmid) {
 				navigation.setParams({
-					name: this.getRoomTitle(room),
+					name: RocketChat.getRoomTitle(room),
 					subtitle: room.topic,
 					avatar: room.name,
 					t: room.t
@@ -645,7 +645,7 @@ class RoomView extends React.Component {
 		const { room } = this.state;
 		if (rid === this.rid) {
 			Navigation.navigate('RoomsListView');
-			showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: this.getRoomTitle(room) }), I18n.t('Oops'));
+			showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: RocketChat.getRoomTitle(room) }), I18n.t('Oops'));
 		}
 	}
 
@@ -666,11 +666,6 @@ class RoomView extends React.Component {
 			Review.pushPositiveEvent();
 		});
 	};
-
-	getRoomTitle = (room) => {
-		const { useRealName } = this.props;
-		return ((room.prid || useRealName) && room.fname) || room.name;
-	}
 
 	getMessages = () => {
 		const { room } = this.state;
