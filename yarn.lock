@@ -13326,11 +13326,6 @@ react-native-bootsplash@2.2.4:
     jimp "0.10.1"
     prompts "2.3.2"
 
-react-native-clean-project@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/react-native-clean-project/-/react-native-clean-project-3.3.0.tgz#89974c4a291123e6d1f72c32185a012a649f1fa8"
-  integrity sha512-IudFlNsaQd6QcgcbTZcNEXDlrJ9zzRspIUV7yvBX3bfB72Z9et9hIceH9+F+xYSlvwUSB4L/fvkIPosYKa+q9Q==
-
 react-native-console-time-polyfill@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/react-native-console-time-polyfill/-/react-native-console-time-polyfill-1.2.1.tgz#3bf9a1d1d1ce3a05325fe1f2e5c4e5a1c25d910f"
