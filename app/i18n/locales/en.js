@@ -560,6 +560,7 @@ export default {
 	You_will_be_logged_out_of_this_application: 'You will be logged out of this application.',
 	Clear: 'Clear',
 	This_will_clear_all_your_offline_data: 'This will clear all your offline data.',
+	This_will_remove_all_data_from_this_server: 'This will remove all data from this server.',
 	Mark_unread: 'Mark Unread',
 	Wait_activation_warning: 'Before you can login, your account must be manually activated by an administrator.'
 };
