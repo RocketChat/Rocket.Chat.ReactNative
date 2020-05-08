@@ -59,7 +59,7 @@ class Sidebar extends Component {
 		this.setIsAdmin();
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		const { loadingServer } = this.props;
 		if (loadingServer && nextProps.loadingServer !== loadingServer) {
 			this.setIsAdmin();

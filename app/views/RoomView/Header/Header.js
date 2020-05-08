@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	subtitle: {
+		marginRight: -16,
 		...sharedStyles.textRegular,
 		fontSize: 12
 	},

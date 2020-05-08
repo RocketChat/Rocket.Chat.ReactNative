@@ -23,7 +23,8 @@ const styles = StyleSheet.create({
 	textContainer: {
 		flex: 1,
 		flexDirection: 'column',
-		justifyContent: 'center'
+		justifyContent: 'center',
+		marginRight: 15
 	},
 	name: {
 		fontSize: 17,

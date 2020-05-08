@@ -69,7 +69,7 @@ const stateAttrsUpdate = [
 	'readOnly',
 	'member'
 ];
-const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement', 'sysMes', 'topic', 'name', 'fname', 'roles'];
+const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement', 'sysMes', 'topic', 'name', 'fname', 'roles', 'bannerClosed', 'visitor'];
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -87,6 +87,7 @@ class RoomView extends React.Component {
 		const goRoomActionsView = navigation.getParam('goRoomActionsView', () => {});
 		const unreadsCount = navigation.getParam('unreadsCount', null);
 		const roomUserId = navigation.getParam('roomUserId');
+		const visitor = navigation.getParam('visitor');
 		if (!rid) {
 			return {
 				...themedHeader(screenProps.theme)
@@ -104,6 +105,7 @@ class RoomView extends React.Component {
 					type={t}
 					widthOffset={tmid ? 95 : 130}
 					roomUserId={roomUserId}
+					visitor={visitor}
 					goRoomActionsView={goRoomActionsView}
 				/>
 			),
@@ -289,6 +291,12 @@ class RoomView extends React.Component {
 			}
 			if (!isEqual(prevState.roomUpdate.roles, roomUpdate.roles)) {
 				this.setReadOnly();
+			}
+		}
+		// If it's a livechat room
+		if (this.t === 'l') {
+			if (!isEqual(prevState.roomUpdate.visitor, roomUpdate.visitor)) {
+				navigation.setParams({ visitor: roomUpdate.visitor });
 			}
 		}
 		if (((roomUpdate.fname !== prevState.roomUpdate.fname) || (roomUpdate.name !== prevState.roomUpdate.name)) && !this.tmid) {
@@ -810,6 +818,20 @@ class RoomView extends React.Component {
 		}
 	});
 
+	closeBanner = async() => {
+		const { room } = this.state;
+		try {
+			const db = database.active;
+			await db.action(async() => {
+				await room.update((r) => {
+					r.bannerClosed = true;
+				});
+			});
+		} catch {
+			// do nothing
+		}
+	};
+
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
@@ -988,7 +1010,9 @@ class RoomView extends React.Component {
 		const {
 			user, baseUrl, theme, navigation, Hide_System_Messages
 		} = this.props;
-		const { rid, t, sysMes } = room;
+		const {
+			rid, t, sysMes, bannerClosed, announcement
+		} = room;
 
 		return (
 			<SafeAreaView
@@ -1003,7 +1027,9 @@ class RoomView extends React.Component {
 				<Banner
 					rid={rid}
 					title={I18n.t('Announcement')}
-					text={room.announcement}
+					text={announcement}
+					bannerClosed={bannerClosed}
+					closeBanner={this.closeBanner}
 					theme={theme}
 				/>
 				<List
