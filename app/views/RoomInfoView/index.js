@@ -234,28 +234,25 @@ class RoomInfoView extends React.Component {
 		const { roomUser, room } = this.state;
 		const { name, username } = roomUser;
 		const { rooms, navigation } = this.props;
-		try {
-			if (room.rid) {
-				let navigate = navigation.push;
 
-				// if this is a room focused
-				if (rooms.includes(room.rid)) {
-					({ navigate } = navigation);
-				}
+		if (room.rid) {
+			let navigate = navigation.push;
 
-				navigate('RoomView', {
-					rid: room._id,
-					name: RocketChat.getRoomTitle({
-						t: room.t,
-						fname: name,
-						name: username
-					}),
-					t: room.t,
-					roomUserId: RocketChat.getUidDirectMessage(room)
-				});
+			// if this is a room focused
+			if (rooms.includes(room.rid)) {
+				({ navigate } = navigation);
 			}
-		} catch (e) {
-			// do nothing
+
+			navigate('RoomView', {
+				rid: room.rid,
+				name: RocketChat.getRoomTitle({
+					t: room.t,
+					fname: name,
+					name: username
+				}),
+				t: room.t,
+				roomUserId: RocketChat.getUidDirectMessage(room)
+			});
 		}
 	}
 
