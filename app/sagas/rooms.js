@@ -46,12 +46,12 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 		const subCollection = db.collections.get('subscriptions');
 		const messagesCollection = db.collections.get('messages');
 
-		if (subscriptions.length) {
-			const subsIds = subscriptions.map(sub => sub.rid);
+		const subsIds = subscriptions.map(sub => sub.rid).concat(roomsResult.remove.map(room => room._id));
+		if (subsIds.length) {
 			const existingSubs = yield subCollection.query(Q.where('id', Q.oneOf(subsIds))).fetch();
 			const subsToUpdate = existingSubs.filter(i1 => subscriptions.find(i2 => i1._id === i2._id));
 			const subsToCreate = subscriptions.filter(i1 => !existingSubs.find(i2 => i1._id === i2._id));
-			// TODO: subsToDelete?
+			const subsToDelete = existingSubs.filter(i1 => !subscriptions.find(i2 => i1._id === i2._id));
 
 			const lastMessages = subscriptions
 				.map(sub => sub.lastMessage && buildMessage(sub.lastMessage))
@@ -77,6 +77,7 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 						Object.assign(subscription, newSub);
 					});
 				}),
+				...subsToDelete.map(subscription => subscription.prepareDestroyPermanently()),
 				...messagesToCreate.map(message => messagesCollection.prepareCreate(protectedFunction((m) => {
 					m._raw = sanitizedRaw({ id: message._id }, messagesCollection.schema);
 					m.subscription.id = message.rid;
