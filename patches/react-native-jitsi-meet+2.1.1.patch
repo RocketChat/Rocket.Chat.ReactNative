@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-jitsi-meet/android/build.gradle b/node_modules/react-native-jitsi-meet/android/build.gradle
-index 27d041a..4557113 100644
+index 27d041a..981fa95 100644
 --- a/node_modules/react-native-jitsi-meet/android/build.gradle
 +++ b/node_modules/react-native-jitsi-meet/android/build.gradle
 @@ -45,7 +45,14 @@ repositories {
@@ -11,7 +11,7 @@ index 27d041a..4557113 100644
 +      exclude group: 'com.facebook.react', module:'react-native-vector-icons'
 +      exclude group: 'com.facebook.react', module:'react-native-webview'
 +      exclude group: 'com.facebook.react', module:'react-native-youtube'
-+      // exclude group: 'com.facebook.react', module:'react-native-community-async-storage'
++      exclude group: 'com.facebook.react', module:'react-native-community-async-storage'
 +      // exclude group: 'com.facebook.react', module:'react-native-linear-gradient'
 +      exclude group: 'com.facebook.react', module:'react-native-background-timer'
 +      exclude group: 'com.facebook', module:'hermes'
