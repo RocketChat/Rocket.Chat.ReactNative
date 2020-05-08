@@ -119,10 +119,15 @@ class MessageAudio extends React.Component {
 		const { file } = this.props;
 		const { baseUrl, user } = this.context;
 
+		let url = file.audio_url;
+		if (!url.startsWith('http')) {
+			url = `${ baseUrl }${ file.audio_url }`;
+		}
+
 		this.setState({ loading: true });
 		try {
 			await Audio.setAudioModeAsync(mode);
-			await this.sound.loadAsync({ uri: `${ baseUrl }${ file.audio_url }?rc_uid=${ user.id }&rc_token=${ user.token }` });
+			await this.sound.loadAsync({ uri: `${ url }?rc_uid=${ user.id }&rc_token=${ user.token }` });
 		} catch {
 			// Do nothing
 		}
