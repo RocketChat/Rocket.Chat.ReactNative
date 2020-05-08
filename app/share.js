@@ -15,7 +15,7 @@ import {
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
 import sharedStyles from './views/Styles';
-import { isNotch, supportSystemTheme } from './utils/deviceInfo';
+import { hasNotch, supportSystemTheme } from './utils/deviceInfo';
 import { defaultHeader, onNavigationStateChange, cardStyle } from './utils/navigation';
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { ThemeContext } from './theme';
@@ -108,7 +108,7 @@ class Root extends React.Component {
 		return (
 			<AppearanceProvider>
 				<View
-					style={[sharedStyles.container, isLandscape && isNotch ? sharedStyles.notchLandscapeContainer : {}]}
+					style={[sharedStyles.container, isLandscape && hasNotch ? sharedStyles.notchLandscapeContainer : {}]}
 					onLayout={this.handleLayout}
 				>
 					<Provider store={store}>

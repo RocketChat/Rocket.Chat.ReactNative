@@ -69,13 +69,12 @@ class DefaultBrowserView extends React.Component {
 		theme: PropTypes.string
 	}
 
-	state = {
-		browser: null,
-		supported: []
-	}
-
 	constructor(props) {
 		super(props);
+		this.state = {
+			browser: null,
+			supported: []
+		};
 		if (isIOS) {
 			this.init();
 		}

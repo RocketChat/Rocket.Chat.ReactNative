@@ -1,6 +1,6 @@
 {
   "name": "ReactNativeKeyboardTrackingView",
-  "version": "5.6.1",
+  "version": "5.7.0",
   "summary": "React Native Keyboard Tracking View",
   "authors": "Wix.com",
   "homepage": "https://github.com/wix/react-native-keyboard-tracking-view",
@@ -12,7 +12,7 @@
   "module_name": "ReactNativeKeyboardTrackingView",
   "source": {
     "git": "https://github.com/wix/react-native-keyboard-tracking-view",
-    "tag": "5.6.1"
+    "tag": "5.7.0"
   },
   "source_files": "lib/**/*.{h,m}",
   "dependencies": {

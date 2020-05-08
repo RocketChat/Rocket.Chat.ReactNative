@@ -6,7 +6,7 @@ jobs:
   lint-testunit:
     <<: *defaults
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:10
 
     environment:
       CODECOV_TOKEN: caa771ab-3d45-4756-8e2a-e1f25996fef6
@@ -59,13 +59,13 @@ jobs:
           key: node-v1-mac-{{ checksum "yarn.lock" }}
 
       - run:
-          name: Install Node 8
+          name: Install Node 10
           command: |
             curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
             source ~/.nvm/nvm.sh
             # https://github.com/creationix/nvm/issues/1394
             set +e
-            nvm install 8
+            nvm install 10
 
       - run:
           name: Install appleSimUtils
@@ -120,13 +120,13 @@ jobs:
           key: node-v1-mac-{{ checksum "yarn.lock" }}
 
       - run:
-          name: Install Node 8
+          name: Install Node 10
           command: |
             curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
             source ~/.nvm/nvm.sh
             # https://github.com/creationix/nvm/issues/1394
             set +e
-            nvm install 8
+            nvm install 10
 
       - run:
           name: Install appleSimUtils
@@ -176,14 +176,14 @@ jobs:
       - checkout
 
       - run:
-          name: Install Node 8
+          name: Install Node 10
           command: |
             curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
             source ~/.nvm/nvm.sh
             # https://github.com/creationix/nvm/issues/1394
             set +e
-            nvm install 8
-            echo 'export PATH="/home/circleci/.nvm/versions/node/v8.16.0/bin:$PATH"' >> ~/.bash_profile
+            nvm install 10
+            echo 'export PATH="/home/circleci/.nvm/versions/node/v10.20.1/bin:$PATH"' >> ~/.bash_profile
             source ~/.bash_profile
 
       - restore_cache:
@@ -206,6 +206,7 @@ jobs:
             # echo -e "android.enableAapt2=false" >> ./gradle.properties
             echo -e "android.useAndroidX=true" >> ./gradle.properties
             echo -e "android.enableJetifier=true" >> ./gradle.properties
+            echo -e "FLIPPER_VERSION=0.33.1" >> ./gradle.properties
 
             if [[ $KEYSTORE ]]; then
               echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
@@ -234,8 +235,7 @@ jobs:
           name: Build Android App
           command: |
             if [[ $KEYSTORE ]]; then
-              # TODO: enable app bundle again
-              ./gradlew assembleRelease
+              ./gradlew bundleRelease
             else
               ./gradlew assembleDebug
             fi
@@ -292,13 +292,13 @@ jobs:
           key: node-v1-mac-{{ checksum "yarn.lock" }}
 
       - run:
-          name: Install Node 8
+          name: Install Node 10
           command: |
             curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
             source ~/.nvm/nvm.sh
             # https://github.com/creationix/nvm/issues/1394
             set +e
-            nvm install 8
+            nvm install 10
 
       - run:
           name: Install NPM modules

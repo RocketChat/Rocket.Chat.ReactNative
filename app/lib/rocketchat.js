@@ -378,44 +378,32 @@ const RocketChat = {
 			};
 		}
 
-		try {
-			return this.loginTOTP(params);
-		} catch (error) {
-			throw error;
-		}
+		return this.loginTOTP(params);
 	},
 
 	async loginOAuthOrSso(params) {
-		try {
-			const result = await this.login(params);
-			reduxStore.dispatch(loginRequest({ resume: result.token }));
-		} catch (error) {
-			throw error;
-		}
+		const result = await this.login(params);
+		reduxStore.dispatch(loginRequest({ resume: result.token }));
 	},
 
 	async login(params) {
-		try {
-			const sdk = this.shareSDK || this.sdk;
-			// RC 0.64.0
-			await sdk.login(params);
-			const { result } = sdk.currentLogin;
-			const user = {
-				id: result.userId,
-				token: result.authToken,
-				username: result.me.username,
-				name: result.me.name,
-				language: result.me.language,
-				status: result.me.status,
-				statusText: result.me.statusText,
-				customFields: result.me.customFields,
-				emails: result.me.emails,
-				roles: result.me.roles
-			};
-			return user;
-		} catch (e) {
-			throw e;
-		}
+		const sdk = this.shareSDK || this.sdk;
+		// RC 0.64.0
+		await sdk.login(params);
+		const { result } = sdk.currentLogin;
+		const user = {
+			id: result.userId,
+			token: result.authToken,
+			username: result.me.username,
+			name: result.me.name,
+			language: result.me.language,
+			status: result.me.status,
+			statusText: result.me.statusText,
+			customFields: result.me.customFields,
+			emails: result.me.emails,
+			roles: result.me.roles
+		};
+		return user;
 	},
 	logout,
 	removeServer,
