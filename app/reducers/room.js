@@ -31,6 +31,18 @@ export default function(state = initialState, action) {
 				rid: action.rid,
 				isDeleting: true
 			};
+		case ROOM.CLOSE:
+			return {
+				...state,
+				rid: action.rid,
+				isDeleting: true
+			};
+		case ROOM.FORWARD:
+			return {
+				...state,
+				rid: action.rid,
+				isDeleting: true
+			};
 		case ROOM.REMOVED:
 			return {
 				...state,

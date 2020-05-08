@@ -9,7 +9,7 @@ import _ from 'lodash';
 
 import Touch from '../../utils/touch';
 import { setLoading as setLoadingAction } from '../../actions/selectedUsers';
-import { leaveRoom as leaveRoomAction } from '../../actions/room';
+import { leaveRoom as leaveRoomAction, closeRoom as closeRoomAction } from '../../actions/room';
 import styles from './styles';
 import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
@@ -28,6 +28,7 @@ import { themedHeader } from '../../utils/navigation';
 import { CloseModalButton } from '../../containers/HeaderButton';
 import { getUserSelector } from '../../selectors/login';
 import Markdown from '../../containers/markdown';
+import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 
 class RoomActionsView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -51,6 +52,7 @@ class RoomActionsView extends React.Component {
 		leaveRoom: PropTypes.func,
 		jitsiEnabled: PropTypes.bool,
 		setLoadingInvite: PropTypes.func,
+		closeRoom: PropTypes.func,
 		theme: PropTypes.string
 	}
 
@@ -69,7 +71,9 @@ class RoomActionsView extends React.Component {
 			canViewMembers: false,
 			canAutoTranslate: false,
 			canAddUser: false,
-			canInviteUser: false
+			canInviteUser: false,
+			canForwardGuest: false,
+			canReturnQueue: false
 		};
 		if (room && room.observe && room.rid) {
 			this.roomObservable = room.observe();
@@ -117,6 +121,12 @@ class RoomActionsView extends React.Component {
 
 			this.canAddUser();
 			this.canInviteUser();
+
+			// livechat permissions
+			if (room.t === 'l') {
+				this.canForwardGuest();
+				this.canReturnQueue();
+			}
 		}
 	}
 
@@ -186,9 +196,32 @@ class RoomActionsView extends React.Component {
 		return result;
 	}
 
+	canForwardGuest = async() => {
+		const { room } = this.state;
+		const { rid } = room;
+		let result = true;
+
+		const transferLivechatGuest = 'transfer-livechat-guest';
+		const permissions = await RocketChat.hasPermission([transferLivechatGuest], rid);
+		if (!permissions[transferLivechatGuest]) {
+			result = false;
+		}
+
+		this.setState({ canForwardGuest: result });
+	}
+
+	canReturnQueue = async() => {
+		try {
+			const { returnQueue } = await RocketChat.getRoutingConfig();
+			this.setState({ canReturnQueue: returnQueue });
+		} catch {
+			// do nothing
+		}
+	}
+
 	get sections() {
 		const {
-			room, member, membersCount, canViewMembers, canAddUser, canInviteUser, joined, canAutoTranslate
+			room, member, membersCount, canViewMembers, canAddUser, canInviteUser, joined, canAutoTranslate, canForwardGuest, canReturnQueue
 		} = this.state;
 		const { jitsiEnabled } = this.props;
 		const {
@@ -373,7 +406,42 @@ class RoomActionsView extends React.Component {
 				});
 			}
 		} else if (t === 'l') {
-			sections[2].data = [notificationsAction];
+			sections[2].data = [];
+
+			sections[2].data.push({
+				icon: 'circle-cross',
+				name: I18n.t('Close'),
+				event: this.closeLivechat
+			});
+
+			if (canForwardGuest) {
+				sections[2].data.push({
+					icon: 'reply',
+					name: I18n.t('Forward'),
+					route: 'ForwardLivechatView',
+					params: { rid }
+				});
+			}
+
+			if (canReturnQueue) {
+				sections[2].data.push({
+					icon: 'back',
+					name: I18n.t('Return'),
+					event: this.returnLivechat
+				});
+			}
+
+			sections[2].data.push({
+				icon: 'reload',
+				name: I18n.t('Navigation_history'),
+				route: 'VisitorNavigationView',
+				params: { rid }
+			});
+
+			sections.push({
+				data: [notificationsAction],
+				renderItem: this.renderItem
+			});
 		}
 
 		return sections;
@@ -382,6 +450,28 @@ class RoomActionsView extends React.Component {
 	renderSeparator = () => {
 		const { theme } = this.props;
 		return <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
+	}
+
+	closeLivechat = () => {
+		const { room: { rid } } = this.state;
+		const { closeRoom } = this.props;
+
+		closeRoom(rid);
+	}
+
+	returnLivechat = () => {
+		const { room: { rid } } = this.state;
+		showConfirmationAlert({
+			message: I18n.t('Would_you_like_to_return_the_inquiry'),
+			callToAction: I18n.t('Yes'),
+			onPress: async() => {
+				try {
+					await RocketChat.returnLivechat(rid);
+				} catch (e) {
+					showErrorAlert(e.reason, I18n.t('Oops'));
+				}
+			}
+		});
 	}
 
 	updateRoomMember = async() => {
@@ -485,7 +575,7 @@ class RoomActionsView extends React.Component {
 							? <Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{room.fname}</Text>
 							: (
 								<View style={styles.roomTitleRow}>
-									<RoomTypeIcon type={room.prid ? 'discussion' : room.t} theme={theme} />
+									<RoomTypeIcon type={room.prid ? 'discussion' : room.t} status={room.visitor?.status} theme={theme} />
 									<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{RocketChat.getRoomTitle(room)}</Text>
 								</View>
 							)
@@ -583,6 +673,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	leaveRoom: (rid, t) => dispatch(leaveRoomAction(rid, t)),
+	closeRoom: rid => dispatch(closeRoomAction(rid)),
 	setLoadingInvite: loading => dispatch(setLoadingAction(loading))
 });
 

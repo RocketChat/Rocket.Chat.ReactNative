@@ -757,6 +757,59 @@ const RocketChat = {
 		return this.sdk.get('rooms.info', { roomId });
 	},
 
+	getVisitorInfo(visitorId) {
+		// RC 2.3.0
+		return this.sdk.get('livechat/visitors.info', { visitorId });
+	},
+	closeLivechat(rid, comment) {
+		// RC 0.29.0
+		return this.methodCall('livechat:closeRoom', rid, comment, { clientAction: true });
+	},
+	editLivechat(userData, roomData) {
+		// RC 0.55.0
+		return this.methodCall('livechat:saveInfo', userData, roomData);
+	},
+	returnLivechat(rid) {
+		// RC 0.72.0
+		return this.methodCall('livechat:returnAsInquiry', rid);
+	},
+	forwardLivechat(transferData) {
+		// RC 0.36.0
+		return this.methodCall('livechat:transfer', transferData);
+	},
+	getPagesLivechat(rid, offset) {
+		// RC 2.3.0
+		return this.sdk.get(`livechat/visitors.pagesVisited/${ rid }?count=50&offset=${ offset }`);
+	},
+	getDepartmentInfo(departmentId) {
+		// RC 2.2.0
+		return this.sdk.get(`livechat/department/${ departmentId }?includeAgents=false`);
+	},
+	getDepartments() {
+		// RC 2.2.0
+		return this.sdk.get('livechat/department');
+	},
+	usersAutoComplete(selector) {
+		// RC 2.4.0
+		return this.sdk.get('users.autocomplete', { selector });
+	},
+	getRoutingConfig() {
+		// RC 2.0.0
+		return this.methodCall('livechat:getRoutingConfig');
+	},
+	getTagsList() {
+		// RC 2.0.0
+		return this.methodCall('livechat:getTagsList');
+	},
+	getAgentDepartments(uid) {
+		// RC 2.4.0
+		return this.sdk.get(`livechat/agents/${ uid }/departments`);
+	},
+	getCustomFields() {
+		// RC 2.2.0
+		return this.sdk.get('livechat/custom-fields');
+	},
+
 	getUidDirectMessage(room) {
 		const { id: userId } = reduxStore.getState().login.user;
 

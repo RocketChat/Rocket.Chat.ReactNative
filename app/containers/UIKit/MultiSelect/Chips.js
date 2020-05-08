@@ -12,11 +12,13 @@ import styles from './styles';
 
 const keyExtractor = item => item.value.toString();
 
-const Chip = ({ item, onSelect, theme }) => (
+const Chip = ({
+	item, onSelect, style, theme
+}) => (
 	<Touchable
 		key={item.value}
 		onPress={() => onSelect(item)}
-		style={[styles.chip, { backgroundColor: themes[theme].auxiliaryBackground }]}
+		style={[styles.chip, { backgroundColor: themes[theme].auxiliaryBackground }, style]}
 		background={Touchable.Ripple(themes[theme].bannerBackground)}
 	>
 		<>
@@ -29,17 +31,21 @@ const Chip = ({ item, onSelect, theme }) => (
 Chip.propTypes = {
 	item: PropTypes.object,
 	onSelect: PropTypes.func,
+	style: PropTypes.object,
 	theme: PropTypes.string
 };
 
-const Chips = ({ items, onSelect, theme }) => (
+const Chips = ({
+	items, onSelect, style, theme
+}) => (
 	<View style={styles.chips}>
-		{items.map(item => <Chip key={keyExtractor(item)} item={item} onSelect={onSelect} theme={theme} />)}
+		{items.map(item => <Chip key={keyExtractor(item)} item={item} onSelect={onSelect} style={style} theme={theme} />)}
 	</View>
 );
 Chips.propTypes = {
 	items: PropTypes.array,
 	onSelect: PropTypes.func,
+	style: PropTypes.object,
 	theme: PropTypes.string
 };
 

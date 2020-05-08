@@ -19,7 +19,7 @@ import { appStart as appStartAction } from '../actions';
 import sharedStyles from './Styles';
 import Button from '../containers/Button';
 import TextInput from '../containers/TextInput';
-import OnboardingSeparator from '../containers/OnboardingSeparator';
+import OrSeparator from '../containers/OrSeparator';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import I18n from '../i18n';
 import { isIOS } from '../utils/deviceInfo';
@@ -324,7 +324,7 @@ class NewServerView extends React.Component {
 						testID='new-server-view-button'
 						theme={theme}
 					/>
-					<OnboardingSeparator theme={theme} />
+					<OrSeparator theme={theme} />
 					<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Onboarding_join_open_description')}</Text>
 					<Button
 						title={I18n.t('Join_our_open_workspace')}

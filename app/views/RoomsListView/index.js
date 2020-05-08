@@ -421,7 +421,8 @@ class RoomsListView extends React.Component {
 				type: item.t,
 				prid: item.prid,
 				uids: item.uids,
-				usernames: item.usernames
+				usernames: item.usernames,
+				visitor: item.visitor
 			}));
 
 			// unread
@@ -548,6 +549,7 @@ class RoomsListView extends React.Component {
 			prid: item.prid,
 			room: item,
 			search: item.search,
+			visitor: item.visitor,
 			roomUserId: this.getUidDirectMessage(item)
 		});
 	}
@@ -816,6 +818,7 @@ class RoomsListView extends React.Component {
 				useRealName={useRealName}
 				getUserPresence={this.getUserPresence}
 				isGroupChat={isGroupChat}
+				visitor={item.visitor}
 			/>
 		);
 	};
