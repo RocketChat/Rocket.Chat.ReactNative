@@ -1,6 +1,6 @@
 {
   "name": "react-native-background-timer",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "summary": "Emit event periodically (even when app is in the background)",
   "homepage": "https://github.com/ocetnik/react-native-background-timer.git",
   "license": "MIT",

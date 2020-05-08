@@ -160,5 +160,11 @@ export default {
 	},
 	CAS_login_url: {
 		type: 'valueAsString'
+	},
+	Force_Screen_Lock: {
+		type: 'valueAsBoolean'
+	},
+	Force_Screen_Lock_After: {
+		type: 'valueAsNumber'
 	}
 };

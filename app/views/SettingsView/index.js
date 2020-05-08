@@ -1,10 +1,11 @@
 import React from 'react';
 import {
-	View, Linking, ScrollView, AsyncStorage, Switch, Text, Share, Clipboard
+	View, Linking, ScrollView, Switch, Share, Clipboard
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import { logout as logoutAction } from '../../actions/login';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
@@ -13,6 +14,7 @@ import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { DrawerButton, CloseModalButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ListItem from '../../containers/ListItem';
+import ItemInfo from '../../containers/ItemInfo';
 import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import Separator from '../../containers/Separator';
 import I18n from '../../i18n';
@@ -50,16 +52,6 @@ const SectionSeparator = React.memo(({ theme }) => (
 	/>
 ));
 SectionSeparator.propTypes = {
-	theme: PropTypes.string
-};
-
-const ItemInfo = React.memo(({ info, theme }) => (
-	<View style={[styles.infoContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-		<Text style={[styles.infoText, { color: themes[theme].infoText }]}>{info}</Text>
-	</View>
-));
-ItemInfo.propTypes = {
-	info: PropTypes.string,
 	theme: PropTypes.string
 };
 
@@ -270,6 +262,14 @@ class SettingsView extends React.Component {
 						showActionIndicator
 						onPress={() => this.navigateToScreen('ThemeView')}
 						testID='settings-view-theme'
+						right={this.renderDisclosure}
+						theme={theme}
+					/>
+					<Separator theme={theme} />
+					<ListItem
+						title={I18n.t('Screen_lock')}
+						showActionIndicator
+						onPress={() => this.navigateToScreen('ScreenLockConfigView')}
 						right={this.renderDisclosure}
 						theme={theme}
 					/>
