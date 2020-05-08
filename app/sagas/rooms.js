@@ -70,6 +70,11 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 				...subsToUpdate.map((subscription) => {
 					const newSub = subscriptions.find(s => s._id === subscription._id);
 					return subscription.prepareUpdate(() => {
+						if (newSub.announcement) {
+							if (newSub.announcement !== subscription.announcement) {
+								subscription.bannerClosed = false;
+							}
+						}
 						Object.assign(subscription, newSub);
 					});
 				}),
