@@ -7,6 +7,7 @@ import { Audio } from 'expo-av';
 import Slider from '@react-native-community/slider';
 import moment from 'moment';
 import equal from 'deep-equal';
+import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
@@ -155,6 +156,15 @@ class MessageAudio extends React.Component {
 			return true;
 		}
 		return false;
+	}
+
+	componentDidUpdate() {
+		const { paused } = this.state;
+		if (paused) {
+			deactivateKeepAwake();
+		} else {
+			activateKeepAwake();
+		}
 	}
 
 	async componentWillUnmount() {
