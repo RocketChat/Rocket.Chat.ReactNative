@@ -53,6 +53,7 @@ const User = React.memo(({
 				<TouchableOpacity
 					style={styles.titleContainer}
 					onPress={() => navToRoomInfo(navParam)}
+					style={styles.titleContainer}
 					disabled={author._id === user.id}
 				>
 					<Text style={[styles.username, { color: themes[theme].titleText }]} numberOfLines={1}>
