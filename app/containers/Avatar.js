@@ -6,9 +6,10 @@ import Touchable from 'react-native-platform-touchable';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import { avatarURL } from '../utils/avatar';
+import Emoji from './markdown/Emoji';
 
 const Avatar = React.memo(({
-	text, size, baseUrl, borderRadius, style, avatar, type, children, userId, token, onPress
+	text, size, baseUrl, borderRadius, style, avatar, type, children, userId, token, onPress, theme, emoji, getCustomEmoji
 }) => {
 	const avatarStyle = {
 		width: size,
@@ -24,7 +25,15 @@ const Avatar = React.memo(({
 		type, text, size, userId, token, avatar, baseUrl
 	});
 
-	let image = (
+	let image = emoji ? (
+		<Emoji
+			theme={theme}
+			baseUrl={baseUrl}
+			getCustomEmoji={getCustomEmoji}
+			isMessageContainsOnlyEmoji
+			literal={emoji}
+		/>
+	) : (
 		<FastImage
 			style={avatarStyle}
 			source={{
@@ -56,13 +65,16 @@ Avatar.propTypes = {
 	style: PropTypes.any,
 	text: PropTypes.string,
 	avatar: PropTypes.string,
+	emoji: PropTypes.string,
 	size: PropTypes.number,
 	borderRadius: PropTypes.number,
 	type: PropTypes.string,
 	children: PropTypes.object,
 	userId: PropTypes.string,
 	token: PropTypes.string,
-	onPress: PropTypes.func
+	theme: PropTypes.string,
+	onPress: PropTypes.func,
+	getCustomEmoji: PropTypes.func
 };
 
 Avatar.defaultProps = {
