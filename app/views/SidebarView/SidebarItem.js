@@ -21,7 +21,7 @@ const Item = React.memo(({
 			{left}
 		</View>
 		<View style={styles.itemCenter}>
-			<Text style={[styles.itemText, { color: themes[theme].titleText }]}>
+			<Text style={[styles.itemText, { color: themes[theme].titleText }]} numberOfLines={1}>
 				{text}
 			</Text>
 		</View>
