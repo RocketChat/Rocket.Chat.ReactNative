@@ -156,7 +156,7 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (6.6.0):
     - GoogleUtilities/Logger
-  - JitsiMeetSDK (2.4.0)
+  - JitsiMeetSDK (2.8.1)
   - KeyCommands (2.0.3):
     - React
   - libwebp (1.1.0):
@@ -349,7 +349,7 @@ PODS:
   - react-native-document-picker (3.3.3):
     - React
   - react-native-jitsi-meet (2.1.1):
-    - JitsiMeetSDK (= 2.4.0)
+    - JitsiMeetSDK (= 2.8.1)
     - React
   - react-native-notifications (2.1.7):
     - React
@@ -789,7 +789,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   JitsiMeetSDK:
-    :commit: 0d7b379179ef81965e505677cd10d07956c3a2dc
+    :commit: 9177aaa3afb379e17cc687887485e91e5cd24a49
     :git: https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git
 
 SPEC CHECKSUMS:
@@ -828,7 +828,7 @@ SPEC CHECKSUMS:
   GoogleDataTransport: f6f8eba931df03ebd2232ff4645aa85f8f47b5ab
   GoogleDataTransportCCTSupport: d70a561f7d236af529fee598835caad5e25f6d3d
   GoogleUtilities: 39530bc0ad980530298e9c4af8549e991fd033b1
-  JitsiMeetSDK: d4a3aeed1a75fd57e6a78e5d202b6051dfcb9320
+  JitsiMeetSDK: 2984eac1343690bf1c0c72bde75b48b0148d0f79
   KeyCommands: f66c535f698ed14b3d3a4e58859d79a827ea907e
   libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
@@ -847,7 +847,7 @@ SPEC CHECKSUMS:
   react-native-background-timer: 1f7d560647b40e6a60b01c452ba29c54bf581fc4
   react-native-cameraroll: 02e60e9af9273a3cc3b641632bf651189830aaf8
   react-native-document-picker: dd96ce05bf1453b110d7a3912097bf6d298d2cb6
-  react-native-jitsi-meet: 29ed76cdc6142d9a6c013bb14dd6205df0b5452b
+  react-native-jitsi-meet: f89bcb2cfbd5b15403b9c40738036c4f1af45d05
   react-native-notifications: ee8fd739853e72694f3af8b374c8ccb106b7b227
   react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
   react-native-slider: e51492f1264d882a8815b71c5870f8978e52887d

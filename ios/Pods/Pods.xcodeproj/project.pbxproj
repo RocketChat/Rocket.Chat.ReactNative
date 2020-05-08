@@ -25677,23 +25677,6 @@
 			};
 			name = Release;
 		};
-		1E522A8460466326D67750222BB62F29 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 52650D5184EB3D467B9553887EB46DAC /* JitsiMeetSDK.xcconfig */;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		1F0D211E8EEC9BCD27C874D3E2DEFF7E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 76068A15B2460ADC84FF361BB4197837 /* YogaKit.xcconfig */;
@@ -26566,6 +26549,22 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		41F101DFB38CE3C6F686D2BCFC073FCC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 52650D5184EB3D467B9553887EB46DAC /* JitsiMeetSDK.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -28620,6 +28619,23 @@
 			};
 			name = Debug;
 		};
+		AAD031F8415BA72C1127EA588CE1CEC6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 52650D5184EB3D467B9553887EB46DAC /* JitsiMeetSDK.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		AB6916FCBFF289595BB1FD37CB4239A6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CC467A37A31D776D61CA0B32F3CDF41C /* RNLocalize.xcconfig */;
@@ -29359,22 +29375,6 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		CE4972D1F57E0D72C775DF11344141B8 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 52650D5184EB3D467B9553887EB46DAC /* JitsiMeetSDK.xcconfig */;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -31529,8 +31529,8 @@
 		F617CE4545CE4E4DED6DEC4F2D3F8F38 /* Build configuration list for PBXAggregateTarget "JitsiMeetSDK" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				CE4972D1F57E0D72C775DF11344141B8 /* Debug */,
-				1E522A8460466326D67750222BB62F29 /* Release */,
+				41F101DFB38CE3C6F686D2BCFC073FCC /* Debug */,
+				AAD031F8415BA72C1127EA588CE1CEC6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
