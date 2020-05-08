@@ -55,6 +55,7 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	roomTitleRow: {
+		paddingRight: 16,
 		flexDirection: 'row',
 		alignItems: 'center'
 	}
