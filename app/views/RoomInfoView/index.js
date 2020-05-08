@@ -164,32 +164,23 @@ class RoomInfoView extends React.Component {
 		try {
 			const result = await RocketChat.createDirectMessage(username);
 			if (result.success) {
-				const db = database.active;
 				let navigate = navigation.push;
-				const rid = result.room._id;
-				let sub = result.room;
+				const { room } = result;
 
 				// if this is a room focused
-				if (rooms.includes(rid)) {
+				if (rooms.includes(room._id)) {
 					({ navigate } = navigation);
 				}
 
-				try {
-					const subsCollection = db.collections.get('subscriptions');
-					sub = await subsCollection.find(rid);
-				} catch {
-					// Do nothing
-				}
-
 				navigate('RoomView', {
-					rid: sub.rid,
+					rid: room._id,
 					name: RocketChat.getRoomTitle({
-						t: sub.t,
+						t: room.t,
 						fname: name,
 						name: username
 					}),
-					t: sub.t,
-					roomUserId: RocketChat.getUidDirectMessage(sub)
+					t: room.t,
+					roomUserId: RocketChat.getUidDirectMessage(room)
 				});
 			}
 		} catch (e) {
