@@ -67,6 +67,7 @@ class RoomInfoView extends React.Component {
 		}),
 		baseUrl: PropTypes.string,
 		Message_TimeFormat: PropTypes.string,
+		rooms: PropTypes.array,
 		theme: PropTypes.string
 	}
 
@@ -158,14 +159,38 @@ class RoomInfoView extends React.Component {
 
 	goRoom = async() => {
 		const { roomUser } = this.state;
-		const { username } = roomUser;
-		const { navigation } = this.props;
+		const { name, username } = roomUser;
+		const { rooms, navigation } = this.props;
 		try {
 			const result = await RocketChat.createDirectMessage(username);
 			if (result.success) {
-				await navigation.navigate('RoomsListView');
+				const db = database.active;
+				let navigate = navigation.push;
 				const rid = result.room._id;
-				navigation.navigate('RoomView', { rid, name: RocketChat.getRoomTitle(roomUser), t: 'd' });
+				let sub = result.room;
+
+				// if this is a room focused
+				if (rooms.includes(rid)) {
+					({ navigate } = navigation);
+				}
+
+				try {
+					const subsCollection = db.collections.get('subscriptions');
+					sub = await subsCollection.find(rid);
+				} catch {
+					// Do nothing
+				}
+
+				navigate('RoomView', {
+					rid: sub.rid,
+					name: RocketChat.getRoomTitle({
+						t: sub.t,
+						fname: name,
+						name: username
+					}),
+					t: sub.t,
+					roomUserId: RocketChat.getUidDirectMessage(sub)
+				});
 			}
 		} catch (e) {
 			// do nothing
@@ -363,6 +388,7 @@ class RoomInfoView extends React.Component {
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
+	rooms: state.room.rooms,
 	Message_TimeFormat: state.settings.Message_TimeFormat
 });
 
