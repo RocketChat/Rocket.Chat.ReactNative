@@ -29,7 +29,7 @@
     "@react-native-community/datetimepicker": "^2.1.0",
     "@react-native-community/slider": "2.0.5",
     "@rocket.chat/sdk": "djorkaeffalexandre/Rocket.Chat.js.SDK#test.fix-ddp",
-    "@rocket.chat/ui-kit": "^0.2.0-alpha.25",
+    "@rocket.chat/ui-kit": "^0.8.0",
     "base-64": "^0.1.0",
     "bugsnag-react-native": "2.23.2",
     "commonmark": "git+https://github.com/RocketChat/commonmark.js.git",
