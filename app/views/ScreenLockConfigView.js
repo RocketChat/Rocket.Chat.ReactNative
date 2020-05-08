@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const DEFAULT_BIOMETRY = true;
+const DEFAULT_BIOMETRY = false;
 
 class ScreenLockConfigView extends React.Component {
 	static navigationOptions = ({ screenProps }) => ({
@@ -48,7 +48,7 @@ class ScreenLockConfigView extends React.Component {
 		this.state = {
 			autoLock: false,
 			autoLockTime: null,
-			biometry: true,
+			biometry: DEFAULT_BIOMETRY,
 			biometryLabel: null
 		};
 		this.init();
