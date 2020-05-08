@@ -43,7 +43,12 @@ export default appSchema({
 				{ name: 'hide_unread_status', type: 'boolean', isOptional: true },
 				{ name: 'sys_mes', type: 'string', isOptional: true },
 				{ name: 'uids', type: 'string', isOptional: true },
-				{ name: 'usernames', type: 'string', isOptional: true }
+				{ name: 'usernames', type: 'string', isOptional: true },
+				{ name: 'visitor', type: 'string', isOptional: true },
+				{ name: 'department_id', type: 'string', isOptional: true },
+				{ name: 'served_by', type: 'string', isOptional: true },
+				{ name: 'livechat_data', type: 'string', isOptional: true },
+				{ name: 'tags', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({
@@ -52,7 +57,12 @@ export default appSchema({
 				{ name: 'custom_fields', type: 'string' },
 				{ name: 'broadcast', type: 'boolean' },
 				{ name: 'encrypted', type: 'boolean' },
-				{ name: 'ro', type: 'boolean' }
+				{ name: 'ro', type: 'boolean' },
+				{ name: 'v', type: 'string', isOptional: true },
+				{ name: 'department_id', type: 'string', isOptional: true },
+				{ name: 'served_by', type: 'string', isOptional: true },
+				{ name: 'livechat_data', type: 'string', isOptional: true },
+				{ name: 'tags', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({

@@ -99,7 +99,22 @@ export default schemaMigrations({
 				addColumns({
 					table: 'subscriptions',
 					columns: [
-						{ name: 'banner_closed', type: 'boolean', isOptional: true }
+						{ name: 'banner_closed', type: 'boolean', isOptional: true },
+						{ name: 'visitor', type: 'string', isOptional: true },
+						{ name: 'department_id', type: 'string', isOptional: true },
+						{ name: 'served_by', type: 'string', isOptional: true },
+						{ name: 'livechat_data', type: 'string', isOptional: true },
+						{ name: 'tags', type: 'string', isOptional: true }
+					]
+				}),
+				addColumns({
+					table: 'rooms',
+					columns: [
+						{ name: 'v', type: 'string', isOptional: true },
+						{ name: 'department_id', type: 'string', isOptional: true },
+						{ name: 'served_by', type: 'string', isOptional: true },
+						{ name: 'livechat_data', type: 'string', isOptional: true },
+						{ name: 'tags', type: 'string', isOptional: true }
 					]
 				})
 			]

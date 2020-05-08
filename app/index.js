@@ -168,6 +168,15 @@ const ChatsStack = createStackNavigator({
 	NotificationPrefView: {
 		getScreen: () => require('./views/NotificationPreferencesView').default
 	},
+	VisitorNavigationView: {
+		getScreen: () => require('./views/VisitorNavigationView').default
+	},
+	ForwardLivechatView: {
+		getScreen: () => require('./views/ForwardLivechatView').default
+	},
+	LivechatEditView: {
+		getScreen: () => require('./views/LivechatEditView').default
+	},
 	PickerView: {
 		getScreen: () => require('./views/PickerView').default
 	},

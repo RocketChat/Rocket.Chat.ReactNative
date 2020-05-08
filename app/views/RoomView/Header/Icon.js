@@ -29,7 +29,7 @@ const Icon = React.memo(({
 	}
 
 	let colorStyle = {};
-	if (type === 'd' && roomUserId) {
+	if (type === 'l') {
 		colorStyle = { color: STATUS_COLORS[status] };
 	} else {
 		colorStyle = { color: isAndroid && theme === 'light' ? themes[theme].buttonText : themes[theme].auxiliaryText };
