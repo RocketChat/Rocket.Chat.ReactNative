@@ -46,7 +46,14 @@ export const themes = {
 		messageboxBackground: '#ffffff',
 		searchboxBackground: '#E6E6E7',
 		buttonBackground: '#414852',
-		buttonText: '#ffffff'
+		buttonText: '#ffffff',
+		passcodeBackground: '#EEEFF1',
+		passcodeButtonActive: '#E4E7EA',
+		passcodeLockIcon: '#6C727A',
+		passcodePrimary: '#2F343D',
+		passcodeSecondary: '#6C727A',
+		passcodeDotEmpty: '#CBCED1',
+		passcodeDotFull: '#6C727A'
 	},
 	dark: {
 		backgroundColor: '#030b1b',
@@ -81,7 +88,14 @@ export const themes = {
 		messageboxBackground: '#0b182c',
 		searchboxBackground: '#192d4d',
 		buttonBackground: '#414852',
-		buttonText: '#ffffff'
+		buttonText: '#ffffff',
+		passcodeBackground: '#030C1B',
+		passcodeButtonActive: '#0B182C',
+		passcodeLockIcon: '#6C727A',
+		passcodePrimary: '#FFFFFF',
+		passcodeSecondary: '#CBCED1',
+		passcodeDotEmpty: '#CBCED1',
+		passcodeDotFull: '#6C727A'
 	},
 	black: {
 		backgroundColor: '#000000',
@@ -116,6 +130,13 @@ export const themes = {
 		messageboxBackground: '#0d0d0d',
 		searchboxBackground: '#1f1f1f',
 		buttonBackground: '#414852',
-		buttonText: '#ffffff'
+		buttonText: '#ffffff',
+		passcodeBackground: '#000000',
+		passcodeButtonActive: '#0E0D0D',
+		passcodeLockIcon: '#6C727A',
+		passcodePrimary: '#FFFFFF',
+		passcodeSecondary: '#CBCED1',
+		passcodeDotEmpty: '#CBCED1',
+		passcodeDotFull: '#6C727A'
 	}
 };

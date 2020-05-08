@@ -139,7 +139,10 @@ const Reply = React.memo(({
 			return;
 		}
 		if (attachment.type === 'file') {
-			url = `${ baseUrl }${ url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
+			if (!url.startsWith('http')) {
+				url = `${ baseUrl }${ url }`;
+			}
+			url = `${ url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
 		}
 		openLink(url, theme);
 	};

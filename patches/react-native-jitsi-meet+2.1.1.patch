@@ -1,0 +1,31 @@
+diff --git a/node_modules/react-native-jitsi-meet/android/build.gradle b/node_modules/react-native-jitsi-meet/android/build.gradle
+index 27d041a..4557113 100644
+--- a/node_modules/react-native-jitsi-meet/android/build.gradle
++++ b/node_modules/react-native-jitsi-meet/android/build.gradle
+@@ -45,7 +45,14 @@ repositories {
+ }
+ 
+ dependencies {
+-    implementation ('org.jitsi.react:jitsi-meet-sdk:2.4.0') {
++    implementation ('org.jitsi.react:jitsi-meet-sdk:2.+') {
++      exclude group: 'com.facebook.react', module:'react-native-vector-icons'
++      exclude group: 'com.facebook.react', module:'react-native-webview'
++      exclude group: 'com.facebook.react', module:'react-native-youtube'
++      // exclude group: 'com.facebook.react', module:'react-native-community-async-storage'
++      // exclude group: 'com.facebook.react', module:'react-native-linear-gradient'
++      exclude group: 'com.facebook.react', module:'react-native-background-timer'
++      exclude group: 'com.facebook', module:'hermes'
+       transitive = true
+     }
+ }
+diff --git a/node_modules/react-native-jitsi-meet/react-native-jitsi-meet.podspec b/node_modules/react-native-jitsi-meet/react-native-jitsi-meet.podspec
+index 096c675..7e6d5d3 100644
+--- a/node_modules/react-native-jitsi-meet/react-native-jitsi-meet.podspec
++++ b/node_modules/react-native-jitsi-meet/react-native-jitsi-meet.podspec
+@@ -16,5 +16,5 @@ Pod::Spec.new do |s|
+   s.source_files  = "ios/**/*.{h,m}"
+ 
+   s.dependency 'React'
+-  s.dependency 'JitsiMeetSDK', '2.4.0'
++  s.dependency 'JitsiMeetSDK', '2.8.1'
+ end

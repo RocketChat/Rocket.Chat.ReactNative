@@ -15,10 +15,12 @@ import {
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
 import sharedStyles from './views/Styles';
-import { isNotch, supportSystemTheme } from './utils/deviceInfo';
+import { hasNotch, supportSystemTheme } from './utils/deviceInfo';
 import { defaultHeader, onNavigationStateChange, cardStyle } from './utils/navigation';
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { ThemeContext } from './theme';
+import { localAuthenticate } from './utils/localAuthentication';
+import ScreenLockedView from './views/ScreenLockedView';
 
 const InsideNavigator = createStackNavigator({
 	ShareListView: {
@@ -82,6 +84,7 @@ class Root extends React.Component {
 		const token = await RNUserDefaults.get(RocketChat.TOKEN_KEY);
 
 		if (currentServer && token) {
+			await localAuthenticate(currentServer);
 			await Navigation.navigate('InsideStack');
 			await RocketChat.shareExtensionInit(currentServer);
 		} else {
@@ -108,7 +111,7 @@ class Root extends React.Component {
 		return (
 			<AppearanceProvider>
 				<View
-					style={[sharedStyles.container, isLandscape && isNotch ? sharedStyles.notchLandscapeContainer : {}]}
+					style={[sharedStyles.container, isLandscape && hasNotch ? sharedStyles.notchLandscapeContainer : {}]}
 					onLayout={this.handleLayout}
 				>
 					<Provider store={store}>
@@ -120,6 +123,7 @@ class Root extends React.Component {
 								onNavigationStateChange={onNavigationStateChange}
 								screenProps={{ theme }}
 							/>
+							<ScreenLockedView />
 						</ThemeContext.Provider>
 					</Provider>
 				</View>
