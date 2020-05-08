@@ -74,6 +74,8 @@
 	<string>Upload photos to share with other users or to change your avatar</string>
 	<key>NSRemindersUsageDescription</key>
 	<string>Allow $(PRODUCT_NAME) to access your reminders</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Unlock the app with FaceID</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>custom.ttf</string>

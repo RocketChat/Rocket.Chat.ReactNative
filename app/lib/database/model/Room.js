@@ -13,4 +13,14 @@ export default class Room extends Model {
 	@field('encrypted') encrypted;
 
 	@field('ro') ro;
+
+	@json('v', sanitizer) v;
+
+	@json('served_by', sanitizer) servedBy;
+
+	@field('department_id') departmentId;
+
+	@json('livechat_data', sanitizer) livechatData;
+
+	@json('tags', sanitizer) tags;
 }

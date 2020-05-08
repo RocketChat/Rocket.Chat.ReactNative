@@ -136,7 +136,7 @@ export const MultiSelect = React.memo(({
 		/>
 	) : (
 		<Input
-			open={onShow}
+			onPress={onShow}
 			theme={theme}
 			loading={loading}
 			disabled={disabled}
@@ -150,7 +150,7 @@ export const MultiSelect = React.memo(({
 		const items = options.filter(option => selected.includes(option.value));
 		button = (
 			<Input
-				open={onShow}
+				onPress={onShow}
 				theme={theme}
 				loading={loading}
 				disabled={disabled}

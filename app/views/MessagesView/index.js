@@ -7,7 +7,7 @@ import equal from 'deep-equal';
 import ActionSheet from 'react-native-action-sheet';
 
 import styles from './styles';
-import Message from '../../containers/message/Message';
+import Message from '../../containers/message';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
@@ -87,6 +87,7 @@ class MessagesView extends React.Component {
 		const { user, baseUrl, theme } = this.props;
 
 		const renderItemCommonProps = item => ({
+			item,
 			baseUrl,
 			user,
 			author: item.u || item.user,
@@ -110,21 +111,21 @@ class MessagesView extends React.Component {
 				},
 				noDataMsg: I18n.t('No_files'),
 				testID: 'room-files-view',
-				renderItem: (item) => {
-					const url = getFileUrlFromMessage(item);
-
-					return (
-						<Message
-							{...renderItemCommonProps(item)}
-							attachments={[{
+				renderItem: item => (
+					<Message
+						{...renderItemCommonProps(item)}
+						item={{
+							...item,
+							u: item.user,
+							attachments: [{
 								title: item.name,
 								description: item.description,
-								...url
-							}]}
-							theme={theme}
-						/>
-					);
-				}
+								...getFileUrlFromMessage(item)
+							}]
+						}}
+						theme={theme}
+					/>
+				)
 			},
 			// Mentions Messages Screen
 			Mentions: {

@@ -68,6 +68,9 @@ export default {
 	LDAP_Enable: {
 		type: 'valueAsBoolean'
 	},
+	Livechat_request_comment_when_closing_conversation: {
+		type: 'valueAsBoolean'
+	},
 	Jitsi_Enabled: {
 		type: 'valueAsBoolean'
 	},
@@ -160,5 +163,11 @@ export default {
 	},
 	CAS_login_url: {
 		type: 'valueAsString'
+	},
+	Force_Screen_Lock: {
+		type: 'valueAsBoolean'
+	},
+	Force_Screen_Lock_After: {
+		type: 'valueAsNumber'
 	}
 };

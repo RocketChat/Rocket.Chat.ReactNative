@@ -43,9 +43,11 @@ export default StyleSheet.create({
 	roomTitleContainer: {
 		flex: 1
 	},
+	roomTitlePadding: {
+		paddingRight: 16
+	},
 	roomTitle: {
 		fontSize: 16,
-		paddingRight: 16,
 		...sharedStyles.textMedium
 	},
 	roomDescription: {
@@ -53,6 +55,7 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	roomTitleRow: {
+		paddingRight: 16,
 		flexDirection: 'row',
 		alignItems: 'center'
 	}

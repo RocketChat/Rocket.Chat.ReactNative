@@ -8,7 +8,6 @@ import Header from './Header';
 import RightButtons from './RightButtons';
 import { withTheme } from '../../../theme';
 import RoomHeaderLeft from './RoomHeaderLeft';
-import { getUserSelector } from '../../../selectors/login';
 
 class RoomHeaderView extends Component {
 	static propTypes = {
@@ -95,17 +94,15 @@ class RoomHeaderView extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-	let status;
 	let statusText;
-	const { roomUserId, type } = ownProps;
-	if (type === 'd') {
-		const user = getUserSelector(state);
-		if (user.id) {
-			if (state.activeUsers[roomUserId] && state.meteor.connected) {
-				({ status, statusText } = state.activeUsers[roomUserId]);
-			} else {
-				status = 'offline';
-			}
+	let status = 'offline';
+	const { roomUserId, type, visitor = {} } = ownProps;
+
+	if (state.meteor.connected) {
+		if (type === 'd' && state.activeUsers[roomUserId]) {
+			({ status, statusText } = state.activeUsers[roomUserId]);
+		} else if (type === 'l' && visitor?.status) {
+			({ status } = visitor);
 		}
 	}
 

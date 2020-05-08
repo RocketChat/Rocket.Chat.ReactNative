@@ -209,12 +209,20 @@ RoomItem.defaultProps = {
 	getUserPresence: () => {}
 };
 
-const mapStateToProps = (state, ownProps) => ({
-	connected: state.meteor.connected,
-	status:
-		state.meteor.connected && ownProps.type === 'd'
-			? state.activeUsers[ownProps.id] && state.activeUsers[ownProps.id].status
-			: 'offline'
-});
+const mapStateToProps = (state, ownProps) => {
+	let status = 'offline';
+	const { id, type, visitor = {} } = ownProps;
+	if (state.meteor.connected) {
+		if (type === 'd') {
+			status = state.activeUsers[id]?.status || 'offline';
+		} else if (type === 'l' && visitor?.status) {
+			({ status } = visitor);
+		}
+	}
+	return {
+		connected: state.meteor.connected,
+		status
+	};
+};
 
 export default connect(mapStateToProps)(RoomItem);
