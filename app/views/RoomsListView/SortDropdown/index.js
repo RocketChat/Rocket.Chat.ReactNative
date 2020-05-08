@@ -138,7 +138,7 @@ class Sort extends PureComponent {
 						<View style={[styles.dropdownContainerHeader, { borderColor: themes[theme].separatorColor }]}>
 							<View style={styles.sortItemContainer}>
 								<Text style={[styles.sortToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Sorting_by', { key: I18n.t(sortBy === 'alphabetical' ? 'name' : 'activity') })}</Text>
-								<CustomIcon style={[styles.sortIcon, { color: themes[theme].auxiliaryText }]} size={22} name='sort1' />
+								<CustomIcon style={[styles.sortIcon, { color: themes[theme].auxiliaryText }]} size={22} name='sort' />
 							</View>
 						</View>
 					</Touch>
@@ -161,7 +161,7 @@ class Sort extends PureComponent {
 					<View style={[styles.sortSeparator, { backgroundColor: themes[theme].separatorColor }]} />
 					<SortItemButton onPress={this.toggleGroupByType} theme={theme}>
 						<SortItemContent
-							icon='sort1'
+							icon='sort-amount-down'
 							label='Group_by_type'
 							checked={groupByType}
 							theme={theme}

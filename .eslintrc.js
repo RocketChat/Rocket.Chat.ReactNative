@@ -87,6 +87,7 @@ module.exports = {
 		"no-regex-spaces": 2,
 		"no-undef": 2,
 		"no-unreachable": 2,
+		"no-unused-expressions": 0,
 		"no-unused-vars": [2, {
 			"vars": "all",
 			"args": "after-used"

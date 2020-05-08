@@ -28,6 +28,9 @@ PODS:
     - UMImageLoaderInterface
   - EXKeepAwake (8.1.0):
     - UMCore
+  - EXLocalAuthentication (9.0.0):
+    - UMConstantsInterface
+    - UMCore
   - EXPermissions (8.1.0):
     - UMCore
     - UMPermissionsInterface
@@ -434,6 +437,8 @@ PODS:
     - React
   - RNBootSplash (2.2.4):
     - React
+  - RNCAsyncStorage (1.9.0):
+    - React
   - RNDateTimePicker (2.3.2):
     - React
   - RNDeviceInfo (5.5.7):
@@ -453,12 +458,12 @@ PODS:
     - React
   - RNGestureHandler (1.6.1):
     - React
-  - RNImageCropPicker (0.30.0):
+  - RNImageCropPicker (0.28.0):
     - React-Core
     - React-RCTImage
-    - RNImageCropPicker/QBImagePickerController (= 0.30.0)
+    - RNImageCropPicker/QBImagePickerController (= 0.28.0)
     - RSKImageCropper
-  - RNImageCropPicker/QBImagePickerController (0.30.0):
+  - RNImageCropPicker/QBImagePickerController (0.28.0):
     - React-Core
     - React-RCTImage
     - RSKImageCropper
@@ -511,6 +516,7 @@ DEPENDENCIES:
   - EXHaptics (from `../node_modules/expo-haptics/ios`)
   - EXImageLoader (from `../node_modules/expo-image-loader/ios`)
   - EXKeepAwake (from `../node_modules/expo-keep-awake/ios`)
+  - EXLocalAuthentication (from `../node_modules/expo-local-authentication/ios`)
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
   - EXWebBrowser (from `../node_modules/expo-web-browser/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -576,6 +582,7 @@ DEPENDENCIES:
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - RNAudio (from `../node_modules/react-native-audio`)
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
+  - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNFastImage (from `../node_modules/react-native-fast-image`)
@@ -653,6 +660,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-image-loader/ios"
   EXKeepAwake:
     :path: "../node_modules/expo-keep-awake/ios"
+  EXLocalAuthentication:
+    :path: "../node_modules/expo-local-authentication/ios"
   EXPermissions:
     :path: "../node_modules/expo-permissions/ios"
   EXWebBrowser:
@@ -739,6 +748,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-audio"
   RNBootSplash:
     :path: "../node_modules/react-native-bootsplash"
+  RNCAsyncStorage:
+    :path: "../node_modules/@react-native-community/async-storage"
   RNDateTimePicker:
     :path: "../node_modules/@react-native-community/datetimepicker"
   RNDeviceInfo:
@@ -810,6 +821,7 @@ SPEC CHECKSUMS:
   EXHaptics: 013b5065946d4dd7b46ea547b58072d45a206dbd
   EXImageLoader: 5ad6896fa1ef2ee814b551873cbf7a7baccc694a
   EXKeepAwake: d045bc2cf1ad5a04f0323cc7c894b95b414042e0
+  EXLocalAuthentication: bbf1026cc289d729da4f29240dd7a8f6a14e4b20
   EXPermissions: 24b97f734ce9172d245a5be38ad9ccfcb6135964
   EXWebBrowser: 5902f99ac5ac551e5c82ff46f13a337b323aa9ea
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
@@ -875,12 +887,13 @@ SPEC CHECKSUMS:
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNAudio: cae2991f2dccb75163f260b60da8051717b959fa
   RNBootSplash: 7cb9b4fe7e94177edc0d11010f7631d79db2f5e9
+  RNCAsyncStorage: 453cd7c335ec9ba3b877e27d02238956b76f3268
   RNDateTimePicker: 4bd49e09f91ca73d69119a9e1173b0d43b82f5e5
   RNDeviceInfo: e2102056bde3ad5d137fd029d8d431510a00486a
   RNFastImage: 35ae972d6727c84ee3f5c6897e07f84d0a3445e9
   RNFirebase: 37daa9a346d070f9f6ee1f3b4aaf4c8e3b1d5d1c
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
-  RNImageCropPicker: a606d65f71c6c05caa3c850c16fb1ba2a4718608
+  RNImageCropPicker: cf129d17e042ce3e96fb9ada967c28f21f977c82
   RNLocalize: b6df30cc25ae736d37874f9bce13351db2f56796
   RNReanimated: 955cf4068714003d2f1a6e2bae3fb1118f359aff
   RNRootView: 895a4813dedeaca82db2fa868ca1c333d790e494
@@ -906,6 +919,6 @@ SPEC CHECKSUMS:
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 929bf93b227155c1405c8133dd38934cb852bb55
+PODFILE CHECKSUM: 35d9478dd32cf502959b8efc14411ecf09c66c95
 
 COCOAPODS: 1.8.4
