@@ -30,6 +30,21 @@ export function deleteRoom(rid, t) {
 	};
 }
 
+export function closeRoom(rid) {
+	return {
+		type: types.ROOM.CLOSE,
+		rid
+	};
+}
+
+export function forwardRoom(rid, transferData) {
+	return {
+		type: types.ROOM.FORWARD,
+		transferData,
+		rid
+	};
+}
+
 export function removedRoom() {
 	return {
 		type: types.ROOM.REMOVED

@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { CustomIcon } from '../lib/Icons';
-import { themes } from '../constants/colors';
+import { STATUS_COLORS, themes } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	style: {
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
 });
 
 const RoomTypeIcon = React.memo(({
-	type, size, isGroupChat, style, theme
+	type, size, isGroupChat, status, style, theme
 }) => {
 	if (!type) {
 		return null;
@@ -36,7 +36,7 @@ const RoomTypeIcon = React.memo(({
 		}
 		return <CustomIcon name='at' size={13} style={[styles.style, styles.discussion, { color }]} />;
 	} if (type === 'l') {
-		return <CustomIcon name='omnichannel' size={13} style={[styles.style, styles.discussion, { color }]} />;
+		return <CustomIcon name='omnichannel' size={13} style={[styles.style, styles.discussion, { color: STATUS_COLORS[status] }]} />;
 	}
 	return <Image source={{ uri: 'lock' }} style={[styles.style, style, { width: size, height: size, tintColor: color }]} />;
 });
@@ -45,6 +45,7 @@ RoomTypeIcon.propTypes = {
 	theme: PropTypes.string,
 	type: PropTypes.string,
 	isGroupChat: PropTypes.bool,
+	status: PropTypes.string,
 	size: PropTypes.number,
 	style: PropTypes.object
 };

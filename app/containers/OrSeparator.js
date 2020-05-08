@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const DateSeparator = React.memo(({ theme }) => {
+const OrSeparator = React.memo(({ theme }) => {
 	const line = { backgroundColor: themes[theme].borderColor };
 	const text = { color: themes[theme].auxiliaryText };
 	return (
@@ -36,8 +36,8 @@ const DateSeparator = React.memo(({ theme }) => {
 	);
 });
 
-DateSeparator.propTypes = {
+OrSeparator.propTypes = {
 	theme: PropTypes.string
 };
 
-export default DateSeparator;
+export default OrSeparator;
