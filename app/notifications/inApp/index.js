@@ -8,7 +8,7 @@ import equal from 'deep-equal';
 import { responsive } from 'react-native-responsive-ui';
 import Touchable from 'react-native-platform-touchable';
 
-import { isNotch, isIOS, isTablet } from '../../utils/deviceInfo';
+import { hasNotch, isIOS, isTablet } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 import Avatar from '../../containers/Avatar';
@@ -188,7 +188,7 @@ class NotificationBadge extends React.Component {
 		if (isIOS) {
 			const portrait = window.height > window.width;
 			if (portrait) {
-				top = isNotch ? 45 : 20;
+				top = hasNotch ? 45 : 20;
 			} else {
 				top = isTablet ? 20 : 0;
 			}

@@ -190,7 +190,7 @@ class MessageBox extends Component {
 		});
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		const { isFocused, editing, replying } = this.props;
 		if (!isFocused()) {
 			return;
@@ -306,9 +306,9 @@ class MessageBox extends Component {
 
 		if (!isTextEmpty) {
 			try {
-				const { start, end } = this.component._lastNativeSelection;
+				const { start, end } = this.component?.lastNativeSelection;
 				const cursor = Math.max(start, end);
-				const lastNativeText = this.component._lastNativeText || '';
+				const lastNativeText = this.component?.lastNativeText || '';
 				// matches if text either starts with '/' or have (@,#,:) then it groups whatever comes next of mention type
 				const regexp = /(#|@|:|^\/)([a-z0-9._-]+)$/im;
 				const result = lastNativeText.substr(0, cursor).match(regexp);
@@ -339,7 +339,7 @@ class MessageBox extends Component {
 		}
 		const { trackingType } = this.state;
 		const msg = this.text;
-		const { start, end } = this.component._lastNativeSelection;
+		const { start, end } = this.component?.lastNativeSelection;
 		const cursor = Math.max(start, end);
 		const regexp = /([a-z0-9._-]+)$/im;
 		const result = msg.substr(0, cursor).replace(regexp, '');
@@ -383,8 +383,8 @@ class MessageBox extends Component {
 		let newText = '';
 
 		// if messagebox has an active cursor
-		if (this.component && this.component._lastNativeSelection) {
-			const { start, end } = this.component._lastNativeSelection;
+		if (this.component?.lastNativeSelection) {
+			const { start, end } = this.component.lastNativeSelection;
 			const cursor = Math.max(start, end);
 			newText = `${ text.substr(0, cursor) }${ emoji }${ text.substr(cursor) }`;
 		} else {

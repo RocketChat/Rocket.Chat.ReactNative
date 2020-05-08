@@ -84,7 +84,7 @@ class LoginView extends React.Component {
 		};
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		const { error } = this.props;
 		if (nextProps.failure && !equal(error, nextProps.error)) {
 			Alert.alert(I18n.t('Oops'), I18n.t('Login_error'));
