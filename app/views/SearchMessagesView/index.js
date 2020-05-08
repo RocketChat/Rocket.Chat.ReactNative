@@ -11,7 +11,7 @@ import styles from './styles';
 import Markdown from '../../containers/markdown';
 import debounce from '../../utils/debounce';
 import RocketChat from '../../lib/rocketchat';
-import Message from '../../containers/message/Message';
+import Message from '../../containers/message';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
@@ -115,14 +115,10 @@ class SearchMessagesView extends React.Component {
 		const { user, baseUrl, theme } = this.props;
 		return (
 			<Message
+				item={item}
 				baseUrl={baseUrl}
 				user={user}
-				author={item.u}
-				ts={item.ts}
-				msg={item.msg}
-				attachments={item.attachments || []}
 				timeFormat='MMM Do YYYY, h:mm:ss a'
-				isEdited={!!item.editedAt}
 				isHeader
 				showAttachment={() => {}}
 				getCustomEmoji={this.getCustomEmoji}
