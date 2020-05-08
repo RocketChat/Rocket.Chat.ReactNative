@@ -69,7 +69,7 @@ const stateAttrsUpdate = [
 	'readOnly',
 	'member'
 ];
-const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement', 'sysMes', 'topic', 'name', 'fname', 'roles'];
+const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement', 'sysMes', 'topic', 'name', 'fname', 'roles', 'bannerClosed'];
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -810,6 +810,20 @@ class RoomView extends React.Component {
 		}
 	});
 
+	closeBanner = async() => {
+		const { room } = this.state;
+		try {
+			const db = database.active;
+			await db.action(async() => {
+				await room.update((r) => {
+					r.bannerClosed = true;
+				});
+			});
+		} catch {
+			// do nothing
+		}
+	};
+
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
@@ -988,7 +1002,9 @@ class RoomView extends React.Component {
 		const {
 			user, baseUrl, theme, navigation, Hide_System_Messages
 		} = this.props;
-		const { rid, t, sysMes } = room;
+		const {
+			rid, t, sysMes, bannerClosed, announcement
+		} = room;
 
 		return (
 			<SafeAreaView
@@ -1003,7 +1019,9 @@ class RoomView extends React.Component {
 				<Banner
 					rid={rid}
 					title={I18n.t('Announcement')}
-					text={room.announcement}
+					text={announcement}
+					bannerClosed={bannerClosed}
+					closeBanner={this.closeBanner}
 					theme={theme}
 				/>
 				<List
