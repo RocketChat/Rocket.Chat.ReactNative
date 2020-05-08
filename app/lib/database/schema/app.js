@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 7,
+	version: 8,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -25,6 +25,7 @@ export default appSchema({
 				{ name: 'last_message', type: 'string', isOptional: true },
 				{ name: 'description', type: 'string', isOptional: true },
 				{ name: 'announcement', type: 'string', isOptional: true },
+				{ name: 'banner_closed', type: 'boolean', isOptional: true },
 				{ name: 'topic', type: 'string', isOptional: true },
 				{ name: 'blocked', type: 'boolean', isOptional: true },
 				{ name: 'blocker', type: 'boolean', isOptional: true },

@@ -1,0 +1,6 @@
+module Pods_ShareRocketChatRN {
+  umbrella header "Pods-ShareRocketChatRN-umbrella.h"
+
+  export *
+  module * { export * }
+}

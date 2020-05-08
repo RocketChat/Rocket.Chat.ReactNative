@@ -3,5 +3,5 @@ export default {
 	getReadableVersion: () => '',
 	getBundleId: () => '',
 	isTablet: () => false,
-	hasNotch: () => ''
+	hasNotch: () => false
 };

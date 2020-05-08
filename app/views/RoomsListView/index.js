@@ -235,7 +235,7 @@ class RoomsListView extends React.Component {
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		const { loadingServer, searchText, server } = this.props;
 
 		if (nextProps.server && loadingServer !== nextProps.loadingServer) {
