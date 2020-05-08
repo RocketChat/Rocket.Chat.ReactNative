@@ -1925,10 +1925,10 @@
     tiny-events "^1.0.1"
     universal-websocket-client "^1.0.2"
 
-"@rocket.chat/ui-kit@^0.2.0-alpha.25":
-  version "0.2.0-alpha.26"
-  resolved "https://registry.yarnpkg.com/@rocket.chat/ui-kit/-/ui-kit-0.2.0-alpha.26.tgz#139e337bc8e751ecd5e61e7a07e563792c37d002"
-  integrity sha512-UBsuntc/W/s545WJGUZlG2TyrrCI59REhRWcgIR/Ueb3qkh/DuhdtK6zjVH1y0M+tLlkrIgtEAsoatj55nkWVA==
+"@rocket.chat/ui-kit@^0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@rocket.chat/ui-kit/-/ui-kit-0.8.0.tgz#84d1614c0f3c7749511bfbd555c1592485d262b3"
+  integrity sha512-JNpwGcVQfBHjfG/sLJmMwau0BNvUWx210UAji4MnARAvfxBUslUYWzTRDkvxryKX0223dbTC91HOMt1HZDNNLQ==
 
 "@snyk/composer-lockfile-parser@1.0.3":
   version "1.0.3"
@@ -10077,7 +10077,7 @@ react-native-scrollable-tab-view@^1.0.0:
     prop-types "^15.6.0"
     react-timer-mixin "^0.13.3"
 
-react-native-slowlog@1.0.2:
+react-native-slowlog@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-native-slowlog/-/react-native-slowlog-1.0.2.tgz#5520979e3ef9d5273495d431ff3be34f02e35c89"
   integrity sha1-VSCXnj751Sc0ldQx/zvjTwLjXIk=
