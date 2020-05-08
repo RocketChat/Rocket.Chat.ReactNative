@@ -36,7 +36,7 @@ const RoomTypeIcon = React.memo(({
 		}
 		return <CustomIcon name='at' size={13} style={[styles.style, styles.discussion, { color }]} />;
 	} if (type === 'l') {
-		return <CustomIcon name='livechat' size={13} style={[styles.style, styles.discussion, { color: STATUS_COLORS[status] }]} />;
+		return <CustomIcon name='omnichannel' size={13} style={[styles.style, styles.discussion, { color: STATUS_COLORS[status] }]} />;
 	}
 	return <Image source={{ uri: 'lock' }} style={[styles.style, style, { width: size, height: size, tintColor: color }]} />;
 });

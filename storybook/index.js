@@ -4,6 +4,9 @@ import { getStorybookUI, configure } from '@storybook/react-native'; // eslint-d
 import RNBootSplash from 'react-native-bootsplash';
 import 'react-native-gesture-handler';
 
+// eslint-disable-next-line no-undef
+jest.mock('react-native/Libraries/Components/Touchable/TouchableOpacity', () => jest.fn(() => null));
+
 RNBootSplash.hide();
 
 // import stories

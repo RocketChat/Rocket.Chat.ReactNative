@@ -239,7 +239,7 @@ class RoomActionsView extends React.Component {
 
 		const jitsiActions = jitsiEnabled ? [
 			{
-				icon: 'livechat',
+				icon: 'omnichannel',
 				name: I18n.t('Voice_call'),
 				event: () => RocketChat.callJitsi(rid, true),
 				testID: 'room-actions-voice'
@@ -570,7 +570,7 @@ class RoomActionsView extends React.Component {
 					>
 						{t === 'd' && member._id ? <Status style={sharedStyles.status} id={member._id} /> : null }
 					</Avatar>
-					<View style={styles.roomTitleContainer}>
+					<View style={[styles.roomTitleContainer, item.disabled && styles.roomTitlePadding]}>
 						{room.t === 'd'
 							? <Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{room.fname}</Text>
 							: (
@@ -587,7 +587,7 @@ class RoomActionsView extends React.Component {
 							numberOfLines={1}
 							theme={theme}
 						/>
-						{room.t === 'd' && <Markdown msg={member.statusText} style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]} preview theme={theme} />}
+						{room.t === 'd' && <Markdown msg={member.statusText} style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]} preview theme={theme} numberOfLines={1} />}
 					</View>
 					{!item.disabled && <DisclosureIndicator theme={theme} />}
 				</>

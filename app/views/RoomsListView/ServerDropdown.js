@@ -22,8 +22,9 @@ import { withTheme } from '../../theme';
 import { KEY_COMMAND, handleCommandSelectServer } from '../../commands';
 import { isTablet } from '../../utils/deviceInfo';
 import { withSplit } from '../../split';
-import LongPress from '../../utils/longPress';
+import { localAuthenticate } from '../../utils/localAuthentication';
 import { showConfirmationAlert } from '../../utils/info';
+import LongPress from '../../utils/longPress';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
@@ -148,6 +149,7 @@ class ServerDropdown extends Component {
 					}, ANIMATION_DURATION);
 				}, ANIMATION_DURATION);
 			} else {
+				await localAuthenticate(server);
 				selectServerRequest(server);
 			}
 		}
@@ -211,8 +213,8 @@ class ServerDropdown extends Component {
 							)
 						}
 						<View style={styles.serverTextContainer}>
-							<Text style={[styles.serverName, { color: themes[theme].titleText }]}>{item.name || item.id}</Text>
-							<Text style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]}>{item.id}</Text>
+							<Text style={[styles.serverName, { color: themes[theme].titleText }]} numberOfLines={1}>{item.name || item.id}</Text>
+							<Text style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{item.id}</Text>
 						</View>
 						{item.id === server ? <Check theme={theme} /> : null}
 					</View>

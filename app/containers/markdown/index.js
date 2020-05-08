@@ -261,13 +261,12 @@ class Markdown extends PureComponent {
 		);
 	}
 
-	renderEmoji = ({ emojiName, literal }) => {
+	renderEmoji = ({ literal }) => {
 		const {
-			getCustomEmoji, baseUrl, customEmojis = true, style, theme
+			getCustomEmoji, baseUrl, customEmojis, style, theme
 		} = this.props;
 		return (
 			<MarkdownEmoji
-				emojiName={emojiName}
 				literal={literal}
 				isMessageContainsOnlyEmoji={this.isMessageContainsOnlyEmoji}
 				getCustomEmoji={getCustomEmoji}

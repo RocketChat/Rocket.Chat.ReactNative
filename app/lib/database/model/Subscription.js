@@ -50,6 +50,8 @@ export default class Subscription extends Model {
 
 	@field('announcement') announcement;
 
+	@field('banner_closed') bannerClosed;
+
 	@field('topic') topic;
 
 	@field('blocked') blocked;

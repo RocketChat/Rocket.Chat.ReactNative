@@ -57,6 +57,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					lastOpen: s.lastOpen,
 					description: s.description,
 					announcement: s.announcement,
+					bannerClosed: s.bannerClosed,
 					topic: s.topic,
 					blocked: s.blocked,
 					blocker: s.blocker,
@@ -131,6 +132,11 @@ const createOrUpdateSubscription = async(subscription, room) => {
 				try {
 					const update = sub.prepareUpdate((s) => {
 						Object.assign(s, tmp);
+						if (subscription.announcement) {
+							if (subscription.announcement !== sub.announcement) {
+								s.bannerClosed = false;
+							}
+						}
 					});
 					batch.push(update);
 				} catch (e) {

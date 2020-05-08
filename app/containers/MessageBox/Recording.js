@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { AudioRecorder, AudioUtils } from 'react-native-audio';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import RNFetchBlob from 'rn-fetch-blob';
 
 import styles from './styles';
@@ -75,12 +76,16 @@ export default class extends React.PureComponent {
 			}
 		};
 		AudioRecorder.startRecording();
+
+		activateKeepAwake();
 	}
 
 	componentWillUnmount() {
 		if (this.recording) {
 			this.cancelAudioMessage();
 		}
+
+		deactivateKeepAwake();
 	}
 
 	finishRecording = (didSucceed, filePath, size) => {

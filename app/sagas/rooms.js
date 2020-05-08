@@ -1,10 +1,9 @@
 import {
 	put, select, race, take, fork, cancel, delay
 } from 'redux-saga/effects';
-import { BACKGROUND, INACTIVE } from 'redux-enhancer-react-native-appstate';
 import { Q } from '@nozbe/watermelondb';
-
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+
 import * as types from '../actions/actionsTypes';
 import { roomsSuccess, roomsFailure, roomsRefresh } from '../actions/rooms';
 import database from '../lib/database';
@@ -70,6 +69,11 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 				...subsToUpdate.map((subscription) => {
 					const newSub = subscriptions.find(s => s._id === subscription._id);
 					return subscription.prepareUpdate(() => {
+						if (newSub.announcement) {
+							if (newSub.announcement !== subscription.announcement) {
+								subscription.bannerClosed = false;
+							}
+						}
 						Object.assign(subscription, newSub);
 					});
 				}),
@@ -109,8 +113,7 @@ const root = function* root() {
 				roomsSuccess: take(types.ROOMS.SUCCESS),
 				roomsFailure: take(types.ROOMS.FAILURE),
 				serverReq: take(types.SERVER.SELECT_REQUEST),
-				background: take(BACKGROUND),
-				inactive: take(INACTIVE),
+				background: take(types.APP_STATE.BACKGROUND),
 				logout: take(types.LOGOUT),
 				timeout: delay(30000)
 			});

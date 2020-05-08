@@ -11,6 +11,7 @@ import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';
 import { appStart } from '../actions';
+import { localAuthenticate } from '../utils/localAuthentication';
 
 const roomTypes = {
 	channel: 'c', direct: 'd', group: 'p', channels: 'l'
@@ -72,6 +73,7 @@ const handleOpen = function* handleOpen({ params }) {
 	if (server === host && user) {
 		const connected = yield select(state => state.server.connected);
 		if (!connected) {
+			yield localAuthenticate(host);
 			yield put(selectServerRequest(host));
 			yield take(types.SERVER.SELECT_SUCCESS);
 		}
@@ -83,6 +85,7 @@ const handleOpen = function* handleOpen({ params }) {
 		try {
 			const servers = yield serversCollection.find(host);
 			if (servers && user) {
+				yield localAuthenticate(host);
 				yield put(selectServerRequest(host));
 				yield take(types.LOGIN.SUCCESS);
 				yield navigate({ params });

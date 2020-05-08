@@ -1,4 +1,5 @@
-import { Alert, Linking, AsyncStorage } from 'react-native';
+import { Alert, Linking } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import { isIOS } from './deviceInfo';
 import I18n from '../i18n';
