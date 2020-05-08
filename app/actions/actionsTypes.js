@@ -64,3 +64,4 @@ export const INVITE_LINKS = createRequestTypes('INVITE_LINKS', [
 	...defaultTypes
 ]);
 export const SETTINGS = createRequestTypes('SETTINGS', ['CLEAR', 'ADD']);
+export const APP_STATE = createRequestTypes('APP_STATE', ['FOREGROUND', 'BACKGROUND']);

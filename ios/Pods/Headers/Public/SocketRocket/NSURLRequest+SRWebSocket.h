@@ -1,1 +1,0 @@
-../../../../../node_modules/detox/ios_src/SocketRocket/SocketRocket/NSURLRequest+SRWebSocket.h

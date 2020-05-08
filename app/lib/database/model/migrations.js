@@ -95,6 +95,12 @@ export default schemaMigrations({
 					columns: [
 						{ name: 'emoji', type: 'string', isOptional: true }
 					]
+				}),
+				addColumns({
+					table: 'subscriptions',
+					columns: [
+						{ name: 'banner_closed', type: 'boolean', isOptional: true }
+					]
 				})
 			]
 		}
