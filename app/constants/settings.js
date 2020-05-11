@@ -50,6 +50,9 @@ export default {
 	Accounts_ManuallyApproveNewUsers: {
 		type: 'valueAsBoolean'
 	},
+	API_Use_REST_For_DDP_Calls: {
+		type: 'valueAsBoolean'
+	},
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
 	},

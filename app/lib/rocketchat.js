@@ -77,7 +77,7 @@ const RocketChat = {
 		name, users, type, readOnly, broadcast
 	}) {
 		// RC 0.51.0
-		return this.methodCall(type ? 'createPrivateGroup' : 'createChannel', name, users, readOnly, {}, { broadcast });
+		return this.methodCallWrapper(type ? 'createPrivateGroup' : 'createChannel', name, users, readOnly, {}, { broadcast });
 	},
 	async getUserToken() {
 		try {
@@ -562,7 +562,7 @@ const RocketChat = {
 
 	spotlight(search, usernames, type) {
 		// RC 0.51.0
-		return this.methodCall('spotlight', search, usernames, type);
+		return this.methodCallWrapper('spotlight', search, usernames, type);
 	},
 
 	createDirectMessage(username) {
@@ -734,9 +734,13 @@ const RocketChat = {
 	},
 
 	async methodCallWrapper(method, ...params) {
-		const data = await this.post(`method.call/${ method }`, { message: JSON.stringify({ method, params }) });
-		const { result } = JSON.parse(data.message);
-		return result;
+		const { API_Use_REST_For_DDP_Calls } = reduxStore.getState().settings;
+		if (API_Use_REST_For_DDP_Calls) {
+			const data = await this.post(`method.call/${ method }`, { message: JSON.stringify({ method, params }) });
+			const { result } = JSON.parse(data.message);
+			return result;
+		}
+		return this.methodCall(method, ...params);
 	},
 
 	getUserRoles() {
@@ -766,19 +770,19 @@ const RocketChat = {
 	},
 	closeLivechat(rid, comment) {
 		// RC 0.29.0
-		return this.methodCall('livechat:closeRoom', rid, comment, { clientAction: true });
+		return this.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true });
 	},
 	editLivechat(userData, roomData) {
 		// RC 0.55.0
-		return this.methodCall('livechat:saveInfo', userData, roomData);
+		return this.methodCallWrapper('livechat:saveInfo', userData, roomData);
 	},
 	returnLivechat(rid) {
 		// RC 0.72.0
-		return this.methodCall('livechat:returnAsInquiry', rid);
+		return this.methodCallWrapper('livechat:returnAsInquiry', rid);
 	},
 	forwardLivechat(transferData) {
 		// RC 0.36.0
-		return this.methodCall('livechat:transfer', transferData);
+		return this.methodCallWrapper('livechat:transfer', transferData);
 	},
 	getPagesLivechat(rid, offset) {
 		// RC 2.3.0
@@ -798,11 +802,11 @@ const RocketChat = {
 	},
 	getRoutingConfig() {
 		// RC 2.0.0
-		return this.methodCall('livechat:getRoutingConfig');
+		return this.methodCallWrapper('livechat:getRoutingConfig');
 	},
 	getTagsList() {
 		// RC 2.0.0
-		return this.methodCall('livechat:getTagsList');
+		return this.methodCallWrapper('livechat:getTagsList');
 	},
 	getAgentDepartments(uid) {
 		// RC 2.4.0
@@ -986,7 +990,7 @@ const RocketChat = {
 	},
 	getAvatarSuggestion() {
 		// RC 0.51.0
-		return this.methodCall('getAvatarSuggestion');
+		return this.methodCallWrapper('getAvatarSuggestion');
 	},
 	resetAvatar(userId) {
 		// RC 0.55.0
@@ -994,7 +998,7 @@ const RocketChat = {
 	},
 	setAvatarFromService({ data, contentType = '', service = null }) {
 		// RC 0.51.0
-		return this.methodCall('setAvatarFromService', data, contentType, service);
+		return this.methodCallWrapper('setAvatarFromService', data, contentType, service);
 	},
 	async getAllowCrashReport() {
 		const allowCrashReport = await AsyncStorage.getItem(CRASH_REPORT_KEY);
@@ -1206,13 +1210,13 @@ const RocketChat = {
 	saveAutoTranslate({
 		rid, field, value, options
 	}) {
-		return this.methodCall('autoTranslate.saveSettings', rid, field, value, options);
+		return this.methodCallWrapper('autoTranslate.saveSettings', rid, field, value, options);
 	},
 	getSupportedLanguagesAutoTranslate() {
-		return this.methodCall('autoTranslate.getSupportedLanguages', 'en');
+		return this.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
 	},
 	translateMessage(message, targetLanguage) {
-		return this.methodCall('autoTranslate.translateMessage', message, targetLanguage);
+		return this.methodCallWrapper('autoTranslate.translateMessage', message, targetLanguage);
 	},
 	getRoomTitle(room) {
 		const { UI_Use_Real_Name: useRealName, UI_Allow_room_names_with_special_chars: allowSpecialChars } = reduxStore.getState().settings;
