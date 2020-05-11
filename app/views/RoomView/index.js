@@ -766,7 +766,7 @@ class RoomView extends React.Component {
 			navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
 			ModalNavigation.navigate('RoomInfoView', navParam);
 		} else {
-			navigation.navigate('RoomInfoView', navParam);
+			navigation.push('RoomInfoView', navParam);
 		}
 	}
 
