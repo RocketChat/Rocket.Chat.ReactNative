@@ -18,15 +18,16 @@ if (__DEV__) {
 
 	enhancers = compose(
 		applyAppStateMiddleware(),
+		applyDimensionsMiddleware(),
 		applyMiddleware(reduxImmutableStateInvariant),
 		applyMiddleware(sagaMiddleware),
-		applyMiddleware(applyDimensionsMiddleware),
 		Reactotron.createEnhancer()
 	);
 } else {
 	sagaMiddleware = createSagaMiddleware();
 	enhancers = compose(
 		applyAppStateMiddleware(),
+		applyDimensionsMiddleware(),
 		applyMiddleware(sagaMiddleware)
 	);
 }

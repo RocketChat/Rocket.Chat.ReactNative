@@ -1,15 +1,15 @@
-import * as types from './actionsTypes';
+import { DIMENSIONS } from './actionsTypes';
 
 export function dimensionsWindow(window) {
 	return {
-		type: types.DIMENSIONS.WINDOW,
+		type: DIMENSIONS.WINDOW,
 		window
 	};
 }
 
 export function dimensionsScreen(screen) {
 	return {
-		type: types.DIMENSIONS.SCREEN,
+		type: DIMENSIONS.SCREEN,
 		screen
 	};
 }

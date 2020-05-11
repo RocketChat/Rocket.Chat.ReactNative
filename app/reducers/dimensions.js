@@ -1,8 +1,8 @@
 import { DIMENSIONS } from '../actions/actionsTypes';
 
 const initialState = {
-	window: null,
-	screen: null
+	window: {},
+	screen: {}
 };
 
 export default function(state = initialState, action) {

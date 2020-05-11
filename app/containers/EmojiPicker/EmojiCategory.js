@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, TouchableOpacity, FlatList } from 'react-native';
-import { responsive } from 'react-native-responsive-ui';
+import { connect } from 'react-redux';
 
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import styles from './styles';
@@ -73,4 +73,8 @@ class EmojiCategory extends React.Component {
 	}
 }
 
-export default responsive(EmojiCategory);
+const mapStateToProps = state => ({
+	window: state.dimensions.window
+});
+
+export default connect(mapStateToProps)(EmojiCategory);
