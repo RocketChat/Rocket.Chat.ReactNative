@@ -27,10 +27,10 @@ platform :android do
   end
 
   desc "Upload App to Play store"
-  lane :beta do
+  lane :alpha do
     upload_to_play_store(
-      track: 'beta', 
-      aab: 'app/build/outputs/bundle/release/app-release.aab'
+      track: 'alpha', 
+      aab: 'tmp/build/outputs/bundle/release/app-release.aab'
     )
   end
 end

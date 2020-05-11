@@ -284,13 +284,16 @@ jobs:
           paths:
             - android/fastlane/report.xml
 
-  upload-google-play-beta:
+  upload-google-play-alpha:
     <<: *defaults
     docker:
       - image: circleci/android:api-28-node
 
     steps:
       - checkout
+
+      - attach_workspace:
+          at: android
 
       - run:
           name: Update Fastlane
@@ -306,7 +309,7 @@ jobs:
       - run:
           name: Fastlane Play Store Upload
           command: |
-            bundle exec fastlane android beta
+            bundle exec fastlane android alpha
           working_directory: android
 
       - store_artifacts:
@@ -478,10 +481,10 @@ workflows:
       - android-build:
           requires:
             - lint-testunit
-      - android-hold-google-play-beta:
+      - android-hold-google-play-alpha:
           type: approval
           requires:
             - android-build
-      - upload-google-play-beta:
+      - upload-google-play-alpha:
           requires:
-            - android-hold-google-play-beta
+            - android-hold-google-play-alpha
