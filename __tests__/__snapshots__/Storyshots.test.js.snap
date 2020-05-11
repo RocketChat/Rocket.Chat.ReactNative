@@ -1291,6 +1291,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             resizeMode="contain"
             source={
               Object {
+                "headers": undefined,
                 "priority": "high",
                 "uri": "https://open.rocket.chat/emoji-custom/react_rocket.png",
               }
@@ -1349,6 +1350,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             resizeMode="contain"
             source={
               Object {
+                "headers": undefined,
                 "priority": "high",
                 "uri": "https://open.rocket.chat/emoji-custom/nyan_rocket.png",
               }
@@ -1407,6 +1409,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             resizeMode="contain"
             source={
               Object {
+                "headers": undefined,
                 "priority": "high",
                 "uri": "https://open.rocket.chat/emoji-custom/marioparty.gif",
               }
@@ -1529,6 +1532,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             resizeMode="contain"
             source={
               Object {
+                "headers": undefined,
                 "priority": "high",
                 "uri": "https://open.rocket.chat/emoji-custom/marioparty.gif",
               }
@@ -1954,6 +1958,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
         <Image
           source={
             Object {
+              "headers": undefined,
               "uri": "https://play.google.com/intl/en_us/badges/images/badge_new.png",
             }
           }

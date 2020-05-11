@@ -8,6 +8,7 @@ import Slider from '@react-native-community/slider';
 import moment from 'moment';
 import equal from 'deep-equal';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
+import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
@@ -127,7 +128,10 @@ class MessageAudio extends React.Component {
 		this.setState({ loading: true });
 		try {
 			await Audio.setAudioModeAsync(mode);
-			await this.sound.loadAsync({ uri: `${ url }?rc_uid=${ user.id }&rc_token=${ user.token }` });
+			await this.sound.loadAsync({
+				uri: `${ url }?rc_uid=${ user.id }&rc_token=${ user.token }`,
+				headers: RocketChatSettings.customHeaders
+			});
 		} catch {
 			// Do nothing
 		}
