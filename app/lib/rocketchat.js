@@ -319,18 +319,14 @@ const RocketChat = {
 		reduxStore.dispatch(shareSetUser(null));
 	},
 
-	updateJitsiTimeout(rid) {
-		return this.methodCall('jitsi:updateTimeout', rid);
+	updateJitsiTimeout(roomId) {
+		// RC 0.74.0
+		return this.post('jitsi.updateTimeout', { roomId });
 	},
 
 	register(credentials) {
 		// RC 0.50.0
 		return this.post('users.register', credentials, false);
-	},
-
-	setUsername(username) {
-		// RC 0.51.0
-		return this.methodCall('setUsername', username);
 	},
 
 	forgotPassword(email) {
@@ -922,9 +918,9 @@ const RocketChat = {
 		// RC 0.62.2
 		return this.post('users.updateOwnBasicInfo', { data, customFields });
 	},
-	saveUserPreferences(params) {
-		// RC 0.51.0
-		return this.methodCall('saveUserPreferences', params);
+	saveUserPreferences(data) {
+		// RC 0.62.0
+		return this.post('users.setPreferences', { data });
 	},
 	saveNotificationSettings(roomId, notifications) {
 		// RC 0.63.0
@@ -937,8 +933,8 @@ const RocketChat = {
 		return this.methodCall('addUsersToRoom', { rid, users });
 	},
 	getSingleMessage(msgId) {
-		// RC 0.57.0
-		return this.methodCall('getSingleMessage', msgId);
+		// RC 0.47.0
+		return this.sdk.get('chat.getMessage', { msgId });
 	},
 	async hasPermission(permissions, rid) {
 		const db = database.active;
