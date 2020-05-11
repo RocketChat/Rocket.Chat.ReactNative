@@ -21,9 +21,11 @@ import StatusBar from '../../containers/StatusBar';
 import log from '../../utils/log';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
+import { withSplit } from '../../split';
 import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
 import Markdown from '../../containers/markdown';
+import Navigation from '../../lib/Navigation';
 
 import Livechat from './Livechat';
 import Channel from './Channel';
@@ -78,6 +80,8 @@ class RoomInfoView extends React.Component {
 			token: PropTypes.string
 		}),
 		baseUrl: PropTypes.string,
+		rooms: PropTypes.array,
+		split: PropTypes.bool,
 		theme: PropTypes.string
 	}
 
@@ -229,16 +233,31 @@ class RoomInfoView extends React.Component {
 		}
 	}
 
-	goRoom = async() => {
+	goRoom = () => {
 		const { roomUser, room } = this.state;
-		const { navigation } = this.props;
-		try {
-			if (room.rid) {
-				await navigation.navigate('RoomsListView');
-				navigation.navigate('RoomView', { rid: room.rid, name: RocketChat.getRoomTitle(roomUser), t: 'd' });
+		const { name, username } = roomUser;
+		const { rooms, navigation, split } = this.props;
+
+		if (room.rid) {
+			let navigate = navigation.push;
+
+			// if this is a room focused
+			if (rooms.includes(room.rid)) {
+				({ navigate } = navigation);
+			} else if (split) {
+				({ navigate } = Navigation);
 			}
-		} catch (e) {
-			// do nothing
+
+			navigate('RoomView', {
+				rid: room.rid,
+				name: RocketChat.getRoomTitle({
+					t: room.t,
+					fname: name,
+					name: username
+				}),
+				t: room.t,
+				roomUserId: RocketChat.getUidDirectMessage(room)
+			});
 		}
 	}
 
@@ -326,7 +345,8 @@ class RoomInfoView extends React.Component {
 
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
-	user: getUserSelector(state)
+	user: getUserSelector(state),
+	rooms: state.room.rooms
 });
 
-export default connect(mapStateToProps)(withTheme(RoomInfoView));
+export default connect(mapStateToProps)(withSplit(withTheme(RoomInfoView)));
