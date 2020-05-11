@@ -591,7 +591,7 @@ const RocketChat = {
 		// TODO: join code
 		// RC 0.48.0
 		if (type === 'p') {
-			return this.methodCall('joinRoom', roomId);
+			return this.methodCallWrapper('joinRoom', roomId);
 		}
 		return this.post('channels.join', { roomId });
 	},
@@ -730,11 +730,18 @@ const RocketChat = {
 	},
 	getRoomMembers(rid, allUsers, skip = 0, limit = 10) {
 		// RC 0.42.0
-		return this.methodCall('getUsersOfRoom', rid, allUsers, { skip, limit });
+		return this.methodCallWrapper('getUsersOfRoom', rid, allUsers, { skip, limit });
 	},
+
+	async methodCallWrapper(method, ...params) {
+		const data = await this.post(`method.call/${ method }`, { message: JSON.stringify({ method, params }) });
+		const { result } = JSON.parse(data.message);
+		return result;
+	},
+
 	getUserRoles() {
 		// RC 0.27.0
-		return this.methodCall('getUserRoles');
+		return this.methodCallWrapper('getUserRoles');
 	},
 	getRoomCounters(roomId, t) {
 		// RC 0.65.0
@@ -831,10 +838,10 @@ const RocketChat = {
 	toggleBlockUser(rid, blocked, block) {
 		if (block) {
 			// RC 0.49.0
-			return this.methodCall('blockUser', { rid, blocked });
+			return this.methodCallWrapper('blockUser', { rid, blocked });
 		}
 		// RC 0.49.0
-		return this.methodCall('unblockUser', { rid, blocked });
+		return this.methodCallWrapper('unblockUser', { rid, blocked });
 	},
 	leaveRoom(roomId, t) {
 		// RC 0.48.0
@@ -847,10 +854,10 @@ const RocketChat = {
 	toggleMuteUserInRoom(rid, username, mute) {
 		if (mute) {
 			// RC 0.51.0
-			return this.methodCall('muteUserInRoom', { rid, username });
+			return this.methodCallWrapper('muteUserInRoom', { rid, username });
 		}
 		// RC 0.51.0
-		return this.methodCall('unmuteUserInRoom', { rid, username });
+		return this.methodCallWrapper('unmuteUserInRoom', { rid, username });
 	},
 	toggleArchiveRoom(roomId, t, archive) {
 		if (archive) {
@@ -865,7 +872,7 @@ const RocketChat = {
 	},
 	saveRoomSettings(rid, params) {
 		// RC 0.55.0
-		return this.methodCall('saveRoomSettings', rid, params);
+		return this.methodCallWrapper('saveRoomSettings', rid, params);
 	},
 	post(...args) {
 		return new Promise(async(resolve, reject) => {
@@ -930,7 +937,7 @@ const RocketChat = {
 		let { users } = reduxStore.getState().selectedUsers;
 		users = users.map(u => u.name);
 		// RC 0.51.0
-		return this.methodCall('addUsersToRoom', { rid, users });
+		return this.methodCallWrapper('addUsersToRoom', { rid, users });
 	},
 	getSingleMessage(msgId) {
 		// RC 0.47.0
