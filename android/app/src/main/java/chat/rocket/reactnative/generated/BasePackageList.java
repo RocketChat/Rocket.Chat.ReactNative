@@ -12,8 +12,8 @@ public class BasePackageList {
         new expo.modules.filesystem.FileSystemPackage(),
         new expo.modules.haptics.HapticsPackage(),
         new expo.modules.imageloader.ImageLoaderPackage(),
-        new expo.modules.localauthentication.LocalAuthenticationPackage(),
         new expo.modules.keepawake.KeepAwakePackage(),
+        new expo.modules.localauthentication.LocalAuthenticationPackage(),
         new expo.modules.permissions.PermissionsPackage(),
         new expo.modules.webbrowser.WebBrowserPackage()
     );
