@@ -1,3 +1,7 @@
+diff --git a/node_modules/react-native/Libraries/.DS_Store b/node_modules/react-native/Libraries/.DS_Store
+new file mode 100644
+index 0000000..de9c067
+Binary files /dev/null and b/node_modules/react-native/Libraries/.DS_Store differ
 diff --git a/node_modules/react-native/Libraries/Components/TextInput/TextInput.js b/node_modules/react-native/Libraries/Components/TextInput/TextInput.js
 index 02e1db6..f7d6281 100644
 --- a/node_modules/react-native/Libraries/Components/TextInput/TextInput.js
@@ -99,6 +103,25 @@ index 274f381..1fe2686 100644
  - (NSURLSessionDataTask *)sendRequest:(NSURLRequest *)request
                           withDelegate:(id<RCTURLRequestDelegate>)delegate
  {
+diff --git a/node_modules/react-native/Libraries/Text/TextInput/RCTBackedTextInputDelegateAdapter.m b/node_modules/react-native/Libraries/Text/TextInput/RCTBackedTextInputDelegateAdapter.m
+index b508df2..cf483ca 100644
+--- a/node_modules/react-native/Libraries/Text/TextInput/RCTBackedTextInputDelegateAdapter.m
++++ b/node_modules/react-native/Libraries/Text/TextInput/RCTBackedTextInputDelegateAdapter.m
+@@ -216,6 +216,14 @@ - (BOOL)textView:(__unused UITextView *)textView shouldChangeTextInRange:(NSRang
+     }
+   }
+ 
++  if (
++    _backedTextInputView.autocorrectionType == UITextAutocorrectionTypeNo &&
++    !_backedTextInputView.textWasPasted &&
++    text.length > 1
++  ) {
++    return NO;
++  }
++
+   NSString *newText =
+     [_backedTextInputView.textInputDelegate textInputShouldChangeText:text inRange:range];
+ 
 diff --git a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
 index b967c14..3c9a28b 100644
 --- a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
@@ -308,3 +331,10 @@ index c5c1ec3..1bf60b6 100644
  
  - (BOOL)isKeyCommandRegisteredForInput:(NSString *)input
                           modifierFlags:(UIKeyModifierFlags)flags
+diff --git a/node_modules/react-native/scripts/.packager.env b/node_modules/react-native/scripts/.packager.env
+new file mode 100644
+index 0000000..361f5fb
+--- /dev/null
++++ b/node_modules/react-native/scripts/.packager.env
+@@ -0,0 +1 @@
++export RCT_METRO_PORT=8081

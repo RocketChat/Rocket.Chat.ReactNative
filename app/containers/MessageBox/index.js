@@ -851,6 +851,7 @@ class MessageBox extends Component {
 							blurOnSubmit={false}
 							placeholder={I18n.t('New_Message')}
 							onChangeText={this.onChangeText}
+							autoCorrect={!mentions.length}
 							underlineColorAndroid='transparent'
 							defaultValue=''
 							multiline
