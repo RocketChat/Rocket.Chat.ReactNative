@@ -6,7 +6,6 @@ import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import equal from 'deep-equal';
 import DocumentPicker from 'react-native-document-picker';
-import ActionSheet from 'react-native-action-sheet';
 import { Q } from '@nozbe/watermelondb';
 
 import { generateTriggerId } from '../../lib/methods/actions';
@@ -46,6 +45,7 @@ import CommandsPreview from './CommandsPreview';
 import { Review } from '../../utils/review';
 import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/Navigation';
+import { connectActionSheet } from '../../actionSheet';
 
 const imagePickerConfig = {
 	cropping: true,
@@ -61,12 +61,11 @@ const videoPickerConfig = {
 	mediaType: 'video'
 };
 
-const FILE_CANCEL_INDEX = 0;
-const FILE_PHOTO_INDEX = 1;
-const FILE_VIDEO_INDEX = 2;
-const FILE_LIBRARY_INDEX = 3;
-const FILE_DOCUMENT_INDEX = 4;
-const CREATE_DISCUSSION_INDEX = 5;
+const FILE_PHOTO_INDEX = 0;
+const FILE_VIDEO_INDEX = 1;
+const FILE_LIBRARY_INDEX = 2;
+const FILE_DOCUMENT_INDEX = 3;
+const CREATE_DISCUSSION_INDEX = 4;
 
 class MessageBox extends Component {
 	static propTypes = {
@@ -95,7 +94,8 @@ class MessageBox extends Component {
 		typing: PropTypes.func,
 		theme: PropTypes.string,
 		replyCancel: PropTypes.func,
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		showActionSheetWithOptions: PropTypes.func
 	}
 
 	constructor(props) {
@@ -116,12 +116,11 @@ class MessageBox extends Component {
 		this.text = '';
 		this.focused = false;
 		this.messageBoxActions = [
-			I18n.t('Cancel'),
-			I18n.t('Take_a_photo'),
-			I18n.t('Take_a_video'),
-			I18n.t('Choose_from_library'),
-			I18n.t('Choose_file'),
-			I18n.t('Create_Discussion')
+			{ title: I18n.t('Take_a_photo'), icon: 'photo' },
+			{ title: I18n.t('Take_a_video'), icon: 'video' },
+			{ title: I18n.t('Choose_from_library'), icon: 'file' },
+			{ title: I18n.t('Choose_file'), icon: 'file-generic' },
+			{ title: I18n.t('Create_Discussion'), icon: 'discussion' }
 		];
 		const libPickerLabels = {
 			cropperChooseText: I18n.t('Choose'),
@@ -600,9 +599,9 @@ class MessageBox extends Component {
 	}
 
 	showMessageBoxActions = () => {
-		ActionSheet.showActionSheetWithOptions({
-			options: this.messageBoxActions,
-			cancelButtonIndex: FILE_CANCEL_INDEX
+		const { showActionSheetWithOptions } = this.props;
+		showActionSheetWithOptions({
+			options: this.messageBoxActions
 		}, (actionIndex) => {
 			this.handleMessageBoxActions(actionIndex);
 		});
@@ -922,4 +921,4 @@ const dispatchToProps = ({
 	typing: (rid, status) => userTypingAction(rid, status)
 });
 
-export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(MessageBox);
+export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(connectActionSheet(MessageBox));

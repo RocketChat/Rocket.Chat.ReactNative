@@ -20,10 +20,12 @@ class MessageErrorActions extends React.Component {
 	constructor(props) {
 		super(props);
 		this.handleActionPress = this.handleActionPress.bind(this);
-		this.options = [I18n.t('Cancel'), I18n.t('Delete'), I18n.t('Resend')];
-		this.CANCEL_INDEX = 0;
-		this.DELETE_INDEX = 1;
-		this.RESEND_INDEX = 2;
+		this.options = [
+			{ title: I18n.t('Delete'), icon: 'trash', danger: true },
+			{ title: I18n.t('Resend'), icon: 'send' }
+		];
+		this.DELETE_INDEX = 0;
+		this.RESEND_INDEX = 1;
 		setTimeout(() => {
 			this.showActionSheet();
 		});
