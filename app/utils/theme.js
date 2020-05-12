@@ -35,14 +35,14 @@ export const newThemeState = (prevState, newTheme) => {
 	return { themePreferences, theme: getTheme(themePreferences) };
 };
 
-export const setNativeTheme = (themePreferences) => {
+export const setNativeTheme = themePreferences => setTimeout(async() => {
 	const theme = getTheme(themePreferences);
 	if (isAndroid) {
 		const iconsLight = theme === 'light';
-		changeNavigationBarColor(themes[theme].navbarBackground, iconsLight);
+		await changeNavigationBarColor(themes[theme].navbarBackground, iconsLight);
 	}
 	setRootViewColor(themes[theme].backgroundColor);
-};
+}, 500);
 
 export const unsubscribeTheme = () => {
 	if (themeListener && themeListener.remove) {
