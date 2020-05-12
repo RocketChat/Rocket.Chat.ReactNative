@@ -13,9 +13,9 @@ import log from '../utils/log';
 import Navigation from '../lib/Navigation';
 import { getMessageTranslation } from './message/utils';
 import { LISTENER } from './Toast';
-import { ACTION_SHEET } from './ActionSheet';
 import EventEmitter from '../utils/events';
 import { showConfirmationAlert } from '../utils/info';
+import { connectActionSheet } from '../actionSheet';
 
 class MessageActions extends React.Component {
 	static propTypes = {
@@ -33,7 +33,8 @@ class MessageActions extends React.Component {
 		Message_AllowEditing_BlockEditInMinutes: PropTypes.number,
 		Message_AllowPinning: PropTypes.bool,
 		Message_AllowStarring: PropTypes.bool,
-		Message_Read_Receipt_Store_Users: PropTypes.bool
+		Message_Read_Receipt_Store_Users: PropTypes.bool,
+		showActionSheetWithOptions: PropTypes.func
 	};
 
 	constructor(props) {
@@ -152,15 +153,15 @@ class MessageActions extends React.Component {
 	}
 
 	showActionSheet = () => {
-		EventEmitter.emit(ACTION_SHEET, { data: this.options });
-		// ActionSheet.showActionSheetWithOptions({
-		// 	options: this.options,
-		// 	cancelButtonIndex: this.CANCEL_INDEX,
-		// 	destructiveButtonIndex: this.DELETE_INDEX,
-		// 	title: I18n.t('Message_actions')
-		// }, (actionIndex) => {
-		// 	this.handleActionPress(actionIndex);
-		// });
+		const { showActionSheetWithOptions } = this.props;
+		showActionSheetWithOptions({
+			options: this.options,
+			cancelButtonIndex: this.CANCEL_INDEX,
+			destructiveButtonIndex: this.DELETE_INDEX,
+			title: I18n.t('Message_actions')
+		}, (actionIndex) => {
+			this.handleActionPress(actionIndex);
+		});
 	}
 
 	getPermalink = async(message) => {
@@ -455,4 +456,4 @@ const mapStateToProps = state => ({
 	Message_Read_Receipt_Store_Users: state.settings.Message_Read_Receipt_Store_Users
 });
 
-export default connect(mapStateToProps)(MessageActions);
+export default connect(mapStateToProps)(connectActionSheet(MessageActions));

@@ -43,7 +43,7 @@ import Tablet, { initTabletNav } from './tablet';
 import sharedStyles from './views/Styles';
 import { SplitContext } from './split';
 import TwoFactor from './containers/TwoFactor';
-import ActionSheet from './containers/ActionSheet';
+import ActionSheetProvider from './actionSheet';
 
 import RoomsListView from './views/RoomsListView';
 import RoomView from './views/RoomView';
@@ -365,7 +365,6 @@ class CustomInsideStack extends React.Component {
 		return (
 			<>
 				<InsideStackModal navigation={navigation} screenProps={screenProps} />
-				<ActionSheet />
 				{ !isTablet ? <NotificationBadge navigation={navigation} /> : null }
 				{ !isTablet ? <Toast /> : null }
 			</>
@@ -735,20 +734,22 @@ export default class Root extends React.Component {
 		}
 		return (
 			<AppearanceProvider>
-				<Provider store={store}>
-					<ThemeContext.Provider
-						value={{
-							theme,
-							themePreferences,
-							setTheme: this.setTheme
-						}}
-					>
-						{content}
-						<TwoFactor />
-						<ScreenLockedView />
-						<ChangePasscodeView />
-					</ThemeContext.Provider>
-				</Provider>
+				<ActionSheetProvider>
+					<Provider store={store}>
+						<ThemeContext.Provider
+							value={{
+								theme,
+								themePreferences,
+								setTheme: this.setTheme
+							}}
+						>
+							{content}
+							<TwoFactor />
+							<ScreenLockedView />
+							<ChangePasscodeView />
+						</ThemeContext.Provider>
+					</Provider>
+				</ActionSheetProvider>
 			</AppearanceProvider>
 		);
 	}

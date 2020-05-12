@@ -1,4 +1,9 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, {
+	useRef,
+	useState,
+	forwardRef,
+	useImperativeHandle
+} from 'react';
 import PropTypes from 'prop-types';
 import {
 	View,
@@ -15,14 +20,11 @@ import * as Haptics from 'expo-haptics';
 
 import Separator from './Separator';
 import sharedStyles from '../views/Styles';
-import EventEmitter from '../utils/events';
 
 import { themes } from '../constants/colors';
-import { withTheme } from '../theme';
 import { CustomIcon } from '../lib/Icons';
 
 const ITEM_HEIGHT = 44;
-export const ACTION_SHEET = 'ActionSheet';
 
 const styles = StyleSheet.create({
 	item: {
@@ -166,39 +168,36 @@ Shadow.propTypes = {
 	theme: PropTypes.string
 };
 
-const ActionSheet = React.memo(({ theme }) => {
-	const ref = useRef();
+const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
+	const bottomSheetRef = useRef();
 	const fall = new Animated.Value(1);
-	const [options, setOptions] = useState([]);
+	const [content, setContent] = useState([]);
 
-	const showActionSheet = ({ data }) => {
+	const showActionSheetWithOptions = ({ options }) => {
 		Keyboard.dismiss();
-		setOptions(data);
+		setContent(options);
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 	};
 
-	useEffect(() => {
-		EventEmitter.addEventListener(ACTION_SHEET, showActionSheet);
-
-		return () => EventEmitter.removeListener(ACTION_SHEET);
-	}, []);
+	useImperativeHandle(ref, () => ({ showActionSheetWithOptions }));
 
 	useDeepCompareEffect(() => {
-		if (options.length) {
-			ref.current.snapTo(300);
+		if (content.length) {
+			bottomSheetRef.current.snapTo(300);
 		} else {
-			ref.current.snapTo(0);
+			bottomSheetRef.current.snapTo(0);
 		}
-	}, [options]);
+	}, [content]);
 
 	return (
 		<>
+			{children}
 			<BottomSheet
-				ref={ref}
+				ref={bottomSheetRef}
 				initialSnap={0}
-				snapPoints={[0, 250, options.length * ITEM_HEIGHT]}
+				snapPoints={[0, 250, content.length * ITEM_HEIGHT]}
 				renderHeader={() => <Header theme={theme} />}
-				renderContent={() => <Content options={options} theme={theme} />}
+				renderContent={() => <Content options={content} theme={theme} />}
 				enabledManualSnapping={false}
 				enabledInnerScrolling={false}
 				overdragResistanceFactor={5}
@@ -211,9 +210,10 @@ const ActionSheet = React.memo(({ theme }) => {
 			/>
 		</>
 	);
-});
+}));
 ActionSheet.propTypes = {
+	children: PropTypes.node,
 	theme: PropTypes.string
 };
 
-export default withTheme(ActionSheet);
+export default ActionSheet;
