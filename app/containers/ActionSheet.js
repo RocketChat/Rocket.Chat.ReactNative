@@ -1,6 +1,11 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Text, FlatList, StyleSheet } from 'react-native';
+import {
+	View,
+	Text,
+	FlatList,
+	StyleSheet
+} from 'react-native';
 import BottomSheet from 'reanimated-bottom-sheet';
 import { RectButton } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
@@ -31,6 +36,14 @@ const styles = StyleSheet.create({
 	shadow: {
 		...StyleSheet.absoluteFillObject
 	},
+	header: {
+		width: '100%',
+		height: 24,
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderTopLeftRadius: 16,
+		borderTopRightRadius: 16
+	},
 	headerItem: {
 		height: 36,
 		width: 36,
@@ -38,6 +51,11 @@ const styles = StyleSheet.create({
 		marginHorizontal: 8,
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+	headerIndicator: {
+		width: 36,
+		height: 4,
+		borderRadius: 2
 	}
 });
 
@@ -85,13 +103,18 @@ HeaderItem.propTypes = {
 };
 
 const Header = React.memo(({ theme }) => (
-	<FlatList
-		data={ITEMS}
-		renderItem={({ item }) => <HeaderItem item={item} theme={theme} />}
-		style={{ backgroundColor: themes[theme].backgroundColor }}
-		scrollEnabled={false}
-		horizontal
-	/>
+	<>
+		<View style={[styles.header, { backgroundColor: themes[theme].backgroundColor }]}>
+			<View style={[styles.headerIndicator, { backgroundColor: themes[theme].auxiliaryText }]} />
+		</View>
+		<FlatList
+			data={ITEMS}
+			renderItem={({ item }) => <HeaderItem item={item} theme={theme} />}
+			style={{ backgroundColor: themes[theme].backgroundColor }}
+			scrollEnabled={false}
+			horizontal
+		/>
+	</>
 ));
 Header.propTypes = {
 	theme: PropTypes.string
