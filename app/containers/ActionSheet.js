@@ -201,7 +201,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 
 	useDeepCompareEffect(() => {
 		if (content.length) {
-			bottomSheetRef.current.snapTo(1);
+			bottomSheetRef.current.snapTo(2);
 		} else {
 			bottomSheetRef.current.snapTo(0);
 		}
@@ -217,6 +217,8 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 		/>
 	);
 
+	const height = content.length * ITEM_HEIGHT + 82;
+
 	return (
 		<>
 			{children}
@@ -227,7 +229,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 			<BottomSheet
 				ref={bottomSheetRef}
 				initialSnap={0}
-				snapPoints={[0, 250, content.length * ITEM_HEIGHT + 82]}
+				snapPoints={[0, height / 2, height]}
 				onCloseEnd={() => setContent([])}
 				renderHeader={renderHeader}
 				renderContent={renderContent}
