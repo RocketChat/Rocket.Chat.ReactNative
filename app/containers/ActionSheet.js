@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16
 	},
 	title: {
-		fontSize: 14,
+		fontSize: 16,
 		marginLeft: 16,
 		...sharedStyles.textRegular
 	},
@@ -228,12 +228,13 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 				ref={bottomSheetRef}
 				initialSnap={0}
 				snapPoints={[0, 250, content.length * ITEM_HEIGHT + 82]}
+				onCloseEnd={() => setContent([])}
 				renderHeader={renderHeader}
 				renderContent={renderContent}
 				enabledContentGestureInteraction={false}
 				enabledManualSnapping={false}
 				enabledInnerScrolling={false}
-				overdragResistanceFactor={5}
+				overdragResistanceFactor={8}
 				callbackNode={fall}
 				borderRadius={10}
 			/>
