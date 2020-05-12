@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 import ActionSheet from './containers/ActionSheet';
 
 const context = React.createContext({
-	showActionSheetWithOptions: () => { }
+	showActionSheetWithOptions: () => {},
+	hideActionSheet: () => {}
 });
 
 export function useActionSheet() {
@@ -30,6 +31,9 @@ const ActionSheetProvider = React.memo(({ children }) => {
 	const getContext = () => ({
 		showActionSheetWithOptions: (options, callback) => {
 			ref.current?.showActionSheetWithOptions(options, callback);
+		},
+		hideActionSheet: () => {
+			ref.current?.hideActionSheet();
 		}
 	});
 

@@ -63,7 +63,8 @@ const styles = StyleSheet.create({
 		paddingBottom: 16
 	},
 	headerIcon: {
-		fontSize: 20
+		fontSize: 20,
+		color: '#fff'
 	},
 	headerIndicator: {
 		width: 36,
@@ -72,8 +73,8 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Item = React.memo(({ item, theme }) => (
-	<RectButton style={[styles.item, { backgroundColor: themes[theme].backgroundColor }]}>
+const Item = React.memo(({ item, onPress, theme }) => (
+	<RectButton onPress={onPress} style={[styles.item, { backgroundColor: themes[theme].backgroundColor }]}>
 		<CustomIcon name='discussion' size={20} color={themes[theme].bodyText} />
 		<Text
 			numberOfLines={1}
@@ -85,13 +86,14 @@ const Item = React.memo(({ item, theme }) => (
 ));
 Item.propTypes = {
 	item: PropTypes.object,
+	onPress: PropTypes.func,
 	theme: PropTypes.string
 };
 
-const Content = React.memo(({ options, theme }) => (
+const Content = React.memo(({ options, onPress, theme }) => (
 	<FlatList
 		data={options}
-		renderItem={({ item }) => <Item item={item} theme={theme} />}
+		renderItem={({ item, index }) => <Item item={item} onPress={() => onPress(index)} theme={theme} />}
 		style={{ backgroundColor: themes[theme].backgroundColor }}
 		contentContainerStyle={styles.content}
 		ListHeaderComponent={() => <Separator theme={theme} />}
@@ -101,6 +103,7 @@ const Content = React.memo(({ options, theme }) => (
 ));
 Content.propTypes = {
 	options: PropTypes.array,
+	onPress: PropTypes.func,
 	theme: PropTypes.string
 };
 
@@ -172,43 +175,61 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 	const bottomSheetRef = useRef();
 	const fall = new Animated.Value(1);
 	const [content, setContent] = useState([]);
+	const [onPress, setOnPress] = useState();
 
 	const showActionSheetWithOptions = ({ options }, callback) => {
 		Keyboard.dismiss();
 		setContent(options);
-		console.log(callback);
+		setOnPress(() => idx => callback(idx));
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 	};
 
-	useImperativeHandle(ref, () => ({ showActionSheetWithOptions }));
+	const hideActionSheet = () => {
+		setContent([]);
+	};
+
+	useImperativeHandle(ref, () => ({
+		showActionSheetWithOptions,
+		hideActionSheet
+	}));
 
 	useDeepCompareEffect(() => {
 		if (content.length) {
-			bottomSheetRef.current.snapTo(300);
+			bottomSheetRef.current.snapTo(1);
 		} else {
 			bottomSheetRef.current.snapTo(0);
 		}
 	}, [content]);
 
+	const renderHeader = () => <Header theme={theme} />;
+
+	const renderContent = () => (
+		<Content
+			options={content}
+			onPress={onPress}
+			theme={theme}
+		/>
+	);
+
 	return (
 		<>
 			{children}
+			<Shadow
+				fall={fall}
+				theme={theme}
+			/>
 			<BottomSheet
 				ref={bottomSheetRef}
 				initialSnap={0}
 				snapPoints={[0, 250, content.length * ITEM_HEIGHT]}
-				renderHeader={() => <Header theme={theme} />}
-				renderContent={() => <Content options={content} theme={theme} />}
+				renderHeader={renderHeader}
+				renderContent={renderContent}
 				enabledContentGestureInteraction={false}
 				enabledManualSnapping={false}
 				enabledInnerScrolling={false}
 				overdragResistanceFactor={5}
 				callbackNode={fall}
 				borderRadius={10}
-			/>
-			<Shadow
-				fall={fall}
-				theme={theme}
 			/>
 		</>
 	);

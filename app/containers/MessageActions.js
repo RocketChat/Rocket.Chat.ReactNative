@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Alert, Clipboard, Share } from 'react-native';
 import { connect } from 'react-redux';
-// import ActionSheet from 'react-native-action-sheet';
 import moment from 'moment';
 import * as Haptics from 'expo-haptics';
 
@@ -19,7 +18,6 @@ import { connectActionSheet } from '../actionSheet';
 
 class MessageActions extends React.Component {
 	static propTypes = {
-		actionsHide: PropTypes.func.isRequired,
 		room: PropTypes.object.isRequired,
 		message: PropTypes.object,
 		user: PropTypes.object,
@@ -34,7 +32,8 @@ class MessageActions extends React.Component {
 		Message_AllowPinning: PropTypes.bool,
 		Message_AllowStarring: PropTypes.bool,
 		Message_Read_Receipt_Store_Users: PropTypes.bool,
-		showActionSheetWithOptions: PropTypes.func
+		showActionSheetWithOptions: PropTypes.func,
+		hideActionSheet: PropTypes.func
 	};
 
 	constructor(props) {
@@ -435,8 +434,8 @@ class MessageActions extends React.Component {
 					break;
 			}
 		}
-		const { actionsHide } = this.props;
-		actionsHide();
+		const { hideActionSheet } = this.props;
+		hideActionSheet();
 	}
 
 	render() {

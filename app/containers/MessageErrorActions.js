@@ -1,16 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ActionSheet from 'react-native-action-sheet';
 
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
+import { connectActionSheet } from '../actionSheet';
 import I18n from '../i18n';
 import log from '../utils/log';
 
 class MessageErrorActions extends React.Component {
 	static propTypes = {
-		actionsHide: PropTypes.func.isRequired,
+		showActionSheetWithOptions: PropTypes.func,
+		hideActionSheet: PropTypes.func,
 		message: PropTypes.object,
 		tmid: PropTypes.string
 	};
@@ -91,7 +92,8 @@ class MessageErrorActions extends React.Component {
 	}
 
 	showActionSheet = () => {
-		ActionSheet.showActionSheetWithOptions({
+		const { showActionSheetWithOptions } = this.props;
+		showActionSheetWithOptions({
 			options: this.options,
 			cancelButtonIndex: this.CANCEL_INDEX,
 			destructiveButtonIndex: this.DELETE_INDEX,
@@ -102,7 +104,7 @@ class MessageErrorActions extends React.Component {
 	}
 
 	handleActionPress = (actionIndex) => {
-		const { actionsHide } = this.props;
+		const { hideActionSheet } = this.props;
 		switch (actionIndex) {
 			case this.RESEND_INDEX:
 				this.handleResend();
@@ -113,7 +115,7 @@ class MessageErrorActions extends React.Component {
 			default:
 				break;
 		}
-		actionsHide();
+		hideActionSheet();
 	}
 
 	render() {
@@ -123,4 +125,4 @@ class MessageErrorActions extends React.Component {
 	}
 }
 
-export default MessageErrorActions;
+export default connectActionSheet(MessageErrorActions);
