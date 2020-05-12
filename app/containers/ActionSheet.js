@@ -11,6 +11,7 @@ import BottomSheet from 'reanimated-bottom-sheet';
 import { RectButton } from 'react-native-gesture-handler';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import Animated from 'react-native-reanimated';
+import * as Haptics from 'expo-haptics';
 
 import Separator from './Separator';
 import sharedStyles from '../views/Styles';
@@ -173,6 +174,7 @@ const ActionSheet = React.memo(({ theme }) => {
 	const showActionSheet = ({ data }) => {
 		Keyboard.dismiss();
 		setOptions(data);
+		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 	};
 
 	useEffect(() => {
@@ -194,7 +196,7 @@ const ActionSheet = React.memo(({ theme }) => {
 			<BottomSheet
 				ref={ref}
 				initialSnap={0}
-				snapPoints={[options.length * ITEM_HEIGHT, 0]}
+				snapPoints={[0, 250, options.length * ITEM_HEIGHT]}
 				renderHeader={() => <Header theme={theme} />}
 				renderContent={() => <Content options={options} theme={theme} />}
 				enabledManualSnapping={false}
