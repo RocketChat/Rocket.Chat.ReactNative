@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Alert, Clipboard, Share } from 'react-native';
 import { connect } from 'react-redux';
-import ActionSheet from 'react-native-action-sheet';
+// import ActionSheet from 'react-native-action-sheet';
 import moment from 'moment';
 import * as Haptics from 'expo-haptics';
 
+import ActionSheet from './ActionSheet';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
 import I18n from '../i18n';
@@ -38,6 +39,9 @@ class MessageActions extends React.Component {
 	constructor(props) {
 		super(props);
 		this.handleActionPress = this.handleActionPress.bind(this);
+		this.state = {
+			showActionSheet: false
+		};
 	}
 
 	async componentDidMount() {
@@ -151,14 +155,15 @@ class MessageActions extends React.Component {
 	}
 
 	showActionSheet = () => {
-		ActionSheet.showActionSheetWithOptions({
-			options: this.options,
-			cancelButtonIndex: this.CANCEL_INDEX,
-			destructiveButtonIndex: this.DELETE_INDEX,
-			title: I18n.t('Message_actions')
-		}, (actionIndex) => {
-			this.handleActionPress(actionIndex);
-		});
+		this.setState(({ showActionSheet }) => ({ showActionSheet: !showActionSheet }));
+		// ActionSheet.showActionSheetWithOptions({
+		// 	options: this.options,
+		// 	cancelButtonIndex: this.CANCEL_INDEX,
+		// 	destructiveButtonIndex: this.DELETE_INDEX,
+		// 	title: I18n.t('Message_actions')
+		// }, (actionIndex) => {
+		// 	this.handleActionPress(actionIndex);
+		// });
 	}
 
 	getPermalink = async(message) => {
@@ -437,9 +442,14 @@ class MessageActions extends React.Component {
 	}
 
 	render() {
-		return (
-			null
-		);
+		const { showActionSheet } = this.state;
+		if (!showActionSheet) {
+			return (
+				null
+			);
+		}
+
+		return <ActionSheet options={this.options} />;
 	}
 }
 
