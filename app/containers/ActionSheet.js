@@ -73,19 +73,25 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Item = React.memo(({ item, onPress, theme }) => (
+const Item = React.memo(({
+	item, onPress, theme
+}) => (
 	<RectButton onPress={onPress} style={[styles.item, { backgroundColor: themes[theme].backgroundColor }]}>
-		<CustomIcon name='discussion' size={20} color={themes[theme].bodyText} />
+		<CustomIcon name={item.icon} size={20} color={item.danger ? themes[theme].dangerColor : themes[theme].bodyText} />
 		<Text
 			numberOfLines={1}
-			style={[styles.title, { color: themes[theme].bodyText }]}
+			style={[styles.title, { color: item.danger ? themes[theme].dangerColor : themes[theme].bodyText }]}
 		>
-			{item}
+			{item.title}
 		</Text>
 	</RectButton>
 ));
 Item.propTypes = {
-	item: PropTypes.object,
+	item: PropTypes.shape({
+		title: PropTypes.string,
+		icon: PropTypes.string,
+		danger: PropTypes.bool
+	}),
 	onPress: PropTypes.func,
 	theme: PropTypes.string
 };
@@ -221,7 +227,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 			<BottomSheet
 				ref={bottomSheetRef}
 				initialSnap={0}
-				snapPoints={[0, 250, content.length * ITEM_HEIGHT]}
+				snapPoints={[0, 250, content.length * ITEM_HEIGHT + 82]}
 				renderHeader={renderHeader}
 				renderContent={renderContent}
 				enabledContentGestureInteraction={false}

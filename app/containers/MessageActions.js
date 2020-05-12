@@ -48,87 +48,83 @@ class MessageActions extends React.Component {
 			Message_AllowStarring, Message_AllowPinning, Message_Read_Receipt_Store_Users, user, room, message, isReadOnly
 		} = this.props;
 
-		// Cancel
-		// this.options = [I18n.t('Cancel')];
-		// this.CANCEL_INDEX = 0;
-
 		// Reply
 		if (!isReadOnly) {
-			this.options = [I18n.t('Reply')];
+			this.options = [{ title: I18n.t('Reply'), icon: 'reply' }];
 			this.REPLY_INDEX = 0;
 		}
 
 		// Edit
 		if (this.allowEdit(this.props)) {
-			this.options.push(I18n.t('Edit'));
+			this.options.push({ title: I18n.t('Edit'), icon: 'edit' });
 			this.EDIT_INDEX = this.options.length - 1;
 		}
 
 		// Create Discussion
-		this.options.push(I18n.t('Create_Discussion'));
+		this.options.push({ title: I18n.t('Create_Discussion'), icon: 'discussion' });
 		this.CREATE_DISCUSSION_INDEX = this.options.length - 1;
 
 		// Mark as unread
 		if (message.u && message.u._id !== user.id) {
-			this.options.push(I18n.t('Mark_unread'));
+			this.options.push({ title: I18n.t('Mark_unread'), icon: 'flag' });
 			this.UNREAD_INDEX = this.options.length - 1;
 		}
 
 		// Permalink
-		this.options.push(I18n.t('Permalink'));
+		this.options.push({ title: I18n.t('Permalink'), icon: 'permalink' });
 		this.PERMALINK_INDEX = this.options.length - 1;
 
 		// Copy
-		this.options.push(I18n.t('Copy'));
+		this.options.push({ title: I18n.t('Copy'), icon: 'copy' });
 		this.COPY_INDEX = this.options.length - 1;
 
 		// Share
-		this.options.push(I18n.t('Share'));
+		this.options.push({ title: I18n.t('Share'), icon: 'share' });
 		this.SHARE_INDEX = this.options.length - 1;
 
 		// Quote
 		if (!isReadOnly) {
-			this.options.push(I18n.t('Quote'));
+			this.options.push({ title: I18n.t('Quote'), icon: 'quote' });
 			this.QUOTE_INDEX = this.options.length - 1;
 		}
 
 		// Star
 		if (Message_AllowStarring) {
-			this.options.push(I18n.t(message.starred ? 'Unstar' : 'Star'));
+			this.options.push({ title: I18n.t(message.starred ? 'Unstar' : 'Star'), icon: 'star' });
 			this.STAR_INDEX = this.options.length - 1;
 		}
 
 		// Pin
 		if (Message_AllowPinning) {
-			this.options.push(I18n.t(message.pinned ? 'Unpin' : 'Pin'));
+			this.options.push({ title: I18n.t(message.pinned ? 'Unpin' : 'Pin'), icon: 'pin' });
 			this.PIN_INDEX = this.options.length - 1;
 		}
 
 		// Reaction
 		if (!isReadOnly || this.canReactWhenReadOnly()) {
-			this.options.push(I18n.t('Add_Reaction'));
+			this.options.push({ title: I18n.t('Add_Reaction'), icon: 'add-reaction' });
 			this.REACTION_INDEX = this.options.length - 1;
 		}
 
 		// Read Receipts
 		if (Message_Read_Receipt_Store_Users) {
-			this.options.push(I18n.t('Read_Receipt'));
+			this.options.push({ title: I18n.t('Read_Receipt'), icon: 'receipt' });
 			this.READ_RECEIPT_INDEX = this.options.length - 1;
 		}
 
 		// Toggle Auto-translate
 		if (room.autoTranslate && message.u && message.u._id !== user.id) {
-			this.options.push(I18n.t(message.autoTranslate ? 'View_Original' : 'Translate'));
+			this.options.push({ title: I18n.t(message.autoTranslate ? 'View_Original' : 'Translate'), icon: 'translate' });
 			this.TOGGLE_TRANSLATION_INDEX = this.options.length - 1;
 		}
 
 		// Report
-		this.options.push(I18n.t('Report'));
+		this.options.push({ title: I18n.t('Report'), icon: 'report', danger: true });
 		this.REPORT_INDEX = this.options.length - 1;
 
 		// Delete
 		if (this.allowDelete(this.props)) {
-			this.options.push(I18n.t('Delete'));
+			this.options.push({ title: I18n.t('Delete'), icon: 'trash', danger: true });
 			this.DELETE_INDEX = this.options.length - 1;
 		}
 		setTimeout(() => {
@@ -155,8 +151,6 @@ class MessageActions extends React.Component {
 		const { showActionSheetWithOptions } = this.props;
 		showActionSheetWithOptions({
 			options: this.options,
-			cancelButtonIndex: this.CANCEL_INDEX,
-			destructiveButtonIndex: this.DELETE_INDEX,
 			title: I18n.t('Message_actions')
 		}, (actionIndex) => {
 			this.handleActionPress(actionIndex);
