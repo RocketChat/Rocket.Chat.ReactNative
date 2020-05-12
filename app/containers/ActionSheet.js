@@ -13,7 +13,7 @@ import {
 	StyleSheet
 } from 'react-native';
 import BottomSheet from 'reanimated-bottom-sheet';
-import { RectButton } from 'react-native-gesture-handler';
+import { RectButton, BorderlessButton } from 'react-native-gesture-handler';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import Animated from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
 const Item = React.memo(({
 	item, onPress, theme
 }) => (
-	<RectButton onPress={onPress} style={[styles.item, { backgroundColor: themes[theme].backgroundColor }]}>
+	<BorderlessButton onPress={onPress} style={[styles.item, { backgroundColor: themes[theme].backgroundColor }]}>
 		<CustomIcon name={item.icon} size={20} color={item.danger ? themes[theme].dangerColor : themes[theme].bodyText} />
 		<Text
 			numberOfLines={1}
@@ -84,7 +84,7 @@ const Item = React.memo(({
 		>
 			{item.title}
 		</Text>
-	</RectButton>
+	</BorderlessButton>
 ));
 Item.propTypes = {
 	item: PropTypes.shape({
@@ -183,15 +183,18 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 	const [content, setContent] = useState([]);
 	const [onPress, setOnPress] = useState();
 
+	const hideActionSheet = () => {
+		setContent([]);
+	};
+
 	const showActionSheetWithOptions = ({ options }, callback) => {
 		Keyboard.dismiss();
 		setContent(options);
-		setOnPress(() => idx => callback(idx));
+		setOnPress(() => (idx) => {
+			callback(idx);
+			hideActionSheet();
+		});
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-	};
-
-	const hideActionSheet = () => {
-		setContent([]);
 	};
 
 	useImperativeHandle(ref, () => ({

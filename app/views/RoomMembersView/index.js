@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList, View } from 'react-native';
-import ActionSheet from 'react-native-action-sheet';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import * as Haptics from 'expo-haptics';
@@ -25,6 +24,7 @@ import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import { themes } from '../../constants/colors';
 import { getUserSelector } from '../../selectors/login';
+import { connectActionSheet } from '../../actionSheet';
 
 const PAGE_SIZE = 25;
 
@@ -54,14 +54,14 @@ class RoomMembersView extends React.Component {
 			id: PropTypes.string,
 			token: PropTypes.string
 		}),
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		showActionSheetWithOptions: PropTypes.func
 	}
 
 	constructor(props) {
 		super(props);
 		this.mounted = false;
-		this.CANCEL_INDEX = 0;
-		this.MUTE_INDEX = 1;
+		this.MUTE_INDEX = 0;
 		this.actionSheetOptions = [''];
 		const { rid } = props.navigation.state.params;
 		const room = props.navigation.getParam('room');
@@ -141,13 +141,12 @@ class RoomMembersView extends React.Component {
 		const { room } = this.state;
 		const { muted } = room;
 
-		this.actionSheetOptions = [I18n.t('Cancel')];
 		const userIsMuted = !!(muted || []).find(m => m === user.username);
 		user.muted = userIsMuted;
 		if (userIsMuted) {
-			this.actionSheetOptions.push(I18n.t('Unmute'));
+			this.actionSheetOptions = [{ title: I18n.t('Unmute'), icon: 'mute' }];
 		} else {
-			this.actionSheetOptions.push(I18n.t('Mute'));
+			this.actionSheetOptions = [{ title: I18n.t('Mute'), icon: 'mute' }];
 		}
 		this.setState({ userLongPressed: user });
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -166,9 +165,9 @@ class RoomMembersView extends React.Component {
 	}
 
 	showActionSheet = () => {
-		ActionSheet.showActionSheetWithOptions({
+		const { showActionSheetWithOptions } = this.props;
+		showActionSheetWithOptions({
 			options: this.actionSheetOptions,
-			cancelButtonIndex: this.CANCEL_INDEX,
 			title: I18n.t('Actions')
 		}, (actionIndex) => {
 			this.handleActionPress(actionIndex);
@@ -292,4 +291,4 @@ const mapStateToProps = state => ({
 	user: getUserSelector(state)
 });
 
-export default connect(mapStateToProps)(withTheme(RoomMembersView));
+export default connect(mapStateToProps)(connectActionSheet(withTheme(RoomMembersView)));

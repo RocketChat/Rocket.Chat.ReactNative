@@ -4,7 +4,6 @@ import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
-import ActionSheet from 'react-native-action-sheet';
 
 import styles from './styles';
 import Message from '../../containers/message';
@@ -18,9 +17,9 @@ import { withTheme } from '../../theme';
 import { withSplit } from '../../split';
 import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
+import { connectActionSheet } from '../../actionSheet';
 
 const ACTION_INDEX = 0;
-const CANCEL_INDEX = 1;
 
 class MessagesView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => ({
@@ -34,7 +33,8 @@ class MessagesView extends React.Component {
 		navigation: PropTypes.object,
 		customEmojis: PropTypes.object,
 		theme: PropTypes.string,
-		split: PropTypes.bool
+		split: PropTypes.bool,
+		showActionSheetWithOptions: PropTypes.func
 	}
 
 	constructor(props) {
@@ -165,7 +165,7 @@ class MessagesView extends React.Component {
 						theme={theme}
 					/>
 				),
-				actionTitle: I18n.t('Unstar'),
+				action: { title: I18n.t('Unstar'), icon: 'star' },
 				handleActionPress: message => RocketChat.toggleStarMessage(message._id, message.starred)
 			},
 			// Pinned Messages Screen
@@ -182,7 +182,7 @@ class MessagesView extends React.Component {
 						theme={theme}
 					/>
 				),
-				actionTitle: I18n.t('Unpin'),
+				action: { title: I18n.t('Unpin'), icon: 'pin' },
 				handleActionPress: message => RocketChat.togglePinMessage(message._id, message.pinned)
 			}
 		}[name]);
@@ -237,9 +237,9 @@ class MessagesView extends React.Component {
 	}
 
 	showActionSheet = () => {
-		ActionSheet.showActionSheetWithOptions({
-			options: [this.content.actionTitle, I18n.t('Cancel')],
-			cancelButtonIndex: CANCEL_INDEX,
+		const { showActionSheetWithOptions } = this.props;
+		showActionSheetWithOptions({
+			options: [this.content.action],
 			title: I18n.t('Actions')
 		}, (actionIndex) => {
 			this.handleActionPress(actionIndex);
@@ -322,4 +322,4 @@ const mapStateToProps = state => ({
 	customEmojis: state.customEmojis
 });
 
-export default connect(mapStateToProps)(withSplit(withTheme(MessagesView)));
+export default connect(mapStateToProps)(connectActionSheet(withSplit(withTheme(MessagesView))));

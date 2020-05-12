@@ -6,7 +6,6 @@ import {
 import { connect } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
 import DocumentPicker from 'react-native-document-picker';
-import ActionSheet from 'react-native-action-sheet';
 import RNUserDefaults from 'rn-user-defaults';
 import { encode } from 'base-64';
 import parse from 'url-parse';
@@ -30,6 +29,7 @@ import { withTheme } from '../theme';
 import { setBasicAuth, BASIC_AUTH_KEY } from '../utils/fetch';
 import { themedHeader } from '../utils/navigation';
 import { CloseModalButton } from '../containers/HeaderButton';
+import { connectActionSheet } from '../actionSheet';
 
 const styles = StyleSheet.create({
 	title: {
@@ -83,7 +83,8 @@ class NewServerView extends React.Component {
 		selectServer: PropTypes.func.isRequired,
 		currentServer: PropTypes.string,
 		initAdd: PropTypes.func,
-		finishAdd: PropTypes.func
+		finishAdd: PropTypes.func,
+		showActionSheetWithOptions: PropTypes.func
 	}
 
 	constructor(props) {
@@ -91,13 +92,9 @@ class NewServerView extends React.Component {
 		this.previousServer = props.navigation.getParam('previousServer');
 		props.navigation.setParams({ close: this.close, previousServer: this.previousServer });
 
-		// Cancel
-		this.options = [I18n.t('Cancel')];
-		this.CANCEL_INDEX = 0;
-
 		// Delete
-		this.options.push(I18n.t('Delete'));
-		this.DELETE_INDEX = 1;
+		this.options = [{ title: I18n.t('Delete'), icon: 'trash', danger: true }];
+		this.DELETE_INDEX = 0;
 
 		this.state = {
 			text: '',
@@ -254,7 +251,8 @@ class NewServerView extends React.Component {
 	handleDelete = () => this.setState({ certificate: null }); // We not need delete file from DocumentPicker because it is a temp file
 
 	showActionSheet = () => {
-		ActionSheet.showActionSheetWithOptions({
+		const { showActionSheetWithOptions } = this.props;
+		showActionSheetWithOptions({
 			options: this.options,
 			cancelButtonIndex: this.CANCEL_INDEX,
 			destructiveButtonIndex: this.DELETE_INDEX
@@ -354,4 +352,4 @@ const mapDispatchToProps = dispatch => ({
 	appStart: root => dispatch(appStartAction(root))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(NewServerView));
+export default connect(mapStateToProps, mapDispatchToProps)(connectActionSheet(withTheme(NewServerView)));
