@@ -11,7 +11,7 @@ import log from '../utils/log';
 class MessageErrorActions extends React.Component {
 	static propTypes = {
 		showActionSheetWithOptions: PropTypes.func,
-		hideActionSheet: PropTypes.func,
+		actionsHide: PropTypes.func,
 		message: PropTypes.object,
 		tmid: PropTypes.string
 	};
@@ -106,7 +106,7 @@ class MessageErrorActions extends React.Component {
 	}
 
 	handleActionPress = (actionIndex) => {
-		const { hideActionSheet } = this.props;
+		const { actionsHide } = this.props;
 		switch (actionIndex) {
 			case this.RESEND_INDEX:
 				this.handleResend();
@@ -117,7 +117,7 @@ class MessageErrorActions extends React.Component {
 			default:
 				break;
 		}
-		hideActionSheet();
+		actionsHide();
 	}
 
 	render() {

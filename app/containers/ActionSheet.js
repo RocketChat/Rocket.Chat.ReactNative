@@ -204,6 +204,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 			bottomSheetRef.current.snapTo(2);
 		} else {
 			bottomSheetRef.current.snapTo(0);
+			onPress && onPress();
 		}
 	}, [content]);
 

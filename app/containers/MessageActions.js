@@ -33,7 +33,7 @@ class MessageActions extends React.Component {
 		Message_AllowStarring: PropTypes.bool,
 		Message_Read_Receipt_Store_Users: PropTypes.bool,
 		showActionSheetWithOptions: PropTypes.func,
-		hideActionSheet: PropTypes.func
+		actionsHide: PropTypes.func
 	};
 
 	constructor(props) {
@@ -428,8 +428,8 @@ class MessageActions extends React.Component {
 					break;
 			}
 		}
-		const { hideActionSheet } = this.props;
-		hideActionSheet();
+		const { actionsHide } = this.props;
+		actionsHide();
 	}
 
 	render() {
