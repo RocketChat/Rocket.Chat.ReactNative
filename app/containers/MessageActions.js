@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Alert, Clipboard, Share } from 'react-native';
+import {
+	Alert, Clipboard, Share, StyleSheet, FlatList, Text
+} from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import * as Haptics from 'expo-haptics';
+import { RectButton } from 'react-native-gesture-handler';
 
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
@@ -15,6 +18,26 @@ import { LISTENER } from './Toast';
 import EventEmitter from '../utils/events';
 import { showConfirmationAlert } from '../utils/info';
 import { connectActionSheet } from '../actionSheet';
+import { themes } from '../constants/colors';
+import { CustomIcon } from '../lib/Icons';
+
+const styles = StyleSheet.create({
+	headerItem: {
+		height: 36,
+		width: 36,
+		borderRadius: 18,
+		marginHorizontal: 8,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	headerList: {
+		paddingBottom: 16
+	},
+	headerIcon: {
+		fontSize: 20,
+		color: '#fff'
+	}
+});
 
 class MessageActions extends React.Component {
 	static propTypes = {
@@ -127,6 +150,18 @@ class MessageActions extends React.Component {
 			this.options.push({ title: I18n.t('Delete'), icon: 'trash', danger: true });
 			this.DELETE_INDEX = this.options.length - 1;
 		}
+
+		try {
+			const db = database.active;
+			const freqEmojiCollection = db.collections.get('frequently_used_emojis');
+			this.freqEmojis = await freqEmojiCollection.query().fetch();
+			if (this.freqEmojis?.length) {
+				this.freqEmojis = ['😊', '👏🏻', '👍', '😱', '😒'];
+			}
+		} catch {
+			// Do nothing
+		}
+
 		setTimeout(() => {
 			this.showActionSheet();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -147,11 +182,36 @@ class MessageActions extends React.Component {
 		Promise.resolve();
 	}
 
+	renderHeader = () => {
+		const theme = 'light';
+		return (
+			<FlatList
+				data={this.freqEmojis}
+				renderItem={({ item }) => (
+					<RectButton style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+						<Text style={styles.headerIcon}>{item}</Text>
+					</RectButton>
+				)}
+				style={[styles.headerList, { backgroundColor: themes[theme].backgroundColor }]}
+				ListFooterComponent={() => (
+					<RectButton
+						onPress={this.handleReaction}
+						style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
+					>
+						<CustomIcon name='add-reaction' size={24} color={themes[theme].bodyText} />
+					</RectButton>
+				)}
+				scrollEnabled={false}
+				horizontal
+			/>
+		);
+	}
+
 	showActionSheet = () => {
 		const { showActionSheetWithOptions } = this.props;
 		showActionSheetWithOptions({
 			options: this.options,
-			title: I18n.t('Message_actions')
+			header: this.renderHeader
 		}, (actionIndex) => {
 			this.handleActionPress(actionIndex);
 		});

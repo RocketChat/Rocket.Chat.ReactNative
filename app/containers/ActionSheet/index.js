@@ -20,6 +20,8 @@ import { ITEM_HEIGHT } from './styles';
 const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 	const bottomSheetRef = useRef();
 	const fall = new Animated.Value(1);
+	const [title, setTitle] = useState();
+	const [header, setHeader] = useState();
 	const [content, setContent] = useState([]);
 	const [onPress, setOnPress] = useState();
 
@@ -28,8 +30,10 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 		onPress && onPress();
 	};
 
-	const showActionSheetWithOptions = ({ options }, callback) => {
+	const showActionSheetWithOptions = ({ options, header: customHeader, title: headerTitle }, callback) => {
 		Keyboard.dismiss();
+		setHeader(customHeader);
+		setTitle(headerTitle);
 		setContent(options);
 		setOnPress(() => (idx) => {
 			callback(idx);
@@ -51,7 +55,13 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 		}
 	}, [content]);
 
-	const renderHeader = () => <Header theme={theme} />;
+	const renderHeader = () => (
+		<Header
+			title={title}
+			header={header}
+			theme={theme}
+		/>
+	);
 
 	const renderContent = () => (
 		<Content
@@ -61,7 +71,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 		/>
 	);
 
-	const height = content.length * ITEM_HEIGHT + 82;
+	const height = content.length * ITEM_HEIGHT + ((title || header) ? 82 : 26);
 
 	return (
 		<>

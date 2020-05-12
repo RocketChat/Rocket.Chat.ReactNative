@@ -29,20 +29,14 @@ export default StyleSheet.create({
 		borderTopLeftRadius: 16,
 		borderTopRightRadius: 16
 	},
-	headerItem: {
-		height: 36,
-		width: 36,
-		borderRadius: 18,
-		marginHorizontal: 8,
+	headerTitle: {
+		paddingVertical: 16,
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
-	headerList: {
-		paddingBottom: 16
-	},
-	headerIcon: {
+	headerTitleText: {
 		fontSize: 20,
-		color: '#fff'
+		...sharedStyles.textBold
 	},
 	headerIndicator: {
 		width: 36,
