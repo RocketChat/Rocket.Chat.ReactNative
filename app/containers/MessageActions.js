@@ -377,7 +377,7 @@ class MessageActions extends React.Component {
 	}
 
 	handleActionPress = (actionIndex) => {
-		if (actionIndex) {
+		if (actionIndex >= 0) {
 			switch (actionIndex) {
 				case this.REPLY_INDEX:
 					this.handleReply();

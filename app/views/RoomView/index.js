@@ -523,7 +523,7 @@ class RoomView extends React.Component {
 		if (editing || replying || reacting) {
 			return;
 		}
-		this.setState({ selectedMessage: {}, showActions: false });
+		this.setState({ showActions: false });
 	}
 
 	onErrorActionsHide = () => {
