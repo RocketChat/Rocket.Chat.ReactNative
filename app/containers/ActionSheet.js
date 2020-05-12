@@ -1,23 +1,27 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
 	View,
 	Text,
+	Keyboard,
 	FlatList,
 	StyleSheet
 } from 'react-native';
 import BottomSheet from 'reanimated-bottom-sheet';
 import { RectButton } from 'react-native-gesture-handler';
+import useDeepCompareEffect from 'use-deep-compare-effect';
 import Animated from 'react-native-reanimated';
 
 import Separator from './Separator';
 import sharedStyles from '../views/Styles';
+import EventEmitter from '../utils/events';
 
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { CustomIcon } from '../lib/Icons';
 
 const ITEM_HEIGHT = 44;
+export const ACTION_SHEET = 'ActionSheet';
 
 const styles = StyleSheet.create({
 	item: {
@@ -161,9 +165,29 @@ Shadow.propTypes = {
 	theme: PropTypes.string
 };
 
-const ActionSheet = React.memo(({ options, theme }) => {
+const ActionSheet = React.memo(({ theme }) => {
 	const ref = useRef();
 	const fall = new Animated.Value(1);
+	const [options, setOptions] = useState([]);
+
+	const showActionSheet = ({ data }) => {
+		Keyboard.dismiss();
+		setOptions(data);
+	};
+
+	useEffect(() => {
+		EventEmitter.addEventListener(ACTION_SHEET, showActionSheet);
+
+		return () => EventEmitter.removeListener(ACTION_SHEET);
+	}, []);
+
+	useDeepCompareEffect(() => {
+		if (options.length) {
+			ref.current.snapTo(300);
+		} else {
+			ref.current.snapTo(0);
+		}
+	}, [options]);
 
 	return (
 		<>
@@ -187,7 +211,6 @@ const ActionSheet = React.memo(({ options, theme }) => {
 	);
 });
 ActionSheet.propTypes = {
-	options: PropTypes.array,
 	theme: PropTypes.string
 };
 

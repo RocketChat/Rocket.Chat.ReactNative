@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import * as Haptics from 'expo-haptics';
 
-import ActionSheet from './ActionSheet';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
 import I18n from '../i18n';
@@ -14,6 +13,7 @@ import log from '../utils/log';
 import Navigation from '../lib/Navigation';
 import { getMessageTranslation } from './message/utils';
 import { LISTENER } from './Toast';
+import { ACTION_SHEET } from './ActionSheet';
 import EventEmitter from '../utils/events';
 import { showConfirmationAlert } from '../utils/info';
 
@@ -39,9 +39,6 @@ class MessageActions extends React.Component {
 	constructor(props) {
 		super(props);
 		this.handleActionPress = this.handleActionPress.bind(this);
-		this.state = {
-			showActionSheet: false
-		};
 	}
 
 	async componentDidMount() {
@@ -51,14 +48,14 @@ class MessageActions extends React.Component {
 			Message_AllowStarring, Message_AllowPinning, Message_Read_Receipt_Store_Users, user, room, message, isReadOnly
 		} = this.props;
 
-		// // Cancel
-		// this.options = [I18n.t('Cancel')];
-		// this.CANCEL_INDEX = 0;
+		// Cancel
+		this.options = [I18n.t('Cancel')];
+		this.CANCEL_INDEX = 0;
 
 		// Reply
 		if (!isReadOnly) {
-			this.options = [I18n.t('Reply')];
-			this.REPLY_INDEX = 0;
+			this.options.push(I18n.t('Reply'));
+			this.REPLY_INDEX = this.options.length - 1;
 		}
 
 		// Edit
@@ -155,7 +152,7 @@ class MessageActions extends React.Component {
 	}
 
 	showActionSheet = () => {
-		this.setState(({ showActionSheet }) => ({ showActionSheet: !showActionSheet }));
+		EventEmitter.emit(ACTION_SHEET, { data: this.options });
 		// ActionSheet.showActionSheetWithOptions({
 		// 	options: this.options,
 		// 	cancelButtonIndex: this.CANCEL_INDEX,
@@ -442,14 +439,9 @@ class MessageActions extends React.Component {
 	}
 
 	render() {
-		const { showActionSheet } = this.state;
-		if (!showActionSheet) {
-			return (
-				null
-			);
-		}
-
-		return <ActionSheet options={this.options} />;
+		return (
+			null
+		);
 	}
 }
 
