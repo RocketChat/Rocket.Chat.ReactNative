@@ -173,9 +173,10 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 	const fall = new Animated.Value(1);
 	const [content, setContent] = useState([]);
 
-	const showActionSheetWithOptions = ({ options }) => {
+	const showActionSheetWithOptions = ({ options }, callback) => {
 		Keyboard.dismiss();
 		setContent(options);
+		console.log(callback);
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 	};
 
@@ -198,6 +199,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 				snapPoints={[0, 250, content.length * ITEM_HEIGHT]}
 				renderHeader={() => <Header theme={theme} />}
 				renderContent={() => <Content options={content} theme={theme} />}
+				enabledContentGestureInteraction={false}
 				enabledManualSnapping={false}
 				enabledInnerScrolling={false}
 				overdragResistanceFactor={5}

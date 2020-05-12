@@ -50,13 +50,13 @@ class MessageActions extends React.Component {
 		} = this.props;
 
 		// Cancel
-		this.options = [I18n.t('Cancel')];
-		this.CANCEL_INDEX = 0;
+		// this.options = [I18n.t('Cancel')];
+		// this.CANCEL_INDEX = 0;
 
 		// Reply
 		if (!isReadOnly) {
-			this.options.push(I18n.t('Reply'));
-			this.REPLY_INDEX = this.options.length - 1;
+			this.options = [I18n.t('Reply')];
+			this.REPLY_INDEX = 0;
 		}
 
 		// Edit

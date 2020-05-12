@@ -28,8 +28,8 @@ const ActionSheetProvider = React.memo(({ children }) => {
 	const ref = useRef();
 
 	const getContext = () => ({
-		showActionSheetWithOptions: (options) => {
-			ref.current?.showActionSheetWithOptions(options);
+		showActionSheetWithOptions: (options, callback) => {
+			ref.current?.showActionSheetWithOptions(options, callback);
 		}
 	});
 
