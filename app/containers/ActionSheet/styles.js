@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 
-export const ITEM_HEIGHT = 44;
+const ITEM_HEIGHT = 44;
 
 export default StyleSheet.create({
 	item: {

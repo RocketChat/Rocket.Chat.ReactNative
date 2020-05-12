@@ -15,8 +15,6 @@ import Header from './Header';
 import Content from './Content';
 import Shadow from './Shadow';
 
-import { ITEM_HEIGHT } from './styles';
-
 const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 	const bottomSheetRef = useRef();
 	const fall = new Animated.Value(1);
@@ -49,7 +47,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 
 	useDeepCompareEffect(() => {
 		if (content.length) {
-			bottomSheetRef.current.snapTo(2);
+			bottomSheetRef.current.snapTo(1);
 		} else {
 			bottomSheetRef.current.snapTo(0);
 		}
@@ -71,8 +69,6 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 		/>
 	);
 
-	const height = content.length * ITEM_HEIGHT + ((title || header) ? 82 : 26);
-
 	return (
 		<>
 			{children}
@@ -83,16 +79,13 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 			<BottomSheet
 				ref={bottomSheetRef}
 				initialSnap={0}
-				snapPoints={[0, height / 2, height]}
+				snapPoints={[0, 450]}
 				onCloseEnd={hideActionSheet}
 				renderHeader={renderHeader}
 				renderContent={renderContent}
-				enabledContentGestureInteraction={false}
 				enabledManualSnapping={false}
-				enabledInnerScrolling={false}
 				overdragResistanceFactor={8}
 				callbackNode={fall}
-				borderRadius={10}
 			/>
 		</>
 	);

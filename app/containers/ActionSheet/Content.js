@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, FlatList } from 'react-native';
+import { Text, FlatList, TouchableOpacity } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
 import Separator from '../Separator';
@@ -8,11 +8,15 @@ import Separator from '../Separator';
 import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
+import { isAndroid } from '../../utils/deviceInfo';
+
+// For some reason react-native-gesture-handler isn't working on bottom sheet (iOS)
+const Button = isAndroid ? BorderlessButton : TouchableOpacity;
 
 const Item = React.memo(({
 	item, onPress, theme
 }) => (
-	<BorderlessButton onPress={onPress} style={[styles.item, { backgroundColor: themes[theme].backgroundColor }]}>
+	<Button onPress={onPress} style={[styles.item, { backgroundColor: themes[theme].backgroundColor }]}>
 		<CustomIcon name={item.icon} size={20} color={item.danger ? themes[theme].dangerColor : themes[theme].bodyText} />
 		<Text
 			numberOfLines={1}
@@ -20,7 +24,7 @@ const Item = React.memo(({
 		>
 			{item.title}
 		</Text>
-	</BorderlessButton>
+	</Button>
 ));
 Item.propTypes = {
 	item: PropTypes.shape({
@@ -40,7 +44,6 @@ const Content = React.memo(({ options, onPress, theme }) => (
 		contentContainerStyle={styles.content}
 		ListHeaderComponent={() => <Separator theme={theme} />}
 		ItemSeparatorComponent={() => <Separator theme={theme} />}
-		scrollEnabled={false}
 	/>
 ));
 Content.propTypes = {
