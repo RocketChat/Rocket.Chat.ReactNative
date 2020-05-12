@@ -52,6 +52,12 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
+	headerList: {
+		paddingBottom: 16
+	},
+	headerIcon: {
+		fontSize: 20
+	},
 	headerIndicator: {
 		width: 36,
 		height: 4,
@@ -81,6 +87,7 @@ const Content = React.memo(({ options, theme }) => (
 		renderItem={({ item }) => <Item item={item} theme={theme} />}
 		style={{ backgroundColor: themes[theme].backgroundColor }}
 		contentContainerStyle={styles.content}
+		ListHeaderComponent={() => <Separator theme={theme} />}
 		ItemSeparatorComponent={() => <Separator theme={theme} />}
 		scrollEnabled={false}
 	/>
@@ -90,15 +97,24 @@ Content.propTypes = {
 	theme: PropTypes.string
 };
 
-const ITEMS = ['discussion', 'omnichannel', 'discussion', 'omnichannel', 'discussion', 'omnichannel', 'add-reaction'];
+const ITEMS = ['😊', '👏🏻', '👍', '😱', '😒', '😊'];
 
 const HeaderItem = React.memo(({ item, theme }) => (
 	<RectButton style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-		<CustomIcon name={item} size={24} color={themes[theme].bodyText} />
+		<Text style={styles.headerIcon}>{item}</Text>
 	</RectButton>
 ));
 HeaderItem.propTypes = {
 	item: PropTypes.string,
+	theme: PropTypes.string
+};
+
+const HeaderFooter = React.memo(({ theme }) => (
+	<RectButton style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+		<CustomIcon name='add-reaction' size={24} color={themes[theme].bodyText} />
+	</RectButton>
+));
+HeaderFooter.propTypes = {
 	theme: PropTypes.string
 };
 
@@ -110,7 +126,8 @@ const Header = React.memo(({ theme }) => (
 		<FlatList
 			data={ITEMS}
 			renderItem={({ item }) => <HeaderItem item={item} theme={theme} />}
-			style={{ backgroundColor: themes[theme].backgroundColor }}
+			style={[styles.headerList, { backgroundColor: themes[theme].backgroundColor }]}
+			ListFooterComponent={() => <HeaderFooter theme={theme} />}
 			scrollEnabled={false}
 			horizontal
 		/>

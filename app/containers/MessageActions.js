@@ -51,14 +51,14 @@ class MessageActions extends React.Component {
 			Message_AllowStarring, Message_AllowPinning, Message_Read_Receipt_Store_Users, user, room, message, isReadOnly
 		} = this.props;
 
-		// Cancel
-		this.options = [I18n.t('Cancel')];
-		this.CANCEL_INDEX = 0;
+		// // Cancel
+		// this.options = [I18n.t('Cancel')];
+		// this.CANCEL_INDEX = 0;
 
 		// Reply
 		if (!isReadOnly) {
-			this.options.push(I18n.t('Reply'));
-			this.REPLY_INDEX = this.options.length - 1;
+			this.options = [I18n.t('Reply')];
+			this.REPLY_INDEX = 0;
 		}
 
 		// Edit
