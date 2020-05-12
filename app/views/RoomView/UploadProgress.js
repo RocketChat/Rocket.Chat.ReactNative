@@ -3,8 +3,8 @@ import {
 	View, Text, StyleSheet, TouchableOpacity, ScrollView
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { responsive } from 'react-native-responsive-ui';
 import { Q } from '@nozbe/watermelondb';
+import { connect } from 'react-redux';
 
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
@@ -228,4 +228,8 @@ class UploadProgress extends Component {
 	}
 }
 
-export default responsive(withTheme(UploadProgress));
+const mapStateToProps = state => ({
+	window: state.dimensions.window
+});
+
+export default connect(mapStateToProps)(withTheme(UploadProgress));

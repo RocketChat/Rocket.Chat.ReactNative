@@ -5,7 +5,6 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
-import { responsive } from 'react-native-responsive-ui';
 import Touchable from 'react-native-platform-touchable';
 
 import { hasNotch, isIOS, isTablet } from '../../utils/deviceInfo';
@@ -234,11 +233,12 @@ class NotificationBadge extends React.Component {
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
 	baseUrl: state.server.server,
-	notification: state.notification
+	notification: state.notification,
+	window: state.dimensions.window
 });
 
 const mapDispatchToProps = dispatch => ({
 	removeNotification: () => dispatch(removeNotificationAction())
 });
 
-export default responsive(connect(mapStateToProps, mapDispatchToProps)(withTheme(NotificationBadge)));
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(NotificationBadge));

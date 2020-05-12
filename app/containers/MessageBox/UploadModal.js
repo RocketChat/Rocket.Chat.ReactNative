@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
-import { responsive } from 'react-native-responsive-ui';
+import { connect } from 'react-redux';
 import equal from 'deep-equal';
 
 import TextInput from '../TextInput';
@@ -252,4 +252,8 @@ class UploadModal extends Component {
 	}
 }
 
-export default responsive(withTheme(withSplit(UploadModal)));
+const mapStateToProps = state => ({
+	window: state.dimensions.window
+});
+
+export default connect(mapStateToProps)(withTheme(withSplit(UploadModal)));

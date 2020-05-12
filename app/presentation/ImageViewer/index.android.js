@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 import {
@@ -8,7 +8,7 @@ import {
 } from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';
 import Animated, { Easing } from 'react-native-reanimated';
-import { ResponsiveComponent } from 'react-native-responsive-ui';
+import { connect } from 'react-redux';
 
 const AnimatedFastImage = Animated.createAnimatedComponent(FastImage);
 
@@ -264,13 +264,10 @@ const HEIGHT = 300;
 
 // it was picked from https://github.com/software-mansion/react-native-reanimated/tree/master/Example/imageViewer
 // and changed to use FastImage animated component
-class ImageViewer extends ResponsiveComponent {
-	pinchRef = React.createRef();
-
-	panRef = React.createRef();
-
+class ImageViewer extends Component {
 	static propTypes = {
-		uri: PropTypes.string
+		uri: PropTypes.string,
+		window: PropTypes.object
 	}
 
 	constructor(props) {
@@ -382,9 +379,13 @@ class ImageViewer extends ResponsiveComponent {
 		);
 	}
 
+	pinchRef = React.createRef();
+
+	panRef = React.createRef();
+
 	render() {
-		const { uri, ...props } = this.props;
-		const { width } = this.state.window;
+		const { uri, window, ...props } = this.props;
+		const { width } = window;
 
 		// The below two animated values makes it so that scale appears to be done
 		// from the top left corner of the image view instead of its center. This
@@ -439,4 +440,8 @@ class ImageViewer extends ResponsiveComponent {
 	}
 }
 
-export default ImageViewer;
+const mapStateToProps = state => ({
+	window: state.dimensions.window
+});
+
+export default connect(mapStateToProps)(ImageViewer);

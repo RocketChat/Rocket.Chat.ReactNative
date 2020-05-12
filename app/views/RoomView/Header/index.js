@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { responsive } from 'react-native-responsive-ui';
 import equal from 'deep-equal';
 
 import Header from './Header';
@@ -110,10 +109,11 @@ const mapStateToProps = (state, ownProps) => {
 		connecting: state.meteor.connecting,
 		usersTyping: state.usersTyping,
 		status,
-		statusText
+		statusText,
+		window: state.dimensions.window
 	};
 };
 
-export default responsive(connect(mapStateToProps)(withTheme(RoomHeaderView)));
+export default connect(mapStateToProps)(withTheme(RoomHeaderView));
 
 export { RightButtons, RoomHeaderLeft };

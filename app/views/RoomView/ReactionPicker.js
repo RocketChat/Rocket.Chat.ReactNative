@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
-import { responsive } from 'react-native-responsive-ui';
 
 import EmojiPicker from '../../containers/EmojiPicker';
 import styles from './styles';
@@ -83,7 +82,8 @@ class ReactionPicker extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.server.server
+	baseUrl: state.server.server,
+	window: state.dimensions.window
 });
 
-export default responsive(connect(mapStateToProps)(withSplit(ReactionPicker)));
+export default connect(mapStateToProps)(withSplit(ReactionPicker));
