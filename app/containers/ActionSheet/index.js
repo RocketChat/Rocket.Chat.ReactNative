@@ -25,6 +25,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 
 	const hideActionSheet = () => {
 		setContent([]);
+		onPress && onPress();
 	};
 
 	const showActionSheetWithOptions = ({ options }, callback) => {
@@ -32,7 +33,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 		setContent(options);
 		setOnPress(() => (idx) => {
 			callback(idx);
-			hideActionSheet();
+			setContent([]);
 		});
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 	};
@@ -47,7 +48,6 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 			bottomSheetRef.current.snapTo(2);
 		} else {
 			bottomSheetRef.current.snapTo(0);
-			onPress && onPress();
 		}
 	}, [content]);
 
@@ -74,7 +74,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 				ref={bottomSheetRef}
 				initialSnap={0}
 				snapPoints={[0, height / 2, height]}
-				onCloseEnd={() => setContent([])}
+				onCloseEnd={hideActionSheet}
 				renderHeader={renderHeader}
 				renderContent={renderContent}
 				enabledContentGestureInteraction={false}
