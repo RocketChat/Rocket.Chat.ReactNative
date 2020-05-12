@@ -116,14 +116,6 @@ class MessageBox extends Component {
 		};
 		this.text = '';
 		this.focused = false;
-		this.messageBoxActions = [
-			I18n.t('Cancel'),
-			I18n.t('Take_a_photo'),
-			I18n.t('Take_a_video'),
-			I18n.t('Choose_from_library'),
-			I18n.t('Choose_file'),
-			I18n.t('Create_Discussion')
-		];
 		const libPickerLabels = {
 			cropperChooseText: I18n.t('Choose'),
 			cropperCancelText: I18n.t('Cancel'),
@@ -509,11 +501,7 @@ class MessageBox extends Component {
 	canUploadFile = (file) => {
 		const { FileUpload_Enabled, FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = this.props;
 		const result = canUploadFile(file, { FileUpload_Enabled, FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize });
-		if (result.success) {
-			return true;
-		}
-		Alert.alert(I18n.t('Error_uploading'), I18n.t(result.error));
-		return false;
+		return result.success;
 	}
 
 	sendMediaMessage = async(file) => {
@@ -602,13 +590,14 @@ class MessageBox extends Component {
 
 	showMessageBoxActions = () => {
 		ActionSheet.showActionSheetWithOptions({
-			options: this.messageBoxActions,
+			options: this.createListOfMessageBoxActions(),
 			cancelButtonIndex: FILE_CANCEL_INDEX
 		}, (actionIndex) => {
 			this.handleMessageBoxActions(actionIndex);
 		});
-	
-    showFileActions = () => {
+	}
+
+	showFileActions = () => {
 		const { FileUpload_Enabled } = this.props;
 		if (FileUpload_Enabled) {
 			ActionSheet.showActionSheetWithOptions({
@@ -620,6 +609,15 @@ class MessageBox extends Component {
 		} else {
 			Alert.alert(I18n.t('Error_uploading'), I18n.t('error-message-file-upload-not-allowed'));
 		}
+	}
+
+	createListOfMessageBoxActions = () => {
+		const actions = [I18n.t('Cancel'), I18n.t('Create_Discussion')];
+		const { FileUpload_Enabled } = this.props;
+		if (FileUpload_Enabled) {
+			actions.push(I18n.t('Take_a_photo'), I18n.t('Take_a_video'), I18n.t('Choose_from_library'), I18n.t('Choose_file'));
+		}
+		return actions;
 	}
 
 	handleMessageBoxActions = (actionIndex) => {
