@@ -106,6 +106,8 @@ const handleOpen = function* handleOpen({ params }) {
 		if (params.token) {
 			yield take(types.SERVER.SELECT_SUCCESS);
 			yield RocketChat.connect({ server: host, user: { token: params.token } });
+			yield take(types.LOGIN.SUCCESS);
+			yield navigate({ params });
 		} else {
 			yield handleInviteLink({ params, requireLogin: true });
 		}
