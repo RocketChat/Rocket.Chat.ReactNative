@@ -75,7 +75,7 @@ const handleOpen = function* handleOpen({ params }) {
 		if (!connected) {
 			yield localAuthenticate(host);
 			yield put(selectServerRequest(host));
-			yield take(types.SERVER.SELECT_SUCCESS);
+			yield take(types.LOGIN.SUCCESS);
 		}
 		yield navigate({ params });
 	} else {
