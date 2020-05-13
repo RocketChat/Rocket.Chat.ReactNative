@@ -493,8 +493,8 @@ class MessageBox extends Component {
 			if (isAndroid) {
 				const diff = text.length - this.text?.length;
 				const selection = this.component?.lastNativeSelection;
-				const start = selection?.start + diff > 0 ? selection?.start + diff : text.length;
-				const end = selection?.end + diff > 0 ? selection?.start + diff : text.length;
+				const start = selection?.start + diff >= 0 ? selection?.start + diff : text.length;
+				const end = selection?.end + diff >= 0 ? selection?.start + diff : text.length;
 				props.selection = { start, end };
 			}
 
