@@ -316,7 +316,7 @@ const RocketChat = {
 		}
 		database.share = null;
 
-		reduxStore.dispatch(shareSetUser(null));
+		reduxStore.dispatch(shareSetUser({}));
 	},
 
 	updateJitsiTimeout(rid) {
@@ -963,7 +963,7 @@ const RocketChat = {
 			const shareUser = reduxStore.getState().share.user;
 			const loginUser = reduxStore.getState().login.user;
 			// get user roles on the server from redux
-			const userRoles = (shareUser.roles || loginUser.roles) || [];
+			const userRoles = (shareUser?.roles || loginUser?.roles) || [];
 			// merge both roles
 			const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
 
