@@ -26,6 +26,7 @@ import { themedHeader } from '../utils/navigation';
 import { getUserSelector } from '../selectors/login';
 import Navigation from '../lib/Navigation';
 import { createChannelRequest } from '../actions/createChannel';
+import { goRoom } from '../utils/goRoom';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -121,12 +122,6 @@ class NewMessageView extends React.Component {
 
 	onSearchChangeText(text) {
 		this.search(text);
-	}
-
-	onPressItem = (item) => {
-		const { navigation } = this.props;
-		const onPressItem = navigation.getParam('onPressItem', () => {});
-		onPressItem(item);
 	}
 
 	dismiss = () => {
@@ -231,7 +226,7 @@ class NewMessageView extends React.Component {
 			<UserItem
 				name={item.search ? item.name : item.fname}
 				username={item.search ? item.username : item.name}
-				onPress={() => this.onPressItem(item)}
+				onPress={() => goRoom(item)}
 				baseUrl={baseUrl}
 				testID={`new-message-view-item-${ item.name }`}
 				style={style}
