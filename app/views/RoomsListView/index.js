@@ -61,6 +61,7 @@ import {
 import { MAX_SIDEBAR_WIDTH } from '../../constants/tablet';
 import { withSplit } from '../../split';
 import { getUserSelector } from '../../selectors/login';
+import { goRoom } from '../../utils/goRoom';
 
 const SCROLL_OFFSET = 56;
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
@@ -102,7 +103,6 @@ class RoomsListView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const searching = navigation.getParam('searching');
 		const cancelSearch = navigation.getParam('cancelSearch', () => {});
-		const onPressItem = navigation.getParam('onPressItem', () => {});
 		const initSearching = navigation.getParam(
 			'initSearching',
 			() => {}
@@ -137,9 +137,7 @@ class RoomsListView extends React.Component {
 					<Item
 						title='new'
 						iconName='edit-rounded'
-						onPress={() => navigation.navigate('NewMessageView', {
-							onPressItem
-						})}
+						onPress={() => navigation.navigate('NewMessageView')}
 						testID='rooms-list-view-create-channel'
 					/>
 				</CustomHeaderButtons>
@@ -200,7 +198,6 @@ class RoomsListView extends React.Component {
 		this.getSubscriptions();
 		const { navigation, closeServerDropdown } = this.props;
 		navigation.setParams({
-			onPressItem: this._onPressItem,
 			initSearching: this.initSearching,
 			cancelSearch: this.cancelSearch
 		});
@@ -538,48 +535,15 @@ class RoomsListView extends React.Component {
 
 	getUidDirectMessage = room => RocketChat.getUidDirectMessage(room);
 
-	goRoom = (item) => {
-		const { navigation } = this.props;
-		this.cancelSearch();
-		this.item = item;
-		navigation.navigate('RoomView', {
-			rid: item.rid,
-			name: this.getRoomTitle(item),
-			t: item.t,
-			prid: item.prid,
-			room: item,
-			search: item.search,
-			visitor: item.visitor,
-			roomUserId: this.getUidDirectMessage(item)
-		});
-	}
-
-	_onPressItem = async(item = {}) => {
+	onPressItem = (item = {}) => {
 		const { navigation } = this.props;
 		if (!navigation.isFocused()) {
 			return;
 		}
-		if (!item.search) {
-			return this.goRoom(item);
-		}
-		if (item.t === 'd') {
-			// if user is using the search we need first to join/create room
-			try {
-				const { username } = item;
-				const result = await RocketChat.createDirectMessage(username);
-				if (result.success) {
-					return this.goRoom({
-						rid: result.room._id,
-						name: username,
-						t: 'd'
-					});
-				}
-			} catch (e) {
-				log(e);
-			}
-		} else {
-			return this.goRoom(item);
-		}
+
+		this.cancelSearch();
+		this.item = item;
+		goRoom(item);
 	};
 
 	toggleSort = () => {
@@ -723,7 +687,7 @@ class RoomsListView extends React.Component {
 		} else if (handleCommandNextRoom(event)) {
 			this.goOtherRoom(1);
 		} else if (handleCommandShowNewMessage(event)) {
-			navigation.navigate('NewMessageView', { onPressItem: this._onPressItem });
+			navigation.navigate('NewMessageView');
 		} else if (handleCommandAddNewServer(event)) {
 			navigation.navigate('NewServerView', { previousServer: server });
 		}
@@ -809,7 +773,7 @@ class RoomsListView extends React.Component {
 				baseUrl={server}
 				prid={item.prid}
 				showLastMessage={StoreLastMessage}
-				onPress={() => this._onPressItem(item)}
+				onPress={() => this.onPressItem(item)}
 				testID={`rooms-list-view-item-${ item.name }`}
 				width={split ? MAX_SIDEBAR_WIDTH : width}
 				toggleFav={this.toggleFav}
