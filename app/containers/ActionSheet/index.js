@@ -83,7 +83,6 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 				onCloseEnd={hideActionSheet}
 				renderHeader={renderHeader}
 				renderContent={renderContent}
-				enabledManualSnapping={false}
 				overdragResistanceFactor={8}
 				callbackNode={fall}
 			/>

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, FlatList, TouchableOpacity } from 'react-native';
-import { BorderlessButton } from 'react-native-gesture-handler';
+import { Text, TouchableOpacity } from 'react-native';
+import { BorderlessButton, FlatList } from 'react-native-gesture-handler';
 
 import Separator from '../Separator';
 
@@ -44,6 +44,7 @@ const Content = React.memo(({ options, onPress, theme }) => (
 		contentContainerStyle={styles.content}
 		ListHeaderComponent={() => <Separator theme={theme} />}
 		ItemSeparatorComponent={() => <Separator theme={theme} />}
+		nestedScrollEnabled
 	/>
 ));
 Content.propTypes = {
