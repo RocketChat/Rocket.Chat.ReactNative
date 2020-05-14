@@ -16,7 +16,7 @@ async function navigateToRegister() {
 	await element(by.id('workspace-view-register')).tap();
 }
 
-describe('Create user screen', () => {
+describe.skip('Create user screen', () => {
 	before(async() => {
 		await device.launchApp({ newInstance: true });
 		await navigateToRegister();

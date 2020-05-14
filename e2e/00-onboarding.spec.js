@@ -3,7 +3,7 @@ const {
 } = require('detox');
 const data = require('./data');
 
-describe('Onboarding', () => {
+describe.skip('Onboarding', () => {
 	before(async() => {
 		await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(2000);
 	});
