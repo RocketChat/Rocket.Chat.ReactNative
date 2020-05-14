@@ -1,22 +1,10 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { logout, sleep } = require('./helpers/app');
+const { navigateToRegister, sleep } = require('./helpers/app');
 const data = require('./data');
 
-async function navigateToRegister() {
-	await device.launchApp({ newInstance: true });
-	await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(2000);
-	await element(by.id('join-workspace')).tap();
-	await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
-	await element(by.id('new-server-view-input')).replaceText(data.server);
-	await element(by.id('new-server-view-button')).tap();
-	await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(60000);
-	await expect(element(by.id('workspace-view'))).toBeVisible();
-	await element(by.id('workspace-view-register')).tap();
-}
-
-describe.skip('Create user screen', () => {
+describe('Create user screen', () => {
 	before(async() => {
 		await device.launchApp({ newInstance: true });
 		await navigateToRegister();

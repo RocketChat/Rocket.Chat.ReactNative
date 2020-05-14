@@ -4,7 +4,7 @@ const {
 const { navigateToLogin, tapBack, sleep } = require('./helpers/app');
 const data = require('./data');
 
-describe.skip('Login screen', () => {
+describe('Login screen', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
 		await navigateToLogin();

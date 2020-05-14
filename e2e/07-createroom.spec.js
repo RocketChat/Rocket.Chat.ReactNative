@@ -4,7 +4,7 @@ const {
 const data = require('./data');
 const { tapBack, sleep, login, navigateToLogin } = require('./helpers/app');
 
-describe.skip('Create room screen', () => {
+describe('Create room screen', () => {
 	before(async() => {
 		// await sleep(5000);
 		await device.launchApp({ newInstance: true });

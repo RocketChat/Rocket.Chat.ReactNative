@@ -4,7 +4,7 @@ const {
 const data = require('./data');
 const { navigateToLogin } = require('./helpers/app');
 
-describe.only('Forgot password screen', () => {
+describe('Forgot password screen', () => {
 	before(async() => {
 		await device.launchApp({ newInstance: true });
 		await navigateToLogin();
