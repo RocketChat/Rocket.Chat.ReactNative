@@ -17,29 +17,12 @@ describe('Change server', () => {
 		await expect(element(by.id('rooms-list-header-server-dropdown'))).toExist();
 		await sleep(1000);
 		await element(by.id('rooms-list-header-server-add')).tap();
-		await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(60000);
-		await sleep(1000);
-		await element(by.id('connect-server-button')).tap();
-		//  Add server
 		await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
 		await element(by.id('new-server-view-input')).replaceText(data.alternateServer);
-		await sleep(1000);
 		await element(by.id('new-server-view-button')).tap();
-		// Navigate to register
-		// await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(2000);
-		// await element(by.id('welcome-view-register')).tap();
-		// await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
-		try {
-			await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
-			await expect(element(by.id('login-view'))).toBeVisible();
-			await sleep(1000);
-			await element(by.id('login-view-register')).tap();
-		} catch (error) {
-			await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(2000);
-			await expect(element(by.id('welcome-view'))).toBeVisible();
-			await sleep(1000);
-			await element(by.id('welcome-view-register')).tap();
-		}
+		await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(60000);
+		await expect(element(by.id('workspace-view'))).toBeVisible();
+		await element(by.id('workspace-view-register')).tap();
 		await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
 		await expect(element(by.id('register-view'))).toBeVisible();
 		// Register new user
