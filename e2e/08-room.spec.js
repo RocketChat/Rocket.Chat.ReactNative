@@ -21,7 +21,7 @@ async function navigateToRoom() {
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 }
 
-describe('Room screen', () => {
+describe.skip('Room screen', () => {
 	const mainRoom = `private${ data.random }`;
 
 	before(async() => {

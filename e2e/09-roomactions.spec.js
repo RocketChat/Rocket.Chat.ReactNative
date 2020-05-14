@@ -38,7 +38,7 @@ async function backToRoomsList() {
 	await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 }
 
-describe('Room actions screen', () => {
+describe.skip('Room actions screen', () => {
 	describe('Render', async() => {
 		describe('Direct', async() => {
 			before(async() => {
