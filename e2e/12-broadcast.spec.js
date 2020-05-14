@@ -6,7 +6,7 @@ const GA = OTP.googleAuthenticator;
 const { navigateToLogin, login, tapBack, sleep, logout } = require('./helpers/app');
 const data = require('./data');
 
-describe('Broadcast room', () => {
+describe.skip('Broadcast room', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 	});
