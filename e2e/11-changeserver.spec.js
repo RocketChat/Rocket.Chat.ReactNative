@@ -4,7 +4,7 @@ const {
 const data = require('./data');
 const { sleep, logout } = require('./helpers/app');
 
-describe('Change server', () => {
+describe.skip('Change server', () => {
 	before(async() => {
 		await device.launchApp({ newInstance: true });
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
@@ -17,6 +17,8 @@ describe('Change server', () => {
 		await expect(element(by.id('rooms-list-header-server-dropdown'))).toExist();
 		await sleep(1000);
 		await element(by.id('rooms-list-header-server-add')).tap();
+
+		// TODO: refactor
 		await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
 		await element(by.id('new-server-view-input')).replaceText(data.alternateServer);
 		await element(by.id('new-server-view-button')).tap();
@@ -34,6 +36,7 @@ describe('Change server', () => {
 		await element(by.id('register-view-submit')).tap();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
 		await expect(element(by.id('rooms-list-view'))).toBeVisible();
+
 		// For a sanity test, to make sure roomslist is showing correct rooms
 		// app CANNOT show public room created on previous tests
 		await waitFor(element(by.id(`rooms-list-view-item-public${ data.random }`))).toBeNotVisible().withTimeout(60000);
