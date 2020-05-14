@@ -31,6 +31,17 @@ export default () => (
 				}])
 			}
 
+			<Separator title='Section + Markdown List' />
+			{
+				UiKitMessage([{
+					type: 'section',
+					text: {
+						type: 'mrkdwn',
+						text: '*List*:\n1. Item'
+					}
+				}])
+			}
+
 			<Separator title='Section + Overflow' />
 			{
 				UiKitMessage([
