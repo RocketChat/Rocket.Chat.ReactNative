@@ -5,7 +5,7 @@ const { login, logout, navigateToLogin, tapBack, sleep } = require('./helpers/ap
 const data = require('./data');
 
 describe('Rooms list screen', () => {
-	describe('Render', async() => {
+	describe('Render', () => {
 		it('should have rooms list screen', async() => {
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
 		});
@@ -19,7 +19,7 @@ describe('Rooms list screen', () => {
 		});
 		
 		// Render - Header
-		describe('Header', async() => {
+		describe('Header', () => {
 			it('should have create channel button', async() => {
 				await expect(element(by.id('rooms-list-view-create-channel'))).toBeVisible();
 			});
@@ -31,7 +31,7 @@ describe('Rooms list screen', () => {
 		});
 	});
 
-	describe('Usage', async() => {
+	describe('Usage', () => {
 		it('should search room and navigate', async() => {
 			await element(by.type('UIScrollView')).atIndex(1).scrollTo('top');
 			await waitFor(element(by.id('rooms-list-view-search'))).toExist().withTimeout(2000);
@@ -54,16 +54,16 @@ describe('Rooms list screen', () => {
 		});
 
 		// Usage - Sidebar
-		describe('SidebarView', async() => {
+		describe('SidebarView', () => {
 			it('should navigate to add server', async() => {
 				await element(by.id('rooms-list-header-server-dropdown-button')).tap();
 				await waitFor(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible();
 				await expect(element(by.id('rooms-list-header-server-add'))).toBeVisible();
 				await element(by.id('rooms-list-header-server-add')).tap();
-				await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.id('onboarding-view'))).toBeVisible();
-				await element(by.id('onboarding-close')).tap();
+				await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(2000);
+				await expect(element(by.id('new-server-view'))).toBeVisible();
+				await element(by.id('new-server-view-close')).tap();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('rooms-list-view'))).toBeVisible();
 			});
@@ -73,9 +73,9 @@ describe('Rooms list screen', () => {
 			});
 		});
 
-		after(async() => {
-			await navigateToLogin();
-			await login();
-		});
+		// afterAll(async() => {
+		// 	await navigateToLogin();
+		// 	await login();
+		// });
 	});
 });

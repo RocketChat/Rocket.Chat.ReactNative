@@ -3,27 +3,34 @@ const {
 } = require('detox');
 const data = require('../data');
 
-async function addServer() {
-    await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(2000);
-    await element(by.id('connect-server-button')).tap();
-    await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
-    await expect(element(by.id('new-server-view'))).toBeVisible();
-    await element(by.id('new-server-view-input')).replaceText(data.server);
-    await element(by.id('new-server-view-button')).tap();
-}
+// async function addServer() {
+//     // await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(2000);
+//     // await element(by.id('connect-server-button')).tap();
+//     // await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
+//     // await expect(element(by.id('new-server-view'))).toBeVisible();
+//     // await element(by.id('new-server-view-input')).replaceText(data.server);
+//     // await element(by.id('new-server-view-button')).tap();
+// 	await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(2000);
+// 	await element(by.id('join-workspace')).tap();
+// 	await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
+// 	await element(by.id('new-server-view-input')).replaceText(data.server);
+// 	await element(by.id('new-server-view-button')).tap();
+// 	await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(60000);
+// 	await expect(element(by.id('workspace-view'))).toBeVisible();
+// 	await element(by.id('workspace-view-login')).tap();
+// }
 
 async function navigateToLogin() {
-    await addServer();
-    try {
-        await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
-        await expect(element(by.id('login-view'))).toBeVisible();
-    } catch (error) {
-        await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(2000);
-        await expect(element(by.id('welcome-view'))).toBeVisible();
-        await element(by.id('welcome-view-login')).tap();
-        await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
-        await expect(element(by.id('login-view'))).toBeVisible();
-    }
+    await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(2000);
+	await element(by.id('join-workspace')).tap();
+	await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
+	await element(by.id('new-server-view-input')).replaceText(data.server);
+	await element(by.id('new-server-view-button')).tap();
+	await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(60000);
+	await expect(element(by.id('workspace-view'))).toBeVisible();
+	await element(by.id('workspace-view-login')).tap();
+    await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
+    await expect(element(by.id('login-view'))).toBeVisible();
 }
 
 async function login() {
@@ -60,7 +67,7 @@ async function sleep(ms) {
 }
 
 module.exports = {
-    addServer,
+    // addServer,
     navigateToLogin,
     login,
     logout,
