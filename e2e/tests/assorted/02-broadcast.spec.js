@@ -3,21 +3,24 @@ const {
 } = require('detox');
 const OTP = require('otp.js');
 const GA = OTP.googleAuthenticator;
-const { navigateToLogin, login, tapBack, sleep, logout } = require('./helpers/app');
-const data = require('./data');
+const { navigateToLogin, login, tapBack, sleep, createUser } = require('../../helpers/app');
+const data = require('../../data');
 
 describe('Broadcast room', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		await navigateToLogin();
+		await login();
 	});
 
 	it('should create broadcast room', async() => {
-		await navigateToLogin();
-		await login();
 		await element(by.id('rooms-list-view-create-channel')).tap();
 		await waitFor(element(by.id('new-message-view'))).toBeVisible().withTimeout(2000);
 		await element(by.id('new-message-view-create-channel')).tap();
 		await waitFor(element(by.id('select-users-view'))).toBeVisible().withTimeout(2000);
+		await element(by.id('select-users-view-search')).replaceText(data.alternateUser);
+		await waitFor(element(by.id(`select-users-view-item-${ data.alternateUser }`))).toBeVisible().withTimeout(60000);
+		await expect(element(by.id(`select-users-view-item-${ data.alternateUser }`))).toBeVisible();
 		await element(by.id(`select-users-view-item-${ data.alternateUser }`)).tap();
 		await waitFor(element(by.id(`selected-user-${ data.alternateUser }`))).toBeVisible().withTimeout(5000);
 		await sleep(1000);

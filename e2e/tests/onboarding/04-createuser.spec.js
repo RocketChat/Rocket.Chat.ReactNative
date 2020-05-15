@@ -1,8 +1,8 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { navigateToRegister, sleep } = require('../helpers/app');
-const data = require('../data');
+const { navigateToRegister, sleep } = require('../../helpers/app');
+const data = require('../../data');
 
 describe('Create user screen', () => {
 	before(async() => {

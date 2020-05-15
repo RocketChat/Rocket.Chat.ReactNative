@@ -1,7 +1,7 @@
 const {
 	expect, element, by, waitFor
 } = require('detox');
-const { sleep } = require('./helpers/app');
+const { sleep } = require('../../helpers/app');
 
 async function waitForToast() {
 	await sleep(5000);

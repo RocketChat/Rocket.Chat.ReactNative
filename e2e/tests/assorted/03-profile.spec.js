@@ -1,8 +1,8 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { logout, navigateToLogin, login, sleep } = require('./helpers/app');
-const data = require('./data');
+const { logout, navigateToLogin, login, sleep } = require('../../helpers/app');
+const data = require('../../data');
 
 const scrollDown = 200;
 

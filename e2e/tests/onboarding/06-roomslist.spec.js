@@ -1,7 +1,7 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { logout, tapBack, sleep } = require('../helpers/app');
+const { logout, tapBack, sleep } = require('../../helpers/app');
 
 describe('Rooms list screen', () => {
 	describe('Render', () => {
@@ -47,24 +47,8 @@ describe('Rooms list screen', () => {
 			await expect(element(by.id('rooms-list-view-item-rocket.cat'))).toExist();
 		});
 
-		// Usage - Sidebar
-		describe('SidebarView', () => {
-			it('should navigate to add server', async() => {
-				await element(by.id('rooms-list-header-server-dropdown-button')).tap();
-				await waitFor(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible();
-				await expect(element(by.id('rooms-list-header-server-add'))).toBeVisible();
-				await element(by.id('rooms-list-header-server-add')).tap();
-				await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.id('new-server-view'))).toBeVisible();
-				await element(by.id('new-server-view-close')).tap();
-				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.id('rooms-list-view'))).toBeVisible();
-			});
-	
-			it('should logout', async() => {
-				await logout();
-			});
+		it('should logout', async() => {
+			await logout();
 		});
 	});
 });

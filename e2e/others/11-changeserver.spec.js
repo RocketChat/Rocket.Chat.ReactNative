@@ -1,8 +1,8 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const data = require('./data');
-const { sleep, logout } = require('./helpers/app');
+const data = require('../data');
+const { sleep, logout } = require('../helpers/app');
 
 describe('Change server', () => {
 	before(async() => {

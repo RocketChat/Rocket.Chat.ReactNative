@@ -1,8 +1,8 @@
 const {
 	expect, element, by, waitFor
 } = require('detox');
-const { navigateToLogin, tapBack, sleep } = require('../helpers/app');
-const data = require('../data');
+const { navigateToLogin, tapBack, sleep } = require('../../helpers/app');
+const data = require('../../data');
 
 describe('Login screen', () => {
 	before(async() => {
