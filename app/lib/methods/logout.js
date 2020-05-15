@@ -57,7 +57,6 @@ async function removeServerData({ server }) {
 
 async function removeCurrentServer() {
 	await RNUserDefaults.clear('currentServer');
-	await RNUserDefaults.clear(RocketChat.TOKEN_KEY);
 }
 
 async function removeServerDatabase({ server }) {

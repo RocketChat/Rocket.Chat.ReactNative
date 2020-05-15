@@ -1,4 +1,4 @@
-import { put, takeLatest, all } from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
 import RNUserDefaults from 'rn-user-defaults';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import RNBootSplash from 'react-native-bootsplash';
@@ -35,10 +35,11 @@ const restore = function* restore() {
 			hasMigration = yield AsyncStorage.getItem('hasMigration');
 		}
 
-		let { token, server } = yield all({
-			token: RNUserDefaults.get(RocketChat.TOKEN_KEY),
-			server: RNUserDefaults.get('currentServer')
-		});
+		let token;
+		let server = yield RNUserDefaults.get('currentServer');
+		if (server) {
+			token = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
+		}
 
 		if (!hasMigration && isIOS) {
 			let servers = yield RNUserDefaults.objectForKey(SERVERS);
@@ -91,11 +92,25 @@ const restore = function* restore() {
 			}
 		}
 
-		if (!token || !server) {
-			yield all([
-				RNUserDefaults.clear(RocketChat.TOKEN_KEY),
-				RNUserDefaults.clear('currentServer')
-			]);
+		if (!server) {
+			yield put(actions.appStart('outside'));
+		} else if (!token) {
+			const serversDB = database.servers;
+			// all servers
+			const serversCollection = serversDB.collections.get('servers');
+			const servers = yield serversCollection.query().fetch();
+
+			// see if there're other logged in servers and selects first one
+			if (servers.length > 0) {
+				for (let i = 0; i < servers.length; i += 1) {
+					const newServer = servers[i].id;
+					const userToken = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
+					if (userToken) {
+						return yield put(selectServerRequest(newServer));
+					}
+				}
+			}
+
 			yield put(actions.appStart('outside'));
 		} else {
 			const serversDB = database.servers;

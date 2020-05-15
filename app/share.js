@@ -81,7 +81,7 @@ class Root extends React.Component {
 	init = async() => {
 		RNUserDefaults.objectForKey(THEME_PREFERENCES_KEY).then(this.setTheme);
 		const currentServer = await RNUserDefaults.get('currentServer');
-		const token = await RNUserDefaults.get(RocketChat.TOKEN_KEY);
+		const token = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ currentServer }`);
 
 		if (currentServer && token) {
 			await localAuthenticate(currentServer);
