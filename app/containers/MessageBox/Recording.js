@@ -1,16 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, SafeAreaView, PermissionsAndroid, Text
+	View, SafeAreaView, Text
 } from 'react-native';
-import { AudioRecorder, AudioUtils } from 'react-native-audio';
+import { Audio } from 'expo-av';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import RNFetchBlob from 'rn-fetch-blob';
 
 import styles from './styles';
 import I18n from '../../i18n';
-import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 
@@ -22,19 +21,20 @@ export const _formatTime = function(seconds) {
 	return `${ minutes }:${ seconds }`;
 };
 
+const mode = {
+	allowsRecordingIOS: true,
+	playsInSilentModeIOS: true,
+	staysActiveInBackground: false,
+	shouldDuckAndroid: true,
+	playThroughEarpieceAndroid: false,
+	interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+	interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX
+};
+
 export default class extends React.PureComponent {
 	static async permission() {
-		if (!isAndroid) {
-			return true;
-		}
-
-		const rationale = {
-			title: I18n.t('Microphone_Permission'),
-			message: I18n.t('Microphone_Permission_Message')
-		};
-
-		const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO, rationale);
-		return result === true || result === PermissionsAndroid.RESULTS.GRANTED;
+		const { status } = await Audio.requestPermissionsAsync();
+		return status === 'granted';
 	}
 
 	static propTypes = {
@@ -51,31 +51,42 @@ export default class extends React.PureComponent {
 		this.state = {
 			currentTime: '00:00'
 		};
-	}
 
-	componentDidMount() {
-		const audioPath = `${ AudioUtils.CachesDirectoryPath }/${ this.name }`;
-
-		AudioRecorder.prepareRecordingAtPath(audioPath, {
-			SampleRate: 22050,
-			Channels: 1,
-			AudioQuality: 'Low',
-			AudioEncoding: 'aac',
-			OutputFormat: 'aac_adts'
-		});
-
-		AudioRecorder.onProgress = (data) => {
-			this.setState({
-				currentTime: _formatTime(Math.floor(data.currentTime))
-			});
-		};
-		//
-		AudioRecorder.onFinished = (data) => {
-			if (!this.recordingCanceled && isIOS) {
-				this.finishRecording(data.status === 'OK', data.audioFileURL, data.audioFileSize);
+		this.recordingInstance = new Audio.Recording();
+		this.recordingSettings = {
+			android: {
+				extension: '.aac',
+				outputFormat: Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_AAC_ADTS,
+				audioEncoder: Audio.RECORDING_OPTION_ANDROID_AUDIO_ENCODER_AAC,
+				sampleRate: 22050,
+				numberOfChannels: 1,
+				bitRate: 128000
+			},
+			ios: {
+				extension: '.aac',
+				audioQuality: Audio.RECORDING_OPTION_IOS_AUDIO_QUALITY_MIN,
+				sampleRate: 22050,
+				bitRate: 128000,
+				outputFormat: Audio.RECORDING_OPTION_IOS_OUTPUT_FORMAT_MPEG4AAC,
+				numberOfChannels: 2
 			}
 		};
-		AudioRecorder.startRecording();
+	}
+
+	async componentDidMount() {
+		try {
+			await Audio.setAudioModeAsync(mode);
+			await this.recordingInstance.prepareToRecordAsync(this.recordingSettings);
+
+			this.recordingInstance.setOnRecordingStatusUpdate((status) => {
+				this.setState({
+					currentTime: _formatTime(Math.floor(status.durationMillis / 1000))
+				});
+			});
+			await this.recordingInstance.startAsync();
+		} catch (error) {
+			// Do nothing
+		}
 
 		activateKeepAwake();
 	}
@@ -93,9 +104,7 @@ export default class extends React.PureComponent {
 		if (!didSucceed) {
 			return onFinish && onFinish(didSucceed);
 		}
-		if (isAndroid) {
-			filePath = filePath.startsWith('file://') ? filePath : `file://${ filePath }`;
-		}
+
 		const fileInfo = {
 			name: this.name,
 			mime: 'audio/aac',
@@ -109,12 +118,12 @@ export default class extends React.PureComponent {
 
 	finishAudioMessage = async() => {
 		try {
+			const fileURI = this.recordingInstance.getURI();
+			const fileData = await RNFetchBlob.fs.stat(this.uriToPath(fileURI));
+
 			this.recording = false;
-			const filePath = await AudioRecorder.stopRecording();
-			if (isAndroid) {
-				const data = await RNFetchBlob.fs.stat(decodeURIComponent(filePath));
-				this.finishRecording(true, filePath, data.size);
-			}
+			await this.recordingInstance.stopAndUnloadAsync();
+			this.finishRecording(true, fileURI, fileData.size);
 		} catch (err) {
 			this.finishRecording(false);
 		}
@@ -123,9 +132,11 @@ export default class extends React.PureComponent {
 	cancelAudioMessage = async() => {
 		this.recording = false;
 		this.recordingCanceled = true;
-		await AudioRecorder.stopRecording();
+		await this.recordingInstance.stopAndUnloadAsync();
 		return this.finishRecording(false);
 	}
+
+	uriToPath = uri => decodeURIComponent(uri.replace(/^file:\/\//, ''));
 
 	render() {
 		const { currentTime } = this.state;
