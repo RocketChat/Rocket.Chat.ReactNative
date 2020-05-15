@@ -41,6 +41,7 @@ const FormContainer = ({ children, theme, testID }) => (
 
 FormContainer.propTypes = {
 	theme: PropTypes.string,
+	testID: PropTypes.string,
 	children: PropTypes.element
 };
 
