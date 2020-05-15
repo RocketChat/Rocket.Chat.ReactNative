@@ -1,6 +1,13 @@
 defaults: &defaults
   working_directory: ~/repo
 
+macos: &macos
+  macos:
+    xcode: "11.2.1"
+
+bash-env: &bash-env
+  BASH_ENV: "~/.nvm/nvm.sh"
+
 install-npm-modules: &install-npm-modules
   name: Install NPM modules
   command: yarn
@@ -24,6 +31,47 @@ save-npm-cache-mac: &save-npm-cache-mac
   name: Save NPM cache
   paths:
     - ./node_modules
+
+install-node: &install-node
+  name: Install Node 10
+  command: |
+    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
+    source ~/.nvm/nvm.sh
+    # https://github.com/creationix/nvm/issues/1394
+    set +e
+    nvm install 10
+    echo 'export PATH="/home/circleci/.nvm/versions/node/v10.20.1/bin:$PATH"' >> ~/.bash_profile
+    source ~/.bash_profile
+
+restore-gems-cache: &restore-gems-cache
+  name: Restore gems cache
+  key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
+
+save-gems-cache: &save-gems-cache
+  name: Save gems cache
+  key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
+  paths:
+    - vendor/bundle
+
+update-fastlane: &update-fastlane
+  name: Update Fastlane
+  command: |
+    echo "ruby-2.6.4" > ~/.ruby-version
+    bundle install
+  working_directory: ios
+
+install-apple-sim-utils: &install-apple-sim-utils
+  name: Install appleSimUtils
+  command: |
+    brew update
+    brew tap wix/brew
+    brew install wix/brew/applesimutils
+
+rebuild-detox: &rebuild-detox
+  name: Rebuild Detox framework cache
+  command: |
+    detox clean-framework-cache
+    detox build-framework-cache
 
 version: 2
 jobs:
@@ -59,41 +107,25 @@ jobs:
 
       - save_cache: *save-npm-cache-linux
 
+  # E2E
   e2e-build:
-    macos:
-      xcode: "11.2.1"
+    <<: *macos
 
     environment:
-      BASH_ENV: "~/.nvm/nvm.sh"
+      <<: *bash-env
 
     steps:
       - checkout
 
       - restore_cache: *restore-npm-cache-mac
 
-      - run:
-          name: Install Node 10
-          command: |
-            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
-            source ~/.nvm/nvm.sh
-            # https://github.com/creationix/nvm/issues/1394
-            set +e
-            nvm install 10
+      - run: *install-node
 
-      - run:
-          name: Install appleSimUtils
-          command: |
-            brew update
-            brew tap wix/brew
-            brew install wix/brew/applesimutils
+      - run: *install-apple-sim-utils
 
       - run: *install-npm-modules
 
-      - run:
-          name: Rebuild Detox framework cache
-          command: |
-            detox clean-framework-cache
-            detox build-framework-cache
+      - run: *rebuild-detox
 
       - run:
           name: Build
@@ -108,11 +140,10 @@ jobs:
       - save_cache: *save-npm-cache-mac
 
   e2e-test:
-    macos:
-      xcode: "11.2.1"
+    <<: *macos
 
     environment:
-      BASH_ENV: "~/.nvm/nvm.sh"
+      <<: *bash-env
 
     steps:
       - checkout
@@ -122,29 +153,13 @@ jobs:
 
       - restore_cache: *restore-npm-cache-mac
 
-      - run:
-          name: Install Node 10
-          command: |
-            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
-            source ~/.nvm/nvm.sh
-            # https://github.com/creationix/nvm/issues/1394
-            set +e
-            nvm install 10
+      - run: *install-node
 
-      - run:
-          name: Install appleSimUtils
-          command: |
-            brew update
-            brew tap wix/brew
-            brew install wix/brew/applesimutils
+      - run: *install-apple-sim-utils
 
       - run: *install-npm-modules
       
-      - run:
-          name: Rebuild Detox framework cache
-          command: |
-            detox clean-framework-cache
-            detox build-framework-cache
+      - run: *rebuild-detox
 
       - run:
           name: Test
@@ -153,33 +168,22 @@ jobs:
 
       - save_cache: *save-npm-cache-mac
 
+  # Android builds
   android-build:
     <<: *defaults
     docker:
       - image: circleci/android:api-28-node
 
     environment:
-      # GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4096m -XX:+HeapDumpOnOutOfMemoryError"
-      # GRADLE_OPTS: -Xmx2048m -Dorg.gradle.daemon=false
-      # JVM_OPTS: -Xmx4096m
       JAVA_OPTS: '-Xms512m -Xmx2g'
       GRADLE_OPTS: '-Xmx3g -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx2g -XX:+HeapDumpOnOutOfMemoryError"'
       TERM: dumb
-      BASH_ENV: "~/.nvm/nvm.sh"
+      <<: *bash-env
 
     steps:
       - checkout
 
-      - run:
-          name: Install Node 10
-          command: |
-            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
-            source ~/.nvm/nvm.sh
-            # https://github.com/creationix/nvm/issues/1394
-            set +e
-            nvm install 10
-            echo 'export PATH="/home/circleci/.nvm/versions/node/v10.20.1/bin:$PATH"' >> ~/.bash_profile
-            source ~/.bash_profile
+      - run: *install-node
 
       - restore_cache: *restore-npm-cache-linux
 
@@ -259,39 +263,25 @@ jobs:
           paths:
             - ~/.gradle
 
+  # iOS builds
   ios-build:
-    macos:
-      xcode: "11.2.1"
+    <<: *macos
 
     environment:
-      BASH_ENV: "~/.nvm/nvm.sh"
+      <<: *bash-env
 
     steps:
       - checkout
 
-      - restore_cache:
-          name: Restore gems cache
-          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
+      - restore_cache: *restore-gems-cache
 
-      - restore_cache: *restore-npm-cache-linux
+      - restore_cache: *restore-npm-cache-mac
 
-      - run:
-          name: Install Node 10
-          command: |
-            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
-            source ~/.nvm/nvm.sh
-            # https://github.com/creationix/nvm/issues/1394
-            set +e
-            nvm install 10
+      - run: *install-node
 
       - run: *install-npm-modules
 
-      - run:
-          name: Update Fastlane
-          command: |
-            echo "ruby-2.6.4" > ~/.ruby-version
-            bundle install
-          working_directory: ios
+      - run: *update-fastlane
 
       - run:
           name: Set Google Services
@@ -329,13 +319,9 @@ jobs:
             fi
           working_directory: ios
 
-      - save_cache: *save-npm-cache-linux
+      - save_cache: *save-npm-cache-mac
 
-      - save_cache:
-          name: Save gems cache
-          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
-          paths:
-            - vendor/bundle
+      - save_cache: *save-gems-cache
 
       - store_artifacts:
           path: ios/RocketChatRN.ipa
@@ -347,8 +333,7 @@ jobs:
             - ios/fastlane/report.xml
 
   ios-testflight:
-    macos:
-      xcode: "11.2.1"
+    <<: *macos
 
     steps:
       - checkout
@@ -356,16 +341,9 @@ jobs:
       - attach_workspace:
           at: ios
 
-      - restore_cache:
-          name: Restore gems cache
-          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
+      - restore_cache: *restore-gems-cache
 
-      - run:
-          name: Update Fastlane
-          command: |
-            echo "ruby-2.4" > ~/.ruby-version
-            bundle install
-          working_directory: ios
+      - run: *update-fastlane
 
       - run:
           name: Fastlane Tesflight Upload
@@ -373,11 +351,7 @@ jobs:
             bundle exec fastlane ios beta
           working_directory: ios
 
-      - save_cache:
-          name: Save gems cache
-          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
-          paths:
-            - vendor/bundle
+      - save_cache: *save-gems-cache
 
 workflows:
   version: 2
