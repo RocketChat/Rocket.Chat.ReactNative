@@ -17,7 +17,7 @@ import { CustomIcon } from '../lib/Icons';
 import database from '../lib/database';
 import { supportedBiometryLabel, changePasscode, checkHasPasscode } from '../utils/localAuthentication';
 import { DisclosureImage } from '../containers/DisclosureIndicator';
-import { DEFAULT_AUTO_LOCK_OPTIONS, DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
+import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
 
 const styles = StyleSheet.create({
 	listPadding: {
@@ -53,6 +53,29 @@ class ScreenLockConfigView extends React.Component {
 		};
 		this.init();
 	}
+
+	defaultAutoLockOptions = [
+		{
+			title: I18n.t('Local_authentication_auto_lock_60'),
+			value: 60
+		},
+		{
+			title: I18n.t('Local_authentication_auto_lock_300'),
+			value: 300
+		},
+		{
+			title: I18n.t('Local_authentication_auto_lock_900'),
+			value: 900
+		},
+		{
+			title: I18n.t('Local_authentication_auto_lock_1800'),
+			value: 1800
+		},
+		{
+			title: I18n.t('Local_authentication_auto_lock_3600'),
+			value: 3600
+		}
+	];
 
 	init = async() => {
 		const { server } = this.props;
@@ -168,18 +191,24 @@ class ScreenLockConfigView extends React.Component {
 	}
 
 	renderAutoLockItems = () => {
-		const { autoLock } = this.state;
+		const { autoLock, autoLockTime } = this.state;
 		const { theme, Force_Screen_Lock_After, Force_Screen_Lock } = this.props;
 		if (!autoLock) {
 			return null;
 		}
-		let items = DEFAULT_AUTO_LOCK_OPTIONS;
+		let items = this.defaultAutoLockOptions;
 		if (Force_Screen_Lock && Force_Screen_Lock_After > 0) {
 			items = [{
 				title: I18n.t('After_seconds_set_by_admin', { seconds: Force_Screen_Lock_After }),
 				value: Force_Screen_Lock_After,
 				disabled: true
 			}];
+		// if Force_Screen_Lock is disabled and autoLockTime is a value that isn't on our defaultOptions we'll show it
+		} else if (Force_Screen_Lock_After === autoLockTime && !items.find(item => item.value === autoLockTime)) {
+			items.push({
+				title: I18n.t('After_seconds_set_by_admin', { seconds: Force_Screen_Lock_After }),
+				value: Force_Screen_Lock_After
+			});
 		}
 		return (
 			<>
