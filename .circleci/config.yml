@@ -1,41 +1,6 @@
 defaults: &defaults
   working_directory: ~/repo
 
-install-node: &install-node
-  name: Install Node 10
-  command: |
-    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
-    source ~/.nvm/nvm.sh
-    # https://github.com/creationix/nvm/issues/1394
-    set +e
-    nvm install 10
-    echo 'export PATH="/home/circleci/.nvm/versions/node/v10.20.1/bin:$PATH"' >> ~/.bash_profile
-    source ~/.bash_profile
-
-install-npm-modules: &install-npm-modules
-  name: Install NPM modules
-  command: |
-    yarn
-
-install-apple-sim-utils: &install-apple-sim-utils
-  name: Install appleSimUtils
-  command: |
-    brew update
-    brew tap wix/brew
-    brew install wix/brew/applesimutils
-
-restore-npm-cache-linux: &restore-npm-cache-linux
-  - restore_cache:
-    name: Restore NPM cache
-    key: node-modules-{{ checksum "yarn.lock" }}
-
-save-npm-cache-linux: &save-npm-cache-linux
-  - save_cache:
-    key: node-modules-{{ checksum "yarn.lock" }}
-    name: Save NPM cache
-    paths:
-      - ./node_modules
-
 version: 2
 jobs:
   lint-testunit:
@@ -49,9 +14,14 @@ jobs:
     steps:
       - checkout
 
-      - run: *restore-npm-cache-linux
+      - restore_cache:
+          name: Restore NPM cache
+          key: node-modules-{{ checksum "yarn.lock" }}
 
-      - run: *install-npm-modules
+      - run:
+          name: Install NPM modules
+          command: |
+            yarn
 
       - run:
           name: Lint
@@ -68,7 +38,11 @@ jobs:
           command: |
             yarn codecov
 
-      - run: *save-npm-cache-linux
+      - save_cache:
+          key: node-modules-{{ checksum "yarn.lock" }}
+          name: Save NPM cache
+          paths:
+            - ./node_modules
 
   e2e-build:
     macos:
@@ -84,11 +58,27 @@ jobs:
           name: Restore NPM cache
           key: node-v1-mac-{{ checksum "yarn.lock" }}
 
-      - run: *install-node
+      - run:
+          name: Install Node 10
+          command: |
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
+            source ~/.nvm/nvm.sh
+            # https://github.com/creationix/nvm/issues/1394
+            set +e
+            nvm install 10
 
-      - run: *install-apple-sim-utils
+      - run:
+          name: Install appleSimUtils
+          command: |
+            brew update
+            brew tap wix/brew
+            brew install wix/brew/applesimutils
 
-      - run: *install-npm-modules
+      - run:
+          name: Install NPM modules
+          command: |
+            yarn global add detox-cli
+            yarn
 
       - run:
           name: Rebuild Detox framework cache
@@ -129,11 +119,27 @@ jobs:
           name: Restore NPM cache
           key: node-v1-mac-{{ checksum "yarn.lock" }}
 
-      - run: *install-node
+      - run:
+          name: Install Node 10
+          command: |
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
+            source ~/.nvm/nvm.sh
+            # https://github.com/creationix/nvm/issues/1394
+            set +e
+            nvm install 10
 
-      - run: *install-apple-sim-utils
+      - run:
+          name: Install appleSimUtils
+          command: |
+            brew update
+            brew tap wix/brew
+            brew install wix/brew/applesimutils
 
-      - run: *install-npm-modules
+      - run:
+          name: Install NPM modules
+          command: |
+            yarn global add detox-cli
+            yarn
       
       - run:
           name: Rebuild Detox framework cache
@@ -169,11 +175,25 @@ jobs:
     steps:
       - checkout
 
-      - run: *install-node      
+      - run:
+          name: Install Node 10
+          command: |
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
+            source ~/.nvm/nvm.sh
+            # https://github.com/creationix/nvm/issues/1394
+            set +e
+            nvm install 10
+            echo 'export PATH="/home/circleci/.nvm/versions/node/v10.20.1/bin:$PATH"' >> ~/.bash_profile
+            source ~/.bash_profile
 
-      - run: *restore-npm-cache-linux
+      - restore_cache:
+          name: Restore NPM cache
+          key: node-modules-{{ checksum "yarn.lock" }}
 
-      - run: *install-npm-modules
+      - run:
+          name: Install NPM modules
+          command: |
+            yarn
 
       - restore_cache:
           name: Restore gradle cache
@@ -271,9 +291,19 @@ jobs:
           name: Restore NPM cache
           key: node-v1-mac-{{ checksum "yarn.lock" }}
 
-      - run: *install-node
+      - run:
+          name: Install Node 10
+          command: |
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
+            source ~/.nvm/nvm.sh
+            # https://github.com/creationix/nvm/issues/1394
+            set +e
+            nvm install 10
 
-      - run: *install-npm-modules
+      - run:
+          name: Install NPM modules
+          command: |
+            yarn
 
       - run:
           name: Update Fastlane
