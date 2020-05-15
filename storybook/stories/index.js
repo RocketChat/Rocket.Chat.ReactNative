@@ -16,9 +16,9 @@ import MessageContext from '../../app/containers/message/Context';
 // MessageProvider
 const baseUrl = 'https://open.rocket.chat';
 const user = {
-	id: 'y8bd77ptZswPj3EW8',
+	id: '',
 	username: 'diego.mello',
-	token: '79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz'
+	token: ''
 };
 
 // Change here to see themed storybook
