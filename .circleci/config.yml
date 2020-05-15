@@ -1,6 +1,30 @@
 defaults: &defaults
   working_directory: ~/repo
 
+install-npm-modules: &install-npm-modules
+  name: Install NPM modules
+  command: yarn
+
+restore-npm-cache-linux: &restore-npm-cache-linux
+  name: Restore NPM cache
+  key: node-modules-{{ checksum "yarn.lock" }}
+
+save-npm-cache-linux: &save-npm-cache-linux
+  key: node-modules-{{ checksum "yarn.lock" }}
+  name: Save NPM cache
+  paths:
+    - ./node_modules
+
+restore-npm-cache-mac: &restore-npm-cache-mac
+  name: Restore NPM cache
+  key: node-v1-mac-{{ checksum "yarn.lock" }}
+
+save-npm-cache-mac: &save-npm-cache-mac
+  key: node-v1-mac-{{ checksum "yarn.lock" }}
+  name: Save NPM cache
+  paths:
+    - ./node_modules
+
 version: 2
 jobs:
   lint-testunit:
@@ -14,14 +38,9 @@ jobs:
     steps:
       - checkout
 
-      - restore_cache:
-          name: Restore NPM cache
-          key: node-modules-{{ checksum "yarn.lock" }}
+      - restore_cache: *restore-npm-cache-linux
 
-      - run:
-          name: Install NPM modules
-          command: |
-            yarn
+      - run: *install-npm-modules
 
       - run:
           name: Lint
@@ -38,11 +57,7 @@ jobs:
           command: |
             yarn codecov
 
-      - save_cache:
-          key: node-modules-{{ checksum "yarn.lock" }}
-          name: Save NPM cache
-          paths:
-            - ./node_modules
+      - save_cache: *save-npm-cache-linux
 
   e2e-build:
     macos:
@@ -54,9 +69,7 @@ jobs:
     steps:
       - checkout
 
-      - restore_cache:
-          name: Restore NPM cache
-          key: node-v1-mac-{{ checksum "yarn.lock" }}
+      - restore_cache: *restore-npm-cache-mac
 
       - run:
           name: Install Node 10
@@ -74,11 +87,7 @@ jobs:
             brew tap wix/brew
             brew install wix/brew/applesimutils
 
-      - run:
-          name: Install NPM modules
-          command: |
-            yarn global add detox-cli
-            yarn
+      - run: *install-npm-modules
 
       - run:
           name: Rebuild Detox framework cache
@@ -96,11 +105,7 @@ jobs:
           paths:
             - ios/build/Build/Products/Release-iphonesimulator/RocketChatRN.app
 
-      - save_cache:
-          name: Save NPM cache
-          key: node-v1-mac-{{ checksum "yarn.lock" }}
-          paths:
-            - node_modules
+      - save_cache: *save-npm-cache-mac
 
   e2e-test:
     macos:
@@ -115,9 +120,7 @@ jobs:
       - attach_workspace:
           at: .
 
-      - restore_cache:
-          name: Restore NPM cache
-          key: node-v1-mac-{{ checksum "yarn.lock" }}
+      - restore_cache: *restore-npm-cache-mac
 
       - run:
           name: Install Node 10
@@ -135,11 +138,7 @@ jobs:
             brew tap wix/brew
             brew install wix/brew/applesimutils
 
-      - run:
-          name: Install NPM modules
-          command: |
-            yarn global add detox-cli
-            yarn
+      - run: *install-npm-modules
       
       - run:
           name: Rebuild Detox framework cache
@@ -152,11 +151,7 @@ jobs:
           command: |
             detox test --configuration ios.sim.release --cleanup
 
-      - save_cache:
-          name: Save NPM cache
-          key: node-v1-mac-{{ checksum "yarn.lock" }}
-          paths:
-            - node_modules
+      - save_cache: *save-npm-cache-mac
 
   android-build:
     <<: *defaults
@@ -186,14 +181,9 @@ jobs:
             echo 'export PATH="/home/circleci/.nvm/versions/node/v10.20.1/bin:$PATH"' >> ~/.bash_profile
             source ~/.bash_profile
 
-      - restore_cache:
-          name: Restore NPM cache
-          key: node-modules-{{ checksum "yarn.lock" }}
+      - restore_cache: *restore-npm-cache-linux
 
-      - run:
-          name: Install NPM modules
-          command: |
-            yarn
+      - run: *install-npm-modules
 
       - restore_cache:
           name: Restore gradle cache
@@ -261,11 +251,7 @@ jobs:
       - store_artifacts:
           path: /tmp/build/outputs
 
-      - save_cache:
-          name: Save NPM cache
-          key: node-modules-{{ checksum "yarn.lock" }}
-          paths:
-            - ./node_modules
+      - save_cache: *save-npm-cache-linux
 
       - save_cache:
           name: Save gradle cache
@@ -287,9 +273,7 @@ jobs:
           name: Restore gems cache
           key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
 
-      - restore_cache:
-          name: Restore NPM cache
-          key: node-v1-mac-{{ checksum "yarn.lock" }}
+      - restore_cache: *restore-npm-cache-linux
 
       - run:
           name: Install Node 10
@@ -300,10 +284,7 @@ jobs:
             set +e
             nvm install 10
 
-      - run:
-          name: Install NPM modules
-          command: |
-            yarn
+      - run: *install-npm-modules
 
       - run:
           name: Update Fastlane
@@ -348,11 +329,7 @@ jobs:
             fi
           working_directory: ios
 
-      - save_cache:
-          name: Save NPM cache
-          key: node-v1-mac-{{ checksum "yarn.lock" }}
-          paths:
-            - node_modules
+      - save_cache: *save-npm-cache-linux
 
       - save_cache:
           name: Save gems cache
