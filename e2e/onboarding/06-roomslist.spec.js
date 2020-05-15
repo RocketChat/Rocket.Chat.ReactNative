@@ -1,18 +1,13 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { login, logout, navigateToLogin, tapBack, sleep } = require('./helpers/app');
-const data = require('./data');
+const { logout, tapBack, sleep } = require('../helpers/app');
 
 describe('Rooms list screen', () => {
 	describe('Render', () => {
 		it('should have rooms list screen', async() => {
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
 		});
-        
-		// it('should have rooms list', async() => {
-		// 	await expect(element(by.id('rooms-list-view-list'))).toBeVisible();
-		// });
 
 		it('should have room item', async() => {
 			await expect(element(by.id('rooms-list-view-item-general')).atIndex(0)).toExist();
@@ -26,7 +21,6 @@ describe('Rooms list screen', () => {
 	
 			it('should have sidebar button', async() => {
 				await expect(element(by.id('rooms-list-view-sidebar'))).toBeVisible();
-				// await expect(element(by.id('rooms-list-view-sidebar'))).toHaveLabel(`Connected to ${ data.server }. Tap to view servers list.`);
 			});
 		});
 	});
@@ -72,10 +66,5 @@ describe('Rooms list screen', () => {
 				await logout();
 			});
 		});
-
-		// afterAll(async() => {
-		// 	await navigateToLogin();
-		// 	await login();
-		// });
 	});
 });

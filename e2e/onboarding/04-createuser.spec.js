@@ -1,8 +1,8 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { navigateToRegister, sleep } = require('./helpers/app');
-const data = require('./data');
+const { navigateToRegister, sleep } = require('../helpers/app');
+const data = require('../data');
 
 describe('Create user screen', () => {
 	before(async() => {
@@ -83,9 +83,5 @@ describe('Create user screen', () => {
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
 		});
-
-		// afterAll(async() => {
-		// 	await logout();
-		// });
 	});
 });

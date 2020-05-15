@@ -1,7 +1,7 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { navigateToRegister, navigateToLogin } = require('./helpers/app');
+const { navigateToRegister, navigateToLogin } = require('../helpers/app');
 
 describe('Legal screen', () => {
 	it('should have legal button on login', async() => {
