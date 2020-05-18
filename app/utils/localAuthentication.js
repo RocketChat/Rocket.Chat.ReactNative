@@ -65,16 +65,16 @@ export const biometryAuth = force => LocalAuthentication.authenticateAsync({
 const checkBiometry = async(serverRecord) => {
 	const serversDB = database.servers;
 
-	const result = await biometryAuth(true);
-	await serversDB.action(async() => {
-		try {
+	try {
+		const result = await biometryAuth(true);
+		await serversDB.action(async() => {
 			await serverRecord.update((record) => {
 				record.biometry = !!result?.success;
 			});
-		} catch {
-			// Do nothing
-		}
-	});
+		});
+	} catch {
+		// Do nothing
+	}
 };
 
 export const checkHasPasscode = async({ force = true, serverRecord }) => {

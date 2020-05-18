@@ -32,9 +32,13 @@ const PasscodeEnter = ({ theme, hasBiometry, finishProcess }) => {
 
 	const biometry = async() => {
 		if (hasBiometry && status === TYPE.ENTER) {
-			const result = await biometryAuth();
-			if (result?.success) {
-				finishProcess();
+			try {
+				const result = await biometryAuth();
+				if (result?.success) {
+					finishProcess();
+				}
+			} catch {
+				// Do nothing
 			}
 		}
 	};
