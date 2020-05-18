@@ -5178,6 +5178,25 @@ exports[`Storyshots UiKitMessage list uikitmessage 1`] = `
           ]
         }
       >
+        Section + Markdown List
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "fontSize": 20,
+              "fontWeight": "300",
+              "marginLeft": 10,
+              "marginTop": 30,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
+              "color": "#0d0e12",
+            },
+            undefined,
+          ]
+        }
+      >
         Section + Overflow
       </Text>
       <Text
