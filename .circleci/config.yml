@@ -139,7 +139,7 @@ jobs:
 
       - save_cache: *save-npm-cache-mac
 
-  e2e-test:
+  e2e-test-onboarding:
     <<: *macos
 
     environment:
@@ -164,7 +164,7 @@ jobs:
       - run:
           name: Test
           command: |
-            detox test --configuration ios.sim.release --cleanup
+            detox test ./e2e/tests/onboarding --configuration ios.sim.release --cleanup
 
       - save_cache: *save-npm-cache-mac
 
@@ -366,7 +366,7 @@ workflows:
       - e2e-build:
           requires:
             - e2e-hold
-      - e2e-test:
+      - e2e-test-onboarding:
           requires:
             - e2e-build
 
