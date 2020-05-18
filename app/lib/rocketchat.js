@@ -225,13 +225,12 @@ const RocketChat = {
 				.catch((err) => {
 					console.log('connect error', err);
 
-					const { server: currentServer } = reduxStore.getState().server;
-					if (server === currentServer) {
-						// when `connect` raises an error, we try again in 10 seconds
-						this.connectTimeout = setTimeout(() => {
+					// when `connect` raises an error, we try again in 10 seconds
+					this.connectTimeout = setTimeout(() => {
+						if (this.sdk?.client?.host === server) {
 							sdkConnect();
-						}, 10000);
-					}
+						}
+					}, 10000);
 				});
 
 			sdkConnect();
