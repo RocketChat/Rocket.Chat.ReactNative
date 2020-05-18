@@ -168,6 +168,64 @@ jobs:
 
       - save_cache: *save-npm-cache-mac
 
+  e2e-test-room:
+    <<: *macos
+
+    environment:
+      <<: *bash-env
+
+    steps:
+      - checkout
+
+      - attach_workspace:
+          at: .
+
+      - restore_cache: *restore-npm-cache-mac
+
+      - run: *install-node
+
+      - run: *install-apple-sim-utils
+
+      - run: *install-npm-modules
+      
+      - run: *rebuild-detox
+
+      - run:
+          name: Test
+          command: |
+            npx detox test ./e2e/tests/room --configuration ios.sim.release --cleanup
+
+      - save_cache: *save-npm-cache-mac
+
+  e2e-test-assorted:
+    <<: *macos
+
+    environment:
+      <<: *bash-env
+
+    steps:
+      - checkout
+
+      - attach_workspace:
+          at: .
+
+      - restore_cache: *restore-npm-cache-mac
+
+      - run: *install-node
+
+      - run: *install-apple-sim-utils
+
+      - run: *install-npm-modules
+      
+      - run: *rebuild-detox
+
+      - run:
+          name: Test
+          command: |
+            npx detox test ./e2e/tests/assorted --configuration ios.sim.release --cleanup
+
+      - save_cache: *save-npm-cache-mac
+
   # Android builds
   android-build:
     <<: *defaults
@@ -367,6 +425,12 @@ workflows:
           requires:
             - e2e-hold
       - e2e-test-onboarding:
+          requires:
+            - e2e-build
+      - e2e-test-room:
+          requires:
+            - e2e-build
+      - e2e-test-assorted:
           requires:
             - e2e-build
 
