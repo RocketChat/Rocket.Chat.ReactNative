@@ -60,6 +60,16 @@ update-fastlane: &update-fastlane
     bundle install
   working_directory: ios
 
+restore-brew-cache: &restore-brew-cache
+  name: Restore Brew cache
+  key: brew-{{ checksum "yarn.lock" }}-{{ checksum ".circleci/config.yml" }}
+
+save-brew-cache: &save-brew-cache
+  name: Save brew cache
+  key: brew-{{ checksum "yarn.lock" }}-{{ checksum ".circleci/config.yml" }}
+  paths:
+    - /usr/local/Homebrew
+
 install-apple-sim-utils: &install-apple-sim-utils
   name: Install appleSimUtils
   command: |
@@ -119,6 +129,8 @@ jobs:
 
       - restore_cache: *restore-npm-cache-mac
 
+      - restore_cache: *restore-brew-cache
+
       - run: *install-node
 
       - run: *install-apple-sim-utils
@@ -139,6 +151,8 @@ jobs:
 
       - save_cache: *save-npm-cache-mac
 
+      - save_cache: *save-brew-cache
+
   e2e-test-onboarding:
     <<: *macos
 
@@ -153,6 +167,8 @@ jobs:
 
       - restore_cache: *restore-npm-cache-mac
 
+      - restore_cache: *restore-brew-cache
+
       - run: *install-node
 
       - run: *install-apple-sim-utils
@@ -165,8 +181,6 @@ jobs:
           name: Test
           command: |
             npx detox test ./e2e/tests/onboarding --configuration ios.sim.release --cleanup
-
-      - save_cache: *save-npm-cache-mac
 
   e2e-test-room:
     <<: *macos
@@ -182,6 +196,8 @@ jobs:
 
       - restore_cache: *restore-npm-cache-mac
 
+      - restore_cache: *restore-brew-cache
+
       - run: *install-node
 
       - run: *install-apple-sim-utils
@@ -194,8 +210,6 @@ jobs:
           name: Test
           command: |
             npx detox test ./e2e/tests/room --configuration ios.sim.release --cleanup
-
-      - save_cache: *save-npm-cache-mac
 
   e2e-test-assorted:
     <<: *macos
@@ -211,6 +225,8 @@ jobs:
 
       - restore_cache: *restore-npm-cache-mac
 
+      - restore_cache: *restore-brew-cache
+
       - run: *install-node
 
       - run: *install-apple-sim-utils
@@ -223,8 +239,6 @@ jobs:
           name: Test
           command: |
             npx detox test ./e2e/tests/assorted --configuration ios.sim.release --cleanup
-
-      - save_cache: *save-npm-cache-mac
 
   # Android builds
   android-build:
