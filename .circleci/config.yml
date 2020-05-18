@@ -70,8 +70,8 @@ install-apple-sim-utils: &install-apple-sim-utils
 rebuild-detox: &rebuild-detox
   name: Rebuild Detox framework cache
   command: |
-    detox clean-framework-cache
-    detox build-framework-cache
+    npx detox clean-framework-cache
+    npx detox build-framework-cache
 
 version: 2
 jobs:
@@ -130,7 +130,7 @@ jobs:
       - run:
           name: Build
           command: |
-            detox build --configuration ios.sim.release
+            npx detox build --configuration ios.sim.release
 
       - persist_to_workspace:
           root: .
@@ -164,7 +164,7 @@ jobs:
       - run:
           name: Test
           command: |
-            detox test ./e2e/tests/onboarding --configuration ios.sim.release --cleanup
+            npx detox test ./e2e/tests/onboarding --configuration ios.sim.release --cleanup
 
       - save_cache: *save-npm-cache-mac
 
