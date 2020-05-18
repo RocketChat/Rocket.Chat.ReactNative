@@ -10,7 +10,7 @@ import log from '../../utils/log';
 import database from '../database';
 import protectedFunction from './helpers/protectedFunction';
 import fetch from '../../utils/fetch';
-import { DEFAULT_AUTO_LOCK, DEFAULT_AUTO_LOCK_OPTIONS } from '../../constants/localAuthentication';
+import { DEFAULT_AUTO_LOCK } from '../../constants/localAuthentication';
 
 const serverInfoKeys = ['Site_Name', 'UI_Use_Real_Name', 'FileUpload_MediaTypeWhiteList', 'FileUpload_MaxFileSize', 'Force_Screen_Lock', 'Force_Screen_Lock_After'];
 
@@ -55,19 +55,6 @@ const serverInfoUpdate = async(serverInfo, iconSetting) => {
 			return { ...allSettings, autoLock };
 		}
 		if (setting._id === 'Force_Screen_Lock_After') {
-			// Force_Screen_Lock from server
-			const forceScreenLock = serverInfo.find(item => item._id === 'Force_Screen_Lock')?.valueAsBoolean;
-
-			// if Force_Screen_Lock is disabled on server and Screen Lock is enabled on app
-			if (!forceScreenLock && server.autoLock) {
-				// if the current autoLockTime is one of our default options, we'll keep this value
-				if (DEFAULT_AUTO_LOCK_OPTIONS.find(option => option.value === server.autoLockTime)) {
-					return { ...allSettings, autoLockTime: server.autoLockTime };
-				}
-				// if the current autoLockTime is a value that isn't in our default options, we'll reset
-				return { ...allSettings, autoLockTime: DEFAULT_AUTO_LOCK };
-			}
-
 			// if Force_Screen_Lock_After === 0 and autoLockTime is null, set app's default value
 			if (setting.valueAsNumber === 0 && !server.autoLockTime) {
 				return { ...allSettings, autoLockTime: DEFAULT_AUTO_LOCK };
