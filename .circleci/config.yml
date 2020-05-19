@@ -84,11 +84,44 @@ rebuild-detox: &rebuild-detox
     npx detox build-framework-cache
 
 version: 2.1
+
+# EXECUTORS
 executors:
   mac-env:
     <<: *macos
     environment:
       <<: *bash-env
+
+# COMMANDS
+commands:
+  detox-test:
+    parameters:
+      folder:
+        type: string
+    steps:
+      - checkout
+
+      - attach_workspace:
+          at: .
+
+      - restore_cache: *restore-npm-cache-mac
+
+      - restore_cache: *restore-brew-cache
+
+      - run: *install-node
+
+      - run: *install-apple-sim-utils
+
+      - run: *install-npm-modules
+      
+      - run: *rebuild-detox
+
+      - run:
+          name: Test
+          command: |
+            npx detox test << parameters.folder >> --configuration ios.sim.release --cleanup
+
+# JOBS
 jobs:
   lint-testunit:
     <<: *defaults
@@ -157,81 +190,21 @@ jobs:
 
   e2e-test-onboarding:
     executor: mac-env
-
     steps:
-      - checkout
-
-      - attach_workspace:
-          at: .
-
-      - restore_cache: *restore-npm-cache-mac
-
-      - restore_cache: *restore-brew-cache
-
-      - run: *install-node
-
-      - run: *install-apple-sim-utils
-
-      - run: *install-npm-modules
-      
-      - run: *rebuild-detox
-
-      - run:
-          name: Test
-          command: |
-            npx detox test ./e2e/tests/onboarding --configuration ios.sim.release --cleanup
+      - detox-test:
+          folder: "./e2e/tests/onboarding"
 
   e2e-test-room:
     executor: mac-env
-
     steps:
-      - checkout
-
-      - attach_workspace:
-          at: .
-
-      - restore_cache: *restore-npm-cache-mac
-
-      - restore_cache: *restore-brew-cache
-
-      - run: *install-node
-
-      - run: *install-apple-sim-utils
-
-      - run: *install-npm-modules
-      
-      - run: *rebuild-detox
-
-      - run:
-          name: Test
-          command: |
-            npx detox test ./e2e/tests/room --configuration ios.sim.release --cleanup
+      - detox-test:
+          folder: "./e2e/tests/room"
 
   e2e-test-assorted:
     executor: mac-env
-
     steps:
-      - checkout
-
-      - attach_workspace:
-          at: .
-
-      - restore_cache: *restore-npm-cache-mac
-
-      - restore_cache: *restore-brew-cache
-
-      - run: *install-node
-
-      - run: *install-apple-sim-utils
-
-      - run: *install-npm-modules
-      
-      - run: *rebuild-detox
-
-      - run:
-          name: Test
-          command: |
-            npx detox test ./e2e/tests/assorted --configuration ios.sim.release --cleanup
+      - detox-test:
+          folder: "./e2e/tests/assorted"
 
   # Android builds
   android-build:
@@ -416,7 +389,6 @@ jobs:
       - save_cache: *save-gems-cache
 
 workflows:
-  version: 2
   build-and-test:
     jobs:
       - lint-testunit
