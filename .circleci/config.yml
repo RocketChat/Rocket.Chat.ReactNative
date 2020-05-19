@@ -83,7 +83,12 @@ rebuild-detox: &rebuild-detox
     npx detox clean-framework-cache
     npx detox build-framework-cache
 
-version: 2
+version: 2.1
+executors:
+  mac-env:
+    <<: *macos
+    environment:
+      <<: *bash-env
 jobs:
   lint-testunit:
     <<: *defaults
@@ -119,10 +124,7 @@ jobs:
 
   # E2E
   e2e-build:
-    <<: *macos
-
-    environment:
-      <<: *bash-env
+    executor: mac-env
 
     steps:
       - checkout
@@ -154,10 +156,7 @@ jobs:
       - save_cache: *save-brew-cache
 
   e2e-test-onboarding:
-    <<: *macos
-
-    environment:
-      <<: *bash-env
+    executor: mac-env
 
     steps:
       - checkout
@@ -183,10 +182,7 @@ jobs:
             npx detox test ./e2e/tests/onboarding --configuration ios.sim.release --cleanup
 
   e2e-test-room:
-    <<: *macos
-
-    environment:
-      <<: *bash-env
+    executor: mac-env
 
     steps:
       - checkout
@@ -212,10 +208,7 @@ jobs:
             npx detox test ./e2e/tests/room --configuration ios.sim.release --cleanup
 
   e2e-test-assorted:
-    <<: *macos
-
-    environment:
-      <<: *bash-env
+    executor: mac-env
 
     steps:
       - checkout
@@ -337,10 +330,7 @@ jobs:
 
   # iOS builds
   ios-build:
-    <<: *macos
-
-    environment:
-      <<: *bash-env
+    executor: mac-env
 
     steps:
       - checkout
@@ -405,7 +395,7 @@ jobs:
             - ios/fastlane/report.xml
 
   ios-testflight:
-    <<: *macos
+    executor: mac-env
 
     steps:
       - checkout
