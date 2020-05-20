@@ -8,7 +8,7 @@ import styles from './styles';
 const Shadow = React.memo(({ fall, theme }) => {
 	const opacity = Animated.interpolate(fall, {
 		inputRange: [0, 1],
-		outputRange: [0.5, 0]
+		outputRange: [0, 0.5]
 	});
 
 	return (

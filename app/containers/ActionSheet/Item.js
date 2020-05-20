@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, TouchableOpacity } from 'react-native';
-import { BorderlessButton, FlatList } from 'react-native-gesture-handler';
-
-import Separator from '../Separator';
+import { BorderlessButton } from 'react-native-gesture-handler';
 
 import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
@@ -36,20 +34,4 @@ Item.propTypes = {
 	theme: PropTypes.string
 };
 
-const Content = React.memo(({ options, onPress, theme }) => (
-	<FlatList
-		data={options}
-		renderItem={({ item, index }) => <Item item={item} onPress={() => onPress(index)} theme={theme} />}
-		style={{ backgroundColor: themes[theme].backgroundColor }}
-		contentContainerStyle={styles.content}
-		ListHeaderComponent={() => <Separator theme={theme} />}
-		ItemSeparatorComponent={() => <Separator theme={theme} />}
-		nestedScrollEnabled
-	/>
-));
-Content.propTypes = {
-	options: PropTypes.array,
-	onPress: PropTypes.func,
-	theme: PropTypes.string
-};
-export default Content;
+export default Item;

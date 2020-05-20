@@ -5,19 +5,25 @@ import React, {
 	useImperativeHandle
 } from 'react';
 import PropTypes from 'prop-types';
-import { Keyboard } from 'react-native';
-import BottomSheet from 'reanimated-bottom-sheet';
+import { Keyboard, Dimensions } from 'react-native';
+import ScrollBottomSheet from 'react-native-scroll-bottom-sheet';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import Animated from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 
 import Header from './Header';
-import Content from './Content';
+import Item from './Item';
 import Shadow from './Shadow';
 
+import Separator from '../Separator';
+import { themes } from '../../constants/colors';
+import styles from './styles';
+
+const windowHeight = Dimensions.get('window').height;
+
 const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
-	const bottomSheetRef = useRef();
-	const fall = new Animated.Value(1);
+	const bottomSheetRef = useRef(null);
+	const fall = new Animated.Value(0);
 	const [title, setTitle] = useState();
 	const [header, setHeader] = useState();
 	const [content, setContent] = useState([]);
@@ -26,6 +32,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 	const hideActionSheet = () => {
 		setContent([]);
 		onPress && onPress();
+		bottomSheetRef.current?.snapTo(2);
 	};
 
 	const showActionSheetWithOptions = ({ options, header: customHeader, title: headerTitle }, callback) => {
@@ -47,9 +54,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 
 	useDeepCompareEffect(() => {
 		if (content.length) {
-			bottomSheetRef.current.snapTo(1);
-		} else {
-			bottomSheetRef.current.snapTo(0);
+			bottomSheetRef.current?.snapTo(1);
 		}
 	}, [content]);
 
@@ -61,14 +66,6 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 		/>
 	);
 
-	const renderContent = () => (
-		<Content
-			options={content}
-			onPress={onPress}
-			theme={theme}
-		/>
-	);
-
 	return (
 		<>
 			{children}
@@ -76,15 +73,20 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 				fall={fall}
 				theme={theme}
 			/>
-			<BottomSheet
+			<ScrollBottomSheet
 				ref={bottomSheetRef}
-				initialSnap={0}
-				snapPoints={[0, 450]}
-				onCloseEnd={hideActionSheet}
-				renderHeader={renderHeader}
-				renderContent={renderContent}
-				overdragResistanceFactor={8}
-				callbackNode={fall}
+				componentType='FlatList'
+				snapPoints={[128, '50%', windowHeight]}
+				initialSnapIndex={2}
+				renderHandle={renderHeader}
+				animatedPosition={fall}
+				data={content}
+				renderItem={({ item, index }) => <Item item={item} onPress={() => onPress(index)} theme={theme} />}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
+				contentContainerStyle={styles.content}
+				ListHeaderComponent={() => <Separator theme={theme} />}
+				onSettle={index => index === 2 && hideActionSheet()}
+				ItemSeparatorComponent={() => <Separator theme={theme} />}
 			/>
 		</>
 	);
