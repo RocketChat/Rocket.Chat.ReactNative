@@ -7,7 +7,6 @@ import React, {
 import PropTypes from 'prop-types';
 import { Keyboard, Dimensions } from 'react-native';
 import ScrollBottomSheet from 'react-native-scroll-bottom-sheet';
-import useDeepCompareEffect from 'use-deep-compare-effect';
 import Animated from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 
@@ -31,7 +30,6 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 
 	const hideActionSheet = () => {
 		setContent([]);
-		onPress && onPress();
 		bottomSheetRef.current?.snapTo(2);
 	};
 
@@ -45,18 +43,13 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 			setContent([]);
 		});
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+		bottomSheetRef.current?.snapTo(1);
 	};
 
 	useImperativeHandle(ref, () => ({
 		showActionSheetWithOptions,
 		hideActionSheet
 	}));
-
-	useDeepCompareEffect(() => {
-		if (content.length) {
-			bottomSheetRef.current?.snapTo(1);
-		}
-	}, [content]);
 
 	const renderHeader = () => (
 		<Header
@@ -85,7 +78,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 				style={{ backgroundColor: themes[theme].backgroundColor }}
 				contentContainerStyle={styles.content}
 				ListHeaderComponent={() => <Separator theme={theme} />}
-				onSettle={index => index === 2 && hideActionSheet()}
+				onSettle={index => index === 2 && console.log('fechou')}
 				ItemSeparatorComponent={() => <Separator theme={theme} />}
 			/>
 		</>
