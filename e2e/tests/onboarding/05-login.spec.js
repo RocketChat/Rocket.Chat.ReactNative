@@ -1,11 +1,12 @@
 const {
-	device, expect, element, by, waitFor
+	expect, element, by, waitFor
 } = require('detox');
-const { navigateToLogin, tapBack, sleep } = require('./helpers/app');
-const data = require('./data');
+const { navigateToLogin, tapBack, sleep } = require('../../helpers/app');
+const data = require('../../data');
 
 describe('Login screen', () => {
 	before(async() => {
+		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
 		await navigateToLogin();
 	});
 
@@ -20,10 +21,6 @@ describe('Login screen', () => {
 
 		it('should have password input', async() => {
 			await expect(element(by.id('login-view-password'))).toBeVisible();
-		});
-
-		it('should have show password icon', async() => {
-			await expect(element(by.id('login-view-password-icon-right'))).toBeVisible();
 		});
 
 		it('should have submit button', async() => {
@@ -53,8 +50,8 @@ describe('Login screen', () => {
 	
 		it('should navigate to forgot password', async() => {
 			await element(by.id('login-view-forgot-password')).tap();
-			await waitFor(element(by.id('forgot-password-view'))).toBeVisible().withTimeout(2000);
-			await expect(element(by.id('forgot-password-view'))).toBeVisible();
+			await waitFor(element(by.id('forgot-password-view'))).toExist().withTimeout(2000);
+			await expect(element(by.id('forgot-password-view'))).toExist();
 			await tapBack();
 		});
 	
