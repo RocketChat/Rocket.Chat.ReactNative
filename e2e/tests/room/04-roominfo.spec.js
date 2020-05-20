@@ -2,7 +2,7 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const data = require('../../data');
-const { tapBack, sleep } = require('../../helpers/app');
+const { tapBack, sleep, navigateToRoom } = require('../../helpers/app');
 
 async function navigateToRoomInfo(type) {
 	let room;
@@ -11,13 +11,7 @@ async function navigateToRoomInfo(type) {
 	} else {
 		room = `private${ data.random }`;
 	}
-	await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
-	await element(by.type('UIScrollView')).atIndex(1).swipe('down');
-	await element(by.id('rooms-list-view-search-input')).typeText(room);
-	await sleep(2000);
-	await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toExist().withTimeout(60000);
-	await element(by.id(`rooms-list-view-item-${ room }`)).tap();
-	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(2000);
+	await navigateToRoom(room);
 	await sleep(1000);
 	await element(by.id('room-view-header-actions')).tap();
 	await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(5000);

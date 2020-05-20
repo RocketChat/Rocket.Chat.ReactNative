@@ -2,7 +2,7 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const data = require('../../data');
-const { tapBack, sleep } = require('../../helpers/app');
+const { tapBack, sleep, navigateToRoom } = require('../../helpers/app');
 
 async function mockMessage(message) {
 	await element(by.id('messagebox-input')).tap();
@@ -12,20 +12,11 @@ async function mockMessage(message) {
 	await expect(element(by.label(`${ data.random }${ message }`)).atIndex(0)).toBeVisible();
 };
 
-async function navigateToRoom() {
-	await element(by.type('UIScrollView')).atIndex(1).scrollTo('top');
-	await element(by.id('rooms-list-view-search-input')).typeText(`private${ data.random }`);
-	await sleep(2000);
-	await waitFor(element(by.id(`rooms-list-view-item-private${ data.random }`))).toBeVisible().withTimeout(60000);
-	await element(by.id(`rooms-list-view-item-private${ data.random }`)).tap();
-	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
-}
-
-describe('Room screen', () => {
+describe.only('Room screen', () => {
 	const mainRoom = `private${ data.random }`;
 
 	before(async() => {
-		await navigateToRoom();
+		await navigateToRoom(mainRoom);
 	});
 
 	describe('Render', async() => {

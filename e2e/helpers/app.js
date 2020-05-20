@@ -76,6 +76,27 @@ async function sleep(ms) {
     return new Promise(res => setTimeout(res, ms));
 }
 
+async function searchRoom(room) {
+    if (device.getPlatform() === 'ios') {
+        await element(by.type('UIScrollView')).atIndex(1).scrollTo('top');
+    } else {
+        await waitFor(element(by.id('rooms-list-view-search-button'))).toExist().withTimeout(2000);
+        await element(by.id('rooms-list-view-search-button')).tap();
+    }
+    await waitFor(element(by.id('rooms-list-view-search-input'))).toExist().withTimeout(2000);
+    await element(by.id('rooms-list-view-search-input')).typeText(room);
+    await sleep(2000);
+    await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible().withTimeout(60000);
+    await expect(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible();
+}
+
+async function navigateToRoom(room) {
+	await searchRoom(room);
+	await element(by.id(`rooms-list-view-item-${ room }`)).tap();
+    await waitFor(element(by.id(`room-view-title-${ room }`))).toBeVisible().withTimeout(5000);
+    await expect(element(by.id(`room-view-title-${ room }`))).toBeVisible();
+}
+
 module.exports = {
     navigateToWorkspace,
     navigateToLogin,
@@ -84,5 +105,7 @@ module.exports = {
     logout,
     createUser,
     tapBack,
-    sleep
+    sleep,
+    searchRoom,
+    navigateToRoom
 };

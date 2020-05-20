@@ -2,7 +2,7 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const data = require('../../data');
-const { tapBack, sleep } = require('../../helpers/app');
+const { tapBack, sleep, navigateToRoom } = require('../../helpers/app');
 
 const room = 'detox-public';
 
@@ -14,16 +14,6 @@ async function mockMessage(message) {
 	await sleep(1000);
 };
 
-async function navigateToRoom() {
-	await sleep(2000);
-	await element(by.type('UIScrollView')).atIndex(1).scrollTo('top');
-	await element(by.id('rooms-list-view-search-input')).typeText(room);
-	await sleep(2000);
-	await waitFor(element(by.id(`rooms-list-view-item-${ room }`)).atIndex(0)).toBeVisible().withTimeout(60000);
-	await element(by.id(`rooms-list-view-item-${ room }`)).atIndex(0).tap();
-	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
-}
-
 async function navigateToRoomActions() {
 	await sleep(2000);
 	await element(by.id('room-view-header-actions')).tap();
@@ -34,7 +24,7 @@ async function navigateToRoomActions() {
 describe('Join public room', () => {
 	before(async() => {
 		await device.launchApp({ newInstance: true });
-		await navigateToRoom();
+		await navigateToRoom(room);
 	});
 
 	describe('Render', async() => {

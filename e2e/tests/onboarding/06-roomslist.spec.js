@@ -1,7 +1,7 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { logout, tapBack, sleep } = require('../../helpers/app');
+const { logout, tapBack, sleep, navigateToRoom } = require('../../helpers/app');
 
 describe('Rooms list screen', () => {
 	describe('Render', () => {
@@ -27,22 +27,7 @@ describe('Rooms list screen', () => {
 
 	describe('Usage', () => {
 		it('should search room and navigate', async() => {
-			if (device.getPlatform() === 'ios') {
-				await element(by.type('UIScrollView')).atIndex(1).scrollTo('top');
-			} else {
-				await waitFor(element(by.id('rooms-list-view-search-button'))).toExist().withTimeout(2000);
-				await element(by.id('rooms-list-view-search-button')).tap();
-			}
-			await waitFor(element(by.id('rooms-list-view-search-input'))).toExist().withTimeout(2000);
-			await element(by.id('rooms-list-view-search-input')).typeText('rocket.cat');
-			await sleep(2000);
-			await waitFor(element(by.id('rooms-list-view-item-rocket.cat'))).toBeVisible().withTimeout(60000);
-			await expect(element(by.id('rooms-list-view-item-rocket.cat'))).toBeVisible();
-			await element(by.id('rooms-list-view-item-rocket.cat')).tap();
-			await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(10000);
-			await expect(element(by.id('room-view'))).toBeVisible();
-			await waitFor(element(by.id('room-view-title-rocket.cat'))).toBeVisible().withTimeout(60000);
-			await expect(element(by.id('room-view-title-rocket.cat'))).toBeVisible();
+			await navigateToRoom('rocket.cat');
 			await tapBack();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
