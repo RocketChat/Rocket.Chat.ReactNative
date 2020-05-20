@@ -11,24 +11,25 @@ import log from '../utils/log';
 class MessageErrorActions extends React.Component {
 	static propTypes = {
 		showActionSheetWithOptions: PropTypes.func,
-		actionsHide: PropTypes.func,
 		message: PropTypes.object,
 		tmid: PropTypes.string
 	};
 
-	// eslint-disable-next-line react/sort-comp
 	constructor(props) {
 		super(props);
-		this.handleActionPress = this.handleActionPress.bind(this);
 		this.options = [
-			{ title: I18n.t('Delete'), icon: 'trash', danger: true },
-			{ title: I18n.t('Resend'), icon: 'send' }
+			{
+				title: I18n.t('Delete'),
+				icon: 'trash',
+				danger: true,
+				onPress: this.handleDelete
+			},
+			{
+				title: I18n.t('Resend'),
+				icon: 'send',
+				onPress: this.handleResend
+			}
 		];
-		this.DELETE_INDEX = 0;
-		this.RESEND_INDEX = 1;
-		setTimeout(() => {
-			this.showActionSheet();
-		});
 	}
 
 	handleResend = protectedFunction(async() => {
@@ -95,29 +96,7 @@ class MessageErrorActions extends React.Component {
 
 	showActionSheet = () => {
 		const { showActionSheetWithOptions } = this.props;
-		showActionSheetWithOptions({
-			options: this.options,
-			cancelButtonIndex: this.CANCEL_INDEX,
-			destructiveButtonIndex: this.DELETE_INDEX,
-			title: I18n.t('Message_actions')
-		}, (actionIndex) => {
-			this.handleActionPress(actionIndex);
-		});
-	}
-
-	handleActionPress = (actionIndex) => {
-		const { actionsHide } = this.props;
-		switch (actionIndex) {
-			case this.RESEND_INDEX:
-				this.handleResend();
-				break;
-			case this.DELETE_INDEX:
-				this.handleDelete();
-				break;
-			default:
-				break;
-		}
-		actionsHide();
+		showActionSheetWithOptions({ options: this.options });
 	}
 
 	render() {

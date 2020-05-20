@@ -93,8 +93,12 @@ class NewServerView extends React.Component {
 		props.navigation.setParams({ close: this.close, previousServer: this.previousServer });
 
 		// Delete
-		this.options = [{ title: I18n.t('Delete'), icon: 'trash', danger: true }];
-		this.DELETE_INDEX = 0;
+		this.options = [{
+			title: I18n.t('Delete'),
+			icon: 'trash',
+			danger: true,
+			onPress: this.handleDelete
+		}];
 
 		this.state = {
 			text: '',
@@ -252,13 +256,7 @@ class NewServerView extends React.Component {
 
 	showActionSheet = () => {
 		const { showActionSheetWithOptions } = this.props;
-		showActionSheetWithOptions({
-			options: this.options,
-			cancelButtonIndex: this.CANCEL_INDEX,
-			destructiveButtonIndex: this.DELETE_INDEX
-		}, (actionIndex) => {
-			if (actionIndex === this.DELETE_INDEX) { this.handleDelete(); }
-		});
+		showActionSheetWithOptions({ options: this.options });
 	}
 
 	renderCertificatePicker = () => {

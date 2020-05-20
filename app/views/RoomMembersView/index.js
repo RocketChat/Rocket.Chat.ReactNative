@@ -62,7 +62,7 @@ class RoomMembersView extends React.Component {
 		super(props);
 		this.mounted = false;
 		this.MUTE_INDEX = 0;
-		this.actionSheetOptions = [''];
+		this.actionSheetOptions = [];
 		const { rid } = props.navigation.state.params;
 		const room = props.navigation.getParam('room');
 		this.state = {
@@ -144,9 +144,17 @@ class RoomMembersView extends React.Component {
 		const userIsMuted = !!(muted || []).find(m => m === user.username);
 		user.muted = userIsMuted;
 		if (userIsMuted) {
-			this.actionSheetOptions = [{ title: I18n.t('Unmute'), icon: 'mute' }];
+			this.actionSheetOptions = [{
+				title: I18n.t('Unmute'),
+				icon: 'mute',
+				onPress: this.handleMute
+			}];
 		} else {
-			this.actionSheetOptions = [{ title: I18n.t('Mute'), icon: 'mute' }];
+			this.actionSheetOptions = [{
+				title: I18n.t('Mute'),
+				icon: 'mute',
+				onPress: this.handleMute
+			}];
 		}
 		this.setState({ userLongPressed: user });
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -166,12 +174,7 @@ class RoomMembersView extends React.Component {
 
 	showActionSheet = () => {
 		const { showActionSheetWithOptions } = this.props;
-		showActionSheetWithOptions({
-			options: this.actionSheetOptions,
-			title: I18n.t('Actions')
-		}, (actionIndex) => {
-			this.handleActionPress(actionIndex);
-		});
+		showActionSheetWithOptions({ options: this.actionSheetOptions });
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -215,16 +218,6 @@ class RoomMembersView extends React.Component {
 			EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_key', { key: userLongPressed.muted ? I18n.t('unmuted') : I18n.t('muted') }) });
 		} catch (e) {
 			log(e);
-		}
-	}
-
-	handleActionPress = (actionIndex) => {
-		switch (actionIndex) {
-			case this.MUTE_INDEX:
-				this.handleMute();
-				break;
-			default:
-				break;
 		}
 	}
 

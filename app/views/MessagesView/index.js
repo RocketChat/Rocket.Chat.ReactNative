@@ -19,8 +19,6 @@ import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
 import { connectActionSheet } from '../../actionSheet';
 
-const ACTION_INDEX = 0;
-
 class MessagesView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => ({
 		title: I18n.t(navigation.state.params.name),
@@ -165,7 +163,7 @@ class MessagesView extends React.Component {
 						theme={theme}
 					/>
 				),
-				action: { title: I18n.t('Unstar'), icon: 'star' },
+				action: { title: I18n.t('Unstar'), icon: 'star', onPress: this.handleActionPress },
 				handleActionPress: message => RocketChat.toggleStarMessage(message._id, message.starred)
 			},
 			// Pinned Messages Screen
@@ -182,7 +180,7 @@ class MessagesView extends React.Component {
 						theme={theme}
 					/>
 				),
-				action: { title: I18n.t('Unpin'), icon: 'pin' },
+				action: { title: I18n.t('Unpin'), icon: 'pin', onPress: this.handleActionPress },
 				handleActionPress: message => RocketChat.togglePinMessage(message._id, message.pinned)
 			}
 		}[name]);
@@ -232,35 +230,27 @@ class MessagesView extends React.Component {
 	}
 
 	onLongPress = (message) => {
-		this.setState({ message });
-		this.showActionSheet();
+		this.setState({ message }, this.showActionSheet);
 	}
 
 	showActionSheet = () => {
 		const { showActionSheetWithOptions } = this.props;
-		showActionSheetWithOptions({
-			options: [this.content.action],
-			title: I18n.t('Actions')
-		}, (actionIndex) => {
-			this.handleActionPress(actionIndex);
-		});
+		showActionSheetWithOptions({ options: [this.content.action] });
 	}
 
-	handleActionPress = async(actionIndex) => {
-		if (actionIndex === ACTION_INDEX) {
-			const { message } = this.state;
+	handleActionPress = async() => {
+		const { message } = this.state;
 
-			try {
-				const result = await this.content.handleActionPress(message);
-				if (result.success) {
-					this.setState(prevState => ({
-						messages: prevState.messages.filter(item => item._id !== message._id),
-						total: prevState.total - 1
-					}));
-				}
-			} catch (error) {
-				console.warn('MessagesView -> handleActionPress -> catch -> error', error);
+		try {
+			const result = await this.content.handleActionPress(message);
+			if (result.success) {
+				this.setState(prevState => ({
+					messages: prevState.messages.filter(item => item._id !== message._id),
+					total: prevState.total - 1
+				}));
 			}
+		} catch {
+			// Do nothing
 		}
 	}
 

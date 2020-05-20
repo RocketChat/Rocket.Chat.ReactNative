@@ -61,12 +61,6 @@ const videoPickerConfig = {
 	mediaType: 'video'
 };
 
-const FILE_PHOTO_INDEX = 0;
-const FILE_VIDEO_INDEX = 1;
-const FILE_LIBRARY_INDEX = 2;
-const FILE_DOCUMENT_INDEX = 3;
-const CREATE_DISCUSSION_INDEX = 4;
-
 class MessageBox extends Component {
 	static propTypes = {
 		rid: PropTypes.string.isRequired,
@@ -115,13 +109,36 @@ class MessageBox extends Component {
 		};
 		this.text = '';
 		this.focused = false;
-		this.messageBoxActions = [
-			{ title: I18n.t('Take_a_photo'), icon: 'photo' },
-			{ title: I18n.t('Take_a_video'), icon: 'video' },
-			{ title: I18n.t('Choose_from_library'), icon: 'file' },
-			{ title: I18n.t('Choose_file'), icon: 'file-generic' },
-			{ title: I18n.t('Create_Discussion'), icon: 'discussion' }
+
+		// MessageBox Actions
+		this.options = [
+			{
+				title: I18n.t('Take_a_photo'),
+				icon: 'photo',
+				onPress: this.takePhoto
+			},
+			{
+				title: I18n.t('Take_a_video'),
+				icon: 'video',
+				onPress: this.takeVideo
+			},
+			{
+				title: I18n.t('Choose_from_library'),
+				icon: 'file',
+				onPress: this.chooseFromLibrary
+			},
+			{
+				title: I18n.t('Choose_file'),
+				icon: 'file-generic',
+				onPress: this.chooseFile
+			},
+			{
+				title: I18n.t('Create_Discussion'),
+				icon: 'discussion',
+				onPress: this.createDiscussion
+			}
 		];
+
 		const libPickerLabels = {
 			cropperChooseText: I18n.t('Choose'),
 			cropperCancelText: I18n.t('Cancel'),
@@ -600,33 +617,7 @@ class MessageBox extends Component {
 
 	showMessageBoxActions = () => {
 		const { showActionSheetWithOptions } = this.props;
-		showActionSheetWithOptions({
-			options: this.messageBoxActions
-		}, (actionIndex) => {
-			this.handleMessageBoxActions(actionIndex);
-		});
-	}
-
-	handleMessageBoxActions = (actionIndex) => {
-		switch (actionIndex) {
-			case FILE_PHOTO_INDEX:
-				this.takePhoto();
-				break;
-			case FILE_VIDEO_INDEX:
-				this.takeVideo();
-				break;
-			case FILE_LIBRARY_INDEX:
-				this.chooseFromLibrary();
-				break;
-			case FILE_DOCUMENT_INDEX:
-				this.chooseFile();
-				break;
-			case CREATE_DISCUSSION_INDEX:
-				this.createDiscussion();
-				break;
-			default:
-				break;
-		}
+		showActionSheetWithOptions({ options: this.options });
 	}
 
 	editCancel = () => {
