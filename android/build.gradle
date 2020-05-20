@@ -45,6 +45,8 @@ allprojects {
             url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
         }
 
+        maven { url "$rootDir/../node_modules/detox/Detox-android" }
+
         google()
         jcenter()
 
