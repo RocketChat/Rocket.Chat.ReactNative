@@ -2,7 +2,7 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const data = require('../../data');
-const { tapBack, sleep, navigateToRoom } = require('../../helpers/app');
+const { tapBack, sleep, navigateToRoom, waitForToast } = require('../../helpers/app');
 
 async function navigateToRoomInfo(type) {
 	let room;
@@ -18,14 +18,6 @@ async function navigateToRoomInfo(type) {
 	await sleep(1000);
 	await element(by.id('room-actions-info')).tap();
 	await waitFor(element(by.id('room-info-view'))).toBeVisible().withTimeout(2000);
-}
-
-async function waitForToast() {
-	// await waitFor(element(by.id('toast'))).toBeVisible().withTimeout(10000);
-	// await expect(element(by.id('toast'))).toBeVisible();
-	// await waitFor(element(by.id('toast'))).toBeNotVisible().withTimeout(10000);
-	// await expect(element(by.id('toast'))).toBeNotVisible();
-	await sleep(5000);
 }
 
 describe('Room info screen', () => {

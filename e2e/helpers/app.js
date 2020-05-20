@@ -97,6 +97,11 @@ async function navigateToRoom(room) {
     await expect(element(by.id(`room-view-title-${ room }`))).toBeVisible();
 }
 
+// TODO: it should be only temp... we need to figure a better way
+async function waitForToast() {
+	await sleep(5000);
+}
+
 module.exports = {
     navigateToWorkspace,
     navigateToLogin,
@@ -107,5 +112,6 @@ module.exports = {
     tapBack,
     sleep,
     searchRoom,
-    navigateToRoom
+    navigateToRoom,
+    waitForToast
 };

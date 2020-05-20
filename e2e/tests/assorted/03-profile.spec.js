@@ -1,18 +1,10 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { logout, navigateToLogin, login, sleep } = require('../../helpers/app');
+const { logout, navigateToLogin, login, sleep, waitForToast } = require('../../helpers/app');
 const data = require('../../data');
 
 const scrollDown = 200;
-
-async function waitForToast() {
-	// await waitFor(element(by.id('toast'))).toBeVisible().withTimeout(10000);
-	// await expect(element(by.id('toast'))).toBeVisible();
-	// await waitFor(element(by.id('toast'))).toBeNotVisible().withTimeout(10000);
-	// await expect(element(by.id('toast'))).toBeNotVisible();
-	await sleep(5000);
-}
 
 describe('Profile screen', () => {
 	before(async() => {

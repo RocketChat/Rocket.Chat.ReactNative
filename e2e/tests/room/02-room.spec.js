@@ -12,7 +12,7 @@ async function mockMessage(message) {
 	await expect(element(by.label(`${ data.random }${ message }`)).atIndex(0)).toBeVisible();
 };
 
-describe.only('Room screen', () => {
+describe('Room screen', () => {
 	const mainRoom = `private${ data.random }`;
 
 	before(async() => {
