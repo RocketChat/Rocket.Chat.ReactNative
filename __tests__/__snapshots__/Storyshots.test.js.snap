@@ -666,16 +666,18 @@ exports[`Storyshots Markdown list Markdown 1`] = `
            
         </Text>
         <Text
-          onPress={[Function]}
           style={
             Array [
               Object {
-                "backgroundColor": "#FF5B5A",
+                "backgroundColor": "#E8F2FF",
                 "color": "#ffffff",
                 "fontFamily": "System",
                 "fontSize": 16,
                 "fontWeight": "500",
                 "padding": 5,
+              },
+              Object {
+                "backgroundColor": "#FF5B5A",
               },
             ]
           }
@@ -709,16 +711,18 @@ exports[`Storyshots Markdown list Markdown 1`] = `
            
         </Text>
         <Text
-          onPress={[Function]}
           style={
             Array [
               Object {
-                "backgroundColor": "#FF5B5A",
+                "backgroundColor": "#E8F2FF",
                 "color": "#ffffff",
                 "fontFamily": "System",
                 "fontSize": 16,
                 "fontWeight": "500",
                 "padding": 5,
+              },
+              Object {
+                "backgroundColor": "#FF5B5A",
               },
             ]
           }
@@ -896,16 +900,18 @@ exports[`Storyshots Markdown list Markdown 1`] = `
            
         </Text>
         <Text
-          onPress={[Function]}
           style={
             Array [
               Object {
-                "backgroundColor": "#FF5B5A",
+                "backgroundColor": "#E8F2FF",
                 "color": "#ffffff",
                 "fontFamily": "System",
                 "fontSize": 16,
                 "fontWeight": "500",
                 "padding": 5,
+              },
+              Object {
+                "backgroundColor": "#FF5B5A",
               },
             ]
           }
@@ -939,16 +945,18 @@ exports[`Storyshots Markdown list Markdown 1`] = `
            
         </Text>
         <Text
-          onPress={[Function]}
           style={
             Array [
               Object {
-                "backgroundColor": "#FF5B5A",
+                "backgroundColor": "#E8F2FF",
                 "color": "#ffffff",
                 "fontFamily": "System",
                 "fontSize": 16,
                 "fontWeight": "500",
                 "padding": 5,
+              },
+              Object {
+                "backgroundColor": "#FF5B5A",
               },
             ]
           }
