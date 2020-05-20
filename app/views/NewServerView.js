@@ -69,7 +69,7 @@ class NewServerView extends React.Component {
 		const previousServer = navigation.getParam('previousServer', null);
 		const close = navigation.getParam('close', () => {});
 		return {
-			headerLeft: previousServer ? <CloseModalButton navigation={navigation} onPress={close} /> : undefined,
+			headerLeft: previousServer ? <CloseModalButton navigation={navigation} onPress={close} testID='new-server-view-close' /> : undefined,
 			title: I18n.t('Workspaces'),
 			...themedHeader(screenProps.theme)
 		};
@@ -295,7 +295,7 @@ class NewServerView extends React.Component {
 		const { connecting, theme } = this.props;
 		const { text, connectingOpen } = this.state;
 		return (
-			<FormContainer theme={theme}>
+			<FormContainer theme={theme} testID='new-server-view'>
 				<FormContainerInner>
 					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Join_your_workspace')}</Text>
 					<TextInput
@@ -319,8 +319,8 @@ class NewServerView extends React.Component {
 						disabled={!text || connecting}
 						loading={!connectingOpen && connecting}
 						style={styles.connectButton}
-						testID='new-server-view-button'
 						theme={theme}
+						testID='new-server-view-button'
 					/>
 					<OrSeparator theme={theme} />
 					<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Onboarding_join_open_description')}</Text>
@@ -332,6 +332,7 @@ class NewServerView extends React.Component {
 						disabled={connecting}
 						loading={connectingOpen && connecting}
 						theme={theme}
+						testID='new-server-view-open'
 					/>
 				</FormContainerInner>
 				{ !isIOS ? this.renderCertificatePicker() : null }
