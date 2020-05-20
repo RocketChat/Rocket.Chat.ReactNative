@@ -55,6 +55,7 @@ const Header = React.memo(({
 					placeholder='Search'
 					onChangeText={onSearchChangeText}
 					theme={theme}
+					testID='rooms-list-view-search-input'
 				/>
 			</View>
 		);

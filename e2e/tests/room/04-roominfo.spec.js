@@ -13,7 +13,7 @@ async function navigateToRoomInfo(type) {
 	}
 	await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 	await element(by.type('UIScrollView')).atIndex(1).swipe('down');
-	await element(by.id('rooms-list-view-search')).typeText(room);
+	await element(by.id('rooms-list-view-search-input')).typeText(room);
 	await sleep(2000);
 	await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toExist().withTimeout(60000);
 	await element(by.id(`rooms-list-view-item-${ room }`)).tap();
@@ -311,7 +311,6 @@ describe('Room info screen', () => {
 				await expect(element(by.text('Yes, delete it!'))).toBeVisible();
 				await element(by.text('Yes, delete it!')).tap();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
-				// await element(by.id('rooms-list-view-search')).typeText('');
 				await sleep(2000);
 				await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible().withTimeout(60000);
 				await expect(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible();

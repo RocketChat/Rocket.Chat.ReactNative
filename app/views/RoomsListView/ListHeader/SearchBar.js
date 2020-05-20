@@ -12,7 +12,7 @@ const SearchBar = React.memo(({
 		return (
 			<SearchBox
 				onChangeText={onChangeSearchText}
-				testID='rooms-list-view-search'
+				testID='rooms-list-view-search-input'
 				inputRef={inputRef}
 				theme={theme}
 				hasCancel={searching}

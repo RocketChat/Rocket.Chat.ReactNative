@@ -42,7 +42,11 @@ async function logout() {
 	await waitFor(element(by.id('sidebar-settings'))).toBeVisible().withTimeout(2000);
     await element(by.id('sidebar-settings')).tap();
     await waitFor(element(by.id('settings-view'))).toBeVisible().withTimeout(2000);
-    await element(by.type('UIScrollView')).atIndex(1).scrollTo('bottom');
+    if (device.getPlatform() === 'ios') {
+        await element(by.type('UIScrollView')).atIndex(1).scrollTo('bottom');
+    } else {
+        await element(by.id('settings-view-list')).scrollTo('bottom');
+    }
     await element(by.id('settings-logout')).tap();
     const logoutAlertMessage = 'You will be logged out of this application.';
     await waitFor(element(by.text(logoutAlertMessage)).atIndex(0)).toExist().withTimeout(10000);

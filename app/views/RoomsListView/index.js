@@ -132,6 +132,7 @@ class RoomsListView extends React.Component {
 							title='search'
 							iconName='magnifier'
 							onPress={initSearching}
+							testID='rooms-list-view-search-button'
 						/>
 					) : null}
 					<Item

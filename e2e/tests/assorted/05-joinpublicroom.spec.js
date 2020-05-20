@@ -17,7 +17,7 @@ async function mockMessage(message) {
 async function navigateToRoom() {
 	await sleep(2000);
 	await element(by.type('UIScrollView')).atIndex(1).scrollTo('top');
-	await element(by.id('rooms-list-view-search')).typeText(room);
+	await element(by.id('rooms-list-view-search-input')).typeText(room);
 	await sleep(2000);
 	await waitFor(element(by.id(`rooms-list-view-item-${ room }`)).atIndex(0)).toBeVisible().withTimeout(60000);
 	await element(by.id(`rooms-list-view-item-${ room }`)).atIndex(0).tap();
@@ -178,7 +178,6 @@ describe('Join public room', () => {
 			await expect(element(by.text('Yes, leave it!'))).toBeVisible();
 			await element(by.text('Yes, leave it!')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
-			// await element(by.id('rooms-list-view-search')).typeText('');
 			await sleep(2000);
 			await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible().withTimeout(60000);
 			await expect(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible();

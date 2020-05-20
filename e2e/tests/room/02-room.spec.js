@@ -14,7 +14,7 @@ async function mockMessage(message) {
 
 async function navigateToRoom() {
 	await element(by.type('UIScrollView')).atIndex(1).scrollTo('top');
-	await element(by.id('rooms-list-view-search')).typeText(`private${ data.random }`);
+	await element(by.id('rooms-list-view-search-input')).typeText(`private${ data.random }`);
 	await sleep(2000);
 	await waitFor(element(by.id(`rooms-list-view-item-private${ data.random }`))).toBeVisible().withTimeout(60000);
 	await element(by.id(`rooms-list-view-item-private${ data.random }`)).tap();

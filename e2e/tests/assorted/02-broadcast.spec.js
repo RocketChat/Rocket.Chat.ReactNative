@@ -72,7 +72,7 @@ describe('Broadcast room', () => {
 		await element(by.id('two-factor-send')).tap();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 		await element(by.type('UIScrollView')).atIndex(1).scrollTo('top');
-		await element(by.id('rooms-list-view-search')).typeText(`broadcast${ data.random }`);
+		await element(by.id('rooms-list-view-search-input')).typeText(`broadcast${ data.random }`);
 		await sleep(2000);
 		await waitFor(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toExist().withTimeout(60000);
 		await expect(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toExist();
