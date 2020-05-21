@@ -43,7 +43,6 @@ import Tablet, { initTabletNav } from './tablet';
 import sharedStyles from './views/Styles';
 import { SplitContext } from './split';
 import TwoFactor from './containers/TwoFactor';
-import ActionSheetProvider from './actionSheet';
 
 import RoomsListView from './views/RoomsListView';
 import RoomView from './views/RoomView';
@@ -734,22 +733,20 @@ export default class Root extends React.Component {
 		}
 		return (
 			<AppearanceProvider>
-				<ActionSheetProvider>
-					<Provider store={store}>
-						<ThemeContext.Provider
-							value={{
-								theme,
-								themePreferences,
-								setTheme: this.setTheme
-							}}
-						>
-							{content}
-							<TwoFactor />
-							<ScreenLockedView />
-							<ChangePasscodeView />
-						</ThemeContext.Provider>
-					</Provider>
-				</ActionSheetProvider>
+				<Provider store={store}>
+					<ThemeContext.Provider
+						value={{
+							theme,
+							themePreferences,
+							setTheme: this.setTheme
+						}}
+					>
+						{content}
+						<TwoFactor />
+						<ScreenLockedView />
+						<ChangePasscodeView />
+					</ThemeContext.Provider>
+				</Provider>
 			</AppearanceProvider>
 		);
 	}

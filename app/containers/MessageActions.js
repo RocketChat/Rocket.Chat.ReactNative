@@ -1,7 +1,6 @@
-import { forwardRef, useImperativeHandle, useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Alert, Clipboard, Share } from 'react-native';
-import useDeepCompareEffect from 'use-deep-compare-effect';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
@@ -14,7 +13,7 @@ import { getMessageTranslation } from './message/utils';
 import { LISTENER } from './Toast';
 import EventEmitter from '../utils/events';
 import { showConfirmationAlert } from '../utils/info';
-import { useActionSheet } from '../actionSheet';
+import ActionSheet from './ActionSheet';
 
 const MessageActions = forwardRef(({
 	room,
@@ -33,30 +32,22 @@ const MessageActions = forwardRef(({
 	Message_AllowStarring,
 	Message_Read_Receipt_Store_Users
 }, ref) => {
-	let options = [];
-	const { showActionSheetWithOptions } = useActionSheet();
-	const [permissions, setPermissions] = useState({});
+	let permissions = {};
+	const actionsRef = useRef();
 
 	const getPermissions = async() => {
 		try {
 			const permission = ['edit-message', 'delete-message', 'force-delete-message'];
 			const result = await RocketChat.hasPermission(permission, room.rid);
-			setPermissions({
+			permissions = {
 				hasEditPermission: result[permission[0]],
 				hasDeletePermission: result[permission[1]],
 				hasForceDeletePermission: result[permission[2]]
-			});
+			};
 		} catch {
 			// Do nothing
 		}
 	};
-
-	const showMessageActions = () => {
-		getPermissions();
-		showActionSheetWithOptions({ options });
-	};
-
-	useImperativeHandle(ref, () => ({ showMessageActions }));
 
 	const isOwn = () => message.u && message.u._id === user.id;
 
@@ -242,7 +233,9 @@ const MessageActions = forwardRef(({
 		});
 	};
 
-	useDeepCompareEffect(() => {
+	const getOptions = () => {
+		let options = [];
+
 		// Reply
 		if (!isReadOnly) {
 			options = [{
@@ -369,7 +362,24 @@ const MessageActions = forwardRef(({
 				onPress: handleDelete
 			});
 		}
-	}, [permissions]);
+
+		return options;
+	};
+
+	const showMessageActions = async() => {
+		await getPermissions();
+		actionsRef.current?.show();
+	};
+
+	useImperativeHandle(ref, () => ({ showMessageActions }));
+
+	return (
+		<ActionSheet
+			ref={actionsRef}
+			options={getOptions()}
+			theme='light'
+		/>
+	);
 });
 MessageActions.propTypes = {
 	room: PropTypes.object.isRequired,

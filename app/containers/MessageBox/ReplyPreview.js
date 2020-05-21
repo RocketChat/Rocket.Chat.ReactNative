@@ -58,7 +58,7 @@ const ReplyPreview = React.memo(({
 		>
 			<View style={[styles.messageContainer, { backgroundColor: themes[theme].chatComponentBackground }]}>
 				<View style={styles.header}>
-					<Text style={[styles.username, { color: themes[theme].tintColor }]}>{message.u.username}</Text>
+					<Text style={[styles.username, { color: themes[theme].tintColor }]}>{message.u?.username}</Text>
 					<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 				</View>
 				<Markdown

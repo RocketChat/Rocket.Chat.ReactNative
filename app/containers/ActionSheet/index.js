@@ -1,13 +1,8 @@
-import React, {
-	useRef,
-	useState,
-	forwardRef,
-	useImperativeHandle
-} from 'react';
+import React, { useRef, forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
-import { View, Keyboard, Dimensions } from 'react-native';
-import ScrollBottomSheet from 'react-native-scroll-bottom-sheet';
-import Animated from 'react-native-reanimated';
+import { Keyboard } from 'react-native';
+import { Modalize } from 'react-native-modalize';
+import { FlatList } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 
 import Item from './Item';
@@ -16,69 +11,41 @@ import Separator from '../Separator';
 import { themes } from '../../constants/colors';
 import styles from './styles';
 
-const { height } = Dimensions.get('window');
+const ActionSheet = forwardRef(({ options, Header, theme }, ref) => {
+	const modalizeRef = useRef();
 
-const SNAP_POINTS = [128, '50%', height];
-
-const ActionSheet = forwardRef(({ children, theme }, ref) => {
-	const bottomSheetRef = useRef(null);
-	const fall = new Animated.Value(0);
-	const [content, setContent] = useState([]);
-
-	const opacity = Animated.interpolate(fall, {
-		inputRange: [0, 1],
-		outputRange: [0, 0.5]
-	});
-
-	const hideActionSheet = () => {
-		bottomSheetRef.current?.snapTo(2);
+	const hide = () => {
+		modalizeRef.current?.close();
 	};
 
-	const showActionSheetWithOptions = ({ options }) => {
+	const show = () => {
 		Keyboard.dismiss();
-		setContent(options);
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-		bottomSheetRef.current?.snapTo(1);
+		modalizeRef.current?.open();
 	};
 
 	useImperativeHandle(ref, () => ({
-		showActionSheetWithOptions,
-		hideActionSheet
+		show,
+		hide
 	}));
 
-	const renderHeader = () => (
-		<View style={[styles.header, { backgroundColor: themes[theme].backgroundColor }]}>
-			<View style={[styles.headerIndicator, { backgroundColor: themes[theme].auxiliaryText }]} />
-		</View>
-	);
-
 	return (
-		<>
-			{children}
-			<Animated.View
-				pointerEvents='none'
-				style={[
-					styles.shadow,
-					{
-						backgroundColor: themes[theme].backdropColor,
-						opacity
-					}
-				]}
-			/>
-			<ScrollBottomSheet
-				ref={bottomSheetRef}
-				componentType='FlatList'
-				snapPoints={SNAP_POINTS}
-				initialSnapIndex={2}
-				renderHandle={renderHeader}
-				animatedPosition={fall}
-				data={content}
+		<Modalize
+			ref={modalizeRef}
+			adjustToContentHeight
+			HeaderComponent={Header}
+			handleStyle={{ backgroundColor: themes[theme].auxiliaryText }}
+			modalStyle={{ backgroundColor: themes[theme].backgroundColor }}
+			handlePosition='inside'
+		>
+			<FlatList
+				data={options}
 				renderItem={({ item }) => (
 					<Item
 						item={item}
 						onPress={() => {
 							item.onPress();
-							hideActionSheet();
+							hide();
 						}}
 						theme={theme}
 					/>
@@ -88,11 +55,12 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 				ListHeaderComponent={() => <Separator theme={theme} />}
 				ItemSeparatorComponent={() => <Separator theme={theme} />}
 			/>
-		</>
+		</Modalize>
 	);
 });
 ActionSheet.propTypes = {
-	children: PropTypes.node,
+	options: PropTypes.array,
+	Header: PropTypes.node,
 	theme: PropTypes.string
 };
 
