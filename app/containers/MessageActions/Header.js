@@ -37,9 +37,9 @@ const styles = StyleSheet.create({
 const DEFAULT_EMOJIS = ['clap', '+1', 'heart_eyes', 'grinning', 'thinking_face', 'smiley'];
 
 const HeaderItem = React.memo(({
-	item, onPress, server, theme
+	item, handleReaction, server, theme
 }) => (
-	<TouchableOpacity onPress={() => onPress(`:${ item.content || item }:`)} style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+	<TouchableOpacity onPress={() => handleReaction(`:${ item.content || item }:`)} style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 		{item?.isCustom ? (
 			<CustomEmoji style={styles.customEmoji} emoji={item} baseUrl={server} />
 		) : (
@@ -51,23 +51,23 @@ const HeaderItem = React.memo(({
 ));
 HeaderItem.propTypes = {
 	item: PropTypes.string,
-	onPress: PropTypes.func,
+	handleReaction: PropTypes.func,
 	server: PropTypes.string,
 	theme: PropTypes.string
 };
 
-const HeaderFooter = React.memo(({ onAdd, theme }) => (
-	<TouchableOpacity onPress={onAdd} style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+const HeaderFooter = React.memo(({ handleReaction, theme }) => (
+	<TouchableOpacity onPress={handleReaction} style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 		<CustomIcon name='add-reaction' size={24} color={themes[theme].bodyText} />
 	</TouchableOpacity>
 ));
 HeaderFooter.propTypes = {
-	onAdd: PropTypes.func,
+	handleReaction: PropTypes.func,
 	theme: PropTypes.string
 };
 
 const Header = React.memo(({
-	onAdd, onPress, server, theme
+	handleReaction, server, theme
 }) => {
 	const [items, setItems] = useState([]);
 	useEffect(() => {
@@ -89,9 +89,9 @@ const Header = React.memo(({
 		<View style={styles.container}>
 			<FlatList
 				data={items}
-				renderItem={({ item }) => <HeaderItem item={item} onPress={onPress} server={server} theme={theme} />}
+				renderItem={({ item }) => <HeaderItem item={item} handleReaction={handleReaction} server={server} theme={theme} />}
 				style={[styles.headerList, { backgroundColor: themes[theme].backgroundColor }]}
-				ListFooterComponent={() => <HeaderFooter onAdd={onAdd} theme={theme} />}
+				ListFooterComponent={() => <HeaderFooter handleReaction={handleReaction} theme={theme} />}
 				scrollEnabled={false}
 				horizontal
 			/>
@@ -99,8 +99,7 @@ const Header = React.memo(({
 	);
 });
 Header.propTypes = {
-	onAdd: PropTypes.func,
-	onPress: PropTypes.func,
+	handleReaction: PropTypes.func,
 	server: PropTypes.string,
 	theme: PropTypes.string
 };

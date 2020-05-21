@@ -38,6 +38,8 @@ const MessageActions = forwardRef(({
 	let permissions = {};
 	const { show, hide } = useActionSheet();
 
+	console.log('message', message);
+
 	const getPermissions = async() => {
 		try {
 			const permission = ['edit-message', 'delete-message', 'force-delete-message'];
@@ -185,8 +187,12 @@ const MessageActions = forwardRef(({
 		}
 	};
 
-	const handleReaction = () => {
-		reactionInit(message);
+	const handleReaction = (shortname) => {
+		if (shortname) {
+			onReactionPress(shortname, message.id);
+		} else {
+			reactionInit(message);
+		}
 		// close actionSheet when click at header
 		hide();
 	};
@@ -380,8 +386,7 @@ const MessageActions = forwardRef(({
 			customHeader: (
 				<Header
 					server={server}
-					onAdd={handleReaction}
-					onPress={shortname => onReactionPress(shortname, message.id)}
+					handleReaction={handleReaction}
 				/>
 			)
 		});
