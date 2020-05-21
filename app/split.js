@@ -3,7 +3,7 @@ import hoistNonReactStatics from 'hoist-non-react-statics';
 
 import { isTablet } from './utils/deviceInfo';
 
-export const SplitContext = React.createContext(null);
+export const SplitContext = React.createContext({ split: false });
 
 export function withSplit(Component) {
 	if (isTablet) {
