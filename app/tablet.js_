@@ -8,7 +8,7 @@ import Navigation from './lib/Navigation';
 import { isSplited } from './utils/deviceInfo';
 import {
 	App, RoomContainer, ModalContainer, NotificationContainer
-} from './index';
+} from './index.js';
 import { MAX_SIDEBAR_WIDTH } from './constants/tablet';
 import ModalNavigation from './lib/ModalNavigation';
 import { keyCommands, defaultCommands } from './commands';
