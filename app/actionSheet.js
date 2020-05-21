@@ -6,8 +6,8 @@ import ActionSheet from './containers/ActionSheet';
 import { withTheme } from './theme';
 
 const context = React.createContext({
-	showActionSheetWithOptions: () => {},
-	hideActionSheet: () => {}
+	show: () => {},
+	hide: () => {}
 });
 
 export function useActionSheet() {
@@ -30,11 +30,11 @@ const ActionSheetProvider = React.memo(({ children, theme }) => {
 	const ref = useRef();
 
 	const getContext = () => ({
-		showActionSheetWithOptions: (options) => {
-			ref.current?.showActionSheetWithOptions(options);
+		show: (options) => {
+			ref.current?.show(options);
 		},
-		hideActionSheet: () => {
-			ref.current?.hideActionSheet();
+		hide: () => {
+			ref.current?.hide();
 		}
 	});
 

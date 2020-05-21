@@ -512,7 +512,7 @@ class RoomView extends React.Component {
 	}
 
 	errorActionsShow = (message) => {
-		this.setState({ selectedMessage: message });
+		this.setState({ selectedMessage: message }, this.messageErrorActions?.showMessageErrorActions);
 	}
 
 	onEditInit = (message) => {
@@ -970,6 +970,7 @@ class RoomView extends React.Component {
 					isReadOnly={readOnly}
 				/>
 				<MessageErrorActions
+					ref={ref => this.messageErrorActions = ref}
 					tmid={this.tmid}
 					message={selectedMessage}
 				/>

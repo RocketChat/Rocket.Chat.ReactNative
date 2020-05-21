@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import { forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 import { Alert, Clipboard, Share } from 'react-native';
 import { connect } from 'react-redux';
@@ -13,7 +13,7 @@ import { getMessageTranslation } from './message/utils';
 import { LISTENER } from './Toast';
 import EventEmitter from '../utils/events';
 import { showConfirmationAlert } from '../utils/info';
-import ActionSheet from './ActionSheet';
+import { useActionSheet } from '../actionSheet';
 
 const MessageActions = forwardRef(({
 	room,
@@ -33,7 +33,7 @@ const MessageActions = forwardRef(({
 	Message_Read_Receipt_Store_Users
 }, ref) => {
 	let permissions = {};
-	const actionsRef = useRef();
+	const { show } = useActionSheet();
 
 	const getPermissions = async() => {
 		try {
@@ -368,18 +368,10 @@ const MessageActions = forwardRef(({
 
 	const showMessageActions = async() => {
 		await getPermissions();
-		actionsRef.current?.show();
+		show({ options: getOptions() });
 	};
 
 	useImperativeHandle(ref, () => ({ showMessageActions }));
-
-	return (
-		<ActionSheet
-			ref={actionsRef}
-			options={getOptions()}
-			theme='light'
-		/>
-	);
 });
 MessageActions.propTypes = {
 	room: PropTypes.object.isRequired,
