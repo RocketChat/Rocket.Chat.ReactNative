@@ -1,19 +1,20 @@
-import { forwardRef, useImperativeHandle } from 'react';
+import React, { forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 import { Alert, Clipboard, Share } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
-import RocketChat from '../lib/rocketchat';
-import database from '../lib/database';
-import I18n from '../i18n';
-import log from '../utils/log';
-import Navigation from '../lib/Navigation';
-import { getMessageTranslation } from './message/utils';
-import { LISTENER } from './Toast';
-import EventEmitter from '../utils/events';
-import { showConfirmationAlert } from '../utils/info';
-import { useActionSheet } from '../actionSheet';
+import RocketChat from '../../lib/rocketchat';
+import database from '../../lib/database';
+import I18n from '../../i18n';
+import log from '../../utils/log';
+import Navigation from '../../lib/Navigation';
+import { getMessageTranslation } from '../message/utils';
+import { LISTENER } from '../Toast';
+import EventEmitter from '../../utils/events';
+import { showConfirmationAlert } from '../../utils/info';
+import { useActionSheet } from '../../actionSheet';
+import Header from './Header';
 
 const MessageActions = forwardRef(({
 	room,
@@ -22,8 +23,10 @@ const MessageActions = forwardRef(({
 	user,
 	editInit,
 	reactionInit,
+	onReactionPress,
 	replyInit,
 	isReadOnly,
+	server,
 	Message_AllowDeleting,
 	Message_AllowDeleting_BlockDeleteInMinutes,
 	Message_AllowEditing,
@@ -33,7 +36,7 @@ const MessageActions = forwardRef(({
 	Message_Read_Receipt_Store_Users
 }, ref) => {
 	let permissions = {};
-	const { show } = useActionSheet();
+	const { show, hide } = useActionSheet();
 
 	const getPermissions = async() => {
 		try {
@@ -182,7 +185,11 @@ const MessageActions = forwardRef(({
 		}
 	};
 
-	const handleReaction = () => reactionInit(message);
+	const handleReaction = () => {
+		reactionInit(message);
+		// close actionSheet when click at header
+		hide();
+	};
 
 	const handleReadReceipt = () => Navigation.navigate('ReadReceiptsView', { messageId: message.id });
 
@@ -368,19 +375,29 @@ const MessageActions = forwardRef(({
 
 	const showMessageActions = async() => {
 		await getPermissions();
-		show({ options: getOptions() });
+		show({
+			options: getOptions(),
+			customHeader: (
+				<Header
+					server={server}
+					onAdd={handleReaction}
+					onPress={shortname => onReactionPress(shortname, message.id)}
+				/>
+			)
+		});
 	};
 
 	useImperativeHandle(ref, () => ({ showMessageActions }));
 });
 MessageActions.propTypes = {
-	room: PropTypes.object.isRequired,
+	room: PropTypes.object,
 	message: PropTypes.object,
 	tmid: PropTypes.string,
 	user: PropTypes.object,
-	editInit: PropTypes.func.isRequired,
-	reactionInit: PropTypes.func.isRequired,
-	replyInit: PropTypes.func.isRequired,
+	editInit: PropTypes.func,
+	reactionInit: PropTypes.func,
+	onReactionPress: PropTypes.func,
+	replyInit: PropTypes.func,
 	isReadOnly: PropTypes.bool,
 	Message_AllowDeleting: PropTypes.bool,
 	Message_AllowDeleting_BlockDeleteInMinutes: PropTypes.number,
@@ -388,7 +405,8 @@ MessageActions.propTypes = {
 	Message_AllowEditing_BlockEditInMinutes: PropTypes.number,
 	Message_AllowPinning: PropTypes.bool,
 	Message_AllowStarring: PropTypes.bool,
-	Message_Read_Receipt_Store_Users: PropTypes.bool
+	Message_Read_Receipt_Store_Users: PropTypes.bool,
+	server: PropTypes.string
 };
 
 const mapStateToProps = state => ({

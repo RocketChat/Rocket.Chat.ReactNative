@@ -15,19 +15,21 @@ import Item from './Item';
 import Separator from '../Separator';
 import { themes } from '../../constants/colors';
 import styles from './styles';
+import Header from './Header';
+import Footer from './Footer';
 
 const ActionSheet = forwardRef(({ children, theme }, ref) => {
 	const modalizeRef = useRef();
-	const [options, setOptions] = useState([]);
+	const [data, setData] = useState({});
 
 	const hide = () => {
 		modalizeRef.current?.close();
 	};
 
-	const show = (data) => {
+	const show = (options) => {
 		Keyboard.dismiss();
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-		setOptions(data?.options);
+		setData(options);
 		modalizeRef.current?.open();
 	};
 
@@ -35,6 +37,20 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 		show,
 		hide
 	}));
+
+	const renderFooter = () => (data?.hasCancel ? (
+		<Footer
+			hide={hide}
+			theme={theme}
+		/>
+	) : null);
+
+	const renderHeader = () => (data?.title ? (
+		<Header
+			title={data?.title}
+			theme={theme}
+		/>
+	) : data?.customHeader);
 
 	return (
 		<>
@@ -44,10 +60,12 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 				adjustToContentHeight
 				handleStyle={{ backgroundColor: themes[theme].auxiliaryText }}
 				modalStyle={[styles.modal, { backgroundColor: themes[theme].backgroundColor }]}
+				HeaderComponent={renderHeader}
+				FooterComponent={renderFooter}
 				handlePosition='inside'
 			>
 				<FlatList
-					data={options}
+					data={data?.options}
 					renderItem={({ item }) => (
 						<Item
 							item={item}

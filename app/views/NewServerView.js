@@ -84,21 +84,13 @@ class NewServerView extends React.Component {
 		currentServer: PropTypes.string,
 		initAdd: PropTypes.func,
 		finishAdd: PropTypes.func,
-		showActionSheetWithOptions: PropTypes.func
+		show: PropTypes.func
 	}
 
 	constructor(props) {
 		super(props);
 		this.previousServer = props.navigation.getParam('previousServer');
 		props.navigation.setParams({ close: this.close, previousServer: this.previousServer });
-
-		// Delete
-		this.options = [{
-			title: I18n.t('Delete'),
-			icon: 'trash',
-			danger: true,
-			onPress: this.handleDelete
-		}];
 
 		this.state = {
 			text: '',
@@ -255,8 +247,20 @@ class NewServerView extends React.Component {
 	handleDelete = () => this.setState({ certificate: null }); // We not need delete file from DocumentPicker because it is a temp file
 
 	showActionSheet = () => {
-		const { showActionSheetWithOptions } = this.props;
-		showActionSheetWithOptions({ options: this.options });
+		const { show } = this.props;
+
+		// Delete
+		const options = [{
+			title: I18n.t('Delete'),
+			icon: 'trash',
+			danger: true,
+			onPress: this.handleDelete
+		}];
+
+		show({
+			options,
+			hasCancel: true
+		});
 	}
 
 	renderCertificatePicker = () => {
@@ -273,7 +277,7 @@ class NewServerView extends React.Component {
 					{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
 				</Text>
 				<TouchableOpacity
-					onPress={certificate ? this.showActionSheet : this.chooseCertificate}
+					onPress={!certificate ? this.showActionSheet : this.chooseCertificate}
 					testID='new-server-choose-certificate'
 				>
 					<Text

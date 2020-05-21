@@ -967,6 +967,7 @@ class RoomView extends React.Component {
 					editInit={this.onEditInit}
 					replyInit={this.onReplyInit}
 					reactionInit={this.onReactionInit}
+					onReactionPress={this.onReactionPress}
 					isReadOnly={readOnly}
 				/>
 				<MessageErrorActions
