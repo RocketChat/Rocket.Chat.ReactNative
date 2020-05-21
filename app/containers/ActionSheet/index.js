@@ -7,7 +7,6 @@ import React, {
 import PropTypes from 'prop-types';
 import { Keyboard } from 'react-native';
 import { Modalize } from 'react-native-modalize';
-import { FlatList } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 
 import Item from './Item';
@@ -63,26 +62,27 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 				HeaderComponent={renderHeader}
 				FooterComponent={renderFooter}
 				handlePosition='inside'
-			>
-				<FlatList
-					data={data?.options}
-					renderItem={({ item }) => (
+				flatListProps={{
+					data: data?.options,
+					// eslint-disable-next-line react/prop-types
+					renderItem: ({ item }) => (
 						<Item
 							item={item}
 							onPress={() => {
+								// eslint-disable-next-line react/prop-types
 								item.onPress();
 								hide();
 							}}
 							theme={theme}
 						/>
-					)}
-					style={{ backgroundColor: themes[theme].backgroundColor }}
-					contentContainerStyle={styles.content}
-					ListHeaderComponent={() => <Separator theme={theme} />}
-					ItemSeparatorComponent={() => <Separator theme={theme} />}
-					nestedScrollEnabled
-				/>
-			</Modalize>
+					),
+					style: { backgroundColor: themes[theme].backgroundColor },
+					contentContainerStyle: styles.content,
+					ListHeaderComponent: () => <Separator theme={theme} />,
+					ItemSeparatorComponent: () => <Separator theme={theme} />,
+					nestedScrollEnabled: true
+				}}
+			/>
 		</>
 	);
 });
