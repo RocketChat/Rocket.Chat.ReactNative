@@ -89,7 +89,7 @@ class MessageBox extends Component {
 		theme: PropTypes.string,
 		replyCancel: PropTypes.func,
 		navigation: PropTypes.object,
-		showActionSheetWithOptions: PropTypes.func
+		show: PropTypes.func
 	}
 
 	constructor(props) {
@@ -616,8 +616,8 @@ class MessageBox extends Component {
 	}
 
 	showMessageBoxActions = () => {
-		const { showActionSheetWithOptions } = this.props;
-		showActionSheetWithOptions({ options: this.options });
+		const { show } = this.props;
+		show({ options: this.options });
 	}
 
 	editCancel = () => {

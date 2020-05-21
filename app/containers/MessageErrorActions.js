@@ -89,7 +89,11 @@ const MessageErrorActions = forwardRef(({
 	];
 
 	const showMessageErrorActions = () => {
-		show({ options });
+		show({
+			options,
+			hasCancel: true,
+			title: 'Message Error'
+		});
 	};
 
 	useImperativeHandle(ref, () => ({
