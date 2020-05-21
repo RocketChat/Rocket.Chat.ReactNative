@@ -13,6 +13,10 @@ import ServerAvatar from './ServerAvatar';
 import { getShowLoginButton } from '../../selectors/login';
 
 class WorkspaceView extends React.Component {
+	static navigationOptions = {
+		title: I18n.t('Your_workspace')
+	}
+
 	static propTypes = {
 		navigation: PropTypes.object,
 		theme: PropTypes.string,
@@ -87,9 +91,5 @@ const mapStateToProps = state => ({
 	registrationText: state.settings.Accounts_RegistrationForm_LinkReplacementText,
 	showLoginButton: getShowLoginButton(state)
 });
-
-WorkspaceView.navigationOptions = {
-	title: I18n.t('Your_workspace')
-};
 
 export default connect(mapStateToProps)(withTheme(WorkspaceView));

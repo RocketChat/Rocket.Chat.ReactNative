@@ -16,7 +16,6 @@ import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import Separator from '../../containers/Separator';
 import SafeAreaView from '../../containers/SafeAreaView';
 
@@ -60,13 +59,13 @@ const OPTIONS = {
 };
 
 class InviteUsersView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Invite_users'),
-		...themedHeader(screenProps.theme)
-	})
+	static navigationOptions = {
+		title: I18n.t('Invite_users')
+	}
 
 	static propTypes = {
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		theme: PropTypes.string,
 		timeDateFormat: PropTypes.string,
 		createInviteLink: PropTypes.func,
@@ -75,7 +74,7 @@ class InviteUsersView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.rid = props.navigation.getParam('rid');
+		this.rid = props.route.params?.rid;
 	}
 
 	onValueChangePicker = (key, value) => {

@@ -14,7 +14,6 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import styles from './styles';
 import RocketChat from '../../lib/rocketchat';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import SafeAreaView from '../../containers/SafeAreaView';
 
@@ -139,21 +138,21 @@ const OPTIONS = {
 };
 
 class NotificationPreferencesView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Notification_Preferences'),
-		...themedHeader(screenProps.theme)
-	})
+	static navigationOptions = {
+		title: I18n.t('Notification_Preferences')
+	}
 
 	static propTypes = {
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		theme: PropTypes.string
 	};
 
 	constructor(props) {
 		super(props);
 		this.mounted = false;
-		this.rid = props.navigation.getParam('rid');
-		const room = props.navigation.getParam('room');
+		this.rid = props.route.params?.rid;
+		const room = props.route.params?.room;
 		this.state = {
 			room: room || {}
 		};

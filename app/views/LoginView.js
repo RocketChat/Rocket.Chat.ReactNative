@@ -51,6 +51,11 @@ const styles = StyleSheet.create({
 });
 
 class LoginView extends React.Component {
+	static navigatonOptions = ({ route, navigation }) => ({
+		title: route.params.title,
+		headerRight: () => <LegalButton testID='login-view-more' navigation={navigation} />
+	})
+
 	static propTypes = {
 		navigation: PropTypes.object,
 		Site_Name: PropTypes.string,
@@ -218,11 +223,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	loginRequest: params => dispatch(loginRequestAction(params))
-});
-
-LoginView.navigatonOptions = ({ route, navigation }) => ({
-	title: route.params.title,
-	headerRight: () => <LegalButton testID='login-view-more' navigation={navigation} />
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(LoginView));

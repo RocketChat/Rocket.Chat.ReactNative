@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
-// import { SafeAreaView } from 'react-navigation';
 import UAParser from 'ua-parser-js';
 import _ from 'lodash';
 
@@ -22,7 +21,6 @@ import log from '../../utils/log';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { withSplit } from '../../split';
-import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
 import Markdown from '../../containers/markdown';
 import Navigation from '../../lib/Navigation';
@@ -31,6 +29,7 @@ import Livechat from './Livechat';
 import Channel from './Channel';
 import Item from './Item';
 import Direct from './Direct';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 const getRoomTitle = (room, type, name, username, statusText, theme) => (type === 'd'
@@ -50,15 +49,14 @@ const getRoomTitle = (room, type, name, username, statusText, theme) => (type ==
 );
 
 class RoomInfoView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const t = navigation.getParam('t');
-		const rid = navigation.getParam('rid');
-		const room = navigation.getParam('room');
-		const roomUser = navigation.getParam('roomUser');
-		const showEdit = navigation.getParam('showEdit', t === 'l');
+	static navigationOptions = ({ navigation, route }) => {
+		const t = route.params?.t;
+		const rid = route.params?.rid;
+		const room = route.params?.room;
+		const roomUser = route.params?.roomUser;
+		const showEdit = route.params?.showEdit;
 		return {
 			title: t === 'd' ? I18n.t('User_Info') : I18n.t('Room_Info'),
-			...themedHeader(screenProps.theme),
 			headerRight: showEdit
 				? (
 					<CustomHeaderButtons>
@@ -75,6 +73,7 @@ class RoomInfoView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			token: PropTypes.string
@@ -87,10 +86,10 @@ class RoomInfoView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		const room = props.navigation.getParam('room');
-		const roomUser = props.navigation.getParam('member');
-		this.rid = props.navigation.getParam('rid');
-		this.t = props.navigation.getParam('t');
+		const room = props.route.params?.room;
+		const roomUser = props.route.params?.member;
+		this.rid = props.route.params?.rid;
+		this.t = props.route.params?.t;
 		this.state = {
 			room: room || { rid: this.rid, t: this.t },
 			roomUser: roomUser || {}
@@ -327,8 +326,8 @@ class RoomInfoView extends React.Component {
 			<ScrollView style={[styles.scroll, { backgroundColor: themes[theme].backgroundColor }]}>
 				<StatusBar theme={theme} />
 				<SafeAreaView
-					style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}
-					forceInset={{ vertical: 'never' }}
+					style={{ backgroundColor: themes[theme].backgroundColor }}
+					theme={theme}
 					testID='room-info-view'
 				>
 					<View style={[styles.avatarContainer, this.isDirect && styles.avatarContainerDirectRoom, { backgroundColor: themes[theme].auxiliaryBackground }]}>

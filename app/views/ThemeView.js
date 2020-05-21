@@ -69,10 +69,9 @@ const styles = StyleSheet.create({
 });
 
 class ThemeView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Theme'),
-		...themedHeader(screenProps.theme)
-	})
+	static navigationOptions = {
+		title: I18n.t('Theme')
+	}
 
 	static propTypes = {
 		theme: PropTypes.string,

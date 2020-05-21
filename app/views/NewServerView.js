@@ -64,6 +64,20 @@ const styles = StyleSheet.create({
 });
 
 class NewServerView extends React.Component {
+	// static navigationOptions = ({ screenProps, navigation }) => {
+	// 	const previousServer = navigation.getParam('previousServer', null);
+	// 	const close = navigation.getParam('close', () => {});
+	// 	return {
+	// 		headerLeft: previousServer ? <CloseModalButton navigation={navigation} onPress={close} testID='new-server-view-close' /> : undefined,
+	// 		title: I18n.t('Workspaces'),
+	// 		...themedHeader(screenProps.theme)
+	// 	};
+	// }
+
+	static navigationOptions = {
+		title: I18n.t('Workspaces')
+	}
+
 	static propTypes = {
 		navigation: PropTypes.object,
 		theme: PropTypes.string,
@@ -344,19 +358,5 @@ const mapDispatchToProps = dispatch => ({
 	selectServer: server => dispatch(selectServerRequest(server)),
 	appStart: root => dispatch(appStartAction(root))
 });
-
-// static navigationOptions = ({ screenProps, navigation }) => {
-// 	const previousServer = navigation.getParam('previousServer', null);
-// 	const close = navigation.getParam('close', () => {});
-// 	return {
-// 		headerLeft: previousServer ? <CloseModalButton navigation={navigation} onPress={close} testID='new-server-view-close' /> : undefined,
-// 		title: I18n.t('Workspaces'),
-// 		...themedHeader(screenProps.theme)
-// 	};
-// }
-
-NewServerView.navigationOptions = {
-	title: I18n.t('Workspaces')
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(NewServerView));

@@ -99,6 +99,51 @@ const getItemLayout = (data, index) => ({
 const keyExtractor = item => item.rid;
 
 class RoomsListView extends React.Component {
+	static navigationOptions = ({ route, navigation }) => {
+		const searching = route.params?.searching;
+		const cancelSearch = route.params?.cancelSearch ?? (() => {});
+		const onPressItem = route.params?.onPressItem ?? (() => {});
+		const initSearching = route.params?.initSearching ?? (() => {});
+
+		return {
+			headerLeft: () => (searching && isAndroid ? (
+				<CustomHeaderButtons left>
+					<Item
+						title='cancel'
+						iconName='cross'
+						onPress={cancelSearch}
+					/>
+				</CustomHeaderButtons>
+			) : (
+				<DrawerButton
+					navigation={navigation}
+					testID='rooms-list-view-sidebar'
+				/>
+			)),
+			headerTitle: () => <RoomsListHeaderView />,
+			headerRight: () => (searching && isAndroid ? null : (
+				<CustomHeaderButtons>
+					{isAndroid ? (
+						<Item
+							title='search'
+							iconName='magnifier'
+							onPress={initSearching}
+						/>
+					) : null}
+					<Item
+						title='new'
+						iconName='edit-rounded'
+						onPress={() => navigation.navigate('NewMessageStack', {
+							screen: 'NewMessageView',
+							params: { onPressItem }
+						})}
+						testID='rooms-list-view-create-channel'
+					/>
+				</CustomHeaderButtons>
+			))
+		};
+	}
+
 	static propTypes = {
 		navigation: PropTypes.object,
 		user: PropTypes.shape({
@@ -834,50 +879,5 @@ const mapDispatchToProps = dispatch => ({
 	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
 	closeServerDropdown: () => dispatch(closeServerDropdownAction())
 });
-
-RoomsListView.navigationOptions = ({ route, navigation }) => {
-	const searching = route.params?.searching;
-	const cancelSearch = route.params?.cancelSearch ?? (() => {});
-	const onPressItem = route.params?.onPressItem ?? (() => {});
-	const initSearching = route.params?.initSearching ?? (() => {});
-
-	return {
-		headerLeft: () => (searching && isAndroid ? (
-			<CustomHeaderButtons left>
-				<Item
-					title='cancel'
-					iconName='cross'
-					onPress={cancelSearch}
-				/>
-			</CustomHeaderButtons>
-		) : (
-			<DrawerButton
-				navigation={navigation}
-				testID='rooms-list-view-sidebar'
-			/>
-		)),
-		headerTitle: () => <RoomsListHeaderView />,
-		headerRight: () => (searching && isAndroid ? null : (
-			<CustomHeaderButtons>
-				{isAndroid ? (
-					<Item
-						title='search'
-						iconName='magnifier'
-						onPress={initSearching}
-					/>
-				) : null}
-				<Item
-					title='new'
-					iconName='edit-rounded'
-					onPress={() => navigation.navigate('NewMessageStack', {
-						screen: 'NewMessageView',
-						params: { onPressItem }
-					})}
-					testID='rooms-list-view-create-channel'
-				/>
-			</CustomHeaderButtons>
-		))
-	};
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(withSplit(RoomsListView)));

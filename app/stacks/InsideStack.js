@@ -68,7 +68,7 @@ const ChatsStack = () => {
 				component={RoomView}
 				options={RoomView.navigationOptions}
 			/>
-			{/* <Chats.Screen
+			<Chats.Screen
 				name='RoomActionsView'
 				component={RoomActionsView}
 				options={RoomActionsView.navigationOptions}
@@ -142,7 +142,7 @@ const ChatsStack = () => {
 				name='ReadReceiptsView'
 				component={ReadReceiptsView}
 				options={ReadReceiptsView.navigationOptions}
-			/> */}
+			/>
 		</Chats.Navigator>
 	);
 };

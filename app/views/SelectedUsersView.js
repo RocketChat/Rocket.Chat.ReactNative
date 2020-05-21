@@ -19,7 +19,6 @@ import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
-import { themedHeader } from '../utils/navigation';
 import { getUserSelector } from '../selectors/login';
 import {
 	reset as resetAction,
@@ -36,14 +35,13 @@ const styles = StyleSheet.create({
 });
 
 class SelectedUsersView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const title = navigation.getParam('title', I18n.t('Select_Users'));
-		const buttonText = navigation.getParam('buttonText', I18n.t('Next'));
-		const showButton = navigation.getParam('showButton', false);
-		const maxUsers = navigation.getParam('maxUsers');
-		const nextAction = navigation.getParam('nextAction', () => {});
+	static navigationOptions = ({ route }) => {
+		const title = route.params?.title ?? I18n.t('Select_Users');
+		const buttonText = route.params?.buttonText ?? I18n.t('Next');
+		const showButton = route.params?.showButton ?? false;
+		const maxUsers = route.params?.maxUsers;
+		const nextAction = route.params?.nextAction ?? (() => {});
 		return {
-			...themedHeader(screenProps.theme),
 			title,
 			headerRight: (
 				(!maxUsers || showButton) && (
@@ -69,6 +67,7 @@ class SelectedUsersView extends React.Component {
 			name: PropTypes.string
 		}),
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		theme: PropTypes.string
 	};
 
@@ -76,7 +75,7 @@ class SelectedUsersView extends React.Component {
 		super(props);
 		this.init();
 
-		const maxUsers = props.navigation.getParam('maxUsers');
+		const maxUsers = props.route.params?.maxUsers;
 		this.state = {
 			maxUsers,
 			search: [],

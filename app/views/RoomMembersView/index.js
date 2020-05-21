@@ -21,7 +21,6 @@ import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import { themes } from '../../constants/colors';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -29,13 +28,12 @@ import SafeAreaView from '../../containers/SafeAreaView';
 const PAGE_SIZE = 25;
 
 class RoomMembersView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const toggleStatus = navigation.getParam('toggleStatus', () => {});
-		const allUsers = navigation.getParam('allUsers');
+	static navigationOptions = ({ route }) => {
+		const toggleStatus = route.params?.toggleStatus ?? (() => {});
+		const allUsers = route.params?.allUsers;
 		const toggleText = allUsers ? I18n.t('Online') : I18n.t('All');
 		return {
 			title: I18n.t('Members'),
-			...themedHeader(screenProps.theme),
 			headerRight: (
 				<CustomHeaderButtons>
 					<Item title={toggleText} onPress={toggleStatus} testID='room-members-view-toggle-status' />
@@ -46,6 +44,7 @@ class RoomMembersView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		rid: PropTypes.string,
 		members: PropTypes.array,
 		baseUrl: PropTypes.string,
@@ -63,8 +62,8 @@ class RoomMembersView extends React.Component {
 		this.CANCEL_INDEX = 0;
 		this.MUTE_INDEX = 1;
 		this.actionSheetOptions = [''];
-		const { rid } = props.navigation.state.params;
-		const room = props.navigation.getParam('room');
+		const rid = props.route.params?.rid;
+		const room = props.route.params?.room;
 		this.state = {
 			isLoading: false,
 			allUsers: false,

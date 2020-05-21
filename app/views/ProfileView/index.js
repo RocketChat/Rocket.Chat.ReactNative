@@ -29,13 +29,11 @@ import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 
 class ProfileView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => ({
-		...themedHeader(screenProps.theme),
+	static navigationOptions = ({ navigation }) => ({
 		// headerLeft: screenProps.split ? (
 		// 	<HeaderBackButton
 		// 		onPress={() => navigation.navigate('SettingsView')}
@@ -44,6 +42,7 @@ class ProfileView extends React.Component {
 		// ) : (
 		// 	<DrawerButton navigation={navigation} />
 		// ),
+		headerLeft: () => <DrawerButton navigation={navigation} />,
 		title: I18n.t('Profile')
 	})
 

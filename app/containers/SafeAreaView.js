@@ -6,17 +6,19 @@ import { themes } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	view: {
-		flex: 1,
+		flex: 1
+	},
+	vertical: {
 		paddingTop: 0,
 		paddingBottom: 0
 	}
 });
 
 const SafeAreaView = React.memo(({
-	style, children, testID, theme, ...props
+	style, children, testID, theme, vertical = true, ...props
 }) => (
 	<SafeAreaContext
-		style={[styles.view, { backgroundColor: themes[theme].auxiliaryBackground }, style]}
+		style={[styles.view, vertical && styles.vertical, { backgroundColor: themes[theme].auxiliaryBackground }, style]}
 		testID={testID}
 		{...props}
 	>
@@ -27,6 +29,7 @@ const SafeAreaView = React.memo(({
 SafeAreaView.propTypes = {
 	testID: PropTypes.string,
 	theme: PropTypes.string,
+	vertical: PropTypes.bool,
 	style: PropTypes.object,
 	children: PropTypes.element
 };

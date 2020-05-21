@@ -14,26 +14,25 @@ import SearchBox from '../../containers/SearchBox';
 import { CustomIcon } from '../../lib/Icons';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-import { CloseModalButton } from '../../containers/HeaderButton';
+// import { CloseModalButton } from '../../containers/HeaderButton';
 import debounce from '../../utils/debounce';
 import log from '../../utils/log';
 import Options from './Options';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
 import styles from './styles';
-import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 
 class DirectoryView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
+	static navigationOptions = () => {
 		const options = {
-			...themedHeader(screenProps.theme),
 			title: I18n.t('Directory')
 		};
-		if (screenProps.split) {
-			options.headerLeft = <CloseModalButton navigation={navigation} testID='directory-view-close' />;
-		}
+		// TODO: ?
+		// if (screenProps.split) {
+		// 	options.headerLeft = <CloseModalButton navigation={navigation} testID='directory-view-close' />;
+		// }
 		return options;
 	}
 

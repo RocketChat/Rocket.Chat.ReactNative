@@ -11,11 +11,13 @@ import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
-import { themedHeader } from '../utils/navigation';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
-import { LegalButton } from '../containers/HeaderButton';
 
 class ForgotPasswordView extends React.Component {
+	static navigatonOptions = ({ route }) => ({
+		title: route.params.title
+	})
+
 	static propTypes = {
 		navigation: PropTypes.object,
 		theme: PropTypes.string
@@ -106,9 +108,5 @@ class ForgotPasswordView extends React.Component {
 		);
 	}
 }
-
-ForgotPasswordView.navigatonOptions = ({ route }) => ({
-	title: route.params.title
-});
 
 export default withTheme(ForgotPasswordView);

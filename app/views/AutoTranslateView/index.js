@@ -14,7 +14,6 @@ import Separator from '../../containers/Separator';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 
 const styles = StyleSheet.create({
@@ -49,20 +48,19 @@ SectionSeparator.propTypes = {
 };
 
 class AutoTranslateView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Auto_Translate'),
-		...themedHeader(screenProps.theme)
-	})
+	static navigationOptions = {
+		title: I18n.t('Auto_Translate')
+	}
 
 	static propTypes = {
-		navigation: PropTypes.object,
+		route: PropTypes.object,
 		theme: PropTypes.string
 	}
 
 	constructor(props) {
 		super(props);
-		this.rid = props.navigation.getParam('rid');
-		const room = props.navigation.getParam('room');
+		this.rid = props.route.params?.rid;
+		const room = props.route.params?.room;
 
 		if (room && room.observe) {
 			this.roomObservable = room.observe();

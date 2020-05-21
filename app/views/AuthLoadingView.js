@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default React.memo(withTheme(({ theme, navigation }) => {
-	const text = navigation.getParam('text');
+export default React.memo(withTheme(({ theme, route }) => {
+	const text = route.params?.text;
 	return (
 		<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
 			<StatusBar theme={theme} />

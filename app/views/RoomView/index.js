@@ -71,6 +71,67 @@ const stateAttrsUpdate = [
 const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement', 'sysMes', 'topic', 'name', 'fname', 'roles', 'bannerClosed', 'visitor'];
 
 class RoomView extends React.Component {
+	static navigationOptions = ({ navigation, route }) => {
+		const rid = route.params?.rid ?? null;
+		const prid = route.params?.prid;
+		const title = route.params?.name;
+		const subtitle = route.params?.subtitle;
+		const t = route.params?.t;
+		const tmid = route.params?.tmid;
+		const baseUrl = route.params?.baseUrl;
+		const userId = route.params?.userId;
+		const token = route.params?.token;
+		const avatar = route.params?.avatar;
+		const toggleFollowThread = route.params?.toggleFollowThread ?? (() => {});
+		const goRoomActionsView = route.params?.goRoomActionsView ?? (() => {});
+		const unreadsCount = route.params?.unreadsCount ?? null;
+		const roomUserId = route.params?.roomUserId;
+		const visitor = route.params?.visitor;
+		if (!rid) {
+			return {};
+		}
+		return {
+			headerTitle: () => (
+				<RoomHeaderView
+					rid={rid}
+					prid={prid}
+					tmid={tmid}
+					title={title}
+					subtitle={subtitle}
+					type={t}
+					widthOffset={tmid ? 95 : 130}
+					roomUserId={roomUserId}
+					visitor={visitor}
+					goRoomActionsView={goRoomActionsView}
+				/>
+			),
+			headerRight: () => (
+				<RightButtons
+					rid={rid}
+					tmid={tmid}
+					t={t}
+					navigation={navigation}
+					toggleFollowThread={toggleFollowThread}
+				/>
+			),
+			headerLeft: () => (
+				<RoomHeaderLeft
+					tmid={tmid}
+					unreadsCount={unreadsCount}
+					navigation={navigation}
+					baseUrl={baseUrl}
+					userId={userId}
+					token={token}
+					title={avatar}
+					theme='light' // TODO: ?
+					t={t}
+					goRoomActionsView={goRoomActionsView}
+					split={false} // TODO: ?
+				/>
+			)
+		};
+	}
+
 	static propTypes = {
 		navigation: PropTypes.object,
 		route: PropTypes.object,
@@ -1016,66 +1077,5 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 });
-
-RoomView.navigationOptions = ({ navigation, route }) => {
-	const rid = route.params?.rid ?? null;
-	const prid = route.params?.prid;
-	const title = route.params?.name;
-	const subtitle = route.params?.subtitle;
-	const t = route.params?.t;
-	const tmid = route.params?.tmid;
-	const baseUrl = route.params?.baseUrl;
-	const userId = route.params?.userId;
-	const token = route.params?.token;
-	const avatar = route.params?.avatar;
-	const toggleFollowThread = route.params?.toggleFollowThread ?? (() => {});
-	const goRoomActionsView = route.params?.goRoomActionsView ?? (() => {});
-	const unreadsCount = route.params?.unreadsCount ?? null;
-	const roomUserId = route.params?.roomUserId;
-	const visitor = route.params?.visitor;
-	if (!rid) {
-		return {};
-	}
-	return {
-		headerTitle: () => (
-			<RoomHeaderView
-				rid={rid}
-				prid={prid}
-				tmid={tmid}
-				title={title}
-				subtitle={subtitle}
-				type={t}
-				widthOffset={tmid ? 95 : 130}
-				roomUserId={roomUserId}
-				visitor={visitor}
-				goRoomActionsView={goRoomActionsView}
-			/>
-		),
-		headerRight: () => (
-			<RightButtons
-				rid={rid}
-				tmid={tmid}
-				t={t}
-				navigation={navigation}
-				toggleFollowThread={toggleFollowThread}
-			/>
-		),
-		headerLeft: () => (
-			<RoomHeaderLeft
-				tmid={tmid}
-				unreadsCount={unreadsCount}
-				navigation={navigation}
-				baseUrl={baseUrl}
-				userId={userId}
-				token={token}
-				title={avatar}
-				theme='light' // TODO: ?
-				t={t}
-				goRoomActionsView={goRoomActionsView}
-				split={false} // TODO: ?
-			/>
-		)
-	};
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RoomView));

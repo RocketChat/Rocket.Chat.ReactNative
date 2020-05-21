@@ -53,14 +53,10 @@ const styles = StyleSheet.create({
 });
 
 class RegisterView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const title = navigation.getParam('title', 'Rocket.Chat');
-		return {
-			...themedHeader(screenProps.theme),
-			title,
-			headerRight: <LegalButton navigation={navigation} testID='register-view-more' />
-		};
-	}
+	static navigatonOptions = ({ route, navigation }) => ({
+		title: route.params.title,
+		headerRight: () => <LegalButton testID='register-view-more' navigation={navigation} />
+	});
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -340,11 +336,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	loginRequest: params => dispatch(loginRequestAction(params))
-});
-
-RegisterView.navigatonOptions = ({ route, navigation }) => ({
-	title: route.params.title,
-	headerRight: () => <LegalButton testID='register-view-more' navigation={navigation} />
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RegisterView));
