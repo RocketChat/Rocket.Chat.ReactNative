@@ -1041,21 +1041,20 @@ RoomView.navigationOptions = ({ navigation, route }) => {
 		return {};
 	}
 	return {
-		// headerTitle: (
-		// 	<RoomHeaderView
-		// 		rid={rid}
-		// 		prid={prid}
-		// 		tmid={tmid}
-		// 		title={title}
-		// 		subtitle={subtitle}
-		// 		type={t}
-		// 		widthOffset={tmid ? 95 : 130}
-		// 		roomUserId={roomUserId}
-		// 		visitor={visitor}
-		// 		goRoomActionsView={goRoomActionsView}
-		// 	/>
-		// ),
-		title: 'asdahsdohia',
+		headerTitle: () => (
+			<RoomHeaderView
+				rid={rid}
+				prid={prid}
+				tmid={tmid}
+				title={title}
+				subtitle={subtitle}
+				type={t}
+				widthOffset={tmid ? 95 : 130}
+				roomUserId={roomUserId}
+				visitor={visitor}
+				goRoomActionsView={goRoomActionsView}
+			/>
+		),
 		headerRight: () => (
 			<RightButtons
 				rid={rid}
@@ -1065,21 +1064,21 @@ RoomView.navigationOptions = ({ navigation, route }) => {
 				toggleFollowThread={toggleFollowThread}
 			/>
 		),
-		// headerLeft: () => (
-		// 	<RoomHeaderLeft
-		// 		tmid={tmid}
-		// 		unreadsCount={unreadsCount}
-		// 		navigation={navigation}
-		// 		baseUrl={baseUrl}
-		// 		userId={userId}
-		// 		token={token}
-		// 		title={avatar}
-		// 		theme='light' // TODO: ?
-		// 		t={t}
-		// 		goRoomActionsView={goRoomActionsView}
-		// 		split={false} // TODO: ?
-		// 	/>
-		// )
+		headerLeft: () => (
+			<RoomHeaderLeft
+				tmid={tmid}
+				unreadsCount={unreadsCount}
+				navigation={navigation}
+				baseUrl={baseUrl}
+				userId={userId}
+				token={token}
+				title={avatar}
+				theme='light' // TODO: ?
+				t={t}
+				goRoomActionsView={goRoomActionsView}
+				split={false} // TODO: ?
+			/>
+		)
 	};
 };
 

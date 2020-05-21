@@ -18,7 +18,8 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		marginRight: isAndroid ? 15 : 5,
-		marginLeft: isAndroid ? androidMarginLeft : -10
+		marginLeft: isAndroid ? androidMarginLeft : -10,
+		justifyContent: 'center'
 	},
 	titleContainer: {
 		alignItems: 'center',
