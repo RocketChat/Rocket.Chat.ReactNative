@@ -63,6 +63,11 @@ const ChatsStack = () => {
 				component={RoomsListView}
 				options={RoomsListView.navigationOptions}
 			/>
+			<Chats.Screen
+				name='RoomView'
+				component={RoomView}
+				options={RoomView.navigationOptions}
+			/>
 			{/* <Chats.Screen
 				name='RoomActionsView'
 				component={RoomActionsView}
@@ -122,11 +127,6 @@ const ChatsStack = () => {
 				name='NotificationPrefView'
 				component={NotificationPrefView}
 				options={NotificationPrefView.navigationOptions}
-			/>
-			<Chats.Screen
-				name='RoomView'
-				component={RoomView}
-				options={RoomView.navigationOptions}
 			/>
 			<Chats.Screen
 				name='ThreadMessagesView'

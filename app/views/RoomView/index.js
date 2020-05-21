@@ -72,72 +72,9 @@ const stateAttrsUpdate = [
 const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement', 'sysMes', 'topic', 'name', 'fname', 'roles', 'bannerClosed', 'visitor'];
 
 class RoomView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const rid = navigation.getParam('rid', null);
-		const prid = navigation.getParam('prid');
-		const title = navigation.getParam('name');
-		const subtitle = navigation.getParam('subtitle');
-		const t = navigation.getParam('t');
-		const tmid = navigation.getParam('tmid');
-		const baseUrl = navigation.getParam('baseUrl');
-		const userId = navigation.getParam('userId');
-		const token = navigation.getParam('token');
-		const avatar = navigation.getParam('avatar');
-		const toggleFollowThread = navigation.getParam('toggleFollowThread', () => {});
-		const goRoomActionsView = navigation.getParam('goRoomActionsView', () => {});
-		const unreadsCount = navigation.getParam('unreadsCount', null);
-		const roomUserId = navigation.getParam('roomUserId');
-		const visitor = navigation.getParam('visitor');
-		if (!rid) {
-			return {
-				...themedHeader(screenProps.theme)
-			};
-		}
-		return {
-			...themedHeader(screenProps.theme),
-			headerTitle: (
-				<RoomHeaderView
-					rid={rid}
-					prid={prid}
-					tmid={tmid}
-					title={title}
-					subtitle={subtitle}
-					type={t}
-					widthOffset={tmid ? 95 : 130}
-					roomUserId={roomUserId}
-					visitor={visitor}
-					goRoomActionsView={goRoomActionsView}
-				/>
-			),
-			headerRight: (
-				<RightButtons
-					rid={rid}
-					tmid={tmid}
-					t={t}
-					navigation={navigation}
-					toggleFollowThread={toggleFollowThread}
-				/>
-			),
-			headerLeft: (
-				<RoomHeaderLeft
-					tmid={tmid}
-					unreadsCount={unreadsCount}
-					navigation={navigation}
-					baseUrl={baseUrl}
-					userId={userId}
-					token={token}
-					title={avatar}
-					theme={screenProps.theme}
-					t={t}
-					goRoomActionsView={goRoomActionsView}
-					split={screenProps.split}
-				/>
-			)
-		};
-	}
-
 	static propTypes = {
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
 			username: PropTypes.string.isRequired,
@@ -161,15 +98,15 @@ class RoomView extends React.Component {
 		super(props);
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
-		this.rid = props.navigation.getParam('rid');
-		this.t = props.navigation.getParam('t');
-		this.tmid = props.navigation.getParam('tmid', null);
-		const room = props.navigation.getParam('room');
-		const selectedMessage = props.navigation.getParam('message');
-		const name = props.navigation.getParam('name');
-		const fname = props.navigation.getParam('fname');
-		const search = props.navigation.getParam('search');
-		const prid = props.navigation.getParam('prid');
+		this.rid = props.route.params?.rid;
+		this.t = props.route.params?.t;
+		this.tmid = props.route.params?.tmid;
+		const room = props.route.params?.room;
+		const selectedMessage = props.route.params?.message;
+		const name = props.route.params?.name;
+		const fname = props.route.params?.fname;
+		const search = props.route.params?.search;
+		const prid = props.route.params?.prid;
 		this.state = {
 			joined: true,
 			room: room || {
@@ -613,9 +550,9 @@ class RoomView extends React.Component {
 			.observeWithColumns(['unread']);
 
 		this.queryUnreads = observable.subscribe((data) => {
-			const { navigation } = this.props;
+			const { navigation, route } = this.props;
 			const unreadsCount = data.filter(s => s.unread > 0).reduce((a, b) => a + (b.unread || 0), 0);
-			if (unreadsCount !== navigation.getParam('unreadsCount')) {
+			if (unreadsCount !== route.params?.unreadsCount) {
 				navigation.setParams({
 					unreadsCount
 				});
@@ -1083,5 +1020,67 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 });
+
+RoomView.navigationOptions = ({ navigation, route }) => {
+	const rid = route.params?.rid ?? null;
+	const prid = route.params?.prid;
+	const title = route.params?.name;
+	const subtitle = route.params?.subtitle;
+	const t = route.params?.t;
+	const tmid = route.params?.tmid;
+	const baseUrl = route.params?.baseUrl;
+	const userId = route.params?.userId;
+	const token = route.params?.token;
+	const avatar = route.params?.avatar;
+	const toggleFollowThread = route.params?.toggleFollowThread ?? (() => {});
+	const goRoomActionsView = route.params?.goRoomActionsView ?? (() => {});
+	const unreadsCount = route.params?.unreadsCount ?? null;
+	const roomUserId = route.params?.roomUserId;
+	const visitor = route.params?.visitor;
+	if (!rid) {
+		return {};
+	}
+	return {
+		// headerTitle: (
+		// 	<RoomHeaderView
+		// 		rid={rid}
+		// 		prid={prid}
+		// 		tmid={tmid}
+		// 		title={title}
+		// 		subtitle={subtitle}
+		// 		type={t}
+		// 		widthOffset={tmid ? 95 : 130}
+		// 		roomUserId={roomUserId}
+		// 		visitor={visitor}
+		// 		goRoomActionsView={goRoomActionsView}
+		// 	/>
+		// ),
+		title: 'asdahsdohia',
+		headerRight: () => (
+			<RightButtons
+				rid={rid}
+				tmid={tmid}
+				t={t}
+				navigation={navigation}
+				toggleFollowThread={toggleFollowThread}
+			/>
+		),
+		// headerLeft: () => (
+		// 	<RoomHeaderLeft
+		// 		tmid={tmid}
+		// 		unreadsCount={unreadsCount}
+		// 		navigation={navigation}
+		// 		baseUrl={baseUrl}
+		// 		userId={userId}
+		// 		token={token}
+		// 		title={avatar}
+		// 		theme='light' // TODO: ?
+		// 		t={t}
+		// 		goRoomActionsView={goRoomActionsView}
+		// 		split={false} // TODO: ?
+		// 	/>
+		// )
+	};
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RoomView));
