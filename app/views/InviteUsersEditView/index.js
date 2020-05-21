@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView, View } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import { ScrollView, View, SafeAreaView } from 'react-native';
+// import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
 

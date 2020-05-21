@@ -1,14 +1,12 @@
 import React from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
-import { NavigationActions, StackActions } from 'react-navigation';
+import { NavigationActions, StackActions } from '@react-navigation/native';
 import KeyCommands from 'react-native-keycommands';
 
 import Navigation from './lib/Navigation';
 import { isSplited } from './utils/deviceInfo';
-import {
-	App, RoomContainer, ModalContainer, NotificationContainer
-} from './index.js';
+import { App } from './index';
 import { MAX_SIDEBAR_WIDTH } from './constants/tablet';
 import ModalNavigation from './lib/ModalNavigation';
 import { keyCommands, defaultCommands } from './commands';
@@ -24,61 +22,61 @@ export const initTabletNav = (setState) => {
 	let inCall = false;
 
 	const defaultApp = App.router.getStateForAction;
-	const defaultModal = ModalContainer.router.getStateForAction;
-	const defaultRoom = RoomContainer.router.getStateForAction;
-	const defaultNotification = NotificationContainer.router.getStateForAction;
+	// const defaultModal = ModalContainer.router.getStateForAction;
+	// const defaultRoom = RoomContainer.router.getStateForAction;
+	// const defaultNotification = NotificationContainer.router.getStateForAction;
 
-	NotificationContainer.router.getStateForAction = (action, state) => {
-		if (action.type === NavigationActions.NAVIGATE && isSplited()) {
-			const { routeName, params } = action;
-			if (routeName === 'RoomView') {
-				const resetAction = StackActions.reset({
-					index: 0,
-					actions: [NavigationActions.navigate({ routeName, params })]
-				});
-				roomRef.dispatch(resetAction);
-			}
-		}
-		return defaultNotification(action, state);
-	};
+	// NotificationContainer.router.getStateForAction = (action, state) => {
+	// 	if (action.type === NavigationActions.NAVIGATE && isSplited()) {
+	// 		const { routeName, params } = action;
+	// 		if (routeName === 'RoomView') {
+	// 			const resetAction = StackActions.reset({
+	// 				index: 0,
+	// 				actions: [NavigationActions.navigate({ routeName, params })]
+	// 			});
+	// 			roomRef.dispatch(resetAction);
+	// 		}
+	// 	}
+	// 	return defaultNotification(action, state);
+	// };
 
-	RoomContainer.router.getStateForAction = (action, state) => {
-		if (action.type === NavigationActions.NAVIGATE && isSplited()) {
-			const { routeName, params } = action;
-			if (routeName === 'RoomActionsView') {
-				modalRef.dispatch(NavigationActions.navigate({ routeName, params }));
-				setState({ showModal: true });
-				return null;
-			}
-			if (routeName === 'AttachmentView') {
-				modalRef.dispatch(NavigationActions.navigate({ routeName, params }));
-				setState({ showModal: true });
-				return null;
-			}
-		}
-		if (action.type === 'Navigation/RESET' && isSplited()) {
-			const { params } = action.actions[action.index];
-			const routes = state.routes[state.index] && state.routes[state.index].params;
-			if (params && params.rid && routes && routes.rid && params.rid === routes.rid) {
-				return null;
-			}
-		}
-		return defaultRoom(action, state);
-	};
+	// RoomContainer.router.getStateForAction = (action, state) => {
+	// 	if (action.type === NavigationActions.NAVIGATE && isSplited()) {
+	// 		const { routeName, params } = action;
+	// 		if (routeName === 'RoomActionsView') {
+	// 			modalRef.dispatch(NavigationActions.navigate({ routeName, params }));
+	// 			setState({ showModal: true });
+	// 			return null;
+	// 		}
+	// 		if (routeName === 'AttachmentView') {
+	// 			modalRef.dispatch(NavigationActions.navigate({ routeName, params }));
+	// 			setState({ showModal: true });
+	// 			return null;
+	// 		}
+	// 	}
+	// 	if (action.type === 'Navigation/RESET' && isSplited()) {
+	// 		const { params } = action.actions[action.index];
+	// 		const routes = state.routes[state.index] && state.routes[state.index].params;
+	// 		if (params && params.rid && routes && routes.rid && params.rid === routes.rid) {
+	// 			return null;
+	// 		}
+	// 	}
+	// 	return defaultRoom(action, state);
+	// };
 
-	ModalContainer.router.getStateForAction = (action, state) => {
-		if (action.type === 'Navigation/POP' && isSplited()) {
-			modalRef.dispatch(NavigationActions.navigate({ routeName: 'AuthLoading' }));
-			setState({ showModal: false });
-		}
-		if (action.type === NavigationActions.NAVIGATE && isSplited()) {
-			const { routeName, params } = action;
-			if (routeName === 'RoomView') {
-				Navigation.navigate(routeName, params);
-			}
-		}
-		return defaultModal(action, state);
-	};
+	// ModalContainer.router.getStateForAction = (action, state) => {
+	// 	if (action.type === 'Navigation/POP' && isSplited()) {
+	// 		modalRef.dispatch(NavigationActions.navigate({ routeName: 'AuthLoading' }));
+	// 		setState({ showModal: false });
+	// 	}
+	// 	if (action.type === NavigationActions.NAVIGATE && isSplited()) {
+	// 		const { routeName, params } = action;
+	// 		if (routeName === 'RoomView') {
+	// 			Navigation.navigate(routeName, params);
+	// 		}
+	// 	}
+	// 	return defaultModal(action, state);
+	// };
 
 	App.router.getStateForAction = (action, state) => {
 		if (action.type === NavigationActions.NAVIGATE) {
@@ -108,15 +106,16 @@ export const initTabletNav = (setState) => {
 					KeyCommands.deleteKeyCommands([...defaultCommands, ...keyCommands]);
 					setState({ inside: false, showModal: false });
 				}
-				if (routeName === 'OnboardingView' || routeName === 'NewServerView') {
+				if (routeName === 'OnboardingView') {
 					KeyCommands.deleteKeyCommands([...defaultCommands, ...keyCommands]);
 					setState({ inside: false, showModal: false });
 				}
-				if (routeName === 'ModalBlockView' || routeName === 'StatusView' || routeName === 'CreateDiscussionView') {
+				if (routeName === 'ModalBlockView') {
 					modalRef.dispatch(NavigationActions.navigate({ routeName, params }));
 					setState({ showModal: true });
 					return null;
 				}
+
 				if (routeName === 'RoomView') {
 					const resetAction = StackActions.reset({
 						index: 0,
@@ -171,9 +170,9 @@ const Split = ({
 		return (
 			<>
 				<View style={[sharedStyles.container, sharedStyles.separatorLeft, { borderColor: themes[theme].separatorColor }]}>
-					<RoomContainer ref={ref => roomRef = ref} screenProps={{ split: tablet, theme }} />
+					<App ref={ref => roomRef = ref} />
 				</View>
-				<ModalContainer showModal={showModal} closeModal={closeModal} ref={setModalRef} screenProps={{ split: tablet, theme }} />
+				{/* <ModalContainer showModal={showModal} closeModal={closeModal} ref={setModalRef} /> */}
 			</>
 		);
 	}
@@ -195,7 +194,7 @@ const Tablet = ({
 				{children}
 			</View>
 			<Split split={split} tablet={tablet} theme={theme} showModal={showModal} closeModal={closeModal} setModalRef={setModalRef} />
-			<NotificationContainer ref={ref => notificationRef = ref} screenProps={{ theme }} />
+			{/* <NotificationContainer ref={ref => notificationRef = ref} /> */}
 		</View>
 	);
 };

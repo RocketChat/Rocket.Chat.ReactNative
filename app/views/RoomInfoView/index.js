@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, SafeAreaView } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
+// import { SafeAreaView } from 'react-navigation';
 import UAParser from 'ua-parser-js';
 import _ from 'lodash';
 

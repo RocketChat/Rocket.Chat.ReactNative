@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Share, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import { View, Share, ScrollView, SafeAreaView } from 'react-native';
+// import { SafeAreaView } from 'react-navigation';
 import moment from 'moment';
 import { connect } from 'react-redux';
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, ScrollView, View, StyleSheet
+	Text, ScrollView, View, StyleSheet, SafeAreaView
 } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+// import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import Touch from '../utils/touch';

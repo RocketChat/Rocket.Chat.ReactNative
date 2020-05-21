@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, Keyboard } from 'react-native';
+import { View, ScrollView, Keyboard, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import prompt from 'react-native-prompt-android';
 import SHA256 from 'js-sha256';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
-import { SafeAreaView } from 'react-navigation';
-import { HeaderBackButton } from 'react-navigation-stack';
+// import { SafeAreaView } from 'react-navigation';
+// import { HeaderBackButton } from 'react-navigation-stack';
 import equal from 'deep-equal';
 
 import Touch from '../../utils/touch';
@@ -36,14 +36,14 @@ import { getUserSelector } from '../../selectors/login';
 class ProfileView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => ({
 		...themedHeader(screenProps.theme),
-		headerLeft: screenProps.split ? (
-			<HeaderBackButton
-				onPress={() => navigation.navigate('SettingsView')}
-				tintColor={themes[screenProps.theme].headerTintColor}
-			/>
-		) : (
-			<DrawerButton navigation={navigation} />
-		),
+		// headerLeft: screenProps.split ? (
+		// 	<HeaderBackButton
+		// 		onPress={() => navigation.navigate('SettingsView')}
+		// 		tintColor={themes[screenProps.theme].headerTintColor}
+		// 	/>
+		// ) : (
+		// 	<DrawerButton navigation={navigation} />
+		// ),
 		title: I18n.t('Profile')
 	})
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Switch, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import { StyleSheet, Switch, ScrollView, SafeAreaView } from 'react-native';
+// import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import I18n from '../i18n';

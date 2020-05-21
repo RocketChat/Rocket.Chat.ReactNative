@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	FlatList, View, Text, InteractionManager
+	FlatList, View, Text, InteractionManager, SafeAreaView
 } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
+// import { SafeAreaView } from 'react-navigation';
 import moment from 'moment';
 import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';

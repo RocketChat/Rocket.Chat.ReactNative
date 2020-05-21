@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, SectionList, Text, Alert, Share
+	View, SectionList, Text, Alert, Share, SafeAreaView
 } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
+// import { SafeAreaView } from 'react-navigation';
 import _ from 'lodash';
 
 import Touch from '../../utils/touch';

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
-import { HeaderBackButton } from 'react-navigation-stack';
+// import { HeaderBackButton } from 'react-navigation-stack';
 
 import { isIOS } from '../../../utils/deviceInfo';
 import { themes } from '../../../constants/colors';
@@ -18,14 +18,15 @@ const RoomHeaderLeft = ({
 	tmid, unreadsCount, navigation, baseUrl, userId, token, title, t, theme, goRoomActionsView, split
 }) => {
 	if (!split || tmid) {
-		return (
-			<HeaderBackButton
-				title={unreadsCount > 999 ? '+999' : unreadsCount || ' '}
-				backTitleVisible={isIOS}
-				onPress={() => navigation.goBack()}
-				tintColor={themes[theme].headerTintColor}
-			/>
-		);
+		// return (
+		// 	<HeaderBackButton
+		// 		title={unreadsCount > 999 ? '+999' : unreadsCount || ' '}
+		// 		backTitleVisible={isIOS}
+		// 		onPress={() => navigation.goBack()}
+		// 		tintColor={themes[theme].headerTintColor}
+		// 	/>
+		// );
+		return null;
 	}
 	if (baseUrl && userId && token) {
 		return (

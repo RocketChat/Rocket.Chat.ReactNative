@@ -1,7 +1,7 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View, SafeAreaView } from 'react-native';
 import PropTypes from 'prop-types';
-import { SafeAreaView } from 'react-navigation';
+// import { SafeAreaView } from 'react-navigation';
 
 import { themes } from '../constants/colors';
 import sharedStyles from '../views/Styles';

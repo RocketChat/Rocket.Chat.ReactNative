@@ -1,9 +1,9 @@
 import React from 'react';
 import {
-	View, ScrollView, Switch, Text
+	View, ScrollView, Switch, Text, SafeAreaView
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { SafeAreaView } from 'react-navigation';
+// import { SafeAreaView } from 'react-navigation';
 
 import database from '../../lib/database';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';

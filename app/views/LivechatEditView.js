@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Text, StyleSheet, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import { Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
+// import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { withTheme } from '../theme';
