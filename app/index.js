@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Linking } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import { AppearanceProvider } from 'react-native-appearance';
 import { Provider } from 'react-redux';
 import RNUserDefaults from 'rn-user-defaults';
@@ -31,16 +29,7 @@ import {
 import { KEY_COMMAND } from './commands';
 import Tablet, { initTabletNav } from './tablet';
 import { SplitContext } from './split';
-import { defaultHeader, onNavigationStateChange } from './utils/navigation';
-
-// App Stack
-import AuthLoadingView from './views/AuthLoadingView';
-
-// SetUsername Stack
-import SetUsernameView from './views/SetUsernameView';
-
-import OutsideStack from './stacks/OutsideStack';
-import InsideStack from './stacks/InsideStack';
+import AppContainer from './AppContainer';
 
 RNScreens.enableScreens();
 
@@ -56,60 +45,6 @@ const parseDeepLinking = (url) => {
 		}
 	}
 	return null;
-};
-
-// SetUsernameStack
-const SetUsername = createStackNavigator();
-const SetUsernameStack = () => (
-	<SetUsername.Navigator screenOptions={defaultHeader}>
-		<SetUsername.Screen
-			name='SetUsernameView'
-			component={SetUsernameView}
-		/>
-	</SetUsername.Navigator>
-);
-
-const AuthContext = React.createContext();
-
-// App
-const Stack = createStackNavigator();
-export const App = () => {
-	const [loading] = useState(false);
-
-	return (
-		<NavigationContainer
-			ref={(navigatorRef) => {
-				Navigation.setTopLevelNavigator(navigatorRef);
-			}}
-			onNavigationStateChange={onNavigationStateChange}
-		>
-			<AuthContext.Provider value={{}}>
-				<Stack.Navigator screenOptions={{ headerShown: false }}>
-					{loading ? (
-						<Stack.Screen
-							name='AuthLoading'
-							component={AuthLoadingView}
-						/>
-					) : (
-						<>
-							<Stack.Screen
-								name='OutsideStack'
-								component={OutsideStack}
-							/>
-							<Stack.Screen
-								name='InsideStack'
-								component={InsideStack}
-							/>
-							<Stack.Screen
-								name='SetUsernameStack'
-								component={SetUsernameStack}
-							/>
-						</>
-					)}
-				</Stack.Navigator>
-			</AuthContext.Provider>
-		</NavigationContainer>
-	);
 };
 
 export default class Root extends React.Component {
@@ -223,7 +158,7 @@ export default class Root extends React.Component {
 	render() {
 		const { split, themePreferences, theme } = this.state;
 
-		let content = <App />;
+		let content = <AppContainer />;
 
 		if (isTablet) {
 			const { inside, showModal } = this.state;

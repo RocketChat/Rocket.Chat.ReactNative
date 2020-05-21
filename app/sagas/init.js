@@ -113,16 +113,7 @@ const restore = function* restore() {
 	}
 };
 
-const start = function* start({ root, text }) {
-	if (root === 'inside') {
-		yield Navigation.navigate('InsideStack');
-	} else if (root === 'setUsername') {
-		yield Navigation.navigate('SetUsernameStack');
-	} else if (root === 'outside') {
-		yield Navigation.navigate('OutsideStack');
-	} else if (root === 'loading') {
-		yield Navigation.navigate('AuthLoading', { text });
-	}
+const start = function start() {
 	RNBootSplash.hide();
 };
 
