@@ -1,10 +1,12 @@
 import { StyleSheet } from 'react-native';
+import { TransitionPresets } from '@react-navigation/stack';
 
 import { analytics, leaveBreadcrumb } from './log';
 import { themes } from '../constants/colors';
 
 export const defaultHeader = {
-	headerBackTitleVisible: false
+	headerBackTitleVisible: false,
+	...TransitionPresets.SlideFromRightIOS
 };
 
 export const cardStyle = {
