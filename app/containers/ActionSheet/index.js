@@ -80,6 +80,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 					contentContainerStyle={styles.content}
 					ListHeaderComponent={() => <Separator theme={theme} />}
 					ItemSeparatorComponent={() => <Separator theme={theme} />}
+					nestedScrollEnabled
 				/>
 			</Modalize>
 		</>

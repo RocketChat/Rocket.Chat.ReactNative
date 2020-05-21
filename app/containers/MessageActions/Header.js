@@ -57,7 +57,7 @@ HeaderItem.propTypes = {
 };
 
 const HeaderFooter = React.memo(({ handleReaction, theme }) => (
-	<TouchableOpacity onPress={handleReaction} style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+	<TouchableOpacity onPress={() => handleReaction()} style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 		<CustomIcon name='add-reaction' size={24} color={themes[theme].bodyText} />
 	</TouchableOpacity>
 ));

@@ -38,8 +38,6 @@ const MessageActions = forwardRef(({
 	let permissions = {};
 	const { show, hide } = useActionSheet();
 
-	console.log('message', message);
-
 	const getPermissions = async() => {
 		try {
 			const permission = ['edit-message', 'delete-message', 'force-delete-message'];
