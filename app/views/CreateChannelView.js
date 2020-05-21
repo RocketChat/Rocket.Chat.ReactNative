@@ -1,10 +1,9 @@
 import React from 'react';
-import { connect, SafeAreaView } from 'react-redux';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
 	View, Text, Switch, ScrollView, StyleSheet, FlatList
 } from 'react-native';
-// import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
 import TextInput from '../presentation/TextInput';
@@ -23,6 +22,7 @@ import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
 import { Review } from '../utils/review';
 import { getUserSelector } from '../selectors/login';
+import SafeAreaView from '../containers/SafeAreaView';
 
 const styles = StyleSheet.create({
 	container: {
@@ -294,7 +294,7 @@ class CreateChannelView extends React.Component {
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar theme={theme} />
-				<SafeAreaView testID='create-channel-view' style={styles.container} forceInset={{ vertical: 'never' }}>
+				<SafeAreaView testID='create-channel-view' theme={theme}>
 					<ScrollView {...scrollPersistTaps}>
 						<View style={[sharedStyles.separatorVertical, { borderColor: themes[theme].separatorColor }]}>
 							<TextInput

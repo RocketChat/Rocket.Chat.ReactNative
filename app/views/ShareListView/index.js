@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, FlatList, Keyboard, BackHandler, SafeAreaView
+	View, Text, FlatList, Keyboard, BackHandler
 } from 'react-native';
-// import { SafeAreaView } from 'react-navigation';
 import ShareExtension from 'rn-extensions-share';
 import { connect } from 'react-redux';
 import RNFetchBlob from 'rn-fetch-blob';
@@ -30,6 +29,7 @@ import { themes } from '../../constants/colors';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 const LIMIT = 50;
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
@@ -452,7 +452,7 @@ class ShareListView extends React.Component {
 		const { showError } = this.state;
 		const { theme } = this.props;
 		return (
-			<SafeAreaView style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]} forceInset={{ vertical: 'never' }}>
+			<SafeAreaView theme={theme}>
 				<StatusBar theme={theme} />
 				{ showError ? this.renderError() : this.renderContent() }
 			</SafeAreaView>

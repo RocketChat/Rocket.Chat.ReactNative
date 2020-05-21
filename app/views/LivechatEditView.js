@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
-// import { SafeAreaView } from 'react-navigation';
+import { Text, StyleSheet, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 
 import { withTheme } from '../theme';
@@ -18,6 +17,7 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 import { getUserSelector } from '../selectors/login';
 import Chips from '../containers/UIKit/MultiSelect/Chips';
 import Button from '../containers/Button';
+import SafeAreaView from '../containers/SafeAreaView';
 
 const styles = StyleSheet.create({
 	container: {
@@ -149,7 +149,7 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 			keyboardVerticalOffset={128}
 		>
 			<ScrollView {...scrollPersistTaps}>
-				<SafeAreaView style={[sharedStyles.container, styles.container]} forceInset={{ vertical: 'never' }}>
+				<SafeAreaView style={styles.container} theme={theme}>
 					<Title
 						title={visitor?.username}
 						theme={theme}

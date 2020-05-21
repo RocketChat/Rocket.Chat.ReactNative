@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, SectionList, Text, Alert, Share, SafeAreaView
+	View, SectionList, Text, Alert, Share
 } from 'react-native';
 import { connect } from 'react-redux';
-// import { SafeAreaView } from 'react-navigation';
 import _ from 'lodash';
 
 import Touch from '../../utils/touch';
@@ -29,6 +28,7 @@ import { CloseModalButton } from '../../containers/HeaderButton';
 import { getUserSelector } from '../../selectors/login';
 import Markdown from '../../containers/markdown';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 class RoomActionsView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -647,7 +647,7 @@ class RoomActionsView extends React.Component {
 	render() {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView style={styles.container} testID='room-actions-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView testID='room-actions-view' theme={theme}>
 				<StatusBar theme={theme} />
 				<SectionList
 					contentContainerStyle={[styles.contentContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}

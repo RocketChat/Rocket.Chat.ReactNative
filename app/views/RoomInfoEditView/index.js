@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, ScrollView, TouchableOpacity, Keyboard, Alert, SafeAreaView
+	Text, View, ScrollView, TouchableOpacity, Keyboard, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
-// import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 import isEqual from 'lodash/isEqual';
@@ -32,6 +31,7 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { MessageTypeValues } from '../../utils/messageTypes';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 const PERMISSION_SET_READONLY = 'set-readonly';
 const PERMISSION_SET_REACT_WHEN_READONLY = 'set-react-when-readonly';
@@ -354,7 +354,7 @@ class RoomInfoEditView extends React.Component {
 					testID='room-info-edit-view-list'
 					{...scrollPersistTaps}
 				>
-					<SafeAreaView style={sharedStyles.container} testID='room-info-edit-view' forceInset={{ vertical: 'never' }}>
+					<SafeAreaView testID='room-info-edit-view' theme={theme}>
 						<RCTextInput
 							inputRef={(e) => { this.name = e; }}
 							label={I18n.t('Name')}

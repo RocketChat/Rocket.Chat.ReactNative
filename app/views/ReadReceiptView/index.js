@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, Text, SafeAreaView } from 'react-native';
-// import { SafeAreaView } from 'react-navigation';
+import { FlatList, View, Text } from 'react-native';
 import equal from 'deep-equal';
 import moment from 'moment';
 import { connect } from 'react-redux';
@@ -16,6 +15,7 @@ import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import { themes } from '../../constants/colors';
 import { getUserSelector } from '../../selectors/login';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 class ReadReceiptView extends React.Component {
 	static navigationOptions = ({ screenProps }) => ({
@@ -135,11 +135,7 @@ class ReadReceiptView extends React.Component {
 		}
 
 		return (
-			<SafeAreaView
-				style={[styles.container, { backgroundColor: themes[theme].chatComponentBackground }]}
-				forceInset={{ bottom: 'always' }}
-				testID='read-receipt-view'
-			>
+			<SafeAreaView testID='read-receipt-view' theme={theme}>
 				<StatusBar theme={theme} />
 				<View>
 					{loading

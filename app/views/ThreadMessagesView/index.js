@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	FlatList, View, Text, InteractionManager, SafeAreaView
+	FlatList, View, Text, InteractionManager
 } from 'react-native';
 import { connect } from 'react-redux';
-// import { SafeAreaView } from 'react-navigation';
 import moment from 'moment';
 import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
@@ -26,6 +25,7 @@ import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import ModalNavigation from '../../lib/ModalNavigation';
 import { getUserSelector } from '../../selectors/login';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 const Separator = React.memo(({ theme }) => <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />);
 Separator.propTypes = {
@@ -331,7 +331,7 @@ class ThreadMessagesView extends React.Component {
 		}
 
 		return (
-			<SafeAreaView style={styles.list} testID='thread-messages-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView testID='thread-messages-view' theme={theme}>
 				<StatusBar theme={theme} />
 				<FlatList
 					data={messages}

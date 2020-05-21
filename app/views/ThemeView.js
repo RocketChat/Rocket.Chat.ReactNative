@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	FlatList, Text, View, StyleSheet, SafeAreaView
+	FlatList, Text, View, StyleSheet
 } from 'react-native';
-// import { SafeAreaView } from 'react-navigation';
 import RNUserDefaults from 'rn-user-defaults';
 
 import I18n from '../i18n';
@@ -17,6 +16,7 @@ import ListItem from '../containers/ListItem';
 import { CustomIcon } from '../lib/Icons';
 import { THEME_PREFERENCES_KEY } from '../lib/rocketchat';
 import { supportSystemTheme } from '../utils/deviceInfo';
+import SafeAreaView from '../containers/SafeAreaView';
 
 const THEME_GROUP = 'THEME_GROUP';
 const DARK_GROUP = 'DARK_GROUP';
@@ -167,11 +167,7 @@ class ThemeView extends React.Component {
 	render() {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView
-				style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
-				forceInset={{ vertical: 'never' }}
-				testID='theme-view'
-			>
+			<SafeAreaView testID='theme-view' theme={theme}>
 				<StatusBar theme={theme} />
 				<FlatList
 					data={THEMES}

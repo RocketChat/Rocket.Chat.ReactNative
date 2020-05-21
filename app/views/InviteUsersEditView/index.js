@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView, View, SafeAreaView } from 'react-native';
-// import { SafeAreaView } from 'react-navigation';
+import { ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -19,6 +18,7 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import Separator from '../../containers/Separator';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 const OPTIONS = {
 	days: [{
@@ -111,7 +111,7 @@ class InviteUsersView extends React.Component {
 	render() {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]} forceInset={{ vertical: 'never' }}>
+			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} theme={theme}>
 				<ScrollView
 					{...scrollPersistTaps}
 					style={{ backgroundColor: themes[theme].auxiliaryBackground }}

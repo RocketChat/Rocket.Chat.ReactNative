@@ -1,9 +1,8 @@
 import React from 'react';
 import {
-	View, ScrollView, Switch, Text, SafeAreaView
+	View, ScrollView, Switch, Text
 } from 'react-native';
 import PropTypes from 'prop-types';
-// import { SafeAreaView } from 'react-navigation';
 
 import database from '../../lib/database';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
@@ -13,11 +12,11 @@ import Separator from '../../containers/Separator';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import styles from './styles';
-import sharedStyles from '../Styles';
 import RocketChat from '../../lib/rocketchat';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 const SectionTitle = React.memo(({ title, theme }) => (
 	<Text
@@ -245,7 +244,7 @@ class NotificationPreferencesView extends React.Component {
 		const { room } = this.state;
 		const { theme } = this.props;
 		return (
-			<SafeAreaView style={sharedStyles.container} testID='notification-preference-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView testID='notification-preference-view' theme={theme}>
 				<StatusBar theme={theme} />
 				<ScrollView
 					{...scrollPersistTaps}

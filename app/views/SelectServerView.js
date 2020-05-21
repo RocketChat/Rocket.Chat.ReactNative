@@ -1,10 +1,9 @@
 import React from 'react';
 import {
-	FlatList, StyleSheet, View, SafeAreaView
+	FlatList, StyleSheet, View
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import { SafeAreaView } from 'react-navigation';
 
 import I18n from '../i18n';
 import StatusBar from '../containers/StatusBar';
@@ -15,14 +14,12 @@ import sharedStyles from './Styles';
 import RocketChat from '../lib/rocketchat';
 import { withTheme } from '../theme';
 import { themedHeader } from '../utils/navigation';
+import SafeAreaView from '../containers/SafeAreaView';
 
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.id;
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1
-	},
 	list: {
 		marginVertical: 32,
 		...sharedStyles.separatorVertical
@@ -88,10 +85,7 @@ class SelectServerView extends React.Component {
 		const { servers } = this.state;
 		const { theme } = this.props;
 		return (
-			<SafeAreaView
-				style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
-				forceInset={{ vertical: 'never' }}
-			>
+			<SafeAreaView theme={theme}>
 				<StatusBar theme={theme} />
 				<View style={[styles.list, { borderColor: themes[theme].separatorColor }]}>
 					<FlatList

@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, SafeAreaView } from 'react-native';
+import { FlatList, View } from 'react-native';
 import ActionSheet from 'react-native-action-sheet';
 import { connect } from 'react-redux';
-// import { SafeAreaView } from 'react-navigation';
 import * as Haptics from 'expo-haptics';
 import { Q } from '@nozbe/watermelondb';
 
@@ -25,6 +24,7 @@ import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import { themes } from '../../constants/colors';
 import { getUserSelector } from '../../selectors/login';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 const PAGE_SIZE = 25;
 
@@ -261,7 +261,7 @@ class RoomMembersView extends React.Component {
 		} = this.state;
 		const { theme } = this.props;
 		return (
-			<SafeAreaView style={styles.list} testID='room-members-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView testID='room-members-view' theme={theme}>
 				<StatusBar theme={theme} />
 				<FlatList
 					data={filtering ? membersFiltered : members}

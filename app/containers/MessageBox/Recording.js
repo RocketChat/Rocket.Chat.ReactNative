@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, SafeAreaView, PermissionsAndroid, Text
+	View, PermissionsAndroid, Text
 } from 'react-native';
 import { AudioRecorder, AudioUtils } from 'react-native-audio';
 import { BorderlessButton } from 'react-native-gesture-handler';
@@ -13,6 +13,7 @@ import I18n from '../../i18n';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
+import SafeAreaView from '../SafeAreaView';
 
 export const _formatTime = function(seconds) {
 	let minutes = Math.floor(seconds / 60);
@@ -134,6 +135,7 @@ export default class extends React.PureComponent {
 		return (
 			<SafeAreaView
 				testID='messagebox-recording'
+				theme={theme}
 				style={[
 					styles.textBox,
 					{ borderTopColor: themes[theme].borderColor }

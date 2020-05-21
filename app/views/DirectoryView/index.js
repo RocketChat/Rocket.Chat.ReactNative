@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, FlatList, Text, SafeAreaView
+	View, FlatList, Text
 } from 'react-native';
 import { connect } from 'react-redux';
-// import { SafeAreaView } from 'react-navigation';
 
 import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
@@ -24,6 +23,7 @@ import { themes } from '../../constants/colors';
 import styles from './styles';
 import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 class DirectoryView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -230,7 +230,7 @@ class DirectoryView extends React.Component {
 		} = this.state;
 		const { isFederationEnabled, theme } = this.props;
 		return (
-			<SafeAreaView style={[styles.safeAreaView, { backgroundColor: themes[theme].backgroundColor }]} testID='directory-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='directory-view'>
 				<StatusBar theme={theme} />
 				<FlatList
 					data={data}

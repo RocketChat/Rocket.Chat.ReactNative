@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, ScrollView, StyleSheet, SafeAreaView
+	Text, ScrollView, StyleSheet
 } from 'react-native';
 import { connect } from 'react-redux';
-// import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
 
 import { loginRequest as loginRequestAction } from '../actions/login';
@@ -22,6 +21,7 @@ import { themes } from '../constants/colors';
 import { isTablet } from '../utils/deviceInfo';
 import { getUserSelector } from '../selectors/login';
 import { showErrorAlert } from '../utils/info';
+import SafeAreaView from '../containers/SafeAreaView';
 
 const styles = StyleSheet.create({
 	loginTitle: {
@@ -111,7 +111,7 @@ class SetUsernameView extends React.Component {
 			>
 				<StatusBar theme={theme} />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
-					<SafeAreaView style={sharedStyles.container} testID='set-username-view' forceInset={{ vertical: 'never' }}>
+					<SafeAreaView testID='set-username-view' theme={theme}>
 						<Text
 							style={[
 								sharedStyles.loginTitle,

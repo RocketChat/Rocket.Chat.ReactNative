@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { connect } from 'react-redux';
+import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
+
 import { defaultHeader, onNavigationStateChange } from './utils/navigation';
 import Navigation from './lib/Navigation';
 
@@ -29,46 +31,48 @@ const SetUsernameStack = () => (
 // App
 const Stack = createStackNavigator();
 const App = ({ root }) => {
-	if (!root) {
+	if (!root || root === 'background') {
 		return null;
 	}
 
 	return (
-		<NavigationContainer
-			ref={(navigatorRef) => {
-				Navigation.setTopLevelNavigator(navigatorRef);
-			}}
-			onNavigationStateChange={onNavigationStateChange}
-		>
-			<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
-				<>
-					{root === 'loading' ? (
-						<Stack.Screen
-							name='AuthLoading'
-							component={AuthLoadingView}
-						/>
-					) : null}
-					{root === 'outside' ? (
-						<Stack.Screen
-							name='OutsideStack'
-							component={OutsideStack}
-						/>
-					) : null}
-					{root === 'inside' ? (
-						<Stack.Screen
-							name='InsideStack'
-							component={InsideStack}
-						/>
-					) : null}
-					{root === 'setUsername' ? (
-						<Stack.Screen
-							name='SetUsernameStack'
-							component={SetUsernameStack}
-						/>
-					) : null}
-				</>
-			</Stack.Navigator>
-		</NavigationContainer>
+		<SafeAreaProvider initialMetrics={initialWindowMetrics}>
+			<NavigationContainer
+				ref={(navigatorRef) => {
+					Navigation.setTopLevelNavigator(navigatorRef);
+				}}
+				onNavigationStateChange={onNavigationStateChange}
+			>
+				<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
+					<>
+						{root === 'loading' ? (
+							<Stack.Screen
+								name='AuthLoading'
+								component={AuthLoadingView}
+							/>
+						) : null}
+						{root === 'outside' ? (
+							<Stack.Screen
+								name='OutsideStack'
+								component={OutsideStack}
+							/>
+						) : null}
+						{root === 'inside' ? (
+							<Stack.Screen
+								name='InsideStack'
+								component={InsideStack}
+							/>
+						) : null}
+						{root === 'setUsername' ? (
+							<Stack.Screen
+								name='SetUsernameStack'
+								component={SetUsernameStack}
+							/>
+						) : null}
+					</>
+				</Stack.Navigator>
+			</NavigationContainer>
+		</SafeAreaProvider>
 	);
 };
 const mapStateToProps = state => ({

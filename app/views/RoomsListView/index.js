@@ -7,12 +7,10 @@ import {
 	Text,
 	Keyboard,
 	Dimensions,
-	RefreshControl,
-	SafeAreaView
+	RefreshControl
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual, orderBy } from 'lodash';
-// import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
 
@@ -47,7 +45,6 @@ import { selectServerRequest as selectServerRequestAction } from '../../actions/
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
-import { themedHeader } from '../../utils/navigation';
 import EventEmitter from '../../utils/events';
 import {
 	KEY_COMMAND,
@@ -63,6 +60,7 @@ import { MAX_SIDEBAR_WIDTH } from '../../constants/tablet';
 import { withSplit } from '../../split';
 import { getUserSelector } from '../../selectors/login';
 import { goRoom } from '../../utils/goRoom';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 const SCROLL_OFFSET = 56;
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
@@ -161,14 +159,7 @@ class RoomsListView extends React.Component {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
 		Dimensions.addEventListener('change', this.onDimensionsChange);
-		this.willFocusListener = navigation.addListener('willFocus', () => {
-			// Check if there were changes while not focused (it's set on sCU)
-			if (this.shouldUpdate) {
-				this.forceUpdate();
-				this.shouldUpdate = false;
-			}
-		});
-		this.didFocusListener = navigation.addListener('didFocus', () => {
+		this.unsubscribeFocus = navigation.addListener('focus', () => {
 			Orientation.unlockAllOrientations();
 			this.animated = true;
 			// Check if there were changes while not focused (it's set on sCU)
@@ -178,7 +169,7 @@ class RoomsListView extends React.Component {
 			}
 			this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 		});
-		this.willBlurListener = navigation.addListener('willBlur', () => {
+		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			this.animated = false;
 			closeServerDropdown();
 			if (this.backHandler && this.backHandler.remove) {
@@ -286,14 +277,11 @@ class RoomsListView extends React.Component {
 		if (this.querySubscription && this.querySubscription.unsubscribe) {
 			this.querySubscription.unsubscribe();
 		}
-		if (this.willFocusListener && this.willFocusListener.remove) {
-			this.willFocusListener.remove();
+		if (this.unsubscribeFocus) {
+			this.unsubscribeFocus();
 		}
-		if (this.didFocusListener && this.didFocusListener.remove) {
-			this.didFocusListener.remove();
-		}
-		if (this.willBlurListener && this.willBlurListener.remove) {
-			this.willBlurListener.remove();
+		if (this.unsubscribeBlur) {
+			this.unsubscribeBlur();
 		}
 		if (isTablet) {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
@@ -801,11 +789,7 @@ class RoomsListView extends React.Component {
 		} = this.props;
 
 		return (
-			<SafeAreaView
-				style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}
-				testID='rooms-list-view'
-				forceInset={{ vertical: 'never' }}
-			>
+			<SafeAreaView testID='rooms-list-view' theme={theme} style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<StatusBar theme={theme} />
 				{this.renderScroll()}
 				{showSortDropdown ? (

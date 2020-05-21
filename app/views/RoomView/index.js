@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, InteractionManager, SafeAreaView } from 'react-native';
+import { Text, View, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
-// import { SafeAreaView } from 'react-navigation';
 
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
@@ -39,7 +38,6 @@ import { isReadOnly } from '../../utils/isReadOnly';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
 import { showErrorAlert } from '../../utils/info';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import {
 	KEY_COMMAND,
 	handleCommandScroll,
@@ -54,6 +52,7 @@ import { getUserSelector } from '../../selectors/login';
 import { CONTAINER_TYPES } from '../../lib/methods/actions';
 import Banner from './Banner';
 import Navigation from '../../lib/Navigation';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -953,12 +952,9 @@ class RoomView extends React.Component {
 
 		return (
 			<SafeAreaView
-				style={[
-					styles.container,
-					{ backgroundColor: themes[theme].backgroundColor }
-				]}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
 				testID='room-view'
-				forceInset={{ vertical: 'never' }}
+				theme={theme}
 			>
 				<StatusBar theme={theme} />
 				<Banner

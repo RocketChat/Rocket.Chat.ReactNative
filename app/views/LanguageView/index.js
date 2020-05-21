@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, SafeAreaView } from 'react-native';
+import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
-// import { SafeAreaView } from 'react-navigation';
 
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
@@ -20,6 +19,7 @@ import { themedHeader } from '../../utils/navigation';
 import { appStart as appStartAction } from '../../actions';
 import { getUserSelector } from '../../selectors/login';
 import database from '../../lib/database';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 const LANGUAGES = [
 	{
@@ -175,11 +175,7 @@ class LanguageView extends React.Component {
 	render() {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView
-				style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
-				forceInset={{ vertical: 'never' }}
-				testID='language-view'
-			>
+			<SafeAreaView testID='language-view' theme={theme}>
 				<StatusBar theme={theme} />
 				<FlatList
 					data={LANGUAGES}

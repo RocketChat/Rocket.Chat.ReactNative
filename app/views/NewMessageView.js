@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import {
 	View, StyleSheet, FlatList, Text
 } from 'react-native';
-import { connect, SafeAreaView } from 'react-redux';
-// import { SafeAreaView } from 'react-navigation';
+import { connect } from 'react-redux';
 import equal from 'deep-equal';
 import { orderBy } from 'lodash';
 import { Q } from '@nozbe/watermelondb';
@@ -27,11 +26,9 @@ import { getUserSelector } from '../selectors/login';
 import Navigation from '../lib/Navigation';
 import { createChannelRequest } from '../actions/createChannel';
 import { goRoom } from '../utils/goRoom';
+import SafeAreaView from '../containers/SafeAreaView';
 
 const styles = StyleSheet.create({
-	safeAreaView: {
-		flex: 1
-	},
 	separator: {
 		marginLeft: 60
 	},
@@ -256,11 +253,7 @@ class NewMessageView extends React.Component {
 	render = () => {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView
-				style={[styles.safeAreaView, { backgroundColor: themes[theme].auxiliaryBackground }]}
-				forceInset={{ vertical: 'never' }}
-				testID='new-message-view'
-			>
+			<SafeAreaView testID='new-message-view' theme={theme}>
 				<StatusBar theme={theme} />
 				{this.renderList()}
 			</SafeAreaView>

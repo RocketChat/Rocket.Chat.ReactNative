@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { ScrollView, Text, SafeAreaView } from 'react-native';
-// import { SafeAreaView } from 'react-navigation';
+import { ScrollView, Text } from 'react-native';
 import isEqual from 'lodash/isEqual';
 
 import Loading from '../../containers/Loading';
@@ -25,6 +24,7 @@ import SelectChannel from './SelectChannel';
 import SelectUsers from './SelectUsers';
 
 import styles from './styles';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 class CreateChannelView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -137,7 +137,7 @@ class CreateChannelView extends React.Component {
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar theme={theme} />
-				<SafeAreaView testID='create-discussion-view' style={styles.container} forceInset={{ vertical: 'never' }}>
+				<SafeAreaView testID='create-discussion-view' style={styles.container} theme={theme}>
 					<ScrollView {...scrollPersistTaps}>
 						<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Discussion_Desc')}</Text>
 						<SelectChannel

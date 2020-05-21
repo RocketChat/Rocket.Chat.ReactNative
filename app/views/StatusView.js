@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, StyleSheet, SafeAreaView } from 'react-native';
-// import { SafeAreaView } from 'react-navigation';
+import { FlatList, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
 import I18n from '../i18n';
@@ -23,6 +22,7 @@ import { getUserSelector } from '../selectors/login';
 import { CustomHeaderButtons, Item, CancelModalButton } from '../containers/HeaderButton';
 import store from '../lib/createStore';
 import { setUser } from '../actions/login';
+import SafeAreaView from '../containers/SafeAreaView';
 
 const STATUS = [{
 	id: 'online',
@@ -39,9 +39,6 @@ const STATUS = [{
 }];
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1
-	},
 	status: {
 		marginRight: 16
 	},
@@ -196,14 +193,7 @@ class StatusView extends React.Component {
 		const { loading } = this.state;
 		const { theme } = this.props;
 		return (
-			<SafeAreaView
-				style={[
-					styles.container,
-					{ backgroundColor: themes[theme].auxiliaryBackground }
-				]}
-				forceInset={{ vertical: 'never' }}
-				testID='status-view'
-			>
+			<SafeAreaView testID='status-view' theme={theme}>
 				<FlatList
 					data={STATUS}
 					keyExtractor={item => item.id}

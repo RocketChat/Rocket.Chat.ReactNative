@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, Keyboard, SafeAreaView } from 'react-native';
+import { View, ScrollView, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 import prompt from 'react-native-prompt-android';
 import SHA256 from 'js-sha256';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
-// import { SafeAreaView } from 'react-navigation';
 // import { HeaderBackButton } from 'react-navigation-stack';
 import equal from 'deep-equal';
 
@@ -32,6 +31,7 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 class ProfileView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => ({
@@ -440,7 +440,7 @@ class ProfileView extends React.Component {
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar theme={theme} />
-				<SafeAreaView style={sharedStyles.container} testID='profile-view' forceInset={{ vertical: 'never' }}>
+				<SafeAreaView testID='profile-view' theme={theme}>
 					<ScrollView
 						contentContainerStyle={sharedStyles.containerScrollView}
 						testID='profile-view-list'

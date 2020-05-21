@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, Text, SafeAreaView } from 'react-native';
+import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
-// import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import ActionSheet from 'react-native-action-sheet';
 
@@ -18,6 +17,7 @@ import { withTheme } from '../../theme';
 import { withSplit } from '../../split';
 import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 const ACTION_INDEX = 0;
 const CANCEL_INDEX = 1;
@@ -295,12 +295,9 @@ class MessagesView extends React.Component {
 
 		return (
 			<SafeAreaView
-				style={[
-					styles.list,
-					{ backgroundColor: themes[theme].backgroundColor }
-				]}
-				forceInset={{ vertical: 'never' }}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
 				testID={this.content.testID}
+				theme={theme}
 			>
 				<StatusBar theme={theme} />
 				<FlatList

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	ScrollView, Text, View, SafeAreaView
+	ScrollView, Text, View
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
@@ -20,6 +20,7 @@ import { withTheme } from '../../theme';
 import { withSplit } from '../../split';
 import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/Navigation';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 const Separator = React.memo(({ theme }) => <View style={[styles.separator, { borderColor: themes[theme].separatorColor }]} />);
 Separator.propTypes = {
@@ -199,7 +200,7 @@ class Sidebar extends Component {
 			return null;
 		}
 		return (
-			<SafeAreaView testID='sidebar-view' style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]}>
+			<SafeAreaView testID='sidebar-view' style={{ backgroundColor: themes[theme].focusedBackground }} theme={theme}>
 				<ScrollView
 					style={[
 						styles.container,

@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, FlatList, SafeAreaView } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { connect } from 'react-redux';
-// import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import { orderBy } from 'lodash';
 import { Q } from '@nozbe/watermelondb';
@@ -28,11 +27,9 @@ import {
 	removeUser as removeUserAction
 } from '../actions/selectedUsers';
 import { showErrorAlert } from '../utils/info';
+import SafeAreaView from '../containers/SafeAreaView';
 
 const styles = StyleSheet.create({
-	safeAreaView: {
-		flex: 1
-	},
 	separator: {
 		marginLeft: 60
 	}
@@ -313,11 +310,7 @@ class SelectedUsersView extends React.Component {
 	render = () => {
 		const { loading, theme } = this.props;
 		return (
-			<SafeAreaView
-				style={[styles.safeAreaView, { backgroundColor: themes[theme].auxiliaryBackground }]}
-				forceInset={{ vertical: 'never' }}
-				testID='select-users-view'
-			>
+			<SafeAreaView testID='select-users-view' theme={theme}>
 				<StatusBar theme={theme} />
 				{this.renderList()}
 				<Loading visible={loading} />

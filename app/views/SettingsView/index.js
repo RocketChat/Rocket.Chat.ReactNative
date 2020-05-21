@@ -1,10 +1,9 @@
 import React from 'react';
 import {
-	View, Linking, ScrollView, Switch, Share, Clipboard, SafeAreaView
+	View, Linking, ScrollView, Switch, Share, Clipboard
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import { SafeAreaView } from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import { logout as logoutAction } from '../../actions/login';
@@ -26,7 +25,6 @@ import openLink from '../../utils/openLink';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
 import styles from './styles';
-import sharedStyles from '../Styles';
 import { loggerConfig, analytics } from '../../utils/log';
 import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/links';
 import { withTheme } from '../../theme';
@@ -39,6 +37,7 @@ import EventEmitter from '../../utils/events';
 import { appStart as appStartAction } from '../../actions';
 import { onReviewPress } from '../../utils/review';
 import { getUserSelector } from '../../selectors/login';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 const SectionSeparator = React.memo(({ theme }) => (
 	<View
@@ -183,11 +182,7 @@ class SettingsView extends React.Component {
 	render() {
 		const { server, split, theme } = this.props;
 		return (
-			<SafeAreaView
-				style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
-				testID='settings-view'
-				forceInset={{ vertical: 'never' }}
-			>
+			<SafeAreaView testID='settings-view' theme={theme}>
 				<StatusBar theme={theme} />
 				<ScrollView
 					{...scrollPersistTaps}
