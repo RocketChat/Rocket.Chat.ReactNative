@@ -28,7 +28,6 @@ import log from '../utils/log';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
 import { setBasicAuth, BASIC_AUTH_KEY } from '../utils/fetch';
-import { themedHeader } from '../utils/navigation';
 import { CloseModalButton } from '../containers/HeaderButton';
 
 const styles = StyleSheet.create({
@@ -65,16 +64,6 @@ const styles = StyleSheet.create({
 });
 
 class NewServerView extends React.Component {
-	static navigationOptions = ({ screenProps, navigation }) => {
-		const previousServer = navigation.getParam('previousServer', null);
-		const close = navigation.getParam('close', () => {});
-		return {
-			headerLeft: previousServer ? <CloseModalButton navigation={navigation} onPress={close} testID='new-server-view-close' /> : undefined,
-			title: I18n.t('Workspaces'),
-			...themedHeader(screenProps.theme)
-		};
-	}
-
 	static propTypes = {
 		navigation: PropTypes.object,
 		theme: PropTypes.string,
@@ -88,8 +77,9 @@ class NewServerView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.previousServer = props.navigation.getParam('previousServer');
-		props.navigation.setParams({ close: this.close, previousServer: this.previousServer });
+		// TODO: add server logic
+		// this.previousServer = props.route.params?.previousServer;
+		// props.navigation.setParams({ close: this.close, previousServer: this.previousServer });
 
 		// Cancel
 		this.options = [I18n.t('Cancel')];
@@ -354,5 +344,19 @@ const mapDispatchToProps = dispatch => ({
 	selectServer: server => dispatch(selectServerRequest(server)),
 	appStart: root => dispatch(appStartAction(root))
 });
+
+// static navigationOptions = ({ screenProps, navigation }) => {
+// 	const previousServer = navigation.getParam('previousServer', null);
+// 	const close = navigation.getParam('close', () => {});
+// 	return {
+// 		headerLeft: previousServer ? <CloseModalButton navigation={navigation} onPress={close} testID='new-server-view-close' /> : undefined,
+// 		title: I18n.t('Workspaces'),
+// 		...themedHeader(screenProps.theme)
+// 	};
+// }
+
+NewServerView.navigationOptions = {
+	title: I18n.t('Workspaces')
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(NewServerView));

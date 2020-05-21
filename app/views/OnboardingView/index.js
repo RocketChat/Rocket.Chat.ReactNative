@@ -16,10 +16,6 @@ import { withTheme } from '../../theme';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 
 class OnboardingView extends React.Component {
-	static navigationOptions = () => ({
-		header: null
-	})
-
 	static propTypes = {
 		navigation: PropTypes.object,
 		appStart: PropTypes.func,
@@ -100,5 +96,9 @@ class OnboardingView extends React.Component {
 const mapDispatchToProps = dispatch => ({
 	appStart: root => dispatch(appStartAction(root))
 });
+
+OnboardingView.navigationOptions = {
+	headerShown: false
+};
 
 export default connect(null, mapDispatchToProps)(withTheme(OnboardingView));

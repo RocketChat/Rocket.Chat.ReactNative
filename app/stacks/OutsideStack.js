@@ -24,37 +24,37 @@ const OutsideStack = () => {
 			<Outside.Screen
 				name='OnboardingView'
 				component={OnboardingView}
-				// options={{ headerShown: false }}
+				options={OnboardingView.navigationOptions}
 			/>
 			<Outside.Screen
 				name='NewServerView'
 				component={NewServerView}
-				// options={{ headerShown: false }}
+				options={NewServerView.navigationOptions}
 			/>
 			<Outside.Screen
 				name='WorkspaceView'
 				component={WorkspaceView}
-				// options={WorkspaceView.navigationOptions}
+				options={WorkspaceView.navigationOptions}
 			/>
 			<Outside.Screen
 				name='LoginView'
 				component={LoginView}
-				// options={LoginView.navigationOptions}
+				options={LoginView.navigationOptions}
 			/>
 			<Outside.Screen
 				name='ForgotPasswordView'
 				component={ForgotPasswordView}
-				// options={ForgotPasswordView.navigationOptions}
+				options={ForgotPasswordView.navigationOptions}
 			/>
 			<Outside.Screen
 				name='RegisterView'
 				component={RegisterView}
-				// options={RegisterView.navigationOptions}
+				options={RegisterView.navigationOptions}
 			/>
 			<Outside.Screen
 				name='LegalView'
 				component={LegalView}
-				// options={LegalView.navigationOptions}
+				options={LegalView.navigationOptions}
 			/>
 		</Outside.Navigator>
 	);

@@ -52,11 +52,6 @@ Separator.propTypes = {
 };
 
 class LegalView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Legal'),
-		...themedHeader(screenProps.theme)
-	})
-
 	static propTypes = {
 		server: PropTypes.string,
 		theme: PropTypes.string
@@ -119,5 +114,9 @@ class LegalView extends React.Component {
 const mapStateToProps = state => ({
 	server: state.server.server
 });
+
+LegalView.navigationOptions = {
+	title: I18n.t('Legal')
+};
 
 export default connect(mapStateToProps)(withTheme(LegalView));

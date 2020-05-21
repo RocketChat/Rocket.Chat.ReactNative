@@ -4,7 +4,7 @@ import { analytics, leaveBreadcrumb } from './log';
 import { themes } from '../constants/colors';
 
 export const defaultHeader = {
-	headerBackTitle: null
+	headerBackTitleVisible: false
 };
 
 export const cardStyle = {

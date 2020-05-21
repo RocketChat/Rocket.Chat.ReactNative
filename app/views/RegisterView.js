@@ -342,4 +342,9 @@ const mapDispatchToProps = dispatch => ({
 	loginRequest: params => dispatch(loginRequestAction(params))
 });
 
+RegisterView.navigatonOptions = ({ route, navigation }) => ({
+	title: route.params.title,
+	headerRight: () => <LegalButton testID='register-view-more' navigation={navigation} />
+});
+
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RegisterView));

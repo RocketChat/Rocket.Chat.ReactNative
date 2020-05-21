@@ -13,16 +13,9 @@ import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import { themedHeader } from '../utils/navigation';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
+import { LegalButton } from '../containers/HeaderButton';
 
 class ForgotPasswordView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const title = navigation.getParam('title', 'Rocket.Chat');
-		return {
-			title,
-			...themedHeader(screenProps.theme)
-		};
-	}
-
 	static propTypes = {
 		navigation: PropTypes.object,
 		theme: PropTypes.string
@@ -113,5 +106,9 @@ class ForgotPasswordView extends React.Component {
 		);
 	}
 }
+
+ForgotPasswordView.navigatonOptions = ({ route }) => ({
+	title: route.params.title
+});
 
 export default withTheme(ForgotPasswordView);
