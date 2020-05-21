@@ -43,7 +43,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 				ref={modalizeRef}
 				adjustToContentHeight
 				handleStyle={{ backgroundColor: themes[theme].auxiliaryText }}
-				modalStyle={{ backgroundColor: themes[theme].backgroundColor }}
+				modalStyle={[styles.modal, { backgroundColor: themes[theme].backgroundColor }]}
 				handlePosition='inside'
 			>
 				<FlatList

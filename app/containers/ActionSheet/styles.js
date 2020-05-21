@@ -18,29 +18,9 @@ export default StyleSheet.create({
 		marginLeft: 16,
 		...sharedStyles.textRegular
 	},
-	shadow: {
-		...StyleSheet.absoluteFillObject
-	},
-	header: {
-		width: '100%',
-		height: 24,
-		alignItems: 'center',
-		justifyContent: 'center',
+	modal: {
+		overflow: 'hidden',
 		borderTopLeftRadius: 16,
 		borderTopRightRadius: 16
-	},
-	headerTitle: {
-		paddingVertical: 16,
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	headerTitleText: {
-		fontSize: 20,
-		...sharedStyles.textBold
-	},
-	headerIndicator: {
-		width: 36,
-		height: 4,
-		borderRadius: 2
 	}
 });
