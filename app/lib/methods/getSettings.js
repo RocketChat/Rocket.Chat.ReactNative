@@ -55,12 +55,14 @@ const serverInfoUpdate = async(serverInfo, iconSetting) => {
 			return { ...allSettings, autoLock };
 		}
 		if (setting._id === 'Force_Screen_Lock_After') {
+			const forceScreenLock = serverInfo.find(s => s._id === 'Force_Screen_Lock')?.valueAsBoolean;
+
 			// if Force_Screen_Lock_After === 0 and autoLockTime is null, set app's default value
 			if (setting.valueAsNumber === 0 && !server.autoLockTime) {
 				return { ...allSettings, autoLockTime: DEFAULT_AUTO_LOCK };
 			}
-			// if Force_Screen_Lock_After > 0, use it
-			if (setting.valueAsNumber > 0) {
+			// if Force_Screen_Lock_After > 0 and forceScreenLock is enabled, use it
+			if (setting.valueAsNumber > 0 && forceScreenLock) {
 				return { ...allSettings, autoLockTime: setting.valueAsNumber };
 			}
 		}
