@@ -1,8 +1,8 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { logout, navigateToLogin, login, sleep } = require('./helpers/app');
-const data = require('./data');
+const { logout, navigateToLogin, login, sleep } = require('../../helpers/app');
+const data = require('../../data');
 
 const scrollDown = 200;
 
@@ -16,13 +16,15 @@ async function waitForToast() {
 
 describe('Profile screen', () => {
 	before(async() => {
+		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		await navigateToLogin();
+		await login();
 		await element(by.id('rooms-list-view-sidebar')).tap();
 		await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
 		await waitFor(element(by.id('sidebar-profile'))).toBeVisible().withTimeout(2000);
-		// await expect(element(by.id('sidebar-profile'))).toBeVisible();
+		await expect(element(by.id('sidebar-profile'))).toBeVisible();
 		await element(by.id('sidebar-profile')).tap();
 		await waitFor(element(by.id('profile-view'))).toBeVisible().withTimeout(2000);
-
 	});
 
 	describe('Render', async() => {
@@ -32,10 +34,6 @@ describe('Profile screen', () => {
 
 		it('should have avatar', async() => {
 			await expect(element(by.id('profile-view-avatar')).atIndex(0)).toExist();
-		});
-
-		it('should have custom status', async() => {
-			await expect(element(by.id('profile-view-custom-status'))).toExist();
 		});
 
 		it('should have name', async() => {
@@ -80,16 +78,6 @@ describe('Profile screen', () => {
 	});
 
 	describe('Usage', async() => {
-		it('should change custom status', async() => {
-			await element(by.type('UIScrollView')).atIndex(1).swipe('down');
-			await element(by.id('profile-view-custom-status')).replaceText(`${ data.user }new`);
-			await sleep(1000);
-			await element(by.type('UIScrollView')).atIndex(1).swipe('up');
-			await sleep(1000);
-			await element(by.id('profile-view-submit')).tap();
-			await waitForToast();
-		});
-
 		it('should change name and username', async() => {
 			await element(by.type('UIScrollView')).atIndex(1).swipe('down');
 			await element(by.id('profile-view-name')).replaceText(`${ data.user }new`);

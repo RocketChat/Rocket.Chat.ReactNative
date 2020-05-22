@@ -1,7 +1,127 @@
 defaults: &defaults
   working_directory: ~/repo
 
-version: 2
+macos: &macos
+  macos:
+    xcode: "11.2.1"
+
+bash-env: &bash-env
+  BASH_ENV: "~/.nvm/nvm.sh"
+
+install-npm-modules: &install-npm-modules
+  name: Install NPM modules
+  command: yarn
+
+restore-npm-cache-linux: &restore-npm-cache-linux
+  name: Restore NPM cache
+  key: node-modules-{{ checksum "yarn.lock" }}
+
+save-npm-cache-linux: &save-npm-cache-linux
+  key: node-modules-{{ checksum "yarn.lock" }}
+  name: Save NPM cache
+  paths:
+    - ./node_modules
+
+restore-npm-cache-mac: &restore-npm-cache-mac
+  name: Restore NPM cache
+  key: node-v1-mac-{{ checksum "yarn.lock" }}
+
+save-npm-cache-mac: &save-npm-cache-mac
+  key: node-v1-mac-{{ checksum "yarn.lock" }}
+  name: Save NPM cache
+  paths:
+    - ./node_modules
+
+install-node: &install-node
+  name: Install Node 10
+  command: |
+    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
+    source ~/.nvm/nvm.sh
+    # https://github.com/creationix/nvm/issues/1394
+    set +e
+    nvm install 10
+    echo 'export PATH="/home/circleci/.nvm/versions/node/v10.20.1/bin:$PATH"' >> ~/.bash_profile
+    source ~/.bash_profile
+
+restore-gems-cache: &restore-gems-cache
+  name: Restore gems cache
+  key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
+
+save-gems-cache: &save-gems-cache
+  name: Save gems cache
+  key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
+  paths:
+    - vendor/bundle
+
+update-fastlane: &update-fastlane
+  name: Update Fastlane
+  command: |
+    echo "ruby-2.6.4" > ~/.ruby-version
+    bundle install
+  working_directory: ios
+
+restore-brew-cache: &restore-brew-cache
+  name: Restore Brew cache
+  key: brew-{{ checksum "yarn.lock" }}-{{ checksum ".circleci/config.yml" }}
+
+save-brew-cache: &save-brew-cache
+  name: Save brew cache
+  key: brew-{{ checksum "yarn.lock" }}-{{ checksum ".circleci/config.yml" }}
+  paths:
+    - /usr/local/Homebrew
+
+install-apple-sim-utils: &install-apple-sim-utils
+  name: Install appleSimUtils
+  command: |
+    brew update
+    brew tap wix/brew
+    brew install wix/brew/applesimutils
+
+rebuild-detox: &rebuild-detox
+  name: Rebuild Detox framework cache
+  command: |
+    npx detox clean-framework-cache
+    npx detox build-framework-cache
+
+version: 2.1
+
+# EXECUTORS
+executors:
+  mac-env:
+    <<: *macos
+    environment:
+      <<: *bash-env
+
+# COMMANDS
+commands:
+  detox-test:
+    parameters:
+      folder:
+        type: string
+    steps:
+      - checkout
+
+      - attach_workspace:
+          at: .
+
+      - restore_cache: *restore-npm-cache-mac
+
+      - restore_cache: *restore-brew-cache
+
+      - run: *install-node
+
+      - run: *install-apple-sim-utils
+
+      - run: *install-npm-modules
+      
+      - run: *rebuild-detox
+
+      - run:
+          name: Test
+          command: |
+            npx detox test << parameters.folder >> --configuration ios.sim.release --cleanup
+
+# JOBS
 jobs:
   lint-testunit:
     <<: *defaults
@@ -14,14 +134,9 @@ jobs:
     steps:
       - checkout
 
-      - restore_cache:
-          name: Restore NPM cache
-          key: node-modules-{{ checksum "yarn.lock" }}
+      - restore_cache: *restore-npm-cache-linux
 
-      - run:
-          name: Install NPM modules
-          command: |
-            yarn
+      - run: *install-npm-modules
 
       - run:
           name: Lint
@@ -38,162 +153,79 @@ jobs:
           command: |
             yarn codecov
 
-      - save_cache:
-          key: node-modules-{{ checksum "yarn.lock" }}
-          name: Save NPM cache
-          paths:
-            - ./node_modules
+      - save_cache: *save-npm-cache-linux
 
+  # E2E
   e2e-build:
-    macos:
-      xcode: "11.2.1"
-
-    environment:
-      BASH_ENV: "~/.nvm/nvm.sh"
+    executor: mac-env
 
     steps:
       - checkout
 
-      - restore_cache:
-          name: Restore NPM cache
-          key: node-v1-mac-{{ checksum "yarn.lock" }}
+      - restore_cache: *restore-npm-cache-mac
 
-      - run:
-          name: Install Node 10
-          command: |
-            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
-            source ~/.nvm/nvm.sh
-            # https://github.com/creationix/nvm/issues/1394
-            set +e
-            nvm install 10
+      - restore_cache: *restore-brew-cache
 
-      - run:
-          name: Install appleSimUtils
-          command: |
-            brew update
-            brew tap wix/brew
-            brew install wix/brew/applesimutils
+      - run: *install-node
 
-      - run:
-          name: Install NPM modules
-          command: |
-            yarn global add detox-cli
-            yarn
+      - run: *install-apple-sim-utils
 
-      - run:
-          name: Rebuild Detox framework cache
-          command: |
-            detox clean-framework-cache
-            detox build-framework-cache
+      - run: *install-npm-modules
+
+      - run: *rebuild-detox
 
       - run:
           name: Build
           command: |
-            detox build --configuration ios.sim.release
+            npx detox build --configuration ios.sim.release
 
       - persist_to_workspace:
           root: .
           paths:
             - ios/build/Build/Products/Release-iphonesimulator/RocketChatRN.app
 
-      - save_cache:
-          name: Save NPM cache
-          key: node-v1-mac-{{ checksum "yarn.lock" }}
-          paths:
-            - node_modules
+      - save_cache: *save-npm-cache-mac
 
-  e2e-test:
-    macos:
-      xcode: "11.2.1"
+      - save_cache: *save-brew-cache
 
-    environment:
-      BASH_ENV: "~/.nvm/nvm.sh"
-
+  e2e-test-onboarding:
+    executor: mac-env
     steps:
-      - checkout
+      - detox-test:
+          folder: "./e2e/tests/onboarding"
 
-      - attach_workspace:
-          at: .
+  e2e-test-room:
+    executor: mac-env
+    steps:
+      - detox-test:
+          folder: "./e2e/tests/room"
 
-      - restore_cache:
-          name: Restore NPM cache
-          key: node-v1-mac-{{ checksum "yarn.lock" }}
+  e2e-test-assorted:
+    executor: mac-env
+    steps:
+      - detox-test:
+          folder: "./e2e/tests/assorted"
 
-      - run:
-          name: Install Node 10
-          command: |
-            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
-            source ~/.nvm/nvm.sh
-            # https://github.com/creationix/nvm/issues/1394
-            set +e
-            nvm install 10
-
-      - run:
-          name: Install appleSimUtils
-          command: |
-            brew update
-            brew tap wix/brew
-            brew install wix/brew/applesimutils
-
-      - run:
-          name: Install NPM modules
-          command: |
-            yarn global add detox-cli
-            yarn
-      
-      - run:
-          name: Rebuild Detox framework cache
-          command: |
-            detox clean-framework-cache
-            detox build-framework-cache
-
-      - run:
-          name: Test
-          command: |
-            detox test --configuration ios.sim.release --cleanup
-
-      - save_cache:
-          name: Save NPM cache
-          key: node-v1-mac-{{ checksum "yarn.lock" }}
-          paths:
-            - node_modules
-
+  # Android builds
   android-build:
     <<: *defaults
     docker:
       - image: circleci/android:api-28-node
 
     environment:
-      # GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4096m -XX:+HeapDumpOnOutOfMemoryError"
-      # GRADLE_OPTS: -Xmx2048m -Dorg.gradle.daemon=false
-      # JVM_OPTS: -Xmx4096m
       JAVA_OPTS: '-Xms512m -Xmx2g'
       GRADLE_OPTS: '-Xmx3g -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx2g -XX:+HeapDumpOnOutOfMemoryError"'
       TERM: dumb
-      BASH_ENV: "~/.nvm/nvm.sh"
+      <<: *bash-env
 
     steps:
       - checkout
 
-      - run:
-          name: Install Node 10
-          command: |
-            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
-            source ~/.nvm/nvm.sh
-            # https://github.com/creationix/nvm/issues/1394
-            set +e
-            nvm install 10
-            echo 'export PATH="/home/circleci/.nvm/versions/node/v10.20.1/bin:$PATH"' >> ~/.bash_profile
-            source ~/.bash_profile
+      - run: *install-node
 
-      - restore_cache:
-          name: Restore NPM cache
-          key: node-modules-{{ checksum "yarn.lock" }}
+      - restore_cache: *restore-npm-cache-linux
 
-      - run:
-          name: Install NPM modules
-          command: |
-            yarn
+      - run: *install-npm-modules
 
       - restore_cache:
           name: Restore gradle cache
@@ -261,11 +293,7 @@ jobs:
       - store_artifacts:
           path: /tmp/build/outputs
 
-      - save_cache:
-          name: Save NPM cache
-          key: node-modules-{{ checksum "yarn.lock" }}
-          paths:
-            - ./node_modules
+      - save_cache: *save-npm-cache-linux
 
       - save_cache:
           name: Save gradle cache
@@ -273,44 +301,22 @@ jobs:
           paths:
             - ~/.gradle
 
+  # iOS builds
   ios-build:
-    macos:
-      xcode: "11.2.1"
-
-    environment:
-      BASH_ENV: "~/.nvm/nvm.sh"
+    executor: mac-env
 
     steps:
       - checkout
 
-      - restore_cache:
-          name: Restore gems cache
-          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
+      - restore_cache: *restore-gems-cache
 
-      - restore_cache:
-          name: Restore NPM cache
-          key: node-v1-mac-{{ checksum "yarn.lock" }}
+      - restore_cache: *restore-npm-cache-mac
 
-      - run:
-          name: Install Node 10
-          command: |
-            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
-            source ~/.nvm/nvm.sh
-            # https://github.com/creationix/nvm/issues/1394
-            set +e
-            nvm install 10
+      - run: *install-node
 
-      - run:
-          name: Install NPM modules
-          command: |
-            yarn
+      - run: *install-npm-modules
 
-      - run:
-          name: Update Fastlane
-          command: |
-            echo "ruby-2.6.4" > ~/.ruby-version
-            bundle install
-          working_directory: ios
+      - run: *update-fastlane
 
       - run:
           name: Set Google Services
@@ -348,17 +354,9 @@ jobs:
             fi
           working_directory: ios
 
-      - save_cache:
-          name: Save NPM cache
-          key: node-v1-mac-{{ checksum "yarn.lock" }}
-          paths:
-            - node_modules
+      - save_cache: *save-npm-cache-mac
 
-      - save_cache:
-          name: Save gems cache
-          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
-          paths:
-            - vendor/bundle
+      - save_cache: *save-gems-cache
 
       - store_artifacts:
           path: ios/RocketChatRN.ipa
@@ -370,8 +368,7 @@ jobs:
             - ios/fastlane/report.xml
 
   ios-testflight:
-    macos:
-      xcode: "11.2.1"
+    executor: mac-env
 
     steps:
       - checkout
@@ -379,16 +376,9 @@ jobs:
       - attach_workspace:
           at: ios
 
-      - restore_cache:
-          name: Restore gems cache
-          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
+      - restore_cache: *restore-gems-cache
 
-      - run:
-          name: Update Fastlane
-          command: |
-            echo "ruby-2.4" > ~/.ruby-version
-            bundle install
-          working_directory: ios
+      - run: *update-fastlane
 
       - run:
           name: Fastlane Tesflight Upload
@@ -396,14 +386,9 @@ jobs:
             bundle exec fastlane ios beta
           working_directory: ios
 
-      - save_cache:
-          name: Save gems cache
-          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
-          paths:
-            - vendor/bundle
+      - save_cache: *save-gems-cache
 
 workflows:
-  version: 2
   build-and-test:
     jobs:
       - lint-testunit
@@ -415,7 +400,13 @@ workflows:
       - e2e-build:
           requires:
             - e2e-hold
-      - e2e-test:
+      - e2e-test-onboarding:
+          requires:
+            - e2e-build
+      - e2e-test-room:
+          requires:
+            - e2e-build
+      - e2e-test-assorted:
           requires:
             - e2e-build
 

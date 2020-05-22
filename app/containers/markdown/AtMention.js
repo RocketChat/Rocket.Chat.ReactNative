@@ -11,11 +11,10 @@ const AtMention = React.memo(({
 }) => {
 	let mentionStyle = { ...styles.mention, color: themes[theme].buttonText };
 	if (mention === 'all' || mention === 'here') {
-		mentionStyle = {
-			...mentionStyle,
-			...styles.mentionAll
-		};
-	} else if (mention === username) {
+		return <Text style={[mentionStyle, styles.mentionAll, ...style]}>{mention}</Text>;
+	}
+
+	if (mention === username) {
 		mentionStyle = {
 			...mentionStyle,
 			backgroundColor: themes[theme].actionTintColor

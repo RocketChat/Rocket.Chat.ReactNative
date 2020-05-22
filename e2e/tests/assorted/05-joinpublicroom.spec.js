@@ -1,8 +1,8 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const data = require('./data');
-const { tapBack, sleep } = require('./helpers/app');
+const data = require('../../data');
+const { tapBack, sleep } = require('../../helpers/app');
 
 const room = 'detox-public';
 

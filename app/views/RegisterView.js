@@ -58,7 +58,7 @@ class RegisterView extends React.Component {
 		return {
 			...themedHeader(screenProps.theme),
 			title,
-			headerRight: <LegalButton navigation={navigation} />
+			headerRight: <LegalButton navigation={navigation} testID='register-view-more' />
 		};
 	}
 
@@ -230,7 +230,7 @@ class RegisterView extends React.Component {
 		const { saving } = this.state;
 		const { theme, showLoginButton } = this.props;
 		return (
-			<FormContainer theme={theme}>
+			<FormContainer theme={theme} testID='register-view'>
 				<FormContainerInner>
 					<LoginServices />
 					<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Sign_Up')}</Text>
