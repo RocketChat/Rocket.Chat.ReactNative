@@ -26,7 +26,7 @@ export function connectActionSheet(Component) {
 	return ConnectedActionSheet;
 }
 
-const ActionSheetProvider = React.memo(({ children, theme }) => {
+const ActionSheetProvider = ({ children, theme }) => {
 	const ref = useRef();
 
 	const getContext = () => ({
@@ -45,7 +45,7 @@ const ActionSheetProvider = React.memo(({ children, theme }) => {
 			</ActionSheet>
 		</Provider>
 	);
-});
+};
 ActionSheetProvider.propTypes = {
 	children: PropTypes.node,
 	theme: PropTypes.string

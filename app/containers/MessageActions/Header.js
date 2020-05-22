@@ -13,7 +13,6 @@ import database from '../../lib/database';
 
 const styles = StyleSheet.create({
 	container: {
-		paddingTop: 24,
 		alignItems: 'center'
 	},
 	headerItem: {

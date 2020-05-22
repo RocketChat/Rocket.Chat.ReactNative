@@ -11,18 +11,13 @@ export default StyleSheet.create({
 		flexDirection: 'row'
 	},
 	content: {
-		paddingTop: 24,
-		paddingHorizontal: 16
+		// paddingTop: 24
+		// paddingHorizontal: 16
 	},
 	title: {
 		fontSize: 16,
 		marginLeft: 16,
 		...sharedStyles.textRegular
-	},
-	modal: {
-		overflow: 'hidden',
-		borderTopLeftRadius: 16,
-		borderTopRightRadius: 16
 	},
 	header: {
 		fontSize: 18,
@@ -33,5 +28,21 @@ export default StyleSheet.create({
 	},
 	footer: {
 		paddingHorizontal: 16
+	},
+	handle: {
+		overflow: 'hidden',
+		borderTopLeftRadius: 16,
+		borderTopRightRadius: 16,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	handleIndicator: {
+		width: 40,
+		height: 4,
+		borderRadius: 2,
+		margin: 8
+	},
+	backdrop: {
+		...StyleSheet.absoluteFillObject
 	}
 });
