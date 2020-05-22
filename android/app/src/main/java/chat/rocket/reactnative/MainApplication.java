@@ -11,6 +11,8 @@ import com.facebook.react.bridge.JavaScriptExecutorFactory;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
+import com.facebook.react.modules.network.OkHttpClientFactory;
+import com.facebook.react.modules.network.OkHttpClientProvider;
 import com.facebook.soloader.SoLoader;
 
 import chat.rocket.reactnative.generated.BasePackageList;
@@ -19,6 +21,8 @@ import org.unimodules.adapters.react.ModuleRegistryAdapter;
 import org.unimodules.adapters.react.ReactModuleRegistryProvider;
 import org.unimodules.core.interfaces.SingletonModule;
 
+import com.seventheta.notifications.NotificationsPackage;
+import com.seventheta.notifications.SocketServiceUtils;
 import com.wix.reactnativenotifications.RNNotificationsPackage;
 import com.wix.reactnativenotifications.core.AppLaunchHelper;
 import com.wix.reactnativenotifications.core.AppLifecycleFacade;
@@ -30,12 +34,16 @@ import com.wix.reactnativekeyboardinput.KeyboardInputPackage;
 import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage;
 import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
 import io.invertase.firebase.perf.RNFirebasePerformancePackage;
+import okhttp3.OkHttpClient;
 
 import com.nozbe.watermelondb.WatermelonDBPackage;
 import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
 
 import java.util.Arrays;
 import java.util.List;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
 
 public class MainApplication extends Application implements ReactApplication, INotificationsApplication {
 
@@ -59,6 +67,7 @@ public class MainApplication extends Application implements ReactApplication, IN
       packages.add(new WatermelonDBPackage());
       packages.add(new RNCViewPagerPackage());
       packages.add(new ModuleRegistryAdapter(mModuleRegistryProvider));
+      packages.add(new NotificationsPackage());
       return packages;
     }
 
@@ -82,6 +91,12 @@ public class MainApplication extends Application implements ReactApplication, IN
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+    SocketServiceUtils.INSTANCE.startService(this);
+    OkHttpClientProvider.setOkHttpClientFactory(() -> {
+      final OkHttpClient.Builder builder = OkHttpClientProvider.createClientBuilder();
+      builder.hostnameVerifier((s, sslSession) -> true);
+      return builder.build();
+    });
   }
 
   @Override

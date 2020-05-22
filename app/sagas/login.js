@@ -22,6 +22,7 @@ import EventEmitter from '../utils/events';
 import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../utils/info';
 import { setActiveUsers } from '../actions/activeUsers';
+import SocketNotificationsModule from '../notifications/SocketNotificationsModule';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -126,6 +127,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ user.id }`, user.token);
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
+		SocketNotificationsModule.onSuccessfulLogin(user.token);
 
 		let currentRoot;
 		if (adding) {

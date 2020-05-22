@@ -210,6 +210,9 @@ dependencies {
         transitive = true
     }
 
+    implementation 'io.reactivex:rxjava:1.2.1'
+    implementation 'com.parse.bolts:bolts-tasks:1.4.0'
+
     if (enableHermes) {
       def hermesPath = "../../node_modules/hermes-engine/android/";
       debugImplementation files(hermesPath + "hermes-debug.aar")
