@@ -44,7 +44,6 @@ class NotificationBadge extends React.Component {
 			if (navState && navState.routeName === 'RoomView' && navState.params && navState.params.rid === payload.rid) {
 				return;
 			}
-			/* Chamada da notificação */
 			Notifier.showNotification({
 				showAnimationDuration: ANIMATION_DURATION,
 				hideAnimationDuration: ANIMATION_DURATION,
