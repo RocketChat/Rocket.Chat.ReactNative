@@ -5,7 +5,6 @@ import {
 } from 'react-native';
 
 import I18n from '../i18n';
-import { themedHeader } from '../utils/navigation';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import debounce from '../utils/debounce';
@@ -57,29 +56,29 @@ Item.propTypes = {
 };
 
 class PickerView extends React.PureComponent {
-	static navigationOptions = ({ navigation, screenProps }) => ({
-		title: navigation.getParam('title', I18n.t('Select_an_option')),
-		...themedHeader(screenProps.theme)
+	static navigationOptions = ({ route }) => ({
+		title: route.params?.title ?? I18n.t('Select_an_option')
 	})
 
 	static propTypes = {
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		theme: PropTypes.string
 	}
 
 	constructor(props) {
 		super(props);
-		const data = props.navigation.getParam('data', []);
-		const value = props.navigation.getParam('value');
+		const data = props.route.params?.data ?? [];
+		const value = props.route.params?.value;
 		this.state = { data, value };
 
-		this.onSearch = props.navigation.getParam('onChangeText');
+		this.onSearch = props.route.params?.onChangeText;
 	}
 
 	onChangeValue = (value) => {
-		const { navigation } = this.props;
-		const goBack = navigation.getParam('goBack', true);
-		const onChange = navigation.getParam('onChangeValue', () => {});
+		const { navigation, route } = this.props;
+		const goBack = route.params?.goBack ?? true;
+		const onChange = route.params?.onChangeValue ?? (() => {});
 		onChange(value);
 		if (goBack) {
 			navigation.goBack();

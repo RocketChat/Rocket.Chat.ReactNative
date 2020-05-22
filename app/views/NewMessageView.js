@@ -51,9 +51,8 @@ const styles = StyleSheet.create({
 });
 
 class NewMessageView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => ({
-		...themedHeader(screenProps.theme),
-		headerLeft: <CloseModalButton navigation={navigation} testID='new-message-view-close' />,
+	static navigationOptions = ({ navigation }) => ({
+		headerLeft: () => <CloseModalButton navigation={navigation} testID='new-message-view-close' />,
 		title: I18n.t('New_Message')
 	})
 

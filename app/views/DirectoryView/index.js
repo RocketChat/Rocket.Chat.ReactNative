@@ -14,7 +14,7 @@ import SearchBox from '../../containers/SearchBox';
 import { CustomIcon } from '../../lib/Icons';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-// import { CloseModalButton } from '../../containers/HeaderButton';
+import { CloseModalButton } from '../../containers/HeaderButton';
 import debounce from '../../utils/debounce';
 import log from '../../utils/log';
 import Options from './Options';
@@ -25,14 +25,13 @@ import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 
 class DirectoryView extends React.Component {
-	static navigationOptions = () => {
+	static navigationOptions = ({ navigation, split }) => {
 		const options = {
 			title: I18n.t('Directory')
 		};
-		// TODO: ?
-		// if (screenProps.split) {
-		// 	options.headerLeft = <CloseModalButton navigation={navigation} testID='directory-view-close' />;
-		// }
+		if (split) {
+			options.headerLeft = () => <CloseModalButton navigation={navigation} testID='directory-view-close' />;
+		}
 		return options;
 	}
 
@@ -229,7 +228,11 @@ class DirectoryView extends React.Component {
 		} = this.state;
 		const { isFederationEnabled, theme } = this.props;
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='directory-view'>
+			<SafeAreaView
+				style={{ backgroundColor: themes[theme].backgroundColor }}
+				testID='directory-view'
+				theme={theme}
+			>
 				<StatusBar theme={theme} />
 				<FlatList
 					data={data}

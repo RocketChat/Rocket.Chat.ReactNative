@@ -53,6 +53,7 @@ import { CONTAINER_TYPES } from '../../lib/methods/actions';
 import Banner from './Banner';
 import Navigation from '../../lib/Navigation';
 import SafeAreaView from '../../containers/SafeAreaView';
+import { withSplit } from '../../split';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -71,7 +72,9 @@ const stateAttrsUpdate = [
 const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement', 'sysMes', 'topic', 'name', 'fname', 'roles', 'bannerClosed', 'visitor'];
 
 class RoomView extends React.Component {
-	static navigationOptions = ({ navigation, route }) => {
+	static navigationOptions = ({
+		navigation, route, split, theme
+	}) => {
 		const rid = route.params?.rid ?? null;
 		const prid = route.params?.prid;
 		const title = route.params?.name;
@@ -123,10 +126,10 @@ class RoomView extends React.Component {
 					userId={userId}
 					token={token}
 					title={avatar}
-					theme='light' // TODO: ?
+					theme={theme}
 					t={t}
 					goRoomActionsView={goRoomActionsView}
-					split={false} // TODO: ?
+					split={split}
 				/>
 			)
 		};
@@ -149,7 +152,7 @@ class RoomView extends React.Component {
 		Hide_System_Messages: PropTypes.array,
 		baseUrl: PropTypes.string,
 		customEmojis: PropTypes.object,
-		screenProps: PropTypes.object,
+		split: PropTypes.bool,
 		theme: PropTypes.string,
 		replyBroadcast: PropTypes.func
 	};
@@ -755,15 +758,15 @@ class RoomView extends React.Component {
 
 	navToRoomInfo = (navParam) => {
 		const { room } = this.state;
-		const { navigation, user, screenProps } = this.props;
+		const { navigation, user, split } = this.props;
 		if (navParam.rid === user.id) {
 			return;
 		}
-		if (screenProps && screenProps.split) {
+		if (split) {
 			navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
 			ModalNavigation.navigate('RoomInfoView', navParam);
 		} else {
-			navigation.push('RoomInfoView', navParam);
+			navigation.navigate('RoomInfoView', navParam);
 		}
 	}
 
@@ -1078,4 +1081,4 @@ const mapDispatchToProps = dispatch => ({
 	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RoomView));
+export default connect(mapStateToProps, mapDispatchToProps)(withSplit(withTheme(RoomView)));

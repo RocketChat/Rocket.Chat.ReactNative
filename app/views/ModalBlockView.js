@@ -57,22 +57,22 @@ const mapElementToState = ({ element, blockId, elements = [] }) => {
 const reduceState = (obj, el) => (Array.isArray(el[0]) ? { ...obj, ...Object.fromEntries(el) } : { ...obj, [el[0]]: el[1] });
 
 class ModalBlockView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const { theme, closeModal } = screenProps;
-		const data = navigation.getParam('data');
-		const cancel = navigation.getParam('cancel', () => {});
-		const submitting = navigation.getParam('submitting', false);
+	static navigationOptions = ({ route }) => {
+		// const { theme, closeModal } = screenProps;
+		const data = route.params?.data;
+		// const cancel = route.params?.cancel ?? (() => {});
+		const submitting = route.params?.submitting ?? false;
 		const { view } = data;
 		const { title, submit, close } = view;
 		return {
 			title: textParser([title]),
-			...themedHeader(theme),
-			headerLeft: close ? (
+			headerLeft: close ? () => (
 				<CustomHeaderButtons>
 					<Item
 						title={textParser([close.text])}
 						style={styles.submit}
-						onPress={!submitting && (() => cancel({ closeModal }))}
+						// TODO: ?
+						// onPress={!submitting && (() => cancel({ closeModal }))}
 						testID='close-modal-uikit'
 					/>
 				</CustomHeaderButtons>
@@ -82,7 +82,7 @@ class ModalBlockView extends React.Component {
 					<Item
 						title={textParser([submit.text])}
 						style={styles.submit}
-						onPress={!submitting && (navigation.getParam('submit', () => {}))}
+						onPress={!submitting && (route.params?.submit ?? (() => {}))}
 						testID='submit-modal-uikit'
 					/>
 				</CustomHeaderButtons>
@@ -92,6 +92,7 @@ class ModalBlockView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		theme: PropTypes.string,
 		language: PropTypes.string,
 		user: PropTypes.shape({
@@ -103,8 +104,7 @@ class ModalBlockView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.submitting = false;
-		const { navigation } = props;
-		const data = navigation.getParam('data');
+		const data = props.route.params?.data;
 		this.values = data.view.blocks.filter(filterInputFields).map(mapElementToState).reduce(reduceState, {});
 		this.state = {
 			data,
@@ -133,9 +133,9 @@ class ModalBlockView extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { navigation } = this.props;
-		const oldData = prevProps.navigation.getParam('data', {});
-		const newData = navigation.getParam('data', {});
+		const { navigation, route } = this.props;
+		const oldData = prevProps.route.params?.data ?? {};
+		const newData = route.params?.data ?? {};
 		if (oldData.viewId !== newData.viewId) {
 			navigation.push('ModalBlockView', { data: newData });
 		}

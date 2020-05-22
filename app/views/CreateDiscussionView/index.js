@@ -12,7 +12,6 @@ import { CustomHeaderButtons, Item, CloseModalButton } from '../../containers/He
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
 import TextInput from '../../containers/TextInput';
 import RocketChat from '../../lib/rocketchat';
@@ -27,11 +26,10 @@ import styles from './styles';
 import SafeAreaView from '../../containers/SafeAreaView';
 
 class CreateChannelView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const submit = navigation.getParam('submit', () => {});
-		const showSubmit = navigation.getParam('showSubmit', navigation.getParam('message'));
+	static navigationOptions = ({ navigation, route }) => {
+		const submit = route.params?.submit ?? (() => {});
+		const showSubmit = route.params?.showSubmit ?? route.params?.message;
 		return {
-			...themedHeader(screenProps.theme),
 			title: I18n.t('Create_Discussion'),
 			headerRight: (
 				showSubmit

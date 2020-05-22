@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 import { isIOS } from '../utils/deviceInfo';
 import { themes } from '../constants/colors';
-import { withTheme } from '../theme';
 
 const StatusBar = React.memo(({ theme }) => {
 	let barStyle = 'light-content';
@@ -18,4 +17,4 @@ StatusBar.propTypes = {
 	theme: PropTypes.string
 };
 
-export default withTheme(StatusBar);
+export default StatusBar;

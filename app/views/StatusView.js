@@ -17,7 +17,6 @@ import { LISTENER } from '../containers/Toast';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { withSplit } from '../split';
-import { themedHeader } from '../utils/navigation';
 import { getUserSelector } from '../selectors/login';
 import { CustomHeaderButtons, Item, CancelModalButton } from '../containers/HeaderButton';
 import store from '../lib/createStore';
@@ -57,19 +56,18 @@ const styles = StyleSheet.create({
 });
 
 class StatusView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => ({
+	static navigationOptions = ({ route }) => ({
 		title: I18n.t('Edit_Status'),
-		headerLeft: <CancelModalButton onPress={navigation.getParam('close', () => {})} />,
-		headerRight: (
+		headerLeft: () => <CancelModalButton onPress={route.params?.close ?? (() => {})} />,
+		headerRight: () => (
 			<CustomHeaderButtons>
 				<Item
 					title={I18n.t('Done')}
-					onPress={navigation.getParam('submit', () => {})}
+					onPress={route.params?.submit ?? (() => {})}
 					testID='status-view-submit'
 				/>
 			</CustomHeaderButtons>
-		),
-		...themedHeader(screenProps.theme)
+		)
 	})
 
 	static propTypes = {

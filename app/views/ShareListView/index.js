@@ -28,7 +28,6 @@ import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 
 const LIMIT = 50;
@@ -36,30 +35,29 @@ const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT
 const keyExtractor = item => item.rid;
 
 class ShareListView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const searching = navigation.getParam('searching');
-		const initSearch = navigation.getParam('initSearch', () => {});
-		const cancelSearch = navigation.getParam('cancelSearch', () => {});
-		const search = navigation.getParam('search', () => {});
+	static navigationOptions = ({ route, theme }) => {
+		const searching = route.params?.searching;
+		const initSearch = route.params?.initSearch ?? (() => {});
+		const cancelSearch = route.params?.cancelSearch ?? (() => {});
+		const search = route.params?.search ?? (() => {});
 
 		if (isIOS) {
 			return {
-				headerStyle: { backgroundColor: themes[screenProps.theme].headerBackground },
-				headerTitle: (
+				headerStyle: { backgroundColor: themes[theme].headerBackground },
+				headerTitle: () => (
 					<ShareListHeader
 						searching={searching}
 						initSearch={initSearch}
 						cancelSearch={cancelSearch}
 						search={search}
-						theme={screenProps.theme}
+						theme={theme}
 					/>
 				)
 			};
 		}
 
 		return {
-			...themedHeader(screenProps.theme),
-			headerLeft: searching
+			headerLeft: () => (searching
 				? (
 					<CustomHeaderButtons left>
 						<Item title='cancel' iconName='cross' onPress={cancelSearch} />
@@ -70,9 +68,9 @@ class ShareListView extends React.Component {
 						onPress={ShareExtension.close}
 						testID='share-extension-close'
 					/>
-				),
-			headerTitle: <ShareListHeader searching={searching} search={search} theme={screenProps.theme} />,
-			headerRight: (
+				)),
+			headerTitle: () => <ShareListHeader searching={searching} search={search} theme={theme} />,
+			headerRight: () => (
 				searching
 					? null
 					: (

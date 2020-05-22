@@ -30,14 +30,13 @@ import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import SafeAreaView from '../../containers/SafeAreaView';
 
 class RoomActionsView extends React.Component {
-	static navigationOptions = () => {
+	static navigationOptions = ({ navigation, split }) => {
 		const options = {
 			title: I18n.t('Actions')
 		};
-		// TODO: ?
-		// if (screenProps.split) {
-		// 	options.headerLeft = <CloseModalButton navigation={navigation} testID='room-actions-view-close' />;
-		// }
+		if (split) {
+			options.headerLeft = () => <CloseModalButton navigation={navigation} testID='room-actions-view-close' />;
+		}
 		return options;
 	}
 

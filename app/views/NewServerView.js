@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
 });
 
 class NewServerView extends React.Component {
+	// TODO: ?
 	// static navigationOptions = ({ screenProps, navigation }) => {
 	// 	const previousServer = navigation.getParam('previousServer', null);
 	// 	const close = navigation.getParam('close', () => {});

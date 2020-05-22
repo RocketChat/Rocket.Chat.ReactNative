@@ -3,11 +3,16 @@ import { TransitionPresets } from '@react-navigation/stack';
 
 import { analytics, leaveBreadcrumb } from './log';
 import { themes } from '../constants/colors';
+import { isIOS } from './deviceInfo';
 
 export const defaultHeader = {
 	headerBackTitleVisible: false,
-	...TransitionPresets.SlideFromRightIOS
+	cardOverlayEnabled: true,
+	cardStyle: { backgroundColor: 'transparent' }
 };
+
+export const stackAnimation = TransitionPresets.SlideFromRightIOS;
+export const modalAnimation = TransitionPresets.ModalTransition;
 
 export const cardStyle = {
 	backgroundColor: 'rgba(0,0,0,0)'

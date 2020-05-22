@@ -73,13 +73,12 @@ const styles = StyleSheet.create({
 });
 
 class CreateChannelView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const submit = navigation.getParam('submit', () => {});
-		const showSubmit = navigation.getParam('showSubmit');
+	static navigationOptions = ({ route }) => {
+		const submit = route.param?.submit ?? (() => {});
+		const showSubmit = route.param?.showSubmit ?? false;
 		return {
-			...themedHeader(screenProps.theme),
 			title: I18n.t('Create_Channel'),
-			headerRight: (
+			headerRight: () => (
 				showSubmit
 					? (
 						<CustomHeaderButtons>

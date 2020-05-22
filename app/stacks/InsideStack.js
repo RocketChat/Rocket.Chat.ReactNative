@@ -5,7 +5,9 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { ThemeContext } from '../theme';
 import { SplitContext } from '../split';
-import { defaultHeader, themedHeader } from '../utils/navigation';
+import {
+	defaultHeader, themedHeader, modalAnimation, stackAnimation
+} from '../utils/navigation';
 import Toast from '../containers/Toast';
 import Sidebar from '../views/SidebarView';
 import NotificationBadge from '../notifications/inApp';
@@ -37,6 +39,7 @@ import SettingsView from '../views/SettingsView';
 import LanguageView from '../views/LanguageView';
 import ThemeView from '../views/ThemeView';
 import DefaultBrowserView from '../views/DefaultBrowserView';
+import ScreenLockConfigView from '../views/ScreenLockConfigView';
 
 // Admin Stack
 import AdminPanelView from '../views/AdminPanelView';
@@ -57,7 +60,7 @@ const ChatsStack = () => {
 	const { split } = React.useContext(SplitContext);
 
 	return (
-		<Chats.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
+		<Chats.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...stackAnimation }}>
 			<Chats.Screen
 				name='RoomsListView'
 				component={RoomsListView}
@@ -66,7 +69,7 @@ const ChatsStack = () => {
 			<Chats.Screen
 				name='RoomView'
 				component={RoomView}
-				options={RoomView.navigationOptions}
+				options={props => RoomView.navigationOptions({ ...props, split, theme })}
 			/>
 			<Chats.Screen
 				name='RoomActionsView'
@@ -154,7 +157,7 @@ const ProfileStack = () => {
 	const { split } = React.useContext(SplitContext);
 
 	return (
-		<Profile.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
+		<Profile.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...stackAnimation }}>
 			<Profile.Screen
 				name='ProfileView'
 				component={ProfileView}
@@ -171,7 +174,7 @@ const SettingsStack = () => {
 	const { split } = React.useContext(SplitContext);
 
 	return (
-		<Settings.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
+		<Settings.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...stackAnimation }}>
 			<Settings.Screen
 				name='SettingsView'
 				component={SettingsView}
@@ -192,6 +195,11 @@ const SettingsStack = () => {
 				component={DefaultBrowserView}
 				options={DefaultBrowserView.navigationOptions}
 			/>
+			<Settings.Screen
+				name='ScreenLockConfigView'
+				component={ScreenLockConfigView}
+				options={ScreenLockConfigView.navigationOptions}
+			/>
 		</Settings.Navigator>
 	);
 };
@@ -202,7 +210,7 @@ const AdminPanelStack = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<AdminPanel.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
+		<AdminPanel.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...stackAnimation }}>
 			<AdminPanel.Screen
 				name='AdminPanelView'
 				component={AdminPanelView}
@@ -229,7 +237,7 @@ const NewMessageStack = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<NewMessage.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
+		<NewMessage.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...stackAnimation }}>
 			<NewMessage.Screen
 				name='NewMessageView'
 				component={NewMessageView}
@@ -238,7 +246,7 @@ const NewMessageStack = () => {
 			<NewMessage.Screen
 				name='SelectedUsersViewCreateChannel'
 				component={SelectedUsersView}
-				options={SelectedUsersView.navigationOptions}
+				options={props => SelectedUsersView.navigationOptions({ ...props })}
 			/>
 			<NewMessage.Screen
 				name='CreateChannelView'
@@ -255,7 +263,7 @@ const InsideStackModal = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<InsideStack.Navigator mode='modal' screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
+		<InsideStack.Navigator mode='modal' screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...modalAnimation }}>
 			<InsideStack.Screen
 				name='ChatsDrawer'
 				component={ChatsDrawer}

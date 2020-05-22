@@ -16,28 +16,26 @@ import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import { isBlocked } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 
 class ShareView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const canSend = navigation.getParam('canSend', true);
+	static navigationOptions = ({ route }) => {
+		const canSend = route.params?.canSend ?? true;
 
 		return ({
 			title: I18n.t('Share'),
-			...themedHeader(screenProps.theme),
 			headerRight:
-				canSend
+				() => (canSend
 					? (
 						<CustomHeaderButtons>
 							<Item
 								title={I18n.t('Send')}
-								onPress={navigation.getParam('sendMessage')}
+								onPress={route.params?.sendMessage}
 								testID='send-message-share-view'
 								buttonStyle={styles.send}
 							/>
 						</CustomHeaderButtons>
 					)
-					: null
+					: null)
 		});
 	}
 

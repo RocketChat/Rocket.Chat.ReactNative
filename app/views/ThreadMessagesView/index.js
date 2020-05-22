@@ -25,6 +25,7 @@ import { withTheme } from '../../theme';
 import ModalNavigation from '../../lib/ModalNavigation';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
+import { withSplit } from '../../split';
 
 const Separator = React.memo(({ theme }) => <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />);
 Separator.propTypes = {
@@ -46,7 +47,7 @@ class ThreadMessagesView extends React.Component {
 		useRealName: PropTypes.bool,
 		theme: PropTypes.string,
 		customEmojis: PropTypes.object,
-		screenProps: PropTypes.object
+		split: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -283,11 +284,11 @@ class ThreadMessagesView extends React.Component {
 	}
 
 	navToRoomInfo = (navParam) => {
-		const { navigation, user, screenProps } = this.props;
+		const { navigation, user, split } = this.props;
 		if (navParam.rid === user.id) {
 			return;
 		}
-		if (screenProps && screenProps.split) {
+		if (split) {
 			navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t });
 			ModalNavigation.navigate('RoomInfoView', navParam);
 		} else {
@@ -358,4 +359,4 @@ const mapStateToProps = state => ({
 	customEmojis: state.customEmojis
 });
 
-export default connect(mapStateToProps)(withTheme(ThreadMessagesView));
+export default connect(mapStateToProps)(withSplit(withTheme(ThreadMessagesView)));
