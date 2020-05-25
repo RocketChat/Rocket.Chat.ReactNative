@@ -29,7 +29,7 @@ import { withTheme } from '../theme';
 import { setBasicAuth, BASIC_AUTH_KEY } from '../utils/fetch';
 import { themedHeader } from '../utils/navigation';
 import { CloseModalButton } from '../containers/HeaderButton';
-import { connectActionSheet } from '../actionSheet';
+import { showConfirmationAlert } from '../utils/info';
 
 const styles = StyleSheet.create({
 	title: {
@@ -83,8 +83,7 @@ class NewServerView extends React.Component {
 		selectServer: PropTypes.func.isRequired,
 		currentServer: PropTypes.string,
 		initAdd: PropTypes.func,
-		finishAdd: PropTypes.func,
-		show: PropTypes.func
+		finishAdd: PropTypes.func
 	}
 
 	constructor(props) {
@@ -244,22 +243,11 @@ class NewServerView extends React.Component {
 		this.setState({ certificate });
 	}
 
-	handleDelete = () => this.setState({ certificate: null }); // We not need delete file from DocumentPicker because it is a temp file
-
-	showActionSheet = () => {
-		const { show } = this.props;
-
-		// Delete
-		const options = [{
-			title: I18n.t('Delete'),
-			icon: 'trash',
-			danger: true,
-			onPress: this.handleDelete
-		}];
-
-		show({
-			options,
-			hasCancel: true
+	handleRemove = () => {
+		showConfirmationAlert({
+			message: I18n.t('You_will_unset_a_certificate_for_this_server'),
+			callToAction: I18n.t('Remove'),
+			onPress: this.setState({ certificate: null }) // We not need delete file from DocumentPicker because it is a temp file
 		});
 	}
 
@@ -277,7 +265,7 @@ class NewServerView extends React.Component {
 					{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
 				</Text>
 				<TouchableOpacity
-					onPress={!certificate ? this.showActionSheet : this.chooseCertificate}
+					onPress={certificate ? this.handleRemove : this.chooseCertificate}
 					testID='new-server-choose-certificate'
 				>
 					<Text
@@ -355,4 +343,4 @@ const mapDispatchToProps = dispatch => ({
 	appStart: root => dispatch(appStartAction(root))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(connectActionSheet(withTheme(NewServerView)));
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(NewServerView));
