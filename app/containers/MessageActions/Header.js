@@ -10,6 +10,7 @@ import { CustomIcon } from '../../lib/Icons';
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import database from '../../lib/database';
+import useDimensions from '../../utils/useDimensions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -68,6 +69,7 @@ HeaderFooter.propTypes = {
 const Header = React.memo(({
 	handleReaction, server, theme
 }) => {
+	const { width } = useDimensions();
 	const [items, setItems] = useState([]);
 	useEffect(() => {
 		(async() => {
@@ -76,13 +78,13 @@ const Header = React.memo(({
 				const freqEmojiCollection = db.collections.get('frequently_used_emojis');
 				let freqEmojis = await freqEmojiCollection.query().fetch();
 				freqEmojis = freqEmojis.concat(DEFAULT_EMOJIS);
-				freqEmojis = freqEmojis.slice(0, 6);
+				freqEmojis = freqEmojis.slice(0, parseInt((width / 50) - 1, 10));
 				setItems(freqEmojis);
 			} catch {
 				// Do nothing
 			}
 		})();
-	}, []);
+	}, [width]);
 
 	return (
 		<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
