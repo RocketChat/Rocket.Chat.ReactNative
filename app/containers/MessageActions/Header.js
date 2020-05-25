@@ -85,11 +85,11 @@ const Header = React.memo(({
 	}, []);
 
 	return (
-		<View style={styles.container}>
+		<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
 			<FlatList
 				data={items}
 				renderItem={({ item }) => <HeaderItem item={item} handleReaction={handleReaction} server={server} theme={theme} />}
-				style={[styles.headerList, { backgroundColor: themes[theme].backgroundColor }]}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
 				ListFooterComponent={() => <HeaderFooter handleReaction={handleReaction} theme={theme} />}
 				scrollEnabled={false}
 				horizontal

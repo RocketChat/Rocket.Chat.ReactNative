@@ -12,7 +12,7 @@ export default StyleSheet.create({
 	},
 	content: {
 		// paddingTop: 24
-		// paddingHorizontal: 16
+		paddingHorizontal: 16
 	},
 	title: {
 		fontSize: 16,
