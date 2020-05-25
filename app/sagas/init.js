@@ -1,8 +1,8 @@
-import { AsyncStorage } from 'react-native';
 import { put, takeLatest, all } from 'redux-saga/effects';
 import RNUserDefaults from 'rn-user-defaults';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import RNBootSplash from 'react-native-bootsplash';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import * as actions from '../actions';
 import { selectServerRequest, serverRequest } from '../actions/server';
@@ -19,6 +19,7 @@ import { isIOS } from '../utils/deviceInfo';
 import database from '../lib/database';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
 import appConfig from '../../app.json';
+import { localAuthenticate } from '../utils/localAuthentication';
 
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = yield RocketChat.getSortPreferences();
@@ -100,6 +101,8 @@ const restore = function* restore() {
 		} else {
 			const serversDB = database.servers;
 			const serverCollections = serversDB.collections.get('servers');
+
+			yield localAuthenticate(server);
 			const serverObj = yield serverCollections.find(server);
 			yield put(selectServerRequest(server, serverObj && serverObj.version));
 		}

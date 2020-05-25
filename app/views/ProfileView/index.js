@@ -84,7 +84,7 @@ class ProfileView extends React.Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		const { user } = this.props;
 		if (!equal(user, nextProps.user)) {
 			this.init(nextProps.user);

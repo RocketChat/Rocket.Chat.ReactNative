@@ -57,6 +57,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					lastOpen: s.lastOpen,
 					description: s.description,
 					announcement: s.announcement,
+					bannerClosed: s.bannerClosed,
 					topic: s.topic,
 					blocked: s.blocked,
 					blocker: s.blocker,
@@ -74,7 +75,12 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					lastMessage: s.lastMessage,
 					roles: s.roles,
 					usernames: s.usernames,
-					uids: s.uids
+					uids: s.uids,
+					visitor: s.visitor,
+					departmentId: s.departmentId,
+					servedBy: s.servedBy,
+					livechatData: s.livechatData,
+					tags: s.tags
 				};
 			} catch (error) {
 				try {
@@ -97,10 +103,15 @@ const createOrUpdateSubscription = async(subscription, room) => {
 				// We have to create a plain obj so we can manipulate it on `merge`
 				// Can we do it in a better way?
 				room = {
-					customFields: r.customFields,
-					broadcast: r.broadcast,
+					v: r.v,
+					ro: r.ro,
+					tags: r.tags,
+					servedBy: r.servedBy,
 					encrypted: r.encrypted,
-					ro: r.ro
+					broadcast: r.broadcast,
+					customFields: r.customFields,
+					departmentId: r.departmentId,
+					livechatData: r.livechatData
 				};
 			} catch (error) {
 				// Do nothing
@@ -121,6 +132,11 @@ const createOrUpdateSubscription = async(subscription, room) => {
 				try {
 					const update = sub.prepareUpdate((s) => {
 						Object.assign(s, tmp);
+						if (subscription.announcement) {
+							if (subscription.announcement !== sub.announcement) {
+								s.bannerClosed = false;
+							}
+						}
 					});
 					batch.push(update);
 				} catch (e) {
@@ -141,7 +157,8 @@ const createOrUpdateSubscription = async(subscription, room) => {
 				}
 			}
 
-			if (tmp.lastMessage) {
+			const { rooms } = store.getState().room;
+			if (tmp.lastMessage && !rooms.includes(tmp.rid)) {
 				const lastMessage = buildMessage(tmp.lastMessage);
 				const messagesCollection = db.collections.get('messages');
 				let messageRecord;

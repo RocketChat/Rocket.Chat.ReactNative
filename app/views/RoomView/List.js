@@ -27,10 +27,21 @@ class List extends React.Component {
 		t: PropTypes.string,
 		tmid: PropTypes.string,
 		theme: PropTypes.string,
+		loading: PropTypes.bool,
 		listRef: PropTypes.func,
 		hideSystemMessages: PropTypes.array,
 		navigation: PropTypes.object
 	};
+
+	// this.state.loading works for this.onEndReached and RoomView.init
+	static getDerivedStateFromProps(props, state) {
+		if (props.loading !== state.loading) {
+			return {
+				loading: props.loading
+			};
+		}
+		return null;
+	}
 
 	constructor(props) {
 		super(props);
@@ -96,7 +107,7 @@ class List extends React.Component {
 			this.messagesSubscription = this.messagesObservable
 				.subscribe((data) => {
 					this.interaction = InteractionManager.runAfterInteractions(() => {
-						if (tmid) {
+						if (tmid && this.thread) {
 							data = [this.thread, ...data];
 						}
 						const messages = orderBy(data, ['ts'], ['desc']);
@@ -114,16 +125,6 @@ class List extends React.Component {
 	reload = () => {
 		this.unsubscribeMessages();
 		this.init();
-	}
-
-	// this.state.loading works for this.onEndReached and RoomView.init
-	static getDerivedStateFromProps(props, state) {
-		if (props.loading !== state.loading) {
-			return {
-				loading: props.loading
-			};
-		}
-		return null;
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {

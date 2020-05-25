@@ -22,6 +22,7 @@ import EventEmitter from '../utils/events';
 import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../utils/info';
 import appConfig from '../../app.json';
+import { localAuthenticate } from '../utils/localAuthentication';
 import { setActiveUsers } from '../actions/activeUsers';
 
 const getServer = state => state.server.server;
@@ -42,6 +43,8 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 			yield put(setUser(result));
 			yield put(appStart('setUsername'));
 		} else {
+			const server = yield select(getServer);
+			yield localAuthenticate(server);
 			yield put(loginSuccess(result));
 		}
 	} catch (e) {

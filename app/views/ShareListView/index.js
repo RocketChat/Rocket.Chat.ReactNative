@@ -149,7 +149,7 @@ class ShareListView extends React.Component {
 		}, 500);
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		const { server } = this.props;
 		if (nextProps.server !== server) {
 			this.getSubscriptions(nextProps.server);

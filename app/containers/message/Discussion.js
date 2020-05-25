@@ -1,20 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 import PropTypes from 'prop-types';
 
+import Touchable from './Touchable';
 import { formatLastMessage, formatMessageCount, BUTTON_HIT_SLOP } from './utils';
 import styles from './styles';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 import { DISCUSSION } from './constants';
 import { themes } from '../../constants/colors';
+import MessageContext from './Context';
 
 const Discussion = React.memo(({
-	msg, dcount, dlm, onDiscussionPress, theme
+	msg, dcount, dlm, theme
 }) => {
 	const time = formatLastMessage(dlm);
 	const buttonText = formatMessageCount(dcount, DISCUSSION);
+	const { onDiscussionPress } = useContext(MessageContext);
 	return (
 		<>
 			<Text style={[styles.startedDiscussion, { color: themes[theme].auxiliaryText }]}>{I18n.t('Started_discussion')}</Text>
@@ -55,8 +57,7 @@ Discussion.propTypes = {
 	msg: PropTypes.string,
 	dcount: PropTypes.number,
 	dlm: PropTypes.string,
-	theme: PropTypes.string,
-	onDiscussionPress: PropTypes.func
+	theme: PropTypes.string
 };
 Discussion.displayName = 'MessageDiscussion';
 

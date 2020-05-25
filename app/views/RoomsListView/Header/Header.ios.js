@@ -56,11 +56,11 @@ const Header = React.memo(({
 			onPress={onPress}
 			testID='rooms-list-header-server-dropdown-button'
 			style={styles.container}
-			disabled={connecting || isFetching}
+			// disabled={connecting || isFetching}
 		>
 			<HeaderTitle connecting={connecting} isFetching={isFetching} theme={theme} />
 			<View style={styles.button}>
-				<Text style={[styles.server, { color: themes[theme].headerTintColor }]}>{serverName}</Text>
+				<Text style={[styles.server, { color: themes[theme].headerTintColor }]} numberOfLines={1}>{serverName}</Text>
 				<Image style={[styles.disclosure, showServerDropdown && styles.upsideDown]} source={{ uri: 'disclosure_indicator_server' }} />
 			</View>
 		</TouchableOpacity> */}
