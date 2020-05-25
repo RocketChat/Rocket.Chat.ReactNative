@@ -11,7 +11,6 @@ export default StyleSheet.create({
 		flexDirection: 'row'
 	},
 	content: {
-		// paddingTop: 24
 		paddingHorizontal: 16
 	},
 	title: {

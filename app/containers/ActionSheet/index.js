@@ -20,7 +20,7 @@ import Item from './Item';
 
 import Separator from '../Separator';
 import { themes } from '../../constants/colors';
-import styles from './styles';
+import styles, { ITEM_HEIGHT } from './styles';
 import Header from './Header';
 import Footer from './Footer';
 import Handle from './Handle';
@@ -96,6 +96,8 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 		extrapolate: Extrapolate.CLAMP
 	});
 
+	const open = Math.abs(windowHeight - (ITEM_HEIGHT * data?.options?.length));
+
 	return (
 		<>
 			{children}
@@ -115,7 +117,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 					<ScrollBottomSheet
 						ref={modalizeRef}
 						componentType='FlatList'
-						snapPoints={[128, windowHeight]}
+						snapPoints={[open, windowHeight]}
 						initialSnapIndex={1}
 						renderHandle={renderHandle}
 						data={data?.options}

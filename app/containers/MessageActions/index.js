@@ -351,7 +351,7 @@ const MessageActions = forwardRef(({
 		if (room.autoTranslate && message.u && message.u._id !== user.id) {
 			options.push({
 				title: I18n.t(message.autoTranslate ? 'View_Original' : 'Translate'),
-				icon: 'translate',
+				icon: 'language',
 				onPress: handleToggleTranslation
 			});
 		}
