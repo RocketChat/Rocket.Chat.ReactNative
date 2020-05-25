@@ -28,6 +28,9 @@ import useOrientation from '../../utils/useOrientation';
 import useDimensions from '../../utils/useDimensions';
 import { useSplit } from '../../split';
 
+const HANDLE_HEIGHT = 24;
+const MIN_SNAP_HEIGHT = 56;
+
 const ActionSheet = forwardRef(({ children, theme }, ref) => {
 	const modalizeRef = useRef();
 	const [data, setData] = useState({});
@@ -98,7 +101,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 		extrapolate: Extrapolate.CLAMP
 	});
 
-	const open = Math.abs(height - (ITEM_HEIGHT * data?.options?.length));
+	const open = Math.max((height - (ITEM_HEIGHT * data?.options?.length) - HANDLE_HEIGHT), MIN_SNAP_HEIGHT);
 
 	return (
 		<>

@@ -32,7 +32,7 @@ class MessagesView extends React.Component {
 		customEmojis: PropTypes.object,
 		theme: PropTypes.string,
 		split: PropTypes.bool,
-		showActionSheetWithOptions: PropTypes.func
+		show: PropTypes.func
 	}
 
 	constructor(props) {
@@ -234,8 +234,8 @@ class MessagesView extends React.Component {
 	}
 
 	showActionSheet = () => {
-		const { showActionSheetWithOptions } = this.props;
-		showActionSheetWithOptions({ options: [this.content.action] });
+		const { show } = this.props;
+		show({ options: [this.content.action] });
 	}
 
 	handleActionPress = async() => {
