@@ -17,13 +17,10 @@ import Animated, {
 import * as Haptics from 'expo-haptics';
 
 import Item from './Item';
-
+import Handle from './Handle';
 import Separator from '../Separator';
 import { themes } from '../../constants/colors';
 import styles, { ITEM_HEIGHT } from './styles';
-import Header from './Header';
-import Footer from './Footer';
-import Handle from './Handle';
 import useOrientation from '../../utils/useOrientation';
 import useDimensions from '../../utils/useDimensions';
 import { useSplit } from '../../split';
@@ -73,20 +70,6 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 		hide
 	}));
 
-	const renderFooter = () => (data?.hasCancel ? (
-		<Footer
-			hide={hide}
-			theme={theme}
-		/>
-	) : null);
-
-	const renderHeader = () => (data?.title ? (
-		<Header
-			title={data?.title}
-			theme={theme}
-		/>
-	) : null);
-
 	const renderHandle = () => (
 		<>
 			<Handle theme={theme} />
@@ -129,8 +112,6 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 						data={data?.options}
 						style={{ backgroundColor: themes[theme].backgroundColor }}
 						contentContainerStyle={styles.content}
-						ListHeaderComponent={renderHeader}
-						ListFooterComponent={renderFooter}
 						ItemSeparatorComponent={() => <Separator theme={theme} />}
 						renderItem={({ item }) => <Item item={item} hide={hide} theme={theme} />}
 						onSettle={index => index === 1 && toggleVisible()}
