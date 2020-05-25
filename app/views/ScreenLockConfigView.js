@@ -54,6 +54,12 @@ class ScreenLockConfigView extends React.Component {
 		this.init();
 	}
 
+	componentWillUnmount() {
+		if (this.observable && this.observable.unsubscribe) {
+			this.observable.unsubscribe();
+		}
+	}
+
 	defaultAutoLockOptions = [
 		{
 			title: I18n.t('Local_authentication_auto_lock_60'),
@@ -94,6 +100,19 @@ class ScreenLockConfigView extends React.Component {
 
 		const biometryLabel = await supportedBiometryLabel();
 		this.setState({ biometryLabel });
+
+		this.observe();
+	}
+
+	/*
+	 * We should observe biometry value
+	 * because it can be changed by PasscodeChange
+	 * when the user set his first passcode
+	*/
+	observe = () => {
+		this.observable = this.serverRecord?.observe()?.subscribe(({ biometry }) => {
+			this.setState({ biometry });
+		});
 	}
 
 	save = async() => {
