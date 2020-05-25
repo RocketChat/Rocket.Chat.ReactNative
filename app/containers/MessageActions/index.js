@@ -315,7 +315,7 @@ const MessageActions = forwardRef(({
 		if (Message_AllowStarring) {
 			options.push({
 				title: I18n.t(message.starred ? 'Unstar' : 'Star'),
-				icon: 'star',
+				icon: message.starred ? 'Star-filled' : 'star',
 				onPress: handleStar
 			});
 		}
@@ -326,15 +326,6 @@ const MessageActions = forwardRef(({
 				title: I18n.t(message.pinned ? 'Unpin' : 'Pin'),
 				icon: 'pin',
 				onPress: handlePin
-			});
-		}
-
-		// Reaction
-		if (!isReadOnly || room.reactWhenReadOnly) {
-			options.push({
-				title: I18n.t('Add_Reaction'),
-				icon: 'add-reaction',
-				onPress: handleReaction
 			});
 		}
 
@@ -381,12 +372,12 @@ const MessageActions = forwardRef(({
 		await getPermissions();
 		show({
 			options: getOptions(),
-			customHeader: (
+			customHeader: (!isReadOnly || room.reactWhenReadOnly ? (
 				<Header
 					server={server}
 					handleReaction={handleReaction}
 				/>
-			)
+			) : null)
 		});
 	};
 
