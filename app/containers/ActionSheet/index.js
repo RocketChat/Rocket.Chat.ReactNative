@@ -26,6 +26,7 @@ import Footer from './Footer';
 import Handle from './Handle';
 import useOrientation from '../../utils/useOrientation';
 import useDimensions from '../../utils/useDimensions';
+import { useSplit } from '../../split';
 
 const ActionSheet = forwardRef(({ children, theme }, ref) => {
 	const modalizeRef = useRef();
@@ -33,6 +34,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 	const [visible, setVisible] = useState(false);
 	const orientation = useOrientation();
 	const { height } = useDimensions();
+	const split = useSplit();
 
 	const toggleVisible = () => setVisible(!visible);
 
@@ -60,7 +62,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 	}, [visible]);
 
 	useEffect(() => {
-		hide();
+		modalizeRef.current?.snapTo(0);
 	}, [orientation]);
 
 	useImperativeHandle(ref, () => ({
@@ -115,6 +117,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 						/>
 					</TapGestureHandler>
 					<ScrollBottomSheet
+						key={orientation}
 						ref={modalizeRef}
 						componentType='FlatList'
 						snapPoints={[open, height]}
@@ -129,6 +132,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 						renderItem={({ item }) => <Item item={item} hide={hide} theme={theme} />}
 						onSettle={index => index === 1 && toggleVisible()}
 						animatedPosition={animatedPosition.current}
+						containerStyle={split && styles.bottomSheet}
 						nestedScrollEnabled
 					/>
 				</>

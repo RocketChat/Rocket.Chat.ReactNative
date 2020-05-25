@@ -26,7 +26,7 @@ export default StyleSheet.create({
 		...sharedStyles.textBold
 	},
 	footer: {
-		paddingHorizontal: 16
+		// paddingHorizontal: 16
 	},
 	handle: {
 		overflow: 'hidden',
@@ -43,5 +43,10 @@ export default StyleSheet.create({
 	},
 	backdrop: {
 		...StyleSheet.absoluteFillObject
+	},
+	bottomSheet: {
+		width: '50%',
+		alignSelf: 'center',
+		left: '25%'
 	}
 });

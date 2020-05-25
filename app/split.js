@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 
 import { isTablet } from './utils/deviceInfo';
 
 export const SplitContext = React.createContext(null);
+
+export function useSplit() {
+	return useContext(SplitContext);
+}
 
 export function withSplit(Component) {
 	if (isTablet) {
