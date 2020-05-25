@@ -6,7 +6,7 @@ import React, {
 	useImperativeHandle
 } from 'react';
 import PropTypes from 'prop-types';
-import { Keyboard, Dimensions } from 'react-native';
+import { Keyboard } from 'react-native';
 import { TapGestureHandler, State } from 'react-native-gesture-handler';
 import ScrollBottomSheet from 'react-native-scroll-bottom-sheet';
 import Animated, {
@@ -25,14 +25,14 @@ import Header from './Header';
 import Footer from './Footer';
 import Handle from './Handle';
 import useOrientation from '../../utils/useOrientation';
-
-const windowHeight = Dimensions.get('window').height;
+import useDimensions from '../../utils/useDimensions';
 
 const ActionSheet = forwardRef(({ children, theme }, ref) => {
 	const modalizeRef = useRef();
 	const [data, setData] = useState({});
 	const [visible, setVisible] = useState(false);
 	const orientation = useOrientation();
+	const { height } = useDimensions();
 
 	const toggleVisible = () => setVisible(!visible);
 
@@ -96,7 +96,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 		extrapolate: Extrapolate.CLAMP
 	});
 
-	const open = Math.abs(windowHeight - (ITEM_HEIGHT * data?.options?.length));
+	const open = Math.abs(height - (ITEM_HEIGHT * data?.options?.length));
 
 	return (
 		<>
@@ -117,7 +117,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 					<ScrollBottomSheet
 						ref={modalizeRef}
 						componentType='FlatList'
-						snapPoints={[open, windowHeight]}
+						snapPoints={[open, height]}
 						initialSnapIndex={1}
 						renderHandle={renderHandle}
 						data={data?.options}
