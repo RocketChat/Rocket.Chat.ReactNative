@@ -483,6 +483,8 @@ export default {
 	Terms_of_Service: ' Terms of Service ',
 	Theme: 'Theme',
 	The_URL_is_invalid: 'Invalid URL or unable to establish a secure connection.\n{{contact}}',
+	The_user_wont_be_able_to_type_in_roomName: 'The user won\'t be able to type in {{roomName}}',
+	The_user_will_be_able_to_type_in_roomName: 'The user will be able to type in {{roomName}}',
 	There_was_an_error_while_action: 'There was an error while {{action}}!',
 	This_room_is_blocked: 'This room is blocked',
 	This_room_is_read_only: 'This room is read only',

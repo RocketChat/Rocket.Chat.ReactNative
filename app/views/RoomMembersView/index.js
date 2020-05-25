@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View } from 'react-native';
+import { FlatList, View, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
 import * as Haptics from 'expo-haptics';
@@ -24,7 +24,6 @@ import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import { themes } from '../../constants/colors';
 import { getUserSelector } from '../../selectors/login';
-import { connectActionSheet } from '../../actionSheet';
 
 const PAGE_SIZE = 25;
 
@@ -54,15 +53,13 @@ class RoomMembersView extends React.Component {
 			id: PropTypes.string,
 			token: PropTypes.string
 		}),
-		theme: PropTypes.string,
-		showActionSheetWithOptions: PropTypes.func
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
 		super(props);
 		this.mounted = false;
 		this.MUTE_INDEX = 0;
-		this.actionSheetOptions = [];
 		const { rid } = props.navigation.state.params;
 		const room = props.navigation.getParam('room');
 		this.state = {
@@ -143,22 +140,28 @@ class RoomMembersView extends React.Component {
 
 		const userIsMuted = !!(muted || []).find(m => m === user.username);
 		user.muted = userIsMuted;
-		if (userIsMuted) {
-			this.actionSheetOptions = [{
-				title: I18n.t('Unmute'),
-				icon: 'mute',
-				onPress: this.handleMute
-			}];
-		} else {
-			this.actionSheetOptions = [{
-				title: I18n.t('Mute'),
-				icon: 'mute',
-				onPress: this.handleMute
-			}];
-		}
-		this.setState({ userLongPressed: user });
+
+		Alert.alert(
+			`${ I18n.t(userIsMuted ? 'Unmute' : 'Mute') } ${ user.username }?`,
+			I18n.t(`The_user_${ userIsMuted ? 'will' : 'wont' }_be_able_to_type_in_roomName`, {
+				roomName: RocketChat.getRoomTitle(room)
+			}),
+			[
+				{
+					text: I18n.t('Cancel'),
+					style: 'cancel'
+				},
+				{
+					text: I18n.t(userIsMuted ? 'Unmute' : 'Mute'),
+					style: 'destructive',
+					onPress: this.handleMute
+				}
+			],
+			{ cancelable: true }
+		);
+
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-		this.showActionSheet();
+		this.setState({ userLongPressed: user });
 	}
 
 	toggleStatus = () => {
@@ -170,11 +173,6 @@ class RoomMembersView extends React.Component {
 		} catch (e) {
 			log(e);
 		}
-	}
-
-	showActionSheet = () => {
-		const { showActionSheetWithOptions } = this.props;
-		showActionSheetWithOptions({ options: this.actionSheetOptions });
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -284,4 +282,4 @@ const mapStateToProps = state => ({
 	user: getUserSelector(state)
 });
 
-export default connect(mapStateToProps)(connectActionSheet(withTheme(RoomMembersView)));
+export default connect(mapStateToProps)(withTheme(RoomMembersView));
