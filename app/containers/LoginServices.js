@@ -12,7 +12,7 @@ import sharedStyles from '../views/Styles';
 import { themes } from '../constants/colors';
 import { loginRequest as loginRequestAction } from '../actions/login';
 import Button from './Button';
-import OnboardingSeparator from './OnboardingSeparator';
+import OrSeparator from './OrSeparator';
 import Touch from '../utils/touch';
 import I18n from '../i18n';
 import random from '../utils/random';
@@ -252,12 +252,12 @@ class LoginServices extends React.PureComponent {
 						style={styles.options}
 						color={themes[theme].actionTintColor}
 					/>
-					<OnboardingSeparator theme={theme} />
+					<OrSeparator theme={theme} />
 				</>
 			);
 		}
 		if (length > 0 && separator) {
-			return <OnboardingSeparator theme={theme} />;
+			return <OrSeparator theme={theme} />;
 		}
 		return null;
 	}

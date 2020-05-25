@@ -6,7 +6,7 @@ import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 
 const Emoji = React.memo(({
-	content, standardEmojiStyle, customEmojiStyle, baseUrl, getCustomEmoji
+	content, baseUrl, standardEmojiStyle, customEmojiStyle, getCustomEmoji
 }) => {
 	const parsedContent = content.replace(/^:|:$/g, '');
 	const emoji = getCustomEmoji(parsedContent);
@@ -18,9 +18,9 @@ const Emoji = React.memo(({
 
 Emoji.propTypes = {
 	content: PropTypes.string,
+	baseUrl: PropTypes.string,
 	standardEmojiStyle: PropTypes.object,
 	customEmojiStyle: PropTypes.object,
-	baseUrl: PropTypes.string,
 	getCustomEmoji: PropTypes.func
 };
 Emoji.displayName = 'MessageEmoji';

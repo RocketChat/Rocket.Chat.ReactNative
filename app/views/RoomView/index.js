@@ -69,7 +69,7 @@ const stateAttrsUpdate = [
 	'readOnly',
 	'member'
 ];
-const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement', 'sysMes', 'topic', 'name', 'fname', 'roles'];
+const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement', 'sysMes', 'topic', 'name', 'fname', 'roles', 'bannerClosed', 'visitor'];
 
 class RoomView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -87,6 +87,7 @@ class RoomView extends React.Component {
 		const goRoomActionsView = navigation.getParam('goRoomActionsView', () => {});
 		const unreadsCount = navigation.getParam('unreadsCount', null);
 		const roomUserId = navigation.getParam('roomUserId');
+		const visitor = navigation.getParam('visitor');
 		if (!rid) {
 			return {
 				...themedHeader(screenProps.theme)
@@ -104,6 +105,7 @@ class RoomView extends React.Component {
 					type={t}
 					widthOffset={tmid ? 95 : 130}
 					roomUserId={roomUserId}
+					visitor={visitor}
 					goRoomActionsView={goRoomActionsView}
 				/>
 			),
@@ -218,7 +220,7 @@ class RoomView extends React.Component {
 			} = this.props;
 			if ((room.id || room.rid) && !this.tmid) {
 				navigation.setParams({
-					name: this.getRoomTitle(room),
+					name: RocketChat.getRoomTitle(room),
 					subtitle: room.topic,
 					avatar: room.name,
 					t: room.t,
@@ -291,8 +293,14 @@ class RoomView extends React.Component {
 				this.setReadOnly();
 			}
 		}
+		// If it's a livechat room
+		if (this.t === 'l') {
+			if (!isEqual(prevState.roomUpdate.visitor, roomUpdate.visitor)) {
+				navigation.setParams({ visitor: roomUpdate.visitor });
+			}
+		}
 		if (((roomUpdate.fname !== prevState.roomUpdate.fname) || (roomUpdate.name !== prevState.roomUpdate.name)) && !this.tmid) {
-			navigation.setParams({ name: this.getRoomTitle(room) });
+			navigation.setParams({ name: RocketChat.getRoomTitle(room) });
 		}
 	}
 
@@ -456,7 +464,7 @@ class RoomView extends React.Component {
 			this.setState({ room });
 			if (!this.tmid) {
 				navigation.setParams({
-					name: this.getRoomTitle(room),
+					name: RocketChat.getRoomTitle(room),
 					subtitle: room.topic,
 					avatar: room.name,
 					t: room.t
@@ -645,7 +653,7 @@ class RoomView extends React.Component {
 		const { room } = this.state;
 		if (rid === this.rid) {
 			Navigation.navigate('RoomsListView');
-			showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: this.getRoomTitle(room) }), I18n.t('Oops'));
+			showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: RocketChat.getRoomTitle(room) }), I18n.t('Oops'));
 		}
 	}
 
@@ -666,11 +674,6 @@ class RoomView extends React.Component {
 			Review.pushPositiveEvent();
 		});
 	};
-
-	getRoomTitle = (room) => {
-		const { useRealName } = this.props;
-		return ((room.prid || useRealName) && room.fname) || room.name;
-	}
 
 	getMessages = () => {
 		const { room } = this.state;
@@ -763,7 +766,7 @@ class RoomView extends React.Component {
 			navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
 			ModalNavigation.navigate('RoomInfoView', navParam);
 		} else {
-			navigation.navigate('RoomInfoView', navParam);
+			navigation.push('RoomInfoView', navParam);
 		}
 	}
 
@@ -814,6 +817,20 @@ class RoomView extends React.Component {
 			id: mid
 		}
 	});
+
+	closeBanner = async() => {
+		const { room } = this.state;
+		try {
+			const db = database.active;
+			await db.action(async() => {
+				await room.update((r) => {
+					r.bannerClosed = true;
+				});
+			});
+		} catch {
+			// do nothing
+		}
+	};
 
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
@@ -993,7 +1010,9 @@ class RoomView extends React.Component {
 		const {
 			user, baseUrl, theme, navigation, Hide_System_Messages
 		} = this.props;
-		const { rid, t, sysMes } = room;
+		const {
+			rid, t, sysMes, bannerClosed, announcement
+		} = room;
 
 		return (
 			<SafeAreaView
@@ -1008,7 +1027,9 @@ class RoomView extends React.Component {
 				<Banner
 					rid={rid}
 					title={I18n.t('Announcement')}
-					text={room.announcement}
+					text={announcement}
+					bannerClosed={bannerClosed}
+					closeBanner={this.closeBanner}
 					theme={theme}
 				/>
 				<List

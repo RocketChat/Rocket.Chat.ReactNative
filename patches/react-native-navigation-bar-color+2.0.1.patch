@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-navigation-bar-color/src/index.js b/node_modules/react-native-navigation-bar-color/src/index.js
+index eeab32f..d4d8a2c 100644
+--- a/node_modules/react-native-navigation-bar-color/src/index.js
++++ b/node_modules/react-native-navigation-bar-color/src/index.js
+@@ -9,7 +9,7 @@ const changeNavigationBarColor = (
+ ) => {
+   if (Platform.OS === 'android') {
+     const LightNav = light ? true : false;
+-    NavigationBarColor.changeNavigationBarColor(color, LightNav, animated);
++    return NavigationBarColor.changeNavigationBarColor(color, LightNav, animated);
+   }
+ };
+ const hideNavigationBar = () => {

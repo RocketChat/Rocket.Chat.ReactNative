@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, Keyboard, StyleSheet, TouchableOpacity, View, Alert
+	Text, Keyboard, StyleSheet, TouchableOpacity, View, Alert, BackHandler
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
@@ -19,7 +19,7 @@ import { appStart as appStartAction } from '../actions';
 import sharedStyles from './Styles';
 import Button from '../containers/Button';
 import TextInput from '../containers/TextInput';
-import OnboardingSeparator from '../containers/OnboardingSeparator';
+import OrSeparator from '../containers/OrSeparator';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import I18n from '../i18n';
 import { isIOS } from '../utils/deviceInfo';
@@ -69,7 +69,7 @@ class NewServerView extends React.Component {
 		const previousServer = navigation.getParam('previousServer', null);
 		const close = navigation.getParam('close', () => {});
 		return {
-			headerLeft: previousServer ? <CloseModalButton navigation={navigation} onPress={close} /> : undefined,
+			headerLeft: previousServer ? <CloseModalButton navigation={navigation} onPress={close} testID='new-server-view-close' /> : undefined,
 			title: I18n.t('Workspaces'),
 			...themedHeader(screenProps.theme)
 		};
@@ -105,6 +105,7 @@ class NewServerView extends React.Component {
 			certificate: null
 		};
 		EventEmitter.addEventListener('NewServer', this.handleNewServerEvent);
+		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
 	componentDidMount() {
@@ -116,6 +117,16 @@ class NewServerView extends React.Component {
 
 	componentWillUnmount() {
 		EventEmitter.removeListener('NewServer', this.handleNewServerEvent);
+		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+	}
+
+	handleBackPress = () => {
+		const { navigation } = this.props;
+		if (navigation.isFocused() && this.previousServer) {
+			this.close();
+			return true;
+		}
+		return false;
 	}
 
 	onChangeText = (text) => {
@@ -286,7 +297,7 @@ class NewServerView extends React.Component {
 		const { connecting, theme } = this.props;
 		const { text, connectingOpen } = this.state;
 		return (
-			<FormContainer theme={theme}>
+			<FormContainer theme={theme} testID='new-server-view'>
 				<FormContainerInner>
 					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Join_your_workspace')}</Text>
 					<TextInput
@@ -310,10 +321,10 @@ class NewServerView extends React.Component {
 						disabled={!text || connecting}
 						loading={!connectingOpen && connecting}
 						style={styles.connectButton}
-						testID='new-server-view-button'
 						theme={theme}
+						testID='new-server-view-button'
 					/>
-					<OnboardingSeparator theme={theme} />
+					<OrSeparator theme={theme} />
 					<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Onboarding_join_open_description')}</Text>
 					<Button
 						title={I18n.t('Join_our_open_workspace')}
@@ -323,6 +334,7 @@ class NewServerView extends React.Component {
 						disabled={connecting}
 						loading={connectingOpen && connecting}
 						theme={theme}
+						testID='new-server-view-open'
 					/>
 				</FormContainerInner>
 				{ isIOS ? this.renderCertificatePicker() : null }

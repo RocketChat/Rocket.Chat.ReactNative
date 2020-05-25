@@ -64,8 +64,10 @@ export default class RCTextInput extends React.PureComponent {
 		inputRef: PropTypes.func,
 		testID: PropTypes.string,
 		iconLeft: PropTypes.string,
+		iconRight: PropTypes.string,
 		placeholder: PropTypes.string,
 		left: PropTypes.element,
+		onIconRightPress: PropTypes.func,
 		theme: PropTypes.string
 	}
 
@@ -87,6 +89,19 @@ export default class RCTextInput extends React.PureComponent {
 				style={[styles.iconContainer, styles.iconLeft, { color: themes[theme].bodyText }]}
 				size={20}
 			/>
+		);
+	}
+
+	get iconRight() {
+		const { iconRight, onIconRightPress, theme } = this.props;
+		return (
+			<BorderlessButton onPress={onIconRightPress} style={[styles.iconContainer, styles.iconRight]}>
+				<CustomIcon
+					name={iconRight}
+					style={{ color: themes[theme].bodyText }}
+					size={20}
+				/>
+			</BorderlessButton>
 		);
 	}
 
@@ -117,7 +132,7 @@ export default class RCTextInput extends React.PureComponent {
 	render() {
 		const { showPassword } = this.state;
 		const {
-			label, left, error, loading, secureTextEntry, containerStyle, inputRef, iconLeft, inputStyle, testID, placeholder, theme, ...inputProps
+			label, left, error, loading, secureTextEntry, containerStyle, inputRef, iconLeft, iconRight, inputStyle, testID, placeholder, theme, ...inputProps
 		} = this.props;
 		const { dangerColor } = themes[theme];
 		return (
@@ -140,7 +155,7 @@ export default class RCTextInput extends React.PureComponent {
 						style={[
 							styles.input,
 							iconLeft && styles.inputIconLeft,
-							secureTextEntry && styles.inputIconRight,
+							(secureTextEntry || iconRight) && styles.inputIconRight,
 							{
 								backgroundColor: themes[theme].backgroundColor,
 								borderColor: themes[theme].separatorColor,
@@ -165,6 +180,7 @@ export default class RCTextInput extends React.PureComponent {
 						{...inputProps}
 					/>
 					{iconLeft ? this.iconLeft : null}
+					{iconRight ? this.iconRight : null}
 					{secureTextEntry ? this.iconPassword : null}
 					{loading ? this.loading : null}
 					{left}

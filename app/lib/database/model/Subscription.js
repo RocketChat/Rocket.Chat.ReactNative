@@ -50,6 +50,8 @@ export default class Subscription extends Model {
 
 	@field('announcement') announcement;
 
+	@field('banner_closed') bannerClosed;
+
 	@field('topic') topic;
 
 	@field('blocked') blocked;
@@ -95,4 +97,14 @@ export default class Subscription extends Model {
 	@json('uids', sanitizer) uids;
 
 	@json('usernames', sanitizer) usernames;
+
+	@json('visitor', sanitizer) visitor;
+
+	@field('department_id') departmentId;
+
+	@json('served_by', sanitizer) servedBy;
+
+	@json('livechat_data', sanitizer) livechatData;
+
+	@json('tags', sanitizer) tags;
 }

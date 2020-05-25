@@ -59,7 +59,7 @@ class Sidebar extends Component {
 		this.setIsAdmin();
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		const { loadingServer } = this.props;
 		if (loadingServer && nextProps.loadingServer !== loadingServer) {
 			this.setIsAdmin();
@@ -224,7 +224,12 @@ class Sidebar extends Component {
 							<View style={styles.headerUsername}>
 								<Text numberOfLines={1} style={[styles.username, { color: themes[theme].titleText }]}>{useRealName ? user.name : user.username}</Text>
 							</View>
-							<Text style={[styles.currentServerText, { color: themes[theme].titleText }]} numberOfLines={1}>{Site_Name}</Text>
+							<Text
+								style={[styles.currentServerText, { color: themes[theme].titleText }]}
+								numberOfLines={1}
+								accessibilityLabel={`Connected to ${ baseUrl }`}
+							>{Site_Name}
+							</Text>
 						</View>
 					</View>
 

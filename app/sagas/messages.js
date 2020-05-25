@@ -27,10 +27,12 @@ const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 				rid: subscriptions[0].rid, name: username, fname: name, message
 			});
 		} else {
-			const room = yield RocketChat.createDirectMessage(username);
-			yield goRoom({
-				rid: room.rid, name: username, fname: name, message
-			});
+			const result = yield RocketChat.createDirectMessage(username);
+			if (result?.success) {
+				yield goRoom({
+					rid: result?.room.rid, t: 'd', name: username, fname: name, message
+				});
+			}
 		}
 	} catch (e) {
 		log(e);
