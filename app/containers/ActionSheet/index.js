@@ -84,7 +84,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 		extrapolate: Extrapolate.CLAMP
 	});
 
-	const open = Math.max((height - (ITEM_HEIGHT * data?.options?.length) - HANDLE_HEIGHT), MIN_SNAP_HEIGHT);
+	const open = Math.max((height - (ITEM_HEIGHT * data?.options?.length) - HANDLE_HEIGHT - (data?.headerHeight || 0)), MIN_SNAP_HEIGHT);
 
 	return (
 		<>

@@ -14,7 +14,7 @@ import { LISTENER } from '../Toast';
 import EventEmitter from '../../utils/events';
 import { showConfirmationAlert } from '../../utils/info';
 import { useActionSheet } from '../../actionSheet';
-import Header from './Header';
+import Header, { HEADER_HEIGHT } from './Header';
 
 const MessageActions = forwardRef(({
 	room,
@@ -371,6 +371,7 @@ const MessageActions = forwardRef(({
 		await getPermissions();
 		show({
 			options: getOptions(message),
+			headerHeight: HEADER_HEIGHT,
 			customHeader: (!isReadOnly || room.reactWhenReadOnly ? (
 				<Header
 					server={server}

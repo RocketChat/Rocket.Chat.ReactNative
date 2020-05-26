@@ -12,6 +12,8 @@ import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import database from '../../lib/database';
 import useDimensions from '../../utils/useDimensions';
 
+export const HEADER_HEIGHT = 36;
+
 const styles = StyleSheet.create({
 	container: {
 		alignItems: 'center'
