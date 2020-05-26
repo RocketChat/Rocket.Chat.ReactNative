@@ -205,7 +205,7 @@ class UploadModal extends Component {
 				</View>
 			);
 		}
-		return (<CustomIcon name='file-generic' size={72} style={[styles.fileIcon, { color: themes[theme].tintColor }]} />);
+		return (<CustomIcon name='clip' size={72} style={[styles.fileIcon, { color: themes[theme].tintColor }]} />);
 	}
 
 	render() {

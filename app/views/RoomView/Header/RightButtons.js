@@ -80,7 +80,7 @@ class RightButtonsContainer extends React.PureComponent {
 				<CustomHeaderButtons>
 					<Item
 						title='bell'
-						iconName={isFollowingThread ? 'bell' : 'Bell-off'}
+						iconName={isFollowingThread ? 'bell' : 'bell-off'}
 						onPress={this.toggleFollowThread}
 						testID={isFollowingThread ? 'room-view-header-unfollow' : 'room-view-header-follow'}
 					/>
@@ -91,8 +91,8 @@ class RightButtonsContainer extends React.PureComponent {
 			<CustomHeaderButtons>
 				{threadsEnabled ? (
 					<Item
-						title='thread'
-						iconName='thread'
+						title='threads'
+						iconName='threads'
 						onPress={this.goThreadsView}
 						testID='room-view-header-threads'
 					/>

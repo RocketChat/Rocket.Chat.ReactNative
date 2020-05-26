@@ -182,7 +182,7 @@ class NewMessageView extends React.Component {
 					{this.renderButton({
 						onPress: this.createChannel,
 						title: I18n.t('Create_Channel'),
-						icon: 'hashtag',
+						icon: 'hash',
 						testID: 'new-message-view-create-channel',
 						first: true
 					})}

@@ -29,7 +29,7 @@ const Sort = React.memo(({
 				]}
 			>
 				<Text style={[styles.sortToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Sorting_by', { key: I18n.t(sortBy === 'alphabetical' ? 'name' : 'activity') })}</Text>
-				<CustomIcon style={[styles.sortIcon, { color: themes[theme].auxiliaryText }]} size={22} name='sort' />
+				<CustomIcon style={[styles.sortIcon, { color: themes[theme].auxiliaryText }]} size={22} name='sort-az' />
 			</View>
 		</Touch>
 	);

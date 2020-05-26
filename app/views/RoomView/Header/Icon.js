@@ -39,9 +39,9 @@ const Icon = React.memo(({
 	if (type === 'discussion') {
 		icon = 'chat';
 	} else if (type === 'thread') {
-		icon = 'thread';
+		icon = 'threads';
 	} else if (type === 'c') {
-		icon = 'hashtag';
+		icon = 'hash';
 	} else if (type === 'l') {
 		icon = 'livechat';
 	} else if (type === 'd') {
