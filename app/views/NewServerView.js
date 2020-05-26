@@ -64,17 +64,6 @@ const styles = StyleSheet.create({
 });
 
 class NewServerView extends React.Component {
-	// TODO: ?
-	// static navigationOptions = ({ screenProps, navigation }) => {
-	// 	const previousServer = navigation.getParam('previousServer', null);
-	// 	const close = navigation.getParam('close', () => {});
-	// 	return {
-	// 		headerLeft: previousServer ? <CloseModalButton navigation={navigation} onPress={close} testID='new-server-view-close' /> : undefined,
-	// 		title: I18n.t('Workspaces'),
-	// 		...themedHeader(screenProps.theme)
-	// 	};
-	// }
-
 	static navigationOptions = {
 		title: I18n.t('Workspaces')
 	}
@@ -86,15 +75,16 @@ class NewServerView extends React.Component {
 		connectServer: PropTypes.func.isRequired,
 		selectServer: PropTypes.func.isRequired,
 		currentServer: PropTypes.string,
+		previousServer: PropTypes.string,
 		initAdd: PropTypes.func,
 		finishAdd: PropTypes.func
 	}
 
 	constructor(props) {
 		super(props);
-		// TODO: add server logic
-		// this.previousServer = props.route.params?.previousServer;
-		// props.navigation.setParams({ close: this.close, previousServer: this.previousServer });
+		props.navigation.setOptions({
+			headerLeft: () => <CloseModalButton navigation={props.navigation} onPress={this.close} testID='new-server-view-close' />
+		});
 
 		// Cancel
 		this.options = [I18n.t('Cancel')];
@@ -114,8 +104,8 @@ class NewServerView extends React.Component {
 	}
 
 	componentDidMount() {
-		const { initAdd } = this.props;
-		if (this.previousServer) {
+		const { initAdd, previousServer } = this.props;
+		if (previousServer) {
 			initAdd();
 		}
 	}
@@ -126,8 +116,8 @@ class NewServerView extends React.Component {
 	}
 
 	handleBackPress = () => {
-		const { navigation } = this.props;
-		if (navigation.isFocused() && this.previousServer) {
+		const { navigation, previousServer } = this.props;
+		if (navigation.isFocused() && previousServer) {
 			this.close();
 			return true;
 		}
@@ -139,9 +129,11 @@ class NewServerView extends React.Component {
 	}
 
 	close = () => {
-		const { selectServer, currentServer, finishAdd } = this.props;
-		if (this.previousServer !== currentServer) {
-			selectServer(this.previousServer);
+		const {
+			selectServer, currentServer, finishAdd, previousServer
+		} = this.props;
+		if (previousServer !== currentServer) {
+			selectServer(previousServer);
 		}
 		finishAdd();
 	}
@@ -349,7 +341,8 @@ class NewServerView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	connecting: state.server.connecting
+	connecting: state.server.connecting,
+	previousServer: state.app.text
 });
 
 const mapDispatchToProps = dispatch => ({

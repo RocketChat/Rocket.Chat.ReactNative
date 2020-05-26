@@ -30,7 +30,7 @@ const SetUsernameStack = () => (
 
 // App
 const Stack = createStackNavigator();
-const App = ({ root }) => {
+const App = React.memo(({ root }) => {
 	if (!root || root === 'background') {
 		return null;
 	}
@@ -51,7 +51,7 @@ const App = ({ root }) => {
 								component={AuthLoadingView}
 							/>
 						) : null}
-						{root === 'outside' ? (
+						{root === 'outside' || root === 'newServer' ? (
 							<Stack.Screen
 								name='OutsideStack'
 								component={OutsideStack}
@@ -74,7 +74,7 @@ const App = ({ root }) => {
 			</NavigationContainer>
 		</SafeAreaProvider>
 	);
-};
+});
 const mapStateToProps = state => ({
 	root: state.app.root
 });

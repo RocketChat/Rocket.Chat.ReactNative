@@ -1,5 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import { connect } from 'react-redux';
 
 import { ThemeContext } from '../theme';
 import { defaultHeader, themedHeader } from '../utils/navigation';
@@ -16,16 +17,18 @@ import AuthenticationWebView from '../views/AuthenticationWebView';
 
 // Outside
 const Outside = createStackNavigator();
-const OutsideStack = () => {
+const _OutsideStack = ({ root }) => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
 		<Outside.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
-			<Outside.Screen
-				name='OnboardingView'
-				component={OnboardingView}
-				options={OnboardingView.navigationOptions}
-			/>
+			{root === 'outside' ? (
+				<Outside.Screen
+					name='OnboardingView'
+					component={OnboardingView}
+					options={OnboardingView.navigationOptions}
+				/>
+			) : null}
 			<Outside.Screen
 				name='NewServerView'
 				component={NewServerView}
@@ -59,6 +62,12 @@ const OutsideStack = () => {
 		</Outside.Navigator>
 	);
 };
+
+const mapStateToProps = state => ({
+	root: state.app.root
+});
+
+const OutsideStack = connect(mapStateToProps)(_OutsideStack);
 
 // OutsideStackModal
 const OutsideModal = createStackNavigator();

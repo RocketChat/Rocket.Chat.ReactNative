@@ -10,6 +10,7 @@ import RNUserDefaults from 'rn-user-defaults';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
+import { appStart as appStartAction } from '../../actions';
 import styles from './styles';
 import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
@@ -123,17 +124,17 @@ class ServerDropdown extends Component {
 	}
 
 	addServer = () => {
-		const { server, navigation } = this.props;
+		const { server, appStart } = this.props;
 
 		this.close();
 		setTimeout(() => {
-			navigation.navigate('NewServerView', { previousServer: server });
+			appStart('newServer', server);
 		}, ANIMATION_DURATION);
 	}
 
 	select = async(server) => {
 		const {
-			server: currentServer, selectServerRequest, navigation, split
+			server: currentServer, selectServerRequest, navigation, split, appStart
 		} = this.props;
 		this.close();
 		if (currentServer !== server) {
@@ -143,7 +144,7 @@ class ServerDropdown extends Component {
 			}
 			if (!userId) {
 				setTimeout(() => {
-					navigation.navigate('NewServerView', { previousServer: currentServer });
+					appStart('newServer', server);
 					this.newServerTimeout = setTimeout(() => {
 						EventEmitter.emit('NewServer', { server });
 					}, ANIMATION_DURATION);
@@ -285,7 +286,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	toggleServerDropdown: () => dispatch(toggleServerDropdownAction()),
-	selectServerRequest: server => dispatch(selectServerRequestAction(server))
+	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
+	appStart: (param, text) => dispatch(appStartAction(param, text))
 });
 
 export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(withTheme(withSplit(ServerDropdown))));
