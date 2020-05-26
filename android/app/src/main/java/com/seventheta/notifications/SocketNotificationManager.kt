@@ -43,7 +43,7 @@ class SocketNotificationManager(val context: Context) {
         this.client = ddpClient
     }
 
-    fun connect(): Boolean {
+    fun connect(onConnect: () -> Unit): Boolean {
         val prefs = context.getSharedPreferences("react-native", Context.MODE_PRIVATE)
         val allPrefs = prefs.all
 
@@ -57,6 +57,8 @@ class SocketNotificationManager(val context: Context) {
 
         client.connect(url).onSuccessTask { task ->
             val result = task.result
+
+            onConnect()
 
             // observe all callback events.
             result.client.subscriptionCallback.subscribe { event ->

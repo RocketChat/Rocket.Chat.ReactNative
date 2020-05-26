@@ -14,7 +14,6 @@ import chat.rocket.reactnative.BuildConfig
 
 class SocketJobService : JobService() {
 
-    private var client: SocketNotificationManager? = null
     private var params: JobParameters? = null
 
     override fun onCreate() {
@@ -26,14 +25,14 @@ class SocketJobService : JobService() {
         this.params = params
         val command = params?.extras?.getString(EXTRA_COMMAND)
 
-        Log.d("SOCKETNOTIS", "onStartJob, client: $client")
+        Log.d("SOCKETNOTIS", "onStartJob, client: $_client")
 
-        if (this.client == null) {
+        if (_client == null) {
             Log.d("SOCKETNOTIS", "constructing client...")
-            this.client = SocketNotificationManager(this)
+            _client = SocketNotificationManager(this)
         }
 
-        val client = this.client!!
+        val client = _client!!
 
         Log.d("SOCKETNOTIS", "onStartJob ready...")
 
@@ -61,14 +60,14 @@ class SocketJobService : JobService() {
             }
         }
 
-//        Log.d("SOCKETNOTIS", "No command, rescheduling...")
+        Log.d("SOCKETNOTIS", "No command, rescheduling...")
 
-//        scheduleJobAgain(300)
-        return true
+        scheduleJobAgain(1000L * 60)
+        return false
     }
 
     private fun disconnectAndReconnect() {
-        this.client?.close()
+        _client?.close()
         Handler(Looper.getMainLooper()).postDelayed({
             val didConnect = connectClient()
             if (!didConnect) {
@@ -79,8 +78,10 @@ class SocketJobService : JobService() {
 
     private fun connectClient(): Boolean {
         Log.d("SOCKETNOTIS", "connecting...")
-        val client = this.client!!
-        return client.connect()
+        val client = _client!!
+        return client.connect {
+            scheduleJobAgain(1000L * 60)
+        }
     }
 
     private fun scheduleJobAgain(interval: Long) {
@@ -106,16 +107,19 @@ class SocketJobService : JobService() {
 
     override fun onDestroy() {
         Log.d("SOCKETNOTIS", "onDestroy")
-        val client = this.client
-        if (client != null) {
-            if (client.isConnected) {
-                client.close()
-            }
-        }
+//        val client = _client
+//        if (client != null) {
+//            if (client.isConnected) {
+//                client.close()
+//            }
+//        }
+//        _client = null
         super.onDestroy()
     }
 
     companion object {
+
+        private var _client: SocketNotificationManager? = null
 
         const val EXTRA_JOB_ID = 528491
 
