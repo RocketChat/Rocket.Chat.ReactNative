@@ -55,7 +55,7 @@ export const Select = ({
 	const Icon = () => (
 		loading
 			? <ActivityIndicator style={styles.loading} />
-			: <CustomIcon size={22} name='arrow-down' style={isAndroid && styles.icon} color={themes[theme].auxiliaryText} />
+			: <CustomIcon size={22} name='chevron-down' style={isAndroid && styles.icon} color={themes[theme].auxiliaryText} />
 	);
 
 	return (

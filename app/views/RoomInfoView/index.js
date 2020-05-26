@@ -304,7 +304,7 @@ class RoomInfoView extends React.Component {
 	renderButtons = () => (
 		<View style={styles.roomButtonsContainer}>
 			{this.renderButton(this.goRoom, 'message', I18n.t('Message'))}
-			{this.renderButton(this.videoCall, 'video', I18n.t('Video_call'))}
+			{this.renderButton(this.videoCall, 'video-1', I18n.t('Video_call'))}
 		</View>
 	)
 

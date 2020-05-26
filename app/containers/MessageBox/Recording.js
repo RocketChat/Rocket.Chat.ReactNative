@@ -149,7 +149,7 @@ export default class extends React.PureComponent {
 						<CustomIcon
 							size={22}
 							color={themes[theme].dangerColor}
-							name='cross'
+							name='Cross'
 						/>
 					</BorderlessButton>
 					<Text key='currentTime' style={[styles.textBoxInput, { color: themes[theme].titleText }]}>{currentTime}</Text>

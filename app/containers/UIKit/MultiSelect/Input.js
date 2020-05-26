@@ -22,7 +22,7 @@ const Input = ({
 			{
 				loading
 					? <ActivityIndicator style={[styles.loading, styles.icon]} />
-					: <CustomIcon name='arrow-down' size={22} color={themes[theme].auxiliaryText} style={styles.icon} />
+					: <CustomIcon name='chevron-down' size={22} color={themes[theme].auxiliaryText} style={styles.icon} />
 			}
 		</View>
 	</Touchable>
