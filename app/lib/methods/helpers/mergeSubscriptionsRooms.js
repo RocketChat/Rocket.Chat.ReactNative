@@ -57,6 +57,10 @@ export const merge = (subscription, room) => {
 		subscription.name = subscription.fname;
 	}
 
+	if (!subscription.autoTranslate) {
+		subscription.autoTranslate = false;
+	}
+
 	subscription.blocker = !!subscription.blocker;
 	subscription.blocked = !!subscription.blocked;
 	return subscription;

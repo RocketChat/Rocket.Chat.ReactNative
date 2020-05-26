@@ -6,7 +6,6 @@ import {
 import { SafeAreaView, ScrollView } from 'react-navigation';
 
 import RocketChat from '../../lib/rocketchat';
-import database from '../../lib/database';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import { CustomIcon } from '../../lib/Icons';
@@ -62,6 +61,7 @@ class AutoTranslateView extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.mounted = false;
 		this.rid = props.navigation.getParam('rid');
 		const room = props.navigation.getParam('room');
 
@@ -70,6 +70,16 @@ class AutoTranslateView extends React.Component {
 			this.subscription = this.roomObservable
 				.subscribe((changes) => {
 					this.room = changes;
+
+					if (this.mounted) {
+						const { selectedLanguage, enableAutoTranslate } = this.state;
+						if (selectedLanguage !== changes.autoTranslateLanguage) {
+							this.setState({ selectedLanguage: changes.autoTranslateLanguage });
+						}
+						if (enableAutoTranslate !== changes.autoTranslate) {
+							this.setState({ enableAutoTranslate: changes.autoTranslate });
+						}
+					}
 				});
 		}
 		this.state = {
@@ -80,6 +90,7 @@ class AutoTranslateView extends React.Component {
 	}
 
 	async componentDidMount() {
+		this.mounted = true;
 		try {
 			const languages = await RocketChat.getSupportedLanguagesAutoTranslate();
 			this.setState({ languages });
@@ -95,7 +106,6 @@ class AutoTranslateView extends React.Component {
 	}
 
 	toggleAutoTranslate = async() => {
-		const { room } = this;
 		const { enableAutoTranslate } = this.state;
 		try {
 			await RocketChat.saveAutoTranslate({
@@ -104,17 +114,6 @@ class AutoTranslateView extends React.Component {
 				value: enableAutoTranslate ? '0' : '1',
 				options: { defaultLanguage: 'en' }
 			});
-			try {
-				const db = database.active;
-				await db.action(async() => {
-					await room.update((r) => {
-						r.autoTranslate = !enableAutoTranslate;
-					});
-				});
-			} catch {
-				// do nothing
-			}
-			this.setState({ enableAutoTranslate: !enableAutoTranslate });
 		} catch (error) {
 			console.log(error);
 		}
