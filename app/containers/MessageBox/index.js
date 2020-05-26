@@ -114,27 +114,27 @@ class MessageBox extends Component {
 		this.options = [
 			{
 				title: I18n.t('Take_a_photo'),
-				icon: 'photo',
+				icon: 'image',
 				onPress: this.takePhoto
 			},
 			{
 				title: I18n.t('Take_a_video'),
-				icon: 'video',
+				icon: 'video-1',
 				onPress: this.takeVideo
 			},
 			{
 				title: I18n.t('Choose_from_library'),
-				icon: 'file',
+				icon: 'share',
 				onPress: this.chooseFromLibrary
 			},
 			{
 				title: I18n.t('Choose_file'),
-				icon: 'file-generic',
+				icon: 'folder',
 				onPress: this.chooseFile
 			},
 			{
 				title: I18n.t('Create_Discussion'),
-				icon: 'discussion',
+				icon: 'chat',
 				onPress: this.createDiscussion
 			}
 		];

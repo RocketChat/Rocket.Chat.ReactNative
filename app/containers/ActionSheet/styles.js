@@ -11,22 +11,13 @@ export default StyleSheet.create({
 		flexDirection: 'row'
 	},
 	content: {
-		paddingHorizontal: 16
+		paddingHorizontal: 16,
+		paddingTop: 16
 	},
 	title: {
 		fontSize: 16,
 		marginLeft: 16,
 		...sharedStyles.textRegular
-	},
-	header: {
-		fontSize: 18,
-		paddingTop: 24,
-		paddingBottom: 8,
-		...sharedStyles.textAlignCenter,
-		...sharedStyles.textBold
-	},
-	footer: {
-		// paddingHorizontal: 16
 	},
 	handle: {
 		overflow: 'hidden',

@@ -250,10 +250,19 @@ const MessageActions = forwardRef(({
 		// Reply
 		if (!isReadOnly) {
 			options = [{
-				title: I18n.t('Reply'),
-				icon: 'reply',
+				title: I18n.t('Reply_in_Thread'),
+				icon: 'threads',
 				onPress: handleReply
 			}];
+		}
+
+		// Quote
+		if (!isReadOnly) {
+			options.push({
+				title: I18n.t('Quote'),
+				icon: 'quote',
+				onPress: handleQuote
+			});
 		}
 
 		// Edit
@@ -265,10 +274,17 @@ const MessageActions = forwardRef(({
 			});
 		}
 
+		// Permalink
+		options.push({
+			title: I18n.t('Permalink'),
+			icon: 'link',
+			onPress: handlePermalink
+		});
+
 		// Create Discussion
 		options.push({
-			title: I18n.t('Create_Discussion'),
-			icon: 'discussion',
+			title: I18n.t('Start_a_Discussion'),
+			icon: 'chat',
 			onPress: handleCreateDiscussion
 		});
 
@@ -280,13 +296,6 @@ const MessageActions = forwardRef(({
 				onPress: handleUnread
 			});
 		}
-
-		// Permalink
-		options.push({
-			title: I18n.t('Permalink'),
-			icon: 'permalink',
-			onPress: handlePermalink
-		});
 
 		// Copy
 		options.push({
@@ -302,20 +311,11 @@ const MessageActions = forwardRef(({
 			onPress: handleShare
 		});
 
-		// Quote
-		if (!isReadOnly) {
-			options.push({
-				title: I18n.t('Quote'),
-				icon: 'quote',
-				onPress: handleQuote
-			});
-		}
-
 		// Star
 		if (Message_AllowStarring) {
 			options.push({
 				title: I18n.t(message.starred ? 'Unstar' : 'Star'),
-				icon: message.starred ? 'Star-filled' : 'star',
+				icon: message.starred ? 'star-filled' : 'star',
 				onPress: handleStar
 			});
 		}
@@ -350,7 +350,7 @@ const MessageActions = forwardRef(({
 		// Report
 		options.push({
 			title: I18n.t('Report'),
-			icon: 'report',
+			icon: 'warning',
 			danger: true,
 			onPress: handleReport
 		});

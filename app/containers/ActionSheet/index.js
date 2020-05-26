@@ -25,7 +25,7 @@ import useOrientation from '../../utils/useOrientation';
 import useDimensions from '../../utils/useDimensions';
 import { useSplit } from '../../split';
 
-const HANDLE_HEIGHT = 24;
+const HANDLE_HEIGHT = 40;
 const MIN_SNAP_HEIGHT = 56;
 
 const ActionSheet = forwardRef(({ children, theme }, ref) => {
@@ -113,6 +113,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 						style={{ backgroundColor: themes[theme].backgroundColor }}
 						contentContainerStyle={styles.content}
 						ItemSeparatorComponent={() => <Separator theme={theme} />}
+						ListHeaderComponent={() => <Separator theme={theme} />}
 						renderItem={({ item }) => <Item item={item} hide={hide} theme={theme} />}
 						onSettle={index => index === 1 && toggleVisible()}
 						animatedPosition={animatedPosition.current}
