@@ -107,7 +107,7 @@ class NotificationBadge extends React.Component {
 		const { notification: { payload }, route } = this.props;
 		const navState = this.getNavState(route.state);
 		if (payload.rid) {
-			if (navState && navState.routeName === 'RoomView' && navState.params && navState.params.rid === payload.rid) {
+			if (navState && navState.name === 'RoomView' && navState.params && navState.params?.rid === payload.rid) {
 				return;
 			}
 			this.show();
@@ -151,11 +151,12 @@ class NotificationBadge extends React.Component {
 		}
 	}
 
-	getNavState = (routes) => {
-		if (!routes.routes) {
-			return routes;
+	getNavState = (state) => {
+		const value = state.routes[state.index];
+		if (value.state) {
+			return this.getNavState(value.state);
 		}
-		return this.getNavState(routes.routes[routes.index]);
+		return value;
 	}
 
 	goToRoom = async() => {
