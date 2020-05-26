@@ -34,11 +34,11 @@ class AttachmentView extends React.Component {
 		const { title } = attachment;
 		const options = {
 			title: decodeURI(title),
-			headerRight: <SaveButton testID='save-image' onPress={handleSave} />
+			headerRight: () => <SaveButton testID='save-image' onPress={handleSave} />
 		};
 		if (from !== 'MessagesView') {
 			options.gesturesEnabled = false;
-			options.headerLeft = <CloseModalButton testID='close-attachment-view' navigation={navigation} />;
+			options.headerLeft = () => <CloseModalButton testID='close-attachment-view' navigation={navigation} />;
 		}
 		return options;
 	}
