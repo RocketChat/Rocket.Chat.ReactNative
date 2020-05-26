@@ -8,17 +8,14 @@ import { useActionSheet } from '../actionSheet';
 import I18n from '../i18n';
 import log from '../utils/log';
 
-const MessageErrorActions = forwardRef(({
-	message,
-	tmid
-}, ref) => {
+const MessageErrorActions = forwardRef(({ tmid }, ref) => {
 	const { show } = useActionSheet();
 
-	const handleResend = protectedFunction(async() => {
+	const handleResend = protectedFunction(async(message) => {
 		await RocketChat.resendMessage(message, tmid);
 	});
 
-	const handleDelete = async() => {
+	const handleDelete = async(message) => {
 		try {
 			const db = database.active;
 			const deleteBatch = [];
@@ -74,22 +71,22 @@ const MessageErrorActions = forwardRef(({
 		}
 	};
 
-	const options = [
-		{
-			title: I18n.t('Resend'),
-			icon: 'send',
-			onPress: handleResend
-		},
-		{
-			title: I18n.t('Delete'),
-			icon: 'trash',
-			danger: true,
-			onPress: handleDelete
-		}
-	];
-
-	const showMessageErrorActions = () => {
-		show({ options });
+	const showMessageErrorActions = (message) => {
+		show({
+			options: [
+				{
+					title: I18n.t('Resend'),
+					icon: 'send',
+					onPress: () => handleResend(message)
+				},
+				{
+					title: I18n.t('Delete'),
+					icon: 'trash',
+					danger: true,
+					onPress: () => handleDelete(message)
+				}
+			]
+		});
 	};
 
 	useImperativeHandle(ref, () => ({

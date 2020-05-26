@@ -512,7 +512,7 @@ class RoomView extends React.Component {
 	}
 
 	errorActionsShow = (message) => {
-		this.setState({ selectedMessage: message }, this.messageErrorActions?.showMessageErrorActions);
+		this.messageErrorActions?.showMessageErrorActions(message);
 	}
 
 	onEditInit = (message) => {
@@ -551,7 +551,7 @@ class RoomView extends React.Component {
 	}
 
 	onMessageLongPress = (message) => {
-		this.setState({ selectedMessage: message }, this.messageActions?.showMessageActions);
+		this.messageActions?.showMessageActions(message);
 	}
 
 	showAttachment = (attachment) => {
@@ -947,9 +947,7 @@ class RoomView extends React.Component {
 	};
 
 	renderActions = () => {
-		const {
-			room, selectedMessage, readOnly
-		} = this.state;
+		const { room, readOnly } = this.state;
 		const {
 			user, navigation
 		} = this.props;
@@ -963,7 +961,6 @@ class RoomView extends React.Component {
 					tmid={this.tmid}
 					room={room}
 					user={user}
-					message={selectedMessage}
 					editInit={this.onEditInit}
 					replyInit={this.onReplyInit}
 					reactionInit={this.onReactionInit}
@@ -973,7 +970,6 @@ class RoomView extends React.Component {
 				<MessageErrorActions
 					ref={ref => this.messageErrorActions = ref}
 					tmid={this.tmid}
-					message={selectedMessage}
 				/>
 			</>
 		);

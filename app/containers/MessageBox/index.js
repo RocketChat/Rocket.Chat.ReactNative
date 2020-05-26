@@ -229,7 +229,7 @@ class MessageBox extends Component {
 		} = this.state;
 
 		const {
-			roomType, replying, editing, isFocused, theme
+			roomType, replying, editing, isFocused, message, theme
 		} = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
@@ -262,6 +262,9 @@ class MessageBox extends Component {
 			return true;
 		}
 		if (!equal(nextState.file, file)) {
+			return true;
+		}
+		if (!equal(nextProps.message, message)) {
 			return true;
 		}
 		return false;

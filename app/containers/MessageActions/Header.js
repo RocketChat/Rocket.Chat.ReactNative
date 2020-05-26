@@ -67,7 +67,7 @@ HeaderFooter.propTypes = {
 };
 
 const Header = React.memo(({
-	handleReaction, server, theme
+	handleReaction, server, message, theme
 }) => {
 	const { width } = useDimensions();
 	const [items, setItems] = useState([]);
@@ -90,7 +90,7 @@ const Header = React.memo(({
 		<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
 			<FlatList
 				data={items}
-				renderItem={({ item }) => <HeaderItem item={item} handleReaction={handleReaction} server={server} theme={theme} />}
+				renderItem={({ item }) => <HeaderItem item={item} handleReaction={emoji => handleReaction(emoji, message)} server={server} theme={theme} />}
 				style={{ backgroundColor: themes[theme].backgroundColor }}
 				ListFooterComponent={() => <HeaderFooter handleReaction={handleReaction} theme={theme} />}
 				scrollEnabled={false}
@@ -102,6 +102,7 @@ const Header = React.memo(({
 Header.propTypes = {
 	handleReaction: PropTypes.func,
 	server: PropTypes.string,
+	message: PropTypes.object,
 	theme: PropTypes.string
 };
 export default withTheme(Header);

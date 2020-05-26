@@ -18,7 +18,6 @@ import Header from './Header';
 
 const MessageActions = forwardRef(({
 	room,
-	message,
 	tmid,
 	user,
 	editInit,
@@ -52,13 +51,13 @@ const MessageActions = forwardRef(({
 		}
 	};
 
-	const isOwn = () => message.u && message.u._id === user.id;
+	const isOwn = message => message.u && message.u._id === user.id;
 
-	const allowEdit = () => {
+	const allowEdit = (message) => {
 		if (isReadOnly) {
 			return false;
 		}
-		const editOwn = isOwn();
+		const editOwn = isOwn(message);
 
 		if (!(permissions.hasEditPermission || (Message_AllowEditing && editOwn))) {
 			return false;
@@ -78,7 +77,7 @@ const MessageActions = forwardRef(({
 		return true;
 	};
 
-	const allowDelete = () => {
+	const allowDelete = (message) => {
 		if (isReadOnly) {
 			return false;
 		}
@@ -87,7 +86,7 @@ const MessageActions = forwardRef(({
 		if (tmid === message.id) {
 			return false;
 		}
-		const deleteOwn = isOwn();
+		const deleteOwn = isOwn(message);
 		if (!(permissions.hasDeletePermission || (Message_AllowDeleting && deleteOwn) || permissions.hasForceDeletePermission)) {
 			return false;
 		}
@@ -109,17 +108,17 @@ const MessageActions = forwardRef(({
 		return true;
 	};
 
-	const getPermalink = () => RocketChat.getPermalinkMessage(message);
+	const getPermalink = message => RocketChat.getPermalinkMessage(message);
 
-	const handleReply = () => replyInit(message, true);
+	const handleReply = message => replyInit(message, true);
 
-	const handleEdit = () => editInit(message);
+	const handleEdit = message => editInit(message);
 
-	const handleCreateDiscussion = () => {
+	const handleCreateDiscussion = (message) => {
 		Navigation.navigate('CreateDiscussionView', { message, channel: room });
 	};
 
-	const handleUnread = async() => {
+	const handleUnread = async(message) => {
 		const { id: messageId, ts } = message;
 		const { rid } = room;
 		try {
@@ -142,9 +141,9 @@ const MessageActions = forwardRef(({
 		}
 	};
 
-	const handlePermalink = async() => {
+	const handlePermalink = async(message) => {
 		try {
-			const permalink = await getPermalink();
+			const permalink = await getPermalink(message);
 			Clipboard.setString(permalink);
 			EventEmitter.emit(LISTENER, { message: I18n.t('Permalink_copied_to_clipboard') });
 		} catch {
@@ -152,23 +151,23 @@ const MessageActions = forwardRef(({
 		}
 	};
 
-	const handleCopy = async() => {
+	const handleCopy = async(message) => {
 		await Clipboard.setString(message.msg);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 	};
 
-	const handleShare = async() => {
+	const handleShare = async(message) => {
 		try {
-			const permalink = await getPermalink();
+			const permalink = await getPermalink(message);
 			Share.share({ message: permalink });
 		} catch {
 			// Do nothing
 		}
 	};
 
-	const handleQuote = () => replyInit(message, false);
+	const handleQuote = message => replyInit(message, false);
 
-	const handleStar = async() => {
+	const handleStar = async(message) => {
 		try {
 			await RocketChat.toggleStarMessage(message.id, message.starred);
 			EventEmitter.emit(LISTENER, { message: message.starred ? I18n.t('Message_unstarred') : I18n.t('Message_starred') });
@@ -177,7 +176,7 @@ const MessageActions = forwardRef(({
 		}
 	};
 
-	const handlePin = async() => {
+	const handlePin = async(message) => {
 		try {
 			await RocketChat.togglePinMessage(message.id, message.pinned);
 		} catch (e) {
@@ -185,7 +184,7 @@ const MessageActions = forwardRef(({
 		}
 	};
 
-	const handleReaction = (shortname) => {
+	const handleReaction = (shortname, message) => {
 		if (shortname) {
 			onReactionPress(shortname, message.id);
 		} else {
@@ -195,9 +194,9 @@ const MessageActions = forwardRef(({
 		hide();
 	};
 
-	const handleReadReceipt = () => Navigation.navigate('ReadReceiptsView', { messageId: message.id });
+	const handleReadReceipt = message => Navigation.navigate('ReadReceiptsView', { messageId: message.id });
 
-	const handleToggleTranslation = async() => {
+	const handleToggleTranslation = async(message) => {
 		try {
 			const db = database.active;
 			await db.action(async() => {
@@ -221,7 +220,7 @@ const MessageActions = forwardRef(({
 		}
 	};
 
-	const handleReport = async() => {
+	const handleReport = async(message) => {
 		try {
 			await RocketChat.reportMessage(message.id);
 			Alert.alert(I18n.t('Message_Reported'));
@@ -230,7 +229,7 @@ const MessageActions = forwardRef(({
 		}
 	};
 
-	const handleDelete = () => {
+	const handleDelete = (message) => {
 		showConfirmationAlert({
 			message: I18n.t('You_will_not_be_able_to_recover_this_message'),
 			callToAction: I18n.t('Delete'),
@@ -244,7 +243,7 @@ const MessageActions = forwardRef(({
 		});
 	};
 
-	const getOptions = () => {
+	const getOptions = (message) => {
 		let options = [];
 
 		// Reply
@@ -252,7 +251,7 @@ const MessageActions = forwardRef(({
 			options = [{
 				title: I18n.t('Reply_in_Thread'),
 				icon: 'threads',
-				onPress: handleReply
+				onPress: () => handleReply(message)
 			}];
 		}
 
@@ -261,16 +260,16 @@ const MessageActions = forwardRef(({
 			options.push({
 				title: I18n.t('Quote'),
 				icon: 'quote',
-				onPress: handleQuote
+				onPress: () => handleQuote(message)
 			});
 		}
 
 		// Edit
-		if (allowEdit()) {
+		if (allowEdit(message)) {
 			options.push({
 				title: I18n.t('Edit'),
 				icon: 'edit',
-				onPress: handleEdit
+				onPress: () => handleEdit(message)
 			});
 		}
 
@@ -278,14 +277,14 @@ const MessageActions = forwardRef(({
 		options.push({
 			title: I18n.t('Permalink'),
 			icon: 'link',
-			onPress: handlePermalink
+			onPress: () => handlePermalink(message)
 		});
 
 		// Create Discussion
 		options.push({
 			title: I18n.t('Start_a_Discussion'),
 			icon: 'chat',
-			onPress: handleCreateDiscussion
+			onPress: () => handleCreateDiscussion(message)
 		});
 
 		// Mark as unread
@@ -293,7 +292,7 @@ const MessageActions = forwardRef(({
 			options.push({
 				title: I18n.t('Mark_unread'),
 				icon: 'flag',
-				onPress: handleUnread
+				onPress: () => handleUnread(message)
 			});
 		}
 
@@ -301,14 +300,14 @@ const MessageActions = forwardRef(({
 		options.push({
 			title: I18n.t('Copy'),
 			icon: 'copy',
-			onPress: handleCopy
+			onPress: () => handleCopy(message)
 		});
 
 		// Share
 		options.push({
 			title: I18n.t('Share'),
 			icon: 'share',
-			onPress: handleShare
+			onPress: () => handleShare(message)
 		});
 
 		// Star
@@ -316,7 +315,7 @@ const MessageActions = forwardRef(({
 			options.push({
 				title: I18n.t(message.starred ? 'Unstar' : 'Star'),
 				icon: message.starred ? 'star-filled' : 'star',
-				onPress: handleStar
+				onPress: () => handleStar(message)
 			});
 		}
 
@@ -325,7 +324,7 @@ const MessageActions = forwardRef(({
 			options.push({
 				title: I18n.t(message.pinned ? 'Unpin' : 'Pin'),
 				icon: 'pin',
-				onPress: handlePin
+				onPress: () => handlePin(message)
 			});
 		}
 
@@ -334,7 +333,7 @@ const MessageActions = forwardRef(({
 			options.push({
 				title: I18n.t('Read_Receipt'),
 				icon: 'receipt',
-				onPress: handleReadReceipt
+				onPress: () => handleReadReceipt(message)
 			});
 		}
 
@@ -343,7 +342,7 @@ const MessageActions = forwardRef(({
 			options.push({
 				title: I18n.t(message.autoTranslate ? 'View_Original' : 'Translate'),
 				icon: 'language',
-				onPress: handleToggleTranslation
+				onPress: () => handleToggleTranslation(message)
 			});
 		}
 
@@ -352,30 +351,31 @@ const MessageActions = forwardRef(({
 			title: I18n.t('Report'),
 			icon: 'warning',
 			danger: true,
-			onPress: handleReport
+			onPress: () => handleReport(message)
 		});
 
 		// Delete
-		if (allowDelete()) {
+		if (allowDelete(message)) {
 			options.push({
 				title: I18n.t('Delete'),
 				icon: 'trash',
 				danger: true,
-				onPress: handleDelete
+				onPress: () => handleDelete(message)
 			});
 		}
 
 		return options;
 	};
 
-	const showMessageActions = async() => {
+	const showMessageActions = async(message) => {
 		await getPermissions();
 		show({
-			options: getOptions(),
+			options: getOptions(message),
 			customHeader: (!isReadOnly || room.reactWhenReadOnly ? (
 				<Header
 					server={server}
 					handleReaction={handleReaction}
+					message={message}
 				/>
 			) : null)
 		});
@@ -385,7 +385,6 @@ const MessageActions = forwardRef(({
 });
 MessageActions.propTypes = {
 	room: PropTypes.object,
-	message: PropTypes.object,
 	tmid: PropTypes.string,
 	user: PropTypes.object,
 	editInit: PropTypes.func,
