@@ -5,7 +5,6 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
-import { withNavigation } from '@react-navigation/compat';
 import RNUserDefaults from 'rn-user-defaults';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
@@ -291,4 +290,4 @@ const mapDispatchToProps = dispatch => ({
 	appStart: params => dispatch(appStartAction(params))
 });
 
-export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(withTheme(withSplit(ServerDropdown))));
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(withSplit(ServerDropdown)));

@@ -830,7 +830,8 @@ class RoomsListView extends React.Component {
 			showUnread,
 			showServerDropdown,
 			showSortDropdown,
-			theme
+			theme,
+			navigation
 		} = this.props;
 
 		return (
@@ -846,7 +847,7 @@ class RoomsListView extends React.Component {
 						showUnread={showUnread}
 					/>
 				) : null}
-				{showServerDropdown ? <ServerDropdown /> : null}
+				{showServerDropdown ? <ServerDropdown navigation={navigation} /> : null}
 			</SafeAreaView>
 		);
 	};

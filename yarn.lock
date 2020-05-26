@@ -1764,11 +1764,6 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/viewpager/-/viewpager-2.0.2.tgz#622b190294b1310c4825c98daeaee1c8443f7124"
   integrity sha512-CKVhIZdX/Cmb80muog8sKpi5vM8npwFp4tx4Dj1IvTBidZweuO22+VH2rDOj7E0LzdV9IYRJ4FGBwcPBD2qUrQ==
 
-"@react-navigation/compat@^5.1.23":
-  version "5.1.23"
-  resolved "https://registry.yarnpkg.com/@react-navigation/compat/-/compat-5.1.23.tgz#2e43727815919c38ef7bd198cdbf0ca08ec85599"
-  integrity sha512-JczqRNZujNcz32SsNJeBEcMatsQix/9MIPOXZcAnmUV8UxYpcXt8NKD0Us60evqVc8pZDTV3vCLvAOkOY7OxeA==
-
 "@react-navigation/core@^5.8.1":
   version "5.8.1"
   resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-5.8.1.tgz#4f0d744a10eec7dc8bfad2901eec5fb9623b0972"
