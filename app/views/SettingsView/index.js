@@ -28,13 +28,12 @@ import styles from './styles';
 import { loggerConfig, analytics } from '../../utils/log';
 import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/links';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import SidebarView from '../SidebarView';
 import { withSplit } from '../../split';
 import Navigation from '../../lib/Navigation';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
-import { appStart as appStartAction } from '../../actions';
+import { appStart as appStartAction, ROOT_LOADING } from '../../actions/app';
 import { onReviewPress } from '../../utils/review';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -99,7 +98,7 @@ class SettingsView extends React.Component {
 				const {
 					server: { server }, appStart, selectServerRequest
 				} = this.props;
-				await appStart('loading', I18n.t('Clear_cache_loading'));
+				await appStart({ root: ROOT_LOADING, text: I18n.t('Clear_cache_loading') });
 				await RocketChat.clearCache({ server });
 				await selectServerRequest(server, null, true);
 			}
@@ -345,7 +344,7 @@ const mapDispatchToProps = dispatch => ({
 	logout: () => dispatch(logoutAction()),
 	selectServerRequest: params => dispatch(selectServerRequestAction(params)),
 	toggleCrashReport: params => dispatch(toggleCrashReportAction(params)),
-	appStart: (...params) => dispatch(appStartAction(...params))
+	appStart: params => dispatch(appStartAction(params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(withSplit(SettingsView)));

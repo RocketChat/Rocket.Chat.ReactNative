@@ -13,7 +13,7 @@ import {
 	unsubscribeTheme
 } from './utils/theme';
 import EventEmitter from './utils/events';
-import { appInit, appInitLocalSettings } from './actions';
+import { appInit, appInitLocalSettings } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
 import Navigation from './lib/Navigation';
 import parseQuery from './lib/methods/helpers/parseQuery';

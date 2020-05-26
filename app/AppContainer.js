@@ -7,6 +7,9 @@ import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-c
 
 import { defaultHeader, onNavigationStateChange } from './utils/navigation';
 import Navigation from './lib/Navigation';
+import {
+	ROOT_LOADING, ROOT_OUTSIDE, ROOT_NEW_SERVER, ROOT_INSIDE, ROOT_SET_USERNAME, ROOT_BACKGROUND
+} from './actions/app';
 
 // Stacks
 import AuthLoadingView from './views/AuthLoadingView';
@@ -31,7 +34,7 @@ const SetUsernameStack = () => (
 // App
 const Stack = createStackNavigator();
 const App = React.memo(({ root }) => {
-	if (!root || root === 'background') {
+	if (!root || root === ROOT_BACKGROUND) {
 		return null;
 	}
 
@@ -45,25 +48,25 @@ const App = React.memo(({ root }) => {
 			>
 				<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
 					<>
-						{root === 'loading' ? (
+						{root === ROOT_LOADING ? (
 							<Stack.Screen
 								name='AuthLoading'
 								component={AuthLoadingView}
 							/>
 						) : null}
-						{root === 'outside' || root === 'newServer' ? (
+						{root === ROOT_OUTSIDE || root === ROOT_NEW_SERVER ? (
 							<Stack.Screen
 								name='OutsideStack'
 								component={OutsideStack}
 							/>
 						) : null}
-						{root === 'inside' ? (
+						{root === ROOT_INSIDE ? (
 							<Stack.Screen
 								name='InsideStack'
 								component={InsideStack}
 							/>
 						) : null}
-						{root === 'setUsername' ? (
+						{root === ROOT_SET_USERNAME ? (
 							<Stack.Screen
 								name='SetUsernameStack'
 								component={SetUsernameStack}

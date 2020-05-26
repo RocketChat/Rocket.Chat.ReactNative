@@ -15,7 +15,6 @@ import EventEmitter from '../utils/events';
 import {
 	selectServerRequest, serverRequest, serverInitAdd, serverFinishAdd
 } from '../actions/server';
-import { appStart as appStartAction } from '../actions';
 import sharedStyles from './Styles';
 import Button from '../containers/Button';
 import TextInput from '../containers/TextInput';
@@ -342,15 +341,14 @@ class NewServerView extends React.Component {
 
 const mapStateToProps = state => ({
 	connecting: state.server.connecting,
-	previousServer: state.app.text
+	previousServer: state.app.previousServer
 });
 
 const mapDispatchToProps = dispatch => ({
 	connectServer: (server, certificate) => dispatch(serverRequest(server, certificate)),
 	initAdd: () => dispatch(serverInitAdd()),
 	finishAdd: () => dispatch(serverFinishAdd()),
-	selectServer: server => dispatch(selectServerRequest(server)),
-	appStart: root => dispatch(appStartAction(root))
+	selectServer: server => dispatch(selectServerRequest(server))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(NewServerView));

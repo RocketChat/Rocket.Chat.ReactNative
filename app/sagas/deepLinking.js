@@ -10,7 +10,7 @@ import { inviteLinksSetToken, inviteLinksRequest } from '../actions/inviteLinks'
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';
-import { appStart } from '../actions';
+import { appStart, ROOT_INSIDE } from '../actions/app';
 import { localAuthenticate } from '../utils/localAuthentication';
 
 const roomTypes = {
@@ -29,7 +29,7 @@ const handleInviteLink = function* handleInviteLink({ params, requireLogin = fal
 };
 
 const navigate = function* navigate({ params }) {
-	yield put(appStart('inside'));
+	yield put(appStart({ root: ROOT_INSIDE }));
 	if (params.path) {
 		const [type, name] = params.path.split('/');
 		if (type !== 'invite') {

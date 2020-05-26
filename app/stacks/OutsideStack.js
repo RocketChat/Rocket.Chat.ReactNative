@@ -14,6 +14,7 @@ import ForgotPasswordView from '../views/ForgotPasswordView';
 import RegisterView from '../views/RegisterView';
 import LegalView from '../views/LegalView';
 import AuthenticationWebView from '../views/AuthenticationWebView';
+import { ROOT_OUTSIDE } from '../actions/app';
 
 // Outside
 const Outside = createStackNavigator();
@@ -22,7 +23,7 @@ const _OutsideStack = ({ root }) => {
 
 	return (
 		<Outside.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
-			{root === 'outside' ? (
+			{root === ROOT_OUTSIDE ? (
 				<Outside.Screen
 					name='OnboardingView'
 					component={OnboardingView}

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Orientation from 'react-native-orientation-locker';
 
-import { appStart as appStartAction } from '../../actions';
+import { appStart as appStartAction, ROOT_BACKGROUND } from '../../actions/app';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import styles from './styles';
@@ -48,7 +48,7 @@ class OnboardingView extends React.Component {
 
 	handleBackPress = () => {
 		const { appStart } = this.props;
-		appStart('background');
+		appStart({ root: ROOT_BACKGROUND });
 		return false;
 	}
 
@@ -98,7 +98,7 @@ class OnboardingView extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-	appStart: root => dispatch(appStartAction(root))
+	appStart: params => dispatch(appStartAction(params))
 });
 
 export default connect(null, mapDispatchToProps)(withTheme(OnboardingView));

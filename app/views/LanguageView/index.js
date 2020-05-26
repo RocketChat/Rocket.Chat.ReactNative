@@ -15,7 +15,7 @@ import ListItem from '../../containers/ListItem';
 import Separator from '../../containers/Separator';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { appStart as appStartAction } from '../../actions';
+import { appStart as appStartAction, ROOT_LOADING, ROOT_INSIDE } from '../../actions/app';
 import { getUserSelector } from '../../selectors/login';
 import database from '../../lib/database';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -103,12 +103,12 @@ class LanguageView extends React.Component {
 
 		const { appStart } = this.props;
 
-		await appStart('loading', I18n.t('Change_language_loading'));
+		await appStart({ root: ROOT_LOADING, text: I18n.t('Change_language_loading') });
 
 		// shows loading for at least 300ms
 		await Promise.all([this.changeLanguage(language), new Promise(resolve => setTimeout(resolve, 300))]);
 
-		await appStart('inside');
+		await appStart({ root: ROOT_INSIDE });
 	}
 
 	changeLanguage = async(language) => {
@@ -199,7 +199,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	setUser: params => dispatch(setUserAction(params)),
-	appStart: (...params) => dispatch(appStartAction(...params))
+	appStart: params => dispatch(appStartAction(params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(LanguageView));

@@ -2,7 +2,8 @@ import { APP, APP_STATE } from '../actions/actionsTypes';
 
 const initialState = {
 	root: null,
-	text: null,
+	text: '',
+	previousServer: '',
 	ready: false,
 	foreground: true,
 	background: false
@@ -27,6 +28,7 @@ export default function app(state = initialState, action) {
 				...state,
 				root: action.root,
 				text: action.text,
+				previousServer: action.previousServer
 			};
 		case APP.INIT:
 			return {
