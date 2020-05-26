@@ -5,8 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
-import { defaultHeader, onNavigationStateChange } from './utils/navigation';
 import Navigation from './lib/Navigation';
+import { defaultHeader, onNavigationStateChange } from './utils/navigation';
 import {
 	ROOT_LOADING, ROOT_OUTSIDE, ROOT_NEW_SERVER, ROOT_INSIDE, ROOT_SET_USERNAME, ROOT_BACKGROUND
 } from './actions/app';
@@ -40,12 +40,7 @@ const App = React.memo(({ root }) => {
 
 	return (
 		<SafeAreaProvider initialMetrics={initialWindowMetrics}>
-			<NavigationContainer
-				ref={(navigatorRef) => {
-					Navigation.setTopLevelNavigator(navigatorRef);
-				}}
-				onNavigationStateChange={onNavigationStateChange}
-			>
+			<NavigationContainer ref={Navigation.navigationRef} onNavigationStateChange={onNavigationStateChange}>
 				<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
 					<>
 						{root === ROOT_LOADING ? (

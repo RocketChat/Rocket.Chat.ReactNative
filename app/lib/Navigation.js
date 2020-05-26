@@ -1,28 +1,18 @@
+import * as React from 'react';
 import { CommonActions } from '@react-navigation/native';
 
-let _navigator;
+const navigationRef = React.createRef();
 
-function setTopLevelNavigator(navigatorRef) {
-	_navigator = navigatorRef;
+function navigate(name, params) {
+  navigationRef.current?.navigate(name, params);
 }
 
 function back() {
-	_navigator.dispatch(
-		CommonActions.back()
-	);
-}
-
-function navigate(name, params) {
-	_navigator.dispatch(
-		CommonActions.navigate({
-			name,
-			params
-		})
-	);
+	navigationRef.current?.dispatch(CommonActions.goBack());
 }
 
 export default {
-	back,
+	navigationRef,
 	navigate,
-	setTopLevelNavigator
+	back
 };
