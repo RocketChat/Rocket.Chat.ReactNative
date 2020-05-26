@@ -29,7 +29,7 @@ class SocketJobService : JobService() {
 
         if (_client == null) {
             Log.d("SOCKETNOTIS", "constructing client...")
-            _client = SocketNotificationManager(this)
+            _client = SocketNotificationManager(applicationContext)
         }
 
         val client = _client!!
