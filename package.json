@@ -88,7 +88,7 @@
     "react-native-reanimated": "1.8.0",
     "react-native-responsive-ui": "^1.1.1",
     "react-native-screens": "2.7.0",
-    "react-native-scroll-bottom-sheet": "^0.6.0",
+    "react-native-scroll-bottom-sheet": "^0.6.1",
     "react-native-scrollable-tab-view": "^1.0.0",
     "react-native-slowlog": "^1.0.2",
     "react-native-unimodules": "0.9.1",

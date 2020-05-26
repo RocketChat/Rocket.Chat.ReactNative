@@ -23,7 +23,7 @@ import { themes } from '../../constants/colors';
 import styles, { ITEM_HEIGHT } from './styles';
 import useOrientation from '../../utils/useOrientation';
 import useDimensions from '../../utils/useDimensions';
-import { useSplit } from '../../split';
+import { isTablet } from '../../utils/deviceInfo';
 
 const HANDLE_HEIGHT = 40;
 const MIN_SNAP_HEIGHT = 56;
@@ -34,7 +34,6 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 	const [visible, setVisible] = useState(false);
 	const orientation = useOrientation();
 	const { height } = useDimensions();
-	const split = useSplit();
 
 	const toggleVisible = () => setVisible(!visible);
 
@@ -117,7 +116,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 						renderItem={({ item }) => <Item item={item} hide={hide} theme={theme} />}
 						onSettle={index => index === 1 && toggleVisible()}
 						animatedPosition={animatedPosition.current}
-						containerStyle={split && styles.bottomSheet}
+						containerStyle={isTablet && styles.bottomSheet}
 						nestedScrollEnabled
 					/>
 				</>
