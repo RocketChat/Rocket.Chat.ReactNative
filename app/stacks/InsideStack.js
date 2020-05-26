@@ -52,6 +52,7 @@ import CreateChannelView from '../views/CreateChannelView';
 import AttachmentView from '../views/AttachmentView';
 import ModalBlockView from '../views/ModalBlockView';
 import JitsiMeetView from '../views/JitsiMeetView';
+import StatusView from '../views/StatusView';
 
 // ChatsStack
 const Chats = createStackNavigator();
@@ -278,6 +279,11 @@ const InsideStackModal = () => {
 				name='AttachmentView'
 				component={AttachmentView}
 				options={AttachmentView.navigationOptions}
+			/>
+			<InsideStack.Screen
+				name='StatusView'
+				component={StatusView}
+				options={StatusView.navigationOptions}
 			/>
 			<InsideStack.Screen
 				name='ModalBlockView'
