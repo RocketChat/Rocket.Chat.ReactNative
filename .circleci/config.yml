@@ -199,7 +199,7 @@ jobs:
           name: Update Fastlane
           command: |
             echo "ruby-2.6.4" > ~/.ruby-version
-            bundle install
+            bundle install && bundle update
           working_directory: android
 
       - restore_cache:
@@ -303,7 +303,7 @@ jobs:
           name: Update Fastlane
           command: |
             echo "ruby-2.6.4" > ~/.ruby-version
-            bundle install
+            bundle install && bundle update
           working_directory: android
 
       - restore_cache:
