@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { KeyboardUtils } from 'react-native-keyboard-input';
+import { connect } from 'react-redux';
 
 import Message from './Message';
 import MessageContext from './Context';
@@ -46,7 +47,8 @@ class MessageContainer extends React.Component {
 		navToRoomInfo: PropTypes.func,
 		callJitsi: PropTypes.func,
 		blockAction: PropTypes.func,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		scale: PropTypes.number
 	}
 
 	static defaultProps = {
@@ -227,7 +229,7 @@ class MessageContainer extends React.Component {
 
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, showAttachment, timeFormat, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, showAttachment, timeFormat, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme, scale
 		} = this.props;
 		const {
 			id, msg, ts, attachments, urls, reactions, t, avatar, emoji, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, blocks, autoTranslate: autoTranslateMessage
@@ -302,10 +304,15 @@ class MessageContainer extends React.Component {
 					callJitsi={callJitsi}
 					blockAction={blockAction}
 					theme={theme}
+					scale={scale}
 				/>
 			</MessageContext.Provider>
 		);
 	}
 }
 
-export default withTheme(MessageContainer);
+const mapStateToProps = state => ({
+	scale: state.dimensions.scale
+});
+
+export default connect(mapStateToProps)(withTheme(MessageContainer));

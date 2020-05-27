@@ -95,7 +95,8 @@ class MessageBox extends Component {
 		typing: PropTypes.func,
 		theme: PropTypes.string,
 		replyCancel: PropTypes.func,
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		width: PropTypes.number
 	}
 
 	constructor(props) {
@@ -875,7 +876,9 @@ class MessageBox extends Component {
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { showEmojiKeyboard, file } = this.state;
-		const { user, baseUrl, theme } = this.props;
+		const {
+			user, baseUrl, theme, width
+		} = this.props;
 		return (
 			<MessageboxContext.Provider
 				value={{
@@ -903,6 +906,7 @@ class MessageBox extends Component {
 					file={file}
 					close={() => this.setState({ file: {} })}
 					submit={this.sendMediaMessage}
+					width={width}
 				/>
 			</MessageboxContext.Provider>
 		);
@@ -915,7 +919,8 @@ const mapStateToProps = state => ({
 	user: getUserSelector(state),
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
-	Message_AudioRecorderEnabled: state.settings.Message_AudioRecorderEnabled
+	Message_AudioRecorderEnabled: state.settings.Message_AudioRecorderEnabled,
+	width: state.dimensions.width
 });
 
 const dispatchToProps = ({

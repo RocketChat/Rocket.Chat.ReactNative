@@ -1,21 +1,17 @@
+import { Dimensions } from 'react-native';
 import { DIMENSIONS } from '../actions/actionsTypes';
 
-const initialState = {
-	window: {},
-	screen: {}
-};
+const initialState = Dimensions.get('window');
 
 export default function(state = initialState, action) {
 	switch (action.type) {
 		case DIMENSIONS.WINDOW:
 			return {
 				...state,
-				window: action.window
-			};
-		case DIMENSIONS.SCREEN:
-			return {
-				...state,
-				screen: action.screen
+				scale: action.window.scale,
+				width: action.window.width,
+				height: action.window.height,
+				fontScale: action.window.fontScale
 			};
 		default:
 			return state;

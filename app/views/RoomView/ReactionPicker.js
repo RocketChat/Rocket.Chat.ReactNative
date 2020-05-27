@@ -15,17 +15,20 @@ const maxSize = 400;
 class ReactionPicker extends React.Component {
 	static propTypes = {
 		baseUrl: PropTypes.string.isRequired,
-		window: PropTypes.any,
 		message: PropTypes.object,
 		show: PropTypes.bool,
 		reactionClose: PropTypes.func,
 		onEmojiSelected: PropTypes.func,
-		split: PropTypes.bool
+		split: PropTypes.bool,
+		width: PropTypes.number,
+		height: PropTypes.number
 	};
 
 	shouldComponentUpdate(nextProps) {
-		const { show, window, split } = this.props;
-		return nextProps.show !== show || window.width !== nextProps.window.width || nextProps.split !== split;
+		const {
+			show, width, height, split
+		} = this.props;
+		return nextProps.show !== show || width !== nextProps.width || height !== nextProps.height || nextProps.split !== split;
 	}
 
 	onEmojiSelected = (emoji, shortname) => {
@@ -38,7 +41,7 @@ class ReactionPicker extends React.Component {
 
 	render() {
 		const {
-			window: { width, height }, show, baseUrl, reactionClose, split
+			width, height, show, baseUrl, reactionClose, split
 		} = this.props;
 
 		let widthStyle = width - margin;
@@ -82,8 +85,7 @@ class ReactionPicker extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.server.server,
-	window: state.dimensions.window
+	baseUrl: state.server.server
 });
 
 export default connect(mapStateToProps)(withSplit(ReactionPicker));

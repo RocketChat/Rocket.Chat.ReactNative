@@ -6,7 +6,6 @@ import {
 	BackHandler,
 	Text,
 	Keyboard,
-	Dimensions,
 	RefreshControl
 } from 'react-native';
 import { connect } from 'react-redux';
@@ -173,7 +172,8 @@ class RoomsListView extends React.Component {
 		closeServerDropdown: PropTypes.func,
 		useRealName: PropTypes.bool,
 		connected: PropTypes.bool,
-		split: PropTypes.bool
+		split: PropTypes.bool,
+		width: PropTypes.number
 	};
 
 	constructor(props) {
@@ -183,14 +183,12 @@ class RoomsListView extends React.Component {
 
 		this.gotSubscriptions = false;
 		this.animated = false;
-		const { width } = Dimensions.get('window');
 		this.state = {
 			searching: false,
 			search: [],
 			loading: true,
 			allChats: [],
-			chats: [],
-			width
+			chats: []
 		};
 	}
 
@@ -204,7 +202,6 @@ class RoomsListView extends React.Component {
 		if (isTablet) {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
-		Dimensions.addEventListener('change', this.onDimensionsChange);
 		this.willFocusListener = navigation.addListener('willFocus', () => {
 			// Check if there were changes while not focused (it's set on sCU)
 			if (this.shouldUpdate) {
@@ -277,13 +274,15 @@ class RoomsListView extends React.Component {
 
 		const {
 			loading,
-			width,
 			search
 		} = this.state;
+		const {
+			width
+		} = this.props;
 		if (nextState.loading !== loading) {
 			return true;
 		}
-		if (nextState.width !== width) {
+		if (nextProps.width !== width) {
 			return true;
 		}
 		if (!isEqual(nextState.search, search)) {
@@ -342,12 +341,8 @@ class RoomsListView extends React.Component {
 		if (isTablet) {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
-		Dimensions.removeEventListener('change', this.onDimensionsChange);
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
-
-	// eslint-disable-next-line react/sort-comp
-	onDimensionsChange = ({ window: { width } }) => this.setState({ width });
 
 	internalSetState = (...args) => {
 		if (this.animated) {
@@ -734,7 +729,7 @@ class RoomsListView extends React.Component {
 			return this.renderSectionHeader(item.rid);
 		}
 
-		const { width } = this.state;
+		const { width } = this.props;
 		const {
 			user: {
 				id: userId,
@@ -882,7 +877,8 @@ const mapStateToProps = state => ({
 	showUnread: state.sortPreferences.showUnread,
 	useRealName: state.settings.UI_Use_Real_Name,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
-	StoreLastMessage: state.settings.Store_Last_Message
+	StoreLastMessage: state.settings.Store_Last_Message,
+	width: state.dimensions.width
 });
 
 const mapDispatchToProps = dispatch => ({

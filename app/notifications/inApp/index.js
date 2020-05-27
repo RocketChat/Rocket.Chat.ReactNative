@@ -74,9 +74,10 @@ class NotificationBadge extends React.Component {
 		baseUrl: PropTypes.string,
 		user: PropTypes.object,
 		notification: PropTypes.object,
-		window: PropTypes.object,
 		removeNotification: PropTypes.func,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		width: PropTypes.number,
+		height: PropTypes.number
 	}
 
 	constructor(props) {
@@ -87,7 +88,7 @@ class NotificationBadge extends React.Component {
 	shouldComponentUpdate(nextProps) {
 		const { notification: nextNotification } = nextProps;
 		const {
-			notification: { payload }, window, theme
+			notification: { payload }, width, theme
 		} = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
@@ -95,7 +96,7 @@ class NotificationBadge extends React.Component {
 		if (!equal(nextNotification.payload, payload)) {
 			return true;
 		}
-		if (nextProps.window.width !== window.width) {
+		if (nextProps.width !== width) {
 			return true;
 		}
 		return false;
@@ -175,7 +176,7 @@ class NotificationBadge extends React.Component {
 
 	render() {
 		const {
-			baseUrl, user: { id: userId, token }, notification, window, theme
+			baseUrl, user: { id: userId, token }, notification, width, height, theme
 		} = this.props;
 		const { message, payload } = notification;
 		const { type } = payload;
@@ -185,7 +186,7 @@ class NotificationBadge extends React.Component {
 
 		let top = 0;
 		if (isIOS) {
-			const portrait = window.height > window.width;
+			const portrait = height > width;
 			if (portrait) {
 				top = hasNotch ? 45 : 20;
 			} else {
@@ -234,7 +235,8 @@ const mapStateToProps = state => ({
 	user: getUserSelector(state),
 	baseUrl: state.server.server,
 	notification: state.notification,
-	window: state.dimensions.window
+	width: state.dimensions.width,
+	height: state.dimensions.height
 });
 
 const mapDispatchToProps = dispatch => ({

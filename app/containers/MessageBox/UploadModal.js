@@ -4,7 +4,6 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
-import { connect } from 'react-redux';
 import equal from 'deep-equal';
 
 import TextInput from '../TextInput';
@@ -89,7 +88,7 @@ class UploadModal extends Component {
 		file: PropTypes.object,
 		close: PropTypes.func,
 		submit: PropTypes.func,
-		window: PropTypes.object,
+		width: PropTypes.number,
 		theme: PropTypes.string,
 		split: PropTypes.bool
 	}
@@ -114,7 +113,7 @@ class UploadModal extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { name, description, file } = this.state;
 		const {
-			window, isVisible, split, theme
+			width, isVisible, split, theme
 		} = this.props;
 
 		if (nextState.name !== name) {
@@ -132,7 +131,7 @@ class UploadModal extends Component {
 		if (nextProps.isVisible !== isVisible) {
 			return true;
 		}
-		if (nextProps.window.width !== window.width) {
+		if (nextProps.width !== width) {
 			return true;
 		}
 		if (!equal(nextState.file, file)) {
@@ -210,7 +209,7 @@ class UploadModal extends Component {
 
 	render() {
 		const {
-			window: { width }, isVisible, close, split, theme
+			width, isVisible, close, split, theme
 		} = this.props;
 		const { name, description } = this.state;
 		return (
@@ -252,8 +251,4 @@ class UploadModal extends Component {
 	}
 }
 
-const mapStateToProps = state => ({
-	window: state.dimensions.window
-});
-
-export default connect(mapStateToProps)(withTheme(withSplit(UploadModal)));
+export default withTheme(withSplit(UploadModal));

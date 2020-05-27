@@ -1,23 +1,27 @@
 import { Dimensions } from 'react-native';
+import { isEqual } from 'lodash';
 
-import { dimensionsWindow, dimensionsScreen } from '../actions/dimensions';
+
+import { dimensionsWindow } from '../actions/dimensions';
 
 export default () => createStore => (...args) => {
 	const store = createStore(...args);
 
+	let currentDimensions = '';
+
 	const handleDimensionsChange = (nextDimensionState) => {
-		if (nextDimensionState) {
-			if (nextDimensionState.window) {
-				store.dispatch(dimensionsWindow(nextDimensionState.window));
+		if (!isEqual(currentDimensions, nextDimensionState)) {
+			if (nextDimensionState) {
+				if (nextDimensionState.window) {
+					store.dispatch(dimensionsWindow(nextDimensionState.window));
+				}
 			}
-			if (nextDimensionState.screen) {
-				store.dispatch(dimensionsScreen(nextDimensionState.screen));
-			}
+			currentDimensions = nextDimensionState;
 		}
 	};
 
 	Dimensions.addEventListener('change', handleDimensionsChange);
 
-	setTimeout(() => handleDimensionsChange({ ...Dimensions.get('window'), ...Dimensions.get('screen') }));
+	setTimeout(() => handleDimensionsChange(Dimensions.get('window')));
 	return store;
 };

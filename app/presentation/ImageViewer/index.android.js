@@ -267,7 +267,7 @@ const HEIGHT = 300;
 class ImageViewer extends Component {
 	static propTypes = {
 		uri: PropTypes.string,
-		window: PropTypes.object
+		width: PropTypes.number
 	}
 
 	constructor(props) {
@@ -384,8 +384,7 @@ class ImageViewer extends Component {
 	panRef = React.createRef();
 
 	render() {
-		const { uri, window, ...props } = this.props;
-		const { width } = window;
+		const { uri, width, ...props } = this.props;
 
 		// The below two animated values makes it so that scale appears to be done
 		// from the top left corner of the image view instead of its center. This
@@ -441,7 +440,7 @@ class ImageViewer extends Component {
 }
 
 const mapStateToProps = state => ({
-	window: state.dimensions.window
+	width: state.dimensions.width
 });
 
 export default connect(mapStateToProps)(ImageViewer);

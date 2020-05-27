@@ -6,10 +6,3 @@ export function dimensionsWindow(window) {
 		window
 	};
 }
-
-export function dimensionsScreen(screen) {
-	return {
-		type: DIMENSIONS.SCREEN,
-		screen
-	};
-}
