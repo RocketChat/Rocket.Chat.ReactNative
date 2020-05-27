@@ -85,7 +85,7 @@ const Header = React.memo(({
 				const freqEmojiCollection = db.collections.get('frequently_used_emojis');
 				let freqEmojis = await freqEmojiCollection.query().fetch();
 				freqEmojis = freqEmojis.concat(DEFAULT_EMOJIS);
-				freqEmojis = freqEmojis.slice(0, parseInt((width / 50) - 1, 10));
+				freqEmojis = freqEmojis.slice(0, parseInt(((width - 32) / 50) - 1, 10));
 				setItems(freqEmojis);
 			} catch {
 				// Do nothing
@@ -99,7 +99,7 @@ const Header = React.memo(({
 				data={items}
 				renderItem={({ item }) => <HeaderItem item={item} handleReaction={emoji => handleReaction(emoji, message)} server={server} theme={theme} />}
 				style={{ backgroundColor: themes[theme].backgroundColor }}
-				ListFooterComponent={() => <HeaderFooter handleReaction={handleReaction} theme={theme} />}
+				ListFooterComponent={() => <HeaderFooter handleReaction={() => handleReaction(null, message)} theme={theme} />}
 				scrollEnabled={false}
 				horizontal
 			/>

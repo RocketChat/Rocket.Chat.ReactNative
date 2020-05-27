@@ -117,6 +117,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 						initialSnapIndex={2}
 						renderHandle={renderHandle}
 						data={data?.options}
+						keyExtractor={item => item.title}
 						style={{ backgroundColor: themes[theme].backgroundColor }}
 						contentContainerStyle={styles.content}
 						ItemSeparatorComponent={() => <Separator theme={theme} />}
@@ -125,7 +126,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 						onSettle={index => index === 2 && toggleVisible()}
 						animatedPosition={animatedPosition.current}
 						containerStyle={[
-							styles.handle,
+							styles.container,
 							{ backgroundColor: themes[theme].backgroundColor },
 							isTablet && styles.bottomSheet
 						]}

@@ -5,6 +5,11 @@ import sharedStyles from '../../views/Styles';
 export const ITEM_HEIGHT = 46;
 
 export default StyleSheet.create({
+	container: {
+		overflow: 'hidden',
+		borderTopLeftRadius: 16,
+		borderTopRightRadius: 16
+	},
 	item: {
 		height: ITEM_HEIGHT,
 		alignItems: 'center',
@@ -20,9 +25,6 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	handle: {
-		overflow: 'hidden',
-		borderTopLeftRadius: 16,
-		borderTopRightRadius: 16,
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
