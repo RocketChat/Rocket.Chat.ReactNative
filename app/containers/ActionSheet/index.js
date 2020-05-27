@@ -24,7 +24,7 @@ import { themes } from '../../constants/colors';
 import styles, { ITEM_HEIGHT } from './styles';
 import useOrientation from '../../utils/useOrientation';
 import useDimensions from '../../utils/useDimensions';
-import { isTablet } from '../../utils/deviceInfo';
+import { isTablet, isAndroid } from '../../utils/deviceInfo';
 
 const HANDLE_HEIGHT = 40;
 const MIN_SNAP_HEIGHT = 16;
@@ -35,6 +35,13 @@ const ANIMATION_CONFIG = {
 	duration: ANIMATION_DURATION,
 	easing: Easing.out(Easing.elastic(0))
 };
+
+/*
+ * At Android height needs to be adjusted
+ * because of the StyleSheet has a difference of
+ * +2 dp between Android and iOS
+ */
+const ANDROID_ADJUST = isAndroid ? 2 : 0;
 
 const ActionSheet = forwardRef(({ children, theme }, ref) => {
 	const modalizeRef = useRef();
@@ -91,7 +98,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 		extrapolate: Extrapolate.CLAMP
 	});
 
-	const open = Math.max((height - (ITEM_HEIGHT * data?.options?.length) - HANDLE_HEIGHT - (data?.headerHeight || 0)), MIN_SNAP_HEIGHT);
+	const open = Math.max((height - ((ITEM_HEIGHT + ANDROID_ADJUST) * data?.options?.length) - HANDLE_HEIGHT - (data?.headerHeight || 0)), MIN_SNAP_HEIGHT);
 
 	return (
 		<>
