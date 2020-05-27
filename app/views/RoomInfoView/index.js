@@ -49,28 +49,6 @@ const getRoomTitle = (room, type, name, username, statusText, theme) => (type ==
 );
 
 class RoomInfoView extends React.Component {
-	static navigationOptions = ({ navigation, route }) => {
-		const t = route.params?.t;
-		const rid = route.params?.rid;
-		const room = route.params?.room;
-		const roomUser = route.params?.roomUser;
-		const showEdit = route.params?.showEdit;
-		return {
-			title: t === 'd' ? I18n.t('User_Info') : I18n.t('Room_Info'),
-			headerRight: showEdit
-				? (
-					<CustomHeaderButtons>
-						<Item
-							iconName='edit'
-							onPress={() => navigation.navigate(t === 'l' ? 'LivechatEditView' : 'RoomInfoEditView', { rid, room, roomUser })}
-							testID='room-info-view-edit-button'
-						/>
-					</CustomHeaderButtons>
-				)
-				: null
-		};
-	}
-
 	static propTypes = {
 		navigation: PropTypes.object,
 		route: PropTypes.object,
@@ -92,7 +70,8 @@ class RoomInfoView extends React.Component {
 		this.t = props.route.params?.t;
 		this.state = {
 			room: room || { rid: this.rid, t: this.t },
-			roomUser: roomUser || {}
+			roomUser: roomUser || {},
+			showEdit: false
 		};
 	}
 
@@ -118,6 +97,27 @@ class RoomInfoView extends React.Component {
 		if (this.willFocusListener && this.willFocusListener.remove) {
 			this.willFocusListener.remove();
 		}
+	}
+
+	setHeader = () => {
+		const { roomUser, room, showEdit } = this.state;
+		const { navigation, route } = this.props;
+		const t = route.params?.t;
+		const rid = route.params?.rid;
+		navigation.setOptions({
+			title: t === 'd' ? I18n.t('User_Info') : I18n.t('Room_Info'),
+			headerRight: showEdit
+				? () => (
+					<CustomHeaderButtons>
+						<Item
+							iconName='edit'
+							onPress={() => navigation.navigate(t === 'l' ? 'LivechatEditView' : 'RoomInfoEditView', { rid, room, roomUser })}
+							testID='room-info-view-edit-button'
+						/>
+					</CustomHeaderButtons>
+				)
+				: null
+		});
 	}
 
 	get isDirect() {
@@ -146,8 +146,6 @@ class RoomInfoView extends React.Component {
 
 	loadVisitor = async() => {
 		const { room } = this.state;
-		const { navigation } = this.props;
-
 		try {
 			const result = await RocketChat.getVisitorInfo(room?.visitor?._id);
 			if (result.success) {
@@ -159,7 +157,7 @@ class RoomInfoView extends React.Component {
 					visitor.browser = `${ ua.getBrowser().name } ${ ua.getBrowser().version }`;
 				}
 				this.setState({ roomUser: visitor });
-				navigation.setParams({ roomUser: visitor });
+				this.setHeader();
 			}
 		} catch (error) {
 			// Do nothing
@@ -194,14 +192,14 @@ class RoomInfoView extends React.Component {
 	}
 
 	loadRoom = async() => {
-		const { navigation } = this.props;
-		let room = navigation.getParam('room');
+		const { route } = this.props;
+		let room = route.params?.room;
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable
 				.subscribe((changes) => {
 					this.setState({ room: changes });
-					navigation.setParams({ room: changes });
+					this.setHeader();
 				});
 		} else {
 			try {
@@ -217,7 +215,8 @@ class RoomInfoView extends React.Component {
 
 		const permissions = await RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
 		if (permissions[PERMISSION_EDIT_ROOM] && !room.prid) {
-			navigation.setParams({ showEdit: true });
+			this.setState({ showEdit: true });
+			this.setHeader();
 		}
 	}
 
