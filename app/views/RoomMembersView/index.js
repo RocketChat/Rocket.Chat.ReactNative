@@ -28,20 +28,6 @@ import SafeAreaView from '../../containers/SafeAreaView';
 const PAGE_SIZE = 25;
 
 class RoomMembersView extends React.Component {
-	static navigationOptions = ({ route }) => {
-		const toggleStatus = route.params?.toggleStatus ?? (() => {});
-		const allUsers = route.params?.allUsers;
-		const toggleText = allUsers ? I18n.t('Online') : I18n.t('All');
-		return {
-			title: I18n.t('Members'),
-			headerRight: (
-				<CustomHeaderButtons>
-					<Item title={toggleText} onPress={toggleStatus} testID='room-members-view-toggle-status' />
-				</CustomHeaderButtons>
-			)
-		};
-	}
-
 	static propTypes = {
 		navigation: PropTypes.object,
 		route: PropTypes.object,
@@ -86,6 +72,7 @@ class RoomMembersView extends React.Component {
 					}
 				});
 		}
+		this.setHeader();
 	}
 
 	async componentDidMount() {
@@ -94,7 +81,6 @@ class RoomMembersView extends React.Component {
 
 		const { navigation } = this.props;
 		const { rid } = navigation.state.params;
-		navigation.setParams({ toggleStatus: this.toggleStatus });
 		this.permissions = await RocketChat.hasPermission(['mute-user'], rid);
 	}
 
@@ -102,6 +88,20 @@ class RoomMembersView extends React.Component {
 		if (this.subscription && this.subscription.unsubscribe) {
 			this.subscription.unsubscribe();
 		}
+	}
+
+	setHeader = () => {
+		const { allUsers } = this.state;
+		const { navigation } = this.props;
+		const toggleText = allUsers ? I18n.t('Online') : I18n.t('All');
+		navigation.setOptions({
+			title: I18n.t('Members'),
+			headerRight: () => (
+				<CustomHeaderButtons>
+					<Item title={toggleText} onPress={this.toggleStatus} testID='room-members-view-toggle-status' />
+				</CustomHeaderButtons>
+			)
+		});
 	}
 
 	onSearchChangeText = protectedFunction((text) => {
@@ -179,7 +179,6 @@ class RoomMembersView extends React.Component {
 		const {
 			rid, members, isLoading, allUsers, end
 		} = this.state;
-		const { navigation } = this.props;
 		if (isLoading || end) {
 			return;
 		}
@@ -193,7 +192,7 @@ class RoomMembersView extends React.Component {
 				isLoading: false,
 				end: newMembers.length < PAGE_SIZE
 			});
-			navigation.setParams({ allUsers });
+			this.setHeader();
 		} catch (e) {
 			log(e);
 			this.setState({ isLoading: false });
