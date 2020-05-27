@@ -10,6 +10,7 @@ import { Keyboard } from 'react-native';
 import { TapGestureHandler, State } from 'react-native-gesture-handler';
 import ScrollBottomSheet from 'react-native-scroll-bottom-sheet';
 import Animated, {
+	Easing,
 	Extrapolate,
 	interpolate,
 	Value
@@ -26,7 +27,14 @@ import useDimensions from '../../utils/useDimensions';
 import { isTablet } from '../../utils/deviceInfo';
 
 const HANDLE_HEIGHT = 40;
-const MIN_SNAP_HEIGHT = 56;
+const MIN_SNAP_HEIGHT = 16;
+
+const ANIMATION_DURATION = 150;
+
+const ANIMATION_CONFIG = {
+	duration: ANIMATION_DURATION,
+	easing: Easing.out(Easing.elastic(0))
+};
 
 const ActionSheet = forwardRef(({ children, theme }, ref) => {
 	const modalizeRef = useRef();
@@ -38,7 +46,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 	const toggleVisible = () => setVisible(!visible);
 
 	const hide = () => {
-		modalizeRef.current?.snapTo(1);
+		modalizeRef.current?.snapTo(2);
 	};
 
 	const show = (options) => {
@@ -105,8 +113,8 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 						key={orientation}
 						ref={modalizeRef}
 						componentType='FlatList'
-						snapPoints={[open, height]}
-						initialSnapIndex={1}
+						snapPoints={[open, open * 2, height]}
+						initialSnapIndex={2}
 						renderHandle={renderHandle}
 						data={data?.options}
 						style={{ backgroundColor: themes[theme].backgroundColor }}
@@ -114,9 +122,14 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 						ItemSeparatorComponent={() => <Separator theme={theme} />}
 						ListHeaderComponent={() => <Separator theme={theme} />}
 						renderItem={({ item }) => <Item item={item} hide={hide} theme={theme} />}
-						onSettle={index => index === 1 && toggleVisible()}
+						onSettle={index => index === 2 && toggleVisible()}
 						animatedPosition={animatedPosition.current}
-						containerStyle={isTablet && styles.bottomSheet}
+						containerStyle={[
+							styles.handle,
+							{ backgroundColor: themes[theme].backgroundColor },
+							isTablet && styles.bottomSheet
+						]}
+						animationConfig={ANIMATION_CONFIG}
 						nestedScrollEnabled
 					/>
 				</>
