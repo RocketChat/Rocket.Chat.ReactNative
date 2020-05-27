@@ -81,9 +81,11 @@ class NewServerView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		props.navigation.setOptions({
-			headerLeft: () => <CloseModalButton navigation={props.navigation} onPress={this.close} testID='new-server-view-close' />
-		});
+		if (props.previousServer) {
+			props.navigation.setOptions({
+				headerLeft: () => <CloseModalButton navigation={props.navigation} onPress={this.close} testID='new-server-view-close' />
+			});
+		}
 
 		// Cancel
 		this.options = [I18n.t('Cancel')];
