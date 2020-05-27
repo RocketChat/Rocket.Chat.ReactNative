@@ -66,12 +66,10 @@ const ChatsStack = () => {
 			<Chats.Screen
 				name='RoomsListView'
 				component={RoomsListView}
-				options={RoomsListView.navigationOptions}
 			/>
 			<Chats.Screen
 				name='RoomView'
 				component={RoomView}
-				options={props => RoomView.navigationOptions({ ...props, split, theme })}
 			/>
 			<Chats.Screen
 				name='RoomActionsView'
