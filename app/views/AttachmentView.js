@@ -27,22 +27,6 @@ const styles = StyleSheet.create({
 });
 
 class AttachmentView extends React.Component {
-	static navigationOptions = ({ navigation, route }) => {
-		const attachment = route.params?.attachment;
-		const from = route.params?.from;
-		const handleSave = route.params?.handleSave ?? (() => {});
-		const { title } = attachment;
-		const options = {
-			title: decodeURI(title),
-			headerRight: () => <SaveButton testID='save-image' onPress={handleSave} />
-		};
-		if (from !== 'MessagesView') {
-			options.gesturesEnabled = false;
-			options.headerLeft = () => <CloseModalButton testID='close-attachment-view' navigation={navigation} />;
-		}
-		return options;
-	}
-
 	static propTypes = {
 		navigation: PropTypes.object,
 		route: PropTypes.object,
@@ -58,12 +42,11 @@ class AttachmentView extends React.Component {
 		super(props);
 		const attachment = props.route.params?.attachment;
 		this.state = { attachment, loading: true };
+		this.setHeader();
 	}
 
 	componentDidMount() {
 		const { navigation } = this.props;
-		navigation.setParams({ handleSave: this.handleSave });
-
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			if (this.videoRef && this.videoRef.stopAsync) {
 				this.videoRef.stopAsync();
@@ -75,6 +58,22 @@ class AttachmentView extends React.Component {
 		if (this.unsubscribeBlur) {
 			this.unsubscribeBlur();
 		}
+	}
+
+	setHeader = () => {
+		const { route, navigation } = this.props;
+		const attachment = route.params?.attachment;
+		const from = route.params?.from;
+		const { title } = attachment;
+		const options = {
+			title: decodeURI(title),
+			headerRight: () => <SaveButton testID='save-image' onPress={this.handleSave} />
+		};
+		if (from !== 'MessagesView') {
+			options.gesturesEnabled = false;
+			options.headerLeft = () => <CloseModalButton testID='close-attachment-view' navigation={navigation} />;
+		}
+		navigation.setOptions(options);
 	}
 
 	getVideoRef = ref => this.videoRef = ref;
