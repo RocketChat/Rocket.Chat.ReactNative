@@ -99,11 +99,6 @@ class CreateChannelView extends React.Component {
 		broadcast: false
 	}
 
-	componentDidMount() {
-		const { navigation } = this.props;
-		navigation.setParams({ submit: this.submit });
-	}
-
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
 			channelName, type, readOnly, broadcast
