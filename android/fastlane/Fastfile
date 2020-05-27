@@ -28,7 +28,7 @@ platform :android do
 
   desc "Upload App to Play store"
   lane :alpha do
-    upload_to_play_store(
+    supply(
       track: 'alpha', 
       aab: 'tmp/build/outputs/bundle/release/app-release.aab'
     )
