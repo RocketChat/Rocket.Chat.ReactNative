@@ -3,7 +3,6 @@ import { TransitionPresets } from '@react-navigation/stack';
 
 import { analytics, leaveBreadcrumb } from './log';
 import { themes } from '../constants/colors';
-import { isIOS } from './deviceInfo';
 
 export const defaultHeader = {
 	headerBackTitleVisible: false,

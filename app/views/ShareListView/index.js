@@ -12,7 +12,7 @@ import { Q } from '@nozbe/watermelondb';
 
 import Navigation from '../../lib/ShareNavigation';
 import database from '../../lib/database';
-import { isIOS, isAndroid } from '../../utils/deviceInfo';
+import { isIOS } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 import log from '../../utils/log';
@@ -35,53 +35,6 @@ const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT
 const keyExtractor = item => item.rid;
 
 class ShareListView extends React.Component {
-	static navigationOptions = ({ route, theme }) => {
-		const searching = route.params?.searching;
-		const initSearch = route.params?.initSearch ?? (() => {});
-		const cancelSearch = route.params?.cancelSearch ?? (() => {});
-		const search = route.params?.search ?? (() => {});
-
-		if (isIOS) {
-			return {
-				headerStyle: { backgroundColor: themes[theme].headerBackground },
-				headerTitle: () => (
-					<ShareListHeader
-						searching={searching}
-						initSearch={initSearch}
-						cancelSearch={cancelSearch}
-						search={search}
-						theme={theme}
-					/>
-				)
-			};
-		}
-
-		return {
-			headerLeft: () => (searching
-				? (
-					<CustomHeaderButtons left>
-						<Item title='cancel' iconName='cross' onPress={cancelSearch} />
-					</CustomHeaderButtons>
-				)
-				: (
-					<CancelModalButton
-						onPress={ShareExtension.close}
-						testID='share-extension-close'
-					/>
-				)),
-			headerTitle: () => <ShareListHeader searching={searching} search={search} theme={theme} />,
-			headerRight: () => (
-				searching
-					? null
-					: (
-						<CustomHeaderButtons>
-							{isAndroid ? <Item title='search' iconName='magnifier' onPress={initSearch} /> : null}
-						</CustomHeaderButtons>
-					)
-			)
-		};
-	}
-
 	static propTypes = {
 		navigation: PropTypes.object,
 		server: PropTypes.string,
@@ -107,18 +60,13 @@ class ShareListView extends React.Component {
 			loading: true,
 			serverInfo: null
 		};
+		this.setHeader();
 		this.didFocusListener = props.navigation.addListener('didFocus', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
 		this.willBlurListener = props.navigation.addListener('willBlur', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
 	}
 
 	componentDidMount() {
-		const { navigation, server } = this.props;
-		navigation.setParams({
-			initSearch: this.initSearch,
-			cancelSearch: this.cancelSearch,
-			search: this.search
-		});
-
+		const { server } = this.props;
 		setTimeout(async() => {
 			try {
 				const { value, type } = await ShareExtension.data();
@@ -179,6 +127,51 @@ class ShareListView extends React.Component {
 			return true;
 		}
 		return false;
+	}
+
+	setHeader = () => {
+		const { searching } = this.state;
+		const { navigation, theme } = this.props;
+
+		if (isIOS) {
+			navigation.setOptions({
+				header: () => (
+					<ShareListHeader
+						searching={searching}
+						initSearch={this.initSearch}
+						cancelSearch={this.cancelSearch}
+						search={this.search}
+						theme={theme}
+					/>
+				)
+			});
+			return;
+		}
+
+		navigation.setOptions({
+			headerLeft: () => (searching
+				? (
+					<CustomHeaderButtons left>
+						<Item title='cancel' iconName='cross' onPress={this.cancelSearch} />
+					</CustomHeaderButtons>
+				)
+				: (
+					<CancelModalButton
+						onPress={ShareExtension.close}
+						testID='share-extension-close'
+					/>
+				)),
+			headerTitle: () => <ShareListHeader searching={searching} search={this.search} theme={theme} />,
+			headerRight: () => (
+				searching
+					? null
+					: (
+						<CustomHeaderButtons>
+							<Item title='search' iconName='magnifier' onPress={this.initSearch} />
+						</CustomHeaderButtons>
+					)
+			)
+		});
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -259,15 +252,11 @@ class ShareListView extends React.Component {
 
 	initSearch = () => {
 		const { chats } = this.state;
-		const { navigation } = this.props;
-		this.setState({ searching: true, searchResults: chats });
-		navigation.setParams({ searching: true });
+		this.setState({ searching: true, searchResults: chats }, () => this.setHeader());
 	}
 
 	cancelSearch = () => {
-		const { navigation } = this.props;
-		this.internalSetState({ searching: false, searchResults: [], searchText: '' });
-		navigation.setParams({ searching: false });
+		this.internalSetState({ searching: false, searchResults: [], searchText: '' }, () => this.setHeader());
 		Keyboard.dismiss();
 	}
 

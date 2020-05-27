@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { View } from 'react-native';
+import PropTypes from 'prop-types';
 import { NavigationContainer } from '@react-navigation/native';
 import { AppearanceProvider } from 'react-native-appearance';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -14,14 +15,12 @@ import {
 } from './utils/theme';
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
-import sharedStyles from './views/Styles';
-import { isNotch, isIOS, supportSystemTheme } from './utils/deviceInfo';
+import { isIOS, supportSystemTheme } from './utils/deviceInfo';
 import { defaultHeader, onNavigationStateChange, themedHeader } from './utils/navigation';
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { ThemeContext } from './theme';
 
 // Outside Stack
-import AuthLoadingView from './views/AuthLoadingView';
 import WithoutServersView from './views/WithoutServersView';
 
 // Inside Stack
@@ -33,17 +32,25 @@ const Inside = createStackNavigator();
 const InsideStack = () => {
 	const { theme } = useContext(ThemeContext);
 
+	const screenOptions = {
+		...defaultHeader,
+		...themedHeader(theme)
+	};
+	screenOptions.headerStyle = {
+		...screenOptions.headerStyle,
+		// TODO: fix on multiple files PR :)
+		height: 57
+	};
+
 	return (
-		<Inside.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
+		<Inside.Navigator screenOptions={screenOptions}>
 			<Inside.Screen
 				name='ShareListView'
 				component={ShareListView}
-				options={props => ShareListView.navigationOptions({ ...props, theme })}
 			/>
 			<Inside.Screen
 				name='ShareView'
 				component={ShareView}
-				options={ShareView.navigationOptions}
 			/>
 			<Inside.Screen
 				name='SelectServerView'
@@ -69,48 +76,47 @@ const OutsideStack = () => {
 	);
 };
 
-const AuthContext = React.createContext();
-
 // App
 const Stack = createStackNavigator();
-export const App = () => {
-	const [loading] = useState(false);
+export const App = ({ root }) => {
+	if (!root) {
+		return null;
+	}
 
 	return (
-		<AuthContext.Provider value={{}}>
-			<Stack.Navigator screenOptions={{ headerShown: false }}>
-				{loading ? (
+		<Stack.Navigator screenOptions={{ headerShown: false }}>
+			<>
+				{root === 'outside' ? (
 					<Stack.Screen
-						name='AuthLoading'
-						component={AuthLoadingView}
+						name='OutsideStack'
+						component={OutsideStack}
 					/>
-				) : (
-					<>
-						<Stack.Screen
-							name='OutsideStack'
-							component={OutsideStack}
-						/>
-						<Stack.Screen
-							name='InsideStack'
-							component={InsideStack}
-						/>
-					</>
-				)}
-			</Stack.Navigator>
-		</AuthContext.Provider>
+				) : null}
+				{root === 'inside' ? (
+					<Stack.Screen
+						name='InsideStack'
+						component={InsideStack}
+					/>
+				) : null}
+			</>
+		</Stack.Navigator>
 	);
+};
+
+App.propTypes = {
+	root: PropTypes.string
 };
 
 class Root extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isLandscape: false,
 			theme: defaultTheme(),
 			themePreferences: {
 				currentTheme: supportSystemTheme() ? 'automatic' : 'light',
 				darkLevel: 'dark'
-			}
+			},
+			root: ''
 		};
 		this.init();
 	}
@@ -129,10 +135,10 @@ class Root extends React.Component {
 		const token = await RNUserDefaults.get(RocketChat.TOKEN_KEY);
 
 		if (currentServer && token) {
-			await Navigation.navigate('InsideStack');
+			this.setState({ root: 'inside' });
 			await RocketChat.shareExtensionInit(currentServer);
 		} else {
-			await Navigation.navigate('OutsideStack');
+			this.setState({ root: 'outside' });
 		}
 	}
 
@@ -145,32 +151,20 @@ class Root extends React.Component {
 		});
 	}
 
-	handleLayout = (event) => {
-		const { width, height } = event.nativeEvent.layout;
-		this.setState({ isLandscape: width > height });
-	}
-
 	render() {
-		const { isLandscape, theme } = this.state;
+		const { theme, root } = this.state;
 		return (
 			<AppearanceProvider>
-				<View
-					style={[sharedStyles.container, isLandscape && isNotch ? sharedStyles.notchLandscapeContainer : {}]}
-					onLayout={this.handleLayout}
-				>
-					<Provider store={store}>
-						<ThemeContext.Provider value={{ theme }}>
-							<NavigationContainer
-								ref={(navigatorRef) => {
-									Navigation.setTopLevelNavigator(navigatorRef);
-								}}
-								onNavigationStateChange={onNavigationStateChange}
-							>
-								<App />
-							</NavigationContainer>
-						</ThemeContext.Provider>
-					</Provider>
-				</View>
+				<Provider store={store}>
+					<ThemeContext.Provider value={{ theme }}>
+						<NavigationContainer
+							ref={Navigation.navigationRef}
+							onNavigationStateChange={onNavigationStateChange}
+						>
+							<App root={root} />
+						</NavigationContainer>
+					</ThemeContext.Provider>
+				</Provider>
 			</AppearanceProvider>
 		);
 	}

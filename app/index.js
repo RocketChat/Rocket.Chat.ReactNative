@@ -30,6 +30,9 @@ import { KEY_COMMAND } from './commands';
 import Tablet, { initTabletNav } from './tablet';
 import { SplitContext } from './split';
 import AppContainer from './AppContainer';
+import TwoFactor from './containers/TwoFactor';
+import ScreenLockedView from './views/ScreenLockedView';
+import ChangePasscodeView from './views/ChangePasscodeView';
 
 RNScreens.enableScreens();
 
@@ -188,6 +191,9 @@ export default class Root extends React.Component {
 						}}
 					>
 						{content}
+						<TwoFactor />
+						<ScreenLockedView />
+						<ChangePasscodeView />
 					</ThemeContext.Provider>
 				</Provider>
 			</AppearanceProvider>

@@ -36,14 +36,14 @@ class SelectServerView extends React.Component {
 
 	static propTypes = {
 		server: PropTypes.string,
-		navigation: PropTypes.object,
+		route: PropTypes.object,
 		theme: PropTypes.string
 	}
 
 	constructor(props) {
 		super(props);
-		const { navigation } = this.props;
-		const servers = navigation.getParam('servers', []);
+		const { route } = this.props;
+		const servers = route.params?.servers ?? [];
 		const filteredServers = servers.filter(server => server.roomsUpdatedAt);
 		this.state = {
 			servers: filteredServers

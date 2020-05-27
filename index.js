@@ -18,7 +18,7 @@ if (__DEV__) {
 }
 
 AppRegistry.registerComponent(appName, () => require('./app/index.js').default);
-// AppRegistry.registerComponent(shareName, () => require('./app/share.js').default);
+AppRegistry.registerComponent(shareName, () => require('./app/share.js').default);
 
 // For storybook, comment everything above and uncomment below
 // import './storybook';

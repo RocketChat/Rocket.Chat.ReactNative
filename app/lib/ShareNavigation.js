@@ -1,21 +1,12 @@
-import { NavigationActions } from '@react-navigation/native';
+import * as React from 'react';
 
-let _shareNavigator;
+const navigationRef = React.createRef();
 
-function setTopLevelNavigator(navigatorRef) {
-	_shareNavigator = navigatorRef;
-}
-
-function navigate(routeName, params) {
-	_shareNavigator.dispatch(
-		NavigationActions.navigate({
-			routeName,
-			params
-		})
-	);
+function navigate(name, params) {
+  navigationRef.current?.navigate(name, params);
 }
 
 export default {
-	navigate,
-	setTopLevelNavigator
+	navigationRef,
+	navigate
 };
