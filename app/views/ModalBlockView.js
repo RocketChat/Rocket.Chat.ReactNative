@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { withTheme } from '../theme';
-import { themedHeader } from '../utils/navigation';
 import EventEmitter from '../utils/events';
 import { themes } from '../constants/colors';
 import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
@@ -58,35 +57,11 @@ const reduceState = (obj, el) => (Array.isArray(el[0]) ? { ...obj, ...Object.fro
 
 class ModalBlockView extends React.Component {
 	static navigationOptions = ({ route }) => {
-		// const { theme, closeModal } = screenProps;
 		const data = route.params?.data;
-		// const cancel = route.params?.cancel ?? (() => {});
-		const submitting = route.params?.submitting ?? false;
 		const { view } = data;
-		const { title, submit, close } = view;
+		const { title } = view;
 		return {
-			title: textParser([title]),
-			headerLeft: close ? () => (
-				<CustomHeaderButtons>
-					<Item
-						title={textParser([close.text])}
-						style={styles.submit}
-						// TODO: ?
-						// onPress={!submitting && (() => cancel({ closeModal }))}
-						testID='close-modal-uikit'
-					/>
-				</CustomHeaderButtons>
-			) : null,
-			headerRight: submit ? (
-				<CustomHeaderButtons>
-					<Item
-						title={textParser([submit.text])}
-						style={styles.submit}
-						onPress={!submitting && (route.params?.submit ?? (() => {}))}
-						testID='submit-modal-uikit'
-					/>
-				</CustomHeaderButtons>
-			) : null
+			title: textParser([title])
 		};
 	}
 
@@ -110,14 +85,12 @@ class ModalBlockView extends React.Component {
 			data,
 			loading: false
 		};
+		this.setHeader();
 	}
 
 	componentDidMount() {
 		const { data } = this.state;
-		const { navigation } = this.props;
 		const { viewId } = data;
-		navigation.setParams({ submit: this.submit, cancel: this.cancel });
-
 		EventEmitter.addEventListener(viewId, this.handleUpdate);
 	}
 
@@ -147,14 +120,43 @@ class ModalBlockView extends React.Component {
 		EventEmitter.removeListener(viewId, this.handleUpdate);
 	}
 
-	handleUpdate = ({ type, ...data }) => {
+	setHeader = () => {
+		const { data } = this.state;
 		const { navigation } = this.props;
+		const { view } = data;
+		const { title, close, submit } = view;
+		navigation.setOptions({
+			title: textParser([title]),
+			headerLeft: close ? () => (
+				<CustomHeaderButtons>
+					<Item
+						title={textParser([close.text])}
+						style={styles.submit}
+						onPress={this.cancel}
+						testID='close-modal-uikit'
+					/>
+				</CustomHeaderButtons>
+			) : null,
+			headerRight: submit ? () => (
+				<CustomHeaderButtons>
+					<Item
+						title={textParser([submit.text])}
+						style={styles.submit}
+						onPress={this.submit}
+						testID='submit-modal-uikit'
+					/>
+				</CustomHeaderButtons>
+			) : null
+		});
+	}
+
+	handleUpdate = ({ type, ...data }) => {
 		if ([MODAL_ACTIONS.ERRORS].includes(type)) {
 			const { errors } = data;
 			this.setState({ errors });
 		} else {
 			this.setState({ data });
-			navigation.setParams({ data });
+			this.setHeader();
 		}
 	};
 
@@ -187,8 +189,11 @@ class ModalBlockView extends React.Component {
 
 	submit = async() => {
 		const { data } = this.state;
-		const { navigation } = this.props;
-		navigation.setParams({ submitting: true });
+		if (this.submitting) {
+			return;
+		}
+
+		this.submitting = true;
 
 		const { appId, viewId } = data;
 		this.setState({ loading: true });
@@ -207,7 +212,7 @@ class ModalBlockView extends React.Component {
 			// do nothing
 		}
 
-		navigation.setParams({ submitting: false });
+		this.submitting = false;
 		this.setState({ loading: false });
 	};
 
