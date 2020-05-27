@@ -1,9 +1,12 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import { ThemeContext } from '../theme';
-import { defaultHeader, themedHeader } from '../utils/navigation';
+import {
+	defaultHeader, themedHeader, stackAnimation, modalAnimation
+} from '../utils/navigation';
 
 // Outside Stack
 import OnboardingView from '../views/OnboardingView';
@@ -22,7 +25,7 @@ const _OutsideStack = ({ root }) => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<Outside.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
+		<Outside.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...stackAnimation }}>
 			{root === ROOT_OUTSIDE ? (
 				<Outside.Screen
 					name='OnboardingView'
@@ -68,6 +71,10 @@ const mapStateToProps = state => ({
 	root: state.app.root
 });
 
+_OutsideStack.propTypes = {
+	root: PropTypes.string
+};
+
 const OutsideStack = connect(mapStateToProps)(_OutsideStack);
 
 // OutsideStackModal
@@ -76,7 +83,7 @@ const OutsideStackModal = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<OutsideModal.Navigator mode='modal' screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
+		<OutsideModal.Navigator mode='modal' screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...modalAnimation }}>
 			<OutsideModal.Screen
 				name='OutsideStack'
 				component={OutsideStack}
