@@ -30,7 +30,7 @@ platform :android do
   lane :alpha do
     upload_to_play_store(
       track: 'alpha', 
-      aab: '~/tmp/build/outputs/bundle/release/app-release.aab'
+      aab: lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH].to_s
     )
   end
 end

@@ -296,6 +296,10 @@ jobs:
           at: android
 
       - run:
+          name: Store the google service account key
+          command: echo "$FASTLANE_GOOGLE_SERVICE_ACCOUNT" | base64 --decode > service_account.json
+
+      - run:
           name: Update Fastlane
           command: |
             echo "ruby-2.6.4" > ~/.ruby-version
