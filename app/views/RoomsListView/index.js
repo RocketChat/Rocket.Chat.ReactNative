@@ -99,51 +99,6 @@ const getItemLayout = (data, index) => ({
 const keyExtractor = item => item.rid;
 
 class RoomsListView extends React.Component {
-	static navigationOptions = ({ route, navigation }) => {
-		const searching = route.params?.searching;
-		const cancelSearch = route.params?.cancelSearch ?? (() => {});
-		const onPressItem = route.params?.onPressItem ?? (() => {});
-		const initSearching = route.params?.initSearching ?? (() => {});
-
-		return {
-			headerLeft: () => (searching && isAndroid ? (
-				<CustomHeaderButtons left>
-					<Item
-						title='cancel'
-						iconName='cross'
-						onPress={cancelSearch}
-					/>
-				</CustomHeaderButtons>
-			) : (
-				<DrawerButton
-					navigation={navigation}
-					testID='rooms-list-view-sidebar'
-				/>
-			)),
-			headerTitle: () => <RoomsListHeaderView />,
-			headerRight: () => (searching && isAndroid ? null : (
-				<CustomHeaderButtons>
-					{isAndroid ? (
-						<Item
-							title='search'
-							iconName='magnifier'
-							onPress={initSearching}
-						/>
-					) : null}
-					<Item
-						title='new'
-						iconName='edit-rounded'
-						onPress={() => navigation.navigate('NewMessageStack', {
-							screen: 'NewMessageView',
-							params: { onPressItem }
-						})}
-						testID='rooms-list-view-create-channel'
-					/>
-				</CustomHeaderButtons>
-			))
-		};
-	}
-
 	static propTypes = {
 		navigation: PropTypes.object,
 		user: PropTypes.shape({
@@ -191,15 +146,12 @@ class RoomsListView extends React.Component {
 			chats: [],
 			width
 		};
+		this.setHeader();
 	}
 
 	componentDidMount() {
 		this.getSubscriptions();
 		const { navigation, closeServerDropdown } = this.props;
-		navigation.setParams({
-			initSearching: this.initSearching,
-			cancelSearch: this.cancelSearch
-		});
 		if (isTablet) {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
@@ -335,6 +287,46 @@ class RoomsListView extends React.Component {
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
+	setHeader = () => {
+		const { searching } = this.state;
+		const { navigation } = this.props;
+
+		navigation.setOptions({
+			headerLeft: () => (searching && isAndroid ? (
+				<CustomHeaderButtons left>
+					<Item
+						title='cancel'
+						iconName='cross'
+						onPress={this.cancelSearch}
+					/>
+				</CustomHeaderButtons>
+			) : (
+				<DrawerButton
+					navigation={navigation}
+					testID='rooms-list-view-sidebar'
+				/>
+			)),
+			headerTitle: () => <RoomsListHeaderView />,
+			headerRight: () => (searching && isAndroid ? null : (
+				<CustomHeaderButtons>
+					{isAndroid ? (
+						<Item
+							title='search'
+							iconName='magnifier'
+							onPress={this.initSearching}
+						/>
+					) : null}
+					<Item
+						title='new'
+						iconName='edit-rounded'
+						onPress={() => navigation.navigate('NewMessageStack')}
+						testID='rooms-list-view-create-channel'
+					/>
+				</CustomHeaderButtons>
+			))
+		});
+	}
+
 	// eslint-disable-next-line react/sort-comp
 	onDimensionsChange = ({ window: { width } }) => this.setState({ width });
 
@@ -450,17 +442,18 @@ class RoomsListView extends React.Component {
 	}
 
 	initSearching = () => {
-		const { openSearchHeader, navigation } = this.props;
-		this.internalSetState({ searching: true });
-		if (isAndroid) {
-			navigation.setParams({ searching: true });
-			openSearchHeader();
-		}
+		const { openSearchHeader } = this.props;
+		this.internalSetState({ searching: true }, () => {
+			if (isAndroid) {
+				openSearchHeader();
+				this.setHeader();
+			}
+		});
 	};
 
 	cancelSearch = () => {
 		const { searching } = this.state;
-		const { closeSearchHeader, navigation } = this.props;
+		const { closeSearchHeader } = this.props;
 
 		if (!searching) {
 			return;
@@ -470,13 +463,13 @@ class RoomsListView extends React.Component {
 			this.inputRef.blur();
 			this.inputRef.clear();
 		}
-		if (isAndroid) {
-			navigation.setParams({ searching: false });
-			closeSearchHeader();
-		}
-		Keyboard.dismiss();
 
 		this.setState({ searching: false, search: [] }, () => {
+			if (isAndroid) {
+				this.setHeader();
+				closeSearchHeader();
+			}
+			Keyboard.dismiss();
 			setTimeout(() => {
 				const offset = isAndroid ? 0 : SCROLL_OFFSET;
 				if (this.scroll.scrollTo) {
