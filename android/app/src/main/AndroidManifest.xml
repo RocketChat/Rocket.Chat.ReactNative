@@ -27,12 +27,20 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name="com.seventheta.notifications.PackageUpdatedBroadcastReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
         <service android:name="com.seventheta.notifications.SocketService" android:stopWithTask="false" />
 
         <service android:name="com.seventheta.notifications.SocketJobService"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="true"
             android:stopWithTask="false" />
+
+        <service android:name="com.seventheta.notifications.NotificationsDeliveryService"/>
 
 
         <activity

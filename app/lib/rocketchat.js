@@ -54,6 +54,7 @@ const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
 export const THEME_PREFERENCES_KEY = 'RC_THEME_PREFERENCES_KEY';
 export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
+export const SOCKET_NOTIFICATIONS_KEY = 'RC_SOCKET_NOTIFICATIONS_KEY';
 const returnAnArray = obj => obj || [];
 const MIN_ROCKETCHAT_VERSION = '0.70.0';
 
@@ -957,6 +958,13 @@ const RocketChat = {
 			return true;
 		}
 		return JSON.parse(allowCrashReport);
+	},
+	async getAllowSocketNotifications() {
+		const allowSocketNotifications = await RNUserDefaults.objectForKey(SOCKET_NOTIFICATIONS_KEY);
+		if (allowSocketNotifications === null) {
+			return false;
+		}
+		return JSON.parse(allowSocketNotifications);
 	},
 	async getSortPreferences() {
 		const prefs = await RNUserDefaults.objectForKey(SORT_PREFS_KEY);

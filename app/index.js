@@ -224,6 +224,9 @@ const SettingsStack = createStackNavigator({
 	},
 	DefaultBrowserView: {
 		getScreen: () => require('./views/DefaultBrowserView').default
+	},
+	PushNotificationsView: {
+		getScreen: () => require('./views/PushNotificationsView').default
 	}
 }, {
 	defaultNavigationOptions: defaultHeader,

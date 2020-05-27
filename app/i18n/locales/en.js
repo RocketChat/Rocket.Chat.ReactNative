@@ -357,6 +357,8 @@ export default {
 	Public: 'Public',
 	PUSH_NOTIFICATIONS: 'PUSH NOTIFICATIONS',
 	Push_Notifications_Alert_Info: 'These notifications are delivered to you when the app is not open',
+	Socket_notifications: 'Push Notifications',
+	Enable_socket_notifications: 'Enable websocket notifications',
 	Quote: 'Quote',
 	Reactions_are_disabled: 'Reactions are disabled',
 	Reactions_are_enabled: 'Reactions are enabled',

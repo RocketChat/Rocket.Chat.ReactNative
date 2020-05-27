@@ -273,6 +273,15 @@ class SettingsView extends React.Component {
 						right={this.renderDisclosure}
 						theme={theme}
 					/>
+					<Separator theme={theme} />
+					<ListItem
+						title={I18n.t('Socket_notifications')}
+						showActionIndicator
+						onPress={() => this.navigateToScreen('PushNotificationsView')}
+						testID='settings-view-push-notifications'
+						right={this.renderDisclosure}
+						theme={theme}
+					/>
 
 					<SectionSeparator theme={theme} />
 

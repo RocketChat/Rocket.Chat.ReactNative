@@ -9,11 +9,13 @@ import { BASIC_AUTH_KEY } from '../../utils/fetch';
 import database, { getDatabase } from '../database';
 import RocketChat from '../rocketchat';
 import { useSsl } from '../../utils/url';
+import { SocketNotificationsModule } from '../../notifications/push/SocketNotificationsModule';
 
 async function removeServerKeys({ server, userId }) {
 	await RNUserDefaults.clear(`${ RocketChat.TOKEN_KEY }-${ server }`);
 	await RNUserDefaults.clear(`${ RocketChat.TOKEN_KEY }-${ userId }`);
 	await RNUserDefaults.clear(`${ BASIC_AUTH_KEY }-${ server }`);
+	SocketNotificationsModule.invalidateNotifications();
 }
 
 async function removeSharedCredentials({ server }) {

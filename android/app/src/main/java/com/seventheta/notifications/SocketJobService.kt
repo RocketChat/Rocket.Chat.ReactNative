@@ -166,6 +166,8 @@ class SocketJobService : JobService() {
 
             val jobScheduler = context
                     .getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+
+            jobScheduler.cancel(EXTRA_JOB_ID)
             jobScheduler.schedule(jobInfo)
         }
 

@@ -8,6 +8,7 @@ import * as actions from '../actions';
 import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
 import { toggleCrashReport } from '../actions/crashReport';
+import { toggleSocketNotifications } from '../actions/socketNotifications';
 import { APP } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
@@ -25,6 +26,9 @@ export const initLocalSettings = function* initLocalSettings() {
 
 	const allowCrashReport = yield RocketChat.getAllowCrashReport();
 	yield put(toggleCrashReport(allowCrashReport));
+
+	const allowSocketNotifications = yield RocketChat.getAllowSocketNotifications();
+	yield put(toggleSocketNotifications(allowSocketNotifications));
 };
 
 const restore = function* restore() {

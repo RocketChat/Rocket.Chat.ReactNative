@@ -12,6 +12,7 @@ import sortPreferences from './sortPreferences';
 import notification from './notification';
 import share from './share';
 import crashReport from './crashReport';
+import socketNotifications from './socketNotifications';
 import customEmojis from './customEmojis';
 import activeUsers from './activeUsers';
 import usersTyping from './usersTyping';
@@ -32,6 +33,7 @@ export default combineReducers({
 	notification,
 	share,
 	crashReport,
+	socketNotifications,
 	customEmojis,
 	activeUsers,
 	usersTyping,

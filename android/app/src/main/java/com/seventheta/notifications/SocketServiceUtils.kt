@@ -2,6 +2,12 @@ package com.seventheta.notifications
 
 import android.content.Context
 import android.os.Build
+import android.os.Bundle
+import com.facebook.react.bridge.Arguments
+import com.facebook.react.bridge.ReactContext
+import com.facebook.react.bridge.WritableMap
+import com.facebook.react.modules.core.DeviceEventManagerModule
+
 
 object SocketServiceUtils {
 
@@ -22,4 +28,12 @@ object SocketServiceUtils {
             SocketService.startService(context)
         }
     }
+}
+
+fun ReactContext.sendEventToJS(eventName: String, data: Bundle) {
+    sendEventToJS(eventName, Arguments.fromBundle(data))
+}
+
+fun ReactContext.sendEventToJS(eventName: String, data: WritableMap) {
+    getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java).emit(eventName, data)
 }

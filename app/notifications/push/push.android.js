@@ -1,18 +1,12 @@
 import { NotificationsAndroid, PendingNotifications } from 'react-native-notifications';
+import { SocketNotificationsModule } from './SocketNotificationsModule';
+import RocketChat from '../../lib/rocketchat';
 
 class PushNotification {
 	constructor() {
 		this.onRegister = null;
 		this.onNotification = null;
 		this.deviceToken = null;
-
-		NotificationsAndroid.setRegistrationTokenUpdateListener((deviceToken) => {
-			this.deviceToken = deviceToken;
-		});
-
-		NotificationsAndroid.setNotificationOpenedListener((notification) => {
-			this.onNotification(notification);
-		});
 	}
 
 	getDeviceToken() {
@@ -21,11 +15,29 @@ class PushNotification {
 
 	setBadgeCount = () => {}
 
-	configure(params) {
+	configure = async(params) => {
 		this.onRegister = params.onRegister;
 		this.onNotification = params.onNotification;
-		NotificationsAndroid.refreshToken();
-		return PendingNotifications.getInitialNotification();
+		const allowSocketNotifications = await RocketChat.getAllowSocketNotifications();
+		if (allowSocketNotifications) {
+			NotificationsAndroid.clearNotificationOpenedListener();
+			SocketNotificationsModule.setNotificationOpenedListener((notification) => {
+				this.onNotification(notification);
+			});
+			SocketNotificationsModule.invalidateNotifications();
+			return SocketNotificationsModule.getInitialNotification();
+		} else {
+			NotificationsAndroid.setRegistrationTokenUpdateListener((deviceToken) => {
+				this.deviceToken = deviceToken;
+			});
+	
+			NotificationsAndroid.setNotificationOpenedListener((notification) => {
+				this.onNotification(notification);
+			});
+			NotificationsAndroid.refreshToken();
+			SocketNotificationsModule.invalidateNotifications();
+			return PendingNotifications.getInitialNotification();
+		}
 	}
 }
 

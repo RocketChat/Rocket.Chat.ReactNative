@@ -9,6 +9,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
+import android.os.Bundle
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import bolts.Task
@@ -24,9 +25,19 @@ import java.util.concurrent.atomic.AtomicInteger
 
 class SocketNotificationManager(val context: Context) {
 
+    data class LoginData(
+            val host: String,
+            val userId: String,
+            val userToken: String)
+
+    data class RoomData(
+            val id: String,
+            val type: String)
+
     data class NotificationData(
             val senderUsername: String,
-            val message: String)
+            val message: String,
+            val data: Bundle)
 
     private val client: DDPClient
     private val notiId = AtomicInteger(0)
@@ -47,13 +58,41 @@ class SocketNotificationManager(val context: Context) {
         val prefs = context.getSharedPreferences("react-native", Context.MODE_PRIVATE)
         val allPrefs = prefs.all
 
-        val userToken = allPrefs.get("reactnativemeteor_usertoken") as? String
-        val currentServer = allPrefs.get("currentServer") as? String
-        if (userToken == null || currentServer == null) {
+        if (allPrefs[SOCKET_NOTIFICATIONS_KEY] != "true") {
             return false
         }
 
-        val url = "wss://${URL(currentServer).host}/websocket"
+        val loginDatas = allPrefs.keys.mapNotNull { prefKey ->
+            return@mapNotNull if (userTokenRegex.containsMatchIn(prefKey)) {
+                val host = URL(prefKey.split("-")[1]).host
+                val userId = allPrefs[prefKey] as String
+                val userTokenKey = "reactnativemeteor_usertoken-$userId"
+                val userToken = allPrefs[userTokenKey] as String
+                LoginData(host, userId, userToken)
+            } else {
+                null
+            }
+        }
+
+        val numToConnect = AtomicInteger(loginDatas.size)
+        loginDatas.forEach { data ->
+            connect(data.host, data.userId, data.userToken) {
+                val remaining = numToConnect.decrementAndGet()
+                if (remaining == 0) {
+                    onConnect()
+                }
+            }
+        }
+
+        return true
+    }
+
+    fun connect(host: String, myUserId: String, token: String, onConnect: () -> Unit): Boolean {
+        val url = "wss://$host/websocket"
+
+        val rooms = mutableMapOf<String, RoomData>()
+        val subNum = AtomicInteger(100)
+        val activeSubs = mutableListOf<String>()
 
         client.connect(url).onSuccessTask { task ->
             val result = task.result
@@ -77,17 +116,34 @@ class SocketNotificationManager(val context: Context) {
                     val msg = message.getString("msg")
                     val user = message.getJSONObject("u")
                     val userId = user.getString("_id")
-                    val username = user.getString("username")
-                    val mentions = message.getJSONArray("mentions")
-                    val mentionedUserIds = mutableListOf<String>()
-                    for (j in 0 until mentions.length()) {
-                        val mention = mentions.getJSONObject(j)
-                        val userId = mention.getString("_id")
-                        val username = mention.getString("username")
-                        mentionedUserIds.add(userId)
+
+                    if (userId != myUserId) {
+                        val roomId = message.getString("rid")
+                        val username = user.getString("username")
+                        val mentions = message.getJSONArray("mentions")
+                        val mentionedUserIds = mutableListOf<String>()
+                        for (j in 0 until mentions.length()) {
+                            val mention = mentions.getJSONObject(j)
+                            val userId = mention.getString("_id")
+                            val username = mention.getString("username")
+                            mentionedUserIds.add(userId)
+                        }
+                        val ejson = JSONObject().apply {
+                            put("rid", roomId)
+                            put("name", userId)
+                            put("sender", JSONObject().apply {
+                                put("username", username)
+                                put("name", username)
+                            })
+                            put("type", rooms[roomId]?.type ?: "d")
+                            put("host", host)
+                        }
+                        val data = Bundle().apply {
+                            putString("ejson", ejson.toString())
+                        }
+                        val notiData = NotificationData(username, msg, data)
+                        messages.add(notiData)
                     }
-                    val notiData = NotificationData(username, msg)
-                    messages.add(notiData)
                 }
 
                 messages.forEach { message ->
@@ -97,7 +153,7 @@ class SocketNotificationManager(val context: Context) {
 
             result.client.rpc("login", JSONArray().apply {
                 put(JSONObject().apply {
-                    put("resume", userToken)
+                    put("resume", token)
                 })
             }, "2", 4000)
 
@@ -116,6 +172,9 @@ class SocketNotificationManager(val context: Context) {
             for (i in 0 until updates.length()) {
                 val room = updates.getJSONObject(i)
                 val roomId = room.getString("_id")
+                val type = room.getString("t")
+                val roomData = RoomData(roomId, type)
+                rooms[roomId] = roomData
                 roomIds.add(roomId)
             }
 
@@ -125,16 +184,21 @@ class SocketNotificationManager(val context: Context) {
 //                put(false)
 //            })
 
-            val tasks = mutableListOf<Task<DDPSubscription.Ready>>()
+            activeSubs.forEach { subId ->
+                result.client.unsub(subId).onSuccess { task -> }
+            }
+            activeSubs.clear()
+
             for (i in 0 until roomIds.size) {
                 val roomId = roomIds.get(i)
+                val subIdNum = subNum.incrementAndGet()
+                val subId = "$subIdNum"
                 Log.d("SOCKETNOTIS", "SUBBING $roomId")
-                result.client.sub("83854$i", "stream-room-messages", JSONArray().apply {
+                result.client.sub(subId, "stream-room-messages", JSONArray().apply {
                     put(roomId)
                     put(false)
                 }).onSuccess { task ->
-
-
+                    activeSubs.add(subId)
                 }
             }
 
@@ -156,6 +220,10 @@ class SocketNotificationManager(val context: Context) {
     }
 
     private fun displayNotification(data: NotificationData) {
+        val intent = Intent(context, NotificationsDeliveryService::class.java)
+        intent.putExtra(NotificationsDeliveryService.EXTRA_NOTIFICATION_DATA, data.data)
+        val contentIntent = PendingIntent.getService(context, System.currentTimeMillis().toInt(), intent, PendingIntent.FLAG_ONE_SHOT)
+
         val builder: NotificationCompat.Builder = NotificationCompat.Builder(context)
                 .setAutoCancel(true)
                 .setSmallIcon(context.resources.getIdentifier("ic_notification", "mipmap", context.packageName))
@@ -164,7 +232,7 @@ class SocketNotificationManager(val context: Context) {
                 .setLights(Color.RED, 1000, 1000)
                 .setVibrate(longArrayOf(0, 400, 250, 400))
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setContentIntent(PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT))
+                .setContentIntent(contentIntent)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create the NotificationChannel
@@ -178,5 +246,11 @@ class SocketNotificationManager(val context: Context) {
 
         val notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(notiId.incrementAndGet(), builder.build())
+    }
+
+    companion object {
+
+        val SOCKET_NOTIFICATIONS_KEY = "RC_SOCKET_NOTIFICATIONS_KEY"
+        val userTokenRegex = "reactnativemeteor_usertoken-[a-z][a-z0-9+\\-.]*://([a-z0-9\\-._~%!\$&'()*+,;=]+@)?([a-z0-9\\-._~%]+|\\[[a-f0-9:.]+\\]|\\[v[a-f0-9][a-z0-9\\-._~%!\$&'()*+,;=:]+\\])(:[0-9]+)?(/[a-z0-9\\-._~%!\$&'()*+,;=:@]+)*/?(\\?[a-z0-9\\-._~%!\$&'()*+,;=:@/?]*)?(#[a-z0-9\\-._~%!\$&'()*+,;=:@/?]*)?".toRegex()
     }
 }
