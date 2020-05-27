@@ -1,19 +1,20 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const data = require('./data');
+const data = require('../../data');
+const { navigateToLogin } = require('../../helpers/app');
 
 describe('Forgot password screen', () => {
 	before(async() => {
-		await element(by.id('welcome-view-login')).tap();
-    	await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
+		await device.launchApp({ newInstance: true });
+		await navigateToLogin();
 		await element(by.id('login-view-forgot-password')).tap();
-		await waitFor(element(by.id('forgot-password-view'))).toBeVisible().withTimeout(2000);
+		await waitFor(element(by.id('forgot-password-view'))).toExist().withTimeout(2000);
 	});
 
 	describe('Render', async() => {
 		it('should have forgot password screen', async() => {
-			await expect(element(by.id('forgot-password-view'))).toBeVisible();
+			await expect(element(by.id('forgot-password-view'))).toExist();
 		});
 
 		it('should have email input', async() => {

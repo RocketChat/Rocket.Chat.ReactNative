@@ -1,14 +1,27 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const data = require('./data');
-const { sleep, logout } = require('./helpers/app');
+const data = require('../../data');
+const { sleep, createUser } = require('../../helpers/app');
+
+const checkServer = async(server) => {
+	const label = `Connected to ${ server }`;
+	await element(by.id('rooms-list-view-sidebar')).tap();
+	await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
+	await waitFor(element(by.label(label))).toBeVisible().withTimeout(60000);
+	await expect(element(by.label(label))).toBeVisible();
+	await element(by.type('UIScrollView')).atIndex(1).swipe('left'); // close sidebar
+}
 
 describe('Change server', () => {
 	before(async() => {
-		await device.launchApp({ newInstance: true });
+		await createUser();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 	});
+
+	it('should be logged in main server', async() => {
+		await checkServer(data.server);
+	})
 
 	it('should add server and create new user', async() => {
 		await sleep(5000);
@@ -17,29 +30,14 @@ describe('Change server', () => {
 		await expect(element(by.id('rooms-list-header-server-dropdown'))).toExist();
 		await sleep(1000);
 		await element(by.id('rooms-list-header-server-add')).tap();
-		await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(60000);
-		await sleep(1000);
-		await element(by.id('connect-server-button')).tap();
-		//  Add server
+
+		// TODO: refactor
 		await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
 		await element(by.id('new-server-view-input')).replaceText(data.alternateServer);
-		await sleep(1000);
 		await element(by.id('new-server-view-button')).tap();
-		// Navigate to register
-		// await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(2000);
-		// await element(by.id('welcome-view-register')).tap();
-		// await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
-		try {
-			await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
-			await expect(element(by.id('login-view'))).toBeVisible();
-			await sleep(1000);
-			await element(by.id('login-view-register')).tap();
-		} catch (error) {
-			await waitFor(element(by.id('welcome-view'))).toBeVisible().withTimeout(2000);
-			await expect(element(by.id('welcome-view'))).toBeVisible();
-			await sleep(1000);
-			await element(by.id('welcome-view-register')).tap();
-		}
+		await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(60000);
+		await expect(element(by.id('workspace-view'))).toBeVisible();
+		await element(by.id('workspace-view-register')).tap();
 		await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
 		await expect(element(by.id('register-view'))).toBeVisible();
 		// Register new user
@@ -51,13 +49,15 @@ describe('Change server', () => {
 		await element(by.id('register-view-submit')).tap();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
 		await expect(element(by.id('rooms-list-view'))).toBeVisible();
+
 		// For a sanity test, to make sure roomslist is showing correct rooms
 		// app CANNOT show public room created on previous tests
-		await waitFor(element(by.id(`rooms-list-view-item-public${ data.random }`))).toBeNotVisible().withTimeout(60000);
-		await expect(element(by.id(`rooms-list-view-item-public${ data.random }`))).toBeNotVisible();
+		// await waitFor(element(by.id(`rooms-list-view-item-public${ data.random }`))).toBeNotVisible().withTimeout(60000);
+		// await expect(element(by.id(`rooms-list-view-item-public${ data.random }`))).toBeNotVisible();
+		await checkServer(data.alternateServer);
 	});
 
-	it('should change server', async() => {
+	it('should change back', async() => {
 		await sleep(5000);
 		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
 		await waitFor(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible().withTimeout(5000);
@@ -65,9 +65,6 @@ describe('Change server', () => {
 		await sleep(1000);
 		await element(by.id(`rooms-list-header-server-${ data.server }`)).tap();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
-		// For a sanity test, to make sure roomslist is showing correct rooms
-		// app MUST show public room created on previous tests
-		await waitFor(element(by.id(`rooms-list-view-item-public${ data.random }`))).toBeVisible().withTimeout(60000);
-		await expect(element(by.id(`rooms-list-view-item-public${ data.random }`))).toBeVisible();
+		await checkServer(data.server);
 	});
 });

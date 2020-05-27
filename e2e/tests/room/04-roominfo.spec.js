@@ -1,8 +1,8 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const data = require('./data');
-const { tapBack, sleep } = require('./helpers/app');
+const data = require('../../data');
+const { tapBack, sleep } = require('../../helpers/app');
 
 async function navigateToRoomInfo(type) {
 	let room;
@@ -12,7 +12,7 @@ async function navigateToRoomInfo(type) {
 		room = `private${ data.random }`;
 	}
 	await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
-	await element(by.type('UIScrollView')).atIndex(1).scrollTo('top');
+	await element(by.type('UIScrollView')).atIndex(1).swipe('down');
 	await element(by.id('rooms-list-view-search')).typeText(room);
 	await sleep(2000);
 	await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toExist().withTimeout(60000);
@@ -84,7 +84,7 @@ describe('Room info screen', () => {
 				await sleep(1000);
 				await waitFor(element(by.id('room-info-view-edit-button'))).toBeVisible().withTimeout(10000);
 				await element(by.id('room-info-view-edit-button')).tap();
-				await waitFor(element(by.id('room-info-edit-view'))).toBeVisible().withTimeout(2000);
+				await waitFor(element(by.id('room-info-edit-view'))).toExist().withTimeout(2000);
 			});
 	
 			it('should have room info edit view', async() => {
@@ -169,7 +169,8 @@ describe('Room info screen', () => {
 				// change name to original
 				await element(by.id('room-info-view-edit-button')).tap();
 				await sleep(1000);
-				await waitFor(element(by.id('room-info-edit-view'))).toBeVisible().withTimeout(2000);
+				await waitFor(element(by.id('room-info-edit-view'))).toExist().withTimeout(2000);
+				await sleep(1000);
 				await element(by.id('room-info-edit-view-name')).replaceText(`${ room }`);
 				await element(by.type('UIScrollView')).atIndex(1).swipe('up');
 				await sleep(1000);
@@ -186,8 +187,11 @@ describe('Room info screen', () => {
 				await element(by.id('room-info-edit-view-password')).replaceText('abc');
 				await element(by.type('UIScrollView')).atIndex(1).swipe('up');
 				await element(by.id('room-info-edit-view-t')).tap();
+				await sleep(1000);
 				await element(by.id('room-info-edit-view-ro')).tap();
+				await sleep(1000);
 				await element(by.id('room-info-edit-view-react-when-ro')).tap();
+				await sleep(1000);
 				await element(by.id('room-info-edit-view-reset')).tap();
 				// after reset
 				await expect(element(by.id('room-info-edit-view-name'))).toHaveText(room);
@@ -210,14 +214,14 @@ describe('Room info screen', () => {
 				await tapBack();
 				await waitFor(element(by.id('room-info-view'))).toBeVisible().withTimeout(2000);
 				await sleep(1000);
-				// await expect(element(by.id('room-info-view-description'))).toHaveLabel('new description');
-				await expect(element(by.label('new description'))).toBeVisible();
-				await waitFor(element(by.id('room-info-view-edit-button'))).toBeVisible().withTimeout(10000);
-				await element(by.id('room-info-view-edit-button')).tap();
-				await waitFor(element(by.id('room-info-edit-view'))).toBeVisible().withTimeout(2000);
+				await expect(element(by.label('new description').withAncestor(by.id('room-info-view-description')))).toBeVisible();
 			});
 	
 			it('should change room topic', async() => {
+				await sleep(1000);
+				await waitFor(element(by.id('room-info-view-edit-button'))).toBeVisible().withTimeout(10000);
+				await element(by.id('room-info-view-edit-button')).tap();
+				await waitFor(element(by.id('room-info-edit-view'))).toExist().withTimeout(2000);
 				await sleep(1000);
 				await element(by.id('room-info-edit-view-topic')).replaceText('new topic');
 				await element(by.type('UIScrollView')).atIndex(1).swipe('up');
@@ -226,14 +230,14 @@ describe('Room info screen', () => {
 				await tapBack();
 				await waitFor(element(by.id('room-info-view'))).toBeVisible().withTimeout(2000);
 				await sleep(1000);
-				// await expect(element(by.id('room-info-view-topic'))).toHaveLabel('new topic');
-				await expect(element(by.label('new topic'))).toBeVisible();
-				await waitFor(element(by.id('room-info-view-edit-button'))).toBeVisible().withTimeout(10000);
-				await element(by.id('room-info-view-edit-button')).tap();
-				await waitFor(element(by.id('room-info-edit-view'))).toBeVisible().withTimeout(2000);
+				await expect(element(by.label('new topic').withAncestor(by.id('room-info-view-topic')))).toBeVisible();
 			});
 	
 			it('should change room announcement', async() => {
+				await sleep(1000);
+				await waitFor(element(by.id('room-info-view-edit-button'))).toBeVisible().withTimeout(10000);
+				await element(by.id('room-info-view-edit-button')).tap();
+				await waitFor(element(by.id('room-info-edit-view'))).toExist().withTimeout(2000);
 				await sleep(1000);
 				await element(by.id('room-info-edit-view-announcement')).replaceText('new announcement');
 				await element(by.type('UIScrollView')).atIndex(1).swipe('up');
@@ -242,14 +246,14 @@ describe('Room info screen', () => {
 				await tapBack();
 				await waitFor(element(by.id('room-info-view'))).toBeVisible().withTimeout(2000);
 				await sleep(1000);
-				// await expect(element(by.id('room-info-view-announcement'))).toHaveLabel('new announcement');
-				await expect(element(by.label('new announcement'))).toBeVisible();
-				await waitFor(element(by.id('room-info-view-edit-button'))).toBeVisible().withTimeout(10000);
-				await element(by.id('room-info-view-edit-button')).tap();
-				await waitFor(element(by.id('room-info-edit-view'))).toBeVisible().withTimeout(2000);
+				await expect(element(by.label('new announcement').withAncestor(by.id('room-info-view-announcement')))).toBeVisible();
 			});
 	
 			it('should change room password', async() => {
+				await sleep(1000);
+				await waitFor(element(by.id('room-info-view-edit-button'))).toBeVisible().withTimeout(10000);
+				await element(by.id('room-info-view-edit-button')).tap();
+				await waitFor(element(by.id('room-info-edit-view'))).toExist().withTimeout(2000);
 				await sleep(1000);
 				await element(by.type('UIScrollView')).atIndex(1).swipe('up');
 				await element(by.id('room-info-edit-view-password')).replaceText('password');

@@ -1,20 +1,8 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { logout, sleep } = require('./helpers/app');
-const data = require('./data');
-
-async function navigateToRegister() {
-	await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(2000);
-	await element(by.id('connect-server-button')).tap();
-	await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
-	await element(by.id('new-server-view-input')).replaceText(data.server);
-	await element(by.id('new-server-view-button')).tap();
-	// we're assuming the server don't have login services and the navigation will jump to login
-	await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(60000);
-	await element(by.id('login-view-register')).tap();
-	await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
-}
+const { navigateToRegister, sleep } = require('../../helpers/app');
+const data = require('../../data');
 
 describe('Create user screen', () => {
 	before(async() => {
@@ -37,10 +25,6 @@ describe('Create user screen', () => {
 
 		it('should have password input', async() => {
 			await expect(element(by.id('register-view-password'))).toBeVisible();
-		});
-
-		it('should have show password icon', async() => {
-			await expect(element(by.id('register-view-password-icon-right'))).toBeVisible();
 		});
 
 		it('should have submit button', async() => {
@@ -98,10 +82,6 @@ describe('Create user screen', () => {
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
-		});
-
-		after(async() => {
-			await logout();
 		});
 	});
 });

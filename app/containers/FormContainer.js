@@ -23,7 +23,7 @@ export const FormContainerInner = ({ children }) => (
 	</View>
 );
 
-const FormContainer = ({ children, theme }) => (
+const FormContainer = ({ children, theme, testID }) => (
 	<KeyboardView
 		style={{ backgroundColor: themes[theme].backgroundColor }}
 		contentContainerStyle={sharedStyles.container}
@@ -31,7 +31,7 @@ const FormContainer = ({ children, theme }) => (
 	>
 		<StatusBar theme={theme} />
 		<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}>
-			<SafeAreaView style={sharedStyles.container} forceInset={{ top: 'never' }}>
+			<SafeAreaView style={sharedStyles.container} forceInset={{ top: 'never' }} testID={testID}>
 				{children}
 				<AppVersion theme={theme} />
 			</SafeAreaView>
@@ -41,6 +41,7 @@ const FormContainer = ({ children, theme }) => (
 
 FormContainer.propTypes = {
 	theme: PropTypes.string,
+	testID: PropTypes.string,
 	children: PropTypes.element
 };
 
