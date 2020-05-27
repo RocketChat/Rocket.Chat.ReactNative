@@ -26,26 +26,9 @@ import styles from './styles';
 import SafeAreaView from '../../containers/SafeAreaView';
 
 class CreateChannelView extends React.Component {
-	static navigationOptions = ({ navigation, route }) => {
-		const submit = route.params?.submit ?? (() => {});
-		const showSubmit = route.params?.showSubmit ?? route.params?.message;
-		return {
-			title: I18n.t('Create_Discussion'),
-			headerRight: (
-				showSubmit
-					? (
-						<CustomHeaderButtons>
-							<Item title={I18n.t('Create')} onPress={submit} testID='create-discussion-submit' />
-						</CustomHeaderButtons>
-					)
-					: null
-			),
-			headerLeft: <CloseModalButton navigation={navigation} />
-		};
-	}
-
 	propTypes = {
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		server: PropTypes.string,
 		user: PropTypes.object,
 		create: PropTypes.func,
@@ -58,26 +41,26 @@ class CreateChannelView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		const { navigation } = props;
-		navigation.setParams({ submit: this.submit });
-		this.channel = navigation.getParam('channel');
-		const message = navigation.getParam('message', {});
+		const { route } = props;
+		this.channel = route.params?.channel;
+		const message = route.params?.message ?? {};
 		this.state = {
 			channel: this.channel,
 			message,
-			name: message.msg || '',
+			name: message?.msg || '',
 			users: [],
 			reply: ''
 		};
+		this.setHeader();
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		const {
-			loading, failure, error, result, navigation
+			loading, failure, error, result
 		} = this.props;
 
 		if (!isEqual(this.state, prevState)) {
-			navigation.setParams({ showSubmit: this.valid() });
+			this.setHeader();
 		}
 
 		if (!loading && loading !== prevProps.loading) {
@@ -96,6 +79,23 @@ class CreateChannelView extends React.Component {
 				}
 			}, 300);
 		}
+	}
+
+	setHeader = () => {
+		const { navigation } = this.props;
+		navigation.setOptions({
+			title: I18n.t('Create_Discussion'),
+			headerRight: (
+				this.valid()
+					? () => (
+						<CustomHeaderButtons>
+							<Item title={I18n.t('Create')} onPress={this.submit} testID='create-discussion-submit' />
+						</CustomHeaderButtons>
+					)
+					: null
+			),
+			headerLeft: () => <CloseModalButton navigation={navigation} />
+		});
 	}
 
 	submit = () => {
