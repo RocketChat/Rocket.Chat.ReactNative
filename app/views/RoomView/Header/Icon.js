@@ -7,7 +7,7 @@ import { CustomIcon } from '../../../lib/Icons';
 import Status from '../../../containers/Status/Status';
 import { isAndroid } from '../../../utils/deviceInfo';
 
-const ICON_SIZE = 18;
+const ICON_SIZE = 15;
 
 const styles = StyleSheet.create({
 	type: {
