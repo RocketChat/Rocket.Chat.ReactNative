@@ -6,8 +6,8 @@ import { STATUS_COLORS, themes } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	icon: {
-		marginRight: 3,
-		marginTop: 3
+		marginTop: 3,
+		marginRight: 4
 	}
 });
 
@@ -58,7 +58,7 @@ RoomTypeIcon.propTypes = {
 };
 
 RoomTypeIcon.defaultProps = {
-	size: 13
+	size: 16
 };
 
 export default RoomTypeIcon;
