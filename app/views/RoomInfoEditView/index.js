@@ -347,12 +347,16 @@ class RoomInfoEditView extends React.Component {
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar theme={theme} />
-				<ScrollView
-					contentContainerStyle={sharedStyles.containerScrollView}
-					testID='room-info-edit-view-list'
-					{...scrollPersistTaps}
+				<SafeAreaView
+					testID='room-info-edit-view'
+					theme={theme}
+					style={{ backgroundColor: themes[theme].backgroundColor }}
 				>
-					<SafeAreaView testID='room-info-edit-view' theme={theme}>
+					<ScrollView
+						contentContainerStyle={sharedStyles.containerScrollView}
+						testID='room-info-edit-view-list'
+						{...scrollPersistTaps}
+					>
 						<RCTextInput
 							inputRef={(e) => { this.name = e; }}
 							label={I18n.t('Name')}
@@ -540,8 +544,8 @@ class RoomInfoEditView extends React.Component {
 							</Text>
 						</TouchableOpacity>
 						<Loading visible={saving} />
-					</SafeAreaView>
-				</ScrollView>
+					</ScrollView>
+				</SafeAreaView>
 			</KeyboardView>
 		);
 	}
