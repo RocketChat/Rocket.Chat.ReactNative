@@ -56,20 +56,6 @@ const styles = StyleSheet.create({
 });
 
 class StatusView extends React.Component {
-	static navigationOptions = ({ route }) => ({
-		title: I18n.t('Edit_Status'),
-		headerLeft: () => <CancelModalButton onPress={route.params?.close ?? (() => {})} />,
-		headerRight: () => (
-			<CustomHeaderButtons>
-				<Item
-					title={I18n.t('Done')}
-					onPress={route.params?.submit ?? (() => {})}
-					testID='status-view-submit'
-				/>
-			</CustomHeaderButtons>
-		)
-	})
-
 	static propTypes = {
 		user: PropTypes.shape({
 			id: PropTypes.string,
@@ -86,8 +72,24 @@ class StatusView extends React.Component {
 
 		const { statusText } = props.user;
 		this.state = { statusText, loading: false };
+		this.setHeader();
+	}
 
-		props.navigation.setParams({ submit: this.submit, close: this.close });
+	setHeader = () => {
+		const { navigation } = this.props;
+		navigation.setOptions({
+			title: I18n.t('Edit_Status'),
+			headerLeft: () => <CancelModalButton onPress={this.close} />,
+			headerRight: () => (
+				<CustomHeaderButtons>
+					<Item
+						title={I18n.t('Done')}
+						onPress={this.submit}
+						testID='status-view-submit'
+					/>
+				</CustomHeaderButtons>
+			)
+		});
 	}
 
 	submit = async() => {

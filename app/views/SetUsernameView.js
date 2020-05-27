@@ -50,7 +50,7 @@ class SetUsernameView extends React.Component {
 			saving: false
 		};
 		const { server } = this.props;
-		props.navigation.setParams({ title: server });
+		props.navigation.setOptions({ title: server });
 		if (!isTablet) {
 			Orientation.lockToPortrait();
 		}
