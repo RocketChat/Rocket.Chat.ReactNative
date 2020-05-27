@@ -44,7 +44,7 @@ const ANIMATION_CONFIG = {
 const ANDROID_ADJUST = isAndroid ? 2 : 0;
 
 const ActionSheet = forwardRef(({ children, theme }, ref) => {
-	const modalizeRef = useRef();
+	const bottomSheetRef = useRef();
 	const [data, setData] = useState({});
 	const [visible, setVisible] = useState(false);
 	const orientation = useOrientation();
@@ -65,7 +65,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 	const toggleVisible = () => setVisible(!visible);
 
 	const hide = () => {
-		modalizeRef.current?.snapTo(closed);
+		bottomSheetRef.current?.snapTo(closed);
 	};
 
 	const show = (options) => {
@@ -83,13 +83,13 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 		if (visible) {
 			Keyboard.dismiss();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-			modalizeRef.current?.snapTo(opened);
+			bottomSheetRef.current?.snapTo(opened);
 		}
 	}, [visible]);
 
 	useEffect(() => {
 		// Open at the greatest possible snap
-		modalizeRef.current?.snapTo(0);
+		bottomSheetRef.current?.snapTo(0);
 	}, [orientation]);
 
 	useImperativeHandle(ref, () => ({
@@ -131,19 +131,12 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 					</TapGestureHandler>
 					<ScrollBottomSheet
 						key={orientation}
-						ref={modalizeRef}
+						ref={bottomSheetRef}
 						componentType='FlatList'
 						snapPoints={snaps}
 						initialSnapIndex={closed}
 						renderHandle={renderHandle}
-						data={data?.options}
-						keyExtractor={item => item.title}
-						style={{ backgroundColor: themes[theme].backgroundColor }}
-						contentContainerStyle={styles.content}
-						ItemSeparatorComponent={renderSeparator}
-						ListHeaderComponent={renderSeparator}
-						renderItem={({ item }) => <Item item={item} hide={hide} theme={theme} />}
-						onSettle={index => (index === (closed) && toggleVisible())}
+						onSettle={index => (index === closed) && toggleVisible()}
 						animatedPosition={animatedPosition.current}
 						containerStyle={[
 							styles.container,
@@ -151,7 +144,14 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 							isTablet && styles.bottomSheet
 						]}
 						animationConfig={ANIMATION_CONFIG}
-						nestedScrollEnabled
+						// FlatList props
+						data={data?.options}
+						keyExtractor={item => item.title}
+						style={{ backgroundColor: themes[theme].backgroundColor }}
+						contentContainerStyle={styles.content}
+						ItemSeparatorComponent={renderSeparator}
+						ListHeaderComponent={renderSeparator}
+						renderItem={({ item }) => <Item item={item} hide={hide} theme={theme} />}
 					/>
 				</>
 			)}
