@@ -22,6 +22,5 @@ export default () => createStore => (...args) => {
 
 	Dimensions.addEventListener('change', handleDimensionsChange);
 
-	setTimeout(() => handleDimensionsChange(Dimensions.get('window')));
 	return store;
 };
