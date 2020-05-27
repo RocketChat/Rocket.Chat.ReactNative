@@ -39,12 +39,13 @@ const MessageActions = forwardRef(({
 
 	const getPermissions = async() => {
 		try {
-			const permission = ['edit-message', 'delete-message', 'force-delete-message'];
+			const permission = ['edit-message', 'delete-message', 'force-delete-message', 'pin-message'];
 			const result = await RocketChat.hasPermission(permission, room.rid);
 			permissions = {
 				hasEditPermission: result[permission[0]],
 				hasDeletePermission: result[permission[1]],
-				hasForceDeletePermission: result[permission[2]]
+				hasForceDeletePermission: result[permission[2]],
+				hasPinPermission: result[permissions[3]]
 			};
 		} catch {
 			// Do nothing
@@ -320,7 +321,7 @@ const MessageActions = forwardRef(({
 		}
 
 		// Pin
-		if (Message_AllowPinning) {
+		if (Message_AllowPinning && permissions?.hasPinPermission) {
 			options.push({
 				title: I18n.t(message.pinned ? 'Unpin' : 'Pin'),
 				icon: 'pin',

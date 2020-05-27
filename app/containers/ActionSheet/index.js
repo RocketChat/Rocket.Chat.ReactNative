@@ -91,6 +91,8 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 		</>
 	);
 
+	const renderSeparator = () => <Separator theme={theme} style={styles.separator} />;
+
 	const animatedPosition = React.useRef(new Value(0));
 	const opacity = interpolate(animatedPosition.current, {
 		inputRange: [0, 1],
@@ -127,8 +129,8 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 						keyExtractor={item => item.title}
 						style={{ backgroundColor: themes[theme].backgroundColor }}
 						contentContainerStyle={styles.content}
-						ItemSeparatorComponent={() => <Separator theme={theme} />}
-						ListHeaderComponent={() => <Separator theme={theme} />}
+						ItemSeparatorComponent={renderSeparator}
+						ListHeaderComponent={renderSeparator}
 						renderItem={({ item }) => <Item item={item} hide={hide} theme={theme} />}
 						onSettle={index => index === 2 && toggleVisible()}
 						animatedPosition={animatedPosition.current}

@@ -11,12 +11,15 @@ export default StyleSheet.create({
 		borderTopRightRadius: 16
 	},
 	item: {
+		paddingHorizontal: 16,
 		height: ITEM_HEIGHT,
 		alignItems: 'center',
 		flexDirection: 'row'
 	},
+	separator: {
+		marginHorizontal: 16
+	},
 	content: {
-		paddingHorizontal: 16,
 		paddingTop: 16
 	},
 	title: {
