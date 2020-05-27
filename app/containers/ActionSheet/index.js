@@ -50,10 +50,22 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 	const orientation = useOrientation();
 	const { height } = useDimensions();
 
+	const open = Math.max((height - ((ITEM_HEIGHT + ANDROID_ADJUST) * data?.options?.length) - HANDLE_HEIGHT - (data?.headerHeight || 0)), MIN_SNAP_HEIGHT);
+
+	/*
+	 * if the action sheet cover more
+	 * than 60% of the whole screen
+	 * we'll provide more one snap
+	 * that point 50% of the whole screen
+	*/
+	const snaps = height - open > height * 0.6 ? [open, '50%', height] : [open, height];
+	const opened = snaps.length > 2 ? 1 : 0;
+	const closed = snaps.length - 1;
+
 	const toggleVisible = () => setVisible(!visible);
 
 	const hide = () => {
-		modalizeRef.current?.snapTo(2);
+		modalizeRef.current?.snapTo(closed);
 	};
 
 	const show = (options) => {
@@ -71,11 +83,12 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 		if (visible) {
 			Keyboard.dismiss();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-			modalizeRef.current?.snapTo(0);
+			modalizeRef.current?.snapTo(opened);
 		}
 	}, [visible]);
 
 	useEffect(() => {
+		// Open at the greatest possible snap
 		modalizeRef.current?.snapTo(0);
 	}, [orientation]);
 
@@ -100,8 +113,6 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 		extrapolate: Extrapolate.CLAMP
 	});
 
-	const open = Math.max((height - ((ITEM_HEIGHT + ANDROID_ADJUST) * data?.options?.length) - HANDLE_HEIGHT - (data?.headerHeight || 0)), MIN_SNAP_HEIGHT);
-
 	return (
 		<>
 			{children}
@@ -122,8 +133,8 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 						key={orientation}
 						ref={modalizeRef}
 						componentType='FlatList'
-						snapPoints={[open, open * 2, height]}
-						initialSnapIndex={2}
+						snapPoints={snaps}
+						initialSnapIndex={closed}
 						renderHandle={renderHandle}
 						data={data?.options}
 						keyExtractor={item => item.title}
@@ -132,7 +143,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 						ItemSeparatorComponent={renderSeparator}
 						ListHeaderComponent={renderSeparator}
 						renderItem={({ item }) => <Item item={item} hide={hide} theme={theme} />}
-						onSettle={index => index === 2 && toggleVisible()}
+						onSettle={index => (index === (closed) && toggleVisible())}
 						animatedPosition={animatedPosition.current}
 						containerStyle={[
 							styles.container,
