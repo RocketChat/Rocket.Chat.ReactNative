@@ -35,24 +35,6 @@ const styles = StyleSheet.create({
 });
 
 class SelectedUsersView extends React.Component {
-	static navigationOptions = ({ route }) => {
-		const title = route.params?.title ?? I18n.t('Select_Users');
-		const buttonText = route.params?.buttonText ?? I18n.t('Next');
-		const showButton = route.params?.showButton ?? false;
-		const maxUsers = route.params?.maxUsers;
-		const nextAction = route.params?.nextAction ?? (() => {});
-		return {
-			title,
-			headerRight: () => (
-				(!maxUsers || showButton) && (
-					<CustomHeaderButtons>
-						<Item title={buttonText} onPress={nextAction} testID='selected-users-view-submit' />
-					</CustomHeaderButtons>
-				)
-			)
-		};
-	}
-
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		addUser: PropTypes.func.isRequired,
@@ -85,6 +67,7 @@ class SelectedUsersView extends React.Component {
 		if (this.isGroupChat()) {
 			props.addUser({ _id: user.id, name: user.username, fname: user.name });
 		}
+		this.setHeader(props.route.params?.showButton);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -110,13 +93,9 @@ class SelectedUsersView extends React.Component {
 
 	componentDidUpdate(prevProps) {
 		if (this.isGroupChat()) {
-			const { users, navigation } = this.props;
+			const { users } = this.props;
 			if (prevProps.users.length !== users.length) {
-				if (users.length) {
-					navigation.setParams({ showButton: true });
-				} else {
-					navigation.setParams({ showButton: false });
-				}
+				this.setHeader(users.length > 0);
 			}
 		}
 	}
@@ -127,6 +106,26 @@ class SelectedUsersView extends React.Component {
 		if (this.querySubscription && this.querySubscription.unsubscribe) {
 			this.querySubscription.unsubscribe();
 		}
+	}
+
+	// showButton can be sent as route params or updated by the component
+	setHeader = (showButton) => {
+		const { navigation, route } = this.props;
+		const title = route.params?.title ?? I18n.t('Select_Users');
+		const buttonText = route.params?.buttonText ?? I18n.t('Next');
+		const maxUsers = route.params?.maxUsers;
+		const nextAction = route.params?.nextAction ?? (() => {});
+		const options = {
+			title,
+			headerRight: () => (
+				(!maxUsers || showButton) && (
+					<CustomHeaderButtons>
+						<Item title={buttonText} onPress={nextAction} testID='selected-users-view-submit' />
+					</CustomHeaderButtons>
+				)
+			)
+		};
+		navigation.setOptions(options);
 	}
 
 	// eslint-disable-next-line react/sort-comp
