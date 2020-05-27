@@ -100,6 +100,7 @@ const Header = React.memo(({
 				renderItem={({ item }) => <HeaderItem item={item} handleReaction={emoji => handleReaction(emoji, message)} server={server} theme={theme} />}
 				style={{ backgroundColor: themes[theme].backgroundColor }}
 				ListFooterComponent={() => <HeaderFooter handleReaction={() => handleReaction(null, message)} theme={theme} />}
+				showsHorizontalScrollIndicator={false}
 				scrollEnabled={false}
 				horizontal
 			/>
