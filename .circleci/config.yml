@@ -324,6 +324,7 @@ jobs:
       - run:
           name: Store the google service account key
           command: echo "$FASTLANE_GOOGLE_SERVICE_ACCOUNT" | base64 --decode > service_account.json
+          working_directory: android
 
       - run:
           name: Update Fastlane
