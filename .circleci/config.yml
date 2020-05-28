@@ -279,9 +279,6 @@ jobs:
               bundle exec fastlane android build
             fi
 
-            mkdir -p /tmp/build
-
-            mv app/build/outputs /tmp/build/
           working_directory: android
 
       - run:
@@ -298,7 +295,7 @@ jobs:
             fi
 
       - store_artifacts:
-          path: /tmp/build/outputs
+          path: android/app/build/outputs
 
       - save_cache: *save-npm-cache-linux
 
@@ -311,7 +308,7 @@ jobs:
           root: .
           paths:
             - android/fastlane/report.xml
-            - /tmp/build/outputs
+            - android/app/build/outputs
 
   upload-google-play-alpha:
     <<: *defaults
@@ -346,7 +343,7 @@ jobs:
           working_directory: android
 
       - store_artifacts:
-          path: /tmp/build/outputs
+          path: android/app/build/outputs
 
       - save_cache:
           name: Save gradle cache
