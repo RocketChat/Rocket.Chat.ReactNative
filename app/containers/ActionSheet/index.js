@@ -6,7 +6,7 @@ import React, {
 	useImperativeHandle
 } from 'react';
 import PropTypes from 'prop-types';
-import { Keyboard } from 'react-native';
+import { Keyboard, BackHandler } from 'react-native';
 import { TapGestureHandler, State } from 'react-native-gesture-handler';
 import ScrollBottomSheet from 'react-native-scroll-bottom-sheet';
 import Animated, {
@@ -78,11 +78,21 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 	};
 
 	useEffect(() => {
+		const onBackPress = () => {
+			if (visible) {
+				hide();
+			}
+			return visible;
+		};
+
 		if (visible) {
 			Keyboard.dismiss();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 			bottomSheetRef.current?.snapTo(opened);
+			BackHandler.addEventListener('hardwareBackPress', onBackPress);
 		}
+
+		return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
 	}, [visible]);
 
 	useEffect(() => {
