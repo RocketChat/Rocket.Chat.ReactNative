@@ -3,23 +3,28 @@ package com.seventheta.notifications
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.app.job.JobService
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import bolts.Task
+import androidx.core.content.ContextCompat
 import chat.rocket.android_ddp.DDPClient
 import chat.rocket.android_ddp.DDPSubscription
-import chat.rocket.reactnative.MainActivity
+import chat.rocket.reactnative.R
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import okhttp3.OkHttpClient
 import org.json.JSONArray
 import org.json.JSONObject
 import java.net.URL
+import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -28,7 +33,12 @@ class SocketNotificationManager(val context: Context) {
     data class LoginData(
             val host: String,
             val userId: String,
-            val userToken: String)
+            val userToken: String) {
+
+        fun constructAvatarURLForSender(sender: String): String {
+            return "https://$host/avatar/$sender?rc_token=$userToken&rc_uid=$userId"
+        }
+    }
 
     data class RoomData(
             val id: String,
@@ -76,7 +86,7 @@ class SocketNotificationManager(val context: Context) {
 
         val numToConnect = AtomicInteger(loginDatas.size)
         loginDatas.forEach { data ->
-            connect(data.host, data.userId, data.userToken) {
+            connect(data) {
                 val remaining = numToConnect.decrementAndGet()
                 if (remaining == 0) {
                     onConnect()
@@ -87,7 +97,11 @@ class SocketNotificationManager(val context: Context) {
         return true
     }
 
-    fun connect(host: String, myUserId: String, token: String, onConnect: () -> Unit): Boolean {
+    fun connect(loginData: LoginData, onConnect: () -> Unit): Boolean {
+        val host = loginData.host
+        val myUserId = loginData.userId
+        val token = loginData.userToken
+
         val url = "wss://$host/websocket"
 
         val rooms = mutableMapOf<String, RoomData>()
@@ -147,7 +161,7 @@ class SocketNotificationManager(val context: Context) {
                 }
 
                 messages.forEach { message ->
-                    displayNotification(message)
+                    displayNotification(message, loginData)
                 }
             }
 
@@ -219,38 +233,58 @@ class SocketNotificationManager(val context: Context) {
         this.client.close()
     }
 
-    private fun displayNotification(data: NotificationData) {
+    private fun displayNotification(data: NotificationData, loginData: LoginData) {
         val intent = Intent(context, NotificationsDeliveryService::class.java)
         intent.putExtra(NotificationsDeliveryService.EXTRA_NOTIFICATION_DATA, data.data)
         val contentIntent = PendingIntent.getService(context, System.currentTimeMillis().toInt(), intent, PendingIntent.FLAG_ONE_SHOT)
 
-        val builder: NotificationCompat.Builder = NotificationCompat.Builder(context)
-                .setAutoCancel(true)
-                .setSmallIcon(context.resources.getIdentifier("ic_notification", "mipmap", context.packageName))
+        val channelId = "chat.rocket.7theta.channel"
+        val builder: NotificationCompat.Builder = NotificationCompat.Builder(context, channelId)
                 .setContentTitle("New message from ${data.senderUsername}")
                 .setContentText(data.message)
+                .setContentIntent(contentIntent)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                .setAutoCancel(true)
+                .setColor(ContextCompat.getColor(context, R.color.notification_text))
+                .setSmallIcon(context.resources.getIdentifier("ic_notification", "mipmap", context.packageName))
+                .setLargeIcon(getAvatar(loginData.constructAvatarURLForSender(data.senderUsername)))
                 .setLights(Color.RED, 1000, 1000)
                 .setVibrate(longArrayOf(0, 400, 250, 400))
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setContentIntent(contentIntent)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Create the NotificationChannel
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val mChannel = NotificationChannel("chat.rocket.7theta.channel", "RocketChat Notifications", importance)
-            mChannel.description = "Rocket Chat Notification Channel"
-            val notificationManager = context.getSystemService(JobService.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(mChannel)
-            builder.setChannelId("chat.rocket.7theta.channel")
+            val channelId = "rocketchatrn_channel_01"
+            val channelName = "All"
+            val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
+            //channel.description = "Rocket Chat Notification Channel"
+            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+            builder.setChannelId(channelId)
         }
 
         val notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(notiId.incrementAndGet(), builder.build())
     }
 
+    private fun getAvatar(uri: String): Bitmap? {
+        return try {
+            Glide.with(context)
+                .asBitmap()
+                .apply(RequestOptions.bitmapTransform(RoundedCorners(10)))
+                .load(uri)
+                .submit(100, 100)
+                .get()
+        } catch (e: Exception) {
+            val resources = context.resources
+            val largeIconResId: Int = resources.getIdentifier("ic_launcher", "mipmap", context.packageName)
+            return BitmapFactory.decodeResource(resources, largeIconResId)
+        }
+    }
+
     companion object {
 
-        val SOCKET_NOTIFICATIONS_KEY = "RC_SOCKET_NOTIFICATIONS_KEY"
+        const val SOCKET_NOTIFICATIONS_KEY = "RC_SOCKET_NOTIFICATIONS_KEY"
         val userTokenRegex = "reactnativemeteor_usertoken-[a-z][a-z0-9+\\-.]*://([a-z0-9\\-._~%!\$&'()*+,;=]+@)?([a-z0-9\\-._~%]+|\\[[a-f0-9:.]+\\]|\\[v[a-f0-9][a-z0-9\\-._~%!\$&'()*+,;=:]+\\])(:[0-9]+)?(/[a-z0-9\\-._~%!\$&'()*+,;=:@]+)*/?(\\?[a-z0-9\\-._~%!\$&'()*+,;=:@/?]*)?(#[a-z0-9\\-._~%!\$&'()*+,;=:@/?]*)?".toRegex()
     }
 }
