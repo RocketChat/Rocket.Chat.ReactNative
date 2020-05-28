@@ -152,6 +152,9 @@ class NotificationBadge extends React.Component {
 	}
 
 	getNavState = (state) => {
+		if (!state?.routes) {
+			return state;
+		}
 		const value = state.routes[state.index];
 		if (value.state) {
 			return this.getNavState(value.state);
