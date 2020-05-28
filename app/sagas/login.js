@@ -7,7 +7,9 @@ import moment from 'moment';
 import 'moment/min/locales';
 
 import * as types from '../actions/actionsTypes';
-import { appStart, ROOT_SET_USERNAME, ROOT_INSIDE, ROOT_LOADING, ROOT_OUTSIDE } from '../actions/app';
+import {
+	appStart, ROOT_SET_USERNAME, ROOT_INSIDE, ROOT_LOADING, ROOT_OUTSIDE
+} from '../actions/app';
 import { serverFinishAdd, selectServerRequest } from '../actions/server';
 import {
 	loginFailure, loginSuccess, setUser, logout

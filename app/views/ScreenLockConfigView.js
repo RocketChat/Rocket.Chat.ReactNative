@@ -4,7 +4,6 @@ import { StyleSheet, Switch, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 
 import I18n from '../i18n';
-import { themedHeader } from '../utils/navigation';
 import { withTheme } from '../theme';
 import { themes, SWITCH_TRACK_COLOR } from '../constants/colors';
 import StatusBar from '../containers/StatusBar';

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
 import { HeaderBackButton } from '@react-navigation/stack';
 
-import { isIOS } from '../../../utils/deviceInfo';
 import { themes } from '../../../constants/colors';
 import Avatar from '../../../containers/Avatar';
 

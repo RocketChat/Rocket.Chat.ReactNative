@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { Linking } from 'react-native';
 import { AppearanceProvider } from 'react-native-appearance';
@@ -27,7 +28,7 @@ import {
 	isTablet, isIOS, setWidth, supportSystemTheme
 } from './utils/deviceInfo';
 import { KEY_COMMAND } from './commands';
-import Tablet, { initTabletNav } from './tablet';
+// import Tablet, { initTabletNav } from './tablet.js__';
 import { SplitContext } from './split';
 import AppContainer from './AppContainer';
 import TwoFactor from './containers/TwoFactor';
@@ -65,9 +66,9 @@ export default class Root extends React.Component {
 				darkLevel: 'dark'
 			}
 		};
-		if (isTablet) {
-			this.initTablet();
-		}
+		// if (isTablet) {
+		// 	this.initTablet();
+		// }
 	}
 
 	componentDidMount() {
@@ -129,14 +130,14 @@ export default class Root extends React.Component {
 		});
 	}
 
-	initTablet = async() => {
-		initTabletNav(args => this.setState(args));
-		await KeyCommands.setKeyCommands([]);
-		this.onKeyCommands = KeyCommandsEmitter.addListener(
-			'onKeyCommand',
-			command => EventEmitter.emit(KEY_COMMAND, { event: command })
-		);
-	}
+	// initTablet = async() => {
+	// 	initTabletNav(args => this.setState(args));
+	// 	await KeyCommands.setKeyCommands([]);
+	// 	this.onKeyCommands = KeyCommandsEmitter.addListener(
+	// 		'onKeyCommand',
+	// 		command => EventEmitter.emit(KEY_COMMAND, { event: command })
+	// 	);
+	// }
 
 	initCrashReport = () => {
 		RocketChat.getAllowCrashReport()
@@ -163,23 +164,23 @@ export default class Root extends React.Component {
 
 		let content = <AppContainer />;
 
-		if (isTablet) {
-			const { inside, showModal } = this.state;
-			content = (
-				<SplitContext.Provider value={{ split }}>
-					<Tablet
-						theme={theme}
-						tablet={split}
-						inside={inside}
-						showModal={showModal}
-						closeModal={this.closeModal}
-						onLayout={this.onLayout}
-					>
-						{content}
-					</Tablet>
-				</SplitContext.Provider>
-			);
-		}
+		// if (isTablet) {
+		// 	const { inside, showModal } = this.state;
+		// 	content = (
+		// 		<SplitContext.Provider value={{ split }}>
+		// 			<Tablet
+		// 				theme={theme}
+		// 				tablet={split}
+		// 				inside={inside}
+		// 				showModal={showModal}
+		// 				closeModal={this.closeModal}
+		// 				onLayout={this.onLayout}
+		// 			>
+		// 				{content}
+		// 			</Tablet>
+		// 		</SplitContext.Provider>
+		// 	);
+		// }
 		return (
 			<AppearanceProvider>
 				<Provider store={store}>

@@ -1,5 +1,4 @@
-import React, { useState, useContext } from 'react';
-import { View } from 'react-native';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { NavigationContainer } from '@react-navigation/native';
 import { AppearanceProvider } from 'react-native-appearance';
