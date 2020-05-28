@@ -61,8 +61,8 @@ class ShareListView extends React.Component {
 			serverInfo: null
 		};
 		this.setHeader();
-		this.didFocusListener = props.navigation.addListener('didFocus', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
-		this.willBlurListener = props.navigation.addListener('willBlur', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
+		this.unsubscribeFocus = props.navigation.addListener('focus', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
+		this.unsubscribeBlur = props.navigation.addListener('blur', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
 	}
 
 	componentDidMount() {
@@ -127,6 +127,15 @@ class ShareListView extends React.Component {
 			return true;
 		}
 		return false;
+	}
+
+	componentWillUnmount() {
+		if (this.unsubscribeFocus) {
+			this.unsubscribeFocus();
+		}
+		if (this.unsubscribeBlur) {
+			this.unsubscribeBlur();
+		}
 	}
 
 	setHeader = () => {

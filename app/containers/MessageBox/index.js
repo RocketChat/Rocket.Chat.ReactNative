@@ -183,7 +183,7 @@ class MessageBox extends Component {
 			EventEmiter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
 
-		this.didFocusListener = navigation.addListener('didFocus', () => {
+		this.unsubscribeFocus = navigation.addListener('focus', () => {
 			if (this.tracking && this.tracking.resetTracking) {
 				this.tracking.resetTracking();
 			}
@@ -268,8 +268,8 @@ class MessageBox extends Component {
 		if (this.getSlashCommands && this.getSlashCommands.stop) {
 			this.getSlashCommands.stop();
 		}
-		if (this.didFocusListener && this.didFocusListener.remove) {
-			this.didFocusListener.remove();
+		if (this.unsubscribeFocus) {
+			this.unsubscribeFocus();
 		}
 		if (isTablet) {
 			EventEmiter.removeListener(KEY_COMMAND, this.handleCommands);

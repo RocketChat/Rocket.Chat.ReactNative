@@ -57,7 +57,7 @@ class List extends React.Component {
 			animated: false
 		};
 		this.init();
-		this.didFocusListener = props.navigation.addListener('didFocus', () => {
+		this.unsubscribeFocus = props.navigation.addListener('focus', () => {
 			if (this.mounted) {
 				this.setState({ animated: true });
 			} else {
@@ -163,8 +163,8 @@ class List extends React.Component {
 		if (this.onEndReached && this.onEndReached.stop) {
 			this.onEndReached.stop();
 		}
-		if (this.didFocusListener && this.didFocusListener.remove) {
-			this.didFocusListener.remove();
+		if (this.unsubscribeFocus) {
+			this.unsubscribeFocus();
 		}
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
