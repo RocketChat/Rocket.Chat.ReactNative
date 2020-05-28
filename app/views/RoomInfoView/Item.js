@@ -6,9 +6,11 @@ import styles from './styles';
 import Markdown from '../../containers/markdown';
 import { themes } from '../../constants/colors';
 
-const Item = ({ label, content, theme }) => (
+const Item = ({
+	label, content, theme, testID
+}) => (
 	content ? (
-		<View style={styles.item}>
+		<View style={styles.item} testID={testID}>
 			<Text accessibilityLabel={label} style={[styles.itemLabel, { color: themes[theme].titleText }]}>{label}</Text>
 			<Markdown
 				style={[styles.itemContent, { color: themes[theme].auxiliaryText }]}
@@ -21,7 +23,8 @@ const Item = ({ label, content, theme }) => (
 Item.propTypes = {
 	label: PropTypes.string,
 	content: PropTypes.string,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	testID: PropTypes.string
 };
 
 export default Item;

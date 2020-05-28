@@ -1,7 +1,7 @@
 const {
 	expect, element, by, waitFor
 } = require('detox');
-const { sleep } = require('./helpers/app');
+const { sleep } = require('../../helpers/app');
 
 async function waitForToast() {
 	await sleep(5000);
@@ -19,8 +19,8 @@ describe('Status screen', () => {
 
 	describe('Render', async() => {
 		it('should have status input', async() => {
-      await expect(element(by.id('status-view-input'))).toBeVisible();
-      await expect(element(by.id('status-view-online'))).toExist();
+			await expect(element(by.id('status-view-input'))).toBeVisible();
+			await expect(element(by.id('status-view-online'))).toExist();
 			await expect(element(by.id('status-view-busy'))).toExist();
 			await expect(element(by.id('status-view-away'))).toExist();
 			await expect(element(by.id('status-view-offline'))).toExist();
@@ -29,9 +29,10 @@ describe('Status screen', () => {
   
   describe('Usage', async() => {
 		it('should change status', async() => {
-      await element(by.id('status-view-busy')).tap();
-      sleep(1000);
-      await expect(element(by.id('status-view-current-busy'))).toExist();
+			await sleep(1000);
+			await element(by.id('status-view-busy')).tap();
+			await sleep(1000);
+			await expect(element(by.id('status-view-current-busy'))).toExist();
     });
 
     it('should change status text', async() => {
@@ -39,6 +40,7 @@ describe('Status screen', () => {
 			await sleep(1000);
 			await element(by.id('status-view-submit')).tap();
 			await waitForToast();
+			await waitFor(element(by.label('status-text-new').withAncestor(by.id('sidebar-custom-status')))).toBeVisible().withTimeout(2000);
     });
   });
 });

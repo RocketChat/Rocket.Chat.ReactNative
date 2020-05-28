@@ -46,7 +46,7 @@ class WorkspaceView extends React.Component {
 			theme, Site_Name, Site_Url, Assets_favicon_512, server, registrationEnabled, registrationText, showLoginButton
 		} = this.props;
 		return (
-			<FormContainer theme={theme}>
+			<FormContainer theme={theme} testID='workspace-view'>
 				<FormContainerInner>
 					<View style={styles.alignItemsCenter}>
 						<ServerAvatar theme={theme} url={server} image={Assets_favicon_512 && Assets_favicon_512.defaultUrl} />
@@ -60,6 +60,7 @@ class WorkspaceView extends React.Component {
 								type='primary'
 								onPress={this.login}
 								theme={theme}
+								testID='workspace-view-login'
 							/>
 						) : null}
 					{
@@ -70,6 +71,7 @@ class WorkspaceView extends React.Component {
 								backgroundColor={themes[theme].chatComponentBackground}
 								onPress={this.register}
 								theme={theme}
+								testID='workspace-view-register'
 							/>
 						) : (
 							<Text style={[styles.registrationText, { color: themes[theme].auxiliaryText }]}>{registrationText}</Text>

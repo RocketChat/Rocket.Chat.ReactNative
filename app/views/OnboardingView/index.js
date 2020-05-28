@@ -68,7 +68,7 @@ class OnboardingView extends React.Component {
 	render() {
 		const { theme } = this.props;
 		return (
-			<FormContainer theme={theme}>
+			<FormContainer theme={theme} testID='onboarding-view'>
 				<FormContainerInner>
 					<Image style={styles.onboarding} source={{ uri: 'logo' }} fadeDuration={0} />
 					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Onboarding_title')}</Text>
@@ -80,6 +80,7 @@ class OnboardingView extends React.Component {
 							type='primary'
 							onPress={this.connectServer}
 							theme={theme}
+							testID='join-workspace'
 						/>
 						<Button
 							title={I18n.t('Create_a_new_workspace')}
@@ -87,6 +88,7 @@ class OnboardingView extends React.Component {
 							backgroundColor={themes[theme].chatComponentBackground}
 							onPress={this.createWorkspace}
 							theme={theme}
+							testID='create-workspace-button'
 						/>
 					</View>
 				</FormContainerInner>

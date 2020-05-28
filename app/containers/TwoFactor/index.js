@@ -92,7 +92,7 @@ const TwoFactor = React.memo(({ theme, split }) => {
 			isVisible={visible}
 			hideModalContentWhileAnimating
 		>
-			<View style={styles.container}>
+			<View style={styles.container} testID='two-factor'>
 				<View style={[styles.content, split && [sharedStyles.modal, sharedStyles.modalFormSheet], { backgroundColor: themes[theme].backgroundColor }]}>
 					<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
 					{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
@@ -106,6 +106,7 @@ const TwoFactor = React.memo(({ theme, split }) => {
 						keyboardType={method?.keyboardType}
 						secureTextEntry={method?.secureTextEntry}
 						error={data.invalid && { error: 'totp-invalid', reason: I18n.t('Code_or_password_invalid') }}
+						testID='two-factor-input'
 					/>
 					{isEmail && <Text style={[styles.sendEmail, { color }]} onPress={sendEmail}>{I18n.t('Send_me_the_code_again')}</Text>}
 					<View style={styles.buttonContainer}>
@@ -123,6 +124,7 @@ const TwoFactor = React.memo(({ theme, split }) => {
 							style={styles.button}
 							onPress={onSubmit}
 							theme={theme}
+							testID='two-factor-send'
 						/>
 					</View>
 				</View>

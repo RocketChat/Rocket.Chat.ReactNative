@@ -41,8 +41,8 @@
     "expo-av": "^8.1.0",
     "expo-file-system": "^8.1.0",
     "expo-haptics": "^8.1.0",
-    "expo-local-authentication": "9.0.0",
     "expo-keep-awake": "^8.1.0",
+    "expo-local-authentication": "9.0.0",
     "expo-web-browser": "8.2.1",
     "hoist-non-react-statics": "3.3.2",
     "i18n-js": "3.5.1",
@@ -54,7 +54,7 @@
     "react": "16.11.0",
     "react-native": "0.62.2",
     "react-native-action-sheet": "^2.2.0",
-    "react-native-animatable": "^1.3.3",    
+    "react-native-animatable": "^1.3.3",
     "react-native-appearance": "0.3.4",
     "react-native-audio": "^4.3.0",
     "react-native-background-timer": "2.2.0",
@@ -131,7 +131,7 @@
     "babel-runtime": "^6.26.0",
     "bugsnag-sourcemaps": "1.3.0",
     "codecov": "3.6.5",
-    "detox": "^15.2.2",
+    "detox": "^16.5.0",
     "emotion-theming": "10.0.27",
     "eslint": "6.8.0",
     "eslint-plugin-import": "2.20.2",
@@ -143,7 +143,7 @@
     "jest": "^24.9.0",
     "jest-cli": "^23.6.0",
     "metro-react-native-babel-preset": "^0.58.0",
-    "mocha": "^5.2.0",
+    "mocha": "7.1.2",
     "otp.js": "1.2.0",
     "patch-package": "6.2.2",
     "react-dom": "16.11.0",
@@ -178,13 +178,17 @@
         "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/RocketChatRN.app",
         "build": "xcodebuild -workspace ios/RocketChatRN.xcworkspace -scheme RocketChatRN -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
         "type": "ios.simulator",
-        "name": "iPhone 11 Pro"
+        "device": {
+          "type": "iPhone 11 Pro"
+        }
       },
       "ios.sim.release": {
         "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/RocketChatRN.app",
         "build": "xcodebuild -workspace ios/RocketChatRN.xcworkspace -scheme RocketChatRN -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
         "type": "ios.simulator",
-        "name": "iPhone 11 Pro"
+        "device": {
+          "type": "iPhone 11 Pro"
+        }
       }
     }
   }
