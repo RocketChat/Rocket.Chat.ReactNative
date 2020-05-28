@@ -27,6 +27,10 @@ import MessagesView from '../views/MessagesView';
 import AutoTranslateView from '../views/AutoTranslateView';
 import DirectoryView from '../views/DirectoryView';
 import NotificationPrefView from '../views/NotificationPreferencesView';
+import VisitorNavigationView from '../views/VisitorNavigationView';
+import ForwardLivechatView from '../views/ForwardLivechatView';
+import LivechatEditView from '../views/LivechatEditView';
+import PickerView from '../views/PickerView';
 import ThreadMessagesView from '../views/ThreadMessagesView';
 import MarkdownTableView from '../views/MarkdownTableView';
 import ReadReceiptsView from '../views/ReadReceiptView';
@@ -129,6 +133,26 @@ const ChatsStack = () => {
 				name='NotificationPrefView'
 				component={NotificationPrefView}
 				options={NotificationPrefView.navigationOptions}
+			/>
+			<Chats.Screen
+				name='VisitorNavigationView'
+				component={VisitorNavigationView}
+				options={VisitorNavigationView.navigationOptions}
+			/>
+			<Chats.Screen
+				name='ForwardLivechatView'
+				component={ForwardLivechatView}
+				options={ForwardLivechatView.navigationOptions}
+			/>
+			<Chats.Screen
+				name='LivechatEditView'
+				component={LivechatEditView}
+				options={LivechatEditView.navigationOptions}
+			/>
+			<Chats.Screen
+				name='PickerView'
+				component={PickerView}
+				options={PickerView.navigationOptions}
 			/>
 			<Chats.Screen
 				name='ThreadMessagesView'

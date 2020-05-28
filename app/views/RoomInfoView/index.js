@@ -83,7 +83,7 @@ class RoomInfoView extends React.Component {
 		}
 
 		const { navigation } = this.props;
-		this.willFocusListener = navigation.addListener('willFocus', () => {
+		this.willFocusListener = navigation.addListener('focus', () => {
 			if (this.isLivechat) {
 				this.loadVisitor();
 			}
@@ -94,8 +94,8 @@ class RoomInfoView extends React.Component {
 		if (this.subscription && this.subscription.unsubscribe) {
 			this.subscription.unsubscribe();
 		}
-		if (this.willFocusListener && this.willFocusListener.remove) {
-			this.willFocusListener.remove();
+		if (this.willFocusListener) {
+			this.willFocusListener();
 		}
 	}
 

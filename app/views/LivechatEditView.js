@@ -36,15 +36,17 @@ Title.propTypes = {
 	theme: PropTypes.string
 };
 
-const LivechatEditView = ({ user, navigation, theme }) => {
+const LivechatEditView = ({
+	user, navigation, route, theme
+}) => {
 	const [customFields, setCustomFields] = useState({});
 	const [availableUserTags, setAvailableUserTags] = useState([]);
 
 	const params = {};
 	const inputs = {};
 
-	const livechat = navigation.getParam('room', {});
-	const visitor = navigation.getParam('roomUser', {});
+	const livechat = route.params?.room ?? {};
+	const visitor = route.params?.roomUser ?? {};
 
 	const getCustomFields = async() => {
 		const result = await RocketChat.getCustomFields();
@@ -148,8 +150,8 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 			contentContainerStyle={sharedStyles.container}
 			keyboardVerticalOffset={128}
 		>
-			<ScrollView {...scrollPersistTaps}>
-				<SafeAreaView style={styles.container} theme={theme}>
+			<ScrollView {...scrollPersistTaps} style={styles.container}>
+				<SafeAreaView theme={theme}>
 					<Title
 						title={visitor?.username}
 						theme={theme}
@@ -271,6 +273,7 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 LivechatEditView.propTypes = {
 	user: PropTypes.object,
 	navigation: PropTypes.object,
+	route: PropTypes.object,
 	theme: PropTypes.string
 };
 LivechatEditView.navigationOptions = ({
