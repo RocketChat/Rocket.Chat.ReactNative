@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { Keyboard, BackHandler } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TapGestureHandler, State } from 'react-native-gesture-handler';
 import ScrollBottomSheet from 'react-native-scroll-bottom-sheet';
 import Animated, {
@@ -47,8 +48,9 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 	const [visible, setVisible] = useState(false);
 	const orientation = useOrientation();
 	const { height } = useDimensions();
+	const insets = useSafeAreaInsets();
 
-	const open = Math.max((height - ((ITEM_HEIGHT + ANDROID_ADJUST) * data?.options?.length) - HANDLE_HEIGHT - (data?.headerHeight || 0)), MIN_SNAP_HEIGHT);
+	const open = Math.max((height - ((ITEM_HEIGHT + ANDROID_ADJUST) * data?.options?.length) - HANDLE_HEIGHT - (data?.headerHeight || 0) - insets.bottom), MIN_SNAP_HEIGHT);
 
 	/*
 	 * if the action sheet cover more

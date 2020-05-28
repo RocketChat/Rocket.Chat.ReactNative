@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import RNUserDefaults from 'rn-user-defaults';
 import Modal from 'react-native-modal';
 import KeyCommands, { KeyCommandsEmitter } from 'react-native-keycommands';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import {
 	defaultTheme,
@@ -733,24 +734,26 @@ export default class Root extends React.Component {
 			);
 		}
 		return (
-			<AppearanceProvider>
-				<Provider store={store}>
-					<ThemeContext.Provider
-						value={{
-							theme,
-							themePreferences,
-							setTheme: this.setTheme
-						}}
-					>
-						<ActionSheetProvider>
-							{content}
-							<TwoFactor />
-							<ScreenLockedView />
-							<ChangePasscodeView />
-						</ActionSheetProvider>
-					</ThemeContext.Provider>
-				</Provider>
-			</AppearanceProvider>
+			<SafeAreaProvider>
+				<AppearanceProvider>
+					<Provider store={store}>
+						<ThemeContext.Provider
+							value={{
+								theme,
+								themePreferences,
+								setTheme: this.setTheme
+							}}
+						>
+							<ActionSheetProvider>
+								{content}
+								<TwoFactor />
+								<ScreenLockedView />
+								<ChangePasscodeView />
+							</ActionSheetProvider>
+						</ThemeContext.Provider>
+					</Provider>
+				</AppearanceProvider>
+			</SafeAreaProvider>
 		);
 	}
 }
