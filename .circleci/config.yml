@@ -311,6 +311,7 @@ jobs:
           root: .
           paths:
             - android/fastlane/report.xml
+            - /tmp/build/outputs
 
   upload-google-play-alpha:
     <<: *defaults
