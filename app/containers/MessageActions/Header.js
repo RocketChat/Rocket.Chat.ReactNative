@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {
 	View, Text, FlatList, StyleSheet, TouchableOpacity
 } from 'react-native';
-import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
@@ -13,9 +12,10 @@ import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import database from '../../lib/database';
 import useDimensions from '../../utils/useDimensions';
 import { isAndroid } from '../../utils/deviceInfo';
+import Touch from '../../utils/touch';
 
 // For some reason react-native-gesture-handler isn't working on bottom sheet (iOS)
-const Button = isAndroid ? TouchableNativeFeedback : TouchableOpacity;
+const Button = isAndroid ? Touch : TouchableOpacity;
 
 export const HEADER_HEIGHT = 36;
 
@@ -46,7 +46,7 @@ const DEFAULT_EMOJIS = ['clap', '+1', 'heart_eyes', 'grinning', 'thinking_face',
 const HeaderItem = React.memo(({
 	item, handleReaction, server, theme
 }) => (
-	<Button onPress={() => handleReaction(`:${ item.content || item }:`)} style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+	<Button onPress={() => handleReaction(`:${ item.content || item }:`)} style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]} theme={theme}>
 		{item?.isCustom ? (
 			<CustomEmoji style={styles.customEmoji} emoji={item} baseUrl={server} />
 		) : (
@@ -64,7 +64,7 @@ HeaderItem.propTypes = {
 };
 
 const HeaderFooter = React.memo(({ handleReaction, theme }) => (
-	<Button onPress={() => handleReaction()} style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+	<Button onPress={() => handleReaction()} style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]} theme={theme}>
 		<CustomIcon name='add-reaction' size={24} color={themes[theme].bodyText} />
 	</Button>
 ));
