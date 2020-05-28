@@ -10,7 +10,6 @@ import { Keyboard } from 'react-native';
 import { TapGestureHandler, State } from 'react-native-gesture-handler';
 import ScrollBottomSheet from 'react-native-scroll-bottom-sheet';
 import Animated, {
-	Easing,
 	Extrapolate,
 	interpolate,
 	Value
@@ -29,11 +28,10 @@ import { isTablet, isAndroid } from '../../utils/deviceInfo';
 const HANDLE_HEIGHT = 40;
 const MIN_SNAP_HEIGHT = 16;
 
-const ANIMATION_DURATION = 150;
+const ANIMATION_DURATION = 100;
 
 const ANIMATION_CONFIG = {
-	duration: ANIMATION_DURATION,
-	easing: Easing.out(Easing.elastic(0))
+	duration: ANIMATION_DURATION
 };
 
 /*
