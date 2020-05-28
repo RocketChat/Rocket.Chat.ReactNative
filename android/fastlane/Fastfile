@@ -30,7 +30,7 @@ platform :android do
   lane :alpha do
     upload_to_play_store(
       track: 'alpha', 
-      aab: 'app/build/outputs/bundle/release/app-release.aab'
+      aab: 'android/app/build/outputs/bundle/release/app-release.aab'
     )
   end
 end
