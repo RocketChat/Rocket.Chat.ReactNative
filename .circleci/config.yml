@@ -53,14 +53,14 @@ save-gems-cache: &save-gems-cache
   paths:
     - vendor/bundle
 
-update-fastlane: &update-fastlane-ios
+update-fastlane-ios: &update-fastlane-ios
   name: Update Fastlane
   command: |
     echo "ruby-2.6.4" > ~/.ruby-version
     bundle install && bundle update
   working_directory: ios
 
-update-fastlane: &update-fastlane-android
+update-fastlane-android: &update-fastlane-android
   name: Update Fastlane
   command: |
     echo "ruby-2.6.4" > ~/.ruby-version
@@ -336,7 +336,7 @@ jobs:
       - run: *update-fastlane-android
 
       - restore_cache: *restore-gradle-cache
-      
+
       - run:
           name: Fastlane Play Store Upload
           command: |
