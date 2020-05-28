@@ -216,6 +216,7 @@ class MessageBox extends Component {
 			if (this.text) {
 				this.setShowSend(true);
 			}
+			this.focus();
 		} else if (replying !== nextProps.replying && nextProps.replying) {
 			this.focus();
 		} else if (!nextProps.message) {
