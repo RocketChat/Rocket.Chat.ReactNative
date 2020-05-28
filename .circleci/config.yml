@@ -53,12 +53,29 @@ save-gems-cache: &save-gems-cache
   paths:
     - vendor/bundle
 
-update-fastlane: &update-fastlane
+update-fastlane: &update-fastlane-ios
   name: Update Fastlane
   command: |
     echo "ruby-2.6.4" > ~/.ruby-version
-    bundle install
+    bundle install && bundle update
   working_directory: ios
+
+update-fastlane: &update-fastlane-android
+  name: Update Fastlane
+  command: |
+    echo "ruby-2.6.4" > ~/.ruby-version
+    bundle install && bundle update
+  working_directory: android
+
+save-gradle-cache: &save-gradle-cache
+  name: Save gradle cache
+  key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+  paths:
+    - ~/.gradle
+
+restore_cache: &restore-gradle-cache
+  name: Restore gradle cache
+  key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
 
 restore-brew-cache: &restore-brew-cache
   name: Restore Brew cache
@@ -227,16 +244,9 @@ jobs:
 
       - run: *install-npm-modules
 
-      - run:
-          name: Update Fastlane
-          command: |
-            echo "ruby-2.6.4" > ~/.ruby-version
-            bundle install && bundle update
-          working_directory: android
+      - run: *update-fastlane-android
 
-      - restore_cache:
-          name: Restore gradle cache
-          key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+      - restore_cache: *restore-gradle-cache
 
       - run:
           name: Configure Gradle
@@ -299,11 +309,8 @@ jobs:
 
       - save_cache: *save-npm-cache-linux
 
-      - save_cache:
-          name: Save gradle cache
-          key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
-          paths:
-            - ~/.gradle
+      - save_cache: *save-gradle-cache
+
       - persist_to_workspace:
           root: .
           paths:
@@ -326,17 +333,10 @@ jobs:
           command: echo "$FASTLANE_GOOGLE_SERVICE_ACCOUNT" | base64 --decode > service_account.json
           working_directory: android
 
-      - run:
-          name: Update Fastlane
-          command: |
-            echo "ruby-2.6.4" > ~/.ruby-version
-            bundle install && bundle update
-          working_directory: android
+      - run: *update-fastlane-android
 
-      - restore_cache:
-          name: Restore gradle cache
-          key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
-
+      - restore_cache: *restore-gradle-cache
+      
       - run:
           name: Fastlane Play Store Upload
           command: |
@@ -346,11 +346,7 @@ jobs:
       - store_artifacts:
           path: android/app/build/outputs
 
-      - save_cache:
-          name: Save gradle cache
-          key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
-          paths:
-            - ~/.gradle
+      - save_cache: *save-gradle-cache
 
   # iOS builds
   ios-build:
@@ -367,7 +363,7 @@ jobs:
 
       - run: *install-npm-modules
 
-      - run: *update-fastlane
+      - run: *update-fastlane-ios
 
       - run:
           name: Set Google Services
@@ -429,7 +425,7 @@ jobs:
 
       - restore_cache: *restore-gems-cache
 
-      - run: *update-fastlane
+      - run: *update-fastlane-ios
 
       - run:
           name: Fastlane Tesflight Upload
