@@ -106,17 +106,15 @@ class List extends React.Component {
 			this.unsubscribeMessages();
 			this.messagesSubscription = this.messagesObservable
 				.subscribe((data) => {
-					this.interaction = InteractionManager.runAfterInteractions(() => {
-						if (tmid && this.thread) {
-							data = [this.thread, ...data];
-						}
-						const messages = orderBy(data, ['ts'], ['desc']);
-						if (this.mounted) {
-							this.setState({ messages }, () => this.update());
-						} else {
-							this.state.messages = messages;
-						}
-					});
+					if (tmid && this.thread) {
+						data = [this.thread, ...data];
+					}
+					const messages = orderBy(data, ['ts'], ['desc']);
+					if (this.mounted) {
+						this.setState({ messages }, () => this.update());
+					} else {
+						this.state.messages = messages;
+					}
 				});
 		}
 	}
