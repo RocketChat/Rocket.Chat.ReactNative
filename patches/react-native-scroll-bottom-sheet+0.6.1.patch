@@ -1,0 +1,19 @@
+diff --git a/node_modules/react-native-scroll-bottom-sheet/src/index.tsx b/node_modules/react-native-scroll-bottom-sheet/src/index.tsx
+index c571856..603fc96 100644
+--- a/node_modules/react-native-scroll-bottom-sheet/src/index.tsx
++++ b/node_modules/react-native-scroll-bottom-sheet/src/index.tsx
+@@ -518,6 +518,14 @@ export class ScrollBottomSheet<T extends any> extends Component<Props<T>> {
+           clockRunning(this.animationClock)
+         ),
+         [
++          set(
++            this.destSnapPoint,
++            cond(
++              this.isManuallySetValue,
++              this.manualYOffset,
++              this.calculateNextSnapPoint()
++            )
++          ),
+           runTiming({
+             clock: this.animationClock,
+             from: cond(
