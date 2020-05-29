@@ -15,6 +15,9 @@ import { withTheme } from '../theme';
 import SafeAreaView from './SafeAreaView';
 
 const styles = StyleSheet.create({
+	safeArea: {
+		backgroundColor: 'transparent'
+	},
 	titleContainer: {
 		alignItems: 'center',
 		paddingVertical: 10
@@ -96,7 +99,7 @@ const ModalContent = React.memo(({
 }) => {
 	if (message && message.reactions) {
 		return (
-			<SafeAreaView theme={props.theme}>
+			<SafeAreaView theme={props.theme} style={styles.safeArea}>
 				<Touchable onPress={onClose}>
 					<View style={styles.titleContainer}>
 						<CustomIcon
