@@ -10,7 +10,6 @@ import { CustomIcon } from '../../lib/Icons';
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import database from '../../lib/database';
-import useDimensions from '../../utils/useDimensions';
 import { isAndroid } from '../../utils/deviceInfo';
 import Touch from '../../utils/touch';
 
@@ -21,7 +20,8 @@ export const HEADER_HEIGHT = 36;
 
 const styles = StyleSheet.create({
 	container: {
-		alignItems: 'center'
+		alignItems: 'center',
+		marginHorizontal: 8
 	},
 	headerItem: {
 		height: 36,
@@ -76,7 +76,7 @@ HeaderFooter.propTypes = {
 const Header = React.memo(({
 	handleReaction, server, message, theme
 }) => {
-	const { width } = useDimensions();
+	const [width, setWidth] = useState(0);
 	const [items, setItems] = useState([]);
 	useEffect(() => {
 		(async() => {
@@ -85,18 +85,20 @@ const Header = React.memo(({
 				const freqEmojiCollection = db.collections.get('frequently_used_emojis');
 				let freqEmojis = await freqEmojiCollection.query().fetch();
 				freqEmojis = freqEmojis.concat(DEFAULT_EMOJIS);
-				freqEmojis = freqEmojis.slice(0, parseInt(((width - 32) / 50) - 1, 10));
 				setItems(freqEmojis);
 			} catch {
 				// Do nothing
 			}
 		})();
-	}, [width]);
+	}, []);
 
 	return (
-		<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
+		<View
+			onLayout={({ nativeEvent: { layout } }) => setWidth(layout.width)}
+			style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}
+		>
 			<FlatList
-				data={items}
+				data={items.slice(0, parseInt((width / 50) - 1, 10))}
 				renderItem={({ item }) => <HeaderItem item={item} handleReaction={emoji => handleReaction(emoji, message)} server={server} theme={theme} />}
 				style={{ backgroundColor: themes[theme].backgroundColor }}
 				ListFooterComponent={() => <HeaderFooter handleReaction={() => handleReaction(null, message)} theme={theme} />}
