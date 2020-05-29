@@ -32,6 +32,7 @@ const SetUsernameStack = () => (
 );
 
 // App
+const Stack = createStackNavigator();
 const App = React.memo(({ root }) => {
 	if (!root || root === ROOT_BACKGROUND) {
 		return null;
@@ -40,12 +41,34 @@ const App = React.memo(({ root }) => {
 	return (
 		<SafeAreaProvider initialMetrics={initialWindowMetrics}>
 			<NavigationContainer ref={Navigation.navigationRef} onNavigationStateChange={onNavigationStateChange}>
-				<>
-					{root === ROOT_LOADING ? <AuthLoadingView /> : null}
-					{root === ROOT_OUTSIDE || root === ROOT_NEW_SERVER ? <OutsideStack /> : null}
-					{root === ROOT_INSIDE ? <InsideStack /> : null}
-					{root === ROOT_SET_USERNAME ? <SetUsernameStack /> : null}
-				</>
+				<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
+					<>
+						{root === ROOT_LOADING ? (
+							<Stack.Screen
+								name='AuthLoading'
+								component={AuthLoadingView}
+							/>
+						) : null}
+						{root === ROOT_OUTSIDE || root === ROOT_NEW_SERVER ? (
+							<Stack.Screen
+								name='OutsideStack'
+								component={OutsideStack}
+							/>
+						) : null}
+						{root === ROOT_INSIDE ? (
+							<Stack.Screen
+								name='InsideStack'
+								component={InsideStack}
+							/>
+						) : null}
+						{root === ROOT_SET_USERNAME ? (
+							<Stack.Screen
+								name='SetUsernameStack'
+								component={SetUsernameStack}
+							/>
+						) : null}
+					</>
+				</Stack.Navigator>
 			</NavigationContainer>
 		</SafeAreaProvider>
 	);
