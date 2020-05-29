@@ -49,16 +49,18 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 	const orientation = useOrientation();
 	const { height } = useDimensions();
 	const insets = useSafeAreaInsets();
+	const landscape = orientation.includes('LANDSCAPE');
 
 	const open = Math.max((height - ((ITEM_HEIGHT + ANDROID_ADJUST) * data?.options?.length) - HANDLE_HEIGHT - (data?.headerHeight || 0) - insets.bottom), MIN_SNAP_HEIGHT);
 
 	/*
 	 * if the action sheet cover more
 	 * than 60% of the whole screen
+	 * and it's not at the landscape mode
 	 * we'll provide more one snap
 	 * that point 50% of the whole screen
 	*/
-	const snaps = height - open > height * 0.6 ? [open, height * 0.5, height] : [open, height];
+	const snaps = (height - open > height * 0.6) && !landscape ? [open, height * 0.5, height] : [open, height];
 	const opened = snaps.length > 2 ? 1 : 0;
 	const closed = snaps.length - 1;
 
@@ -151,7 +153,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 						containerStyle={[
 							styles.container,
 							{ backgroundColor: themes[theme].backgroundColor },
-							isTablet && styles.bottomSheet
+							(landscape || isTablet) && styles.bottomSheet
 						]}
 						animationConfig={ANIMATION_CONFIG}
 						// FlatList props
