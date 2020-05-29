@@ -9,6 +9,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.media.RingtoneManager
+import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -30,215 +31,106 @@ import java.util.concurrent.atomic.AtomicInteger
 
 class SocketNotificationManager(val context: Context) {
 
-    data class LoginData(
-            val host: String,
-            val userId: String,
-            val userToken: String) {
-
-        fun constructAvatarURLForSender(sender: String): String {
-            return "https://$host/avatar/$sender?rc_token=$userToken&rc_uid=$userId"
-        }
-    }
-
-    data class RoomData(
-            val id: String,
-            val type: String)
-
-    data class NotificationData(
-            val senderUsername: String,
-            val message: String,
-            val data: Bundle)
-
-    private val client: DDPClient
+    private val clients = mutableListOf<SocketNotificationClient>()
     private val notiId = AtomicInteger(0)
+    private val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     val isConnected: Boolean
-        get() = client.isConnected
+        get() {
+            if (clients.isEmpty()) {
+                return false
+            }
+            return clients.fold(true, { acc, client -> acc && client.isConnected })
+        }
 
-    init {
-        val wsClient = OkHttpClient.Builder().apply {
-            readTimeout(0, TimeUnit.MILLISECONDS)
-            hostnameVerifier { hostname, session -> true }
-        }.build()
-        val ddpClient = DDPClient(wsClient)
-        this.client = ddpClient
-    }
+    val isConnecting: Boolean
+        get() {
+            if (clients.isEmpty()) {
+                return false
+            }
+            return clients.fold(false, { acc, client -> acc || client.isConnecting })
+        }
 
-    fun connect(onConnect: () -> Unit): Boolean {
+    fun evaluateAndConnect(performReschedule: (Long) -> Unit): Boolean {
+        Log.d("SOCKETNOTIS", "evaluateAndConnect...")
         val prefs = context.getSharedPreferences("react-native", Context.MODE_PRIVATE)
         val allPrefs = prefs.all
 
         if (allPrefs[SOCKET_NOTIFICATIONS_KEY] != "true") {
+            Log.d("SOCKETNOTIS", "disabled by preference")
             return false
         }
 
-        val loginDatas = allPrefs.keys.mapNotNull { prefKey ->
+        if (!connectivityManager.isConnectedToNetwork) {
+            Log.d("SOCKETNOTIS", "not connected to network, rescheduling...")
+            performReschedule(1000L)
+            return false
+        }
+
+        if (isConnecting) {
+            Log.d("SOCKETNOTIS", "already connecting...")
+            return true
+        }
+
+        if (isConnected) {
+            Log.d("SOCKETNOTIS", "already connected, rescheduling...")
+            performReschedule(1000L * 60 * 10)
+            return false
+        }
+
+        val clients = allPrefs.keys.mapNotNull { prefKey ->
             return@mapNotNull if (userTokenRegex.containsMatchIn(prefKey)) {
                 val host = URL(prefKey.split("-")[1]).host
                 val userId = allPrefs[prefKey] as String
                 val userTokenKey = "reactnativemeteor_usertoken-$userId"
                 val userToken = allPrefs[userTokenKey] as String
-                LoginData(host, userId, userToken)
+                val loginData = SocketNotificationClient.LoginData(host, userId, userToken)
+                SocketNotificationClient(context, loginData, onNotification = { data ->
+                    displayNotification(loginData, data)
+                })
             } else {
                 null
             }
         }
 
-        val numToConnect = AtomicInteger(loginDatas.size)
-        loginDatas.forEach { data ->
-            connect(data) {
+        if (clients.isEmpty()) {
+            Log.d("SOCKETNOTIS", "no available clients found...")
+            return false
+        }
+
+        val numToConnect = AtomicInteger(clients.size)
+        Log.d("SOCKETNOTIS", "Connecting to ${numToConnect.get()} clients...")
+        clients.forEach { client ->
+            client.connect() {
                 val remaining = numToConnect.decrementAndGet()
+                Log.d("SOCKETNOTIS", "Connected. Remaining: $remaining")
                 if (remaining == 0) {
-                    onConnect()
+                    Log.d("SOCKETNOTIS", "All connected. Rescheduling")
+                    performReschedule(1000L * 60 * 10)
                 }
             }
         }
+        this.clients.addAll(clients)
 
-        return true
-    }
-
-    fun connect(loginData: LoginData, onConnect: () -> Unit): Boolean {
-        val host = loginData.host
-        val myUserId = loginData.userId
-        val token = loginData.userToken
-
-        val url = "wss://$host/websocket"
-
-        val rooms = mutableMapOf<String, RoomData>()
-        val subNum = AtomicInteger(100)
-        val activeSubs = mutableListOf<String>()
-
-        client.connect(url).onSuccessTask { task ->
-            val result = task.result
-
-            onConnect()
-
-            // observe all callback events.
-            result.client.subscriptionCallback.subscribe { event ->
-                Log.d("SOCKETNOTIS", "Got sub event: $event")
-                if (event !is DDPSubscription.Changed) {
-                    return@subscribe
-                }
-                if (event.collection != "stream-room-messages") {
-                    return@subscribe
-                }
-                val json = event.fields
-                val args = json.getJSONArray("args")
-                val messages = mutableListOf<NotificationData>()
-                for (i in 0 until args.length()) {
-                    val message = args.getJSONObject(i)
-                    val msg = message.getString("msg")
-                    val user = message.getJSONObject("u")
-                    val userId = user.getString("_id")
-
-                    if (userId != myUserId) {
-                        val roomId = message.getString("rid")
-                        val username = user.getString("username")
-                        val mentions = message.getJSONArray("mentions")
-                        val mentionedUserIds = mutableListOf<String>()
-                        for (j in 0 until mentions.length()) {
-                            val mention = mentions.getJSONObject(j)
-                            val userId = mention.getString("_id")
-                            val username = mention.getString("username")
-                            mentionedUserIds.add(userId)
-                        }
-                        val ejson = JSONObject().apply {
-                            put("rid", roomId)
-                            put("name", userId)
-                            put("sender", JSONObject().apply {
-                                put("username", username)
-                                put("name", username)
-                            })
-                            put("type", rooms[roomId]?.type ?: "d")
-                            put("host", host)
-                        }
-                        val data = Bundle().apply {
-                            putString("ejson", ejson.toString())
-                        }
-                        val notiData = NotificationData(username, msg, data)
-                        messages.add(notiData)
-                    }
-                }
-
-                messages.forEach { message ->
-                    displayNotification(message, loginData)
-                }
-            }
-
-            result.client.rpc("login", JSONArray().apply {
-                put(JSONObject().apply {
-                    put("resume", token)
-                })
-            }, "2", 4000)
-
-        }.onSuccessTask { task ->
-            val result = task.getResult()
-            result.client.rpc("rooms/get", JSONArray().apply {
-                put(JSONObject().apply {
-                    put("\$date", 0)
-                })
-            }, "42", 4000)
-        }.onSuccess { task ->
-            val result = task.result
-            val json = JSONObject(result.result)
-            val updates = json.getJSONArray("update")
-            val roomIds = mutableListOf<String>()
-            for (i in 0 until updates.length()) {
-                val room = updates.getJSONObject(i)
-                val roomId = room.getString("_id")
-                val type = room.getString("t")
-                val roomData = RoomData(roomId, type)
-                rooms[roomId] = roomData
-                roomIds.add(roomId)
-            }
-
-            Log.d("SOCKETNOTIS", result.result)
-//            result.client.sub("83854", "stream-room-messages", JSONArray().apply {
-//                put(roomIds.first())
-//                put(false)
-//            })
-
-            activeSubs.forEach { subId ->
-                result.client.unsub(subId).onSuccess { task -> }
-            }
-            activeSubs.clear()
-
-            for (i in 0 until roomIds.size) {
-                val roomId = roomIds.get(i)
-                val subIdNum = subNum.incrementAndGet()
-                val subId = "$subIdNum"
-                Log.d("SOCKETNOTIS", "SUBBING $roomId")
-                result.client.sub(subId, "stream-room-messages", JSONArray().apply {
-                    put(roomId)
-                    put(false)
-                }).onSuccess { task ->
-                    activeSubs.add(subId)
-                }
-            }
-
-//            val roomId = roomIds.get(i)
-//            return@onSuccessTask result.client.sub("83854", "stream-room-messages", JSONArray().apply {
-//                put(roomIds.last())
-//                put(false)
-//            })
-
-        }.continueWith<Any> { task ->
-            null
-        }
-
+        Log.d("SOCKETNOTIS", "evaluateEnd")
         return true
     }
 
     fun close() {
-        this.client.close()
+        Log.d("SOCKETNOTIS", "manager told to close")
+        this.clients.forEach { client ->
+            client.close()
+        }
+        this.clients.clear()
     }
 
-    private fun displayNotification(data: NotificationData, loginData: LoginData) {
+    private fun displayNotification(loginData: SocketNotificationClient.LoginData, data: SocketNotificationClient.NotificationData) {
+        Log.d("SOCKETNOTIS", "displaying notification: $data")
         val intent = Intent(context, NotificationsDeliveryService::class.java)
         intent.putExtra(NotificationsDeliveryService.EXTRA_NOTIFICATION_DATA, data.data)
         val contentIntent = PendingIntent.getService(context, System.currentTimeMillis().toInt(), intent, PendingIntent.FLAG_ONE_SHOT)
 
-        val channelId = "chat.rocket.7theta.channel"
+        val channelId = "rocketchatrn_channel_01"
         val builder: NotificationCompat.Builder = NotificationCompat.Builder(context, channelId)
                 .setContentTitle("New message from ${data.senderUsername}")
                 .setContentText(data.message)
@@ -254,7 +146,6 @@ class SocketNotificationManager(val context: Context) {
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelId = "rocketchatrn_channel_01"
             val channelName = "All"
             val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
             //channel.description = "Rocket Chat Notification Channel"

@@ -62,7 +62,7 @@ class SocketJobService : JobService() {
 
         Log.d("SOCKETNOTIS", "No command, rescheduling...")
 
-        scheduleJobAgain(1000L * 60)
+        scheduleJobAgain(1000L * 60 * 10)
         return false
     }
 
@@ -79,8 +79,8 @@ class SocketJobService : JobService() {
     private fun connectClient(): Boolean {
         Log.d("SOCKETNOTIS", "connecting...")
         val client = _client!!
-        return client.connect {
-            scheduleJobAgain(1000L * 60)
+        return client.evaluateAndConnect { interval ->
+            scheduleJobAgain(interval)
         }
     }
 
