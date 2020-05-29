@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { TextInput, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -6,7 +6,8 @@ import sharedStyles from '../../views/Styles';
 import LeftButtons from './LeftButtons';
 import RightButtons from './RightButtons';
 
-
+const TOP = 0;
+const BOTTOM = 450;
 const styles = StyleSheet.create({
 	input: {
 		position: 'absolute',
@@ -35,15 +36,13 @@ const styles = StyleSheet.create({
 
 const MessageBox = ({ theme }) => {
 	const [text, setText] = useState();
-
-	useEffect(() => {
-		console.log(text);
-	}, [text]);
+	const [up, setUp] = useState(true);
+	const translateY = up ? TOP : BOTTOM;
 
 	return (
 		<>
 			<TextInput
-				style={styles.input}
+				style={[styles.input, { transform: [{ translateY }] }]}
 				multiline
 				placeholder='New message'
 				value={text}
@@ -61,7 +60,7 @@ const MessageBox = ({ theme }) => {
 					editing={false}
 					showMessageBoxActions={() => {}}
 					editCancel={() => {}}
-					openEmoji={() => {}}
+					openEmoji={() => { setUp(!up); }}
 					closeEmoji={() => {}}
 				/>
 				<View style={styles.rightButtons}>
