@@ -28,6 +28,7 @@
     "@react-native-community/async-storage": "^1.9.0",
     "@react-native-community/cameraroll": "1.6.0",
     "@react-native-community/datetimepicker": "2.3.2",
+    "@react-native-community/hooks": "^2.5.1",
     "@react-native-community/slider": "2.0.9",
     "@rocket.chat/sdk": "djorkaeffalexandre/Rocket.Chat.js.SDK#test.fix-ddp",
     "@rocket.chat/ui-kit": "0.8.0",

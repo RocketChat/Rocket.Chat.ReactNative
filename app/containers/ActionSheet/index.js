@@ -6,7 +6,7 @@ import React, {
 	useImperativeHandle
 } from 'react';
 import PropTypes from 'prop-types';
-import { Keyboard, BackHandler } from 'react-native';
+import { Keyboard } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TapGestureHandler, State } from 'react-native-gesture-handler';
 import ScrollBottomSheet from 'react-native-scroll-bottom-sheet';
@@ -16,14 +16,17 @@ import Animated, {
 	Value
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
+import {
+	useDimensions,
+	useBackHandler,
+	useDeviceOrientation
+} from '@react-native-community/hooks';
 
 import Item from './Item';
 import Handle from './Handle';
 import Separator from '../Separator';
 import { themes } from '../../constants/colors';
 import styles, { ITEM_HEIGHT } from './styles';
-import useOrientation from '../../utils/useOrientation';
-import useDimensions from '../../utils/useDimensions';
 import { isTablet, isAndroid } from '../../utils/deviceInfo';
 
 const HANDLE_HEIGHT = 40;
@@ -46,10 +49,10 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 	const bottomSheetRef = useRef();
 	const [data, setData] = useState({});
 	const [visible, setVisible] = useState(false);
-	const orientation = useOrientation();
-	const { height } = useDimensions();
+	const orientation = useDeviceOrientation();
+	const { height } = useDimensions().window;
 	const insets = useSafeAreaInsets();
-	const landscape = orientation.includes('LANDSCAPE');
+	const { landscape } = orientation;
 
 	const open = Math.max((height - ((ITEM_HEIGHT + ANDROID_ADJUST) * data?.options?.length) - HANDLE_HEIGHT - (data?.headerHeight || 0) - insets.bottom), MIN_SNAP_HEIGHT);
 
@@ -81,28 +84,25 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 		}
 	};
 
-	useEffect(() => {
-		const onBackPress = () => {
-			if (visible) {
-				hide();
-			}
-			return visible;
-		};
+	useBackHandler(() => {
+		if (visible) {
+			hide();
+		}
+		return visible;
+	});
 
+	useEffect(() => {
 		if (visible) {
 			Keyboard.dismiss();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 			bottomSheetRef.current?.snapTo(opened);
-			BackHandler.addEventListener('hardwareBackPress', onBackPress);
 		}
-
-		return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
 	}, [visible]);
 
 	useEffect(() => {
 		// Open at the greatest possible snap
 		bottomSheetRef.current?.snapTo(0);
-	}, [orientation]);
+	}, [orientation.landscape]);
 
 	useImperativeHandle(ref, () => ({
 		show,
@@ -142,7 +142,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 						/>
 					</TapGestureHandler>
 					<ScrollBottomSheet
-						key={orientation}
+						key={height}
 						ref={bottomSheetRef}
 						componentType='FlatList'
 						snapPoints={snaps}
