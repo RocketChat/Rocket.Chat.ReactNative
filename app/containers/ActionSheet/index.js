@@ -99,9 +99,12 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 		}
 	}, [visible]);
 
+	/*
+	 * For now we'll just hide the action sheet
+	 * when orientation changes to/from landscape
+	 */
 	useEffect(() => {
-		// Open at the greatest possible snap
-		bottomSheetRef.current?.snapTo(0);
+		setVisible(false);
 	}, [orientation.landscape]);
 
 	useImperativeHandle(ref, () => ({
@@ -119,7 +122,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 	const renderSeparator = () => <Separator theme={theme} style={styles.separator} />;
 
 	const animatedPosition = React.useRef(new Value(0));
-	const opacity = interpolate(animatedPosition.current, {
+	const opacity = interpolate(visible, {
 		inputRange: [0, 0.7],
 		outputRange: [0, 0.7],
 		extrapolate: Extrapolate.CLAMP
@@ -142,7 +145,6 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 						/>
 					</TapGestureHandler>
 					<ScrollBottomSheet
-						key={height}
 						ref={bottomSheetRef}
 						componentType='FlatList'
 						snapPoints={snaps}
