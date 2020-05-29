@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { SendButton, AudioButton, ActionsButton } from './buttons';
+import { SendButton, RecordAudioButton, ActionsButton } from './buttons';
 
 const RightButtons = React.memo(({
 	theme, showSend, submit, recordAudioMessage, recordAudioMessageEnabled, showMessageBoxActions, recording
@@ -15,7 +15,7 @@ const RightButtons = React.memo(({
 		return (
 			<>
 				{actionsButton}
-				<AudioButton onPress={recordAudioMessage} theme={theme} />
+				<RecordAudioButton onPress={recordAudioMessage} theme={theme} />
 			</>
 		);
 	}

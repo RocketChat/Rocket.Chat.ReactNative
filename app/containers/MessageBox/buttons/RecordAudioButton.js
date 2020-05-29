@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import BaseButton from './BaseButton';
 
-const AudioButton = React.memo(({ theme, onPress }) => (
+const RecordAudioButton = React.memo(({ theme, onPress }) => (
 	<BaseButton
 		onPress={onPress}
 		testID='messagebox-send-audio'
@@ -13,9 +13,9 @@ const AudioButton = React.memo(({ theme, onPress }) => (
 	/>
 ));
 
-AudioButton.propTypes = {
+RecordAudioButton.propTypes = {
 	theme: PropTypes.string,
 	onPress: PropTypes.func.isRequired
 };
 
-export default AudioButton;
+export default RecordAudioButton;
