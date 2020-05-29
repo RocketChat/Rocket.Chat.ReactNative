@@ -891,6 +891,7 @@ class MessageBox extends Component {
 							recordAudioMessage={this.recordAudioMessage}
 							recordAudioMessageEnabled={Message_AudioRecorderEnabled}
 							showMessageBoxActions={this.showMessageBoxActions}
+							recording={recording}
 						/>
 					</View>
 				</SafeAreaView>

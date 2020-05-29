@@ -4,15 +4,17 @@ import PropTypes from 'prop-types';
 import { SendButton, AudioButton, ActionsButton } from './buttons';
 
 const RightButtons = React.memo(({
-	theme, showSend, submit, recordAudioMessage, recordAudioMessageEnabled, showMessageBoxActions
+	theme, showSend, submit, recordAudioMessage, recordAudioMessageEnabled, showMessageBoxActions, recording
 }) => {
+	const actionsButton = recording ? null : <ActionsButton onPress={showMessageBoxActions} theme={theme} />;
+
 	if (showSend) {
 		return <SendButton onPress={submit} theme={theme} />;
 	}
 	if (recordAudioMessageEnabled) {
 		return (
 			<>
-				<ActionsButton onPress={showMessageBoxActions} theme={theme} />
+				{actionsButton}
 				<AudioButton onPress={recordAudioMessage} theme={theme} />
 			</>
 		);
@@ -26,7 +28,8 @@ RightButtons.propTypes = {
 	submit: PropTypes.func.isRequired,
 	recordAudioMessage: PropTypes.func.isRequired,
 	recordAudioMessageEnabled: PropTypes.bool,
-	showMessageBoxActions: PropTypes.func.isRequired
+	showMessageBoxActions: PropTypes.func.isRequired,
+	recording: PropTypes.bool.isRequired
 };
 
 export default RightButtons;
