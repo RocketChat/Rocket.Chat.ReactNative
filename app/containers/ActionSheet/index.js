@@ -58,7 +58,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 	 * we'll provide more one snap
 	 * that point 50% of the whole screen
 	*/
-	const snaps = height - open > height * 0.6 ? [open, '50%', height] : [open, height];
+	const snaps = height - open > height * 0.6 ? [open, height * 0.5, height] : [open, height];
 	const opened = snaps.length > 2 ? 1 : 0;
 	const closed = snaps.length - 1;
 
