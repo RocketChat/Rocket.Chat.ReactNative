@@ -1764,37 +1764,37 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/viewpager/-/viewpager-2.0.2.tgz#622b190294b1310c4825c98daeaee1c8443f7124"
   integrity sha512-CKVhIZdX/Cmb80muog8sKpi5vM8npwFp4tx4Dj1IvTBidZweuO22+VH2rDOj7E0LzdV9IYRJ4FGBwcPBD2qUrQ==
 
-"@react-navigation/core@^5.8.1":
-  version "5.8.1"
-  resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-5.8.1.tgz#4f0d744a10eec7dc8bfad2901eec5fb9623b0972"
-  integrity sha512-jm8eKtpYzhaBj6pz/keCALWuPjfkjghoaJdYXoCEEdSk4o1rCjNrSQ9laA6IB0aWiKEuDBAsyi2N2AP15ASE0Q==
+"@react-navigation/core@^5.9.0":
+  version "5.9.0"
+  resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-5.9.0.tgz#013bcfad898d8cf3bfb7cab3bf796afb660285a9"
+  integrity sha512-1e0vlM0yAAYyy+AKC9oVtwqKfTHl+1ZXJRz16toP07Y6N5cWB6ZsTJIhiL3CHC6d2vBLYSkJca9ID+GB2VGi8Q==
   dependencies:
-    "@react-navigation/routers" "^5.4.6"
+    "@react-navigation/routers" "^5.4.7"
     escape-string-regexp "^4.0.0"
     nanoid "^3.1.5"
     query-string "^6.12.1"
     react-is "^16.13.0"
     use-subscription "^1.4.0"
 
-"@react-navigation/drawer@^5.7.7":
-  version "5.7.7"
-  resolved "https://registry.yarnpkg.com/@react-navigation/drawer/-/drawer-5.7.7.tgz#25d088b7bf53368085bc88a853071e3c14560296"
-  integrity sha512-E/1kcZexfIXC3uLJSokAb5CD4qmOF1udjZ8QzDyzKWgygWk6YhvXX+koCENOvGnslU0HfUH/BCoecxksilJ7kA==
+"@react-navigation/drawer@5.8.1":
+  version "5.8.1"
+  resolved "https://registry.yarnpkg.com/@react-navigation/drawer/-/drawer-5.8.1.tgz#6679f309f2758920f17cca3aa253fc7b3fc0c85a"
+  integrity sha512-V8hu0T9ckHRt3oAsAw4TTTu3D7FD+QNqFU8EcwbOPvOouXzCB8QyKQKjvQHYYlf5NRWTLUEeWMlA/i/NQgESJg==
   dependencies:
     color "^3.1.2"
     react-native-iphone-x-helper "^1.2.1"
 
-"@react-navigation/native@^5.4.2":
-  version "5.4.2"
-  resolved "https://registry.yarnpkg.com/@react-navigation/native/-/native-5.4.2.tgz#256d4f67aa97083de9c8ff52cdc77ac039b66350"
-  integrity sha512-HS8yPbFvjCDZ029b5YOuJauaFxPP1BUrvOHTArQEEHv+gguWaS3WwdtrJFNXP2OM/GOE8Bbqw4naGC7FVmmhIw==
+"@react-navigation/native@5.5.0":
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/@react-navigation/native/-/native-5.5.0.tgz#04bc9a09f9c3fd6c704f56d979772a80327f5c12"
+  integrity sha512-pRNUg/TzTH+Me/lAguMhRQc3EbyJlTvmUFChAM+s5sOFMtEin+t9jcOEJhEdRtepc6xXQGKipuNA9GFDj2ezzA==
   dependencies:
-    "@react-navigation/core" "^5.8.1"
+    "@react-navigation/core" "^5.9.0"
 
-"@react-navigation/routers@^5.4.6":
-  version "5.4.6"
-  resolved "https://registry.yarnpkg.com/@react-navigation/routers/-/routers-5.4.6.tgz#7d0d6209f7e40fc36e4fecb5e34f20d866272a32"
-  integrity sha512-qGJN3wzrP+pSl0cspC8vYd3aR+0egXhURn5lVahAsLk0zXMStWCTAIPB1lttIx2hOpeaVNkrD61Lp6yDaF3TBQ==
+"@react-navigation/routers@^5.4.7":
+  version "5.4.7"
+  resolved "https://registry.yarnpkg.com/@react-navigation/routers/-/routers-5.4.7.tgz#05f85a099d7ee5677edeced98959e4b87562e3b5"
+  integrity sha512-J+lQYDbEsyhAjcPpWY6ZJYEkGiZcPX62hNtySruShjbIEnI9gm3rC+BHdcrP/lufeWxWGFhI8CN7NSJGgP/Nmg==
   dependencies:
     nanoid "^3.1.5"
 
