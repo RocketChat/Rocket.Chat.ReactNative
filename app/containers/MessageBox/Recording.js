@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, SafeAreaView, Text
+	Text
 } from 'react-native';
 import { Audio } from 'expo-av';
 import { BorderlessButton } from 'react-native-gesture-handler';
@@ -143,41 +143,33 @@ export default class extends React.PureComponent {
 		const { theme } = this.props;
 
 		return (
-			<SafeAreaView
-				testID='messagebox-recording'
-				style={[
-					styles.textBox,
-					{ borderTopColor: themes[theme].borderColor }
-				]}
-			>
-				<View style={[styles.textArea, { backgroundColor: themes[theme].messageboxBackground }]}>
-					<BorderlessButton
-						onPress={this.cancelAudioMessage}
-						accessibilityLabel={I18n.t('Cancel_recording')}
-						accessibilityTraits='button'
-						style={styles.actionButton}
-					>
-						<CustomIcon
-							size={22}
-							color={themes[theme].dangerColor}
-							name='Cross'
-						/>
-					</BorderlessButton>
-					<Text key='currentTime' style={[styles.textBoxInput, { color: themes[theme].titleText }]}>{currentTime}</Text>
-					<BorderlessButton
-						onPress={this.finishAudioMessage}
-						accessibilityLabel={I18n.t('Finish_recording')}
-						accessibilityTraits='button'
-						style={styles.actionButton}
-					>
-						<CustomIcon
-							size={22}
-							color={themes[theme].successColor}
-							name='check'
-						/>
-					</BorderlessButton>
-				</View>
-			</SafeAreaView>
+			<>
+				<BorderlessButton
+					onPress={this.cancelAudioMessage}
+					accessibilityLabel={I18n.t('Cancel_recording')}
+					accessibilityTraits='button'
+					style={styles.actionButton}
+				>
+					<CustomIcon
+						size={22}
+						color={themes[theme].dangerColor}
+						name='Cross'
+					/>
+				</BorderlessButton>
+				<Text key='currentTime' style={[styles.textBoxInput, { color: themes[theme].titleText }]}>{currentTime}</Text>
+				<BorderlessButton
+					onPress={this.finishAudioMessage}
+					accessibilityLabel={I18n.t('Finish_recording')}
+					accessibilityTraits='button'
+					style={styles.actionButton}
+				>
+					<CustomIcon
+						size={22}
+						color={themes[theme].successColor}
+						name='check'
+					/>
+				</BorderlessButton>
+			</>
 		);
 	}
 }

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Alert, Keyboard } from 'react-native';
+import {
+	View, Alert, Keyboard, SafeAreaView
+} from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -477,7 +479,7 @@ class MessageBox extends Component {
 
 	setCommandPreview = async(command, name, params) => {
 		const { rid } = this.props;
-		try	{
+		try {
 			const { preview } = await RocketChat.getCommandPreview(name, rid, params);
 			this.setState({ commandPreview: preview.items, showCommandPreview: true, command });
 		} catch (e) {
@@ -717,7 +719,7 @@ class MessageBox extends Component {
 			const { id, subscription: { id: rid } } = editingMessage;
 			editRequest({ id, msg: message, rid });
 
-		// Reply
+			// Reply
 		} else if (replying) {
 			const {
 				message: replyingMessage, threadsEnabled, replyWithMention
@@ -727,7 +729,7 @@ class MessageBox extends Component {
 			if (threadsEnabled && replyWithMention) {
 				onSubmit(message, replyingMessage.id);
 
-			// Legacy reply or quote (quote is a reply without mention)
+				// Legacy reply or quote (quote is a reply without mention)
 			} else {
 				const { user, roomType } = this.props;
 				const permalink = await this.getPermalink(replyingMessage);
@@ -743,7 +745,7 @@ class MessageBox extends Component {
 			}
 			replyCancel();
 
-		// Normal message
+			// Normal message
 		} else {
 			onSubmit(message);
 		}
@@ -811,53 +813,77 @@ class MessageBox extends Component {
 			returnKeyType: 'send'
 		} : {};
 
+		let safeAreaViewStyle = null;
+		let commandsPreviewAndMentions = null;
+		let replyPreview = null;
+		let content = null;
+
 		if (recording) {
-			return <Recording theme={theme} onFinish={this.finishAudioMessage} />;
+			safeAreaViewStyle = [styles.textBox, { borderTopColor: themes[theme].borderColor }];
+			content = <Recording theme={theme} onFinish={this.finishAudioMessage} />;
+		} else {
+			safeAreaViewStyle = [styles.composer, { borderTopColor: themes[theme].separatorColor }];
+			commandsPreviewAndMentions = (
+				<>
+					<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
+					<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
+				</>
+			);
+			replyPreview = (
+				<ReplyPreview
+					message={message}
+					close={replyCancel}
+					username={user.username}
+					replying={replying}
+					getCustomEmoji={getCustomEmoji}
+					theme={theme}
+				/>
+			);
+			content = (
+				<>
+					<LeftButtons
+						theme={theme}
+						showEmojiKeyboard={showEmojiKeyboard}
+						editing={editing}
+						showMessageBoxActions={this.showMessageBoxActions}
+						editCancel={this.editCancel}
+						openEmoji={this.openEmoji}
+						closeEmoji={this.closeEmoji}
+					/>
+					<TextInput
+						ref={component => this.component = component}
+						style={styles.textBoxInput}
+						returnKeyType='default'
+						keyboardType='twitter'
+						blurOnSubmit={false}
+						placeholder={I18n.t('New_Message')}
+						onChangeText={this.onChangeText}
+						underlineColorAndroid='transparent'
+						defaultValue=''
+						multiline
+						testID='messagebox-input'
+						theme={theme}
+						{...isAndroidTablet}
+					/>
+				</>
+			);
 		}
+
 		return (
 			<>
-				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
-				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
-				<View style={[styles.composer, { borderTopColor: themes[theme].separatorColor }]}>
-					<ReplyPreview
-						message={message}
-						close={replyCancel}
-						username={user.username}
-						replying={replying}
-						getCustomEmoji={getCustomEmoji}
-						theme={theme}
-					/>
+				{commandsPreviewAndMentions}
+
+				<SafeAreaView style={safeAreaViewStyle}>
+					{replyPreview}
 					<View
 						style={[
 							styles.textArea,
-							{ backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }
+							{ backgroundColor: themes[theme].messageboxBackground },
+							!recording && editing && { backgroundColor: themes[theme].chatComponentBackground }
 						]}
 						testID='messagebox'
 					>
-						<LeftButtons
-							theme={theme}
-							showEmojiKeyboard={showEmojiKeyboard}
-							editing={editing}
-							showMessageBoxActions={this.showMessageBoxActions}
-							editCancel={this.editCancel}
-							openEmoji={this.openEmoji}
-							closeEmoji={this.closeEmoji}
-						/>
-						<TextInput
-							ref={component => this.component = component}
-							style={styles.textBoxInput}
-							returnKeyType='default'
-							keyboardType='twitter'
-							blurOnSubmit={false}
-							placeholder={I18n.t('New_Message')}
-							onChangeText={this.onChangeText}
-							underlineColorAndroid='transparent'
-							defaultValue=''
-							multiline
-							testID='messagebox-input'
-							theme={theme}
-							{...isAndroidTablet}
-						/>
+						{content}
 						<RightButtons
 							theme={theme}
 							showSend={showSend}
@@ -867,7 +893,7 @@ class MessageBox extends Component {
 							showMessageBoxActions={this.showMessageBoxActions}
 						/>
 					</View>
-				</View>
+				</SafeAreaView>
 			</>
 		);
 	}
