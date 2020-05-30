@@ -59,29 +59,41 @@ const Header = React.memo(({
 			</View>
 		);
 	}
-	return (
-		<View style={styles.container}>
-			<TouchableOpacity
-				onPress={onPress}
-				testID='rooms-list-header-server-dropdown-button'
-				disabled={connecting || isFetching}
-			>
-				{connecting ? <Text style={[styles.updating, titleColorStyle]}>{I18n.t('Connecting')}</Text> : null}
-				{isFetching ? <Text style={[styles.updating, titleColorStyle]}>{I18n.t('Updating')}</Text> : null}
-				<View style={styles.button}>
-					<Text style={[styles.server, isFetching && styles.serverSmall, titleColorStyle]} numberOfLines={1}>{serverName}</Text>
-					<Image
-						style={[
-							styles.disclosure,
-							showServerDropdown && styles.upsideDown,
-							{ tintColor: themes[theme].headerTitleColor }
-						]}
-						source={{ uri: 'disclosure_indicator_server' }}
-					/>
-				</View>
-			</TouchableOpacity>
-		</View>
-	);
+        if (showServerDropdown) {
+                return (
+                    <View style={styles.container}>
+                            <TouchableOpacity
+                                    onPress={onPress}
+                                    testID='rooms-list-header-server-dropdown-button'
+                                    disabled={connecting || isFetching}
+                            >
+                                    {connecting ? <Text style={[styles.updating, titleColorStyle]}>{I18n.t('Connecting')}</Text> : null}
+                                    {isFetching ? <Text style={[styles.updating, titleColorStyle]}>{I18n.t('Updating')}</Text> : null}
+                                    <View style={styles.button}>
+                                            <Text style={[styles.server, isFetching && styles.serverSmall, titleColorStyle]} numberOfLines={1}>{serverName}</Text>
+                                            <Image
+                                                    style={[
+                                                            styles.disclosure,
+                                                            showServerDropdown && styles.upsideDown,
+                                                            { tintColor: themes[theme].headerTitleColor }
+                                                    ]}
+                                                    source={{ uri: 'disclosure_indicator_server' }}
+                                            />
+                                    </View>
+                            </TouchableOpacity>
+                    </View>
+                );
+        } else {
+                return (
+                    <View style={styles.container}>
+                            {connecting ? <Text style={[styles.updating, titleColorStyle]}>{I18n.t('Connecting')}</Text> : null}
+                            {isFetching ? <Text style={[styles.updating, titleColorStyle]}>{I18n.t('Updating')}</Text> : null}
+                            <View style={styles.button}>
+                                    <Text style={[styles.server, isFetching && styles.serverSmall, titleColorStyle]} numberOfLines={1}>{serverName}</Text>
+                            </View>
+                    </View>
+                );  
+        }
 });
 
 Header.propTypes = {
