@@ -63,7 +63,7 @@ class SocketNotificationManager(val context: Context) {
 
         if (!connectivityManager.isConnectedToNetwork) {
             Log.d("SOCKETNOTIS", "not connected to network, rescheduling...")
-            performReschedule(1000L)
+            performReschedule(1000L * 15)
             return false
         }
 
@@ -74,7 +74,7 @@ class SocketNotificationManager(val context: Context) {
 
         if (isConnected) {
             Log.d("SOCKETNOTIS", "already connected, rescheduling...")
-            performReschedule(1000L * 60 * 10)
+            performReschedule(1000L * 15)
             return false
         }
 
@@ -106,7 +106,7 @@ class SocketNotificationManager(val context: Context) {
                 Log.d("SOCKETNOTIS", "Connected. Remaining: $remaining")
                 if (remaining == 0) {
                     Log.d("SOCKETNOTIS", "All connected. Rescheduling")
-                    performReschedule(1000L * 60 * 10)
+                    performReschedule(1000L * 15)
                 }
             }
         }

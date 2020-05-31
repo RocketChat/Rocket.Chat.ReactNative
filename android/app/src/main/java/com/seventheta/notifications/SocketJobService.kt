@@ -62,7 +62,7 @@ class SocketJobService : JobService() {
 
         Log.d("SOCKETNOTIS", "No command, rescheduling...")
 
-        scheduleJobAgain(1000L * 60 * 10)
+        scheduleJobAgain(1000L * 15)
         return false
     }
 
