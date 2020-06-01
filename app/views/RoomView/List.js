@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, InteractionManager, RefreshControl } from 'react-native';
+import { FlatList, RefreshControl } from 'react-native';
 import PropTypes from 'prop-types';
 import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
