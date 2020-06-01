@@ -360,7 +360,7 @@ PODS:
     - React
   - react-native-orientation-locker (1.1.8):
     - React
-  - react-native-safe-area-context (1.0.2):
+  - react-native-safe-area-context (3.0.2):
     - React
   - react-native-slider (2.0.9):
     - React
@@ -873,7 +873,7 @@ SPEC CHECKSUMS:
   react-native-jitsi-meet: f89bcb2cfbd5b15403b9c40738036c4f1af45d05
   react-native-notifications: ee8fd739853e72694f3af8b374c8ccb106b7b227
   react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
-  react-native-safe-area-context: 9d9640a9085014864052e38496fc1dfde0b93974
+  react-native-safe-area-context: b11a34881faac509cad5578726c98161ad4d275c
   react-native-slider: e51492f1264d882a8815b71c5870f8978e52887d
   react-native-webview: cf5527893252b3b036eea024a1da6996f7344c74
   React-RCTActionSheet: f41ea8a811aac770e0cc6e0ad6b270c644ea8b7c
