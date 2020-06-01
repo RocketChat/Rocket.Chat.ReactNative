@@ -7,10 +7,6 @@ import { themes } from '../constants/colors';
 const styles = StyleSheet.create({
 	view: {
 		flex: 1
-	},
-	vertical: {
-		paddingTop: 0,
-		paddingBottom: 0
 	}
 });
 
@@ -18,7 +14,8 @@ const SafeAreaView = React.memo(({
 	style, children, testID, theme, vertical = true, ...props
 }) => (
 	<SafeAreaContext
-		style={[styles.view, vertical && styles.vertical, { backgroundColor: themes[theme].auxiliaryBackground }, style]}
+		style={[styles.view, { backgroundColor: themes[theme].auxiliaryBackground }, style]}
+		edges={vertical ? ['right', 'left'] : undefined}
 		testID={testID}
 		{...props}
 	>
