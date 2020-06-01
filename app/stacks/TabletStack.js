@@ -1,7 +1,7 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Easing } from 'react-native';
 import PropTypes from 'prop-types';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { ThemeContext } from '../theme';
@@ -59,9 +59,9 @@ import ModalBlockView from '../views/ModalBlockView';
 import JitsiMeetView from '../views/JitsiMeetView';
 import StatusView from '../views/StatusView';
 import CreateDiscussionView from '../views/CreateDiscussionView';
-import { MAX_SIDEBAR_WIDTH } from '../constants/tablet';
-import navigator from './navigator';
 import stackNavigator from './stackNavigator';
+import { cond, multiply, add } from 'react-native-reanimated';
+import conditional from './conditional';
 
 // ChatsStack
 const Chats = createStackNavigator();
@@ -72,23 +72,13 @@ const ChatsStack = ({ navigation, route }) => {
 
 	return (
 		<View style={{ flex: 1, flexDirection: 'row', backgroundColor: 'red' }}>
-			<View style={{ flex: 1, maxWidth: MAX_SIDEBAR_WIDTH, backgroundColor: 'red' }}>
+			{/* <View style={{ flex: 1, maxWidth: MAX_SIDEBAR_WIDTH, backgroundColor: 'red' }}>
 				<RoomsListView navigation={navigation} route={route} />
-			</View>
+			</View> */}
 			<Chats.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), animationEnabled: false }}>
 				<Chats.Screen
 					name='RoomView'
 					component={RoomView}
-				/>
-				<Chats.Screen
-					name='RoomActionsView'
-					component={RoomActionsView}
-					options={RoomActionsView.navigationOptions}
-				/>
-				<Chats.Screen
-					name='RoomInfoView'
-					component={RoomInfoView}
-					options={RoomInfoView.navigationOptions}
 				/>
 				<Chats.Screen
 					name='RoomInfoEditView'
@@ -250,15 +240,15 @@ const AdminPanelStack = () => {
 };
 
 // ChatsDrawer
-// const Drawer = navigator();
-// const ChatsDrawer = () => (
-// 	<Drawer.Navigator drawerContent={({ navigation, state }) => <RoomsListView navigation={navigation} state={state} />} drawerType="permanent">
-// 		<Drawer.Screen name='ChatsStack' component={ChatsStack} />
-// 		<Drawer.Screen name='ProfileStack' component={ProfileStack} />
-// 		<Drawer.Screen name='SettingsStack' component={SettingsStack} />
-// 		<Drawer.Screen name='AdminPanelStack' component={AdminPanelStack} />
-// 	</Drawer.Navigator>
-// );
+const Drawer = createDrawerNavigator();
+const ChatsDrawer = () => (
+	<Drawer.Navigator drawerContent={({ navigation, state }) => <RoomsListView navigation={navigation} state={state} />} drawerType="permanent">
+		<Drawer.Screen name='ChatsStack' component={ChatsStack} />
+		<Drawer.Screen name='ProfileStack' component={ProfileStack} />
+		<Drawer.Screen name='SettingsStack' component={SettingsStack} />
+		<Drawer.Screen name='AdminPanelStack' component={AdminPanelStack} />
+	</Drawer.Navigator>
+);
 
 // NewMessageStack
 const NewMessage = createStackNavigator();
@@ -289,16 +279,131 @@ const NewMessageStack = () => {
 	);
 };
 
+const RoomStack = createStackNavigator();
+const RoomStackModal = () => (
+	<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#00000030' }}>
+		<View style={{ width: 600, height: 480, alignSelf: 'center', overflow: 'hidden', borderRadius: 10 }}>
+			<RoomStack.Navigator>
+				<RoomStack.Screen
+					name='RoomActionsView'
+					component={RoomActionsView}
+					options={RoomActionsView.navigationOptions}
+				/>
+				<RoomStack.Screen
+					name='RoomInfoView'
+					component={RoomInfoView}
+					options={RoomInfoView.navigationOptions}
+				/>
+			</RoomStack.Navigator>
+		</View>
+	</View>
+)
+
+function forFadeFromBottomAndroid({
+	current,
+	inverted,
+	layouts: { screen },
+	closing,
+}) {
+	// const translateY = multiply(
+	// 	current.progress.interpolate({
+	// 	inputRange: [0, 1],
+	// 	outputRange: [screen.height * 0.08, 0],
+	// 	extrapolate: 'clamp',
+	// 	}),
+	// 	inverted
+	// );
+
+	const opacity = conditional(
+		closing,
+		current.progress,
+		current.progress.interpolate({
+			inputRange: [0, 0.5, 0.9, 1],
+			outputRange: [0, 0.25, 0.7, 1],
+		})
+	);
+
+	return {
+		cardStyle: {
+			opacity,
+			// transform: [{ translateY }],
+		},
+	};
+}
+
+export const FadeInFromBottomAndroidSpec = {
+  animation: 'timing',
+  config: {
+    duration: 350,
+    easing: Easing.out(Easing.poly(5)),
+  },
+};
+
+function forFade({
+  current,
+  next,
+}) {
+  const progress = add(
+    current.progress.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, 1],
+      extrapolate: 'clamp',
+    }),
+    next
+      ? next.progress.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, 1],
+          extrapolate: 'clamp',
+        })
+      : 0
+  );
+
+  const opacity = progress.interpolate({
+    inputRange: [0, 1, 2],
+    outputRange: [0, 1, 0],
+  });
+
+  return {
+    leftButtonStyle: { opacity },
+    rightButtonStyle: { opacity },
+    titleStyle: { opacity },
+    backgroundStyle: {
+      opacity: progress.interpolate({
+        inputRange: [0, 1, 1.9, 2],
+        outputRange: [0, 1, 1, 0],
+      }),
+    },
+  };
+}
+
+const FadeOutToBottomAndroidSpec = {
+  animation: 'timing',
+  config: {
+    duration: 150,
+    easing: Easing.in(Easing.linear),
+  },
+};
+
+const FadeFromBottomAndroid = {
+	gestureDirection: 'vertical',
+	transitionSpec: {
+		open: FadeInFromBottomAndroidSpec,
+		close: FadeOutToBottomAndroidSpec,
+	},
+	cardStyleInterpolator: forFadeFromBottomAndroid,
+	// headerStyleInterpolator: forFade,
+};
+
 // InsideStackModal
-const InsideStack = stackNavigator();
-const InsideStackModal = ({ navigation, route }) => {
+const InsideStack = createStackNavigator();
+const InsideStackModal = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<InsideStack.Navigator mode='modal' screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...modalAnimation }}>
+		<InsideStack.Navigator mode='modal' screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...FadeFromBottomAndroid }}>
 			<InsideStack.Screen
-				name='ChatsStack'
-				component={ChatsStack}
+				name='ChatsDrawer'
+				component={ChatsDrawer}
 				options={{ headerShown: false }}
 			/>
 			<InsideStack.Screen
@@ -322,6 +427,11 @@ const InsideStackModal = ({ navigation, route }) => {
 			<InsideStack.Screen
 				name='JitsiMeetView'
 				component={JitsiMeetView}
+				options={{ headerShown: false }}
+			/>
+			<InsideStack.Screen
+				name='RoomStackModal'
+				component={RoomStackModal}
 				options={{ headerShown: false }}
 			/>
 		</InsideStack.Navigator>

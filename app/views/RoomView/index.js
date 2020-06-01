@@ -347,8 +347,12 @@ class RoomView extends React.Component {
 	goRoomActionsView = () => {
 		const { room, member } = this.state;
 		const { navigation } = this.props;
-		navigation.navigate('RoomActionsView', {
-			rid: this.rid, t: this.t, room, member
+		console.log(this.rid)
+		navigation.navigate('RoomStackModal', {
+			screen: 'RoomActionsView',
+			params: {
+				rid: this.rid, t: this.t, room, member
+			}
 		});
 	}
 

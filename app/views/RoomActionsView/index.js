@@ -59,6 +59,7 @@ class RoomActionsView extends React.Component {
 		super(props);
 		this.mounted = false;
 		const room = props.route.params?.room;
+    console.log('constructor -> props.route', props.route);
 		const member = props.route.params?.member;
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;

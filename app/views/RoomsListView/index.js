@@ -519,17 +519,13 @@ class RoomsListView extends React.Component {
 
 	onPressItem = (item = {}) => {
 		const { navigation } = this.props;
-    console.log('onPressItem -> navigation', navigation);
-		console.log('1')
 		if (!navigation.isFocused()) {
 			return;
 		}
-		console.log('2')
 
 		this.cancelSearch();
 		this.item = item;
 		goRoom(item);
-		// navigation.replace('RoomView', item);
 	};
 
 	toggleSort = () => {
