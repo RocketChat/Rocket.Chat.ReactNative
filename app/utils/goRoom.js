@@ -2,7 +2,7 @@ import Navigation from '../lib/Navigation';
 import RocketChat from '../lib/rocketchat';
 
 const navigate = (item) => {
-	Navigation.navigate('RoomView', {
+	Navigation.replace('RoomView', {
 		rid: item.rid,
 		name: RocketChat.getRoomTitle(item),
 		t: item.t,
