@@ -99,21 +99,33 @@ class SocketNotificationManager(val context: Context) {
         }
 
         val numToConnect = AtomicInteger(clients.size)
+        var performingWork = false
         Log.d("SOCKETNOTIS", "Connecting to ${numToConnect.get()} clients...")
         clients.forEach { client ->
-            client.connect() {
+            if (client.isConnected || client.isConnecting) {
+                performingWork = client.isConnecting || performingWork
                 val remaining = numToConnect.decrementAndGet()
-                Log.d("SOCKETNOTIS", "Connected. Remaining: $remaining")
+                Log.d("SOCKETNOTIS", "Already connected/connecting. Remaining: $remaining")
                 if (remaining == 0) {
-                    Log.d("SOCKETNOTIS", "All connected. Rescheduling")
+                    Log.d("SOCKETNOTIS", "All already connected/connecting. Rescheduling...")
                     performReschedule(1000L * 15)
+                }
+            } else {
+                performingWork = true
+                client.connect() {
+                    val remaining = numToConnect.decrementAndGet()
+                    Log.d("SOCKETNOTIS", "Connected. Remaining: $remaining")
+                    if (remaining == 0) {
+                        Log.d("SOCKETNOTIS", "All connected. Rescheduling")
+                        performReschedule(1000L * 15)
+                    }
                 }
             }
         }
         this.clients.addAll(clients)
 
         Log.d("SOCKETNOTIS", "evaluateEnd")
-        return true
+        return performingWork
     }
 
     fun close() {

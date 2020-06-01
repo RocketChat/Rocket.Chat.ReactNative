@@ -55,6 +55,10 @@ class SocketNotificationClient(
     }
 
     fun connect(onConnect: () -> Unit): Boolean {
+        if (isConnected || isConnecting) {
+            return false
+        }
+
         val host = loginData.host
         val myUserId = loginData.userId
         val token = loginData.userToken
@@ -205,6 +209,9 @@ class SocketNotificationClient(
             Log.d("SOCKETNOTIS", "generic continueWith: $result")
             if (task.error != null) {
                 Log.e("SOCKETNOTIS", "gotError", task.error)
+                Log.d("SOCKETNOTIS", "attempting reconnect with restart")
+                connect { }
+                SocketServiceUtils.serviceReconnect(context)
             }
             isConnecting = false
             null
