@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
@@ -38,9 +38,17 @@ const App = React.memo(({ root }) => {
 		return null;
 	}
 
+	const navigationTheme = {
+		...DefaultTheme,
+		colors: {
+			...DefaultTheme.colors,
+			background: 'transparent'
+		}
+	};
+
 	return (
 		<SafeAreaProvider initialMetrics={initialWindowMetrics}>
-			<NavigationContainer ref={Navigation.navigationRef} onNavigationStateChange={onNavigationStateChange}>
+			<NavigationContainer theme={navigationTheme} ref={Navigation.navigationRef} onNavigationStateChange={onNavigationStateChange}>
 				<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
 					<>
 						{root === ROOT_LOADING ? (
