@@ -95,12 +95,12 @@ const Header = React.memo(({
 	return (
 		<View
 			onLayout={({ nativeEvent: { layout } }) => setWidth(layout.width)}
-			style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}
+			style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]}
 		>
 			<FlatList
 				data={items.slice(0, parseInt((width / 50) - 1, 10))}
 				renderItem={({ item }) => <HeaderItem item={item} handleReaction={emoji => handleReaction(emoji, message)} server={server} theme={theme} />}
-				style={{ backgroundColor: themes[theme].backgroundColor }}
+				style={{ backgroundColor: themes[theme].focusedBackground }}
 				ListFooterComponent={() => <HeaderFooter handleReaction={() => handleReaction(null, message)} theme={theme} />}
 				showsHorizontalScrollIndicator={false}
 				scrollEnabled={false}

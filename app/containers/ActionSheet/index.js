@@ -154,14 +154,14 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 						animatedPosition={animatedPosition.current}
 						containerStyle={[
 							styles.container,
-							{ backgroundColor: themes[theme].backgroundColor },
+							{ backgroundColor: themes[theme].focusedBackground },
 							(landscape || isTablet) && styles.bottomSheet
 						]}
 						animationConfig={ANIMATION_CONFIG}
 						// FlatList props
 						data={data?.options}
 						keyExtractor={item => item.title}
-						style={{ backgroundColor: themes[theme].backgroundColor }}
+						style={{ backgroundColor: themes[theme].focusedBackground }}
 						contentContainerStyle={styles.content}
 						ItemSeparatorComponent={renderSeparator}
 						ListHeaderComponent={renderSeparator}

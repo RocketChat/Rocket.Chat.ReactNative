@@ -22,7 +22,7 @@ const Item = React.memo(({
 	return (
 		<Button
 			onPress={onPress}
-			style={[styles.item, { backgroundColor: themes[theme].backgroundColor }]}
+			style={[styles.item, { backgroundColor: themes[theme].focusedBackground }]}
 			theme={theme}
 		>
 			<CustomIcon name={item.icon} size={20} color={item.danger ? themes[theme].dangerColor : themes[theme].bodyText} />
