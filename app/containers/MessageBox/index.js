@@ -18,7 +18,7 @@ import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
 import database from '../../lib/database';
 import { emojis } from '../../emojis';
-import Recording from './Recording';
+import RecordAudio from './RecordAudio';
 import UploadModal from './UploadModal';
 import log from '../../utils/log';
 import I18n from '../../i18n';
@@ -644,8 +644,7 @@ class MessageBox extends Component {
 		});
 	}
 
-	recordAudioMessage = async() => {
-		const recording = await Recording.permission();
+	recordingCallback = (recording) => {
 		this.setState({ recording });
 	}
 
@@ -813,6 +812,14 @@ class MessageBox extends Component {
 			returnKeyType: 'send'
 		} : {};
 
+		const recordAudio = showSend && Message_AudioRecorderEnabled ? null : (
+			<RecordAudio
+				theme={theme}
+				recordingCallback={this.recordingCallback}
+				onFinish={this.finishAudioMessage}
+			/>
+		);
+
 		let safeAreaViewStyle = null;
 		let commandsPreviewAndMentions = null;
 		let replyPreview = null;
@@ -820,7 +827,6 @@ class MessageBox extends Component {
 
 		if (recording) {
 			safeAreaViewStyle = [styles.textBox, { borderTopColor: themes[theme].borderColor }];
-			content = <Recording theme={theme} onFinish={this.finishAudioMessage} />;
 		} else {
 			safeAreaViewStyle = [styles.composer, { borderTopColor: themes[theme].separatorColor }];
 			commandsPreviewAndMentions = (
@@ -839,6 +845,7 @@ class MessageBox extends Component {
 					theme={theme}
 				/>
 			);
+
 			content = (
 				<>
 					<LeftButtons
@@ -865,6 +872,13 @@ class MessageBox extends Component {
 						theme={theme}
 						{...isAndroidTablet}
 					/>
+
+					<RightButtons
+						theme={theme}
+						showSend={showSend}
+						submit={this.submit}
+						showMessageBoxActions={this.showMessageBoxActions}
+					/>
 				</>
 			);
 		}
@@ -884,15 +898,7 @@ class MessageBox extends Component {
 						testID='messagebox'
 					>
 						{content}
-						<RightButtons
-							theme={theme}
-							showSend={showSend}
-							submit={this.submit}
-							recordAudioMessage={this.recordAudioMessage}
-							recordAudioMessageEnabled={Message_AudioRecorderEnabled}
-							showMessageBoxActions={this.showMessageBoxActions}
-							recording={recording}
-						/>
+						{recordAudio}
 					</View>
 				</SafeAreaView>
 			</>

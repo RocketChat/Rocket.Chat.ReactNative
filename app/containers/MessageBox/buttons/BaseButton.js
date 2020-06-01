@@ -8,9 +8,10 @@ import styles from '../styles';
 import I18n from '../../../i18n';
 
 const BaseButton = React.memo(({
-	onPress, testID, accessibilityLabel, icon, theme
+	onPress, testID, accessibilityLabel, icon, theme, onHandlerStateChange
 }) => (
 	<BorderlessButton
+		onHandlerStateChange={onHandlerStateChange}
 		onPress={onPress}
 		style={styles.actionButton}
 		testID={testID}
@@ -26,7 +27,8 @@ BaseButton.propTypes = {
 	onPress: PropTypes.func.isRequired,
 	testID: PropTypes.string.isRequired,
 	accessibilityLabel: PropTypes.string.isRequired,
-	icon: PropTypes.string.isRequired
+	icon: PropTypes.string.isRequired,
+	onHandlerStateChange: PropTypes.func
 };
 
 export default BaseButton;
