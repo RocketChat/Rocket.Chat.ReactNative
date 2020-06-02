@@ -6,7 +6,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { ThemeContext } from '../theme';
 import { SplitContext } from '../split';
 import {
-	defaultHeader, themedHeader, modalAnimation, stackAnimation
+	defaultHeader, themedHeader, ModalAnimation, StackAnimation
 } from '../utils/navigation';
 import Toast from '../containers/Toast';
 import Sidebar from '../views/SidebarView';
@@ -66,7 +66,7 @@ const ChatsStack = () => {
 	const { split } = React.useContext(SplitContext);
 
 	return (
-		<Chats.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...stackAnimation }}>
+		<Chats.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
 			<Chats.Screen
 				name='RoomsListView'
 				component={RoomsListView}
@@ -180,7 +180,7 @@ const ProfileStack = () => {
 	const { split } = React.useContext(SplitContext);
 
 	return (
-		<Profile.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...stackAnimation }}>
+		<Profile.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
 			<Profile.Screen
 				name='ProfileView'
 				component={ProfileView}
@@ -197,7 +197,7 @@ const SettingsStack = () => {
 	const { split } = React.useContext(SplitContext);
 
 	return (
-		<Settings.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...stackAnimation }}>
+		<Settings.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
 			<Settings.Screen
 				name='SettingsView'
 				component={SettingsView}
@@ -233,7 +233,7 @@ const AdminPanelStack = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<AdminPanel.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...stackAnimation }}>
+		<AdminPanel.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
 			<AdminPanel.Screen
 				name='AdminPanelView'
 				component={AdminPanelView}
@@ -260,7 +260,7 @@ const NewMessageStack = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<NewMessage.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...stackAnimation }}>
+		<NewMessage.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
 			<NewMessage.Screen
 				name='NewMessageView'
 				component={NewMessageView}
@@ -289,7 +289,7 @@ const InsideStackModal = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<InsideStack.Navigator mode='modal' screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...modalAnimation }}>
+		<InsideStack.Navigator mode='modal' screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...ModalAnimation }}>
 			<InsideStack.Screen
 				name='ChatsDrawer'
 				component={ChatsDrawer}

@@ -1,72 +1,68 @@
 import React from 'react';
-import { View, Easing } from 'react-native';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
-import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
-import { ThemeContext } from '../theme';
-import { SplitContext } from '../split';
+import { ThemeContext } from '../../theme';
+import { SplitContext } from '../../split';
 import {
-	defaultHeader, themedHeader, modalAnimation, stackAnimation
-} from '../utils/navigation';
-import Toast from '../containers/Toast';
-import Sidebar from '../views/SidebarView';
-import NotificationBadge from '../notifications/inApp';
+	defaultHeader, themedHeader, StackAnimation, FadeFromCenterModal
+} from '../../utils/navigation';
+import Toast from '../../containers/Toast';
+import NotificationBadge from '../../notifications/inApp';
+import { ModalContainer } from './ModalContainer';
 
 // Chats Stack
-import RoomView from '../views/RoomView';
-import RoomsListView from '../views/RoomsListView';
-import RoomActionsView from '../views/RoomActionsView';
-import RoomInfoView from '../views/RoomInfoView';
-import RoomInfoEditView from '../views/RoomInfoEditView';
-import RoomMembersView from '../views/RoomMembersView';
-import SearchMessagesView from '../views/SearchMessagesView';
-import SelectedUsersView from '../views/SelectedUsersView';
-import InviteUsersView from '../views/InviteUsersView';
-import InviteUsersEditView from '../views/InviteUsersEditView';
-import MessagesView from '../views/MessagesView';
-import AutoTranslateView from '../views/AutoTranslateView';
-import DirectoryView from '../views/DirectoryView';
-import NotificationPrefView from '../views/NotificationPreferencesView';
-import VisitorNavigationView from '../views/VisitorNavigationView';
-import ForwardLivechatView from '../views/ForwardLivechatView';
-import LivechatEditView from '../views/LivechatEditView';
-import PickerView from '../views/PickerView';
-import ThreadMessagesView from '../views/ThreadMessagesView';
-import MarkdownTableView from '../views/MarkdownTableView';
-import ReadReceiptsView from '../views/ReadReceiptView';
+import RoomView from '../../views/RoomView';
+import RoomsListView from '../../views/RoomsListView';
+import RoomActionsView from '../../views/RoomActionsView';
+import RoomInfoView from '../../views/RoomInfoView';
+import RoomInfoEditView from '../../views/RoomInfoEditView';
+import RoomMembersView from '../../views/RoomMembersView';
+import SearchMessagesView from '../../views/SearchMessagesView';
+import SelectedUsersView from '../../views/SelectedUsersView';
+import InviteUsersView from '../../views/InviteUsersView';
+import InviteUsersEditView from '../../views/InviteUsersEditView';
+import MessagesView from '../../views/MessagesView';
+import AutoTranslateView from '../../views/AutoTranslateView';
+import DirectoryView from '../../views/DirectoryView';
+import NotificationPrefView from '../../views/NotificationPreferencesView';
+import VisitorNavigationView from '../../views/VisitorNavigationView';
+import ForwardLivechatView from '../../views/ForwardLivechatView';
+import LivechatEditView from '../../views/LivechatEditView';
+import PickerView from '../../views/PickerView';
+import ThreadMessagesView from '../../views/ThreadMessagesView';
+import MarkdownTableView from '../../views/MarkdownTableView';
+import ReadReceiptsView from '../../views/ReadReceiptView';
 
 // Profile Stack
-import ProfileView from '../views/ProfileView';
+import ProfileView from '../../views/ProfileView';
 
 // Settings Stack
-import SettingsView from '../views/SettingsView';
-import LanguageView from '../views/LanguageView';
-import ThemeView from '../views/ThemeView';
-import DefaultBrowserView from '../views/DefaultBrowserView';
-import ScreenLockConfigView from '../views/ScreenLockConfigView';
+import SettingsView from '../../views/SettingsView';
+import LanguageView from '../../views/LanguageView';
+import ThemeView from '../../views/ThemeView';
+import DefaultBrowserView from '../../views/DefaultBrowserView';
+import ScreenLockConfigView from '../../views/ScreenLockConfigView';
 
 // Admin Stack
-import AdminPanelView from '../views/AdminPanelView';
+import AdminPanelView from '../../views/AdminPanelView';
 
 // NewMessage Stack
-import NewMessageView from '../views/NewMessageView';
-import CreateChannelView from '../views/CreateChannelView';
+import NewMessageView from '../../views/NewMessageView';
+import CreateChannelView from '../../views/CreateChannelView';
 
 // InsideStackModal
-import AttachmentView from '../views/AttachmentView';
-import ModalBlockView from '../views/ModalBlockView';
-import JitsiMeetView from '../views/JitsiMeetView';
-import StatusView from '../views/StatusView';
-import CreateDiscussionView from '../views/CreateDiscussionView';
-import stackNavigator from './stackNavigator';
-import { cond, multiply, add } from 'react-native-reanimated';
-import conditional from './conditional';
+import AttachmentView from '../../views/AttachmentView';
+import ModalBlockView from '../../views/ModalBlockView';
+import JitsiMeetView from '../../views/JitsiMeetView';
+import StatusView from '../../views/StatusView';
+import CreateDiscussionView from '../../views/CreateDiscussionView';
 
 // ChatsStack
 const Chats = createStackNavigator();
 const ChatsStack = ({ navigation, route }) => {
-  console.log('ChatsStack -> navigation', navigation);
 	const { theme } = React.useContext(ThemeContext);
 	const { split } = React.useContext(SplitContext);
 
@@ -176,7 +172,7 @@ const ProfileStack = () => {
 	const { split } = React.useContext(SplitContext);
 
 	return (
-		<Profile.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...stackAnimation }}>
+		<Profile.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
 			<Profile.Screen
 				name='ProfileView'
 				component={ProfileView}
@@ -193,7 +189,7 @@ const SettingsStack = () => {
 	const { split } = React.useContext(SplitContext);
 
 	return (
-		<Settings.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...stackAnimation }}>
+		<Settings.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
 			<Settings.Screen
 				name='SettingsView'
 				component={SettingsView}
@@ -229,7 +225,7 @@ const AdminPanelStack = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<AdminPanel.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...stackAnimation }}>
+		<AdminPanel.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
 			<AdminPanel.Screen
 				name='AdminPanelView'
 				component={AdminPanelView}
@@ -242,7 +238,7 @@ const AdminPanelStack = () => {
 // ChatsDrawer
 const Drawer = createDrawerNavigator();
 const ChatsDrawer = () => (
-	<Drawer.Navigator drawerContent={({ navigation, state }) => <RoomsListView navigation={navigation} state={state} />} drawerType="permanent">
+	<Drawer.Navigator drawerContent={({ navigation, state }) => <RoomsListView navigation={navigation} state={state} />} drawerType='permanent'>
 		<Drawer.Screen name='ChatsStack' component={ChatsStack} />
 		<Drawer.Screen name='ProfileStack' component={ProfileStack} />
 		<Drawer.Screen name='SettingsStack' component={SettingsStack} />
@@ -256,7 +252,7 @@ const NewMessageStack = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<NewMessage.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...stackAnimation }}>
+		<NewMessage.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
 			<NewMessage.Screen
 				name='NewMessageView'
 				component={NewMessageView}
@@ -280,119 +276,22 @@ const NewMessageStack = () => {
 };
 
 const RoomStack = createStackNavigator();
-const RoomStackModal = () => (
-	<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#00000030' }}>
-		<View style={{ width: 600, height: 480, alignSelf: 'center', overflow: 'hidden', borderRadius: 10 }}>
-			<RoomStack.Navigator>
-				<RoomStack.Screen
-					name='RoomActionsView'
-					component={RoomActionsView}
-					options={RoomActionsView.navigationOptions}
-				/>
-				<RoomStack.Screen
-					name='RoomInfoView'
-					component={RoomInfoView}
-					options={RoomInfoView.navigationOptions}
-				/>
-			</RoomStack.Navigator>
-		</View>
-	</View>
-)
-
-function forFadeFromBottomAndroid({
-	current,
-	inverted,
-	layouts: { screen },
-	closing,
-}) {
-	// const translateY = multiply(
-	// 	current.progress.interpolate({
-	// 	inputRange: [0, 1],
-	// 	outputRange: [screen.height * 0.08, 0],
-	// 	extrapolate: 'clamp',
-	// 	}),
-	// 	inverted
-	// );
-
-	const opacity = conditional(
-		closing,
-		current.progress,
-		current.progress.interpolate({
-			inputRange: [0, 0.5, 0.9, 1],
-			outputRange: [0, 0.25, 0.7, 1],
-		})
-	);
-
-	return {
-		cardStyle: {
-			opacity,
-			// transform: [{ translateY }],
-		},
-	};
-}
-
-export const FadeInFromBottomAndroidSpec = {
-  animation: 'timing',
-  config: {
-    duration: 350,
-    easing: Easing.out(Easing.poly(5)),
-  },
-};
-
-function forFade({
-  current,
-  next,
-}) {
-  const progress = add(
-    current.progress.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, 1],
-      extrapolate: 'clamp',
-    }),
-    next
-      ? next.progress.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, 1],
-          extrapolate: 'clamp',
-        })
-      : 0
-  );
-
-  const opacity = progress.interpolate({
-    inputRange: [0, 1, 2],
-    outputRange: [0, 1, 0],
-  });
-
-  return {
-    leftButtonStyle: { opacity },
-    rightButtonStyle: { opacity },
-    titleStyle: { opacity },
-    backgroundStyle: {
-      opacity: progress.interpolate({
-        inputRange: [0, 1, 1.9, 2],
-        outputRange: [0, 1, 1, 0],
-      }),
-    },
-  };
-}
-
-const FadeOutToBottomAndroidSpec = {
-  animation: 'timing',
-  config: {
-    duration: 150,
-    easing: Easing.in(Easing.linear),
-  },
-};
-
-const FadeFromBottomAndroid = {
-	gestureDirection: 'vertical',
-	transitionSpec: {
-		open: FadeInFromBottomAndroidSpec,
-		close: FadeOutToBottomAndroidSpec,
-	},
-	cardStyleInterpolator: forFadeFromBottomAndroid,
-	// headerStyleInterpolator: forFade,
-};
+const RoomStackModal = ({ navigation }) => (
+	<ModalContainer navigation={navigation}>
+		<RoomStack.Navigator>
+			<RoomStack.Screen
+				name='RoomActionsView'
+				component={RoomActionsView}
+				options={props => RoomActionsView.navigationOptions({ ...props, showClose: true })}
+			/>
+			<RoomStack.Screen
+				name='RoomInfoView'
+				component={RoomInfoView}
+				options={RoomInfoView.navigationOptions}
+			/>
+		</RoomStack.Navigator>
+	</ModalContainer>
+);
 
 // InsideStackModal
 const InsideStack = createStackNavigator();
@@ -400,7 +299,7 @@ const InsideStackModal = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<InsideStack.Navigator mode='modal' screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...FadeFromBottomAndroid }}>
+		<InsideStack.Navigator mode='modal' screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...FadeFromCenterModal }}>
 			<InsideStack.Screen
 				name='ChatsDrawer'
 				component={ChatsDrawer}

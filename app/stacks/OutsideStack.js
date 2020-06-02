@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import { ThemeContext } from '../theme';
 import {
-	defaultHeader, themedHeader, stackAnimation, modalAnimation
+	defaultHeader, themedHeader, StackAnimation, ModalAnimation
 } from '../utils/navigation';
 
 // Outside Stack
@@ -25,7 +25,7 @@ const _OutsideStack = ({ root }) => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<Outside.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...stackAnimation }}>
+		<Outside.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
 			{root === ROOT_OUTSIDE ? (
 				<Outside.Screen
 					name='OnboardingView'
@@ -83,7 +83,7 @@ const OutsideStackModal = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<OutsideModal.Navigator mode='modal' screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...modalAnimation }}>
+		<OutsideModal.Navigator mode='modal' screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...ModalAnimation }}>
 			<OutsideModal.Screen
 				name='OutsideStack'
 				component={OutsideStack}

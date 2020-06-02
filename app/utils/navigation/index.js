@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
-import { TransitionPresets } from '@react-navigation/stack';
 
-import { analytics, leaveBreadcrumb } from './log';
-import { themes } from '../constants/colors';
-import { isAndroid } from './deviceInfo';
+import { analytics, leaveBreadcrumb } from '../log';
+import { themes } from '../../constants/colors';
+
+export * from './animations';
 
 export const defaultHeader = {
 	headerBackTitleVisible: false,
@@ -11,8 +11,6 @@ export const defaultHeader = {
 	cardStyle: { backgroundColor: 'transparent' }
 };
 
-export const stackAnimation = isAndroid ? TransitionPresets.FadeFromBottomAndroid : TransitionPresets.SlideFromRightIOS;
-export const modalAnimation = TransitionPresets.ModalTransition;
 
 export const cardStyle = {
 	backgroundColor: 'rgba(0,0,0,0)'

@@ -30,11 +30,11 @@ import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import SafeAreaView from '../../containers/SafeAreaView';
 
 class RoomActionsView extends React.Component {
-	static navigationOptions = ({ navigation, split }) => {
+	static navigationOptions = ({ navigation, showClose }) => {
 		const options = {
 			title: I18n.t('Actions')
 		};
-		if (split) {
+		if (showClose) {
 			options.headerLeft = () => <CloseModalButton navigation={navigation} testID='room-actions-view-close' />;
 		}
 		return options;
@@ -59,7 +59,6 @@ class RoomActionsView extends React.Component {
 		super(props);
 		this.mounted = false;
 		const room = props.route.params?.room;
-    console.log('constructor -> props.route', props.route);
 		const member = props.route.params?.member;
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;
