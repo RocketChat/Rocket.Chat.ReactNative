@@ -14380,8 +14380,8 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     inherits "^2.0.1"
 
 rn-extensions-share@RocketChat/rn-extensions-share#new.multiple-data:
-  version "2.4.0-rc.0"
-  resolved "https://codeload.github.com/RocketChat/rn-extensions-share/tar.gz/7b8d6019301b2a42248d761cd53216387a97f71c"
+  version "2.4.0-rc.1"
+  resolved "https://codeload.github.com/RocketChat/rn-extensions-share/tar.gz/13cc4fb7a3cf6458572b89ea69d0d3ebd6077067"
 
 rn-fetch-blob@0.12.0:
   version "0.12.0"
