@@ -302,6 +302,7 @@ class RoomView extends React.Component {
 			return;
 		}
 		navigation.setOptions({
+			headerShown: true,
 			headerTitle: () => (
 				<RoomHeaderView
 					rid={rid}

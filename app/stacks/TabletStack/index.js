@@ -75,6 +75,7 @@ const ChatsStack = ({ navigation, route }) => {
 				<Chats.Screen
 					name='RoomView'
 					component={RoomView}
+					options={{ headerShown: false }}
 				/>
 			</Chats.Navigator>
 		</View>
