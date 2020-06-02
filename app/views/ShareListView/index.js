@@ -123,7 +123,7 @@ class ShareListView extends React.Component {
 
 		setTimeout(async() => {
 			try {
-				const { value, type } = await ShareExtension.data();
+				const [{ value, type }] = await ShareExtension.data();
 				let fileInfo = null;
 				const isMedia = (type === 'media');
 				if (isMedia) {
