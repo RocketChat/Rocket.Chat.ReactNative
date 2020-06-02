@@ -85,7 +85,8 @@ const MessageErrorActions = forwardRef(({ tmid }, ref) => {
 					danger: true,
 					onPress: () => handleDelete(message)
 				}
-			]
+			],
+			hasCancel: true
 		});
 	};
 

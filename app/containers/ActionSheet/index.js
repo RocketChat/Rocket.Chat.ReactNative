@@ -28,9 +28,12 @@ import Separator from '../Separator';
 import { themes } from '../../constants/colors';
 import styles, { ITEM_HEIGHT } from './styles';
 import { isTablet, isAndroid } from '../../utils/deviceInfo';
+import Button from '../Button';
+import I18n from '../../i18n';
 
 const HANDLE_HEIGHT = 40;
 const MIN_SNAP_HEIGHT = 16;
+const CANCEL_HEIGHT = 64;
 
 const ANIMATION_DURATION = 100;
 
@@ -54,7 +57,22 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 	const insets = useSafeAreaInsets();
 	const { landscape } = orientation;
 
-	const open = Math.max((height - ((ITEM_HEIGHT + ANDROID_ADJUST) * data?.options?.length) - HANDLE_HEIGHT - (data?.headerHeight || 0) - insets.bottom), MIN_SNAP_HEIGHT);
+	const open = Math.max(
+		(
+			height
+			// Items height
+			- ((ITEM_HEIGHT + ANDROID_ADJUST) * data?.options?.length)
+			// Handle height
+			- HANDLE_HEIGHT
+			// Custom header height
+			- (data?.headerHeight || 0)
+			// Insets bottom height (Notch devices)
+			- insets.bottom
+			// Cancel button height
+			- (data.hasCancel ? CANCEL_HEIGHT : 0)
+		),
+		MIN_SNAP_HEIGHT
+	);
 
 	/*
 	 * if the action sheet cover more
@@ -119,6 +137,17 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 		</>
 	);
 
+	const renderFooter = () => (data?.hasCancel ? (
+		<Button
+			onPress={hide}
+			title={I18n.t('Cancel')}
+			backgroundColor={themes[theme].auxiliaryBackground}
+			color={themes[theme].bodyText}
+			style={styles.footer}
+			theme={theme}
+		/>
+	) : null);
+
 	const renderSeparator = () => <Separator theme={theme} style={styles.separator} />;
 
 	const animatedPosition = React.useRef(new Value(0));
@@ -167,6 +196,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 						contentContainerStyle={styles.content}
 						ItemSeparatorComponent={renderSeparator}
 						ListHeaderComponent={renderSeparator}
+						ListFooterComponent={renderFooter}
 						renderItem={({ item }) => <Item item={item} hide={hide} theme={theme} />}
 					/>
 				</>

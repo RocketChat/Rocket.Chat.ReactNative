@@ -163,7 +163,7 @@ class MessagesView extends React.Component {
 						theme={theme}
 					/>
 				),
-				action: { title: I18n.t('Unstar'), icon: 'star', onPress: this.handleActionPress },
+				action: message => ({ title: I18n.t('Unstar'), icon: message.starred ? 'star-filled' : 'star', onPress: this.handleActionPress }),
 				handleActionPress: message => RocketChat.toggleStarMessage(message._id, message.starred)
 			},
 			// Pinned Messages Screen
@@ -180,7 +180,7 @@ class MessagesView extends React.Component {
 						theme={theme}
 					/>
 				),
-				action: { title: I18n.t('Unpin'), icon: 'pin', onPress: this.handleActionPress },
+				action: () => ({ title: I18n.t('Unpin'), icon: 'pin', onPress: this.handleActionPress }),
 				handleActionPress: message => RocketChat.togglePinMessage(message._id, message.pinned)
 			}
 		}[name]);
@@ -234,8 +234,9 @@ class MessagesView extends React.Component {
 	}
 
 	showActionSheet = () => {
+		const { message } = this.state;
 		const { show } = this.props;
-		show({ options: [this.content.action] });
+		show({ options: [this.content.action(message)], hasCancel: true });
 	}
 
 	handleActionPress = async() => {

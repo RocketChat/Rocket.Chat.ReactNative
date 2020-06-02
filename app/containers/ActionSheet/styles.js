@@ -44,5 +44,8 @@ export default StyleSheet.create({
 		width: '50%',
 		alignSelf: 'center',
 		left: '25%'
+	},
+	footer: {
+		marginHorizontal: 16
 	}
 });
