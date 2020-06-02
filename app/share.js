@@ -5,6 +5,7 @@ import { AppearanceProvider } from 'react-native-appearance';
 import { createStackNavigator } from 'react-navigation-stack';
 import { Provider } from 'react-redux';
 import RNUserDefaults from 'rn-user-defaults';
+import ShareExtension from 'rn-extensions-share';
 
 import {
 	defaultTheme,
@@ -21,6 +22,8 @@ import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { ThemeContext } from './theme';
 import { localAuthenticate } from './utils/localAuthentication';
 import ScreenLockedView from './views/ScreenLockedView';
+import { showErrorAlert } from './utils/info';
+import I18n from './i18n';
 
 const InsideNavigator = createStackNavigator({
 	ShareListView: {
@@ -38,18 +41,7 @@ const InsideNavigator = createStackNavigator({
 	cardStyle
 });
 
-const OutsideNavigator = createStackNavigator({
-	WithoutServersView: {
-		getScreen: () => require('./views/WithoutServersView').default
-	}
-}, {
-	initialRouteName: 'WithoutServersView',
-	defaultNavigationOptions: defaultHeader,
-	cardStyle
-});
-
 const AppContainer = createAppContainer(createSwitchNavigator({
-	OutsideStack: OutsideNavigator,
 	InsideStack: InsideNavigator,
 	AuthLoading: {
 		getScreen: () => require('./views/AuthLoadingView').default
@@ -88,7 +80,11 @@ class Root extends React.Component {
 			await Navigation.navigate('InsideStack');
 			await RocketChat.shareExtensionInit(currentServer);
 		} else {
-			await Navigation.navigate('OutsideStack');
+			showErrorAlert(
+				I18n.t('You_need_to_access_at_least_one_RocketChat_server_to_share_something'),
+				I18n.t('Without_Servers'),
+				() => ShareExtension.close()
+			);
 		}
 	}
 
