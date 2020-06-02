@@ -288,11 +288,10 @@ class RoomsListView extends React.Component {
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
-	setHeader = () => {
+	getHeader = () => {
 		const { searching } = this.state;
 		const { navigation } = this.props;
-
-		navigation.setOptions({
+		return {
 			headerLeft: () => (searching && isAndroid ? (
 				<CustomHeaderButtons left>
 					<Item
@@ -325,7 +324,13 @@ class RoomsListView extends React.Component {
 					/>
 				</CustomHeaderButtons>
 			))
-		});
+		};
+	}
+
+	setHeader = () => {
+		const { navigation } = this.props;
+		const options = this.getHeader();
+		navigation.setOptions(options);
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -709,47 +714,16 @@ class RoomsListView extends React.Component {
 	};
 
 	renderHeader = () => {
-		const { searching } = this.state;
-		const { navigation, isMasterDetail } = this.props;
+		const { isMasterDetail } = this.props;
 
 		if (!isMasterDetail) {
 			return null;
 		}
 
+		const options = this.getHeader();
 		return (
 			<Header
-				headerLeft={() => (searching && isAndroid ? (
-					<CustomHeaderButtons left>
-						<Item
-							title='cancel'
-							iconName='cross'
-							onPress={this.cancelSearch}
-						/>
-					</CustomHeaderButtons>
-				) : (
-					<DrawerButton
-						navigation={navigation}
-						testID='rooms-list-view-sidebar'
-					/>
-				))}
-				headerTitle={() => <RoomsListHeaderView />}
-				headerRight={() => (searching && isAndroid ? null : (
-					<CustomHeaderButtons>
-						{isAndroid ? (
-							<Item
-								title='search'
-								iconName='magnifier'
-								onPress={this.initSearching}
-							/>
-						) : null}
-						<Item
-							title='new'
-							iconName='edit-rounded'
-							onPress={() => navigation.navigate('NewMessageStack')}
-							testID='rooms-list-view-create-channel'
-						/>
-					</CustomHeaderButtons>
-				))}
+				{...options}
 			/>
 		);
 	}
