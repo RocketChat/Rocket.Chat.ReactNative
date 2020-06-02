@@ -135,6 +135,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 				<>
 					<TapGestureHandler onHandlerStateChange={overlay}>
 						<Animated.View
+							testID='scroll-bottom-sheet-backdrop'
 							style={[
 								styles.backdrop,
 								{
@@ -145,6 +146,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 						/>
 					</TapGestureHandler>
 					<ScrollBottomSheet
+						testID='scroll-bottom-sheet'
 						ref={bottomSheetRef}
 						componentType='FlatList'
 						snapPoints={snaps}

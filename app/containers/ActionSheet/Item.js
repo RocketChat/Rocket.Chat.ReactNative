@@ -24,6 +24,7 @@ const Item = React.memo(({
 			onPress={onPress}
 			style={[styles.item, { backgroundColor: themes[theme].focusedBackground }]}
 			theme={theme}
+			testID={item.title}
 		>
 			<CustomIcon name={item.icon} size={20} color={item.danger ? themes[theme].dangerColor : themes[theme].bodyText} />
 			<Text

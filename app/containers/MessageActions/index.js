@@ -45,7 +45,7 @@ const MessageActions = forwardRef(({
 				hasEditPermission: result[permission[0]],
 				hasDeletePermission: result[permission[1]],
 				hasForceDeletePermission: result[permission[2]],
-				hasPinPermission: result[permissions[3]]
+				hasPinPermission: result[permission[3]]
 			};
 		} catch {
 			// Do nothing

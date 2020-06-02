@@ -46,7 +46,12 @@ const DEFAULT_EMOJIS = ['clap', '+1', 'heart_eyes', 'grinning', 'thinking_face',
 const HeaderItem = React.memo(({
 	item, handleReaction, server, theme
 }) => (
-	<Button onPress={() => handleReaction(`:${ item.content || item }:`)} style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]} theme={theme}>
+	<Button
+		testID={`message-actions-emoji-${ item.content || item }`}
+		onPress={() => handleReaction(`:${ item.content || item }:`)}
+		style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
+		theme={theme}
+	>
 		{item?.isCustom ? (
 			<CustomEmoji style={styles.customEmoji} emoji={item} baseUrl={server} />
 		) : (
@@ -64,7 +69,12 @@ HeaderItem.propTypes = {
 };
 
 const HeaderFooter = React.memo(({ handleReaction, theme }) => (
-	<Button onPress={() => handleReaction()} style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]} theme={theme}>
+	<Button
+		testID='add-reaction'
+		onPress={() => handleReaction()}
+		style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
+		theme={theme}
+	>
 		<CustomIcon name='add-reaction' size={24} color={themes[theme].bodyText} />
 	</Button>
 ));

@@ -212,9 +212,11 @@ describe('Room actions screen', () => {
 				await waitFor(element(by.label(`${ data.random }message`)).atIndex(0)).toBeVisible().withTimeout(60000);
 				await expect(element(by.label(`${ data.random }message`)).atIndex(0)).toBeVisible();
 				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
-				await waitFor(element(by.text('Unstar'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.text('Unstar'))).toBeVisible();
-				await element(by.text('Unstar')).tap();
+
+				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
+				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
+				await element(by.id('Unstar')).tap();
+
 				await waitFor(element(by.label(`${ data.random }message`))).toBeNotVisible().withTimeout(60000);
 				await expect(element(by.label(`${ data.random }message`))).toBeNotVisible();
 				await backToActions();
@@ -228,9 +230,11 @@ describe('Room actions screen', () => {
 				await waitFor(element(by.label(`${ data.random }edited (edited)`)).atIndex(0)).toBeVisible().withTimeout(60000);
 				await expect(element(by.label(`${ data.random }edited (edited)`)).atIndex(0)).toBeVisible();
 				await element(by.label(`${ data.random }edited (edited)`)).atIndex(0).longPress();
-				await waitFor(element(by.text('Unpin'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.text('Unpin'))).toBeVisible();
-				await element(by.text('Unpin')).tap();
+
+				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
+				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
+				await element(by.id('Unpin')).tap();
+
 				await waitFor(element(by.label(`${ data.random }edited (edited)`)).atIndex(0)).toBeNotVisible().withTimeout(60000);
 				await expect(element(by.label(`${ data.random }edited (edited)`))).toBeNotVisible();
 				await backToActions();
