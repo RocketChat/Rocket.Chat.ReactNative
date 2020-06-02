@@ -5,8 +5,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import ShareExtension from 'rn-extensions-share';
+import * as FileSystem from 'expo-file-system';
 import { connect } from 'react-redux';
-import RNFetchBlob from 'rn-fetch-blob';
 import * as mime from 'react-native-mime-types';
 import { isEqual, orderBy } from 'lodash';
 import { Q } from '@nozbe/watermelondb';
@@ -128,7 +128,7 @@ class ShareListView extends React.Component {
 				const isMedia = (type === 'media');
 				if (isMedia) {
 					this.setState({ mediaLoading: true });
-					const data = await RNFetchBlob.fs.stat(this.uriToPath(value));
+					const data = FileSystem.getInfoAsync(this.uriToPath(value), { size: true });
 					fileInfo = {
 						name: data.filename,
 						description: '',
