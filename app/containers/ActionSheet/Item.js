@@ -1,15 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, TouchableOpacity } from 'react-native';
+import { Text } from 'react-native';
 
 import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
-import { isAndroid } from '../../utils/deviceInfo';
-import Touch from '../../utils/touch';
-
-// For some reason react-native-gesture-handler isn't working on bottom sheet (iOS)
-const Button = isAndroid ? Touch : TouchableOpacity;
+import { Button } from './index';
 
 const Item = React.memo(({
 	item, hide, theme

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, FlatList, StyleSheet, TouchableOpacity
+	View, Text, FlatList, StyleSheet
 } from 'react-native';
 
 import { withTheme } from '../../theme';
@@ -10,11 +10,7 @@ import { CustomIcon } from '../../lib/Icons';
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import database from '../../lib/database';
-import { isAndroid } from '../../utils/deviceInfo';
-import Touch from '../../utils/touch';
-
-// For some reason react-native-gesture-handler isn't working on bottom sheet (iOS)
-const Button = isAndroid ? Touch : TouchableOpacity;
+import { Button } from '../ActionSheet';
 
 export const HEADER_HEIGHT = 36;
 

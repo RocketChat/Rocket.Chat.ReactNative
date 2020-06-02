@@ -6,7 +6,7 @@ import React, {
 	useImperativeHandle
 } from 'react';
 import PropTypes from 'prop-types';
-import { Keyboard } from 'react-native';
+import { Keyboard, TouchableOpacity, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TapGestureHandler, State } from 'react-native-gesture-handler';
 import ScrollBottomSheet from 'react-native-scroll-bottom-sheet';
@@ -28,8 +28,11 @@ import Separator from '../Separator';
 import { themes } from '../../constants/colors';
 import styles, { ITEM_HEIGHT } from './styles';
 import { isTablet, isAndroid } from '../../utils/deviceInfo';
-import Button from '../Button';
+import Touch from '../../utils/touch';
 import I18n from '../../i18n';
+
+// For some reason react-native-gesture-handler isn't working on bottom sheet (iOS)
+export const Button = isAndroid ? Touch : TouchableOpacity;
 
 const HANDLE_HEIGHT = 40;
 const MIN_SNAP_HEIGHT = 16;
@@ -140,12 +143,13 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 	const renderFooter = () => (data?.hasCancel ? (
 		<Button
 			onPress={hide}
-			title={I18n.t('Cancel')}
-			backgroundColor={themes[theme].auxiliaryBackground}
-			color={themes[theme].bodyText}
-			style={styles.footer}
+			style={[styles.button, { backgroundColor: themes[theme].auxiliaryBackground }]}
 			theme={theme}
-		/>
+		>
+			<Text style={[styles.text, { color: themes[theme].bodyText }]}>
+				{I18n.t('Cancel')}
+			</Text>
+		</Button>
 	) : null);
 
 	const renderSeparator = () => <Separator theme={theme} style={styles.separator} />;

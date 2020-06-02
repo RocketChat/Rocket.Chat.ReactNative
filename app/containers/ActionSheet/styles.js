@@ -45,7 +45,17 @@ export default StyleSheet.create({
 		alignSelf: 'center',
 		left: '25%'
 	},
-	footer: {
-		marginHorizontal: 16
+	button: {
+		marginHorizontal: 16,
+		paddingHorizontal: 14,
+		justifyContent: 'center',
+		height: 48,
+		borderRadius: 2,
+		marginBottom: 12
+	},
+	text: {
+		fontSize: 16,
+		textAlign: 'center',
+		...sharedStyles.textMedium
 	}
 });
