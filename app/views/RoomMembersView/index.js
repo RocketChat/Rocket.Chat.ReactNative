@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, Alert } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { connect } from 'react-redux';
 import { SafeAreaView } from 'react-navigation';
-import * as Haptics from 'expo-haptics';
 import { Q } from '@nozbe/watermelondb';
 
 import styles from './styles';
@@ -24,6 +23,8 @@ import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import { themes } from '../../constants/colors';
 import { getUserSelector } from '../../selectors/login';
+import { connectActionSheet } from '../../actionSheet';
+import { showConfirmationAlert } from '../../utils/info';
 
 const PAGE_SIZE = 25;
 
@@ -53,6 +54,7 @@ class RoomMembersView extends React.Component {
 			id: PropTypes.string,
 			token: PropTypes.string
 		}),
+		show: PropTypes.func,
 		theme: PropTypes.string
 	}
 
@@ -69,7 +71,6 @@ class RoomMembersView extends React.Component {
 			rid,
 			members: [],
 			membersFiltered: [],
-			userLongPressed: {},
 			room: room || {},
 			end: false
 		};
@@ -136,32 +137,28 @@ class RoomMembersView extends React.Component {
 			return;
 		}
 		const { room } = this.state;
+		const { show } = this.props;
 		const { muted } = room;
 
 		const userIsMuted = !!(muted || []).find(m => m === user.username);
 		user.muted = userIsMuted;
 
-		Alert.alert(
-			`${ I18n.t(userIsMuted ? 'Unmute' : 'Mute') } ${ user.username }?`,
-			I18n.t(`The_user_${ userIsMuted ? 'will' : 'wont' }_be_able_to_type_in_roomName`, {
-				roomName: RocketChat.getRoomTitle(room)
-			}),
-			[
-				{
-					text: I18n.t('Cancel'),
-					style: 'cancel'
-				},
-				{
-					text: I18n.t(userIsMuted ? 'Unmute' : 'Mute'),
-					style: 'destructive',
-					onPress: this.handleMute
+		show({
+			options: [{
+				icon: userIsMuted ? 'volume' : 'volume-off',
+				title: I18n.t(userIsMuted ? 'Unmute' : 'Mute'),
+				onPress: () => {
+					showConfirmationAlert({
+						message: I18n.t(`The_user_${ userIsMuted ? 'will' : 'wont' }_be_able_to_type_in_roomName`, {
+							roomName: RocketChat.getRoomTitle(room)
+						}),
+						callToAction: I18n.t(userIsMuted ? 'Unmute' : 'Mute'),
+						onPress: () => this.handleMute(user)
+					});
 				}
-			],
-			{ cancelable: true }
-		);
-
-		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-		this.setState({ userLongPressed: user });
+			}],
+			hasCancel: true
+		});
 	}
 
 	toggleStatus = () => {
@@ -209,11 +206,11 @@ class RoomMembersView extends React.Component {
 		});
 	}
 
-	handleMute = async() => {
-		const { rid, userLongPressed } = this.state;
+	handleMute = async(user) => {
+		const { rid } = this.state;
 		try {
-			await RocketChat.toggleMuteUserInRoom(rid, userLongPressed.username, !userLongPressed.muted);
-			EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_key', { key: userLongPressed.muted ? I18n.t('unmuted') : I18n.t('muted') }) });
+			await RocketChat.toggleMuteUserInRoom(rid, user?.username, !user?.muted);
+			EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_key', { key: user?.muted ? I18n.t('unmuted') : I18n.t('muted') }) });
 		} catch (e) {
 			log(e);
 		}
@@ -282,4 +279,4 @@ const mapStateToProps = state => ({
 	user: getUserSelector(state)
 });
 
-export default connect(mapStateToProps)(withTheme(RoomMembersView));
+export default connect(mapStateToProps)(connectActionSheet(withTheme(RoomMembersView)));
