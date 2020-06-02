@@ -686,7 +686,7 @@ class MessageBox extends Component {
 
 	submit = async() => {
 		const {
-			onSubmit, rid: roomId, tmid
+			onSubmit, rid: roomId, tmid, showSend
 		} = this.props;
 		const message = this.text;
 
@@ -695,7 +695,7 @@ class MessageBox extends Component {
 		this.closeEmoji();
 		this.stopTrackingMention();
 		this.handleTyping(false);
-		if (message.trim() === '') {
+		if (message.trim() === '' && !showSend) {
 			return;
 		}
 

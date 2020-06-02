@@ -102,7 +102,7 @@ const ShareView = React.memo(({
 		<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
 			{attachments?.map((item, index) => (
 				<BorderlessButton onPress={() => select(index)}>
-					<Text>{item.name}</Text>
+					<Text>{item.filename}</Text>
 				</BorderlessButton>
 			))}
 			<ImageViewer uri={attachments[selected]?.path} />
@@ -149,13 +149,13 @@ ShareView.propTypes = {
 	server: PropTypes.string
 };
 
-const mapStateToProps = (({ login, server }) => ({
+const mapStateToProps = (({ share, login, server }) => ({
 	user: {
-		id: login.user && login.user.id,
-		username: login.user && login.user.username,
-		token: login.user && login.user.token
+		id: (share.user || login.user)?.id,
+		username: (share.user || login.user)?.username,
+		token: (share.user || login.user)?.token
 	},
-	server: server.server
+	server: share.server || server.server
 }));
 
 export default connect(mapStateToProps)(withTheme(ShareView));

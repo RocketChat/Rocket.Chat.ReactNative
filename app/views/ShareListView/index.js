@@ -125,7 +125,7 @@ class ShareListView extends React.Component {
 				const data = await ShareExtension.data();
 				const info = await Promise.all(data.map(file => FileSystem.getInfoAsync(this.uriToPath(file.value), { size: true })));
 				const attachments = info.map(file => ({
-					name: file.uri.substring(file.uri.lastIndexOf('/') + 1),
+					filename: file.uri.substring(file.uri.lastIndexOf('/') + 1),
 					description: '',
 					size: file.size,
 					mime: mime.lookup(file.uri),
