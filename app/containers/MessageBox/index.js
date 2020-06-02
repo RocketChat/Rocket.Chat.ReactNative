@@ -54,6 +54,7 @@ const imagePickerConfig = {
 };
 
 const libraryPickerConfig = {
+	multiple: true,
 	mediaType: 'any'
 };
 
@@ -95,7 +96,15 @@ class MessageBox extends Component {
 		typing: PropTypes.func,
 		theme: PropTypes.string,
 		replyCancel: PropTypes.func,
+		showSend: PropTypes.bool,
+		onChangeText: PropTypes.func,
 		navigation: PropTypes.object
+	}
+
+	static defaultProps = {
+		message: {
+			id: ''
+		}
 	}
 
 	constructor(props) {
@@ -103,7 +112,7 @@ class MessageBox extends Component {
 		this.state = {
 			mentions: [],
 			showEmojiKeyboard: false,
-			showSend: false,
+			showSend: props.showSend,
 			recording: false,
 			trackingType: '',
 			file: {
@@ -192,7 +201,7 @@ class MessageBox extends Component {
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		const { isFocused, editing, replying } = this.props;
-		if (!isFocused()) {
+		if (!isFocused?.()) {
 			return;
 		}
 		if (editing !== nextProps.editing && nextProps.editing) {
@@ -218,7 +227,7 @@ class MessageBox extends Component {
 		if (nextProps.theme !== theme) {
 			return true;
 		}
-		if (!isFocused()) {
+		if (!isFocused?.()) {
 			return false;
 		}
 		if (nextProps.roomType !== roomType) {
@@ -277,10 +286,12 @@ class MessageBox extends Component {
 	}
 
 	onChangeText = (text) => {
+		const { onChangeText } = this.props;
 		const isTextEmpty = text.length === 0;
 		this.setShowSend(!isTextEmpty);
 		this.debouncedOnChangeText(text);
 		this.setInput(text);
+		onChangeText?.(text);
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -495,7 +506,8 @@ class MessageBox extends Component {
 
 	setShowSend = (showSend) => {
 		const { showSend: prevShowSend } = this.state;
-		if (prevShowSend !== showSend) {
+		const { showSend: propShowSend } = this.props;
+		if (prevShowSend !== showSend && !propShowSend) {
 			this.setState({ showSend });
 		}
 	}
@@ -561,10 +573,12 @@ class MessageBox extends Component {
 
 	chooseFromLibrary = async() => {
 		try {
-			const image = await ImagePicker.openPicker(this.libraryPickerConfig);
-			if (this.canUploadFile(image)) {
-				this.showUploadModal(image);
-			}
+			const { room } = this;
+			const attachments = await ImagePicker.openPicker(this.libraryPickerConfig);
+			Navigation.navigate('ShareView', { room, attachments });
+			// if (this.canUploadFile(image)) {
+			// 	this.showUploadModal(image);
+			// }
 		} catch (e) {
 			// Do nothing
 		}

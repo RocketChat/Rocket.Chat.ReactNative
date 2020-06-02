@@ -16,7 +16,6 @@ import database from '../../lib/database';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
-import log from '../../utils/log';
 import { canUploadFile } from '../../utils/media';
 import DirectoryItem, { ROW_HEIGHT } from '../../presentation/DirectoryItem';
 import ServerItem from '../../presentation/ServerItem';
@@ -99,13 +98,13 @@ class ShareListView extends React.Component {
 			showError: false,
 			searching: false,
 			searchText: '',
-			value: '',
 			isMedia: false,
 			mediaLoading: false,
 			fileInfo: null,
 			searchResults: [],
 			chats: [],
 			servers: [],
+			attachments: [],
 			loading: true,
 			serverInfo: null
 		};
@@ -123,26 +122,18 @@ class ShareListView extends React.Component {
 
 		setTimeout(async() => {
 			try {
-				const [{ value, type }] = await ShareExtension.data();
-				let fileInfo = null;
-				const isMedia = (type === 'media');
-				if (isMedia) {
-					this.setState({ mediaLoading: true });
-					const data = FileSystem.getInfoAsync(this.uriToPath(value), { size: true });
-					fileInfo = {
-						name: data.filename,
-						description: '',
-						size: data.size,
-						mime: mime.lookup(data.path),
-						path: isIOS ? data.path : `file://${ data.path }`
-					};
-				}
-				this.setState({
-					value, fileInfo, isMedia, mediaLoading: false
-				});
-			} catch (e) {
-				log(e);
-				this.setState({ mediaLoading: false });
+				const data = await ShareExtension.data();
+				const info = await Promise.all(data.map(file => FileSystem.getInfoAsync(this.uriToPath(file.value), { size: true })));
+				const attachments = info.map(file => ({
+					name: file.uri.substring(file.uri.lastIndexOf('/') + 1),
+					description: '',
+					size: file.size,
+					mime: mime.lookup(file.uri),
+					path: isIOS ? file.uri : `file://${ file.uri }`
+				}));
+				this.setState({ attachments });
+			} catch {
+				// Do nothing
 			}
 
 			this.getSubscriptions(server);
@@ -238,17 +229,11 @@ class ShareListView extends React.Component {
 		return ((item.prid || useRealName) && item.fname) || item.name;
 	}
 
-	shareMessage = (item) => {
-		const { value, isMedia, fileInfo } = this.state;
+	shareMessage = (room) => {
+		const { attachments } = this.state;
 		const { navigation } = this.props;
 
-		navigation.navigate('ShareView', {
-			rid: item.rid,
-			value,
-			isMedia,
-			fileInfo,
-			name: this.getRoomTitle(item)
-		});
+		navigation.navigate('ShareView', { room, attachments, shareExtension: true });
 	}
 
 	search = (text) => {

@@ -443,6 +443,7 @@ export default {
 	Send_message: 'Send message',
 	Send_me_the_code_again: 'Send me the code again',
 	Send_to: 'Send to...',
+	Sending_to: 'Sending to',
 	Sent_an_attachment: 'Sent an attachment',
 	Server: 'Server',
 	Servers: 'Servers',

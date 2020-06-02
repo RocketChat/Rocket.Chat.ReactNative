@@ -297,6 +297,15 @@ const AttachmentStack = createStackNavigator({
 	cardStyle
 });
 
+const ShareStack = createStackNavigator({
+	ShareView: {
+		getScreen: () => require('./views/ShareView').default
+	}
+}, {
+	defaultNavigationOptions: defaultHeader,
+	cardStyle
+});
+
 const ModalBlockStack = createStackNavigator({
 	ModalBlockView: {
 		getScreen: () => require('./views/ModalBlockView').default
@@ -331,6 +340,7 @@ const InsideStackModal = createStackNavigator({
 	AttachmentStack,
 	ModalBlockStack,
 	StatusStack,
+	ShareStack,
 	CreateDiscussionStack,
 	JitsiMeetView: {
 		getScreen: () => require('./views/JitsiMeetView').default
