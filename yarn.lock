@@ -14379,10 +14379,9 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-rn-extensions-share@^2.3.10:
-  version "2.3.10"
-  resolved "https://registry.yarnpkg.com/rn-extensions-share/-/rn-extensions-share-2.3.10.tgz#17b9cf101b325cfe4c150f4c2585ca1e78f965a5"
-  integrity sha512-gff32w15VXnuKdGG9QfrysI+Cga4beSWT8xdp1DvVJ1HezJ7XsDR1ELj3Wajij5OlW31VAunO8g91HgUfplmSQ==
+rn-extensions-share@RocketChat/rn-extensions-share#new.multiple-data:
+  version "2.4.0-rc.0"
+  resolved "https://codeload.github.com/RocketChat/rn-extensions-share/tar.gz/7b8d6019301b2a42248d761cd53216387a97f71c"
 
 rn-fetch-blob@0.12.0:
   version "0.12.0"
