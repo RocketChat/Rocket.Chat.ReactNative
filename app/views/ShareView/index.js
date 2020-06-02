@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
+import { BorderlessButton } from 'react-native-gesture-handler';
 
 import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
@@ -28,11 +29,10 @@ const ShareView = React.memo(({
 	},
 	server
 }) => {
-	const msgBoxRef = useRef();
 	const [loading, setLoading] = useState(false);
 	const [readOnly, setReadOnly] = useState(false);
-	const [attachments, setAttachments] = useState(navigation.getParam('attachments', {}));
-	const [selected] = useState(0);
+	const [attachments, setAttachments] = useState([]);
+	const [selected, select] = useState(0);
 	const room = navigation.getParam('room', {});
 	const shareExtension = navigation.getParam('shareExtension');
 
@@ -83,9 +83,12 @@ const ShareView = React.memo(({
 			const ro = await isReadOnly(room, { username });
 			setReadOnly(ro);
 		})();
+
+		// set attachments just when it was mounted to prevent memory issues
+		setAttachments(navigation.getParam('attachments', []));
 	}, []);
 
-	if (room?.readOnly || isBlocked(room)) {
+	if (readOnly || isBlocked(room)) {
 		return (
 			<View style={[styles.container, styles.centered, { backgroundColor: themes[theme].backgroundColor }]}>
 				<Text style={styles.title}>
@@ -95,21 +98,23 @@ const ShareView = React.memo(({
 		);
 	}
 
-	console.log('readOnly', readOnly);
-
 	return (
 		<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
-			<ImageViewer uri={attachments[selected].path} />
+			{attachments?.map((item, index) => (
+				<BorderlessButton onPress={() => select(index)}>
+					<Text>{item.name}</Text>
+				</BorderlessButton>
+			))}
+			<ImageViewer uri={attachments[selected]?.path} />
 			<MessageBox
 				showSend
-				ref={msgBoxRef}
 				rid={room.rid}
 				roomType={room.t}
 				theme={theme}
 				onSubmit={send}
 				getCustomEmoji={() => {}}
 				onChangeText={onChangeText}
-				message={attachments[selected].description}
+				message={attachments[selected]?.description}
 				navigation={navigation}
 			/>
 			<Loading visible={loading} />
@@ -119,12 +124,19 @@ const ShareView = React.memo(({
 ShareView.navigationOptions = ({ navigation, screenProps }) => {
 	const { theme } = screenProps;
 	const room = navigation.getParam('room', {});
+	const shareExtension = navigation.getParam('shareExtension');
 
-	return ({
+	const options = {
 		...themedHeader(screenProps.theme),
-		headerTitle: <Header room={room} theme={theme} />,
-		headerLeft: <CancelModalButton onPress={() => navigation.pop()} />
-	});
+		headerTitle: <Header room={room} theme={theme} />
+	};
+
+	// if is share extension show default back button
+	if (!shareExtension) {
+		options.headerLeft = <CancelModalButton onPress={() => navigation.pop()} />;
+	}
+
+	return options;
 };
 ShareView.propTypes = {
 	navigation: PropTypes.object,
