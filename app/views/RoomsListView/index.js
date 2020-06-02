@@ -61,6 +61,7 @@ import { withSplit } from '../../split';
 import { getUserSelector } from '../../selectors/login';
 import { goRoom } from '../../utils/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
+import Header from '../../containers/Header';
 
 const SCROLL_OFFSET = 56;
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
@@ -518,14 +519,14 @@ class RoomsListView extends React.Component {
 	getUidDirectMessage = room => RocketChat.getUidDirectMessage(room);
 
 	onPressItem = (item = {}) => {
-		const { navigation } = this.props;
+		const { navigation, isMasterDetail } = this.props;
 		if (!navigation.isFocused()) {
 			return;
 		}
 
 		this.cancelSearch();
 		this.item = item;
-		goRoom(item);
+		goRoom({ item, isMasterDetail });
 	};
 
 	toggleSort = () => {
@@ -613,10 +614,11 @@ class RoomsListView extends React.Component {
 
 	goRoomByIndex = (index) => {
 		const { chats } = this.state;
+		const { isMasterDetail } = this.props;
 		const filteredChats = chats.filter(c => !c.separator);
 		const room = filteredChats[index - 1];
 		if (room) {
-			this.goRoom(room);
+			this.goRoom({ item: room, isMasterDetail });
 		}
 	}
 
@@ -650,6 +652,7 @@ class RoomsListView extends React.Component {
 		const index = chats.findIndex(c => c.rid === this.item.rid);
 		const otherRoom = this.findOtherRoom(index, sign);
 		if (otherRoom) {
+			// FIXME: test commands
 			this.goRoom(otherRoom);
 		}
 	}
@@ -704,6 +707,52 @@ class RoomsListView extends React.Component {
 			/>
 		);
 	};
+
+	renderHeader = () => {
+		const { searching } = this.state;
+		const { navigation, isMasterDetail } = this.props;
+
+		if (!isMasterDetail) {
+			return null;
+		}
+
+		return (
+			<Header
+				headerLeft={() => (searching && isAndroid ? (
+					<CustomHeaderButtons left>
+						<Item
+							title='cancel'
+							iconName='cross'
+							onPress={this.cancelSearch}
+						/>
+					</CustomHeaderButtons>
+				) : (
+					<DrawerButton
+						navigation={navigation}
+						testID='rooms-list-view-sidebar'
+					/>
+				))}
+				headerTitle={() => <RoomsListHeaderView />}
+				headerRight={() => (searching && isAndroid ? null : (
+					<CustomHeaderButtons>
+						{isAndroid ? (
+							<Item
+								title='search'
+								iconName='magnifier'
+								onPress={this.initSearching}
+							/>
+						) : null}
+						<Item
+							title='new'
+							iconName='edit-rounded'
+							onPress={() => navigation.navigate('NewMessageStack')}
+							testID='rooms-list-view-create-channel'
+						/>
+					</CustomHeaderButtons>
+				))}
+			/>
+		);
+	}
 
 	getIsRead = (item) => {
 		let isUnread = item.archived !== true && item.open === true; // item is not archived and not opened
@@ -830,6 +879,7 @@ class RoomsListView extends React.Component {
 		return (
 			<SafeAreaView testID='rooms-list-view' theme={theme} style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<StatusBar theme={theme} />
+				{this.renderHeader()}
 				{this.renderScroll()}
 				{showSortDropdown ? (
 					<SortDropdown

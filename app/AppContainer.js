@@ -18,7 +18,9 @@ import AuthLoadingView from './views/AuthLoadingView';
 import SetUsernameView from './views/SetUsernameView';
 
 import OutsideStack from './stacks/OutsideStack';
+import InsideStack from './stacks/InsideStack';
 import TabletStack from './stacks/TabletStack';
+import { isTablet } from './utils/deviceInfo';
 
 // SetUsernameStack
 const SetUsername = createStackNavigator();
@@ -63,10 +65,17 @@ const App = React.memo(({ root }) => {
 								component={OutsideStack}
 							/>
 						) : null}
-						{root === ROOT_INSIDE ? (
+						{/* TODO: test width */}
+						{root === ROOT_INSIDE && isTablet ? (
 							<Stack.Screen
 								name='TabletStack'
 								component={TabletStack}
+							/>
+						) : null}
+						{root === ROOT_INSIDE && !isTablet ? (
+							<Stack.Screen
+								name='InsideStack'
+								component={InsideStack}
 							/>
 						) : null}
 						{root === ROOT_SET_USERNAME ? (

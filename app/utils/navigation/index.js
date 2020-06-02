@@ -16,7 +16,7 @@ export const cardStyle = {
 	backgroundColor: 'rgba(0,0,0,0)'
 };
 
-const borderBottom = theme => ({
+export const borderBottom = theme => ({
 	borderBottomWidth: StyleSheet.hairlineWidth,
 	borderBottomColor: themes[theme].headerBorder,
 	elevation: 0

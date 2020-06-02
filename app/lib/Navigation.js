@@ -5,8 +5,6 @@ const navigationRef = React.createRef();
 
 function navigate(name, params) {
 	navigationRef.current?.navigate(name, params);
-	// navigationRef.current?.dispatch({ type: 'JUMP_TO', payload: { name, params } });
-  // console.log('navigate -> navigationRef', navigationRef, name);
 }
 
 function back() {
