@@ -7,15 +7,16 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
-		backgroundColor: '#00000030',
+		backgroundColor: '#00000070'
 	},
 	backdrop: {
 		...StyleSheet.absoluteFill
 	},
 	modal: {
-		width: 600,
-		height: 480,
-		alignSelf: 'center',
+		// Following UIModalPresentationFormSheet size
+		// this not change on different iPad sizes
+		width: 540,
+		height: 620,
 		overflow: 'hidden',
 		borderRadius: 10
 	}

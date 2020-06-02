@@ -28,12 +28,12 @@ export default StyleSheet.create({
 		borderRadius: 10,
 		overflow: 'hidden'
 	},
-	modalFormSheet: {
-		// Following UIModalPresentationFormSheet size
-		// this not change on different iPad sizes
-		width: 540,
-		height: 620
-	},
+	// modalFormSheet: {
+	// 	// Following UIModalPresentationFormSheet size
+	// 	// this not change on different iPad sizes
+	// 	width: 540,
+	// 	height: 620
+	// },
 	modalPageSheet: {
 		width: '100%',
 		height: '100%'

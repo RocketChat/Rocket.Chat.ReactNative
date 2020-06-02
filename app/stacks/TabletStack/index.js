@@ -76,90 +76,6 @@ const ChatsStack = ({ navigation, route }) => {
 					name='RoomView'
 					component={RoomView}
 				/>
-				<Chats.Screen
-					name='RoomInfoEditView'
-					component={RoomInfoEditView}
-					options={RoomInfoEditView.navigationOptions}
-				/>
-				<Chats.Screen
-					name='RoomMembersView'
-					component={RoomMembersView}
-					options={RoomMembersView.navigationOptions}
-				/>
-				<Chats.Screen
-					name='SearchMessagesView'
-					component={SearchMessagesView}
-					options={SearchMessagesView.navigationOptions}
-				/>
-				<Chats.Screen
-					name='SelectedUsersView'
-					component={SelectedUsersView}
-				/>
-				<Chats.Screen
-					name='InviteUsersView'
-					component={InviteUsersView}
-					options={InviteUsersView.navigationOptions}
-				/>
-				<Chats.Screen
-					name='InviteUsersEditView'
-					component={InviteUsersEditView}
-					options={InviteUsersEditView.navigationOptions}
-				/>
-				<Chats.Screen
-					name='MessagesView'
-					component={MessagesView}
-					options={MessagesView.navigationOptions}
-				/>
-				<Chats.Screen
-					name='AutoTranslateView'
-					component={AutoTranslateView}
-					options={AutoTranslateView.navigationOptions}
-				/>
-				<Chats.Screen
-					name='DirectoryView'
-					component={DirectoryView}
-					options={props => DirectoryView.navigationOptions({ ...props, split })}
-				/>
-				<Chats.Screen
-					name='NotificationPrefView'
-					component={NotificationPrefView}
-					options={NotificationPrefView.navigationOptions}
-				/>
-				<Chats.Screen
-					name='VisitorNavigationView'
-					component={VisitorNavigationView}
-					options={VisitorNavigationView.navigationOptions}
-				/>
-				<Chats.Screen
-					name='ForwardLivechatView'
-					component={ForwardLivechatView}
-					options={ForwardLivechatView.navigationOptions}
-				/>
-				<Chats.Screen
-					name='LivechatEditView'
-					component={LivechatEditView}
-					options={LivechatEditView.navigationOptions}
-				/>
-				<Chats.Screen
-					name='PickerView'
-					component={PickerView}
-					options={PickerView.navigationOptions}
-				/>
-				<Chats.Screen
-					name='ThreadMessagesView'
-					component={ThreadMessagesView}
-					options={ThreadMessagesView.navigationOptions}
-				/>
-				<Chats.Screen
-					name='MarkdownTableView'
-					component={MarkdownTableView}
-					options={MarkdownTableView.navigationOptions}
-				/>
-				<Chats.Screen
-					name='ReadReceiptsView'
-					component={ReadReceiptsView}
-					options={ReadReceiptsView.navigationOptions}
-				/>
 			</Chats.Navigator>
 		</View>
 	);
@@ -276,22 +192,109 @@ const NewMessageStack = () => {
 };
 
 const RoomStack = createStackNavigator();
-const RoomStackModal = ({ navigation }) => (
-	<ModalContainer navigation={navigation}>
-		<RoomStack.Navigator>
-			<RoomStack.Screen
-				name='RoomActionsView'
-				component={RoomActionsView}
-				options={props => RoomActionsView.navigationOptions({ ...props, showClose: true })}
-			/>
-			<RoomStack.Screen
-				name='RoomInfoView'
-				component={RoomInfoView}
-				options={RoomInfoView.navigationOptions}
-			/>
-		</RoomStack.Navigator>
-	</ModalContainer>
-);
+const RoomStackModal = ({ navigation }) => {
+	const { theme } = React.useContext(ThemeContext);
+	return (
+		<ModalContainer navigation={navigation}>
+			<RoomStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
+				<RoomStack.Screen
+					name='RoomActionsView'
+					component={RoomActionsView}
+					options={props => RoomActionsView.navigationOptions({ ...props, showClose: true })}
+				/>
+				<RoomStack.Screen
+					name='RoomInfoView'
+					component={RoomInfoView}
+					options={RoomInfoView.navigationOptions}
+				/>
+				<RoomStack.Screen
+					name='RoomInfoEditView'
+					component={RoomInfoEditView}
+					options={RoomInfoEditView.navigationOptions}
+				/>
+				<RoomStack.Screen
+					name='RoomMembersView'
+					component={RoomMembersView}
+					options={RoomMembersView.navigationOptions}
+				/>
+				<RoomStack.Screen
+					name='SearchMessagesView'
+					component={SearchMessagesView}
+					options={SearchMessagesView.navigationOptions}
+				/>
+				<RoomStack.Screen
+					name='SelectedUsersView'
+					component={SelectedUsersView}
+				/>
+				<RoomStack.Screen
+					name='InviteUsersView'
+					component={InviteUsersView}
+					options={InviteUsersView.navigationOptions}
+				/>
+				<RoomStack.Screen
+					name='InviteUsersEditView'
+					component={InviteUsersEditView}
+					options={InviteUsersEditView.navigationOptions}
+				/>
+				<RoomStack.Screen
+					name='MessagesView'
+					component={MessagesView}
+					options={MessagesView.navigationOptions}
+				/>
+				<RoomStack.Screen
+					name='AutoTranslateView'
+					component={AutoTranslateView}
+					options={AutoTranslateView.navigationOptions}
+				/>
+				<RoomStack.Screen
+					name='DirectoryView'
+					component={DirectoryView}
+					options={props => DirectoryView.navigationOptions({ ...props, split })}
+				/>
+				<RoomStack.Screen
+					name='NotificationPrefView'
+					component={NotificationPrefView}
+					options={NotificationPrefView.navigationOptions}
+				/>
+				<RoomStack.Screen
+					name='VisitorNavigationView'
+					component={VisitorNavigationView}
+					options={VisitorNavigationView.navigationOptions}
+				/>
+				<RoomStack.Screen
+					name='ForwardLivechatView'
+					component={ForwardLivechatView}
+					options={ForwardLivechatView.navigationOptions}
+				/>
+				<RoomStack.Screen
+					name='LivechatEditView'
+					component={LivechatEditView}
+					options={LivechatEditView.navigationOptions}
+				/>
+				<RoomStack.Screen
+					name='PickerView'
+					component={PickerView}
+					options={PickerView.navigationOptions}
+				/>
+				<RoomStack.Screen
+					name='ThreadMessagesView'
+					component={ThreadMessagesView}
+					options={ThreadMessagesView.navigationOptions}
+				/>
+				<RoomStack.Screen
+					name='MarkdownTableView'
+					component={MarkdownTableView}
+					options={MarkdownTableView.navigationOptions}
+				/>
+				<RoomStack.Screen
+					name='ReadReceiptsView'
+					component={ReadReceiptsView}
+					options={ReadReceiptsView.navigationOptions}
+				/>
+			</RoomStack.Navigator>
+		</ModalContainer>
+	)
+}
 
 // InsideStackModal
 const InsideStack = createStackNavigator();
