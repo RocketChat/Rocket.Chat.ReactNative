@@ -53,7 +53,7 @@ import { CONTAINER_TYPES } from '../../lib/methods/actions';
 import Banner from './Banner';
 import Navigation from '../../lib/Navigation';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { withSplit } from '../../split';
+import { withMasterDetail } from '../../masterDetail';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -89,7 +89,7 @@ class RoomView extends React.Component {
 		Hide_System_Messages: PropTypes.array,
 		baseUrl: PropTypes.string,
 		customEmojis: PropTypes.object,
-		split: PropTypes.bool,
+		isMasterDetail: PropTypes.bool,
 		theme: PropTypes.string,
 		replyBroadcast: PropTypes.func
 	};
@@ -175,6 +175,7 @@ class RoomView extends React.Component {
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
+	// TODO: turn it on again
 	// shouldComponentUpdate(nextProps, nextState) {
 	// 	const { state } = this;
 	// 	const { roomUpdate, member } = state;
@@ -283,7 +284,7 @@ class RoomView extends React.Component {
 	setHeader = () => {
 		const { room, unreadsCount, roomUserId: stateRoomUserId } = this.state;
 		const {
-			navigation, route, split, theme, baseUrl, user
+			navigation, route, isMasterDetail, theme, baseUrl, user
 		} = this.props;
 		const rid = route.params?.rid;
 		const prid = route.params?.prid;
@@ -303,20 +304,20 @@ class RoomView extends React.Component {
 		}
 		navigation.setOptions({
 			headerShown: true,
-			headerTitle: () => (
-				<RoomHeaderView
-					rid={rid}
-					prid={prid}
-					tmid={tmid}
-					title={title}
-					subtitle={subtitle}
-					type={t}
-					widthOffset={tmid ? 95 : 130}
-					roomUserId={roomUserId}
-					visitor={visitor}
-					goRoomActionsView={this.goRoomActionsView}
-				/>
-			),
+			// headerTitle: () => (
+			// 	<RoomHeaderView
+			// 		rid={rid}
+			// 		prid={prid}
+			// 		tmid={tmid}
+			// 		title={title}
+			// 		subtitle={subtitle}
+			// 		type={t}
+			// 		widthOffset={tmid ? 95 : 130}
+			// 		roomUserId={roomUserId}
+			// 		visitor={visitor}
+			// 		goRoomActionsView={this.goRoomActionsView}
+			// 	/>
+			// ),
 			headerRight: () => (
 				<RightButtons
 					rid={rid}
@@ -338,7 +339,7 @@ class RoomView extends React.Component {
 					theme={theme}
 					t={t}
 					goRoomActionsView={this.goRoomActionsView}
-					split={split}
+					isMasterDetail={isMasterDetail}
 				/>
 			)
 		});
@@ -348,7 +349,6 @@ class RoomView extends React.Component {
 	goRoomActionsView = () => {
 		const { room, member } = this.state;
 		const { navigation } = this.props;
-		console.log(this.rid)
 		navigation.navigate('RoomStackModal', {
 			screen: 'RoomActionsView',
 			params: {
@@ -738,11 +738,11 @@ class RoomView extends React.Component {
 
 	navToRoomInfo = (navParam) => {
 		const { room } = this.state;
-		const { navigation, user, split } = this.props;
+		const { navigation, user, isMasterDetail } = this.props;
 		if (navParam.rid === user.id) {
 			return;
 		}
-		if (split) {
+		if (isMasterDetail) {
 			navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
 			ModalNavigation.navigate('RoomInfoView', navParam);
 		} else {
@@ -1061,4 +1061,4 @@ const mapDispatchToProps = dispatch => ({
 	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withSplit(withTheme(RoomView)));
+export default connect(mapStateToProps, mapDispatchToProps)(withMasterDetail(withTheme(RoomView)));

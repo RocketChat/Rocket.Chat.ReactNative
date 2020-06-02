@@ -19,8 +19,9 @@ import SetUsernameView from './views/SetUsernameView';
 
 import OutsideStack from './stacks/OutsideStack';
 import InsideStack from './stacks/InsideStack';
-import TabletStack from './stacks/TabletStack';
+import MasterDetailStack from './stacks/MasterDetailStack';
 import { isTablet } from './utils/deviceInfo';
+import { MasterDetailContext } from './masterDetail';
 
 // SetUsernameStack
 const SetUsername = createStackNavigator();
@@ -48,6 +49,8 @@ const App = React.memo(({ root }) => {
 		}
 	};
 
+	const { isMasterDetail } = React.useContext(MasterDetailContext);
+
 	return (
 		<SafeAreaProvider initialMetrics={initialWindowMetrics}>
 			<NavigationContainer theme={navigationTheme} ref={Navigation.navigationRef} onNavigationStateChange={onNavigationStateChange}>
@@ -66,13 +69,13 @@ const App = React.memo(({ root }) => {
 							/>
 						) : null}
 						{/* TODO: test width */}
-						{root === ROOT_INSIDE && isTablet ? (
+						{root === ROOT_INSIDE && isMasterDetail ? (
 							<Stack.Screen
-								name='TabletStack'
-								component={TabletStack}
+								name='MasterDetailStack'
+								component={MasterDetailStack}
 							/>
 						) : null}
-						{root === ROOT_INSIDE && !isTablet ? (
+						{root === ROOT_INSIDE && !isMasterDetail ? (
 							<Stack.Screen
 								name='InsideStack'
 								component={InsideStack}

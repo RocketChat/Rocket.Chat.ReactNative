@@ -64,21 +64,14 @@ import CreateDiscussionView from '../../views/CreateDiscussionView';
 const Chats = createStackNavigator();
 const ChatsStack = ({ navigation, route }) => {
 	const { theme } = React.useContext(ThemeContext);
-	const { split } = React.useContext(SplitContext);
-
 	return (
-		<View style={{ flex: 1, flexDirection: 'row', backgroundColor: 'red' }}>
-			{/* <View style={{ flex: 1, maxWidth: MAX_SIDEBAR_WIDTH, backgroundColor: 'red' }}>
-				<RoomsListView navigation={navigation} route={route} />
-			</View> */}
-			<Chats.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), animationEnabled: false }}>
-				<Chats.Screen
-					name='RoomView'
-					component={RoomView}
-					options={{ headerShown: false }}
-				/>
-			</Chats.Navigator>
-		</View>
+		<Chats.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
+			<Chats.Screen
+				name='RoomView'
+				component={RoomView}
+				options={{ headerShown: false }}
+			/>
+		</Chats.Navigator>
 	);
 };
 
@@ -155,7 +148,7 @@ const AdminPanelStack = () => {
 // ChatsDrawer
 const Drawer = createDrawerNavigator();
 const ChatsDrawer = () => (
-	<Drawer.Navigator drawerContent={({ navigation, state }) => <RoomsListView navigation={navigation} state={state} isMasterDetail />} drawerType='permanent'>
+	<Drawer.Navigator drawerContent={({ navigation, state }) => <RoomsListView navigation={navigation} state={state} />} drawerType='permanent'>
 		<Drawer.Screen name='ChatsStack' component={ChatsStack} />
 		<Drawer.Screen name='ProfileStack' component={ProfileStack} />
 		<Drawer.Screen name='SettingsStack' component={SettingsStack} />

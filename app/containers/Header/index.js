@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 const Header = ({
 	theme = 'light', headerLeft, headerTitle, headerRight
 }) => (
-	<SafeAreaView style={{ backgroundColor: themes[theme].headerBackground }}>
+	<SafeAreaView style={{ backgroundColor: themes[theme].headerBackground }} edges={['top', 'left', 'right']}>
 		<View style={[styles.container, { ...themedHeader(theme).headerStyle }]}>
 			{headerLeft ? headerLeft() : null}
 			{headerTitle ? headerTitle() : null}

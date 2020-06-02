@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from 'react';
-import { Linking } from 'react-native';
+import { Linking, Dimensions } from 'react-native';
 import { AppearanceProvider } from 'react-native-appearance';
 import { Provider } from 'react-redux';
 import RNUserDefaults from 'rn-user-defaults';
@@ -23,7 +23,7 @@ import store from './lib/createStore';
 import { loggerConfig, analytics } from './utils/log';
 import { ThemeContext } from './theme';
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
-import { MIN_WIDTH_SPLIT_LAYOUT } from './constants/tablet';
+import { MIN_WIDTH_MASTER_DETAIL_LAYOUT } from './constants/tablet';
 import {
 	isTablet, isIOS, setWidth, supportSystemTheme
 } from './utils/deviceInfo';
@@ -34,6 +34,7 @@ import AppContainer from './AppContainer';
 import TwoFactor from './containers/TwoFactor';
 import ScreenLockedView from './views/ScreenLockedView';
 import ChangePasscodeView from './views/ChangePasscodeView';
+import { MasterDetailContext } from './masterDetail';
 
 RNScreens.enableScreens();
 
@@ -56,10 +57,10 @@ export default class Root extends React.Component {
 		super(props);
 		this.init();
 		this.initCrashReport();
+		const { width } = Dimensions.get('window');
 		this.state = {
-			split: false,
-			inside: false,
-			showModal: false,
+			width,
+			isMasterDetail: this.getIsMasterDetail(width),
 			theme: defaultTheme(),
 			themePreferences: {
 				currentTheme: supportSystemTheme() ? 'automatic' : 'light',
@@ -80,22 +81,24 @@ export default class Root extends React.Component {
 				}
 			});
 		}, 5000);
+		Dimensions.addEventListener('change', this.onDimensionsChange);
 	}
 
-	// eslint-disable-next-line no-unused-vars
-	componentDidUpdate(_, prevState) {
-		if (isTablet) {
-			const { split, inside } = this.state;
-			if (inside && split !== prevState.split) {
-				// Reset app on split mode changes
-				Navigation.navigate('RoomsListView');
-				this.closeModal();
-			}
-		}
-	}
+	// // eslint-disable-next-line no-unused-vars
+	// componentDidUpdate(_, prevState) {
+	// 	if (isTablet) {
+	// 		const { split, inside } = this.state;
+	// 		if (inside && split !== prevState.split) {
+	// 			// Reset app on split mode changes
+	// 			Navigation.navigate('RoomsListView');
+	// 			this.closeModal();
+	// 		}
+	// 	}
+	// }
 
 	componentWillUnmount() {
 		clearTimeout(this.listenerTimeout);
+		Dimensions.removeEventListener('change', this.onDimensionsChange);
 
 		unsubscribeTheme();
 
@@ -121,6 +124,10 @@ export default class Root extends React.Component {
 		}
 	}
 
+	getIsMasterDetail = (width) => width > MIN_WIDTH_MASTER_DETAIL_LAYOUT
+
+	onDimensionsChange = ({ window: { width } }) => this.setState({ width, isMasterDetail: this.getIsMasterDetail(width) })
+
 	setTheme = (newTheme = {}) => {
 		// change theme state
 		this.setState(prevState => newThemeState(prevState, newTheme), () => {
@@ -131,7 +138,7 @@ export default class Root extends React.Component {
 	}
 
 	// initTablet = async() => {
-	// 	initTabletNav(args => this.setState(args));
+	// 	// initTabletNav(args => this.setState(args));
 	// 	await KeyCommands.setKeyCommands([]);
 	// 	this.onKeyCommands = KeyCommandsEmitter.addListener(
 	// 		'onKeyCommand',
@@ -150,37 +157,8 @@ export default class Root extends React.Component {
 			});
 	}
 
-	onLayout = ({ nativeEvent: { layout: { width } } }) => (isTablet ? this.setSplit(width) : null);
-
-	setSplit = (width) => {
-		this.setState({ split: width > MIN_WIDTH_SPLIT_LAYOUT });
-		setWidth(width);
-	}
-
-	closeModal = () => this.setState({ showModal: false });
-
 	render() {
-		const { split, themePreferences, theme } = this.state;
-
-		let content = <AppContainer />;
-
-		// if (isTablet) {
-		// 	const { inside, showModal } = this.state;
-		// 	content = (
-		// 		<SplitContext.Provider value={{ split }}>
-		// 			<Tablet
-		// 				theme={theme}
-		// 				tablet={split}
-		// 				inside={inside}
-		// 				showModal={showModal}
-		// 				closeModal={this.closeModal}
-		// 				onLayout={this.onLayout}
-		// 			>
-		// 				{content}
-		// 			</Tablet>
-		// 		</SplitContext.Provider>
-		// 	);
-		// }
+		const { isMasterDetail, themePreferences, theme } = this.state;
 		return (
 			<AppearanceProvider>
 				<Provider store={store}>
@@ -191,7 +169,9 @@ export default class Root extends React.Component {
 							setTheme: this.setTheme
 						}}
 					>
-						{content}
+						<MasterDetailContext.Provider value={{ isMasterDetail }}>
+							<AppContainer />
+						</MasterDetailContext.Provider>
 						<TwoFactor />
 						<ScreenLockedView />
 						<ChangePasscodeView />

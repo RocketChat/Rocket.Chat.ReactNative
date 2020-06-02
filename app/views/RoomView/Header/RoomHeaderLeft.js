@@ -14,9 +14,9 @@ const styles = StyleSheet.create({
 });
 
 const RoomHeaderLeft = ({
-	tmid, unreadsCount, navigation, baseUrl, userId, token, title, t, theme, goRoomActionsView, split
+	tmid, unreadsCount, navigation, baseUrl, userId, token, title, t, theme, goRoomActionsView, isMasterDetail
 }) => {
-	if (!split || tmid) {
+	if (!isMasterDetail || tmid) {
 		return (
 			<HeaderBackButton
 				label={unreadsCount > 999 ? '+999' : unreadsCount || ' '}

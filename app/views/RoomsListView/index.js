@@ -57,11 +57,11 @@ import {
 	handleCommandAddNewServer
 } from '../../commands';
 import { MAX_SIDEBAR_WIDTH } from '../../constants/tablet';
-import { withSplit } from '../../split';
 import { getUserSelector } from '../../selectors/login';
 import { goRoom } from '../../utils/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Header from '../../containers/Header';
+import { withMasterDetail } from '../../masterDetail';
 
 const SCROLL_OFFSET = 56;
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
@@ -89,7 +89,7 @@ const shouldUpdateProps = [
 	'StoreLastMessage',
 	'appState',
 	'theme',
-	'split',
+	'isMasterDetail',
 	'refreshing'
 ];
 const getItemLayout = (data, index) => ({
@@ -128,7 +128,7 @@ class RoomsListView extends React.Component {
 		closeServerDropdown: PropTypes.func,
 		useRealName: PropTypes.bool,
 		connected: PropTypes.bool,
-		split: PropTypes.bool
+		isMasterDetail: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -750,7 +750,7 @@ class RoomsListView extends React.Component {
 			StoreLastMessage,
 			useRealName,
 			theme,
-			split
+			isMasterDetail
 		} = this.props;
 		const id = this.getUidDirectMessage(item);
 		const isGroupChat = RocketChat.isGroupChat(item);
@@ -780,7 +780,7 @@ class RoomsListView extends React.Component {
 				showLastMessage={StoreLastMessage}
 				onPress={() => this.onPressItem(item)}
 				testID={`rooms-list-view-item-${ item.name }`}
-				width={split ? MAX_SIDEBAR_WIDTH : width}
+				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
 				toggleFav={this.toggleFav}
 				toggleRead={this.toggleRead}
 				hideChannel={this.hideChannel}
@@ -898,4 +898,4 @@ const mapDispatchToProps = dispatch => ({
 	closeServerDropdown: () => dispatch(closeServerDropdownAction())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(withSplit(RoomsListView)));
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(withMasterDetail(RoomsListView)));
