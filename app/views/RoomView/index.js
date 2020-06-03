@@ -745,6 +745,7 @@ class RoomView extends React.Component {
 			return;
 		}
 		if (isMasterDetail) {
+			navParam.showCloseModal = true;
 			navigation.navigate('RoomStackModal', { screen: 'RoomInfoView', params: navParam });
 		} else {
 			navigation.navigate('RoomInfoView', navParam);

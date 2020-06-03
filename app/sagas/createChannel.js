@@ -59,6 +59,7 @@ const handleRequest = function* handleRequest({ data }) {
 const handleSuccess = function* handleSuccess({ data }) {
 	const { rid, t } = data;
 	const isMasterDetail = yield select(state => state.app.isMasterDetail);
+	// TODO: should be added on goRoom?
 	if (isMasterDetail) {
 		Navigation.navigate('ChatsDrawer');
 	}

@@ -15,7 +15,7 @@ import sharedStyles from '../Styles';
 import RocketChat from '../../lib/rocketchat';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
-import { CustomHeaderButtons } from '../../containers/HeaderButton';
+import { CustomHeaderButtons, CloseModalButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import log from '../../utils/log';
 import { themes } from '../../constants/colors';
@@ -28,6 +28,8 @@ import Channel from './Channel';
 import Item from './Item';
 import Direct from './Direct';
 import SafeAreaView from '../../containers/SafeAreaView';
+import { goRoom } from '../../utils/goRoom';
+import Navigation from '../../lib/Navigation';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 const getRoomTitle = (room, type, name, username, statusText, theme) => (type === 'd'
@@ -56,7 +58,8 @@ class RoomInfoView extends React.Component {
 		}),
 		baseUrl: PropTypes.string,
 		rooms: PropTypes.array,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		isMasterDetail: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -102,7 +105,9 @@ class RoomInfoView extends React.Component {
 		const { navigation, route } = this.props;
 		const t = route.params?.t;
 		const rid = route.params?.rid;
+		const showCloseModal = route.params?.showCloseModal;
 		navigation.setOptions({
+			headerLeft: showCloseModal ? () => <CloseModalButton navigation={navigation} /> : undefined,
 			title: t === 'd' ? I18n.t('User_Info') : I18n.t('Room_Info'),
 			headerRight: showEdit
 				? () => (
@@ -232,30 +237,31 @@ class RoomInfoView extends React.Component {
 	goRoom = () => {
 		const { roomUser, room } = this.state;
 		const { name, username } = roomUser;
-		const { rooms, navigation } = this.props;
+		const { rooms, navigation, isMasterDetail } = this.props;
+		const params = {
+			rid: room.rid,
+			name: RocketChat.getRoomTitle({
+				t: room.t,
+				fname: name,
+				name: username
+			}),
+			t: room.t,
+			roomUserId: RocketChat.getUidDirectMessage(room)
+		};
 
 		if (room.rid) {
-			let navigate = navigation.push;
-
-			// if this is a room focused
-			if (rooms.includes(room.rid)) {
-				({ navigate } = navigation);
+			// if it's on master detail layout, we close the modal and replace RoomView
+			if (isMasterDetail) {
+				Navigation.navigate('ChatsDrawer');
+				goRoom({ item: params, isMasterDetail });
+			} else {
+				let navigate = navigation.push;
+				// if this is a room focused
+				if (rooms.includes(room.rid)) {
+					({ navigate } = navigation);
+				}
+				navigate('RoomView', params);
 			}
-			// TODO: ?
-			// } else if (split) {
-			// 	({ navigate } = Navigation);
-			// }
-
-			navigate('RoomView', {
-				rid: room.rid,
-				name: RocketChat.getRoomTitle({
-					t: room.t,
-					fname: name,
-					name: username
-				}),
-				t: room.t,
-				roomUserId: RocketChat.getUidDirectMessage(room)
-			});
 		}
 	}
 
@@ -344,7 +350,8 @@ class RoomInfoView extends React.Component {
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
-	rooms: state.room.rooms
+	rooms: state.room.rooms,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 export default connect(mapStateToProps)(withTheme(RoomInfoView));
