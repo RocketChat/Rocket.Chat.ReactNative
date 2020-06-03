@@ -465,6 +465,8 @@ class RoomsListView extends React.Component {
 			return;
 		}
 
+		Keyboard.dismiss();
+
 		if (isIOS && this.inputRef) {
 			this.inputRef.blur();
 			this.inputRef.clear();
@@ -475,7 +477,6 @@ class RoomsListView extends React.Component {
 				this.setHeader();
 				closeSearchHeader();
 			}
-			Keyboard.dismiss();
 			setTimeout(() => {
 				const offset = isAndroid ? 0 : SCROLL_OFFSET;
 				if (this.scroll.scrollTo) {
@@ -500,9 +501,10 @@ class RoomsListView extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	search = debounce(async(text) => {
-		const { searching } = this.state;
 		const result = await RocketChat.search({ text });
+
 		// if the search was cancelled before the promise is resolved
+		const { searching } = this.state;
 		if (!searching) {
 			return;
 		}
@@ -670,7 +672,7 @@ class RoomsListView extends React.Component {
 		const { navigation, server } = this.props;
 		const { input } = event;
 		if (handleCommandShowPreferences(event)) {
-			navigation.toggleDrawer();
+			navigation.navigate('SettingsStack');
 		} else if (handleCommandSearching(event)) {
 			this.scroll.scrollToOffset({ animated: true, offset: 0 });
 			this.inputRef.focus();
