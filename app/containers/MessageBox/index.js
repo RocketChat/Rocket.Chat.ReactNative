@@ -98,7 +98,8 @@ class MessageBox extends Component {
 		replyCancel: PropTypes.func,
 		showSend: PropTypes.bool,
 		onChangeText: PropTypes.func,
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		children: PropTypes.node
 	}
 
 	static defaultProps = {
@@ -217,47 +218,48 @@ class MessageBox extends Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const {
-			showEmojiKeyboard, showSend, recording, mentions, file, commandPreview
-		} = this.state;
+		// const {
+		// 	showEmojiKeyboard, showSend, recording, mentions, file, commandPreview
+		// } = this.state;
 
-		const {
-			roomType, replying, editing, isFocused, theme
-		} = this.props;
-		if (nextProps.theme !== theme) {
-			return true;
-		}
-		if (!isFocused?.()) {
-			return false;
-		}
-		if (nextProps.roomType !== roomType) {
-			return true;
-		}
-		if (nextProps.replying !== replying) {
-			return true;
-		}
-		if (nextProps.editing !== editing) {
-			return true;
-		}
-		if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
-			return true;
-		}
-		if (nextState.showSend !== showSend) {
-			return true;
-		}
-		if (nextState.recording !== recording) {
-			return true;
-		}
-		if (!equal(nextState.mentions, mentions)) {
-			return true;
-		}
-		if (!equal(nextState.commandPreview, commandPreview)) {
-			return true;
-		}
-		if (!equal(nextState.file, file)) {
-			return true;
-		}
-		return false;
+		// const {
+		// 	roomType, replying, editing, isFocused, theme
+		// } = this.props;
+		// if (nextProps.theme !== theme) {
+		// 	return true;
+		// }
+		// if (!isFocused?.()) {
+		// 	return false;
+		// }
+		// if (nextProps.roomType !== roomType) {
+		// 	return true;
+		// }
+		// if (nextProps.replying !== replying) {
+		// 	return true;
+		// }
+		// if (nextProps.editing !== editing) {
+		// 	return true;
+		// }
+		// if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
+		// 	return true;
+		// }
+		// if (nextState.showSend !== showSend) {
+		// 	return true;
+		// }
+		// if (nextState.recording !== recording) {
+		// 	return true;
+		// }
+		// if (!equal(nextState.mentions, mentions)) {
+		// 	return true;
+		// }
+		// if (!equal(nextState.commandPreview, commandPreview)) {
+		// 	return true;
+		// }
+		// if (!equal(nextState.file, file)) {
+		// 	return true;
+		// }
+		// return false;
+		return true;
 	}
 
 	componentWillUnmount() {
@@ -816,7 +818,7 @@ class MessageBox extends Component {
 			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview
 		} = this.state;
 		const {
-			editing, message, replying, replyCancel, user, getCustomEmoji, theme, Message_AudioRecorderEnabled
+			editing, message, replying, replyCancel, user, getCustomEmoji, theme, Message_AudioRecorderEnabled, children
 		} = this.props;
 
 		const isAndroidTablet = isTablet && isAndroid ? {
@@ -882,6 +884,7 @@ class MessageBox extends Component {
 						/>
 					</View>
 				</View>
+				{children}
 			</>
 		);
 	}

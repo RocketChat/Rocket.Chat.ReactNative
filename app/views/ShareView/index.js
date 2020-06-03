@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, SafeAreaView } from 'react-native';
+import {
+	View,
+	Text,
+	Image,
+	FlatList,
+	SafeAreaView,
+	InteractionManager
+} from 'react-native';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
 import { BorderlessButton } from 'react-native-gesture-handler';
@@ -18,6 +25,8 @@ import Header from './Header';
 import MessageBox from '../../containers/MessageBox';
 import ImageViewer from '../../presentation/ImageViewer';
 import RocketChat from '../../lib/rocketchat';
+import { CustomIcon } from '../../lib/Icons';
+import { BUTTON_HIT_SLOP } from '../../containers/message/utils';
 
 const ShareView = React.memo(({
 	navigation,
@@ -36,6 +45,12 @@ const ShareView = React.memo(({
 	const room = navigation.getParam('room', {});
 	const shareExtension = navigation.getParam('shareExtension');
 
+	const remove = (index) => {
+		const cpAttachments = attachments;
+		cpAttachments.splice(index, 1);
+		setAttachments(cpAttachments);
+	};
+
 	const send = async() => {
 		if (loading) {
 			return;
@@ -47,23 +62,27 @@ const ShareView = React.memo(({
 			navigation.pop();
 		}
 
-		const {
-			filename: name,
-			mime: type,
-			description,
-			size,
-			path
-		} = attachments[selected];
-		const fileInfo = {
-			name,
-			description,
-			size,
-			type,
-			path,
-			store: 'Uploads'
-		};
 		try {
-			await RocketChat.sendFileMessage(room.rid, fileInfo, undefined, server, { id, token });
+			await Promise.all(attachments.map(({
+				filename: name,
+				mime: type,
+				description,
+				size,
+				path
+			}) => RocketChat.sendFileMessage(
+				room.rid,
+				{
+					name,
+					description,
+					size,
+					type,
+					path,
+					store: 'Uploads'
+				},
+				undefined,
+				server,
+				{ id, token }
+			)));
 		} catch {
 			// Do nothing
 		}
@@ -85,7 +104,9 @@ const ShareView = React.memo(({
 		})();
 
 		// set attachments just when it was mounted to prevent memory issues
-		setAttachments(navigation.getParam('attachments', []));
+		InteractionManager.runAfterInteractions(() => {
+			setAttachments(navigation.getParam('attachments', []));
+		});
 	}, []);
 
 	if (readOnly || isBlocked(room)) {
@@ -100,11 +121,6 @@ const ShareView = React.memo(({
 
 	return (
 		<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
-			{attachments?.map((item, index) => (
-				<BorderlessButton onPress={() => select(index)}>
-					<Text>{item.filename}</Text>
-				</BorderlessButton>
-			))}
 			<ImageViewer uri={attachments[selected]?.path} />
 			<MessageBox
 				showSend
@@ -116,7 +132,29 @@ const ShareView = React.memo(({
 				onChangeText={onChangeText}
 				message={attachments[selected]?.description}
 				navigation={navigation}
-			/>
+			>
+				<FlatList
+					horizontal
+					data={attachments}
+					renderItem={({ item, index }) => (
+						<BorderlessButton onPress={() => select(index)} style={styles.item}>
+							<Image source={{ uri: item.path }} style={styles.thumb} />
+							<BorderlessButton
+								hitSlop={BUTTON_HIT_SLOP}
+								style={[styles.remove, { backgroundColor: themes[theme].bodyText, borderColor: themes[theme].auxiliaryBackground }]}
+								onPress={() => remove(index)}
+							>
+								<CustomIcon
+									name='cross'
+									color={themes[theme].backgroundColor}
+									size={16}
+								/>
+							</BorderlessButton>
+						</BorderlessButton>
+					)}
+					style={[styles.list, { backgroundColor: themes[theme].auxiliaryBackground }]}
+				/>
+			</MessageBox>
 			<Loading visible={loading} />
 		</SafeAreaView>
 	);
@@ -151,9 +189,9 @@ ShareView.propTypes = {
 
 const mapStateToProps = (({ share, login, server }) => ({
 	user: {
-		id: (share.user || login.user)?.id,
-		username: (share.user || login.user)?.username,
-		token: (share.user || login.user)?.token
+		id: share.user?.id || login.user?.id,
+		username: share.user?.username || login.user?.username,
+		token: share.user?.token || login.user?.token
 	},
 	server: share.server || server.server
 }));

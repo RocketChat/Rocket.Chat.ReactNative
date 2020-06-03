@@ -2,7 +2,29 @@ import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../Styles';
 
+const THUMB_SIZE = 64;
+
 export default StyleSheet.create({
+	list: {
+		paddingVertical: 8,
+		paddingHorizontal: 8
+	},
+	remove: {
+		position: 'absolute',
+		right: 4,
+		padding: 4,
+		borderWidth: 2,
+		borderRadius: 14
+	},
+	item: {
+		paddingTop: 8
+	},
+	thumb: {
+		width: THUMB_SIZE,
+		height: THUMB_SIZE,
+		borderRadius: 2,
+		marginRight: 16
+	},
 	// Error
 	container: {
 		flex: 1
