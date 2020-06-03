@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import Touchable from 'react-native-platform-touchable';
 import { connect } from 'react-redux';
 
-import Avatar from '../../containers/Avatar';
+import Avatar from '../Avatar';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';

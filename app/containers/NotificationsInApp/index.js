@@ -7,11 +7,11 @@ import { responsive } from 'react-native-responsive-ui';
 
 import { removeNotification as removeNotificationAction } from '../../actions/notification';
 import NotifierComponent from './NotifierComponent';
-import EventEmitter from './../../utils/events';
+import EventEmitter from '../../utils/events';
 
 const ANIMATION_DURATION = 300;
 const NOTIFICATION_DURATION = 3000;
-const LISTENER = 'NotificationInApp'
+const LISTENER = 'NotificationInApp';
 
 class NotificationBadge extends React.Component {
 	static propTypes = {
@@ -44,7 +44,7 @@ class NotificationBadge extends React.Component {
 		return false;
 	}
 
-	componentWillMount () {
+	componentWillUnmount() {
 		EventEmitter.removeListener(LISTENER);
 	}
 
