@@ -533,7 +533,7 @@ class RoomsListView extends React.Component {
 
 		this.cancelSearch();
 		this.item = item;
-		goRoom({ item, isMasterDetail });
+		this.goRoom({ item, isMasterDetail });
 	};
 
 	toggleSort = () => {
@@ -623,6 +623,11 @@ class RoomsListView extends React.Component {
 		}
 	};
 
+	goRoom({ item, isMasterDetail }) {
+		this.item = item;
+		goRoom({ item, isMasterDetail });
+	}
+
 	goRoomByIndex = (index) => {
 		const { chats } = this.state;
 		const { isMasterDetail } = this.props;
@@ -653,6 +658,7 @@ class RoomsListView extends React.Component {
 		if (!this.item) {
 			return;
 		}
+
 		// Don't run during search
 		const { search } = this.state;
 		if (search.length > 0) {
@@ -660,11 +666,11 @@ class RoomsListView extends React.Component {
 		}
 
 		const { chats } = this.state;
+		const { isMasterDetail } = this.props;
 		const index = chats.findIndex(c => c.rid === this.item.rid);
 		const otherRoom = this.findOtherRoom(index, sign);
 		if (otherRoom) {
-			// FIXME: test commands
-			this.goRoom(otherRoom);
+			this.goRoom({ item: otherRoom, isMasterDetail });
 		}
 	}
 
@@ -683,7 +689,7 @@ class RoomsListView extends React.Component {
 		} else if (handleCommandNextRoom(event)) {
 			this.goOtherRoom(1);
 		} else if (handleCommandShowNewMessage(event)) {
-			navigation.navigate('NewMessageView');
+			navigation.navigate('NewMessageStack');
 		} else if (handleCommandAddNewServer(event)) {
 			navigation.navigate('NewServerView', { previousServer: server });
 		}
