@@ -98,13 +98,12 @@ class ShareListView extends React.Component {
 			showError: false,
 			searching: false,
 			searchText: '',
-			isMedia: false,
-			mediaLoading: false,
 			fileInfo: null,
 			searchResults: [],
 			chats: [],
 			servers: [],
 			attachments: [],
+			text: '',
 			loading: true,
 			serverInfo: null
 		};
@@ -123,7 +122,7 @@ class ShareListView extends React.Component {
 		setTimeout(async() => {
 			try {
 				const data = await ShareExtension.data();
-				const info = await Promise.all(data.map(file => FileSystem.getInfoAsync(this.uriToPath(file.value), { size: true })));
+				const info = await Promise.all(data.filter(item => item.type === 'media').map(file => FileSystem.getInfoAsync(this.uriToPath(file.value), { size: true })));
 				const attachments = info.map(file => ({
 					filename: file.uri.substring(file.uri.lastIndexOf('/') + 1),
 					description: '',
@@ -131,7 +130,11 @@ class ShareListView extends React.Component {
 					mime: mime.lookup(file.uri),
 					path: isIOS ? file.uri : `file://${ file.uri }`
 				}));
-				this.setState({ attachments });
+				const text = data.filter(item => item.type === 'text').reduce((acc, item) => `${ item.value }\n${ acc }`, '');
+				this.setState({
+					text,
+					attachments
+				});
 			} catch {
 				// Do nothing
 			}
@@ -150,12 +153,6 @@ class ShareListView extends React.Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { searching } = this.state;
 		if (nextState.searching !== searching) {
-			return true;
-		}
-
-		const { isMedia } = this.state;
-		if (nextState.isMedia !== isMedia) {
-			this.getSubscriptions(nextProps.server, nextState.fileInfo);
 			return true;
 		}
 
@@ -230,10 +227,15 @@ class ShareListView extends React.Component {
 	}
 
 	shareMessage = (room) => {
-		const { attachments } = this.state;
+		const { attachments, text } = this.state;
 		const { navigation } = this.props;
 
-		navigation.navigate('ShareView', { room, attachments, shareExtension: true });
+		navigation.navigate('ShareView', {
+			room,
+			text,
+			attachments,
+			shareExtension: true
+		});
 	}
 
 	search = (text) => {
@@ -374,11 +376,11 @@ class ShareListView extends React.Component {
 
 	renderContent = () => {
 		const {
-			chats, mediaLoading, loading, searchResults, searching, searchText
+			chats, loading, searchResults, searching, searchText
 		} = this.state;
 		const { theme } = this.props;
 
-		if (mediaLoading || loading) {
+		if (loading) {
 			return <ActivityIndicator theme={theme} />;
 		}
 

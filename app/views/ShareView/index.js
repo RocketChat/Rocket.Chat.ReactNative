@@ -28,6 +28,7 @@ import ImageViewer from '../../presentation/ImageViewer';
 import RocketChat from '../../lib/rocketchat';
 import { CustomIcon } from '../../lib/Icons';
 import { BUTTON_HIT_SLOP } from '../../containers/message/utils';
+import TextInput from '../../containers/TextInput';
 
 const ShareView = React.memo(({
 	navigation,
@@ -42,6 +43,7 @@ const ShareView = React.memo(({
 	const [loading, setLoading] = useState(false);
 	const [readOnly, setReadOnly] = useState(false);
 	const [attachments, setAttachments] = useState([]);
+	const [text, setText] = useState(navigation.getParam('text', ''));
 	const [selected, select] = useState(0);
 	const room = navigation.getParam('room', {});
 	const shareExtension = navigation.getParam('shareExtension');
@@ -93,8 +95,8 @@ const ShareView = React.memo(({
 		}
 	};
 
-	const onChangeText = (text) => {
-		attachments[selected].description = text;
+	const onChangeText = (txt) => {
+		attachments[selected].description = txt;
 		setAttachments(attachments);
 	};
 
@@ -137,62 +139,82 @@ const ShareView = React.memo(({
 
 	return (
 		<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
-			{attachments[selected]?.mime.match(/video/) ? (
-				<Video
-					source={{ uri: attachments[selected].path }}
-					rate={1.0}
-					volume={1.0}
-					isMuted={false}
-					resizeMode={Video.RESIZE_MODE_CONTAIN}
-					shouldPlay
-					isLooping={false}
-					style={{ width: '100%', height: '50%' }}
-					useNativeControls
-				/>
-			) : (
-				<ImageViewer uri={getUri(attachments[selected])} />
-			)}
-			<MessageBox
-				showSend
-				rid={room.rid}
-				roomType={room.t}
-				theme={theme}
-				onSubmit={send}
-				getCustomEmoji={() => {}}
-				onChangeText={onChangeText}
-				message={attachments[selected]?.description}
-				navigation={navigation}
-			>
-				<FlatList
-					horizontal
-					data={attachments}
-					renderItem={({ item, index }) => (
-						<BorderlessButton onPress={() => select(index)} style={styles.item}>
-							<Image source={{ uri: getUri(item) }} style={styles.thumb} />
-							{item.mime.match(/video/) ? (
-								<CustomIcon
-									name='play'
-									size={48}
-									color={themes[theme].separatorColor}
-									style={styles.play}
-								/>
-							) : null}
-							<BorderlessButton
-								hitSlop={BUTTON_HIT_SLOP}
-								style={[styles.remove, { backgroundColor: themes[theme].bodyText, borderColor: themes[theme].auxiliaryBackground }]}
-								onPress={() => remove(index)}
-							>
-								<CustomIcon
-									name='cross'
-									color={themes[theme].backgroundColor}
-									size={16}
-								/>
-							</BorderlessButton>
-						</BorderlessButton>
+			{navigation.getParam('attachments', []).length ? (
+				<>
+					{attachments[selected]?.mime.match(/video/) ? (
+						<Video
+							source={{ uri: attachments[selected].path }}
+							rate={1.0}
+							volume={1.0}
+							isMuted={false}
+							resizeMode={Video.RESIZE_MODE_CONTAIN}
+							shouldPlay
+							isLooping={false}
+							style={{ width: '100%', height: '50%' }}
+							useNativeControls
+						/>
+					) : (
+						<ImageViewer uri={getUri(attachments[selected])} />
 					)}
-					style={[styles.list, { backgroundColor: themes[theme].auxiliaryBackground }]}
+					<MessageBox
+						showSend
+						rid={room.rid}
+						roomType={room.t}
+						theme={theme}
+						onSubmit={send}
+						getCustomEmoji={() => {}}
+						onChangeText={onChangeText}
+						message={attachments[selected]?.description}
+						navigation={navigation}
+					>
+						<FlatList
+							horizontal
+							data={attachments}
+							renderItem={({ item, index }) => (
+								<BorderlessButton onPress={() => select(index)} style={styles.item}>
+									<Image source={{ uri: getUri(item) }} style={styles.thumb} />
+									{item.mime.match(/video/) ? (
+										<CustomIcon
+											name='play'
+											size={48}
+											color={themes[theme].separatorColor}
+											style={styles.play}
+										/>
+									) : null}
+									<BorderlessButton
+										hitSlop={BUTTON_HIT_SLOP}
+										style={[styles.remove, { backgroundColor: themes[theme].bodyText, borderColor: themes[theme].auxiliaryBackground }]}
+										onPress={() => remove(index)}
+									>
+										<CustomIcon
+											name='cross'
+											color={themes[theme].backgroundColor}
+											size={16}
+										/>
+									</BorderlessButton>
+								</BorderlessButton>
+							)}
+							style={[styles.list, { backgroundColor: themes[theme].auxiliaryBackground }]}
+						/>
+					</MessageBox>
+				</>
+			) : (
+				<TextInput
+					containerStyle={styles.inputContainer}
+					inputStyle={[
+						styles.input,
+						styles.textInput,
+						{ backgroundColor: themes[theme].focusedBackground }
+					]}
+					placeholder=''
+					onChangeText={setText}
+					defaultValue={text}
+					multiline
+					textAlignVertical='top'
+					autoFocus
+					theme={theme}
 				/>
-			</MessageBox>
+			)}
 			<Loading visible={loading} />
 		</SafeAreaView>
 	);

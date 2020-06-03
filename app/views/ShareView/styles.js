@@ -5,6 +5,18 @@ import sharedStyles from '../Styles';
 const THUMB_SIZE = 64;
 
 export default StyleSheet.create({
+	// Text
+	input: {
+		fontSize: 16,
+		...sharedStyles.textRegular
+	},
+	inputContainer: {
+		marginBottom: 0
+	},
+	textInput: {
+		height: '100%'
+	},
+	// Media
 	list: {
 		paddingVertical: 8,
 		paddingHorizontal: 8
