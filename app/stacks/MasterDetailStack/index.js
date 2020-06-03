@@ -236,8 +236,7 @@ const RoomStackModal = ({ navigation }) => {
 				<RoomStack.Screen
 					name='DirectoryView'
 					component={DirectoryView}
-					// TODO:
-					// options={props => DirectoryView.navigationOptions({ ...props, split })}
+					options={props => DirectoryView.navigationOptions({ ...props, isMasterDetail: true })}
 				/>
 				<RoomStack.Screen
 					name='NotificationPrefView'

@@ -613,8 +613,12 @@ class RoomsListView extends React.Component {
 	};
 
 	goDirectory = () => {
-		const { navigation } = this.props;
-		navigation.navigate('DirectoryView');
+		const { navigation, isMasterDetail } = this.props;
+		if (isMasterDetail) {
+			navigation.navigate('RoomStackModal', { screen: 'DirectoryView' });
+		} else {
+			navigation.navigate('DirectoryView');
+		}
 	};
 
 	goRoomByIndex = (index) => {

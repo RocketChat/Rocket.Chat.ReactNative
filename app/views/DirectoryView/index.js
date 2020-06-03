@@ -23,14 +23,14 @@ import { themes } from '../../constants/colors';
 import styles from './styles';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
+import { goRoom } from '../../utils/goRoom';
 
 class DirectoryView extends React.Component {
-	// TODO: split?
-	static navigationOptions = ({ navigation, split }) => {
+	static navigationOptions = ({ navigation, isMasterDetail }) => {
 		const options = {
 			title: I18n.t('Directory')
 		};
-		if (split) {
+		if (isMasterDetail) {
 			options.headerLeft = () => <CloseModalButton navigation={navigation} testID='directory-view-close' />;
 		}
 		return options;
@@ -45,7 +45,8 @@ class DirectoryView extends React.Component {
 			token: PropTypes.string
 		}),
 		theme: PropTypes.string,
-		directoryDefaultView: PropTypes.string
+		directoryDefaultView: PropTypes.string,
+		isMasterDetail: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -124,14 +125,14 @@ class DirectoryView extends React.Component {
 		this.setState(({ showOptionsDropdown }) => ({ showOptionsDropdown: !showOptionsDropdown }));
 	}
 
-	goRoom = async({
-		rid, name, t, search
-	}) => {
-		const { navigation } = this.props;
-		await navigation.navigate('RoomsListView');
-		navigation.navigate('RoomView', {
-			rid, name, t, search
-		});
+	goRoom = (item) => {
+		const { navigation, isMasterDetail } = this.props;
+		if (isMasterDetail) {
+			navigation.navigate('ChatsDrawer');
+		} else {
+			navigation.navigate('RoomsListView');
+		}
+		goRoom({ item, isMasterDetail });
 	}
 
 	onPressItem = async(item) => {
@@ -270,7 +271,8 @@ const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	isFederationEnabled: state.settings.FEDERATION_Enabled,
-	directoryDefaultView: state.settings.Accounts_Directory_DefaultView
+	directoryDefaultView: state.settings.Accounts_Directory_DefaultView,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 export default connect(mapStateToProps)(withTheme(DirectoryView));
