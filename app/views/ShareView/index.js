@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import * as VideoThumbnails from 'expo-video-thumbnails';
+import { Video } from 'expo-av';
 
 import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
@@ -136,7 +137,21 @@ const ShareView = React.memo(({
 
 	return (
 		<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
-			<ImageViewer uri={getUri(attachments[selected])} />
+			{attachments[selected]?.mime.match(/video/) ? (
+				<Video
+					source={{ uri: attachments[selected].path }}
+					rate={1.0}
+					volume={1.0}
+					isMuted={false}
+					resizeMode={Video.RESIZE_MODE_CONTAIN}
+					shouldPlay
+					isLooping={false}
+					style={{ width: '100%', height: '50%' }}
+					useNativeControls
+				/>
+			) : (
+				<ImageViewer uri={getUri(attachments[selected])} />
+			)}
 			<MessageBox
 				showSend
 				rid={room.rid}
@@ -154,6 +169,14 @@ const ShareView = React.memo(({
 					renderItem={({ item, index }) => (
 						<BorderlessButton onPress={() => select(index)} style={styles.item}>
 							<Image source={{ uri: getUri(item) }} style={styles.thumb} />
+							{item.mime.match(/video/) ? (
+								<CustomIcon
+									name='play'
+									size={48}
+									color={themes[theme].separatorColor}
+									style={styles.play}
+								/>
+							) : null}
 							<BorderlessButton
 								hitSlop={BUTTON_HIT_SLOP}
 								style={[styles.remove, { backgroundColor: themes[theme].bodyText, borderColor: themes[theme].auxiliaryBackground }]}

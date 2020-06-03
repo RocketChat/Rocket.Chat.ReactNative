@@ -9,6 +9,11 @@ export default StyleSheet.create({
 		paddingVertical: 8,
 		paddingHorizontal: 8
 	},
+	play: {
+		position: 'absolute',
+		left: 8,
+		top: 16
+	},
 	remove: {
 		position: 'absolute',
 		right: 4,
