@@ -20,10 +20,11 @@ import database from '../../lib/database';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { KEY_COMMAND, handleCommandSelectServer } from '../../commands';
-import { isTablet } from '../../utils/deviceInfo';
+import { isTablet, isIOS } from '../../utils/deviceInfo';
 import { localAuthenticate } from '../../utils/localAuthentication';
 import { showConfirmationAlert } from '../../utils/info';
 import LongPress from '../../utils/longPress';
+import { headerHeight } from '../../containers/Header';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
@@ -34,6 +35,7 @@ class ServerDropdown extends Component {
 		closeServerDropdown: PropTypes.bool,
 		server: PropTypes.string,
 		theme: PropTypes.string,
+		isMasterDetail: PropTypes.bool,
 		appStart: PropTypes.func,
 		toggleServerDropdown: PropTypes.func,
 		selectServerRequest: PropTypes.func
@@ -225,12 +227,14 @@ class ServerDropdown extends Component {
 
 	render() {
 		const { servers } = this.state;
-		const { theme } = this.props;
+		const { theme, isMasterDetail } = this.props;
 		const maxRows = 4;
 		const initialTop = 41 + (Math.min(servers.length, maxRows) * ROW_HEIGHT);
+		const statusBarHeight = isIOS ? 20 : 0;
+		const heightDestination = isMasterDetail ? headerHeight + statusBarHeight : 0;
 		const translateY = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [-initialTop, 0]
+			outputRange: [-initialTop, heightDestination]
 		});
 		const backdropOpacity = this.animatedValue.interpolate({
 			inputRange: [0, 1],
@@ -239,7 +243,13 @@ class ServerDropdown extends Component {
 		return (
 			<>
 				<TouchableWithoutFeedback onPress={this.close}>
-					<Animated.View style={[styles.backdrop, { backgroundColor: themes[theme].backdropColor, opacity: backdropOpacity }]} />
+					<Animated.View style={[styles.backdrop,
+						{
+							backgroundColor: themes[theme].backdropColor,
+							opacity: backdropOpacity,
+							top: heightDestination
+						}]}
+					/>
 				</TouchableWithoutFeedback>
 				<Animated.View
 					style={[
@@ -280,7 +290,8 @@ class ServerDropdown extends Component {
 
 const mapStateToProps = state => ({
 	closeServerDropdown: state.rooms.closeServerDropdown,
-	server: state.server.server
+	server: state.server.server,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 const mapDispatchToProps = dispatch => ({

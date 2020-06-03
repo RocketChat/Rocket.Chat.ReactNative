@@ -718,7 +718,7 @@ class RoomsListView extends React.Component {
 	};
 
 	renderHeader = () => {
-		const { isMasterDetail } = this.props;
+		const { isMasterDetail, theme } = this.props;
 
 		if (!isMasterDetail) {
 			return null;
@@ -727,6 +727,7 @@ class RoomsListView extends React.Component {
 		const options = this.getHeader();
 		return (
 			<Header
+				theme={theme}
 				{...options}
 			/>
 		);

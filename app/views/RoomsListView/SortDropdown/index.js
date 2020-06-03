@@ -15,6 +15,8 @@ import { CustomIcon } from '../../../lib/Icons';
 import { withTheme } from '../../../theme';
 import { themes } from '../../../constants/colors';
 import { SortItemButton, SortItemContent } from './Item';
+import { headerHeight } from '../../../containers/Header';
+import { isIOS } from '../../../utils/deviceInfo';
 
 const ANIMATION_DURATION = 200;
 
@@ -26,6 +28,7 @@ class Sort extends PureComponent {
 		groupByType: PropTypes.bool,
 		showFavorites: PropTypes.bool,
 		showUnread: PropTypes.bool,
+		isMasterDetail: PropTypes.bool,
 		theme: PropTypes.string,
 		setSortPreference: PropTypes.func
 	}
@@ -104,9 +107,12 @@ class Sort extends PureComponent {
 	}
 
 	render() {
+		const { isMasterDetail } = this.props;
+		const statusBarHeight = isIOS ? 20 : 0;
+		const heightDestination = isMasterDetail ? headerHeight + statusBarHeight : 0;
 		const translateY = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [-326, 0]
+			outputRange: [-326, heightDestination]
 		});
 		const backdropOpacity = this.animatedValue.interpolate({
 			inputRange: [0, 1],
@@ -119,7 +125,13 @@ class Sort extends PureComponent {
 		return (
 			<>
 				<TouchableWithoutFeedback onPress={this.close}>
-					<Animated.View style={[styles.backdrop, { backgroundColor: themes[theme].backdropColor, opacity: backdropOpacity }]} />
+					<Animated.View style={[styles.backdrop,
+						{
+							backgroundColor: themes[theme].backdropColor,
+							opacity: backdropOpacity,
+							top: heightDestination
+						}]}
+					/>
 				</TouchableWithoutFeedback>
 				<Animated.View
 					style={[
@@ -190,7 +202,8 @@ class Sort extends PureComponent {
 }
 
 const mapStateToProps = state => ({
-	closeSortDropdown: state.rooms.closeSortDropdown
+	closeSortDropdown: state.rooms.closeSortDropdown,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 const mapDispatchToProps = dispatch => ({

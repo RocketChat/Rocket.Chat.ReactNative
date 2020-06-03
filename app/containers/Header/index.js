@@ -6,18 +6,19 @@ import { themes } from '../../constants/colors';
 import { themedHeader } from '../../utils/navigation';
 import { isIOS } from '../../utils/deviceInfo';
 
+export const headerHeight = isIOS ? 44 : 56;
+
 const styles = StyleSheet.create({
 	container: {
-		height: isIOS ? 44 : 56,
+		height: headerHeight,
 		flexDirection: 'row',
 		justifyContent: 'center',
 		elevation: 4
 	}
 });
 
-// TODO: remove default light
 const Header = ({
-	theme = 'light', headerLeft, headerTitle, headerRight
+	theme, headerLeft, headerTitle, headerRight
 }) => (
 	<SafeAreaView style={{ backgroundColor: themes[theme].headerBackground }} edges={['top', 'left', 'right']}>
 		<View style={[styles.container, { ...themedHeader(theme).headerStyle }]}>
