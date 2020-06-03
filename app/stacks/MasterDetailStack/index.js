@@ -144,9 +144,6 @@ const Drawer = createDrawerNavigator();
 const ChatsDrawer = () => (
 	<Drawer.Navigator drawerContent={({ navigation, state }) => <RoomsListView navigation={navigation} state={state} />} drawerType='permanent'>
 		<Drawer.Screen name='ChatsStack' component={ChatsStack} />
-		{/* <Drawer.Screen name='ProfileStack' component={ProfileStack} />
-		<Drawer.Screen name='SettingsStack' component={SettingsStack} />
-		<Drawer.Screen name='AdminPanelStack' component={AdminPanelStack} /> */}
 	</Drawer.Navigator>
 );
 

@@ -93,7 +93,7 @@ const TwoFactor = React.memo(({ theme, isMasterDetail }) => {
 			hideModalContentWhileAnimating
 		>
 			<View style={styles.container} testID='two-factor'>
-				<View style={[styles.content, isMasterDetail && sharedStyles.modalFormSheet, { backgroundColor: themes[theme].backgroundColor }]}>
+				<View style={[styles.content, isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet], { backgroundColor: themes[theme].backgroundColor }]}>
 					<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
 					{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
 					<TextInput
