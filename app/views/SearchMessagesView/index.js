@@ -19,10 +19,18 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
+import { CloseModalButton } from '../../containers/HeaderButton';
 
 class SearchMessagesView extends React.Component {
-	static navigationOptions = {
-		title: I18n.t('Search')
+	static navigationOptions = ({ navigation, route }) => {
+		const options = {
+			title: I18n.t('Search')
+		};
+		const showCloseModal = route.params?.showCloseModal;
+		if (showCloseModal) {
+			options.headerLeft = () => <CloseModalButton navigation={navigation} />;
+		}
+		return options;
 	}
 
 	static propTypes = {

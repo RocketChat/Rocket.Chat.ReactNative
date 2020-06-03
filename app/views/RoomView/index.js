@@ -343,14 +343,14 @@ class RoomView extends React.Component {
 		});
 	}
 
-	goRoomActionsView = () => {
+	goRoomActionsView = (screen) => {
 		const { room, member } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('RoomStackModal', {
-				screen: 'RoomActionsView',
+				screen: screen ?? 'RoomActionsView',
 				params: {
-					rid: this.rid, t: this.t, room, member
+					rid: this.rid, t: this.t, room, member, showCloseModal: !!screen
 				}
 			});
 		} else {
@@ -764,18 +764,15 @@ class RoomView extends React.Component {
 
 	handleCommands = ({ event }) => {
 		if (this.rid) {
-			const { room } = this.state;
-			const { navigation } = this.props;
 			const { input } = event;
 			if (handleCommandScroll(event)) {
 				const offset = input === 'UIKeyInputUpArrow' ? 100 : -100;
 				this.offset += offset;
 				this.flatList.scrollToOffset({ offset: this.offset });
 			} else if (handleCommandRoomActions(event)) {
-				navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
+				this.goRoomActionsView();
 			} else if (handleCommandSearchMessages(event)) {
-				navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
-				ModalNavigation.navigate('SearchMessagesView', { rid: this.rid });
+				this.goRoomActionsView('SearchMessagesView');
 			} else if (handleCommandReplyLatest(event)) {
 				if (this.list && this.list.current) {
 					const message = this.list.current.getLastMessage();
