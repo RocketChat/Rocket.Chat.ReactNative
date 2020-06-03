@@ -73,22 +73,6 @@ const ChatsStack = () => {
 	);
 };
 
-// ProfileStack
-const Profile = createStackNavigator();
-const ProfileStack = () => {
-	const { theme } = React.useContext(ThemeContext);
-	return (
-		<Profile.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
-			<Profile.Screen
-				name='ProfileView'
-				component={ProfileView}
-				// TODO:
-				// options={props => ProfileView.navigationOptions({ ...props, split })}
-			/>
-		</Profile.Navigator>
-	);
-};
-
 // SettingsStack
 const Settings = createStackNavigator();
 const SettingsStack = ({ navigation }) => {
@@ -128,6 +112,7 @@ const SettingsStack = ({ navigation }) => {
 				<Settings.Screen
 					name='ProfileView'
 					component={ProfileView}
+					options={props => ProfileView.navigationOptions({ ...props, isMasterDetail: true })}
 				/>
 				<Settings.Screen
 					name='AdminPanelStack'
