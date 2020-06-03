@@ -124,7 +124,12 @@ export default class Root extends React.Component {
 		}
 	}
 
-	getIsMasterDetail = (width) => width > MIN_WIDTH_MASTER_DETAIL_LAYOUT
+	getIsMasterDetail = (width) => {
+		if (!isTablet) {
+			return false;
+		}
+		return width > MIN_WIDTH_MASTER_DETAIL_LAYOUT;
+	}
 
 	onDimensionsChange = ({ window: { width } }) => this.setState({ width, isMasterDetail: this.getIsMasterDetail(width) })
 
