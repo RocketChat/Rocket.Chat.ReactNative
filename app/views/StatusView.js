@@ -62,7 +62,8 @@ class StatusView extends React.Component {
 			statusText: PropTypes.string
 		}),
 		theme: PropTypes.string,
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		isMasterDetail: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -74,10 +75,10 @@ class StatusView extends React.Component {
 	}
 
 	setHeader = () => {
-		const { navigation } = this.props;
+		const { navigation, isMasterDetail } = this.props;
 		navigation.setOptions({
 			title: I18n.t('Edit_Status'),
-			headerLeft: () => <CancelModalButton onPress={this.close} />,
+			headerLeft: isMasterDetail ? undefined : () => <CancelModalButton onPress={this.close} />,
 			headerRight: () => (
 				<CustomHeaderButtons>
 					<Item
@@ -102,11 +103,6 @@ class StatusView extends React.Component {
 	close = () => {
 		const { navigation } = this.props;
 		navigation.goBack();
-		// if (split) {
-		// 	navigation.goBack();
-		// } else {
-		// 	navigation.pop();
-		// }
 	}
 
 	setCustomStatus = async() => {
@@ -209,7 +205,8 @@ class StatusView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	user: getUserSelector(state)
+	user: getUserSelector(state),
+	isMasterDetail: state.app.isMasterDetail
 });
 
 export default connect(mapStateToProps)(withTheme(StatusView));
