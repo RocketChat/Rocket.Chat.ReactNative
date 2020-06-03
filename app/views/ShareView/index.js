@@ -17,7 +17,11 @@ import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
 import styles from './styles';
 import Loading from '../../containers/Loading';
-import { CancelModalButton } from '../../containers/HeaderButton';
+import {
+	Item,
+	CancelModalButton,
+	CustomHeaderButtons
+} from '../../containers/HeaderButton';
 import { isBlocked } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { withTheme } from '../../theme';
@@ -122,6 +126,26 @@ const ShareView = React.memo(({
 			}
 			setAttachments(files);
 		})();
+
+		navigation.setParams({
+			sendMessage: async() => {
+				if (shareExtension) {
+					setLoading(true);
+				} else {
+					navigation.pop();
+				}
+
+				try {
+					await RocketChat.sendMessage(room.rid, text, undefined, { id, token });
+				} catch {
+					// Do nothing
+				}
+
+				if (shareExtension) {
+					ShareExtension.close();
+				}
+			}
+		});
 	}, []);
 
 	if (readOnly || isBlocked(room)) {
@@ -222,6 +246,7 @@ const ShareView = React.memo(({
 ShareView.navigationOptions = ({ navigation, screenProps }) => {
 	const { theme } = screenProps;
 	const room = navigation.getParam('room', {});
+	const attachments = navigation.getParam('attachments', []);
 	const shareExtension = navigation.getParam('shareExtension');
 
 	const options = {
@@ -232,6 +257,18 @@ ShareView.navigationOptions = ({ navigation, screenProps }) => {
 	// if is share extension show default back button
 	if (!shareExtension) {
 		options.headerLeft = <CancelModalButton onPress={() => navigation.pop()} />;
+	}
+
+	if (!attachments.length) {
+		options.headerRight = (
+			<CustomHeaderButtons>
+				<Item
+					title={I18n.t('Send')}
+					onPress={navigation.getParam('sendMessage')}
+					buttonStyle={styles.send}
+				/>
+			</CustomHeaderButtons>
+		);
 	}
 
 	return options;

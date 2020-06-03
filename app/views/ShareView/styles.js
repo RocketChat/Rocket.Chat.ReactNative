@@ -69,5 +69,9 @@ export default StyleSheet.create({
 	name: {
 		fontSize: 16,
 		...sharedStyles.textSemibold
+	},
+	send: {
+		...sharedStyles.textSemibold,
+		fontSize: 16
 	}
 });
