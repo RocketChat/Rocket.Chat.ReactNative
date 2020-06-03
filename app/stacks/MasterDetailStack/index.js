@@ -121,6 +121,14 @@ const SettingsStack = ({ navigation }) => {
 					component={ScreenLockConfigView}
 					options={ScreenLockConfigView.navigationOptions}
 				/>
+				<Settings.Screen
+					name='StatusView'
+					component={StatusView}
+				/>
+				<Settings.Screen
+					name='ProfileView'
+					component={ProfileView}
+				/>
 			</Settings.Navigator>
 		</ModalContainer>
 	);
@@ -321,10 +329,6 @@ const InsideStackModal = () => {
 			<InsideStack.Screen
 				name='AttachmentView'
 				component={AttachmentView}
-			/>
-			<InsideStack.Screen
-				name='StatusView'
-				component={StatusView}
 			/>
 			<InsideStack.Screen
 				name='ModalBlockView'

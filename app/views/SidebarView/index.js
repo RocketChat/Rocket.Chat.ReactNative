@@ -138,8 +138,24 @@ class Sidebar extends Component {
 		navigation.navigate(route);
 	}
 
-	renderNavigation = () => {
+	renderAdmin = () => {
 		const { isAdmin } = this.state;
+		const { activeItemKey, theme } = this.props;
+		if (!isAdmin) {
+			return null;
+		}
+		return (
+			<SidebarItem
+				text={I18n.t('Admin_Panel')}
+				left={<CustomIcon name='shield-alt' size={20} color={themes[theme].titleText} />}
+				onPress={() => this.sidebarNavigate('AdminPanelStack')}
+				testID='sidebar-settings'
+				current={activeItemKey === 'AdminPanelStack'}
+			/>
+		);
+	}
+
+	renderNavigation = () => {
 		const { activeItemKey, theme } = this.props;
 		return (
 			<>
@@ -164,15 +180,7 @@ class Sidebar extends Component {
 					testID='sidebar-settings'
 					current={activeItemKey === 'SettingsStack'}
 				/>
-				{isAdmin ? (
-					<SidebarItem
-						text={I18n.t('Admin_Panel')}
-						left={<CustomIcon name='shield-alt' size={20} color={themes[theme].titleText} />}
-						onPress={() => this.sidebarNavigate('AdminPanelStack')}
-						testID='sidebar-settings'
-						current={activeItemKey === 'AdminPanelStack'}
-					/>
-				) : null}
+				{this.renderAdmin()}
 			</>
 		);
 	}
@@ -242,7 +250,12 @@ class Sidebar extends Component {
 							{this.renderNavigation()}
 							<Separator theme={theme} />
 						</>
-					) : null}
+					) : (
+						<>
+							<Separator theme={theme} />
+							{this.renderAdmin()}
+						</>
+					)}
 				</ScrollView>
 			</SafeAreaView>
 		);

@@ -124,8 +124,7 @@ const ChatsStack = () => {
 			<Chats.Screen
 				name='DirectoryView'
 				component={DirectoryView}
-				// TODO: split?
-				// options={props => DirectoryView.navigationOptions({ ...props, split })}
+				options={DirectoryView.navigationOptions}
 			/>
 			<Chats.Screen
 				name='NotificationPrefView'
@@ -180,8 +179,7 @@ const ProfileStack = () => {
 			<Profile.Screen
 				name='ProfileView'
 				component={ProfileView}
-				// TODO: ? split
-				// options={props => ProfileView.navigationOptions({ ...props, split })}
+				options={ProfileView.navigationOptions}
 			/>
 		</Profile.Navigator>
 	);
@@ -197,8 +195,7 @@ const SettingsStack = () => {
 			<Settings.Screen
 				name='SettingsView'
 				component={SettingsView}
-				// TODO: split ?
-				// options={props => SettingsView.navigationOptions({ ...props, split })}
+				options={SettingsView.navigationOptions}
 			/>
 			<Settings.Screen
 				name='LanguageView'
