@@ -343,16 +343,21 @@ class RoomView extends React.Component {
 		});
 	}
 
-	// eslint-disable-next-line react/sort-comp
 	goRoomActionsView = () => {
 		const { room, member } = this.state;
-		const { navigation } = this.props;
-		navigation.navigate('RoomStackModal', {
-			screen: 'RoomActionsView',
-			params: {
+		const { navigation, isMasterDetail } = this.props;
+		if (isMasterDetail) {
+			navigation.navigate('RoomStackModal', {
+				screen: 'RoomActionsView',
+				params: {
+					rid: this.rid, t: this.t, room, member
+				}
+			});
+		} else {
+			navigation.navigate('RoomActionsView', {
 				rid: this.rid, t: this.t, room, member
-			}
-		});
+			});
+		}
 	}
 
 	setReadOnly = async() => {

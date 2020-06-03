@@ -22,7 +22,6 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import Markdown from '../../containers/markdown';
-import Navigation from '../../lib/Navigation';
 
 import Livechat from './Livechat';
 import Channel from './Channel';
@@ -79,6 +78,7 @@ class RoomInfoView extends React.Component {
 		} else {
 			this.loadRoom();
 		}
+		this.setHeader();
 
 		const { navigation } = this.props;
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
