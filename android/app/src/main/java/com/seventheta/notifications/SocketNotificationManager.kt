@@ -56,7 +56,7 @@ class SocketNotificationManager(val context: Context) {
         val prefs = context.getSharedPreferences("react-native", Context.MODE_PRIVATE)
         val allPrefs = prefs.all
 
-        if (allPrefs[SOCKET_NOTIFICATIONS_KEY] != "true") {
+        if (allPrefs[SOCKET_NOTIFICATIONS_KEY] == "false") {
             Log.d("SOCKETNOTIS", "disabled by preference")
             return false
         }

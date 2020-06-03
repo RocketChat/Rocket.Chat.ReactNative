@@ -962,7 +962,7 @@ const RocketChat = {
 	async getAllowSocketNotifications() {
 		const allowSocketNotifications = await RNUserDefaults.objectForKey(SOCKET_NOTIFICATIONS_KEY);
 		if (allowSocketNotifications === null) {
-			return false;
+			return true;
 		}
 		return JSON.parse(allowSocketNotifications);
 	},
