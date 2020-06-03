@@ -43,42 +43,53 @@ const ShareView = React.memo(({
 	const files = navigation.getParam('attachments', []);
 	const room = navigation.getParam('room', {});
 
-	const sendFiles = async() => {
+	const send = async() => {
 		if (loading) {
 			return;
 		}
 
+		// if it's share extension this should show loading
 		if (shareExtension) {
 			setLoading(true);
+
+		// if it's not share extension this can close
 		} else {
 			navigation.pop();
 		}
 
 		try {
-			await Promise.all(attachments.map(({
-				filename: name,
-				mime: type,
-				description,
-				size,
-				path
-			}) => RocketChat.sendFileMessage(
-				room.rid,
-				{
-					name,
+			// Send attachment
+			if (attachments.length) {
+				await Promise.all(attachments.map(({
+					filename: name,
+					mime: type,
 					description,
 					size,
-					type,
-					path,
-					store: 'Uploads'
-				},
-				undefined,
-				server,
-				{ id, token }
-			)));
+					path
+				}) => RocketChat.sendFileMessage(
+					room.rid,
+					{
+						name,
+						description,
+						size,
+						type,
+						path,
+						store: 'Uploads'
+					},
+					undefined,
+					server,
+					{ id, token }
+				)));
+
+			// Send text message
+			} else if (text.length) {
+				await RocketChat.sendMessage(room.rid, text, undefined, { id, token });
+			}
 		} catch {
 			// Do nothing
 		}
 
+		// if it's share extension this should close
 		if (shareExtension) {
 			ShareExtension.close();
 		}
@@ -86,12 +97,17 @@ const ShareView = React.memo(({
 
 	useEffect(() => {
 		(async() => {
-			const ro = await isReadOnly(room, { username });
-			setReadOnly(ro);
+			try {
+				const ro = await isReadOnly(room, { username });
+				setReadOnly(ro);
+			} catch {
+				// Do nothing
+			}
 		})();
 
+		// set attachments just when it was mounted to prevent memory issues
 		(async() => {
-			// set attachments just when it was mounted to prevent memory issues
+			// logic to get video thumbnails
 			const videos = files.filter(attachment => attachment.mime.match(/video/));
 			if (videos?.length) {
 				try {
@@ -106,26 +122,8 @@ const ShareView = React.memo(({
 			setAttachments(files);
 		})();
 
-		navigation.setParams({
-			sendFiles,
-			sendMessage: async() => {
-				if (shareExtension) {
-					setLoading(true);
-				} else {
-					navigation.pop();
-				}
-
-				try {
-					await RocketChat.sendMessage(room.rid, text, undefined, { id, token });
-				} catch {
-					// Do nothing
-				}
-
-				if (shareExtension) {
-					ShareExtension.close();
-				}
-			}
-		});
+		// set send as a navigation function to be used at header
+		navigation.setParams({ send });
 	}, []);
 
 	if (readOnly || isBlocked(room)) {
@@ -203,7 +201,7 @@ ShareView.navigationOptions = ({ navigation, screenProps }) => {
 			<CustomHeaderButtons>
 				<Item
 					title={I18n.t('Send')}
-					onPress={navigation.getParam('sendMessage')}
+					onPress={navigation.getParam('send')}
 					buttonStyle={styles.send}
 				/>
 			</CustomHeaderButtons>
