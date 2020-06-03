@@ -22,9 +22,9 @@ import debounce from '../../utils/debounce';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import ModalNavigation from '../../lib/ModalNavigation';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
+import { CloseModalButton } from '../../containers/HeaderButton';
 
 const Separator = React.memo(({ theme }) => <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />);
 Separator.propTypes = {
@@ -34,8 +34,14 @@ Separator.propTypes = {
 const API_FETCH_COUNT = 50;
 
 class ThreadMessagesView extends React.Component {
-	static navigationOptions = {
-		title: I18n.t('Threads')
+	static navigationOptions = ({ navigation, isMasterDetail }) => {
+		const options = {
+			title: I18n.t('Threads')
+		};
+		if (isMasterDetail) {
+			options.headerLeft = () => <CloseModalButton navigation={navigation} />;
+		}
+		return options;
 	}
 
 	static propTypes = {
@@ -46,7 +52,7 @@ class ThreadMessagesView extends React.Component {
 		useRealName: PropTypes.bool,
 		theme: PropTypes.string,
 		customEmojis: PropTypes.object,
-		split: PropTypes.bool
+		isMasterDetail: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -262,7 +268,10 @@ class ThreadMessagesView extends React.Component {
 	}
 
 	onThreadPress = debounce((item) => {
-		const { navigation } = this.props;
+		const { navigation, isMasterDetail } = this.props;
+		if (isMasterDetail) {
+			navigation.pop();
+		}
 		navigation.push('RoomView', {
 			rid: item.subscription.id, tmid: item.id, name: item.msg, t: 'thread'
 		});
@@ -283,17 +292,11 @@ class ThreadMessagesView extends React.Component {
 	}
 
 	navToRoomInfo = (navParam) => {
-		const { navigation, user, split } = this.props;
+		const { navigation, user } = this.props;
 		if (navParam.rid === user.id) {
 			return;
 		}
-		// TODO: split
-		if (split) {
-			navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t });
-			ModalNavigation.navigate('RoomInfoView', navParam);
-		} else {
-			navigation.navigate('RoomInfoView', navParam);
-		}
+		navigation.navigate('RoomInfoView', navParam);
 	}
 
 	renderItem = ({ item }) => {
@@ -356,7 +359,8 @@ const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	useRealName: state.settings.UI_Use_Real_Name,
-	customEmojis: state.customEmojis
+	customEmojis: state.customEmojis,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 export default connect(mapStateToProps)(withTheme(ThreadMessagesView));

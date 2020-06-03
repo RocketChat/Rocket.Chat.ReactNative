@@ -266,7 +266,7 @@ const RoomStackModal = ({ navigation }) => {
 				<RoomStack.Screen
 					name='ThreadMessagesView'
 					component={ThreadMessagesView}
-					options={ThreadMessagesView.navigationOptions}
+					options={props => ThreadMessagesView.navigationOptions({ ...props, isMasterDetail: true })}
 				/>
 				<RoomStack.Screen
 					name='MarkdownTableView'
