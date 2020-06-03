@@ -29,7 +29,6 @@ import { loggerConfig, analytics } from '../../utils/log';
 import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/links';
 import { withTheme } from '../../theme';
 import SidebarView from '../SidebarView';
-import Navigation from '../../lib/Navigation';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import { appStart as appStartAction, ROOT_LOADING } from '../../actions/app';
@@ -80,11 +79,7 @@ class SettingsView extends React.Component {
 			message: I18n.t('You_will_be_logged_out_of_this_application'),
 			callToAction: I18n.t('Logout'),
 			onPress: () => {
-				// TODO: split
-				const { logout, split } = this.props;
-				if (split) {
-					Navigation.navigate('RoomView');
-				}
+				const { logout } = this.props;
 				logout();
 			}
 		});
