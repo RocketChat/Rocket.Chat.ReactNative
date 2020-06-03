@@ -91,37 +91,38 @@ const ProfileStack = () => {
 
 // SettingsStack
 const Settings = createStackNavigator();
-const SettingsStack = () => {
+const SettingsStack = ({ navigation }) => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
-		<Settings.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
-			<Settings.Screen
-				name='SettingsView'
-				component={SettingsView}
-				// TODO:
-				// options={props => SettingsView.navigationOptions({ ...props, split })}
-			/>
-			<Settings.Screen
-				name='LanguageView'
-				component={LanguageView}
-				options={LanguageView.navigationOptions}
-			/>
-			<Settings.Screen
-				name='ThemeView'
-				component={ThemeView}
-				options={ThemeView.navigationOptions}
-			/>
-			<Settings.Screen
-				name='DefaultBrowserView'
-				component={DefaultBrowserView}
-				options={DefaultBrowserView.navigationOptions}
-			/>
-			<Settings.Screen
-				name='ScreenLockConfigView'
-				component={ScreenLockConfigView}
-				options={ScreenLockConfigView.navigationOptions}
-			/>
-		</Settings.Navigator>
+		<ModalContainer navigation={navigation}>
+			<Settings.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
+				<Settings.Screen
+					name='SettingsView'
+					component={SettingsView}
+					options={props => SettingsView.navigationOptions({ ...props, isMasterDetail: true })}
+				/>
+				<Settings.Screen
+					name='LanguageView'
+					component={LanguageView}
+					options={LanguageView.navigationOptions}
+				/>
+				<Settings.Screen
+					name='ThemeView'
+					component={ThemeView}
+					options={ThemeView.navigationOptions}
+				/>
+				<Settings.Screen
+					name='DefaultBrowserView'
+					component={DefaultBrowserView}
+					options={DefaultBrowserView.navigationOptions}
+				/>
+				<Settings.Screen
+					name='ScreenLockConfigView'
+					component={ScreenLockConfigView}
+					options={ScreenLockConfigView.navigationOptions}
+				/>
+			</Settings.Navigator>
+		</ModalContainer>
 	);
 };
 
@@ -146,9 +147,9 @@ const Drawer = createDrawerNavigator();
 const ChatsDrawer = () => (
 	<Drawer.Navigator drawerContent={({ navigation, state }) => <RoomsListView navigation={navigation} state={state} />} drawerType='permanent'>
 		<Drawer.Screen name='ChatsStack' component={ChatsStack} />
-		<Drawer.Screen name='ProfileStack' component={ProfileStack} />
+		{/* <Drawer.Screen name='ProfileStack' component={ProfileStack} />
 		<Drawer.Screen name='SettingsStack' component={SettingsStack} />
-		<Drawer.Screen name='AdminPanelStack' component={AdminPanelStack} />
+		<Drawer.Screen name='AdminPanelStack' component={AdminPanelStack} /> */}
 	</Drawer.Navigator>
 );
 
@@ -192,7 +193,7 @@ const RoomStackModal = ({ navigation }) => {
 				<RoomStack.Screen
 					name='RoomActionsView'
 					component={RoomActionsView}
-					options={props => RoomActionsView.navigationOptions({ ...props, showClose: true })}
+					options={props => RoomActionsView.navigationOptions({ ...props, isMasterDetail: true })}
 				/>
 				<RoomStack.Screen
 					name='RoomInfoView'
@@ -302,10 +303,21 @@ const InsideStackModal = () => {
 				options={{ headerShown: false }}
 			/>
 			<InsideStack.Screen
+				name='RoomStackModal'
+				component={RoomStackModal}
+				options={{ headerShown: false }}
+			/>
+			<InsideStack.Screen
+				name='SettingsStack'
+				component={SettingsStack}
+				options={{ headerShown: false }}
+			/>
+			<InsideStack.Screen
 				name='NewMessageStack'
 				component={NewMessageStack}
 				options={{ headerShown: false }}
 			/>
+
 			<InsideStack.Screen
 				name='AttachmentView'
 				component={AttachmentView}
@@ -322,11 +334,6 @@ const InsideStackModal = () => {
 			<InsideStack.Screen
 				name='JitsiMeetView'
 				component={JitsiMeetView}
-				options={{ headerShown: false }}
-			/>
-			<InsideStack.Screen
-				name='RoomStackModal'
-				component={RoomStackModal}
 				options={{ headerShown: false }}
 			/>
 		</InsideStack.Navigator>

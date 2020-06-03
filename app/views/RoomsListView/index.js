@@ -289,7 +289,7 @@ class RoomsListView extends React.Component {
 
 	getHeader = () => {
 		const { searching } = this.state;
-		const { navigation } = this.props;
+		const { navigation, isMasterDetail } = this.props;
 		return {
 			headerLeft: () => (searching && isAndroid ? (
 				<CustomHeaderButtons left>
@@ -303,6 +303,7 @@ class RoomsListView extends React.Component {
 				<DrawerButton
 					navigation={navigation}
 					testID='rooms-list-view-sidebar'
+					onPress={isMasterDetail ? () => navigation.navigate('SettingsStack') : () => navigation.toggleDrawer()}
 				/>
 			)),
 			headerTitle: () => <RoomsListHeaderView />,

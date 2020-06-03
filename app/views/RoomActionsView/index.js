@@ -30,11 +30,11 @@ import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import SafeAreaView from '../../containers/SafeAreaView';
 
 class RoomActionsView extends React.Component {
-	static navigationOptions = ({ navigation, showClose }) => {
+	static navigationOptions = ({ navigation, isMasterDetail }) => {
 		const options = {
 			title: I18n.t('Actions')
 		};
-		if (showClose) {
+		if (isMasterDetail) {
 			options.headerLeft = () => <CloseModalButton navigation={navigation} testID='room-actions-view-close' />;
 		}
 		return options;

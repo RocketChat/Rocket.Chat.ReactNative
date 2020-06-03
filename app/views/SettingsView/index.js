@@ -53,9 +53,8 @@ SectionSeparator.propTypes = {
 };
 
 class SettingsView extends React.Component {
-	// TODO: split
-	static navigationOptions = ({ navigation, split }) => ({
-		headerLeft: () => (split ? (
+	static navigationOptions = ({ navigation, isMasterDetail }) => ({
+		headerLeft: () => (isMasterDetail ? (
 			<CloseModalButton navigation={navigation} testID='settings-view-close' />
 		) : (
 			<DrawerButton navigation={navigation} />
