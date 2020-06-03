@@ -12,6 +12,7 @@ const Thumb = React.memo(({ item, theme }) => {
 	const type = item?.mime;
 
 	if (type?.match(/video/)) {
+		console.log(item);
 		const { uri } = item;
 		return (
 			<>

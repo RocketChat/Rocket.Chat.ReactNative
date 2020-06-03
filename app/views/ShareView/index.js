@@ -107,19 +107,20 @@ const ShareView = React.memo(({
 
 		// set attachments just when it was mounted to prevent memory issues
 		(async() => {
-			// logic to get video thumbnails
-			const videos = files.filter(attachment => attachment.mime.match(/video/));
-			if (videos?.length) {
-				try {
-					await Promise.all(videos.map(async(video, index) => {
-						const { uri } = await VideoThumbnails.getThumbnailAsync(video.path);
-						files[index].uri = uri;
-					}));
-				} catch {
-					// Do nothing
+			// get video thumbnails
+			const items = await Promise.all(files.map(async(item) => {
+				if (item.mime?.match(/video/)) {
+					try {
+						const { uri } = await VideoThumbnails.getThumbnailAsync(item.path);
+						item.uri = uri;
+					} catch {
+						// Do nothing
+					}
+					return item;
 				}
-			}
-			setAttachments(files);
+				return item;
+			}));
+			setAttachments(items);
 		})();
 
 		// set send as a navigation function to be used at header
