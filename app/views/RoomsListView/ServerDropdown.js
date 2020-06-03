@@ -25,6 +25,7 @@ import { localAuthenticate } from '../../utils/localAuthentication';
 import { showConfirmationAlert } from '../../utils/info';
 import LongPress from '../../utils/longPress';
 import { headerHeight } from '../../containers/Header';
+import { goRoom } from '../../utils/goRoom';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
@@ -134,15 +135,14 @@ class ServerDropdown extends Component {
 
 	select = async(server) => {
 		const {
-			server: currentServer, selectServerRequest, navigation, appStart
+			server: currentServer, selectServerRequest, appStart, isMasterDetail
 		} = this.props;
 		this.close();
 		if (currentServer !== server) {
 			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
-			// TODO?
-			// if (split) {
-			// 	navigation.navigate('RoomView');
-			// }
+			if (isMasterDetail) {
+				goRoom({ item: {}, isMasterDetail });
+			}
 			if (!userId) {
 				setTimeout(() => {
 					appStart({ root: ROOT_NEW_SERVER, previousServer: server });
