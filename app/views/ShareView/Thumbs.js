@@ -38,14 +38,14 @@ Thumb.propTypes = {
 	theme: PropTypes.string
 };
 
-const Thumbs = React.memo(({ attachments, theme }) => {
+const Thumbs = React.memo(({ attachments, onPress, theme }) => {
 	if (attachments?.length > 1) {
 		return (
 			<FlatList
 				horizontal
 				data={attachments}
-				renderItem={({ item }) => (
-					<BorderlessButton style={styles.item}>
+				renderItem={({ item, index }) => (
+					<BorderlessButton style={styles.item} onPress={() => onPress(index)}>
 						<Thumb
 							item={item}
 							theme={theme}
@@ -69,6 +69,7 @@ const Thumbs = React.memo(({ attachments, theme }) => {
 });
 Thumbs.propTypes = {
 	attachments: PropTypes.array,
+	onPress: PropTypes.func,
 	theme: PropTypes.string
 };
 

@@ -34,7 +34,7 @@ const ShareView = React.memo(({
 	},
 	server
 }) => {
-	const [selected] = useState(0);
+	const [selected, select] = useState(0);
 	const [loading, setLoading] = useState(false);
 	const [readOnly, setReadOnly] = useState(false);
 	const [attachments, setAttachments] = useState([]);
@@ -142,14 +142,19 @@ const ShareView = React.memo(({
 				<View style={styles.container}>
 					<View style={styles.container}>
 						<Preview
+							// using key just to reset zoom/move after change selected
+							key={attachments[selected]?.path}
 							item={attachments[selected]}
 							theme={theme}
 						/>
 					</View>
-					<Thumbs
-						attachments={attachments}
-						theme={theme}
-					/>
+					<View style={styles.thumbs}>
+						<Thumbs
+							onPress={select}
+							attachments={attachments}
+							theme={theme}
+						/>
+					</View>
 				</View>
 			);
 		}

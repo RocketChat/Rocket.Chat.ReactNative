@@ -13,6 +13,10 @@ export default StyleSheet.create({
 		width: '100%',
 		height: '100%'
 	},
+	// Thumbs
+	thumbs: {
+		height: 86
+	},
 	// Text
 	input: {
 		fontSize: 16,
