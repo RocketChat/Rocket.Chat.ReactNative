@@ -19,8 +19,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		marginRight: isAndroid ? 15 : 5,
 		marginLeft: isAndroid ? androidMarginLeft : -10,
-		justifyContent: 'center',
-		backgroundColor: 'red'
+		justifyContent: 'center'
 	},
 	titleContainer: {
 		alignItems: 'center',
@@ -128,7 +127,7 @@ HeaderTitle.propTypes = {
 };
 
 const Header = React.memo(({
-	title, subtitle, type, status, usersTyping, width, height, prid, tmid, widthOffset, connecting, goRoomActionsView, roomUserId, theme
+	title, subtitle, type, status, usersTyping, width, height, prid, tmid, connecting, goRoomActionsView, roomUserId, theme
 }) => {
 	const portrait = height > width;
 	let scale = 1;
@@ -145,7 +144,7 @@ const Header = React.memo(({
 		<TouchableOpacity
 			testID='room-view-header-actions'
 			onPress={onPress}
-			style={[styles.container, { width: width - widthOffset }]}
+			style={styles.container}
 			disabled={tmid}
 		>
 			<View style={[styles.titleContainer, tmid && styles.threadContainer]}>
@@ -175,7 +174,6 @@ Header.propTypes = {
 	status: PropTypes.string,
 	theme: PropTypes.string,
 	usersTyping: PropTypes.array,
-	widthOffset: PropTypes.number,
 	connecting: PropTypes.bool,
 	roomUserId: PropTypes.string,
 	goRoomActionsView: PropTypes.func

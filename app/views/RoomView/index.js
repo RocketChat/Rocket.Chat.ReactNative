@@ -304,20 +304,20 @@ class RoomView extends React.Component {
 		}
 		navigation.setOptions({
 			headerShown: true,
-			// headerTitle: () => (
-			// 	<RoomHeaderView
-			// 		rid={rid}
-			// 		prid={prid}
-			// 		tmid={tmid}
-			// 		title={title}
-			// 		subtitle={subtitle}
-			// 		type={t}
-			// 		widthOffset={tmid ? 95 : 130}
-			// 		roomUserId={roomUserId}
-			// 		visitor={visitor}
-			// 		goRoomActionsView={this.goRoomActionsView}
-			// 	/>
-			// ),
+			headerTitleAlign: 'left',
+			headerTitle: () => (
+				<RoomHeaderView
+					rid={rid}
+					prid={prid}
+					tmid={tmid}
+					title={title}
+					subtitle={subtitle}
+					type={t}
+					roomUserId={roomUserId}
+					visitor={visitor}
+					goRoomActionsView={this.goRoomActionsView}
+				/>
+			),
 			headerRight: () => (
 				<RightButtons
 					rid={rid}
