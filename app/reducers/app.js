@@ -2,6 +2,7 @@ import { APP, APP_STATE } from '../actions/actionsTypes';
 
 const initialState = {
 	root: null,
+	isMasterDetail: false,
 	text: '',
 	previousServer: '',
 	ready: false,
@@ -39,6 +40,11 @@ export default function app(state = initialState, action) {
 			return {
 				...state,
 				ready: true
+			};
+		case APP.SET_MASTER_DETAIL:
+			return {
+				...state,
+				isMasterDetail: action.isMasterDetail
 			};
 		default:
 			return state;

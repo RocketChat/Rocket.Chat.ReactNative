@@ -158,30 +158,32 @@ const ChatsDrawer = () => (
 
 // NewMessageStack
 const NewMessage = createStackNavigator();
-const NewMessageStack = () => {
+const NewMessageStack = ({ navigation }) => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<NewMessage.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
-			<NewMessage.Screen
-				name='NewMessageView'
-				component={NewMessageView}
-				options={NewMessageView.navigationOptions}
-			/>
-			<NewMessage.Screen
-				name='SelectedUsersViewCreateChannel'
-				component={SelectedUsersView}
-			/>
-			<NewMessage.Screen
-				name='CreateChannelView'
-				component={CreateChannelView}
-				options={CreateChannelView.navigationOptions}
-			/>
-			<NewMessage.Screen
-				name='CreateDiscussionView'
-				component={CreateDiscussionView}
-			/>
-		</NewMessage.Navigator>
+		<ModalContainer navigation={navigation}>
+			<NewMessage.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
+				<NewMessage.Screen
+					name='NewMessageView'
+					component={NewMessageView}
+					options={NewMessageView.navigationOptions}
+				/>
+				<NewMessage.Screen
+					name='SelectedUsersViewCreateChannel'
+					component={SelectedUsersView}
+				/>
+				<NewMessage.Screen
+					name='CreateChannelView'
+					component={CreateChannelView}
+					options={CreateChannelView.navigationOptions}
+				/>
+				<NewMessage.Screen
+					name='CreateDiscussionView'
+					component={CreateDiscussionView}
+				/>
+			</NewMessage.Navigator>
+		</ModalContainer>
 	);
 };
 

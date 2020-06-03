@@ -64,7 +64,8 @@ class NewMessageView extends React.Component {
 		}),
 		createChannel: PropTypes.func,
 		maxUsers: PropTypes.number,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		isMasterDetail: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -145,6 +146,14 @@ class NewMessageView extends React.Component {
 		});
 	}
 
+	goRoom = (item) => {
+		const { isMasterDetail, navigation } = this.props;
+		if (isMasterDetail) {
+			navigation.pop();
+		}
+		goRoom({ item, isMasterDetail });
+	}
+
 	renderButton = ({
 		onPress, testID, title, icon, first
 	}) => {
@@ -221,7 +230,7 @@ class NewMessageView extends React.Component {
 			<UserItem
 				name={item.search ? item.name : item.fname}
 				username={item.search ? item.username : item.name}
-				onPress={() => goRoom(item)}
+				onPress={() => this.goRoom(item)}
 				baseUrl={baseUrl}
 				testID={`new-message-view-item-${ item.name }`}
 				style={style}
@@ -260,6 +269,7 @@ class NewMessageView extends React.Component {
 }
 
 const mapStateToProps = state => ({
+	isMasterDetail: state.app.isMasterDetail,
 	baseUrl: state.server.server,
 	maxUsers: state.settings.DirectMesssage_maxUsers || 1,
 	user: getUserSelector(state)

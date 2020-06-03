@@ -14,7 +14,7 @@ import {
 	unsubscribeTheme
 } from './utils/theme';
 import EventEmitter from './utils/events';
-import { appInit, appInitLocalSettings } from './actions/app';
+import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
 import Navigation from './lib/Navigation';
 import parseQuery from './lib/methods/helpers/parseQuery';
@@ -25,7 +25,7 @@ import { ThemeContext } from './theme';
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { MIN_WIDTH_MASTER_DETAIL_LAYOUT } from './constants/tablet';
 import {
-	isTablet, isIOS, setWidth, supportSystemTheme
+	isTablet, isIOS, supportSystemTheme
 } from './utils/deviceInfo';
 import { KEY_COMMAND, keyCommands, defaultCommands } from './commands';
 // import Tablet, { initTabletNav } from './tablet.js__';
@@ -34,7 +34,6 @@ import AppContainer from './AppContainer';
 import TwoFactor from './containers/TwoFactor';
 import ScreenLockedView from './views/ScreenLockedView';
 import ChangePasscodeView from './views/ChangePasscodeView';
-import { MasterDetailContext } from './masterDetail';
 
 RNScreens.enableScreens();
 
@@ -57,10 +56,7 @@ export default class Root extends React.Component {
 		super(props);
 		this.init();
 		this.initCrashReport();
-		const { width } = Dimensions.get('window');
 		this.state = {
-			width,
-			isMasterDetail: this.getIsMasterDetail(width),
 			theme: defaultTheme(),
 			themePreferences: {
 				currentTheme: supportSystemTheme() ? 'automatic' : 'light',
@@ -124,14 +120,21 @@ export default class Root extends React.Component {
 		}
 	}
 
-	getIsMasterDetail = (width) => {
+	getMasterDetail = (width) => {
 		if (!isTablet) {
 			return false;
 		}
 		return width > MIN_WIDTH_MASTER_DETAIL_LAYOUT;
 	}
 
-	onDimensionsChange = ({ window: { width } }) => this.setState({ width, isMasterDetail: this.getIsMasterDetail(width) })
+	setMasterDetail = (width) => {
+		const isMasterDetail = this.getMasterDetail(width);
+		store.dispatch(setMasterDetailAction(isMasterDetail))
+	};
+
+	onDimensionsChange = ({ window: { width } }) => {
+		this.setMasterDetail(width);
+	}
 
 	setTheme = (newTheme = {}) => {
 		// change theme state
@@ -143,7 +146,8 @@ export default class Root extends React.Component {
 	}
 
 	initTablet = async() => {
-		const { isMasterDetail } = this.state;
+		const { width } = Dimensions.get('window');
+		this.setMasterDetail(width);
 		await KeyCommands.setKeyCommands([]);
 		this.onKeyCommands = KeyCommandsEmitter.addListener(
 			'onKeyCommand',
@@ -172,7 +176,7 @@ export default class Root extends React.Component {
 	}
 
 	render() {
-		const { isMasterDetail, themePreferences, theme } = this.state;
+		const { themePreferences, theme } = this.state;
 		return (
 			<AppearanceProvider>
 				<Provider store={store}>
@@ -183,9 +187,7 @@ export default class Root extends React.Component {
 							setTheme: this.setTheme
 						}}
 					>
-						<MasterDetailContext.Provider value={{ isMasterDetail }}>
-							<AppContainer />
-						</MasterDetailContext.Provider>
+						<AppContainer />
 						<TwoFactor />
 						<ScreenLockedView />
 						<ChangePasscodeView />

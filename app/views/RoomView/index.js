@@ -53,7 +53,6 @@ import { CONTAINER_TYPES } from '../../lib/methods/actions';
 import Banner from './Banner';
 import Navigation from '../../lib/Navigation';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { withMasterDetail } from '../../masterDetail';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -1046,6 +1045,7 @@ class RoomView extends React.Component {
 
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
+	isMasterDetail: state.app.isMasterDetail,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	useRealName: state.settings.UI_Use_Real_Name,
 	isAuthenticated: state.login.isAuthenticated,
@@ -1061,4 +1061,4 @@ const mapDispatchToProps = dispatch => ({
 	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withMasterDetail(withTheme(RoomView)));
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RoomView));

@@ -20,8 +20,6 @@ import SetUsernameView from './views/SetUsernameView';
 import OutsideStack from './stacks/OutsideStack';
 import InsideStack from './stacks/InsideStack';
 import MasterDetailStack from './stacks/MasterDetailStack';
-import { isTablet } from './utils/deviceInfo';
-import { MasterDetailContext } from './masterDetail';
 
 // SetUsernameStack
 const SetUsername = createStackNavigator();
@@ -36,7 +34,7 @@ const SetUsernameStack = () => (
 
 // App
 const Stack = createStackNavigator();
-const App = React.memo(({ root }) => {
+const App = React.memo(({ root, isMasterDetail }) => {
 	if (!root || root === ROOT_BACKGROUND) {
 		return null;
 	}
@@ -48,8 +46,6 @@ const App = React.memo(({ root }) => {
 			background: 'transparent'
 		}
 	};
-
-	const { isMasterDetail } = React.useContext(MasterDetailContext);
 
 	return (
 		<SafeAreaProvider initialMetrics={initialWindowMetrics}>
@@ -94,11 +90,13 @@ const App = React.memo(({ root }) => {
 	);
 });
 const mapStateToProps = state => ({
-	root: state.app.root
+	root: state.app.root,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 App.propTypes = {
-	root: PropTypes.string
+	root: PropTypes.string,
+	isMasterDetail: PropTypes.bool
 };
 
 const AppContainer = connect(mapStateToProps)(App);

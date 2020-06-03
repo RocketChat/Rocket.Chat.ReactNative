@@ -32,3 +32,10 @@ export function appInitLocalSettings() {
 		type: APP.INIT_LOCAL_SETTINGS
 	};
 }
+
+export function setMasterDetail(isMasterDetail) {
+	return {
+		type: APP.SET_MASTER_DETAIL,
+		isMasterDetail
+	};
+}
