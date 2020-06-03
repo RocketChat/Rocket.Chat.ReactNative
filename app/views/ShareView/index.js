@@ -5,12 +5,12 @@ import {
 	Text,
 	Image,
 	FlatList,
-	SafeAreaView,
-	InteractionManager
+	SafeAreaView
 } from 'react-native';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import * as VideoThumbnails from 'expo-video-thumbnails';
 
 import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
@@ -103,10 +103,22 @@ const ShareView = React.memo(({
 			setReadOnly(ro);
 		})();
 
-		// set attachments just when it was mounted to prevent memory issues
-		InteractionManager.runAfterInteractions(() => {
-			setAttachments(navigation.getParam('attachments', []));
-		});
+		(async() => {
+			// set attachments just when it was mounted to prevent memory issues
+			const files = navigation.getParam('attachments', []);
+			const videos = files.filter(attachment => attachment.mime.match(/video/));
+			if (videos?.length) {
+				try {
+					await Promise.all(videos.map(async(video, index) => {
+						const { uri } = await VideoThumbnails.getThumbnailAsync(video.path);
+						files[index].uri = uri;
+					}));
+				} catch {
+					// Do nothing
+				}
+			}
+			setAttachments(files);
+		})();
 	}, []);
 
 	if (readOnly || isBlocked(room)) {
@@ -119,9 +131,12 @@ const ShareView = React.memo(({
 		);
 	}
 
+	// handle video thumbnails
+	const getUri = attachment => attachment?.uri || attachment?.path;
+
 	return (
 		<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
-			<ImageViewer uri={attachments[selected]?.path} />
+			<ImageViewer uri={getUri(attachments[selected])} />
 			<MessageBox
 				showSend
 				rid={room.rid}
@@ -138,7 +153,7 @@ const ShareView = React.memo(({
 					data={attachments}
 					renderItem={({ item, index }) => (
 						<BorderlessButton onPress={() => select(index)} style={styles.item}>
-							<Image source={{ uri: item.path }} style={styles.thumb} />
+							<Image source={{ uri: getUri(item) }} style={styles.thumb} />
 							<BorderlessButton
 								hitSlop={BUTTON_HIT_SLOP}
 								style={[styles.remove, { backgroundColor: themes[theme].bodyText, borderColor: themes[theme].auxiliaryBackground }]}
