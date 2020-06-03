@@ -191,35 +191,37 @@ const ShareView = React.memo(({
 						message={attachments[selected]?.description}
 						navigation={navigation}
 					>
-						<FlatList
-							horizontal
-							data={attachments}
-							renderItem={({ item, index }) => (
-								<BorderlessButton onPress={() => select(index)} style={styles.item}>
-									<Image source={{ uri: getUri(item) }} style={styles.thumb} />
-									{item.mime.match(/video/) ? (
-										<CustomIcon
-											name='play'
-											size={48}
-											color={themes[theme].separatorColor}
-											style={styles.play}
-										/>
-									) : null}
-									<BorderlessButton
-										hitSlop={BUTTON_HIT_SLOP}
-										style={[styles.remove, { backgroundColor: themes[theme].bodyText, borderColor: themes[theme].auxiliaryBackground }]}
-										onPress={() => remove(index)}
-									>
-										<CustomIcon
-											name='cross'
-											color={themes[theme].backgroundColor}
-											size={16}
-										/>
+						{attachments?.length > 1 ? (
+							<FlatList
+								horizontal
+								data={attachments}
+								renderItem={({ item, index }) => (
+									<BorderlessButton onPress={() => select(index)} style={styles.item}>
+										<Image source={{ uri: getUri(item) }} style={styles.thumb} />
+										{item.mime.match(/video/) ? (
+											<CustomIcon
+												name='play'
+												size={48}
+												color={themes[theme].separatorColor}
+												style={styles.play}
+											/>
+										) : null}
+										<BorderlessButton
+											hitSlop={BUTTON_HIT_SLOP}
+											style={[styles.remove, { backgroundColor: themes[theme].bodyText, borderColor: themes[theme].auxiliaryBackground }]}
+											onPress={() => remove(index)}
+										>
+											<CustomIcon
+												name='cross'
+												color={themes[theme].backgroundColor}
+												size={16}
+											/>
+										</BorderlessButton>
 									</BorderlessButton>
-								</BorderlessButton>
-							)}
-							style={[styles.list, { backgroundColor: themes[theme].auxiliaryBackground }]}
-						/>
+								)}
+								style={[styles.list, { backgroundColor: themes[theme].auxiliaryBackground }]}
+							/>
+						) : null}
 					</MessageBox>
 				</>
 			) : (
