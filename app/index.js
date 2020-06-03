@@ -27,7 +27,7 @@ import { MIN_WIDTH_MASTER_DETAIL_LAYOUT } from './constants/tablet';
 import {
 	isTablet, isIOS, setWidth, supportSystemTheme
 } from './utils/deviceInfo';
-import { KEY_COMMAND } from './commands';
+import { KEY_COMMAND, keyCommands, defaultCommands } from './commands';
 // import Tablet, { initTabletNav } from './tablet.js__';
 import { SplitContext } from './split';
 import AppContainer from './AppContainer';
@@ -67,9 +67,9 @@ export default class Root extends React.Component {
 				darkLevel: 'dark'
 			}
 		};
-		// if (isTablet) {
-		// 	this.initTablet();
-		// }
+		if (isTablet) {
+			this.initTablet();
+		}
 	}
 
 	componentDidMount() {
@@ -142,14 +142,23 @@ export default class Root extends React.Component {
 		});
 	}
 
-	// initTablet = async() => {
-	// 	// initTabletNav(args => this.setState(args));
-	// 	await KeyCommands.setKeyCommands([]);
-	// 	this.onKeyCommands = KeyCommandsEmitter.addListener(
-	// 		'onKeyCommand',
-	// 		command => EventEmitter.emit(KEY_COMMAND, { event: command })
-	// 	);
-	// }
+	initTablet = async() => {
+		const { isMasterDetail } = this.state;
+		await KeyCommands.setKeyCommands([]);
+		this.onKeyCommands = KeyCommandsEmitter.addListener(
+			'onKeyCommand',
+			command => {
+      	console.log('initTab -> command', command);
+				EventEmitter.emit(KEY_COMMAND, { event: command })
+			}
+		);
+		// TODO: add/remove commands based on the current screen
+		let commands = defaultCommands;
+		if (isMasterDetail) {
+			commands = [...commands, ...keyCommands];
+		}
+		KeyCommands.setKeyCommands(commands);
+	}
 
 	initCrashReport = () => {
 		RocketChat.getAllowCrashReport()
