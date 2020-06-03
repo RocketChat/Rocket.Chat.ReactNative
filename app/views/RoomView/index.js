@@ -174,26 +174,25 @@ class RoomView extends React.Component {
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
-	// TODO: turn it on again
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	const { state } = this;
-	// 	const { roomUpdate, member } = state;
-	// 	const { appState, theme } = this.props;
-	// 	if (theme !== nextProps.theme) {
-	// 		return true;
-	// 	}
-	// 	if (appState !== nextProps.appState) {
-	// 		return true;
-	// 	}
-	// 	if (member.statusText !== nextState.member.statusText) {
-	// 		return true;
-	// 	}
-	// 	const stateUpdated = stateAttrsUpdate.some(key => nextState[key] !== state[key]);
-	// 	if (stateUpdated) {
-	// 		return true;
-	// 	}
-	// 	return roomAttrsUpdate.some(key => !isEqual(nextState.roomUpdate[key], roomUpdate[key]));
-	// }
+	shouldComponentUpdate(nextProps, nextState) {
+		const { state } = this;
+		const { roomUpdate, member } = state;
+		const { appState, theme } = this.props;
+		if (theme !== nextProps.theme) {
+			return true;
+		}
+		if (appState !== nextProps.appState) {
+			return true;
+		}
+		if (member.statusText !== nextState.member.statusText) {
+			return true;
+		}
+		const stateUpdated = stateAttrsUpdate.some(key => nextState[key] !== state[key]);
+		if (stateUpdated) {
+			return true;
+		}
+		return roomAttrsUpdate.some(key => !isEqual(nextState.roomUpdate[key], roomUpdate[key]));
+	}
 
 	componentDidUpdate(prevProps, prevState) {
 		const { roomUpdate } = this.state;
