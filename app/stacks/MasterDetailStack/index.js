@@ -129,24 +129,13 @@ const SettingsStack = ({ navigation }) => {
 					name='ProfileView'
 					component={ProfileView}
 				/>
+				<Settings.Screen
+					name='AdminPanelStack'
+					component={AdminPanelView}
+					options={props => AdminPanelView.navigationOptions({ ...props, isMasterDetail: true })}
+				/>
 			</Settings.Navigator>
 		</ModalContainer>
-	);
-};
-
-// AdminPanelStack
-const AdminPanel = createStackNavigator();
-const AdminPanelStack = () => {
-	const { theme } = React.useContext(ThemeContext);
-
-	return (
-		<AdminPanel.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
-			<AdminPanel.Screen
-				name='AdminPanelView'
-				component={AdminPanelView}
-				options={AdminPanelView.navigationOptions}
-			/>
-		</AdminPanel.Navigator>
 	);
 };
 

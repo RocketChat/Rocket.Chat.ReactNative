@@ -11,8 +11,8 @@ import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 
 class AdminPanelView extends React.Component {
-	static navigationOptions = ({ navigation }) => ({
-		headerLeft: () => <DrawerButton navigation={navigation} />,
+	static navigationOptions = ({ navigation, isMasterDetail }) => ({
+		headerLeft: isMasterDetail ? undefined : () => <DrawerButton navigation={navigation} />,
 		title: I18n.t('Admin_Panel')
 	})
 
