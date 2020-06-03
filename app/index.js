@@ -26,7 +26,7 @@ import Sidebar from './views/SidebarView';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications, onNotification } from './notifications/push';
 import store from './lib/createStore';
-import NotificationBadge from './notifications/inApp';
+import NotificationBadge from './containers/NotificationsInApp';
 import {
 	defaultHeader, onNavigationStateChange, cardStyle, getActiveRouteName
 } from './utils/navigation';

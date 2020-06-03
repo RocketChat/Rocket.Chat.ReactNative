@@ -6,10 +6,12 @@ import { NotifierRoot, Notifier, Easing } from 'react-native-notifier';
 import { responsive } from 'react-native-responsive-ui';
 
 import { removeNotification as removeNotificationAction } from '../../actions/notification';
-import NotifierComponent from './notifierComponent';
+import NotifierComponent from './NotifierComponent';
+import EventEmitter from './../../utils/events';
 
 const ANIMATION_DURATION = 300;
 const NOTIFICATION_DURATION = 3000;
+const LISTENER = 'NotificationInApp'
 
 class NotificationBadge extends React.Component {
 	static propTypes = {
@@ -20,11 +22,16 @@ class NotificationBadge extends React.Component {
 		removeNotification: PropTypes.func
 	}
 
+	componentDidMount() {
+		EventEmitter.addEventListener(LISTENER, this.show);
+	}
+
 	shouldComponentUpdate(nextProps) {
 		const { notification: nextNotification } = nextProps;
 		const {
 			notification: { payload }, window, theme
 		} = this.props;
+		console.log(nextProps, this.props);
 		if (nextProps.theme !== theme) {
 			return true;
 		}
@@ -37,8 +44,13 @@ class NotificationBadge extends React.Component {
 		return false;
 	}
 
-	componentDidUpdate() {
-		const { notification: { payload }, navigation } = this.props;
+	componentWillMount () {
+		EventEmitter.removeListener(LISTENER);
+	}
+
+	show = (notification) => {
+		const { navigation } = this.props;
+		const { payload } = notification;
 		const navState = this.getNavState(navigation.state);
 		if (payload.rid) {
 			if (navState && navState.routeName === 'RoomView' && navState.params && navState.params.rid === payload.rid) {
@@ -58,6 +70,7 @@ class NotificationBadge extends React.Component {
 			});
 		}
 	}
+
 
 	hide = () => {
 		const { removeNotification } = this.props;
