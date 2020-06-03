@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-	View,
-	Text,
-	Image,
-	FlatList,
-	SafeAreaView
-} from 'react-native';
+import { View, Text, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import * as VideoThumbnails from 'expo-video-thumbnails';
-import { Video } from 'expo-av';
 
 import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
@@ -27,12 +19,10 @@ import { isReadOnly } from '../../utils/isReadOnly';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import Header from './Header';
-import MessageBox from '../../containers/MessageBox';
-import ImageViewer from '../../presentation/ImageViewer';
 import RocketChat from '../../lib/rocketchat';
-import { CustomIcon } from '../../lib/Icons';
-import { BUTTON_HIT_SLOP } from '../../containers/message/utils';
 import TextInput from '../../containers/TextInput';
+import Preview from './Preview';
+import Thumbs from './Thumbs';
 
 const ShareView = React.memo(({
 	navigation,
@@ -44,21 +34,16 @@ const ShareView = React.memo(({
 	},
 	server
 }) => {
+	const [selected] = useState(0);
 	const [loading, setLoading] = useState(false);
 	const [readOnly, setReadOnly] = useState(false);
 	const [attachments, setAttachments] = useState([]);
 	const [text, setText] = useState(navigation.getParam('text', ''));
-	const [selected, select] = useState(0);
-	const room = navigation.getParam('room', {});
 	const shareExtension = navigation.getParam('shareExtension');
+	const files = navigation.getParam('attachments', []);
+	const room = navigation.getParam('room', {});
 
-	const remove = (index) => {
-		const cpAttachments = attachments;
-		cpAttachments.splice(index, 1);
-		setAttachments(cpAttachments);
-	};
-
-	const send = async() => {
+	const sendFiles = async() => {
 		if (loading) {
 			return;
 		}
@@ -99,11 +84,6 @@ const ShareView = React.memo(({
 		}
 	};
 
-	const onChangeText = (txt) => {
-		attachments[selected].description = txt;
-		setAttachments(attachments);
-	};
-
 	useEffect(() => {
 		(async() => {
 			const ro = await isReadOnly(room, { username });
@@ -112,7 +92,6 @@ const ShareView = React.memo(({
 
 		(async() => {
 			// set attachments just when it was mounted to prevent memory issues
-			const files = navigation.getParam('attachments', []);
 			const videos = files.filter(attachment => attachment.mime.match(/video/));
 			if (videos?.length) {
 				try {
@@ -128,6 +107,7 @@ const ShareView = React.memo(({
 		})();
 
 		navigation.setParams({
+			sendFiles,
 			sendMessage: async() => {
 				if (shareExtension) {
 					setLoading(true);
@@ -158,89 +138,46 @@ const ShareView = React.memo(({
 		);
 	}
 
-	// handle video thumbnails
-	const getUri = attachment => attachment?.uri || attachment?.path;
+	const renderContent = () => {
+		if (files.length) {
+			return (
+				<View style={styles.container}>
+					<View style={styles.container}>
+						<Preview
+							item={attachments[selected]}
+							theme={theme}
+						/>
+					</View>
+					<Thumbs
+						attachments={attachments}
+						theme={theme}
+					/>
+				</View>
+			);
+		}
+
+		return (
+			<TextInput
+				containerStyle={styles.inputContainer}
+				inputStyle={[
+					styles.input,
+					styles.textInput,
+					{ backgroundColor: themes[theme].focusedBackground }
+				]}
+				placeholder=''
+				onChangeText={setText}
+				defaultValue={text}
+				multiline
+				textAlignVertical='top'
+				autoFocus
+				theme={theme}
+			/>
+		);
+	};
 
 	return (
-		<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
-			{navigation.getParam('attachments', []).length ? (
-				<>
-					{attachments[selected]?.mime.match(/video/) ? (
-						<Video
-							source={{ uri: attachments[selected].path }}
-							rate={1.0}
-							volume={1.0}
-							isMuted={false}
-							resizeMode={Video.RESIZE_MODE_CONTAIN}
-							shouldPlay
-							isLooping={false}
-							style={{ width: '100%', height: '50%' }}
-							useNativeControls
-						/>
-					) : (
-						<ImageViewer uri={getUri(attachments[selected])} />
-					)}
-					<MessageBox
-						showSend
-						rid={room.rid}
-						roomType={room.t}
-						theme={theme}
-						onSubmit={send}
-						getCustomEmoji={() => {}}
-						onChangeText={onChangeText}
-						message={attachments[selected]?.description}
-						navigation={navigation}
-					>
-						{attachments?.length > 1 ? (
-							<FlatList
-								horizontal
-								data={attachments}
-								renderItem={({ item, index }) => (
-									<BorderlessButton onPress={() => select(index)} style={styles.item}>
-										<Image source={{ uri: getUri(item) }} style={styles.thumb} />
-										{item.mime.match(/video/) ? (
-											<CustomIcon
-												name='play'
-												size={48}
-												color={themes[theme].separatorColor}
-												style={styles.play}
-											/>
-										) : null}
-										<BorderlessButton
-											hitSlop={BUTTON_HIT_SLOP}
-											style={[styles.remove, { backgroundColor: themes[theme].bodyText, borderColor: themes[theme].auxiliaryBackground }]}
-											onPress={() => remove(index)}
-										>
-											<CustomIcon
-												name='cross'
-												color={themes[theme].backgroundColor}
-												size={16}
-											/>
-										</BorderlessButton>
-									</BorderlessButton>
-								)}
-								style={[styles.list, { backgroundColor: themes[theme].auxiliaryBackground }]}
-							/>
-						) : null}
-					</MessageBox>
-				</>
-			) : (
-				<TextInput
-					containerStyle={styles.inputContainer}
-					inputStyle={[
-						styles.input,
-						styles.textInput,
-						{ backgroundColor: themes[theme].focusedBackground }
-					]}
-					placeholder=''
-					onChangeText={setText}
-					defaultValue={text}
-					multiline
-					textAlignVertical='top'
-					autoFocus
-					theme={theme}
-				/>
-			)}
+		<SafeAreaView style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
+			{renderContent()}
 			<Loading visible={loading} />
 		</SafeAreaView>
 	);

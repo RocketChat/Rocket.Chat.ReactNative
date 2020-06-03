@@ -5,6 +5,14 @@ import sharedStyles from '../Styles';
 const THUMB_SIZE = 64;
 
 export default StyleSheet.create({
+	container: {
+		flex: 1
+	},
+	// Preview
+	video: {
+		width: '100%',
+		height: '100%'
+	},
 	// Text
 	input: {
 		fontSize: 16,
@@ -43,9 +51,6 @@ export default StyleSheet.create({
 		marginRight: 16
 	},
 	// Error
-	container: {
-		flex: 1
-	},
 	centered: {
 		justifyContent: 'center',
 		alignItems: 'center'
