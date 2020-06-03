@@ -57,7 +57,7 @@ update-fastlane-ios: &update-fastlane-ios
   name: Update Fastlane
   command: |
     echo "ruby-2.6.4" > ~/.ruby-version
-    bundle install && bundle update
+    bundle install
   working_directory: ios
 
 update-fastlane-android: &update-fastlane-android
@@ -334,18 +334,10 @@ jobs:
 
       - run: *update-fastlane-android
 
-      - restore_cache: *restore-gradle-cache
-
       - run:
           name: Fastlane Play Store Upload
-          command: |
-            bundle exec fastlane android alpha
+          command: bundle exec fastlane android alpha
           working_directory: android
-
-      - store_artifacts:
-          path: android/app/build/outputs
-
-      - save_cache: *save-gradle-cache
 
   # iOS builds
   ios-build:
@@ -477,3 +469,4 @@ workflows:
       - upload-google-play-alpha:
           requires:
             - android-hold-google-play-alpha
+            
