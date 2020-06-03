@@ -221,12 +221,7 @@ class MessagesView extends React.Component {
 
 	showAttachment = (attachment) => {
 		const { navigation } = this.props;
-		let params = { attachment };
-		// TODO: ?
-		// if (split) {
-		// 	params = { ...params, from: 'MessagesView' };
-		// }
-		navigation.navigate('AttachmentView', params);
+		navigation.navigate('AttachmentView', { attachment });
 	}
 
 	onLongPress = (message) => {

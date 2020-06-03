@@ -740,14 +740,12 @@ class RoomView extends React.Component {
 	}
 
 	navToRoomInfo = (navParam) => {
-		const { room } = this.state;
 		const { navigation, user, isMasterDetail } = this.props;
 		if (navParam.rid === user.id) {
 			return;
 		}
 		if (isMasterDetail) {
-			navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t, room });
-			ModalNavigation.navigate('RoomInfoView', navParam);
+			navigation.navigate('RoomStackModal', { screen: 'RoomInfoView', params: navParam });
 		} else {
 			navigation.navigate('RoomInfoView', navParam);
 		}
