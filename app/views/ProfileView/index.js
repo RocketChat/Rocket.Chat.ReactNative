@@ -33,6 +33,7 @@ import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 
 class ProfileView extends React.Component {
+	// TODO: split?
 	static navigationOptions = ({ navigation, split }) => ({
 		headerLeft: () => (split ? (
 			<HeaderBackButton

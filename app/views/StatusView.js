@@ -16,7 +16,6 @@ import log from '../utils/log';
 import { LISTENER } from '../containers/Toast';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
-import { withSplit } from '../split';
 import { getUserSelector } from '../selectors/login';
 import { CustomHeaderButtons, Item, CancelModalButton } from '../containers/HeaderButton';
 import store from '../lib/createStore';
@@ -63,7 +62,6 @@ class StatusView extends React.Component {
 			statusText: PropTypes.string
 		}),
 		theme: PropTypes.string,
-		split: PropTypes.bool,
 		navigation: PropTypes.object
 	}
 
@@ -102,12 +100,13 @@ class StatusView extends React.Component {
 	}
 
 	close = () => {
-		const { navigation, split } = this.props;
-		if (split) {
-			navigation.goBack();
-		} else {
-			navigation.pop();
-		}
+		const { navigation } = this.props;
+		navigation.goBack();
+		// if (split) {
+		// 	navigation.goBack();
+		// } else {
+		// 	navigation.pop();
+		// }
 	}
 
 	setCustomStatus = async() => {
@@ -213,4 +212,4 @@ const mapStateToProps = state => ({
 	user: getUserSelector(state)
 });
 
-export default connect(mapStateToProps)(withSplit(withTheme(StatusView)));
+export default connect(mapStateToProps)(withTheme(StatusView));

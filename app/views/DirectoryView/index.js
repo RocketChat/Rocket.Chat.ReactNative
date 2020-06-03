@@ -25,6 +25,7 @@ import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 
 class DirectoryView extends React.Component {
+	// TODO: split?
 	static navigationOptions = ({ navigation, split }) => {
 		const options = {
 			title: I18n.t('Directory')

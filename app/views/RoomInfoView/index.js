@@ -20,7 +20,6 @@ import StatusBar from '../../containers/StatusBar';
 import log from '../../utils/log';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { withSplit } from '../../split';
 import { getUserSelector } from '../../selectors/login';
 import Markdown from '../../containers/markdown';
 import Navigation from '../../lib/Navigation';
@@ -58,7 +57,6 @@ class RoomInfoView extends React.Component {
 		}),
 		baseUrl: PropTypes.string,
 		rooms: PropTypes.array,
-		split: PropTypes.bool,
 		theme: PropTypes.string
 	}
 
@@ -234,7 +232,7 @@ class RoomInfoView extends React.Component {
 	goRoom = () => {
 		const { roomUser, room } = this.state;
 		const { name, username } = roomUser;
-		const { rooms, navigation, split } = this.props;
+		const { rooms, navigation } = this.props;
 
 		if (room.rid) {
 			let navigate = navigation.push;
@@ -242,9 +240,11 @@ class RoomInfoView extends React.Component {
 			// if this is a room focused
 			if (rooms.includes(room.rid)) {
 				({ navigate } = navigation);
-			} else if (split) {
-				({ navigate } = Navigation);
 			}
+			// TODO: ?
+			// } else if (split) {
+			// 	({ navigate } = Navigation);
+			// }
 
 			navigate('RoomView', {
 				rid: room.rid,
@@ -347,4 +347,4 @@ const mapStateToProps = state => ({
 	rooms: state.room.rooms
 });
 
-export default connect(mapStateToProps)(withSplit(withTheme(RoomInfoView)));
+export default connect(mapStateToProps)(withTheme(RoomInfoView));

@@ -2,6 +2,8 @@ import React from 'react';
 import { TouchableWithoutFeedback, View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
+import sharedStyles from '../../views/Styles';
+
 const styles = StyleSheet.create({
 	root: {
 		flex: 1,
@@ -11,14 +13,6 @@ const styles = StyleSheet.create({
 	},
 	backdrop: {
 		...StyleSheet.absoluteFill
-	},
-	modal: {
-		// Following UIModalPresentationFormSheet size
-		// this not change on different iPad sizes
-		width: 540,
-		height: 620,
-		overflow: 'hidden',
-		borderRadius: 10
 	}
 });
 
@@ -27,7 +21,7 @@ export const ModalContainer = ({ navigation, children }) => (
 		<TouchableWithoutFeedback onPress={() => navigation.pop()}>
 			<View style={styles.backdrop} />
 		</TouchableWithoutFeedback>
-		<View style={styles.modal}>
+		<View style={sharedStyles.modalFormSheet}>
 			{children}
 		</View>
 	</View>

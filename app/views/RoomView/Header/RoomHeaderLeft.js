@@ -54,7 +54,7 @@ RoomHeaderLeft.propTypes = {
 	t: PropTypes.string,
 	theme: PropTypes.string,
 	goRoomActionsView: PropTypes.func,
-	split: PropTypes.bool
+	isMasterDetail: PropTypes.bool
 };
 
 export default RoomHeaderLeft;

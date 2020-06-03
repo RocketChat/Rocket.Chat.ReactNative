@@ -14,7 +14,6 @@ import StatusBar from '../../containers/StatusBar';
 import getFileUrlFromMessage from '../../lib/methods/helpers/getFileUrlFromMessage';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { withSplit } from '../../split';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 
@@ -32,8 +31,7 @@ class MessagesView extends React.Component {
 		navigation: PropTypes.object,
 		route: PropTypes.object,
 		customEmojis: PropTypes.object,
-		theme: PropTypes.string,
-		split: PropTypes.bool
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
@@ -222,11 +220,12 @@ class MessagesView extends React.Component {
 	}
 
 	showAttachment = (attachment) => {
-		const { navigation, split } = this.props;
+		const { navigation } = this.props;
 		let params = { attachment };
-		if (split) {
-			params = { ...params, from: 'MessagesView' };
-		}
+		// TODO: ?
+		// if (split) {
+		// 	params = { ...params, from: 'MessagesView' };
+		// }
 		navigation.navigate('AttachmentView', params);
 	}
 
@@ -318,4 +317,4 @@ const mapStateToProps = state => ({
 	customEmojis: state.customEmojis
 });
 
-export default connect(mapStateToProps)(withSplit(withTheme(MessagesView)));
+export default connect(mapStateToProps)(withTheme(MessagesView));

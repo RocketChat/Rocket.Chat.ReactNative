@@ -21,7 +21,6 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { KEY_COMMAND, handleCommandSelectServer } from '../../commands';
 import { isTablet } from '../../utils/deviceInfo';
-import { withSplit } from '../../split';
 import { localAuthenticate } from '../../utils/localAuthentication';
 import { showConfirmationAlert } from '../../utils/info';
 import LongPress from '../../utils/longPress';
@@ -33,7 +32,6 @@ class ServerDropdown extends Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		closeServerDropdown: PropTypes.bool,
-		split: PropTypes.bool,
 		server: PropTypes.string,
 		theme: PropTypes.string,
 		appStart: PropTypes.func,
@@ -134,14 +132,15 @@ class ServerDropdown extends Component {
 
 	select = async(server) => {
 		const {
-			server: currentServer, selectServerRequest, navigation, split, appStart
+			server: currentServer, selectServerRequest, navigation, appStart
 		} = this.props;
 		this.close();
 		if (currentServer !== server) {
 			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
-			if (split) {
-				navigation.navigate('RoomView');
-			}
+			// TODO?
+			// if (split) {
+			// 	navigation.navigate('RoomView');
+			// }
 			if (!userId) {
 				setTimeout(() => {
 					appStart({ root: ROOT_NEW_SERVER, previousServer: server });
@@ -290,4 +289,4 @@ const mapDispatchToProps = dispatch => ({
 	appStart: params => dispatch(appStartAction(params))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(withSplit(ServerDropdown)));
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(ServerDropdown));

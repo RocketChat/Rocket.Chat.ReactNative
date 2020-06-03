@@ -29,7 +29,6 @@ import { loggerConfig, analytics } from '../../utils/log';
 import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/links';
 import { withTheme } from '../../theme';
 import SidebarView from '../SidebarView';
-import { withSplit } from '../../split';
 import Navigation from '../../lib/Navigation';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
@@ -54,6 +53,7 @@ SectionSeparator.propTypes = {
 };
 
 class SettingsView extends React.Component {
+	// TODO: split
 	static navigationOptions = ({ navigation, split }) => ({
 		headerLeft: () => (split ? (
 			<CloseModalButton navigation={navigation} testID='settings-view-close' />
@@ -69,7 +69,7 @@ class SettingsView extends React.Component {
 		allowCrashReport: PropTypes.bool,
 		toggleCrashReport: PropTypes.func,
 		theme: PropTypes.string,
-		split: PropTypes.bool,
+		isMasterDetail: PropTypes.bool,
 		logout: PropTypes.func.isRequired,
 		selectServerRequest: PropTypes.func,
 		token: PropTypes.string,
@@ -81,6 +81,7 @@ class SettingsView extends React.Component {
 			message: I18n.t('You_will_be_logged_out_of_this_application'),
 			callToAction: I18n.t('Logout'),
 			onPress: () => {
+				// TODO: split
 				const { logout, split } = this.props;
 				if (split) {
 					Navigation.navigate('RoomView');
@@ -178,7 +179,7 @@ class SettingsView extends React.Component {
 	}
 
 	render() {
-		const { server, split, theme } = this.props;
+		const { server, isMasterDetail, theme } = this.props;
 		return (
 			<SafeAreaView testID='settings-view' theme={theme}>
 				<StatusBar theme={theme} />
@@ -188,7 +189,7 @@ class SettingsView extends React.Component {
 					showsVerticalScrollIndicator={false}
 					testID='settings-view-list'
 				>
-					{split ? (
+					{isMasterDetail ? (
 						<>
 							<Separator theme={theme} />
 							<SidebarView theme={theme} />
@@ -337,7 +338,8 @@ class SettingsView extends React.Component {
 const mapStateToProps = state => ({
 	server: state.server,
 	token: getUserSelector(state).token,
-	allowCrashReport: state.crashReport.allowCrashReport
+	allowCrashReport: state.crashReport.allowCrashReport,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -347,4 +349,4 @@ const mapDispatchToProps = dispatch => ({
 	appStart: params => dispatch(appStartAction(params))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(withSplit(SettingsView)));
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(SettingsView));

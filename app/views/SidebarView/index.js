@@ -17,7 +17,6 @@ import SidebarItem from './SidebarItem';
 import { themes } from '../../constants/colors';
 import database from '../../lib/database';
 import { withTheme } from '../../theme';
-import { withSplit } from '../../split';
 import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/Navigation';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -45,7 +44,7 @@ class Sidebar extends Component {
 		loadingServer: PropTypes.bool,
 		useRealName: PropTypes.bool,
 		allowStatusMessage: PropTypes.bool,
-		split: PropTypes.bool
+		isMasterDetail: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -70,7 +69,7 @@ class Sidebar extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { showStatus, isAdmin } = this.state;
 		const {
-			Site_Name, user, baseUrl, activeItemKey, split, useRealName, theme
+			Site_Name, user, baseUrl, activeItemKey, isMasterDetail, useRealName, theme
 		} = this.props;
 		if (nextState.showStatus !== showStatus) {
 			return true;
@@ -104,7 +103,7 @@ class Sidebar extends Component {
 				return true;
 			}
 		}
-		if (nextProps.split !== split) {
+		if (nextProps.isMasterDetail !== isMasterDetail) {
 			return true;
 		}
 		if (nextProps.useRealName !== useRealName) {
@@ -193,7 +192,7 @@ class Sidebar extends Component {
 
 	render() {
 		const {
-			user, Site_Name, baseUrl, useRealName, allowStatusMessage, split, theme
+			user, Site_Name, baseUrl, useRealName, allowStatusMessage, isMasterDetail, theme
 		} = this.props;
 
 		if (!user) {
@@ -205,7 +204,7 @@ class Sidebar extends Component {
 					style={[
 						styles.container,
 						{
-							backgroundColor: split
+							backgroundColor: isMasterDetail
 								? themes[theme].backgroundColor
 								: themes[theme].focusedBackground
 						}
@@ -237,7 +236,7 @@ class Sidebar extends Component {
 					<Separator theme={theme} />
 
 					{allowStatusMessage ? this.renderCustomStatus() : null}
-					{!split ? (
+					{!isMasterDetail ? (
 						<>
 							<Separator theme={theme} />
 							{this.renderNavigation()}
@@ -256,7 +255,8 @@ const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	loadingServer: state.server.loading,
 	useRealName: state.settings.UI_Use_Real_Name,
-	allowStatusMessage: state.settings.Accounts_AllowUserStatusMessageChange
+	allowStatusMessage: state.settings.Accounts_AllowUserStatusMessageChange,
+	isMasterDetail: state.app.isMasterDetail
 });
 
-export default connect(mapStateToProps)(withTheme(withSplit(Sidebar)));
+export default connect(mapStateToProps)(withTheme(Sidebar));

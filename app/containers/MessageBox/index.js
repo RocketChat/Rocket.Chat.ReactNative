@@ -875,7 +875,9 @@ class MessageBox extends Component {
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { showEmojiKeyboard, file } = this.state;
-		const { user, baseUrl, theme } = this.props;
+		const {
+			user, baseUrl, theme, isMasterDetail
+		} = this.props;
 		return (
 			<MessageboxContext.Provider
 				value={{
@@ -903,6 +905,7 @@ class MessageBox extends Component {
 					file={file}
 					close={() => this.setState({ file: {} })}
 					submit={this.sendMediaMessage}
+					isMasterDetail={isMasterDetail}
 				/>
 			</MessageboxContext.Provider>
 		);
@@ -910,6 +913,7 @@ class MessageBox extends Component {
 }
 
 const mapStateToProps = state => ({
+	isMasterDetail: state.app.isMasterDetail,
 	baseUrl: state.server.server,
 	threadsEnabled: state.settings.Threads_enabled,
 	user: getUserSelector(state),

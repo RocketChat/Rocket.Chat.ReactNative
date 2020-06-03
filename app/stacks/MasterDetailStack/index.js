@@ -1,11 +1,9 @@
 import React from 'react';
-import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { ThemeContext } from '../../theme';
-import { SplitContext } from '../../split';
 import {
 	defaultHeader, themedHeader, StackAnimation, FadeFromCenterModal
 } from '../../utils/navigation';
@@ -62,7 +60,7 @@ import CreateDiscussionView from '../../views/CreateDiscussionView';
 
 // ChatsStack
 const Chats = createStackNavigator();
-const ChatsStack = ({ navigation, route }) => {
+const ChatsStack = () => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
 		<Chats.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
@@ -79,14 +77,13 @@ const ChatsStack = ({ navigation, route }) => {
 const Profile = createStackNavigator();
 const ProfileStack = () => {
 	const { theme } = React.useContext(ThemeContext);
-	const { split } = React.useContext(SplitContext);
-
 	return (
 		<Profile.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
 			<Profile.Screen
 				name='ProfileView'
 				component={ProfileView}
-				options={props => ProfileView.navigationOptions({ ...props, split })}
+				// TODO:
+				// options={props => ProfileView.navigationOptions({ ...props, split })}
 			/>
 		</Profile.Navigator>
 	);
@@ -96,14 +93,13 @@ const ProfileStack = () => {
 const Settings = createStackNavigator();
 const SettingsStack = () => {
 	const { theme } = React.useContext(ThemeContext);
-	const { split } = React.useContext(SplitContext);
-
 	return (
 		<Settings.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
 			<Settings.Screen
 				name='SettingsView'
 				component={SettingsView}
-				options={props => SettingsView.navigationOptions({ ...props, split })}
+				// TODO:
+				// options={props => SettingsView.navigationOptions({ ...props, split })}
 			/>
 			<Settings.Screen
 				name='LanguageView'
@@ -245,7 +241,8 @@ const RoomStackModal = ({ navigation }) => {
 				<RoomStack.Screen
 					name='DirectoryView'
 					component={DirectoryView}
-					options={props => DirectoryView.navigationOptions({ ...props, split })}
+					// TODO:
+					// options={props => DirectoryView.navigationOptions({ ...props, split })}
 				/>
 				<RoomStack.Screen
 					name='NotificationPrefView'
@@ -289,8 +286,8 @@ const RoomStackModal = ({ navigation }) => {
 				/>
 			</RoomStack.Navigator>
 		</ModalContainer>
-	)
-}
+	);
+};
 
 // InsideStackModal
 const InsideStack = createStackNavigator();

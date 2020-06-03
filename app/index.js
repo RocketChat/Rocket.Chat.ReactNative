@@ -28,8 +28,6 @@ import {
 	isTablet, isIOS, supportSystemTheme
 } from './utils/deviceInfo';
 import { KEY_COMMAND, keyCommands, defaultCommands } from './commands';
-// import Tablet, { initTabletNav } from './tablet.js__';
-import { SplitContext } from './split';
 import AppContainer from './AppContainer';
 import TwoFactor from './containers/TwoFactor';
 import ScreenLockedView from './views/ScreenLockedView';
@@ -80,18 +78,6 @@ export default class Root extends React.Component {
 		Dimensions.addEventListener('change', this.onDimensionsChange);
 	}
 
-	// // eslint-disable-next-line no-unused-vars
-	// componentDidUpdate(_, prevState) {
-	// 	if (isTablet) {
-	// 		const { split, inside } = this.state;
-	// 		if (inside && split !== prevState.split) {
-	// 			// Reset app on split mode changes
-	// 			Navigation.navigate('RoomsListView');
-	// 			this.closeModal();
-	// 		}
-	// 	}
-	// }
-
 	componentWillUnmount() {
 		clearTimeout(this.listenerTimeout);
 		Dimensions.removeEventListener('change', this.onDimensionsChange);
@@ -130,6 +116,7 @@ export default class Root extends React.Component {
 	setMasterDetail = (width) => {
 		const isMasterDetail = this.getMasterDetail(width);
 		store.dispatch(setMasterDetailAction(isMasterDetail))
+		return isMasterDetail;
 	};
 
 	onDimensionsChange = ({ window: { width } }) => {
@@ -147,7 +134,7 @@ export default class Root extends React.Component {
 
 	initTablet = async() => {
 		const { width } = Dimensions.get('window');
-		this.setMasterDetail(width);
+		const isMasterDetail = this.setMasterDetail(width);
 		await KeyCommands.setKeyCommands([]);
 		this.onKeyCommands = KeyCommandsEmitter.addListener(
 			'onKeyCommand',
