@@ -532,7 +532,6 @@ class RoomsListView extends React.Component {
 		}
 
 		this.cancelSearch();
-		this.item = item;
 		this.goRoom({ item, isMasterDetail });
 	};
 
@@ -623,7 +622,10 @@ class RoomsListView extends React.Component {
 		}
 	};
 
-	goRoom({ item, isMasterDetail }) {
+	goRoom = ({ item, isMasterDetail }) => {
+		if (this.item?.rid === item.rid) {
+			return;
+		}
 		this.item = item;
 		goRoom({ item, isMasterDetail });
 	}
