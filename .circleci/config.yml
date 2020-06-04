@@ -64,7 +64,7 @@ update-fastlane-android: &update-fastlane-android
   name: Update Fastlane
   command: |
     echo "ruby-2.6.4" > ~/.ruby-version
-    bundle install && bundle update
+    bundle install
   working_directory: android
 
 save-gradle-cache: &save-gradle-cache
@@ -469,4 +469,4 @@ workflows:
       - upload-google-play-alpha:
           requires:
             - android-hold-google-play-alpha
-            
+       
