@@ -16,7 +16,7 @@ import ImageViewer from '../presentation/ImageViewer';
 import { themes } from '../constants/colors';
 import { formatAttachmentUrl } from '../lib/utils';
 import RCActivityIndicator from '../containers/ActivityIndicator';
-import { SaveButton } from '../containers/HeaderButton';
+import { SaveButton, CloseModalButton } from '../containers/HeaderButton';
 import { isAndroid } from '../utils/deviceInfo';
 import { getUserSelector } from '../selectors/login';
 
@@ -65,6 +65,7 @@ class AttachmentView extends React.Component {
 		const attachment = route.params?.attachment;
 		const { title } = attachment;
 		const options = {
+			headerLeft: () => <CloseModalButton testID='close-attachment-view' navigation={navigation} />,
 			title: decodeURI(title),
 			headerRight: () => <SaveButton testID='save-image' onPress={this.handleSave} />
 		};
