@@ -17,6 +17,8 @@ import sharedStyles from '../../views/Styles';
 import { ROW_HEIGHT } from '../../presentation/RoomItem';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
+import { getActiveRoute } from '../../utils/navigation';
+import Navigation from '../../lib/Navigation';
 
 const AVATAR_SIZE = 48;
 const ANIMATION_DURATION = 300;
@@ -72,7 +74,6 @@ const styles = StyleSheet.create({
 class NotificationBadge extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
-		route: PropTypes.object,
 		baseUrl: PropTypes.string,
 		user: PropTypes.object,
 		notification: PropTypes.object,
@@ -104,10 +105,11 @@ class NotificationBadge extends React.Component {
 	}
 
 	componentDidUpdate() {
-		const { notification: { payload }, route } = this.props;
-		const navState = this.getNavState(route.state);
+		const { notification: { payload } } = this.props;
+		const state = Navigation.navigationRef.current.getRootState();
+		const route = getActiveRoute(state);
 		if (payload.rid) {
-			if (navState && navState.name === 'RoomView' && navState.params && navState.params?.rid === payload.rid) {
+			if (route && route.name === 'RoomView' && route.params && route.params?.rid === payload.rid) {
 				return;
 			}
 			this.show();
@@ -149,17 +151,6 @@ class NotificationBadge extends React.Component {
 		if	(this.timeout) {
 			clearTimeout(this.timeout);
 		}
-	}
-
-	getNavState = (state) => {
-		if (!state?.routes) {
-			return state;
-		}
-		const value = state.routes[state.index];
-		if (value.state) {
-			return this.getNavState(value.state);
-		}
-		return value;
 	}
 
 	goToRoom = async() => {

@@ -32,13 +32,17 @@ export const themedHeader = theme => ({
 });
 
 // Gets the current screen from navigation state
-export const getActiveRouteName = (state) => {
+export const getActiveRoute = (state) => {
 	const route = state.routes[state.index];
 
 	if (route.state) {
 		// Dive into nested navigators
-		return getActiveRouteName(route.state);
+		return getActiveRoute(route.state);
 	}
 
-	return route.name;
+	return route;
+};
+
+export const getActiveRouteName = (state) => {
+	return getActiveRoute(state).name;
 };
