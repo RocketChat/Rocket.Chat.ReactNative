@@ -90,7 +90,7 @@ const Settings = createStackNavigator();
 const SettingsStack = React.memo(({ navigation }) => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
-		<ModalContainer navigation={navigation}>
+		<ModalContainer navigation={navigation} theme={theme}>
 			<Settings.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
 				<Settings.Screen
 					name='SettingsView'
@@ -152,7 +152,7 @@ const NewMessage = createStackNavigator();
 const NewMessageStack = React.memo(({ navigation }) => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
-		<ModalContainer navigation={navigation}>
+		<ModalContainer navigation={navigation} theme={theme}>
 			<NewMessage.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
 				<NewMessage.Screen
 					name='NewMessageView'
@@ -181,7 +181,7 @@ const RoomStack = createStackNavigator();
 const RoomStackModal = React.memo(({ navigation }) => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
-		<ModalContainer navigation={navigation}>
+		<ModalContainer navigation={navigation} theme={theme}>
 			<RoomStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
 				<RoomStack.Screen
 					name='RoomActionsView'

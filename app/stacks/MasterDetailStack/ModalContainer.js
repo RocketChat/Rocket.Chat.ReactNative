@@ -3,21 +3,21 @@ import { TouchableWithoutFeedback, View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 import sharedStyles from '../../views/Styles';
+import { themes } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	root: {
 		flex: 1,
 		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: '#00000070'
+		justifyContent: 'center'
 	},
 	backdrop: {
 		...StyleSheet.absoluteFill
 	}
 });
 
-export const ModalContainer = ({ navigation, children }) => (
-	<View style={styles.root}>
+export const ModalContainer = ({ navigation, children, theme }) => (
+	<View style={[styles.root, { backgroundColor: `${ themes[theme].backdropColor }70` }]}>
 		<TouchableWithoutFeedback onPress={() => navigation.pop()}>
 			<View style={styles.backdrop} />
 		</TouchableWithoutFeedback>
@@ -29,5 +29,6 @@ export const ModalContainer = ({ navigation, children }) => (
 
 ModalContainer.propTypes = {
 	navigation: PropTypes.object,
-	children: PropTypes.element
+	children: PropTypes.element,
+	theme: PropTypes.string
 };
