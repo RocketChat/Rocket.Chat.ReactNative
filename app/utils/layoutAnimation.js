@@ -1,4 +1,4 @@
-import { LayoutAnimation } from 'react-native';
+// import { LayoutAnimation } from 'react-native';
 
 import debounce from './debounce';
 import { isIOS } from './deviceInfo';

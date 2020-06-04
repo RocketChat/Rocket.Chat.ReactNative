@@ -95,6 +95,7 @@ class MessageBox extends Component {
 		typing: PropTypes.func,
 		theme: PropTypes.string,
 		replyCancel: PropTypes.func,
+		isMasterDetail: PropTypes.bool,
 		navigation: PropTypes.object
 	}
 

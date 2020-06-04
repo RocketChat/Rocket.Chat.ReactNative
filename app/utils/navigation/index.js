@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native';
 
-import { setCurrentScreen } from '../log';
 import { themes } from '../../constants/colors';
 
 export * from './animations';
@@ -43,6 +42,4 @@ export const getActiveRoute = (state) => {
 	return route;
 };
 
-export const getActiveRouteName = (state) => {
-	return getActiveRoute(state).name;
-};
+export const getActiveRouteName = state => getActiveRoute(state).name;

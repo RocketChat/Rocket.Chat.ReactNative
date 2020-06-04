@@ -136,6 +136,10 @@ const SettingsStack = React.memo(({ navigation }) => {
 	);
 });
 
+SettingsStack.propTypes = {
+	navigation: PropTypes.object
+};
+
 // ChatsDrawer
 const Drawer = createDrawerNavigator();
 const ChatsDrawer = React.memo(() => (
@@ -176,6 +180,10 @@ const NewMessageStack = React.memo(({ navigation }) => {
 		</ModalContainer>
 	);
 });
+
+NewMessageStack.propTypes = {
+	navigation: PropTypes.object
+};
 
 const RoomStack = createStackNavigator();
 const RoomStackModal = React.memo(({ navigation }) => {
@@ -281,6 +289,10 @@ const RoomStackModal = React.memo(({ navigation }) => {
 		</ModalContainer>
 	);
 });
+
+RoomStackModal.propTypes = {
+	navigation: PropTypes.object
+};
 
 // InsideStackModal
 const InsideStack = createStackNavigator();

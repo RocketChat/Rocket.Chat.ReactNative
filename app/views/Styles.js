@@ -1,6 +1,6 @@
 import { StyleSheet, Platform } from 'react-native';
 
-import { MAX_SCREEN_CONTENT_WIDTH, MAX_CONTENT_WIDTH } from '../constants/tablet';
+import { MAX_SCREEN_CONTENT_WIDTH } from '../constants/tablet';
 
 export default StyleSheet.create({
 	container: {
