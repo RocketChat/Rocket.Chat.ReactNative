@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import KeyCommands from 'react-native-keycommands';
 
 import { ThemeContext } from '../../theme';
 import {
@@ -76,7 +75,7 @@ const ChatsStack = React.memo(() => {
 	}, [isFocused]);
 
 	return (
-		<Chats.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
+		<Chats.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
 			<Chats.Screen
 				name='RoomView'
 				component={RoomView}
@@ -140,7 +139,10 @@ const SettingsStack = React.memo(({ navigation }) => {
 // ChatsDrawer
 const Drawer = createDrawerNavigator();
 const ChatsDrawer = React.memo(() => (
-	<Drawer.Navigator drawerContent={({ navigation, state }) => <RoomsListView navigation={navigation} state={state} />} drawerType='permanent'>
+	<Drawer.Navigator
+		drawerContent={({ navigation, state }) => <RoomsListView navigation={navigation} state={state} />}
+		drawerType='permanent'
+	>
 		<Drawer.Screen name='ChatsStack' component={ChatsStack} />
 	</Drawer.Navigator>
 ));
