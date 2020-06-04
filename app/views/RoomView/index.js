@@ -145,7 +145,9 @@ class RoomView extends React.Component {
 		this.messagebox = React.createRef();
 		this.list = React.createRef();
 		this.mounted = false;
-		this.sub = new RoomClass(this.rid);
+		if (this.rid) {
+			this.sub = new RoomClass(this.rid);
+		}
 		console.timeEnd(`${ this.constructor.name } init`);
 	}
 
