@@ -115,8 +115,7 @@ export default class Root extends React.Component {
 
 	setMasterDetail = (width) => {
 		const isMasterDetail = this.getMasterDetail(width);
-		store.dispatch(setMasterDetailAction(isMasterDetail))
-		return isMasterDetail;
+		store.dispatch(setMasterDetailAction(isMasterDetail));
 	};
 
 	onDimensionsChange = ({ window: { width } }) => {
@@ -134,21 +133,13 @@ export default class Root extends React.Component {
 
 	initTablet = async() => {
 		const { width } = Dimensions.get('window');
-		const isMasterDetail = this.setMasterDetail(width);
-		await KeyCommands.setKeyCommands([]);
+		this.setMasterDetail(width);
 		this.onKeyCommands = KeyCommandsEmitter.addListener(
 			'onKeyCommand',
 			command => {
-      	console.log('initTab -> command', command);
 				EventEmitter.emit(KEY_COMMAND, { event: command })
 			}
 		);
-		// TODO: add/remove commands based on the current screen
-		let commands = defaultCommands;
-		if (isMasterDetail) {
-			commands = [...commands, ...keyCommands];
-		}
-		KeyCommands.setKeyCommands(commands);
 	}
 
 	initCrashReport = () => {

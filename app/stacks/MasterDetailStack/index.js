@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import KeyCommands from 'react-native-keycommands';
 
 import { ThemeContext } from '../../theme';
 import {
@@ -57,11 +59,22 @@ import ModalBlockView from '../../views/ModalBlockView';
 import JitsiMeetView from '../../views/JitsiMeetView';
 import StatusView from '../../views/StatusView';
 import CreateDiscussionView from '../../views/CreateDiscussionView';
+import { setKeyCommands, deleteKeyCommands } from '../../commands';
 
 // ChatsStack
 const Chats = createStackNavigator();
-const ChatsStack = () => {
+const ChatsStack = React.memo(() => {
 	const { theme } = React.useContext(ThemeContext);
+
+	const isFocused = useIsFocused();
+	useEffect(() => {
+		if (isFocused) {
+			setKeyCommands();
+		} else {
+			deleteKeyCommands();
+		}
+	}, [isFocused]);
+
 	return (
 		<Chats.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			<Chats.Screen
@@ -71,11 +84,11 @@ const ChatsStack = () => {
 			/>
 		</Chats.Navigator>
 	);
-};
+});
 
 // SettingsStack
 const Settings = createStackNavigator();
-const SettingsStack = ({ navigation }) => {
+const SettingsStack = React.memo(({ navigation }) => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
 		<ModalContainer navigation={navigation}>
@@ -122,21 +135,20 @@ const SettingsStack = ({ navigation }) => {
 			</Settings.Navigator>
 		</ModalContainer>
 	);
-};
+});
 
 // ChatsDrawer
 const Drawer = createDrawerNavigator();
-const ChatsDrawer = () => (
+const ChatsDrawer = React.memo(() => (
 	<Drawer.Navigator drawerContent={({ navigation, state }) => <RoomsListView navigation={navigation} state={state} />} drawerType='permanent'>
 		<Drawer.Screen name='ChatsStack' component={ChatsStack} />
 	</Drawer.Navigator>
-);
+));
 
 // NewMessageStack
 const NewMessage = createStackNavigator();
-const NewMessageStack = ({ navigation }) => {
+const NewMessageStack = React.memo(({ navigation }) => {
 	const { theme } = React.useContext(ThemeContext);
-
 	return (
 		<ModalContainer navigation={navigation}>
 			<NewMessage.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
@@ -161,10 +173,10 @@ const NewMessageStack = ({ navigation }) => {
 			</NewMessage.Navigator>
 		</ModalContainer>
 	);
-};
+});
 
 const RoomStack = createStackNavigator();
-const RoomStackModal = ({ navigation }) => {
+const RoomStackModal = React.memo(({ navigation }) => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
 		<ModalContainer navigation={navigation}>
@@ -266,13 +278,12 @@ const RoomStackModal = ({ navigation }) => {
 			</RoomStack.Navigator>
 		</ModalContainer>
 	);
-};
+});
 
 // InsideStackModal
 const InsideStack = createStackNavigator();
-const InsideStackModal = () => {
+const InsideStackModal = React.memo(() => {
 	const { theme } = React.useContext(ThemeContext);
-
 	return (
 		<InsideStack.Navigator mode='modal' screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...FadeFromCenterModal }}>
 			<InsideStack.Screen
@@ -295,7 +306,6 @@ const InsideStackModal = () => {
 				component={NewMessageStack}
 				options={{ headerShown: false }}
 			/>
-
 			<InsideStack.Screen
 				name='AttachmentView'
 				component={AttachmentView}
@@ -312,15 +322,15 @@ const InsideStackModal = () => {
 			/>
 		</InsideStack.Navigator>
 	);
-};
+});
 
-const CustomInsideStack = ({ navigation, route }) => (
+const CustomInsideStack = React.memo(({ navigation, route }) => (
 	<>
 		<InsideStackModal navigation={navigation} />
 		<NotificationBadge navigation={navigation} route={route} />
 		<Toast />
 	</>
-);
+));
 CustomInsideStack.propTypes = {
 	navigation: PropTypes.object,
 	route: PropTypes.object
