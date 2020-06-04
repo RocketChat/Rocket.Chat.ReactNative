@@ -45,7 +45,6 @@ import {
 	handleCommandSearchMessages,
 	handleCommandReplyLatest
 } from '../../commands';
-import ModalNavigation from '../../lib/ModalNavigation';
 import { Review } from '../../utils/review';
 import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
