@@ -188,6 +188,9 @@ class MessageBox extends Component {
 				this.tracking.resetTracking();
 			}
 		});
+		this.unsubscribeBlur = navigation.addListener('blur', () => {
+			this.component?.blur();
+		});
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -270,6 +273,9 @@ class MessageBox extends Component {
 		}
 		if (this.unsubscribeFocus) {
 			this.unsubscribeFocus();
+		}
+		if (this.unsubscribeBlur) {
+			this.unsubscribeBlur();
 		}
 		if (isTablet) {
 			EventEmiter.removeListener(KEY_COMMAND, this.handleCommands);

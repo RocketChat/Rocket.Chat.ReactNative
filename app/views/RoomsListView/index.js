@@ -170,6 +170,7 @@ class RoomsListView extends React.Component {
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			this.animated = false;
 			closeServerDropdown();
+			this.cancelSearch();
 			if (this.backHandler && this.backHandler.remove) {
 				this.backHandler.remove();
 			}
