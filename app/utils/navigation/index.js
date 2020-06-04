@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { analytics, leaveBreadcrumb } from '../log';
+import { setCurrentScreen } from '../log';
 import { themes } from '../../constants/colors';
 
 export * from './animations';
@@ -31,25 +31,14 @@ export const themedHeader = theme => ({
 	headerTitleStyle: { color: themes[theme].headerTitleColor }
 });
 
-// gets the current screen from navigation state
-export const getActiveRouteName = (navigationState) => {
-	if (!navigationState) {
-		return null;
-	}
-	const route = navigationState.routes[navigationState.index];
-	// dive into nested navigators
-	if (route.routes) {
-		return getActiveRouteName(route);
-	}
-	return route.routeName;
-};
+// Gets the current screen from navigation state
+export const getActiveRouteName = (state) => {
+	const route = state.routes[state.index];
 
-export const onNavigationStateChange = (prevState, currentState) => {
-	const currentScreen = getActiveRouteName(currentState);
-	const prevScreen = getActiveRouteName(prevState);
-
-	if (prevScreen !== currentScreen) {
-		analytics().setCurrentScreen(currentScreen);
-		leaveBreadcrumb(currentScreen, { type: 'navigation' });
+	if (route.state) {
+		// Dive into nested navigators
+		return getActiveRouteName(route.state);
 	}
+
+	return route.name;
 };

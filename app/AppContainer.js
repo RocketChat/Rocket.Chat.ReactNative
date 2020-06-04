@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
 import Navigation from './lib/Navigation';
-import { defaultHeader, onNavigationStateChange } from './utils/navigation';
+import { defaultHeader, getActiveRouteName } from './utils/navigation';
 import {
 	ROOT_LOADING, ROOT_OUTSIDE, ROOT_NEW_SERVER, ROOT_INSIDE, ROOT_SET_USERNAME, ROOT_BACKGROUND
 } from './actions/app';
@@ -22,6 +22,7 @@ import InsideStack from './stacks/InsideStack';
 import MasterDetailStack from './stacks/MasterDetailStack';
 import { ThemeContext } from './theme';
 import { themes } from './constants/colors';
+import { setCurrentScreen } from './utils/log';
 
 // SetUsernameStack
 const SetUsername = createStackNavigator();
@@ -53,9 +54,27 @@ const App = React.memo(({ root, isMasterDetail }) => {
 		}
 	};
 
+	React.useEffect(() => {
+		const state = Navigation.navigationRef.current.getRootState();
+		const currentRouteName = getActiveRouteName(state);
+		Navigation.routeNameRef.current = currentRouteName;
+		setCurrentScreen(currentRouteName);
+	}, []);
+
 	return (
 		<SafeAreaProvider initialMetrics={initialWindowMetrics}>
-			<NavigationContainer theme={navigationTheme} ref={Navigation.navigationRef} onNavigationStateChange={onNavigationStateChange}>
+			<NavigationContainer
+				theme={navigationTheme}
+				ref={Navigation.navigationRef}
+				onStateChange={(state) => {
+					const previousRouteName = Navigation.routeNameRef.current;
+					const currentRouteName = getActiveRouteName(state);
+					if (previousRouteName !== currentRouteName) {
+						setCurrentScreen(currentRouteName);
+					}
+					Navigation.routeNameRef.current = currentRouteName;
+				}}
+			>
 				<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
 					<>
 						{root === ROOT_LOADING ? (
@@ -70,7 +89,6 @@ const App = React.memo(({ root, isMasterDetail }) => {
 								component={OutsideStack}
 							/>
 						) : null}
-						{/* TODO: test width */}
 						{root === ROOT_INSIDE && isMasterDetail ? (
 							<Stack.Screen
 								name='MasterDetailStack'

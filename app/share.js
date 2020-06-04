@@ -15,7 +15,7 @@ import {
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
 import { isIOS, supportSystemTheme } from './utils/deviceInfo';
-import { defaultHeader, onNavigationStateChange, themedHeader } from './utils/navigation';
+import { defaultHeader, themedHeader, getActiveRouteName } from './utils/navigation';
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { ThemeContext } from './theme';
 
@@ -26,6 +26,8 @@ import WithoutServersView from './views/WithoutServersView';
 import ShareListView from './views/ShareListView';
 import ShareView from './views/ShareView';
 import SelectServerView from './views/SelectServerView';
+import { setCurrentScreen } from './utils/log';
+import AuthLoadingView from './views/AuthLoadingView';
 
 const Inside = createStackNavigator();
 const InsideStack = () => {
@@ -77,30 +79,30 @@ const OutsideStack = () => {
 
 // App
 const Stack = createStackNavigator();
-export const App = ({ root }) => {
-	if (!root) {
-		return null;
-	}
-
-	return (
-		<Stack.Navigator screenOptions={{ headerShown: false }}>
-			<>
-				{root === 'outside' ? (
-					<Stack.Screen
-						name='OutsideStack'
-						component={OutsideStack}
-					/>
-				) : null}
-				{root === 'inside' ? (
-					<Stack.Screen
-						name='InsideStack'
-						component={InsideStack}
-					/>
-				) : null}
-			</>
-		</Stack.Navigator>
-	);
-};
+export const App = ({ root }) => (
+	<Stack.Navigator screenOptions={{ headerShown: false }}>
+		<>
+			{!root ? (
+				<Stack.Screen
+					name='AuthLoading'
+					component={AuthLoadingView}
+				/>
+			) : null}
+			{root === 'outside' ? (
+				<Stack.Screen
+					name='OutsideStack'
+					component={OutsideStack}
+				/>
+			) : null}
+			{root === 'inside' ? (
+				<Stack.Screen
+					name='InsideStack'
+					component={InsideStack}
+				/>
+			) : null}
+		</>
+	</Stack.Navigator>
+);
 
 App.propTypes = {
 	root: PropTypes.string
@@ -139,6 +141,11 @@ class Root extends React.Component {
 		} else {
 			this.setState({ root: 'outside' });
 		}
+
+		const state = Navigation.navigationRef.current.getRootState();
+		const currentRouteName = getActiveRouteName(state);
+		Navigation.routeNameRef.current = currentRouteName;
+		setCurrentScreen(currentRouteName);
 	}
 
 	setTheme = (newTheme = {}) => {
@@ -158,7 +165,14 @@ class Root extends React.Component {
 					<ThemeContext.Provider value={{ theme }}>
 						<NavigationContainer
 							ref={Navigation.navigationRef}
-							onNavigationStateChange={onNavigationStateChange}
+							onStateChange={(state) => {
+								const previousRouteName = Navigation.routeNameRef.current;
+								const currentRouteName = getActiveRouteName(state);
+								if (previousRouteName !== currentRouteName) {
+									setCurrentScreen(currentRouteName);
+								}
+								Navigation.routeNameRef.current = currentRouteName;
+							}}
 						>
 							<App root={root} />
 						</NavigationContainer>

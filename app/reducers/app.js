@@ -3,7 +3,7 @@ import { APP, APP_STATE } from '../actions/actionsTypes';
 const initialState = {
 	root: null,
 	isMasterDetail: false,
-	text: '',
+	text: null,
 	previousServer: '',
 	ready: false,
 	foreground: true,
