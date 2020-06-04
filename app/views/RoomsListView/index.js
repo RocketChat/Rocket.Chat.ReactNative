@@ -633,7 +633,10 @@ class RoomsListView extends React.Component {
 		if (currentItem?.rid === item.rid) {
 			return;
 		}
-		this.setState({ item });
+		// Only mark room as focused when in master detail layout
+		if (isMasterDetail) {
+			this.setState({ item });
+		}
 		goRoom({ item, isMasterDetail });
 	}
 
