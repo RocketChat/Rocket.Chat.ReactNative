@@ -1,8 +1,21 @@
+def taskRequests = getGradle().getStartParameter().getTaskRequests().toString()
+def isPlay = !(taskRequests.contains("Foss") || taskRequests.contains("foss"))
+
 apply plugin: "com.android.application"
 apply plugin: 'kotlin-android'
-apply plugin: "io.fabric"
-apply plugin: "com.google.firebase.firebase-perf"
+
 apply plugin: 'com.bugsnag.android.gradle'
+apply plugin: 'com.google.gms.google-services'
+
+if(isPlay){
+    apply plugin: "io.fabric"
+    apply plugin: "com.google.firebase.firebase-perf"
+}
+
+android.applicationVariants.all { variant ->
+    def googleTask = tasks.findByName("process${variant.name.capitalize()}GoogleServices")
+    googleTask.enabled = !"foss".equals(variant.flavorName)
+}
 
 import com.android.build.OutputFile
 
@@ -139,7 +152,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode VERSIONCODE as Integer
-        versionName "4.8.0"
+        versionName "4.7.0"
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
         missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
@@ -179,6 +192,19 @@ android {
     }
 
     // applicationVariants are e.g. debug, release
+
+    flavorDimensions 'type'
+    productFlavors {
+        foss {
+            dimension = 'type'
+            buildConfigField 'boolean', 'PLAY_BUILD', "false"
+        }
+        play {
+            dimension = 'type'
+            buildConfigField 'boolean', 'PLAY_BUILD', "true"
+        }
+    }
+
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             // For each separate APK per architecture, set a unique version code as described here:
@@ -214,10 +240,10 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
-    implementation "com.google.firebase:firebase-messaging:18.0.0"
-    implementation "com.google.firebase:firebase-core:16.0.9"
-    implementation "com.google.firebase:firebase-perf:17.0.2"
-    implementation('com.crashlytics.sdk.android:crashlytics:2.9.9@aar') {
+    playImplementation "com.google.firebase:firebase-messaging:18.0.0"
+    playImplementation "com.google.firebase:firebase-core:16.0.9"
+    playImplementation "com.google.firebase:firebase-perf:17.0.2"
+    playImplementation('com.crashlytics.sdk.android:crashlytics:2.9.9@aar') {
         transitive = true
     }
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
@@ -251,5 +277,4 @@ task copyDownloadableDepsToLibs(type: Copy) {
     into 'libs'
 }
 
-apply plugin: 'com.google.gms.google-services'
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
