@@ -14,7 +14,7 @@ import { themes } from '../constants/colors';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 
 class ForgotPasswordView extends React.Component {
-	static navigatonOptions = ({ route }) => ({
+	static navigationOptions = ({ route }) => ({
 		title: route.params.title
 	})
 

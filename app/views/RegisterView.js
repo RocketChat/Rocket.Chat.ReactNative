@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 });
 
 class RegisterView extends React.Component {
-	static navigatonOptions = ({ route, navigation }) => ({
+	static navigationOptions = ({ route, navigation }) => ({
 		title: route.params.title,
 		headerRight: () => <LegalButton testID='register-view-more' navigation={navigation} />
 	});

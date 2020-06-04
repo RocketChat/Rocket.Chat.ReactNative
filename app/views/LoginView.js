@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
 });
 
 class LoginView extends React.Component {
-	static navigatonOptions = ({ route, navigation }) => ({
+	static navigationOptions = ({ route, navigation }) => ({
 		title: route.params.title,
 		headerRight: () => <LegalButton testID='login-view-more' navigation={navigation} />
 	})
