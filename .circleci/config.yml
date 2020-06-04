@@ -469,4 +469,3 @@ workflows:
       - upload-google-play-alpha:
           requires:
             - android-hold-google-play-alpha
-       
