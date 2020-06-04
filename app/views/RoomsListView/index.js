@@ -144,7 +144,8 @@ class RoomsListView extends React.Component {
 			loading: true,
 			allChats: [],
 			chats: [],
-			width
+			width,
+			item: {}
 		};
 		this.setHeader();
 	}
@@ -195,7 +196,7 @@ class RoomsListView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { allChats, searching } = this.state;
+		const { allChats, searching, item } = this.state;
 		// eslint-disable-next-line react/destructuring-assignment
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
@@ -211,6 +212,10 @@ class RoomsListView extends React.Component {
 		}
 
 		if (nextState.searching !== searching) {
+			return true;
+		}
+
+		if (nextState.item?.rid !== item?.rid) {
 			return true;
 		}
 
@@ -623,10 +628,11 @@ class RoomsListView extends React.Component {
 	};
 
 	goRoom = ({ item, isMasterDetail }) => {
-		if (this.item?.rid === item.rid) {
+		const { item: currentItem } = this.state;
+		if (currentItem?.rid === item.rid) {
 			return;
 		}
-		this.item = item;
+		this.setState({ item });
 		goRoom({ item, isMasterDetail });
 	}
 
@@ -657,7 +663,8 @@ class RoomsListView extends React.Component {
 	// Go to previous or next room based on sign (-1 or 1)
 	// It's used by iPad key commands
 	goOtherRoom = (sign) => {
-		if (!this.item) {
+		const { item } = this.state;
+		if (!item) {
 			return;
 		}
 
@@ -669,7 +676,7 @@ class RoomsListView extends React.Component {
 
 		const { chats } = this.state;
 		const { isMasterDetail } = this.props;
-		const index = chats.findIndex(c => c.rid === this.item.rid);
+		const index = chats.findIndex(c => c.rid === item.rid);
 		const otherRoom = this.findOtherRoom(index, sign);
 		if (otherRoom) {
 			this.goRoom({ item: otherRoom, isMasterDetail });
@@ -754,7 +761,7 @@ class RoomsListView extends React.Component {
 			return this.renderSectionHeader(item.rid);
 		}
 
-		const { width } = this.state;
+		const { width, item: currentItem } = this.state;
 		const {
 			user: {
 				id: userId,
@@ -803,6 +810,7 @@ class RoomsListView extends React.Component {
 				getUserPresence={this.getUserPresence}
 				isGroupChat={isGroupChat}
 				visitor={item.visitor}
+				isFocused={currentItem?.rid === item.rid}
 			/>
 		);
 	};
