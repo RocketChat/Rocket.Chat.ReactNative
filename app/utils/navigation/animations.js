@@ -5,7 +5,7 @@ import { isAndroid } from '../deviceInfo';
 import conditional from './conditional';
 
 export const StackAnimation = isAndroid ? TransitionPresets.FadeFromBottomAndroid : TransitionPresets.SlideFromRightIOS;
-export const ModalAnimation = TransitionPresets.ModalTransition;
+export const ModalAnimation = isAndroid ? TransitionPresets.FadeFromBottomAndroid : TransitionPresets.ModalTransition;
 
 const forFadeFromCenter = ({
 	current,
