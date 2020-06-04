@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
@@ -20,6 +20,8 @@ import SetUsernameView from './views/SetUsernameView';
 import OutsideStack from './stacks/OutsideStack';
 import InsideStack from './stacks/InsideStack';
 import MasterDetailStack from './stacks/MasterDetailStack';
+import { ThemeContext } from './theme';
+import { themes } from './constants/colors';
 
 // SetUsernameStack
 const SetUsername = createStackNavigator();
@@ -39,11 +41,15 @@ const App = React.memo(({ root, isMasterDetail }) => {
 		return null;
 	}
 
+	const { theme } = React.useContext(ThemeContext);
+	const defaultNavTheme = theme === 'light' ? DefaultTheme : DarkTheme;
+
 	const navigationTheme = {
-		...DefaultTheme,
+		...defaultNavTheme,
 		colors: {
-			...DefaultTheme.colors,
-			background: 'transparent'
+			...defaultNavTheme.colors,
+			background: 'transparent',
+			border: themes[theme].borderColor
 		}
 	};
 
