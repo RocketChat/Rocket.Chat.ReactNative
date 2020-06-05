@@ -23,7 +23,7 @@
     }
   },
   "dependencies": {
-    "@nozbe/watermelondb": "^0.16.0",
+    "@nozbe/watermelondb": "0.16.2",
     "@react-native-community/art": "^1.2.0",
     "@react-native-community/async-storage": "^1.9.0",
     "@react-native-community/cameraroll": "1.6.0",
