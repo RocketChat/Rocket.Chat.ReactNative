@@ -66,6 +66,7 @@ export default StyleSheet.create({
 		textAlign: 'center'
 	},
 	status: {
+		marginLeft: 4,
 		marginRight: 7,
 		marginTop: 3
 	},
