@@ -9,7 +9,7 @@ import {
 } from '../utils/navigation';
 import Toast from '../containers/Toast';
 import Sidebar from '../views/SidebarView';
-import NotificationBadge from '../notifications/inApp';
+import NotificationBadge from '../containers/NotificationsInApp';
 
 // Chats Stack
 import RoomView from '../views/RoomView';

@@ -13,7 +13,7 @@ import { notificationReceived } from '../../../actions/notification';
 import { handlePayloadUserInteraction } from '../actions';
 import buildMessage from '../helpers/buildMessage';
 import RocketChat from '../../rocketchat';
-import EventEmmiter from '../../../utils/events';
+import EventEmitter from '../../../utils/events';
 import { removedRoom } from '../../../actions/room';
 
 const removeListener = listener => listener.stop();
@@ -267,7 +267,7 @@ export default function subscribeRooms() {
 					if (data.rid === roomState.rid && roomState.isDeleting) {
 						store.dispatch(removedRoom());
 					} else {
-						EventEmmiter.emit('ROOM_REMOVED', { rid: data.rid });
+						EventEmitter.emit('ROOM_REMOVED', { rid: data.rid });
 					}
 				} catch (e) {
 					log(e);
@@ -320,6 +320,7 @@ export default function subscribeRooms() {
 			} catch (e) {
 				// do nothing
 			}
+			EventEmitter.emit('NotificationInApp', notification);
 			store.dispatch(notificationReceived(notification));
 		}
 		if (/uiInteraction/.test(ev)) {

@@ -11900,6 +11900,11 @@ react-native-notifications@2.1.7:
     core-js "^1.0.0"
     uuid "^2.0.3"
 
+react-native-notifier@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-notifier/-/react-native-notifier-1.1.0.tgz#676bec87c17b09410d40bbcecf12d1f850129e4b"
+  integrity sha512-wMCNUfInu1kUxA7c9OuytadXzSqJ8YZZxol+4QwIu9hL5xhhLcfRK3PsqelZ7IFJQWY8SgXvGGh8DtILlzd9+A==
+
 react-native-orientation-locker@1.1.8:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/react-native-orientation-locker/-/react-native-orientation-locker-1.1.8.tgz#45d1c9e002496b8d286ec8932d6e3e7d341f9c85"

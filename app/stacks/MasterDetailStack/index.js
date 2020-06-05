@@ -9,7 +9,7 @@ import {
 	defaultHeader, themedHeader, StackAnimation, FadeFromCenterModal
 } from '../../utils/navigation';
 import Toast from '../../containers/Toast';
-import NotificationBadge from '../../notifications/inApp';
+import NotificationBadge from '../../containers/NotificationsInApp';
 import { ModalContainer } from './ModalContainer';
 
 // Chats Stack
