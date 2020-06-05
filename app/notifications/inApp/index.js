@@ -104,15 +104,18 @@ class NotificationBadge extends React.Component {
 		return false;
 	}
 
-	componentDidUpdate() {
+	componentDidUpdate(prevProps) {
 		const { notification: { payload } } = this.props;
-		const state = Navigation.navigationRef.current.getRootState();
-		const route = getActiveRoute(state);
-		if (payload.rid) {
-			if (route && route.name === 'RoomView' && route.params && route.params?.rid === payload.rid) {
-				return;
+		const { notification: { payload: prevPayload } } = prevProps;
+		if (!equal(prevPayload, payload)) {
+			const state = Navigation.navigationRef.current.getRootState();
+			const route = getActiveRoute(state);
+			if (payload.rid) {
+				if (route && route.name === 'RoomView' && route.params && route.params?.rid === payload.rid) {
+					return;
+				}
+				this.show();
 			}
-			this.show();
 		}
 	}
 
