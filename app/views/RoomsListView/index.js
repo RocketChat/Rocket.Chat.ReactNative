@@ -114,7 +114,7 @@ class RoomsListView extends React.Component {
 				<CustomHeaderButtons left>
 					<Item
 						title='cancel'
-						iconName='cross'
+						iconName='Cross'
 						onPress={cancelSearch}
 					/>
 				</CustomHeaderButtons>
@@ -136,7 +136,7 @@ class RoomsListView extends React.Component {
 					) : null}
 					<Item
 						title='new'
-						iconName='edit-rounded'
+						iconName='new-chat'
 						onPress={() => navigation.navigate('NewMessageView')}
 						testID='rooms-list-view-create-channel'
 					/>

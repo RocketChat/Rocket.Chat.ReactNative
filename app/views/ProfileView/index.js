@@ -335,7 +335,7 @@ class ProfileView extends React.Component {
 					key: 'profile-view-upload-avatar'
 				})}
 				{this.renderAvatarButton({
-					child: <CustomIcon name='permalink' size={30} color={themes[theme].bodyText} />,
+					child: <CustomIcon name='link' size={30} color={themes[theme].bodyText} />,
 					onPress: () => this.setAvatar({ url: avatarUrl, data: avatarUrl, service: 'url' }),
 					disabled: !avatarUrl,
 					key: 'profile-view-avatar-url-button'

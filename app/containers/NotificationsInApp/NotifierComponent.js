@@ -14,7 +14,6 @@ import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import { ROW_HEIGHT } from '../../presentation/RoomItem';
 
-
 const AVATAR_SIZE = 48;
 const BUTTON_HIT_SLOP = {
 	top: 12, right: 12, bottom: 12, left: 12
@@ -121,7 +120,7 @@ class NotifierComponent extends React.Component {
 						</>
 					</Touchable>
 					<TouchableOpacity onPress={hideNotification}>
-						<CustomIcon name='circle-cross' style={[styles.close, { color: themes[theme].titleText }]} size={20} />
+						<CustomIcon name='Cross' style={[styles.close, { color: themes[theme].titleText }]} size={20} />
 					</TouchableOpacity>
 				</View>
 			</SafeAreaView>

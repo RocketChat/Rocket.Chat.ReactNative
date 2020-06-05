@@ -31,7 +31,6 @@ class NotificationBadge extends React.Component {
 		const {
 			notification: { payload }, window, theme
 		} = this.props;
-		console.log(nextProps, this.props);
 		if (nextProps.theme !== theme) {
 			return true;
 		}

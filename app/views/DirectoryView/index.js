@@ -166,9 +166,9 @@ class DirectoryView extends React.Component {
 					theme={theme}
 				>
 					<View style={[sharedStyles.separatorVertical, styles.toggleDropdownContainer, { borderColor: themes[theme].separatorColor }]}>
-						<CustomIcon style={[styles.toggleDropdownIcon, { color: themes[theme].tintColor }]} size={20} name={type === 'users' ? 'user' : 'hashtag'} />
+						<CustomIcon style={[styles.toggleDropdownIcon, { color: themes[theme].tintColor }]} size={20} name={type === 'users' ? 'user' : 'hash'} />
 						<Text style={[styles.toggleDropdownText, { color: themes[theme].tintColor }]}>{type === 'users' ? I18n.t('Users') : I18n.t('Channels')}</Text>
-						<CustomIcon name='arrow-down' size={20} style={[styles.toggleDropdownArrow, { color: themes[theme].auxiliaryTintColor }]} />
+						<CustomIcon name='chevron-down' size={20} style={[styles.toggleDropdownArrow, { color: themes[theme].auxiliaryTintColor }]} />
 					</View>
 				</Touch>
 			</>
