@@ -437,7 +437,7 @@ PODS:
     - React
   - RNBootSplash (2.2.4):
     - React
-  - RNCAsyncStorage (1.9.0):
+  - RNCAsyncStorage (1.10.0):
     - React
   - RNDateTimePicker (2.3.2):
     - React
@@ -887,7 +887,7 @@ SPEC CHECKSUMS:
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNAudio: cae2991f2dccb75163f260b60da8051717b959fa
   RNBootSplash: 7cb9b4fe7e94177edc0d11010f7631d79db2f5e9
-  RNCAsyncStorage: 453cd7c335ec9ba3b877e27d02238956b76f3268
+  RNCAsyncStorage: 6d99641f8e6f15d169d695d8ef184bf187903f11
   RNDateTimePicker: 4bd49e09f91ca73d69119a9e1173b0d43b82f5e5
   RNDeviceInfo: e2102056bde3ad5d137fd029d8d431510a00486a
   RNFastImage: 35ae972d6727c84ee3f5c6897e07f84d0a3445e9
