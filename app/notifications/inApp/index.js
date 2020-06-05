@@ -224,7 +224,7 @@ class NotificationBadge extends React.Component {
 					</>
 				</Touchable>
 				<TouchableOpacity onPress={this.hide}>
-					<CustomIcon name='circle-cross' style={[styles.close, { color: themes[theme].titleText }]} size={20} />
+					<CustomIcon name='cancel' style={[styles.close, { color: themes[theme].titleText }]} size={20} />
 				</TouchableOpacity>
 			</Animated.View>
 		);

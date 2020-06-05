@@ -26,7 +26,7 @@ const RepliedThread = React.memo(({
 
 	return (
 		<View style={styles.repliedThread} testID={`message-thread-replied-on-${ msg }`}>
-			<CustomIcon name='thread' size={20} style={styles.repliedThreadIcon} color={themes[theme].tintColor} />
+			<CustomIcon name='threads' size={20} style={styles.repliedThreadIcon} color={themes[theme].tintColor} />
 			<Text style={[styles.repliedThreadName, { color: themes[theme].tintColor }]} numberOfLines={1}>{msg}</Text>
 			<DisclosureIndicator theme={theme} />
 		</View>
