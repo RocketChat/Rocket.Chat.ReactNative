@@ -150,13 +150,13 @@ class Sort extends PureComponent {
 						<View style={[styles.dropdownContainerHeader, { borderColor: themes[theme].separatorColor }]}>
 							<View style={styles.sortItemContainer}>
 								<Text style={[styles.sortToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Sorting_by', { key: I18n.t(sortBy === 'alphabetical' ? 'name' : 'activity') })}</Text>
-								<CustomIcon style={[styles.sortIcon, { color: themes[theme].auxiliaryText }]} size={22} name='sort' />
+								<CustomIcon style={[styles.sortIcon, { color: themes[theme].auxiliaryText }]} size={22} name='sort-az' />
 							</View>
 						</View>
 					</Touch>
 					<SortItemButton onPress={this.sortByName} theme={theme}>
 						<SortItemContent
-							icon='sort'
+							icon='sort-az'
 							label='Alphabetical'
 							checked={sortBy === 'alphabetical'}
 							theme={theme}
@@ -164,7 +164,7 @@ class Sort extends PureComponent {
 					</SortItemButton>
 					<SortItemButton onPress={this.sortByActivity} theme={theme}>
 						<SortItemContent
-							imageUri='sort_activity'
+							icon='clock'
 							label='Activity'
 							checked={sortBy === 'activity'}
 							theme={theme}
@@ -173,7 +173,7 @@ class Sort extends PureComponent {
 					<View style={[styles.sortSeparator, { backgroundColor: themes[theme].separatorColor }]} />
 					<SortItemButton onPress={this.toggleGroupByType} theme={theme}>
 						<SortItemContent
-							icon='sort-amount-down'
+							icon='group-by-type'
 							label='Group_by_type'
 							checked={groupByType}
 							theme={theme}

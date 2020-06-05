@@ -27,7 +27,7 @@ const Directory = React.memo(({ goDirectory, theme, searching }) => {
 					{ borderBottomWidth: StyleSheet.hairlineWidth, borderColor: themes[theme].separatorColor }
 				]}
 			>
-				<CustomIcon style={[styles.directoryIcon, color]} size={22} name='discover' />
+				<CustomIcon style={[styles.directoryIcon, color]} size={22} name='directory' />
 				<Text style={[styles.directoryText, color]}>{I18n.t('Directory')}</Text>
 				<DisclosureIndicator theme={theme} />
 			</View>

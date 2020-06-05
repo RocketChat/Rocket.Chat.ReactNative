@@ -147,7 +147,7 @@ class Sidebar extends Component {
 		return (
 			<SidebarItem
 				text={I18n.t('Admin_Panel')}
-				left={<CustomIcon name='shield-alt' size={20} color={themes[theme].titleText} />}
+				left={<CustomIcon name='shield' size={20} color={themes[theme].titleText} />}
 				onPress={() => Navigation.navigate('AdminPanelStack')}
 				testID='sidebar-settings'
 				current={activeItemKey === 'AdminPanelStack'}

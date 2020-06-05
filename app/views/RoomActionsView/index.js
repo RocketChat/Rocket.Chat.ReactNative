@@ -238,13 +238,13 @@ class RoomActionsView extends React.Component {
 
 		const jitsiActions = jitsiEnabled ? [
 			{
-				icon: 'omnichannel',
+				icon: 'mic',
 				name: I18n.t('Voice_call'),
 				event: () => RocketChat.callJitsi(rid, true),
 				testID: 'room-actions-voice'
 			},
 			{
-				icon: 'video',
+				icon: 'video-1',
 				name: I18n.t('Video_call'),
 				event: () => RocketChat.callJitsi(rid),
 				testID: 'room-actions-video'
@@ -270,7 +270,7 @@ class RoomActionsView extends React.Component {
 		}, {
 			data: [
 				{
-					icon: 'file-generic',
+					icon: 'clip',
 					name: I18n.t('Files'),
 					route: 'MessagesView',
 					params: { rid, t, name: 'Files' },
@@ -378,7 +378,7 @@ class RoomActionsView extends React.Component {
 			}
 			if (canInviteUser) {
 				actions.push({
-					icon: 'user-plus',
+					icon: 'add-user',
 					name: I18n.t('Invite_users'),
 					route: 'InviteUsersView',
 					params: {
@@ -394,7 +394,7 @@ class RoomActionsView extends React.Component {
 				sections.push({
 					data: [
 						{
-							icon: 'sign-out',
+							icon: 'exit',
 							name: I18n.t('Leave_channel'),
 							type: 'danger',
 							event: this.leaveChannel,
@@ -408,14 +408,14 @@ class RoomActionsView extends React.Component {
 			sections[2].data = [];
 
 			sections[2].data.push({
-				icon: 'circle-cross',
+				icon: 'cancel',
 				name: I18n.t('Close'),
 				event: this.closeLivechat
 			});
 
 			if (canForwardGuest) {
 				sections[2].data.push({
-					icon: 'reply',
+					icon: 'transfer',
 					name: I18n.t('Forward'),
 					route: 'ForwardLivechatView',
 					params: { rid }
@@ -424,14 +424,14 @@ class RoomActionsView extends React.Component {
 
 			if (canReturnQueue) {
 				sections[2].data.push({
-					icon: 'back',
+					icon: 'undo',
 					name: I18n.t('Return'),
 					event: this.returnLivechat
 				});
 			}
 
 			sections[2].data.push({
-				icon: 'reload',
+				icon: 'history',
 				name: I18n.t('Navigation_history'),
 				route: 'VisitorNavigationView',
 				params: { rid }
