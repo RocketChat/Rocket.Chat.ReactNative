@@ -213,9 +213,11 @@ describe('Room actions screen', () => {
 				await waitFor(element(by.label(`${ data.random }message`).withAncestor(by.id('starred-messages-view')))).toExist().withTimeout(60000);
 				await expect(element(by.label(`${ data.random }message`).withAncestor(by.id('starred-messages-view')))).toExist();
 				await element(by.label(`${ data.random }message`).withAncestor(by.id('starred-messages-view'))).longPress();
-				await waitFor(element(by.text('Unstar'))).toExist().withTimeout(2000);
-				await expect(element(by.text('Unstar'))).toExist();
-				await element(by.text('Unstar')).tap();
+
+				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
+				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
+				await element(by.id('Unstar')).tap();
+
 				await waitFor(element(by.label(`${ data.random }message`).withAncestor(by.id('starred-messages-view')))).toBeNotVisible().withTimeout(60000);
 				await expect(element(by.label(`${ data.random }message`).withAncestor(by.id('starred-messages-view')))).toBeNotVisible();
 				await backToActions();
@@ -229,9 +231,11 @@ describe('Room actions screen', () => {
 				await waitFor(element(by.label(`${ data.random }edited (edited)`).withAncestor(by.id('pinned-messages-view')))).toExist().withTimeout(60000);
 				await expect(element(by.label(`${ data.random }edited (edited)`).withAncestor(by.id('pinned-messages-view')))).toExist();
 				await element(by.label(`${ data.random }edited (edited)`).withAncestor(by.id('pinned-messages-view'))).longPress();
-				await waitFor(element(by.text('Unpin'))).toExist().withTimeout(2000);
-				await expect(element(by.text('Unpin'))).toExist();
-				await element(by.text('Unpin')).tap();
+
+				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
+				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
+				await element(by.id('Unpin')).tap();
+
 				await waitFor(element(by.label(`${ data.random }edited (edited)`).withAncestor(by.id('pinned-messages-view')))).toBeNotVisible().withTimeout(60000);
 				await expect(element(by.label(`${ data.random }edited (edited)`).withAncestor(by.id('pinned-messages-view')))).toBeNotVisible();
 				await backToActions();

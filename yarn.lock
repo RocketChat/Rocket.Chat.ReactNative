@@ -1749,6 +1749,11 @@
   dependencies:
     invariant "^2.2.4"
 
+"@react-native-community/hooks@^2.5.1":
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/@react-native-community/hooks/-/hooks-2.5.1.tgz#545c76d1a6203532a8e776578bbaaa64bb754cf6"
+  integrity sha512-P9gwIUGpa/h8p5ASwY8QFTthXw/e/rt4mzZRfe3Xh5L13mTuOFXsYVwe9f8JAUx512cUKUsdTg6Dsg3/jTlxeg==
+
 "@react-native-community/masked-view@^0.1.10":
   version "0.1.10"
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.10.tgz#5dda643e19e587793bc2034dd9bf7398ad43d401"
@@ -11958,10 +11963,17 @@ react-native-safe-area-view@^0.14.6:
   dependencies:
     hoist-non-react-statics "^2.3.1"
 
-react-native-screens@^2.7.0:
+react-native-screens@2.7.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-2.7.0.tgz#2d3cf3c39a665e9ca1c774264fccdb90e7944047"
   integrity sha512-n/23IBOkrTKCfuUd6tFeRkn3lB2QZ3cmvoubRscR0JU/Zl4/ZyKmwnFmUv1/Fr+2GH/H8UTX59kEKDYYg3dMgA==
+
+react-native-scroll-bottom-sheet@0.6.1:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/react-native-scroll-bottom-sheet/-/react-native-scroll-bottom-sheet-0.6.1.tgz#7fa6a4f1104417e4e9bf4b10efffc46d501aeeb4"
+  integrity sha512-Glws8msLrbKDW5a53rCeN0pLNI41Yhvz7K7OWZnaVYLs3GPTP2ySYdJ849rd/d5P1P0xqFyKEF/0p+/KLI0nYA==
+  dependencies:
+    utility-types "^3.10.0"
 
 react-native-scrollable-tab-view@^1.0.0:
   version "1.0.0"
@@ -14394,6 +14406,11 @@ utila@^0.4.0, utila@~0.4:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/utila/-/utila-0.4.0.tgz#8a16a05d445657a3aea5eecc5b12a4fa5379772c"
   integrity sha1-ihagXURWV6Oupe7MWxKk+lN5dyw=
+
+utility-types@^3.10.0:
+  version "3.10.0"
+  resolved "https://registry.yarnpkg.com/utility-types/-/utility-types-3.10.0.tgz#ea4148f9a741015f05ed74fd615e1d20e6bed82b"
+  integrity sha512-O11mqxmi7wMKCo6HKFt5AhO4BwY3VV68YU07tgxfz8zJTIxr4BpsezN49Ffwy9j3ZpwwJp4fkRwjRzq3uWE6Rg==
 
 utils-merge@1.0.1:
   version "1.0.1"
