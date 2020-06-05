@@ -9,7 +9,7 @@ import I18n from '../i18n';
 import log from '../utils/log';
 
 const MessageErrorActions = forwardRef(({ tmid }, ref) => {
-	const { show } = useActionSheet();
+	const { showActionSheet } = useActionSheet();
 
 	const handleResend = protectedFunction(async(message) => {
 		await RocketChat.resendMessage(message, tmid);
@@ -72,7 +72,7 @@ const MessageErrorActions = forwardRef(({ tmid }, ref) => {
 	};
 
 	const showMessageErrorActions = (message) => {
-		show({
+		showActionSheet({
 			options: [
 				{
 					title: I18n.t('Resend'),

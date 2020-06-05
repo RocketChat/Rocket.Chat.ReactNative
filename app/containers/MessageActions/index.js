@@ -35,7 +35,7 @@ const MessageActions = forwardRef(({
 	Message_Read_Receipt_Store_Users
 }, ref) => {
 	let permissions = {};
-	const { show, hide } = useActionSheet();
+	const { showActionSheet, hideActionSheet } = useActionSheet();
 
 	const getPermissions = async() => {
 		try {
@@ -192,7 +192,7 @@ const MessageActions = forwardRef(({
 			reactionInit(message);
 		}
 		// close actionSheet when click at header
-		hide();
+		hideActionSheet();
 	};
 
 	const handleReadReceipt = message => Navigation.navigate('ReadReceiptsView', { messageId: message.id });
@@ -370,7 +370,7 @@ const MessageActions = forwardRef(({
 
 	const showMessageActions = async(message) => {
 		await getPermissions();
-		show({
+		showActionSheet({
 			options: getOptions(message),
 			headerHeight: HEADER_HEIGHT,
 			customHeader: (!isReadOnly || room.reactWhenReadOnly ? (

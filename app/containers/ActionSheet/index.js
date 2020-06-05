@@ -129,8 +129,8 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 	}, [orientation.landscape]);
 
 	useImperativeHandle(ref, () => ({
-		show,
-		hide
+		showActionSheet: show,
+		hideActionSheet: hide
 	}));
 
 	const renderHandle = () => (

@@ -54,7 +54,7 @@ class RoomMembersView extends React.Component {
 			id: PropTypes.string,
 			token: PropTypes.string
 		}),
-		show: PropTypes.func,
+		showActionSheet: PropTypes.func,
 		theme: PropTypes.string
 	}
 
@@ -137,13 +137,13 @@ class RoomMembersView extends React.Component {
 			return;
 		}
 		const { room } = this.state;
-		const { show } = this.props;
+		const { showActionSheet } = this.props;
 		const { muted } = room;
 
 		const userIsMuted = !!(muted || []).find(m => m === user.username);
 		user.muted = userIsMuted;
 
-		show({
+		showActionSheet({
 			options: [{
 				icon: userIsMuted ? 'volume' : 'volume-off',
 				title: I18n.t(userIsMuted ? 'Unmute' : 'Mute'),
