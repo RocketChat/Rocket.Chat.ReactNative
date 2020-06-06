@@ -20,7 +20,7 @@ const stylez = StyleSheet.create({
 		position: 'absolute',
 		right: 0,
 		left: 0,
-		height: '100%'
+		height: '100%',
 	},
 	input: {
 		textAlignVertical: 'top',
@@ -29,17 +29,12 @@ const stylez = StyleSheet.create({
 		fontSize: 17,
 		letterSpacing: 0,
 		...sharedStyles.textRegular,
-		backgroundColor: 'white',
-		height: '100%'
+		height: '90%'
 	},
 	buttons: {
 		zIndex: 5,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		position: 'absolute',
-		bottom: 0,
-		left: 0,
-		right: 0
 	},
 	rightButtons: {
 		flexDirection: 'row'
@@ -54,7 +49,7 @@ const stylez = StyleSheet.create({
 
 const MessageBox = React.memo(({ editing, message, replying, replyCancel, user, getCustomEmoji, theme, Message_AudioRecorderEnabled }) => {
 	const [text, setText] = useState('');
-	const [up, setUp] = useState(0);
+	const [up, setUp] = useState(1);
 	const [bottomCoefficient, setBottomCoefficient] = useState(0.77);
 	const translateY = up ? TOP : BOTTOM;
 	const [mentions, setMentions] = useState([]);
@@ -200,7 +195,7 @@ const MessageBox = React.memo(({ editing, message, replying, replyCancel, user, 
 				{renderTopButton()}
 				<TextInput
 					ref={component}
-					style={stylez.input}
+					style={[stylez.input, { backgroundColor: themes[theme].chatComponentBackground }]}
 					returnKeyType='default'
 					keyboardType='twitter'
 					blurOnSubmit={false}
@@ -211,11 +206,12 @@ const MessageBox = React.memo(({ editing, message, replying, replyCancel, user, 
 					multiline
 					testID='messagebox-input'
 					theme={theme}
+					autoGrow={false}
 				/>
 			</Animated.View>
 			{
 				up ?
-					<View style={stylez.buttons}>
+					<View style={[stylez.buttons, { backgroundColor: themes[theme].chatComponentBackground }]}>
 						<LeftButtons
 							theme={theme}
 							showEmojiKeyboard={false}
