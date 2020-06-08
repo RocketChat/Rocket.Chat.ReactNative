@@ -100,7 +100,7 @@ const ModalContent = React.memo(({
 					<View style={styles.titleContainer}>
 						<CustomIcon
 							style={[styles.closeButton, { color: themes[props.theme].buttonText }]}
-							name='cross'
+							name='Cross'
 							size={20}
 						/>
 						<Text style={[styles.title, { color: themes[props.theme].buttonText }]}>{I18n.t('Reactions')}</Text>

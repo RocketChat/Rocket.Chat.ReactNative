@@ -30,7 +30,7 @@ import { withTheme } from '../theme';
 import { setBasicAuth, BASIC_AUTH_KEY } from '../utils/fetch';
 import { themedHeader } from '../utils/navigation';
 import { CloseModalButton } from '../containers/HeaderButton';
-import { CONNECT_TO_WORKSPACE, CONNECT_TO_OPEN_WORKSPACE } from '../utils/trackableEvents';
+import { CONNECT_TO_WORKSPACE, JOIN_OPEN_WORKSPACE } from '../utils/trackableEvents';
 
 const styles = StyleSheet.create({
 	title: {
@@ -184,7 +184,7 @@ class NewServerView extends React.Component {
 		this.setState({ connectingOpen: true });
 		const { connectServer } = this.props;
 		connectServer('https://open.rocket.chat');
-		trackUserEvent({ eventName: CONNECT_TO_OPEN_WORKSPACE });
+		trackUserEvent({ eventName: JOIN_OPEN_WORKSPACE });
 	}
 
 	basicAuth = async(server, text) => {

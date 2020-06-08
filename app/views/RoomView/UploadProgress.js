@@ -173,11 +173,11 @@ class UploadProgress extends Component {
 			return (
 				[
 					<View key='row' style={styles.row}>
-						<CustomIcon name='file-generic' size={20} color={themes[theme].auxiliaryText} />
+						<CustomIcon name='clip' size={20} color={themes[theme].auxiliaryText} />
 						<Text style={[styles.descriptionContainer, styles.descriptionText, { color: themes[theme].auxiliaryText }]} ellipsizeMode='tail' numberOfLines={1}>
 							{I18n.t('Uploading')} {item.name}
 						</Text>
-						<CustomIcon name='cross' size={20} color={themes[theme].auxiliaryText} onPress={() => this.cancelUpload(item)} />
+						<CustomIcon name='Cross' size={20} color={themes[theme].auxiliaryText} onPress={() => this.cancelUpload(item)} />
 					</View>,
 					<View key='progress' style={[styles.progress, { width: (window.width * item.progress) / 100, backgroundColor: themes[theme].tintColor }]} />
 				]
@@ -192,7 +192,7 @@ class UploadProgress extends Component {
 						<Text style={[styles.tryAgainButtonText, { color: themes[theme].tintColor }]}>{I18n.t('Try_again')}</Text>
 					</TouchableOpacity>
 				</View>
-				<CustomIcon name='cross' size={20} color={themes[theme].auxiliaryText} onPress={() => this.deleteUpload(item)} />
+				<CustomIcon name='Cross' size={20} color={themes[theme].auxiliaryText} onPress={() => this.deleteUpload(item)} />
 			</View>
 		);
 	}

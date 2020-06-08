@@ -15,7 +15,7 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import { trackUserEvent } from '../../utils/log';
-import { ENTER_WORKSPACE, CREATE_NEW_WORKSPACE } from '../../utils/trackableEvents';
+import { JOIN_A_WORKSPACE, CREATE_NEW_WORKSPACE } from '../../utils/trackableEvents';
 
 class OnboardingView extends React.Component {
 	static navigationOptions = () => ({
@@ -57,7 +57,7 @@ class OnboardingView extends React.Component {
 	connectServer = () => {
 		const { navigation } = this.props;
 		navigation.navigate('NewServerView');
-		trackUserEvent({ eventName: ENTER_WORKSPACE });
+		trackUserEvent({ eventName: JOIN_A_WORKSPACE });
 	}
 
 	createWorkspace = async() => {

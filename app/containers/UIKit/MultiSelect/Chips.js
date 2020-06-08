@@ -24,7 +24,7 @@ const Chip = ({
 		<>
 			{item.imageUrl ? <FastImage style={styles.chipImage} source={{ uri: item.imageUrl }} /> : null}
 			<Text numberOfLines={1} style={[styles.chipText, { color: themes[theme].titleText }]}>{textParser([item.text])}</Text>
-			<CustomIcon name='cross' size={16} color={themes[theme].auxiliaryText} />
+			<CustomIcon name='Cross' size={16} color={themes[theme].auxiliaryText} />
 		</>
 	</Touchable>
 );

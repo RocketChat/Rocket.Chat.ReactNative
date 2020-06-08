@@ -1,7 +1,7 @@
-export const ENTER_WORKSPACE = 'enter_workspace';
+export const JOIN_A_WORKSPACE = 'join_a_workspace';
 export const CREATE_NEW_WORKSPACE = 'create_new_workspace';
 export const CONNECT_TO_WORKSPACE = 'connect_to_workspace';
-export const CONNECT_TO_OPEN_WORKSPACE = 'connect_to_open_workspace';
+export const JOIN_OPEN_WORKSPACE = 'join_open_workspace';
 export const DEFAULT_LOGIN = 'default_login';
 export const DEFAULT_SIGN_UP = 'default_sign_up';
 export const FORGOT_PASSWORD = 'forgot_password';
