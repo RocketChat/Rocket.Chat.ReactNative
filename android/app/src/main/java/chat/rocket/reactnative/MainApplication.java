@@ -92,11 +92,6 @@ public class MainApplication extends Application implements ReactApplication, IN
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     SocketServiceUtils.INSTANCE.startService(this);
-    OkHttpClientProvider.setOkHttpClientFactory(() -> {
-      final OkHttpClient.Builder builder = OkHttpClientProvider.createClientBuilder();
-      builder.hostnameVerifier((s, sslSession) -> true);
-      return builder.build();
-    });
   }
 
   @Override

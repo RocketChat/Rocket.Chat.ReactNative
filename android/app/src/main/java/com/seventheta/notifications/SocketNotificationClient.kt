@@ -48,7 +48,6 @@ class SocketNotificationClient(
     init {
         val wsClient = OkHttpClient.Builder().apply {
             readTimeout(0, TimeUnit.MILLISECONDS)
-            hostnameVerifier { hostname, session -> true }
         }.build()
         val ddpClient = DDPClient(wsClient)
         this.client = ddpClient
