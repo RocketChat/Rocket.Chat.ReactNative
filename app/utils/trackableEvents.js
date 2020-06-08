@@ -3,6 +3,7 @@ export const CREATE_NEW_WORKSPACE = 'create_new_workspace';
 export const CONNECT_TO_WORKSPACE = 'connect_to_workspace';
 export const CONNECT_TO_OPEN_WORKSPACE = 'connect_to_open_workspace';
 export const DEFAULT_LOGIN = 'default_login';
+export const DEFAULT_SIGN_UP = 'default_sign_up';
 export const FORGOT_PASSWORD = 'forgot_password';
 export const LOGIN_WITH_FACEBOOK = 'login_with_facebook';
 export const LOGIN_WITH_GITHUB = 'login_with_github';
