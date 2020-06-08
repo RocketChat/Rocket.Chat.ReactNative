@@ -15,6 +15,7 @@ import { getMessageTranslation } from './message/utils';
 import { LISTENER } from './Toast';
 import EventEmitter from '../utils/events';
 import { showConfirmationAlert } from '../utils/info';
+import { goRoom } from '../utils/goRoom';
 
 class MessageActions extends React.Component {
 	static propTypes = {
@@ -254,7 +255,7 @@ class MessageActions extends React.Component {
 	}
 
 	handleUnread = async() => {
-		const { message, room } = this.props;
+		const { message, room, isMasterDetail } = this.props;
 		const { id: messageId, ts } = message;
 		const { rid } = room;
 		try {
@@ -270,7 +271,11 @@ class MessageActions extends React.Component {
 						// do nothing
 					}
 				});
-				Navigation.navigate('RoomsListView');
+				if (isMasterDetail) {
+					Navigation.replace('RoomView');
+				} else {
+					Navigation.navigate('RoomsListView');
+				}
 			}
 		} catch (e) {
 			log(e);
@@ -450,7 +455,8 @@ const mapStateToProps = state => ({
 	Message_AllowEditing_BlockEditInMinutes: state.settings.Message_AllowEditing_BlockEditInMinutes,
 	Message_AllowPinning: state.settings.Message_AllowPinning,
 	Message_AllowStarring: state.settings.Message_AllowStarring,
-	Message_Read_Receipt_Store_Users: state.settings.Message_Read_Receipt_Store_Users
+	Message_Read_Receipt_Store_Users: state.settings.Message_Read_Receipt_Store_Users,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 export default connect(mapStateToProps)(MessageActions);

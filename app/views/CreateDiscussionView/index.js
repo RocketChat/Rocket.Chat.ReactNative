@@ -24,6 +24,7 @@ import SelectUsers from './SelectUsers';
 
 import styles from './styles';
 import SafeAreaView from '../../containers/SafeAreaView';
+import { goRoom } from '../../utils/goRoom';
 
 class CreateChannelView extends React.Component {
 	propTypes = {
@@ -56,7 +57,7 @@ class CreateChannelView extends React.Component {
 
 	componentDidUpdate(prevProps, prevState) {
 		const {
-			loading, failure, error, result
+			loading, failure, error, result, isMasterDetail
 		} = this.props;
 
 		if (!isEqual(this.state, prevState)) {
@@ -70,12 +71,15 @@ class CreateChannelView extends React.Component {
 					showErrorAlert(msg);
 				} else {
 					const { rid, t, prid } = result;
-					if (this.channel) {
+					if (isMasterDetail) {
+						Navigation.navigate('ChatsDrawer');
+					} else {
 						Navigation.navigate('RoomsListView');
 					}
-					Navigation.navigate('RoomView', {
+					const item = {
 						rid, name: RocketChat.getRoomTitle(result), t, prid
-					});
+					};
+					goRoom({ item, isMasterDetail });
 				}
 			}, 300);
 		}
@@ -185,7 +189,8 @@ const mapStateToProps = state => ({
 	error: state.createDiscussion.error,
 	failure: state.createDiscussion.failure,
 	loading: state.createDiscussion.isFetching,
-	result: state.createDiscussion.result
+	result: state.createDiscussion.result,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 const mapDispatchToProps = dispatch => ({

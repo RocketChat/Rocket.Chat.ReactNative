@@ -24,6 +24,7 @@ import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
+import { goRoom } from '../../utils/goRoom';
 
 const PAGE_SIZE = 25;
 
@@ -39,7 +40,8 @@ class RoomMembersView extends React.Component {
 			id: PropTypes.string,
 			token: PropTypes.string
 		}),
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		isMasterDetail: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -79,8 +81,8 @@ class RoomMembersView extends React.Component {
 		this.mounted = true;
 		this.fetchMembers();
 
-		const { navigation } = this.props;
-		const { rid } = navigation.state.params;
+		const { route } = this.props;
+		const rid = route.params?.rid;
 		this.permissions = await RocketChat.hasPermission(['mute-user'], rid);
 	}
 
@@ -121,11 +123,11 @@ class RoomMembersView extends React.Component {
 			const query = await subsCollection.query(Q.where('name', item.username)).fetch();
 			if (query.length) {
 				const [room] = query;
-				this.goRoom({ rid: room.rid, name: item.username, room });
+				this.goRoom(room);
 			} else {
 				const result = await RocketChat.createDirectMessage(item.username);
 				if (result.success) {
-					this.goRoom({ rid: result.room._id, name: item.username });
+					this.goRoom({ rid: result.room?._id, name: item.username, t: 'd' });
 				}
 			}
 		} catch (e) {
@@ -199,12 +201,14 @@ class RoomMembersView extends React.Component {
 		}
 	}
 
-	goRoom = async({ rid, name, room }) => {
-		const { navigation } = this.props;
-		await navigation.popToTop();
-		navigation.navigate('RoomView', {
-			rid, name, t: 'd', room
-		});
+	goRoom = (item) => {
+		const { navigation, isMasterDetail } = this.props;
+		if (isMasterDetail) {
+			navigation.navigate('ChatsDrawer');
+		} else {
+			navigation.popToTop();
+		}
+		goRoom({ item, isMasterDetail });
 	}
 
 	handleMute = async() => {
@@ -287,7 +291,8 @@ class RoomMembersView extends React.Component {
 
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
-	user: getUserSelector(state)
+	user: getUserSelector(state),
+	isMasterDetail: state.app.isMasterDetail
 });
 
 export default connect(mapStateToProps)(withTheme(RoomMembersView));

@@ -1,10 +1,9 @@
-/* eslint-disable */
 import React from 'react';
 import { Linking, Dimensions } from 'react-native';
 import { AppearanceProvider } from 'react-native-appearance';
 import { Provider } from 'react-redux';
 import RNUserDefaults from 'rn-user-defaults';
-import KeyCommands, { KeyCommandsEmitter } from 'react-native-keycommands';
+import { KeyCommandsEmitter } from 'react-native-keycommands';
 import RNScreens from 'react-native-screens';
 
 import {
@@ -16,7 +15,6 @@ import {
 import EventEmitter from './utils/events';
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
-import Navigation from './lib/Navigation';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications, onNotification } from './notifications/push';
 import store from './lib/createStore';
@@ -27,7 +25,7 @@ import { MIN_WIDTH_MASTER_DETAIL_LAYOUT } from './constants/tablet';
 import {
 	isTablet, isIOS, supportSystemTheme
 } from './utils/deviceInfo';
-import { KEY_COMMAND, keyCommands, defaultCommands } from './commands';
+import { KEY_COMMAND } from './commands';
 import AppContainer from './AppContainer';
 import TwoFactor from './containers/TwoFactor';
 import ScreenLockedView from './views/ScreenLockedView';
@@ -90,9 +88,6 @@ export default class Root extends React.Component {
 	}
 
 	init = async() => {
-		if (isIOS) {
-			await RNUserDefaults.setName('group.ios.chat.rocket');
-		}
 		RNUserDefaults.objectForKey(THEME_PREFERENCES_KEY).then(this.setTheme);
 		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
@@ -131,13 +126,13 @@ export default class Root extends React.Component {
 		});
 	}
 
-	initTablet = async() => {
+	initTablet = () => {
 		const { width } = Dimensions.get('window');
 		this.setMasterDetail(width);
 		this.onKeyCommands = KeyCommandsEmitter.addListener(
 			'onKeyCommand',
-			command => {
-				EventEmitter.emit(KEY_COMMAND, { event: command })
+			(command) => {
+				EventEmitter.emit(KEY_COMMAND, { event: command });
 			}
 		);
 	}

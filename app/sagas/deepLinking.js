@@ -12,6 +12,7 @@ import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';
 import { appStart, ROOT_INSIDE } from '../actions/app';
 import { localAuthenticate } from '../utils/localAuthentication';
+import { goRoom } from '../utils/goRoom';
 
 const roomTypes = {
 	channel: 'c', direct: 'd', group: 'p', channels: 'l'
@@ -35,13 +36,19 @@ const navigate = function* navigate({ params }) {
 		if (type !== 'invite') {
 			const room = yield RocketChat.canOpenRoom(params);
 			if (room) {
-				yield Navigation.navigate('RoomsListView');
-				Navigation.navigate('RoomView', {
+				const isMasterDetail = yield select(state => state.app.isMasterDetail);
+				if (isMasterDetail) {
+					Navigation.navigate('ChatsDrawer');
+				} else {
+					Navigation.navigate('RoomsListView');
+				}
+				const item = {
 					name,
 					t: roomTypes[type],
 					roomUserId: RocketChat.getUidDirectMessage(room),
 					...room
-				});
+				};
+				goRoom({ item, isMasterDetail });
 			}
 		} else {
 			yield handleInviteLink({ params });
