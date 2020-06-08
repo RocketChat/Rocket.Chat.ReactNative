@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
 import { HeaderBackButton } from '@react-navigation/stack';
@@ -13,19 +13,20 @@ const styles = StyleSheet.create({
 	}
 });
 
-const RoomHeaderLeft = ({
+const RoomHeaderLeft = React.memo(({
 	tmid, unreadsCount, navigation, baseUrl, userId, token, title, t, theme, goRoomActionsView, isMasterDetail
 }) => {
 	if (!isMasterDetail || tmid) {
+		const onPress = useCallback(() => navigation.goBack());
 		return (
 			<HeaderBackButton
 				label={unreadsCount > 999 ? '+999' : unreadsCount || ' '}
-				// backTitleVisible={isIOS}
-				onPress={() => navigation.goBack()}
+				onPress={onPress}
 				tintColor={themes[theme].headerTintColor}
 			/>
 		);
 	}
+	const onPress = useCallback(() => goRoomActionsView(), []);
 	if (baseUrl && userId && token) {
 		return (
 			<Avatar
@@ -36,12 +37,12 @@ const RoomHeaderLeft = ({
 				style={styles.avatar}
 				userId={userId}
 				token={token}
-				onPress={goRoomActionsView}
+				onPress={onPress}
 			/>
 		);
 	}
 	return null;
-};
+});
 
 RoomHeaderLeft.propTypes = {
 	tmid: PropTypes.string,
