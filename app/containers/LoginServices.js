@@ -16,6 +16,10 @@ import OrSeparator from './OrSeparator';
 import Touch from '../utils/touch';
 import I18n from '../i18n';
 import random from '../utils/random';
+import { trackUserEvent } from '../utils/log';
+import {
+	LOGIN_WITH_GITHUB, LOGIN_WITH_GITLAB, LOGIN_WITH_GOOGLE, LOGIN_WITH_FACEBOOK, LOGIN_WITH_METEOR, LOGIN_WITH_LINKEDIN, LOGIN_WITH_TWITTER
+} from '../utils/trackableEvents';
 
 const SERVICE_HEIGHT = 58;
 const SERVICES_COLLAPSED_HEIGHT = 174;
@@ -83,6 +87,7 @@ class LoginServices extends React.PureComponent {
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&display=touch`;
 		this.openOAuth({ url: `${ endpoint }${ params }` });
+		trackUserEvent({ eventName: LOGIN_WITH_FACEBOOK });
 	}
 
 	onPressGithub = () => {
@@ -94,6 +99,7 @@ class LoginServices extends React.PureComponent {
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }`;
 		this.openOAuth({ url: `${ endpoint }${ encodeURIComponent(params) }` });
+		trackUserEvent({ eventName: LOGIN_WITH_GITHUB });
 	}
 
 	onPressGitlab = () => {
@@ -106,6 +112,7 @@ class LoginServices extends React.PureComponent {
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&response_type=code`;
 		this.openOAuth({ url: `${ endpoint }${ params }` });
+		trackUserEvent({ eventName: LOGIN_WITH_GITLAB });
 	}
 
 	onPressGoogle = () => {
@@ -117,6 +124,7 @@ class LoginServices extends React.PureComponent {
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&response_type=code`;
 		this.openOAuth({ url: `${ endpoint }${ params }` });
+		trackUserEvent({ eventName: LOGIN_WITH_GOOGLE });
 	}
 
 	onPressLinkedin = () => {
@@ -128,6 +136,7 @@ class LoginServices extends React.PureComponent {
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&response_type=code`;
 		this.openOAuth({ url: `${ endpoint }${ params }` });
+		trackUserEvent({ eventName: LOGIN_WITH_LINKEDIN });
 	}
 
 	onPressMeteor = () => {
@@ -138,6 +147,7 @@ class LoginServices extends React.PureComponent {
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&state=${ state }&response_type=code`;
 		this.openOAuth({ url: `${ endpoint }${ params }` });
+		trackUserEvent({ eventName: LOGIN_WITH_METEOR });
 	}
 
 	onPressTwitter = () => {
@@ -145,6 +155,7 @@ class LoginServices extends React.PureComponent {
 		const state = this.getOAuthState();
 		const url = `${ server }/_oauth/twitter/?requestTokenAndRedirect=true&state=${ state }`;
 		this.openOAuth({ url });
+		trackUserEvent({ eventName: LOGIN_WITH_TWITTER });
 	}
 
 	onPressWordpress = () => {
