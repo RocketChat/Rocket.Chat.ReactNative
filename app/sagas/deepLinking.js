@@ -38,7 +38,7 @@ const navigate = function* navigate({ params }) {
 			if (room) {
 				const isMasterDetail = yield select(state => state.app.isMasterDetail);
 				if (isMasterDetail) {
-					Navigation.navigate('ChatsDrawer');
+					Navigation.navigate('DrawerNavigator');
 				} else {
 					Navigation.navigate('RoomsListView');
 				}

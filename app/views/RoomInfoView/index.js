@@ -252,7 +252,7 @@ class RoomInfoView extends React.Component {
 		if (room.rid) {
 			// if it's on master detail layout, we close the modal and replace RoomView
 			if (isMasterDetail) {
-				Navigation.navigate('ChatsDrawer');
+				Navigation.navigate('DrawerNavigator');
 				goRoom({ item: params, isMasterDetail });
 			} else {
 				let navigate = navigation.push;

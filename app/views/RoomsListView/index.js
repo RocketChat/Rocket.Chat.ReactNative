@@ -309,7 +309,7 @@ class RoomsListView extends React.Component {
 				<DrawerButton
 					navigation={navigation}
 					testID='rooms-list-view-sidebar'
-					onPress={isMasterDetail ? () => navigation.navigate('SettingsStack') : () => navigation.toggleDrawer()}
+					onPress={isMasterDetail ? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' }) : () => navigation.toggleDrawer()}
 				/>
 			)),
 			headerTitle: () => <RoomsListHeaderView />,
@@ -325,7 +325,7 @@ class RoomsListView extends React.Component {
 					<Item
 						title='new'
 						iconName='new-chat'
-						onPress={() => navigation.navigate('NewMessageStack')}
+						onPress={isMasterDetail ? () => navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' }) : () => navigation.navigate('NewMessageStack')}
 						testID='rooms-list-view-create-channel'
 					/>
 				</CustomHeaderButtons>
@@ -622,7 +622,7 @@ class RoomsListView extends React.Component {
 	goDirectory = () => {
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
-			navigation.navigate('RoomStackModal', { screen: 'DirectoryView' });
+			navigation.navigate('ModalStackNavigator', { screen: 'DirectoryView' });
 		} else {
 			navigation.navigate('DirectoryView');
 		}
@@ -688,10 +688,10 @@ class RoomsListView extends React.Component {
 	}
 
 	handleCommands = ({ event }) => {
-		const { navigation, server } = this.props;
+		const { navigation, server, isMasterDetail } = this.props;
 		const { input } = event;
 		if (handleCommandShowPreferences(event)) {
-			navigation.navigate('SettingsStack');
+			navigation.navigate('SettingsView');
 		} else if (handleCommandSearching(event)) {
 			this.scroll.scrollToOffset({ animated: true, offset: 0 });
 			this.inputRef.focus();
@@ -702,7 +702,11 @@ class RoomsListView extends React.Component {
 		} else if (handleCommandNextRoom(event)) {
 			this.goOtherRoom(1);
 		} else if (handleCommandShowNewMessage(event)) {
-			navigation.navigate('NewMessageStack');
+			if (isMasterDetail) {
+				navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' });
+			} else {
+				navigation.navigate('NewMessageStack');
+			}
 		} else if (handleCommandAddNewServer(event)) {
 			navigation.navigate('NewServerView', { previousServer: server });
 		}

@@ -33,7 +33,7 @@ const watchUserTyping = function* watchUserTyping({ rid, status }) {
 const handleRemovedRoom = function* handleRemovedRoom() {
 	const isMasterDetail = yield select(state => state.app.isMasterDetail);
 	if (isMasterDetail) {
-		yield Navigation.navigate('ChatsDrawer');
+		yield Navigation.navigate('DrawerNavigator');
 	} else {
 		yield Navigation.navigate('RoomsListView');
 	}
@@ -81,7 +81,7 @@ const handleCloseRoom = function* handleCloseRoom({ rid }) {
 			await RocketChat.closeLivechat(rid, comment);
 			const isMasterDetail = await select(state => state.app.isMasterDetail);
 			if (isMasterDetail) {
-				Navigation.navigate('ChatsDrawer');
+				Navigation.navigate('DrawerNavigator');
 			} else {
 				Navigation.navigate('RoomsListView');
 			}
@@ -117,7 +117,7 @@ const handleForwardRoom = function* handleForwardRoom({ transferData }) {
 		if (result === true) {
 			const isMasterDetail = yield select(state => state.app.isMasterDetail);
 			if (isMasterDetail) {
-				Navigation.navigate('ChatsDrawer');
+				Navigation.navigate('DrawerNavigator');
 			} else {
 				Navigation.navigate('RoomsListView');
 			}

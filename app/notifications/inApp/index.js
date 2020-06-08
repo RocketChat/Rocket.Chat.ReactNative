@@ -171,7 +171,7 @@ class NotificationBadge extends React.Component {
 			rid, name: title, t: type, prid, baseUrl
 		};
 		if (isMasterDetail) {
-			Navigation.navigate('ChatsDrawer');
+			Navigation.navigate('DrawerNavigator');
 		}
 		goRoom({ item, isMasterDetail });
 		this.hide();

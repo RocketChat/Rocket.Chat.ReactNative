@@ -140,17 +140,18 @@ class Sidebar extends Component {
 
 	renderAdmin = () => {
 		const { isAdmin } = this.state;
-		const { activeItemKey, theme } = this.props;
+		const { activeItemKey, theme, isMasterDetail } = this.props;
 		if (!isAdmin) {
 			return null;
 		}
+		const routeName = isMasterDetail ? 'AdminPanelView' : 'AdminPanelStackNavigator';
 		return (
 			<SidebarItem
 				text={I18n.t('Admin_Panel')}
 				left={<CustomIcon name='shield' size={20} color={themes[theme].titleText} />}
-				onPress={() => Navigation.navigate('AdminPanelStack')}
+				onPress={() => Navigation.navigate(routeName)}
 				testID='sidebar-settings'
-				current={activeItemKey === 'AdminPanelStack'}
+				current={activeItemKey === routeName}
 			/>
 		);
 	}
@@ -162,23 +163,23 @@ class Sidebar extends Component {
 				<SidebarItem
 					text={I18n.t('Chats')}
 					left={<CustomIcon name='message' size={20} color={themes[theme].titleText} />}
-					onPress={() => this.sidebarNavigate('ChatsStack')}
+					onPress={() => this.sidebarNavigate('ChatsStackNavigator')}
 					testID='sidebar-chats'
-					current={activeItemKey === 'ChatsStack'}
+					current={activeItemKey === 'ChatsStackNavigator'}
 				/>
 				<SidebarItem
 					text={I18n.t('Profile')}
 					left={<CustomIcon name='user' size={20} color={themes[theme].titleText} />}
-					onPress={() => this.sidebarNavigate('ProfileStack')}
+					onPress={() => this.sidebarNavigate('ProfileStackNavigator')}
 					testID='sidebar-profile'
-					current={activeItemKey === 'ProfileStack'}
+					current={activeItemKey === 'ProfileStackNavigator'}
 				/>
 				<SidebarItem
 					text={I18n.t('Settings')}
 					left={<CustomIcon name='cog' size={20} color={themes[theme].titleText} />}
-					onPress={() => this.sidebarNavigate('SettingsStack')}
+					onPress={() => this.sidebarNavigate('SettingsViewNavigator')}
 					testID='sidebar-settings'
-					current={activeItemKey === 'SettingsStack'}
+					current={activeItemKey === 'SettingsViewNavigator'}
 				/>
 				{this.renderAdmin()}
 			</>

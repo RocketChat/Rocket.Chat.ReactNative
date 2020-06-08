@@ -128,7 +128,7 @@ class DirectoryView extends React.Component {
 	goRoom = (item) => {
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
-			navigation.navigate('ChatsDrawer');
+			navigation.navigate('DrawerNavigator');
 		} else {
 			navigation.navigate('RoomsListView');
 		}

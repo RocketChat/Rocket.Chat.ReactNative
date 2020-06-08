@@ -348,7 +348,7 @@ class RoomView extends React.Component {
 		const { room, member } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
-			navigation.navigate('RoomStackModal', {
+			navigation.navigate('ModalStackNavigator', {
 				screen: screen ?? 'RoomActionsView',
 				params: {
 					rid: this.rid, t: this.t, room, member, showCloseModal: !!screen
@@ -747,7 +747,7 @@ class RoomView extends React.Component {
 		}
 		if (isMasterDetail) {
 			navParam.showCloseModal = true;
-			navigation.navigate('RoomStackModal', { screen: 'RoomInfoView', params: navParam });
+			navigation.navigate('ModalStackNavigator', { screen: 'RoomInfoView', params: navParam });
 		} else {
 			navigation.navigate('RoomInfoView', navParam);
 		}

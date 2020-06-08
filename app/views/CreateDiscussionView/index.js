@@ -72,7 +72,7 @@ class CreateChannelView extends React.Component {
 				} else {
 					const { rid, t, prid } = result;
 					if (isMasterDetail) {
-						Navigation.navigate('ChatsDrawer');
+						Navigation.navigate('DrawerNavigator');
 					} else {
 						Navigation.navigate('RoomsListView');
 					}

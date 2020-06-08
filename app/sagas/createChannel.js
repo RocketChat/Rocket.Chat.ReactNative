@@ -59,7 +59,7 @@ const handleRequest = function* handleRequest({ data }) {
 const handleSuccess = function* handleSuccess({ data }) {
 	const isMasterDetail = yield select(state => state.app.isMasterDetail);
 	if (isMasterDetail) {
-		Navigation.navigate('ChatsDrawer');
+		Navigation.navigate('DrawerNavigator');
 	}
 	goRoom({ item: data, isMasterDetail });
 };
