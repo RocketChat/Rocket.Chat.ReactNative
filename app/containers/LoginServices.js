@@ -18,7 +18,7 @@ import I18n from '../i18n';
 import random from '../utils/random';
 import { trackUserEvent } from '../utils/log';
 import {
-	LOGIN_WITH_GITHUB, LOGIN_WITH_GITLAB, LOGIN_WITH_GOOGLE, LOGIN_WITH_FACEBOOK, LOGIN_WITH_METEOR, LOGIN_WITH_LINKEDIN, LOGIN_WITH_TWITTER
+	LOGIN_WITH_GITHUB, LOGIN_WITH_GITLAB, LOGIN_WITH_GOOGLE, LOGIN_WITH_FACEBOOK, LOGIN_WITH_METEOR, LOGIN_WITH_LINKEDIN, LOGIN_WITH_TWITTER, LOGIN_WITH_WORDPRESS, LOGIN_WITH_CUSTOM_OAUTH, LOGIN_WITH_SAML, LOGIN_WITH_CAS
 } from '../utils/trackableEvents';
 
 const SERVICE_HEIGHT = 58;
@@ -167,6 +167,7 @@ class LoginServices extends React.PureComponent {
 		const state = this.getOAuthState();
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&response_type=code`;
 		this.openOAuth({ url: `${ endpoint }${ params }` });
+		trackUserEvent(LOGIN_WITH_WORDPRESS);
 	}
 
 	onPressCustomOAuth = (loginService) => {
@@ -181,6 +182,7 @@ class LoginServices extends React.PureComponent {
 		const absolutePath = `${ authorizePath }${ params }`;
 		const url = absolutePath.includes(domain) ? absolutePath : domain + absolutePath;
 		this.openOAuth({ url });
+		trackUserEvent(LOGIN_WITH_CUSTOM_OAUTH);
 	}
 
 	onPressSaml = (loginService) => {
@@ -190,6 +192,7 @@ class LoginServices extends React.PureComponent {
 		const ssoToken = random(17);
 		const url = `${ server }/_saml/authorize/${ provider }/${ ssoToken }`;
 		this.openOAuth({ url, ssoToken, authType: 'saml' });
+		trackUserEvent(LOGIN_WITH_SAML);
 	}
 
 	onPressCas = () => {
@@ -197,6 +200,7 @@ class LoginServices extends React.PureComponent {
 		const ssoToken = random(17);
 		const url = `${ CAS_login_url }?service=${ server }/_cas/${ ssoToken }`;
 		this.openOAuth({ url, ssoToken, authType: 'cas' });
+		trackUserEvent(LOGIN_WITH_CAS);
 	}
 
 	getOAuthState = () => {

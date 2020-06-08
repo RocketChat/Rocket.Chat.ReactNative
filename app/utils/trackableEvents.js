@@ -13,3 +13,6 @@ export const LOGIN_WITH_GOOGLE = 'login_with_google';
 export const LOGIN_WITH_METEOR = 'login_with_meteor';
 export const LOGIN_WITH_TWITTER = 'login_with_twitter';
 export const LOGIN_WITH_WORDPRESS = 'login_with_wordpress';
+export const LOGIN_WITH_CUSTOM_OAUTH = 'login_with_custom_oauth';
+export const LOGIN_WITH_SAML = 'login_with_saml';
+export const LOGIN_WITH_CAS = 'login_with_cas';
