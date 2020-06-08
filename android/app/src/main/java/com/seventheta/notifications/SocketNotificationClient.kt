@@ -86,7 +86,6 @@ class SocketNotificationClient(
                 Log.e("SOCKETNOTIS", "got onClose for $host.")
                 if (!manualClose) {
                     Log.d("SOCKETNOTIS", "non-manual close, reconnecting...")
-                    connect { }
                     SocketServiceUtils.serviceReconnect(context)
                 }
             }
@@ -210,7 +209,6 @@ class SocketNotificationClient(
             if (task.error != null) {
                 Log.e("SOCKETNOTIS", "gotError", task.error)
                 Log.d("SOCKETNOTIS", "attempting reconnect with restart")
-                connect { }
                 SocketServiceUtils.serviceReconnect(context)
             }
             isConnecting = false

@@ -13,7 +13,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule
 
 object SocketServiceUtils {
 
-    private val useJobService = Build.VERSION.SDK_INT >= 26
+    private val useJobService = Build.VERSION.SDK_INT >= 21
 
     fun startService(context: Context) {
         if (useJobService) {

@@ -71,7 +71,7 @@ class SocketJobService : JobService() {
         Handler(Looper.getMainLooper()).postDelayed({
             val didConnect = connectClient()
             if (!didConnect) {
-                this.jobFinished(this.params, false)
+                scheduleJobAgain(1000L * 15)
             }
         }, 500)
     }
