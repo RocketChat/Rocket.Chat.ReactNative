@@ -105,7 +105,7 @@ class LoginView extends React.Component {
 	forgotPassword = () => {
 		const { navigation, Site_Name } = this.props;
 		navigation.navigate('ForgotPasswordView', { title: Site_Name });
-		trackUserEvent({ eventName: FORGOT_PASSWORD });
+		trackUserEvent(FORGOT_PASSWORD);
 	}
 
 	valid = () => {
@@ -122,7 +122,7 @@ class LoginView extends React.Component {
 		const { loginRequest } = this.props;
 		Keyboard.dismiss();
 		loginRequest({ user, password });
-		trackUserEvent({ eventName: DEFAULT_LOGIN });
+		trackUserEvent(DEFAULT_LOGIN);
 	}
 
 	renderUserForm = () => {

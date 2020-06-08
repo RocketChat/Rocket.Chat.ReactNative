@@ -10,8 +10,8 @@ export const { leaveBreadcrumb } = bugsnag;
 
 let metadata = {};
 
-export const trackUserEvent = ({ eventName, payload }) => {
-	analytics().logEvent(eventName, { ...payload });
+export const trackUserEvent = (eventName, payload) => {
+	analytics().logEvent(eventName, payload);
 };
 
 export const logServerVersion = (serverVersion) => {

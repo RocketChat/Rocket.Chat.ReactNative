@@ -177,14 +177,14 @@ class NewServerView extends React.Component {
 			connectServer(server, cert);
 		}
 
-		trackUserEvent({ eventName: CONNECT_TO_WORKSPACE });
+		trackUserEvent(CONNECT_TO_WORKSPACE);
 	}
 
 	connectOpen = () => {
 		this.setState({ connectingOpen: true });
 		const { connectServer } = this.props;
 		connectServer('https://open.rocket.chat');
-		trackUserEvent({ eventName: JOIN_OPEN_WORKSPACE });
+		trackUserEvent(JOIN_OPEN_WORKSPACE);
 	}
 
 	basicAuth = async(server, text) => {

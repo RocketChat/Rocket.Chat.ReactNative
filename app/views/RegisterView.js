@@ -157,7 +157,7 @@ class RegisterView extends React.Component {
 			showErrorAlert(e.data.error, I18n.t('Oops'));
 		}
 		this.setState({ saving: false });
-		trackUserEvent({ eventName: DEFAULT_SIGN_UP });
+		trackUserEvent(DEFAULT_SIGN_UP);
 	}
 
 	openContract = (route) => {
