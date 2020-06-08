@@ -31,6 +31,8 @@ import { isTablet, isAndroid } from '../../utils/deviceInfo';
 import Touch from '../../utils/touch';
 import I18n from '../../i18n';
 
+const getItemLayout = (data, index) => ({ length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index });
+
 // For some reason react-native-gesture-handler isn't working on bottom sheet (iOS)
 export const Button = isAndroid ? Touch : TouchableOpacity;
 
@@ -201,6 +203,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 						ItemSeparatorComponent={renderSeparator}
 						ListHeaderComponent={renderSeparator}
 						ListFooterComponent={renderFooter}
+						getItemLayout={getItemLayout}
 						renderItem={({ item }) => <Item item={item} hide={hide} theme={theme} />}
 					/>
 				</>
