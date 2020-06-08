@@ -2,8 +2,8 @@ import React, { useRef, useContext } from 'react';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import PropTypes from 'prop-types';
 
-import ActionSheet from './containers/ActionSheet';
-import { withTheme } from './theme';
+import ActionSheet from './index';
+import { withTheme } from '../../theme';
 
 const context = React.createContext({
 	showActionSheet: () => {},
@@ -26,7 +26,7 @@ export function connectActionSheet(Component) {
 	return ConnectedActionSheet;
 }
 
-const ActionSheetProvider = ({ children, theme }) => {
+const ActionSheetProvider = React.memo(({ children, theme }) => {
 	const ref = useRef();
 
 	const getContext = () => ({
@@ -45,7 +45,7 @@ const ActionSheetProvider = ({ children, theme }) => {
 			</ActionSheet>
 		</Provider>
 	);
-};
+});
 ActionSheetProvider.propTypes = {
 	children: PropTypes.node,
 	theme: PropTypes.string

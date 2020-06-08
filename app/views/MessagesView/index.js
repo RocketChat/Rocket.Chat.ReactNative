@@ -17,7 +17,7 @@ import { withTheme } from '../../theme';
 import { withSplit } from '../../split';
 import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
-import { connectActionSheet } from '../../actionSheet';
+import { connectActionSheet } from '../../containers/ActionSheet/Provider';
 
 class MessagesView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => ({

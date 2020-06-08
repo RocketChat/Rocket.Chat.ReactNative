@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-scroll-bottom-sheet/src/index.tsx b/node_modules/react-native-scroll-bottom-sheet/src/index.tsx
-index c571856..c7abcdf 100644
+index c571856..d7179c6 100644
 --- a/node_modules/react-native-scroll-bottom-sheet/src/index.tsx
 +++ b/node_modules/react-native-scroll-bottom-sheet/src/index.tsx
 @@ -518,6 +518,28 @@ export class ScrollBottomSheet<T extends any> extends Component<Props<T>> {
@@ -31,3 +31,12 @@ index c571856..c7abcdf 100644
            runTiming({
              clock: this.animationClock,
              from: cond(
+@@ -550,7 +572,7 @@ export class ScrollBottomSheet<T extends any> extends Component<Props<T>> {
+     );
+ 
+     this.position = interpolate(this.translateY, {
+-      inputRange: [openPosition, closedPosition],
++      inputRange: [snapPoints[snapPoints.length - 2], closedPosition],
+       outputRange: [1, 0],
+       extrapolate: Extrapolate.CLAMP,
+     });

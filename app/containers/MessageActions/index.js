@@ -13,10 +13,10 @@ import { getMessageTranslation } from '../message/utils';
 import { LISTENER } from '../Toast';
 import EventEmitter from '../../utils/events';
 import { showConfirmationAlert } from '../../utils/info';
-import { useActionSheet } from '../../actionSheet';
+import { useActionSheet } from '../ActionSheet/Provider';
 import Header, { HEADER_HEIGHT } from './Header';
 
-const MessageActions = forwardRef(({
+const MessageActions = React.memo(forwardRef(({
 	room,
 	tmid,
 	user,
@@ -384,7 +384,7 @@ const MessageActions = forwardRef(({
 	};
 
 	useImperativeHandle(ref, () => ({ showMessageActions }));
-});
+}));
 MessageActions.propTypes = {
 	room: PropTypes.object,
 	tmid: PropTypes.string,

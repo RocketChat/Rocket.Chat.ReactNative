@@ -23,7 +23,7 @@ import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import { themes } from '../../constants/colors';
 import { getUserSelector } from '../../selectors/login';
-import { connectActionSheet } from '../../actionSheet';
+import { connectActionSheet } from '../../containers/ActionSheet/Provider';
 import { showConfirmationAlert } from '../../utils/info';
 
 const PAGE_SIZE = 25;

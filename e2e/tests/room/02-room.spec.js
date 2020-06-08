@@ -152,7 +152,7 @@ describe('Room screen', () => {
 				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
 				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
 				await element(by.id('scroll-bottom-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by.id('Permalink')).tap();
+				await element(by.label('Permalink')).tap();
 				await sleep(1000);
 		
 				// TODO: test clipboard
@@ -163,7 +163,7 @@ describe('Room screen', () => {
 				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
 				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
 				await element(by.id('scroll-bottom-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by.id('Copy')).tap();
+				await element(by.label('Copy')).tap();
 				await sleep(1000);
 		
 				// TODO: test clipboard
@@ -174,7 +174,7 @@ describe('Room screen', () => {
 				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
 				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
 				await element(by.id('scroll-bottom-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by.id('Star')).tap();
+				await element(by.label('Star')).tap();
 				await sleep(1000);
 				await waitFor(element(by.id('scroll-bottom-sheet'))).toNotExist().withTimeout(5000);
 		
@@ -182,8 +182,8 @@ describe('Room screen', () => {
 				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
 				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
 				await element(by.id('scroll-bottom-sheet-handle')).swipe('up', 'fast', 0.5);
-				await waitFor(element(by.id('Unstar'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.id('Unstar'))).toBeVisible();
+				await waitFor(element(by.label('Unstar'))).toBeVisible().withTimeout(2000);
+				await expect(element(by.label('Unstar'))).toBeVisible();
 				await element(by.id('scroll-bottom-sheet-backdrop')).tap();
 				await sleep(1000);
 			});
@@ -243,7 +243,7 @@ describe('Room screen', () => {
 				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
 				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
 				await element(by.id('scroll-bottom-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by.id('Edit')).tap();
+				await element(by.label('Edit')).tap();
 				await element(by.id('messagebox-input')).typeText('ed');
 				await element(by.id('messagebox-send-message')).tap();
 				await waitFor(element(by.label(`${ data.random }edited (edited)`)).atIndex(0)).toBeVisible().withTimeout(60000);
@@ -256,7 +256,7 @@ describe('Room screen', () => {
 				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
 				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
 				await element(by.id('scroll-bottom-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by.id('Quote')).tap();
+				await element(by.label('Quote')).tap();
 				await element(by.id('messagebox-input')).typeText(`${ data.random }quoted`);
 				await element(by.id('messagebox-send-message')).tap();
 				await sleep(1000);
@@ -270,7 +270,7 @@ describe('Room screen', () => {
 				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
 				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
 				await element(by.id('scroll-bottom-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by.id('Pin')).tap();
+				await element(by.label('Pin')).tap();
 				await waitFor(element(by.id('scroll-bottom-sheet'))).toNotExist().withTimeout(5000);
 				await sleep(1500);
 		
@@ -279,8 +279,8 @@ describe('Room screen', () => {
 				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
 				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
 				await element(by.id('scroll-bottom-sheet-handle')).swipe('up', 'fast', 0.5);
-				await waitFor(element(by.id('Unpin'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.id('Unpin'))).toBeVisible();
+				await waitFor(element(by.label('Unpin'))).toBeVisible().withTimeout(2000);
+				await expect(element(by.label('Unpin'))).toBeVisible();
 				await element(by.id('scroll-bottom-sheet-backdrop')).tap();
 			});
 
@@ -290,7 +290,7 @@ describe('Room screen', () => {
 				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
 				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
 				await element(by.id('scroll-bottom-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by.id('Delete')).tap();
+				await element(by.label('Delete')).tap();
 
 				const deleteAlertMessage = 'You will not be able to recover this message!';
     		await waitFor(element(by.text(deleteAlertMessage)).atIndex(0)).toExist().withTimeout(10000);
@@ -310,7 +310,7 @@ describe('Room screen', () => {
 				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
 				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
 				await element(by.id('scroll-bottom-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by.id('Reply in Thread')).tap();
+				await element(by.label('Reply in Thread')).tap();
 				await element(by.id('messagebox-input')).typeText('replied');
 				await element(by.id('messagebox-send-message')).tap();
 				await waitFor(element(by.id(`message-thread-button-${ thread }`))).toExist().withTimeout(5000);
@@ -347,7 +347,7 @@ describe('Room screen', () => {
 				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
 				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
 				await element(by.id('scroll-bottom-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by.id('Reply in Thread')).tap();
+				await element(by.label('Reply in Thread')).tap();
 				await element(by.id('messagebox-input')).typeText('repliedagain');
 				await element(by.id('messagebox-send-message')).tap();
 				await waitFor(element(by.id(`message-thread-replied-on-${ thread }`))).toExist().withTimeout(5000);

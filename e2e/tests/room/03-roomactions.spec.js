@@ -215,7 +215,7 @@ describe('Room actions screen', () => {
 
 				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
 				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
-				await element(by.id('Unstar')).tap();
+				await element(by.label('Unstar')).tap();
 
 				await waitFor(element(by.label(`${ data.random }message`))).toBeNotVisible().withTimeout(60000);
 				await expect(element(by.label(`${ data.random }message`))).toBeNotVisible();
@@ -233,7 +233,7 @@ describe('Room actions screen', () => {
 
 				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
 				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
-				await element(by.id('Unpin')).tap();
+				await element(by.label('Unpin')).tap();
 
 				await waitFor(element(by.label(`${ data.random }edited (edited)`)).atIndex(0)).toBeNotVisible().withTimeout(60000);
 				await expect(element(by.label(`${ data.random }edited (edited)`))).toBeNotVisible();

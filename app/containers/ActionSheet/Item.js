@@ -5,11 +5,9 @@ import { Text } from 'react-native';
 import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
-import { Button } from './index';
+import Button from './Button';
 
-const Item = React.memo(({
-	item, hide, theme
-}) => {
+const Item = React.memo(({ item, hide, theme }) => {
 	const onPress = () => {
 		hide();
 		item?.onPress();
@@ -20,7 +18,6 @@ const Item = React.memo(({
 			onPress={onPress}
 			style={[styles.item, { backgroundColor: themes[theme].focusedBackground }]}
 			theme={theme}
-			testID={item.title}
 		>
 			<CustomIcon name={item.icon} size={20} color={item.danger ? themes[theme].dangerColor : themes[theme].bodyText} />
 			<Text

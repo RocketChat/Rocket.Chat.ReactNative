@@ -44,7 +44,7 @@ import Tablet, { initTabletNav } from './tablet';
 import sharedStyles from './views/Styles';
 import { SplitContext } from './split';
 import TwoFactor from './containers/TwoFactor';
-import ActionSheetProvider from './actionSheet';
+import ActionSheetProvider from './containers/ActionSheet/Provider';
 
 import RoomsListView from './views/RoomsListView';
 import RoomView from './views/RoomView';

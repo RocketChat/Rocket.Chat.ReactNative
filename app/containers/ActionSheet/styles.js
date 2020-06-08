@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 
-export const ITEM_HEIGHT = 46;
+export const ITEM_HEIGHT = 48;
 
 export default StyleSheet.create({
 	container: {
@@ -34,7 +34,7 @@ export default StyleSheet.create({
 	handleIndicator: {
 		width: 40,
 		height: 4,
-		borderRadius: 2,
+		borderRadius: 4,
 		margin: 8
 	},
 	backdrop: {
@@ -49,7 +49,7 @@ export default StyleSheet.create({
 		marginHorizontal: 16,
 		paddingHorizontal: 14,
 		justifyContent: 'center',
-		height: 48,
+		height: ITEM_HEIGHT,
 		borderRadius: 2,
 		marginBottom: 12
 	},

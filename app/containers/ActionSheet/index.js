@@ -3,10 +3,12 @@ import React, {
 	useState,
 	useEffect,
 	forwardRef,
-	useImperativeHandle
+	useImperativeHandle,
+	useCallback,
+	isValidElement
 } from 'react';
 import PropTypes from 'prop-types';
-import { Keyboard, TouchableOpacity, Text } from 'react-native';
+import { Keyboard, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TapGestureHandler, State } from 'react-native-gesture-handler';
 import ScrollBottomSheet from 'react-native-scroll-bottom-sheet';
@@ -24,20 +26,17 @@ import {
 
 import Item from './Item';
 import Handle from './Handle';
-import Separator from '../Separator';
+import Button from './Button';
 import { themes } from '../../constants/colors';
 import styles, { ITEM_HEIGHT } from './styles';
-import { isTablet, isAndroid } from '../../utils/deviceInfo';
-import Touch from '../../utils/touch';
+import { isTablet, isIOS } from '../../utils/deviceInfo';
+import Separator from '../Separator';
 import I18n from '../../i18n';
 
 const getItemLayout = (data, index) => ({ length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index });
 
-// For some reason react-native-gesture-handler isn't working on bottom sheet (iOS)
-export const Button = isAndroid ? Touch : TouchableOpacity;
-
-const HANDLE_HEIGHT = 40;
-const MIN_SNAP_HEIGHT = 16;
+const HANDLE_HEIGHT = isIOS ? 40 : 56;
+const MAX_SNAP_HEIGHT = 16;
 const CANCEL_HEIGHT = 64;
 
 const ANIMATION_DURATION = 100;
@@ -46,27 +45,20 @@ const ANIMATION_CONFIG = {
 	duration: ANIMATION_DURATION
 };
 
-/*
- * At Android height needs to be adjusted
- * because of the StyleSheet has a difference of
- * +2 dp between Android and iOS
- */
-const ANDROID_ADJUST = isAndroid ? 2 : 0;
-
-const ActionSheet = forwardRef(({ children, theme }, ref) => {
+const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 	const bottomSheetRef = useRef();
 	const [data, setData] = useState({});
-	const [visible, setVisible] = useState(false);
+	const [isVisible, setVisible] = useState(false);
 	const orientation = useDeviceOrientation();
 	const { height } = useDimensions().window;
 	const insets = useSafeAreaInsets();
 	const { landscape } = orientation;
 
-	const open = Math.max(
+	const maxSnap = Math.max(
 		(
 			height
 			// Items height
-			- ((ITEM_HEIGHT + ANDROID_ADJUST) * data?.options?.length)
+			- (ITEM_HEIGHT * (data?.options?.length || 0))
 			// Handle height
 			- HANDLE_HEIGHT
 			// Custom header height
@@ -74,9 +66,9 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 			// Insets bottom height (Notch devices)
 			- insets.bottom
 			// Cancel button height
-			- (data.hasCancel ? CANCEL_HEIGHT : 0)
+			- (data?.hasCancel ? CANCEL_HEIGHT : 0)
 		),
-		MIN_SNAP_HEIGHT
+		MAX_SNAP_HEIGHT
 	);
 
 	/*
@@ -86,14 +78,14 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 	 * we'll provide more one snap
 	 * that point 50% of the whole screen
 	*/
-	const snaps = (height - open > height * 0.6) && !landscape ? [open, height * 0.5, height] : [open, height];
-	const opened = snaps.length > 2 ? 1 : 0;
-	const closed = snaps.length - 1;
+	const snaps = (height - maxSnap > height * 0.6) && !landscape ? [maxSnap, height * 0.5, height] : [maxSnap, height];
+	const openedSnapIndex = snaps.length > 2 ? 1 : 0;
+	const closedSnapIndex = snaps.length - 1;
 
-	const toggleVisible = () => setVisible(!visible);
+	const toggleVisible = () => setVisible(!isVisible);
 
 	const hide = () => {
-		bottomSheetRef.current?.snapTo(closed);
+		bottomSheetRef.current?.snapTo(closedSnapIndex);
 	};
 
 	const show = (options) => {
@@ -108,24 +100,21 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 	};
 
 	useBackHandler(() => {
-		if (visible) {
+		if (isVisible) {
 			hide();
 		}
-		return visible;
+		return isVisible;
 	});
 
 	useEffect(() => {
-		if (visible) {
+		if (isVisible) {
 			Keyboard.dismiss();
 			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-			bottomSheetRef.current?.snapTo(opened);
+			bottomSheetRef.current?.snapTo(openedSnapIndex);
 		}
-	}, [visible]);
+	}, [isVisible]);
 
-	/*
-	 * For now we'll just hide the action sheet
-	 * when orientation changes to/from landscape
-	 */
+	// Hides action sheet when orientation changes
 	useEffect(() => {
 		setVisible(false);
 	}, [orientation.landscape]);
@@ -135,14 +124,14 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 		hideActionSheet: hide
 	}));
 
-	const renderHandle = () => (
+	const renderHandle = useCallback(() => (
 		<>
 			<Handle theme={theme} />
-			{data?.customHeader || null}
+			{isValidElement(data?.customHeader) ? data.customHeader : null}
 		</>
-	);
+	));
 
-	const renderFooter = () => (data?.hasCancel ? (
+	const renderFooter = useCallback(() => (data?.hasCancel ? (
 		<Button
 			onPress={hide}
 			style={[styles.button, { backgroundColor: themes[theme].auxiliaryBackground }]}
@@ -152,9 +141,11 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 				{I18n.t('Cancel')}
 			</Text>
 		</Button>
-	) : null);
+	) : null));
 
-	const renderSeparator = () => <Separator theme={theme} style={styles.separator} />;
+	const renderSeparator = useCallback(() => <Separator theme={theme} style={styles.separator} />);
+
+	const renderItem = useCallback(({ item }) => <Item item={item} hide={hide} theme={theme} />);
 
 	const animatedPosition = React.useRef(new Value(0));
 	const opacity = interpolate(animatedPosition.current, {
@@ -166,7 +157,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 	return (
 		<>
 			{children}
-			{visible && (
+			{isVisible && (
 				<>
 					<TapGestureHandler onHandlerStateChange={overlay}>
 						<Animated.View
@@ -185,9 +176,9 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 						ref={bottomSheetRef}
 						componentType='FlatList'
 						snapPoints={snaps}
-						initialSnapIndex={closed}
+						initialSnapIndex={closedSnapIndex}
 						renderHandle={renderHandle}
-						onSettle={index => (index === closed) && toggleVisible()}
+						onSettle={index => (index === closedSnapIndex) && toggleVisible()}
 						animatedPosition={animatedPosition.current}
 						containerStyle={[
 							styles.container,
@@ -197,6 +188,7 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 						animationConfig={ANIMATION_CONFIG}
 						// FlatList props
 						data={data?.options}
+						renderItem={renderItem}
 						keyExtractor={item => item.title}
 						style={{ backgroundColor: themes[theme].focusedBackground }}
 						contentContainerStyle={styles.content}
@@ -204,13 +196,13 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 						ListHeaderComponent={renderSeparator}
 						ListFooterComponent={renderFooter}
 						getItemLayout={getItemLayout}
-						renderItem={({ item }) => <Item item={item} hide={hide} theme={theme} />}
+						removeClippedSubviews={isIOS}
 					/>
 				</>
 			)}
 		</>
 	);
-});
+}));
 ActionSheet.propTypes = {
 	children: PropTypes.node,
 	theme: PropTypes.string

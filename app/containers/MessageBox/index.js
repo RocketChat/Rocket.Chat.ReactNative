@@ -45,7 +45,7 @@ import CommandsPreview from './CommandsPreview';
 import { Review } from '../../utils/review';
 import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/Navigation';
-import { connectActionSheet } from '../../actionSheet';
+import { connectActionSheet } from '../ActionSheet/Provider';
 
 const imagePickerConfig = {
 	cropping: true,
