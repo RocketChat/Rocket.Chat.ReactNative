@@ -157,8 +157,8 @@ const ActionSheet = forwardRef(({ children, theme }, ref) => {
 	const renderSeparator = () => <Separator theme={theme} style={styles.separator} />;
 
 	const animatedPosition = React.useRef(new Value(0));
-	const opacity = interpolate(visible, {
-		inputRange: [0, 0.7],
+	const opacity = interpolate(animatedPosition.current, {
+		inputRange: [0, 1],
 		outputRange: [0, 0.7],
 		extrapolate: Extrapolate.CLAMP
 	});
