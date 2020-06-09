@@ -188,14 +188,14 @@ class List extends React.Component {
 				result = await RocketChat.loadMessagesForRoom({ rid, t, latest });
 			}
 
-			this.setState({ end: result.length < 50, loading: false, latest: result[result.length - 1].ts }, () => this.loop(result));
+			this.setState({ end: result.length < 50, loading: false, latest: result[result.length - 1].ts }, () => this.loadMoreMessages(result));
 		} catch (e) {
 			this.setState({ loading: false });
 			log(e);
 		}
 	}, 300)
 
-	loop = (result) => {
+	loadMoreMessages = (result) => {
 		const { end } = this.state;
 
 		// handle servers with version < 3.0.0
@@ -204,7 +204,9 @@ class List extends React.Component {
 			hideSystemMessages = [];
 		}
 
-		if (!end && !result.filter(message => !message.t || (message.t && !hideSystemMessages.includes(message.t))).length) {
+		const hasReadableMessages = result.filter(message => !message.t || (message.t && !hideSystemMessages.includes(message.t))).length > 0;
+		// if it's not the chat end and this batch not contains any messages that will be displayed, we'll request a new batch
+		if (!end && !hasReadableMessages) {
 			this.onEndReached();
 		}
 	}
