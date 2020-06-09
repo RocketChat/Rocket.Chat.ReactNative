@@ -171,9 +171,9 @@ class List extends React.Component {
 
 	onEndReached = debounce(async() => {
 		const {
-			loading, end, messages
+			loading, end, messages, latest = messages[messages.length - 1].ts
 		} = this.state;
-		if (loading || end || messages.length < 50) {
+		if (loading || end) {
 			return;
 		}
 
@@ -185,15 +185,39 @@ class List extends React.Component {
 				// `offset` is `messages.length - 1` because we append thread start to `messages` obj
 				result = await RocketChat.loadThreadMessages({ tmid, rid, offset: messages.length - 1 });
 			} else {
-				result = await RocketChat.loadMessagesForRoom({ rid, t, latest: messages[messages.length - 1].ts });
+				result = await RocketChat.loadMessagesForRoom({ rid, t, latest });
 			}
 
-			this.setState({ end: result.length < 50, loading: false });
+			this.setState({ end: result.length < 50, loading: false, latest: result[result.length - 1].ts }, () => this.loadMoreMessages(result));
 		} catch (e) {
 			this.setState({ loading: false });
 			log(e);
 		}
 	}, 300)
+
+	loadMoreMessages = (result) => {
+		const { end } = this.state;
+
+		if (end) {
+			return;
+		}
+
+		// handle servers with version < 3.0.0
+		let { hideSystemMessages = [] } = this.props;
+		if (!Array.isArray(hideSystemMessages)) {
+			hideSystemMessages = [];
+		}
+
+		if (!hideSystemMessages.length) {
+			return;
+		}
+
+		const hasReadableMessages = result.filter(message => !message.t || (message.t && !hideSystemMessages.includes(message.t))).length > 0;
+		// if this batch doesn't contain any messages that will be displayed, we'll request a new batch
+		if (!hasReadableMessages) {
+			this.onEndReached();
+		}
+	}
 
 	onRefresh = () => this.setState({ refreshing: true }, async() => {
 		const { messages } = this.state;
