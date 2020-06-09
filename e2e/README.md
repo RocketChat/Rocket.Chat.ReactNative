@@ -36,13 +36,19 @@
 * Open Simulator which is used in tests (check in package.json under detox section) from Xcode and make sure that software keyboard is being displayed. To toggle keyboard press `cmd+K`.
 * Run tests: `detox test -c ios.sim.release`
 
-#### 3.1. Android
+#### 3.2. Android
 
 * Build app with detox: `detox build -c android.emu.debug`
 * Run: `react-native start`
 * Run Android emulator with name `ANDROID_API_28` via Android studio or `cd /Users/USERNAME/Library/Android/sdk/emulator/ && ./emulator -avd ANDROID_API_28`
 Note: if you need to run tests on different Android emulator then simply change emulator name in ./package.json detox configurations
 * Run tests: `detox test -c android.emu.debug`
+
+#### 3.3 Running a subset of tests
+
+Tests have been grouped into subfolders. You can choose to run just one group of tests by running, for example:
+
+`detox test ./e2e/tests/onboarding -c ios.sim.release`
 
 ### 4. FAQ
 
