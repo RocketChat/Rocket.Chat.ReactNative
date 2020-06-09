@@ -88,8 +88,7 @@ class ShareView extends React.Component {
 		const { username } = user;
 		const readOnly = await isReadOnly(room, { username });
 
-		this.setState({ readOnly, canSend: !(readOnly || isBlocked(room)) });
-		this.setHeader();
+		this.setState({ readOnly, canSend: !(readOnly || isBlocked(room)) }, () => this.setHeader());
 	}
 
 	bytesToSize = bytes => `${ (bytes / 1048576).toFixed(2) }MB`;
