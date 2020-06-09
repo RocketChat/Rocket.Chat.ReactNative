@@ -20,6 +20,8 @@ import {
 } from './utils/navigation';
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { ThemeContext } from './theme';
+import { localAuthenticate } from './utils/localAuthentication';
+import ScreenLockedView from './views/ScreenLockedView';
 
 // Outside Stack
 import WithoutServersView from './views/WithoutServersView';
@@ -136,6 +138,7 @@ class Root extends React.Component {
 		const token = await RNUserDefaults.get(RocketChat.TOKEN_KEY);
 
 		if (currentServer && token) {
+			await localAuthenticate(currentServer);
 			this.setState({ root: 'inside' });
 			await RocketChat.shareExtensionInit(currentServer);
 		} else {
@@ -179,6 +182,7 @@ class Root extends React.Component {
 							>
 								<App root={root} />
 							</NavigationContainer>
+							<ScreenLockedView />
 						</LayoutAnimation>
 					</ThemeContext.Provider>
 				</Provider>
