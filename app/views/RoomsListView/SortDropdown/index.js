@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import styles from '../styles';
 import Touch from '../../../utils/touch';
@@ -16,7 +17,6 @@ import { withTheme } from '../../../theme';
 import { themes } from '../../../constants/colors';
 import { SortItemButton, SortItemContent } from './Item';
 import { headerHeight } from '../../../containers/Header';
-import { isIOS } from '../../../utils/deviceInfo';
 
 const ANIMATION_DURATION = 200;
 
@@ -30,6 +30,7 @@ class Sort extends PureComponent {
 		showUnread: PropTypes.bool,
 		isMasterDetail: PropTypes.bool,
 		theme: PropTypes.string,
+		insets: PropTypes.object,
 		setSortPreference: PropTypes.func
 	}
 
@@ -107,8 +108,8 @@ class Sort extends PureComponent {
 	}
 
 	render() {
-		const { isMasterDetail } = this.props;
-		const statusBarHeight = isIOS ? 20 : 0;
+		const { isMasterDetail, insets } = this.props;
+		const statusBarHeight = insets?.top ?? 0;
 		const heightDestination = isMasterDetail ? headerHeight + statusBarHeight : 0;
 		const translateY = this.animatedValue.interpolate({
 			inputRange: [0, 1],
@@ -210,4 +211,4 @@ const mapDispatchToProps = dispatch => ({
 	setSortPreference: preference => dispatch(setPreference(preference))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(Sort));
+export default connect(mapStateToProps, mapDispatchToProps)(withSafeAreaInsets(withTheme(Sort)));

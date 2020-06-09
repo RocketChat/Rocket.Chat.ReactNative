@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
 import RNUserDefaults from 'rn-user-defaults';
+import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
@@ -20,7 +21,7 @@ import database from '../../lib/database';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { KEY_COMMAND, handleCommandSelectServer } from '../../commands';
-import { isTablet, isIOS } from '../../utils/deviceInfo';
+import { isTablet } from '../../utils/deviceInfo';
 import { localAuthenticate } from '../../utils/localAuthentication';
 import { showConfirmationAlert } from '../../utils/info';
 import LongPress from '../../utils/longPress';
@@ -33,6 +34,7 @@ const ANIMATION_DURATION = 200;
 class ServerDropdown extends Component {
 	static propTypes = {
 		navigation: PropTypes.object,
+		insets: PropTypes.object,
 		closeServerDropdown: PropTypes.bool,
 		server: PropTypes.string,
 		theme: PropTypes.string,
@@ -227,10 +229,10 @@ class ServerDropdown extends Component {
 
 	render() {
 		const { servers } = this.state;
-		const { theme, isMasterDetail } = this.props;
+		const { theme, isMasterDetail, insets } = this.props;
 		const maxRows = 4;
 		const initialTop = 41 + (Math.min(servers.length, maxRows) * ROW_HEIGHT);
-		const statusBarHeight = isIOS ? 20 : 0;
+		const statusBarHeight = insets?.top ?? 0;
 		const heightDestination = isMasterDetail ? headerHeight + statusBarHeight : 0;
 		const translateY = this.animatedValue.interpolate({
 			inputRange: [0, 1],
@@ -300,4 +302,4 @@ const mapDispatchToProps = dispatch => ({
 	appStart: params => dispatch(appStartAction(params))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(ServerDropdown));
+export default connect(mapStateToProps, mapDispatchToProps)(withSafeAreaInsets(withTheme(ServerDropdown)));
