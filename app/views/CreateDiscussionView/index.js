@@ -37,7 +37,8 @@ class CreateChannelView extends React.Component {
 		result: PropTypes.object,
 		failure: PropTypes.bool,
 		error: PropTypes.object,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		isMasterDetail: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -86,7 +87,8 @@ class CreateChannelView extends React.Component {
 	}
 
 	setHeader = () => {
-		const { navigation } = this.props;
+		const { navigation, route } = this.props;
+		const showCloseModal = route.params?.showCloseModal;
 		navigation.setOptions({
 			title: I18n.t('Create_Discussion'),
 			headerRight: (
@@ -98,7 +100,7 @@ class CreateChannelView extends React.Component {
 					)
 					: null
 			),
-			headerLeft: () => <CloseModalButton navigation={navigation} />
+			headerLeft: showCloseModal ? () => <CloseModalButton navigation={navigation} /> : undefined
 		});
 	}
 

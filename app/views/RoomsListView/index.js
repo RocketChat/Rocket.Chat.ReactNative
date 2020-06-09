@@ -325,7 +325,7 @@ class RoomsListView extends React.Component {
 					<Item
 						title='new'
 						iconName='new-chat'
-						onPress={isMasterDetail ? () => navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' }) : () => navigation.navigate('NewMessageStack')}
+						onPress={isMasterDetail ? () => navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' }) : () => navigation.navigate('NewMessageStackNavigator')}
 						testID='rooms-list-view-create-channel'
 					/>
 				</CustomHeaderButtons>

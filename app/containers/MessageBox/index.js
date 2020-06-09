@@ -599,7 +599,13 @@ class MessageBox extends Component {
 	}
 
 	createDiscussion = () => {
-		Navigation.navigate('CreateDiscussionView', { channel: this.room });
+		const { isMasterDetail } = this.props;
+		const params = { channel: this.room, showCloseModal: true };
+		if (isMasterDetail) {
+			Navigation.navigate('ModalStackNavigator', { screen: 'CreateDiscussionView', params });
+		} else {
+			Navigation.navigate('CreateDiscussionView', params);
+		}
 	}
 
 	showUploadModal = (file) => {
