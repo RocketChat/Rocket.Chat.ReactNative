@@ -1043,7 +1043,7 @@ class RoomView extends React.Component {
 					renderRow={this.renderItem}
 					loading={loading}
 					navigation={navigation}
-					hideSystemMessages={sysMes || Hide_System_Messages}
+					hideSystemMessages={Array.isArray(sysMes) ? sysMes : Hide_System_Messages}
 				/>
 				{this.renderFooter()}
 				{this.renderActions()}
