@@ -198,15 +198,23 @@ class List extends React.Component {
 	loadMoreMessages = (result) => {
 		const { end } = this.state;
 
+		if (end) {
+			return;
+		}
+
 		// handle servers with version < 3.0.0
 		let { hideSystemMessages = [] } = this.props;
 		if (!Array.isArray(hideSystemMessages)) {
 			hideSystemMessages = [];
 		}
 
+		if (!hideSystemMessages.length) {
+			return;
+		}
+
 		const hasReadableMessages = result.filter(message => !message.t || (message.t && !hideSystemMessages.includes(message.t))).length > 0;
-		// if it's not the chat end and this batch not contains any messages that will be displayed, we'll request a new batch
-		if (!end && !hasReadableMessages) {
+		// if this batch doesn't contain any messages that will be displayed, we'll request a new batch
+		if (!hasReadableMessages) {
 			this.onEndReached();
 		}
 	}
