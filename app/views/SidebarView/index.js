@@ -177,9 +177,9 @@ class Sidebar extends Component {
 				<SidebarItem
 					text={I18n.t('Settings')}
 					left={<CustomIcon name='cog' size={20} color={themes[theme].titleText} />}
-					onPress={() => this.sidebarNavigate('SettingsViewNavigator')}
+					onPress={() => this.sidebarNavigate('SettingsStackNavigator')}
 					testID='sidebar-settings'
-					current={activeItemKey === 'SettingsViewNavigator'}
+					current={activeItemKey === 'SettingsStackNavigator'}
 				/>
 				{this.renderAdmin()}
 			</>
