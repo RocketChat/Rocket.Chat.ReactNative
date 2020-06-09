@@ -15,7 +15,6 @@ import { getMessageTranslation } from './message/utils';
 import { LISTENER } from './Toast';
 import EventEmitter from '../utils/events';
 import { showConfirmationAlert } from '../utils/info';
-import { goRoom } from '../utils/goRoom';
 
 class MessageActions extends React.Component {
 	static propTypes = {
@@ -33,7 +32,8 @@ class MessageActions extends React.Component {
 		Message_AllowEditing_BlockEditInMinutes: PropTypes.number,
 		Message_AllowPinning: PropTypes.bool,
 		Message_AllowStarring: PropTypes.bool,
-		Message_Read_Receipt_Store_Users: PropTypes.bool
+		Message_Read_Receipt_Store_Users: PropTypes.bool,
+		isMasterDetail: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -381,8 +381,13 @@ class MessageActions extends React.Component {
 	}
 
 	handleCreateDiscussion = () => {
-		const { message, room: channel } = this.props;
-		Navigation.navigate('CreateDiscussionView', { message, channel });
+		const { message, room: channel, isMasterDetail } = this.props;
+		const params = { message, channel, showCloseModal: true };
+		if (isMasterDetail) {
+			Navigation.navigate('ModalStackNavigator', { screen: 'CreateDiscussionView', params });
+		} else {
+			Navigation.navigate('CreateDiscussionView', params);
+		}
 	}
 
 	handleActionPress = (actionIndex) => {
