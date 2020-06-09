@@ -65,6 +65,9 @@ const ChatsStackNavigator = React.memo(() => {
 		} else {
 			deleteKeyCommands();
 		}
+		return () => {
+			deleteKeyCommands();
+		};
 	}, [isFocused]);
 
 	return (
