@@ -146,13 +146,16 @@ class Sidebar extends Component {
 		}
 		const routeName = isMasterDetail ? 'AdminPanelView' : 'AdminPanelStackNavigator';
 		return (
-			<SidebarItem
-				text={I18n.t('Admin_Panel')}
-				left={<CustomIcon name='shield' size={20} color={themes[theme].titleText} />}
-				onPress={() => Navigation.navigate(routeName)}
-				testID='sidebar-settings'
-				current={activeItemKey === routeName}
-			/>
+			<>
+				<Separator theme={theme} />
+				<SidebarItem
+					text={I18n.t('Admin_Panel')}
+					left={<CustomIcon name='shield' size={20} color={themes[theme].titleText} />}
+					onPress={() => Navigation.navigate(routeName)}
+					testID='sidebar-settings'
+					current={activeItemKey === routeName}
+				/>
+			</>
 		);
 	}
 
@@ -253,7 +256,6 @@ class Sidebar extends Component {
 						</>
 					) : (
 						<>
-							<Separator theme={theme} />
 							{this.renderAdmin()}
 						</>
 					)}
