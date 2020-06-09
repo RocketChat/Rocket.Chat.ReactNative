@@ -155,9 +155,6 @@ class List extends React.Component {
 
 	componentWillUnmount() {
 		this.unsubscribeMessages();
-		if (this.interaction && this.interaction.cancel) {
-			this.interaction.cancel();
-		}
 		if (this.onEndReached && this.onEndReached.stop) {
 			this.onEndReached.stop();
 		}
