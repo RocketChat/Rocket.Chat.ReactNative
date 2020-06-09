@@ -626,7 +626,16 @@ const MessageBox = React.memo(({
 		}
 	}
 
-	function handleCommands ({ event }) {
+	function editStateCancel() {
+		editCancel();
+		clearInput();
+	}
+
+	function openEmoji() {
+		setShowEmojiKeyboard(true);
+	}; 
+
+	function handleCommands({ event }) {
 		if (handleCommandTyping(event)) {
 			if (focused) {
 				Keyboard.dismiss();
@@ -676,12 +685,12 @@ const MessageBox = React.memo(({
 					>
 						<LeftButtons
 							theme={theme}
-							showEmojiKeyboard={false}
-							editing={false}
-							showMessageBoxActions={() => { }}
-							editCancel={() => { }}
-							openEmoji={() => { }}
-							closeEmoji={() => { }}
+							showEmojiKeyboard={showEmojiKeyboard}
+							editing={editing}
+							showMessageBoxActions={showMessageBoxActions}
+							editCancel={editStateCancel}
+							openEmoji={openEmoji}
+							closeEmoji={closeEmoji}
 						/>
 						<TextInput
 							ref={component}
