@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
 import Navigation from './lib/Navigation';
-import { defaultHeader, getActiveRouteName } from './utils/navigation';
+import { defaultHeader, getActiveRouteName, navigationTheme } from './utils/navigation';
 import {
 	ROOT_LOADING, ROOT_OUTSIDE, ROOT_NEW_SERVER, ROOT_INSIDE, ROOT_SET_USERNAME, ROOT_BACKGROUND
 } from './actions/app';
@@ -21,7 +21,6 @@ import OutsideStack from './stacks/OutsideStack';
 import InsideStack from './stacks/InsideStack';
 import MasterDetailStack from './stacks/MasterDetailStack';
 import { ThemeContext } from './theme';
-import { themes } from './constants/colors';
 import { setCurrentScreen } from './utils/log';
 
 // SetUsernameStack
@@ -43,16 +42,7 @@ const App = React.memo(({ root, isMasterDetail }) => {
 	}
 
 	const { theme } = React.useContext(ThemeContext);
-	const defaultNavTheme = theme === 'light' ? DefaultTheme : DarkTheme;
-
-	const navigationTheme = {
-		...defaultNavTheme,
-		colors: {
-			...defaultNavTheme.colors,
-			background: 'transparent',
-			border: themes[theme].borderColor
-		}
-	};
+	const navTheme = navigationTheme(theme);
 
 	React.useEffect(() => {
 		const state = Navigation.navigationRef.current.getRootState();
@@ -64,7 +54,7 @@ const App = React.memo(({ root, isMasterDetail }) => {
 	return (
 		<SafeAreaProvider initialMetrics={initialWindowMetrics}>
 			<NavigationContainer
-				theme={navigationTheme}
+				theme={navTheme}
 				ref={Navigation.navigationRef}
 				onStateChange={(state) => {
 					const previousRouteName = Navigation.routeNameRef.current;

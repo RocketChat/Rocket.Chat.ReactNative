@@ -15,7 +15,9 @@ import {
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
 import { supportSystemTheme } from './utils/deviceInfo';
-import { defaultHeader, themedHeader, getActiveRouteName } from './utils/navigation';
+import {
+	defaultHeader, themedHeader, getActiveRouteName, navigationTheme
+} from './utils/navigation';
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { ThemeContext } from './theme';
 
@@ -156,11 +158,13 @@ class Root extends React.Component {
 
 	render() {
 		const { theme, root } = this.state;
+		const navTheme = navigationTheme(theme);
 		return (
 			<AppearanceProvider>
 				<Provider store={store}>
 					<ThemeContext.Provider value={{ theme }}>
 						<NavigationContainer
+							theme={navTheme}
 							ref={Navigation.navigationRef}
 							onStateChange={(state) => {
 								const previousRouteName = Navigation.routeNameRef.current;

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { DefaultTheme, DarkTheme } from '@react-navigation/native';
 
 import { themes } from '../../constants/colors';
 
@@ -29,6 +30,19 @@ export const themedHeader = theme => ({
 	headerTintColor: themes[theme].headerTintColor,
 	headerTitleStyle: { color: themes[theme].headerTitleColor }
 });
+
+export const navigationTheme = (theme) => {
+	const defaultNavTheme = theme === 'light' ? DefaultTheme : DarkTheme;
+
+	return {
+		...defaultNavTheme,
+		colors: {
+			...defaultNavTheme.colors,
+			background: themes[theme].backgroundColor,
+			border: themes[theme].borderColor
+		}
+	};
+};
 
 // Gets the current screen from navigation state
 export const getActiveRoute = (state) => {
