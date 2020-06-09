@@ -37,7 +37,7 @@ const SetUsernameStack = () => (
 // App
 const Stack = createStackNavigator();
 const App = React.memo(({ root, isMasterDetail }) => {
-	if (!root || root === ROOT_BACKGROUND) {
+	if (!root) {
 		return null;
 	}
 
@@ -67,7 +67,7 @@ const App = React.memo(({ root, isMasterDetail }) => {
 			>
 				<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
 					<>
-						{root === ROOT_LOADING ? (
+						{root === ROOT_LOADING || root === ROOT_BACKGROUND ? (
 							<Stack.Screen
 								name='AuthLoading'
 								component={AuthLoadingView}
