@@ -49,3 +49,10 @@ export function setPreference(preference) {
 		preference
 	};
 }
+
+export function setLocalAuthenticated(isLocalAuthenticated) {
+	return {
+		type: types.LOGIN.SET_LOCAL_AUTHENTICATED,
+		isLocalAuthenticated
+	};
+}

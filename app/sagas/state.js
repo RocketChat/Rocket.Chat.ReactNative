@@ -34,6 +34,10 @@ const appHasComeBackToBackground = function* appHasComeBackToBackground() {
 	if (!auth) {
 		return;
 	}
+	const localAuthenticated = yield select(state => state.login.isLocalAuthenticated);
+	if (!localAuthenticated) {
+		return;
+	}
 	try {
 		const server = yield select(state => state.server.server);
 		yield saveLastLocalAuthenticationSession(server);
