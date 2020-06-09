@@ -10,7 +10,6 @@ import * as mime from 'react-native-mime-types';
 import { isEqual, orderBy } from 'lodash';
 import { Q } from '@nozbe/watermelondb';
 
-import Navigation from '../../lib/ShareNavigation';
 import database from '../../lib/database';
 import { isIOS } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
@@ -332,7 +331,7 @@ class ShareListView extends React.Component {
 
 	renderSelectServer = () => {
 		const { servers } = this.state;
-		const { server, theme } = this.props;
+		const { server, theme, navigation } = this.props;
 		const currentServer = servers.find(serverFiltered => serverFiltered.id === server);
 		return currentServer ? (
 			<>
@@ -348,7 +347,7 @@ class ShareListView extends React.Component {
 				>
 					<ServerItem
 						server={server}
-						onPress={() => Navigation.navigate('SelectServerView', { servers: this.servers })}
+						onPress={() => navigation.navigate('SelectServerView', { servers: this.servers })}
 						item={currentServer}
 						theme={theme}
 					/>

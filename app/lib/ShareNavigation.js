@@ -1,14 +1,9 @@
-import * as React from 'react';
+import { createRef } from 'react';
 
-const navigationRef = React.createRef();
-const routeNameRef = React.createRef();
-
-function navigate(name, params) {
-  navigationRef.current?.navigate(name, params);
-}
+const navigationRef = createRef();
+const routeNameRef = createRef();
 
 export default {
 	navigationRef,
-	routeNameRef,
-	navigate
+	routeNameRef
 };

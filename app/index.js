@@ -23,7 +23,7 @@ import { ThemeContext } from './theme';
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { MIN_WIDTH_MASTER_DETAIL_LAYOUT } from './constants/tablet';
 import {
-	isTablet, isIOS, supportSystemTheme
+	isTablet, supportSystemTheme
 } from './utils/deviceInfo';
 import { KEY_COMMAND } from './commands';
 import AppContainer from './AppContainer';

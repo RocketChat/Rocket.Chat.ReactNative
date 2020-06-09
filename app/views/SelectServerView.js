@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import I18n from '../i18n';
 import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
-import Navigation from '../lib/ShareNavigation';
 import ServerItem, { ROW_HEIGHT } from '../presentation/ServerItem';
 import sharedStyles from './Styles';
 import RocketChat from '../lib/rocketchat';
@@ -37,6 +36,7 @@ class SelectServerView extends React.Component {
 	static propTypes = {
 		server: PropTypes.string,
 		route: PropTypes.object,
+		navigation: PropTypes.object,
 		theme: PropTypes.string
 	}
 
@@ -52,10 +52,10 @@ class SelectServerView extends React.Component {
 
 	select = async(server) => {
 		const {
-			server: currentServer
+			server: currentServer, navigation
 		} = this.props;
 
-		Navigation.navigate('ShareListView');
+		navigation.navigate('ShareListView');
 		if (currentServer !== server) {
 			await RocketChat.shareExtensionInit(server);
 		}
