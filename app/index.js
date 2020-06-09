@@ -30,6 +30,7 @@ import AppContainer from './AppContainer';
 import TwoFactor from './containers/TwoFactor';
 import ScreenLockedView from './views/ScreenLockedView';
 import ChangePasscodeView from './views/ChangePasscodeView';
+import { LayoutAnimation } from './utils/layoutAnimation';
 
 RNScreens.enableScreens();
 
@@ -160,7 +161,9 @@ export default class Root extends React.Component {
 							setTheme: this.setTheme
 						}}
 					>
-						<AppContainer />
+						<LayoutAnimation>
+							<AppContainer />
+						</LayoutAnimation>
 						<TwoFactor />
 						<ScreenLockedView />
 						<ChangePasscodeView />
