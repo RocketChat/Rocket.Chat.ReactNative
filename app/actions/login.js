@@ -49,3 +49,10 @@ export function setPreference(preference) {
 		preference
 	};
 }
+
+export function setLocalAuth(isLocalAuth) {
+	return {
+		type: types.LOGIN.SET_LOCAL_AUTH,
+		isLocalAuth
+	};
+}
