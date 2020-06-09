@@ -1,7 +1,7 @@
 import * as types from '../actions/actionsTypes';
 
 const initialState = {
-	isLocalAuth: true,
+	isLocalAuthenticated: true,
 	isAuthenticated: false,
 	isFetching: false,
 	user: {},
@@ -69,10 +69,10 @@ export default function login(state = initialState, action) {
 					}
 				}
 			};
-		case types.LOGIN.SET_LOCAL_AUTH:
+		case types.LOGIN.SET_LOCAL_AUTHENTICATED:
 			return {
 				...state,
-				isLocalAuth: action.isLocalAuth
+				isLocalAuthenticated: action.isLocalAuthenticated
 			};
 		default:
 			return state;

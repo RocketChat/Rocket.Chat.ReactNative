@@ -13,7 +13,7 @@ export const LOGIN = createRequestTypes('LOGIN', [
 	...defaultTypes,
 	'SET_SERVICES',
 	'SET_PREFERENCE',
-	'SET_LOCAL_AUTH'
+	'SET_LOCAL_AUTHENTICATED'
 ]);
 export const SHARE = createRequestTypes('SHARE', [
 	'SELECT_SERVER',
