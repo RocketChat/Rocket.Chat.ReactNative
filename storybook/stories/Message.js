@@ -8,7 +8,6 @@ import messagesStatus from '../../app/constants/messagesStatus';
 import MessageSeparator from '../../app/views/RoomView/Separator';
 
 import { themes } from '../../app/constants/colors';
-import MessageContext from '../../app/containers/message/Context';
 
 let _theme = 'light';
 
@@ -42,32 +41,17 @@ const getCustomEmoji = (content) => {
 };
 
 const Message = props => (
-	<MessageContext.Provider
-		value={{
-			user,
-			baseUrl,
-			onPress: () => {},
-			onLongPress: () => {},
-			reactionInit: () => {},
-			onErrorPress: () => {},
-			replyBroadcast: () => {},
-			onReactionPress: () => {},
-			onDiscussionPress: () => {},
-			onReactionLongPress: () => {}
-		}}
-	>
-		<MessageComponent
-			baseUrl={baseUrl}
-			user={user}
-			author={author}
-			ts={date}
-			timeFormat='LT'
-			isHeader
-			getCustomEmoji={getCustomEmoji}
-			theme={_theme}
-			{...props}
-		/>
-	</MessageContext.Provider>
+	<MessageComponent
+		baseUrl={baseUrl}
+		user={user}
+		author={author}
+		ts={date}
+		timeFormat='LT'
+		isHeader
+		getCustomEmoji={getCustomEmoji}
+		theme={_theme}
+		{...props}
+	/>
 );
 
 // eslint-disable-next-line react/prop-types

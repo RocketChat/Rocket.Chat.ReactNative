@@ -208,13 +208,15 @@ Readme will guide you on how to config.
 - Build your app
 
 ```bash
-$ detox build --configuration ios.sim.release
+$ npx detox build --configuration ios.sim.release
 ```
 
 - Run tests
 
 ```bash
-$ detox test --configuration ios.sim.release
+$ npx detox test ./e2e/tests/onboarding --configuration ios.sim.release
+$ npx detox test ./e2e/tests/room --configuration ios.sim.release
+$ npx detox test ./e2e/tests/assorted --configuration ios.sim.release
 ```
 
 ## Storybook

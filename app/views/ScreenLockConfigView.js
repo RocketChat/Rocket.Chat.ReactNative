@@ -17,7 +17,7 @@ import { CustomIcon } from '../lib/Icons';
 import database from '../lib/database';
 import { supportedBiometryLabel, changePasscode, checkHasPasscode } from '../utils/localAuthentication';
 import { DisclosureImage } from '../containers/DisclosureIndicator';
-import { DEFAULT_AUTO_LOCK_OPTIONS, DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
+import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
 
 const styles = StyleSheet.create({
 	listPadding: {
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const DEFAULT_BIOMETRY = true;
+const DEFAULT_BIOMETRY = false;
 
 class ScreenLockConfigView extends React.Component {
 	static navigationOptions = ({ screenProps }) => ({
@@ -48,11 +48,40 @@ class ScreenLockConfigView extends React.Component {
 		this.state = {
 			autoLock: false,
 			autoLockTime: null,
-			biometry: true,
+			biometry: DEFAULT_BIOMETRY,
 			biometryLabel: null
 		};
 		this.init();
 	}
+
+	componentWillUnmount() {
+		if (this.observable && this.observable.unsubscribe) {
+			this.observable.unsubscribe();
+		}
+	}
+
+	defaultAutoLockOptions = [
+		{
+			title: I18n.t('Local_authentication_auto_lock_60'),
+			value: 60
+		},
+		{
+			title: I18n.t('Local_authentication_auto_lock_300'),
+			value: 300
+		},
+		{
+			title: I18n.t('Local_authentication_auto_lock_900'),
+			value: 900
+		},
+		{
+			title: I18n.t('Local_authentication_auto_lock_1800'),
+			value: 1800
+		},
+		{
+			title: I18n.t('Local_authentication_auto_lock_3600'),
+			value: 3600
+		}
+	];
 
 	init = async() => {
 		const { server } = this.props;
@@ -71,6 +100,19 @@ class ScreenLockConfigView extends React.Component {
 
 		const biometryLabel = await supportedBiometryLabel();
 		this.setState({ biometryLabel });
+
+		this.observe();
+	}
+
+	/*
+	 * We should observe biometry value
+	 * because it can be changed by PasscodeChange
+	 * when the user set his first passcode
+	*/
+	observe = () => {
+		this.observable = this.serverRecord?.observe()?.subscribe(({ biometry }) => {
+			this.setState({ biometry });
+		});
 	}
 
 	save = async() => {
@@ -168,18 +210,24 @@ class ScreenLockConfigView extends React.Component {
 	}
 
 	renderAutoLockItems = () => {
-		const { autoLock } = this.state;
+		const { autoLock, autoLockTime } = this.state;
 		const { theme, Force_Screen_Lock_After, Force_Screen_Lock } = this.props;
 		if (!autoLock) {
 			return null;
 		}
-		let items = DEFAULT_AUTO_LOCK_OPTIONS;
+		let items = this.defaultAutoLockOptions;
 		if (Force_Screen_Lock && Force_Screen_Lock_After > 0) {
 			items = [{
 				title: I18n.t('After_seconds_set_by_admin', { seconds: Force_Screen_Lock_After }),
 				value: Force_Screen_Lock_After,
 				disabled: true
 			}];
+		// if Force_Screen_Lock is disabled and autoLockTime is a value that isn't on our defaultOptions we'll show it
+		} else if (Force_Screen_Lock_After === autoLockTime && !items.find(item => item.value === autoLockTime)) {
+			items.push({
+				title: I18n.t('After_seconds_set_by_admin', { seconds: Force_Screen_Lock_After }),
+				value: Force_Screen_Lock_After
+			});
 		}
 		return (
 			<>

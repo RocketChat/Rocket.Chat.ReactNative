@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { themes } from '../constants/colors';
+import { CustomIcon } from '../lib/Icons';
 
 const styles = StyleSheet.create({
 	disclosureContainer: {
@@ -10,17 +11,14 @@ const styles = StyleSheet.create({
 		marginRight: 9,
 		alignItems: 'center',
 		justifyContent: 'center'
-	},
-	disclosureIndicator: {
-		width: 20,
-		height: 20
 	}
 });
 
 export const DisclosureImage = React.memo(({ theme }) => (
-	<Image
-		source={{ uri: 'disclosure_indicator' }}
-		style={[styles.disclosureIndicator, { tintColor: themes[theme].auxiliaryTintColor }]}
+	<CustomIcon
+		name='chevron-right'
+		color={themes[theme].auxiliaryTintColor}
+		size={20}
 	/>
 ));
 DisclosureImage.propTypes = {

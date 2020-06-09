@@ -11,6 +11,16 @@ import UiKitModal from './UiKitModal';
 import Markdown from './Markdown';
 // import RoomViewHeader from './RoomViewHeader';
 
+import MessageContext from '../../app/containers/message/Context';
+
+// MessageProvider
+const baseUrl = 'https://open.rocket.chat';
+const user = {
+	id: '',
+	username: 'diego.mello',
+	token: ''
+};
+
 // Change here to see themed storybook
 const theme = 'light';
 
@@ -26,15 +36,37 @@ const reducers = combineReducers({
 });
 const store = createStore(reducers);
 
+const messageDecorator = story => (
+	<MessageContext.Provider
+		value={{
+			user,
+			baseUrl,
+			onPress: () => {},
+			onLongPress: () => {},
+			reactionInit: () => {},
+			onErrorPress: () => {},
+			replyBroadcast: () => {},
+			onReactionPress: () => {},
+			onDiscussionPress: () => {},
+			onReactionLongPress: () => {}
+		}}
+	>
+		{story()}
+	</MessageContext.Provider>
+);
+
 storiesOf('RoomItem', module)
 	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
 	.add('list roomitem', () => <RoomItem theme={theme} />);
 storiesOf('Message', module)
+	.addDecorator(messageDecorator)
 	.add('list message', () => <Message theme={theme} />);
 
 storiesOf('UiKitMessage', module)
+	.addDecorator(messageDecorator)
 	.add('list uikitmessage', () => <UiKitMessage theme={theme} />);
 storiesOf('UiKitModal', module)
+	.addDecorator(messageDecorator)
 	.add('list UiKitModal', () => <UiKitModal theme={theme} />);
 storiesOf('Markdown', module)
 	.add('list Markdown', () => <Markdown theme={theme} />);

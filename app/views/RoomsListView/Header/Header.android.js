@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	Text, View, TouchableOpacity, Image, StyleSheet
+	Text, View, TouchableOpacity, StyleSheet
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -8,6 +8,7 @@ import TextInput from '../../../presentation/TextInput';
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
 import { themes } from '../../../constants/colors';
+import { CustomIcon } from '../../../lib/Icons';
 
 const styles = StyleSheet.create({
 	container: {
@@ -29,12 +30,6 @@ const styles = StyleSheet.create({
 	updating: {
 		fontSize: 14,
 		...sharedStyles.textRegular
-	},
-	disclosure: {
-		marginLeft: 9,
-		marginTop: 1,
-		width: 10,
-		height: 5
 	},
 	upsideDown: {
 		transform: [{ scaleY: -1 }]
@@ -70,13 +65,11 @@ const Header = React.memo(({
 				{isFetching ? <Text style={[styles.updating, titleColorStyle]}>{I18n.t('Updating')}</Text> : null}
 				<View style={styles.button}>
 					<Text style={[styles.server, isFetching && styles.serverSmall, titleColorStyle]} numberOfLines={1}>{serverName}</Text>
-					<Image
-						style={[
-							styles.disclosure,
-							showServerDropdown && styles.upsideDown,
-							{ tintColor: themes[theme].headerTitleColor }
-						]}
-						source={{ uri: 'disclosure_indicator_server' }}
+					<CustomIcon
+						name='chevron-down'
+						color={themes[theme].headerTintColor}
+						style={[showServerDropdown && styles.upsideDown]}
+						size={18}
 					/>
 				</View>
 			</TouchableOpacity>

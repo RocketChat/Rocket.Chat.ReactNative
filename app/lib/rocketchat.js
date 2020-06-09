@@ -225,13 +225,12 @@ const RocketChat = {
 				.catch((err) => {
 					console.log('connect error', err);
 
-					const { server: currentServer } = reduxStore.getState().server;
-					if (server === currentServer) {
-						// when `connect` raises an error, we try again in 10 seconds
-						this.connectTimeout = setTimeout(() => {
+					// when `connect` raises an error, we try again in 10 seconds
+					this.connectTimeout = setTimeout(() => {
+						if (this.sdk?.client?.host === server) {
 							sdkConnect();
-						}, 10000);
-					}
+						}
+					}, 10000);
 				});
 
 			sdkConnect();
@@ -316,7 +315,7 @@ const RocketChat = {
 		}
 		database.share = null;
 
-		reduxStore.dispatch(shareSetUser(null));
+		reduxStore.dispatch(shareSetUser({}));
 	},
 
 	updateJitsiTimeout(rid) {
@@ -963,7 +962,7 @@ const RocketChat = {
 			const shareUser = reduxStore.getState().share.user;
 			const loginUser = reduxStore.getState().login.user;
 			// get user roles on the server from redux
-			const userRoles = (shareUser.roles || loginUser.roles) || [];
+			const userRoles = (shareUser?.roles || loginUser?.roles) || [];
 			// merge both roles
 			const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
 

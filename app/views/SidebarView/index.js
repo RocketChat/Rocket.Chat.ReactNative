@@ -167,7 +167,7 @@ class Sidebar extends Component {
 				{isAdmin ? (
 					<SidebarItem
 						text={I18n.t('Admin_Panel')}
-						left={<CustomIcon name='shield-alt' size={20} color={themes[theme].titleText} />}
+						left={<CustomIcon name='shield' size={20} color={themes[theme].titleText} />}
 						onPress={() => this.sidebarNavigate('AdminPanelView')}
 						testID='sidebar-settings'
 						current={activeItemKey === 'AdminPanelStack'}
@@ -224,7 +224,12 @@ class Sidebar extends Component {
 							<View style={styles.headerUsername}>
 								<Text numberOfLines={1} style={[styles.username, { color: themes[theme].titleText }]}>{useRealName ? user.name : user.username}</Text>
 							</View>
-							<Text style={[styles.currentServerText, { color: themes[theme].titleText }]} numberOfLines={1}>{Site_Name}</Text>
+							<Text
+								style={[styles.currentServerText, { color: themes[theme].titleText }]}
+								numberOfLines={1}
+								accessibilityLabel={`Connected to ${ baseUrl }`}
+							>{Site_Name}
+							</Text>
 						</View>
 					</View>
 

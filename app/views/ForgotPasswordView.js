@@ -85,7 +85,7 @@ class ForgotPasswordView extends React.Component {
 		const { theme } = this.props;
 
 		return (
-			<FormContainer theme={theme}>
+			<FormContainer theme={theme} testID='forgot-password-view'>
 				<FormContainerInner>
 					<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Forgot_password')}</Text>
 					<TextInput
