@@ -76,6 +76,10 @@ class AuthenticationWebView extends React.PureComponent {
 		}
 	}
 
+	get isIframe() {
+		return this.authType === 'iframe';
+	}
+
 	dismiss = () => {
 		const { navigation } = this.props;
 		navigation.pop();
@@ -171,7 +175,7 @@ class AuthenticationWebView extends React.PureComponent {
 					// https://github.com/react-native-community/react-native-webview/issues/24#issuecomment-540130141
 					onMessage={({ nativeEvent }) => this.onNavigationStateChange(nativeEvent)}
 					onNavigationStateChange={this.onNavigationStateChange}
-					injectedJavaScript={injectedJavaScript}
+					injectedJavaScript={this.isIframe ? injectedJavaScript : undefined}
 					onLoadStart={() => {
 						this.setState({ loading: true });
 					}}

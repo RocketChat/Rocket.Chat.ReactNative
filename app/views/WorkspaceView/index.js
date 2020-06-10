@@ -47,9 +47,18 @@ class WorkspaceView extends React.Component {
 		navigation.navigate('AuthenticationWebView', { url: server, authType: 'iframe' });
 	}
 
+	renderRegisterDisabled = () => {
+		const { Accounts_iframe_enabled, registrationText, theme } = this.props;
+		if (Accounts_iframe_enabled) {
+			return null;
+		}
+
+		return <Text style={[styles.registrationText, { color: themes[theme].auxiliaryText }]}>{registrationText}</Text>;
+	}
+
 	render() {
 		const {
-			theme, Site_Name, Site_Url, Assets_favicon_512, server, registrationEnabled, registrationText, showLoginButton, Accounts_iframe_enabled
+			theme, Site_Name, Site_Url, Assets_favicon_512, server, registrationEnabled, showLoginButton, Accounts_iframe_enabled
 		} = this.props;
 
 		return (
@@ -71,7 +80,7 @@ class WorkspaceView extends React.Component {
 							/>
 						) : null}
 					{
-						registrationEnabled ? (
+						registrationEnabled && !Accounts_iframe_enabled ? (
 							<Button
 								title={I18n.t('Create_account')}
 								type='secondary'
@@ -80,9 +89,7 @@ class WorkspaceView extends React.Component {
 								theme={theme}
 								testID='workspace-view-register'
 							/>
-						) : (
-							<Text style={[styles.registrationText, { color: themes[theme].auxiliaryText }]}>{registrationText}</Text>
-						)
+						) : this.renderRegisterDisabled()
 					}
 				</FormContainerInner>
 			</FormContainer>
