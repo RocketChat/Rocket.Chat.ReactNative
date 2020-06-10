@@ -3,13 +3,13 @@ import {
 	View, Text, Animated, Easing, TouchableWithoutFeedback, TouchableOpacity, FlatList, Image
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, batch } from 'react-redux';
 import equal from 'deep-equal';
 import RNUserDefaults from 'rn-user-defaults';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
-import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
+import { selectServerRequest as selectServerRequestAction, serverInitAdd as serverInitAddAction } from '../../actions/server';
 import { appStart as appStartAction, ROOT_NEW_SERVER } from '../../actions/app';
 import styles from './styles';
 import Touch from '../../utils/touch';
@@ -41,7 +41,8 @@ class ServerDropdown extends Component {
 		isMasterDetail: PropTypes.bool,
 		appStart: PropTypes.func,
 		toggleServerDropdown: PropTypes.func,
-		selectServerRequest: PropTypes.func
+		selectServerRequest: PropTypes.func,
+		initAdd: PropTypes.func
 	}
 
 	constructor(props) {
@@ -126,18 +127,25 @@ class ServerDropdown extends Component {
 		).start(() => toggleServerDropdown());
 	}
 
-	addServer = () => {
-		const { server, appStart } = this.props;
+	navToNewServer = (previousServer) => {
+		const { appStart, initAdd } = this.props;
+		batch(() => {
+			appStart({ root: ROOT_NEW_SERVER });
+			initAdd(previousServer);
+		});
+	}
 
+	addServer = () => {
+		const { server } = this.props;
 		this.close();
 		setTimeout(() => {
-			appStart({ root: ROOT_NEW_SERVER, previousServer: server });
+			this.navToNewServer(server);
 		}, ANIMATION_DURATION);
 	}
 
 	select = async(server) => {
 		const {
-			server: currentServer, selectServerRequest, appStart, isMasterDetail
+			server: currentServer, selectServerRequest, isMasterDetail
 		} = this.props;
 		this.close();
 		if (currentServer !== server) {
@@ -147,7 +155,7 @@ class ServerDropdown extends Component {
 			}
 			if (!userId) {
 				setTimeout(() => {
-					appStart({ root: ROOT_NEW_SERVER, previousServer: server });
+					this.navToNewServer(currentServer);
 					this.newServerTimeout = setTimeout(() => {
 						EventEmitter.emit('NewServer', { server });
 					}, ANIMATION_DURATION);
@@ -299,7 +307,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	toggleServerDropdown: () => dispatch(toggleServerDropdownAction()),
 	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
-	appStart: params => dispatch(appStartAction(params))
+	appStart: params => dispatch(appStartAction(params)),
+	initAdd: previousServer => dispatch(serverInitAddAction(previousServer))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withSafeAreaInsets(withTheme(ServerDropdown)));

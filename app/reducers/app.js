@@ -4,7 +4,6 @@ const initialState = {
 	root: null,
 	isMasterDetail: false,
 	text: null,
-	previousServer: '',
 	ready: false,
 	foreground: true,
 	background: false
@@ -28,8 +27,7 @@ export default function app(state = initialState, action) {
 			return {
 				...state,
 				root: action.root,
-				text: action.text,
-				previousServer: action.previousServer
+				text: action.text
 			};
 		case APP.INIT:
 			return {

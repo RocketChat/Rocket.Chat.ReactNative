@@ -12,9 +12,7 @@ import { encode } from 'base-64';
 import parse from 'url-parse';
 
 import EventEmitter from '../utils/events';
-import {
-	selectServerRequest, serverRequest, serverInitAdd, serverFinishAdd
-} from '../actions/server';
+import { selectServerRequest, serverRequest } from '../actions/server';
 import sharedStyles from './Styles';
 import Button from '../containers/Button';
 import TextInput from '../containers/TextInput';
@@ -73,15 +71,13 @@ class NewServerView extends React.Component {
 		connecting: PropTypes.bool.isRequired,
 		connectServer: PropTypes.func.isRequired,
 		selectServer: PropTypes.func.isRequired,
-		currentServer: PropTypes.string,
-		previousServer: PropTypes.string,
-		initAdd: PropTypes.func,
-		finishAdd: PropTypes.func
+		adding: PropTypes.bool,
+		previousServer: PropTypes.string
 	}
 
 	constructor(props) {
 		super(props);
-		if (props.previousServer) {
+		if (props.adding) {
 			props.navigation.setOptions({
 				headerLeft: () => <CloseModalButton navigation={props.navigation} onPress={this.close} testID='new-server-view-close' />
 			});
@@ -104,13 +100,6 @@ class NewServerView extends React.Component {
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
-	componentDidMount() {
-		const { initAdd, previousServer } = this.props;
-		if (previousServer) {
-			initAdd();
-		}
-	}
-
 	componentWillUnmount() {
 		EventEmitter.removeListener('NewServer', this.handleNewServerEvent);
 		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
@@ -130,13 +119,8 @@ class NewServerView extends React.Component {
 	}
 
 	close = () => {
-		const {
-			selectServer, currentServer, finishAdd, previousServer
-		} = this.props;
-		if (previousServer !== currentServer) {
-			selectServer(previousServer);
-		}
-		finishAdd();
+		const { selectServer, previousServer } = this.props;
+		selectServer(previousServer);
 	}
 
 	handleNewServerEvent = (event) => {
@@ -343,13 +327,12 @@ class NewServerView extends React.Component {
 
 const mapStateToProps = state => ({
 	connecting: state.server.connecting,
-	previousServer: state.app.previousServer
+	adding: state.server.adding,
+	previousServer: state.server.previousServer
 });
 
 const mapDispatchToProps = dispatch => ({
 	connectServer: (server, certificate) => dispatch(serverRequest(server, certificate)),
-	initAdd: () => dispatch(serverInitAdd()),
-	finishAdd: () => dispatch(serverFinishAdd()),
 	selectServer: server => dispatch(selectServerRequest(server))
 });
 
