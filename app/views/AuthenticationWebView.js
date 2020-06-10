@@ -133,6 +133,7 @@ class AuthenticationWebView extends React.PureComponent {
 				<WebView
 					source={{ uri }}
 					userAgent={userAgent}
+					// https://github.com/react-native-community/react-native-webview/blob/master/docs/Guide.md#the-windowreactnativewebviewpostmessage-method-and-onmessage-prop
 					onMessage={() => {}}
 					onNavigationStateChange={this.onNavigationStateChange}
 					injectedJavaScript={injectedJavaScript}
