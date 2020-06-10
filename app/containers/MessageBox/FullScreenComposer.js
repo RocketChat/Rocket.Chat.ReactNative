@@ -92,19 +92,17 @@ const stylez = StyleSheet.create({
 		position: 'absolute',
 		right: 0,
 		left: 0,
-		height: '100%'
+		height: '100%',
 	},
 	input: {
 		textAlignVertical: 'top',
-		// paddingVertical: 12, needs to be paddingTop/paddingBottom because of iOS/Android's TextInput differences on rendering
 		padding: 15,
 		fontSize: 17,
 		letterSpacing: 0,
 		...sharedStyles.textRegular,
-		height: '90%'
+		height: '80%',
 	},
 	buttons: {
-		zIndex: 5,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 	},
@@ -633,7 +631,7 @@ const MessageBox = React.memo(({
 
 	function openEmoji() {
 		setShowEmojiKeyboard(true);
-	}; 
+	};
 
 	function handleCommands({ event }) {
 		if (handleCommandTyping(event)) {
@@ -654,7 +652,7 @@ const MessageBox = React.memo(({
 		return <TouchableOpacity onPress={() => setUp(!up)} style={stylez.topButton} />
 	}
 
-	function renderComposer() {
+	function renderBottomComposer() {
 		const isAndroidTablet = isTablet && isAndroid ? {
 			multiline: false,
 			onSubmitEditing: () => { },
@@ -666,86 +664,63 @@ const MessageBox = React.memo(({
 		}
 		return (
 			<>
-				<View style={[styles.composer, { borderTopColor: themes[theme].separatorColor }]}>
-					{renderTopButton()}
-					<ReplyPreview
-						message={message}
-						close={replyCancel}
-						username={user.username}
-						replying={replying}
-						getCustomEmoji={getCustomEmoji}
-						theme={theme}
-					/>
-					<View
-						style={[
-							styles.textArea,
-							{ backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }
-						]}
-						testID='messagebox'
-					>
-						<LeftButtons
-							theme={theme}
-							showEmojiKeyboard={showEmojiKeyboard}
-							editing={editing}
-							showMessageBoxActions={showMessageBoxActions}
-							editCancel={editStateCancel}
-							openEmoji={openEmoji}
-							closeEmoji={closeEmoji}
-						/>
-						<TextInput
-							ref={component}
-							style={styles.textBoxInput}
-							returnKeyType='default'
-							keyboardType='twitter'
-							blurOnSubmit={false}
-							placeholder={I18n.t('New_Message')}
-							onChangeText={onChangeText}
-							underlineColorAndroid='transparent'
-							defaultValue={text}
-							multiline
-							testID='messagebox-input'
-							theme={theme}
-							{...isAndroidTablet}
-						/>
-						<RightButtons
-							theme={theme}
-							showSend={showSend}
-							submit={submit}
-							recordAudioMessage={recordAudioMessage}
-							recordAudioMessageEnabled={Message_AudioRecorderEnabled}
-							showMessageBoxActions={showMessageBoxActions}
-						/>
-					</View>
-				</View>
-			</>
-		);
-	}
-
-	function renderContent() {
-		return (
-			<>
-				<Animated.View style={[stylez.container, { transform: [{ translateY }] }]}>
-					{renderTopButton()}
-					<TextInput
-						ref={component}
-						style={[stylez.input, { backgroundColor: themes[theme].chatComponentBackground }]}
-						returnKeyType='default'
-						keyboardType='twitter'
-						blurOnSubmit={false}
-						placeholder={I18n.t('New_Message')}
-						onChangeText={onChangeText}
-						underlineColorAndroid='transparent'
-						defaultValue={text}
-						multiline
-						testID='messagebox-input'
-						theme={theme}
-						autoGrow={false}
-					/>
-				</Animated.View>
 				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
 				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
-				{
-					up ?
+				{!up ?
+					<>
+						<View style={[styles.composer, { borderTopColor: themes[theme].separatorColor }]}>
+							{renderTopButton()}
+							<ReplyPreview
+								message={message}
+								close={replyCancel}
+								username={user.username}
+								replying={replying}
+								getCustomEmoji={getCustomEmoji}
+								theme={theme}
+							/>
+							<View
+								style={[
+									styles.textArea,
+									{ backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }
+								]}
+								testID='messagebox'
+							>
+								<LeftButtons
+									theme={theme}
+									showEmojiKeyboard={showEmojiKeyboard}
+									editing={editing}
+									showMessageBoxActions={showMessageBoxActions}
+									editCancel={editStateCancel}
+									openEmoji={openEmoji}
+									closeEmoji={closeEmoji}
+								/>
+								<TextInput
+									ref={component}
+									style={styles.textBoxInput}
+									returnKeyType='default'
+									keyboardType='twitter'
+									blurOnSubmit={false}
+									placeholder={I18n.t('New_Message')}
+									onChangeText={onChangeText}
+									underlineColorAndroid='transparent'
+									defaultValue={text}
+									multiline
+									testID='messagebox-input'
+									theme={theme}
+									{...isAndroidTablet}
+								/>
+								<RightButtons
+									theme={theme}
+									showSend={showSend}
+									submit={submit}
+									recordAudioMessage={recordAudioMessage}
+									recordAudioMessageEnabled={Message_AudioRecorderEnabled}
+									showMessageBoxActions={showMessageBoxActions}
+								/>
+							</View>
+						</View>
+					</> :
+					<>
 						<View style={[stylez.buttons, { backgroundColor: themes[theme].chatComponentBackground }]}>
 							<LeftButtons
 								theme={theme}
@@ -767,8 +742,32 @@ const MessageBox = React.memo(({
 								/>
 							</View>
 						</View>
-						: renderComposer()
-				}
+					</>}
+			</>
+		);
+	}
+
+	function renderFullScreenComposer() {
+		return (
+			<>
+				<Animated.View style={[stylez.container, { transform: [{ translateY }], backgroundColor: themes[theme].chatComponentBackground }]}>
+					{renderTopButton()}
+					<TextInput
+						ref={component}
+						style={stylez.input}
+						returnKeyType='default'
+						keyboardType='twitter'
+						blurOnSubmit={false}
+						placeholder={I18n.t('New_Message')}
+						onChangeText={onChangeText}
+						underlineColorAndroid='transparent'
+						defaultValue={text}
+						multiline
+						testID='messagebox-input'
+						theme={theme}
+						autoGrow={false}
+					/>
+				</Animated.View>
 			</>
 		);
 	}
@@ -783,9 +782,10 @@ const MessageBox = React.memo(({
 					onPressCommandPreview: onPressCommandPreview
 				}}
 			>
+				{renderFullScreenComposer()}
 				<KeyboardAccessoryView
 					ref={tracking}
-					renderContent={renderContent}
+					renderContent={renderBottomComposer}
 					kbInputRef={component}
 					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
 					onKeyboardResigned={onKeyboardResigned}
