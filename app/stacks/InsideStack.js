@@ -240,7 +240,10 @@ const AdminPanelStackNavigator = () => {
 // DrawerNavigator
 const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => (
-	<Drawer.Navigator drawerContent={({ navigation, state }) => <Sidebar navigation={navigation} state={state} />}>
+	<Drawer.Navigator
+		drawerContent={({ navigation, state }) => <Sidebar navigation={navigation} state={state} />}
+		screenOptions={{ swipeEnabled: false }}
+	>
 		<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
 		<Drawer.Screen name='ProfileStackNavigator' component={ProfileStackNavigator} />
 		<Drawer.Screen name='SettingsStackNavigator' component={SettingsStackNavigator} />
