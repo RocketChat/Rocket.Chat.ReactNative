@@ -67,7 +67,7 @@ class AuthenticationWebView extends React.PureComponent {
 		};
 		this.authType = props.navigation.getParam('authType', 'oauth');
 		this.oauthRedirectRegex = new RegExp(`(?=.*(${ props.server }))(?=.*(credentialToken))(?=.*(credentialSecret))`, 'g');
-		this.iframeRedirectRegex = new RegExp(`(?=.*(${ props.server }))(?=.*(loginToken|token))`, 'g');
+		this.iframeRedirectRegex = new RegExp(`(?=.*(${ props.server }))(?=.*(event|loginToken|token))`, 'g');
 	}
 
 	componentWillUnmount() {
@@ -105,16 +105,14 @@ class AuthenticationWebView extends React.PureComponent {
 	// eslint-disable-next-line react/sort-comp
 	debouncedLogin = debounce(params => this.login(params), 3000);
 
-	tryLogin = async() => {
+	tryLogin = debounce(async() => {
 		const { Accounts_Iframe_api_url, Accounts_Iframe_api_method } = this.props;
-		const result = await fetch(Accounts_Iframe_api_url, {
-			method: Accounts_Iframe_api_method
-		});
-		const resume = result?.data?.login || result?.data?.loginToken;
+		const data = await fetch(Accounts_Iframe_api_url, { method: Accounts_Iframe_api_method }).then(response => response.json());
+		const resume = data?.login || data?.loginToken;
 		if (resume) {
 			this.login({ resume });
 		}
-	}
+	}, 3000, true)
 
 	onNavigationStateChange = (webViewState) => {
 		const url = decodeURIComponent(webViewState.url);
