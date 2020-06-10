@@ -53,9 +53,6 @@ export default {
 	Accounts_iframe_enabled: {
 		type: 'valueAsBoolean'
 	},
-	Accounts_iframe_url: {
-		type: 'valueAsString'
-	},
 	Accounts_Iframe_api_url: {
 		type: 'valueAsString'
 	},

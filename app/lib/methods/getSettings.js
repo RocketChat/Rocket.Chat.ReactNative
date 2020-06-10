@@ -29,7 +29,6 @@ const loginSettings = [
 	'Accounts_PasswordPlaceholder',
 	'Accounts_PasswordReset',
 	'Accounts_iframe_enabled',
-	'Accounts_iframe_url',
 	'Accounts_Iframe_api_url',
 	'Accounts_Iframe_api_method'
 ];

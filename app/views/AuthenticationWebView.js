@@ -54,6 +54,8 @@ class AuthenticationWebView extends React.PureComponent {
 	static propTypes = {
 		navigation: PropTypes.object,
 		server: PropTypes.string,
+		Accounts_Iframe_api_url: PropTypes.bool,
+		Accounts_Iframe_api_method: PropTypes.bool,
 		theme: PropTypes.string
 	}
 
@@ -99,6 +101,17 @@ class AuthenticationWebView extends React.PureComponent {
 	// eslint-disable-next-line react/sort-comp
 	debouncedLogin = debounce(params => this.login(params), 3000);
 
+	tryLogin = async() => {
+		const { Accounts_Iframe_api_url, Accounts_Iframe_api_method } = this.props;
+		const result = await fetch(Accounts_Iframe_api_url, {
+			method: Accounts_Iframe_api_method
+		});
+		const resume = result?.data?.login || result?.data?.loginToken;
+		if (resume) {
+			this.login({ resume });
+		}
+	}
+
 	onNavigationStateChange = (webViewState) => {
 		const url = decodeURIComponent(webViewState.url);
 		if (this.authType === 'saml' || this.authType === 'cas') {
@@ -131,7 +144,16 @@ class AuthenticationWebView extends React.PureComponent {
 			if (this.iframeRedirectRegex.test(url)) {
 				const parts = url.split('#');
 				const credentials = JSON.parse(parts[1]);
-				this.login({ resume: credentials.token || credentials.loginToken });
+				switch (credentials.event) {
+					case 'try-iframe-login':
+						this.tryLogin();
+						break;
+					case 'login-with-token':
+						this.login({ resume: credentials.token || credentials.loginToken });
+						break;
+					default:
+						// Do nothing
+				}
 			}
 		}
 	}
@@ -164,7 +186,9 @@ class AuthenticationWebView extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-	server: state.server.server
+	server: state.server.server,
+	Accounts_Iframe_api_url: state.settings.Accounts_Iframe_api_url,
+	Accounts_Iframe_api_method: state.settings.Accounts_Iframe_api_method
 });
 
 export default connect(mapStateToProps)(withTheme(AuthenticationWebView));
