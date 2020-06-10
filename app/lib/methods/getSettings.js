@@ -27,7 +27,11 @@ const loginSettings = [
 	'Accounts_RegistrationForm_LinkReplacementText',
 	'Accounts_EmailOrUsernamePlaceholder',
 	'Accounts_PasswordPlaceholder',
-	'Accounts_PasswordReset'
+	'Accounts_PasswordReset',
+	'Accounts_iframe_enabled',
+	'Accounts_iframe_url',
+	'Accounts_Iframe_api_url',
+	'Accounts_Iframe_api_method'
 ];
 
 const serverInfoUpdate = async(serverInfo, iconSetting) => {

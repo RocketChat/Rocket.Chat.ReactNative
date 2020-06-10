@@ -28,7 +28,8 @@ class WorkspaceView extends React.Component {
 		Assets_favicon_512: PropTypes.object,
 		registrationEnabled: PropTypes.bool,
 		registrationText: PropTypes.string,
-		showLoginButton: PropTypes.bool
+		showLoginButton: PropTypes.bool,
+		Accounts_iframe_enabled: PropTypes.bool
 	}
 
 	login = () => {
@@ -41,10 +42,16 @@ class WorkspaceView extends React.Component {
 		navigation.navigate('RegisterView', { title: Site_Name });
 	}
 
+	loginIframe = () => {
+		const { navigation, server } = this.props;
+		navigation.navigate('AuthenticationWebView', { url: server, authType: 'iframe' });
+	}
+
 	render() {
 		const {
-			theme, Site_Name, Site_Url, Assets_favicon_512, server, registrationEnabled, registrationText, showLoginButton
+			theme, Site_Name, Site_Url, Assets_favicon_512, server, registrationEnabled, registrationText, showLoginButton, Accounts_iframe_enabled
 		} = this.props;
+
 		return (
 			<FormContainer theme={theme} testID='workspace-view'>
 				<FormContainerInner>
@@ -58,7 +65,7 @@ class WorkspaceView extends React.Component {
 							<Button
 								title={I18n.t('Login')}
 								type='primary'
-								onPress={this.login}
+								onPress={Accounts_iframe_enabled ? this.loginIframe : this.login}
 								theme={theme}
 								testID='workspace-view-login'
 							/>
@@ -91,6 +98,7 @@ const mapStateToProps = state => ({
 	Assets_favicon_512: state.settings.Assets_favicon_512,
 	registrationEnabled: state.settings.Accounts_RegistrationForm === 'Public',
 	registrationText: state.settings.Accounts_RegistrationForm_LinkReplacementText,
+	Accounts_iframe_enabled: state.settings.Accounts_iframe_enabled,
 	showLoginButton: getShowLoginButton(state)
 });
 

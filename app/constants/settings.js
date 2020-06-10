@@ -50,6 +50,18 @@ export default {
 	Accounts_ManuallyApproveNewUsers: {
 		type: 'valueAsBoolean'
 	},
+	Accounts_iframe_enabled: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_iframe_url: {
+		type: 'valueAsString'
+	},
+	Accounts_Iframe_api_url: {
+		type: 'valueAsString'
+	},
+	Accounts_Iframe_api_method: {
+		type: 'valueAsString'
+	},
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
 	},

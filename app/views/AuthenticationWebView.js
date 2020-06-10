@@ -17,13 +17,24 @@ const userAgent = isIOS
 	? 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1'
 	: 'Mozilla/5.0 (Linux; Android 6.0.1; SM-G920V Build/MMB29K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.98 Mobile Safari/537.36';
 
+// iframe uses a postMessage to send the token to the client
+// We'll handle this sending the token to the hash of the window.location
+// https://docs.rocket.chat/guides/developer-guides/iframe-integration/authentication#iframe-url
+const injectedJavaScript = `
+window.addEventListener('message', ({ data }) => {
+	if (typeof data === 'object') {
+		window.location.hash = JSON.stringify(data);
+	}
+});
+`;
+
 class AuthenticationWebView extends React.PureComponent {
 	static navigationOptions = ({ navigation, screenProps }) => {
 		const authType = navigation.getParam('authType', 'oauth');
 		return {
 			...themedHeader(screenProps.theme),
 			headerLeft: <CloseModalButton navigation={navigation} />,
-			title: authType === 'saml' || authType === 'cas' ? 'SSO' : 'OAuth'
+			title: ['saml', 'cas', 'iframe'].includes(authType) ? 'SSO' : 'OAuth'
 		};
 	}
 
@@ -40,7 +51,8 @@ class AuthenticationWebView extends React.PureComponent {
 			loading: false
 		};
 		this.authType = props.navigation.getParam('authType', 'oauth');
-		this.redirectRegex = new RegExp(`(?=.*(${ props.server }))(?=.*(credentialToken))(?=.*(credentialSecret))`, 'g');
+		this.oauthRedirectRegex = new RegExp(`(?=.*(${ props.server }))(?=.*(credentialToken))(?=.*(credentialSecret))`, 'g');
+		this.iframeRedirectRegex = new RegExp(`(?=.*(${ props.server }))(?=.*(loginToken|token))`, 'g');
 	}
 
 	componentWillUnmount() {
@@ -95,10 +107,18 @@ class AuthenticationWebView extends React.PureComponent {
 		}
 
 		if (this.authType === 'oauth') {
-			if (this.redirectRegex.test(url)) {
+			if (this.oauthRedirectRegex.test(url)) {
 				const parts = url.split('#');
 				const credentials = JSON.parse(parts[1]);
 				this.login({ oauth: { ...credentials } });
+			}
+		}
+
+		if (this.authType === 'iframe') {
+			if (this.iframeRedirectRegex.test(url)) {
+				const parts = url.split('#');
+				const credentials = JSON.parse(parts[1]);
+				this.login({ resume: credentials.token || credentials.loginToken });
 			}
 		}
 	}
@@ -113,7 +133,9 @@ class AuthenticationWebView extends React.PureComponent {
 				<WebView
 					source={{ uri }}
 					userAgent={userAgent}
+					onMessage={() => {}}
 					onNavigationStateChange={this.onNavigationStateChange}
+					injectedJavaScript={injectedJavaScript}
 					onLoadStart={() => {
 						this.setState({ loading: true });
 					}}
