@@ -127,7 +127,8 @@ class RoomsListView extends React.Component {
 		closeServerDropdown: PropTypes.func,
 		useRealName: PropTypes.bool,
 		connected: PropTypes.bool,
-		isMasterDetail: PropTypes.bool
+		isMasterDetail: PropTypes.bool,
+		rooms: PropTypes.array
 	};
 
 	constructor(props) {
@@ -230,6 +231,7 @@ class RoomsListView extends React.Component {
 			width,
 			search
 		} = this.state;
+		const { rooms } = this.props;
 		if (nextState.loading !== loading) {
 			return true;
 		}
@@ -237,6 +239,9 @@ class RoomsListView extends React.Component {
 			return true;
 		}
 		if (!isEqual(nextState.search, search)) {
+			return true;
+		}
+		if (!isEqual(nextProps.rooms, rooms)) {
 			return true;
 		}
 		// If it's focused and there are changes, update
@@ -255,8 +260,11 @@ class RoomsListView extends React.Component {
 			showUnread,
 			appState,
 			connected,
-			roomsRequest
+			roomsRequest,
+			rooms,
+			isMasterDetail
 		} = this.props;
+		const { item } = this.state;
 
 		if (
 			!(
@@ -273,6 +281,11 @@ class RoomsListView extends React.Component {
 			&& connected
 		) {
 			roomsRequest();
+		}
+		// Update current item in case of another action triggers an update on rooms reducer
+		if (isMasterDetail && item?.rid !== rooms[0] && !isEqual(rooms, prevProps.rooms)) {
+			// eslint-disable-next-line react/no-did-update-set-state
+			this.setState({ item: { rid: rooms[0] } });
 		}
 	}
 
@@ -630,7 +643,8 @@ class RoomsListView extends React.Component {
 
 	goRoom = ({ item, isMasterDetail }) => {
 		const { item: currentItem } = this.state;
-		if (currentItem?.rid === item.rid) {
+		const { rooms } = this.props;
+		if (currentItem?.rid === item.rid || rooms?.includes(item.rid)) {
 			return;
 		}
 		// Only mark room as focused when in master detail layout
@@ -917,7 +931,8 @@ const mapStateToProps = state => ({
 	showUnread: state.sortPreferences.showUnread,
 	useRealName: state.settings.UI_Use_Real_Name,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
-	StoreLastMessage: state.settings.Store_Last_Message
+	StoreLastMessage: state.settings.Store_Last_Message,
+	rooms: state.room.rooms
 });
 
 const mapDispatchToProps = dispatch => ({
