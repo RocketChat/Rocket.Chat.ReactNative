@@ -20,11 +20,24 @@ const userAgent = isIOS
 // iframe uses a postMessage to send the token to the client
 // We'll handle this sending the token to the hash of the window.location
 // https://docs.rocket.chat/guides/developer-guides/iframe-integration/authentication#iframe-url
+// https://github.com/react-native-community/react-native-webview/issues/24#issuecomment-540130141
 const injectedJavaScript = `
 window.addEventListener('message', ({ data }) => {
 	if (typeof data === 'object') {
 		window.location.hash = JSON.stringify(data);
 	}
+});
+function wrap(fn) {
+	return function wrapper() {
+		var res = fn.apply(this, arguments);
+		window.ReactNativeWebView.postMessage(window.location.href);
+		return res;
+	}
+}
+history.pushState = wrap(history.pushState);
+history.replaceState = wrap(history.replaceState);
+window.addEventListener('popstate', function() {
+	window.ReactNativeWebView.postMessage(window.location.href);
 });
 `;
 
@@ -133,8 +146,8 @@ class AuthenticationWebView extends React.PureComponent {
 				<WebView
 					source={{ uri }}
 					userAgent={userAgent}
-					// https://github.com/react-native-community/react-native-webview/blob/master/docs/Guide.md#the-windowreactnativewebviewpostmessage-method-and-onmessage-prop
-					onMessage={() => {}}
+					// https://github.com/react-native-community/react-native-webview/issues/24#issuecomment-540130141
+					onMessage={({ nativeEvent }) => this.onNavigationStateChange(nativeEvent)}
 					onNavigationStateChange={this.onNavigationStateChange}
 					injectedJavaScript={injectedJavaScript}
 					onLoadStart={() => {
