@@ -25,6 +25,8 @@ import { withSplit } from '../../split';
 import { localAuthenticate } from '../../utils/localAuthentication';
 import { showConfirmationAlert } from '../../utils/info';
 import LongPress from '../../utils/longPress';
+import { trackUserEvent } from '../../utils/log';
+import { ADD_SERVER, CHANGE_SERVER } from '../../utils/trackableEvents';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
@@ -126,6 +128,7 @@ class ServerDropdown extends Component {
 		const { server, navigation } = this.props;
 
 		this.close();
+		trackUserEvent(ADD_SERVER);
 		setTimeout(() => {
 			navigation.navigate('NewServerView', { previousServer: server });
 		}, ANIMATION_DURATION);
@@ -138,6 +141,7 @@ class ServerDropdown extends Component {
 		this.close();
 		if (currentServer !== server) {
 			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
+			trackUserEvent(CHANGE_SERVER);
 			if (split) {
 				navigation.navigate('RoomView');
 			}

@@ -16,3 +16,6 @@ export const LOGIN_WITH_WORDPRESS = 'login_with_wordpress';
 export const LOGIN_WITH_CUSTOM_OAUTH = 'login_with_custom_oauth';
 export const LOGIN_WITH_SAML = 'login_with_saml';
 export const LOGIN_WITH_CAS = 'login_with_cas';
+export const ADD_SERVER = 'add_server';
+export const CHANGE_SERVER = 'change_server';
+export const ROOMSLIST_SEARCH = 'roomslist_search';
