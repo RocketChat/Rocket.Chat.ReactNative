@@ -1,19 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-<<<<<<< HEAD
 import {
 	StyleSheet, View, TouchableOpacity, Dimensions, Keyboard, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
-=======
-import { StyleSheet, View, TouchableOpacity, Dimensions, Keyboard } from 'react-native';
-import { connect } from 'react-redux';
-import { KeyboardAccessoryView } from 'react-native-keyboard-input';
-import ImagePicker from 'react-native-image-crop-picker';
-import equal from 'deep-equal';
->>>>>>> 614a1f1d534a0629f057bb4b2bd3afdd68e261ff
 import DocumentPicker from 'react-native-document-picker';
 import ActionSheet from 'react-native-action-sheet';
 import { Q } from '@nozbe/watermelondb';
@@ -57,10 +49,7 @@ import CommandsPreview from './CommandsPreview';
 import { Review } from '../../utils/review';
 import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/Navigation';
-<<<<<<< HEAD
 import { CustomIcon } from '../../lib/Icons';
-=======
->>>>>>> 614a1f1d534a0629f057bb4b2bd3afdd68e261ff
 
 
 const messageBoxActions = [
@@ -109,41 +98,23 @@ const stylez = StyleSheet.create({
 	},
 	input: {
 		textAlignVertical: 'top',
-<<<<<<< HEAD
-=======
-		// paddingVertical: 12, needs to be paddingTop/paddingBottom because of iOS/Android's TextInput differences on rendering
->>>>>>> 614a1f1d534a0629f057bb4b2bd3afdd68e261ff
 		padding: 15,
 		fontSize: 17,
 		letterSpacing: 0,
 		...sharedStyles.textRegular,
-<<<<<<< HEAD
 		height: '80%'
 	},
 	buttons: {
 		flexDirection: 'row',
 		justifyContent: 'space-between'
-=======
-		height: '90%'
-	},
-	buttons: {
-		zIndex: 5,
-		flexDirection: 'row',
-		justifyContent: 'space-between',
->>>>>>> 614a1f1d534a0629f057bb4b2bd3afdd68e261ff
 	},
 	rightButtons: {
 		flexDirection: 'row'
 	},
 	topButton: {
 		width: '100%',
-<<<<<<< HEAD
 		alignItems: 'center',
 		justifyContent: 'center'
-=======
-		backgroundColor: 'red',
-		padding: '1%'
->>>>>>> 614a1f1d534a0629f057bb4b2bd3afdd68e261ff
 	}
 });
 
@@ -155,10 +126,6 @@ const MessageBox = React.memo(({
 	replying,
 	editing,
 	threadsEnabled,
-<<<<<<< HEAD
-=======
-	isFocused,
->>>>>>> 614a1f1d534a0629f057bb4b2bd3afdd68e261ff
 	user,
 	roomType,
 	tmid,
