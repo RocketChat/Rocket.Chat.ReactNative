@@ -48,6 +48,7 @@ import CommandsPreview from './CommandsPreview';
 import { Review } from '../../utils/review';
 import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/Navigation';
+import { CustomIcon } from '../../lib/Icons';
 
 
 const messageBoxActions = [
@@ -111,8 +112,8 @@ const stylez = StyleSheet.create({
 	},
 	topButton: {
 		width: '100%',
-		backgroundColor: 'red',
-		padding: '1%'
+		alignItems: 'center',
+		justifyContent: 'center'
 	}
 });
 
@@ -215,7 +216,7 @@ const MessageBox = React.memo(({
 			}
 		}
 	}, []);
-	
+
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
 			if (tracking && tracking.resetTracking) {
@@ -237,13 +238,13 @@ const MessageBox = React.memo(({
 		} else if (!message) {
 			clearInput();
 		}
-	},[editing, replying, message]);
+	}, [editing, replying, message]);
 
 
 	useEffect(() => {
 		console.count('MessageBox.render calls');
 
-		return () =>{
+		return () => {
 			console.countReset('MessageBox.render calls');
 			if (onChangeText && onChangeText.stop) {
 				onChangeText.stop();
@@ -260,7 +261,7 @@ const MessageBox = React.memo(({
 			if (getSlashCommands && getSlashCommands.stop) {
 				getSlashCommands.stop();
 			}
-		} 
+		}
 
 	}, []);
 
@@ -730,7 +731,7 @@ const MessageBox = React.memo(({
 			getRooms(keyword);
 		}
 	}
-	
+
 	function identifyMentionKeyword(keyword, type) {
 		setShowEmojiKeyboard(false);
 		setTrackingType(type);
@@ -763,7 +764,11 @@ const MessageBox = React.memo(({
 	}
 
 	function renderTopButton() {
-		return <TouchableOpacity onPress={() => setUp(!up)} style={stylez.topButton} />
+		return (
+			<TouchableOpacity onPress={() => setUp(!up)} style={[stylez.topButton, { backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }]}>
+				<CustomIcon name={up ? 'chevron-down' : 'chevron-up'} size={14} color={themes[theme].tintColor} />
+			</TouchableOpacity>
+		);
 	}
 
 	function renderBottomComposer() {
@@ -835,7 +840,7 @@ const MessageBox = React.memo(({
 						</View>
 					</> :
 					<>
-						<View style={[stylez.buttons, { backgroundColor: themes[theme].chatComponentBackground }]}>
+						<View style={[stylez.buttons, { backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }]}>
 							<LeftButtons
 								theme={theme}
 								showEmojiKeyboard={showEmojiKeyboard}
@@ -868,7 +873,7 @@ const MessageBox = React.memo(({
 		} : {};
 		return (
 			<>
-				<Animated.View style={[stylez.container, { transform: [{ translateY }], backgroundColor: themes[theme].chatComponentBackground }]}>
+				<Animated.View style={[stylez.container, { transform: [{ translateY }] }, { backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }]}>
 					{renderTopButton()}
 					<TextInput
 						ref={component}
