@@ -161,169 +161,114 @@ const MessageBox = React.memo(({
 	const component = useRef();
 	const tracking = useRef();
 
-	function setInput(text) {
-		setText(text);
-		if (component && component.current?.setNativeProps) {
-			component.current?.setNativeProps({ text });
+	async function loadData() {
+		const db = database.active;
+		let msg;
+		try {
+			const threadsCollection = db.collections.get('threads');
+			const subsCollection = db.collections.get('subscriptions');
+			if (tmid) {
+				try {
+					const thread = await threadsCollection.find(tmid);
+					if (thread) {
+						msg = thread.draftMessage;
+					}
+				} catch (error) {
+					console.log('Messagebox.didMount: Thread not found');
+				}
+			} else {
+				try {
+					setRoom(await subsCollection.find(rid));
+					msg = room.draftMessage;
+				} catch (error) {
+					console.log('Messagebox.didMount: Room not found');
+				}
+			}
+		} catch (e) {
+			log(e);
 		}
-	}
 
-	function setShowSend(nextShowSend) {
-		if (nextShowSend !== showSend) {
-			setStateShowSend(nextShowSend);
+		if (msg) {
+			setInput(msg);
+			setShowSend(true);
 		}
-	}
 
-	function onKeyboardResigned() {
-		closeEmoji();
-	}
-
-	function onEmojiSelected(keyboardId, params) {
-		const { emoji } = params;
-		let newText = '';
-
-		// if messagebox has an active cursor
-		if (component.current?.lastNativeSelection) {
-			const { start, end } = component.current?.lastNativeSelection;
-			const cursor = Math.max(start, end);
-			newText = `${text.substr(0, cursor)}${emoji}${text.substr(cursor)}`;
-		} else {
-			// if messagebox doesn't have a cursor, just append selected emoji
-			newText = `${text}${emoji}`;
-		}
-		setInput(newText);
-		setShowSend(true);
 	};
 
-	function clearInput() {
-		setInput('');
-		setShowSend(false);
-	}
+	useEffect(() => {
+		loadData();
+
+		if (isAndroid) {
+			require('./EmojiKeyboard');
+		}
+
+	}, []);
+
+	useEffect(() => {
+		if (isTablet) {
+			EventEmiter.addEventListener(KEY_COMMAND, handleCommands);
+		}
+
+		return () => {
+			if (isTablet) {
+				EventEmiter.removeListener(KEY_COMMAND, this.handleCommands);
+			}
+		}
+	}, []);
+	
+	useEffect(() => {
+		const unsubscribe = navigation.addListener('focus', () => {
+			if (tracking && tracking.resetTracking) {
+				tracking.resetTracking();
+			}
+		});
+
+		return () => unsubscribe;
+	}, [navigation]);
+
+	useEffect(() => {
+		if (editing) {
+			setInput(message.msg);
+			if (text) {
+				setShowSend(true);
+			}
+		} else if (replying) {
+			focus();
+		} else if (!message) {
+			clearInput();
+		}
+	},[editing, replying, message]);
+
+
+	useEffect(() => {
+		console.count('MessageBox.render calls');
+
+		return () =>{
+			console.countReset('MessageBox.render calls');
+			if (onChangeText && onChangeText.stop) {
+				onChangeText.stop();
+			}
+			if (getUsers && getUsers.stop) {
+				getUsers.stop();
+			}
+			if (getRooms && getRooms.stop) {
+				getRooms.stop();
+			}
+			if (getEmojis && getEmojis.stop) {
+				getEmojis.stop();
+			}
+			if (getSlashCommands && getSlashCommands.stop) {
+				getSlashCommands.stop();
+			}
+		} 
+
+	}, []);
 
 	function onChangeText(text) {
 		const isTextEmpty = text.length === 0;
 		setShowSend(!isTextEmpty);
 		debouncedOnChangeText(text);
 		setInput(text);
-	}
-
-	function setShowSend(nextShowSend) {
-		if (nextShowSend !== showSend) {
-			setStateShowSend(nextShowSend);
-		}
-	}
-
-	function focus() {
-		if (component && component.current?.focus) {
-			component.current?.focus();
-		}
-	}
-
-	function handleTyping(isTyping) {
-		if (!isTyping) {
-			if (typingTimeout) {
-				clearTimeout(typingTimeout);
-				setTypingTimeout(false);
-			}
-			typing(rid, false);
-			return;
-		}
-
-		if (typingTimeout) {
-			return;
-		}
-
-		setTypingTimeout(setTimeout(() => {
-			typing(rid, true);
-			setTypingTimeout(false);
-		}, 1000));
-	}
-
-	function getFixedMentions(keyword) {
-		let result = [];
-		if ('all'.indexOf(keyword) !== -1) {
-			result = [{ id: -1, username: 'all' }];
-		}
-		if ('here'.indexOf(keyword) !== -1) {
-			result = [{ id: -2, username: 'here' }, ...result];
-		}
-		return result;
-	}
-
-	const getUsers = debounce(async (keyword) => {
-		let res = await RocketChat.search({ text: keyword, filterRooms: false, filterUsers: true });
-		res = [...getFixedMentions(keyword), ...res];
-		setMentions(res);
-	}, 300)
-
-	const getRooms = debounce(async (keyword = '') => {
-		const res = await RocketChat.search({ text: keyword, filterRooms: true, filterUsers: false });
-		setMentions(res);
-	}, 300)
-
-	const getEmojis = debounce(async (keyword) => {
-		const db = database.active;
-		if (keyword) {
-			const customEmojisCollection = db.collections.get('custom_emojis');
-			let customEmojis = await customEmojisCollection.query(
-				Q.where('name', Q.like(`${Q.sanitizeLikeString(keyword)}%`))
-			).fetch();
-			customEmojis = customEmojis.slice(0, MENTIONS_COUNT_TO_DISPLAY);
-			const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
-			const mergedEmojis = [...customEmojis, ...filteredEmojis].slice(0, MENTIONS_COUNT_TO_DISPLAY);
-			setMentions(mergedEmojis || []);
-		}
-	}, 300)
-
-	const getSlashCommands = debounce(async (keyword) => {
-		const db = database.active;
-		const commandsCollection = db.collections.get('slash_commands');
-		const commands = await commandsCollection.query(
-			Q.where('id', Q.like(`${Q.sanitizeLikeString(keyword)}%`))
-		).fetch();
-		setMentions(commands || []);
-	}, 300)
-
-	async function setCommandPreview(command, name, params) {
-		try {
-			const { preview } = await RocketChat.getCommandPreview(name, rid, params);
-			setStateCommandPreview(preview.items);
-			setShowCommandPreview(true);
-			setCommand(command);
-		} catch (e) {
-			setStateCommandPreview([]);
-			setShowCommandPreview(true);
-			setCommand({});
-			log(e);
-		}
-	}
-
-	function stopTrackingMention() {
-		if (!trackingType && !showCommandPreview) {
-			return;
-		}
-		setMentions([]);
-		setTrackingType('');
-		setCommandPreview([]);
-		setShowCommandPreview(false);
-	}
-
-	function updateMentions(keyword, type) {
-		if (type === MENTIONS_TRACKING_TYPE_USERS) {
-			getUsers(keyword);
-		} else if (type === MENTIONS_TRACKING_TYPE_EMOJIS) {
-			getEmojis(keyword);
-		} else if (type === MENTIONS_TRACKING_TYPE_COMMANDS) {
-			getSlashCommands(keyword);
-		} else {
-			getRooms(keyword);
-		}
-	}
-
-	function identifyMentionKeyword(keyword, type) {
-		setShowEmojiKeyboard(false);
-		setTrackingType(type);
-		updateMentions(keyword, type);
 	}
 
 	const debouncedOnChangeText = debounce(async (text) => {
@@ -371,6 +316,10 @@ const MessageBox = React.memo(({
 		}
 	}, 100)
 
+	function onKeyboardResigned() {
+		closeEmoji();
+	}
+
 	function onPressMention(item) {
 		if (!component.current) {
 			return;
@@ -412,94 +361,132 @@ const MessageBox = React.memo(({
 		}
 	}
 
-	function stopTrackingMention() {
-		if (!trackingType && !showCommandPreview) {
-			return;
-		}
-		setMentions([]);
-		setTrackingType('');
-		setCommandPreview([]);
-		setShowCommandPreview(false);
-	}
+	function onEmojiSelected(keyboardId, params) {
+		const { emoji } = params;
+		let newText = '';
 
-	function closeEmoji() {
-		setShowEmojiKeyboard(false);
-	}
-
-	async function submit() {
-		const message = text;
-
-		clearInput();
-		debouncedOnChangeText.stop();
-		closeEmoji();
-		stopTrackingMention();
-		handleTyping(false);
-		if (message.trim() === '') {
-			return;
-		}
-
-		const { id: messageTmid } = message;
-
-		// Slash command
-		if (message[0] === MENTIONS_TRACKING_TYPE_COMMANDS) {
-			const db = database.active;
-			const commandsCollection = db.collections.get('slash_commands');
-			const command = message.replace(/ .*/, '').slice(1);
-			const slashCommand = await commandsCollection.query(
-				Q.where('id', Q.like(`${Q.sanitizeLikeString(command)}%`))
-			).fetch();
-			if (slashCommand.length > 0) {
-				try {
-					const messageWithoutCommand = message.replace(/([^\s]+)/, '').trim();
-					const [{ appId }] = slashCommand;
-					const triggerId = generateTriggerId(appId);
-					RocketChat.runSlashCommand(command, this.rid, messageWithoutCommand, triggerId, tmid || messageTmid);
-					replyCancel();
-				} catch (e) {
-					log(e);
-				}
-				clearInput();
-				return;
-			}
-		}
-		// Edit
-		if (editing) {
-			const { editingMessage } = message;
-			const { id, subscription: { id: rid } } = editingMessage;
-			editRequest({ id, msg: message, rid });
-
-			// Reply
-		} else if (replying) {
-			const { replyingMessage } = message;
-
-			// Thread
-			if (threadsEnabled && replyWithMention) {
-				onSubmit(message, replyingMessage.id);
-
-				// Legacy reply or quote (quote is a reply without mention)
-			} else {
-				const permalink = await this.getPermalink(replyingMessage);
-				let msg = `[ ](${permalink}) `;
-
-				// if original message wasn't sent by current user and neither from a direct room
-				if (user.username !== replyingMessage.u.username && roomType !== 'd' && replyWithMention) {
-					msg += `@${replyingMessage.u.username} `;
-				}
-
-				msg = `${msg} ${message}`;
-				onSubmit(msg);
-			}
-			replyCancel();
-
-			// Normal message
+		// if messagebox has an active cursor
+		if (component.current?.lastNativeSelection) {
+			const { start, end } = component.current?.lastNativeSelection;
+			const cursor = Math.max(start, end);
+			newText = `${text.substr(0, cursor)}${emoji}${text.substr(cursor)}`;
 		} else {
-			onSubmit(message);
+			// if messagebox doesn't have a cursor, just append selected emoji
+			newText = `${text}${emoji}`;
+		}
+		setInput(newText);
+		setShowSend(true);
+	};
+
+	async function getPermalink(message) {
+		try {
+			return await RocketChat.getPermalinkMessage(message);
+		} catch (error) {
+			return null;
 		}
 	}
 
-	async function recordAudioMessage() {
-		const recording = await Recording.permission();
-		setRecording(recording);
+	function getFixedMentions(keyword) {
+		let result = [];
+		if ('all'.indexOf(keyword) !== -1) {
+			result = [{ id: -1, username: 'all' }];
+		}
+		if ('here'.indexOf(keyword) !== -1) {
+			result = [{ id: -2, username: 'here' }, ...result];
+		}
+		return result;
+	}
+
+	const getUsers = debounce(async (keyword) => {
+		let res = await RocketChat.search({ text: keyword, filterRooms: false, filterUsers: true });
+		res = [...getFixedMentions(keyword), ...res];
+		setMentions(res);
+	}, 300)
+
+	const getRooms = debounce(async (keyword = '') => {
+		const res = await RocketChat.search({ text: keyword, filterRooms: true, filterUsers: false });
+		setMentions(res);
+	}, 300)
+
+	const getEmojis = debounce(async (keyword) => {
+		const db = database.active;
+		if (keyword) {
+			const customEmojisCollection = db.collections.get('custom_emojis');
+			let customEmojis = await customEmojisCollection.query(
+				Q.where('name', Q.like(`${Q.sanitizeLikeString(keyword)}%`))
+			).fetch();
+			customEmojis = customEmojis.slice(0, MENTIONS_COUNT_TO_DISPLAY);
+			const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
+			const mergedEmojis = [...customEmojis, ...filteredEmojis].slice(0, MENTIONS_COUNT_TO_DISPLAY);
+			setMentions(mergedEmojis || []);
+		}
+	}, 300)
+
+	const getSlashCommands = debounce(async (keyword) => {
+		const db = database.active;
+		const commandsCollection = db.collections.get('slash_commands');
+		const commands = await commandsCollection.query(
+			Q.where('id', Q.like(`${Q.sanitizeLikeString(keyword)}%`))
+		).fetch();
+		setMentions(commands || []);
+	}, 300)
+
+	function focus() {
+		if (component && component.current?.focus) {
+			component.current?.focus();
+		}
+	}
+
+	function handleTyping(isTyping) {
+		if (!isTyping) {
+			if (typingTimeout) {
+				clearTimeout(typingTimeout);
+				setTypingTimeout(false);
+			}
+			typing(rid, false);
+			return;
+		}
+
+		if (typingTimeout) {
+			return;
+		}
+
+		setTypingTimeout(setTimeout(() => {
+			typing(rid, true);
+			setTypingTimeout(false);
+		}, 1000));
+	}
+
+	async function setCommandPreview(command, name, params) {
+		try {
+			const { preview } = await RocketChat.getCommandPreview(name, rid, params);
+			setStateCommandPreview(preview.items);
+			setShowCommandPreview(true);
+			setCommand(command);
+		} catch (e) {
+			setStateCommandPreview([]);
+			setShowCommandPreview(true);
+			setCommand({});
+			log(e);
+		}
+	}
+
+	function setInput(text) {
+		setText(text);
+		if (component && component.current?.setNativeProps) {
+			component.current?.setNativeProps({ text });
+		}
+	}
+
+	function setShowSend(nextShowSend) {
+		if (nextShowSend !== showSend) {
+			setStateShowSend(nextShowSend);
+		}
+	}
+
+	function clearInput() {
+		setInput('');
+		setShowSend(false);
 	}
 
 	function canUploadFile(file) {
@@ -591,6 +578,9 @@ const MessageBox = React.memo(({
 
 	function showUploadModal(newFile) {
 		setFile({ ...newFile, isVisible: true });
+		if (up) {
+			setUp(0);
+		}
 	}
 
 	function showMessageBoxActions() {
@@ -633,6 +623,130 @@ const MessageBox = React.memo(({
 		setShowEmojiKeyboard(true);
 	};
 
+	async function recordAudioMessage() {
+		const recording = await Recording.permission();
+		setRecording(recording);
+	}
+
+	async function finishAudioMessage(fileInfo) {
+		const { server } = baseUrl;
+
+		setRecording(false);
+		if (fileInfo) {
+			try {
+				if (canUploadFile(fileInfo)) {
+					await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
+				}
+			} catch (e) {
+				log(e);
+			}
+		}
+	}
+
+	function closeEmoji() {
+		setShowEmojiKeyboard(false);
+	}
+
+	async function submit() {
+		const message = text;
+
+		setUp(0);
+		clearInput();
+		debouncedOnChangeText.stop();
+		closeEmoji();
+		stopTrackingMention();
+		handleTyping(false);
+		if (message.trim() === '') {
+			return;
+		}
+
+		const { id: messageTmid } = message;
+
+		// Slash command
+		if (message[0] === MENTIONS_TRACKING_TYPE_COMMANDS) {
+			const db = database.active;
+			const commandsCollection = db.collections.get('slash_commands');
+			const command = message.replace(/ .*/, '').slice(1);
+			const slashCommand = await commandsCollection.query(
+				Q.where('id', Q.like(`${Q.sanitizeLikeString(command)}%`))
+			).fetch();
+			if (slashCommand.length > 0) {
+				try {
+					const messageWithoutCommand = message.replace(/([^\s]+)/, '').trim();
+					const [{ appId }] = slashCommand;
+					const triggerId = generateTriggerId(appId);
+					RocketChat.runSlashCommand(command, rid, messageWithoutCommand, triggerId, tmid || messageTmid);
+					replyCancel();
+				} catch (e) {
+					log(e);
+				}
+				clearInput();
+				return;
+			}
+		}
+		// Edit
+		if (editing) {
+			const { editingMessage } = message;
+			const { id, subscription: { id: rid } } = editingMessage;
+			editRequest({ id, msg: message, rid });
+
+			// Reply
+		} else if (replying) {
+			const { replyingMessage } = message;
+
+			// Thread
+			if (threadsEnabled && replyWithMention) {
+				onSubmit(message, replyingMessage.id);
+
+				// Legacy reply or quote (quote is a reply without mention)
+			} else {
+				const permalink = await getPermalink(replyingMessage);
+				let msg = `[ ](${permalink}) `;
+
+				// if original message wasn't sent by current user and neither from a direct room
+				if (user.username !== replyingMessage.u.username && roomType !== 'd' && replyWithMention) {
+					msg += `@${replyingMessage.u.username} `;
+				}
+
+				msg = `${msg} ${message}`;
+				onSubmit(msg);
+			}
+			replyCancel();
+
+			// Normal message
+		} else {
+			onSubmit(message);
+		}
+	}
+
+	function updateMentions(keyword, type) {
+		if (type === MENTIONS_TRACKING_TYPE_USERS) {
+			getUsers(keyword);
+		} else if (type === MENTIONS_TRACKING_TYPE_EMOJIS) {
+			getEmojis(keyword);
+		} else if (type === MENTIONS_TRACKING_TYPE_COMMANDS) {
+			getSlashCommands(keyword);
+		} else {
+			getRooms(keyword);
+		}
+	}
+	
+	function identifyMentionKeyword(keyword, type) {
+		setShowEmojiKeyboard(false);
+		setTrackingType(type);
+		updateMentions(keyword, type);
+	}
+
+	function stopTrackingMention() {
+		if (!trackingType && !showCommandPreview) {
+			return;
+		}
+		setMentions([]);
+		setTrackingType('');
+		setCommandPreview([]);
+		setShowCommandPreview(false);
+	}
+
 	function handleCommands({ event }) {
 		if (handleCommandTyping(event)) {
 			if (focused) {
@@ -655,12 +769,12 @@ const MessageBox = React.memo(({
 	function renderBottomComposer() {
 		const isAndroidTablet = isTablet && isAndroid ? {
 			multiline: false,
-			onSubmitEditing: () => { },
+			onSubmitEditing: submit,
 			returnKeyType: 'send'
 		} : {};
 
 		if (recording) {
-			return <Recording theme={theme} onFinish={() => { }} />;
+			return <Recording theme={theme} onFinish={finishAudioMessage} />;
 		}
 		return (
 			<>
@@ -724,21 +838,21 @@ const MessageBox = React.memo(({
 						<View style={[stylez.buttons, { backgroundColor: themes[theme].chatComponentBackground }]}>
 							<LeftButtons
 								theme={theme}
-								showEmojiKeyboard={false}
-								editing={false}
-								showMessageBoxActions={() => { }}
-								editCancel={() => { }}
-								openEmoji={() => { }}
-								closeEmoji={() => { }}
+								showEmojiKeyboard={showEmojiKeyboard}
+								editing={editing}
+								showMessageBoxActions={showMessageBoxActions}
+								editCancel={editStateCancel}
+								openEmoji={openEmoji}
+								closeEmoji={closeEmoji}
 							/>
 							<View style={stylez.rightButtons}>
 								<RightButtons
 									theme={theme}
-									showSend={false}
-									submit={() => { }}
-									recordAudioMessage={() => { }}
-									recordAudioMessageEnabled={() => { }}
-									showMessageBoxActions={() => { }}
+									showSend={showSend}
+									submit={submit}
+									recordAudioMessage={recordAudioMessage}
+									recordAudioMessageEnabled={Message_AudioRecorderEnabled}
+									showMessageBoxActions={showMessageBoxActions}
 								/>
 							</View>
 						</View>
@@ -748,6 +862,10 @@ const MessageBox = React.memo(({
 	}
 
 	function renderFullScreenComposer() {
+		const isAndroidTablet = isTablet && isAndroid ? {
+			onSubmitEditing: submit,
+			returnKeyType: 'send'
+		} : {};
 		return (
 			<>
 				<Animated.View style={[stylez.container, { transform: [{ translateY }], backgroundColor: themes[theme].chatComponentBackground }]}>
@@ -765,7 +883,7 @@ const MessageBox = React.memo(({
 						multiline
 						testID='messagebox-input'
 						theme={theme}
-						autoGrow={false}
+						{...isAndroidTablet}
 					/>
 				</Animated.View>
 			</>
@@ -799,13 +917,13 @@ const MessageBox = React.memo(({
 				<UploadModal
 					isVisible={(file && file.isVisible)}
 					file={file}
-					close={() => this.setFile({})}
+					close={() => setFile({})}
 					submit={sendMediaMessage}
 				/>
 			</MessageboxContext.Provider>
 		</>
 	);
-});
+}, (prevProps, nextProps) => prevProps.theme === nextProps.theme && prevProps.isFocused() && prevProps.roomType === nextProps.roomType && prevProps.replying === nextProps.replying && prevProps.editing === nextProps.editing);
 
 MessageBox.propTypes = {
 	rid: PropTypes.string.isRequired,
