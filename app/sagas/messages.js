@@ -27,7 +27,7 @@ const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 		} else {
 			const result = yield RocketChat.createDirectMessage(username);
 			if (result?.success) {
-				goRoom({ item: result, isMasterDetail, message });
+				goRoom({ item: result?.room, isMasterDetail, message });
 			}
 		}
 	} catch (e) {
