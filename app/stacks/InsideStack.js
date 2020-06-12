@@ -243,6 +243,7 @@ const DrawerNavigator = () => (
 	<Drawer.Navigator
 		drawerContent={({ navigation, state }) => <Sidebar navigation={navigation} state={state} />}
 		screenOptions={{ swipeEnabled: false }}
+		drawerType='back'
 	>
 		<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
 		<Drawer.Screen name='ProfileStackNavigator' component={ProfileStackNavigator} />

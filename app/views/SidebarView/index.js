@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	ScrollView, Text, View
+	ScrollView, Text, View, TouchableWithoutFeedback
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
@@ -204,7 +204,7 @@ class Sidebar extends Component {
 
 	render() {
 		const {
-			user, Site_Name, baseUrl, useRealName, allowStatusMessage, isMasterDetail, theme
+			user, Site_Name, baseUrl, useRealName, allowStatusMessage, isMasterDetail, theme, navigation
 		} = this.props;
 
 		if (!user) {
@@ -223,27 +223,29 @@ class Sidebar extends Component {
 					]}
 					{...scrollPersistTaps}
 				>
-					<View style={styles.header} theme={theme}>
-						<Avatar
-							text={user.username}
-							size={30}
-							style={styles.avatar}
-							baseUrl={baseUrl}
-							userId={user.id}
-							token={user.token}
-						/>
-						<View style={styles.headerTextContainer}>
-							<View style={styles.headerUsername}>
-								<Text numberOfLines={1} style={[styles.username, { color: themes[theme].titleText }]}>{useRealName ? user.name : user.username}</Text>
+					<TouchableWithoutFeedback onPress={() => navigation.closeDrawer()} testID='sidebar-close-drawer'>
+						<View style={styles.header} theme={theme}>
+							<Avatar
+								text={user.username}
+								size={30}
+								style={styles.avatar}
+								baseUrl={baseUrl}
+								userId={user.id}
+								token={user.token}
+							/>
+							<View style={styles.headerTextContainer}>
+								<View style={styles.headerUsername}>
+									<Text numberOfLines={1} style={[styles.username, { color: themes[theme].titleText }]}>{useRealName ? user.name : user.username}</Text>
+								</View>
+								<Text
+									style={[styles.currentServerText, { color: themes[theme].titleText }]}
+									numberOfLines={1}
+									accessibilityLabel={`Connected to ${ baseUrl }`}
+								>{Site_Name}
+								</Text>
 							</View>
-							<Text
-								style={[styles.currentServerText, { color: themes[theme].titleText }]}
-								numberOfLines={1}
-								accessibilityLabel={`Connected to ${ baseUrl }`}
-							>{Site_Name}
-							</Text>
 						</View>
-					</View>
+					</TouchableWithoutFeedback>
 
 					<Separator theme={theme} />
 
