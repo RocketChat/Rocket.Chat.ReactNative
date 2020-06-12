@@ -23,11 +23,11 @@ const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 		}
 
 		if (subscriptions.length) {
-			goRoom({ item: subscriptions[0], isMasterDetail });
+			goRoom({ item: subscriptions[0], isMasterDetail, message });
 		} else {
 			const result = yield RocketChat.createDirectMessage(username);
 			if (result?.success) {
-				goRoom({ item: result, isMasterDetail });
+				goRoom({ item: result, isMasterDetail, message });
 			}
 		}
 	} catch (e) {

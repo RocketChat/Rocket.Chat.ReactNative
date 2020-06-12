@@ -1,7 +1,7 @@
 import Navigation from '../lib/Navigation';
 import RocketChat from '../lib/rocketchat';
 
-const navigate = ({ item, isMasterDetail }) => {
+const navigate = ({ item, isMasterDetail, ...props }) => {
 	let navigationMethod = Navigation.navigate;
 
 	if (isMasterDetail) {
@@ -16,15 +16,13 @@ const navigate = ({ item, isMasterDetail }) => {
 		room: item,
 		search: item.search,
 		visitor: item.visitor,
-		roomUserId: RocketChat.getUidDirectMessage(item)
+		roomUserId: RocketChat.getUidDirectMessage(item),
+		...props
 	});
 };
 
-export const goRoom = async({ item = {}, isMasterDetail = false }) => {
-	if (!item.search) {
-		return navigate({ item, isMasterDetail });
-	}
-	if (item.t === 'd') {
+export const goRoom = async({ item = {}, isMasterDetail = false, ...props }) => {
+	if (item.t === 'd' && item.search) {
 		// if user is using the search we need first to join/create room
 		try {
 			const { username } = item;
@@ -36,13 +34,14 @@ export const goRoom = async({ item = {}, isMasterDetail = false }) => {
 						name: username,
 						t: 'd'
 					},
-					isMasterDetail
+					isMasterDetail,
+					...props
 				});
 			}
 		} catch {
 			// Do nothing
 		}
-	} else {
-		return navigate({ item, isMasterDetail });
 	}
+
+	return navigate({ item, isMasterDetail, ...props });
 };
