@@ -32,7 +32,6 @@ import ShareView from './views/ShareView';
 import SelectServerView from './views/SelectServerView';
 import { setCurrentScreen } from './utils/log';
 import AuthLoadingView from './views/AuthLoadingView';
-import { LayoutAnimation } from './utils/layoutAnimation';
 
 const Inside = createStackNavigator();
 const InsideStack = () => {
@@ -167,23 +166,21 @@ class Root extends React.Component {
 			<AppearanceProvider>
 				<Provider store={store}>
 					<ThemeContext.Provider value={{ theme }}>
-						<LayoutAnimation>
-							<NavigationContainer
-								theme={navTheme}
-								ref={Navigation.navigationRef}
-								onStateChange={(state) => {
-									const previousRouteName = Navigation.routeNameRef.current;
-									const currentRouteName = getActiveRouteName(state);
-									if (previousRouteName !== currentRouteName) {
-										setCurrentScreen(currentRouteName);
-									}
-									Navigation.routeNameRef.current = currentRouteName;
-								}}
-							>
-								<App root={root} />
-							</NavigationContainer>
-							<ScreenLockedView />
-						</LayoutAnimation>
+						<NavigationContainer
+							theme={navTheme}
+							ref={Navigation.navigationRef}
+							onStateChange={(state) => {
+								const previousRouteName = Navigation.routeNameRef.current;
+								const currentRouteName = getActiveRouteName(state);
+								if (previousRouteName !== currentRouteName) {
+									setCurrentScreen(currentRouteName);
+								}
+								Navigation.routeNameRef.current = currentRouteName;
+							}}
+						>
+							<App root={root} />
+						</NavigationContainer>
+						<ScreenLockedView />
 					</ThemeContext.Provider>
 				</Provider>
 			</AppearanceProvider>
