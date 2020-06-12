@@ -26,9 +26,15 @@ class WorkspaceView extends React.Component {
 		Site_Url: PropTypes.string,
 		server: PropTypes.string,
 		Assets_favicon_512: PropTypes.object,
-		registrationEnabled: PropTypes.bool,
+		registrationForm: PropTypes.string,
 		registrationText: PropTypes.string,
-		showLoginButton: PropTypes.bool
+		showLoginButton: PropTypes.bool,
+		inviteLinkToken: PropTypes.string
+	}
+
+	get showRegistrationButton() {
+		const { registrationForm, inviteLinkToken } = this.props;
+		return registrationForm === 'Public' || (registrationForm === 'Secret URL' && inviteLinkToken?.length);
 	}
 
 	login = () => {
@@ -43,7 +49,7 @@ class WorkspaceView extends React.Component {
 
 	render() {
 		const {
-			theme, Site_Name, Site_Url, Assets_favicon_512, server, registrationEnabled, registrationText, showLoginButton
+			theme, Site_Name, Site_Url, Assets_favicon_512, server, registrationText, showLoginButton
 		} = this.props;
 		return (
 			<FormContainer theme={theme} testID='workspace-view'>
@@ -64,7 +70,7 @@ class WorkspaceView extends React.Component {
 							/>
 						) : null}
 					{
-						registrationEnabled ? (
+						this.showRegistrationButton ? (
 							<Button
 								title={I18n.t('Create_account')}
 								type='secondary'
@@ -89,9 +95,10 @@ const mapStateToProps = state => ({
 	Site_Name: state.settings.Site_Name,
 	Site_Url: state.settings.Site_Url,
 	Assets_favicon_512: state.settings.Assets_favicon_512,
-	registrationEnabled: state.settings.Accounts_RegistrationForm === 'Public',
+	registrationForm: state.settings.Accounts_RegistrationForm,
 	registrationText: state.settings.Accounts_RegistrationForm_LinkReplacementText,
-	showLoginButton: getShowLoginButton(state)
+	showLoginButton: getShowLoginButton(state),
+	inviteLinkToken: state.inviteLinks.token
 });
 
 export default connect(mapStateToProps)(withTheme(WorkspaceView));

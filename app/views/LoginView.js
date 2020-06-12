@@ -73,7 +73,8 @@ class LoginView extends React.Component {
 		error: PropTypes.object,
 		failure: PropTypes.bool,
 		theme: PropTypes.string,
-		loginRequest: PropTypes.func
+		loginRequest: PropTypes.func,
+		inviteLinkToken: PropTypes.string
 	}
 
 	constructor(props) {
@@ -89,6 +90,11 @@ class LoginView extends React.Component {
 		if (nextProps.failure && !equal(error, nextProps.error)) {
 			Alert.alert(I18n.t('Oops'), I18n.t('Login_error'));
 		}
+	}
+
+	get showRegistrationButton() {
+		const { Accounts_RegistrationForm, inviteLinkToken } = this.props;
+		return Accounts_RegistrationForm === 'Public' || (Accounts_RegistrationForm === 'Secret URL' && inviteLinkToken?.length);
 	}
 
 	login = () => {
@@ -125,7 +131,7 @@ class LoginView extends React.Component {
 
 	renderUserForm = () => {
 		const {
-			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, Accounts_PasswordReset, Accounts_RegistrationForm, Accounts_RegistrationForm_LinkReplacementText, isFetching, theme, Accounts_ShowFormLogin
+			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, Accounts_PasswordReset, Accounts_RegistrationForm_LinkReplacementText, isFetching, theme, Accounts_ShowFormLogin
 		} = this.props;
 
 		if (!Accounts_ShowFormLogin) {
@@ -183,7 +189,7 @@ class LoginView extends React.Component {
 						fontSize={14}
 					/>
 				)}
-				{Accounts_RegistrationForm === 'Public' ? (
+				{this.showRegistrationButton ? (
 					<View style={styles.bottomContainer}>
 						<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Dont_Have_An_Account')}</Text>
 						<Text
@@ -222,7 +228,8 @@ const mapStateToProps = state => ({
 	error: state.login.error && state.login.error.data,
 	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
 	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
-	Accounts_PasswordReset: state.settings.Accounts_PasswordReset
+	Accounts_PasswordReset: state.settings.Accounts_PasswordReset,
+	inviteLinkToken: state.inviteLinks.token
 });
 
 const mapDispatchToProps = dispatch => ({
