@@ -28,10 +28,21 @@ class OnboardingView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 		if (!isTablet) {
 			Orientation.lockToPortrait();
 		}
+	}
+
+	componentDidMount() {
+		const { navigation } = this.props;
+		this.unsubscribeFocus = navigation.addListener('focus', () => {
+			this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+		});
+		this.unsubscribeBlur = navigation.addListener('blur', () => {
+			if (this.backHandler && this.backHandler.remove) {
+				this.backHandler.remove();
+			}
+		});
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -43,7 +54,12 @@ class OnboardingView extends React.Component {
 	}
 
 	componentWillUnmount() {
-		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+		if (this.unsubscribeFocus) {
+			this.unsubscribeFocus();
+		}
+		if (this.unsubscribeBlur) {
+			this.unsubscribeBlur();
+		}
 	}
 
 	handleBackPress = () => {
