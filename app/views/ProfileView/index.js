@@ -20,7 +20,7 @@ import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import RocketChat from '../../lib/rocketchat';
 import RCTextInput from '../../containers/TextInput';
-import log from '../../utils/log';
+import log, { trackUserEvent } from '../../utils/log';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
@@ -32,6 +32,9 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
+import {
+	PICK_PROFILE_AVATAR, PICK_PROFILE_AVATAR_FAIL, PICK_PROFILE_AVATAR_WITH_URL, SAVE_PROFILE_CHANGES, SAVE_PROFILE_CHANGES_FAIL, SAVE_PROFILE_AVATAR, SAVE_PROFILE_AVATAR_FAIL
+} from '../../utils/trackableEvents';
 
 class ProfileView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => ({
@@ -229,8 +232,10 @@ class ProfileView extends React.Component {
 			if (avatar.url) {
 				try {
 					await RocketChat.setAvatarFromService(avatar);
+					trackUserEvent(SAVE_PROFILE_AVATAR);
 				} catch (e) {
 					this.setState({ saving: false, currentPassword: null });
+					trackUserEvent(SAVE_PROFILE_AVATAR_FAIL);
 					return this.handleError(e, 'setAvatarFromService', 'changing_avatar');
 				}
 			}
@@ -245,11 +250,13 @@ class ProfileView extends React.Component {
 				}
 				EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
 				this.init();
+				trackUserEvent(SAVE_PROFILE_CHANGES);
 			}
 			this.setState({ saving: false });
 		} catch (e) {
 			this.setState({ saving: false, currentPassword: null });
 			this.handleError(e, 'saveUserProfile', 'saving_profile');
+			trackUserEvent(SAVE_PROFILE_CHANGES_FAIL);
 		}
 	}
 
@@ -288,9 +295,16 @@ class ProfileView extends React.Component {
 		try {
 			const response = await ImagePicker.openPicker(options);
 			this.setAvatar({ url: response.path, data: `data:image/jpeg;base64,${ response.data }`, service: 'upload' });
+			trackUserEvent(PICK_PROFILE_AVATAR);
 		} catch (error) {
 			console.warn(error);
+			trackUserEvent(PICK_PROFILE_AVATAR_FAIL);
 		}
+	}
+
+	pickImageWithURL = (avatarUrl) => {
+		this.setAvatar({ url: avatarUrl, data: avatarUrl, service: 'url' });
+		trackUserEvent(PICK_PROFILE_AVATAR_WITH_URL);
 	}
 
 	renderAvatarButton = ({
@@ -336,7 +350,7 @@ class ProfileView extends React.Component {
 				})}
 				{this.renderAvatarButton({
 					child: <CustomIcon name='link' size={30} color={themes[theme].bodyText} />,
-					onPress: () => this.setAvatar({ url: avatarUrl, data: avatarUrl, service: 'url' }),
+					onPress: () => this.pickImageWithURL(avatarUrl),
 					disabled: !avatarUrl,
 					key: 'profile-view-avatar-url-button'
 				})}

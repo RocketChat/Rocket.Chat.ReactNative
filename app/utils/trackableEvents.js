@@ -2,6 +2,7 @@ export const JOIN_A_WORKSPACE = 'join_a_workspace';
 export const CREATE_NEW_WORKSPACE = 'create_new_workspace';
 export const CONNECT_TO_WORKSPACE = 'connect_to_workspace';
 export const JOIN_OPEN_WORKSPACE = 'join_open_workspace';
+
 export const DEFAULT_LOGIN = 'default_login';
 export const DEFAULT_SIGN_UP = 'default_sign_up';
 export const FORGOT_PASSWORD = 'forgot_password';
@@ -16,11 +17,21 @@ export const LOGIN_WITH_WORDPRESS = 'login_with_wordpress';
 export const LOGIN_WITH_CUSTOM_OAUTH = 'login_with_custom_oauth';
 export const LOGIN_WITH_SAML = 'login_with_saml';
 export const LOGIN_WITH_CAS = 'login_with_cas';
+
 export const ADD_SERVER = 'add_server';
 export const CHANGE_SERVER = 'change_server';
 export const ROOMSLIST_SEARCH = 'roomslist_search';
+
 export const NAVIGATE_TO_STATUS_VIEW = 'navigate_to_status_view';
 export const NAVIGATE_TO_ROOMSLIST = 'navigate_to_roomslist';
 export const NAVIGATE_TO_PROFILE = 'navigate_to_profile';
 export const NAVIGATE_TO_SETTINGS = 'navigate_to_settings';
 export const NAVIGATE_TO_ADM_PANEL = 'navigate_to_adm_panel';
+
+export const PICK_PROFILE_AVATAR = 'pick_profile_avatar';
+export const PICK_PROFILE_AVATAR_FAIL = 'pick_profile_avatar_fail';
+export const PICK_PROFILE_AVATAR_WITH_URL = 'pick_profile_avatar_with_url';
+export const SAVE_PROFILE_CHANGES = 'save_profile_changes';
+export const SAVE_PROFILE_CHANGES_FAIL = 'save_profile_changes_fail';
+export const SAVE_PROFILE_AVATAR = 'save_profile_avatar';
+export const SAVE_PROFILE_AVATAR_FAIL = 'save_profile_avatar_fail';
