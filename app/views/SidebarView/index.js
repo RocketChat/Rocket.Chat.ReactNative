@@ -8,7 +8,7 @@ import { Q } from '@nozbe/watermelondb';
 
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status/Status';
-import log from '../../utils/log';
+import log, { trackUserEvent } from '../../utils/log';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { CustomIcon } from '../../lib/Icons';
@@ -20,6 +20,9 @@ import { withTheme } from '../../theme';
 import { withSplit } from '../../split';
 import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/Navigation';
+import {
+	NAVIGATE_TO_ROOMSLIST, NAVIGATE_TO_PROFILE, NAVIGATE_TO_SETTINGS, NAVIGATE_TO_ADM_PANEL, NAVIGATE_TO_STATUS_VIEW
+} from '../../utils/trackableEvents';
 
 const Separator = React.memo(({ theme }) => <View style={[styles.separator, { borderColor: themes[theme].separatorColor }]} />);
 Separator.propTypes = {
@@ -133,9 +136,9 @@ class Sidebar extends Component {
 		}
 	}
 
-	sidebarNavigate = (route) => {
-		const { navigation } = this.props;
-		navigation.navigate(route);
+	navigateAndTrack = (route, event) => {
+		Navigation.navigate(route);
+		trackUserEvent(event);
 	}
 
 	renderNavigation = () => {
@@ -146,21 +149,21 @@ class Sidebar extends Component {
 				<SidebarItem
 					text={I18n.t('Chats')}
 					left={<CustomIcon name='message' size={20} color={themes[theme].titleText} />}
-					onPress={() => this.sidebarNavigate('RoomsListView')}
+					onPress={() => this.navigateAndTrack('RoomsListView', NAVIGATE_TO_ROOMSLIST)}
 					testID='sidebar-chats'
 					current={activeItemKey === 'ChatsStack'}
 				/>
 				<SidebarItem
 					text={I18n.t('Profile')}
 					left={<CustomIcon name='user' size={20} color={themes[theme].titleText} />}
-					onPress={() => this.sidebarNavigate('ProfileView')}
+					onPress={() => this.navigateAndTrack('ProfileView', NAVIGATE_TO_PROFILE)}
 					testID='sidebar-profile'
 					current={activeItemKey === 'ProfileStack'}
 				/>
 				<SidebarItem
 					text={I18n.t('Settings')}
 					left={<CustomIcon name='cog' size={20} color={themes[theme].titleText} />}
-					onPress={() => this.sidebarNavigate('SettingsView')}
+					onPress={() => this.navigateAndTrack('SettingsView', NAVIGATE_TO_SETTINGS)}
 					testID='sidebar-settings'
 					current={activeItemKey === 'SettingsStack'}
 				/>
@@ -168,7 +171,7 @@ class Sidebar extends Component {
 					<SidebarItem
 						text={I18n.t('Admin_Panel')}
 						left={<CustomIcon name='shield' size={20} color={themes[theme].titleText} />}
-						onPress={() => this.sidebarNavigate('AdminPanelView')}
+						onPress={() => this.navigateAndTrack('AdminPanelView', NAVIGATE_TO_ADM_PANEL)}
 						testID='sidebar-settings'
 						current={activeItemKey === 'AdminPanelStack'}
 					/>
@@ -184,7 +187,7 @@ class Sidebar extends Component {
 				text={user.statusText || I18n.t('Edit_Status')}
 				left={<Status style={styles.status} size={12} status={user && user.status} />}
 				right={<CustomIcon name='edit' size={20} color={themes[theme].titleText} />}
-				onPress={() => Navigation.navigate('StatusView')}
+				onPress={() => this.navigateAndTrack('StatusView', NAVIGATE_TO_STATUS_VIEW)}
 				testID='sidebar-custom-status'
 			/>
 		);
