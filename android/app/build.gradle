@@ -5,16 +5,10 @@ apply plugin: "com.android.application"
 apply plugin: 'kotlin-android'
 
 apply plugin: 'com.bugsnag.android.gradle'
-apply plugin: 'com.google.gms.google-services'
 
 if(isPlay){
     apply plugin: "io.fabric"
     apply plugin: "com.google.firebase.firebase-perf"
-}
-
-android.applicationVariants.all { variant ->
-    def googleTask = tasks.findByName("process${variant.name.capitalize()}GoogleServices")
-    googleTask.enabled = !"foss".equals(variant.flavorName)
 }
 
 import com.android.build.OutputFile
@@ -193,15 +187,15 @@ android {
 
     // applicationVariants are e.g. debug, release
 
-    flavorDimensions 'type'
+    flavorDimensions "type"
     productFlavors {
         foss {
-            dimension = 'type'
-            buildConfigField 'boolean', 'PLAY_BUILD', "false"
+            dimension = "type"
+            buildConfigField "boolean", "PLAY_BUILD", "false"
         }
         play {
-            dimension = 'type'
-            buildConfigField 'boolean', 'PLAY_BUILD', "true"
+            dimension = "type"
+            buildConfigField "boolean", "PLAY_BUILD", "true"
         }
     }
 
@@ -278,3 +272,6 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+if(isPlay) {
+    apply plugin: 'com.google.gms.google-services'
+}
