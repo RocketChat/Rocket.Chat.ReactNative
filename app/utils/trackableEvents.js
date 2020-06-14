@@ -27,6 +27,7 @@ export const NAVIGATE_TO_ROOMSLIST = 'navigate_to_roomslist';
 export const NAVIGATE_TO_PROFILE = 'navigate_to_profile';
 export const NAVIGATE_TO_SETTINGS = 'navigate_to_settings';
 export const NAVIGATE_TO_ADM_PANEL = 'navigate_to_adm_panel';
+export const NAVIGATE_TO_NEW_MESSAGE = 'navigate_to_new_message';
 
 export const PICK_PROFILE_AVATAR = 'pick_profile_avatar';
 export const PICK_PROFILE_AVATAR_FAIL = 'pick_profile_avatar_fail';
@@ -35,3 +36,10 @@ export const SAVE_PROFILE_CHANGES = 'save_profile_changes';
 export const SAVE_PROFILE_CHANGES_FAIL = 'save_profile_changes_fail';
 export const SAVE_PROFILE_AVATAR = 'save_profile_avatar';
 export const SAVE_PROFILE_AVATAR_FAIL = 'save_profile_avatar_fail';
+
+export const CREATE_CHANNEL_START = 'create_channel_start';
+export const CREATE_CHANNEL_FINISH = 'create_channel_finish';
+export const CREATE_CHANNEL_REMOVE_INVITED = 'create_channel_finish';
+
+export const SELECTED_USERS_ADD_USER = 'selected_users_add_user';
+export const SELECTED_USERS_REMOVE_USER = 'selected_users_remove_user';

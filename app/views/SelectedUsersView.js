@@ -12,7 +12,7 @@ import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
 import Loading from '../containers/Loading';
 import I18n from '../i18n';
-import log from '../utils/log';
+import log, { trackUserEvent } from '../utils/log';
 import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
 import { Item, CustomHeaderButtons } from '../containers/HeaderButton';
@@ -28,6 +28,7 @@ import {
 	removeUser as removeUserAction
 } from '../actions/selectedUsers';
 import { showErrorAlert } from '../utils/info';
+import { SELECTED_USERS_ADD_USER, SELECTED_USERS_REMOVE_USER } from '../utils/trackableEvents';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -190,8 +191,10 @@ class SelectedUsersView extends React.Component {
 			}
 
 			addUser(user);
+			trackUserEvent(SELECTED_USERS_ADD_USER);
 		} else {
 			removeUser(user);
+			trackUserEvent(SELECTED_USERS_REMOVE_USER);
 		}
 	}
 

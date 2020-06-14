@@ -15,7 +15,7 @@ import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
-import log from '../utils/log';
+import log, { trackUserEvent } from '../utils/log';
 import SearchBox from '../containers/SearchBox';
 import { CustomIcon } from '../lib/Icons';
 import { CloseModalButton } from '../containers/HeaderButton';
@@ -27,6 +27,7 @@ import { getUserSelector } from '../selectors/login';
 import Navigation from '../lib/Navigation';
 import { createChannelRequest } from '../actions/createChannel';
 import { goRoom } from '../utils/goRoom';
+import { CREATE_CHANNEL_START } from '../utils/trackableEvents';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -139,6 +140,7 @@ class NewMessageView extends React.Component {
 	createChannel = () => {
 		const { navigation } = this.props;
 		navigation.navigate('SelectedUsersViewCreateChannel', { nextAction: () => navigation.navigate('CreateChannelView') });
+		trackUserEvent(CREATE_CHANNEL_START);
 	}
 
 	createGroupChat = () => {
