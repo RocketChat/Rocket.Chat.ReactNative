@@ -1,6 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
+import {
+	Animated, Text, View, Dimensions, Easing
+} from 'react-native';
 import PropTypes from 'prop-types';
-import { Animated, Text } from 'react-native';
 import { Audio } from 'expo-av';
 import {
 	PanGestureHandler, State, LongPressGestureHandler, TouchableNativeFeedback
@@ -13,6 +15,10 @@ import styles from './styles';
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
 import { SendButton } from './buttons';
+
+const RECORDING_PERSIST_DISTANCE = -80;	// Swipe up gesture to persist recording
+const RECORDING_CANCEL_DISTANCE = -120;	// Swipe left gesture to cancel recording
+const RECORDING_MINIMUM_DURATION = 300;	// Cancel if recording < this duration (in ms)
 
 const mode = {
 	allowsRecordingIOS: true,
@@ -111,12 +117,14 @@ const cancelAudioMessage = async(instance, onFinish, setRecordingCancelled, setR
 };
 
 const RecordAudio = (({ theme, recordingCallback, onFinish }) => {
-	const touchX = useRef(new Animated.Value(0)).current;
-	const touchY = useRef(new Animated.Value(0)).current;
+	/* Refs */
 	const recordingInstance = useRef();
 	const panRef = useRef(null);
 	const longPressRef = useRef(null);
+	const touchX = useRef(new Animated.Value(0)).current;
+	const touchY = useRef(new Animated.Value(0)).current;
 
+	/* State */
 	const [recordingStatus, setRecordingStatus] = useState({
 		canRecord: false,
 		isRecording: false,
@@ -125,95 +133,118 @@ const RecordAudio = (({ theme, recordingCallback, onFinish }) => {
 	});
 	const [recordingCancelled, setRecordingCancelled] = useState(false);
 	const [recordingPersisted, setRecordingPersisted] = useState(false);
+	const [showRecordTooltip, setShowRecordTooltip] = useState(false);
 
+	/* Effects */
 	useEffect(() => {
 		recordingCallback(recordingStatus.isRecording);
 	}, [recordingStatus.isRecording]);
 
+	/* Animations */
+	// Button Press
+	const buttonPressAnim = useRef(new Animated.Value(0)).current;
+	const buttonGrow = buttonPressAnim.interpolate({
+		inputRange: [0, 1],
+		outputRange: [0, 80]
+	});
 
+	const animateButton = (from, to) => {
+		buttonPressAnim.setValue(from);
+		Animated.timing(
+			buttonPressAnim,
+			{
+				toValue: to,
+				duration: 150,
+				easing: Easing.ease,
+				useNativeDriver: false
+			}
+		).start();
+	};
+
+	// Persist
+	const persistAnim = touchY.interpolate({
+		inputRange: [RECORDING_PERSIST_DISTANCE, 0],
+		outputRange: [1, 0],
+		extrapolate: 'clamp'
+	});
+	const persistTranslateY = persistAnim.interpolate({
+		inputRange: [0, 1],
+		outputRange: [0, RECORDING_PERSIST_DISTANCE]
+	});
+
+
+	// Cancel
+	const cancelAnim = touchX.interpolate({
+		inputRange: [RECORDING_CANCEL_DISTANCE, 0],
+		outputRange: [1, 0],
+		extrapolate: 'clamp'
+	});
+	const cancelTranslateX = cancelAnim.interpolate({
+		inputRange: [0, 1],
+		outputRange: [0, RECORDING_CANCEL_DISTANCE]
+	});
+
+
+	/* Functions */
 	const onPanEvent = Animated.event(
 		[{ nativeEvent: { x: touchX, y: touchY } }],
 		{
-			useNativeDriver: true,
+			useNativeDriver: false,
 			listener: (e) => {
 				const { nativeEvent } = e;
-				if (nativeEvent.x <= -120 && recordingInstance.current && recordingStatus.isRecording && !recordingCancelled) {
-					cancelAudioMessage(recordingInstance.current, onFinish, setRecordingCancelled, setRecordingPersisted);
-				}
+				if (recordingInstance.current && recordingStatus.isRecording && !recordingCancelled && !recordingPersisted) {
+					// Swipe left gesture, cancel message
+					if (nativeEvent.x <= RECORDING_CANCEL_DISTANCE) {
+						animateButton(1, 0);
+						cancelAudioMessage(recordingInstance.current, onFinish, setRecordingCancelled, setRecordingPersisted);
+					}
 
-				if (nativeEvent.y <= -80 && recordingInstance.current && recordingStatus.isRecording && !recordingCancelled) {
-					setRecordingPersisted(true);
+					// Swipe up gesture, persist recording
+					if (nativeEvent.y <= RECORDING_PERSIST_DISTANCE) {
+						buttonPressAnim.setValue(0);
+						setRecordingPersisted(true);
+					}
 				}
 			}
 		}
 	);
 
-	const onPanStateChange = ({ nativeEvent }) => {
-		switch (nativeEvent.state) {
-			case State.ACTIVE: {
-				console.log('pan active');
-
-				break;
-			}
-			case State.END: {
-				console.log('pan end');
-
-				break;
-			}
-			case State.CANCELLED: {
-				console.log('pan cancelled');
-				break;
-			}
-			case State.BEGAN: {
-				console.log('pan began');
-				break;
-			}
-			case State.FAILED: {
-				console.log('pan failed');
-				break;
-			}
-			default:
-				break;
-		}
-	};
-
 	const onLongPressStateChange = ({ nativeEvent }) => {
 		switch (nativeEvent.state) {
 			case State.ACTIVE: {
-				console.log('longpress active');
-
+				touchY.setValue(0);
+				touchX.setValue(0);
 				if (!recordingStatus.isRecording) {
+					// Start if not recording
 					recordingInstance.current = new Audio.Recording();
 					startRecordingAudio(recordingInstance.current, mode, recordingSettings, setRecordingStatus);
 					setRecordingCancelled(false);
 					setRecordingPersisted(false);
 				} else if (recordingStatus.isRecording && recordingInstance.current) {
+					// Cancel if already recording
 					cancelAudioMessage(recordingInstance.current, onFinish, setRecordingCancelled, setRecordingPersisted);
 				}
-
+				animateButton(0, 1);
 				break;
 			}
+
 			case State.END: {
-				console.log('longpress end');
-
-				if (recordingStatus.durationMillis > 300 && recordingStatus.isRecording && !recordingPersisted) {
-					finishRecordingAudio(recordingInstance.current, setRecordingPersisted, onFinish);
+				if (!recordingPersisted) {
+					if (recordingStatus.durationMillis > RECORDING_MINIMUM_DURATION && recordingStatus.isRecording) {
+						// Finish recording as duration > RECORDING_MINIMUM_DURATION
+						finishRecordingAudio(recordingInstance.current, setRecordingPersisted, onFinish);
+						animateButton(1, 0);
+					}
+					if (recordingStatus.durationMillis <= RECORDING_MINIMUM_DURATION && !recordingCancelled) {
+						// Recording duration less than RECORDING_MINIMUM_DURATION. Show tooltip and cancel message
+						setShowRecordTooltip(true);
+						setTimeout(() => {
+							setShowRecordTooltip(false);
+						}, 1500);
+						cancelAudioMessage(recordingInstance.current, onFinish, setRecordingCancelled, setRecordingPersisted);
+						animateButton(0.7, 0);
+					}
 				}
-				if (recordingStatus.durationMillis < 300 && !recordingPersisted) {
-					cancelAudioMessage(recordingInstance.current, onFinish, setRecordingCancelled, setRecordingPersisted);
-				}
-				break;
-			}
-			case State.CANCELLED: {
-				console.log('longpress cancelled');
-				break;
-			}
-			case State.BEGAN: {
-				console.log('longpress began');
-				break;
-			}
-			case State.FAILED: {
-				console.log('longpress failed');
 				break;
 			}
 			default:
@@ -221,33 +252,19 @@ const RecordAudio = (({ theme, recordingCallback, onFinish }) => {
 		}
 	};
 
-	const cancelButton = recordingPersisted ? (
-		<TouchableNativeFeedback
-			style={{ maxHeight: styles.textBoxInput.fontSize }}
-			onPress={() => {
-				cancelAudioMessage(recordingInstance.current, onFinish, setRecordingCancelled, setRecordingPersisted);
-			}}
-		>
-			<Text style={[styles.cancelRecordingText, { color: themes[theme].titleText }]}>
-				Cancel
-			</Text>
-		</TouchableNativeFeedback>
-	) : null;
-
+	/* UI */
 	const currentTimeText = recordingStatus.isRecording ? (
-		<>
-			<Text
-				key='currentTime'
-				style={[styles.textBoxInput, { color: themes[theme].titleText }]}
-			>
-				{_formatTime(Math.floor(recordingStatus.durationMillis / 1000))}
-			</Text>
-			{cancelButton }
-		</>
+		<Text
+			key='currentTime'
+			style={[styles.cancelRecordingText, { color: themes[theme].titleText }]}
+		>
+			{_formatTime(Math.floor(recordingStatus.durationMillis / 1000))}
+		</Text>
 	) : null;
 
 
 	let recordingButton = null;
+	let centerContent = null;
 	if (recordingPersisted) {
 		recordingButton = (
 			<SendButton
@@ -256,6 +273,18 @@ const RecordAudio = (({ theme, recordingCallback, onFinish }) => {
 					finishRecordingAudio(recordingInstance.current, setRecordingPersisted, onFinish);
 				}}
 			/>
+		);
+
+		centerContent = (
+			<TouchableNativeFeedback
+				onPress={() => {
+					cancelAudioMessage(recordingInstance.current, onFinish, setRecordingCancelled, setRecordingPersisted);
+				}}
+			>
+				<Text style={[styles.cancelRecordingText, { color: themes[theme].titleText, textAlign: 'right' }]}>
+					Cancel
+				</Text>
+			</TouchableNativeFeedback>
 		);
 	} else {
 		recordingButton = (
@@ -273,24 +302,80 @@ const RecordAudio = (({ theme, recordingCallback, onFinish }) => {
 					accessibilityTraits='button'
 				>
 					<CustomIcon name='mic' size={23} color={themes[theme].tintColor} />
+					<Animated.View
+						style={{
+							backgroundColor: 'red',
+							position: 'absolute',
+							width: buttonGrow,
+							height: buttonGrow,
+							zIndex: -1,
+							borderRadius: 200,
+							transform: [{ translateY: persistTranslateY }]
+						}}
+					/>
+
 				</Animated.View>
 			</LongPressGestureHandler>
 		);
+
+		if (recordingStatus.isRecording) {
+			centerContent = (
+				<Animated.View style={{ transform: [{ translateX: cancelTranslateX }] }}>
+
+					<Text style={[styles.cancelRecordingText, {
+						color: themes[theme].titleText,
+						backgroundColor: 'blue',
+						textAlign: 'right'
+					}]}
+					>
+						{'<'} Slide to cancel
+					</Text>
+				</Animated.View>
+			);
+		}
 	}
+
+	const recordTooltip = showRecordTooltip ? (
+		<View style={{
+			backgroundColor: 'red',
+			position: 'absolute',
+			bottom: '130%',
+			right: 1,
+			width: Dimensions.get('window').width,
+			zIndex: 100
+		}}
+		>
+			<Text style={{ color: 'white', textAlign: 'right' }}>Hold to record. Release to send.</Text>
+		</View>
+	) : null;
+
+	const recordingLeft = recordingStatus.isRecording ? (
+		<View style={[styles.textBoxInput, {
+			flexDirection: 'row', flex: 3, marginHorizontal: 24
+		}]}
+		>
+			<View style={{ flex: 1 }}>
+				{currentTimeText}
+			</View>
+			<View style={{ flex: 2 }}>
+				{centerContent}
+			</View>
+		</View>
+	) : null;
 
 
 	return (
 		<>
-			{currentTimeText}
+			{recordingLeft}
 
 			<PanGestureHandler
 				ref={panRef}
 				simultaneousHandlers={[longPressRef]}
 				onGestureEvent={onPanEvent}
-				onHandlerStateChange={onPanStateChange}
 			>
 				<Animated.View>
 					{recordingButton}
+					{recordTooltip}
 				</Animated.View>
 			</PanGestureHandler>
 		</>
