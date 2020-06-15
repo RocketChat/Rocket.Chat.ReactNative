@@ -13,7 +13,6 @@ import EventEmitter from '../utils/events';
 import I18n from '../i18n';
 import { withTheme } from '../theme';
 import ImageViewer from '../presentation/ImageViewer';
-import { themedHeader } from '../utils/navigation';
 import { themes } from '../constants/colors';
 import { formatAttachmentUrl } from '../lib/utils';
 import RCActivityIndicator from '../containers/ActivityIndicator';
@@ -28,26 +27,9 @@ const styles = StyleSheet.create({
 });
 
 class AttachmentView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const { theme } = screenProps;
-		const attachment = navigation.getParam('attachment');
-		const from = navigation.getParam('from');
-		const handleSave = navigation.getParam('handleSave', () => {});
-		const { title } = attachment;
-		const options = {
-			title: decodeURI(title),
-			...themedHeader(theme),
-			headerRight: <SaveButton testID='save-image' onPress={handleSave} />
-		};
-		if (from !== 'MessagesView') {
-			options.gesturesEnabled = false;
-			options.headerLeft = <CloseModalButton testID='close-attachment-view' navigation={navigation} />;
-		}
-		return options;
-	}
-
 	static propTypes = {
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		theme: PropTypes.string,
 		baseUrl: PropTypes.string,
 		user: PropTypes.shape({
@@ -58,15 +40,14 @@ class AttachmentView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		const attachment = props.navigation.getParam('attachment');
+		const attachment = props.route.params?.attachment;
 		this.state = { attachment, loading: true };
+		this.setHeader();
 	}
 
 	componentDidMount() {
 		const { navigation } = this.props;
-		navigation.setParams({ handleSave: this.handleSave });
-
-		this.willBlurListener = navigation.addListener('willBlur', () => {
+		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			if (this.videoRef && this.videoRef.stopAsync) {
 				this.videoRef.stopAsync();
 			}
@@ -74,9 +55,21 @@ class AttachmentView extends React.Component {
 	}
 
 	componentWillUnmount() {
-		if (this.willBlurListener && this.willBlurListener.remove) {
-			this.willBlurListener.remove();
+		if (this.unsubscribeBlur) {
+			this.unsubscribeBlur();
 		}
+	}
+
+	setHeader = () => {
+		const { route, navigation } = this.props;
+		const attachment = route.params?.attachment;
+		const { title } = attachment;
+		const options = {
+			headerLeft: () => <CloseModalButton testID='close-attachment-view' navigation={navigation} />,
+			title: decodeURI(title),
+			headerRight: () => <SaveButton testID='save-image' onPress={this.handleSave} />
+		};
+		navigation.setOptions(options);
 	}
 
 	getVideoRef = ref => this.videoRef = ref;

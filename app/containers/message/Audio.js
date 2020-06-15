@@ -15,7 +15,6 @@ import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import { isAndroid, isIOS } from '../../utils/deviceInfo';
-import { withSplit } from '../../split';
 import MessageContext from './Context';
 import ActivityIndicator from '../ActivityIndicator';
 
@@ -98,7 +97,6 @@ class MessageAudio extends React.Component {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
 		theme: PropTypes.string,
-		split: PropTypes.bool,
 		getCustomEmoji: PropTypes.func
 	}
 
@@ -138,7 +136,7 @@ class MessageAudio extends React.Component {
 		const {
 			currentTime, duration, paused, loading
 		} = this.state;
-		const { file, split, theme } = this.props;
+		const { file, theme } = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
 		}
@@ -152,9 +150,6 @@ class MessageAudio extends React.Component {
 			return true;
 		}
 		if (!equal(nextProps.file, file)) {
-			return true;
-		}
-		if (nextProps.split !== split) {
 			return true;
 		}
 		if (nextState.loading !== loading) {
@@ -248,9 +243,7 @@ class MessageAudio extends React.Component {
 		const {
 			loading, paused, currentTime, duration
 		} = this.state;
-		const {
-			file, getCustomEmoji, split, theme
-		} = this.props;
+		const { file, getCustomEmoji, theme } = this.props;
 		const { description } = file;
 		const { baseUrl, user } = this.context;
 
@@ -263,8 +256,7 @@ class MessageAudio extends React.Component {
 				<View
 					style={[
 						styles.audioContainer,
-						{ backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor },
-						split && sharedStyles.tabletContent
+						{ backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor }
 					]}
 				>
 					<Button loading={loading} paused={paused} onPress={this.togglePlayPause} theme={theme} />
@@ -289,4 +281,4 @@ class MessageAudio extends React.Component {
 	}
 }
 
-export default withSplit(MessageAudio);
+export default MessageAudio;

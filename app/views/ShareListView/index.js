@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {
 	View, Text, FlatList, Keyboard, BackHandler
 } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
 import ShareExtension from 'rn-extensions-share';
 import { connect } from 'react-redux';
 import RNFetchBlob from 'rn-fetch-blob';
@@ -11,9 +10,8 @@ import * as mime from 'react-native-mime-types';
 import { isEqual, orderBy } from 'lodash';
 import { Q } from '@nozbe/watermelondb';
 
-import Navigation from '../../lib/ShareNavigation';
 import database from '../../lib/database';
-import { isIOS, isAndroid } from '../../utils/deviceInfo';
+import { isIOS } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 import log from '../../utils/log';
@@ -29,61 +27,13 @@ import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 const LIMIT = 50;
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.rid;
 
 class ShareListView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const searching = navigation.getParam('searching');
-		const initSearch = navigation.getParam('initSearch', () => {});
-		const cancelSearch = navigation.getParam('cancelSearch', () => {});
-		const search = navigation.getParam('search', () => {});
-
-		if (isIOS) {
-			return {
-				headerStyle: { backgroundColor: themes[screenProps.theme].headerBackground },
-				headerTitle: (
-					<ShareListHeader
-						searching={searching}
-						initSearch={initSearch}
-						cancelSearch={cancelSearch}
-						search={search}
-						theme={screenProps.theme}
-					/>
-				)
-			};
-		}
-
-		return {
-			...themedHeader(screenProps.theme),
-			headerLeft: searching
-				? (
-					<CustomHeaderButtons left>
-						<Item title='cancel' iconName='Cross' onPress={cancelSearch} />
-					</CustomHeaderButtons>
-				)
-				: (
-					<CancelModalButton
-						onPress={ShareExtension.close}
-						testID='share-extension-close'
-					/>
-				),
-			headerTitle: <ShareListHeader searching={searching} search={search} theme={screenProps.theme} />,
-			headerRight: (
-				searching
-					? null
-					: (
-						<CustomHeaderButtons>
-							{isAndroid ? <Item title='search' iconName='magnifier' onPress={initSearch} /> : null}
-						</CustomHeaderButtons>
-					)
-			)
-		};
-	}
-
 	static propTypes = {
 		navigation: PropTypes.object,
 		server: PropTypes.string,
@@ -109,18 +59,13 @@ class ShareListView extends React.Component {
 			loading: true,
 			serverInfo: null
 		};
-		this.didFocusListener = props.navigation.addListener('didFocus', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
-		this.willBlurListener = props.navigation.addListener('willBlur', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
+		this.setHeader();
+		this.unsubscribeFocus = props.navigation.addListener('focus', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
+		this.unsubscribeBlur = props.navigation.addListener('blur', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
 	}
 
 	componentDidMount() {
-		const { navigation, server } = this.props;
-		navigation.setParams({
-			initSearch: this.initSearch,
-			cancelSearch: this.cancelSearch,
-			search: this.search
-		});
-
+		const { server } = this.props;
 		setTimeout(async() => {
 			try {
 				const { value, type } = await ShareExtension.data();
@@ -181,6 +126,60 @@ class ShareListView extends React.Component {
 			return true;
 		}
 		return false;
+	}
+
+	componentWillUnmount() {
+		if (this.unsubscribeFocus) {
+			this.unsubscribeFocus();
+		}
+		if (this.unsubscribeBlur) {
+			this.unsubscribeBlur();
+		}
+	}
+
+	setHeader = () => {
+		const { searching } = this.state;
+		const { navigation, theme } = this.props;
+
+		if (isIOS) {
+			navigation.setOptions({
+				header: () => (
+					<ShareListHeader
+						searching={searching}
+						initSearch={this.initSearch}
+						cancelSearch={this.cancelSearch}
+						search={this.search}
+						theme={theme}
+					/>
+				)
+			});
+			return;
+		}
+
+		navigation.setOptions({
+			headerLeft: () => (searching
+				? (
+					<CustomHeaderButtons left>
+						<Item title='cancel' iconName='Cross' onPress={this.cancelSearch} />
+					</CustomHeaderButtons>
+				)
+				: (
+					<CancelModalButton
+						onPress={ShareExtension.close}
+						testID='share-extension-close'
+					/>
+				)),
+			headerTitle: () => <ShareListHeader searching={searching} search={this.search} theme={theme} />,
+			headerRight: () => (
+				searching
+					? null
+					: (
+						<CustomHeaderButtons>
+							<Item title='search' iconName='magnifier' onPress={this.initSearch} />
+						</CustomHeaderButtons>
+					)
+			)
+		});
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -261,15 +260,11 @@ class ShareListView extends React.Component {
 
 	initSearch = () => {
 		const { chats } = this.state;
-		const { navigation } = this.props;
-		this.setState({ searching: true, searchResults: chats });
-		navigation.setParams({ searching: true });
+		this.setState({ searching: true, searchResults: chats }, () => this.setHeader());
 	}
 
 	cancelSearch = () => {
-		const { navigation } = this.props;
-		this.internalSetState({ searching: false, searchResults: [], searchText: '' });
-		navigation.setParams({ searching: false });
+		this.internalSetState({ searching: false, searchResults: [], searchText: '' }, () => this.setHeader());
 		Keyboard.dismiss();
 	}
 
@@ -336,7 +331,7 @@ class ShareListView extends React.Component {
 
 	renderSelectServer = () => {
 		const { servers } = this.state;
-		const { server, theme } = this.props;
+		const { server, theme, navigation } = this.props;
 		const currentServer = servers.find(serverFiltered => serverFiltered.id === server);
 		return currentServer ? (
 			<>
@@ -352,7 +347,7 @@ class ShareListView extends React.Component {
 				>
 					<ServerItem
 						server={server}
-						onPress={() => Navigation.navigate('SelectServerView', { servers: this.servers })}
+						onPress={() => navigation.navigate('SelectServerView', { servers: this.servers })}
 						item={currentServer}
 						theme={theme}
 					/>
@@ -452,7 +447,7 @@ class ShareListView extends React.Component {
 		const { showError } = this.state;
 		const { theme } = this.props;
 		return (
-			<SafeAreaView style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]} forceInset={{ vertical: 'never' }}>
+			<SafeAreaView theme={theme}>
 				<StatusBar theme={theme} />
 				{ showError ? this.renderError() : this.renderContent() }
 			</SafeAreaView>

@@ -12,7 +12,8 @@ function createRequestTypes(base, types = defaultTypes) {
 export const LOGIN = createRequestTypes('LOGIN', [
 	...defaultTypes,
 	'SET_SERVICES',
-	'SET_PREFERENCE'
+	'SET_PREFERENCE',
+	'SET_LOCAL_AUTHENTICATED'
 ]);
 export const SHARE = createRequestTypes('SHARE', [
 	'SELECT_SERVER',
@@ -32,7 +33,7 @@ export const ROOMS = createRequestTypes('ROOMS', [
 	'CLOSE_SEARCH_HEADER'
 ]);
 export const ROOM = createRequestTypes('ROOM', ['SUBSCRIBE', 'UNSUBSCRIBE', 'LEAVE', 'DELETE', 'REMOVED', 'CLOSE', 'FORWARD', 'USER_TYPING']);
-export const APP = createRequestTypes('APP', ['START', 'READY', 'INIT', 'INIT_LOCAL_SETTINGS']);
+export const APP = createRequestTypes('APP', ['START', 'READY', 'INIT', 'INIT_LOCAL_SETTINGS', 'SET_MASTER_DETAIL']);
 export const MESSAGES = createRequestTypes('MESSAGES', ['REPLY_BROADCAST']);
 export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [...defaultTypes]);
 export const CREATE_DISCUSSION = createRequestTypes('CREATE_DISCUSSION', [...defaultTypes]);

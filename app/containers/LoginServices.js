@@ -5,7 +5,6 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Base64 } from 'js-base64';
-import { withNavigation } from 'react-navigation';
 
 import { withTheme } from '../theme';
 import sharedStyles from '../views/Styles';
@@ -361,4 +360,4 @@ const mapDispatchToProps = dispatch => ({
 	loginRequest: params => dispatch(loginRequestAction(params))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(withNavigation(LoginServices)));
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(LoginServices));

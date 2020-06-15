@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, FlatList, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
 import RCTextInput from '../../containers/TextInput';
@@ -18,17 +17,25 @@ import StatusBar from '../../containers/StatusBar';
 import log from '../../utils/log';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
+import SafeAreaView from '../../containers/SafeAreaView';
+import { CloseModalButton } from '../../containers/HeaderButton';
 
 class SearchMessagesView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Search'),
-		...themedHeader(screenProps.theme)
-	})
+	static navigationOptions = ({ navigation, route }) => {
+		const options = {
+			title: I18n.t('Search')
+		};
+		const showCloseModal = route.params?.showCloseModal;
+		if (showCloseModal) {
+			options.headerLeft = () => <CloseModalButton navigation={navigation} />;
+		}
+		return options;
+	}
 
 	static propTypes = {
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
 		customEmojis: PropTypes.object,
@@ -42,7 +49,7 @@ class SearchMessagesView extends React.Component {
 			messages: [],
 			searchText: ''
 		};
-		this.rid = props.navigation.getParam('rid');
+		this.rid = props.route.params?.rid;
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -152,7 +159,7 @@ class SearchMessagesView extends React.Component {
 	render() {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]} testID='search-messages-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='search-messages-view' theme={theme}>
 				<StatusBar theme={theme} />
 				<View style={styles.searchContainer}>
 					<RCTextInput

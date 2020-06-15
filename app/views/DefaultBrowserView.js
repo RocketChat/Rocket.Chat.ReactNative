@@ -3,11 +3,9 @@ import PropTypes from 'prop-types';
 import {
 	StyleSheet, FlatList, View, Text, Linking
 } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
 import RNUserDefaults from 'rn-user-defaults';
 
 import I18n from '../i18n';
-import { themedHeader } from '../utils/navigation';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import sharedStyles from './Styles';
@@ -17,6 +15,7 @@ import ListItem from '../containers/ListItem';
 import { CustomIcon } from '../lib/Icons';
 import { DEFAULT_BROWSER_KEY } from '../utils/openLink';
 import { isIOS } from '../utils/deviceInfo';
+import SafeAreaView from '../containers/SafeAreaView';
 
 const DEFAULT_BROWSERS = [
 	{
@@ -60,10 +59,9 @@ const styles = StyleSheet.create({
 });
 
 class DefaultBrowserView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Default_browser'),
-		...themedHeader(screenProps.theme)
-	})
+	static navigationOptions = {
+		title: I18n.t('Default_browser')
+	}
 
 	static propTypes = {
 		theme: PropTypes.string
@@ -164,11 +162,7 @@ class DefaultBrowserView extends React.Component {
 		const { supported } = this.state;
 		const { theme } = this.props;
 		return (
-			<SafeAreaView
-				style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
-				forceInset={{ vertical: 'never' }}
-				testID='default-browser-view'
-			>
+			<SafeAreaView testID='default-browser-view' theme={theme}>
 				<StatusBar theme={theme} />
 				<FlatList
 					data={DEFAULT_BROWSERS.concat(supported)}

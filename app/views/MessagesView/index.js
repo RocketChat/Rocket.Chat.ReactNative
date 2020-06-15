@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
 import styles from './styles';
@@ -14,24 +13,22 @@ import StatusBar from '../../containers/StatusBar';
 import getFileUrlFromMessage from '../../lib/methods/helpers/getFileUrlFromMessage';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { withSplit } from '../../split';
-import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
 import { connectActionSheet } from '../../containers/ActionSheet/Provider';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 class MessagesView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => ({
-		title: I18n.t(navigation.state.params.name),
-		...themedHeader(screenProps.theme)
+	static navigationOptions = ({ route }) => ({
+		title: I18n.t(route.params?.name)
 	});
 
 	static propTypes = {
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		customEmojis: PropTypes.object,
 		theme: PropTypes.string,
-		split: PropTypes.bool,
 		showActionSheet: PropTypes.func
 	}
 
@@ -42,9 +39,9 @@ class MessagesView extends React.Component {
 			messages: [],
 			fileLoading: true
 		};
-		this.rid = props.navigation.getParam('rid');
-		this.t = props.navigation.getParam('t');
-		this.content = this.defineMessagesViewContent(props.navigation.getParam('name'));
+		this.rid = props.route.params?.rid;
+		this.t = props.route.params?.t;
+		this.content = this.defineMessagesViewContent(props.route.params?.name);
 	}
 
 	componentDidMount() {
@@ -221,12 +218,8 @@ class MessagesView extends React.Component {
 	}
 
 	showAttachment = (attachment) => {
-		const { navigation, split } = this.props;
-		let params = { attachment };
-		if (split) {
-			params = { ...params, from: 'MessagesView' };
-		}
-		navigation.navigate('AttachmentView', params);
+		const { navigation } = this.props;
+		navigation.navigate('AttachmentView', { attachment });
 	}
 
 	onLongPress = (message) => {
@@ -286,12 +279,9 @@ class MessagesView extends React.Component {
 
 		return (
 			<SafeAreaView
-				style={[
-					styles.list,
-					{ backgroundColor: themes[theme].backgroundColor }
-				]}
-				forceInset={{ vertical: 'never' }}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
 				testID={this.content.testID}
+				theme={theme}
 			>
 				<StatusBar theme={theme} />
 				<FlatList
@@ -313,4 +303,4 @@ const mapStateToProps = state => ({
 	customEmojis: state.customEmojis
 });
 
-export default connect(mapStateToProps)(connectActionSheet(withSplit(withTheme(MessagesView))));
+export default connect(mapStateToProps)(connectActionSheet(withTheme(MessagesView)));
