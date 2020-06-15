@@ -4,6 +4,7 @@ import { Parser, Node } from 'commonmark';
 import Renderer from 'commonmark-react-renderer';
 import PropTypes from 'prop-types';
 import removeMarkdown from 'remove-markdown';
+import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import I18n from '../../i18n';
@@ -286,7 +287,10 @@ class Markdown extends PureComponent {
 		return (
 			<Image
 				style={styles.inlineImage}
-				source={{ uri: encodeURI(src) }}
+				source={{
+					uri: encodeURI(src),
+					headers: RocketChatSettings.customHeaders
+				}}
 			/>
 		);
 	}

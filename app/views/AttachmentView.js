@@ -7,6 +7,7 @@ import * as mime from 'react-native-mime-types';
 import { FileSystem } from 'react-native-unimodules';
 import { Video } from 'expo-av';
 import SHA256 from 'js-sha256';
+import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import { LISTENER } from '../containers/Toast';
 import EventEmitter from '../utils/events';
@@ -123,7 +124,10 @@ class AttachmentView extends React.Component {
 
 	renderVideo = uri => (
 		<Video
-			source={{ uri }}
+			source={{
+				uri,
+				headers: RocketChatSettings.customHeaders
+			}}
 			rate={1.0}
 			volume={1.0}
 			isMuted={false}

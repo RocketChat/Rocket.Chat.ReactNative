@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import equal from 'deep-equal';
 import { withNavigation } from 'react-navigation';
 import RNUserDefaults from 'rn-user-defaults';
+import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
@@ -199,7 +200,10 @@ class ServerDropdown extends Component {
 						{item.iconURL
 							? (
 								<Image
-									source={{ uri: item.iconURL }}
+									source={{
+										uri: item.iconURL,
+										headers: RocketChatSettings.customHeaders
+									}}
 									defaultSource={{ uri: 'logo' }}
 									style={styles.serverIcon}
 									onError={() => console.warn('error loading serverIcon')}
