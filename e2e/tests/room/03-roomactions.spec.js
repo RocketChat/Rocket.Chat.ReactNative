@@ -214,8 +214,8 @@ describe('Room actions screen', () => {
 				await expect(element(by.label(`${ data.random }message`).withAncestor(by.id('starred-messages-view')))).toBeVisible();
 				await element(by.label(`${ data.random }message`).withAncestor(by.id('starred-messages-view'))).longPress();
 
-				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
-				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.label('Unstar')).tap();
 
 				await waitFor(element(by.label(`${ data.random }message`).withAncestor(by.id('starred-messages-view')))).toBeNotVisible().withTimeout(60000);
@@ -232,8 +232,8 @@ describe('Room actions screen', () => {
 				await expect(element(by.label(`${ data.random }edited (edited)`).withAncestor(by.id('pinned-messages-view')))).toBeVisible();
 				await element(by.label(`${ data.random }edited (edited)`).withAncestor(by.id('pinned-messages-view'))).longPress();
 
-				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
-				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.label('Unpin')).tap();
 
 				await waitFor(element(by.label(`${ data.random }edited (edited)`).withAncestor(by.id('pinned-messages-view')))).toBeNotVisible().withTimeout(60000);

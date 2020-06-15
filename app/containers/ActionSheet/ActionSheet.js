@@ -164,7 +164,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 				<>
 					<TapGestureHandler onHandlerStateChange={onBackdropPressed}>
 						<Animated.View
-							testID='scroll-bottom-sheet-backdrop'
+							testID='action-sheet-backdrop'
 							style={[
 								styles.backdrop,
 								{
@@ -175,7 +175,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 						/>
 					</TapGestureHandler>
 					<ScrollBottomSheet
-						testID='scroll-bottom-sheet'
+						testID='action-sheet'
 						ref={bottomSheetRef}
 						componentType='FlatList'
 						snapPoints={snaps}

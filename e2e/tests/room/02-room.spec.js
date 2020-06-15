@@ -152,9 +152,9 @@ describe('Room screen', () => {
 		describe('Message', async() => {
 			it('should copy permalink', async() => {
 				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
-				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
-				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
-				await element(by.id('scroll-bottom-sheet-handle')).swipe('up', 'fast', 0.5);
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.label('Permalink')).tap();
 				await sleep(1000);
 		
@@ -163,9 +163,9 @@ describe('Room screen', () => {
 		
 			it('should copy message', async() => {
 				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
-				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
-				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
-				await element(by.id('scroll-bottom-sheet-handle')).swipe('up', 'fast', 0.5);
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.label('Copy')).tap();
 				await sleep(1000);
 		
@@ -174,28 +174,28 @@ describe('Room screen', () => {
 		
 			it('should star message', async() => {
 				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
-				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
-				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
-				await element(by.id('scroll-bottom-sheet-handle')).swipe('up', 'fast', 0.5);
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.label('Star')).tap();
 				await sleep(1000);
-				await waitFor(element(by.id('scroll-bottom-sheet'))).toNotExist().withTimeout(5000);
+				await waitFor(element(by.id('action-sheet'))).toNotExist().withTimeout(5000);
 		
 				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
-				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
-				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
-				await element(by.id('scroll-bottom-sheet-handle')).swipe('up', 'fast', 0.5);
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await waitFor(element(by.label('Unstar'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.label('Unstar'))).toBeVisible();
-				await element(by.id('scroll-bottom-sheet-backdrop')).tap();
+				await element(by.id('action-sheet-backdrop')).tap();
 				await sleep(1000);
 			});
 		
 			it('should react to message', async() => {
 				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
-				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
-				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
-				await element(by.id('scroll-bottom-sheet-handle')).swipe('up', 'fast', 0.5);
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.id('add-reaction')).tap();
 				await waitFor(element(by.id('reaction-picker'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('reaction-picker'))).toBeVisible();
@@ -210,9 +210,9 @@ describe('Room screen', () => {
 
 			it('should react to message with frequently used emoji', async() => {
 				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
-				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
-				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
-				await element(by.id('scroll-bottom-sheet-handle')).swipe('up', 'fast', 0.5);
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await waitFor(element(by.id('message-actions-emoji-+1'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.id('message-actions-emoji-+1'))).toBeVisible();
 				await element(by.id('message-actions-emoji-+1')).tap();
@@ -243,9 +243,9 @@ describe('Room screen', () => {
 			it('should edit message', async() => {
 				await mockMessage('edit');
 				await element(by.label(`${ data.random }edit`)).atIndex(0).longPress();
-				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
-				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
-				await element(by.id('scroll-bottom-sheet-handle')).swipe('up', 'fast', 0.5);
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.label('Edit')).tap();
 				await element(by.id('messagebox-input')).typeText('ed');
 				await element(by.id('messagebox-send-message')).tap();
@@ -256,9 +256,9 @@ describe('Room screen', () => {
 			it('should quote message', async() => {
 				await mockMessage('quote');
 				await element(by.label(`${ data.random }quote`)).atIndex(0).longPress();
-				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
-				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
-				await element(by.id('scroll-bottom-sheet-handle')).swipe('up', 'fast', 0.5);
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.label('Quote')).tap();
 				await element(by.id('messagebox-input')).typeText(`${ data.random }quoted`);
 				await element(by.id('messagebox-send-message')).tap();
@@ -270,29 +270,29 @@ describe('Room screen', () => {
 			it('should pin message', async() => {
 				await waitFor(element(by.label(`${ data.random }edited (edited)`)).atIndex(0)).toExist();
 				await element(by.label(`${ data.random }edited (edited)`)).atIndex(0).longPress();
-				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
-				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
-				await element(by.id('scroll-bottom-sheet-handle')).swipe('up', 'fast', 0.5);
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.label('Pin')).tap();
-				await waitFor(element(by.id('scroll-bottom-sheet'))).toNotExist().withTimeout(5000);
+				await waitFor(element(by.id('action-sheet'))).toNotExist().withTimeout(5000);
 				await sleep(1500);
 		
 				await waitFor(element(by.label(`${ data.random }edited (edited)`)).atIndex(0)).toBeVisible();
 				await element(by.label(`${ data.random }edited (edited)`)).atIndex(0).longPress();
-				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
-				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
-				await element(by.id('scroll-bottom-sheet-handle')).swipe('up', 'fast', 0.5);
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await waitFor(element(by.label('Unpin'))).toBeVisible().withTimeout(2000);
 				await expect(element(by.label('Unpin'))).toBeVisible();
-				await element(by.id('scroll-bottom-sheet-backdrop')).tap();
+				await element(by.id('action-sheet-backdrop')).tap();
 			});
 
 			it('should delete message', async() => {
 				await waitFor(element(by.label(`${ data.random }quoted`)).atIndex(0)).toBeVisible();
 				await element(by.label(`${ data.random }quoted`)).atIndex(0).longPress();
-				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
-				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
-				await element(by.id('scroll-bottom-sheet-handle')).swipe('up', 'fast', 0.5);
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.label('Delete')).tap();
 
 				const deleteAlertMessage = 'You will not be able to recover this message!';
@@ -310,9 +310,9 @@ describe('Room screen', () => {
 			it('should create thread', async() => {
 				await mockMessage('thread');
 				await element(by.label(thread)).atIndex(0).longPress();
-				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
-				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
-				await element(by.id('scroll-bottom-sheet-handle')).swipe('up', 'fast', 0.5);
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.label('Reply in Thread')).tap();
 				await element(by.id('messagebox-input')).typeText('replied');
 				await element(by.id('messagebox-send-message')).tap();
@@ -347,9 +347,9 @@ describe('Room screen', () => {
 			it('should navigate to thread from thread name', async() => {
 				await mockMessage('dummymessagebetweenthethread');
 				await element(by.label(thread)).atIndex(0).longPress();
-				await expect(element(by.id('scroll-bottom-sheet'))).toExist();
-				await expect(element(by.id('scroll-bottom-sheet-handle'))).toBeVisible();
-				await element(by.id('scroll-bottom-sheet-handle')).swipe('up', 'fast', 0.5);
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.label('Reply in Thread')).tap();
 				await element(by.id('messagebox-input')).typeText('repliedagain');
 				await element(by.id('messagebox-send-message')).tap();
