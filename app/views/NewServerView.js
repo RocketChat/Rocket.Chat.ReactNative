@@ -6,7 +6,6 @@ import {
 import { connect } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
 import DocumentPicker from 'react-native-document-picker';
-import ActionSheet from 'react-native-action-sheet';
 import RNUserDefaults from 'rn-user-defaults';
 import { encode } from 'base-64';
 import parse from 'url-parse';
@@ -26,6 +25,7 @@ import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
 import { setBasicAuth, BASIC_AUTH_KEY } from '../utils/fetch';
 import { CloseModalButton } from '../containers/HeaderButton';
+import { showConfirmationAlert } from '../utils/info';
 
 const styles = StyleSheet.create({
 	title: {
@@ -82,14 +82,6 @@ class NewServerView extends React.Component {
 				headerLeft: () => <CloseModalButton navigation={props.navigation} onPress={this.close} testID='new-server-view-close' />
 			});
 		}
-
-		// Cancel
-		this.options = [I18n.t('Cancel')];
-		this.CANCEL_INDEX = 0;
-
-		// Delete
-		this.options.push(I18n.t('Delete'));
-		this.DELETE_INDEX = 1;
 
 		this.state = {
 			text: '',
@@ -233,15 +225,11 @@ class NewServerView extends React.Component {
 		this.setState({ certificate });
 	}
 
-	handleDelete = () => this.setState({ certificate: null }); // We not need delete file from DocumentPicker because it is a temp file
-
-	showActionSheet = () => {
-		ActionSheet.showActionSheetWithOptions({
-			options: this.options,
-			cancelButtonIndex: this.CANCEL_INDEX,
-			destructiveButtonIndex: this.DELETE_INDEX
-		}, (actionIndex) => {
-			if (actionIndex === this.DELETE_INDEX) { this.handleDelete(); }
+	handleRemove = () => {
+		showConfirmationAlert({
+			message: I18n.t('You_will_unset_a_certificate_for_this_server'),
+			callToAction: I18n.t('Remove'),
+			onPress: this.setState({ certificate: null }) // We not need delete file from DocumentPicker because it is a temp file
 		});
 	}
 
@@ -259,7 +247,7 @@ class NewServerView extends React.Component {
 					{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
 				</Text>
 				<TouchableOpacity
-					onPress={certificate ? this.showActionSheet : this.chooseCertificate}
+					onPress={certificate ? this.handleRemove : this.chooseCertificate}
 					testID='new-server-choose-certificate'
 				>
 					<Text

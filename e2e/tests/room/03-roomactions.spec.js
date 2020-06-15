@@ -210,12 +210,14 @@ describe('Room actions screen', () => {
 				await element(by.id('room-actions-starred')).tap();
 				await waitFor(element(by.id('starred-messages-view'))).toExist().withTimeout(2000);
 				await sleep(1000);
-				await waitFor(element(by.label(`${ data.random }message`).withAncestor(by.id('starred-messages-view')))).toExist().withTimeout(60000);
-				await expect(element(by.label(`${ data.random }message`).withAncestor(by.id('starred-messages-view')))).toExist();
+				await waitFor(element(by.label(`${ data.random }message`).withAncestor(by.id('starred-messages-view')))).toBeVisible().withTimeout(60000);
+				await expect(element(by.label(`${ data.random }message`).withAncestor(by.id('starred-messages-view')))).toBeVisible();
 				await element(by.label(`${ data.random }message`).withAncestor(by.id('starred-messages-view'))).longPress();
-				await waitFor(element(by.text('Unstar'))).toExist().withTimeout(2000);
-				await expect(element(by.text('Unstar'))).toExist();
-				await element(by.text('Unstar')).tap();
+
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.label('Unstar')).tap();
+
 				await waitFor(element(by.label(`${ data.random }message`).withAncestor(by.id('starred-messages-view')))).toBeNotVisible().withTimeout(60000);
 				await expect(element(by.label(`${ data.random }message`).withAncestor(by.id('starred-messages-view')))).toBeNotVisible();
 				await backToActions();
@@ -226,12 +228,14 @@ describe('Room actions screen', () => {
 				await element(by.id('room-actions-pinned')).tap();
 				await waitFor(element(by.id('pinned-messages-view'))).toExist().withTimeout(2000);
 				await sleep(1000);
-				await waitFor(element(by.label(`${ data.random }edited (edited)`).withAncestor(by.id('pinned-messages-view')))).toExist().withTimeout(60000);
-				await expect(element(by.label(`${ data.random }edited (edited)`).withAncestor(by.id('pinned-messages-view')))).toExist();
+				await waitFor(element(by.label(`${ data.random }edited (edited)`).withAncestor(by.id('pinned-messages-view')))).toBeVisible().withTimeout(60000);
+				await expect(element(by.label(`${ data.random }edited (edited)`).withAncestor(by.id('pinned-messages-view')))).toBeVisible();
 				await element(by.label(`${ data.random }edited (edited)`).withAncestor(by.id('pinned-messages-view'))).longPress();
-				await waitFor(element(by.text('Unpin'))).toExist().withTimeout(2000);
-				await expect(element(by.text('Unpin'))).toExist();
-				await element(by.text('Unpin')).tap();
+
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.label('Unpin')).tap();
+
 				await waitFor(element(by.label(`${ data.random }edited (edited)`).withAncestor(by.id('pinned-messages-view')))).toBeNotVisible().withTimeout(60000);
 				await expect(element(by.label(`${ data.random }edited (edited)`).withAncestor(by.id('pinned-messages-view')))).toBeNotVisible();
 				await backToActions();

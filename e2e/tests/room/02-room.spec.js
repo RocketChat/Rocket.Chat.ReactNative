@@ -151,48 +151,54 @@ describe('Room screen', () => {
 
 		describe('Message', async() => {
 			it('should copy permalink', async() => {
-				await sleep(1000);
-				await element(by.label(`${ data.random }message`)).atIndex(0).tap();
 				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
-				await waitFor(element(by.text('Message actions'))).toExist().withTimeout(5000);
-				await expect(element(by.text('Message actions'))).toExist();
-				await element(by.text('Permalink')).tap();
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await element(by.label('Permalink')).tap();
 				await sleep(1000);
-
+		
 				// TODO: test clipboard
 			});
-
+		
 			it('should copy message', async() => {
 				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
-				await waitFor(element(by.text('Message actions'))).toExist().withTimeout(5000);
-				await expect(element(by.text('Message actions'))).toExist();
-				await element(by.text('Copy')).tap();
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await element(by.label('Copy')).tap();
 				await sleep(1000);
+		
 				// TODO: test clipboard
 			});
-
+		
 			it('should star message', async() => {
 				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
-				await waitFor(element(by.text('Message actions'))).toExist().withTimeout(5000);
-				await expect(element(by.text('Message actions'))).toExist();
-				await element(by.text('Star')).tap();
-				await sleep(2000);
-				await waitFor(element(by.text('Message actions'))).toBeNotVisible().withTimeout(5000);
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await element(by.label('Star')).tap();
+				await sleep(1000);
+				await waitFor(element(by.id('action-sheet'))).toNotExist().withTimeout(5000);
+		
 				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
-				await waitFor(element(by.text('Unstar'))).toExist().withTimeout(2000);
-				await expect(element(by.text('Unstar'))).toExist();
-				await element(by.text('Cancel')).tap();
-				await waitFor(element(by.text('Cancel'))).toBeNotVisible().withTimeout(2000);
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await waitFor(element(by.label('Unstar'))).toBeVisible().withTimeout(2000);
+				await expect(element(by.label('Unstar'))).toBeVisible();
+				await element(by.id('action-sheet-backdrop')).tap();
 				await sleep(1000);
 			});
-
+		
 			it('should react to message', async() => {
 				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
-				await waitFor(element(by.text('Message actions'))).toExist().withTimeout(5000);
-				await expect(element(by.text('Message actions'))).toExist();
-				await element(by.text('Add Reaction')).tap();
-				await waitFor(element(by.id('reaction-picker'))).toExist().withTimeout(2000);
-				await expect(element(by.id('reaction-picker'))).toExist();
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await element(by.id('add-reaction')).tap();
+				await waitFor(element(by.id('reaction-picker'))).toBeVisible().withTimeout(2000);
+				await expect(element(by.id('reaction-picker'))).toBeVisible();
 				await element(by.id('reaction-picker-😃')).tap();
 				await waitFor(element(by.id('reaction-picker-grinning'))).toExist().withTimeout(2000);
 				await expect(element(by.id('reaction-picker-grinning'))).toExist();
@@ -202,6 +208,19 @@ describe('Room screen', () => {
 				await sleep(1000);
 			});
 
+			it('should react to message with frequently used emoji', async() => {
+				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await waitFor(element(by.id('message-actions-emoji-+1'))).toBeVisible().withTimeout(2000);
+				await expect(element(by.id('message-actions-emoji-+1'))).toBeVisible();
+				await element(by.id('message-actions-emoji-+1')).tap();
+				await waitFor(element(by.id('message-reaction-:+1:'))).toBeVisible().withTimeout(60000);
+				await expect(element(by.id('message-reaction-:+1:'))).toBeVisible();
+				await sleep(1000);
+			});
+		
 			it('should show reaction picker on add reaction button pressed and have frequently used emoji', async() => {
 				await element(by.id('message-add-reaction')).tap();
 				await waitFor(element(by.id('reaction-picker'))).toExist().withTimeout(2000);
@@ -214,54 +233,76 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('message-reaction-:grimacing:'))).toExist().withTimeout(60000);
 				await sleep(1000);
 			});
-
+		
 			it('should remove reaction', async() => {
 				await element(by.id('message-reaction-:grinning:')).tap();
 				await waitFor(element(by.id('message-reaction-:grinning:'))).toBeNotVisible().withTimeout(60000);
 				await expect(element(by.id('message-reaction-:grinning:'))).toBeNotVisible();
 			});
-
+		
 			it('should edit message', async() => {
 				await mockMessage('edit');
 				await element(by.label(`${ data.random }edit`)).atIndex(0).longPress();
-				await waitFor(element(by.text('Message actions'))).toExist().withTimeout(5000);
-				await expect(element(by.text('Message actions'))).toExist();
-				await element(by.text('Edit')).tap();
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await element(by.label('Edit')).tap();
 				await element(by.id('messagebox-input')).typeText('ed');
 				await element(by.id('messagebox-send-message')).tap();
 				await waitFor(element(by.label(`${ data.random }edited (edited)`)).atIndex(0)).toExist().withTimeout(60000);
 				await expect(element(by.label(`${ data.random }edited (edited)`)).atIndex(0)).toExist();
 			});
-
+		
 			it('should quote message', async() => {
 				await mockMessage('quote');
 				await element(by.label(`${ data.random }quote`)).atIndex(0).longPress();
-				await waitFor(element(by.text('Message actions'))).toExist().withTimeout(5000);
-				await expect(element(by.text('Message actions'))).toExist();
-				await element(by.text('Quote')).tap();
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await element(by.label('Quote')).tap();
 				await element(by.id('messagebox-input')).typeText(`${ data.random }quoted`);
 				await element(by.id('messagebox-send-message')).tap();
+				await sleep(1000);
+		
 				// TODO: test if quote was sent
-				await sleep(2000);
 			});
-
+		
 			it('should pin message', async() => {
 				await waitFor(element(by.label(`${ data.random }edited (edited)`)).atIndex(0)).toExist();
 				await element(by.label(`${ data.random }edited (edited)`)).atIndex(0).longPress();
-				await waitFor(element(by.text('Message actions'))).toExist().withTimeout(5000);
-				await expect(element(by.text('Message actions'))).toExist();
-				await element(by.text('Pin')).tap();
-				await waitFor(element(by.text('Message actions'))).toBeNotVisible().withTimeout(5000);
-				await waitFor(element(by.label('Message pinned')).atIndex(0)).toExist().withTimeout(5000);
-				await waitFor(element(by.label(`${ data.random }edited (edited)`)).atIndex(0)).toExist().withTimeout(60000);
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await element(by.label('Pin')).tap();
+				await waitFor(element(by.id('action-sheet'))).toNotExist().withTimeout(5000);
+				await sleep(1500);
+		
+				await waitFor(element(by.label(`${ data.random }edited (edited)`)).atIndex(0)).toBeVisible();
 				await element(by.label(`${ data.random }edited (edited)`)).atIndex(0).longPress();
-				await waitFor(element(by.text('Unpin'))).toExist().withTimeout(2000);
-				await expect(element(by.text('Unpin'))).toExist();
-				await element(by.text('Cancel')).tap();
-				await waitFor(element(by.text('Cancel'))).toBeNotVisible().withTimeout(2000);
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await waitFor(element(by.label('Unpin'))).toBeVisible().withTimeout(2000);
+				await expect(element(by.label('Unpin'))).toBeVisible();
+				await element(by.id('action-sheet-backdrop')).tap();
 			});
 
-			// TODO: delete message - swipe on action sheet missing
+			it('should delete message', async() => {
+				await waitFor(element(by.label(`${ data.random }quoted`)).atIndex(0)).toBeVisible();
+				await element(by.label(`${ data.random }quoted`)).atIndex(0).longPress();
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await element(by.label('Delete')).tap();
+
+				const deleteAlertMessage = 'You will not be able to recover this message!';
+    		await waitFor(element(by.text(deleteAlertMessage)).atIndex(0)).toExist().withTimeout(10000);
+    		await expect(element(by.text(deleteAlertMessage)).atIndex(0)).toExist();
+				await element(by.text('Delete')).tap();
+
+				await sleep(1000);
+				await expect(element(by.label(`${ data.random }quoted`)).atIndex(0)).toNotExist();
+			});
 		});
 
 		describe('Thread', async() => {
@@ -269,9 +310,10 @@ describe('Room screen', () => {
 			it('should create thread', async() => {
 				await mockMessage('thread');
 				await element(by.label(thread)).atIndex(0).longPress();
-				await waitFor(element(by.text('Message actions'))).toExist().withTimeout(5000);
-				await expect(element(by.text('Message actions'))).toExist();
-				await element(by.text('Reply')).tap();
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await element(by.label('Reply in Thread')).tap();
 				await element(by.id('messagebox-input')).typeText('replied');
 				await element(by.id('messagebox-send-message')).tap();
 				await waitFor(element(by.id(`message-thread-button-${ thread }`))).toExist().withTimeout(5000);
@@ -305,9 +347,10 @@ describe('Room screen', () => {
 			it('should navigate to thread from thread name', async() => {
 				await mockMessage('dummymessagebetweenthethread');
 				await element(by.label(thread)).atIndex(0).longPress();
-				await waitFor(element(by.text('Message actions'))).toExist().withTimeout(5000);
-				await expect(element(by.text('Message actions'))).toExist();
-				await element(by.text('Reply')).tap();
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await element(by.label('Reply in Thread')).tap();
 				await element(by.id('messagebox-input')).typeText('repliedagain');
 				await element(by.id('messagebox-send-message')).tap();
 				await waitFor(element(by.id(`message-thread-replied-on-${ thread }`))).toExist().withTimeout(5000);
