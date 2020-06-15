@@ -24,9 +24,7 @@ import { themedHeader } from '../utils/navigation';
 import { Review } from '../utils/review';
 import { getUserSelector } from '../selectors/login';
 import { trackUserEvent } from '../utils/log';
-import {
-	CREATE_CHANNEL_FINISH, CREATE_CHANNEL_REMOVE_INVITED
-} from '../utils/trackableEvents';
+import { CREATE_CHANNEL_REMOVE_INVITED } from '../utils/trackableEvents';
 
 const styles = StyleSheet.create({
 	container: {
@@ -177,11 +175,6 @@ class CreateChannelView extends React.Component {
 		});
 
 		Review.pushPositiveEvent();
-		trackUserEvent(CREATE_CHANNEL_FINISH, {
-			type: type ? 'private' : 'public',
-			readOnly,
-			broadcast
-		});
 	}
 
 	removeUser = (user) => {

@@ -28,7 +28,7 @@ import Navigation from '../lib/Navigation';
 import { createChannelRequest } from '../actions/createChannel';
 import { goRoom } from '../utils/goRoom';
 import {
-	CREATE_CHANNEL_START, NEW_MESSAGE_CHAT_WITH_USER, DIRECT_MESSAGES_START
+	CREATE_CHANNEL_START, NEW_MESSAGE_CHAT_WITH_USER, CREATE_GROUP_CHAT_START, CREATE_DISCUSSION_START
 } from '../utils/trackableEvents';
 
 const styles = StyleSheet.create({
@@ -152,7 +152,7 @@ class NewMessageView extends React.Component {
 			buttonText: I18n.t('Create'),
 			maxUsers
 		});
-		trackUserEvent(DIRECT_MESSAGES_START);
+		trackUserEvent(CREATE_GROUP_CHAT_START);
 	}
 
 	renderButton = ({
@@ -176,6 +176,7 @@ class NewMessageView extends React.Component {
 
 	createDiscussion = () => {
 		Navigation.navigate('CreateDiscussionView');
+		trackUserEvent(CREATE_DISCUSSION_START);
 	}
 
 	renderHeader = () => {
