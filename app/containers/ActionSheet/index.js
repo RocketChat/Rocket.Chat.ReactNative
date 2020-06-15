@@ -15,7 +15,8 @@ import ScrollBottomSheet from 'react-native-scroll-bottom-sheet';
 import Animated, {
 	Extrapolate,
 	interpolate,
-	Value
+	Value,
+	Easing
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import {
@@ -39,10 +40,12 @@ const HANDLE_HEIGHT = isIOS ? 40 : 56;
 const MAX_SNAP_HEIGHT = 16;
 const CANCEL_HEIGHT = 64;
 
-const ANIMATION_DURATION = 100;
+const ANIMATION_DURATION = 250;
 
 const ANIMATION_CONFIG = {
-	duration: ANIMATION_DURATION
+	duration: ANIMATION_DURATION,
+	// https://easings.net/#easeInOutCubic
+	easing: Easing.bezier(0.645, 0.045, 0.355, 1.0)
 };
 
 const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
