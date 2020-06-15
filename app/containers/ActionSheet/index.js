@@ -93,7 +93,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 		toggleVisible();
 	};
 
-	const overlay = ({ nativeEvent }) => {
+	const onBackdropPressed = ({ nativeEvent }) => {
 		if (nativeEvent.oldState === State.ACTIVE) {
 			hide();
 		}
@@ -159,7 +159,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 			{children}
 			{isVisible && (
 				<>
-					<TapGestureHandler onHandlerStateChange={overlay}>
+					<TapGestureHandler onHandlerStateChange={onBackdropPressed}>
 						<Animated.View
 							testID='scroll-bottom-sheet-backdrop'
 							style={[
