@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
-import ActionSheet from 'react-native-action-sheet';
 
 import styles from './styles';
 import Message from '../../containers/message';
@@ -15,10 +14,8 @@ import getFileUrlFromMessage from '../../lib/methods/helpers/getFileUrlFromMessa
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
+import { withActionSheet } from '../../containers/ActionSheet';
 import SafeAreaView from '../../containers/SafeAreaView';
-
-const ACTION_INDEX = 0;
-const CANCEL_INDEX = 1;
 
 class MessagesView extends React.Component {
 	static navigationOptions = ({ route }) => ({
@@ -31,7 +28,8 @@ class MessagesView extends React.Component {
 		navigation: PropTypes.object,
 		route: PropTypes.object,
 		customEmojis: PropTypes.object,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		showActionSheet: PropTypes.func
 	}
 
 	constructor(props) {
@@ -162,7 +160,7 @@ class MessagesView extends React.Component {
 						theme={theme}
 					/>
 				),
-				actionTitle: I18n.t('Unstar'),
+				action: message => ({ title: I18n.t('Unstar'), icon: message.starred ? 'star-filled' : 'star', onPress: this.handleActionPress }),
 				handleActionPress: message => RocketChat.toggleStarMessage(message._id, message.starred)
 			},
 			// Pinned Messages Screen
@@ -179,7 +177,7 @@ class MessagesView extends React.Component {
 						theme={theme}
 					/>
 				),
-				actionTitle: I18n.t('Unpin'),
+				action: () => ({ title: I18n.t('Unpin'), icon: 'pin', onPress: this.handleActionPress }),
 				handleActionPress: message => RocketChat.togglePinMessage(message._id, message.pinned)
 			}
 		}[name]);
@@ -225,35 +223,28 @@ class MessagesView extends React.Component {
 	}
 
 	onLongPress = (message) => {
-		this.setState({ message });
-		this.showActionSheet();
+		this.setState({ message }, this.showActionSheet);
 	}
 
 	showActionSheet = () => {
-		ActionSheet.showActionSheetWithOptions({
-			options: [this.content.actionTitle, I18n.t('Cancel')],
-			cancelButtonIndex: CANCEL_INDEX,
-			title: I18n.t('Actions')
-		}, (actionIndex) => {
-			this.handleActionPress(actionIndex);
-		});
+		const { message } = this.state;
+		const { showActionSheet } = this.props;
+		showActionSheet({ options: [this.content.action(message)], hasCancel: true });
 	}
 
-	handleActionPress = async(actionIndex) => {
-		if (actionIndex === ACTION_INDEX) {
-			const { message } = this.state;
+	handleActionPress = async() => {
+		const { message } = this.state;
 
-			try {
-				const result = await this.content.handleActionPress(message);
-				if (result.success) {
-					this.setState(prevState => ({
-						messages: prevState.messages.filter(item => item._id !== message._id),
-						total: prevState.total - 1
-					}));
-				}
-			} catch (error) {
-				console.warn('MessagesView -> handleActionPress -> catch -> error', error);
+		try {
+			const result = await this.content.handleActionPress(message);
+			if (result.success) {
+				this.setState(prevState => ({
+					messages: prevState.messages.filter(item => item._id !== message._id),
+					total: prevState.total - 1
+				}));
 			}
+		} catch {
+			// Do nothing
 		}
 	}
 
@@ -312,4 +303,4 @@ const mapStateToProps = state => ({
 	customEmojis: state.customEmojis
 });
 
-export default connect(mapStateToProps)(withTheme(MessagesView));
+export default connect(mapStateToProps)(withTheme(withActionSheet(MessagesView)));

@@ -58,8 +58,7 @@ const stateAttrsUpdate = [
 	'lastOpen',
 	'reactionsModalVisible',
 	'canAutoTranslate',
-	'showActions',
-	'showErrorActions',
+	'selectedMessage',
 	'loading',
 	'editing',
 	'replying',
@@ -117,8 +116,6 @@ class RoomView extends React.Component {
 			selectedMessage: selectedMessage || {},
 			canAutoTranslate: false,
 			loading: true,
-			showActions: false,
-			showErrorActions: false,
 			editing: false,
 			replying: !!selectedMessage,
 			replyWithMention: false,
@@ -501,23 +498,11 @@ class RoomView extends React.Component {
 	}
 
 	errorActionsShow = (message) => {
-		this.setState({ selectedMessage: message, showErrorActions: true });
-	}
-
-	onActionsHide = () => {
-		const { editing, replying, reacting } = this.state;
-		if (editing || replying || reacting) {
-			return;
-		}
-		this.setState({ selectedMessage: {}, showActions: false });
-	}
-
-	onErrorActionsHide = () => {
-		this.setState({ selectedMessage: {}, showErrorActions: false });
+		this.messageErrorActions?.showMessageErrorActions(message);
 	}
 
 	onEditInit = (message) => {
-		this.setState({ selectedMessage: message, editing: true, showActions: false });
+		this.setState({ selectedMessage: message, editing: true });
 	}
 
 	onEditCancel = () => {
@@ -535,7 +520,7 @@ class RoomView extends React.Component {
 
 	onReplyInit = (message, mention) => {
 		this.setState({
-			selectedMessage: message, replying: true, showActions: false, replyWithMention: mention
+			selectedMessage: message, replying: true, replyWithMention: mention
 		});
 	}
 
@@ -544,7 +529,7 @@ class RoomView extends React.Component {
 	}
 
 	onReactionInit = (message) => {
-		this.setState({ selectedMessage: message, reacting: true, showActions: false });
+		this.setState({ selectedMessage: message, reacting: true });
 	}
 
 	onReactionClose = () => {
@@ -552,7 +537,7 @@ class RoomView extends React.Component {
 	}
 
 	onMessageLongPress = (message) => {
-		this.setState({ selectedMessage: message, showActions: true });
+		this.messageActions?.showMessageActions(message);
 	}
 
 	showAttachment = (attachment) => {
@@ -942,9 +927,7 @@ class RoomView extends React.Component {
 	};
 
 	renderActions = () => {
-		const {
-			room, selectedMessage, showActions, showErrorActions, joined, readOnly
-		} = this.state;
+		const { room, readOnly } = this.state;
 		const {
 			user, navigation
 		} = this.props;
@@ -953,29 +936,21 @@ class RoomView extends React.Component {
 		}
 		return (
 			<>
-				{joined && showActions
-					? (
-						<MessageActions
-							tmid={this.tmid}
-							room={room}
-							user={user}
-							message={selectedMessage}
-							actionsHide={this.onActionsHide}
-							editInit={this.onEditInit}
-							replyInit={this.onReplyInit}
-							reactionInit={this.onReactionInit}
-							isReadOnly={readOnly}
-						/>
-					)
-					: null
-				}
-				{showErrorActions ? (
-					<MessageErrorActions
-						tmid={this.tmid}
-						message={selectedMessage}
-						actionsHide={this.onErrorActionsHide}
-					/>
-				) : null}
+				<MessageActions
+					ref={ref => this.messageActions = ref}
+					tmid={this.tmid}
+					room={room}
+					user={user}
+					editInit={this.onEditInit}
+					replyInit={this.onReplyInit}
+					reactionInit={this.onReactionInit}
+					onReactionPress={this.onReactionPress}
+					isReadOnly={readOnly}
+				/>
+				<MessageErrorActions
+					ref={ref => this.messageErrorActions = ref}
+					tmid={this.tmid}
+				/>
 			</>
 		);
 	}
