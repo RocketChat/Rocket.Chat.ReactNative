@@ -10,6 +10,8 @@ import RocketChat from '../lib/rocketchat';
 import Navigation from '../lib/Navigation';
 import database from '../lib/database';
 import I18n from '../i18n';
+import { trackUserEvent } from '../utils/log';
+import { DIRECT_MESSAGES_FINISH, DIRECT_MESSAGES_FINISH_FAIL } from '../utils/trackableEvents';
 
 const createChannel = function createChannel(data) {
 	return RocketChat.createChannel(data);
@@ -50,8 +52,10 @@ const handleRequest = function* handleRequest({ data }) {
 		}
 
 		yield put(createChannelSuccess(sub));
+		trackUserEvent(DIRECT_MESSAGES_FINISH);
 	} catch (err) {
 		yield put(createChannelFailure(err));
+		trackUserEvent(DIRECT_MESSAGES_FINISH_FAIL);
 	}
 };
 

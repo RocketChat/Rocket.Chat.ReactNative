@@ -43,5 +43,9 @@ export const CREATE_CHANNEL_REMOVE_INVITED = 'create_channel_remove_invited';
 
 export const NEW_MESSAGE_CHAT_WITH_USER = 'new_message_chat_with_user';
 
+export const DIRECT_MESSAGES_START = 'direct_messages_start';
+export const DIRECT_MESSAGES_FINISH = 'direct_messages_finish';
+export const DIRECT_MESSAGES_FINISH_FAIL = 'direct_messages_finish_fail';
+
 export const SELECTED_USERS_ADD_USER = 'selected_users_add_user';
 export const SELECTED_USERS_REMOVE_USER = 'selected_users_remove_user';

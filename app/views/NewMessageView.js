@@ -27,7 +27,9 @@ import { getUserSelector } from '../selectors/login';
 import Navigation from '../lib/Navigation';
 import { createChannelRequest } from '../actions/createChannel';
 import { goRoom } from '../utils/goRoom';
-import { CREATE_CHANNEL_START, NEW_MESSAGE_CHAT_WITH_USER } from '../utils/trackableEvents';
+import {
+	CREATE_CHANNEL_START, NEW_MESSAGE_CHAT_WITH_USER, DIRECT_MESSAGES_START
+} from '../utils/trackableEvents';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -150,6 +152,7 @@ class NewMessageView extends React.Component {
 			buttonText: I18n.t('Create'),
 			maxUsers
 		});
+		trackUserEvent(DIRECT_MESSAGES_START);
 	}
 
 	renderButton = ({
