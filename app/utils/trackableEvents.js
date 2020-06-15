@@ -53,3 +53,7 @@ export const CREATE_DISCUSSION_FINISH_FAIL = 'create_discussion_finish_fail';
 
 export const SELECTED_USERS_ADD_USER = 'selected_users_add_user';
 export const SELECTED_USERS_REMOVE_USER = 'selected_users_remove_user';
+
+export const NAVIGATE_TO_DIRECTORY = 'navigate_to_directory';
+export const DIRECTORY_SEARCH_USERS = 'directory_search_users';
+export const DIRECTORY_SEARCH_CHANNELS = 'directory_search_channels';

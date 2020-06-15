@@ -17,13 +17,14 @@ import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { CloseModalButton } from '../../containers/HeaderButton';
 import debounce from '../../utils/debounce';
-import log from '../../utils/log';
+import log, { trackUserEvent } from '../../utils/log';
 import Options from './Options';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
 import styles from './styles';
 import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
+import { DIRECTORY_SEARCH_USERS, DIRECTORY_SEARCH_CHANNELS } from '../../utils/trackableEvents';
 
 class DirectoryView extends React.Component {
 	static navigationOptions = ({ navigation, screenProps }) => {
@@ -115,6 +116,12 @@ class DirectoryView extends React.Component {
 
 	changeType = (type) => {
 		this.setState({ type, data: [] }, () => this.search());
+
+		if (type === 'users') {
+			trackUserEvent(DIRECTORY_SEARCH_USERS);
+		} else if (type === 'channels') {
+			trackUserEvent(DIRECTORY_SEARCH_CHANNELS);
+		}
 	}
 
 	toggleWorkspace = () => {

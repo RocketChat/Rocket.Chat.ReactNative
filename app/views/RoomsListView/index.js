@@ -62,7 +62,7 @@ import { MAX_SIDEBAR_WIDTH } from '../../constants/tablet';
 import { withSplit } from '../../split';
 import { getUserSelector } from '../../selectors/login';
 import { goRoom } from '../../utils/goRoom';
-import { ROOMSLIST_SEARCH, NAVIGATE_TO_NEW_MESSAGE } from '../../utils/trackableEvents';
+import { ROOMSLIST_SEARCH, NAVIGATE_TO_NEW_MESSAGE, NAVIGATE_TO_DIRECTORY } from '../../utils/trackableEvents';
 
 const SCROLL_OFFSET = 56;
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
@@ -632,6 +632,7 @@ class RoomsListView extends React.Component {
 	goDirectory = () => {
 		const { navigation } = this.props;
 		navigation.navigate('DirectoryView');
+		trackUserEvent(NAVIGATE_TO_DIRECTORY);
 	};
 
 	goRoomByIndex = (index) => {
