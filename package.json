@@ -58,7 +58,6 @@
     "prop-types": "15.7.2",
     "react": "16.11.0",
     "react-native": "0.62.2",
-    "react-native-action-sheet": "^2.2.0",
     "react-native-animatable": "^1.3.3",
     "react-native-appearance": "0.3.4",
     "react-native-audio": "^4.3.0",
