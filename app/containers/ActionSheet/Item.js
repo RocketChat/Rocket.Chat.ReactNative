@@ -5,7 +5,7 @@ import { Text } from 'react-native';
 import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
-import Button from './Button';
+import { Button } from './Button';
 
 const Item = React.memo(({ item, hide, theme }) => {
 	const onPress = () => {

@@ -14,7 +14,7 @@ import getFileUrlFromMessage from '../../lib/methods/helpers/getFileUrlFromMessa
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
-import { withActionSheet } from '../../containers/ActionSheet/Provider';
+import { withActionSheet } from '../../containers/ActionSheet';
 import SafeAreaView from '../../containers/SafeAreaView';
 
 class MessagesView extends React.Component {

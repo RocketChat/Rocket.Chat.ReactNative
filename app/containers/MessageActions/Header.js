@@ -10,7 +10,7 @@ import { CustomIcon } from '../../lib/Icons';
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import database from '../../lib/database';
-import Button from '../ActionSheet/Button';
+import { Button } from '../ActionSheet';
 
 export const HEADER_HEIGHT = 36;
 

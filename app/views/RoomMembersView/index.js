@@ -21,7 +21,7 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
 import { getUserSelector } from '../../selectors/login';
-import { withActionSheet } from '../../containers/ActionSheet/Provider';
+import { withActionSheet } from '../../containers/ActionSheet';
 import { showConfirmationAlert } from '../../utils/info';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';

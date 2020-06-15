@@ -26,7 +26,7 @@ export function withActionSheet(Component) {
 	return ConnectedActionSheet;
 }
 
-const ActionSheetProvider = React.memo(({ children }) => {
+export const ActionSheetProvider = React.memo(({ children }) => {
 	const ref = useRef();
 	const { theme } = useTheme();
 
@@ -50,4 +50,3 @@ const ActionSheetProvider = React.memo(({ children }) => {
 ActionSheetProvider.propTypes = {
 	children: PropTypes.node
 };
-export default ActionSheetProvider;

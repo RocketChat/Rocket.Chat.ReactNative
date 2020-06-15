@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
-import { useActionSheet } from './ActionSheet/Provider';
+import { useActionSheet } from './ActionSheet';
 import I18n from '../i18n';
 import log from '../utils/log';
 

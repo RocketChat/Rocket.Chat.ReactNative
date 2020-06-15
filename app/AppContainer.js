@@ -10,7 +10,7 @@ import { defaultHeader, getActiveRouteName, navigationTheme } from './utils/navi
 import {
 	ROOT_LOADING, ROOT_OUTSIDE, ROOT_NEW_SERVER, ROOT_INSIDE, ROOT_SET_USERNAME, ROOT_BACKGROUND
 } from './actions/app';
-import ActionSheetProvider from './containers/ActionSheet/Provider';
+import { ActionSheetProvider } from './containers/ActionSheet';
 
 // Stacks
 import AuthLoadingView from './views/AuthLoadingView';
