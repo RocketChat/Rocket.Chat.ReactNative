@@ -2,7 +2,7 @@ import React, { useRef, useContext } from 'react';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import PropTypes from 'prop-types';
 
-import ActionSheet from './index';
+import ActionSheet from './ActionSheet';
 import { withTheme } from '../../theme';
 
 const context = React.createContext({
@@ -16,7 +16,7 @@ export function useActionSheet() {
 
 const { Provider, Consumer } = context;
 
-export function connectActionSheet(Component) {
+export function withActionSheet(Component) {
 	const ConnectedActionSheet = props => (
 		<Consumer>
 			{contexts => <Component {...props} {...contexts} />}

@@ -14,7 +14,7 @@ import getFileUrlFromMessage from '../../lib/methods/helpers/getFileUrlFromMessa
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
-import { connectActionSheet } from '../../containers/ActionSheet/Provider';
+import { withActionSheet } from '../../containers/ActionSheet/Provider';
 import SafeAreaView from '../../containers/SafeAreaView';
 
 class MessagesView extends React.Component {
@@ -303,4 +303,4 @@ const mapStateToProps = state => ({
 	customEmojis: state.customEmojis
 });
 
-export default connect(mapStateToProps)(connectActionSheet(withTheme(MessagesView)));
+export default connect(mapStateToProps)(withActionSheet(withTheme(MessagesView)));

@@ -21,7 +21,7 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
 import { getUserSelector } from '../../selectors/login';
-import { connectActionSheet } from '../../containers/ActionSheet/Provider';
+import { withActionSheet } from '../../containers/ActionSheet/Provider';
 import { showConfirmationAlert } from '../../utils/info';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
@@ -282,4 +282,4 @@ const mapStateToProps = state => ({
 	isMasterDetail: state.app.isMasterDetail
 });
 
-export default connect(mapStateToProps)(connectActionSheet(withTheme(RoomMembersView)));
+export default connect(mapStateToProps)(withActionSheet(withTheme(RoomMembersView)));

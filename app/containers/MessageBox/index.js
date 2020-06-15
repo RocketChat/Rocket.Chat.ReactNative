@@ -45,7 +45,7 @@ import CommandsPreview from './CommandsPreview';
 import { Review } from '../../utils/review';
 import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/Navigation';
-import { connectActionSheet } from '../ActionSheet/Provider';
+import { withActionSheet } from '../ActionSheet/Provider';
 
 const imagePickerConfig = {
 	cropping: true,
@@ -933,4 +933,4 @@ const dispatchToProps = ({
 	typing: (rid, status) => userTypingAction(rid, status)
 });
 
-export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(connectActionSheet(MessageBox));
+export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(withActionSheet(MessageBox));
