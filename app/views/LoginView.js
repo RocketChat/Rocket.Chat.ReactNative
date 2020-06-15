@@ -13,7 +13,6 @@ import I18n from '../i18n';
 import { LegalButton } from '../containers/HeaderButton';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
-import { themedHeader } from '../utils/navigation';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import TextInput from '../containers/TextInput';
 import { loginRequest as loginRequestAction } from '../actions/login';
@@ -51,14 +50,10 @@ const styles = StyleSheet.create({
 });
 
 class LoginView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const title = navigation.getParam('title', 'Rocket.Chat');
-		return {
-			...themedHeader(screenProps.theme),
-			title,
-			headerRight: <LegalButton testID='login-view-more' navigation={navigation} />
-		};
-	}
+	static navigationOptions = ({ route, navigation }) => ({
+		title: route.params?.title ?? 'Rocket.Chat',
+		headerRight: () => <LegalButton testID='login-view-more' navigation={navigation} />
+	})
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -73,7 +68,8 @@ class LoginView extends React.Component {
 		error: PropTypes.object,
 		failure: PropTypes.bool,
 		theme: PropTypes.string,
-		loginRequest: PropTypes.func
+		loginRequest: PropTypes.func,
+		inviteLinkToken: PropTypes.string
 	}
 
 	constructor(props) {
@@ -89,6 +85,11 @@ class LoginView extends React.Component {
 		if (nextProps.failure && !equal(error, nextProps.error)) {
 			Alert.alert(I18n.t('Oops'), I18n.t('Login_error'));
 		}
+	}
+
+	get showRegistrationButton() {
+		const { Accounts_RegistrationForm, inviteLinkToken } = this.props;
+		return Accounts_RegistrationForm === 'Public' || (Accounts_RegistrationForm === 'Secret URL' && inviteLinkToken?.length);
 	}
 
 	login = () => {
@@ -125,7 +126,7 @@ class LoginView extends React.Component {
 
 	renderUserForm = () => {
 		const {
-			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, Accounts_PasswordReset, Accounts_RegistrationForm, Accounts_RegistrationForm_LinkReplacementText, isFetching, theme, Accounts_ShowFormLogin
+			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, Accounts_PasswordReset, Accounts_RegistrationForm_LinkReplacementText, isFetching, theme, Accounts_ShowFormLogin
 		} = this.props;
 
 		if (!Accounts_ShowFormLogin) {
@@ -183,7 +184,7 @@ class LoginView extends React.Component {
 						fontSize={14}
 					/>
 				)}
-				{Accounts_RegistrationForm === 'Public' ? (
+				{this.showRegistrationButton ? (
 					<View style={styles.bottomContainer}>
 						<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Dont_Have_An_Account')}</Text>
 						<Text
@@ -199,11 +200,11 @@ class LoginView extends React.Component {
 	}
 
 	render() {
-		const { Accounts_ShowFormLogin, theme } = this.props;
+		const { Accounts_ShowFormLogin, theme, navigation } = this.props;
 		return (
 			<FormContainer theme={theme} testID='login-view'>
 				<FormContainerInner>
-					<LoginServices separator={Accounts_ShowFormLogin} />
+					<LoginServices separator={Accounts_ShowFormLogin} navigation={navigation} />
 					{this.renderUserForm()}
 				</FormContainerInner>
 			</FormContainer>
@@ -222,7 +223,8 @@ const mapStateToProps = state => ({
 	error: state.login.error && state.login.error.data,
 	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
 	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
-	Accounts_PasswordReset: state.settings.Accounts_PasswordReset
+	Accounts_PasswordReset: state.settings.Accounts_PasswordReset,
+	inviteLinkToken: state.inviteLinks.token
 });
 
 const mapDispatchToProps = dispatch => ({

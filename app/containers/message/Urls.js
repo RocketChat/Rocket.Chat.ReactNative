@@ -11,7 +11,6 @@ import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { withSplit } from '../../split';
 import { LISTENER } from '../Toast';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
@@ -80,9 +79,7 @@ const UrlContent = React.memo(({ title, description, theme }) => (
 	return true;
 });
 
-const Url = React.memo(({
-	url, index, split, theme
-}) => {
+const Url = React.memo(({ url, index, theme }) => {
 	if (!url) {
 		return null;
 	}
@@ -105,8 +102,7 @@ const Url = React.memo(({
 				{
 					backgroundColor: themes[theme].chatComponentBackground,
 					borderColor: themes[theme].borderColor
-				},
-				split && sharedStyles.tabletContent
+				}
 			]}
 			background={Touchable.Ripple(themes[theme].bannerBackground)}
 		>
@@ -116,19 +112,17 @@ const Url = React.memo(({
 			</>
 		</Touchable>
 	);
-}, (oldProps, newProps) => isEqual(oldProps.url, newProps.url) && oldProps.split === newProps.split && oldProps.theme === newProps.theme);
+}, (oldProps, newProps) => isEqual(oldProps.url, newProps.url) && oldProps.theme === newProps.theme);
 
-const Urls = React.memo(({
-	urls, split, theme
-}) => {
+const Urls = React.memo(({ urls, theme }) => {
 	if (!urls || urls.length === 0) {
 		return null;
 	}
 
 	return urls.map((url, index) => (
-		<Url url={url} key={url.url} index={index} split={split} theme={theme} />
+		<Url url={url} key={url.url} index={index} theme={theme} />
 	));
-}, (oldProps, newProps) => isEqual(oldProps.urls, newProps.urls) && oldProps.split === newProps.split && oldProps.theme === newProps.theme);
+}, (oldProps, newProps) => isEqual(oldProps.urls, newProps.urls) && oldProps.theme === newProps.theme);
 
 UrlImage.propTypes = {
 	image: PropTypes.string
@@ -145,16 +139,14 @@ UrlContent.displayName = 'MessageUrlContent';
 Url.propTypes = {
 	url: PropTypes.object.isRequired,
 	index: PropTypes.number,
-	theme: PropTypes.string,
-	split: PropTypes.bool
+	theme: PropTypes.string
 };
 Url.displayName = 'MessageUrl';
 
 Urls.propTypes = {
 	urls: PropTypes.array,
-	theme: PropTypes.string,
-	split: PropTypes.bool
+	theme: PropTypes.string
 };
 Urls.displayName = 'MessageUrls';
 
-export default withTheme(withSplit(Urls));
+export default withTheme(Urls);

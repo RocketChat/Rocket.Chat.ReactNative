@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { ScrollView, Text } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
 import isEqual from 'lodash/isEqual';
 
 import Loading from '../../containers/Loading';
@@ -13,7 +12,6 @@ import { CustomHeaderButtons, Item, CloseModalButton } from '../../containers/He
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
 import TextInput from '../../containers/TextInput';
 import RocketChat from '../../lib/rocketchat';
@@ -25,29 +23,13 @@ import SelectChannel from './SelectChannel';
 import SelectUsers from './SelectUsers';
 
 import styles from './styles';
+import SafeAreaView from '../../containers/SafeAreaView';
+import { goRoom } from '../../utils/goRoom';
 
 class CreateChannelView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const submit = navigation.getParam('submit', () => {});
-		const showSubmit = navigation.getParam('showSubmit', navigation.getParam('message'));
-		return {
-			...themedHeader(screenProps.theme),
-			title: I18n.t('Create_Discussion'),
-			headerRight: (
-				showSubmit
-					? (
-						<CustomHeaderButtons>
-							<Item title={I18n.t('Create')} onPress={submit} testID='create-discussion-submit' />
-						</CustomHeaderButtons>
-					)
-					: null
-			),
-			headerLeft: <CloseModalButton navigation={navigation} />
-		};
-	}
-
 	propTypes = {
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		server: PropTypes.string,
 		user: PropTypes.object,
 		create: PropTypes.func,
@@ -55,31 +37,32 @@ class CreateChannelView extends React.Component {
 		result: PropTypes.object,
 		failure: PropTypes.bool,
 		error: PropTypes.object,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		isMasterDetail: PropTypes.bool
 	}
 
 	constructor(props) {
 		super(props);
-		const { navigation } = props;
-		navigation.setParams({ submit: this.submit });
-		this.channel = navigation.getParam('channel');
-		const message = navigation.getParam('message', {});
+		const { route } = props;
+		this.channel = route.params?.channel;
+		const message = route.params?.message ?? {};
 		this.state = {
 			channel: this.channel,
 			message,
-			name: message.msg || '',
+			name: message?.msg || '',
 			users: [],
 			reply: ''
 		};
+		this.setHeader();
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		const {
-			loading, failure, error, result, navigation
+			loading, failure, error, result, isMasterDetail
 		} = this.props;
 
 		if (!isEqual(this.state, prevState)) {
-			navigation.setParams({ showSubmit: this.valid() });
+			this.setHeader();
 		}
 
 		if (!loading && loading !== prevProps.loading) {
@@ -89,15 +72,36 @@ class CreateChannelView extends React.Component {
 					showErrorAlert(msg);
 				} else {
 					const { rid, t, prid } = result;
-					if (this.channel) {
+					if (isMasterDetail) {
+						Navigation.navigate('DrawerNavigator');
+					} else {
 						Navigation.navigate('RoomsListView');
 					}
-					Navigation.navigate('RoomView', {
+					const item = {
 						rid, name: RocketChat.getRoomTitle(result), t, prid
-					});
+					};
+					goRoom({ item, isMasterDetail });
 				}
 			}, 300);
 		}
+	}
+
+	setHeader = () => {
+		const { navigation, route } = this.props;
+		const showCloseModal = route.params?.showCloseModal;
+		navigation.setOptions({
+			title: I18n.t('Create_Discussion'),
+			headerRight: (
+				this.valid()
+					? () => (
+						<CustomHeaderButtons>
+							<Item title={I18n.t('Create')} onPress={this.submit} testID='create-discussion-submit' />
+						</CustomHeaderButtons>
+					)
+					: null
+			),
+			headerLeft: showCloseModal ? () => <CloseModalButton navigation={navigation} /> : undefined
+		});
 	}
 
 	submit = () => {
@@ -137,7 +141,7 @@ class CreateChannelView extends React.Component {
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar theme={theme} />
-				<SafeAreaView testID='create-discussion-view' style={styles.container} forceInset={{ vertical: 'never' }}>
+				<SafeAreaView testID='create-discussion-view' style={styles.container} theme={theme}>
 					<ScrollView {...scrollPersistTaps}>
 						<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Discussion_Desc')}</Text>
 						<SelectChannel
@@ -187,7 +191,8 @@ const mapStateToProps = state => ({
 	error: state.createDiscussion.error,
 	failure: state.createDiscussion.failure,
 	loading: state.createDiscussion.isFetching,
-	result: state.createDiscussion.result
+	result: state.createDiscussion.result,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 const mapDispatchToProps = dispatch => ({

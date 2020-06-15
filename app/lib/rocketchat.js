@@ -346,6 +346,7 @@ const RocketChat = {
 				if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
 					const { details } = e.data;
 					try {
+						reduxStore.dispatch(setUser({ username: params.user || params.username }));
 						const code = await twoFactor({ method: details?.method || 'totp', invalid: e.data.error === 'totp-invalid' });
 						return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }));
 					} catch {

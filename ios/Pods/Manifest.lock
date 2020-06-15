@@ -360,6 +360,8 @@ PODS:
     - React
   - react-native-orientation-locker (1.1.8):
     - React
+  - react-native-safe-area-context (3.0.2):
+    - React
   - react-native-slider (2.0.9):
     - React
   - react-native-webview (9.4.0):
@@ -437,7 +439,9 @@ PODS:
     - React
   - RNBootSplash (2.2.4):
     - React
-  - RNCAsyncStorage (1.10.0):
+  - RNCAsyncStorage (1.10.3):
+    - React
+  - RNCMaskedView (0.1.10):
     - React
   - RNDateTimePicker (2.3.2):
     - React
@@ -458,12 +462,12 @@ PODS:
     - React
   - RNGestureHandler (1.6.1):
     - React
-  - RNImageCropPicker (0.28.0):
+  - RNImageCropPicker (0.30.0):
     - React-Core
     - React-RCTImage
-    - RNImageCropPicker/QBImagePickerController (= 0.28.0)
+    - RNImageCropPicker/QBImagePickerController (= 0.30.0)
     - RSKImageCropper
-  - RNImageCropPicker/QBImagePickerController (0.28.0):
+  - RNImageCropPicker/QBImagePickerController (0.30.0):
     - React-Core
     - React-RCTImage
     - RSKImageCropper
@@ -562,6 +566,7 @@ DEPENDENCIES:
   - react-native-jitsi-meet (from `../node_modules/react-native-jitsi-meet`)
   - react-native-notifications (from `../node_modules/react-native-notifications`)
   - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
+  - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -583,6 +588,7 @@ DEPENDENCIES:
   - RNAudio (from `../node_modules/react-native-audio`)
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
+  - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNFastImage (from `../node_modules/react-native-fast-image`)
@@ -710,6 +716,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-notifications"
   react-native-orientation-locker:
     :path: "../node_modules/react-native-orientation-locker"
+  react-native-safe-area-context:
+    :path: "../node_modules/react-native-safe-area-context"
   react-native-slider:
     :path: "../node_modules/@react-native-community/slider"
   react-native-webview:
@@ -750,6 +758,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-bootsplash"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
+  RNCMaskedView:
+    :path: "../node_modules/@react-native-community/masked-view"
   RNDateTimePicker:
     :path: "../node_modules/@react-native-community/datetimepicker"
   RNDeviceInfo:
@@ -868,6 +878,7 @@ SPEC CHECKSUMS:
   react-native-jitsi-meet: f89bcb2cfbd5b15403b9c40738036c4f1af45d05
   react-native-notifications: ee8fd739853e72694f3af8b374c8ccb106b7b227
   react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
+  react-native-safe-area-context: b11a34881faac509cad5578726c98161ad4d275c
   react-native-slider: e51492f1264d882a8815b71c5870f8978e52887d
   react-native-webview: cf5527893252b3b036eea024a1da6996f7344c74
   React-RCTActionSheet: f41ea8a811aac770e0cc6e0ad6b270c644ea8b7c
@@ -887,13 +898,14 @@ SPEC CHECKSUMS:
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNAudio: cae2991f2dccb75163f260b60da8051717b959fa
   RNBootSplash: 7cb9b4fe7e94177edc0d11010f7631d79db2f5e9
-  RNCAsyncStorage: 6d99641f8e6f15d169d695d8ef184bf187903f11
+  RNCAsyncStorage: cd7234ff15c010723ed7c499ae4eedc605eac1fd
+  RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNDateTimePicker: 4bd49e09f91ca73d69119a9e1173b0d43b82f5e5
   RNDeviceInfo: e2102056bde3ad5d137fd029d8d431510a00486a
   RNFastImage: 35ae972d6727c84ee3f5c6897e07f84d0a3445e9
   RNFirebase: 37daa9a346d070f9f6ee1f3b4aaf4c8e3b1d5d1c
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
-  RNImageCropPicker: cf129d17e042ce3e96fb9ada967c28f21f977c82
+  RNImageCropPicker: a606d65f71c6c05caa3c850c16fb1ba2a4718608
   RNLocalize: b6df30cc25ae736d37874f9bce13351db2f56796
   RNReanimated: 955cf4068714003d2f1a6e2bae3fb1118f359aff
   RNRootView: 895a4813dedeaca82db2fa868ca1c333d790e494
