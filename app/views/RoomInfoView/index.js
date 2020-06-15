@@ -159,8 +159,7 @@ class RoomInfoView extends React.Component {
 					visitor.os = `${ ua.getOS().name } ${ ua.getOS().version }`;
 					visitor.browser = `${ ua.getBrowser().name } ${ ua.getBrowser().version }`;
 				}
-				this.setState({ roomUser: visitor });
-				this.setHeader();
+				this.setState({ roomUser: visitor }, () => this.setHeader());
 			}
 		} catch (error) {
 			// Do nothing
@@ -201,8 +200,7 @@ class RoomInfoView extends React.Component {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable
 				.subscribe((changes) => {
-					this.setState({ room: changes });
-					this.setHeader();
+					this.setState({ room: changes }, () => this.setHeader());
 				});
 		} else {
 			try {
@@ -218,8 +216,7 @@ class RoomInfoView extends React.Component {
 
 		const permissions = await RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
 		if (permissions[PERMISSION_EDIT_ROOM] && !room.prid) {
-			this.setState({ showEdit: true });
-			this.setHeader();
+			this.setState({ showEdit: true }, () => this.setHeader());
 		}
 	}
 
