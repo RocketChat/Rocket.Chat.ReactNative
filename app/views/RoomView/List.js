@@ -171,7 +171,7 @@ class List extends React.Component {
 
 	onEndReached = debounce(async() => {
 		const {
-			loading, end, messages, latest = messages[messages.length - 1].ts
+			loading, end, messages, latest = messages[messages.length - 1]?.ts
 		} = this.state;
 		if (loading || end) {
 			return;
@@ -188,7 +188,7 @@ class List extends React.Component {
 				result = await RocketChat.loadMessagesForRoom({ rid, t, latest });
 			}
 
-			this.setState({ end: result.length < 50, loading: false, latest: result[result.length - 1].ts }, () => this.loadMoreMessages(result));
+			this.setState({ end: result.length < 50, loading: false, latest: result[result.length - 1]?.ts }, () => this.loadMoreMessages(result));
 		} catch (e) {
 			this.setState({ loading: false });
 			log(e);

@@ -26,25 +26,32 @@ class WorkspaceView extends React.Component {
 		Site_Url: PropTypes.string,
 		server: PropTypes.string,
 		Assets_favicon_512: PropTypes.object,
-		registrationEnabled: PropTypes.bool,
+		registrationForm: PropTypes.string,
 		registrationText: PropTypes.string,
 		showLoginButton: PropTypes.bool,
-		Accounts_iframe_enabled: PropTypes.bool
+		Accounts_iframe_enabled: PropTypes.bool,
+		inviteLinkToken: PropTypes.string
+	}
+
+	get showRegistrationButton() {
+		const { registrationForm, inviteLinkToken, Accounts_iframe_enabled } = this.props;
+		return !Accounts_iframe_enabled && (registrationForm === 'Public' || (registrationForm === 'Secret URL' && inviteLinkToken?.length));
 	}
 
 	login = () => {
-		const { navigation, Site_Name } = this.props;
+		const {
+			navigation, server, Site_Name, Accounts_iframe_enabled
+		} = this.props;
+		if (Accounts_iframe_enabled) {
+			navigation.navigate('AuthenticationWebView', { url: server, authType: 'iframe' });
+			return;
+		}
 		navigation.navigate('LoginView', { title: Site_Name });
 	}
 
 	register = () => {
 		const { navigation, Site_Name } = this.props;
 		navigation.navigate('RegisterView', { title: Site_Name });
-	}
-
-	loginIframe = () => {
-		const { navigation, server } = this.props;
-		navigation.navigate('AuthenticationWebView', { url: server, authType: 'iframe' });
 	}
 
 	renderRegisterDisabled = () => {
@@ -58,7 +65,7 @@ class WorkspaceView extends React.Component {
 
 	render() {
 		const {
-			theme, Site_Name, Site_Url, Assets_favicon_512, server, registrationEnabled, showLoginButton, Accounts_iframe_enabled
+			theme, Site_Name, Site_Url, Assets_favicon_512, server, showLoginButton
 		} = this.props;
 
 		return (
@@ -74,13 +81,13 @@ class WorkspaceView extends React.Component {
 							<Button
 								title={I18n.t('Login')}
 								type='primary'
-								onPress={Accounts_iframe_enabled ? this.loginIframe : this.login}
+								onPress={this.login}
 								theme={theme}
 								testID='workspace-view-login'
 							/>
 						) : null}
 					{
-						registrationEnabled && !Accounts_iframe_enabled ? (
+						this.showRegistrationButton ? (
 							<Button
 								title={I18n.t('Create_account')}
 								type='secondary'
@@ -103,10 +110,11 @@ const mapStateToProps = state => ({
 	Site_Name: state.settings.Site_Name,
 	Site_Url: state.settings.Site_Url,
 	Assets_favicon_512: state.settings.Assets_favicon_512,
-	registrationEnabled: state.settings.Accounts_RegistrationForm === 'Public',
+	registrationForm: state.settings.Accounts_RegistrationForm,
 	registrationText: state.settings.Accounts_RegistrationForm_LinkReplacementText,
 	Accounts_iframe_enabled: state.settings.Accounts_iframe_enabled,
-	showLoginButton: getShowLoginButton(state)
+	showLoginButton: getShowLoginButton(state),
+	inviteLinkToken: state.inviteLinks.token
 });
 
 export default connect(mapStateToProps)(withTheme(WorkspaceView));
