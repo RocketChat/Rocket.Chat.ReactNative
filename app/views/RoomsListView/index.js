@@ -629,7 +629,6 @@ class RoomsListView extends React.Component {
 						log(e);
 					}
 				});
-
 				trackUserEvent(HIDE_CHANNEL);
 			}
 		} catch (e) {

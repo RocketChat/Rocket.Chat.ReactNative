@@ -68,3 +68,10 @@ export const HIDE_CHANNEL_FAIL = 'hide_channel_fail';
 export const FAVORITE_CHANNEL = 'favorite_channel';
 export const UNFAVORITE_CHANNEL = 'unfavorite_channel';
 export const TOGGLE_FAVORITE_FAIL = 'toggle_favorite_fail';
+
+export const SORT_CHANNELS_BY_ALPHABETICAL = 'sort_channels_by_alphabetical';
+export const SORT_CHANNELS_BY_ACTIVITY = 'sort_channels_by_activity';
+export const GROUP_CHANNELS_BY_TYPE = 'group_channels_by_type';
+export const GROUP_CHANNELS_BY_FAVORITE = 'group_channels_by_favorite';
+export const GROUP_CHANNELS_BY_UNREAD = 'group_channels_by_unread';
+export const SORT_CHANNELS_FAIL = 'sort_channels_fail';

@@ -9,12 +9,15 @@ import styles from '../styles';
 import Touch from '../../../utils/touch';
 import RocketChat from '../../../lib/rocketchat';
 import { setPreference } from '../../../actions/sortPreferences';
-import log from '../../../utils/log';
+import log, { trackUserEvent } from '../../../utils/log';
 import I18n from '../../../i18n';
 import { CustomIcon } from '../../../lib/Icons';
 import { withTheme } from '../../../theme';
 import { themes } from '../../../constants/colors';
 import { SortItemButton, SortItemContent } from './Item';
+import {
+	SORT_CHANNELS_BY_ACTIVITY, SORT_CHANNELS_BY_ALPHABETICAL, GROUP_CHANNELS_BY_FAVORITE, GROUP_CHANNELS_BY_TYPE, GROUP_CHANNELS_BY_UNREAD, SORT_CHANNELS_FAIL
+} from '../../../utils/trackableEvents';
 
 const ANIMATION_DURATION = 200;
 
@@ -62,31 +65,43 @@ class Sort extends PureComponent {
 			RocketChat.saveSortPreference(param);
 		} catch (e) {
 			log(e);
+			trackUserEvent(SORT_CHANNELS_FAIL);
 		}
 	}
 
 	sortByName = () => {
 		this.setSortPreference({ sortBy: 'alphabetical' });
 		this.close();
+		trackUserEvent(SORT_CHANNELS_BY_ALPHABETICAL);
 	}
 
 	sortByActivity = () => {
 		this.setSortPreference({ sortBy: 'activity' });
 		this.close();
+		trackUserEvent(SORT_CHANNELS_BY_ACTIVITY);
 	}
 
 	toggleGroupByType = () => {
 		const { groupByType } = this.props;
+		if (!groupByType) {
+			trackUserEvent(GROUP_CHANNELS_BY_TYPE);
+		}
 		this.setSortPreference({ groupByType: !groupByType });
 	}
 
 	toggleGroupByFavorites = () => {
 		const { showFavorites } = this.props;
+		if (!showFavorites) {
+			trackUserEvent(GROUP_CHANNELS_BY_FAVORITE);
+		}
 		this.setSortPreference({ showFavorites: !showFavorites });
 	}
 
 	toggleUnread = () => {
 		const { showUnread } = this.props;
+		if (!showUnread) {
+			trackUserEvent(GROUP_CHANNELS_BY_UNREAD);
+		}
 		this.setSortPreference({ showUnread: !showUnread });
 	}
 
