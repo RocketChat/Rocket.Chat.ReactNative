@@ -27,7 +27,7 @@ import { getUserSelector } from '../selectors/login';
 import Navigation from '../lib/Navigation';
 import { createChannelRequest } from '../actions/createChannel';
 import { goRoom } from '../utils/goRoom';
-import { CREATE_CHANNEL_START } from '../utils/trackableEvents';
+import { CREATE_CHANNEL_START, NEW_MESSAGE_CHAT_WITH_USER } from '../utils/trackableEvents';
 
 const styles = StyleSheet.create({
 	safeAreaView: {
@@ -228,7 +228,10 @@ class NewMessageView extends React.Component {
 			<UserItem
 				name={item.search ? item.name : item.fname}
 				username={item.search ? item.username : item.name}
-				onPress={() => goRoom(item)}
+				onPress={() => {
+					goRoom(item);
+					trackUserEvent(NEW_MESSAGE_CHAT_WITH_USER);
+				}}
 				baseUrl={baseUrl}
 				testID={`new-message-view-item-${ item.name }`}
 				style={style}
