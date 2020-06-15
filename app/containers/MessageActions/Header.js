@@ -38,6 +38,8 @@ const styles = StyleSheet.create({
 	}
 });
 
+const keyExtractor = item => item?.id || item;
+
 const DEFAULT_EMOJIS = ['clap', '+1', 'heart_eyes', 'grinning', 'thinking_face', 'smiley'];
 
 const HeaderItem = React.memo(({
@@ -120,6 +122,7 @@ const Header = React.memo(({
 				renderItem={renderItem}
 				ListFooterComponent={renderFooter}
 				style={{ backgroundColor: themes[theme].focusedBackground }}
+				keyExtractor={keyExtractor}
 				showsHorizontalScrollIndicator={false}
 				scrollEnabled={false}
 				horizontal
