@@ -604,7 +604,7 @@ class MessageBox extends Component {
 		if (isMasterDetail) {
 			Navigation.navigate('ModalStackNavigator', { screen: 'CreateDiscussionView', params });
 		} else {
-			Navigation.navigate('CreateDiscussionView', params);
+			Navigation.navigate('NewMessageStackNavigator', { screen: 'CreateDiscussionView', params });
 		}
 	}
 

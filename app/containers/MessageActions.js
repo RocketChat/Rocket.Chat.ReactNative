@@ -386,7 +386,7 @@ class MessageActions extends React.Component {
 		if (isMasterDetail) {
 			Navigation.navigate('ModalStackNavigator', { screen: 'CreateDiscussionView', params });
 		} else {
-			Navigation.navigate('CreateDiscussionView', params);
+			Navigation.navigate('NewMessageStackNavigator', { screen: 'CreateDiscussionView', params });
 		}
 	}
 
