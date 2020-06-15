@@ -62,7 +62,9 @@ import { MAX_SIDEBAR_WIDTH } from '../../constants/tablet';
 import { withSplit } from '../../split';
 import { getUserSelector } from '../../selectors/login';
 import { goRoom } from '../../utils/goRoom';
-import { ROOMSLIST_SEARCH, NAVIGATE_TO_NEW_MESSAGE, NAVIGATE_TO_DIRECTORY } from '../../utils/trackableEvents';
+import {
+	ROOMSLIST_SEARCH, NAVIGATE_TO_NEW_MESSAGE, NAVIGATE_TO_DIRECTORY, READ_CHANNEL, UNREAD_CHANNEL, TOGGLE_READ_FAIL, HIDE_CHANNEL, HIDE_CHANNEL_FAIL, FAVORITE_CHANNEL, UNFAVORITE_CHANNEL, TOGGLE_FAVORITE_FAIL
+} from '../../utils/trackableEvents';
 
 const SCROLL_OFFSET = 56;
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
@@ -581,9 +583,11 @@ class RoomsListView extends React.Component {
 						log(e);
 					}
 				});
+				trackUserEvent(favorite ? UNFAVORITE_CHANNEL : FAVORITE_CHANNEL);
 			}
 		} catch (e) {
 			log(e);
+			trackUserEvent(TOGGLE_FAVORITE_FAIL);
 		}
 	};
 
@@ -603,9 +607,11 @@ class RoomsListView extends React.Component {
 						log(e);
 					}
 				});
+				trackUserEvent(isRead ? UNREAD_CHANNEL : READ_CHANNEL);
 			}
 		} catch (e) {
 			log(e);
+			trackUserEvent(TOGGLE_READ_FAIL);
 		}
 	};
 
@@ -623,9 +629,12 @@ class RoomsListView extends React.Component {
 						log(e);
 					}
 				});
+
+				trackUserEvent(HIDE_CHANNEL);
 			}
 		} catch (e) {
 			log(e);
+			trackUserEvent(HIDE_CHANNEL_FAIL);
 		}
 	};
 

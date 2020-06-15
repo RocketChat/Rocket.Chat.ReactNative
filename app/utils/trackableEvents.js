@@ -57,3 +57,14 @@ export const SELECTED_USERS_REMOVE_USER = 'selected_users_remove_user';
 export const NAVIGATE_TO_DIRECTORY = 'navigate_to_directory';
 export const DIRECTORY_SEARCH_USERS = 'directory_search_users';
 export const DIRECTORY_SEARCH_CHANNELS = 'directory_search_channels';
+
+export const READ_CHANNEL = 'read_channel';
+export const UNREAD_CHANNEL = 'unread_channel';
+export const TOGGLE_READ_FAIL = 'toggle_read_fail';
+
+export const HIDE_CHANNEL = 'hide_channel';
+export const HIDE_CHANNEL_FAIL = 'hide_channel_fail';
+
+export const FAVORITE_CHANNEL = 'favorite_channel';
+export const UNFAVORITE_CHANNEL = 'unfavorite_channel';
+export const TOGGLE_FAVORITE_FAIL = 'toggle_favorite_fail';
