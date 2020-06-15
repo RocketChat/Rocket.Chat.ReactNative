@@ -7,6 +7,8 @@ import { CREATE_DISCUSSION, LOGIN } from '../actions/actionsTypes';
 import { createDiscussionSuccess, createDiscussionFailure } from '../actions/createDiscussion';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
+import { trackUserEvent } from '../utils/log';
+import { CREATE_DISCUSSION_FINISH, CREATE_DISCUSSION_FINISH_FAIL } from '../utils/trackableEvents';
 
 const create = function* create(data) {
 	return yield RocketChat.createDiscussion(data);
@@ -37,11 +39,14 @@ const handleRequest = function* handleRequest({ data }) {
 			}
 
 			yield put(createDiscussionSuccess(sub));
+			trackUserEvent(CREATE_DISCUSSION_FINISH);
 		} else {
 			yield put(createDiscussionFailure(result));
+			trackUserEvent(CREATE_DISCUSSION_FINISH_FAIL);
 		}
 	} catch (err) {
 		yield put(createDiscussionFailure(err));
+		trackUserEvent(CREATE_DISCUSSION_FINISH_FAIL);
 	}
 };
 
