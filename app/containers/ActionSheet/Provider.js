@@ -3,7 +3,7 @@ import hoistNonReactStatics from 'hoist-non-react-statics';
 import PropTypes from 'prop-types';
 
 import ActionSheet from './ActionSheet';
-import { withTheme } from '../../theme';
+import { useTheme } from '../../theme';
 
 const context = React.createContext({
 	showActionSheet: () => {},
@@ -26,8 +26,9 @@ export function withActionSheet(Component) {
 	return ConnectedActionSheet;
 }
 
-const ActionSheetProvider = React.memo(({ children, theme }) => {
+const ActionSheetProvider = React.memo(({ children }) => {
 	const ref = useRef();
+	const { theme } = useTheme();
 
 	const getContext = () => ({
 		showActionSheet: (options) => {
@@ -47,7 +48,6 @@ const ActionSheetProvider = React.memo(({ children, theme }) => {
 	);
 });
 ActionSheetProvider.propTypes = {
-	children: PropTypes.node,
-	theme: PropTypes.string
+	children: PropTypes.node
 };
-export default withTheme(ActionSheetProvider);
+export default ActionSheetProvider;
