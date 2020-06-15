@@ -3,11 +3,9 @@ import PropTypes from 'prop-types';
 import {
 	FlatList, Text, View, StyleSheet
 } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
 import RNUserDefaults from 'rn-user-defaults';
 
 import I18n from '../i18n';
-import { themedHeader } from '../utils/navigation';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import sharedStyles from './Styles';
@@ -17,6 +15,7 @@ import ListItem from '../containers/ListItem';
 import { CustomIcon } from '../lib/Icons';
 import { THEME_PREFERENCES_KEY } from '../lib/rocketchat';
 import { supportSystemTheme } from '../utils/deviceInfo';
+import SafeAreaView from '../containers/SafeAreaView';
 
 const THEME_GROUP = 'THEME_GROUP';
 const DARK_GROUP = 'DARK_GROUP';
@@ -69,10 +68,9 @@ const styles = StyleSheet.create({
 });
 
 class ThemeView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Theme'),
-		...themedHeader(screenProps.theme)
-	})
+	static navigationOptions = {
+		title: I18n.t('Theme')
+	}
 
 	static propTypes = {
 		theme: PropTypes.string,
@@ -167,11 +165,7 @@ class ThemeView extends React.Component {
 	render() {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView
-				style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
-				forceInset={{ vertical: 'never' }}
-				testID='theme-view'
-			>
+			<SafeAreaView testID='theme-view' theme={theme}>
 				<StatusBar theme={theme} />
 				<FlatList
 					data={THEMES}

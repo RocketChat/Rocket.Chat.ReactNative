@@ -11,17 +11,12 @@ import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
-import { themedHeader } from '../utils/navigation';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 
 class ForgotPasswordView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const title = navigation.getParam('title', 'Rocket.Chat');
-		return {
-			title,
-			...themedHeader(screenProps.theme)
-		};
-	}
+	static navigationOptions = ({ route }) => ({
+		title: route.params?.title ?? 'Rocket.Chat'
+	})
 
 	static propTypes = {
 		navigation: PropTypes.object,

@@ -12,10 +12,7 @@ import { encode } from 'base-64';
 import parse from 'url-parse';
 
 import EventEmitter from '../utils/events';
-import {
-	selectServerRequest, serverRequest, serverInitAdd, serverFinishAdd
-} from '../actions/server';
-import { appStart as appStartAction } from '../actions';
+import { selectServerRequest, serverRequest } from '../actions/server';
 import sharedStyles from './Styles';
 import Button from '../containers/Button';
 import TextInput from '../containers/TextInput';
@@ -28,7 +25,6 @@ import log from '../utils/log';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
 import { setBasicAuth, BASIC_AUTH_KEY } from '../utils/fetch';
-import { themedHeader } from '../utils/navigation';
 import { CloseModalButton } from '../containers/HeaderButton';
 
 const styles = StyleSheet.create({
@@ -65,14 +61,8 @@ const styles = StyleSheet.create({
 });
 
 class NewServerView extends React.Component {
-	static navigationOptions = ({ screenProps, navigation }) => {
-		const previousServer = navigation.getParam('previousServer', null);
-		const close = navigation.getParam('close', () => {});
-		return {
-			headerLeft: previousServer ? <CloseModalButton navigation={navigation} onPress={close} testID='new-server-view-close' /> : undefined,
-			title: I18n.t('Workspaces'),
-			...themedHeader(screenProps.theme)
-		};
+	static navigationOptions = {
+		title: I18n.t('Workspaces')
 	}
 
 	static propTypes = {
@@ -81,15 +71,17 @@ class NewServerView extends React.Component {
 		connecting: PropTypes.bool.isRequired,
 		connectServer: PropTypes.func.isRequired,
 		selectServer: PropTypes.func.isRequired,
-		currentServer: PropTypes.string,
-		initAdd: PropTypes.func,
-		finishAdd: PropTypes.func
+		adding: PropTypes.bool,
+		previousServer: PropTypes.string
 	}
 
 	constructor(props) {
 		super(props);
-		this.previousServer = props.navigation.getParam('previousServer');
-		props.navigation.setParams({ close: this.close, previousServer: this.previousServer });
+		if (props.adding) {
+			props.navigation.setOptions({
+				headerLeft: () => <CloseModalButton navigation={props.navigation} onPress={this.close} testID='new-server-view-close' />
+			});
+		}
 
 		// Cancel
 		this.options = [I18n.t('Cancel')];
@@ -108,21 +100,14 @@ class NewServerView extends React.Component {
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
-	componentDidMount() {
-		const { initAdd } = this.props;
-		if (this.previousServer) {
-			initAdd();
-		}
-	}
-
 	componentWillUnmount() {
 		EventEmitter.removeListener('NewServer', this.handleNewServerEvent);
 		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
 	handleBackPress = () => {
-		const { navigation } = this.props;
-		if (navigation.isFocused() && this.previousServer) {
+		const { navigation, previousServer } = this.props;
+		if (navigation.isFocused() && previousServer) {
 			this.close();
 			return true;
 		}
@@ -134,11 +119,8 @@ class NewServerView extends React.Component {
 	}
 
 	close = () => {
-		const { selectServer, currentServer, finishAdd } = this.props;
-		if (this.previousServer !== currentServer) {
-			selectServer(this.previousServer);
-		}
-		finishAdd();
+		const { selectServer, previousServer } = this.props;
+		selectServer(previousServer);
 	}
 
 	handleNewServerEvent = (event) => {
@@ -344,15 +326,14 @@ class NewServerView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	connecting: state.server.connecting
+	connecting: state.server.connecting,
+	adding: state.server.adding,
+	previousServer: state.server.previousServer
 });
 
 const mapDispatchToProps = dispatch => ({
 	connectServer: (server, certificate) => dispatch(serverRequest(server, certificate)),
-	initAdd: () => dispatch(serverInitAdd()),
-	finishAdd: () => dispatch(serverFinishAdd()),
-	selectServer: server => dispatch(selectServerRequest(server)),
-	appStart: root => dispatch(appStartAction(root))
+	selectServer: server => dispatch(selectServerRequest(server))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(NewServerView));

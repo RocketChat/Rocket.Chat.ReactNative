@@ -13,7 +13,6 @@ import I18n from '../i18n';
 import { LegalButton } from '../containers/HeaderButton';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
-import { themedHeader } from '../utils/navigation';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import TextInput from '../containers/TextInput';
 import { loginRequest as loginRequestAction } from '../actions/login';
@@ -51,14 +50,10 @@ const styles = StyleSheet.create({
 });
 
 class LoginView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const title = navigation.getParam('title', 'Rocket.Chat');
-		return {
-			...themedHeader(screenProps.theme),
-			title,
-			headerRight: <LegalButton testID='login-view-more' navigation={navigation} />
-		};
-	}
+	static navigationOptions = ({ route, navigation }) => ({
+		title: route.params?.title ?? 'Rocket.Chat',
+		headerRight: () => <LegalButton testID='login-view-more' navigation={navigation} />
+	})
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -205,11 +200,11 @@ class LoginView extends React.Component {
 	}
 
 	render() {
-		const { Accounts_ShowFormLogin, theme } = this.props;
+		const { Accounts_ShowFormLogin, theme, navigation } = this.props;
 		return (
 			<FormContainer theme={theme} testID='login-view'>
 				<FormContainerInner>
-					<LoginServices separator={Accounts_ShowFormLogin} />
+					<LoginServices separator={Accounts_ShowFormLogin} navigation={navigation} />
 					{this.renderUserForm()}
 				</FormContainerInner>
 			</FormContainer>

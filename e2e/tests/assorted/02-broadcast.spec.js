@@ -28,7 +28,9 @@ describe('Broadcast room', () => {
 		await sleep(1000);
 		await waitFor(element(by.id('create-channel-view'))).toExist().withTimeout(5000);
 		await element(by.id('create-channel-name')).replaceText(`broadcast${ data.random }`);
+		await sleep(1000);
 		await element(by.id('create-channel-broadcast')).tap();
+		await sleep(1000);
 		await element(by.id('create-channel-submit')).tap();
 		await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(60000);
 		await expect(element(by.id('room-view'))).toBeVisible();
