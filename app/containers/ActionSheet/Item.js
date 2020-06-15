@@ -7,7 +7,7 @@ import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 import { Button } from './Button';
 
-const Item = React.memo(({ item, hide, theme }) => {
+export const Item = React.memo(({ item, hide, theme }) => {
 	const onPress = () => {
 		hide();
 		item?.onPress();
@@ -39,5 +39,3 @@ Item.propTypes = {
 	hide: PropTypes.func,
 	theme: PropTypes.string
 };
-
-export default Item;

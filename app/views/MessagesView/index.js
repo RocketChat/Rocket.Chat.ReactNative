@@ -303,4 +303,4 @@ const mapStateToProps = state => ({
 	customEmojis: state.customEmojis
 });
 
-export default connect(mapStateToProps)(withActionSheet(withTheme(MessagesView)));
+export default connect(mapStateToProps)(withTheme(withActionSheet(MessagesView)));

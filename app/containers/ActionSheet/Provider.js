@@ -10,13 +10,11 @@ const context = React.createContext({
 	hideActionSheet: () => {}
 });
 
-export function useActionSheet() {
-	return useContext(context);
-}
+export const useActionSheet = () => useContext(context);
 
 const { Provider, Consumer } = context;
 
-export function withActionSheet(Component) {
+export const withActionSheet = (Component) => {
 	const ConnectedActionSheet = props => (
 		<Consumer>
 			{contexts => <Component {...props} {...contexts} />}
@@ -24,7 +22,7 @@ export function withActionSheet(Component) {
 	);
 	hoistNonReactStatics(ConnectedActionSheet, Component);
 	return ConnectedActionSheet;
-}
+};
 
 export const ActionSheetProvider = React.memo(({ children }) => {
 	const ref = useRef();

@@ -25,9 +25,9 @@ import {
 	useDeviceOrientation
 } from '@react-native-community/hooks';
 
-import Item from './Item';
-import Handle from './Handle';
-import Button from './Button';
+import { Item } from './Item';
+import { Handle } from './Handle';
+import { Button } from './Button';
 import { themes } from '../../constants/colors';
 import styles, { ITEM_HEIGHT } from './styles';
 import { isTablet, isIOS } from '../../utils/deviceInfo';
