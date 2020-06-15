@@ -32,7 +32,8 @@ class MessageActions extends React.Component {
 		Message_AllowEditing_BlockEditInMinutes: PropTypes.number,
 		Message_AllowPinning: PropTypes.bool,
 		Message_AllowStarring: PropTypes.bool,
-		Message_Read_Receipt_Store_Users: PropTypes.bool
+		Message_Read_Receipt_Store_Users: PropTypes.bool,
+		isMasterDetail: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -254,7 +255,7 @@ class MessageActions extends React.Component {
 	}
 
 	handleUnread = async() => {
-		const { message, room } = this.props;
+		const { message, room, isMasterDetail } = this.props;
 		const { id: messageId, ts } = message;
 		const { rid } = room;
 		try {
@@ -270,7 +271,11 @@ class MessageActions extends React.Component {
 						// do nothing
 					}
 				});
-				Navigation.navigate('RoomsListView');
+				if (isMasterDetail) {
+					Navigation.replace('RoomView');
+				} else {
+					Navigation.navigate('RoomsListView');
+				}
 			}
 		} catch (e) {
 			log(e);
@@ -376,8 +381,13 @@ class MessageActions extends React.Component {
 	}
 
 	handleCreateDiscussion = () => {
-		const { message, room: channel } = this.props;
-		Navigation.navigate('CreateDiscussionView', { message, channel });
+		const { message, room: channel, isMasterDetail } = this.props;
+		const params = { message, channel, showCloseModal: true };
+		if (isMasterDetail) {
+			Navigation.navigate('ModalStackNavigator', { screen: 'CreateDiscussionView', params });
+		} else {
+			Navigation.navigate('NewMessageStackNavigator', { screen: 'CreateDiscussionView', params });
+		}
 	}
 
 	handleActionPress = (actionIndex) => {
@@ -450,7 +460,8 @@ const mapStateToProps = state => ({
 	Message_AllowEditing_BlockEditInMinutes: state.settings.Message_AllowEditing_BlockEditInMinutes,
 	Message_AllowPinning: state.settings.Message_AllowPinning,
 	Message_AllowStarring: state.settings.Message_AllowStarring,
-	Message_Read_Receipt_Store_Users: state.settings.Message_Read_Receipt_Store_Users
+	Message_Read_Receipt_Store_Users: state.settings.Message_Read_Receipt_Store_Users,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 export default connect(mapStateToProps)(MessageActions);

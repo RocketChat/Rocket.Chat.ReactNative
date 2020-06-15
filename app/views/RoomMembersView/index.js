@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { FlatList, View } from 'react-native';
 import ActionSheet from 'react-native-action-sheet';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 import * as Haptics from 'expo-haptics';
 import { Q } from '@nozbe/watermelondb';
 
@@ -22,30 +21,17 @@ import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import { themes } from '../../constants/colors';
 import { getUserSelector } from '../../selectors/login';
+import SafeAreaView from '../../containers/SafeAreaView';
+import { goRoom } from '../../utils/goRoom';
 
 const PAGE_SIZE = 25;
 
 class RoomMembersView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const toggleStatus = navigation.getParam('toggleStatus', () => {});
-		const allUsers = navigation.getParam('allUsers');
-		const toggleText = allUsers ? I18n.t('Online') : I18n.t('All');
-		return {
-			title: I18n.t('Members'),
-			...themedHeader(screenProps.theme),
-			headerRight: (
-				<CustomHeaderButtons>
-					<Item title={toggleText} onPress={toggleStatus} testID='room-members-view-toggle-status' />
-				</CustomHeaderButtons>
-			)
-		};
-	}
-
 	static propTypes = {
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		rid: PropTypes.string,
 		members: PropTypes.array,
 		baseUrl: PropTypes.string,
@@ -54,7 +40,8 @@ class RoomMembersView extends React.Component {
 			id: PropTypes.string,
 			token: PropTypes.string
 		}),
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		isMasterDetail: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -63,8 +50,8 @@ class RoomMembersView extends React.Component {
 		this.CANCEL_INDEX = 0;
 		this.MUTE_INDEX = 1;
 		this.actionSheetOptions = [''];
-		const { rid } = props.navigation.state.params;
-		const room = props.navigation.getParam('room');
+		const rid = props.route.params?.rid;
+		const room = props.route.params?.room;
 		this.state = {
 			isLoading: false,
 			allUsers: false,
@@ -87,15 +74,15 @@ class RoomMembersView extends React.Component {
 					}
 				});
 		}
+		this.setHeader();
 	}
 
 	async componentDidMount() {
 		this.mounted = true;
 		this.fetchMembers();
 
-		const { navigation } = this.props;
-		const { rid } = navigation.state.params;
-		navigation.setParams({ toggleStatus: this.toggleStatus });
+		const { route } = this.props;
+		const rid = route.params?.rid;
 		this.permissions = await RocketChat.hasPermission(['mute-user'], rid);
 	}
 
@@ -103,6 +90,20 @@ class RoomMembersView extends React.Component {
 		if (this.subscription && this.subscription.unsubscribe) {
 			this.subscription.unsubscribe();
 		}
+	}
+
+	setHeader = () => {
+		const { allUsers } = this.state;
+		const { navigation } = this.props;
+		const toggleText = allUsers ? I18n.t('Online') : I18n.t('All');
+		navigation.setOptions({
+			title: I18n.t('Members'),
+			headerRight: () => (
+				<CustomHeaderButtons>
+					<Item title={toggleText} onPress={this.toggleStatus} testID='room-members-view-toggle-status' />
+				</CustomHeaderButtons>
+			)
+		});
 	}
 
 	onSearchChangeText = protectedFunction((text) => {
@@ -122,11 +123,11 @@ class RoomMembersView extends React.Component {
 			const query = await subsCollection.query(Q.where('name', item.username)).fetch();
 			if (query.length) {
 				const [room] = query;
-				this.goRoom({ rid: room.rid, name: item.username, room });
+				this.goRoom(room);
 			} else {
 				const result = await RocketChat.createDirectMessage(item.username);
 				if (result.success) {
-					this.goRoom({ rid: result.room._id, name: item.username });
+					this.goRoom({ rid: result.room?._id, name: item.username, t: 'd' });
 				}
 			}
 		} catch (e) {
@@ -180,7 +181,6 @@ class RoomMembersView extends React.Component {
 		const {
 			rid, members, isLoading, allUsers, end
 		} = this.state;
-		const { navigation } = this.props;
 		if (isLoading || end) {
 			return;
 		}
@@ -194,19 +194,21 @@ class RoomMembersView extends React.Component {
 				isLoading: false,
 				end: newMembers.length < PAGE_SIZE
 			});
-			navigation.setParams({ allUsers });
+			this.setHeader();
 		} catch (e) {
 			log(e);
 			this.setState({ isLoading: false });
 		}
 	}
 
-	goRoom = async({ rid, name, room }) => {
-		const { navigation } = this.props;
-		await navigation.popToTop();
-		navigation.navigate('RoomView', {
-			rid, name, t: 'd', room
-		});
+	goRoom = (item) => {
+		const { navigation, isMasterDetail } = this.props;
+		if (isMasterDetail) {
+			navigation.navigate('DrawerNavigator');
+		} else {
+			navigation.popToTop();
+		}
+		goRoom({ item, isMasterDetail });
 	}
 
 	handleMute = async() => {
@@ -261,7 +263,7 @@ class RoomMembersView extends React.Component {
 		} = this.state;
 		const { theme } = this.props;
 		return (
-			<SafeAreaView style={styles.list} testID='room-members-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView testID='room-members-view' theme={theme}>
 				<StatusBar theme={theme} />
 				<FlatList
 					data={filtering ? membersFiltered : members}
@@ -289,7 +291,8 @@ class RoomMembersView extends React.Component {
 
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
-	user: getUserSelector(state)
+	user: getUserSelector(state),
+	isMasterDetail: state.app.isMasterDetail
 });
 
 export default connect(mapStateToProps)(withTheme(RoomMembersView));

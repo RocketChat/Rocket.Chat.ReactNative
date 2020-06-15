@@ -17,6 +17,9 @@ import sharedStyles from '../../views/Styles';
 import { ROW_HEIGHT } from '../../presentation/RoomItem';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
+import { getActiveRoute } from '../../utils/navigation';
+import Navigation from '../../lib/Navigation';
+import { goRoom } from '../../utils/goRoom';
 
 const AVATAR_SIZE = 48;
 const ANIMATION_DURATION = 300;
@@ -71,7 +74,7 @@ const styles = StyleSheet.create({
 
 class NotificationBadge extends React.Component {
 	static propTypes = {
-		navigation: PropTypes.object,
+		isMasterDetail: PropTypes.bool,
 		baseUrl: PropTypes.string,
 		user: PropTypes.object,
 		notification: PropTypes.object,
@@ -102,14 +105,18 @@ class NotificationBadge extends React.Component {
 		return false;
 	}
 
-	componentDidUpdate() {
-		const { notification: { payload }, navigation } = this.props;
-		const navState = this.getNavState(navigation.state);
-		if (payload.rid) {
-			if (navState && navState.routeName === 'RoomView' && navState.params && navState.params.rid === payload.rid) {
-				return;
+	componentDidUpdate(prevProps) {
+		const { notification: { payload } } = this.props;
+		const { notification: { payload: prevPayload } } = prevProps;
+		if (!equal(prevPayload, payload)) {
+			const state = Navigation.navigationRef.current.getRootState();
+			const route = getActiveRoute(state);
+			if (payload.rid) {
+				if (route?.name === 'RoomView' && route.params?.rid === payload.rid) {
+					return;
+				}
+				this.show();
 			}
-			this.show();
 		}
 	}
 
@@ -150,15 +157,8 @@ class NotificationBadge extends React.Component {
 		}
 	}
 
-	getNavState = (routes) => {
-		if (!routes.routes) {
-			return routes;
-		}
-		return this.getNavState(routes.routes[routes.index]);
-	}
-
-	goToRoom = async() => {
-		const { notification, navigation, baseUrl } = this.props;
+	goToRoom = () => {
+		const { notification, isMasterDetail, baseUrl } = this.props;
 		const { payload } = notification;
 		const { rid, type, prid } = payload;
 		if (!rid) {
@@ -167,10 +167,13 @@ class NotificationBadge extends React.Component {
 		const name = type === 'd' ? payload.sender.username : payload.name;
 		// if sub is not on local database, title will be null, so we use payload from notification
 		const { title = name } = notification;
-		await navigation.navigate('RoomsListView');
-		navigation.navigate('RoomView', {
+		const item = {
 			rid, name: title, t: type, prid, baseUrl
-		});
+		};
+		if (isMasterDetail) {
+			Navigation.navigate('DrawerNavigator');
+		}
+		goRoom({ item, isMasterDetail });
 		this.hide();
 	}
 
@@ -234,7 +237,8 @@ class NotificationBadge extends React.Component {
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
 	baseUrl: state.server.server,
-	notification: state.notification
+	notification: state.notification,
+	isMasterDetail: PropTypes.bool
 });
 
 const mapDispatchToProps = dispatch => ({

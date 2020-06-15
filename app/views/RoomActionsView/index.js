@@ -4,7 +4,6 @@ import {
 	View, SectionList, Text, Alert, Share
 } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 import _ from 'lodash';
 
 import Touch from '../../utils/touch';
@@ -24,20 +23,19 @@ import DisclosureIndicator from '../../containers/DisclosureIndicator';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import { CloseModalButton } from '../../containers/HeaderButton';
 import { getUserSelector } from '../../selectors/login';
 import Markdown from '../../containers/markdown';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 class RoomActionsView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
+	static navigationOptions = ({ navigation, isMasterDetail }) => {
 		const options = {
-			...themedHeader(screenProps.theme),
 			title: I18n.t('Actions')
 		};
-		if (screenProps.split) {
-			options.headerLeft = <CloseModalButton navigation={navigation} testID='room-actions-view-close' />;
+		if (isMasterDetail) {
+			options.headerLeft = () => <CloseModalButton navigation={navigation} testID='room-actions-view-close' />;
 		}
 		return options;
 	}
@@ -45,6 +43,7 @@ class RoomActionsView extends React.Component {
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			token: PropTypes.string
@@ -59,10 +58,10 @@ class RoomActionsView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.mounted = false;
-		const room = props.navigation.getParam('room');
-		const member = props.navigation.getParam('member');
-		this.rid = props.navigation.getParam('rid');
-		this.t = props.navigation.getParam('t');
+		const room = props.route.params?.room;
+		const member = props.route.params?.member;
+		this.rid = props.route.params?.rid;
+		this.t = props.route.params?.t;
 		this.state = {
 			room: room || { rid: this.rid, t: this.t },
 			membersCount: 0,
@@ -647,7 +646,7 @@ class RoomActionsView extends React.Component {
 	render() {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView style={styles.container} testID='room-actions-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView testID='room-actions-view' theme={theme}>
 				<StatusBar theme={theme} />
 				<SectionList
 					contentContainerStyle={[styles.contentContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}

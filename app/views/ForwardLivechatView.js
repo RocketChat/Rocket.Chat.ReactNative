@@ -18,14 +18,16 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ForwardLivechatView = ({ forwardRoom, navigation, theme }) => {
+const ForwardLivechatView = ({
+	forwardRoom, navigation, route, theme
+}) => {
 	const [departments, setDepartments] = useState([]);
 	const [departmentId, setDepartment] = useState();
 	const [users, setUsers] = useState([]);
 	const [userId, setUser] = useState();
 	const [room, setRoom] = useState();
 
-	const rid = navigation.getParam('rid');
+	const rid = route.params?.rid;
 
 	const getDepartments = async() => {
 		try {
@@ -137,6 +139,7 @@ const ForwardLivechatView = ({ forwardRoom, navigation, theme }) => {
 ForwardLivechatView.propTypes = {
 	forwardRoom: PropTypes.func,
 	navigation: PropTypes.object,
+	route: PropTypes.object,
 	theme: PropTypes.string
 };
 ForwardLivechatView.navigationOptions = {

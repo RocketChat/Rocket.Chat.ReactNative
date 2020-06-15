@@ -95,6 +95,7 @@ class MessageBox extends Component {
 		typing: PropTypes.func,
 		theme: PropTypes.string,
 		replyCancel: PropTypes.func,
+		isMasterDetail: PropTypes.bool,
 		navigation: PropTypes.object
 	}
 
@@ -183,10 +184,13 @@ class MessageBox extends Component {
 			EventEmiter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
 
-		this.didFocusListener = navigation.addListener('didFocus', () => {
+		this.unsubscribeFocus = navigation.addListener('focus', () => {
 			if (this.tracking && this.tracking.resetTracking) {
 				this.tracking.resetTracking();
 			}
+		});
+		this.unsubscribeBlur = navigation.addListener('blur', () => {
+			this.component?.blur();
 		});
 	}
 
@@ -268,8 +272,11 @@ class MessageBox extends Component {
 		if (this.getSlashCommands && this.getSlashCommands.stop) {
 			this.getSlashCommands.stop();
 		}
-		if (this.didFocusListener && this.didFocusListener.remove) {
-			this.didFocusListener.remove();
+		if (this.unsubscribeFocus) {
+			this.unsubscribeFocus();
+		}
+		if (this.unsubscribeBlur) {
+			this.unsubscribeBlur();
 		}
 		if (isTablet) {
 			EventEmiter.removeListener(KEY_COMMAND, this.handleCommands);
@@ -592,7 +599,13 @@ class MessageBox extends Component {
 	}
 
 	createDiscussion = () => {
-		Navigation.navigate('CreateDiscussionView', { channel: this.room });
+		const { isMasterDetail } = this.props;
+		const params = { channel: this.room, showCloseModal: true };
+		if (isMasterDetail) {
+			Navigation.navigate('ModalStackNavigator', { screen: 'CreateDiscussionView', params });
+		} else {
+			Navigation.navigate('NewMessageStackNavigator', { screen: 'CreateDiscussionView', params });
+		}
 	}
 
 	showUploadModal = (file) => {
@@ -875,7 +888,9 @@ class MessageBox extends Component {
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { showEmojiKeyboard, file } = this.state;
-		const { user, baseUrl, theme } = this.props;
+		const {
+			user, baseUrl, theme, isMasterDetail
+		} = this.props;
 		return (
 			<MessageboxContext.Provider
 				value={{
@@ -903,6 +918,7 @@ class MessageBox extends Component {
 					file={file}
 					close={() => this.setState({ file: {} })}
 					submit={this.sendMediaMessage}
+					isMasterDetail={isMasterDetail}
 				/>
 			</MessageboxContext.Provider>
 		);
@@ -910,6 +926,7 @@ class MessageBox extends Component {
 }
 
 const mapStateToProps = state => ({
+	isMasterDetail: state.app.isMasterDetail,
 	baseUrl: state.server.server,
 	threadsEnabled: state.settings.Threads_enabled,
 	user: getUserSelector(state),
