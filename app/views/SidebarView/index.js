@@ -39,7 +39,7 @@ class Sidebar extends Component {
 		navigation: PropTypes.object,
 		Site_Name: PropTypes.string.isRequired,
 		user: PropTypes.object,
-		activeItemKey: PropTypes.string,
+		state: PropTypes.string,
 		theme: PropTypes.string,
 		loadingServer: PropTypes.bool,
 		useRealName: PropTypes.bool,
@@ -69,8 +69,12 @@ class Sidebar extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { showStatus, isAdmin } = this.state;
 		const {
-			Site_Name, user, baseUrl, activeItemKey, isMasterDetail, useRealName, theme
+			Site_Name, user, baseUrl, state, isMasterDetail, useRealName, theme
 		} = this.props;
+		// Drawer navigation state
+		if (state?.index !== nextProps.state?.index) {
+			return true;
+		}
 		if (nextState.showStatus !== showStatus) {
 			return true;
 		}
@@ -81,9 +85,6 @@ class Sidebar extends Component {
 			return true;
 		}
 		if (nextProps.baseUrl !== baseUrl) {
-			return true;
-		}
-		if (nextProps.activeItemKey !== activeItemKey) {
 			return true;
 		}
 		if (nextProps.theme !== theme) {
@@ -138,9 +139,14 @@ class Sidebar extends Component {
 		navigation.navigate(route);
 	}
 
+	get currentItemKey() {
+		const { state } = this.props;
+		return state.routeNames[state.index];
+	}
+
 	renderAdmin = () => {
 		const { isAdmin } = this.state;
-		const { activeItemKey, theme, isMasterDetail } = this.props;
+		const { theme, isMasterDetail } = this.props;
 		if (!isAdmin) {
 			return null;
 		}
@@ -153,14 +159,14 @@ class Sidebar extends Component {
 					left={<CustomIcon name='shield' size={20} color={themes[theme].titleText} />}
 					onPress={() => Navigation.navigate(routeName)}
 					testID='sidebar-settings'
-					current={activeItemKey === routeName}
+					current={this.currentItemKey === routeName}
 				/>
 			</>
 		);
 	}
 
 	renderNavigation = () => {
-		const { activeItemKey, theme } = this.props;
+		const { theme } = this.props;
 		return (
 			<>
 				<SidebarItem
@@ -168,21 +174,21 @@ class Sidebar extends Component {
 					left={<CustomIcon name='message' size={20} color={themes[theme].titleText} />}
 					onPress={() => this.sidebarNavigate('ChatsStackNavigator')}
 					testID='sidebar-chats'
-					current={activeItemKey === 'ChatsStackNavigator'}
+					current={this.currentItemKey === 'ChatsStackNavigator'}
 				/>
 				<SidebarItem
 					text={I18n.t('Profile')}
 					left={<CustomIcon name='user' size={20} color={themes[theme].titleText} />}
 					onPress={() => this.sidebarNavigate('ProfileStackNavigator')}
 					testID='sidebar-profile'
-					current={activeItemKey === 'ProfileStackNavigator'}
+					current={this.currentItemKey === 'ProfileStackNavigator'}
 				/>
 				<SidebarItem
 					text={I18n.t('Settings')}
 					left={<CustomIcon name='cog' size={20} color={themes[theme].titleText} />}
 					onPress={() => this.sidebarNavigate('SettingsStackNavigator')}
 					testID='sidebar-settings'
-					current={activeItemKey === 'SettingsStackNavigator'}
+					current={this.currentItemKey === 'SettingsStackNavigator'}
 				/>
 				{this.renderAdmin()}
 			</>
