@@ -7,9 +7,7 @@ import { ThemeContext } from '../theme';
 import {
 	defaultHeader, themedHeader, ModalAnimation, StackAnimation
 } from '../utils/navigation';
-import Toast from '../containers/Toast';
 import Sidebar from '../views/SidebarView';
-import InAppNotification from '../containers/InAppNotification';
 
 // Chats Stack
 import RoomView from '../views/RoomView';
@@ -320,16 +318,4 @@ const InsideStackNavigator = () => {
 	);
 };
 
-const RootInsideStack = ({ navigation, route }) => (
-	<>
-		<InsideStackNavigator navigation={navigation} />
-		<InAppNotification navigation={navigation} route={route} />
-		<Toast />
-	</>
-);
-RootInsideStack.propTypes = {
-	navigation: PropTypes.object,
-	route: PropTypes.object
-};
-
-export default RootInsideStack;
+export default InsideStackNavigator;

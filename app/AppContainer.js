@@ -3,14 +3,12 @@ import PropTypes from 'prop-types';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { connect } from 'react-redux';
-import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
 import Navigation from './lib/Navigation';
 import { defaultHeader, getActiveRouteName, navigationTheme } from './utils/navigation';
 import {
 	ROOT_LOADING, ROOT_OUTSIDE, ROOT_NEW_SERVER, ROOT_INSIDE, ROOT_SET_USERNAME, ROOT_BACKGROUND
 } from './actions/app';
-import { ActionSheetProvider } from './containers/ActionSheet';
 
 // Stacks
 import AuthLoadingView from './views/AuthLoadingView';
@@ -53,57 +51,53 @@ const App = React.memo(({ root, isMasterDetail }) => {
 	}, []);
 
 	return (
-		<SafeAreaProvider initialMetrics={initialWindowMetrics}>
-			<ActionSheetProvider>
-				<NavigationContainer
-					theme={navTheme}
-					ref={Navigation.navigationRef}
-					onStateChange={(state) => {
-						const previousRouteName = Navigation.routeNameRef.current;
-						const currentRouteName = getActiveRouteName(state);
-						if (previousRouteName !== currentRouteName) {
-							setCurrentScreen(currentRouteName);
-						}
-						Navigation.routeNameRef.current = currentRouteName;
-					}}
-				>
-					<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
-						<>
-							{root === ROOT_LOADING || root === ROOT_BACKGROUND ? (
-								<Stack.Screen
-									name='AuthLoading'
-									component={AuthLoadingView}
-								/>
-							) : null}
-							{root === ROOT_OUTSIDE || root === ROOT_NEW_SERVER ? (
-								<Stack.Screen
-									name='OutsideStack'
-									component={OutsideStack}
-								/>
-							) : null}
-							{root === ROOT_INSIDE && isMasterDetail ? (
-								<Stack.Screen
-									name='MasterDetailStack'
-									component={MasterDetailStack}
-								/>
-							) : null}
-							{root === ROOT_INSIDE && !isMasterDetail ? (
-								<Stack.Screen
-									name='InsideStack'
-									component={InsideStack}
-								/>
-							) : null}
-							{root === ROOT_SET_USERNAME ? (
-								<Stack.Screen
-									name='SetUsernameStack'
-									component={SetUsernameStack}
-								/>
-							) : null}
-						</>
-					</Stack.Navigator>
-				</NavigationContainer>
-			</ActionSheetProvider>
-		</SafeAreaProvider>
+		<NavigationContainer
+			theme={navTheme}
+			ref={Navigation.navigationRef}
+			onStateChange={(state) => {
+				const previousRouteName = Navigation.routeNameRef.current;
+				const currentRouteName = getActiveRouteName(state);
+				if (previousRouteName !== currentRouteName) {
+					setCurrentScreen(currentRouteName);
+				}
+				Navigation.routeNameRef.current = currentRouteName;
+			}}
+		>
+			<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
+				<>
+					{root === ROOT_LOADING || root === ROOT_BACKGROUND ? (
+						<Stack.Screen
+							name='AuthLoading'
+							component={AuthLoadingView}
+						/>
+					) : null}
+					{root === ROOT_OUTSIDE || root === ROOT_NEW_SERVER ? (
+						<Stack.Screen
+							name='OutsideStack'
+							component={OutsideStack}
+						/>
+					) : null}
+					{root === ROOT_INSIDE && isMasterDetail ? (
+						<Stack.Screen
+							name='MasterDetailStack'
+							component={MasterDetailStack}
+						/>
+					) : null}
+					{root === ROOT_INSIDE && !isMasterDetail ? (
+						<Stack.Screen
+							name='InsideStack'
+							component={InsideStack}
+						/>
+					) : null}
+					{root === ROOT_SET_USERNAME ? (
+						<Stack.Screen
+							name='SetUsernameStack'
+							component={SetUsernameStack}
+						/>
+					) : null}
+				</>
+			</Stack.Navigator>
+		</NavigationContainer>
 	);
 });
 const mapStateToProps = state => ({

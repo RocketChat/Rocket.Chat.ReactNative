@@ -292,16 +292,4 @@ const InsideStackNavigator = React.memo(() => {
 	);
 });
 
-const RootInsideStack = React.memo(({ navigation, route }) => (
-	<>
-		<InsideStackNavigator navigation={navigation} />
-		<InAppNotification navigation={navigation} route={route} />
-		<Toast />
-	</>
-));
-RootInsideStack.propTypes = {
-	navigation: PropTypes.object,
-	route: PropTypes.object
-};
-
-export default RootInsideStack;
+export default InsideStackNavigator;
