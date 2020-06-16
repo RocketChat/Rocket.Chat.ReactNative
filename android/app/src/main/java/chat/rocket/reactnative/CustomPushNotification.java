@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.Date;
+import android.util.Log;
 
 import static com.wix.reactnativenotifications.Defs.NOTIFICATION_RECEIVED_EVENT_NAME;
 
@@ -78,6 +79,14 @@ public class CustomPushNotification extends PushNotification {
         super.postNotification(Integer.parseInt(notId));
 
         notifyReceivedToJS();
+
+        notificationLoad(ejson.serverURL(), ejson.messageId, new Callback() {
+            @Override
+            public void call(Bundle bundle) {
+                String title = bundle.getString("title");
+                Log.d("ROCKETCHAT", title);
+            }
+        });
     }
 
     @Override
@@ -94,12 +103,8 @@ public class CustomPushNotification extends PushNotification {
 
         Bundle bundle = mNotificationProps.asBundle();
         String notId = bundle.getString("notId", "1");
-        String title = bundle.getString("title");
-        String message = bundle.getString("message");
 
         notification
-            .setContentTitle(title)
-            .setContentText(message)
             .setContentIntent(intent)
             .setPriority(Notification.PRIORITY_HIGH)
             .setDefaults(Notification.DEFAULT_ALL)
@@ -300,4 +305,7 @@ public class CustomPushNotification extends PushNotification {
         notification.setDeleteIntent(dismissPendingIntent);
     }
 
+    private void notificationLoad(String server, String messageId, Callback callback) {
+        LoadNotification.load(reactApplicationContext, server, messageId, callback);
+    }
 }
