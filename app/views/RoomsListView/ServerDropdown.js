@@ -3,13 +3,14 @@ import {
 	View, Text, Animated, Easing, TouchableWithoutFeedback, TouchableOpacity, FlatList, Image
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, batch } from 'react-redux';
 import equal from 'deep-equal';
-import { withNavigation } from 'react-navigation';
 import RNUserDefaults from 'rn-user-defaults';
+import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
-import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
+import { selectServerRequest as selectServerRequestAction, serverInitAdd as serverInitAddAction } from '../../actions/server';
+import { appStart as appStartAction, ROOT_NEW_SERVER } from '../../actions/app';
 import styles from './styles';
 import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
@@ -21,10 +22,11 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { KEY_COMMAND, handleCommandSelectServer } from '../../commands';
 import { isTablet } from '../../utils/deviceInfo';
-import { withSplit } from '../../split';
 import { localAuthenticate } from '../../utils/localAuthentication';
 import { showConfirmationAlert } from '../../utils/info';
 import LongPress from '../../utils/longPress';
+import { headerHeight } from '../../containers/Header';
+import { goRoom } from '../../utils/goRoom';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
@@ -32,12 +34,15 @@ const ANIMATION_DURATION = 200;
 class ServerDropdown extends Component {
 	static propTypes = {
 		navigation: PropTypes.object,
+		insets: PropTypes.object,
 		closeServerDropdown: PropTypes.bool,
-		split: PropTypes.bool,
 		server: PropTypes.string,
 		theme: PropTypes.string,
+		isMasterDetail: PropTypes.bool,
+		appStart: PropTypes.func,
 		toggleServerDropdown: PropTypes.func,
-		selectServerRequest: PropTypes.func
+		selectServerRequest: PropTypes.func,
+		initAdd: PropTypes.func
 	}
 
 	constructor(props) {
@@ -122,28 +127,35 @@ class ServerDropdown extends Component {
 		).start(() => toggleServerDropdown());
 	}
 
-	addServer = () => {
-		const { server, navigation } = this.props;
+	navToNewServer = (previousServer) => {
+		const { appStart, initAdd } = this.props;
+		batch(() => {
+			appStart({ root: ROOT_NEW_SERVER });
+			initAdd(previousServer);
+		});
+	}
 
+	addServer = () => {
+		const { server } = this.props;
 		this.close();
 		setTimeout(() => {
-			navigation.navigate('NewServerView', { previousServer: server });
+			this.navToNewServer(server);
 		}, ANIMATION_DURATION);
 	}
 
 	select = async(server) => {
 		const {
-			server: currentServer, selectServerRequest, navigation, split
+			server: currentServer, selectServerRequest, isMasterDetail
 		} = this.props;
 		this.close();
 		if (currentServer !== server) {
 			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
-			if (split) {
-				navigation.navigate('RoomView');
+			if (isMasterDetail) {
+				goRoom({ item: {}, isMasterDetail });
 			}
 			if (!userId) {
 				setTimeout(() => {
-					navigation.navigate('NewServerView', { previousServer: currentServer });
+					this.navToNewServer(currentServer);
 					this.newServerTimeout = setTimeout(() => {
 						EventEmitter.emit('NewServer', { server });
 					}, ANIMATION_DURATION);
@@ -225,12 +237,14 @@ class ServerDropdown extends Component {
 
 	render() {
 		const { servers } = this.state;
-		const { theme } = this.props;
+		const { theme, isMasterDetail, insets } = this.props;
 		const maxRows = 4;
 		const initialTop = 41 + (Math.min(servers.length, maxRows) * ROW_HEIGHT);
+		const statusBarHeight = insets?.top ?? 0;
+		const heightDestination = isMasterDetail ? headerHeight + statusBarHeight : 0;
 		const translateY = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [-initialTop, 0]
+			outputRange: [-initialTop, heightDestination]
 		});
 		const backdropOpacity = this.animatedValue.interpolate({
 			inputRange: [0, 1],
@@ -239,7 +253,13 @@ class ServerDropdown extends Component {
 		return (
 			<>
 				<TouchableWithoutFeedback onPress={this.close}>
-					<Animated.View style={[styles.backdrop, { backgroundColor: themes[theme].backdropColor, opacity: backdropOpacity }]} />
+					<Animated.View style={[styles.backdrop,
+						{
+							backgroundColor: themes[theme].backdropColor,
+							opacity: backdropOpacity,
+							top: heightDestination
+						}]}
+					/>
 				</TouchableWithoutFeedback>
 				<Animated.View
 					style={[
@@ -280,12 +300,15 @@ class ServerDropdown extends Component {
 
 const mapStateToProps = state => ({
 	closeServerDropdown: state.rooms.closeServerDropdown,
-	server: state.server.server
+	server: state.server.server,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 const mapDispatchToProps = dispatch => ({
 	toggleServerDropdown: () => dispatch(toggleServerDropdownAction()),
-	selectServerRequest: server => dispatch(selectServerRequestAction(server))
+	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
+	appStart: params => dispatch(appStartAction(params)),
+	initAdd: previousServer => dispatch(serverInitAddAction(previousServer))
 });
 
-export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(withTheme(withSplit(ServerDropdown))));
+export default connect(mapStateToProps, mapDispatchToProps)(withSafeAreaInsets(withTheme(ServerDropdown)));

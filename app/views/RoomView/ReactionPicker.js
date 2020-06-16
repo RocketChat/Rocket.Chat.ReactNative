@@ -8,7 +8,6 @@ import { responsive } from 'react-native-responsive-ui';
 import EmojiPicker from '../../containers/EmojiPicker';
 import styles from './styles';
 import { isAndroid } from '../../utils/deviceInfo';
-import { withSplit } from '../../split';
 
 const margin = isAndroid ? 40 : 20;
 const maxSize = 400;
@@ -19,14 +18,14 @@ class ReactionPicker extends React.Component {
 		window: PropTypes.any,
 		message: PropTypes.object,
 		show: PropTypes.bool,
+		isMasterDetail: PropTypes.bool,
 		reactionClose: PropTypes.func,
-		onEmojiSelected: PropTypes.func,
-		split: PropTypes.bool
+		onEmojiSelected: PropTypes.func
 	};
 
 	shouldComponentUpdate(nextProps) {
-		const { show, window, split } = this.props;
-		return nextProps.show !== show || window.width !== nextProps.window.width || nextProps.split !== split;
+		const { show, window } = this.props;
+		return nextProps.show !== show || window.width !== nextProps.window.width;
 	}
 
 	onEmojiSelected = (emoji, shortname) => {
@@ -39,12 +38,13 @@ class ReactionPicker extends React.Component {
 
 	render() {
 		const {
-			window: { width, height }, show, baseUrl, reactionClose, split
+			window: { width, height }, show, baseUrl, reactionClose, isMasterDetail
 		} = this.props;
 
 		let widthStyle = width - margin;
 		let heightStyle = Math.min(width, height) - (margin * 2);
-		if (split) {
+
+		if (isMasterDetail) {
 			widthStyle = maxSize;
 			heightStyle = maxSize;
 		}
@@ -83,7 +83,8 @@ class ReactionPicker extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.server.server
+	baseUrl: state.server.server,
+	isMasterDetail: state.app.isMasterDetail
 });
 
-export default responsive(connect(mapStateToProps)(withSplit(ReactionPicker)));
+export default responsive(connect(mapStateToProps)(ReactionPicker));

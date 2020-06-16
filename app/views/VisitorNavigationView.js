@@ -37,13 +37,13 @@ Item.propTypes = {
 	theme: PropTypes.string
 };
 
-const VisitorNavigationView = ({ navigation, theme }) => {
+const VisitorNavigationView = ({ route, theme }) => {
 	let offset;
 	let total = 0;
 	const [pages, setPages] = useState([]);
 
 	const getPages = async() => {
-		const rid = navigation.getParam('rid');
+		const rid = route.params?.rid;
 		if (rid) {
 			try {
 				const result = await RocketChat.getPagesLivechat(rid, offset);
@@ -89,7 +89,7 @@ const VisitorNavigationView = ({ navigation, theme }) => {
 };
 VisitorNavigationView.propTypes = {
 	theme: PropTypes.string,
-	navigation: PropTypes.object
+	route: PropTypes.object
 };
 VisitorNavigationView.navigationOptions = {
 	title: I18n.t('Navigation_history')
