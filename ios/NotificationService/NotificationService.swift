@@ -6,6 +6,9 @@ class NotificationService: UNNotificationServiceExtension {
     var contentHandler: ((UNNotificationContent) -> Void)?
     var bestAttemptContent: UNMutableNotificationContent?
 
+    var retryCount = 0
+    var retryTimeout = [1.0, 3.0, 5.0, 10.0]
+
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
@@ -34,25 +37,62 @@ class NotificationService: UNNotificationServiceExtension {
                   request.addValue(userId, forHTTPHeaderField: "x-user-id")
                   request.addValue(token, forHTTPHeaderField: "x-auth-token")
 
-                  let task = URLSession.shared.dataTask(with: request) {(data, response, error) in
-                      guard let data = data else { return }
-                      let json = try? (JSONSerialization.jsonObject(with: data) as! [String: Any])
-                      if let json = json {
-                        if let content = json["message"] as? [String: Any] {
-                            bestAttemptContent.body = content["msg"] as! String
-                          
-                            if let user = content["u"] as? [String: Any] {
-                                bestAttemptContent.title = user["username"] as! String
-                            }
-                        }
-                      }
-                      contentHandler(bestAttemptContent)
-                  }
-
-                  task.resume()
+                  runRequest(request: request, bestAttemptContent: bestAttemptContent, contentHandler: contentHandler)
               }
             }
         }
+    }
+  
+    func runRequest(request: URLRequest, bestAttemptContent: UNMutableNotificationContent, contentHandler: @escaping (UNNotificationContent) -> Void) {
+        let task = URLSession.shared.dataTask(with: request) {(data, response, error) in
+
+        func retryRequest() {
+          // if we can try again
+          if self.retryCount < self.retryTimeout.count {
+            // Try again after X seconds
+            DispatchQueue.main.asyncAfter(deadline: .now() + self.retryTimeout[self.retryCount], execute: {
+              self.runRequest(request: request, bestAttemptContent: bestAttemptContent, contentHandler: contentHandler)
+              self.retryCount += 1;
+            })
+          }
+        }
+
+        // If some error happened
+        if error != nil {
+          retryRequest()
+
+        // Check if the request did successfully
+        } else if let response = response as? HTTPURLResponse {
+            // if it not was successfully
+            if response.statusCode != 200 {
+              retryRequest()
+
+            // If the response status is 200
+            } else {
+                // Process data
+                if let data = data {
+                    // Parse data of response
+                    let json = try? (JSONSerialization.jsonObject(with: data) as! [String: Any])
+                    if let json = json {
+                      // Message
+                      if let content = json["message"] as? [String: Any] {
+                          // Message -> Msg
+                          bestAttemptContent.body = content["msg"] as! String
+                        
+                          // Message -> U -> Username
+                          if let user = content["u"] as? [String: Any] {
+                              bestAttemptContent.title = user["username"] as! String
+                          }
+                      }
+                    }
+                    // Show notification with the content modified
+                    contentHandler(bestAttemptContent)
+                }
+            }
+        }
+      }
+
+      task.resume()
     }
     
     override func serviceExtensionTimeWillExpire() {
