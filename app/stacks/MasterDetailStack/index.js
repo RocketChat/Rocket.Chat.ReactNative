@@ -8,8 +8,6 @@ import { ThemeContext } from '../../theme';
 import {
 	defaultHeader, themedHeader, StackAnimation, FadeFromCenterModal
 } from '../../utils/navigation';
-import Toast from '../../containers/Toast';
-import InAppNotification from '../../containers/InAppNotification';
 import { ModalContainer } from './ModalContainer';
 
 // Chats Stack
