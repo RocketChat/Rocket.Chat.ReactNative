@@ -4,7 +4,7 @@ const {
 const data = require('../data');
 
 async function navigateToWorkspace() {
-    await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(2000);
+    await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(10000);
 	await element(by.id('join-workspace')).tap();
 	await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
 	await element(by.id('new-server-view-input')).replaceText(data.server);

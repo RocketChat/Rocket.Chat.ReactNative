@@ -53,12 +53,29 @@ save-gems-cache: &save-gems-cache
   paths:
     - vendor/bundle
 
-update-fastlane: &update-fastlane
+update-fastlane-ios: &update-fastlane-ios
   name: Update Fastlane
   command: |
     echo "ruby-2.6.4" > ~/.ruby-version
     bundle install
   working_directory: ios
+
+update-fastlane-android: &update-fastlane-android
+  name: Update Fastlane
+  command: |
+    echo "ruby-2.6.4" > ~/.ruby-version
+    bundle install
+  working_directory: android
+
+save-gradle-cache: &save-gradle-cache
+  name: Save gradle cache
+  key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+  paths:
+    - ~/.gradle
+
+restore_cache: &restore-gradle-cache
+  name: Restore gradle cache
+  key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
 
 restore-brew-cache: &restore-brew-cache
   name: Restore Brew cache
@@ -227,9 +244,9 @@ jobs:
 
       - run: *install-npm-modules
 
-      - restore_cache:
-          name: Restore gradle cache
-          key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+      - run: *update-fastlane-android
+
+      - restore_cache: *restore-gradle-cache
 
       - run:
           name: Configure Gradle
@@ -267,14 +284,10 @@ jobs:
           name: Build Android App
           command: |
             if [[ $KEYSTORE ]]; then
-              ./gradlew bundleRelease
+              bundle exec fastlane android release
             else
-              ./gradlew assembleDebug
+              bundle exec fastlane android build
             fi
-
-            mkdir -p /tmp/build
-
-            mv app/build/outputs /tmp/build/
           working_directory: android
 
       - run:
@@ -291,15 +304,40 @@ jobs:
             fi
 
       - store_artifacts:
-          path: /tmp/build/outputs
+          path: android/app/build/outputs
 
       - save_cache: *save-npm-cache-linux
 
-      - save_cache:
-          name: Save gradle cache
-          key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+      - save_cache: *save-gradle-cache
+
+      - persist_to_workspace:
+          root: .
           paths:
-            - ~/.gradle
+            - android/fastlane/report.xml
+            - android/app/build/outputs
+
+  android-google-play-alpha:
+    <<: *defaults
+    docker:
+      - image: circleci/android:api-28-node
+
+    steps:
+      - checkout
+
+      - attach_workspace:
+          at: android
+
+      - run:
+          name: Store the google service account key
+          command: echo "$FASTLANE_GOOGLE_SERVICE_ACCOUNT" | base64 --decode > service_account.json
+          working_directory: android
+
+      - run: *update-fastlane-android
+
+      - run:
+          name: Fastlane Play Store Upload
+          command: bundle exec fastlane android alpha
+          working_directory: android
 
   # iOS builds
   ios-build:
@@ -316,7 +354,7 @@ jobs:
 
       - run: *install-npm-modules
 
-      - run: *update-fastlane
+      - run: *update-fastlane-ios
 
       - run:
           name: Set Google Services
@@ -378,7 +416,7 @@ jobs:
 
       - restore_cache: *restore-gems-cache
 
-      - run: *update-fastlane
+      - run: *update-fastlane-ios
 
       - run:
           name: Fastlane Tesflight Upload
@@ -424,3 +462,10 @@ workflows:
       - android-build:
           requires:
             - lint-testunit
+      - android-hold-google-play-alpha:
+          type: approval
+          requires:
+            - android-build
+      - android-google-play-alpha:
+          requires:
+            - android-hold-google-play-alpha

@@ -9,15 +9,13 @@ import styles from './styles';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
-import { themedHeader } from '../../utils/navigation';
 import ServerAvatar from './ServerAvatar';
 import { getShowLoginButton } from '../../selectors/login';
 
 class WorkspaceView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Your_workspace'),
-		...themedHeader(screenProps.theme)
-	})
+	static navigationOptions = {
+		title: I18n.t('Your_workspace')
+	}
 
 	static propTypes = {
 		navigation: PropTypes.object,

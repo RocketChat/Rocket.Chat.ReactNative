@@ -6,12 +6,11 @@ import parse from 'url-parse';
 
 import RocketChat from '../lib/rocketchat';
 import { isIOS } from '../utils/deviceInfo';
-import { CloseModalButton } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { withTheme } from '../theme';
-import { themedHeader } from '../utils/navigation';
 import debounce from '../utils/debounce';
+import { CloseModalButton } from '../containers/HeaderButton';
 
 const userAgent = isIOS
 	? 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1'
@@ -42,17 +41,9 @@ window.addEventListener('popstate', function() {
 `;
 
 class AuthenticationWebView extends React.PureComponent {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const authType = navigation.getParam('authType', 'oauth');
-		return {
-			...themedHeader(screenProps.theme),
-			headerLeft: <CloseModalButton navigation={navigation} />,
-			title: ['saml', 'cas', 'iframe'].includes(authType) ? 'SSO' : 'OAuth'
-		};
-	}
-
 	static propTypes = {
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		server: PropTypes.string,
 		Accounts_Iframe_api_url: PropTypes.bool,
 		Accounts_Iframe_api_method: PropTypes.bool,
@@ -65,7 +56,6 @@ class AuthenticationWebView extends React.PureComponent {
 			logging: false,
 			loading: false
 		};
-		this.authType = props.navigation.getParam('authType', 'oauth');
 		this.oauthRedirectRegex = new RegExp(`(?=.*(${ props.server }))(?=.*(credentialToken))(?=.*(credentialSecret))`, 'g');
 		this.iframeRedirectRegex = new RegExp(`(?=.*(${ props.server }))(?=.*(event|loginToken|token))`, 'g');
 	}
@@ -74,10 +64,6 @@ class AuthenticationWebView extends React.PureComponent {
 		if (this.debouncedLogin && this.debouncedLogin.stop) {
 			this.debouncedLogin.stop();
 		}
-	}
-
-	get isIframe() {
-		return this.authType === 'iframe';
 	}
 
 	dismiss = () => {
@@ -116,14 +102,15 @@ class AuthenticationWebView extends React.PureComponent {
 
 	onNavigationStateChange = (webViewState) => {
 		const url = decodeURIComponent(webViewState.url);
-		if (this.authType === 'saml' || this.authType === 'cas') {
-			const { navigation } = this.props;
-			const ssoToken = navigation.getParam('ssoToken');
+		const { route } = this.props;
+		const { authType } = route.params;
+		if (authType === 'saml' || authType === 'cas') {
+			const { ssoToken } = route.params;
 			const parsedUrl = parse(url, true);
 			// ticket -> cas / validate & saml_idp_credentialToken -> saml
 			if (parsedUrl.pathname?.includes('validate') || parsedUrl.query?.ticket || parsedUrl.query?.saml_idp_credentialToken) {
 				let payload;
-				if (this.authType === 'saml') {
+				if (authType === 'saml') {
 					const token = parsedUrl.query?.saml_idp_credentialToken || ssoToken;
 					const credentialToken = { credentialToken: token };
 					payload = { ...credentialToken, saml: true };
@@ -134,7 +121,7 @@ class AuthenticationWebView extends React.PureComponent {
 			}
 		}
 
-		if (this.authType === 'oauth') {
+		if (authType === 'oauth') {
 			if (this.oauthRedirectRegex.test(url)) {
 				const parts = url.split('#');
 				const credentials = JSON.parse(parts[1]);
@@ -142,7 +129,7 @@ class AuthenticationWebView extends React.PureComponent {
 			}
 		}
 
-		if (this.authType === 'iframe') {
+		if (authType === 'iframe') {
 			if (this.iframeRedirectRegex.test(url)) {
 				const parts = url.split('#');
 				const credentials = JSON.parse(parts[1]);
@@ -162,18 +149,20 @@ class AuthenticationWebView extends React.PureComponent {
 
 	render() {
 		const { loading } = this.state;
-		const { navigation, theme } = this.props;
-		const uri = navigation.getParam('url');
+		const { route, theme } = this.props;
+		const { url, authType } = route.params;
+		const isIframe = authType === 'iframe';
+
 		return (
 			<>
 				<StatusBar theme={theme} />
 				<WebView
-					source={{ uri }}
+					source={{ uri: url }}
 					userAgent={userAgent}
 					// https://github.com/react-native-community/react-native-webview/issues/24#issuecomment-540130141
 					onMessage={({ nativeEvent }) => this.onNavigationStateChange(nativeEvent)}
 					onNavigationStateChange={this.onNavigationStateChange}
-					injectedJavaScript={this.isIframe ? injectedJavaScript : undefined}
+					injectedJavaScript={isIframe ? injectedJavaScript : undefined}
 					onLoadStart={() => {
 						this.setState({ loading: true });
 					}}
@@ -192,5 +181,13 @@ const mapStateToProps = state => ({
 	Accounts_Iframe_api_url: state.settings.Accounts_Iframe_api_url,
 	Accounts_Iframe_api_method: state.settings.Accounts_Iframe_api_method
 });
+
+AuthenticationWebView.navigationOptions = ({ route, navigation }) => {
+	const { authType } = route.params;
+	return {
+		headerLeft: () => <CloseModalButton navigation={navigation} />,
+		title: ['saml', 'cas', 'iframe'].includes(authType) ? 'SSO' : 'OAuth'
+	};
+};
 
 export default connect(mapStateToProps)(withTheme(AuthenticationWebView));
