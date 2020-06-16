@@ -316,7 +316,7 @@ jobs:
             - android/fastlane/report.xml
             - android/app/build/outputs
 
-  upload-google-play-alpha:
+  android-google-play-alpha:
     <<: *defaults
     docker:
       - image: circleci/android:api-28-node
@@ -466,6 +466,6 @@ workflows:
           type: approval
           requires:
             - android-build
-      - upload-google-play-alpha:
+      - android-google-play-alpha:
           requires:
             - android-hold-google-play-alpha
