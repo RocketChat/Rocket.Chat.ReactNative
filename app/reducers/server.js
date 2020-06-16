@@ -7,7 +7,8 @@ const initialState = {
 	server: '',
 	version: null,
 	loading: true,
-	adding: false
+	adding: false,
+	previousServer: null
 };
 
 
@@ -54,12 +55,14 @@ export default function server(state = initialState, action) {
 		case SERVER.INIT_ADD:
 			return {
 				...state,
-				adding: true
+				adding: true,
+				previousServer: action.previousServer
 			};
 		case SERVER.FINISH_ADD:
 			return {
 				...state,
-				adding: false
+				adding: false,
+				previousServer: null
 			};
 		default:
 			return state;

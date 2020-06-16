@@ -5,10 +5,11 @@ import { setBadgeCount } from '../notifications/push';
 import log from '../utils/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../utils/localAuthentication';
 import { APP_STATE } from '../actions/actionsTypes';
+import { ROOT_OUTSIDE } from '../actions/app';
 
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	const appRoot = yield select(state => state.app.root);
-	if (appRoot === 'outside') {
+	if (appRoot === ROOT_OUTSIDE) {
 		return;
 	}
 	const auth = yield select(state => state.login.isAuthenticated);
@@ -27,7 +28,7 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 
 const appHasComeBackToBackground = function* appHasComeBackToBackground() {
 	const appRoot = yield select(state => state.app.root);
-	if (appRoot === 'outside') {
+	if (appRoot === ROOT_OUTSIDE) {
 		return;
 	}
 	const auth = yield select(state => state.login.isAuthenticated);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, InteractionManager, RefreshControl } from 'react-native';
+import { FlatList, RefreshControl } from 'react-native';
 import PropTypes from 'prop-types';
 import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
@@ -57,7 +57,7 @@ class List extends React.Component {
 			animated: false
 		};
 		this.init();
-		this.didFocusListener = props.navigation.addListener('didFocus', () => {
+		this.unsubscribeFocus = props.navigation.addListener('focus', () => {
 			if (this.mounted) {
 				this.setState({ animated: true });
 			} else {
@@ -106,17 +106,15 @@ class List extends React.Component {
 			this.unsubscribeMessages();
 			this.messagesSubscription = this.messagesObservable
 				.subscribe((data) => {
-					this.interaction = InteractionManager.runAfterInteractions(() => {
-						if (tmid && this.thread) {
-							data = [this.thread, ...data];
-						}
-						const messages = orderBy(data, ['ts'], ['desc']);
-						if (this.mounted) {
-							this.setState({ messages }, () => this.update());
-						} else {
-							this.state.messages = messages;
-						}
-					});
+					if (tmid && this.thread) {
+						data = [this.thread, ...data];
+					}
+					const messages = orderBy(data, ['ts'], ['desc']);
+					if (this.mounted) {
+						this.setState({ messages }, () => this.update());
+					} else {
+						this.state.messages = messages;
+					}
 				});
 		}
 	}
@@ -157,21 +155,18 @@ class List extends React.Component {
 
 	componentWillUnmount() {
 		this.unsubscribeMessages();
-		if (this.interaction && this.interaction.cancel) {
-			this.interaction.cancel();
-		}
 		if (this.onEndReached && this.onEndReached.stop) {
 			this.onEndReached.stop();
 		}
-		if (this.didFocusListener && this.didFocusListener.remove) {
-			this.didFocusListener.remove();
+		if (this.unsubscribeFocus) {
+			this.unsubscribeFocus();
 		}
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
 	onEndReached = debounce(async() => {
 		const {
-			loading, end, messages, latest = messages[messages.length - 1].ts
+			loading, end, messages, latest = messages[messages.length - 1]?.ts
 		} = this.state;
 		if (loading || end) {
 			return;
@@ -188,7 +183,7 @@ class List extends React.Component {
 				result = await RocketChat.loadMessagesForRoom({ rid, t, latest });
 			}
 
-			this.setState({ end: result.length < 50, loading: false, latest: result[result.length - 1].ts }, () => this.loadMoreMessages(result));
+			this.setState({ end: result.length < 50, loading: false, latest: result[result.length - 1]?.ts }, () => this.loadMoreMessages(result));
 		} catch (e) {
 			this.setState({ loading: false });
 			log(e);

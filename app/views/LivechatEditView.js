@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Text, StyleSheet, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { withTheme } from '../theme';
@@ -18,6 +17,7 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 import { getUserSelector } from '../selectors/login';
 import Chips from '../containers/UIKit/MultiSelect/Chips';
 import Button from '../containers/Button';
+import SafeAreaView from '../containers/SafeAreaView';
 
 const styles = StyleSheet.create({
 	container: {
@@ -36,15 +36,17 @@ Title.propTypes = {
 	theme: PropTypes.string
 };
 
-const LivechatEditView = ({ user, navigation, theme }) => {
+const LivechatEditView = ({
+	user, navigation, route, theme
+}) => {
 	const [customFields, setCustomFields] = useState({});
 	const [availableUserTags, setAvailableUserTags] = useState([]);
 
 	const params = {};
 	const inputs = {};
 
-	const livechat = navigation.getParam('room', {});
-	const visitor = navigation.getParam('roomUser', {});
+	const livechat = route.params?.room ?? {};
+	const visitor = route.params?.roomUser ?? {};
 
 	const getCustomFields = async() => {
 		const result = await RocketChat.getCustomFields();
@@ -148,8 +150,8 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 			contentContainerStyle={sharedStyles.container}
 			keyboardVerticalOffset={128}
 		>
-			<ScrollView {...scrollPersistTaps}>
-				<SafeAreaView style={[sharedStyles.container, styles.container]} forceInset={{ vertical: 'never' }}>
+			<ScrollView {...scrollPersistTaps} style={styles.container}>
+				<SafeAreaView theme={theme}>
 					<Title
 						title={visitor?.username}
 						theme={theme}
@@ -271,6 +273,7 @@ const LivechatEditView = ({ user, navigation, theme }) => {
 LivechatEditView.propTypes = {
 	user: PropTypes.object,
 	navigation: PropTypes.object,
+	route: PropTypes.object,
 	theme: PropTypes.string
 };
 LivechatEditView.navigationOptions = ({

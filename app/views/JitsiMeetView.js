@@ -16,6 +16,7 @@ const formatUrl = (url, baseUrl, uriSize, avatarAuthURLFragment) => (
 class JitsiMeetView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		baseUrl: PropTypes.string,
 		user: PropTypes.shape({
 			id: PropTypes.string,
@@ -27,14 +28,14 @@ class JitsiMeetView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.rid = props.navigation.getParam('rid');
+		this.rid = props.route.params?.rid;
 		this.onConferenceTerminated = this.onConferenceTerminated.bind(this);
 		this.onConferenceJoined = this.onConferenceJoined.bind(this);
 		this.jitsiTimeout = null;
 	}
 
 	componentDidMount() {
-		const { navigation, user, baseUrl } = this.props;
+		const { route, user, baseUrl } = this.props;
 		const {
 			name: displayName, id: userId, token, username
 		} = user;
@@ -47,8 +48,8 @@ class JitsiMeetView extends React.Component {
 				displayName,
 				avatar
 			};
-			const url = navigation.getParam('url');
-			const onlyAudio = navigation.getParam('onlyAudio', false);
+			const url = route.params?.url;
+			const onlyAudio = route.params?.onlyAudio ?? false;
 			if (onlyAudio) {
 				JitsiMeet.audioCall(url, userInfo);
 			} else {
