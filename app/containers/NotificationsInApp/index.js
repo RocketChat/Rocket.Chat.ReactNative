@@ -8,6 +8,8 @@ import { responsive } from 'react-native-responsive-ui';
 import { removeNotification as removeNotificationAction } from '../../actions/notification';
 import NotifierComponent from './NotifierComponent';
 import EventEmitter from '../../utils/events';
+import Navigation from '../../lib/Navigation';
+import { getActiveRoute } from '../../utils/navigation';
 
 const ANIMATION_DURATION = 300;
 const NOTIFICATION_DURATION = 3000;
@@ -26,22 +28,22 @@ class NotificationBadge extends React.Component {
 		EventEmitter.addEventListener(LISTENER, this.show);
 	}
 
-	shouldComponentUpdate(nextProps) {
-		const { notification: nextNotification } = nextProps;
-		const {
-			notification: { payload }, window, theme
-		} = this.props;
-		if (nextProps.theme !== theme) {
-			return true;
-		}
-		if (!equal(nextNotification.payload, payload)) {
-			return true;
-		}
-		if (nextProps.window.width !== window.width) {
-			return true;
-		}
-		return false;
-	}
+	// shouldComponentUpdate(nextProps) {
+	// 	const { notification: nextNotification } = nextProps;
+	// 	const {
+	// 		notification: { payload }, window, theme
+	// 	} = this.props;
+	// 	if (nextProps.theme !== theme) {
+	// 		return true;
+	// 	}
+	// 	if (!equal(nextNotification.payload, payload)) {
+	// 		return true;
+	// 	}
+	// 	if (nextProps.window.width !== window.width) {
+	// 		return true;
+	// 	}
+	// 	return false;
+	// }
 
 	componentWillUnmount() {
 		EventEmitter.removeListener(LISTENER);
@@ -50,9 +52,10 @@ class NotificationBadge extends React.Component {
 	show = (notification) => {
 		const { navigation } = this.props;
 		const { payload } = notification;
-		const navState = this.getNavState(navigation.state);
+		const state = Navigation.navigationRef.current.getRootState();
+		const route = getActiveRoute(state);
 		if (payload.rid) {
-			if (navState && navState.routeName === 'RoomView' && navState.params && navState.params.rid === payload.rid) {
+			if (route?.name === 'RoomView' && route.params?.rid === payload.rid) {
 				return;
 			}
 			Notifier.showNotification({
