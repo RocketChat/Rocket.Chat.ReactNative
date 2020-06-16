@@ -55,10 +55,9 @@ public class CustomPushNotification extends PushNotification {
 
     @Override
     public void onReceived() throws InvalidNotificationException {
-        final Bundle bundle = mNotificationProps.asBundle();
+        Bundle bundle = mNotificationProps.asBundle();
 
         String notId = bundle.getString("notId", "1");
-        String title = bundle.getString("title");
 
         if (notificationMessages.get(notId) == null) {
             notificationMessages.put(notId, new ArrayList<Bundle>());
@@ -67,24 +66,22 @@ public class CustomPushNotification extends PushNotification {
         Gson gson = new Gson();
         Ejson ejson = gson.fromJson(bundle.getString("ejson", "{}"), Ejson.class);
 
-        boolean hasSender = ejson.sender != null;
-
-        bundle.putLong("time", new Date().getTime());
-        bundle.putString("username", hasSender ? ejson.sender.username : title);
-        bundle.putString("senderId", hasSender ? ejson.sender._id : "1");
-        bundle.putString("avatarUri", ejson.getAvatarUri());
-
-        notificationMessages.get(notId).add(bundle);
-
-        super.postNotification(Integer.parseInt(notId));
-
-        notifyReceivedToJS();
-
         notificationLoad(ejson.serverURL(), ejson.messageId, new Callback() {
             @Override
-            public void call(Bundle bundle) {
+            public void call(Bundle value) {
+                bundle.putAll(value);
+
+                boolean hasSender = ejson.sender != null;
                 String title = bundle.getString("title");
-                Log.d("ROCKETCHAT", title);
+
+                bundle.putLong("time", new Date().getTime());
+                bundle.putString("username", !hasSender ? ejson.sender.username : title);
+                bundle.putString("senderId", hasSender ? ejson.sender._id : "1");
+                bundle.putString("avatarUri", ejson.getAvatarUri());
+                
+                notificationMessages.get(notId).add(bundle);
+                notifyReceivedToJS();
+                postNotification(Integer.parseInt(notId));
             }
         });
     }
