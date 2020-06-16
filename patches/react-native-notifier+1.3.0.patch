@@ -1,0 +1,61 @@
+diff --git a/node_modules/react-native-notifier/src/Notifier.tsx b/node_modules/react-native-notifier/src/Notifier.tsx
+index 141bc25..ad5119a 100644
+--- a/node_modules/react-native-notifier/src/Notifier.tsx
++++ b/node_modules/react-native-notifier/src/Notifier.tsx
+@@ -139,15 +139,7 @@ export class NotifierRoot extends React.PureComponent<ShowNotificationParams, St
+       return;
+     }
+ 
+-    const {
+-      duration = DEFAULT_DURATION,
+-      title,
+-      description,
+-      swipeEnabled,
+-      Component,
+-      componentProps,
+-      ...restParams
+-    } = params;
++    const { title, description, swipeEnabled, Component, componentProps, ...restParams } = params;
+ 
+     this.setState({
+       title,
+@@ -160,9 +152,7 @@ export class NotifierRoot extends React.PureComponent<ShowNotificationParams, St
+     this.showParams = restParams;
+     this.isShown = true;
+ 
+-    if (duration && !isNaN(duration)) {
+-      this.hideTimer = setTimeout(this.hideNotification, duration);
+-    }
++    this.setHideTimer();
+ 
+     this.translateY.setValue(-DEFAULT_COMPONENT_HEIGHT);
+     Animated.timing(this.translateY, {
+@@ -176,6 +166,14 @@ export class NotifierRoot extends React.PureComponent<ShowNotificationParams, St
+     }).start();
+   }
+ 
++  private setHideTimer() {
++    const { duration = DEFAULT_DURATION } = this.props;
++    clearTimeout(this.hideTimer);
++    if (duration && !isNaN(duration)) {
++      this.hideTimer = setTimeout(this.hideNotification, duration);
++    }
++  }
++
+   private onStartHiding() {
+     this.showParams?.onStartHiding?.();
+     this.isHiding = true;
+@@ -196,9 +194,13 @@ export class NotifierRoot extends React.PureComponent<ShowNotificationParams, St
+   }
+ 
+   private onHandlerStateChange({ nativeEvent }: PanGestureHandlerStateChangeEvent) {
++    if (nativeEvent.state === State.ACTIVE) {
++      clearTimeout(this.hideTimer);
++    }
+     if (nativeEvent.oldState !== State.ACTIVE) {
+       return;
+     }
++    this.setHideTimer();
+ 
+     const swipePixelsToClose = -(this.showParams?.swipePixelsToClose ?? SWIPE_PIXELS_TO_CLOSE);
+     const isSwipedOut = nativeEvent.translationY < swipePixelsToClose;
