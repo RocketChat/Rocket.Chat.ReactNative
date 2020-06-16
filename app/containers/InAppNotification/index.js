@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useEffect } from 'react';
 import { NotifierRoot, Notifier, Easing } from 'react-native-notifier';
 
 import NotifierComponent from './NotifierComponent';
@@ -8,16 +8,8 @@ import { getActiveRoute } from '../../utils/navigation';
 
 export const INAPP_NOTIFICATION_EMITTER = 'NotificationInApp';
 
-class InAppNotification extends React.Component {
-	componentDidMount() {
-		EventEmitter.addEventListener(INAPP_NOTIFICATION_EMITTER, this.show);
-	}
-
-	componentWillUnmount() {
-		EventEmitter.removeListener(INAPP_NOTIFICATION_EMITTER);
-	}
-
-	show = (notification) => {
+const InAppNotification = memo(() => {
+	const show = (notification) => {
 		const { payload } = notification;
 		const state = Navigation.navigationRef.current.getRootState();
 		const route = getActiveRoute(state);
@@ -33,13 +25,16 @@ class InAppNotification extends React.Component {
 				}
 			});
 		}
-	}
+	};
 
-	render() {
-		return (
-			<NotifierRoot />
-		);
-	}
-}
+	useEffect(() => {
+		EventEmitter.addEventListener(INAPP_NOTIFICATION_EMITTER, show);
+		return () => {
+			EventEmitter.removeListener(INAPP_NOTIFICATION_EMITTER);
+		};
+	}, []);
+
+	return <NotifierRoot />;
+});
 
 export default InAppNotification;
