@@ -8,8 +8,6 @@ import { ThemeContext } from '../../theme';
 import {
 	defaultHeader, themedHeader, StackAnimation, FadeFromCenterModal
 } from '../../utils/navigation';
-import Toast from '../../containers/Toast';
-import NotificationBadge from '../../notifications/inApp';
 import { ModalContainer } from './ModalContainer';
 
 // Chats Stack
@@ -292,16 +290,4 @@ const InsideStackNavigator = React.memo(() => {
 	);
 });
 
-const RootInsideStack = React.memo(({ navigation, route }) => (
-	<>
-		<InsideStackNavigator navigation={navigation} />
-		<NotificationBadge navigation={navigation} route={route} />
-		<Toast />
-	</>
-));
-RootInsideStack.propTypes = {
-	navigation: PropTypes.object,
-	route: PropTypes.object
-};
-
-export default RootInsideStack;
+export default InsideStackNavigator;
