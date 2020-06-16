@@ -14,6 +14,7 @@ import buildMessage from '../helpers/buildMessage';
 import RocketChat from '../../rocketchat';
 import EventEmitter from '../../../utils/events';
 import { removedRoom } from '../../../actions/room';
+import { INAPP_NOTIFICATION_EMITTER } from '../../../containers/InAppNotification';
 
 const removeListener = listener => listener.stop();
 
@@ -319,7 +320,7 @@ export default function subscribeRooms() {
 			} catch (e) {
 				// do nothing
 			}
-			EventEmitter.emit('NotificationInApp', notification);
+			EventEmitter.emit(INAPP_NOTIFICATION_EMITTER, notification);
 		}
 		if (/uiInteraction/.test(ev)) {
 			const { type: eventType, ...args } = type;

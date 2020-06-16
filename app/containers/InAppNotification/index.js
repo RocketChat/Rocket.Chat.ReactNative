@@ -8,15 +8,16 @@ import { getActiveRoute } from '../../utils/navigation';
 
 const ANIMATION_DURATION = 300;
 const NOTIFICATION_DURATION = 3000;
-const LISTENER = 'NotificationInApp';
+
+export const INAPP_NOTIFICATION_EMITTER = 'NotificationInApp';
 
 class InAppNotification extends React.Component {
 	componentDidMount() {
-		EventEmitter.addEventListener(LISTENER, this.show);
+		EventEmitter.addEventListener(INAPP_NOTIFICATION_EMITTER, this.show);
 	}
 
 	componentWillUnmount() {
-		EventEmitter.removeListener(LISTENER);
+		EventEmitter.removeListener(INAPP_NOTIFICATION_EMITTER);
 	}
 
 	show = (notification) => {
