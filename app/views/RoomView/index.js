@@ -20,7 +20,7 @@ import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
 import MessageActions from '../../containers/MessageActions';
 import MessageErrorActions from '../../containers/MessageErrorActions';
-import MessageBox from '../../containers/MessageBox/FullScreenComposer';
+import MessageBox from '../../containers/MessageBox';
 import ReactionPicker from './ReactionPicker';
 import UploadProgress from './UploadProgress';
 import styles from './styles';

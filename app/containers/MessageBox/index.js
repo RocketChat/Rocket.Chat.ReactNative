@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Alert, Keyboard } from 'react-native';
+import {
+	View, Alert, Keyboard, StyleSheet, TouchableOpacity, Dimensions
+} from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -8,7 +10,9 @@ import equal from 'deep-equal';
 import DocumentPicker from 'react-native-document-picker';
 import ActionSheet from 'react-native-action-sheet';
 import { Q } from '@nozbe/watermelondb';
+import Animated from 'react-native-reanimated';
 
+import sharedStyles from '../../views/Styles';
 import { generateTriggerId } from '../../lib/methods/actions';
 import TextInput from '../../presentation/TextInput';
 import { userTyping as userTypingAction } from '../../actions/room';
@@ -46,6 +50,40 @@ import CommandsPreview from './CommandsPreview';
 import { Review } from '../../utils/review';
 import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/Navigation';
+import { CustomIcon } from '../../lib/Icons';
+
+const TOP = 0;
+const BOTTOM = Dimensions.get('window').height;
+const stylez = StyleSheet.create({
+	container: {
+		position: 'absolute',
+		right: 0,
+		left: 0,
+		height: '100%'
+	},
+	input: {
+		textAlignVertical: 'top',
+		padding: 15,
+		fontSize: 17,
+		letterSpacing: 0,
+		...sharedStyles.textRegular,
+		height: '80%'
+	},
+	buttons: {
+		flexDirection: 'row',
+		justifyContent: 'space-between'
+	},
+	rightButtons: {
+		flexDirection: 'row'
+	},
+	topButton: {
+		width: '100%',
+		alignItems: 'center',
+		justifyContent: 'center',
+		zIndex: 5,
+		marginBottom: -10
+	}
+});
 
 const imagePickerConfig = {
 	cropping: true,
@@ -111,7 +149,9 @@ class MessageBox extends Component {
 			},
 			commandPreview: [],
 			showCommandPreview: false,
-			command: {}
+			command: {},
+			fullScreenUp: false,
+			translateY: BOTTOM
 		};
 		this.text = '';
 		this.focused = false;
@@ -209,7 +249,7 @@ class MessageBox extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			showEmojiKeyboard, showSend, recording, mentions, file, commandPreview
+			showEmojiKeyboard, showSend, recording, mentions, file, commandPreview, fullScreenUp, translateY
 		} = this.state;
 
 		const {
@@ -246,6 +286,12 @@ class MessageBox extends Component {
 			return true;
 		}
 		if (!equal(nextState.file, file)) {
+			return true;
+		}
+		if (nextState.fullScreenUp !== fullScreenUp) {
+			return true;
+		}
+		if (nextState.translateY !== translateY) {
 			return true;
 		}
 		return false;
@@ -477,7 +523,7 @@ class MessageBox extends Component {
 
 	setCommandPreview = async(command, name, params) => {
 		const { rid } = this.props;
-		try	{
+		try {
 			const { preview } = await RocketChat.getCommandPreview(name, rid, params);
 			this.setState({ commandPreview: preview.items, showCommandPreview: true, command });
 		} catch (e) {
@@ -596,6 +642,11 @@ class MessageBox extends Component {
 	}
 
 	showUploadModal = (file) => {
+		const { fullScreenUp } = this.state;
+
+		if (fullScreenUp) {
+			this.changeComposerState();
+		}
 		this.setState({ file: { ...file, isVisible: true } });
 	}
 
@@ -651,7 +702,11 @@ class MessageBox extends Component {
 		const {
 			rid, tmid, baseUrl: server, user
 		} = this.props;
+		const { fullScreenUp } = this.state;
 
+		if (fullScreenUp) {
+			this.changeComposerState();
+		}
 		this.setState({
 			recording: false
 		});
@@ -674,6 +729,7 @@ class MessageBox extends Component {
 		const {
 			onSubmit, rid: roomId, tmid
 		} = this.props;
+		const { fullScreenUp } = this.state;
 		const message = this.text;
 
 		this.clearInput();
@@ -717,7 +773,7 @@ class MessageBox extends Component {
 			const { id, subscription: { id: rid } } = editingMessage;
 			editRequest({ id, msg: message, rid });
 
-		// Reply
+			// Reply
 		} else if (replying) {
 			const {
 				message: replyingMessage, threadsEnabled, replyWithMention
@@ -727,7 +783,7 @@ class MessageBox extends Component {
 			if (threadsEnabled && replyWithMention) {
 				onSubmit(message, replyingMessage.id);
 
-			// Legacy reply or quote (quote is a reply without mention)
+				// Legacy reply or quote (quote is a reply without mention)
 			} else {
 				const { user, roomType } = this.props;
 				const permalink = await this.getPermalink(replyingMessage);
@@ -743,9 +799,13 @@ class MessageBox extends Component {
 			}
 			replyCancel();
 
-		// Normal message
+			// Normal message
 		} else {
 			onSubmit(message);
+		}
+
+		if (fullScreenUp) {
+			this.changeComposerState();
 		}
 	}
 
@@ -797,13 +857,38 @@ class MessageBox extends Component {
 		}
 	}
 
+	changeComposerState = () => {
+		const { fullScreenUp } = this.state;
+
+		if (fullScreenUp) {
+			this.setState({ translateY: BOTTOM });
+		} else {
+			this.setState({ translateY: TOP });
+		}
+
+		this.setState({ fullScreenUp: !fullScreenUp });
+	}
+
+	renderTopButton = () => {
+		const { fullScreenUp } = this.state;
+		const { theme, editing } = this.props;
+		return (
+			<TouchableOpacity onPress={() => this.changeComposerState()} style={[stylez.topButton, { backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }]}>
+				<CustomIcon name={fullScreenUp ? 'chevron-down' : 'chevron-up'} size={14} color={themes[theme].tintColor} />
+			</TouchableOpacity>
+		);
+	}
+
 	renderContent = () => {
 		const {
-			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview
+			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview, fullScreenUp
 		} = this.state;
 		const {
 			editing, message, replying, replyCancel, user, getCustomEmoji, theme, Message_AudioRecorderEnabled
 		} = this.props;
+		const {
+			text
+		} = this;
 
 		const isAndroidTablet = isTablet && isAndroid ? {
 			multiline: false,
@@ -818,56 +903,120 @@ class MessageBox extends Component {
 			<>
 				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
 				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
-				<View style={[styles.composer, { borderTopColor: themes[theme].separatorColor }]}>
-					<ReplyPreview
-						message={message}
-						close={replyCancel}
-						username={user.username}
-						replying={replying}
-						getCustomEmoji={getCustomEmoji}
+				{fullScreenUp ? (
+					<>
+						<View style={[stylez.buttons, { backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }]}>
+							<LeftButtons
+								theme={theme}
+								showEmojiKeyboard={showEmojiKeyboard}
+								editing={editing}
+								showMessageBoxActions={this.showMessageBoxActions}
+								editCancel={this.editCancel}
+								openEmoji={this.openEmoji}
+								closeEmoji={this.closeEmoji}
+							/>
+							<View style={stylez.rightButtons}>
+								<RightButtons
+									theme={theme}
+									showSend={showSend}
+									submit={this.submit}
+									recordAudioMessage={this.recordAudioMessage}
+									recordAudioMessageEnabled={Message_AudioRecorderEnabled}
+									showMessageBoxActions={this.showMessageBoxActions}
+								/>
+							</View>
+						</View>
+					</>
+				)
+					: (
+						<>
+							<View style={[styles.composer, { borderTopColor: themes[theme].separatorColor }]}>
+								{this.renderTopButton()}
+								<ReplyPreview
+									message={message}
+									close={replyCancel}
+									username={user.username}
+									replying={replying}
+									getCustomEmoji={getCustomEmoji}
+									theme={theme}
+								/>
+								<View
+									style={[
+										styles.textArea,
+										{ backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }
+									]}
+									testID='messagebox'
+								>
+									<LeftButtons
+										theme={theme}
+										showEmojiKeyboard={showEmojiKeyboard}
+										editing={editing}
+										showMessageBoxActions={this.showMessageBoxActions}
+										editCancel={this.editCancel}
+										openEmoji={this.openEmoji}
+										closeEmoji={this.closeEmoji}
+									/>
+									<TextInput
+										ref={component => this.component = component}
+										style={styles.textBoxInput}
+										returnKeyType='default'
+										keyboardType='twitter'
+										blurOnSubmit={false}
+										placeholder={I18n.t('New_Message')}
+										onChangeText={this.onChangeText}
+										underlineColorAndroid='transparent'
+										defaultValue={text}
+										multiline
+										testID='messagebox-input'
+										theme={theme}
+										{...isAndroidTablet}
+									/>
+									<RightButtons
+										theme={theme}
+										showSend={showSend}
+										submit={this.submit}
+										recordAudioMessage={this.recordAudioMessage}
+										recordAudioMessageEnabled={Message_AudioRecorderEnabled}
+										showMessageBoxActions={this.showMessageBoxActions}
+									/>
+								</View>
+							</View>
+						</>
+					)}
+			</>
+		);
+	}
+
+	renderFullScreenComposer = () => {
+		const { text } = this;
+		const { theme, editing } = this.props;
+		const { translateY } = this.state;
+
+		const isAndroidTablet = isTablet && isAndroid ? {
+			onSubmitEditing: this.submit,
+			returnKeyType: 'send'
+		} : {};
+
+		return (
+			<>
+				<Animated.View style={[stylez.container, { transform: [{ translateY }] }, { backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }]}>
+					{this.renderTopButton()}
+					<TextInput
+						ref={component => this.component = component}
+						style={stylez.input}
+						returnKeyType='default'
+						keyboardType='twitter'
+						blurOnSubmit={false}
+						placeholder={I18n.t('New_Message')}
+						onChangeText={this.onChangeText}
+						underlineColorAndroid='transparent'
+						defaultValue={text}
+						multiline
+						testID='messagebox-input'
 						theme={theme}
+						{...isAndroidTablet}
 					/>
-					<View
-						style={[
-							styles.textArea,
-							{ backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }
-						]}
-						testID='messagebox'
-					>
-						<LeftButtons
-							theme={theme}
-							showEmojiKeyboard={showEmojiKeyboard}
-							editing={editing}
-							showMessageBoxActions={this.showMessageBoxActions}
-							editCancel={this.editCancel}
-							openEmoji={this.openEmoji}
-							closeEmoji={this.closeEmoji}
-						/>
-						<TextInput
-							ref={component => this.component = component}
-							style={styles.textBoxInput}
-							returnKeyType='default'
-							keyboardType='twitter'
-							blurOnSubmit={false}
-							placeholder={I18n.t('New_Message')}
-							onChangeText={this.onChangeText}
-							underlineColorAndroid='transparent'
-							defaultValue=''
-							multiline
-							testID='messagebox-input'
-							theme={theme}
-							{...isAndroidTablet}
-						/>
-						<RightButtons
-							theme={theme}
-							showSend={showSend}
-							submit={this.submit}
-							recordAudioMessage={this.recordAudioMessage}
-							recordAudioMessageEnabled={Message_AudioRecorderEnabled}
-							showMessageBoxActions={this.showMessageBoxActions}
-						/>
-					</View>
-				</View>
+				</Animated.View>
 			</>
 		);
 	}
@@ -885,6 +1034,7 @@ class MessageBox extends Component {
 					onPressCommandPreview: this.onPressCommandPreview
 				}}
 			>
+				{this.renderFullScreenComposer()}
 				<KeyboardAccessoryView
 					ref={ref => this.tracking = ref}
 					renderContent={this.renderContent}
