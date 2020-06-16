@@ -5,6 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import Touchable from 'react-native-platform-touchable';
 import { connect } from 'react-redux';
+import { Notifier } from 'react-native-notifier';
 
 import Avatar from '../Avatar';
 import { CustomIcon } from '../../lib/Icons';
@@ -62,13 +63,12 @@ class NotifierComponent extends React.Component {
 		baseUrl: PropTypes.string,
 		user: PropTypes.object,
 		notification: PropTypes.object,
-		theme: PropTypes.string,
-		hideNotification: PropTypes.func
+		theme: PropTypes.string
 	}
 
 	goToRoom = async() => {
 		const {
-			notification, navigation, baseUrl, hideNotification
+			notification, navigation, baseUrl
 		} = this.props;
 		const { payload } = notification;
 		const { rid, type, prid } = payload;
@@ -82,12 +82,14 @@ class NotifierComponent extends React.Component {
 		navigation.navigate('RoomView', {
 			rid, name: title, t: type, prid, baseUrl
 		});
-		hideNotification();
+		this.hideNotification();
 	}
+
+	hideNotification = () => Notifier.hideNotification()
 
 	render() {
 		const {
-			baseUrl, user: { id: userId, token }, notification, theme, hideNotification
+			baseUrl, user: { id: userId, token }, notification, theme
 		} = this.props;
 		const { text, payload } = notification;
 		const { type } = payload;
@@ -95,7 +97,6 @@ class NotifierComponent extends React.Component {
 		// if sub is not on local database, title and avatar will be null, so we use payload from notification
 		const { title = name, avatar = name } = notification;
 
-		// return null;
 		return (
 			<SafeAreaView>
 				<View style={[
@@ -120,7 +121,7 @@ class NotifierComponent extends React.Component {
 							</View>
 						</>
 					</Touchable>
-					<TouchableOpacity onPress={hideNotification}>
+					<TouchableOpacity onPress={this.hideNotification} hitSlop={BUTTON_HIT_SLOP}>
 						<CustomIcon name='Cross' style={[styles.close, { color: themes[theme].titleText }]} size={20} />
 					</TouchableOpacity>
 				</View>
