@@ -28,7 +28,6 @@ platform :android do
 
   desc "Upload App to Play store"
   lane :alpha do
-    changelog_from_git_commits
     upload_to_play_store(
       track: 'alpha', 
       aab: 'android/app/build/outputs/bundle/release/app-release.aab'

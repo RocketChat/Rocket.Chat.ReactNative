@@ -35,7 +35,6 @@ platform :ios do
 
   desc "Submit a new Beta Build to Apple TestFlight"
   lane :beta do
-    changelog_from_git_commits
     pilot(ipa: 'ios/RocketChatRN.ipa')
   end
 
