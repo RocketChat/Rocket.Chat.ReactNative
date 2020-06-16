@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import RNUserDefaults from 'rn-user-defaults';
 import { KeyCommandsEmitter } from 'react-native-keycommands';
 import RNScreens from 'react-native-screens';
+import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
 import {
 	defaultTheme,
@@ -30,6 +31,10 @@ import AppContainer from './AppContainer';
 import TwoFactor from './containers/TwoFactor';
 import ScreenLockedView from './views/ScreenLockedView';
 import ChangePasscodeView from './views/ChangePasscodeView';
+import Toast from './containers/Toast';
+import InAppNotification from './containers/InAppNotification';
+import { ActionSheetProvider } from './containers/ActionSheet';
+
 
 RNScreens.enableScreens();
 
@@ -151,22 +156,28 @@ export default class Root extends React.Component {
 	render() {
 		const { themePreferences, theme } = this.state;
 		return (
-			<AppearanceProvider>
-				<Provider store={store}>
-					<ThemeContext.Provider
-						value={{
-							theme,
-							themePreferences,
-							setTheme: this.setTheme
-						}}
-					>
-						<AppContainer />
-						<TwoFactor />
-						<ScreenLockedView />
-						<ChangePasscodeView />
-					</ThemeContext.Provider>
-				</Provider>
-			</AppearanceProvider>
+			<SafeAreaProvider initialMetrics={initialWindowMetrics}>
+				<AppearanceProvider>
+					<Provider store={store}>
+						<ThemeContext.Provider
+							value={{
+								theme,
+								themePreferences,
+								setTheme: this.setTheme
+							}}
+						>
+							<ActionSheetProvider>
+								<AppContainer />
+								<TwoFactor />
+								<ScreenLockedView />
+								<ChangePasscodeView />
+								<InAppNotification />
+								<Toast />
+							</ActionSheetProvider>
+						</ThemeContext.Provider>
+					</Provider>
+				</AppearanceProvider>
+			</SafeAreaProvider>
 		);
 	}
 }
