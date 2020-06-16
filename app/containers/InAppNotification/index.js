@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import equal from 'deep-equal';
 import { NotifierRoot, Notifier, Easing } from 'react-native-notifier';
 import { responsive } from 'react-native-responsive-ui';
 

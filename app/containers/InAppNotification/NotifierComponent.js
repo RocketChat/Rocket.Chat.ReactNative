@@ -14,6 +14,8 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import { ROW_HEIGHT } from '../../presentation/RoomItem';
+import { goRoom } from '../../utils/goRoom';
+import Navigation from '../../lib/Navigation';
 
 const AVATAR_SIZE = 48;
 const BUTTON_HIT_SLOP = {
@@ -59,16 +61,16 @@ const styles = StyleSheet.create({
 
 class NotifierComponent extends React.Component {
 	static propTypes = {
-		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
 		user: PropTypes.object,
 		notification: PropTypes.object,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		isMasterDetail: PropTypes.bool
 	}
 
-	goToRoom = async() => {
+	goRoom = () => {
 		const {
-			notification, navigation, baseUrl
+			notification, isMasterDetail
 		} = this.props;
 		const { payload } = notification;
 		const { rid, type, prid } = payload;
@@ -78,10 +80,14 @@ class NotifierComponent extends React.Component {
 		const name = type === 'd' ? payload.sender.username : payload.name;
 		// if sub is not on local database, title will be null, so we use payload from notification
 		const { title = name } = notification;
-		await navigation.navigate('RoomsListView');
-		navigation.navigate('RoomView', {
-			rid, name: title, t: type, prid, baseUrl
-		});
+		const item = {
+			rid, name: title, t: type, prid
+		};
+
+		if (isMasterDetail) {
+			Navigation.navigate('DrawerNavigator');
+		}
+		goRoom({ item, isMasterDetail });
 		this.hideNotification();
 	}
 
@@ -109,7 +115,7 @@ class NotifierComponent extends React.Component {
 				>
 					<Touchable
 						style={styles.content}
-						onPress={this.goToRoom}
+						onPress={this.goRoom}
 						hitSlop={BUTTON_HIT_SLOP}
 						background={Touchable.SelectableBackgroundBorderless()}
 					>
@@ -132,7 +138,8 @@ class NotifierComponent extends React.Component {
 
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
-	baseUrl: state.server.server
+	baseUrl: state.server.server,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 export default connect(mapStateToProps)(withTheme(NotifierComponent));
