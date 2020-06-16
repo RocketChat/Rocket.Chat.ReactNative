@@ -9,7 +9,6 @@ import log from '../../../utils/log';
 import random from '../../../utils/random';
 import store from '../../createStore';
 import { roomsRequest } from '../../../actions/rooms';
-import { notificationReceived } from '../../../actions/notification';
 import { handlePayloadUserInteraction } from '../actions';
 import buildMessage from '../helpers/buildMessage';
 import RocketChat from '../../rocketchat';
@@ -321,7 +320,6 @@ export default function subscribeRooms() {
 				// do nothing
 			}
 			EventEmitter.emit('NotificationInApp', notification);
-			store.dispatch(notificationReceived(notification));
 		}
 		if (/uiInteraction/.test(ev)) {
 			const { type: eventType, ...args } = type;

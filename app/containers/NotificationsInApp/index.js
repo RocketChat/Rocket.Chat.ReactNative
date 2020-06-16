@@ -5,7 +5,6 @@ import equal from 'deep-equal';
 import { NotifierRoot, Notifier, Easing } from 'react-native-notifier';
 import { responsive } from 'react-native-responsive-ui';
 
-import { removeNotification as removeNotificationAction } from '../../actions/notification';
 import NotifierComponent from './NotifierComponent';
 import EventEmitter from '../../utils/events';
 import Navigation from '../../lib/Navigation';
@@ -18,10 +17,8 @@ const LISTENER = 'NotificationInApp';
 class NotificationBadge extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
-		notification: PropTypes.object,
 		window: PropTypes.object,
-		theme: PropTypes.string,
-		removeNotification: PropTypes.func
+		theme: PropTypes.string
 	}
 
 	componentDidMount() {
@@ -62,29 +59,14 @@ class NotificationBadge extends React.Component {
 				showAnimationDuration: ANIMATION_DURATION,
 				hideAnimationDuration: ANIMATION_DURATION,
 				duration: NOTIFICATION_DURATION,
-				hideOnPress: false,
 				showEasing: Easing.inOut(Easing.quad),
 				Component: NotifierComponent,
 				componentProps: {
 					navigation,
-					hideNotification: this.hide
+					notification
 				}
 			});
 		}
-	}
-
-
-	hide = () => {
-		const { removeNotification } = this.props;
-		Notifier.hideNotification();
-		removeNotification();
-	}
-
-	getNavState = (routes) => {
-		if (!routes.routes) {
-			return routes;
-		}
-		return this.getNavState(routes.routes[routes.index]);
 	}
 
 	render() {
@@ -94,12 +76,4 @@ class NotificationBadge extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
-	notification: state.notification
-});
-
-const mapDispatchToProps = dispatch => ({
-	removeNotification: () => dispatch(removeNotificationAction())
-});
-
-export default responsive(connect(mapStateToProps, mapDispatchToProps)((NotificationBadge)));
+export default responsive(NotificationBadge);

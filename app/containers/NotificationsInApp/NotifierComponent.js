@@ -89,12 +89,13 @@ class NotifierComponent extends React.Component {
 		const {
 			baseUrl, user: { id: userId, token }, notification, theme, hideNotification
 		} = this.props;
-		const { message, payload } = notification;
+		const { text, payload } = notification;
 		const { type } = payload;
 		const name = type === 'd' ? payload.sender.username : payload.name;
 		// if sub is not on local database, title and avatar will be null, so we use payload from notification
 		const { title = name, avatar = name } = notification;
 
+		// return null;
 		return (
 			<SafeAreaView>
 				<View style={[
@@ -115,7 +116,7 @@ class NotifierComponent extends React.Component {
 							<Avatar text={avatar} size={AVATAR_SIZE} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
 							<View style={styles.inner}>
 								<Text style={[styles.roomName, { color: themes[theme].titleText }]} numberOfLines={1}>{title}</Text>
-								<Text style={[styles.message, { color: themes[theme].titleText }]} numberOfLines={1}>{message}</Text>
+								<Text style={[styles.message, { color: themes[theme].titleText }]} numberOfLines={1}>{text}</Text>
 							</View>
 						</>
 					</Touchable>
@@ -130,8 +131,7 @@ class NotifierComponent extends React.Component {
 
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
-	baseUrl: state.server.server,
-	notification: state.notification
+	baseUrl: state.server.server
 });
 
 export default connect(mapStateToProps)(withTheme(NotifierComponent));
