@@ -1,7 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { NotifierRoot, Notifier, Easing } from 'react-native-notifier';
-import { responsive } from 'react-native-responsive-ui';
 
 import NotifierComponent from './NotifierComponent';
 import EventEmitter from '../../utils/events';
@@ -13,10 +11,6 @@ const NOTIFICATION_DURATION = 3000;
 const LISTENER = 'NotificationInApp';
 
 class InAppNotification extends React.Component {
-	static propTypes = {
-		navigation: PropTypes.object
-	}
-
 	componentDidMount() {
 		EventEmitter.addEventListener(LISTENER, this.show);
 	}
@@ -26,7 +20,6 @@ class InAppNotification extends React.Component {
 	}
 
 	show = (notification) => {
-		const { navigation } = this.props;
 		const { payload } = notification;
 		const state = Navigation.navigationRef.current.getRootState();
 		const route = getActiveRoute(state);
@@ -41,7 +34,6 @@ class InAppNotification extends React.Component {
 				showEasing: Easing.inOut(Easing.quad),
 				Component: NotifierComponent,
 				componentProps: {
-					navigation,
 					notification
 				}
 			});
@@ -55,4 +47,4 @@ class InAppNotification extends React.Component {
 	}
 }
 
-export default responsive(InAppNotification);
+export default InAppNotification;
