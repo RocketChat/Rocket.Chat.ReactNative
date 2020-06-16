@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	StyleSheet, SafeAreaView, View, Text, TouchableOpacity
+	StyleSheet, SafeAreaView, View, Text
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Touchable from 'react-native-platform-touchable';
@@ -127,9 +127,13 @@ class NotifierComponent extends React.Component {
 							</View>
 						</>
 					</Touchable>
-					<TouchableOpacity onPress={this.hideNotification} hitSlop={BUTTON_HIT_SLOP}>
+					<Touchable
+						onPress={this.hideNotification}
+						hitSlop={BUTTON_HIT_SLOP}
+						background={Touchable.SelectableBackgroundBorderless()}
+					>
 						<CustomIcon name='Cross' style={[styles.close, { color: themes[theme].titleText }]} size={20} />
-					</TouchableOpacity>
+					</Touchable>
 				</View>
 			</SafeAreaView>
 		);
