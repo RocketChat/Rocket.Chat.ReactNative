@@ -6,9 +6,6 @@ import EventEmitter from '../../utils/events';
 import Navigation from '../../lib/Navigation';
 import { getActiveRoute } from '../../utils/navigation';
 
-const ANIMATION_DURATION = 300;
-const NOTIFICATION_DURATION = 3000;
-
 export const INAPP_NOTIFICATION_EMITTER = 'NotificationInApp';
 
 class InAppNotification extends React.Component {
@@ -29,9 +26,6 @@ class InAppNotification extends React.Component {
 				return;
 			}
 			Notifier.showNotification({
-				showAnimationDuration: ANIMATION_DURATION,
-				hideAnimationDuration: ANIMATION_DURATION,
-				duration: NOTIFICATION_DURATION,
 				showEasing: Easing.inOut(Easing.quad),
 				Component: NotifierComponent,
 				componentProps: {
