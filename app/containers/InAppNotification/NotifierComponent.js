@@ -11,7 +11,7 @@ import Avatar from '../Avatar';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
+import { useTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import { ROW_HEIGHT } from '../../presentation/RoomItem';
 import { goRoom } from '../../utils/goRoom';
@@ -58,28 +58,24 @@ const styles = StyleSheet.create({
 	}
 });
 
+const hideNotification = () => Notifier.hideNotification();
 
-class NotifierComponent extends React.Component {
-	static propTypes = {
-		baseUrl: PropTypes.string,
-		user: PropTypes.object,
-		notification: PropTypes.object,
-		theme: PropTypes.string,
-		isMasterDetail: PropTypes.bool
-	}
+const NotifierComponent = ({
+	baseUrl, user, notification, isMasterDetail
+}) => {
+	const { theme } = useTheme();
+	const { id: userId, token } = user;
+	const { text, payload } = notification;
+	const { type } = payload;
+	const name = type === 'd' ? payload.sender.username : payload.name;
+	// if sub is not on local database, title and avatar will be null, so we use payload from notification
+	const { title = name, avatar = name } = notification;
 
-	goRoom = () => {
-		const {
-			notification, isMasterDetail
-		} = this.props;
-		const { payload } = notification;
-		const { rid, type, prid } = payload;
+	const onPress = () => {
+		const { rid, prid } = payload;
 		if (!rid) {
 			return;
 		}
-		const name = type === 'd' ? payload.sender.username : payload.name;
-		// if sub is not on local database, title will be null, so we use payload from notification
-		const { title = name } = notification;
 		const item = {
 			rid, name: title, t: type, prid
 		};
@@ -88,57 +84,51 @@ class NotifierComponent extends React.Component {
 			Navigation.navigate('DrawerNavigator');
 		}
 		goRoom({ item, isMasterDetail });
-		this.hideNotification();
-	}
+		hideNotification();
+	};
 
-	hideNotification = () => Notifier.hideNotification()
-
-	render() {
-		const {
-			baseUrl, user: { id: userId, token }, notification, theme
-		} = this.props;
-		const { text, payload } = notification;
-		const { type } = payload;
-		const name = type === 'd' ? payload.sender.username : payload.name;
-		// if sub is not on local database, title and avatar will be null, so we use payload from notification
-		const { title = name, avatar = name } = notification;
-
-		return (
-			<SafeAreaView>
-				<View style={[
-					styles.container,
-					{
-						backgroundColor: themes[theme].focusedBackground,
-						borderColor: themes[theme].separatorColor
-					}
-				]}
+	return (
+		<SafeAreaView>
+			<View style={[
+				styles.container,
+				{
+					backgroundColor: themes[theme].focusedBackground,
+					borderColor: themes[theme].separatorColor
+				}
+			]}
+			>
+				<Touchable
+					style={styles.content}
+					onPress={onPress}
+					hitSlop={BUTTON_HIT_SLOP}
+					background={Touchable.SelectableBackgroundBorderless()}
 				>
-					<Touchable
-						style={styles.content}
-						onPress={this.goRoom}
-						hitSlop={BUTTON_HIT_SLOP}
-						background={Touchable.SelectableBackgroundBorderless()}
-					>
-						<>
-							<Avatar text={avatar} size={AVATAR_SIZE} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
-							<View style={styles.inner}>
-								<Text style={[styles.roomName, { color: themes[theme].titleText }]} numberOfLines={1}>{title}</Text>
-								<Text style={[styles.message, { color: themes[theme].titleText }]} numberOfLines={1}>{text}</Text>
-							</View>
-						</>
-					</Touchable>
-					<Touchable
-						onPress={this.hideNotification}
-						hitSlop={BUTTON_HIT_SLOP}
-						background={Touchable.SelectableBackgroundBorderless()}
-					>
-						<CustomIcon name='Cross' style={[styles.close, { color: themes[theme].titleText }]} size={20} />
-					</Touchable>
-				</View>
-			</SafeAreaView>
-		);
-	}
-}
+					<>
+						<Avatar text={avatar} size={AVATAR_SIZE} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
+						<View style={styles.inner}>
+							<Text style={[styles.roomName, { color: themes[theme].titleText }]} numberOfLines={1}>{title}</Text>
+							<Text style={[styles.message, { color: themes[theme].titleText }]} numberOfLines={1}>{text}</Text>
+						</View>
+					</>
+				</Touchable>
+				<Touchable
+					onPress={hideNotification}
+					hitSlop={BUTTON_HIT_SLOP}
+					background={Touchable.SelectableBackgroundBorderless()}
+				>
+					<CustomIcon name='Cross' style={[styles.close, { color: themes[theme].titleText }]} size={20} />
+				</Touchable>
+			</View>
+		</SafeAreaView>
+	);
+};
+
+NotifierComponent.propTypes = {
+	baseUrl: PropTypes.string,
+	user: PropTypes.object,
+	notification: PropTypes.object,
+	isMasterDetail: PropTypes.bool
+};
 
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
@@ -146,4 +136,4 @@ const mapStateToProps = state => ({
 	isMasterDetail: state.app.isMasterDetail
 });
 
-export default connect(mapStateToProps)(withTheme(NotifierComponent));
+export default connect(mapStateToProps)(NotifierComponent);
