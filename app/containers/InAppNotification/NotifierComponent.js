@@ -1,11 +1,11 @@
 import React from 'react';
-import {
-	StyleSheet, SafeAreaView, View, Text
-} from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import Touchable from 'react-native-platform-touchable';
 import { connect } from 'react-redux';
 import { Notifier } from 'react-native-notifier';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useDeviceOrientation } from '@react-native-community/hooks';
 
 import Avatar from '../Avatar';
 import { CustomIcon } from '../../lib/Icons';
@@ -29,8 +29,9 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		width: '100%',
-		borderBottomWidth: StyleSheet.hairlineWidth
+		marginHorizontal: 10,
+		borderWidth: StyleSheet.hairlineWidth,
+		borderRadius: 4
 	},
 	content: {
 		flex: 1,
@@ -55,6 +56,10 @@ const styles = StyleSheet.create({
 	},
 	close: {
 		marginLeft: 10
+	},
+	small: {
+		width: '50%',
+		alignSelf: 'center'
 	}
 });
 
@@ -64,6 +69,9 @@ const NotifierComponent = React.memo(({
 	baseUrl, user, notification, isMasterDetail
 }) => {
 	const { theme } = useTheme();
+	const insets = useSafeAreaInsets();
+	const { landscape } = useDeviceOrientation();
+
 	const { id: userId, token } = user;
 	const { text, payload } = notification;
 	const { type } = payload;
@@ -88,38 +96,38 @@ const NotifierComponent = React.memo(({
 	};
 
 	return (
-		<SafeAreaView>
-			<View style={[
-				styles.container,
-				{
-					backgroundColor: themes[theme].focusedBackground,
-					borderColor: themes[theme].separatorColor
-				}
-			]}
+		<View style={[
+			styles.container,
+			(isMasterDetail || landscape) && styles.small,
+			{
+				backgroundColor: themes[theme].focusedBackground,
+				borderColor: themes[theme].separatorColor,
+				marginTop: insets.top
+			}
+		]}
+		>
+			<Touchable
+				style={styles.content}
+				onPress={onPress}
+				hitSlop={BUTTON_HIT_SLOP}
+				background={Touchable.SelectableBackgroundBorderless()}
 			>
-				<Touchable
-					style={styles.content}
-					onPress={onPress}
-					hitSlop={BUTTON_HIT_SLOP}
-					background={Touchable.SelectableBackgroundBorderless()}
-				>
-					<>
-						<Avatar text={avatar} size={AVATAR_SIZE} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
-						<View style={styles.inner}>
-							<Text style={[styles.roomName, { color: themes[theme].titleText }]} numberOfLines={1}>{title}</Text>
-							<Text style={[styles.message, { color: themes[theme].titleText }]} numberOfLines={1}>{text}</Text>
-						</View>
-					</>
-				</Touchable>
-				<Touchable
-					onPress={hideNotification}
-					hitSlop={BUTTON_HIT_SLOP}
-					background={Touchable.SelectableBackgroundBorderless()}
-				>
-					<CustomIcon name='Cross' style={[styles.close, { color: themes[theme].titleText }]} size={20} />
-				</Touchable>
-			</View>
-		</SafeAreaView>
+				<>
+					<Avatar text={avatar} size={AVATAR_SIZE} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
+					<View style={styles.inner}>
+						<Text style={[styles.roomName, { color: themes[theme].titleText }]} numberOfLines={1}>{title}</Text>
+						<Text style={[styles.message, { color: themes[theme].titleText }]} numberOfLines={1}>{text}</Text>
+					</View>
+				</>
+			</Touchable>
+			<Touchable
+				onPress={hideNotification}
+				hitSlop={BUTTON_HIT_SLOP}
+				background={Touchable.SelectableBackgroundBorderless()}
+			>
+				<CustomIcon name='Cross' style={[styles.close, { color: themes[theme].titleText }]} size={20} />
+			</Touchable>
+		</View>
 	);
 });
 
