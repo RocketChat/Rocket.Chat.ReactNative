@@ -15,6 +15,7 @@ import styles from './styles';
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
 import { SendButton } from './buttons';
+import { mode as playbackMode } from '../message/Audio';
 
 const RECORDING_PERSIST_DISTANCE = -80;	// Swipe up gesture to persist recording
 const RECORDING_CANCEL_DISTANCE = -120;	// Swipe left gesture to cancel recording
@@ -80,7 +81,7 @@ const startRecordingAudio = async(instance, audioMode, settings, setRecordingSta
 	activateKeepAwake();
 };
 
-const finishRecordingAudio = async(instance, setRecordingPersisted, onFinish) => {
+const finishRecordingAudio = async(instance, setRecordingPersisted, onFinish, setRecordingStatus) => {
 	const uriToPath = uri => decodeURIComponent(uri.replace(/^file:\/\//, ''));
 
 	try {
@@ -88,6 +89,15 @@ const finishRecordingAudio = async(instance, setRecordingPersisted, onFinish) =>
 		const fileData = await RNFetchBlob.fs.stat(uriToPath(fileURI));
 
 		await instance.stopAndUnloadAsync();
+
+		setRecordingStatus({
+			canRecord: true,
+			isRecording: false,
+			durationMillis: 0,
+			isDoneRecording: true
+		});
+
+		await Audio.setAudioModeAsync(playbackMode);
 
 		const fileInfo = {
 			name: `${ Date.now() }.aac`,
@@ -104,22 +114,47 @@ const finishRecordingAudio = async(instance, setRecordingPersisted, onFinish) =>
 	} catch (err) {
 		setRecordingPersisted(false);
 		deactivateKeepAwake();
+
+		setRecordingStatus({
+			canRecord: true,
+			isRecording: false,
+			durationMillis: 0,
+			isDoneRecording: true
+		});
+
+		await Audio.setAudioModeAsync(playbackMode);
 		return onFinish && onFinish(false);
 	}
 };
 
-const cancelAudioMessage = async(instance, onFinish, setRecordingCancelled, setRecordingPersisted) => {
-	await instance.stopAndUnloadAsync();
-	setRecordingCancelled(true);
-	setRecordingPersisted(false);
-	deactivateKeepAwake();
-	return onFinish && onFinish(false);
+const cancelAudioMessage = async(instance, onFinish, setRecordingCancelled, setRecordingPersisted, setRecordingStatus) => {
+	if (instance) {
+		try {
+			await instance.stopAndUnloadAsync();
+			setRecordingStatus({
+				canRecord: true,
+				isRecording: false,
+				durationMillis: 0,
+				isDoneRecording: true
+			});
+			setRecordingCancelled(true);
+			setRecordingPersisted(false);
+			deactivateKeepAwake();
+			await Audio.setAudioModeAsync(playbackMode);
+			return onFinish && onFinish(false);
+		} catch (error) {
+			await Audio.setAudioModeAsync(playbackMode);
+			console.log(error);
+		}
+	}
 };
 
 const RecordAudio = (({ theme, recordingCallback, onFinish }) => {
 	/* Refs */
 	const recordingInstance = useRef();
 	const panRef = useRef(null);
+	const swipeUpRef = useRef(null);
+	const swipeLeftRef = useRef(null);
 	const longPressRef = useRef(null);
 	const touchX = useRef(new Animated.Value(0)).current;
 	const touchY = useRef(new Animated.Value(0)).current;
@@ -137,6 +172,7 @@ const RecordAudio = (({ theme, recordingCallback, onFinish }) => {
 
 	/* Effects */
 	useEffect(() => {
+		console.log('recordingcallback', recordingStatus.isRecording);
 		recordingCallback(recordingStatus.isRecording);
 	}, [recordingStatus.isRecording]);
 
@@ -147,6 +183,10 @@ const RecordAudio = (({ theme, recordingCallback, onFinish }) => {
 		inputRange: [0, 1],
 		outputRange: [0, 80]
 	});
+	// const recordingLeftTranslateX = buttonPressAnim.interpolate({
+	// 	inputRange: [0, 1],
+	// 	outputRange: [40, 0]
+	// });
 
 	const animateButton = (from, to) => {
 		buttonPressAnim.setValue(from);
@@ -154,9 +194,9 @@ const RecordAudio = (({ theme, recordingCallback, onFinish }) => {
 			buttonPressAnim,
 			{
 				toValue: to,
-				duration: 150,
+				duration: 180,
 				easing: Easing.ease,
-				useNativeDriver: false
+				useNativeDriver: true
 			}
 		).start();
 	};
@@ -187,64 +227,134 @@ const RecordAudio = (({ theme, recordingCallback, onFinish }) => {
 
 	/* Functions */
 	const onPanEvent = Animated.event(
-		[{ nativeEvent: { x: touchX, y: touchY } }],
-		{
-			useNativeDriver: false,
-			listener: (e) => {
-				const { nativeEvent } = e;
-				if (recordingInstance.current && recordingStatus.isRecording && !recordingCancelled && !recordingPersisted) {
-					// Swipe left gesture, cancel message
-					if (nativeEvent.x <= RECORDING_CANCEL_DISTANCE) {
-						animateButton(1, 0);
-						cancelAudioMessage(recordingInstance.current, onFinish, setRecordingCancelled, setRecordingPersisted);
-					}
-
-					// Swipe up gesture, persist recording
-					if (nativeEvent.y <= RECORDING_PERSIST_DISTANCE) {
-						buttonPressAnim.setValue(0);
-						setRecordingPersisted(true);
-					}
-				}
-			}
-		}
+		[{ nativeEvent: { x: touchX, y: touchY } }], { useNativeDriver: true }
 	);
 
 	const onLongPressStateChange = ({ nativeEvent }) => {
 		switch (nativeEvent.state) {
 			case State.ACTIVE: {
+				console.log('longpress active');
 				touchY.setValue(0);
 				touchX.setValue(0);
+				setRecordingCancelled(false);
+				setRecordingPersisted(false);
 				if (!recordingStatus.isRecording) {
 					// Start if not recording
 					recordingInstance.current = new Audio.Recording();
 					startRecordingAudio(recordingInstance.current, mode, recordingSettings, setRecordingStatus);
-					setRecordingCancelled(false);
-					setRecordingPersisted(false);
 				} else if (recordingStatus.isRecording && recordingInstance.current) {
 					// Cancel if already recording
-					cancelAudioMessage(recordingInstance.current, onFinish, setRecordingCancelled, setRecordingPersisted);
+					cancelAudioMessage(recordingInstance.current, onFinish, setRecordingCancelled, setRecordingPersisted, setRecordingStatus);
 				}
 				animateButton(0, 1);
 				break;
 			}
 
 			case State.END: {
+				console.log('longpress end');
 				if (!recordingPersisted) {
+					console.log('longpress nonrecordingpersisted', JSON.stringify(recordingStatus));
 					if (recordingStatus.durationMillis > RECORDING_MINIMUM_DURATION && recordingStatus.isRecording) {
+						console.log('finishrecordingaudio');
 						// Finish recording as duration > RECORDING_MINIMUM_DURATION
-						finishRecordingAudio(recordingInstance.current, setRecordingPersisted, onFinish);
+						finishRecordingAudio(recordingInstance.current, setRecordingPersisted, onFinish, setRecordingStatus);
 						animateButton(1, 0);
+						break;
 					}
+					// Recording duration less than RECORDING_MINIMUM_DURATION. Show tooltip and cancel message
+					console.log('cancellongpressrecordingaudio');
+					cancelAudioMessage(recordingInstance.current, onFinish, setRecordingCancelled, setRecordingPersisted, setRecordingStatus);
 					if (recordingStatus.durationMillis <= RECORDING_MINIMUM_DURATION && !recordingCancelled) {
-						// Recording duration less than RECORDING_MINIMUM_DURATION. Show tooltip and cancel message
 						setShowRecordTooltip(true);
 						setTimeout(() => {
 							setShowRecordTooltip(false);
 						}, 1500);
-						cancelAudioMessage(recordingInstance.current, onFinish, setRecordingCancelled, setRecordingPersisted);
 						animateButton(0.7, 0);
 					}
 				}
+				break;
+			}
+
+			case State.CANCELLED: {
+				console.log('longpress cancelled');
+				break;
+			}
+			case State.FAILED: {
+				console.log('longpress failed');
+				break;
+			}
+			case State.UNDETERMINED: {
+				console.log('longpress undertermined');
+				break;
+			}
+			default:
+				break;
+		}
+	};
+
+	const onSwipeLeft = ({ nativeEvent }) => {
+		switch (nativeEvent.state) {
+			case State.ACTIVE: {
+				if (recordingInstance.current && recordingStatus.isRecording && !recordingCancelled && !recordingPersisted) {
+					// Swipe left gesture, cancel message
+					console.log('cancelledcall');
+					cancelAudioMessage(recordingInstance.current, onFinish, setRecordingCancelled, setRecordingPersisted, setRecordingStatus);
+					console.log(JSON.stringify(recordingStatus));
+					animateButton(1, 0);
+				}
+				console.log('OnSwipeLeft active');
+				break;
+			}
+
+			case State.END: {
+				console.log('OnSwipeLeft end');
+				break;
+			}
+
+			case State.CANCELLED: {
+				console.log('OnSwipeLeft cancelled');
+				break;
+			}
+			case State.FAILED: {
+				console.log('OnSwipeLeft failed');
+				break;
+			}
+			case State.UNDETERMINED: {
+				console.log('OnSwipeLeft undertermined');
+				break;
+			}
+			default:
+				break;
+		}
+	};
+
+	const onSwipeUp = ({ nativeEvent }) => {
+		switch (nativeEvent.state) {
+			case State.ACTIVE: {
+				console.log('onSwipeUp active');
+				if (recordingInstance.current && recordingStatus.isRecording && !recordingCancelled && !recordingPersisted) {
+					// Swipe up gesture, persist recording
+					buttonPressAnim.setValue(0);
+					setRecordingPersisted(true);
+				}
+				break;
+			}
+
+			case State.END: {
+				console.log('onSwipeUp end');
+				break;
+			}
+
+			case State.CANCELLED: {
+				console.log('onSwipeUp cancelled');
+				break;
+			}
+			case State.FAILED: {
+				console.log('onSwipeUp failed');
+				break;
+			}
+			case State.UNDETERMINED: {
+				console.log('onSwipeUp undertermined');
 				break;
 			}
 			default:
@@ -270,15 +380,16 @@ const RecordAudio = (({ theme, recordingCallback, onFinish }) => {
 			<SendButton
 				theme={theme}
 				onPress={() => {
-					finishRecordingAudio(recordingInstance.current, setRecordingPersisted, onFinish);
+					finishRecordingAudio(recordingInstance.current, setRecordingPersisted, onFinish, setRecordingStatus);
 				}}
 			/>
 		);
 
 		centerContent = (
 			<TouchableNativeFeedback
+				style={{ height: 23 }}
 				onPress={() => {
-					cancelAudioMessage(recordingInstance.current, onFinish, setRecordingCancelled, setRecordingPersisted);
+					cancelAudioMessage(recordingInstance.current, onFinish, setRecordingCancelled, setRecordingPersisted, setRecordingStatus);
 				}}
 			>
 				<Text style={[styles.cancelRecordingText, { color: themes[theme].titleText, textAlign: 'right' }]}>
@@ -290,7 +401,7 @@ const RecordAudio = (({ theme, recordingCallback, onFinish }) => {
 		recordingButton = (
 			<LongPressGestureHandler
 				ref={longPressRef}
-				simultaneousHandlers={[panRef]}
+				simultaneousHandlers={[panRef, swipeUpRef, swipeLeftRef]}
 				minDurationMs={2}
 				maxDist={300}
 				onHandlerStateChange={onLongPressStateChange}
@@ -301,16 +412,16 @@ const RecordAudio = (({ theme, recordingCallback, onFinish }) => {
 					accessibilityLabel={I18n.t('Send_audio_message')}
 					accessibilityTraits='button'
 				>
-					<CustomIcon name='mic' size={23} color={themes[theme].tintColor} />
+					<CustomIcon name='mic' size={23} color={recordingStatus.isRecording ? themes[theme].focusedBackground : themes[theme].tintColor} />
 					<Animated.View
 						style={{
-							backgroundColor: 'red',
+							backgroundColor: themes[theme].tintColor,
 							position: 'absolute',
-							width: buttonGrow,
-							height: buttonGrow,
+							width: 1,
+							height: 1,
 							zIndex: -1,
 							borderRadius: 200,
-							transform: [{ translateY: persistTranslateY }]
+							transform: [{ translateY: persistTranslateY }, { scale: buttonGrow }]
 						}}
 					/>
 
@@ -324,7 +435,6 @@ const RecordAudio = (({ theme, recordingCallback, onFinish }) => {
 
 					<Text style={[styles.cancelRecordingText, {
 						color: themes[theme].titleText,
-						backgroundColor: 'blue',
 						textAlign: 'right'
 					}]}
 					>
@@ -337,7 +447,6 @@ const RecordAudio = (({ theme, recordingCallback, onFinish }) => {
 
 	const recordTooltip = showRecordTooltip ? (
 		<View style={{
-			backgroundColor: 'red',
 			position: 'absolute',
 			bottom: '130%',
 			right: 1,
@@ -345,13 +454,30 @@ const RecordAudio = (({ theme, recordingCallback, onFinish }) => {
 			zIndex: 100
 		}}
 		>
-			<Text style={{ color: 'white', textAlign: 'right' }}>Hold to record. Release to send.</Text>
+			<View
+				style={{
+					backgroundColor: themes[theme].focusedBackground,
+					alignSelf: 'flex-end',
+					padding: 12,
+					borderRadius: 4,
+					opacity: 0.9
+				}}
+			>
+				<Text style={{ color: themes[theme].infoText }}>
+					Hold to record. Release to send
+				</Text>
+			</View>
+
 		</View>
 	) : null;
 
 	const recordingLeft = recordingStatus.isRecording ? (
-		<View style={[styles.textBoxInput, {
-			flexDirection: 'row', flex: 3, marginHorizontal: 24
+		<Animated.View style={[styles.textBoxInput, {
+			flexDirection: 'row',
+			flex: 3,
+			marginHorizontal: 24
+			// opacity: recordingPersisted ? 1 : buttonPressAnim,
+			// transform: [{ translateX: recordingPersisted ? 0 : recordingLeftTranslateX }]
 		}]}
 		>
 			<View style={{ flex: 1 }}>
@@ -360,7 +486,7 @@ const RecordAudio = (({ theme, recordingCallback, onFinish }) => {
 			<View style={{ flex: 2 }}>
 				{centerContent}
 			</View>
-		</View>
+		</Animated.View>
 	) : null;
 
 
@@ -370,13 +496,34 @@ const RecordAudio = (({ theme, recordingCallback, onFinish }) => {
 
 			<PanGestureHandler
 				ref={panRef}
-				simultaneousHandlers={[longPressRef]}
+				simultaneousHandlers={[longPressRef, swipeUpRef, swipeLeftRef]}
 				onGestureEvent={onPanEvent}
 			>
 				<Animated.View>
-					{recordingButton}
-					{recordTooltip}
+					<PanGestureHandler
+						ref={swipeLeftRef}
+						simultaneousHandlers={[longPressRef, panRef, swipeUpRef]}
+						onHandlerStateChange={onSwipeLeft}
+						failOffsetY={-30}
+						activeOffsetX={RECORDING_CANCEL_DISTANCE}
+					>
+						<Animated.View>
+							<PanGestureHandler
+								ref={swipeUpRef}
+								simultaneousHandlers={[longPressRef, panRef, swipeLeftRef]}
+								onHandlerStateChange={onSwipeUp}
+								failOffsetX={-30}
+								activeOffsetY={RECORDING_PERSIST_DISTANCE}
+							>
+								<Animated.View>
+									{recordingButton}
+									{recordTooltip}
+								</Animated.View>
+							</PanGestureHandler>
+						</Animated.View>
+					</PanGestureHandler>
 				</Animated.View>
+
 			</PanGestureHandler>
 		</>
 	);
