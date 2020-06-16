@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
 
 const hideNotification = () => Notifier.hideNotification();
 
-const NotifierComponent = ({
+const NotifierComponent = React.memo(({
 	baseUrl, user, notification, isMasterDetail
 }) => {
 	const { theme } = useTheme();
@@ -121,7 +121,7 @@ const NotifierComponent = ({
 			</View>
 		</SafeAreaView>
 	);
-};
+});
 
 NotifierComponent.propTypes = {
 	baseUrl: PropTypes.string,
