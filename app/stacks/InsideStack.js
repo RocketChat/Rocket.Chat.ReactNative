@@ -9,7 +9,7 @@ import {
 } from '../utils/navigation';
 import Toast from '../containers/Toast';
 import Sidebar from '../views/SidebarView';
-import NotificationBadge from '../containers/NotificationsInApp';
+import InAppNotification from '../containers/InAppNotification';
 
 // Chats Stack
 import RoomView from '../views/RoomView';
@@ -323,7 +323,7 @@ const InsideStackNavigator = () => {
 const RootInsideStack = ({ navigation, route }) => (
 	<>
 		<InsideStackNavigator navigation={navigation} />
-		<NotificationBadge navigation={navigation} route={route} />
+		<InAppNotification navigation={navigation} route={route} />
 		<Toast />
 	</>
 );

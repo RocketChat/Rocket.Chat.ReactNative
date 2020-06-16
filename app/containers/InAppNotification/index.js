@@ -14,33 +14,14 @@ const ANIMATION_DURATION = 300;
 const NOTIFICATION_DURATION = 3000;
 const LISTENER = 'NotificationInApp';
 
-class NotificationBadge extends React.Component {
+class InAppNotification extends React.Component {
 	static propTypes = {
-		navigation: PropTypes.object,
-		window: PropTypes.object,
-		theme: PropTypes.string
+		navigation: PropTypes.object
 	}
 
 	componentDidMount() {
 		EventEmitter.addEventListener(LISTENER, this.show);
 	}
-
-	// shouldComponentUpdate(nextProps) {
-	// 	const { notification: nextNotification } = nextProps;
-	// 	const {
-	// 		notification: { payload }, window, theme
-	// 	} = this.props;
-	// 	if (nextProps.theme !== theme) {
-	// 		return true;
-	// 	}
-	// 	if (!equal(nextNotification.payload, payload)) {
-	// 		return true;
-	// 	}
-	// 	if (nextProps.window.width !== window.width) {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
 
 	componentWillUnmount() {
 		EventEmitter.removeListener(LISTENER);
@@ -76,4 +57,4 @@ class NotificationBadge extends React.Component {
 	}
 }
 
-export default responsive(NotificationBadge);
+export default responsive(InAppNotification);
