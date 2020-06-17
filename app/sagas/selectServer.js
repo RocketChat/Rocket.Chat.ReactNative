@@ -6,7 +6,6 @@ import semver from 'semver';
 
 import Navigation from '../lib/Navigation';
 import { SERVER } from '../actions/actionsTypes';
-import * as actions from '../actions';
 import {
 	serverFailure, selectServerRequest, selectServerSuccess, selectServerFailure
 } from '../actions/server';
@@ -19,6 +18,7 @@ import { extractHostname } from '../utils/server';
 import I18n from '../i18n';
 import { SERVERS, TOKEN, SERVER_URL } from '../constants/userDefaults';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../utils/fetch';
+import { appStart, ROOT_INSIDE, ROOT_OUTSIDE } from '../actions/app';
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
@@ -103,10 +103,10 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			yield put(clearSettings());
 			yield RocketChat.connect({ server, user, logoutOnError: true });
 			yield put(setUser(user));
-			yield put(actions.appStart('inside'));
+			yield put(appStart({ root: ROOT_INSIDE }));
 		} else {
 			yield RocketChat.connect({ server });
-			yield put(actions.appStart('outside'));
+			yield put(appStart({ root: ROOT_OUTSIDE }));
 		}
 
 		// We can't use yield here because fetch of Settings & Custom Emojis is slower

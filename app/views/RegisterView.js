@@ -13,7 +13,6 @@ import I18n from '../i18n';
 import { LegalButton } from '../containers/HeaderButton';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
-import { themedHeader } from '../utils/navigation';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import TextInput from '../containers/TextInput';
 import isValidEmail from '../utils/isValidEmail';
@@ -53,14 +52,10 @@ const styles = StyleSheet.create({
 });
 
 class RegisterView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const title = navigation.getParam('title', 'Rocket.Chat');
-		return {
-			...themedHeader(screenProps.theme),
-			title,
-			headerRight: <LegalButton navigation={navigation} testID='register-view-more' />
-		};
-	}
+	static navigationOptions = ({ route, navigation }) => ({
+		title: route.params?.title ?? 'Rocket.Chat',
+		headerRight: () => <LegalButton testID='register-view-more' navigation={navigation} />
+	});
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -228,11 +223,11 @@ class RegisterView extends React.Component {
 
 	render() {
 		const { saving } = this.state;
-		const { theme, showLoginButton } = this.props;
+		const { theme, showLoginButton, navigation } = this.props;
 		return (
 			<FormContainer theme={theme} testID='register-view'>
 				<FormContainerInner>
-					<LoginServices />
+					<LoginServices navigation={navigation} />
 					<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Sign_Up')}</Text>
 					<TextInput
 						label='Name'

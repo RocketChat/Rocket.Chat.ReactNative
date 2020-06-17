@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Orientation from 'react-native-orientation-locker';
 
-import { appStart as appStartAction } from '../../actions';
+import { appStart as appStartAction, ROOT_BACKGROUND } from '../../actions/app';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import styles from './styles';
@@ -16,9 +16,9 @@ import { withTheme } from '../../theme';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 
 class OnboardingView extends React.Component {
-	static navigationOptions = () => ({
-		header: null
-	})
+	static navigationOptions = {
+		headerShown: false
+	};
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -28,10 +28,21 @@ class OnboardingView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 		if (!isTablet) {
 			Orientation.lockToPortrait();
 		}
+	}
+
+	componentDidMount() {
+		const { navigation } = this.props;
+		this.unsubscribeFocus = navigation.addListener('focus', () => {
+			this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+		});
+		this.unsubscribeBlur = navigation.addListener('blur', () => {
+			if (this.backHandler && this.backHandler.remove) {
+				this.backHandler.remove();
+			}
+		});
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -43,12 +54,17 @@ class OnboardingView extends React.Component {
 	}
 
 	componentWillUnmount() {
-		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+		if (this.unsubscribeFocus) {
+			this.unsubscribeFocus();
+		}
+		if (this.unsubscribeBlur) {
+			this.unsubscribeBlur();
+		}
 	}
 
 	handleBackPress = () => {
 		const { appStart } = this.props;
-		appStart('background');
+		appStart({ root: ROOT_BACKGROUND });
 		return false;
 	}
 
@@ -98,7 +114,7 @@ class OnboardingView extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-	appStart: root => dispatch(appStartAction(root))
+	appStart: params => dispatch(appStartAction(params))
 });
 
 export default connect(null, mapDispatchToProps)(withTheme(OnboardingView));

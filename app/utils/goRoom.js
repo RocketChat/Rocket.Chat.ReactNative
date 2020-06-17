@@ -1,8 +1,14 @@
 import Navigation from '../lib/Navigation';
 import RocketChat from '../lib/rocketchat';
 
-const navigate = (item) => {
-	Navigation.navigate('RoomView', {
+const navigate = ({ item, isMasterDetail, ...props }) => {
+	let navigationMethod = Navigation.navigate;
+
+	if (isMasterDetail) {
+		navigationMethod = Navigation.replace;
+	}
+
+	navigationMethod('RoomView', {
 		rid: item.rid,
 		name: RocketChat.getRoomTitle(item),
 		t: item.t,
@@ -10,30 +16,32 @@ const navigate = (item) => {
 		room: item,
 		search: item.search,
 		visitor: item.visitor,
-		roomUserId: RocketChat.getUidDirectMessage(item)
+		roomUserId: RocketChat.getUidDirectMessage(item),
+		...props
 	});
 };
 
-export const goRoom = async(item = {}) => {
-	if (!item.search) {
-		return navigate(item);
-	}
-	if (item.t === 'd') {
+export const goRoom = async({ item = {}, isMasterDetail = false, ...props }) => {
+	if (item.t === 'd' && item.search) {
 		// if user is using the search we need first to join/create room
 		try {
 			const { username } = item;
 			const result = await RocketChat.createDirectMessage(username);
 			if (result.success) {
 				return navigate({
-					rid: result.room._id,
-					name: username,
-					t: 'd'
+					item: {
+						rid: result.room._id,
+						name: username,
+						t: 'd'
+					},
+					isMasterDetail,
+					...props
 				});
 			}
 		} catch {
 			// Do nothing
 		}
-	} else {
-		return navigate(item);
 	}
+
+	return navigate({ item, isMasterDetail, ...props });
 };

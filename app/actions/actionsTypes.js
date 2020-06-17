@@ -12,7 +12,8 @@ function createRequestTypes(base, types = defaultTypes) {
 export const LOGIN = createRequestTypes('LOGIN', [
 	...defaultTypes,
 	'SET_SERVICES',
-	'SET_PREFERENCE'
+	'SET_PREFERENCE',
+	'SET_LOCAL_AUTHENTICATED'
 ]);
 export const SHARE = createRequestTypes('SHARE', [
 	'SELECT_SERVER',
@@ -32,7 +33,7 @@ export const ROOMS = createRequestTypes('ROOMS', [
 	'CLOSE_SEARCH_HEADER'
 ]);
 export const ROOM = createRequestTypes('ROOM', ['SUBSCRIBE', 'UNSUBSCRIBE', 'LEAVE', 'DELETE', 'REMOVED', 'CLOSE', 'FORWARD', 'USER_TYPING']);
-export const APP = createRequestTypes('APP', ['START', 'READY', 'INIT', 'INIT_LOCAL_SETTINGS']);
+export const APP = createRequestTypes('APP', ['START', 'READY', 'INIT', 'INIT_LOCAL_SETTINGS', 'SET_MASTER_DETAIL']);
 export const MESSAGES = createRequestTypes('MESSAGES', ['REPLY_BROADCAST']);
 export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [...defaultTypes]);
 export const CREATE_DISCUSSION = createRequestTypes('CREATE_DISCUSSION', [...defaultTypes]);
@@ -50,7 +51,6 @@ export const LOGOUT = 'LOGOUT'; // logout is always success
 export const SNIPPETED_MESSAGES = createRequestTypes('SNIPPETED_MESSAGES', ['OPEN', 'READY', 'CLOSE', 'MESSAGES_RECEIVED']);
 export const DEEP_LINKING = createRequestTypes('DEEP_LINKING', ['OPEN']);
 export const SORT_PREFERENCES = createRequestTypes('SORT_PREFERENCES', ['SET_ALL', 'SET']);
-export const NOTIFICATION = createRequestTypes('NOTIFICATION', ['RECEIVED', 'REMOVE']);
 export const TOGGLE_CRASH_REPORT = 'TOGGLE_CRASH_REPORT';
 export const SET_CUSTOM_EMOJIS = 'SET_CUSTOM_EMOJIS';
 export const SET_ACTIVE_USERS = 'SET_ACTIVE_USERS';

@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	FlatList, Switch, View, StyleSheet
+	FlatList, Switch, View, StyleSheet, ScrollView
 } from 'react-native';
-import { SafeAreaView, ScrollView } from 'react-navigation';
 
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
@@ -15,7 +14,7 @@ import Separator from '../../containers/Separator';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 const styles = StyleSheet.create({
 	contentContainerStyle: {
@@ -49,20 +48,19 @@ SectionSeparator.propTypes = {
 };
 
 class AutoTranslateView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Auto_Translate'),
-		...themedHeader(screenProps.theme)
-	})
+	static navigationOptions = {
+		title: I18n.t('Auto_Translate')
+	}
 
 	static propTypes = {
-		navigation: PropTypes.object,
+		route: PropTypes.object,
 		theme: PropTypes.string
 	}
 
 	constructor(props) {
 		super(props);
-		this.rid = props.navigation.getParam('rid');
-		const room = props.navigation.getParam('room');
+		this.rid = props.route.params?.rid;
+		const room = props.route.params?.room;
 
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
@@ -163,11 +161,7 @@ class AutoTranslateView extends React.Component {
 		const { languages } = this.state;
 		const { theme } = this.props;
 		return (
-			<SafeAreaView
-				style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
-				forceInset={{ vertical: 'never' }}
-				testID='auto-translate-view'
-			>
+			<SafeAreaView testID='auto-translate-view' theme={theme}>
 				<StatusBar theme={theme} />
 				<ScrollView
 					{...scrollPersistTaps}

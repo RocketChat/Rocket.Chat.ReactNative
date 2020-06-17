@@ -61,7 +61,7 @@ export default class DirectoryOptions extends PureComponent {
 		let icon = 'user';
 		if (itemType === 'channels') {
 			text = 'Channels';
-			icon = 'hashtag';
+			icon = 'hash';
 		}
 
 		return (
@@ -100,7 +100,7 @@ export default class DirectoryOptions extends PureComponent {
 					<Touch onPress={this.close} theme={theme}>
 						<View style={[styles.dropdownContainerHeader, styles.dropdownItemContainer, { borderColor: themes[theme].separatorColor }]}>
 							<Text style={[styles.dropdownToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Search_by')}</Text>
-							<CustomIcon style={[styles.dropdownItemIcon, styles.inverted, { color: themes[theme].auxiliaryTintColor }]} size={22} name='arrow-down' />
+							<CustomIcon style={[styles.dropdownItemIcon, styles.inverted, { color: themes[theme].auxiliaryTintColor }]} size={22} name='chevron-down' />
 						</View>
 					</Touch>
 					{this.renderItem('channels')}
