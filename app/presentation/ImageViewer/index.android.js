@@ -8,7 +8,7 @@ import {
 } from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';
 import Animated, { Easing } from 'react-native-reanimated';
-import { connect } from 'react-redux';
+import { withDimensions } from '../../dimensions';
 
 const AnimatedFastImage = Animated.createAnimatedComponent(FastImage);
 
@@ -439,8 +439,4 @@ class ImageViewer extends Component {
 	}
 }
 
-const mapStateToProps = state => ({
-	width: state.dimensions.width
-});
-
-export default connect(mapStateToProps)(ImageViewer);
+export default withDimensions(ImageViewer);

@@ -4,7 +4,6 @@ import createSagaMiddleware from 'redux-saga';
 import reducers from '../reducers';
 import sagas from '../sagas';
 import applyAppStateMiddleware from './appStateMiddleware';
-import applyDimensionsMiddleware from './dimensionsMiddleware';
 
 let sagaMiddleware;
 let enhancers;
@@ -18,7 +17,6 @@ if (__DEV__) {
 
 	enhancers = compose(
 		applyAppStateMiddleware(),
-		applyDimensionsMiddleware(),
 		applyMiddleware(reduxImmutableStateInvariant),
 		applyMiddleware(sagaMiddleware),
 		Reactotron.createEnhancer()
@@ -27,7 +25,6 @@ if (__DEV__) {
 	sagaMiddleware = createSagaMiddleware();
 	enhancers = compose(
 		applyAppStateMiddleware(),
-		applyDimensionsMiddleware(),
 		applyMiddleware(sagaMiddleware)
 	);
 }

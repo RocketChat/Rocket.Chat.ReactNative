@@ -60,6 +60,7 @@ import { getUserSelector } from '../../selectors/login';
 import { goRoom } from '../../utils/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Header from '../../containers/Header';
+import { withDimensions } from '../../dimensions';
 
 const SCROLL_OFFSET = 56;
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
@@ -925,7 +926,6 @@ const mapStateToProps = state => ({
 	useRealName: state.settings.UI_Use_Real_Name,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	StoreLastMessage: state.settings.Store_Last_Message,
-	width: state.dimensions.width,
 	rooms: state.room.rooms
 });
 
@@ -939,4 +939,4 @@ const mapDispatchToProps = dispatch => ({
 	closeServerDropdown: () => dispatch(closeServerDropdownAction())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RoomsListView));
+export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(RoomsListView)));

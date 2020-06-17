@@ -35,6 +35,7 @@ import ChangePasscodeView from './views/ChangePasscodeView';
 import Toast from './containers/Toast';
 import InAppNotification from './containers/InAppNotification';
 import { ActionSheetProvider } from './containers/ActionSheet';
+import debounce from './utils/debounce';
 
 
 RNScreens.enableScreens();
@@ -123,10 +124,11 @@ export default class Root extends React.Component {
 		store.dispatch(setMasterDetailAction(isMasterDetail));
 	};
 
-	onDimensionsChange = ({ window: { width, height, scale } }) => {
+	// Dimensions update fires twice
+	onDimensionsChange = debounce(({ window: { width, height, scale } }) => {
 		this.setDimensions({ width, height, scale });
 		this.setMasterDetail(width);
-	}
+	})
 
 	setTheme = (newTheme = {}) => {
 		// change theme state
@@ -142,7 +144,7 @@ export default class Root extends React.Component {
 	}
 
 	initTablet = () => {
-		const { width } = Dimensions.get('window');
+		const { width } = this.state;
 		this.setMasterDetail(width);
 		this.onKeyCommands = KeyCommandsEmitter.addListener(
 			'onKeyCommand',

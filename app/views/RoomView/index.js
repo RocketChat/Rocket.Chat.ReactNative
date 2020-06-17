@@ -52,6 +52,7 @@ import { CONTAINER_TYPES } from '../../lib/methods/actions';
 import Banner from './Banner';
 import Navigation from '../../lib/Navigation';
 import SafeAreaView from '../../containers/SafeAreaView';
+import { withDimensions } from '../../dimensions';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -1034,13 +1035,11 @@ const mapStateToProps = state => ({
 	customEmojis: state.customEmojis,
 	baseUrl: state.server.server,
 	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled,
-	Hide_System_Messages: state.settings.Hide_System_Messages,
-	width: state.dimensions.width,
-	height: state.dimensions.height
+	Hide_System_Messages: state.settings.Hide_System_Messages
 });
 
 const mapDispatchToProps = dispatch => ({
 	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RoomView));
+export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(RoomView)));

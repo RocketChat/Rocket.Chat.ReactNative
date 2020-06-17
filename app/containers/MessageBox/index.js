@@ -89,7 +89,6 @@ class MessageBox extends Component {
 		theme: PropTypes.string,
 		replyCancel: PropTypes.func,
 		isMasterDetail: PropTypes.bool,
-		width: PropTypes.number,
 		navigation: PropTypes.object,
 		showActionSheet: PropTypes.func
 	}
@@ -884,7 +883,7 @@ class MessageBox extends Component {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { showEmojiKeyboard, file } = this.state;
 		const {
-			user, baseUrl, theme, width, isMasterDetail
+			user, baseUrl, theme, isMasterDetail
 		} = this.props;
 		return (
 			<MessageboxContext.Provider
@@ -913,7 +912,6 @@ class MessageBox extends Component {
 					file={file}
 					close={() => this.setState({ file: {} })}
 					submit={this.sendMediaMessage}
-					width={width}
 					isMasterDetail={isMasterDetail}
 				/>
 			</MessageboxContext.Provider>
@@ -928,8 +926,7 @@ const mapStateToProps = state => ({
 	user: getUserSelector(state),
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
-	Message_AudioRecorderEnabled: state.settings.Message_AudioRecorderEnabled,
-	width: state.dimensions.width
+	Message_AudioRecorderEnabled: state.settings.Message_AudioRecorderEnabled
 });
 
 const dispatchToProps = ({

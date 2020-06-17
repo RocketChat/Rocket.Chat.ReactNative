@@ -17,6 +17,7 @@ import { themes } from '../../constants/colors';
 import { isAndroid, isIOS } from '../../utils/deviceInfo';
 import MessageContext from './Context';
 import ActivityIndicator from '../ActivityIndicator';
+import { withDimensions } from '../../dimensions';
 
 const mode = {
 	allowsRecordingIOS: false,
@@ -137,11 +138,8 @@ class MessageAudio extends React.Component {
 		const {
 			currentTime, duration, paused, loading
 		} = this.state;
-		const { file, theme, scale } = this.props;
+		const { file, theme } = this.props;
 		if (nextProps.theme !== theme) {
-			return true;
-		}
-		if (nextProps.scale !== scale) {
 			return true;
 		}
 		if (nextState.currentTime !== currentTime) {
@@ -287,4 +285,4 @@ class MessageAudio extends React.Component {
 	}
 }
 
-export default MessageAudio;
+export default withDimensions(MessageAudio);

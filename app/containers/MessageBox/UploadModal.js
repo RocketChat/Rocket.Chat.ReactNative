@@ -14,6 +14,7 @@ import { isIOS } from '../../utils/deviceInfo';
 import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
 import { withTheme } from '../../theme';
+import { withDimensions } from '../../dimensions';
 
 const styles = StyleSheet.create({
 	modal: {
@@ -245,4 +246,4 @@ class UploadModal extends Component {
 	}
 }
 
-export default withTheme(UploadModal);
+export default withDimensions(withTheme(UploadModal));

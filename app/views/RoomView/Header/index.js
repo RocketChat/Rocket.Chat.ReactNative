@@ -7,6 +7,7 @@ import Header from './Header';
 import RightButtons from './RightButtons';
 import { withTheme } from '../../../theme';
 import RoomHeaderLeft from './RoomHeaderLeft';
+import { withDimensions } from '../../../dimensions';
 
 class RoomHeaderView extends Component {
 	static propTypes = {
@@ -116,12 +117,10 @@ const mapStateToProps = (state, ownProps) => {
 		connecting: state.meteor.connecting,
 		usersTyping: state.usersTyping,
 		status,
-		statusText,
-		width: state.dimensions.width,
-		height: state.dimensions.height
+		statusText
 	};
 };
 
-export default connect(mapStateToProps)(withTheme(RoomHeaderView));
+export default connect(mapStateToProps)(withDimensions(withTheme(RoomHeaderView)));
 
 export { RightButtons, RoomHeaderLeft };

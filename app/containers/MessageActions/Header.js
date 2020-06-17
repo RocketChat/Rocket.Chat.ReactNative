@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, FlatList, StyleSheet, Dimensions
+	View, Text, FlatList, StyleSheet
 } from 'react-native';
 
 import { withTheme } from '../../theme';
@@ -11,6 +11,7 @@ import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import database from '../../lib/database';
 import { Button } from '../ActionSheet';
+import { useDimensions } from '../../dimensions';
 
 export const HEADER_HEIGHT = 36;
 
@@ -86,6 +87,7 @@ const Header = React.memo(({
 	handleReaction, server, message, theme
 }) => {
 	const [items, setItems] = useState([]);
+	const { width, height } = useDimensions();
 
 	const setEmojis = async() => {
 		try {
@@ -93,7 +95,6 @@ const Header = React.memo(({
 			const freqEmojiCollection = db.collections.get('frequently_used_emojis');
 			let freqEmojis = await freqEmojiCollection.query().fetch();
 
-			const { width, height } = Dimensions.get('window');
 			const isLandscape = width > height;
 			const size = isLandscape ? width / 2 : width;
 			const quantity = (size / 50) - 1;
