@@ -65,12 +65,6 @@ class RoomHeaderView extends Component {
 		if (nextProps.goRoomActionsView !== goRoomActionsView) {
 			return true;
 		}
-		if (nextProps.width !== width) {
-			return true;
-		}
-		if (nextProps.height !== height) {
-			return true;
-		}
 		return false;
 	}
 
