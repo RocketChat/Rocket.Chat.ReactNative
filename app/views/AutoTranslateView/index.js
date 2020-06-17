@@ -59,6 +59,7 @@ class AutoTranslateView extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.mounted = false;
 		this.rid = props.route.params?.rid;
 		const room = props.route.params?.room;
 
@@ -66,7 +67,15 @@ class AutoTranslateView extends React.Component {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable
 				.subscribe((changes) => {
-					this.room = changes;
+					if (this.mounted) {
+						const { selectedLanguage, enableAutoTranslate } = this.state;
+						if (selectedLanguage !== changes.autoTranslateLanguage) {
+							this.setState({ selectedLanguage: changes.autoTranslateLanguage });
+						}
+						if (enableAutoTranslate !== changes.autoTranslate) {
+							this.setState({ enableAutoTranslate: changes.autoTranslate });
+						}
+					}
 				});
 		}
 		this.state = {
@@ -77,6 +86,7 @@ class AutoTranslateView extends React.Component {
 	}
 
 	async componentDidMount() {
+		this.mounted = true;
 		try {
 			const languages = await RocketChat.getSupportedLanguagesAutoTranslate();
 			this.setState({ languages });
