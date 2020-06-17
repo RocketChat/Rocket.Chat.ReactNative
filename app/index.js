@@ -21,6 +21,7 @@ import { initializePushNotifications, onNotification } from './notifications/pus
 import store from './lib/createStore';
 import { loggerConfig, analytics } from './utils/log';
 import { ThemeContext } from './theme';
+import { DimensionsContext } from './dimensions';
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { MIN_WIDTH_MASTER_DETAIL_LAYOUT } from './constants/tablet';
 import {
@@ -57,12 +58,16 @@ export default class Root extends React.Component {
 		super(props);
 		this.init();
 		this.initCrashReport();
+		const { width, height, scale } = Dimensions.get('window');
 		this.state = {
 			theme: defaultTheme(),
 			themePreferences: {
 				currentTheme: supportSystemTheme() ? 'automatic' : 'light',
 				darkLevel: 'dark'
-			}
+			},
+			width,
+			height,
+			scale
 		};
 		if (isTablet) {
 			this.initTablet();
@@ -118,7 +123,8 @@ export default class Root extends React.Component {
 		store.dispatch(setMasterDetailAction(isMasterDetail));
 	};
 
-	onDimensionsChange = ({ window: { width } }) => {
+	onDimensionsChange = ({ window: { width, height, scale } }) => {
+		this.setDimensions({ width, height, scale });
 		this.setMasterDetail(width);
 	}
 
@@ -129,6 +135,10 @@ export default class Root extends React.Component {
 			// subscribe to Appearance changes
 			subscribeTheme(themePreferences, this.setTheme);
 		});
+	}
+
+	setDimensions = ({ width, height, scale }) => {
+		this.setState({ width, height, scale });
 	}
 
 	initTablet = () => {
@@ -154,7 +164,9 @@ export default class Root extends React.Component {
 	}
 
 	render() {
-		const { themePreferences, theme } = this.state;
+		const {
+			themePreferences, theme, width, height, scale
+		} = this.state;
 		return (
 			<SafeAreaProvider initialMetrics={initialWindowMetrics}>
 				<AppearanceProvider>
@@ -166,14 +178,23 @@ export default class Root extends React.Component {
 								setTheme: this.setTheme
 							}}
 						>
-							<ActionSheetProvider>
-								<AppContainer />
-								<TwoFactor />
-								<ScreenLockedView />
-								<ChangePasscodeView />
-								<InAppNotification />
-								<Toast />
-							</ActionSheetProvider>
+							<DimensionsContext.Provider
+								value={{
+									width,
+									height,
+									scale,
+									setDimensions: this.setDimensions
+								}}
+							>
+								<ActionSheetProvider>
+									<AppContainer />
+									<TwoFactor />
+									<ScreenLockedView />
+									<ChangePasscodeView />
+									<InAppNotification />
+									<Toast />
+								</ActionSheetProvider>
+							</DimensionsContext.Provider>
 						</ThemeContext.Provider>
 					</Provider>
 				</AppearanceProvider>
