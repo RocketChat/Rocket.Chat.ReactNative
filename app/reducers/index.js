@@ -9,7 +9,6 @@ import selectedUsers from './selectedUsers';
 import createChannel from './createChannel';
 import app from './app';
 import sortPreferences from './sortPreferences';
-import notification from './notification';
 import share from './share';
 import crashReport from './crashReport';
 import customEmojis from './customEmojis';
@@ -29,7 +28,6 @@ export default combineReducers({
 	room,
 	rooms,
 	sortPreferences,
-	notification,
 	share,
 	crashReport,
 	customEmojis,

@@ -1,28 +1,25 @@
-import { NavigationActions } from 'react-navigation';
+import * as React from 'react';
+import { CommonActions, StackActions } from '@react-navigation/native';
 
-let _navigator;
+const navigationRef = React.createRef();
+const routeNameRef = React.createRef();
 
-function setTopLevelNavigator(navigatorRef) {
-	_navigator = navigatorRef;
+function navigate(name, params) {
+	navigationRef.current?.navigate(name, params);
 }
 
 function back() {
-	_navigator.dispatch(
-		NavigationActions.back()
-	);
+	navigationRef.current?.dispatch(CommonActions.goBack());
 }
 
-function navigate(routeName, params) {
-	_navigator.dispatch(
-		NavigationActions.navigate({
-			routeName,
-			params
-		})
-	);
+function replace(name, params) {
+	navigationRef.current?.dispatch(StackActions.replace(name, params));
 }
 
 export default {
-	back,
+	navigationRef,
+	routeNameRef,
 	navigate,
-	setTopLevelNavigator
+	back,
+	replace
 };

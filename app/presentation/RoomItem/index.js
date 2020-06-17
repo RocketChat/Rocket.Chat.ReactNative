@@ -28,7 +28,8 @@ const attrs = [
 	'favorite',
 	'status',
 	'connected',
-	'theme'
+	'theme',
+	'isFocused'
 ];
 
 const arePropsEqual = (oldProps, newProps) => {
@@ -41,7 +42,39 @@ const arePropsEqual = (oldProps, newProps) => {
 };
 
 const RoomItem = React.memo(({
-	onPress, width, favorite, toggleFav, isRead, rid, toggleRead, hideChannel, testID, unread, userMentions, name, _updatedAt, alert, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, hideUnreadStatus, lastMessage, status, avatar, useRealName, getUserPresence, isGroupChat, connected, theme
+	onPress,
+	width,
+	favorite,
+	toggleFav,
+	isRead,
+	rid,
+	toggleRead,
+	hideChannel,
+	testID,
+	unread,
+	userMentions,
+	name,
+	_updatedAt,
+	alert,
+	type,
+	avatarSize,
+	baseUrl,
+	userId,
+	username,
+	token,
+	id,
+	prid,
+	showLastMessage,
+	hideUnreadStatus,
+	lastMessage,
+	status,
+	avatar,
+	useRealName,
+	getUserPresence,
+	isGroupChat,
+	connected,
+	theme,
+	isFocused
 }) => {
 	useEffect(() => {
 		if (connected && type === 'd' && id) {
@@ -79,6 +112,7 @@ const RoomItem = React.memo(({
 			testID={testID}
 			type={type}
 			theme={theme}
+			isFocused={isFocused}
 		>
 			<View
 				style={styles.container}
@@ -200,7 +234,8 @@ RoomItem.propTypes = {
 	getUserPresence: PropTypes.func,
 	connected: PropTypes.bool,
 	isGroupChat: PropTypes.bool,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	isFocused: PropTypes.bool
 };
 
 RoomItem.defaultProps = {

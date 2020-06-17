@@ -26,6 +26,7 @@ import Thumbs from './Thumbs';
 
 const ShareView = React.memo(({
 	navigation,
+	route,
 	theme,
 	user: {
 		id,
@@ -38,10 +39,35 @@ const ShareView = React.memo(({
 	const [loading, setLoading] = useState(false);
 	const [readOnly, setReadOnly] = useState(false);
 	const [attachments, setAttachments] = useState([]);
-	const [text, setText] = useState(navigation.getParam('text', ''));
-	const shareExtension = navigation.getParam('shareExtension');
-	const files = navigation.getParam('attachments', []);
-	const room = navigation.getParam('room', {});
+	const [text, setText] = useState(route.params?.text ?? '');
+	const shareExtension = route.params?.shareExtension;
+	const files = route.params?.attachments ?? [];
+	const room = route.params?.room ?? { rid };
+
+	// this.setReadOnly();
+	// this.setHeader();
+
+	// setHeader = () => {
+	// 	const { canSend } = this.state;
+	// 	const { navigation } = this.props;
+
+	// 	navigation.setOptions({
+	// 		title: I18n.t('Share'),
+	// 		headerRight:
+	// 			() => (canSend
+	// 				? (
+	// 					<CustomHeaderButtons>
+	// 						<Item
+	// 							title={I18n.t('Send')}
+	// 							onPress={this.sendMessage}
+	// 							testID='send-message-share-view'
+	// 							buttonStyle={styles.send}
+	// 						/>
+	// 					</CustomHeaderButtons>
+	// 				)
+	// 				: null)
+	// 	});
+	// }
 
 	const send = async() => {
 		if (loading) {

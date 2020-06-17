@@ -4,7 +4,6 @@ import {
 	Text, ScrollView, StyleSheet
 } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
 
 import { loginRequest as loginRequestAction } from '../actions/login';
@@ -16,12 +15,12 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 import StatusBar from '../containers/StatusBar';
-import { themedHeader } from '../utils/navigation';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import { isTablet } from '../utils/deviceInfo';
 import { getUserSelector } from '../selectors/login';
 import { showErrorAlert } from '../utils/info';
+import SafeAreaView from '../containers/SafeAreaView';
 
 const styles = StyleSheet.create({
 	loginTitle: {
@@ -31,13 +30,9 @@ const styles = StyleSheet.create({
 });
 
 class SetUsernameView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const title = navigation.getParam('title');
-		return {
-			...themedHeader(screenProps.theme),
-			title
-		};
-	}
+	static navigationOptions = ({ route }) => ({
+		title: route.params?.title
+	})
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -55,7 +50,7 @@ class SetUsernameView extends React.Component {
 			saving: false
 		};
 		const { server } = this.props;
-		props.navigation.setParams({ title: server });
+		props.navigation.setOptions({ title: server });
 		if (!isTablet) {
 			Orientation.lockToPortrait();
 		}
@@ -111,7 +106,7 @@ class SetUsernameView extends React.Component {
 			>
 				<StatusBar theme={theme} />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
-					<SafeAreaView style={sharedStyles.container} testID='set-username-view' forceInset={{ vertical: 'never' }}>
+					<SafeAreaView testID='set-username-view' theme={theme}>
 						<Text
 							style={[
 								sharedStyles.loginTitle,
