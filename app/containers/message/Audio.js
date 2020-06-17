@@ -18,7 +18,7 @@ import { isAndroid, isIOS } from '../../utils/deviceInfo';
 import MessageContext from './Context';
 import ActivityIndicator from '../ActivityIndicator';
 
-const mode = {
+export const mode = {
 	allowsRecordingIOS: false,
 	playsInSilentModeIOS: true,
 	staysActiveInBackground: false,

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Alert, Keyboard } from 'react-native';
+import {
+	View, Alert, Keyboard, SafeAreaView
+} from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -15,7 +17,7 @@ import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
 import database from '../../lib/database';
 import { emojis } from '../../emojis';
-import Recording from './Recording';
+import RecordAudio from './RecordAudio';
 import UploadModal from './UploadModal';
 import log from '../../utils/log';
 import I18n from '../../i18n';
@@ -649,8 +651,7 @@ class MessageBox extends Component {
 		});
 	}
 
-	recordAudioMessage = async() => {
-		const recording = await Recording.permission();
+	recordingCallback = (recording) => {
 		this.setState({ recording });
 	}
 
@@ -818,63 +819,95 @@ class MessageBox extends Component {
 			returnKeyType: 'send'
 		} : {};
 
+		const recordAudio = showSend || !Message_AudioRecorderEnabled ? null : (
+			<RecordAudio
+				theme={theme}
+				recordingCallback={this.recordingCallback}
+				onFinish={this.finishAudioMessage}
+			/>
+		);
+
+		let safeAreaViewStyle = null;
+		let commandsPreviewAndMentions = null;
+		let replyPreview = null;
+		let content = null;
+
 		if (recording) {
-			return <Recording theme={theme} onFinish={this.finishAudioMessage} />;
+			safeAreaViewStyle = [styles.textBox, { borderTopColor: themes[theme].borderColor }];
+		} else {
+			safeAreaViewStyle = [styles.composer, { borderTopColor: themes[theme].separatorColor }];
+			commandsPreviewAndMentions = (
+				<>
+					<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
+					<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
+				</>
+			);
+			replyPreview = (
+				<ReplyPreview
+					message={message}
+					close={replyCancel}
+					username={user.username}
+					replying={replying}
+					getCustomEmoji={getCustomEmoji}
+					theme={theme}
+				/>
+			);
+
+			content = (
+				<>
+					<LeftButtons
+						theme={theme}
+						showEmojiKeyboard={showEmojiKeyboard}
+						editing={editing}
+						showMessageBoxActions={this.showMessageBoxActions}
+						editCancel={this.editCancel}
+						openEmoji={this.openEmoji}
+						closeEmoji={this.closeEmoji}
+					/>
+					<TextInput
+						ref={component => this.component = component}
+						style={styles.textBoxInput}
+						returnKeyType='default'
+						keyboardType='twitter'
+						blurOnSubmit={false}
+						placeholder={I18n.t('New_Message')}
+						onChangeText={this.onChangeText}
+						underlineColorAndroid='transparent'
+						defaultValue=''
+						multiline
+						testID='messagebox-input'
+						theme={theme}
+						{...isAndroidTablet}
+					/>
+
+					<RightButtons
+						theme={theme}
+						showSend={showSend}
+						submit={this.submit}
+						showMessageBoxActions={this.showMessageBoxActions}
+					/>
+				</>
+			);
 		}
+
 		return (
 			<>
-				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
-				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
-				<View style={[styles.composer, { borderTopColor: themes[theme].separatorColor }]}>
-					<ReplyPreview
-						message={message}
-						close={replyCancel}
-						username={user.username}
-						replying={replying}
-						getCustomEmoji={getCustomEmoji}
-						theme={theme}
-					/>
+				{commandsPreviewAndMentions}
+
+				<SafeAreaView style={safeAreaViewStyle}>
+					{replyPreview}
 					<View
 						style={[
 							styles.textArea,
-							{ backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }
+							{ backgroundColor: themes[theme].messageboxBackground },
+							!recording && editing && { backgroundColor: themes[theme].chatComponentBackground }
 						]}
 						testID='messagebox'
 					>
-						<LeftButtons
-							theme={theme}
-							showEmojiKeyboard={showEmojiKeyboard}
-							editing={editing}
-							showMessageBoxActions={this.showMessageBoxActions}
-							editCancel={this.editCancel}
-							openEmoji={this.openEmoji}
-							closeEmoji={this.closeEmoji}
-						/>
-						<TextInput
-							ref={component => this.component = component}
-							style={styles.textBoxInput}
-							returnKeyType='default'
-							keyboardType='twitter'
-							blurOnSubmit={false}
-							placeholder={I18n.t('New_Message')}
-							onChangeText={this.onChangeText}
-							underlineColorAndroid='transparent'
-							defaultValue=''
-							multiline
-							testID='messagebox-input'
-							theme={theme}
-							{...isAndroidTablet}
-						/>
-						<RightButtons
-							theme={theme}
-							showSend={showSend}
-							submit={this.submit}
-							recordAudioMessage={this.recordAudioMessage}
-							recordAudioMessageEnabled={Message_AudioRecorderEnabled}
-							showMessageBoxActions={this.showMessageBoxActions}
-						/>
+						{content}
+						{recordAudio}
 					</View>
-				</View>
+				</SafeAreaView>
 			</>
 		);
 	}
