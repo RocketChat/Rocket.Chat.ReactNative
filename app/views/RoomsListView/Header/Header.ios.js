@@ -1,12 +1,13 @@
 import React from 'react';
 import {
-	Text, View, TouchableOpacity, Image, StyleSheet
+	Text, View, TouchableOpacity, StyleSheet
 } from 'react-native';
 import PropTypes from 'prop-types';
 
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
 import { themes } from '../../../constants/colors';
+import { CustomIcon } from '../../../lib/Icons';
 
 const styles = StyleSheet.create({
 	container: {
@@ -15,7 +16,8 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	button: {
-		flexDirection: 'row'
+		flexDirection: 'row',
+		alignItems: 'center'
 	},
 	title: {
 		fontSize: 14,
@@ -32,8 +34,7 @@ const styles = StyleSheet.create({
 		height: 9
 	},
 	upsideDown: {
-		transform: [{ scaleY: -1 }],
-		marginTop: 4
+		transform: [{ scaleY: -1 }]
 	}
 });
 
@@ -61,7 +62,12 @@ const Header = React.memo(({
 			<HeaderTitle connecting={connecting} isFetching={isFetching} theme={theme} />
 			<View style={styles.button}>
 				<Text style={[styles.server, { color: themes[theme].headerTintColor }]} numberOfLines={1}>{serverName}</Text>
-				<Image style={[styles.disclosure, showServerDropdown && styles.upsideDown]} source={{ uri: 'disclosure_indicator_server' }} />
+				<CustomIcon
+					name='chevron-down'
+					color={themes[theme].headerTintColor}
+					style={[showServerDropdown && styles.upsideDown]}
+					size={18}
+				/>
 			</View>
 		</TouchableOpacity>
 	</View>

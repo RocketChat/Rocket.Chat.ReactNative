@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import styles from '../styles';
 import Touch from '../../../utils/touch';
@@ -15,6 +16,7 @@ import { CustomIcon } from '../../../lib/Icons';
 import { withTheme } from '../../../theme';
 import { themes } from '../../../constants/colors';
 import { SortItemButton, SortItemContent } from './Item';
+import { headerHeight } from '../../../containers/Header';
 
 const ANIMATION_DURATION = 200;
 
@@ -26,7 +28,9 @@ class Sort extends PureComponent {
 		groupByType: PropTypes.bool,
 		showFavorites: PropTypes.bool,
 		showUnread: PropTypes.bool,
+		isMasterDetail: PropTypes.bool,
 		theme: PropTypes.string,
+		insets: PropTypes.object,
 		setSortPreference: PropTypes.func
 	}
 
@@ -104,9 +108,12 @@ class Sort extends PureComponent {
 	}
 
 	render() {
+		const { isMasterDetail, insets } = this.props;
+		const statusBarHeight = insets?.top ?? 0;
+		const heightDestination = isMasterDetail ? headerHeight + statusBarHeight : 0;
 		const translateY = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [-326, 0]
+			outputRange: [-326, heightDestination]
 		});
 		const backdropOpacity = this.animatedValue.interpolate({
 			inputRange: [0, 1],
@@ -119,7 +126,13 @@ class Sort extends PureComponent {
 		return (
 			<>
 				<TouchableWithoutFeedback onPress={this.close}>
-					<Animated.View style={[styles.backdrop, { backgroundColor: themes[theme].backdropColor, opacity: backdropOpacity }]} />
+					<Animated.View style={[styles.backdrop,
+						{
+							backgroundColor: themes[theme].backdropColor,
+							opacity: backdropOpacity,
+							top: heightDestination
+						}]}
+					/>
 				</TouchableWithoutFeedback>
 				<Animated.View
 					style={[
@@ -138,13 +151,13 @@ class Sort extends PureComponent {
 						<View style={[styles.dropdownContainerHeader, { borderColor: themes[theme].separatorColor }]}>
 							<View style={styles.sortItemContainer}>
 								<Text style={[styles.sortToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Sorting_by', { key: I18n.t(sortBy === 'alphabetical' ? 'name' : 'activity') })}</Text>
-								<CustomIcon style={[styles.sortIcon, { color: themes[theme].auxiliaryText }]} size={22} name='sort' />
+								<CustomIcon style={[styles.sortIcon, { color: themes[theme].auxiliaryText }]} size={22} name='sort-az' />
 							</View>
 						</View>
 					</Touch>
 					<SortItemButton onPress={this.sortByName} theme={theme}>
 						<SortItemContent
-							icon='sort'
+							icon='sort-az'
 							label='Alphabetical'
 							checked={sortBy === 'alphabetical'}
 							theme={theme}
@@ -152,7 +165,7 @@ class Sort extends PureComponent {
 					</SortItemButton>
 					<SortItemButton onPress={this.sortByActivity} theme={theme}>
 						<SortItemContent
-							imageUri='sort_activity'
+							icon='clock'
 							label='Activity'
 							checked={sortBy === 'activity'}
 							theme={theme}
@@ -161,7 +174,7 @@ class Sort extends PureComponent {
 					<View style={[styles.sortSeparator, { backgroundColor: themes[theme].separatorColor }]} />
 					<SortItemButton onPress={this.toggleGroupByType} theme={theme}>
 						<SortItemContent
-							icon='sort-amount-down'
+							icon='group-by-type'
 							label='Group_by_type'
 							checked={groupByType}
 							theme={theme}
@@ -190,11 +203,12 @@ class Sort extends PureComponent {
 }
 
 const mapStateToProps = state => ({
-	closeSortDropdown: state.rooms.closeSortDropdown
+	closeSortDropdown: state.rooms.closeSortDropdown,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 const mapDispatchToProps = dispatch => ({
 	setSortPreference: preference => dispatch(setPreference(preference))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(Sort));
+export default connect(mapStateToProps, mapDispatchToProps)(withSafeAreaInsets(withTheme(Sort)));
