@@ -19,11 +19,7 @@ import Animated, {
 	Easing
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
-import {
-	useDimensions,
-	useBackHandler,
-	useDeviceOrientation
-} from '@react-native-community/hooks';
+import { useBackHandler } from '@react-native-community/hooks';
 
 import { Item } from './Item';
 import { Handle } from './Handle';
@@ -33,6 +29,7 @@ import styles, { ITEM_HEIGHT } from './styles';
 import { isTablet, isIOS } from '../../utils/deviceInfo';
 import Separator from '../Separator';
 import I18n from '../../i18n';
+import { useOrientation, useDimensions } from '../../dimensions';
 
 const getItemLayout = (data, index) => ({ length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index });
 
@@ -52,10 +49,9 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 	const bottomSheetRef = useRef();
 	const [data, setData] = useState({});
 	const [isVisible, setVisible] = useState(false);
-	const orientation = useDeviceOrientation();
-	const { height } = useDimensions().window;
+	const { height } = useDimensions();
+	const { isLandscape } = useOrientation();
 	const insets = useSafeAreaInsets();
-	const { landscape } = orientation;
 
 	const maxSnap = Math.max(
 		(
@@ -81,7 +77,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 	 * we'll provide more one snap
 	 * that point 50% of the whole screen
 	*/
-	const snaps = (height - maxSnap > height * 0.6) && !landscape ? [maxSnap, height * 0.5, height] : [maxSnap, height];
+	const snaps = (height - maxSnap > height * 0.6) && !isLandscape ? [maxSnap, height * 0.5, height] : [maxSnap, height];
 	const openedSnapIndex = snaps.length > 2 ? 1 : 0;
 	const closedSnapIndex = snaps.length - 1;
 
@@ -120,7 +116,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 	// Hides action sheet when orientation changes
 	useEffect(() => {
 		setVisible(false);
-	}, [orientation.landscape]);
+	}, [isLandscape]);
 
 	useImperativeHandle(ref, () => ({
 		showActionSheet: show,
@@ -186,7 +182,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 						containerStyle={[
 							styles.container,
 							{ backgroundColor: themes[theme].focusedBackground },
-							(landscape || isTablet) && styles.bottomSheet
+							(isLandscape || isTablet) && styles.bottomSheet
 						]}
 						animationConfig={ANIMATION_CONFIG}
 						// FlatList props

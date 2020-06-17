@@ -52,6 +52,7 @@ import { CONTAINER_TYPES } from '../../lib/methods/actions';
 import Banner from './Banner';
 import Navigation from '../../lib/Navigation';
 import SafeAreaView from '../../containers/SafeAreaView';
+import { withDimensions } from '../../dimensions';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -88,7 +89,9 @@ class RoomView extends React.Component {
 		customEmojis: PropTypes.object,
 		isMasterDetail: PropTypes.bool,
 		theme: PropTypes.string,
-		replyBroadcast: PropTypes.func
+		replyBroadcast: PropTypes.func,
+		width: PropTypes.number,
+		height: PropTypes.number
 	};
 
 	constructor(props) {
@@ -963,7 +966,7 @@ class RoomView extends React.Component {
 			room, reactionsModalVisible, selectedMessage, loading, reacting
 		} = this.state;
 		const {
-			user, baseUrl, theme, navigation, Hide_System_Messages
+			user, baseUrl, theme, navigation, Hide_System_Messages, width, height
 		} = this.props;
 		const {
 			rid, t, sysMes, bannerClosed, announcement
@@ -1004,8 +1007,10 @@ class RoomView extends React.Component {
 					message={selectedMessage}
 					onEmojiSelected={this.onReactionPress}
 					reactionClose={this.onReactionClose}
+					width={width}
+					height={height}
 				/>
-				<UploadProgress rid={this.rid} user={user} baseUrl={baseUrl} />
+				<UploadProgress rid={this.rid} user={user} baseUrl={baseUrl} width={width} />
 				<ReactionsModal
 					message={selectedMessage}
 					isVisible={reactionsModalVisible}
@@ -1037,4 +1042,4 @@ const mapDispatchToProps = dispatch => ({
 	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RoomView));
+export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(RoomView)));

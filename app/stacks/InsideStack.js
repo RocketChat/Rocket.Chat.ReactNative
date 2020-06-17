@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
@@ -7,9 +6,7 @@ import { ThemeContext } from '../theme';
 import {
 	defaultHeader, themedHeader, ModalAnimation, StackAnimation
 } from '../utils/navigation';
-import Toast from '../containers/Toast';
 import Sidebar from '../views/SidebarView';
-import NotificationBadge from '../notifications/inApp';
 
 // Chats Stack
 import RoomView from '../views/RoomView';
@@ -320,16 +317,4 @@ const InsideStackNavigator = () => {
 	);
 };
 
-const RootInsideStack = ({ navigation, route }) => (
-	<>
-		<InsideStackNavigator navigation={navigation} />
-		<NotificationBadge navigation={navigation} route={route} />
-		<Toast />
-	</>
-);
-RootInsideStack.propTypes = {
-	navigation: PropTypes.object,
-	route: PropTypes.object
-};
-
-export default RootInsideStack;
+export default InsideStackNavigator;
