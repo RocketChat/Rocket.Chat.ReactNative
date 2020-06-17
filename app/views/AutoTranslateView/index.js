@@ -67,8 +67,6 @@ class AutoTranslateView extends React.Component {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable
 				.subscribe((changes) => {
-					this.room = changes;
-
 					if (this.mounted) {
 						const { selectedLanguage, enableAutoTranslate } = this.state;
 						if (selectedLanguage !== changes.autoTranslateLanguage) {
