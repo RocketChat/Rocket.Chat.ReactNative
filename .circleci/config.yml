@@ -224,7 +224,7 @@ jobs:
           folder: "./e2e/tests/assorted"
 
   # Android builds
-  android-build:
+  android-play-build:
     <<: *defaults
     docker:
       - image: circleci/android:api-28-node
@@ -281,13 +281,86 @@ jobs:
             echo -e "export default { BUGSNAG_API_KEY: '$BUGSNAG_KEY' };" > ./config.js
 
       - run:
-          name: Build Android App
+          name: Build Android Play App
           command: |
             if [[ $KEYSTORE ]]; then
-              bundle exec fastlane android release
+              bundle exec fastlane android playRelease
             else
-              bundle exec fastlane android build
+              bundle exec fastlane android playBuild
             fi
+          working_directory: android
+
+      - run:
+          name: Upload sourcemaps to Bugsnag
+          command: |
+            if [[ $BUGSNAG_KEY ]]; then
+              yarn generate-source-maps-android upload \
+                --api-key=$BUGSNAG_KEY \
+                --app-version=$CIRCLE_BUILD_NUM \
+                --minifiedFile=android/app/build/generated/assets/react/release/app.bundle \
+                --source-map=android/app/build/generated/sourcemaps/react/release/app.bundle.map \
+                --minified-url=app.bundle \
+                --upload-sources
+            fi
+
+      - store_artifacts:
+          path: android/app/build/outputs
+
+      - save_cache: *save-npm-cache-linux
+
+      - save_cache: *save-gradle-cache
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - android/fastlane/report.xml
+            - android/app/build/outputs
+
+  android-foss-build:
+    <<: *defaults
+    docker:
+      - image: circleci/android:api-28-node
+
+    environment:
+      JAVA_OPTS: '-Xms512m -Xmx2g'
+      GRADLE_OPTS: '-Xmx3g -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx2g -XX:+HeapDumpOnOutOfMemoryError"'
+      TERM: dumb
+      <<: *bash-env
+
+    steps:
+      - checkout
+
+      - run: *install-node
+
+      - restore_cache: *restore-npm-cache-linux
+
+      - run: *install-npm-modules
+
+      - run: *update-fastlane-android
+
+      - restore_cache: *restore-gradle-cache
+
+      - run:
+          name: Configure Gradle
+          command: |
+            echo -e "" > ./gradle.properties
+            # echo -e "android.enableAapt2=false" >> ./gradle.properties
+            echo -e "android.useAndroidX=true" >> ./gradle.properties
+            echo -e "android.enableJetifier=true" >> ./gradle.properties
+            echo -e "FLIPPER_VERSION=0.33.1" >> ./gradle.properties
+
+            echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
+            echo -e "BugsnagAPIKey=$BUGSNAG_KEY" >> ./gradle.properties
+          working_directory: android
+
+      - run:
+          name: Config variables
+          command: |
+            echo -e "export default { BUGSNAG_API_KEY: '$BUGSNAG_KEY' };" > ./config.js
+
+      - run:
+          name: Build Android Foss App
+          command: bundle exec fastlane android fossBuild
           working_directory: android
 
       - run:
@@ -336,7 +409,7 @@ jobs:
 
       - run:
           name: Fastlane Play Store Upload
-          command: bundle exec fastlane android alpha
+          command: bundle exec fastlane android playAlpha
           working_directory: android
 
   # iOS builds
@@ -459,13 +532,16 @@ workflows:
           requires:
             - ios-hold-testflight
 
-      - android-build:
+      - android-play-build:
+          requires:
+            - lint-testunit
+      -android-foss-build:
           requires:
             - lint-testunit
       - android-hold-google-play-alpha:
           type: approval
           requires:
-            - android-build
+            - android-play-build
       - android-google-play-alpha:
           requires:
             - android-hold-google-play-alpha
