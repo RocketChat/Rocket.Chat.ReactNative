@@ -112,6 +112,7 @@ class AutoTranslateView extends React.Component {
 				value: enableAutoTranslate ? '0' : '1',
 				options: { defaultLanguage: 'en' }
 			});
+			this.setState({ enableAutoTranslate: !enableAutoTranslate });
 		} catch (error) {
 			console.log(error);
 		}
