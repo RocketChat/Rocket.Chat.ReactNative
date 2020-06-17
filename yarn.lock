@@ -11944,13 +11944,6 @@ react-native-reanimated@^1.8.0:
   dependencies:
     fbjs "^1.0.0"
 
-react-native-responsive-ui@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-responsive-ui/-/react-native-responsive-ui-1.1.1.tgz#eb41839d4f3951ff025660185c36a9a9ce33759f"
-  integrity sha1-60GDnU85Uf8CVmAYXDapqc4zdZ8=
-  dependencies:
-    lodash "^4.17.4"
-
 react-native-safe-area-context@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-3.0.2.tgz#95dd7e56bc89bcc4f3f7bb5fada30c98420328b2"

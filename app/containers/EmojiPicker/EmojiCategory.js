@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, TouchableOpacity, FlatList } from 'react-native';
-import { responsive } from 'react-native-responsive-ui';
 
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import styles from './styles';
@@ -25,7 +24,6 @@ class EmojiCategory extends React.Component {
 	static propTypes = {
 		baseUrl: PropTypes.string.isRequired,
 		emojis: PropTypes.any,
-		window: PropTypes.any,
 		onEmojiSelected: PropTypes.func,
 		emojisPerRow: PropTypes.number,
 		width: PropTypes.number
@@ -73,4 +71,4 @@ class EmojiCategory extends React.Component {
 	}
 }
 
-export default responsive(EmojiCategory);
+export default EmojiCategory;
