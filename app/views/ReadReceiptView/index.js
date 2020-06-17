@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList, View, Text } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import moment from 'moment';
 import { connect } from 'react-redux';
@@ -13,18 +12,17 @@ import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import { themes } from '../../constants/colors';
 import { getUserSelector } from '../../selectors/login';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 class ReadReceiptView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Read_Receipt'),
-		...themedHeader(screenProps.theme)
-	})
+	static navigationOptions = {
+		title: I18n.t('Read_Receipt')
+	}
 
 	static propTypes = {
-		navigation: PropTypes.object,
+		route: PropTypes.object,
 		Message_TimeFormat: PropTypes.string,
 		baseUrl: PropTypes.string,
 		user: PropTypes.object,
@@ -33,7 +31,7 @@ class ReadReceiptView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.messageId = props.navigation.getParam('messageId');
+		this.messageId = props.route.params?.messageId;
 		this.state = {
 			loading: false,
 			receipts: []
@@ -135,11 +133,7 @@ class ReadReceiptView extends React.Component {
 		}
 
 		return (
-			<SafeAreaView
-				style={[styles.container, { backgroundColor: themes[theme].chatComponentBackground }]}
-				forceInset={{ bottom: 'always' }}
-				testID='read-receipt-view'
-			>
+			<SafeAreaView testID='read-receipt-view' theme={theme}>
 				<StatusBar theme={theme} />
 				<View>
 					{loading

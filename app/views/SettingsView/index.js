@@ -4,7 +4,6 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import { logout as logoutAction } from '../../actions/login';
@@ -26,19 +25,16 @@ import openLink from '../../utils/openLink';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
 import styles from './styles';
-import sharedStyles from '../Styles';
 import { loggerConfig, analytics } from '../../utils/log';
 import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/links';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import SidebarView from '../SidebarView';
-import { withSplit } from '../../split';
-import Navigation from '../../lib/Navigation';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
-import { appStart as appStartAction } from '../../actions';
+import { appStart as appStartAction, ROOT_LOADING } from '../../actions/app';
 import { onReviewPress } from '../../utils/review';
 import { getUserSelector } from '../../selectors/login';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 const SectionSeparator = React.memo(({ theme }) => (
 	<View
@@ -56,13 +52,12 @@ SectionSeparator.propTypes = {
 };
 
 class SettingsView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => ({
-		...themedHeader(screenProps.theme),
-		headerLeft: screenProps.split ? (
+	static navigationOptions = ({ navigation, isMasterDetail }) => ({
+		headerLeft: () => (isMasterDetail ? (
 			<CloseModalButton navigation={navigation} testID='settings-view-close' />
 		) : (
 			<DrawerButton navigation={navigation} />
-		),
+		)),
 		title: I18n.t('Settings')
 	});
 
@@ -72,7 +67,7 @@ class SettingsView extends React.Component {
 		allowCrashReport: PropTypes.bool,
 		toggleCrashReport: PropTypes.func,
 		theme: PropTypes.string,
-		split: PropTypes.bool,
+		isMasterDetail: PropTypes.bool,
 		logout: PropTypes.func.isRequired,
 		selectServerRequest: PropTypes.func,
 		token: PropTypes.string,
@@ -84,10 +79,7 @@ class SettingsView extends React.Component {
 			message: I18n.t('You_will_be_logged_out_of_this_application'),
 			callToAction: I18n.t('Logout'),
 			onPress: () => {
-				const { logout, split } = this.props;
-				if (split) {
-					Navigation.navigate('RoomView');
-				}
+				const { logout } = this.props;
 				logout();
 			}
 		});
@@ -101,7 +93,7 @@ class SettingsView extends React.Component {
 				const {
 					server: { server }, appStart, selectServerRequest
 				} = this.props;
-				await appStart('loading', I18n.t('Clear_cache_loading'));
+				await appStart({ root: ROOT_LOADING, text: I18n.t('Clear_cache_loading') });
 				await RocketChat.clearCache({ server });
 				await selectServerRequest(server, null, true);
 			}
@@ -181,13 +173,9 @@ class SettingsView extends React.Component {
 	}
 
 	render() {
-		const { server, split, theme } = this.props;
+		const { server, isMasterDetail, theme } = this.props;
 		return (
-			<SafeAreaView
-				style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
-				testID='settings-view'
-				forceInset={{ vertical: 'never' }}
-			>
+			<SafeAreaView testID='settings-view' theme={theme}>
 				<StatusBar theme={theme} />
 				<ScrollView
 					{...scrollPersistTaps}
@@ -195,7 +183,7 @@ class SettingsView extends React.Component {
 					showsVerticalScrollIndicator={false}
 					testID='settings-view-list'
 				>
-					{split ? (
+					{isMasterDetail ? (
 						<>
 							<Separator theme={theme} />
 							<SidebarView theme={theme} />
@@ -344,14 +332,15 @@ class SettingsView extends React.Component {
 const mapStateToProps = state => ({
 	server: state.server,
 	token: getUserSelector(state).token,
-	allowCrashReport: state.crashReport.allowCrashReport
+	allowCrashReport: state.crashReport.allowCrashReport,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 const mapDispatchToProps = dispatch => ({
 	logout: () => dispatch(logoutAction()),
 	selectServerRequest: params => dispatch(selectServerRequestAction(params)),
 	toggleCrashReport: params => dispatch(toggleCrashReportAction(params)),
-	appStart: (...params) => dispatch(appStartAction(...params))
+	appStart: params => dispatch(appStartAction(params))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(withSplit(SettingsView)));
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(SettingsView));

@@ -16,33 +16,11 @@ import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
 import { isBlocked } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 
 class ShareView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const canSend = navigation.getParam('canSend', true);
-
-		return ({
-			title: I18n.t('Share'),
-			...themedHeader(screenProps.theme),
-			headerRight:
-				canSend
-					? (
-						<CustomHeaderButtons>
-							<Item
-								title={I18n.t('Send')}
-								onPress={navigation.getParam('sendMessage')}
-								testID='send-message-share-view'
-								buttonStyle={styles.send}
-							/>
-						</CustomHeaderButtons>
-					)
-					: null
-		});
-	}
-
 	static propTypes = {
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		theme: PropTypes.string,
 		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
@@ -54,13 +32,13 @@ class ShareView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		const { navigation } = this.props;
-		const rid = navigation.getParam('rid', '');
-		const name = navigation.getParam('name', '');
-		const value = navigation.getParam('value', '');
-		const isMedia = navigation.getParam('isMedia', false);
-		const fileInfo = navigation.getParam('fileInfo', {});
-		const room = navigation.getParam('room', { rid });
+		const { route } = this.props;
+		const rid = route.params?.rid;
+		const name = route.params?.name;
+		const value = route.params?.value;
+		const isMedia = route.params?.isMedia ?? false;
+		const fileInfo = route.params?.fileInfo ?? {};
+		const room = route.params?.room ?? { rid };
 
 		this.state = {
 			rid,
@@ -74,30 +52,48 @@ class ShareView extends React.Component {
 			file: {
 				name: fileInfo ? fileInfo.name : '',
 				description: ''
-			}
+			},
+			canSend: false
 		};
 
 		this.setReadOnly();
+		this.setHeader();
 	}
 
-	componentDidMount() {
+	setHeader = () => {
+		const { canSend } = this.state;
 		const { navigation } = this.props;
-		navigation.setParams({ sendMessage: this._sendMessage });
+
+		navigation.setOptions({
+			title: I18n.t('Share'),
+			headerRight:
+				() => (canSend
+					? (
+						<CustomHeaderButtons>
+							<Item
+								title={I18n.t('Send')}
+								onPress={this.sendMessage}
+								testID='send-message-share-view'
+								buttonStyle={styles.send}
+							/>
+						</CustomHeaderButtons>
+					)
+					: null)
+		});
 	}
 
 	setReadOnly = async() => {
 		const { room } = this.state;
-		const { navigation, user } = this.props;
+		const { user } = this.props;
 		const { username } = user;
 		const readOnly = await isReadOnly(room, { username });
 
-		this.setState({ readOnly });
-		navigation.setParams({ canSend: !(readOnly || isBlocked(room)) });
+		this.setState({ readOnly, canSend: !(readOnly || isBlocked(room)) }, () => this.setHeader());
 	}
 
 	bytesToSize = bytes => `${ (bytes / 1048576).toFixed(2) }MB`;
 
-	_sendMessage = async() => {
+	sendMessage = async() => {
 		const { isMedia, loading } = this.state;
 		if (loading) {
 			return;

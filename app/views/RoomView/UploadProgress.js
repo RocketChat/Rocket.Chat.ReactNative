@@ -3,7 +3,6 @@ import {
 	View, Text, StyleSheet, TouchableOpacity, ScrollView
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { responsive } from 'react-native-responsive-ui';
 import { Q } from '@nozbe/watermelondb';
 
 import database from '../../lib/database';
@@ -56,7 +55,7 @@ const styles = StyleSheet.create({
 
 class UploadProgress extends Component {
 	static propTypes = {
-		window: PropTypes.object,
+		width: PropTypes.number,
 		rid: PropTypes.string,
 		theme: PropTypes.string,
 		user: PropTypes.shape({
@@ -167,7 +166,7 @@ class UploadProgress extends Component {
 	}
 
 	renderItemContent = (item) => {
-		const { window, theme } = this.props;
+		const { width, theme } = this.props;
 
 		if (!item.error) {
 			return (
@@ -179,7 +178,7 @@ class UploadProgress extends Component {
 						</Text>
 						<CustomIcon name='Cross' size={20} color={themes[theme].auxiliaryText} onPress={() => this.cancelUpload(item)} />
 					</View>,
-					<View key='progress' style={[styles.progress, { width: (window.width * item.progress) / 100, backgroundColor: themes[theme].tintColor }]} />
+					<View key='progress' style={[styles.progress, { width: (width * item.progress) / 100, backgroundColor: themes[theme].tintColor }]} />
 				]
 			);
 		}
@@ -228,4 +227,4 @@ class UploadProgress extends Component {
 	}
 }
 
-export default responsive(withTheme(UploadProgress));
+export default withTheme(UploadProgress);
