@@ -103,5 +103,16 @@ export default StyleSheet.create({
 	},
 	scrollViewMention: {
 		maxHeight: SCROLLVIEW_MENTION_HEIGHT
+	},
+	cancelRecordingText: {
+		textAlignVertical: 'center',
+		fontSize: 17,
+		letterSpacing: 0,
+		...sharedStyles.textRegular
+	},
+	recordingContent: {
+		flexDirection: 'row',
+		flex: 3,
+		marginHorizontal: 24
 	}
 });
