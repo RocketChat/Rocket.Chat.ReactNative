@@ -30,6 +30,7 @@ export default StyleSheet.create({
 	},
 	// Media
 	list: {
+		height: 86,
 		paddingVertical: 8,
 		paddingHorizontal: 8
 	},

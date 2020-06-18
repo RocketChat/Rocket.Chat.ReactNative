@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, SafeAreaView } from 'react-native';
+import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
 import * as VideoThumbnails from 'expo-video-thumbnails';
@@ -22,6 +22,8 @@ import RocketChat from '../../lib/rocketchat';
 import TextInput from '../../containers/TextInput';
 import Preview from './Preview';
 import Thumbs from './Thumbs';
+import MessageBox from '../../containers/MessageBox';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 const ShareView = React.memo(({
 	navigation,
@@ -150,13 +152,23 @@ const ShareView = React.memo(({
 							shareExtension={shareExtension}
 						/>
 					</View>
-					<View style={styles.thumbs}>
+					<MessageBox
+						showSend
+						rid={room.rid}
+						roomType={room.t}
+						theme={theme}
+						onSubmit={send}
+						getCustomEmoji={() => {}}
+						// onChangeText={onChangeText}
+						message={attachments[selected]?.description}
+						navigation={navigation}
+					>
 						<Thumbs
 							onPress={select}
 							attachments={attachments}
 							theme={theme}
 						/>
-					</View>
+					</MessageBox>
 				</View>
 			);
 		}
@@ -181,7 +193,12 @@ const ShareView = React.memo(({
 	};
 
 	return (
-		<SafeAreaView style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
+		// <SafeAreaView style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
+		<SafeAreaView
+			style={{ backgroundColor: themes[theme].backgroundColor }}
+			testID='room-view'
+			theme={theme}
+		>
 			{renderContent()}
 			<Loading visible={loading} />
 		</SafeAreaView>
