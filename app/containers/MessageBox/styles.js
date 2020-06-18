@@ -128,5 +128,18 @@ export default StyleSheet.create({
 		width: 1,
 		height: 1,
 		borderRadius: 200
+	},
+	recordingTooltipContainer: {
+		position: 'absolute',
+		bottom: '120%',
+		right: '10%',
+		zIndex: 10
+	},
+	recordingTooltip: {
+		alignSelf: 'flex-end',
+		padding: 10,
+		borderRadius: 4,
+		borderWidth: 1,
+		opacity: 0.96
 	}
 });

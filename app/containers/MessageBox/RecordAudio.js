@@ -9,6 +9,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import {
 	PanGestureHandler, State, LongPressGestureHandler
 } from 'react-native-gesture-handler';
+import { useDimensions } from '@react-native-community/hooks';
 
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
@@ -19,7 +20,9 @@ import { SendButton } from './buttons';
 
 const RECORDING_PERSIST_DISTANCE = -80;	// Swipe up gesture to persist recording
 const RECORDING_CANCEL_DISTANCE = -120;	// Swipe left gesture to cancel recording
-const RECORDING_DEFER_END_ANDROID = 500;	//  Ms to wait before android ends the recording.
+const RECORDING_DEFER_END_ANDROID = 300;	//  Ms to wait before android ends the recording.
+const RECORDING_MINIMUM_DURATION = 300;	// Cancel if recording < this duration (in ms)
+const RECORDING_TOOLTIP_DURATION = 1500;	// Duration to show recording tooltip (in ms)
 
 const RECORDING_MODE = {
 	allowsRecordingIOS: true,
@@ -158,6 +161,10 @@ const RecordAudio = ({ theme, recordingCallback, onFinish }) => {
 	});
 	const [recordingCancelled, setRecordingCancelled] = useState(false);
 	const [recordingPersisted, setRecordingPersisted] = useState(false);
+	const [showRecordingTooltip, setShowRecordingTooltip] = useState(false);
+	const [timePressed, setTimePressed] = useState(0);
+
+	const { width } = useDimensions().window;
 
 	/* Effects */
 	useEffect(() => {
@@ -250,6 +257,7 @@ const RecordAudio = ({ theme, recordingCallback, onFinish }) => {
 			if (recordingStatus.isRecording) {
 				cancelAudioMessage(recordingInstance.current, onFinish, setRecordingCancelled, setRecordingStatus, setRecordingPersisted);
 			} else {
+				setTimePressed(new Date());
 				setRecordingCancelled(false);
 				setRecordingPersisted(false);
 				recordingInstance.current = new Audio.Recording();
@@ -257,17 +265,39 @@ const RecordAudio = ({ theme, recordingCallback, onFinish }) => {
 				animateButton(0, 1);
 			}
 		} else if (nativeEvent.state === State.END && Platform.OS === 'ios' && !recordingPersisted && !recordingCancelled) {
-			finishRecordingAudio(recordingInstance.current, onFinish, setRecordingStatus, setRecordingPersisted);
-			animateButton(1, 0);
+			const durationPressed = new Date() - timePressed;
+			if (durationPressed > RECORDING_MINIMUM_DURATION) {
+				finishRecordingAudio(recordingInstance.current, onFinish, setRecordingStatus, setRecordingPersisted);
+				animateButton(1, 0);
+			} else {
+				setShowRecordingTooltip(true);
+				cancelAudioMessage(recordingInstance.current, onFinish, setRecordingCancelled, setRecordingStatus, setRecordingPersisted);
+				animateButton(1, 0);
+				setTimeout(() => {
+					setShowRecordingTooltip(false);
+				}, RECORDING_TOOLTIP_DURATION);
+			}
 		}
 	};
 
 	const onPan = ({ nativeEvent }) => {
 		if (nativeEvent.state === State.END && Platform.OS === 'android' && !recordingPersisted && !recordingCancelled) {
-			animateButton(1, 0);
-			setTimeout(() => {
-				finishRecordingAudio(recordingInstance.current, onFinish, setRecordingStatus, setRecordingPersisted);
-			}, RECORDING_DEFER_END_ANDROID);
+			const durationPressed = new Date() - timePressed;
+			if (durationPressed > RECORDING_MINIMUM_DURATION) {
+				animateButton(1, 0);
+				setTimeout(() => {
+					finishRecordingAudio(recordingInstance.current, onFinish, setRecordingStatus, setRecordingPersisted);
+				}, RECORDING_DEFER_END_ANDROID);
+			} else {
+				setShowRecordingTooltip(true);
+				setTimeout(() => {
+					cancelAudioMessage(recordingInstance.current, onFinish, setRecordingCancelled, setRecordingStatus, setRecordingPersisted);
+				}, RECORDING_DEFER_END_ANDROID);
+				animateButton(1, 0);
+				setTimeout(() => {
+					setShowRecordingTooltip(false);
+				}, RECORDING_TOOLTIP_DURATION);
+			}
 		}
 	};
 
@@ -340,6 +370,22 @@ const RecordAudio = ({ theme, recordingCallback, onFinish }) => {
 		);
 	}
 
+	const recordTooltip = showRecordingTooltip ? (
+		<View style={[styles.recordingTooltipContainer, { width }]}>
+			<View
+				style={[styles.recordingTooltip, {
+					backgroundColor: themes[theme].bannerBackground,
+					borderColor: themes[theme].borderColor
+				}]}
+			>
+				<Text style={{ color: themes[theme].bodyText }}>
+					Hold to record. Release to send
+				</Text>
+			</View>
+
+		</View>
+	) : null;
+
 
 	const recordingContent = recordingStatus.isRecording ? (
 		<Animated.View style={[styles.textBoxInput, styles.recordingContent]}>
@@ -382,6 +428,7 @@ const RecordAudio = ({ theme, recordingCallback, onFinish }) => {
 							>
 								<Animated.View>
 									{recordingButton}
+									{recordTooltip}
 								</Animated.View>
 							</PanGestureHandler>
 						</Animated.View>
