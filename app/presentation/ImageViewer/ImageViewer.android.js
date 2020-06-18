@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 import {
@@ -6,11 +6,9 @@ import {
 	State,
 	PinchGestureHandler
 } from 'react-native-gesture-handler';
-import FastImage from 'react-native-fast-image';
 import Animated, { Easing } from 'react-native-reanimated';
 import { withDimensions } from '../../dimensions';
-
-const AnimatedFastImage = Animated.createAnimatedComponent(FastImage);
+import { ImageComponent } from './ImageComponent';
 
 const styles = StyleSheet.create({
 	wrapper: {
@@ -264,10 +262,11 @@ const HEIGHT = 300;
 
 // it was picked from https://github.com/software-mansion/react-native-reanimated/tree/master/Example/imageViewer
 // and changed to use FastImage animated component
-class ImageViewer extends Component {
+class _ImageViewer extends React.Component {
 	static propTypes = {
 		uri: PropTypes.string,
-		width: PropTypes.number
+		width: PropTypes.number,
+		imageComponentType: PropTypes.string
 	}
 
 	constructor(props) {
@@ -384,7 +383,12 @@ class ImageViewer extends Component {
 	panRef = React.createRef();
 
 	render() {
-		const { uri, width, ...props } = this.props;
+		const {
+			uri, width, imageComponentType, ...props
+		} = this.props;
+
+		const Component = ImageComponent(imageComponentType);
+		const AnimatedFastImage = Animated.createAnimatedComponent(Component);
 
 		// The below two animated values makes it so that scale appears to be done
 		// from the top left corner of the image view instead of its center. This
@@ -439,4 +443,4 @@ class ImageViewer extends Component {
 	}
 }
 
-export default withDimensions(ImageViewer);
+export const ImageViewer = withDimensions(_ImageViewer);

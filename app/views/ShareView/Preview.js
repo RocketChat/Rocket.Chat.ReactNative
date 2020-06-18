@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { Video } from 'expo-av';
 
 import { CustomIcon } from '../../lib/Icons';
-import ImageViewer from '../../presentation/ImageViewer';
+import { ImageViewer, types } from '../../presentation/ImageViewer';
 import { themes } from '../../constants/colors';
 import styles from './styles';
 
-const Preview = React.memo(({ item, theme }) => {
+const Preview = React.memo(({ item, theme, shareExtension }) => {
 	const type = item?.mime;
 
 	if (type?.match(/video/)) {
@@ -30,6 +30,7 @@ const Preview = React.memo(({ item, theme }) => {
 		return (
 			<ImageViewer
 				uri={item.path}
+				imageComponentType={shareExtension ? types.REACT_NATIVE_IMAGE : types.FAST_IMAGE}
 			/>
 		);
 	}
@@ -44,7 +45,8 @@ const Preview = React.memo(({ item, theme }) => {
 });
 Preview.propTypes = {
 	item: PropTypes.object,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	shareExtension: PropTypes.bool
 };
 
 export default Preview;

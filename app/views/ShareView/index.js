@@ -147,6 +147,7 @@ const ShareView = React.memo(({
 							key={attachments[selected]?.path}
 							item={attachments[selected]}
 							theme={theme}
+							shareExtension={shareExtension}
 						/>
 					</View>
 					<View style={styles.thumbs}>
