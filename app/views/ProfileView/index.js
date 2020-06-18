@@ -6,8 +6,6 @@ import prompt from 'react-native-prompt-android';
 import SHA256 from 'js-sha256';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
-import { SafeAreaView } from 'react-navigation';
-import { HeaderBackButton } from 'react-navigation-stack';
 import equal from 'deep-equal';
 
 import Touch from '../../utils/touch';
@@ -30,22 +28,19 @@ import { DrawerButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 class ProfileView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => ({
-		...themedHeader(screenProps.theme),
-		headerLeft: screenProps.split ? (
-			<HeaderBackButton
-				onPress={() => navigation.navigate('SettingsView')}
-				tintColor={themes[screenProps.theme].headerTintColor}
-			/>
-		) : (
-			<DrawerButton navigation={navigation} />
-		),
-		title: I18n.t('Profile')
-	})
+	static navigationOptions = ({ navigation, isMasterDetail }) => {
+		const options = {
+			title: I18n.t('Profile')
+		};
+		if (!isMasterDetail) {
+			options.headerLeft = () => <DrawerButton navigation={navigation} />;
+		}
+		return options;
+	}
 
 	static propTypes = {
 		baseUrl: PropTypes.string,
@@ -440,7 +435,7 @@ class ProfileView extends React.Component {
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar theme={theme} />
-				<SafeAreaView style={sharedStyles.container} testID='profile-view' forceInset={{ vertical: 'never' }}>
+				<SafeAreaView testID='profile-view' theme={theme}>
 					<ScrollView
 						contentContainerStyle={sharedStyles.containerScrollView}
 						testID='profile-view-list'

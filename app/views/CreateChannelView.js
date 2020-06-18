@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import {
 	View, Text, Switch, ScrollView, StyleSheet, FlatList
 } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
 import TextInput from '../presentation/TextInput';
@@ -20,9 +19,9 @@ import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { SWITCH_TRACK_COLOR, themes } from '../constants/colors';
 import { withTheme } from '../theme';
-import { themedHeader } from '../utils/navigation';
 import { Review } from '../utils/review';
 import { getUserSelector } from '../selectors/login';
+import SafeAreaView from '../containers/SafeAreaView';
 
 const styles = StyleSheet.create({
 	container: {
@@ -73,22 +72,8 @@ const styles = StyleSheet.create({
 });
 
 class CreateChannelView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const submit = navigation.getParam('submit', () => {});
-		const showSubmit = navigation.getParam('showSubmit');
-		return {
-			...themedHeader(screenProps.theme),
-			title: I18n.t('Create_Channel'),
-			headerRight: (
-				showSubmit
-					? (
-						<CustomHeaderButtons>
-							<Item title={I18n.t('Create')} onPress={submit} testID='create-channel-submit' />
-						</CustomHeaderButtons>
-					)
-					: null
-			)
-		};
+	static navigationOptions = {
+		title: I18n.t('Create_Channel')
 	}
 
 	static propTypes = {
@@ -112,11 +97,6 @@ class CreateChannelView extends React.Component {
 		type: true,
 		readOnly: false,
 		broadcast: false
-	}
-
-	componentDidMount() {
-		const { navigation } = this.props;
-		navigation.setParams({ submit: this.submit });
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -148,9 +128,19 @@ class CreateChannelView extends React.Component {
 		return false;
 	}
 
-	onChangeText = (channelName) => {
+	toggleRightButton = (channelName) => {
 		const { navigation } = this.props;
-		navigation.setParams({ showSubmit: channelName.trim().length > 0 });
+		navigation.setOptions({
+			headerRight: () => channelName.trim().length > 0 && (
+				<CustomHeaderButtons>
+					<Item title={I18n.t('Create')} onPress={this.submit} testID='create-channel-submit' />
+				</CustomHeaderButtons>
+			)
+		});
+	}
+
+	onChangeText = (channelName) => {
+		this.toggleRightButton(channelName);
 		this.setState({ channelName });
 	}
 
@@ -294,7 +284,7 @@ class CreateChannelView extends React.Component {
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar theme={theme} />
-				<SafeAreaView testID='create-channel-view' style={styles.container} forceInset={{ vertical: 'never' }}>
+				<SafeAreaView testID='create-channel-view' theme={theme}>
 					<ScrollView {...scrollPersistTaps}>
 						<View style={[sharedStyles.separatorVertical, { borderColor: themes[theme].separatorColor }]}>
 							<TextInput

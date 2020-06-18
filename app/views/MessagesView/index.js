@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
-import ActionSheet from 'react-native-action-sheet';
 
 import styles from './styles';
 import Message from '../../containers/message';
@@ -15,26 +13,23 @@ import StatusBar from '../../containers/StatusBar';
 import getFileUrlFromMessage from '../../lib/methods/helpers/getFileUrlFromMessage';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { withSplit } from '../../split';
-import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
-
-const ACTION_INDEX = 0;
-const CANCEL_INDEX = 1;
+import { withActionSheet } from '../../containers/ActionSheet';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 class MessagesView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => ({
-		title: I18n.t(navigation.state.params.name),
-		...themedHeader(screenProps.theme)
+	static navigationOptions = ({ route }) => ({
+		title: I18n.t(route.params?.name)
 	});
 
 	static propTypes = {
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		customEmojis: PropTypes.object,
 		theme: PropTypes.string,
-		split: PropTypes.bool
+		showActionSheet: PropTypes.func
 	}
 
 	constructor(props) {
@@ -44,9 +39,9 @@ class MessagesView extends React.Component {
 			messages: [],
 			fileLoading: true
 		};
-		this.rid = props.navigation.getParam('rid');
-		this.t = props.navigation.getParam('t');
-		this.content = this.defineMessagesViewContent(props.navigation.getParam('name'));
+		this.rid = props.route.params?.rid;
+		this.t = props.route.params?.t;
+		this.content = this.defineMessagesViewContent(props.route.params?.name);
 	}
 
 	componentDidMount() {
@@ -165,7 +160,7 @@ class MessagesView extends React.Component {
 						theme={theme}
 					/>
 				),
-				actionTitle: I18n.t('Unstar'),
+				action: message => ({ title: I18n.t('Unstar'), icon: message.starred ? 'star-filled' : 'star', onPress: this.handleActionPress }),
 				handleActionPress: message => RocketChat.toggleStarMessage(message._id, message.starred)
 			},
 			// Pinned Messages Screen
@@ -182,7 +177,7 @@ class MessagesView extends React.Component {
 						theme={theme}
 					/>
 				),
-				actionTitle: I18n.t('Unpin'),
+				action: () => ({ title: I18n.t('Unpin'), icon: 'pin', onPress: this.handleActionPress }),
 				handleActionPress: message => RocketChat.togglePinMessage(message._id, message.pinned)
 			}
 		}[name]);
@@ -223,44 +218,33 @@ class MessagesView extends React.Component {
 	}
 
 	showAttachment = (attachment) => {
-		const { navigation, split } = this.props;
-		let params = { attachment };
-		if (split) {
-			params = { ...params, from: 'MessagesView' };
-		}
-		navigation.navigate('AttachmentView', params);
+		const { navigation } = this.props;
+		navigation.navigate('AttachmentView', { attachment });
 	}
 
 	onLongPress = (message) => {
-		this.setState({ message });
-		this.showActionSheet();
+		this.setState({ message }, this.showActionSheet);
 	}
 
 	showActionSheet = () => {
-		ActionSheet.showActionSheetWithOptions({
-			options: [this.content.actionTitle, I18n.t('Cancel')],
-			cancelButtonIndex: CANCEL_INDEX,
-			title: I18n.t('Actions')
-		}, (actionIndex) => {
-			this.handleActionPress(actionIndex);
-		});
+		const { message } = this.state;
+		const { showActionSheet } = this.props;
+		showActionSheet({ options: [this.content.action(message)], hasCancel: true });
 	}
 
-	handleActionPress = async(actionIndex) => {
-		if (actionIndex === ACTION_INDEX) {
-			const { message } = this.state;
+	handleActionPress = async() => {
+		const { message } = this.state;
 
-			try {
-				const result = await this.content.handleActionPress(message);
-				if (result.success) {
-					this.setState(prevState => ({
-						messages: prevState.messages.filter(item => item._id !== message._id),
-						total: prevState.total - 1
-					}));
-				}
-			} catch (error) {
-				console.warn('MessagesView -> handleActionPress -> catch -> error', error);
+		try {
+			const result = await this.content.handleActionPress(message);
+			if (result.success) {
+				this.setState(prevState => ({
+					messages: prevState.messages.filter(item => item._id !== message._id),
+					total: prevState.total - 1
+				}));
 			}
+		} catch {
+			// Do nothing
 		}
 	}
 
@@ -295,12 +279,9 @@ class MessagesView extends React.Component {
 
 		return (
 			<SafeAreaView
-				style={[
-					styles.list,
-					{ backgroundColor: themes[theme].backgroundColor }
-				]}
-				forceInset={{ vertical: 'never' }}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
 				testID={this.content.testID}
+				theme={theme}
 			>
 				<StatusBar theme={theme} />
 				<FlatList
@@ -322,4 +303,4 @@ const mapStateToProps = state => ({
 	customEmojis: state.customEmojis
 });
 
-export default connect(mapStateToProps)(withSplit(withTheme(MessagesView)));
+export default connect(mapStateToProps)(withTheme(withActionSheet(MessagesView)));

@@ -22,6 +22,11 @@ export const logEvent = (eventName, payload) => {
 	analytics().logEvent(eventName, payload);
 };
 
+export const setCurrentScreen = (currentScreen) => {
+	analytics().setCurrentScreen(currentScreen);
+	leaveBreadcrumb(currentScreen, { type: 'navigation' });
+};
+
 export default (e) => {
 	if (e instanceof Error && e.message !== 'Aborted' && !__DEV__) {
 		bugsnag.notify(e, (report) => {

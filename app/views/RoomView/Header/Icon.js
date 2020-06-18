@@ -43,7 +43,7 @@ const Icon = React.memo(({
 	} else if (type === 'c') {
 		icon = 'hash';
 	} else if (type === 'l') {
-		icon = 'livechat';
+		icon = 'omnichannel';
 	} else if (type === 'd') {
 		icon = 'team';
 	} else {
