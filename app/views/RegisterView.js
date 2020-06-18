@@ -6,7 +6,7 @@ import {
 import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
 
-import log, { trackUserEvent } from '../utils/log';
+import log, { logEvent, events } from '../utils/log';
 import sharedStyles from './Styles';
 import Button from '../containers/Button';
 import I18n from '../i18n';
@@ -23,7 +23,6 @@ import { loginRequest as loginRequestAction } from '../actions/login';
 import openLink from '../utils/openLink';
 import LoginServices from '../containers/LoginServices';
 import { getShowLoginButton } from '../selectors/login';
-import { DEFAULT_SIGN_UP } from '../utils/trackableEvents';
 
 const styles = StyleSheet.create({
 	title: {
@@ -157,7 +156,7 @@ class RegisterView extends React.Component {
 			showErrorAlert(e.data.error, I18n.t('Oops'));
 		}
 		this.setState({ saving: false });
-		trackUserEvent(DEFAULT_SIGN_UP);
+		logEvent(events.DEFAULT_SIGN_UP);
 	}
 
 	openContract = (route) => {

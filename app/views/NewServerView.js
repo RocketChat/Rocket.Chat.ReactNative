@@ -24,13 +24,12 @@ import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import I18n from '../i18n';
 import { isIOS } from '../utils/deviceInfo';
 import { themes } from '../constants/colors';
-import log, { trackUserEvent } from '../utils/log';
+import log, { logEvent, events } from '../utils/log';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
 import { setBasicAuth, BASIC_AUTH_KEY } from '../utils/fetch';
 import { themedHeader } from '../utils/navigation';
 import { CloseModalButton } from '../containers/HeaderButton';
-import { CONNECT_TO_WORKSPACE, JOIN_OPEN_WORKSPACE } from '../utils/trackableEvents';
 
 const styles = StyleSheet.create({
 	title: {
@@ -177,14 +176,14 @@ class NewServerView extends React.Component {
 			connectServer(server, cert);
 		}
 
-		trackUserEvent(CONNECT_TO_WORKSPACE);
+		logEvent(events.CONNECT_TO_WORKSPACE);
 	}
 
 	connectOpen = () => {
 		this.setState({ connectingOpen: true });
 		const { connectServer } = this.props;
 		connectServer('https://open.rocket.chat');
-		trackUserEvent(JOIN_OPEN_WORKSPACE);
+		logEvent(events.JOIN_OPEN_WORKSPACE);
 	}
 
 	basicAuth = async(server, text) => {

@@ -1,0 +1,20 @@
+export default {
+	JOIN_A_WORKSPACE: 'join_a_workspace',
+	CREATE_NEW_WORKSPACE: 'create_new_workspace',
+	CONNECT_TO_WORKSPACE: 'connect_to_workspace',
+	JOIN_OPEN_WORKSPACE: 'join_open_workspace',
+	DEFAULT_LOGIN: 'default_login',
+	DEFAULT_SIGN_UP: 'default_sign_up',
+	FORGOT_PASSWORD: 'forgot_password',
+	LOGIN_WITH_FACEBOOK: 'login_with_facebook',
+	LOGIN_WITH_GITHUB: 'login_with_github',
+	LOGIN_WITH_GITLAB: 'login_with_gitlab',
+	LOGIN_WITH_LINKEDIN: 'login_with_linkedin',
+	LOGIN_WITH_GOOGLE: 'login_with_google',
+	LOGIN_WITH_METEOR: 'login_with_meteor',
+	LOGIN_WITH_TWITTER: 'login_with_twitter',
+	LOGIN_WITH_WORDPRESS: 'login_with_wordpress',
+	LOGIN_WITH_CUSTOM_OAUTH: 'login_with_custom_oauth',
+	LOGIN_WITH_SAML: 'login_with_saml',
+	LOGIN_WITH_CAS: 'login_with_cas'
+};

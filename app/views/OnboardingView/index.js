@@ -14,8 +14,7 @@ import { isTablet } from '../../utils/deviceInfo';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
-import { trackUserEvent } from '../../utils/log';
-import { JOIN_A_WORKSPACE, CREATE_NEW_WORKSPACE } from '../../utils/trackableEvents';
+import { logEvent, events } from '../../utils/log';
 
 class OnboardingView extends React.Component {
 	static navigationOptions = () => ({
@@ -57,13 +56,13 @@ class OnboardingView extends React.Component {
 	connectServer = () => {
 		const { navigation } = this.props;
 		navigation.navigate('NewServerView');
-		trackUserEvent(JOIN_A_WORKSPACE);
+		logEvent(events.JOIN_A_WORKSPACE);
 	}
 
 	createWorkspace = async() => {
 		try {
 			await Linking.openURL('https://cloud.rocket.chat/trial');
-			trackUserEvent(CREATE_NEW_WORKSPACE);
+			logEvent(events.CREATE_NEW_WORKSPACE);
 		} catch {
 			// do nothing
 		}
