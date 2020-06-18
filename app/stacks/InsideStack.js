@@ -307,6 +307,7 @@ const InsideStackNavigator = () => {
 			<InsideStack.Screen
 				name='ShareView'
 				component={ShareView}
+				options={ShareView.navigationOptions}
 			/>
 			<InsideStack.Screen
 				name='ModalBlockView'

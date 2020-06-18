@@ -56,7 +56,7 @@ const Thumbs = React.memo(({ attachments, onPress, theme }) => {
 							style={[styles.remove, { backgroundColor: themes[theme].bodyText, borderColor: themes[theme].auxiliaryBackground }]}
 						>
 							<CustomIcon
-								name='cross'
+								name='Cross'
 								color={themes[theme].backgroundColor}
 								size={16}
 							/>

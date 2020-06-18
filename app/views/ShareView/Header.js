@@ -7,6 +7,7 @@ import { CustomIcon } from '../../lib/Icons';
 import RocketChat from '../../lib/rocketchat';
 import { themes } from '../../constants/colors';
 import styles from './styles';
+import { withTheme } from '../../theme';
 
 const Header = React.memo(({ room, theme }) => {
 	let icon;
@@ -42,4 +43,4 @@ Header.propTypes = {
 	theme: PropTypes.string
 };
 
-export default Header;
+export default withTheme(Header);

@@ -11,13 +11,12 @@ import styles from './styles';
 import Loading from '../../containers/Loading';
 import {
 	Item,
-	CancelModalButton,
+	CloseModalButton,
 	CustomHeaderButtons
 } from '../../containers/HeaderButton';
 import { isBlocked } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import Header from './Header';
 import RocketChat from '../../lib/rocketchat';
 import TextInput from '../../containers/TextInput';
@@ -43,31 +42,6 @@ const ShareView = React.memo(({
 	const shareExtension = route.params?.shareExtension;
 	const files = route.params?.attachments ?? [];
 	const room = route.params?.room ?? { rid };
-
-	// this.setReadOnly();
-	// this.setHeader();
-
-	// setHeader = () => {
-	// 	const { canSend } = this.state;
-	// 	const { navigation } = this.props;
-
-	// 	navigation.setOptions({
-	// 		title: I18n.t('Share'),
-	// 		headerRight:
-	// 			() => (canSend
-	// 				? (
-	// 					<CustomHeaderButtons>
-	// 						<Item
-	// 							title={I18n.t('Send')}
-	// 							onPress={this.sendMessage}
-	// 							testID='send-message-share-view'
-	// 							buttonStyle={styles.send}
-	// 						/>
-	// 					</CustomHeaderButtons>
-	// 				)
-	// 				: null)
-	// 	});
-	// }
 
 	const send = async() => {
 		if (loading) {
@@ -212,28 +186,27 @@ const ShareView = React.memo(({
 		</SafeAreaView>
 	);
 });
-ShareView.navigationOptions = ({ navigation, screenProps }) => {
-	const { theme } = screenProps;
-	const room = navigation.getParam('room', {});
-	const attachments = navigation.getParam('attachments', []);
-	const shareExtension = navigation.getParam('shareExtension');
+
+ShareView.navigationOptions = ({ navigation, route }) => {
+	const room = route.params?.room ?? {};
+	const attachments = route.params?.attachments ?? [];
+	const shareExtension = route.params?.shareExtension;
 
 	const options = {
-		...themedHeader(screenProps.theme),
-		headerTitle: <Header room={room} theme={theme} />
+		headerTitle: () => <Header room={room} />
 	};
 
 	// if is share extension show default back button
 	if (!shareExtension) {
-		options.headerLeft = <CancelModalButton onPress={() => navigation.pop()} />;
+		options.headerLeft = () => <CloseModalButton onPress={() => navigation.pop()} />;
 	}
 
 	if (!attachments.length) {
-		options.headerRight = (
+		options.headerRight = () => (
 			<CustomHeaderButtons>
 				<Item
 					title={I18n.t('Send')}
-					onPress={navigation.getParam('send')}
+					onPress={route.params?.send ?? (() => {})}
 					buttonStyle={styles.send}
 				/>
 			</CustomHeaderButtons>
