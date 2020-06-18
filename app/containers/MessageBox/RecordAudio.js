@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Animated, View, Text, Platform
+	Animated, View, Text, Platform, TouchableOpacity, Easing
 } from 'react-native';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { Audio } from 'expo-av';
@@ -15,9 +15,10 @@ import styles from './styles';
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
 import { mode as playbackMode } from '../message/Audio';
+import { SendButton } from './buttons';
 
+const RECORDING_PERSIST_DISTANCE = -80;	// Swipe up gesture to persist recording
 const RECORDING_CANCEL_DISTANCE = -120;	// Swipe left gesture to cancel recording
-const RECORDING_GESTURE_FAIL_DISTANCE = -30;	// Fail gesture with this amount of pan
 const RECORDING_DEFER_END_ANDROID = 500;	//  Ms to wait before android ends the recording.
 
 const RECORDING_MODE = {
@@ -78,9 +79,9 @@ const startRecordingAudio = async(instance, setRecordingStatus) => {
 	}
 };
 
-const finishRecordingAudio = async(instance, onFinish, setRecordingStatus) => {
+const finishRecordingAudio = async(instance, onFinish, setRecordingStatus, setRecordingPersisted) => {
 	const uriToPath = uri => decodeURIComponent(uri.replace(/^file:\/\//, ''));
-
+	setRecordingPersisted(false);
 	try {
 		await instance.stopAndUnloadAsync();
 
@@ -120,7 +121,7 @@ const finishRecordingAudio = async(instance, onFinish, setRecordingStatus) => {
 	}
 };
 
-const cancelAudioMessage = async(instance, onFinish, setRecordingCancelled, setRecordingStatus) => {
+const cancelAudioMessage = async(instance, onFinish, setRecordingCancelled, setRecordingStatus, setRecordingPersisted) => {
 	try {
 		await Audio.setAudioModeAsync(playbackMode);
 		await instance.stopAndUnloadAsync();
@@ -131,6 +132,7 @@ const cancelAudioMessage = async(instance, onFinish, setRecordingCancelled, setR
 			isDoneRecording: true
 		});
 		setRecordingCancelled(true);
+		setRecordingPersisted(false);
 		deactivateKeepAwake();
 		return onFinish && onFinish(false);
 	} catch (error) {
@@ -144,6 +146,7 @@ const RecordAudio = ({ theme, recordingCallback, onFinish }) => {
 	const recordingInstance = useRef(null);
 	const panRef = useRef(null);
 	const swipeLeftRef = useRef(null);
+	const swipeUpRef = useRef(null);
 	const longPressRef = useRef(null);
 
 	/* State */
@@ -154,6 +157,7 @@ const RecordAudio = ({ theme, recordingCallback, onFinish }) => {
 		isDoneRecording: false
 	});
 	const [recordingCancelled, setRecordingCancelled] = useState(false);
+	const [recordingPersisted, setRecordingPersisted] = useState(false);
 
 	/* Effects */
 	useEffect(() => {
@@ -176,6 +180,37 @@ const RecordAudio = ({ theme, recordingCallback, onFinish }) => {
 		outputRange: [0, RECORDING_CANCEL_DISTANCE]
 	});
 
+	// Button Press
+	const buttonPressAnim = useRef(new Animated.Value(0)).current;
+	const buttonGrow = buttonPressAnim.interpolate({
+		inputRange: [0, 1],
+		outputRange: [0, 80]
+	});
+
+	const animateButton = (from, to) => {
+		buttonPressAnim.setValue(from);
+		Animated.timing(
+			buttonPressAnim,
+			{
+				toValue: to,
+				duration: 180,
+				easing: Easing.ease,
+				useNativeDriver: true
+			}
+		).start();
+	};
+
+	// Persist
+	const persistAnim = touchY.interpolate({
+		inputRange: [RECORDING_PERSIST_DISTANCE, 0],
+		outputRange: [1, 0],
+		extrapolate: 'clamp'
+	});
+	const persistTranslateY = persistAnim.interpolate({
+		inputRange: [0, 1],
+		outputRange: [0, RECORDING_PERSIST_DISTANCE]
+	});
+
 	/* Functions */
 
 	/* Gesture states
@@ -196,8 +231,15 @@ const RecordAudio = ({ theme, recordingCallback, onFinish }) => {
 	);
 
 	const onSwipeLeft = ({ nativeEvent }) => {
-		if (nativeEvent.state === State.ACTIVE && recordingInstance.current && recordingStatus.isRecording && !recordingCancelled) {
-			cancelAudioMessage(recordingInstance.current, onFinish, setRecordingCancelled, setRecordingStatus);
+		if (nativeEvent.state === State.ACTIVE && recordingInstance.current && recordingStatus.isRecording && !recordingCancelled && !recordingPersisted) {
+			animateButton(1, 0);
+			cancelAudioMessage(recordingInstance.current, onFinish, setRecordingCancelled, setRecordingStatus, setRecordingPersisted);
+		}
+	};
+
+	const onSwipeUp = ({ nativeEvent }) => {
+		if (nativeEvent.state === State.ACTIVE && !recordingCancelled) {
+			setRecordingPersisted(true);
 		}
 	};
 
@@ -206,21 +248,25 @@ const RecordAudio = ({ theme, recordingCallback, onFinish }) => {
 			touchX.setValue(0);
 			touchY.setValue(0);
 			if (recordingStatus.isRecording) {
-				cancelAudioMessage(recordingInstance.current, onFinish, setRecordingCancelled, setRecordingStatus);
+				cancelAudioMessage(recordingInstance.current, onFinish, setRecordingCancelled, setRecordingStatus, setRecordingPersisted);
 			} else {
 				setRecordingCancelled(false);
+				setRecordingPersisted(false);
 				recordingInstance.current = new Audio.Recording();
 				startRecordingAudio(recordingInstance.current, setRecordingStatus);
+				animateButton(0, 1);
 			}
-		} else if (nativeEvent.state === State.END && Platform.OS === 'ios') {
-			finishRecordingAudio(recordingInstance.current, onFinish, setRecordingStatus);
+		} else if (nativeEvent.state === State.END && Platform.OS === 'ios' && !recordingPersisted && !recordingCancelled) {
+			finishRecordingAudio(recordingInstance.current, onFinish, setRecordingStatus, setRecordingPersisted);
+			animateButton(1, 0);
 		}
 	};
 
 	const onPan = ({ nativeEvent }) => {
-		if (nativeEvent.state === State.END && Platform.OS === 'android') {
+		if (nativeEvent.state === State.END && Platform.OS === 'android' && !recordingPersisted && !recordingCancelled) {
+			animateButton(1, 0);
 			setTimeout(() => {
-				finishRecordingAudio(recordingInstance.current, onFinish, setRecordingStatus);
+				finishRecordingAudio(recordingInstance.current, onFinish, setRecordingStatus, setRecordingPersisted);
 			}, RECORDING_DEFER_END_ANDROID);
 		}
 	};
@@ -228,17 +274,71 @@ const RecordAudio = ({ theme, recordingCallback, onFinish }) => {
 
 	/* UI */
 
-	const centerContent = (
-		<Animated.View style={{ transform: [{ translateX: cancelTranslateX }] }}>
-			<Text style={[styles.cancelRecordingText, {
-				color: themes[theme].titleText,
-				textAlign: 'right'
-			}]}
+	let centerContent;
+	let recordingButton;
+
+	if (recordingPersisted) {
+		centerContent = (
+			<TouchableOpacity
+				style={styles.recordingCancelButton}
+				onPress={() => {
+					cancelAudioMessage(recordingInstance.current, onFinish, setRecordingCancelled, setRecordingStatus, setRecordingPersisted);
+				}}
 			>
-				{'<'} Slide to cancel
-			</Text>
-		</Animated.View>
-	);
+				<Text style={[styles.cancelRecordingText, { color: themes[theme].tintColor, textAlign: 'right' }]}>
+					Cancel
+				</Text>
+			</TouchableOpacity>
+		);
+
+		recordingButton = (
+			<SendButton
+				theme={theme}
+				onPress={() => {
+					finishRecordingAudio(recordingInstance.current, onFinish, setRecordingStatus, setRecordingPersisted);
+				}}
+			/>
+		);
+	} else {
+		centerContent = (
+			<Animated.View style={[styles.recordingSlideToCancel, { transform: [{ translateX: cancelTranslateX }] }]}>
+				<CustomIcon name='chevron-left' size={30} color={themes[theme].auxiliaryTintColor} />
+				<Text style={[styles.cancelRecordingText, {
+					color: themes[theme].auxiliaryText,
+					textAlign: 'right'
+				}]}
+				>
+					Slide to cancel
+				</Text>
+			</Animated.View>
+		);
+
+		recordingButton = (
+			<LongPressGestureHandler
+				ref={longPressRef}
+				simultaneousHandlers={[swipeLeftRef, panRef, swipeUpRef]}
+				onHandlerStateChange={onLongPress}
+				minDurationMs={0}
+			>
+				<Animated.View
+					style={styles.actionButton}
+					testID='messagebox-send-audio'
+					accessibilityLabel={I18n.t('Send_audio_message')}
+					accessibilityTraits='button'
+				>
+					<CustomIcon style={{ zIndex: 1 }} name='mic' size={23} color={recordingStatus.isRecording ? themes[theme].focusedBackground : themes[theme].tintColor} />
+					<View style={{ position: 'absolute' }}>
+						<Animated.View
+							style={[styles.recordingButtonBubble, {
+								backgroundColor: themes[theme].tintColor,
+								transform: [{ translateY: persistTranslateY }, { scale: buttonGrow }]
+							}]}
+						/>
+					</View>
+				</Animated.View>
+			</LongPressGestureHandler>
+		);
+	}
 
 
 	const recordingContent = recordingStatus.isRecording ? (
@@ -257,43 +357,33 @@ const RecordAudio = ({ theme, recordingCallback, onFinish }) => {
 		</Animated.View>
 	) : null;
 
-	const recordingButton = (
-		<LongPressGestureHandler
-			ref={longPressRef}
-			simultaneousHandlers={[swipeLeftRef, panRef]}
-			onHandlerStateChange={onLongPress}
-			minDurationMs={0}
-		>
-			<Animated.View
-				style={styles.actionButton}
-				testID='messagebox-send-audio'
-				accessibilityLabel={I18n.t('Send_audio_message')}
-				accessibilityTraits='button'
-			>
-				<CustomIcon name='mic' size={23} color={recordingStatus.isRecording ? themes[theme].focusedBackground : themes[theme].tintColor} />
-			</Animated.View>
-		</LongPressGestureHandler>
-	);
-
 	return (
 		<>
 			{recordingContent}
 			<PanGestureHandler
 				ref={panRef}
-				simultaneousHandlers={[swipeLeftRef, longPressRef]}
+				simultaneousHandlers={[swipeLeftRef, longPressRef, swipeUpRef]}
 				onGestureEvent={onPanEvent}
 				onHandlerStateChange={onPan}
 			>
 				<Animated.View>
 					<PanGestureHandler
 						ref={swipeLeftRef}
-						simultaneousHandlers={[panRef, longPressRef]}
-						failOffsetY={RECORDING_GESTURE_FAIL_DISTANCE}
+						simultaneousHandlers={[panRef, longPressRef, swipeUpRef]}
 						activeOffsetX={RECORDING_CANCEL_DISTANCE}
 						onHandlerStateChange={onSwipeLeft}
 					>
 						<Animated.View>
-							{recordingButton}
+							<PanGestureHandler
+								ref={swipeUpRef}
+								simultaneousHandlers={[longPressRef, panRef, swipeLeftRef]}
+								onHandlerStateChange={onSwipeUp}
+								activeOffsetY={RECORDING_PERSIST_DISTANCE}
+							>
+								<Animated.View>
+									{recordingButton}
+								</Animated.View>
+							</PanGestureHandler>
 						</Animated.View>
 					</PanGestureHandler>
 				</Animated.View>

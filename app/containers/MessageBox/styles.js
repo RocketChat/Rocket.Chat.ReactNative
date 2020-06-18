@@ -112,7 +112,21 @@ export default StyleSheet.create({
 	},
 	recordingContent: {
 		flexDirection: 'row',
+		alignItems: 'center',
 		flex: 3,
 		marginHorizontal: 24
+	},
+	recordingSlideToCancel: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	recordingCancelButton: {
+		height: 22
+	},
+	recordingButtonBubble: {
+		width: 1,
+		height: 1,
+		borderRadius: 200
 	}
 });
