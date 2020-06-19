@@ -46,18 +46,20 @@ const Header = React.memo(({ room, theme }) => {
 		icon = 'lock';
 	}
 
+	const textColor = themes[theme].headerTitleColor;
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.inner}>
 				<Text numberOfLines={1} style={styles.text}>
-					<Text style={[styles.text, { color: themes[theme].bodyText }]} numberOfLines={1}>{I18n.t('Sending_to')} </Text>
+					<Text style={[styles.text, { color: textColor }]} numberOfLines={1}>{I18n.t('Sending_to')} </Text>
 					<CustomIcon
 						name={icon}
 						size={16}
-						color={themes[theme].bodyText}
+						color={textColor}
 					/>
 					<Text
-						style={[styles.name, { color: themes[theme].bodyText }]}
+						style={[styles.name, { color: textColor }]}
 						numberOfLines={1}
 					>
 						{RocketChat.getRoomTitle(room)}
