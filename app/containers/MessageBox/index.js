@@ -922,6 +922,7 @@ class MessageBox extends Component {
 					requiresSameParentToManageScrollView
 					addBottomView
 					bottomViewColor={themes[theme].messageboxBackground}
+					// absolute={false}
 				/>
 				<UploadModal
 					isVisible={(file && file.isVisible)}

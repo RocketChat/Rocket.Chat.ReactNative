@@ -36,11 +36,13 @@ class ShareView extends Component {
 		this.state = {
 			selected: 0,
 			loading: false,
+			loadingPreview: true,
 			readOnly: false,
 			attachments: [],
 			text: props.route.params?.text ?? '',
 			room: props.route.params?.room ?? {} // TODO: query room?
 		};
+		this.unsubscribeFocus = props.navigation.addListener('focus', this.didFocus);
 	}
 
 	componentDidMount = () => {
@@ -59,6 +61,10 @@ class ShareView extends Component {
 
 	componentWillUnmount = () => {
 		console.countReset(`${ this.constructor.name }.render calls`);
+	}
+
+	didFocus = () => {
+		this.setState({ loadingPreview: false });
 	}
 
 	setAttachments = async() => {
@@ -149,7 +155,7 @@ class ShareView extends Component {
 			options.headerLeft = () => <CloseModalButton onPress={() => navigation.pop()} />;
 		}
 
-		if (!attachments.length) {
+		if (attachments.length > 1) {
 			options.headerRight = () => (
 				<CustomHeaderButtons>
 					<Item
@@ -174,21 +180,21 @@ class ShareView extends Component {
 	}, 100)
 
 	renderContent = () => {
-		const { attachments, selected, room } = this.state;
+		const { attachments, selected, room, loadingPreview } = this.state;
 		const { theme, navigation } = this.props;
 
 		if (attachments.length) {
 			return (
 				<View style={styles.container}>
-					<View style={styles.container}>
-						<Preview
-							// using key just to reset zoom/move after change selected
-							key={attachments[selected]?.path}
-							item={attachments[selected]}
-							theme={theme}
-							shareExtension={this.shareExtension}
-						/>
-					</View>
+					<Preview
+						// using key just to reset zoom/move after change selected
+						key={attachments[selected]?.path}
+						item={attachments[selected]}
+						theme={theme}
+						shareExtension={this.shareExtension}
+						loading={loadingPreview}
+					/>
+					{/* <View style={{ height: 80, backgroundColor: 'yellow' }} /> */}
 					<MessageBox
 						showSend
 						rid={room.rid}
@@ -246,7 +252,6 @@ class ShareView extends Component {
 		return (
 			<SafeAreaView
 				style={{ backgroundColor: themes[theme].backgroundColor }}
-				testID='room-view'
 				theme={theme}
 			>
 				{this.renderContent()}

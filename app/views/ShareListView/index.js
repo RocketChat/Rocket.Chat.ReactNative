@@ -67,7 +67,9 @@ class ShareListView extends React.Component {
 		setTimeout(async() => {
 			try {
 				const data = await ShareExtension.data();
+        console.log('ShareListView -> componentDidMount -> data', data);
 				const info = await Promise.all(data.filter(item => item.type === 'media').map(file => FileSystem.getInfoAsync(this.uriToPath(file.value), { size: true })));
+        console.log('ShareListView -> componentDidMount -> info', info);
 				const attachments = info.map(file => ({
 					filename: file.uri.substring(file.uri.lastIndexOf('/') + 1),
 					description: '',
@@ -227,6 +229,7 @@ class ShareListView extends React.Component {
 
 	shareMessage = (room) => {
 		const { attachments, text } = this.state;
+    console.log('ShareListView -> shareMessage -> attachments', attachments);
 		const { navigation } = this.props;
 
 		navigation.navigate('ShareView', {
