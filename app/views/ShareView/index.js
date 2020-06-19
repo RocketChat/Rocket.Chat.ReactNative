@@ -25,6 +25,7 @@ import Thumbs from './Thumbs';
 import MessageBox from '../../containers/MessageBox';
 import SafeAreaView from '../../containers/SafeAreaView';
 import debounce from '../../utils/debounce';
+import { getUserSelector } from '../../selectors/login';
 
 class ShareView extends Component {
 	constructor(props) {
@@ -54,6 +55,10 @@ class ShareView extends Component {
 
 		this.setAttachments();
 		this.setHeader();
+	}
+
+	componentWillUnmount = () => {
+		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
 	setAttachments = async() => {
@@ -226,6 +231,7 @@ class ShareView extends Component {
 	};
 
 	render() {
+		console.count(`${ this.constructor.name }.render calls`);
 		const { readOnly, room, loading } = this.state;
 		const { theme } = this.props;
 		if (readOnly || isBlocked(room)) {
@@ -261,13 +267,9 @@ ShareView.propTypes = {
 	server: PropTypes.string
 };
 
-const mapStateToProps = (({ share, login, server }) => ({
-	user: {
-		id: share.user?.id || login.user?.id,
-		username: share.user?.username || login.user?.username,
-		token: share.user?.token || login.user?.token
-	},
-	server: share.server || server.server
-}));
+const mapStateToProps = state => ({
+	user: getUserSelector(state),
+	server: state.share.server || state.server.server
+});
 
 export default connect(mapStateToProps)(withTheme(ShareView));

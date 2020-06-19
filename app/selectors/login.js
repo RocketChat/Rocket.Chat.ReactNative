@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-const getUser = state => state.login.user || {};
+const getUser = state => state.share?.user || state.login?.user || {};
 const getLoginServices = state => state.login.services || {};
 const getShowFormLoginSetting = state => state.settings.Accounts_ShowFormLogin || false;
 
