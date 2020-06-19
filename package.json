@@ -15,7 +15,8 @@
     "precommit": "eslint . && jest",
     "generate-source-maps-ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios-release.bundle --sourcemap-output ios-release.bundle.map",
     "generate-source-maps-android": "bugsnag-sourcemaps",
-    "postinstall": "patch-package && jetify"
+    "postinstall": "patch-package && jetify",
+    "prepare": "yarn run snyk-protect"
   },
   "husky": {
     "hooks": {
@@ -114,7 +115,8 @@
     "semver": "7.3.2",
     "ua-parser-js": "^0.7.21",
     "url-parse": "^1.4.7",
-    "use-deep-compare-effect": "^1.3.1"
+    "use-deep-compare-effect": "^1.3.1",
+    "snyk": "^1.345.1"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
