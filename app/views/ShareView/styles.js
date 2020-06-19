@@ -65,21 +65,6 @@ export default StyleSheet.create({
 		...sharedStyles.textBold,
 		...sharedStyles.textAlignCenter
 	},
-	// Header
-	header: {
-		width: '70%',
-		justifyContent: 'center',
-		flexDirection: 'row'
-	},
-	text: {
-		fontSize: 16,
-		...sharedStyles.textRegular,
-		marginRight: 4
-	},
-	name: {
-		fontSize: 16,
-		...sharedStyles.textSemibold
-	},
 	send: {
 		...sharedStyles.textSemibold,
 		fontSize: 16

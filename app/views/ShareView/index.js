@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
@@ -45,7 +45,8 @@ const ShareView = React.memo(({
 	const files = route.params?.attachments ?? [];
 	const room = route.params?.room ?? { rid };
 
-	const send = async() => {
+	const send = useCallback(async() => {
+		console.log('RERERERERERERERERER SEND')
 		if (loading) {
 			return;
 		}
@@ -95,7 +96,34 @@ const ShareView = React.memo(({
 		if (shareExtension) {
 			ShareExtension.close();
 		}
-	};
+	}, []);
+
+	const setHeader = useCallback(() => {
+		const options = {
+			headerTitle: () => <Header room={room} />,
+			headerTitleAlign: 'left'
+		};
+
+		// if is share extension show default back button
+		if (!shareExtension) {
+			options.headerLeft = () => <CloseModalButton onPress={() => navigation.pop()} />;
+		}
+
+		if (!attachments.length) {
+			options.headerRight = () => (
+				<CustomHeaderButtons>
+					<Item
+						title={I18n.t('Send')}
+						onPress={send}
+						buttonStyle={styles.send}
+					/>
+				</CustomHeaderButtons>
+			);
+		}
+
+		// return options;
+		navigation.setOptions(options);
+	}, []);
 
 	useEffect(() => {
 		(async() => {
@@ -125,8 +153,7 @@ const ShareView = React.memo(({
 			setAttachments(items);
 		})();
 
-		// set send as a navigation function to be used at header
-		navigation.setParams({ send });
+		setHeader();
 	}, []);
 
 	if (readOnly || isBlocked(room)) {
@@ -193,7 +220,6 @@ const ShareView = React.memo(({
 	};
 
 	return (
-		// <SafeAreaView style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
 		<SafeAreaView
 			style={{ backgroundColor: themes[theme].backgroundColor }}
 			testID='room-view'
@@ -205,34 +231,6 @@ const ShareView = React.memo(({
 	);
 });
 
-ShareView.navigationOptions = ({ navigation, route }) => {
-	const room = route.params?.room ?? {};
-	const attachments = route.params?.attachments ?? [];
-	const shareExtension = route.params?.shareExtension;
-
-	const options = {
-		headerTitle: () => <Header room={room} />
-	};
-
-	// if is share extension show default back button
-	if (!shareExtension) {
-		options.headerLeft = () => <CloseModalButton onPress={() => navigation.pop()} />;
-	}
-
-	if (!attachments.length) {
-		options.headerRight = () => (
-			<CustomHeaderButtons>
-				<Item
-					title={I18n.t('Send')}
-					onPress={route.params?.send ?? (() => {})}
-					buttonStyle={styles.send}
-				/>
-			</CustomHeaderButtons>
-		);
-	}
-
-	return options;
-};
 ShareView.propTypes = {
 	navigation: PropTypes.object,
 	theme: PropTypes.string,
