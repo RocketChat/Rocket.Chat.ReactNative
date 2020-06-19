@@ -434,7 +434,7 @@ PODS:
     - React
   - ReactNativeKeyboardTrackingView (5.7.0):
     - React
-  - rn-extensions-share (2.4.0-rc.1):
+  - rn-extensions-share (2.4.0-rc.2):
     - React
   - rn-fetch-blob (0.12.0):
     - React-Core
@@ -901,7 +901,7 @@ SPEC CHECKSUMS:
   ReactNativeART: 78edc68dd4a1e675338cd0cd113319cf3a65f2ab
   ReactNativeKeyboardInput: c37e26821519869993b3b61844350feb9177ff37
   ReactNativeKeyboardTrackingView: 02137fac3b2ebd330d74fa54ead48b14750a2306
-  rn-extensions-share: b3663e0751baa904af09073b909c0a548fa9c82b
+  rn-extensions-share: 830702b118873cd761b5f503517fa8f267fba8ae
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNAudio: cae2991f2dccb75163f260b60da8051717b959fa
   RNBootSplash: 7cb9b4fe7e94177edc0d11010f7631d79db2f5e9
