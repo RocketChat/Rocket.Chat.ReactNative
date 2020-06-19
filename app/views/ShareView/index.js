@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
@@ -24,36 +24,68 @@ import Preview from './Preview';
 import Thumbs from './Thumbs';
 import MessageBox from '../../containers/MessageBox';
 import SafeAreaView from '../../containers/SafeAreaView';
+import debounce from '../../utils/debounce';
 
-const ShareView = React.memo(({
-	navigation,
-	route,
-	theme,
-	user: {
-		id,
-		username,
-		token
-	},
-	server
-}) => {
-	const [selected, select] = useState(0);
-	const [loading, setLoading] = useState(false);
-	const [readOnly, setReadOnly] = useState(false);
-	const [attachments, setAttachments] = useState([]);
-	const [text, setText] = useState(route.params?.text ?? '');
-	const shareExtension = route.params?.shareExtension;
-	const files = route.params?.attachments ?? [];
-	const room = route.params?.room ?? { rid };
+class ShareView extends Component {
+	constructor(props) {
+		super(props);
+		this.files = props.route.params?.attachments ?? [];
+		this.shareExtension = props.route.params?.shareExtension;
 
-	const send = useCallback(async() => {
-		console.log('RERERERERERERERERER SEND')
+		this.state = {
+			selected: 0,
+			loading: false,
+			readOnly: false,
+			attachments: [],
+			text: props.route.params?.text ?? '',
+			room: props.route.params?.room ?? {} // TODO: query room?
+		};
+	}
+
+	componentDidMount = () => {
+		// (async() => {
+		// 	try {
+		// 		const ro = await isReadOnly(room, { username });
+		// 		setReadOnly(ro);
+		// 	} catch {
+		// 		// Do nothing
+		// 	}
+		// })();
+
+		this.setAttachments();
+		this.setHeader();
+	}
+
+	setAttachments = async() => {
+		// set attachments just when it was mounted to prevent memory issues
+		// get video thumbnails
+		const items = await Promise.all(this.files.map(async(item) => {
+			if (item.mime?.match(/video/)) {
+				try {
+					const { uri } = await VideoThumbnails.getThumbnailAsync(item.path);
+					item.uri = uri;
+				} catch {
+					// Do nothing
+				}
+				return item;
+			}
+			return item;
+		}));
+		this.setState({ attachments: items });
+	}
+
+	send = async() => {
+		const {
+			loading, attachments, room, text
+		} = this.state;
+		const { navigation, server, user } = this.props;
 		if (loading) {
 			return;
 		}
 
 		// if it's share extension this should show loading
-		if (shareExtension) {
-			setLoading(true);
+		if (this.shareExtension) {
+			this.setState({ loading: true });
 
 		// if it's not share extension this can close
 		} else {
@@ -81,31 +113,34 @@ const ShareView = React.memo(({
 					},
 					undefined,
 					server,
-					{ id, token }
+					{ id: user.id, token: user.token }
 				)));
 
 			// Send text message
 			} else if (text.length) {
-				await RocketChat.sendMessage(room.rid, text, undefined, { id, token });
+				await RocketChat.sendMessage(room.rid, text, undefined, { id: user.id, token: user.token });
 			}
 		} catch {
 			// Do nothing
 		}
 
 		// if it's share extension this should close
-		if (shareExtension) {
+		if (this.shareExtension) {
 			ShareExtension.close();
 		}
-	}, []);
+	};
 
-	const setHeader = useCallback(() => {
+	setHeader = () => {
+		const { attachments, room } = this.state;
+		const { navigation } = this.props;
+
 		const options = {
 			headerTitle: () => <Header room={room} />,
 			headerTitleAlign: 'left'
 		};
 
 		// if is share extension show default back button
-		if (!shareExtension) {
+		if (!this.shareExtension) {
 			options.headerLeft = () => <CloseModalButton onPress={() => navigation.pop()} />;
 		}
 
@@ -114,7 +149,7 @@ const ShareView = React.memo(({
 				<CustomHeaderButtons>
 					<Item
 						title={I18n.t('Send')}
-						onPress={send}
+						onPress={this.send}
 						buttonStyle={styles.send}
 					/>
 				</CustomHeaderButtons>
@@ -123,51 +158,21 @@ const ShareView = React.memo(({
 
 		// return options;
 		navigation.setOptions(options);
-	}, []);
-
-	useEffect(() => {
-		(async() => {
-			try {
-				const ro = await isReadOnly(room, { username });
-				setReadOnly(ro);
-			} catch {
-				// Do nothing
-			}
-		})();
-
-		// set attachments just when it was mounted to prevent memory issues
-		(async() => {
-			// get video thumbnails
-			const items = await Promise.all(files.map(async(item) => {
-				if (item.mime?.match(/video/)) {
-					try {
-						const { uri } = await VideoThumbnails.getThumbnailAsync(item.path);
-						item.uri = uri;
-					} catch {
-						// Do nothing
-					}
-					return item;
-				}
-				return item;
-			}));
-			setAttachments(items);
-		})();
-
-		setHeader();
-	}, []);
-
-	if (readOnly || isBlocked(room)) {
-		return (
-			<View style={[styles.container, styles.centered, { backgroundColor: themes[theme].backgroundColor }]}>
-				<Text style={styles.title}>
-					{isBlocked(room) ? I18n.t('This_room_is_blocked') : I18n.t('This_room_is_read_only')}
-				</Text>
-			</View>
-		);
 	}
 
-	const renderContent = () => {
-		if (files.length) {
+	selectFile = (index) => {
+		this.setState({ selected: index });
+	}
+
+	onChangeText = debounce((text) => {
+		this.setState({ text });
+	}, 100)
+
+	renderContent = () => {
+		const { attachments, selected, room } = this.state;
+		const { theme, navigation } = this.props;
+
+		if (attachments.length) {
 			return (
 				<View style={styles.container}>
 					<View style={styles.container}>
@@ -176,7 +181,7 @@ const ShareView = React.memo(({
 							key={attachments[selected]?.path}
 							item={attachments[selected]}
 							theme={theme}
-							shareExtension={shareExtension}
+							shareExtension={this.shareExtension}
 						/>
 					</View>
 					<MessageBox
@@ -184,14 +189,14 @@ const ShareView = React.memo(({
 						rid={room.rid}
 						roomType={room.t}
 						theme={theme}
-						onSubmit={send}
+						onSubmit={this.send}
 						getCustomEmoji={() => {}}
-						// onChangeText={onChangeText}
+						onChangeText={this.onChangeText}
 						message={attachments[selected]?.description}
 						navigation={navigation}
 					>
 						<Thumbs
-							onPress={select}
+							onPress={this.selectFile}
 							attachments={attachments}
 							theme={theme}
 						/>
@@ -200,6 +205,7 @@ const ShareView = React.memo(({
 			);
 		}
 
+		// Reuse
 		return (
 			<TextInput
 				containerStyle={styles.inputContainer}
@@ -209,8 +215,8 @@ const ShareView = React.memo(({
 					{ backgroundColor: themes[theme].focusedBackground }
 				]}
 				placeholder=''
-				onChangeText={setText}
-				defaultValue={text}
+				onChangeText={this.onChangeText}
+				defaultValue=''
 				multiline
 				textAlignVertical='top'
 				autoFocus
@@ -219,17 +225,30 @@ const ShareView = React.memo(({
 		);
 	};
 
-	return (
-		<SafeAreaView
-			style={{ backgroundColor: themes[theme].backgroundColor }}
-			testID='room-view'
-			theme={theme}
-		>
-			{renderContent()}
-			<Loading visible={loading} />
-		</SafeAreaView>
-	);
-});
+	render() {
+		const { readOnly, room, loading } = this.state;
+		const { theme } = this.props;
+		if (readOnly || isBlocked(room)) {
+			return (
+				<View style={[styles.container, styles.centered, { backgroundColor: themes[theme].backgroundColor }]}>
+					<Text style={styles.title}>
+						{isBlocked(room) ? I18n.t('This_room_is_blocked') : I18n.t('This_room_is_read_only')}
+					</Text>
+				</View>
+			);
+		}
+		return (
+			<SafeAreaView
+				style={{ backgroundColor: themes[theme].backgroundColor }}
+				testID='room-view'
+				theme={theme}
+			>
+				{this.renderContent()}
+				<Loading visible={loading} />
+			</SafeAreaView>
+		);
+	}
+}
 
 ShareView.propTypes = {
 	navigation: PropTypes.object,
