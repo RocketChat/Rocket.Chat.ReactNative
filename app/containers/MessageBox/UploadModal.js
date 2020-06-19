@@ -4,7 +4,6 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
-import { responsive } from 'react-native-responsive-ui';
 import equal from 'deep-equal';
 
 import TextInput from '../TextInput';
@@ -15,6 +14,7 @@ import { isIOS } from '../../utils/deviceInfo';
 import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
 import { withTheme } from '../../theme';
+import { withDimensions } from '../../dimensions';
 
 const styles = StyleSheet.create({
 	modal: {
@@ -88,7 +88,7 @@ class UploadModal extends Component {
 		file: PropTypes.object,
 		close: PropTypes.func,
 		submit: PropTypes.func,
-		window: PropTypes.object,
+		width: PropTypes.number,
 		theme: PropTypes.string,
 		isMasterDetail: PropTypes.bool
 	}
@@ -112,7 +112,7 @@ class UploadModal extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { name, description, file } = this.state;
-		const { window, isVisible, theme } = this.props;
+		const { width, isVisible, theme } = this.props;
 
 		if (nextState.name !== name) {
 			return true;
@@ -126,7 +126,7 @@ class UploadModal extends Component {
 		if (nextProps.isVisible !== isVisible) {
 			return true;
 		}
-		if (nextProps.window.width !== window.width) {
+		if (nextProps.width !== width) {
 			return true;
 		}
 		if (!equal(nextState.file, file)) {
@@ -204,7 +204,7 @@ class UploadModal extends Component {
 
 	render() {
 		const {
-			window: { width }, isVisible, close, isMasterDetail, theme
+			width, isVisible, close, isMasterDetail, theme
 		} = this.props;
 		const { name, description } = this.state;
 		return (
@@ -246,4 +246,4 @@ class UploadModal extends Component {
 	}
 }
 
-export default responsive(withTheme(UploadModal));
+export default withDimensions(withTheme(UploadModal));

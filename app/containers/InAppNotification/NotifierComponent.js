@@ -5,7 +5,6 @@ import Touchable from 'react-native-platform-touchable';
 import { connect } from 'react-redux';
 import { Notifier } from 'react-native-notifier';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useDeviceOrientation } from '@react-native-community/hooks';
 
 import Avatar from '../Avatar';
 import { CustomIcon } from '../../lib/Icons';
@@ -16,6 +15,7 @@ import { getUserSelector } from '../../selectors/login';
 import { ROW_HEIGHT } from '../../presentation/RoomItem';
 import { goRoom } from '../../utils/goRoom';
 import Navigation from '../../lib/Navigation';
+import { useOrientation } from '../../dimensions';
 
 const AVATAR_SIZE = 48;
 const BUTTON_HIT_SLOP = {
@@ -70,7 +70,7 @@ const NotifierComponent = React.memo(({
 }) => {
 	const { theme } = useTheme();
 	const insets = useSafeAreaInsets();
-	const { landscape } = useDeviceOrientation();
+	const { isLandscape } = useOrientation();
 
 	const { id: userId, token } = user;
 	const { text, payload } = notification;
@@ -98,7 +98,7 @@ const NotifierComponent = React.memo(({
 	return (
 		<View style={[
 			styles.container,
-			(isMasterDetail || landscape) && styles.small,
+			(isMasterDetail || isLandscape) && styles.small,
 			{
 				backgroundColor: themes[theme].focusedBackground,
 				borderColor: themes[theme].separatorColor,
