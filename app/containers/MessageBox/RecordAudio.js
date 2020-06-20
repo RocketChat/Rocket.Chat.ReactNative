@@ -1,15 +1,15 @@
 import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { TouchableOpacity } from 'react-native';
+import { View, Text } from 'react-native';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { Audio } from 'expo-av';
 import RNFetchBlob from 'rn-fetch-blob';
+import { BorderlessButton } from 'react-native-gesture-handler';
 
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
-import { mode as playbackMode } from '../message/Audio';
 
 const RECORDING_MODE = {
 	allowsRecordingIOS: true,
@@ -38,6 +38,14 @@ const RECORDING_SETTINGS = {
 		outputFormat: Audio.RECORDING_OPTION_IOS_OUTPUT_FORMAT_MPEG4AAC,
 		numberOfChannels: 2
 	}
+};
+
+const _formatTime = function(seconds) {
+	let minutes = Math.floor(seconds / 60);
+	seconds %= 60;
+	if (minutes < 10) { minutes = `0${ minutes }`; }
+	if (seconds < 10) { seconds = `0${ seconds }`; }
+	return `${ minutes }:${ seconds }`;
 };
 
 const startRecordingAudio = async(instance, setRecordingStatus) => {
@@ -70,8 +78,6 @@ const finishRecordingAudio = async(instance, onFinish, setRecordingStatus) => {
 		const fileURI = instance.getURI();
 		const fileData = await RNFetchBlob.fs.stat(uriToPath(fileURI));
 
-		await Audio.setAudioModeAsync(playbackMode);
-
 		setRecordingStatus({
 			canRecord: true,
 			isRecording: false,
@@ -91,7 +97,6 @@ const finishRecordingAudio = async(instance, onFinish, setRecordingStatus) => {
 		deactivateKeepAwake();
 		return onFinish && onFinish(fileInfo);
 	} catch (err) {
-		await Audio.setAudioModeAsync(playbackMode);
 		deactivateKeepAwake();
 		setRecordingStatus({
 			canRecord: true,
@@ -103,11 +108,25 @@ const finishRecordingAudio = async(instance, onFinish, setRecordingStatus) => {
 	}
 };
 
+const cancelAudioMessage = async(instance, onFinish, setRecordingStatus) => {
+	try {
+		await instance.stopAndUnloadAsync();
+		setRecordingStatus({
+			canRecord: true,
+			isRecording: false,
+			durationMillis: 0,
+			isDoneRecording: true
+		});
+		deactivateKeepAwake();
+		return onFinish && onFinish(false);
+	} catch (error) {
+		// Do nothing
+	}
+};
+
 const RecordAudio = ({ theme, recordingCallback, onFinish }) => {
-	/* Refs */
 	const recordingInstance = useRef(null);
 
-	/* State */
 	const [recordingStatus, setRecordingStatus] = useState({
 		canRecord: false,
 		isRecording: false,
@@ -115,22 +134,56 @@ const RecordAudio = ({ theme, recordingCallback, onFinish }) => {
 		isDoneRecording: false
 	});
 
-	/* Effects */
 	useEffect(() => {
 		recordingCallback(recordingStatus.isRecording);
 	}, [recordingStatus.isRecording]);
 
-	/* UI */
-	const recordingButton = (
-		<TouchableOpacity
-			onPressIn={() => {
+	const recordingContent = recordingStatus.isRecording ? (
+		<View style={[styles.recordingContent]}>
+			<View style={styles.textArea}>
+				<BorderlessButton
+					onPress={() => {
+						cancelAudioMessage(recordingInstance.current, onFinish, setRecordingStatus);
+					}}
+					accessibilityLabel={I18n.t('Cancel_recording')}
+					accessibilityTraits='button'
+					style={styles.actionButton}
+				>
+					<CustomIcon
+						size={22}
+						color={themes[theme].dangerColor}
+						name='Cross'
+					/>
+				</BorderlessButton>
+				<Text
+					key='currentTime'
+					style={[styles.recordingCancelText, { color: themes[theme].titleText }]}
+				>
+					{_formatTime(Math.floor(recordingStatus.durationMillis / 1000))}
+				</Text>
+			</View>
+			<View style={styles.recordingContentFinish}>
+				<BorderlessButton
+					onPress={() => {
+						finishRecordingAudio(recordingInstance.current, onFinish, setRecordingStatus);
+					}}
+					accessibilityLabel={I18n.t('Finish_recording')}
+					accessibilityTraits='button'
+					style={styles.actionButton}
+				>
+					<CustomIcon
+						size={22}
+						color={themes[theme].successColor}
+						name='check'
+					/>
+				</BorderlessButton>
+			</View>
+		</View>
+	) : (
+		<BorderlessButton
+			onPress={() => {
 				recordingInstance.current = new Audio.Recording();
 				startRecordingAudio(recordingInstance.current, setRecordingStatus);
-			}}
-			onPressOut={() => {
-				if (recordingStatus.isRecording) {
-					finishRecordingAudio(recordingInstance.current, onFinish, setRecordingStatus);
-				}
 			}}
 			style={styles.actionButton}
 			testID='messagebox-send-audio'
@@ -138,14 +191,10 @@ const RecordAudio = ({ theme, recordingCallback, onFinish }) => {
 			accessibilityTraits='button'
 		>
 			<CustomIcon name='mic' size={23} color={recordingStatus.isRecording ? themes[theme].focusedBackground : themes[theme].tintColor} />
-		</TouchableOpacity>
+		</BorderlessButton>
 	);
 
-	return (
-		<>
-			{recordingButton}
-		</>
-	);
+	return recordingContent;
 };
 
 RecordAudio.propTypes = {
