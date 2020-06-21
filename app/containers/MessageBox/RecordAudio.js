@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { Audio } from 'expo-av';
-import RNFetchBlob from 'rn-fetch-blob';
+import { getInfoAsync } from 'expo-file-system';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
 import { CustomIcon } from '../../lib/Icons';
@@ -73,14 +73,11 @@ const startRecordingAudio = async(instance, setRecordingStatus, setRecorderBusy)
 
 const finishRecordingAudio = async(instance, onFinish, setRecorderBusy) => {
 	setRecorderBusy(true);
-	const uriToPath = uri => decodeURIComponent(uri.replace(/^file:\/\//, ''));
-
 	try {
 		await instance.stopAndUnloadAsync();
 
 		const fileURI = instance.getURI();
-		const fileData = await RNFetchBlob.fs.stat(uriToPath(fileURI));
-
+		const fileData = await getInfoAsync(fileURI);
 		const fileInfo = {
 			name: `${ Date.now() }.aac`,
 			mime: 'audio/aac',
