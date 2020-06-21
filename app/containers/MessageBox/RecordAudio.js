@@ -48,7 +48,8 @@ const _formatTime = function(seconds) {
 	return `${ minutes }:${ seconds }`;
 };
 
-const startRecordingAudio = async(instance, setRecordingStatus) => {
+const startRecordingAudio = async(instance, setRecordingStatus, setRecorderBusy) => {
+	setRecorderBusy(true);
 	try {
 		const permissions = await Audio.getPermissionsAsync();
 
@@ -67,9 +68,11 @@ const startRecordingAudio = async(instance, setRecordingStatus) => {
 	} catch (error) {
 		console.log('startrecordingerror', error);
 	}
+	setRecorderBusy(false);
 };
 
-const finishRecordingAudio = async(instance, onFinish, setRecordingStatus) => {
+const finishRecordingAudio = async(instance, onFinish, setRecorderBusy) => {
+	setRecorderBusy(true);
 	const uriToPath = uri => decodeURIComponent(uri.replace(/^file:\/\//, ''));
 
 	try {
@@ -77,13 +80,6 @@ const finishRecordingAudio = async(instance, onFinish, setRecordingStatus) => {
 
 		const fileURI = instance.getURI();
 		const fileData = await RNFetchBlob.fs.stat(uriToPath(fileURI));
-
-		setRecordingStatus({
-			canRecord: true,
-			isRecording: false,
-			durationMillis: 0,
-			isDoneRecording: true
-		});
 
 		const fileInfo = {
 			name: `${ Date.now() }.aac`,
@@ -94,34 +90,23 @@ const finishRecordingAudio = async(instance, onFinish, setRecordingStatus) => {
 			size: fileData.size
 		};
 
-		deactivateKeepAwake();
-		return onFinish && onFinish(fileInfo);
-	} catch (err) {
-		deactivateKeepAwake();
-		setRecordingStatus({
-			canRecord: true,
-			isRecording: false,
-			durationMillis: 0,
-			isDoneRecording: true
-		});
-		return onFinish && onFinish(false);
-	}
-};
-
-const cancelAudioMessage = async(instance, onFinish, setRecordingStatus) => {
-	try {
-		await instance.stopAndUnloadAsync();
-		setRecordingStatus({
-			canRecord: true,
-			isRecording: false,
-			durationMillis: 0,
-			isDoneRecording: true
-		});
-		deactivateKeepAwake();
-		return onFinish && onFinish(false);
+		onFinish(fileInfo);
 	} catch (error) {
 		// Do nothing
 	}
+	deactivateKeepAwake();
+	setRecorderBusy(false);
+};
+
+const cancelAudioMessage = async(instance, setRecorderBusy) => {
+	setRecorderBusy(true);
+	try {
+		await instance.stopAndUnloadAsync();
+	} catch (error) {
+		// Do nothing
+	}
+	deactivateKeepAwake();
+	setRecorderBusy(false);
 };
 
 const RecordAudio = ({ theme, recordingCallback, onFinish }) => {
@@ -133,6 +118,7 @@ const RecordAudio = ({ theme, recordingCallback, onFinish }) => {
 		durationMillis: 0,
 		isDoneRecording: false
 	});
+	const [recorderBusy, setRecorderBusy] = useState(false);
 
 	useEffect(() => {
 		recordingCallback(recordingStatus.isRecording);
@@ -143,7 +129,9 @@ const RecordAudio = ({ theme, recordingCallback, onFinish }) => {
 			<View style={styles.textArea}>
 				<BorderlessButton
 					onPress={() => {
-						cancelAudioMessage(recordingInstance.current, onFinish, setRecordingStatus);
+						if (!recorderBusy) {
+							cancelAudioMessage(recordingInstance.current, setRecorderBusy);
+						}
 					}}
 					accessibilityLabel={I18n.t('Cancel_recording')}
 					accessibilityTraits='button'
@@ -165,7 +153,9 @@ const RecordAudio = ({ theme, recordingCallback, onFinish }) => {
 			<View style={styles.recordingContentFinish}>
 				<BorderlessButton
 					onPress={() => {
-						finishRecordingAudio(recordingInstance.current, onFinish, setRecordingStatus);
+						if (!recorderBusy) {
+							finishRecordingAudio(recordingInstance.current, onFinish, setRecorderBusy);
+						}
 					}}
 					accessibilityLabel={I18n.t('Finish_recording')}
 					accessibilityTraits='button'
@@ -182,8 +172,10 @@ const RecordAudio = ({ theme, recordingCallback, onFinish }) => {
 	) : (
 		<BorderlessButton
 			onPress={() => {
-				recordingInstance.current = new Audio.Recording();
-				startRecordingAudio(recordingInstance.current, setRecordingStatus);
+				if (!recorderBusy) {
+					recordingInstance.current = new Audio.Recording();
+					startRecordingAudio(recordingInstance.current, setRecordingStatus, setRecorderBusy);
+				}
 			}}
 			style={styles.actionButton}
 			testID='messagebox-send-audio'

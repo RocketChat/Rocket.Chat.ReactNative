@@ -660,9 +660,6 @@ class MessageBox extends Component {
 			rid, tmid, baseUrl: server, user
 		} = this.props;
 
-		this.setState({
-			recording: false
-		});
 		if (fileInfo) {
 			try {
 				if (this.canUploadFile(fileInfo)) {
@@ -827,22 +824,10 @@ class MessageBox extends Component {
 			/>
 		);
 
-		let safeAreaViewStyle = null;
-		let commandsPreviewAndMentions = null;
-		let replyPreview = null;
-		let content = null;
-
-		if (recording) {
-			safeAreaViewStyle = [styles.textBox, { borderTopColor: themes[theme].borderColor }];
-		} else {
-			safeAreaViewStyle = [styles.composer, { borderTopColor: themes[theme].separatorColor }];
-			commandsPreviewAndMentions = (
-				<>
-					<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
-					<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
-				</>
-			);
-			replyPreview = (
+		const commandsReplyMentions = !recording ? (
+			<>
+				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
+				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
 				<ReplyPreview
 					message={message}
 					close={replyCancel}
@@ -851,63 +836,59 @@ class MessageBox extends Component {
 					getCustomEmoji={getCustomEmoji}
 					theme={theme}
 				/>
-			);
+			</>
+		) : null;
 
-			content = (
-				<>
-					<LeftButtons
-						theme={theme}
-						showEmojiKeyboard={showEmojiKeyboard}
-						editing={editing}
-						showMessageBoxActions={this.showMessageBoxActions}
-						editCancel={this.editCancel}
-						openEmoji={this.openEmoji}
-						closeEmoji={this.closeEmoji}
-					/>
-					<TextInput
-						ref={component => this.component = component}
-						style={styles.textBoxInput}
-						returnKeyType='default'
-						keyboardType='twitter'
-						blurOnSubmit={false}
-						placeholder={I18n.t('New_Message')}
-						onChangeText={this.onChangeText}
-						underlineColorAndroid='transparent'
-						defaultValue=''
-						multiline
-						testID='messagebox-input'
-						theme={theme}
-						{...isAndroidTablet}
-					/>
+		const content = !recording ? (
+			<>
+				<LeftButtons
+					theme={theme}
+					showEmojiKeyboard={showEmojiKeyboard}
+					editing={editing}
+					showMessageBoxActions={this.showMessageBoxActions}
+					editCancel={this.editCancel}
+					openEmoji={this.openEmoji}
+					closeEmoji={this.closeEmoji}
+				/>
+				<TextInput
+					ref={component => this.component = component}
+					style={styles.textBoxInput}
+					returnKeyType='default'
+					keyboardType='twitter'
+					blurOnSubmit={false}
+					placeholder={I18n.t('New_Message')}
+					onChangeText={this.onChangeText}
+					underlineColorAndroid='transparent'
+					defaultValue=''
+					multiline
+					testID='messagebox-input'
+					theme={theme}
+					{...isAndroidTablet}
+				/>
 
-					<RightButtons
-						theme={theme}
-						showSend={showSend}
-						submit={this.submit}
-						showMessageBoxActions={this.showMessageBoxActions}
-					/>
-				</>
-			);
-		}
+				<RightButtons
+					theme={theme}
+					showSend={showSend}
+					submit={this.submit}
+					showMessageBoxActions={this.showMessageBoxActions}
+				/>
+			</>
+		) : null;
 
 		return (
 			<>
-				{commandsPreviewAndMentions}
-
-				<SafeAreaView style={safeAreaViewStyle}>
-					{replyPreview}
-					<View
-						style={[
-							styles.textArea,
-							{ backgroundColor: themes[theme].messageboxBackground },
-							!recording && editing && { backgroundColor: themes[theme].chatComponentBackground }
-						]}
-						testID='messagebox'
-					>
-						{content}
-						{recordAudio}
-					</View>
-				</SafeAreaView>
+				{commandsReplyMentions}
+				<View
+					style={[
+						styles.textArea,
+						{ backgroundColor: themes[theme].messageboxBackground },
+						!recording && editing && { backgroundColor: themes[theme].chatComponentBackground }
+					]}
+					testID='messagebox'
+				>
+					{content}
+					{recordAudio}
+				</View>
 			</>
 		);
 	}
