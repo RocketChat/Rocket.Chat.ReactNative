@@ -1,14 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Switch, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import I18n from '../i18n';
-import { themedHeader } from '../utils/navigation';
 import { withTheme } from '../theme';
 import { themes, SWITCH_TRACK_COLOR } from '../constants/colors';
-import sharedStyles from './Styles';
 import StatusBar from '../containers/StatusBar';
 import Separator from '../containers/Separator';
 import ListItem from '../containers/ListItem';
@@ -18,6 +15,7 @@ import database from '../lib/database';
 import { supportedBiometryLabel, changePasscode, checkHasPasscode } from '../utils/localAuthentication';
 import { DisclosureImage } from '../containers/DisclosureIndicator';
 import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
+import SafeAreaView from '../containers/SafeAreaView';
 
 const styles = StyleSheet.create({
 	listPadding: {
@@ -31,10 +29,9 @@ const styles = StyleSheet.create({
 const DEFAULT_BIOMETRY = false;
 
 class ScreenLockConfigView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Screen_lock'),
-		...themedHeader(screenProps.theme)
-	})
+	static navigationOptions = {
+		title: I18n.t('Screen_lock')
+	};
 
 	static propTypes = {
 		theme: PropTypes.string,
@@ -265,10 +262,7 @@ class ScreenLockConfigView extends React.Component {
 		const { autoLock } = this.state;
 		const { theme } = this.props;
 		return (
-			<SafeAreaView
-				style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
-				forceInset={{ vertical: 'never' }}
-			>
+			<SafeAreaView theme={theme}>
 				<StatusBar theme={theme} />
 				<ScrollView
 					keyExtractor={item => item.value}

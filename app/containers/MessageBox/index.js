@@ -8,7 +8,6 @@ import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import equal from 'deep-equal';
 import DocumentPicker from 'react-native-document-picker';
-import ActionSheet from 'react-native-action-sheet';
 import { Q } from '@nozbe/watermelondb';
 import Animated from 'react-native-reanimated';
 
@@ -51,6 +50,7 @@ import { Review } from '../../utils/review';
 import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/Navigation';
 import { CustomIcon } from '../../lib/Icons';
+import { withActionSheet } from '../ActionSheet';
 
 const TOP = 0;
 const BOTTOM = Dimensions.get('window').height;
@@ -99,13 +99,6 @@ const videoPickerConfig = {
 	mediaType: 'video'
 };
 
-const FILE_CANCEL_INDEX = 0;
-const FILE_PHOTO_INDEX = 1;
-const FILE_VIDEO_INDEX = 2;
-const FILE_LIBRARY_INDEX = 3;
-const FILE_DOCUMENT_INDEX = 4;
-const CREATE_DISCUSSION_INDEX = 5;
-
 class MessageBox extends Component {
 	static propTypes = {
 		rid: PropTypes.string.isRequired,
@@ -133,7 +126,9 @@ class MessageBox extends Component {
 		typing: PropTypes.func,
 		theme: PropTypes.string,
 		replyCancel: PropTypes.func,
-		navigation: PropTypes.object
+		isMasterDetail: PropTypes.bool,
+		navigation: PropTypes.object,
+		showActionSheet: PropTypes.func
 	}
 
 	constructor(props) {
@@ -155,14 +150,36 @@ class MessageBox extends Component {
 		};
 		this.text = '';
 		this.focused = false;
-		this.messageBoxActions = [
-			I18n.t('Cancel'),
-			I18n.t('Take_a_photo'),
-			I18n.t('Take_a_video'),
-			I18n.t('Choose_from_library'),
-			I18n.t('Choose_file'),
-			I18n.t('Create_Discussion')
+
+		// MessageBox Actions
+		this.options = [
+			{
+				title: I18n.t('Take_a_photo'),
+				icon: 'image',
+				onPress: this.takePhoto
+			},
+			{
+				title: I18n.t('Take_a_video'),
+				icon: 'video-1',
+				onPress: this.takeVideo
+			},
+			{
+				title: I18n.t('Choose_from_library'),
+				icon: 'share',
+				onPress: this.chooseFromLibrary
+			},
+			{
+				title: I18n.t('Choose_file'),
+				icon: 'folder',
+				onPress: this.chooseFile
+			},
+			{
+				title: I18n.t('Create_Discussion'),
+				icon: 'chat',
+				onPress: this.createDiscussion
+			}
 		];
+
 		const libPickerLabels = {
 			cropperChooseText: I18n.t('Choose'),
 			cropperCancelText: I18n.t('Cancel'),
@@ -223,10 +240,13 @@ class MessageBox extends Component {
 			EventEmiter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
 
-		this.didFocusListener = navigation.addListener('didFocus', () => {
+		this.unsubscribeFocus = navigation.addListener('focus', () => {
 			if (this.tracking && this.tracking.resetTracking) {
 				this.tracking.resetTracking();
 			}
+		});
+		this.unsubscribeBlur = navigation.addListener('blur', () => {
+			this.component?.blur();
 		});
 	}
 
@@ -240,6 +260,7 @@ class MessageBox extends Component {
 			if (this.text) {
 				this.setShowSend(true);
 			}
+			this.focus();
 		} else if (replying !== nextProps.replying && nextProps.replying) {
 			this.focus();
 		} else if (!nextProps.message) {
@@ -253,7 +274,7 @@ class MessageBox extends Component {
 		} = this.state;
 
 		const {
-			roomType, replying, editing, isFocused, theme
+			roomType, replying, editing, isFocused, message, theme
 		} = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
@@ -294,6 +315,9 @@ class MessageBox extends Component {
 		if (nextState.translateY !== translateY) {
 			return true;
 		}
+		if (!equal(nextProps.message, message)) {
+			return true;
+		}
 		return false;
 	}
 
@@ -314,8 +338,11 @@ class MessageBox extends Component {
 		if (this.getSlashCommands && this.getSlashCommands.stop) {
 			this.getSlashCommands.stop();
 		}
-		if (this.didFocusListener && this.didFocusListener.remove) {
-			this.didFocusListener.remove();
+		if (this.unsubscribeFocus) {
+			this.unsubscribeFocus();
+		}
+		if (this.unsubscribeBlur) {
+			this.unsubscribeBlur();
 		}
 		if (isTablet) {
 			EventEmiter.removeListener(KEY_COMMAND, this.handleCommands);
@@ -638,7 +665,13 @@ class MessageBox extends Component {
 	}
 
 	createDiscussion = () => {
-		Navigation.navigate('CreateDiscussionView', { channel: this.room });
+		const { isMasterDetail } = this.props;
+		const params = { channel: this.room, showCloseModal: true };
+		if (isMasterDetail) {
+			Navigation.navigate('ModalStackNavigator', { screen: 'CreateDiscussionView', params });
+		} else {
+			Navigation.navigate('NewMessageStackNavigator', { screen: 'CreateDiscussionView', params });
+		}
 	}
 
 	showUploadModal = (file) => {
@@ -651,34 +684,8 @@ class MessageBox extends Component {
 	}
 
 	showMessageBoxActions = () => {
-		ActionSheet.showActionSheetWithOptions({
-			options: this.messageBoxActions,
-			cancelButtonIndex: FILE_CANCEL_INDEX
-		}, (actionIndex) => {
-			this.handleMessageBoxActions(actionIndex);
-		});
-	}
-
-	handleMessageBoxActions = (actionIndex) => {
-		switch (actionIndex) {
-			case FILE_PHOTO_INDEX:
-				this.takePhoto();
-				break;
-			case FILE_VIDEO_INDEX:
-				this.takeVideo();
-				break;
-			case FILE_LIBRARY_INDEX:
-				this.chooseFromLibrary();
-				break;
-			case FILE_DOCUMENT_INDEX:
-				this.chooseFile();
-				break;
-			case CREATE_DISCUSSION_INDEX:
-				this.createDiscussion();
-				break;
-			default:
-				break;
-		}
+		const { showActionSheet } = this.props;
+		showActionSheet({ options: this.options });
 	}
 
 	editCancel = () => {
@@ -1024,7 +1031,9 @@ class MessageBox extends Component {
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { showEmojiKeyboard, file } = this.state;
-		const { user, baseUrl, theme } = this.props;
+		const {
+			user, baseUrl, theme, isMasterDetail
+		} = this.props;
 		return (
 			<MessageboxContext.Provider
 				value={{
@@ -1053,6 +1062,7 @@ class MessageBox extends Component {
 					file={file}
 					close={() => this.setState({ file: {} })}
 					submit={this.sendMediaMessage}
+					isMasterDetail={isMasterDetail}
 				/>
 			</MessageboxContext.Provider>
 		);
@@ -1060,6 +1070,7 @@ class MessageBox extends Component {
 }
 
 const mapStateToProps = state => ({
+	isMasterDetail: state.app.isMasterDetail,
 	baseUrl: state.server.server,
 	threadsEnabled: state.settings.Threads_enabled,
 	user: getUserSelector(state),
@@ -1072,4 +1083,4 @@ const dispatchToProps = ({
 	typing: (rid, status) => userTypingAction(rid, status)
 });
 
-export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(MessageBox);
+export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(withActionSheet(MessageBox));

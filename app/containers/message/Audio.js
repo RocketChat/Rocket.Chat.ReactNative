@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, Text, Easing, Dimensions
+	View, StyleSheet, Text, Easing
 } from 'react-native';
 import { Audio } from 'expo-av';
 import Slider from '@react-native-community/slider';
@@ -15,9 +15,9 @@ import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import { isAndroid, isIOS } from '../../utils/deviceInfo';
-import { withSplit } from '../../split';
 import MessageContext from './Context';
 import ActivityIndicator from '../ActivityIndicator';
+import { withDimensions } from '../../dimensions';
 
 const mode = {
 	allowsRecordingIOS: false,
@@ -98,8 +98,8 @@ class MessageAudio extends React.Component {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
 		theme: PropTypes.string,
-		split: PropTypes.bool,
-		getCustomEmoji: PropTypes.func
+		getCustomEmoji: PropTypes.func,
+		scale: PropTypes.number
 	}
 
 	constructor(props) {
@@ -138,7 +138,7 @@ class MessageAudio extends React.Component {
 		const {
 			currentTime, duration, paused, loading
 		} = this.state;
-		const { file, split, theme } = this.props;
+		const { file, theme } = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
 		}
@@ -152,9 +152,6 @@ class MessageAudio extends React.Component {
 			return true;
 		}
 		if (!equal(nextProps.file, file)) {
-			return true;
-		}
-		if (nextProps.split !== split) {
 			return true;
 		}
 		if (nextState.loading !== loading) {
@@ -249,7 +246,7 @@ class MessageAudio extends React.Component {
 			loading, paused, currentTime, duration
 		} = this.state;
 		const {
-			file, getCustomEmoji, split, theme
+			file, getCustomEmoji, theme, scale
 		} = this.props;
 		const { description } = file;
 		const { baseUrl, user } = this.context;
@@ -263,8 +260,7 @@ class MessageAudio extends React.Component {
 				<View
 					style={[
 						styles.audioContainer,
-						{ backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor },
-						split && sharedStyles.tabletContent
+						{ backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor }
 					]}
 				>
 					<Button loading={loading} paused={paused} onPress={this.togglePlayPause} theme={theme} />
@@ -279,7 +275,7 @@ class MessageAudio extends React.Component {
 						minimumTrackTintColor={themes[theme].tintColor}
 						maximumTrackTintColor={themes[theme].auxiliaryText}
 						onValueChange={this.onValueChange}
-						thumbImage={isIOS && { uri: 'audio_thumb', scale: Dimensions.get('window').scale }}
+						thumbImage={isIOS && { uri: 'audio_thumb', scale }}
 					/>
 					<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{this.duration}</Text>
 				</View>
@@ -289,4 +285,4 @@ class MessageAudio extends React.Component {
 	}
 }
 
-export default withSplit(MessageAudio);
+export default withDimensions(MessageAudio);
