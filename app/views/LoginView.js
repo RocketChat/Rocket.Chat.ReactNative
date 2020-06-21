@@ -6,19 +6,17 @@ import {
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
 
-import { trackUserEvent } from '../utils/log';
+import { logEvent, events } from '../utils/log';
 import sharedStyles from './Styles';
 import Button from '../containers/Button';
 import I18n from '../i18n';
 import { LegalButton } from '../containers/HeaderButton';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
-import { themedHeader } from '../utils/navigation';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import TextInput from '../containers/TextInput';
 import { loginRequest as loginRequestAction } from '../actions/login';
 import LoginServices from '../containers/LoginServices';
-import { DEFAULT_LOGIN, FORGOT_PASSWORD } from '../utils/trackableEvents';
 
 const styles = StyleSheet.create({
 	registerDisabled: {
@@ -52,14 +50,10 @@ const styles = StyleSheet.create({
 });
 
 class LoginView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const title = navigation.getParam('title', 'Rocket.Chat');
-		return {
-			...themedHeader(screenProps.theme),
-			title,
-			headerRight: <LegalButton testID='login-view-more' navigation={navigation} />
-		};
-	}
+	static navigationOptions = ({ route, navigation }) => ({
+		title: route.params?.title ?? 'Rocket.Chat',
+		headerRight: () => <LegalButton testID='login-view-more' navigation={navigation} />
+	})
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -111,7 +105,7 @@ class LoginView extends React.Component {
 	forgotPassword = () => {
 		const { navigation, Site_Name } = this.props;
 		navigation.navigate('ForgotPasswordView', { title: Site_Name });
-		trackUserEvent(FORGOT_PASSWORD);
+		logEvent(events.FORGOT_PASSWORD);
 	}
 
 	valid = () => {
@@ -128,7 +122,7 @@ class LoginView extends React.Component {
 		const { loginRequest } = this.props;
 		Keyboard.dismiss();
 		loginRequest({ user, password });
-		trackUserEvent(DEFAULT_LOGIN);
+		logEvent(events.DEFAULT_LOGIN);
 	}
 
 	renderUserForm = () => {
@@ -207,11 +201,11 @@ class LoginView extends React.Component {
 	}
 
 	render() {
-		const { Accounts_ShowFormLogin, theme } = this.props;
+		const { Accounts_ShowFormLogin, theme, navigation } = this.props;
 		return (
 			<FormContainer theme={theme} testID='login-view'>
 				<FormContainerInner>
-					<LoginServices separator={Accounts_ShowFormLogin} />
+					<LoginServices separator={Accounts_ShowFormLogin} navigation={navigation} />
 					{this.renderUserForm()}
 				</FormContainerInner>
 			</FormContainer>

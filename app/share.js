@@ -1,8 +1,8 @@
-import React from 'react';
-import { View } from 'react-native';
-import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
+import { NavigationContainer } from '@react-navigation/native';
 import { AppearanceProvider } from 'react-native-appearance';
-import { createStackNavigator } from 'react-navigation-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
 import RNUserDefaults from 'rn-user-defaults';
 
@@ -14,61 +14,114 @@ import {
 } from './utils/theme';
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
-import sharedStyles from './views/Styles';
-import { hasNotch, supportSystemTheme } from './utils/deviceInfo';
-import { defaultHeader, onNavigationStateChange, cardStyle } from './utils/navigation';
+import { supportSystemTheme } from './utils/deviceInfo';
+import {
+	defaultHeader, themedHeader, getActiveRouteName, navigationTheme
+} from './utils/navigation';
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { ThemeContext } from './theme';
 import { localAuthenticate } from './utils/localAuthentication';
 import ScreenLockedView from './views/ScreenLockedView';
 
-const InsideNavigator = createStackNavigator({
-	ShareListView: {
-		getScreen: () => require('./views/ShareListView').default
-	},
-	ShareView: {
-		getScreen: () => require('./views/ShareView').default
-	},
-	SelectServerView: {
-		getScreen: () => require('./views/SelectServerView').default
-	}
-}, {
-	initialRouteName: 'ShareListView',
-	defaultNavigationOptions: defaultHeader,
-	cardStyle
-});
+// Outside Stack
+import WithoutServersView from './views/WithoutServersView';
 
-const OutsideNavigator = createStackNavigator({
-	WithoutServersView: {
-		getScreen: () => require('./views/WithoutServersView').default
-	}
-}, {
-	initialRouteName: 'WithoutServersView',
-	defaultNavigationOptions: defaultHeader,
-	cardStyle
-});
+// Inside Stack
+import ShareListView from './views/ShareListView';
+import ShareView from './views/ShareView';
+import SelectServerView from './views/SelectServerView';
+import { setCurrentScreen } from './utils/log';
+import AuthLoadingView from './views/AuthLoadingView';
 
-const AppContainer = createAppContainer(createSwitchNavigator({
-	OutsideStack: OutsideNavigator,
-	InsideStack: InsideNavigator,
-	AuthLoading: {
-		getScreen: () => require('./views/AuthLoadingView').default
-	}
-},
-{
-	initialRouteName: 'AuthLoading'
-}));
+const Inside = createStackNavigator();
+const InsideStack = () => {
+	const { theme } = useContext(ThemeContext);
+
+	const screenOptions = {
+		...defaultHeader,
+		...themedHeader(theme)
+	};
+	screenOptions.headerStyle = {
+		...screenOptions.headerStyle,
+		// TODO: fix on multiple files PR :)
+		height: 57
+	};
+
+	return (
+		<Inside.Navigator screenOptions={screenOptions}>
+			<Inside.Screen
+				name='ShareListView'
+				component={ShareListView}
+			/>
+			<Inside.Screen
+				name='ShareView'
+				component={ShareView}
+			/>
+			<Inside.Screen
+				name='SelectServerView'
+				component={SelectServerView}
+				options={SelectServerView.navigationOptions}
+			/>
+		</Inside.Navigator>
+	);
+};
+
+const Outside = createStackNavigator();
+const OutsideStack = () => {
+	const { theme } = useContext(ThemeContext);
+
+	return (
+		<Outside.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
+			<Outside.Screen
+				name='WithoutServersView'
+				component={WithoutServersView}
+				options={WithoutServersView.navigationOptions}
+			/>
+		</Outside.Navigator>
+	);
+};
+
+// App
+const Stack = createStackNavigator();
+export const App = ({ root }) => (
+	<Stack.Navigator screenOptions={{ headerShown: false }}>
+		<>
+			{!root ? (
+				<Stack.Screen
+					name='AuthLoading'
+					component={AuthLoadingView}
+				/>
+			) : null}
+			{root === 'outside' ? (
+				<Stack.Screen
+					name='OutsideStack'
+					component={OutsideStack}
+				/>
+			) : null}
+			{root === 'inside' ? (
+				<Stack.Screen
+					name='InsideStack'
+					component={InsideStack}
+				/>
+			) : null}
+		</>
+	</Stack.Navigator>
+);
+
+App.propTypes = {
+	root: PropTypes.string
+};
 
 class Root extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isLandscape: false,
 			theme: defaultTheme(),
 			themePreferences: {
 				currentTheme: supportSystemTheme() ? 'automatic' : 'light',
 				darkLevel: 'dark'
-			}
+			},
+			root: ''
 		};
 		this.init();
 	}
@@ -85,11 +138,16 @@ class Root extends React.Component {
 
 		if (currentServer && token) {
 			await localAuthenticate(currentServer);
-			await Navigation.navigate('InsideStack');
+			this.setState({ root: 'inside' });
 			await RocketChat.shareExtensionInit(currentServer);
 		} else {
-			await Navigation.navigate('OutsideStack');
+			this.setState({ root: 'outside' });
 		}
+
+		const state = Navigation.navigationRef.current.getRootState();
+		const currentRouteName = getActiveRouteName(state);
+		Navigation.routeNameRef.current = currentRouteName;
+		setCurrentScreen(currentRouteName);
 	}
 
 	setTheme = (newTheme = {}) => {
@@ -101,32 +159,30 @@ class Root extends React.Component {
 		});
 	}
 
-	handleLayout = (event) => {
-		const { width, height } = event.nativeEvent.layout;
-		this.setState({ isLandscape: width > height });
-	}
-
 	render() {
-		const { isLandscape, theme } = this.state;
+		const { theme, root } = this.state;
+		const navTheme = navigationTheme(theme);
 		return (
 			<AppearanceProvider>
-				<View
-					style={[sharedStyles.container, isLandscape && hasNotch ? sharedStyles.notchLandscapeContainer : {}]}
-					onLayout={this.handleLayout}
-				>
-					<Provider store={store}>
-						<ThemeContext.Provider value={{ theme }}>
-							<AppContainer
-								ref={(navigatorRef) => {
-									Navigation.setTopLevelNavigator(navigatorRef);
-								}}
-								onNavigationStateChange={onNavigationStateChange}
-								screenProps={{ theme }}
-							/>
-							<ScreenLockedView />
-						</ThemeContext.Provider>
-					</Provider>
-				</View>
+				<Provider store={store}>
+					<ThemeContext.Provider value={{ theme }}>
+						<NavigationContainer
+							theme={navTheme}
+							ref={Navigation.navigationRef}
+							onStateChange={(state) => {
+								const previousRouteName = Navigation.routeNameRef.current;
+								const currentRouteName = getActiveRouteName(state);
+								if (previousRouteName !== currentRouteName) {
+									setCurrentScreen(currentRouteName);
+								}
+								Navigation.routeNameRef.current = currentRouteName;
+							}}
+						>
+							<App root={root} />
+						</NavigationContainer>
+						<ScreenLockedView />
+					</ThemeContext.Provider>
+				</Provider>
 			</AppearanceProvider>
 		);
 	}

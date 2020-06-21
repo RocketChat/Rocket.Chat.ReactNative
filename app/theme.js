@@ -12,3 +12,5 @@ export function withTheme(Component) {
 	hoistNonReactStatics(ThemedComponent, Component);
 	return ThemedComponent;
 }
+
+export const useTheme = () => React.useContext(ThemeContext);

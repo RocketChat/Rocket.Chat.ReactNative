@@ -6,14 +6,13 @@ import {
 import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
 
-import log, { trackUserEvent } from '../utils/log';
+import log, { logEvent, events } from '../utils/log';
 import sharedStyles from './Styles';
 import Button from '../containers/Button';
 import I18n from '../i18n';
 import { LegalButton } from '../containers/HeaderButton';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
-import { themedHeader } from '../utils/navigation';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import TextInput from '../containers/TextInput';
 import isValidEmail from '../utils/isValidEmail';
@@ -23,7 +22,6 @@ import { loginRequest as loginRequestAction } from '../actions/login';
 import openLink from '../utils/openLink';
 import LoginServices from '../containers/LoginServices';
 import { getShowLoginButton } from '../selectors/login';
-import { DEFAULT_SIGN_UP } from '../utils/trackableEvents';
 
 const styles = StyleSheet.create({
 	title: {
@@ -54,14 +52,10 @@ const styles = StyleSheet.create({
 });
 
 class RegisterView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const title = navigation.getParam('title', 'Rocket.Chat');
-		return {
-			...themedHeader(screenProps.theme),
-			title,
-			headerRight: <LegalButton navigation={navigation} testID='register-view-more' />
-		};
-	}
+	static navigationOptions = ({ route, navigation }) => ({
+		title: route.params?.title ?? 'Rocket.Chat',
+		headerRight: () => <LegalButton testID='register-view-more' navigation={navigation} />
+	});
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -157,7 +151,7 @@ class RegisterView extends React.Component {
 			showErrorAlert(e.data.error, I18n.t('Oops'));
 		}
 		this.setState({ saving: false });
-		trackUserEvent(DEFAULT_SIGN_UP);
+		logEvent(events.DEFAULT_SIGN_UP);
 	}
 
 	openContract = (route) => {
@@ -230,11 +224,11 @@ class RegisterView extends React.Component {
 
 	render() {
 		const { saving } = this.state;
-		const { theme, showLoginButton } = this.props;
+		const { theme, showLoginButton, navigation } = this.props;
 		return (
 			<FormContainer theme={theme} testID='register-view'>
 				<FormContainerInner>
-					<LoginServices />
+					<LoginServices navigation={navigation} />
 					<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Sign_Up')}</Text>
 					<TextInput
 						label='Name'

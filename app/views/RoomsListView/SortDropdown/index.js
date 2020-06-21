@@ -4,20 +4,19 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import styles from '../styles';
 import Touch from '../../../utils/touch';
 import RocketChat from '../../../lib/rocketchat';
 import { setPreference } from '../../../actions/sortPreferences';
-import log, { trackUserEvent } from '../../../utils/log';
+import log, { logEvent, events } from '../../../utils/log';
 import I18n from '../../../i18n';
 import { CustomIcon } from '../../../lib/Icons';
 import { withTheme } from '../../../theme';
 import { themes } from '../../../constants/colors';
 import { SortItemButton, SortItemContent } from './Item';
-import {
-	SORT_CHANNELS_BY_ACTIVITY, SORT_CHANNELS_BY_ALPHABETICAL, GROUP_CHANNELS_BY_FAVORITE, GROUP_CHANNELS_BY_TYPE, GROUP_CHANNELS_BY_UNREAD, SORT_CHANNELS_FAIL
-} from '../../../utils/trackableEvents';
+import { headerHeight } from '../../../containers/Header';
 
 const ANIMATION_DURATION = 200;
 
@@ -29,7 +28,9 @@ class Sort extends PureComponent {
 		groupByType: PropTypes.bool,
 		showFavorites: PropTypes.bool,
 		showUnread: PropTypes.bool,
+		isMasterDetail: PropTypes.bool,
 		theme: PropTypes.string,
+		insets: PropTypes.object,
 		setSortPreference: PropTypes.func
 	}
 
@@ -65,26 +66,26 @@ class Sort extends PureComponent {
 			RocketChat.saveSortPreference(param);
 		} catch (e) {
 			log(e);
-			trackUserEvent(SORT_CHANNELS_FAIL);
+			logEvent(events.SORT_CHANNELS_FAIL);
 		}
 	}
 
 	sortByName = () => {
 		this.setSortPreference({ sortBy: 'alphabetical' });
 		this.close();
-		trackUserEvent(SORT_CHANNELS_BY_ALPHABETICAL);
+		logEvent(events.SORT_CHANNELS_BY_ALPHABETICAL);
 	}
 
 	sortByActivity = () => {
 		this.setSortPreference({ sortBy: 'activity' });
 		this.close();
-		trackUserEvent(SORT_CHANNELS_BY_ACTIVITY);
+		logEvent(events.SORT_CHANNELS_BY_ACTIVITY);
 	}
 
 	toggleGroupByType = () => {
 		const { groupByType } = this.props;
 		if (!groupByType) {
-			trackUserEvent(GROUP_CHANNELS_BY_TYPE);
+			logEvent(events.GROUP_CHANNELS_BY_TYPE);
 		}
 		this.setSortPreference({ groupByType: !groupByType });
 	}
@@ -92,7 +93,7 @@ class Sort extends PureComponent {
 	toggleGroupByFavorites = () => {
 		const { showFavorites } = this.props;
 		if (!showFavorites) {
-			trackUserEvent(GROUP_CHANNELS_BY_FAVORITE);
+			logEvent(events.GROUP_CHANNELS_BY_FAVORITE);
 		}
 		this.setSortPreference({ showFavorites: !showFavorites });
 	}
@@ -100,7 +101,7 @@ class Sort extends PureComponent {
 	toggleUnread = () => {
 		const { showUnread } = this.props;
 		if (!showUnread) {
-			trackUserEvent(GROUP_CHANNELS_BY_UNREAD);
+			logEvent(events.GROUP_CHANNELS_BY_UNREAD);
 		}
 		this.setSortPreference({ showUnread: !showUnread });
 	}
@@ -119,9 +120,12 @@ class Sort extends PureComponent {
 	}
 
 	render() {
+		const { isMasterDetail, insets } = this.props;
+		const statusBarHeight = insets?.top ?? 0;
+		const heightDestination = isMasterDetail ? headerHeight + statusBarHeight : 0;
 		const translateY = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [-326, 0]
+			outputRange: [-326, heightDestination]
 		});
 		const backdropOpacity = this.animatedValue.interpolate({
 			inputRange: [0, 1],
@@ -134,7 +138,13 @@ class Sort extends PureComponent {
 		return (
 			<>
 				<TouchableWithoutFeedback onPress={this.close}>
-					<Animated.View style={[styles.backdrop, { backgroundColor: themes[theme].backdropColor, opacity: backdropOpacity }]} />
+					<Animated.View style={[styles.backdrop,
+						{
+							backgroundColor: themes[theme].backdropColor,
+							opacity: backdropOpacity,
+							top: heightDestination
+						}]}
+					/>
 				</TouchableWithoutFeedback>
 				<Animated.View
 					style={[
@@ -205,11 +215,12 @@ class Sort extends PureComponent {
 }
 
 const mapStateToProps = state => ({
-	closeSortDropdown: state.rooms.closeSortDropdown
+	closeSortDropdown: state.rooms.closeSortDropdown,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 const mapDispatchToProps = dispatch => ({
 	setSortPreference: preference => dispatch(setPreference(preference))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(Sort));
+export default connect(mapStateToProps, mapDispatchToProps)(withSafeAreaInsets(withTheme(Sort)));

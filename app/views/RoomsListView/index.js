@@ -6,12 +6,10 @@ import {
 	BackHandler,
 	Text,
 	Keyboard,
-	Dimensions,
 	RefreshControl
 } from 'react-native';
 import { connect } from 'react-redux';
 import { isEqual, orderBy } from 'lodash';
-import { SafeAreaView } from 'react-navigation';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
 
@@ -19,7 +17,7 @@ import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
 import styles from './styles';
-import log, { trackUserEvent } from '../../utils/log';
+import log, { logEvent, events } from '../../utils/log';
 import I18n from '../../i18n';
 import SortDropdown from './SortDropdown';
 import ServerDropdown from './ServerDropdown';
@@ -30,7 +28,7 @@ import {
 	roomsRequest as roomsRequestAction,
 	closeServerDropdown as closeServerDropdownAction
 } from '../../actions/rooms';
-import { appStart as appStartAction } from '../../actions';
+import { appStart as appStartAction, ROOT_BACKGROUND } from '../../actions/app';
 import debounce from '../../utils/debounce';
 import { isIOS, isAndroid, isTablet } from '../../utils/deviceInfo';
 import RoomsListHeaderView from './Header';
@@ -46,7 +44,6 @@ import { selectServerRequest as selectServerRequestAction } from '../../actions/
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
-import { themedHeader } from '../../utils/navigation';
 import EventEmitter from '../../utils/events';
 import {
 	KEY_COMMAND,
@@ -59,12 +56,11 @@ import {
 	handleCommandAddNewServer
 } from '../../commands';
 import { MAX_SIDEBAR_WIDTH } from '../../constants/tablet';
-import { withSplit } from '../../split';
 import { getUserSelector } from '../../selectors/login';
 import { goRoom } from '../../utils/goRoom';
-import {
-	ROOMSLIST_SEARCH, NAVIGATE_TO_NEW_MESSAGE, NAVIGATE_TO_DIRECTORY, READ_CHANNEL, UNREAD_CHANNEL, TOGGLE_READ_FAIL, HIDE_CHANNEL, HIDE_CHANNEL_FAIL, FAVORITE_CHANNEL, UNFAVORITE_CHANNEL, TOGGLE_FAVORITE_FAIL
-} from '../../utils/trackableEvents';
+import SafeAreaView from '../../containers/SafeAreaView';
+import Header from '../../containers/Header';
+import { withDimensions } from '../../dimensions';
 
 const SCROLL_OFFSET = 56;
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
@@ -92,7 +88,7 @@ const shouldUpdateProps = [
 	'StoreLastMessage',
 	'appState',
 	'theme',
-	'split',
+	'isMasterDetail',
 	'refreshing'
 ];
 const getItemLayout = (data, index) => ({
@@ -103,54 +99,6 @@ const getItemLayout = (data, index) => ({
 const keyExtractor = item => item.rid;
 
 class RoomsListView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const searching = navigation.getParam('searching');
-		const cancelSearch = navigation.getParam('cancelSearch', () => {});
-		const initSearching = navigation.getParam(
-			'initSearching',
-			() => {}
-		);
-
-		return {
-			...themedHeader(screenProps.theme),
-			headerLeft: searching && isAndroid ? (
-				<CustomHeaderButtons left>
-					<Item
-						title='cancel'
-						iconName='Cross'
-						onPress={cancelSearch}
-					/>
-				</CustomHeaderButtons>
-			) : (
-				<DrawerButton
-					navigation={navigation}
-					testID='rooms-list-view-sidebar'
-				/>
-			),
-			headerTitle: <RoomsListHeaderView />,
-			headerRight: searching && isAndroid ? null : (
-				<CustomHeaderButtons>
-					{isAndroid ? (
-						<Item
-							title='search'
-							iconName='magnifier'
-							onPress={initSearching}
-						/>
-					) : null}
-					<Item
-						title='new'
-						iconName='new-chat'
-						onPress={() => {
-							trackUserEvent(NAVIGATE_TO_NEW_MESSAGE);
-							navigation.navigate('NewMessageView');
-						}}
-						testID='rooms-list-view-create-channel'
-					/>
-				</CustomHeaderButtons>
-			)
-		};
-	};
-
 	static propTypes = {
 		navigation: PropTypes.object,
 		user: PropTypes.shape({
@@ -179,7 +127,9 @@ class RoomsListView extends React.Component {
 		closeServerDropdown: PropTypes.func,
 		useRealName: PropTypes.bool,
 		connected: PropTypes.bool,
-		split: PropTypes.bool
+		isMasterDetail: PropTypes.bool,
+		rooms: PropTypes.array,
+		width: PropTypes.number
 	};
 
 	constructor(props) {
@@ -189,36 +139,24 @@ class RoomsListView extends React.Component {
 
 		this.gotSubscriptions = false;
 		this.animated = false;
-		const { width } = Dimensions.get('window');
 		this.state = {
 			searching: false,
 			search: [],
 			loading: true,
 			allChats: [],
 			chats: [],
-			width
+			item: {}
 		};
+		this.setHeader();
 	}
 
 	componentDidMount() {
 		this.getSubscriptions();
 		const { navigation, closeServerDropdown } = this.props;
-		navigation.setParams({
-			initSearching: this.initSearching,
-			cancelSearch: this.cancelSearch
-		});
 		if (isTablet) {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
-		Dimensions.addEventListener('change', this.onDimensionsChange);
-		this.willFocusListener = navigation.addListener('willFocus', () => {
-			// Check if there were changes while not focused (it's set on sCU)
-			if (this.shouldUpdate) {
-				this.forceUpdate();
-				this.shouldUpdate = false;
-			}
-		});
-		this.didFocusListener = navigation.addListener('didFocus', () => {
+		this.unsubscribeFocus = navigation.addListener('focus', () => {
 			Orientation.unlockAllOrientations();
 			this.animated = true;
 			// Check if there were changes while not focused (it's set on sCU)
@@ -228,9 +166,10 @@ class RoomsListView extends React.Component {
 			}
 			this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 		});
-		this.willBlurListener = navigation.addListener('willBlur', () => {
+		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			this.animated = false;
 			closeServerDropdown();
+			this.cancelSearch();
 			if (this.backHandler && this.backHandler.remove) {
 				this.backHandler.remove();
 			}
@@ -257,7 +196,7 @@ class RoomsListView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { allChats, searching } = this.state;
+		const { allChats, searching, item } = this.state;
 		// eslint-disable-next-line react/destructuring-assignment
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
@@ -276,6 +215,10 @@ class RoomsListView extends React.Component {
 			return true;
 		}
 
+		if (nextState.item?.rid !== item?.rid) {
+			return true;
+		}
+
 		// Abort if it's not focused
 		if (!nextProps.navigation.isFocused()) {
 			return false;
@@ -283,16 +226,19 @@ class RoomsListView extends React.Component {
 
 		const {
 			loading,
-			width,
 			search
 		} = this.state;
+		const { rooms, width } = this.props;
 		if (nextState.loading !== loading) {
 			return true;
 		}
-		if (nextState.width !== width) {
+		if (nextProps.width !== width) {
 			return true;
 		}
 		if (!isEqual(nextState.search, search)) {
+			return true;
+		}
+		if (!isEqual(nextProps.rooms, rooms)) {
 			return true;
 		}
 		// If it's focused and there are changes, update
@@ -311,8 +257,11 @@ class RoomsListView extends React.Component {
 			showUnread,
 			appState,
 			connected,
-			roomsRequest
+			roomsRequest,
+			rooms,
+			isMasterDetail
 		} = this.props;
+		const { item } = this.state;
 
 		if (
 			!(
@@ -330,30 +279,74 @@ class RoomsListView extends React.Component {
 		) {
 			roomsRequest();
 		}
+		// Update current item in case of another action triggers an update on rooms reducer
+		if (isMasterDetail && item?.rid !== rooms[0] && !isEqual(rooms, prevProps.rooms)) {
+			// eslint-disable-next-line react/no-did-update-set-state
+			this.setState({ item: { rid: rooms[0] } });
+		}
 	}
 
 	componentWillUnmount() {
 		if (this.querySubscription && this.querySubscription.unsubscribe) {
 			this.querySubscription.unsubscribe();
 		}
-		if (this.willFocusListener && this.willFocusListener.remove) {
-			this.willFocusListener.remove();
+		if (this.unsubscribeFocus) {
+			this.unsubscribeFocus();
 		}
-		if (this.didFocusListener && this.didFocusListener.remove) {
-			this.didFocusListener.remove();
-		}
-		if (this.willBlurListener && this.willBlurListener.remove) {
-			this.willBlurListener.remove();
+		if (this.unsubscribeBlur) {
+			this.unsubscribeBlur();
 		}
 		if (isTablet) {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
-		Dimensions.removeEventListener('change', this.onDimensionsChange);
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
-	// eslint-disable-next-line react/sort-comp
-	onDimensionsChange = ({ window: { width } }) => this.setState({ width });
+	getHeader = () => {
+		const { searching } = this.state;
+		const { navigation, isMasterDetail } = this.props;
+		return {
+			headerLeft: () => (searching && isAndroid ? (
+				<CustomHeaderButtons left>
+					<Item
+						title='cancel'
+						iconName='Cross'
+						onPress={this.cancelSearch}
+					/>
+				</CustomHeaderButtons>
+			) : (
+				<DrawerButton
+					navigation={navigation}
+					testID='rooms-list-view-sidebar'
+					onPress={isMasterDetail ? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' }) : () => navigation.toggleDrawer()}
+				/>
+			)),
+			headerTitle: () => <RoomsListHeaderView />,
+			headerRight: () => (searching && isAndroid ? null : (
+				<CustomHeaderButtons>
+					{isAndroid ? (
+						<Item
+							title='search'
+							iconName='magnifier'
+							onPress={this.initSearching}
+						/>
+					) : null}
+					<Item
+						title='new'
+						iconName='new-chat'
+						onPress={isMasterDetail ? () => navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' }) : () => navigation.navigate('NewMessageStackNavigator')}
+						testID='rooms-list-view-create-channel'
+					/>
+				</CustomHeaderButtons>
+			))
+		};
+	}
+
+	setHeader = () => {
+		const { navigation } = this.props;
+		const options = this.getHeader();
+		navigation.setOptions(options);
+	}
 
 	internalSetState = (...args) => {
 		if (this.animated) {
@@ -467,34 +460,36 @@ class RoomsListView extends React.Component {
 	}
 
 	initSearching = () => {
-		const { openSearchHeader, navigation } = this.props;
-		this.internalSetState({ searching: true });
-		trackUserEvent(ROOMSLIST_SEARCH);
-		if (isAndroid) {
-			navigation.setParams({ searching: true });
-			openSearchHeader();
-		}
+		const { openSearchHeader } = this.props;
+		this.internalSetState({ searching: true }, () => {
+			if (isAndroid) {
+				openSearchHeader();
+				this.setHeader();
+			}
+		});
+		logEvent(events.ROOMSLIST_SEARCH);
 	};
 
 	cancelSearch = () => {
 		const { searching } = this.state;
-		const { closeSearchHeader, navigation } = this.props;
+		const { closeSearchHeader } = this.props;
 
 		if (!searching) {
 			return;
 		}
 
+		Keyboard.dismiss();
+
 		if (isIOS && this.inputRef) {
 			this.inputRef.blur();
 			this.inputRef.clear();
 		}
-		if (isAndroid) {
-			navigation.setParams({ searching: false });
-			closeSearchHeader();
-		}
-		Keyboard.dismiss();
 
 		this.setState({ searching: false, search: [] }, () => {
+			if (isAndroid) {
+				this.setHeader();
+				closeSearchHeader();
+			}
 			setTimeout(() => {
 				const offset = isAndroid ? 0 : SCROLL_OFFSET;
 				if (this.scroll.scrollTo) {
@@ -513,15 +508,16 @@ class RoomsListView extends React.Component {
 			this.cancelSearch();
 			return true;
 		}
-		appStart('background');
+		appStart({ root: ROOT_BACKGROUND });
 		return false;
 	};
 
 	// eslint-disable-next-line react/sort-comp
 	search = debounce(async(text) => {
-		const { searching } = this.state;
 		const result = await RocketChat.search({ text });
+
 		// if the search was cancelled before the promise is resolved
+		const { searching } = this.state;
 		if (!searching) {
 			return;
 		}
@@ -543,14 +539,13 @@ class RoomsListView extends React.Component {
 	getUidDirectMessage = room => RocketChat.getUidDirectMessage(room);
 
 	onPressItem = (item = {}) => {
-		const { navigation } = this.props;
+		const { navigation, isMasterDetail } = this.props;
 		if (!navigation.isFocused()) {
 			return;
 		}
 
 		this.cancelSearch();
-		this.item = item;
-		goRoom(item);
+		this.goRoom({ item, isMasterDetail });
 	};
 
 	toggleSort = () => {
@@ -583,11 +578,11 @@ class RoomsListView extends React.Component {
 						log(e);
 					}
 				});
-				trackUserEvent(favorite ? UNFAVORITE_CHANNEL : FAVORITE_CHANNEL);
+				logEvent(favorite ? events.UNFAVORITE_CHANNEL : events.FAVORITE_CHANNEL);
 			}
 		} catch (e) {
 			log(e);
-			trackUserEvent(TOGGLE_FAVORITE_FAIL);
+			logEvent(events.TOGGLE_FAVORITE_FAIL);
 		}
 	};
 
@@ -607,11 +602,11 @@ class RoomsListView extends React.Component {
 						log(e);
 					}
 				});
-				trackUserEvent(isRead ? UNREAD_CHANNEL : READ_CHANNEL);
+				logEvent(isRead ? events.UNREAD_CHANNEL : events.READ_CHANNEL);
 			}
 		} catch (e) {
 			log(e);
-			trackUserEvent(TOGGLE_READ_FAIL);
+			logEvent(events.TOGGLE_READ_FAIL);
 		}
 	};
 
@@ -629,26 +624,44 @@ class RoomsListView extends React.Component {
 						log(e);
 					}
 				});
-				trackUserEvent(HIDE_CHANNEL);
+				logEvent(events.HIDE_CHANNEL);
 			}
 		} catch (e) {
 			log(e);
-			trackUserEvent(HIDE_CHANNEL_FAIL);
+			logEvent(events.HIDE_CHANNEL_FAIL);
 		}
 	};
 
 	goDirectory = () => {
-		const { navigation } = this.props;
-		navigation.navigate('DirectoryView');
-		trackUserEvent(NAVIGATE_TO_DIRECTORY);
+		const { navigation, isMasterDetail } = this.props;
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', { screen: 'DirectoryView' });
+		} else {
+			navigation.navigate('DirectoryView');
+			logEvent(events.NAVIGATE_TO_DIRECTORY);
+		}
 	};
+
+	goRoom = ({ item, isMasterDetail }) => {
+		const { item: currentItem } = this.state;
+		const { rooms } = this.props;
+		if (currentItem?.rid === item.rid || rooms?.includes(item.rid)) {
+			return;
+		}
+		// Only mark room as focused when in master detail layout
+		if (isMasterDetail) {
+			this.setState({ item });
+		}
+		goRoom({ item, isMasterDetail });
+	}
 
 	goRoomByIndex = (index) => {
 		const { chats } = this.state;
+		const { isMasterDetail } = this.props;
 		const filteredChats = chats.filter(c => !c.separator);
 		const room = filteredChats[index - 1];
 		if (room) {
-			this.goRoom(room);
+			this.goRoom({ item: room, isMasterDetail });
 		}
 	}
 
@@ -669,9 +682,11 @@ class RoomsListView extends React.Component {
 	// Go to previous or next room based on sign (-1 or 1)
 	// It's used by iPad key commands
 	goOtherRoom = (sign) => {
-		if (!this.item) {
+		const { item } = this.state;
+		if (!item) {
 			return;
 		}
+
 		// Don't run during search
 		const { search } = this.state;
 		if (search.length > 0) {
@@ -679,18 +694,19 @@ class RoomsListView extends React.Component {
 		}
 
 		const { chats } = this.state;
-		const index = chats.findIndex(c => c.rid === this.item.rid);
+		const { isMasterDetail } = this.props;
+		const index = chats.findIndex(c => c.rid === item.rid);
 		const otherRoom = this.findOtherRoom(index, sign);
 		if (otherRoom) {
-			this.goRoom(otherRoom);
+			this.goRoom({ item: otherRoom, isMasterDetail });
 		}
 	}
 
 	handleCommands = ({ event }) => {
-		const { navigation, server } = this.props;
+		const { navigation, server, isMasterDetail } = this.props;
 		const { input } = event;
 		if (handleCommandShowPreferences(event)) {
-			navigation.toggleDrawer();
+			navigation.navigate('SettingsView');
 		} else if (handleCommandSearching(event)) {
 			this.scroll.scrollToOffset({ animated: true, offset: 0 });
 			this.inputRef.focus();
@@ -701,7 +717,11 @@ class RoomsListView extends React.Component {
 		} else if (handleCommandNextRoom(event)) {
 			this.goOtherRoom(1);
 		} else if (handleCommandShowNewMessage(event)) {
-			navigation.navigate('NewMessageView');
+			if (isMasterDetail) {
+				navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' });
+			} else {
+				navigation.navigate('NewMessageStack');
+			}
 		} else if (handleCommandAddNewServer(event)) {
 			navigation.navigate('NewServerView', { previousServer: server });
 		}
@@ -737,6 +757,22 @@ class RoomsListView extends React.Component {
 		);
 	};
 
+	renderHeader = () => {
+		const { isMasterDetail, theme } = this.props;
+
+		if (!isMasterDetail) {
+			return null;
+		}
+
+		const options = this.getHeader();
+		return (
+			<Header
+				theme={theme}
+				{...options}
+			/>
+		);
+	}
+
 	getIsRead = (item) => {
 		let isUnread = item.archived !== true && item.open === true; // item is not archived and not opened
 		isUnread = isUnread && (item.unread > 0 || item.alert === true); // either its unread count > 0 or its alert
@@ -748,7 +784,7 @@ class RoomsListView extends React.Component {
 			return this.renderSectionHeader(item.rid);
 		}
 
-		const { width } = this.state;
+		const { item: currentItem } = this.state;
 		const {
 			user: {
 				id: userId,
@@ -759,7 +795,8 @@ class RoomsListView extends React.Component {
 			StoreLastMessage,
 			useRealName,
 			theme,
-			split
+			isMasterDetail,
+			width
 		} = this.props;
 		const id = this.getUidDirectMessage(item);
 		const isGroupChat = RocketChat.isGroupChat(item);
@@ -789,7 +826,7 @@ class RoomsListView extends React.Component {
 				showLastMessage={StoreLastMessage}
 				onPress={() => this.onPressItem(item)}
 				testID={`rooms-list-view-item-${ item.name }`}
-				width={split ? MAX_SIDEBAR_WIDTH : width}
+				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
 				toggleFav={this.toggleFav}
 				toggleRead={this.toggleRead}
 				hideChannel={this.hideChannel}
@@ -797,6 +834,7 @@ class RoomsListView extends React.Component {
 				getUserPresence={this.getUserPresence}
 				isGroupChat={isGroupChat}
 				visitor={item.visitor}
+				isFocused={currentItem?.rid === item.rid}
 			/>
 		);
 	};
@@ -855,16 +893,14 @@ class RoomsListView extends React.Component {
 			showUnread,
 			showServerDropdown,
 			showSortDropdown,
-			theme
+			theme,
+			navigation
 		} = this.props;
 
 		return (
-			<SafeAreaView
-				style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}
-				testID='rooms-list-view'
-				forceInset={{ vertical: 'never' }}
-			>
+			<SafeAreaView testID='rooms-list-view' theme={theme} style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<StatusBar theme={theme} />
+				{this.renderHeader()}
 				{this.renderScroll()}
 				{showSortDropdown ? (
 					<SortDropdown
@@ -875,7 +911,7 @@ class RoomsListView extends React.Component {
 						showUnread={showUnread}
 					/>
 				) : null}
-				{showServerDropdown ? <ServerDropdown /> : null}
+				{showServerDropdown ? <ServerDropdown navigation={navigation} /> : null}
 			</SafeAreaView>
 		);
 	};
@@ -883,6 +919,7 @@ class RoomsListView extends React.Component {
 
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
+	isMasterDetail: state.app.isMasterDetail,
 	server: state.server.server,
 	connected: state.server.connected,
 	searchText: state.rooms.searchText,
@@ -896,17 +933,18 @@ const mapStateToProps = state => ({
 	showUnread: state.sortPreferences.showUnread,
 	useRealName: state.settings.UI_Use_Real_Name,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
-	StoreLastMessage: state.settings.Store_Last_Message
+	StoreLastMessage: state.settings.Store_Last_Message,
+	rooms: state.room.rooms
 });
 
 const mapDispatchToProps = dispatch => ({
 	toggleSortDropdown: () => dispatch(toggleSortDropdownAction()),
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
-	appStart: () => dispatch(appStartAction()),
+	appStart: params => dispatch(appStartAction(params)),
 	roomsRequest: params => dispatch(roomsRequestAction(params)),
 	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
 	closeServerDropdown: () => dispatch(closeServerDropdownAction())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(withSplit(RoomsListView)));
+export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(RoomsListView)));

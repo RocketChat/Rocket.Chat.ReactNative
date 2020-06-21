@@ -10,7 +10,7 @@ const checkServer = async(server) => {
 	await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
 	await waitFor(element(by.label(label))).toBeVisible().withTimeout(60000);
 	await expect(element(by.label(label))).toBeVisible();
-	await element(by.type('UIScrollView')).atIndex(1).swipe('left'); // close sidebar
+	await element(by.id('sidebar-close-drawer')).tap();
 }
 
 describe('Change server', () => {
