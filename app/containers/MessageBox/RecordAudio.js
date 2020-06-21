@@ -11,6 +11,25 @@ import styles from './styles';
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
 
+const RECORDING_EXTENSION = '.aac';
+const RECORDING_SETTINGS = {
+	android: {
+		extension: RECORDING_EXTENSION,
+		outputFormat: Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_AAC_ADTS,
+		audioEncoder: Audio.RECORDING_OPTION_ANDROID_AUDIO_ENCODER_AAC,
+		sampleRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.sampleRate,
+		numberOfChannels: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.numberOfChannels,
+		bitRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.bitRate
+	},
+	ios: {
+		extension: RECORDING_EXTENSION,
+		audioQuality: Audio.RECORDING_OPTION_IOS_AUDIO_QUALITY_MIN,
+		sampleRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.sampleRate,
+		numberOfChannels: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.numberOfChannels,
+		bitRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.bitRate,
+		outputFormat: Audio.RECORDING_OPTION_IOS_OUTPUT_FORMAT_MPEG4AAC
+	}
+};
 const RECORDING_MODE = {
 	allowsRecordingIOS: true,
 	playsInSilentModeIOS: true,
@@ -19,25 +38,6 @@ const RECORDING_MODE = {
 	playThroughEarpieceAndroid: false,
 	interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
 	interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX
-};
-
-const RECORDING_SETTINGS = {
-	android: {
-		extension: '.aac',
-		outputFormat: Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_AAC_ADTS,
-		audioEncoder: Audio.RECORDING_OPTION_ANDROID_AUDIO_ENCODER_AAC,
-		sampleRate: 22050,
-		numberOfChannels: 1,
-		bitRate: 128000
-	},
-	ios: {
-		extension: '.aac',
-		audioQuality: Audio.RECORDING_OPTION_IOS_AUDIO_QUALITY_MIN,
-		sampleRate: 22050,
-		bitRate: 128000,
-		outputFormat: Audio.RECORDING_OPTION_IOS_OUTPUT_FORMAT_MPEG4AAC,
-		numberOfChannels: 2
-	}
 };
 
 const _formatTime = function(seconds) {
@@ -66,7 +66,7 @@ const startRecordingAudio = async(instance, setRecordingStatus, setRecorderBusy)
 			await Audio.requestPermissionsAsync();
 		}
 	} catch (error) {
-		console.log('startrecordingerror', error);
+		// Do nothing
 	}
 	setRecorderBusy(false);
 };
@@ -119,6 +119,12 @@ const RecordAudio = ({ theme, recordingCallback, onFinish }) => {
 		isDoneRecording: false
 	});
 	const [recorderBusy, setRecorderBusy] = useState(false);
+
+	useEffect(() => () => {
+		if (recordingInstance.current) {
+			cancelAudioMessage(recordingInstance.current, setRecorderBusy);
+		}
+	}, []);
 
 	useEffect(() => {
 		recordingCallback(recordingStatus.isRecording);
