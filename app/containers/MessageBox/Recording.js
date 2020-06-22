@@ -14,6 +14,7 @@ import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 import SafeAreaView from '../SafeAreaView';
+import { logEvent, events } from '../../utils/log';
 
 export const _formatTime = function(seconds) {
 	let minutes = Math.floor(seconds / 60);
@@ -116,8 +117,10 @@ export default class extends React.PureComponent {
 				const data = await RNFetchBlob.fs.stat(decodeURIComponent(filePath));
 				this.finishRecording(true, filePath, data.size);
 			}
+			logEvent(events.END_AUDIO_RECORDING);
 		} catch (err) {
 			this.finishRecording(false);
+			logEvent(events.END_AUDIO_RECORDING_FAIL);
 		}
 	}
 
@@ -125,6 +128,7 @@ export default class extends React.PureComponent {
 		this.recording = false;
 		this.recordingCanceled = true;
 		await AudioRecorder.stopRecording();
+		logEvent(events.CANCEL_AUDIO_RECORDING);
 		return this.finishRecording(false);
 	}
 

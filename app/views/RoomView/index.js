@@ -23,7 +23,7 @@ import MessageBox from '../../containers/MessageBox';
 import ReactionPicker from './ReactionPicker';
 import UploadProgress from './UploadProgress';
 import styles from './styles';
-import log from '../../utils/log';
+import log, { logEvent, events } from '../../utils/log';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
 import RoomHeaderView, { RightButtons, RoomHeaderLeft } from './Header';
@@ -644,6 +644,7 @@ class RoomView extends React.Component {
 			}
 			this.setLastOpen(null);
 			Review.pushPositiveEvent();
+			logEvent(events.SEND_MESSAGE);
 		});
 	};
 
@@ -662,6 +663,7 @@ class RoomView extends React.Component {
 		const { customEmojis } = this.props;
 		const emoji = customEmojis[name];
 		if (emoji) {
+			logEvent(events.SHOW_CUSTOM_EMOJI);
 			return emoji;
 		}
 		return null;

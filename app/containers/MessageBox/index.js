@@ -17,7 +17,7 @@ import database from '../../lib/database';
 import { emojis } from '../../emojis';
 import Recording from './Recording';
 import UploadModal from './UploadModal';
-import log from '../../utils/log';
+import log, { logEvent, events } from '../../utils/log';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
 import debounce from '../../utils/debounce';
@@ -569,9 +569,10 @@ class MessageBox extends Component {
 			const image = await ImagePicker.openCamera(this.imagePickerConfig);
 			if (this.canUploadFile(image)) {
 				this.showUploadModal(image);
+				logEvent(events.TAKE_PHOTO);
 			}
 		} catch (e) {
-			// Do nothing
+			logEvent(events.TAKE_PHOTO_FAIL);
 		}
 	}
 
@@ -580,9 +581,10 @@ class MessageBox extends Component {
 			const video = await ImagePicker.openCamera(this.videoPickerConfig);
 			if (this.canUploadFile(video)) {
 				this.showUploadModal(video);
+				logEvent(events.TAKE_VIDEO);
 			}
 		} catch (e) {
-			// Do nothing
+			logEvent(events.TAKE_VIDEO_FAIL);
 		}
 	}
 
@@ -591,9 +593,10 @@ class MessageBox extends Component {
 			const image = await ImagePicker.openPicker(this.libraryPickerConfig);
 			if (this.canUploadFile(image)) {
 				this.showUploadModal(image);
+				logEvent(events.CHOOSE_FROM_LIBRARY);
 			}
 		} catch (e) {
-			// Do nothing
+			logEvent(events.CHOOSE_FROM_LIBRARY_FAIL);
 		}
 	}
 
@@ -610,10 +613,12 @@ class MessageBox extends Component {
 			};
 			if (this.canUploadFile(file)) {
 				this.showUploadModal(file);
+				logEvent(events.CHOOSE_FILE);
 			}
 		} catch (e) {
 			if (!DocumentPicker.isCancel(e)) {
 				log(e);
+				logEvent(events.CHOOSE_FILE_FAIL);
 			}
 		}
 	}
@@ -626,6 +631,7 @@ class MessageBox extends Component {
 		} else {
 			Navigation.navigate('NewMessageStackNavigator', { screen: 'CreateDiscussionView', params });
 		}
+		logEvent(events.CREATE_DISCUSSION_START);
 	}
 
 	showUploadModal = (file) => {
@@ -643,15 +649,15 @@ class MessageBox extends Component {
 		this.clearInput();
 	}
 
-	openEmoji = async() => {
-		await this.setState({
-			showEmojiKeyboard: true
-		});
+	openEmoji = () => {
+		this.setState({ showEmojiKeyboard: true });
+		logEvent(events.SHOW_EMOJI_KEYBOARD);
 	}
 
 	recordAudioMessage = async() => {
 		const recording = await Recording.permission();
 		this.setState({ recording });
+		logEvent(events.START_AUDIO_RECORDING);
 	}
 
 	finishAudioMessage = async(fileInfo) => {
