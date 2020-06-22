@@ -11,7 +11,7 @@ import TextInput from '../containers/TextInput';
 import EventEmitter from '../utils/events';
 import Loading from '../containers/Loading';
 import RocketChat from '../lib/rocketchat';
-import log from '../utils/log';
+import log, { logEvent, events } from '../utils/log';
 
 import { LISTENER } from '../containers/Toast';
 import { themes } from '../constants/colors';
@@ -98,6 +98,7 @@ class StatusView extends React.Component {
 			await this.setCustomStatus();
 		}
 		this.close();
+		logEvent(events.EDIT_STATUS_DONE);
 	}
 
 	close = () => {
@@ -115,11 +116,14 @@ class StatusView extends React.Component {
 			const result = await RocketChat.setUserStatus(user.status, statusText);
 			if (result.success) {
 				EventEmitter.emit(LISTENER, { message: I18n.t('Status_saved_successfully') });
+				logEvent(events.SET_CUSTOM_STATUS);
 			} else {
 				EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
+				logEvent(events.SET_CUSTOM_STATUS_FAIL);
 			}
 		} catch {
 			EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
+			logEvent(events.SET_CUSTOM_STATUS_FAIL);
 		}
 
 		this.setState({ loading: false });
@@ -171,9 +175,11 @@ class StatusView extends React.Component {
 							const result = await RocketChat.setUserStatus(item.id, statusText);
 							if (result.success) {
 								store.dispatch(setUser({ status: item.id }));
+								logEvent(events[`SET_STATUS_${ item.id.toUpperCase() }`]);
 							}
 						} catch (e) {
 							log(e);
+							logEvent(events.SET_STATUS_FAIL);
 						}
 					}
 				}}

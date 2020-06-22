@@ -97,6 +97,13 @@ export default {
 	ACTION_ADD_RECENT_REACTION: 'action_add_recent_reaction',
 	ACTION_ADD_REACTION: 'action_add_reaction',
 	ACTION_REPORT: 'action_report',
-	ACTION_REPORT_FAIL: 'action_report_fail'
-
+	ACTION_REPORT_FAIL: 'action_report_fail',
+	EDIT_STATUS_DONE: 'edit_status_done',
+	SET_STATUS_ONLINE: 'set_status_online',
+	SET_STATUS_BUSY: 'set_status_busy',
+	SET_STATUS_AWAY: 'set_status_away',
+	SET_STATUS_OFFLINE: 'set_status_offline',
+	SET_STATUS_FAIL: 'set_status_fail',
+	SET_CUSTOM_STATUS: 'set_custom_status',
+	SET_CUSTOM_STATUS_FAIL: 'set_custom_status_fail'
 };
