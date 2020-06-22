@@ -14,6 +14,14 @@ class NotificationService: UNNotificationServiceExtension {
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
         if let bestAttemptContent = bestAttemptContent {
+            let type = bestAttemptContent.userInfo["type"] as! String
+          
+            // If the notification have the content at her payload, show it
+            if type != "message-hidden" {
+                contentHandler(bestAttemptContent);
+                return;
+            }
+          
             let suiteName = Bundle.main.object(forInfoDictionaryKey: "AppGroup") as! String
             let userDefaults = UserDefaults(suiteName: suiteName)
 
@@ -99,6 +107,8 @@ class NotificationService: UNNotificationServiceExtension {
         // Called just before the extension will be terminated by the system.
         // Use this as an opportunity to deliver your "best attempt" at modified content, otherwise the original push payload will be used.
         if let contentHandler = contentHandler, let bestAttemptContent =  bestAttemptContent {
+            bestAttemptContent.title = "Error"
+            bestAttemptContent.body = "Can't fetch a message from your server"
             contentHandler(bestAttemptContent)
         }
     }
