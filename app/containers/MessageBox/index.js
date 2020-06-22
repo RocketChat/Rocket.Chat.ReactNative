@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Alert, Keyboard, NativeModules } from 'react-native';
+import {
+	View, Alert, Keyboard, NativeModules
+} from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
-import equal from 'deep-equal';
+// import equal from 'deep-equal';
 import DocumentPicker from 'react-native-document-picker';
 import { Q } from '@nozbe/watermelondb';
 
@@ -95,7 +97,8 @@ class MessageBox extends Component {
 		children: PropTypes.node,
 		isMasterDetail: PropTypes.bool,
 		bottomViewColor: PropTypes.string,
-		showActionSheet: PropTypes.func
+		showActionSheet: PropTypes.func,
+		iOSScrollBehavior: PropTypes.number
 	}
 
 	static defaultProps = {

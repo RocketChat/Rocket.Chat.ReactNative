@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 import {
 	PanGestureHandler,
@@ -266,6 +266,8 @@ export class ImageViewer extends React.Component {
 	static propTypes = {
 		uri: PropTypes.string,
 		width: PropTypes.number,
+		height: PropTypes.number,
+		theme: PropTypes.string,
 		imageComponentType: PropTypes.string
 	}
 
@@ -384,7 +386,7 @@ export class ImageViewer extends React.Component {
 
 	render() {
 		const {
-			uri, width, height, theme, loading, imageComponentType, ...props
+			uri, width, height, theme, imageComponentType, ...props
 		} = this.props;
 
 		const Component = ImageComponent(imageComponentType);
@@ -399,51 +401,47 @@ export class ImageViewer extends React.Component {
 
 		return (
 			<View style={[styles.flex, { width, height, backgroundColor }]}>
-				{loading
-					? <ActivityIndicator style={styles.flex} />
-					: (
-						<PinchGestureHandler
-							ref={this.pinchRef}
-							simultaneousHandlers={this.panRef}
-							onGestureEvent={this._onPinchEvent}
-							onHandlerStateChange={this._onPinchEvent}
+				<PinchGestureHandler
+					ref={this.pinchRef}
+					simultaneousHandlers={this.panRef}
+					onGestureEvent={this._onPinchEvent}
+					onHandlerStateChange={this._onPinchEvent}
+				>
+					<Animated.View>
+						<PanGestureHandler
+							ref={this.panRef}
+							minDist={10}
+							avgTouches
+							simultaneousHandlers={this.pinchRef}
+							onGestureEvent={this._onPanEvent}
+							onHandlerStateChange={this._onPanEvent}
 						>
-							<Animated.View>
-								<PanGestureHandler
-									ref={this.panRef}
-									minDist={10}
-									avgTouches
-									simultaneousHandlers={this.pinchRef}
-									onGestureEvent={this._onPanEvent}
-									onHandlerStateChange={this._onPanEvent}
-								>
-									<AnimatedFastImage
-										style={[
-											styles.image,
-											{
-												width,
-												height: '100%'
-											},
-											{
-												transform: [
-													{ translateX: this._panTransX },
-													{ translateY: this._panTransY },
-													{ translateX: this._focalDisplacementX },
-													{ translateY: this._focalDisplacementY },
-													{ translateX: scaleTopLeftFixX },
-													{ translateY: scaleTopLeftFixY },
-													{ scale: this._scale }
-												]
-											}
-										]}
-										resizeMode='contain'
-										source={{ uri }}
-										{...props}
-									/>
-								</PanGestureHandler>
-							</Animated.View>
-						</PinchGestureHandler>
-					)}
+							<AnimatedFastImage
+								style={[
+									styles.image,
+									{
+										width,
+										height: '100%'
+									},
+									{
+										transform: [
+											{ translateX: this._panTransX },
+											{ translateY: this._panTransY },
+											{ translateX: this._focalDisplacementX },
+											{ translateY: this._focalDisplacementY },
+											{ translateX: scaleTopLeftFixX },
+											{ translateY: scaleTopLeftFixY },
+											{ scale: this._scale }
+										]
+									}
+								]}
+								resizeMode='contain'
+								source={{ uri }}
+								{...props}
+							/>
+						</PanGestureHandler>
+					</Animated.View>
+				</PinchGestureHandler>
 			</View>
 		);
 	}

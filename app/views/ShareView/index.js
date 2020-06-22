@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, NativeModules } from 'react-native';
+import { View, Text, NativeModules } from 'react-native';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
 import * as VideoThumbnails from 'expo-video-thumbnails';
@@ -15,7 +15,7 @@ import {
 	CustomHeaderButtons
 } from '../../containers/HeaderButton';
 import { isBlocked } from '../../utils/room';
-import { isReadOnly } from '../../utils/isReadOnly';
+// import { isReadOnly } from '../../utils/isReadOnly';
 import { withTheme } from '../../theme';
 import Header from './Header';
 import RocketChat from '../../lib/rocketchat';
@@ -271,6 +271,7 @@ class ShareView extends Component {
 
 ShareView.propTypes = {
 	navigation: PropTypes.object,
+	route: PropTypes.object,
 	theme: PropTypes.string,
 	user: PropTypes.shape({
 		id: PropTypes.string.isRequired,

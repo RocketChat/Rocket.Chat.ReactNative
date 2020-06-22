@@ -7,6 +7,7 @@ import * as mime from 'react-native-mime-types';
 import { FileSystem } from 'react-native-unimodules';
 import { Video } from 'expo-av';
 import SHA256 from 'js-sha256';
+import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { LISTENER } from '../containers/Toast';
 import EventEmitter from '../utils/events';
@@ -21,7 +22,6 @@ import { isAndroid } from '../utils/deviceInfo';
 import { getUserSelector } from '../selectors/login';
 import { withDimensions } from '../dimensions';
 import { getHeaderHeight } from '../containers/Header';
-import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import StatusBar from '../containers/StatusBar';
 
 const styles = StyleSheet.create({
@@ -36,6 +36,9 @@ class AttachmentView extends React.Component {
 		route: PropTypes.object,
 		theme: PropTypes.string,
 		baseUrl: PropTypes.string,
+		width: PropTypes.number,
+		height: PropTypes.number,
+		insets: PropTypes.object,
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			token: PropTypes.string
@@ -115,7 +118,9 @@ class AttachmentView extends React.Component {
 	};
 
 	renderImage = (uri) => {
-		const { theme, width, height, insets } = this.props;
+		const {
+			theme, width, height, insets
+		} = this.props;
 		const headerHeight = getHeaderHeight(width > height);
 		return (
 			<ImageViewer
@@ -124,7 +129,6 @@ class AttachmentView extends React.Component {
 				theme={theme}
 				width={width}
 				height={height - insets.top - insets.bottom - headerHeight}
-				loading={false}
 			/>
 		);
 	}

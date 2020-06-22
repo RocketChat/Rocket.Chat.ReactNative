@@ -12,7 +12,7 @@ import { getHeaderHeight } from '../../containers/Header';
 import { isIOS } from '../../utils/deviceInfo';
 
 const Preview = React.memo(({
-	item, theme, shareExtension, loading, length
+	item, theme, shareExtension, length
 }) => {
 	const type = item?.mime;
 
@@ -45,7 +45,6 @@ const Preview = React.memo(({
 				imageComponentType={shareExtension ? types.REACT_NATIVE_IMAGE : types.FAST_IMAGE}
 				width={width}
 				height={height - insets.top - insets.bottom - messageboxHeight - thumbsHeight - headerHeight}
-				loading={loading}
 				theme={theme}
 			/>
 		);
@@ -62,7 +61,8 @@ const Preview = React.memo(({
 Preview.propTypes = {
 	item: PropTypes.object,
 	theme: PropTypes.string,
-	shareExtension: PropTypes.bool
+	shareExtension: PropTypes.bool,
+	length: PropTypes.number
 };
 
 export default Preview;

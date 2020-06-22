@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { ImageComponent } from './ImageComponent';
@@ -16,12 +16,10 @@ const styles = StyleSheet.create({
 });
 
 export const ImageViewer = ({
-	uri, imageComponentType, theme, width, height, loading, ...props
+	uri, imageComponentType, theme, width, height, ...props
 }) => {
-  console.log('uri', uri);
 	const backgroundColor = themes[theme].previewBackground;
 	const Component = ImageComponent(imageComponentType);
-  console.log('Component', Component);
 	return (
 		<ScrollView
 			style={{ backgroundColor }}
@@ -34,21 +32,20 @@ export const ImageViewer = ({
 			showsVerticalScrollIndicator={false}
 			maximumZoomScale={2}
 		>
-			{loading
-				? <ActivityIndicator style={{ flex: 1 }} />
-				: (
-					<Component
-						style={styles.image}
-						resizeMode='contain'
-						source={{ uri }}
-						{...props}
-					/>
-				)}
+			<Component
+				style={styles.image}
+				resizeMode='contain'
+				source={{ uri }}
+				{...props}
+			/>
 		</ScrollView>
 	);
 };
 
 ImageViewer.propTypes = {
 	uri: PropTypes.string,
-	imageComponentType: PropTypes.string
+	imageComponentType: PropTypes.string,
+	width: PropTypes.number,
+	height: PropTypes.number,
+	theme: PropTypes.string
 };
