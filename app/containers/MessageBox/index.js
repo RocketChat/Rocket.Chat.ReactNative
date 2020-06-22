@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Alert, Keyboard, StyleSheet, TouchableOpacity, Dimensions
+	View, Alert, Keyboard, StyleSheet, TouchableOpacity, Dimensions, Text
 } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
@@ -10,6 +10,8 @@ import equal from 'deep-equal';
 import DocumentPicker from 'react-native-document-picker';
 import { Q } from '@nozbe/watermelondb';
 import Animated from 'react-native-reanimated';
+import { gestureHandlerRootHOC, RectButton } from 'react-native-gesture-handler';
+import Modal from 'react-native-modal';
 
 import sharedStyles from '../../views/Styles';
 import { generateTriggerId } from '../../lib/methods/actions';
@@ -1063,6 +1065,29 @@ class MessageBox extends Component {
 		);
 	}
 
+	renderModal = () => {
+		const { isFullscreen } = this.state;
+		const Content = gestureHandlerRootHOC(
+			function content() {
+				return (
+					<View>
+						<RectButton onPress={() => Alert.alert("It's a modal")} >
+							<Text>
+								BUTTON
+							</Text>
+						</RectButton>
+					</View>
+				);
+			}
+		);
+
+		return(
+			<Modal isVisible={isFullscreen}>
+				<Content />
+			</Modal>
+		);
+	}
+
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { showEmojiKeyboard, file } = this.state;
@@ -1078,7 +1103,8 @@ class MessageBox extends Component {
 					onPressCommandPreview: this.onPressCommandPreview
 				}}
 			>
-				{this.renderFullScreenComposer()}
+				{this.renderModal()}
+				{/* {this.renderFullScreenComposer()} */}
 				<KeyboardAccessoryView
 					ref={ref => this.tracking = ref}
 					renderContent={this.renderContent}
