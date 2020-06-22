@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import { showErrorAlert } from '../../utils/info';
-import log from '../../utils/log';
+import log, { logEvent, events } from '../../utils/log';
 import { setUser as setUserAction } from '../../actions/login';
 import StatusBar from '../../containers/StatusBar';
 import { CustomIcon } from '../../lib/Icons';
@@ -133,12 +133,14 @@ class LanguageView extends React.Component {
 					await userRecord.update((record) => {
 						record.language = params.language;
 					});
+					logEvent(events.SET_LANGUAGE);
 				} catch (e) {
-					// do nothing
+					logEvent(events.SET_LANGUAGE_FAIL);
 				}
 			});
 		} catch (e) {
 			showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_preferences') }));
+			logEvent(events.SET_LANGUAGE_FAIL);
 			log(e);
 		}
 	}

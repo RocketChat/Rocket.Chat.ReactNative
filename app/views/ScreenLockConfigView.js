@@ -16,6 +16,7 @@ import { supportedBiometryLabel, changePasscode, checkHasPasscode } from '../uti
 import { DisclosureImage } from '../containers/DisclosureIndicator';
 import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
 import SafeAreaView from '../containers/SafeAreaView';
+import { events, logEvent } from '../utils/log';
 
 const styles = StyleSheet.create({
 	listPadding: {
@@ -120,6 +121,7 @@ class ScreenLockConfigView extends React.Component {
 				record.autoLock = autoLock;
 				record.autoLockTime = autoLockTime === null ? DEFAULT_AUTO_LOCK : autoLockTime;
 				record.biometry = biometry === null ? DEFAULT_BIOMETRY : biometry;
+				logEvent(events.SAVE_SCREEN_LOCK, { autoLock, autoLockTime, biometry });
 			});
 		});
 	}

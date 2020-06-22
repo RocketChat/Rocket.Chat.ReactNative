@@ -16,6 +16,7 @@ import { CustomIcon } from '../lib/Icons';
 import { DEFAULT_BROWSER_KEY } from '../utils/openLink';
 import { isIOS } from '../utils/deviceInfo';
 import SafeAreaView from '../containers/SafeAreaView';
+import { logEvent, events } from '../utils/log';
 
 const DEFAULT_BROWSERS = [
 	{
@@ -117,8 +118,9 @@ class DefaultBrowserView extends React.Component {
 			const browser = newBrowser !== 'inApp' ? newBrowser : null;
 			await RNUserDefaults.set(DEFAULT_BROWSER_KEY, browser);
 			this.setState({ browser });
+			logEvent(events.CHANGE_DEFAULT_BROWSER, { browser: newBrowser });
 		} catch {
-			// do nothing
+			logEvent(events.CHANGE_DEFAULT_BROWSER_FAIL);
 		}
 	}
 

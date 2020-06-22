@@ -5,6 +5,7 @@ import { isIOS } from './deviceInfo';
 import I18n from '../i18n';
 import { showErrorAlert } from './info';
 import { STORE_REVIEW_LINK } from '../constants/links';
+import { logEvent, events } from './log';
 
 const store = isIOS ? 'App Store' : 'Play Store';
 
@@ -36,9 +37,11 @@ export const onReviewPress = async() => {
 		const supported = await Linking.canOpenURL(STORE_REVIEW_LINK);
 		if (supported) {
 			Linking.openURL(STORE_REVIEW_LINK);
+			logEvent(events.REVIEW_THIS_APP);
 		}
 	} catch (e) {
 		showErrorAlert(I18n.t('Review_app_unable_store', { store }));
+		logEvent(events.REVIEW_THIS_APP_FAIL);
 	}
 };
 

@@ -25,7 +25,9 @@ import openLink from '../../utils/openLink';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
 import styles from './styles';
-import { loggerConfig, analytics } from '../../utils/log';
+import {
+	loggerConfig, analytics, logEvent, events
+} from '../../utils/log';
 import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/links';
 import { withTheme } from '../../theme';
 import SidebarView from '../SidebarView';
@@ -81,6 +83,7 @@ class SettingsView extends React.Component {
 			onPress: () => {
 				const { logout } = this.props;
 				logout();
+				logEvent(events.LOG_OUT);
 			}
 		});
 	}
@@ -96,6 +99,7 @@ class SettingsView extends React.Component {
 				await appStart({ root: ROOT_LOADING, text: I18n.t('Clear_cache_loading') });
 				await RocketChat.clearCache({ server });
 				await selectServerRequest(server, null, true);
+				logEvent(events.CLEAR_LOCAL_SERVER_CACHE);
 			}
 		});
 	}
@@ -106,11 +110,12 @@ class SettingsView extends React.Component {
 		toggleCrashReport(value);
 		loggerConfig.autoNotify = value;
 		analytics().setAnalyticsCollectionEnabled(value);
-
 		if (value) {
 			loggerConfig.clearBeforeSendCallbacks();
+			logEvent(events.SEND_CRASH_REPORT_ON);
 		} else {
 			loggerConfig.registerBeforeSendCallback(() => false);
+			logEvent(events.SEND_CRASH_REPORT_OFF);
 		}
 	}
 
@@ -128,22 +133,28 @@ class SettingsView extends React.Component {
 		`);
 		try {
 			await Linking.openURL(`mailto:${ email }?subject=${ subject }&body=${ description }`);
+			logEvent(events.CONTACT_US);
 		} catch (e) {
+			logEvent(events.CONTACT_US_FAIL);
+
 			showErrorAlert(I18n.t('error-email-send-failed', { message: 'support@rocket.chat' }));
 		}
 	}
 
 	shareApp = () => {
 		Share.share({ message: isAndroid ? PLAY_MARKET_LINK : APP_STORE_LINK });
+		logEvent(events.SHARE_THIS_APP);
 	}
 
 	copyServerVersion = () => {
-		const { server } = this.props;
-		this.saveToClipboard(server.version);
+		const { server: { version } } = this.props;
+		this.saveToClipboard(version);
+		logEvent(events.COPY_SERVER_VERSION, { server_version: version });
 	}
 
 	copyAppVersion = () => {
 		this.saveToClipboard(getReadableVersion);
+		logEvent(events.COPY_APP_VERSION, { app_version: getReadableVersion });
 	}
 
 	saveToClipboard = async(content) => {
@@ -154,6 +165,7 @@ class SettingsView extends React.Component {
 	onPressLicense = () => {
 		const { theme } = this.props;
 		openLink(LICENSE_LINK, theme);
+		logEvent(events.READ_LICENSE);
 	}
 
 	renderDisclosure = () => {
@@ -211,7 +223,10 @@ class SettingsView extends React.Component {
 					<Separator theme={theme} />
 					<ListItem
 						title={I18n.t('Language')}
-						onPress={() => this.navigateToScreen('LanguageView')}
+						onPress={() => {
+							this.navigateToScreen('LanguageView');
+							logEvent(events.NAVIGATE_TO_LANGUAGE);
+						}}
 						showActionIndicator
 						testID='settings-view-language'
 						right={this.renderDisclosure}
@@ -239,7 +254,10 @@ class SettingsView extends React.Component {
 					<ListItem
 						title={I18n.t('Default_browser')}
 						showActionIndicator
-						onPress={() => this.navigateToScreen('DefaultBrowserView')}
+						onPress={() => {
+							this.navigateToScreen('DefaultBrowserView');
+							logEvent(events.NAVIGATE_TO_DEFAULT_BROWSER);
+						}}
 						testID='settings-view-default-browser'
 						right={this.renderDisclosure}
 						theme={theme}
@@ -248,7 +266,10 @@ class SettingsView extends React.Component {
 					<ListItem
 						title={I18n.t('Theme')}
 						showActionIndicator
-						onPress={() => this.navigateToScreen('ThemeView')}
+						onPress={() => {
+							this.navigateToScreen('ThemeView');
+							logEvent(events.NAVIGATE_TO_THEMES);
+						}}
 						testID='settings-view-theme'
 						right={this.renderDisclosure}
 						theme={theme}
@@ -257,7 +278,10 @@ class SettingsView extends React.Component {
 					<ListItem
 						title={I18n.t('Screen_lock')}
 						showActionIndicator
-						onPress={() => this.navigateToScreen('ScreenLockConfigView')}
+						onPress={() => {
+							this.navigateToScreen('ScreenLockConfigView');
+							logEvent(events.NAVIGATE_TO_SCREEN_LOCK);
+						}}
 						right={this.renderDisclosure}
 						theme={theme}
 					/>
