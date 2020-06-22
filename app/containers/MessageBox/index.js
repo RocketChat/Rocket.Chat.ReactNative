@@ -64,6 +64,7 @@ const stylez = StyleSheet.create({
 	input: {
 		textAlignVertical: 'top',
 		padding: 15,
+		paddingTop: 5,
 		fontSize: 17,
 		letterSpacing: 0,
 		...sharedStyles.textRegular,
@@ -82,6 +83,11 @@ const stylez = StyleSheet.create({
 		justifyContent: 'center',
 		zIndex: 5,
 		marginBottom: -10
+	},
+	closeModal: {
+		alignSelf: 'flex-end',
+		margin: 10,
+		marginBottom: 0
 	}
 });
 
@@ -878,12 +884,26 @@ class MessageBox extends Component {
 		const { theme, editing } = this.props;
 		const buttonStyle = {
 			...stylez.topButton,
-			backgroundColor: editing ? themes[theme].chatComponentBackground :
-				themes[theme].messageboxBackground
-		}
+			backgroundColor: editing ? themes[theme].chatComponentBackground
+				: themes[theme].messageboxBackground
+		};
 		return (
 			<TouchableOpacity onPress={() => this.changeComposerState()} style={buttonStyle}>
 				<CustomIcon name={isFullscreen ? 'chevron-down' : 'chevron-up'} size={14} color={themes[theme].tintColor} />
+			</TouchableOpacity>
+		);
+	}
+
+	renderCloseModalButton = () => {
+		const { theme, editing } = this.props;
+		const buttonStyle = {
+			...stylez.closeModal,
+			backgroundColor: editing ? themes[theme].chatComponentBackground
+				: themes[theme].messageboxBackground
+		};
+		return (
+			<TouchableOpacity onPress={() => this.changeComposerState()} style={buttonStyle}>
+				<CustomIcon name="Cross" size={25} color={themes[theme].tintColor} />
 			</TouchableOpacity>
 		);
 	}
@@ -1022,7 +1042,7 @@ class MessageBox extends Component {
 		return (
 			<>
 				<Animated.View style={[stylez.container, { transform: [{ translateY }] }, { backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }]}>
-					{this.renderTopButton()}
+					{this.renderCloseModalButton()}
 					<TextInput
 						ref={component => this.component = component}
 						style={stylez.input}
