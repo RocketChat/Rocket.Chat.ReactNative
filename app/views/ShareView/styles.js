@@ -41,10 +41,14 @@ export default StyleSheet.create({
 	},
 	remove: {
 		position: 'absolute',
-		right: 4,
-		padding: 4,
+		right: 6,
+		// padding: 4,
+		width: 28,
+		height: 28,
 		borderWidth: 2,
-		borderRadius: 14
+		borderRadius: 14,
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 	item: {
 		paddingTop: 8
@@ -53,7 +57,8 @@ export default StyleSheet.create({
 		width: THUMB_SIZE,
 		height: THUMB_SIZE,
 		borderRadius: 2,
-		marginRight: 16
+		marginRight: 16,
+		overflow: 'hidden'
 	},
 	// Error
 	centered: {

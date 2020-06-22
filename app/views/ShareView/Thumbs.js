@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, Image } from 'react-native';
-import { BorderlessButton } from 'react-native-gesture-handler';
+import { FlatList, Image, View } from 'react-native';
+import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
 
 import { BUTTON_HIT_SLOP } from '../../containers/message/utils';
 import { themes } from '../../constants/colors';
@@ -46,22 +46,33 @@ const Thumbs = React.memo(({ attachments, onPress, theme }) => {
 				horizontal
 				data={attachments}
 				renderItem={({ item, index }) => (
-					<BorderlessButton style={styles.item} onPress={() => onPress(index)}>
+					<RectButton style={styles.item} onPress={() => onPress(index)}>
 						<Thumb
 							item={item}
 							theme={theme}
 						/>
-						<BorderlessButton
+						<RectButton
 							hitSlop={BUTTON_HIT_SLOP}
 							style={[styles.remove, { backgroundColor: themes[theme].bodyText, borderColor: themes[theme].auxiliaryBackground }]}
 						>
-							<CustomIcon
-								name='Cross'
-								color={themes[theme].backgroundColor}
-								size={16}
-							/>
-						</BorderlessButton>
-					</BorderlessButton>
+							<View style={[
+								{ 
+									width: 28,
+									height: 28,
+									borderWidth: 2,
+									borderRadius: 14,
+									alignItems: 'center',
+									justifyContent: 'center',
+									borderColor: themes[theme].auxiliaryBackground
+								}]}>
+								<CustomIcon
+									name='Cross'
+									color={themes[theme].backgroundColor}
+									size={14}
+								/>
+							</View>
+						</RectButton>
+					</RectButton>
 				)}
 				style={[styles.list, { backgroundColor: themes[theme].auxiliaryBackground }]}
 			/>
