@@ -145,7 +145,7 @@ class MessageBox extends Component {
 			commandPreview: [],
 			showCommandPreview: false,
 			command: {},
-			fullScreenUp: false,
+			isFullscreen: false,
 			translateY: BOTTOM
 		};
 		this.text = '';
@@ -270,7 +270,7 @@ class MessageBox extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			showEmojiKeyboard, showSend, recording, mentions, file, commandPreview, fullScreenUp, translateY
+			showEmojiKeyboard, showSend, recording, mentions, file, commandPreview, isFullscreen, translateY
 		} = this.state;
 
 		const {
@@ -309,7 +309,7 @@ class MessageBox extends Component {
 		if (!equal(nextState.file, file)) {
 			return true;
 		}
-		if (nextState.fullScreenUp !== fullScreenUp) {
+		if (nextState.isFullscreen !== isFullscreen) {
 			return true;
 		}
 		if (nextState.translateY !== translateY) {
@@ -322,7 +322,7 @@ class MessageBox extends Component {
 	}
 
 	componentWillUnmount() {
-		console.countReset(`${ this.constructor.name }.render calls`);
+		console.countReset(`${this.constructor.name}.render calls`);
 		if (this.onChangeText && this.onChangeText.stop) {
 			this.onChangeText.stop();
 		}
@@ -357,7 +357,7 @@ class MessageBox extends Component {
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	debouncedOnChangeText = debounce(async(text) => {
+	debouncedOnChangeText = debounce(async (text) => {
 		const db = database.active;
 		const isTextEmpty = text.length === 0;
 		// this.setShowSend(!isTextEmpty);
@@ -417,9 +417,9 @@ class MessageBox extends Component {
 		const regexp = /([a-z0-9._-]+)$/im;
 		const result = msg.substr(0, cursor).replace(regexp, '');
 		const mentionName = trackingType === MENTIONS_TRACKING_TYPE_EMOJIS
-			? `${ item.name || item }:`
+			? `${item.name || item}:`
 			: (item.username || item.name || item.command);
-		const text = `${ result }${ mentionName } ${ msg.slice(cursor) }`;
+		const text = `${result}${mentionName} ${msg.slice(cursor)}`;
 		if ((trackingType === MENTIONS_TRACKING_TYPE_COMMANDS) && item.providesPreview) {
 			this.setState({ showCommandPreview: true });
 		}
@@ -459,16 +459,16 @@ class MessageBox extends Component {
 		if (this.component?.lastNativeSelection) {
 			const { start, end } = this.component.lastNativeSelection;
 			const cursor = Math.max(start, end);
-			newText = `${ text.substr(0, cursor) }${ emoji }${ text.substr(cursor) }`;
+			newText = `${text.substr(0, cursor)}${emoji}${text.substr(cursor)}`;
 		} else {
 			// if messagebox doesn't have a cursor, just append selected emoji
-			newText = `${ text }${ emoji }`;
+			newText = `${text}${emoji}`;
 		}
 		this.setInput(newText);
 		this.setShowSend(true);
 	}
 
-	getPermalink = async(message) => {
+	getPermalink = async (message) => {
 		try {
 			return await RocketChat.getPermalinkMessage(message);
 		} catch (error) {
@@ -487,23 +487,23 @@ class MessageBox extends Component {
 		return result;
 	}
 
-	getUsers = debounce(async(keyword) => {
+	getUsers = debounce(async (keyword) => {
 		let res = await RocketChat.search({ text: keyword, filterRooms: false, filterUsers: true });
 		res = [...this.getFixedMentions(keyword), ...res];
 		this.setState({ mentions: res });
 	}, 300)
 
-	getRooms = debounce(async(keyword = '') => {
+	getRooms = debounce(async (keyword = '') => {
 		const res = await RocketChat.search({ text: keyword, filterRooms: true, filterUsers: false });
 		this.setState({ mentions: res });
 	}, 300)
 
-	getEmojis = debounce(async(keyword) => {
+	getEmojis = debounce(async (keyword) => {
 		const db = database.active;
 		if (keyword) {
 			const customEmojisCollection = db.collections.get('custom_emojis');
 			let customEmojis = await customEmojisCollection.query(
-				Q.where('name', Q.like(`${ Q.sanitizeLikeString(keyword) }%`))
+				Q.where('name', Q.like(`${Q.sanitizeLikeString(keyword)}%`))
 			).fetch();
 			customEmojis = customEmojis.slice(0, MENTIONS_COUNT_TO_DISPLAY);
 			const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
@@ -512,11 +512,11 @@ class MessageBox extends Component {
 		}
 	}, 300)
 
-	getSlashCommands = debounce(async(keyword) => {
+	getSlashCommands = debounce(async (keyword) => {
 		const db = database.active;
 		const commandsCollection = db.collections.get('slash_commands');
 		const commands = await commandsCollection.query(
-			Q.where('id', Q.like(`${ Q.sanitizeLikeString(keyword) }%`))
+			Q.where('id', Q.like(`${Q.sanitizeLikeString(keyword)}%`))
 		).fetch();
 		this.setState({ mentions: commands || [] });
 	}, 300)
@@ -548,7 +548,7 @@ class MessageBox extends Component {
 		}, 1000);
 	}
 
-	setCommandPreview = async(command, name, params) => {
+	setCommandPreview = async (command, name, params) => {
 		const { rid } = this.props;
 		try {
 			const { preview } = await RocketChat.getCommandPreview(name, rid, params);
@@ -588,7 +588,7 @@ class MessageBox extends Component {
 		return false;
 	}
 
-	sendMediaMessage = async(file) => {
+	sendMediaMessage = async (file) => {
 		const {
 			rid, tmid, baseUrl: server, user, message: { id: messageTmid }, replyCancel
 		} = this.props;
@@ -610,7 +610,7 @@ class MessageBox extends Component {
 		}
 	}
 
-	takePhoto = async() => {
+	takePhoto = async () => {
 		try {
 			const image = await ImagePicker.openCamera(this.imagePickerConfig);
 			if (this.canUploadFile(image)) {
@@ -621,7 +621,7 @@ class MessageBox extends Component {
 		}
 	}
 
-	takeVideo = async() => {
+	takeVideo = async () => {
 		try {
 			const video = await ImagePicker.openCamera(this.videoPickerConfig);
 			if (this.canUploadFile(video)) {
@@ -632,7 +632,7 @@ class MessageBox extends Component {
 		}
 	}
 
-	chooseFromLibrary = async() => {
+	chooseFromLibrary = async () => {
 		try {
 			const image = await ImagePicker.openPicker(this.libraryPickerConfig);
 			if (this.canUploadFile(image)) {
@@ -643,7 +643,7 @@ class MessageBox extends Component {
 		}
 	}
 
-	chooseFile = async() => {
+	chooseFile = async () => {
 		try {
 			const res = await DocumentPicker.pick({
 				type: [DocumentPicker.types.allFiles]
@@ -675,9 +675,9 @@ class MessageBox extends Component {
 	}
 
 	showUploadModal = (file) => {
-		const { fullScreenUp } = this.state;
+		const { isFullscreen } = this.state;
 
-		if (fullScreenUp) {
+		if (isFullscreen) {
 			this.changeComposerState();
 		}
 		this.setState({ file: { ...file, isVisible: true } });
@@ -694,24 +694,24 @@ class MessageBox extends Component {
 		this.clearInput();
 	}
 
-	openEmoji = async() => {
+	openEmoji = async () => {
 		await this.setState({
 			showEmojiKeyboard: true
 		});
 	}
 
-	recordAudioMessage = async() => {
+	recordAudioMessage = async () => {
 		const recording = await Recording.permission();
 		this.setState({ recording });
 	}
 
-	finishAudioMessage = async(fileInfo) => {
+	finishAudioMessage = async (fileInfo) => {
 		const {
 			rid, tmid, baseUrl: server, user
 		} = this.props;
-		const { fullScreenUp } = this.state;
+		const { isFullscreen } = this.state;
 
-		if (fullScreenUp) {
+		if (isFullscreen) {
 			this.changeComposerState();
 		}
 		this.setState({
@@ -732,11 +732,11 @@ class MessageBox extends Component {
 		this.setState({ showEmojiKeyboard: false });
 	}
 
-	submit = async() => {
+	submit = async () => {
 		const {
 			onSubmit, rid: roomId, tmid
 		} = this.props;
-		const { fullScreenUp } = this.state;
+		const { isFullscreen } = this.state;
 		const message = this.text;
 
 		this.clearInput();
@@ -758,7 +758,7 @@ class MessageBox extends Component {
 			const commandsCollection = db.collections.get('slash_commands');
 			const command = message.replace(/ .*/, '').slice(1);
 			const slashCommand = await commandsCollection.query(
-				Q.where('id', Q.like(`${ Q.sanitizeLikeString(command) }%`))
+				Q.where('id', Q.like(`${Q.sanitizeLikeString(command)}%`))
 			).fetch();
 			if (slashCommand.length > 0) {
 				try {
@@ -794,14 +794,14 @@ class MessageBox extends Component {
 			} else {
 				const { user, roomType } = this.props;
 				const permalink = await this.getPermalink(replyingMessage);
-				let msg = `[ ](${ permalink }) `;
+				let msg = `[ ](${permalink}) `;
 
 				// if original message wasn't sent by current user and neither from a direct room
 				if (user.username !== replyingMessage.u.username && roomType !== 'd' && replyWithMention) {
-					msg += `@${ replyingMessage.u.username } `;
+					msg += `@${replyingMessage.u.username} `;
 				}
 
-				msg = `${ msg } ${ message }`;
+				msg = `${msg} ${message}`;
 				onSubmit(msg);
 			}
 			replyCancel();
@@ -811,7 +811,7 @@ class MessageBox extends Component {
 			onSubmit(message);
 		}
 
-		if (fullScreenUp) {
+		if (isFullscreen) {
 			this.changeComposerState();
 		}
 	}
@@ -865,30 +865,65 @@ class MessageBox extends Component {
 	}
 
 	changeComposerState = () => {
-		const { fullScreenUp } = this.state;
+		const { isFullscreen } = this.state;
 
-		if (fullScreenUp) {
-			this.setState({ translateY: BOTTOM });
-		} else {
-			this.setState({ translateY: TOP });
-		}
-
-		this.setState({ fullScreenUp: !fullScreenUp });
+		this.setState({
+			translateY: isFullscreen ? BOTTOM : TOP,
+			isFullscreen: !isFullscreen
+		});
 	}
 
 	renderTopButton = () => {
-		const { fullScreenUp } = this.state;
+		const { isFullscreen } = this.state;
 		const { theme, editing } = this.props;
+		const buttonStyle = {
+			...stylez.topButton,
+			backgroundColor: editing ? themes[theme].chatComponentBackground :
+				themes[theme].messageboxBackground
+		}
 		return (
-			<TouchableOpacity onPress={() => this.changeComposerState()} style={[stylez.topButton, { backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }]}>
-				<CustomIcon name={fullScreenUp ? 'chevron-down' : 'chevron-up'} size={14} color={themes[theme].tintColor} />
+			<TouchableOpacity onPress={() => this.changeComposerState()} style={buttonStyle}>
+				<CustomIcon name={isFullscreen ? 'chevron-down' : 'chevron-up'} size={14} color={themes[theme].tintColor} />
 			</TouchableOpacity>
+		);
+	}
+
+	renderFullScreenButtons = () => {
+		const {
+			showEmojiKeyboard, showSend
+		} = this.state;
+		const {
+			editing, theme, Message_AudioRecorderEnabled
+		} = this.props;
+
+		return (
+			<View style={[stylez.buttons, { backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }]}>
+				<LeftButtons
+					theme={theme}
+					showEmojiKeyboard={showEmojiKeyboard}
+					editing={editing}
+					showMessageBoxActions={this.showMessageBoxActions}
+					editCancel={this.editCancel}
+					openEmoji={this.openEmoji}
+					closeEmoji={this.closeEmoji}
+				/>
+				<View style={stylez.rightButtons}>
+					<RightButtons
+						theme={theme}
+						showSend={showSend}
+						submit={this.submit}
+						recordAudioMessage={this.recordAudioMessage}
+						recordAudioMessageEnabled={Message_AudioRecorderEnabled}
+						showMessageBoxActions={this.showMessageBoxActions}
+					/>
+				</View>
+			</View>
 		);
 	}
 
 	renderContent = () => {
 		const {
-			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview, fullScreenUp
+			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview, isFullscreen
 		} = this.state;
 		const {
 			editing, message, replying, replyCancel, user, getCustomEmoji, theme, Message_AudioRecorderEnabled
@@ -910,29 +945,9 @@ class MessageBox extends Component {
 			<>
 				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
 				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
-				{fullScreenUp ? (
+				{isFullscreen ? (
 					<>
-						<View style={[stylez.buttons, { backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }]}>
-							<LeftButtons
-								theme={theme}
-								showEmojiKeyboard={showEmojiKeyboard}
-								editing={editing}
-								showMessageBoxActions={this.showMessageBoxActions}
-								editCancel={this.editCancel}
-								openEmoji={this.openEmoji}
-								closeEmoji={this.closeEmoji}
-							/>
-							<View style={stylez.rightButtons}>
-								<RightButtons
-									theme={theme}
-									showSend={showSend}
-									submit={this.submit}
-									recordAudioMessage={this.recordAudioMessage}
-									recordAudioMessageEnabled={Message_AudioRecorderEnabled}
-									showMessageBoxActions={this.showMessageBoxActions}
-								/>
-							</View>
-						</View>
+						{this.renderFullScreenButtons()}
 					</>
 				)
 					: (
@@ -1029,7 +1044,7 @@ class MessageBox extends Component {
 	}
 
 	render() {
-		console.count(`${ this.constructor.name }.render calls`);
+		console.count(`${this.constructor.name}.render calls`);
 		const { showEmojiKeyboard, file } = this.state;
 		const {
 			user, baseUrl, theme, isMasterDetail

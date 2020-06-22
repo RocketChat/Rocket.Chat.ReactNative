@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import DocumentPicker from 'react-native-document-picker';
-import ActionSheet from 'react-native-action-sheet';
 import { Q } from '@nozbe/watermelondb';
 import Animated from 'react-native-reanimated';
 
@@ -525,6 +524,7 @@ const MessageBox = React.memo(({
 	}
 
 	function showMessageBoxActions() {
+		const ActionSheet = {};
 		ActionSheet.showActionSheetWithOptions({
 			options: messageBoxActions,
 			cancelButtonIndex: FILE_CANCEL_INDEX
