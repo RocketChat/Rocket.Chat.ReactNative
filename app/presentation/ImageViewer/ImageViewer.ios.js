@@ -18,8 +18,10 @@ const styles = StyleSheet.create({
 export const ImageViewer = ({
 	uri, imageComponentType, theme, width, height, loading, ...props
 }) => {
+  console.log('uri', uri);
 	const backgroundColor = themes[theme].previewBackground;
 	const Component = ImageComponent(imageComponentType);
+  console.log('Component', Component);
 	return (
 		<ScrollView
 			style={{ backgroundColor }}

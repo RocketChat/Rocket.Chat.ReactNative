@@ -19,6 +19,10 @@ import RCActivityIndicator from '../containers/ActivityIndicator';
 import { SaveButton, CloseModalButton } from '../containers/HeaderButton';
 import { isAndroid } from '../utils/deviceInfo';
 import { getUserSelector } from '../selectors/login';
+import { withDimensions } from '../dimensions';
+import { getHeaderHeight } from '../containers/Header';
+import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import StatusBar from '../containers/StatusBar';
 
 const styles = StyleSheet.create({
 	container: {
@@ -61,13 +65,16 @@ class AttachmentView extends React.Component {
 	}
 
 	setHeader = () => {
-		const { route, navigation } = this.props;
+		const { route, navigation, theme } = this.props;
 		const attachment = route.params?.attachment;
 		const { title } = attachment;
 		const options = {
-			headerLeft: () => <CloseModalButton testID='close-attachment-view' navigation={navigation} />,
+			headerLeft: () => <CloseModalButton testID='close-attachment-view' navigation={navigation} buttonStyle={{ color: themes[theme].previewTintColor }} />,
 			title: decodeURI(title),
-			headerRight: () => <SaveButton testID='save-image' onPress={this.handleSave} />
+			headerRight: () => <SaveButton testID='save-image' onPress={this.handleSave} buttonStyle={{ color: themes[theme].previewTintColor }} />,
+			headerBackground: () => <View style={{ flex: 1, backgroundColor: themes[theme].previewBackground }} />,
+			headerTintColor: themes[theme].previewTintColor,
+			headerTitleStyle: { color: themes[theme].previewTintColor }
 		};
 		navigation.setOptions(options);
 	}
@@ -107,12 +114,20 @@ class AttachmentView extends React.Component {
 		this.setState({ loading: false });
 	};
 
-	renderImage = uri => (
-		<ImageViewer
-			uri={uri}
-			onLoadEnd={() => this.setState({ loading: false })}
-		/>
-	);
+	renderImage = (uri) => {
+		const { theme, width, height, insets } = this.props;
+		const headerHeight = getHeaderHeight(width > height);
+		return (
+			<ImageViewer
+				uri={uri}
+				onLoadEnd={() => this.setState({ loading: false })}
+				theme={theme}
+				width={width}
+				height={height - insets.top - insets.bottom - headerHeight}
+				loading={false}
+			/>
+		);
+	}
 
 	renderVideo = uri => (
 		<Video
@@ -133,7 +148,9 @@ class AttachmentView extends React.Component {
 
 	render() {
 		const { loading, attachment } = this.state;
-		const { theme, user, baseUrl } = this.props;
+		const {
+			theme, user, baseUrl
+		} = this.props;
 		let content = null;
 
 		if (attachment && attachment.image_url) {
@@ -146,6 +163,7 @@ class AttachmentView extends React.Component {
 
 		return (
 			<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
+				<StatusBar barStyle='light-content' backgroundColor={themes[theme].previewBackground} />
 				{content}
 				{loading ? <RCActivityIndicator absolute size='large' theme={theme} /> : null}
 			</View>
@@ -158,4 +176,4 @@ const mapStateToProps = state => ({
 	user: getUserSelector(state)
 });
 
-export default connect(mapStateToProps)(withTheme(AttachmentView));
+export default connect(mapStateToProps)(withTheme(withDimensions(withSafeAreaInsets(AttachmentView))));

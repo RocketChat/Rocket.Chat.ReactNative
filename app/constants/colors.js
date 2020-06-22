@@ -98,7 +98,7 @@ export const themes = {
 		passcodeSecondary: '#CBCED1',
 		passcodeDotEmpty: '#CBCED1',
 		passcodeDotFull: '#6C727A',
-		previewBackground: '#1F2329',
+		previewBackground: '#030b1b',
 		previewTintColor: '#ffffff'
 	},
 	black: {
@@ -142,7 +142,7 @@ export const themes = {
 		passcodeSecondary: '#CBCED1',
 		passcodeDotEmpty: '#CBCED1',
 		passcodeDotFull: '#6C727A',
-		previewBackground: '#1F2329',
+		previewBackground: '#000000',
 		previewTintColor: '#ffffff'
 	}
 };

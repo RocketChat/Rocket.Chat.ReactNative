@@ -59,9 +59,9 @@ export const MoreButton = React.memo(({ onPress, testID }) => (
 	</CustomHeaderButtons>
 ));
 
-export const SaveButton = React.memo(({ onPress, testID }) => (
+export const SaveButton = React.memo(({ onPress, testID, ...props }) => (
 	<CustomHeaderButtons>
-		<Item title='save' iconName='download' onPress={onPress} testID={testID} />
+		<Item title='save' iconName='download' onPress={onPress} testID={testID} {...props} />
 	</CustomHeaderButtons>
 ));
 
