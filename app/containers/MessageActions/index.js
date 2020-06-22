@@ -7,7 +7,7 @@ import moment from 'moment';
 import RocketChat from '../../lib/rocketchat';
 import database from '../../lib/database';
 import I18n from '../../i18n';
-import log from '../../utils/log';
+import log, { logEvent } from '../../utils/log';
 import Navigation from '../../lib/Navigation';
 import { getMessageTranslation } from '../message/utils';
 import { LISTENER } from '../Toast';
@@ -15,6 +15,7 @@ import EventEmitter from '../../utils/events';
 import { showConfirmationAlert } from '../../utils/info';
 import { useActionSheet } from '../ActionSheet';
 import Header, { HEADER_HEIGHT } from './Header';
+import events from '../../utils/log/events';
 
 const MessageActions = React.memo(forwardRef(({
 	room,
@@ -111,12 +112,19 @@ const MessageActions = React.memo(forwardRef(({
 
 	const getPermalink = message => RocketChat.getPermalinkMessage(message);
 
-	const handleReply = message => replyInit(message, true);
+	const handleReply = (message) => {
+		replyInit(message, true);
+		logEvent(events.ACTION_REPLY_IN_THREAD);
+	};
 
-	const handleEdit = message => editInit(message);
+	const handleEdit = (message) => {
+		editInit(message);
+		logEvent(events.ACTION_EDIT);
+	};
 
 	const handleCreateDiscussion = (message) => {
 		Navigation.navigate('CreateDiscussionView', { message, channel: room });
+		logEvent(events.CREATE_DISCUSSION_START);
 	};
 
 	const handleUnread = async(message) => {
@@ -136,9 +144,11 @@ const MessageActions = React.memo(forwardRef(({
 					}
 				});
 				Navigation.navigate('RoomsListView');
+				logEvent(events.ACTION_MARK_UNREAD);
 			}
 		} catch (e) {
 			log(e);
+			logEvent(events.ACTION_MARK_UNREAD_FAIL);
 		}
 	};
 
@@ -147,49 +157,61 @@ const MessageActions = React.memo(forwardRef(({
 			const permalink = await getPermalink(message);
 			Clipboard.setString(permalink);
 			EventEmitter.emit(LISTENER, { message: I18n.t('Permalink_copied_to_clipboard') });
+			logEvent(events.ACTION_PERMALINK);
 		} catch {
-			// Do nothing
+			logEvent(events.ACTION_PERMALINK_FAIL);
 		}
 	};
 
 	const handleCopy = async(message) => {
 		await Clipboard.setString(message.msg);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
+		logEvent(events.ACTION_COPY);
 	};
 
 	const handleShare = async(message) => {
 		try {
 			const permalink = await getPermalink(message);
 			Share.share({ message: permalink });
+			logEvent(events.ACTION_SHARE);
 		} catch {
-			// Do nothing
+			logEvent(events.ACTION_SHARE_FAIL);
 		}
 	};
 
-	const handleQuote = message => replyInit(message, false);
+	const handleQuote = (message) => {
+		replyInit(message, false);
+		logEvent(events.ACTION_QUOTE);
+	};
 
 	const handleStar = async(message) => {
 		try {
 			await RocketChat.toggleStarMessage(message.id, message.starred);
 			EventEmitter.emit(LISTENER, { message: message.starred ? I18n.t('Message_unstarred') : I18n.t('Message_starred') });
+			logEvent(message.starred ? events.ACTION_UNSTAR : events.ACTION_STAR);
 		} catch (e) {
 			log(e);
+			logEvent(events.ACTION_STAR_FAIL);
 		}
 	};
 
 	const handlePin = async(message) => {
 		try {
 			await RocketChat.togglePinMessage(message.id, message.pinned);
+			logEvent(events.ACTION_PIN);
 		} catch (e) {
 			log(e);
+			logEvent(events.ACTION_PIN_FAIL);
 		}
 	};
 
 	const handleReaction = (shortname, message) => {
 		if (shortname) {
 			onReactionPress(shortname, message.id);
+			logEvent(events.ACTION_ADD_RECENT_REACTION);
 		} else {
 			reactionInit(message);
+			logEvent(events.ACTION_ADD_REACTION);
 		}
 		// close actionSheet when click at header
 		hideActionSheet();
@@ -225,8 +247,10 @@ const MessageActions = React.memo(forwardRef(({
 		try {
 			await RocketChat.reportMessage(message.id);
 			Alert.alert(I18n.t('Message_Reported'));
+			logEvent(events.ACTION_REPORT);
 		} catch (e) {
 			log(e);
+			logEvent(events.ACTION_REPORT_FAIL);
 		}
 	};
 
@@ -237,8 +261,10 @@ const MessageActions = React.memo(forwardRef(({
 			onPress: async() => {
 				try {
 					await RocketChat.deleteMessage(message.id, message.subscription.id);
+					logEvent(events.ACTION_DELETE);
 				} catch (e) {
 					log(e);
+					logEvent(events.ACTION_DELETE_FAIL);
 				}
 			}
 		});
@@ -370,6 +396,7 @@ const MessageActions = React.memo(forwardRef(({
 
 	const showMessageActions = async(message) => {
 		await getPermissions();
+		logEvent(events.SHOW_MESSAGE_ACTIONS);
 		showActionSheet({
 			options: getOptions(message),
 			headerHeight: HEADER_HEIGHT,
