@@ -94,6 +94,7 @@ class MessageBox extends Component {
 		navigation: PropTypes.object,
 		children: PropTypes.node,
 		isMasterDetail: PropTypes.bool,
+		bottomViewColor: PropTypes.string,
 		showActionSheet: PropTypes.func
 	}
 
@@ -899,7 +900,7 @@ class MessageBox extends Component {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { showEmojiKeyboard, file } = this.state;
 		const {
-			user, baseUrl, theme, isMasterDetail
+			user, baseUrl, theme, isMasterDetail, bottomViewColor
 		} = this.props;
 		return (
 			<MessageboxContext.Provider
@@ -921,8 +922,7 @@ class MessageBox extends Component {
 					// revealKeyboardInteractive
 					requiresSameParentToManageScrollView
 					addBottomView
-					bottomViewColor={themes[theme].messageboxBackground}
-					// absolute={false}
+					bottomViewColor={bottomViewColor ?? themes[theme].messageboxBackground}
 				/>
 				<UploadModal
 					isVisible={(file && file.isVisible)}

@@ -197,7 +197,6 @@ class ShareView extends Component {
 						shareExtension={this.shareExtension}
 						loading={loadingPreview}
 					/>
-					{/* <View style={{ height: 80, backgroundColor: 'yellow' }} /> */}
 					<MessageBox
 						showSend
 						rid={room.rid}
@@ -208,6 +207,7 @@ class ShareView extends Component {
 						onChangeText={this.onChangeText}
 						message={attachments[selected]?.description}
 						navigation={navigation}
+						bottomViewColor={attachments.length > 1 ? themes[theme].auxiliaryBackground : undefined}
 					>
 						<Thumbs
 							onPress={this.selectFile}
