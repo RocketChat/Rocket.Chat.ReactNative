@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Alert, Keyboard } from 'react-native';
+import { View, Alert, Keyboard, NativeModules } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -900,7 +900,7 @@ class MessageBox extends Component {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { showEmojiKeyboard, file } = this.state;
 		const {
-			user, baseUrl, theme, isMasterDetail, bottomViewColor
+			user, baseUrl, theme, isMasterDetail, bottomViewColor, iOSScrollBehavior
 		} = this.props;
 		return (
 			<MessageboxContext.Provider
@@ -923,6 +923,7 @@ class MessageBox extends Component {
 					requiresSameParentToManageScrollView
 					addBottomView
 					bottomViewColor={bottomViewColor ?? themes[theme].messageboxBackground}
+					iOSScrollBehavior={iOSScrollBehavior ?? NativeModules.KeyboardTrackingViewManager?.KeyboardTrackingScrollBehaviorFixedOffset}
 				/>
 				<UploadModal
 					isVisible={(file && file.isVisible)}

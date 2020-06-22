@@ -9,8 +9,11 @@ import { themes } from '../../constants/colors';
 import styles from './styles';
 import { useDimensions, useOrientation } from '../../dimensions';
 import { getHeaderHeight } from '../../containers/Header';
+import { isIOS } from '../../utils/deviceInfo';
 
-const Preview = React.memo(({ item, theme, shareExtension, loading }) => {
+const Preview = React.memo(({
+	item, theme, shareExtension, loading, length
+}) => {
 	const type = item?.mime;
 
 	if (type?.match(/video/)) {
@@ -34,12 +37,14 @@ const Preview = React.memo(({ item, theme, shareExtension, loading }) => {
 		const { isLandscape } = useOrientation();
 		const insets = useSafeAreaInsets();
 		const headerHeight = getHeaderHeight(isLandscape);
+		const messageboxHeight = isIOS ? 56 : 0;
+		const thumbsHeight = (length > 1) ? 86 : 0;
 		return (
 			<ImageViewer
 				uri={item.path}
 				imageComponentType={shareExtension ? types.REACT_NATIVE_IMAGE : types.FAST_IMAGE}
 				width={width}
-				height={height - insets.top - insets.bottom - 56 - headerHeight}
+				height={height - insets.top - insets.bottom - messageboxHeight - thumbsHeight - headerHeight}
 				loading={loading}
 				theme={theme}
 			/>

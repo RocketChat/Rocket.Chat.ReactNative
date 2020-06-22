@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 import {
 	PanGestureHandler,
@@ -7,11 +7,11 @@ import {
 	PinchGestureHandler
 } from 'react-native-gesture-handler';
 import Animated, { Easing } from 'react-native-reanimated';
-import { withDimensions } from '../../dimensions';
 import { ImageComponent } from './ImageComponent';
+import { themes } from '../../constants/colors';
 
 const styles = StyleSheet.create({
-	wrapper: {
+	flex: {
 		flex: 1
 	},
 	image: {
@@ -262,7 +262,7 @@ const HEIGHT = 300;
 
 // it was picked from https://github.com/software-mansion/react-native-reanimated/tree/master/Example/imageViewer
 // and changed to use FastImage animated component
-class _ImageViewer extends React.Component {
+export class ImageViewer extends React.Component {
 	static propTypes = {
 		uri: PropTypes.string,
 		width: PropTypes.number,
@@ -384,7 +384,7 @@ class _ImageViewer extends React.Component {
 
 	render() {
 		const {
-			uri, width, imageComponentType, ...props
+			uri, width, height, theme, loading, imageComponentType, ...props
 		} = this.props;
 
 		const Component = ImageComponent(imageComponentType);
@@ -395,52 +395,56 @@ class _ImageViewer extends React.Component {
 		// is required for the "scale focal point" math to work correctly
 		const scaleTopLeftFixX = divide(multiply(WIDTH, add(this._scale, -1)), 2);
 		const scaleTopLeftFixY = divide(multiply(HEIGHT, add(this._scale, -1)), 2);
+		const backgroundColor = themes[theme].previewBackground;
+
 		return (
-			<View style={styles.wrapper}>
-				<PinchGestureHandler
-					ref={this.pinchRef}
-					simultaneousHandlers={this.panRef}
-					onGestureEvent={this._onPinchEvent}
-					onHandlerStateChange={this._onPinchEvent}
-				>
-					<Animated.View>
-						<PanGestureHandler
-							ref={this.panRef}
-							minDist={10}
-							avgTouches
-							simultaneousHandlers={this.pinchRef}
-							onGestureEvent={this._onPanEvent}
-							onHandlerStateChange={this._onPanEvent}
+			<View style={[styles.flex, { width, height, backgroundColor }]}>
+				{loading
+					? <ActivityIndicator style={styles.flex} />
+					: (
+						<PinchGestureHandler
+							ref={this.pinchRef}
+							simultaneousHandlers={this.panRef}
+							onGestureEvent={this._onPinchEvent}
+							onHandlerStateChange={this._onPinchEvent}
 						>
-							<AnimatedFastImage
-								style={[
-									styles.image,
-									{
-										width,
-										height: '100%'
-									},
-									{
-										transform: [
-											{ translateX: this._panTransX },
-											{ translateY: this._panTransY },
-											{ translateX: this._focalDisplacementX },
-											{ translateY: this._focalDisplacementY },
-											{ translateX: scaleTopLeftFixX },
-											{ translateY: scaleTopLeftFixY },
-											{ scale: this._scale }
-										]
-									}
-								]}
-								resizeMode='contain'
-								source={{ uri }}
-								{...props}
-							/>
-						</PanGestureHandler>
-					</Animated.View>
-				</PinchGestureHandler>
+							<Animated.View>
+								<PanGestureHandler
+									ref={this.panRef}
+									minDist={10}
+									avgTouches
+									simultaneousHandlers={this.pinchRef}
+									onGestureEvent={this._onPanEvent}
+									onHandlerStateChange={this._onPanEvent}
+								>
+									<AnimatedFastImage
+										style={[
+											styles.image,
+											{
+												width,
+												height: '100%'
+											},
+											{
+												transform: [
+													{ translateX: this._panTransX },
+													{ translateY: this._panTransY },
+													{ translateX: this._focalDisplacementX },
+													{ translateY: this._focalDisplacementY },
+													{ translateX: scaleTopLeftFixX },
+													{ translateY: scaleTopLeftFixY },
+													{ scale: this._scale }
+												]
+											}
+										]}
+										resizeMode='contain'
+										source={{ uri }}
+										{...props}
+									/>
+								</PanGestureHandler>
+							</Animated.View>
+						</PinchGestureHandler>
+					)}
 			</View>
 		);
 	}
 }
-
-export const ImageViewer = withDimensions(_ImageViewer);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, NativeModules } from 'react-native';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
 import * as VideoThumbnails from 'expo-video-thumbnails';
@@ -183,7 +183,9 @@ class ShareView extends Component {
 	}, 100)
 
 	renderContent = () => {
-		const { attachments, selected, room, loadingPreview } = this.state;
+		const {
+			attachments, selected, room, loadingPreview
+		} = this.state;
 		const { theme, navigation } = this.props;
 
 		if (attachments.length) {
@@ -193,6 +195,7 @@ class ShareView extends Component {
 						// using key just to reset zoom/move after change selected
 						key={attachments[selected]?.path}
 						item={attachments[selected]}
+						length={attachments.length}
 						theme={theme}
 						shareExtension={this.shareExtension}
 						loading={loadingPreview}
@@ -208,6 +211,7 @@ class ShareView extends Component {
 						message={attachments[selected]?.description}
 						navigation={navigation}
 						bottomViewColor={attachments.length > 1 ? themes[theme].auxiliaryBackground : undefined}
+						iOSScrollBehavior={NativeModules.KeyboardTrackingViewManager?.KeyboardTrackingScrollBehaviorNone}
 					>
 						<Thumbs
 							onPress={this.selectFile}
