@@ -239,52 +239,52 @@ class MessageBox extends Component {
 		}
 	}
 
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	const {
-	// 		showEmojiKeyboard, showSend, recording, mentions, file, commandPreview
-	// 	} = this.state;
+	shouldComponentUpdate(nextProps, nextState) {
+		const {
+			showEmojiKeyboard, showSend, recording, mentions, file, commandPreview
+		} = this.state;
 
-	// 	const {
-	// 		roomType, replying, editing, isFocused, message, theme
-	// 	} = this.props;
-	// 	if (nextProps.theme !== theme) {
-	// 		return true;
-	// 	}
-	// 	if (!isFocused()) {
-	// 		return false;
-	// 	}
-	// 	if (nextProps.roomType !== roomType) {
-	// 		return true;
-	// 	}
-	// 	if (nextProps.replying !== replying) {
-	// 		return true;
-	// 	}
-	// 	if (nextProps.editing !== editing) {
-	// 		return true;
-	// 	}
-	// 	if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
-	// 		return true;
-	// 	}
-	// 	if (nextState.showSend !== showSend) {
-	// 		return true;
-	// 	}
-	// 	if (nextState.recording !== recording) {
-	// 		return true;
-	// 	}
-	// 	if (!equal(nextState.mentions, mentions)) {
-	// 		return true;
-	// 	}
-	// 	if (!equal(nextState.commandPreview, commandPreview)) {
-	// 		return true;
-	// 	}
-	// 	if (!equal(nextState.file, file)) {
-	// 		return true;
-	// 	}
-	// 	if (!equal(nextProps.message, message)) {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
+		const {
+			roomType, replying, editing, isFocused, message, theme
+		} = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
+		if (!isFocused()) {
+			return false;
+		}
+		if (nextProps.roomType !== roomType) {
+			return true;
+		}
+		if (nextProps.replying !== replying) {
+			return true;
+		}
+		if (nextProps.editing !== editing) {
+			return true;
+		}
+		if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
+			return true;
+		}
+		if (nextState.showSend !== showSend) {
+			return true;
+		}
+		if (nextState.recording !== recording) {
+			return true;
+		}
+		if (!equal(nextState.mentions, mentions)) {
+			return true;
+		}
+		if (!equal(nextState.commandPreview, commandPreview)) {
+			return true;
+		}
+		if (!equal(nextState.file, file)) {
+			return true;
+		}
+		if (!equal(nextProps.message, message)) {
+			return true;
+		}
+		return false;
+	}
 
 	componentWillUnmount() {
 		console.countReset(`${ this.constructor.name }.render calls`);
