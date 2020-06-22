@@ -1,20 +1,14 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import { ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { ImageComponent } from './ImageComponent';
-import { useDimensions, useOrientation } from '../../dimensions';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { getHeaderHeight } from '../../containers/Header';
+import { themes } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	scrollContent: {
 		width: '100%',
-		height: '100%',
-		// flex: 1,
-		// height: 400,
-		backgroundColor: 'red',
-		// paddingBottom: 88
+		height: '100%'
 	},
 	image: {
 		flex: 1
@@ -22,17 +16,13 @@ const styles = StyleSheet.create({
 });
 
 export const ImageViewer = ({
-	uri, imageComponentType, width, height, loading, ...props
+	uri, imageComponentType, theme, width, height, loading, ...props
 }) => {
+	const backgroundColor = themes[theme].previewBackground;
 	const Component = ImageComponent(imageComponentType);
-	const ref = useRef();
-	useEffect(() => {
-		ref.current.scrollTo({ x: 0, y: 0 });
-		console.log(width, height)
-	}, [])
 	return (
 		<ScrollView
-			ref={ref}
+			style={{ backgroundColor }}
 			contentContainerStyle={[
 				styles.scrollContent,
 				width && { width },
@@ -43,7 +33,7 @@ export const ImageViewer = ({
 			maximumZoomScale={2}
 		>
 			{loading
-				? <ActivityIndicator />
+				? <ActivityIndicator style={{ flex: 1 }} />
 				: (
 					<Component
 						style={styles.image}

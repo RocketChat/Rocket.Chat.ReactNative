@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
 import * as VideoThumbnails from 'expo-video-thumbnails';
@@ -26,6 +26,7 @@ import MessageBox from '../../containers/MessageBox';
 import SafeAreaView from '../../containers/SafeAreaView';
 import debounce from '../../utils/debounce';
 import { getUserSelector } from '../../selectors/login';
+import StatusBar from '../../containers/StatusBar';
 
 class ShareView extends Component {
 	constructor(props) {
@@ -143,7 +144,7 @@ class ShareView extends Component {
 
 	setHeader = () => {
 		const { attachments, room } = this.state;
-		const { navigation } = this.props;
+		const { navigation, theme } = this.props;
 
 		const options = {
 			headerTitle: () => <Header room={room} />,
@@ -152,7 +153,7 @@ class ShareView extends Component {
 
 		// if is share extension show default back button
 		if (!this.shareExtension) {
-			options.headerLeft = () => <CloseModalButton onPress={() => navigation.pop()} />;
+			options.headerLeft = () => <CloseModalButton navigation={navigation} buttonStyle={{ color: themes[theme].previewTintColor }} />;
 		}
 
 		if (attachments.length > 1) {
@@ -166,6 +167,8 @@ class ShareView extends Component {
 				</CustomHeaderButtons>
 			);
 		}
+
+		options.headerBackground = () => <View style={{ flex: 1, backgroundColor: themes[theme].previewBackground }} />;
 
 		// return options;
 		navigation.setOptions(options);
@@ -254,6 +257,7 @@ class ShareView extends Component {
 				style={{ backgroundColor: themes[theme].backgroundColor }}
 				theme={theme}
 			>
+				<StatusBar barStyle='light-content' backgroundColor={themes[theme].previewBackground} />
 				{this.renderContent()}
 				<Loading visible={loading} />
 			</SafeAreaView>

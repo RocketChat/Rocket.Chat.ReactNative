@@ -46,7 +46,7 @@ const Header = React.memo(({ room, theme }) => {
 		icon = 'lock';
 	}
 
-	const textColor = themes[theme].headerTitleColor;
+	const textColor = themes[theme].previewTintColor;
 
 	return (
 		<View style={styles.container}>

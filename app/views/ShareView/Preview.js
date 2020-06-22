@@ -9,7 +9,6 @@ import { themes } from '../../constants/colors';
 import styles from './styles';
 import { useDimensions, useOrientation } from '../../dimensions';
 import { getHeaderHeight } from '../../containers/Header';
-import { ActivityIndicator } from 'react-native';
 
 const Preview = React.memo(({ item, theme, shareExtension, loading }) => {
 	const type = item?.mime;
@@ -42,6 +41,7 @@ const Preview = React.memo(({ item, theme, shareExtension, loading }) => {
 				width={width}
 				height={height - insets.top - insets.bottom - 56 - headerHeight}
 				loading={loading}
+				theme={theme}
 			/>
 		);
 	}
