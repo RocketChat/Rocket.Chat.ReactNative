@@ -178,6 +178,10 @@ class ShareView extends Component {
 		this.setState({ selected: index });
 	}
 
+	removeFile = (item) => {
+		this.setState(({ attachments }) => ({ attachments: attachments.filter(att => att.path !== item.path) }));
+	}
+
 	onChangeText = debounce((text) => {
 		this.setState({ text });
 	}, 100)
@@ -214,9 +218,10 @@ class ShareView extends Component {
 						iOSScrollBehavior={NativeModules.KeyboardTrackingViewManager?.KeyboardTrackingScrollBehaviorNone}
 					>
 						<Thumbs
-							onPress={this.selectFile}
 							attachments={attachments}
 							theme={theme}
+							onPress={this.selectFile}
+							onRemove={this.removeFile}
 						/>
 					</MessageBox>
 				</View>

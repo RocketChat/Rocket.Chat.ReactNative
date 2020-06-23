@@ -85,7 +85,9 @@ Thumb.propTypes = {
 	theme: PropTypes.string
 };
 
-const Thumbs = React.memo(({ attachments, onPress, theme }) => {
+const Thumbs = React.memo(({
+	attachments, theme, onPress, onRemove
+}) => {
 	if (attachments?.length > 1) {
 		return (
 			<FlatList
@@ -103,6 +105,7 @@ const Thumbs = React.memo(({ attachments, onPress, theme }) => {
 								style={[styles.removeButton, { backgroundColor: themes[theme].bodyText, borderColor: themes[theme].auxiliaryBackground }]}
 								activeOpacity={1}
 								rippleColor={themes[theme].bannerBackground}
+								onPress={() => onRemove(item)}
 							>
 								<View style={[styles.removeView, { borderColor: themes[theme].auxiliaryBackground }]}>
 									<CustomIcon
@@ -122,8 +125,9 @@ const Thumbs = React.memo(({ attachments, onPress, theme }) => {
 });
 Thumbs.propTypes = {
 	attachments: PropTypes.array,
+	theme: PropTypes.string,
 	onPress: PropTypes.func,
-	theme: PropTypes.string
+	onRemove: PropTypes.func
 };
 
 export default Thumbs;
