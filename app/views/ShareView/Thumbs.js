@@ -14,8 +14,7 @@ const THUMB_SIZE = 64;
 
 const styles = StyleSheet.create({
 	list: {
-		height: 86,
-		paddingVertical: 8,
+		height: 74,
 		paddingHorizontal: 8
 	},
 	play: {
@@ -118,7 +117,7 @@ const Thumbs = React.memo(({
 						</>
 					</ThumbButton>
 				)}
-				style={[styles.list, { backgroundColor: themes[theme].auxiliaryBackground }]}
+				style={[styles.list, { backgroundColor: themes[theme].messageboxBackground }]}
 			/>
 		);
 	}

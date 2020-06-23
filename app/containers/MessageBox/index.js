@@ -96,7 +96,6 @@ class MessageBox extends Component {
 		navigation: PropTypes.object,
 		children: PropTypes.node,
 		isMasterDetail: PropTypes.bool,
-		bottomViewColor: PropTypes.string,
 		showActionSheet: PropTypes.func,
 		iOSScrollBehavior: PropTypes.number
 	}
@@ -903,7 +902,7 @@ class MessageBox extends Component {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { showEmojiKeyboard, file } = this.state;
 		const {
-			user, baseUrl, theme, isMasterDetail, bottomViewColor, iOSScrollBehavior
+			user, baseUrl, theme, isMasterDetail, iOSScrollBehavior
 		} = this.props;
 		return (
 			<MessageboxContext.Provider
@@ -925,7 +924,7 @@ class MessageBox extends Component {
 					// revealKeyboardInteractive
 					requiresSameParentToManageScrollView
 					addBottomView
-					bottomViewColor={bottomViewColor ?? themes[theme].messageboxBackground}
+					bottomViewColor={themes[theme].messageboxBackground}
 					iOSScrollBehavior={iOSScrollBehavior ?? NativeModules.KeyboardTrackingViewManager?.KeyboardTrackingScrollBehaviorFixedOffset}
 				/>
 				<UploadModal

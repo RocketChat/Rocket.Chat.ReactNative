@@ -214,7 +214,6 @@ class ShareView extends Component {
 						onChangeText={this.onChangeText}
 						message={attachments[selected]?.description}
 						navigation={navigation}
-						bottomViewColor={attachments.length > 1 ? themes[theme].auxiliaryBackground : undefined}
 						iOSScrollBehavior={NativeModules.KeyboardTrackingViewManager?.KeyboardTrackingScrollBehaviorNone}
 					>
 						<Thumbs
