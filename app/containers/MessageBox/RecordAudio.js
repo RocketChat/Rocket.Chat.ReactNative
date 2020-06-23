@@ -1,15 +1,15 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
-import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { Audio } from 'expo-av';
-import { getInfoAsync } from 'expo-file-system';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import { getInfoAsync } from 'expo-file-system';
+import { deactivateKeepAwake, activateKeepAwake } from 'expo-keep-awake';
 
-import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
+import { CustomIcon } from '../../lib/Icons';
 
 const RECORDING_EXTENSION = '.aac';
 const RECORDING_SETTINGS = {
@@ -40,7 +40,7 @@ const RECORDING_MODE = {
 	interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX
 };
 
-const _formatTime = function(seconds) {
+const formatTime = function(seconds) {
 	let minutes = Math.floor(seconds / 60);
 	seconds %= 60;
 	if (minutes < 10) { minutes = `0${ minutes }`; }
@@ -48,154 +48,180 @@ const _formatTime = function(seconds) {
 	return `${ minutes }:${ seconds }`;
 };
 
-const startRecordingAudio = async(instance, setRecordingStatus, setRecorderBusy) => {
-	setRecorderBusy(true);
-	try {
-		const permissions = await Audio.getPermissionsAsync();
-
-		if (permissions.status === 'granted') {
-			await Audio.setAudioModeAsync(RECORDING_MODE);
-			instance.setOnRecordingStatusUpdate((status) => {
-				setRecordingStatus(status);
-			});
-
-			await instance.prepareToRecordAsync(RECORDING_SETTINGS);
-			await instance.startAsync();
-			activateKeepAwake();
-		} else {
-			await Audio.requestPermissionsAsync();
-		}
-	} catch (error) {
-		// Do nothing
+export default class RecordAudio extends React.PureComponent {
+	static propTypes = {
+		theme: PropTypes.string,
+		recordingCallback: PropTypes.func,
+		onFinish: PropTypes.func
 	}
-	setRecorderBusy(false);
-};
 
-const finishRecordingAudio = async(instance, onFinish, setRecorderBusy) => {
-	setRecorderBusy(true);
-	try {
-		await instance.stopAndUnloadAsync();
-
-		const fileURI = instance.getURI();
-		const fileData = await getInfoAsync(fileURI);
-		const fileInfo = {
-			name: `${ Date.now() }.aac`,
-			mime: 'audio/aac',
-			type: 'audio/aac',
-			store: 'Uploads',
-			path: fileURI,
-			size: fileData.size
+	constructor(props) {
+		super(props);
+		this.recording = null;
+		this.state = {
+			isRecording: false,
+			isRecorderBusy: false,
+			recordingDurationMillis: 0
 		};
-
-		onFinish(fileInfo);
-	} catch (error) {
-		// Do nothing
 	}
-	deactivateKeepAwake();
-	setRecorderBusy(false);
-};
 
-const cancelAudioMessage = async(instance, setRecorderBusy) => {
-	setRecorderBusy(true);
-	try {
-		await instance.stopAndUnloadAsync();
-	} catch (error) {
-		// Do nothing
+	componentDidUpdate() {
+		const { recordingCallback } = this.props;
+		const { isRecording } = this.state;
+
+		recordingCallback(isRecording);
 	}
-	deactivateKeepAwake();
-	setRecorderBusy(false);
-};
 
-const RecordAudio = ({ theme, recordingCallback, onFinish }) => {
-	const recordingInstance = useRef(null);
-
-	const [recordingStatus, setRecordingStatus] = useState({
-		canRecord: false,
-		isRecording: false,
-		durationMillis: 0,
-		isDoneRecording: false
-	});
-	const [recorderBusy, setRecorderBusy] = useState(false);
-
-	useEffect(() => () => {
-		if (recordingInstance.current) {
-			cancelAudioMessage(recordingInstance.current, setRecorderBusy);
+	componentWillUnmount() {
+		if (this.recording) {
+			this.cancelRecordingAudio();
 		}
-	}, []);
+	}
 
-	useEffect(() => {
-		recordingCallback(recordingStatus.isRecording);
-	}, [recordingStatus.isRecording]);
+	get duration() {
+		const { recordingDurationMillis } = this.state;
+		return formatTime(Math.floor(recordingDurationMillis / 1000));
+	}
 
-	const recordingContent = recordingStatus.isRecording ? (
-		<View style={[styles.recordingContent]}>
-			<View style={styles.textArea}>
-				<BorderlessButton
-					onPress={() => {
-						if (!recorderBusy) {
-							cancelAudioMessage(recordingInstance.current, setRecorderBusy);
-						}
-					}}
-					accessibilityLabel={I18n.t('Cancel_recording')}
-					accessibilityTraits='button'
-					style={styles.actionButton}
-				>
-					<CustomIcon
-						size={22}
-						color={themes[theme].dangerColor}
-						name='Cross'
-					/>
-				</BorderlessButton>
-				<Text
-					key='currentTime'
-					style={[styles.recordingCancelText, { color: themes[theme].titleText }]}
-				>
-					{_formatTime(Math.floor(recordingStatus.durationMillis / 1000))}
-				</Text>
-			</View>
-			<View style={styles.recordingContentFinish}>
-				<BorderlessButton
-					onPress={() => {
-						if (!recorderBusy) {
-							finishRecordingAudio(recordingInstance.current, onFinish, setRecorderBusy);
-						}
-					}}
-					accessibilityLabel={I18n.t('Finish_recording')}
-					accessibilityTraits='button'
-					style={styles.actionButton}
-				>
-					<CustomIcon
-						size={22}
-						color={themes[theme].successColor}
-						name='check'
-					/>
-				</BorderlessButton>
-			</View>
-		</View>
-	) : (
-		<BorderlessButton
-			onPress={() => {
-				if (!recorderBusy) {
-					recordingInstance.current = new Audio.Recording();
-					startRecordingAudio(recordingInstance.current, setRecordingStatus, setRecorderBusy);
+	startRecordingAudio = async() => {
+		const { isRecorderBusy } = this.state;
+
+		if (!isRecorderBusy) {
+			this.setState({ isRecorderBusy: true });
+			try {
+				const permissions = await Audio.getPermissionsAsync();
+
+				if (permissions.status === 'granted') {
+					await Audio.setAudioModeAsync(RECORDING_MODE);
+
+					if (this.recording !== null) {
+						this.recording.setOnRecordingStatusUpdate(null);
+						this.recording = null;
+					}
+
+					const recording = new Audio.Recording();
+					await recording.prepareToRecordAsync(RECORDING_SETTINGS);
+					recording.setOnRecordingStatusUpdate((status) => {
+						this.setState({
+							isRecording: status.isRecording,
+							recordingDurationMillis: status.durationMillis
+						});
+					});
+
+					this.recording = recording;
+
+					await this.recording.startAsync();
+					activateKeepAwake();
+				} else {
+					await Audio.requestPermissionsAsync();
 				}
-			}}
-			style={styles.actionButton}
-			testID='messagebox-send-audio'
-			accessibilityLabel={I18n.t('Send_audio_message')}
-			accessibilityTraits='button'
-		>
-			<CustomIcon name='mic' size={23} color={recordingStatus.isRecording ? themes[theme].focusedBackground : themes[theme].tintColor} />
-		</BorderlessButton>
-	);
+			} catch (error) {
+			// Do nothing
+			}
+			this.setState({ isRecorderBusy: false });
+		}
+	};
 
-	return recordingContent;
-};
+	finishRecordingAudio = async() => {
+		const { isRecorderBusy } = this.state;
 
-RecordAudio.propTypes = {
-	theme: PropTypes.string,
-	recordingCallback: PropTypes.func,
-	onFinish: PropTypes.func
-};
+		if (!isRecorderBusy) {
+			const { onFinish } = this.props;
 
-export default RecordAudio;
+			this.setState({ isRecorderBusy: true });
+			try {
+				await this.recording.stopAndUnloadAsync();
+
+				const fileURI = this.recording.getURI();
+				const fileData = await getInfoAsync(fileURI);
+				const fileInfo = {
+					name: `${ Date.now() }.aac`,
+					mime: 'audio/aac',
+					type: 'audio/aac',
+					store: 'Uploads',
+					path: fileURI,
+					size: fileData.size
+				};
+
+				onFinish(fileInfo);
+			} catch (error) {
+			// Do nothing
+			}
+			deactivateKeepAwake();
+			this.setState({ isRecorderBusy: false });
+		}
+	};
+
+	cancelRecordingAudio = async() => {
+		const { isRecorderBusy } = this.state;
+
+		if (!isRecorderBusy) {
+			this.setState({ isRecorderBusy: true });
+			try {
+				await this.recording.stopAndUnloadAsync();
+			} catch (error) {
+			// Do nothing
+			}
+			deactivateKeepAwake();
+			this.setState({ isRecorderBusy: false });
+		}
+	};
+
+	render() {
+		const { theme } = this.props;
+		const { isRecording } = this.state;
+
+		if (!isRecording) {
+			return (
+				<BorderlessButton
+					onPress={this.startRecordingAudio}
+					style={styles.actionButton}
+					testID='messagebox-send-audio'
+					accessibilityLabel={I18n.t('Send_audio_message')}
+					accessibilityTraits='button'
+				>
+					<CustomIcon name='mic' size={23} color={themes[theme].tintColor} />
+				</BorderlessButton>
+			);
+		}
+
+		return (
+			<View style={styles.recordingContent}>
+				<View style={styles.textArea}>
+					<BorderlessButton
+						onPress={this.cancelRecordingAudio}
+						accessibilityLabel={I18n.t('Cancel_recording')}
+						accessibilityTraits='button'
+						style={styles.actionButton}
+					>
+						<CustomIcon
+							size={22}
+							color={themes[theme].dangerColor}
+							name='Cross'
+						/>
+					</BorderlessButton>
+					<Text
+						key='currentTime'
+						style={[styles.recordingCancelText, { color: themes[theme].titleText }]}
+					>
+						{this.duration}
+					</Text>
+				</View>
+				<View style={styles.recordingContentFinish}>
+					<BorderlessButton
+						onPress={this.finishRecordingAudio}
+						accessibilityLabel={I18n.t('Finish_recording')}
+						accessibilityTraits='button'
+						style={styles.actionButton}
+					>
+						<CustomIcon
+							size={22}
+							color={themes[theme].successColor}
+							name='check'
+						/>
+					</BorderlessButton>
+				</View>
+			</View>
+		);
+	}
+}
