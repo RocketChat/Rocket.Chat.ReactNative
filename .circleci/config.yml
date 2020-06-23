@@ -535,7 +535,7 @@ workflows:
       - android-play-build:
           requires:
             - lint-testunit
-      -android-foss-build:
+      - android-foss-build:
           requires:
             - lint-testunit
       - android-hold-google-play-alpha:
