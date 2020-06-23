@@ -18,7 +18,6 @@ import styles from './styles';
 import database from '../../lib/database';
 import { emojis } from '../../emojis';
 import Recording from './Recording';
-import UploadModal from './UploadModal';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
@@ -44,7 +43,6 @@ import {
 	MENTIONS_TRACKING_TYPE_USERS
 } from './constants';
 import CommandsPreview from './CommandsPreview';
-import { Review } from '../../utils/review';
 import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/Navigation';
 import { withActionSheet } from '../ActionSheet';
@@ -117,9 +115,6 @@ class MessageBox extends Component {
 			showSend: props.showSend,
 			recording: false,
 			trackingType: '',
-			file: {
-				isVisible: false
-			},
 			commandPreview: [],
 			showCommandPreview: false,
 			command: {}
@@ -252,7 +247,7 @@ class MessageBox extends Component {
 
 	// shouldComponentUpdate(nextProps, nextState) {
 	// 	const {
-	// 		showEmojiKeyboard, showSend, recording, mentions, file, commandPreview
+	// 		showEmojiKeyboard, showSend, recording, mentions, commandPreview
 	// 	} = this.state;
 
 	// 	const {
@@ -286,9 +281,6 @@ class MessageBox extends Component {
 	// 		return true;
 	// 	}
 	// 	if (!equal(nextState.commandPreview, commandPreview)) {
-	// 		return true;
-	// 	}
-	// 	if (!equal(nextState.file, file)) {
 	// 		return true;
 	// 	}
 	// 	if (!equal(nextProps.message, message)) {
@@ -567,28 +559,6 @@ class MessageBox extends Component {
 		return false;
 	}
 
-	sendMediaMessage = async(file) => {
-		const {
-			rid, tmid, baseUrl: server, user, message: { id: messageTmid }, replyCancel
-		} = this.props;
-		this.setState({ file: { isVisible: false } });
-		const fileInfo = {
-			name: file.name,
-			description: file.description,
-			size: file.size,
-			type: file.mime,
-			store: 'Uploads',
-			path: file.path
-		};
-		try {
-			replyCancel();
-			await RocketChat.sendFileMessage(rid, fileInfo, tmid || messageTmid, server, user);
-			Review.pushPositiveEvent();
-		} catch (e) {
-			log(e);
-		}
-	}
-
 	takePhoto = async() => {
 		try {
 			const image = await ImagePicker.openCamera(this.imagePickerConfig);
@@ -649,10 +619,6 @@ class MessageBox extends Component {
 		} else {
 			Navigation.navigate('NewMessageStackNavigator', { screen: 'CreateDiscussionView', params });
 		}
-	}
-
-	showUploadModal = (file) => {
-		this.setState({ file: { ...file, isVisible: true } });
 	}
 
 	showMessageBoxActions = () => {
@@ -905,7 +871,7 @@ class MessageBox extends Component {
 
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
-		const { showEmojiKeyboard, file } = this.state;
+		const { showEmojiKeyboard } = this.state;
 		const {
 			user, baseUrl, theme, isMasterDetail, iOSScrollBehavior
 		} = this.props;
@@ -932,13 +898,6 @@ class MessageBox extends Component {
 					bottomViewColor={themes[theme].messageboxBackground}
 					iOSScrollBehavior={iOSScrollBehavior}
 				/>
-				{/* <UploadModal
-					isVisible={(file && file.isVisible)}
-					file={file}
-					close={() => this.setState({ file: {} })}
-					submit={this.sendMediaMessage}
-					isMasterDetail={isMasterDetail}
-				/> */}
 			</MessageboxContext.Provider>
 		);
 	}
