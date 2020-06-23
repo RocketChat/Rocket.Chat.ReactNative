@@ -229,6 +229,7 @@ class ShareView extends Component {
 						navigation={navigation}
 						isFocused={navigation.isFocused}
 						iOSScrollBehavior={NativeModules.KeyboardTrackingViewManager?.KeyboardTrackingScrollBehaviorNone}
+						isActionsEnabled={false}
 					>
 						<Thumbs
 							attachments={attachments}

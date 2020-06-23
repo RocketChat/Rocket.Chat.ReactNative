@@ -96,7 +96,8 @@ class MessageBox extends Component {
 		isMasterDetail: PropTypes.bool,
 		showActionSheet: PropTypes.func,
 		iOSScrollBehavior: PropTypes.number,
-		sharing: PropTypes.bool
+		sharing: PropTypes.bool,
+		isActionsEnabled: PropTypes.bool
 	}
 
 	static defaultProps = {
@@ -104,7 +105,8 @@ class MessageBox extends Component {
 			id: ''
 		},
 		sharing: false,
-		iOSScrollBehavior: NativeModules.KeyboardTrackingViewManager?.KeyboardTrackingScrollBehaviorFixedOffset
+		iOSScrollBehavior: NativeModules.KeyboardTrackingViewManager?.KeyboardTrackingScrollBehaviorFixedOffset,
+		isActionsEnabled: true
 	}
 
 	constructor(props) {
@@ -801,7 +803,7 @@ class MessageBox extends Component {
 			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview
 		} = this.state;
 		const {
-			editing, message, replying, replyCancel, user, getCustomEmoji, theme, Message_AudioRecorderEnabled, children
+			editing, message, replying, replyCancel, user, getCustomEmoji, theme, Message_AudioRecorderEnabled, children, isActionsEnabled
 		} = this.props;
 
 		const isAndroidTablet = isTablet && isAndroid ? {
@@ -838,6 +840,7 @@ class MessageBox extends Component {
 							showEmojiKeyboard={showEmojiKeyboard}
 							editing={editing}
 							showMessageBoxActions={this.showMessageBoxActions}
+							isActionsEnabled={isActionsEnabled}
 							editCancel={this.editCancel}
 							openEmoji={this.openEmoji}
 							closeEmoji={this.closeEmoji}
@@ -864,6 +867,7 @@ class MessageBox extends Component {
 							recordAudioMessage={this.recordAudioMessage}
 							recordAudioMessageEnabled={Message_AudioRecorderEnabled}
 							showMessageBoxActions={this.showMessageBoxActions}
+							isActionsEnabled={isActionsEnabled}
 						/>
 					</View>
 				</View>
