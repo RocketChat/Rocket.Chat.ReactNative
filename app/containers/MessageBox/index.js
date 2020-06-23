@@ -824,22 +824,25 @@ class MessageBox extends Component {
 			/>
 		);
 
-		const commandsReplyMentions = !recording ? (
+		const commandsPreviewAndMentions = !recording ? (
 			<>
 				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
 				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
-				<ReplyPreview
-					message={message}
-					close={replyCancel}
-					username={user.username}
-					replying={replying}
-					getCustomEmoji={getCustomEmoji}
-					theme={theme}
-				/>
 			</>
 		) : null;
 
-		const content = !recording ? (
+		const replyPreview = !recording ? (
+			<ReplyPreview
+				message={message}
+				close={replyCancel}
+				username={user.username}
+				replying={replying}
+				getCustomEmoji={getCustomEmoji}
+				theme={theme}
+			/>
+		) : null;
+
+		const textInputAndButtons = !recording ? (
 			<>
 				<LeftButtons
 					theme={theme}
@@ -877,17 +880,20 @@ class MessageBox extends Component {
 
 		return (
 			<>
-				{commandsReplyMentions}
-				<View
-					style={[
-						styles.textArea,
-						{ backgroundColor: themes[theme].messageboxBackground },
-						!recording && editing && { backgroundColor: themes[theme].chatComponentBackground }
-					]}
-					testID='messagebox'
-				>
-					{content}
-					{recordAudio}
+				{commandsPreviewAndMentions}
+				<View style={[styles.composer, { borderTopColor: themes[theme].separatorColor }]}>
+					{replyPreview}
+					<View
+						style={[
+							styles.textArea,
+							{ backgroundColor: themes[theme].messageboxBackground },
+							!recording && editing && { backgroundColor: themes[theme].chatComponentBackground }
+						]}
+						testID='messagebox'
+					>
+						{textInputAndButtons}
+						{recordAudio}
+					</View>
 				</View>
 			</>
 		);
