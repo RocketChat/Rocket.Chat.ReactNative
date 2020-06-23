@@ -6,15 +6,6 @@ export default StyleSheet.create({
 	container: {
 		flex: 1
 	},
-	// Preview
-	video: {
-		width: '100%',
-		height: '100%'
-	},
-	// Thumbs
-	thumbs: {
-		height: 86
-	},
 	// Text
 	input: {
 		fontSize: 16,

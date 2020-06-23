@@ -9,18 +9,19 @@ import { BUTTON_HIT_SLOP } from '../../containers/message/utils';
 import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
 import { isIOS } from '../../utils/deviceInfo';
+import { THUMBS_HEIGHT } from './constants';
 
 const THUMB_SIZE = 64;
 
 const styles = StyleSheet.create({
 	list: {
-		height: 74,
+		height: THUMBS_HEIGHT,
 		paddingHorizontal: 8
 	},
-	play: {
+	videoThumbIcon: {
 		position: 'absolute',
-		left: 8,
-		top: 16
+		left: 0,
+		bottom: 0
 	},
 	removeButton: {
 		position: 'absolute',
@@ -63,10 +64,10 @@ const Thumb = React.memo(({ item, theme }) => {
 			<>
 				<Image source={{ uri }} style={styles.thumb} />
 				<CustomIcon
-					name='play'
-					size={48}
-					color={themes[theme].separatorColor}
-					style={styles.play}
+					name='video-1'
+					size={20}
+					color={themes[theme].buttonText}
+					style={styles.videoThumbIcon}
 				/>
 			</>
 		);
