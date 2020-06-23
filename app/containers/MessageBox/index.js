@@ -6,7 +6,7 @@ import {
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
-// import equal from 'deep-equal';
+import equal from 'deep-equal';
 import DocumentPicker from 'react-native-document-picker';
 import { Q } from '@nozbe/watermelondb';
 
@@ -97,13 +97,16 @@ class MessageBox extends Component {
 		children: PropTypes.node,
 		isMasterDetail: PropTypes.bool,
 		showActionSheet: PropTypes.func,
-		iOSScrollBehavior: PropTypes.number
+		iOSScrollBehavior: PropTypes.number,
+		sharing: PropTypes.bool
 	}
 
 	static defaultProps = {
 		message: {
 			id: ''
-		}
+		},
+		sharing: false,
+		iOSScrollBehavior: NativeModules.KeyboardTrackingViewManager?.KeyboardTrackingScrollBehaviorFixedOffset
 	}
 
 	constructor(props) {
@@ -224,8 +227,14 @@ class MessageBox extends Component {
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
-		const { isFocused, editing, replying } = this.props;
+		const {
+			isFocused, editing, replying, sharing
+		} = this.props;
 		if (!isFocused?.()) {
+			return;
+		}
+		if (sharing) {
+			this.setInput(nextProps.message.msg ?? '');
 			return;
 		}
 		if (editing !== nextProps.editing && nextProps.editing) {
@@ -929,7 +938,7 @@ class MessageBox extends Component {
 					requiresSameParentToManageScrollView
 					addBottomView
 					bottomViewColor={themes[theme].messageboxBackground}
-					iOSScrollBehavior={iOSScrollBehavior ?? NativeModules.KeyboardTrackingViewManager?.KeyboardTrackingScrollBehaviorFixedOffset}
+					iOSScrollBehavior={iOSScrollBehavior}
 				/>
 				{/* <UploadModal
 					isVisible={(file && file.isVisible)}

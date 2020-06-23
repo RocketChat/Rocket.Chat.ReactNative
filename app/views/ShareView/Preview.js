@@ -78,7 +78,7 @@ const Preview = React.memo(({
 				color={themes[theme].tintColor}
 			/>
 			<Text style={[styles.fileName, { color: themes[theme].titleText }]}>{item?.filename}</Text>
-			<Text style={[styles.fileSize, { color: themes[theme].bodyText }]}>{prettyBytes(item?.size)}</Text>
+			<Text style={[styles.fileSize, { color: themes[theme].bodyText }]}>{prettyBytes(item?.size ?? 0)}</Text>
 		</ScrollView>
 	);
 });

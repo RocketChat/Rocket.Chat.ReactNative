@@ -35,7 +35,7 @@ class ShareView extends Component {
 		this.shareExtension = props.route.params?.shareExtension;
 
 		this.state = {
-			selected: 0,
+			selected: {},
 			loading: false,
 			loadingPreview: true,
 			readOnly: false,
@@ -83,17 +83,20 @@ class ShareView extends Component {
 			}
 			return item;
 		}));
-		this.setState({ attachments: items });
+		this.setState({ attachments: items, selected: items[0] });
 	}
 
 	send = async() => {
-		const {
-			loading, attachments, room, text
-		} = this.state;
-		const { navigation, server, user } = this.props;
+		const { loading, selected } = this.state;
 		if (loading) {
 			return;
 		}
+
+		// update state
+		await this.selectFile(selected);
+
+		const { attachments, room, text } = this.state;
+		const { navigation, server, user } = this.props;
 
 		// if it's share extension this should show loading
 		if (this.shareExtension) {
@@ -174,8 +177,16 @@ class ShareView extends Component {
 		navigation.setOptions(options);
 	}
 
-	selectFile = (index) => {
-		this.setState({ selected: index });
+	selectFile = (item) => {
+		const { attachments, selected } = this.state;
+		const newAttachments = attachments.map((att) => {
+			if (att.path === selected.path) {
+				att.description = this.description;
+			}
+			return att;
+		});
+		this.description = item?.description;
+		this.setState({ attachments: newAttachments, selected: item });
 	}
 
 	removeFile = (item) => {
@@ -183,7 +194,8 @@ class ShareView extends Component {
 	}
 
 	onChangeText = debounce((text) => {
-		this.setState({ text });
+		this.description = text;
+		// this.setState({ text });
 	}, 100)
 
 	renderContent = () => {
@@ -197,8 +209,8 @@ class ShareView extends Component {
 				<View style={styles.container}>
 					<Preview
 						// using key just to reset zoom/move after change selected
-						key={attachments[selected]?.path}
-						item={attachments[selected]}
+						key={selected?.path}
+						item={selected}
 						length={attachments.length}
 						theme={theme}
 						shareExtension={this.shareExtension}
@@ -206,14 +218,16 @@ class ShareView extends Component {
 					/>
 					<MessageBox
 						showSend
+						sharing
 						rid={room.rid}
 						roomType={room.t}
 						theme={theme}
 						onSubmit={this.send}
-						getCustomEmoji={() => {}}
+						getCustomEmoji={() => {}} // TODO: custom emoji
 						onChangeText={this.onChangeText}
-						message={attachments[selected]?.description}
+						message={{ msg: selected?.description ?? '' }}
 						navigation={navigation}
+						isFocused={navigation.isFocused}
 						iOSScrollBehavior={NativeModules.KeyboardTrackingViewManager?.KeyboardTrackingScrollBehaviorNone}
 					>
 						<Thumbs

@@ -98,8 +98,8 @@ const Thumbs = React.memo(({
 			<FlatList
 				horizontal
 				data={attachments}
-				renderItem={({ item, index }) => (
-					<ThumbButton style={styles.item} onPress={() => onPress(index)} activeOpacity={0.7}>
+				renderItem={({ item }) => (
+					<ThumbButton style={styles.item} onPress={() => onPress(item)} activeOpacity={0.7}>
 						<>
 							<Thumb
 								item={item}
