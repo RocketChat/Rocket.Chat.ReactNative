@@ -583,9 +583,9 @@ class MessageBox extends Component {
 	takePhoto = async() => {
 		try {
 			const image = await ImagePicker.openCamera(this.imagePickerConfig);
-			if (this.canUploadFile(image)) {
-				this.showUploadModal(image);
-			}
+			// if (this.canUploadFile(image)) {
+			// 	this.showUploadModal(image);
+			// }
 		} catch (e) {
 			// Do nothing
 		}
@@ -594,9 +594,9 @@ class MessageBox extends Component {
 	takeVideo = async() => {
 		try {
 			const video = await ImagePicker.openCamera(this.videoPickerConfig);
-			if (this.canUploadFile(video)) {
-				this.showUploadModal(video);
-			}
+			// if (this.canUploadFile(video)) {
+			// 	this.showUploadModal(video);
+			// }
 		} catch (e) {
 			// Do nothing
 		}
@@ -627,8 +627,12 @@ class MessageBox extends Component {
 				path: res.uri
 			};
 			if (this.canUploadFile(file)) {
-				this.showUploadModal(file);
+				const { room } = this;
+				Navigation.navigate('ShareView', { room, attachments: [file] });
 			}
+			// if (this.canUploadFile(file)) {
+			// 	this.showUploadModal(file);
+			// }
 		} catch (e) {
 			if (!DocumentPicker.isCancel(e)) {
 				log(e);
@@ -927,13 +931,13 @@ class MessageBox extends Component {
 					bottomViewColor={themes[theme].messageboxBackground}
 					iOSScrollBehavior={iOSScrollBehavior ?? NativeModules.KeyboardTrackingViewManager?.KeyboardTrackingScrollBehaviorFixedOffset}
 				/>
-				<UploadModal
+				{/* <UploadModal
 					isVisible={(file && file.isVisible)}
 					file={file}
 					close={() => this.setState({ file: {} })}
 					submit={this.sendMediaMessage}
 					isMasterDetail={isMasterDetail}
-				/>
+				/> */}
 			</MessageboxContext.Provider>
 		);
 	}

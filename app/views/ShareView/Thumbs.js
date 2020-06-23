@@ -58,6 +58,15 @@ const ThumbButton = isIOS ? TouchableOpacity : TouchableNativeFeedback;
 const Thumb = React.memo(({ item, theme }) => {
 	const type = item?.mime;
 
+	if (type?.match(/image/)) {
+		return (
+			<Image
+				source={{ uri: item.path }}
+				style={styles.thumb}
+			/>
+		);
+	}
+
 	if (type?.match(/video/)) {
 		const { uri } = item;
 		return (
@@ -73,12 +82,8 @@ const Thumb = React.memo(({ item, theme }) => {
 		);
 	}
 
-	return (
-		<Image
-			source={{ uri: item.path }}
-			style={styles.thumb}
-		/>
-	);
+	// Multiple files selection (not audio or video) is not implemented, so there's no thumb
+	return null;
 });
 Thumb.propTypes = {
 	item: PropTypes.object,

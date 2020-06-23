@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Video } from 'expo-av';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ScrollView, Text, StyleSheet } from 'react-native';
+import prettyBytes from 'pretty-bytes';
 
 import { CustomIcon } from '../../lib/Icons';
 import { ImageViewer, types } from '../../presentation/ImageViewer';
@@ -10,6 +12,24 @@ import { useDimensions, useOrientation } from '../../dimensions';
 import { getHeaderHeight } from '../../containers/Header';
 import { isIOS } from '../../utils/deviceInfo';
 import { THUMBS_HEIGHT } from './constants';
+import sharedStyles from '../Styles';
+
+const styles = StyleSheet.create({
+	fileContainer: {
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	fileName: {
+		fontSize: 16,
+		textAlign: 'center',
+		marginHorizontal: 10,
+		...sharedStyles.textMedium
+	},
+	fileSize: {
+		fontSize: 14,
+		...sharedStyles.textRegular
+	}
+});
 
 const Preview = React.memo(({
 	item, theme, shareExtension, length
@@ -51,11 +71,15 @@ const Preview = React.memo(({
 	}
 
 	return (
-		<CustomIcon
-			name='clip'
-			size={56}
-			color={themes[theme].auxiliaryBackground}
-		/>
+		<ScrollView style={{ backgroundColor: themes[theme].auxiliaryBackground }} contentContainerStyle={[styles.fileContainer, { width, height: calculatedHeight }]}>
+			<CustomIcon
+				name='clip'
+				size={56}
+				color={themes[theme].tintColor}
+			/>
+			<Text style={[styles.fileName, { color: themes[theme].titleText }]}>{item?.filename}</Text>
+			<Text style={[styles.fileSize, { color: themes[theme].bodyText }]}>{prettyBytes(item?.size)}</Text>
+		</ScrollView>
 	);
 });
 Preview.propTypes = {
