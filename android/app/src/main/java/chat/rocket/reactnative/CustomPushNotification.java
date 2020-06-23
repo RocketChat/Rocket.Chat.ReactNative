@@ -54,35 +54,43 @@ public class CustomPushNotification extends PushNotification {
 
     @Override
     public void onReceived() throws InvalidNotificationException {
-        Bundle bundle = mNotificationProps.asBundle();
+        Bundle received = mNotificationProps.asBundle();
 
-        String notId = bundle.getString("notId", "1");
+        String notId = received.getString("notId", "1");
 
         if (notificationMessages.get(notId) == null) {
             notificationMessages.put(notId, new ArrayList<Bundle>());
         }
 
+        String server = received.getString("server", "");
+        String msgId = received.getString("msgId", "");
+        String type = received.getString("type", "");
+
+        if (type.equals("message-hidden")) {
+            notificationLoad(server, msgId, new Callback() {
+                @Override
+                public void call(Bundle bundle) {
+                    mNotificationProps = createProps(bundle);
+                }
+            });
+        }
+
+        Bundle bundle = mNotificationProps.asBundle();
+
         Gson gson = new Gson();
         Ejson ejson = gson.fromJson(bundle.getString("ejson", "{}"), Ejson.class);
 
-        notificationLoad(ejson.serverURL(), ejson.messageId, new Callback() {
-            @Override
-            public void call(Bundle value) {
-                bundle.putAll(value);
+        boolean hasSender = ejson.sender != null;
+        String title = bundle.getString("title");
 
-                boolean hasSender = ejson.sender != null;
-                String title = bundle.getString("title");
-
-                bundle.putLong("time", new Date().getTime());
-                bundle.putString("username", !hasSender ? ejson.sender.username : title);
-                bundle.putString("senderId", hasSender ? ejson.sender._id : "1");
-                bundle.putString("avatarUri", ejson.getAvatarUri());
-                
-                notificationMessages.get(notId).add(bundle);
-                notifyReceivedToJS();
-                postNotification(Integer.parseInt(notId));
-            }
-        });
+        bundle.putLong("time", new Date().getTime());
+        bundle.putString("username", !hasSender ? ejson.sender.username : title);
+        bundle.putString("senderId", hasSender ? ejson.sender._id : "1");
+        bundle.putString("avatarUri", ejson.getAvatarUri());
+        
+        notificationMessages.get(notId).add(bundle);
+        postNotification(Integer.parseInt(notId));
+        notifyReceivedToJS();
     }
 
     @Override

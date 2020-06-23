@@ -25,29 +25,22 @@ class NotificationService: UNNotificationServiceExtension {
             let suiteName = Bundle.main.object(forInfoDictionaryKey: "AppGroup") as! String
             let userDefaults = UserDefaults(suiteName: suiteName)
 
-            let ejson = bestAttemptContent.userInfo["ejson"] as! String
+            let server = bestAttemptContent.userInfo["server"] as! String
+            let msgId = bestAttemptContent.userInfo["msgId"] as! String
           
-            if let data = ejson.data(using: .utf8) {
-              let json = try? (JSONSerialization.jsonObject(with: data) as! [String: Any])
-              if let json = json {
-                  let host = json["host"] as! String
-                  let msgId = json["messageId"] as! String
-                  
-                  let userId = userDefaults?.string(forKey: "reactnativemeteor_usertoken-\(host)")! ?? ""
-                  let token = userDefaults?.string(forKey: "reactnativemeteor_usertoken-\(userId)")! ?? ""
+            let userId = userDefaults?.string(forKey: "reactnativemeteor_usertoken-\(server)")! ?? ""
+            let token = userDefaults?.string(forKey: "reactnativemeteor_usertoken-\(userId)")! ?? ""
 
-                  var urlComponents = URLComponents(string: "\(host)/api/v1/chat.getMessage")!
-                  let queryItems = [URLQueryItem(name: "msgId", value: msgId)]
-                  urlComponents.queryItems = queryItems
-                  
-                  var request = URLRequest(url: urlComponents.url!)
-                  request.httpMethod = "GET"
-                  request.addValue(userId, forHTTPHeaderField: "x-user-id")
-                  request.addValue(token, forHTTPHeaderField: "x-auth-token")
+            var urlComponents = URLComponents(string: "\(server)/notification")!
+            let queryItems = [URLQueryItem(name: "msgId", value: msgId)]
+            urlComponents.queryItems = queryItems
+            
+            var request = URLRequest(url: urlComponents.url!)
+            request.httpMethod = "GET"
+            request.addValue(userId, forHTTPHeaderField: "x-user-id")
+            request.addValue(token, forHTTPHeaderField: "x-auth-token")
 
-                  runRequest(request: request, bestAttemptContent: bestAttemptContent, contentHandler: contentHandler)
-              }
-            }
+            runRequest(request: request, bestAttemptContent: bestAttemptContent, contentHandler: contentHandler)
         }
     }
   
@@ -82,15 +75,17 @@ class NotificationService: UNNotificationServiceExtension {
                     // Parse data of response
                     let json = try? (JSONSerialization.jsonObject(with: data) as! [String: Any])
                     if let json = json {
-                      // Message
-                      if let content = json["message"] as? [String: Any] {
-                          // Message -> Msg
-                          bestAttemptContent.body = content["msg"] as! String
-                        
-                          // Message -> U -> Username
-                          if let user = content["u"] as? [String: Any] {
-                              bestAttemptContent.title = user["username"] as! String
-                          }
+                      // Title
+                      if let title = json["title"] as? String {
+                        bestAttemptContent.title = title
+                      }
+                      // Body
+                      if let body = json["message"] as? String {
+                        bestAttemptContent.body = body
+                      }
+                      // Ejson
+                      if let ejson = json["ejson"] as? String {
+                        bestAttemptContent.userInfo["ejson"] = ejson;
                       }
                     }
                     // Show notification with the content modified

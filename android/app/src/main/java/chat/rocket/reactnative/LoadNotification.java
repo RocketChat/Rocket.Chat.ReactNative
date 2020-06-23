@@ -19,16 +19,9 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import chat.rocket.userdefaults.RNUserDefaultsModule;
 
 class JsonResponse {
-  Message message;
-
-  public class Message {
-    String msg;
-    U u;
-
-    public class U {
-      String username;
-    }
-  }
+  String title;
+  String message;
+  String ejson;
 }
 
 public class LoadNotification {
@@ -39,7 +32,7 @@ public class LoadNotification {
 
   public static void load(ReactApplicationContext reactApplicationContext, final String host, final String msgId, Callback callback) {
     final OkHttpClient client = new OkHttpClient();
-    HttpUrl.Builder url = HttpUrl.parse(host.concat("/api/v1/chat.getMessage")).newBuilder();
+    HttpUrl.Builder url = HttpUrl.parse(host.concat("/notification")).newBuilder();
 
     String userId = sharedPreferences.getString(TOKEN_KEY.concat(host), "");
     String token = sharedPreferences.getString(TOKEN_KEY.concat(userId), "");
@@ -81,8 +74,9 @@ public class LoadNotification {
         JsonResponse json = gson.fromJson(response.body().string(), JsonResponse.class);
 
         Bundle bundle = new Bundle();
-        bundle.putString("title", json.message.u.username);
-        bundle.putString("message", json.message.msg);
+        bundle.putString("title", json.title);
+        bundle.putString("message", json.message);
+        bundle.putString("ejson", json.ejson);
 
         callback.call(bundle);
       }
