@@ -592,9 +592,9 @@ class MessageBox extends Component {
 	takePhoto = async() => {
 		try {
 			const image = await ImagePicker.openCamera(this.imagePickerConfig);
-			// if (this.canUploadFile(image)) {
-			// 	this.showUploadModal(image);
-			// }
+			if (this.canUploadFile(image)) {
+				Navigation.navigate('ShareView', { room: this.room, attachments: [image] });
+			}
 		} catch (e) {
 			// Do nothing
 		}
@@ -603,9 +603,9 @@ class MessageBox extends Component {
 	takeVideo = async() => {
 		try {
 			const video = await ImagePicker.openCamera(this.videoPickerConfig);
-			// if (this.canUploadFile(video)) {
-			// 	this.showUploadModal(video);
-			// }
+			if (this.canUploadFile(video)) {
+				Navigation.navigate('ShareView', { room: this.room, attachments: [video] });
+			}
 		} catch (e) {
 			// Do nothing
 		}
@@ -613,12 +613,8 @@ class MessageBox extends Component {
 
 	chooseFromLibrary = async() => {
 		try {
-			const { room } = this;
 			const attachments = await ImagePicker.openPicker(this.libraryPickerConfig);
-			Navigation.navigate('ShareView', { room, attachments });
-			// if (this.canUploadFile(image)) {
-			// 	this.showUploadModal(image);
-			// }
+			Navigation.navigate('ShareView', { room: this.room, attachments });
 		} catch (e) {
 			// Do nothing
 		}
@@ -636,12 +632,8 @@ class MessageBox extends Component {
 				path: res.uri
 			};
 			if (this.canUploadFile(file)) {
-				const { room } = this;
-				Navigation.navigate('ShareView', { room, attachments: [file] });
+				Navigation.navigate('ShareView', { room: this.room, attachments: [file] });
 			}
-			// if (this.canUploadFile(file)) {
-			// 	this.showUploadModal(file);
-			// }
 		} catch (e) {
 			if (!DocumentPicker.isCancel(e)) {
 				log(e);
