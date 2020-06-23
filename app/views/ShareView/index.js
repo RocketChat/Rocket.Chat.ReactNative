@@ -24,7 +24,6 @@ import Preview from './Preview';
 import Thumbs from './Thumbs';
 import MessageBox from '../../containers/MessageBox';
 import SafeAreaView from '../../containers/SafeAreaView';
-import debounce from '../../utils/debounce';
 import { getUserSelector } from '../../selectors/login';
 import StatusBar from '../../containers/StatusBar';
 
@@ -146,12 +145,13 @@ class ShareView extends Component {
 	};
 
 	setHeader = () => {
-		const { attachments, room } = this.state;
+		const { room } = this.state;
 		const { navigation, theme } = this.props;
 
 		const options = {
 			headerTitle: () => <Header room={room} />,
-			headerTitleAlign: 'left'
+			headerTitleAlign: 'left',
+			headerTintColor: themes[theme].previewTintColor
 		};
 
 		// if is share extension show default back button
@@ -159,13 +159,14 @@ class ShareView extends Component {
 			options.headerLeft = () => <CloseModalButton navigation={navigation} buttonStyle={{ color: themes[theme].previewTintColor }} />;
 		}
 
-		if (attachments.length > 1) {
+		// At this time, this.setAttachments might not be ended, so we compare it against this.files
+		if (!this.files.length) {
 			options.headerRight = () => (
 				<CustomHeaderButtons>
 					<Item
 						title={I18n.t('Send')}
 						onPress={this.send}
-						buttonStyle={styles.send}
+						buttonStyle={[styles.send, { color: themes[theme].previewTintColor }]}
 					/>
 				</CustomHeaderButtons>
 			);
@@ -193,14 +194,19 @@ class ShareView extends Component {
 		this.setState(({ attachments }) => ({ attachments: attachments.filter(att => att.path !== item.path) }));
 	}
 
-	onChangeText = debounce((text) => {
-		this.description = text;
-		// this.setState({ text });
-	}, 100)
+	onChangeText = (text) => {
+		const { attachments } = this.state;
+		// if there're attachments, we handle the description on this.description only
+		if (attachments.length) {
+			this.description = text;
+		} else {
+			this.setState({ text });
+		}
+	}
 
 	renderContent = () => {
 		const {
-			attachments, selected, room, loadingPreview
+			attachments, selected, room, loadingPreview, text
 		} = this.state;
 		const { theme, navigation } = this.props;
 
@@ -258,6 +264,7 @@ class ShareView extends Component {
 				textAlignVertical='top'
 				autoFocus
 				theme={theme}
+				value={text}
 			/>
 		);
 	};
