@@ -14,7 +14,7 @@ class NotificationService: UNNotificationServiceExtension {
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
         if let bestAttemptContent = bestAttemptContent {
-            let type = bestAttemptContent.userInfo["type"] as! String
+            let type = bestAttemptContent.userInfo["type"] as? String ?? ""
           
             // If the notification have the content at her payload, show it
             if type != "message-hidden" {
