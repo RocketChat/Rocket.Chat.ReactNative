@@ -60,8 +60,9 @@ public class LoadNotification {
       JsonResponse json = gson.fromJson(body, JsonResponse.class);
 
       Bundle bundle = new Bundle();
-      bundle.putString("title", json.message.u.username);
-      bundle.putString("message", json.message.msg);
+      bundle.putString("title", json.title);
+      bundle.putString("message", json.message);
+      bundle.putString("ejson", json.ejson);
 
       callback.call(bundle);
 
