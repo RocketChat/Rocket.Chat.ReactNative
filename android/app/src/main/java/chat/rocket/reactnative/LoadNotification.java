@@ -49,38 +49,27 @@ public class LoadNotification {
   private static void runRequest(OkHttpClient client, Request request, Callback callback) {
     try {
       Thread.sleep(TIMEOUT[RETRY_COUNT] * 1000);
-    } catch (InterruptedException ie) {
 
+      Response response = client.newCall(request).execute();
+      String body = response.body().string();
+      if (!response.isSuccessful()) {
+        throw new Exception("Error");
+      }
+
+      Gson gson = new Gson();
+      JsonResponse json = gson.fromJson(body, JsonResponse.class);
+
+      Bundle bundle = new Bundle();
+      bundle.putString("title", json.message.u.username);
+      bundle.putString("message", json.message.msg);
+
+      callback.call(bundle);
+
+    } catch (Exception e) {
+      if (RETRY_COUNT <= TIMEOUT.length) {
+        runRequest(client, request, callback);
+      }
     }
-
-    client.newCall(request).enqueue(new okhttp3.Callback() {
-      @Override
-      public void onFailure(Call call, IOException e) {
-        if (RETRY_COUNT <= TIMEOUT.length) {
-          runRequest(client, request, callback);
-        }
-      }
-
-      @Override
-      public void onResponse(Call call, final Response response) throws IOException {
-        if (!response.isSuccessful()) {
-          if (RETRY_COUNT <= TIMEOUT.length) {
-            runRequest(client, request, callback);
-          }
-          return;
-        }
-
-        Gson gson = new Gson();
-        JsonResponse json = gson.fromJson(response.body().string(), JsonResponse.class);
-
-        Bundle bundle = new Bundle();
-        bundle.putString("title", json.title);
-        bundle.putString("message", json.message);
-        bundle.putString("ejson", json.ejson);
-
-        callback.call(bundle);
-      }
-    });
 
     RETRY_COUNT++;
   }
