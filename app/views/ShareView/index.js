@@ -15,7 +15,7 @@ import {
 	CustomHeaderButtons
 } from '../../containers/HeaderButton';
 import { isBlocked } from '../../utils/room';
-// import { isReadOnly } from '../../utils/isReadOnly';
+import { isReadOnly } from '../../utils/isReadOnly';
 import { withTheme } from '../../theme';
 import Header from './Header';
 import RocketChat from '../../lib/rocketchat';
@@ -45,16 +45,8 @@ class ShareView extends Component {
 		this.unsubscribeFocus = props.navigation.addListener('focus', this.didFocus);
 	}
 
-	componentDidMount = () => {
-		// (async() => {
-		// 	try {
-		// 		const ro = await isReadOnly(room, { username });
-		// 		setReadOnly(ro);
-		// 	} catch {
-		// 		// Do nothing
-		// 	}
-		// })();
-
+	componentDidMount = async() => {
+		await this.setReadOnly();
 		this.setAttachments();
 		this.setHeader();
 	}
@@ -65,6 +57,46 @@ class ShareView extends Component {
 
 	didFocus = () => {
 		this.setState({ loadingPreview: false });
+	}
+
+	setHeader = () => {
+		const { room, readOnly } = this.state;
+		const { navigation, theme } = this.props;
+
+		const options = {
+			headerTitle: () => <Header room={room} />,
+			headerTitleAlign: 'left',
+			headerTintColor: themes[theme].previewTintColor
+		};
+
+		// if is share extension show default back button
+		if (!this.shareExtension) {
+			options.headerLeft = () => <CloseModalButton navigation={navigation} buttonStyle={{ color: themes[theme].previewTintColor }} />;
+		}
+
+		// At this time, this.setAttachments might not be ended, so we compare it against this.files
+		if (!this.files.length && !readOnly) {
+			options.headerRight = () => (
+				<CustomHeaderButtons>
+					<Item
+						title={I18n.t('Send')}
+						onPress={this.send}
+						buttonStyle={[styles.send, { color: themes[theme].previewTintColor }]}
+					/>
+				</CustomHeaderButtons>
+			);
+		}
+
+		options.headerBackground = () => <View style={{ flex: 1, backgroundColor: themes[theme].previewBackground }} />;
+
+		navigation.setOptions(options);
+	}
+
+	setReadOnly = async() => {
+		const { room } = this.state;
+		const { user } = this.props;
+		const readOnly = await isReadOnly(room, user);
+		this.setState({ readOnly });
 	}
 
 	setAttachments = async() => {
@@ -144,40 +176,6 @@ class ShareView extends Component {
 		}
 	};
 
-	setHeader = () => {
-		const { room } = this.state;
-		const { navigation, theme } = this.props;
-
-		const options = {
-			headerTitle: () => <Header room={room} />,
-			headerTitleAlign: 'left',
-			headerTintColor: themes[theme].previewTintColor
-		};
-
-		// if is share extension show default back button
-		if (!this.shareExtension) {
-			options.headerLeft = () => <CloseModalButton navigation={navigation} buttonStyle={{ color: themes[theme].previewTintColor }} />;
-		}
-
-		// At this time, this.setAttachments might not be ended, so we compare it against this.files
-		if (!this.files.length) {
-			options.headerRight = () => (
-				<CustomHeaderButtons>
-					<Item
-						title={I18n.t('Send')}
-						onPress={this.send}
-						buttonStyle={[styles.send, { color: themes[theme].previewTintColor }]}
-					/>
-				</CustomHeaderButtons>
-			);
-		}
-
-		options.headerBackground = () => <View style={{ flex: 1, backgroundColor: themes[theme].previewBackground }} />;
-
-		// return options;
-		navigation.setOptions(options);
-	}
-
 	selectFile = (item) => {
 		const { attachments, selected } = this.state;
 		const newAttachments = attachments.map((att) => {
@@ -248,7 +246,6 @@ class ShareView extends Component {
 			);
 		}
 
-		// Reuse
 		return (
 			<TextInput
 				containerStyle={styles.inputContainer}
