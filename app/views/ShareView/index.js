@@ -114,6 +114,9 @@ class ShareView extends Component {
 				}
 				return item;
 			}
+			if (!item.filename) {
+				item.filename = new Date().toISOString();
+			}
 			return item;
 		}));
 		this.setState({ attachments: items, selected: items[0] });
