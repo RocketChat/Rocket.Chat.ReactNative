@@ -40,7 +40,8 @@ class ShareView extends Component {
 			readOnly: false,
 			attachments: [],
 			text: props.route.params?.text ?? '',
-			room: props.route.params?.room ?? {} // TODO: query room?
+			room: props.route.params?.room ?? {},
+			thread: props.route.params?.thread ?? {}
 		};
 		this.unsubscribeFocus = props.navigation.addListener('focus', this.didFocus);
 	}
@@ -60,11 +61,11 @@ class ShareView extends Component {
 	}
 
 	setHeader = () => {
-		const { room, readOnly } = this.state;
+		const { room, thread, readOnly } = this.state;
 		const { navigation, theme } = this.props;
 
 		const options = {
-			headerTitle: () => <Header room={room} />,
+			headerTitle: () => <Header room={room} thread={thread} />,
 			headerTitleAlign: 'left',
 			headerTintColor: themes[theme].previewTintColor
 		};
@@ -126,7 +127,9 @@ class ShareView extends Component {
 		// update state
 		await this.selectFile(selected);
 
-		const { attachments, room, text } = this.state;
+		const {
+			attachments, room, text, thread
+		} = this.state;
 		const { navigation, server, user } = this.props;
 
 		// if it's share extension this should show loading
@@ -157,14 +160,14 @@ class ShareView extends Component {
 						path,
 						store: 'Uploads'
 					},
-					undefined,
+					thread?.tmid,
 					server,
 					{ id: user.id, token: user.token }
 				)));
 
 			// Send text message
 			} else if (text.length) {
-				await RocketChat.sendMessage(room.rid, text, undefined, { id: user.id, token: user.token });
+				await RocketChat.sendMessage(room.rid, text, thread?.tmid, { id: user.id, token: user.token });
 			}
 		} catch {
 			// Do nothing

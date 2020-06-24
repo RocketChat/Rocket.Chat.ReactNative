@@ -34,14 +34,30 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Header = React.memo(({ room, theme }) => {
+const Header = React.memo(({ room, thread, theme }) => {
+	let type;
+	if (thread?.tmid) {
+		type = 'thread';
+	} else if (room?.prid) {
+		type = 'discussion';
+	} else {
+		type = room?.t;
+	}
 	let icon;
-	if (room.t === 'c') {
-		icon = 'hashtag';
-	} else if (room.t === 'l') {
-		icon = 'livechat';
-	} else if (room.t === 'd') {
-		icon = 'at';
+	if (type === 'discussion') {
+		icon = 'chat';
+	} else if (type === 'thread') {
+		icon = 'threads';
+	} else if (type === 'c') {
+		icon = 'hash';
+	} else if (type === 'l') {
+		icon = 'omnichannel';
+	} else if (type === 'd') {
+		if (RocketChat.isGroupChat(room)) {
+			icon = 'team';
+		} else {
+			icon = 'at';
+		}
 	} else {
 		icon = 'lock';
 	}
@@ -62,7 +78,7 @@ const Header = React.memo(({ room, theme }) => {
 						style={[styles.name, { color: textColor }]}
 						numberOfLines={1}
 					>
-						{RocketChat.getRoomTitle(room)}
+						{thread?.msg ?? RocketChat.getRoomTitle(room)}
 					</Text>
 				</Text>
 			</View>
@@ -71,6 +87,7 @@ const Header = React.memo(({ room, theme }) => {
 });
 Header.propTypes = {
 	room: PropTypes.object,
+	thread: PropTypes.object,
 	theme: PropTypes.string
 };
 

@@ -179,18 +179,18 @@ class MessageBox extends Component {
 		try {
 			const threadsCollection = db.collections.get('threads');
 			const subsCollection = db.collections.get('subscriptions');
+			this.room = await subsCollection.find(rid);
 			if (tmid) {
 				try {
-					const thread = await threadsCollection.find(tmid);
-					if (thread) {
-						msg = thread.draftMessage;
+					this.thread = await threadsCollection.find(tmid);
+					if (this.thread) {
+						msg = this.thread.draftMessage;
 					}
 				} catch (error) {
 					console.log('Messagebox.didMount: Thread not found');
 				}
 			} else {
 				try {
-					this.room = await subsCollection.find(rid);
 					msg = this.room.draftMessage;
 				} catch (error) {
 					console.log('Messagebox.didMount: Room not found');
@@ -568,7 +568,7 @@ class MessageBox extends Component {
 		try {
 			const image = await ImagePicker.openCamera(this.imagePickerConfig);
 			if (this.canUploadFile(image)) {
-				Navigation.navigate('ShareView', { room: this.room, attachments: [image] });
+				Navigation.navigate('ShareView', { room: this.room, thread: this.thread, attachments: [image] });
 			}
 		} catch (e) {
 			// Do nothing
@@ -579,7 +579,7 @@ class MessageBox extends Component {
 		try {
 			const video = await ImagePicker.openCamera(this.videoPickerConfig);
 			if (this.canUploadFile(video)) {
-				Navigation.navigate('ShareView', { room: this.room, attachments: [video] });
+				Navigation.navigate('ShareView', { room: this.room, thread: this.thread, attachments: [video] });
 			}
 		} catch (e) {
 			// Do nothing
@@ -589,7 +589,7 @@ class MessageBox extends Component {
 	chooseFromLibrary = async() => {
 		try {
 			const attachments = await ImagePicker.openPicker(this.libraryPickerConfig);
-			Navigation.navigate('ShareView', { room: this.room, attachments });
+			Navigation.navigate('ShareView', { room: this.room, thread: this.thread, attachments });
 		} catch (e) {
 			// Do nothing
 		}
@@ -607,7 +607,7 @@ class MessageBox extends Component {
 				path: res.uri
 			};
 			if (this.canUploadFile(file)) {
-				Navigation.navigate('ShareView', { room: this.room, attachments: [file] });
+				Navigation.navigate('ShareView', { room: this.room, thread: this.thread, attachments: [file] });
 			}
 		} catch (e) {
 			if (!DocumentPicker.isCancel(e)) {
