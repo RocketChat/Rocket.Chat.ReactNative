@@ -83,8 +83,16 @@ export default class RecordAudio extends React.PureComponent {
 	}
 
 	isRecordingPermissionGranted = async() => {
-		const permission = await Audio.getPermissionsAsync();
-		return permission.status === 'granted';
+		try {
+			const permission = await Audio.getPermissionsAsync();
+			if (permission.status === 'granted') {
+				return true;
+			}
+			await Audio.requestPermissionsAsync();
+		} catch {
+			// Do nothing
+		}
+		return false;
 	}
 
 	onRecordingStatusUpdate = (status) => {
@@ -98,7 +106,8 @@ export default class RecordAudio extends React.PureComponent {
 		if (!this.isRecorderBusy) {
 			this.isRecorderBusy = true;
 			try {
-				if (await this.isRecordingPermissionGranted()) {
+				const canRecord = await this.isRecordingPermissionGranted();
+				if (canRecord) {
 					await Audio.setAudioModeAsync(RECORDING_MODE);
 
 					this.recording = new Audio.Recording();
@@ -140,6 +149,7 @@ export default class RecordAudio extends React.PureComponent {
 			} catch (error) {
 				// Do nothing
 			}
+			this.setState({ isRecording: false, recordingDurationMillis: 0 });
 			deactivateKeepAwake();
 			this.isRecorderBusy = false;
 		}
@@ -153,6 +163,7 @@ export default class RecordAudio extends React.PureComponent {
 			} catch (error) {
 				// Do nothing
 			}
+			this.setState({ isRecording: false, recordingDurationMillis: 0 });
 			deactivateKeepAwake();
 			this.isRecorderBusy = false;
 		}
