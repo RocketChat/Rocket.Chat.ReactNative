@@ -37,14 +37,12 @@ class ShareView extends Component {
 		this.state = {
 			selected: {},
 			loading: false,
-			loadingPreview: true,
 			readOnly: false,
 			attachments: [],
 			text: props.route.params?.text ?? '',
 			room: props.route.params?.room ?? {},
 			thread: props.route.params?.thread ?? {}
 		};
-		// this.unsubscribeFocus = props.navigation.addListener('focus', this.didFocus);
 	}
 
 	componentDidMount = async() => {
@@ -56,10 +54,6 @@ class ShareView extends Component {
 	componentWillUnmount = () => {
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
-
-	// didFocus = () => {
-	// 	this.setState({ loadingPreview: false });
-	// }
 
 	setHeader = () => {
 		const {
@@ -90,7 +84,7 @@ class ShareView extends Component {
 			);
 		}
 
-		options.headerBackground = () => <View style={{ flex: 1, backgroundColor: themes[theme].previewBackground }} />;
+		options.headerBackground = () => <View style={[styles.container, { backgroundColor: themes[theme].previewBackground }]} />;
 
 		navigation.setOptions(options);
 	}
@@ -214,7 +208,7 @@ class ShareView extends Component {
 
 	renderContent = () => {
 		const {
-			attachments, selected, room, loadingPreview, text
+			attachments, selected, room, text
 		} = this.state;
 		const { theme, navigation } = this.props;
 
@@ -228,7 +222,6 @@ class ShareView extends Component {
 						length={attachments.length}
 						theme={theme}
 						shareExtension={this.shareExtension}
-						loading={loadingPreview}
 					/>
 					<MessageBox
 						showSend

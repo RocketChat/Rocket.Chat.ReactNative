@@ -6,7 +6,6 @@ export default StyleSheet.create({
 	container: {
 		flex: 1
 	},
-	// Text
 	input: {
 		fontSize: 16,
 		...sharedStyles.textRegular
@@ -17,7 +16,6 @@ export default StyleSheet.create({
 	textInput: {
 		height: '100%'
 	},
-	// Error
 	centered: {
 		justifyContent: 'center',
 		alignItems: 'center'

@@ -788,7 +788,6 @@ class MessageBox extends Component {
 	}
 
 	identifyMentionKeyword = (keyword, type) => {
-    console.log('MessageBox -> identifyMentionKeyword -> type', type);
 		this.setState({
 			showEmojiKeyboard: false,
 			trackingType: type
