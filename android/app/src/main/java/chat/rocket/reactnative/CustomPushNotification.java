@@ -84,7 +84,7 @@ public class CustomPushNotification extends PushNotification {
         String title = bundle.getString("title");
 
         bundle.putLong("time", new Date().getTime());
-        bundle.putString("username", !hasSender ? ejson.sender.username : title);
+        bundle.putString("username", hasSender ? ejson.sender.username : title);
         bundle.putString("senderId", hasSender ? ejson.sender._id : "1");
         bundle.putString("avatarUri", ejson.getAvatarUri());
 
