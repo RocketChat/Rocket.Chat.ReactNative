@@ -90,7 +90,6 @@ class MessageBox extends Component {
 		theme: PropTypes.string,
 		replyCancel: PropTypes.func,
 		showSend: PropTypes.bool,
-		onChangeText: PropTypes.func,
 		navigation: PropTypes.object,
 		children: PropTypes.node,
 		isMasterDetail: PropTypes.bool,
@@ -174,27 +173,29 @@ class MessageBox extends Component {
 
 	async componentDidMount() {
 		const db = database.active;
-		const { rid, tmid, navigation } = this.props;
+		const {
+			rid, tmid, navigation, sharing
+		} = this.props;
 		let msg;
 		try {
 			const threadsCollection = db.collections.get('threads');
 			const subsCollection = db.collections.get('subscriptions');
-			this.room = await subsCollection.find(rid);
+			try {
+				this.room = await subsCollection.find(rid);
+			} catch (error) {
+				console.log('Messagebox.didMount: Room not found');
+			}
 			if (tmid) {
 				try {
 					this.thread = await threadsCollection.find(tmid);
-					if (this.thread) {
+					if (this.thread && !sharing) {
 						msg = this.thread.draftMessage;
 					}
 				} catch (error) {
 					console.log('Messagebox.didMount: Thread not found');
 				}
-			} else {
-				try {
-					msg = this.room.draftMessage;
-				} catch (error) {
-					console.log('Messagebox.didMount: Room not found');
-				}
+			} else if (!sharing) {
+				msg = this.room.draftMessage;
 			}
 		} catch (e) {
 			log(e);
@@ -323,12 +324,10 @@ class MessageBox extends Component {
 	}
 
 	onChangeText = (text) => {
-		const { onChangeText } = this.props;
 		const isTextEmpty = text.length === 0;
 		this.setShowSend(!isTextEmpty);
 		this.debouncedOnChangeText(text);
 		this.setInput(text);
-		onChangeText?.(text);
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -673,9 +672,15 @@ class MessageBox extends Component {
 
 	submit = async() => {
 		const {
-			onSubmit, rid: roomId, tmid, showSend
+			onSubmit, rid: roomId, tmid, showSend, sharing
 		} = this.props;
 		const message = this.text;
+
+		// if sharing, only execute onSubmit prop
+		if (sharing) {
+			onSubmit(message);
+			return;
+		}
 
 		this.clearInput();
 		this.debouncedOnChangeText.stop();

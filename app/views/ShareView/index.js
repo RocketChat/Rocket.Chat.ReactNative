@@ -30,6 +30,7 @@ import StatusBar from '../../containers/StatusBar';
 class ShareView extends Component {
 	constructor(props) {
 		super(props);
+		this.messagebox = React.createRef();
 		this.files = props.route.params?.attachments ?? [];
 		this.shareExtension = props.route.params?.shareExtension;
 
@@ -180,14 +181,14 @@ class ShareView extends Component {
 	};
 
 	selectFile = (item) => {
+		const { text } = this.messagebox.current;
 		const { attachments, selected } = this.state;
 		const newAttachments = attachments.map((att) => {
 			if (att.path === selected.path) {
-				att.description = this.description;
+				att.description = text;
 			}
 			return att;
 		});
-		this.description = item?.description;
 		this.setState({ attachments: newAttachments, selected: item });
 	}
 
@@ -197,10 +198,8 @@ class ShareView extends Component {
 
 	onChangeText = (text) => {
 		const { attachments } = this.state;
-		// if there're attachments, we handle the description on this.description only
-		if (attachments.length) {
-			this.description = text;
-		} else {
+		// we manage attachments on this state only when it's text only sharing
+		if (!attachments.length) {
 			this.setState({ text });
 		}
 	}
@@ -226,12 +225,12 @@ class ShareView extends Component {
 					<MessageBox
 						showSend
 						sharing
+						ref={this.messagebox}
 						rid={room.rid}
 						roomType={room.t}
 						theme={theme}
 						onSubmit={this.send}
 						getCustomEmoji={() => {}} // TODO: custom emoji
-						onChangeText={this.onChangeText}
 						message={{ msg: selected?.description ?? '' }}
 						navigation={navigation}
 						isFocused={navigation.isFocused}
