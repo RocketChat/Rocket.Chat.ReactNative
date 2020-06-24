@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, Alert, Keyboard
-} from 'react-native';
+import { View, Alert, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -868,7 +866,6 @@ class MessageBox extends Component {
 					theme={theme}
 					{...isAndroidTablet}
 				/>
-
 				<RightButtons
 					theme={theme}
 					showSend={showSend}

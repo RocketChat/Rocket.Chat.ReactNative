@@ -106,16 +106,11 @@ export default StyleSheet.create({
 	},
 	recordingContent: {
 		flexDirection: 'row',
-		flex: 3
+		flex: 1,
+		justifyContent: 'space-between'
 	},
 	recordingCancelText: {
-		textAlignVertical: 'center',
 		fontSize: 17,
-		letterSpacing: 0,
 		...sharedStyles.textRegular
-	},
-	recordingContentFinish: {
-		flex: 2,
-		alignItems: 'flex-end'
 	}
 });

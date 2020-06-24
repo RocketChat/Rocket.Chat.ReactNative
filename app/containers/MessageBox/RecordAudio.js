@@ -57,10 +57,9 @@ export default class RecordAudio extends React.PureComponent {
 
 	constructor(props) {
 		super(props);
-		this.recording = null;
+		this.isRecorderBusy = false;
 		this.state = {
 			isRecording: false,
-			isRecorderBusy: false,
 			recordingDurationMillis: 0
 		};
 	}
@@ -83,32 +82,28 @@ export default class RecordAudio extends React.PureComponent {
 		return formatTime(Math.floor(recordingDurationMillis / 1000));
 	}
 
+	isRecordingPermissionGranted = async() => {
+		const permission = await Audio.getPermissionsAsync();
+		return permission.status === 'granted';
+	}
+
+	onRecordingStatusUpdate = (status) => {
+		this.setState({
+			isRecording: status.isRecording,
+			recordingDurationMillis: status.durationMillis
+		});
+	}
+
 	startRecordingAudio = async() => {
-		const { isRecorderBusy } = this.state;
-
-		if (!isRecorderBusy) {
-			this.setState({ isRecorderBusy: true });
+		if (!this.isRecorderBusy) {
+			this.isRecorderBusy = true;
 			try {
-				const permissions = await Audio.getPermissionsAsync();
-
-				if (permissions.status === 'granted') {
+				if (this.isRecordingPermissionGranted()) {
 					await Audio.setAudioModeAsync(RECORDING_MODE);
 
-					if (this.recording !== null) {
-						this.recording.setOnRecordingStatusUpdate(null);
-						this.recording = null;
-					}
-
-					const recording = new Audio.Recording();
-					await recording.prepareToRecordAsync(RECORDING_SETTINGS);
-					recording.setOnRecordingStatusUpdate((status) => {
-						this.setState({
-							isRecording: status.isRecording,
-							recordingDurationMillis: status.durationMillis
-						});
-					});
-
-					this.recording = recording;
+					this.recording = new Audio.Recording();
+					await this.recording.prepareToRecordAsync(RECORDING_SETTINGS);
+					this.recording.setOnRecordingStatusUpdate(this.onRecordingStatusUpdate);
 
 					await this.recording.startAsync();
 					activateKeepAwake();
@@ -116,19 +111,17 @@ export default class RecordAudio extends React.PureComponent {
 					await Audio.requestPermissionsAsync();
 				}
 			} catch (error) {
-			// Do nothing
+				// Do nothing
 			}
-			this.setState({ isRecorderBusy: false });
+			this.isRecorderBusy = false;
 		}
 	};
 
 	finishRecordingAudio = async() => {
-		const { isRecorderBusy } = this.state;
-
-		if (!isRecorderBusy) {
+		if (!this.isRecorderBusy) {
 			const { onFinish } = this.props;
 
-			this.setState({ isRecorderBusy: true });
+			this.isRecorderBusy = true;
 			try {
 				await this.recording.stopAndUnloadAsync();
 
@@ -145,25 +138,23 @@ export default class RecordAudio extends React.PureComponent {
 
 				onFinish(fileInfo);
 			} catch (error) {
-			// Do nothing
+				// Do nothing
 			}
 			deactivateKeepAwake();
-			this.setState({ isRecorderBusy: false });
+			this.isRecorderBusy = false;
 		}
 	};
 
 	cancelRecordingAudio = async() => {
-		const { isRecorderBusy } = this.state;
-
-		if (!isRecorderBusy) {
-			this.setState({ isRecorderBusy: true });
+		if (!this.isRecorderBusy) {
+			this.isRecorderBusy = true;
 			try {
 				await this.recording.stopAndUnloadAsync();
 			} catch (error) {
-			// Do nothing
+				// Do nothing
 			}
 			deactivateKeepAwake();
-			this.setState({ isRecorderBusy: false });
+			this.isRecorderBusy = false;
 		}
 	};
 
@@ -201,26 +192,23 @@ export default class RecordAudio extends React.PureComponent {
 						/>
 					</BorderlessButton>
 					<Text
-						key='currentTime'
 						style={[styles.recordingCancelText, { color: themes[theme].titleText }]}
 					>
 						{this.duration}
 					</Text>
 				</View>
-				<View style={styles.recordingContentFinish}>
-					<BorderlessButton
-						onPress={this.finishRecordingAudio}
-						accessibilityLabel={I18n.t('Finish_recording')}
-						accessibilityTraits='button'
-						style={styles.actionButton}
-					>
-						<CustomIcon
-							size={22}
-							color={themes[theme].successColor}
-							name='check'
-						/>
-					</BorderlessButton>
-				</View>
+				<BorderlessButton
+					onPress={this.finishRecordingAudio}
+					accessibilityLabel={I18n.t('Finish_recording')}
+					accessibilityTraits='button'
+					style={styles.actionButton}
+				>
+					<CustomIcon
+						size={22}
+						color={themes[theme].successColor}
+						name='check'
+					/>
+				</BorderlessButton>
 			</View>
 		);
 	}
