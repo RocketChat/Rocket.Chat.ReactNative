@@ -98,7 +98,7 @@ export default class RecordAudio extends React.PureComponent {
 		if (!this.isRecorderBusy) {
 			this.isRecorderBusy = true;
 			try {
-				if (this.isRecordingPermissionGranted()) {
+				if (await this.isRecordingPermissionGranted()) {
 					await Audio.setAudioModeAsync(RECORDING_MODE);
 
 					this.recording = new Audio.Recording();
