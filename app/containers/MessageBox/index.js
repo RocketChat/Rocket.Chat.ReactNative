@@ -583,7 +583,7 @@ class MessageBox extends Component {
 		try {
 			const image = await ImagePicker.openCamera(this.imagePickerConfig);
 			if (this.canUploadFile(image)) {
-				Navigation.navigate('ShareView', { room: this.room, thread: this.thread, attachments: [image] });
+				this.openShareView([image]);
 			}
 		} catch (e) {
 			// Do nothing
@@ -594,7 +594,7 @@ class MessageBox extends Component {
 		try {
 			const video = await ImagePicker.openCamera(this.videoPickerConfig);
 			if (this.canUploadFile(video)) {
-				Navigation.navigate('ShareView', { room: this.room, thread: this.thread, attachments: [video] });
+				this.openShareView([video]);
 			}
 		} catch (e) {
 			// Do nothing
@@ -604,7 +604,7 @@ class MessageBox extends Component {
 	chooseFromLibrary = async() => {
 		try {
 			const attachments = await ImagePicker.openPicker(this.libraryPickerConfig);
-			Navigation.navigate('ShareView', { room: this.room, thread: this.thread, attachments });
+			this.openShareView(attachments);
 		} catch (e) {
 			// Do nothing
 		}
@@ -622,13 +622,17 @@ class MessageBox extends Component {
 				path: res.uri
 			};
 			if (this.canUploadFile(file)) {
-				Navigation.navigate('ShareView', { room: this.room, thread: this.thread, attachments: [file] });
+				this.openShareView([file]);
 			}
 		} catch (e) {
 			if (!DocumentPicker.isCancel(e)) {
 				log(e);
 			}
 		}
+	}
+
+	openShareView = (attachments) => {
+		Navigation.navigate('ShareView', { room: this.room, thread: this.thread, attachments });
 	}
 
 	createDiscussion = () => {
