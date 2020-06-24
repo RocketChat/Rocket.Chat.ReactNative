@@ -105,7 +105,8 @@ class MessageBox extends Component {
 		},
 		sharing: false,
 		iOSScrollBehavior: NativeModules.KeyboardTrackingViewManager?.KeyboardTrackingScrollBehaviorFixedOffset,
-		isActionsEnabled: true
+		isActionsEnabled: true,
+		getCustomEmoji: () => {}
 	}
 
 	constructor(props) {

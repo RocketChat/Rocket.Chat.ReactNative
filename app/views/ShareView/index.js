@@ -230,7 +230,6 @@ class ShareView extends Component {
 						roomType={room.t}
 						theme={theme}
 						onSubmit={this.send}
-						getCustomEmoji={() => {}} // TODO: custom emoji
 						message={{ msg: selected?.description ?? '' }}
 						navigation={navigation}
 						isFocused={navigation.isFocused}
