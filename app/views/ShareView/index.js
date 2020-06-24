@@ -44,25 +44,27 @@ class ShareView extends Component {
 			room: props.route.params?.room ?? {},
 			thread: props.route.params?.thread ?? {}
 		};
-		this.unsubscribeFocus = props.navigation.addListener('focus', this.didFocus);
+		// this.unsubscribeFocus = props.navigation.addListener('focus', this.didFocus);
 	}
 
 	componentDidMount = async() => {
-		await this.setReadOnly();
-		this.setAttachments();
-		this.setHeader();
+		const readOnly = await this.getReadOnly();
+		const { attachments, selected } = await this.getAttachments();
+		this.setState({ readOnly, attachments, selected }, () => this.setHeader());
 	}
 
 	componentWillUnmount = () => {
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
-	didFocus = () => {
-		this.setState({ loadingPreview: false });
-	}
+	// didFocus = () => {
+	// 	this.setState({ loadingPreview: false });
+	// }
 
 	setHeader = () => {
-		const { room, thread, readOnly } = this.state;
+		const {
+			room, thread, readOnly, attachments
+		} = this.state;
 		const { navigation, theme } = this.props;
 
 		const options = {
@@ -76,8 +78,7 @@ class ShareView extends Component {
 			options.headerLeft = () => <CloseModalButton navigation={navigation} buttonStyle={{ color: themes[theme].previewTintColor }} />;
 		}
 
-		// At this time, this.setAttachments might not be ended, so we compare it against this.files
-		if (!this.files.length && !readOnly) {
+		if (!attachments.length && !readOnly) {
 			options.headerRight = () => (
 				<CustomHeaderButtons>
 					<Item
@@ -94,14 +95,14 @@ class ShareView extends Component {
 		navigation.setOptions(options);
 	}
 
-	setReadOnly = async() => {
+	getReadOnly = async() => {
 		const { room } = this.state;
 		const { user } = this.props;
 		const readOnly = await isReadOnly(room, user);
-		this.setState({ readOnly });
+		return readOnly;
 	}
 
-	setAttachments = async() => {
+	getAttachments = async() => {
 		// set attachments just when it was mounted to prevent memory issues
 		// get video thumbnails
 		const items = await Promise.all(this.files.map(async(item) => {
@@ -119,7 +120,11 @@ class ShareView extends Component {
 			}
 			return item;
 		}));
-		this.setState({ attachments: items, selected: items[0] });
+		// this.setState({ attachments: items, selected: items[0] });
+		return {
+			attachments: items,
+			selected: items[0]
+		};
 	}
 
 	send = async() => {
