@@ -401,6 +401,7 @@ const RocketChat = {
 			status: result.me.status,
 			statusText: result.me.statusText,
 			customFields: result.me.customFields,
+			statusLivechat: result.me.statusLivechat,
 			emails: result.me.emails,
 			roles: result.me.roles
 		};
@@ -808,6 +809,10 @@ const RocketChat = {
 	getCustomFields() {
 		// RC 2.2.0
 		return this.sdk.get('livechat/custom-fields');
+	},
+	changeLivechatStatus() {
+		// RC 0.26.0
+		return this.methodCall('livechat:changeLivechatStatus');
 	},
 
 	getUidDirectMessage(room) {
