@@ -332,22 +332,26 @@ class MessageBox extends Component {
 
 	// eslint-disable-next-line react/sort-comp
 	debouncedOnChangeText = debounce(async(text) => {
+		const { sharing } = this.props;
 		const db = database.active;
 		const isTextEmpty = text.length === 0;
 		// this.setShowSend(!isTextEmpty);
 		this.handleTyping(!isTextEmpty);
-		// matches if their is text that stats with '/' and group the command and params so we can use it "/command params"
-		const slashCommand = text.match(/^\/([a-z0-9._-]+) (.+)/im);
-		if (slashCommand) {
-			const [, name, params] = slashCommand;
-			const commandsCollection = db.collections.get('slash_commands');
-			try {
-				const command = await commandsCollection.find(name);
-				if (command.providesPreview) {
-					return this.setCommandPreview(command, name, params);
+
+		if (!sharing) {
+			// matches if their is text that stats with '/' and group the command and params so we can use it "/command params"
+			const slashCommand = text.match(/^\/([a-z0-9._-]+) (.+)/im);
+			if (slashCommand) {
+				const [, name, params] = slashCommand;
+				const commandsCollection = db.collections.get('slash_commands');
+				try {
+					const command = await commandsCollection.find(name);
+					if (command.providesPreview) {
+						return this.setCommandPreview(command, name, params);
+					}
+				} catch (e) {
+					console.log('Slash command not found');
 				}
-			} catch (e) {
-				console.log('Slash command not found');
 			}
 		}
 
@@ -357,12 +361,20 @@ class MessageBox extends Component {
 				const cursor = Math.max(start, end);
 				const lastNativeText = this.component?.lastNativeText || '';
 				// matches if text either starts with '/' or have (@,#,:) then it groups whatever comes next of mention type
-				const regexp = /(#|@|:|^\/)([a-z0-9._-]+)$/im;
+				let regexp = /(#|@|:|^\/)([a-z0-9._-]+)$/im;
+
+				// if sharing, track #|@|:
+				if (sharing) {
+					regexp = /(#|@|:)([a-z0-9._-]+)$/im;
+				}
+
 				const result = lastNativeText.substr(0, cursor).match(regexp);
 				if (!result) {
-					const slash = lastNativeText.match(/^\/$/); // matches only '/' in input
-					if (slash) {
-						return this.identifyMentionKeyword('', MENTIONS_TRACKING_TYPE_COMMANDS);
+					if (!sharing) {
+						const slash = lastNativeText.match(/^\/$/); // matches only '/' in input
+						if (slash) {
+							return this.identifyMentionKeyword('', MENTIONS_TRACKING_TYPE_COMMANDS);
+						}
 					}
 					return this.stopTrackingMention();
 				}
@@ -502,7 +514,10 @@ class MessageBox extends Component {
 	}
 
 	handleTyping = (isTyping) => {
-		const { typing, rid } = this.props;
+		const { typing, rid, sharing } = this.props;
+		if (sharing) {
+			return;
+		}
 		if (!isTyping) {
 			if (this.typingTimeout) {
 				clearTimeout(this.typingTimeout);
@@ -768,6 +783,7 @@ class MessageBox extends Component {
 	}
 
 	identifyMentionKeyword = (keyword, type) => {
+    console.log('MessageBox -> identifyMentionKeyword -> type', type);
 		this.setState({
 			showEmojiKeyboard: false,
 			trackingType: type
