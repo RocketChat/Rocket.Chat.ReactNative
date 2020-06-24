@@ -8,7 +8,6 @@ public class Ejson {
     String host;
     String rid;
     String type;
-    String messageId;
     Sender sender;
 
     private String TOKEN_KEY = "reactnativemeteor_usertoken-";
