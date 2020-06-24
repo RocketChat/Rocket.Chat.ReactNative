@@ -87,7 +87,7 @@ public class CustomPushNotification extends PushNotification {
         bundle.putString("username", !hasSender ? ejson.sender.username : title);
         bundle.putString("senderId", hasSender ? ejson.sender._id : "1");
         bundle.putString("avatarUri", ejson.getAvatarUri());
-        
+
         notificationMessages.get(notId).add(bundle);
         postNotification(Integer.parseInt(notId));
         notifyReceivedToJS();
