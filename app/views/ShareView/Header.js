@@ -51,7 +51,7 @@ const Header = React.memo(({ room, thread, theme }) => {
 	} else if (type === 'c') {
 		icon = 'hash';
 	} else if (type === 'l') {
-		icon = 'omnichannel';
+		icon = 'livechat';
 	} else if (type === 'd') {
 		if (RocketChat.isGroupChat(room)) {
 			icon = 'team';
