@@ -46,7 +46,6 @@ const InsideStack = () => {
 	};
 	screenOptions.headerStyle = {
 		...screenOptions.headerStyle,
-		// TODO: fix on multiple files PR :)
 		height: 57
 	};
 
