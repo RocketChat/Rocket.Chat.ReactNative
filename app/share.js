@@ -87,7 +87,7 @@ const OutsideStack = () => {
 // App
 const Stack = createStackNavigator();
 export const App = ({ root }) => (
-	<Stack.Navigator screenOptions={{ headerShown: false }}>
+	<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
 		<>
 			{!root ? (
 				<Stack.Screen
