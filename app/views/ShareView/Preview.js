@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 });
 
 const Preview = React.memo(({
-	item, theme, shareExtension, length
+	item, theme, isShareExtension, length
 }) => {
 	const type = item?.mime;
 	const { width, height } = useDimensions();
@@ -60,12 +60,12 @@ const Preview = React.memo(({
 	}
 
 	// Disallow preview of images too big in order to prevent memory issues on iOS share extension
-	if (allowPreview(shareExtension, item?.size)) {
+	if (allowPreview(isShareExtension, item?.size)) {
 		if (type?.match(/image/)) {
 			return (
 				<ImageViewer
 					uri={item.path}
-					imageComponentType={shareExtension ? types.REACT_NATIVE_IMAGE : types.FAST_IMAGE}
+					imageComponentType={isShareExtension ? types.REACT_NATIVE_IMAGE : types.FAST_IMAGE}
 					width={width}
 					height={calculatedHeight}
 					theme={theme}
@@ -89,7 +89,7 @@ const Preview = React.memo(({
 Preview.propTypes = {
 	item: PropTypes.object,
 	theme: PropTypes.string,
-	shareExtension: PropTypes.bool,
+	isShareExtension: PropTypes.bool,
 	length: PropTypes.number
 };
 

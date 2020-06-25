@@ -59,12 +59,12 @@ const styles = StyleSheet.create({
 
 const ThumbButton = isIOS ? TouchableOpacity : TouchableNativeFeedback;
 
-const Thumb = React.memo(({ item, theme, shareExtension }) => {
+const Thumb = React.memo(({ item, theme, isShareExtension }) => {
 	const type = item?.mime;
 
 	if (type?.match(/image/)) {
 		// Disallow preview of images too big in order to prevent memory issues on iOS share extension
-		if (allowPreview(shareExtension, item?.size)) {
+		if (allowPreview(isShareExtension, item?.size)) {
 			return (
 				<Image
 					source={{ uri: item.path }}
@@ -105,11 +105,11 @@ const Thumb = React.memo(({ item, theme, shareExtension }) => {
 Thumb.propTypes = {
 	item: PropTypes.object,
 	theme: PropTypes.string,
-	shareExtension: PropTypes.bool
+	isShareExtension: PropTypes.bool
 };
 
 const Thumbs = React.memo(({
-	attachments, theme, shareExtension, onPress, onRemove
+	attachments, theme, isShareExtension, onPress, onRemove
 }) => {
 	if (attachments?.length > 1) {
 		return (
@@ -123,7 +123,7 @@ const Thumbs = React.memo(({
 							<Thumb
 								item={item}
 								theme={theme}
-								shareExtension={shareExtension}
+								isShareExtension={isShareExtension}
 							/>
 							<RectButton
 								hitSlop={BUTTON_HIT_SLOP}
@@ -151,7 +151,7 @@ const Thumbs = React.memo(({
 Thumbs.propTypes = {
 	attachments: PropTypes.array,
 	theme: PropTypes.string,
-	shareExtension: PropTypes.bool,
+	isShareExtension: PropTypes.bool,
 	onPress: PropTypes.func,
 	onRemove: PropTypes.func
 };

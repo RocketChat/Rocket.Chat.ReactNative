@@ -32,7 +32,7 @@ class ShareView extends Component {
 		super(props);
 		this.messagebox = React.createRef();
 		this.files = props.route.params?.attachments ?? [];
-		this.shareExtension = props.route.params?.shareExtension;
+		this.isShareExtension = props.route.params?.isShareExtension;
 
 		this.state = {
 			selected: {},
@@ -68,7 +68,7 @@ class ShareView extends Component {
 		};
 
 		// if is share extension show default back button
-		if (!this.shareExtension) {
+		if (!this.isShareExtension) {
 			options.headerLeft = () => <CloseModalButton navigation={navigation} buttonStyle={{ color: themes[theme].previewTintColor }} />;
 		}
 
@@ -135,7 +135,7 @@ class ShareView extends Component {
 		const { navigation, server, user } = this.props;
 
 		// if it's share extension this should show loading
-		if (this.shareExtension) {
+		if (this.isShareExtension) {
 			this.setState({ loading: true });
 
 		// if it's not share extension this can close
@@ -176,7 +176,7 @@ class ShareView extends Component {
 		}
 
 		// if it's share extension this should close
-		if (this.shareExtension) {
+		if (this.isShareExtension) {
 			ShareExtension.close();
 		}
 	};
@@ -232,7 +232,7 @@ class ShareView extends Component {
 						item={selected}
 						length={attachments.length}
 						theme={theme}
-						shareExtension={this.shareExtension}
+						isShareExtension={this.isShareExtension}
 					/>
 					<MessageBox
 						showSend
@@ -251,7 +251,7 @@ class ShareView extends Component {
 						<Thumbs
 							attachments={attachments}
 							theme={theme}
-							shareExtension={this.shareExtension}
+							isShareExtension={this.isShareExtension}
 							onPress={this.selectFile}
 							onRemove={this.removeFile}
 						/>

@@ -233,7 +233,7 @@ class ShareListView extends React.Component {
 			room,
 			text,
 			attachments,
-			shareExtension: true
+			isShareExtension: true
 		});
 	}
 
