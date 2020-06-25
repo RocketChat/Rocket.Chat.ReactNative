@@ -298,7 +298,7 @@ class ShareListView extends React.Component {
 						? (item.topic || item.description)
 						: item.fname
 				}
-				type={item.t}
+				type={item.prid ? 'discussion' : item.t}
 				onPress={() => this.shareMessage(item)}
 				testID={`share-extension-item-${ item.name }`}
 				theme={theme}
