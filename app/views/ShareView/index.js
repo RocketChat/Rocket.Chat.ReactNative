@@ -114,7 +114,6 @@ class ShareView extends Component {
 			}
 			return item;
 		}));
-		// this.setState({ attachments: items, selected: items[0] });
 		return {
 			attachments: items,
 			selected: items[0]
@@ -240,6 +239,7 @@ class ShareView extends Component {
 						<Thumbs
 							attachments={attachments}
 							theme={theme}
+							shareExtension={this.shareExtension}
 							onPress={this.selectFile}
 							onRemove={this.removeFile}
 						/>

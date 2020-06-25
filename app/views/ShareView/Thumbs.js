@@ -10,6 +10,7 @@ import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
 import { isIOS } from '../../utils/deviceInfo';
 import { THUMBS_HEIGHT } from './constants';
+import { allowPreview } from './utils';
 
 const THUMB_SIZE = 64;
 
@@ -49,22 +50,38 @@ const styles = StyleSheet.create({
 		height: THUMB_SIZE,
 		borderRadius: 2,
 		marginRight: 16,
-		overflow: 'hidden'
+		overflow: 'hidden',
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderWidth: 1
 	}
 });
 
 const ThumbButton = isIOS ? TouchableOpacity : TouchableNativeFeedback;
 
-const Thumb = React.memo(({ item, theme }) => {
+const Thumb = React.memo(({ item, theme, shareExtension }) => {
 	const type = item?.mime;
 
 	if (type?.match(/image/)) {
-		return (
-			<Image
-				source={{ uri: item.path }}
-				style={styles.thumb}
-			/>
-		);
+		// Disallow preview of images too big in order to prevent memory issues on iOS share extension
+		if (allowPreview(shareExtension, item?.size)) {
+			return (
+				<Image
+					source={{ uri: item.path }}
+					style={[styles.thumb, { borderColor: themes[theme].borderColor }]}
+				/>
+			);
+		} else {
+			return (
+				<View style={[styles.thumb, { borderColor: themes[theme].borderColor }]}>
+					<CustomIcon
+						name='Camera'
+						size={30}
+						color={themes[theme].tintColor}
+					/>
+				</View>
+			);
+		}
 	}
 
 	if (type?.match(/video/)) {
@@ -87,11 +104,12 @@ const Thumb = React.memo(({ item, theme }) => {
 });
 Thumb.propTypes = {
 	item: PropTypes.object,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	shareExtension: PropTypes.bool
 };
 
 const Thumbs = React.memo(({
-	attachments, theme, onPress, onRemove
+	attachments, theme, shareExtension, onPress, onRemove
 }) => {
 	if (attachments?.length > 1) {
 		return (
@@ -105,6 +123,7 @@ const Thumbs = React.memo(({
 							<Thumb
 								item={item}
 								theme={theme}
+								shareExtension={shareExtension}
 							/>
 							<RectButton
 								hitSlop={BUTTON_HIT_SLOP}
@@ -132,6 +151,7 @@ const Thumbs = React.memo(({
 Thumbs.propTypes = {
 	attachments: PropTypes.array,
 	theme: PropTypes.string,
+	shareExtension: PropTypes.bool,
 	onPress: PropTypes.func,
 	onRemove: PropTypes.func
 };

@@ -13,6 +13,7 @@ import { getHeaderHeight } from '../../containers/Header';
 import { isIOS } from '../../utils/deviceInfo';
 import { THUMBS_HEIGHT } from './constants';
 import sharedStyles from '../Styles';
+import { allowPreview } from './utils';
 
 const styles = StyleSheet.create({
 	fileContainer: {
@@ -58,22 +59,25 @@ const Preview = React.memo(({
 		);
 	}
 
-	if (type?.match(/image/)) {
-		return (
-			<ImageViewer
-				uri={item.path}
-				imageComponentType={shareExtension ? types.REACT_NATIVE_IMAGE : types.FAST_IMAGE}
-				width={width}
-				height={calculatedHeight}
-				theme={theme}
-			/>
-		);
+	// Disallow preview of images too big in order to prevent memory issues on iOS share extension
+	if (allowPreview(shareExtension, item?.size)) {
+		if (type?.match(/image/)) {
+			return (
+				<ImageViewer
+					uri={item.path}
+					imageComponentType={shareExtension ? types.REACT_NATIVE_IMAGE : types.FAST_IMAGE}
+					width={width}
+					height={calculatedHeight}
+					theme={theme}
+				/>
+			);
+		}
 	}
 
 	return (
 		<ScrollView style={{ backgroundColor: themes[theme].auxiliaryBackground }} contentContainerStyle={[styles.fileContainer, { width, height: calculatedHeight }]}>
 			<CustomIcon
-				name='clip'
+				name={type?.match(/image/) ? 'Camera' : 'clip'}
 				size={56}
 				color={themes[theme].tintColor}
 			/>
