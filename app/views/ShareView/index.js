@@ -26,6 +26,8 @@ import MessageBox from '../../containers/MessageBox';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { getUserSelector } from '../../selectors/login';
 import StatusBar from '../../containers/StatusBar';
+import database from '../../lib/database';
+import { canUploadFile } from '../../utils/media';
 
 class ShareView extends Component {
 	constructor(props) {
@@ -33,6 +35,7 @@ class ShareView extends Component {
 		this.messagebox = React.createRef();
 		this.files = props.route.params?.attachments ?? [];
 		this.isShareExtension = props.route.params?.isShareExtension;
+		this.serverInfo = props.route.params?.serverInfo ?? {};
 
 		this.state = {
 			selected: {},
@@ -41,8 +44,11 @@ class ShareView extends Component {
 			attachments: [],
 			text: props.route.params?.text ?? '',
 			room: props.route.params?.room ?? {},
-			thread: props.route.params?.thread ?? {}
+			thread: props.route.params?.thread ?? {},
+			maxFileSize: this.isShareExtension ? this.serverInfo?.FileUpload_MaxFileSize : props.FileUpload_MaxFileSize,
+			mediaAllowList: this.isShareExtension ? this.serverInfo?.FileUpload_MediaTypeWhiteList : props.FileUpload_MediaTypeWhiteList
 		};
+		this.getServerInfo();
 	}
 
 	componentDidMount = async() => {
@@ -89,6 +95,18 @@ class ShareView extends Component {
 		navigation.setOptions(options);
 	}
 
+	// fetch server info
+	getServerInfo = async() => {
+		const { server } = this.props;
+		const serversDB = database.servers;
+		const serversCollection = serversDB.collections.get('servers');
+		try {
+			this.serverInfo = await serversCollection.find(server);
+		} catch (error) {
+			// Do nothing
+		}
+	}
+
 	getReadOnly = async() => {
 		const { room } = this.state;
 		const { user } = this.props;
@@ -97,9 +115,14 @@ class ShareView extends Component {
 	}
 
 	getAttachments = async() => {
-		// set attachments just when it was mounted to prevent memory issues
-		// get video thumbnails
+		const { mediaAllowList, maxFileSize } = this.state;
 		const items = await Promise.all(this.files.map(async(item) => {
+			// Check server settings
+			const { success: canUpload, error } = canUploadFile(item, mediaAllowList, maxFileSize);
+			item.canUpload = canUpload;
+			item.error = error;
+
+			// get video thumbnails
 			if (item.mime?.match(/video/)) {
 				try {
 					const { uri } = await VideoThumbnails.getThumbnailAsync(item.path);
@@ -107,8 +130,9 @@ class ShareView extends Component {
 				} catch {
 					// Do nothing
 				}
-				return item;
 			}
+
+			// Set a filename, if there isn't any
 			if (!item.filename) {
 				item.filename = new Date().toISOString();
 			}
@@ -151,21 +175,27 @@ class ShareView extends Component {
 					mime: type,
 					description,
 					size,
-					path
-				}) => RocketChat.sendFileMessage(
-					room.rid,
-					{
-						name,
-						description,
-						size,
-						type,
-						path,
-						store: 'Uploads'
-					},
-					thread?.tmid,
-					server,
-					{ id: user.id, token: user.token }
-				)));
+					path,
+					canUpload
+				}) => {
+					if (canUpload) {
+						return RocketChat.sendFileMessage(
+							room.rid,
+							{
+								name,
+								description,
+								size,
+								type,
+								path,
+								store: 'Uploads'
+							},
+							thread?.tmid,
+							server,
+							{ id: user.id, token: user.token }
+						);
+					}
+					return Promise.resolve();
+				}));
 
 			// Send text message
 			} else if (text.length) {
@@ -315,12 +345,16 @@ ShareView.propTypes = {
 		username: PropTypes.string.isRequired,
 		token: PropTypes.string.isRequired
 	}),
-	server: PropTypes.string
+	server: PropTypes.string,
+	FileUpload_MediaTypeWhiteList: PropTypes.string,
+	FileUpload_MaxFileSize: PropTypes.string
 };
 
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
-	server: state.share.server || state.server.server
+	server: state.share.server || state.server.server,
+	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
+	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize
 });
 
 export default connect(mapStateToProps)(withTheme(ShareView));

@@ -217,13 +217,14 @@ class ShareListView extends React.Component {
 	}
 
 	shareMessage = (room) => {
-		const { attachments, text } = this.state;
+		const { attachments, text, serverInfo } = this.state;
 		const { navigation } = this.props;
 
 		navigation.navigate('ShareView', {
 			room,
 			text,
 			attachments,
+			serverInfo,
 			isShareExtension: true
 		});
 	}

@@ -14,6 +14,7 @@ import { isIOS } from '../../utils/deviceInfo';
 import { THUMBS_HEIGHT } from './constants';
 import sharedStyles from '../Styles';
 import { allowPreview } from './utils';
+import I18n from '../../i18n';
 
 const styles = StyleSheet.create({
 	fileContainer: {
@@ -32,6 +33,23 @@ const styles = StyleSheet.create({
 	}
 });
 
+const IconPreview = React.memo(({
+	iconName, title, description, theme, width, height, danger
+}) => (
+	<ScrollView
+		style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+		contentContainerStyle={[styles.fileContainer, { width, height }]}
+	>
+		<CustomIcon
+			name={iconName}
+			size={56}
+			color={danger ? themes[theme].dangerColor : themes[theme].tintColor}
+		/>
+		<Text style={[styles.fileName, { color: themes[theme].titleText }]}>{title}</Text>
+		{description ? <Text style={[styles.fileSize, { color: themes[theme].bodyText }]}>{description}</Text> : null}
+	</ScrollView>
+));
+
 const Preview = React.memo(({
 	item, theme, isShareExtension, length
 }) => {
@@ -44,46 +62,58 @@ const Preview = React.memo(({
 	const thumbsHeight = (length > 1) ? THUMBS_HEIGHT : 0;
 	const calculatedHeight = height - insets.top - insets.bottom - messageboxHeight - thumbsHeight - headerHeight;
 
-	if (type?.match(/video/)) {
+	if (item?.canUpload) {
+		if (type?.match(/video/)) {
+			return (
+				<Video
+					source={{ uri: item.path }}
+					rate={1.0}
+					volume={1.0}
+					isMuted={false}
+					resizeMode={Video.RESIZE_MODE_CONTAIN}
+					isLooping={false}
+					style={{ width, height: calculatedHeight }}
+					useNativeControls
+				/>
+			);
+		}
+
+		// Disallow preview of images too big in order to prevent memory issues on iOS share extension
+		if (allowPreview(isShareExtension, item?.size)) {
+			if (type?.match(/image/)) {
+				return (
+					<ImageViewer
+						uri={item.path}
+						imageComponentType={isShareExtension ? types.REACT_NATIVE_IMAGE : types.FAST_IMAGE}
+						width={width}
+						height={calculatedHeight}
+						theme={theme}
+					/>
+				);
+			}
+		}
 		return (
-			<Video
-				source={{ uri: item.path }}
-				rate={1.0}
-				volume={1.0}
-				isMuted={false}
-				resizeMode={Video.RESIZE_MODE_CONTAIN}
-				isLooping={false}
-				style={{ width, height: calculatedHeight }}
-				useNativeControls
+			<IconPreview
+				iconName={type?.match(/image/) ? 'Camera' : 'clip'}
+				title={item?.filename}
+				description={prettyBytes(item?.size ?? 0)}
+				theme={theme}
+				width={width}
+				height={calculatedHeight}
 			/>
 		);
 	}
 
-	// Disallow preview of images too big in order to prevent memory issues on iOS share extension
-	if (allowPreview(isShareExtension, item?.size)) {
-		if (type?.match(/image/)) {
-			return (
-				<ImageViewer
-					uri={item.path}
-					imageComponentType={isShareExtension ? types.REACT_NATIVE_IMAGE : types.FAST_IMAGE}
-					width={width}
-					height={calculatedHeight}
-					theme={theme}
-				/>
-			);
-		}
-	}
-
 	return (
-		<ScrollView style={{ backgroundColor: themes[theme].auxiliaryBackground }} contentContainerStyle={[styles.fileContainer, { width, height: calculatedHeight }]}>
-			<CustomIcon
-				name={type?.match(/image/) ? 'Camera' : 'clip'}
-				size={56}
-				color={themes[theme].tintColor}
-			/>
-			<Text style={[styles.fileName, { color: themes[theme].titleText }]}>{item?.filename}</Text>
-			<Text style={[styles.fileSize, { color: themes[theme].bodyText }]}>{prettyBytes(item?.size ?? 0)}</Text>
-		</ScrollView>
+		<IconPreview
+			iconName='warning'
+			title={I18n.t(item?.error)}
+			description={prettyBytes(item?.size ?? 0)}
+			theme={theme}
+			width={width}
+			height={calculatedHeight}
+			danger
+		/>
 	);
 });
 Preview.propTypes = {
@@ -91,6 +121,16 @@ Preview.propTypes = {
 	theme: PropTypes.string,
 	isShareExtension: PropTypes.bool,
 	length: PropTypes.number
+};
+
+IconPreview.propTypes = {
+	iconName: PropTypes.string,
+	title: PropTypes.string,
+	description: PropTypes.string,
+	theme: PropTypes.string,
+	width: PropTypes.number,
+	height: PropTypes.number,
+	danger: PropTypes.bool
 };
 
 export default Preview;

@@ -24,6 +24,11 @@ const styles = StyleSheet.create({
 		left: 0,
 		bottom: 0
 	},
+	dangerIcon: {
+		position: 'absolute',
+		right: 16,
+		bottom: 0
+	},
 	removeButton: {
 		position: 'absolute',
 		right: 6,
@@ -59,7 +64,7 @@ const styles = StyleSheet.create({
 
 const ThumbButton = isIOS ? TouchableOpacity : TouchableNativeFeedback;
 
-const Thumb = React.memo(({ item, theme, isShareExtension }) => {
+const ThumbContent = React.memo(({ item, theme, isShareExtension }) => {
 	const type = item?.mime;
 
 	if (type?.match(/image/)) {
@@ -102,11 +107,43 @@ const Thumb = React.memo(({ item, theme, isShareExtension }) => {
 	// Multiple files selection (not audio or video) is not implemented, so there's no thumb
 	return null;
 });
-Thumb.propTypes = {
-	item: PropTypes.object,
-	theme: PropTypes.string,
-	isShareExtension: PropTypes.bool
-};
+
+const Thumb = ({
+	item, theme, isShareExtension, onPress, onRemove
+}) => (
+	<ThumbButton style={styles.item} onPress={() => onPress(item)} activeOpacity={0.7}>
+		<>
+			<ThumbContent
+				item={item}
+				theme={theme}
+				isShareExtension={isShareExtension}
+			/>
+			<RectButton
+				hitSlop={BUTTON_HIT_SLOP}
+				style={[styles.removeButton, { backgroundColor: themes[theme].bodyText, borderColor: themes[theme].auxiliaryBackground }]}
+				activeOpacity={1}
+				rippleColor={themes[theme].bannerBackground}
+				onPress={() => onRemove(item)}
+			>
+				<View style={[styles.removeView, { borderColor: themes[theme].auxiliaryBackground }]}>
+					<CustomIcon
+						name='Cross'
+						color={themes[theme].backgroundColor}
+						size={14}
+					/>
+				</View>
+			</RectButton>
+			{!item?.canUpload ? (
+				<CustomIcon
+					name='warning'
+					size={20}
+					color={themes[theme].dangerColor}
+					style={styles.dangerIcon}
+				/>
+			) : null}
+		</>
+	</ThumbButton>
+);
 
 const Thumbs = React.memo(({
 	attachments, theme, isShareExtension, onPress, onRemove
@@ -118,30 +155,13 @@ const Thumbs = React.memo(({
 				data={attachments}
 				keyExtractor={item => item.path}
 				renderItem={({ item }) => (
-					<ThumbButton style={styles.item} onPress={() => onPress(item)} activeOpacity={0.7}>
-						<>
-							<Thumb
-								item={item}
-								theme={theme}
-								isShareExtension={isShareExtension}
-							/>
-							<RectButton
-								hitSlop={BUTTON_HIT_SLOP}
-								style={[styles.removeButton, { backgroundColor: themes[theme].bodyText, borderColor: themes[theme].auxiliaryBackground }]}
-								activeOpacity={1}
-								rippleColor={themes[theme].bannerBackground}
-								onPress={() => onRemove(item)}
-							>
-								<View style={[styles.removeView, { borderColor: themes[theme].auxiliaryBackground }]}>
-									<CustomIcon
-										name='Cross'
-										color={themes[theme].backgroundColor}
-										size={14}
-									/>
-								</View>
-							</RectButton>
-						</>
-					</ThumbButton>
+					<Thumb
+						item={item}
+						theme={theme}
+						isShareExtension={isShareExtension}
+						onPress={() => onPress(item)}
+						onRemove={() => onRemove(item)}
+					/>
 				)}
 				style={[styles.list, { backgroundColor: themes[theme].messageboxBackground }]}
 			/>
@@ -154,6 +174,18 @@ Thumbs.propTypes = {
 	isShareExtension: PropTypes.bool,
 	onPress: PropTypes.func,
 	onRemove: PropTypes.func
+};
+Thumb.propTypes = {
+	item: PropTypes.object,
+	theme: PropTypes.string,
+	isShareExtension: PropTypes.bool,
+	onPress: PropTypes.func,
+	onRemove: PropTypes.func
+};
+ThumbContent.propTypes = {
+	item: PropTypes.object,
+	theme: PropTypes.string,
+	isShareExtension: PropTypes.bool
 };
 
 export default Thumbs;
