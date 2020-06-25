@@ -48,6 +48,9 @@ import AdminPanelView from '../views/AdminPanelView';
 import NewMessageView from '../views/NewMessageView';
 import CreateChannelView from '../views/CreateChannelView';
 
+// FullScreenStackNavigator
+import FullScreenComposerView from '../views/FullScreenComposerView';
+
 // InsideStackNavigator
 import AttachmentView from '../views/AttachmentView';
 import ModalBlockView from '../views/ModalBlockView';
@@ -311,6 +314,11 @@ const InsideStackNavigator = () => {
 			<InsideStack.Screen
 				name='JitsiMeetView'
 				component={JitsiMeetView}
+				options={{ headerShown: false }}
+			/>
+			<InsideStack.Screen
+				name="FullScreenComposerView" 
+				component={FullScreenComposerView} 
 				options={{ headerShown: false }}
 			/>
 		</InsideStack.Navigator>
