@@ -194,7 +194,19 @@ class ShareView extends Component {
 	}
 
 	removeFile = (item) => {
-		this.setState(({ attachments }) => ({ attachments: attachments.filter(att => att.path !== item.path) }));
+		const { selected, attachments } = this.state;
+		let newSelected;
+		if (item.path === selected.path) {
+			const selectedIndex = attachments.findIndex(att => att.path === selected.path);
+			// Selects the next one, if available
+			if (attachments[selectedIndex + 1]?.path) {
+				newSelected = attachments[selectedIndex + 1];
+			// If it's the last thumb, selects the previous one
+			} else {
+				newSelected = attachments[selectedIndex - 1] || {};
+			}
+		}
+		this.setState({ attachments: attachments.filter(att => att.path !== item.path), selected: newSelected ?? selected });
 	}
 
 	onChangeText = (text) => {
