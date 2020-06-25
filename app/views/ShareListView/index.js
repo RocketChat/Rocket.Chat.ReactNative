@@ -13,8 +13,6 @@ import { Q } from '@nozbe/watermelondb';
 import database from '../../lib/database';
 import { isIOS } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
-import { CustomIcon } from '../../lib/Icons';
-import { canUploadFile } from '../../utils/media';
 import DirectoryItem, { ROW_HEIGHT } from '../../presentation/DirectoryItem';
 import ServerItem from '../../presentation/ServerItem';
 import { CancelModalButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
@@ -45,10 +43,8 @@ class ShareListView extends React.Component {
 		super(props);
 		this.data = [];
 		this.state = {
-			showError: false,
 			searching: false,
 			searchText: '',
-			fileInfo: null,
 			searchResults: [],
 			chats: [],
 			servers: [],
@@ -179,8 +175,7 @@ class ShareListView extends React.Component {
 		this.setState(...args);
 	}
 
-	getSubscriptions = async(server, fileInfo) => {
-		const { fileInfo: fileData } = this.state;
+	getSubscriptions = async(server) => {
 		const db = database.active;
 		const serversDB = database.servers;
 
@@ -203,14 +198,10 @@ class ShareListView extends React.Component {
 				// Do nothing
 			}
 
-			const canUploadFileResult = canUploadFile(fileInfo || fileData, serverInfo);
-
 			this.internalSetState({
 				chats: this.chats ? this.chats.slice() : [],
 				servers: this.servers ? this.servers.slice() : [],
 				loading: false,
-				showError: !canUploadFileResult.success,
-				error: canUploadFileResult.error,
 				serverInfo
 			});
 			this.forceUpdate();
@@ -401,42 +392,12 @@ class ShareListView extends React.Component {
 		);
 	}
 
-	renderError = () => {
-		const {
-			fileInfo: file, loading, searching, error
-		} = this.state;
-		const { theme } = this.props;
-
-		if (loading) {
-			return <ActivityIndicator theme={theme} />;
-		}
-
-		return (
-			<View style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-				{ !searching
-					? (
-						<>
-							{this.renderSelectServer()}
-						</>
-					)
-					: null
-				}
-				<View style={[styles.container, styles.centered, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t(error)}</Text>
-					<CustomIcon name='cancel' size={120} color={themes[theme].dangerColor} />
-					<Text style={[styles.fileMime, { color: themes[theme].titleText }]}>{ file.mime }</Text>
-				</View>
-			</View>
-		);
-	}
-
 	render() {
-		const { showError } = this.state;
 		const { theme } = this.props;
 		return (
 			<SafeAreaView theme={theme}>
 				<StatusBar theme={theme} />
-				{ showError ? this.renderError() : this.renderContent() }
+				{this.renderContent()}
 			</SafeAreaView>
 		);
 	}
