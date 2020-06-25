@@ -292,7 +292,7 @@ class ShareListView extends React.Component {
 				}}
 				title={this.getRoomTitle(item)}
 				baseUrl={server}
-				avatar={this.getRoomTitle(item)}
+				avatar={item.t === 'd' ? item.name : this.getRoomTitle(item)}
 				description={
 					item.t === 'c'
 						? (item.topic || item.description)
