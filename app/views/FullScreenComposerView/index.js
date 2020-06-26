@@ -697,27 +697,7 @@ class FullScreenComposerView extends Component {
   recordAudioMessage = async () => {
     const recording = await Recording.permission();
     this.setState({ recording });
-  }
-
-  finishAudioMessage = async (fileInfo) => {
-    const { route } = this.props;
-    const { rid, tmid } = route.params;
-    const {
-      baseUrl: server, user
-    } = this.props;
-
-    this.setState({
-      recording: false
-    });
-    if (fileInfo) {
-      try {
-        if (this.canUploadFile(fileInfo)) {
-          await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
-        }
-      } catch (e) {
-        log(e);
-      }
-    }
+    this.closeModal();
   }
 
   closeEmoji = () => {
@@ -854,10 +834,25 @@ class FullScreenComposerView extends Component {
     }
   }
 
+  replyCancel = () => {
+    const { navigation, route } = this.props;
+    const { replyCancel } = route.params;
+
+    navigation.goBack();
+    replyCancel();
+
+  }
+
   closeModal = () => {
     const { navigation, route } = this.props;
     const { getFullScreenChanges } = route.params;
-    const { commandPreview, showCommandPreview, mentions, trackingType, command } = this.state;
+    const { commandPreview,
+      showCommandPreview,
+      mentions,
+      trackingType,
+      command,
+      recording
+    } = this.state;
     navigation.goBack();
     const args = {
       text: this.text,
@@ -865,7 +860,8 @@ class FullScreenComposerView extends Component {
       showCommandPreview,
       mentions,
       trackingType,
-      command
+      command,
+      recording
     };
     getFullScreenChanges(args);
   }
@@ -885,9 +881,9 @@ class FullScreenComposerView extends Component {
   }
 
   renderContent = () => {
-    const { theme, route } = this.props;
-    const { text } = route.params;
-    const { commandPreview, showCommandPreview, mentions, trackingType } = this.state;
+    const { theme, route, user } = this.props;
+    const { text } = this;
+    const { message, replying, getCustomEmoji } = route.params;
 
     const isAndroidTablet = isTablet && isAndroid ? {
       onSubmitEditing: this.submit,
@@ -912,8 +908,14 @@ class FullScreenComposerView extends Component {
           theme={theme}
           {...isAndroidTablet}
         />
-        <CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
-        <Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
+        <ReplyPreview
+          message={message}
+          close={this.replyCancel}
+          username={user.username}
+          replying={replying}
+          getCustomEmoji={getCustomEmoji}
+          theme={theme}
+        />
       </View>
     );
   }
@@ -923,37 +925,40 @@ class FullScreenComposerView extends Component {
     const {
       editing
     } = route.params;
-    const { showEmojiKeyboard, showSend } = this.state;
-
+    const { showEmojiKeyboard, showSend, commandPreview, showCommandPreview, mentions, trackingType } = this.state;
 
     return (
-      <View style={[stylez.buttons, { backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }]}>
-        <LeftButtons
-          theme={theme}
-          showEmojiKeyboard={showEmojiKeyboard}
-          editing={editing}
-          showMessageBoxActions={this.showMessageBoxActions}
-          editCancel={this.editCancel}
-          openEmoji={this.openEmoji}
-          closeEmoji={this.closeEmoji}
-        />
-        <View style={stylez.rightButtons}>
-          <RightButtons
+      <>
+        <CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
+        <Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
+        <View style={[stylez.buttons, { backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }]}>
+          <LeftButtons
             theme={theme}
-            showSend={showSend}
-            submit={this.submit}
-            recordAudioMessage={this.recordAudioMessage}
-            recordAudioMessageEnabled={Message_AudioRecorderEnabled}
+            showEmojiKeyboard={showEmojiKeyboard}
+            editing={editing}
             showMessageBoxActions={this.showMessageBoxActions}
+            editCancel={this.editCancel}
+            openEmoji={this.openEmoji}
+            closeEmoji={this.closeEmoji}
           />
+          <View style={stylez.rightButtons}>
+            <RightButtons
+              theme={theme}
+              showSend={showSend}
+              submit={this.submit}
+              recordAudioMessage={this.recordAudioMessage}
+              recordAudioMessageEnabled={Message_AudioRecorderEnabled}
+              showMessageBoxActions={this.showMessageBoxActions}
+            />
+          </View>
         </View>
-      </View>
+      </>
     );
   }
 
   render() {
     console.count(`${this.constructor.name}.render calls`);
-    const { route, theme, user, baseUrl, isMasterDetail } = this.props;
+    const { route, theme, user, baseUrl } = this.props;
     const { editing } = route.params;
     const { showEmojiKeyboard } = this.state;
     const backgroundColor = editing ? themes[theme].chatComponentBackground : themes[theme].messageboxBackground;

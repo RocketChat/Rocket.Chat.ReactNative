@@ -847,6 +847,9 @@ class MessageBox extends Component {
 		if (args.trackingType) {
 			this.setState({ trackingType: args.trackingType });
 		}
+		if (args.recording) {
+			this.setState({ recording: args.recording });
+		}
 		this.changeComposerState();
 	}
 
@@ -866,6 +869,7 @@ class MessageBox extends Component {
 			replyWithMention,
 			editRequest,
 			roomType,
+			getCustomEmoji
 		} = this.props;
 
 		const params = {
@@ -883,6 +887,7 @@ class MessageBox extends Component {
 			replyWithMention,
 			editRequest,
 			roomType,
+			getCustomEmoji,
 			text: this.text,
 			getFullScreenChanges: this.getFullScreenChanges
 		}
