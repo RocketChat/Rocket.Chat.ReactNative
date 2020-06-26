@@ -112,5 +112,30 @@ export default StyleSheet.create({
 	recordingCancelText: {
 		fontSize: 17,
 		...sharedStyles.textRegular
+	},
+	recordingTooltipContainer: {
+		position: 'absolute',
+		bottom: '120%',
+		right: 14,
+		zIndex: 10
+	},
+	recordingTooltip: {
+		alignSelf: 'flex-end',
+		padding: 10,
+		borderRadius: 4,
+		borderWidth: 1,
+		opacity: 0.96
+	},
+	recordingSlideToCancel: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	recordingDurationText: {
+		textAlignVertical: 'center',
+		fontSize: 17,
+		margin: 10,
+		letterSpacing: 0,
+		...sharedStyles.textRegular
 	}
 });

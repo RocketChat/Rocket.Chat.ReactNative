@@ -2,14 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import { Audio } from 'expo-av';
-import { BorderlessButton } from 'react-native-gesture-handler';
+import {
+	LongPressGestureHandler, State, PanGestureHandler
+} from 'react-native-gesture-handler';
 import { getInfoAsync } from 'expo-file-system';
 import { deactivateKeepAwake, activateKeepAwake } from 'expo-keep-awake';
+import Animated from 'react-native-reanimated';
 
 import styles from './styles';
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
+import { withDimensions } from '../../dimensions';
+import { isIOS, isAndroid } from '../../utils/deviceInfo';
+
 
 const RECORDING_EXTENSION = '.aac';
 const RECORDING_SETTINGS = {
@@ -39,6 +45,11 @@ const RECORDING_MODE = {
 	interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
 	interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX
 };
+const RECORDING_MINIMUM_DURATION = 300;	// Cancel if recording < this duration (in ms)
+const RECORDING_DEFER_END = 300;	//  Ms to wait before android ends the recording.
+const RECORDING_TOOLTIP_DURATION = 1500;	// Duration to show recording tooltip (in ms)
+const RECORDING_TOOLTIP_TEXT = 'Hold to record. Release to send';
+
 
 const formatTime = function(seconds) {
 	let minutes = Math.floor(seconds / 60);
@@ -48,20 +59,100 @@ const formatTime = function(seconds) {
 	return `${ minutes }:${ seconds }`;
 };
 
-export default class RecordAudio extends React.PureComponent {
+const {
+	cond, eq, and, event, block, Value, set, call, Clock, startClock, stopClock, sub, greaterThan
+} = Animated;
+
+class RecordAudio extends React.PureComponent {
 	static propTypes = {
 		theme: PropTypes.string,
 		recordingCallback: PropTypes.func,
-		onFinish: PropTypes.func
+		onFinish: PropTypes.func,
+		width: PropTypes.number
 	}
 
 	constructor(props) {
 		super(props);
+
 		this.isRecorderBusy = false;
+		this.longPressRef = React.createRef();
+		this.panRef = React.createRef();
+
 		this.state = {
 			isRecording: false,
-			recordingDurationMillis: 0
+			recordingDurationMillis: 0,
+			isRecordingTooltipVisible: false
 		};
+
+		this.touchX = new Value(0);
+
+		const longPressClock = new Clock();
+		const longPressStartTime = new Value(0);
+		const isLongPressStarted = new Value(0);
+
+		this._onLongPress = event([{
+			nativeEvent: ({ state }) => block([
+
+				cond(and(eq(state, State.ACTIVE), eq(isLongPressStarted, 0)), [
+					set(isLongPressStarted, 1),
+					startClock(longPressClock),
+					set(longPressStartTime, longPressClock),
+					call([], () => this.startRecordingAudio())
+				]),
+
+				cond(and(eq(state, State.END), eq(isLongPressStarted, 1), eq(isIOS, 1)), [
+					set(isLongPressStarted, 0),
+					stopClock(longPressClock),
+					cond(greaterThan(sub(longPressClock, longPressStartTime), RECORDING_MINIMUM_DURATION), [
+						call([], () => this.finishRecordingAudio())
+					], [
+						call([], () => {
+							setTimeout(() => {
+								this.cancelRecordingAudio();
+							}, RECORDING_DEFER_END);
+							this.setState({ isRecordingTooltipVisible: true });
+							setTimeout(() => {
+								this.setState({ isRecordingTooltipVisible: false });
+							}, RECORDING_TOOLTIP_DURATION);
+						})
+					])
+				])
+			])
+		}]);
+
+		const isPanStarted = new Value(0);
+
+		this._onPan = event([{
+			nativeEvent: ({ state, translationX }) => block([
+
+				cond(eq(state, State.ACTIVE), [
+					cond(eq(isPanStarted, 0), [
+						set(isPanStarted, 1)
+					]),
+					set(this.touchX, translationX)
+				]),
+
+				cond(and(eq(state, State.END), eq(isPanStarted, 1), eq(isAndroid, 1)), [
+					set(isPanStarted, 0),
+					stopClock(longPressClock),
+					cond(greaterThan(sub(longPressClock, longPressStartTime), RECORDING_MINIMUM_DURATION), [
+						call([], () => {
+							this.finishRecordingAudio();
+						})
+					], [
+						call([], () => {
+							setTimeout(() => {
+								this.cancelRecordingAudio();
+							}, RECORDING_DEFER_END);
+							this.setState({ isRecordingTooltipVisible: true });
+							setTimeout(() => {
+								this.setState({ isRecordingTooltipVisible: false });
+							}, RECORDING_TOOLTIP_DURATION);
+						})
+					])
+				])
+			])
+		}]);
 	}
 
 	componentDidUpdate() {
@@ -169,58 +260,114 @@ export default class RecordAudio extends React.PureComponent {
 		}
 	};
 
-	render() {
-		const { theme } = this.props;
-		const { isRecording } = this.state;
+	// onPan = ({ nativeEvent }) => {
+	// 	if (nativeEvent.state === State.END && Platform.OS === 'android') {
+	// 		const durationPressed = new Date() - this.timePressed;
+	// 		if (durationPressed > RECORDING_MINIMUM_DURATION) {
+	// 			setTimeout(() => {
+	// 				this.finishRecordingAudio();
+	// 			}, RECORDING_DEFER_END);
+	// 		} else {
+	// 			setTimeout(() => {
+	// 				this.cancelRecordingAudio();
+	// 			}, RECORDING_DEFER_END);
+	// 		}
+	// 	}
+	// };
 
-		if (!isRecording) {
-			return (
-				<BorderlessButton
-					onPress={this.startRecordingAudio}
-					style={styles.actionButton}
-					testID='messagebox-send-audio'
-					accessibilityLabel={I18n.t('Send_audio_message')}
-					accessibilityTraits='button'
-				>
-					<CustomIcon name='mic' size={23} color={themes[theme].tintColor} />
-				</BorderlessButton>
-			);
-		}
+	renderRecordingButton = () => {
+		const { theme } = this.props;
+		// const { isRecording } = this.state;
+
+		// const buttonIconColor = isRecording ? themes[theme].focusedBackground : themes[theme].tintColor;
+		const buttonIconColor = themes[theme].tintColor;
 
 		return (
-			<View style={styles.recordingContent}>
-				<View style={styles.textArea}>
-					<BorderlessButton
-						onPress={this.cancelRecordingAudio}
-						accessibilityLabel={I18n.t('Cancel_recording')}
-						accessibilityTraits='button'
-						style={styles.actionButton}
+			<PanGestureHandler
+				ref={this.panRef}
+				simultaneousHandlers={[this.longPressRef]}
+				onGestureEvent={this._onPan}
+			>
+				<Animated.View>
+					<LongPressGestureHandler
+						ref={this.longPressRef}
+						simultaneousHandlers={[this.panRef]}
+						onHandlerStateChange={this._onLongPress}
+						minDurationMs={0}
 					>
-						<CustomIcon
-							size={22}
-							color={themes[theme].dangerColor}
-							name='Cross'
-						/>
-					</BorderlessButton>
-					<Text
-						style={[styles.recordingCancelText, { color: themes[theme].titleText }]}
-					>
-						{this.duration}
+						<Animated.View
+							style={styles.actionButton}
+							testID='messagebox-send-audio'
+							accessibilityLabel={I18n.t('Send_audio_message')}
+							accessibilityTraits='button'
+						>
+							<CustomIcon style={{ zIndex: 1 }} name='mic' size={23} color={buttonIconColor} />
+						</Animated.View>
+					</LongPressGestureHandler>
+				</Animated.View>
+			</PanGestureHandler>
+		);
+	}
+
+	renderRecordingTooltip = () => {
+		const { width, theme } = this.props;
+		const { isRecordingTooltipVisible } = this.state;
+
+		if (!isRecordingTooltipVisible) { return null; }
+
+		return (
+			<View style={[styles.recordingTooltipContainer, { width }]}>
+				<View
+					style={[styles.recordingTooltip, {
+						backgroundColor: themes[theme].bannerBackground,
+						borderColor: themes[theme].borderColor
+					}]}
+				>
+					<Text style={{ color: themes[theme].bodyText }}>
+						{RECORDING_TOOLTIP_TEXT}
 					</Text>
 				</View>
-				<BorderlessButton
-					onPress={this.finishRecordingAudio}
-					accessibilityLabel={I18n.t('Finish_recording')}
-					accessibilityTraits='button'
-					style={styles.actionButton}
-				>
-					<CustomIcon
-						size={22}
-						color={themes[theme].successColor}
-						name='check'
-					/>
-				</BorderlessButton>
+
 			</View>
 		);
 	}
+
+	renderRecordingContent = () => {
+		const { theme } = this.props;
+		const { isRecording } = this.state;
+
+		if (!isRecording) { return null; }
+
+		return (
+			<Animated.View style={styles.recordingContent}>
+				<Text
+					style={[styles.recordingDurationText, { color: themes[theme].titleText }]}
+				>
+					{this.duration}
+				</Text>
+				<Animated.View style={[styles.recordingSlideToCancel, { transform: [{ translateX: this.touchX }] }]}>
+					<CustomIcon name='chevron-left' size={30} color={themes[theme].auxiliaryTintColor} />
+					<Text style={[styles.cancelRecordingText, {
+						color: themes[theme].auxiliaryText,
+						textAlign: 'right'
+					}]}
+					>
+						Slide to cancel
+					</Text>
+				</Animated.View>
+			</Animated.View>
+		);
+	}
+
+	render() {
+		return (
+			<>
+				{this.renderRecordingTooltip()}
+				{this.renderRecordingContent()}
+				{this.renderRecordingButton()}
+			</>
+		);
+	}
 }
+
+export default withDimensions(RecordAudio);
