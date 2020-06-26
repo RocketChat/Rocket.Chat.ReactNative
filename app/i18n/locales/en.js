@@ -379,6 +379,8 @@ export default {
 	Reactions_are_enabled: 'Reactions are enabled',
 	Reactions: 'Reactions',
 	Read: 'Read',
+	Read_External_Permission_Message: 'Rocket Chat needs to access photos, media, and files on your device',
+	Read_External_Permission: 'Read Media Permission',
 	Read_Only_Channel: 'Read Only Channel',
 	Read_Only: 'Read Only',
 	Read_Receipt: 'Read Receipt',

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, FlatList, Keyboard, BackHandler
+	View, Text, FlatList, Keyboard, BackHandler, PermissionsAndroid, ScrollView
 } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
 import * as FileSystem from 'expo-file-system';
@@ -11,7 +11,7 @@ import { isEqual, orderBy } from 'lodash';
 import { Q } from '@nozbe/watermelondb';
 
 import database from '../../lib/database';
-import { isIOS } from '../../utils/deviceInfo';
+import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import DirectoryItem, { ROW_HEIGHT } from '../../presentation/DirectoryItem';
 import ServerItem from '../../presentation/ServerItem';
@@ -25,6 +25,11 @@ import { themes } from '../../constants/colors';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
+
+const permission = {
+	title: I18n.t('Read_External_Permission'),
+	message: I18n.t('Read_External_Permission_Message')
+};
 
 const LIMIT = 50;
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
@@ -51,37 +56,39 @@ class ShareListView extends React.Component {
 			attachments: [],
 			text: '',
 			loading: true,
-			serverInfo: null
+			serverInfo: null,
+			needsPermission: true
 		};
 		this.setHeader();
 		this.unsubscribeFocus = props.navigation.addListener('focus', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
-		this.unsubscribeBlur = props.navigation.addListener('blur', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
+		this.unsubscribeBlur = props.navigation.addListener('blur', () => BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress));
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		const { server } = this.props;
-		setTimeout(async() => {
-			try {
-				const data = await ShareExtension.data();
-				const info = await Promise.all(data.filter(item => item.type === 'media').map(file => FileSystem.getInfoAsync(this.uriToPath(file.value), { size: true })));
-				const attachments = info.map(file => ({
-					filename: file.uri.substring(file.uri.lastIndexOf('/') + 1),
-					description: '',
-					size: file.size,
-					mime: mime.lookup(file.uri),
-					path: isIOS ? file.uri : `file://${ file.uri }`
-				}));
-				const text = data.filter(item => item.type === 'text').reduce((acc, item) => `${ item.value }\n${ acc }`, '');
-				this.setState({
-					text,
-					attachments
-				});
-			} catch {
-				// Do nothing
+		try {
+			const data = await ShareExtension.data();
+			if (isAndroid) {
+				await this.askForPermission(data);
 			}
+			const info = await Promise.all(data.filter(item => item.type === 'media').map(file => FileSystem.getInfoAsync(this.uriToPath(file.value), { size: true })));
+			const attachments = info.map(file => ({
+				filename: file.uri.substring(file.uri.lastIndexOf('/') + 1),
+				description: '',
+				size: file.size,
+				mime: mime.lookup(file.uri),
+				path: file.uri
+			}));
+			const text = data.filter(item => item.type === 'text').reduce((acc, item) => `${ item.value }\n${ acc }`, '');
+			this.setState({
+				text,
+				attachments
+			});
+		} catch {
+			// Do nothing
+		}
 
-			this.getSubscriptions(server);
-		}, 500);
+		this.getSubscriptions(server);
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -92,8 +99,11 @@ class ShareListView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { searching } = this.state;
+		const { searching, needsPermission } = this.state;
 		if (nextState.searching !== searching) {
+			return true;
+		}
+		if (nextState.needsPermission !== needsPermission) {
 			return true;
 		}
 
@@ -207,6 +217,19 @@ class ShareListView extends React.Component {
 			this.forceUpdate();
 		}
 	};
+
+	askForPermission = async(data) => {
+		const mediaIndex = data.findIndex(item => item.type === 'media');
+		if (mediaIndex !== -1) {
+			const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE, permission);
+			if (result !== PermissionsAndroid.RESULTS.GRANTED) {
+				this.setState({ needsPermission: true });
+				return Promise.reject();
+			}
+		}
+		this.setState({ needsPermission: false });
+		return Promise.resolve();
+	}
 
 	uriToPath = uri => decodeURIComponent(isIOS ? uri.replace(/^file:\/\//, '') : uri);
 
@@ -363,12 +386,24 @@ class ShareListView extends React.Component {
 
 	renderContent = () => {
 		const {
-			chats, loading, searchResults, searching, searchText
+			chats, loading, searchResults, searching, searchText, needsPermission
 		} = this.state;
 		const { theme } = this.props;
 
 		if (loading) {
 			return <ActivityIndicator theme={theme} />;
+		}
+
+		if (needsPermission) {
+			return (
+				<ScrollView
+					style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+					contentContainerStyle={[styles.container, styles.centered, { backgroundColor: themes[theme].backgroundColor }]}
+				>
+					<Text style={[styles.permissionTitle, { color: themes[theme].titleText }]}>{permission.title}</Text>
+					<Text style={[styles.permissionMessage, { color: themes[theme].bodyText }]}>{permission.message}</Text>
+				</ScrollView>
+			);
 		}
 
 		return (
