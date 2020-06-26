@@ -1,21 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, FlatList, Keyboard, BackHandler
+	View, Text, FlatList, Keyboard, BackHandler, PermissionsAndroid, ScrollView
 } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
+import * as FileSystem from 'expo-file-system';
 import { connect } from 'react-redux';
-import RNFetchBlob from 'rn-fetch-blob';
 import * as mime from 'react-native-mime-types';
 import { isEqual, orderBy } from 'lodash';
 import { Q } from '@nozbe/watermelondb';
 
 import database from '../../lib/database';
-import { isIOS } from '../../utils/deviceInfo';
+import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
-import { CustomIcon } from '../../lib/Icons';
-import log from '../../utils/log';
-import { canUploadFile } from '../../utils/media';
 import DirectoryItem, { ROW_HEIGHT } from '../../presentation/DirectoryItem';
 import ServerItem from '../../presentation/ServerItem';
 import { CancelModalButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
@@ -28,6 +25,12 @@ import { themes } from '../../constants/colors';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
+import RocketChat from '../../lib/rocketchat';
+
+const permission = {
+	title: I18n.t('Read_External_Permission'),
+	message: I18n.t('Read_External_Permission_Message')
+};
 
 const LIMIT = 50;
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
@@ -46,52 +49,47 @@ class ShareListView extends React.Component {
 		super(props);
 		this.data = [];
 		this.state = {
-			showError: false,
 			searching: false,
 			searchText: '',
-			value: '',
-			isMedia: false,
-			mediaLoading: false,
-			fileInfo: null,
 			searchResults: [],
 			chats: [],
 			servers: [],
+			attachments: [],
+			text: '',
 			loading: true,
-			serverInfo: null
+			serverInfo: null,
+			needsPermission: isAndroid || false
 		};
 		this.setHeader();
 		this.unsubscribeFocus = props.navigation.addListener('focus', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
-		this.unsubscribeBlur = props.navigation.addListener('blur', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
+		this.unsubscribeBlur = props.navigation.addListener('blur', () => BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress));
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		const { server } = this.props;
-		setTimeout(async() => {
-			try {
-				const { value, type } = await ShareExtension.data();
-				let fileInfo = null;
-				const isMedia = (type === 'media');
-				if (isMedia) {
-					this.setState({ mediaLoading: true });
-					const data = await RNFetchBlob.fs.stat(this.uriToPath(value));
-					fileInfo = {
-						name: data.filename,
-						description: '',
-						size: data.size,
-						mime: mime.lookup(data.path),
-						path: isIOS ? data.path : `file://${ data.path }`
-					};
-				}
-				this.setState({
-					value, fileInfo, isMedia, mediaLoading: false
-				});
-			} catch (e) {
-				log(e);
-				this.setState({ mediaLoading: false });
+		try {
+			const data = await ShareExtension.data();
+			if (isAndroid) {
+				await this.askForPermission(data);
 			}
+			const info = await Promise.all(data.filter(item => item.type === 'media').map(file => FileSystem.getInfoAsync(this.uriToPath(file.value), { size: true })));
+			const attachments = info.map(file => ({
+				filename: file.uri.substring(file.uri.lastIndexOf('/') + 1),
+				description: '',
+				size: file.size,
+				mime: mime.lookup(file.uri),
+				path: file.uri
+			}));
+			const text = data.filter(item => item.type === 'text').reduce((acc, item) => `${ item.value }\n${ acc }`, '');
+			this.setState({
+				text,
+				attachments
+			});
+		} catch {
+			// Do nothing
+		}
 
-			this.getSubscriptions(server);
-		}, 500);
+		this.getSubscriptions(server);
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -102,14 +100,11 @@ class ShareListView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { searching } = this.state;
+		const { searching, needsPermission } = this.state;
 		if (nextState.searching !== searching) {
 			return true;
 		}
-
-		const { isMedia } = this.state;
-		if (nextState.isMedia !== isMedia) {
-			this.getSubscriptions(nextProps.server, nextState.fileInfo);
+		if (nextState.needsPermission !== needsPermission) {
 			return true;
 		}
 
@@ -191,8 +186,7 @@ class ShareListView extends React.Component {
 		this.setState(...args);
 	}
 
-	getSubscriptions = async(server, fileInfo) => {
-		const { fileInfo: fileData } = this.state;
+	getSubscriptions = async(server) => {
 		const db = database.active;
 		const serversDB = database.servers;
 
@@ -215,19 +209,28 @@ class ShareListView extends React.Component {
 				// Do nothing
 			}
 
-			const canUploadFileResult = canUploadFile(fileInfo || fileData, serverInfo);
-
 			this.internalSetState({
 				chats: this.chats ? this.chats.slice() : [],
 				servers: this.servers ? this.servers.slice() : [],
 				loading: false,
-				showError: !canUploadFileResult.success,
-				error: canUploadFileResult.error,
 				serverInfo
 			});
 			this.forceUpdate();
 		}
 	};
+
+	askForPermission = async(data) => {
+		const mediaIndex = data.findIndex(item => item.type === 'media');
+		if (mediaIndex !== -1) {
+			const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE, permission);
+			if (result !== PermissionsAndroid.RESULTS.GRANTED) {
+				this.setState({ needsPermission: true });
+				return Promise.reject();
+			}
+		}
+		this.setState({ needsPermission: false });
+		return Promise.resolve();
+	}
 
 	uriToPath = uri => decodeURIComponent(isIOS ? uri.replace(/^file:\/\//, '') : uri);
 
@@ -237,16 +240,16 @@ class ShareListView extends React.Component {
 		return ((item.prid || useRealName) && item.fname) || item.name;
 	}
 
-	shareMessage = (item) => {
-		const { value, isMedia, fileInfo } = this.state;
+	shareMessage = (room) => {
+		const { attachments, text, serverInfo } = this.state;
 		const { navigation } = this.props;
 
 		navigation.navigate('ShareView', {
-			rid: item.rid,
-			value,
-			isMedia,
-			fileInfo,
-			name: this.getRoomTitle(item)
+			room,
+			text,
+			attachments,
+			serverInfo,
+			isShareExtension: true
 		});
 	}
 
@@ -305,13 +308,13 @@ class ShareListView extends React.Component {
 				}}
 				title={this.getRoomTitle(item)}
 				baseUrl={server}
-				avatar={this.getRoomTitle(item)}
+				avatar={RocketChat.getRoomAvatar(item)}
 				description={
 					item.t === 'c'
 						? (item.topic || item.description)
 						: item.fname
 				}
-				type={item.t}
+				type={item.prid ? 'discussion' : item.t}
 				onPress={() => this.shareMessage(item)}
 				testID={`share-extension-item-${ item.name }`}
 				theme={theme}
@@ -384,12 +387,24 @@ class ShareListView extends React.Component {
 
 	renderContent = () => {
 		const {
-			chats, mediaLoading, loading, searchResults, searching, searchText
+			chats, loading, searchResults, searching, searchText, needsPermission
 		} = this.state;
 		const { theme } = this.props;
 
-		if (mediaLoading || loading) {
+		if (loading) {
 			return <ActivityIndicator theme={theme} />;
+		}
+
+		if (needsPermission) {
+			return (
+				<ScrollView
+					style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+					contentContainerStyle={[styles.container, styles.centered, { backgroundColor: themes[theme].backgroundColor }]}
+				>
+					<Text style={[styles.permissionTitle, { color: themes[theme].titleText }]}>{permission.title}</Text>
+					<Text style={[styles.permissionMessage, { color: themes[theme].bodyText }]}>{permission.message}</Text>
+				</ScrollView>
+			);
 		}
 
 		return (
@@ -414,42 +429,12 @@ class ShareListView extends React.Component {
 		);
 	}
 
-	renderError = () => {
-		const {
-			fileInfo: file, loading, searching, error
-		} = this.state;
-		const { theme } = this.props;
-
-		if (loading) {
-			return <ActivityIndicator theme={theme} />;
-		}
-
-		return (
-			<View style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-				{ !searching
-					? (
-						<>
-							{this.renderSelectServer()}
-						</>
-					)
-					: null
-				}
-				<View style={[styles.container, styles.centered, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t(error)}</Text>
-					<CustomIcon name='cancel' size={120} color={themes[theme].dangerColor} />
-					<Text style={[styles.fileMime, { color: themes[theme].titleText }]}>{ file.mime }</Text>
-				</View>
-			</View>
-		);
-	}
-
 	render() {
-		const { showError } = this.state;
 		const { theme } = this.props;
 		return (
 			<SafeAreaView theme={theme}>
 				<StatusBar theme={theme} />
-				{ showError ? this.renderError() : this.renderContent() }
+				{this.renderContent()}
 			</SafeAreaView>
 		);
 	}
