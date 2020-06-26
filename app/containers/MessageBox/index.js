@@ -889,7 +889,8 @@ class MessageBox extends Component {
 			roomType,
 			getCustomEmoji,
 			text: this.text,
-			getFullScreenChanges: this.getFullScreenChanges
+			getFullScreenChanges: this.getFullScreenChanges,
+			showMessageBoxActions: this.showMessageBoxActions
 		}
 		Navigation.navigate('FullScreenComposerView', params)
 		this.changeComposerState();

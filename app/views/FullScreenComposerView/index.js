@@ -677,8 +677,12 @@ class FullScreenComposerView extends Component {
 
   showMessageBoxActions = () => {
     const { route } = this.props;
-    const { showActionSheet } = route.params;
-    showActionSheet({ options: this.options });
+    const { showMessageBoxActions, replying, replyCancel } = route.params;
+    this.closeModal();
+    if ( replying ) {
+      replyCancel();
+    }
+    showMessageBoxActions();
   }
 
   editCancel = () => {
