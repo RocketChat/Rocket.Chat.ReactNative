@@ -14,6 +14,7 @@ import buildMessage from '../helpers/buildMessage';
 import RocketChat from '../../rocketchat';
 import EventEmitter from '../../../utils/events';
 import { removedRoom } from '../../../actions/room';
+import { setUser } from '../../../actions/login';
 import { INAPP_NOTIFICATION_EMITTER } from '../../../containers/InAppNotification';
 
 const removeListener = listener => listener.stop();
@@ -241,6 +242,10 @@ export default function subscribeRooms() {
 		}
 		const [type, data] = ddpMessage.fields.args;
 		const [, ev] = ddpMessage.fields.eventName.split('/');
+		if (/userData/.test(ev)) {
+			const [{ diff }] = ddpMessage.fields.args;
+			store.dispatch(setUser({ statusLivechat: diff?.statusLivechat }));
+		}
 		if (/subscriptions/.test(ev)) {
 			if (type === 'removed') {
 				try {

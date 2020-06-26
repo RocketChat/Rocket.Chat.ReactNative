@@ -212,9 +212,6 @@ class RoomView extends React.Component {
 			if (roomUpdate.topic !== prevState.roomUpdate.topic) {
 				this.setHeader();
 			}
-			if (!isEqual(prevState.roomUpdate.roles, roomUpdate.roles)) {
-				this.setReadOnly();
-			}
 		}
 		// If it's a livechat room
 		if (this.t === 'l') {
@@ -225,6 +222,7 @@ class RoomView extends React.Component {
 		if (((roomUpdate.fname !== prevState.roomUpdate.fname) || (roomUpdate.name !== prevState.roomUpdate.name)) && !this.tmid) {
 			this.setHeader();
 		}
+		this.setReadOnly();
 	}
 
 	async componentWillUnmount() {
