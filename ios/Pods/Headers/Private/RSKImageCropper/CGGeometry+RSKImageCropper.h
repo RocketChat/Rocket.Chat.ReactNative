@@ -1,1 +1,0 @@
-../../../RSKImageCropper/RSKImageCropper/CGGeometry+RSKImageCropper.h

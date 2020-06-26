@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 import { NavigationContainer } from '@react-navigation/native';
 import { AppearanceProvider } from 'react-native-appearance';
@@ -32,6 +33,8 @@ import ShareView from './views/ShareView';
 import SelectServerView from './views/SelectServerView';
 import { setCurrentScreen } from './utils/log';
 import AuthLoadingView from './views/AuthLoadingView';
+import { DimensionsContext } from './dimensions';
+import debounce from './utils/debounce';
 
 const Inside = createStackNavigator();
 const InsideStack = () => {
@@ -43,7 +46,6 @@ const InsideStack = () => {
 	};
 	screenOptions.headerStyle = {
 		...screenOptions.headerStyle,
-		// TODO: fix on multiple files PR :)
 		height: 57
 	};
 
@@ -84,7 +86,7 @@ const OutsideStack = () => {
 // App
 const Stack = createStackNavigator();
 export const App = ({ root }) => (
-	<Stack.Navigator screenOptions={{ headerShown: false }}>
+	<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
 		<>
 			{!root ? (
 				<Stack.Screen
@@ -115,13 +117,17 @@ App.propTypes = {
 class Root extends React.Component {
 	constructor(props) {
 		super(props);
+		const { width, height, scale } = Dimensions.get('screen');
 		this.state = {
 			theme: defaultTheme(),
 			themePreferences: {
 				currentTheme: supportSystemTheme() ? 'automatic' : 'light',
 				darkLevel: 'dark'
 			},
-			root: ''
+			root: '',
+			width,
+			height,
+			scale
 		};
 		this.init();
 	}
@@ -159,28 +165,49 @@ class Root extends React.Component {
 		});
 	}
 
+	// Dimensions update fires twice
+	onDimensionsChange = debounce(({ window: { width, height, scale } }) => {
+		this.setDimensions({ width, height, scale });
+		this.setMasterDetail(width);
+	})
+
+	setDimensions = ({ width, height, scale }) => {
+		this.setState({ width, height, scale });
+	}
+
 	render() {
-		const { theme, root } = this.state;
+		const {
+			theme, root, width, height, scale
+		} = this.state;
 		const navTheme = navigationTheme(theme);
 		return (
 			<AppearanceProvider>
 				<Provider store={store}>
 					<ThemeContext.Provider value={{ theme }}>
-						<NavigationContainer
-							theme={navTheme}
-							ref={Navigation.navigationRef}
-							onStateChange={(state) => {
-								const previousRouteName = Navigation.routeNameRef.current;
-								const currentRouteName = getActiveRouteName(state);
-								if (previousRouteName !== currentRouteName) {
-									setCurrentScreen(currentRouteName);
-								}
-								Navigation.routeNameRef.current = currentRouteName;
+						<DimensionsContext.Provider
+							value={{
+								width,
+								height,
+								scale,
+								setDimensions: this.setDimensions
 							}}
 						>
-							<App root={root} />
-						</NavigationContainer>
-						<ScreenLockedView />
+							<NavigationContainer
+								theme={navTheme}
+								ref={Navigation.navigationRef}
+								onStateChange={(state) => {
+									const previousRouteName = Navigation.routeNameRef.current;
+									const currentRouteName = getActiveRouteName(state);
+									if (previousRouteName !== currentRouteName) {
+										setCurrentScreen(currentRouteName);
+									}
+									Navigation.routeNameRef.current = currentRouteName;
+								}}
+							>
+								<App root={root} />
+							</NavigationContainer>
+							<ScreenLockedView />
+						</DimensionsContext.Provider>
 					</ThemeContext.Provider>
 				</Provider>
 			</AppearanceProvider>
