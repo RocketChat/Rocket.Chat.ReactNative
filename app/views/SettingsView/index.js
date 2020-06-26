@@ -325,7 +325,7 @@ class SettingsView extends React.Component {
 					{this.showLivechat ? (
 						<>
 							<ListItem
-								title={I18n.t('Livechat')}
+								title={I18n.t('Omnichannel')}
 								testID='settings-view-livechat'
 								right={() => this.renderLivechatSwitch()}
 								theme={theme}
