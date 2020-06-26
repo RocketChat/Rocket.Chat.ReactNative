@@ -104,7 +104,7 @@ const ThumbContent = React.memo(({ item, theme, isShareExtension }) => {
 		);
 	}
 
-	// Multiple files selection (not audio or video) is not implemented, so there's no thumb
+	// Multiple files upload of files different than image/video is not implemented, so there's no thumb
 	return null;
 });
 

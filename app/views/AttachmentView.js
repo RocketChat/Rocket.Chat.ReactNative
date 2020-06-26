@@ -152,9 +152,7 @@ class AttachmentView extends React.Component {
 
 	render() {
 		const { loading, attachment } = this.state;
-		const {
-			theme, user, baseUrl
-		} = this.props;
+		const { theme, user, baseUrl } = this.props;
 		let content = null;
 
 		if (attachment && attachment.image_url) {

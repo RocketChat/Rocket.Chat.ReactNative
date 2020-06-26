@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import { isEmpty } from 'lodash';
 
 const getUser = (state) => {
-	if (!isEmpty(state.share.user)) {
+	if (!isEmpty(state.share?.user)) {
 		return state.share.user;
 	}
 	return state.login?.user;

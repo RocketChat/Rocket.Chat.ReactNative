@@ -212,15 +212,17 @@ class ShareView extends Component {
 	};
 
 	selectFile = (item) => {
-		const { text } = this.messagebox.current;
 		const { attachments, selected } = this.state;
-		const newAttachments = attachments.map((att) => {
-			if (att.path === selected.path) {
-				att.description = text;
-			}
-			return att;
-		});
-		this.setState({ attachments: newAttachments, selected: item });
+		if (attachments.length > 0) {
+			const { text } = this.messagebox.current;
+			const newAttachments = attachments.map((att) => {
+				if (att.path === selected.path) {
+					att.description = text;
+				}
+				return att;
+			});
+			return this.setState({ attachments: newAttachments, selected: item });
+		}
 	}
 
 	removeFile = (item) => {
@@ -240,11 +242,7 @@ class ShareView extends Component {
 	}
 
 	onChangeText = (text) => {
-		const { attachments } = this.state;
-		// we manage attachments on this state only when it's text only sharing
-		if (!attachments.length) {
-			this.setState({ text });
-		}
+		this.setState({ text });
 	}
 
 	renderContent = () => {

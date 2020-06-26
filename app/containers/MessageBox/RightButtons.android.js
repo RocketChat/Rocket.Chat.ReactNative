@@ -14,7 +14,7 @@ const RightButtons = React.memo(({
 	if (recordAudioMessageEnabled || isActionsEnabled) {
 		return (
 			<>
-				{isActionsEnabled ? <AudioButton onPress={recordAudioMessage} theme={theme} /> : null}
+				{recordAudioMessageEnabled ? <AudioButton onPress={recordAudioMessage} theme={theme} /> : null}
 				{isActionsEnabled ? <ActionsButton onPress={showMessageBoxActions} theme={theme} /> : null}
 			</>
 		);

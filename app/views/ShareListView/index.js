@@ -25,6 +25,7 @@ import { themes } from '../../constants/colors';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
+import RocketChat from '../../lib/rocketchat';
 
 const permission = {
 	title: I18n.t('Read_External_Permission'),
@@ -57,7 +58,7 @@ class ShareListView extends React.Component {
 			text: '',
 			loading: true,
 			serverInfo: null,
-			needsPermission: true
+			needsPermission: isAndroid || false
 		};
 		this.setHeader();
 		this.unsubscribeFocus = props.navigation.addListener('focus', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
@@ -307,7 +308,7 @@ class ShareListView extends React.Component {
 				}}
 				title={this.getRoomTitle(item)}
 				baseUrl={server}
-				avatar={item.t === 'd' ? item.name : this.getRoomTitle(item)}
+				avatar={RocketChat.getRoomAvatar(item)}
 				description={
 					item.t === 'c'
 						? (item.topic || item.description)
