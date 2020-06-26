@@ -132,7 +132,7 @@ class FullScreenComposerView extends Component {
     this.state = {
       mentions: [],
       showEmojiKeyboard: false,
-      showSend: !!route.params.text || false,
+      showSend: !!route.params?.text || false,
       recording: false,
       trackingType: '',
       file: {
@@ -192,12 +192,12 @@ class FullScreenComposerView extends Component {
       ...libPickerLabels
     };
   }
-  
+
   async componentDidMount() {
     const db = database.active;
     const { route } = this.props;
     const { rid, tmid, navigation } = route.params;
-    
+
     BackHandler.addEventListener('hardwareBackPress', this.backAction);
     let msg;
     try {
@@ -249,11 +249,8 @@ class FullScreenComposerView extends Component {
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     const { route } = this.props;
-    const { isFocused, editing, replying } = route.params;
+    const { editing, replying } = route.params;
 
-    if (!isFocused()) {
-      return;
-    }
     if (editing !== nextProps.editing && nextProps.editing) {
       this.setInput(nextProps.message.msg);
       if (this.text) {
@@ -273,14 +270,11 @@ class FullScreenComposerView extends Component {
     } = this.state;
     const { route, theme } = this.props;
     const {
-      roomType, replying, editing, isFocused, message
+      roomType, replying, editing, message
     } = route.params;
 
     if (nextProps.route.params.theme !== theme) {
       return true;
-    }
-    if (!isFocused()) {
-      return false;
     }
     if (nextProps.route.params.roomType !== roomType) {
       return true;
@@ -744,6 +738,8 @@ class FullScreenComposerView extends Component {
       return;
     }
 
+    this.closeModal();
+
     const {
       editing, replying, message: { id: messageTmid }, replyCancel
     } = route.params;
@@ -861,8 +857,17 @@ class FullScreenComposerView extends Component {
   closeModal = () => {
     const { navigation, route } = this.props;
     const { getFullScreenChanges } = route.params;
+    const { commandPreview, showCommandPreview, mentions, trackingType, command } = this.state;
     navigation.goBack();
-    getFullScreenChanges(this.text);
+    const args = {
+      text: this.text,
+      commandPreview,
+      showCommandPreview,
+      mentions,
+      trackingType,
+      command
+    };
+    getFullScreenChanges(args);
   }
 
   renderCloseButton = () => {
@@ -882,6 +887,7 @@ class FullScreenComposerView extends Component {
   renderContent = () => {
     const { theme, route } = this.props;
     const { text } = route.params;
+    const { commandPreview, showCommandPreview, mentions, trackingType } = this.state;
 
     const isAndroidTablet = isTablet && isAndroid ? {
       onSubmitEditing: this.submit,
@@ -889,21 +895,26 @@ class FullScreenComposerView extends Component {
     } : {};
 
     return (
-      <TextInput
-        ref={component => this.component = component}
-        style={stylez.input}
-        returnKeyType='default'
-        keyboardType='twitter'
-        blurOnSubmit={false}
-        placeholder={I18n.t('New_Message')}
-        onChangeText={this.onChangeText}
-        underlineColorAndroid='transparent'
-        defaultValue={text}
-        multiline
-        testID='full-screen-messagebox-input'
-        theme={theme}
-        {...isAndroidTablet}
-      />
+      <View style={{ flex: 1 }}>
+        <TextInput
+          ref={component => this.component = component}
+          style={stylez.input}
+          returnKeyType='default'
+          keyboardType='twitter'
+          blurOnSubmit={false}
+          placeholder={I18n.t('New_Message')}
+          onChangeText={this.onChangeText}
+          underlineColorAndroid='transparent'
+          defaultValue={text}
+          multiline
+          autoFocus
+          testID='full-screen-messagebox-input'
+          theme={theme}
+          {...isAndroidTablet}
+        />
+        <CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
+        <Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
+      </View>
     );
   }
 

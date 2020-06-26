@@ -828,10 +828,25 @@ class MessageBox extends Component {
 		});
 	}
 
-	getFullScreenChanges = (text) => {
-		this.text = text;
-		const isTextEmpty = text.length === 0;
+	getFullScreenChanges = (args) => {
+		this.text = args.text;
+		const isTextEmpty = args.text.length === 0;
 		this.setShowSend(!isTextEmpty);
+		if (args.commandPreview) {
+			this.setState({ commandPreview: args.commandPreview });
+		}
+		if (args.showCommandPreview) {
+			this.setState({ showCommandPreview: args.showCommandPreview });
+		}
+		if (args.command) {
+			this.setState({ command: args.command });
+		}
+		if (args.mentions) {
+			this.setState({ mentions: args.mentions });
+		}
+		if (args.trackingType) {
+			this.setState({ trackingType: args.trackingType });
+		}
 		this.changeComposerState();
 	}
 
@@ -841,7 +856,6 @@ class MessageBox extends Component {
 			typing,
 			rid,
 			tmid,
-			isFocused,
 			replying,
 			message,
 			replyCancel,
@@ -858,7 +872,6 @@ class MessageBox extends Component {
 			editing,
 			rid,
 			tmid,
-			isFocused,
 			replying,
 			message,
 			replyCancel,
@@ -975,7 +988,7 @@ class MessageBox extends Component {
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { showEmojiKeyboard, file, isFullscreen } = this.state;
+		const { showEmojiKeyboard, file } = this.state;
 		const {
 			user, baseUrl, theme, isMasterDetail
 		} = this.props;
