@@ -906,7 +906,7 @@ class MessageBox extends Component {
 
 		return (
 			<TouchableOpacity onPress={() => this.openModal()} style={buttonStyle}>
-				<CustomIcon name='chevron-up' size={14} color={themes[theme].tintColor} />
+				<CustomIcon name='chevron-up' size={24} color={themes[theme].tintColor} />
 			</TouchableOpacity>
 		);
 	}
