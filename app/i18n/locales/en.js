@@ -334,6 +334,7 @@ export default {
 	No_available_agents_to_transfer: 'No available agents to transfer',
 	Offline: 'Offline',
 	Oops: 'Oops!',
+	Omnichannel: 'Omnichannel',
 	Onboarding_description: 'A workspace is your team or organization’s space to collaborate. Ask the workspace admin for address to join or create one for your team.',
 	Onboarding_join_workspace: 'Join a workspace',
 	Onboarding_subtitle: 'Beyond Team Collaboration',
