@@ -317,8 +317,8 @@ const InsideStackNavigator = () => {
 				options={{ headerShown: false }}
 			/>
 			<InsideStack.Screen
-				name="FullScreenComposerView" 
-				component={FullScreenComposerView} 
+				name='FullScreenComposerView'
+				component={FullScreenComposerView}
 				options={{ headerShown: false }}
 			/>
 		</InsideStack.Navigator>
