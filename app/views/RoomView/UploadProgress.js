@@ -173,7 +173,7 @@ class UploadProgress extends Component {
 				[
 					<View key='row' style={styles.row}>
 						<CustomIcon name='clip' size={20} color={themes[theme].auxiliaryText} />
-						<Text style={[styles.descriptionContainer, styles.descriptionText, { color: themes[theme].auxiliaryText }]} ellipsizeMode='tail' numberOfLines={1}>
+						<Text style={[styles.descriptionContainer, styles.descriptionText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
 							{I18n.t('Uploading')} {item.name}
 						</Text>
 						<CustomIcon name='Cross' size={20} color={themes[theme].auxiliaryText} onPress={() => this.cancelUpload(item)} />
@@ -186,7 +186,7 @@ class UploadProgress extends Component {
 			<View style={styles.row}>
 				<CustomIcon name='warning' size={20} color={themes[theme].dangerColor} />
 				<View style={styles.descriptionContainer}>
-					<Text style={[styles.descriptionText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Error_uploading')} {item.name}</Text>
+					<Text style={[styles.descriptionText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{I18n.t('Error_uploading')} {item.name}</Text>
 					<TouchableOpacity onPress={() => this.tryAgain(item)}>
 						<Text style={[styles.tryAgainButtonText, { color: themes[theme].tintColor }]}>{I18n.t('Try_again')}</Text>
 					</TouchableOpacity>

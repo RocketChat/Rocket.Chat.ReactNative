@@ -1,6 +1,12 @@
 import { createSelector } from 'reselect';
+import { isEmpty } from 'lodash';
 
-const getUser = state => state.login.user || {};
+const getUser = (state) => {
+	if (!isEmpty(state.share?.user)) {
+		return state.share.user;
+	}
+	return state.login?.user;
+};
 const getLoginServices = state => state.login.services || {};
 const getShowFormLoginSetting = state => state.settings.Accounts_ShowFormLogin || false;
 
