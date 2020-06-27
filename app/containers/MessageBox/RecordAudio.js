@@ -260,111 +260,73 @@ class RecordAudio extends React.PureComponent {
 		}
 	};
 
-	// onPan = ({ nativeEvent }) => {
-	// 	if (nativeEvent.state === State.END && Platform.OS === 'android') {
-	// 		const durationPressed = new Date() - this.timePressed;
-	// 		if (durationPressed > RECORDING_MINIMUM_DURATION) {
-	// 			setTimeout(() => {
-	// 				this.finishRecordingAudio();
-	// 			}, RECORDING_DEFER_END);
-	// 		} else {
-	// 			setTimeout(() => {
-	// 				this.cancelRecordingAudio();
-	// 			}, RECORDING_DEFER_END);
-	// 		}
-	// 	}
-	// };
-
-	renderRecordingButton = () => {
-		const { theme } = this.props;
-		// const { isRecording } = this.state;
-
-		// const buttonIconColor = isRecording ? themes[theme].focusedBackground : themes[theme].tintColor;
-		const buttonIconColor = themes[theme].tintColor;
-
-		return (
-			<PanGestureHandler
-				ref={this.panRef}
-				simultaneousHandlers={[this.longPressRef]}
-				onGestureEvent={this._onPan}
-			>
-				<Animated.View>
-					<LongPressGestureHandler
-						ref={this.longPressRef}
-						simultaneousHandlers={[this.panRef]}
-						onHandlerStateChange={this._onLongPress}
-						minDurationMs={0}
-					>
-						<Animated.View
-							style={styles.actionButton}
-							testID='messagebox-send-audio'
-							accessibilityLabel={I18n.t('Send_audio_message')}
-							accessibilityTraits='button'
-						>
-							<CustomIcon style={{ zIndex: 1 }} name='mic' size={23} color={buttonIconColor} />
-						</Animated.View>
-					</LongPressGestureHandler>
-				</Animated.View>
-			</PanGestureHandler>
-		);
-	}
-
-	renderRecordingTooltip = () => {
-		const { width, theme } = this.props;
-		const { isRecordingTooltipVisible } = this.state;
-
-		if (!isRecordingTooltipVisible) { return null; }
-
-		return (
-			<View style={[styles.recordingTooltipContainer, { width }]}>
-				<View
-					style={[styles.recordingTooltip, {
-						backgroundColor: themes[theme].bannerBackground,
-						borderColor: themes[theme].borderColor
-					}]}
-				>
-					<Text style={{ color: themes[theme].bodyText }}>
-						{RECORDING_TOOLTIP_TEXT}
-					</Text>
-				</View>
-
-			</View>
-		);
-	}
-
-	renderRecordingContent = () => {
-		const { theme } = this.props;
-		const { isRecording } = this.state;
-
-		if (!isRecording) { return null; }
-
-		return (
-			<Animated.View style={styles.recordingContent}>
-				<Text
-					style={[styles.recordingDurationText, { color: themes[theme].titleText }]}
-				>
-					{this.duration}
-				</Text>
-				<Animated.View style={[styles.recordingSlideToCancel, { transform: [{ translateX: this.touchX }] }]}>
-					<CustomIcon name='chevron-left' size={30} color={themes[theme].auxiliaryTintColor} />
-					<Text style={[styles.cancelRecordingText, {
-						color: themes[theme].auxiliaryText,
-						textAlign: 'right'
-					}]}
-					>
-						Slide to cancel
-					</Text>
-				</Animated.View>
-			</Animated.View>
-		);
-	}
-
 	render() {
+		const { theme, width } = this.props;
+		const { isRecording, isRecordingTooltipVisible } = this.state;
+
+		const buttonIconColor = isRecording ? themes[theme].focusedBackground : themes[theme].tintColor;
+
 		return (
 			<>
-				{this.renderRecordingTooltip()}
-				{this.renderRecordingContent()}
-				{this.renderRecordingButton()}
+				{ isRecordingTooltipVisible && (
+					<View style={[styles.recordingTooltipContainer, { width }]}>
+						<View
+							style={[styles.recordingTooltip, {
+								backgroundColor: themes[theme].bannerBackground,
+								borderColor: themes[theme].borderColor
+							}]}
+						>
+							<Text style={{ color: themes[theme].bodyText }}>
+								{RECORDING_TOOLTIP_TEXT}
+							</Text>
+						</View>
+
+					</View>
+				)}
+
+				{ isRecording && (
+					<Animated.View style={styles.recordingContent}>
+						<Text
+							style={[styles.recordingDurationText, { color: themes[theme].titleText }]}
+						>
+							{this.duration}
+						</Text>
+						<Animated.View style={[styles.recordingSlideToCancel, { transform: [{ translateX: this.touchX }] }]}>
+							<CustomIcon name='chevron-left' size={30} color={themes[theme].auxiliaryTintColor} />
+							<Text style={[styles.cancelRecordingText, {
+								color: themes[theme].auxiliaryText,
+								textAlign: 'right'
+							}]}
+							>
+								Slide to cancel
+							</Text>
+						</Animated.View>
+					</Animated.View>
+				)}
+
+				<PanGestureHandler
+					ref={this.panRef}
+					simultaneousHandlers={[this.longPressRef]}
+					onGestureEvent={this._onPan}
+				>
+					<Animated.View>
+						<LongPressGestureHandler
+							ref={this.longPressRef}
+							simultaneousHandlers={[this.panRef]}
+							onHandlerStateChange={this._onLongPress}
+							minDurationMs={0}
+						>
+							<Animated.View
+								style={styles.actionButton}
+								testID='messagebox-send-audio'
+								accessibilityLabel={I18n.t('Send_audio_message')}
+								accessibilityTraits='button'
+							>
+								<CustomIcon style={{ zIndex: 1 }} name='mic' size={23} color={buttonIconColor} />
+							</Animated.View>
+						</LongPressGestureHandler>
+					</Animated.View>
+				</PanGestureHandler>
 			</>
 		);
 	}
