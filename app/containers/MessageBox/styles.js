@@ -128,8 +128,8 @@ export default StyleSheet.create({
 	},
 	recordingSlideToCancel: {
 		flexDirection: 'row',
-		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
+		marginRight: 24
 	},
 	recordingDurationText: {
 		textAlignVertical: 'center',
@@ -137,5 +137,10 @@ export default StyleSheet.create({
 		margin: 10,
 		letterSpacing: 0,
 		...sharedStyles.textRegular
+	},
+	recordingButtonBubble: {
+		width: 1,
+		height: 1,
+		borderRadius: 200
 	}
 });
