@@ -62,10 +62,6 @@ const navigate = function* navigate({ params }) {
 };
 
 const handleOpen = function* handleOpen({ params }) {
-	if (!params.host && !params.isCall) {
-		return;
-	}
-
 	const serversDB = database.servers;
 	const serversCollection = serversDB.collections.get('servers');
 
@@ -80,6 +76,9 @@ const handleOpen = function* handleOpen({ params }) {
 		});
 	}
 
+	if (!host) {
+		return;
+	}
 	if (!/^(http|https)/.test(host)) {
 		host = `https://${ params.host }`;
 	}
