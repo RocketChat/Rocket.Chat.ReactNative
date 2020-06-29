@@ -106,7 +106,7 @@ const handleOpen = function* handleOpen({ params }) {
 	} else {
 		// search if deep link's server already exists
 		try {
-			const servers = yield serversCollection.query().fetch();
+			const servers = yield serversCollection.find(host);
 			if (servers && user) {
 				yield localAuthenticate(host);
 				yield put(selectServerRequest(host));
