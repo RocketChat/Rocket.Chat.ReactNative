@@ -60,8 +60,10 @@ export default async function canOpenRoom({ rid, path, isCall }) {
 		const subsCollection = db.collections.get('subscriptions');
 
 		if (isCall) {
+			// Extract rid from a Jitsi URL
+			// Eg.: rocketchat://jitsi.rocket.chat/[Jitsi_URL_Room_Prefix][uniqueID][rid][?jwt]
 			const { Jitsi_URL_Room_Prefix, uniqueID } = store.getState().settings;
-			rid = path.replace(`${ Jitsi_URL_Room_Prefix }${ uniqueID }`, '');
+			rid = path.replace(`${ Jitsi_URL_Room_Prefix }${ uniqueID }`, '').replace(/\?(.*)/g, '');
 		}
 
 		if (rid) {

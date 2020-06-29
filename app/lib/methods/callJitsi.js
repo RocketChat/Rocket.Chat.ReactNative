@@ -1,7 +1,7 @@
 import reduxStore from '../createStore';
 import Navigation from '../Navigation';
 
-const jitsiURL = async(rid) => {
+const jitsiURL = async({ rid }) => {
 	const { settings } = reduxStore.getState();
 	const { Jitsi_Enabled } = settings;
 
@@ -31,8 +31,9 @@ const jitsiURL = async(rid) => {
 	return `${ protocol }${ domain }${ prefix }${ uniqueIdentifier }${ rid }${ queryString }`;
 };
 
-function callJitsi(rid, onlyAudio = false) {
-	Navigation.navigate('JitsiMeetView', { url: jitsiURL(rid), onlyAudio, rid });
+async function callJitsi(rid, onlyAudio = false) {
+	const url = await jitsiURL({ rid });
+	Navigation.navigate('JitsiMeetView', { url, onlyAudio, rid });
 }
 
 export default callJitsi;
