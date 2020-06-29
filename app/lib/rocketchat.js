@@ -822,7 +822,7 @@ const RocketChat = {
 	},
 	changeLivechatStatus() {
 		// RC 0.26.0
-		return this.methodCall('livechat:changeLivechatStatus');
+		return this.methodCallWrapper('livechat:changeLivechatStatus');
 	},
 
 	getUidDirectMessage(room) {
