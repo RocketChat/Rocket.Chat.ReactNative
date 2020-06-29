@@ -62,11 +62,24 @@ const navigate = function* navigate({ params }) {
 };
 
 const handleOpen = function* handleOpen({ params }) {
-	if (!params.host) {
+	if (!params.host && !params.isCall) {
 		return;
 	}
 
+	const serversDB = database.servers;
+	const serversCollection = serversDB.collections.get('servers');
+
 	let { host } = params;
+	if (params.isCall) {
+		const servers = yield serversCollection.query().fetch();
+		// search from which server is that call
+		servers.forEach(({ uniqueID, id }) => {
+			if (params.path.includes(uniqueID)) {
+				host = id;
+			}
+		});
+	}
+
 	if (!/^(http|https)/.test(host)) {
 		host = `https://${ params.host }`;
 	}
@@ -92,10 +105,8 @@ const handleOpen = function* handleOpen({ params }) {
 		yield navigate({ params });
 	} else {
 		// search if deep link's server already exists
-		const serversDB = database.servers;
-		const serversCollection = serversDB.collections.get('servers');
 		try {
-			const servers = yield serversCollection.find(host);
+			const servers = yield serversCollection.query().fetch();
 			if (servers && user) {
 				yield localAuthenticate(host);
 				yield put(selectServerRequest(host));
