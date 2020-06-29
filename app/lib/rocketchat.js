@@ -1141,6 +1141,14 @@ const RocketChat = {
 			rid, updatedSince
 		});
 	},
+	readThreads(tmid) {
+		const serverVersion = reduxStore.getState().server.version;
+		if (serverVersion && semver.gte(semver.coerce(serverVersion), '3.4.0')) {
+			// RC 3.4.0
+			return this.methodCallWrapper('readThreads', tmid);
+		}
+		return Promise.resolve();
+	},
 	runSlashCommand(command, roomId, params, triggerId, tmid) {
 		// RC 0.60.2
 		return this.post('commands.run', {
