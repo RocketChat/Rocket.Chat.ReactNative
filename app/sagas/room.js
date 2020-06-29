@@ -74,12 +74,12 @@ const handleDeleteRoom = function* handleDeleteRoom({ rid, t }) {
 };
 
 const handleCloseRoom = function* handleCloseRoom({ rid }) {
+	const isMasterDetail = yield select(state => state.app.isMasterDetail);
 	const requestComment = yield select(state => state.settings.Livechat_request_comment_when_closing_conversation);
 
 	const closeRoom = async(comment = '') => {
 		try {
 			await RocketChat.closeLivechat(rid, comment);
-			const isMasterDetail = await select(state => state.app.isMasterDetail);
 			if (isMasterDetail) {
 				Navigation.navigate('DrawerNavigator');
 			} else {

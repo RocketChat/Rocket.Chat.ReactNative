@@ -103,5 +103,8 @@ export default StyleSheet.create({
 	},
 	scrollViewMention: {
 		maxHeight: SCROLLVIEW_MENTION_HEIGHT
+	},
+	buttonsWhitespace: {
+		width: 15
 	}
 });

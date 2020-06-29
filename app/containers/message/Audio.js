@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, Text, Easing, Dimensions
+	View, StyleSheet, Text, Easing
 } from 'react-native';
 import { Audio } from 'expo-av';
 import Slider from '@react-native-community/slider';
@@ -17,6 +17,7 @@ import { themes } from '../../constants/colors';
 import { isAndroid, isIOS } from '../../utils/deviceInfo';
 import MessageContext from './Context';
 import ActivityIndicator from '../ActivityIndicator';
+import { withDimensions } from '../../dimensions';
 
 const mode = {
 	allowsRecordingIOS: false,
@@ -97,7 +98,8 @@ class MessageAudio extends React.Component {
 	static propTypes = {
 		file: PropTypes.object.isRequired,
 		theme: PropTypes.string,
-		getCustomEmoji: PropTypes.func
+		getCustomEmoji: PropTypes.func,
+		scale: PropTypes.number
 	}
 
 	constructor(props) {
@@ -243,7 +245,9 @@ class MessageAudio extends React.Component {
 		const {
 			loading, paused, currentTime, duration
 		} = this.state;
-		const { file, getCustomEmoji, theme } = this.props;
+		const {
+			file, getCustomEmoji, theme, scale
+		} = this.props;
 		const { description } = file;
 		const { baseUrl, user } = this.context;
 
@@ -271,7 +275,7 @@ class MessageAudio extends React.Component {
 						minimumTrackTintColor={themes[theme].tintColor}
 						maximumTrackTintColor={themes[theme].auxiliaryText}
 						onValueChange={this.onValueChange}
-						thumbImage={isIOS && { uri: 'audio_thumb', scale: Dimensions.get('window').scale }}
+						thumbImage={isIOS && { uri: 'audio_thumb', scale }}
 					/>
 					<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{this.duration}</Text>
 				</View>
@@ -281,4 +285,4 @@ class MessageAudio extends React.Component {
 	}
 }
 
-export default MessageAudio;
+export default withDimensions(MessageAudio);

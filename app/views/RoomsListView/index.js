@@ -6,7 +6,6 @@ import {
 	BackHandler,
 	Text,
 	Keyboard,
-	Dimensions,
 	RefreshControl
 } from 'react-native';
 import { connect } from 'react-redux';
@@ -61,6 +60,7 @@ import { getUserSelector } from '../../selectors/login';
 import { goRoom } from '../../utils/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Header from '../../containers/Header';
+import { withDimensions } from '../../dimensions';
 
 const SCROLL_OFFSET = 56;
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
@@ -128,7 +128,8 @@ class RoomsListView extends React.Component {
 		useRealName: PropTypes.bool,
 		connected: PropTypes.bool,
 		isMasterDetail: PropTypes.bool,
-		rooms: PropTypes.array
+		rooms: PropTypes.array,
+		width: PropTypes.number
 	};
 
 	constructor(props) {
@@ -138,14 +139,12 @@ class RoomsListView extends React.Component {
 
 		this.gotSubscriptions = false;
 		this.animated = false;
-		const { width } = Dimensions.get('window');
 		this.state = {
 			searching: false,
 			search: [],
 			loading: true,
 			allChats: [],
 			chats: [],
-			width,
 			item: {}
 		};
 		this.setHeader();
@@ -157,7 +156,6 @@ class RoomsListView extends React.Component {
 		if (isTablet) {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
-		Dimensions.addEventListener('change', this.onDimensionsChange);
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
 			Orientation.unlockAllOrientations();
 			this.animated = true;
@@ -228,14 +226,13 @@ class RoomsListView extends React.Component {
 
 		const {
 			loading,
-			width,
 			search
 		} = this.state;
-		const { rooms } = this.props;
+		const { rooms, width } = this.props;
 		if (nextState.loading !== loading) {
 			return true;
 		}
-		if (nextState.width !== width) {
+		if (nextProps.width !== width) {
 			return true;
 		}
 		if (!isEqual(nextState.search, search)) {
@@ -302,7 +299,6 @@ class RoomsListView extends React.Component {
 		if (isTablet) {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
-		Dimensions.removeEventListener('change', this.onDimensionsChange);
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
@@ -351,9 +347,6 @@ class RoomsListView extends React.Component {
 		const options = this.getHeader();
 		navigation.setOptions(options);
 	}
-
-	// eslint-disable-next-line react/sort-comp
-	onDimensionsChange = ({ window: { width } }) => this.setState({ width });
 
 	internalSetState = (...args) => {
 		if (this.animated) {
@@ -783,7 +776,7 @@ class RoomsListView extends React.Component {
 			return this.renderSectionHeader(item.rid);
 		}
 
-		const { width, item: currentItem } = this.state;
+		const { item: currentItem } = this.state;
 		const {
 			user: {
 				id: userId,
@@ -794,7 +787,8 @@ class RoomsListView extends React.Component {
 			StoreLastMessage,
 			useRealName,
 			theme,
-			isMasterDetail
+			isMasterDetail,
+			width
 		} = this.props;
 		const id = this.getUidDirectMessage(item);
 		const isGroupChat = RocketChat.isGroupChat(item);
@@ -945,4 +939,4 @@ const mapDispatchToProps = dispatch => ({
 	closeServerDropdown: () => dispatch(closeServerDropdownAction())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RoomsListView));
+export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(RoomsListView)));

@@ -27,16 +27,23 @@ class WorkspaceView extends React.Component {
 		registrationForm: PropTypes.string,
 		registrationText: PropTypes.string,
 		showLoginButton: PropTypes.bool,
+		Accounts_iframe_enabled: PropTypes.bool,
 		inviteLinkToken: PropTypes.string
 	}
 
 	get showRegistrationButton() {
-		const { registrationForm, inviteLinkToken } = this.props;
-		return registrationForm === 'Public' || (registrationForm === 'Secret URL' && inviteLinkToken?.length);
+		const { registrationForm, inviteLinkToken, Accounts_iframe_enabled } = this.props;
+		return !Accounts_iframe_enabled && (registrationForm === 'Public' || (registrationForm === 'Secret URL' && inviteLinkToken?.length));
 	}
 
 	login = () => {
-		const { navigation, Site_Name } = this.props;
+		const {
+			navigation, server, Site_Name, Accounts_iframe_enabled
+		} = this.props;
+		if (Accounts_iframe_enabled) {
+			navigation.navigate('AuthenticationWebView', { url: server, authType: 'iframe' });
+			return;
+		}
 		navigation.navigate('LoginView', { title: Site_Name });
 	}
 
@@ -45,10 +52,20 @@ class WorkspaceView extends React.Component {
 		navigation.navigate('RegisterView', { title: Site_Name });
 	}
 
+	renderRegisterDisabled = () => {
+		const { Accounts_iframe_enabled, registrationText, theme } = this.props;
+		if (Accounts_iframe_enabled) {
+			return null;
+		}
+
+		return <Text style={[styles.registrationText, { color: themes[theme].auxiliaryText }]}>{registrationText}</Text>;
+	}
+
 	render() {
 		const {
-			theme, Site_Name, Site_Url, Assets_favicon_512, server, registrationText, showLoginButton
+			theme, Site_Name, Site_Url, Assets_favicon_512, server, showLoginButton
 		} = this.props;
+
 		return (
 			<FormContainer theme={theme} testID='workspace-view'>
 				<FormContainerInner>
@@ -77,9 +94,7 @@ class WorkspaceView extends React.Component {
 								theme={theme}
 								testID='workspace-view-register'
 							/>
-						) : (
-							<Text style={[styles.registrationText, { color: themes[theme].auxiliaryText }]}>{registrationText}</Text>
-						)
+						) : this.renderRegisterDisabled()
 					}
 				</FormContainerInner>
 			</FormContainer>
@@ -95,6 +110,7 @@ const mapStateToProps = state => ({
 	Assets_favicon_512: state.settings.Assets_favicon_512,
 	registrationForm: state.settings.Accounts_RegistrationForm,
 	registrationText: state.settings.Accounts_RegistrationForm_LinkReplacementText,
+	Accounts_iframe_enabled: state.settings.Accounts_iframe_enabled,
 	showLoginButton: getShowLoginButton(state),
 	inviteLinkToken: state.inviteLinks.token
 });
