@@ -1134,6 +1134,10 @@ const RocketChat = {
 			rid, updatedSince
 		});
 	},
+	readThreads(tmid) {
+		// RC 3.4.0
+		return this.methodCall('readThreads', tmid);
+	},
 	runSlashCommand(command, roomId, params, triggerId, tmid) {
 		// RC 0.60.2
 		return this.post('commands.run', {
