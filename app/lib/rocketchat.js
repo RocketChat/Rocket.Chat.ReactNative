@@ -225,13 +225,12 @@ const RocketChat = {
 				.catch((err) => {
 					console.log('connect error', err);
 
-					const { server: currentServer } = reduxStore.getState().server;
-					if (server === currentServer) {
-						// when `connect` raises an error, we try again in 10 seconds
-						this.connectTimeout = setTimeout(() => {
+					// when `connect` raises an error, we try again in 10 seconds
+					this.connectTimeout = setTimeout(() => {
+						if (this.sdk?.client?.host === server) {
 							sdkConnect();
-						}, 10000);
-					}
+						}
+					}, 10000);
 				});
 
 			sdkConnect();
@@ -316,7 +315,7 @@ const RocketChat = {
 		}
 		database.share = null;
 
-		reduxStore.dispatch(shareSetUser(null));
+		reduxStore.dispatch(shareSetUser({}));
 	},
 
 	updateJitsiTimeout(roomId) {
@@ -343,6 +342,7 @@ const RocketChat = {
 				if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
 					const { details } = e.data;
 					try {
+						reduxStore.dispatch(setUser({ username: params.user || params.username }));
 						const code = await twoFactor({ method: details?.method || 'totp', invalid: e.data.error === 'totp-invalid' });
 						return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }));
 					} catch {
@@ -397,6 +397,7 @@ const RocketChat = {
 			status: result.me.status,
 			statusText: result.me.statusText,
 			customFields: result.me.customFields,
+			statusLivechat: result.me.statusLivechat,
 			emails: result.me.emails,
 			roles: result.me.roles
 		};
@@ -700,9 +701,12 @@ const RocketChat = {
 	onStreamData(...args) {
 		return this.sdk.onStreamData(...args);
 	},
-	emitTyping(room, t = true) {
-		const { login } = reduxStore.getState();
-		return this.methodCall('stream-notify-room', `${ room }/typing`, login.user.username, t);
+	emitTyping(room, typing = true) {
+		const { login, settings } = reduxStore.getState();
+		const { UI_Use_Real_Name } = settings;
+		const { user } = login;
+		const name = UI_Use_Real_Name ? user.name : user.username;
+		return this.methodCall('stream-notify-room', `${ room }/typing`, name, typing);
 	},
 	setUserPresenceAway() {
 		return this.methodCall('UserPresence:away');
@@ -815,6 +819,10 @@ const RocketChat = {
 	getCustomFields() {
 		// RC 2.2.0
 		return this.sdk.get('livechat/custom-fields');
+	},
+	changeLivechatStatus() {
+		// RC 0.26.0
+		return this.methodCall('livechat:changeLivechatStatus');
 	},
 
 	getUidDirectMessage(room) {
@@ -970,7 +978,7 @@ const RocketChat = {
 			const shareUser = reduxStore.getState().share.user;
 			const loginUser = reduxStore.getState().login.user;
 			// get user roles on the server from redux
-			const userRoles = (shareUser.roles || loginUser.roles) || [];
+			const userRoles = (shareUser?.roles || loginUser?.roles) || [];
 			// merge both roles
 			const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
 

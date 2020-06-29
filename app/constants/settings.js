@@ -53,6 +53,15 @@ export default {
 	API_Use_REST_For_DDP_Calls: {
 		type: 'valueAsBoolean'
 	},
+	Accounts_iframe_enabled: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_Iframe_api_url: {
+		type: 'valueAsString'
+	},
+	Accounts_Iframe_api_method: {
+		type: 'valueAsString'
+	},
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
 	},
