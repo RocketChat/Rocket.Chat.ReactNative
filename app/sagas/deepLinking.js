@@ -13,6 +13,7 @@ import EventEmitter from '../utils/events';
 import { appStart, ROOT_INSIDE } from '../actions/app';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { goRoom } from '../utils/goRoom';
+import callJitsi from '../lib/methods/callJitsi';
 
 const roomTypes = {
 	channel: 'c', direct: 'd', group: 'p', channels: 'l'
@@ -48,7 +49,11 @@ const navigate = function* navigate({ params }) {
 					roomUserId: RocketChat.getUidDirectMessage(room),
 					...room
 				};
-				goRoom({ item, isMasterDetail });
+				yield goRoom({ item, isMasterDetail });
+
+				if (params.isCall) {
+					callJitsi(item.rid);
+				}
 			}
 		} else {
 			yield handleInviteLink({ params });
