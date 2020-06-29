@@ -34,6 +34,9 @@ PODS:
   - EXPermissions (8.1.0):
     - UMCore
     - UMPermissionsInterface
+  - EXVideoThumbnails (4.1.1):
+    - UMCore
+    - UMFileSystemInterface
   - EXWebBrowser (8.2.1):
     - UMCore
   - Fabric (1.10.2)
@@ -431,7 +434,7 @@ PODS:
     - React
   - ReactNativeKeyboardTrackingView (5.7.0):
     - React
-  - rn-extensions-share (2.3.10):
+  - rn-extensions-share (2.4.0):
     - React
   - rn-fetch-blob (0.12.0):
     - React-Core
@@ -462,15 +465,15 @@ PODS:
     - React
   - RNGestureHandler (1.6.1):
     - React
-  - RNImageCropPicker (0.30.0):
+  - RNImageCropPicker (0.31.1):
     - React-Core
     - React-RCTImage
-    - RNImageCropPicker/QBImagePickerController (= 0.30.0)
-    - RSKImageCropper
-  - RNImageCropPicker/QBImagePickerController (0.30.0):
+    - RNImageCropPicker/QBImagePickerController (= 0.31.1)
+    - TOCropViewController
+  - RNImageCropPicker/QBImagePickerController (0.31.1):
     - React-Core
     - React-RCTImage
-    - RSKImageCropper
+    - TOCropViewController
   - RNLocalize (1.4.0):
     - React
   - RNReanimated (1.8.0):
@@ -483,13 +486,13 @@ PODS:
     - React
   - RNVectorIcons (6.6.0):
     - React
-  - RSKImageCropper (2.2.3)
   - SDWebImage (5.7.4):
     - SDWebImage/Core (= 5.7.4)
   - SDWebImage/Core (5.7.4)
   - SDWebImageWebPCoder (0.4.1):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.5)
+  - TOCropViewController (2.5.2)
   - UMAppLoader (1.0.2)
   - UMBarCodeScannerInterface (5.1.0)
   - UMCameraInterface (5.1.0)
@@ -522,6 +525,7 @@ DEPENDENCIES:
   - EXKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - EXLocalAuthentication (from `../node_modules/expo-local-authentication/ios`)
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
+  - EXVideoThumbnails (from `../node_modules/expo-video-thumbnails/ios`)
   - EXWebBrowser (from `../node_modules/expo-web-browser/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
@@ -644,9 +648,9 @@ SPEC REPOS:
     - nanopb
     - OpenSSL-Universal
     - PromisesObjC
-    - RSKImageCropper
     - SDWebImage
     - SDWebImageWebPCoder
+    - TOCropViewController
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -670,6 +674,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-local-authentication/ios"
   EXPermissions:
     :path: "../node_modules/expo-permissions/ios"
+  EXVideoThumbnails:
+    :path: "../node_modules/expo-video-thumbnails/ios"
   EXWebBrowser:
     :path: "../node_modules/expo-web-browser/ios"
   FBLazyVector:
@@ -833,6 +839,7 @@ SPEC CHECKSUMS:
   EXKeepAwake: d045bc2cf1ad5a04f0323cc7c894b95b414042e0
   EXLocalAuthentication: bbf1026cc289d729da4f29240dd7a8f6a14e4b20
   EXPermissions: 24b97f734ce9172d245a5be38ad9ccfcb6135964
+  EXVideoThumbnails: be6984a3cda1e44c45b5c6278244e99855f99a0a
   EXWebBrowser: 5902f99ac5ac551e5c82ff46f13a337b323aa9ea
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   FBLazyVector: 4aab18c93cd9546e4bfed752b4084585eca8b245
@@ -894,7 +901,7 @@ SPEC CHECKSUMS:
   ReactNativeART: 78edc68dd4a1e675338cd0cd113319cf3a65f2ab
   ReactNativeKeyboardInput: c37e26821519869993b3b61844350feb9177ff37
   ReactNativeKeyboardTrackingView: 02137fac3b2ebd330d74fa54ead48b14750a2306
-  rn-extensions-share: 4bfee75806ad54aadeff1dfa535697a6345a50b8
+  rn-extensions-share: 8db79372089567cbc5aefe8444869bbc808578d3
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNAudio: cae2991f2dccb75163f260b60da8051717b959fa
   RNBootSplash: 7cb9b4fe7e94177edc0d11010f7631d79db2f5e9
@@ -905,16 +912,16 @@ SPEC CHECKSUMS:
   RNFastImage: 35ae972d6727c84ee3f5c6897e07f84d0a3445e9
   RNFirebase: 37daa9a346d070f9f6ee1f3b4aaf4c8e3b1d5d1c
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
-  RNImageCropPicker: a606d65f71c6c05caa3c850c16fb1ba2a4718608
+  RNImageCropPicker: 38865ab4af1b0b2146ad66061196bc0184946855
   RNLocalize: b6df30cc25ae736d37874f9bce13351db2f56796
   RNReanimated: 955cf4068714003d2f1a6e2bae3fb1118f359aff
   RNRootView: 895a4813dedeaca82db2fa868ca1c333d790e494
   RNScreens: cf198f915f8a2bf163de94ca9f5bfc8d326c3706
   RNUserDefaults: c421fd97ad06b35c16608c5d0fe675db353f632d
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
-  RSKImageCropper: a446db0e8444a036b34f3c43db01b2373baa4b2a
   SDWebImage: 48b88379b798fd1e4298f95bb25d2cdabbf4deb3
   SDWebImageWebPCoder: 36f8f47bd9879a8aea6044765c1351120fd8e3a8
+  TOCropViewController: e9da34f484aedd4e5d5a8ab230ba217cfe16c729
   UMAppLoader: ee77a072f9e15128f777ccd6d2d00f52ab4387e6
   UMBarCodeScannerInterface: 9dc692b87e5f20fe277fa57aa47f45d418c3cc6c
   UMCameraInterface: 625878bbf2ba188a8548675e1d1d2e438a653e6d

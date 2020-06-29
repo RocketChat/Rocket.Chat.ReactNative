@@ -3,13 +3,8 @@
 	package="chat.rocket.reactnative">
 
 	<uses-permission android:name="android.permission.INTERNET" />
-	<!-- <uses-permission android:name="android.permission.CAMERA" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-	<uses-permission android:name="android.permission.RECORD_AUDIO" />
-	<uses-permission android:name="android.permission.WAKE_LOCK" />
-	<uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" /> -->
-	<!-- <uses-permission-sdk-23 android:name="android.permission.VIBRATE"/> -->
 
 	<application
 		android:name=".MainApplication"
@@ -65,6 +60,7 @@
 				android:theme="@style/AppTheme" >
 				<intent-filter>
 					<action android:name="android.intent.action.SEND" />
+					<action android:name="android.intent.action.SEND_MULTIPLE" />
 					<category android:name="android.intent.category.DEFAULT" />
 					<data android:mimeType="*/*" />
 				</intent-filter>

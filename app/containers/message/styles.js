@@ -112,7 +112,8 @@ export default StyleSheet.create({
 		// maxWidth: 400,
 		minHeight: isTablet ? 300 : 200,
 		borderRadius: 4,
-		borderWidth: 1
+		borderWidth: 1,
+		overflow: 'hidden'
 	},
 	imagePressed: {
 		opacity: 0.5
