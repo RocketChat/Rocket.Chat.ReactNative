@@ -698,7 +698,7 @@ class RoomView extends React.Component {
 					});
 				});
 			} else {
-				const thread = await RocketChat.getSingleMessage(tmid);
+				const { message: thread } = await RocketChat.getSingleMessage(tmid);
 				await db.action(async() => {
 					await db.batch(
 						threadCollection.prepareCreate((t) => {
