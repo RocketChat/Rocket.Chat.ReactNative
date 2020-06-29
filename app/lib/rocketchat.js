@@ -1143,7 +1143,7 @@ const RocketChat = {
 	},
 	readThreads(tmid) {
 		// RC 3.4.0
-		return this.methodCall('readThreads', tmid);
+		return this.methodCallWrapper('readThreads', tmid);
 	},
 	runSlashCommand(command, roomId, params, triggerId, tmid) {
 		// RC 0.60.2
