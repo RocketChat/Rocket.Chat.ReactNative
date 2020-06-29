@@ -69,6 +69,9 @@ const serverInfoUpdate = async(serverInfo, iconSetting) => {
 				return { ...allSettings, autoLockTime: setting.valueAsNumber };
 			}
 		}
+		if (setting._id === 'uniqueID') {
+			return { ...allSettings, uniqueID: setting.valueAsString };
+		}
 		return allSettings;
 	}, {});
 
