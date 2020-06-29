@@ -1,7 +1,7 @@
 import reduxStore from '../createStore';
 import Navigation from '../Navigation';
 
-const jitsiURL = async({ rid }) => {
+async function jitsiURL({ rid }) {
 	const { settings } = reduxStore.getState();
 	const { Jitsi_Enabled } = settings;
 
@@ -21,7 +21,7 @@ const jitsiURL = async({ rid }) => {
 	let queryString = '';
 	if (Jitsi_Enabled_TokenAuth) {
 		try {
-			const accessToken = await this.sdk.methodCall('jitsi:generateAccessToken', rid);
+			const accessToken = await this.methodCallWrapper('jitsi:generateAccessToken', rid);
 			queryString = `?jwt=${ accessToken }`;
 		} catch {
 			// do nothing
@@ -29,10 +29,10 @@ const jitsiURL = async({ rid }) => {
 	}
 
 	return `${ protocol }${ domain }${ prefix }${ uniqueIdentifier }${ rid }${ queryString }`;
-};
+}
 
 async function callJitsi(rid, onlyAudio = false) {
-	const url = await jitsiURL({ rid });
+	const url = await jitsiURL.call(this, { rid });
 	Navigation.navigate('JitsiMeetView', { url, onlyAudio, rid });
 }
 
