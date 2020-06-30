@@ -334,7 +334,7 @@ class RoomsListView extends React.Component {
 			)),
 			headerTitle: () => <RoomsListHeaderView />,
 			headerTitleContainerStyle: {
-				left: 56 + insets.left,
+				left: 60 + insets.left,
 				right: 36 + insets.right
 			},
 			headerRight: () => (searching ? null : (

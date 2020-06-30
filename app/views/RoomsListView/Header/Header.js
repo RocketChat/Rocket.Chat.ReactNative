@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 		...sharedStyles.textSemibold
 	},
 	updating: {
-		fontSize: 14,
+		fontSize: 12,
 		...sharedStyles.textRegular
 	},
 	upsideDown: {
@@ -76,7 +76,7 @@ const Header = React.memo(({
 						size={18}
 					/>
 				</View>
-				{subtitle ? <Text style={[styles.updating, { color: themes[theme].controlText }]}>{subtitle}</Text> : null}
+				{subtitle ? <Text style={[styles.updating, { color: themes[theme].auxiliaryText }]}>{subtitle}</Text> : null}
 			</TouchableOpacity>
 		</View>
 	);
