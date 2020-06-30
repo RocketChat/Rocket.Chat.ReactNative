@@ -543,6 +543,7 @@ export default {
 	Video_call: 'Video call',
 	View_Original: 'View Original',
 	Voice_call: 'Voice call',
+	Waiting_for_network: 'Waiting for network...',
 	Websocket_disabled: 'Websocket is disabled for this server.\n{{contact}}',
 	Welcome: 'Welcome',
 	What_are_you_doing_right_now: 'What are you doing right now?',

@@ -21,11 +21,8 @@ const styles = StyleSheet.create({
 		marginRight: 64
 	},
 	server: {
-		fontSize: 20,
-		...sharedStyles.textRegular
-	},
-	serverSmall: {
-		fontSize: 16
+		fontSize: 16,
+		...sharedStyles.textSemibold
 	},
 	updating: {
 		fontSize: 14,
@@ -37,7 +34,7 @@ const styles = StyleSheet.create({
 });
 
 const Header = React.memo(({
-	connecting, isFetching, serverName, showServerDropdown, showSearchHeader, theme, onSearchChangeText, onPress
+	connecting, connected, isFetching, serverName, server, showServerDropdown, showSearchHeader, theme, onSearchChangeText, onPress
 }) => {
 	const titleColorStyle = { color: themes[theme].headerTitleColor };
 	const isLight = theme === 'light';
@@ -54,15 +51,22 @@ const Header = React.memo(({
 			</View>
 		);
 	}
+	let subtitle;
+	if (connecting) {
+		subtitle = I18n.t('Connecting');
+	} else if (isFetching) {
+		subtitle = I18n.t('Updating');
+	} else if (!connected) {
+		subtitle = I18n.t('Waiting_for_network');
+	} else {
+		subtitle = server?.replace(/(^\w+:|^)\/\//, '');
+	}
 	return (
 		<View style={styles.container}>
 			<TouchableOpacity
 				onPress={onPress}
 				testID='rooms-list-header-server-dropdown-button'
-				disabled={connecting || isFetching}
 			>
-				{connecting ? <Text style={[styles.updating, titleColorStyle]}>{I18n.t('Connecting')}</Text> : null}
-				{isFetching ? <Text style={[styles.updating, titleColorStyle]}>{I18n.t('Updating')}</Text> : null}
 				<View style={styles.button}>
 					<Text style={[styles.server, isFetching && styles.serverSmall, titleColorStyle]} numberOfLines={1}>{serverName}</Text>
 					<CustomIcon
@@ -72,6 +76,7 @@ const Header = React.memo(({
 						size={18}
 					/>
 				</View>
+				{subtitle ? <Text style={[styles.updating, { color: themes[theme].controlText }]}>{subtitle}</Text> : null}
 			</TouchableOpacity>
 		</View>
 	);
@@ -83,8 +88,10 @@ Header.propTypes = {
 	onPress: PropTypes.func.isRequired,
 	onSearchChangeText: PropTypes.func.isRequired,
 	connecting: PropTypes.bool,
+	connected: PropTypes.bool,
 	isFetching: PropTypes.bool,
 	serverName: PropTypes.string,
+	server: PropTypes.string,
 	theme: PropTypes.string
 };
 
