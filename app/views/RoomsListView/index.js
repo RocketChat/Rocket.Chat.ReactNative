@@ -30,7 +30,7 @@ import {
 } from '../../actions/rooms';
 import { appStart as appStartAction, ROOT_BACKGROUND } from '../../actions/app';
 import debounce from '../../utils/debounce';
-import { isIOS, isAndroid, isTablet } from '../../utils/deviceInfo';
+import { isIOS, isTablet } from '../../utils/deviceInfo';
 import RoomsListHeaderView from './Header';
 import {
 	DrawerButton,
@@ -62,7 +62,6 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import Header from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
 
-const SCROLL_OFFSET = 56;
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
 const UNREAD_HEADER = 'Unread';
@@ -306,7 +305,8 @@ class RoomsListView extends React.Component {
 		const { searching } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 		return {
-			headerLeft: () => (searching && isAndroid ? (
+			headerTitleAlign: 'left',
+			headerLeft: () => (searching ? (
 				<CustomHeaderButtons left>
 					<Item
 						title='cancel'
@@ -318,24 +318,26 @@ class RoomsListView extends React.Component {
 				<DrawerButton
 					navigation={navigation}
 					testID='rooms-list-view-sidebar'
-					onPress={isMasterDetail ? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' }) : () => navigation.toggleDrawer()}
+					onPress={isMasterDetail
+						? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
+						: () => navigation.toggleDrawer()}
 				/>
 			)),
 			headerTitle: () => <RoomsListHeaderView />,
-			headerRight: () => (searching && isAndroid ? null : (
+			headerRight: () => (searching ? null : (
 				<CustomHeaderButtons>
-					{isAndroid ? (
-						<Item
-							title='search'
-							iconName='magnifier'
-							onPress={this.initSearching}
-						/>
-					) : null}
 					<Item
 						title='new'
 						iconName='new-chat'
-						onPress={isMasterDetail ? () => navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' }) : () => navigation.navigate('NewMessageStackNavigator')}
+						onPress={isMasterDetail
+							? () => navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' })
+							: () => navigation.navigate('NewMessageStackNavigator')}
 						testID='rooms-list-view-create-channel'
+					/>
+					<Item
+						title='search'
+						iconName='magnifier'
+						onPress={this.initSearching}
 					/>
 				</CustomHeaderButtons>
 			))
@@ -462,10 +464,8 @@ class RoomsListView extends React.Component {
 	initSearching = () => {
 		const { openSearchHeader } = this.props;
 		this.internalSetState({ searching: true }, () => {
-			if (isAndroid) {
-				openSearchHeader();
-				this.setHeader();
-			}
+			openSearchHeader();
+			this.setHeader();
 		});
 	};
 
@@ -479,18 +479,11 @@ class RoomsListView extends React.Component {
 
 		Keyboard.dismiss();
 
-		if (isIOS && this.inputRef) {
-			this.inputRef.blur();
-			this.inputRef.clear();
-		}
-
 		this.setState({ searching: false, search: [] }, () => {
-			if (isAndroid) {
-				this.setHeader();
-				closeSearchHeader();
-			}
+			this.setHeader();
+			closeSearchHeader();
 			setTimeout(() => {
-				const offset = isAndroid ? 0 : SCROLL_OFFSET;
+				const offset = 0;
 				if (this.scroll.scrollTo) {
 					this.scroll.scrollTo({ x: 0, y: offset, animated: true });
 				} else if (this.scroll.scrollToOffset) {
@@ -550,7 +543,7 @@ class RoomsListView extends React.Component {
 	toggleSort = () => {
 		const { toggleSortDropdown } = this.props;
 
-		const offset = isAndroid ? 0 : SCROLL_OFFSET;
+		const offset = 0;
 		if (this.scroll.scrollTo) {
 			this.scroll.scrollTo({ x: 0, y: offset, animated: true });
 		} else if (this.scroll.scrollToOffset) {
@@ -701,7 +694,7 @@ class RoomsListView extends React.Component {
 			navigation.navigate('SettingsView');
 		} else if (handleCommandSearching(event)) {
 			this.scroll.scrollToOffset({ animated: true, offset: 0 });
-			this.inputRef.focus();
+			// this.inputRef.focus();
 		} else if (handleCommandSelectRoom(event)) {
 			this.goRoomByIndex(input);
 		} else if (handleCommandPreviousRoom(event)) {
@@ -730,19 +723,13 @@ class RoomsListView extends React.Component {
 
 	getScrollRef = ref => (this.scroll = ref);
 
-	getInputRef = ref => (this.inputRef = ref);
-
 	renderListHeader = () => {
 		const { searching } = this.state;
 		const { sortBy } = this.props;
 		return (
 			<ListHeader
-				inputRef={this.getInputRef}
 				searching={searching}
 				sortBy={sortBy}
-				onChangeSearchText={this.search}
-				onCancelSearchPress={this.cancelSearch}
-				onSearchFocus={this.initSearching}
 				toggleSort={this.toggleSort}
 				goDirectory={this.goDirectory}
 			/>
@@ -855,7 +842,6 @@ class RoomsListView extends React.Component {
 				ref={this.getScrollRef}
 				data={searching ? search : chats}
 				extraData={searching ? search : chats}
-				contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
 				keyExtractor={keyExtractor}
 				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 				renderItem={this.renderItem}
