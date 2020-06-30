@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { isEqual, orderBy } from 'lodash';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
+import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
@@ -128,7 +129,8 @@ class RoomsListView extends React.Component {
 		connected: PropTypes.bool,
 		isMasterDetail: PropTypes.bool,
 		rooms: PropTypes.array,
-		width: PropTypes.number
+		width: PropTypes.number,
+		insets: PropTypes.object
 	};
 
 	constructor(props) {
@@ -227,7 +229,7 @@ class RoomsListView extends React.Component {
 			loading,
 			search
 		} = this.state;
-		const { rooms, width } = this.props;
+		const { rooms, width, insets } = this.props;
 		if (nextState.loading !== loading) {
 			return true;
 		}
@@ -238,6 +240,9 @@ class RoomsListView extends React.Component {
 			return true;
 		}
 		if (!isEqual(nextProps.rooms, rooms)) {
+			return true;
+		}
+		if (!isEqual(nextProps.insets, insets)) {
 			return true;
 		}
 		// If it's focused and there are changes, update
@@ -258,7 +263,8 @@ class RoomsListView extends React.Component {
 			connected,
 			roomsRequest,
 			rooms,
-			isMasterDetail
+			isMasterDetail,
+			insets
 		} = this.props;
 		const { item } = this.state;
 
@@ -283,6 +289,9 @@ class RoomsListView extends React.Component {
 			// eslint-disable-next-line react/no-did-update-set-state
 			this.setState({ item: { rid: rooms[0] } });
 		}
+		if (insets.left !== prevProps.insets.left) {
+			this.setHeader();
+		}
 	}
 
 	componentWillUnmount() {
@@ -303,7 +312,7 @@ class RoomsListView extends React.Component {
 
 	getHeader = () => {
 		const { searching } = this.state;
-		const { navigation, isMasterDetail } = this.props;
+		const { navigation, isMasterDetail, insets } = this.props;
 		return {
 			headerTitleAlign: 'left',
 			headerLeft: () => (searching ? (
@@ -324,6 +333,10 @@ class RoomsListView extends React.Component {
 				/>
 			)),
 			headerTitle: () => <RoomsListHeaderView />,
+			headerTitleContainerStyle: {
+				left: 56 + insets.left,
+				right: 36 + insets.right
+			},
 			headerRight: () => (searching ? null : (
 				<CustomHeaderButtons>
 					<Item
@@ -925,4 +938,4 @@ const mapDispatchToProps = dispatch => ({
 	closeServerDropdown: () => dispatch(closeServerDropdownAction())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(RoomsListView)));
+export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomsListView))));
