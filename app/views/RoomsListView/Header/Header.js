@@ -9,11 +9,13 @@ import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
 import { themes } from '../../../constants/colors';
 import { CustomIcon } from '../../../lib/Icons';
+import { isTablet } from '../../../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'center'
+		justifyContent: 'center',
+		marginLeft: isTablet ? 10 : 0
 	},
 	button: {
 		flexDirection: 'row',
