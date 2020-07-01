@@ -78,12 +78,8 @@ SubTitle.propTypes = {
 };
 
 const HeaderTitle = React.memo(({
-	title, tmid, prid, scale, connecting, theme
+	title, tmid, prid, scale, theme
 }) => {
-	if (connecting) {
-		title = I18n.t('Connecting');
-	}
-
 	if (!tmid && !prid) {
 		return (
 			<Text
@@ -113,7 +109,6 @@ HeaderTitle.propTypes = {
 	tmid: PropTypes.string,
 	prid: PropTypes.string,
 	scale: PropTypes.number,
-	connecting: PropTypes.bool,
 	theme: PropTypes.string
 };
 
