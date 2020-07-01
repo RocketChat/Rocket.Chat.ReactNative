@@ -313,7 +313,7 @@ class RoomView extends React.Component {
 			// Keep it aligned to message content
 			headerTitleContainerStyle: {
 				left: isAndroid ? 58 : 70 + insets.left,
-				right: 46 + insets.right
+				right: 80 + insets.right
 			},
 			headerLeft: () => (
 				<LeftButtons
