@@ -60,7 +60,7 @@ import { MAX_SIDEBAR_WIDTH } from '../../constants/tablet';
 import { getUserSelector } from '../../selectors/login';
 import { goRoom } from '../../utils/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
-import Header from '../../containers/Header';
+import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
@@ -313,6 +313,7 @@ class RoomsListView extends React.Component {
 	getHeader = () => {
 		const { searching } = this.state;
 		const { navigation, isMasterDetail, insets } = this.props;
+		const headerTitlePosition = getHeaderTitlePosition(insets);
 		return {
 			headerTitleAlign: 'left',
 			headerLeft: () => (searching ? (
@@ -333,10 +334,9 @@ class RoomsListView extends React.Component {
 				/>
 			)),
 			headerTitle: () => <RoomsListHeaderView />,
-			// Keep it aligned to RoomView's header
 			headerTitleContainerStyle: {
-				left: 60 + insets.left,
-				right: 80 + insets.right
+				left: headerTitlePosition.left,
+				right: headerTitlePosition.right
 			},
 			headerRight: () => (searching ? null : (
 				<CustomHeaderButtons>

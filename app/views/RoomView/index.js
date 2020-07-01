@@ -36,7 +36,7 @@ import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
 import { isBlocked } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
-import { isIOS, isTablet, isAndroid } from '../../utils/deviceInfo';
+import { isIOS, isTablet } from '../../utils/deviceInfo';
 import { showErrorAlert } from '../../utils/info';
 import { withTheme } from '../../theme';
 import {
@@ -54,6 +54,7 @@ import Banner from './Banner';
 import Navigation from '../../lib/Navigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
+import { getHeaderTitlePosition } from '../../containers/Header';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -307,13 +308,13 @@ class RoomView extends React.Component {
 		if (!rid) {
 			return;
 		}
+		const headerTitlePosition = getHeaderTitlePosition(insets);
 		navigation.setOptions({
 			headerShown: true,
 			headerTitleAlign: 'left',
-			// Keep it aligned to message content
 			headerTitleContainerStyle: {
-				left: isAndroid ? 58 : 70 + insets.left,
-				right: 80 + insets.right
+				left: headerTitlePosition.left,
+				right: headerTitlePosition.right
 			},
 			headerLeft: () => (
 				<LeftButtons
