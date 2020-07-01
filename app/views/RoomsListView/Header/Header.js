@@ -17,8 +17,7 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		flexDirection: 'row',
-		alignItems: 'center',
-		marginRight: 64
+		alignItems: 'center'
 	},
 	server: {
 		fontSize: 16,

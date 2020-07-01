@@ -8,6 +8,7 @@ import moment from 'moment';
 import * as Haptics from 'expo-haptics';
 import { Q } from '@nozbe/watermelondb';
 import isEqual from 'lodash/isEqual';
+import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Touch from '../../utils/touch';
 import {
@@ -35,7 +36,7 @@ import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
 import { isBlocked } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
-import { isIOS, isTablet } from '../../utils/deviceInfo';
+import { isIOS, isTablet, isAndroid } from '../../utils/deviceInfo';
 import { showErrorAlert } from '../../utils/info';
 import { withTheme } from '../../theme';
 import {
@@ -91,7 +92,8 @@ class RoomView extends React.Component {
 		theme: PropTypes.string,
 		replyBroadcast: PropTypes.func,
 		width: PropTypes.number,
-		height: PropTypes.number
+		height: PropTypes.number,
+		insets: PropTypes.object
 	};
 
 	constructor(props) {
@@ -178,7 +180,7 @@ class RoomView extends React.Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { state } = this;
 		const { roomUpdate, member } = state;
-		const { appState, theme } = this.props;
+		const { appState, theme, insets } = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
 		}
@@ -192,12 +194,15 @@ class RoomView extends React.Component {
 		if (stateUpdated) {
 			return true;
 		}
+		if (!isEqual(nextProps.insets, insets)) {
+			return true;
+		}
 		return roomAttrsUpdate.some(key => !isEqual(nextState.roomUpdate[key], roomUpdate[key]));
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		const { roomUpdate } = this.state;
-		const { appState } = this.props;
+		const { appState, insets } = this.props;
 
 		if (appState === 'foreground' && appState !== prevProps.appState && this.rid) {
 			this.onForegroundInteraction = InteractionManager.runAfterInteractions(() => {
@@ -220,6 +225,9 @@ class RoomView extends React.Component {
 			}
 		}
 		if (((roomUpdate.fname !== prevState.roomUpdate.fname) || (roomUpdate.name !== prevState.roomUpdate.name)) && !this.tmid) {
+			this.setHeader();
+		}
+		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
 			this.setHeader();
 		}
 		this.setReadOnly();
@@ -281,7 +289,7 @@ class RoomView extends React.Component {
 	setHeader = () => {
 		const { room, unreadsCount, roomUserId: stateRoomUserId } = this.state;
 		const {
-			navigation, route, isMasterDetail, theme, baseUrl, user
+			navigation, route, isMasterDetail, theme, baseUrl, user, insets
 		} = this.props;
 		const rid = route.params?.rid;
 		const prid = route.params?.prid;
@@ -302,6 +310,11 @@ class RoomView extends React.Component {
 		navigation.setOptions({
 			headerShown: true,
 			headerTitleAlign: 'left',
+			// Keep it aligned to message content
+			headerTitleContainerStyle: {
+				left: isAndroid ? 58 : 70 + insets.left,
+				right: 46 + insets.right
+			},
 			headerTitle: () => (
 				<RoomHeaderView
 					rid={rid}
@@ -1040,4 +1053,4 @@ const mapDispatchToProps = dispatch => ({
 	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(RoomView)));
+export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomView))));

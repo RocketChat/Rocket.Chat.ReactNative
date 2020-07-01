@@ -289,7 +289,7 @@ class RoomsListView extends React.Component {
 			// eslint-disable-next-line react/no-did-update-set-state
 			this.setState({ item: { rid: rooms[0] } });
 		}
-		if (insets.left !== prevProps.insets.left) {
+		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
 			this.setHeader();
 		}
 	}
@@ -333,9 +333,10 @@ class RoomsListView extends React.Component {
 				/>
 			)),
 			headerTitle: () => <RoomsListHeaderView />,
+			// Keep it aligned to RoomView's header
 			headerTitleContainerStyle: {
 				left: 60 + insets.left,
-				right: 36 + insets.right
+				right: 80 + insets.right
 			},
 			headerRight: () => (searching ? null : (
 				<CustomHeaderButtons>

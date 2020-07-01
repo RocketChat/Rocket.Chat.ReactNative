@@ -15,11 +15,7 @@ const CustomHeaderButton = React.memo(withTheme(({ theme, ...props }) => (
 		{...props}
 		IconComponent={CustomIcon}
 		iconSize={headerIconSize}
-		color={
-			isAndroid
-				? themes[theme].headerTitleColor
-				: themes[theme].headerTintColor
-		}
+		color={themes[theme].headerTintColor}
 	/>
 )));
 
