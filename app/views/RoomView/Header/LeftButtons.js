@@ -18,11 +18,16 @@ const LeftButtons = React.memo(({
 }) => {
 	if (!isMasterDetail || tmid) {
 		const onPress = useCallback(() => navigation.goBack());
+		const label = unreadsCount > 99 ? '+99' : unreadsCount || ' ';
+		const labelLength = label.length ? label.length : 1;
+		const marginLeft = -2 * labelLength;
+		const fontSize = labelLength > 1 ? 14 : 17;
 		return (
 			<HeaderBackButton
-				label={unreadsCount > 999 ? '+999' : unreadsCount || ' '}
+				label={label}
 				onPress={onPress}
 				tintColor={themes[theme].headerTintColor}
+				labelStyle={{ fontSize, marginLeft }}
 			/>
 		);
 	}
