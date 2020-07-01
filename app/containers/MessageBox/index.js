@@ -849,7 +849,7 @@ class MessageBox extends Component {
 	}
 
 	getFullScreenChanges = (args) => {
-		this.text = args.text;
+		this.setInput(args.text);
 		const isTextEmpty = args.text.length === 0;
 		this.setShowSend(!isTextEmpty);
 		if (args.commandPreview) {
@@ -883,7 +883,6 @@ class MessageBox extends Component {
 			message,
 			replyCancel,
 			showActionSheet,
-			editCancel,
 			onSubmit,
 			threadsEnabled,
 			replyWithMention,
@@ -901,7 +900,6 @@ class MessageBox extends Component {
 			replyCancel,
 			typing,
 			showActionSheet,
-			editCancel,
 			onSubmit,
 			threadsEnabled,
 			replyWithMention,
@@ -909,6 +907,7 @@ class MessageBox extends Component {
 			roomType,
 			getCustomEmoji,
 			text: this.text,
+			editCancel: this.editCancel,
 			getFullScreenChanges: this.getFullScreenChanges,
 			showMessageBoxActions: this.showMessageBoxActions
 		};

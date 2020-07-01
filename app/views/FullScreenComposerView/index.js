@@ -41,7 +41,6 @@ import {
 } from '../../containers/MessageBox/constants';
 import CommandsPreview from '../../containers/MessageBox/CommandsPreview';
 import { getUserSelector } from '../../selectors/login';
-import Navigation from '../../lib/Navigation';
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 
@@ -470,8 +469,8 @@ class FullScreenComposerView extends Component {
 	editCancel = () => {
 		const { route } = this.props;
 		const { editCancel } = route.params;
+		this.closeModal();
 		editCancel();
-		this.clearInput();
 	}
 
 	openEmoji = async() => {
@@ -620,10 +619,10 @@ class FullScreenComposerView extends Component {
 	}
 
 	replyCancel = () => {
-		const { route } = this.props;
+		const { route, navigation } = this.props;
 		const { replyCancel } = route.params;
 
-		Navigation.goBack();
+		navigation.goBack();
 		replyCancel();
 	}
 
