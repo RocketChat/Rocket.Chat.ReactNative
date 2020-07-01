@@ -312,7 +312,6 @@ class RoomsListView extends React.Component {
 		const { searching, permissions } = this.state;
     const { navigation, isMasterDetail } = this.props;
     const hasCreateChannelPermission = permissions['create-c'];
-    alert(JSON.stringify(permissions));
 		const hasCreateDirectMessagePermission = permissions['create-d'];
     const hasCreatePrivateGroupPermission = permissions['create-p'];
 		return {
