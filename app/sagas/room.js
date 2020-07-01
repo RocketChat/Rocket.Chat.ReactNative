@@ -31,7 +31,12 @@ const watchUserTyping = function* watchUserTyping({ rid, status }) {
 };
 
 const handleRemovedRoom = function* handleRemovedRoom() {
-	yield Navigation.navigate('RoomsListView');
+	const isMasterDetail = yield select(state => state.app.isMasterDetail);
+	if (isMasterDetail) {
+		yield Navigation.navigate('DrawerNavigator');
+	} else {
+		yield Navigation.navigate('RoomsListView');
+	}
 	// types.ROOM.REMOVE is triggered by `subscriptions-changed` with `removed` arg
 	const { timeout } = yield race({
 		deleteFinished: take(types.ROOM.REMOVED),
@@ -69,12 +74,17 @@ const handleDeleteRoom = function* handleDeleteRoom({ rid, t }) {
 };
 
 const handleCloseRoom = function* handleCloseRoom({ rid }) {
+	const isMasterDetail = yield select(state => state.app.isMasterDetail);
 	const requestComment = yield select(state => state.settings.Livechat_request_comment_when_closing_conversation);
 
 	const closeRoom = async(comment = '') => {
 		try {
 			await RocketChat.closeLivechat(rid, comment);
-			Navigation.navigate('RoomsListView');
+			if (isMasterDetail) {
+				Navigation.navigate('DrawerNavigator');
+			} else {
+				Navigation.navigate('RoomsListView');
+			}
 		} catch {
 			// do nothing
 		}
@@ -105,7 +115,12 @@ const handleForwardRoom = function* handleForwardRoom({ transferData }) {
 	try {
 		const result = yield RocketChat.forwardLivechat(transferData);
 		if (result === true) {
-			Navigation.navigate('RoomsListView');
+			const isMasterDetail = yield select(state => state.app.isMasterDetail);
+			if (isMasterDetail) {
+				Navigation.navigate('DrawerNavigator');
+			} else {
+				Navigation.navigate('RoomsListView');
+			}
 		} else {
 			showErrorAlert(I18n.t('No_available_agents_to_transfer'), I18n.t('Oops'));
 		}

@@ -1,16 +1,15 @@
-export const canUploadFile = (file, serverInfo) => {
-	const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = serverInfo;
+export const canUploadFile = (file, allowList, maxFileSize) => {
 	if (!(file && file.path)) {
 		return { success: true };
 	}
-	if (FileUpload_MaxFileSize > -1 && file.size > FileUpload_MaxFileSize) {
+	if (maxFileSize > -1 && file.size > maxFileSize) {
 		return { success: false, error: 'error-file-too-large' };
 	}
 	// if white list is empty, all media types are enabled
-	if (!FileUpload_MediaTypeWhiteList || FileUpload_MediaTypeWhiteList === '*') {
+	if (!allowList || allowList === '*') {
 		return { success: true };
 	}
-	const allowedMime = FileUpload_MediaTypeWhiteList.split(',');
+	const allowedMime = allowList.split(',');
 	if (allowedMime.includes(file.mime)) {
 		return { success: true };
 	}

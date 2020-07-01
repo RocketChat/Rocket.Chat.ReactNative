@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
-import { HeaderBackButton } from 'react-navigation-stack';
+import { HeaderBackButton } from '@react-navigation/stack';
 
-import { isIOS } from '../../../utils/deviceInfo';
 import { themes } from '../../../constants/colors';
 import Avatar from '../../../containers/Avatar';
 
@@ -14,19 +13,20 @@ const styles = StyleSheet.create({
 	}
 });
 
-const RoomHeaderLeft = ({
-	tmid, unreadsCount, navigation, baseUrl, userId, token, title, t, theme, goRoomActionsView, split
+const RoomHeaderLeft = React.memo(({
+	tmid, unreadsCount, navigation, baseUrl, userId, token, title, t, theme, goRoomActionsView, isMasterDetail
 }) => {
-	if (!split || tmid) {
+	if (!isMasterDetail || tmid) {
+		const onPress = useCallback(() => navigation.goBack());
 		return (
 			<HeaderBackButton
-				title={unreadsCount > 999 ? '+999' : unreadsCount || ' '}
-				backTitleVisible={isIOS}
-				onPress={() => navigation.goBack()}
+				label={unreadsCount > 999 ? '+999' : unreadsCount || ' '}
+				onPress={onPress}
 				tintColor={themes[theme].headerTintColor}
 			/>
 		);
 	}
+	const onPress = useCallback(() => goRoomActionsView(), []);
 	if (baseUrl && userId && token) {
 		return (
 			<Avatar
@@ -37,12 +37,12 @@ const RoomHeaderLeft = ({
 				style={styles.avatar}
 				userId={userId}
 				token={token}
-				onPress={goRoomActionsView}
+				onPress={onPress}
 			/>
 		);
 	}
 	return null;
-};
+});
 
 RoomHeaderLeft.propTypes = {
 	tmid: PropTypes.string,
@@ -55,7 +55,7 @@ RoomHeaderLeft.propTypes = {
 	t: PropTypes.string,
 	theme: PropTypes.string,
 	goRoomActionsView: PropTypes.func,
-	split: PropTypes.bool
+	isMasterDetail: PropTypes.bool
 };
 
 export default RoomHeaderLeft;

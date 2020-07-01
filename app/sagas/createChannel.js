@@ -10,6 +10,7 @@ import RocketChat from '../lib/rocketchat';
 import Navigation from '../lib/Navigation';
 import database from '../lib/database';
 import I18n from '../i18n';
+import { goRoom } from '../utils/goRoom';
 
 const createChannel = function createChannel(data) {
 	return RocketChat.createChannel(data);
@@ -55,9 +56,12 @@ const handleRequest = function* handleRequest({ data }) {
 	}
 };
 
-const handleSuccess = function handleSuccess({ data }) {
-	const { rid, t } = data;
-	Navigation.navigate('RoomView', { rid, t, name: RocketChat.getRoomTitle(data) });
+const handleSuccess = function* handleSuccess({ data }) {
+	const isMasterDetail = yield select(state => state.app.isMasterDetail);
+	if (isMasterDetail) {
+		Navigation.navigate('DrawerNavigator');
+	}
+	goRoom({ item: data, isMasterDetail });
 };
 
 const handleFailure = function handleFailure({ err }) {
