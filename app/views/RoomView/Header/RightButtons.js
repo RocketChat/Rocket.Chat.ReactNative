@@ -73,7 +73,7 @@ class RightButtonsContainer extends React.PureComponent {
 			rid, navigation, isMasterDetail
 		} = this.props;
 		if (isMasterDetail) {
-			navigation.navigate('ModalStackNavigator', { screen: 'SearchMessagesView', params: { rid } });
+			navigation.navigate('ModalStackNavigator', { screen: 'SearchMessagesView', params: { rid, showCloseModal: true } });
 		} else {
 			navigation.navigate('SearchMessagesView', { rid });
 		}
