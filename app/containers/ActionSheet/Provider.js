@@ -1,5 +1,4 @@
-import React, { useRef, useContext } from 'react';
-import hoistNonReactStatics from 'hoist-non-react-statics';
+import React, { useRef, useContext, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 
 import ActionSheet from './ActionSheet';
@@ -14,15 +13,11 @@ export const useActionSheet = () => useContext(context);
 
 const { Provider, Consumer } = context;
 
-export const withActionSheet = (Component) => {
-	const ConnectedActionSheet = props => (
-		<Consumer>
-			{contexts => <Component {...props} {...contexts} />}
-		</Consumer>
-	);
-	hoistNonReactStatics(ConnectedActionSheet, Component);
-	return ConnectedActionSheet;
-};
+export const withActionSheet = Component => forwardRef((props, ref) => (
+	<Consumer>
+		{contexts => <Component {...props} {...contexts} ref={ref} />}
+	</Consumer>
+));
 
 export const ActionSheetProvider = React.memo(({ children }) => {
 	const ref = useRef();

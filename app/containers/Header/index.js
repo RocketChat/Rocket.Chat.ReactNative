@@ -4,10 +4,21 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, StyleSheet } from 'react-native';
 import { themes } from '../../constants/colors';
 import { themedHeader } from '../../utils/navigation';
-import { isIOS } from '../../utils/deviceInfo';
+import { isIOS, isTablet } from '../../utils/deviceInfo';
 
 // Get from https://github.com/react-navigation/react-navigation/blob/master/packages/stack/src/views/Header/HeaderSegment.tsx#L69
 export const headerHeight = isIOS ? 44 : 56;
+
+export const getHeaderHeight = (isLandscape) => {
+	if (isIOS) {
+		if (isLandscape && !isTablet) {
+			return 32;
+		} else {
+			return 44;
+		}
+	}
+	return 56;
+};
 
 const styles = StyleSheet.create({
 	container: {

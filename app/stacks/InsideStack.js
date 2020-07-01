@@ -56,6 +56,7 @@ import AttachmentView from '../views/AttachmentView';
 import ModalBlockView from '../views/ModalBlockView';
 import JitsiMeetView from '../views/JitsiMeetView';
 import StatusView from '../views/StatusView';
+import ShareView from '../views/ShareView';
 import CreateDiscussionView from '../views/CreateDiscussionView';
 
 // ChatsStackNavigator
@@ -305,6 +306,10 @@ const InsideStackNavigator = () => {
 			<InsideStack.Screen
 				name='StatusView'
 				component={StatusView}
+			/>
+			<InsideStack.Screen
+				name='ShareView'
+				component={ShareView}
 			/>
 			<InsideStack.Screen
 				name='ModalBlockView'

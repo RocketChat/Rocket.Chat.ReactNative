@@ -7,18 +7,22 @@ import * as mime from 'react-native-mime-types';
 import { FileSystem } from 'react-native-unimodules';
 import { Video } from 'expo-av';
 import SHA256 from 'js-sha256';
+import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { LISTENER } from '../containers/Toast';
 import EventEmitter from '../utils/events';
 import I18n from '../i18n';
 import { withTheme } from '../theme';
-import ImageViewer from '../presentation/ImageViewer';
+import { ImageViewer } from '../presentation/ImageViewer';
 import { themes } from '../constants/colors';
 import { formatAttachmentUrl } from '../lib/utils';
 import RCActivityIndicator from '../containers/ActivityIndicator';
 import { SaveButton, CloseModalButton } from '../containers/HeaderButton';
 import { isAndroid } from '../utils/deviceInfo';
 import { getUserSelector } from '../selectors/login';
+import { withDimensions } from '../dimensions';
+import { getHeaderHeight } from '../containers/Header';
+import StatusBar from '../containers/StatusBar';
 
 const styles = StyleSheet.create({
 	container: {
@@ -32,6 +36,9 @@ class AttachmentView extends React.Component {
 		route: PropTypes.object,
 		theme: PropTypes.string,
 		baseUrl: PropTypes.string,
+		width: PropTypes.number,
+		height: PropTypes.number,
+		insets: PropTypes.object,
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			token: PropTypes.string
@@ -61,13 +68,16 @@ class AttachmentView extends React.Component {
 	}
 
 	setHeader = () => {
-		const { route, navigation } = this.props;
+		const { route, navigation, theme } = this.props;
 		const attachment = route.params?.attachment;
 		const { title } = attachment;
 		const options = {
-			headerLeft: () => <CloseModalButton testID='close-attachment-view' navigation={navigation} />,
+			headerLeft: () => <CloseModalButton testID='close-attachment-view' navigation={navigation} buttonStyle={{ color: themes[theme].previewTintColor }} />,
 			title: decodeURI(title),
-			headerRight: () => <SaveButton testID='save-image' onPress={this.handleSave} />
+			headerRight: () => <SaveButton testID='save-image' onPress={this.handleSave} buttonStyle={{ color: themes[theme].previewTintColor }} />,
+			headerBackground: () => <View style={{ flex: 1, backgroundColor: themes[theme].previewBackground }} />,
+			headerTintColor: themes[theme].previewTintColor,
+			headerTitleStyle: { color: themes[theme].previewTintColor }
 		};
 		navigation.setOptions(options);
 	}
@@ -107,12 +117,21 @@ class AttachmentView extends React.Component {
 		this.setState({ loading: false });
 	};
 
-	renderImage = uri => (
-		<ImageViewer
-			uri={uri}
-			onLoadEnd={() => this.setState({ loading: false })}
-		/>
-	);
+	renderImage = (uri) => {
+		const {
+			theme, width, height, insets
+		} = this.props;
+		const headerHeight = getHeaderHeight(width > height);
+		return (
+			<ImageViewer
+				uri={uri}
+				onLoadEnd={() => this.setState({ loading: false })}
+				theme={theme}
+				width={width}
+				height={height - insets.top - insets.bottom - headerHeight}
+			/>
+		);
+	}
 
 	renderVideo = uri => (
 		<Video
@@ -146,6 +165,7 @@ class AttachmentView extends React.Component {
 
 		return (
 			<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
+				<StatusBar barStyle='light-content' backgroundColor={themes[theme].previewBackground} />
 				{content}
 				{loading ? <RCActivityIndicator absolute size='large' theme={theme} /> : null}
 			</View>
@@ -158,4 +178,4 @@ const mapStateToProps = state => ({
 	user: getUserSelector(state)
 });
 
-export default connect(mapStateToProps)(withTheme(AttachmentView));
+export default connect(mapStateToProps)(withTheme(withDimensions(withSafeAreaInsets(AttachmentView))));
