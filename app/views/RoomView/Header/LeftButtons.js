@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const RoomHeaderLeft = React.memo(({
+const LeftButtons = React.memo(({
 	tmid, unreadsCount, navigation, baseUrl, userId, token, title, t, theme, goRoomActionsView, isMasterDetail
 }) => {
 	if (!isMasterDetail || tmid) {
@@ -44,7 +44,7 @@ const RoomHeaderLeft = React.memo(({
 	return null;
 });
 
-RoomHeaderLeft.propTypes = {
+LeftButtons.propTypes = {
 	tmid: PropTypes.string,
 	unreadsCount: PropTypes.number,
 	navigation: PropTypes.object,
@@ -58,4 +58,4 @@ RoomHeaderLeft.propTypes = {
 	isMasterDetail: PropTypes.bool
 };
 
-export default RoomHeaderLeft;
+export default LeftButtons;

@@ -27,7 +27,7 @@ import styles from './styles';
 import log from '../../utils/log';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
-import RoomHeaderView, { RightButtons, RoomHeaderLeft } from './Header';
+import RoomHeaderView, { RightButtons, LeftButtons } from './Header';
 import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
 import { themes } from '../../constants/colors';
@@ -315,6 +315,21 @@ class RoomView extends React.Component {
 				left: isAndroid ? 58 : 70 + insets.left,
 				right: 46 + insets.right
 			},
+			headerLeft: () => (
+				<LeftButtons
+					tmid={tmid}
+					unreadsCount={unreadsCount}
+					navigation={navigation}
+					baseUrl={baseUrl}
+					userId={userId}
+					token={token}
+					title={avatar}
+					theme={theme}
+					t={t}
+					goRoomActionsView={this.goRoomActionsView}
+					isMasterDetail={isMasterDetail}
+				/>
+			),
 			headerTitle: () => (
 				<RoomHeaderView
 					rid={rid}
@@ -335,21 +350,6 @@ class RoomView extends React.Component {
 					t={t}
 					navigation={navigation}
 					toggleFollowThread={this.toggleFollowThread}
-				/>
-			),
-			headerLeft: () => (
-				<RoomHeaderLeft
-					tmid={tmid}
-					unreadsCount={unreadsCount}
-					navigation={navigation}
-					baseUrl={baseUrl}
-					userId={userId}
-					token={token}
-					title={avatar}
-					theme={theme}
-					t={t}
-					goRoomActionsView={this.goRoomActionsView}
-					isMasterDetail={isMasterDetail}
 				/>
 			)
 		});

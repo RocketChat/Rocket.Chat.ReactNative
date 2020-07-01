@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import equal from 'deep-equal';
 
 import Header from './Header';
+import LeftButtons from './LeftButtons';
 import RightButtons from './RightButtons';
 import { withTheme } from '../../../theme';
-import RoomHeaderLeft from './RoomHeaderLeft';
 import { withDimensions } from '../../../dimensions';
 
 class RoomHeaderView extends Component {
@@ -117,4 +117,4 @@ const mapStateToProps = (state, ownProps) => {
 
 export default connect(mapStateToProps)(withDimensions(withTheme(RoomHeaderView)));
 
-export { RightButtons, RoomHeaderLeft };
+export { RightButtons, LeftButtons };
