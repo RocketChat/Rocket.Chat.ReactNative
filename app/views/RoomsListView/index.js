@@ -707,8 +707,7 @@ class RoomsListView extends React.Component {
 		if (handleCommandShowPreferences(event)) {
 			navigation.navigate('SettingsView');
 		} else if (handleCommandSearching(event)) {
-			this.scroll.scrollToOffset({ animated: true, offset: 0 });
-			// this.inputRef.focus();
+			this.initSearching();
 		} else if (handleCommandSelectRoom(event)) {
 			this.goRoomByIndex(input);
 		} else if (handleCommandPreviousRoom(event)) {
