@@ -73,8 +73,16 @@ class NewMessageView extends React.Component {
 		this.init();
 		this.state = {
 			search: [],
-			chats: []
+      chats: [],
+      permissions: {}
 		};
+  }
+  
+  async componentDidMount() {
+		const hasPermissions = ['create-c', 'create-d', 'create-p'];
+    const { user } = this.props;
+    const permissions = await RocketChat.hasPermissionsByUserRoles(hasPermissions, user.roles);
+    this.setState({ permissions });
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -178,33 +186,37 @@ class NewMessageView extends React.Component {
 	}
 
 	renderHeader = () => {
-		const { maxUsers, theme } = this.props;
-		return (
+    const { maxUsers, theme } = this.props;
+    const { permissions } = this.state;
+    const hasCreateChannelPermission = permissions['create-c'];
+		const hasCreateDirectMessagePermission = permissions['create-d'];
+		const hasCreatePrivateGroupPermission = permissions['create-p'];
+		return hasCreateChannelPermission || hasCreateDirectMessagePermission || hasCreatePrivateGroupPermission ? (
 			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
 				<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='new-message-view-search' />
 				<View style={styles.buttonContainer}>
-					{this.renderButton({
+        {hasCreateChannelPermission ? this.renderButton({
 						onPress: this.createChannel,
 						title: I18n.t('Create_Channel'),
 						icon: 'hash',
 						testID: 'new-message-view-create-channel',
 						first: true
-					})}
-					{maxUsers > 2 ? this.renderButton({
+					}) : null}
+					{hasCreateDirectMessagePermission && maxUsers > 2 ? this.renderButton({
 						onPress: this.createGroupChat,
 						title: I18n.t('Create_Direct_Messages'),
 						icon: 'team',
 						testID: 'new-message-view-create-direct-message'
 					}) : null}
-					{this.renderButton({
+					{hasCreatePrivateGroupPermission ? this.renderButton({
 						onPress: this.createDiscussion,
 						title: I18n.t('Create_Discussion'),
 						icon: 'chat',
 						testID: 'new-message-view-create-discussion'
-					})}
+					}) : null}
 				</View>
 			</View>
-		);
+		) : null;
 	}
 
 	renderSeparator = () => {
