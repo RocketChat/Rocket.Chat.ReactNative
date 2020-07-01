@@ -151,7 +151,7 @@ class RoomsListView extends React.Component {
 		this.setHeader();
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		this.getSubscriptions();
 		const { navigation, closeServerDropdown } = this.props;
 		if (isTablet) {
@@ -178,7 +178,8 @@ class RoomsListView extends React.Component {
     const hasPermissions = ['create-c', 'create-d', 'create-p', 'view-c-room', 'view-d-room', 'view-l-room'];
 		const { user } = this.props;
 		const permissions = await RocketChat.hasPermissionsByUserRoles(hasPermissions, user.roles);
-		this.setState({ permissions });
+    this.setState({ permissions });
+    this.setHeader();
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
@@ -311,6 +312,7 @@ class RoomsListView extends React.Component {
 		const { searching, permissions } = this.state;
     const { navigation, isMasterDetail } = this.props;
     const hasCreateChannelPermission = permissions['create-c'];
+    alert(JSON.stringify(permissions));
 		const hasCreateDirectMessagePermission = permissions['create-d'];
     const hasCreatePrivateGroupPermission = permissions['create-p'];
 		return {
@@ -786,7 +788,7 @@ class RoomsListView extends React.Component {
 			return this.renderSectionHeader(item.rid);
 		}
 
-		const { item: currentItem , permissions } = this.state;
+		const { item: currentItem, permissions } = this.state;
 		const {
 			user: {
 				id: userId,
