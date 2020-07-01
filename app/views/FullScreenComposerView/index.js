@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Alert, Keyboard, TouchableOpacity, SafeAreaView, BackHandler
+	View, Keyboard, TouchableOpacity, SafeAreaView, BackHandler
 } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
-import ImagePicker from 'react-native-image-crop-picker';
 import equal from 'deep-equal';
-import DocumentPicker from 'react-native-document-picker';
 import { Q } from '@nozbe/watermelondb';
 
 import { withTheme } from '../../theme';
@@ -26,7 +24,6 @@ import { themes } from '../../constants/colors';
 import LeftButtons from '../../containers/MessageBox/LeftButtons';
 import RightButtons from '../../containers/MessageBox/RightButtons';
 import { isAndroid, isTablet } from '../../utils/deviceInfo';
-import { canUploadFile } from '../../utils/media';
 import EventEmiter from '../../utils/events';
 import {
 	KEY_COMMAND,
@@ -43,25 +40,10 @@ import {
 	MENTIONS_TRACKING_TYPE_USERS
 } from '../../containers/MessageBox/constants';
 import CommandsPreview from '../../containers/MessageBox/CommandsPreview';
-import { Review } from '../../utils/review';
 import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/Navigation';
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
-
-const imagePickerConfig = {
-	cropping: true,
-	compressImageQuality: 0.8,
-	avoidEmptySpaceAroundImage: false
-};
-
-const libraryPickerConfig = {
-	mediaType: 'any'
-};
-
-const videoPickerConfig = {
-	mediaType: 'video'
-};
 
 class FullScreenComposerView extends Component {
 	static propTypes = {
@@ -91,68 +73,18 @@ class FullScreenComposerView extends Component {
 			showSend: !!route.params?.text || false,
 			recording: false,
 			trackingType: '',
-			file: {
-				isVisible: false
-			},
 			commandPreview: [],
 			showCommandPreview: false,
 			command: {}
 		};
 		this.text = route.params?.text || '';
 		this.focused = false;
-
-		// MessageBox Actions
-		this.options = [
-			{
-				title: I18n.t('Take_a_photo'),
-				icon: 'image',
-				onPress: this.takePhoto
-			},
-			{
-				title: I18n.t('Take_a_video'),
-				icon: 'video-1',
-				onPress: this.takeVideo
-			},
-			{
-				title: I18n.t('Choose_from_library'),
-				icon: 'share',
-				onPress: this.chooseFromLibrary
-			},
-			{
-				title: I18n.t('Choose_file'),
-				icon: 'folder',
-				onPress: this.chooseFile
-			},
-			{
-				title: I18n.t('Create_Discussion'),
-				icon: 'chat',
-				onPress: this.createDiscussion
-			}
-		];
-
-		const libPickerLabels = {
-			cropperChooseText: I18n.t('Choose'),
-			cropperCancelText: I18n.t('Cancel'),
-			loadingLabelText: I18n.t('Processing')
-		};
-		this.imagePickerConfig = {
-			...imagePickerConfig,
-			...libPickerLabels
-		};
-		this.libraryPickerConfig = {
-			...libraryPickerConfig,
-			...libPickerLabels
-		};
-		this.videoPickerConfig = {
-			...videoPickerConfig,
-			...libPickerLabels
-		};
 	}
 
 	async componentDidMount() {
 		const db = database.active;
-		const { route } = this.props;
-		const { rid, tmid, navigation } = route.params;
+		const { route, navigation } = this.props;
+		const { rid, tmid } = route.params;
 
 		BackHandler.addEventListener('hardwareBackPress', this.backAction);
 		let msg;
@@ -222,14 +154,14 @@ class FullScreenComposerView extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			showEmojiKeyboard, showSend, recording, mentions, file, commandPreview
+			showEmojiKeyboard, showSend, recording, mentions, commandPreview
 		} = this.state;
 		const { route, theme } = this.props;
 		const {
 			roomType, replying, editing, message
 		} = route.params;
 
-		if (nextProps.route.params.theme !== theme) {
+		if (nextProps.theme !== theme) {
 			return true;
 		}
 		if (nextProps.route.params.roomType !== roomType) {
@@ -254,9 +186,6 @@ class FullScreenComposerView extends Component {
 			return true;
 		}
 		if (!equal(nextState.commandPreview, commandPreview)) {
-			return true;
-		}
-		if (!equal(nextState.file, file)) {
 			return true;
 		}
 		if (!equal(nextProps.route.params.message, message)) {
@@ -528,109 +457,6 @@ class FullScreenComposerView extends Component {
 		this.setShowSend(false);
 	}
 
-	canUploadFile = (file) => {
-		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = this.props;
-		const result = canUploadFile(file, { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize });
-		if (result.success) {
-			return true;
-		}
-		Alert.alert(I18n.t('Error_uploading'), I18n.t(result.error));
-		return false;
-	}
-
-	sendMediaMessage = async(file) => {
-		const {
-			baseUrl: server, user, route
-		} = this.props;
-		const {
-			rid, tmid, message: { id: messageTmid }, replyCancel
-		} = route.params;
-		this.setState({ file: { isVisible: false } });
-		const fileInfo = {
-			name: file.name,
-			description: file.description,
-			size: file.size,
-			type: file.mime,
-			store: 'Uploads',
-			path: file.path
-		};
-		try {
-			replyCancel();
-			await RocketChat.sendFileMessage(rid, fileInfo, tmid || messageTmid, server, user);
-			Review.pushPositiveEvent();
-		} catch (e) {
-			log(e);
-		}
-	}
-
-	takePhoto = async() => {
-		try {
-			const image = await ImagePicker.openCamera(this.imagePickerConfig);
-			if (this.canUploadFile(image)) {
-				this.showUploadModal(image);
-			}
-		} catch (e) {
-			// Do nothing
-		}
-	}
-
-	takeVideo = async() => {
-		try {
-			const video = await ImagePicker.openCamera(this.videoPickerConfig);
-			if (this.canUploadFile(video)) {
-				this.showUploadModal(video);
-			}
-		} catch (e) {
-			// Do nothing
-		}
-	}
-
-	chooseFromLibrary = async() => {
-		try {
-			const image = await ImagePicker.openPicker(this.libraryPickerConfig);
-			if (this.canUploadFile(image)) {
-				this.showUploadModal(image);
-			}
-		} catch (e) {
-			// Do nothing
-		}
-	}
-
-	chooseFile = async() => {
-		try {
-			const res = await DocumentPicker.pick({
-				type: [DocumentPicker.types.allFiles]
-			});
-			const file = {
-				filename: res.name,
-				size: res.size,
-				mime: res.type,
-				path: res.uri
-			};
-			if (this.canUploadFile(file)) {
-				this.showUploadModal(file);
-			}
-		} catch (e) {
-			if (!DocumentPicker.isCancel(e)) {
-				log(e);
-			}
-		}
-	}
-
-	createDiscussion = () => {
-		const { isMasterDetail } = this.props;
-		const params = { channel: this.room, showCloseModal: true };
-		if (isMasterDetail) {
-			Navigation.navigate('ModalStackNavigator', { screen: 'CreateDiscussionView', params });
-		} else {
-			Navigation.navigate('NewMessageStackNavigator', { screen: 'CreateDiscussionView', params });
-		}
-	}
-
-	showUploadModal = (file) => {
-		this.setState({ file: { ...file, isVisible: true } });
-	}
-
 	showMessageBoxActions = () => {
 		const { route } = this.props;
 		const { showMessageBoxActions, replying, replyCancel } = route.params;
@@ -794,10 +620,10 @@ class FullScreenComposerView extends Component {
 	}
 
 	replyCancel = () => {
-		const { navigation, route } = this.props;
+		const { route } = this.props;
 		const { replyCancel } = route.params;
 
-		navigation.goBack();
+		Navigation.goBack();
 		replyCancel();
 	}
 
@@ -898,6 +724,7 @@ class FullScreenComposerView extends Component {
 						theme={theme}
 						showEmojiKeyboard={showEmojiKeyboard}
 						editing={editing}
+						isActionsEnabled
 						showMessageBoxActions={this.showMessageBoxActions}
 						editCancel={this.editCancel}
 						openEmoji={this.openEmoji}
@@ -911,6 +738,7 @@ class FullScreenComposerView extends Component {
 							recordAudioMessage={this.recordAudioMessage}
 							recordAudioMessageEnabled={Message_AudioRecorderEnabled}
 							showMessageBoxActions={this.showMessageBoxActions}
+							isActionsEnabled
 						/>
 					</View>
 				</View>
