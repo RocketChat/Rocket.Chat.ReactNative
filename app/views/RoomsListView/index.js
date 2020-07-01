@@ -352,6 +352,7 @@ class RoomsListView extends React.Component {
 						title='search'
 						iconName='magnifier'
 						onPress={this.initSearching}
+						testID='rooms-list-view-search'
 					/>
 				</CustomHeaderButtons>
 			))

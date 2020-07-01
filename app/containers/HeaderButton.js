@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { HeaderButtons, HeaderButton, Item } from 'react-navigation-header-buttons';
 
 import { CustomIcon } from '../lib/Icons';
-import { isIOS, isAndroid } from '../utils/deviceInfo';
+import { isIOS } from '../utils/deviceInfo';
 import { themes } from '../constants/colors';
 import I18n from '../i18n';
 import { withTheme } from '../theme';
