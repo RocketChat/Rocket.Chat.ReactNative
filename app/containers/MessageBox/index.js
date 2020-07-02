@@ -848,73 +848,6 @@ class MessageBox extends Component {
 		});
 	}
 
-	getFullScreenChanges = (args) => {
-		this.setInput(args.text);
-		const isTextEmpty = args.text.length === 0;
-		this.setShowSend(!isTextEmpty);
-		if (args.commandPreview) {
-			this.setState({ commandPreview: args.commandPreview });
-		}
-		if (args.showCommandPreview) {
-			this.setState({ showCommandPreview: args.showCommandPreview });
-		}
-		if (args.command) {
-			this.setState({ command: args.command });
-		}
-		if (args.mentions) {
-			this.setState({ mentions: args.mentions });
-		}
-		if (args.trackingType) {
-			this.setState({ trackingType: args.trackingType });
-		}
-		if (args.recording) {
-			this.setState({ recording: args.recording });
-		}
-		this.changeComposerState();
-	}
-
-	openModal = () => {
-		const {
-			editing,
-			typing,
-			rid,
-			tmid,
-			replying,
-			message,
-			replyCancel,
-			showActionSheet,
-			onSubmit,
-			threadsEnabled,
-			replyWithMention,
-			editRequest,
-			roomType,
-			getCustomEmoji
-		} = this.props;
-
-		const params = {
-			editing,
-			rid,
-			tmid,
-			replying,
-			message,
-			replyCancel,
-			typing,
-			showActionSheet,
-			onSubmit,
-			threadsEnabled,
-			replyWithMention,
-			editRequest,
-			roomType,
-			getCustomEmoji,
-			text: this.text,
-			editCancel: this.editCancel,
-			getFullScreenChanges: this.getFullScreenChanges,
-			showMessageBoxActions: this.showMessageBoxActions
-		};
-		Navigation.navigate('FullScreenComposerView', params);
-		this.changeComposerState();
-	}
-
 	renderTopButton = () => {
 		const { theme, editing } = this.props;
 		const buttonStyle = {
@@ -924,7 +857,7 @@ class MessageBox extends Component {
 		};
 
 		return (
-			<TouchableOpacity onPress={() => this.openModal()} style={buttonStyle}>
+			<TouchableOpacity onPress={() => {}} style={buttonStyle}>
 				<CustomIcon name='chevron-up' size={24} color={themes[theme].tintColor} />
 			</TouchableOpacity>
 		);
@@ -932,7 +865,7 @@ class MessageBox extends Component {
 
 	renderContent = () => {
 		const {
-			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview
+			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview, isFullscreen
 		} = this.state;
 		const {
 			editing, message, replying, replyCancel, user, getCustomEmoji, theme, Message_AudioRecorderEnabled, children, isActionsEnabled
@@ -952,7 +885,7 @@ class MessageBox extends Component {
 				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
 				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
 				<View style={[styles.composer, { borderTopColor: themes[theme].separatorColor }]}>
-					{isActionsEnabled ? this.renderTopButton() : null}
+					{isActionsEnabled && !isFullscreen ? this.renderTopButton() : null}
 					<ReplyPreview
 						message={message}
 						close={replyCancel}
