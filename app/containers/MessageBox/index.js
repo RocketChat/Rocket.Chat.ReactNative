@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Alert, Keyboard, TouchableOpacity, StyleSheet, NativeModules
+	View, Alert, Keyboard, TouchableOpacity, StyleSheet, NativeModules, Text
 } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
@@ -9,6 +9,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import equal from 'deep-equal';
 import DocumentPicker from 'react-native-document-picker';
 import { Q } from '@nozbe/watermelondb';
+import Modal from 'react-native-modal';
 
 import { generateTriggerId } from '../../lib/methods/actions';
 import TextInput from '../../presentation/TextInput';
@@ -47,6 +48,7 @@ import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/Navigation';
 import { CustomIcon } from '../../lib/Icons';
 import { withActionSheet } from '../ActionSheet';
+import sharedStyles from '../../views/Styles';
 
 const stylez = StyleSheet.create({
 	topButton: {
@@ -55,6 +57,27 @@ const stylez = StyleSheet.create({
 		justifyContent: 'center',
 		zIndex: 5,
 		marginBottom: -10
+	},
+	input: {
+		textAlignVertical: 'top',
+		padding: 15,
+		paddingTop: 5,
+		fontSize: 17,
+		letterSpacing: 0,
+		...sharedStyles.textRegular,
+		flex: 1
+	},
+	closeModal: {
+		alignSelf: 'flex-end',
+		margin: 10,
+		marginBottom: 0
+	},
+	buttons: {
+		flexDirection: 'row',
+		justifyContent: 'space-between'
+	},
+	rightButtons: {
+		flexDirection: 'row'
 	}
 });
 
@@ -315,7 +338,7 @@ class MessageBox extends Component {
 	}
 
 	componentWillUnmount() {
-		console.countReset(`${ this.constructor.name }.render calls`);
+		console.countReset(`${this.constructor.name}.render calls`);
 		if (this.onChangeText && this.onChangeText.stop) {
 			this.onChangeText.stop();
 		}
@@ -350,7 +373,7 @@ class MessageBox extends Component {
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	debouncedOnChangeText = debounce(async(text) => {
+	debouncedOnChangeText = debounce(async (text) => {
 		const { sharing } = this.props;
 		const db = database.active;
 		const isTextEmpty = text.length === 0;
@@ -422,9 +445,9 @@ class MessageBox extends Component {
 		const regexp = /([a-z0-9._-]+)$/im;
 		const result = msg.substr(0, cursor).replace(regexp, '');
 		const mentionName = trackingType === MENTIONS_TRACKING_TYPE_EMOJIS
-			? `${ item.name || item }:`
+			? `${item.name || item}:`
 			: (item.username || item.name || item.command);
-		const text = `${ result }${ mentionName } ${ msg.slice(cursor) }`;
+		const text = `${result}${mentionName} ${msg.slice(cursor)}`;
 		if ((trackingType === MENTIONS_TRACKING_TYPE_COMMANDS) && item.providesPreview) {
 			this.setState({ showCommandPreview: true });
 		}
@@ -463,16 +486,16 @@ class MessageBox extends Component {
 		if (this.component?.lastNativeSelection) {
 			const { start, end } = this.component.lastNativeSelection;
 			const cursor = Math.max(start, end);
-			newText = `${ text.substr(0, cursor) }${ emoji }${ text.substr(cursor) }`;
+			newText = `${text.substr(0, cursor)}${emoji}${text.substr(cursor)}`;
 		} else {
 			// if messagebox doesn't have a cursor, just append selected emoji
-			newText = `${ text }${ emoji }`;
+			newText = `${text}${emoji}`;
 		}
 		this.setInput(newText);
 		this.setShowSend(true);
 	}
 
-	getPermalink = async(message) => {
+	getPermalink = async (message) => {
 		try {
 			return await RocketChat.getPermalinkMessage(message);
 		} catch (error) {
@@ -491,23 +514,23 @@ class MessageBox extends Component {
 		return result;
 	}
 
-	getUsers = debounce(async(keyword) => {
+	getUsers = debounce(async (keyword) => {
 		let res = await RocketChat.search({ text: keyword, filterRooms: false, filterUsers: true });
 		res = [...this.getFixedMentions(keyword), ...res];
 		this.setState({ mentions: res });
 	}, 300)
 
-	getRooms = debounce(async(keyword = '') => {
+	getRooms = debounce(async (keyword = '') => {
 		const res = await RocketChat.search({ text: keyword, filterRooms: true, filterUsers: false });
 		this.setState({ mentions: res });
 	}, 300)
 
-	getEmojis = debounce(async(keyword) => {
+	getEmojis = debounce(async (keyword) => {
 		const db = database.active;
 		if (keyword) {
 			const customEmojisCollection = db.collections.get('custom_emojis');
 			let customEmojis = await customEmojisCollection.query(
-				Q.where('name', Q.like(`${ Q.sanitizeLikeString(keyword) }%`))
+				Q.where('name', Q.like(`${Q.sanitizeLikeString(keyword)}%`))
 			).fetch();
 			customEmojis = customEmojis.slice(0, MENTIONS_COUNT_TO_DISPLAY);
 			const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
@@ -516,11 +539,11 @@ class MessageBox extends Component {
 		}
 	}, 300)
 
-	getSlashCommands = debounce(async(keyword) => {
+	getSlashCommands = debounce(async (keyword) => {
 		const db = database.active;
 		const commandsCollection = db.collections.get('slash_commands');
 		const commands = await commandsCollection.query(
-			Q.where('id', Q.like(`${ Q.sanitizeLikeString(keyword) }%`))
+			Q.where('id', Q.like(`${Q.sanitizeLikeString(keyword)}%`))
 		).fetch();
 		this.setState({ mentions: commands || [] });
 	}, 300)
@@ -555,7 +578,7 @@ class MessageBox extends Component {
 		}, 1000);
 	}
 
-	setCommandPreview = async(command, name, params) => {
+	setCommandPreview = async (command, name, params) => {
 		const { rid } = this.props;
 		try {
 			const { preview } = await RocketChat.getCommandPreview(name, rid, params);
@@ -596,7 +619,7 @@ class MessageBox extends Component {
 		return false;
 	}
 
-	takePhoto = async() => {
+	takePhoto = async () => {
 		try {
 			const image = await ImagePicker.openCamera(this.imagePickerConfig);
 			if (this.canUploadFile(image)) {
@@ -607,7 +630,7 @@ class MessageBox extends Component {
 		}
 	}
 
-	takeVideo = async() => {
+	takeVideo = async () => {
 		try {
 			const video = await ImagePicker.openCamera(this.videoPickerConfig);
 			if (this.canUploadFile(video)) {
@@ -618,7 +641,7 @@ class MessageBox extends Component {
 		}
 	}
 
-	chooseFromLibrary = async() => {
+	chooseFromLibrary = async () => {
 		try {
 			const attachments = await ImagePicker.openPicker(this.libraryPickerConfig);
 			this.openShareView(attachments);
@@ -627,7 +650,7 @@ class MessageBox extends Component {
 		}
 	}
 
-	chooseFile = async() => {
+	chooseFile = async () => {
 		try {
 			const res = await DocumentPicker.pick({
 				type: [DocumentPicker.types.allFiles]
@@ -679,12 +702,12 @@ class MessageBox extends Component {
 		});
 	}
 
-	recordAudioMessage = async() => {
+	recordAudioMessage = async () => {
 		const recording = await Recording.permission();
 		this.setState({ recording });
 	}
 
-	finishAudioMessage = async(fileInfo) => {
+	finishAudioMessage = async (fileInfo) => {
 		const {
 			rid, tmid, baseUrl: server, user
 		} = this.props;
@@ -707,7 +730,7 @@ class MessageBox extends Component {
 		this.setState({ showEmojiKeyboard: false });
 	}
 
-	submit = async() => {
+	submit = async () => {
 		const {
 			onSubmit, rid: roomId, tmid, showSend, sharing
 		} = this.props;
@@ -738,7 +761,7 @@ class MessageBox extends Component {
 			const commandsCollection = db.collections.get('slash_commands');
 			const command = message.replace(/ .*/, '').slice(1);
 			const slashCommand = await commandsCollection.query(
-				Q.where('id', Q.like(`${ Q.sanitizeLikeString(command) }%`))
+				Q.where('id', Q.like(`${Q.sanitizeLikeString(command)}%`))
 			).fetch();
 			if (slashCommand.length > 0) {
 				try {
@@ -774,14 +797,14 @@ class MessageBox extends Component {
 			} else {
 				const { user, roomType } = this.props;
 				const permalink = await this.getPermalink(replyingMessage);
-				let msg = `[ ](${ permalink }) `;
+				let msg = `[ ](${permalink}) `;
 
 				// if original message wasn't sent by current user and neither from a direct room
 				if (user.username !== replyingMessage.u.username && roomType !== 'd' && replyWithMention) {
-					msg += `@${ replyingMessage.u.username } `;
+					msg += `@${replyingMessage.u.username} `;
 				}
 
-				msg = `${ msg } ${ message }`;
+				msg = `${msg} ${message}`;
 				onSubmit(msg);
 			}
 			replyCancel();
@@ -848,6 +871,74 @@ class MessageBox extends Component {
 		});
 	}
 
+	renderCloseButton = () => {
+		const { theme, editing } = this.props;
+		const buttonStyle = {
+			...stylez.closeModal,
+			backgroundColor: editing ? themes[theme].chatComponentBackground
+				: themes[theme].messageboxBackground
+		};
+		return (
+			<TouchableOpacity onPress={() => this.changeComposerState()} style={buttonStyle}>
+				<CustomIcon name='Cross' size={30} color={themes[theme].tintColor} />
+			</TouchableOpacity>
+		);
+	}
+
+	renderFullScreenComposer = () => {
+		const {
+			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview, isFullscreen
+		} = this.state;
+		const {
+			editing, message, replying, replyCancel, user, getCustomEmoji, theme, Message_AudioRecorderEnabled, children, isActionsEnabled, iOSScrollBehavior
+		} = this.props;
+		const backgroundColor = editing ? themes[theme].chatComponentBackground : themes[theme].messageboxBackground;
+
+		const isAndroidTablet = isTablet && isAndroid ? {
+			multiline: false,
+			onSubmitEditing: this.submit,
+			returnKeyType: 'send'
+		} : {};
+
+		return (
+			<Modal
+				style={{ margin: 0 }}
+				useNativeDriver
+				isVisible={isFullscreen}
+				hideModalContentWhileAnimating
+			>
+				<View style={{ backgroundColor, flex: 1 }}>
+					{this.renderCloseButton()}
+					<TextInput
+						ref={component => this.component = component}
+						style={stylez.input}
+						returnKeyType='default'
+						keyboardType='twitter'
+						blurOnSubmit={false}
+						placeholder={I18n.t('New_Message')}
+						onChangeText={this.onChangeText}
+						underlineColorAndroid='transparent'
+						defaultValue={this.text}
+						multiline
+						autoFocus
+						testID='full-screen-messagebox-input'
+						theme={theme}
+						{...isAndroidTablet}
+					/>
+					<ReplyPreview
+						message={message}
+						close={replyCancel}
+						username={user.username}
+						replying={replying}
+						getCustomEmoji={getCustomEmoji}
+						theme={theme}
+					/>
+					{this.renderKeyboard()}
+				</View>
+			</Modal>
+		);
+	}
+
 	renderTopButton = () => {
 		const { theme, editing } = this.props;
 		const buttonStyle = {
@@ -857,9 +948,47 @@ class MessageBox extends Component {
 		};
 
 		return (
-			<TouchableOpacity onPress={() => {}} style={buttonStyle}>
+			<TouchableOpacity onPress={() => this.changeComposerState()} style={buttonStyle}>
 				<CustomIcon name='chevron-up' size={24} color={themes[theme].tintColor} />
 			</TouchableOpacity>
+		);
+	}
+
+	renderFullScreenBottomBar = () => {
+		const {
+			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview, isFullscreen
+		} = this.state;
+		const {
+			editing, message, replying, replyCancel, user, getCustomEmoji, theme, Message_AudioRecorderEnabled, children, isActionsEnabled
+		} = this.props;
+		return (
+			<>
+				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
+				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
+				<View style={[stylez.buttons, { backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }]}>
+					<LeftButtons
+						theme={theme}
+						showEmojiKeyboard={showEmojiKeyboard}
+						editing={editing}
+						isActionsEnabled
+						showMessageBoxActions={this.showMessageBoxActions}
+						editCancel={this.editCancel}
+						openEmoji={this.openEmoji}
+						closeEmoji={this.closeEmoji}
+					/>
+					<View style={stylez.rightButtons}>
+						<RightButtons
+							theme={theme}
+							showSend={showSend}
+							submit={this.submit}
+							recordAudioMessage={this.recordAudioMessage}
+							recordAudioMessageEnabled={Message_AudioRecorderEnabled}
+							showMessageBoxActions={this.showMessageBoxActions}
+							isActionsEnabled
+						/>
+					</View>
+				</View>
+			</>
 		);
 	}
 
@@ -920,7 +1049,7 @@ class MessageBox extends Component {
 							placeholder={I18n.t('New_Message')}
 							onChangeText={this.onChangeText}
 							underlineColorAndroid='transparent'
-							defaultValue=''
+							defaultValue={this.text}
 							multiline
 							testID='messagebox-input'
 							theme={theme}
@@ -942,8 +1071,31 @@ class MessageBox extends Component {
 		);
 	}
 
+	renderKeyboard = () => {
+		const { showEmojiKeyboard, isFullscreen } = this.state;
+		const {
+			user, baseUrl, theme, iOSScrollBehavior
+		} = this.props;
+		return (
+			<KeyboardAccessoryView
+				ref={ref => this.tracking = ref}
+				renderContent={isFullscreen ? this.renderFullScreenBottomBar : this.renderContent}
+				kbInputRef={this.component}
+				kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
+				onKeyboardResigned={this.onKeyboardResigned}
+				onItemSelected={this.onEmojiSelected}
+				trackInteractive
+				// revealKeyboardInteractive
+				requiresSameParentToManageScrollView
+				addBottomView
+				bottomViewColor={themes[theme].messageboxBackground}
+				iOSScrollBehavior={iOSScrollBehavior}
+			/>
+		);
+	}
+
 	render() {
-		console.count(`${ this.constructor.name }.render calls`);
+		console.count(`${this.constructor.name}.render calls`);
 		const { showEmojiKeyboard } = this.state;
 		const {
 			user, baseUrl, theme, iOSScrollBehavior
@@ -957,20 +1109,8 @@ class MessageBox extends Component {
 					onPressCommandPreview: this.onPressCommandPreview
 				}}
 			>
-				<KeyboardAccessoryView
-					ref={ref => this.tracking = ref}
-					renderContent={this.renderContent}
-					kbInputRef={this.component}
-					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
-					onKeyboardResigned={this.onKeyboardResigned}
-					onItemSelected={this.onEmojiSelected}
-					trackInteractive
-					// revealKeyboardInteractive
-					requiresSameParentToManageScrollView
-					addBottomView
-					bottomViewColor={themes[theme].messageboxBackground}
-					iOSScrollBehavior={iOSScrollBehavior}
-				/>
+				{this.renderFullScreenComposer()}
+				{this.renderKeyboard()}
 			</MessageboxContext.Provider>
 		);
 	}
