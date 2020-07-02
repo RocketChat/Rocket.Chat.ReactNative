@@ -81,7 +81,7 @@ class SettingsView extends React.Component {
 		const { user } = this.props;
 		const { roles } = user;
 
-		return roles.includes('livechat-agent');
+		return roles?.includes('livechat-agent');
 	}
 
 	handleLogout = () => {

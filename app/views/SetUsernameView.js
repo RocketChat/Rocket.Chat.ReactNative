@@ -88,7 +88,7 @@ class SetUsernameView extends React.Component {
 
 		this.setState({ saving: true });
 		try {
-			await RocketChat.setUsername(username);
+			await RocketChat.saveUserProfile({ username });
 			await loginRequest({ resume: token });
 		} catch (e) {
 			showErrorAlert(e.message, I18n.t('Oops'));
