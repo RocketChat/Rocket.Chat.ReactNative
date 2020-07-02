@@ -687,6 +687,11 @@ class MessageBox extends Component {
 
 	showMessageBoxActions = () => {
 		const { showActionSheet } = this.props;
+		const { isFullscreen } = this.state;
+
+		if (isFullscreen) {
+			this.changeComposerState();
+		}
 		showActionSheet({ options: this.options });
 	}
 
@@ -903,7 +908,6 @@ class MessageBox extends Component {
 		return (
 			<Modal
 				style={{ margin: 0 }}
-				useNativeDriver
 				isVisible={isFullscreen}
 				hideModalContentWhileAnimating
 			>
@@ -961,6 +965,7 @@ class MessageBox extends Component {
 		const {
 			editing, message, replying, replyCancel, user, getCustomEmoji, theme, Message_AudioRecorderEnabled, children, isActionsEnabled
 		} = this.props;
+
 		return (
 			<>
 				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
