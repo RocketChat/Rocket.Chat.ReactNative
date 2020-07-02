@@ -196,7 +196,7 @@ class MessageBox extends Component {
 					console.log('Messagebox.didMount: Thread not found');
 				}
 			} else if (!sharing) {
-				msg = this.room.draftMessage;
+				msg = this.room?.draftMessage;
 			}
 		} catch (e) {
 			log(e);

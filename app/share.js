@@ -150,7 +150,7 @@ class Root extends React.Component {
 			this.setState({ root: 'outside' });
 		}
 
-		const state = Navigation.navigationRef.current.getRootState();
+		const state = Navigation.navigationRef.current?.getRootState();
 		const currentRouteName = getActiveRouteName(state);
 		Navigation.routeNameRef.current = currentRouteName;
 		setCurrentScreen(currentRouteName);
