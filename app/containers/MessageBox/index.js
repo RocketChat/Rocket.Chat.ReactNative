@@ -702,6 +702,12 @@ class MessageBox extends Component {
 	}
 
 	openEmoji = () => {
+		const { isFullscreen } = this.state;
+
+		if ( isFullscreen ) {
+			Keyboard.dismiss();
+		}
+
 		this.setState({
 			showEmojiKeyboard: true
 		});
