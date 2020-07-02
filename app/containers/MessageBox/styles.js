@@ -112,5 +112,8 @@ export default StyleSheet.create({
 	recordingCancelText: {
 		fontSize: 17,
 		...sharedStyles.textRegular
+	},
+	buttonsWhitespace: {
+		width: 15
 	}
 });
