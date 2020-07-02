@@ -151,8 +151,22 @@ class RoomsListView extends React.Component {
 	}
 
 	componentDidMount() {
-		this.getSubscriptions();
-		const { navigation, closeServerDropdown } = this.props;
+		const {
+			navigation, closeServerDropdown, appState
+		} = this.props;
+
+		/**
+		 * - When didMount is triggered and appState is foreground,
+		 * it means the user is logging in and selectServer has ran, so we can getSubscriptions
+		 *
+		 * - When didMount is triggered and appState is background,
+		 * it means the user has resumed the app, so selectServer needs to be triggered,
+		 * which is going to change server and getSubscriptions will be triggered by componentWillReceiveProps
+		 */
+		if (appState === 'foreground') {
+			this.getSubscriptions();
+		}
+
 		if (isTablet) {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
