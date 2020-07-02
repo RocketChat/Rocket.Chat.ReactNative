@@ -348,33 +348,13 @@ jobs:
             echo -e "android.useAndroidX=true" >> ./gradle.properties
             echo -e "android.enableJetifier=true" >> ./gradle.properties
             echo -e "FLIPPER_VERSION=0.33.1" >> ./gradle.properties
-
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
-            echo -e "BugsnagAPIKey=$BUGSNAG_KEY" >> ./gradle.properties
           working_directory: android
-
-      - run:
-          name: Config variables
-          command: |
-            echo -e "export default { BUGSNAG_API_KEY: '$BUGSNAG_KEY' };" > ./config.js
 
       - run:
           name: Build Android Foss App
           command: bundle exec fastlane android fossBuild
           working_directory: android
-
-      - run:
-          name: Upload sourcemaps to Bugsnag
-          command: |
-            if [[ $BUGSNAG_KEY ]]; then
-              yarn generate-source-maps-android upload \
-                --api-key=$BUGSNAG_KEY \
-                --app-version=$CIRCLE_BUILD_NUM \
-                --minifiedFile=android/app/build/generated/assets/react/release/app.bundle \
-                --source-map=android/app/build/generated/sourcemaps/react/release/app.bundle.map \
-                --minified-url=app.bundle \
-                --upload-sources
-            fi
 
       - store_artifacts:
           path: android/app/build/outputs
