@@ -632,7 +632,14 @@ class MessageBox extends Component {
 	}
 
 	openShareView = (attachments) => {
-		Navigation.navigate('ShareView', { room: this.room, thread: this.thread, attachments });
+		const { message, replyCancel, replyWithMention } = this.props;
+		// Start a thread with an attachment
+		let { thread } = this;
+		if (replyWithMention) {
+			thread = message;
+			replyCancel();
+		}
+		Navigation.navigate('ShareView', { room: this.room, thread, attachments });
 	}
 
 	createDiscussion = () => {
