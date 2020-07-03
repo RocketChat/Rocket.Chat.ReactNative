@@ -714,6 +714,10 @@ class MessageBox extends Component {
 	}
 
 	recordAudioMessage = async () => {
+		const { isFullscreen } = this.state;
+		if ( isFullscreen ) {
+			this.changeComposerState();
+		}
 		const recording = await Recording.permission();
 		this.setState({ recording });
 	}
