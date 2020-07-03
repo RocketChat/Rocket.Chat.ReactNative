@@ -722,7 +722,6 @@ class MessageBox extends Component {
 		const {
 			rid, tmid, baseUrl: server, user
 		} = this.props;
-
 		this.setState({
 			recording: false
 		});
@@ -943,7 +942,20 @@ class MessageBox extends Component {
 						getCustomEmoji={getCustomEmoji}
 						theme={theme}
 					/>
-					{this.renderKeyboard()}
+					<KeyboardAccessoryView
+						ref={ref => this.tracking = ref}
+						renderContent={this.renderFullScreenBottomBar}
+						kbInputRef={this.component}
+						kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
+						onKeyboardResigned={this.onKeyboardResigned}
+						onItemSelected={this.onEmojiSelected}
+						trackInteractive
+						// revealKeyboardInteractive
+						requiresSameParentToManageScrollView
+						addBottomView
+						bottomViewColor={themes[theme].messageboxBackground}
+						iOSScrollBehavior={iOSScrollBehavior}
+					/>
 				</View>
 			</Modal>
 		);
@@ -1121,7 +1133,20 @@ class MessageBox extends Component {
 				}}
 			>
 				{this.renderFullScreenComposer()}
-				{this.renderKeyboard()}
+				<KeyboardAccessoryView
+					ref={ref => this.tracking = ref}
+					renderContent={this.renderContent}
+					kbInputRef={this.component}
+					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
+					onKeyboardResigned={this.onKeyboardResigned}
+					onItemSelected={this.onEmojiSelected}
+					trackInteractive
+					// revealKeyboardInteractive
+					requiresSameParentToManageScrollView
+					addBottomView
+					bottomViewColor={themes[theme].messageboxBackground}
+					iOSScrollBehavior={iOSScrollBehavior}
+				/>
 			</MessageboxContext.Provider>
 		);
 	}
