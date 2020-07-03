@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Alert, Keyboard, TouchableOpacity, StyleSheet, NativeModules
+	View, Alert, Keyboard, TouchableOpacity, NativeModules
 } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
@@ -48,38 +48,6 @@ import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/Navigation';
 import { CustomIcon } from '../../lib/Icons';
 import { withActionSheet } from '../ActionSheet';
-import sharedStyles from '../../views/Styles';
-
-const stylez = StyleSheet.create({
-	topButton: {
-		width: '100%',
-		alignItems: 'center',
-		justifyContent: 'center',
-		zIndex: 5,
-		marginBottom: -10
-	},
-	input: {
-		textAlignVertical: 'top',
-		padding: 15,
-		paddingTop: 5,
-		fontSize: 17,
-		letterSpacing: 0,
-		...sharedStyles.textRegular,
-		flex: 1
-	},
-	closeModal: {
-		alignSelf: 'flex-end',
-		margin: 10,
-		marginBottom: 0
-	},
-	buttons: {
-		flexDirection: 'row',
-		justifyContent: 'space-between'
-	},
-	rightButtons: {
-		flexDirection: 'row'
-	}
-});
 
 const imagePickerConfig = {
 	cropping: true,
@@ -154,7 +122,7 @@ class MessageBox extends Component {
 			commandPreview: [],
 			showCommandPreview: false,
 			command: {},
-			isFullscreen: false
+			isFullScreen: false
 		};
 		this.text = '';
 		this.focused = false;
@@ -286,7 +254,7 @@ class MessageBox extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			showEmojiKeyboard, showSend, recording, mentions, commandPreview, isFullscreen
+			showEmojiKeyboard, showSend, recording, mentions, commandPreview, isFullScreen
 		} = this.state;
 
 		const {
@@ -325,7 +293,7 @@ class MessageBox extends Component {
 		if (!equal(nextProps.message, message)) {
 			return true;
 		}
-		if (nextState.isFullscreen !== isFullscreen) {
+		if (nextState.isFullScreen !== isFullScreen) {
 			return true;
 		}
 		if (!equal(nextProps.message, message)) {
@@ -687,9 +655,9 @@ class MessageBox extends Component {
 
 	showMessageBoxActions = () => {
 		const { showActionSheet } = this.props;
-		const { isFullscreen } = this.state;
+		const { isFullScreen } = this.state;
 
-		if (isFullscreen) {
+		if (isFullScreen) {
 			this.changeComposerState();
 		}
 		showActionSheet({ options: this.options });
@@ -702,9 +670,9 @@ class MessageBox extends Component {
 	}
 
 	openEmoji = () => {
-		const { isFullscreen } = this.state;
+		const { isFullScreen } = this.state;
 
-		if (isFullscreen) {
+		if (isFullScreen) {
 			Keyboard.dismiss();
 		}
 
@@ -714,8 +682,8 @@ class MessageBox extends Component {
 	}
 
 	recordAudioMessage = async() => {
-		const { isFullscreen } = this.state;
-		if (isFullscreen) {
+		const { isFullScreen } = this.state;
+		if (isFullScreen) {
 			this.changeComposerState();
 		}
 		const recording = await Recording.permission();
@@ -749,7 +717,7 @@ class MessageBox extends Component {
 			onSubmit, rid: roomId, tmid, showSend, sharing
 		} = this.props;
 		const message = this.text;
-		const { isFullscreen } = this.state;
+		const { isFullScreen } = this.state;
 
 		// if sharing, only execute onSubmit prop
 		if (sharing) {
@@ -757,7 +725,7 @@ class MessageBox extends Component {
 			return;
 		}
 
-		if (isFullscreen) {
+		if (isFullScreen) {
 			this.changeComposerState();
 		}
 		this.clearInput();
@@ -882,17 +850,17 @@ class MessageBox extends Component {
 	}
 
 	changeComposerState = () => {
-		const { isFullscreen } = this.state;
+		const { isFullScreen } = this.state;
 
 		this.setState({
-			isFullscreen: !isFullscreen
+			isFullScreen: !isFullScreen
 		});
 	}
 
 	renderCloseButton = () => {
 		const { theme, editing } = this.props;
 		const buttonStyle = {
-			...stylez.closeModal,
+			...styles.fullScreenComposerCloseButton,
 			backgroundColor: editing ? themes[theme].chatComponentBackground
 				: themes[theme].messageboxBackground
 		};
@@ -905,7 +873,7 @@ class MessageBox extends Component {
 
 	renderFullScreenComposer = () => {
 		const {
-			showEmojiKeyboard, isFullscreen
+			showEmojiKeyboard, isFullScreen
 		} = this.state;
 		const {
 			editing, message, replying, replyCancel, user, getCustomEmoji, theme, iOSScrollBehavior
@@ -921,7 +889,7 @@ class MessageBox extends Component {
 		return (
 			<Modal
 				style={{ margin: 0 }}
-				isVisible={isFullscreen}
+				isVisible={isFullScreen}
 				useNativeDriver
 				hideModalContentWhileAnimating
 			>
@@ -929,7 +897,7 @@ class MessageBox extends Component {
 					{this.renderCloseButton()}
 					<TextInput
 						ref={component => this.component = component}
-						style={stylez.input}
+						style={styles.fullScreenComposerInput}
 						returnKeyType='default'
 						keyboardType='twitter'
 						blurOnSubmit={false}
@@ -973,7 +941,7 @@ class MessageBox extends Component {
 	renderTopButton = () => {
 		const { theme, editing } = this.props;
 		const buttonStyle = {
-			...stylez.topButton,
+			...styles.textBoxTopButton,
 			backgroundColor: editing ? themes[theme].chatComponentBackground
 				: themes[theme].messageboxBackground
 		};
@@ -997,7 +965,7 @@ class MessageBox extends Component {
 			<>
 				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
 				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
-				<View style={[stylez.buttons, { backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }]}>
+				<View style={[styles.bottomBarButtons, { backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }]}>
 					<LeftButtons
 						theme={theme}
 						showEmojiKeyboard={showEmojiKeyboard}
@@ -1008,7 +976,7 @@ class MessageBox extends Component {
 						openEmoji={this.openEmoji}
 						closeEmoji={this.closeEmoji}
 					/>
-					<View style={stylez.rightButtons}>
+					<View style={styles.bottomBarRightButtons}>
 						<RightButtons
 							theme={theme}
 							showSend={showSend}
@@ -1026,7 +994,7 @@ class MessageBox extends Component {
 
 	renderContent = () => {
 		const {
-			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview, isFullscreen
+			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview, isFullScreen
 		} = this.state;
 		const {
 			editing, message, replying, replyCancel, user, getCustomEmoji, theme, Message_AudioRecorderEnabled, children, isActionsEnabled
@@ -1046,7 +1014,7 @@ class MessageBox extends Component {
 				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
 				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
 				<View style={[styles.composer, { borderTopColor: themes[theme].separatorColor }]}>
-					{isActionsEnabled && !isFullscreen ? this.renderTopButton() : null}
+					{isActionsEnabled && !isFullScreen ? this.renderTopButton() : null}
 					<ReplyPreview
 						message={message}
 						close={replyCancel}
