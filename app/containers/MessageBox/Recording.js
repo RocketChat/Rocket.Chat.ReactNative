@@ -4,9 +4,9 @@ import {
 	View, PermissionsAndroid, Text
 } from 'react-native';
 import { AudioRecorder, AudioUtils } from 'react-native-audio';
+import { BorderlessButton } from 'react-native-gesture-handler';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import * as FileSystem from 'expo-file-system';
-import Touchable from 'react-native-platform-touchable';
 
 import styles from './styles';
 import I18n from '../../i18n';
@@ -142,7 +142,7 @@ export default class extends React.PureComponent {
 				]}
 			>
 				<View style={[styles.textArea, { backgroundColor: themes[theme].messageboxBackground }]}>
-					<Touchable
+					<BorderlessButton
 						onPress={this.cancelAudioMessage}
 						accessibilityLabel={I18n.t('Cancel_recording')}
 						accessibilityTraits='button'
@@ -153,9 +153,9 @@ export default class extends React.PureComponent {
 							color={themes[theme].dangerColor}
 							name='Cross'
 						/>
-					</Touchable>
+					</BorderlessButton>
 					<Text key='currentTime' style={[styles.textBoxInput, { color: themes[theme].titleText }]}>{currentTime}</Text>
-					<Touchable
+					<BorderlessButton
 						onPress={this.finishAudioMessage}
 						accessibilityLabel={I18n.t('Finish_recording')}
 						accessibilityTraits='button'
@@ -166,7 +166,7 @@ export default class extends React.PureComponent {
 							color={themes[theme].successColor}
 							name='check'
 						/>
-					</Touchable>
+					</BorderlessButton>
 				</View>
 			</SafeAreaView>
 		);
