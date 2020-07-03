@@ -15,7 +15,6 @@ import EmptyRoom from './EmptyRoom';
 import { isIOS } from '../../utils/deviceInfo';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-import debounce from '../../utils/debounce';
 import { themes } from '../../constants/colors';
 
 class List extends React.Component {
@@ -47,7 +46,8 @@ class List extends React.Component {
 		super(props);
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
-
+		this.count = 50;
+		this.queryLength = 0;
 		this.mounted = false;
 		this.state = {
 			loading: true,
@@ -56,7 +56,7 @@ class List extends React.Component {
 			refreshing: false,
 			animated: false
 		};
-		this.init();
+		this.query();
 		this.unsubscribeFocus = props.navigation.addListener('focus', () => {
 			if (this.mounted) {
 				this.setState({ animated: true });
@@ -73,7 +73,7 @@ class List extends React.Component {
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	async init() {
+	async query() {
 		const { rid, tmid } = this.props;
 		const db = database.active;
 
@@ -93,23 +93,34 @@ class List extends React.Component {
 			}
 			this.messagesObservable = db.collections
 				.get('thread_messages')
-				.query(Q.where('rid', tmid), Q.or(Q.where('t', Q.notIn(hideSystemMessages)), Q.where('t', Q.eq(null))))
+				.query(
+					Q.where('rid', tmid),
+					Q.or(Q.where('t', Q.notIn(hideSystemMessages)), Q.where('t', Q.eq(null))),
+					Q.experimentalSortBy('ts', Q.desc),
+					Q.experimentalSkip(0),
+					Q.experimentalTake(this.count)
+				)
 				.observe();
 		} else if (rid) {
 			this.messagesObservable = db.collections
 				.get('messages')
-				.query(Q.where('rid', rid), Q.or(Q.where('t', Q.notIn(hideSystemMessages)), Q.where('t', Q.eq(null))))
+				.query(
+					Q.where('rid', rid),
+					Q.or(Q.where('t', Q.notIn(hideSystemMessages)), Q.where('t', Q.eq(null))),
+					Q.experimentalSortBy('ts', Q.desc),
+					Q.experimentalSkip(0),
+					Q.experimentalTake(this.count)
+				)
 				.observe();
 		}
 
 		if (rid) {
 			this.unsubscribeMessages();
 			this.messagesSubscription = this.messagesObservable
-				.subscribe((data) => {
+				.subscribe((messages) => {
 					if (tmid && this.thread) {
-						data = [this.thread, ...data];
+						messages = [...messages, this.thread];
 					}
-					const messages = orderBy(data, ['ts'], ['desc']);
 					if (this.mounted) {
 						this.setState({ messages }, () => this.update());
 					} else {
@@ -120,10 +131,8 @@ class List extends React.Component {
 		}
 	}
 
-	// eslint-disable-next-line react/sort-comp
 	reload = () => {
-		this.unsubscribeMessages();
-		this.init();
+		this.query();
 	}
 
 	readThreads = async() => {
@@ -177,31 +186,33 @@ class List extends React.Component {
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
-	onEndReached = debounce(async() => {
-		const {
-			loading, end, messages, latest = messages[messages.length - 1]?.ts
-		} = this.state;
-		if (loading || end) {
-			return;
-		}
+	onEndReached = async() => {
+		this.count += 50;
+		this.query();
+		// const {
+		// 	loading, end, messages, latest = messages[messages.length - 1]?.ts
+		// } = this.state;
+		// if (loading || end) {
+		// 	return;
+		// }
 
-		this.setState({ loading: true });
-		const { rid, t, tmid } = this.props;
-		try {
-			let result;
-			if (tmid) {
-				// `offset` is `messages.length - 1` because we append thread start to `messages` obj
-				result = await RocketChat.loadThreadMessages({ tmid, rid, offset: messages.length - 1 });
-			} else {
-				result = await RocketChat.loadMessagesForRoom({ rid, t, latest });
-			}
+		// this.setState({ loading: true });
+		// const { rid, t, tmid } = this.props;
+		// try {
+		// 	let result;
+		// 	if (tmid) {
+		// 		// `offset` is `messages.length - 1` because we append thread start to `messages` obj
+		// 		result = await RocketChat.loadThreadMessages({ tmid, rid, offset: messages.length - 1 });
+		// 	} else {
+		// 		result = await RocketChat.loadMessagesForRoom({ rid, t, latest });
+		// 	}
 
-			this.setState({ end: result.length < 50, loading: false, latest: result[result.length - 1]?.ts }, () => this.loadMoreMessages(result));
-		} catch (e) {
-			this.setState({ loading: false });
-			log(e);
-		}
-	}, 300)
+		// 	this.setState({ end: result.length < 50, loading: false, latest: result[result.length - 1]?.ts }, () => this.loadMoreMessages(result));
+		// } catch (e) {
+		// 	this.setState({ loading: false });
+		// 	log(e);
+		// }
+	}
 
 	loadMoreMessages = (result) => {
 		const { end } = this.state;
