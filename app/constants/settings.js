@@ -50,6 +50,9 @@ export default {
 	Accounts_ManuallyApproveNewUsers: {
 		type: 'valueAsBoolean'
 	},
+	API_Use_REST_For_DDP_Calls: {
+		type: 'valueAsBoolean'
+	},
 	Accounts_iframe_enabled: {
 		type: 'valueAsBoolean'
 	},

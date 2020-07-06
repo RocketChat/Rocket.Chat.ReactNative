@@ -50,6 +50,7 @@ import StatusView from '../../views/StatusView';
 import CreateDiscussionView from '../../views/CreateDiscussionView';
 
 import { setKeyCommands, deleteKeyCommands } from '../../commands';
+import ShareView from '../../views/ShareView';
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator();
@@ -285,6 +286,10 @@ const InsideStackNavigator = React.memo(() => {
 				name='JitsiMeetView'
 				component={JitsiMeetView}
 				options={{ headerShown: false }}
+			/>
+			<InsideStack.Screen
+				name='ShareView'
+				component={ShareView}
 			/>
 		</InsideStack.Navigator>
 	);
