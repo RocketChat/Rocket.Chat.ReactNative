@@ -63,9 +63,13 @@ static void InitializeFlipper(UIApplication *application) {
     [self.window makeKeyAndVisible];
     [RNNotifications startMonitorNotifications];
   
+    // AppGroup MMKV
+    NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
+    [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
+  
     // NSUserDefaults -> MMKV (Migration)
     NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]];
-    MMKV *mmkv = [MMKV mmkvWithID:@"default"];
+    MMKV *mmkv = [MMKV mmkvWithID:@"default" mode:MMKVMultiProcess];
     [mmkv migrateFromUserDefaults:userDefaults];
 
     return YES;
