@@ -70,10 +70,15 @@ const handleOpen = function* handleOpen({ params }) {
 		host = host.slice(0, host.length - 1);
 	}
 
-	const [server, user] = yield all([
-		MMKV.getStringAsync('currentServer'),
-		MMKV.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ host }`)
-	]);
+	let server; let user;
+	try {
+		[server, user] = yield all([
+			MMKV.getStringAsync('currentServer'),
+			MMKV.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ host }`)
+		]);
+	} catch {
+		// Do nothing
+	}
 
 	// TODO: needs better test
 	// if deep link is from same server

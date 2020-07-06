@@ -178,9 +178,11 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 				if (servers.length > 0) {
 					for (let i = 0; i < servers.length; i += 1) {
 						const newServer = servers[i].id;
-						const token = yield MMKV.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
-						if (token) {
-							return yield put(selectServerRequest(newServer));
+						try {
+							yield MMKV.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
+							return put(selectServerRequest(newServer));
+						} catch {
+							// Do nothing
 						}
 					}
 				}

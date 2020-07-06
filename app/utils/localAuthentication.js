@@ -80,7 +80,12 @@ const checkBiometry = async(serverRecord) => {
 };
 
 export const checkHasPasscode = async({ force = true, serverRecord }) => {
-	const storedPasscode = await MMKV.getStringAsync(PASSCODE_KEY);
+	let storedPasscode;
+	try {
+		storedPasscode = await MMKV.getStringAsync(PASSCODE_KEY);
+	} catch {
+		// Do nothing
+	}
 	if (!storedPasscode) {
 		await changePasscode({ force });
 		await checkBiometry(serverRecord);

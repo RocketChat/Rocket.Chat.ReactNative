@@ -37,7 +37,12 @@ const appSchemeURL = (url, browser) => {
 
 const openLink = async(url, theme = 'light') => {
 	try {
-		const browser = await MMKV.getStringAsync(DEFAULT_BROWSER_KEY);
+		let browser;
+		try {
+			browser = await MMKV.getStringAsync(DEFAULT_BROWSER_KEY);
+		} catch {
+			// Do nothing
+		}
 
 		if (browser) {
 			const schemeUrl = appSchemeURL(url, browser.replace(':', ''));

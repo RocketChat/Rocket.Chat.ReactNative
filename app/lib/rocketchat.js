@@ -297,8 +297,8 @@ const RocketChat = {
 			}
 			reduxStore.dispatch(shareSetUser(user));
 			await RocketChat.login({ resume: user.token });
-		} catch (e) {
-			log(e);
+		} catch {
+			// Do nothing
 		}
 	},
 	closeShareExtension() {
@@ -1015,6 +1015,7 @@ const RocketChat = {
 		} catch {
 			// Do nothing
 		}
+		return {};
 	},
 	async saveSortPreference(param) {
 		try {

@@ -67,7 +67,12 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 	try {
 		const serversDB = database.servers;
 		yield MMKV.setStringAsync('currentServer', server);
-		const userId = yield MMKV.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
+		let userId;
+		try {
+			userId = yield MMKV.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
+		} catch {
+			// Do nothing
+		}
 		const userCollections = serversDB.collections.get('users');
 		let user = null;
 		if (userId) {
@@ -85,11 +90,15 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 				};
 			} catch (e) {
 				// We only run it if not has user on DB
-				const servers = yield MMKV.getMapAsync(SERVERS);
-				const userCredentials = servers && servers.find(srv => srv[SERVER_URL] === server);
-				user = userCredentials && {
-					token: userCredentials[TOKEN]
-				};
+				try {
+					const servers = yield MMKV.getMapAsync(SERVERS);
+					const userCredentials = servers && servers.find(srv => srv[SERVER_URL] === server);
+					user = userCredentials && {
+						token: userCredentials[TOKEN]
+					};
+				} catch {
+					// Do nothing
+				}
 			}
 		}
 
@@ -97,7 +106,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			const basicAuth = yield MMKV.getStringAsync(`${ BASIC_AUTH_KEY }-${ server }`);
 			setBasicAuth(basicAuth);
 		} catch {
-			// Do nothing, basicAuth was not found
+			// Do nothing
 		}
 
 		// Check for running requests and abort them before connecting to the server

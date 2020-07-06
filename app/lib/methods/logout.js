@@ -17,18 +17,23 @@ async function removeServerKeys({ server, userId }) {
 }
 
 async function removeSharedCredentials({ server }) {
+	// clear native credentials
 	try {
 		const servers = await MMKV.getMapAsync(SERVERS);
 		await MMKV.setMapAsync(SERVERS, servers && servers.filter(srv => srv[SERVER_URL] !== server));
+	} catch {
+		// Do nothing
+	}
 
-		// clear certificate for server - SSL Pinning
+	// clear certificate for server - SSL Pinning
+	try {
 		const certificate = await MMKV.getMapAsync(extractHostname(server));
 		if (certificate && certificate.path) {
 			await MMKV.removeItem(extractHostname(server));
 			await FileSystem.deleteAsync(certificate.path);
 		}
-	} catch (e) {
-		console.log('removeSharedCredentials', e);
+	} catch {
+		// Do nothing
 	}
 }
 
@@ -36,7 +41,12 @@ async function removeServerData({ server }) {
 	try {
 		const batch = [];
 		const serversDB = database.servers;
-		const userId = await MMKV.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
+		let userId;
+		try {
+			userId = await MMKV.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
+		} catch {
+			// Do nothing
+		}
 
 		const usersCollection = serversDB.collections.get('users');
 		if (userId) {
@@ -50,8 +60,8 @@ async function removeServerData({ server }) {
 		await serversDB.action(() => serversDB.batch(...batch));
 		await removeSharedCredentials({ server });
 		await removeServerKeys({ server });
-	} catch (e) {
-		console.log('removeServerData', e);
+	} catch {
+		// Do nothing
 	}
 }
 
@@ -85,12 +95,12 @@ export async function removeServer({ server }) {
 
 			await sdk.logout();
 		}
-
-		await removeServerData({ server });
-		await removeServerDatabase({ server });
 	} catch (e) {
 		console.log('removePush', e);
 	}
+
+	await removeServerData({ server });
+	await removeServerDatabase({ server });
 }
 
 export default async function logout({ server }) {

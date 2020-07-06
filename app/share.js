@@ -138,15 +138,15 @@ class Root extends React.Component {
 	}
 
 	init = async() => {
-		MMKV.getMapAsync(THEME_PREFERENCES_KEY).then(this.setTheme);
-		const currentServer = await MMKV.getStringAsync('currentServer');
-		const token = await MMKV.getStringAsync(RocketChat.TOKEN_KEY);
+		MMKV.getMapAsync(THEME_PREFERENCES_KEY).then(this.setTheme).catch(() => {});
 
-		if (currentServer && token) {
-			await localAuthenticate(currentServer);
+		try {
+			const [server] = await Promise.all([MMKV.getStringAsync('currentServer'), MMKV.getStringAsync(RocketChat.TOKEN_KEY)]);
+
+			await localAuthenticate(server);
 			this.setState({ root: 'inside' });
-			await RocketChat.shareExtensionInit(currentServer);
-		} else {
+			await RocketChat.shareExtensionInit(server);
+		} catch {
 			this.setState({ root: 'outside' });
 		}
 

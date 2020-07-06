@@ -34,10 +34,15 @@ const restore = function* restore() {
 			hasMigration = yield AsyncStorage.getItem('hasMigration');
 		}
 
-		let { token, server } = yield all({
-			token: MMKV.getStringAsync(RocketChat.TOKEN_KEY),
-			server: MMKV.getStringAsync('currentServer')
-		});
+		let token; let server;
+		try {
+			({ token, server } = yield all({
+				token: MMKV.getStringAsync(RocketChat.TOKEN_KEY),
+				server: MMKV.getStringAsync('currentServer')
+			}));
+		} catch {
+			// Do nothing
+		}
 
 		if (!hasMigration && isIOS) {
 			let servers = yield MMKV.setMapAsync(SERVERS);

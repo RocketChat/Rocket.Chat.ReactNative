@@ -149,7 +149,12 @@ class ServerDropdown extends Component {
 		} = this.props;
 		this.close();
 		if (currentServer !== server) {
-			const userId = await MMKV.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
+			let userId;
+			try {
+				userId = await MMKV.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
+			} catch {
+				// Do nothing
+			}
 			if (isMasterDetail) {
 				goRoom({ item: {}, isMasterDetail });
 			}

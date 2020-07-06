@@ -99,7 +99,7 @@ export default class Root extends React.Component {
 	}
 
 	init = async() => {
-		MMKV.getMapAsync(THEME_PREFERENCES_KEY).then(this.setTheme);
+		MMKV.getMapAsync(THEME_PREFERENCES_KEY).then(this.setTheme).catch(() => {});
 		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
 		store.dispatch(appInitLocalSettings());

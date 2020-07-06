@@ -26,8 +26,12 @@ const PasscodeEnter = ({ theme, hasBiometry, finishProcess }) => {
 	const { setItem: setLockedUntil } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
 
 	const fetchPasscode = async() => {
-		const p = await MMKV.getStringAsync(PASSCODE_KEY);
-		setPasscode(p);
+		try {
+			const p = await MMKV.getStringAsync(PASSCODE_KEY);
+			setPasscode(p);
+		} catch {
+			// Do nothing
+		}
 	};
 
 	const biometry = async() => {
