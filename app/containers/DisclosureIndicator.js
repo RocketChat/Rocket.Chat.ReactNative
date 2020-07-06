@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 export const DisclosureImage = React.memo(({ theme }) => (
 	<CustomIcon
 		name='chevron-right'
-		color={themes[theme].auxiliaryTintColor}
+		color={themes[theme].auxiliaryText}
 		size={20}
 	/>
 ));

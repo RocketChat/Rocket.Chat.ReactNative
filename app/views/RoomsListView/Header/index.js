@@ -18,8 +18,10 @@ class RoomsListHeaderView extends PureComponent {
 		showSearchHeader: PropTypes.bool,
 		serverName: PropTypes.string,
 		connecting: PropTypes.bool,
+		connected: PropTypes.bool,
 		isFetching: PropTypes.bool,
 		theme: PropTypes.string,
+		server: PropTypes.string,
 		open: PropTypes.func,
 		close: PropTypes.func,
 		closeSort: PropTypes.func,
@@ -68,16 +70,18 @@ class RoomsListHeaderView extends PureComponent {
 
 	render() {
 		const {
-			serverName, showServerDropdown, showSearchHeader, connecting, isFetching, theme
+			serverName, showServerDropdown, showSearchHeader, connecting, connected, isFetching, theme, server
 		} = this.props;
 
 		return (
 			<Header
 				theme={theme}
 				serverName={serverName}
+				server={server}
 				showServerDropdown={showServerDropdown}
 				showSearchHeader={showSearchHeader}
 				connecting={connecting}
+				connected={connected}
 				isFetching={isFetching}
 				onPress={this.onPress}
 				onSearchChangeText={this.onSearchChangeText}
@@ -91,8 +95,10 @@ const mapStateToProps = state => ({
 	showSortDropdown: state.rooms.showSortDropdown,
 	showSearchHeader: state.rooms.showSearchHeader,
 	connecting: state.meteor.connecting || state.server.loading,
+	connected: state.meteor.connected,
 	isFetching: state.rooms.isFetching,
-	serverName: state.settings.Site_Name
+	serverName: state.settings.Site_Name,
+	server: state.server.server
 });
 
 const mapDispatchtoProps = dispatch => ({
