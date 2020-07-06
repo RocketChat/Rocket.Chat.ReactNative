@@ -189,7 +189,7 @@ class ShareView extends Component {
 								path,
 								store: 'Uploads'
 							},
-							thread?.tmid,
+							thread?.id,
 							server,
 							{ id: user.id, token: user.token }
 						);
@@ -199,7 +199,7 @@ class ShareView extends Component {
 
 			// Send text message
 			} else if (text.length) {
-				await RocketChat.sendMessage(room.rid, text, thread?.tmid, { id: user.id, token: user.token });
+				await RocketChat.sendMessage(room.rid, text, thread?.id, { id: user.id, token: user.token });
 			}
 		} catch {
 			// Do nothing
