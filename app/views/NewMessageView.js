@@ -60,7 +60,8 @@ class NewMessageView extends React.Component {
 		baseUrl: PropTypes.string,
 		user: PropTypes.shape({
 			id: PropTypes.string,
-			token: PropTypes.string
+			token: PropTypes.string,
+			roles: PropTypes.array
 		}),
 		createChannel: PropTypes.func,
 		maxUsers: PropTypes.number,
@@ -73,16 +74,16 @@ class NewMessageView extends React.Component {
 		this.init();
 		this.state = {
 			search: [],
-      chats: [],
-      permissions: {}
+			chats: [],
+			permissions: {}
 		};
-  }
-  
-  async componentDidMount() {
+	}
+
+	async componentDidMount() {
 		const hasPermissions = ['create-c', 'create-d', 'create-p'];
-    const { user } = this.props;
-    const permissions = await RocketChat.hasPermissionsByUserRoles(hasPermissions, user.roles);
-    this.setState({ permissions });
+		const { user } = this.props;
+		const permissions = await RocketChat.hasPermissionsByUserRoles(hasPermissions, user.roles);
+		this.setState({ permissions });
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -186,16 +187,16 @@ class NewMessageView extends React.Component {
 	}
 
 	renderHeader = () => {
-    const { maxUsers, theme } = this.props;
-    const { permissions } = this.state;
-    const hasCreateChannelPermission = permissions['create-c'];
+		const { maxUsers, theme } = this.props;
+		const { permissions } = this.state;
+		const hasCreateChannelPermission = permissions['create-c'];
 		const hasCreateDirectMessagePermission = permissions['create-d'];
 		const hasCreatePrivateGroupPermission = permissions['create-p'];
 		return hasCreateChannelPermission || hasCreateDirectMessagePermission || hasCreatePrivateGroupPermission ? (
 			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
 				<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='new-message-view-search' />
 				<View style={styles.buttonContainer}>
-        {hasCreateChannelPermission ? this.renderButton({
+					{hasCreateChannelPermission ? this.renderButton({
 						onPress: this.createChannel,
 						title: I18n.t('Create_Channel'),
 						icon: 'hash',

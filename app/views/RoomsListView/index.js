@@ -104,7 +104,8 @@ class RoomsListView extends React.Component {
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			username: PropTypes.string,
-			token: PropTypes.string
+			token: PropTypes.string,
+			roles: PropTypes.array
 		}),
 		server: PropTypes.string,
 		searchText: PropTypes.string,
@@ -145,8 +146,8 @@ class RoomsListView extends React.Component {
 			loading: true,
 			allChats: [],
 			chats: [],
-      item: {},
-      permissions: {}
+			item: {},
+			permissions: {}
 		};
 		this.setHeader();
 	}
@@ -174,12 +175,12 @@ class RoomsListView extends React.Component {
 			if (this.backHandler && this.backHandler.remove) {
 				this.backHandler.remove();
 			}
-    });
-    const hasPermissions = ['create-c', 'create-d', 'create-p', 'view-c-room', 'view-d-room', 'view-l-room'];
+		});
+		const hasPermissions = ['create-c', 'create-d', 'create-p', 'view-c-room', 'view-d-room', 'view-l-room'];
 		const { user } = this.props;
 		const permissions = await RocketChat.hasPermissionsByUserRoles(hasPermissions, user.roles);
-    this.setState({ permissions });
-    this.setHeader();
+		this.setState({ permissions });
+		this.setHeader();
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
@@ -310,10 +311,10 @@ class RoomsListView extends React.Component {
 
 	getHeader = () => {
 		const { searching, permissions } = this.state;
-    const { navigation, isMasterDetail } = this.props;
-    const hasCreateChannelPermission = permissions['create-c'];
+		const { navigation, isMasterDetail } = this.props;
+		const hasCreateChannelPermission = permissions['create-c'];
 		const hasCreateDirectMessagePermission = permissions['create-d'];
-    const hasCreatePrivateGroupPermission = permissions['create-p'];
+		const hasCreatePrivateGroupPermission = permissions['create-p'];
 		return {
 			headerLeft: () => (searching && isAndroid ? (
 				<CustomHeaderButtons left>
@@ -341,13 +342,13 @@ class RoomsListView extends React.Component {
 						/>
 					) : null}
 					{hasCreateChannelPermission || hasCreateDirectMessagePermission || hasCreatePrivateGroupPermission ? (
-            <Item
-              title='new'
-              iconName='new-chat'
-              onPress={isMasterDetail ? () => navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' }) : () => navigation.navigate('NewMessageStackNavigator')}
-              testID='rooms-list-view-create-channel'
-            />
-          ) : null}
+						<Item
+							title='new'
+							iconName='new-chat'
+							onPress={isMasterDetail ? () => navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' }) : () => navigation.navigate('NewMessageStackNavigator')}
+							testID='rooms-list-view-create-channel'
+						/>
+					) : null}
 				</CustomHeaderButtons>
 			))
 		};
@@ -803,9 +804,9 @@ class RoomsListView extends React.Component {
 		} = this.props;
 		const id = this.getUidDirectMessage(item);
 		const isGroupChat = RocketChat.isGroupChat(item);
-    const hasViewChannelPermission = item.t !== 'd' ? true : permissions['view-d-room'];
-    const hasViewGroupPermission = item.t !== 'c' ? true : permissions['view-c-room'];
-    const hasViewLivechatPermission = item.t !== 'l' ? true : permissions['view-l-room'];
+		const hasViewChannelPermission = item.t !== 'd' ? true : permissions['view-d-room'];
+		const hasViewGroupPermission = item.t !== 'c' ? true : permissions['view-c-room'];
+		const hasViewLivechatPermission = item.t !== 'l' ? true : permissions['view-l-room'];
 		return (!hasViewGroupPermission || !hasViewChannelPermission || !hasViewLivechatPermission) ? null : (
 			<RoomItem
 				theme={theme}
