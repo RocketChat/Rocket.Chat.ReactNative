@@ -104,6 +104,15 @@ export default StyleSheet.create({
 	scrollViewMention: {
 		maxHeight: SCROLLVIEW_MENTION_HEIGHT
 	},
+	recordingContent: {
+		flexDirection: 'row',
+		flex: 1,
+		justifyContent: 'space-between'
+	},
+	recordingCancelText: {
+		fontSize: 17,
+		...sharedStyles.textRegular
+	},
 	buttonsWhitespace: {
 		width: 15
 	}
