@@ -1,7 +1,6 @@
 import * as FileSystem from 'expo-file-system';
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 
-import { SERVERS, SERVER_URL } from '../../constants/userDefaults';
 import { getDeviceToken } from '../../notifications/push';
 import { extractHostname } from '../../utils/server';
 import { BASIC_AUTH_KEY } from '../../utils/fetch';
@@ -17,14 +16,6 @@ async function removeServerKeys({ server, userId }) {
 }
 
 async function removeSharedCredentials({ server }) {
-	// clear native credentials
-	try {
-		const servers = await MMKV.getMapAsync(SERVERS);
-		await MMKV.setMapAsync(SERVERS, servers && servers.filter(srv => srv[SERVER_URL] !== server));
-	} catch {
-		// Do nothing
-	}
-
 	// clear certificate for server - SSL Pinning
 	try {
 		const certificate = await MMKV.getMapAsync(extractHostname(server));

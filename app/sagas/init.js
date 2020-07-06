@@ -1,7 +1,5 @@
 import { put, takeLatest, all } from 'redux-saga/effects';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import RNBootSplash from 'react-native-bootsplash';
-import AsyncStorage from '@react-native-community/async-storage';
 
 import MMKV from '../utils/mmkv';
 import { selectServerRequest } from '../actions/server';
@@ -10,12 +8,7 @@ import { toggleCrashReport } from '../actions/crashReport';
 import { APP } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
-import {
-	SERVERS, SERVER_ICON, SERVER_NAME, SERVER_URL, TOKEN, USER_ID
-} from '../constants/userDefaults';
-import { isIOS } from '../utils/deviceInfo';
 import database from '../lib/database';
-import protectedFunction from '../lib/methods/helpers/protectedFunction';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { appStart, ROOT_OUTSIDE, appReady } from '../actions/app';
 
@@ -29,11 +22,6 @@ export const initLocalSettings = function* initLocalSettings() {
 
 const restore = function* restore() {
 	try {
-		let hasMigration;
-		if (isIOS) {
-			hasMigration = yield AsyncStorage.getItem('hasMigration');
-		}
-
 		let token; let server;
 		try {
 			({ token, server } = yield all({
@@ -42,57 +30,6 @@ const restore = function* restore() {
 			}));
 		} catch {
 			// Do nothing
-		}
-
-		if (!hasMigration && isIOS) {
-			let servers = yield MMKV.setMapAsync(SERVERS);
-			// if not have current
-			if (servers && servers.length !== 0 && (!token || !server)) {
-				server = servers[0][SERVER_URL];
-				token = servers[0][TOKEN];
-			}
-
-			// get native credentials
-			if (servers) {
-				try {
-					// parse servers
-					servers = yield Promise.all(servers.map(async(s) => {
-						await MMKV.setStringAsync(`${ RocketChat.TOKEN_KEY }-${ s[SERVER_URL] }`, s[USER_ID]);
-						return ({ id: s[SERVER_URL], name: s[SERVER_NAME], iconURL: s[SERVER_ICON] });
-					}));
-					const serversDB = database.servers;
-					yield serversDB.action(async() => {
-						const serversCollection = serversDB.collections.get('servers');
-						const allServerRecords = await serversCollection.query().fetch();
-
-						// filter servers
-						let serversToCreate = servers.filter(i1 => !allServerRecords.find(i2 => i1.id === i2.id));
-
-						// Create
-						serversToCreate = serversToCreate.map(record => serversCollection.prepareCreate(protectedFunction((s) => {
-							s._raw = sanitizedRaw({ id: record.id }, serversCollection.schema);
-							Object.assign(s, record);
-						})));
-
-						const allRecords = serversToCreate;
-
-						try {
-							await serversDB.batch(...allRecords);
-						} catch (e) {
-							log(e);
-						}
-						return allRecords.length;
-					});
-				} catch (e) {
-					log(e);
-				}
-			}
-
-			try {
-				yield AsyncStorage.setItem('hasMigration', '1');
-			} catch (e) {
-				log(e);
-			}
 		}
 
 		if (!token || !server) {

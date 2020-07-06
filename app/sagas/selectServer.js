@@ -15,7 +15,6 @@ import database from '../lib/database';
 import log, { logServerVersion } from '../utils/log';
 import { extractHostname } from '../utils/server';
 import I18n from '../i18n';
-import { SERVERS, TOKEN, SERVER_URL } from '../constants/userDefaults';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../utils/fetch';
 import { appStart, ROOT_INSIDE, ROOT_OUTSIDE } from '../actions/app';
 import MMKV from '../utils/mmkv';
@@ -88,17 +87,8 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 					statusText: userRecord.statusText,
 					roles: userRecord.roles
 				};
-			} catch (e) {
-				// We only run it if not has user on DB
-				try {
-					const servers = yield MMKV.getMapAsync(SERVERS);
-					const userCredentials = servers && servers.find(srv => srv[SERVER_URL] === server);
-					user = userCredentials && {
-						token: userCredentials[TOKEN]
-					};
-				} catch {
-					// Do nothing
-				}
+			} catch {
+				// Do nothing
 			}
 		}
 
