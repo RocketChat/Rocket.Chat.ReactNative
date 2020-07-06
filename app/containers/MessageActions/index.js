@@ -333,7 +333,7 @@ const MessageActions = React.memo(forwardRef(({
 		if (Message_Read_Receipt_Store_Users) {
 			options.push({
 				title: I18n.t('Read_Receipt'),
-				icon: 'receipt',
+				icon: 'info',
 				onPress: () => handleReadReceipt(message)
 			});
 		}

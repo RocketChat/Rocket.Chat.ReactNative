@@ -196,7 +196,7 @@ class MessageBox extends Component {
 					console.log('Messagebox.didMount: Thread not found');
 				}
 			} else if (!sharing) {
-				msg = this.room.draftMessage;
+				msg = this.room?.draftMessage;
 			}
 		} catch (e) {
 			log(e);
@@ -632,7 +632,14 @@ class MessageBox extends Component {
 	}
 
 	openShareView = (attachments) => {
-		Navigation.navigate('ShareView', { room: this.room, thread: this.thread, attachments });
+		const { message, replyCancel, replyWithMention } = this.props;
+		// Start a thread with an attachment
+		let { thread } = this;
+		if (replyWithMention) {
+			thread = message;
+			replyCancel();
+		}
+		Navigation.navigate('ShareView', { room: this.room, thread, attachments });
 	}
 
 	createDiscussion = () => {

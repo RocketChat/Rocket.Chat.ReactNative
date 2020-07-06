@@ -44,7 +44,7 @@ const App = React.memo(({ root, isMasterDetail }) => {
 	const navTheme = navigationTheme(theme);
 
 	React.useEffect(() => {
-		const state = Navigation.navigationRef.current.getRootState();
+		const state = Navigation.navigationRef.current?.getRootState();
 		const currentRouteName = getActiveRouteName(state);
 		Navigation.routeNameRef.current = currentRouteName;
 		setCurrentScreen(currentRouteName);

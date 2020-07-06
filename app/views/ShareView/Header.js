@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
 
 const Header = React.memo(({ room, thread, theme }) => {
 	let type;
-	if (thread?.tmid) {
+	if (thread?.id) {
 		type = 'thread';
 	} else if (room?.prid) {
 		type = 'discussion';

@@ -9,6 +9,7 @@ const getUser = (state) => {
 };
 const getLoginServices = state => state.login.services || {};
 const getShowFormLoginSetting = state => state.settings.Accounts_ShowFormLogin || false;
+const getIframeEnabledSetting = state => state.settings.Accounts_iframe_enabled || false;
 
 export const getUserSelector = createSelector(
 	[getUser],
@@ -16,6 +17,6 @@ export const getUserSelector = createSelector(
 );
 
 export const getShowLoginButton = createSelector(
-	[getLoginServices, getShowFormLoginSetting],
-	(loginServices, showFormLogin) => showFormLogin || Object.values(loginServices).length
+	[getLoginServices, getShowFormLoginSetting, getIframeEnabledSetting],
+	(loginServices, showFormLogin, iframeEnabled) => showFormLogin || Object.values(loginServices).length || iframeEnabled
 );
