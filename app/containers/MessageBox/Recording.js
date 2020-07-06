@@ -94,9 +94,6 @@ export default class extends React.PureComponent {
 		if (!didSucceed) {
 			return onFinish && onFinish(didSucceed);
 		}
-		if (isAndroid) {
-			filePath = filePath.startsWith('file://') ? filePath : `file://${ filePath }`;
-		}
 		const fileInfo = {
 			name: this.name,
 			mime: 'audio/aac',
@@ -111,8 +108,9 @@ export default class extends React.PureComponent {
 	finishAudioMessage = async() => {
 		try {
 			this.recording = false;
-			const filePath = await AudioRecorder.stopRecording();
+			let filePath = await AudioRecorder.stopRecording();
 			if (isAndroid) {
+				filePath = filePath.startsWith('file://') ? filePath : `file://${ filePath }`;
 				const data = await FileSystem.getInfoAsync(decodeURIComponent(filePath), { size: true });
 				this.finishRecording(true, filePath, data.size);
 			}
