@@ -1,13 +1,18 @@
 package chat.rocket.reactnative;
 
-import com.facebook.react.ReactActivityDelegate;
-import com.facebook.react.ReactRootView;
-import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import android.os.Bundle;
-import com.facebook.react.ReactFragmentActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.SharedPreferences;
+
+import com.facebook.react.ReactRootView;
+import com.facebook.react.ReactActivityDelegate;
+import com.facebook.react.ReactFragmentActivity;
+
+import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import com.zoontek.rnbootsplash.RNBootSplash;
+import com.tencent.mmkv.MMKV;
 
 public class MainActivity extends ReactFragmentActivity {
 
@@ -16,6 +21,12 @@ public class MainActivity extends ReactFragmentActivity {
         // https://github.com/software-mansion/react-native-screens/issues/17#issuecomment-424704067
         super.onCreate(null);
         RNBootSplash.init(R.drawable.launch_screen, MainActivity.this);
+
+        MMKV.initialize(MainActivity.this);
+        MMKV mmkv = MMKV.mmkvWithID("default");
+        SharedPreferences sharedPreferences = getSharedPreferences("react-native", Context.MODE_PRIVATE);
+        mmkv.importFromSharedPreferences(sharedPreferences);
+        sharedPreferences.edit().clear().commit();
     }
 
     /**

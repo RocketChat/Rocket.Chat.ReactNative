@@ -1,8 +1,6 @@
 package chat.rocket.reactnative;
 
-import android.content.SharedPreferences;
-
-import chat.rocket.userdefaults.RNUserDefaultsModule;
+import com.tencent.mmkv.MMKV;
 
 public class Ejson {
     String host;
@@ -11,7 +9,7 @@ public class Ejson {
     Sender sender;
 
     private String TOKEN_KEY = "reactnativemeteor_usertoken-";
-    private SharedPreferences sharedPreferences = RNUserDefaultsModule.getPreferences(CustomPushNotification.reactApplicationContext);
+    private MMKV mmkv = MMKV.mmkvWithID("default");
 
     public String getAvatarUri() {
         if (type == null) {
@@ -21,11 +19,11 @@ public class Ejson {
     }
 
     public String token() {
-        return sharedPreferences.getString(TOKEN_KEY.concat(userId()), "");
+        return mmkv.decodeString(TOKEN_KEY.concat(userId()), "");
     }
 
     public String userId() {
-        return sharedPreferences.getString(TOKEN_KEY.concat(serverURL()), "");
+        return mmkv.decodeString(TOKEN_KEY.concat(serverURL()), "");
     }
 
     public String serverURL() {
