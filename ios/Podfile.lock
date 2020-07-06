@@ -488,8 +488,6 @@ PODS:
     - React
   - RNScreens (2.7.0):
     - React
-  - RNUserDefaults (1.8.1):
-    - React
   - RNVectorIcons (6.6.0):
     - React
   - SDWebImage (5.7.4):
@@ -610,7 +608,6 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNRootView (from `../node_modules/rn-root-view`)
   - RNScreens (from `../node_modules/react-native-screens`)
-  - RNUserDefaults (from `../node_modules/rn-user-defaults`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - UMAppLoader (from `../node_modules/unimodules-app-loader/ios`)
   - UMBarCodeScannerInterface (from `../node_modules/unimodules-barcode-scanner-interface/ios`)
@@ -797,8 +794,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/rn-root-view"
   RNScreens:
     :path: "../node_modules/react-native-screens"
-  RNUserDefaults:
-    :path: "../node_modules/rn-user-defaults"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   UMAppLoader:
@@ -931,7 +926,6 @@ SPEC CHECKSUMS:
   RNReanimated: 955cf4068714003d2f1a6e2bae3fb1118f359aff
   RNRootView: 895a4813dedeaca82db2fa868ca1c333d790e494
   RNScreens: cf198f915f8a2bf163de94ca9f5bfc8d326c3706
-  RNUserDefaults: c421fd97ad06b35c16608c5d0fe675db353f632d
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   SDWebImage: 48b88379b798fd1e4298f95bb25d2cdabbf4deb3
   SDWebImageWebPCoder: 36f8f47bd9879a8aea6044765c1351120fd8e3a8

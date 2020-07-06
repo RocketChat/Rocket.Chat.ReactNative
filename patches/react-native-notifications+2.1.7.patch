@@ -1,16 +1,16 @@
 diff --git a/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m b/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m
-index edc4fd4..7cd77f6 100644
+index edc4fd4..17e4d88 100644
 --- a/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m
 +++ b/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m
 @@ -3,6 +3,7 @@
  #import "RNNotificationUtils.h"
  #import "RCTConvert+RNNotifications.h"
  #import "RNNotificationParser.h"
-+#import "RNUserDefaults.h"
++#import <MMKV/MMKV.h>
  
  @implementation RNNotificationEventHandler {
      RNNotificationsStore* _store;
-@@ -28,9 +29,91 @@ - (void)didReceiveForegroundNotification:(UNNotification *)notification withComp
+@@ -28,9 +29,92 @@ - (void)didReceiveForegroundNotification:(UNNotification *)notification withComp
      [RNEventEmitter sendEvent:RNNotificationReceivedForeground body:[RNNotificationParser parseNotification:notification]];
  }
  
@@ -63,8 +63,9 @@ index edc4fd4..7cd77f6 100644
 +
 +        // get credentials
 +        NSString *TOKEN_KEY = @"reactnativemeteor_usertoken";
-+        NSString *userId = [[RNUserDefaults getDefaultUser] stringForKey:[NSString stringWithFormat:@"%@-%@", TOKEN_KEY, [self serverURL:host]]];
-+        NSString *token = [[RNUserDefaults getDefaultUser] stringForKey:[NSString stringWithFormat:@"%@-%@", TOKEN_KEY, userId]];
++        MMKV *mmkv = [MMKV mmkvWithID:@"default"];
++        NSString *userId = [mmkv getStringForKey:[NSString stringWithFormat:@"%@-%@", TOKEN_KEY, [self serverURL:host]]];
++        NSString *token = [mmkv getStringForKey:[NSString stringWithFormat:@"%@-%@", TOKEN_KEY, userId]];
 +
 +        // background task - we need this because fetch doesn't work if app is closed/killed
 +        UIApplication *app = [UIApplication sharedApplication];

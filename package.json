@@ -113,7 +113,6 @@
     "rn-extensions-share": "^2.4.0",
     "rn-fetch-blob": "0.12.0",
     "rn-root-view": "^1.0.3",
-    "rn-user-defaults": "^1.8.1",
     "semver": "7.3.2",
     "ua-parser-js": "^0.7.21",
     "url-parse": "^1.4.7",
