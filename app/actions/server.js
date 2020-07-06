@@ -44,9 +44,10 @@ export function serverFailure(err) {
 	};
 }
 
-export function serverInitAdd() {
+export function serverInitAdd(previousServer) {
 	return {
-		type: SERVER.INIT_ADD
+		type: SERVER.INIT_ADD,
+		previousServer
 	};
 }
 

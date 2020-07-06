@@ -1,18 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, SafeAreaView, PermissionsAndroid, Text
+	View, PermissionsAndroid, Text
 } from 'react-native';
 import { AudioRecorder, AudioUtils } from 'react-native-audio';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
-import RNFetchBlob from 'rn-fetch-blob';
+import * as FileSystem from 'expo-file-system';
 
 import styles from './styles';
 import I18n from '../../i18n';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
+import SafeAreaView from '../SafeAreaView';
 
 export const _formatTime = function(seconds) {
 	let minutes = Math.floor(seconds / 60);
@@ -93,9 +94,6 @@ export default class extends React.PureComponent {
 		if (!didSucceed) {
 			return onFinish && onFinish(didSucceed);
 		}
-		if (isAndroid) {
-			filePath = filePath.startsWith('file://') ? filePath : `file://${ filePath }`;
-		}
 		const fileInfo = {
 			name: this.name,
 			mime: 'audio/aac',
@@ -110,9 +108,10 @@ export default class extends React.PureComponent {
 	finishAudioMessage = async() => {
 		try {
 			this.recording = false;
-			const filePath = await AudioRecorder.stopRecording();
+			let filePath = await AudioRecorder.stopRecording();
 			if (isAndroid) {
-				const data = await RNFetchBlob.fs.stat(decodeURIComponent(filePath));
+				filePath = filePath.startsWith('file://') ? filePath : `file://${ filePath }`;
+				const data = await FileSystem.getInfoAsync(decodeURIComponent(filePath), { size: true });
 				this.finishRecording(true, filePath, data.size);
 			}
 		} catch (err) {
@@ -134,6 +133,7 @@ export default class extends React.PureComponent {
 		return (
 			<SafeAreaView
 				testID='messagebox-recording'
+				theme={theme}
 				style={[
 					styles.textBox,
 					{ borderTopColor: themes[theme].borderColor }
@@ -149,7 +149,7 @@ export default class extends React.PureComponent {
 						<CustomIcon
 							size={22}
 							color={themes[theme].dangerColor}
-							name='cross'
+							name='Cross'
 						/>
 					</BorderlessButton>
 					<Text key='currentTime' style={[styles.textBoxInput, { color: themes[theme].titleText }]}>{currentTime}</Text>

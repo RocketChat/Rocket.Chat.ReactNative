@@ -69,7 +69,7 @@ Follow the [React Native Getting Started Guide](https://facebook.github.io/react
 
 ### Running single server
 If you don't need multiple servers, there is a branch `single-server` just for that.
-Readme will guide you on how to config.
+Temp whitelabel docs: https://docs.google.com/document/d/17ib2Le_SH6U2gP0sEuKapF2J-WgqZxPFMRRVUSofz7Y/edit
 
 ## Current priorities
 1) Omnichannel support

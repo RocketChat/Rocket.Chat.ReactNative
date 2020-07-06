@@ -7,8 +7,12 @@ import moment from 'moment';
 import 'moment/min/locales';
 
 import * as types from '../actions/actionsTypes';
-import { appStart } from '../actions';
+// import { appStart } from '../actions';
 import { serverFinishAdd, serverRequest } from '../actions/server';
+import {
+	appStart, ROOT_SET_USERNAME, ROOT_INSIDE, ROOT_LOADING, ROOT_OUTSIDE
+} from '../actions/app';
+// import { serverFinishAdd, selectServerRequest } from '../actions/server';
 import {
 	loginFailure, loginSuccess, setUser, logout
 } from '../actions/login';
@@ -41,7 +45,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 		if (!result.username) {
 			yield put(serverFinishAdd());
 			yield put(setUser(result));
-			yield put(appStart('setUsername'));
+			yield put(appStart({ root: ROOT_SET_USERNAME }));
 		} else {
 			const server = yield select(getServer);
 			yield localAuthenticate(server);
@@ -134,17 +138,17 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		let currentRoot;
 		if (adding) {
 			yield put(serverFinishAdd());
-			yield put(appStart('inside'));
+			yield put(appStart({ root: ROOT_INSIDE }));
 		} else {
 			currentRoot = yield select(state => state.app.root);
-			if (currentRoot !== 'inside') {
-				yield put(appStart('inside'));
+			if (currentRoot !== ROOT_INSIDE) {
+				yield put(appStart({ root: ROOT_INSIDE }));
 			}
 		}
 
 		// after a successful login, check if it's been invited via invite link
 		currentRoot = yield select(state => state.app.root);
-		if (currentRoot === 'inside') {
+		if (currentRoot === ROOT_INSIDE) {
 			const inviteLinkToken = yield select(state => state.inviteLinks.token);
 			if (inviteLinkToken) {
 				yield put(inviteLinksRequest(inviteLinkToken));
@@ -156,21 +160,38 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 };
 
 const handleLogout = function* handleLogout({ forcedByServer }) {
-	yield put(appStart('loading', I18n.t('Logging_out')));
+	yield put(appStart({ root: ROOT_LOADING, text: I18n.t('Logging_out') }));
 	const server = yield select(getServer);
 	if (server) {
 		try {
 			yield call(logoutCall, { server });
+			yield put(appStart({ root: ROOT_OUTSIDE }));
 
 			// if the user was logged out by the server
 			if (forcedByServer) {
-				yield put(appStart('outside'));
 				showErrorAlert(I18n.t('Logged_out_by_server'), I18n.t('Oops'));
 			} else {
 				yield put(serverRequest(appConfig.server));
+				// const serversDB = database.servers;
+				// // all servers
+				// const serversCollection = serversDB.collections.get('servers');
+				// const servers = yield serversCollection.query().fetch();
+
+				// // see if there're other logged in servers and selects first one
+				// if (servers.length > 0) {
+				// 	for (let i = 0; i < servers.length; i += 1) {
+				// 		const newServer = servers[i].id;
+				// 		const token = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
+				// 		if (token) {
+				// 			return yield put(selectServerRequest(newServer));
+				// 		}
+				// 	}
+				// }
+				// // if there's no servers, go outside
+				// yield put(appStart({ root: ROOT_OUTSIDE }));
 			}
 		} catch (e) {
-			yield put(appStart('outside'));
+			yield put(appStart({ root: ROOT_OUTSIDE }));
 			log(e);
 		}
 	}

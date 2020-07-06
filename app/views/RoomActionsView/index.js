@@ -4,7 +4,6 @@ import {
 	View, SectionList, Text, Alert, Share
 } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 import _ from 'lodash';
 
 import Touch from '../../utils/touch';
@@ -24,20 +23,19 @@ import DisclosureIndicator from '../../containers/DisclosureIndicator';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import { CloseModalButton } from '../../containers/HeaderButton';
 import { getUserSelector } from '../../selectors/login';
 import Markdown from '../../containers/markdown';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 class RoomActionsView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
+	static navigationOptions = ({ navigation, isMasterDetail }) => {
 		const options = {
-			...themedHeader(screenProps.theme),
 			title: I18n.t('Actions')
 		};
-		if (screenProps.split) {
-			options.headerLeft = <CloseModalButton navigation={navigation} testID='room-actions-view-close' />;
+		if (isMasterDetail) {
+			options.headerLeft = () => <CloseModalButton navigation={navigation} testID='room-actions-view-close' />;
 		}
 		return options;
 	}
@@ -45,6 +43,7 @@ class RoomActionsView extends React.Component {
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			token: PropTypes.string
@@ -59,10 +58,10 @@ class RoomActionsView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.mounted = false;
-		const room = props.navigation.getParam('room');
-		const member = props.navigation.getParam('member');
-		this.rid = props.navigation.getParam('rid');
-		this.t = props.navigation.getParam('t');
+		const room = props.route.params?.room;
+		const member = props.route.params?.member;
+		this.rid = props.route.params?.rid;
+		this.t = props.route.params?.t;
 		this.state = {
 			room: room || { rid: this.rid, t: this.t },
 			membersCount: 0,
@@ -239,13 +238,13 @@ class RoomActionsView extends React.Component {
 
 		const jitsiActions = jitsiEnabled ? [
 			{
-				icon: 'omnichannel',
+				icon: 'mic',
 				name: I18n.t('Voice_call'),
 				event: () => RocketChat.callJitsi(rid, true),
 				testID: 'room-actions-voice'
 			},
 			{
-				icon: 'video',
+				icon: 'video-1',
 				name: I18n.t('Video_call'),
 				event: () => RocketChat.callJitsi(rid),
 				testID: 'room-actions-video'
@@ -271,7 +270,7 @@ class RoomActionsView extends React.Component {
 		}, {
 			data: [
 				{
-					icon: 'file-generic',
+					icon: 'clip',
 					name: I18n.t('Files'),
 					route: 'MessagesView',
 					params: { rid, t, name: 'Files' },
@@ -379,7 +378,7 @@ class RoomActionsView extends React.Component {
 			}
 			if (canInviteUser) {
 				actions.push({
-					icon: 'user-plus',
+					icon: 'add-user',
 					name: I18n.t('Invite_users'),
 					route: 'InviteUsersView',
 					params: {
@@ -395,7 +394,7 @@ class RoomActionsView extends React.Component {
 				sections.push({
 					data: [
 						{
-							icon: 'sign-out',
+							icon: 'exit',
 							name: I18n.t('Leave_channel'),
 							type: 'danger',
 							event: this.leaveChannel,
@@ -409,14 +408,14 @@ class RoomActionsView extends React.Component {
 			sections[2].data = [];
 
 			sections[2].data.push({
-				icon: 'circle-cross',
+				icon: 'cancel',
 				name: I18n.t('Close'),
 				event: this.closeLivechat
 			});
 
 			if (canForwardGuest) {
 				sections[2].data.push({
-					icon: 'reply',
+					icon: 'transfer',
 					name: I18n.t('Forward'),
 					route: 'ForwardLivechatView',
 					params: { rid }
@@ -425,14 +424,14 @@ class RoomActionsView extends React.Component {
 
 			if (canReturnQueue) {
 				sections[2].data.push({
-					icon: 'back',
+					icon: 'undo',
 					name: I18n.t('Return'),
 					event: this.returnLivechat
 				});
 			}
 
 			sections[2].data.push({
-				icon: 'reload',
+				icon: 'history',
 				name: I18n.t('Navigation_history'),
 				route: 'VisitorNavigationView',
 				params: { rid }
@@ -647,7 +646,7 @@ class RoomActionsView extends React.Component {
 	render() {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView style={styles.container} testID='room-actions-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView testID='room-actions-view' theme={theme}>
 				<StatusBar theme={theme} />
 				<SectionList
 					contentContainerStyle={[styles.contentContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}

@@ -25,7 +25,7 @@ async function callJitsi(rid, onlyAudio = false) {
 
 	if (Jitsi_Enabled_TokenAuth) {
 		try {
-			accessToken = await this.sdk.methodCall('jitsi:generateAccessToken', rid);
+			accessToken = await this.methodCallWrapper('jitsi:generateAccessToken', rid);
 		} catch (e) {
 			// do nothing
 		}

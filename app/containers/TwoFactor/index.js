@@ -5,12 +5,12 @@ import PropTypes from 'prop-types';
 import { sha256 } from 'js-sha256';
 import Modal from 'react-native-modal';
 import useDeepCompareEffect from 'use-deep-compare-effect';
+import { connect } from 'react-redux';
 
 import TextInput from '../TextInput';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
 import { withTheme } from '../../theme';
-import { withSplit } from '../../split';
 import { themes } from '../../constants/colors';
 import Button from '../Button';
 import sharedStyles from '../../views/Styles';
@@ -36,7 +36,7 @@ const methods = {
 	}
 };
 
-const TwoFactor = React.memo(({ theme, split }) => {
+const TwoFactor = React.memo(({ theme, isMasterDetail }) => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState({});
 	const [code, setCode] = useState('');
@@ -93,7 +93,7 @@ const TwoFactor = React.memo(({ theme, split }) => {
 			hideModalContentWhileAnimating
 		>
 			<View style={styles.container} testID='two-factor'>
-				<View style={[styles.content, split && [sharedStyles.modal, sharedStyles.modalFormSheet], { backgroundColor: themes[theme].backgroundColor }]}>
+				<View style={[styles.content, isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet], { backgroundColor: themes[theme].backgroundColor }]}>
 					<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
 					{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
 					<TextInput
@@ -134,7 +134,11 @@ const TwoFactor = React.memo(({ theme, split }) => {
 });
 TwoFactor.propTypes = {
 	theme: PropTypes.string,
-	split: PropTypes.bool
+	isMasterDetail: PropTypes.bool
 };
 
-export default withSplit(withTheme(TwoFactor));
+const mapStateToProps = state => ({
+	isMasterDetail: state.app.isMasterDetail
+});
+
+export default connect(mapStateToProps)(withTheme(TwoFactor));

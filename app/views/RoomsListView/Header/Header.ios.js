@@ -15,7 +15,8 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	button: {
-		flexDirection: 'row'
+		flexDirection: 'row',
+		alignItems: 'center'
 	},
 	title: {
 		fontSize: 14,
@@ -32,8 +33,7 @@ const styles = StyleSheet.create({
 		height: 9
 	},
 	upsideDown: {
-		transform: [{ scaleY: -1 }],
-		marginTop: 4
+		transform: [{ scaleY: -1 }]
 	}
 });
 
@@ -61,7 +61,12 @@ const Header = React.memo(({
 			<HeaderTitle connecting={connecting} isFetching={isFetching} theme={theme} />
 			<View style={styles.button}>
 				<Text style={[styles.server, { color: themes[theme].headerTintColor }]} numberOfLines={1}>{serverName}</Text>
-				<Image style={[styles.disclosure, showServerDropdown && styles.upsideDown]} source={{ uri: 'disclosure_indicator_server' }} />
+				<CustomIcon
+					name='chevron-down'
+					color={themes[theme].headerTintColor}
+					style={[showServerDropdown && styles.upsideDown]}
+					size={18}
+				/>
 			</View>
 		</TouchableOpacity> */}
 		<HeaderTitle connecting={connecting} isFetching={isFetching} theme={theme} />
@@ -72,9 +77,9 @@ Header.propTypes = {
 	connecting: PropTypes.bool,
 	isFetching: PropTypes.bool,
 	// serverName: PropTypes.string,
-	theme: PropTypes.string,
+	theme: PropTypes.string
 	// showServerDropdown: PropTypes.bool.isRequired,
-	onPress: PropTypes.func.isRequired
+	// onPress: PropTypes.func.isRequired
 };
 
 // Header.defaultProps = {

@@ -6,16 +6,12 @@ import {
 import { connect } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
 import DocumentPicker from 'react-native-document-picker';
-import ActionSheet from 'react-native-action-sheet';
 import RNUserDefaults from 'rn-user-defaults';
 import { encode } from 'base-64';
 import parse from 'url-parse';
 
 import EventEmitter from '../utils/events';
-import {
-	selectServerRequest, serverRequest, serverInitAdd, serverFinishAdd
-} from '../actions/server';
-import { appStart as appStartAction } from '../actions';
+import { selectServerRequest, serverRequest } from '../actions/server';
 import sharedStyles from './Styles';
 import Button from '../containers/Button';
 import TextInput from '../containers/TextInput';
@@ -28,8 +24,8 @@ import log from '../utils/log';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
 import { setBasicAuth, BASIC_AUTH_KEY } from '../utils/fetch';
-import { themedHeader } from '../utils/navigation';
 import { CloseModalButton } from '../containers/HeaderButton';
+import { showConfirmationAlert } from '../utils/info';
 
 const styles = StyleSheet.create({
 	title: {
@@ -65,14 +61,8 @@ const styles = StyleSheet.create({
 });
 
 class NewServerView extends React.Component {
-	static navigationOptions = ({ screenProps, navigation }) => {
-		const previousServer = navigation.getParam('previousServer', null);
-		const close = navigation.getParam('close', () => {});
-		return {
-			headerLeft: previousServer ? <CloseModalButton navigation={navigation} onPress={close} testID='new-server-view-close' /> : undefined,
-			title: I18n.t('Workspaces'),
-			...themedHeader(screenProps.theme)
-		};
+	static navigationOptions = {
+		title: I18n.t('Workspaces')
 	}
 
 	static propTypes = {
@@ -81,23 +71,17 @@ class NewServerView extends React.Component {
 		connecting: PropTypes.bool.isRequired,
 		connectServer: PropTypes.func.isRequired,
 		selectServer: PropTypes.func.isRequired,
-		currentServer: PropTypes.string,
-		initAdd: PropTypes.func,
-		finishAdd: PropTypes.func
+		adding: PropTypes.bool,
+		previousServer: PropTypes.string
 	}
 
 	constructor(props) {
 		super(props);
-		this.previousServer = props.navigation.getParam('previousServer');
-		props.navigation.setParams({ close: this.close, previousServer: this.previousServer });
-
-		// Cancel
-		this.options = [I18n.t('Cancel')];
-		this.CANCEL_INDEX = 0;
-
-		// Delete
-		this.options.push(I18n.t('Delete'));
-		this.DELETE_INDEX = 1;
+		if (props.adding) {
+			props.navigation.setOptions({
+				headerLeft: () => <CloseModalButton navigation={props.navigation} onPress={this.close} testID='new-server-view-close' />
+			});
+		}
 
 		this.state = {
 			text: '',
@@ -108,21 +92,14 @@ class NewServerView extends React.Component {
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
-	componentDidMount() {
-		const { initAdd } = this.props;
-		if (this.previousServer) {
-			initAdd();
-		}
-	}
-
 	componentWillUnmount() {
 		EventEmitter.removeListener('NewServer', this.handleNewServerEvent);
 		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
 	handleBackPress = () => {
-		const { navigation } = this.props;
-		if (navigation.isFocused() && this.previousServer) {
+		const { navigation, previousServer } = this.props;
+		if (navigation.isFocused() && previousServer) {
 			this.close();
 			return true;
 		}
@@ -134,11 +111,8 @@ class NewServerView extends React.Component {
 	}
 
 	close = () => {
-		const { selectServer, currentServer, finishAdd } = this.props;
-		if (this.previousServer !== currentServer) {
-			selectServer(this.previousServer);
-		}
-		finishAdd();
+		const { selectServer, previousServer } = this.props;
+		selectServer(previousServer);
 	}
 
 	handleNewServerEvent = (event) => {
@@ -251,15 +225,11 @@ class NewServerView extends React.Component {
 		this.setState({ certificate });
 	}
 
-	handleDelete = () => this.setState({ certificate: null }); // We not need delete file from DocumentPicker because it is a temp file
-
-	showActionSheet = () => {
-		ActionSheet.showActionSheetWithOptions({
-			options: this.options,
-			cancelButtonIndex: this.CANCEL_INDEX,
-			destructiveButtonIndex: this.DELETE_INDEX
-		}, (actionIndex) => {
-			if (actionIndex === this.DELETE_INDEX) { this.handleDelete(); }
+	handleRemove = () => {
+		showConfirmationAlert({
+			message: I18n.t('You_will_unset_a_certificate_for_this_server'),
+			callToAction: I18n.t('Remove'),
+			onPress: this.setState({ certificate: null }) // We not need delete file from DocumentPicker because it is a temp file
 		});
 	}
 
@@ -277,7 +247,7 @@ class NewServerView extends React.Component {
 					{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
 				</Text>
 				<TouchableOpacity
-					onPress={certificate ? this.showActionSheet : this.chooseCertificate}
+					onPress={certificate ? this.handleRemove : this.chooseCertificate}
 					testID='new-server-choose-certificate'
 				>
 					<Text
@@ -344,15 +314,14 @@ class NewServerView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	connecting: state.server.connecting
+	connecting: state.server.connecting,
+	adding: state.server.adding,
+	previousServer: state.server.previousServer
 });
 
 const mapDispatchToProps = dispatch => ({
 	connectServer: (server, certificate) => dispatch(serverRequest(server, certificate)),
-	initAdd: () => dispatch(serverInitAdd()),
-	finishAdd: () => dispatch(serverFinishAdd()),
-	selectServer: server => dispatch(selectServerRequest(server)),
-	appStart: root => dispatch(appStartAction(root))
+	selectServer: server => dispatch(selectServerRequest(server))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(NewServerView));
