@@ -66,7 +66,7 @@ static void InitializeFlipper(UIApplication *application) {
   
     // NSUserDefaults -> MMKV (Migration)
     NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]];
-    MMKV *mmkv = [MMKV mmkvWithID:@"mmkvIdStore"];
+    MMKV *mmkv = [MMKV mmkvWithID:@"default"];
     [mmkv migrateFromUserDefaults:userDefaults];
 
     return YES;

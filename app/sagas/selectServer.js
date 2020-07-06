@@ -1,6 +1,5 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import { Alert } from 'react-native';
-import RNUserDefaults from 'rn-user-defaults';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import semver from 'semver';
 
@@ -19,6 +18,7 @@ import I18n from '../i18n';
 import { SERVERS, TOKEN, SERVER_URL } from '../constants/userDefaults';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../utils/fetch';
 import { appStart, ROOT_INSIDE, ROOT_OUTSIDE } from '../actions/app';
+import MMKV from '../utils/mmkv';
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
@@ -66,8 +66,8 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }) {
 	try {
 		const serversDB = database.servers;
-		yield RNUserDefaults.set('currentServer', server);
-		const userId = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
+		yield MMKV.setStringAsync('currentServer', server);
+		const userId = yield MMKV.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
 		const userCollections = serversDB.collections.get('users');
 		let user = null;
 		if (userId) {
@@ -85,7 +85,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 				};
 			} catch (e) {
 				// We only run it if not has user on DB
-				const servers = yield RNUserDefaults.objectForKey(SERVERS);
+				const servers = yield MMKV.getMapAsync(SERVERS);
 				const userCredentials = servers && servers.find(srv => srv[SERVER_URL] === server);
 				user = userCredentials && {
 					token: userCredentials[TOKEN]
@@ -93,8 +93,12 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			}
 		}
 
-		const basicAuth = yield RNUserDefaults.get(`${ BASIC_AUTH_KEY }-${ server }`);
-		setBasicAuth(basicAuth);
+		try {
+			const basicAuth = yield MMKV.getStringAsync(`${ BASIC_AUTH_KEY }-${ server }`);
+			setBasicAuth(basicAuth);
+		} catch {
+			// Do nothing, basicAuth was not found
+		}
 
 		// Check for running requests and abort them before connecting to the server
 		RocketChat.abort();
@@ -134,7 +138,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 const handleServerRequest = function* handleServerRequest({ server, certificate }) {
 	try {
 		if (certificate) {
-			yield RNUserDefaults.setObjectForKey(extractHostname(server), certificate);
+			yield MMKV.setMapAsync(extractHostname(server), certificate);
 		}
 
 		const serverInfo = yield getServerInfo({ server });

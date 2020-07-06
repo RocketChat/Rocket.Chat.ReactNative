@@ -1,7 +1,6 @@
 import { InteractionManager } from 'react-native';
 import semver from 'semver';
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
-import RNUserDefaults from 'rn-user-defaults';
 import { Q } from '@nozbe/watermelondb';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -50,6 +49,7 @@ import I18n from '../i18n';
 import { twoFactor } from '../utils/twoFactor';
 import { selectServerFailure } from '../actions/server';
 import { useSsl } from '../utils/url';
+import MMKV from '../utils/mmkv';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
@@ -78,13 +78,6 @@ const RocketChat = {
 	}) {
 		// RC 0.51.0
 		return this.methodCallWrapper(type ? 'createPrivateGroup' : 'createChannel', name, users, readOnly, {}, { broadcast });
-	},
-	async getUserToken() {
-		try {
-			return await RNUserDefaults.get(TOKEN_KEY);
-		} catch (error) {
-			console.warn(`RNUserDefaults error: ${ error.message }`);
-		}
 	},
 	async getWebsocketInfo({ server }) {
 		const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
@@ -290,7 +283,7 @@ const RocketChat = {
 
 		// set User info
 		try {
-			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
+			const userId = await MMKV.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
 			const userCollections = serversDB.collections.get('users');
 			let user = null;
 			if (userId) {
@@ -1016,16 +1009,20 @@ const RocketChat = {
 		return JSON.parse(allowCrashReport);
 	},
 	async getSortPreferences() {
-		const prefs = await RNUserDefaults.objectForKey(SORT_PREFS_KEY);
-		return prefs;
+		try {
+			const prefs = await MMKV.getMapAsync(SORT_PREFS_KEY);
+			return prefs;
+		} catch {
+			// Do nothing
+		}
 	},
 	async saveSortPreference(param) {
 		try {
 			let prefs = await RocketChat.getSortPreferences();
 			prefs = { ...prefs, ...param };
-			return await RNUserDefaults.setObjectForKey(SORT_PREFS_KEY, prefs);
-		} catch (error) {
-			console.warn(error);
+			await MMKV.setMapAsync(SORT_PREFS_KEY, prefs);
+		} catch {
+			// Do nothing
 		}
 	},
 	async getLoginServices(server) {

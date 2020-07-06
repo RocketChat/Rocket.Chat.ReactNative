@@ -1,7 +1,6 @@
 import {
 	put, call, takeLatest, select, take, fork, cancel, race, delay
 } from 'redux-saga/effects';
-import RNUserDefaults from 'rn-user-defaults';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
 import 'moment/min/locales';
@@ -25,6 +24,7 @@ import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../utils/info';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { setActiveUsers } from '../actions/activeUsers';
+import MMKV from '../utils/mmkv';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -85,7 +85,7 @@ const fetchUsersPresence = function* fetchUserPresence() {
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
 		const adding = yield select(state => state.server.adding);
-		yield RNUserDefaults.set(RocketChat.TOKEN_KEY, user.token);
+		yield MMKV.setStringAsync(RocketChat.TOKEN_KEY, user.token);
 
 		RocketChat.getUserPresence(user.id);
 
@@ -127,8 +127,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			}
 		});
 
-		yield RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ server }`, user.id);
-		yield RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ user.id }`, user.token);
+		yield MMKV.setStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`, user.id);
+		yield MMKV.setStringAsync(`${ RocketChat.TOKEN_KEY }-${ user.id }`, user.token);
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
 
@@ -178,7 +178,7 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 				if (servers.length > 0) {
 					for (let i = 0; i < servers.length; i += 1) {
 						const newServer = servers[i].id;
-						const token = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
+						const token = yield MMKV.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
 						if (token) {
 							return yield put(selectServerRequest(newServer));
 						}

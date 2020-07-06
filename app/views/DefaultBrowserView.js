@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {
 	StyleSheet, FlatList, View, Text, Linking
 } from 'react-native';
-import RNUserDefaults from 'rn-user-defaults';
 
 import I18n from '../i18n';
 import { withTheme } from '../theme';
@@ -16,6 +15,7 @@ import { CustomIcon } from '../lib/Icons';
 import { DEFAULT_BROWSER_KEY } from '../utils/openLink';
 import { isIOS } from '../utils/deviceInfo';
 import SafeAreaView from '../containers/SafeAreaView';
+import MMKV from '../utils/mmkv';
 
 const DEFAULT_BROWSERS = [
 	{
@@ -81,7 +81,7 @@ class DefaultBrowserView extends React.Component {
 	async componentDidMount() {
 		this.mounted = true;
 		try {
-			const browser = await RNUserDefaults.get(DEFAULT_BROWSER_KEY);
+			const browser = await MMKV.getStringAsync(DEFAULT_BROWSER_KEY);
 			this.setState({ browser });
 		} catch {
 			// do nothing
@@ -115,7 +115,7 @@ class DefaultBrowserView extends React.Component {
 	changeDefaultBrowser = async(newBrowser) => {
 		try {
 			const browser = newBrowser !== 'inApp' ? newBrowser : null;
-			await RNUserDefaults.set(DEFAULT_BROWSER_KEY, browser);
+			await MMKV.setStringAsync(DEFAULT_BROWSER_KEY, browser);
 			this.setState({ browser });
 		} catch {
 			// do nothing

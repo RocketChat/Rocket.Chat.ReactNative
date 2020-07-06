@@ -1,8 +1,8 @@
 import {
 	takeLatest, take, select, put, all, delay
 } from 'redux-saga/effects';
-import RNUserDefaults from 'rn-user-defaults';
 
+import MMKV from '../utils/mmkv';
 import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
 import { selectServerRequest } from '../actions/server';
@@ -71,8 +71,8 @@ const handleOpen = function* handleOpen({ params }) {
 	}
 
 	const [server, user] = yield all([
-		RNUserDefaults.get('currentServer'),
-		RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ host }`)
+		MMKV.getStringAsync('currentServer'),
+		MMKV.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ host }`)
 	]);
 
 	// TODO: needs better test

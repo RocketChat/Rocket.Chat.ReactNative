@@ -1,9 +1,9 @@
 import { put, takeLatest, all } from 'redux-saga/effects';
-import RNUserDefaults from 'rn-user-defaults';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-community/async-storage';
 
+import MMKV from '../utils/mmkv';
 import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
 import { toggleCrashReport } from '../actions/crashReport';
@@ -35,12 +35,12 @@ const restore = function* restore() {
 		}
 
 		let { token, server } = yield all({
-			token: RNUserDefaults.get(RocketChat.TOKEN_KEY),
-			server: RNUserDefaults.get('currentServer')
+			token: MMKV.getStringAsync(RocketChat.TOKEN_KEY),
+			server: MMKV.getStringAsync('currentServer')
 		});
 
 		if (!hasMigration && isIOS) {
-			let servers = yield RNUserDefaults.objectForKey(SERVERS);
+			let servers = yield MMKV.setMapAsync(SERVERS);
 			// if not have current
 			if (servers && servers.length !== 0 && (!token || !server)) {
 				server = servers[0][SERVER_URL];
@@ -52,7 +52,7 @@ const restore = function* restore() {
 				try {
 					// parse servers
 					servers = yield Promise.all(servers.map(async(s) => {
-						await RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ s[SERVER_URL] }`, s[USER_ID]);
+						await MMKV.setStringAsync(`${ RocketChat.TOKEN_KEY }-${ s[SERVER_URL] }`, s[USER_ID]);
 						return ({ id: s[SERVER_URL], name: s[SERVER_NAME], iconURL: s[SERVER_ICON] });
 					}));
 					const serversDB = database.servers;
@@ -92,8 +92,8 @@ const restore = function* restore() {
 
 		if (!token || !server) {
 			yield all([
-				RNUserDefaults.clear(RocketChat.TOKEN_KEY),
-				RNUserDefaults.clear('currentServer')
+				MMKV.removeItem(RocketChat.TOKEN_KEY),
+				MMKV.removeItem('currentServer')
 			]);
 			yield put(appStart({ root: ROOT_OUTSIDE }));
 		} else {
