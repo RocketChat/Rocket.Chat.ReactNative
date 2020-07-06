@@ -9,7 +9,8 @@ import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
 import { themes } from '../../../constants/colors';
 import { CustomIcon } from '../../../lib/Icons';
-import { isTablet } from '../../../utils/deviceInfo';
+import { isTablet, isIOS } from '../../../utils/deviceInfo';
+import { useOrientation } from '../../../dimensions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -21,12 +22,10 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
-	server: {
-		fontSize: 16,
+	title: {
 		...sharedStyles.textSemibold
 	},
-	updating: {
-		fontSize: 12,
+	subtitle: {
 		...sharedStyles.textRegular
 	},
 	upsideDown: {
@@ -39,12 +38,17 @@ const Header = React.memo(({
 }) => {
 	const titleColorStyle = { color: themes[theme].headerTitleColor };
 	const isLight = theme === 'light';
+	const { isLandscape } = useOrientation();
+	const scale = isIOS && isLandscape && !isTablet ? 0.8 : 1;
+	const titleFontSize = 16 * scale;
+	const subTitleFontSize = 12 * scale;
+
 	if (showSearchHeader) {
 		return (
 			<View style={styles.container}>
 				<TextInput
 					autoFocus
-					style={[styles.server, isLight && titleColorStyle]}
+					style={[styles.title, isLight && titleColorStyle, { fontSize: titleFontSize }]}
 					placeholder='Search'
 					onChangeText={onSearchChangeText}
 					theme={theme}
@@ -70,15 +74,15 @@ const Header = React.memo(({
 				testID='rooms-list-header-server-dropdown-button'
 			>
 				<View style={styles.button}>
-					<Text style={[styles.server, isFetching && styles.serverSmall, titleColorStyle]} numberOfLines={1}>{serverName}</Text>
+					<Text style={[styles.title, isFetching && styles.serverSmall, titleColorStyle, { fontSize: titleFontSize }]} numberOfLines={1}>{serverName}</Text>
 					<CustomIcon
 						name='chevron-down'
 						color={themes[theme].headerTintColor}
-						style={[showServerDropdown && styles.upsideDown]}
+						style={[showServerDropdown && styles.upsideDown, { fontSize: subTitleFontSize }]}
 						size={18}
 					/>
 				</View>
-				{subtitle ? <Text style={[styles.updating, { color: themes[theme].auxiliaryText }]}>{subtitle}</Text> : null}
+				{subtitle ? <Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{subtitle}</Text> : null}
 			</TouchableOpacity>
 		</View>
 	);
