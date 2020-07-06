@@ -4,10 +4,11 @@ import { connect } from 'react-redux';
 import equal from 'deep-equal';
 
 import Header from './Header';
+import LeftButtons from './LeftButtons';
 import RightButtons from './RightButtons';
 import { withTheme } from '../../../theme';
-import RoomHeaderLeft from './RoomHeaderLeft';
 import { withDimensions } from '../../../dimensions';
+import I18n from '../../../i18n';
 
 class RoomHeaderView extends Component {
 	static propTypes = {
@@ -20,6 +21,7 @@ class RoomHeaderView extends Component {
 		status: PropTypes.string,
 		statusText: PropTypes.string,
 		connecting: PropTypes.bool,
+		connected: PropTypes.bool,
 		theme: PropTypes.string,
 		roomUserId: PropTypes.string,
 		widthOffset: PropTypes.number,
@@ -30,7 +32,7 @@ class RoomHeaderView extends Component {
 
 	shouldComponentUpdate(nextProps) {
 		const {
-			type, title, subtitle, status, statusText, connecting, goRoomActionsView, usersTyping, theme, width, height
+			type, title, subtitle, status, statusText, connecting, connected, goRoomActionsView, usersTyping, theme, width, height
 		} = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
@@ -53,6 +55,9 @@ class RoomHeaderView extends Component {
 		if (nextProps.connecting !== connecting) {
 			return true;
 		}
+		if (nextProps.connected !== connected) {
+			return true;
+		}
 		if (nextProps.width !== width) {
 			return true;
 		}
@@ -70,8 +75,17 @@ class RoomHeaderView extends Component {
 
 	render() {
 		const {
-			title, subtitle, type, prid, tmid, widthOffset, status = 'offline', statusText, connecting, usersTyping, goRoomActionsView, roomUserId, theme, width, height
+			title, subtitle: subtitleProp, type, prid, tmid, widthOffset, status = 'offline', statusText, connecting, connected, usersTyping, goRoomActionsView, roomUserId, theme, width, height
 		} = this.props;
+
+		let subtitle;
+		if (connecting) {
+			subtitle = I18n.t('Connecting');
+		} else if (!connected) {
+			subtitle = I18n.t('Waiting_for_network');
+		} else {
+			subtitle = subtitleProp;
+		}
 
 		return (
 			<Header
@@ -108,7 +122,8 @@ const mapStateToProps = (state, ownProps) => {
 	}
 
 	return {
-		connecting: state.meteor.connecting,
+		connecting: state.meteor.connecting || state.server.loading,
+		connected: state.meteor.connected,
 		usersTyping: state.usersTyping,
 		status,
 		statusText
@@ -117,4 +132,4 @@ const mapStateToProps = (state, ownProps) => {
 
 export default connect(mapStateToProps)(withDimensions(withTheme(RoomHeaderView)));
 
-export { RightButtons, RoomHeaderLeft };
+export { RightButtons, LeftButtons };

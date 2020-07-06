@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { isEqual, orderBy } from 'lodash';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
+import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
@@ -30,7 +31,7 @@ import {
 } from '../../actions/rooms';
 import { appStart as appStartAction, ROOT_BACKGROUND } from '../../actions/app';
 import debounce from '../../utils/debounce';
-import { isIOS, isAndroid, isTablet } from '../../utils/deviceInfo';
+import { isIOS, isTablet } from '../../utils/deviceInfo';
 import RoomsListHeaderView from './Header';
 import {
 	DrawerButton,
@@ -59,10 +60,9 @@ import { MAX_SIDEBAR_WIDTH } from '../../constants/tablet';
 import { getUserSelector } from '../../selectors/login';
 import { goRoom } from '../../utils/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
-import Header from '../../containers/Header';
+import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
 
-const SCROLL_OFFSET = 56;
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
 const UNREAD_HEADER = 'Unread';
@@ -129,7 +129,8 @@ class RoomsListView extends React.Component {
 		connected: PropTypes.bool,
 		isMasterDetail: PropTypes.bool,
 		rooms: PropTypes.array,
-		width: PropTypes.number
+		width: PropTypes.number,
+		insets: PropTypes.object
 	};
 
 	constructor(props) {
@@ -242,7 +243,7 @@ class RoomsListView extends React.Component {
 			loading,
 			search
 		} = this.state;
-		const { rooms, width } = this.props;
+		const { rooms, width, insets } = this.props;
 		if (nextState.loading !== loading) {
 			return true;
 		}
@@ -253,6 +254,9 @@ class RoomsListView extends React.Component {
 			return true;
 		}
 		if (!isEqual(nextProps.rooms, rooms)) {
+			return true;
+		}
+		if (!isEqual(nextProps.insets, insets)) {
 			return true;
 		}
 		// If it's focused and there are changes, update
@@ -273,7 +277,8 @@ class RoomsListView extends React.Component {
 			connected,
 			roomsRequest,
 			rooms,
-			isMasterDetail
+			isMasterDetail,
+			insets
 		} = this.props;
 		const { item } = this.state;
 
@@ -298,6 +303,9 @@ class RoomsListView extends React.Component {
 			// eslint-disable-next-line react/no-did-update-set-state
 			this.setState({ item: { rid: rooms[0] } });
 		}
+		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
+			this.setHeader();
+		}
 	}
 
 	componentWillUnmount() {
@@ -318,9 +326,11 @@ class RoomsListView extends React.Component {
 
 	getHeader = () => {
 		const { searching } = this.state;
-		const { navigation, isMasterDetail } = this.props;
+		const { navigation, isMasterDetail, insets } = this.props;
+		const headerTitlePosition = getHeaderTitlePosition(insets);
 		return {
-			headerLeft: () => (searching && isAndroid ? (
+			headerTitleAlign: 'left',
+			headerLeft: () => (searching ? (
 				<CustomHeaderButtons left>
 					<Item
 						title='cancel'
@@ -332,24 +342,31 @@ class RoomsListView extends React.Component {
 				<DrawerButton
 					navigation={navigation}
 					testID='rooms-list-view-sidebar'
-					onPress={isMasterDetail ? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' }) : () => navigation.toggleDrawer()}
+					onPress={isMasterDetail
+						? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
+						: () => navigation.toggleDrawer()}
 				/>
 			)),
 			headerTitle: () => <RoomsListHeaderView />,
-			headerRight: () => (searching && isAndroid ? null : (
+			headerTitleContainerStyle: {
+				left: headerTitlePosition.left,
+				right: headerTitlePosition.right
+			},
+			headerRight: () => (searching ? null : (
 				<CustomHeaderButtons>
-					{isAndroid ? (
-						<Item
-							title='search'
-							iconName='magnifier'
-							onPress={this.initSearching}
-						/>
-					) : null}
 					<Item
 						title='new'
 						iconName='new-chat'
-						onPress={isMasterDetail ? () => navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' }) : () => navigation.navigate('NewMessageStackNavigator')}
+						onPress={isMasterDetail
+							? () => navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' })
+							: () => navigation.navigate('NewMessageStackNavigator')}
 						testID='rooms-list-view-create-channel'
+					/>
+					<Item
+						title='search'
+						iconName='magnifier'
+						onPress={this.initSearching}
+						testID='rooms-list-view-search'
 					/>
 				</CustomHeaderButtons>
 			))
@@ -476,10 +493,8 @@ class RoomsListView extends React.Component {
 	initSearching = () => {
 		const { openSearchHeader } = this.props;
 		this.internalSetState({ searching: true }, () => {
-			if (isAndroid) {
-				openSearchHeader();
-				this.setHeader();
-			}
+			openSearchHeader();
+			this.setHeader();
 		});
 	};
 
@@ -493,18 +508,11 @@ class RoomsListView extends React.Component {
 
 		Keyboard.dismiss();
 
-		if (isIOS && this.inputRef) {
-			this.inputRef.blur();
-			this.inputRef.clear();
-		}
-
 		this.setState({ searching: false, search: [] }, () => {
-			if (isAndroid) {
-				this.setHeader();
-				closeSearchHeader();
-			}
+			this.setHeader();
+			closeSearchHeader();
 			setTimeout(() => {
-				const offset = isAndroid ? 0 : SCROLL_OFFSET;
+				const offset = 0;
 				if (this.scroll.scrollTo) {
 					this.scroll.scrollTo({ x: 0, y: offset, animated: true });
 				} else if (this.scroll.scrollToOffset) {
@@ -564,7 +572,7 @@ class RoomsListView extends React.Component {
 	toggleSort = () => {
 		const { toggleSortDropdown } = this.props;
 
-		const offset = isAndroid ? 0 : SCROLL_OFFSET;
+		const offset = 0;
 		if (this.scroll.scrollTo) {
 			this.scroll.scrollTo({ x: 0, y: offset, animated: true });
 		} else if (this.scroll.scrollToOffset) {
@@ -714,8 +722,7 @@ class RoomsListView extends React.Component {
 		if (handleCommandShowPreferences(event)) {
 			navigation.navigate('SettingsView');
 		} else if (handleCommandSearching(event)) {
-			this.scroll.scrollToOffset({ animated: true, offset: 0 });
-			this.inputRef.focus();
+			this.initSearching();
 		} else if (handleCommandSelectRoom(event)) {
 			this.goRoomByIndex(input);
 		} else if (handleCommandPreviousRoom(event)) {
@@ -744,19 +751,13 @@ class RoomsListView extends React.Component {
 
 	getScrollRef = ref => (this.scroll = ref);
 
-	getInputRef = ref => (this.inputRef = ref);
-
 	renderListHeader = () => {
 		const { searching } = this.state;
 		const { sortBy } = this.props;
 		return (
 			<ListHeader
-				inputRef={this.getInputRef}
 				searching={searching}
 				sortBy={sortBy}
-				onChangeSearchText={this.search}
-				onCancelSearchPress={this.cancelSearch}
-				onSearchFocus={this.initSearching}
 				toggleSort={this.toggleSort}
 				goDirectory={this.goDirectory}
 			/>
@@ -869,7 +870,6 @@ class RoomsListView extends React.Component {
 				ref={this.getScrollRef}
 				data={searching ? search : chats}
 				extraData={searching ? search : chats}
-				contentOffset={isIOS ? { x: 0, y: SCROLL_OFFSET } : {}}
 				keyExtractor={keyExtractor}
 				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 				renderItem={this.renderItem}
@@ -953,4 +953,4 @@ const mapDispatchToProps = dispatch => ({
 	closeServerDropdown: () => dispatch(closeServerDropdownAction())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(RoomsListView)));
+export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomsListView))));

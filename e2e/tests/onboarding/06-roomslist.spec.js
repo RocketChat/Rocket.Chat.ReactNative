@@ -1,7 +1,7 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { logout, tapBack, sleep } = require('../../helpers/app');
+const { logout, tapBack, sleep, searchRoom } = require('../../helpers/app');
 
 describe('Rooms list screen', () => {
 	describe('Render', () => {
@@ -27,10 +27,7 @@ describe('Rooms list screen', () => {
 
 	describe('Usage', () => {
 		it('should search room and navigate', async() => {
-			await element(by.type('UIScrollView')).atIndex(1).scrollTo('top');
-			await waitFor(element(by.id('rooms-list-view-search'))).toExist().withTimeout(2000);
-			await element(by.id('rooms-list-view-search')).typeText('rocket.cat');
-			await sleep(2000);
+			await searchRoom('rocket.cat');
 			await waitFor(element(by.id('rooms-list-view-item-rocket.cat'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('rooms-list-view-item-rocket.cat'))).toBeVisible();
 			await element(by.id('rooms-list-view-item-rocket.cat')).tap();
@@ -41,7 +38,6 @@ describe('Rooms list screen', () => {
 			await tapBack();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
-			// await element(by.id('rooms-list-view-search')).typeText('');
 			await sleep(2000);
 			await waitFor(element(by.id('rooms-list-view-item-rocket.cat'))).toExist().withTimeout(60000);
 			await expect(element(by.id('rooms-list-view-item-rocket.cat'))).toExist();

@@ -72,6 +72,14 @@ async function sleep(ms) {
     return new Promise(res => setTimeout(res, ms));
 }
 
+async function searchRoom(room) {
+    await element(by.id('rooms-list-view-search')).tap();
+	await expect(element(by.id('rooms-list-view-search-input'))).toExist();
+	await waitFor(element(by.id('rooms-list-view-search-input'))).toExist().withTimeout(5000);
+    await element(by.id('rooms-list-view-search-input')).typeText(room);
+    await sleep(2000);
+}
+
 module.exports = {
     navigateToWorkspace,
     navigateToLogin,
@@ -80,5 +88,6 @@ module.exports = {
     logout,
     createUser,
     tapBack,
-    sleep
+    sleep,
+    searchRoom
 };
