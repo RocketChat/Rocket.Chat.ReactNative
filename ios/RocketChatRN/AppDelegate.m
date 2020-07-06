@@ -21,6 +21,7 @@
 #import <UMReactNativeAdapter/UMNativeModulesProxy.h>
 #import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
 #import <MMKV/MMKV.h>
+#import <React/RCTLog.h>
 
 #if DEBUG
 #import <FlipperKit/FlipperClient.h>
@@ -71,6 +72,11 @@ static void InitializeFlipper(UIApplication *application) {
     NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]];
     MMKV *mmkv = [MMKV mmkvWithID:@"default" mode:MMKVMultiProcess];
     [mmkv migrateFromUserDefaults:userDefaults];
+  
+    // Remove our own keys of NSUserDefaults
+    for (NSString *key in [userDefaults dictionaryRepresentation].keyEnumerator) {
+      [userDefaults removeObjectForKey:key];
+    }
 
     return YES;
 }
