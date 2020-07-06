@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { HeaderButtons, HeaderButton, Item } from 'react-navigation-header-buttons';
 
 import { CustomIcon } from '../lib/Icons';
-import { isIOS, isAndroid } from '../utils/deviceInfo';
+import { isIOS } from '../utils/deviceInfo';
 import { themes } from '../constants/colors';
 import I18n from '../i18n';
 import { withTheme } from '../theme';
@@ -15,11 +15,7 @@ const CustomHeaderButton = React.memo(withTheme(({ theme, ...props }) => (
 		{...props}
 		IconComponent={CustomIcon}
 		iconSize={headerIconSize}
-		color={
-			isAndroid
-				? themes[theme].headerTitleColor
-				: themes[theme].headerTintColor
-		}
+		color={themes[theme].headerTintColor}
 	/>
 )));
 
@@ -32,7 +28,7 @@ export const CustomHeaderButtons = React.memo(props => (
 
 export const DrawerButton = React.memo(({ navigation, testID, ...otherProps }) => (
 	<CustomHeaderButtons left>
-		<Item title='drawer' iconName='customize' onPress={navigation.toggleDrawer} testID={testID} {...otherProps} />
+		<Item title='drawer' iconName='menu_hamburguer' onPress={navigation.toggleDrawer} testID={testID} {...otherProps} />
 	</CustomHeaderButtons>
 ));
 
