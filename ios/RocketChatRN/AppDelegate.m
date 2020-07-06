@@ -20,6 +20,8 @@
 #import <UMCore/UMModuleRegistry.h>
 #import <UMReactNativeAdapter/UMNativeModulesProxy.h>
 #import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
+#import <MMKV/MMKV.h>
+#import <React/RCTLog.h>
 
 #if DEBUG
 #import <FlipperKit/FlipperClient.h>
@@ -61,6 +63,11 @@ static void InitializeFlipper(UIApplication *application) {
     self.window.rootViewController = rootViewController;
     [self.window makeKeyAndVisible];
     [RNNotifications startMonitorNotifications];
+  
+    // NSUserDefaults -> MMKV (Migration)
+    NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]];
+    MMKV *mmkv = [MMKV mmkvWithID:@"mmkvIdStore"];
+    [mmkv migrateFromUserDefaults:userDefaults];
 
     return YES;
 }
