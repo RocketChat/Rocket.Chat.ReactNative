@@ -4,14 +4,12 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import * as actions from '../actions';
 import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
 import { toggleCrashReport } from '../actions/crashReport';
 import { APP } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
-import Navigation from '../lib/Navigation';
 import {
 	SERVERS, SERVER_ICON, SERVER_NAME, SERVER_URL, TOKEN, USER_ID
 } from '../constants/userDefaults';
@@ -19,6 +17,7 @@ import { isIOS } from '../utils/deviceInfo';
 import database from '../lib/database';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
 import { localAuthenticate } from '../utils/localAuthentication';
+import { appStart, ROOT_OUTSIDE, appReady } from '../actions/app';
 
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = yield RocketChat.getSortPreferences();
@@ -96,7 +95,7 @@ const restore = function* restore() {
 				RNUserDefaults.clear(RocketChat.TOKEN_KEY),
 				RNUserDefaults.clear('currentServer')
 			]);
-			yield put(actions.appStart('outside'));
+			yield put(appStart({ root: ROOT_OUTSIDE }));
 		} else {
 			const serversDB = database.servers;
 			const serverCollections = serversDB.collections.get('servers');
@@ -106,23 +105,14 @@ const restore = function* restore() {
 			yield put(selectServerRequest(server, serverObj && serverObj.version));
 		}
 
-		yield put(actions.appReady({}));
+		yield put(appReady({}));
 	} catch (e) {
 		log(e);
-		yield put(actions.appStart('outside'));
+		yield put(appStart({ root: ROOT_OUTSIDE }));
 	}
 };
 
-const start = function* start({ root, text }) {
-	if (root === 'inside') {
-		yield Navigation.navigate('InsideStack');
-	} else if (root === 'setUsername') {
-		yield Navigation.navigate('SetUsernameStack');
-	} else if (root === 'outside') {
-		yield Navigation.navigate('OutsideStack');
-	} else if (root === 'loading') {
-		yield Navigation.navigate('AuthLoading', { text });
-	}
+const start = function start() {
 	RNBootSplash.hide();
 };
 
