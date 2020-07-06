@@ -995,12 +995,12 @@ const RocketChat = {
 		} catch (e) {
 			log(e);
 		}
-  },
-  async hasPermissionsByUserRoles(permissions, userRoles) {
-    const db = database.active;
-    const permissionsCollection = db.collections.get('permissions');
-    try {
-      const permissionsFiltered = await permissionsCollection.query(Q.where('id', Q.oneOf(permissions))).fetch();
+	},
+	async hasPermissionsByUserRoles(permissions, userRoles) {
+		const db = database.active;
+		const permissionsCollection = db.collections.get('permissions');
+		try {
+			const permissionsFiltered = await permissionsCollection.query(Q.where('id', Q.oneOf(permissions))).fetch();
 			// return permissions in object format
 			// e.g. { 'edit-room': true, 'set-readonly': false }
 			return permissions.reduce((result, permission) => {
@@ -1014,7 +1014,7 @@ const RocketChat = {
 		} catch (e) {
 			log(e);
 		}
-  },
+	},
 	getAvatarSuggestion() {
 		// RC 0.51.0
 		return this.methodCallWrapper('getAvatarSuggestion');
