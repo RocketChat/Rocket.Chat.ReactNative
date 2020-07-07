@@ -1,7 +1,6 @@
 import React from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 import PropTypes from 'prop-types';
-import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
 import moment from 'moment';
 import isEqual from 'lodash/isEqual';
@@ -139,7 +138,7 @@ class List extends React.Component {
 		}
 	}
 
-	async query() {
+	query = async() => {
 		const { rid, tmid } = this.props;
 		const db = database.active;
 
@@ -161,7 +160,6 @@ class List extends React.Component {
 				.get('thread_messages')
 				.query(
 					Q.where('rid', tmid),
-					// Q.or(Q.where('t', Q.notIn(hideSystemMessages)), Q.where('t', Q.eq(null))),
 					Q.experimentalSortBy('ts', Q.desc),
 					Q.experimentalSkip(0),
 					Q.experimentalTake(this.count)
@@ -172,7 +170,6 @@ class List extends React.Component {
 				.get('messages')
 				.query(
 					Q.where('rid', rid),
-					// Q.or(Q.where('t', Q.notIn(hideSystemMessages)), Q.where('t', Q.eq(null))),
 					Q.experimentalSortBy('ts', Q.desc),
 					Q.experimentalSkip(0),
 					Q.experimentalTake(this.count)
@@ -190,6 +187,8 @@ class List extends React.Component {
 					if (tmid && this.thread) {
 						messages = [...messages, this.thread];
 					}
+					messages = messages.filter(m => !m.t || !hideSystemMessages?.includes(m.t));
+
 					if (this.mounted) {
 						this.setState({ messages }, () => this.update());
 					} else {
