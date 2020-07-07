@@ -49,6 +49,7 @@ class List extends React.Component {
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
 		this.count = QUERY_SIZE;
+		this.needsFetch = false;
 		this.mounted = false;
 		this.state = {
 			loading: true,
@@ -96,7 +97,7 @@ class List extends React.Component {
 				.get('thread_messages')
 				.query(
 					Q.where('rid', tmid),
-					Q.or(Q.where('t', Q.notIn(hideSystemMessages)), Q.where('t', Q.eq(null))),
+					// Q.or(Q.where('t', Q.notIn(hideSystemMessages)), Q.where('t', Q.eq(null))),
 					Q.experimentalSortBy('ts', Q.desc),
 					Q.experimentalSkip(0),
 					Q.experimentalTake(this.count)
@@ -107,7 +108,7 @@ class List extends React.Component {
 				.get('messages')
 				.query(
 					Q.where('rid', rid),
-					Q.or(Q.where('t', Q.notIn(hideSystemMessages)), Q.where('t', Q.eq(null))),
+					// Q.or(Q.where('t', Q.notIn(hideSystemMessages)), Q.where('t', Q.eq(null))),
 					Q.experimentalSortBy('ts', Q.desc),
 					Q.experimentalSkip(0),
 					Q.experimentalTake(this.count)
@@ -119,6 +120,9 @@ class List extends React.Component {
 			this.unsubscribeMessages();
 			this.messagesSubscription = this.messagesObservable
 				.subscribe((messages) => {
+					if (messages.length < this.count) {
+						this.needsFetch = true;
+					}
 					if (tmid && this.thread) {
 						messages = [...messages, this.thread];
 					}
@@ -187,32 +191,38 @@ class List extends React.Component {
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
+	fetchData = async() => {
+		const {
+			loading, end, messages, latest = messages[messages.length - 1]?.ts
+		} = this.state;
+		if (loading || end) {
+			return;
+		}
+
+		this.setState({ loading: true });
+		const { rid, t, tmid } = this.props;
+		try {
+			let result;
+			if (tmid) {
+				// `offset` is `messages.length - 1` because we append thread start to `messages` obj
+				result = await RocketChat.loadThreadMessages({ tmid, rid, offset: messages.length - 1 });
+			} else {
+				result = await RocketChat.loadMessagesForRoom({ rid, t, latest });
+			}
+
+			this.setState({ end: result.length < QUERY_SIZE, loading: false, latest: result[result.length - 1]?.ts }, () => this.loadMoreMessages(result));
+		} catch (e) {
+			this.setState({ loading: false });
+			log(e);
+		}
+	}
+
 	onEndReached = async() => {
 		this.count += QUERY_SIZE;
+		if (this.needsFetch) {
+			await this.fetchData();
+		}
 		this.query();
-		// const {
-		// 	loading, end, messages, latest = messages[messages.length - 1]?.ts
-		// } = this.state;
-		// if (loading || end) {
-		// 	return;
-		// }
-
-		// this.setState({ loading: true });
-		// const { rid, t, tmid } = this.props;
-		// try {
-		// 	let result;
-		// 	if (tmid) {
-		// 		// `offset` is `messages.length - 1` because we append thread start to `messages` obj
-		// 		result = await RocketChat.loadThreadMessages({ tmid, rid, offset: messages.length - 1 });
-		// 	} else {
-		// 		result = await RocketChat.loadMessagesForRoom({ rid, t, latest });
-		// 	}
-
-		// 	this.setState({ end: result.length < 50, loading: false, latest: result[result.length - 1]?.ts }, () => this.loadMoreMessages(result));
-		// } catch (e) {
-		// 	this.setState({ loading: false });
-		// 	log(e);
-		// }
 	}
 
 	loadMoreMessages = (result) => {
