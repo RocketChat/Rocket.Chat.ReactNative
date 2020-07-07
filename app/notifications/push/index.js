@@ -3,6 +3,7 @@ import EJSON from 'ejson';
 import PushNotification from './push';
 import store from '../../lib/createStore';
 import { deepLinkingOpen } from '../../actions/deepLinking';
+import RNConfigReader from 'react-native-config-reader';
 
 export const onNotification = (notification) => {
 	if (notification) {
@@ -37,8 +38,11 @@ export const onNotification = (notification) => {
 export const getDeviceToken = () => PushNotification.getDeviceToken();
 export const setBadgeCount = count => PushNotification.setBadgeCount(count);
 export const initializePushNotifications = () => {
-	setBadgeCount();
-	return PushNotification.configure({
-		onNotification
-	});
+	const configValue = RNConfigReader.PLAY_BUILD;
+	if(configValue){
+		setBadgeCount();
+		return PushNotification.configure({
+			onNotification
+		});
+	}
 };

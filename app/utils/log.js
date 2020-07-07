@@ -1,7 +1,9 @@
 import { Client } from 'bugsnag-react-native';
 import firebase from 'react-native-firebase';
+import RNConfigReader from 'react-native-config-reader';
 import config from '../../config';
 
+const configValue = RNConfigReader.PLAY_BUILD;
 const bugsnag = new Client(config.BUGSNAG_API_KEY);
 
 export const { analytics } = firebase;
@@ -17,7 +19,9 @@ export const logServerVersion = (serverVersion) => {
 };
 
 export const setCurrentScreen = (currentScreen) => {
-	analytics().setCurrentScreen(currentScreen);
+	if(configValue){
+		analytics().setCurrentScreen(currentScreen);
+	}
 	leaveBreadcrumb(currentScreen, { type: 'navigation' });
 };
 
