@@ -12,7 +12,7 @@ index 02e1db6..f7d6281 100644
      },
    });
 diff --git a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
-index 274f381..bfffc04 100644
+index 274f381..5a2a220 100644
 --- a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
 +++ b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
 @@ -9,6 +9,7 @@
@@ -23,7 +23,7 @@ index 274f381..bfffc04 100644
  #import <React/RCTNetworking.h>
  #import <ReactCommon/RCTTurboModule.h>
  
-@@ -58,6 +59,76 @@ - (BOOL)canHandleRequest:(NSURLRequest *)request
+@@ -58,6 +59,81 @@ - (BOOL)canHandleRequest:(NSURLRequest *)request
    return [schemes containsObject:request.URL.scheme.lowercaseString];
  }
  
@@ -83,7 +83,12 @@ index 274f381..bfffc04 100644
 +-(void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler {
 +
 +  NSString *host = challenge.protectionSpace.host;
-+  MMKV *mmkv = [MMKV mmkvWithID:@"default"];
++  // AppGroup MMKV
++  NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
++  [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
++
++  // Start the MMKV container
++  MMKV *mmkv = [MMKV mmkvWithID:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"] mode:MMKVMultiProcess];
 +  NSDictionary *clientSSL = [mmkv getObjectOfClass:[NSDictionary class] forKey:host];
 +
 +  NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
@@ -101,7 +106,7 @@ index 274f381..bfffc04 100644
                           withDelegate:(id<RCTURLRequestDelegate>)delegate
  {
 diff --git a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
-index b967c14..8d5887c 100644
+index b967c14..96e6245 100644
 --- a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
 +++ b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
 @@ -23,6 +23,7 @@
@@ -142,13 +147,19 @@ index b967c14..8d5887c 100644
  - (void)_initializeStreams
  {
    assert(_url.port.unsignedIntValue <= UINT32_MAX);
-@@ -515,6 +539,16 @@ - (void)_initializeStreams
+@@ -515,6 +539,22 @@ - (void)_initializeStreams
      RCTLogInfo(@"SocketRocket: In debug mode.  Allowing connection to any root cert");
  #endif
  
-+    // SSL Pinning
-+    MMKV *mmkv = [MMKV mmkvWithID:@"default"];
++    // AppGroup MMKV
++    NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
++    [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
++
++    // Start the MMKV container
++    MMKV *mmkv = [MMKV mmkvWithID:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"] mode:MMKVMultiProcess];
 +    NSDictionary *clientSSL = [mmkv getObjectOfClass:[NSDictionary class] forKey:host];
++
++    // SSL Pinning
 +    if (clientSSL != (id)[NSNull null]) {
 +      NSString *path = [clientSSL objectForKey:@"path"];
 +      NSString *password = [clientSSL objectForKey:@"password"];
@@ -159,7 +170,7 @@ index b967c14..8d5887c 100644
      [_outputStream setProperty:SSLOptions
                          forKey:(__bridge id)kCFStreamPropertySSLSettings];
    }
-@@ -594,6 +628,7 @@ - (void)closeWithCode:(NSInteger)code reason:(NSString *)reason
+@@ -594,6 +634,7 @@ - (void)closeWithCode:(NSInteger)code reason:(NSString *)reason
        }
      }
  
