@@ -74,7 +74,71 @@ class List extends React.Component {
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
-	// eslint-disable-next-line react/sort-comp
+	shouldComponentUpdate(nextProps, nextState) {
+		const { loading, end, refreshing } = this.state;
+		const { hideSystemMessages, theme } = this.props;
+		if (theme !== nextProps.theme) {
+			return true;
+		}
+		if (loading !== nextState.loading) {
+			return true;
+		}
+		if (end !== nextState.end) {
+			return true;
+		}
+		if (refreshing !== nextState.refreshing) {
+			return true;
+		}
+		if (!isEqual(hideSystemMessages, nextProps.hideSystemMessages)) {
+			return true;
+		}
+		return false;
+	}
+
+	componentDidUpdate(prevProps) {
+		const { hideSystemMessages } = this.props;
+		if (!isEqual(hideSystemMessages, prevProps.hideSystemMessages)) {
+			this.reload();
+		}
+	}
+
+	componentWillUnmount() {
+		this.unsubscribeMessages();
+		if (this.onEndReached && this.onEndReached.stop) {
+			this.onEndReached.stop();
+		}
+		if (this.unsubscribeFocus) {
+			this.unsubscribeFocus();
+		}
+		console.countReset(`${ this.constructor.name }.render calls`);
+	}
+
+	fetchData = async() => {
+		const {
+			loading, end, messages, latest = messages[messages.length - 1]?.ts
+		} = this.state;
+		if (loading || end) {
+			return;
+		}
+
+		this.setState({ loading: true });
+		const { rid, t, tmid } = this.props;
+		try {
+			let result;
+			if (tmid) {
+				// `offset` is `messages.length - 1` because we append thread start to `messages` obj
+				result = await RocketChat.loadThreadMessages({ tmid, rid, offset: messages.length - 1 });
+			} else {
+				result = await RocketChat.loadMessagesForRoom({ rid, t, latest });
+			}
+
+			this.setState({ end: result.length < QUERY_SIZE, loading: false, latest: result[result.length - 1]?.ts }, () => this.loadMoreMessages(result));
+		} catch (e) {
+			this.setState({ loading: false });
+			log(e);
+		}
+	}
+
 	async query() {
 		const { rid, tmid } = this.props;
 		const db = database.active;
@@ -149,71 +213,6 @@ class List extends React.Component {
 			} catch {
 				// Do nothing
 			}
-		}
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		const { loading, end, refreshing } = this.state;
-		const { hideSystemMessages, theme } = this.props;
-		if (theme !== nextProps.theme) {
-			return true;
-		}
-		if (loading !== nextState.loading) {
-			return true;
-		}
-		if (end !== nextState.end) {
-			return true;
-		}
-		if (refreshing !== nextState.refreshing) {
-			return true;
-		}
-		if (!isEqual(hideSystemMessages, nextProps.hideSystemMessages)) {
-			return true;
-		}
-		return false;
-	}
-
-	componentDidUpdate(prevProps) {
-		const { hideSystemMessages } = this.props;
-		if (!isEqual(hideSystemMessages, prevProps.hideSystemMessages)) {
-			this.reload();
-		}
-	}
-
-	componentWillUnmount() {
-		this.unsubscribeMessages();
-		if (this.onEndReached && this.onEndReached.stop) {
-			this.onEndReached.stop();
-		}
-		if (this.unsubscribeFocus) {
-			this.unsubscribeFocus();
-		}
-		console.countReset(`${ this.constructor.name }.render calls`);
-	}
-
-	fetchData = async() => {
-		const {
-			loading, end, messages, latest = messages[messages.length - 1]?.ts
-		} = this.state;
-		if (loading || end) {
-			return;
-		}
-
-		this.setState({ loading: true });
-		const { rid, t, tmid } = this.props;
-		try {
-			let result;
-			if (tmid) {
-				// `offset` is `messages.length - 1` because we append thread start to `messages` obj
-				result = await RocketChat.loadThreadMessages({ tmid, rid, offset: messages.length - 1 });
-			} else {
-				result = await RocketChat.loadMessagesForRoom({ rid, t, latest });
-			}
-
-			this.setState({ end: result.length < QUERY_SIZE, loading: false, latest: result[result.length - 1]?.ts }, () => this.loadMoreMessages(result));
-		} catch (e) {
-			this.setState({ loading: false });
-			log(e);
 		}
 	}
 
