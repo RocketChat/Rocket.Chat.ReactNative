@@ -479,6 +479,7 @@ export default {
 	Verify_your_email_for_the_code_we_sent: 'Verifique em seu e-mail o código que enviamos',
 	Video_call: 'Chamada de vídeo',
 	Voice_call: 'Chamada de voz',
+	Waiting_for_network: 'Aguardando rede...',
 	Websocket_disabled: 'Websocket está desativado para esse servidor.\n{{contact}}',
 	Welcome: 'Bem vindo',
 	Whats_your_2fa: 'Qual seu código de autenticação?',
