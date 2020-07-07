@@ -8,6 +8,7 @@ import moment from 'moment';
 import * as Haptics from 'expo-haptics';
 import { Q } from '@nozbe/watermelondb';
 import isEqual from 'lodash/isEqual';
+import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Touch from '../../utils/touch';
 import {
@@ -26,7 +27,7 @@ import styles from './styles';
 import log from '../../utils/log';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
-import RoomHeaderView, { RightButtons, RoomHeaderLeft } from './Header';
+import RoomHeaderView, { RightButtons, LeftButtons } from './Header';
 import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
 import { themes } from '../../constants/colors';
@@ -53,6 +54,7 @@ import Banner from './Banner';
 import Navigation from '../../lib/Navigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
+import { getHeaderTitlePosition } from '../../containers/Header';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -91,7 +93,8 @@ class RoomView extends React.Component {
 		theme: PropTypes.string,
 		replyBroadcast: PropTypes.func,
 		width: PropTypes.number,
-		height: PropTypes.number
+		height: PropTypes.number,
+		insets: PropTypes.object
 	};
 
 	constructor(props) {
@@ -178,7 +181,7 @@ class RoomView extends React.Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { state } = this;
 		const { roomUpdate, member } = state;
-		const { appState, theme } = this.props;
+		const { appState, theme, insets } = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
 		}
@@ -192,12 +195,15 @@ class RoomView extends React.Component {
 		if (stateUpdated) {
 			return true;
 		}
+		if (!isEqual(nextProps.insets, insets)) {
+			return true;
+		}
 		return roomAttrsUpdate.some(key => !isEqual(nextState.roomUpdate[key], roomUpdate[key]));
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		const { roomUpdate } = this.state;
-		const { appState } = this.props;
+		const { appState, insets } = this.props;
 
 		if (appState === 'foreground' && appState !== prevProps.appState && this.rid) {
 			this.onForegroundInteraction = InteractionManager.runAfterInteractions(() => {
@@ -220,6 +226,9 @@ class RoomView extends React.Component {
 			}
 		}
 		if (((roomUpdate.fname !== prevState.roomUpdate.fname) || (roomUpdate.name !== prevState.roomUpdate.name)) && !this.tmid) {
+			this.setHeader();
+		}
+		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
 			this.setHeader();
 		}
 		this.setReadOnly();
@@ -281,7 +290,7 @@ class RoomView extends React.Component {
 	setHeader = () => {
 		const { room, unreadsCount, roomUserId: stateRoomUserId } = this.state;
 		const {
-			navigation, route, isMasterDetail, theme, baseUrl, user
+			navigation, route, isMasterDetail, theme, baseUrl, user, insets
 		} = this.props;
 		const rid = route.params?.rid;
 		const prid = route.params?.prid;
@@ -299,9 +308,29 @@ class RoomView extends React.Component {
 		if (!rid) {
 			return;
 		}
+		const headerTitlePosition = getHeaderTitlePosition(insets);
 		navigation.setOptions({
 			headerShown: true,
 			headerTitleAlign: 'left',
+			headerTitleContainerStyle: {
+				left: headerTitlePosition.left,
+				right: headerTitlePosition.right
+			},
+			headerLeft: () => (
+				<LeftButtons
+					tmid={tmid}
+					unreadsCount={unreadsCount}
+					navigation={navigation}
+					baseUrl={baseUrl}
+					userId={userId}
+					token={token}
+					title={avatar}
+					theme={theme}
+					t={t}
+					goRoomActionsView={this.goRoomActionsView}
+					isMasterDetail={isMasterDetail}
+				/>
+			),
 			headerTitle: () => (
 				<RoomHeaderView
 					rid={rid}
@@ -322,21 +351,6 @@ class RoomView extends React.Component {
 					t={t}
 					navigation={navigation}
 					toggleFollowThread={this.toggleFollowThread}
-				/>
-			),
-			headerLeft: () => (
-				<RoomHeaderLeft
-					tmid={tmid}
-					unreadsCount={unreadsCount}
-					navigation={navigation}
-					baseUrl={baseUrl}
-					userId={userId}
-					token={token}
-					title={avatar}
-					theme={theme}
-					t={t}
-					goRoomActionsView={this.goRoomActionsView}
-					isMasterDetail={isMasterDetail}
 				/>
 			)
 		});
@@ -1040,4 +1054,4 @@ const mapDispatchToProps = dispatch => ({
 	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(RoomView)));
+export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomView))));
