@@ -1,7 +1,5 @@
 package chat.rocket.reactnative;
 
-import com.tencent.mmkv.MMKV;
-
 public class Ejson {
     String host;
     String rid;
@@ -9,21 +7,12 @@ public class Ejson {
     Sender sender;
 
     private String TOKEN_KEY = "reactnativemeteor_usertoken-";
-    private MMKV mmkv = MMKV.mmkvWithID("default");
 
     public String getAvatarUri() {
         if (type == null) {
             return null;
         }
-        return serverURL() + "/avatar/" + this.sender.username + "?rc_token=" + token() + "&rc_uid=" + userId();
-    }
-
-    public String token() {
-        return mmkv.decodeString(TOKEN_KEY.concat(userId()), "");
-    }
-
-    public String userId() {
-        return mmkv.decodeString(TOKEN_KEY.concat(serverURL()), "");
+        return serverURL() + "/avatar/" + this.sender.username;
     }
 
     public String serverURL() {

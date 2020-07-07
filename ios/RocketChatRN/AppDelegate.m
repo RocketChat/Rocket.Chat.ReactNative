@@ -66,15 +66,23 @@ static void InitializeFlipper(UIApplication *application) {
     // AppGroup MMKV
     NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
     [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
+
+    // Start the MMKV container
+    MMKV *mmkv = [MMKV mmkvWithID:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"] mode:MMKVMultiProcess];
+    BOOL alreadyMigrated = [mmkv getBoolForKey:@"alreadyMigrated"];
+
+    if (!alreadyMigrated) {
+      // NSUserDefaults -> MMKV (Migration)
+      NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]];
+      [mmkv migrateFromUserDefaults:userDefaults];
   
-    // NSUserDefaults -> MMKV (Migration)
-    NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]];
-    MMKV *mmkv = [MMKV mmkvWithID:@"default" mode:MMKVMultiProcess];
-    [mmkv migrateFromUserDefaults:userDefaults];
-  
-    // Remove our own keys of NSUserDefaults
-    for (NSString *key in [userDefaults dictionaryRepresentation].keyEnumerator) {
-      [userDefaults removeObjectForKey:key];
+      // Remove our own keys of NSUserDefaults
+      for (NSString *key in [userDefaults dictionaryRepresentation].keyEnumerator) {
+        [userDefaults removeObjectForKey:key];
+      }
+
+      // Mark migration complete
+      [mmkv setBool:YES forKey:@"alreadyMigrated"];
     }
 
     return YES;

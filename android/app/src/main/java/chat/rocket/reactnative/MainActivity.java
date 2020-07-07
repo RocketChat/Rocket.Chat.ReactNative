@@ -22,11 +22,22 @@ public class MainActivity extends ReactFragmentActivity {
         super.onCreate(null);
         RNBootSplash.init(R.drawable.launch_screen, MainActivity.this);
 
+        // Start the MMKV container
         MMKV.initialize(MainActivity.this);
-        MMKV mmkv = MMKV.mmkvWithID("default");
-        SharedPreferences sharedPreferences = getSharedPreferences("react-native", Context.MODE_PRIVATE);
-        mmkv.importFromSharedPreferences(sharedPreferences);
-        sharedPreferences.edit().clear().commit();
+        MMKV mmkv = MMKV.mmkvWithID(getApplicationContext().getPackageName());
+        boolean alreadyMigrated = mmkv.decodeBool("alreadyMigrated");
+
+        if (!alreadyMigrated) {
+            // SharedPreferences -> MMKV (Migration)
+            SharedPreferences sharedPreferences = getSharedPreferences("react-native", Context.MODE_PRIVATE);
+            mmkv.importFromSharedPreferences(sharedPreferences);
+
+            // Remove all our keys of SharedPreferences
+            sharedPreferences.edit().clear().commit();
+          
+            // Mark migration complete
+            mmkv.encode("alreadyMigrated", true);
+        }
     }
 
     /**

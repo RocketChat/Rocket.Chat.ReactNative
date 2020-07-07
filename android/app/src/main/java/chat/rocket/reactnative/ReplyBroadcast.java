@@ -25,6 +25,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import com.tencent.mmkv.MMKV;
 import com.wix.reactnativenotifications.core.NotificationIntentAdapter;
 
 public class ReplyBroadcast extends BroadcastReceiver {
@@ -68,10 +69,20 @@ public class ReplyBroadcast extends BroadcastReceiver {
 
         CustomPushNotification.clearMessages(notId);
 
+        // Start MMKV container
+        MMKV.initialize(mContext);
+        MMKV mmkv = MMKV.mmkvWithID(mContext.getPackageName());
+
+        String TOKEN_KEY = "reactnativemeteor_usertoken-";
+
+        // Get user credentials
+        String userId = mmkv.decodeString(TOKEN_KEY.concat(serverURL));
+        String userToken = mmkv.decodeString(TOKEN_KEY.concat(userId));
+
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
-                .header("x-auth-token", ejson.token())
-                .header("x-user-id", ejson.userId())
+                .header("x-auth-token", userToken)
+                .header("x-user-id", userId)
                 .url(String.format("%s/api/v1/chat.sendMessage", serverURL))
                 .post(body)
                 .build();
