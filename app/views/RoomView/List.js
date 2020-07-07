@@ -201,6 +201,7 @@ class List extends React.Component {
 	}
 
 	reload = () => {
+		this.count = 0;
 		this.query();
 	}
 
@@ -219,6 +220,7 @@ class List extends React.Component {
 	onEndReached = async() => {
 		this.count += QUERY_SIZE;
 		if (this.needsFetch) {
+			this.needsFetch = false;
 			await this.fetchData();
 		}
 		this.query();
