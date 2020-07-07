@@ -1,4 +1,10 @@
 import MMKVStorage from 'react-native-mmkv-storage';
 
-// MODES.MULTI_PROCESS = ACCESSIBLE BY APP GROUP (iOS)
-export default new MMKVStorage.Loader().setProcessingMode(MMKVStorage.MODES.MULTI_PROCESS).initialize();
+import { getBundleId } from './deviceInfo';
+
+export default new MMKVStorage.Loader()
+	// MODES.MULTI_PROCESS = ACCESSIBLE BY APP GROUP (iOS)
+	.setProcessingMode(MMKVStorage.MODES.MULTI_PROCESS)
+	.withInstanceID(getBundleId)
+	.withEncryption()
+	.initialize();
