@@ -17,6 +17,8 @@ import { animateNextTransition } from '../../utils/layoutAnimation';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { themes } from '../../constants/colors';
 
+const QUERY_SIZE = 50;
+
 class List extends React.Component {
 	static propTypes = {
 		onEndReached: PropTypes.func,
@@ -46,8 +48,7 @@ class List extends React.Component {
 		super(props);
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
-		this.count = 50;
-		this.queryLength = 0;
+		this.count = QUERY_SIZE;
 		this.mounted = false;
 		this.state = {
 			loading: true,
@@ -187,7 +188,7 @@ class List extends React.Component {
 	}
 
 	onEndReached = async() => {
-		this.count += 50;
+		this.count += QUERY_SIZE;
 		this.query();
 		// const {
 		// 	loading, end, messages, latest = messages[messages.length - 1]?.ts
