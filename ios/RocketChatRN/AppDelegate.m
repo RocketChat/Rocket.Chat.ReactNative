@@ -21,7 +21,6 @@
 #import <UMReactNativeAdapter/UMNativeModulesProxy.h>
 #import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
 #import <MMKV/MMKV.h>
-#import <React/RCTLog.h>
 
 #if DEBUG
 #import <FlipperKit/FlipperClient.h>
