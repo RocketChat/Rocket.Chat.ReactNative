@@ -7,4 +7,5 @@ export default new MMKVStorage.Loader()
 	.setProcessingMode(MMKVStorage.MODES.MULTI_PROCESS)
 	.withInstanceID(getBundleId)
 	.withEncryption()
+	.encryptWithCustomKey('rocketchat')
 	.initialize();

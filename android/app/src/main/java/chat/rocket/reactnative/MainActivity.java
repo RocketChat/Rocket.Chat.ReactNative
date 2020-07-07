@@ -38,6 +38,9 @@ public class MainActivity extends ReactFragmentActivity {
             // Mark migration complete
             mmkv.encode("alreadyMigrated", true);
         }
+
+        // Encrypt mmkv instance
+        mmkv.reKey("rocketchat");
     }
 
     /**

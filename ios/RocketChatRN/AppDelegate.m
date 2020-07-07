@@ -85,6 +85,9 @@ static void InitializeFlipper(UIApplication *application) {
       [mmkv setBool:YES forKey:@"alreadyMigrated"];
     }
 
+    // Encrypt mmkv instance
+    [mmkv reKey:[@"rocketchat" dataUsingEncoding:NSUTF8StringEncoding]];
+
     return YES;
 }
 

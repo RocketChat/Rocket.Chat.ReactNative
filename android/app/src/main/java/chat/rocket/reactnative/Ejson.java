@@ -15,7 +15,7 @@ public class Ejson {
     public Ejson() {
         // Start MMKV container
         MMKV.initialize(CustomPushNotification.reactApplicationContext);
-        mmkv = MMKV.mmkvWithID(CustomPushNotification.reactApplicationContext.getPackageName());
+        mmkv = MMKV.mmkvWithID(CustomPushNotification.reactApplicationContext.getPackageName(), MMKV.SINGLE_PROCESS_MODE, "rocketchat");
     }
 
     public String getAvatarUri() {
