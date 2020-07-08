@@ -78,7 +78,8 @@ class RoomView extends React.Component {
 		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
 			username: PropTypes.string.isRequired,
-			token: PropTypes.string.isRequired
+			token: PropTypes.string.isRequired,
+			roles: PropTypes.array
 		}),
 		appState: PropTypes.string,
 		useRealName: PropTypes.bool,
@@ -427,6 +428,11 @@ class RoomView extends React.Component {
 			const member = await this.getRoomMember();
 
 			this.setState({ canAutoTranslate, member, loading: false });
+
+			const hasPermissions = ['create-c', 'create-d', 'create-p', 'view-c-room', 'view-d-room', 'view-l-room'];
+			const { user } = this.props;
+			const permissions = await RocketChat.hasPermissionsByUserRoles(hasPermissions, user.roles);
+			this.setState({ permissions });
 		} catch (e) {
 			this.setState({ loading: false });
 			this.retryInit = this.retryInit + 1 || 1;
@@ -599,7 +605,15 @@ class RoomView extends React.Component {
 			.observeWithColumns(['unread']);
 
 		this.queryUnreads = observable.subscribe((data) => {
-			const { unreadsCount } = this.state;
+			const { unreadsCount, permissions } = this.state;
+
+			data = data.filter((chat) => {
+				const hasViewChannelPermission = chat.t !== 'd' ? true : permissions['view-d-room'];
+				const hasViewGroupPermission = chat.t !== 'c' ? true : permissions['view-c-room'];
+				const hasViewLivechatPermission = chat.t !== 'l' ? true : permissions['view-l-room'];
+
+				return !(!hasViewGroupPermission || !hasViewChannelPermission || !hasViewLivechatPermission);
+			});
 			const newUnreadsCount = data.filter(s => s.unread > 0).reduce((a, b) => a + (b.unread || 0), 0);
 			if (unreadsCount !== newUnreadsCount) {
 				this.setState({ unreadsCount: newUnreadsCount }, () => this.setHeader());

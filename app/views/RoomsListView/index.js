@@ -195,7 +195,7 @@ class RoomsListView extends React.Component {
 		const { user } = this.props;
 		const permissions = await RocketChat.hasPermissionsByUserRoles(hasPermissions, user.roles);
 		this.setState({ permissions });
-		this.setHeader();
+		this.getSubscriptions(true);
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
@@ -427,6 +427,8 @@ class RoomsListView extends React.Component {
 			groupByType
 		} = this.props;
 
+		const { permissions } = this.state;
+
 		const db = database.active;
 		const observable = await db.collections
 			.get('subscriptions')
@@ -493,6 +495,14 @@ class RoomsListView extends React.Component {
 			} else {
 				tempChats = chats;
 			}
+
+			tempChats = tempChats.filter((chat) => {
+				const hasViewChannelPermission = chat.t !== 'd' ? true : permissions['view-d-room'];
+				const hasViewGroupPermission = chat.t !== 'c' ? true : permissions['view-c-room'];
+				const hasViewLivechatPermission = chat.t !== 'l' ? true : permissions['view-l-room'];
+
+				return !(!hasViewGroupPermission || !hasViewChannelPermission || !hasViewLivechatPermission);
+			});
 
 			this.internalSetState({
 				chats: tempChats,
@@ -803,7 +813,7 @@ class RoomsListView extends React.Component {
 			return this.renderSectionHeader(item.rid);
 		}
 
-		const { item: currentItem, permissions } = this.state;
+		const { item: currentItem } = this.state;
 		const {
 			user: {
 				id: userId,
@@ -819,10 +829,8 @@ class RoomsListView extends React.Component {
 		} = this.props;
 		const id = this.getUidDirectMessage(item);
 		const isGroupChat = RocketChat.isGroupChat(item);
-		const hasViewChannelPermission = item.t !== 'd' ? true : permissions['view-d-room'];
-		const hasViewGroupPermission = item.t !== 'c' ? true : permissions['view-c-room'];
-		const hasViewLivechatPermission = item.t !== 'l' ? true : permissions['view-l-room'];
-		return (!hasViewGroupPermission || !hasViewChannelPermission || !hasViewLivechatPermission) ? null : (
+
+		return (
 			<RoomItem
 				theme={theme}
 				alert={item.alert}

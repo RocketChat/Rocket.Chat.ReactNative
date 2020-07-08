@@ -996,7 +996,7 @@ const RocketChat = {
 			log(e);
 		}
 	},
-	async hasPermissionsByUserRoles(permissions, userRoles) {
+	async hasPermissionsByUserRoles(permissions = [], userRoles = []) {
 		const db = database.active;
 		const permissionsCollection = db.collections.get('permissions');
 		try {
@@ -1007,7 +1007,7 @@ const RocketChat = {
 				result[permission] = false;
 				const permissionFound = permissionsFiltered.find(p => p.id === permission);
 				if (permissionFound) {
-					result[permission] = returnAnArray(permissionFound.roles).some(r => userRoles.includes(r));
+					result[permission] = returnAnArray(permissionFound.roles).some(r => userRoles?.includes(r));
 				}
 				return result;
 			}, {});
