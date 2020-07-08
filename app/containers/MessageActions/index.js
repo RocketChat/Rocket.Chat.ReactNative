@@ -117,7 +117,12 @@ const MessageActions = React.memo(forwardRef(({
 	const handleEdit = message => editInit(message);
 
 	const handleCreateDiscussion = (message) => {
-		Navigation.navigate('CreateDiscussionView', { message, channel: room });
+		const params = { message, channel: room, showCloseModal: true };
+		if (isMasterDetail) {
+			Navigation.navigate('ModalStackNavigator', { screen: 'CreateDiscussionView', params });
+		} else {
+			Navigation.navigate('NewMessageStackNavigator', { screen: 'CreateDiscussionView', params });
+		}
 	};
 
 	const handleUnread = async(message) => {
