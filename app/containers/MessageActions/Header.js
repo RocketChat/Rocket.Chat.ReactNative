@@ -14,17 +14,20 @@ import { Button } from '../ActionSheet';
 import { useDimensions } from '../../dimensions';
 
 export const HEADER_HEIGHT = 36;
+const ITEM_SIZE = 36;
+const CONTAINER_MARGIN = 8;
+const ITEM_MARGIN = 8;
 
 const styles = StyleSheet.create({
 	container: {
 		alignItems: 'center',
-		marginHorizontal: 8
+		marginHorizontal: CONTAINER_MARGIN
 	},
 	headerItem: {
-		height: 36,
-		width: 36,
-		borderRadius: 20,
-		marginHorizontal: 8,
+		height: ITEM_SIZE,
+		width: ITEM_SIZE,
+		borderRadius: ITEM_SIZE / 2,
+		marginHorizontal: ITEM_MARGIN,
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
@@ -96,8 +99,8 @@ const Header = React.memo(({
 			let freqEmojis = await freqEmojiCollection.query().fetch();
 
 			const isLandscape = width > height;
-			const size = isLandscape ? width / 2 : width;
-			const quantity = (size / 50) - 1;
+			const size = (isLandscape ? width / 2 : width) - (CONTAINER_MARGIN * 2);
+			const quantity = (size / (ITEM_SIZE + (ITEM_MARGIN * 2))) - 1;
 
 			freqEmojis = freqEmojis.concat(DEFAULT_EMOJIS).slice(0, quantity);
 			setItems(freqEmojis);

@@ -29,7 +29,8 @@ export default StyleSheet.create({
 	},
 	handle: {
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
+		paddingBottom: 8
 	},
 	handleIndicator: {
 		width: 40,
