@@ -273,7 +273,7 @@ class Image extends React.PureComponent {
 		return <Component {...this.props} />;
 	}
 }
-const AnimatedFastImage = Animated.createAnimatedComponent(Image);
+const AnimatedImage = Animated.createAnimatedComponent(Image);
 
 // it was picked from https://github.com/software-mansion/react-native-reanimated/tree/master/Example/imageViewer
 // and changed to use FastImage animated component
@@ -428,7 +428,7 @@ export class ImageViewer extends React.Component {
 							onGestureEvent={this._onPanEvent}
 							onHandlerStateChange={this._onPanEvent}
 						>
-							<AnimatedFastImage
+							<AnimatedImage
 								style={[
 									styles.image,
 									{
