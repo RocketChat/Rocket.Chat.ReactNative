@@ -13,16 +13,21 @@ const styles = StyleSheet.create({
 	}
 });
 
-const RoomHeaderLeft = React.memo(({
+const LeftButtons = React.memo(({
 	tmid, unreadsCount, navigation, baseUrl, userId, token, title, t, theme, goRoomActionsView, isMasterDetail
 }) => {
 	if (!isMasterDetail || tmid) {
 		const onPress = useCallback(() => navigation.goBack());
+		const label = unreadsCount > 99 ? '+99' : unreadsCount || ' ';
+		const labelLength = label.length ? label.length : 1;
+		const marginLeft = -2 * labelLength;
+		const fontSize = labelLength > 1 ? 14 : 17;
 		return (
 			<HeaderBackButton
-				label={unreadsCount > 999 ? '+999' : unreadsCount || ' '}
+				label={label}
 				onPress={onPress}
 				tintColor={themes[theme].headerTintColor}
+				labelStyle={{ fontSize, marginLeft }}
 			/>
 		);
 	}
@@ -44,7 +49,7 @@ const RoomHeaderLeft = React.memo(({
 	return null;
 });
 
-RoomHeaderLeft.propTypes = {
+LeftButtons.propTypes = {
 	tmid: PropTypes.string,
 	unreadsCount: PropTypes.number,
 	navigation: PropTypes.object,
@@ -58,4 +63,4 @@ RoomHeaderLeft.propTypes = {
 	isMasterDetail: PropTypes.bool
 };
 
-export default RoomHeaderLeft;
+export default LeftButtons;

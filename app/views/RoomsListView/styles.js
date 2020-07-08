@@ -23,7 +23,7 @@ export default StyleSheet.create({
 	sortToggleText: {
 		fontSize: 16,
 		flex: 1,
-		marginLeft: 15,
+		marginLeft: 12,
 		...sharedStyles.textRegular
 	},
 	dropdownContainer: {
@@ -50,16 +50,16 @@ export default StyleSheet.create({
 	},
 	sortSeparator: {
 		height: StyleSheet.hairlineWidth,
-		marginHorizontal: 15,
+		marginHorizontal: 12,
 		flex: 1
 	},
 	sortIcon: {
 		width: 22,
 		height: 22,
-		marginHorizontal: 15
+		marginHorizontal: 12
 	},
 	groupTitleContainer: {
-		paddingHorizontal: 15,
+		paddingHorizontal: 12,
 		paddingTop: 17,
 		paddingBottom: 10
 	},
@@ -75,12 +75,12 @@ export default StyleSheet.create({
 	},
 	serverHeaderText: {
 		fontSize: 16,
-		marginLeft: 15,
+		marginLeft: 12,
 		...sharedStyles.textRegular
 	},
 	serverHeaderAdd: {
 		fontSize: 16,
-		marginRight: 15,
+		marginRight: 12,
 		paddingVertical: 10,
 		...sharedStyles.textRegular
 	},
@@ -95,7 +95,7 @@ export default StyleSheet.create({
 	serverIcon: {
 		width: 42,
 		height: 42,
-		marginHorizontal: 15,
+		marginHorizontal: 12,
 		marginVertical: 13,
 		borderRadius: 4,
 		resizeMode: 'contain'
@@ -120,7 +120,7 @@ export default StyleSheet.create({
 	directoryIcon: {
 		width: 22,
 		height: 22,
-		marginHorizontal: 15
+		marginHorizontal: 12
 	},
 	directoryText: {
 		fontSize: 16,
