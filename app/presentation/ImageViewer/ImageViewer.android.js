@@ -260,6 +260,21 @@ function bouncy(
 const WIDTH = 300;
 const HEIGHT = 300;
 
+class Image extends React.PureComponent {
+	static propTypes = {
+		imageComponentType: PropTypes.string
+	}
+
+	render() {
+		const { imageComponentType } = this.props;
+
+		const Component = ImageComponent(imageComponentType);
+
+		return <Component {...this.props} />;
+	}
+}
+const AnimatedFastImage = Animated.createAnimatedComponent(Image);
+
 // it was picked from https://github.com/software-mansion/react-native-reanimated/tree/master/Example/imageViewer
 // and changed to use FastImage animated component
 export class ImageViewer extends React.Component {
@@ -386,11 +401,8 @@ export class ImageViewer extends React.Component {
 
 	render() {
 		const {
-			uri, width, height, theme, imageComponentType, ...props
+			uri, width, height, imageComponentType, theme, ...props
 		} = this.props;
-
-		const Component = ImageComponent(imageComponentType);
-		const AnimatedFastImage = Animated.createAnimatedComponent(Component);
 
 		// The below two animated values makes it so that scale appears to be done
 		// from the top left corner of the image view instead of its center. This
@@ -435,6 +447,7 @@ export class ImageViewer extends React.Component {
 										]
 									}
 								]}
+								imageComponentType={imageComponentType}
 								resizeMode='contain'
 								source={{ uri }}
 								{...props}
