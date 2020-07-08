@@ -70,10 +70,15 @@ class AttachmentView extends React.Component {
 	setHeader = () => {
 		const { route, navigation, theme } = this.props;
 		const attachment = route.params?.attachment;
-		const { title } = attachment;
+		let { title } = attachment;
+		try {
+			title = decodeURI(title);
+		} catch {
+			// Do nothing
+		}
 		const options = {
+			title,
 			headerLeft: () => <CloseModalButton testID='close-attachment-view' navigation={navigation} buttonStyle={{ color: themes[theme].previewTintColor }} />,
-			title: decodeURI(title),
 			headerRight: () => <SaveButton testID='save-image' onPress={this.handleSave} buttonStyle={{ color: themes[theme].previewTintColor }} />,
 			headerBackground: () => <View style={{ flex: 1, backgroundColor: themes[theme].previewBackground }} />,
 			headerTintColor: themes[theme].previewTintColor,
