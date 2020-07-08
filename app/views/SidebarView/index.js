@@ -141,7 +141,7 @@ class Sidebar extends Component {
 
 	get currentItemKey() {
 		const { state } = this.props;
-		return state.routeNames[state.index];
+		return state?.routeNames[state?.index];
 	}
 
 	renderAdmin = () => {
