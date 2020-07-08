@@ -6,6 +6,7 @@ import RNUserDefaults from 'rn-user-defaults';
 import { KeyCommandsEmitter } from 'react-native-keycommands';
 import RNScreens from 'react-native-screens';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
+import RNConfigReader from 'react-native-config-reader';
 
 import {
 	defaultTheme,
@@ -39,6 +40,8 @@ import debounce from './utils/debounce';
 
 
 RNScreens.enableScreens();
+
+const configValue = RNConfigReader.PLAY_BUILD;
 
 const parseDeepLinking = (url) => {
 	if (url) {
@@ -160,7 +163,9 @@ export default class Root extends React.Component {
 				if (!allowCrashReport) {
 					loggerConfig.autoNotify = false;
 					loggerConfig.registerBeforeSendCallback(() => false);
-					analytics().setAnalyticsCollectionEnabled(false);
+					if (configValue) {
+						analytics().setAnalyticsCollectionEnabled(false);
+					}
 				}
 			});
 	}

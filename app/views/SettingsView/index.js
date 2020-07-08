@@ -5,6 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNConfigReader from 'react-native-config-reader';
 
 import { logout as logoutAction } from '../../actions/login';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
@@ -35,6 +36,8 @@ import { appStart as appStartAction, ROOT_LOADING } from '../../actions/app';
 import { onReviewPress } from '../../utils/review';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
+
+const configValue = RNConfigReader.PLAY_BUILD;
 
 const SectionSeparator = React.memo(({ theme }) => (
 	<View
@@ -115,7 +118,9 @@ class SettingsView extends React.Component {
 		const { toggleCrashReport } = this.props;
 		toggleCrashReport(value);
 		loggerConfig.autoNotify = value;
-		analytics().setAnalyticsCollectionEnabled(value);
+		if (configValue) {
+			analytics().setAnalyticsCollectionEnabled(value);
+		}
 
 		if (value) {
 			loggerConfig.clearBeforeSendCallbacks();

@@ -6,7 +6,7 @@ import config from '../../config';
 const configValue = RNConfigReader.PLAY_BUILD;
 const bugsnag = new Client(config.BUGSNAG_API_KEY);
 
-export const { analytics } = firebase;
+export const { analytics } = firebase != null;
 export const loggerConfig = bugsnag.config;
 export const { leaveBreadcrumb } = bugsnag;
 
@@ -19,7 +19,7 @@ export const logServerVersion = (serverVersion) => {
 };
 
 export const setCurrentScreen = (currentScreen) => {
-	if(configValue){
+	if (configValue) {
 		analytics().setCurrentScreen(currentScreen);
 	}
 	leaveBreadcrumb(currentScreen, { type: 'navigation' });

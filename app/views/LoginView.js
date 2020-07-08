@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
+import RNConfigReader from 'react-native-config-reader';
 
 import { analytics } from '../utils/log';
 import sharedStyles from './Styles';
@@ -17,6 +18,8 @@ import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import TextInput from '../containers/TextInput';
 import { loginRequest as loginRequestAction } from '../actions/login';
 import LoginServices from '../containers/LoginServices';
+
+const configValue = RNConfigReader.PLAY_BUILD;
 
 const styles = StyleSheet.create({
 	registerDisabled: {
@@ -121,7 +124,9 @@ class LoginView extends React.Component {
 		const { loginRequest } = this.props;
 		Keyboard.dismiss();
 		loginRequest({ user, password });
-		analytics().logEvent('login');
+		if (configValue) {
+			analytics().logEvent('login');
+		}
 	}
 
 	renderUserForm = () => {
