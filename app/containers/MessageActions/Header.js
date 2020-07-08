@@ -87,7 +87,7 @@ HeaderFooter.propTypes = {
 };
 
 const Header = React.memo(({
-	handleReaction, server, message, theme
+	handleReaction, server, message, isMasterDetail, theme
 }) => {
 	const [items, setItems] = useState([]);
 	const { width, height } = useDimensions();
@@ -99,7 +99,7 @@ const Header = React.memo(({
 			let freqEmojis = await freqEmojiCollection.query().fetch();
 
 			const isLandscape = width > height;
-			const size = (isLandscape ? width / 2 : width) - (CONTAINER_MARGIN * 2);
+			const size = (isLandscape || isMasterDetail ? width / 2 : width) - (CONTAINER_MARGIN * 2);
 			const quantity = (size / (ITEM_SIZE + (ITEM_MARGIN * 2))) - 1;
 
 			freqEmojis = freqEmojis.concat(DEFAULT_EMOJIS).slice(0, quantity);
@@ -138,6 +138,7 @@ Header.propTypes = {
 	handleReaction: PropTypes.func,
 	server: PropTypes.string,
 	message: PropTypes.object,
+	isMasterDetail: PropTypes.bool,
 	theme: PropTypes.string
 };
 export default withTheme(Header);
