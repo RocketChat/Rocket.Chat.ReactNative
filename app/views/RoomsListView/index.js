@@ -513,9 +513,9 @@ class RoomsListView extends React.Component {
 			closeSearchHeader();
 			setTimeout(() => {
 				const offset = 0;
-				if (this.scroll.scrollTo) {
+				if (this.scroll?.scrollTo) {
 					this.scroll.scrollTo({ x: 0, y: offset, animated: true });
-				} else if (this.scroll.scrollToOffset) {
+				} else if (this.scroll?.scrollToOffset) {
 					this.scroll.scrollToOffset({ offset });
 				}
 			}, 200);
@@ -546,7 +546,7 @@ class RoomsListView extends React.Component {
 			search: result,
 			searching: true
 		});
-		if (this.scroll && this.scroll.scrollTo) {
+		if (this.scroll?.scrollTo) {
 			this.scroll.scrollTo({ x: 0, y: 0, animated: true });
 		}
 	}, 300);
@@ -573,9 +573,9 @@ class RoomsListView extends React.Component {
 		const { toggleSortDropdown } = this.props;
 
 		const offset = 0;
-		if (this.scroll.scrollTo) {
+		if (this.scroll?.scrollTo) {
 			this.scroll.scrollTo({ x: 0, y: offset, animated: true });
-		} else if (this.scroll.scrollToOffset) {
+		} else if (this.scroll?.scrollToOffset) {
 			this.scroll.scrollToOffset({ offset });
 		}
 		setTimeout(() => {
