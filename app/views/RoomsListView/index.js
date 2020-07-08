@@ -504,12 +504,7 @@ class RoomsListView extends React.Component {
 				closeSearchHeader();
 			}
 			setTimeout(() => {
-				const offset = isAndroid ? 0 : SCROLL_OFFSET;
-				if (this.scroll.scrollTo) {
-					this.scroll.scrollTo({ x: 0, y: offset, animated: true });
-				} else if (this.scroll.scrollToOffset) {
-					this.scroll.scrollToOffset({ offset });
-				}
+				this.scrollToTop();
 			}, 200);
 		});
 	};
@@ -538,9 +533,7 @@ class RoomsListView extends React.Component {
 			search: result,
 			searching: true
 		});
-		if (this.scroll && this.scroll.scrollTo) {
-			this.scroll.scrollTo({ x: 0, y: 0, animated: true });
-		}
+		this.scrollToTop();
 	}, 300);
 
 	getRoomTitle = item => RocketChat.getRoomTitle(item)
@@ -561,15 +554,17 @@ class RoomsListView extends React.Component {
 		this.goRoom({ item, isMasterDetail });
 	};
 
+	scrollToTop = () => {
+		const offset = isAndroid ? 0 : SCROLL_OFFSET;
+		if (this.scroll?.scrollToOffset) {
+			this.scroll.scrollToOffset({ offset });
+		}
+	}
+
 	toggleSort = () => {
 		const { toggleSortDropdown } = this.props;
 
-		const offset = isAndroid ? 0 : SCROLL_OFFSET;
-		if (this.scroll.scrollTo) {
-			this.scroll.scrollTo({ x: 0, y: offset, animated: true });
-		} else if (this.scroll.scrollToOffset) {
-			this.scroll.scrollToOffset({ offset });
-		}
+		this.scrollToTop();
 		setTimeout(() => {
 			toggleSortDropdown();
 		}, 100);
