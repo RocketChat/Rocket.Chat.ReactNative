@@ -632,8 +632,8 @@ class MessageBox extends Component {
 			}
 		} catch (e) {
 			if (!DocumentPicker.isCancel(e)) {
-				log(e);
 				logEvent(events.CHOOSE_FILE_FAIL);
+				log(e);
 			}
 		}
 	}
@@ -650,6 +650,7 @@ class MessageBox extends Component {
 	}
 
 	createDiscussion = () => {
+		logEvent(events.CREATE_DISCUSSION_START);
 		const { isMasterDetail } = this.props;
 		const params = { channel: this.room, showCloseModal: true };
 		if (isMasterDetail) {
@@ -657,7 +658,6 @@ class MessageBox extends Component {
 		} else {
 			Navigation.navigate('NewMessageStackNavigator', { screen: 'CreateDiscussionView', params });
 		}
-		logEvent(events.CREATE_DISCUSSION_START);
 	}
 
 	showMessageBoxActions = () => {
@@ -672,13 +672,13 @@ class MessageBox extends Component {
 	}
 
 	openEmoji = () => {
-		this.setState({ showEmojiKeyboard: true });
 		logEvent(events.SHOW_EMOJI_KEYBOARD);
+		this.setState({ showEmojiKeyboard: true });
 	}
 
 	recordingCallback = (recording) => {
-		this.setState({ recording });
 		logEvent(events.START_AUDIO_RECORDING);
+		this.setState({ recording });
 	}
 
 	finishAudioMessage = async(fileInfo) => {

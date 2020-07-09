@@ -92,13 +92,13 @@ class StatusView extends React.Component {
 	}
 
 	submit = async() => {
+		logEvent(events.EDIT_STATUS_DONE);
 		const { statusText } = this.state;
 		const { user } = this.props;
 		if (statusText !== user.statusText) {
 			await this.setCustomStatus();
 		}
 		this.close();
-		logEvent(events.EDIT_STATUS_DONE);
 	}
 
 	close = () => {
@@ -115,15 +115,15 @@ class StatusView extends React.Component {
 		try {
 			const result = await RocketChat.setUserStatus(user.status, statusText);
 			if (result.success) {
-				EventEmitter.emit(LISTENER, { message: I18n.t('Status_saved_successfully') });
 				logEvent(events.SET_CUSTOM_STATUS);
+				EventEmitter.emit(LISTENER, { message: I18n.t('Status_saved_successfully') });
 			} else {
-				EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
 				logEvent(events.SET_CUSTOM_STATUS_FAIL);
+				EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
 			}
 		} catch {
-			EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
 			logEvent(events.SET_CUSTOM_STATUS_FAIL);
+			EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
 		}
 
 		this.setState({ loading: false });
@@ -170,16 +170,16 @@ class StatusView extends React.Component {
 			<ListItem
 				title={name}
 				onPress={async() => {
+					logEvent(events[`SET_STATUS_${ item.id.toUpperCase() }`]);
 					if (user.status !== item.id) {
 						try {
 							const result = await RocketChat.setUserStatus(item.id, statusText);
 							if (result.success) {
 								store.dispatch(setUser({ status: item.id }));
-								logEvent(events[`SET_STATUS_${ item.id.toUpperCase() }`]);
 							}
 						} catch (e) {
-							log(e);
 							logEvent(events.SET_STATUS_FAIL);
+							log(e);
 						}
 					}
 				}}

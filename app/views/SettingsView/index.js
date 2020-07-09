@@ -87,18 +87,19 @@ class SettingsView extends React.Component {
 	}
 
 	handleLogout = () => {
+		logEvent(events.LOG_OUT);
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_of_this_application'),
 			callToAction: I18n.t('Logout'),
 			onPress: () => {
 				const { logout } = this.props;
 				logout();
-				logEvent(events.LOG_OUT);
 			}
 		});
 	}
 
 	handleClearCache = () => {
+		logEvent(events.CLEAR_LOCAL_SERVER_CACHE);
 		showConfirmationAlert({
 			message: I18n.t('This_will_clear_all_your_offline_data'),
 			callToAction: I18n.t('Clear'),
@@ -109,7 +110,6 @@ class SettingsView extends React.Component {
 				await appStart({ root: ROOT_LOADING, text: I18n.t('Clear_cache_loading') });
 				await RocketChat.clearCache({ server });
 				await selectServerRequest(server, null, true);
-				logEvent(events.CLEAR_LOCAL_SERVER_CACHE);
 			}
 		});
 	}
@@ -121,11 +121,11 @@ class SettingsView extends React.Component {
 		loggerConfig.autoNotify = value;
 		analytics().setAnalyticsCollectionEnabled(value);
 		if (value) {
-			loggerConfig.clearBeforeSendCallbacks();
 			logEvent(events.SEND_CRASH_REPORT_ON);
+			loggerConfig.clearBeforeSendCallbacks();
 		} else {
-			loggerConfig.registerBeforeSendCallback(() => false);
 			logEvent(events.SEND_CRASH_REPORT_OFF);
+			loggerConfig.registerBeforeSendCallback(() => false);
 		}
 	}
 
@@ -143,6 +143,7 @@ class SettingsView extends React.Component {
 	}
 
 	sendEmail = async() => {
+		logEvent(events.CONTACT_US);
 		const subject = encodeURI('React Native App Support');
 		const email = encodeURI('support@rocket.chat');
 		const description = encodeURI(`
@@ -151,28 +152,26 @@ class SettingsView extends React.Component {
 		`);
 		try {
 			await Linking.openURL(`mailto:${ email }?subject=${ subject }&body=${ description }`);
-			logEvent(events.CONTACT_US);
 		} catch (e) {
 			logEvent(events.CONTACT_US_FAIL);
-
 			showErrorAlert(I18n.t('error-email-send-failed', { message: 'support@rocket.chat' }));
 		}
 	}
 
 	shareApp = () => {
-		Share.share({ message: isAndroid ? PLAY_MARKET_LINK : APP_STORE_LINK });
 		logEvent(events.SHARE_THIS_APP);
+		Share.share({ message: isAndroid ? PLAY_MARKET_LINK : APP_STORE_LINK });
 	}
 
 	copyServerVersion = () => {
 		const { server: { version } } = this.props;
-		this.saveToClipboard(version);
 		logEvent(events.COPY_SERVER_VERSION, { server_version: version });
+		this.saveToClipboard(version);
 	}
 
 	copyAppVersion = () => {
-		this.saveToClipboard(getReadableVersion);
 		logEvent(events.COPY_APP_VERSION, { app_version: getReadableVersion });
+		this.saveToClipboard(getReadableVersion);
 	}
 
 	saveToClipboard = async(content) => {
@@ -181,9 +180,9 @@ class SettingsView extends React.Component {
 	}
 
 	onPressLicense = () => {
+		logEvent(events.READ_LICENSE);
 		const { theme } = this.props;
 		openLink(LICENSE_LINK, theme);
-		logEvent(events.READ_LICENSE);
 	}
 
 	renderDisclosure = () => {
@@ -254,8 +253,8 @@ class SettingsView extends React.Component {
 					<ListItem
 						title={I18n.t('Language')}
 						onPress={() => {
-							this.navigateToScreen('LanguageView');
 							logEvent(events.NAVIGATE_TO_LANGUAGE);
+							this.navigateToScreen('LanguageView');
 						}}
 						showActionIndicator
 						testID='settings-view-language'
@@ -285,8 +284,8 @@ class SettingsView extends React.Component {
 						title={I18n.t('Default_browser')}
 						showActionIndicator
 						onPress={() => {
-							this.navigateToScreen('DefaultBrowserView');
 							logEvent(events.NAVIGATE_TO_DEFAULT_BROWSER);
+							this.navigateToScreen('DefaultBrowserView');
 						}}
 						testID='settings-view-default-browser'
 						right={this.renderDisclosure}
@@ -297,8 +296,8 @@ class SettingsView extends React.Component {
 						title={I18n.t('Theme')}
 						showActionIndicator
 						onPress={() => {
-							this.navigateToScreen('ThemeView');
 							logEvent(events.NAVIGATE_TO_THEMES);
+							this.navigateToScreen('ThemeView');
 						}}
 						testID='settings-view-theme'
 						right={this.renderDisclosure}
@@ -309,8 +308,8 @@ class SettingsView extends React.Component {
 						title={I18n.t('Screen_lock')}
 						showActionIndicator
 						onPress={() => {
-							this.navigateToScreen('ScreenLockConfigView');
 							logEvent(events.NAVIGATE_TO_SCREEN_LOCK);
+							this.navigateToScreen('ScreenLockConfigView');
 						}}
 						right={this.renderDisclosure}
 						theme={theme}

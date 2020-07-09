@@ -114,13 +114,13 @@ const MessageActions = React.memo(forwardRef(({
 	const getPermalink = message => RocketChat.getPermalinkMessage(message);
 
 	const handleReply = (message) => {
-		replyInit(message, true);
 		logEvent(events.ACTION_REPLY_IN_THREAD);
+		replyInit(message, true);
 	};
 
 	const handleEdit = (message) => {
-		editInit(message);
 		logEvent(events.ACTION_EDIT);
+		editInit(message);
 	};
 
 	const handleCreateDiscussion = (message) => {
@@ -134,6 +134,7 @@ const MessageActions = React.memo(forwardRef(({
 	};
 
 	const handleUnread = async(message) => {
+		logEvent(events.ACTION_MARK_UNREAD);
 		const { id: messageId, ts } = message;
 		const { rid } = room;
 		try {
@@ -150,74 +151,73 @@ const MessageActions = React.memo(forwardRef(({
 					}
 				});
 				Navigation.navigate('RoomsListView');
-				logEvent(events.ACTION_MARK_UNREAD);
 			}
 		} catch (e) {
-			log(e);
 			logEvent(events.ACTION_MARK_UNREAD_FAIL);
+			log(e);
 		}
 	};
 
 	const handlePermalink = async(message) => {
+		logEvent(events.ACTION_PERMALINK);
 		try {
 			const permalink = await getPermalink(message);
 			Clipboard.setString(permalink);
 			EventEmitter.emit(LISTENER, { message: I18n.t('Permalink_copied_to_clipboard') });
-			logEvent(events.ACTION_PERMALINK);
 		} catch {
 			logEvent(events.ACTION_PERMALINK_FAIL);
 		}
 	};
 
 	const handleCopy = async(message) => {
+		logEvent(events.ACTION_COPY);
 		await Clipboard.setString(message.msg);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
-		logEvent(events.ACTION_COPY);
 	};
 
 	const handleShare = async(message) => {
+		logEvent(events.ACTION_SHARE);
 		try {
 			const permalink = await getPermalink(message);
 			Share.share({ message: permalink });
-			logEvent(events.ACTION_SHARE);
 		} catch {
 			logEvent(events.ACTION_SHARE_FAIL);
 		}
 	};
 
 	const handleQuote = (message) => {
-		replyInit(message, false);
 		logEvent(events.ACTION_QUOTE);
+		replyInit(message, false);
 	};
 
 	const handleStar = async(message) => {
+		logEvent(message.starred ? events.ACTION_UNSTAR : events.ACTION_STAR);
 		try {
 			await RocketChat.toggleStarMessage(message.id, message.starred);
 			EventEmitter.emit(LISTENER, { message: message.starred ? I18n.t('Message_unstarred') : I18n.t('Message_starred') });
-			logEvent(message.starred ? events.ACTION_UNSTAR : events.ACTION_STAR);
 		} catch (e) {
-			log(e);
 			logEvent(events.ACTION_STAR_FAIL);
+			log(e);
 		}
 	};
 
 	const handlePin = async(message) => {
+		logEvent(events.ACTION_PIN);
 		try {
 			await RocketChat.togglePinMessage(message.id, message.pinned);
-			logEvent(events.ACTION_PIN);
 		} catch (e) {
-			log(e);
 			logEvent(events.ACTION_PIN_FAIL);
+			log(e);
 		}
 	};
 
 	const handleReaction = (shortname, message) => {
 		if (shortname) {
-			onReactionPress(shortname, message.id);
 			logEvent(events.ACTION_ADD_RECENT_REACTION);
+			onReactionPress(shortname, message.id);
 		} else {
-			reactionInit(message);
 			logEvent(events.ACTION_ADD_REACTION);
+			reactionInit(message);
 		}
 		// close actionSheet when click at header
 		hideActionSheet();
@@ -250,13 +250,13 @@ const MessageActions = React.memo(forwardRef(({
 	};
 
 	const handleReport = async(message) => {
+		logEvent(events.ACTION_REPORT);
 		try {
 			await RocketChat.reportMessage(message.id);
 			Alert.alert(I18n.t('Message_Reported'));
-			logEvent(events.ACTION_REPORT);
 		} catch (e) {
-			log(e);
 			logEvent(events.ACTION_REPORT_FAIL);
+			log(e);
 		}
 	};
 
@@ -266,11 +266,11 @@ const MessageActions = React.memo(forwardRef(({
 			callToAction: I18n.t('Delete'),
 			onPress: async() => {
 				try {
-					await RocketChat.deleteMessage(message.id, message.subscription.id);
 					logEvent(events.ACTION_DELETE);
+					await RocketChat.deleteMessage(message.id, message.subscription.id);
 				} catch (e) {
-					log(e);
 					logEvent(events.ACTION_DELETE_FAIL);
+					log(e);
 				}
 			}
 		});
@@ -401,8 +401,8 @@ const MessageActions = React.memo(forwardRef(({
 	};
 
 	const showMessageActions = async(message) => {
-		await getPermissions();
 		logEvent(events.SHOW_MESSAGE_ACTIONS);
+		await getPermissions();
 		showActionSheet({
 			options: getOptions(message),
 			headerHeight: HEADER_HEIGHT,

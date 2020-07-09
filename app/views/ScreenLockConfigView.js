@@ -116,12 +116,12 @@ class ScreenLockConfigView extends React.Component {
 	save = async() => {
 		const { autoLock, autoLockTime, biometry } = this.state;
 		const serversDB = database.servers;
+		logEvent(events.SAVE_SCREEN_LOCK, { autoLock, autoLockTime, biometry });
 		await serversDB.action(async() => {
 			await this.serverRecord?.update((record) => {
 				record.autoLock = autoLock;
 				record.autoLockTime = autoLockTime === null ? DEFAULT_AUTO_LOCK : autoLockTime;
 				record.biometry = biometry === null ? DEFAULT_BIOMETRY : biometry;
-				logEvent(events.SAVE_SCREEN_LOCK, { autoLock, autoLockTime, biometry });
 			});
 		});
 	}

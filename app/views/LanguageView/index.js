@@ -112,6 +112,7 @@ class LanguageView extends React.Component {
 	}
 
 	changeLanguage = async(language) => {
+		logEvent(events.SET_LANGUAGE);
 		const { user, setUser } = this.props;
 
 		const params = {};
@@ -133,14 +134,13 @@ class LanguageView extends React.Component {
 					await userRecord.update((record) => {
 						record.language = params.language;
 					});
-					logEvent(events.SET_LANGUAGE);
 				} catch (e) {
 					logEvent(events.SET_LANGUAGE_FAIL);
 				}
 			});
 		} catch (e) {
-			showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_preferences') }));
 			logEvent(events.SET_LANGUAGE_FAIL);
+			showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_preferences') }));
 			log(e);
 		}
 	}

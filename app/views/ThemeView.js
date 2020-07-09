@@ -97,12 +97,12 @@ class ThemeView extends React.Component {
 		const { value, group } = item;
 		let changes = {};
 		if (group === THEME_GROUP && currentTheme !== value) {
-			changes = { currentTheme: value };
 			logEvent(events.SET_THEME_GROUP, { theme_group: value });
+			changes = { currentTheme: value };
 		}
 		if (group === DARK_GROUP && darkLevel !== value) {
-			changes = { darkLevel: value };
 			logEvent(events.SET_DARK_LEVEL, { dark_level: value });
+			changes = { darkLevel: value };
 		}
 		this.setTheme(changes);
 	}
