@@ -281,6 +281,8 @@ const RocketChat = {
 		const serversDB = database.servers;
 		reduxStore.dispatch(shareSelectServer(server));
 
+		RocketChat.setCustomEmojis();
+
 		// set User info
 		try {
 			const userId = await MMKV.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
