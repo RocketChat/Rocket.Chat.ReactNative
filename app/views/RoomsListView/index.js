@@ -309,9 +309,7 @@ class RoomsListView extends React.Component {
 	}
 
 	componentWillUnmount() {
-		if (this.querySubscription && this.querySubscription.unsubscribe) {
-			this.querySubscription.unsubscribe();
-		}
+		this.unsubscribeQuery();
 		if (this.unsubscribeFocus) {
 			this.unsubscribeFocus();
 		}
@@ -397,14 +395,12 @@ class RoomsListView extends React.Component {
 	}
 
 	getSubscriptions = async(force = false) => {
-		if (this.gotSubscriptions && !force) {
-			return;
-		}
-		this.gotSubscriptions = true;
+		// if (this.gotSubscriptions && !force) {
+		// 	return;
+		// }
+		// this.gotSubscriptions = true;
 
-		if (this.querySubscription && this.querySubscription.unsubscribe) {
-			this.querySubscription.unsubscribe();
-		}
+		this.unsubscribeQuery();
 
 		this.setState({ loading: true });
 
@@ -423,7 +419,7 @@ class RoomsListView extends React.Component {
 				Q.where('open', true),
 				Q.experimentalSortBy('room_updated_at', Q.desc), // TODO: sort according to params
 				Q.experimentalSkip(0),
-				Q.experimentalTake(50)
+				Q.experimentalTake(this.count)
 			)
 			.observeWithColumns(['room_updated_at', 'unread', 'alert', 'user_mentions', 'f', 't']);
 
@@ -491,6 +487,12 @@ class RoomsListView extends React.Component {
 				loading: false
 			});
 		});
+	}
+
+	unsubscribeQuery = () => {
+		if (this.querySubscription && this.querySubscription.unsubscribe) {
+			this.querySubscription.unsubscribe();
+		}
 	}
 
 	initSearching = () => {
