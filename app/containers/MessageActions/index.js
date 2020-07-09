@@ -32,7 +32,8 @@ const MessageActions = React.memo(forwardRef(({
 	Message_AllowEditing_BlockEditInMinutes,
 	Message_AllowPinning,
 	Message_AllowStarring,
-	Message_Read_Receipt_Store_Users
+	Message_Read_Receipt_Store_Users,
+	isMasterDetail
 }, ref) => {
 	let permissions = {};
 	const { showActionSheet, hideActionSheet } = useActionSheet();
@@ -116,7 +117,12 @@ const MessageActions = React.memo(forwardRef(({
 	const handleEdit = message => editInit(message);
 
 	const handleCreateDiscussion = (message) => {
-		Navigation.navigate('CreateDiscussionView', { message, channel: room });
+		const params = { message, channel: room, showCloseModal: true };
+		if (isMasterDetail) {
+			Navigation.navigate('ModalStackNavigator', { screen: 'CreateDiscussionView', params });
+		} else {
+			Navigation.navigate('NewMessageStackNavigator', { screen: 'CreateDiscussionView', params });
+		}
 	};
 
 	const handleUnread = async(message) => {
@@ -333,7 +339,7 @@ const MessageActions = React.memo(forwardRef(({
 		if (Message_Read_Receipt_Store_Users) {
 			options.push({
 				title: I18n.t('Read_Receipt'),
-				icon: 'receipt',
+				icon: 'info',
 				onPress: () => handleReadReceipt(message)
 			});
 		}
@@ -377,6 +383,7 @@ const MessageActions = React.memo(forwardRef(({
 				<Header
 					server={server}
 					handleReaction={handleReaction}
+					isMasterDetail={isMasterDetail}
 					message={message}
 				/>
 			) : null)
@@ -412,7 +419,8 @@ const mapStateToProps = state => ({
 	Message_AllowEditing_BlockEditInMinutes: state.settings.Message_AllowEditing_BlockEditInMinutes,
 	Message_AllowPinning: state.settings.Message_AllowPinning,
 	Message_AllowStarring: state.settings.Message_AllowStarring,
-	Message_Read_Receipt_Store_Users: state.settings.Message_Read_Receipt_Store_Users
+	Message_Read_Receipt_Store_Users: state.settings.Message_Read_Receipt_Store_Users,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 export default connect(mapStateToProps, null, null, { forwardRef: true })(MessageActions);

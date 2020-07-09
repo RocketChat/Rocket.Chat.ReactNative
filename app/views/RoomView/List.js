@@ -115,6 +115,7 @@ class List extends React.Component {
 					} else {
 						this.state.messages = messages;
 					}
+					this.readThreads();
 				});
 		}
 	}
@@ -123,6 +124,18 @@ class List extends React.Component {
 	reload = () => {
 		this.unsubscribeMessages();
 		this.init();
+	}
+
+	readThreads = async() => {
+		const { tmid } = this.props;
+
+		if (tmid) {
+			try {
+				await RocketChat.readThreads(tmid);
+			} catch {
+				// Do nothing
+			}
+		}
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {

@@ -40,7 +40,7 @@ const RoomTypeIcon = React.memo(({
 			name={icon}
 			size={size}
 			style={[
-				type === 'l' ? { color: STATUS_COLORS[status] } : { color },
+				type === 'l' && status ? { color: STATUS_COLORS[status] } : { color },
 				styles.icon,
 				style
 			]}

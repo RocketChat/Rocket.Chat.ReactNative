@@ -68,6 +68,17 @@ class RightButtonsContainer extends React.PureComponent {
 		}
 	}
 
+	goSearchView = () => {
+		const {
+			rid, navigation, isMasterDetail
+		} = this.props;
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', { screen: 'SearchMessagesView', params: { rid, showCloseModal: true } });
+		} else {
+			navigation.navigate('SearchMessagesView', { rid });
+		}
+	}
+
 	toggleFollowThread = () => {
 		const { isFollowingThread } = this.state;
 		const { toggleFollowThread } = this.props;
@@ -104,6 +115,12 @@ class RightButtonsContainer extends React.PureComponent {
 						testID='room-view-header-threads'
 					/>
 				) : null}
+				<Item
+					title='search'
+					iconName='magnifier'
+					onPress={this.goSearchView}
+					testID='room-view-search'
+				/>
 			</CustomHeaderButtons>
 		);
 	}

@@ -103,9 +103,9 @@ class LoginView extends React.Component {
 	}
 
 	forgotPassword = () => {
+		logEvent(events.FORGOT_PASSWORD);
 		const { navigation, Site_Name } = this.props;
 		navigation.navigate('ForgotPasswordView', { title: Site_Name });
-		logEvent(events.FORGOT_PASSWORD);
 	}
 
 	valid = () => {
@@ -122,7 +122,6 @@ class LoginView extends React.Component {
 		const { loginRequest } = this.props;
 		Keyboard.dismiss();
 		loginRequest({ user, password });
-		logEvent(events.DEFAULT_LOGIN);
 	}
 
 	renderUserForm = () => {
