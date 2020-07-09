@@ -39,7 +39,8 @@ const Avatar = React.memo(({
 			source={{
 				uri,
 				headers: RocketChatSettings.customHeaders,
-				priority: FastImage.priority.high
+				priority: FastImage.priority.high,
+				cache: FastImage.cacheControl.web
 			}}
 		/>
 	);
