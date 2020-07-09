@@ -21,7 +21,6 @@
 #import <UMReactNativeAdapter/UMNativeModulesProxy.h>
 #import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
 #import <MMKV/MMKV.h>
-#import "SecureStorage.h"
 
 #if DEBUG
 #import <FlipperKit/FlipperClient.h>
@@ -98,13 +97,6 @@ static void InitializeFlipper(UIApplication *application) {
 
       // Mark migration complete
       [defaultMMKV setBool:YES forKey:@"alreadyMigrated"];
-
-      // Encrypt the migrated content and save the password at SecureStorage.
-      // SecureStorage will manipulate the password between native and JS code.
-      NSString *key = [self random:16];
-      SecureStorage *secureStorage = [[SecureStorage alloc] init];
-      [secureStorage setSecureKey:@"636f6d2e4d4d4b562e636861742e726f636b65742e72656163746e6174697665" value:key options:@{} callback:^(NSArray *_) {}];
-      [mmkv reKey:[key dataUsingEncoding:NSUTF8StringEncoding]];
     }
 
     return YES;

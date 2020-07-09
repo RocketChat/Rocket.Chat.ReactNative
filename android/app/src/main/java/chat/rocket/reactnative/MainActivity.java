@@ -22,12 +22,16 @@ public class MainActivity extends ReactFragmentActivity {
         super.onCreate(null);
         RNBootSplash.init(R.drawable.launch_screen, MainActivity.this);
 
-        // Start the MMKV container
         MMKV.initialize(MainActivity.this);
-        MMKV mmkv = MMKV.mmkvWithID(getApplicationContext().getPackageName());
-        boolean alreadyMigrated = mmkv.decodeBool("alreadyMigrated");
+
+        // Start the MMKV container
+        MMKV defaultMMKV = MMKV.defaultMMKV();
+        boolean alreadyMigrated = defaultMMKV.decodeBool("alreadyMigrated");
 
         if (!alreadyMigrated) {
+            // MMKV Instance that will be used by JS
+            MMKV mmkv = MMKV.mmkvWithID(getApplicationContext().getPackageName());
+
             // SharedPreferences -> MMKV (Migration)
             SharedPreferences sharedPreferences = getSharedPreferences("react-native", Context.MODE_PRIVATE);
             mmkv.importFromSharedPreferences(sharedPreferences);
@@ -36,11 +40,8 @@ public class MainActivity extends ReactFragmentActivity {
             sharedPreferences.edit().clear().commit();
           
             // Mark migration complete
-            mmkv.encode("alreadyMigrated", true);
+            defaultMMKV.encode("alreadyMigrated", true);
         }
-
-        // Encrypt mmkv instance
-        mmkv.reKey("rocketchat");
     }
 
     /**
