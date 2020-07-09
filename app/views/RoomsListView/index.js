@@ -420,18 +420,21 @@ class RoomsListView extends React.Component {
 			.get('subscriptions')
 			.query(
 				Q.where('archived', false),
-				Q.where('open', true)
+				Q.where('open', true),
+				Q.experimentalSortBy('room_updated_at', Q.desc), // TODO: sort according to params
+				Q.experimentalSkip(0),
+				Q.experimentalTake(50)
 			)
 			.observeWithColumns(['room_updated_at', 'unread', 'alert', 'user_mentions', 'f', 't']);
 
 		this.querySubscription = observable.subscribe((data) => {
 			let tempChats = [];
-			let chats = [];
-			if (sortBy === 'alphabetical') {
-				chats = orderBy(data, [`${ this.useRealName ? 'fname' : 'name' }`], ['asc']);
-			} else {
-				chats = orderBy(data, ['roomUpdatedAt'], ['desc']);
-			}
+			let chats = data;
+			// if (sortBy === 'alphabetical') {
+			// 	chats = orderBy(data, [`${ this.useRealName ? 'fname' : 'name' }`], ['asc']);
+			// } else {
+			// 	chats = orderBy(data, ['roomUpdatedAt'], ['desc']);
+			// }
 
 			// it's better to map and test all subs altogether then testing them individually
 			const allChats = data.map(item => ({
