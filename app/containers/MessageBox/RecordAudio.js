@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import { Audio } from 'expo-av';
-import { BorderlessButton } from 'react-native-gesture-handler';
+import Touchable from 'react-native-platform-touchable';
 import { getInfoAsync } from 'expo-file-system';
 import { deactivateKeepAwake, activateKeepAwake } from 'expo-keep-awake';
 
@@ -52,7 +52,10 @@ export default class RecordAudio extends React.PureComponent {
 	static propTypes = {
 		theme: PropTypes.string,
 		recordingCallback: PropTypes.func,
-		onFinish: PropTypes.func
+		onFinish: PropTypes.func,
+		recordStartState: PropTypes.bool,
+		onPress: PropTypes.func,
+		toggleRecordAudioWithState: PropTypes.func
 	}
 
 	constructor(props) {
@@ -62,6 +65,15 @@ export default class RecordAudio extends React.PureComponent {
 			isRecording: false,
 			recordingDurationMillis: 0
 		};
+	}
+
+	componentDidMount() {
+		const { recordStartState, toggleRecordAudioWithState } = this.props;
+
+		if (recordStartState) {
+			this.startRecordingAudio();
+			toggleRecordAudioWithState();
+		}
 	}
 
 	componentDidUpdate() {
@@ -144,7 +156,7 @@ export default class RecordAudio extends React.PureComponent {
 					path: fileURI,
 					size: fileData.size
 				};
-
+			
 				onFinish(fileInfo);
 			} catch (error) {
 				// Do nothing
@@ -170,27 +182,27 @@ export default class RecordAudio extends React.PureComponent {
 	};
 
 	render() {
-		const { theme } = this.props;
+		const { theme, onPress } = this.props;
 		const { isRecording } = this.state;
 
 		if (!isRecording) {
 			return (
-				<BorderlessButton
-					onPress={this.startRecordingAudio}
+				<Touchable
+					onPress={onPress || this.startRecordingAudio}
 					style={styles.actionButton}
 					testID='messagebox-send-audio'
 					accessibilityLabel={I18n.t('Send_audio_message')}
 					accessibilityTraits='button'
 				>
 					<CustomIcon name='mic' size={23} color={themes[theme].tintColor} />
-				</BorderlessButton>
+				</Touchable>
 			);
 		}
 
 		return (
 			<View style={styles.recordingContent}>
 				<View style={styles.textArea}>
-					<BorderlessButton
+					<Touchable
 						onPress={this.cancelRecordingAudio}
 						accessibilityLabel={I18n.t('Cancel_recording')}
 						accessibilityTraits='button'
@@ -201,14 +213,14 @@ export default class RecordAudio extends React.PureComponent {
 							color={themes[theme].dangerColor}
 							name='Cross'
 						/>
-					</BorderlessButton>
+					</Touchable>
 					<Text
 						style={[styles.recordingCancelText, { color: themes[theme].titleText }]}
 					>
 						{this.duration}
 					</Text>
 				</View>
-				<BorderlessButton
+				<Touchable
 					onPress={this.finishRecordingAudio}
 					accessibilityLabel={I18n.t('Finish_recording')}
 					accessibilityTraits='button'
@@ -219,7 +231,7 @@ export default class RecordAudio extends React.PureComponent {
 						color={themes[theme].successColor}
 						name='check'
 					/>
-				</BorderlessButton>
+				</Touchable>
 			</View>
 		);
 	}

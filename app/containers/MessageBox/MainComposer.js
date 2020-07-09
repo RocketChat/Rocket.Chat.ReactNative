@@ -7,7 +7,7 @@ import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 
 import TextInput from '../../presentation/TextInput';
 import styles from './styles';
-import Recording from './Recording';
+import RecordAudio from './RecordAudio';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
 import { themes } from '../../constants/colors';
@@ -39,6 +39,7 @@ const MainComposer = React.forwardRef(({
 	openEmoji,
 	recording,
 	recordingCallback,
+	recordStartState,
 	replyCancel,
 	replying,
 	showCommandPreview,
@@ -47,6 +48,7 @@ const MainComposer = React.forwardRef(({
 	showSend,
 	submit,
 	text,
+	toggleRecordAudioWithState,
 	theme,
 	trackingType,
 	user
@@ -68,7 +70,6 @@ const MainComposer = React.forwardRef(({
 	}
 
 	function renderContent() {
-
 		const isAndroidTablet = isTablet && isAndroid ? {
 			multiline: false,
 			onSubmitEditing: submit,
@@ -80,6 +81,8 @@ const MainComposer = React.forwardRef(({
 				theme={theme}
 				recordingCallback={recordingCallback}
 				onFinish={finishAudioMessage}
+				recordStartState={recordStartState}
+				toggleRecordAudioWithState={toggleRecordAudioWithState}
 			/>
 		);
 
@@ -122,7 +125,7 @@ const MainComposer = React.forwardRef(({
 					placeholder={I18n.t('New_Message')}
 					onChangeText={onChangeText}
 					underlineColorAndroid='transparent'
-					defaultValue=''
+					defaultValue={text}
 					multiline
 					testID='messagebox-input'
 					theme={theme}
@@ -142,6 +145,7 @@ const MainComposer = React.forwardRef(({
 			<>
 				{commandsPreviewAndMentions}
 				<View style={[styles.composer, { borderTopColor: themes[theme].separatorColor }]}>
+					{isActionsEnabled && !isFullScreen && !recording ? renderTopButton() : null}
 					{replyPreview}
 					<View
 						style={[
@@ -198,6 +202,7 @@ MainComposer.propTypes = {
 	openEmoji: PropTypes.func,
 	recording: PropTypes.bool,
 	recordingCallback: PropTypes.func,
+	recordStartState: PropTypes.bool,
 	replying: PropTypes.bool,
 	replyCancel: PropTypes.func,
 	showCommandPreview: PropTypes.bool,
@@ -206,6 +211,7 @@ MainComposer.propTypes = {
 	showSend: PropTypes.bool,
 	submit: PropTypes.func,
 	text: PropTypes.string,
+	toggleRecordAudioWithState: PropTypes.func,
 	theme: PropTypes.string,
 	toggleFullScreen: PropTypes.func,
 	trackingType: PropTypes.array,

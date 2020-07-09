@@ -14,7 +14,6 @@ import { userTyping as userTypingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import database from '../../lib/database';
 import { emojis } from '../../emojis';
-import RecordAudio from './RecordAudio';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import debounce from '../../utils/debounce';
@@ -113,7 +112,8 @@ class MessageBox extends Component {
 			commandPreview: [],
 			showCommandPreview: false,
 			command: {},
-			isFullScreen: false
+			isFullScreen: false,
+			recordStartState: false
 		};
 		this.text = '';
 		this.focused = false;
@@ -700,6 +700,12 @@ class MessageBox extends Component {
 		}
 	}
 
+	toggleRecordAudioWithState = () => {
+		this.setState(prevState => ({
+			recordStartState: !prevState.recordStartState
+		}));
+	}
+
 	closeEmoji = () => {
 		this.setState({ showEmojiKeyboard: false });
 	}
@@ -850,7 +856,7 @@ class MessageBox extends Component {
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
-			showEmojiKeyboard, commandPreview, isFullScreen, mentions, showCommandPreview, trackingType, showSend, recording
+			showEmojiKeyboard, commandPreview, isFullScreen, mentions, showCommandPreview, trackingType, showSend, recording, recordStartState
 		} = this.state;
 		const {
 			user, baseUrl, theme, iOSScrollBehavior, editing, getCustomEmoji, message, Message_AudioRecorderEnabled, replyCancel, replying, children, isActionsEnabled
@@ -878,6 +884,7 @@ class MessageBox extends Component {
 							editing={editing}
 							getCustomEmoji={getCustomEmoji}
 							iOSScrollBehavior={iOSScrollBehavior}
+							isActionsEnabled={isActionsEnabled}
 							isFullScreen={isFullScreen}
 							mentions={mentions}
 							message={message}
@@ -897,6 +904,7 @@ class MessageBox extends Component {
 							submit={this.submit}
 							text={this.text}
 							theme={theme}
+							toggleRecordAudioWithState={this.toggleRecordAudioWithState}
 							trackingType={trackingType}
 							user={user}
 						/>
@@ -926,6 +934,7 @@ class MessageBox extends Component {
 							openEmoji={this.openEmoji}
 							recording={recording}
 							recordingCallback={this.recordingCallback}
+							recordStartState={recordStartState}
 							replyCancel={replyCancel}
 							replying={replying}
 							showCommandPreview={showCommandPreview}
@@ -934,6 +943,7 @@ class MessageBox extends Component {
 							showSend={showSend}
 							submit={this.submit}
 							text={this.text}
+							toggleRecordAudioWithState={this.toggleRecordAudioWithState}
 							theme={theme}
 							trackingType={trackingType}
 							user={user}
