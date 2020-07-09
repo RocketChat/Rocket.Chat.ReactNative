@@ -541,12 +541,14 @@ class MessageBox extends Component {
 	setCommandPreview = async(command, name, params) => {
 		const { rid } = this.props;
 		try	{
-			const { preview } = await RocketChat.getCommandPreview(name, rid, params);
-			this.setState({ commandPreview: preview.items, showCommandPreview: true, command });
+			const { success, preview } = await RocketChat.getCommandPreview(name, rid, params);
+			if (success) {
+				return this.setState({ commandPreview: preview?.items, showCommandPreview: true, command });
+			}
 		} catch (e) {
-			this.setState({ commandPreview: [], showCommandPreview: true, command: {} });
 			log(e);
 		}
+		this.setState({ commandPreview: [], showCommandPreview: true, command: {} });
 	}
 
 	setInput = (text) => {

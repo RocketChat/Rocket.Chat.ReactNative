@@ -9,26 +9,23 @@ import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
 import { themes } from '../../../constants/colors';
 import { CustomIcon } from '../../../lib/Icons';
+import { isTablet, isIOS } from '../../../utils/deviceInfo';
+import { useOrientation } from '../../../dimensions';
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'center'
+		justifyContent: 'center',
+		marginLeft: isTablet ? 10 : 0
 	},
 	button: {
 		flexDirection: 'row',
-		alignItems: 'center',
-		marginRight: 64
+		alignItems: 'center'
 	},
-	server: {
-		fontSize: 20,
-		...sharedStyles.textRegular
+	title: {
+		...sharedStyles.textSemibold
 	},
-	serverSmall: {
-		fontSize: 16
-	},
-	updating: {
-		fontSize: 14,
+	subtitle: {
 		...sharedStyles.textRegular
 	},
 	upsideDown: {
@@ -37,41 +34,55 @@ const styles = StyleSheet.create({
 });
 
 const Header = React.memo(({
-	connecting, isFetching, serverName, showServerDropdown, showSearchHeader, theme, onSearchChangeText, onPress
+	connecting, connected, isFetching, serverName, server, showServerDropdown, showSearchHeader, theme, onSearchChangeText, onPress
 }) => {
 	const titleColorStyle = { color: themes[theme].headerTitleColor };
 	const isLight = theme === 'light';
+	const { isLandscape } = useOrientation();
+	const scale = isIOS && isLandscape && !isTablet ? 0.8 : 1;
+	const titleFontSize = 16 * scale;
+	const subTitleFontSize = 12 * scale;
+
 	if (showSearchHeader) {
 		return (
 			<View style={styles.container}>
 				<TextInput
 					autoFocus
-					style={[styles.server, isLight && titleColorStyle]}
+					style={[styles.title, isLight && titleColorStyle, { fontSize: titleFontSize }]}
 					placeholder='Search'
 					onChangeText={onSearchChangeText}
 					theme={theme}
+					testID='rooms-list-view-search-input'
 				/>
 			</View>
 		);
+	}
+	let subtitle;
+	if (connecting) {
+		subtitle = I18n.t('Connecting');
+	} else if (isFetching) {
+		subtitle = I18n.t('Updating');
+	} else if (!connected) {
+		subtitle = I18n.t('Waiting_for_network');
+	} else {
+		subtitle = server?.replace(/(^\w+:|^)\/\//, '');
 	}
 	return (
 		<View style={styles.container}>
 			<TouchableOpacity
 				onPress={onPress}
 				testID='rooms-list-header-server-dropdown-button'
-				disabled={connecting || isFetching}
 			>
-				{connecting ? <Text style={[styles.updating, titleColorStyle]}>{I18n.t('Connecting')}</Text> : null}
-				{isFetching ? <Text style={[styles.updating, titleColorStyle]}>{I18n.t('Updating')}</Text> : null}
 				<View style={styles.button}>
-					<Text style={[styles.server, isFetching && styles.serverSmall, titleColorStyle]} numberOfLines={1}>{serverName}</Text>
+					<Text style={[styles.title, isFetching && styles.serverSmall, titleColorStyle, { fontSize: titleFontSize }]} numberOfLines={1}>{serverName}</Text>
 					<CustomIcon
 						name='chevron-down'
 						color={themes[theme].headerTintColor}
-						style={[showServerDropdown && styles.upsideDown]}
+						style={[showServerDropdown && styles.upsideDown, { fontSize: subTitleFontSize }]}
 						size={18}
 					/>
 				</View>
+				{subtitle ? <Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{subtitle}</Text> : null}
 			</TouchableOpacity>
 		</View>
 	);
@@ -83,8 +94,10 @@ Header.propTypes = {
 	onPress: PropTypes.func.isRequired,
 	onSearchChangeText: PropTypes.func.isRequired,
 	connecting: PropTypes.bool,
+	connected: PropTypes.bool,
 	isFetching: PropTypes.bool,
 	serverName: PropTypes.string,
+	server: PropTypes.string,
 	theme: PropTypes.string
 };
 

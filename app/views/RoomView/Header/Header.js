@@ -6,27 +6,19 @@ import {
 
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
-import { isAndroid, isTablet } from '../../../utils/deviceInfo';
 import Icon from './Icon';
 import { themes } from '../../../constants/colors';
 import Markdown from '../../../containers/markdown';
-
-const androidMarginLeft = isTablet ? 0 : 4;
 
 const TITLE_SIZE = 16;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		marginRight: isAndroid ? 15 : 5,
-		marginLeft: isAndroid ? androidMarginLeft : -10,
 		justifyContent: 'center'
 	},
 	titleContainer: {
 		alignItems: 'center',
 		flexDirection: 'row'
-	},
-	threadContainer: {
-		marginRight: isAndroid ? 20 : undefined
 	},
 	title: {
 		...sharedStyles.textSemibold,
@@ -36,7 +28,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	subtitle: {
-		marginRight: -16,
 		...sharedStyles.textRegular,
 		fontSize: 12
 	},
@@ -87,12 +78,8 @@ SubTitle.propTypes = {
 };
 
 const HeaderTitle = React.memo(({
-	title, tmid, prid, scale, connecting, theme
+	title, tmid, prid, scale, theme
 }) => {
-	if (connecting) {
-		title = I18n.t('Connecting');
-	}
-
 	if (!tmid && !prid) {
 		return (
 			<Text
@@ -122,7 +109,6 @@ HeaderTitle.propTypes = {
 	tmid: PropTypes.string,
 	prid: PropTypes.string,
 	scale: PropTypes.number,
-	connecting: PropTypes.bool,
 	theme: PropTypes.string
 };
 
@@ -147,7 +133,7 @@ const Header = React.memo(({
 			style={styles.container}
 			disabled={tmid}
 		>
-			<View style={[styles.titleContainer, tmid && styles.threadContainer]}>
+			<View style={styles.titleContainer}>
 				<Icon type={prid ? 'discussion' : type} status={status} roomUserId={roomUserId} theme={theme} />
 				<HeaderTitle
 					title={title}

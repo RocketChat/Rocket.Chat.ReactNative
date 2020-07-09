@@ -1,5 +1,3 @@
-import { isIOS, isAndroid } from '../utils/deviceInfo';
-
 export const STATUS_COLORS = {
 	online: '#2de0a5',
 	busy: '#f5455c',
@@ -8,7 +6,7 @@ export const STATUS_COLORS = {
 };
 
 export const SWITCH_TRACK_COLOR = {
-	false: isAndroid ? '#f5455c' : null,
+	false: '#f5455c',
 	true: '#2de0a5'
 };
 
@@ -34,11 +32,11 @@ export const themes = {
 		separatorColor: '#cbcbcc',
 		navbarBackground: '#ffffff',
 		headerBorder: '#B2B2B2',
-		headerBackground: isIOS ? '#f8f8f8' : '#2f343d',
+		headerBackground: '#EEEFF1',
 		headerSecondaryBackground: '#ffffff',
-		headerTintColor: isAndroid ? '#ffffff' : '#1d74f5',
-		headerTitleColor: isAndroid ? '#ffffff' : '#0d0e12',
-		headerSecondaryText: isAndroid ? '#9ca2a8' : '#1d74f5',
+		headerTintColor: '#6C727A',
+		headerTitleColor: '#0C0D0F',
+		headerSecondaryText: '#1d74f5',
 		toastBackground: '#0C0D0F',
 		videoBackground: '#1f2329',
 		favoriteBackground: '#ffbb00',
@@ -63,7 +61,7 @@ export const themes = {
 		chatComponentBackground: '#192132',
 		auxiliaryBackground: '#07101e',
 		bannerBackground: '#0e1f38',
-		titleText: '#FFFFFF',
+		titleText: '#f9f9f9',
 		bodyText: '#e8ebed',
 		backdropColor: '#000000',
 		dangerColor: '#f5455c',
@@ -80,9 +78,9 @@ export const themes = {
 		headerBorder: '#2F3A4B',
 		headerBackground: '#0b182c',
 		headerSecondaryBackground: '#0b182c',
-		headerTintColor: isAndroid ? '#ffffff' : '#1d74f5',
-		headerTitleColor: '#FFFFFF',
-		headerSecondaryText: isAndroid ? '#9297a2' : '#1d74f5',
+		headerTintColor: '#f9f9f9',
+		headerTitleColor: '#f9f9f9',
+		headerSecondaryText: '#9297a2',
 		toastBackground: '#0C0D0F',
 		videoBackground: '#1f2329',
 		favoriteBackground: '#ffbb00',
@@ -124,9 +122,9 @@ export const themes = {
 		headerBorder: '#323232',
 		headerBackground: '#0d0d0d',
 		headerSecondaryBackground: '#0d0d0d',
-		headerTintColor: isAndroid ? '#ffffff' : '#1e9bfe',
+		headerTintColor: '#f9f9f9',
 		headerTitleColor: '#f9f9f9',
-		headerSecondaryText: isAndroid ? '#b2b8c6' : '#1e9bfe',
+		headerSecondaryText: '#b2b8c6',
 		toastBackground: '#0C0D0F',
 		videoBackground: '#1f2329',
 		favoriteBackground: '#ffbb00',

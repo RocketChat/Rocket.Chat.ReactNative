@@ -16,6 +16,7 @@ import RocketChat from '../../lib/rocketchat';
 import { withTheme } from '../../theme';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import SafeAreaView from '../../containers/SafeAreaView';
+import log from '../../utils/log';
 
 const SectionTitle = React.memo(({ title, theme }) => (
 	<Text
@@ -183,26 +184,30 @@ class NotificationPreferencesView extends React.Component {
 		const { room } = this.state;
 		const db = database.active;
 
-		await db.action(async() => {
-			await room.update(protectedFunction((r) => {
-				r[key] = value;
-			}));
-		});
-
 		try {
-			const result = await RocketChat.saveNotificationSettings(this.rid, params);
-			if (result.success) {
-				return;
-			}
-		} catch {
-			// do nothing
-		}
+			await db.action(async() => {
+				await room.update(protectedFunction((r) => {
+					r[key] = value;
+				}));
+			});
 
-		await db.action(async() => {
-			await room.update(protectedFunction((r) => {
-				r[key] = room[key];
-			}));
-		});
+			try {
+				const result = await RocketChat.saveNotificationSettings(this.rid, params);
+				if (result.success) {
+					return;
+				}
+			} catch {
+				// do nothing
+			}
+
+			await db.action(async() => {
+				await room.update(protectedFunction((r) => {
+					r[key] = room[key];
+				}));
+			});
+		} catch (e) {
+			log(e);
+		}
 	}
 
 	onValueChangeSwitch = (key, value) => this.saveNotificationSettings(key, value, { [key]: value ? '1' : '0' });

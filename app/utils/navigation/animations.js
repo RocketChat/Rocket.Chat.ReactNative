@@ -54,8 +54,7 @@ export const FadeFromCenterModal = {
 const forStackAndroid = ({
 	current,
 	inverted,
-	layouts: { screen },
-	closing
+	layouts: { screen }
 }) => {
 	const translateX = multiply(
 		current.progress.interpolate({
@@ -65,13 +64,12 @@ const forStackAndroid = ({
 		inverted
 	);
 
-	const opacity = conditional(
-		closing,
-		current.progress,
+	const opacity = multiply(
 		current.progress.interpolate({
 			inputRange: [0, 1],
 			outputRange: [0, 1]
-		})
+		}),
+		inverted
 	);
 
 	return {

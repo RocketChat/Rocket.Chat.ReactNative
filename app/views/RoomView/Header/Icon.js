@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import { STATUS_COLORS, themes } from '../../../constants/colors';
 import { CustomIcon } from '../../../lib/Icons';
 import Status from '../../../containers/Status/Status';
-import { isAndroid } from '../../../utils/deviceInfo';
 
 const ICON_SIZE = 15;
 
@@ -32,7 +31,7 @@ const Icon = React.memo(({
 	if (type === 'l') {
 		colorStyle = { color: STATUS_COLORS[status] };
 	} else {
-		colorStyle = { color: isAndroid && theme === 'light' ? themes[theme].buttonText : themes[theme].auxiliaryText };
+		colorStyle = { color: themes[theme].auxiliaryText };
 	}
 
 	let icon;
