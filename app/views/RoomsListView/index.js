@@ -413,16 +413,23 @@ class RoomsListView extends React.Component {
 		const db = database.active;
 		let observable;
 
+		const defaultWhereClause = [
+			Q.where('archived', false),
+			Q.where('open', true)
+		];
+
+		if (sortBy === 'alphabetical') {
+			defaultWhereClause.push(Q.experimentalSortBy(`${ this.useRealName ? 'fname' : 'name' }`, Q.asc));
+		} else {
+			defaultWhereClause.push(Q.experimentalSortBy('room_updated_at', Q.desc));
+		}
+
 		// When we're grouping by something
 		if (this.isGrouping) {
 			observable = await db.collections
 				.get('subscriptions')
-				.query(
-					Q.where('archived', false), // TODO: reuse where clause
-					Q.where('open', true),
-					Q.experimentalSortBy('room_updated_at', Q.desc) // TODO: sort according to params
-				)
-				.observeWithColumns(['room_updated_at', 'unread', 'alert', 'user_mentions', 'f', 't']);  // TODO: reuse observe clause
+				.query(...defaultWhereClause)
+				.observeWithColumns(['room_updated_at', 'unread', 'alert', 'user_mentions', 'f', 't']); // TODO: reuse observe clause
 
 		// When we're NOT grouping
 		} else {
@@ -430,9 +437,7 @@ class RoomsListView extends React.Component {
 			observable = await db.collections
 				.get('subscriptions')
 				.query(
-					Q.where('archived', false),
-					Q.where('open', true),
-					Q.experimentalSortBy('room_updated_at', Q.desc), // TODO: sort according to params
+					...defaultWhereClause,
 					Q.experimentalSkip(0),
 					Q.experimentalTake(this.count)
 				)
