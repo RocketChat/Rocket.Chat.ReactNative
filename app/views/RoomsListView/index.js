@@ -9,7 +9,7 @@ import {
 	RefreshControl
 } from 'react-native';
 import { connect } from 'react-redux';
-import { isEqual, orderBy } from 'lodash';
+import { isEqual } from 'lodash';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
@@ -292,7 +292,7 @@ class RoomsListView extends React.Component {
 				&& prevProps.showUnread === showUnread
 			)
 		) {
-			this.getSubscriptions(true);
+			this.getSubscriptions();
 		} else if (
 			appState === 'foreground'
 			&& appState !== prevProps.appState
@@ -396,11 +396,7 @@ class RoomsListView extends React.Component {
 		return allData;
 	}
 
-	getSubscriptions = async(force = false) => {
-		// if (this.gotSubscriptions && !force) {
-		// 	return;
-		// }
-		// this.gotSubscriptions = true;
+	getSubscriptions = async() => {
 		this.unsubscribeQuery();
 
 		const {
@@ -429,7 +425,7 @@ class RoomsListView extends React.Component {
 			observable = await db.collections
 				.get('subscriptions')
 				.query(...defaultWhereClause)
-				.observeWithColumns(['room_updated_at', 'unread', 'alert', 'user_mentions', 'f', 't']); // TODO: reuse observe clause
+				.observeWithColumns(['room_updated_at', 'unread', 'alert', 'user_mentions', 'f', 't']);
 
 		// When we're NOT grouping
 		} else {
