@@ -43,6 +43,17 @@ static void InitializeFlipper(UIApplication *application) {
 
 @implementation AppDelegate
 
+-(NSString *)random:(int)len {
+    NSString *letters = @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    NSMutableString *randomString = [NSMutableString stringWithCapacity:len];
+
+    for (int i=0; i<len; i++) {
+        [randomString appendFormat: @"%C", [letters characterAtIndex: arc4random_uniform((uint32_t)[letters length])]];
+    }
+
+    return randomString;
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     #if DEBUG
@@ -88,13 +99,12 @@ static void InitializeFlipper(UIApplication *application) {
       // Mark migration complete
       [defaultMMKV setBool:YES forKey:@"alreadyMigrated"];
 
-      /*
-       *  We'll use a fixed password for the first encryption of the data that came from the migration
-       *  after that, when the app is opened, the library react-native-mmkv-storage will change the password to a random string.
-       */
+      // Encrypt the migrated content and save the password at SecureStorage.
+      // SecureStorage will manipulate the password between native and JS code.
+      NSString *key = [self random:16];
       SecureStorage *secureStorage = [[SecureStorage alloc] init];
-      [secureStorage setSecureKey:@"636f6d2e4d4d4b562e636861742e726f636b65742e72656163746e6174697665" value:@"rocketchat" options:@{} callback:^(NSArray *_) {}];
-      [mmkv reKey:[@"rocketchat" dataUsingEncoding:NSUTF8StringEncoding]];
+      [secureStorage setSecureKey:@"636f6d2e4d4d4b562e636861742e726f636b65742e72656163746e6174697665" value:key options:@{} callback:^(NSArray *_) {}];
+      [mmkv reKey:[key dataUsingEncoding:NSUTF8StringEncoding]];
     }
 
     return YES;
