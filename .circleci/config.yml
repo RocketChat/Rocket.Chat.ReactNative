@@ -33,12 +33,12 @@ save-npm-cache-mac: &save-npm-cache-mac
     - ./node_modules
 
 install-node: &install-node
-  name: Install Node 10
+  name: Install Node
   command: |
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
     source ~/.nvm/nvm.sh
-    nvm install 10
-    echo 'export PATH="/home/circleci/.nvm/versions/node/v10.21.0/bin:$PATH"' >> ~/.bash_profile
+    INSTALLED_NODE=`nvm which current`
+    echo "export PATH=\"${INSTALLED_NODE%%/node}:\$PATH\"" >> ~/.bash_profile
     source ~/.bash_profile
 
 restore-gems-cache: &restore-gems-cache
