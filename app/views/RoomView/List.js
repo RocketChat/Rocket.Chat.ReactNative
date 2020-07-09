@@ -47,7 +47,7 @@ class List extends React.Component {
 		super(props);
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
-		this.count = QUERY_SIZE;
+		this.count = 0;
 		this.needsFetch = false;
 		this.mounted = false;
 		this.state = {
@@ -139,6 +139,7 @@ class List extends React.Component {
 	}
 
 	query = async() => {
+		this.count += QUERY_SIZE;
 		const { rid, tmid } = this.props;
 		const db = database.active;
 
@@ -181,7 +182,7 @@ class List extends React.Component {
 			this.unsubscribeMessages();
 			this.messagesSubscription = this.messagesObservable
 				.subscribe((messages) => {
-					if (messages.length < this.count) {
+					if (messages.length <= this.count) {
 						this.needsFetch = true;
 					}
 					if (tmid && this.thread) {
@@ -217,7 +218,6 @@ class List extends React.Component {
 	}
 
 	onEndReached = async() => {
-		this.count += QUERY_SIZE;
 		if (this.needsFetch) {
 			this.needsFetch = false;
 			await this.fetchData();
