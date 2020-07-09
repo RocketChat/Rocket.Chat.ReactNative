@@ -401,10 +401,7 @@ class RoomsListView extends React.Component {
 		// 	return;
 		// }
 		// this.gotSubscriptions = true;
-
 		this.unsubscribeQuery();
-		this.count += QUERY_SIZE;
-		// this.setState({ loading: true }); // TODO: add back
 
 		const {
 			sortBy,
@@ -414,25 +411,38 @@ class RoomsListView extends React.Component {
 		} = this.props;
 
 		const db = database.active;
-		const observable = await db.collections
-			.get('subscriptions')
-			.query(
-				Q.where('archived', false),
-				Q.where('open', true),
-				Q.experimentalSortBy('room_updated_at', Q.desc), // TODO: sort according to params
-				Q.experimentalSkip(0),
-				Q.experimentalTake(this.count)
-			)
-			.observeWithColumns(['room_updated_at', 'unread', 'alert', 'user_mentions', 'f', 't']);
+		let observable;
+
+		// When we're grouping by something
+		if (this.isGrouping) {
+			observable = await db.collections
+				.get('subscriptions')
+				.query(
+					Q.where('archived', false), // TODO: reuse where clause
+					Q.where('open', true),
+					Q.experimentalSortBy('room_updated_at', Q.desc) // TODO: sort according to params
+				)
+				.observeWithColumns(['room_updated_at', 'unread', 'alert', 'user_mentions', 'f', 't']);  // TODO: reuse observe clause
+
+		// When we're NOT grouping
+		} else {
+			this.count += QUERY_SIZE;
+			observable = await db.collections
+				.get('subscriptions')
+				.query(
+					Q.where('archived', false),
+					Q.where('open', true),
+					Q.experimentalSortBy('room_updated_at', Q.desc), // TODO: sort according to params
+					Q.experimentalSkip(0),
+					Q.experimentalTake(this.count)
+				)
+				.observeWithColumns(['room_updated_at', 'unread', 'alert', 'user_mentions', 'f', 't']);
+		}
+
 
 		this.querySubscription = observable.subscribe((data) => {
 			let tempChats = [];
 			let chats = data;
-			// if (sortBy === 'alphabetical') {
-			// 	chats = orderBy(data, [`${ this.useRealName ? 'fname' : 'name' }`], ['asc']);
-			// } else {
-			// 	chats = orderBy(data, ['roomUpdatedAt'], ['desc']);
-			// }
 
 			// it's better to map and test all subs altogether then testing them individually
 			const allChats = data.map(item => ({
@@ -558,6 +568,11 @@ class RoomsListView extends React.Component {
 	getUserPresence = uid => RocketChat.getUserPresence(uid)
 
 	getUidDirectMessage = room => RocketChat.getUidDirectMessage(room);
+
+	get isGrouping() {
+		const { showUnread, showFavorites, groupByType } = this.props;
+		return showUnread || showFavorites || groupByType;
+	}
 
 	onPressItem = (item = {}) => {
 		const { navigation, isMasterDetail } = this.props;
@@ -751,12 +766,8 @@ class RoomsListView extends React.Component {
 	}
 
 	onEndReached = () => {
-		const {
-			showUnread,
-			showFavorites,
-			groupByType
-		} = this.props;
-		if (!(showUnread || showFavorites || groupByType)) {
+		// Run only when we're not grouping by anything
+		if (!this.isGrouping) {
 			this.getSubscriptions();
 		}
 	}
