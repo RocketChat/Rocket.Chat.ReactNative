@@ -425,7 +425,7 @@ class RoomsListView extends React.Component {
 			observable = await db.collections
 				.get('subscriptions')
 				.query(...defaultWhereClause)
-				.observeWithColumns(['room_updated_at', 'unread', 'alert', 'user_mentions', 'f', 't']);
+				.observe();
 
 		// When we're NOT grouping
 		} else {
@@ -437,7 +437,7 @@ class RoomsListView extends React.Component {
 					Q.experimentalSkip(0),
 					Q.experimentalTake(this.count)
 				)
-				.observeWithColumns(['room_updated_at', 'unread', 'alert', 'user_mentions', 'f', 't']);
+				.observe();
 		}
 
 
@@ -450,10 +450,10 @@ class RoomsListView extends React.Component {
 				alert: item.alert,
 				unread: item.unread,
 				userMentions: item.userMentions,
-				isRead: this.getIsRead(item),
+				// isRead: this.getIsRead(item), // TODO: need it?
 				favorite: item.f,
 				lastMessage: item.lastMessage,
-				name: this.getRoomTitle(item),
+				name: this.getRoomTitle(item), // TODO: need it?
 				_updatedAt: item.roomUpdatedAt,
 				key: item._id,
 				rid: item.rid,
@@ -565,6 +565,10 @@ class RoomsListView extends React.Component {
 	getRoomTitle = item => RocketChat.getRoomTitle(item)
 
 	getRoomAvatar = item => RocketChat.getRoomAvatar(item)
+
+	isGroupChat = item => RocketChat.isGroupChat(item)
+
+	isRead = item => RocketChat.isRead(item)
 
 	getUserPresence = uid => RocketChat.getUserPresence(uid)
 
@@ -804,12 +808,6 @@ class RoomsListView extends React.Component {
 		);
 	}
 
-	getIsRead = (item) => {
-		let isUnread = item.archived !== true && item.open === true; // item is not archived and not opened
-		isUnread = isUnread && (item.unread > 0 || item.alert === true); // either its unread count > 0 or its alert
-		return !isUnread;
-	};
-
 	renderItem = ({ item }) => {
 		if (item.separator) {
 			return this.renderSectionHeader(item.rid);
@@ -830,30 +828,18 @@ class RoomsListView extends React.Component {
 			width
 		} = this.props;
 		const id = this.getUidDirectMessage(item);
-		const isGroupChat = RocketChat.isGroupChat(item);
 
 		return (
 			<RoomItem
+				item={item}
 				theme={theme}
-				alert={item.alert}
-				unread={item.unread}
 				hideUnreadStatus={item.hideUnreadStatus}
-				userMentions={item.userMentions}
-				isRead={this.getIsRead(item)}
-				favorite={item.f}
-				avatar={this.getRoomAvatar(item)}
-				lastMessage={item.lastMessage}
-				name={this.getRoomTitle(item)}
-				_updatedAt={item.roomUpdatedAt}
 				key={item._id}
 				id={id}
 				userId={userId}
 				username={username}
 				token={token}
-				rid={item.rid}
-				type={item.t}
 				baseUrl={server}
-				prid={item.prid}
 				showLastMessage={StoreLastMessage}
 				onPress={() => this.onPressItem(item)}
 				testID={`rooms-list-view-item-${ item.name }`}
@@ -863,7 +849,10 @@ class RoomsListView extends React.Component {
 				hideChannel={this.hideChannel}
 				useRealName={useRealName}
 				getUserPresence={this.getUserPresence}
-				isGroupChat={isGroupChat}
+				getRoomTitle={this.getRoomTitle}
+				getRoomAvatar={this.getRoomAvatar}
+				getIsGroupChat={this.isGroupChat}
+				getIsRead={this.isRead}
 				visitor={item.visitor}
 				isFocused={currentItem?.rid === item.rid}
 			/>
