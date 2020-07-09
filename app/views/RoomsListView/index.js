@@ -71,6 +71,7 @@ const DISCUSSIONS_HEADER = 'Discussions';
 const CHANNELS_HEADER = 'Channels';
 const DM_HEADER = 'Direct_Messages';
 const GROUPS_HEADER = 'Private_Groups';
+const QUERY_SIZE = 20;
 
 const filterIsUnread = s => (s.unread > 0 || s.alert) && !s.hideUnreadStatus;
 const filterIsFavorite = s => s.f;
@@ -140,6 +141,7 @@ class RoomsListView extends React.Component {
 
 		this.gotSubscriptions = false;
 		this.animated = false;
+		this.count = 0;
 		this.state = {
 			searching: false,
 			search: [],
@@ -401,8 +403,8 @@ class RoomsListView extends React.Component {
 		// this.gotSubscriptions = true;
 
 		this.unsubscribeQuery();
-
-		this.setState({ loading: true });
+		this.count += QUERY_SIZE;
+		// this.setState({ loading: true }); // TODO: add back
 
 		const {
 			sortBy,
@@ -748,6 +750,17 @@ class RoomsListView extends React.Component {
 		roomsRequest({ allData: true });
 	}
 
+	onEndReached = () => {
+		const {
+			showUnread,
+			showFavorites,
+			groupByType
+		} = this.props;
+		if (!(showUnread || showFavorites || groupByType)) {
+			this.getSubscriptions();
+		}
+	}
+
 	getScrollRef = ref => (this.scroll = ref);
 
 	renderListHeader = () => {
@@ -885,6 +898,8 @@ class RoomsListView extends React.Component {
 					/>
 				)}
 				windowSize={9}
+				onEndReached={this.onEndReached}
+				onEndReachedThreshold={0.5}
 			/>
 		);
 	};
