@@ -166,8 +166,8 @@ class Sidebar extends Component {
 					text={I18n.t('Admin_Panel')}
 					left={<CustomIcon name='shield' size={20} color={themes[theme].titleText} />}
 					onPress={() => {
-						Navigation.navigate(routeName);
 						logEvent(events.NAVIGATE_TO_ADM_PANEL);
+						Navigation.navigate(routeName);
 					}}
 					testID='sidebar-settings'
 					current={this.currentItemKey === routeName}
@@ -184,8 +184,8 @@ class Sidebar extends Component {
 					text={I18n.t('Chats')}
 					left={<CustomIcon name='message' size={20} color={themes[theme].titleText} />}
 					onPress={() => {
-						this.sidebarNavigate('ChatsStackNavigator');
 						logEvent(events.NAVIGATE_TO_ROOMSLIST);
+						this.sidebarNavigate('ChatsStackNavigator');
 					}}
 					testID='sidebar-chats'
 					current={this.currentItemKey === 'ChatsStackNavigator'}
@@ -194,8 +194,8 @@ class Sidebar extends Component {
 					text={I18n.t('Profile')}
 					left={<CustomIcon name='user' size={20} color={themes[theme].titleText} />}
 					onPress={() => {
-						this.sidebarNavigate('ProfileStackNavigator');
 						logEvent(events.NAVIGATE_TO_PROFILE);
+						this.sidebarNavigate('ProfileStackNavigator');
 					}}
 					testID='sidebar-profile'
 					current={this.currentItemKey === 'ProfileStackNavigator'}
@@ -204,8 +204,8 @@ class Sidebar extends Component {
 					text={I18n.t('Settings')}
 					left={<CustomIcon name='cog' size={20} color={themes[theme].titleText} />}
 					onPress={() => {
-						this.sidebarNavigate('SettingsStackNavigator');
 						logEvent(events.NAVIGATE_TO_SETTINGS);
+						this.sidebarNavigate('SettingsStackNavigator');
 					}}
 					testID='sidebar-settings'
 					current={this.currentItemKey === 'SettingsStackNavigator'}
@@ -223,8 +223,8 @@ class Sidebar extends Component {
 				left={<Status style={styles.status} size={12} status={user && user.status} />}
 				right={<CustomIcon name='edit' size={20} color={themes[theme].titleText} />}
 				onPress={() => {
-					Navigation.navigate('StatusView');
 					logEvent(events.NAVIGATE_TO_STATUS_VIEW);
+					Navigation.navigate('StatusView');
 				}}
 				testID='sidebar-custom-status'
 			/>

@@ -223,11 +223,11 @@ class ProfileView extends React.Component {
 		try {
 			if (avatar.url) {
 				try {
-					await RocketChat.setAvatarFromService(avatar);
 					logEvent(events.SAVE_PROFILE_AVATAR);
+					await RocketChat.setAvatarFromService(avatar);
 				} catch (e) {
-					this.setState({ saving: false, currentPassword: null });
 					logEvent(events.SAVE_PROFILE_AVATAR_FAIL);
+					this.setState({ saving: false, currentPassword: null });
 					return this.handleError(e, 'setAvatarFromService', 'changing_avatar');
 				}
 			}
@@ -235,6 +235,7 @@ class ProfileView extends React.Component {
 			const result = await RocketChat.saveUserProfile(params, customFields);
 
 			if (result.success) {
+				logEvent(events.SAVE_PROFILE_CHANGES);
 				if (customFields) {
 					setUser({ customFields, ...params });
 				} else {
@@ -242,13 +243,12 @@ class ProfileView extends React.Component {
 				}
 				EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
 				this.init();
-				logEvent(events.SAVE_PROFILE_CHANGES);
 			}
 			this.setState({ saving: false });
 		} catch (e) {
+			logEvent(events.SAVE_PROFILE_CHANGES_FAIL);
 			this.setState({ saving: false, currentPassword: null });
 			this.handleError(e, 'saveUserProfile', 'saving_profile');
-			logEvent(events.SAVE_PROFILE_CHANGES_FAIL);
 		}
 	}
 
@@ -285,18 +285,18 @@ class ProfileView extends React.Component {
 			includeBase64: true
 		};
 		try {
+			logEvent(events.PICK_PROFILE_AVATAR);
 			const response = await ImagePicker.openPicker(options);
 			this.setAvatar({ url: response.path, data: `data:image/jpeg;base64,${ response.data }`, service: 'upload' });
-			logEvent(events.PICK_PROFILE_AVATAR);
 		} catch (error) {
-			console.warn(error);
 			logEvent(events.PICK_PROFILE_AVATAR_FAIL);
+			console.warn(error);
 		}
 	}
 
 	pickImageWithURL = (avatarUrl) => {
-		this.setAvatar({ url: avatarUrl, data: avatarUrl, service: 'url' });
 		logEvent(events.PICK_PROFILE_AVATAR_WITH_URL);
+		this.setAvatar({ url: avatarUrl, data: avatarUrl, service: 'url' });
 	}
 
 	renderAvatarButton = ({

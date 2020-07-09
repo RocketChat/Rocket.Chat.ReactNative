@@ -491,12 +491,12 @@ class RoomsListView extends React.Component {
 	}
 
 	initSearching = () => {
+		logEvent(events.ROOMSLIST_SEARCH);
 		const { openSearchHeader } = this.props;
 		this.internalSetState({ searching: true }, () => {
 			openSearchHeader();
 			this.setHeader();
 		});
-		logEvent(events.ROOMSLIST_SEARCH);
 	};
 
 	cancelSearch = () => {
@@ -579,6 +579,7 @@ class RoomsListView extends React.Component {
 	};
 
 	toggleFav = async(rid, favorite) => {
+		logEvent(favorite ? events.UNFAVORITE_CHANNEL : events.FAVORITE_CHANNEL);
 		try {
 			const db = database.active;
 			const result = await RocketChat.toggleFavorite(rid, !favorite);
@@ -594,15 +595,15 @@ class RoomsListView extends React.Component {
 						log(e);
 					}
 				});
-				logEvent(favorite ? events.UNFAVORITE_CHANNEL : events.FAVORITE_CHANNEL);
 			}
 		} catch (e) {
-			log(e);
 			logEvent(events.TOGGLE_FAVORITE_FAIL);
+			log(e);
 		}
 	};
 
 	toggleRead = async(rid, isRead) => {
+		logEvent(isRead ? events.UNREAD_CHANNEL : events.READ_CHANNEL);
 		try {
 			const db = database.active;
 			const result = await RocketChat.toggleRead(isRead, rid);
@@ -618,15 +619,15 @@ class RoomsListView extends React.Component {
 						log(e);
 					}
 				});
-				logEvent(isRead ? events.UNREAD_CHANNEL : events.READ_CHANNEL);
 			}
 		} catch (e) {
-			log(e);
 			logEvent(events.TOGGLE_READ_FAIL);
+			log(e);
 		}
 	};
 
 	hideChannel = async(rid, type) => {
+		logEvent(events.HIDE_CHANNEL);
 		try {
 			const db = database.active;
 			const result = await RocketChat.hideRoom(rid, type);
@@ -640,11 +641,10 @@ class RoomsListView extends React.Component {
 						log(e);
 					}
 				});
-				logEvent(events.HIDE_CHANNEL);
 			}
 		} catch (e) {
-			log(e);
 			logEvent(events.HIDE_CHANNEL_FAIL);
+			log(e);
 		}
 	};
 
@@ -653,8 +653,8 @@ class RoomsListView extends React.Component {
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', { screen: 'DirectoryView' });
 		} else {
-			navigation.navigate('DirectoryView');
 			logEvent(events.NAVIGATE_TO_DIRECTORY);
+			navigation.navigate('DirectoryView');
 		}
 	};
 

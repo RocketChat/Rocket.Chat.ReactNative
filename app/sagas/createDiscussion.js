@@ -14,6 +14,7 @@ const create = function* create(data) {
 };
 
 const handleRequest = function* handleRequest({ data }) {
+	logEvent(events.CREATE_DISCUSSION_FINISH);
 	try {
 		const auth = yield select(state => state.login.isAuthenticated);
 		if (!auth) {
@@ -36,16 +37,14 @@ const handleRequest = function* handleRequest({ data }) {
 			} catch {
 				// do nothing
 			}
-
 			yield put(createDiscussionSuccess(sub));
-			logEvent(events.CREATE_DISCUSSION_FINISH);
 		} else {
-			yield put(createDiscussionFailure(result));
 			logEvent(events.CREATE_DISCUSSION_FINISH_FAIL);
+			yield put(createDiscussionFailure(result));
 		}
 	} catch (err) {
-		yield put(createDiscussionFailure(err));
 		logEvent(events.CREATE_DISCUSSION_FINISH_FAIL);
+		yield put(createDiscussionFailure(err));
 	}
 };
 

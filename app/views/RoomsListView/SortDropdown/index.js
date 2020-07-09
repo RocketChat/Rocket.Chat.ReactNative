@@ -65,21 +65,21 @@ class Sort extends PureComponent {
 			setSortPreference(param);
 			RocketChat.saveSortPreference(param);
 		} catch (e) {
-			log(e);
 			logEvent(events.SORT_CHANNELS_FAIL);
+			log(e);
 		}
 	}
 
 	sortByName = () => {
+		logEvent(events.SORT_CHANNELS_BY_ALPHABETICAL);
 		this.setSortPreference({ sortBy: 'alphabetical' });
 		this.close();
-		logEvent(events.SORT_CHANNELS_BY_ALPHABETICAL);
 	}
 
 	sortByActivity = () => {
+		logEvent(events.SORT_CHANNELS_BY_ACTIVITY);
 		this.setSortPreference({ sortBy: 'activity' });
 		this.close();
-		logEvent(events.SORT_CHANNELS_BY_ACTIVITY);
 	}
 
 	toggleGroupByType = () => {
