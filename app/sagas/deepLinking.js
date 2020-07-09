@@ -10,7 +10,9 @@ import { inviteLinksSetToken, inviteLinksRequest } from '../actions/inviteLinks'
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';
-import { appStart } from '../actions';
+import { appStart, ROOT_INSIDE } from '../actions/app';
+import { localAuthenticate } from '../utils/localAuthentication';
+import { goRoom } from '../utils/goRoom';
 
 const roomTypes = {
 	channel: 'c', direct: 'd', group: 'p', channels: 'l'
@@ -28,16 +30,29 @@ const handleInviteLink = function* handleInviteLink({ params, requireLogin = fal
 };
 
 const navigate = function* navigate({ params }) {
-	yield put(appStart('inside'));
-	if (params.rid) {
-		const canOpenRoom = yield RocketChat.canOpenRoom(params);
-		if (canOpenRoom) {
-			const [type, name] = params.path.split('/');
-			yield Navigation.navigate('RoomsListView');
-			Navigation.navigate('RoomView', { rid: params.rid, name, t: roomTypes[type] });
+	yield put(appStart({ root: ROOT_INSIDE }));
+	if (params.path) {
+		const [type, name] = params.path.split('/');
+		if (type !== 'invite') {
+			const room = yield RocketChat.canOpenRoom(params);
+			if (room) {
+				const isMasterDetail = yield select(state => state.app.isMasterDetail);
+				if (isMasterDetail) {
+					Navigation.navigate('DrawerNavigator');
+				} else {
+					Navigation.navigate('RoomsListView');
+				}
+				const item = {
+					name,
+					t: roomTypes[type],
+					roomUserId: RocketChat.getUidDirectMessage(room),
+					...room
+				};
+				goRoom({ item, isMasterDetail });
+			}
+		} else {
+			yield handleInviteLink({ params });
 		}
-	} else {
-		yield handleInviteLink({ params });
 	}
 };
 
@@ -65,8 +80,9 @@ const handleOpen = function* handleOpen({ params }) {
 	if (server === host && user) {
 		const connected = yield select(state => state.server.connected);
 		if (!connected) {
+			yield localAuthenticate(host);
 			yield put(selectServerRequest(host));
-			yield take(types.SERVER.SELECT_SUCCESS);
+			yield take(types.LOGIN.SUCCESS);
 		}
 		yield navigate({ params });
 	} else {
@@ -76,6 +92,7 @@ const handleOpen = function* handleOpen({ params }) {
 		try {
 			const servers = yield serversCollection.find(host);
 			if (servers && user) {
+				yield localAuthenticate(host);
 				yield put(selectServerRequest(host));
 				yield take(types.LOGIN.SUCCESS);
 				yield navigate({ params });
@@ -89,13 +106,15 @@ const handleOpen = function* handleOpen({ params }) {
 		if (!result.success) {
 			return;
 		}
-		Navigation.navigate('OnboardingView', { previousServer: server });
+		Navigation.navigate('NewServerView', { previousServer: server });
 		yield delay(1000);
 		EventEmitter.emit('NewServer', { server: host });
 
 		if (params.token) {
 			yield take(types.SERVER.SELECT_SUCCESS);
 			yield RocketChat.connect({ server: host, user: { token: params.token } });
+			yield take(types.LOGIN.SUCCESS);
+			yield navigate({ params });
 		} else {
 			yield handleInviteLink({ params, requireLogin: true });
 		}

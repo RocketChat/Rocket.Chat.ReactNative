@@ -27,7 +27,9 @@ const attrs = [
 	'isRead',
 	'favorite',
 	'status',
-	'theme'
+	'connected',
+	'theme',
+	'isFocused'
 ];
 
 const arePropsEqual = (oldProps, newProps) => {
@@ -40,16 +42,47 @@ const arePropsEqual = (oldProps, newProps) => {
 };
 
 const RoomItem = React.memo(({
-	onPress, width, favorite, toggleFav, isRead, rid, toggleRead, hideChannel, testID, unread, userMentions, name, _updatedAt, alert, type, avatarSize, baseUrl, userId, username, token, id, prid, showLastMessage, hideUnreadStatus, lastMessage, status, avatar, useRealName, getUserPresence, theme
+	onPress,
+	width,
+	favorite,
+	toggleFav,
+	isRead,
+	rid,
+	toggleRead,
+	hideChannel,
+	testID,
+	unread,
+	userMentions,
+	name,
+	_updatedAt,
+	alert,
+	type,
+	avatarSize,
+	baseUrl,
+	userId,
+	username,
+	token,
+	id,
+	prid,
+	showLastMessage,
+	hideUnreadStatus,
+	lastMessage,
+	status,
+	avatar,
+	useRealName,
+	getUserPresence,
+	isGroupChat,
+	connected,
+	theme,
+	isFocused
 }) => {
 	useEffect(() => {
-		if (type === 'd' && rid) {
-			const uid = rid.replace(userId, '');
-			getUserPresence(uid);
+		if (connected && type === 'd' && id) {
+			getUserPresence(id);
 		}
-	}, []);
+	}, [connected]);
 
-	const date = formatDate(_updatedAt);
+	const date = lastMessage && formatDate(lastMessage.ts);
 
 	let accessibilityLabel = name;
 	if (unread === 1) {
@@ -79,6 +112,7 @@ const RoomItem = React.memo(({
 			testID={testID}
 			type={type}
 			theme={theme}
+			isFocused={isFocused}
 		>
 			<View
 				style={styles.container}
@@ -104,9 +138,9 @@ const RoomItem = React.memo(({
 					<View style={styles.titleContainer}>
 						<TypeIcon
 							type={type}
-							id={id}
 							prid={prid}
 							status={status}
+							isGroupChat={isGroupChat}
 							theme={theme}
 						/>
 						<Text
@@ -198,7 +232,10 @@ RoomItem.propTypes = {
 	hideUnreadStatus: PropTypes.bool,
 	useRealName: PropTypes.bool,
 	getUserPresence: PropTypes.func,
-	theme: PropTypes.string
+	connected: PropTypes.bool,
+	isGroupChat: PropTypes.bool,
+	theme: PropTypes.string,
+	isFocused: PropTypes.bool
 };
 
 RoomItem.defaultProps = {
@@ -207,11 +244,20 @@ RoomItem.defaultProps = {
 	getUserPresence: () => {}
 };
 
-const mapStateToProps = (state, ownProps) => ({
-	status:
-		state.meteor.connected && ownProps.type === 'd'
-			? state.activeUsers[ownProps.id]
-			: 'offline'
-});
+const mapStateToProps = (state, ownProps) => {
+	let status = 'offline';
+	const { id, type, visitor = {} } = ownProps;
+	if (state.meteor.connected) {
+		if (type === 'd') {
+			status = state.activeUsers[id]?.status || 'offline';
+		} else if (type === 'l' && visitor?.status) {
+			({ status } = visitor);
+		}
+	}
+	return {
+		connected: state.meteor.connected,
+		status
+	};
+};
 
 export default connect(mapStateToProps)(RoomItem);

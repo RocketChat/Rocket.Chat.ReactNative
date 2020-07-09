@@ -1,6 +1,6 @@
 {
   "name": "rn-fetch-blob",
-  "version": "0.11.2",
+  "version": "0.12.0",
   "summary": "A module provides upload, download, and files access API. Supports file stream read/write for process large files.",
   "requires_arc": true,
   "license": "MIT",

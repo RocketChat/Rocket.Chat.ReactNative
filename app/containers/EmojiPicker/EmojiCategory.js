@@ -30,7 +30,6 @@ class EmojiCategory extends React.Component {
 	static propTypes = {
 		baseUrl: PropTypes.string.isRequired,
 		emojis: PropTypes.any,
-		window: PropTypes.any,
 		onEmojiSelected: PropTypes.func,
 		emojisPerRow: PropTypes.number,
 		width: PropTypes.number,
@@ -92,4 +91,4 @@ class EmojiCategory extends React.Component {
 	}
 }
 
-export default responsive(EmojiCategory);
+export default EmojiCategory;

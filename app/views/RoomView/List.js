@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, InteractionManager, RefreshControl } from 'react-native';
+import { FlatList, RefreshControl } from 'react-native';
 import PropTypes from 'prop-types';
 import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
@@ -27,10 +27,21 @@ class List extends React.Component {
 		t: PropTypes.string,
 		tmid: PropTypes.string,
 		theme: PropTypes.string,
+		loading: PropTypes.bool,
 		listRef: PropTypes.func,
 		hideSystemMessages: PropTypes.array,
 		navigation: PropTypes.object
 	};
+
+	// this.state.loading works for this.onEndReached and RoomView.init
+	static getDerivedStateFromProps(props, state) {
+		if (props.loading !== state.loading) {
+			return {
+				loading: props.loading
+			};
+		}
+		return null;
+	}
 
 	constructor(props) {
 		super(props);
@@ -46,7 +57,7 @@ class List extends React.Component {
 			animated: false
 		};
 		this.init();
-		this.didFocusListener = props.navigation.addListener('didFocus', () => {
+		this.unsubscribeFocus = props.navigation.addListener('focus', () => {
 			if (this.mounted) {
 				this.setState({ animated: true });
 			} else {
@@ -95,17 +106,16 @@ class List extends React.Component {
 			this.unsubscribeMessages();
 			this.messagesSubscription = this.messagesObservable
 				.subscribe((data) => {
-					this.interaction = InteractionManager.runAfterInteractions(() => {
-						if (tmid) {
-							data = [this.thread, ...data];
-						}
-						const messages = orderBy(data, ['ts'], ['desc']);
-						if (this.mounted) {
-							this.setState({ messages }, () => this.update());
-						} else {
-							this.state.messages = messages;
-						}
-					});
+					if (tmid && this.thread) {
+						data = [this.thread, ...data];
+					}
+					const messages = orderBy(data, ['ts'], ['desc']);
+					if (this.mounted) {
+						this.setState({ messages }, () => this.update());
+					} else {
+						this.state.messages = messages;
+					}
+					this.readThreads();
 				});
 		}
 	}
@@ -116,14 +126,16 @@ class List extends React.Component {
 		this.init();
 	}
 
-	// this.state.loading works for this.onEndReached and RoomView.init
-	static getDerivedStateFromProps(props, state) {
-		if (props.loading !== state.loading) {
-			return {
-				loading: props.loading
-			};
+	readThreads = async() => {
+		const { tmid } = this.props;
+
+		if (tmid) {
+			try {
+				await RocketChat.readThreads(tmid);
+			} catch {
+				// Do nothing
+			}
 		}
-		return null;
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -156,23 +168,20 @@ class List extends React.Component {
 
 	componentWillUnmount() {
 		this.unsubscribeMessages();
-		if (this.interaction && this.interaction.cancel) {
-			this.interaction.cancel();
-		}
 		if (this.onEndReached && this.onEndReached.stop) {
 			this.onEndReached.stop();
 		}
-		if (this.didFocusListener && this.didFocusListener.remove) {
-			this.didFocusListener.remove();
+		if (this.unsubscribeFocus) {
+			this.unsubscribeFocus();
 		}
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
 	onEndReached = debounce(async() => {
 		const {
-			loading, end, messages
+			loading, end, messages, latest = messages[messages.length - 1]?.ts
 		} = this.state;
-		if (loading || end || messages.length < 50) {
+		if (loading || end) {
 			return;
 		}
 
@@ -184,15 +193,39 @@ class List extends React.Component {
 				// `offset` is `messages.length - 1` because we append thread start to `messages` obj
 				result = await RocketChat.loadThreadMessages({ tmid, rid, offset: messages.length - 1 });
 			} else {
-				result = await RocketChat.loadMessagesForRoom({ rid, t, latest: messages[messages.length - 1].ts });
+				result = await RocketChat.loadMessagesForRoom({ rid, t, latest });
 			}
 
-			this.setState({ end: result.length < 50, loading: false });
+			this.setState({ end: result.length < 50, loading: false, latest: result[result.length - 1]?.ts }, () => this.loadMoreMessages(result));
 		} catch (e) {
 			this.setState({ loading: false });
 			log(e);
 		}
 	}, 300)
+
+	loadMoreMessages = (result) => {
+		const { end } = this.state;
+
+		if (end) {
+			return;
+		}
+
+		// handle servers with version < 3.0.0
+		let { hideSystemMessages = [] } = this.props;
+		if (!Array.isArray(hideSystemMessages)) {
+			hideSystemMessages = [];
+		}
+
+		if (!hideSystemMessages.length) {
+			return;
+		}
+
+		const hasReadableMessages = result.filter(message => !message.t || (message.t && !hideSystemMessages.includes(message.t))).length > 0;
+		// if this batch doesn't contain any messages that will be displayed, we'll request a new batch
+		if (!hasReadableMessages) {
+			this.onEndReached();
+		}
+	}
 
 	onRefresh = () => this.setState({ refreshing: true }, async() => {
 		const { messages } = this.state;

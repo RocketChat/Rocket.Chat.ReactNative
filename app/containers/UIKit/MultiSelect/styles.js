@@ -30,6 +30,7 @@ export default StyleSheet.create({
 	},
 	pickerText: {
 		...sharedStyles.textRegular,
+		paddingLeft: 6,
 		fontSize: 16
 	},
 	item: {
@@ -40,7 +41,7 @@ export default StyleSheet.create({
 	},
 	input: {
 		minHeight: 48,
-		padding: 8,
+		paddingHorizontal: 8,
 		paddingBottom: 0,
 		borderWidth: StyleSheet.hairlineWidth,
 		borderRadius: 2,
@@ -58,6 +59,7 @@ export default StyleSheet.create({
 		height: 226
 	},
 	chips: {
+		paddingTop: 8,
 		flexDirection: 'row',
 		flexWrap: 'wrap',
 		marginRight: 50
@@ -82,5 +84,11 @@ export default StyleSheet.create({
 		borderRadius: 2,
 		width: 20,
 		height: 20
+	},
+	itemImage: {
+		marginRight: 8,
+		borderRadius: 2,
+		width: 24,
+		height: 24
 	}
 });

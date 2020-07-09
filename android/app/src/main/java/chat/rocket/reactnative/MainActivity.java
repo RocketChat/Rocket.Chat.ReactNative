@@ -13,8 +13,9 @@ public class MainActivity extends ReactFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        RNBootSplash.show(R.drawable.launch_screen, MainActivity.this);
+        // https://github.com/software-mansion/react-native-screens/issues/17#issuecomment-424704067
+        super.onCreate(null);
+        RNBootSplash.init(R.drawable.launch_screen, MainActivity.this);
     }
 
     /**

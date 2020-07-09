@@ -18,7 +18,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.2'
+        classpath 'com.android.tools.build:gradle:3.5.2'
         classpath 'com.google.gms:google-services:4.2.0'
         classpath 'io.fabric.tools:gradle:1.28.1'
         classpath 'com.google.firebase:perf-plugin:1.2.1'
@@ -42,16 +42,14 @@ allprojects {
             url("$rootDir/../node_modules/jsc-android/dist")
         }
         maven {
-            // We should change it when Jitsi-SDK release v2.4
-            url("$rootDir/../node_modules/react-native-jitsi-meet/jitsi-sdk")
-            // url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
+            url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
         }
 
         google()
         jcenter()
 
         maven { url 'https://maven.google.com' }
-        maven { url "https://jitpack.io" }
+        maven { url 'https://www.jitpack.io' }
     }
 }
 
@@ -63,6 +61,12 @@ subprojects { subproject ->
                 buildToolsVersion "28.0.3"
                 defaultConfig {
                     targetSdkVersion 28
+                }
+                variantFilter { variant ->
+                    def names = variant.flavors*.name
+                    if (names.contains("reactNative59")) {
+                        setIgnore(true)
+                    }
                 }
             }
         }

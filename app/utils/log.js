@@ -16,8 +16,13 @@ export const logServerVersion = (serverVersion) => {
 	};
 };
 
+export const setCurrentScreen = (currentScreen) => {
+	analytics().setCurrentScreen(currentScreen);
+	leaveBreadcrumb(currentScreen, { type: 'navigation' });
+};
+
 export default (e) => {
-	if (e instanceof Error && !__DEV__) {
+	if (e instanceof Error && e.message !== 'Aborted' && !__DEV__) {
 		bugsnag.notify(e, (report) => {
 			report.metadata = {
 				details: {

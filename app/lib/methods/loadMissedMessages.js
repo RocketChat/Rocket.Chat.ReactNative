@@ -1,5 +1,3 @@
-import { InteractionManager } from 'react-native';
-
 import database from '../database';
 import log from '../../utils/log';
 import updateMessages from './updateMessages';
@@ -35,9 +33,7 @@ export default function loadMissedMessages(args) {
 
 			if (data) {
 				const { updated, deleted } = data;
-				InteractionManager.runAfterInteractions(async() => {
-					await updateMessages({ rid: args.rid, update: updated, remove: deleted });
-				});
+				await updateMessages({ rid: args.rid, update: updated, remove: deleted });
 			}
 			resolve();
 		} catch (e) {

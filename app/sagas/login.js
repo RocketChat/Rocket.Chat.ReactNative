@@ -7,7 +7,9 @@ import moment from 'moment';
 import 'moment/min/locales';
 
 import * as types from '../actions/actionsTypes';
-import { appStart } from '../actions';
+import {
+	appStart, ROOT_SET_USERNAME, ROOT_INSIDE, ROOT_LOADING, ROOT_OUTSIDE
+} from '../actions/app';
 import { serverFinishAdd, selectServerRequest } from '../actions/server';
 import {
 	loginFailure, loginSuccess, setUser, logout
@@ -21,6 +23,8 @@ import database from '../lib/database';
 import EventEmitter from '../utils/events';
 import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../utils/info';
+import { localAuthenticate } from '../utils/localAuthentication';
+import { setActiveUsers } from '../actions/activeUsers';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -38,8 +42,10 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 		if (!result.username) {
 			yield put(serverFinishAdd());
 			yield put(setUser(result));
-			yield put(appStart('setUsername'));
+			yield put(appStart({ root: ROOT_SET_USERNAME }));
 		} else {
+			const server = yield select(getServer);
+			yield localAuthenticate(server);
 			yield put(loginSuccess(result));
 		}
 	} catch (e) {
@@ -73,13 +79,15 @@ const registerPushToken = function* registerPushToken() {
 
 const fetchUsersPresence = function* fetchUserPresence() {
 	yield RocketChat.getUsersPresence();
-	yield RocketChat.subscribeUsersPresence();
+	RocketChat.subscribeUsersPresence();
 };
 
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
 		const adding = yield select(state => state.server.adding);
 		yield RNUserDefaults.set(RocketChat.TOKEN_KEY, user.token);
+
+		RocketChat.getUserPresence(user.id);
 
 		const server = yield select(getServer);
 		yield put(roomsRequest());
@@ -101,6 +109,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			name: user.name,
 			language: user.language,
 			status: user.status,
+			statusText: user.statusText,
 			roles: user.roles
 		};
 		yield serversDB.action(async() => {
@@ -126,17 +135,17 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		let currentRoot;
 		if (adding) {
 			yield put(serverFinishAdd());
-			yield put(appStart('inside'));
+			yield put(appStart({ root: ROOT_INSIDE }));
 		} else {
 			currentRoot = yield select(state => state.app.root);
-			if (currentRoot !== 'inside') {
-				yield put(appStart('inside'));
+			if (currentRoot !== ROOT_INSIDE) {
+				yield put(appStart({ root: ROOT_INSIDE }));
 			}
 		}
 
 		// after a successful login, check if it's been invited via invite link
 		currentRoot = yield select(state => state.app.root);
-		if (currentRoot === 'inside') {
+		if (currentRoot === ROOT_INSIDE) {
 			const inviteLinkToken = yield select(state => state.inviteLinks.token);
 			if (inviteLinkToken) {
 				yield put(inviteLinksRequest(inviteLinkToken));
@@ -148,7 +157,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 };
 
 const handleLogout = function* handleLogout({ forcedByServer }) {
-	yield put(appStart('loading', I18n.t('Logging_out')));
+	yield put(appStart({ root: ROOT_LOADING, text: I18n.t('Logging_out') }));
 	const server = yield select(getServer);
 	if (server) {
 		try {
@@ -156,7 +165,7 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 
 			// if the user was logged out by the server
 			if (forcedByServer) {
-				yield put(appStart('outside'));
+				yield put(appStart({ root: ROOT_OUTSIDE }));
 				showErrorAlert(I18n.t('Logged_out_by_server'), I18n.t('Oops'));
 				EventEmitter.emit('NewServer', { server });
 			} else {
@@ -176,19 +185,24 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 					}
 				}
 				// if there's no servers, go outside
-				yield put(appStart('outside'));
+				yield put(appStart({ root: ROOT_OUTSIDE }));
 			}
 		} catch (e) {
-			yield put(appStart('outside'));
+			yield put(appStart({ root: ROOT_OUTSIDE }));
 			log(e);
 		}
 	}
 };
 
-const handleSetUser = function handleSetUser({ user }) {
+const handleSetUser = function* handleSetUser({ user }) {
 	if (user && user.language) {
 		I18n.locale = user.language;
 		moment.locale(toMomentLocale(user.language));
+	}
+
+	if (user && user.status) {
+		const userId = yield select(state => state.login.user.id);
+		yield put(setActiveUsers({ [userId]: user }));
 	}
 };
 

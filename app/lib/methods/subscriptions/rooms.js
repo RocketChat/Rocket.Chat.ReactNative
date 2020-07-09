@@ -9,12 +9,13 @@ import log from '../../../utils/log';
 import random from '../../../utils/random';
 import store from '../../createStore';
 import { roomsRequest } from '../../../actions/rooms';
-import { notificationReceived } from '../../../actions/notification';
 import { handlePayloadUserInteraction } from '../actions';
 import buildMessage from '../helpers/buildMessage';
 import RocketChat from '../../rocketchat';
-import EventEmmiter from '../../../utils/events';
+import EventEmitter from '../../../utils/events';
 import { removedRoom } from '../../../actions/room';
+import { setUser } from '../../../actions/login';
+import { INAPP_NOTIFICATION_EMITTER } from '../../../containers/InAppNotification';
 
 const removeListener = listener => listener.stop();
 
@@ -57,6 +58,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					lastOpen: s.lastOpen,
 					description: s.description,
 					announcement: s.announcement,
+					bannerClosed: s.bannerClosed,
 					topic: s.topic,
 					blocked: s.blocked,
 					blocker: s.blocker,
@@ -71,7 +73,15 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					jitsiTimeout: s.jitsiTimeout,
 					autoTranslate: s.autoTranslate,
 					autoTranslateLanguage: s.autoTranslateLanguage,
-					lastMessage: s.lastMessage
+					lastMessage: s.lastMessage,
+					roles: s.roles,
+					usernames: s.usernames,
+					uids: s.uids,
+					visitor: s.visitor,
+					departmentId: s.departmentId,
+					servedBy: s.servedBy,
+					livechatData: s.livechatData,
+					tags: s.tags
 				};
 			} catch (error) {
 				try {
@@ -94,10 +104,15 @@ const createOrUpdateSubscription = async(subscription, room) => {
 				// We have to create a plain obj so we can manipulate it on `merge`
 				// Can we do it in a better way?
 				room = {
-					customFields: r.customFields,
-					broadcast: r.broadcast,
+					v: r.v,
+					ro: r.ro,
+					tags: r.tags,
+					servedBy: r.servedBy,
 					encrypted: r.encrypted,
-					ro: r.ro
+					broadcast: r.broadcast,
+					customFields: r.customFields,
+					departmentId: r.departmentId,
+					livechatData: r.livechatData
 				};
 			} catch (error) {
 				// Do nothing
@@ -118,6 +133,11 @@ const createOrUpdateSubscription = async(subscription, room) => {
 				try {
 					const update = sub.prepareUpdate((s) => {
 						Object.assign(s, tmp);
+						if (subscription.announcement) {
+							if (subscription.announcement !== sub.announcement) {
+								s.bannerClosed = false;
+							}
+						}
 					});
 					batch.push(update);
 				} catch (e) {
@@ -138,7 +158,8 @@ const createOrUpdateSubscription = async(subscription, room) => {
 				}
 			}
 
-			if (tmp.lastMessage) {
+			const { rooms } = store.getState().room;
+			if (tmp.lastMessage && !rooms.includes(tmp.rid)) {
 				const lastMessage = buildMessage(tmp.lastMessage);
 				const messagesCollection = db.collections.get('messages');
 				let messageRecord;
@@ -221,6 +242,10 @@ export default function subscribeRooms() {
 		}
 		const [type, data] = ddpMessage.fields.args;
 		const [, ev] = ddpMessage.fields.eventName.split('/');
+		if (/userData/.test(ev)) {
+			const [{ diff }] = ddpMessage.fields.args;
+			store.dispatch(setUser({ statusLivechat: diff?.statusLivechat }));
+		}
 		if (/subscriptions/.test(ev)) {
 			if (type === 'removed') {
 				try {
@@ -247,7 +272,7 @@ export default function subscribeRooms() {
 					if (data.rid === roomState.rid && roomState.isDeleting) {
 						store.dispatch(removedRoom());
 					} else {
-						EventEmmiter.emit('ROOM_REMOVED', { rid: data.rid });
+						EventEmitter.emit('ROOM_REMOVED', { rid: data.rid });
 					}
 				} catch (e) {
 					log(e);
@@ -300,7 +325,7 @@ export default function subscribeRooms() {
 			} catch (e) {
 				// do nothing
 			}
-			store.dispatch(notificationReceived(notification));
+			EventEmitter.emit(INAPP_NOTIFICATION_EMITTER, notification);
 		}
 		if (/uiInteraction/.test(ev)) {
 			const { type: eventType, ...args } = type;

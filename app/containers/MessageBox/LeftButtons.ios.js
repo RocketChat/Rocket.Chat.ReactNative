@@ -1,22 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { View } from 'react-native';
 
-import { CancelEditingButton, FileButton } from './buttons';
+import { CancelEditingButton, ActionsButton } from './buttons';
+import styles from './styles';
 
 const LeftButtons = React.memo(({
-	theme, showFileActions, editing, editCancel
+	theme, showMessageBoxActions, editing, editCancel, isActionsEnabled
 }) => {
 	if (editing) {
 		return <CancelEditingButton onPress={editCancel} theme={theme} />;
 	}
-	return <FileButton onPress={showFileActions} theme={theme} />;
+	if (isActionsEnabled) {
+		return <ActionsButton onPress={showMessageBoxActions} theme={theme} />;
+	}
+	return <View style={styles.buttonsWhitespace} />;
 });
 
 LeftButtons.propTypes = {
 	theme: PropTypes.string,
-	showFileActions: PropTypes.func.isRequired,
+	showMessageBoxActions: PropTypes.func.isRequired,
 	editing: PropTypes.bool,
-	editCancel: PropTypes.func.isRequired
+	editCancel: PropTypes.func.isRequired,
+	isActionsEnabled: PropTypes.bool
 };
 
 export default LeftButtons;
