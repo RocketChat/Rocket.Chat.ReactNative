@@ -34,7 +34,7 @@ const FullScreenComposer = React.forwardRef(({
 	onKeyboardResigned,
 	onEmojiSelected,
 	openEmoji,
-	recordAudioMessage,
+	recordingCallback,
 	replyCancel,
 	replying,
 	showCommandPreview,
@@ -98,7 +98,7 @@ const FullScreenComposer = React.forwardRef(({
 							theme={theme}
 							showSend={showSend}
 							submit={submit}
-							recordAudioMessage={recordAudioMessage}
+							recordingCallback={recordingCallback}
 							recordAudioMessageEnabled={Message_AudioRecorderEnabled}
 							showMessageBoxActions={showMessageBoxActions}
 							isActionsEnabled
@@ -180,7 +180,7 @@ FullScreenComposer.propTypes = {
 	openEmoji: PropTypes.func,
 	replying: PropTypes.bool,
 	replyCancel: PropTypes.func,
-	recordAudioMessage: PropTypes.func,
+	recordingCallback: PropTypes.func,
 	showSend: PropTypes.bool,
 	showEmojiKeyboard: PropTypes.bool,
 	showCommandPreview: PropTypes.bool,

@@ -14,7 +14,7 @@ import { userTyping as userTypingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import database from '../../lib/database';
 import { emojis } from '../../emojis';
-import Recording from './Recording';
+import RecordAudio from './RecordAudio';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import debounce from '../../utils/debounce';
@@ -190,7 +190,7 @@ class MessageBox extends Component {
 					console.log('Messagebox.didMount: Thread not found');
 				}
 			} else if (!sharing) {
-				msg = this.room.draftMessage;
+				msg = this.room?.draftMessage;
 			}
 		} catch (e) {
 			log(e);
@@ -539,13 +539,15 @@ class MessageBox extends Component {
 
 	setCommandPreview = async(command, name, params) => {
 		const { rid } = this.props;
-		try {
-			const { preview } = await RocketChat.getCommandPreview(name, rid, params);
-			this.setState({ commandPreview: preview.items, showCommandPreview: true, command });
+		try	{
+			const { success, preview } = await RocketChat.getCommandPreview(name, rid, params);
+			if (success) {
+				return this.setState({ commandPreview: preview?.items, showCommandPreview: true, command });
+			}
 		} catch (e) {
-			this.setState({ commandPreview: [], showCommandPreview: true, command: {} });
 			log(e);
 		}
+		this.setState({ commandPreview: [], showCommandPreview: true, command: {} });
 	}
 
 	setInput = (text) => {
@@ -631,7 +633,14 @@ class MessageBox extends Component {
 	}
 
 	openShareView = (attachments) => {
-		Navigation.navigate('ShareView', { room: this.room, thread: this.thread, attachments });
+		const { message, replyCancel, replyWithMention } = this.props;
+		// Start a thread with an attachment
+		let { thread } = this;
+		if (replyWithMention) {
+			thread = message;
+			replyCancel();
+		}
+		Navigation.navigate('ShareView', { room: this.room, thread, attachments });
 	}
 
 	createDiscussion = () => {
@@ -672,12 +681,7 @@ class MessageBox extends Component {
 		});
 	}
 
-	recordAudioMessage = async() => {
-		const { isFullScreen } = this.state;
-		if (isFullScreen) {
-			this.toggleFullScreen();
-		}
-		const recording = await Recording.permission();
+	recordingCallback = (recording) => {
 		this.setState({ recording });
 	}
 
@@ -685,9 +689,6 @@ class MessageBox extends Component {
 		const {
 			rid, tmid, baseUrl: server, user
 		} = this.props;
-		this.setState({
-			recording: false
-		});
 		if (fileInfo) {
 			try {
 				if (this.canUploadFile(fileInfo)) {
@@ -886,7 +887,7 @@ class MessageBox extends Component {
 							onEmojiSelected={this.onEmojiSelected}
 							openEmoji={this.openEmoji}
 							recording={recording}
-							recordAudioMessage={this.recordAudioMessage}
+							recordingCallback={this.recordingCallback}
 							replyCancel={replyCancel}
 							replying={replying}
 							showCommandPreview={showCommandPreview}
@@ -924,7 +925,7 @@ class MessageBox extends Component {
 							onEmojiSelected={this.onEmojiSelected}
 							openEmoji={this.openEmoji}
 							recording={recording}
-							recordAudioMessage={this.recordAudioMessage}
+							recordingCallback={this.recordingCallback}
 							replyCancel={replyCancel}
 							replying={replying}
 							showCommandPreview={showCommandPreview}

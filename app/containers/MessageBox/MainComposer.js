@@ -38,7 +38,7 @@ const MainComposer = React.forwardRef(({
 	onEmojiSelected,
 	openEmoji,
 	recording,
-	recordAudioMessage,
+	recordingCallback,
 	replyCancel,
 	replying,
 	showCommandPreview,
@@ -68,77 +68,97 @@ const MainComposer = React.forwardRef(({
 	}
 
 	function renderContent() {
+
 		const isAndroidTablet = isTablet && isAndroid ? {
 			multiline: false,
 			onSubmitEditing: submit,
 			returnKeyType: 'send'
 		} : {};
 
-		if (recording) {
-			return <Recording theme={theme} onFinish={finishAudioMessage} />;
-		}
-		return (
+		const recordAudio = showSend || !Message_AudioRecorderEnabled ? null : (
+			<RecordAudio
+				theme={theme}
+				recordingCallback={recordingCallback}
+				onFinish={finishAudioMessage}
+			/>
+		);
+
+		const commandsPreviewAndMentions = !recording ? (
 			<>
 				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
 				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
+			</>
+		) : null;
+
+		const replyPreview = !recording ? (
+			<ReplyPreview
+				message={message}
+				close={replyCancel}
+				username={user.username}
+				replying={replying}
+				getCustomEmoji={getCustomEmoji}
+				theme={theme}
+			/>
+		) : null;
+
+		const textInputAndButtons = !recording ? (
+			<>
+				<LeftButtons
+					theme={theme}
+					showEmojiKeyboard={showEmojiKeyboard}
+					editing={editing}
+					showMessageBoxActions={showMessageBoxActions}
+					editCancel={editCancel}
+					openEmoji={openEmoji}
+					closeEmoji={closeEmoji}
+					isActionsEnabled={isActionsEnabled}
+				/>
+				<TextInput
+					ref={component}
+					style={styles.textBoxInput}
+					returnKeyType='default'
+					keyboardType='twitter'
+					blurOnSubmit={false}
+					placeholder={I18n.t('New_Message')}
+					onChangeText={onChangeText}
+					underlineColorAndroid='transparent'
+					defaultValue=''
+					multiline
+					testID='messagebox-input'
+					theme={theme}
+					{...isAndroidTablet}
+				/>
+				<RightButtons
+					theme={theme}
+					showSend={showSend}
+					submit={submit}
+					showMessageBoxActions={showMessageBoxActions}
+					isActionsEnabled={isActionsEnabled}
+				/>
+			</>
+		) : null;
+
+		return (
+			<>
+				{commandsPreviewAndMentions}
 				<View style={[styles.composer, { borderTopColor: themes[theme].separatorColor }]}>
-					{isActionsEnabled && !isFullScreen ? renderTopButton() : null}
-					<ReplyPreview
-						message={message}
-						close={replyCancel}
-						username={user.username}
-						replying={replying}
-						getCustomEmoji={getCustomEmoji}
-						theme={theme}
-					/>
+					{replyPreview}
 					<View
 						style={[
 							styles.textArea,
-							{ backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }
+							{ backgroundColor: themes[theme].messageboxBackground },
+							!recording && editing && { backgroundColor: themes[theme].chatComponentBackground }
 						]}
 						testID='messagebox'
 					>
-						<LeftButtons
-							theme={theme}
-							showEmojiKeyboard={showEmojiKeyboard}
-							editing={editing}
-							showMessageBoxActions={showMessageBoxActions}
-							isActionsEnabled={isActionsEnabled}
-							editCancel={editCancel}
-							openEmoji={openEmoji}
-							closeEmoji={closeEmoji}
-						/>
-						<TextInput
-							ref={component}
-							style={styles.textBoxInput}
-							returnKeyType='default'
-							keyboardType='twitter'
-							blurOnSubmit={false}
-							placeholder={I18n.t('New_Message')}
-							onChangeText={onChangeText}
-							underlineColorAndroid='transparent'
-							defaultValue={text}
-							multiline
-							testID='messagebox-input'
-							theme={theme}
-							{...isAndroidTablet}
-						/>
-						<RightButtons
-							theme={theme}
-							showSend={showSend}
-							submit={submit}
-							recordAudioMessage={recordAudioMessage}
-							recordAudioMessageEnabled={Message_AudioRecorderEnabled}
-							showMessageBoxActions={showMessageBoxActions}
-							isActionsEnabled={isActionsEnabled}
-						/>
+						{textInputAndButtons}
+						{recordAudio}
 					</View>
 				</View>
 				{children}
 			</>
 		);
 	}
-
 
 	return (
 		<KeyboardAccessoryView
@@ -177,7 +197,7 @@ MainComposer.propTypes = {
 	onKeyboardResigned: PropTypes.func,
 	openEmoji: PropTypes.func,
 	recording: PropTypes.bool,
-	recordAudioMessage: PropTypes.func,
+	recordingCallback: PropTypes.func,
 	replying: PropTypes.bool,
 	replyCancel: PropTypes.func,
 	showCommandPreview: PropTypes.bool,

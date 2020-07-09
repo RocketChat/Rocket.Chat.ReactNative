@@ -438,8 +438,6 @@ PODS:
     - React
   - rn-fetch-blob (0.12.0):
     - React-Core
-  - RNAudio (4.3.0):
-    - React
   - RNBootSplash (2.2.4):
     - React
   - RNCAsyncStorage (1.10.3):
@@ -589,7 +587,6 @@ DEPENDENCIES:
   - ReactNativeKeyboardTrackingView (from `../node_modules/react-native-keyboard-tracking-view`)
   - rn-extensions-share (from `../node_modules/rn-extensions-share`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
-  - RNAudio (from `../node_modules/react-native-audio`)
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
@@ -758,8 +755,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/rn-extensions-share"
   rn-fetch-blob:
     :path: "../node_modules/rn-fetch-blob"
-  RNAudio:
-    :path: "../node_modules/react-native-audio"
   RNBootSplash:
     :path: "../node_modules/react-native-bootsplash"
   RNCAsyncStorage:
@@ -903,7 +898,6 @@ SPEC CHECKSUMS:
   ReactNativeKeyboardTrackingView: 02137fac3b2ebd330d74fa54ead48b14750a2306
   rn-extensions-share: 8db79372089567cbc5aefe8444869bbc808578d3
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
-  RNAudio: cae2991f2dccb75163f260b60da8051717b959fa
   RNBootSplash: 7cb9b4fe7e94177edc0d11010f7631d79db2f5e9
   RNCAsyncStorage: cd7234ff15c010723ed7c499ae4eedc605eac1fd
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
