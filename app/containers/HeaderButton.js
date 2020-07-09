@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { HeaderButtons, HeaderButton, Item } from 'react-navigation-header-buttons';
 
 import { CustomIcon } from '../lib/Icons';
-import { isIOS, isAndroid } from '../utils/deviceInfo';
+import { isIOS } from '../utils/deviceInfo';
 import { themes } from '../constants/colors';
 import I18n from '../i18n';
 import { withTheme } from '../theme';
@@ -15,11 +15,7 @@ const CustomHeaderButton = React.memo(withTheme(({ theme, ...props }) => (
 		{...props}
 		IconComponent={CustomIcon}
 		iconSize={headerIconSize}
-		color={
-			isAndroid
-				? themes[theme].headerTitleColor
-				: themes[theme].headerTintColor
-		}
+		color={themes[theme].headerTintColor}
 	/>
 )));
 
@@ -32,13 +28,15 @@ export const CustomHeaderButtons = React.memo(props => (
 
 export const DrawerButton = React.memo(({ navigation, testID, ...otherProps }) => (
 	<CustomHeaderButtons left>
-		<Item title='drawer' iconName='customize' onPress={navigation.toggleDrawer} testID={testID} {...otherProps} />
+		<Item title='drawer' iconName='menu_hamburguer' onPress={navigation.toggleDrawer} testID={testID} {...otherProps} />
 	</CustomHeaderButtons>
 ));
 
-export const CloseModalButton = React.memo(({ navigation, testID, onPress = () => navigation.pop() }) => (
+export const CloseModalButton = React.memo(({
+	navigation, testID, onPress = () => navigation.pop(), ...props
+}) => (
 	<CustomHeaderButtons left>
-		<Item title='close' iconName='Cross' onPress={onPress} testID={testID} />
+		<Item title='close' iconName='Cross' onPress={onPress} testID={testID} {...props} />
 	</CustomHeaderButtons>
 ));
 
@@ -57,9 +55,9 @@ export const MoreButton = React.memo(({ onPress, testID }) => (
 	</CustomHeaderButtons>
 ));
 
-export const SaveButton = React.memo(({ onPress, testID }) => (
+export const SaveButton = React.memo(({ onPress, testID, ...props }) => (
 	<CustomHeaderButtons>
-		<Item title='save' iconName='download' onPress={onPress} testID={testID} />
+		<Item title='save' iconName='download' onPress={onPress} testID={testID} {...props} />
 	</CustomHeaderButtons>
 ));
 

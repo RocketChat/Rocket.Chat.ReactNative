@@ -137,9 +137,9 @@ class ServerDropdown extends Component {
 	}
 
 	addServer = () => {
+		logEvent(events.ADD_SERVER);
 		const { server } = this.props;
 		this.close();
-		logEvent(events.ADD_SERVER);
 		setTimeout(() => {
 			this.navToNewServer(server);
 		}, ANIMATION_DURATION);
@@ -151,6 +151,7 @@ class ServerDropdown extends Component {
 		} = this.props;
 		this.close();
 		if (currentServer !== server) {
+			logEvent(events.CHANGE_SERVER);
 			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
 			if (isMasterDetail) {
 				goRoom({ item: {}, isMasterDetail });
@@ -166,7 +167,6 @@ class ServerDropdown extends Component {
 				await localAuthenticate(server);
 				selectServerRequest(server);
 			}
-			logEvent(events.CHANGE_SERVER);
 		}
 	}
 

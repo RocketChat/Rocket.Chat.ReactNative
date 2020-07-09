@@ -124,6 +124,7 @@ class NewServerView extends React.Component {
 	}
 
 	submit = async() => {
+		logEvent(events.CONNECT_TO_WORKSPACE);
 		const { text, certificate } = this.state;
 		const { connectServer } = this.props;
 		let cert = null;
@@ -135,6 +136,7 @@ class NewServerView extends React.Component {
 			try {
 				await FileSystem.copyAsync({ from: certificate.path, to: certificatePath });
 			} catch (e) {
+				logEvent(events.CONNECT_TO_WORKSPACE_FAIL);
 				log(e);
 			}
 			cert = {
@@ -149,15 +151,13 @@ class NewServerView extends React.Component {
 			await this.basicAuth(server, text);
 			connectServer(server, cert);
 		}
-
-		logEvent(events.CONNECT_TO_WORKSPACE);
 	}
 
 	connectOpen = () => {
+		logEvent(events.JOIN_OPEN_WORKSPACE);
 		this.setState({ connectingOpen: true });
 		const { connectServer } = this.props;
 		connectServer('https://open.rocket.chat');
-		logEvent(events.JOIN_OPEN_WORKSPACE);
 	}
 
 	basicAuth = async(server, text) => {

@@ -72,8 +72,18 @@ class SettingsView extends React.Component {
 		isMasterDetail: PropTypes.bool,
 		logout: PropTypes.func.isRequired,
 		selectServerRequest: PropTypes.func,
-		token: PropTypes.string,
+		user: PropTypes.shape({
+			roles: PropTypes.array,
+			statusLivechat: PropTypes.string
+		}),
 		appStart: PropTypes.func
+	}
+
+	get showLivechat() {
+		const { user } = this.props;
+		const { roles } = user;
+
+		return roles?.includes('livechat-agent');
 	}
 
 	handleLogout = () => {
@@ -116,6 +126,14 @@ class SettingsView extends React.Component {
 		} else {
 			loggerConfig.registerBeforeSendCallback(() => false);
 			logEvent(events.SEND_CRASH_REPORT_OFF);
+		}
+	}
+
+	toggleLivechat = async() => {
+		try {
+			await RocketChat.changeLivechatStatus();
+		} catch {
+			// Do nothing
 		}
 	}
 
@@ -180,6 +198,18 @@ class SettingsView extends React.Component {
 				value={allowCrashReport}
 				trackColor={SWITCH_TRACK_COLOR}
 				onValueChange={this.toggleCrashReport}
+			/>
+		);
+	}
+
+	renderLivechatSwitch = () => {
+		const { user } = this.props;
+		const { statusLivechat } = user;
+		return (
+			<Switch
+				value={statusLivechat === 'available'}
+				trackColor={SWITCH_TRACK_COLOR}
+				onValueChange={this.toggleLivechat}
 			/>
 		);
 	}
@@ -316,6 +346,18 @@ class SettingsView extends React.Component {
 
 					<SectionSeparator theme={theme} />
 
+					{this.showLivechat ? (
+						<>
+							<ListItem
+								title={I18n.t('Omnichannel')}
+								testID='settings-view-livechat'
+								right={() => this.renderLivechatSwitch()}
+								theme={theme}
+							/>
+							<SectionSeparator theme={theme} />
+						</>
+					) : null}
+
 					<ListItem
 						title={I18n.t('Send_crash_report')}
 						testID='settings-view-crash-report'
@@ -355,7 +397,7 @@ class SettingsView extends React.Component {
 
 const mapStateToProps = state => ({
 	server: state.server,
-	token: getUserSelector(state).token,
+	user: getUserSelector(state),
 	allowCrashReport: state.crashReport.allowCrashReport,
 	isMasterDetail: state.app.isMasterDetail
 });

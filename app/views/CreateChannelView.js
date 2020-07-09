@@ -167,9 +167,9 @@ class CreateChannelView extends React.Component {
 	}
 
 	removeUser = (user) => {
+		logEvent(events.CREATE_CHANNEL_REMOVE_INVITED);
 		const { removeUser } = this.props;
 		removeUser(user);
-		logEvent(events.CREATE_CHANNEL_REMOVE_INVITED);
 	}
 
 	renderSwitch = ({

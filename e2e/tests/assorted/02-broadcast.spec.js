@@ -3,7 +3,7 @@ const {
 } = require('detox');
 const OTP = require('otp.js');
 const GA = OTP.googleAuthenticator;
-const { navigateToLogin, login, tapBack, sleep, createUser } = require('../../helpers/app');
+const { navigateToLogin, login, tapBack, sleep, searchRoom } = require('../../helpers/app');
 const data = require('../../data');
 
 describe('Broadcast room', () => {
@@ -73,9 +73,7 @@ describe('Broadcast room', () => {
 		await sleep(1000);
 		await element(by.id('two-factor-send')).tap();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
-		await element(by.type('UIScrollView')).atIndex(1).scrollTo('top');
-		await element(by.id('rooms-list-view-search')).typeText(`broadcast${ data.random }`);
-		await sleep(2000);
+		await searchRoom(`broadcast${ data.random }`);
 		await waitFor(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toExist().withTimeout(60000);
 		await expect(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toExist();
 		await element(by.id(`rooms-list-view-item-broadcast${ data.random }`)).tap();

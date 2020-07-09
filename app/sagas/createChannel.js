@@ -22,6 +22,17 @@ const createGroupChat = function createGroupChat() {
 };
 
 const handleRequest = function* handleRequest({ data }) {
+	if (data.group) {
+		logEvent(events.CREATE_GROUP_CHAT_FINISH);
+	} else {
+		const { type, readOnly, broadcast } = data;
+		logEvent(events.CREATE_CHANNEL_FINISH, {
+			type: type ? 'private' : 'public',
+			readOnly,
+			broadcast
+		});
+	}
+
 	try {
 		const auth = yield select(state => state.login.isAuthenticated);
 		if (!auth) {
@@ -52,20 +63,9 @@ const handleRequest = function* handleRequest({ data }) {
 		}
 
 		yield put(createChannelSuccess(sub));
-
-		if (data.group) {
-			logEvent(events.CREATE_GROUP_CHAT_FINISH);
-		} else {
-			const { type, readOnly, broadcast } = data;
-			logEvent(events.CREATE_CHANNEL_FINISH, {
-				type: type ? 'private' : 'public',
-				readOnly,
-				broadcast
-			});
-		}
 	} catch (err) {
-		yield put(createChannelFailure(err));
 		logEvent(events.CREATE_CHANNEL_FAIL);
+		yield put(createChannelFailure(err));
 	}
 };
 

@@ -16,9 +16,15 @@ export const isReadOnly = async(room, user) => {
 	if (room.archived) {
 		return true;
 	}
-	const allowPost = await canPost(room);
-	if (allowPost) {
-		return false;
+	if (isMuted(room, user)) {
+		return true;
 	}
-	return (room && room.ro) || isMuted(room, user);
+	if (room?.ro) {
+		const allowPost = await canPost(room);
+		if (allowPost) {
+			return false;
+		}
+		return true;
+	}
+	return false;
 };
