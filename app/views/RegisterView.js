@@ -114,6 +114,7 @@ class RegisterView extends React.Component {
 	}
 
 	submit = async() => {
+		logEvent(events.DEFAULT_SIGN_UP);
 		if (!this.valid()) {
 			return;
 		}
@@ -149,11 +150,11 @@ class RegisterView extends React.Component {
 				return loginRequest({ user: email, password });
 			}
 			if (e.data?.error) {
+				logEvent(events.DEFAULT_SIGN_UP_FAIL);
 				showErrorAlert(e.data.error, I18n.t('Oops'));
 			}
 		}
 		this.setState({ saving: false });
-		logEvent(events.DEFAULT_SIGN_UP);
 	}
 
 	openContract = (route) => {
