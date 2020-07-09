@@ -6,7 +6,6 @@ import {
 	FlatList,
 	View
 } from 'react-native';
-import { responsive } from 'react-native-responsive-ui';
 
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import styles from './styles';
