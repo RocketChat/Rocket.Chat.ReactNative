@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  View, TouchableOpacity
+  View, TouchableOpacity, Keyboard
 } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import Modal from 'react-native-modal';
@@ -47,15 +47,22 @@ const FullScreenComposer = React.forwardRef(({
   trackingType,
   user
 }, ref) => {
-
-
+  const animationTime = 300;
   const backgroundColor = editing ? themes[theme].chatComponentBackground : themes[theme].messageboxBackground;
+  const [modalState, setModalState] = useState(isFullScreen);
+  const { component, tracking } = ref;
 
   const isAndroidTablet = isTablet && isAndroid ? {
     multiline: false,
     onSubmitEditing: submit,
     returnKeyType: 'send'
   } : {};
+
+  function closeModal() {
+    Keyboard.dismiss();
+    setTimeout(toggleFullScreen, animationTime * 0.09);
+    setModalState(!modalState);
+  }
 
   function renderCloseButton() {
     const buttonStyle = {
@@ -64,7 +71,7 @@ const FullScreenComposer = React.forwardRef(({
         : themes[theme].messageboxBackground
     };
     return (
-      <TouchableOpacity onPress={() => toggleFullScreen()} style={buttonStyle}>
+      <TouchableOpacity onPress={() => closeModal()} style={buttonStyle}>
         <CustomIcon name='Cross' size={30} color={themes[theme].tintColor} />
       </TouchableOpacity>
     );
@@ -105,14 +112,16 @@ const FullScreenComposer = React.forwardRef(({
   return (
     <Modal
       style={{ margin: 0 }}
-      isVisible={isFullScreen}
+      isVisible={modalState}
       useNativeDriver
       hideModalContentWhileAnimating
+      animationInTiming={animationTime}
+      animationOutTiming={animationTime}
     >
       <View style={{ backgroundColor, flex: 1 }}>
         {renderCloseButton()}
         <TextInput
-          ref={ref}
+          ref={component}
           style={styles.fullScreenComposerInput}
           returnKeyType='default'
           keyboardType='twitter'
@@ -136,7 +145,7 @@ const FullScreenComposer = React.forwardRef(({
           theme={theme}
         />
         <KeyboardAccessoryView
-          ref={ref => this.tracking = ref}
+          ref={tracking}
           renderContent={renderFullScreenBottomBar}
           kbInputRef={ref}
           kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
@@ -152,41 +161,40 @@ const FullScreenComposer = React.forwardRef(({
       </View>
     </Modal>
   );
-
 });
 
 FullScreenComposer.propTypes = {
-  showEmojiKeyboard: PropTypes.bool,
-  showSend: PropTypes.bool,
-  mentions: PropTypes.array,
-  trackingType: PropTypes.array,
+  closeEmoji: PropTypes.func,
   commandPreview: PropTypes.array,
-  showCommandPreview: PropTypes.bool,
   editing: PropTypes.bool,
-  theme: PropTypes.string,
-  Message_AudioRecorderEnabled: PropTypes.bool,
+  editCancel: PropTypes.func,
+  getCustomEmoji: PropTypes.func,
+  iOSScrollBehavior: PropTypes.number,
   isFullScreen: PropTypes.bool,
+  mentions: PropTypes.array,
   message: PropTypes.object,
+  Message_AudioRecorderEnabled: PropTypes.bool,
+  onChangeText: PropTypes.func,
+  onEmojiSelected: PropTypes.func,
+  onKeyboardResigned: PropTypes.func,
+  openEmoji: PropTypes.func,
   replying: PropTypes.bool,
   replyCancel: PropTypes.func,
+  recordAudioMessage: PropTypes.func,
+  showSend: PropTypes.bool,
+  showEmojiKeyboard: PropTypes.bool,
+  showCommandPreview: PropTypes.bool,
+  showMessageBoxActions: PropTypes.func,
+  submit: PropTypes.func,
+  text: PropTypes.string,
+  theme: PropTypes.string,
+  toggleFullScreen: PropTypes.func,
+  trackingType: PropTypes.array,
   user: PropTypes.shape({
     id: PropTypes.string,
     username: PropTypes.string,
     token: PropTypes.string
-  }),
-  getCustomEmoji: PropTypes.func,
-  iOSScrollBehavior: PropTypes.number,
-  toggleFullScreen: PropTypes.func,
-  tracking: PropTypes.object,
-  onKeyboardResigned: PropTypes.func,
-  onEmojiSelected: PropTypes.func,
-  submit: PropTypes.func,
-  onChangeText: PropTypes.func,
-  text: PropTypes.string,
-  editCancel: PropTypes.func,
-  closeEmoji: PropTypes.func,
-  openEmoji: PropTypes.func,
-  recordAudioMessage: PropTypes.func
-}
+  })
+};
 
 export default FullScreenComposer;

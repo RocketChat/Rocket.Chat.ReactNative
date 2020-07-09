@@ -1,31 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Alert, Keyboard, TouchableOpacity, NativeModules
+	Alert, Keyboard, NativeModules
 } from 'react-native';
 import { connect } from 'react-redux';
-import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import ImagePicker from 'react-native-image-crop-picker';
 import equal from 'deep-equal';
 import DocumentPicker from 'react-native-document-picker';
 import { Q } from '@nozbe/watermelondb';
-import Modal from 'react-native-modal';
 
 import { generateTriggerId } from '../../lib/methods/actions';
-import TextInput from '../../presentation/TextInput';
 import { userTyping as userTypingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
-import styles from './styles';
 import database from '../../lib/database';
 import { emojis } from '../../emojis';
 import Recording from './Recording';
 import log from '../../utils/log';
 import I18n from '../../i18n';
-import ReplyPreview from './ReplyPreview';
 import debounce from '../../utils/debounce';
-import { themes } from '../../constants/colors';
-import LeftButtons from './LeftButtons';
-import RightButtons from './RightButtons';
 import { isAndroid, isTablet } from '../../utils/deviceInfo';
 import { canUploadFile } from '../../utils/media';
 import EventEmiter from '../../utils/events';
@@ -35,7 +27,6 @@ import {
 	handleCommandSubmit,
 	handleCommandShowUpload
 } from '../../commands';
-import Mentions from './Mentions';
 import MessageboxContext from './Context';
 import {
 	MENTIONS_TRACKING_TYPE_EMOJIS,
@@ -43,10 +34,8 @@ import {
 	MENTIONS_COUNT_TO_DISPLAY,
 	MENTIONS_TRACKING_TYPE_USERS
 } from './constants';
-import CommandsPreview from './CommandsPreview';
 import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/Navigation';
-import { CustomIcon } from '../../lib/Icons';
 import { withActionSheet } from '../ActionSheet';
 import FullScreenComposer from './FullScreenComposer';
 import MainComposer from './MainComposer';
@@ -213,7 +202,7 @@ class MessageBox extends Component {
 		}
 
 		if (isAndroid) {
-			require('./EmojiKeyboard');
+			await import('./EmojiKeyboard');
 		}
 
 		if (isTablet) {
@@ -286,6 +275,9 @@ class MessageBox extends Component {
 		if (nextState.recording !== recording) {
 			return true;
 		}
+		if (nextState.isFullScreen !== isFullScreen) {
+			return true;
+		}
 		if (!equal(nextState.mentions, mentions)) {
 			return true;
 		}
@@ -293,9 +285,6 @@ class MessageBox extends Component {
 			return true;
 		}
 		if (!equal(nextProps.message, message)) {
-			return true;
-		}
-		if (nextState.isFullScreen !== isFullScreen) {
 			return true;
 		}
 		if (!equal(nextProps.message, message)) {
@@ -852,105 +841,9 @@ class MessageBox extends Component {
 	}
 
 	toggleFullScreen = () => {
-		const { isFullScreen } = this.state;
-
-		this.setState({
-			isFullScreen: !isFullScreen
-		});
-	}
-
-	renderTopButton = () => {
-		const { theme, editing } = this.props;
-		const buttonStyle = {
-			...styles.textBoxTopButton,
-			backgroundColor: editing ? themes[theme].chatComponentBackground
-				: themes[theme].messageboxBackground
-		};
-
-		return (
-			<TouchableOpacity onPress={() => this.toggleFullScreen()} style={buttonStyle}>
-				<CustomIcon name='chevron-up' size={24} color={themes[theme].tintColor} />
-			</TouchableOpacity>
-		);
-	}
-
-	renderContent = () => {
-		const {
-			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview, isFullScreen
-		} = this.state;
-		const {
-			editing, message, replying, replyCancel, user, getCustomEmoji, theme, Message_AudioRecorderEnabled, children, isActionsEnabled
-		} = this.props;
-
-		const isAndroidTablet = isTablet && isAndroid ? {
-			multiline: false,
-			onSubmitEditing: this.submit,
-			returnKeyType: 'send'
-		} : {};
-
-		if (recording) {
-			return <Recording theme={theme} onFinish={this.finishAudioMessage} />;
-		}
-		return (
-			<>
-				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
-				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
-				<View style={[styles.composer, { borderTopColor: themes[theme].separatorColor }]}>
-					{isActionsEnabled && !isFullScreen ? this.renderTopButton() : null}
-					<ReplyPreview
-						message={message}
-						close={replyCancel}
-						username={user.username}
-						replying={replying}
-						getCustomEmoji={getCustomEmoji}
-						theme={theme}
-					/>
-					<View
-						style={[
-							styles.textArea,
-							{ backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }
-						]}
-						testID='messagebox'
-					>
-						<LeftButtons
-							theme={theme}
-							showEmojiKeyboard={showEmojiKeyboard}
-							editing={editing}
-							showMessageBoxActions={this.showMessageBoxActions}
-							isActionsEnabled={isActionsEnabled}
-							editCancel={this.editCancel}
-							openEmoji={this.openEmoji}
-							closeEmoji={this.closeEmoji}
-						/>
-						<TextInput
-							ref={component => this.component = component}
-							style={styles.textBoxInput}
-							returnKeyType='default'
-							keyboardType='twitter'
-							blurOnSubmit={false}
-							placeholder={I18n.t('New_Message')}
-							onChangeText={this.onChangeText}
-							underlineColorAndroid='transparent'
-							defaultValue={this.text}
-							multiline
-							testID='messagebox-input'
-							theme={theme}
-							{...isAndroidTablet}
-						/>
-						<RightButtons
-							theme={theme}
-							showSend={showSend}
-							submit={this.submit}
-							recordAudioMessage={this.recordAudioMessage}
-							recordAudioMessageEnabled={Message_AudioRecorderEnabled}
-							showMessageBoxActions={this.showMessageBoxActions}
-							isActionsEnabled={isActionsEnabled}
-						/>
-					</View>
-				</View>
-				{children}
-			</>
-		);
+		this.setState(prevState => ({
+			isFullScreen: !prevState.isFullScreen
+		}));
 	}
 
 	render() {
@@ -970,73 +863,83 @@ class MessageBox extends Component {
 					onPressCommandPreview: this.onPressCommandPreview
 				}}
 			>
-				{isFullScreen ?
-					<FullScreenComposer
-						ref={component => this.component = component}
-						closeEmoji={this.closeEmoji}
-						toggleFullScreen={this.toggleFullScreen}
-						commandPreview={commandPreview}
-						editCancel={this.editCancel}
-						editing={editing}
-						getCustomEmoji={getCustomEmoji}
-						iOSScrollBehavior={iOSScrollBehavior}
-						isFullScreen={isFullScreen}
-						mentions={mentions}
-						message={message}
-						Message_AudioRecorderEnabled={Message_AudioRecorderEnabled}
-						onChangeText={this.onChangeText}
-						onKeyboardResigned={this.onKeyboardResigned}
-						onEmojiSelected={this.onEmojiSelected}
-						openEmoji={this.openEmoji}
-						recording={recording}
-						recordAudioMessage={this.recordAudioMessage}
-						replyCancel={replyCancel}
-						replying={replying}
-						showCommandPreview={showCommandPreview}
-						showEmojiKeyboard={showEmojiKeyboard}
-						showMessageBoxActions={this.showMessageBoxActions}
-						showSend={showSend}
-						submit={this.submit}
-						text={this.text}
-						theme={theme}
-						trackingType={trackingType}
-						user={user}
-					/>
-					:
-					<MainComposer
-						ref={component => this.component = component}
-						children={children}
-						closeEmoji={this.closeEmoji}
-						toggleFullScreen={this.toggleFullScreen}
-						commandPreview={commandPreview}
-						editCancel={this.editCancel}
-						editing={editing}
-						finishAudioMessage={this.finishAudioMessage}
-						getCustomEmoji={getCustomEmoji}
-						iOSScrollBehavior={iOSScrollBehavior}
-						isActionsEnabled={isActionsEnabled}
-						isFullScreen={isFullScreen}
-						mentions={mentions}
-						message={message}
-						Message_AudioRecorderEnabled={Message_AudioRecorderEnabled}
-						onChangeText={this.onChangeText}
-						onKeyboardResigned={this.onKeyboardResigned}
-						onEmojiSelected={this.onEmojiSelected}
-						openEmoji={this.openEmoji}
-						recording={recording}
-						recordAudioMessage={this.recordAudioMessage}
-						replyCancel={replyCancel}
-						replying={replying}
-						showCommandPreview={showCommandPreview}
-						showEmojiKeyboard={showEmojiKeyboard}
-						showMessageBoxActions={this.showMessageBoxActions}
-						showSend={showSend}
-						submit={this.submit}
-						text={this.text}
-						theme={theme}
-						trackingType={trackingType}
-						user={user}
-					/>
+				{isFullScreen
+					? (
+						<FullScreenComposer
+							ref={{
+								component: component => this.component = component,
+								tracking: tracking => this.tracking = tracking
+							}}
+							closeEmoji={this.closeEmoji}
+							toggleFullScreen={this.toggleFullScreen}
+							commandPreview={commandPreview}
+							editCancel={this.editCancel}
+							editing={editing}
+							getCustomEmoji={getCustomEmoji}
+							iOSScrollBehavior={iOSScrollBehavior}
+							isFullScreen={isFullScreen}
+							mentions={mentions}
+							message={message}
+							Message_AudioRecorderEnabled={Message_AudioRecorderEnabled}
+							onChangeText={this.onChangeText}
+							onKeyboardResigned={this.onKeyboardResigned}
+							onEmojiSelected={this.onEmojiSelected}
+							openEmoji={this.openEmoji}
+							recording={recording}
+							recordAudioMessage={this.recordAudioMessage}
+							replyCancel={replyCancel}
+							replying={replying}
+							showCommandPreview={showCommandPreview}
+							showEmojiKeyboard={showEmojiKeyboard}
+							showMessageBoxActions={this.showMessageBoxActions}
+							showSend={showSend}
+							submit={this.submit}
+							text={this.text}
+							theme={theme}
+							trackingType={trackingType}
+							user={user}
+						/>
+					)
+					: (
+						<MainComposer
+							ref={{
+								component: component => this.component = component,
+								tracking: tracking => this.tracking = tracking
+							}}
+							closeEmoji={this.closeEmoji}
+							toggleFullScreen={this.toggleFullScreen}
+							commandPreview={commandPreview}
+							editCancel={this.editCancel}
+							editing={editing}
+							finishAudioMessage={this.finishAudioMessage}
+							getCustomEmoji={getCustomEmoji}
+							iOSScrollBehavior={iOSScrollBehavior}
+							isActionsEnabled={isActionsEnabled}
+							isFullScreen={isFullScreen}
+							mentions={mentions}
+							message={message}
+							Message_AudioRecorderEnabled={Message_AudioRecorderEnabled}
+							onChangeText={this.onChangeText}
+							onKeyboardResigned={this.onKeyboardResigned}
+							onEmojiSelected={this.onEmojiSelected}
+							openEmoji={this.openEmoji}
+							recording={recording}
+							recordAudioMessage={this.recordAudioMessage}
+							replyCancel={replyCancel}
+							replying={replying}
+							showCommandPreview={showCommandPreview}
+							showEmojiKeyboard={showEmojiKeyboard}
+							showMessageBoxActions={this.showMessageBoxActions}
+							showSend={showSend}
+							submit={this.submit}
+							text={this.text}
+							theme={theme}
+							trackingType={trackingType}
+							user={user}
+						>
+							{children}
+						</MainComposer>
+					)
 				}
 			</MessageboxContext.Provider>
 		);
