@@ -21,6 +21,7 @@
 #import <UMReactNativeAdapter/UMNativeModulesProxy.h>
 #import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
 #import <MMKV/MMKV.h>
+#import "SecureStorage.h"
 
 #if DEBUG
 #import <FlipperKit/FlipperClient.h>
@@ -66,27 +67,35 @@ static void InitializeFlipper(UIApplication *application) {
     // AppGroup MMKV
     NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
     [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
-
+  
     // Start the MMKV container
-    MMKV *mmkv = [MMKV mmkvWithID:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"] mode:MMKVMultiProcess];
-    BOOL alreadyMigrated = [mmkv getBoolForKey:@"alreadyMigrated"];
+    MMKV *defaultMMKV = [MMKV defaultMMKV];
+    BOOL alreadyMigrated = [defaultMMKV getBoolForKey:@"alreadyMigrated"];
 
     if (!alreadyMigrated) {
+      // MMKV Instance that will be used by JS
+      MMKV *mmkv = [MMKV mmkvWithID:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"] mode:MMKVMultiProcess];
+
       // NSUserDefaults -> MMKV (Migration)
       NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]];
       [mmkv migrateFromUserDefaults:userDefaults];
-  
+
       // Remove our own keys of NSUserDefaults
       for (NSString *key in [userDefaults dictionaryRepresentation].keyEnumerator) {
         [userDefaults removeObjectForKey:key];
       }
 
       // Mark migration complete
-      [mmkv setBool:YES forKey:@"alreadyMigrated"];
-    }
+      [defaultMMKV setBool:YES forKey:@"alreadyMigrated"];
 
-    // Encrypt mmkv instance
-    [mmkv reKey:[@"rocketchat" dataUsingEncoding:NSUTF8StringEncoding]];
+      /*
+       *  We'll use a fixed password for the first encryption of the data that came from the migration
+       *  after that, when the app is opened, the library react-native-mmkv-storage will change the password to a random string.
+       */
+      SecureStorage *secureStorage = [[SecureStorage alloc] init];
+      [secureStorage setSecureKey:@"636f6d2e4d4d4b562e636861742e726f636b65742e72656163746e6174697665" value:@"rocketchat" options:@{} callback:^(NSArray *_) {}];
+      [mmkv reKey:[@"rocketchat" dataUsingEncoding:NSUTF8StringEncoding]];
+    }
 
     return YES;
 }
