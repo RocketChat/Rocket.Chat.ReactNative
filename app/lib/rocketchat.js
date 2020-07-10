@@ -322,7 +322,7 @@ const RocketChat = {
 
 	updateJitsiTimeout(roomId) {
 		// RC 0.74.0
-		return this.post('jitsi.updateTimeout', { roomId });
+		return this.post('video-conference/jitsi.update-timeout', { roomId });
 	},
 
 	register(credentials) {
