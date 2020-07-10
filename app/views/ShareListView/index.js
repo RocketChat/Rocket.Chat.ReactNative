@@ -7,7 +7,7 @@ import ShareExtension from 'rn-extensions-share';
 import * as FileSystem from 'expo-file-system';
 import { connect } from 'react-redux';
 import * as mime from 'react-native-mime-types';
-import { isEqual, orderBy } from 'lodash';
+import { isEqual } from 'lodash';
 import { Q } from '@nozbe/watermelondb';
 
 import database from '../../lib/database';
@@ -32,7 +32,6 @@ const permission = {
 	message: I18n.t('Read_External_Permission_Message')
 };
 
-const LIMIT = 50;
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.rid;
 
@@ -187,7 +186,6 @@ class ShareListView extends React.Component {
 	}
 
 	query = (text) => {
-    console.log('ShareListView -> query -> text', text);
 		const db = database.active;
 		const defaultWhereClause = [
 			Q.where('archived', false),
@@ -270,7 +268,6 @@ class ShareListView extends React.Component {
 
 	search = async(text) => {
 		const result = await this.query(text);
-    console.log('ShareListView -> search -> result', result);
 		this.internalSetState({
 			searchResults: result,
 			searchText: text
@@ -278,7 +275,6 @@ class ShareListView extends React.Component {
 	}
 
 	initSearch = () => {
-		console.log('INIT SEARCH')
 		const { chats } = this.state;
 		this.setState({ searching: true, searchResults: chats }, () => this.setHeader());
 	}
@@ -436,8 +432,6 @@ class ShareListView extends React.Component {
 				</ScrollView>
 			);
 		}
-
-		console.log(searching)
 
 		return (
 			<FlatList
