@@ -146,7 +146,7 @@ class RoomsListView extends React.Component {
 			searching: false,
 			search: [],
 			loading: true,
-			allChats: [],
+			chatsOrder: [],
 			chats: [],
 			item: {}
 		};
@@ -213,7 +213,7 @@ class RoomsListView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { allChats, searching, item } = this.state;
+		const { chatsOrder, searching, item } = this.state;
 		// eslint-disable-next-line react/destructuring-assignment
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
@@ -221,7 +221,7 @@ class RoomsListView extends React.Component {
 		}
 
 		// Compare changes only once
-		const chatsNotEqual = !isEqual(nextState.allChats, allChats);
+		const chatsNotEqual = !isEqual(nextState.chatsOrder, chatsOrder);
 
 		// If they aren't equal, set to update if focused
 		if (chatsNotEqual) {
@@ -445,24 +445,11 @@ class RoomsListView extends React.Component {
 			let tempChats = [];
 			let chats = data;
 
-			// it's better to map and test all subs altogether then testing them individually
-			const allChats = data.map(item => ({
-				alert: item.alert,
-				unread: item.unread,
-				userMentions: item.userMentions,
-				// isRead: this.getIsRead(item), // TODO: need it?
-				favorite: item.f,
-				lastMessage: item.lastMessage,
-				name: this.getRoomTitle(item), // TODO: need it?
-				_updatedAt: item.roomUpdatedAt,
-				key: item._id,
-				rid: item.rid,
-				type: item.t,
-				prid: item.prid,
-				uids: item.uids,
-				usernames: item.usernames,
-				visitor: item.visitor
-			}));
+			/**
+			 * We trigger re-render only when chats order changes
+			 * RoomItem handles its own re-render
+			 */
+			const chatsOrder = data.map(item => item.rid);
 
 			// unread
 			if (showUnread) {
@@ -496,7 +483,7 @@ class RoomsListView extends React.Component {
 
 			this.internalSetState({
 				chats: tempChats,
-				allChats,
+				chatsOrder,
 				loading: false
 			});
 		});
