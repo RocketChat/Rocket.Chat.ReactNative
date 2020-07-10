@@ -1,0 +1,41 @@
+diff --git a/node_modules/react-native-mmkv-storage/ios/SecureStorage.m b/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
+index 70f3a01..41fc275 100644
+--- a/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
++++ b/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
+@@ -130,7 +130,8 @@ - (void) removeSecureKey:(NSString *)key
+ 
+ - (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
+     NSMutableDictionary *searchDictionary = [[NSMutableDictionary alloc] init];
+-    serviceName = [[NSBundle mainBundle] bundleIdentifier];
++    // this value is shared by main app and extensions, so, is the best to be used here
++    serviceName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
+     
+     [searchDictionary setObject:(id)kSecClassGenericPassword forKey:(id)kSecClass];
+     
+@@ -139,6 +140,9 @@ - (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
+     [searchDictionary setObject:encodedIdentifier forKey:(id)kSecAttrAccount];
+     [searchDictionary setObject:serviceName forKey:(id)kSecAttrService];
+ 
++    NSString *keychainGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"KeychainGroup"];
++    [searchDictionary setObject:keychainGroup forKey:(id)kSecAttrAccessGroup];
++    
+     return searchDictionary;
+ }
+ 
+@@ -240,11 +244,11 @@ - (void)clearSecureKeyStore
+ 
+ - (void)handleAppUninstallation
+ {
+-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"RnSksIsAppInstalled"]) {
+-        [self clearSecureKeyStore];
+-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"RnSksIsAppInstalled"];
+-        [[NSUserDefaults standardUserDefaults] synchronize];
+-    }
++    // if (![[NSUserDefaults standardUserDefaults] boolForKey:@"RnSksIsAppInstalled"]) {
++    //     [self clearSecureKeyStore];
++    //     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"RnSksIsAppInstalled"];
++    //     [[NSUserDefaults standardUserDefaults] synchronize];
++    // }
+ }
+ 
+ NSError * secureKeyStoreError(NSString *errMsg)

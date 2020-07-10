@@ -75,7 +75,7 @@ export default class Root extends React.Component {
 		}
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		this.listenerTimeout = setTimeout(() => {
 			Linking.addEventListener('url', ({ url }) => {
 				const parsedDeepLinkingURL = parseDeepLinking(url);
@@ -85,6 +85,13 @@ export default class Root extends React.Component {
 			});
 		}, 5000);
 		Dimensions.addEventListener('change', this.onDimensionsChange);
+
+		try {
+			// Encrypt the migration data
+			await MMKV.encryption.encrypt();
+		} catch {
+			// Do nothing
+		}
 	}
 
 	componentWillUnmount() {
