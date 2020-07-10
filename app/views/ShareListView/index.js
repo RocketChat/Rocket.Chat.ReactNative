@@ -314,9 +314,26 @@ class ShareListView extends React.Component {
 	}
 
 	renderItem = ({ item }) => {
+		const { serverInfo } = this.state;
+		const { useRealName } = serverInfo;
 		const {
 			userId, token, server, theme
 		} = this.props;
+		let description;
+		switch (item.t) {
+			case 'c':
+				description = item.topic || item.description;
+				break;
+			case 'p':
+				description = item.topic || item.description;
+				break;
+			case 'd':
+				description = useRealName ? item.name : item.fname;
+				break;
+			default:
+				description = item.fname;
+				break;
+		}
 		return (
 			<DirectoryItem
 				user={{
@@ -326,11 +343,7 @@ class ShareListView extends React.Component {
 				title={this.getRoomTitle(item)}
 				baseUrl={server}
 				avatar={RocketChat.getRoomAvatar(item)}
-				description={
-					item.t === 'c'
-						? (item.topic || item.description)
-						: item.fname
-				}
+				description={description}
 				type={item.prid ? 'discussion' : item.t}
 				onPress={() => this.shareMessage(item)}
 				testID={`share-extension-item-${ item.name }`}
