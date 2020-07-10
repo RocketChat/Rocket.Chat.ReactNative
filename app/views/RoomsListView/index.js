@@ -833,9 +833,8 @@ class RoomsListView extends React.Component {
 			<RoomItem
 				item={item}
 				theme={theme}
-				hideUnreadStatus={item.hideUnreadStatus}
-				key={item._id}
 				id={id}
+				type={item.t}
 				userId={userId}
 				username={username}
 				token={token}

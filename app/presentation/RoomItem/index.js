@@ -41,7 +41,6 @@ const RoomItem = React.memo(({
 	token,
 	id,
 	showLastMessage,
-	hideUnreadStatus,
 	status,
 	useRealName,
 	getUserPresence,
@@ -142,7 +141,7 @@ const RoomItem = React.memo(({
 						<Text
 							style={[
 								styles.title,
-								alert && !hideUnreadStatus && styles.alert,
+								item.alert && !item.hideUnreadStatus && styles.alert,
 								{ color: themes[theme].titleText }
 							]}
 							ellipsizeMode='tail'
@@ -159,7 +158,7 @@ const RoomItem = React.memo(({
 											themes[theme]
 												.auxiliaryText
 									},
-									alert && !hideUnreadStatus && [
+									item.alert && !item.hideUnreadStatus && [
 										styles.updateAlert,
 										{
 											color:
@@ -181,7 +180,7 @@ const RoomItem = React.memo(({
 							type={item.t}
 							showLastMessage={showLastMessage}
 							username={username}
-							alert={alert && !hideUnreadStatus}
+							alert={item.alert && !item.hideUnreadStatus}
 							useRealName={useRealName}
 							theme={theme}
 						/>
@@ -214,7 +213,6 @@ RoomItem.propTypes = {
 	toggleFav: PropTypes.func,
 	toggleRead: PropTypes.func,
 	hideChannel: PropTypes.func,
-	hideUnreadStatus: PropTypes.bool,
 	useRealName: PropTypes.bool,
 	getUserPresence: PropTypes.func,
 	connected: PropTypes.bool,
