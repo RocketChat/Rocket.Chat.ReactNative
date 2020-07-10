@@ -47,7 +47,7 @@ class ShareListView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.data = [];
+		this.chats = [];
 		this.state = {
 			searching: false,
 			searchText: '',
@@ -186,22 +186,37 @@ class ShareListView extends React.Component {
 		this.setState(...args);
 	}
 
-	getSubscriptions = async(server) => {
+	query = (text) => {
+    console.log('ShareListView -> query -> text', text);
 		const db = database.active;
+		const defaultWhereClause = [
+			Q.where('archived', false),
+			Q.where('open', true),
+			Q.experimentalSkip(0),
+			Q.experimentalTake(50),
+			Q.experimentalSortBy('room_updated_at', Q.desc)
+		];
+		if (text) {
+			return db.collections
+				.get('subscriptions')
+				.query(
+					...defaultWhereClause,
+					Q.or(
+						Q.where('name', Q.like(`%${ Q.sanitizeLikeString(text) }%`)),
+						Q.where('fname', Q.like(`%${ Q.sanitizeLikeString(text) }%`))
+					)
+				).fetch();
+		}
+		return db.collections.get('subscriptions').query(...defaultWhereClause).fetch();
+	}
+
+	getSubscriptions = async(server) => {
 		const serversDB = database.servers;
 
 		if (server) {
-			this.data = await db.collections
-				.get('subscriptions')
-				.query(
-					Q.where('archived', false),
-					Q.where('open', true)
-				).fetch();
-			this.data = orderBy(this.data, ['roomUpdatedAt'], ['desc']);
-
+			this.chats = await this.query();
 			const serversCollection = serversDB.collections.get('servers');
 			this.servers = await serversCollection.query().fetch();
-			this.chats = this.data.slice(0, LIMIT);
 			let serverInfo = {};
 			try {
 				serverInfo = await serversCollection.find(server);
@@ -210,8 +225,8 @@ class ShareListView extends React.Component {
 			}
 
 			this.internalSetState({
-				chats: this.chats ? this.chats.slice() : [],
-				servers: this.servers ? this.servers.slice() : [],
+				chats: this.chats ?? [],
+				servers: this.servers ?? [],
 				loading: false,
 				serverInfo
 			});
@@ -253,15 +268,17 @@ class ShareListView extends React.Component {
 		});
 	}
 
-	search = (text) => {
-		const result = this.data.filter(item => item.name.includes(text)) || [];
+	search = async(text) => {
+		const result = await this.query(text);
+    console.log('ShareListView -> search -> result', result);
 		this.internalSetState({
-			searchResults: result.slice(0, LIMIT),
+			searchResults: result,
 			searchText: text
 		});
 	}
 
 	initSearch = () => {
+		console.log('INIT SEARCH')
 		const { chats } = this.state;
 		this.setState({ searching: true, searchResults: chats }, () => this.setHeader());
 	}
@@ -406,6 +423,8 @@ class ShareListView extends React.Component {
 				</ScrollView>
 			);
 		}
+
+		console.log(searching)
 
 		return (
 			<FlatList
