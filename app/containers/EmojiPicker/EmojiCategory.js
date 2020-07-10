@@ -11,6 +11,7 @@ import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import styles from './styles';
 import CustomEmoji from './CustomEmoji';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import i18n from '../../i18n';
 
 const EMOJI_SIZE = 50;
 
@@ -55,7 +56,7 @@ class EmojiCategory extends React.Component {
 		return (
 			<View>
 				<Text style={[styles.headerText, { color: theme }]}>
-					{emojiCategoryHeader}
+					{i18n.t(emojiCategoryHeader)}
 				</Text>
 			</View>
 		);
