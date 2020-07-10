@@ -77,6 +77,7 @@ const RoomItem = React.memo(({
 	const avatar = getRoomAvatar(item);
 	const isGroupChat = getIsGroupChat(item);
 	const isRead = getIsRead(item);
+	const _onPress = () => onPress(item);
 	const date = item.lastMessage?.ts && formatDate(item.lastMessage.ts);
 
 	let accessibilityLabel = name;
@@ -96,7 +97,7 @@ const RoomItem = React.memo(({
 
 	return (
 		<Touchable
-			onPress={onPress}
+			onPress={_onPress}
 			width={width}
 			favorite={item.f}
 			toggleFav={toggleFav}
