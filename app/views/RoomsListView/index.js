@@ -9,7 +9,7 @@ import {
 	RefreshControl
 } from 'react-native';
 import { connect } from 'react-redux';
-import { isEqual } from 'lodash';
+import isEqual from 'react-fast-compare';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
