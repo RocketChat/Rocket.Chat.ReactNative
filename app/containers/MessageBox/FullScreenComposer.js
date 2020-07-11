@@ -23,7 +23,7 @@ import { CustomIcon } from '../../lib/Icons';
 const ANIMATIONTIME = 300;
 
 class FullScreenComposer extends Component {
-	static PropTypes = {
+	static propTypes = {
 		closeEmoji: PropTypes.func,
 		commandPreview: PropTypes.array,
 		editing: PropTypes.bool,
@@ -62,7 +62,7 @@ class FullScreenComposer extends Component {
 		innerRef: PropTypes.object
 	};
 
-	constructor(props){
+	constructor(props) {
 		super(props);
 		this.state = {};
 	}
@@ -70,14 +70,15 @@ class FullScreenComposer extends Component {
 	shouldComponentUpdate(nextProps) {
 		const {
 			theme,
-			replying, 
-			editing, 
+			replying,
+			editing,
 			showEmojiKeyboard,
-			showSend, 
-			recording, 
-			mentions, 
+			showSend,
+			recording,
+			mentions,
 			commandPreview,
-			message, 
+			message,
+			isFullScreen
 		} = this.props;
 
 		if (nextProps.theme !== theme) {
@@ -98,13 +99,13 @@ class FullScreenComposer extends Component {
 		if (nextProps.recording !== recording) {
 			return true;
 		}
+		if (nextProps.isFullScreen !== isFullScreen) {
+			return true;
+		}
 		if (!equal(nextProps.mentions, mentions)) {
 			return true;
 		}
 		if (!equal(nextProps.commandPreview, commandPreview)) {
-			return true;
-		}
-		if (!equal(nextProps.message, message)) {
 			return true;
 		}
 		if (!equal(nextProps.message, message)) {
@@ -125,7 +126,7 @@ class FullScreenComposer extends Component {
 		this.closeModal();
 	}
 
-	renderFullScreenBottomBar = ()  => {
+	renderFullScreenBottomBar = () => {
 		const {
 			theme,
 			recordingCallback,
@@ -143,9 +144,9 @@ class FullScreenComposer extends Component {
 			showMessageBoxActions,
 			isActionsEnabled,
 			editing,
-			Message_AudioRecorderEnabled,
+			Message_AudioRecorderEnabled
 		} = this.props;
-		
+
 		const recordAudio = showSend || !Message_AudioRecorderEnabled ? null : (
 			<RecordAudio
 				theme={theme}
@@ -201,7 +202,9 @@ class FullScreenComposer extends Component {
 			onEmojiSelected,
 			iOSScrollBehavior,
 			innerRef,
-			editing
+			editing,
+			submit,
+			isFullScreen
 		} = this.props;
 		const { component, tracking } = innerRef;
 		const buttonStyle = {
@@ -220,7 +223,7 @@ class FullScreenComposer extends Component {
 
 			<Modal
 				style={{ margin: 0 }}
-				isVisible={true}
+				isVisible={isFullScreen}
 				useNativeDriver
 				hideModalContentWhileAnimating
 				animationInTiming={ANIMATIONTIME}
@@ -273,9 +276,11 @@ class FullScreenComposer extends Component {
 			</Modal>
 		);
 	}
-
 }
 
-export default React.forwardRef((props, ref) => <FullScreenComposer 
-innerRef={ref} {...props}
-/>);
+export default React.forwardRef((props, ref) => (
+	<FullScreenComposer
+		innerRef={ref}
+		{...props}
+	/>
+));

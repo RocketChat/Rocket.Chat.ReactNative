@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
 	View, TouchableOpacity
 } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
+import equal from 'deep-equal';
 
 import TextInput from '../../presentation/TextInput';
 import styles from './styles';
@@ -18,44 +19,100 @@ import Mentions from './Mentions';
 import CommandsPreview from './CommandsPreview';
 import { CustomIcon } from '../../lib/Icons';
 
-const MainComposer = React.forwardRef(({
-	children,
-	closeEmoji,
-	toggleFullScreen,
-	commandPreview,
-	editCancel,
-	editing,
-	finishAudioMessage,
-	getCustomEmoji,
-	iOSScrollBehavior,
-	isActionsEnabled,
-	isFullScreen,
-	mentions,
-	message,
-	Message_AudioRecorderEnabled,
-	onChangeText,
-	onKeyboardResigned,
-	onEmojiSelected,
-	openEmoji,
-	recording,
-	recordingCallback,
-	recordStartState,
-	replyCancel,
-	replying,
-	showCommandPreview,
-	showEmojiKeyboard,
-	showMessageBoxActions,
-	showSend,
-	submit,
-	text,
-	toggleRecordAudioWithState,
-	theme,
-	trackingType,
-	user
-}, ref) => {
-	const { component, tracking } = ref;
+class MainComposer extends Component {
+	static propTypes = {
+		children: PropTypes.node,
+		closeEmoji: PropTypes.func,
+		commandPreview: PropTypes.array,
+		editing: PropTypes.bool,
+		editCancel: PropTypes.func,
+		finishAudioMessage: PropTypes.func,
+		getCustomEmoji: PropTypes.func,
+		iOSScrollBehavior: PropTypes.number,
+		isActionsEnabled: PropTypes.bool,
+		mentions: PropTypes.array,
+		message: PropTypes.object,
+		Message_AudioRecorderEnabled: PropTypes.bool,
+		onChangeText: PropTypes.func,
+		onEmojiSelected: PropTypes.func,
+		onKeyboardResigned: PropTypes.func,
+		openEmoji: PropTypes.func,
+		recording: PropTypes.bool,
+		recordingCallback: PropTypes.func,
+		recordStartState: PropTypes.bool,
+		replying: PropTypes.bool,
+		replyCancel: PropTypes.func,
+		showCommandPreview: PropTypes.bool,
+		showEmojiKeyboard: PropTypes.bool,
+		showMessageBoxActions: PropTypes.func,
+		showSend: PropTypes.bool,
+		submit: PropTypes.func,
+		text: PropTypes.string,
+		toggleRecordAudioWithState: PropTypes.func,
+		theme: PropTypes.string,
+		toggleFullScreen: PropTypes.func,
+		trackingType: PropTypes.array,
+		user: PropTypes.shape({
+			id: PropTypes.string,
+			username: PropTypes.string,
+			token: PropTypes.string
+		}),
+		innerRef: PropTypes.object
+	};
 
-	function renderTopButton() {
+	constructor(props) {
+		super(props);
+		this.state = {};
+	}
+
+	shouldComponentUpdate(nextProps) {
+		const {
+			showEmojiKeyboard,
+			showSend,
+			recording,
+			mentions,
+			commandPreview,
+			replying,
+			editing,
+			message,
+			theme,
+			children
+		} = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
+		if (nextProps.replying !== replying) {
+			return true;
+		}
+		if (nextProps.editing !== editing) {
+			return true;
+		}
+		if (nextProps.showEmojiKeyboard !== showEmojiKeyboard) {
+			return true;
+		}
+		if (nextProps.showSend !== showSend) {
+			return true;
+		}
+		if (nextProps.recording !== recording) {
+			return true;
+		}
+		if (!equal(nextProps.mentions, mentions)) {
+			return true;
+		}
+		if (!equal(nextProps.commandPreview, commandPreview)) {
+			return true;
+		}
+		if (!equal(nextProps.message, message)) {
+			return true;
+		}
+		if (!equal(nextProps.children, children)) {
+			return true;
+		}
+		return false;
+	}
+
+	renderTopButton = () => {
+		const { editing, toggleFullScreen, theme } = this.props;
 		const buttonStyle = {
 			...styles.textBoxTopButton,
 			backgroundColor: editing ? themes[theme].chatComponentBackground
@@ -69,7 +126,39 @@ const MainComposer = React.forwardRef(({
 		);
 	}
 
-	function renderContent() {
+	renderContent = () => {
+		const {
+			submit,
+			showSend,
+			Message_AudioRecorderEnabled,
+			theme,
+			recordingCallback,
+			finishAudioMessage,
+			recordStartState,
+			toggleRecordAudioWithState,
+			commandPreview,
+			showCommandPreview,
+			mentions,
+			trackingType,
+			message,
+			replyCancel,
+			user,
+			replying,
+			getCustomEmoji,
+			showEmojiKeyboard,
+			editing,
+			showMessageBoxActions,
+			editCancel,
+			openEmoji,
+			closeEmoji,
+			isActionsEnabled,
+			onChangeText,
+			text,
+			recording,
+			children,
+			innerRef
+		} = this.props;
+		const { component } = innerRef;
 		const isAndroidTablet = isTablet && isAndroid ? {
 			multiline: false,
 			onSubmitEditing: submit,
@@ -145,7 +234,7 @@ const MainComposer = React.forwardRef(({
 			<>
 				{commandsPreviewAndMentions}
 				<View style={[styles.composer, { borderTopColor: themes[theme].separatorColor }]}>
-					{isActionsEnabled && !isFullScreen && !recording ? renderTopButton() : null}
+					{isActionsEnabled && !recording ? this.renderTopButton() : null}
 					{replyPreview}
 					<View
 						style={[
@@ -164,62 +253,40 @@ const MainComposer = React.forwardRef(({
 		);
 	}
 
-	return (
-		<KeyboardAccessoryView
-			ref={tracking}
-			renderContent={renderContent}
-			kbInputRef={ref}
-			kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
-			onKeyboardResigned={onKeyboardResigned}
-			onItemSelected={onEmojiSelected}
-			trackInteractive
-			// revealKeyboardInteractive
-			requiresSameParentToManageScrollView
-			addBottomView
-			bottomViewColor={themes[theme].messageboxBackground}
-			iOSScrollBehavior={iOSScrollBehavior}
-		/>
-	);
-});
 
-MainComposer.propTypes = {
-	children: PropTypes.node,
-	closeEmoji: PropTypes.func,
-	commandPreview: PropTypes.array,
-	editing: PropTypes.bool,
-	editCancel: PropTypes.func,
-	finishAudioMessage: PropTypes.func,
-	getCustomEmoji: PropTypes.func,
-	iOSScrollBehavior: PropTypes.number,
-	isActionsEnabled: PropTypes.bool,
-	isFullScreen: PropTypes.bool,
-	mentions: PropTypes.array,
-	message: PropTypes.object,
-	Message_AudioRecorderEnabled: PropTypes.bool,
-	onChangeText: PropTypes.func,
-	onEmojiSelected: PropTypes.func,
-	onKeyboardResigned: PropTypes.func,
-	openEmoji: PropTypes.func,
-	recording: PropTypes.bool,
-	recordingCallback: PropTypes.func,
-	recordStartState: PropTypes.bool,
-	replying: PropTypes.bool,
-	replyCancel: PropTypes.func,
-	showCommandPreview: PropTypes.bool,
-	showEmojiKeyboard: PropTypes.bool,
-	showMessageBoxActions: PropTypes.func,
-	showSend: PropTypes.bool,
-	submit: PropTypes.func,
-	text: PropTypes.string,
-	toggleRecordAudioWithState: PropTypes.func,
-	theme: PropTypes.string,
-	toggleFullScreen: PropTypes.func,
-	trackingType: PropTypes.array,
-	user: PropTypes.shape({
-		id: PropTypes.string,
-		username: PropTypes.string,
-		token: PropTypes.string
-	})
-};
+	render() {
+		const {
+			showEmojiKeyboard,
+			onEmojiSelected,
+			onKeyboardResigned,
+			iOSScrollBehavior,
+			theme,
+			innerRef
+		} = this.props;
+		const { component, tracking } = innerRef;
 
-export default MainComposer;
+		return (
+			<KeyboardAccessoryView
+				ref={tracking}
+				renderContent={this.renderContent}
+				kbInputRef={component}
+				kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
+				onKeyboardResigned={onKeyboardResigned}
+				onItemSelected={onEmojiSelected}
+				trackInteractive
+				// revealKeyboardInteractive
+				requiresSameParentToManageScrollView
+				addBottomView
+				bottomViewColor={themes[theme].messageboxBackground}
+				iOSScrollBehavior={iOSScrollBehavior}
+			/>
+		);
+	}
+}
+
+export default React.forwardRef((props, ref) => (
+	<MainComposer
+		innerRef={ref}
+		{...props}
+	/>
+));
