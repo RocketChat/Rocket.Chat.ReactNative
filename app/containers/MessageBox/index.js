@@ -98,7 +98,7 @@ class MessageBox extends Component {
 		sharing: false,
 		iOSScrollBehavior: NativeModules.KeyboardTrackingViewManager?.KeyboardTrackingScrollBehaviorFixedOffset,
 		isActionsEnabled: true,
-		getCustomEmoji: () => { }
+		getCustomEmoji: () => {}
 	}
 
 	constructor(props) {
@@ -441,6 +441,7 @@ class MessageBox extends Component {
 		const { text } = this;
 		const { emoji } = params;
 		let newText = '';
+
 		// if messagebox has an active cursor
 		if (this.component?.lastNativeSelection) {
 			const { start, end } = this.component.lastNativeSelection;
@@ -689,6 +690,7 @@ class MessageBox extends Component {
 		const {
 			rid, tmid, baseUrl: server, user
 		} = this.props;
+
 		if (fileInfo) {
 			try {
 				if (this.canUploadFile(fileInfo)) {
@@ -767,7 +769,7 @@ class MessageBox extends Component {
 			const { id, subscription: { id: rid } } = editingMessage;
 			editRequest({ id, msg: message, rid });
 
-			// Reply
+		// Reply
 		} else if (replying) {
 			const {
 				message: replyingMessage, threadsEnabled, replyWithMention
@@ -777,7 +779,7 @@ class MessageBox extends Component {
 			if (threadsEnabled && replyWithMention) {
 				onSubmit(message, replyingMessage.id);
 
-				// Legacy reply or quote (quote is a reply without mention)
+			// Legacy reply or quote (quote is a reply without mention)
 			} else {
 				const { user, roomType } = this.props;
 				const permalink = await this.getPermalink(replyingMessage);
@@ -793,7 +795,7 @@ class MessageBox extends Component {
 			}
 			replyCancel();
 
-			// Normal message
+		// Normal message
 		} else {
 			onSubmit(message);
 		}
