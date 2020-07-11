@@ -7,7 +7,7 @@ import {
 } from 'react-native-gesture-handler';
 import { getInfoAsync } from 'expo-file-system';
 import { deactivateKeepAwake, activateKeepAwake } from 'expo-keep-awake';
-import Animated, { Easing, lessThan } from 'react-native-reanimated';
+import Animated, { Easing } from 'react-native-reanimated';
 
 import styles from './styles';
 import I18n from '../../i18n';
@@ -78,10 +78,10 @@ const {
 	Extrapolate,
 	neq,
 	interpolate,
-	or
+	lessThan
 } = Animated;
 
-function runButtonPressTimer(clock, longPressState, isRecordingCancelled, outputRange) {
+function runButtonPressTimer(clock, toValue) {
 	const state = {
 		finished: new Value(0),
 		position: new Value(0),
@@ -96,25 +96,18 @@ function runButtonPressTimer(clock, longPressState, isRecordingCancelled, output
 	};
 
 	return block([
-		cond(and(eq(longPressState, State.ACTIVE), neq(config.toValue, 1)), [
+		cond(and(neq(config.toValue, toValue)), [
 			set(state.finished, 0),
 			set(state.time, 0),
 			set(state.frameTime, 0),
-			set(config.toValue, 1),
-			startClock(clock)
-		]),
-		cond(and(or(eq(isRecordingCancelled, 1), eq(longPressState, State.END)), neq(config.toValue, 0)), [
-			set(state.finished, 0),
-			set(state.time, 0),
-			set(state.frameTime, 0),
-			set(config.toValue, 0),
+			set(config.toValue, toValue),
 			startClock(clock)
 		]),
 		timing(clock, state, config),
 		cond(state.finished, stopClock(clock)),
 		interpolate(state.position, {
 			inputRange: [0, 1],
-			outputRange,
+			outputRange: [0, 80],
 			extrapolate: Extrapolate.CLAMP
 		})
 	]);
@@ -143,6 +136,10 @@ class RecordAudio extends React.PureComponent {
 		const isRecordingCancelled = new Value(0);
 		const panState = new Value(-1);
 
+		const isLongPressStarted = new Value(0);
+		const clock = new Clock();
+		const buttonPressToValue = new Value(0);
+
 		this._onPan = event([{
 			nativeEvent: ({ translationX, translationY, state }) => block([
 				set(touchX, translationX),
@@ -155,7 +152,8 @@ class RecordAudio extends React.PureComponent {
 					]),
 					cond(and(lessThan(translationX, RECORDING_CANCEL_DISTANCE), eq(isRecordingCancelled, 0)), [
 						set(isRecordingCancelled, 1),
-						call([], () => this.setState({ isRecording: false }))
+						call([], () => this.setState({ isRecording: false })),
+						set(buttonPressToValue, 0)
 					])
 				]),
 
@@ -166,21 +164,18 @@ class RecordAudio extends React.PureComponent {
 			])
 		}]);
 
-		const isLongPressStarted = new Value(0);
-		const longPressState = new Value(-1);
-		const clock = new Clock();
-
 		this._onLongPressState = event([{
 			nativeEvent: ({ state }) => block([
-				set(longPressState, state),
 				cond(and(eq(state, State.ACTIVE), eq(isLongPressStarted, 0)), [
 					set(isLongPressStarted, 1),
 					set(isRecordingCancelled, 0),
+					set(buttonPressToValue, 1),
 					call([new Value(0)], () => this.setState({ isRecording: true }))
 				]),
 
 				cond(and(eq(state, State.END), eq(isLongPressStarted, 1)), [
 					set(isLongPressStarted, 0),
+					set(buttonPressToValue, 0),
 					call([new Value(0)], () => this.setState({ isRecording: false }))
 				])
 
@@ -189,7 +184,7 @@ class RecordAudio extends React.PureComponent {
 
 		this._cancelTranslationX = cond(isPanStarted, touchX, 0);
 		this._persistTranslationY = cond(isPanStarted, touchY, 0);
-		this._buttonGrow = runButtonPressTimer(clock, longPressState, isRecordingCancelled, [0, 80]);
+		this._buttonGrow = runButtonPressTimer(clock, buttonPressToValue);
 	}
 
 	componentDidUpdate() {
