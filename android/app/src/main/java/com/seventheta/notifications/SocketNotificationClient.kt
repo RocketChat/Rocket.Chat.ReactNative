@@ -18,6 +18,7 @@ class SocketNotificationClient(
 
     data class LoginData(
             val host: String,
+            val port: Int?,
             val userId: String,
             val userToken: String) {
 
@@ -59,10 +60,11 @@ class SocketNotificationClient(
         }
 
         val host = loginData.host
+        val port = loginData.port
         val myUserId = loginData.userId
         val token = loginData.userToken
 
-        val url = "wss://$host/websocket"
+        val url = "wss://$host${port?.let { ":$it" } ?: ""}/websocket"
 
         val rooms = mutableMapOf<String, RoomData>()
         val subNum = AtomicInteger(100)

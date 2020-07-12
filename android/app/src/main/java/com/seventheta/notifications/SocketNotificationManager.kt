@@ -80,11 +80,19 @@ class SocketNotificationManager(val context: Context) {
 
         val clients = allPrefs.keys.mapNotNull { prefKey ->
             return@mapNotNull if (userTokenRegex.containsMatchIn(prefKey)) {
-                val host = URL(prefKey.split("-")[1]).host
+                val url = URL(prefKey.split("-")[1])
+                val host = url.host
+                val port = url.port.let { port ->
+                    return@let if (port == -1) {
+                        null
+                    } else {
+                        port
+                    }
+                }
                 val userId = allPrefs[prefKey] as String
                 val userTokenKey = "reactnativemeteor_usertoken-$userId"
                 val userToken = allPrefs[userTokenKey] as String
-                val loginData = SocketNotificationClient.LoginData(host, userId, userToken)
+                val loginData = SocketNotificationClient.LoginData(host, port, userId, userToken)
                 SocketNotificationClient(context, loginData, onNotification = { data ->
                     displayNotification(loginData, data)
                 })

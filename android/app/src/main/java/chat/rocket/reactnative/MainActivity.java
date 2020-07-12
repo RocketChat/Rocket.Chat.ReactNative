@@ -2,6 +2,7 @@ package chat.rocket.reactnative;
 
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
+import com.seventheta.notifications.SocketServiceUtils;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import android.os.Bundle;
 import com.facebook.react.ReactFragmentActivity;
@@ -15,6 +16,18 @@ public class MainActivity extends ReactFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         RNBootSplash.init(R.drawable.launch_screen, MainActivity.this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SocketServiceUtils.INSTANCE.startService(this);
+    }
+
+    @Override
+    protected void onPause() {
+        SocketServiceUtils.INSTANCE.startService(this);
+        super.onPause();
     }
 
     /**
