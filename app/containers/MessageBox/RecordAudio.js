@@ -45,10 +45,11 @@ const RECORDING_MODE = {
 	interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
 	interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX
 };
-const RECORDING_MINIMUM_DURATION = 300;	// Cancel if recording < this duration (in ms)
-const RECORDING_DEFER_END = 300;	//  Ms to wait before android ends the recording.
+const RECORDING_MINIMUM_DURATION = 300;		// Cancel if recording < this duration (in ms)
+const RECORDING_DEFER_END_IOS = 300;		// Ms to wait before ending the recording (ios).
+const RECORDING_DEFER_END_ANDROID = 400;	// Ms to wait before ending the recording (android).
 const RECORDING_TOOLTIP_DURATION = 1500;	// Duration to show recording tooltip (in ms)
-const RECORDING_CANCEL_DISTANCE = -120;	// Swipe left gesture to cancel recording
+const RECORDING_CANCEL_DISTANCE = -120;		// Swipe left gesture to cancel recording
 
 const RECORDING_TOOLTIP_TEXT = 'Hold to record. Release to send';
 const RECORDING_SLIDE_TO_CANCEL_TEXT = 'Slide to cancel';
@@ -80,7 +81,9 @@ const {
 	Extrapolate,
 	neq,
 	interpolate,
-	lessThan
+	lessThan,
+	or,
+	not
 } = Animated;
 
 function runButtonPressTimer(clock, toValue) {
@@ -159,7 +162,7 @@ class RecordAudio extends React.PureComponent {
 					startClock(longPressClock),
 					set(longPressStartTime, longPressClock),
 					set(buttonPressToValue, 1),
-					call([], () => this.startRecordingAudio())
+					call([], this.startRecordingAudio)
 				]),
 
 				cond(and(eq(state, State.END), eq(isLongPressStarted, 1), eq(isIOS, 1)), [
@@ -167,17 +170,9 @@ class RecordAudio extends React.PureComponent {
 					set(buttonPressToValue, 0),
 					stopClock(longPressClock),
 					cond(greaterThan(sub(longPressClock, longPressStartTime), RECORDING_MINIMUM_DURATION), [
-						call([], () => this.finishRecordingAudio())
+						call([], this.finishRecordingAudio)
 					], [
-						call([], () => {
-							setTimeout(() => {
-								this.cancelRecordingAudio();
-							}, RECORDING_DEFER_END);
-							this.setState({ isRecordingTooltipVisible: true });
-							setTimeout(() => {
-								this.setState({ isRecordingTooltipVisible: false });
-							}, RECORDING_TOOLTIP_DURATION);
-						})
+						call([], () => this.cancelRecordingAndShowTooltip(RECORDING_DEFER_END_IOS))
 					])
 				])
 			])
@@ -194,37 +189,29 @@ class RecordAudio extends React.PureComponent {
 					]),
 					cond(and(lessThan(translationX, RECORDING_CANCEL_DISTANCE), eq(isRecordingCancelled, 0)), [
 						set(isRecordingCancelled, 1),
-						call([], () => this.cancelRecordingAudio()),
+						call([], this.cancelRecordingAudio),
 						set(buttonPressToValue, 0)
 					])
 				]),
 
 				cond(and(eq(state, State.END), eq(isPanStarted, 1)), [
 					set(isPanStarted, 0),
-					cond(isAndroid, [
+					cond(eq(isAndroid, 1), [
+						set(isLongPressStarted, 0),
+						set(buttonPressToValue, 0),
 						stopClock(longPressClock),
 						cond(greaterThan(sub(longPressClock, longPressStartTime), RECORDING_MINIMUM_DURATION), [
-							call([], () => {
-								this.finishRecordingAudio();
-							})
+							call([], this.finishRecordingAudio)
 						], [
-							call([], () => {
-								setTimeout(() => {
-									this.cancelRecordingAudio();
-								}, RECORDING_DEFER_END);
-								this.setState({ isRecordingTooltipVisible: true });
-								setTimeout(() => {
-									this.setState({ isRecordingTooltipVisible: false });
-								}, RECORDING_TOOLTIP_DURATION);
-							})
+							call([], () => this.cancelRecordingAndShowTooltip(RECORDING_DEFER_END_ANDROID))
 						])
 					])
 				])
 			])
 		}]);
 
-		this._cancelTranslationX = cond(isPanStarted, touchX, 0);
-		this._persistTranslationY = cond(isPanStarted, touchY, 0);
+		this._cancelTranslationX = cond(or(not(isPanStarted), greaterThan(touchX, 0)), 0, touchX);
+		this._persistTranslationY = cond(or(not(isPanStarted), greaterThan(touchY, 0)), 0, touchY);
 		this._buttonGrow = runButtonPressTimer(buttonPressClock, buttonPressToValue);
 	}
 
@@ -333,6 +320,16 @@ class RecordAudio extends React.PureComponent {
 		}
 	};
 
+	cancelRecordingAndShowTooltip = (deferDuration) => {
+		setTimeout(() => {
+			this.cancelRecordingAudio();
+		}, deferDuration);
+		this.setState({ isRecordingTooltipVisible: true });
+		setTimeout(() => {
+			this.setState({ isRecordingTooltipVisible: false });
+		}, RECORDING_TOOLTIP_DURATION);
+	}
+
 	render() {
 		const { theme, width } = this.props;
 		const { isRecording, isRecordingTooltipVisible } = this.state;
@@ -378,6 +375,7 @@ class RecordAudio extends React.PureComponent {
 
 				<PanGestureHandler
 					ref={this.panRef}
+					minDist={0}
 					simultaneousHandlers={[this.longPressRef]}
 					onGestureEvent={this._onPan}
 					onHandlerStateChange={this._onPan}
