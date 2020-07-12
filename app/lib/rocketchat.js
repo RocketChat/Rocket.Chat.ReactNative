@@ -288,6 +288,8 @@ const RocketChat = {
 		const serversDB = database.servers;
 		reduxStore.dispatch(shareSelectServer(server));
 
+		RocketChat.setCustomEmojis();
+
 		// set User info
 		try {
 			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
@@ -320,7 +322,7 @@ const RocketChat = {
 
 	updateJitsiTimeout(roomId) {
 		// RC 0.74.0
-		return this.post('jitsi.updateTimeout', { roomId });
+		return this.post('video-conference/jitsi.update-timeout', { roomId });
 	},
 
 	register(credentials) {

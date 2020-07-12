@@ -127,7 +127,7 @@ class ThreadMessagesView extends React.Component {
 	// eslint-disable-next-line react/sort-comp
 	init = () => {
 		if (!this.subscription) {
-			this.load();
+			return this.load();
 		}
 		try {
 			const lastThreadSync = new Date();

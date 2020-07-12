@@ -46,9 +46,9 @@ export const navigationTheme = (theme) => {
 
 // Gets the current screen from navigation state
 export const getActiveRoute = (state) => {
-	const route = state.routes[state.index];
+	const route = state?.routes[state?.index];
 
-	if (route.state) {
+	if (route?.state) {
 		// Dive into nested navigators
 		return getActiveRoute(route.state);
 	}
@@ -56,4 +56,4 @@ export const getActiveRoute = (state) => {
 	return route;
 };
 
-export const getActiveRouteName = state => getActiveRoute(state).name;
+export const getActiveRouteName = state => getActiveRoute(state)?.name;
