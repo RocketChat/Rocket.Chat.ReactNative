@@ -145,5 +145,9 @@ export default StyleSheet.create({
 		width: 1,
 		height: 1,
 		borderRadius: 200
+	},
+	recordingCancelButton: {
+		paddingVertical: 12,
+		paddingHorizontal: 6
 	}
 });
