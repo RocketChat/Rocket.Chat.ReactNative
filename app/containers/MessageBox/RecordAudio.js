@@ -48,8 +48,10 @@ const RECORDING_MODE = {
 const RECORDING_MINIMUM_DURATION = 300;	// Cancel if recording < this duration (in ms)
 const RECORDING_DEFER_END = 300;	//  Ms to wait before android ends the recording.
 const RECORDING_TOOLTIP_DURATION = 1500;	// Duration to show recording tooltip (in ms)
-const RECORDING_TOOLTIP_TEXT = 'Hold to record. Release to send';
 const RECORDING_CANCEL_DISTANCE = -120;	// Swipe left gesture to cancel recording
+
+const RECORDING_TOOLTIP_TEXT = 'Hold to record. Release to send';
+const RECORDING_SLIDE_TO_CANCEL_TEXT = 'Slide to cancel';
 
 
 const formatTime = function(seconds) {
@@ -116,159 +118,6 @@ function runButtonPressTimer(clock, toValue) {
 class RecordAudio extends React.PureComponent {
 	static propTypes = {
 		theme: PropTypes.string,
-		recordingCallback: PropTypes.func
-	}
-
-	constructor(props) {
-		super(props);
-
-		this.longPressRef = React.createRef();
-		this.panRef = React.createRef();
-
-		this.state = {
-			isRecording: false
-		};
-
-		const touchX = new Value(0);
-		const touchY = new Value(0);
-
-		const isPanStarted = new Value(0);
-		const isRecordingCancelled = new Value(0);
-		const panState = new Value(-1);
-
-		const isLongPressStarted = new Value(0);
-		const clock = new Clock();
-		const buttonPressToValue = new Value(0);
-
-		this._onPan = event([{
-			nativeEvent: ({ translationX, translationY, state }) => block([
-				set(touchX, translationX),
-				set(touchY, translationY),
-
-				cond(eq(state, State.ACTIVE), [
-					cond(eq(isPanStarted, 0), [
-						set(panState, state),
-						set(isPanStarted, 1)
-					]),
-					cond(and(lessThan(translationX, RECORDING_CANCEL_DISTANCE), eq(isRecordingCancelled, 0)), [
-						set(isRecordingCancelled, 1),
-						call([], () => this.setState({ isRecording: false })),
-						set(buttonPressToValue, 0)
-					])
-				]),
-
-				cond(and(eq(state, State.END), eq(isPanStarted, 1)), [
-					set(panState, state),
-					set(isPanStarted, 0)
-				])
-			])
-		}]);
-
-		this._onLongPressState = event([{
-			nativeEvent: ({ state }) => block([
-				cond(and(eq(state, State.ACTIVE), eq(isLongPressStarted, 0)), [
-					set(isLongPressStarted, 1),
-					set(isRecordingCancelled, 0),
-					set(buttonPressToValue, 1),
-					call([new Value(0)], () => this.setState({ isRecording: true }))
-				]),
-
-				cond(and(eq(state, State.END), eq(isLongPressStarted, 1)), [
-					set(isLongPressStarted, 0),
-					set(buttonPressToValue, 0),
-					call([new Value(0)], () => this.setState({ isRecording: false }))
-				])
-
-			])
-		}]);
-
-		this._cancelTranslationX = cond(isPanStarted, touchX, 0);
-		this._persistTranslationY = cond(isPanStarted, touchY, 0);
-		this._buttonGrow = runButtonPressTimer(clock, buttonPressToValue);
-	}
-
-	componentDidUpdate() {
-		const { recordingCallback } = this.props;
-		const { isRecording } = this.state;
-
-		recordingCallback(isRecording);
-	}
-
-	componentWillUnmount() {
-		if (this.recording) {
-			this.setState({ isRecording: false });
-		}
-	}
-
-	render() {
-		const { theme } = this.props;
-		const { isRecording } = this.state;
-
-		const buttonIconColor = isRecording ? themes[theme].focusedBackground : themes[theme].tintColor;
-
-		return (
-			<>
-				{isRecording && (
-					<Animated.View style={styles.recordingContent}>
-						<Text
-							style={[styles.recordingDurationText, { color: themes[theme].titleText }]}
-						>
-							00:00
-						</Text>
-						<Animated.View style={[styles.recordingSlideToCancel, {
-							transform: [{ translateX: this._cancelTranslationX }]
-						}]}
-						>
-							<CustomIcon name='chevron-left' size={30} color={themes[theme].auxiliaryTintColor} />
-							<Text style={{ color: themes[theme].auxiliaryText }}>
-								Slide to cancel
-							</Text>
-						</Animated.View>
-					</Animated.View>
-				)}
-
-				<PanGestureHandler
-					ref={this.panRef}
-					simultaneousHandlers={[this.longPressRef]}
-					onGestureEvent={this._onPan}
-					onHandlerStateChange={this._onPan}
-				>
-					<Animated.View>
-						<LongPressGestureHandler
-							ref={this.longPressRef}
-							simultaneousHandlers={[this.panRef]}
-							onHandlerStateChange={this._onLongPressState}
-							minDurationMs={0}
-						>
-							<Animated.View
-								style={styles.actionButton}
-								testID='messagebox-send-audio'
-								accessibilityLabel={I18n.t('Send_audio_message')}
-								accessibilityTraits='button'
-							>
-								<CustomIcon style={{ zIndex: 1 }} name='mic' size={23} color={buttonIconColor} />
-								<View style={{ position: 'absolute' }}>
-									<Animated.View
-										style={[styles.recordingButtonBubble, {
-											backgroundColor: themes[theme].tintColor,
-											transform: [{ translateY: this._persistTranslationY }, { scale: this._buttonGrow }]
-										}]}
-									/>
-								</View>
-							</Animated.View>
-						</LongPressGestureHandler>
-					</Animated.View>
-				</PanGestureHandler>
-			</>
-		);
-	}
-}
-
-// Will be used later
-// eslint-disable-next-line no-unused-vars
-class RealRecordAudio extends React.PureComponent {
-	static propTypes = {
-		theme: PropTypes.string,
 		recordingCallback: PropTypes.func,
 		onFinish: PropTypes.func,
 		width: PropTypes.number
@@ -287,24 +136,35 @@ class RealRecordAudio extends React.PureComponent {
 			isRecordingTooltipVisible: false
 		};
 
-		this.touchX = new Value(0);
+		const touchX = new Value(0);
+		const touchY = new Value(0);
+
+		const buttonPressToValue = new Value(0);
+		const buttonPressClock = new Clock();
+
+		const isRecordingCancelled = new Value(0);
 
 		const longPressClock = new Clock();
 		const longPressStartTime = new Value(0);
 		const isLongPressStarted = new Value(0);
+
+		const isPanStarted = new Value(0);
 
 		this._onLongPress = event([{
 			nativeEvent: ({ state }) => block([
 
 				cond(and(eq(state, State.ACTIVE), eq(isLongPressStarted, 0)), [
 					set(isLongPressStarted, 1),
+					set(isRecordingCancelled, 0),
 					startClock(longPressClock),
 					set(longPressStartTime, longPressClock),
+					set(buttonPressToValue, 1),
 					call([], () => this.startRecordingAudio())
 				]),
 
 				cond(and(eq(state, State.END), eq(isLongPressStarted, 1), eq(isIOS, 1)), [
 					set(isLongPressStarted, 0),
+					set(buttonPressToValue, 0),
 					stopClock(longPressClock),
 					cond(greaterThan(sub(longPressClock, longPressStartTime), RECORDING_MINIMUM_DURATION), [
 						call([], () => this.finishRecordingAudio())
@@ -323,39 +183,49 @@ class RealRecordAudio extends React.PureComponent {
 			])
 		}]);
 
-		const isPanStarted = new Value(0);
-
 		this._onPan = event([{
-			nativeEvent: ({ state, translationX }) => block([
+			nativeEvent: ({ translationX, translationY, state }) => block([
+				set(touchX, translationX),
+				set(touchY, translationY),
 
 				cond(eq(state, State.ACTIVE), [
 					cond(eq(isPanStarted, 0), [
 						set(isPanStarted, 1)
 					]),
-					set(this.touchX, translationX)
+					cond(and(lessThan(translationX, RECORDING_CANCEL_DISTANCE), eq(isRecordingCancelled, 0)), [
+						set(isRecordingCancelled, 1),
+						call([], () => this.cancelRecordingAudio()),
+						set(buttonPressToValue, 0)
+					])
 				]),
 
-				cond(and(eq(state, State.END), eq(isPanStarted, 1), eq(isAndroid, 1)), [
+				cond(and(eq(state, State.END), eq(isPanStarted, 1)), [
 					set(isPanStarted, 0),
-					stopClock(longPressClock),
-					cond(greaterThan(sub(longPressClock, longPressStartTime), RECORDING_MINIMUM_DURATION), [
-						call([], () => {
-							this.finishRecordingAudio();
-						})
-					], [
-						call([], () => {
-							setTimeout(() => {
-								this.cancelRecordingAudio();
-							}, RECORDING_DEFER_END);
-							this.setState({ isRecordingTooltipVisible: true });
-							setTimeout(() => {
-								this.setState({ isRecordingTooltipVisible: false });
-							}, RECORDING_TOOLTIP_DURATION);
-						})
+					cond(isAndroid, [
+						stopClock(longPressClock),
+						cond(greaterThan(sub(longPressClock, longPressStartTime), RECORDING_MINIMUM_DURATION), [
+							call([], () => {
+								this.finishRecordingAudio();
+							})
+						], [
+							call([], () => {
+								setTimeout(() => {
+									this.cancelRecordingAudio();
+								}, RECORDING_DEFER_END);
+								this.setState({ isRecordingTooltipVisible: true });
+								setTimeout(() => {
+									this.setState({ isRecordingTooltipVisible: false });
+								}, RECORDING_TOOLTIP_DURATION);
+							})
+						])
 					])
 				])
 			])
 		}]);
+
+		this._cancelTranslationX = cond(isPanStarted, touchX, 0);
+		this._persistTranslationY = cond(isPanStarted, touchY, 0);
+		this._buttonGrow = runButtonPressTimer(buttonPressClock, buttonPressToValue);
 	}
 
 	componentDidUpdate() {
@@ -494,14 +364,13 @@ class RealRecordAudio extends React.PureComponent {
 						>
 							{this.duration}
 						</Text>
-						<Animated.View style={[styles.recordingSlideToCancel, { transform: [{ translateX: this.touchX }] }]}>
+						<Animated.View style={[styles.recordingSlideToCancel, { transform: [{ translateX: this._cancelTranslationX }] }]}>
 							<CustomIcon name='chevron-left' size={30} color={themes[theme].auxiliaryTintColor} />
 							<Text style={[styles.cancelRecordingText, {
-								color: themes[theme].auxiliaryText,
-								textAlign: 'right'
+								color: themes[theme].auxiliaryText
 							}]}
 							>
-								Slide to cancel
+								{RECORDING_SLIDE_TO_CANCEL_TEXT}
 							</Text>
 						</Animated.View>
 					</Animated.View>
@@ -511,6 +380,7 @@ class RealRecordAudio extends React.PureComponent {
 					ref={this.panRef}
 					simultaneousHandlers={[this.longPressRef]}
 					onGestureEvent={this._onPan}
+					onHandlerStateChange={this._onPan}
 				>
 					<Animated.View>
 						<LongPressGestureHandler
@@ -526,6 +396,14 @@ class RealRecordAudio extends React.PureComponent {
 								accessibilityTraits='button'
 							>
 								<CustomIcon style={{ zIndex: 1 }} name='mic' size={23} color={buttonIconColor} />
+								<View style={{ position: 'absolute' }}>
+									<Animated.View
+										style={[styles.recordingButtonBubble, {
+											backgroundColor: themes[theme].tintColor,
+											transform: [{ translateY: this._persistTranslationY }, { scale: this._buttonGrow }]
+										}]}
+									/>
+								</View>
 							</Animated.View>
 						</LongPressGestureHandler>
 					</Animated.View>
