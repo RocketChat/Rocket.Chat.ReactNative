@@ -3,7 +3,7 @@ import firebase from 'react-native-firebase';
 import RNConfigReader from 'react-native-config-reader';
 import config from '../../config';
 
-const configValue = RNConfigReader.PLAY_BUILD;
+const isPlayBuild = RNConfigReader.PLAY_BUILD;
 const bugsnag = new Client(config.BUGSNAG_API_KEY);
 
 export const { analytics } = firebase != null;
@@ -19,7 +19,7 @@ export const logServerVersion = (serverVersion) => {
 };
 
 export const setCurrentScreen = (currentScreen) => {
-	if (configValue) {
+	if (isPlayBuild) {
 		analytics().setCurrentScreen(currentScreen);
 	}
 	leaveBreadcrumb(currentScreen, { type: 'navigation' });

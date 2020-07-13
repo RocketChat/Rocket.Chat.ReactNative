@@ -37,7 +37,7 @@ import { onReviewPress } from '../../utils/review';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 
-const configValue = RNConfigReader.PLAY_BUILD;
+const isPlayBuild = RNConfigReader.PLAY_BUILD;
 
 const SectionSeparator = React.memo(({ theme }) => (
 	<View
@@ -118,7 +118,7 @@ class SettingsView extends React.Component {
 		const { toggleCrashReport } = this.props;
 		toggleCrashReport(value);
 		loggerConfig.autoNotify = value;
-		if (configValue) {
+		if (isPlayBuild) {
 			analytics().setAnalyticsCollectionEnabled(value);
 		}
 

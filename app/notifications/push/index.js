@@ -37,8 +37,8 @@ export const onNotification = (notification) => {
 export const getDeviceToken = () => PushNotification.getDeviceToken();
 export const setBadgeCount = count => PushNotification.setBadgeCount(count);
 export const initializePushNotifications = () => {
-	const configValue = RNConfigReader.PLAY_BUILD;
-	if (configValue) {
+	const isPlayBuild = RNConfigReader.PLAY_BUILD;
+	if (isPlayBuild) {
 		setBadgeCount();
 		return PushNotification.configure({
 			onNotification

@@ -41,7 +41,7 @@ import debounce from './utils/debounce';
 
 RNScreens.enableScreens();
 
-const configValue = RNConfigReader.PLAY_BUILD;
+const isPlayBuild = RNConfigReader.PLAY_BUILD;
 
 const parseDeepLinking = (url) => {
 	if (url) {
@@ -163,7 +163,7 @@ export default class Root extends React.Component {
 				if (!allowCrashReport) {
 					loggerConfig.autoNotify = false;
 					loggerConfig.registerBeforeSendCallback(() => false);
-					if (configValue) {
+					if (isPlayBuild) {
 						analytics().setAnalyticsCollectionEnabled(false);
 					}
 				}
