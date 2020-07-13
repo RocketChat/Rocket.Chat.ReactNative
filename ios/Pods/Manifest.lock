@@ -10,6 +10,8 @@ PODS:
   - Crashlytics (3.14.0):
     - Fabric (~> 1.10.2)
   - DoubleConversion (1.1.6)
+  - EXAppleAuthentication (2.2.1):
+    - UMCore
   - EXAV (8.1.0):
     - UMCore
     - UMFileSystemInterface
@@ -515,6 +517,7 @@ PODS:
 DEPENDENCIES:
   - BugsnagReactNative (from `../node_modules/bugsnag-react-native`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - EXAppleAuthentication (from `../node_modules/expo-apple-authentication/ios`)
   - EXAV (from `../node_modules/expo-av/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
@@ -655,6 +658,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/bugsnag-react-native"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  EXAppleAuthentication:
+    :path: "../node_modules/expo-apple-authentication/ios"
   EXAV:
     :path: "../node_modules/expo-av/ios"
   EXConstants:
@@ -826,6 +831,7 @@ SPEC CHECKSUMS:
   CocoaLibEvent: 2fab71b8bd46dd33ddb959f7928ec5909f838e3f
   Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
+  EXAppleAuthentication: 5b3da71bada29e2423d8ea27e5538ef0d75aba62
   EXAV: 2edd9cd30fe98d04b55325303c7ff01db02d1d0f
   EXConstants: 5304709b1bea70a4828f48ba4c7fc3ec3b2d9b17
   EXFileSystem: cf4232ba7c62dc49b78c2d36005f97b6fddf0b01
