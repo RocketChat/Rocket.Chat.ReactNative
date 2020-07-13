@@ -1,0 +1,27 @@
+#!/bin/bash
+SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+ROOT_FOLDER=${SCRIPTPATH%%/e2e*} #Gets path up to (but excluding) "e2e" - this assumes this script is always held within the e2e folder
+PAUSE_ON_FAIL_FOR_DEBUG=0
+
+TEST_SUBSET="${1:-}"
+
+function cleanup_and_exit () {
+    "$SCRIPTPATH/controlRCDemoEnv.sh" stop
+    exit $1
+}
+
+# INFRASTRUCTURE UP
+"$SCRIPTPATH/controlRCDemoEnv.sh" startandwait
+
+# RUN TESTS
+echo "Running tests"
+
+cd "$ROOT_FOLDER"
+npx detox test "$ROOT_FOLDER/e2e/tests/$TEST_SUBSET" -c ios.sim.release
+TEST_SUCCESS=$?
+if [ $TEST_SUCCESS != 0 ] && [ $PAUSE_ON_FAIL_FOR_DEBUG == 1 ]; then
+    read -n 1 -s -r -p "Paused for debugging failed tests. Press any key to continue." && echo
+fi
+cleanup_and_exit $TEST_SUCCESS
+
+

@@ -2,15 +2,7 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const data = require('../../data');
-const { tapBack, sleep, searchRoom } = require('../../helpers/app');
-
-async function mockMessage(message) {
-	await element(by.id('messagebox-input')).tap();
-	await element(by.id('messagebox-input')).typeText(`${ data.random }${ message }`);
-	await element(by.id('messagebox-send-message')).tap();
-	await waitFor(element(by.label(`${ data.random }${ message }`)).atIndex(0)).toExist().withTimeout(60000);
-	await expect(element(by.label(`${ data.random }${ message }`)).atIndex(0)).toExist();
-};
+const { mockMessage, tapBack, sleep, searchRoom } = require('../../helpers/app');
 
 async function navigateToRoom() {
 	await searchRoom(`private${ data.random }`);

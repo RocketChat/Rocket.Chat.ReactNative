@@ -18,7 +18,7 @@ describe('Profile screen', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
-		await login();
+		await login(data.profileChangeUser, data.profileChangeUserPassword);
 		await element(by.id('rooms-list-view-sidebar')).tap();
 		await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
 		await waitFor(element(by.id('sidebar-profile'))).toBeVisible().withTimeout(2000);
@@ -80,8 +80,8 @@ describe('Profile screen', () => {
 	describe('Usage', async() => {
 		it('should change name and username', async() => {
 			await element(by.type('UIScrollView')).atIndex(1).swipe('down');
-			await element(by.id('profile-view-name')).replaceText(`${ data.user }new`);
-			await element(by.id('profile-view-username')).replaceText(`${ data.user }new`);
+			await element(by.id('profile-view-name')).replaceText(`${ data.profileChangeUser }new`);
+			await element(by.id('profile-view-username')).replaceText(`${ data.profileChangeUser }new`);
 			await sleep(1000);
 			await element(by.type('UIScrollView')).atIndex(1).swipe('up');
 			await sleep(1000);
@@ -90,10 +90,10 @@ describe('Profile screen', () => {
 		});
 
 		it('should change email and password', async() => {
-			await element(by.id('profile-view-email')).replaceText(`diego.mello+e2e${ data.random }test@rocket.chat`);
-			await element(by.id('profile-view-new-password')).replaceText(`${ data.password }new`);
+			await element(by.id('profile-view-email')).replaceText(`${ data.profileChangeUser }${ data.random }@example.com`);
+			await element(by.id('profile-view-new-password')).replaceText(`${ data.profileChangeUserPassword }new`);
 			await element(by.id('profile-view-submit')).tap();
-			await element(by.type('_UIAlertControllerTextField')).replaceText(`${ data.password }`)
+			await element(by.type('_UIAlertControllerTextField')).replaceText(`${ data.profileChangeUserPassword }`)
 			// For some reason, replaceText does some type of submit, which submits the alert for us
 			// await element(by.label('Save').and(by.type('_UIAlertControllerActionView'))).tap();
 			await waitForToast();
