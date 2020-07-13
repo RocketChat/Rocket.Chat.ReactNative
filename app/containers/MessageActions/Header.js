@@ -78,7 +78,7 @@ const HeaderFooter = React.memo(({ onReaction, theme }) => (
 		style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
 		theme={theme}
 	>
-		<CustomIcon name='add-reaction' size={24} color={themes[theme].bodyText} />
+		<CustomIcon name='reaction-add' size={24} color={themes[theme].bodyText} />
 	</Button>
 ));
 HeaderFooter.propTypes = {

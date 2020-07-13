@@ -32,7 +32,7 @@ const Item = ({ item, theme }) => {
 						{ loading ? <ActivityIndicator theme={theme} /> : null }
 					</FastImage>
 				)
-				: <CustomIcon name='clip' size={36} color={themes[theme].actionTintColor} />
+				: <CustomIcon name='attach' size={36} color={themes[theme].actionTintColor} />
 			}
 		</TouchableOpacity>
 	);

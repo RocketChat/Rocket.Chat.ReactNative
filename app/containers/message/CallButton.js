@@ -22,7 +22,7 @@ const CallButton = React.memo(({
 				hitSlop={BUTTON_HIT_SLOP}
 			>
 				<>
-					<CustomIcon name='video-1' size={20} style={styles.buttonIcon} color={themes[theme].buttonText} />
+					<CustomIcon name='camera' size={20} style={styles.buttonIcon} color={themes[theme].buttonText} />
 					<Text style={[styles.buttonText, { color: themes[theme].buttonText }]}>{I18n.t('Click_to_join')}</Text>
 				</>
 			</Touchable>
