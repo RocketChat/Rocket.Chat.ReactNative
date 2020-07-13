@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, TouchableOpacity, Keyboard
+	View, TouchableOpacity
 } from 'react-native';
-import { KeyboardAccessoryView } from 'react-native-keyboard-input';
+import { KeyboardAccessoryView, KeyboardUtils } from 'react-native-keyboard-input';
 import Modal from 'react-native-modal';
 import equal from 'deep-equal';
 
@@ -19,8 +19,6 @@ import { isAndroid, isTablet } from '../../utils/deviceInfo';
 import Mentions from './Mentions';
 import CommandsPreview from './CommandsPreview';
 import { CustomIcon } from '../../lib/Icons';
-
-const ANIMATIONTIME = 300;
 
 class FullScreenComposer extends Component {
 	static propTypes = {
@@ -64,10 +62,12 @@ class FullScreenComposer extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			isOpen: props.isFullScreen
+		};
 	}
 
-	shouldComponentUpdate(nextProps) {
+	shouldComponentUpdate(nextProps, nextState) {
 		const {
 			theme,
 			replying,
@@ -78,8 +78,8 @@ class FullScreenComposer extends Component {
 			mentions,
 			commandPreview,
 			message,
-			isFullScreen
 		} = this.props;
+		const { isOpen } = this.state;
 
 		if (nextProps.theme !== theme) {
 			return true;
@@ -99,7 +99,7 @@ class FullScreenComposer extends Component {
 		if (nextProps.recording !== recording) {
 			return true;
 		}
-		if (nextProps.isFullScreen !== isFullScreen) {
+		if (nextState.isOpen !== isOpen) {
 			return true;
 		}
 		if (!equal(nextProps.mentions, mentions)) {
@@ -116,7 +116,10 @@ class FullScreenComposer extends Component {
 
 	closeModal = () => {
 		const { toggleFullScreen } = this.props;
-		Keyboard.dismiss();
+		KeyboardUtils.dismiss();
+		this.setState(prevState => ({
+			isOpen: !prevState.isOpen
+		}));
 		toggleFullScreen();
 	}
 
@@ -204,9 +207,9 @@ class FullScreenComposer extends Component {
 			innerRef,
 			editing,
 			submit,
-			isFullScreen
 		} = this.props;
 		const { component, tracking } = innerRef;
+		const { isOpen } = this.state;
 		const buttonStyle = {
 			...styles.fullScreenComposerCloseButton,
 			backgroundColor: editing ? themes[theme].chatComponentBackground
@@ -223,11 +226,9 @@ class FullScreenComposer extends Component {
 
 			<Modal
 				style={{ margin: 0 }}
-				isVisible={isFullScreen}
+				isVisible={isOpen}
 				useNativeDriver
 				hideModalContentWhileAnimating
-				animationInTiming={ANIMATIONTIME}
-				animationOutTiming={ANIMATIONTIME}
 				coverScreen={false}
 			>
 				<View style={{ backgroundColor, flex: 1 }}>
