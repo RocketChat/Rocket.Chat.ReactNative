@@ -3,14 +3,14 @@ const {
 } = require('detox');
 const OTP = require('otp.js');
 const GA = OTP.googleAuthenticator;
-const { navigateToLogin, login, tapBack, sleep, searchRoom } = require('../../helpers/app');
+const { navigateToLogin, login, mockMessage, tapBack, sleep, searchRoom, createUser } = require('../../helpers/app');
 const data = require('../../data');
 
 describe('Broadcast room', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
-		await login();
+		await login(data.user, data.password);
 	});
 
 	it('should create broadcast room', async() => {
@@ -28,8 +28,9 @@ describe('Broadcast room', () => {
 		await sleep(1000);
 		await waitFor(element(by.id('create-channel-view'))).toExist().withTimeout(5000);
 		await element(by.id('create-channel-name')).replaceText(`broadcast${ data.random }`);
-		await sleep(1000);
-		await element(by.id('create-channel-broadcast')).tap();
+		await sleep(2000);
+		await element(by.id('create-channel-broadcast')).tap(); //FLAKY
+		await expect(element(by.id('create-channel-broadcast'))).toHaveValue('1');
 		await sleep(1000);
 		await element(by.id('create-channel-submit')).tap();
 		await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(60000);
@@ -51,11 +52,7 @@ describe('Broadcast room', () => {
 
 	it('should send message', async() => {
 		await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
-		await element(by.id('messagebox-input')).tap();
-		await element(by.id('messagebox-input')).typeText(`${ data.random }message`);
-		await element(by.id('messagebox-send-message')).tap();
-		await waitFor(element(by.label(`${ data.random }message`)).atIndex(0)).toExist().withTimeout(60000);
-		await expect(element(by.label(`${ data.random }message`)).atIndex(0)).toBeVisible();
+		await mockMessage('message');
 		await tapBack();
 	});
 
@@ -108,10 +105,6 @@ describe('Broadcast room', () => {
 	});
 
 	it('should reply broadcasted message', async() => {
-		await element(by.id('messagebox-input')).tap();
-		await element(by.id('messagebox-input')).typeText(`${ data.random }broadcastreply`);
-		await element(by.id('messagebox-send-message')).tap();
-		await waitFor(element(by.label(`${ data.random }broadcastreply`)).atIndex(0)).toBeVisible().withTimeout(60000);
-		await expect(element(by.label(`${ data.random }broadcastreply`)).atIndex(0)).toBeVisible();
+		await mockMessage('broadcastreply');
 	});
 });
