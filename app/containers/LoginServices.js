@@ -5,6 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Base64 } from 'js-base64';
+import * as AppleAuthentication from 'expo-apple-authentication';
 
 import { withTheme } from '../theme';
 import sharedStyles from '../views/Styles';
@@ -16,18 +17,20 @@ import Touch from '../utils/touch';
 import I18n from '../i18n';
 import random from '../utils/random';
 
+const BUTTON_HEIGHT = 48;
 const SERVICE_HEIGHT = 58;
+const BORDER_RADIUS = 2;
 const SERVICES_COLLAPSED_HEIGHT = 174;
 
 const styles = StyleSheet.create({
 	serviceButton: {
-		borderRadius: 2,
+		borderRadius: BORDER_RADIUS,
 		marginBottom: 10
 	},
 	serviceButtonContainer: {
-		borderRadius: 2,
+		borderRadius: BORDER_RADIUS,
 		width: '100%',
-		height: 48,
+		height: BUTTON_HEIGHT,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
@@ -288,6 +291,36 @@ class LoginServices extends React.PureComponent {
 			default:
 				break;
 		}
+
+		if (name === 'apple') {
+			return (
+				<AppleAuthentication.AppleAuthenticationButton
+					buttonType={AppleAuthentication.AppleAuthenticationButtonType.CONTINUE}
+					buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+					cornerRadius={BORDER_RADIUS}
+					style={[styles.serviceButton, { height: BUTTON_HEIGHT }]}
+					onPress={async() => {
+						// try {
+						// 	const credential = await AppleAuthentication.signInAsync({
+						// 		requestedScopes: [
+						// 			AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+						// 			AppleAuthentication.AppleAuthenticationScope.EMAIL
+						// 		],
+						// 	});
+						// 	// signed in
+						// } catch (e) {
+						// 	if (e.code === 'ERR_CANCELED') {
+						// 		// handle that the user canceled the sign-in flow
+						// 	} else {
+						// 		// handle other errors
+						// 	}
+						// }
+						alert('Uncomment above');
+					}}
+				/>
+			)
+		}
+
 		name = name.charAt(0).toUpperCase() + name.slice(1);
 		const { CAS_enabled, theme } = this.props;
 		let buttonText;
@@ -332,6 +365,8 @@ class LoginServices extends React.PureComponent {
 		if (length > 3 && separator) {
 			return (
 				<>
+					{/* It should be in `services` */}
+					{this.renderItem({ name: 'apple' })}
 					<Animated.View style={style}>
 						{Object.values(services).map(service => this.renderItem(service))}
 					</Animated.View>
@@ -341,6 +376,8 @@ class LoginServices extends React.PureComponent {
 		}
 		return (
 			<>
+				{/* It should be in `services` */}
+				{this.renderItem({ name: 'apple' })}
 				{Object.values(services).map(service => this.renderItem(service))}
 				{this.renderServicesSeparator()}
 			</>
