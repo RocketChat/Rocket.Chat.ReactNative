@@ -156,7 +156,7 @@ export default class RecordAudio extends React.PureComponent {
 					path: fileURI,
 					size: fileData.size
 				};
-			
+
 				onFinish(fileInfo);
 			} catch (error) {
 				// Do nothing

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	Alert, Keyboard, NativeModules
+	Alert, Keyboard, NativeModules, BackHandler
 } from 'react-native';
 import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -203,6 +203,7 @@ class MessageBox extends Component {
 
 		if (isAndroid) {
 			await import('./EmojiKeyboard');
+			BackHandler.addEventListener('backPress', this.backPress);
 		}
 
 		if (isTablet) {
@@ -322,6 +323,15 @@ class MessageBox extends Component {
 		if (isTablet) {
 			EventEmiter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
+		if (isAndroid) {
+			BackHandler.removeEventListener('backPress');
+		}
+	}
+
+	backPress = () => {
+		const { isFullScreen } = this.state;
+
+		return isFullScreen;
 	}
 
 	onChangeText = (text) => {
@@ -671,12 +681,6 @@ class MessageBox extends Component {
 	}
 
 	openEmoji = () => {
-		const { isFullScreen } = this.state;
-
-		if (isFullScreen) {
-			Keyboard.dismiss();
-		}
-
 		this.setState({
 			showEmojiKeyboard: true
 		});

@@ -228,6 +228,7 @@ class FullScreenComposer extends Component {
 				hideModalContentWhileAnimating
 				animationInTiming={ANIMATIONTIME}
 				animationOutTiming={ANIMATIONTIME}
+				coverScreen={false}
 			>
 				<View style={{ backgroundColor, flex: 1 }}>
 					<TouchableOpacity onPress={() => this.closeModal()} style={buttonStyle}>
