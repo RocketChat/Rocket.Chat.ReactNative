@@ -299,7 +299,7 @@ class LoginServices extends React.PureComponent {
 					buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
 					cornerRadius={BORDER_RADIUS}
 					style={[styles.serviceButton, { height: BUTTON_HEIGHT }]}
-					onPress={async() => {
+					onPress={() => {
 						// try {
 						// 	const credential = await AppleAuthentication.signInAsync({
 						// 		requestedScopes: [
@@ -318,7 +318,7 @@ class LoginServices extends React.PureComponent {
 						alert('Uncomment above');
 					}}
 				/>
-			)
+			);
 		}
 
 		name = name.charAt(0).toUpperCase() + name.slice(1);
