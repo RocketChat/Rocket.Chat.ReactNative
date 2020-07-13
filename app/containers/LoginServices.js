@@ -10,12 +10,12 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 import { withTheme } from '../theme';
 import sharedStyles from '../views/Styles';
 import { themes } from '../constants/colors';
-import { loginRequest as loginRequestAction } from '../actions/login';
 import Button from './Button';
 import OrSeparator from './OrSeparator';
 import Touch from '../utils/touch';
 import I18n from '../i18n';
 import random from '../utils/random';
+import RocketChat from '../lib/rocketchat';
 
 const BUTTON_HEIGHT = 48;
 const SERVICE_HEIGHT = 58;
@@ -190,6 +190,21 @@ class LoginServices extends React.PureComponent {
 		this.openOAuth({ url, ssoToken, authType: 'cas' });
 	}
 
+	onPressAppleLogin = async() => {
+		try {
+			const { fullName, email, identityToken } = await AppleAuthentication.signInAsync({
+				requestedScopes: [
+					AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+					AppleAuthentication.AppleAuthenticationScope.EMAIL
+				]
+			});
+
+			await RocketChat.loginOAuthOrSso({ fullName, email, identityToken });
+		} catch {
+			// Do nothing
+		}
+	}
+
 	getOAuthState = () => {
 		const credentialToken = random(43);
 		return Base64.encodeURI(JSON.stringify({ loginStyle: 'popup', credentialToken, isCordova: true }));
@@ -288,6 +303,10 @@ class LoginServices extends React.PureComponent {
 				onPress = () => this.onPressCas();
 				break;
 			}
+			case 'apple': {
+				onPress = () => this.onPressAppleLogin();
+				break;
+			}
 			default:
 				break;
 		}
@@ -299,24 +318,7 @@ class LoginServices extends React.PureComponent {
 					buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
 					cornerRadius={BORDER_RADIUS}
 					style={[styles.serviceButton, { height: BUTTON_HEIGHT }]}
-					onPress={() => {
-						// try {
-						// 	const credential = await AppleAuthentication.signInAsync({
-						// 		requestedScopes: [
-						// 			AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-						// 			AppleAuthentication.AppleAuthenticationScope.EMAIL
-						// 		],
-						// 	});
-						// 	// signed in
-						// } catch (e) {
-						// 	if (e.code === 'ERR_CANCELED') {
-						// 		// handle that the user canceled the sign-in flow
-						// 	} else {
-						// 		// handle other errors
-						// 	}
-						// }
-						alert('Uncomment above');
-					}}
+					onPress={onPress}
 				/>
 			);
 		}
@@ -365,8 +367,6 @@ class LoginServices extends React.PureComponent {
 		if (length > 3 && separator) {
 			return (
 				<>
-					{/* It should be in `services` */}
-					{this.renderItem({ name: 'apple' })}
 					<Animated.View style={style}>
 						{Object.values(services).map(service => this.renderItem(service))}
 					</Animated.View>
@@ -376,8 +376,6 @@ class LoginServices extends React.PureComponent {
 		}
 		return (
 			<>
-				{/* It should be in `services` */}
-				{this.renderItem({ name: 'apple' })}
 				{Object.values(services).map(service => this.renderItem(service))}
 				{this.renderServicesSeparator()}
 			</>
@@ -393,8 +391,4 @@ const mapStateToProps = state => ({
 	services: state.login.services
 });
 
-const mapDispatchToProps = dispatch => ({
-	loginRequest: params => dispatch(loginRequestAction(params))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(LoginServices));
+export default connect(mapStateToProps)(withTheme(LoginServices));
