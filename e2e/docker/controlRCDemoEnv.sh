@@ -1,6 +1,8 @@
 #!/bin/bash
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
+PAUSE_ON_FAIL_FOR_DEBUG=0
+
 COMMAND="start"
 if [ "$1" != "" ]; then
     if [[ "$1" =~ ^(start|startandwait|stop)$ ]]; then
@@ -43,15 +45,16 @@ if [ "$COMMAND" == "start" ]; then
             echo "Waiting for server to be up ($ATTEMPT_NUMBER of $MAX_ATTEMPTS)"
             LOGS=$(docker logs rc_test_env_rocketchat_1  2> /dev/null)
             if grep -q 'SERVER RUNNING' <<< $LOGS ; then
-            echo "RocketChat is ready!"
-            break
+                echo "RocketChat is ready!"
+                break
             else
                 if [ $ATTEMPT_NUMBER == $MAX_ATTEMPTS ]; then
                     echo "RocketChat failed to start"
                     if [ $PAUSE_ON_FAIL_FOR_DEBUG == 1 ]; then
                         read -n 1 -s -r -p "Press any key to tear down infrastructure." && echo
                     fi
-                    cleanup_and_exit 1
+                    docker-compose down --volumes
+                    exit 1
                 fi
             fi
             sleep 4
