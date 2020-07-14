@@ -1077,6 +1077,10 @@ const RocketChat = {
 			return 'cas';
 		}
 
+		if (authName === 'apple' && isIOS) {
+			return 'apple';
+		}
+
 		// TODO: remove this after other oauth providers are implemented. e.g. Drupal, github_enterprise
 		const availableOAuth = ['facebook', 'github', 'gitlab', 'google', 'linkedin', 'meteor-developer', 'twitter', 'wordpress'];
 		return availableOAuth.includes(authName) ? 'oauth' : 'not_supported';

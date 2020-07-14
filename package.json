@@ -43,6 +43,7 @@
     "deep-equal": "2.0.3",
     "ejson": "2.2.0",
     "eslint-config-airbnb": "^18.1.0",
+    "expo-apple-authentication": "^2.2.1",
     "expo-av": "^8.1.0",
     "expo-file-system": "^8.1.0",
     "expo-haptics": "^8.1.0",
