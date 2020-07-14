@@ -130,6 +130,7 @@ class SocketJobService : JobService() {
         const val EXTRA_COMMAND_STOP = "${BuildConfig.APPLICATION_ID}.extra.COMMAND_STOP"
 
         fun startService(context: Context) {
+            val context = context.applicationContext
             val serviceName = ComponentName(
                     context.packageName,
                     SocketJobService::class.java.name)
@@ -150,6 +151,7 @@ class SocketJobService : JobService() {
         }
 
         fun serviceReconnect(context: Context) {
+            val context = context.applicationContext
             val serviceName = ComponentName(
                     context.packageName,
                     SocketJobService::class.java.name)
@@ -172,6 +174,7 @@ class SocketJobService : JobService() {
         }
 
         fun stopService(context: Context) {
+            val context = context.applicationContext
             val serviceName = ComponentName(
                     context.packageName,
                     SocketJobService::class.java.name

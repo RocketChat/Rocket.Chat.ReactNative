@@ -19,14 +19,8 @@ public class MainActivity extends ReactFragmentActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        SocketServiceUtils.INSTANCE.startService(this);
-    }
-
-    @Override
     protected void onPause() {
-        SocketServiceUtils.INSTANCE.startService(this);
+        SocketServiceUtils.INSTANCE.serviceReconnect(this);
         super.onPause();
     }
 

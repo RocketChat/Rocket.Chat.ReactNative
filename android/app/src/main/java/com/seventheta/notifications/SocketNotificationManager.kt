@@ -79,26 +79,29 @@ class SocketNotificationManager(val context: Context) {
         }
 
         val clients = allPrefs.keys.mapNotNull { prefKey ->
-            return@mapNotNull if (userTokenRegex.containsMatchIn(prefKey)) {
-                val url = URL(prefKey.split("-")[1])
-                val host = url.host
-                val port = url.port.let { port ->
-                    return@let if (port == -1) {
-                        null
-                    } else {
-                        port
-                    }
-                }
-                val userId = allPrefs[prefKey] as String
-                val userTokenKey = "reactnativemeteor_usertoken-$userId"
-                val userToken = allPrefs[userTokenKey] as String
-                val loginData = SocketNotificationClient.LoginData(host, port, userId, userToken)
-                SocketNotificationClient(context, loginData, onNotification = { data ->
-                    displayNotification(loginData, data)
-                })
-            } else {
+            val potentialUrlString = prefKey.substringAfter(serverUrlDelimiter, "")
+            val url = try {
+                URL(potentialUrlString)
+            } catch (e: Throwable) {
                 null
+            } ?: return@mapNotNull null
+
+            val userId = allPrefs[prefKey] as? String ?: return@mapNotNull null
+            val userTokenKey = "$serverUrlDelimiter$userId"
+            val userToken = allPrefs[userTokenKey] as? String ?: return@mapNotNull null
+
+            val host = url.host
+            val port = url.port.let { port ->
+                return@let if (port == -1) {
+                    null
+                } else {
+                    port
+                }
             }
+            val loginData = SocketNotificationClient.LoginData(host, port, userId, userToken)
+            return@mapNotNull SocketNotificationClient(context, loginData, onNotification = { data ->
+                displayNotification(loginData, data)
+            })
         }
 
         if (clients.isEmpty()) {
@@ -196,6 +199,6 @@ class SocketNotificationManager(val context: Context) {
     companion object {
 
         const val SOCKET_NOTIFICATIONS_KEY = "RC_SOCKET_NOTIFICATIONS_KEY"
-        val userTokenRegex = "reactnativemeteor_usertoken-[a-z][a-z0-9+\\-.]*://([a-z0-9\\-._~%!\$&'()*+,;=]+@)?([a-z0-9\\-._~%]+|\\[[a-f0-9:.]+\\]|\\[v[a-f0-9][a-z0-9\\-._~%!\$&'()*+,;=:]+\\])(:[0-9]+)?(/[a-z0-9\\-._~%!\$&'()*+,;=:@]+)*/?(\\?[a-z0-9\\-._~%!\$&'()*+,;=:@/?]*)?(#[a-z0-9\\-._~%!\$&'()*+,;=:@/?]*)?".toRegex()
+        val serverUrlDelimiter = "reactnativemeteor_usertoken-"
     }
 }
