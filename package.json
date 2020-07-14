@@ -129,6 +129,7 @@
     "@storybook/react-native": "5.3.18",
     "@storybook/theming": "5.3.18",
     "@types/react-native": "^0.62.7",
+    "axios": "^0.19.2",
     "babel-core": "^6.26.3",
     "babel-eslint": "^9.0.0",
     "babel-jest": "^24.1.0",
