@@ -12,10 +12,10 @@ index 02e1db6..f7d6281 100644
      },
    });
 diff --git a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
-index 274f381..5a2a220 100644
+index 274f381..9de23d1 100644
 --- a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
 +++ b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
-@@ -9,6 +9,7 @@
+@@ -9,10 +9,12 @@
  
  #import <mutex>
  
@@ -23,7 +23,12 @@ index 274f381..5a2a220 100644
  #import <React/RCTNetworking.h>
  #import <ReactCommon/RCTTurboModule.h>
  
-@@ -58,6 +59,81 @@ - (BOOL)canHandleRequest:(NSURLRequest *)request
+ #import "RCTNetworkPlugins.h"
++#import "SecureStorage.h"
+ 
+ @interface RCTHTTPRequestHandler () <NSURLSessionDataDelegate, RCTTurboModule>
+ 
+@@ -58,6 +60,85 @@ - (BOOL)canHandleRequest:(NSURLRequest *)request
    return [schemes containsObject:request.URL.scheme.lowercaseString];
  }
  
@@ -83,13 +88,17 @@ index 274f381..5a2a220 100644
 +-(void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler {
 +
 +  NSString *host = challenge.protectionSpace.host;
-+  // AppGroup MMKV
-+  NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
-+  [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
 +
-+  // Start the MMKV container
-+  MMKV *mmkv = [MMKV mmkvWithID:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"] mode:MMKVMultiProcess];
-+  NSDictionary *clientSSL = [mmkv getObjectOfClass:[NSDictionary class] forKey:host];
++  // Read the clientSSL info from MMKV
++  __block NSDictionary *clientSSL;
++  SecureStorage *secureStorage = [[SecureStorage alloc] init];
++  [secureStorage getSecureKey:@"636f6d2e4d4d4b562e636861742e726f636b65742e72656163746e6174697665" callback:^(NSArray *response) {
++    NSString *key = [response objectAtIndex:1];
++    NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
++    MMKV *mmkv = [MMKV mmkvWithID:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"] cryptKey:cryptKey mode:MMKVMultiProcess];
++
++    clientSSL = [mmkv getObjectOfClass:[NSDictionary class] forKey:host];
++  }];
 +
 +  NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
 +
@@ -106,18 +115,20 @@ index 274f381..5a2a220 100644
                           withDelegate:(id<RCTURLRequestDelegate>)delegate
  {
 diff --git a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
-index b967c14..96e6245 100644
+index b967c14..9ded26b 100644
 --- a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
 +++ b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
-@@ -23,6 +23,7 @@
- #import <CommonCrypto/CommonDigest.h>
+@@ -24,6 +24,9 @@
  #import <React/RCTAssert.h>
  #import <React/RCTLog.h>
-+#import <MMKV/MMKV.h>
  
++#import <MMKV/MMKV.h>
++#import "SecureStorage.h"
++
  typedef NS_ENUM(NSInteger, RCTSROpCode)  {
    RCTSROpCodeTextFrame = 0x1,
-@@ -478,6 +479,29 @@ - (void)didConnect
+   RCTSROpCodeBinaryFrame = 0x2,
+@@ -478,6 +481,29 @@ - (void)didConnect
    [self _readHTTPHeader];
  }
  
@@ -147,17 +158,20 @@ index b967c14..96e6245 100644
  - (void)_initializeStreams
  {
    assert(_url.port.unsignedIntValue <= UINT32_MAX);
-@@ -515,6 +539,22 @@ - (void)_initializeStreams
+@@ -515,6 +541,25 @@ - (void)_initializeStreams
      RCTLogInfo(@"SocketRocket: In debug mode.  Allowing connection to any root cert");
  #endif
  
-+    // AppGroup MMKV
-+    NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
-+    [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
++    // Read the clientSSL info from MMKV
++    __block NSDictionary *clientSSL;
++    SecureStorage *secureStorage = [[SecureStorage alloc] init];
++    [secureStorage getSecureKey:@"636f6d2e4d4d4b562e636861742e726f636b65742e72656163746e6174697665" callback:^(NSArray *response) {
++      NSString *key = [response objectAtIndex:1];
++      NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
++      MMKV *mmkv = [MMKV mmkvWithID:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"] cryptKey:cryptKey mode:MMKVMultiProcess];
 +
-+    // Start the MMKV container
-+    MMKV *mmkv = [MMKV mmkvWithID:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"] mode:MMKVMultiProcess];
-+    NSDictionary *clientSSL = [mmkv getObjectOfClass:[NSDictionary class] forKey:host];
++      clientSSL = [mmkv getObjectOfClass:[NSDictionary class] forKey:host];
++    }];
 +
 +    // SSL Pinning
 +    if (clientSSL != (id)[NSNull null]) {
@@ -170,7 +184,7 @@ index b967c14..96e6245 100644
      [_outputStream setProperty:SSLOptions
                          forKey:(__bridge id)kCFStreamPropertySSLSettings];
    }
-@@ -594,6 +634,7 @@ - (void)closeWithCode:(NSInteger)code reason:(NSString *)reason
+@@ -594,6 +639,7 @@ - (void)closeWithCode:(NSInteger)code reason:(NSString *)reason
        }
      }
  
