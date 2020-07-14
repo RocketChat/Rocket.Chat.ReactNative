@@ -60,7 +60,7 @@ const setup = async () => {
     for (var userKey in data.users) {
         if (data.users.hasOwnProperty(userKey)) {
             const user = data.users[userKey]
-            await createUser(user.username, user.password, user.username, `${user.username}@example.com`)
+            await createUser(user.username, user.password, user.username, user.email)
         }
     }
 
