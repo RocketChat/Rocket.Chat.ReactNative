@@ -280,6 +280,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	renderItem = (service) => {
+		const { CAS_enabled, theme } = this.props;
 		let { name } = service;
 		name = name === 'meteor-developer' ? 'meteor' : name;
 		const icon = `icon_${ name }`;
@@ -315,7 +316,7 @@ class LoginServices extends React.PureComponent {
 			return (
 				<AppleAuthentication.AppleAuthenticationButton
 					buttonType={AppleAuthentication.AppleAuthenticationButtonType.CONTINUE}
-					buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+					buttonStyle={theme === 'light' ? AppleAuthentication.AppleAuthenticationButtonStyle.BLACK : AppleAuthentication.AppleAuthenticationButtonStyle.WHITE}
 					cornerRadius={BORDER_RADIUS}
 					style={[styles.serviceButton, { height: BUTTON_HEIGHT }]}
 					onPress={onPress}
@@ -324,7 +325,6 @@ class LoginServices extends React.PureComponent {
 		}
 
 		name = name.charAt(0).toUpperCase() + name.slice(1);
-		const { CAS_enabled, theme } = this.props;
 		let buttonText;
 		if (isSaml || (service.service === 'cas' && CAS_enabled)) {
 			buttonText = <Text style={[styles.serviceName, isSaml && { color: service.buttonLabelColor }]}>{name}</Text>;
