@@ -38,19 +38,19 @@ Both Flipper's desktop app and native mobile SDKs are open-source and MIT licens
 
 This repository includes all parts of Flipper. This includes:
 
-* Flipper's desktop app built using [Electron](https://electronjs.org) (`/src`)
+* Flipper's desktop app built using [Electron](https://electronjs.org) (`/desktop`)
 * native Flipper SDKs for iOS (`/iOS`)
 * native Flipper SDKs for Android (`/android`)
 * Plugins:
-  * Logs (`/src/device-plugins/logs`)
-  * Layout inspector (`/src/plugins/layout`)
-  * Network inspector (`/src/plugins/network`)
-  * Shared Preferences/NSUserDefaults inspector (`/src/plugins/shared_preferences`)
+  * Logs (`/desktop/src/device-plugins/logs`)
+  * Layout inspector (`/desktop/plugins/layout`)
+  * Network inspector (`/desktop/plugins/network`)
+  * Shared Preferences/NSUserDefaults inspector (`/desktop/plugins/shared_preferences`)
 * website and documentation (`/website` / `/docs`)
 
 # Getting started
 
-Please refer to our [Getting Started guide](https://fbflipper.com/docs/getting-started.html) to set up Flipper.
+Please refer to our [Getting Started guide](https://fbflipper.com/docs/getting-started/index) to set up Flipper.
 
 ## Requirements
 
@@ -66,7 +66,7 @@ Please refer to our [Getting Started guide](https://fbflipper.com/docs/getting-s
 
 ```
 git clone https://github.com/facebook/flipper.git
-cd flipper
+cd flipper/desktop
 yarn
 yarn start
 ```
@@ -119,9 +119,9 @@ Alternatively, the app can be started on `iOS` by running `yarn ios`.
 
 Older yarn versions might show an error / hang with the message 'Waiting for the other yarn instance to finish'. If that happens, run the command `yarn` first separately in the directory `react-native/react-native-flipper`.
 
-## Documentation
+# Documentation
 
-Find the full documentation for this project at [fbflipper.com](https://fbflipper.com/docs).
+Find the full documentation for this project at [fbflipper.com](https://fbflipper.com/).
 
 Our documentation is built with [Docusaurus](https://docusaurus.io/). You can build
 it locally by running this:
