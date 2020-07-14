@@ -23,6 +23,7 @@
     }
   },
   "dependencies": {
+    "@codler/react-native-keyboard-aware-scroll-view": "^1.0.1",
     "@nozbe/watermelondb": "0.16.2",
     "@react-native-community/art": "^1.2.0",
     "@react-native-community/async-storage": "^1.9.0",
@@ -75,7 +76,6 @@
     "react-native-image-crop-picker": "RocketChat/react-native-image-crop-picker",
     "react-native-image-progress": "^1.1.1",
     "react-native-jitsi-meet": "2.1.1",
-    "react-native-keyboard-aware-scroll-view": "0.9.1",
     "react-native-keyboard-input": "RocketChat/react-native-keyboard-input",
     "react-native-keyboard-tracking-view": "5.7.0",
     "react-native-keycommands": "2.0.3",
