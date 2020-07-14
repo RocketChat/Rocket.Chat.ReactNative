@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m b/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m
-index edc4fd4..57693fd 100644
+index edc4fd4..28434f4 100644
 --- a/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m
 +++ b/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m
 @@ -3,6 +3,8 @@
@@ -11,7 +11,7 @@ index edc4fd4..57693fd 100644
  
  @implementation RNNotificationEventHandler {
      RNNotificationsStore* _store;
-@@ -28,9 +30,119 @@ - (void)didReceiveForegroundNotification:(UNNotification *)notification withComp
+@@ -28,9 +30,126 @@ - (void)didReceiveForegroundNotification:(UNNotification *)notification withComp
      [RNEventEmitter sendEvent:RNNotificationReceivedForeground body:[RNNotificationParser parseNotification:notification]];
  }
  
@@ -53,6 +53,13 @@ index edc4fd4..57693fd 100644
 +  __block MMKV *mmkv;
 +  SecureStorage *secureStorage = [[SecureStorage alloc] init];
 +  [secureStorage getSecureKey:@"636f6d2e4d4d4b562e636861742e726f636b65742e72656163746e6174697665" callback:^(NSArray *response) {
++    // error handling
++    if ([response objectAtIndex:0]) {
++        return @{
++            @"userId": @"",
++            @"userToken": @""
++        };
++    }
 +    NSString *key = [response objectAtIndex:1];
 +    NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
 +    mmkv = [MMKV mmkvWithID:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"] cryptKey:cryptKey mode:MMKVMultiProcess];
