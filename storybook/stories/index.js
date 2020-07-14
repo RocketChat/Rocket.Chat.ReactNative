@@ -9,6 +9,7 @@ import Message from './Message';
 import UiKitMessage from './UiKitMessage';
 import UiKitModal from './UiKitModal';
 import Markdown from './Markdown';
+import MessageBox from './MessageBox';
 // import RoomViewHeader from './RoomViewHeader';
 
 import MessageContext from '../../app/containers/message/Context';
@@ -32,7 +33,13 @@ const reducers = combineReducers({
 		}
 	}),
 	meteor: () => ({ connected: true }),
-	activeUsers: () => ({ abc: { status: 'online', statusText: 'dog' } })
+	activeUsers: () => ({ abc: { status: 'online', statusText: 'dog' } }),
+	server: () => ({
+		server: baseUrl
+	}),
+	settings: () => ({
+		Message_TimeFormat: 'LT'
+	})
 });
 const store = createStore(reducers);
 
@@ -61,6 +68,9 @@ storiesOf('RoomItem', module)
 storiesOf('Message', module)
 	.addDecorator(messageDecorator)
 	.add('list message', () => <Message theme={theme} />);
+storiesOf('MessageBox', module)
+	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
+	.add('list messageBox', () => (<MessageBox theme={theme} />));
 
 storiesOf('UiKitMessage', module)
 	.addDecorator(messageDecorator)

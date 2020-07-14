@@ -57,9 +57,16 @@ class FullScreenComposer extends Component {
 			username: PropTypes.string,
 			token: PropTypes.string
 		}),
-		innerRef: PropTypes.object
+		innerRef: PropTypes.object,
+		autoFocus: PropTypes.bool,
+		backdropOpacity: PropTypes.number
 	};
 
+	static defaultProps = {
+		autoFocus: true,
+		backdropOpacity: 0.70 // Default value of backdropOpacity in React native modal
+	}
+	
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -207,6 +214,8 @@ class FullScreenComposer extends Component {
 			innerRef,
 			editing,
 			submit,
+			autoFocus,
+			backdropOpacity
 		} = this.props;
 		const { component, tracking } = innerRef;
 		const { isOpen } = this.state;
@@ -230,6 +239,7 @@ class FullScreenComposer extends Component {
 				useNativeDriver
 				hideModalContentWhileAnimating
 				coverScreen={false}
+				backdropOpacity={backdropOpacity}
 			>
 				<View style={{ backgroundColor, flex: 1 }}>
 					<TouchableOpacity onPress={() => this.closeModal()} style={buttonStyle}>
@@ -246,7 +256,7 @@ class FullScreenComposer extends Component {
 						underlineColorAndroid='transparent'
 						defaultValue={text}
 						multiline
-						autoFocus
+						autoFocus={autoFocus}
 						editable={!recording}
 						testID='full-screen-messagebox-input'
 						theme={theme}
