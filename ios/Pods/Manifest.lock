@@ -10,6 +10,8 @@ PODS:
   - Crashlytics (3.14.0):
     - Fabric (~> 1.10.2)
   - DoubleConversion (1.1.6)
+  - EXAppleAuthentication (2.2.1):
+    - UMCore
   - EXAV (8.1.0):
     - UMCore
     - UMFileSystemInterface
@@ -439,7 +441,7 @@ PODS:
     - React
   - rn-fetch-blob (0.12.0):
     - React-Core
-  - RNBootSplash (2.2.4):
+  - RNBootSplash (2.2.5):
     - React
   - RNCAsyncStorage (1.10.3):
     - React
@@ -516,6 +518,7 @@ PODS:
 DEPENDENCIES:
   - BugsnagReactNative (from `../node_modules/bugsnag-react-native`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - EXAppleAuthentication (from `../node_modules/expo-apple-authentication/ios`)
   - EXAV (from `../node_modules/expo-av/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
@@ -655,6 +658,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/bugsnag-react-native"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  EXAppleAuthentication:
+    :path: "../node_modules/expo-apple-authentication/ios"
   EXAV:
     :path: "../node_modules/expo-av/ios"
   EXConstants:
@@ -821,6 +826,7 @@ SPEC CHECKSUMS:
   CocoaLibEvent: 2fab71b8bd46dd33ddb959f7928ec5909f838e3f
   Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
   DoubleConversion: cde416483dac037923206447da6e1454df403714
+  EXAppleAuthentication: 5b3da71bada29e2423d8ea27e5538ef0d75aba62
   EXAV: 2edd9cd30fe98d04b55325303c7ff01db02d1d0f
   EXConstants: 5304709b1bea70a4828f48ba4c7fc3ec3b2d9b17
   EXFileSystem: cf4232ba7c62dc49b78c2d36005f97b6fddf0b01
@@ -893,7 +899,7 @@ SPEC CHECKSUMS:
   ReactNativeKeyboardTrackingView: 02137fac3b2ebd330d74fa54ead48b14750a2306
   rn-extensions-share: 8db79372089567cbc5aefe8444869bbc808578d3
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
-  RNBootSplash: 7cb9b4fe7e94177edc0d11010f7631d79db2f5e9
+  RNBootSplash: b3836aa90c5bec690c6cd3c9ab355fcf98d0fe1d
   RNCAsyncStorage: cd7234ff15c010723ed7c499ae4eedc605eac1fd
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNDateTimePicker: 4bd49e09f91ca73d69119a9e1173b0d43b82f5e5

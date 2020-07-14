@@ -769,7 +769,7 @@ class RoomView extends React.Component {
 			if (handleCommandScroll(event)) {
 				const offset = input === 'UIKeyInputUpArrow' ? 100 : -100;
 				this.offset += offset;
-				this.flatList.scrollToOffset({ offset: this.offset });
+				this.flatList?.scrollToOffset({ offset: this.offset });
 			} else if (handleCommandRoomActions(event)) {
 				this.goRoomActionsView();
 			} else if (handleCommandSearchMessages(event)) {

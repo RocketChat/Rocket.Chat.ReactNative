@@ -123,7 +123,7 @@ class ShareView extends Component {
 			item.error = error;
 
 			// get video thumbnails
-			if (item.mime?.match(/video/)) {
+			if (item.mime?.match?.(/video/)) {
 				try {
 					const { uri } = await VideoThumbnails.getThumbnailAsync(item.path);
 					item.uri = uri;
