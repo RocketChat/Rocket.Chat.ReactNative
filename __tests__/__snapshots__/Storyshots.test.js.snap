@@ -4994,6 +4994,1807 @@ exports[`Storyshots Message list message 1`] = `
 </RCTScrollView>
 `;
 
+exports[`Storyshots MessageBox list messageBox 1`] = `
+<RCTScrollView
+  style={
+    Object {
+      "backgroundColor": "#ffffff",
+    }
+  }
+>
+  <View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginTop": 30,
+          },
+          Object {
+            "backgroundColor": "#ffffff",
+            "color": "#0d0e12",
+          },
+          Object {
+            "marginBottom": 20,
+            "marginTop": 30,
+          },
+        ]
+      }
+    >
+      Simple
+    </Text>
+    <KeyboardTrackingView
+      addBottomView={true}
+      allowHitsOutsideBounds={false}
+      bottomViewColor="#ffffff"
+      manageScrollView={true}
+      onLayout={[Function]}
+      requiresSameParentToManageScrollView={true}
+      revealKeyboardInteractive={false}
+      scrollBehavior={0}
+      style={
+        Object {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+        }
+      }
+    >
+      <View
+        testID="messagebox-container"
+      >
+        <RCTScrollView
+          data={Array []}
+          disableVirtualization={false}
+          extraData={Array []}
+          getItem={[Function]}
+          getItemCount={[Function]}
+          horizontal={false}
+          initialNumToRender={10}
+          keyExtractor={[Function]}
+          keyboardShouldPersistTaps="always"
+          maxToRenderPerBatch={10}
+          onContentSizeChange={[Function]}
+          onEndReachedThreshold={2}
+          onLayout={[Function]}
+          onMomentumScrollEnd={[Function]}
+          onScroll={[Function]}
+          onScrollBeginDrag={[Function]}
+          onScrollEndDrag={[Function]}
+          removeClippedSubviews={false}
+          renderItem={[Function]}
+          scrollEventThrottle={50}
+          stickyHeaderIndices={Array []}
+          style={
+            Array [
+              Object {
+                "maxHeight": 200,
+              },
+              Object {
+                "backgroundColor": "#efeff4",
+              },
+            ]
+          }
+          updateCellsBatchingPeriod={50}
+          viewabilityConfigCallbackPairs={Array []}
+          windowSize={21}
+        >
+          <View />
+        </RCTScrollView>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "borderTopWidth": 0.5,
+              "flexDirection": "column",
+            },
+            Object {
+              "borderTopColor": "#cbcbcc",
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "flexGrow": 0,
+              },
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+              false,
+            ]
+          }
+          testID="messagebox"
+        >
+          <TextInput
+            allowFontScaling={true}
+            blurOnSubmit={false}
+            defaultValue=""
+            keyboardAppearance="light"
+            keyboardType="twitter"
+            multiline={true}
+            onChangeText={[Function]}
+            placeholder="New Message"
+            placeholderTextColor="#9ca2a8"
+            rejectResponderTermination={true}
+            returnKeyType="default"
+            style={
+              Array [
+                Object {
+                  "color": "#0d0e12",
+                },
+                Object {
+                  "backgroundColor": "transparent",
+                  "flexGrow": 1,
+                  "fontFamily": "System",
+                  "fontSize": 17,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "maxHeight": 242,
+                  "paddingBottom": 12,
+                  "paddingLeft": 0,
+                  "paddingRight": 0,
+                  "paddingTop": 12,
+                  "textAlignVertical": "center",
+                  "width": 1,
+                },
+              ]
+            }
+            testID="messagebox-input"
+            underlineColorAndroid="transparent"
+          />
+        </View>
+      </View>
+    </KeyboardTrackingView>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginTop": 30,
+          },
+          Object {
+            "backgroundColor": "#ffffff",
+            "color": "#0d0e12",
+          },
+          Object {
+            "marginBottom": 20,
+            "marginTop": 30,
+          },
+        ]
+      }
+    >
+      Simple with content
+    </Text>
+    <KeyboardTrackingView
+      addBottomView={true}
+      allowHitsOutsideBounds={false}
+      bottomViewColor="#ffffff"
+      manageScrollView={true}
+      onLayout={[Function]}
+      requiresSameParentToManageScrollView={true}
+      revealKeyboardInteractive={false}
+      scrollBehavior={0}
+      style={
+        Object {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+        }
+      }
+    >
+      <View
+        testID="messagebox-container"
+      >
+        <RCTScrollView
+          data={Array []}
+          disableVirtualization={false}
+          extraData={Array []}
+          getItem={[Function]}
+          getItemCount={[Function]}
+          horizontal={false}
+          initialNumToRender={10}
+          keyExtractor={[Function]}
+          keyboardShouldPersistTaps="always"
+          maxToRenderPerBatch={10}
+          onContentSizeChange={[Function]}
+          onEndReachedThreshold={2}
+          onLayout={[Function]}
+          onMomentumScrollEnd={[Function]}
+          onScroll={[Function]}
+          onScrollBeginDrag={[Function]}
+          onScrollEndDrag={[Function]}
+          removeClippedSubviews={false}
+          renderItem={[Function]}
+          scrollEventThrottle={50}
+          stickyHeaderIndices={Array []}
+          style={
+            Array [
+              Object {
+                "maxHeight": 200,
+              },
+              Object {
+                "backgroundColor": "#efeff4",
+              },
+            ]
+          }
+          updateCellsBatchingPeriod={50}
+          viewabilityConfigCallbackPairs={Array []}
+          windowSize={21}
+        >
+          <View />
+        </RCTScrollView>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "borderTopWidth": 0.5,
+              "flexDirection": "column",
+            },
+            Object {
+              "borderTopColor": "#cbcbcc",
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "flexGrow": 0,
+              },
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+              false,
+            ]
+          }
+          testID="messagebox"
+        >
+          <TextInput
+            allowFontScaling={true}
+            blurOnSubmit={false}
+            defaultValue="A simple text"
+            keyboardAppearance="light"
+            keyboardType="twitter"
+            multiline={true}
+            onChangeText={[Function]}
+            placeholder="New Message"
+            placeholderTextColor="#9ca2a8"
+            rejectResponderTermination={true}
+            returnKeyType="default"
+            style={
+              Array [
+                Object {
+                  "color": "#0d0e12",
+                },
+                Object {
+                  "backgroundColor": "transparent",
+                  "flexGrow": 1,
+                  "fontFamily": "System",
+                  "fontSize": 17,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "maxHeight": 242,
+                  "paddingBottom": 12,
+                  "paddingLeft": 0,
+                  "paddingRight": 0,
+                  "paddingTop": 12,
+                  "textAlignVertical": "center",
+                  "width": 1,
+                },
+              ]
+            }
+            testID="messagebox-input"
+            underlineColorAndroid="transparent"
+          />
+        </View>
+      </View>
+    </KeyboardTrackingView>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginTop": 30,
+          },
+          Object {
+            "backgroundColor": "#ffffff",
+            "color": "#0d0e12",
+          },
+          Object {
+            "marginBottom": 20,
+            "marginTop": 30,
+          },
+        ]
+      }
+    >
+      Editing
+    </Text>
+    <KeyboardTrackingView
+      addBottomView={true}
+      allowHitsOutsideBounds={false}
+      bottomViewColor="#ffffff"
+      manageScrollView={true}
+      onLayout={[Function]}
+      requiresSameParentToManageScrollView={true}
+      revealKeyboardInteractive={false}
+      scrollBehavior={0}
+      style={
+        Object {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+        }
+      }
+    >
+      <View
+        testID="messagebox-container"
+      >
+        <RCTScrollView
+          data={Array []}
+          disableVirtualization={false}
+          extraData={Array []}
+          getItem={[Function]}
+          getItemCount={[Function]}
+          horizontal={false}
+          initialNumToRender={10}
+          keyExtractor={[Function]}
+          keyboardShouldPersistTaps="always"
+          maxToRenderPerBatch={10}
+          onContentSizeChange={[Function]}
+          onEndReachedThreshold={2}
+          onLayout={[Function]}
+          onMomentumScrollEnd={[Function]}
+          onScroll={[Function]}
+          onScrollBeginDrag={[Function]}
+          onScrollEndDrag={[Function]}
+          removeClippedSubviews={false}
+          renderItem={[Function]}
+          scrollEventThrottle={50}
+          stickyHeaderIndices={Array []}
+          style={
+            Array [
+              Object {
+                "maxHeight": 200,
+              },
+              Object {
+                "backgroundColor": "#efeff4",
+              },
+            ]
+          }
+          updateCellsBatchingPeriod={50}
+          viewabilityConfigCallbackPairs={Array []}
+          windowSize={21}
+        >
+          <View />
+        </RCTScrollView>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "borderTopWidth": 0.5,
+              "flexDirection": "column",
+            },
+            Object {
+              "borderTopColor": "#cbcbcc",
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "flexGrow": 0,
+              },
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+              Object {
+                "backgroundColor": "#f3f4f5",
+              },
+            ]
+          }
+          testID="messagebox"
+        >
+          <TextInput
+            allowFontScaling={true}
+            blurOnSubmit={false}
+            defaultValue="Editable message"
+            keyboardAppearance="light"
+            keyboardType="twitter"
+            multiline={true}
+            onChangeText={[Function]}
+            placeholder="New Message"
+            placeholderTextColor="#9ca2a8"
+            rejectResponderTermination={true}
+            returnKeyType="default"
+            style={
+              Array [
+                Object {
+                  "color": "#0d0e12",
+                },
+                Object {
+                  "backgroundColor": "transparent",
+                  "flexGrow": 1,
+                  "fontFamily": "System",
+                  "fontSize": 17,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "maxHeight": 242,
+                  "paddingBottom": 12,
+                  "paddingLeft": 0,
+                  "paddingRight": 0,
+                  "paddingTop": 12,
+                  "textAlignVertical": "center",
+                  "width": 1,
+                },
+              ]
+            }
+            testID="messagebox-input"
+            underlineColorAndroid="transparent"
+          />
+        </View>
+      </View>
+    </KeyboardTrackingView>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginTop": 30,
+          },
+          Object {
+            "backgroundColor": "#ffffff",
+            "color": "#0d0e12",
+          },
+          Object {
+            "marginBottom": 20,
+            "marginTop": 30,
+          },
+        ]
+      }
+    >
+      Replying
+    </Text>
+    <KeyboardTrackingView
+      addBottomView={true}
+      allowHitsOutsideBounds={false}
+      bottomViewColor="#ffffff"
+      manageScrollView={true}
+      onLayout={[Function]}
+      requiresSameParentToManageScrollView={true}
+      revealKeyboardInteractive={false}
+      scrollBehavior={0}
+      style={
+        Object {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+        }
+      }
+    >
+      <View
+        testID="messagebox-container"
+      >
+        <RCTScrollView
+          data={Array []}
+          disableVirtualization={false}
+          extraData={Array []}
+          getItem={[Function]}
+          getItemCount={[Function]}
+          horizontal={false}
+          initialNumToRender={10}
+          keyExtractor={[Function]}
+          keyboardShouldPersistTaps="always"
+          maxToRenderPerBatch={10}
+          onContentSizeChange={[Function]}
+          onEndReachedThreshold={2}
+          onLayout={[Function]}
+          onMomentumScrollEnd={[Function]}
+          onScroll={[Function]}
+          onScrollBeginDrag={[Function]}
+          onScrollEndDrag={[Function]}
+          removeClippedSubviews={false}
+          renderItem={[Function]}
+          scrollEventThrottle={50}
+          stickyHeaderIndices={Array []}
+          style={
+            Array [
+              Object {
+                "maxHeight": 200,
+              },
+              Object {
+                "backgroundColor": "#efeff4",
+              },
+            ]
+          }
+          updateCellsBatchingPeriod={50}
+          viewabilityConfigCallbackPairs={Array []}
+          windowSize={21}
+        >
+          <View />
+        </RCTScrollView>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "borderTopWidth": 0.5,
+              "flexDirection": "column",
+            },
+            Object {
+              "borderTopColor": "#cbcbcc",
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "flexDirection": "row",
+                "paddingTop": 10,
+              },
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 4,
+                  "flex": 1,
+                  "marginHorizontal": 10,
+                  "paddingHorizontal": 15,
+                  "paddingVertical": 10,
+                },
+                Object {
+                  "backgroundColor": "#f3f4f5",
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "500",
+                    },
+                    Object {
+                      "color": "#1d74f5",
+                    },
+                  ]
+                }
+              >
+                ezequiel.reis
+              </Text>
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 12,
+                      "fontWeight": "300",
+                      "lineHeight": 16,
+                      "marginLeft": 6,
+                    },
+                    Object {
+                      "color": "#9ca2a8",
+                    },
+                  ]
+                }
+              >
+                4:00 AM
+              </Text>
+            </View>
+            <Text
+              accessibilityLabel="Message to reply 👊🤙👏"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
+                ]
+              }
+            >
+              Message to reply 👊🤙👏
+            </Text>
+          </View>
+          <Text
+            allowFontScaling={false}
+            onPress={[Function]}
+            style={
+              Array [
+                Object {
+                  "color": "#9ca2a8",
+                  "fontSize": 20,
+                },
+                Object {
+                  "marginRight": 10,
+                },
+                Object {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                Object {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+        <View
+          style={
+            Array [
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+                "flexGrow": 0,
+              },
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+              false,
+            ]
+          }
+          testID="messagebox"
+        >
+          <TextInput
+            allowFontScaling={true}
+            blurOnSubmit={false}
+            defaultValue=""
+            keyboardAppearance="light"
+            keyboardType="twitter"
+            multiline={true}
+            onChangeText={[Function]}
+            placeholder="New Message"
+            placeholderTextColor="#9ca2a8"
+            rejectResponderTermination={true}
+            returnKeyType="default"
+            style={
+              Array [
+                Object {
+                  "color": "#0d0e12",
+                },
+                Object {
+                  "backgroundColor": "transparent",
+                  "flexGrow": 1,
+                  "fontFamily": "System",
+                  "fontSize": 17,
+                  "fontWeight": "400",
+                  "letterSpacing": 0,
+                  "maxHeight": 242,
+                  "paddingBottom": 12,
+                  "paddingLeft": 0,
+                  "paddingRight": 0,
+                  "paddingTop": 12,
+                  "textAlignVertical": "center",
+                  "width": 1,
+                },
+              ]
+            }
+            testID="messagebox-input"
+            underlineColorAndroid="transparent"
+          />
+        </View>
+      </View>
+    </KeyboardTrackingView>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginTop": 30,
+          },
+          Object {
+            "backgroundColor": "#ffffff",
+            "color": "#0d0e12",
+          },
+          Object {
+            "marginBottom": 20,
+            "marginTop": 30,
+          },
+        ]
+      }
+    >
+      Simple
+    </Text>
+    <View
+      style={
+        Object {
+          "height": 400,
+        }
+      }
+    >
+      <View
+        pointerEvents="box-none"
+        style={
+          Array [
+            Object {
+              "backgroundColor": "black",
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            },
+            Object {
+              "backgroundColor": "transparent",
+              "opacity": 1,
+              "zIndex": 2,
+            },
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          forwardedRef={[Function]}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "backgroundColor": "black",
+              "bottom": 0,
+              "height": 1334,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+              "width": 750,
+            }
+          }
+        />
+        <View
+          forwardedRef={[Function]}
+          hideModalContentWhileAnimating={true}
+          onModalHide={[Function]}
+          onModalWillHide={[Function]}
+          onModalWillShow={[Function]}
+          pointerEvents="box-none"
+          scrollHorizontal={false}
+          scrollOffset={0}
+          scrollOffsetMax={0}
+          scrollTo={null}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "margin": 0,
+              "transform": Array [
+                Object {
+                  "translateY": 1334,
+                },
+              ],
+            }
+          }
+          supportedOrientations={
+            Array [
+              "portrait",
+              "landscape",
+            ]
+          }
+          swipeThreshold={100}
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "#ffffff",
+                "flex": 1,
+              }
+            }
+          >
+            <TextInput
+              allowFontScaling={true}
+              autoFocus={false}
+              blurOnSubmit={false}
+              defaultValue=""
+              editable={true}
+              keyboardAppearance="light"
+              keyboardType="twitter"
+              multiline={true}
+              onChangeText={[Function]}
+              placeholder="New Message"
+              placeholderTextColor="#9ca2a8"
+              rejectResponderTermination={true}
+              returnKeyType="default"
+              style={
+                Array [
+                  Object {
+                    "color": "#0d0e12",
+                  },
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flex": 1,
+                    "fontFamily": "System",
+                    "fontSize": 17,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "padding": 15,
+                    "paddingTop": 5,
+                    "textAlignVertical": "top",
+                  },
+                ]
+              }
+              testID="full-screen-messagebox-input"
+              underlineColorAndroid="transparent"
+            />
+            <KeyboardTrackingView
+              addBottomView={true}
+              allowHitsOutsideBounds={false}
+              bottomViewColor="#ffffff"
+              manageScrollView={true}
+              onLayout={[Function]}
+              requiresSameParentToManageScrollView={true}
+              revealKeyboardInteractive={false}
+              scrollBehavior={0}
+              style={
+                Object {
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                }
+              }
+            >
+              <View
+                testID="messagebox-container"
+              >
+                <RCTScrollView
+                  data={Array []}
+                  disableVirtualization={false}
+                  extraData={Array []}
+                  getItem={[Function]}
+                  getItemCount={[Function]}
+                  horizontal={false}
+                  initialNumToRender={10}
+                  keyExtractor={[Function]}
+                  keyboardShouldPersistTaps="always"
+                  maxToRenderPerBatch={10}
+                  onContentSizeChange={[Function]}
+                  onEndReachedThreshold={2}
+                  onLayout={[Function]}
+                  onMomentumScrollEnd={[Function]}
+                  onScroll={[Function]}
+                  onScrollBeginDrag={[Function]}
+                  onScrollEndDrag={[Function]}
+                  removeClippedSubviews={false}
+                  renderItem={[Function]}
+                  scrollEventThrottle={50}
+                  stickyHeaderIndices={Array []}
+                  style={
+                    Array [
+                      Object {
+                        "maxHeight": 200,
+                      },
+                      Object {
+                        "backgroundColor": "#efeff4",
+                      },
+                    ]
+                  }
+                  updateCellsBatchingPeriod={50}
+                  viewabilityConfigCallbackPairs={Array []}
+                  windowSize={21}
+                >
+                  <View />
+                </RCTScrollView>
+              </View>
+              <View
+                style={
+                  Array [
+                    Object {
+                      "flexDirection": "row",
+                      "justifyContent": "space-between",
+                    },
+                    Object {
+                      "backgroundColor": "#ffffff",
+                    },
+                    false,
+                  ]
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+            </KeyboardTrackingView>
+          </View>
+        </View>
+      </View>
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginTop": 30,
+          },
+          Object {
+            "backgroundColor": "#ffffff",
+            "color": "#0d0e12",
+          },
+          Object {
+            "marginBottom": 20,
+            "marginTop": 30,
+          },
+        ]
+      }
+    >
+      Simple with content
+    </Text>
+    <View
+      style={
+        Object {
+          "height": 400,
+        }
+      }
+    >
+      <View
+        pointerEvents="box-none"
+        style={
+          Array [
+            Object {
+              "backgroundColor": "black",
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            },
+            Object {
+              "backgroundColor": "transparent",
+              "opacity": 1,
+              "zIndex": 2,
+            },
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          forwardedRef={[Function]}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "backgroundColor": "black",
+              "bottom": 0,
+              "height": 1334,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+              "width": 750,
+            }
+          }
+        />
+        <View
+          forwardedRef={[Function]}
+          hideModalContentWhileAnimating={true}
+          onModalHide={[Function]}
+          onModalWillHide={[Function]}
+          onModalWillShow={[Function]}
+          pointerEvents="box-none"
+          scrollHorizontal={false}
+          scrollOffset={0}
+          scrollOffsetMax={0}
+          scrollTo={null}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "margin": 0,
+              "transform": Array [
+                Object {
+                  "translateY": 1334,
+                },
+              ],
+            }
+          }
+          supportedOrientations={
+            Array [
+              "portrait",
+              "landscape",
+            ]
+          }
+          swipeThreshold={100}
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "#ffffff",
+                "flex": 1,
+              }
+            }
+          >
+            <TextInput
+              allowFontScaling={true}
+              autoFocus={false}
+              blurOnSubmit={false}
+              defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.😃😇😃😇😃😇😃😇😃😇😃😇😃😇"
+              editable={true}
+              keyboardAppearance="light"
+              keyboardType="twitter"
+              multiline={true}
+              onChangeText={[Function]}
+              placeholder="New Message"
+              placeholderTextColor="#9ca2a8"
+              rejectResponderTermination={true}
+              returnKeyType="default"
+              style={
+                Array [
+                  Object {
+                    "color": "#0d0e12",
+                  },
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flex": 1,
+                    "fontFamily": "System",
+                    "fontSize": 17,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "padding": 15,
+                    "paddingTop": 5,
+                    "textAlignVertical": "top",
+                  },
+                ]
+              }
+              testID="full-screen-messagebox-input"
+              underlineColorAndroid="transparent"
+            />
+            <KeyboardTrackingView
+              addBottomView={true}
+              allowHitsOutsideBounds={false}
+              bottomViewColor="#ffffff"
+              manageScrollView={true}
+              onLayout={[Function]}
+              requiresSameParentToManageScrollView={true}
+              revealKeyboardInteractive={false}
+              scrollBehavior={0}
+              style={
+                Object {
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                }
+              }
+            >
+              <View
+                testID="messagebox-container"
+              >
+                <RCTScrollView
+                  data={Array []}
+                  disableVirtualization={false}
+                  extraData={Array []}
+                  getItem={[Function]}
+                  getItemCount={[Function]}
+                  horizontal={false}
+                  initialNumToRender={10}
+                  keyExtractor={[Function]}
+                  keyboardShouldPersistTaps="always"
+                  maxToRenderPerBatch={10}
+                  onContentSizeChange={[Function]}
+                  onEndReachedThreshold={2}
+                  onLayout={[Function]}
+                  onMomentumScrollEnd={[Function]}
+                  onScroll={[Function]}
+                  onScrollBeginDrag={[Function]}
+                  onScrollEndDrag={[Function]}
+                  removeClippedSubviews={false}
+                  renderItem={[Function]}
+                  scrollEventThrottle={50}
+                  stickyHeaderIndices={Array []}
+                  style={
+                    Array [
+                      Object {
+                        "maxHeight": 200,
+                      },
+                      Object {
+                        "backgroundColor": "#efeff4",
+                      },
+                    ]
+                  }
+                  updateCellsBatchingPeriod={50}
+                  viewabilityConfigCallbackPairs={Array []}
+                  windowSize={21}
+                >
+                  <View />
+                </RCTScrollView>
+              </View>
+              <View
+                style={
+                  Array [
+                    Object {
+                      "flexDirection": "row",
+                      "justifyContent": "space-between",
+                    },
+                    Object {
+                      "backgroundColor": "#ffffff",
+                    },
+                    false,
+                  ]
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+            </KeyboardTrackingView>
+          </View>
+        </View>
+      </View>
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginTop": 30,
+          },
+          Object {
+            "backgroundColor": "#ffffff",
+            "color": "#0d0e12",
+          },
+          Object {
+            "marginBottom": 20,
+            "marginTop": 30,
+          },
+        ]
+      }
+    >
+      Editing
+    </Text>
+    <View
+      style={
+        Object {
+          "height": 400,
+        }
+      }
+    >
+      <View
+        pointerEvents="box-none"
+        style={
+          Array [
+            Object {
+              "backgroundColor": "black",
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            },
+            Object {
+              "backgroundColor": "transparent",
+              "opacity": 1,
+              "zIndex": 2,
+            },
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          forwardedRef={[Function]}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "backgroundColor": "black",
+              "bottom": 0,
+              "height": 1334,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+              "width": 750,
+            }
+          }
+        />
+        <View
+          forwardedRef={[Function]}
+          hideModalContentWhileAnimating={true}
+          onModalHide={[Function]}
+          onModalWillHide={[Function]}
+          onModalWillShow={[Function]}
+          pointerEvents="box-none"
+          scrollHorizontal={false}
+          scrollOffset={0}
+          scrollOffsetMax={0}
+          scrollTo={null}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "margin": 0,
+              "transform": Array [
+                Object {
+                  "translateY": 1334,
+                },
+              ],
+            }
+          }
+          supportedOrientations={
+            Array [
+              "portrait",
+              "landscape",
+            ]
+          }
+          swipeThreshold={100}
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "#f3f4f5",
+                "flex": 1,
+              }
+            }
+          >
+            <TextInput
+              allowFontScaling={true}
+              autoFocus={false}
+              blurOnSubmit={false}
+              defaultValue="Editing this too long message. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.😃😇😃😇😃😇😃😇😃😇😃😇😃😇"
+              editable={true}
+              keyboardAppearance="light"
+              keyboardType="twitter"
+              multiline={true}
+              onChangeText={[Function]}
+              placeholder="New Message"
+              placeholderTextColor="#9ca2a8"
+              rejectResponderTermination={true}
+              returnKeyType="default"
+              style={
+                Array [
+                  Object {
+                    "color": "#0d0e12",
+                  },
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flex": 1,
+                    "fontFamily": "System",
+                    "fontSize": 17,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "padding": 15,
+                    "paddingTop": 5,
+                    "textAlignVertical": "top",
+                  },
+                ]
+              }
+              testID="full-screen-messagebox-input"
+              underlineColorAndroid="transparent"
+            />
+            <KeyboardTrackingView
+              addBottomView={true}
+              allowHitsOutsideBounds={false}
+              bottomViewColor="#ffffff"
+              manageScrollView={true}
+              onLayout={[Function]}
+              requiresSameParentToManageScrollView={true}
+              revealKeyboardInteractive={false}
+              scrollBehavior={0}
+              style={
+                Object {
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                }
+              }
+            >
+              <View
+                testID="messagebox-container"
+              >
+                <RCTScrollView
+                  data={Array []}
+                  disableVirtualization={false}
+                  extraData={Array []}
+                  getItem={[Function]}
+                  getItemCount={[Function]}
+                  horizontal={false}
+                  initialNumToRender={10}
+                  keyExtractor={[Function]}
+                  keyboardShouldPersistTaps="always"
+                  maxToRenderPerBatch={10}
+                  onContentSizeChange={[Function]}
+                  onEndReachedThreshold={2}
+                  onLayout={[Function]}
+                  onMomentumScrollEnd={[Function]}
+                  onScroll={[Function]}
+                  onScrollBeginDrag={[Function]}
+                  onScrollEndDrag={[Function]}
+                  removeClippedSubviews={false}
+                  renderItem={[Function]}
+                  scrollEventThrottle={50}
+                  stickyHeaderIndices={Array []}
+                  style={
+                    Array [
+                      Object {
+                        "maxHeight": 200,
+                      },
+                      Object {
+                        "backgroundColor": "#efeff4",
+                      },
+                    ]
+                  }
+                  updateCellsBatchingPeriod={50}
+                  viewabilityConfigCallbackPairs={Array []}
+                  windowSize={21}
+                >
+                  <View />
+                </RCTScrollView>
+              </View>
+              <View
+                style={
+                  Array [
+                    Object {
+                      "flexDirection": "row",
+                      "justifyContent": "space-between",
+                    },
+                    Object {
+                      "backgroundColor": "#ffffff",
+                    },
+                    Object {
+                      "backgroundColor": "#f3f4f5",
+                    },
+                  ]
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+            </KeyboardTrackingView>
+          </View>
+        </View>
+      </View>
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginTop": 30,
+          },
+          Object {
+            "backgroundColor": "#ffffff",
+            "color": "#0d0e12",
+          },
+          Object {
+            "marginBottom": 20,
+            "marginTop": 30,
+          },
+        ]
+      }
+    >
+      Replying
+    </Text>
+    <View
+      style={
+        Object {
+          "height": 400,
+        }
+      }
+    >
+      <View
+        pointerEvents="box-none"
+        style={
+          Array [
+            Object {
+              "backgroundColor": "black",
+              "bottom": 0,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            },
+            Object {
+              "backgroundColor": "transparent",
+              "opacity": 1,
+              "zIndex": 2,
+            },
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          forwardedRef={[Function]}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "backgroundColor": "black",
+              "bottom": 0,
+              "height": 1334,
+              "left": 0,
+              "opacity": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+              "width": 750,
+            }
+          }
+        />
+        <View
+          forwardedRef={[Function]}
+          hideModalContentWhileAnimating={true}
+          onModalHide={[Function]}
+          onModalWillHide={[Function]}
+          onModalWillShow={[Function]}
+          pointerEvents="box-none"
+          scrollHorizontal={false}
+          scrollOffset={0}
+          scrollOffsetMax={0}
+          scrollTo={null}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "margin": 0,
+              "transform": Array [
+                Object {
+                  "translateY": 1334,
+                },
+              ],
+            }
+          }
+          supportedOrientations={
+            Array [
+              "portrait",
+              "landscape",
+            ]
+          }
+          swipeThreshold={100}
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "#ffffff",
+                "flex": 1,
+              }
+            }
+          >
+            <TextInput
+              allowFontScaling={true}
+              autoFocus={false}
+              blurOnSubmit={false}
+              defaultValue=""
+              editable={true}
+              keyboardAppearance="light"
+              keyboardType="twitter"
+              multiline={true}
+              onChangeText={[Function]}
+              placeholder="New Message"
+              placeholderTextColor="#9ca2a8"
+              rejectResponderTermination={true}
+              returnKeyType="default"
+              style={
+                Array [
+                  Object {
+                    "color": "#0d0e12",
+                  },
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flex": 1,
+                    "fontFamily": "System",
+                    "fontSize": 17,
+                    "fontWeight": "400",
+                    "letterSpacing": 0,
+                    "padding": 15,
+                    "paddingTop": 5,
+                    "textAlignVertical": "top",
+                  },
+                ]
+              }
+              testID="full-screen-messagebox-input"
+              underlineColorAndroid="transparent"
+            />
+            <View
+              style={
+                Array [
+                  Object {
+                    "flexDirection": "row",
+                    "paddingTop": 10,
+                  },
+                  Object {
+                    "backgroundColor": "#ffffff",
+                  },
+                ]
+              }
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "borderRadius": 4,
+                      "flex": 1,
+                      "marginHorizontal": 10,
+                      "paddingHorizontal": 15,
+                      "paddingVertical": 10,
+                    },
+                    Object {
+                      "backgroundColor": "#f3f4f5",
+                    },
+                  ]
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                        },
+                        Object {
+                          "color": "#1d74f5",
+                        },
+                      ]
+                    }
+                  >
+                    ezequiel.reis
+                  </Text>
+                  <Text
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 12,
+                          "fontWeight": "300",
+                          "lineHeight": 16,
+                          "marginLeft": 6,
+                        },
+                        Object {
+                          "color": "#9ca2a8",
+                        },
+                      ]
+                    }
+                  >
+                    4:00 AM
+                  </Text>
+                </View>
+                <Text
+                  accessibilityLabel="Message to reply 👊🤙👏"
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                      },
+                      Object {
+                        "color": "#2f343d",
+                      },
+                    ]
+                  }
+                >
+                  Message to reply 👊🤙👏
+                </Text>
+              </View>
+              <Text
+                allowFontScaling={false}
+                onPress={[Function]}
+                style={
+                  Array [
+                    Object {
+                      "color": "#9ca2a8",
+                      "fontSize": 20,
+                    },
+                    Object {
+                      "marginRight": 10,
+                    },
+                    Object {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
+            <KeyboardTrackingView
+              addBottomView={true}
+              allowHitsOutsideBounds={false}
+              bottomViewColor="#ffffff"
+              manageScrollView={true}
+              onLayout={[Function]}
+              requiresSameParentToManageScrollView={true}
+              revealKeyboardInteractive={false}
+              scrollBehavior={0}
+              style={
+                Object {
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                }
+              }
+            >
+              <View
+                testID="messagebox-container"
+              >
+                <RCTScrollView
+                  data={Array []}
+                  disableVirtualization={false}
+                  extraData={Array []}
+                  getItem={[Function]}
+                  getItemCount={[Function]}
+                  horizontal={false}
+                  initialNumToRender={10}
+                  keyExtractor={[Function]}
+                  keyboardShouldPersistTaps="always"
+                  maxToRenderPerBatch={10}
+                  onContentSizeChange={[Function]}
+                  onEndReachedThreshold={2}
+                  onLayout={[Function]}
+                  onMomentumScrollEnd={[Function]}
+                  onScroll={[Function]}
+                  onScrollBeginDrag={[Function]}
+                  onScrollEndDrag={[Function]}
+                  removeClippedSubviews={false}
+                  renderItem={[Function]}
+                  scrollEventThrottle={50}
+                  stickyHeaderIndices={Array []}
+                  style={
+                    Array [
+                      Object {
+                        "maxHeight": 200,
+                      },
+                      Object {
+                        "backgroundColor": "#efeff4",
+                      },
+                    ]
+                  }
+                  updateCellsBatchingPeriod={50}
+                  viewabilityConfigCallbackPairs={Array []}
+                  windowSize={21}
+                >
+                  <View />
+                </RCTScrollView>
+              </View>
+              <View
+                style={
+                  Array [
+                    Object {
+                      "flexDirection": "row",
+                      "justifyContent": "space-between",
+                    },
+                    Object {
+                      "backgroundColor": "#ffffff",
+                    },
+                    false,
+                  ]
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                    }
+                  }
+                />
+              </View>
+            </KeyboardTrackingView>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
 exports[`Storyshots RoomItem list roomitem 1`] = `
 <RCTScrollView
   style={

@@ -17,16 +17,16 @@ const RECORDING_SETTINGS = {
 		extension: RECORDING_EXTENSION,
 		outputFormat: Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_AAC_ADTS,
 		audioEncoder: Audio.RECORDING_OPTION_ANDROID_AUDIO_ENCODER_AAC,
-		sampleRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.sampleRate,
-		numberOfChannels: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.numberOfChannels,
-		bitRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.bitRate
+		sampleRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY?.android.sampleRate,
+		numberOfChannels: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY?.android.numberOfChannels,
+		bitRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY?.android.bitRate
 	},
 	ios: {
 		extension: RECORDING_EXTENSION,
 		audioQuality: Audio.RECORDING_OPTION_IOS_AUDIO_QUALITY_MIN,
-		sampleRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.sampleRate,
-		numberOfChannels: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.numberOfChannels,
-		bitRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.bitRate,
+		sampleRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY?.ios.sampleRate,
+		numberOfChannels: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY?.ios.numberOfChannels,
+		bitRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY?.ios.bitRate,
 		outputFormat: Audio.RECORDING_OPTION_IOS_OUTPUT_FORMAT_MPEG4AAC
 	}
 };

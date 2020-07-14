@@ -26,7 +26,6 @@ const user = {
 const theme = 'light';
 
 const reducers = combineReducers({
-	settings: () => ({}),
 	login: () => ({
 		user: {
 			username: 'diego.mello'

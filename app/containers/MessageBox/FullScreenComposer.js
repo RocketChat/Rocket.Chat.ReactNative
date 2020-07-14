@@ -66,7 +66,7 @@ class FullScreenComposer extends Component {
 		autoFocus: true,
 		backdropOpacity: 0.70 // Default value of backdropOpacity in React native modal
 	}
-	
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -84,7 +84,7 @@ class FullScreenComposer extends Component {
 			recording,
 			mentions,
 			commandPreview,
-			message,
+			message
 		} = this.props;
 		const { isOpen } = this.state;
 
