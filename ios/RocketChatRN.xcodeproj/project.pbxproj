@@ -791,7 +791,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative;
 				PRODUCT_NAME = RocketChatRN;
-				PROVISIONING_PROFILE_SPECIFIER = "chat.rocket.reactnative AppStore";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.rocket.reactnative";
 				SWIFT_OBJC_BRIDGING_HEADER = "RocketChatRN-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
