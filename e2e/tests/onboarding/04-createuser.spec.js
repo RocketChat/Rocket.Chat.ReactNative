@@ -51,7 +51,7 @@ describe('Create user screen', () => {
 		it('should submit email already taken and raise error', async() => {
 			await element(by.id('register-view-name')).replaceText(data.registeringUser.username);
 			await element(by.id('register-view-username')).replaceText(data.registeringUser.username);
-			await element(by.id('register-view-email')).replaceText(`${data.users.existing.username}@example.com`);
+			await element(by.id('register-view-email')).replaceText(data.users.existing.email);
 			await element(by.id('register-view-password')).replaceText(data.registeringUser.password);
 			await sleep(300);
 			await element(by.id('register-view-submit')).tap();
@@ -63,7 +63,7 @@ describe('Create user screen', () => {
 		it('should submit username already taken and raise error', async() => {
 			await element(by.id('register-view-name')).replaceText(data.registeringUser.username);
 			await element(by.id('register-view-username')).replaceText(data.users.existing.username);
-			await element(by.id('register-view-email')).replaceText(`${data.registeringUser.username}@example.com`);
+			await element(by.id('register-view-email')).replaceText(data.registeringUser.email);
 			await element(by.id('register-view-password')).replaceText(data.registeringUser.password);
 			await sleep(300);
 			await element(by.id('register-view-submit')).tap();
@@ -75,7 +75,7 @@ describe('Create user screen', () => {
 		it('should register', async() => {
 			await element(by.id('register-view-name')).replaceText(data.registeringUser.username);
 			await element(by.id('register-view-username')).replaceText(data.registeringUser.username);
-			await element(by.id('register-view-email')).replaceText(`${data.registeringUser.username}@example.com`);
+			await element(by.id('register-view-email')).replaceText(data.registeringUser.email);
 			await element(by.id('register-view-password')).replaceText(data.registeringUser.password);
 			await sleep(300);
 			await element(by.id('register-view-submit')).tap();

@@ -44,7 +44,7 @@ describe('Change server', () => {
 		// Register new user
 		await element(by.id('register-view-name')).replaceText(data.registeringUser.username);
 		await element(by.id('register-view-username')).replaceText(data.registeringUser.username);
-		await element(by.id('register-view-email')).replaceText(`${data.registeringUser.username}@example.com`);
+		await element(by.id('register-view-email')).replaceText(data.registeringUser.email);
 		await element(by.id('register-view-password')).replaceText(data.registeringUser.password);
 		await sleep(1000);
 		await element(by.id('register-view-submit')).tap();
