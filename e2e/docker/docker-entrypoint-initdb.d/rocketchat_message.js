@@ -1,3 +1,1 @@
-db.getCollection("rocketchat_message").insert({"_id":"FmKi3eBzSQxwToJ5q","t":"uj","rid":"GENERAL","ts":new Date(1584022922478),"msg":"YOUR.NAME","u":{"_id":"DdCXaCP8rGFB59TGR","username":"YOUR.NAME"},"groupable":false,"_updatedAt":new Date(1584022922478)});
 db.getCollection("rocketchat_message").insert({"_id":"fsy2dZJgmmboowJ8N","t":"uj","rid":"GENERAL","ts":new Date(1584022608462),"msg":"admin","u":{"_id":"nM6vXyDLGGzSPsLNy","username":"admin"},"groupable":false,"_updatedAt":new Date(1584022608462)});
-db.getCollection("rocketchat_message").insert({"_id":"jCkudvuxCPJQHYLrk","t":"uj","rid":"GENERAL","ts":new Date(1584022880273),"msg":"detoxrn","u":{"_id":"QgsvCarjhjsv2jPn3","username":"detoxrn"},"groupable":false,"_updatedAt":new Date(1584022880273)});

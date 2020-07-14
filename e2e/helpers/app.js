@@ -52,18 +52,6 @@ async function logout() {
     await expect(element(by.id('onboarding-view'))).toBeVisible();
 }
 
-async function createUser() {
-    await navigateToRegister();
-    await element(by.id('register-view-name')).replaceText(data.user);
-    await element(by.id('register-view-username')).replaceText(data.user);
-    await element(by.id('register-view-email')).replaceText(data.email);
-    await element(by.id('register-view-password')).replaceText(data.password);
-    await sleep(300);
-    await element(by.id('register-view-submit')).tap();
-    await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
-    await expect(element(by.id('rooms-list-view'))).toBeVisible();
-}
-
 async function mockMessage(message) {
 	await element(by.id('messagebox-input')).tap();
 	await element(by.id('messagebox-input')).typeText(`${ data.random }${ message }`);
@@ -95,7 +83,6 @@ module.exports = {
     navigateToRegister,
     login,
     logout,
-    createUser,
     mockMessage,
     tapBack,
     sleep,
