@@ -75,7 +75,7 @@ export default class Root extends React.Component {
 		}
 	}
 
-	async componentDidMount() {
+	componentDidMount() {
 		this.listenerTimeout = setTimeout(() => {
 			Linking.addEventListener('url', ({ url }) => {
 				const parsedDeepLinkingURL = parseDeepLinking(url);
@@ -86,12 +86,7 @@ export default class Root extends React.Component {
 		}, 5000);
 		Dimensions.addEventListener('change', this.onDimensionsChange);
 
-		try {
-			// Encrypt the migration data
-			await MMKV.encryption.encrypt();
-		} catch {
-			// Do nothing
-		}
+		this.encryptMigratedData();
 	}
 
 	componentWillUnmount() {
@@ -116,6 +111,23 @@ export default class Root extends React.Component {
 			store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
 		} else {
 			store.dispatch(appInit());
+		}
+	}
+
+	// It should run only once
+	encryptMigratedData = async() => {
+		try {
+			await MMKV.getBoolAsync('encryptMigration');
+		} catch {
+			// Key was not found
+			try {
+				// Encrypt the migration data
+				await MMKV.encryption.encrypt();
+
+				await MMKV.setBoolAsync('encryptMigration', true);
+			} catch {
+				// Do nothing
+			}
 		}
 	}
 
