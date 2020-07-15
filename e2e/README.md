@@ -9,9 +9,9 @@
 
 ### 1. Prepare test environment
 
-#### 1.1. Set up local Rocket Chat server
+#### 1.1. Set up local Rocket.Chat server
 
-* Install Rocket Chat meteor app by following this [guide](https://rocket.chat/docs/developer-guides/quick-start).
+* Install Rocket.Chat meteor app by following this [guide](https://rocket.chat/docs/developer-guides/quick-start).
 
 #### 1.2. Set up detox
 
@@ -19,7 +19,7 @@
 
 ### 2. Prepare test data
 
-* Run Rocket Chat meteor app: `meteor npm start` (make sure you to run this command from project that you created on Step 1.1.).
+* Run Rocket.Chat meteor app: `meteor npm start` (make sure you to run this command from project that you created on Step 1.1.).
 * Open `localhost:3000` in browser.
 * Sign up as admin.
 * Create public room `detox-public`.
