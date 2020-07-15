@@ -5089,11 +5089,11 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
         style={
           Array [
             Object {
-              "borderTopWidth": 0.5,
+              "borderTopWidth": 1,
               "flexDirection": "column",
             },
             Object {
-              "borderTopColor": "#cbcbcc",
+              "borderTopColor": "#e1e5e8",
             },
           ]
         }
@@ -5247,11 +5247,11 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
         style={
           Array [
             Object {
-              "borderTopWidth": 0.5,
+              "borderTopWidth": 1,
               "flexDirection": "column",
             },
             Object {
-              "borderTopColor": "#cbcbcc",
+              "borderTopColor": "#e1e5e8",
             },
           ]
         }
@@ -5405,11 +5405,11 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
         style={
           Array [
             Object {
-              "borderTopWidth": 0.5,
+              "borderTopWidth": 1,
               "flexDirection": "column",
             },
             Object {
-              "borderTopColor": "#cbcbcc",
+              "borderTopColor": "#e1e5e8",
             },
           ]
         }
@@ -5558,11 +5558,11 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
         style={
           Array [
             Object {
-              "borderTopWidth": 0.5,
+              "borderTopWidth": 1,
               "flexDirection": "column",
             },
             Object {
-              "borderTopColor": "#cbcbcc",
+              "borderTopColor": "#e1e5e8",
             },
           ]
         }
@@ -5977,19 +5977,27 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
               <View
                 style={
                   Object {
-                    "backgroundColor": "#ffffff",
-                    "flexDirection": "row",
-                    "justifyContent": "space-between",
+                    "borderTopColor": "#e1e5e8",
                   }
                 }
               >
                 <View
                   style={
                     Object {
+                      "backgroundColor": "#ffffff",
                       "flexDirection": "row",
+                      "justifyContent": "space-between",
                     }
                   }
-                />
+                >
+                  <View
+                    style={
+                      Object {
+                        "flexDirection": "row",
+                      }
+                    }
+                  />
+                </View>
               </View>
             </KeyboardTrackingView>
           </View>
@@ -6225,19 +6233,27 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
               <View
                 style={
                   Object {
-                    "backgroundColor": "#ffffff",
-                    "flexDirection": "row",
-                    "justifyContent": "space-between",
+                    "borderTopColor": "#e1e5e8",
                   }
                 }
               >
                 <View
                   style={
                     Object {
+                      "backgroundColor": "#ffffff",
                       "flexDirection": "row",
+                      "justifyContent": "space-between",
                     }
                   }
-                />
+                >
+                  <View
+                    style={
+                      Object {
+                        "flexDirection": "row",
+                      }
+                    }
+                  />
+                </View>
               </View>
             </KeyboardTrackingView>
           </View>
@@ -6473,19 +6489,27 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
               <View
                 style={
                   Object {
-                    "backgroundColor": "#f3f4f5",
-                    "flexDirection": "row",
-                    "justifyContent": "space-between",
+                    "borderTopColor": "#e1e5e8",
                   }
                 }
               >
                 <View
                   style={
                     Object {
+                      "backgroundColor": "#f3f4f5",
                       "flexDirection": "row",
+                      "justifyContent": "space-between",
                     }
                   }
-                />
+                >
+                  <View
+                    style={
+                      Object {
+                        "flexDirection": "row",
+                      }
+                    }
+                  />
+                </View>
               </View>
             </KeyboardTrackingView>
           </View>
@@ -6658,124 +6682,6 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
               testID="full-screen-messagebox-input"
               underlineColorAndroid="transparent"
             />
-            <View
-              style={
-                Array [
-                  Object {
-                    "flexDirection": "row",
-                    "paddingTop": 10,
-                  },
-                  Object {
-                    "backgroundColor": "#ffffff",
-                  },
-                ]
-              }
-            >
-              <View
-                style={
-                  Array [
-                    Object {
-                      "borderRadius": 4,
-                      "flex": 1,
-                      "marginHorizontal": 10,
-                      "paddingHorizontal": 15,
-                      "paddingVertical": 10,
-                    },
-                    Object {
-                      "backgroundColor": "#f3f4f5",
-                    },
-                  ]
-                }
-              >
-                <View
-                  style={
-                    Object {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                    }
-                  }
-                >
-                  <Text
-                    style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                        },
-                        Object {
-                          "color": "#1d74f5",
-                        },
-                      ]
-                    }
-                  >
-                    ezequiel.reis
-                  </Text>
-                  <Text
-                    style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 12,
-                          "fontWeight": "300",
-                          "lineHeight": 16,
-                          "marginLeft": 6,
-                        },
-                        Object {
-                          "color": "#9ca2a8",
-                        },
-                      ]
-                    }
-                  >
-                    4:00 AM
-                  </Text>
-                </View>
-                <Text
-                  accessibilityLabel="Message to reply 👊🤙👏"
-                  numberOfLines={1}
-                  style={
-                    Array [
-                      Object {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "System",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                      },
-                      Object {
-                        "color": "#2f343d",
-                      },
-                    ]
-                  }
-                >
-                  Message to reply 👊🤙👏
-                </Text>
-              </View>
-              <Text
-                allowFontScaling={false}
-                onPress={[Function]}
-                style={
-                  Array [
-                    Object {
-                      "color": "#9ca2a8",
-                      "fontSize": 20,
-                    },
-                    Object {
-                      "marginRight": 10,
-                    },
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
-                  ]
-                }
-              >
-                
-              </Text>
-            </View>
             <KeyboardTrackingView
               addBottomView={true}
               allowHitsOutsideBounds={false}
@@ -6839,19 +6745,145 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
               <View
                 style={
                   Object {
-                    "backgroundColor": "#ffffff",
-                    "flexDirection": "row",
-                    "justifyContent": "space-between",
+                    "borderTopColor": "#e1e5e8",
                   }
                 }
               >
                 <View
                   style={
+                    Array [
+                      Object {
+                        "flexDirection": "row",
+                        "paddingTop": 10,
+                      },
+                      Object {
+                        "backgroundColor": "#ffffff",
+                      },
+                    ]
+                  }
+                >
+                  <View
+                    style={
+                      Array [
+                        Object {
+                          "borderRadius": 4,
+                          "flex": 1,
+                          "marginHorizontal": 10,
+                          "paddingHorizontal": 15,
+                          "paddingVertical": 10,
+                        },
+                        Object {
+                          "backgroundColor": "#f3f4f5",
+                        },
+                      ]
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                        }
+                      }
+                    >
+                      <Text
+                        style={
+                          Array [
+                            Object {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "System",
+                              "fontSize": 16,
+                              "fontWeight": "500",
+                            },
+                            Object {
+                              "color": "#1d74f5",
+                            },
+                          ]
+                        }
+                      >
+                        ezequiel.reis
+                      </Text>
+                      <Text
+                        style={
+                          Array [
+                            Object {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "System",
+                              "fontSize": 12,
+                              "fontWeight": "300",
+                              "lineHeight": 16,
+                              "marginLeft": 6,
+                            },
+                            Object {
+                              "color": "#9ca2a8",
+                            },
+                          ]
+                        }
+                      >
+                        4:00 AM
+                      </Text>
+                    </View>
+                    <Text
+                      accessibilityLabel="Message to reply 👊🤙👏"
+                      numberOfLines={1}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                          },
+                          Object {
+                            "color": "#2f343d",
+                          },
+                        ]
+                      }
+                    >
+                      Message to reply 👊🤙👏
+                    </Text>
+                  </View>
+                  <Text
+                    allowFontScaling={false}
+                    onPress={[Function]}
+                    style={
+                      Array [
+                        Object {
+                          "color": "#9ca2a8",
+                          "fontSize": 20,
+                        },
+                        Object {
+                          "marginRight": 10,
+                        },
+                        Object {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        Object {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
+                <View
+                  style={
                     Object {
+                      "backgroundColor": "#ffffff",
                       "flexDirection": "row",
+                      "justifyContent": "space-between",
                     }
                   }
-                />
+                >
+                  <View
+                    style={
+                      Object {
+                        "flexDirection": "row",
+                      }
+                    }
+                  />
+                </View>
               </View>
             </KeyboardTrackingView>
           </View>

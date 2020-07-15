@@ -152,7 +152,12 @@ class FullScreenComposer extends Component {
 			showMessageBoxActions,
 			isActionsEnabled,
 			editing,
-			Message_AudioRecorderEnabled
+			Message_AudioRecorderEnabled,
+			message,
+			replyCancel,
+			user,
+			replying,
+			getCustomEmoji
 		} = this.props;
 		const buttonsViewStyle = {
 			...styles.bottomBarButtons,
@@ -172,26 +177,36 @@ class FullScreenComposer extends Component {
 			<>
 				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
 				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
-				<View style={buttonsViewStyle}>
-					<LeftButtons
+				<View style={{ borderTopColor: themes[theme].borderColor }}>
+					<ReplyPreview
+						message={message}
+						close={replyCancel}
+						username={user.username}
+						replying={replying}
+						getCustomEmoji={getCustomEmoji}
 						theme={theme}
-						showEmojiKeyboard={showEmojiKeyboard}
-						editing={editing}
-						isActionsEnabled
-						showMessageBoxActions={showMessageBoxActions}
-						editCancel={editCancel}
-						openEmoji={openEmoji}
-						closeEmoji={closeEmoji}
 					/>
-					<View style={styles.bottomBarRightButtons}>
-						<RightButtons
+					<View style={buttonsViewStyle}>
+						<LeftButtons
 							theme={theme}
-							showSend={showSend}
-							submit={submit}
+							showEmojiKeyboard={showEmojiKeyboard}
+							editing={editing}
+							isActionsEnabled
 							showMessageBoxActions={showMessageBoxActions}
-							isActionsEnabled={isActionsEnabled}
+							editCancel={editCancel}
+							openEmoji={openEmoji}
+							closeEmoji={closeEmoji}
 						/>
-						{recordAudio}
+						<View style={styles.bottomBarRightButtons}>
+							<RightButtons
+								theme={theme}
+								showSend={showSend}
+								submit={submit}
+								showMessageBoxActions={showMessageBoxActions}
+								isActionsEnabled={isActionsEnabled}
+							/>
+							{recordAudio}
+						</View>
 					</View>
 				</View>
 			</>
@@ -204,11 +219,6 @@ class FullScreenComposer extends Component {
 			text,
 			recording,
 			theme,
-			message,
-			replyCancel,
-			user,
-			replying,
-			getCustomEmoji,
 			showEmojiKeyboard,
 			onKeyboardResigned,
 			onEmojiSelected,
@@ -260,14 +270,6 @@ class FullScreenComposer extends Component {
 						testID='full-screen-messagebox-input'
 						theme={theme}
 						{...isAndroidTablet}
-					/>
-					<ReplyPreview
-						message={message}
-						close={replyCancel}
-						username={user.username}
-						replying={replying}
-						getCustomEmoji={getCustomEmoji}
-						theme={theme}
 					/>
 					<KeyboardAccessoryView
 						ref={tracking}
