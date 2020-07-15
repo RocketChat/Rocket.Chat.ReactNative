@@ -304,10 +304,11 @@ class RoomInfoView extends React.Component {
 	}
 
 	renderButtons = () => {
+		const { room } = this.state;
 		const { jitsiEnabled } = this.props;
 		return (
 			<View style={styles.roomButtonsContainer}>
-				{this.renderButton(this.goRoom, 'message', I18n.t('Message'))}
+				{room.rid ? this.renderButton(this.goRoom, 'message', I18n.t('Message')) : null}
 				{jitsiEnabled ? this.renderButton(this.videoCall, 'video-1', I18n.t('Video_call')) : null}
 			</View>
 		);
