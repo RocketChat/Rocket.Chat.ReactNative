@@ -5,6 +5,7 @@ const data = require('../../data');
 
 describe('Onboarding', () => {
 	before(async() => {
+		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(2000);
 	});
 
