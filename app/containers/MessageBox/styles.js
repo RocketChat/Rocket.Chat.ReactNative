@@ -15,7 +15,7 @@ export default StyleSheet.create({
 	},
 	composer: {
 		flexDirection: 'column',
-		borderTopWidth: StyleSheet.hairlineWidth
+		borderTopWidth: 1
 	},
 	textArea: {
 		flexDirection: 'row',

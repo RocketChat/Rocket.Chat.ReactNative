@@ -217,7 +217,7 @@ class MainComposer extends Component {
 		return (
 			<>
 				{commandsPreviewAndMentions}
-				<View style={[styles.composer, { borderTopColor: themes[theme].separatorColor }]}>
+				<View style={[styles.composer, { borderTopColor: themes[theme].borderColor }]}>
 					{replyPreview}
 					<View
 						style={[
