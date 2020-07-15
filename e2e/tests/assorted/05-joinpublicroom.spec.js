@@ -2,8 +2,9 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const data = require('../../data');
-const { mockMessage, tapBack, sleep, searchRoom } = require('../../helpers/app');
+const { navigateToLogin, login, mockMessage, tapBack, sleep, searchRoom } = require('../../helpers/app');
 
+const testuser = data.users.regular
 const room = 'detox-public';
 
 async function navigateToRoom() {
@@ -23,7 +24,9 @@ async function navigateToRoomActions() {
 
 describe('Join public room', () => {
 	before(async() => {
-		await device.launchApp({ newInstance: true });
+		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		await navigateToLogin();
+		await login(testuser.username, testuser.password);
 		await navigateToRoom();
 	});
 
