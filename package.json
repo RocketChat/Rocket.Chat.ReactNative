@@ -180,6 +180,7 @@
   },
   "detox": {
     "runner-config": "e2e/.mocharc.json",
+    "specs": "e2e/tests",
     "configurations": {
       "ios.sim.debug": {
         "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/RocketChatRN.app",
