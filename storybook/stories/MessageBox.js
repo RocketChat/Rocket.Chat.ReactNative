@@ -148,7 +148,7 @@ export default ({ theme }) => {
 				<FullScreen showSend text={longText} />
 
 				<Separator title='Editing' theme={_theme} />
-				<FullScreen editing text={`Editing this too long message. ${longText}`} showSend />
+				<FullScreen editing text={`Editing this too long message. ${ longText }`} showSend />
 
 				<Separator title='Replying' theme={_theme} />
 				<FullScreen
