@@ -1,0 +1,6 @@
+{
+  "timeout": 300000,
+  "recursive": true,
+  "bail": true,
+  "file":"e2e/tests/init.js"
+}
