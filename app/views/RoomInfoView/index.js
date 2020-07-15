@@ -59,7 +59,8 @@ class RoomInfoView extends React.Component {
 		baseUrl: PropTypes.string,
 		rooms: PropTypes.array,
 		theme: PropTypes.string,
-		isMasterDetail: PropTypes.bool
+		isMasterDetail: PropTypes.bool,
+		jitsiEnabled: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -302,12 +303,15 @@ class RoomInfoView extends React.Component {
 		);
 	}
 
-	renderButtons = () => (
-		<View style={styles.roomButtonsContainer}>
-			{this.renderButton(this.goRoom, 'message', I18n.t('Message'))}
-			{this.renderButton(this.videoCall, 'video-1', I18n.t('Video_call'))}
-		</View>
-	)
+	renderButtons = () => {
+		const { jitsiEnabled } = this.props;
+		return (
+			<View style={styles.roomButtonsContainer}>
+				{this.renderButton(this.goRoom, 'message', I18n.t('Message'))}
+				{jitsiEnabled ? this.renderButton(this.videoCall, 'video-1', I18n.t('Video_call')) : null}
+			</View>
+		);
+	}
 
 	renderContent = () => {
 		const { room, roomUser } = this.state;
@@ -348,7 +352,8 @@ const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	rooms: state.room.rooms,
-	isMasterDetail: state.app.isMasterDetail
+	isMasterDetail: state.app.isMasterDetail,
+	jitsiEnabled: state.settings.Jitsi_Enabled || false
 });
 
 export default connect(mapStateToProps)(withTheme(RoomInfoView));
