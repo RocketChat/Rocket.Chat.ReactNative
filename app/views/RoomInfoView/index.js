@@ -186,7 +186,7 @@ class RoomInfoView extends React.Component {
 
 					const room = await this.getDirect(user.username);
 
-					this.setState({ roomUser: user, room: { ...roomState, rid: room.rid } });
+					this.setState({ roomUser: user, room: { ...roomState, rid: room?.rid } });
 				}
 			} catch {
 				// do nothing
