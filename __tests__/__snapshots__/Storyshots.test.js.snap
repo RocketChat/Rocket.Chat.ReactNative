@@ -5114,6 +5114,13 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
           }
           testID="messagebox"
         >
+          <View
+            style={
+              Object {
+                "width": 15,
+              }
+            }
+          />
           <TextInput
             allowFontScaling={true}
             blurOnSubmit={false}
@@ -5265,6 +5272,13 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
           }
           testID="messagebox"
         >
+          <View
+            style={
+              Object {
+                "width": 15,
+              }
+            }
+          />
           <TextInput
             allowFontScaling={true}
             blurOnSubmit={false}
@@ -5687,6 +5701,13 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
           }
           testID="messagebox"
         >
+          <View
+            style={
+              Object {
+                "width": 15,
+              }
+            }
+          />
           <TextInput
             allowFontScaling={true}
             blurOnSubmit={false}
@@ -5756,26 +5777,29 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
         }
       }
     >
-      <View
-        pointerEvents="box-none"
-        style={
+      <Modal
+        animationType="none"
+        hardwareAccelerated={false}
+        hideModalContentWhileAnimating={true}
+        onModalHide={[Function]}
+        onModalWillHide={[Function]}
+        onModalWillShow={[Function]}
+        onRequestClose={[Function]}
+        onSwipeComplete={[Function]}
+        scrollHorizontal={false}
+        scrollOffset={0}
+        scrollOffsetMax={0}
+        scrollTo={null}
+        supportedOrientations={
           Array [
-            Object {
-              "backgroundColor": "black",
-              "bottom": 0,
-              "left": 0,
-              "opacity": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            },
-            Object {
-              "backgroundColor": "transparent",
-              "opacity": 1,
-              "zIndex": 2,
-            },
+            "portrait",
+            "landscape",
           ]
         }
+        swipeDirection="down"
+        swipeThreshold={100}
+        transparent={true}
+        visible={false}
       >
         <View
           accessible={true}
@@ -5808,6 +5832,19 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
           onModalHide={[Function]}
           onModalWillHide={[Function]}
           onModalWillShow={[Function]}
+          onMoveShouldSetResponder={[Function]}
+          onMoveShouldSetResponderCapture={[Function]}
+          onResponderEnd={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderReject={[Function]}
+          onResponderRelease={[Function]}
+          onResponderStart={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          onStartShouldSetResponderCapture={[Function]}
+          onSwipeComplete={[Function]}
           pointerEvents="box-none"
           scrollHorizontal={false}
           scrollOffset={0}
@@ -5820,7 +5857,7 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
               "margin": 0,
               "transform": Array [
                 Object {
-                  "translateY": 1334,
+                  "translateY": 0,
                 },
               ],
             }
@@ -5831,6 +5868,7 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
               "landscape",
             ]
           }
+          swipeDirection="down"
           swipeThreshold={100}
         >
           <View
@@ -5938,16 +5976,11 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
               </View>
               <View
                 style={
-                  Array [
-                    Object {
-                      "flexDirection": "row",
-                      "justifyContent": "space-between",
-                    },
-                    Object {
-                      "backgroundColor": "#ffffff",
-                    },
-                    false,
-                  ]
+                  Object {
+                    "backgroundColor": "#ffffff",
+                    "flexDirection": "row",
+                    "justifyContent": "space-between",
+                  }
                 }
               >
                 <View
@@ -5961,7 +5994,7 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
             </KeyboardTrackingView>
           </View>
         </View>
-      </View>
+      </Modal>
     </View>
     <Text
       style={
@@ -5992,26 +6025,29 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
         }
       }
     >
-      <View
-        pointerEvents="box-none"
-        style={
+      <Modal
+        animationType="none"
+        hardwareAccelerated={false}
+        hideModalContentWhileAnimating={true}
+        onModalHide={[Function]}
+        onModalWillHide={[Function]}
+        onModalWillShow={[Function]}
+        onRequestClose={[Function]}
+        onSwipeComplete={[Function]}
+        scrollHorizontal={false}
+        scrollOffset={0}
+        scrollOffsetMax={0}
+        scrollTo={null}
+        supportedOrientations={
           Array [
-            Object {
-              "backgroundColor": "black",
-              "bottom": 0,
-              "left": 0,
-              "opacity": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            },
-            Object {
-              "backgroundColor": "transparent",
-              "opacity": 1,
-              "zIndex": 2,
-            },
+            "portrait",
+            "landscape",
           ]
         }
+        swipeDirection="down"
+        swipeThreshold={100}
+        transparent={true}
+        visible={false}
       >
         <View
           accessible={true}
@@ -6044,6 +6080,19 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
           onModalHide={[Function]}
           onModalWillHide={[Function]}
           onModalWillShow={[Function]}
+          onMoveShouldSetResponder={[Function]}
+          onMoveShouldSetResponderCapture={[Function]}
+          onResponderEnd={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderReject={[Function]}
+          onResponderRelease={[Function]}
+          onResponderStart={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          onStartShouldSetResponderCapture={[Function]}
+          onSwipeComplete={[Function]}
           pointerEvents="box-none"
           scrollHorizontal={false}
           scrollOffset={0}
@@ -6056,7 +6105,7 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
               "margin": 0,
               "transform": Array [
                 Object {
-                  "translateY": 1334,
+                  "translateY": 0,
                 },
               ],
             }
@@ -6067,6 +6116,7 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
               "landscape",
             ]
           }
+          swipeDirection="down"
           swipeThreshold={100}
         >
           <View
@@ -6174,16 +6224,11 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
               </View>
               <View
                 style={
-                  Array [
-                    Object {
-                      "flexDirection": "row",
-                      "justifyContent": "space-between",
-                    },
-                    Object {
-                      "backgroundColor": "#ffffff",
-                    },
-                    false,
-                  ]
+                  Object {
+                    "backgroundColor": "#ffffff",
+                    "flexDirection": "row",
+                    "justifyContent": "space-between",
+                  }
                 }
               >
                 <View
@@ -6197,7 +6242,7 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
             </KeyboardTrackingView>
           </View>
         </View>
-      </View>
+      </Modal>
     </View>
     <Text
       style={
@@ -6228,26 +6273,29 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
         }
       }
     >
-      <View
-        pointerEvents="box-none"
-        style={
+      <Modal
+        animationType="none"
+        hardwareAccelerated={false}
+        hideModalContentWhileAnimating={true}
+        onModalHide={[Function]}
+        onModalWillHide={[Function]}
+        onModalWillShow={[Function]}
+        onRequestClose={[Function]}
+        onSwipeComplete={[Function]}
+        scrollHorizontal={false}
+        scrollOffset={0}
+        scrollOffsetMax={0}
+        scrollTo={null}
+        supportedOrientations={
           Array [
-            Object {
-              "backgroundColor": "black",
-              "bottom": 0,
-              "left": 0,
-              "opacity": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            },
-            Object {
-              "backgroundColor": "transparent",
-              "opacity": 1,
-              "zIndex": 2,
-            },
+            "portrait",
+            "landscape",
           ]
         }
+        swipeDirection="down"
+        swipeThreshold={100}
+        transparent={true}
+        visible={false}
       >
         <View
           accessible={true}
@@ -6280,6 +6328,19 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
           onModalHide={[Function]}
           onModalWillHide={[Function]}
           onModalWillShow={[Function]}
+          onMoveShouldSetResponder={[Function]}
+          onMoveShouldSetResponderCapture={[Function]}
+          onResponderEnd={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderReject={[Function]}
+          onResponderRelease={[Function]}
+          onResponderStart={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          onStartShouldSetResponderCapture={[Function]}
+          onSwipeComplete={[Function]}
           pointerEvents="box-none"
           scrollHorizontal={false}
           scrollOffset={0}
@@ -6292,7 +6353,7 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
               "margin": 0,
               "transform": Array [
                 Object {
-                  "translateY": 1334,
+                  "translateY": 0,
                 },
               ],
             }
@@ -6303,6 +6364,7 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
               "landscape",
             ]
           }
+          swipeDirection="down"
           swipeThreshold={100}
         >
           <View
@@ -6410,18 +6472,11 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
               </View>
               <View
                 style={
-                  Array [
-                    Object {
-                      "flexDirection": "row",
-                      "justifyContent": "space-between",
-                    },
-                    Object {
-                      "backgroundColor": "#ffffff",
-                    },
-                    Object {
-                      "backgroundColor": "#f3f4f5",
-                    },
-                  ]
+                  Object {
+                    "backgroundColor": "#f3f4f5",
+                    "flexDirection": "row",
+                    "justifyContent": "space-between",
+                  }
                 }
               >
                 <View
@@ -6435,7 +6490,7 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
             </KeyboardTrackingView>
           </View>
         </View>
-      </View>
+      </Modal>
     </View>
     <Text
       style={
@@ -6466,26 +6521,29 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
         }
       }
     >
-      <View
-        pointerEvents="box-none"
-        style={
+      <Modal
+        animationType="none"
+        hardwareAccelerated={false}
+        hideModalContentWhileAnimating={true}
+        onModalHide={[Function]}
+        onModalWillHide={[Function]}
+        onModalWillShow={[Function]}
+        onRequestClose={[Function]}
+        onSwipeComplete={[Function]}
+        scrollHorizontal={false}
+        scrollOffset={0}
+        scrollOffsetMax={0}
+        scrollTo={null}
+        supportedOrientations={
           Array [
-            Object {
-              "backgroundColor": "black",
-              "bottom": 0,
-              "left": 0,
-              "opacity": 0,
-              "position": "absolute",
-              "right": 0,
-              "top": 0,
-            },
-            Object {
-              "backgroundColor": "transparent",
-              "opacity": 1,
-              "zIndex": 2,
-            },
+            "portrait",
+            "landscape",
           ]
         }
+        swipeDirection="down"
+        swipeThreshold={100}
+        transparent={true}
+        visible={false}
       >
         <View
           accessible={true}
@@ -6518,6 +6576,19 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
           onModalHide={[Function]}
           onModalWillHide={[Function]}
           onModalWillShow={[Function]}
+          onMoveShouldSetResponder={[Function]}
+          onMoveShouldSetResponderCapture={[Function]}
+          onResponderEnd={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderReject={[Function]}
+          onResponderRelease={[Function]}
+          onResponderStart={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          onStartShouldSetResponderCapture={[Function]}
+          onSwipeComplete={[Function]}
           pointerEvents="box-none"
           scrollHorizontal={false}
           scrollOffset={0}
@@ -6530,7 +6601,7 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
               "margin": 0,
               "transform": Array [
                 Object {
-                  "translateY": 1334,
+                  "translateY": 0,
                 },
               ],
             }
@@ -6541,6 +6612,7 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
               "landscape",
             ]
           }
+          swipeDirection="down"
           swipeThreshold={100}
         >
           <View
@@ -6766,16 +6838,11 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
               </View>
               <View
                 style={
-                  Array [
-                    Object {
-                      "flexDirection": "row",
-                      "justifyContent": "space-between",
-                    },
-                    Object {
-                      "backgroundColor": "#ffffff",
-                    },
-                    false,
-                  ]
+                  Object {
+                    "backgroundColor": "#ffffff",
+                    "flexDirection": "row",
+                    "justifyContent": "space-between",
+                  }
                 }
               >
                 <View
@@ -6789,7 +6856,7 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
             </KeyboardTrackingView>
           </View>
         </View>
-      </View>
+      </Modal>
     </View>
   </View>
 </RCTScrollView>

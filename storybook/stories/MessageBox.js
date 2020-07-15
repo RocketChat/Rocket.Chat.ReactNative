@@ -41,44 +41,49 @@ const getCustomEmoji = (content) => {
 	return customEmoji;
 };
 
+const commonProps = {
+	closeEmoji: () => {},
+	toggleFullScreen: () => {},
+	commandPreview: [],
+	editCancel: () => {},
+	editing: false,
+	getCustomEmoji,
+	iOSScrollBehavior: 0,
+	isActionsEnabled: false,
+	isFullScreen: false,
+	mentions: [],
+	message: {},
+	Message_AudioRecorderEnabled: false,
+	onChangeText: () => {},
+	onKeyboardResigned: () => {},
+	onEmojiSelected: () => {},
+	openEmoji: () => {},
+	recording: false,
+	recordingCallback: () => {},
+	replyCancel: () => {},
+	replying: false,
+	showCommandPreview: false,
+	showEmojiKeyboard: false,
+	showMessageBoxActions: () => {},
+	showSend: false,
+	submit: () => {},
+	text: '',
+	theme: _theme,
+	toggleRecordAudioWithState: () => {},
+	trackingType: [],
+	user,
+	autoFocus: false,
+	backdropOpacity: 0
+};
+
 const Main = props => (
 	<MainComposer
 		ref={{
 			component: useRef(),
 			tracking: useRef()
 		}}
-		closeEmoji={() => {}}
-		toggleFullScreen={() => {}}
-		commandPreview={[]}
-		editCancel={() => {}}
-		editing={false}
-		finishAudioMessage={() => {}}
-		getCustomEmoji={getCustomEmoji}
-		iOSScrollBehavior={0}
-		isActionsEnabled
+		{...commonProps}
 		isFullScreen={false}
-		mentions={[]}
-		message={{}}
-		Message_AudioRecorderEnabled
-		onChangeText={() => {}}
-		onKeyboardResigned={() => {}}
-		onEmojiSelected={() => {}}
-		openEmoji={() => {}}
-		recording={false}
-		recordingCallback={() => {}}
-		recordStartState={false}
-		replyCancel={() => {}}
-		replying={false}
-		showCommandPreview={false}
-		showEmojiKeyboard={false}
-		showMessageBoxActions={() => {}}
-		showSend={false}
-		submit={() => {}}
-		text=''
-		toggleRecordAudioWithState={() => {}}
-		theme={_theme}
-		trackingType={[]}
-		user={user}
 		{...props}
 	/>
 );
@@ -90,38 +95,7 @@ const FullScreen = props => (
 				component: useRef(),
 				tracking: useRef()
 			}}
-			closeEmoji={() => {}}
-			toggleFullScreen={() => {}}
-			commandPreview={[]}
-			editCancel={() => {}}
-			editing={false}
-			getCustomEmoji={getCustomEmoji}
-			iOSScrollBehavior={0}
-			isActionsEnabled
-			isFullScreen
-			mentions={[]}
-			message={{}}
-			Message_AudioRecorderEnabled
-			onChangeText={() => {}}
-			onKeyboardResigned={() => {}}
-			onEmojiSelected={() => {}}
-			openEmoji={() => {}}
-			recording={false}
-			recordingCallback={() => {}}
-			replyCancel={() => {}}
-			replying={false}
-			showCommandPreview={false}
-			showEmojiKeyboard={false}
-			showMessageBoxActions={() => {}}
-			showSend={false}
-			submit={() => {}}
-			text=''
-			theme={_theme}
-			toggleRecordAudioWithState={() => {}}
-			trackingType={[]}
-			user={user}
-			autoFocus={false}
-			backdropOpacity={0}
+			{...commonProps}
 			{...props}
 		/>
 	</View>
@@ -174,7 +148,7 @@ export default ({ theme }) => {
 				<FullScreen showSend text={longText} />
 
 				<Separator title='Editing' theme={_theme} />
-				<FullScreen editing text={`Editing this too long message. ${ longText }`} showSend />
+				<FullScreen editing text={`Editing this too long message. ${longText}`} showSend />
 
 				<Separator title='Replying' theme={_theme} />
 				<FullScreen

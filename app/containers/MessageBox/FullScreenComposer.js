@@ -67,12 +67,10 @@ class FullScreenComposer extends Component {
 		backdropOpacity: 0.70 // Default value of backdropOpacity in React native modal
 	}
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			isOpen: props.isFullScreen
-		};
-	}
+	state = {
+		// eslint-disable-next-line react/destructuring-assignment
+		isOpen: this.props.isFullScreen
+	};
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
@@ -156,13 +154,17 @@ class FullScreenComposer extends Component {
 			editing,
 			Message_AudioRecorderEnabled
 		} = this.props;
+		const buttonsViewStyle = {
+			...styles.bottomBarButtons,
+			backgroundColor: editing ? themes[theme].chatComponentBackground : themes[theme].messageboxBackground
+		};
 
 		const recordAudio = showSend || !Message_AudioRecorderEnabled ? null : (
 			<RecordAudio
 				theme={theme}
 				recordingCallback={recordingCallback}
 				onFinish={finishAudioMessage}
-				onPress={() => this.startRecordingAudio()}
+				onPress={this.startRecordingAudio}
 			/>
 		);
 
@@ -170,7 +172,7 @@ class FullScreenComposer extends Component {
 			<>
 				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
 				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
-				<View style={[styles.bottomBarButtons, { backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }]}>
+				<View style={buttonsViewStyle}>
 					<LeftButtons
 						theme={theme}
 						showEmojiKeyboard={showEmojiKeyboard}
@@ -235,9 +237,9 @@ class FullScreenComposer extends Component {
 				hideModalContentWhileAnimating
 				coverScreen={false}
 				backdropOpacity={backdropOpacity}
-				swipeDirection="down"
+				swipeDirection='down'
 				onSwipeComplete={() => this.closeModal()}
-				>
+			>
 				<View style={{ backgroundColor, flex: 1 }}>
 					<TouchableOpacity onPress={() => this.closeModal()} style={styles.fullScreenComposerCloseButton}>
 						<CustomIcon name='minimize-arrow' size={30} color={themes[theme].tintColor} />

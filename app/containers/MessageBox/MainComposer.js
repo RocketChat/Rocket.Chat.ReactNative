@@ -58,11 +58,6 @@ class MainComposer extends Component {
 		innerRef: PropTypes.object
 	};
 
-	constructor(props) {
-		super(props);
-		this.state = {};
-	}
-
 	shouldComponentUpdate(nextProps) {
 		const {
 			showEmojiKeyboard,
@@ -150,7 +145,7 @@ class MainComposer extends Component {
 		} : {};
 
 		const openFullScreen = isActionsEnabled && !recording ? (
-			<OpenFullScreenButton theme={theme} onPress={() => toggleFullScreen()} />
+			<OpenFullScreenButton theme={theme} onPress={toggleFullScreen} />
 		) : null;
 
 		const recordAudio = showSend || !Message_AudioRecorderEnabled ? null : (

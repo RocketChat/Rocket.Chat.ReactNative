@@ -867,6 +867,43 @@ class MessageBox extends Component {
 		const {
 			user, baseUrl, theme, iOSScrollBehavior, editing, getCustomEmoji, message, Message_AudioRecorderEnabled, replyCancel, replying, children, isActionsEnabled
 		} = this.props;
+		const commonProps = {
+			commandPreview,
+			editing,
+			getCustomEmoji,
+			iOSScrollBehavior,
+			isActionsEnabled,
+			isFullScreen,
+			mentions,
+			message,
+			Message_AudioRecorderEnabled,
+			recording,
+			replyCancel,
+			replying,
+			showCommandPreview,
+			showEmojiKeyboard,
+			showSend,
+			theme,
+			trackingType,
+			user,
+			text: this.text,
+			ref: {
+				component: component => this.component = component,
+				tracking: tracking => this.tracking = tracking
+			},
+			closeEmoji: this.closeEmoji,
+			toggleFullScreen: this.toggleFullScreen,
+			editCancel: this.editCancel,
+			onChangeText: this.onChangeText,
+			onKeyboardResigned: this.onKeyboardResigned,
+			onEmojiSelected: this.onEmojiSelected,
+			openEmoji: this.openEmoji,
+			recordingCallback: this.recordingCallback,
+			showMessageBoxActions: this.showMessageBoxActions,
+			submit: this.submit,
+			toggleRecordAudioWithState: this.toggleRecordAudioWithState
+		};
+
 		return (
 			<MessageboxContext.Provider
 				value={{
@@ -879,80 +916,14 @@ class MessageBox extends Component {
 				{isFullScreen
 					? (
 						<FullScreenComposer
-							ref={{
-								component: component => this.component = component,
-								tracking: tracking => this.tracking = tracking
-							}}
-							closeEmoji={this.closeEmoji}
-							toggleFullScreen={this.toggleFullScreen}
-							commandPreview={commandPreview}
-							editCancel={this.editCancel}
-							editing={editing}
-							getCustomEmoji={getCustomEmoji}
-							iOSScrollBehavior={iOSScrollBehavior}
-							isActionsEnabled={isActionsEnabled}
-							isFullScreen={isFullScreen}
-							mentions={mentions}
-							message={message}
-							Message_AudioRecorderEnabled={Message_AudioRecorderEnabled}
-							onChangeText={this.onChangeText}
-							onKeyboardResigned={this.onKeyboardResigned}
-							onEmojiSelected={this.onEmojiSelected}
-							openEmoji={this.openEmoji}
-							recording={recording}
-							recordingCallback={this.recordingCallback}
-							replyCancel={replyCancel}
-							replying={replying}
-							showCommandPreview={showCommandPreview}
-							showEmojiKeyboard={showEmojiKeyboard}
-							showMessageBoxActions={this.showMessageBoxActions}
-							showSend={showSend}
-							submit={this.submit}
-							text={this.text}
-							theme={theme}
-							toggleRecordAudioWithState={this.toggleRecordAudioWithState}
-							trackingType={trackingType}
-							user={user}
+							{...commonProps}
 						/>
 					)
 					: (
 						<MainComposer
-							ref={{
-								component: component => this.component = component,
-								tracking: tracking => this.tracking = tracking
-							}}
-							closeEmoji={this.closeEmoji}
-							toggleFullScreen={this.toggleFullScreen}
-							commandPreview={commandPreview}
-							editCancel={this.editCancel}
-							editing={editing}
+							{...commonProps}
 							finishAudioMessage={this.finishAudioMessage}
-							getCustomEmoji={getCustomEmoji}
-							iOSScrollBehavior={iOSScrollBehavior}
-							isActionsEnabled={isActionsEnabled}
-							isFullScreen={isFullScreen}
-							mentions={mentions}
-							message={message}
-							Message_AudioRecorderEnabled={Message_AudioRecorderEnabled}
-							onChangeText={this.onChangeText}
-							onKeyboardResigned={this.onKeyboardResigned}
-							onEmojiSelected={this.onEmojiSelected}
-							openEmoji={this.openEmoji}
-							recording={recording}
-							recordingCallback={this.recordingCallback}
 							recordStartState={recordStartState}
-							replyCancel={replyCancel}
-							replying={replying}
-							showCommandPreview={showCommandPreview}
-							showEmojiKeyboard={showEmojiKeyboard}
-							showMessageBoxActions={this.showMessageBoxActions}
-							showSend={showSend}
-							submit={this.submit}
-							text={this.text}
-							toggleRecordAudioWithState={this.toggleRecordAudioWithState}
-							theme={theme}
-							trackingType={trackingType}
-							user={user}
 						>
 							{children}
 						</MainComposer>
