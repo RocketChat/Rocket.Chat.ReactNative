@@ -42,7 +42,7 @@ public class Ejson {
         SecureKeystore secureKeystore = new SecureKeystore(reactApplicationContext);
 
         // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
-        String alias = Utils.toHex("com.MMKV." + "chat.rocket.reactnative");
+        String alias = Utils.toHex("com.MMKV.default");
 
         // Retrieve container password
         secureKeystore.getSecureKey(alias, new RNCallback() {

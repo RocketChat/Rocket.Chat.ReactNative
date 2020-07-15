@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m b/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m
-index edc4fd4..9319f87 100644
+index edc4fd4..f763aa7 100644
 --- a/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m
 +++ b/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m
 @@ -3,6 +3,8 @@
@@ -11,7 +11,7 @@ index edc4fd4..9319f87 100644
  
  @implementation RNNotificationEventHandler {
      RNNotificationsStore* _store;
-@@ -28,9 +30,129 @@ - (void)didReceiveForegroundNotification:(UNNotification *)notification withComp
+@@ -28,9 +30,140 @@ - (void)didReceiveForegroundNotification:(UNNotification *)notification withComp
      [RNEventEmitter sendEvent:RNNotificationReceivedForeground body:[RNNotificationParser parseNotification:notification]];
  }
  
@@ -32,7 +32,7 @@ index edc4fd4..9319f87 100644
 +/*
 + * Remove trailing slash on server url from notification
 +*/
-+-(NSString *)serverURL:(NSString *)host {
++- (NSString *)serverURL:(NSString *)host {
 +    if ([host length] > 0) {
 +        unichar last = [host characterAtIndex:[host length] - 1];
 +        if (last == '/') {
@@ -40,6 +40,15 @@ index edc4fd4..9319f87 100644
 +        }
 +    }
 +    return host;
++}
++
++- (NSString *)stringToHex:(NSString *)string
++{
++    char *utf8 = (char *)[string UTF8String];
++    NSMutableString *hex = [NSMutableString string];
++    while (*utf8) [hex appendFormat:@"%02X", *utf8++ & 0x00FF];
++
++    return [NSString stringWithFormat:@"%@", hex];
 +}
 +
 +- (NSDictionary *) retrieveCredentialsForServer:(NSString *)serverURL {
@@ -52,7 +61,9 @@ index edc4fd4..9319f87 100644
 +  // Start the MMKV container
 +  __block MMKV *mmkv;
 +  SecureStorage *secureStorage = [[SecureStorage alloc] init];
-+  [secureStorage getSecureKey:@"636f6d2e4d4d4b562e636861742e726f636b65742e72656163746e6174697665" callback:^(NSArray *response) {
++
++  // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
++  [secureStorage getSecureKey:[self stringToHex:@"com.MMKV.default"] callback:^(NSArray *response) {
 +    // error handling
 +    if ([response objectAtIndex:0]) {
 +        return;

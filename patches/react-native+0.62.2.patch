@@ -12,7 +12,7 @@ index 02e1db6..f7d6281 100644
      },
    });
 diff --git a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
-index 274f381..9de23d1 100644
+index 274f381..4585605 100644
 --- a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
 +++ b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
 @@ -9,10 +9,12 @@
@@ -28,7 +28,7 @@ index 274f381..9de23d1 100644
  
  @interface RCTHTTPRequestHandler () <NSURLSessionDataDelegate, RCTTurboModule>
  
-@@ -58,6 +60,85 @@ - (BOOL)canHandleRequest:(NSURLRequest *)request
+@@ -58,6 +60,100 @@ - (BOOL)canHandleRequest:(NSURLRequest *)request
    return [schemes containsObject:request.URL.scheme.lowercaseString];
  }
  
@@ -85,6 +85,15 @@ index 274f381..9de23d1 100644
 +  return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
 +}
 +
++- (NSString *)stringToHex:(NSString *)string
++{
++    char *utf8 = (char *)[string UTF8String];
++    NSMutableString *hex = [NSMutableString string];
++    while (*utf8) [hex appendFormat:@"%02X", *utf8++ & 0x00FF];
++
++    return [NSString stringWithFormat:@"%@", hex];
++}
++
 +-(void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler {
 +
 +  NSString *host = challenge.protectionSpace.host;
@@ -92,7 +101,13 @@ index 274f381..9de23d1 100644
 +  // Read the clientSSL info from MMKV
 +  __block NSDictionary *clientSSL;
 +  SecureStorage *secureStorage = [[SecureStorage alloc] init];
-+  [secureStorage getSecureKey:@"636f6d2e4d4d4b562e636861742e726f636b65742e72656163746e6174697665" callback:^(NSArray *response) {
++
++  // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
++  [secureStorage getSecureKey:[self stringToHex:@"com.MMKV.default"] callback:^(NSArray *response) {
++    // Error happened
++    if ([response objectAtIndex:0]) {
++        return;
++    }
 +    NSString *key = [response objectAtIndex:1];
 +    NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
 +    MMKV *mmkv = [MMKV mmkvWithID:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"] cryptKey:cryptKey mode:MMKVMultiProcess];
@@ -115,7 +130,7 @@ index 274f381..9de23d1 100644
                           withDelegate:(id<RCTURLRequestDelegate>)delegate
  {
 diff --git a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
-index b967c14..9ded26b 100644
+index b967c14..c9939ca 100644
 --- a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
 +++ b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
 @@ -24,6 +24,9 @@
@@ -128,7 +143,7 @@ index b967c14..9ded26b 100644
  typedef NS_ENUM(NSInteger, RCTSROpCode)  {
    RCTSROpCodeTextFrame = 0x1,
    RCTSROpCodeBinaryFrame = 0x2,
-@@ -478,6 +481,29 @@ - (void)didConnect
+@@ -478,6 +481,38 @@ - (void)didConnect
    [self _readHTTPHeader];
  }
  
@@ -155,17 +170,32 @@ index b967c14..9ded26b 100644
 +    }
 +}
 +
++- (NSString *)stringToHex:(NSString *)string
++{
++    char *utf8 = (char *)[string UTF8String];
++    NSMutableString *hex = [NSMutableString string];
++    while (*utf8) [hex appendFormat:@"%02X", *utf8++ & 0x00FF];
++
++    return [NSString stringWithFormat:@"%@", hex];
++}
++
  - (void)_initializeStreams
  {
    assert(_url.port.unsignedIntValue <= UINT32_MAX);
-@@ -515,6 +541,25 @@ - (void)_initializeStreams
+@@ -515,6 +550,31 @@ - (void)_initializeStreams
      RCTLogInfo(@"SocketRocket: In debug mode.  Allowing connection to any root cert");
  #endif
  
 +    // Read the clientSSL info from MMKV
 +    __block NSDictionary *clientSSL;
 +    SecureStorage *secureStorage = [[SecureStorage alloc] init];
-+    [secureStorage getSecureKey:@"636f6d2e4d4d4b562e636861742e726f636b65742e72656163746e6174697665" callback:^(NSArray *response) {
++
++    // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
++    [secureStorage getSecureKey:[self stringToHex:@"com.MMKV.default"] callback:^(NSArray *response) {
++      // Error happened
++      if ([response objectAtIndex:0]) {
++          return;
++      }
 +      NSString *key = [response objectAtIndex:1];
 +      NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
 +      MMKV *mmkv = [MMKV mmkvWithID:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"] cryptKey:cryptKey mode:MMKVMultiProcess];
@@ -184,7 +214,7 @@ index b967c14..9ded26b 100644
      [_outputStream setProperty:SSLOptions
                          forKey:(__bridge id)kCFStreamPropertySSLSettings];
    }
-@@ -594,6 +639,7 @@ - (void)closeWithCode:(NSInteger)code reason:(NSString *)reason
+@@ -594,6 +654,7 @@ - (void)closeWithCode:(NSInteger)code reason:(NSString *)reason
        }
      }
  
@@ -334,3 +364,10 @@ index c5c1ec3..1bf60b6 100644
  
  - (BOOL)isKeyCommandRegisteredForInput:(NSString *)input
                           modifierFlags:(UIKeyModifierFlags)flags
+diff --git a/node_modules/react-native/scripts/.packager.env b/node_modules/react-native/scripts/.packager.env
+new file mode 100644
+index 0000000..361f5fb
+--- /dev/null
++++ b/node_modules/react-native/scripts/.packager.env
+@@ -0,0 +1 @@
++export RCT_METRO_PORT=8081
