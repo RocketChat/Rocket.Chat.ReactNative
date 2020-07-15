@@ -22,6 +22,8 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import Markdown from '../../containers/markdown';
+import { LISTENER } from '../../containers/Toast';
+import EventEmitter from '../../utils/events';
 
 import Livechat from './Livechat';
 import Channel from './Channel';
@@ -168,11 +170,11 @@ class RoomInfoView extends React.Component {
 	}
 
 	loadUser = async() => {
-		const { room: roomState, roomUser } = this.state;
+		const { room, roomUser } = this.state;
 
 		if (_.isEmpty(roomUser)) {
 			try {
-				const roomUserId = RocketChat.getUidDirectMessage(roomState);
+				const roomUserId = RocketChat.getUidDirectMessage(room);
 				const result = await RocketChat.getUserInfo(roomUserId);
 				if (result.success) {
 					const { user } = result;
@@ -184,9 +186,7 @@ class RoomInfoView extends React.Component {
 						}));
 					}
 
-					const room = await this.getDirect(user.username);
-
-					this.setState({ roomUser: user, room: { ...roomState, rid: room?.rid } });
+					this.setState({ roomUser: user });
 				}
 			} catch {
 				// do nothing
@@ -221,16 +221,28 @@ class RoomInfoView extends React.Component {
 		}
 	}
 
-	getDirect = async(username) => {
+	createDirect = () => new Promise(async(resolve, reject) => {
+		const { route } = this.props;
+
+		// We don't need to create a direct
+		const member = route.params?.member;
+		if (!_.isEmpty(member)) {
+			return resolve();
+		}
+
+		// TODO: Check if some direct with the user already exists on database
 		try {
+			const { roomUser: { username } } = this.state;
 			const result = await RocketChat.createDirectMessage(username);
 			if (result.success) {
-				return result.room;
+				const { room: { rid } } = result;
+				return this.setState(({ room }) => ({ room: { ...room, rid } }), resolve);
 			}
 		} catch {
 			// do nothing
 		}
-	}
+		reject();
+	})
 
 	goRoom = () => {
 		const { roomUser, room } = this.state;
@@ -288,9 +300,19 @@ class RoomInfoView extends React.Component {
 
 	renderButton = (onPress, iconName, text) => {
 		const { theme } = this.props;
+
+		const onActionPress = async() => {
+			try {
+				await this.createDirect();
+				onPress();
+			} catch {
+				EventEmitter.emit(LISTENER, { message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') }) });
+			}
+		};
+
 		return (
 			<BorderlessButton
-				onPress={onPress}
+				onPress={onActionPress}
 				style={styles.roomButton}
 			>
 				<CustomIcon
@@ -304,11 +326,10 @@ class RoomInfoView extends React.Component {
 	}
 
 	renderButtons = () => {
-		const { room } = this.state;
 		const { jitsiEnabled } = this.props;
 		return (
 			<View style={styles.roomButtonsContainer}>
-				{room.rid ? this.renderButton(this.goRoom, 'message', I18n.t('Message')) : null}
+				{this.renderButton(this.goRoom, 'message', I18n.t('Message'))}
 				{jitsiEnabled ? this.renderButton(this.videoCall, 'video-1', I18n.t('Video_call')) : null}
 			</View>
 		);
