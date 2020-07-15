@@ -1,9 +1,9 @@
 const random = require('./helpers/random');
 const value = random(20);
 const data = {
-    server: 'https://mobile.rocket.chat',
-    adminUser: 'e2e_admin',
-    adminPassword: 'p7mFh4yLwCRXSnMvG',
+    server: 'http://127.0.0.1:3000',
+    adminUser: 'admin',
+    adminPassword: 'password',
     alternateServer: 'https://stable.rocket.chat',
     users: {
         regular: {

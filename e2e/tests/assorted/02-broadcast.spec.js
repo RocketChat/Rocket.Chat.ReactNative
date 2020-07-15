@@ -3,14 +3,17 @@ const {
 } = require('detox');
 const OTP = require('otp.js');
 const GA = OTP.googleAuthenticator;
-const { navigateToLogin, login, tapBack, sleep, searchRoom } = require('../../helpers/app');
+const { navigateToLogin, login, mockMessage, tapBack, sleep, searchRoom } = require('../../helpers/app');
 const data = require('../../data');
+
+const testuser = data.users.regular
+const otheruser = data.users.alternate
 
 describe('Broadcast room', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
-		await login();
+		await login(testuser.username, testuser.password);
 	});
 
 	it('should create broadcast room', async() => {
@@ -18,19 +21,22 @@ describe('Broadcast room', () => {
 		await waitFor(element(by.id('new-message-view'))).toBeVisible().withTimeout(2000);
 		await element(by.id('new-message-view-create-channel')).tap();
 		await waitFor(element(by.id('select-users-view'))).toBeVisible().withTimeout(2000);
-		await element(by.id('select-users-view-search')).replaceText(data.alternateUser);
-		await waitFor(element(by.id(`select-users-view-item-${ data.alternateUser }`))).toBeVisible().withTimeout(60000);
-		await expect(element(by.id(`select-users-view-item-${ data.alternateUser }`))).toBeVisible();
-		await element(by.id(`select-users-view-item-${ data.alternateUser }`)).tap();
-		await waitFor(element(by.id(`selected-user-${ data.alternateUser }`))).toBeVisible().withTimeout(5000);
+		await element(by.id('select-users-view-search')).replaceText(otheruser.username);
+		await waitFor(element(by.id(`select-users-view-item-${ otheruser.username }`))).toBeVisible().withTimeout(60000);
+		await expect(element(by.id(`select-users-view-item-${ otheruser.username }`))).toBeVisible();
+		await element(by.id(`select-users-view-item-${ otheruser.username }`)).tap();
+		await waitFor(element(by.id(`selected-user-${ otheruser.username }`))).toBeVisible().withTimeout(5000);
 		await sleep(1000);
 		await element(by.id('selected-users-view-submit')).tap();
 		await sleep(1000);
 		await waitFor(element(by.id('create-channel-view'))).toExist().withTimeout(5000);
 		await element(by.id('create-channel-name')).replaceText(`broadcast${ data.random }`);
-		await sleep(1000);
-		await element(by.id('create-channel-broadcast')).tap();
-		await sleep(1000);
+		await sleep(2000);
+		await element(by.id('create-channel-broadcast')).tap(); 
+		if (device.getPlatform() === 'ios') { //Because this tap is FLAKY on iOS
+			await expect(element(by.id('create-channel-broadcast'))).toHaveValue('1')
+		}
+		await sleep(500);
 		await element(by.id('create-channel-submit')).tap();
 		await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(60000);
 		await expect(element(by.id('room-view'))).toBeVisible();
@@ -51,27 +57,23 @@ describe('Broadcast room', () => {
 
 	it('should send message', async() => {
 		await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
-		await element(by.id('messagebox-input')).tap();
-		await element(by.id('messagebox-input')).typeText(`${ data.random }message`);
-		await element(by.id('messagebox-send-message')).tap();
-		await waitFor(element(by.label(`${ data.random }message`)).atIndex(0)).toExist().withTimeout(60000);
-		await expect(element(by.label(`${ data.random }message`)).atIndex(0)).toBeVisible();
+		await mockMessage('message');
 		await tapBack();
 	});
 
 	it('should login as user without write message authorization and enter room', async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
-		await element(by.id('login-view-email')).replaceText(data.alternateUser);
-		await element(by.id('login-view-password')).replaceText(data.alternateUserPassword);
+		await element(by.id('login-view-email')).replaceText(otheruser.username);
+		await element(by.id('login-view-password')).replaceText(otheruser.password);
 		await sleep(1000);
 		await element(by.id('login-view-submit')).tap();
-		await waitFor(element(by.id('two-factor'))).toBeVisible().withTimeout(5000);
-		await expect(element(by.id('two-factor'))).toBeVisible();
-		const code = GA.gen(data.alternateUserTOTPSecret);
-		await element(by.id('two-factor-input')).replaceText(code);
-		await sleep(1000);
-		await element(by.id('two-factor-send')).tap();
+		//await waitFor(element(by.id('two-factor'))).toBeVisible().withTimeout(5000);
+		//await expect(element(by.id('two-factor'))).toBeVisible();
+		//const code = GA.gen(data.alternateUserTOTPSecret);
+		//await element(by.id('two-factor-input')).replaceText(code);
+		//await sleep(1000);
+		//await element(by.id('two-factor-send')).tap();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 		await searchRoom(`broadcast${ data.random }`);
 		await waitFor(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toExist().withTimeout(60000);
@@ -103,15 +105,11 @@ describe('Broadcast room', () => {
 	it('should tap on reply button and navigate to direct room', async() => {
 		await element(by.id('message-broadcast-reply')).tap();
 		await sleep(1000);
-		await waitFor(element(by.id(`room-view-title-${ data.user }`))).toBeVisible().withTimeout(5000);
-		await expect(element(by.id(`room-view-title-${ data.user }`))).toBeVisible();
+		await waitFor(element(by.id(`room-view-title-${ testuser.username }`))).toBeVisible().withTimeout(5000);
+		await expect(element(by.id(`room-view-title-${ testuser.username }`))).toBeVisible();
 	});
 
 	it('should reply broadcasted message', async() => {
-		await element(by.id('messagebox-input')).tap();
-		await element(by.id('messagebox-input')).typeText(`${ data.random }broadcastreply`);
-		await element(by.id('messagebox-send-message')).tap();
-		await waitFor(element(by.label(`${ data.random }broadcastreply`)).atIndex(0)).toBeVisible().withTimeout(60000);
-		await expect(element(by.label(`${ data.random }broadcastreply`)).atIndex(0)).toBeVisible();
+		await mockMessage('broadcastreply');
 	});
 });

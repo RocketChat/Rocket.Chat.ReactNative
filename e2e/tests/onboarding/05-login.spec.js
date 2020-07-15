@@ -56,8 +56,8 @@ describe('Login screen', () => {
 		});
 	
 		it('should insert wrong password and get error', async() => {
-			await element(by.id('login-view-email')).replaceText(data.user);
-			await element(by.id('login-view-password')).replaceText('error');
+			await element(by.id('login-view-email')).replaceText(data.users.regular.username);
+			await element(by.id('login-view-password')).replaceText('NotMyActualPassword');
 			await sleep(300);
 			await element(by.id('login-view-submit')).tap();
 			await waitFor(element(by.text('Your credentials were rejected! Please try again.'))).toBeVisible().withTimeout(10000);
@@ -66,7 +66,7 @@ describe('Login screen', () => {
 		});
 	
 		it('should login with success', async() => {
-			await element(by.id('login-view-password')).replaceText(data.password);
+			await element(by.id('login-view-password')).replaceText(data.users.regular.password);
 			await sleep(300);
 			await element(by.id('login-view-submit')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
