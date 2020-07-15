@@ -12,7 +12,7 @@ index 02e1db6..f7d6281 100644
      },
    });
 diff --git a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
-index 274f381..4585605 100644
+index 274f381..950de0d 100644
 --- a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
 +++ b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
 @@ -9,10 +9,12 @@
@@ -110,7 +110,7 @@ index 274f381..4585605 100644
 +    }
 +    NSString *key = [response objectAtIndex:1];
 +    NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
-+    MMKV *mmkv = [MMKV mmkvWithID:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"] cryptKey:cryptKey mode:MMKVMultiProcess];
++    MMKV *mmkv = [MMKV mmkvWithID:@"default" cryptKey:cryptKey mode:MMKVMultiProcess];
 +
 +    clientSSL = [mmkv getObjectOfClass:[NSDictionary class] forKey:host];
 +  }];
@@ -130,7 +130,7 @@ index 274f381..4585605 100644
                           withDelegate:(id<RCTURLRequestDelegate>)delegate
  {
 diff --git a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
-index b967c14..c9939ca 100644
+index b967c14..9b5dca9 100644
 --- a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
 +++ b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
 @@ -24,6 +24,9 @@
@@ -198,7 +198,7 @@ index b967c14..c9939ca 100644
 +      }
 +      NSString *key = [response objectAtIndex:1];
 +      NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
-+      MMKV *mmkv = [MMKV mmkvWithID:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"] cryptKey:cryptKey mode:MMKVMultiProcess];
++      MMKV *mmkv = [MMKV mmkvWithID:@"default" cryptKey:cryptKey mode:MMKVMultiProcess];
 +
 +      clientSSL = [mmkv getObjectOfClass:[NSDictionary class] forKey:host];
 +    }];

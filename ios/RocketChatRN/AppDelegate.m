@@ -73,7 +73,7 @@ static void InitializeFlipper(UIApplication *application) {
 
     if (!alreadyMigrated) {
       // MMKV Instance that will be used by JS
-      MMKV *mmkv = [MMKV mmkvWithID:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"] mode:MMKVMultiProcess];
+      MMKV *mmkv = [MMKV mmkvWithID:@"default" mode:MMKVMultiProcess];
 
       // NSUserDefaults -> MMKV (Migration)
       NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]];
