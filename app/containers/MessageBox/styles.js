@@ -125,17 +125,10 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular,
 		flex: 1
 	},
-	textBoxTopButton: {
-		width: '100%',
-		alignItems: 'center',
-		justifyContent: 'center',
-		zIndex: 5,
-		marginBottom: -10
-	},
 	fullScreenComposerCloseButton: {
 		alignSelf: 'flex-end',
-		margin: 10,
-		marginBottom: 0
+		margin: 15,
+		marginBottom: 5
 	},
 	bottomBarButtons: {
 		flexDirection: 'row',

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, TouchableOpacity
-} from 'react-native';
+import { View } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import equal from 'deep-equal';
 
@@ -17,7 +15,7 @@ import RightButtons from './RightButtons';
 import { isAndroid, isTablet } from '../../utils/deviceInfo';
 import Mentions from './Mentions';
 import CommandsPreview from './CommandsPreview';
-import { CustomIcon } from '../../lib/Icons';
+import OpenFullScreenButton from './buttons/OpenFullScreenButton';
 
 class MainComposer extends Component {
 	static propTypes = {
@@ -111,21 +109,6 @@ class MainComposer extends Component {
 		return false;
 	}
 
-	renderTopButton = () => {
-		const { editing, toggleFullScreen, theme } = this.props;
-		const buttonStyle = {
-			...styles.textBoxTopButton,
-			backgroundColor: editing ? themes[theme].chatComponentBackground
-				: themes[theme].messageboxBackground
-		};
-
-		return (
-			<TouchableOpacity onPress={() => toggleFullScreen()} style={buttonStyle}>
-				<CustomIcon name='chevron-up' size={24} color={themes[theme].tintColor} />
-			</TouchableOpacity>
-		);
-	}
-
 	renderContent = () => {
 		const {
 			submit,
@@ -156,6 +139,7 @@ class MainComposer extends Component {
 			text,
 			recording,
 			children,
+			toggleFullScreen,
 			innerRef
 		} = this.props;
 		const { component } = innerRef;
@@ -164,6 +148,10 @@ class MainComposer extends Component {
 			onSubmitEditing: submit,
 			returnKeyType: 'send'
 		} : {};
+
+		const openFullScreen = isActionsEnabled && !recording ? (
+			<OpenFullScreenButton theme={theme} onPress={() => toggleFullScreen()} />
+		) : null;
 
 		const recordAudio = showSend || !Message_AudioRecorderEnabled ? null : (
 			<RecordAudio
@@ -220,6 +208,7 @@ class MainComposer extends Component {
 					theme={theme}
 					{...isAndroidTablet}
 				/>
+				{openFullScreen}
 				<RightButtons
 					theme={theme}
 					showSend={showSend}
@@ -234,7 +223,6 @@ class MainComposer extends Component {
 			<>
 				{commandsPreviewAndMentions}
 				<View style={[styles.composer, { borderTopColor: themes[theme].separatorColor }]}>
-					{isActionsEnabled && !recording ? this.renderTopButton() : null}
 					{replyPreview}
 					<View
 						style={[

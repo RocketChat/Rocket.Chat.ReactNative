@@ -219,11 +219,6 @@ class FullScreenComposer extends Component {
 		} = this.props;
 		const { component, tracking } = innerRef;
 		const { isOpen } = this.state;
-		const buttonStyle = {
-			...styles.fullScreenComposerCloseButton,
-			backgroundColor: editing ? themes[theme].chatComponentBackground
-				: themes[theme].messageboxBackground
-		};
 		const isAndroidTablet = isTablet && isAndroid ? {
 			multiline: false,
 			onSubmitEditing: submit,
@@ -240,10 +235,12 @@ class FullScreenComposer extends Component {
 				hideModalContentWhileAnimating
 				coverScreen={false}
 				backdropOpacity={backdropOpacity}
-			>
+				swipeDirection="down"
+				onSwipeComplete={() => this.closeModal()}
+				>
 				<View style={{ backgroundColor, flex: 1 }}>
-					<TouchableOpacity onPress={() => this.closeModal()} style={buttonStyle}>
-						<CustomIcon name='Cross' size={30} color={themes[theme].tintColor} />
+					<TouchableOpacity onPress={() => this.closeModal()} style={styles.fullScreenComposerCloseButton}>
+						<CustomIcon name='minimize-arrow' size={30} color={themes[theme].tintColor} />
 					</TouchableOpacity>
 					<TextInput
 						ref={component}
