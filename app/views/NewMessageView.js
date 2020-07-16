@@ -161,6 +161,15 @@ class NewMessageView extends React.Component {
 		goRoom({ item, isMasterDetail });
 	}
 
+	get showButtons() {
+		const { permissions } = this.state;
+		const hasCreateChannelPermission = permissions['create-c'];
+		const hasCreateDirectMessagePermission = permissions['create-d'];
+		const hasCreatePrivateGroupPermission = permissions['create-p'];
+
+		return hasCreateChannelPermission || hasCreateDirectMessagePermission || hasCreatePrivateGroupPermission;
+	}
+
 	renderButton = ({
 		onPress, testID, title, icon, first
 	}) => {
@@ -190,7 +199,7 @@ class NewMessageView extends React.Component {
 		const hasCreateChannelPermission = permissions['create-c'];
 		const hasCreateDirectMessagePermission = permissions['create-d'];
 		const hasCreatePrivateGroupPermission = permissions['create-p'];
-		return hasCreateChannelPermission || hasCreateDirectMessagePermission || hasCreatePrivateGroupPermission ? (
+		return this.showButtons ? (
 			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
 				<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='new-message-view-search' />
 				<View style={styles.buttonContainer}>
