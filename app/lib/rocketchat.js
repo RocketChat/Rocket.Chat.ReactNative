@@ -955,10 +955,24 @@ const RocketChat = {
 		// RC 0.47.0
 		return this.sdk.get('chat.getMessage', { msgId });
 	},
+	async filterPermission(permissions, roles) {
+		const db = database.active;
+		const permissionsCollection = db.collections.get('permissions');
+		const permissionsFiltered = await permissionsCollection.query(Q.where('id', Q.oneOf(permissions))).fetch();
+		// return permissions in object format
+		// e.g. { 'edit-room': true, 'set-readonly': false }
+		return permissions.reduce((result, permission) => {
+			result[permission] = false;
+			const permissionFound = permissionsFiltered.find(p => p.id === permission);
+			if (permissionFound) {
+				result[permission] = returnAnArray(permissionFound.roles).some(r => roles?.includes(r));
+			}
+			return result;
+		}, {});
+	},
 	async hasPermission(permissions, rid) {
 		const db = database.active;
 		const subsCollection = db.collections.get('subscriptions');
-		const permissionsCollection = db.collections.get('permissions');
 		let roomRoles = [];
 		try {
 			// get the room from database
@@ -974,7 +988,6 @@ const RocketChat = {
 		}
 		// get permissions from database
 		try {
-			const permissionsFiltered = await permissionsCollection.query(Q.where('id', Q.oneOf(permissions))).fetch();
 			const shareUser = reduxStore.getState().share.user;
 			const loginUser = reduxStore.getState().login.user;
 			// get user roles on the server from redux
@@ -982,35 +995,19 @@ const RocketChat = {
 			// merge both roles
 			const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
 
-			// return permissions in object format
-			// e.g. { 'edit-room': true, 'set-readonly': false }
-			return permissions.reduce((result, permission) => {
-				result[permission] = false;
-				const permissionFound = permissionsFiltered.find(p => p.id === permission);
-				if (permissionFound) {
-					result[permission] = returnAnArray(permissionFound.roles).some(r => mergedRoles.includes(r));
-				}
-				return result;
-			}, {});
+			return await this.filterPermission(permissions, mergedRoles);
 		} catch (e) {
 			log(e);
 		}
 	},
-	async hasPermissionsByUserRoles(permissions = [], userRoles = []) {
-		const db = database.active;
-		const permissionsCollection = db.collections.get('permissions');
+	async hasPermissionsByUserRoles(permissions = []) {
 		try {
-			const permissionsFiltered = await permissionsCollection.query(Q.where('id', Q.oneOf(permissions))).fetch();
-			// return permissions in object format
-			// e.g. { 'edit-room': true, 'set-readonly': false }
-			return permissions.reduce((result, permission) => {
-				result[permission] = false;
-				const permissionFound = permissionsFiltered.find(p => p.id === permission);
-				if (permissionFound) {
-					result[permission] = returnAnArray(permissionFound.roles).some(r => userRoles?.includes(r));
-				}
-				return result;
-			}, {});
+			const shareUser = reduxStore.getState().share.user;
+			const loginUser = reduxStore.getState().login.user;
+			// get user roles on the server from redux
+			const userRoles = (shareUser?.roles || loginUser?.roles) || [];
+
+			return await this.filterPermission(permissions, userRoles);
 		} catch (e) {
 			log(e);
 		}
