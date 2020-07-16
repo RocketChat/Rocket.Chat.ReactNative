@@ -45,7 +45,6 @@ class MessagesView extends React.Component {
 		this.setHeader();
 	}
 
-	
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
 			loading, messages, fileLoading
@@ -63,7 +62,6 @@ class MessagesView extends React.Component {
 		if (fileLoading !== nextState.fileLoading) {
 			return true;
 		}
-		
 		return false;
 	}
 	
