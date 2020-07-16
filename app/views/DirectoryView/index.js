@@ -58,11 +58,15 @@ class DirectoryView extends React.Component {
 			total: -1,
 			showOptionsDropdown: false,
 			globalUsers: true,
-			type: props.directoryDefaultView
+			type: props.directoryDefaultView,
+			permissions: {}
 		};
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
+		const hasPermissions = ['view-c-room', 'view-d-room'];
+		const permissions = await RocketChat.hasPermissionsByUserRoles(hasPermissions);
+		this.setState({ permissions });
 		this.load({});
 	}
 
@@ -181,8 +185,15 @@ class DirectoryView extends React.Component {
 	}
 
 	renderItem = ({ item, index }) => {
-		const { data, type } = this.state;
+		const { data, type, permissions } = this.state;
 		const { baseUrl, user, theme } = this.props;
+
+		let hasPermissions = false;
+		if (type === 'users') {
+			hasPermissions = permissions['view-c-room'];
+		} else {
+			hasPermissions = permissions['view-d-room'];
+		}
 
 		let style;
 		if (index === data.length - 1) {
@@ -202,7 +213,7 @@ class DirectoryView extends React.Component {
 			theme
 		};
 
-		if (type === 'users') {
+		if (type === 'users' && hasPermissions) {
 			return (
 				<DirectoryItem
 					avatar={item.username}
@@ -213,7 +224,7 @@ class DirectoryView extends React.Component {
 				/>
 			);
 		}
-		return (
+		return hasPermissions ? (
 			<DirectoryItem
 				avatar={item.name}
 				description={item.topic}
@@ -221,7 +232,7 @@ class DirectoryView extends React.Component {
 				type='c'
 				{...commonProps}
 			/>
-		);
+		) : null;
 	}
 
 	render = () => {
