@@ -4,9 +4,13 @@ const {
 const { navigateToRegister, navigateToLogin } = require('../../helpers/app');
 
 describe('Legal screen', () => {
-	it('should have legal button on login', async() => {
+
+	before(async() => {
 		await device.launchApp({ newInstance: true });
 		await navigateToLogin();
+	});
+
+	it('should have legal button on login', async() => {		
 		await waitFor(element(by.id('login-view-more'))).toBeVisible().withTimeout(60000);
 		await expect(element(by.id('login-view-more'))).toBeVisible();
 	});
