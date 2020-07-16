@@ -27,10 +27,10 @@ async function navigateToRegister() {
     await expect(element(by.id('register-view'))).toBeVisible();
 }
 
-async function login() {
+async function login(username, password) {
     await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
-    await element(by.id('login-view-email')).replaceText(data.user);
-    await element(by.id('login-view-password')).replaceText(data.password);
+    await element(by.id('login-view-email')).replaceText(username);
+    await element(by.id('login-view-password')).replaceText(password);
     await sleep(300);
     await element(by.id('login-view-submit')).tap();
     await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
@@ -52,17 +52,14 @@ async function logout() {
     await expect(element(by.id('onboarding-view'))).toBeVisible();
 }
 
-async function createUser() {
-    await navigateToRegister();
-    await element(by.id('register-view-name')).replaceText(data.user);
-    await element(by.id('register-view-username')).replaceText(data.user);
-    await element(by.id('register-view-email')).replaceText(data.email);
-    await element(by.id('register-view-password')).replaceText(data.password);
-    await sleep(300);
-    await element(by.id('register-view-submit')).tap();
-    await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
-    await expect(element(by.id('rooms-list-view'))).toBeVisible();
-}
+async function mockMessage(message) {
+	await element(by.id('messagebox-input')).tap();
+	await element(by.id('messagebox-input')).typeText(`${ data.random }${ message }`);
+	await element(by.id('messagebox-send-message')).tap();
+	await waitFor(element(by.label(`${ data.random }${ message }`)).atIndex(0)).toExist().withTimeout(60000);
+    await expect(element(by.label(`${ data.random }${ message }`)).atIndex(0)).toExist();
+    await element(by.label(`${ data.random }${ message }`)).atIndex(0).tap();
+};
 
 async function tapBack() {
     await element(by.id('header-back')).atIndex(0).tap();
@@ -86,7 +83,7 @@ module.exports = {
     navigateToRegister,
     login,
     logout,
-    createUser,
+    mockMessage,
     tapBack,
     sleep,
     searchRoom

@@ -305,6 +305,9 @@ describe('Room actions screen', () => {
 		describe('Channel/Group', async() => {
 			// Currently, there's no way to add more owners to the room
 			// So we test only for the 'You are the last owner...' message
+
+			const user = data.users.alternate
+
 			it('should tap on leave channel and raise alert', async() => {
 				await waitFor(element(by.id('room-actions-leave-channel'))).toExist();
 				await expect(element(by.id('room-actions-leave-channel'))).toExist();
@@ -322,18 +325,18 @@ describe('Room actions screen', () => {
 				await waitFor(element(by.id('room-actions-add-user'))).toExist();
 				await element(by.id('room-actions-add-user')).tap();
 				await element(by.id('select-users-view-search')).tap();
-				await element(by.id('select-users-view-search')).replaceText(data.alternateUser);
-				await waitFor(element(by.id(`select-users-view-item-${ data.alternateUser }`))).toExist().withTimeout(60000);
-				await expect(element(by.id(`select-users-view-item-${ data.alternateUser }`))).toExist();
-				await element(by.id(`select-users-view-item-${ data.alternateUser }`)).tap();
-				await waitFor(element(by.id(`selected-user-${ data.alternateUser }`))).toExist().withTimeout(5000);
-				await expect(element(by.id(`selected-user-${ data.alternateUser }`))).toExist();
+				await element(by.id('select-users-view-search')).replaceText(user.username);
+				await waitFor(element(by.id(`select-users-view-item-${ user.username }`))).toExist().withTimeout(60000);
+				await expect(element(by.id(`select-users-view-item-${ user.username }`))).toExist();
+				await element(by.id(`select-users-view-item-${ user.username }`)).tap();
+				await waitFor(element(by.id(`selected-user-${ user.username }`))).toExist().withTimeout(5000);
+				await expect(element(by.id(`selected-user-${ user.username }`))).toExist();
 				await element(by.id('selected-users-view-submit')).tap();
 				await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(2000);
 				await element(by.id('room-actions-members')).tap();
 				await element(by.id('room-members-view-toggle-status')).tap();
-				await waitFor(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toExist().withTimeout(60000);
-				await expect(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toExist();
+				await waitFor(element(by.id(`room-members-view-item-${ user.username }`))).toExist().withTimeout(60000);
+				await expect(element(by.id(`room-members-view-item-${ user.username }`))).toExist();
 				await backToActions(1);
 			});
 
@@ -347,26 +350,26 @@ describe('Room actions screen', () => {
 				it('should show all users', async() => {
 					await sleep(1000);
 					await element(by.id('room-members-view-toggle-status')).tap();
-					await waitFor(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toExist().withTimeout(60000);
-					await expect(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toExist();
+					await waitFor(element(by.id(`room-members-view-item-${ user.username }`))).toExist().withTimeout(60000);
+					await expect(element(by.id(`room-members-view-item-${ user.username }`))).toExist();
 				});
 
 				it('should filter user', async() => {
-					await waitFor(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toExist().withTimeout(60000);
-					await expect(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toExist();
+					await waitFor(element(by.id(`room-members-view-item-${ user.username }`))).toExist().withTimeout(60000);
+					await expect(element(by.id(`room-members-view-item-${ user.username }`))).toExist();
 					await element(by.id('room-members-view-search')).replaceText('rocket');
-					await waitFor(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toBeNotVisible().withTimeout(60000);
-					await expect(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toBeNotVisible();
+					await waitFor(element(by.id(`room-members-view-item-${ user.username }`))).toBeNotVisible().withTimeout(60000);
+					await expect(element(by.id(`room-members-view-item-${ user.username }`))).toBeNotVisible();
 					await element(by.id('room-members-view-search')).tap();
 					await element(by.id('room-members-view-search')).clearText('');
-					await waitFor(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toExist().withTimeout(60000);
-					await expect(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toExist();
+					await waitFor(element(by.id(`room-members-view-item-${ user.username }`))).toExist().withTimeout(60000);
+					await expect(element(by.id(`room-members-view-item-${ user.username }`))).toExist();
 				});
 
 				// FIXME: mute/unmute isn't working
 				// it('should mute user', async() => {
 				// 	await sleep(1000);
-				// 	await element(by.id(`room-members-view-item-${ data.alternateUser }`)).longPress(1500);
+				// 	await element(by.id(`room-members-view-item-${ user.username }`)).longPress(1500);
 				// 	await waitFor(element(by.text('Mute'))).toExist().withTimeout(5000);
 				// 	await expect(element(by.text('Mute'))).toExist();
 				// 	await element(by.text('Mute')).tap();
@@ -374,7 +377,7 @@ describe('Room actions screen', () => {
 				// 	await expect(element(by.id('toast'))).toExist();
 				// 	await waitFor(element(by.id('toast'))).toBeNotVisible().withTimeout(10000);
 				// 	await expect(element(by.id('toast'))).toBeNotVisible();
-				// 	await element(by.id(`room-members-view-item-${ data.alternateUser }`)).longPress(1500);
+				// 	await element(by.id(`room-members-view-item-${ user.username }`)).longPress(1500);
 				// 	await waitFor(element(by.text('Unmute'))).toExist().withTimeout(2000);
 				// 	await expect(element(by.text('Unmute'))).toExist();
 				// 	await element(by.text('Unmute')).tap();
@@ -385,12 +388,12 @@ describe('Room actions screen', () => {
 				// });
 
 				it('should navigate to direct room', async() => {
-					await waitFor(element(by.id(`room-members-view-item-${ data.alternateUser }`))).toExist().withTimeout(5000);
-					await element(by.id(`room-members-view-item-${ data.alternateUser }`)).tap();
+					await waitFor(element(by.id(`room-members-view-item-${ user.username }`))).toExist().withTimeout(5000);
+					await element(by.id(`room-members-view-item-${ user.username }`)).tap();
 					await waitFor(element(by.id('room-view'))).toExist().withTimeout(60000);
 					await expect(element(by.id('room-view'))).toExist();
-					await waitFor(element(by.id(`room-view-title-${ data.alternateUser }`))).toExist().withTimeout(60000);
-					await expect(element(by.id(`room-view-title-${ data.alternateUser }`))).toExist();
+					await waitFor(element(by.id(`room-view-title-${ user.username }`))).toExist().withTimeout(60000);
+					await expect(element(by.id(`room-view-title-${ user.username }`))).toExist();
 					await tapBack();
 					await waitFor(element(by.id('rooms-list-view'))).toExist().withTimeout(2000);
 				});
