@@ -104,8 +104,7 @@ class RoomsListView extends React.Component {
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			username: PropTypes.string,
-			token: PropTypes.string,
-			roles: PropTypes.array
+			token: PropTypes.string
 		}),
 		server: PropTypes.string,
 		searchText: PropTypes.string,
@@ -192,8 +191,7 @@ class RoomsListView extends React.Component {
 			}
 		});
 		const hasPermissions = ['create-c', 'create-d', 'create-p', 'view-c-room', 'view-d-room', 'view-l-room'];
-		const { user } = this.props;
-		const permissions = await RocketChat.hasPermissionsByUserRoles(hasPermissions, user.roles);
+		const permissions = await RocketChat.hasPermissionsByUserRoles(hasPermissions);
 		this.setState({ permissions });
 		this.getSubscriptions(true);
 		console.timeEnd(`${ this.constructor.name } mount`);
@@ -364,16 +362,14 @@ class RoomsListView extends React.Component {
 			},
 			headerRight: () => (searching ? null : (
 				<CustomHeaderButtons>
-					{hasCreateChannelPermission || hasCreateDirectMessagePermission || hasCreatePrivateGroupPermission ? (
-						<Item
-							title='new'
-							iconName='new-chat'
-							onPress={isMasterDetail
-								? () => navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' })
-								: () => navigation.navigate('NewMessageStackNavigator')}
-							testID='rooms-list-view-create-channel'
-						/>
-					) : null}
+					<Item
+						title='new'
+						iconName='new-chat'
+						onPress={isMasterDetail
+							? () => navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' })
+							: () => navigation.navigate('NewMessageStackNavigator')}
+						testID='rooms-list-view-create-channel'
+					/>
 					<Item
 						title='search'
 						iconName='magnifier'

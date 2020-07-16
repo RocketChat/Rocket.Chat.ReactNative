@@ -239,8 +239,19 @@ class NewMessageView extends React.Component {
 	}
 
 	renderItem = ({ item, index }) => {
-		const { search, chats } = this.state;
+		const { search, chats, permissions } = this.state;
 		const { baseUrl, user, theme } = this.props;
+
+		let hasPermissions = false;
+		if (chats.t === 'd' && permissions['view-d-room']) {
+			hasPermissions = true;
+		}
+		if (chats.t === 'c' && permissions['view-c-room']) {
+			hasPermissions = true;
+		}
+		if (chats.t === 'l' && permissions['view-l-room']) {
+			hasPermissions = true;
+		}
 
 		let style = { borderColor: themes[theme].separatorColor };
 		if (index === 0) {
@@ -256,7 +267,7 @@ class NewMessageView extends React.Component {
 			<UserItem
 				name={item.search ? item.name : item.fname}
 				username={item.search ? item.username : item.name}
-				onPress={() => this.goRoom(item)}
+				onPress={hasPermissions ? () => this.goRoom(item) : null}
 				baseUrl={baseUrl}
 				testID={`new-message-view-item-${ item.name }`}
 				style={style}
