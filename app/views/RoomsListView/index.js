@@ -428,13 +428,18 @@ class RoomsListView extends React.Component {
 		} = this.props;
 
 		const { permissions } = this.state;
+		const notPermissionsChat = [];
+		if (!permissions['view-d-room']) { notPermissionsChat.push('d'); }
+		if (!permissions['view-c-room']) { notPermissionsChat.push('c'); }
+		if (!permissions['view-l-room']) { notPermissionsChat.push('l'); }
 
 		const db = database.active;
 		const observable = await db.collections
 			.get('subscriptions')
 			.query(
 				Q.where('archived', false),
-				Q.where('open', true)
+				Q.where('open', true),
+				Q.where('t', Q.notIn(notPermissionsChat))
 			)
 			.observeWithColumns(['room_updated_at', 'unread', 'alert', 'user_mentions', 'f', 't']);
 
@@ -495,14 +500,6 @@ class RoomsListView extends React.Component {
 			} else {
 				tempChats = chats;
 			}
-
-			tempChats = tempChats.filter((chat) => {
-				const hasViewChannelPermission = chat.t !== 'd' ? true : permissions['view-d-room'];
-				const hasViewGroupPermission = chat.t !== 'c' ? true : permissions['view-c-room'];
-				const hasViewLivechatPermission = chat.t !== 'l' ? true : permissions['view-l-room'];
-
-				return !(!hasViewGroupPermission || !hasViewChannelPermission || !hasViewLivechatPermission);
-			});
 
 			this.internalSetState({
 				chats: tempChats,
