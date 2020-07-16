@@ -78,8 +78,7 @@ class RoomView extends React.Component {
 		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
 			username: PropTypes.string.isRequired,
-			token: PropTypes.string.isRequired,
-			roles: PropTypes.array
+			token: PropTypes.string.isRequired
 		}),
 		appState: PropTypes.string,
 		useRealName: PropTypes.bool,
@@ -429,9 +428,8 @@ class RoomView extends React.Component {
 
 			this.setState({ canAutoTranslate, member, loading: false });
 
-			const hasPermissions = ['create-c', 'create-d', 'create-p', 'view-c-room', 'view-d-room', 'view-l-room'];
-			const { user } = this.props;
-			const permissions = await RocketChat.hasPermissionsByUserRoles(hasPermissions, user.roles);
+			const hasPermissions = ['view-c-room', 'view-d-room', 'view-l-room'];
+			const permissions = await RocketChat.hasPermissionsByUserRoles(hasPermissions);
 			this.setState({ permissions });
 		} catch (e) {
 			this.setState({ loading: false });
@@ -594,26 +592,26 @@ class RoomView extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	updateUnreadCount = async() => {
+		const { permissions } = this.state;
+		const notPermissionsChat = [];
+		if (!permissions['view-d-room']) { notPermissionsChat.push('d'); }
+		if (!permissions['view-c-room']) { notPermissionsChat.push('c'); }
+		if (!permissions['view-l-room']) { notPermissionsChat.push('l'); }
+
 		const db = database.active;
 		const observable = await db.collections
 			.get('subscriptions')
 			.query(
 				Q.where('archived', false),
 				Q.where('open', true),
-				Q.where('rid', Q.notEq(this.rid))
+				Q.where('rid', Q.notEq(this.rid)),
+				Q.where('t', Q.notIn(notPermissionsChat))
 			)
 			.observeWithColumns(['unread']);
 
 		this.queryUnreads = observable.subscribe((data) => {
-			const { unreadsCount, permissions } = this.state;
+			const { unreadsCount } = this.state;
 
-			data = data.filter((chat) => {
-				const hasViewChannelPermission = chat.t !== 'd' ? true : permissions['view-d-room'];
-				const hasViewGroupPermission = chat.t !== 'c' ? true : permissions['view-c-room'];
-				const hasViewLivechatPermission = chat.t !== 'l' ? true : permissions['view-l-room'];
-
-				return !(!hasViewGroupPermission || !hasViewChannelPermission || !hasViewLivechatPermission);
-			});
 			const newUnreadsCount = data.filter(s => s.unread > 0).reduce((a, b) => a + (b.unread || 0), 0);
 			if (unreadsCount !== newUnreadsCount) {
 				this.setState({ unreadsCount: newUnreadsCount }, () => this.setHeader());
