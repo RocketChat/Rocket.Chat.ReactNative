@@ -18,10 +18,6 @@ import { withActionSheet } from '../../containers/ActionSheet';
 import SafeAreaView from '../../containers/SafeAreaView';
 
 class MessagesView extends React.Component {
-	static navigationOptions = ({ route }) => ({
-		title: I18n.t(route.params?.name)
-	});
-
 	static propTypes = {
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
@@ -46,8 +42,10 @@ class MessagesView extends React.Component {
 
 	componentDidMount() {
 		this.load();
+		this.setHeader();
 	}
 
+	
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
 			loading, messages, fileLoading
@@ -65,10 +63,17 @@ class MessagesView extends React.Component {
 		if (fileLoading !== nextState.fileLoading) {
 			return true;
 		}
-
+		
 		return false;
 	}
-
+	
+	setHeader = () => {
+		const { route, navigation } = this.props;
+		navigation.setOptions({
+			title: I18n.t(route.params?.name)
+		});
+	}
+	
 	navToRoomInfo = (navParam) => {
 		const { navigation, user } = this.props;
 		if (navParam.rid === user.id) {
