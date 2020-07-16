@@ -60,8 +60,7 @@ class NewMessageView extends React.Component {
 		baseUrl: PropTypes.string,
 		user: PropTypes.shape({
 			id: PropTypes.string,
-			token: PropTypes.string,
-			roles: PropTypes.array
+			token: PropTypes.string
 		}),
 		createChannel: PropTypes.func,
 		maxUsers: PropTypes.number,
@@ -81,8 +80,7 @@ class NewMessageView extends React.Component {
 
 	async componentDidMount() {
 		const hasPermissions = ['create-c', 'create-d', 'create-p'];
-		const { user } = this.props;
-		const permissions = await RocketChat.hasPermissionsByUserRoles(hasPermissions, user.roles);
+		const permissions = await RocketChat.hasPermissionsByUserRoles(hasPermissions);
 		this.setState({ permissions });
 	}
 
