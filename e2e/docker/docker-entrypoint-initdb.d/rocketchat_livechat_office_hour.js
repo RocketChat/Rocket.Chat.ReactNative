@@ -1,0 +1,7 @@
+db.getCollection("rocketchat_livechat_office_hour").insert({"_id":"25cEkE4HYJepqYdSQ","day":"Saturday","start":"08:00","finish":"20:00","code":NumberInt(6),"open":false,"_updatedAt":new Date(1584022357707)});
+db.getCollection("rocketchat_livechat_office_hour").insert({"_id":"CQAfqmpYCv6WC7MTQ","day":"Tuesday","start":"08:00","finish":"20:00","code":NumberInt(2),"open":true,"_updatedAt":new Date(1584022357689)});
+db.getCollection("rocketchat_livechat_office_hour").insert({"_id":"GBNmEQYQGDEX9tQ4j","day":"Sunday","start":"08:00","finish":"20:00","code":NumberInt(0),"open":false,"_updatedAt":new Date(1584022357710)});
+db.getCollection("rocketchat_livechat_office_hour").insert({"_id":"TYvTiTSorTPKiH8mF","day":"Wednesday","start":"08:00","finish":"20:00","code":NumberInt(3),"open":true,"_updatedAt":new Date(1584022357697)});
+db.getCollection("rocketchat_livechat_office_hour").insert({"_id":"WeLuoHz3Kz8figd9M","day":"Thursday","start":"08:00","finish":"20:00","code":NumberInt(4),"open":true,"_updatedAt":new Date(1584022357698)});
+db.getCollection("rocketchat_livechat_office_hour").insert({"_id":"e9t67H2WnZvpiSJQd","day":"Monday","start":"08:00","finish":"20:00","code":NumberInt(1),"open":true,"_updatedAt":new Date(1584022357676)});
+db.getCollection("rocketchat_livechat_office_hour").insert({"_id":"rzLMR3aBY3oyBexHf","day":"Friday","start":"08:00","finish":"20:00","code":NumberInt(5),"open":true,"_updatedAt":new Date(1584022357702)});
