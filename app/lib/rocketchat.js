@@ -507,6 +507,17 @@ const RocketChat = {
 		} else if (!filterUsers && filterRooms) {
 			data = data.filter(item => item.t !== 'd' || RocketChat.isGroupChat(item));
 		}
+		const hasPermissions = ['view-c-room', 'view-d-room', 'view-l-room'];
+		const permissions = await RocketChat.hasPermissionsByUserRoles(hasPermissions);
+
+		data = data.filter((chat) => {
+			const hasViewChannelPermission = chat.t !== 'd' ? true : permissions['view-d-room'];
+			const hasViewGroupPermission = chat.t !== 'c' ? true : permissions['view-c-room'];
+			const hasViewLivechatPermission = chat.t !== 'l' ? true : permissions['view-l-room'];
+
+			return !(!hasViewGroupPermission || !hasViewChannelPermission || !hasViewLivechatPermission);
+		});
+
 		data = data.slice(0, 7);
 
 		data = data.map((sub) => {
