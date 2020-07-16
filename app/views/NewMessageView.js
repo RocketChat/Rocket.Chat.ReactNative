@@ -171,8 +171,11 @@ class NewMessageView extends React.Component {
 	}
 
 	renderButton = ({
-		onPress, testID, title, icon, first
+		onPress, testID, title, icon, showButton, first
 	}) => {
+		if (!showButton) {
+			return null;
+		}
 		const { theme } = this.props;
 		return (
 			<Touch
@@ -203,25 +206,28 @@ class NewMessageView extends React.Component {
 			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
 				<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='new-message-view-search' />
 				<View style={styles.buttonContainer}>
-					{hasCreateChannelPermission ? this.renderButton({
+					{this.renderButton({
 						onPress: this.createChannel,
 						title: I18n.t('Create_Channel'),
 						icon: 'hash',
 						testID: 'new-message-view-create-channel',
+						showButton: hasCreateChannelPermission,
 						first: true
-					}) : null}
-					{hasCreateDirectMessagePermission && maxUsers > 2 ? this.renderButton({
+					})}
+					{maxUsers > 2 ? this.renderButton({
 						onPress: this.createGroupChat,
 						title: I18n.t('Create_Direct_Messages'),
 						icon: 'team',
-						testID: 'new-message-view-create-direct-message'
+						testID: 'new-message-view-create-direct-message',
+						showButton: hasCreateDirectMessagePermission
 					}) : null}
-					{hasCreatePrivateGroupPermission ? this.renderButton({
+					{this.renderButton({
 						onPress: this.createDiscussion,
 						title: I18n.t('Create_Discussion'),
 						icon: 'chat',
-						testID: 'new-message-view-create-discussion'
-					}) : null}
+						testID: 'new-message-view-create-discussion',
+						showButton: hasCreatePrivateGroupPermission
+					})}
 				</View>
 			</View>
 		) : null;
