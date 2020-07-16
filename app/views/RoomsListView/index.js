@@ -330,12 +330,9 @@ class RoomsListView extends React.Component {
 	}
 
 	getHeader = () => {
-		const { searching, permissions } = this.state;
+		const { searching } = this.state;
 		const { navigation, isMasterDetail, insets } = this.props;
 		const headerTitlePosition = getHeaderTitlePosition(insets);
-		const hasCreateChannelPermission = permissions['create-c'];
-		const hasCreateDirectMessagePermission = permissions['create-d'];
-		const hasCreatePrivateGroupPermission = permissions['create-p'];
 		return {
 			headerTitleAlign: 'left',
 			headerLeft: () => (searching ? (
