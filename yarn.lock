@@ -11808,10 +11808,9 @@ react-native-easy-toast@^1.2.0:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-fast-image@8.1.5:
+react-native-fast-image@RocketChat/react-native-fast-image:
   version "8.1.5"
-  resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-8.1.5.tgz#0a6404c988dad68c98d26f91155d0a5293ba2ea5"
-  integrity sha512-DoAWGLeQ2hbllummrpXH9B38OgM0TFmNYCF34F90/hdHZirqUtYHzF4QDdb/NV7ebSijHmM3mpkzct8PXtcYyg==
+  resolved "https://codeload.github.com/RocketChat/react-native-fast-image/tar.gz/8157398fdb4632a60cd9c909cd05156b471f254f"
 
 react-native-firebase@5.6.0:
   version "5.6.0"
