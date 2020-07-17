@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, FlatList } from 'react-native';
 import PropTypes from 'prop-types';
 import Touchable from 'react-native-platform-touchable';
-import FastImage from 'react-native-fast-image';
+import FastImage from '@rocket.chat/react-native-fast-image';
 
 import Separator from '../../Separator';
 import Check from '../../Check';
