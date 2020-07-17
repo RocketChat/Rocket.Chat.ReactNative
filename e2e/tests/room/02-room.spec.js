@@ -25,7 +25,6 @@ describe('Room screen', () => {
 		it('should have room screen', async() => {
 			await expect(element(by.id('room-view'))).toExist();
 			await waitFor(element(by.id(`room-view-title-${ mainRoom }`))).toExist().withTimeout(5000);
-			await expect(element(by.id(`room-view-title-${ mainRoom }`))).toExist();
 		});
 
 		// Render - Header
@@ -77,12 +76,10 @@ describe('Room screen', () => {
 				if (device.getPlatform() === 'android') {
 					await element(by.id('messagebox-open-emoji')).tap();
 					await waitFor(element(by.id('messagebox-keyboard-emoji'))).toExist().withTimeout(10000);
-					await expect(element(by.id('messagebox-keyboard-emoji'))).toExist();
 					await expect(element(by.id('messagebox-close-emoji'))).toExist();
 					await expect(element(by.id('messagebox-open-emoji'))).toBeNotVisible();
 					await element(by.id('messagebox-close-emoji')).tap();
 					await waitFor(element(by.id('messagebox-keyboard-emoji'))).toBeNotVisible().withTimeout(10000);
-					await expect(element(by.id('messagebox-keyboard-emoji'))).toBeNotVisible();
 					await expect(element(by.id('messagebox-close-emoji'))).toBeNotVisible();
 					await expect(element(by.id('messagebox-open-emoji'))).toExist();
 				}
@@ -92,10 +89,8 @@ describe('Room screen', () => {
 				await element(by.id('messagebox-input')).tap();
 				await element(by.id('messagebox-input')).typeText(':joy');
 				await waitFor(element(by.id('messagebox-container'))).toExist().withTimeout(10000);
-				await expect(element(by.id('messagebox-container'))).toExist();
 				await element(by.id('messagebox-input')).clearText();
 				await waitFor(element(by.id('messagebox-container'))).toBeNotVisible().withTimeout(10000);
-				await expect(element(by.id('messagebox-container'))).toBeNotVisible();
 			});
 
 			it('should show and tap on emoji autocomplete', async() => {
@@ -103,7 +98,6 @@ describe('Room screen', () => {
 				await element(by.id('messagebox-input')).replaceText(':');
 				await element(by.id('messagebox-input')).typeText('joy'); // workaround for number keyboard
 				await waitFor(element(by.id('messagebox-container'))).toExist().withTimeout(10000);
-				await expect(element(by.id('messagebox-container'))).toExist();
 				await sleep(1000);
 				await element(by.id('mention-item-joy')).tap();
 				await expect(element(by.id('messagebox-input'))).toHaveText(':joy: ');
@@ -115,7 +109,6 @@ describe('Room screen', () => {
 				await element(by.id('messagebox-input')).tap();
 				await element(by.id('messagebox-input')).typeText(`@${ username }`);
 				await waitFor(element(by.id('messagebox-container'))).toExist().withTimeout(60000);
-				await expect(element(by.id('messagebox-container'))).toExist();
 				await sleep(1000);
 				await element(by.id(`mention-item-${ username }`)).tap();
 				await expect(element(by.id('messagebox-input'))).toHaveText(`@${ username } `);
@@ -130,7 +123,6 @@ describe('Room screen', () => {
 				await element(by.id('messagebox-input')).tap();
 				await element(by.id('messagebox-input')).typeText('#general');
 				await waitFor(element(by.id('messagebox-container'))).toExist().withTimeout(60000);
-				await expect(element(by.id('messagebox-container'))).toExist();
 				await sleep(1000);
 				await element(by.id('mention-item-general')).tap();
 				await expect(element(by.id('messagebox-input'))).toHaveText('#general ');
@@ -169,7 +161,6 @@ describe('Room screen', () => {
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await waitFor(element(by.label('Unstar'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.label('Unstar'))).toBeVisible();
 				await element(by.id('action-sheet-backdrop')).tap();
 				await sleep(1000);
 			});
@@ -181,13 +172,10 @@ describe('Room screen', () => {
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.id('add-reaction')).tap();
 				await waitFor(element(by.id('reaction-picker'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.id('reaction-picker'))).toBeVisible();
 				await element(by.id('reaction-picker-😃')).tap();
 				await waitFor(element(by.id('reaction-picker-grinning'))).toExist().withTimeout(2000);
-				await expect(element(by.id('reaction-picker-grinning'))).toExist();
 				await element(by.id('reaction-picker-grinning')).tap();
 				await waitFor(element(by.id('message-reaction-:grinning:'))).toExist().withTimeout(60000);
-				await expect(element(by.id('message-reaction-:grinning:'))).toExist();
 				await sleep(1000);
 			});
 
@@ -197,19 +185,15 @@ describe('Room screen', () => {
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await waitFor(element(by.id('message-actions-emoji-+1'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.id('message-actions-emoji-+1'))).toBeVisible();
 				await element(by.id('message-actions-emoji-+1')).tap();
 				await waitFor(element(by.id('message-reaction-:+1:'))).toBeVisible().withTimeout(60000);
-				await expect(element(by.id('message-reaction-:+1:'))).toBeVisible();
 				await sleep(1000);
 			});
 		
 			it('should show reaction picker on add reaction button pressed and have frequently used emoji', async() => {
 				await element(by.id('message-add-reaction')).tap();
 				await waitFor(element(by.id('reaction-picker'))).toExist().withTimeout(2000);
-				await expect(element(by.id('reaction-picker'))).toExist();
 				await waitFor(element(by.id('reaction-picker-grinning'))).toExist().withTimeout(2000);
-				await expect(element(by.id('reaction-picker-grinning'))).toExist();
 				await element(by.id('reaction-picker-😃')).tap();
 				await waitFor(element(by.id('reaction-picker-grimacing'))).toExist().withTimeout(2000);
 				await element(by.id('reaction-picker-grimacing')).tap();
@@ -219,14 +203,12 @@ describe('Room screen', () => {
 
 			it('should ask for review', async() => {
 				await waitFor(element(by.text('Are you enjoying this app?'))).toExist().withTimeout(60000);
-				await expect(element(by.text('Are you enjoying this app?')).atIndex(0)).toExist();
 				await element(by.label('No').and(by.type('_UIAlertControllerActionView'))).tap(); // Tap `no` on ask for review alert
 			})
 		
 			it('should remove reaction', async() => {
 				await element(by.id('message-reaction-:grinning:')).tap();
 				await waitFor(element(by.id('message-reaction-:grinning:'))).toBeNotVisible().withTimeout(60000);
-				await expect(element(by.id('message-reaction-:grinning:'))).toBeNotVisible();
 			});
 		
 			it('should edit message', async() => {
@@ -239,7 +221,6 @@ describe('Room screen', () => {
 				await element(by.id('messagebox-input')).typeText('ed');
 				await element(by.id('messagebox-send-message')).tap();
 				await waitFor(element(by.label(`${ data.random }edited (edited)`)).atIndex(0)).toExist().withTimeout(60000);
-				await expect(element(by.label(`${ data.random }edited (edited)`)).atIndex(0)).toExist();
 			});
 		
 			it('should quote message', async() => {
@@ -265,7 +246,6 @@ describe('Room screen', () => {
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await waitFor(element(by.label('Unpin'))).toBeVisible().withTimeout(2000);
-				await expect(element(by.label('Unpin'))).toBeVisible();
 				await element(by.id('action-sheet-backdrop')).tap();
 			});
 
@@ -278,8 +258,7 @@ describe('Room screen', () => {
 				await element(by.label('Delete')).tap();
 
 				const deleteAlertMessage = 'You will not be able to recover this message!';
-    		await waitFor(element(by.text(deleteAlertMessage)).atIndex(0)).toExist().withTimeout(10000);
-    		await expect(element(by.text(deleteAlertMessage)).atIndex(0)).toExist();
+				await waitFor(element(by.text(deleteAlertMessage)).atIndex(0)).toExist().withTimeout(10000);
 				await element(by.text('Delete')).tap();
 
 				await sleep(1000);

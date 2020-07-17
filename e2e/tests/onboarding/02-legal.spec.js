@@ -12,7 +12,6 @@ describe('Legal screen', () => {
 
 	it('should have legal button on login', async() => {		
 		await waitFor(element(by.id('login-view-more'))).toBeVisible().withTimeout(60000);
-		await expect(element(by.id('login-view-more'))).toBeVisible();
 	});
 
 	it('should navigate to legal from login', async() => {
@@ -24,12 +23,10 @@ describe('Legal screen', () => {
 		await device.launchApp({ newInstance: true });
 		await navigateToRegister();
 		await waitFor(element(by.id('register-view-more'))).toBeVisible().withTimeout(60000);
-		await expect(element(by.id('register-view-more'))).toBeVisible();
 	});
 
 	it('should navigate to legal from register', async() => {
 		await waitFor(element(by.id('register-view-more'))).toBeVisible().withTimeout(60000);
-		await element(by.id('register-view-more')).tap();
 	});
 
 	it('should have legal screen', async() => {

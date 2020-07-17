@@ -44,14 +44,12 @@ describe('Login screen', () => {
 		it('should navigate to register', async() => {
 			await element(by.id('login-view-register')).tap();
 			await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
-			await expect(element(by.id('register-view'))).toBeVisible();
 			await tapBack();
 		});
 	
 		it('should navigate to forgot password', async() => {
 			await element(by.id('login-view-forgot-password')).tap();
 			await waitFor(element(by.id('forgot-password-view'))).toExist().withTimeout(2000);
-			await expect(element(by.id('forgot-password-view'))).toExist();
 			await tapBack();
 		});
 	
@@ -61,7 +59,6 @@ describe('Login screen', () => {
 			await sleep(300);
 			await element(by.id('login-view-submit')).tap();
 			await waitFor(element(by.text('Your credentials were rejected! Please try again.'))).toBeVisible().withTimeout(10000);
-			await expect(element(by.text('Your credentials were rejected! Please try again.'))).toBeVisible();
 			await element(by.text('OK')).tap();
 		});
 	
@@ -70,7 +67,6 @@ describe('Login screen', () => {
 			await sleep(300);
 			await element(by.id('login-view-submit')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
-			await expect(element(by.id('rooms-list-view'))).toBeVisible();
 		});
 	});
 });

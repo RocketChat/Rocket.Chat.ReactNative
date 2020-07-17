@@ -13,7 +13,6 @@ describe('Settings screen', () => {
 		await navigateToLogin();
 		await login(testuser.username, testuser.password);
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
-		await expect(element(by.id('rooms-list-view'))).toBeVisible();
 		await element(by.id('rooms-list-view-sidebar')).tap();
 		await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
 		await waitFor(element(by.id('sidebar-settings'))).toBeVisible().withTimeout(2000);

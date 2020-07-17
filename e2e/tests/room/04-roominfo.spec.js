@@ -91,7 +91,6 @@ describe('Room info screen', () => {
 
 		describe('Render Edit', async() => {
 			before(async() => {
-				await sleep(1000);
 				await waitFor(element(by.id('room-info-view-edit-button'))).toExist().withTimeout(10000);
 				await element(by.id('room-info-view-edit-button')).tap();
 				await waitFor(element(by.id('room-info-edit-view'))).toExist().withTimeout(2000);
@@ -298,10 +297,8 @@ describe('Room info screen', () => {
 				await element(by.type('UIScrollView')).atIndex(1).swipe('up');
 				await element(by.id('room-info-edit-view-archive')).tap();
 				await waitFor(element(by.text('Yes, archive it!'))).toExist().withTimeout(5000);
-				await expect(element(by.text('Yes, archive it!'))).toExist();
 				await element(by.text('Yes, archive it!')).tap();
 				await waitFor(element(by.id('room-info-edit-view-unarchive'))).toExist().withTimeout(60000);
-				await expect(element(by.id('room-info-edit-view-unarchive'))).toExist();
 				await expect(element(by.id('room-info-edit-view-archive'))).toBeNotVisible();
 				// TODO: needs permission to unarchive
 				// await element(by.id('room-info-edit-view-archive')).tap();
@@ -317,12 +314,10 @@ describe('Room info screen', () => {
 				await element(by.type('UIScrollView')).atIndex(1).swipe('up');
 				await element(by.id('room-info-edit-view-delete')).tap();
 				await waitFor(element(by.text('Yes, delete it!'))).toExist().withTimeout(5000);
-				await expect(element(by.text('Yes, delete it!'))).toExist();
 				await element(by.text('Yes, delete it!')).tap();
 				await waitFor(element(by.id('rooms-list-view'))).toExist().withTimeout(10000);
 				await sleep(2000);
 				await waitFor(element(by.id(`rooms-list-view-item-${ privateRoomName }`))).toBeNotVisible().withTimeout(60000);
-				await expect(element(by.id(`rooms-list-view-item-${ privateRoomName }`))).toBeNotVisible();
 			});
 		});
 	});

@@ -37,18 +37,13 @@ describe('Rooms list screen', () => {
 		it('should search room and navigate', async() => {
 			await searchRoom('rocket.cat');
 			await waitFor(element(by.id('rooms-list-view-item-rocket.cat'))).toBeVisible().withTimeout(60000);
-			await expect(element(by.id('rooms-list-view-item-rocket.cat'))).toBeVisible();
 			await element(by.id('rooms-list-view-item-rocket.cat')).tap();
 			await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(10000);
-			await expect(element(by.id('room-view'))).toBeVisible();
 			await waitFor(element(by.id('room-view-title-rocket.cat'))).toBeVisible().withTimeout(60000);
-			await expect(element(by.id('room-view-title-rocket.cat'))).toBeVisible();
 			await tapBack();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
-			await expect(element(by.id('rooms-list-view'))).toBeVisible();
 			await sleep(2000);
 			await waitFor(element(by.id('rooms-list-view-item-rocket.cat'))).toExist().withTimeout(60000);
-			await expect(element(by.id('rooms-list-view-item-rocket.cat'))).toExist();
 		});
 
 		it('should logout', async() => {

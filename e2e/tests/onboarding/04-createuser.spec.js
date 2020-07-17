@@ -56,7 +56,6 @@ describe('Create user screen', () => {
 			await sleep(300);
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.text('Email already exists. [403]')).atIndex(0)).toExist().withTimeout(10000);
-			await expect(element(by.text('Email already exists. [403]')).atIndex(0)).toExist();
 			await element(by.text('OK')).tap();
 		});
 
@@ -68,7 +67,6 @@ describe('Create user screen', () => {
 			await sleep(300);
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.text('Username is already in use')).atIndex(0)).toExist().withTimeout(10000);
-			await expect(element(by.text('Username is already in use')).atIndex(0)).toExist();
 			await element(by.text('OK')).tap();
 		});
 
@@ -80,7 +78,6 @@ describe('Create user screen', () => {
 			await sleep(300);
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
-			await expect(element(by.id('rooms-list-view'))).toBeVisible();
 		});
 	});
 });

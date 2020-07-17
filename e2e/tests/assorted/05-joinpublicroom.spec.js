@@ -172,7 +172,6 @@ describe('Join public room', () => {
 			// await element(by.id('rooms-list-view-search')).typeText('');
 			await sleep(2000);
 			await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible().withTimeout(60000);
-			await expect(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible();
 		});
 	});
 });

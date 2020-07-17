@@ -24,7 +24,6 @@ describe('Profile screen', () => {
 		await element(by.id('rooms-list-view-sidebar')).tap();
 		await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
 		await waitFor(element(by.id('sidebar-profile'))).toBeVisible().withTimeout(2000);
-		await expect(element(by.id('sidebar-profile'))).toBeVisible();
 		await element(by.id('sidebar-profile')).tap();
 		await waitFor(element(by.id('profile-view'))).toBeVisible().withTimeout(2000);
 	});
@@ -60,22 +59,18 @@ describe('Profile screen', () => {
 		
 		it('should have reset avatar button', async() => {
 			await waitFor(element(by.id('profile-view-reset-avatar'))).toExist().whileElement(by.id('profile-view-list')).scroll(scrollDown, 'down');
-			await expect(element(by.id('profile-view-reset-avatar'))).toExist();
 		});
 
 		it('should have upload avatar button', async() => {
 			await waitFor(element(by.id('profile-view-upload-avatar'))).toExist().whileElement(by.id('profile-view-list')).scroll(scrollDown, 'down');
-			await expect(element(by.id('profile-view-upload-avatar'))).toExist();
 		});
 
 		it('should have avatar url button', async() => {
 			await waitFor(element(by.id('profile-view-avatar-url-button'))).toExist().whileElement(by.id('profile-view-list')).scroll(scrollDown, 'down');
-			await expect(element(by.id('profile-view-avatar-url-button'))).toExist();
 		});
 
 		it('should have submit button', async() => {
 			await waitFor(element(by.id('profile-view-submit'))).toExist().whileElement(by.id('profile-view-list')).scroll(scrollDown, 'down');
-			await expect(element(by.id('profile-view-submit'))).toExist();
 		});
 	});
 
