@@ -4678,7 +4678,7 @@ commondir@^1.0.1:
 
 "commonmark@git+https://github.com/RocketChat/commonmark.js.git":
   version "0.29.2"
-  resolved "git+https://github.com/RocketChat/commonmark.js.git#03a30752d221b30b5cc7eb31616e8dc49d815321"
+  resolved "git+https://github.com/RocketChat/commonmark.js.git#020b5af060459ac2010e382e9ae431d48ed39777"
   dependencies:
     entities "~2.0"
     mdurl "~1.0.1"
