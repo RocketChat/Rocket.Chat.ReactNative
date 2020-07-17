@@ -203,8 +203,7 @@ const MessageActions = React.memo(forwardRef(({
 
 	const handleReadReceipt = (message) => {
 		if (isMasterDetail) {
-			const params = { messageId: message.id, showCloseModal: true };
-			Navigation.navigate('ModalStackNavigator', { screen: 'ReadReceiptsView', params });
+			Navigation.navigate('ModalStackNavigator', { screen: 'ReadReceiptsView', params: { messageId: message.id } });
 		} else {
 			Navigation.navigate('ReadReceiptsView', { messageId: message.id });
 		}
