@@ -84,6 +84,11 @@ async function pinMessage(message){
     await waitFor(element(by.id('action-sheet'))).toNotExist().withTimeout(5000);
 }
 
+async function dismissReviewNag(){
+    await waitFor(element(by.text('Are you enjoying this app?'))).toExist().withTimeout(60000);
+    await element(by.label('No').and(by.type('_UIAlertControllerActionView'))).tap(); // Tap `no` on ask for review alert
+}
+
 async function tapBack() {
     await element(by.id('header-back')).atIndex(0).tap();
 }
@@ -109,6 +114,7 @@ module.exports = {
     mockMessage,
     starMessage,
     pinMessage,
+    dismissReviewNag,
     tapBack,
     sleep,
     searchRoom

@@ -2,7 +2,7 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const data = require('../../data');
-const { navigateToLogin, login, mockMessage, tapBack, sleep, searchRoom, starMessage, pinMessage } = require('../../helpers/app');
+const { navigateToLogin, login, mockMessage, tapBack, sleep, searchRoom, starMessage, pinMessage, dismissReviewNag } = require('../../helpers/app');
 
 async function navigateToRoom(roomName) {
 	await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
@@ -202,8 +202,7 @@ describe('Room screen', () => {
 			});
 
 			it('should ask for review', async() => {
-				await waitFor(element(by.text('Are you enjoying this app?'))).toExist().withTimeout(60000);
-				await element(by.label('No').and(by.type('_UIAlertControllerActionView'))).tap(); // Tap `no` on ask for review alert
+				await dismissReviewNag() //TODO: Create a proper test for this elsewhere.
 			})
 		
 			it('should remove reaction', async() => {

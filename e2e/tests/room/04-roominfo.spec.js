@@ -196,7 +196,7 @@ describe('Room info screen', () => {
 				await element(by.type('UIScrollView')).atIndex(1).swipe('up');
 				await element(by.id('room-info-edit-view-t')).tap();
 				await sleep(1000);
-				await element(by.id('room-info-edit-view-ro')).tap();
+				await element(by.id('room-info-edit-view-ro')).longPress(); //https://github.com/facebook/react-native/issues/28032
 				await sleep(1000);
 				await element(by.id('room-info-edit-view-react-when-ro')).tap();
 				await sleep(1000);
