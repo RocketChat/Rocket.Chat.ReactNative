@@ -1,4 +1,4 @@
-import { schemaMigrations, addColumns } from '@nozbe/watermelondb/Schema/migrations';
+import { schemaMigrations, addColumns, createTable } from '@nozbe/watermelondb/Schema/migrations';
 
 export default schemaMigrations({
 	migrations: [
@@ -115,6 +115,20 @@ export default schemaMigrations({
 						{ name: 'served_by', type: 'string', isOptional: true },
 						{ name: 'livechat_data', type: 'string', isOptional: true },
 						{ name: 'tags', type: 'string', isOptional: true }
+					]
+				})
+			]
+		},
+		{
+			toVersion: 9,
+			steps: [
+				createTable({
+					name: 'users',
+					columns: [
+						{ name: '_id', type: 'string', isOptional: true },
+						{ name: 'name', type: 'string', isOptional: true },
+						{ name: 'username', type: 'string', isOptional: true },
+						{ name: 'avatar_etag', type: 'string', isOptional: true }
 					]
 				})
 			]

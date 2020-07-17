@@ -27,6 +27,7 @@ const MessageAvatar = React.memo(({
 				baseUrl={baseUrl}
 				userId={user.id}
 				token={user.token}
+				avatarETag={author.avatarETag}
 				theme={theme}
 			/>
 		);

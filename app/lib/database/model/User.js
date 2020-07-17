@@ -19,4 +19,6 @@ export default class User extends Model {
 	@field('statusText') statusText;
 
 	@json('roles', sanitizer) roles;
+
+	@field('avatar_etag') avatarETag;
 }

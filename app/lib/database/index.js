@@ -17,6 +17,7 @@ import Permission from './model/Permission';
 import SlashCommand from './model/SlashCommand';
 import User from './model/User';
 import Server from './model/Server';
+import Users from './model/Users';
 
 import serversSchema from './schema/servers';
 import appSchema from './schema/app';
@@ -57,7 +58,8 @@ export const getDatabase = (database = '') => {
 			Setting,
 			Role,
 			Permission,
-			SlashCommand
+			SlashCommand,
+			Users
 		],
 		actionsEnabled: true
 	});

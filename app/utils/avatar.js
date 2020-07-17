@@ -1,9 +1,9 @@
-const formatUrl = (url, baseUrl, uriSize, avatarAuthURLFragment) => (
-	`${ baseUrl }${ url }?format=png&size=${ uriSize }&${ avatarAuthURLFragment }`
+const formatUrl = (url, baseUrl, uriSize, avatarAuthURLFragment, avatarETagFragment) => (
+	`${ baseUrl }${ url }?format=png&size=${ uriSize }${ avatarAuthURLFragment }${ avatarETagFragment }`
 );
 
 export const avatarURL = ({
-	type, text, size, userId, token, avatar, baseUrl
+	type, text, size, userId, token, avatar, baseUrl, avatarETag
 }) => {
 	const room = type === 'd' ? text : `@${ text }`;
 
@@ -15,12 +15,17 @@ export const avatarURL = ({
 		avatarAuthURLFragment = `&rc_token=${ token }&rc_uid=${ userId }`;
 	}
 
+	let avatarETagFragment;
+	if (avatarETag) {
+		avatarETagFragment = `&${ avatarETag }`;
+	}
+
 
 	let uri;
 	if (avatar) {
-		uri = avatar.includes('http') ? avatar : formatUrl(avatar, baseUrl, uriSize, avatarAuthURLFragment);
+		uri = avatar.includes('http') ? avatar : formatUrl(avatar, baseUrl, uriSize, avatarAuthURLFragment, avatarETagFragment);
 	} else {
-		uri = formatUrl(`/avatar/${ room }`, baseUrl, uriSize, avatarAuthURLFragment);
+		uri = formatUrl(`/avatar/${ room }`, baseUrl, uriSize, avatarAuthURLFragment, avatarETagFragment);
 	}
 
 	return uri;

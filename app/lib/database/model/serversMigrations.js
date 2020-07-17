@@ -26,6 +26,17 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 5,
+			steps: [
+				addColumns({
+					table: 'users',
+					columns: [
+						{ name: 'avatar_etag', type: 'string', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });

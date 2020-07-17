@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
@@ -12,6 +12,7 @@ import LastMessage from './LastMessage';
 import { capitalize, formatDate } from '../../utils/room';
 import Touchable from './Touchable';
 import { themes } from '../../constants/colors';
+import database from '../../lib/database';
 
 export { ROW_HEIGHT };
 
@@ -76,11 +77,32 @@ const RoomItem = React.memo(({
 	theme,
 	isFocused
 }) => {
+	const [avatarETag, setAvatarETag] = useState();
+
 	useEffect(() => {
 		if (connected && type === 'd' && id) {
 			getUserPresence(id);
 		}
 	}, [connected]);
+
+	const handleAvatarChange = async() => {
+		if (type === 'd' && id) {
+			const db = database.active;
+			const usersCollection = db.collections.get('users');
+			try {
+				const user = await usersCollection.find(id);
+				user.observe().subscribe((changes) => {
+					setAvatarETag(changes.avatarETag);
+				});
+			} catch {
+				// Do nothing
+			}
+		}
+	};
+
+	useEffect(() => {
+		handleAvatarChange();
+	}, []);
 
 	const date = lastMessage && formatDate(lastMessage.ts);
 
@@ -119,6 +141,7 @@ const RoomItem = React.memo(({
 				accessibilityLabel={accessibilityLabel}
 			>
 				<Avatar
+					id={id}
 					text={avatar}
 					size={avatarSize}
 					type={type}
@@ -126,6 +149,7 @@ const RoomItem = React.memo(({
 					style={styles.avatar}
 					userId={userId}
 					token={token}
+					avatarETag={avatarETag}
 				/>
 				<View
 					style={[

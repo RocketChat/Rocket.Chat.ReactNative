@@ -1,9 +1,11 @@
 import { InteractionManager } from 'react-native';
 import semver from 'semver';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import reduxStore from '../createStore';
 import { setActiveUsers } from '../../actions/activeUsers';
 import { setUser } from '../../actions/login';
+import database from '../database';
 
 export function subscribeUsersPresence() {
 	const serverVersion = reduxStore.getState().server.version;
@@ -61,6 +63,27 @@ export default async function getUsersPresence() {
 				});
 				ids = [];
 			}
+
+			const db = database.active;
+			const userCollection = db.collections.get('users');
+			result.users?.forEach(async(user) => {
+				try {
+					const userRecord = await userCollection.find(user._id);
+					await db.action(async() => {
+						await userRecord.update((u) => {
+							Object.assign(u, user);
+						});
+					});
+				} catch (e) {
+					// Not was found
+					await db.action(async() => {
+						await userCollection.create((u) => {
+							u._raw = sanitizedRaw({ id: user._id }, userCollection.schema);
+							Object.assign(u, user);
+						});
+					});
+				}
+			});
 		} catch {
 			// do nothing
 		}

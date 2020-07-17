@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 4,
+	version: 5,
 	tables: [
 		tableSchema({
 			name: 'users',
@@ -12,7 +12,8 @@ export default appSchema({
 				{ name: 'language', type: 'string', isOptional: true },
 				{ name: 'status', type: 'string', isOptional: true },
 				{ name: 'statusText', type: 'string', isOptional: true },
-				{ name: 'roles', type: 'string', isOptional: true }
+				{ name: 'roles', type: 'string', isOptional: true },
+				{ name: 'avatar_etag', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({

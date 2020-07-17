@@ -4,6 +4,7 @@ import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import RNUserDefaults from 'rn-user-defaults';
 import { Q } from '@nozbe/watermelondb';
 import AsyncStorage from '@react-native-community/async-storage';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
@@ -245,9 +246,13 @@ const RocketChat = {
 
 			this.usersListener = this.sdk.onStreamData('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
 
-			this.notifyLoggedListener = this.sdk.onStreamData('stream-notify-logged', protectedFunction((ddpMessage) => {
+			this.sdk.subscribe('stream-notify-logged', 'updateAvatar');
+
+			this.sdk.subscribe('stream-notify-logged', 'Users:NameChanged');
+
+			this.notifyLoggedListener = this.sdk.onStreamData('stream-notify-logged', protectedFunction(async(ddpMessage) => {
 				const { eventName } = ddpMessage.fields;
-				if (eventName === 'user-status') {
+				if (/user-status/.test(eventName)) {
 					this.activeUsers = this.activeUsers || {};
 					if (!this._setUserTimer) {
 						this._setUserTimer = setTimeout(() => {
@@ -266,6 +271,40 @@ const RocketChat = {
 					const { user: loggedUser } = reduxStore.getState().login;
 					if (loggedUser && loggedUser.id === id) {
 						reduxStore.dispatch(setUser({ status: STATUSES[status], statusText }));
+					}
+				} else if (/updateAvatar/.test(eventName)) {
+					const { username, etag } = ddpMessage.fields.args[0];
+					const db = database.active;
+					const userCollection = db.collections.get('users');
+					try {
+						const [userRecord] = await userCollection.query(Q.where('username', Q.eq(username))).fetch();
+						await db.action(async() => {
+							await userRecord.update((u) => {
+								u.avatarETag = etag;
+							});
+						});
+					} catch {
+						// We can't create a new record since we don't receive the user._id
+					}
+				} else if (/Users:NameChanged/.test(eventName)) {
+					const userNameChanged = ddpMessage.fields.args[0];
+					const db = database.active;
+					const userCollection = db.collections.get('users');
+					try {
+						const userRecord = await userCollection.find(userNameChanged._id);
+						await db.action(async() => {
+							await userRecord.update((u) => {
+								Object.assign(u, userNameChanged);
+							});
+						});
+					} catch {
+						// Not was found
+						await db.action(async() => {
+							await userCollection.create((u) => {
+								u._raw = sanitizedRaw({ id: userNameChanged._id }, userCollection.schema);
+								Object.assign(u, userNameChanged);
+							});
+						});
 					}
 				}
 			}));
@@ -401,7 +440,8 @@ const RocketChat = {
 			customFields: result.me.customFields,
 			statusLivechat: result.me.statusLivechat,
 			emails: result.me.emails,
-			roles: result.me.roles
+			roles: result.me.roles,
+			avatarETag: result.me.avatarETag
 		};
 		return user;
 	},

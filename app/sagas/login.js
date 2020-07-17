@@ -110,7 +110,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			language: user.language,
 			status: user.status,
 			statusText: user.statusText,
-			roles: user.roles
+			roles: user.roles,
+			avatarETag: user.avatarETag
 		};
 		yield serversDB.action(async() => {
 			try {
