@@ -23,7 +23,7 @@ class ReadReceiptView extends React.Component {
 			title: I18n.t('Read_Receipt')
 		};
 		if (isMasterDetail) {
-			options.headerLeft = () => <CloseModalButton navigation={navigation} testID='readreceipt-view-close' />;
+			options.headerLeft = () => <CloseModalButton navigation={navigation} testID='read-receipt-view-close' />;
 		}
 		return options;
 	}
