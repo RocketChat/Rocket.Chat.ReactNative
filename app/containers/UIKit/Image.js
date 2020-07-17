@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import FastImage from '@rocket.chat/react-native-fast-image';
 import PropTypes from 'prop-types';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 

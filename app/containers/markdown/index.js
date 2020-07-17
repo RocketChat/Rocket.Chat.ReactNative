@@ -383,9 +383,9 @@ class Markdown extends PureComponent {
 		m = m.replace(/^\[([\s]]*)\]\(([^)]*)\)\s/, '').trim();
 
 		if (preview) {
-			m = m.replace(/\n+/g, ' ');
 			m = shortnameToUnicode(m);
 			m = removeMarkdown(m);
+			m = m.replace(/\n+/g, ' ');
 			return (
 				<Text accessibilityLabel={m} style={[styles.text, { color: themes[theme].bodyText }, ...style]} numberOfLines={numberOfLines} testID={testID}>
 					{m}
