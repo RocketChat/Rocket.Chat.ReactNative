@@ -440,7 +440,7 @@ PODS:
     - React
   - rn-fetch-blob (0.12.0):
     - React-Core
-  - RNBootSplash (2.2.4):
+  - RNBootSplash (2.2.5):
     - React
   - RNCAsyncStorage (1.10.3):
     - React
@@ -486,9 +486,9 @@ PODS:
     - React
   - RNVectorIcons (6.6.0):
     - React
-  - SDWebImage (5.7.4):
-    - SDWebImage/Core (= 5.7.4)
-  - SDWebImage/Core (5.7.4)
+  - SDWebImage (5.8.0):
+    - SDWebImage/Core (= 5.8.0)
+  - SDWebImage/Core (5.8.0)
   - SDWebImageWebPCoder (0.4.1):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.5)
@@ -595,7 +595,7 @@ DEPENDENCIES:
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
-  - RNFastImage (from `../node_modules/react-native-fast-image`)
+  - "RNFastImage (from `../node_modules/@rocket.chat/react-native-fast-image`)"
   - RNFirebase (from `../node_modules/react-native-firebase/ios`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
@@ -771,7 +771,7 @@ EXTERNAL SOURCES:
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
   RNFastImage:
-    :path: "../node_modules/react-native-fast-image"
+    :path: "../node_modules/@rocket.chat/react-native-fast-image"
   RNFirebase:
     :path: "../node_modules/react-native-firebase/ios"
   RNGestureHandler:
@@ -904,7 +904,7 @@ SPEC CHECKSUMS:
   ReactNativeKeyboardTrackingView: 02137fac3b2ebd330d74fa54ead48b14750a2306
   rn-extensions-share: 8db79372089567cbc5aefe8444869bbc808578d3
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
-  RNBootSplash: 7cb9b4fe7e94177edc0d11010f7631d79db2f5e9
+  RNBootSplash: b3836aa90c5bec690c6cd3c9ab355fcf98d0fe1d
   RNCAsyncStorage: cd7234ff15c010723ed7c499ae4eedc605eac1fd
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNDateTimePicker: 4bd49e09f91ca73d69119a9e1173b0d43b82f5e5
@@ -919,7 +919,7 @@ SPEC CHECKSUMS:
   RNScreens: cf198f915f8a2bf163de94ca9f5bfc8d326c3706
   RNUserDefaults: c421fd97ad06b35c16608c5d0fe675db353f632d
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
-  SDWebImage: 48b88379b798fd1e4298f95bb25d2cdabbf4deb3
+  SDWebImage: 84000f962cbfa70c07f19d2234cbfcf5d779b5dc
   SDWebImageWebPCoder: 36f8f47bd9879a8aea6044765c1351120fd8e3a8
   TOCropViewController: e9da34f484aedd4e5d5a8ab230ba217cfe16c729
   UMAppLoader: ee77a072f9e15128f777ccd6d2d00f52ab4387e6
