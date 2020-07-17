@@ -6,7 +6,7 @@ export const ImageComponent = (type) => {
 		const { Image } = require('react-native');
 		Component = Image;
 	} else {
-		const FastImage = require('react-native-fast-image').default;
+		const FastImage = require('@rocket.chat/react-native-fast-image').default;
 		Component = FastImage;
 	}
 	return Component;
