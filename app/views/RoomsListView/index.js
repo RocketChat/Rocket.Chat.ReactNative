@@ -566,7 +566,7 @@ class RoomsListView extends React.Component {
 		if (this.scroll?.scrollToOffset) {
 			this.scroll.scrollToOffset({ offset: 0 });
 		}
-	}
+	};
 
 	toggleSort = () => {
 		const { toggleSortDropdown } = this.props;
