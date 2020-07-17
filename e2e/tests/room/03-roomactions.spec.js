@@ -2,7 +2,7 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const data = require('../../data');
-const { tapBack, sleep, searchRoom } = require('../../helpers/app');
+const { navigateToLogin, login, tapBack, sleep, searchRoom, mockMessage, starMessage, pinMessage } = require('../../helpers/app');
 
 const scrollDown = 200;
 
@@ -11,7 +11,7 @@ async function navigateToRoomActions(type) {
 	if (type === 'd') {
 		room = 'rocket.cat';
 	} else {
-		room = `private${ data.random }`;
+		room = data.groups.private.name;
 	}
 	await searchRoom(room);
 	await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toExist().withTimeout(60000);
@@ -36,10 +36,16 @@ async function backToRoomsList() {
 }
 
 describe('Room actions screen', () => {
+
+	before(async() => {
+		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		await navigateToLogin();
+		await login(data.users.regular.username, data.users.regular.password);
+	});
+	
 	describe('Render', async() => {
 		describe('Direct', async() => {
 			before(async() => {
-				await device.launchApp({ newInstance: true });
 				await navigateToRoomActions('d');
 			});
 
@@ -204,47 +210,79 @@ describe('Room actions screen', () => {
 			});
 
 			it('should show starred message and unstar it', async() => {
+
+				//Go back to room and send a message
+				await tapBack();
+				await mockMessage('messageToStar');
+
+				//Star the message
+				await starMessage('messageToStar')
+
+				//Back into Room Actions
+				await element(by.id('room-view-header-actions')).tap();
+				await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
+
+				//Go to starred messages
 				await element(by.id('room-actions-starred')).tap();
 				await waitFor(element(by.id('starred-messages-view'))).toExist().withTimeout(2000);
 				await sleep(1000);
-				await waitFor(element(by.label(`${ data.random }message`).withAncestor(by.id('starred-messages-view')))).toBeVisible().withTimeout(60000);
-				await expect(element(by.label(`${ data.random }message`).withAncestor(by.id('starred-messages-view')))).toBeVisible();
-				await element(by.label(`${ data.random }message`).withAncestor(by.id('starred-messages-view'))).longPress();
-
+				await waitFor(element(by.label(`${ data.random }messageToStar`).withAncestor(by.id('starred-messages-view')))).toBeVisible().withTimeout(60000);
+				
+				//Unstar message
+				await element(by.label(`${ data.random }messageToStar`).withAncestor(by.id('starred-messages-view'))).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.label('Unstar')).tap();
 
-				await waitFor(element(by.label(`${ data.random }message`).withAncestor(by.id('starred-messages-view')))).toBeNotVisible().withTimeout(60000);
+				await waitFor(element(by.label(`${ data.random }messageToStar`).withAncestor(by.id('starred-messages-view')))).toBeNotVisible().withTimeout(60000);
 				await expect(element(by.label(`${ data.random }message`).withAncestor(by.id('starred-messages-view')))).toBeNotVisible();
 				await backToActions();
 			});
 
 			it('should show pinned message and unpin it', async() => {
+
+				//Go back to room and send a message
+				await tapBack();
+				await mockMessage('messageToPin');
+
+				//Pin the message
+				await pinMessage('messageToPin')
+
+				//Back into Room Actions
+				await element(by.id('room-view-header-actions')).tap();
+				await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
+
 				await waitFor(element(by.id('room-actions-pinned'))).toExist();
 				await element(by.id('room-actions-pinned')).tap();
 				await waitFor(element(by.id('pinned-messages-view'))).toExist().withTimeout(2000);
 				await sleep(1000);
-				await waitFor(element(by.label(`${ data.random }edited (edited)`).withAncestor(by.id('pinned-messages-view')))).toBeVisible().withTimeout(60000);
-				await expect(element(by.label(`${ data.random }edited (edited)`).withAncestor(by.id('pinned-messages-view')))).toBeVisible();
-				await element(by.label(`${ data.random }edited (edited)`).withAncestor(by.id('pinned-messages-view'))).longPress();
+				await waitFor(element(by.label(`${ data.random }messageToPin`).withAncestor(by.id('pinned-messages-view')))).toBeVisible().withTimeout(60000);
+				await element(by.label(`${ data.random }messageToPin`).withAncestor(by.id('pinned-messages-view'))).longPress();
 
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.label('Unpin')).tap();
 
-				await waitFor(element(by.label(`${ data.random }edited (edited)`).withAncestor(by.id('pinned-messages-view')))).toBeNotVisible().withTimeout(60000);
+				await waitFor(element(by.label(`${ data.random }messageToPin`).withAncestor(by.id('pinned-messages-view')))).toBeNotVisible().withTimeout(60000);
 				await expect(element(by.label(`${ data.random }edited (edited)`).withAncestor(by.id('pinned-messages-view')))).toBeNotVisible();
 				await backToActions();
 			});
 
 			it('should search and find a message', async() => {
+
+				//Go back to room and send a message
+				await tapBack();
+				await mockMessage('messageToFind');
+
+				//Back into Room Actions
+				await element(by.id('room-view-header-actions')).tap();
+				await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
+
 				await element(by.id('room-actions-search')).tap();
 				await waitFor(element(by.id('search-messages-view'))).toExist().withTimeout(2000);
 				await expect(element(by.id('search-message-view-input'))).toExist();
-				await element(by.id('search-message-view-input')).replaceText(`/${ data.random }message/`);
-				await waitFor(element(by.label(`${ data.random }message`).withAncestor(by.id('search-messages-view')))).toExist().withTimeout(60000);
-				await expect(element(by.label(`${ data.random }message`).withAncestor(by.id('search-messages-view')))).toExist();
+				await element(by.id('search-message-view-input')).replaceText(`/${ data.random }messageToFind/`);
+				await waitFor(element(by.label(`${ data.random }messageToFind`).withAncestor(by.id('search-messages-view')))).toExist().withTimeout(60000);
 				await backToActions();
 			});
 		});

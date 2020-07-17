@@ -6,6 +6,7 @@ const { tapBack, sleep, navigateToLogin, login } = require('../../helpers/app');
 
 describe('Create room screen', () => {
 	before(async() => {
+		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 		await element(by.id('rooms-list-view-create-channel')).tap();

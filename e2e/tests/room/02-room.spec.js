@@ -2,20 +2,23 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const data = require('../../data');
-const { mockMessage, tapBack, sleep, searchRoom } = require('../../helpers/app');
+const { navigateToLogin, login, mockMessage, tapBack, sleep, searchRoom, starMessage, pinMessage } = require('../../helpers/app');
 
-async function navigateToRoom() {
-	await searchRoom(`private${ data.random }`);
-	await waitFor(element(by.id(`rooms-list-view-item-private${ data.random }`))).toExist().withTimeout(60000);
-	await element(by.id(`rooms-list-view-item-private${ data.random }`)).tap();
+async function navigateToRoom(roomName) {
+	await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+	await navigateToLogin();
+	await login(data.users.regular.username, data.users.regular.password);
+	await searchRoom(`${ roomName }`);
+	await waitFor(element(by.id(`rooms-list-view-item-${ roomName }`))).toExist().withTimeout(60000);
+	await element(by.id(`rooms-list-view-item-${ roomName }`)).tap();
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 }
 
 describe('Room screen', () => {
-	const mainRoom = `private${ data.random }`;
+	const mainRoom = data.groups.private.name;
 
 	before(async() => {
-		await navigateToRoom();
+		await navigateToRoom(mainRoom);
 	});
 
 	describe('Render', async() => {
@@ -69,11 +72,6 @@ describe('Room screen', () => {
 				await expect(element(by.label(`${ data.random }message`)).atIndex(0)).toExist();
 			});
 
-			it('should ask for review', async() => {
-				await waitFor(element(by.text('Are you enjoying this app?'))).toExist().withTimeout(60000);
-				await expect(element(by.text('Are you enjoying this app?')).atIndex(0)).toExist();
-				await element(by.label('No').and(by.type('_UIAlertControllerActionView'))).tap(); // Tap `no` on ask for review alert
-			})
 
 			it('should show/hide emoji keyboard', async () => {
 				if (device.getPlatform() === 'android') {
@@ -164,13 +162,7 @@ describe('Room screen', () => {
 			});
 		
 			it('should star message', async() => {
-				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
-				await expect(element(by.id('action-sheet'))).toExist();
-				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by.label('Star')).tap();
-				await sleep(1000);
-				await waitFor(element(by.id('action-sheet'))).toNotExist().withTimeout(5000);
+				await starMessage('message')
 		
 				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
@@ -224,6 +216,12 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('message-reaction-:grimacing:'))).toExist().withTimeout(60000);
 				await sleep(1000);
 			});
+
+			it('should ask for review', async() => {
+				await waitFor(element(by.text('Are you enjoying this app?'))).toExist().withTimeout(60000);
+				await expect(element(by.text('Are you enjoying this app?')).atIndex(0)).toExist();
+				await element(by.label('No').and(by.type('_UIAlertControllerActionView'))).tap(); // Tap `no` on ask for review alert
+			})
 		
 			it('should remove reaction', async() => {
 				await element(by.id('message-reaction-:grinning:')).tap();
@@ -259,15 +257,8 @@ describe('Room screen', () => {
 			});
 		
 			it('should pin message', async() => {
-				await waitFor(element(by.label(`${ data.random }edited (edited)`)).atIndex(0)).toExist();
-				await element(by.label(`${ data.random }edited (edited)`)).atIndex(0).longPress();
-				await expect(element(by.id('action-sheet'))).toExist();
-				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by.label('Pin')).tap();
-				await waitFor(element(by.id('action-sheet'))).toNotExist().withTimeout(5000);
-				await sleep(1500);
-		
+				await pinMessage('edited (edited)')
+						
 				await waitFor(element(by.label(`${ data.random }edited (edited)`)).atIndex(0)).toBeVisible();
 				await element(by.label(`${ data.random }edited (edited)`)).atIndex(0).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();

@@ -2,14 +2,16 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const data = require('../../data');
-const { tapBack, sleep, searchRoom } = require('../../helpers/app');
+const { navigateToLogin, login, tapBack, sleep, searchRoom } = require('../../helpers/app');
+
+const privateRoomName = data.groups.private.name
 
 async function navigateToRoomInfo(type) {
 	let room;
 	if (type === 'd') {
 		room = 'rocket.cat';
 	} else {
-		room = `private${ data.random }`;
+		room = privateRoomName;
 	}
 	await searchRoom(room);
 	await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toExist().withTimeout(60000);
@@ -32,9 +34,15 @@ async function waitForToast() {
 }
 
 describe('Room info screen', () => {
+
+	before(async() => {
+		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		await navigateToLogin();
+		await login(data.users.regular.username, data.users.regular.password);
+	});
+
 	describe('Direct', async() => {
 		before(async() => {
-			await device.launchApp({ newInstance: true });
 			await navigateToRoomInfo('d');
 		});
 
@@ -42,11 +50,16 @@ describe('Room info screen', () => {
 			await expect(element(by.id('room-info-view'))).toExist();
 			await expect(element(by.id('room-info-view-name'))).toExist();
 		});
+
+		after(async() => {
+			await tapBack()
+			await tapBack()
+			await tapBack()
+		})
 	});
 
 	describe('Channel/Group', async() => {
 		before(async() => {
-			await device.launchApp({ newInstance: true });
 			await navigateToRoomInfo('c');
 		});
 
@@ -141,7 +154,6 @@ describe('Room info screen', () => {
 		});
 	
 		describe('Usage', async() => {
-			const room = `private${ data.random }`;
 			// it('should enter "invalid name" and get error', async() => {
 			// 	await element(by.type('UIScrollView')).atIndex(1).swipe('down');
 			// 	await element(by.id('room-info-edit-view-name')).replaceText('invalid name');
@@ -155,20 +167,20 @@ describe('Room info screen', () => {
 			// });
 	
 			it('should change room name', async() => {
-				await element(by.id('room-info-edit-view-name')).replaceText(`${ room }new`);
+				await element(by.id('room-info-edit-view-name')).replaceText(`${ privateRoomName }new`);
 				await element(by.type('UIScrollView')).atIndex(1).swipe('up');
 				await element(by.id('room-info-edit-view-submit')).tap();
 				await sleep(5000);
 				await tapBack();
 				await waitFor(element(by.id('room-info-view'))).toExist().withTimeout(2000);
 				await sleep(1000);
-				await expect(element(by.id('room-info-view-name'))).toHaveLabel(`${ room }new`);
+				await expect(element(by.id('room-info-view-name'))).toHaveLabel(`${ privateRoomName }new`);
 				// change name to original
 				await element(by.id('room-info-view-edit-button')).tap();
 				await sleep(1000);
 				await waitFor(element(by.id('room-info-edit-view'))).toExist().withTimeout(2000);
 				await sleep(1000);
-				await element(by.id('room-info-edit-view-name')).replaceText(`${ room }`);
+				await element(by.id('room-info-edit-view-name')).replaceText(`${ privateRoomName }`);
 				await element(by.type('UIScrollView')).atIndex(1).swipe('up');
 				await sleep(1000);
 				await element(by.id('room-info-edit-view-submit')).tap();
@@ -191,7 +203,7 @@ describe('Room info screen', () => {
 				await sleep(1000);
 				await element(by.id('room-info-edit-view-reset')).tap();
 				// after reset
-				await expect(element(by.id('room-info-edit-view-name'))).toHaveText(room);
+				await expect(element(by.id('room-info-edit-view-name'))).toHaveText(privateRoomName);
 				await expect(element(by.id('room-info-edit-view-description'))).toHaveText('');
 				await expect(element(by.id('room-info-edit-view-topic'))).toHaveText('');
 				await expect(element(by.id('room-info-edit-view-announcement'))).toHaveText('');
@@ -309,8 +321,8 @@ describe('Room info screen', () => {
 				await element(by.text('Yes, delete it!')).tap();
 				await waitFor(element(by.id('rooms-list-view'))).toExist().withTimeout(10000);
 				await sleep(2000);
-				await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible().withTimeout(60000);
-				await expect(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible();
+				await waitFor(element(by.id(`rooms-list-view-item-${ privateRoomName }`))).toBeNotVisible().withTimeout(60000);
+				await expect(element(by.id(`rooms-list-view-item-${ privateRoomName }`))).toBeNotVisible();
 			});
 		});
 	});

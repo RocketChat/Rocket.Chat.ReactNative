@@ -61,6 +61,29 @@ async function mockMessage(message) {
     await element(by.label(`${ data.random }${ message }`)).atIndex(0).tap();
 };
 
+async function starMessage(message){
+    const messageLabel = `${ data.random }${ message }`
+    await waitFor(element(by.label(messageLabel))).toBeVisible().withTimeout(5000);
+    await element(by.label(messageLabel)).atIndex(0).longPress();
+    await expect(element(by.id('action-sheet'))).toExist();
+    await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+    await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+    await element(by.label('Star')).tap();
+    await sleep(1000);
+    await waitFor(element(by.id('action-sheet'))).toNotExist().withTimeout(5000);
+};
+
+async function pinMessage(message){
+    const messageLabel = `${ data.random }${ message }`
+    await waitFor(element(by.label(messageLabel)).atIndex(0)).toExist();
+    await element(by.label(messageLabel)).atIndex(0).longPress();
+    await expect(element(by.id('action-sheet'))).toExist();
+    await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+    await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+    await element(by.label('Pin')).tap();
+    await waitFor(element(by.id('action-sheet'))).toNotExist().withTimeout(5000);
+}
+
 async function tapBack() {
     await element(by.id('header-back')).atIndex(0).tap();
 }
@@ -84,6 +107,8 @@ module.exports = {
     login,
     logout,
     mockMessage,
+    starMessage,
+    pinMessage,
     tapBack,
     sleep,
     searchRoom

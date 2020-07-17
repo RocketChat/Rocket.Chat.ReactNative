@@ -38,7 +38,7 @@ const createUser = async (username, password, name, email) => {
 }
 
 const createChannelIfNotExists = async (channelname) => {
-    console.log(`Creating channel ${channelname}`)
+    console.log(`Creating public channel ${channelname}`)
     try {
         await rocketchat.post('channels.create', {
             "name": channelname
@@ -49,7 +49,24 @@ const createChannelIfNotExists = async (channelname) => {
         } catch (infoError) {
             console.log(JSON.stringify(createError))
             console.log(JSON.stringify(infoError))
-            throw "Failed to find or create channel"
+            throw "Failed to find or create public channel"
+        }
+    }
+}
+
+const createGroupIfNotExists = async (groupname) => {
+    console.log(`Creating private group ${groupname}`)
+    try {
+        await rocketchat.post('groups.create', {
+            "name": groupname
+        })
+    } catch (createError) {
+        try { //Maybe it exists already?
+            await rocketchat.get(`group.info?roomName=${groupname}`)
+        } catch (infoError) {
+            console.log(JSON.stringify(createError))
+            console.log(JSON.stringify(infoError))
+            throw "Failed to find or create private group"
         }
     }
 }
@@ -68,6 +85,15 @@ const setup = async () => {
         if (data.channels.hasOwnProperty(channelKey)) {
             const channel = data.channels[channelKey]
             await createChannelIfNotExists(channel.name)
+        }
+    }
+
+    await login(data.users.regular.username, data.users.regular.password)
+
+    for (var groupKey in data.groups) {
+        if (data.groups.hasOwnProperty(groupKey)) {
+            const group = data.groups[groupKey]
+            await createGroupIfNotExists(group.name)
         }
     }
 

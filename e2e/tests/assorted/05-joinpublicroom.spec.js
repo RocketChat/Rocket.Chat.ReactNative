@@ -5,7 +5,7 @@ const data = require('../../data');
 const { navigateToLogin, login, mockMessage, tapBack, sleep, searchRoom } = require('../../helpers/app');
 
 const testuser = data.users.regular
-const room = 'detox-public';
+const room = data.channels.detoxpublic;
 
 async function navigateToRoom() {
 	await sleep(2000);
