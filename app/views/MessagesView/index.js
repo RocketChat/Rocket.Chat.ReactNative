@@ -197,7 +197,7 @@ class MessagesView extends React.Component {
 			const result = await this.content.fetchFunc();
 			if (result.success) {
 				this.setState({
-					messages: [...messages, ...result.messages],
+					messages: [...result.messages],
 					total: result.total,
 					loading: false
 				});
