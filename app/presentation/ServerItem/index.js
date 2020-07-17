@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import FastImage from '@rocket.chat/react-native-fast-image';
 
 import Touch from '../../utils/touch';
 import Check from '../../containers/Check';
