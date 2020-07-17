@@ -126,7 +126,6 @@ class MessageAudio extends React.Component {
 
 		this.setState({ loading: true });
 		try {
-			await Audio.setAudioModeAsync(mode);
 			await this.sound.loadAsync({ uri: `${ url }?rc_uid=${ user.id }&rc_token=${ user.token }` });
 		} catch {
 			// Do nothing
@@ -225,6 +224,7 @@ class MessageAudio extends React.Component {
 			if (paused) {
 				await this.sound.pauseAsync();
 			} else {
+				await Audio.setAudioModeAsync(mode);
 				await this.sound.playAsync();
 			}
 		} catch {
