@@ -141,7 +141,15 @@ class Sidebar extends Component {
 
 	get currentItemKey() {
 		const { state } = this.props;
-		return state.routeNames[state.index];
+		return state?.routeNames[state?.index];
+	}
+
+	onPressUser = () => {
+		const { navigation, isMasterDetail } = this.props;
+		if (isMasterDetail) {
+			return;
+		}
+		navigation.closeDrawer();
 	}
 
 	renderAdmin = () => {
@@ -210,7 +218,7 @@ class Sidebar extends Component {
 
 	render() {
 		const {
-			user, Site_Name, baseUrl, useRealName, allowStatusMessage, isMasterDetail, theme, navigation
+			user, Site_Name, baseUrl, useRealName, allowStatusMessage, isMasterDetail, theme
 		} = this.props;
 
 		if (!user) {
@@ -229,7 +237,7 @@ class Sidebar extends Component {
 					]}
 					{...scrollPersistTaps}
 				>
-					<TouchableWithoutFeedback onPress={() => navigation.closeDrawer()} testID='sidebar-close-drawer'>
+					<TouchableWithoutFeedback onPress={this.onPressUser} testID='sidebar-close-drawer'>
 						<View style={styles.header} theme={theme}>
 							<Avatar
 								text={user.username}

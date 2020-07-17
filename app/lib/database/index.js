@@ -111,7 +111,9 @@ class DB {
 				Thread,
 				ThreadMessage,
 				Upload,
-				Permission
+				Permission,
+				CustomEmoji,
+				FrequentlyUsedEmoji
 			],
 			actionsEnabled: true
 		});

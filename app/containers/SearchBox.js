@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
 
 const CancelButton = (onCancelPress, theme) => (
 	<Touchable onPress={onCancelPress} style={styles.cancel}>
-		<Text style={[styles.cancelText, { color: themes[theme].tintColor }]}>{I18n.t('Cancel')}</Text>
+		<Text style={[styles.cancelText, { color: themes[theme].headerTintColor }]}>{I18n.t('Cancel')}</Text>
 	</Touchable>
 );
 
