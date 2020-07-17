@@ -1,0 +1,11 @@
+db.getCollection("rocketchat_roles").insert({"_id":"admin","_updatedAt":new Date(1591734394689),"description":"Admin","mandatory2fa":false,"protected":true,"scope":"Users"});
+db.getCollection("rocketchat_roles").insert({"_id":"anonymous","_updatedAt":new Date(1591734394716),"description":"","mandatory2fa":false,"protected":true,"scope":"Users"});
+db.getCollection("rocketchat_roles").insert({"_id":"app","_updatedAt":new Date(1591734394711),"description":"","mandatory2fa":false,"protected":true,"scope":"Users"});
+db.getCollection("rocketchat_roles").insert({"_id":"bot","_updatedAt":new Date(1591734394706),"description":"","mandatory2fa":false,"protected":true,"scope":"Users"});
+db.getCollection("rocketchat_roles").insert({"_id":"guest","_updatedAt":new Date(1591734394714),"description":"","mandatory2fa":false,"protected":true,"scope":"Users"});
+db.getCollection("rocketchat_roles").insert({"_id":"leader","_updatedAt":new Date(1591734394698),"description":"Leader","mandatory2fa":false,"protected":true,"scope":"Subscriptions"});
+db.getCollection("rocketchat_roles").insert({"_id":"livechat-agent","_updatedAt":new Date(1591734394718),"description":"Livechat Agent","mandatory2fa":false,"protected":true,"scope":"Users"});
+db.getCollection("rocketchat_roles").insert({"_id":"livechat-manager","_updatedAt":new Date(1591734394720),"description":"Livechat Manager","mandatory2fa":false,"protected":true,"scope":"Users"});
+db.getCollection("rocketchat_roles").insert({"_id":"moderator","_updatedAt":new Date(1591734394695),"description":"Moderator","mandatory2fa":false,"protected":true,"scope":"Subscriptions"});
+db.getCollection("rocketchat_roles").insert({"_id":"owner","_updatedAt":new Date(1591734394701),"description":"Owner","mandatory2fa":false,"protected":true,"scope":"Subscriptions"});
+db.getCollection("rocketchat_roles").insert({"_id":"user","_updatedAt":new Date(1591734394703),"description":"","mandatory2fa":false,"protected":true,"scope":"Users"});

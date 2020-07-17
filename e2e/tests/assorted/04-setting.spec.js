@@ -1,7 +1,6 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { logout, navigateToLogin, login } = require('../../helpers/app');
 
 describe('Settings screen', () => {
 	before(async() => {

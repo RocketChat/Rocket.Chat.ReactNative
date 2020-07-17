@@ -194,7 +194,7 @@ export default {
 	Message_pinned: 'Message épinglé',
 	Message_removed: 'Message supprimé',
 	Messages: 'Messages',
-	Microphone_Permission_Message: 'Rocket Chat doit avoir accès à votre microphone pour pouvoir envoyer un message audio.',
+	Microphone_Permission_Message: 'Rocket.Chat doit avoir accès à votre microphone pour pouvoir envoyer un message audio.',
 	Microphone_Permission: 'Permission de microphone',
 	Mute: 'Rendre muet',
 	muted: 'Rendu muet',
