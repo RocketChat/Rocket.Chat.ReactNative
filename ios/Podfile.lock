@@ -593,7 +593,7 @@ DEPENDENCIES:
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
-  - RNFastImage (from `../node_modules/react-native-fast-image`)
+  - "RNFastImage (from `../node_modules/@rocket.chat/react-native-fast-image`)"
   - RNFirebase (from `../node_modules/react-native-firebase/ios`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
@@ -768,7 +768,7 @@ EXTERNAL SOURCES:
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
   RNFastImage:
-    :path: "../node_modules/react-native-fast-image"
+    :path: "../node_modules/@rocket.chat/react-native-fast-image"
   RNFirebase:
     :path: "../node_modules/react-native-firebase/ios"
   RNGestureHandler:
