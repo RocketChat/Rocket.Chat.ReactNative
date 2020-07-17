@@ -126,7 +126,7 @@ class MessagesView extends React.Component {
 				name: I18n.t('Mentions'),
 				fetchFunc: () => {
 					const { messages } = this.state;
-					RocketChat.getMessages(
+					return RocketChat.getMessages(
 						this.rid,
 						this.t,
 						{ 'mentions._id': { $in: [user.id] } },
@@ -148,7 +148,7 @@ class MessagesView extends React.Component {
 				name: I18n.t('Starred'),
 				fetchFunc: () => {
 					const { messages } = this.state;
-					RocketChat.getMessages(
+					return RocketChat.getMessages(
 						this.rid,
 						this.t,
 						{ 'starred._id': { $in: [user.id] } },
@@ -173,7 +173,7 @@ class MessagesView extends React.Component {
 				name: I18n.t('Pinned'),
 				fetchFunc: () => {
 					const { messages } = this.state;
-					RocketChat.getMessages(this.rid, this.t, { pinned: true }, messages.length);
+					return RocketChat.getMessages(this.rid, this.t, { pinned: true }, messages.length);
 				},
 				noDataMsg: I18n.t('No_pinned_messages'),
 				testID: 'pinned-messages-view',
