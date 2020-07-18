@@ -67,12 +67,7 @@ class FullScreenComposer extends Component {
 		backdropOpacity: 0.70 // Default value of backdropOpacity in React native modal
 	}
 
-	state = {
-		// eslint-disable-next-line react/destructuring-assignment
-		isOpen: this.props.isFullScreen
-	};
-
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps) {
 		const {
 			theme,
 			replying,
@@ -82,9 +77,9 @@ class FullScreenComposer extends Component {
 			recording,
 			mentions,
 			commandPreview,
-			message
+			message,
+			isFullScreen
 		} = this.props;
-		const { isOpen } = this.state;
 
 		if (nextProps.theme !== theme) {
 			return true;
@@ -104,7 +99,7 @@ class FullScreenComposer extends Component {
 		if (nextProps.recording !== recording) {
 			return true;
 		}
-		if (nextState.isOpen !== isOpen) {
+		if (nextProps.isFullScreen !== isFullScreen) {
 			return true;
 		}
 		if (!equal(nextProps.mentions, mentions)) {
@@ -122,9 +117,6 @@ class FullScreenComposer extends Component {
 	closeModal = () => {
 		const { toggleFullScreen } = this.props;
 		KeyboardUtils.dismiss();
-		this.setState(prevState => ({
-			isOpen: !prevState.isOpen
-		}));
 		toggleFullScreen();
 	}
 
@@ -227,10 +219,10 @@ class FullScreenComposer extends Component {
 			editing,
 			submit,
 			autoFocus,
-			backdropOpacity
+			backdropOpacity,
+			isFullScreen
 		} = this.props;
 		const { component, tracking } = innerRef;
-		const { isOpen } = this.state;
 		const isAndroidTablet = isTablet && isAndroid ? {
 			multiline: false,
 			onSubmitEditing: submit,
@@ -242,13 +234,13 @@ class FullScreenComposer extends Component {
 
 			<Modal
 				style={{ margin: 0 }}
-				isVisible={isOpen}
+				isVisible={isFullScreen}
 				useNativeDriver
 				hideModalContentWhileAnimating
 				coverScreen={false}
 				backdropOpacity={backdropOpacity}
-				swipeDirection='down'
-				onSwipeComplete={() => this.closeModal()}
+				//swipeDirection='down'
+				//onSwipeComplete={() => this.closeModal()}
 			>
 				<View style={{ backgroundColor, flex: 1 }}>
 					<TouchableOpacity onPress={() => this.closeModal()} style={styles.fullScreenComposerCloseButton}>

@@ -913,22 +913,16 @@ class MessageBox extends Component {
 					onPressCommandPreview: this.onPressCommandPreview
 				}}
 			>
-				{isFullScreen
-					? (
-						<FullScreenComposer
-							{...commonProps}
-						/>
-					)
-					: (
-						<MainComposer
-							{...commonProps}
-							finishAudioMessage={this.finishAudioMessage}
-							recordStartState={recordStartState}
-						>
-							{children}
-						</MainComposer>
-					)
-				}
+				<FullScreenComposer
+					{...commonProps}
+				/>
+					<MainComposer
+						{...commonProps}
+						finishAudioMessage={this.finishAudioMessage}
+						recordStartState={recordStartState}
+					>
+						{children}
+					</MainComposer>
 			</MessageboxContext.Provider>
 		);
 	}
