@@ -55,7 +55,13 @@ class MainComposer extends Component {
 			username: PropTypes.string,
 			token: PropTypes.string
 		}),
-		innerRef: PropTypes.object
+		innerRef: PropTypes.object,
+		isFullScreen: PropTypes.bool
+	};
+
+	state = {
+		// The key for KeyboardAccessoryView doesn't stop opening the Emoji keyboard
+		key: 0
 	};
 
 	shouldComponentUpdate(nextProps) {
@@ -89,6 +95,10 @@ class MainComposer extends Component {
 		if (nextProps.recording !== recording) {
 			return true;
 		}
+		if (!nextProps.isFullScreen) {
+			// Don't update the screen when full screen is opening
+			return true;
+		}
 		if (!equal(nextProps.mentions, mentions)) {
 			return true;
 		}
@@ -102,6 +112,16 @@ class MainComposer extends Component {
 			return true;
 		}
 		return false;
+	}
+
+	componentDidUpdate(prevProps) {
+		const { isFullScreen } = this.props;
+		if (prevProps.isFullScreen !== isFullScreen) {
+			// eslint-disable-next-line react/no-did-update-set-state
+			this.setState(prevState => ({
+				key: prevState.key + 1
+			}));
+		}
 	}
 
 	renderContent = () => {
@@ -135,7 +155,8 @@ class MainComposer extends Component {
 			recording,
 			children,
 			toggleFullScreen,
-			innerRef
+			innerRef,
+			isFullScreen
 		} = this.props;
 		const { component } = innerRef;
 		const isAndroidTablet = isTablet && isAndroid ? {
@@ -176,7 +197,7 @@ class MainComposer extends Component {
 			/>
 		) : null;
 
-		const textInputAndButtons = !recording ? (
+		const textInputAndButtons = !recording && !isFullScreen ? (
 			<>
 				<LeftButtons
 					theme={theme}
@@ -247,9 +268,11 @@ class MainComposer extends Component {
 			innerRef
 		} = this.props;
 		const { component, tracking } = innerRef;
+		const { key } = this.state;
 
 		return (
 			<KeyboardAccessoryView
+				key={key}
 				ref={tracking}
 				renderContent={this.renderContent}
 				kbInputRef={component}

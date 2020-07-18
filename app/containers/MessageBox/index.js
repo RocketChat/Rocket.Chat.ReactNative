@@ -916,13 +916,13 @@ class MessageBox extends Component {
 				<FullScreenComposer
 					{...commonProps}
 				/>
-					<MainComposer
-						{...commonProps}
-						finishAudioMessage={this.finishAudioMessage}
-						recordStartState={recordStartState}
-					>
-						{children}
-					</MainComposer>
+				<MainComposer
+					{...commonProps}
+					finishAudioMessage={this.finishAudioMessage}
+					recordStartState={recordStartState}
+				>
+					{children}
+				</MainComposer>
 			</MessageboxContext.Provider>
 		);
 	}

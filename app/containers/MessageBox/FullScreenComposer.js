@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {
 	View, TouchableOpacity
 } from 'react-native';
-import { KeyboardAccessoryView, KeyboardUtils } from 'react-native-keyboard-input';
+import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import Modal from 'react-native-modal';
 import equal from 'deep-equal';
 
@@ -115,8 +115,8 @@ class FullScreenComposer extends Component {
 	}
 
 	closeModal = () => {
-		const { toggleFullScreen } = this.props;
-		KeyboardUtils.dismiss();
+		const { toggleFullScreen, closeEmoji } = this.props;
+		closeEmoji();
 		toggleFullScreen();
 	}
 
@@ -239,8 +239,8 @@ class FullScreenComposer extends Component {
 				hideModalContentWhileAnimating
 				coverScreen={false}
 				backdropOpacity={backdropOpacity}
-				//swipeDirection='down'
-				//onSwipeComplete={() => this.closeModal()}
+				swipeDirection='down'
+				onSwipeComplete={() => this.closeModal()}
 			>
 				<View style={{ backgroundColor, flex: 1 }}>
 					<TouchableOpacity onPress={() => this.closeModal()} style={styles.fullScreenComposerCloseButton}>
