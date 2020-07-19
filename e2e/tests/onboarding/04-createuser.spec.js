@@ -53,7 +53,6 @@ describe('Create user screen', () => {
 			await element(by.id('register-view-username')).replaceText(data.registeringUser.username);
 			await element(by.id('register-view-email')).replaceText(data.users.existing.email);
 			await element(by.id('register-view-password')).replaceText(data.registeringUser.password);
-			await sleep(300);
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.text('Email already exists. [403]')).atIndex(0)).toExist().withTimeout(10000);
 			await element(by.text('OK')).tap();
@@ -64,7 +63,6 @@ describe('Create user screen', () => {
 			await element(by.id('register-view-username')).replaceText(data.users.existing.username);
 			await element(by.id('register-view-email')).replaceText(data.registeringUser.email);
 			await element(by.id('register-view-password')).replaceText(data.registeringUser.password);
-			await sleep(300);
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.text('Username is already in use')).atIndex(0)).toExist().withTimeout(10000);
 			await element(by.text('OK')).tap();
@@ -75,7 +73,6 @@ describe('Create user screen', () => {
 			await element(by.id('register-view-username')).replaceText(data.registeringUser.username);
 			await element(by.id('register-view-email')).replaceText(data.registeringUser.email);
 			await element(by.id('register-view-password')).replaceText(data.registeringUser.password);
-			await sleep(300);
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
 		});

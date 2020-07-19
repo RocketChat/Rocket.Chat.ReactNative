@@ -25,20 +25,14 @@ describe('Broadcast room', () => {
 		await waitFor(element(by.id(`select-users-view-item-${ otheruser.username }`))).toBeVisible().withTimeout(60000);
 		await element(by.id(`select-users-view-item-${ otheruser.username }`)).tap();
 		await waitFor(element(by.id(`selected-user-${ otheruser.username }`))).toBeVisible().withTimeout(5000);
-		await sleep(1000);
 		await element(by.id('selected-users-view-submit')).tap();
-		await sleep(1000);
 		await waitFor(element(by.id('create-channel-view'))).toExist().withTimeout(5000);
 		await element(by.id('create-channel-name')).replaceText(`broadcast${ data.random }`);
-		await sleep(2000);
 		await element(by.id('create-channel-broadcast')).longPress(); //https://github.com/facebook/react-native/issues/28032 
-		await sleep(500);
 		await element(by.id('create-channel-submit')).tap();
 		await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(60000);
 		await waitFor(element(by.id(`room-view-title-broadcast${ data.random }`))).toBeVisible().withTimeout(60000);
-		await sleep(1000);
 		await element(by.id('room-view-header-actions')).tap();
-		await sleep(1000);
 		await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(5000);
 		await element(by.id('room-actions-info')).tap();
 		await waitFor(element(by.id('room-info-view'))).toBeVisible().withTimeout(2000);
@@ -60,13 +54,11 @@ describe('Broadcast room', () => {
 		await navigateToLogin();
 		await element(by.id('login-view-email')).replaceText(otheruser.username);
 		await element(by.id('login-view-password')).replaceText(otheruser.password);
-		await sleep(1000);
 		await element(by.id('login-view-submit')).tap();
 		//await waitFor(element(by.id('two-factor'))).toBeVisible().withTimeout(5000);
 		//await expect(element(by.id('two-factor'))).toBeVisible();
 		//const code = GA.gen(data.alternateUserTOTPSecret);
 		//await element(by.id('two-factor-input')).replaceText(code);
-		//await sleep(1000);
 		//await element(by.id('two-factor-send')).tap();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 		await searchRoom(`broadcast${ data.random }`);
@@ -74,7 +66,6 @@ describe('Broadcast room', () => {
 		await element(by.id(`rooms-list-view-item-broadcast${ data.random }`)).tap();
 		await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 		await waitFor(element(by.id(`room-view-title-broadcast${ data.random }`))).toBeVisible().withTimeout(60000);
-		await sleep(1000);
 	});
 
 	it('should not have messagebox', async() => {
@@ -95,7 +86,6 @@ describe('Broadcast room', () => {
 
 	it('should tap on reply button and navigate to direct room', async() => {
 		await element(by.id('message-broadcast-reply')).tap();
-		await sleep(1000);
 		await waitFor(element(by.id(`room-view-title-${ testuser.username }`))).toBeVisible().withTimeout(5000);
 	});
 

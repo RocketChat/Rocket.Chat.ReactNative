@@ -98,7 +98,6 @@ describe('Room screen', () => {
 				await element(by.id('messagebox-input')).replaceText(':');
 				await element(by.id('messagebox-input')).typeText('joy'); // workaround for number keyboard
 				await waitFor(element(by.id('messagebox-container'))).toExist().withTimeout(10000);
-				await sleep(1000);
 				await element(by.id('mention-item-joy')).tap();
 				await expect(element(by.id('messagebox-input'))).toHaveText(':joy: ');
 				await element(by.id('messagebox-input')).clearText();
@@ -109,21 +108,20 @@ describe('Room screen', () => {
 				await element(by.id('messagebox-input')).tap();
 				await element(by.id('messagebox-input')).typeText(`@${ username }`);
 				await waitFor(element(by.id('messagebox-container'))).toExist().withTimeout(60000);
-				await sleep(1000);
 				await element(by.id(`mention-item-${ username }`)).tap();
 				await expect(element(by.id('messagebox-input'))).toHaveText(`@${ username } `);
 				await element(by.id('messagebox-input')).tap();
 				await element(by.id('messagebox-input')).typeText(`${ data.random }mention`);
 				await element(by.id('messagebox-send-message')).tap();
 				// await waitFor(element(by.label(`@${ data.user } ${ data.random }mention`)).atIndex(0)).toExist().withTimeout(60000);
-				await sleep(2000);
 			});
 
 			it('should show and tap on room autocomplete', async() => {
 				await element(by.id('messagebox-input')).tap();
 				await element(by.id('messagebox-input')).typeText('#general');
-				await waitFor(element(by.id('messagebox-container'))).toExist().withTimeout(60000);
-				await sleep(1000);
+				//await waitFor(element(by.id('messagebox-container'))).toExist().withTimeout(4000);
+				await waitFor(element(by.id('mention-item-general'))).toBeVisible().withTimeout(4000);
+				await sleep(100); //Until detox can detect something is ready for tapping
 				await element(by.id('mention-item-general')).tap();
 				await expect(element(by.id('messagebox-input'))).toHaveText('#general ');
 				await element(by.id('messagebox-input')).clearText();
@@ -137,7 +135,6 @@ describe('Room screen', () => {
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.label('Permalink')).tap();
-				await sleep(1000);
 		
 				// TODO: test clipboard
 			});
@@ -148,7 +145,6 @@ describe('Room screen', () => {
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.label('Copy')).tap();
-				await sleep(1000);
 		
 				// TODO: test clipboard
 			});
@@ -162,7 +158,6 @@ describe('Room screen', () => {
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await waitFor(element(by.label('Unstar'))).toBeVisible().withTimeout(2000);
 				await element(by.id('action-sheet-backdrop')).tap();
-				await sleep(1000);
 			});
 		
 			it('should react to message', async() => {
@@ -176,7 +171,6 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('reaction-picker-grinning'))).toExist().withTimeout(2000);
 				await element(by.id('reaction-picker-grinning')).tap();
 				await waitFor(element(by.id('message-reaction-:grinning:'))).toExist().withTimeout(60000);
-				await sleep(1000);
 			});
 
 			it('should react to message with frequently used emoji', async() => {
@@ -187,7 +181,6 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('message-actions-emoji-+1'))).toBeVisible().withTimeout(2000);
 				await element(by.id('message-actions-emoji-+1')).tap();
 				await waitFor(element(by.id('message-reaction-:+1:'))).toBeVisible().withTimeout(60000);
-				await sleep(1000);
 			});
 		
 			it('should show reaction picker on add reaction button pressed and have frequently used emoji', async() => {
@@ -198,7 +191,6 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('reaction-picker-grimacing'))).toExist().withTimeout(2000);
 				await element(by.id('reaction-picker-grimacing')).tap();
 				await waitFor(element(by.id('message-reaction-:grimacing:'))).toExist().withTimeout(60000);
-				await sleep(1000);
 			});
 
 			it('should ask for review', async() => {
@@ -231,7 +223,6 @@ describe('Room screen', () => {
 				await element(by.label('Quote')).tap();
 				await element(by.id('messagebox-input')).typeText(`${ data.random }quoted`);
 				await element(by.id('messagebox-send-message')).tap();
-				await sleep(1000);
 		
 				// TODO: test if quote was sent
 			});
@@ -260,8 +251,7 @@ describe('Room screen', () => {
 				await waitFor(element(by.text(deleteAlertMessage)).atIndex(0)).toExist().withTimeout(10000);
 				await element(by.text('Delete')).tap();
 
-				await sleep(1000);
-				await expect(element(by.label(`${ data.random }quoted`)).atIndex(0)).toNotExist();
+				await waitFor(element(by.label(`${ data.random }quoted`)).atIndex(0)).toNotExist().withTimeout(2000);
 			});
 		});
 
@@ -286,7 +276,6 @@ describe('Room screen', () => {
 				await waitFor(element(by.id(`room-view-title-${ thread }`))).toExist().withTimeout(5000);
 				await expect(element(by.id(`room-view-title-${ thread }`))).toExist();
 				await tapBack();
-				await sleep(1000);
 			});
 
 			it('should toggle follow thread', async() => {
@@ -301,10 +290,13 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('room-view-header-unfollow'))).toExist().withTimeout(60000);
 				await expect(element(by.id('room-view-header-unfollow'))).toExist();
 				await tapBack();
-				await sleep(1000);
 			});
 
 			it('should navigate to thread from thread name', async() => {
+				await waitFor(element(by.id('room-view-header-actions').and(by.label(` ${ mainRoom }`)))).toBeVisible().withTimeout(2000);	
+				await waitFor(element(by.id('room-view-header-actions').and(by.label(` ${ data.random }thread`)))).toBeNotVisible().withTimeout(2000);	
+				await sleep(500) //TODO: Find a better way to wait for the animation to finish and the messagebox-input to be available and usable :(
+				
 				await mockMessage('dummymessagebetweenthethread');
 				await element(by.label(thread)).atIndex(0).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
@@ -321,10 +313,10 @@ describe('Room screen', () => {
 				await waitFor(element(by.id(`room-view-title-${ thread }`))).toExist().withTimeout(5000);
 				await expect(element(by.id(`room-view-title-${ thread }`))).toExist();
 				await tapBack();
-				await sleep(1000);
 			});
 
 			it('should navigate to thread from threads view', async() => {
+				await waitFor(element(by.id('room-view-header-threads'))).toExist().withTimeout(1000);
 				await element(by.id('room-view-header-threads')).tap();
 				await waitFor(element(by.id('thread-messages-view'))).toExist().withTimeout(5000);
 				await expect(element(by.id('thread-messages-view'))).toExist();

@@ -31,7 +31,6 @@ async function login(username, password) {
     await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
     await element(by.id('login-view-email')).replaceText(username);
     await element(by.id('login-view-password')).replaceText(password);
-    await sleep(300);
     await element(by.id('login-view-submit')).tap();
     await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 }
@@ -69,7 +68,6 @@ async function starMessage(message){
     await expect(element(by.id('action-sheet-handle'))).toBeVisible();
     await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
     await element(by.label('Star')).tap();
-    await sleep(1000);
     await waitFor(element(by.id('action-sheet'))).toNotExist().withTimeout(5000);
 };
 
@@ -102,7 +100,6 @@ async function searchRoom(room) {
 	await expect(element(by.id('rooms-list-view-search-input'))).toExist();
 	await waitFor(element(by.id('rooms-list-view-search-input'))).toExist().withTimeout(5000);
     await element(by.id('rooms-list-view-search-input')).typeText(room);
-    await sleep(2000);
 }
 
 module.exports = {

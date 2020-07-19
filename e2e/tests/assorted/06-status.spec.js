@@ -7,7 +7,7 @@ const data = require('../../data');
 const testuser = data.users.regular
 
 async function waitForToast() {
-	await sleep(5000);
+	await sleep(1);
 }
 
 describe('Status screen', () => {
@@ -36,15 +36,12 @@ describe('Status screen', () => {
 
 	describe('Usage', async () => {
 		it('should change status', async () => {
-			await sleep(1000);
 			await element(by.id('status-view-busy')).tap();
-			await sleep(1000);
 			await expect(element(by.id('status-view-current-busy'))).toExist();
 		});
 
 		it('should change status text', async () => {
 			await element(by.id('status-view-input')).replaceText('status-text-new');
-			await sleep(1000);
 			await element(by.id('status-view-submit')).tap();
 			await waitForToast();
 			await waitFor(element(by.label('status-text-new').withAncestor(by.id('sidebar-custom-status')))).toBeVisible().withTimeout(2000);

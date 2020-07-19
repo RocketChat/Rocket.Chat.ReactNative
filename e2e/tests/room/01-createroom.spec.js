@@ -26,7 +26,6 @@ describe('Create room screen', () => {
 
 		describe('Usage', async() => {
 			it('should back to rooms list', async() => {
-				await sleep(1000);
 				await element(by.id('new-message-view-close')).tap();
 				await waitFor(element(by.id('rooms-list-view'))).toExist().withTimeout(2000);
 				await element(by.id('rooms-list-view-create-channel')).tap();
@@ -46,7 +45,6 @@ describe('Create room screen', () => {
 			it('should navigate to select users', async() => {
 				await element(by.id('rooms-list-view-create-channel')).tap();
 				await waitFor(element(by.id('new-message-view'))).toExist().withTimeout(2000);
-				await sleep(1000);
 				await element(by.id('new-message-view-create-channel')).tap();
 				await waitFor(element(by.id('select-users-view'))).toExist().withTimeout(2000);
 			});
@@ -101,7 +99,6 @@ describe('Create room screen', () => {
 				const room = `public${ data.random }`;
 				await element(by.id('create-channel-name')).replaceText(room);
 				await element(by.id('create-channel-type')).tap();
-				await sleep(1000);
 				await element(by.id('create-channel-submit')).tap();
 				await waitFor(element(by.id('room-view'))).toExist().withTimeout(60000);
 				await expect(element(by.id('room-view'))).toExist();
@@ -116,19 +113,15 @@ describe('Create room screen', () => {
 			it('should create private room', async() => {
 				const room = `private${ data.random }`;
 				await waitFor(element(by.id('rooms-list-view'))).toExist().withTimeout(2000);
-				await sleep(1000);
 				await element(by.id('rooms-list-view-create-channel')).tap();
 				await waitFor(element(by.id('new-message-view'))).toExist().withTimeout(2000);
-				await sleep(1000);
 				await element(by.id('new-message-view-create-channel')).tap();
 				await waitFor(element(by.id('select-users-view'))).toExist().withTimeout(2000);
-				await sleep(1000);
 				await element(by.id('select-users-view-item-rocket.cat')).tap();
 				await waitFor(element(by.id('selected-user-rocket.cat'))).toExist().withTimeout(5000);
 				await element(by.id('selected-users-view-submit')).tap();
 				await waitFor(element(by.id('create-channel-view'))).toExist().withTimeout(5000);
 				await element(by.id('create-channel-name')).replaceText(room);
-				await sleep(1000);
 				await element(by.id('create-channel-submit')).tap();
 				await waitFor(element(by.id('room-view'))).toExist().withTimeout(60000);
 				await expect(element(by.id('room-view'))).toExist();
@@ -144,17 +137,13 @@ describe('Create room screen', () => {
 				const room = `empty${ data.random }`;
 				await waitFor(element(by.id('rooms-list-view'))).toExist().withTimeout(2000);
 				// await device.launchApp({ newInstance: true });
-				await sleep(1000);
 				await element(by.id('rooms-list-view-create-channel')).tap();
 				await waitFor(element(by.id('new-message-view'))).toExist().withTimeout(2000);
-				await sleep(1000);
 				await element(by.id('new-message-view-create-channel')).tap();
 				await waitFor(element(by.id('select-users-view'))).toExist().withTimeout(2000);
-				await sleep(1000);
 				await element(by.id('selected-users-view-submit')).tap();
 				await waitFor(element(by.id('create-channel-view'))).toExist().withTimeout(5000);
 				await element(by.id('create-channel-name')).replaceText(room);
-				await sleep(1000);
 				await element(by.id('create-channel-submit')).tap();
 				await waitFor(element(by.id('room-view'))).toExist().withTimeout(60000);
 				await expect(element(by.id('room-view'))).toExist();

@@ -17,7 +17,6 @@ async function navigateToRoomActions(type) {
 	await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toExist().withTimeout(60000);
 	await element(by.id(`rooms-list-view-item-${ room }`)).tap();
 	await waitFor(element(by.id('room-view'))).toExist().withTimeout(2000);
-	await sleep(1000);
 	await element(by.id('room-view-header-actions')).tap();
 	await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
 }
@@ -222,7 +221,6 @@ describe('Room actions screen', () => {
 				//Go to starred messages
 				await element(by.id('room-actions-starred')).tap();
 				await waitFor(element(by.id('starred-messages-view'))).toExist().withTimeout(2000);
-				await sleep(1000);
 				await waitFor(element(by.label(`${ data.random }messageToStar`).withAncestor(by.id('starred-messages-view')))).toBeVisible().withTimeout(60000);
 				
 				//Unstar message
@@ -251,7 +249,6 @@ describe('Room actions screen', () => {
 				await waitFor(element(by.id('room-actions-pinned'))).toExist();
 				await element(by.id('room-actions-pinned')).tap();
 				await waitFor(element(by.id('pinned-messages-view'))).toExist().withTimeout(2000);
-				await sleep(1000);
 				await waitFor(element(by.label(`${ data.random }messageToPin`).withAncestor(by.id('pinned-messages-view')))).toBeVisible().withTimeout(60000);
 				await element(by.label(`${ data.random }messageToPin`).withAncestor(by.id('pinned-messages-view'))).longPress();
 
@@ -367,7 +364,6 @@ describe('Room actions screen', () => {
 				});
 
 				it('should show all users', async() => {
-					await sleep(1000);
 					await element(by.id('room-members-view-toggle-status')).tap();
 					await waitFor(element(by.id(`room-members-view-item-${ user.username }`))).toExist().withTimeout(60000);
 				});
@@ -420,7 +416,6 @@ describe('Room actions screen', () => {
 
 			it('should block/unblock user', async() => {
 				await waitFor(element(by.id('room-actions-block-user'))).toExist();
-				await sleep(1000);
 				await element(by.id('room-actions-block-user')).tap();
 				await waitFor(element(by.label('Unblock user'))).toExist().withTimeout(60000);
 				await element(by.id('room-actions-block-user')).tap();

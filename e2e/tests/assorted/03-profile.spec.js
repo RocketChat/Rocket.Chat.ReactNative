@@ -13,7 +13,7 @@ async function waitForToast() {
 	// await expect(element(by.id('toast'))).toBeVisible();
 	// await waitFor(element(by.id('toast'))).toBeNotVisible().withTimeout(10000);
 	// await expect(element(by.id('toast'))).toBeNotVisible();
-	await sleep(5000);
+	await sleep(1);
 }
 
 describe('Profile screen', () => {
@@ -79,9 +79,7 @@ describe('Profile screen', () => {
 			await element(by.type('UIScrollView')).atIndex(1).swipe('down');
 			await element(by.id('profile-view-name')).replaceText(`${ profileChangeUser.username }new`);
 			await element(by.id('profile-view-username')).replaceText(`${ profileChangeUser.username }new`);
-			await sleep(1000);
 			await element(by.type('UIScrollView')).atIndex(1).swipe('up');
-			await sleep(1000);
 			await element(by.id('profile-view-submit')).tap();
 			await waitForToast();
 		});
@@ -98,7 +96,6 @@ describe('Profile screen', () => {
 
 		it('should reset avatar', async() => {
 			await element(by.type('UIScrollView')).atIndex(1).swipe('up');
-			await sleep(1000);
 			await element(by.id('profile-view-reset-avatar')).tap();
 			await waitForToast();
 		});

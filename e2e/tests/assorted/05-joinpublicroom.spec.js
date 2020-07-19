@@ -8,7 +8,6 @@ const testuser = data.users.regular
 const room = data.channels.detoxpublic.name;
 
 async function navigateToRoom() {
-	await sleep(2000);
 	await searchRoom(room);
 	await waitFor(element(by.id(`rooms-list-view-item-${ room }`)).atIndex(0)).toBeVisible().withTimeout(60000);
 	await element(by.id(`rooms-list-view-item-${ room }`)).atIndex(0).tap();
@@ -16,9 +15,7 @@ async function navigateToRoom() {
 }
 
 async function navigateToRoomActions() {
-	await sleep(2000);
 	await element(by.id('room-view-header-actions')).tap();
-	await sleep(2000);
 	await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(5000);
 }
 
@@ -170,7 +167,6 @@ describe('Join public room', () => {
 			await element(by.text('Yes, leave it!')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 			// await element(by.id('rooms-list-view-search')).typeText('');
-			await sleep(2000);
 			await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible().withTimeout(60000);
 		});
 	});
