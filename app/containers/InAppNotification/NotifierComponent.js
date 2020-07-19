@@ -90,6 +90,8 @@ const NotifierComponent = React.memo(({
 
 		if (isMasterDetail) {
 			Navigation.navigate('DrawerNavigator');
+		} else {
+			Navigation.navigate('RoomsListView');
 		}
 		goRoom({ item, isMasterDetail });
 		hideNotification();
