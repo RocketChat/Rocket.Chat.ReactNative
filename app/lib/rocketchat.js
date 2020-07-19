@@ -322,7 +322,7 @@ const RocketChat = {
 
 	updateJitsiTimeout(roomId) {
 		// RC 0.74.0
-		return this.post('jitsi.updateTimeout', { roomId });
+		return this.post('video-conference/jitsi.update-timeout', { roomId });
 	},
 
 	register(credentials) {
@@ -1075,6 +1075,10 @@ const RocketChat = {
 
 		if (service === 'cas') {
 			return 'cas';
+		}
+
+		if (authName === 'apple' && isIOS) {
+			return 'apple';
 		}
 
 		// TODO: remove this after other oauth providers are implemented. e.g. Drupal, github_enterprise

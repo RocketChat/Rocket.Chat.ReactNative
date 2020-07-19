@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
-import FastImage from 'react-native-fast-image';
+import FastImage from '@rocket.chat/react-native-fast-image';
 import equal from 'deep-equal';
 import { createImageProgress } from 'react-native-image-progress';
 import * as Progress from 'react-native-progress';
