@@ -27,7 +27,9 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
 import styles from './styles';
 import { loggerConfig, analytics } from '../../utils/log';
-import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/links';
+import {
+	PLAY_MARKET_LINK, FDROID_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK
+} from '../../constants/links';
 import { withTheme } from '../../theme';
 import SidebarView from '../SidebarView';
 import { LISTENER } from '../../containers/Toast';
@@ -159,7 +161,8 @@ class SettingsView extends React.Component {
 	}
 
 	shareApp = () => {
-		Share.share({ message: isAndroid ? PLAY_MARKET_LINK : APP_STORE_LINK });
+		// eslint-disable-next-line no-nested-ternary
+		Share.share({ message: isAndroid ? (isGooglePlayBuild ? PLAY_MARKET_LINK : FDROID_MARKET_LINK) : APP_STORE_LINK });
 	}
 
 	copyServerVersion = () => {
