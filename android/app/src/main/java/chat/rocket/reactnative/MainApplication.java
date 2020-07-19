@@ -53,7 +53,7 @@ public class MainApplication extends Application implements ReactApplication, IN
     protected List<ReactPackage> getPackages() {
       @SuppressWarnings("UnnecessaryLocalVariable")
       List<ReactPackage> packages = new PackageList(this).getPackages();
-      if(BuildConfig.PLAY_BUILD) {
+      if (BuildConfig.PLAY_BUILD) {
         packages.add(new RNFirebaseCrashlyticsPackage());
         packages.add(new RNFirebaseAnalyticsPackage());
         packages.add(new RNFirebasePerformancePackage());

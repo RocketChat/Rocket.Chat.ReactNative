@@ -1,10 +1,10 @@
-def taskRequests = getGradle().getStartParameter().getTaskRequests().toString()
-def isPlay = !(taskRequests.contains("Foss") || taskRequests.contains("foss"))
+def taskRequests = getGradle().getStartParameter().getTaskRequests().toString().toLowerCase()
+def isPlay = !taskRequests.contains("foss")
 
 apply plugin: "com.android.application"
 apply plugin: 'kotlin-android'
 
-if(isPlay){
+if (isPlay) {
     apply plugin: "io.fabric"
     apply plugin: "com.google.firebase.firebase-perf"
     apply plugin: 'com.bugsnag.android.gradle'
@@ -271,6 +271,6 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
-if(isPlay) {
+if (isPlay) {
     apply plugin: 'com.google.gms.google-services'
 }

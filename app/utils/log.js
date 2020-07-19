@@ -1,12 +1,14 @@
 import { Client } from 'bugsnag-react-native';
 import firebase from 'react-native-firebase';
-import RNConfigReader from 'react-native-config-reader';
+import { isGooglePlayBuild } from '../constants/environment';
 import config from '../../config';
 
-const isPlayBuild = RNConfigReader.PLAY_BUILD;
 const bugsnag = new Client(config.BUGSNAG_API_KEY);
 
-export const { analytics } = firebase != null;
+export const analytics = isGooglePlayBuild ? firebase.analytics : ({
+	logEvent: () => { }
+});
+
 export const loggerConfig = bugsnag.config;
 export const { leaveBreadcrumb } = bugsnag;
 
@@ -19,7 +21,7 @@ export const logServerVersion = (serverVersion) => {
 };
 
 export const setCurrentScreen = (currentScreen) => {
-	if (isPlayBuild) {
+	if (isGooglePlayBuild) {
 		analytics().setCurrentScreen(currentScreen);
 	}
 	leaveBreadcrumb(currentScreen, { type: 'navigation' });

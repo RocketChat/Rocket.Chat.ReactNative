@@ -1,8 +1,8 @@
 import EJSON from 'ejson';
-import RNConfigReader from 'react-native-config-reader';
 import PushNotification from './push';
 import store from '../../lib/createStore';
 import { deepLinkingOpen } from '../../actions/deepLinking';
+import { isGooglePlayBuild } from '../../constants/environment';
 
 export const onNotification = (notification) => {
 	if (notification) {
@@ -37,8 +37,7 @@ export const onNotification = (notification) => {
 export const getDeviceToken = () => PushNotification.getDeviceToken();
 export const setBadgeCount = count => PushNotification.setBadgeCount(count);
 export const initializePushNotifications = () => {
-	const isPlayBuild = RNConfigReader.PLAY_BUILD;
-	if (isPlayBuild) {
+	if (isGooglePlayBuild) {
 		setBadgeCount();
 		return PushNotification.configure({
 			onNotification

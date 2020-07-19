@@ -5,7 +5,6 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
-import RNConfigReader from 'react-native-config-reader';
 
 import { logout as logoutAction } from '../../actions/login';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
@@ -36,8 +35,8 @@ import { appStart as appStartAction, ROOT_LOADING } from '../../actions/app';
 import { onReviewPress } from '../../utils/review';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
+import { isGooglePlayBuild } from '../../constants/environment';
 
-const isPlayBuild = RNConfigReader.PLAY_BUILD;
 
 const SectionSeparator = React.memo(({ theme }) => (
 	<View
@@ -118,7 +117,7 @@ class SettingsView extends React.Component {
 		const { toggleCrashReport } = this.props;
 		toggleCrashReport(value);
 		loggerConfig.autoNotify = value;
-		if (isPlayBuild) {
+		if (isGooglePlayBuild) {
 			analytics().setAnalyticsCollectionEnabled(value);
 		}
 
@@ -253,14 +252,18 @@ class SettingsView extends React.Component {
 						theme={theme}
 					/>
 					<Separator theme={theme} />
-					<ListItem
-						title={I18n.t('Review_this_app')}
-						showActionIndicator
-						onPress={onReviewPress}
-						testID='settings-view-review-app'
-						right={this.renderDisclosure}
-						theme={theme}
-					/>
+					{isGooglePlayBuild ? (
+						<>
+							<ListItem
+								title={I18n.t('Review_this_app')}
+								showActionIndicator
+								onPress={onReviewPress}
+								testID='settings-view-review-app'
+								right={this.renderDisclosure}
+								theme={theme}
+							/>
+						</>
+					) : null}
 					<Separator theme={theme} />
 					<ListItem
 						title={I18n.t('Share_this_app')}
@@ -339,17 +342,21 @@ class SettingsView extends React.Component {
 						</>
 					) : null}
 
-					<ListItem
-						title={I18n.t('Send_crash_report')}
-						testID='settings-view-crash-report'
-						right={() => this.renderCrashReportSwitch()}
-						theme={theme}
-					/>
-					<Separator theme={theme} />
-					<ItemInfo
-						info={I18n.t('Crash_report_disclaimer')}
-						theme={theme}
-					/>
+					{isGooglePlayBuild ? (
+						<>
+							<ListItem
+								title={I18n.t('Send_crash_report')}
+								testID='settings-view-crash-report'
+								right={() => this.renderCrashReportSwitch()}
+								theme={theme}
+							/>
+							<Separator theme={theme} />
+							<ItemInfo
+								info={I18n.t('Crash_report_disclaimer')}
+								theme={theme}
+							/>
+						</>
+					) : null}
 
 					<Separator theme={theme} />
 					<ListItem

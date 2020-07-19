@@ -17,11 +17,12 @@ buildscript {
             url 'https://maven.fabric.io/public'
         }
     }
-    
-    def taskRequests = getGradle().getStartParameter().getTaskRequests().toString()
-    def isPlay = !(taskRequests.contains("Foss") || taskRequests.contains("foss"))
+
+    def taskRequests = getGradle().getStartParameter().getTaskRequests().toString().toLowerCase()
+    def isPlay = !taskRequests.contains("foss")
+
     dependencies {
-        if(isPlay){
+        if (isPlay) {
             classpath 'com.google.gms:google-services:4.2.0'
             classpath 'io.fabric.tools:gradle:1.28.1'
             classpath 'com.google.firebase:perf-plugin:1.2.1'
