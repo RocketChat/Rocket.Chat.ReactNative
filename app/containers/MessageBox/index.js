@@ -555,7 +555,10 @@ class MessageBox extends Component {
 
 	setInput = (text, selection) => {
 		this.text = text;
-		this.component.setTextAndSelection(text, selection);
+		if (selection) {
+			return this.component.setTextAndSelection(text, selection);
+		}
+		this.component.setNativeProps({ text });
 	}
 
 	setShowSend = (showSend) => {
