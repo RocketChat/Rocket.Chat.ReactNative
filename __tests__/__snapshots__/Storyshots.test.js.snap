@@ -5879,41 +5879,52 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
               }
             }
           >
-            <TextInput
-              allowFontScaling={true}
-              autoFocus={false}
-              blurOnSubmit={false}
-              defaultValue=""
-              editable={true}
-              keyboardAppearance="light"
-              keyboardType="twitter"
-              multiline={true}
-              onChangeText={[Function]}
-              placeholder="New Message"
-              placeholderTextColor="#9ca2a8"
-              rejectResponderTermination={true}
-              returnKeyType="default"
+            <View
               style={
-                Array [
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                  Object {
-                    "backgroundColor": "transparent",
-                    "flex": 1,
-                    "fontFamily": "System",
-                    "fontSize": 17,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "padding": 15,
-                    "paddingTop": 5,
-                    "textAlignVertical": "top",
-                  },
-                ]
+                Object {
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "marginTop": 20,
+                }
               }
-              testID="full-screen-messagebox-input"
-              underlineColorAndroid="transparent"
-            />
+            >
+              <TextInput
+                allowFontScaling={true}
+                autoFocus={false}
+                blurOnSubmit={false}
+                defaultValue=""
+                editable={true}
+                keyboardAppearance="light"
+                keyboardType="twitter"
+                multiline={true}
+                onChangeText={[Function]}
+                placeholder="New Message"
+                placeholderTextColor="#9ca2a8"
+                rejectResponderTermination={true}
+                returnKeyType="default"
+                style={
+                  Array [
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                    Object {
+                      "backgroundColor": "transparent",
+                      "flex": 1,
+                      "fontFamily": "System",
+                      "fontSize": 17,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "marginHorizontal": 10,
+                      "paddingHorizontal": 0,
+                      "paddingVertical": 12,
+                      "textAlignVertical": "top",
+                    },
+                  ]
+                }
+                testID="full-screen-messagebox-input"
+                underlineColorAndroid="transparent"
+              />
+            </View>
             <KeyboardTrackingView
               addBottomView={true}
               allowHitsOutsideBounds={false}
@@ -6135,41 +6146,52 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
               }
             }
           >
-            <TextInput
-              allowFontScaling={true}
-              autoFocus={false}
-              blurOnSubmit={false}
-              defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.😃😇😃😇😃😇😃😇😃😇😃😇😃😇"
-              editable={true}
-              keyboardAppearance="light"
-              keyboardType="twitter"
-              multiline={true}
-              onChangeText={[Function]}
-              placeholder="New Message"
-              placeholderTextColor="#9ca2a8"
-              rejectResponderTermination={true}
-              returnKeyType="default"
+            <View
               style={
-                Array [
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                  Object {
-                    "backgroundColor": "transparent",
-                    "flex": 1,
-                    "fontFamily": "System",
-                    "fontSize": 17,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "padding": 15,
-                    "paddingTop": 5,
-                    "textAlignVertical": "top",
-                  },
-                ]
+                Object {
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "marginTop": 20,
+                }
               }
-              testID="full-screen-messagebox-input"
-              underlineColorAndroid="transparent"
-            />
+            >
+              <TextInput
+                allowFontScaling={true}
+                autoFocus={false}
+                blurOnSubmit={false}
+                defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.😃😇😃😇😃😇😃😇😃😇😃😇😃😇"
+                editable={true}
+                keyboardAppearance="light"
+                keyboardType="twitter"
+                multiline={true}
+                onChangeText={[Function]}
+                placeholder="New Message"
+                placeholderTextColor="#9ca2a8"
+                rejectResponderTermination={true}
+                returnKeyType="default"
+                style={
+                  Array [
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                    Object {
+                      "backgroundColor": "transparent",
+                      "flex": 1,
+                      "fontFamily": "System",
+                      "fontSize": 17,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "marginHorizontal": 10,
+                      "paddingHorizontal": 0,
+                      "paddingVertical": 12,
+                      "textAlignVertical": "top",
+                    },
+                  ]
+                }
+                testID="full-screen-messagebox-input"
+                underlineColorAndroid="transparent"
+              />
+            </View>
             <KeyboardTrackingView
               addBottomView={true}
               allowHitsOutsideBounds={false}
@@ -6391,41 +6413,52 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
               }
             }
           >
-            <TextInput
-              allowFontScaling={true}
-              autoFocus={false}
-              blurOnSubmit={false}
-              defaultValue="Editing this too long message. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.😃😇😃😇😃😇😃😇😃😇😃😇😃😇"
-              editable={true}
-              keyboardAppearance="light"
-              keyboardType="twitter"
-              multiline={true}
-              onChangeText={[Function]}
-              placeholder="New Message"
-              placeholderTextColor="#9ca2a8"
-              rejectResponderTermination={true}
-              returnKeyType="default"
+            <View
               style={
-                Array [
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                  Object {
-                    "backgroundColor": "transparent",
-                    "flex": 1,
-                    "fontFamily": "System",
-                    "fontSize": 17,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "padding": 15,
-                    "paddingTop": 5,
-                    "textAlignVertical": "top",
-                  },
-                ]
+                Object {
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "marginTop": 20,
+                }
               }
-              testID="full-screen-messagebox-input"
-              underlineColorAndroid="transparent"
-            />
+            >
+              <TextInput
+                allowFontScaling={true}
+                autoFocus={false}
+                blurOnSubmit={false}
+                defaultValue="Editing this too long message. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.😃😇😃😇😃😇😃😇😃😇😃😇😃😇"
+                editable={true}
+                keyboardAppearance="light"
+                keyboardType="twitter"
+                multiline={true}
+                onChangeText={[Function]}
+                placeholder="New Message"
+                placeholderTextColor="#9ca2a8"
+                rejectResponderTermination={true}
+                returnKeyType="default"
+                style={
+                  Array [
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                    Object {
+                      "backgroundColor": "transparent",
+                      "flex": 1,
+                      "fontFamily": "System",
+                      "fontSize": 17,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "marginHorizontal": 10,
+                      "paddingHorizontal": 0,
+                      "paddingVertical": 12,
+                      "textAlignVertical": "top",
+                    },
+                  ]
+                }
+                testID="full-screen-messagebox-input"
+                underlineColorAndroid="transparent"
+              />
+            </View>
             <KeyboardTrackingView
               addBottomView={true}
               allowHitsOutsideBounds={false}
@@ -6647,41 +6680,52 @@ exports[`Storyshots MessageBox list messageBox 1`] = `
               }
             }
           >
-            <TextInput
-              allowFontScaling={true}
-              autoFocus={false}
-              blurOnSubmit={false}
-              defaultValue=""
-              editable={true}
-              keyboardAppearance="light"
-              keyboardType="twitter"
-              multiline={true}
-              onChangeText={[Function]}
-              placeholder="New Message"
-              placeholderTextColor="#9ca2a8"
-              rejectResponderTermination={true}
-              returnKeyType="default"
+            <View
               style={
-                Array [
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                  Object {
-                    "backgroundColor": "transparent",
-                    "flex": 1,
-                    "fontFamily": "System",
-                    "fontSize": 17,
-                    "fontWeight": "400",
-                    "letterSpacing": 0,
-                    "padding": 15,
-                    "paddingTop": 5,
-                    "textAlignVertical": "top",
-                  },
-                ]
+                Object {
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "marginTop": 20,
+                }
               }
-              testID="full-screen-messagebox-input"
-              underlineColorAndroid="transparent"
-            />
+            >
+              <TextInput
+                allowFontScaling={true}
+                autoFocus={false}
+                blurOnSubmit={false}
+                defaultValue=""
+                editable={true}
+                keyboardAppearance="light"
+                keyboardType="twitter"
+                multiline={true}
+                onChangeText={[Function]}
+                placeholder="New Message"
+                placeholderTextColor="#9ca2a8"
+                rejectResponderTermination={true}
+                returnKeyType="default"
+                style={
+                  Array [
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                    Object {
+                      "backgroundColor": "transparent",
+                      "flex": 1,
+                      "fontFamily": "System",
+                      "fontSize": 17,
+                      "fontWeight": "400",
+                      "letterSpacing": 0,
+                      "marginHorizontal": 10,
+                      "paddingHorizontal": 0,
+                      "paddingVertical": 12,
+                      "textAlignVertical": "top",
+                    },
+                  ]
+                }
+                testID="full-screen-messagebox-input"
+                underlineColorAndroid="transparent"
+              />
+            </View>
             <KeyboardTrackingView
               addBottomView={true}
               allowHitsOutsideBounds={false}

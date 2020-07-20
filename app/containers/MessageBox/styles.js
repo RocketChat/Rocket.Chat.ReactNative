@@ -116,19 +116,25 @@ export default StyleSheet.create({
 	buttonsWhitespace: {
 		width: 15
 	},
+	fullScreenComposerCloseMainContent: {
+		flexDirection: 'row',
+		flex: 1,
+		marginTop: 20
+	},
 	fullScreenComposerInput: {
 		textAlignVertical: 'top',
-		padding: 15,
-		paddingTop: 5,
+		paddingVertical: 12,
+		marginHorizontal: 10,
+		paddingHorizontal: 0,
 		fontSize: 17,
 		letterSpacing: 0,
 		...sharedStyles.textRegular,
 		flex: 1
 	},
 	fullScreenComposerCloseButton: {
-		alignSelf: 'flex-end',
-		margin: 15,
-		marginBottom: 5
+		marginRight: 10,
+		marginLeft: 0,
+		paddingTop: 10
 	},
 	bottomBarButtons: {
 		flexDirection: 'row',

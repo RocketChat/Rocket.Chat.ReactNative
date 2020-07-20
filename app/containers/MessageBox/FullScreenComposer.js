@@ -243,26 +243,28 @@ class FullScreenComposer extends Component {
 				onSwipeComplete={() => this.closeModal()}
 			>
 				<View style={{ backgroundColor, flex: 1 }}>
-					<TouchableOpacity onPress={() => this.closeModal()} style={styles.fullScreenComposerCloseButton}>
-						<CustomIcon name='minimize-arrow' size={30} color={themes[theme].tintColor} />
-					</TouchableOpacity>
-					<TextInput
-						ref={component}
-						style={styles.fullScreenComposerInput}
-						returnKeyType='default'
-						keyboardType='twitter'
-						blurOnSubmit={false}
-						placeholder={I18n.t('New_Message')}
-						onChangeText={onChangeText}
-						underlineColorAndroid='transparent'
-						defaultValue={text}
-						multiline
-						autoFocus={autoFocus}
-						editable={!recording}
-						testID='full-screen-messagebox-input'
-						theme={theme}
-						{...isAndroidTablet}
-					/>
+					<View style={styles.fullScreenComposerCloseMainContent}>
+						<TextInput
+							ref={component}
+							style={styles.fullScreenComposerInput}
+							returnKeyType='default'
+							keyboardType='twitter'
+							blurOnSubmit={false}
+							placeholder={I18n.t('New_Message')}
+							onChangeText={onChangeText}
+							underlineColorAndroid='transparent'
+							defaultValue={text}
+							multiline
+							autoFocus={autoFocus}
+							editable={!recording}
+							testID='full-screen-messagebox-input'
+							theme={theme}
+							{...isAndroidTablet}
+						/>
+						<TouchableOpacity onPress={this.closeModal} style={styles.fullScreenComposerCloseButton}>
+							<CustomIcon name='minimize-arrow' size={30} color={themes[theme].tintColor} />
+						</TouchableOpacity>
+					</View>
 					<KeyboardAccessoryView
 						ref={tracking}
 						renderContent={this.renderFullScreenBottomBar}
