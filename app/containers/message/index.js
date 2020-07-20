@@ -87,7 +87,8 @@ class MessageContainer extends React.Component {
 		const usersCollection = db.collections.get('users');
 		try {
 			const user = await usersCollection.find(item.u._id);
-			user.observe().subscribe((changes) => {
+			const observable = user.observe();
+			this.userSubscription = observable.subscribe((changes) => {
 				this.setState({ author: changes });
 				this.forceUpdate();
 			});
@@ -107,6 +108,9 @@ class MessageContainer extends React.Component {
 	componentWillUnmount() {
 		if (this.subscription && this.subscription.unsubscribe) {
 			this.subscription.unsubscribe();
+		}
+		if (this.userSubscription && this.userSubscription.unsubscribe) {
+			this.userSubscription.unsubscribe();
 		}
 	}
 

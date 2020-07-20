@@ -114,7 +114,8 @@ class DB {
 				Upload,
 				Permission,
 				CustomEmoji,
-				FrequentlyUsedEmoji
+				FrequentlyUsedEmoji,
+				Users
 			],
 			actionsEnabled: true
 		});

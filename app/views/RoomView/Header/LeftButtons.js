@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 });
 
 const LeftButtons = React.memo(({
-	tmid, unreadsCount, navigation, baseUrl, userId, token, title, t, theme, goRoomActionsView, isMasterDetail
+	tmid, unreadsCount, navigation, title, t, theme, goRoomActionsView, isMasterDetail
 }) => {
 	if (!isMasterDetail || tmid) {
 		const onPress = useCallback(() => navigation.goBack());
@@ -32,30 +32,22 @@ const LeftButtons = React.memo(({
 		);
 	}
 	const onPress = useCallback(() => goRoomActionsView(), []);
-	if (baseUrl && userId && token) {
-		return (
-			<Avatar
-				text={title}
-				size={30}
-				type={t}
-				baseUrl={baseUrl}
-				style={styles.avatar}
-				userId={userId}
-				token={token}
-				onPress={onPress}
-			/>
-		);
-	}
-	return null;
+
+	return (
+		<Avatar
+			text={title}
+			size={30}
+			type={t}
+			style={styles.avatar}
+			onPress={onPress}
+		/>
+	);
 });
 
 LeftButtons.propTypes = {
 	tmid: PropTypes.string,
 	unreadsCount: PropTypes.number,
 	navigation: PropTypes.object,
-	baseUrl: PropTypes.string,
-	userId: PropTypes.string,
-	token: PropTypes.string,
 	title: PropTypes.string,
 	t: PropTypes.string,
 	theme: PropTypes.string,

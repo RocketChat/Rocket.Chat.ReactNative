@@ -310,7 +310,6 @@ class ProfileView extends React.Component {
 		const { avatarUrl, avatarSuggestions } = this.state;
 		const {
 			user,
-			baseUrl,
 			theme,
 			Accounts_AllowUserAvatarChange
 		} = this.props;
@@ -318,7 +317,7 @@ class ProfileView extends React.Component {
 		return (
 			<View style={styles.avatarButtons}>
 				{this.renderAvatarButton({
-					child: <Avatar text={`@${ user.username }`} size={50} baseUrl={baseUrl} userId={user.id} token={user.token} />,
+					child: <Avatar text={`@${ user.username }`} size={50} />,
 					onPress: () => this.resetAvatar(),
 					disabled: !Accounts_AllowUserAvatarChange,
 					key: 'profile-view-reset-avatar'
@@ -340,7 +339,7 @@ class ProfileView extends React.Component {
 					return this.renderAvatarButton({
 						disabled: !Accounts_AllowUserAvatarChange,
 						key: `profile-view-avatar-${ service }`,
-						child: <Avatar avatar={url} size={50} baseUrl={baseUrl} userId={user.id} token={user.token} />,
+						child: <Avatar avatar={url} size={50} />,
 						onPress: () => this.setAvatar({
 							url, data: blob, service, contentType
 						})
@@ -417,8 +416,6 @@ class ProfileView extends React.Component {
 			name, username, email, newPassword, avatarUrl, customFields, avatar, saving
 		} = this.state;
 		const {
-			baseUrl,
-			user,
 			theme,
 			Accounts_AllowEmailChange,
 			Accounts_AllowPasswordChange,
@@ -446,9 +443,6 @@ class ProfileView extends React.Component {
 								text={username}
 								avatar={avatar && avatar.url}
 								size={100}
-								baseUrl={baseUrl}
-								userId={user.id}
-								token={user.token}
 							/>
 						</View>
 						<RCTextInput

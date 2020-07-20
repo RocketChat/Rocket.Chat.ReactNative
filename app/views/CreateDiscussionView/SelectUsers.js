@@ -27,7 +27,7 @@ const SelectUsers = ({
 	}, 300);
 
 	const getAvatar = text => avatarURL({
-		text, type: 'd', userId, token, baseUrl: server
+		text, type: 'd', user: { id: userId, token }, server
 	});
 
 	return (

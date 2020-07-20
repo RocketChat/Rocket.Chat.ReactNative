@@ -26,7 +26,7 @@ const SelectChannel = ({
 	}, 300);
 
 	const getAvatar = (text, type) => avatarURL({
-		text, type, userId, token, baseUrl: server
+		text, type, user: { id: userId, token }, server
 	});
 
 	return (

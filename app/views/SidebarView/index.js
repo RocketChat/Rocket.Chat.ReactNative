@@ -241,11 +241,8 @@ class Sidebar extends Component {
 						<View style={styles.header} theme={theme}>
 							<Avatar
 								text={user.username}
-								size={30}
 								style={styles.avatar}
-								baseUrl={baseUrl}
-								userId={user.id}
-								token={user.token}
+								size={30}
 							/>
 							<View style={styles.headerTextContainer}>
 								<View style={styles.headerUsername}>
