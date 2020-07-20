@@ -79,7 +79,7 @@ class NewMessageView extends React.Component {
 	}
 
 	async componentDidMount() {
-		const hasPermissions = ['create-c', 'create-d', 'create-p'];
+		const hasPermissions = ['create-c', 'create-d', 'create-p', 'view-d-room'];
 		const permissions = await RocketChat.hasPermissionsByUserRoles(hasPermissions);
 		this.setState({ permissions });
 	}
@@ -242,16 +242,7 @@ class NewMessageView extends React.Component {
 		const { search, chats, permissions } = this.state;
 		const { baseUrl, user, theme } = this.props;
 
-		let hasPermissions = false;
-		if (chats.t === 'd' && permissions['view-d-room']) {
-			hasPermissions = true;
-		}
-		if (chats.t === 'c' && permissions['view-c-room']) {
-			hasPermissions = true;
-		}
-		if (chats.t === 'l' && permissions['view-l-room']) {
-			hasPermissions = true;
-		}
+		const hasPermissions = permissions['view-d-room'];
 
 		let style = { borderColor: themes[theme].separatorColor };
 		if (index === 0) {
