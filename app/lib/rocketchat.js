@@ -499,10 +499,7 @@ const RocketChat = {
 
 		const hasPermissions = ['view-c-room', 'view-d-room', 'view-l-room'];
 		const permissions = await RocketChat.hasPermissionsByUserRoles(hasPermissions);
-		const notPermissionsChat = [];
-		if (!permissions['view-d-room']) { notPermissionsChat.push('d'); }
-		if (!permissions['view-c-room']) { notPermissionsChat.push('c'); }
-		if (!permissions['view-l-room']) { notPermissionsChat.push('l'); }
+		const notPermissionsChat = RocketChat.hasNotChatPermissions(permissions);
 
 		const db = database.active;
 		let data = await db.collections.get('subscriptions').query(
@@ -1017,6 +1014,17 @@ const RocketChat = {
 			const userRoles = (shareUser?.roles || loginUser?.roles) || [];
 
 			return this.filterPermission(permissions, userRoles);
+		} catch (e) {
+			log(e);
+		}
+	},
+	hasNotChatPermissions(permissions) {
+		try {
+			const notPermissionsChat = [];
+			if (!permissions['view-d-room']) { notPermissionsChat.push('d'); }
+			if (!permissions['view-c-room']) { notPermissionsChat.push('c'); }
+			if (!permissions['view-l-room']) { notPermissionsChat.push('l'); }
+			return notPermissionsChat;
 		} catch (e) {
 			log(e);
 		}

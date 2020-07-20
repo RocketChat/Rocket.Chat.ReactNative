@@ -417,10 +417,7 @@ class RoomsListView extends React.Component {
 		} = this.props;
 
 		const { permissions } = this.state;
-		const notPermissionsChat = [];
-		if (!permissions['view-d-room']) { notPermissionsChat.push('d'); }
-		if (!permissions['view-c-room']) { notPermissionsChat.push('c'); }
-		if (!permissions['view-l-room']) { notPermissionsChat.push('l'); }
+		const notPermissionsChat = RocketChat.hasNotChatPermissions(permissions);
 
 		const db = database.active;
 		const observable = await db.collections
