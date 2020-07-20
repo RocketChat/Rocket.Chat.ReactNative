@@ -35,6 +35,7 @@ class MessagesView extends React.Component {
 			messages: [],
 			fileLoading: true
 		};
+		this.setHeader();
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;
 		this.content = this.defineMessagesViewContent(props.route.params?.name);
@@ -42,7 +43,6 @@ class MessagesView extends React.Component {
 
 	componentDidMount() {
 		this.load();
-		this.setHeader();
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
