@@ -122,6 +122,7 @@ class MessageBox extends Component {
 			command: {}
 		};
 		this.text = '';
+		this.selection = { start: 0, end: 0 };
 		this.focused = false;
 
 		// MessageBox Actions
@@ -331,6 +332,10 @@ class MessageBox extends Component {
 		this.setInput(text);
 	}
 
+	onSelectionChange = (e) => {
+		this.selection = e.nativeEvent.selection;
+	}
+
 	// eslint-disable-next-line react/sort-comp
 	debouncedOnChangeText = debounce(async(text) => {
 		const { sharing } = this.props;
@@ -358,9 +363,9 @@ class MessageBox extends Component {
 
 		if (!isTextEmpty) {
 			try {
-				const { start, end } = this.component?.lastNativeSelection;
+				const { start, end } = this.selection;
 				const cursor = Math.max(start, end);
-				const lastNativeText = this.component?.lastNativeText || '';
+				const lastNativeText = this.text;
 				// matches if text either starts with '/' or have (@,#,:) then it groups whatever comes next of mention type
 				let regexp = /(#|@|:|^\/)([a-z0-9._-]+)$/im;
 
@@ -399,7 +404,7 @@ class MessageBox extends Component {
 		}
 		const { trackingType } = this.state;
 		const msg = this.text;
-		const { start, end } = this.component?.lastNativeSelection;
+		const { start, end } = this.selection;
 		const cursor = Math.max(start, end);
 		const regexp = /([a-z0-9._-]+)$/im;
 		const result = msg.substr(0, cursor).replace(regexp, '');
@@ -410,7 +415,8 @@ class MessageBox extends Component {
 		if ((trackingType === MENTIONS_TRACKING_TYPE_COMMANDS) && item.providesPreview) {
 			this.setState({ showCommandPreview: true });
 		}
-		this.setInput(text);
+		const newCursor = cursor + mentionName.length;
+		this.setInput(text, { start: newCursor, end: newCursor });
 		this.focus();
 		requestAnimationFrame(() => this.stopTrackingMention());
 	}
@@ -443,15 +449,11 @@ class MessageBox extends Component {
 		let newText = '';
 
 		// if messagebox has an active cursor
-		if (this.component?.lastNativeSelection) {
-			const { start, end } = this.component.lastNativeSelection;
-			const cursor = Math.max(start, end);
-			newText = `${ text.substr(0, cursor) }${ emoji }${ text.substr(cursor) }`;
-		} else {
-			// if messagebox doesn't have a cursor, just append selected emoji
-			newText = `${ text }${ emoji }`;
-		}
-		this.setInput(newText);
+		const { start, end } = this.selection;
+		const cursor = Math.max(start, end);
+		newText = `${ text.substr(0, cursor) }${ emoji }${ text.substr(cursor) }`;
+		const newCursor = cursor + emoji.length;
+		this.setInput(newText, { start: newCursor, end: newCursor });
 		this.setShowSend(true);
 	}
 
@@ -551,11 +553,12 @@ class MessageBox extends Component {
 		this.setState({ commandPreview: [], showCommandPreview: true, command: {} });
 	}
 
-	setInput = (text) => {
+	setInput = (text, selection) => {
 		this.text = text;
-		if (this.component && this.component.setNativeProps) {
-			this.component.setNativeProps({ text });
+		if (selection) {
+			return this.component.setTextAndSelection(text, selection);
 		}
+		this.component.setNativeProps({ text });
 	}
 
 	setShowSend = (showSend) => {
@@ -888,6 +891,7 @@ class MessageBox extends Component {
 					blurOnSubmit={false}
 					placeholder={I18n.t('New_Message')}
 					onChangeText={this.onChangeText}
+					onSelectionChange={this.onSelectionChange}
 					underlineColorAndroid='transparent'
 					defaultValue=''
 					multiline
