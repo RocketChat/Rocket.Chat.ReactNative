@@ -497,9 +497,17 @@ const RocketChat = {
 			return [];
 		}
 
+		const hasPermissions = ['view-c-room', 'view-d-room', 'view-l-room'];
+		const permissions = await RocketChat.hasPermissionsByUserRoles(hasPermissions);
+		const notPermissionsChat = [];
+		if (!permissions['view-d-room']) { notPermissionsChat.push('d'); }
+		if (!permissions['view-c-room']) { notPermissionsChat.push('c'); }
+		if (!permissions['view-l-room']) { notPermissionsChat.push('l'); }
+
 		const db = database.active;
 		let data = await db.collections.get('subscriptions').query(
-			Q.where('name', Q.like(`%${ Q.sanitizeLikeString(searchText) }%`))
+			Q.where('name', Q.like(`%${ Q.sanitizeLikeString(searchText) }%`)),
+			Q.where('t', Q.notIn(notPermissionsChat))
 		).fetch();
 
 		if (filterUsers && !filterRooms) {
@@ -507,16 +515,6 @@ const RocketChat = {
 		} else if (!filterUsers && filterRooms) {
 			data = data.filter(item => item.t !== 'd' || RocketChat.isGroupChat(item));
 		}
-		const hasPermissions = ['view-c-room', 'view-d-room', 'view-l-room'];
-		const permissions = await RocketChat.hasPermissionsByUserRoles(hasPermissions);
-
-		data = data.filter((chat) => {
-			const hasViewChannelPermission = chat.t !== 'd' ? true : permissions['view-d-room'];
-			const hasViewGroupPermission = chat.t !== 'c' ? true : permissions['view-c-room'];
-			const hasViewLivechatPermission = chat.t !== 'l' ? true : permissions['view-l-room'];
-
-			return !(!hasViewGroupPermission || !hasViewChannelPermission || !hasViewLivechatPermission);
-		});
 
 		data = data.slice(0, 7);
 
