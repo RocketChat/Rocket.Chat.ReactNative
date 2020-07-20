@@ -2,33 +2,41 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const data = require('../../data');
-const { tapBack, sleep, navigateToLogin, login } = require('../../helpers/app');
+const { tapBack, sleep, navigateToLogin, login, tryTapping } = require('../../helpers/app');
+
+
 
 describe('Create room screen', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
-		await element(by.id('rooms-list-view-create-channel')).tap();
-		await waitFor(element(by.id('new-message-view'))).toExist().withTimeout(2000);
 	});
 
 	describe('New Message', async() => {
+		before(async() => {
+			await element(by.id('rooms-list-view-create-channel')).tap();
+		});
+
 		describe('Render', async() => {
 			it('should have new message screen', async() => {
-				await expect(element(by.id('new-message-view'))).toExist();
+				await waitFor(element(by.id('new-message-view'))).toBeVisible().withTimeout(2000);
 			});
 	
 			it('should have search input', async() => {
-				await waitFor(element(by.id('new-message-view-search'))).toExist().withTimeout(2000);
+				await waitFor(element(by.id('new-message-view-search'))).toBeVisible().withTimeout(2000);
 			});
 		})
 
 		describe('Usage', async() => {
 			it('should back to rooms list', async() => {
+				await waitFor(element(by.id('new-message-view-close'))).toBeVisible().withTimeout(2000);
 				await element(by.id('new-message-view-close')).tap();
-				await waitFor(element(by.id('rooms-list-view'))).toExist().withTimeout(2000);
-				await element(by.id('rooms-list-view-create-channel')).tap();
+
+				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
+				
+				await tryTapping(element(by.id('rooms-list-view-create-channel')), 3000);
+				//await element(by.id('rooms-list-view-create-channel')).tap();
 				await waitFor(element(by.id('new-message-view'))).toExist().withTimeout(2000);
 			});
 

@@ -102,6 +102,18 @@ async function searchRoom(room) {
     await element(by.id('rooms-list-view-search-input')).typeText(room);
 }
 
+async function tryTapping(theElement, timeout){
+	try {
+		await theElement.tap()
+	} catch(e) {
+		if(timeout <= 0){ //TODO: Maths. How closely has the timeout been honoured here?
+			throw e
+		}
+		await sleep(100)
+		await tryTapping(theElement, timeout - 100)
+	}
+}
+
 module.exports = {
     navigateToWorkspace,
     navigateToLogin,
@@ -114,5 +126,6 @@ module.exports = {
     dismissReviewNag,
     tapBack,
     sleep,
-    searchRoom
+    searchRoom,
+    tryTapping
 };

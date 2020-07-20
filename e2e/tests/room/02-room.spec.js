@@ -2,7 +2,7 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const data = require('../../data');
-const { navigateToLogin, login, mockMessage, tapBack, sleep, searchRoom, starMessage, pinMessage, dismissReviewNag } = require('../../helpers/app');
+const { navigateToLogin, login, mockMessage, tapBack, sleep, searchRoom, starMessage, pinMessage, dismissReviewNag, tryTapping } = require('../../helpers/app');
 
 async function navigateToRoom(roomName) {
 	await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
@@ -121,8 +121,7 @@ describe('Room screen', () => {
 				await element(by.id('messagebox-input')).typeText('#general');
 				//await waitFor(element(by.id('messagebox-container'))).toExist().withTimeout(4000);
 				await waitFor(element(by.id('mention-item-general'))).toBeVisible().withTimeout(4000);
-				await sleep(100); //Until detox can detect something is ready for tapping
-				await element(by.id('mention-item-general')).tap();
+				await tryTapping(element(by.id('mention-item-general')), 2000)
 				await expect(element(by.id('messagebox-input'))).toHaveText('#general ');
 				await element(by.id('messagebox-input')).clearText();
 			});
@@ -228,10 +227,11 @@ describe('Room screen', () => {
 			});
 		
 			it('should pin message', async() => {
-				await pinMessage('edited (edited)')
+				await mockMessage('pin')
+				await pinMessage('pin')
 						
-				await waitFor(element(by.label(`${ data.random }edited (edited)`)).atIndex(0)).toBeVisible();
-				await element(by.label(`${ data.random }edited (edited)`)).atIndex(0).longPress();
+				await waitFor(element(by.label(`${ data.random }pin`)).atIndex(0)).toBeVisible();
+				await element(by.label(`${ data.random }pin`)).atIndex(0).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
@@ -240,8 +240,10 @@ describe('Room screen', () => {
 			});
 
 			it('should delete message', async() => {
-				await waitFor(element(by.label(`${ data.random }quoted`)).atIndex(0)).toBeVisible();
-				await element(by.label(`${ data.random }quoted`)).atIndex(0).longPress();
+				await mockMessage('delete')
+
+				await waitFor(element(by.label(`${ data.random }delete`)).atIndex(0)).toBeVisible();
+				await element(by.label(`${ data.random }delete`)).atIndex(0).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
@@ -251,7 +253,7 @@ describe('Room screen', () => {
 				await waitFor(element(by.text(deleteAlertMessage)).atIndex(0)).toExist().withTimeout(10000);
 				await element(by.text('Delete')).tap();
 
-				await waitFor(element(by.label(`${ data.random }quoted`)).atIndex(0)).toNotExist().withTimeout(2000);
+				await waitFor(element(by.label(`${ data.random }delete`)).atIndex(0)).toNotExist().withTimeout(2000);
 			});
 		});
 
