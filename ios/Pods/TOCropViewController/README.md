@@ -4,7 +4,7 @@
 <img src="https://github.com/TimOliver/TOCropViewController/raw/master/Images/screenshot.jpg" width="900" style="margin:0 auto" />
 </p>
 
-[![Build status](https://badge.buildkite.com/f2e7dda942eae2aadb2c456f1f8a9fba97c8feb378ad8638df.svg)](https://buildkite.com/xd-ci/tocropviewcontroller-run-ci)
+[![CI](https://github.com/TimOliver/TOCropViewController/workflows/CI/badge.svg)](https://github.com/TimOliver/TOCropViewController/actions?query=workflow%3ACI)
 [![Version](https://img.shields.io/cocoapods/v/TOCropViewController.svg?style=flat)](http://cocoadocs.org/docsets/TOCropViewController)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/TimOliver/TOCropViewController/master/LICENSE)
@@ -60,6 +60,18 @@ pod 'CropViewController'
 </details>
 
 <details>
+  <summary><strong>Swift Package Manager</strong></summary>
+
+Add the following to your `Package.swift`:
+``` swift
+dependencies: [
+  // ...
+  .package(url: "https://github.com/TimOliver/TOCropViewController.git"),
+],
+```
+</details>
+
+<details>
   <summary><strong>Carthage</strong></summary>
 
 1. Add the following to your Cartfile:
@@ -95,7 +107,7 @@ For a complete working example, check out the sample apps included in this repo.
 
 #### Swift
 ```swift
-func presentCropViewController {
+func presentCropViewController() {
   let image: UIImage = ... //Load an image
   
   let cropViewController = CropViewController(image: image)

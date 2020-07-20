@@ -1,23 +1,3 @@
-# Rocket.Chat
-
-### What we have changed
-`ios/sdk/src/callkit/JMCallKitProxy.swift`
-```Swift
-@objc public static var enabled: Bool = true {
-    didSet {
-        let regionCode = Locale.current.regionCode as String?
-        provider.invalidate()
-        if enabled && !regionCode!.contains("CN") && !regionCode!.contains("CHN") {
-            guard isProviderConfigured() else  { return; }
-            provider = CXProvider(configuration: providerConfiguration!)
-            provider.setDelegate(emitter, queue: nil)
-        } else {
-            provider.setDelegate(nil, queue: nil)
-        }
-    }
-}
-```
-
 # Jitsi Meet iOS SDK releases
 
 This repository contains the binaries for the **[Jitsi Meet]() iOS SDK**. Each
