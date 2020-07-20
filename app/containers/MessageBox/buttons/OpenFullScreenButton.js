@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import BaseButton from './BaseButton';
 
-const OpenFullScreenButton = React.memo(({ theme, onPress }) => (
+const OpenFullScreenButton = ({ theme, onPress }) => (
 	<BaseButton
 		onPress={onPress}
 		testID='messagebox-full-screen'
@@ -11,7 +11,7 @@ const OpenFullScreenButton = React.memo(({ theme, onPress }) => (
 		icon='expand-arrow'
 		theme={theme}
 	/>
-));
+);
 
 OpenFullScreenButton.propTypes = {
 	theme: PropTypes.string,
