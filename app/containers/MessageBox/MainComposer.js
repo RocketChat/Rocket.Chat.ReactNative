@@ -60,11 +60,6 @@ class MainComposer extends Component {
 		keyboardUp: PropTypes.bool
 	};
 
-	state = {
-		// The key for KeyboardAccessoryView doesn't stop opening the Emoji keyboard
-		key: 0
-	};
-
 	shouldComponentUpdate(nextProps) {
 		const {
 			showEmojiKeyboard,
@@ -113,16 +108,6 @@ class MainComposer extends Component {
 			return true;
 		}
 		return false;
-	}
-
-	componentDidUpdate(prevProps) {
-		const { isFullScreen } = this.props;
-		if (prevProps.isFullScreen !== isFullScreen) {
-			// eslint-disable-next-line react/no-did-update-set-state
-			this.setState(prevState => ({
-				key: prevState.key + 1
-			}));
-		}
 	}
 
 	renderContent = () => {
@@ -271,11 +256,9 @@ class MainComposer extends Component {
 			innerRef
 		} = this.props;
 		const { component, tracking } = innerRef;
-		const { key } = this.state;
 
 		return (
 			<KeyboardAccessoryView
-				key={key}
 				ref={tracking}
 				renderContent={this.renderContent}
 				kbInputRef={component}
