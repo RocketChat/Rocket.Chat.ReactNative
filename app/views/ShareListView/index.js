@@ -7,7 +7,7 @@ import ShareExtension from 'rn-extensions-share';
 import * as FileSystem from 'expo-file-system';
 import { connect } from 'react-redux';
 import * as mime from 'react-native-mime-types';
-import { isEqual } from 'lodash';
+import isEqual from 'react-fast-compare';
 import { Q } from '@nozbe/watermelondb';
 
 import database from '../../lib/database';

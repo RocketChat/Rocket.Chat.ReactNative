@@ -21,7 +21,8 @@ const attrs = [
 	'connected',
 	'theme',
 	'isFocused',
-	'forceUpdate'
+	'forceUpdate',
+	'showLastMessage'
 ];
 
 const arePropsEqual = (oldProps, newProps) => attrs.every(key => oldProps[key] === newProps[key]);
