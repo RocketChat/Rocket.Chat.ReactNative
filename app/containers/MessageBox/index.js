@@ -221,13 +221,13 @@ class MessageBox extends Component {
 		});
 
 		this.keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      this.keyboardChangeState,
-    );
-    this.keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      this.keyboardChangeState,
-    );
+			'keyboardDidShow',
+			this.keyboardChangeState
+		);
+		this.keyboardDidHideListener = Keyboard.addListener(
+			'keyboardDidHide',
+			this.keyboardChangeState
+		);
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -334,7 +334,7 @@ class MessageBox extends Component {
 			EventEmiter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
 		if (isAndroid) {
-			BackHandler.removeEventListener('backPress');
+			BackHandler.removeEventListener('backPress', this.backPress);
 		}
 		if (this.keyboardDidShowListener) {
 			this.keyboardDidShowListener.remove();

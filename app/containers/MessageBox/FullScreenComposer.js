@@ -240,7 +240,7 @@ class FullScreenComposer extends Component {
 				coverScreen={isTablet}
 				backdropOpacity={backdropOpacity}
 				swipeDirection='down'
-				onSwipeComplete={() => this.closeModal()}
+				onSwipeComplete={this.closeModal}
 			>
 				<View style={{ backgroundColor, flex: 1 }}>
 					<View style={styles.fullScreenComposerCloseMainContent}>
