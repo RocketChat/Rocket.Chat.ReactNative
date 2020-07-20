@@ -1917,13 +1917,19 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
-"@nozbe/watermelondb@0.16.2":
-  version "0.16.2"
-  resolved "https://registry.yarnpkg.com/@nozbe/watermelondb/-/watermelondb-0.16.2.tgz#9c29c426bedb3d3af5d38304344bb49d60ddd1af"
-  integrity sha512-LLOEl13bVCiLsZf8QCHt5KUmuks7QnMtsXuhBB2rSb1vBDjc3mG2HmkH/eTzbgJnGIdFzH/XtoVUHlS/ll7Log==
+"@nozbe/sqlite@3.31.1":
+  version "3.31.1"
+  resolved "https://registry.yarnpkg.com/@nozbe/sqlite/-/sqlite-3.31.1.tgz#ffd394ad7c188c6b73f89fd6e1ccb849a1b96dba"
+  integrity sha512-z5+GdcHZl9OQ1g0pnygORAnwCYUlYw/gQxdW/8rS0HxD2Gnn/k3DBQOvqQIH4Z3Z3KWVMbGUYhcH1v4SqTAdwg==
+
+"@nozbe/watermelondb@^0.18.0":
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/@nozbe/watermelondb/-/watermelondb-0.18.0.tgz#f174d8a4b9e8665bb9e8a7825a682905a43cd92c"
+  integrity sha512-jybGScFR+b0wp8QDNJw9cfd7Qfu51SegivjIniX6dXV/KZxjjhQ+IJxUB6bp2f2tWJIQcxC5e9syctLsrh/PiQ==
   dependencies:
+    "@nozbe/sqlite" "3.31.1"
     lodash.clonedeep "^4.5.0"
-    lokijs "git+https://github.com/Nozbe/LokiJS.git#d08f660"
+    lokijs "git+https://github.com/Nozbe/LokiJS.git#fabe503"
     rambdax "2.15.0"
     rxjs "^6.2.2"
     rxjs-compat "^6.3.2"
@@ -10206,9 +10212,9 @@ logkitty@^0.7.1:
     dayjs "^1.8.15"
     yargs "^15.1.0"
 
-"lokijs@git+https://github.com/Nozbe/LokiJS.git#d08f660":
-  version "1.5.7"
-  resolved "git+https://github.com/Nozbe/LokiJS.git#d08f660794be558529f5ba049fe2868d4f243ec4"
+"lokijs@git+https://github.com/Nozbe/LokiJS.git#fabe503":
+  version "1.5.9"
+  resolved "git+https://github.com/Nozbe/LokiJS.git#fabe503e4fc7887b76b0e4892b28fbd0753da27d"
 
 lolex@^5.0.0:
   version "5.1.2"
@@ -12572,6 +12578,11 @@ react-fast-compare@^3.0.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-3.1.1.tgz#0becf31e3812fa70dc231e259f40d892d4767900"
   integrity sha512-SCsAORWK59BvauR2L1BTdjQbJcSGJJz03U0awektk2hshLKrITDDFTlgGCqIZpTDlPC/NFlZee6xTMzXPVLiHw==
+
+react-fast-compare@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-3.2.0.tgz#641a9da81b6a6320f270e89724fb45a0b39e43bb"
+  integrity sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==
 
 react-focus-lock@^2.1.0:
   version "2.3.1"

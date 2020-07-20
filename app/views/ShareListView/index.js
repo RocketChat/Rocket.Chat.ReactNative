@@ -7,7 +7,7 @@ import ShareExtension from 'rn-extensions-share';
 import * as FileSystem from 'expo-file-system';
 import { connect } from 'react-redux';
 import * as mime from 'react-native-mime-types';
-import { isEqual, orderBy } from 'lodash';
+import isEqual from 'react-fast-compare';
 import { Q } from '@nozbe/watermelondb';
 
 import database from '../../lib/database';
@@ -32,7 +32,6 @@ const permission = {
 	message: I18n.t('Read_External_Permission_Message')
 };
 
-const LIMIT = 50;
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.rid;
 
@@ -47,7 +46,7 @@ class ShareListView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.data = [];
+		this.chats = [];
 		this.state = {
 			searching: false,
 			searchText: '',
@@ -186,22 +185,36 @@ class ShareListView extends React.Component {
 		this.setState(...args);
 	}
 
-	getSubscriptions = async(server) => {
+	query = (text) => {
 		const db = database.active;
+		const defaultWhereClause = [
+			Q.where('archived', false),
+			Q.where('open', true),
+			Q.experimentalSkip(0),
+			Q.experimentalTake(50),
+			Q.experimentalSortBy('room_updated_at', Q.desc)
+		];
+		if (text) {
+			return db.collections
+				.get('subscriptions')
+				.query(
+					...defaultWhereClause,
+					Q.or(
+						Q.where('name', Q.like(`%${ Q.sanitizeLikeString(text) }%`)),
+						Q.where('fname', Q.like(`%${ Q.sanitizeLikeString(text) }%`))
+					)
+				).fetch();
+		}
+		return db.collections.get('subscriptions').query(...defaultWhereClause).fetch();
+	}
+
+	getSubscriptions = async(server) => {
 		const serversDB = database.servers;
 
 		if (server) {
-			this.data = await db.collections
-				.get('subscriptions')
-				.query(
-					Q.where('archived', false),
-					Q.where('open', true)
-				).fetch();
-			this.data = orderBy(this.data, ['roomUpdatedAt'], ['desc']);
-
+			this.chats = await this.query();
 			const serversCollection = serversDB.collections.get('servers');
 			this.servers = await serversCollection.query().fetch();
-			this.chats = this.data.slice(0, LIMIT);
 			let serverInfo = {};
 			try {
 				serverInfo = await serversCollection.find(server);
@@ -210,8 +223,8 @@ class ShareListView extends React.Component {
 			}
 
 			this.internalSetState({
-				chats: this.chats ? this.chats.slice() : [],
-				servers: this.servers ? this.servers.slice() : [],
+				chats: this.chats ?? [],
+				servers: this.servers ?? [],
 				loading: false,
 				serverInfo
 			});
@@ -253,10 +266,10 @@ class ShareListView extends React.Component {
 		});
 	}
 
-	search = (text) => {
-		const result = this.data.filter(item => item.name.includes(text)) || [];
+	search = async(text) => {
+		const result = await this.query(text);
 		this.internalSetState({
-			searchResults: result.slice(0, LIMIT),
+			searchResults: result,
 			searchText: text
 		});
 	}
@@ -297,9 +310,26 @@ class ShareListView extends React.Component {
 	}
 
 	renderItem = ({ item }) => {
+		const { serverInfo } = this.state;
+		const { useRealName } = serverInfo;
 		const {
 			userId, token, server, theme
 		} = this.props;
+		let description;
+		switch (item.t) {
+			case 'c':
+				description = item.topic || item.description;
+				break;
+			case 'p':
+				description = item.topic || item.description;
+				break;
+			case 'd':
+				description = useRealName ? item.name : item.fname;
+				break;
+			default:
+				description = item.fname;
+				break;
+		}
 		return (
 			<DirectoryItem
 				user={{
@@ -309,11 +339,7 @@ class ShareListView extends React.Component {
 				title={this.getRoomTitle(item)}
 				baseUrl={server}
 				avatar={RocketChat.getRoomAvatar(item)}
-				description={
-					item.t === 'c'
-						? (item.topic || item.description)
-						: item.fname
-				}
+				description={description}
 				type={item.prid ? 'discussion' : item.t}
 				onPress={() => this.shareMessage(item)}
 				testID={`share-extension-item-${ item.name }`}
