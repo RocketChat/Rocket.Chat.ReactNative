@@ -237,7 +237,7 @@ class FullScreenComposer extends Component {
 				isVisible={isFullScreen}
 				useNativeDriver
 				hideModalContentWhileAnimating
-				coverScreen={false}
+				coverScreen={isTablet}
 				backdropOpacity={backdropOpacity}
 				swipeDirection='down'
 				onSwipeComplete={() => this.closeModal()}
