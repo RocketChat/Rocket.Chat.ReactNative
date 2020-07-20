@@ -64,14 +64,14 @@ class MessagesView extends React.Component {
 		}
 		return false;
 	}
-	
+
 	setHeader = () => {
 		const { route, navigation } = this.props;
 		navigation.setOptions({
 			title: I18n.t(route.params?.name)
 		});
 	}
-	
+
 	navToRoomInfo = (navParam) => {
 		const { navigation, user } = this.props;
 		if (navParam.rid === user.id) {
