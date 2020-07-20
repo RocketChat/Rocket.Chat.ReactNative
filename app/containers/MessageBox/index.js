@@ -113,7 +113,8 @@ class MessageBox extends Component {
 			showCommandPreview: false,
 			command: {},
 			isFullScreen: false,
-			recordStartState: false
+			recordStartState: false,
+			keyboardUp: false
 		};
 		this.text = '';
 		this.focused = false;
@@ -218,6 +219,15 @@ class MessageBox extends Component {
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			this.component?.blur();
 		});
+
+		this.keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      this.keyboardChangeState,
+    );
+    this.keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      this.keyboardChangeState,
+    );
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -326,12 +336,24 @@ class MessageBox extends Component {
 		if (isAndroid) {
 			BackHandler.removeEventListener('backPress');
 		}
+		if (this.keyboardDidShowListener) {
+			this.keyboardDidShowListener.remove();
+		}
+		if (this.keyboardDidHideListener) {
+			this.keyboardDidHideListener.remove();
+		}
 	}
 
 	backPress = () => {
 		const { isFullScreen } = this.state;
 
 		return isFullScreen;
+	}
+
+	keyboardChangeState = () => {
+		this.setState(prevState => ({
+			keyboardUp: !prevState.keyboardUp
+		}));
 	}
 
 	onChangeText = (text) => {
@@ -862,7 +884,7 @@ class MessageBox extends Component {
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
-			showEmojiKeyboard, commandPreview, isFullScreen, mentions, showCommandPreview, trackingType, showSend, recording, recordStartState
+			showEmojiKeyboard, commandPreview, isFullScreen, mentions, showCommandPreview, trackingType, showSend, recording, recordStartState, keyboardUp
 		} = this.state;
 		const {
 			user, baseUrl, theme, iOSScrollBehavior, editing, getCustomEmoji, message, Message_AudioRecorderEnabled, replyCancel, replying, children, isActionsEnabled
@@ -920,6 +942,7 @@ class MessageBox extends Component {
 					{...commonProps}
 					finishAudioMessage={this.finishAudioMessage}
 					recordStartState={recordStartState}
+					keyboardUp={keyboardUp}
 				>
 					{children}
 				</MainComposer>

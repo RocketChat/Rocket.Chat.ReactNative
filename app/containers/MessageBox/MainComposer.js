@@ -56,7 +56,8 @@ class MainComposer extends Component {
 			token: PropTypes.string
 		}),
 		innerRef: PropTypes.object,
-		isFullScreen: PropTypes.bool
+		isFullScreen: PropTypes.bool,
+		keyboardUp: PropTypes.bool
 	};
 
 	state = {
@@ -156,7 +157,8 @@ class MainComposer extends Component {
 			children,
 			toggleFullScreen,
 			innerRef,
-			isFullScreen
+			isFullScreen,
+			keyboardUp
 		} = this.props;
 		const { component } = innerRef;
 		const isAndroidTablet = isTablet && isAndroid ? {
@@ -220,6 +222,7 @@ class MainComposer extends Component {
 					underlineColorAndroid='transparent'
 					defaultValue={text}
 					multiline
+					autoFocus={keyboardUp}
 					testID='messagebox-input'
 					theme={theme}
 					{...isAndroidTablet}
