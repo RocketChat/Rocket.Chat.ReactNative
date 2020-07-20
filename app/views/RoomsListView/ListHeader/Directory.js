@@ -10,8 +10,10 @@ import DisclosureIndicator from '../../../containers/DisclosureIndicator';
 import { themes } from '../../../constants/colors';
 import { withTheme } from '../../../theme';
 
-const Directory = React.memo(({ goDirectory, theme, searching }) => {
-	if (searching > 0) {
+const Directory = React.memo(({
+	goDirectory, theme, searching, permissions
+}) => {
+	if (searching > 0 || !(permissions['view-c-room'] || permissions['view-d-room'])) {
 		return null;
 	}
 	const color = { color: themes[theme].headerSecondaryText };
@@ -38,7 +40,8 @@ const Directory = React.memo(({ goDirectory, theme, searching }) => {
 Directory.propTypes = {
 	searching: PropTypes.bool,
 	goDirectory: PropTypes.func,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	permissions: PropTypes.object
 };
 
 export default withTheme(Directory);

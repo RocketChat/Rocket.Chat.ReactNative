@@ -190,7 +190,7 @@ class RoomsListView extends React.Component {
 				this.backHandler.remove();
 			}
 		});
-		const hasPermissions = ['create-c', 'create-d', 'create-p', 'view-c-room', 'view-d-room', 'view-l-room'];
+		const hasPermissions = ['view-c-room', 'view-d-room', 'view-l-room'];
 		const permissions = await RocketChat.hasPermissionsByUserRoles(hasPermissions);
 		this.setState({ permissions });
 		this.getSubscriptions(true);
@@ -764,7 +764,7 @@ class RoomsListView extends React.Component {
 	getScrollRef = ref => (this.scroll = ref);
 
 	renderListHeader = () => {
-		const { searching } = this.state;
+		const { searching, permissions } = this.state;
 		const { sortBy } = this.props;
 		return (
 			<ListHeader
@@ -772,6 +772,7 @@ class RoomsListView extends React.Component {
 				sortBy={sortBy}
 				toggleSort={this.toggleSort}
 				goDirectory={this.goDirectory}
+				permissions={permissions}
 			/>
 		);
 	};

@@ -8,10 +8,11 @@ const ListHeader = React.memo(({
 	searching,
 	sortBy,
 	toggleSort,
-	goDirectory
+	goDirectory,
+	permissions
 }) => (
 	<>
-		<Directory searching={searching} goDirectory={goDirectory} />
+		<Directory searching={searching} goDirectory={goDirectory} permissions={permissions} />
 		<Sort searching={searching} sortBy={sortBy} toggleSort={toggleSort} />
 	</>
 ));
@@ -20,7 +21,8 @@ ListHeader.propTypes = {
 	searching: PropTypes.bool,
 	sortBy: PropTypes.string,
 	toggleSort: PropTypes.func,
-	goDirectory: PropTypes.func
+	goDirectory: PropTypes.func,
+	permissions: PropTypes.object
 };
 
 export default ListHeader;

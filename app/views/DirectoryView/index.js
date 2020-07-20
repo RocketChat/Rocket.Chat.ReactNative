@@ -67,6 +67,10 @@ class DirectoryView extends React.Component {
 		const hasPermissions = ['view-c-room', 'view-d-room'];
 		const permissions = await RocketChat.hasPermissionsByUserRoles(hasPermissions);
 		this.setState({ permissions });
+		if (!this.hasViewUsersAndChannelsPermissions(permissions)) {
+			const type = permissions['view-c-room'] ? 'channels' : 'users';
+			this.setState({ type });
+		}
 		this.load({});
 	}
 
@@ -129,6 +133,8 @@ class DirectoryView extends React.Component {
 		this.setState(({ showOptionsDropdown }) => ({ showOptionsDropdown: !showOptionsDropdown }));
 	}
 
+  hasViewUsersAndChannelsPermissions = permissions => (permissions['view-c-room'] && permissions['view-d-room']);
+
 	goRoom = (item) => {
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
@@ -154,8 +160,9 @@ class DirectoryView extends React.Component {
 	}
 
 	renderHeader = () => {
-		const { type } = this.state;
+		const { type, permissions } = this.state;
 		const { theme } = this.props;
+		const hasPermissions = this.hasViewUsersAndChannelsPermissions(permissions);
 		return (
 			<>
 				<SearchBox
@@ -172,7 +179,7 @@ class DirectoryView extends React.Component {
 					<View style={[sharedStyles.separatorVertical, styles.toggleDropdownContainer, { borderColor: themes[theme].separatorColor }]}>
 						<CustomIcon style={[styles.toggleDropdownIcon, { color: themes[theme].tintColor }]} size={20} name={type === 'users' ? 'user' : 'hash'} />
 						<Text style={[styles.toggleDropdownText, { color: themes[theme].tintColor }]}>{type === 'users' ? I18n.t('Users') : I18n.t('Channels')}</Text>
-						<CustomIcon name='chevron-down' size={20} style={[styles.toggleDropdownArrow, { color: themes[theme].auxiliaryTintColor }]} />
+						<CustomIcon name='chevron-down' size={20} style={hasPermissions ? [styles.toggleDropdownArrow, { color: themes[theme].auxiliaryTintColor }] : null} />
 					</View>
 				</Touch>
 			</>
@@ -185,15 +192,8 @@ class DirectoryView extends React.Component {
 	}
 
 	renderItem = ({ item, index }) => {
-		const { data, type, permissions } = this.state;
+		const { data, type } = this.state;
 		const { baseUrl, user, theme } = this.props;
-
-		let hasPermissions = false;
-		if (type === 'users') {
-			hasPermissions = permissions['view-c-room'];
-		} else {
-			hasPermissions = permissions['view-d-room'];
-		}
 
 		let style;
 		if (index === data.length - 1) {
@@ -213,7 +213,7 @@ class DirectoryView extends React.Component {
 			theme
 		};
 
-		if (type === 'users' && hasPermissions) {
+		if (type === 'users') {
 			return (
 				<DirectoryItem
 					avatar={item.username}
@@ -224,7 +224,7 @@ class DirectoryView extends React.Component {
 				/>
 			);
 		}
-		return hasPermissions ? (
+		return (
 			<DirectoryItem
 				avatar={item.name}
 				description={item.topic}
@@ -232,14 +232,15 @@ class DirectoryView extends React.Component {
 				type='c'
 				{...commonProps}
 			/>
-		) : null;
+		);
 	}
 
 	render = () => {
 		const {
-			data, loading, showOptionsDropdown, type, globalUsers
+			data, loading, showOptionsDropdown, type, globalUsers, permissions
 		} = this.state;
 		const { isFederationEnabled, theme } = this.props;
+		const hasPermissions = this.hasViewUsersAndChannelsPermissions(permissions);
 		return (
 			<SafeAreaView
 				style={{ backgroundColor: themes[theme].backgroundColor }}
@@ -260,7 +261,7 @@ class DirectoryView extends React.Component {
 					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 					onEndReached={() => this.load({})}
 				/>
-				{showOptionsDropdown
+				{showOptionsDropdown && hasPermissions
 					? (
 						<Options
 							theme={theme}
