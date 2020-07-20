@@ -3,7 +3,7 @@ import {
 	View, Text, StyleSheet, Clipboard
 } from 'react-native';
 import PropTypes from 'prop-types';
-import FastImage from 'react-native-fast-image';
+import FastImage from '@rocket.chat/react-native-fast-image';
 import isEqual from 'lodash/isEqual';
 
 import Touchable from './Touchable';

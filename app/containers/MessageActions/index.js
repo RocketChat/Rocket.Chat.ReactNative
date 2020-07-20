@@ -201,7 +201,13 @@ const MessageActions = React.memo(forwardRef(({
 		hideActionSheet();
 	};
 
-	const handleReadReceipt = message => Navigation.navigate('ReadReceiptsView', { messageId: message.id });
+	const handleReadReceipt = (message) => {
+		if (isMasterDetail) {
+			Navigation.navigate('ModalStackNavigator', { screen: 'ReadReceiptsView', params: { messageId: message.id } });
+		} else {
+			Navigation.navigate('ReadReceiptsView', { messageId: message.id });
+		}
+	};
 
 	const handleToggleTranslation = async(message) => {
 		try {
