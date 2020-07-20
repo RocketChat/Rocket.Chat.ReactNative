@@ -90,18 +90,19 @@ NS_SWIFT_NAME(Analytics)
 /// Must be called on the main thread.
 ///
 /// Note that screen reporting is enabled automatically and records the class name of the current
-/// UIViewController for you without requiring you to call this method. If you implement
-/// viewDidAppear in your UIViewController but do not call [super viewDidAppear:], that screen class
-/// will not be automatically tracked. The class name can optionally be overridden by calling this
-/// method in the viewDidAppear callback of your UIViewController and specifying the
-/// screenClassOverride parameter. setScreenName:screenClass: must be called after
-/// [super viewDidAppear:].
+/// UIViewController for you without requiring you to call this method. The class name can
+/// optionally be overridden by calling this method in the viewDidAppear callback of your
+/// UIViewController and specifying the screenClassOverride parameter.
+/// `setScreenName:screenClass:` must be called after `[super viewDidAppear:]`.
 ///
 /// If your app does not use a distinct UIViewController for each screen, you should call this
 /// method and specify a distinct screenName each time a new screen is presented to the user.
 ///
 /// The screen name and screen class remain in effect until the current UIViewController changes or
 /// a new call to setScreenName:screenClass: is made.
+///
+/// @warning If you override `viewDidAppear:` in your UIViewController but do not call
+///     `[super viewDidAppear:]`, that screen class will not be tracked.
 ///
 /// @param screenName The name of the current screen. Should contain 1 to 100 characters. Set to nil
 ///     to clear the current screen name.
