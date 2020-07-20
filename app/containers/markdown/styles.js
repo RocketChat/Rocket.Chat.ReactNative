@@ -32,7 +32,8 @@ export default StyleSheet.create({
 	},
 	text: {
 		fontSize: 16,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		// lineHeight: 30
 	},
 	textInfo: {
 		fontStyle: 'italic',
@@ -54,10 +55,11 @@ export default StyleSheet.create({
 	temp: { opacity: 0.3 },
 	mention: {
 		fontSize: 16,
-		color: '#0072FE',
-		padding: 5,
+		// lineHeight: 20,
+		// color: '#0072FE',
+		// padding: 5,
 		...sharedStyles.textMedium,
-		backgroundColor: '#E8F2FF'
+		// backgroundColor: '#E8F2FF'
 	},
 	mentionAll: {
 		backgroundColor: '#FF5B5A'
