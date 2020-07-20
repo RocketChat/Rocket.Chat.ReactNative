@@ -1006,19 +1006,19 @@ const RocketChat = {
 			// merge both roles
 			const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
 
-			return await this.filterPermission(permissions, mergedRoles);
+			return this.filterPermission(permissions, mergedRoles);
 		} catch (e) {
 			log(e);
 		}
 	},
-	async hasPermissionsByUserRoles(permissions = []) {
+	hasPermissionsByUserRoles(permissions = []) {
 		try {
 			const shareUser = reduxStore.getState().share.user;
 			const loginUser = reduxStore.getState().login.user;
 			// get user roles on the server from redux
 			const userRoles = (shareUser?.roles || loginUser?.roles) || [];
 
-			return await this.filterPermission(permissions, userRoles);
+			return this.filterPermission(permissions, userRoles);
 		} catch (e) {
 			log(e);
 		}
