@@ -70,9 +70,7 @@ class MessageContainer extends React.Component {
 		theme: 'light'
 	}
 
-	state = {
-		author: null
-	}
+	state = {}
 
 	async componentDidMount() {
 		const { item } = this.props;

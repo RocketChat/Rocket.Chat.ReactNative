@@ -20,41 +20,45 @@ const Avatar = React.memo(({
 		borderRadius
 	};
 
+	let image;
 	if (emoji) {
-		return (
-			<Touchable style={[avatarStyle, style]} disabled={!onPress} onPress={onPress}>
-				<Emoji
-					theme={theme}
-					baseUrl={server}
-					getCustomEmoji={getCustomEmoji}
-					isMessageContainsOnlyEmoji
-					literal={emoji}
-				/>
-			</Touchable>
+		image = (
+			<Emoji
+				theme={theme}
+				baseUrl={server}
+				getCustomEmoji={getCustomEmoji}
+				isMessageContainsOnlyEmoji
+				literal={emoji}
+			/>
+		);
+	} else {
+		const uri = avatarURL({
+			type,
+			text,
+			size,
+			user,
+			avatar,
+			server,
+			avatarETag
+		});
+
+		image = (
+			<FastImage
+				style={avatarStyle}
+				source={{
+					uri,
+					headers: RocketChatSettings.customHeaders,
+					priority: FastImage.priority.high
+				}}
+			/>
 		);
 	}
 
-	const uri = avatarURL({
-		type,
-		text,
-		size,
-		user,
-		avatar,
-		server,
-		avatarETag
-	});
 
 	return (
 		<Touchable style={[avatarStyle, style]} disabled={!onPress} onPress={onPress}>
 			<>
-				<FastImage
-					style={avatarStyle}
-					source={{
-						uri,
-						headers: RocketChatSettings.customHeaders,
-						priority: FastImage.priority.high
-					}}
-				/>
+				{image}
 				{children}
 			</>
 		</Touchable>
