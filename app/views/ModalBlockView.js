@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 import { connect } from 'react-redux';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scroll-view';
 
 import { withTheme } from '../theme';
 import EventEmitter from '../utils/events';
