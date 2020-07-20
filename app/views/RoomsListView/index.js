@@ -156,7 +156,7 @@ class RoomsListView extends React.Component {
 		const {
 			navigation, closeServerDropdown, appState
 		} = this.props;
-
+		await this.setPermissions();
 		/**
 		 * - When didMount is triggered and appState is foreground,
 		 * it means the user is logging in and selectServer has ran, so we can getSubscriptions
@@ -190,10 +190,6 @@ class RoomsListView extends React.Component {
 				this.backHandler.remove();
 			}
 		});
-		const hasPermissions = ['view-c-room', 'view-d-room', 'view-l-room'];
-		const permissions = await RocketChat.hasPermissionsByUserRoles(hasPermissions);
-		this.setState({ permissions });
-		this.getSubscriptions(true);
 		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
@@ -272,7 +268,7 @@ class RoomsListView extends React.Component {
 		return false;
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps, prevState) {
 		const {
 			sortBy,
 			groupByType,
@@ -285,14 +281,14 @@ class RoomsListView extends React.Component {
 			isMasterDetail,
 			insets
 		} = this.props;
-		const { item } = this.state;
-
+		const { item, permissions } = this.state;
 		if (
 			!(
 				prevProps.sortBy === sortBy
 				&& prevProps.groupByType === groupByType
 				&& prevProps.showFavorites === showFavorites
-				&& prevProps.showUnread === showUnread
+        && prevProps.showUnread === showUnread
+        && prevState.permissions === permissions
 			)
 		) {
 			this.getSubscriptions(true);
@@ -500,6 +496,12 @@ class RoomsListView extends React.Component {
 				loading: false
 			});
 		});
+	}
+
+	setPermissions = async() => {
+		const hasPermissions = ['view-c-room', 'view-d-room', 'view-l-room'];
+		const permissions = await RocketChat.hasPermissionsByUserRoles(hasPermissions);
+		this.setState({ permissions });
 	}
 
 	initSearching = () => {

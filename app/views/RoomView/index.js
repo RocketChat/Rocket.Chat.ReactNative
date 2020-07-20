@@ -611,7 +611,6 @@ class RoomView extends React.Component {
 
 		this.queryUnreads = observable.subscribe((data) => {
 			const { unreadsCount } = this.state;
-
 			const newUnreadsCount = data.filter(s => s.unread > 0).reduce((a, b) => a + (b.unread || 0), 0);
 			if (unreadsCount !== newUnreadsCount) {
 				this.setState({ unreadsCount: newUnreadsCount }, () => this.setHeader());
