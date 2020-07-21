@@ -535,5 +535,31 @@ export default {
     'アプリからログアウトします。',
 	Clear: 'クリア',
 	This_will_clear_all_your_offline_data:
-    'オフラインデータをすべて削除します。'
+	'オフラインデータをすべて削除します。',
+	No_Location_Near_You: 'この近くに場所はありません!',
+	Retry: 'リトライ',
+	Location_Choose_In_Maps: '地図上で選択した場所を送信します',
+	Identifying_Location: '場所の特定...',
+	Send_Place_Near_You: 'お近くの場所を送信してください',
+	Pull_Up_To_See_More_Location: '他の場所を表示するには引き上げます',
+	Send_You_Current_Location: '現在地を送信',
+	Exactly_To: 'まさに',
+	Open_GPS_Android: 'サービスを使用するにはGPSをオンにしてください.',
+	Share_Location_Confirm: '共有場所を確認',
+	location: 'ロケーション',
+	Confirm_Yes: 'はい',
+	Send_Location_Question: 'この場所をに送信しますか',
+	Permission_Step_ios: {
+		step1: 'iPhone設定を開く',
+		step2: 'セキュリティを選択',
+		step3: '位置情報サービスを選択',
+		step4: 'Rocket.Chatをオンにする'
+	},
+	Permission_Step_Android: {
+		step1: 'Android設定を開く',
+		step2: 'セキュリティを選択',
+		step3: '位置情報サービスを選択',
+		step4: 'アプリの権限を選択',
+		step5: 'Rocket.Chatをオンにする'
+	}
 };

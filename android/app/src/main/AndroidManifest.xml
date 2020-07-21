@@ -5,6 +5,8 @@
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.ACCESS_COURSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 	<application
 		android:name=".MainApplication"
@@ -68,6 +70,9 @@
 		<meta-data
 				android:name="com.bugsnag.android.API_KEY"
 				android:value="${BugsnagAPIKey}" />
+		<meta-data
+				android:name="com.google.android.geo.API_KEY"
+				android:value=""/> 
 	</application>
 
 </manifest>

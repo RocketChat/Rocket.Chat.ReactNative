@@ -181,5 +181,8 @@ export default {
 	},
 	Force_Screen_Lock_After: {
 		type: 'valueAsNumber'
+	},
+	MapView_GMapsAPIKey: {
+		type: 'valueAsString'
 	}
 };

@@ -621,5 +621,31 @@ export default {
 	Passcode_app_locked_title: 'App locked',
 	Passcode_app_locked_subtitle: 'Try again in {{timeLeft}} seconds',
 	After_seconds_set_by_admin: 'After {{seconds}} seconds (set by admin)',
-	Dont_activate: 'Don\'t activate now'
+	Dont_activate: 'Don\'t activate now',
+	No_Location_Near_You: 'No locations near you!',
+	Retry: 'Retry',
+	Location_Choose_In_Maps: 'Send the location you choose on the map',
+	Identifying_Location: 'Identifying location...',
+	Send_Place_Near_You: 'Submit places near you',
+	Pull_Up_To_See_More_Location: 'Pull up to see more locations',
+	Send_You_Current_Location: 'Send your current location',
+	Exactly_To: 'Exactly to',
+	Open_GPS_Android: 'Turn on GPS to use the service.',
+	Share_Location_Confirm: 'Confirm share location',
+	location: 'Location',
+	Confirm_Yes: 'Yes',
+	Send_Location_Question: 'Would you like to send this location to',
+	Permission_Step_ios: {
+		step1: 'Open settings iphone',
+		step2: 'Choose security',
+		step3: 'Select location services',
+		step4: 'Turn ON for Rocket.Chat'
+	},
+	Permission_Step_Android: {
+		step1: 'Open settings Android',
+		step2: 'Choose security',
+		step3: 'Select location services',
+		step4: 'Select App Permission',
+		step5: 'Turn ON for Rocket.Chat'
+	}
 };

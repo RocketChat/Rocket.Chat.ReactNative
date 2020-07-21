@@ -45,14 +45,14 @@ const changeMessageStatus = async(id, tmid, status, message) => {
 
 export async function sendMessageCall(message) {
 	const {
-		id: _id, subscription: { id: rid }, msg, tmid
+		id: _id, subscription: { id: rid }, msg, tmid, location
 	} = message;
 	try {
 		const sdk = this.shareSDK || this.sdk;
 		// RC 0.60.0
 		const result = await sdk.post('chat.sendMessage', {
 			message: {
-				_id, rid, msg, tmid
+				_id, rid, msg, tmid, location
 			}
 		});
 		if (result.success) {
@@ -64,7 +64,7 @@ export async function sendMessageCall(message) {
 	return changeMessageStatus(_id, tmid, messagesStatus.ERROR);
 }
 
-export default async function(rid, msg, tmid, user) {
+export default async function(rid, msg, tmid, user, location) {
 	try {
 		const db = database.active;
 		const subsCollection = db.collections.get('subscriptions');
@@ -74,7 +74,7 @@ export default async function(rid, msg, tmid, user) {
 		const messageId = random(17);
 		const batch = [];
 		const message = {
-			id: messageId, subscription: { id: rid }, msg, tmid
+			id: messageId, subscription: { id: rid }, msg, tmid, location
 		};
 		const messageDate = new Date();
 		let tMessageRecord;

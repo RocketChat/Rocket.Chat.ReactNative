@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Alert, Keyboard, NativeModules
+	View, Alert, Keyboard, NativeModules, Platform
 } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
@@ -9,7 +9,11 @@ import ImagePicker from 'react-native-image-crop-picker';
 import equal from 'deep-equal';
 import DocumentPicker from 'react-native-document-picker';
 import { Q } from '@nozbe/watermelondb';
+import {
+	request, check, PERMISSIONS, RESULTS
+} from 'react-native-permissions';
 
+import SettingsTurnOnGPS from '../SettingsTurnOnGPS';
 import { generateTriggerId } from '../../lib/methods/actions';
 import TextInput from '../../presentation/TextInput';
 import { userTyping as userTypingAction } from '../../actions/room';
@@ -119,7 +123,8 @@ class MessageBox extends Component {
 			trackingType: '',
 			commandPreview: [],
 			showCommandPreview: false,
-			command: {}
+			command: {},
+			isLocationSettings: false
 		};
 		this.text = '';
 		this.selection = { start: 0, end: 0 };
@@ -127,6 +132,11 @@ class MessageBox extends Component {
 
 		// MessageBox Actions
 		this.options = [
+			{
+				title: I18n.t('location'),
+				icon: 'Location',
+				onPress: this.checkPermissionLocation
+			},
 			{
 				title: I18n.t('Take_a_photo'),
 				icon: 'image',
@@ -252,7 +262,7 @@ class MessageBox extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			showEmojiKeyboard, showSend, recording, mentions, commandPreview
+			showEmojiKeyboard, showSend, recording, mentions, commandPreview, isLocationSettings
 		} = this.state;
 
 		const {
@@ -274,6 +284,9 @@ class MessageBox extends Component {
 			return true;
 		}
 		if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
+			return true;
+		}
+		if (nextState.isLocationSettings !== isLocationSettings) {
 			return true;
 		}
 		if (nextState.showSend !== showSend) {
@@ -657,6 +670,62 @@ class MessageBox extends Component {
 		}
 	}
 
+	checkPermissionLocation = () => {
+		check(
+			Platform.select({
+				android: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+				ios: PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
+			})
+		).then((result) => {
+			switch (result) {
+				case RESULTS.GRANTED:
+					this.gotoRoomMapView();
+					break;
+				default:
+					this.requestLocation();
+					break;
+			}
+		}).catch((error) => {
+			console.log(error);
+		});
+	}
+
+	gotoRoomMapView = () => {
+		const {
+			navigation,
+			title,
+			tmid,
+			rid
+		} = this.props;
+		navigation.navigate('RoomMapsView', { title, tmid, rid }); // TODO: Condition send message in room
+	}
+
+	hideSettingsGPS = () => {
+		this.setState({
+			isLocationSettings: false
+		});
+	}
+
+	requestLocation = () => {
+		request(
+			Platform.select({
+				android: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+				ios: PERMISSIONS.IOS.LOCATION_WHEN_IN_USE
+			})
+		).then((result) => {
+			switch (result) {
+				case RESULTS.GRANTED:
+					this.gotoRoomMapView();
+					break;
+				default:
+					this.setState({ isLocationSettings: true });
+					break;
+			}
+		}).catch((error) => {
+			console.log(error);
+		});
+	}
+
 	showMessageBoxActions = () => {
 		const { showActionSheet } = this.props;
 		showActionSheet({ options: this.options });
@@ -933,34 +1002,42 @@ class MessageBox extends Component {
 
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
-		const { showEmojiKeyboard } = this.state;
+		const { showEmojiKeyboard, isLocationSettings } = this.state;
 		const {
-			user, baseUrl, theme, iOSScrollBehavior
+			user, baseUrl, theme, iOSScrollBehavior, navigation
 		} = this.props;
 		return (
-			<MessageboxContext.Provider
-				value={{
-					user,
-					baseUrl,
-					onPressMention: this.onPressMention,
-					onPressCommandPreview: this.onPressCommandPreview
-				}}
-			>
-				<KeyboardAccessoryView
-					ref={ref => this.tracking = ref}
-					renderContent={this.renderContent}
-					kbInputRef={this.component}
-					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
-					onKeyboardResigned={this.onKeyboardResigned}
-					onItemSelected={this.onEmojiSelected}
-					trackInteractive
-					// revealKeyboardInteractive
-					requiresSameParentToManageScrollView
-					addBottomView
-					bottomViewColor={themes[theme].messageboxBackground}
-					iOSScrollBehavior={iOSScrollBehavior}
-				/>
-			</MessageboxContext.Provider>
+			<>
+				<MessageboxContext.Provider
+					value={{
+						user,
+						baseUrl,
+						onPressMention: this.onPressMention,
+						onPressCommandPreview: this.onPressCommandPreview
+					}}
+				>
+					<KeyboardAccessoryView
+						ref={ref => this.tracking = ref}
+						renderContent={this.renderContent}
+						kbInputRef={this.component}
+						kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
+						onKeyboardResigned={this.onKeyboardResigned}
+						onItemSelected={this.onEmojiSelected}
+						trackInteractive
+						// revealKeyboardInteractive
+						requiresSameParentToManageScrollView
+						addBottomView
+						bottomViewColor={themes[theme].messageboxBackground}
+						iOSScrollBehavior={iOSScrollBehavior}
+					/>
+					<SettingsTurnOnGPS
+						isLocationSettings={isLocationSettings}
+						theme={theme}
+						onPressClose={this.hideSettingsGPS}
+						navigation={navigation}
+					/>
+				</MessageboxContext.Provider>
+			</>
 		);
 	}
 }

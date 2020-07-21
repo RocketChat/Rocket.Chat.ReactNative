@@ -12,6 +12,14 @@ end
 
 target 'RocketChatRN' do
   all_pods
+  pod 'react-native-maps', :path => '../node_modules/react-native-maps'
+
+  pod 'react-native-geolocation', :path => '../node_modules/@react-native-community/geolocation'
+
+  pod 'react-native-settings', :path => '../node_modules/react-native-settings'
+
+  pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
+
 end
 
 target 'ShareRocketChatRN' do

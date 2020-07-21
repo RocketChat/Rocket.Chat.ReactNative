@@ -94,7 +94,8 @@ class RoomView extends React.Component {
 		replyBroadcast: PropTypes.func,
 		width: PropTypes.number,
 		height: PropTypes.number,
-		insets: PropTypes.object
+		insets: PropTypes.object,
+		MapView_GMapsAPIKey: PropTypes.string
 	};
 
 	constructor(props) {
@@ -810,7 +811,7 @@ class RoomView extends React.Component {
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
-			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme
+			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme, MapView_GMapsAPIKey
 		} = this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
@@ -835,6 +836,7 @@ class RoomView extends React.Component {
 				archived={room.archived}
 				broadcast={room.broadcast}
 				status={item.status}
+				MapView_GMapsAPIKey={MapView_GMapsAPIKey}
 				isThreadRoom={!!this.tmid}
 				previousItem={previousItem}
 				fetchThreadName={this.fetchThreadName}
@@ -1042,7 +1044,8 @@ const mapStateToProps = state => ({
 	customEmojis: state.customEmojis,
 	baseUrl: state.server.server,
 	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled,
-	Hide_System_Messages: state.settings.Hide_System_Messages
+	Hide_System_Messages: state.settings.Hide_System_Messages,
+	MapView_GMapsAPIKey: state.settings.MapView_GMapsAPIKey
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -12,6 +12,7 @@ import MessageAvatar from './MessageAvatar';
 import Attachments from './Attachments';
 import Urls from './Urls';
 import Thread from './Thread';
+import ImageMaps from './ImageMaps';
 import Blocks from './Blocks';
 import Reactions from './Reactions';
 import Broadcast from './Broadcast';
@@ -47,6 +48,9 @@ const MessageInner = React.memo((props) => {
 				<Reactions {...props} />
 			</>
 		);
+	}
+	if (props.location) {
+		return <ImageMaps {...props} theme={props.theme} />;
 	}
 	return (
 		<>
@@ -132,7 +136,9 @@ MessageTouchable.propTypes = {
 	hasError: PropTypes.bool,
 	isInfo: PropTypes.bool,
 	isTemp: PropTypes.bool,
-	archived: PropTypes.bool
+	archived: PropTypes.bool,
+	MapView_GMapsAPIKey: PropTypes.string,
+	location: PropTypes.object
 };
 
 Message.propTypes = {
@@ -146,12 +152,16 @@ Message.propTypes = {
 	onLongPress: PropTypes.func,
 	isReadReceiptEnabled: PropTypes.bool,
 	unread: PropTypes.bool,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	MapView_GMapsAPIKey: PropTypes.string,
+	location: PropTypes.object
 };
 
 MessageInner.propTypes = {
 	type: PropTypes.string,
-	blocks: PropTypes.array
+	blocks: PropTypes.array,
+	MapView_GMapsAPIKey: PropTypes.string,
+	location: PropTypes.object,
 };
 
 export default MessageTouchable;

@@ -211,6 +211,10 @@ dependencies {
     implementation project(':reactnativenotifications')
     implementation project(":reactnativekeyboardinput")
     implementation project(':@react-native-community_viewpager')
+    implementation project(':react-native-settings')
+    implementation project(':@react-native-community_geolocation')
+    implementation project(':react-native-maps')
+    implementation project(':react-native-permissions')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules

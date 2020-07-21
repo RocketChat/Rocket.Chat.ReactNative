@@ -11,6 +11,7 @@ import Sidebar from '../views/SidebarView';
 // Chats Stack
 import RoomView from '../views/RoomView';
 import RoomsListView from '../views/RoomsListView';
+import RoomMapsView from '../views/RoomMapsView';
 import RoomActionsView from '../views/RoomActionsView';
 import RoomInfoView from '../views/RoomInfoView';
 import RoomInfoEditView from '../views/RoomInfoEditView';
@@ -163,6 +164,11 @@ const ChatsStackNavigator = () => {
 				name='ReadReceiptsView'
 				component={ReadReceiptsView}
 				options={ReadReceiptsView.navigationOptions}
+			/>
+			<ChatsStack.Screen
+				name='RoomMapsView'
+				component={RoomMapsView}
+				// options={RoomMapsView.navigationOptions}
 			/>
 		</ChatsStack.Navigator>
 	);
