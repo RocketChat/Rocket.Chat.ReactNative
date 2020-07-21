@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.SharedPreferences;
 
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.ReactRootView;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactFragmentActivity;
@@ -13,6 +15,12 @@ import com.facebook.react.ReactFragmentActivity;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import com.zoontek.rnbootsplash.RNBootSplash;
 import com.tencent.mmkv.MMKV;
+import com.google.gson.Gson;
+
+class ThemePreferences {
+  String currentTheme;
+  String darkLevel;
+}
 
 public class MainActivity extends ReactFragmentActivity {
 
@@ -35,6 +43,16 @@ public class MainActivity extends ReactFragmentActivity {
             // SharedPreferences -> MMKV (Migration)
             SharedPreferences sharedPreferences = getSharedPreferences("react-native", Context.MODE_PRIVATE);
             mmkv.importFromSharedPreferences(sharedPreferences);
+
+            // SharedPreferences only save strings, so we saved this value as a String and now we'll need to cast into a MMKV object
+            String THEME_PREFERENCES_KEY = "RC_THEME_PREFERENCES_KEY";
+            String themeJson = sharedPreferences.getString(THEME_PREFERENCES_KEY, "{}");
+            ThemePreferences themePreferences = new Gson().fromJson(themeJson, ThemePreferences.class);
+            WritableMap map = new Arguments().createMap();
+            map.putString("currentTheme", themePreferences.currentTheme);
+            map.putString("darkLevel", themePreferences.darkLevel);
+            Bundle bundle = Arguments.toBundle(map);
+            mmkv.encode(THEME_PREFERENCES_KEY, bundle);
 
             // Remove all our keys of SharedPreferences
             sharedPreferences.edit().clear().commit();
