@@ -64,9 +64,9 @@ public class CustomPushNotification extends PushNotification {
 
         String server = received.getString("server", "");
         String msgId = received.getString("msgId", "");
-        String type = received.getString("type", "");
+        String notificationType = received.getString("notificationType", "");
 
-        if (type.equals("message-hidden")) {
+        if (notificationType.equals("message-id-only")) {
             notificationLoad(server, msgId, new Callback() {
                 @Override
                 public void call(Bundle bundle) {

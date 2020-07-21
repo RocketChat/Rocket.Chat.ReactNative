@@ -14,10 +14,10 @@ class NotificationService: UNNotificationServiceExtension {
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
         
         if let bestAttemptContent = bestAttemptContent {
-            let type = bestAttemptContent.userInfo["type"] as? String ?? ""
+            let notificationType = bestAttemptContent.userInfo["notificationType"] as? String ?? ""
           
             // If the notification have the content at her payload, show it
-            if type != "message-hidden" {
+            if notificationType != "message-id-only" {
                 contentHandler(bestAttemptContent);
                 return;
             }
@@ -31,8 +31,8 @@ class NotificationService: UNNotificationServiceExtension {
             let userId = userDefaults?.string(forKey: "reactnativemeteor_usertoken-\(server)")! ?? ""
             let token = userDefaults?.string(forKey: "reactnativemeteor_usertoken-\(userId)")! ?? ""
 
-            var urlComponents = URLComponents(string: "\(server)/notification")!
-            let queryItems = [URLQueryItem(name: "msgId", value: msgId)]
+            var urlComponents = URLComponents(string: "\(server)/api/v1/push.get")!
+            let queryItems = [URLQueryItem(name: "id", value: msgId)]
             urlComponents.queryItems = queryItems
             
             var request = URLRequest(url: urlComponents.url!)

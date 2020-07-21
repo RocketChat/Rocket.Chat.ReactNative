@@ -32,7 +32,7 @@ public class LoadNotification {
 
   public static void load(ReactApplicationContext reactApplicationContext, final String host, final String msgId, Callback callback) {
     final OkHttpClient client = new OkHttpClient();
-    HttpUrl.Builder url = HttpUrl.parse(host.concat("/notification")).newBuilder();
+    HttpUrl.Builder url = HttpUrl.parse(host.concat("/api/v1/push.get")).newBuilder();
 
     String userId = sharedPreferences.getString(TOKEN_KEY.concat(host), "");
     String token = sharedPreferences.getString(TOKEN_KEY.concat(userId), "");
@@ -40,7 +40,7 @@ public class LoadNotification {
     Request request = new Request.Builder()
       .header("x-user-id", userId)
       .header("x-auth-token", token)
-      .url(url.addQueryParameter("msgId", msgId).build())
+      .url(url.addQueryParameter("id", msgId).build())
       .build();
 
     runRequest(client, request, callback);
