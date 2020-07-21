@@ -67,19 +67,14 @@ export default class RecordAudio extends React.PureComponent {
 		};
 	}
 
-	componentDidMount() {
-		const { recordStartState, toggleRecordAudioWithState } = this.props;
-
-		if (recordStartState) {
-			this.startRecordingAudio();
-			toggleRecordAudioWithState();
-		}
-	}
-
-	componentDidUpdate() {
-		const { recordingCallback } = this.props;
+	componentDidUpdate(prevProps) {
+		const { recordingCallback, recordStartState, toggleRecordAudioWithState } = this.props;
 		const { isRecording } = this.state;
 
+		if (prevProps.recordStartState !== recordStartState && recordStartState) {
+			toggleRecordAudioWithState();
+			this.startRecordingAudio();
+		}
 		recordingCallback(isRecording);
 	}
 
@@ -141,7 +136,6 @@ export default class RecordAudio extends React.PureComponent {
 	finishRecordingAudio = async() => {
 		if (!this.isRecorderBusy) {
 			const { onFinish } = this.props;
-
 			this.isRecorderBusy = true;
 			try {
 				await this.recording.stopAndUnloadAsync();
