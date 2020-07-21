@@ -115,8 +115,7 @@ class FullScreenComposer extends Component {
 	}
 
 	closeModal = () => {
-		const { toggleFullScreen, closeEmoji } = this.props;
-		closeEmoji();
+		const { toggleFullScreen } = this.props;
 		toggleFullScreen();
 	}
 

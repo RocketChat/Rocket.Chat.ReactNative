@@ -572,7 +572,7 @@ class MessageBox extends Component {
 
 	setCommandPreview = async(command, name, params) => {
 		const { rid } = this.props;
-		try	{
+		try {
 			const { success, preview } = await RocketChat.getCommandPreview(name, rid, params);
 			if (success) {
 				return this.setState({ commandPreview: preview?.items, showCommandPreview: true, command });
@@ -876,9 +876,16 @@ class MessageBox extends Component {
 	}
 
 	toggleFullScreen = () => {
-		this.setState(prevState => ({
-			isFullScreen: !prevState.isFullScreen
-		}));
+		const { showEmojiKeyboard } = this.state;
+		if (!showEmojiKeyboard) {
+			this.setState(prevState => ({
+				isFullScreen: !prevState.isFullScreen
+			}));
+		} else {
+			this.setState({ showEmojiKeyboard: false }, () => {
+				this.toggleFullScreen();
+			});
+		}
 	}
 
 	render() {
