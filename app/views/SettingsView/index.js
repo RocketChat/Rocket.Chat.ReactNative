@@ -5,6 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
+import FastImage from '@rocket.chat/react-native-fast-image';
 
 import { logout as logoutAction } from '../../actions/login';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
@@ -103,9 +104,11 @@ class SettingsView extends React.Component {
 				const {
 					server: { server }, appStart, selectServerRequest
 				} = this.props;
-				await appStart({ root: ROOT_LOADING, text: I18n.t('Clear_cache_loading') });
+				appStart({ root: ROOT_LOADING, text: I18n.t('Clear_cache_loading') });
 				await RocketChat.clearCache({ server });
-				await selectServerRequest(server, null, true);
+				await FastImage.clearMemoryCache();
+				await FastImage.clearDiskCache();
+				selectServerRequest(server, null, true);
 			}
 		});
 	}

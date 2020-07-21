@@ -227,7 +227,7 @@ export default {
 	messages: 'сообщения',
 	Messages: 'Сообщения',
 	Message_Reported: 'Сообщение отправлено',
-	Microphone_Permission_Message: 'Rocket Chat нужен доступ к вашему микрофону, чтобы вы могли отправлять аудиосообщения.',
+	Microphone_Permission_Message: 'Rocket.Chat нужен доступ к вашему микрофону, чтобы вы могли отправлять аудиосообщения.',
 	Microphone_Permission: 'Разрешение на использование микрофона',
 	Mute: 'Заглушить',
 	muted: 'Заглушен',

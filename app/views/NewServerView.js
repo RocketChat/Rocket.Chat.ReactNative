@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
 import DocumentPicker from 'react-native-document-picker';
 import RNUserDefaults from 'rn-user-defaults';
-import { encode } from 'base-64';
+import { Base64 } from 'js-base64';
 import parse from 'url-parse';
 
 import EventEmitter from '../utils/events';
@@ -161,7 +161,7 @@ class NewServerView extends React.Component {
 		try {
 			const parsedUrl = parse(text, true);
 			if (parsedUrl.auth.length) {
-				const credentials = encode(parsedUrl.auth);
+				const credentials = Base64.encode(parsedUrl.auth);
 				await RNUserDefaults.set(`${ BASIC_AUTH_KEY }-${ server }`, credentials);
 				setBasicAuth(credentials);
 			}
