@@ -151,6 +151,7 @@ describe('Room screen', () => {
 			it('should star message', async() => {
 				await starMessage('message')
 		
+				await sleep(1000) //https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/2324
 				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
@@ -231,6 +232,7 @@ describe('Room screen', () => {
 				await pinMessage('pin')
 						
 				await waitFor(element(by.label(`${ data.random }pin`)).atIndex(0)).toBeVisible();
+				await sleep(1000) //https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/2324
 				await element(by.label(`${ data.random }pin`)).atIndex(0).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
