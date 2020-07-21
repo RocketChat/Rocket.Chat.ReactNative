@@ -299,8 +299,8 @@ const RocketChat = {
 			}
 			reduxStore.dispatch(shareSetUser(user));
 			await RocketChat.login({ resume: user.token });
-		} catch {
-			// Do nothing
+		} catch (e) {
+			log(e);
 		}
 	},
 	closeShareExtension() {
