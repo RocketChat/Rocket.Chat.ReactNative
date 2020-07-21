@@ -41,7 +41,7 @@ const Header = React.memo(({
 	const { isLandscape } = useOrientation();
 	const scale = isIOS && isLandscape && !isTablet ? 0.8 : 1;
 	const titleFontSize = 16 * scale;
-	const subTitleFontSize = 12 * scale;
+	const subTitleFontSize = 14 * scale;
 
 	if (showSearchHeader) {
 		return (
@@ -78,11 +78,11 @@ const Header = React.memo(({
 					<CustomIcon
 						name='chevron-down'
 						color={themes[theme].headerTintColor}
-						style={[showServerDropdown && styles.upsideDown, { fontSize: subTitleFontSize }]}
+						style={[showServerDropdown && styles.upsideDown]}
 						size={18}
 					/>
 				</View>
-				{subtitle ? <Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{subtitle}</Text> : null}
+				{subtitle ? <Text style={[styles.subtitle, { color: themes[theme].auxiliaryText, fontSize: subTitleFontSize }]} numberOfLines={1}>{subtitle}</Text> : null}
 			</TouchableOpacity>
 		</View>
 	);

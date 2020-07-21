@@ -190,7 +190,7 @@ export default {
 	Message_pinned: '消息被钉住',
 	Message_removed: '消息被删除',
 	Messages: '消息',
-	Microphone_Permission_Message: 'Rocket Chat需要访问您的麦克风，以便您可以发送音频消息。',
+	Microphone_Permission_Message: 'Rocket.Chat需要访问您的麦克风，以便您可以发送音频消息。',
 	Microphone_Permission: '麦克风授权',
 	Mute: '静音',
 	muted: '被静音',

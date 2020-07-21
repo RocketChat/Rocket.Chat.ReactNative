@@ -2,11 +2,12 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const data = require('../../data');
-const { tapBack, sleep, createUser } = require('../../helpers/app');
+const { tapBack, sleep, navigateToLogin, login } = require('../../helpers/app');
 
 describe('Create room screen', () => {
 	before(async() => {
-		await createUser();
+		await navigateToLogin();
+		await login(data.users.regular.username, data.users.regular.password);
 		await element(by.id('rooms-list-view-create-channel')).tap();
 		await waitFor(element(by.id('new-message-view'))).toExist().withTimeout(2000);
 	});

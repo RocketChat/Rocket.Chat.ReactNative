@@ -1,1 +1,1 @@
-../../../FirebaseCore/FirebaseCore/Sources/Private/FIRDiagnosticsData.h
+../../../FirebaseCore/FirebaseCore/Sources/FIRDiagnosticsData.h

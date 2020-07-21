@@ -78,9 +78,7 @@ class MessagesView extends React.Component {
 	}
 
 	defineMessagesViewContent = (name) => {
-		const { messages } = this.state;
 		const { user, baseUrl, theme } = this.props;
-
 		const renderItemCommonProps = item => ({
 			item,
 			baseUrl,
@@ -101,6 +99,7 @@ class MessagesView extends React.Component {
 			Files: {
 				name: I18n.t('Files'),
 				fetchFunc: async() => {
+					const { messages } = this.state;
 					const result = await RocketChat.getFiles(this.rid, this.t, messages.length);
 					return { ...result, messages: result.files };
 				},
@@ -125,12 +124,15 @@ class MessagesView extends React.Component {
 			// Mentions Messages Screen
 			Mentions: {
 				name: I18n.t('Mentions'),
-				fetchFunc: () => RocketChat.getMessages(
-					this.rid,
-					this.t,
-					{ 'mentions._id': { $in: [user.id] } },
-					messages.length
-				),
+				fetchFunc: () => {
+					const { messages } = this.state;
+					return RocketChat.getMessages(
+						this.rid,
+						this.t,
+						{ 'mentions._id': { $in: [user.id] } },
+						messages.length
+					);
+				},
 				noDataMsg: I18n.t('No_mentioned_messages'),
 				testID: 'mentioned-messages-view',
 				renderItem: item => (
@@ -144,12 +146,15 @@ class MessagesView extends React.Component {
 			// Starred Messages Screen
 			Starred: {
 				name: I18n.t('Starred'),
-				fetchFunc: () => RocketChat.getMessages(
-					this.rid,
-					this.t,
-					{ 'starred._id': { $in: [user.id] } },
-					messages.length
-				),
+				fetchFunc: () => {
+					const { messages } = this.state;
+					return RocketChat.getMessages(
+						this.rid,
+						this.t,
+						{ 'starred._id': { $in: [user.id] } },
+						messages.length
+					);
+				},
 				noDataMsg: I18n.t('No_starred_messages'),
 				testID: 'starred-messages-view',
 				renderItem: item => (
@@ -166,7 +171,10 @@ class MessagesView extends React.Component {
 			// Pinned Messages Screen
 			Pinned: {
 				name: I18n.t('Pinned'),
-				fetchFunc: () => RocketChat.getMessages(this.rid, this.t, { pinned: true }, messages.length),
+				fetchFunc: () => {
+					const { messages } = this.state;
+					return RocketChat.getMessages(this.rid, this.t, { pinned: true }, messages.length);
+				},
 				noDataMsg: I18n.t('No_pinned_messages'),
 				testID: 'pinned-messages-view',
 				renderItem: item => (
