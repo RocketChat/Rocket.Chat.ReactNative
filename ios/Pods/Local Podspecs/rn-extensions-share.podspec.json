@@ -1,6 +1,6 @@
 {
   "name": "rn-extensions-share",
-  "version": "2.3.10",
+  "version": "2.4.0",
   "summary": "Share-Extension using react-native for both ios and android",
   "license": "MIT",
   "authors": {

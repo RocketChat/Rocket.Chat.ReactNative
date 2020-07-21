@@ -16,11 +16,10 @@
 
 #import <Foundation/Foundation.h>
 
-#import <GoogleDataTransport/GDTCOREventDataObject.h>
+#import "GDTCOREventDataObject.h"
+#import "GDTCORTargets.h"
 
 @class GDTCORClock;
-@class GDTCORDataFuture;
-@class GDTCORStoredEvent;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -47,15 +46,21 @@ typedef NS_ENUM(NSInteger, GDTCOREventQoS) {
 
 @interface GDTCOREvent : NSObject <NSSecureCoding>
 
+/** The unique ID of the event. */
+@property(readonly, nonatomic) NSString *eventID;
+
 /** The mapping identifier, to allow backends to map the transport bytes to a proto. */
-@property(readonly, nonatomic) NSString *mappingID;
+@property(nullable, readonly, nonatomic) NSString *mappingID;
 
 /** The identifier for the backend this event will eventually be sent to. */
-@property(readonly, nonatomic) NSInteger target;
+@property(readonly, nonatomic) GDTCORTarget target;
 
 /** The data object encapsulated in the transport of your choice, as long as it implements
  * the GDTCOREventDataObject protocol. */
 @property(nullable, nonatomic) id<GDTCOREventDataObject> dataObject;
+
+/** The serialized bytes from calling [dataObject transportBytes]. */
+@property(nullable, readonly, nonatomic) NSData *serializedDataObjectBytes;
 
 /** The quality of service tier this event belongs to. */
 @property(nonatomic) GDTCOREventQoS qosTier;
@@ -63,15 +68,11 @@ typedef NS_ENUM(NSInteger, GDTCOREventQoS) {
 /** The clock snapshot at the time of the event. */
 @property(nonatomic) GDTCORClock *clockSnapshot;
 
-/** A dictionary provided to aid prioritizers by allowing the passing of arbitrary data. It will be
- * retained by a copy in -copy, but not used for -hash.
- *
- * @note Ensure that classes contained therein implement NSSecureCoding to prevent loss of data.
- */
-@property(nullable, nonatomic) NSDictionary *customPrioritizationParams;
+/** The expiration date of the event. Default is 604800 seconds (7 days) from creation. */
+@property(nonatomic) NSDate *expirationDate;
 
-// Please use the designated initializer.
-- (instancetype)init NS_UNAVAILABLE;
+/** Bytes that can be used by an uploader later on. */
+@property(nullable, nonatomic) NSData *customBytes;
 
 /** Initializes an instance using the given mappingID.
  *
@@ -79,15 +80,7 @@ typedef NS_ENUM(NSInteger, GDTCOREventQoS) {
  * @param target The event's target identifier.
  * @return An instance of this class.
  */
-- (nullable instancetype)initWithMappingID:(NSString *)mappingID
-                                    target:(NSInteger)target NS_DESIGNATED_INITIALIZER;
-
-/** Returns the GDTCORStoredEvent equivalent of self.
- *
- * @param dataFuture The data future representing the transport bytes of the original event.
- * @return An equivalent GDTCORStoredEvent.
- */
-- (GDTCORStoredEvent *)storedEventWithDataFuture:(GDTCORDataFuture *)dataFuture;
+- (nullable instancetype)initWithMappingID:(NSString *)mappingID target:(GDTCORTarget)target;
 
 @end
 

@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>4.5.1</string>
+	<string>4.10.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>NSAppTransportSecurity</key>
@@ -38,11 +38,11 @@
 				<key>NSExtensionActivationDictionaryVersion</key>
 				<integer>2</integer>
 				<key>NSExtensionActivationSupportsFileWithMaxCount</key>
-				<integer>1</integer>
+				<integer>5</integer>
 				<key>NSExtensionActivationSupportsImageWithMaxCount</key>
-				<integer>1</integer>
+				<integer>5</integer>
 				<key>NSExtensionActivationSupportsMovieWithMaxCount</key>
-				<integer>1</integer>
+				<integer>5</integer>
 				<key>NSExtensionActivationSupportsText</key>
 				<true/>
 				<key>NSExtensionActivationSupportsWebPageWithMaxCount</key>

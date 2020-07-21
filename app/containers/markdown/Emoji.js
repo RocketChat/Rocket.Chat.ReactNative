@@ -9,10 +9,10 @@ import { themes } from '../../constants/colors';
 import styles from './styles';
 
 const Emoji = React.memo(({
-	emojiName, literal, isMessageContainsOnlyEmoji, getCustomEmoji, baseUrl, customEmojis, style = [], theme
+	literal, isMessageContainsOnlyEmoji, getCustomEmoji, baseUrl, customEmojis = true, style = [], theme
 }) => {
 	const emojiUnicode = shortnameToUnicode(literal);
-	const emoji = getCustomEmoji && getCustomEmoji(emojiName);
+	const emoji = getCustomEmoji && getCustomEmoji(literal.replace(/:/g, ''));
 	if (emoji && customEmojis) {
 		return (
 			<CustomEmoji
@@ -36,7 +36,6 @@ const Emoji = React.memo(({
 });
 
 Emoji.propTypes = {
-	emojiName: PropTypes.string,
 	literal: PropTypes.string,
 	isMessageContainsOnlyEmoji: PropTypes.bool,
 	getCustomEmoji: PropTypes.func,

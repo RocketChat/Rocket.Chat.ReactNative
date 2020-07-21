@@ -1,0 +1,1 @@
+db.getCollection("rocketchat_avatars.files").insert({"_id":"MKBNfes8gxMXWJ92Q","length":NumberInt(15150),"chunkSize":NumberInt(261120),"uploadDate":new Date(1584022383269),"filename":"MKBNfes8gxMXWJ92Q","md5":"c9b8c0bcfb357aad6776c79e01cfe337","contentType":"image/png"});

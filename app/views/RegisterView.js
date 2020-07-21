@@ -1,48 +1,72 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Keyboard, Text, ScrollView } from 'react-native';
+import {
+	Text, View, StyleSheet, Keyboard
+} from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 import RNPickerSelect from 'react-native-picker-select';
-import equal from 'deep-equal';
 
-import TextInput from '../containers/TextInput';
-import Button from '../containers/Button';
-import KeyboardView from '../presentation/KeyboardView';
+import log from '../utils/log';
 import sharedStyles from './Styles';
-import scrollPersistTaps from '../utils/scrollPersistTaps';
+import Button from '../containers/Button';
 import I18n from '../i18n';
+import { LegalButton } from '../containers/HeaderButton';
+import { themes } from '../constants/colors';
+import { withTheme } from '../theme';
+import FormContainer, { FormContainerInner } from '../containers/FormContainer';
+import TextInput from '../containers/TextInput';
+import isValidEmail from '../utils/isValidEmail';
+import { showErrorAlert } from '../utils/info';
 import RocketChat from '../lib/rocketchat';
 import { loginRequest as loginRequestAction } from '../actions/login';
-import isValidEmail from '../utils/isValidEmail';
-import { LegalButton } from '../containers/HeaderButton';
-import StatusBar from '../containers/StatusBar';
-import log from '../utils/log';
-import { withTheme } from '../theme';
-import { themes } from '../constants/colors';
-import { themedHeader } from '../utils/navigation';
-import { isTablet } from '../utils/deviceInfo';
-import { showErrorAlert } from '../utils/info';
+import openLink from '../utils/openLink';
+import LoginServices from '../containers/LoginServices';
+import { getShowLoginButton } from '../selectors/login';
 
-const shouldUpdateState = ['name', 'email', 'password', 'username', 'saving'];
+const styles = StyleSheet.create({
+	title: {
+		...sharedStyles.textBold,
+		fontSize: 22
+	},
+	inputContainer: {
+		marginVertical: 16
+	},
+	bottomContainer: {
+		flexDirection: 'column',
+		alignItems: 'center',
+		marginBottom: 32,
+		marginHorizontal: 30
+	},
+	bottomContainerText: {
+		...sharedStyles.textRegular,
+		fontSize: 13
+	},
+	bottomContainerTextBold: {
+		...sharedStyles.textSemibold,
+		fontSize: 13
+	},
+	registerButton: {
+		marginTop: 16,
+		marginBottom: 32
+	}
+});
 
 class RegisterView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const title = navigation.getParam('title', 'Rocket.Chat');
-		return {
-			...themedHeader(screenProps.theme),
-			title,
-			headerRight: <LegalButton testID='register-view-more' navigation={navigation} />
-		};
-	}
+	static navigationOptions = ({ route, navigation }) => ({
+		title: route.params?.title ?? 'Rocket.Chat',
+		headerRight: () => <LegalButton testID='register-view-more' navigation={navigation} />
+	});
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		loginRequest: PropTypes.func,
-		Site_Name: PropTypes.string,
+		server: PropTypes.string,
 		Accounts_CustomFields: PropTypes.string,
 		Accounts_EmailVerification: PropTypes.bool,
-		theme: PropTypes.string
+		Accounts_ManuallyApproveNewUsers: PropTypes.bool,
+		theme: PropTypes.string,
+		Site_Name: PropTypes.string,
+		loginRequest: PropTypes.func,
+		showLoginButton: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -71,29 +95,9 @@ class RegisterView extends React.Component {
 		};
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const { customFields } = this.state;
-		const { theme } = this.props;
-		if (nextProps.theme !== theme) {
-			return true;
-		}
-		if (!equal(nextState.customFields, customFields)) {
-			return true;
-		}
-		// eslint-disable-next-line react/destructuring-assignment
-		return shouldUpdateState.some(key => nextState[key] !== this.state[key]);
-	}
-
-	componentDidUpdate(prevProps) {
-		const { Site_Name } = this.props;
-		if (Site_Name && prevProps.Site_Name !== Site_Name) {
-			this.setTitle(Site_Name);
-		}
-	}
-
-	setTitle = (title) => {
-		const { navigation } = this.props;
-		navigation.setParams({ title });
+	login = () => {
+		const { navigation, Site_Name } = this.props;
+		navigation.navigate('LoginView', { title: Site_Name });
 	}
 
 	valid = () => {
@@ -119,7 +123,12 @@ class RegisterView extends React.Component {
 		const {
 			name, email, password, username, customFields
 		} = this.state;
-		const { loginRequest, Accounts_EmailVerification, navigation } = this.props;
+		const {
+			loginRequest,
+			Accounts_EmailVerification,
+			navigation,
+			Accounts_ManuallyApproveNewUsers
+		} = this.props;
 
 		try {
 			await RocketChat.register({
@@ -128,17 +137,30 @@ class RegisterView extends React.Component {
 
 			if (Accounts_EmailVerification) {
 				await navigation.goBack();
-				showErrorAlert(I18n.t('Verify_email_desc'), I18n.t('Verify_email_title'));
+				showErrorAlert(I18n.t('Verify_email_desc'), I18n.t('Registration_Succeeded'));
+			} else if (Accounts_ManuallyApproveNewUsers) {
+				await navigation.goBack();
+				showErrorAlert(I18n.t('Wait_activation_warning'), I18n.t('Registration_Succeeded'));
 			} else {
 				await loginRequest({ user: email, password });
 			}
 		} catch (e) {
-			if (e.data && e.data.errorType === 'username-invalid') {
+			if (e.data?.errorType === 'username-invalid') {
 				return loginRequest({ user: email, password });
 			}
-			showErrorAlert(e.data.error, I18n.t('Oops'));
+			if (e.data?.error) {
+				showErrorAlert(e.data.error, I18n.t('Oops'));
+			}
 		}
 		this.setState({ saving: false });
+	}
+
+	openContract = (route) => {
+		const { server, theme } = this.props;
+		if (!server) {
+			return;
+		}
+		openLink(`${ server }/${ route }`, theme);
 	}
 
 	renderCustomFields = () => {
@@ -166,7 +188,6 @@ class RegisterView extends React.Component {
 								inputRef={(e) => { this[key] = e; }}
 								placeholder={key}
 								value={customFields[key]}
-								iconLeft='flag'
 								testID='register-view-custom-picker'
 								theme={theme}
 							/>
@@ -178,9 +199,9 @@ class RegisterView extends React.Component {
 					<TextInput
 						inputRef={(e) => { this[key] = e; }}
 						key={key}
+						label={key}
 						placeholder={key}
 						value={customFields[key]}
-						iconLeft='flag'
 						onChangeText={(value) => {
 							const newValue = {};
 							newValue[key] = value;
@@ -192,6 +213,7 @@ class RegisterView extends React.Component {
 							}
 							this.avatarUrl.focus();
 						}}
+						containerStyle={styles.inputContainer}
 						theme={theme}
 					/>
 				);
@@ -203,81 +225,114 @@ class RegisterView extends React.Component {
 
 	render() {
 		const { saving } = this.state;
-		const { theme } = this.props;
+		const { theme, showLoginButton, navigation } = this.props;
 		return (
-			<KeyboardView
-				style={{ backgroundColor: themes[theme].backgroundColor }}
-				contentContainerStyle={sharedStyles.container}
-			>
-				<StatusBar theme={theme} />
-				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
-					<SafeAreaView style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]} testID='register-view' forceInset={{ vertical: 'never' }}>
-						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Sign_Up')}</Text>
-						<TextInput
-							autoFocus
-							placeholder={I18n.t('Name')}
-							returnKeyType='next'
-							iconLeft='user'
-							onChangeText={name => this.setState({ name })}
-							onSubmitEditing={() => { this.usernameInput.focus(); }}
-							testID='register-view-name'
-							theme={theme}
-						/>
-						<TextInput
-							inputRef={(e) => { this.usernameInput = e; }}
-							placeholder={I18n.t('Username')}
-							returnKeyType='next'
-							iconLeft='at'
-							onChangeText={username => this.setState({ username })}
-							onSubmitEditing={() => { this.emailInput.focus(); }}
-							testID='register-view-username'
-							theme={theme}
-						/>
-						<TextInput
-							inputRef={(e) => { this.emailInput = e; }}
-							placeholder={I18n.t('Email')}
-							returnKeyType='next'
-							keyboardType='email-address'
-							iconLeft='mail'
-							onChangeText={email => this.setState({ email })}
-							onSubmitEditing={() => { this.passwordInput.focus(); }}
-							testID='register-view-email'
-							theme={theme}
-						/>
-						<TextInput
-							inputRef={(e) => { this.passwordInput = e; }}
-							placeholder={I18n.t('Password')}
-							returnKeyType='send'
-							iconLeft='key'
-							secureTextEntry
-							onChangeText={value => this.setState({ password: value })}
-							onSubmitEditing={this.submit}
-							testID='register-view-password'
-							containerStyle={sharedStyles.inputLastChild}
-							theme={theme}
-						/>
+			<FormContainer theme={theme} testID='register-view'>
+				<FormContainerInner>
+					<LoginServices navigation={navigation} />
+					<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Sign_Up')}</Text>
+					<TextInput
+						label='Name'
+						containerStyle={styles.inputContainer}
+						placeholder={I18n.t('Name')}
+						returnKeyType='next'
+						onChangeText={name => this.setState({ name })}
+						onSubmitEditing={() => { this.usernameInput.focus(); }}
+						testID='register-view-name'
+						theme={theme}
+					/>
+					<TextInput
+						label='Username'
+						containerStyle={styles.inputContainer}
+						inputRef={(e) => { this.usernameInput = e; }}
+						placeholder={I18n.t('Username')}
+						returnKeyType='next'
+						onChangeText={username => this.setState({ username })}
+						onSubmitEditing={() => { this.emailInput.focus(); }}
+						testID='register-view-username'
+						theme={theme}
+					/>
+					<TextInput
+						label='Email'
+						containerStyle={styles.inputContainer}
+						inputRef={(e) => { this.emailInput = e; }}
+						placeholder={I18n.t('Email')}
+						returnKeyType='next'
+						keyboardType='email-address'
+						onChangeText={email => this.setState({ email })}
+						onSubmitEditing={() => { this.passwordInput.focus(); }}
+						testID='register-view-email'
+						theme={theme}
+					/>
+					<TextInput
+						label='Password'
+						containerStyle={styles.inputContainer}
+						inputRef={(e) => { this.passwordInput = e; }}
+						placeholder={I18n.t('Password')}
+						returnKeyType='send'
+						secureTextEntry
+						onChangeText={value => this.setState({ password: value })}
+						onSubmitEditing={this.submit}
+						testID='register-view-password'
+						theme={theme}
+					/>
 
-						{this.renderCustomFields()}
+					{this.renderCustomFields()}
 
-						<Button
-							title={I18n.t('Register')}
-							type='primary'
-							onPress={this.submit}
-							testID='register-view-submit'
-							disabled={!this.valid()}
-							loading={saving}
-							theme={theme}
-						/>
-					</SafeAreaView>
-				</ScrollView>
-			</KeyboardView>
+					<Button
+						title={I18n.t('Register')}
+						type='primary'
+						onPress={this.submit}
+						testID='register-view-submit'
+						disabled={!this.valid()}
+						loading={saving}
+						theme={theme}
+						style={styles.registerButton}
+					/>
+
+					<View style={styles.bottomContainer}>
+						<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>
+							{`${ I18n.t('Onboarding_agree_terms') }\n`}
+							<Text
+								style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
+								onPress={() => this.openContract('terms-of-service')}
+							>{I18n.t('Terms_of_Service')}
+							</Text> {I18n.t('and')}
+							<Text
+								style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
+								onPress={() => this.openContract('privacy-policy')}
+							> {I18n.t('Privacy_Policy')}
+							</Text>
+						</Text>
+					</View>
+
+					{showLoginButton
+						? (
+							<View style={styles.bottomContainer}>
+								<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Do_you_have_an_account')}</Text>
+								<Text
+									style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
+									onPress={this.login}
+								>{I18n.t('Login')}
+								</Text>
+							</View>
+						) : null}
+				</FormContainerInner>
+			</FormContainer>
 		);
 	}
 }
 
 const mapStateToProps = state => ({
+	server: state.server.server,
+	Site_Name: state.settings.Site_Name,
+	Gitlab_URL: state.settings.API_Gitlab_URL,
+	CAS_enabled: state.settings.CAS_enabled,
+	CAS_login_url: state.settings.CAS_login_url,
 	Accounts_CustomFields: state.settings.Accounts_CustomFields,
-	Accounts_EmailVerification: state.settings.Accounts_EmailVerification
+	Accounts_EmailVerification: state.settings.Accounts_EmailVerification,
+	Accounts_ManuallyApproveNewUsers: state.settings.Accounts_ManuallyApproveNewUsers,
+	showLoginButton: getShowLoginButton(state)
 });
 
 const mapDispatchToProps = dispatch => ({

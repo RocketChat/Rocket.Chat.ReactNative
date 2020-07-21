@@ -153,7 +153,6 @@ export default {
 	Collaborative: 'コラボ',
 	Confirm: '承認',
 	Connect: '接続',
-	Connect_to_a_server: 'サーバーに接続',
 	Connected: '接続しました',
 	connecting_server: 'サーバーに接続中',
 	Connecting: '接続中...',
@@ -216,7 +215,6 @@ export default {
 	Following_thread: 'スレッド更新時に通知',
 	For_your_security_you_must_enter_your_current_password_to_continue:
     'セキュリティのため、続けるには現在のパスワードを入力してください。',
-	Forgot_my_password: 'パスワードを忘れた',
 	Forgot_password_If_this_email_is_registered:
     '送信したメールアドレスが登録されていれば、パスワードのリセット方法を送信しました。メールアドレスがすぐに来ない場合はやり直してください。',
 	Forgot_password: 'パスワードを忘れた',
@@ -234,15 +232,14 @@ export default {
     'アプリを表示中にはバナーを上部に表示し、デスクトップには通知を送ります。',
 	Invisible: '状態を隠す',
 	Invite: '招待',
-	is_a_valid_RocketChat_instance: 'は正しいRocket Chatのインスタンスです',
-	is_not_a_valid_RocketChat_instance: 'はRocket Chatのインスタンスではありません',
+	is_a_valid_RocketChat_instance: 'は正しいRocket.Chatのインスタンスです',
+	is_not_a_valid_RocketChat_instance: 'はRocket.Chatのインスタンスではありません',
 	is_typing: 'が入力中',
 	Invalid_or_expired_invite_token: '招待トークンが無効か、期限が切れています',
 	Invalid_server_version:
     '接続しようとしているサーバーのバージョン（{{currentVersion}}）はサポートされていません。\n\nサポートする最低バージョンは {{minVersion}} です',
 	Invite_Link: '招待リンク',
 	Invite_users: 'ユーザーを招待',
-	Join_the_community: 'コミュニティに参加',
 	Join: '参加',
 	Just_invited_people_can_access_this_channel:
     '招待されたユーザーだけがこのチャンネルに参加できます',
@@ -275,7 +272,7 @@ export default {
 	Messages: 'メッセージ',
 	Message_Reported: 'メッセージを報告しました',
 	Microphone_Permission_Message:
-    'Rocket Chatは音声メッセージを送信するのにマイクのアクセスの許可が必要です。',
+    'Rocket.Chatは音声メッセージを送信するのにマイクのアクセスの許可が必要です。',
 	Microphone_Permission: 'マイクの許可',
 	Mute: 'ミュート',
 	muted: 'ミュートした',
@@ -301,7 +298,7 @@ export default {
 	No_Reactions: 'リアクションなし',
 	No_Read_Receipts: '未読通知はありません',
 	Not_logged: 'ログされていません',
-	Not_RC_Server: 'Rocket Chatサーバーではありません。\n{{contact}}',
+	Not_RC_Server: 'Rocket.Chatサーバーではありません。\n{{contact}}',
 	Nothing: '何もなし',
 	Nothing_to_save: '保存するものはありません！',
 	Notify_active_in_this_room: 'このルームのアクティブなユーザーに通知する',
@@ -311,6 +308,7 @@ export default {
 	Notification_Preferences: '通知設定',
 	Offline: 'オフライン',
 	Oops: 'おっと！',
+	Onboarding_title: 'Rocket.Chatへようこそ',
 	Online: 'オンライン',
 	Only_authorized_users_can_write_new_messages:
     '承認されたユーザーだけが新しいメッセージを書き込めます',
@@ -487,11 +485,10 @@ export default {
 	Voice_call: '音声通話',
 	Websocket_disabled: 'Websocketはこのサーバーでは無効化されています。\n{{contact}}',
 	Welcome: 'ようこそ',
-	Welcome_to_RocketChat: 'Rocket.Chatへようこそ',
 	Whats_your_2fa: '2段階認証のコードを入力してください',
 	Without_Servers: 'サーバーを除く',
 	Write_External_Permission_Message:
-    'Rocket Chatは画像を保存するためにギャラリーへのアクセスを求めています。',
+    'Rocket.Chatは画像を保存するためにギャラリーへのアクセスを求めています。',
 	Write_External_Permission: 'ギャラリーへのアクセス許可',
 	Yes_action_it: 'はい、{{action}}します！',
 	Yesterday: '昨日',

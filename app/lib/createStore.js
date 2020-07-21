@@ -1,9 +1,9 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import applyAppStateListener from 'redux-enhancer-react-native-appstate';
 
 import reducers from '../reducers';
 import sagas from '../sagas';
+import applyAppStateMiddleware from './appStateMiddleware';
 
 let sagaMiddleware;
 let enhancers;
@@ -16,7 +16,7 @@ if (__DEV__) {
 	});
 
 	enhancers = compose(
-		applyAppStateListener(),
+		applyAppStateMiddleware(),
 		applyMiddleware(reduxImmutableStateInvariant),
 		applyMiddleware(sagaMiddleware),
 		Reactotron.createEnhancer()
@@ -24,7 +24,7 @@ if (__DEV__) {
 } else {
 	sagaMiddleware = createSagaMiddleware();
 	enhancers = compose(
-		applyAppStateListener(),
+		applyAppStateMiddleware(),
 		applyMiddleware(sagaMiddleware)
 	);
 }

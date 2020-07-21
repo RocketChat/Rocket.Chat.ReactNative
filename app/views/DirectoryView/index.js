@@ -4,7 +4,6 @@ import {
 	View, FlatList, Text
 } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 
 import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
@@ -22,17 +21,17 @@ import Options from './Options';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
 import styles from './styles';
-import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
+import SafeAreaView from '../../containers/SafeAreaView';
+import { goRoom } from '../../utils/goRoom';
 
 class DirectoryView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
+	static navigationOptions = ({ navigation, isMasterDetail }) => {
 		const options = {
-			...themedHeader(screenProps.theme),
 			title: I18n.t('Directory')
 		};
-		if (screenProps.split) {
-			options.headerLeft = <CloseModalButton navigation={navigation} testID='directory-view-close' />;
+		if (isMasterDetail) {
+			options.headerLeft = () => <CloseModalButton navigation={navigation} testID='directory-view-close' />;
 		}
 		return options;
 	}
@@ -45,7 +44,9 @@ class DirectoryView extends React.Component {
 			id: PropTypes.string,
 			token: PropTypes.string
 		}),
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		directoryDefaultView: PropTypes.string,
+		isMasterDetail: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -57,7 +58,7 @@ class DirectoryView extends React.Component {
 			total: -1,
 			showOptionsDropdown: false,
 			globalUsers: true,
-			type: 'channels'
+			type: props.directoryDefaultView
 		};
 	}
 
@@ -124,10 +125,14 @@ class DirectoryView extends React.Component {
 		this.setState(({ showOptionsDropdown }) => ({ showOptionsDropdown: !showOptionsDropdown }));
 	}
 
-	goRoom = async({ rid, name, t }) => {
-		const { navigation } = this.props;
-		await navigation.navigate('RoomsListView');
-		navigation.navigate('RoomView', { rid, name, t });
+	goRoom = (item) => {
+		const { navigation, isMasterDetail } = this.props;
+		if (isMasterDetail) {
+			navigation.navigate('DrawerNavigator');
+		} else {
+			navigation.navigate('RoomsListView');
+		}
+		goRoom({ item, isMasterDetail });
 	}
 
 	onPressItem = async(item) => {
@@ -138,7 +143,9 @@ class DirectoryView extends React.Component {
 				this.goRoom({ rid: result.room._id, name: item.username, t: 'd' });
 			}
 		} else {
-			this.goRoom({ rid: item._id, name: item.name, t: 'c' });
+			this.goRoom({
+				rid: item._id, name: item.name, t: 'c', search: true
+			});
 		}
 	}
 
@@ -159,9 +166,9 @@ class DirectoryView extends React.Component {
 					theme={theme}
 				>
 					<View style={[sharedStyles.separatorVertical, styles.toggleDropdownContainer, { borderColor: themes[theme].separatorColor }]}>
-						<CustomIcon style={[styles.toggleDropdownIcon, { color: themes[theme].tintColor }]} size={20} name={type === 'users' ? 'user' : 'hashtag'} />
+						<CustomIcon style={[styles.toggleDropdownIcon, { color: themes[theme].tintColor }]} size={20} name={type === 'users' ? 'user' : 'hash'} />
 						<Text style={[styles.toggleDropdownText, { color: themes[theme].tintColor }]}>{type === 'users' ? I18n.t('Users') : I18n.t('Channels')}</Text>
-						<CustomIcon name='arrow-down' size={20} style={[styles.toggleDropdownArrow, { color: themes[theme].auxiliaryTintColor }]} />
+						<CustomIcon name='chevron-down' size={20} style={[styles.toggleDropdownArrow, { color: themes[theme].auxiliaryTintColor }]} />
 					</View>
 				</Touch>
 			</>
@@ -179,7 +186,10 @@ class DirectoryView extends React.Component {
 
 		let style;
 		if (index === data.length - 1) {
-			style = sharedStyles.separatorBottom;
+			style = {
+				...sharedStyles.separatorBottom,
+				borderColor: themes[theme].separatorColor
+			};
 		}
 
 		const commonProps = {
@@ -220,7 +230,11 @@ class DirectoryView extends React.Component {
 		} = this.state;
 		const { isFederationEnabled, theme } = this.props;
 		return (
-			<SafeAreaView style={[styles.safeAreaView, { backgroundColor: themes[theme].backgroundColor }]} testID='directory-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView
+				style={{ backgroundColor: themes[theme].backgroundColor }}
+				testID='directory-view'
+				theme={theme}
+			>
 				<StatusBar theme={theme} />
 				<FlatList
 					data={data}
@@ -256,7 +270,9 @@ class DirectoryView extends React.Component {
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
-	isFederationEnabled: state.settings.FEDERATION_Enabled
+	isFederationEnabled: state.settings.FEDERATION_Enabled,
+	directoryDefaultView: state.settings.Accounts_Directory_DefaultView,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 export default connect(mapStateToProps)(withTheme(DirectoryView));

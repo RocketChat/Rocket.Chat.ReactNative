@@ -10,6 +10,7 @@ import reduxStore from '../../createStore';
 import { addUserTyping, removeUserTyping, clearUserTyping } from '../../../actions/usersTyping';
 import debounce from '../../../utils/debounce';
 import RocketChat from '../../rocketchat';
+import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
 
 const WINDOW_TIME = 1000;
 
@@ -38,6 +39,8 @@ export default class RoomSubscription {
 		if (!this.isAlive) {
 			this.unsubscribe();
 		}
+
+		reduxStore.dispatch(subscribeRoom(this.rid));
 	}
 
 	unsubscribe = async() => {
@@ -51,14 +54,16 @@ export default class RoomSubscription {
 				// do nothing
 			}
 		}
+		reduxStore.dispatch(clearUserTyping());
 		this.removeListener(this.connectedListener);
 		this.removeListener(this.disconnectedListener);
 		this.removeListener(this.notifyRoomListener);
 		this.removeListener(this.messageReceivedListener);
-		reduxStore.dispatch(clearUserTyping());
 		if (this.timer) {
 			clearTimeout(this.timer);
 		}
+
+		reduxStore.dispatch(unsubscribeRoom(this.rid));
 	}
 
 	removeListener = async(promise) => {
@@ -73,6 +78,7 @@ export default class RoomSubscription {
 	};
 
 	handleConnection = () => {
+		reduxStore.dispatch(clearUserTyping());
 		RocketChat.loadMissedMessages({ rid: this.rid }).catch(e => console.log(e));
 	};
 
@@ -82,11 +88,16 @@ export default class RoomSubscription {
 			return;
 		}
 		if (ev === 'typing') {
-			const [username, typing] = ddpMessage.fields.args;
-			if (typing) {
-				reduxStore.dispatch(addUserTyping(username));
-			} else {
-				reduxStore.dispatch(removeUserTyping(username));
+			const { user } = reduxStore.getState().login;
+			const { UI_Use_Real_Name } = reduxStore.getState().settings;
+			const [name, typing] = ddpMessage.fields.args;
+			const key = UI_Use_Real_Name ? 'name' : 'username';
+			if (name !== user[key]) {
+				if (typing) {
+					reduxStore.dispatch(addUserTyping(name));
+				} else {
+					reduxStore.dispatch(removeUserTyping(name));
+				}
 			}
 		} else if (ev === 'deleteMessage') {
 			InteractionManager.runAfterInteractions(async() => {
@@ -151,22 +162,17 @@ export default class RoomSubscription {
 			const msgCollection = db.collections.get('messages');
 			const threadsCollection = db.collections.get('threads');
 			const threadMessagesCollection = db.collections.get('thread_messages');
-			let messageRecord;
-			let threadRecord;
-			let threadMessageRecord;
 
 			// Create or update message
 			try {
-				messageRecord = await msgCollection.find(message._id);
-			} catch (error) {
-				// Do nothing
-			}
-			if (messageRecord) {
-				const update = messageRecord.prepareUpdate((m) => {
-					Object.assign(m, message);
-				});
-				this._messagesBatch[message._id] = update;
-			} else {
+				const messageRecord = await msgCollection.find(message._id);
+				if (!messageRecord._hasPendingUpdate) {
+					const update = messageRecord.prepareUpdate(protectedFunction((m) => {
+						Object.assign(m, message);
+					}));
+					this._messagesBatch[message._id] = update;
+				}
+			} catch {
 				const create = msgCollection.prepareCreate(protectedFunction((m) => {
 					m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
 					m.subscription.id = this.rid;
@@ -178,17 +184,14 @@ export default class RoomSubscription {
 			// Create or update thread
 			if (message.tlm) {
 				try {
-					threadRecord = await threadsCollection.find(message._id);
-				} catch (error) {
-					// Do nothing
-				}
-
-				if (threadRecord) {
-					const updateThread = threadRecord.prepareUpdate(protectedFunction((t) => {
-						Object.assign(t, message);
-					}));
-					this._threadsBatch[message._id] = updateThread;
-				} else {
+					const threadRecord = await threadsCollection.find(message._id);
+					if (!threadRecord._hasPendingUpdate) {
+						const updateThread = threadRecord.prepareUpdate(protectedFunction((t) => {
+							Object.assign(t, message);
+						}));
+						this._threadsBatch[message._id] = updateThread;
+					}
+				} catch {
 					const createThread = threadsCollection.prepareCreate(protectedFunction((t) => {
 						t._raw = sanitizedRaw({ id: message._id }, threadsCollection.schema);
 						t.subscription.id = this.rid;
@@ -201,19 +204,16 @@ export default class RoomSubscription {
 			// Create or update thread message
 			if (message.tmid) {
 				try {
-					threadMessageRecord = await threadMessagesCollection.find(message._id);
-				} catch (error) {
-					// Do nothing
-				}
-
-				if (threadMessageRecord) {
-					const updateThreadMessage = threadMessageRecord.prepareUpdate(protectedFunction((tm) => {
-						Object.assign(tm, message);
-						tm.rid = message.tmid;
-						delete tm.tmid;
-					}));
-					this._threadMessagesBatch[message._id] = updateThreadMessage;
-				} else {
+					const threadMessageRecord = await threadMessagesCollection.find(message._id);
+					if (!threadMessageRecord._hasPendingUpdate) {
+						const updateThreadMessage = threadMessageRecord.prepareUpdate(protectedFunction((tm) => {
+							Object.assign(tm, message);
+							tm.rid = message.tmid;
+							delete tm.tmid;
+						}));
+						this._threadMessagesBatch[message._id] = updateThreadMessage;
+					}
+				} catch {
 					const createThreadMessage = threadMessagesCollection.prepareCreate(protectedFunction((tm) => {
 						tm._raw = sanitizedRaw({ id: message._id }, threadMessagesCollection.schema);
 						Object.assign(tm, message);

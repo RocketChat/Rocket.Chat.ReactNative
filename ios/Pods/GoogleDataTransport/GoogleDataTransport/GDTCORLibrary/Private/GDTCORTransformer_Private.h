@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-#import "GDTCORLibrary/Private/GDTCORTransformer.h"
-
-@class GDTCORStorage;
+#import "GoogleDataTransport/GDTCORLibrary/Private/GDTCORTransformer.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -24,9 +22,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** The queue on which all work will occur. */
 @property(nonatomic) dispatch_queue_t eventWritingQueue;
-
-/** The storage instance used to store events. Should only be used to inject a testing fake. */
-@property(nonatomic) GDTCORStorage *storageInstance;
 
 @end
 

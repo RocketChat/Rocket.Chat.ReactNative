@@ -25,7 +25,8 @@ class Touchable extends React.Component {
 		toggleRead: PropTypes.func,
 		hideChannel: PropTypes.func,
 		children: PropTypes.element,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		isFocused: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -55,7 +56,7 @@ class Touchable extends React.Component {
 		_handleRelease = (nativeEvent) => {
 			const { translationX } = nativeEvent;
 			const { rowState } = this.state;
-			this._value = this._value + translationX;
+			this._value += translationX;
 
 			let toValue = 0;
 			if (rowState === 0) { // if no option is opened
@@ -167,7 +168,7 @@ class Touchable extends React.Component {
 
 		render() {
 			const {
-				testID, isRead, width, favorite, children, theme
+				testID, isRead, width, favorite, children, theme, isFocused
 			} = this.props;
 
 			return (
@@ -203,7 +204,7 @@ class Touchable extends React.Component {
 								theme={theme}
 								testID={testID}
 								style={{
-									backgroundColor: themes[theme].backgroundColor
+									backgroundColor: isFocused ? themes[theme].chatComponentBackground : themes[theme].backgroundColor
 								}}
 							>
 								{children}

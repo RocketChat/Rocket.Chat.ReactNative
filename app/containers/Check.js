@@ -13,9 +13,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Check = React.memo(({ theme }) => <CustomIcon style={styles.icon} color={themes[theme].tintColor} size={22} name='check' />);
+const Check = React.memo(({ theme, style }) => <CustomIcon style={[styles.icon, style]} color={themes[theme].tintColor} size={22} name='check' />);
 
 Check.propTypes = {
+	style: PropTypes.object,
 	theme: PropTypes.string
 };
 

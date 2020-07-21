@@ -4,7 +4,6 @@ import {
 	FlatList, View, Text, InteractionManager
 } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 import moment from 'moment';
 import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
@@ -23,9 +22,9 @@ import debounce from '../../utils/debounce';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
-import ModalNavigation from '../../lib/ModalNavigation';
 import { getUserSelector } from '../../selectors/login';
+import SafeAreaView from '../../containers/SafeAreaView';
+import { CloseModalButton } from '../../containers/HeaderButton';
 
 const Separator = React.memo(({ theme }) => <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />);
 Separator.propTypes = {
@@ -35,26 +34,32 @@ Separator.propTypes = {
 const API_FETCH_COUNT = 50;
 
 class ThreadMessagesView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		...themedHeader(screenProps.theme),
-		title: I18n.t('Threads')
-	});
+	static navigationOptions = ({ navigation, isMasterDetail }) => {
+		const options = {
+			title: I18n.t('Threads')
+		};
+		if (isMasterDetail) {
+			options.headerLeft = () => <CloseModalButton navigation={navigation} />;
+		}
+		return options;
+	}
 
 	static propTypes = {
 		user: PropTypes.object,
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		baseUrl: PropTypes.string,
 		useRealName: PropTypes.bool,
 		theme: PropTypes.string,
 		customEmojis: PropTypes.object,
-		screenProps: PropTypes.object
+		isMasterDetail: PropTypes.bool
 	}
 
 	constructor(props) {
 		super(props);
 		this.mounted = false;
-		this.rid = props.navigation.getParam('rid');
-		this.t = props.navigation.getParam('t');
+		this.rid = props.route.params?.rid;
+		this.t = props.route.params?.t;
 		this.state = {
 			loading: false,
 			end: false,
@@ -71,11 +76,9 @@ class ThreadMessagesView extends React.Component {
 	}
 
 	componentWillUnmount() {
+		console.countReset(`${ this.constructor.name }.render calls`);
 		if (this.mountInteraction && this.mountInteraction.cancel) {
 			this.mountInteraction.cancel();
-		}
-		if (this.loadInteraction && this.loadInteraction.cancel) {
-			this.loadInteraction.cancel();
 		}
 		if (this.syncInteraction && this.syncInteraction.cancel) {
 			this.syncInteraction.cancel();
@@ -89,13 +92,14 @@ class ThreadMessagesView extends React.Component {
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	subscribeData = () => {
+	subscribeData = async() => {
 		try {
 			const db = database.active;
-			this.subObservable = db.collections
+			const subscription = await db.collections
 				.get('subscriptions')
-				.findAndObserve(this.rid);
-			this.subSubscription = this.subObservable
+				.find(this.rid);
+			const observable = subscription.observe();
+			this.subSubscription = observable
 				.subscribe((data) => {
 					this.subscription = data;
 				});
@@ -116,14 +120,14 @@ class ThreadMessagesView extends React.Component {
 					}
 				});
 		} catch (e) {
-			log(e);
+			// Do nothing
 		}
 	}
 
 	// eslint-disable-next-line react/sort-comp
 	init = () => {
 		if (!this.subscription) {
-			return;
+			return this.load();
 		}
 		try {
 			const lastThreadSync = new Date();
@@ -138,6 +142,13 @@ class ThreadMessagesView extends React.Component {
 	}
 
 	updateThreads = async({ update, remove, lastThreadSync }) => {
+		// if there's no subscription, manage data on this.state.messages
+		// note: sync will never be called without subscription
+		if (!this.subscription) {
+			this.setState(({ messages }) => ({ messages: [...messages, ...update] }));
+			return;
+		}
+
 		try {
 			const db = database.active;
 			const threadsCollection = db.collections.get('threads');
@@ -198,13 +209,10 @@ class ThreadMessagesView extends React.Component {
 				rid: this.rid, count: API_FETCH_COUNT, offset: messages.length
 			});
 			if (result.success) {
-				this.loadInteraction = InteractionManager.runAfterInteractions(() => {
-					this.updateThreads({ update: result.threads, lastThreadSync });
-
-					this.setState({
-						loading: false,
-						end: result.count < API_FETCH_COUNT
-					});
+				this.updateThreads({ update: result.threads, lastThreadSync });
+				this.setState({
+					loading: false,
+					end: result.count < API_FETCH_COUNT
 				});
 			}
 		} catch (e) {
@@ -260,7 +268,10 @@ class ThreadMessagesView extends React.Component {
 	}
 
 	onThreadPress = debounce((item) => {
-		const { navigation } = this.props;
+		const { navigation, isMasterDetail } = this.props;
+		if (isMasterDetail) {
+			navigation.pop();
+		}
 		navigation.push('RoomView', {
 			rid: item.subscription.id, tmid: item.id, name: item.msg, t: 'thread'
 		});
@@ -281,16 +292,11 @@ class ThreadMessagesView extends React.Component {
 	}
 
 	navToRoomInfo = (navParam) => {
-		const { navigation, user, screenProps } = this.props;
+		const { navigation, user } = this.props;
 		if (navParam.rid === user.id) {
 			return;
 		}
-		if (screenProps && screenProps.split) {
-			navigation.navigate('RoomActionsView', { rid: this.rid, t: this.t });
-			ModalNavigation.navigate('RoomInfoView', navParam);
-		} else {
-			navigation.navigate('RoomInfoView', navParam);
-		}
+		navigation.navigate('RoomInfoView', navParam);
 	}
 
 	renderItem = ({ item }) => {
@@ -319,6 +325,7 @@ class ThreadMessagesView extends React.Component {
 	}
 
 	render() {
+		console.count(`${ this.constructor.name }.render calls`);
 		const { loading, messages } = this.state;
 		const { theme } = this.props;
 
@@ -327,7 +334,7 @@ class ThreadMessagesView extends React.Component {
 		}
 
 		return (
-			<SafeAreaView style={styles.list} testID='thread-messages-view' forceInset={{ vertical: 'never' }}>
+			<SafeAreaView testID='thread-messages-view' theme={theme}>
 				<StatusBar theme={theme} />
 				<FlatList
 					data={messages}
@@ -335,7 +342,7 @@ class ThreadMessagesView extends React.Component {
 					renderItem={this.renderItem}
 					style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 					contentContainerStyle={styles.contentContainer}
-					keyExtractor={item => item.id}
+					keyExtractor={item => item._id}
 					onEndReached={this.load}
 					onEndReachedThreshold={0.5}
 					maxToRenderPerBatch={5}
@@ -352,7 +359,8 @@ const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	useRealName: state.settings.UI_Use_Real_Name,
-	customEmojis: state.customEmojis
+	customEmojis: state.customEmojis,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 export default connect(mapStateToProps)(withTheme(ThreadMessagesView));

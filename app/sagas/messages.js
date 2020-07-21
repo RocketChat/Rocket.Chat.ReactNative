@@ -1,4 +1,4 @@
-import { takeLatest } from 'redux-saga/effects';
+import { takeLatest, select } from 'redux-saga/effects';
 import { Q } from '@nozbe/watermelondb';
 
 import Navigation from '../lib/Navigation';
@@ -6,31 +6,29 @@ import { MESSAGES } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
 import log from '../utils/log';
-
-const goRoom = function goRoom({
-	rid, name, fname, message
-}) {
-	Navigation.navigate('RoomsListView');
-	Navigation.navigate('RoomView', {
-		rid, name, fname, t: 'd', message
-	});
-};
+import { goRoom } from '../utils/goRoom';
 
 const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 	try {
 		const db = database.active;
-		const { username, name } = message.u;
+		const { username } = message.u;
 		const subsCollection = db.collections.get('subscriptions');
 		const subscriptions = yield subsCollection.query(Q.where('name', username)).fetch();
-		if (subscriptions.length) {
-			yield goRoom({
-				rid: subscriptions[0].rid, name: username, fname: name, message
-			});
+
+		const isMasterDetail = yield select(state => state.app.isMasterDetail);
+		if (isMasterDetail) {
+			Navigation.navigate('DrawerNavigator');
 		} else {
-			const room = yield RocketChat.createDirectMessage(username);
-			yield goRoom({
-				rid: room.rid, name: username, fname: name, message
-			});
+			Navigation.navigate('RoomsListView');
+		}
+
+		if (subscriptions.length) {
+			goRoom({ item: subscriptions[0], isMasterDetail, message });
+		} else {
+			const result = yield RocketChat.createDirectMessage(username);
+			if (result?.success) {
+				goRoom({ item: result?.room, isMasterDetail, message });
+			}
 		}
 	} catch (e) {
 		log(e);

@@ -22,6 +22,7 @@ import MarkdownTableCell from './TableCell';
 import mergeTextNodes from './mergeTextNodes';
 
 import styles from './styles';
+import { isValidURL } from '../../utils/url';
 
 // Support <http://link|Text>
 const formatText = text => text.replace(
@@ -260,13 +261,12 @@ class Markdown extends PureComponent {
 		);
 	}
 
-	renderEmoji = ({ emojiName, literal }) => {
+	renderEmoji = ({ literal }) => {
 		const {
-			getCustomEmoji, baseUrl, customEmojis = true, style, theme
+			getCustomEmoji, baseUrl, customEmojis, style, theme
 		} = this.props;
 		return (
 			<MarkdownEmoji
-				emojiName={emojiName}
 				literal={literal}
 				isMessageContainsOnlyEmoji={this.isMessageContainsOnlyEmoji}
 				getCustomEmoji={getCustomEmoji}
@@ -278,7 +278,18 @@ class Markdown extends PureComponent {
 		);
 	}
 
-	renderImage = ({ src }) => <Image style={styles.inlineImage} source={{ uri: src }} />;
+	renderImage = ({ src }) => {
+		if (!isValidURL(src)) {
+			return null;
+		}
+
+		return (
+			<Image
+				style={styles.inlineImage}
+				source={{ uri: encodeURI(src) }}
+			/>
+		);
+	}
 
 	renderEditedIndicator = () => {
 		const { theme } = this.props;
@@ -372,9 +383,9 @@ class Markdown extends PureComponent {
 		m = m.replace(/^\[([\s]]*)\]\(([^)]*)\)\s/, '').trim();
 
 		if (preview) {
-			m = m.replace(/\n+/g, ' ');
 			m = shortnameToUnicode(m);
 			m = removeMarkdown(m);
+			m = m.replace(/\n+/g, ' ');
 			return (
 				<Text accessibilityLabel={m} style={[styles.text, { color: themes[theme].bodyText }, ...style]} numberOfLines={numberOfLines} testID={testID}>
 					{m}

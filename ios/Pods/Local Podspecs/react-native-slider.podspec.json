@@ -1,6 +1,6 @@
 {
   "name": "react-native-slider",
-  "version": "2.0.5",
+  "version": "3.0.2",
   "summary": "React Native component used to select a single value from a range of values.",
   "license": "MIT",
   "authors": "react-native-community",
@@ -10,7 +10,7 @@
   },
   "source": {
     "git": "https://github.com/react-native-community/react-native-slider.git",
-    "tag": "v2.0.5"
+    "tag": "v3.0.2"
   },
   "source_files": "ios/**/*.{h,m}",
   "dependencies": {

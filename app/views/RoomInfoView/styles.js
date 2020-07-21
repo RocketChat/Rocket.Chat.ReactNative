@@ -16,28 +16,32 @@ export default StyleSheet.create({
 		justifyContent: 'center'
 	},
 	avatarContainer: {
-		height: 240,
+		minHeight: 240,
 		flexDirection: 'column',
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginBottom: 20
 	},
 	avatarContainerDirectRoom: {
-		height: 320
+		paddingVertical: 16,
+		minHeight: 320
 	},
 	avatar: {
 		marginHorizontal: 10
 	},
 	roomTitleContainer: {
 		paddingTop: 20,
+		marginHorizontal: 16,
 		alignItems: 'center'
 	},
 	roomTitle: {
 		fontSize: 20,
+		...sharedStyles.textAlignCenter,
 		...sharedStyles.textMedium
 	},
 	roomUsername: {
 		fontSize: 18,
+		...sharedStyles.textAlignCenter,
 		...sharedStyles.textRegular
 	},
 	roomTitleRow: {

@@ -14,6 +14,7 @@ class RightButtonsContainer extends React.PureComponent {
 		t: PropTypes.string,
 		tmid: PropTypes.string,
 		navigation: PropTypes.object,
+		isMasterDetail: PropTypes.bool,
 		toggleFollowThread: PropTypes.func
 	};
 
@@ -57,8 +58,25 @@ class RightButtonsContainer extends React.PureComponent {
 	}
 
 	goThreadsView = () => {
-		const { rid, t, navigation } = this.props;
-		navigation.navigate('ThreadMessagesView', { rid, t });
+		const {
+			rid, t, navigation, isMasterDetail
+		} = this.props;
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', { screen: 'ThreadMessagesView', params: { rid, t } });
+		} else {
+			navigation.navigate('ThreadMessagesView', { rid, t });
+		}
+	}
+
+	goSearchView = () => {
+		const {
+			rid, navigation, isMasterDetail
+		} = this.props;
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', { screen: 'SearchMessagesView', params: { rid, showCloseModal: true } });
+		} else {
+			navigation.navigate('SearchMessagesView', { rid });
+		}
 	}
 
 	toggleFollowThread = () => {
@@ -80,7 +98,7 @@ class RightButtonsContainer extends React.PureComponent {
 				<CustomHeaderButtons>
 					<Item
 						title='bell'
-						iconName={isFollowingThread ? 'bell' : 'Bell-off'}
+						iconName={isFollowingThread ? 'bell' : 'bell-off'}
 						onPress={this.toggleFollowThread}
 						testID={isFollowingThread ? 'room-view-header-unfollow' : 'room-view-header-follow'}
 					/>
@@ -91,12 +109,18 @@ class RightButtonsContainer extends React.PureComponent {
 			<CustomHeaderButtons>
 				{threadsEnabled ? (
 					<Item
-						title='thread'
-						iconName='thread'
+						title='threads'
+						iconName='threads'
 						onPress={this.goThreadsView}
 						testID='room-view-header-threads'
 					/>
 				) : null}
+				<Item
+					title='search'
+					iconName='magnifier'
+					onPress={this.goSearchView}
+					testID='room-view-search'
+				/>
 			</CustomHeaderButtons>
 		);
 	}
@@ -104,7 +128,8 @@ class RightButtonsContainer extends React.PureComponent {
 
 const mapStateToProps = state => ({
 	userId: getUserSelector(state).id,
-	threadsEnabled: state.settings.Threads_enabled
+	threadsEnabled: state.settings.Threads_enabled,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 export default connect(mapStateToProps)(RightButtonsContainer);

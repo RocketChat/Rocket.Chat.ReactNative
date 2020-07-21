@@ -1,5 +1,4 @@
 <resources>
     <string name="app_name">Rocket.Chat Experimental</string>
     <string name="share_extension_name">Rocket.Chat Experimental</string>
-    <string name="no_browser_found">No Browser Found</string>
 </resources>
