@@ -25,10 +25,9 @@ commands:
         type: string
     steps:
       - checkout
-      - attach_workspace:
-          at: .
       - restore-npm-cache-mac
       - restore-brew-cache
+      - restore-app-cache
       - install-node
       - install-apple-sim-utils
       - install-npm-modules
@@ -159,6 +158,42 @@ commands:
             npx detox clean-framework-cache
             npx detox build-framework-cache
 
+  save-app-cache:
+    description: Restore previously built app
+    steps:
+      - run:
+          name: Generate cache key for app source
+          command: |
+            echo $(git rev-parse HEAD:app) > "./app-git-revision.txt"
+      - save_cache:
+          key: iOSDetoxRelease-{{ checksum "yarn.lock" }}-{{ checksum "ios/Podfile.lock" }}-{{ checksum  "./app-git-revision.txt" }}
+          paths:
+            - ios/build/Build/Products/Release-iphonesimulator/RocketChatRN.app
+
+  restore-app-cache:
+    description: Save built app to cache
+    steps:
+      - run:
+          name: Generate cache key for app source
+          command: |
+            echo $(git rev-parse HEAD:app) > "./app-git-revision.txt"
+      - restore_cache:
+          key: iOSDetoxRelease-{{ checksum "yarn.lock" }}-{{ checksum "ios/Podfile.lock" }}-{{ checksum  "./app-git-revision.txt" }}
+
+  did-restore-app-cache:
+    description: Tests to see if an app was restored from the restore-app-cache job
+    steps:
+      - run: 
+          name: if cache exists exit
+          command: |
+            FILE=/Users/distiller/project/ios/build/Build/Products/Release-iphonesimulator/RocketChatRN.app
+            if test -f "$FILE"; then
+                echo "App restored from cache. Halting build."
+                circleci step halt
+            else
+                echo "Suitable app not cached. Continuing build."
+            fi
+
 # JOBS
 jobs:
   lint-testunit:
@@ -200,6 +235,10 @@ jobs:
     steps:
       - checkout
 
+      - restore-app-cache
+
+      - did-restore-app-cache
+
       - restore-npm-cache-mac
 
       - restore-brew-cache
@@ -217,15 +256,11 @@ jobs:
           command: |
             npx detox build --configuration ios.sim.release
 
-      - persist_to_workspace:
-          root: .
-          paths:
-            - ios/build/Build/Products/Release-iphonesimulator/RocketChatRN.app
-
       - save-npm-cache-mac
 
       - save-brew-cache
 
+      - save-app-cache
 
   e2e-test-onboarding:
     executor: mac-env
