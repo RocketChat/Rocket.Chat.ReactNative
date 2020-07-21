@@ -110,7 +110,7 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('messagebox-container'))).toExist().withTimeout(60000);
 				await element(by.id(`mention-item-${ username }`)).tap();
 				await expect(element(by.id('messagebox-input'))).toHaveText(`@${ username } `);
-				await element(by.id('messagebox-input')).tap();
+				await tryTapping(element(by.id('messagebox-input')), 2000)
 				await element(by.id('messagebox-input')).typeText(`${ data.random }mention`);
 				await element(by.id('messagebox-send-message')).tap();
 				// await waitFor(element(by.label(`@${ data.user } ${ data.random }mention`)).atIndex(0)).toExist().withTimeout(60000);
