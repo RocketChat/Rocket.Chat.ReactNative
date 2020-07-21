@@ -366,7 +366,6 @@ static NSString *const kFIREventViewItemList NS_SWIFT_NAME(AnalyticsEventViewIte
 /// <ul>
 ///     <li>@c kFIRParameterSearchTerm (NSString)</li>
 /// </ul>
-/// <b>This constant has been deprecated.</b>
 static NSString *const kFIREventViewSearchResults NS_SWIFT_NAME(AnalyticsEventViewSearchResults) =
     @"view_search_results";
 
