@@ -233,7 +233,7 @@ export default {
 	messages: 'mensajes',
 	Messages: 'Mensajes',
 	Message_Reported: 'Mensaje notificado',
-	Microphone_Permission_Message: 'Rocket Chat necesita acceso a su micrófono para que pueda enviar un mensaje de audio.',
+	Microphone_Permission_Message: 'Rocket.Chat necesita acceso a su micrófono para que pueda enviar un mensaje de audio.',
 	Microphone_Permission: 'Permiso de micrófono',
 	Mute: 'Mutear',
 	muted: 'muteado',

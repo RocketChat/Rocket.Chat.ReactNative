@@ -20,7 +20,6 @@
 #import <JitsiMeet/JitsiMeetConferenceOptions.h>
 #import <JitsiMeet/JitsiMeetLogger.h>
 #import <JitsiMeet/JitsiMeetBaseLogHandler.h>
-#import <JitsiMeet/InfoPlistUtil.h>
 
 
 @interface JitsiMeet : NSObject
@@ -64,7 +63,5 @@
 #pragma mark - Utility methods
 
 - (JitsiMeetConferenceOptions *_Nonnull)getInitialConferenceOptions;
-
-- (BOOL)isCrashReportingDisabled;
 
 @end

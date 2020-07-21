@@ -9,7 +9,7 @@ import {
 	RefreshControl
 } from 'react-native';
 import { connect } from 'react-redux';
-import { isEqual, orderBy } from 'lodash';
+import isEqual from 'react-fast-compare';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
@@ -71,6 +71,7 @@ const DISCUSSIONS_HEADER = 'Discussions';
 const CHANNELS_HEADER = 'Channels';
 const DM_HEADER = 'Direct_Messages';
 const GROUPS_HEADER = 'Private_Groups';
+const QUERY_SIZE = 20;
 
 const filterIsUnread = s => (s.unread > 0 || s.alert) && !s.hideUnreadStatus;
 const filterIsFavorite = s => s.f;
@@ -140,11 +141,12 @@ class RoomsListView extends React.Component {
 
 		this.gotSubscriptions = false;
 		this.animated = false;
+		this.count = 0;
 		this.state = {
 			searching: false,
 			search: [],
 			loading: true,
-			allChats: [],
+			chatsOrder: [],
 			chats: [],
 			item: {},
 			permissions: {}
@@ -212,7 +214,7 @@ class RoomsListView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { allChats, searching, item } = this.state;
+		const { chatsOrder, searching, item } = this.state;
 		// eslint-disable-next-line react/destructuring-assignment
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
@@ -220,7 +222,7 @@ class RoomsListView extends React.Component {
 		}
 
 		// Compare changes only once
-		const chatsNotEqual = !isEqual(nextState.allChats, allChats);
+		const chatsNotEqual = !isEqual(nextState.chatsOrder, chatsOrder);
 
 		// If they aren't equal, set to update if focused
 		if (chatsNotEqual) {
@@ -287,11 +289,11 @@ class RoomsListView extends React.Component {
 				prevProps.sortBy === sortBy
 				&& prevProps.groupByType === groupByType
 				&& prevProps.showFavorites === showFavorites
-        && prevProps.showUnread === showUnread
-        && prevState.permissions === permissions
+				&& prevProps.showUnread === showUnread
+				&& prevState.permissions === permissions
 			)
 		) {
-			this.getSubscriptions(true);
+			this.getSubscriptions();
 		} else if (
 			appState === 'foreground'
 			&& appState !== prevProps.appState
@@ -310,9 +312,7 @@ class RoomsListView extends React.Component {
 	}
 
 	componentWillUnmount() {
-		if (this.querySubscription && this.querySubscription.unsubscribe) {
-			this.querySubscription.unsubscribe();
-		}
+		this.unsubscribeQuery();
 		if (this.unsubscribeFocus) {
 			this.unsubscribeFocus();
 		}
@@ -397,17 +397,8 @@ class RoomsListView extends React.Component {
 		return allData;
 	}
 
-	getSubscriptions = async(force = false) => {
-		if (this.gotSubscriptions && !force) {
-			return;
-		}
-		this.gotSubscriptions = true;
-
-		if (this.querySubscription && this.querySubscription.unsubscribe) {
-			this.querySubscription.unsubscribe();
-		}
-
-		this.setState({ loading: true });
+	getSubscriptions = async() => {
+		this.unsubscribeQuery();
 
 		const {
 			sortBy,
@@ -420,42 +411,50 @@ class RoomsListView extends React.Component {
 		const notPermissionsChat = RocketChat.hasNotChatPermissions(permissions);
 
 		const db = database.active;
-		const observable = await db.collections
-			.get('subscriptions')
-			.query(
-				Q.where('archived', false),
-				Q.where('open', true),
-				Q.where('t', Q.notIn(notPermissionsChat))
-			)
-			.observeWithColumns(['room_updated_at', 'unread', 'alert', 'user_mentions', 'f', 't']);
+		let observable;
+
+		const defaultWhereClause = [
+			Q.where('archived', false),
+			Q.where('open', true),
+			Q.where('t', Q.notIn(notPermissionsChat))
+		];
+
+		if (sortBy === 'alphabetical') {
+			defaultWhereClause.push(Q.experimentalSortBy(`${ this.useRealName ? 'fname' : 'name' }`, Q.asc));
+		} else {
+			defaultWhereClause.push(Q.experimentalSortBy('room_updated_at', Q.desc));
+		}
+
+		// When we're grouping by something
+		if (this.isGrouping) {
+			observable = await db.collections
+				.get('subscriptions')
+				.query(...defaultWhereClause)
+				.observe();
+
+		// When we're NOT grouping
+		} else {
+			this.count += QUERY_SIZE;
+			observable = await db.collections
+				.get('subscriptions')
+				.query(
+					...defaultWhereClause,
+					Q.experimentalSkip(0),
+					Q.experimentalTake(this.count)
+				)
+				.observe();
+		}
+
 
 		this.querySubscription = observable.subscribe((data) => {
 			let tempChats = [];
-			let chats = [];
-			if (sortBy === 'alphabetical') {
-				chats = orderBy(data, ['name'], ['asc']);
-			} else {
-				chats = orderBy(data, ['roomUpdatedAt'], ['desc']);
-			}
+			let chats = data;
 
-			// it's better to map and test all subs altogether then testing them individually
-			const allChats = data.map(item => ({
-				alert: item.alert,
-				unread: item.unread,
-				userMentions: item.userMentions,
-				isRead: this.getIsRead(item),
-				favorite: item.f,
-				lastMessage: item.lastMessage,
-				name: this.getRoomTitle(item),
-				_updatedAt: item.roomUpdatedAt,
-				key: item._id,
-				rid: item.rid,
-				type: item.t,
-				prid: item.prid,
-				uids: item.uids,
-				usernames: item.usernames,
-				visitor: item.visitor
-			}));
+			/**
+			 * We trigger re-render only when chats order changes
+			 * RoomItem handles its own re-render
+			 */
+			const chatsOrder = data.map(item => item.rid);
 
 			// unread
 			if (showUnread) {
@@ -489,10 +488,16 @@ class RoomsListView extends React.Component {
 
 			this.internalSetState({
 				chats: tempChats,
-				allChats,
+				chatsOrder,
 				loading: false
 			});
 		});
+	}
+
+	unsubscribeQuery = () => {
+		if (this.querySubscription && this.querySubscription.unsubscribe) {
+			this.querySubscription.unsubscribe();
+		}
 	}
 
 	setPermissions = async() => {
@@ -523,12 +528,7 @@ class RoomsListView extends React.Component {
 			this.setHeader();
 			closeSearchHeader();
 			setTimeout(() => {
-				const offset = 0;
-				if (this.scroll.scrollTo) {
-					this.scroll.scrollTo({ x: 0, y: offset, animated: true });
-				} else if (this.scroll.scrollToOffset) {
-					this.scroll.scrollToOffset({ offset });
-				}
+				this.scrollToTop();
 			}, 200);
 		});
 	};
@@ -557,18 +557,25 @@ class RoomsListView extends React.Component {
 			search: result,
 			searching: true
 		});
-		if (this.scroll && this.scroll.scrollTo) {
-			this.scroll.scrollTo({ x: 0, y: 0, animated: true });
-		}
+		this.scrollToTop();
 	}, 300);
 
 	getRoomTitle = item => RocketChat.getRoomTitle(item)
 
 	getRoomAvatar = item => RocketChat.getRoomAvatar(item)
 
+	isGroupChat = item => RocketChat.isGroupChat(item)
+
+	isRead = item => RocketChat.isRead(item)
+
 	getUserPresence = uid => RocketChat.getUserPresence(uid)
 
 	getUidDirectMessage = room => RocketChat.getUidDirectMessage(room);
+
+	get isGrouping() {
+		const { showUnread, showFavorites, groupByType } = this.props;
+		return showUnread || showFavorites || groupByType;
+	}
 
 	onPressItem = (item = {}) => {
 		const { navigation, isMasterDetail } = this.props;
@@ -580,15 +587,16 @@ class RoomsListView extends React.Component {
 		this.goRoom({ item, isMasterDetail });
 	};
 
+	scrollToTop = () => {
+		if (this.scroll?.scrollToOffset) {
+			this.scroll.scrollToOffset({ offset: 0 });
+		}
+	}
+
 	toggleSort = () => {
 		const { toggleSortDropdown } = this.props;
 
-		const offset = 0;
-		if (this.scroll.scrollTo) {
-			this.scroll.scrollTo({ x: 0, y: offset, animated: true });
-		} else if (this.scroll.scrollToOffset) {
-			this.scroll.scrollToOffset({ offset });
-		}
+		this.scrollToTop();
 		setTimeout(() => {
 			toggleSortDropdown();
 		}, 100);
@@ -760,6 +768,13 @@ class RoomsListView extends React.Component {
 		roomsRequest({ allData: true });
 	}
 
+	onEndReached = () => {
+		// Run only when we're not grouping by anything
+		if (!this.isGrouping) {
+			this.getSubscriptions();
+		}
+	}
+
 	getScrollRef = ref => (this.scroll = ref);
 
 	renderListHeader = () => {
@@ -792,12 +807,6 @@ class RoomsListView extends React.Component {
 		);
 	}
 
-	getIsRead = (item) => {
-		let isUnread = item.archived !== true && item.open === true; // item is not archived and not opened
-		isUnread = isUnread && (item.unread > 0 || item.alert === true); // either its unread count > 0 or its alert
-		return !isUnread;
-	};
-
 	renderItem = ({ item }) => {
 		if (item.separator) {
 			return this.renderSectionHeader(item.rid);
@@ -818,32 +827,19 @@ class RoomsListView extends React.Component {
 			width
 		} = this.props;
 		const id = this.getUidDirectMessage(item);
-		const isGroupChat = RocketChat.isGroupChat(item);
 
 		return (
 			<RoomItem
+				item={item}
 				theme={theme}
-				alert={item.alert}
-				unread={item.unread}
-				hideUnreadStatus={item.hideUnreadStatus}
-				userMentions={item.userMentions}
-				isRead={this.getIsRead(item)}
-				favorite={item.f}
-				avatar={this.getRoomAvatar(item)}
-				lastMessage={item.lastMessage}
-				name={this.getRoomTitle(item)}
-				_updatedAt={item.roomUpdatedAt}
-				key={item._id}
 				id={id}
+				type={item.t}
 				userId={userId}
 				username={username}
 				token={token}
-				rid={item.rid}
-				type={item.t}
 				baseUrl={server}
-				prid={item.prid}
 				showLastMessage={StoreLastMessage}
-				onPress={() => this.onPressItem(item)}
+				onPress={this.onPressItem}
 				testID={`rooms-list-view-item-${ item.name }`}
 				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
 				toggleFav={this.toggleFav}
@@ -851,7 +847,10 @@ class RoomsListView extends React.Component {
 				hideChannel={this.hideChannel}
 				useRealName={useRealName}
 				getUserPresence={this.getUserPresence}
-				isGroupChat={isGroupChat}
+				getRoomTitle={this.getRoomTitle}
+				getRoomAvatar={this.getRoomAvatar}
+				getIsGroupChat={this.isGroupChat}
+				getIsRead={this.isRead}
 				visitor={item.visitor}
 				isFocused={currentItem?.rid === item.rid}
 			/>
@@ -898,6 +897,8 @@ class RoomsListView extends React.Component {
 					/>
 				)}
 				windowSize={9}
+				onEndReached={this.onEndReached}
+				onEndReachedThreshold={0.5}
 			/>
 		);
 	};
