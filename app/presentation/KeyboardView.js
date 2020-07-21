@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scroll-view';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 
 export default class KeyboardView extends React.PureComponent {

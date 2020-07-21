@@ -206,12 +206,10 @@ class RoomView extends React.Component {
 		const { appState, insets } = this.props;
 
 		if (appState === 'foreground' && appState !== prevProps.appState && this.rid) {
-			this.onForegroundInteraction = InteractionManager.runAfterInteractions(() => {
-				// Fire List.init() just to keep observables working
-				if (this.list && this.list.current) {
-					this.list.current.init();
-				}
-			});
+			// Fire List.query() just to keep observables working
+			if (this.list && this.list.current) {
+				this.list.current?.query?.();
+			}
 		}
 		// If it's not direct message
 		if (this.t !== 'd') {
@@ -266,9 +264,6 @@ class RoomView extends React.Component {
 		this.unsubscribe();
 		if (this.didMountInteraction && this.didMountInteraction.cancel) {
 			this.didMountInteraction.cancel();
-		}
-		if (this.onForegroundInteraction && this.onForegroundInteraction.cancel) {
-			this.onForegroundInteraction.cancel();
 		}
 		if (this.willBlurListener && this.willBlurListener.remove) {
 			this.willBlurListener.remove();
