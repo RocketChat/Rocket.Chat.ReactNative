@@ -30,7 +30,7 @@ public class MainActivity extends ReactFragmentActivity {
 
         if (!alreadyMigrated) {
             // MMKV Instance that will be used by JS
-            MMKV mmkv = MMKV.mmkvWithID(getApplicationContext().getPackageName());
+            MMKV mmkv = MMKV.mmkvWithID("default");
 
             // SharedPreferences -> MMKV (Migration)
             SharedPreferences sharedPreferences = getSharedPreferences("react-native", Context.MODE_PRIVATE);
