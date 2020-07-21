@@ -141,7 +141,7 @@ class Root extends React.Component {
 		UserPreferences.getMapAsync(THEME_PREFERENCES_KEY).then(this.setTheme).catch(() => {});
 
 		try {
-			const [server] = await Promise.all([UserPreferences.getStringAsync('currentServer'), UserPreferences.getStringAsync(RocketChat.TOKEN_KEY)]);
+			const [server] = await Promise.all([UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER), UserPreferences.getStringAsync(RocketChat.TOKEN_KEY)]);
 
 			await localAuthenticate(server);
 			this.setState({ root: 'inside' });

@@ -26,7 +26,7 @@ const restore = function* restore() {
 		try {
 			({ token, server } = yield all({
 				token: UserPreferences.getStringAsync(RocketChat.TOKEN_KEY),
-				server: UserPreferences.getStringAsync('currentServer')
+				server: UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER)
 			}));
 		} catch {
 			// Do nothing
@@ -35,7 +35,7 @@ const restore = function* restore() {
 		if (!token || !server) {
 			yield all([
 				UserPreferences.removeItem(RocketChat.TOKEN_KEY),
-				UserPreferences.removeItem('currentServer')
+				UserPreferences.removeItem(RocketChat.CURRENT_SERVER)
 			]);
 			yield put(appStart({ root: ROOT_OUTSIDE }));
 		} else {

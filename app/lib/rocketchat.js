@@ -52,6 +52,7 @@ import { useSsl } from '../utils/url';
 import UserPreferences from '../utils/userPreferences';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
+const CURRENT_SERVER = 'currentServer';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
 export const THEME_PREFERENCES_KEY = 'RC_THEME_PREFERENCES_KEY';
 export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
@@ -62,6 +63,7 @@ const STATUSES = ['offline', 'online', 'away', 'busy'];
 
 const RocketChat = {
 	TOKEN_KEY,
+	CURRENT_SERVER,
 	callJitsi,
 	async subscribeRooms() {
 		if (!this.roomsSub) {

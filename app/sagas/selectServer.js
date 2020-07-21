@@ -65,7 +65,7 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }) {
 	try {
 		const serversDB = database.servers;
-		yield UserPreferences.setStringAsync('currentServer', server);
+		yield UserPreferences.setStringAsync(RocketChat.CURRENT_SERVER, server);
 		let userId;
 		try {
 			userId = yield UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
