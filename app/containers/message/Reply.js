@@ -10,6 +10,8 @@ import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
+import Image from './Image';
+
 
 const styles = StyleSheet.create({
 	button: {
@@ -87,6 +89,7 @@ const Description = React.memo(({
 	}
 	const { baseUrl, user } = useContext(MessageContext);
 	return (
+		<>
 		<Markdown
 			msg={text}
 			baseUrl={baseUrl}
@@ -94,6 +97,12 @@ const Description = React.memo(({
 			getCustomEmoji={getCustomEmoji}
 			theme={theme}
 		/>
+		{
+		attachment.thumb_url?
+		<Image imageUrl={attachment.thumb_url} key={attachment.thumb_url} file={attachment} showAttachment={true} getCustomEmoji={getCustomEmoji} theme={theme} />
+		: null
+		}
+		</>
 	);
 }, (prevProps, nextProps) => {
 	if (prevProps.attachment.text !== nextProps.attachment.text) {

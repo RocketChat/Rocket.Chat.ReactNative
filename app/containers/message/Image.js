@@ -31,7 +31,7 @@ export const MessageImage = React.memo(({ img, theme }) => (
 	<ImageProgress
 		style={[styles.image, { borderColor: themes[theme].borderColor }]}
 		source={{ uri: encodeURI(img) }}
-		resizeMode={FastImage.resizeMode.cover}
+		resizeMode={FastImage.resizeMode.contain}
 		indicator={Progress.Pie}
 		indicatorProps={{
 			color: themes[theme].actionTintColor

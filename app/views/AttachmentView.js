@@ -166,7 +166,10 @@ class AttachmentView extends React.Component {
 		} else if (attachment && attachment.video_url) {
 			const uri = formatAttachmentUrl(attachment.video_url, user.id, user.token, baseUrl);
 			content = this.renderVideo(encodeURI(uri));
-		}
+		}else if (attachment && attachment.thumb_url) {
+			const uri = formatAttachmentUrl(attachment.thumb_url, user.id, user.token, baseUrl);
+			content = this.renderImage(encodeURI(uri));
+		} 
 
 		return (
 			<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
