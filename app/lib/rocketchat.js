@@ -49,7 +49,7 @@ import I18n from '../i18n';
 import { twoFactor } from '../utils/twoFactor';
 import { selectServerFailure } from '../actions/server';
 import { useSsl } from '../utils/url';
-import MMKV from '../utils/mmkv';
+import UserPreferences from '../utils/userPreferences';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
@@ -285,7 +285,7 @@ const RocketChat = {
 
 		// set User info
 		try {
-			const userId = await MMKV.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
+			const userId = await UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
 			const userCollections = serversDB.collections.get('users');
 			let user = null;
 			if (userId) {
@@ -1018,7 +1018,7 @@ const RocketChat = {
 	},
 	async getSortPreferences() {
 		try {
-			const prefs = await MMKV.getMapAsync(SORT_PREFS_KEY);
+			const prefs = await UserPreferences.getMapAsync(SORT_PREFS_KEY);
 			return prefs;
 		} catch {
 			// Do nothing
@@ -1029,7 +1029,7 @@ const RocketChat = {
 		try {
 			let prefs = await RocketChat.getSortPreferences();
 			prefs = { ...prefs, ...param };
-			await MMKV.setMapAsync(SORT_PREFS_KEY, prefs);
+			await UserPreferences.setMapAsync(SORT_PREFS_KEY, prefs);
 		} catch {
 			// Do nothing
 		}

@@ -15,7 +15,7 @@ import { CustomIcon } from '../lib/Icons';
 import { DEFAULT_BROWSER_KEY } from '../utils/openLink';
 import { isIOS } from '../utils/deviceInfo';
 import SafeAreaView from '../containers/SafeAreaView';
-import MMKV from '../utils/mmkv';
+import UserPreferences from '../utils/userPreferences';
 
 const DEFAULT_BROWSERS = [
 	{
@@ -81,7 +81,7 @@ class DefaultBrowserView extends React.Component {
 	async componentDidMount() {
 		this.mounted = true;
 		try {
-			const browser = await MMKV.getStringAsync(DEFAULT_BROWSER_KEY);
+			const browser = await UserPreferences.getStringAsync(DEFAULT_BROWSER_KEY);
 			this.setState({ browser });
 		} catch {
 			// do nothing
@@ -115,7 +115,7 @@ class DefaultBrowserView extends React.Component {
 	changeDefaultBrowser = async(newBrowser) => {
 		try {
 			const browser = newBrowser !== 'inApp' ? newBrowser : null;
-			await MMKV.setStringAsync(DEFAULT_BROWSER_KEY, browser);
+			await UserPreferences.setStringAsync(DEFAULT_BROWSER_KEY, browser);
 			this.setState({ browser });
 		} catch {
 			// do nothing

@@ -7,20 +7,20 @@ import { BASIC_AUTH_KEY } from '../../utils/fetch';
 import database, { getDatabase } from '../database';
 import RocketChat from '../rocketchat';
 import { useSsl } from '../../utils/url';
-import MMKV from '../../utils/mmkv';
+import UserPreferences from '../../utils/userPreferences';
 
 async function removeServerKeys({ server, userId }) {
-	await MMKV.removeItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
-	await MMKV.removeItem(`${ RocketChat.TOKEN_KEY }-${ userId }`);
-	await MMKV.removeItem(`${ BASIC_AUTH_KEY }-${ server }`);
+	await UserPreferences.removeItem(`${ RocketChat.TOKEN_KEY }-${ server }`);
+	await UserPreferences.removeItem(`${ RocketChat.TOKEN_KEY }-${ userId }`);
+	await UserPreferences.removeItem(`${ BASIC_AUTH_KEY }-${ server }`);
 }
 
 async function removeSharedCredentials({ server }) {
 	// clear certificate for server - SSL Pinning
 	try {
-		const certificate = await MMKV.getMapAsync(extractHostname(server));
+		const certificate = await UserPreferences.getMapAsync(extractHostname(server));
 		if (certificate && certificate.path) {
-			await MMKV.removeItem(extractHostname(server));
+			await UserPreferences.removeItem(extractHostname(server));
 			await FileSystem.deleteAsync(certificate.path);
 		}
 	} catch {
@@ -34,7 +34,7 @@ async function removeServerData({ server }) {
 		const serversDB = database.servers;
 		let userId;
 		try {
-			userId = await MMKV.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
+			userId = await UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
 		} catch {
 			// Do nothing
 		}
@@ -57,8 +57,8 @@ async function removeServerData({ server }) {
 }
 
 async function removeCurrentServer() {
-	await MMKV.removeItem('currentServer');
-	await MMKV.removeItem(RocketChat.TOKEN_KEY);
+	await UserPreferences.removeItem('currentServer');
+	await UserPreferences.removeItem(RocketChat.TOKEN_KEY);
 }
 
 async function removeServerDatabase({ server }) {
@@ -72,9 +72,9 @@ async function removeServerDatabase({ server }) {
 
 export async function removeServer({ server }) {
 	try {
-		const userId = await MMKV.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
+		const userId = await UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
 		if (userId) {
-			const resume = await MMKV.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ userId }`);
+			const resume = await UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ userId }`);
 
 			const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
 			await sdk.login({ resume });

@@ -12,7 +12,7 @@ import {
 	subscribeTheme,
 	unsubscribeTheme
 } from './utils/theme';
-import MMKV from './utils/mmkv';
+import UserPreferences from './utils/userPreferences';
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
 import { supportSystemTheme } from './utils/deviceInfo';
@@ -138,10 +138,10 @@ class Root extends React.Component {
 	}
 
 	init = async() => {
-		MMKV.getMapAsync(THEME_PREFERENCES_KEY).then(this.setTheme).catch(() => {});
+		UserPreferences.getMapAsync(THEME_PREFERENCES_KEY).then(this.setTheme).catch(() => {});
 
 		try {
-			const [server] = await Promise.all([MMKV.getStringAsync('currentServer'), MMKV.getStringAsync(RocketChat.TOKEN_KEY)]);
+			const [server] = await Promise.all([UserPreferences.getStringAsync('currentServer'), UserPreferences.getStringAsync(RocketChat.TOKEN_KEY)]);
 
 			await localAuthenticate(server);
 			this.setState({ root: 'inside' });

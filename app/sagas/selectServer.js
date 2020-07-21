@@ -17,7 +17,7 @@ import { extractHostname } from '../utils/server';
 import I18n from '../i18n';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../utils/fetch';
 import { appStart, ROOT_INSIDE, ROOT_OUTSIDE } from '../actions/app';
-import MMKV from '../utils/mmkv';
+import UserPreferences from '../utils/userPreferences';
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
@@ -65,10 +65,10 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }) {
 	try {
 		const serversDB = database.servers;
-		yield MMKV.setStringAsync('currentServer', server);
+		yield UserPreferences.setStringAsync('currentServer', server);
 		let userId;
 		try {
-			userId = yield MMKV.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
+			userId = yield UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
 		} catch {
 			// Do nothing
 		}
@@ -93,7 +93,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		}
 
 		try {
-			const basicAuth = yield MMKV.getStringAsync(`${ BASIC_AUTH_KEY }-${ server }`);
+			const basicAuth = yield UserPreferences.getStringAsync(`${ BASIC_AUTH_KEY }-${ server }`);
 			setBasicAuth(basicAuth);
 		} catch {
 			// Do nothing
@@ -137,7 +137,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 const handleServerRequest = function* handleServerRequest({ server, certificate }) {
 	try {
 		if (certificate) {
-			yield MMKV.setMapAsync(extractHostname(server), certificate);
+			yield UserPreferences.setMapAsync(extractHostname(server), certificate);
 		}
 
 		const serverInfo = yield getServerInfo({ server });

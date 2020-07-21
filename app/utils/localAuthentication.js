@@ -4,7 +4,7 @@ import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-community/async-storage';
 import { sha256 } from 'js-sha256';
 
-import MMKV from './mmkv';
+import UserPreferences from './userPreferences';
 import store from '../lib/createStore';
 import database from '../lib/database';
 import { isIOS } from './deviceInfo';
@@ -51,7 +51,7 @@ const openChangePasscodeModal = ({ force }) => new Promise((resolve, reject) => 
 
 export const changePasscode = async({ force = false }) => {
 	const passcode = await openChangePasscodeModal({ force });
-	await MMKV.setStringAsync(PASSCODE_KEY, sha256(passcode));
+	await UserPreferences.setStringAsync(PASSCODE_KEY, sha256(passcode));
 };
 
 export const biometryAuth = force => LocalAuthentication.authenticateAsync({
@@ -82,7 +82,7 @@ const checkBiometry = async(serverRecord) => {
 export const checkHasPasscode = async({ force = true, serverRecord }) => {
 	let storedPasscode;
 	try {
-		storedPasscode = await MMKV.getStringAsync(PASSCODE_KEY);
+		storedPasscode = await UserPreferences.getStringAsync(PASSCODE_KEY);
 	} catch {
 		// Do nothing
 	}

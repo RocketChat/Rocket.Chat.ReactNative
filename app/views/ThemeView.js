@@ -15,7 +15,7 @@ import { CustomIcon } from '../lib/Icons';
 import { THEME_PREFERENCES_KEY } from '../lib/rocketchat';
 import { supportSystemTheme } from '../utils/deviceInfo';
 import SafeAreaView from '../containers/SafeAreaView';
-import MMKV from '../utils/mmkv';
+import UserPreferences from '../utils/userPreferences';
 
 const THEME_GROUP = 'THEME_GROUP';
 const DARK_GROUP = 'DARK_GROUP';
@@ -108,7 +108,7 @@ class ThemeView extends React.Component {
 		const { setTheme, themePreferences } = this.props;
 		const newTheme = { ...themePreferences, ...theme };
 		setTheme(newTheme);
-		await MMKV.setMapAsync(THEME_PREFERENCES_KEY, newTheme);
+		await UserPreferences.setMapAsync(THEME_PREFERENCES_KEY, newTheme);
 	};
 
 	renderSeparator = () => {

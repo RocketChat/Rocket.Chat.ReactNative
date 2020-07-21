@@ -9,7 +9,7 @@ import DocumentPicker from 'react-native-document-picker';
 import { Base64 } from 'js-base64';
 import parse from 'url-parse';
 
-import MMKV from '../utils/mmkv';
+import UserPreferences from '../utils/userPreferences';
 import EventEmitter from '../utils/events';
 import { selectServerRequest, serverRequest } from '../actions/server';
 import sharedStyles from './Styles';
@@ -162,7 +162,7 @@ class NewServerView extends React.Component {
 			const parsedUrl = parse(text, true);
 			if (parsedUrl.auth.length) {
 				const credentials = Base64.encode(parsedUrl.auth);
-				await MMKV.setStringAsync(`${ BASIC_AUTH_KEY }-${ server }`, credentials);
+				await UserPreferences.setStringAsync(`${ BASIC_AUTH_KEY }-${ server }`, credentials);
 				setBasicAuth(credentials);
 			}
 		} catch {

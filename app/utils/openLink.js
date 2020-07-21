@@ -2,7 +2,7 @@ import { Linking } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import parse from 'url-parse';
 
-import MMKV from './mmkv';
+import UserPreferences from './userPreferences';
 import { themes } from '../constants/colors';
 
 export const DEFAULT_BROWSER_KEY = 'DEFAULT_BROWSER_KEY';
@@ -39,7 +39,7 @@ const openLink = async(url, theme = 'light') => {
 	try {
 		let browser;
 		try {
-			browser = await MMKV.getStringAsync(DEFAULT_BROWSER_KEY);
+			browser = await UserPreferences.getStringAsync(DEFAULT_BROWSER_KEY);
 		} catch {
 			// Do nothing
 		}

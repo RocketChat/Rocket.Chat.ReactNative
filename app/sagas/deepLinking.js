@@ -2,7 +2,7 @@ import {
 	takeLatest, take, select, put, all, delay
 } from 'redux-saga/effects';
 
-import MMKV from '../utils/mmkv';
+import UserPreferences from '../utils/userPreferences';
 import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
 import { selectServerRequest } from '../actions/server';
@@ -73,8 +73,8 @@ const handleOpen = function* handleOpen({ params }) {
 	let server; let user;
 	try {
 		[server, user] = yield all([
-			MMKV.getStringAsync('currentServer'),
-			MMKV.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ host }`)
+			UserPreferences.getStringAsync('currentServer'),
+			UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ host }`)
 		]);
 	} catch {
 		// Do nothing

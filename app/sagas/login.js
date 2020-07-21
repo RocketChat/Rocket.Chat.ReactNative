@@ -24,7 +24,7 @@ import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../utils/info';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { setActiveUsers } from '../actions/activeUsers';
-import MMKV from '../utils/mmkv';
+import UserPreferences from '../utils/userPreferences';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -85,7 +85,7 @@ const fetchUsersPresence = function* fetchUserPresence() {
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
 		const adding = yield select(state => state.server.adding);
-		yield MMKV.setStringAsync(RocketChat.TOKEN_KEY, user.token);
+		yield UserPreferences.setStringAsync(RocketChat.TOKEN_KEY, user.token);
 
 		RocketChat.getUserPresence(user.id);
 
@@ -127,8 +127,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			}
 		});
 
-		yield MMKV.setStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`, user.id);
-		yield MMKV.setStringAsync(`${ RocketChat.TOKEN_KEY }-${ user.id }`, user.token);
+		yield UserPreferences.setStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`, user.id);
+		yield UserPreferences.setStringAsync(`${ RocketChat.TOKEN_KEY }-${ user.id }`, user.token);
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
 
@@ -179,7 +179,7 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 					for (let i = 0; i < servers.length; i += 1) {
 						const newServer = servers[i].id;
 						try {
-							yield MMKV.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
+							yield UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
 							return put(selectServerRequest(newServer));
 						} catch {
 							// Do nothing

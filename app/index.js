@@ -12,7 +12,7 @@ import {
 	subscribeTheme,
 	unsubscribeTheme
 } from './utils/theme';
-import MMKV from './utils/mmkv';
+import UserPreferences from './utils/userPreferences';
 import EventEmitter from './utils/events';
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -101,7 +101,7 @@ export default class Root extends React.Component {
 	}
 
 	init = async() => {
-		MMKV.getMapAsync(THEME_PREFERENCES_KEY).then(this.setTheme).catch(() => {});
+		UserPreferences.getMapAsync(THEME_PREFERENCES_KEY).then(this.setTheme).catch(() => {});
 		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
 		store.dispatch(appInitLocalSettings());
@@ -117,14 +117,14 @@ export default class Root extends React.Component {
 	// It should run only once
 	encryptMigratedData = async() => {
 		try {
-			await MMKV.getBoolAsync('encryptMigration');
+			await UserPreferences.getBoolAsync('encryptMigration');
 		} catch {
 			// Key was not found
 			try {
 				// Encrypt the migration data
-				await MMKV.encryption.encrypt();
+				await UserPreferences.encryption.encrypt();
 
-				await MMKV.setBoolAsync('encryptMigration', true);
+				await UserPreferences.setBoolAsync('encryptMigration', true);
 			} catch {
 				// Do nothing
 			}

@@ -26,7 +26,7 @@ import { showConfirmationAlert } from '../../utils/info';
 import LongPress from '../../utils/longPress';
 import { headerHeight } from '../../containers/Header';
 import { goRoom } from '../../utils/goRoom';
-import MMKV from '../../utils/mmkv';
+import UserPreferences from '../../utils/userPreferences';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
@@ -151,7 +151,7 @@ class ServerDropdown extends Component {
 		if (currentServer !== server) {
 			let userId;
 			try {
-				userId = await MMKV.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
+				userId = await UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
 			} catch {
 				// Do nothing
 			}

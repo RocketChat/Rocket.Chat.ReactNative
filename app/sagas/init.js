@@ -1,7 +1,7 @@
 import { put, takeLatest, all } from 'redux-saga/effects';
 import RNBootSplash from 'react-native-bootsplash';
 
-import MMKV from '../utils/mmkv';
+import UserPreferences from '../utils/userPreferences';
 import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
 import { toggleCrashReport } from '../actions/crashReport';
@@ -25,8 +25,8 @@ const restore = function* restore() {
 		let token; let server;
 		try {
 			({ token, server } = yield all({
-				token: MMKV.getStringAsync(RocketChat.TOKEN_KEY),
-				server: MMKV.getStringAsync('currentServer')
+				token: UserPreferences.getStringAsync(RocketChat.TOKEN_KEY),
+				server: UserPreferences.getStringAsync('currentServer')
 			}));
 		} catch {
 			// Do nothing
@@ -34,8 +34,8 @@ const restore = function* restore() {
 
 		if (!token || !server) {
 			yield all([
-				MMKV.removeItem(RocketChat.TOKEN_KEY),
-				MMKV.removeItem('currentServer')
+				UserPreferences.removeItem(RocketChat.TOKEN_KEY),
+				UserPreferences.removeItem('currentServer')
 			]);
 			yield put(appStart({ root: ROOT_OUTSIDE }));
 		} else {

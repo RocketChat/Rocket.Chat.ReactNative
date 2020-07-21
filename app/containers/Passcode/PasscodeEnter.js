@@ -13,7 +13,7 @@ import {
 } from '../../constants/localAuthentication';
 import { resetAttempts, biometryAuth } from '../../utils/localAuthentication';
 import { getLockedUntil, getDiff } from './utils';
-import MMKV from '../../utils/mmkv';
+import UserPreferences from '../../utils/userPreferences';
 import I18n from '../../i18n';
 
 const PasscodeEnter = ({ theme, hasBiometry, finishProcess }) => {
@@ -27,7 +27,7 @@ const PasscodeEnter = ({ theme, hasBiometry, finishProcess }) => {
 
 	const fetchPasscode = async() => {
 		try {
-			const p = await MMKV.getStringAsync(PASSCODE_KEY);
+			const p = await UserPreferences.getStringAsync(PASSCODE_KEY);
 			setPasscode(p);
 		} catch {
 			// Do nothing
