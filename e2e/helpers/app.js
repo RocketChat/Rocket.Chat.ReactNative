@@ -31,7 +31,6 @@ async function login(username, password) {
     await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
     await element(by.id('login-view-email')).replaceText(username);
     await element(by.id('login-view-password')).replaceText(password);
-    await sleep(300);
     await element(by.id('login-view-submit')).tap();
     await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 }
@@ -61,6 +60,33 @@ async function mockMessage(message) {
     await element(by.label(`${ data.random }${ message }`)).atIndex(0).tap();
 };
 
+async function starMessage(message){
+    const messageLabel = `${ data.random }${ message }`
+    await waitFor(element(by.label(messageLabel))).toBeVisible().withTimeout(5000);
+    await element(by.label(messageLabel)).atIndex(0).longPress();
+    await expect(element(by.id('action-sheet'))).toExist();
+    await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+    await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+    await element(by.label('Star')).tap();
+    await waitFor(element(by.id('action-sheet'))).toNotExist().withTimeout(5000);
+};
+
+async function pinMessage(message){
+    const messageLabel = `${ data.random }${ message }`
+    await waitFor(element(by.label(messageLabel)).atIndex(0)).toExist();
+    await element(by.label(messageLabel)).atIndex(0).longPress();
+    await expect(element(by.id('action-sheet'))).toExist();
+    await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+    await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+    await element(by.label('Pin')).tap();
+    await waitFor(element(by.id('action-sheet'))).toNotExist().withTimeout(5000);
+}
+
+async function dismissReviewNag(){
+    await waitFor(element(by.text('Are you enjoying this app?'))).toExist().withTimeout(60000);
+    await element(by.label('No').and(by.type('_UIAlertControllerActionView'))).tap(); // Tap `no` on ask for review alert
+}
+
 async function tapBack() {
     await element(by.id('header-back')).atIndex(0).tap();
 }
@@ -74,7 +100,22 @@ async function searchRoom(room) {
 	await expect(element(by.id('rooms-list-view-search-input'))).toExist();
 	await waitFor(element(by.id('rooms-list-view-search-input'))).toExist().withTimeout(5000);
     await element(by.id('rooms-list-view-search-input')).typeText(room);
-    await sleep(2000);
+}
+
+async function tryTapping(theElement, timeout, longtap = false){
+	try {
+        if(longtap){
+            await theElement.longPress()
+        } else {
+            await theElement.tap()
+        }
+	} catch(e) {
+		if(timeout <= 0){ //TODO: Maths. How closely has the timeout been honoured here?
+			throw e
+		}
+		await sleep(100)
+		await tryTapping(theElement, timeout - 100)
+	}
 }
 
 module.exports = {
@@ -84,7 +125,11 @@ module.exports = {
     login,
     logout,
     mockMessage,
+    starMessage,
+    pinMessage,
+    dismissReviewNag,
     tapBack,
     sleep,
-    searchRoom
+    searchRoom,
+    tryTapping
 };

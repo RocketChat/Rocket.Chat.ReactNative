@@ -1,9 +1,17 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { logout, tapBack, sleep, searchRoom } = require('../../helpers/app');
+const { login, navigateToLogin, logout, tapBack, sleep, searchRoom } = require('../../helpers/app');
+const data = require('../../data');
 
 describe('Rooms list screen', () => {
+
+	before(async() => {
+		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
+		await navigateToLogin();
+		await login(data.users.regular.username, data.users.regular.password)
+	});
+
 	describe('Render', () => {
 		it('should have rooms list screen', async() => {
 			await expect(element(by.id('rooms-list-view'))).toBeVisible();
@@ -29,18 +37,12 @@ describe('Rooms list screen', () => {
 		it('should search room and navigate', async() => {
 			await searchRoom('rocket.cat');
 			await waitFor(element(by.id('rooms-list-view-item-rocket.cat'))).toBeVisible().withTimeout(60000);
-			await expect(element(by.id('rooms-list-view-item-rocket.cat'))).toBeVisible();
 			await element(by.id('rooms-list-view-item-rocket.cat')).tap();
 			await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(10000);
-			await expect(element(by.id('room-view'))).toBeVisible();
 			await waitFor(element(by.id('room-view-title-rocket.cat'))).toBeVisible().withTimeout(60000);
-			await expect(element(by.id('room-view-title-rocket.cat'))).toBeVisible();
 			await tapBack();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
-			await expect(element(by.id('rooms-list-view'))).toBeVisible();
-			await sleep(2000);
 			await waitFor(element(by.id('rooms-list-view-item-rocket.cat'))).toExist().withTimeout(60000);
-			await expect(element(by.id('rooms-list-view-item-rocket.cat'))).toExist();
 		});
 
 		it('should logout', async() => {
