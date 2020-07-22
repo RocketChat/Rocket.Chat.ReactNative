@@ -13,7 +13,7 @@ import {
 } from '../../constants/localAuthentication';
 import { resetAttempts, biometryAuth } from '../../utils/localAuthentication';
 import { getLockedUntil, getDiff } from './utils';
-import UserPreferences from '../../utils/userPreferences';
+import UserPreferences from '../../lib/userPreferences';
 import I18n from '../../i18n';
 
 const PasscodeEnter = ({ theme, hasBiometry, finishProcess }) => {

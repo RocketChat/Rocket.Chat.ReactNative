@@ -24,7 +24,7 @@ import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../utils/info';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { setActiveUsers } from '../actions/activeUsers';
-import UserPreferences from '../utils/userPreferences';
+import UserPreferences from '../lib/userPreferences';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);

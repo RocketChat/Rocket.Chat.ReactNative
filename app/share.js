@@ -12,7 +12,7 @@ import {
 	subscribeTheme,
 	unsubscribeTheme
 } from './utils/theme';
-import UserPreferences from './utils/userPreferences';
+import UserPreferences from './lib/userPreferences';
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
 import { supportSystemTheme } from './utils/deviceInfo';

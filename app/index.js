@@ -12,7 +12,7 @@ import {
 	subscribeTheme,
 	unsubscribeTheme
 } from './utils/theme';
-import UserPreferences from './utils/userPreferences';
+import UserPreferences from './lib/userPreferences';
 import EventEmitter from './utils/events';
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';

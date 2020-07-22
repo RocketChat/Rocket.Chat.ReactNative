@@ -26,7 +26,7 @@ import { showConfirmationAlert } from '../../utils/info';
 import LongPress from '../../utils/longPress';
 import { headerHeight } from '../../containers/Header';
 import { goRoom } from '../../utils/goRoom';
-import UserPreferences from '../../utils/userPreferences';
+import UserPreferences from '../../lib/userPreferences';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;

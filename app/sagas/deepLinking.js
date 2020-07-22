@@ -2,7 +2,7 @@ import {
 	takeLatest, take, select, put, all, delay
 } from 'redux-saga/effects';
 
-import UserPreferences from '../utils/userPreferences';
+import UserPreferences from '../lib/userPreferences';
 import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
 import { selectServerRequest } from '../actions/server';

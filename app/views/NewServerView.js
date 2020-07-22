@@ -9,7 +9,7 @@ import DocumentPicker from 'react-native-document-picker';
 import { Base64 } from 'js-base64';
 import parse from 'url-parse';
 
-import UserPreferences from '../utils/userPreferences';
+import UserPreferences from '../lib/userPreferences';
 import EventEmitter from '../utils/events';
 import { selectServerRequest, serverRequest } from '../actions/server';
 import sharedStyles from './Styles';

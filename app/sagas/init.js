@@ -1,7 +1,7 @@
 import { put, takeLatest, all } from 'redux-saga/effects';
 import RNBootSplash from 'react-native-bootsplash';
 
-import UserPreferences from '../utils/userPreferences';
+import UserPreferences from '../lib/userPreferences';
 import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
 import { toggleCrashReport } from '../actions/crashReport';

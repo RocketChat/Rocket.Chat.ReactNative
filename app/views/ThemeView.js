@@ -15,7 +15,7 @@ import { CustomIcon } from '../lib/Icons';
 import { THEME_PREFERENCES_KEY } from '../lib/rocketchat';
 import { supportSystemTheme } from '../utils/deviceInfo';
 import SafeAreaView from '../containers/SafeAreaView';
-import UserPreferences from '../utils/userPreferences';
+import UserPreferences from '../lib/userPreferences';
 
 const THEME_GROUP = 'THEME_GROUP';
 const DARK_GROUP = 'DARK_GROUP';

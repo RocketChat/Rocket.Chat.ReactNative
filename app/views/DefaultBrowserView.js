@@ -15,7 +15,7 @@ import { CustomIcon } from '../lib/Icons';
 import { DEFAULT_BROWSER_KEY } from '../utils/openLink';
 import { isIOS } from '../utils/deviceInfo';
 import SafeAreaView from '../containers/SafeAreaView';
-import UserPreferences from '../utils/userPreferences';
+import UserPreferences from '../lib/userPreferences';
 
 const DEFAULT_BROWSERS = [
 	{

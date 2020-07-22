@@ -17,7 +17,7 @@ import { extractHostname } from '../utils/server';
 import I18n from '../i18n';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../utils/fetch';
 import { appStart, ROOT_INSIDE, ROOT_OUTSIDE } from '../actions/app';
-import UserPreferences from '../utils/userPreferences';
+import UserPreferences from '../lib/userPreferences';
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {

@@ -49,7 +49,7 @@ import I18n from '../i18n';
 import { twoFactor } from '../utils/twoFactor';
 import { selectServerFailure } from '../actions/server';
 import { useSsl } from '../utils/url';
-import UserPreferences from '../utils/userPreferences';
+import UserPreferences from './userPreferences';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';

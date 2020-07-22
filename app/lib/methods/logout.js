@@ -7,7 +7,7 @@ import { BASIC_AUTH_KEY } from '../../utils/fetch';
 import database, { getDatabase } from '../database';
 import RocketChat from '../rocketchat';
 import { useSsl } from '../../utils/url';
-import UserPreferences from '../../utils/userPreferences';
+import UserPreferences from '../userPreferences';
 
 async function removeServerKeys({ server, userId }) {
 	await UserPreferences.removeItem(`${ RocketChat.TOKEN_KEY }-${ server }`);

@@ -4,7 +4,7 @@ import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-community/async-storage';
 import { sha256 } from 'js-sha256';
 
-import UserPreferences from './userPreferences';
+import UserPreferences from '../lib/userPreferences';
 import store from '../lib/createStore';
 import database from '../lib/database';
 import { isIOS } from './deviceInfo';
