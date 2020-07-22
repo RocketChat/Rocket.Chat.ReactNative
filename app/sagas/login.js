@@ -17,7 +17,7 @@ import {
 import { roomsRequest } from '../actions/rooms';
 import { toMomentLocale } from '../utils/moment';
 import RocketChat from '../lib/rocketchat';
-import log from '../utils/log';
+import log, { logEvent, events } from '../utils/log';
 import I18n from '../i18n';
 import database from '../lib/database';
 import EventEmitter from '../utils/events';
@@ -32,6 +32,7 @@ const loginCall = args => RocketChat.login(args);
 const logoutCall = args => RocketChat.logout(args);
 
 const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false }) {
+	logEvent(events.DEFAULT_LOGIN);
 	try {
 		let result;
 		if (credentials.resume) {
@@ -52,6 +53,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 		if (logoutOnError && (e.data && e.data.message && /you've been logged out by the server/i.test(e.data.message))) {
 			yield put(logout(true));
 		} else {
+			logEvent(events.DEFAULT_LOGIN_FAIL);
 			yield put(loginFailure(e));
 		}
 	}

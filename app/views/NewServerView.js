@@ -20,7 +20,7 @@ import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import I18n from '../i18n';
 import { isIOS } from '../utils/deviceInfo';
 import { themes } from '../constants/colors';
-import log from '../utils/log';
+import log, { logEvent, events } from '../utils/log';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
 import { setBasicAuth, BASIC_AUTH_KEY } from '../utils/fetch';
@@ -124,6 +124,7 @@ class NewServerView extends React.Component {
 	}
 
 	submit = async() => {
+		logEvent(events.CONNECT_TO_WORKSPACE);
 		const { text, certificate } = this.state;
 		const { connectServer } = this.props;
 		let cert = null;
@@ -135,6 +136,7 @@ class NewServerView extends React.Component {
 			try {
 				await FileSystem.copyAsync({ from: certificate.path, to: certificatePath });
 			} catch (e) {
+				logEvent(events.CONNECT_TO_WORKSPACE_FAIL);
 				log(e);
 			}
 			cert = {
@@ -152,6 +154,7 @@ class NewServerView extends React.Component {
 	}
 
 	connectOpen = () => {
+		logEvent(events.JOIN_OPEN_WORKSPACE);
 		this.setState({ connectingOpen: true });
 		const { connectServer } = this.props;
 		connectServer('https://open.rocket.chat');
