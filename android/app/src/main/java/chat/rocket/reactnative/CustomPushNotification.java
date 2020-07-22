@@ -15,7 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.app.Person;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -55,19 +55,10 @@ public class CustomPushNotification extends PushNotification {
     @Override
     public void onReceived() throws InvalidNotificationException {
         Bundle received = mNotificationProps.asBundle();
+        Ejson receivedEjson = new Gson().fromJson(received.getString("ejson", "{}"), Ejson.class);
 
-        String notId = received.getString("notId", "1");
-
-        if (notificationMessages.get(notId) == null) {
-            notificationMessages.put(notId, new ArrayList<Bundle>());
-        }
-
-        String server = received.getString("server", "");
-        String msgId = received.getString("msgId", "");
-        String notificationType = received.getString("notificationType", "");
-
-        if (notificationType.equals("message-id-only")) {
-            notificationLoad(server, msgId, new Callback() {
+        if (receivedEjson.notificationType.equals("message-id-only")) {
+            notificationLoad(receivedEjson.serverURL(), receivedEjson.messageId, new Callback() {
                 @Override
                 public void call(Bundle bundle) {
                     mNotificationProps = createProps(bundle);
@@ -75,18 +66,22 @@ public class CustomPushNotification extends PushNotification {
             });
         }
 
+        // We should re-read these values since that can be changed by notificationLoad
         Bundle bundle = mNotificationProps.asBundle();
+        Ejson loadedEjson = new Gson().fromJson(bundle.getString("ejson", "{}"), Ejson.class);
+        String notId = bundle.getString("notId", "1");
 
-        Gson gson = new Gson();
-        Ejson ejson = gson.fromJson(bundle.getString("ejson", "{}"), Ejson.class);
+        if (notificationMessages.get(notId) == null) {
+            notificationMessages.put(notId, new ArrayList<Bundle>());
+        }
 
-        boolean hasSender = ejson.sender != null;
+        boolean hasSender = loadedEjson.sender != null;
         String title = bundle.getString("title");
 
         bundle.putLong("time", new Date().getTime());
-        bundle.putString("username", hasSender ? ejson.sender.username : title);
-        bundle.putString("senderId", hasSender ? ejson.sender._id : "1");
-        bundle.putString("avatarUri", ejson.getAvatarUri());
+        bundle.putString("username", hasSender ? loadedEjson.sender.username : title);
+        bundle.putString("senderId", hasSender ? loadedEjson.sender._id : "1");
+        bundle.putString("avatarUri", loadedEjson.getAvatarUri());
 
         notificationMessages.get(notId).add(bundle);
         postNotification(Integer.parseInt(notId));

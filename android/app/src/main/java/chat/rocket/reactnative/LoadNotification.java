@@ -19,9 +19,32 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import chat.rocket.userdefaults.RNUserDefaultsModule;
 
 class JsonResponse {
-  String title;
-  String message;
-  String ejson;
+  Data data;
+
+  class Data {
+    Notification notification;
+
+    class Notification {
+      String notId;
+      String title;
+      String text;
+      Payload payload;
+
+      class Payload {
+        String host;
+        String rid;
+        String type;
+        Sender sender;
+        String messageId;
+        String notificationType;
+
+        class Sender {
+          String username;
+          String _id;
+        }
+      }
+    }
+  }
 }
 
 public class LoadNotification {
@@ -60,18 +83,18 @@ public class LoadNotification {
       JsonResponse json = gson.fromJson(body, JsonResponse.class);
 
       Bundle bundle = new Bundle();
-      bundle.putString("title", json.title);
-      bundle.putString("message", json.message);
-      bundle.putString("ejson", json.ejson);
+      bundle.putString("notId", json.data.notification.notId);
+      bundle.putString("title", json.data.notification.title);
+      bundle.putString("message", json.data.notification.text);
+      bundle.putString("ejson", gson.toJson(json.data.notification.payload));
 
       callback.call(bundle);
 
     } catch (Exception e) {
       if (RETRY_COUNT <= TIMEOUT.length) {
+        RETRY_COUNT++;
         runRequest(client, request, callback);
       }
     }
-
-    RETRY_COUNT++;
   }
 }
