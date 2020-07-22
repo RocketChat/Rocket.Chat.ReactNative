@@ -131,13 +131,13 @@ commands:
     description: Restore Brew cache
     steps:
       - restore_cache:
-          key: brew-{{ checksum "yarn.lock" }}-{{ checksum ".circleci/config.yml" }}
+          key: brew-mac
 
   save-brew-cache:
     description: Save brew cache
     steps:
       - save_cache:
-          key: brew-{{ checksum "yarn.lock" }}-{{ checksum ".circleci/config.yml" }}
+          key: brew-mac
           paths:
             - /usr/local/Homebrew
 
