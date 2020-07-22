@@ -147,6 +147,7 @@ commands:
     steps:
       - run:
           command: |
+            export HOMEBREW_NO_AUTO_UPDATE=1
             brew tap wix/brew
             brew install wix/brew/applesimutils
 
