@@ -19,7 +19,7 @@ import { deepLinkingOpen } from './actions/deepLinking';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications, onNotification } from './notifications/push';
 import store from './lib/createStore';
-import log, { loggerConfig, analytics } from './utils/log';
+import { loggerConfig, analytics } from './utils/log';
 import { ThemeContext } from './theme';
 import { DimensionsContext } from './dimensions';
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
@@ -84,8 +84,6 @@ export default class Root extends React.Component {
 			});
 		}, 5000);
 		Dimensions.addEventListener('change', this.onDimensionsChange);
-
-		this.encryptMigratedData();
 	}
 
 	componentWillUnmount() {
@@ -110,23 +108,6 @@ export default class Root extends React.Component {
 			store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
 		} else {
 			store.dispatch(appInit());
-		}
-	}
-
-	// It should run only once
-	encryptMigratedData = async() => {
-		try {
-			const encryptMigration = await UserPreferences.getBoolAsync('encryptMigration');
-
-			if (!encryptMigration) {
-				// Encrypt the migrated data
-				await UserPreferences.encryption.encrypt();
-
-				// Mark as completed
-				await UserPreferences.setBoolAsync('encryptMigration', true);
-			}
-		} catch (e) {
-			log(e);
 		}
 	}
 
