@@ -196,6 +196,20 @@
         "type": "ios.simulator",
         "device": {
           "type": "iPhone 11 Pro"
+        },
+        "artifacts": {
+          "plugins": {
+            "screenshot": {
+              "enabled": true,
+              "shouldTakeAutomaticSnapshots": true,
+              "keepOnlyFailedTestsArtifacts": true,
+              "takeWhen": {
+                "testStart": true,
+                "testDone": true,
+                "appNotReady": true
+              }
+            }
+          }
         }
       }
     }
