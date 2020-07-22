@@ -29,8 +29,13 @@ const data = {
         }
     },
     channels: {
-        public: {
+        detoxpublic: {
             name: 'detox-public'
+        }
+    },
+    groups: {
+        private: {
+            name: `detox-private-${ value }`
         }
     },
     registeringUser: {
