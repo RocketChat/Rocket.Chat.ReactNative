@@ -1,12 +1,14 @@
 import { Client } from 'bugsnag-react-native';
 import firebase from 'react-native-firebase';
-import config from '../../config';
+import config from '../../../config';
+import events from './events';
 
 const bugsnag = new Client(config.BUGSNAG_API_KEY);
 
 export const { analytics } = firebase;
 export const loggerConfig = bugsnag.config;
 export const { leaveBreadcrumb } = bugsnag;
+export { events };
 
 let metadata = {};
 
@@ -14,6 +16,11 @@ export const logServerVersion = (serverVersion) => {
 	metadata = {
 		serverVersion
 	};
+};
+
+export const logEvent = (eventName, payload) => {
+	analytics().logEvent(eventName, payload);
+	leaveBreadcrumb(eventName, payload);
 };
 
 export const setCurrentScreen = (currentScreen) => {
