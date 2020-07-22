@@ -107,8 +107,9 @@ describe('Room screen', () => {
 				const username = data.users.regular.username
 				await element(by.id('messagebox-input')).tap();
 				await element(by.id('messagebox-input')).typeText(`@${ username }`);
-				await waitFor(element(by.id('messagebox-container'))).toExist().withTimeout(60000);
-				await element(by.id(`mention-item-${ username }`)).tap();
+				await waitFor(element(by.id('messagebox-container'))).toExist().withTimeout(4000);
+				await waitFor(element(by.id(`mention-item-${ username }`))).toBeVisible().withTimeout(4000)
+				await tryTapping(element(by.id(`mention-item-${ username }`)), 2000, true);
 				await expect(element(by.id('messagebox-input'))).toHaveText(`@${ username } `);
 				await tryTapping(element(by.id('messagebox-input')), 2000)
 				await element(by.id('messagebox-input')).typeText(`${ data.random }mention`);
@@ -121,7 +122,7 @@ describe('Room screen', () => {
 				await element(by.id('messagebox-input')).typeText('#general');
 				//await waitFor(element(by.id('messagebox-container'))).toExist().withTimeout(4000);
 				await waitFor(element(by.id('mention-item-general'))).toBeVisible().withTimeout(4000);
-				await tryTapping(element(by.id('mention-item-general')), 2000)
+				await tryTapping(element(by.id('mention-item-general')), 2000, true)
 				await expect(element(by.id('messagebox-input'))).toHaveText('#general ');
 				await element(by.id('messagebox-input')).clearText();
 			});
@@ -231,10 +232,10 @@ describe('Room screen', () => {
 				await mockMessage('pin')
 				await pinMessage('pin')
 						
-				await waitFor(element(by.label(`${ data.random }pin`)).atIndex(0)).toBeVisible();
-				await sleep(1000) //https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/2324
+				await waitFor(element(by.label(`${ data.random }pin`)).atIndex(0)).toBeVisible().withTimeout(2000);
+				await waitFor(element(by.label('Message pinned')).atIndex(0)).toBeVisible().withTimeout(2000);
 				await element(by.label(`${ data.random }pin`)).atIndex(0).longPress();
-				await expect(element(by.id('action-sheet'))).toExist();
+				await waitFor(element(by.id('action-sheet'))).toExist().withTimeout(1000);
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await waitFor(element(by.label('Unpin'))).toBeVisible().withTimeout(2000);

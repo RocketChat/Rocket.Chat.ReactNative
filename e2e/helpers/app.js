@@ -102,9 +102,13 @@ async function searchRoom(room) {
     await element(by.id('rooms-list-view-search-input')).typeText(room);
 }
 
-async function tryTapping(theElement, timeout){
+async function tryTapping(theElement, timeout, longtap = false){
 	try {
-		await theElement.tap()
+        if(longtap){
+            await theElement.longPress()
+        } else {
+            await theElement.tap()
+        }
 	} catch(e) {
 		if(timeout <= 0){ //TODO: Maths. How closely has the timeout been honoured here?
 			throw e
