@@ -6,7 +6,7 @@ import {
 import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
 
-import log from '../utils/log';
+import log, { logEvent, events } from '../utils/log';
 import sharedStyles from './Styles';
 import Button from '../containers/Button';
 import I18n from '../i18n';
@@ -114,6 +114,7 @@ class RegisterView extends React.Component {
 	}
 
 	submit = async() => {
+		logEvent(events.DEFAULT_SIGN_UP);
 		if (!this.valid()) {
 			return;
 		}
@@ -149,6 +150,7 @@ class RegisterView extends React.Component {
 				return loginRequest({ user: email, password });
 			}
 			if (e.data?.error) {
+				logEvent(events.DEFAULT_SIGN_UP_FAIL);
 				showErrorAlert(e.data.error, I18n.t('Oops'));
 			}
 		}
