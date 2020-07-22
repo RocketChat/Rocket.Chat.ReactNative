@@ -187,7 +187,7 @@ commands:
           name: if cache exists exit
           command: |
             FILE=/Users/distiller/project/ios/build/Build/Products/Release-iphonesimulator/RocketChatRN.app
-            if [ -e “$FILE” ]; then
+            if [ -e "$FILE" ]; then
                 echo "App restored from cache. Halting build."
                 circleci step halt
             else
