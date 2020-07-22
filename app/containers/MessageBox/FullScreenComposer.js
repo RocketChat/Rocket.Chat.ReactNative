@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, TouchableOpacity
+	View, TouchableOpacity, Keyboard
 } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
 import Modal from 'react-native-modal';
@@ -59,7 +59,8 @@ class FullScreenComposer extends Component {
 		}),
 		innerRef: PropTypes.object,
 		autoFocus: PropTypes.bool,
-		backdropOpacity: PropTypes.number
+		backdropOpacity: PropTypes.number,
+		focus: PropTypes.func
 	};
 
 	static defaultProps = {
@@ -125,6 +126,24 @@ class FullScreenComposer extends Component {
 		this.closeModal();
 	}
 
+	openEmoji = () => {
+		const { openEmoji } = this.props;
+
+		if (isTablet && isAndroid) {
+			Keyboard.dismiss();
+		}
+		openEmoji();
+	}
+
+	closeEmoji = () => {
+		const { focus, closeEmoji } = this.props;
+
+		if (isTablet && isAndroid) {
+			focus();
+		}
+		closeEmoji();
+	}
+
 	renderFullScreenBottomBar = () => {
 		const {
 			theme,
@@ -136,8 +155,6 @@ class FullScreenComposer extends Component {
 			trackingType,
 			showEmojiKeyboard,
 			editCancel,
-			openEmoji,
-			closeEmoji,
 			showSend,
 			submit,
 			showMessageBoxActions,
@@ -185,8 +202,8 @@ class FullScreenComposer extends Component {
 							isActionsEnabled
 							showMessageBoxActions={showMessageBoxActions}
 							editCancel={editCancel}
-							openEmoji={openEmoji}
-							closeEmoji={closeEmoji}
+							openEmoji={this.openEmoji}
+							closeEmoji={this.closeEmoji}
 						/>
 						<View style={styles.bottomBarRightButtons}>
 							<RightButtons

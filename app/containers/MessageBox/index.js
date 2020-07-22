@@ -944,6 +944,7 @@ class MessageBox extends Component {
 			>
 				<FullScreenComposer
 					{...commonProps}
+					focus={this.focus}
 				/>
 				<MainComposer
 					{...commonProps}
