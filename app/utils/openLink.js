@@ -37,12 +37,7 @@ const appSchemeURL = (url, browser) => {
 
 const openLink = async(url, theme = 'light') => {
 	try {
-		let browser;
-		try {
-			browser = await UserPreferences.getStringAsync(DEFAULT_BROWSER_KEY);
-		} catch {
-			// Do nothing
-		}
+		const browser = await UserPreferences.getStringAsync(DEFAULT_BROWSER_KEY);
 
 		if (browser) {
 			const schemeUrl = appSchemeURL(url, browser.replace(':', ''));

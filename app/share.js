@@ -138,15 +138,15 @@ class Root extends React.Component {
 	}
 
 	init = async() => {
-		UserPreferences.getMapAsync(THEME_PREFERENCES_KEY).then(this.setTheme).catch(() => {});
+		UserPreferences.getMapAsync(THEME_PREFERENCES_KEY).then(this.setTheme);
 
-		try {
-			const [server] = await Promise.all([UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER), UserPreferences.getStringAsync(RocketChat.TOKEN_KEY)]);
+		const [currentServer, token] = await Promise.all([UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER), UserPreferences.getStringAsync(RocketChat.TOKEN_KEY)]);
 
-			await localAuthenticate(server);
+		if (currentServer && token) {
+			await localAuthenticate(currentServer);
 			this.setState({ root: 'inside' });
-			await RocketChat.shareExtensionInit(server);
-		} catch {
+			await RocketChat.shareExtensionInit(currentServer);
+		} else {
 			this.setState({ root: 'outside' });
 		}
 

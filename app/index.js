@@ -19,7 +19,7 @@ import { deepLinkingOpen } from './actions/deepLinking';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications, onNotification } from './notifications/push';
 import store from './lib/createStore';
-import { loggerConfig, analytics } from './utils/log';
+import log, { loggerConfig, analytics } from './utils/log';
 import { ThemeContext } from './theme';
 import { DimensionsContext } from './dimensions';
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
@@ -36,7 +36,6 @@ import Toast from './containers/Toast';
 import InAppNotification from './containers/InAppNotification';
 import { ActionSheetProvider } from './containers/ActionSheet';
 import debounce from './utils/debounce';
-
 
 RNScreens.enableScreens();
 
@@ -101,7 +100,7 @@ export default class Root extends React.Component {
 	}
 
 	init = async() => {
-		UserPreferences.getMapAsync(THEME_PREFERENCES_KEY).then(this.setTheme).catch(() => {});
+		UserPreferences.getMapAsync(THEME_PREFERENCES_KEY).then(this.setTheme);
 		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
 		store.dispatch(appInitLocalSettings());
@@ -117,17 +116,17 @@ export default class Root extends React.Component {
 	// It should run only once
 	encryptMigratedData = async() => {
 		try {
-			await UserPreferences.getBoolAsync('encryptMigration');
-		} catch {
-			// Key was not found
-			try {
-				// Encrypt the migration data
+			const encryptMigration = await UserPreferences.getBoolAsync('encryptMigration');
+
+			if (!encryptMigration) {
+				// Encrypt the migrated data
 				await UserPreferences.encryption.encrypt();
 
+				// Mark as completed
 				await UserPreferences.setBoolAsync('encryptMigration', true);
-			} catch {
-				// Do nothing
 			}
+		} catch (e) {
+			log(e);
 		}
 	}
 

@@ -80,12 +80,7 @@ const checkBiometry = async(serverRecord) => {
 };
 
 export const checkHasPasscode = async({ force = true, serverRecord }) => {
-	let storedPasscode;
-	try {
-		storedPasscode = await UserPreferences.getStringAsync(PASSCODE_KEY);
-	} catch {
-		// Do nothing
-	}
+	const storedPasscode = await UserPreferences.getStringAsync(PASSCODE_KEY);
 	if (!storedPasscode) {
 		await changePasscode({ force });
 		await checkBiometry(serverRecord);

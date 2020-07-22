@@ -70,15 +70,10 @@ const handleOpen = function* handleOpen({ params }) {
 		host = host.slice(0, host.length - 1);
 	}
 
-	let server; let user;
-	try {
-		[server, user] = yield all([
-			UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER),
-			UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ host }`)
-		]);
-	} catch {
-		// Do nothing
-	}
+	const [server, user] = yield all([
+		UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER),
+		UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ host }`)
+	]);
 
 	// TODO: needs better test
 	// if deep link is from same server

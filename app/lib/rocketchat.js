@@ -1019,22 +1019,13 @@ const RocketChat = {
 		return JSON.parse(allowCrashReport);
 	},
 	async getSortPreferences() {
-		try {
-			const prefs = await UserPreferences.getMapAsync(SORT_PREFS_KEY);
-			return prefs;
-		} catch {
-			// Do nothing
-		}
-		return {};
+		const prefs = await UserPreferences.getMapAsync(SORT_PREFS_KEY);
+		return prefs;
 	},
 	async saveSortPreference(param) {
-		try {
-			let prefs = await RocketChat.getSortPreferences();
-			prefs = { ...prefs, ...param };
-			await UserPreferences.setMapAsync(SORT_PREFS_KEY, prefs);
-		} catch {
-			// Do nothing
-		}
+		let prefs = await RocketChat.getSortPreferences();
+		prefs = { ...prefs, ...param };
+		return UserPreferences.setMapAsync(SORT_PREFS_KEY, prefs);
 	},
 	async getLoginServices(server) {
 		try {

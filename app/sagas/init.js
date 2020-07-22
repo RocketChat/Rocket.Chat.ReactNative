@@ -22,15 +22,10 @@ export const initLocalSettings = function* initLocalSettings() {
 
 const restore = function* restore() {
 	try {
-		let token; let server;
-		try {
-			({ token, server } = yield all({
-				token: UserPreferences.getStringAsync(RocketChat.TOKEN_KEY),
-				server: UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER)
-			}));
-		} catch {
-			// Do nothing
-		}
+		const { token, server } = yield all({
+			token: UserPreferences.getStringAsync(RocketChat.TOKEN_KEY),
+			server: UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER)
+		});
 
 		if (!token || !server) {
 			yield all([

@@ -80,12 +80,8 @@ class DefaultBrowserView extends React.Component {
 
 	async componentDidMount() {
 		this.mounted = true;
-		try {
-			const browser = await UserPreferences.getStringAsync(DEFAULT_BROWSER_KEY);
-			this.setState({ browser });
-		} catch {
-			// do nothing
-		}
+		const browser = await UserPreferences.getStringAsync(DEFAULT_BROWSER_KEY);
+		this.setState({ browser });
 	}
 
 	init = () => {

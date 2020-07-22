@@ -66,12 +66,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 	try {
 		const serversDB = database.servers;
 		yield UserPreferences.setStringAsync(RocketChat.CURRENT_SERVER, server);
-		let userId;
-		try {
-			userId = yield UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
-		} catch {
-			// Do nothing
-		}
+		const userId = yield UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
 		const userCollections = serversDB.collections.get('users');
 		let user = null;
 		if (userId) {
@@ -92,12 +87,8 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			}
 		}
 
-		try {
-			const basicAuth = yield UserPreferences.getStringAsync(`${ BASIC_AUTH_KEY }-${ server }`);
-			setBasicAuth(basicAuth);
-		} catch {
-			// Do nothing
-		}
+		const basicAuth = yield UserPreferences.getStringAsync(`${ BASIC_AUTH_KEY }-${ server }`);
+		setBasicAuth(basicAuth);
 
 		// Check for running requests and abort them before connecting to the server
 		RocketChat.abort();

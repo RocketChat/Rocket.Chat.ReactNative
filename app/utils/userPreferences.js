@@ -12,9 +12,9 @@ class UserPreferences {
 		this.encryption = this.mmkv.encryption;
 	}
 
-	getStringAsync(key) {
+	async getStringAsync(key) {
 		try {
-			const value = this.mmkv.getStringAsync(key);
+			const value = await this.mmkv.getStringAsync(key);
 			return value;
 		} catch {
 			return null;
@@ -25,9 +25,9 @@ class UserPreferences {
 		return this.mmkv.setStringAsync(key, value);
 	}
 
-	getBoolAsync(key) {
+	async getBoolAsync(key) {
 		try {
-			const value = this.mmkv.getBoolAsync(key);
+			const value = await this.mmkv.getBoolAsync(key);
 			return value;
 		} catch {
 			return null;
@@ -38,9 +38,9 @@ class UserPreferences {
 		return this.mmkv.setBoolAsync(key, value);
 	}
 
-	getMapAsync(key) {
+	async getMapAsync(key) {
 		try {
-			const value = this.mmkv.getMapAsync(key);
+			const value = await this.mmkv.getMapAsync(key);
 			return value;
 		} catch {
 			return null;

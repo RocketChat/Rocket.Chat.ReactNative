@@ -23,8 +23,8 @@ async function removeSharedCredentials({ server }) {
 			await UserPreferences.removeItem(extractHostname(server));
 			await FileSystem.deleteAsync(certificate.path);
 		}
-	} catch {
-		// Do nothing
+	} catch (e) {
+		console.log('removeSharedCredentials', e);
 	}
 }
 
@@ -32,12 +32,7 @@ async function removeServerData({ server }) {
 	try {
 		const batch = [];
 		const serversDB = database.servers;
-		let userId;
-		try {
-			userId = await UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
-		} catch {
-			// Do nothing
-		}
+		const userId = await UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
 
 		const usersCollection = serversDB.collections.get('users');
 		if (userId) {
@@ -51,8 +46,8 @@ async function removeServerData({ server }) {
 		await serversDB.action(() => serversDB.batch(...batch));
 		await removeSharedCredentials({ server });
 		await removeServerKeys({ server });
-	} catch {
-		// Do nothing
+	} catch (e) {
+		console.log('removeServerData', e);
 	}
 }
 
@@ -86,12 +81,12 @@ export async function removeServer({ server }) {
 
 			await sdk.logout();
 		}
-	} catch (e) {
-		console.log('removePush', e);
-	}
 
-	await removeServerData({ server });
-	await removeServerDatabase({ server });
+		await removeServerData({ server });
+		await removeServerDatabase({ server });
+	} catch (e) {
+		console.log('removeServer', e);
+	}
 }
 
 export default async function logout({ server }) {
