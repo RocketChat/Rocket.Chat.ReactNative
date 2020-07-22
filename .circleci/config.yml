@@ -36,6 +36,9 @@ commands:
           name: Test
           command: |
             npx detox test << parameters.folder >> --configuration ios.sim.release --cleanup
+          when: always
+      - store_artifacts:
+          path: ./artifacts
 
   install-npm-modules:
     description: Install NPM modules
