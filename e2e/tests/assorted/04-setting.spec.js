@@ -1,12 +1,18 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
+const { navigateToLogin, login } = require('../../helpers/app');
+
+const data = require('../../data');
+
+const testuser = data.users.regular
 
 describe('Settings screen', () => {
 	before(async() => {
-		await device.launchApp({ newInstance: true });
+		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		await navigateToLogin();
+		await login(testuser.username, testuser.password);
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
-		await expect(element(by.id('rooms-list-view'))).toBeVisible();
 		await element(by.id('rooms-list-view-sidebar')).tap();
 		await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
 		await waitFor(element(by.id('sidebar-settings'))).toBeVisible().withTimeout(2000);
