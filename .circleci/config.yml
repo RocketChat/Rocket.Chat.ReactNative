@@ -192,7 +192,6 @@ commands:
                 circleci step halt
             else
                 echo "Suitable app not cached. Continuing build."
-                ls -lR /Users/distiller/project/ios/build/Build
             fi
 
 # JOBS
