@@ -139,7 +139,8 @@ commands:
       - save_cache:
           key: brew-mac
           paths:
-            - /usr/local/Homebrew
+            -  ~/Library/Caches/Homebrew
+            - /usr/local/Homebrew/Library/Taps/
 
   install-apple-sim-utils:
     description: Install appleSimUtils
