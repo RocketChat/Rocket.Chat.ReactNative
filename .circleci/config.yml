@@ -166,7 +166,7 @@ commands:
           command: |
             echo $(git rev-parse HEAD:app) > "./app-git-revision.txt"
       - save_cache:
-          key: iOSDetoxRelease-v2-{{ checksum "yarn.lock" }}-{{ checksum "ios/Podfile.lock" }}-{{ checksum  "./app-git-revision.txt" }}
+          key: iOSDetoxRelease-v3-{{ checksum "yarn.lock" }}-{{ checksum "ios/Podfile.lock" }}-{{ checksum  "./app-git-revision.txt" }}
           paths:
             - ios/build/Build/Products/Release-iphonesimulator/RocketChatRN.app
 
@@ -178,7 +178,7 @@ commands:
           command: |
             echo $(git rev-parse HEAD:app) > "./app-git-revision.txt"
       - restore_cache:
-          key: iOSDetoxRelease-v2-{{ checksum "yarn.lock" }}-{{ checksum "ios/Podfile.lock" }}-{{ checksum  "./app-git-revision.txt" }}
+          key: iOSDetoxRelease-v3-{{ checksum "yarn.lock" }}-{{ checksum "ios/Podfile.lock" }}-{{ checksum  "./app-git-revision.txt" }}
 
   did-restore-app-cache:
     description: Tests to see if an app was restored from the restore-app-cache job
