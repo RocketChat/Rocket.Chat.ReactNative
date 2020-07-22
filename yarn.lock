@@ -5129,9 +5129,9 @@ commondir@^1.0.1:
     pascalcase "^0.1.1"
     xss-filters "^1.2.6"
 
-"commonmark@git+https://github.com/RocketChat/commonmark.js.git":
+commonmark@RocketChat/commonmark.js#fix.update-fork:
   version "0.29.2"
-  resolved "git+https://github.com/RocketChat/commonmark.js.git#020b5af060459ac2010e382e9ae431d48ed39777"
+  resolved "https://codeload.github.com/RocketChat/commonmark.js/tar.gz/66a60dfa1b1b8fa78b46eb6de81369394353baff"
   dependencies:
     entities "~2.0"
     mdurl "~1.0.1"

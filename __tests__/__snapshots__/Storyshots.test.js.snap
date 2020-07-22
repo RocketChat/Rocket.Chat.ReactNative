@@ -80,6 +80,36 @@ exports[`Storyshots Markdown list Markdown 1`] = `
         >
           This is Rocket.Chat
         </Text>
+        <Text>
+          
+
+        </Text>
+        <Text
+          accessibilityLabel="This is Rocket.Chat"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          This is Rocket.Chat
+        </Text>
       </Text>
     </View>
     <Text
@@ -121,6 +151,36 @@ exports[`Storyshots Markdown list Markdown 1`] = `
           ]
         }
       >
+        <Text
+          accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </Text>
+        <Text>
+          
+
+        </Text>
         <Text
           accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
           style={
@@ -219,6 +279,36 @@ exports[`Storyshots Markdown list Markdown 1`] = `
 
         </Text>
         <Text
+          accessibilityLabel="a"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          a
+        </Text>
+        <Text>
+          
+
+        </Text>
+        <Text
           accessibilityLabel="b"
           style={
             Array [
@@ -243,6 +333,70 @@ exports[`Storyshots Markdown list Markdown 1`] = `
           }
         >
           b
+        </Text>
+        <Text>
+          
+
+        </Text>
+        <Text
+          accessibilityLabel="b"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          b
+        </Text>
+        <Text>
+          
+
+        </Text>
+        <Text
+          accessibilityLabel="c"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          c
+        </Text>
+        <Text>
+          
+
         </Text>
         <Text>
           
@@ -321,6 +475,74 @@ exports[`Storyshots Markdown list Markdown 1`] = `
 
         </Text>
         <Text
+          accessibilityLabel="d"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          d
+        </Text>
+        <Text>
+          
+
+        </Text>
+        <Text>
+          
+
+        </Text>
+        <Text>
+          
+
+        </Text>
+        <Text
+          accessibilityLabel="e"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          e
+        </Text>
+        <Text>
+          
+
+        </Text>
+        <Text
           accessibilityLabel="e"
           style={
             Array [
@@ -387,6 +609,36 @@ exports[`Storyshots Markdown list Markdown 1`] = `
           ]
         }
       >
+        <Text
+          accessibilityLabel="This is edited"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          This is edited
+        </Text>
+        <Text>
+          
+
+        </Text>
         <Text
           accessibilityLabel="This is edited"
           style={
@@ -579,6 +831,203 @@ exports[`Storyshots Markdown list Markdown 1`] = `
           ]
         }
       >
+        <Text
+          onPress={[Function]}
+          style={
+            Array [
+              Object {
+                "backgroundColor": "#1d74f5",
+                "color": "#ffffff",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "padding": 5,
+              },
+            ]
+          }
+        >
+          rocket.cat
+        </Text>
+        <Text
+          accessibilityLabel=" "
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+           
+        </Text>
+        <Text
+          onPress={[Function]}
+          style={
+            Array [
+              Object {
+                "backgroundColor": "#E8F2FF",
+                "color": "#1d74f5",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "padding": 5,
+              },
+            ]
+          }
+        >
+          name1
+        </Text>
+        <Text
+          accessibilityLabel=" "
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+           
+        </Text>
+        <Text
+          style={
+            Array [
+              Object {
+                "backgroundColor": "#E8F2FF",
+                "color": "#ffffff",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "padding": 5,
+              },
+              Object {
+                "backgroundColor": "#FF5B5A",
+              },
+            ]
+          }
+        >
+          all
+        </Text>
+        <Text
+          accessibilityLabel=" "
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+           
+        </Text>
+        <Text
+          style={
+            Array [
+              Object {
+                "backgroundColor": "#E8F2FF",
+                "color": "#ffffff",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "padding": 5,
+              },
+              Object {
+                "backgroundColor": "#FF5B5A",
+              },
+            ]
+          }
+        >
+          here
+        </Text>
+        <Text
+          accessibilityLabel=" "
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+           
+        </Text>
+        <Text
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Object {
+                "color": "#2f343d",
+              },
+            ]
+          }
+        >
+          @unknown
+        </Text>
+        <Text>
+          
+
+        </Text>
         <Text
           onPress={[Function]}
           style={
@@ -1006,6 +1455,203 @@ exports[`Storyshots Markdown list Markdown 1`] = `
         >
           @unknown
         </Text>
+        <Text>
+          
+
+        </Text>
+        <Text
+          onPress={[Function]}
+          style={
+            Array [
+              Object {
+                "backgroundColor": "#1d74f5",
+                "color": "#ffffff",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "padding": 5,
+              },
+            ]
+          }
+        >
+          Rocket Cat
+        </Text>
+        <Text
+          accessibilityLabel=" "
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+           
+        </Text>
+        <Text
+          onPress={[Function]}
+          style={
+            Array [
+              Object {
+                "backgroundColor": "#E8F2FF",
+                "color": "#1d74f5",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "padding": 5,
+              },
+            ]
+          }
+        >
+          Name
+        </Text>
+        <Text
+          accessibilityLabel=" "
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+           
+        </Text>
+        <Text
+          style={
+            Array [
+              Object {
+                "backgroundColor": "#E8F2FF",
+                "color": "#ffffff",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "padding": 5,
+              },
+              Object {
+                "backgroundColor": "#FF5B5A",
+              },
+            ]
+          }
+        >
+          all
+        </Text>
+        <Text
+          accessibilityLabel=" "
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+           
+        </Text>
+        <Text
+          style={
+            Array [
+              Object {
+                "backgroundColor": "#E8F2FF",
+                "color": "#ffffff",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "padding": 5,
+              },
+              Object {
+                "backgroundColor": "#FF5B5A",
+              },
+            ]
+          }
+        >
+          here
+        </Text>
+        <Text
+          accessibilityLabel=" "
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+           
+        </Text>
+        <Text
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Object {
+                "color": "#2f343d",
+              },
+            ]
+          }
+        >
+          @unknown
+        </Text>
       </Text>
     </View>
     <Text
@@ -1047,6 +1693,70 @@ exports[`Storyshots Markdown list Markdown 1`] = `
           ]
         }
       >
+        <Text
+          onPress={[Function]}
+          style={
+            Array [
+              Object {
+                "backgroundColor": "#E8F2FF",
+                "color": "#0072FE",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "padding": 5,
+              },
+            ]
+          }
+        >
+          test-channel
+        </Text>
+        <Text
+          accessibilityLabel=" "
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+           
+        </Text>
+        <Text
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Object {
+                "color": "#2f343d",
+              },
+            ]
+          }
+        >
+          #unknown
+        </Text>
+        <Text>
+          
+
+        </Text>
         <Text
           onPress={[Function]}
           style={
@@ -1174,6 +1884,36 @@ exports[`Storyshots Markdown list Markdown 1`] = `
         >
           Unicode: 😃😇👍
         </Text>
+        <Text>
+          
+
+        </Text>
+        <Text
+          accessibilityLabel="Unicode: 😃😇👍"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          Unicode: 😃😇👍
+        </Text>
       </Text>
       <Text
         style={
@@ -1245,6 +1985,70 @@ exports[`Storyshots Markdown list Markdown 1`] = `
         >
           👍
         </Text>
+        <Text>
+          
+
+        </Text>
+        <Text
+          accessibilityLabel="Shortnames: "
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          Shortnames: 
+        </Text>
+        <Text
+          style={
+            Array [
+              Object {
+                "color": "#2f343d",
+              },
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+            ]
+          }
+        >
+          😂
+        </Text>
+        <Text
+          style={
+            Array [
+              Object {
+                "color": "#2f343d",
+              },
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+            ]
+          }
+        >
+          👍
+        </Text>
       </Text>
       <Text
         style={
@@ -1256,6 +2060,184 @@ exports[`Storyshots Markdown list Markdown 1`] = `
           ]
         }
       >
+        <Text
+          accessibilityLabel="Custom emojis: "
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          Custom emojis: 
+        </Text>
+        <View
+          style={
+            Array [
+              Object {
+                "overflow": "hidden",
+              },
+              Object {
+                "height": 20,
+                "width": 20,
+              },
+            ]
+          }
+        >
+          <FastImageView
+            resizeMode="contain"
+            source={
+              Object {
+                "priority": "high",
+                "uri": "https://open.rocket.chat/emoji-custom/react_rocket.png",
+              }
+            }
+            style={
+              Object {
+                "bottom": 0,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              }
+            }
+          />
+        </View>
+        <Text
+          accessibilityLabel=" "
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+           
+        </Text>
+        <View
+          style={
+            Array [
+              Object {
+                "overflow": "hidden",
+              },
+              Object {
+                "height": 20,
+                "width": 20,
+              },
+            ]
+          }
+        >
+          <FastImageView
+            resizeMode="contain"
+            source={
+              Object {
+                "priority": "high",
+                "uri": "https://open.rocket.chat/emoji-custom/nyan_rocket.png",
+              }
+            }
+            style={
+              Object {
+                "bottom": 0,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              }
+            }
+          />
+        </View>
+        <Text
+          accessibilityLabel=" "
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+           
+        </Text>
+        <View
+          style={
+            Array [
+              Object {
+                "overflow": "hidden",
+              },
+              Object {
+                "height": 20,
+                "width": 20,
+              },
+            ]
+          }
+        >
+          <FastImageView
+            resizeMode="contain"
+            source={
+              Object {
+                "priority": "high",
+                "uri": "https://open.rocket.chat/emoji-custom/marioparty.gif",
+              }
+            }
+            style={
+              Object {
+                "bottom": 0,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              }
+            }
+          />
+        </View>
+        <Text>
+          
+
+        </Text>
         <Text
           accessibilityLabel="Custom emojis: "
           style={
@@ -1552,6 +2534,121 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             }
           />
         </View>
+        <Text>
+          
+
+        </Text>
+        <Text
+          accessibilityLabel="😃 "
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontSize": 30,
+                  "fontWeight": "400",
+                },
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          😃 
+        </Text>
+        <Text
+          style={
+            Array [
+              Object {
+                "color": "#2f343d",
+              },
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 30,
+                "fontWeight": "400",
+              },
+            ]
+          }
+        >
+          👍
+        </Text>
+        <Text
+          accessibilityLabel=" "
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontSize": 30,
+                  "fontWeight": "400",
+                },
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+           
+        </Text>
+        <View
+          style={
+            Array [
+              Object {
+                "overflow": "hidden",
+              },
+              Object {
+                "height": 30,
+                "width": 30,
+              },
+            ]
+          }
+        >
+          <FastImageView
+            resizeMode="contain"
+            source={
+              Object {
+                "priority": "high",
+                "uri": "https://open.rocket.chat/emoji-custom/marioparty.gif",
+              }
+            }
+            style={
+              Object {
+                "bottom": 0,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              }
+            }
+          />
+        </View>
       </Text>
     </View>
     <Text
@@ -1649,6 +2746,37 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             >
               This is block quote
             </Text>
+            <Text>
+              
+
+            </Text>
+            <Text
+              accessibilityLabel="This is block quote"
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                  },
+                  Array [
+                    Object {},
+                    undefined,
+                    Object {
+                      "alignItems": "flex-start",
+                      "flexDirection": "row",
+                      "flexWrap": "wrap",
+                      "justifyContent": "flex-start",
+                      "marginBottom": 0,
+                      "marginTop": 0,
+                    },
+                  ],
+                ]
+              }
+            >
+              This is block quote
+            </Text>
           </Text>
         </View>
       </View>
@@ -1662,6 +2790,36 @@ exports[`Storyshots Markdown list Markdown 1`] = `
           ]
         }
       >
+        <Text
+          accessibilityLabel="this is a normal line"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          this is a normal line
+        </Text>
+        <Text>
+          
+
+        </Text>
         <Text
           accessibilityLabel="this is a normal line"
           style={
@@ -1729,6 +2887,99 @@ exports[`Storyshots Markdown list Markdown 1`] = `
           ]
         }
       >
+        <Text
+          onLongPress={[Function]}
+          onPress={[Function]}
+          style={
+            Object {
+              "backgroundColor": "transparent",
+              "color": "#1d74f5",
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+            }
+          }
+        >
+          <Text
+            accessibilityLabel="Markdown link"
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                },
+                Array [
+                  Object {},
+                  Object {
+                    "alignItems": "flex-start",
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                    "justifyContent": "flex-start",
+                    "marginBottom": 0,
+                    "marginTop": 0,
+                  },
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                  },
+                ],
+              ]
+            }
+          >
+            Markdown link
+          </Text>
+        </Text>
+        <Text
+          accessibilityLabel=": "
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          : 
+        </Text>
+        <Text
+          style={
+            Array [
+              Object {
+                "backgroundColor": "#f1f2f4",
+                "borderColor": "#f1f2f4",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "color": "#2f343d",
+                "fontFamily": "Courier New",
+                "fontWeight": "400",
+              },
+            ]
+          }
+        >
+          [description](url)
+        </Text>
+        <Text>
+          
+
+        </Text>
         <Text
           onLongPress={[Function]}
           onPress={[Function]}
@@ -1918,6 +3169,99 @@ exports[`Storyshots Markdown list Markdown 1`] = `
         >
           &lt;url|description&gt;
         </Text>
+        <Text>
+          
+
+        </Text>
+        <Text
+          onLongPress={[Function]}
+          onPress={[Function]}
+          style={
+            Object {
+              "backgroundColor": "transparent",
+              "color": "#1d74f5",
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+            }
+          }
+        >
+          <Text
+            accessibilityLabel="Formatted Link"
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                },
+                Array [
+                  Object {},
+                  Object {
+                    "alignItems": "flex-start",
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                    "justifyContent": "flex-start",
+                    "marginBottom": 0,
+                    "marginTop": 0,
+                  },
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                  },
+                ],
+              ]
+            }
+          >
+            Formatted Link
+          </Text>
+        </Text>
+        <Text
+          accessibilityLabel=": "
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          : 
+        </Text>
+        <Text
+          style={
+            Array [
+              Object {
+                "backgroundColor": "#f1f2f4",
+                "borderColor": "#f1f2f4",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "color": "#2f343d",
+                "fontFamily": "Courier New",
+                "fontWeight": "400",
+              },
+            ]
+          }
+        >
+          &lt;url|description&gt;
+        </Text>
       </Text>
     </View>
     <Text
@@ -1959,6 +3303,24 @@ exports[`Storyshots Markdown list Markdown 1`] = `
           ]
         }
       >
+        <Image
+          source={
+            Object {
+              "uri": "https://play.google.com/intl/en_us/badges/images/badge_new.png",
+            }
+          }
+          style={
+            Object {
+              "height": 300,
+              "resizeMode": "contain",
+              "width": 300,
+            }
+          }
+        />
+        <Text>
+          
+
+        </Text>
         <Image
           source={
             Object {
@@ -2050,6 +3412,41 @@ exports[`Storyshots Markdown list Markdown 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Header 1"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontSize": 24,
+                  "fontWeight": "700",
+                },
+              ],
+            ]
+          }
+        >
+          Header 1
+        </Text>
+      </Text>
+      <Text
+        style={
+          Array [
+            undefined,
+            Object {
+              "color": "#2f343d",
+            },
+          ]
+        }
+      >
+        <Text
           accessibilityLabel="Header 2"
           style={
             Array [
@@ -2072,6 +3469,76 @@ exports[`Storyshots Markdown list Markdown 1`] = `
           }
         >
           Header 2
+        </Text>
+      </Text>
+      <Text
+        style={
+          Array [
+            undefined,
+            Object {
+              "color": "#2f343d",
+            },
+          ]
+        }
+      >
+        <Text
+          accessibilityLabel="Header 2"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontSize": 22,
+                  "fontWeight": "700",
+                },
+              ],
+            ]
+          }
+        >
+          Header 2
+        </Text>
+      </Text>
+      <Text
+        style={
+          Array [
+            undefined,
+            Object {
+              "color": "#2f343d",
+            },
+          ]
+        }
+      >
+        <Text
+          accessibilityLabel="Header 3"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontSize": 20,
+                  "fontWeight": "600",
+                },
+              ],
+            ]
+          }
+        >
+          Header 3
         </Text>
       </Text>
       <Text
@@ -2155,6 +3622,41 @@ exports[`Storyshots Markdown list Markdown 1`] = `
         }
       >
         <Text
+          accessibilityLabel="Header 4"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontSize": 18,
+                  "fontWeight": "600",
+                },
+              ],
+            ]
+          }
+        >
+          Header 4
+        </Text>
+      </Text>
+      <Text
+        style={
+          Array [
+            undefined,
+            Object {
+              "color": "#2f343d",
+            },
+          ]
+        }
+      >
+        <Text
           accessibilityLabel="Header 5"
           style={
             Array [
@@ -2177,6 +3679,76 @@ exports[`Storyshots Markdown list Markdown 1`] = `
           }
         >
           Header 5
+        </Text>
+      </Text>
+      <Text
+        style={
+          Array [
+            undefined,
+            Object {
+              "color": "#2f343d",
+            },
+          ]
+        }
+      >
+        <Text
+          accessibilityLabel="Header 5"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                },
+              ],
+            ]
+          }
+        >
+          Header 5
+        </Text>
+      </Text>
+      <Text
+        style={
+          Array [
+            undefined,
+            Object {
+              "color": "#2f343d",
+            },
+          ]
+        }
+      >
+        <Text
+          accessibilityLabel="Header 6"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontSize": 14,
+                  "fontWeight": "500",
+                },
+              ],
+            ]
+          }
+        >
+          Header 6
         </Text>
       </Text>
       <Text
@@ -2254,6 +3826,53 @@ exports[`Storyshots Markdown list Markdown 1`] = `
           ]
         }
       >
+        <Text
+          accessibilityLabel="This is "
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          This is 
+        </Text>
+        <Text
+          style={
+            Array [
+              Object {
+                "backgroundColor": "#f1f2f4",
+                "borderColor": "#f1f2f4",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "color": "#2f343d",
+                "fontFamily": "Courier New",
+                "fontWeight": "400",
+              },
+            ]
+          }
+        >
+          inline code
+        </Text>
+        <Text>
+          
+
+        </Text>
         <Text
           accessibilityLabel="This is "
           style={
@@ -2450,6 +4069,122 @@ exports[`Storyshots Markdown list Markdown 1`] = `
         >
            it.
         </Text>
+        <Text>
+          
+
+        </Text>
+        <Text
+          accessibilityLabel="Inline "
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          Inline 
+        </Text>
+        <Text
+          style={
+            Array [
+              Object {
+                "backgroundColor": "#f1f2f4",
+                "borderColor": "#f1f2f4",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "color": "#2f343d",
+                "fontFamily": "Courier New",
+                "fontWeight": "400",
+              },
+            ]
+          }
+        >
+          code
+        </Text>
+        <Text
+          accessibilityLabel=" has "
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+           has 
+        </Text>
+        <Text
+          style={
+            Array [
+              Object {
+                "backgroundColor": "#f1f2f4",
+                "borderColor": "#f1f2f4",
+                "borderRadius": 4,
+                "borderWidth": 1,
+                "color": "#2f343d",
+                "fontFamily": "Courier New",
+                "fontWeight": "400",
+              },
+            ]
+          }
+        >
+          back-ticks around
+        </Text>
+        <Text
+          accessibilityLabel=" it."
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+           it.
+        </Text>
       </Text>
       <Text
         style={
@@ -2467,8 +4202,92 @@ exports[`Storyshots Markdown list Markdown 1`] = `
           ]
         }
       >
-        Code block
+        
+      </Text>
+      <Text
+        style={
+          Array [
+            undefined,
+            Object {
+              "color": "#2f343d",
+            },
+          ]
+        }
+      >
+        <Text
+          accessibilityLabel="Code block"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          Code block
+        </Text>
+        <Text>
+          
 
+        </Text>
+        <Text
+          accessibilityLabel="Code block"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          Code block
+        </Text>
+      </Text>
+      <Text
+        style={
+          Array [
+            Object {
+              "backgroundColor": "#f1f2f4",
+              "borderColor": "#f1f2f4",
+              "borderRadius": 4,
+              "borderWidth": 1,
+              "color": "#2f343d",
+              "fontFamily": "Courier New",
+              "fontWeight": "400",
+              "padding": 4,
+            },
+          ]
+        }
+      >
+        
       </Text>
     </View>
     <Text
@@ -2628,6 +4447,164 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             }
           >
             <Text
+              accessibilityLabel="Open Source"
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                  },
+                  Array [
+                    Object {},
+                    undefined,
+                    undefined,
+                    Object {
+                      "alignItems": "flex-start",
+                      "flexDirection": "row",
+                      "flexWrap": "wrap",
+                      "justifyContent": "flex-start",
+                      "marginBottom": 0,
+                      "marginTop": 0,
+                    },
+                  ],
+                ]
+              }
+            >
+              Open Source
+            </Text>
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "alignItems": "flex-start",
+            "flexDirection": "row",
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "width": 15,
+              },
+              Object {
+                "alignItems": "flex-end",
+                "marginRight": 5,
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "#2f343d",
+              }
+            }
+          >
+            •
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "flex": 1,
+            }
+          }
+        >
+          <Text
+            style={
+              Array [
+                undefined,
+                Object {
+                  "color": "#2f343d",
+                },
+              ]
+            }
+          >
+            <Text
+              accessibilityLabel="Rocket.Chat"
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                  },
+                  Array [
+                    Object {},
+                    undefined,
+                    undefined,
+                    Object {
+                      "alignItems": "flex-start",
+                      "flexDirection": "row",
+                      "flexWrap": "wrap",
+                      "justifyContent": "flex-start",
+                      "marginBottom": 0,
+                      "marginTop": 0,
+                    },
+                  ],
+                ]
+              }
+            >
+              Rocket.Chat
+            </Text>
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "alignItems": "flex-start",
+            "flexDirection": "row",
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "width": 15,
+              },
+              Object {
+                "alignItems": "flex-end",
+                "marginRight": 5,
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "#2f343d",
+              }
+            }
+          >
+            •
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "flex": 1,
+            }
+          }
+        >
+          <Text
+            style={
+              Array [
+                undefined,
+                Object {
+                  "color": "#2f343d",
+                },
+              ]
+            }
+          >
+            <Text
               accessibilityLabel="Rocket.Chat"
               style={
                 Array [
@@ -2733,6 +4710,168 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                   }
                 >
                   nodejs
+                </Text>
+              </Text>
+            </View>
+          </View>
+          <View
+            style={
+              Object {
+                "alignItems": "flex-start",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "width": 15,
+                  },
+                  Object {
+                    "alignItems": "flex-end",
+                    "marginRight": 5,
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  Object {
+                    "color": "#2f343d",
+                  }
+                }
+              >
+                ◦
+              </Text>
+            </View>
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                }
+              }
+            >
+              <Text
+                style={
+                  Array [
+                    undefined,
+                    Object {
+                      "color": "#2f343d",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  accessibilityLabel="nodejs"
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                      },
+                      Array [
+                        Object {},
+                        undefined,
+                        undefined,
+                        undefined,
+                        undefined,
+                        Object {
+                          "alignItems": "flex-start",
+                          "flexDirection": "row",
+                          "flexWrap": "wrap",
+                          "justifyContent": "flex-start",
+                          "marginBottom": 0,
+                          "marginTop": 0,
+                        },
+                      ],
+                    ]
+                  }
+                >
+                  nodejs
+                </Text>
+              </Text>
+            </View>
+          </View>
+          <View
+            style={
+              Object {
+                "alignItems": "flex-start",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "width": 15,
+                  },
+                  Object {
+                    "alignItems": "flex-end",
+                    "marginRight": 5,
+                  },
+                ]
+              }
+            >
+              <Text
+                style={
+                  Object {
+                    "color": "#2f343d",
+                  }
+                }
+              >
+                ◦
+              </Text>
+            </View>
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                }
+              }
+            >
+              <Text
+                style={
+                  Array [
+                    undefined,
+                    Object {
+                      "color": "#2f343d",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  accessibilityLabel="ReactNative"
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                      },
+                      Array [
+                        Object {},
+                        undefined,
+                        undefined,
+                        undefined,
+                        undefined,
+                        Object {
+                          "alignItems": "flex-start",
+                          "flexDirection": "row",
+                          "flexWrap": "wrap",
+                          "justifyContent": "flex-start",
+                          "marginBottom": 0,
+                          "marginTop": 0,
+                        },
+                      ],
+                    ]
+                  }
+                >
+                  ReactNative
                 </Text>
               </Text>
             </View>
@@ -2978,6 +5117,164 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             }
           >
             <Text
+              accessibilityLabel="Open Source"
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                  },
+                  Array [
+                    Object {},
+                    undefined,
+                    undefined,
+                    Object {
+                      "alignItems": "flex-start",
+                      "flexDirection": "row",
+                      "flexWrap": "wrap",
+                      "justifyContent": "flex-start",
+                      "marginBottom": 0,
+                      "marginTop": 0,
+                    },
+                  ],
+                ]
+              }
+            >
+              Open Source
+            </Text>
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "alignItems": "flex-start",
+            "flexDirection": "row",
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "width": 16,
+              },
+              Object {
+                "alignItems": "flex-end",
+                "marginRight": 5,
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "#2f343d",
+              }
+            }
+          >
+            3.
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "flex": 1,
+            }
+          }
+        >
+          <Text
+            style={
+              Array [
+                undefined,
+                Object {
+                  "color": "#2f343d",
+                },
+              ]
+            }
+          >
+            <Text
+              accessibilityLabel="Rocket.Chat"
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                  },
+                  Array [
+                    Object {},
+                    undefined,
+                    undefined,
+                    Object {
+                      "alignItems": "flex-start",
+                      "flexDirection": "row",
+                      "flexWrap": "wrap",
+                      "justifyContent": "flex-start",
+                      "marginBottom": 0,
+                      "marginTop": 0,
+                    },
+                  ],
+                ]
+              }
+            >
+              Rocket.Chat
+            </Text>
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "alignItems": "flex-start",
+            "flexDirection": "row",
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "width": 16,
+              },
+              Object {
+                "alignItems": "flex-end",
+                "marginRight": 5,
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "#2f343d",
+              }
+            }
+          >
+            4.
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "flex": 1,
+            }
+          }
+        >
+          <Text
+            style={
+              Array [
+                undefined,
+                Object {
+                  "color": "#2f343d",
+                },
+              ]
+            }
+          >
+            <Text
               accessibilityLabel="Rocket.Chat"
               style={
                 Array [
@@ -3158,6 +5455,120 @@ exports[`Storyshots Markdown list Markdown 1`] = `
         >
           underscores
         </Text>
+        <Text>
+          
+
+        </Text>
+        <Text
+          accessibilityLabel="Strong emphasis, aka bold, with "
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          Strong emphasis, aka bold, with 
+        </Text>
+        <Text
+          accessibilityLabel="asterisks"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+                Object {
+                  "fontWeight": "bold",
+                },
+              ],
+            ]
+          }
+        >
+          asterisks
+        </Text>
+        <Text
+          accessibilityLabel=" or "
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+           or 
+        </Text>
+        <Text
+          accessibilityLabel="underscores"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+                Object {
+                  "fontStyle": "italic",
+                },
+              ],
+            ]
+          }
+        >
+          underscores
+        </Text>
       </Text>
     </View>
     <Text
@@ -3188,7 +5599,255 @@ exports[`Storyshots Markdown list Markdown 1`] = `
           "marginHorizontal": 15,
         }
       }
-    />
+    >
+      <Text
+        style={
+          Array [
+            undefined,
+            Object {
+              "color": "#2f343d",
+            },
+          ]
+        }
+      >
+        <Text
+          accessibilityLabel="First Header | Second Header"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          First Header | Second Header
+        </Text>
+        <Text>
+          
+
+        </Text>
+        <Text
+          accessibilityLabel="First Header | Second Header"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          First Header | Second Header
+        </Text>
+        <Text>
+          
+
+        </Text>
+        <Text
+          accessibilityLabel="------------ | -------------"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          ------------ | -------------
+        </Text>
+        <Text>
+          
+
+        </Text>
+        <Text
+          accessibilityLabel="------------ | -------------"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          ------------ | -------------
+        </Text>
+        <Text>
+          
+
+        </Text>
+        <Text
+          accessibilityLabel="Content from cell 1 | Content from cell 2"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          Content from cell 1 | Content from cell 2
+        </Text>
+        <Text>
+          
+
+        </Text>
+        <Text
+          accessibilityLabel="Content from cell 1 | Content from cell 2"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          Content from cell 1 | Content from cell 2
+        </Text>
+        <Text>
+          
+
+        </Text>
+        <Text
+          accessibilityLabel="Content in the first column | Content in the second column"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          Content in the first column | Content in the second column
+        </Text>
+        <Text>
+          
+
+        </Text>
+        <Text
+          accessibilityLabel="Content in the first column | Content in the second column"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          Content in the first column | Content in the second column
+        </Text>
+      </Text>
+    </View>
   </View>
 </RCTScrollView>
 `;
@@ -4328,6 +6987,37 @@ exports[`Storyshots Message list message 1`] = `
                 >
                   This message has error
                 </Text>
+                <Text>
+                  
+
+                </Text>
+                <Text
+                  accessibilityLabel="This message has error"
+                  numberOfLines={0}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                      },
+                      Array [
+                        Object {},
+                        Object {
+                          "alignItems": "flex-start",
+                          "flexDirection": "row",
+                          "flexWrap": "wrap",
+                          "justifyContent": "flex-start",
+                          "marginBottom": 0,
+                          "marginTop": 0,
+                        },
+                      ],
+                    ]
+                  }
+                >
+                  This message has error
+                </Text>
               </Text>
             </View>
           </View>
@@ -4407,6 +7097,37 @@ exports[`Storyshots Message list message 1`] = `
                   ]
                 }
               >
+                <Text
+                  accessibilityLabel="This message has error too"
+                  numberOfLines={0}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                      },
+                      Array [
+                        Object {},
+                        Object {
+                          "alignItems": "flex-start",
+                          "flexDirection": "row",
+                          "flexWrap": "wrap",
+                          "justifyContent": "flex-start",
+                          "marginBottom": 0,
+                          "marginTop": 0,
+                        },
+                      ],
+                    ]
+                  }
+                >
+                  This message has error too
+                </Text>
+                <Text>
+                  
+
+                </Text>
                 <Text
                   accessibilityLabel="This message has error too"
                   numberOfLines={0}
