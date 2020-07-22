@@ -32,7 +32,6 @@ describe('Forgot password screen', () => {
 			await element(by.id('forgot-password-view-submit')).tap();
 			await element(by.text('OK')).tap();
 			await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(60000);
-			await expect(element(by.id('login-view'))).toBeVisible();
 		});
 	});
 });
