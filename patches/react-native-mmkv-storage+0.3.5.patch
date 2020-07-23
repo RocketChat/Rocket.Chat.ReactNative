@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-mmkv-storage/ios/SecureStorage.m b/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
-index 70f3a01..41fc275 100644
+index 70f3a01..e30b5fb 100644
 --- a/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
 +++ b/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
 @@ -130,7 +130,8 @@ - (void) removeSecureKey:(NSString *)key
@@ -15,7 +15,7 @@ index 70f3a01..41fc275 100644
 @@ -139,6 +140,9 @@ - (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
      [searchDictionary setObject:encodedIdentifier forKey:(id)kSecAttrAccount];
      [searchDictionary setObject:serviceName forKey:(id)kSecAttrService];
- 
+     
 +    NSString *keychainGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"KeychainGroup"];
 +    [searchDictionary setObject:keychainGroup forKey:(id)kSecAttrAccessGroup];
 +    
@@ -39,3 +39,72 @@ index 70f3a01..41fc275 100644
  }
  
  NSError * secureKeyStoreError(NSString *errMsg)
+diff --git a/node_modules/react-native-mmkv-storage/ios/StorageIndexer.m b/node_modules/react-native-mmkv-storage/ios/StorageIndexer.m
+index e7c914b..891cf93 100644
+--- a/node_modules/react-native-mmkv-storage/ios/StorageIndexer.m
++++ b/node_modules/react-native-mmkv-storage/ios/StorageIndexer.m
+@@ -58,7 +58,11 @@ + (void) removeKeyFromIndexer:(MMKV *)kv
+     if (index != NULL && [index containsObject:key]) {
+         
+         [index removeObject:key];
+-        [kv setObject:index forKey:stringsIndexKey];
++        if (!index || [index count] == 0) {
++            [kv removeValueForKey:stringsIndexKey];
++        } else {
++            [kv setObject:index forKey:stringsIndexKey];
++        }
+         return;
+     }
+     
+@@ -67,7 +71,11 @@ + (void) removeKeyFromIndexer:(MMKV *)kv
+     if (index != NULL && [index containsObject:key]) {
+         
+         [index removeObject:key];
+-        [kv setObject:index forKey:intIndexKey];
++        if (!index || [index count] == 0) {
++            [kv removeValueForKey:intIndexKey];
++        } else {
++            [kv setObject:index forKey:intIndexKey];
++        }
+         return;
+     }
+     
+@@ -76,7 +84,11 @@ + (void) removeKeyFromIndexer:(MMKV *)kv
+     if (index != NULL && [index containsObject:key]) {
+         
+         [index removeObject:key];
+-        [kv setObject:index forKey:boolIndexKey];
++        if (!index || [index count] == 0) {
++            [kv removeValueForKey:boolIndexKey];
++        } else {
++            [kv setObject:index forKey:boolIndexKey];
++        }
+         return;
+     }
+     
+@@ -85,7 +97,11 @@ + (void) removeKeyFromIndexer:(MMKV *)kv
+     if (index != NULL && [index containsObject:key]) {
+         
+         [index removeObject:key];
+-        [kv setObject:index forKey:mapIndexKey];
++        if (!index || [index count] == 0) {
++            [kv removeValueForKey:mapIndexKey];
++        } else {
++            [kv setObject:index forKey:mapIndexKey];
++        }
+         return;
+     }
+     
+@@ -94,7 +110,11 @@ + (void) removeKeyFromIndexer:(MMKV *)kv
+     if (index != NULL && [index containsObject:key]) {
+         
+         [index removeObject:key];
+-        [kv setObject:index forKey:arrayIndexKey];
++        if (!index || [index count] == 0) {
++            [kv removeValueForKey:arrayIndexKey];
++        } else {
++            [kv setObject:index forKey:arrayIndexKey];
++        }
+         return;
+     }
+     
