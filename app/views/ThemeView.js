@@ -21,7 +21,7 @@ const THEME_GROUP = 'THEME_GROUP';
 const DARK_GROUP = 'DARK_GROUP';
 
 const SYSTEM_THEME = {
-	label: I18n.t('Automatic'),
+	label: 'Automatic',
 	value: 'automatic',
 	group: THEME_GROUP
 };

@@ -229,7 +229,7 @@ class NotificationPreferencesView extends React.Component {
 		const { room } = this.state;
 		const { theme } = this.props;
 		const text = room[key] ? OPTIONS[key].find(option => option.value === room[key]) : OPTIONS[key][0];
-		return <Text style={[styles.pickerText, { color: themes[theme].actionTintColor }]}>{I18n.t(text?.label, {defaultValue: text?.label, second: text?.second})}</Text>;
+		return <Text style={[styles.pickerText, { color: themes[theme].actionTintColor }]}>{I18n.t(text?.label, { defaultValue: text?.label, second: text?.second })}</Text>;
 	}
 
 	renderSwitch = (key) => {
