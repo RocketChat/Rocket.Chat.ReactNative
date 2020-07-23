@@ -1,5 +1,6 @@
 import { Client } from 'bugsnag-react-native';
 import analytics from '@react-native-firebase/analytics';
+import crashlytics from '@react-native-firebase/crashlytics';
 import config from '../../../config';
 import events from './events';
 
@@ -19,7 +20,11 @@ export const logServerVersion = (serverVersion) => {
 };
 
 export const logEvent = (eventName, payload) => {
+	// Log for analytics usage
 	analytics().logEvent(eventName, payload);
+
+	// Logs for error reporting
+	crashlytics().log(eventName);
 	leaveBreadcrumb(eventName, payload);
 };
 
@@ -37,6 +42,7 @@ export default (e) => {
 				}
 			};
 		});
+		crashlytics().recordError(e);
 	} else {
 		console.log(e);
 	}
