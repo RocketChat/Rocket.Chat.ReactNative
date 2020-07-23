@@ -62,25 +62,21 @@ describe('Create room screen', () => {
 	describe('Select Users', async() => {
 		it('should search users', async() => {
 			await element(by.id('select-users-view-search')).replaceText('rocket.cat');
-			await waitFor(element(by.id(`select-users-view-item-rocket.cat`))).toExist().withTimeout(10000);
-			await expect(element(by.id(`select-users-view-item-rocket.cat`))).toExist();
+			await waitFor(element(by.id(`select-users-view-item-rocket.cat`))).toBeVisible().withTimeout(10000);
 		});
 
 		it('should select/unselect user', async() => {
 			await element(by.id('select-users-view-item-rocket.cat')).tap();
-			await waitFor(element(by.id('selected-user-rocket.cat'))).toExist().withTimeout(5000);
-			await expect(element(by.id('selected-user-rocket.cat'))).toExist();
+			await waitFor(element(by.id('selected-user-rocket.cat'))).toBeVisible().withTimeout(5000);
 			await element(by.id('selected-user-rocket.cat')).tap();
 			await waitFor(element(by.id('selected-user-rocket.cat'))).toBeNotVisible().withTimeout(5000);
-			await expect(element(by.id('selected-user-rocket.cat'))).toBeNotVisible();
 			await element(by.id('select-users-view-item-rocket.cat')).tap();
-			await waitFor(element(by.id('selected-user-rocket.cat'))).toExist().withTimeout(5000);
+			await waitFor(element(by.id('selected-user-rocket.cat'))).toBeVisible().withTimeout(5000);
 		});
 
 		it('should navigate to create channel view', async() => {
 			await element(by.id('selected-users-view-submit')).tap();
-			await waitFor(element(by.id('create-channel-view'))).toExist().withTimeout(5000);
-			await expect(element(by.id('create-channel-view'))).toExist();
+			await waitFor(element(by.id('create-channel-view'))).toBeVisible().withTimeout(5000);
 		});
 	})
 
