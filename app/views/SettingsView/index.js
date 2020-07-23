@@ -118,7 +118,7 @@ class SettingsView extends React.Component {
 		const { toggleCrashReport } = this.props;
 		toggleCrashReport(value);
 		loggerConfig.autoNotify = value;
-		// analytics().setAnalyticsCollectionEnabled(value);
+		analytics().setAnalyticsCollectionEnabled(value);
 
 		if (value) {
 			loggerConfig.clearBeforeSendCallbacks();

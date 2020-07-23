@@ -160,7 +160,7 @@ export default class Root extends React.Component {
 				if (!allowCrashReport) {
 					loggerConfig.autoNotify = false;
 					loggerConfig.registerBeforeSendCallback(() => false);
-					// analytics().setAnalyticsCollectionEnabled(false);
+					analytics().setAnalyticsCollectionEnabled(false);
 				}
 			});
 	}
