@@ -10,11 +10,12 @@ import { ImageViewer, types } from '../../presentation/ImageViewer';
 import { themes } from '../../constants/colors';
 import { useDimensions, useOrientation } from '../../dimensions';
 import { getHeaderHeight } from '../../containers/Header';
-import { isIOS } from '../../utils/deviceInfo';
 import { THUMBS_HEIGHT } from './constants';
 import sharedStyles from '../Styles';
 import { allowPreview } from './utils';
 import I18n from '../../i18n';
+
+const MESSAGEBOX_HEIGHT = 56;
 
 const styles = StyleSheet.create({
 	fileContainer: {
@@ -58,23 +59,24 @@ const Preview = React.memo(({
 	const { isLandscape } = useOrientation();
 	const insets = useSafeAreaInsets();
 	const headerHeight = getHeaderHeight(isLandscape);
-	const messageboxHeight = isIOS ? 56 : 0;
 	const thumbsHeight = (length > 1) ? THUMBS_HEIGHT : 0;
-	const calculatedHeight = height - insets.top - insets.bottom - messageboxHeight - thumbsHeight - headerHeight;
+	const calculatedHeight = height - insets.top - insets.bottom - MESSAGEBOX_HEIGHT - thumbsHeight - headerHeight;
 
 	if (item?.canUpload) {
 		if (type?.match(/video/)) {
 			return (
-				<Video
-					source={{ uri: item.path }}
-					rate={1.0}
-					volume={1.0}
-					isMuted={false}
-					resizeMode={Video.RESIZE_MODE_CONTAIN}
-					isLooping={false}
-					style={{ width, height: calculatedHeight }}
-					useNativeControls
-				/>
+				<ScrollView style={{ height: calculatedHeight }}>
+					<Video
+						source={{ uri: item.path }}
+						rate={1.0}
+						volume={1.0}
+						isMuted={false}
+						resizeMode={Video.RESIZE_MODE_CONTAIN}
+						isLooping={false}
+						style={{ width, height: calculatedHeight }}
+						useNativeControls
+					/>
+				</ScrollView>
 			);
 		}
 
