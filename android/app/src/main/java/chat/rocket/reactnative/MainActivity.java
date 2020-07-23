@@ -22,6 +22,13 @@ class ThemePreferences {
   String darkLevel;
 }
 
+class SortPreferences {
+  String sortBy;
+  Boolean groupByType;
+  Boolean showFavorites;
+  Boolean showUnread;
+}
+
 public class MainActivity extends ReactFragmentActivity {
 
     @Override
@@ -45,14 +52,32 @@ public class MainActivity extends ReactFragmentActivity {
             mmkv.importFromSharedPreferences(sharedPreferences);
 
             // SharedPreferences only save strings, so we saved this value as a String and now we'll need to cast into a MMKV object
+
+            // Theme preferences object
             String THEME_PREFERENCES_KEY = "RC_THEME_PREFERENCES_KEY";
-            String themeJson = sharedPreferences.getString(THEME_PREFERENCES_KEY, "{}");
-            ThemePreferences themePreferences = new Gson().fromJson(themeJson, ThemePreferences.class);
-            WritableMap map = new Arguments().createMap();
-            map.putString("currentTheme", themePreferences.currentTheme);
-            map.putString("darkLevel", themePreferences.darkLevel);
-            Bundle bundle = Arguments.toBundle(map);
-            mmkv.encode(THEME_PREFERENCES_KEY, bundle);
+            String themeJson = sharedPreferences.getString(THEME_PREFERENCES_KEY, "");
+            if (!themeJson.isEmpty()) {
+              ThemePreferences themePreferences = new Gson().fromJson(themeJson, ThemePreferences.class);
+              WritableMap themeMap = new Arguments().createMap();
+              themeMap.putString("currentTheme", themePreferences.currentTheme);
+              themeMap.putString("darkLevel", themePreferences.darkLevel);
+              Bundle bundle = Arguments.toBundle(themeMap);
+              mmkv.encode(THEME_PREFERENCES_KEY, bundle);
+            }
+
+            // Sort preferences object
+            String SORT_PREFS_KEY = "RC_SORT_PREFS_KEY";
+            String sortJson = sharedPreferences.getString(SORT_PREFS_KEY, "");
+            if (!sortJson.isEmpty()) {
+              SortPreferences sortPreferences = new Gson().fromJson(sortJson, SortPreferences.class);
+              WritableMap sortMap = new Arguments().createMap();
+              sortMap.putString("sortBy", sortPreferences.sortBy);
+              sortMap.putBoolean("groupByType", sortPreferences.groupByType);
+              sortMap.putBoolean("showFavorites", sortPreferences.showFavorites);
+              sortMap.putBoolean("showUnread", sortPreferences.showUnread);
+              Bundle bundle = Arguments.toBundle(sortMap);
+              mmkv.encode(SORT_PREFS_KEY, bundle);
+            }
 
             // Remove all our keys of SharedPreferences
             sharedPreferences.edit().clear().commit();
