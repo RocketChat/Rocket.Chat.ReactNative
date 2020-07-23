@@ -322,7 +322,7 @@ const RocketChat = {
 
 	updateJitsiTimeout(roomId) {
 		// RC 0.74.0
-		return this.post('jitsi.updateTimeout', { roomId });
+		return this.post('video-conference/jitsi.update-timeout', { roomId });
 	},
 
 	register(credentials) {
@@ -845,6 +845,12 @@ const RocketChat = {
 		return other && other.length ? other[0] : me;
 	},
 
+	isRead(item) {
+		let isUnread = item.archived !== true && item.open === true; // item is not archived and not opened
+		isUnread = isUnread && (item.unread > 0 || item.alert === true); // either its unread count > 0 or its alert
+		return !isUnread;
+	},
+
 	isGroupChat(room) {
 		return (room.uids && room.uids.length > 2) || (room.usernames && room.usernames.length > 2);
 	},
@@ -1075,6 +1081,10 @@ const RocketChat = {
 
 		if (service === 'cas') {
 			return 'cas';
+		}
+
+		if (authName === 'apple' && isIOS) {
+			return 'apple';
 		}
 
 		// TODO: remove this after other oauth providers are implemented. e.g. Drupal, github_enterprise

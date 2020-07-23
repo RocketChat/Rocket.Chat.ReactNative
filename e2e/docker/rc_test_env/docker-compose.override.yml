@@ -1,0 +1,27 @@
+version: '2'
+
+services:
+  mongo:
+    image: circleci/mongo:4.0
+    volumes:
+      - ${DATAROOT}/data/db:/data/db
+      - ${DATAROOT}/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+    environment:
+      - MONGO_INITDB_DATABASE=rocketchat
+
+  mongo-init-replica: # No replicas when testing
+    image: tianon/true
+    restart: "no"
+    command: "true"
+    entrypoint: ["/true"]
+  
+  hubot:  # No hubot when testing
+    image: tianon/true
+    restart: "no"
+    command: "true"
+    entrypoint: ["/true"]
+
+  mailcatcher:
+    image: tophfr/mailcatcher
+    ports: 
+      - 1080:80

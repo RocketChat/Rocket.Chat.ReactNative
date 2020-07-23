@@ -2,20 +2,12 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const data = require('../../data');
-const { tapBack, sleep, searchRoom } = require('../../helpers/app');
+const { navigateToLogin, login, mockMessage, tapBack, sleep, searchRoom } = require('../../helpers/app');
 
-const room = 'detox-public';
-
-async function mockMessage(message) {
-	await element(by.id('messagebox-input')).tap();
-	await element(by.id('messagebox-input')).typeText(`${ data.random }${ message }`);
-	await element(by.id('messagebox-send-message')).tap();
-	await waitFor(element(by.label(`${ data.random }${ message }`)).atIndex(0)).toExist().withTimeout(60000);
-	await sleep(1000);
-};
+const testuser = data.users.regular
+const room = data.channels.detoxpublic.name;
 
 async function navigateToRoom() {
-	await sleep(2000);
 	await searchRoom(room);
 	await waitFor(element(by.id(`rooms-list-view-item-${ room }`)).atIndex(0)).toBeVisible().withTimeout(60000);
 	await element(by.id(`rooms-list-view-item-${ room }`)).atIndex(0).tap();
@@ -23,15 +15,15 @@ async function navigateToRoom() {
 }
 
 async function navigateToRoomActions() {
-	await sleep(2000);
 	await element(by.id('room-view-header-actions')).tap();
-	await sleep(2000);
 	await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(5000);
 }
 
 describe('Join public room', () => {
 	before(async() => {
-		await device.launchApp({ newInstance: true });
+		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		await navigateToLogin();
+		await login(testuser.username, testuser.password);
 		await navigateToRoom();
 	});
 
@@ -148,8 +140,6 @@ describe('Join public room', () => {
 
 		it('should send message', async() => {
 			await mockMessage('message');
-			await expect(element(by.label(`${ data.random }message`)).atIndex(0)).toExist();
-			await element(by.label(`${ data.random }message`)).atIndex(0).tap();
 		});
 
 		it('should have disable notifications and leave channel', async() => {
@@ -177,9 +167,7 @@ describe('Join public room', () => {
 			await element(by.text('Yes, leave it!')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 			// await element(by.id('rooms-list-view-search')).typeText('');
-			await sleep(2000);
 			await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible().withTimeout(60000);
-			await expect(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible();
 		});
 	});
 });

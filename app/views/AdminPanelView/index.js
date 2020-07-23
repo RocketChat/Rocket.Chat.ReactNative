@@ -31,6 +31,8 @@ class AdminPanelView extends React.Component {
 			<SafeAreaView theme={theme}>
 				<StatusBar theme={theme} />
 				<WebView
+					// https://github.com/react-native-community/react-native-webview/issues/1311
+					onMessage={() => {}}
 					source={{ uri: `${ baseUrl }/admin/info?layout=embedded` }}
 					injectedJavaScript={`Meteor.loginWithToken('${ token }', function() { })`}
 				/>
