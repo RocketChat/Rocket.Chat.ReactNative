@@ -68,8 +68,13 @@ class NotificationService: UNNotificationServiceExtension {
             }
             let msgId = data.messageId
 
-            let userId = userDefaults?.string(forKey: "reactnativemeteor_usertoken-\(server)")! ?? ""
-            let token = userDefaults?.string(forKey: "reactnativemeteor_usertoken-\(userId)")! ?? ""
+            let userId = userDefaults?.string(forKey: "reactnativemeteor_usertoken-\(server)") ?? ""
+            let token = userDefaults?.string(forKey: "reactnativemeteor_usertoken-\(userId)") ?? ""
+          
+            if userId.isEmpty || token.isEmpty {
+                contentHandler(bestAttemptContent)
+                return
+            }
 
             var urlComponents = URLComponents(string: "\(server)/api/v1/push.get")!
             let queryItems = [URLQueryItem(name: "id", value: msgId)]
