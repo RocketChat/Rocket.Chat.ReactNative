@@ -47,6 +47,17 @@ PODS:
     - React-Core (= 0.63.1)
     - React-jsi (= 0.63.1)
     - ReactCommon/turbomodule/core (= 0.63.1)
+  - Firebase/CoreOnly (6.27.1):
+    - FirebaseCore (= 6.8.1)
+  - FirebaseCore (6.8.1):
+    - FirebaseCoreDiagnostics (~> 1.3)
+    - GoogleUtilities/Environment (~> 6.5)
+    - GoogleUtilities/Logger (~> 6.5)
+  - FirebaseCoreDiagnostics (1.5.0):
+    - GoogleDataTransport (~> 7.0)
+    - GoogleUtilities/Environment (~> 6.7)
+    - GoogleUtilities/Logger (~> 6.7)
+    - nanopb (~> 1.30905.0)
   - Flipper (0.41.5):
     - Flipper-Folly (~> 2.2)
     - Flipper-RSocket (~> 1.1)
@@ -103,6 +114,12 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
+  - GoogleDataTransport (7.0.0):
+    - nanopb (~> 1.30905.0)
+  - GoogleUtilities/Environment (6.7.1):
+    - PromisesObjC (~> 1.2)
+  - GoogleUtilities/Logger (6.7.1):
+    - GoogleUtilities/Environment
   - JitsiMeetSDK (2.8.1)
   - KeyCommands (2.0.3):
     - React
@@ -115,9 +132,15 @@ PODS:
   - libwebp/mux (1.1.0):
     - libwebp/demux
   - libwebp/webp (1.1.0)
+  - nanopb (1.30905.0):
+    - nanopb/decode (= 1.30905.0)
+    - nanopb/encode (= 1.30905.0)
+  - nanopb/decode (1.30905.0)
+  - nanopb/encode (1.30905.0)
   - OpenSSL-Universal (1.0.2.19):
     - OpenSSL-Universal/Static (= 1.0.2.19)
   - OpenSSL-Universal/Static (1.0.2.19)
+  - PromisesObjC (1.2.9)
   - RCTRequired (0.63.1)
   - RCTTypeSafety (0.63.1):
     - FBLazyVector (= 0.63.1)
@@ -389,6 +412,9 @@ PODS:
     - React
     - SDWebImage (~> 5.0)
     - SDWebImageWebPCoder (~> 0.4.1)
+  - RNFBApp (8.2.0):
+    - Firebase/CoreOnly (~> 6.27.0)
+    - React
   - RNGestureHandler (1.6.1):
     - React
   - RNImageCropPicker (0.31.1):
@@ -521,6 +547,7 @@ DEPENDENCIES:
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - "RNFastImage (from `../node_modules/@rocket.chat/react-native-fast-image`)"
+  - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNLocalize (from `../node_modules/react-native-localize`)
@@ -549,6 +576,9 @@ SPEC REPOS:
     - boost-for-react-native
     - CocoaAsyncSocket
     - CocoaLibEvent
+    - Firebase
+    - FirebaseCore
+    - FirebaseCoreDiagnostics
     - Flipper
     - Flipper-DoubleConversion
     - Flipper-Folly
@@ -556,9 +586,13 @@ SPEC REPOS:
     - Flipper-PeerTalk
     - Flipper-RSocket
     - FlipperKit
+    - GoogleDataTransport
+    - GoogleUtilities
     - JitsiMeetSDK
     - libwebp
+    - nanopb
     - OpenSSL-Universal
+    - PromisesObjC
     - SDWebImage
     - SDWebImageWebPCoder
     - TOCropViewController
@@ -683,6 +717,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-device-info"
   RNFastImage:
     :path: "../node_modules/@rocket.chat/react-native-fast-image"
+  RNFBApp:
+    :path: "../node_modules/@react-native-firebase/app"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNImageCropPicker:
@@ -747,6 +783,9 @@ SPEC CHECKSUMS:
   EXWebBrowser: d37a5ffdea1b65947352bc001dd9f732463725d4
   FBLazyVector: a50434c875bd42f2b1c99c712bda892a1dc659c7
   FBReactNativeSpec: 393853a536428e05a9da00b6290042f09809b15b
+  Firebase: 919186c8e119dd9372a45fd1dd17a8a942bc1892
+  FirebaseCore: 8cd4f8ea22075e0ee582849b1cf79d8816506085
+  FirebaseCoreDiagnostics: 7535fe695737f8c5b350584292a70b7f8ff0357b
   Flipper: 33585e2d9810fe5528346be33bcf71b37bb7ae13
   Flipper-DoubleConversion: 38631e41ef4f9b12861c67d17cb5518d06badc41
   Flipper-Folly: c12092ea368353b58e992843a990a3225d4533c3
@@ -756,10 +795,14 @@ SPEC CHECKSUMS:
   FlipperKit: bc68102cd4952a258a23c9c1b316c7bec1fecf83
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
+  GoogleDataTransport: 8a40cb194ad242b6f6dfe72c14fe40fc67c4dcd7
+  GoogleUtilities: e121a3867449ce16b0e35ddf1797ea7a389ffdf2
   JitsiMeetSDK: 2984eac1343690bf1c0c72bde75b48b0148d0f79
   KeyCommands: f66c535f698ed14b3d3a4e58859d79a827ea907e
   libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
+  nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
   OpenSSL-Universal: 8b48cc0d10c1b2923617dfe5c178aa9ed2689355
+  PromisesObjC: b48e0338dbbac2207e611750777895f7a5811b75
   RCTRequired: d9b1a9e6fa097744ca3ede59f86a35096df7202b
   RCTTypeSafety: c227cd061983e9e964115afbc4e8730d6a6f1395
   React: 86e972a20967ee4137aa19dc48319405927c2e94
@@ -801,6 +844,7 @@ SPEC CHECKSUMS:
   RNDateTimePicker: e386ff4ef3300964ed0cad97ce6f206e0effbfdb
   RNDeviceInfo: ed8557a8bd6443cbc0ab5d375e6808a38a279744
   RNFastImage: 35ae972d6727c84ee3f5c6897e07f84d0a3445e9
+  RNFBApp: 6fd8a7e757135d4168bf033a8812c241af7363a0
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
   RNImageCropPicker: 38865ab4af1b0b2146ad66061196bc0184946855
   RNLocalize: b6df30cc25ae736d37874f9bce13351db2f56796
