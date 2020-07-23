@@ -72,7 +72,6 @@
     "react-native-document-picker": "3.5.3",
     "react-native-easy-grid": "^0.2.2",
     "react-native-easy-toast": "^1.2.0",
-    "react-native-firebase": "5.6.0",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-image-crop-picker": "RocketChat/react-native-image-crop-picker",
     "react-native-image-progress": "^1.1.1",
