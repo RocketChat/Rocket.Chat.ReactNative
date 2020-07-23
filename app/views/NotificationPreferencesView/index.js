@@ -139,10 +139,6 @@ const OPTIONS = {
 };
 
 class NotificationPreferencesView extends React.Component {
-	static navigationOptions = {
-		title: I18n.t('Notification_Preferences')
-	}
-
 	static propTypes = {
 		navigation: PropTypes.object,
 		route: PropTypes.object,
@@ -171,6 +167,10 @@ class NotificationPreferencesView extends React.Component {
 	}
 
 	componentDidMount() {
+		const { navigation } = this.props;
+		navigation.setOptions({
+			title: I18n.t('Notification_Preferences')
+		});
 		this.mounted = true;
 	}
 
