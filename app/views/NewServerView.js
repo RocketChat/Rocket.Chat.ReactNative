@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
 import DocumentPicker from 'react-native-document-picker';
 import RNUserDefaults from 'rn-user-defaults';
-import { encode } from 'base-64';
+import { Base64 } from 'js-base64';
 import parse from 'url-parse';
 
 import EventEmitter from '../utils/events';
@@ -20,7 +20,7 @@ import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import I18n from '../i18n';
 import { isIOS } from '../utils/deviceInfo';
 import { themes } from '../constants/colors';
-import log from '../utils/log';
+import log, { logEvent, events } from '../utils/log';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
 import { setBasicAuth, BASIC_AUTH_KEY } from '../utils/fetch';
@@ -124,6 +124,7 @@ class NewServerView extends React.Component {
 	}
 
 	submit = async() => {
+		logEvent(events.CONNECT_TO_WORKSPACE);
 		const { text, certificate } = this.state;
 		const { connectServer } = this.props;
 		let cert = null;
@@ -135,6 +136,7 @@ class NewServerView extends React.Component {
 			try {
 				await FileSystem.copyAsync({ from: certificate.path, to: certificatePath });
 			} catch (e) {
+				logEvent(events.CONNECT_TO_WORKSPACE_FAIL);
 				log(e);
 			}
 			cert = {
@@ -152,6 +154,7 @@ class NewServerView extends React.Component {
 	}
 
 	connectOpen = () => {
+		logEvent(events.JOIN_OPEN_WORKSPACE);
 		this.setState({ connectingOpen: true });
 		const { connectServer } = this.props;
 		connectServer('https://open.rocket.chat');
@@ -161,7 +164,7 @@ class NewServerView extends React.Component {
 		try {
 			const parsedUrl = parse(text, true);
 			if (parsedUrl.auth.length) {
-				const credentials = encode(parsedUrl.auth);
+				const credentials = Base64.encode(parsedUrl.auth);
 				await RNUserDefaults.set(`${ BASIC_AUTH_KEY }-${ server }`, credentials);
 				setBasicAuth(credentials);
 			}

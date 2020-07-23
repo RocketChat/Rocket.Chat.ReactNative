@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
@@ -16,82 +16,79 @@ import { themes } from '../../constants/colors';
 export { ROW_HEIGHT };
 
 const attrs = [
-	'name',
-	'unread',
-	'userMentions',
-	'showLastMessage',
-	'useRealName',
-	'alert',
-	'type',
 	'width',
-	'isRead',
-	'favorite',
 	'status',
 	'connected',
 	'theme',
-	'isFocused'
+	'isFocused',
+	'forceUpdate',
+	'showLastMessage'
 ];
 
-const arePropsEqual = (oldProps, newProps) => {
-	const { _updatedAt: _updatedAtOld } = oldProps;
-	const { _updatedAt: _updatedAtNew } = newProps;
-	if (_updatedAtOld && _updatedAtNew && _updatedAtOld.toISOString() !== _updatedAtNew.toISOString()) {
-		return false;
-	}
-	return attrs.every(key => oldProps[key] === newProps[key]);
-};
+const arePropsEqual = (oldProps, newProps) => attrs.every(key => oldProps[key] === newProps[key]);
 
 const RoomItem = React.memo(({
+	item,
 	onPress,
 	width,
-	favorite,
 	toggleFav,
-	isRead,
-	rid,
 	toggleRead,
 	hideChannel,
 	testID,
-	unread,
-	userMentions,
-	name,
-	_updatedAt,
-	alert,
-	type,
 	avatarSize,
 	baseUrl,
 	userId,
 	username,
 	token,
 	id,
-	prid,
 	showLastMessage,
-	hideUnreadStatus,
-	lastMessage,
 	status,
-	avatar,
 	useRealName,
 	getUserPresence,
-	isGroupChat,
 	connected,
 	theme,
-	isFocused
+	isFocused,
+	getRoomTitle,
+	getRoomAvatar,
+	getIsGroupChat,
+	getIsRead
 }) => {
+	const [, setForceUpdate] = useState(1);
+
 	useEffect(() => {
-		if (connected && type === 'd' && id) {
+		if (connected && item.t === 'd' && id) {
 			getUserPresence(id);
 		}
 	}, [connected]);
 
-	const date = lastMessage && formatDate(lastMessage.ts);
+	useEffect(() => {
+		if (item?.observe) {
+			const observable = item.observe();
+			const subscription = observable?.subscribe?.(() => {
+				setForceUpdate(prevForceUpdate => prevForceUpdate + 1);
+			});
+
+			return () => {
+				subscription?.unsubscribe?.();
+			};
+		}
+	}, []);
+
+	const name = getRoomTitle(item);
+	const avatar = getRoomAvatar(item);
+	const isGroupChat = getIsGroupChat(item);
+	const isRead = getIsRead(item);
+	const _onPress = () => onPress(item);
+	const date = item.lastMessage?.ts && formatDate(item.lastMessage.ts);
 
 	let accessibilityLabel = name;
-	if (unread === 1) {
-		accessibilityLabel += `, ${ unread } ${ I18n.t('alert') }`;
-	} else if (unread > 1) {
-		accessibilityLabel += `, ${ unread } ${ I18n.t('alerts') }`;
+	if (item.unread === 1) {
+		accessibilityLabel += `, ${ item.unread } ${ I18n.t('alert') }`;
+	} else if (item.unread > 1) {
+		accessibilityLabel += `, ${ item.unread } ${ I18n.t('alerts') }`;
 	}
 
-	if (userMentions > 0) {
+	if (item.userMentions > 0) {
 		accessibilityLabel += `, ${ I18n.t('you_were_mentioned') }`;
 	}
 
@@ -101,16 +98,16 @@ const RoomItem = React.memo(({
 
 	return (
 		<Touchable
-			onPress={onPress}
+			onPress={_onPress}
 			width={width}
-			favorite={favorite}
+			favorite={item.f}
 			toggleFav={toggleFav}
 			isRead={isRead}
-			rid={rid}
+			rid={item.rid}
 			toggleRead={toggleRead}
 			hideChannel={hideChannel}
 			testID={testID}
-			type={type}
+			type={item.t}
 			theme={theme}
 			isFocused={isFocused}
 		>
@@ -121,7 +118,7 @@ const RoomItem = React.memo(({
 				<Avatar
 					text={avatar}
 					size={avatarSize}
-					type={type}
+					type={item.t}
 					baseUrl={baseUrl}
 					style={styles.avatar}
 					userId={userId}
@@ -137,8 +134,8 @@ const RoomItem = React.memo(({
 				>
 					<View style={styles.titleContainer}>
 						<TypeIcon
-							type={type}
-							prid={prid}
+							type={item.t}
+							prid={item.prid}
 							status={status}
 							isGroupChat={isGroupChat}
 							theme={theme}
@@ -146,7 +143,7 @@ const RoomItem = React.memo(({
 						<Text
 							style={[
 								styles.title,
-								alert && !hideUnreadStatus && styles.alert,
+								item.alert && !item.hideUnreadStatus && styles.alert,
 								{ color: themes[theme].titleText }
 							]}
 							ellipsizeMode='tail'
@@ -154,7 +151,7 @@ const RoomItem = React.memo(({
 						>
 							{name}
 						</Text>
-						{_updatedAt ? (
+						{item.roomUpdatedAt ? (
 							<Text
 								style={[
 									styles.date,
@@ -163,7 +160,7 @@ const RoomItem = React.memo(({
 											themes[theme]
 												.auxiliaryText
 									},
-									alert && !hideUnreadStatus && [
+									item.alert && !item.hideUnreadStatus && [
 										styles.updateAlert,
 										{
 											color:
@@ -181,18 +178,18 @@ const RoomItem = React.memo(({
 					</View>
 					<View style={styles.row}>
 						<LastMessage
-							lastMessage={lastMessage}
-							type={type}
+							lastMessage={item.lastMessage}
+							type={item.t}
 							showLastMessage={showLastMessage}
 							username={username}
-							alert={alert && !hideUnreadStatus}
+							alert={item.alert && !item.hideUnreadStatus}
 							useRealName={useRealName}
 							theme={theme}
 						/>
 						<UnreadBadge
-							unread={unread}
-							userMentions={userMentions}
-							type={type}
+							unread={item.unread}
+							userMentions={item.userMentions}
+							type={item.t}
 							theme={theme}
 						/>
 					</View>
@@ -203,17 +200,10 @@ const RoomItem = React.memo(({
 }, arePropsEqual);
 
 RoomItem.propTypes = {
-	type: PropTypes.string.isRequired,
-	name: PropTypes.string.isRequired,
+	item: PropTypes.object.isRequired,
 	baseUrl: PropTypes.string.isRequired,
 	showLastMessage: PropTypes.bool,
-	_updatedAt: PropTypes.string,
-	lastMessage: PropTypes.object,
-	alert: PropTypes.bool,
-	unread: PropTypes.number,
-	userMentions: PropTypes.number,
 	id: PropTypes.string,
-	prid: PropTypes.string,
 	onPress: PropTypes.func,
 	userId: PropTypes.string,
 	username: PropTypes.string,
@@ -221,27 +211,29 @@ RoomItem.propTypes = {
 	avatarSize: PropTypes.number,
 	testID: PropTypes.string,
 	width: PropTypes.number,
-	favorite: PropTypes.bool,
-	isRead: PropTypes.bool,
-	rid: PropTypes.string,
 	status: PropTypes.string,
 	toggleFav: PropTypes.func,
 	toggleRead: PropTypes.func,
 	hideChannel: PropTypes.func,
-	avatar: PropTypes.bool,
-	hideUnreadStatus: PropTypes.bool,
 	useRealName: PropTypes.bool,
 	getUserPresence: PropTypes.func,
 	connected: PropTypes.bool,
-	isGroupChat: PropTypes.bool,
 	theme: PropTypes.string,
-	isFocused: PropTypes.bool
+	isFocused: PropTypes.bool,
+	getRoomTitle: PropTypes.func,
+	getRoomAvatar: PropTypes.func,
+	getIsGroupChat: PropTypes.func,
+	getIsRead: PropTypes.func
 };
 
 RoomItem.defaultProps = {
 	avatarSize: 48,
 	status: 'offline',
-	getUserPresence: () => {}
+	getUserPresence: () => {},
+	getRoomTitle: () => 'title',
+	getRoomAvatar: () => '',
+	getIsGroupChat: () => false,
+	getIsRead: () => false
 };
 
 const mapStateToProps = (state, ownProps) => {

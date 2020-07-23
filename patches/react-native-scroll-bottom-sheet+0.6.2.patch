@@ -1,0 +1,42 @@
+diff --git a/node_modules/react-native-scroll-bottom-sheet/src/index.tsx b/node_modules/react-native-scroll-bottom-sheet/src/index.tsx
+index c4dbcce..b545c03 100644
+--- a/node_modules/react-native-scroll-bottom-sheet/src/index.tsx
++++ b/node_modules/react-native-scroll-bottom-sheet/src/index.tsx
+@@ -518,6 +518,28 @@ export class ScrollBottomSheet<T extends any> extends Component<Props<T>> {
+           clockRunning(this.animationClock)
+         ),
+         [
++          this.didScrollUpAndPullDown,
++          this.setTranslationY,
++          set(this.tempDestSnapPoint, add(snapPoints[0], this.extraOffset)),
++          cond(not(this.isManuallySetValue), set(this.nextSnapIndex, 0)),
++          set(
++            this.destSnapPoint,
++            cond(
++              this.isManuallySetValue,
++              this.manualYOffset,
++              this.calculateNextSnapPoint()
++            )
++          ),
++          cond(this.isManuallySetValue, [
++            set(this.animationFinished, 0)
++          ]),
++          set(
++            this.lastSnap,
++            sub(
++              this.destSnapPoint,
++              cond(eq(this.scrollUpAndPullDown, 1), this.lastStartScrollY, 0)
++            )
++          ),
+           runTiming({
+             clock: this.animationClock,
+             from: cond(
+@@ -550,7 +572,7 @@ export class ScrollBottomSheet<T extends any> extends Component<Props<T>> {
+     );
+ 
+     this.position = interpolate(this.translateY, {
+-      inputRange: [openPosition, closedPosition],
++      inputRange: [snapPoints[snapPoints.length - 2], closedPosition],
+       outputRange: [1, 0],
+       extrapolate: Extrapolate.CLAMP,
+     });
