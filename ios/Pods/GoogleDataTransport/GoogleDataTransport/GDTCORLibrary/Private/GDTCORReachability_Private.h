@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#import "GoogleDataTransport/GDTCORLibrary/Public/GDTCORReachability.h"
+#import "GDTCORLibrary/Public/GDTCORReachability.h"
 
 @interface GDTCORReachability ()
 
