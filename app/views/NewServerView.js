@@ -77,11 +77,7 @@ class NewServerView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		if (props.adding) {
-			props.navigation.setOptions({
-				headerLeft: () => <CloseModalButton navigation={props.navigation} onPress={this.close} testID='new-server-view-close' />
-			});
-		}
+		this.setHeader();
 
 		this.state = {
 			text: '',
@@ -92,9 +88,25 @@ class NewServerView extends React.Component {
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
+	componentDidUpdate(prevProps) {
+		const { adding } = this.props;
+		if (prevProps.adding !== adding) {
+			this.setHeader();
+		}
+	}
+
 	componentWillUnmount() {
 		EventEmitter.removeListener('NewServer', this.handleNewServerEvent);
 		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+	}
+
+	setHeader = () => {
+		const { adding, navigation } = this.props;
+		if (adding) {
+			navigation.setOptions({
+				headerLeft: () => <CloseModalButton navigation={navigation} onPress={this.close} testID='new-server-view-close' />
+			});
+		}
 	}
 
 	handleBackPress = () => {
