@@ -42,7 +42,7 @@ if [ "$COMMAND" == "start" ]; then
         MAX_ATTEMPTS=60
         while [ $ATTEMPT_NUMBER -lt $MAX_ATTEMPTS ]; do # https://stackoverflow.com/a/21189312/399007
             ATTEMPT_NUMBER=$((ATTEMPT_NUMBER + 1 ))
-            echo "Waiting for server to be up ($ATTEMPT_NUMBER of $MAX_ATTEMPTS)"
+            echo "Checking if servers are ready (attempt $ATTEMPT_NUMBER of $MAX_ATTEMPTS)"
             LOGS=$(docker logs rc_test_env_rocketchat_1  2> /dev/null)
             if grep -q 'SERVER RUNNING' <<< $LOGS ; then
                 echo "RocketChat is ready!"

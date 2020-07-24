@@ -17,11 +17,14 @@
 #import <objc/runtime.h>
 #include <sys/utsname.h>
 
-#import "GoogleDataTransport/GDTCORLibrary/Internal/GoogleDataTransportInternal.h"
+#import <GoogleDataTransport/GDTCORConsoleLogger.h>
+#import <GoogleDataTransport/GDTCOREvent.h>
+#import <GoogleDataTransport/GDTCORTargets.h>
+#import <GoogleDataTransport/GDTCORTransport.h>
 
-#import "GoogleUtilities/Environment/Private/GULAppEnvironmentUtil.h"
-#import "GoogleUtilities/Environment/Private/GULHeartbeatDateStorage.h"
-#import "GoogleUtilities/Logger/Private/GULLogger.h"
+#import <GoogleUtilities/GULAppEnvironmentUtil.h>
+#import <GoogleUtilities/GULHeartbeatDateStorage.h>
+#import <GoogleUtilities/GULLogger.h>
 
 #import "Interop/CoreDiagnostics/Public/FIRCoreDiagnosticsData.h"
 #import "Interop/CoreDiagnostics/Public/FIRCoreDiagnosticsInterop.h"
