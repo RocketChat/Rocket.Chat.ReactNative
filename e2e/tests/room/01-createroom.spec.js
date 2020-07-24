@@ -9,6 +9,7 @@ const { tapBack, sleep, navigateToLogin, login, tryTapping } = require('../../he
 describe('Create room screen', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 	});
@@ -67,7 +68,7 @@ describe('Create room screen', () => {
 
 		it('should select/unselect user', async() => {
 			await element(by.id('select-users-view-item-rocket.cat')).tap();
-			await waitFor(element(by.id('selected-user-rocket.cat'))).toBeVisible().withTimeout(5000);
+			await waitFor(element(by.id('selected-user-rocket.cat'))).toBeVisible().withTimeout(10000);
 			await element(by.id('selected-user-rocket.cat')).tap();
 			await waitFor(element(by.id('selected-user-rocket.cat'))).toBeNotVisible().withTimeout(5000);
 			await element(by.id('select-users-view-item-rocket.cat')).tap();

@@ -7,6 +7,7 @@ const data = require('../../data');
 describe('Create user screen', () => {
 	before(async() => {
 		await device.launchApp({ newInstance: true });
+		await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
 		await navigateToRegister();
 	});
 

@@ -8,6 +8,7 @@ describe('Legal screen', () => {
 	describe('From Login', () => {
 		before(async() => {
 			await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+			await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
 			await navigateToLogin();
 		});
 	

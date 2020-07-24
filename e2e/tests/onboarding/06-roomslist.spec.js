@@ -8,6 +8,7 @@ describe('Rooms list screen', () => {
 
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
+		await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password)
 	});
