@@ -104,8 +104,12 @@ public class CustomPushNotification extends PushNotification {
 
         Bundle bundle = mNotificationProps.asBundle();
         String notId = bundle.getString("notId", "1");
+        String title = bundle.getString("title");
+        String message = bundle.getString("message");
 
         notification
+            .setContentTitle(title)	
+            .setContentText(message)
             .setContentIntent(intent)
             .setPriority(Notification.PRIORITY_HIGH)
             .setDefaults(Notification.DEFAULT_ALL)
