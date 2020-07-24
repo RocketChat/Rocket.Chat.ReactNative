@@ -61,7 +61,9 @@ public class CustomPushNotification extends PushNotification {
             notificationLoad(receivedEjson.serverURL(), receivedEjson.messageId, new Callback() {
                 @Override
                 public void call(Bundle bundle) {
-                    mNotificationProps = createProps(bundle);
+                    if (bundle != null) {
+                        mNotificationProps = createProps(bundle);
+                    }
                 }
             });
         }

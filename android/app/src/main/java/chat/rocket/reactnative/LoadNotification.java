@@ -94,6 +94,8 @@ public class LoadNotification {
       if (RETRY_COUNT <= TIMEOUT.length) {
         RETRY_COUNT++;
         runRequest(client, request, callback);
+      } else {
+        callback.call(null);
       }
     }
   }
