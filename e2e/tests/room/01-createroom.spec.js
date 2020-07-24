@@ -77,17 +77,17 @@ describe('Create room screen', () => {
 
 		it('should navigate to create channel view', async() => {
 			await element(by.id('selected-users-view-submit')).tap();
-			await waitFor(element(by.id('create-channel-view'))).toBeVisible().withTimeout(10000);
+			await waitFor(element(by.id('create-channel-view'))).toExist().withTimeout(10000);
 		});
 	})
 
 	describe('Create Channel', async() => {
 		describe('Render', async() => {
 			it('should render all fields', async() => {
-				await expect(element(by.id('create-channel-name'))).toExist();
-				await expect(element(by.id('create-channel-type'))).toExist();
-				await expect(element(by.id('create-channel-readonly'))).toExist();
-				await expect(element(by.id('create-channel-broadcast'))).toExist();
+				await expect(element(by.id('create-channel-name'))).toBeVisible();
+				await expect(element(by.id('create-channel-type'))).toBeVisible();
+				await expect(element(by.id('create-channel-readonly'))).toBeVisible();
+				await expect(element(by.id('create-channel-broadcast'))).toBeVisible();
 			})
 		})
 
