@@ -14,6 +14,7 @@ import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Person;
+import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.bumptech.glide.Glide;
@@ -60,7 +61,7 @@ public class CustomPushNotification extends PushNotification {
         if (receivedEjson.notificationType != null && receivedEjson.notificationType.equals("message-id-only")) {
             notificationLoad(receivedEjson.serverURL(), receivedEjson.messageId, new Callback() {
                 @Override
-                public void call(Bundle bundle) {
+                public void call(@Nullable Bundle bundle) {
                     if (bundle != null) {
                         mNotificationProps = createProps(bundle);
                     }
@@ -106,6 +107,8 @@ public class CustomPushNotification extends PushNotification {
         String notId = bundle.getString("notId", "1");
         String title = bundle.getString("title");
         String message = bundle.getString("message");
+        Boolean notificationLoaded = bundle.getBoolean("notificationLoaded", false);
+        Ejson ejson = new Gson().fromJson(bundle.getString("ejson", "{}"), Ejson.class);
 
         notification
             .setContentTitle(title)	
@@ -119,9 +122,13 @@ public class CustomPushNotification extends PushNotification {
         notificationColor(notification);
         notificationChannel(notification);
         notificationIcons(notification, bundle);
-        notificationStyle(notification, notificationId, bundle);
-        notificationReply(notification, notificationId, bundle);
         notificationDismiss(notification, notificationId);
+
+        // if notificationType is null (RC < 3.5) or notificationType is different of message-id-only or notification was loaded successfully
+        if (ejson.notificationType == null || !ejson.notificationType.equals("message-id-only") || notificationLoaded) {
+            notificationStyle(notification, notificationId, bundle);
+            notificationReply(notification, notificationId, bundle);
+        }
 
         return notification;
     }

@@ -87,6 +87,7 @@ public class LoadNotification {
       bundle.putString("title", json.data.notification.title);
       bundle.putString("message", json.data.notification.text);
       bundle.putString("ejson", gson.toJson(json.data.notification.payload));
+      bundle.putBoolean("notificationLoaded", true);
 
       callback.call(bundle);
 
