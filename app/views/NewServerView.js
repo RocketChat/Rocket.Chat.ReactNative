@@ -12,6 +12,7 @@ import parse from 'url-parse';
 
 import EventEmitter from '../utils/events';
 import { selectServerRequest, serverRequest } from '../actions/server';
+import { inviteLinksClear as inviteLinksClearAction } from '../actions/inviteLinks';
 import sharedStyles from './Styles';
 import Button from '../containers/Button';
 import TextInput from '../containers/TextInput';
@@ -72,7 +73,8 @@ class NewServerView extends React.Component {
 		connectServer: PropTypes.func.isRequired,
 		selectServer: PropTypes.func.isRequired,
 		adding: PropTypes.bool,
-		previousServer: PropTypes.string
+		previousServer: PropTypes.string,
+		inviteLinksClear: PropTypes.func
 	}
 
 	constructor(props) {
@@ -123,7 +125,8 @@ class NewServerView extends React.Component {
 	}
 
 	close = () => {
-		const { selectServer, previousServer } = this.props;
+		const { selectServer, previousServer, inviteLinksClear } = this.props;
+		inviteLinksClear();
 		selectServer(previousServer);
 	}
 
@@ -336,7 +339,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	connectServer: (server, certificate) => dispatch(serverRequest(server, certificate)),
-	selectServer: server => dispatch(selectServerRequest(server))
+	selectServer: server => dispatch(selectServerRequest(server)),
+	inviteLinksClear: () => dispatch(inviteLinksClearAction())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(NewServerView));
