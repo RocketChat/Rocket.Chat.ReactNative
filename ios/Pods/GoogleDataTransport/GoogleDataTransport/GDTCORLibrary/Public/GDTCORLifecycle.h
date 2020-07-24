@@ -16,7 +16,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "GDTCORPlatform.h"
+#import <GoogleDataTransport/GDTCORPlatform.h>
 
 @class GDTCOREvent;
 
