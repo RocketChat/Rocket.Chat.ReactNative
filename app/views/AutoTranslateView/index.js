@@ -48,6 +48,10 @@ SectionSeparator.propTypes = {
 };
 
 class AutoTranslateView extends React.Component {
+	static navigationOptions = () => ({
+		title: I18n.t('Auto_Translate')
+	})
+
 	static propTypes = {
 		route: PropTypes.object,
 		theme: PropTypes.string,
@@ -83,11 +87,6 @@ class AutoTranslateView extends React.Component {
 	}
 
 	async componentDidMount() {
-		const { navigation } = this.props;
-		navigation.setOptions({
-			title: I18n.t('Auto_Translate')
-		});
-
 		this.mounted = true;
 		try {
 			const languages = await RocketChat.getSupportedLanguagesAutoTranslate();

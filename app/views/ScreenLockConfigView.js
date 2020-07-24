@@ -29,9 +29,9 @@ const styles = StyleSheet.create({
 const DEFAULT_BIOMETRY = false;
 
 class ScreenLockConfigView extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: I18n.t('Screen_lock')
-	};
+	});
 
 	static propTypes = {
 		theme: PropTypes.string,

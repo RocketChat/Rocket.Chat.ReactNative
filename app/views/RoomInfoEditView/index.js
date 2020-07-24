@@ -48,9 +48,9 @@ const PERMISSIONS_ARRAY = [
 ];
 
 class RoomInfoEditView extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: I18n.t('Room_Info_Edit')
-	}
+	})
 
 	static propTypes = {
 		route: PropTypes.object,

@@ -72,9 +72,9 @@ const styles = StyleSheet.create({
 });
 
 class CreateChannelView extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: I18n.t('Create_Channel')
-	}
+	});
 
 	static propTypes = {
 		navigation: PropTypes.object,
