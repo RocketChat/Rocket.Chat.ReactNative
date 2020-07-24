@@ -34,15 +34,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 import static com.wix.reactnativenotifications.Defs.NOTIFICATION_RECEIVED_EVENT_NAME;
 
 public class CustomPushNotification extends PushNotification {
     public static ReactApplicationContext reactApplicationContext;
+    final NotificationManager notificationManager;
 
     public CustomPushNotification(Context context, Bundle bundle, AppLifecycleFacade appLifecycleFacade, AppLaunchHelper appLaunchHelper, JsIOHelper jsIoHelper) {
         super(context, bundle, appLifecycleFacade, appLaunchHelper, jsIoHelper);
         reactApplicationContext = new ReactApplicationContext(context);
+        notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
     private static Map<String, List<Bundle>> notificationMessages = new HashMap<String, List<Bundle>>();
@@ -128,6 +131,26 @@ public class CustomPushNotification extends PushNotification {
         if (ejson.notificationType == null || !ejson.notificationType.equals("message-id-only") || notificationLoaded) {
             notificationStyle(notification, notificationId, bundle);
             notificationReply(notification, notificationId, bundle);
+
+        // message couldn't be loaded from server (Fallback notification)
+        } else {
+            Gson gson = new Gson();
+            // iterate over the current notification ids to dismiss fallback notifications from same server
+            for (Map.Entry<String, List<Bundle>> bundleList : notificationMessages.entrySet()) {
+                // iterate over the notifications with this id (same host + rid)
+                Iterator iterator = bundleList.getValue().iterator();
+                while (iterator.hasNext()) {
+                    Bundle not = (Bundle) iterator.next();
+                    // get the notification info
+                    Ejson notEjson = gson.fromJson(not.getString("ejson", "{}"), Ejson.class);
+                    // if already has a notification from same server
+                    if (ejson.serverURL().equals(notEjson.serverURL())) {
+                        String id = not.getString("notId");
+                        // cancel this notification
+                        notificationManager.cancel(Integer.parseInt(id));
+                    }
+                }
+            }
         }
 
         return notification;
