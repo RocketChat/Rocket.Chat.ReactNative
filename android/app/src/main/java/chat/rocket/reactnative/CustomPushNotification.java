@@ -57,7 +57,7 @@ public class CustomPushNotification extends PushNotification {
         Bundle received = mNotificationProps.asBundle();
         Ejson receivedEjson = new Gson().fromJson(received.getString("ejson", "{}"), Ejson.class);
 
-        if (receivedEjson.notificationType.equals("message-id-only")) {
+        if (receivedEjson.notificationType != null && receivedEjson.notificationType.equals("message-id-only")) {
             notificationLoad(receivedEjson.serverURL(), receivedEjson.messageId, new Callback() {
                 @Override
                 public void call(Bundle bundle) {
