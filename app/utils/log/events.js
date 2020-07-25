@@ -60,9 +60,9 @@ export default {
 	GROUP_CHANNELS_BY_TYPE: 'group_channels_by_type',
 	GROUP_CHANNELS_BY_FAVORITE: 'group_channels_by_favorite',
 	GROUP_CHANNELS_BY_UNREAD: 'group_channels_by_unread',
-	NAVIGATE_TO_ADM_PANEL: 'navigate_to_adm_panel',
-	NAVIGATE_TO_ROOMSLIST: 'navigate_to_roomslist',
-	NAVIGATE_TO_PROFILE: 'navigate_to_profile',
-	NAVIGATE_TO_SETTINGS: 'navigate_to_settings',
-	NAVIGATE_TO_STATUS_VIEW: 'navigate_to_status_view'
+	SIDEBAR_NAVIGATE_TO_ADM_PANEL: 'sidebar_navigate_to_adm_panel',
+	SIDEBAR_NAVIGATE_TO_CHATS: 'sidebar_navigate_to_chats',
+	SIDEBAR_NAVIGATE_TO_PROFILE: 'sidebar_navigate_to_profile',
+	SIDEBAR_NAVIGATE_TO_SETTINGS: 'sidebar_navigate_to_settings',
+	SIDEBAR_NAVIGATE_TO_STATUS_VIEW: 'sidebar_navigate_to_status_view'
 };
