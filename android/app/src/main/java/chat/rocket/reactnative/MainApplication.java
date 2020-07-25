@@ -50,9 +50,6 @@ public class MainApplication extends Application implements ReactApplication, IN
       @SuppressWarnings("UnnecessaryLocalVariable")
       List<ReactPackage> packages = new PackageList(this).getPackages();
       if (BuildConfig.PLAY_BUILD) {
-        packages.add(new RNFirebaseCrashlyticsPackage());
-        packages.add(new RNFirebaseAnalyticsPackage());
-        packages.add(new RNFirebasePerformancePackage());
         packages.add(new RNNotificationsPackage(MainApplication.this));
       }
       packages.add(new KeyboardInputPackage(MainApplication.this));

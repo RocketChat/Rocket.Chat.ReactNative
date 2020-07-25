@@ -121,15 +121,14 @@ class SettingsView extends React.Component {
 		AsyncStorage.setItem(CRASH_REPORT_KEY, JSON.stringify(value));
 		const { toggleCrashReport } = this.props;
 		toggleCrashReport(value);
-		loggerConfig.autoNotify = value;
 		if (isGooglePlayBuild) {
+			loggerConfig.autoNotify = value;
 			analytics().setAnalyticsCollectionEnabled(value);
-		}
-
-		if (value) {
-			loggerConfig.clearBeforeSendCallbacks();
-		} else {
-			loggerConfig.registerBeforeSendCallback(() => false);
+			if (value) {
+				loggerConfig.clearBeforeSendCallbacks();
+			} else {
+				loggerConfig.registerBeforeSendCallback(() => false);
+			}
 		}
 	}
 

@@ -1,7 +1,7 @@
 import { Client } from 'bugsnag-react-native';
 import analytics from '@react-native-firebase/analytics';
 import crashlytics from '@react-native-firebase/crashlytics';
-import { isGooglePlayBuild } from '../constants/environment';
+import { isGooglePlayBuild } from '../../constants/environment';
 import config from '../../../config';
 import events from './events';
 
@@ -21,15 +21,17 @@ export const logServerVersion = (serverVersion) => {
 };
 
 export const logEvent = (eventName, payload) => {
-	analytics().logEvent(eventName, payload);
-	leaveBreadcrumb(eventName, payload);
+	if (isGooglePlayBuild) {
+		analytics().logEvent(eventName, payload);
+		leaveBreadcrumb(eventName, payload);
+	}
 };
 
 export const setCurrentScreen = (currentScreen) => {
 	if (isGooglePlayBuild) {
 		analytics().setCurrentScreen(currentScreen);
+		leaveBreadcrumb(currentScreen, { type: 'navigation' });
 	}
-	leaveBreadcrumb(currentScreen, { type: 'navigation' });
 };
 
 export default (e) => {
@@ -41,7 +43,9 @@ export default (e) => {
 				}
 			};
 		});
-		crashlytics().recordError(e);
+		if (isGooglePlayBuild) {
+			crashlytics().recordError(e);
+		}
 	} else {
 		console.log(e);
 	}

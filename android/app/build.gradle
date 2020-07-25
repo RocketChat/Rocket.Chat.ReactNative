@@ -2,19 +2,12 @@ def taskRequests = getGradle().getStartParameter().getTaskRequests().toString().
 def isPlay = !taskRequests.contains("foss")
 
 apply plugin: "com.android.application"
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'kotlin-android'
-<<<<<<< HEAD
 
 if (isPlay) {
-    apply plugin: "io.fabric"
-    apply plugin: "com.google.firebase.firebase-perf"
+    apply plugin: 'com.google.firebase.crashlytics'
     apply plugin: 'com.bugsnag.android.gradle'
 }
-=======
-apply plugin: 'com.bugsnag.android.gradle'
->>>>>>> e5aaa667e7921a827df304b9d64320e14c7a55d3
 
 import com.android.build.OutputFile
 
@@ -180,8 +173,10 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'])
             signingConfig signingConfigs.release
-            firebaseCrashlytics {
-                nativeSymbolUploadEnabled true
+            if (isPlay) {
+                firebaseCrashlytics {
+                    nativeSymbolUploadEnabled true
+                }
             }
         }
     }
@@ -243,11 +238,6 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
     playImplementation "com.google.firebase:firebase-messaging:18.0.0"
-    playImplementation "com.google.firebase:firebase-core:16.0.9"
-    playImplementation "com.google.firebase:firebase-perf:17.0.2"
-    playImplementation('com.crashlytics.sdk.android:crashlytics:2.9.9@aar') {
-        transitive = true
-    }
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
@@ -279,11 +269,7 @@ task copyDownloadableDepsToLibs(type: Copy) {
     into 'libs'
 }
 
-<<<<<<< HEAD
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
 if (isPlay) {
     apply plugin: 'com.google.gms.google-services'
 }
-=======
-apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
->>>>>>> e5aaa667e7921a827df304b9d64320e14c7a55d3
