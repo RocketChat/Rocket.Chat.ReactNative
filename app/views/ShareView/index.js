@@ -132,6 +132,12 @@ class ShareView extends Component {
 				}
 			}
 
+			// encode files with # in the name
+			if (item.path.includes('#')) {
+				const lastPath = item.path.split('/').slice(-1);
+				item.path = item.path.replace(lastPath, encodeURIComponent(lastPath));
+			}
+
 			// Set a filename, if there isn't any
 			if (!item.filename) {
 				item.filename = new Date().toISOString();
