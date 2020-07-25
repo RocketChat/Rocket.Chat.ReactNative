@@ -72,7 +72,7 @@ class AttachmentView extends React.Component {
 		const attachment = route.params?.attachment;
 		let { title } = attachment;
 		try {
-			title = decodeURI(title);
+			title = decodeURIComponent(title);
 		} catch {
 			// Do nothing
 		}
