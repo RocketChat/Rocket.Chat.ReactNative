@@ -21,28 +21,28 @@ const THEME_GROUP = 'THEME_GROUP';
 const DARK_GROUP = 'DARK_GROUP';
 
 const SYSTEM_THEME = {
-	label: I18n.t('Automatic'),
+	label: 'Automatic',
 	value: 'automatic',
 	group: THEME_GROUP
 };
 
 const THEMES = [
 	{
-		label: I18n.t('Light'),
+		label: 'Light',
 		value: 'light',
 		group: THEME_GROUP
 	}, {
-		label: I18n.t('Dark'),
+		label: 'Dark',
 		value: 'dark',
 		group: THEME_GROUP
 	}, {
-		label: I18n.t('Dark'),
+		label: 'Dark',
 		value: 'dark',
 		separator: true,
-		header: I18n.t('Dark_level'),
+		header: 'Dark_level',
 		group: DARK_GROUP
 	}, {
-		label: I18n.t('Black'),
+		label: 'Black',
 		value: 'black',
 		group: DARK_GROUP
 	}
@@ -129,7 +129,7 @@ class ThemeView extends React.Component {
 			<>
 				{item.separator || isFirst ? this.renderSectionHeader(item.header) : null}
 				<ListItem
-					title={label}
+					title={I18n.t(label)}
 					onPress={() => this.onClick(item)}
 					testID={`theme-view-${ value }`}
 					right={this.isSelected(item) ? this.renderIcon : null}
@@ -139,12 +139,12 @@ class ThemeView extends React.Component {
 		);
 	}
 
-	renderSectionHeader = (header = I18n.t('Theme')) => {
+	renderSectionHeader = (header = 'Theme') => {
 		const { theme } = this.props;
 		return (
 			<>
 				<View style={styles.info}>
-					<Text style={[styles.infoText, { color: themes[theme].infoText }]}>{header}</Text>
+					<Text style={[styles.infoText, { color: themes[theme].infoText }]}>{I18n.t(header)}</Text>
 				</View>
 				{this.renderSeparator()}
 			</>
@@ -169,7 +169,7 @@ class ThemeView extends React.Component {
 				<StatusBar theme={theme} />
 				<FlatList
 					data={THEMES}
-					keyExtractor={item => item.value}
+					keyExtractor={item => item.value + item.group}
 					contentContainerStyle={[
 						styles.list,
 						{ borderColor: themes[theme].separatorColor }
