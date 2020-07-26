@@ -85,7 +85,7 @@ describe('Profile screen', () => {
 		});
 
 		it('should change email and password', async() => {
-			await element(by.id('profile-view-email')).replaceText(`diego.mello+profileChangesNew${ data.random }@rocket.chat`);
+			await element(by.id('profile-view-email')).replaceText(`mobile+profileChangesNew${ data.random }@rocket.chat`);
 			await element(by.id('profile-view-new-password')).replaceText(`${ profileChangeUser.password }new`);
 			await element(by.id('profile-view-submit')).tap();
 			await element(by.type('_UIAlertControllerTextField')).replaceText(`${ profileChangeUser.password }`)
