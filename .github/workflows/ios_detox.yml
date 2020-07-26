@@ -23,8 +23,8 @@ jobs:
       uses: actions/cache@v1
       id: detoxappcache
       with:
-        path: ios/build/Build/Products/Release-iphonesimulator/RocketChatRN.app
-        key: iOSDetoxRelease-v3-${{ hashFiles('yarn.lock') }}-${{ hashFiles('ios/Podfile.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
+        path: ios/build/Build/Products/Release-iphonesimulator
+        key: iOSDetoxRelease-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('ios/Podfile.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Node
       if: steps.detoxappcache.outputs.cache-hit != 'true'
@@ -70,8 +70,8 @@ jobs:
       uses: actions/cache@v1
       id: detoxappcache
       with:
-        path: ios/build/Build/Products/Release-iphonesimulator/RocketChatRN.app
-        key: iOSDetoxRelease-v3-${{ hashFiles('yarn.lock') }}-${{ hashFiles('ios/Podfile.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
+        path: ios/build/Build/Products/Release-iphonesimulator
+        key: iOSDetoxRelease-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('ios/Podfile.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Check for Detox app
       if: steps.detoxappcache.outputs.cache-hit != 'true'
@@ -120,8 +120,8 @@ jobs:
       uses: actions/cache@v1
       id: detoxappcache
       with:
-        path: ios/build/Build/Products/Release-iphonesimulator/RocketChatRN.app
-        key: iOSDetoxRelease-v3-${{ hashFiles('yarn.lock') }}-${{ hashFiles('ios/Podfile.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
+        path: ios/build/Build/Products/Release-iphonesimulator
+        key: iOSDetoxRelease-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('ios/Podfile.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Check for Detox app
       if: steps.detoxappcache.outputs.cache-hit != 'true'
@@ -170,8 +170,8 @@ jobs:
       uses: actions/cache@v1
       id: detoxappcache
       with:
-        path: ios/build/Build/Products/Release-iphonesimulator/RocketChatRN.app
-        key: iOSDetoxRelease-v3-${{ hashFiles('yarn.lock') }}-${{ hashFiles('ios/Podfile.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
+        path: ios/build/Build/Products/Release-iphonesimulator
+        key: iOSDetoxRelease-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('ios/Podfile.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Check for Detox app
       if: steps.detoxappcache.outputs.cache-hit != 'true'
