@@ -42,15 +42,22 @@ export default {
 	NEW_MSG_CREATE_DISCUSSION: 'new_msg_create_discussion',
 	NEW_MSG_CHAT_WITH_USER: 'new_msg_chat_with_user',
 
-
-	CREATE_GROUP_CHAT_FINISH: 'create_group_chat_finish',
-	CREATE_CHANNEL_FINISH: 'create_channel_finish',
-	CREATE_CHANNEL_FAIL: 'create_channel_fail',
-	CREATE_DISCUSSION_FINISH: 'create_discussion_finish',
-	CREATE_DISCUSSION_FINISH_FAIL: 'create_discussion_finish_fail',
-	CREATE_CHANNEL_REMOVE_INVITED: 'create_channel_remove_invited',
+	// SELECTED USERS VIEW
 	SELECTED_USERS_ADD_USER: 'selected_users_add_user',
 	SELECTED_USERS_REMOVE_USER: 'selected_users_remove_user',
+
+	// CREATE CHANNEL VIEW
+	CREATE_CHANNEL_CREATE: 'create_channel_create',
+	CREATE_CHANNEL_CREATE_F: 'create_channel_create_f',
+	CREATE_CHANNEL_TOGGLE_TYPE: 'create_channel_toggle_type',
+	CREATE_CHANNEL_TOGGLE_READ_ONLY: 'create_channel_toggle_read_only',
+	CREATE_CHANNEL_TOGGLE_BROADCAST: 'create_channel_toggle_broadcast',
+	CREATE_CHANNEL_REMOVE_USER: 'create_channel_remove_user',
+
+
+	CREATE_GROUP_CHAT_FINISH: 'create_group_chat_finish',
+	CREATE_DISCUSSION_FINISH: 'create_discussion_finish',
+	CREATE_DISCUSSION_FINISH_FAIL: 'create_discussion_finish_fail',
 	DIRECTORY_SEARCH_USERS: 'directory_search_users',
 	DIRECTORY_SEARCH_CHANNELS: 'directory_search_channels',
 	SAVE_PROFILE_AVATAR: 'save_profile_avatar',
