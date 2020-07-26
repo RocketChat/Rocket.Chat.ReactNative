@@ -45,6 +45,8 @@ export default {
 	// SELECTED USERS VIEW
 	SELECTED_USERS_ADD_USER: 'selected_users_add_user',
 	SELECTED_USERS_REMOVE_USER: 'selected_users_remove_user',
+	SELECTED_USERS_CREATE_GROUP: 'selected_users_create_group',
+	SELECTED_USERS_CREATE_GROUP_F: 'selected_users_create_group_f',
 
 	// CREATE CHANNEL VIEW
 	CREATE_CHANNEL_CREATE: 'create_channel_create',
@@ -54,10 +56,12 @@ export default {
 	CREATE_CHANNEL_TOGGLE_BROADCAST: 'create_channel_toggle_broadcast',
 	CREATE_CHANNEL_REMOVE_USER: 'create_channel_remove_user',
 
+	// CREATE DISCUSSION VIEW
+	CREATE_DISCUSSION_CREATE: 'create_discussion_create',
+	CREATE_DISCUSSION_CREATE_F: 'create_discussion_create_f',
+	CREATE_DISCUSSION_SELECT_CHANNEL: 'create_discussion_select_channel',
+	CREATE_DISCUSSION_SELECT_USERS: 'create_discussion_select_users',
 
-	CREATE_GROUP_CHAT_FINISH: 'create_group_chat_finish',
-	CREATE_DISCUSSION_FINISH: 'create_discussion_finish',
-	CREATE_DISCUSSION_FINISH_FAIL: 'create_discussion_finish_fail',
 	DIRECTORY_SEARCH_USERS: 'directory_search_users',
 	DIRECTORY_SEARCH_CHANNELS: 'directory_search_channels',
 	SAVE_PROFILE_AVATAR: 'save_profile_avatar',

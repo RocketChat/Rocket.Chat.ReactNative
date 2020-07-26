@@ -30,7 +30,7 @@ const handleRequest = function* handleRequest({ data }) {
 
 		let sub;
 		if (data.group) {
-			logEvent(events.CREATE_GROUP_CHAT_FINISH);
+			logEvent(events.SELECTED_USERS_CREATE_GROUP);
 			const result = yield call(createGroupChat);
 			if (result.success) {
 				({ room: sub } = result);
@@ -56,7 +56,7 @@ const handleRequest = function* handleRequest({ data }) {
 
 		yield put(createChannelSuccess(sub));
 	} catch (err) {
-		logEvent(events[data.group ? 'CREATE_GROUP_CHAT_F' : 'CREATE_CHANNEL_CREATE_F']);
+		logEvent(events[data.group ? 'SELECTED_USERS_CREATE_GROUP_F' : 'CREATE_CHANNEL_CREATE_F']);
 		yield put(createChannelFailure(err));
 	}
 };
