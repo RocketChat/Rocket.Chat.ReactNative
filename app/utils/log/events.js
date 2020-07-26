@@ -36,16 +36,19 @@ export default {
 	ENTER_WITH_APPLE: 'enter_with_apple',
 	ENTER_WITH_APPLE_F: 'enter_with_apple_f',
 
+	// NEW MESSAGE VIEW
+	NEW_MSG_CREATE_CHANNEL: 'new_msg_create_channel',
+	NEW_MSG_CREATE_GROUP_CHAT: 'new_msg_create_group_chat',
+	NEW_MSG_CREATE_DISCUSSION: 'new_msg_create_discussion',
+	NEW_MSG_CHAT_WITH_USER: 'new_msg_chat_with_user',
+
+
 	CREATE_GROUP_CHAT_FINISH: 'create_group_chat_finish',
 	CREATE_CHANNEL_FINISH: 'create_channel_finish',
 	CREATE_CHANNEL_FAIL: 'create_channel_fail',
 	CREATE_DISCUSSION_FINISH: 'create_discussion_finish',
 	CREATE_DISCUSSION_FINISH_FAIL: 'create_discussion_finish_fail',
 	CREATE_CHANNEL_REMOVE_INVITED: 'create_channel_remove_invited',
-	CREATE_CHANNEL_START: 'create_channel_start',
-	CREATE_GROUP_CHAT_START: 'create_group_chat_start',
-	CREATE_DISCUSSION_START: 'create_discussion_start',
-	NEW_MESSAGE_CHAT_WITH_USER: 'new_message_chat_with_user',
 	SELECTED_USERS_ADD_USER: 'selected_users_add_user',
 	SELECTED_USERS_REMOVE_USER: 'selected_users_remove_user',
 	DIRECTORY_SEARCH_USERS: 'directory_search_users',
