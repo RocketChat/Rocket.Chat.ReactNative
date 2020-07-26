@@ -22,7 +22,6 @@ async function navigateToRoomActions() {
 describe('Join public room', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
 		await navigateToLogin();
 		await login(testuser.username, testuser.password);
 		await navigateToRoom();

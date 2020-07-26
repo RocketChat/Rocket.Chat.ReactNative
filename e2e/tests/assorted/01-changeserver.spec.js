@@ -15,7 +15,6 @@ const checkServer = async(server) => {
 describe('Change server', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);

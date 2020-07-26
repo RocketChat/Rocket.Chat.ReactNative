@@ -19,7 +19,6 @@ async function waitForToast() {
 describe('Profile screen', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
 		await navigateToLogin();
 		await login(profileChangeUser.username, profileChangeUser.password);
 		await element(by.id('rooms-list-view-sidebar')).tap();

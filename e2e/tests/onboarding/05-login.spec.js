@@ -7,7 +7,6 @@ const data = require('../../data');
 describe('Login screen', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
-		await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
 		await navigateToLogin();
 	});
 

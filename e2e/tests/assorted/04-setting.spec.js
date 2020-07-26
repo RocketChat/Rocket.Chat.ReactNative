@@ -10,7 +10,6 @@ const testuser = data.users.regular
 describe('Settings screen', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
 		await navigateToLogin();
 		await login(testuser.username, testuser.password);
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
