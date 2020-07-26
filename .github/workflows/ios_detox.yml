@@ -1,0 +1,47 @@
+name: iOS
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    timeout-minutes: 15
+
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_11.5.app
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+
+    - name: Node
+      uses: actions/setup-node@v1
+
+    - name: Cache node modules
+      uses: actions/cache@v1
+      id: npmcache
+      with:
+        path: node_modules
+        key: node-modules-${{ hashFiles('**/yarn.lock') }}
+
+    - name: Rebuild detox
+      if: steps.npmcache.outputs.cache-hit == 'true'
+      run: yarn detox clean-framework-cache && yarn detox build-framework-cache
+
+    - name: Install Dependencies
+      if: steps.npmcache.outputs.cache-hit != 'true'
+      run: yarn install
+
+    - name: Cache Pods
+      uses: actions/cache@v1
+      id: podcache
+      with:
+        path: ios/Pods
+        key: pods-${{ hashFiles('**/Podfile.lock') }}
+
+    - run: brew tap wix/brew
+    - run: brew install applesimutils
+    - run: yarn detox build e2e --configuration ios.sim.release
+    - run: yarn detox test e2e/tests --configuration ios.sim.release
