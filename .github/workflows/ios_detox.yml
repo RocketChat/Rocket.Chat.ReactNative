@@ -97,7 +97,14 @@ jobs:
 
     - run: brew tap wix/brew
     - run: brew install applesimutils
-    - run: yarn detox test e2e/tests/room --configuration ios.sim.release
+    - run: yarn detox test e2e/tests/room --configuration ios.sim.release --cleanup
+
+    - name: Upload test artifacts
+      if: ${{ failure() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: artifacts
+        path: artifacts
 
   detox-test-assorted:
     needs: detox-build
@@ -147,7 +154,14 @@ jobs:
 
     - run: brew tap wix/brew
     - run: brew install applesimutils
-    - run: yarn detox test e2e/tests/assorted --configuration ios.sim.release
+    - run: yarn detox test e2e/tests/assorted --configuration ios.sim.release --cleanup
+
+    - name: Upload test artifacts
+      if: ${{ failure() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: artifacts
+        path: artifacts
 
   detox-test-onboarding:
     needs: detox-build
@@ -197,4 +211,11 @@ jobs:
 
     - run: brew tap wix/brew
     - run: brew install applesimutils
-    - run: yarn detox test e2e/tests/onboarding --configuration ios.sim.release
+    - run: yarn detox test e2e/tests/onboarding --configuration ios.sim.release --cleanup
+
+    - name: Upload test artifacts
+      if: ${{ failure() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: artifacts
+        path: artifacts
