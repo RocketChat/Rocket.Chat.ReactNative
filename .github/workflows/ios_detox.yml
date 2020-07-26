@@ -27,11 +27,11 @@ jobs:
         key: iOSDetoxRelease-v3-${{ hashFiles('yarn.lock') }}-${{ hashFiles('ios/Podfile.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Node
-      if: steps.detoxappcache.outputs.cache-hit == 'false'
+      if: steps.detoxappcache.outputs.cache-hit != 'true'
       uses: actions/setup-node@v1
 
     - name: Cache node modules
-      if: steps.detoxappcache.outputs.cache-hit == 'false'
+      if: steps.detoxappcache.outputs.cache-hit != 'true'
       uses: actions/cache@v1
       id: npmcache
       with:
@@ -39,15 +39,15 @@ jobs:
         key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
     - name: Rebuild detox
-      if: steps.detoxappcache.outputs.cache-hit == 'false' && steps.npmcache.outputs.cache-hit == 'true'
+      if: steps.detoxappcache.outputs.cache-hit != 'true' && steps.npmcache.outputs.cache-hit == 'true'
       run: yarn detox clean-framework-cache && yarn detox build-framework-cache
 
     - name: Install Dependencies
-      if: steps.detoxappcache.outputs.cache-hit == 'false' && steps.npmcache.outputs.cache-hit != 'true'
+      if: steps.detoxappcache.outputs.cache-hit != 'true' && steps.npmcache.outputs.cache-hit != 'true'
       run: yarn install
 
     - run: yarn detox build e2e --configuration ios.sim.release
-      if: steps.detoxappcache.outputs.cache-hit == 'false'
+      if: steps.detoxappcache.outputs.cache-hit != 'true'
 
   detox-test-rooms:
     needs: detox-build
@@ -73,6 +73,10 @@ jobs:
         path: ios/build/Build/Products/Release-iphonesimulator/RocketChatRN.app
         key: iOSDetoxRelease-v3-${{ hashFiles('yarn.lock') }}-${{ hashFiles('ios/Podfile.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
 
+    - name: Check for Detox app
+      if: steps.detoxappcache.outputs.cache-hit != 'true'
+      run: exit 1
+
     - name: Node
       uses: actions/setup-node@v1
 
@@ -93,7 +97,7 @@ jobs:
 
     - run: brew tap wix/brew
     - run: brew install applesimutils
-    - run: yarn detox test e2e/tests/rooms --configuration ios.sim.release
+    - run: yarn detox test e2e/tests/room --configuration ios.sim.release
 
   detox-test-assorted:
     needs: detox-build
@@ -118,6 +122,10 @@ jobs:
       with:
         path: ios/build/Build/Products/Release-iphonesimulator/RocketChatRN.app
         key: iOSDetoxRelease-v3-${{ hashFiles('yarn.lock') }}-${{ hashFiles('ios/Podfile.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
+
+    - name: Check for Detox app
+      if: steps.detoxappcache.outputs.cache-hit != 'true'
+      run: exit 1
 
     - name: Node
       uses: actions/setup-node@v1
@@ -164,6 +172,10 @@ jobs:
       with:
         path: ios/build/Build/Products/Release-iphonesimulator/RocketChatRN.app
         key: iOSDetoxRelease-v3-${{ hashFiles('yarn.lock') }}-${{ hashFiles('ios/Podfile.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
+
+    - name: Check for Detox app
+      if: steps.detoxappcache.outputs.cache-hit != 'true'
+      run: exit 1
 
     - name: Node
       uses: actions/setup-node@v1
