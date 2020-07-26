@@ -344,6 +344,7 @@ describe('Room actions screen', () => {
 			it('should add user to the room', async() => {
 				await waitFor(element(by.id('room-actions-add-user'))).toExist().withTimeout(4000);
 				await element(by.id('room-actions-add-user')).tap();
+				await waitFor(element(by.id('select-users-view-search'))).toExist().withTimeout(4000);
 				await element(by.id('select-users-view-search')).tap();
 				await element(by.id('select-users-view-search')).replaceText(user.username);
 				await waitFor(element(by.id(`select-users-view-item-${ user.username }`))).toExist().withTimeout(10000);
