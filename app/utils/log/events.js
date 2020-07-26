@@ -1,10 +1,14 @@
 export default {
-	JOIN_A_WORKSPACE: 'join_a_workspace',
-	CREATE_NEW_WORKSPACE: 'create_new_workspace',
-	CREATE_NEW_WORKSPACE_FAIL: 'create_new_workspace_fail',
-	CONNECT_TO_WORKSPACE: 'connect_to_workspace',
-	CONNECT_TO_WORKSPACE_FAIL: 'connect_to_workspace_fail',
-	JOIN_OPEN_WORKSPACE: 'join_open_workspace',
+	// ONBOARDING
+	ONBOARD_JOIN_A_WORKSPACE: 'onboard_join_a_workspace',
+	ONBOARD_CREATE_NEW_WORKSPACE: 'onboard_create_new_workspace',
+	ONBOARD_CREATE_NEW_WORKSPACE_F: 'onboard_create_new_workspace_f',
+
+	// NEW SERVER
+	NEWSERVER_CONNECT_TO_WORKSPACE: 'newserver_connect_to_workspace',
+	NEWSERVER_CONNECT_TO_WORKSPACE_F: 'newserver_connect_to_workspace_f',
+	NEWSERVER_JOIN_OPEN_WORKSPACE: 'newserver_join_open_workspace',
+
 	DEFAULT_LOGIN: 'default_login',
 	DEFAULT_LOGIN_FAIL: 'default_login_fail',
 	DEFAULT_SIGN_UP: 'default_sign_up',
