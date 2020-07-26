@@ -78,7 +78,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressFacebook = () => {
-		logEvent(events.LOGIN_WITH_FACEBOOK);
+		logEvent(events.ENTER_WITH_FACEBOOK);
 		const { services, server } = this.props;
 		const { clientId } = services.facebook;
 		const endpoint = 'https://m.facebook.com/v2.9/dialog/oauth';
@@ -90,7 +90,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressGithub = () => {
-		logEvent(events.LOGIN_WITH_GITHUB);
+		logEvent(events.ENTER_WITH_GITHUB);
 		const { services, server } = this.props;
 		const { clientId } = services.github;
 		const endpoint = `https://github.com/login?client_id=${ clientId }&return_to=${ encodeURIComponent('/login/oauth/authorize') }`;
@@ -102,7 +102,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressGitlab = () => {
-		logEvent(events.LOGIN_WITH_GITLAB);
+		logEvent(events.ENTER_WITH_GITLAB);
 		const { services, server, Gitlab_URL } = this.props;
 		const { clientId } = services.gitlab;
 		const baseURL = Gitlab_URL ? Gitlab_URL.trim().replace(/\/*$/, '') : 'https://gitlab.com';
@@ -115,7 +115,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressGoogle = () => {
-		logEvent(events.LOGIN_WITH_GOOGLE);
+		logEvent(events.ENTER_WITH_GOOGLE);
 		const { services, server } = this.props;
 		const { clientId } = services.google;
 		const endpoint = 'https://accounts.google.com/o/oauth2/auth';
@@ -127,7 +127,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressLinkedin = () => {
-		logEvent(events.LOGIN_WITH_LINKEDIN);
+		logEvent(events.ENTER_WITH_LINKEDIN);
 		const { services, server } = this.props;
 		const { clientId } = services.linkedin;
 		const endpoint = 'https://www.linkedin.com/oauth/v2/authorization';
@@ -139,7 +139,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressMeteor = () => {
-		logEvent(events.LOGIN_WITH_METEOR);
+		logEvent(events.ENTER_WITH_METEOR);
 		const { services, server } = this.props;
 		const { clientId } = services['meteor-developer'];
 		const endpoint = 'https://www.meteor.com/oauth2/authorize';
@@ -150,7 +150,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressTwitter = () => {
-		logEvent(events.LOGIN_WITH_TWITTER);
+		logEvent(events.ENTER_WITH_TWITTER);
 		const { server } = this.props;
 		const state = this.getOAuthState();
 		const url = `${ server }/_oauth/twitter/?requestTokenAndRedirect=true&state=${ state }`;
@@ -158,7 +158,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressWordpress = () => {
-		logEvent(events.LOGIN_WITH_WORDPRESS);
+		logEvent(events.ENTER_WITH_WORDPRESS);
 		const { services, server } = this.props;
 		const { clientId, serverURL } = services.wordpress;
 		const endpoint = `${ serverURL }/oauth/authorize`;
@@ -170,7 +170,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressCustomOAuth = (loginService) => {
-		logEvent(events.LOGIN_WITH_CUSTOM_OAUTH);
+		logEvent(events.ENTER_WITH_CUSTOM_OAUTH);
 		const { server } = this.props;
 		const {
 			serverURL, authorizePath, clientId, scope, service
@@ -185,7 +185,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressSaml = (loginService) => {
-		logEvent(events.LOGIN_WITH_SAML);
+		logEvent(events.ENTER_WITH_SAML);
 		const { server } = this.props;
 		const {	clientConfig } = loginService;
 		const {	provider } = clientConfig;
@@ -195,7 +195,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressCas = () => {
-		logEvent(events.LOGIN_WITH_CAS);
+		logEvent(events.ENTER_WITH_CAS);
 		const { server, CAS_login_url } = this.props;
 		const ssoToken = random(17);
 		const url = `${ CAS_login_url }?service=${ server }/_cas/${ ssoToken }`;
@@ -203,6 +203,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressAppleLogin = async() => {
+		logEvent(events.ENTER_WITH_APPLE);
 		try {
 			const { fullName, email, identityToken } = await AppleAuthentication.signInAsync({
 				requestedScopes: [
@@ -213,7 +214,7 @@ class LoginServices extends React.PureComponent {
 
 			await RocketChat.loginOAuthOrSso({ fullName, email, identityToken });
 		} catch {
-			// Do nothing
+			logEvent(events.ENTER_WITH_APPLE_F);
 		}
 	}
 

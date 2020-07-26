@@ -1,30 +1,41 @@
 export default {
-	// ONBOARDING
+	// ONBOARDING VIEW
 	ONBOARD_JOIN_A_WORKSPACE: 'onboard_join_a_workspace',
 	ONBOARD_CREATE_NEW_WORKSPACE: 'onboard_create_new_workspace',
 	ONBOARD_CREATE_NEW_WORKSPACE_F: 'onboard_create_new_workspace_f',
 
-	// NEW SERVER
+	// NEW SERVER VIEW
 	NEWSERVER_CONNECT_TO_WORKSPACE: 'newserver_connect_to_workspace',
 	NEWSERVER_CONNECT_TO_WORKSPACE_F: 'newserver_connect_to_workspace_f',
 	NEWSERVER_JOIN_OPEN_WORKSPACE: 'newserver_join_open_workspace',
 
-	DEFAULT_LOGIN: 'default_login',
-	DEFAULT_LOGIN_FAIL: 'default_login_fail',
-	DEFAULT_SIGN_UP: 'default_sign_up',
-	DEFAULT_SIGN_UP_FAIL: 'default_sign_up_fail',
-	FORGOT_PASSWORD: 'forgot_password',
-	LOGIN_WITH_FACEBOOK: 'login_with_facebook',
-	LOGIN_WITH_GITHUB: 'login_with_github',
-	LOGIN_WITH_GITLAB: 'login_with_gitlab',
-	LOGIN_WITH_LINKEDIN: 'login_with_linkedin',
-	LOGIN_WITH_GOOGLE: 'login_with_google',
-	LOGIN_WITH_METEOR: 'login_with_meteor',
-	LOGIN_WITH_TWITTER: 'login_with_twitter',
-	LOGIN_WITH_WORDPRESS: 'login_with_wordpress',
-	LOGIN_WITH_CUSTOM_OAUTH: 'login_with_custom_oauth',
-	LOGIN_WITH_SAML: 'login_with_saml',
-	LOGIN_WITH_CAS: 'login_with_cas',
+	// LOGIN VIEW
+	LOGIN_DEFAULT_LOGIN: 'login_default_login',
+	LOGIN_DEFAULT_LOGIN_F: 'login_default_login_f',
+
+	// FORGOT PASSWORD VIEW
+	FP_FORGOT_PASSWORD: 'fp_forgot_password',
+	FP_FORGOT_PASSWORD_F: 'fp_forgot_password_f',
+
+	// REGISTER VIEW
+	REGISTER_DEFAULT_SIGN_UP: 'register_default_sign_up',
+	REGISTER_DEFAULT_SIGN_UP_F: 'register_default_sign_up_f',
+
+	// LOGIN AND REGISTER VIEW
+	ENTER_WITH_FACEBOOK: 'enter_with_facebook',
+	ENTER_WITH_GITHUB: 'enter_with_github',
+	ENTER_WITH_GITLAB: 'enter_with_gitlab',
+	ENTER_WITH_LINKEDIN: 'enter_with_linkedin',
+	ENTER_WITH_GOOGLE: 'enter_with_google',
+	ENTER_WITH_METEOR: 'enter_with_meteor',
+	ENTER_WITH_TWITTER: 'enter_with_twitter',
+	ENTER_WITH_WORDPRESS: 'enter_with_wordpress',
+	ENTER_WITH_CUSTOM_OAUTH: 'enter_with_custom_oauth',
+	ENTER_WITH_SAML: 'enter_with_saml',
+	ENTER_WITH_CAS: 'enter_with_cas',
+	ENTER_WITH_APPLE: 'enter_with_apple',
+	ENTER_WITH_APPLE_F: 'enter_with_apple_f',
+
 	CREATE_GROUP_CHAT_FINISH: 'create_group_chat_finish',
 	CREATE_CHANNEL_FINISH: 'create_channel_finish',
 	CREATE_CHANNEL_FAIL: 'create_channel_fail',
