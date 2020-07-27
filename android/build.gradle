@@ -20,8 +20,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.3'
         classpath 'com.google.gms:google-services:4.2.0'
-        classpath 'io.fabric.tools:gradle:1.28.1'
-        classpath 'com.google.firebase:perf-plugin:1.2.1'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.0.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.bugsnag:bugsnag-android-gradle-plugin:4.+'
 
