@@ -20,19 +20,19 @@ const RoomTypeIcon = React.memo(({
 
 	const color = themes[theme].auxiliaryText;
 
-	let icon = 'lock';
+	let icon = 'channel-private';
 	if (type === 'discussion') {
-		icon = 'chat';
+		icon = 'discussions';
 	} else if (type === 'c') {
-		icon = 'hash';
+		icon = 'channel-public';
 	} else if (type === 'd') {
 		if (isGroupChat) {
 			icon = 'team';
 		} else {
-			icon = 'at';
+			icon = 'mention';
 		}
 	} else if (type === 'l') {
-		icon = 'livechat';
+		icon = 'omnichannel';
 	}
 
 	return (

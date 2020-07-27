@@ -80,7 +80,7 @@ const ThumbContent = React.memo(({ item, theme, isShareExtension }) => {
 			return (
 				<View style={[styles.thumb, { borderColor: themes[theme].borderColor }]}>
 					<CustomIcon
-						name='Camera'
+						name='image'
 						size={30}
 						color={themes[theme].tintColor}
 					/>
@@ -95,7 +95,7 @@ const ThumbContent = React.memo(({ item, theme, isShareExtension }) => {
 			<>
 				<Image source={{ uri }} style={styles.thumb} />
 				<CustomIcon
-					name='video-1'
+					name='camera-filled'
 					size={20}
 					color={themes[theme].buttonText}
 					style={styles.videoThumbIcon}
@@ -127,7 +127,7 @@ const Thumb = ({
 			>
 				<View style={[styles.removeView, { borderColor: themes[theme].auxiliaryBackground }]}>
 					<CustomIcon
-						name='Cross'
+						name='close'
 						color={themes[theme].backgroundColor}
 						size={14}
 					/>
