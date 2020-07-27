@@ -223,10 +223,10 @@ class ProfileView extends React.Component {
 		try {
 			if (avatar.url) {
 				try {
-					logEvent(events.SAVE_PROFILE_AVATAR);
+					logEvent(events.PROFILE_SAVE_AVATAR);
 					await RocketChat.setAvatarFromService(avatar);
 				} catch (e) {
-					logEvent(events.SAVE_PROFILE_AVATAR_FAIL);
+					logEvent(events.PROFILE_SAVE_AVATAR_F);
 					this.setState({ saving: false, currentPassword: null });
 					return this.handleError(e, 'setAvatarFromService', 'changing_avatar');
 				}
@@ -235,7 +235,7 @@ class ProfileView extends React.Component {
 			const result = await RocketChat.saveUserProfile(params, customFields);
 
 			if (result.success) {
-				logEvent(events.SAVE_PROFILE_CHANGES);
+				logEvent(events.PROFILE_SAVE_CHANGES);
 				if (customFields) {
 					setUser({ customFields, ...params });
 				} else {
@@ -246,7 +246,7 @@ class ProfileView extends React.Component {
 			}
 			this.setState({ saving: false });
 		} catch (e) {
-			logEvent(events.SAVE_PROFILE_CHANGES_FAIL);
+			logEvent(events.PROFILE_SAVE_CHANGES_F);
 			this.setState({ saving: false, currentPassword: null });
 			this.handleError(e, 'saveUserProfile', 'saving_profile');
 		}
@@ -285,17 +285,17 @@ class ProfileView extends React.Component {
 			includeBase64: true
 		};
 		try {
-			logEvent(events.PICK_PROFILE_AVATAR);
+			logEvent(events.PROFILE_PICK_AVATAR);
 			const response = await ImagePicker.openPicker(options);
 			this.setAvatar({ url: response.path, data: `data:image/jpeg;base64,${ response.data }`, service: 'upload' });
 		} catch (error) {
-			logEvent(events.PICK_PROFILE_AVATAR_FAIL);
+			logEvent(events.PROFILE_PICK_AVATAR_F);
 			console.warn(error);
 		}
 	}
 
 	pickImageWithURL = (avatarUrl) => {
-		logEvent(events.PICK_PROFILE_AVATAR_WITH_URL);
+		logEvent(events.PROFILE_PICK_AVATAR_WITH_URL);
 		this.setAvatar({ url: avatarUrl, data: avatarUrl, service: 'url' });
 	}
 

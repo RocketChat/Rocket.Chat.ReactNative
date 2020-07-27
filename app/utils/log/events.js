@@ -97,14 +97,12 @@ export default {
 	CREATE_DISCUSSION_SELECT_CHANNEL: 'create_discussion_select_channel',
 	CREATE_DISCUSSION_SELECT_USERS: 'create_discussion_select_users',
 
-
-	SAVE_PROFILE_AVATAR: 'save_profile_avatar',
-	SAVE_PROFILE_AVATAR_FAIL: 'save_profile_avatar_fail',
-	SAVE_PROFILE_CHANGES: 'save_profile_changes',
-	SAVE_PROFILE_CHANGES_FAIL: 'save_profile_changes_fail',
-	PICK_PROFILE_AVATAR: 'pick_profile_avatar',
-	PICK_PROFILE_AVATAR_FAIL: 'pick_profile_avatar_fail',
-	PICK_PROFILE_AVATAR_WITH_URL: 'pick_profile_avatar_with_url'
-
-
+	// PROFILE VIEW
+	PROFILE_PICK_AVATAR: 'profile_pick_avatar',
+	PROFILE_PICK_AVATAR_F: 'profile_pick_avatar_f',
+	PROFILE_PICK_AVATAR_WITH_URL: 'profile_pick_avatar_with_url',
+	PROFILE_SAVE_AVATAR: 'profile_save_avatar',
+	PROFILE_SAVE_AVATAR_F: 'profile_save_avatar_f',
+	PROFILE_SAVE_CHANGES: 'profile_save_changes',
+	PROFILE_SAVE_CHANGES_F: 'profile_save_changes_f'
 };
