@@ -61,7 +61,7 @@ export default class DirectoryOptions extends PureComponent {
 		let icon = 'user';
 		if (itemType === 'channels') {
 			text = 'Channels';
-			icon = 'hash';
+			icon = 'channel-public';
 		}
 
 		return (
