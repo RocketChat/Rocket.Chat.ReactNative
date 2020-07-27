@@ -9,23 +9,23 @@ const data = {
         regular: {
             username: `userone${ value }`,
             password: '123',
-            email: `diego.mello+regular${ value }@rocket.chat`
+            email: `mobile+regular${ value }@rocket.chat`
         },
         alternate: {
             username: `usertwo${ value }`,
             password: '123',
-            email: `diego.mello+alternate${ value }@rocket.chat`,
+            email: `mobile+alternate${ value }@rocket.chat`,
             totpSecret: 'NA4GOMZGHBQSK6KEFRVT62DMGJJGSYZJFZIHO3ZOGVXWCYZ6MMZQ'
         },
         profileChanges: {
             username: `userthree${ value }`,
             password: '123',
-            email: `diego.mello+profileChanges${ value }@rocket.chat`
+            email: `mobile+profileChanges${ value }@rocket.chat`
         },
         existing: {
             username: `existinguser${ value }`,
             password: '123',
-            email: `diego.mello+existing${ value }@rocket.chat`
+            email: `mobile+existing${ value }@rocket.chat`
         }
     },
     channels: {
@@ -41,7 +41,7 @@ const data = {
     registeringUser: {
         username: `newuser${ value }`,
         password: `password${ value }`,
-        email: `diego.mello+registering${ value }@rocket.chat`
+        email: `mobile+registering${ value }@rocket.chat`
     },
     random: value
 }
