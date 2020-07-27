@@ -49,7 +49,7 @@ public class MainApplication extends Application implements ReactApplication, IN
     protected List<ReactPackage> getPackages() {
       @SuppressWarnings("UnnecessaryLocalVariable")
       List<ReactPackage> packages = new PackageList(this).getPackages();
-      if (BuildConfig.PLAY_BUILD) {
+      if (!BuildConfig.FDROID_BUILD) {
         packages.add(new RNNotificationsPackage(MainApplication.this));
       }
       packages.add(new KeyboardInputPackage(MainApplication.this));

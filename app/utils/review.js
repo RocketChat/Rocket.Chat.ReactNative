@@ -5,7 +5,7 @@ import { isIOS } from './deviceInfo';
 import I18n from '../i18n';
 import { showErrorAlert } from './info';
 import { STORE_REVIEW_LINK } from '../constants/links';
-import { isGooglePlayBuild } from '../constants/environment';
+import { isFDroidBuild } from '../constants/environment';
 
 const store = isIOS ? 'App Store' : 'Play Store';
 
@@ -76,7 +76,7 @@ const tryReview = async() => {
 
 	// if ask me later was pressed earlier, we can ask for review only after {{numberOfDays}} days
 	// if there's no review and it wasn't dismissed by the user
-	if (daysBetween(lastReviewDate, new Date()) >= numberOfDays && !doneReview && isGooglePlayBuild) {
+	if (daysBetween(lastReviewDate, new Date()) >= numberOfDays && !doneReview && !isFDroidBuild) {
 		setTimeout(askReview, reviewDelay);
 	}
 };

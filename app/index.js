@@ -36,7 +36,7 @@ import Toast from './containers/Toast';
 import InAppNotification from './containers/InAppNotification';
 import { ActionSheetProvider } from './containers/ActionSheet';
 import debounce from './utils/debounce';
-import { isGooglePlayBuild } from './constants/environment';
+import { isFDroidBuild } from './constants/environment';
 
 
 RNScreens.enableScreens();
@@ -59,7 +59,7 @@ export default class Root extends React.Component {
 	constructor(props) {
 		super(props);
 		this.init();
-		if (isGooglePlayBuild) {
+		if (!isFDroidBuild) {
 			this.initCrashReport();
 		}
 		const { width, height, scale } = Dimensions.get('window');

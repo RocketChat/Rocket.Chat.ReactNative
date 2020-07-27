@@ -194,11 +194,11 @@ android {
     productFlavors {
         foss {
             dimension = "type"
-            buildConfigField "boolean", "PLAY_BUILD", "false"
+            buildConfigField "boolean", "FDROID_BUILD", "true"
         }
         play {
             dimension = "type"
-            buildConfigField "boolean", "PLAY_BUILD", "true"
+            buildConfigField "boolean", "FDROID_BUILD", "false"
         }
     }
 
