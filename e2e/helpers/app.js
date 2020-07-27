@@ -14,6 +14,7 @@ async function navigateToWorkspace() {
 }
 
 async function navigateToLogin() {
+    await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
     await navigateToWorkspace();
 	await element(by.id('workspace-view-login')).tap();
     await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
@@ -21,6 +22,7 @@ async function navigateToLogin() {
 }
 
 async function navigateToRegister() {
+    await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
     await navigateToWorkspace();
 	await element(by.id('workspace-view-register')).tap();
     await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
