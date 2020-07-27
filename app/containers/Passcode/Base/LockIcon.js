@@ -10,7 +10,7 @@ import { CustomIcon } from '../../../lib/Icons';
 const LockIcon = React.memo(({ theme }) => (
 	<Row style={styles.row}>
 		<View style={styles.iconView}>
-			<CustomIcon name='lock' size={40} color={themes[theme].passcodeLockIcon} />
+			<CustomIcon name='auth' size={40} color={themes[theme].passcodeLockIcon} />
 		</View>
 	</Row>
 ));

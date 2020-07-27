@@ -29,7 +29,7 @@ const Discussion = React.memo(({
 					hitSlop={BUTTON_HIT_SLOP}
 				>
 					<>
-						<CustomIcon name='chat' size={20} style={styles.buttonIcon} color={themes[theme].buttonText} />
+						<CustomIcon name='discussions' size={20} style={styles.buttonIcon} color={themes[theme].buttonText} />
 						<Text style={[styles.buttonText, { color: themes[theme].buttonText }]}>{buttonText}</Text>
 					</>
 				</Touchable>
