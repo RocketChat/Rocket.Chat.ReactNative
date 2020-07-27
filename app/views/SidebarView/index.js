@@ -184,27 +184,21 @@ class Sidebar extends Component {
 				<SidebarItem
 					text={I18n.t('Chats')}
 					left={<CustomIcon name='message' size={20} color={themes[theme].titleText} />}
-					onPress={() => {
-						this.sidebarNavigate('ChatsStackNavigator');
-					}}
+					onPress={() => this.sidebarNavigate('ChatsStackNavigator')}
 					testID='sidebar-chats'
 					current={this.currentItemKey === 'ChatsStackNavigator'}
 				/>
 				<SidebarItem
 					text={I18n.t('Profile')}
 					left={<CustomIcon name='user' size={20} color={themes[theme].titleText} />}
-					onPress={() => {
-						this.sidebarNavigate('ProfileStackNavigator');
-					}}
+					onPress={() => this.sidebarNavigate('ProfileStackNavigator')}
 					testID='sidebar-profile'
 					current={this.currentItemKey === 'ProfileStackNavigator'}
 				/>
 				<SidebarItem
 					text={I18n.t('Settings')}
 					left={<CustomIcon name='cog' size={20} color={themes[theme].titleText} />}
-					onPress={() => {
-						this.sidebarNavigate('SettingsStackNavigator');
-					}}
+					onPress={() => this.sidebarNavigate('SettingsStackNavigator')}
 					testID='sidebar-settings'
 					current={this.currentItemKey === 'SettingsStackNavigator'}
 				/>
