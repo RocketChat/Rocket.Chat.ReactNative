@@ -930,7 +930,8 @@ class MessageBox extends Component {
 			recordingCallback: this.recordingCallback,
 			showMessageBoxActions: this.showMessageBoxActions,
 			submit: this.submit,
-			toggleRecordAudioWithState: this.toggleRecordAudioWithState
+			toggleRecordAudioWithState: this.toggleRecordAudioWithState,
+			finishAudioMessage: this.finishAudioMessage
 		};
 
 		return (
@@ -948,7 +949,6 @@ class MessageBox extends Component {
 				/>
 				<MainComposer
 					{...commonProps}
-					finishAudioMessage={this.finishAudioMessage}
 					recordStartState={recordStartState}
 					keyboardUp={keyboardUp}
 				>
