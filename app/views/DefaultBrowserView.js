@@ -20,11 +20,11 @@ import { logEvent, events } from '../utils/log';
 
 const DEFAULT_BROWSERS = [
 	{
-		title: I18n.t('In_app'),
+		title: 'In_app',
 		value: 'inApp'
 	},
 	{
-		title: isIOS ? 'Safari' : I18n.t('Browser'),
+		title: isIOS ? 'Safari' : 'Browser',
 		value: 'systemDefault:'
 	}
 ];
@@ -139,7 +139,7 @@ class DefaultBrowserView extends React.Component {
 		const { title, value } = item;
 		return (
 			<ListItem
-				title={title}
+				title={I18n.t(title, { defaultValue: title })}
 				onPress={() => this.changeDefaultBrowser(value)}
 				testID={`default-browser-view-${ title }`}
 				right={this.isSelected(value) ? this.renderIcon : null}

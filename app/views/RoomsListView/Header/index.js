@@ -10,6 +10,7 @@ import { withTheme } from '../../../theme';
 import EventEmitter from '../../../utils/events';
 import { KEY_COMMAND, handleCommandOpenServerDropdown } from '../../../commands';
 import { isTablet } from '../../../utils/deviceInfo';
+import { logEvent, events } from '../../../utils/log';
 
 class RoomsListHeaderView extends PureComponent {
 	static propTypes = {
@@ -53,6 +54,7 @@ class RoomsListHeaderView extends PureComponent {
 	}
 
 	onPress = () => {
+		logEvent(events.RL_TOGGLE_SERVER_DROPDOWN);
 		const {
 			showServerDropdown, showSortDropdown, close, open, closeSort
 		} = this.props;

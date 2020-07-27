@@ -49,7 +49,9 @@ static void InitializeFlipper(UIApplication *application) {
 
     self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegistryProvider:[[UMModuleRegistryProvider alloc] init]];
     RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
-    [FIRApp configure];
+    if(![FIRApp defaultApp]){
+      [FIRApp configure];
+    }
     RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                 moduleName:@"RocketChatRN"
                                                 initialProperties:nil];

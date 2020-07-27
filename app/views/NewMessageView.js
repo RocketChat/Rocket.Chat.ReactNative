@@ -133,13 +133,13 @@ class NewMessageView extends React.Component {
 	}
 
 	createChannel = () => {
-		logEvent(events.CREATE_CHANNEL_START);
+		logEvent(events.NEW_MSG_CREATE_CHANNEL);
 		const { navigation } = this.props;
 		navigation.navigate('SelectedUsersViewCreateChannel', { nextAction: () => navigation.navigate('CreateChannelView') });
 	}
 
 	createGroupChat = () => {
-		logEvent(events.CREATE_GROUP_CHAT_START);
+		logEvent(events.NEW_MSG_CREATE_GROUP_CHAT);
 		const { createChannel, maxUsers, navigation } = this.props;
 		navigation.navigate('SelectedUsersViewCreateChannel', {
 			nextAction: () => createChannel({ group: true }),
@@ -149,6 +149,7 @@ class NewMessageView extends React.Component {
 	}
 
 	goRoom = (item) => {
+		logEvent(events.NEW_MSG_CHAT_WITH_USER);
 		const { isMasterDetail, navigation } = this.props;
 		if (isMasterDetail) {
 			navigation.pop();
@@ -176,7 +177,7 @@ class NewMessageView extends React.Component {
 	}
 
 	createDiscussion = () => {
-		logEvent(events.CREATE_DISCUSSION_START);
+		logEvent(events.NEW_MSG_CREATE_DISCUSSION);
 		Navigation.navigate('CreateDiscussionView');
 	}
 
@@ -233,10 +234,7 @@ class NewMessageView extends React.Component {
 			<UserItem
 				name={item.search ? item.name : item.fname}
 				username={item.search ? item.username : item.name}
-				onPress={() => {
-					logEvent(events.NEW_MESSAGE_CHAT_WITH_USER);
-					this.goRoom(item);
-				}}
+				onPress={() => this.goRoom(item)}
 				baseUrl={baseUrl}
 				testID={`new-message-view-item-${ item.name }`}
 				style={style}

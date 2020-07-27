@@ -65,44 +65,38 @@ class Sort extends PureComponent {
 			setSortPreference(param);
 			RocketChat.saveSortPreference(param);
 		} catch (e) {
-			logEvent(events.SORT_CHANNELS_FAIL);
+			logEvent(events.RL_SORT_CHANNELS_FAIL);
 			log(e);
 		}
 	}
 
 	sortByName = () => {
-		logEvent(events.SORT_CHANNELS_BY_ALPHABETICAL);
+		logEvent(events.RL_SORT_CHANNELS_BY_NAME);
 		this.setSortPreference({ sortBy: 'alphabetical' });
 		this.close();
 	}
 
 	sortByActivity = () => {
-		logEvent(events.SORT_CHANNELS_BY_ACTIVITY);
+		logEvent(events.RL_SORT_CHANNELS_BY_ACTIVITY);
 		this.setSortPreference({ sortBy: 'activity' });
 		this.close();
 	}
 
 	toggleGroupByType = () => {
+		logEvent(events.RL_GROUP_CHANNELS_BY_TYPE);
 		const { groupByType } = this.props;
-		if (!groupByType) {
-			logEvent(events.GROUP_CHANNELS_BY_TYPE);
-		}
 		this.setSortPreference({ groupByType: !groupByType });
 	}
 
 	toggleGroupByFavorites = () => {
+		logEvent(events.RL_GROUP_CHANNELS_BY_FAVORITE);
 		const { showFavorites } = this.props;
-		if (!showFavorites) {
-			logEvent(events.GROUP_CHANNELS_BY_FAVORITE);
-		}
 		this.setSortPreference({ showFavorites: !showFavorites });
 	}
 
 	toggleUnread = () => {
+		logEvent(events.RL_GROUP_CHANNELS_BY_UNREAD);
 		const { showUnread } = this.props;
-		if (!showUnread) {
-			logEvent(events.GROUP_CHANNELS_BY_UNREAD);
-		}
 		this.setSortPreference({ showUnread: !showUnread });
 	}
 
