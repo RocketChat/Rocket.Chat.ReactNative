@@ -114,13 +114,13 @@ class DefaultBrowserView extends React.Component {
 	}
 
 	changeDefaultBrowser = async(newBrowser) => {
-		logEvent(events.CHANGE_DEFAULT_BROWSER, { browser: newBrowser });
+		logEvent(events.DB_CHANGE_DEFAULT_BROWSER, { browser: newBrowser });
 		try {
 			const browser = newBrowser !== 'inApp' ? newBrowser : null;
 			await RNUserDefaults.set(DEFAULT_BROWSER_KEY, browser);
 			this.setState({ browser });
 		} catch {
-			logEvent(events.CHANGE_DEFAULT_BROWSER_FAIL);
+			logEvent(events.DB_CHANGE_DEFAULT_BROWSER_F);
 		}
 	}
 

@@ -112,7 +112,7 @@ class LanguageView extends React.Component {
 	}
 
 	changeLanguage = async(language) => {
-		logEvent(events.SET_LANGUAGE);
+		logEvent(events.LANG_SET_LANGUAGE);
 		const { user, setUser } = this.props;
 
 		const params = {};
@@ -135,11 +135,11 @@ class LanguageView extends React.Component {
 						record.language = params.language;
 					});
 				} catch (e) {
-					logEvent(events.SET_LANGUAGE_FAIL);
+					logEvent(events.LANG_SET_LANGUAGE_F);
 				}
 			});
 		} catch (e) {
-			logEvent(events.SET_LANGUAGE_FAIL);
+			logEvent(events.LANG_SET_LANGUAGE_F);
 			showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_preferences') }));
 			log(e);
 		}

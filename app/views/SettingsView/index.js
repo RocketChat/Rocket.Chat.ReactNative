@@ -88,7 +88,7 @@ class SettingsView extends React.Component {
 	}
 
 	handleLogout = () => {
-		logEvent(events.LOG_OUT);
+		logEvent(events.SE_LOG_OUT);
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_of_this_application'),
 			callToAction: I18n.t('Logout'),
@@ -100,7 +100,7 @@ class SettingsView extends React.Component {
 	}
 
 	handleClearCache = () => {
-		logEvent(events.CLEAR_LOCAL_SERVER_CACHE);
+		logEvent(events.SE_CLEAR_LOCAL_SERVER_CACHE);
 		showConfirmationAlert({
 			message: I18n.t('This_will_clear_all_your_offline_data'),
 			callToAction: I18n.t('Clear'),
@@ -118,16 +118,15 @@ class SettingsView extends React.Component {
 	}
 
 	toggleCrashReport = (value) => {
+		logEvent(events.SE_TOGGLE_CRASH_REPORT);
 		AsyncStorage.setItem(CRASH_REPORT_KEY, JSON.stringify(value));
 		const { toggleCrashReport } = this.props;
 		toggleCrashReport(value);
 		loggerConfig.autoNotify = value;
 		analytics().setAnalyticsCollectionEnabled(value);
 		if (value) {
-			logEvent(events.SEND_CRASH_REPORT_ON);
 			loggerConfig.clearBeforeSendCallbacks();
 		} else {
-			logEvent(events.SEND_CRASH_REPORT_OFF);
 			loggerConfig.registerBeforeSendCallback(() => false);
 		}
 	}
@@ -141,12 +140,13 @@ class SettingsView extends React.Component {
 	}
 
 	navigateToScreen = (screen) => {
+		logEvent(events[`SE_NAVIGATE_TO_${ screen.replace('View', '').toUpperCase() }`]);
 		const { navigation } = this.props;
 		navigation.navigate(screen);
 	}
 
 	sendEmail = async() => {
-		logEvent(events.CONTACT_US);
+		logEvent(events.SE_CONTACT_US);
 		const subject = encodeURI('React Native App Support');
 		const email = encodeURI('support@rocket.chat');
 		const description = encodeURI(`
@@ -156,24 +156,24 @@ class SettingsView extends React.Component {
 		try {
 			await Linking.openURL(`mailto:${ email }?subject=${ subject }&body=${ description }`);
 		} catch (e) {
-			logEvent(events.CONTACT_US_FAIL);
+			logEvent(events.SE_CONTACT_US_F);
 			showErrorAlert(I18n.t('error-email-send-failed', { message: 'support@rocket.chat' }));
 		}
 	}
 
 	shareApp = () => {
-		logEvent(events.SHARE_THIS_APP);
+		logEvent(events.SE_SHARE_THIS_APP);
 		Share.share({ message: isAndroid ? PLAY_MARKET_LINK : APP_STORE_LINK });
 	}
 
 	copyServerVersion = () => {
 		const { server: { version } } = this.props;
-		logEvent(events.COPY_SERVER_VERSION, { server_version: version });
+		logEvent(events.SE_COPY_SERVER_VERSION, { serverVersion: version });
 		this.saveToClipboard(version);
 	}
 
 	copyAppVersion = () => {
-		logEvent(events.COPY_APP_VERSION, { app_version: getReadableVersion });
+		logEvent(events.SE_COPY_APP_VERSION, { appVersion: getReadableVersion });
 		this.saveToClipboard(getReadableVersion);
 	}
 
@@ -183,7 +183,7 @@ class SettingsView extends React.Component {
 	}
 
 	onPressLicense = () => {
-		logEvent(events.READ_LICENSE);
+		logEvent(events.SE_READ_LICENSE);
 		const { theme } = this.props;
 		openLink(LICENSE_LINK, theme);
 	}
@@ -255,10 +255,7 @@ class SettingsView extends React.Component {
 					<Separator theme={theme} />
 					<ListItem
 						title={I18n.t('Language')}
-						onPress={() => {
-							logEvent(events.NAVIGATE_TO_LANGUAGE);
-							this.navigateToScreen('LanguageView');
-						}}
+						onPress={() => this.navigateToScreen('LanguageView')}
 						showActionIndicator
 						testID='settings-view-language'
 						right={this.renderDisclosure}
@@ -286,10 +283,7 @@ class SettingsView extends React.Component {
 					<ListItem
 						title={I18n.t('Default_browser')}
 						showActionIndicator
-						onPress={() => {
-							logEvent(events.NAVIGATE_TO_DEFAULT_BROWSER);
-							this.navigateToScreen('DefaultBrowserView');
-						}}
+						onPress={() => this.navigateToScreen('DefaultBrowserView')}
 						testID='settings-view-default-browser'
 						right={this.renderDisclosure}
 						theme={theme}
@@ -298,10 +292,7 @@ class SettingsView extends React.Component {
 					<ListItem
 						title={I18n.t('Theme')}
 						showActionIndicator
-						onPress={() => {
-							logEvent(events.NAVIGATE_TO_THEMES);
-							this.navigateToScreen('ThemeView');
-						}}
+						onPress={() => this.navigateToScreen('ThemeView')}
 						testID='settings-view-theme'
 						right={this.renderDisclosure}
 						theme={theme}
@@ -310,10 +301,7 @@ class SettingsView extends React.Component {
 					<ListItem
 						title={I18n.t('Screen_lock')}
 						showActionIndicator
-						onPress={() => {
-							logEvent(events.NAVIGATE_TO_SCREEN_LOCK);
-							this.navigateToScreen('ScreenLockConfigView');
-						}}
+						onPress={() => this.navigateToScreen('ScreenLockConfigView')}
 						right={this.renderDisclosure}
 						theme={theme}
 					/>

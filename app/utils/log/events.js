@@ -106,10 +106,39 @@ export default {
 	PROFILE_SAVE_CHANGES: 'profile_save_changes',
 	PROFILE_SAVE_CHANGES_F: 'profile_save_changes_f',
 
-	NAVIGATE_TO_LANGUAGE: 'navigate_to_language',
-	NAVIGATE_TO_DEFAULT_BROWSER: 'navigate_to_default_browser',
-	NAVIGATE_TO_THEMES: 'navigate_to_themes',
-	NAVIGATE_TO_SCREEN_LOCK: 'navigate_to_screen_lock',
+	// SETTINGS VIEW
+	SE_CONTACT_US: 'se_contact_us',
+	SE_CONTACT_US_F: 'se_contact_us_f',
+	SE_NAVIGATE_TO_LANGUAGE: 'se_navigate_to_language',
+	SE_REVIEW_THIS_APP: 'se_review_this_app',
+	SE_REVIEW_THIS_APP_F: 'se_review_this_app_f',
+	SE_SHARE_THIS_APP: 'se_share_this_app',
+	SE_NAVIGATE_TO_DEFAULTBROWSER: 'se_navigate_to_default_browser',
+	SE_NAVIGATE_TO_THEME: 'se_navigate_to_theme',
+	SE_NAVIGATE_TO_SCREENLOCKCONFIG: 'se_navigate_to_screen_lock_cfg',
+	SE_NAVIGATE_TO_PROFILE: 'se_navigate_to_profile',
+	SE_READ_LICENSE: 'se_read_license',
+	SE_COPY_APP_VERSION: 'se_copy_app_version',
+	SE_COPY_SERVER_VERSION: 'se_copy_server_version',
+	SE_TOGGLE_CRASH_REPORT: 'se_toggle_crash_report',
+	SE_CLEAR_LOCAL_SERVER_CACHE: 'se_clear_local_server_cache',
+	SE_LOG_OUT: 'se_log_out',
+
+	// LANGUAGE VIEW
+	LANG_SET_LANGUAGE: 'lang_set_language',
+	LANG_SET_LANGUAGE_F: 'lang_set_language_f',
+
+	// DEFAULT BROWSER VIEW
+	DB_CHANGE_DEFAULT_BROWSER: 'db_change_default_browser',
+	DB_CHANGE_DEFAULT_BROWSER_F: 'db_change_default_browser_f',
+
+	// THEME VIEW
+	THEME_SET_THEME_GROUP: 'theme_set_theme_group',
+	THEME_SET_DARK_LEVEL: 'theme_set_dark_level',
+
+	// SCREEN LOCK CONFIG VIEW
+	// trivial+
+	SLC_SAVE_SCREEN_LOCK: 'slc_save_screen_lock',
 
 	SEND_MESSAGE: 'send_message',
 	SHOW_EMOJI_KEYBOARD: 'show_emoji_keyboard',
@@ -155,24 +184,6 @@ export default {
 	SET_STATUS_OFFLINE: 'set_status_offline',
 	SET_STATUS_FAIL: 'set_status_fail',
 	SET_CUSTOM_STATUS: 'set_custom_status',
-	SET_CUSTOM_STATUS_FAIL: 'set_custom_status_fail',
-	CONTACT_US: 'contact_us',
-	CONTACT_US_FAIL: 'contact_us_fail',
-	SET_LANGUAGE: 'set_language',
-	SET_LANGUAGE_FAIL: 'set_language_fail',
-	REVIEW_THIS_APP: 'review_this_app',
-	REVIEW_THIS_APP_FAIL: 'review_this_app_fail',
-	SHARE_THIS_APP: 'share_this_app',
-	CHANGE_DEFAULT_BROWSER: 'change_default_browser',
-	CHANGE_DEFAULT_BROWSER_FAIL: 'change_default_browser_fail',
-	SET_THEME_GROUP: 'set_theme_group',
-	SET_DARK_LEVEL: 'set_dark_level',
-	SAVE_SCREEN_LOCK: 'save_screen_lock',
-	READ_LICENSE: 'read_license',
-	COPY_APP_VERSION: 'copy_app_version',
-	COPY_SERVER_VERSION: 'copy_server_version',
-	SEND_CRASH_REPORT_ON: 'send_crash_report_on',
-	SEND_CRASH_REPORT_OFF: 'send_crash_report_off',
-	CLEAR_LOCAL_SERVER_CACHE: 'clear_local_server_cache',
-	LOG_OUT: 'log_out'
+	SET_CUSTOM_STATUS_FAIL: 'set_custom_status_fail'
+
 };

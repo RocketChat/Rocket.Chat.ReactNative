@@ -32,7 +32,7 @@ const onCancelPress = () => {
 };
 
 export const onReviewPress = async() => {
-	logEvent(events.REVIEW_THIS_APP);
+	logEvent(events.SE_REVIEW_THIS_APP);
 	await onCancelPress();
 	try {
 		const supported = await Linking.canOpenURL(STORE_REVIEW_LINK);
@@ -40,7 +40,7 @@ export const onReviewPress = async() => {
 			Linking.openURL(STORE_REVIEW_LINK);
 		}
 	} catch (e) {
-		logEvent(events.REVIEW_THIS_APP_FAIL);
+		logEvent(events.SE_REVIEW_THIS_APP_F);
 		showErrorAlert(I18n.t('Review_app_unable_store', { store }));
 	}
 };
