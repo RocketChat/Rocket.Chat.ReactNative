@@ -48,8 +48,11 @@ public class Ejson {
         secureKeystore.getSecureKey(alias, new RNCallback() {
             @Override
             public void invoke(Object... args) {
-                String password = (String) args[1];
-                mmkv = MMKV.mmkvWithID(reactApplicationContext.getPackageName(), MMKV.SINGLE_PROCESS_MODE, password);
+                String error = (String) args[0];
+                if (error == null) {
+                    String password = (String) args[1];
+                    mmkv = MMKV.mmkvWithID("default", MMKV.SINGLE_PROCESS_MODE, password);
+                }
             }
         });
     }
@@ -62,11 +65,17 @@ public class Ejson {
     }
 
     public String token() {
-        return mmkv.decodeString(TOKEN_KEY.concat(userId()));
+        if (mmkv != null) {
+            return mmkv.decodeString(TOKEN_KEY.concat(userId()));
+        }
+        return "";
     }
 
     public String userId() {
-        return mmkv.decodeString(TOKEN_KEY.concat(serverURL()));
+        if (mmkv != null) {
+            return mmkv.decodeString(TOKEN_KEY.concat(serverURL()));
+        }
+        return "";
     }
 
     public String serverURL() {
