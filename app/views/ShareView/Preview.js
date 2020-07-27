@@ -96,7 +96,7 @@ const Preview = React.memo(({
 		}
 		return (
 			<IconPreview
-				iconName={type?.match(/image/) ? 'Camera' : 'clip'}
+				iconName={type?.match(/image/) ? 'image' : 'attach'}
 				title={item?.filename}
 				description={prettyBytes(item?.size ?? 0)}
 				theme={theme}
