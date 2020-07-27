@@ -36,6 +36,41 @@ export default {
 	ENTER_WITH_APPLE: 'enter_with_apple',
 	ENTER_WITH_APPLE_F: 'enter_with_apple_f',
 
+	// SIDEBAR VIEW
+	SIDEBAR_NAVIGATE_TO_ADM_PANEL: 'sidebar_navigate_to_adm_panel',
+	SIDEBAR_NAVIGATE_TO_CHATS: 'sidebar_navigate_to_chats',
+	SIDEBAR_NAVIGATE_TO_PROFILE: 'sidebar_navigate_to_profile',
+	SIDEBAR_NAVIGATE_TO_SETTINGS: 'sidebar_navigate_to_settings',
+	SIDEBAR_NAVIGATE_TO_STATUS_VIEW: 'sidebar_navigate_to_status_view',
+
+	// ROOMS LIST VIEW
+	RL_TOGGLE_SERVER_DROPDOWN: 'rl_toggle_server_dropdown',
+	RL_ADD_SERVER: 'rl_add_server',
+	RL_CHANGE_SERVER: 'rl_change_server',
+	RL_NAVIGATE_TO_NEW_MSG: 'rl_navigate_to_new_msg',
+	RL_SEARCH: 'rl_search',
+	RL_NAVIGATE_TO_DIRECTORY: 'rl_navigate_to_directory',
+	RL_GO_TO_ROOM: 'rl_go_to_room',
+	RL_FAVORITE_CHANNEL: 'rl_favorite_channel',
+	RL_UNFAVORITE_CHANNEL: 'rl_unfavorite_channel',
+	RL_TOGGLE_FAVORITE_F: 'rl_toggle_favorite_f',
+	RL_READ_CHANNEL: 'rl_read_channel',
+	RL_UNREAD_CHANNEL: 'rl_unread_channel',
+	RL_TOGGLE_READ_F: 'rl_toggle_read_f',
+	RL_HIDE_CHANNEL: 'rl_hide_channel',
+	RL_HIDE_CHANNEL_F: 'rl_hide_channel_f',
+	RL_TOGGLE_SORT_DROPDOWN: 'rl_toggle_sort_dropdown',
+	RL_SORT_CHANNELS_BY_NAME: 'rl_sort_channels_by_name',
+	RL_SORT_CHANNELS_BY_ACTIVITY: 'rl_sort_channels_by_activity',
+	RL_SORT_CHANNELS_FAIL: 'rl_sort_channels_fail',
+	RL_GROUP_CHANNELS_BY_TYPE: 'rl_group_channels_by_type',
+	RL_GROUP_CHANNELS_BY_FAVORITE: 'rl_group_channels_by_favorite',
+	RL_GROUP_CHANNELS_BY_UNREAD: 'rl_group_channels_by_unread',
+
+	// DIRECTORY VIEW
+	DIRECTORY_SEARCH_USERS: 'directory_search_users',
+	DIRECTORY_SEARCH_CHANNELS: 'directory_search_channels',
+
 	// NEW MESSAGE VIEW
 	NEW_MSG_CREATE_CHANNEL: 'new_msg_create_channel',
 	NEW_MSG_CREATE_GROUP_CHAT: 'new_msg_create_group_chat',
@@ -62,36 +97,14 @@ export default {
 	CREATE_DISCUSSION_SELECT_CHANNEL: 'create_discussion_select_channel',
 	CREATE_DISCUSSION_SELECT_USERS: 'create_discussion_select_users',
 
-	DIRECTORY_SEARCH_USERS: 'directory_search_users',
-	DIRECTORY_SEARCH_CHANNELS: 'directory_search_channels',
+
 	SAVE_PROFILE_AVATAR: 'save_profile_avatar',
 	SAVE_PROFILE_AVATAR_FAIL: 'save_profile_avatar_fail',
 	SAVE_PROFILE_CHANGES: 'save_profile_changes',
 	SAVE_PROFILE_CHANGES_FAIL: 'save_profile_changes_fail',
 	PICK_PROFILE_AVATAR: 'pick_profile_avatar',
 	PICK_PROFILE_AVATAR_FAIL: 'pick_profile_avatar_fail',
-	PICK_PROFILE_AVATAR_WITH_URL: 'pick_profile_avatar_with_url',
-	ROOMSLIST_SEARCH: 'roomslist_search',
-	UNFAVORITE_CHANNEL: 'unfavorite_channel',
-	FAVORITE_CHANNEL: 'favorite_channel',
-	TOGGLE_FAVORITE_FAIL: 'toggle_favorite_fail',
-	UNREAD_CHANNEL: 'unread_channel',
-	READ_CHANNEL: 'read_channel',
-	TOGGLE_READ_FAIL: 'toggle_read_fail',
-	HIDE_CHANNEL: 'hide_channel',
-	HIDE_CHANNEL_FAIL: 'hide_channel_fail',
-	NAVIGATE_TO_DIRECTORY: 'navigate_to_directory',
-	ADD_SERVER: 'add_server',
-	CHANGE_SERVER: 'change_server',
-	SORT_CHANNELS_FAIL: 'sort_channels_fail',
-	SORT_CHANNELS_BY_ALPHABETICAL: 'sort_channels_by_alphabetical',
-	SORT_CHANNELS_BY_ACTIVITY: 'sort_channels_by_activity',
-	GROUP_CHANNELS_BY_TYPE: 'group_channels_by_type',
-	GROUP_CHANNELS_BY_FAVORITE: 'group_channels_by_favorite',
-	GROUP_CHANNELS_BY_UNREAD: 'group_channels_by_unread',
-	SIDEBAR_NAVIGATE_TO_ADM_PANEL: 'sidebar_navigate_to_adm_panel',
-	SIDEBAR_NAVIGATE_TO_CHATS: 'sidebar_navigate_to_chats',
-	SIDEBAR_NAVIGATE_TO_PROFILE: 'sidebar_navigate_to_profile',
-	SIDEBAR_NAVIGATE_TO_SETTINGS: 'sidebar_navigate_to_settings',
-	SIDEBAR_NAVIGATE_TO_STATUS_VIEW: 'sidebar_navigate_to_status_view'
+	PICK_PROFILE_AVATAR_WITH_URL: 'pick_profile_avatar_with_url'
+
+
 };
