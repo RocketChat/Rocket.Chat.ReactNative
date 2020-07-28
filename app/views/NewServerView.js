@@ -226,6 +226,7 @@ class NewServerView extends React.Component {
 			url = `${ url }.rocket.chat`;
 		}
 
+		// Comment to test local server on Android device
 		if (/^(https?:\/\/)?(((\w|[0-9-_])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
 			if (/^localhost(:\d+)?/.test(url)) {
 				url = `http://${ url }`;
