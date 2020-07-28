@@ -160,8 +160,16 @@ class SettingsView extends React.Component {
 	}
 
 	shareApp = () => {
-		// eslint-disable-next-line no-nested-ternary
-		Share.share({ message: isAndroid ? (!isFDroidBuild ? PLAY_MARKET_LINK : FDROID_MARKET_LINK) : APP_STORE_LINK });
+		let message;
+		if (isAndroid) {
+			message = PLAY_MARKET_LINK;
+			if (isFDroidBuild) {
+				message = FDROID_MARKET_LINK;
+			}
+		} else {
+			message = APP_STORE_LINK;
+		}
+		Share.share({ message });
 	}
 
 	copyServerVersion = () => {
