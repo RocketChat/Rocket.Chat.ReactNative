@@ -14,7 +14,7 @@ const InAppNotification = memo(() => {
 		const state = Navigation.navigationRef.current?.getRootState();
 		const route = getActiveRoute(state);
 		if (payload.rid) {
-			if (route?.name === 'RoomView' && route.params?.rid === payload.rid) {
+			if ((route?.name === 'RoomView' || route?.name === 'JitsiMeetView') && route.params?.rid === payload.rid) {
 				return;
 			}
 			Notifier.showNotification({
