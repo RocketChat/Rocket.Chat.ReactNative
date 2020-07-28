@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, InteractionManager } from 'react-native';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { sha256 } from 'js-sha256';
@@ -99,6 +99,7 @@ const TwoFactor = React.memo(({ theme, isMasterDetail }) => {
 					<TextInput
 						value={code}
 						theme={theme}
+						inputRef={e => InteractionManager.runAfterInteractions(() => e?.getNativeRef()?.focus())}
 						returnKeyType='send'
 						autoCapitalize='none'
 						onChangeText={setCode}

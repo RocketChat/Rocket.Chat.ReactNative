@@ -35,7 +35,10 @@ platform :ios do
 
   desc "Submit a new Beta Build to Apple TestFlight"
   lane :beta do
-    pilot(ipa: 'ios/RocketChatRN.ipa')
+    pilot(
+      ipa: 'ios/RocketChatRN.ipa',
+      skip_waiting_for_build_processing: true
+    )
   end
 
   desc "Build App for release"

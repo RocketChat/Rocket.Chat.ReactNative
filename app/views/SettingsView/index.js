@@ -38,7 +38,7 @@ import { appStart as appStartAction, ROOT_LOADING } from '../../actions/app';
 import { onReviewPress } from '../../utils/review';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { isGooglePlayBuild } from '../../constants/environment';
+import { isFDroidBuild } from '../../constants/environment';
 
 
 const SectionSeparator = React.memo(({ theme }) => (
@@ -121,15 +121,14 @@ class SettingsView extends React.Component {
 		AsyncStorage.setItem(CRASH_REPORT_KEY, JSON.stringify(value));
 		const { toggleCrashReport } = this.props;
 		toggleCrashReport(value);
-		loggerConfig.autoNotify = value;
-		if (isGooglePlayBuild) {
+		if (!isFDroidBuild) {
+			loggerConfig.autoNotify = value;
 			analytics().setAnalyticsCollectionEnabled(value);
-		}
-
-		if (value) {
-			loggerConfig.clearBeforeSendCallbacks();
-		} else {
-			loggerConfig.registerBeforeSendCallback(() => false);
+			if (value) {
+				loggerConfig.clearBeforeSendCallbacks();
+			} else {
+				loggerConfig.registerBeforeSendCallback(() => false);
+			}
 		}
 	}
 
@@ -162,7 +161,7 @@ class SettingsView extends React.Component {
 
 	shareApp = () => {
 		// eslint-disable-next-line no-nested-ternary
-		Share.share({ message: isAndroid ? (isGooglePlayBuild ? PLAY_MARKET_LINK : FDROID_MARKET_LINK) : APP_STORE_LINK });
+		Share.share({ message: isAndroid ? (!isFDroidBuild ? PLAY_MARKET_LINK : FDROID_MARKET_LINK) : APP_STORE_LINK });
 	}
 
 	copyServerVersion = () => {
@@ -258,7 +257,7 @@ class SettingsView extends React.Component {
 						theme={theme}
 					/>
 					<Separator theme={theme} />
-					{isGooglePlayBuild ? (
+					{!isFDroidBuild ? (
 						<>
 							<ListItem
 								title={I18n.t('Review_this_app')}
@@ -348,7 +347,7 @@ class SettingsView extends React.Component {
 						</>
 					) : null}
 
-					{isGooglePlayBuild ? (
+					{!isFDroidBuild ? (
 						<>
 							<ListItem
 								title={I18n.t('Send_crash_report')}

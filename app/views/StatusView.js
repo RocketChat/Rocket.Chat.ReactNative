@@ -24,16 +24,16 @@ import SafeAreaView from '../containers/SafeAreaView';
 
 const STATUS = [{
 	id: 'online',
-	name: I18n.t('Online')
+	name: 'Online'
 }, {
 	id: 'busy',
-	name: I18n.t('Busy')
+	name: 'Busy'
 }, {
 	id: 'away',
-	name: I18n.t('Away')
+	name: 'Away'
 }, {
 	id: 'offline',
-	name: I18n.t('Invisible')
+	name: 'Invisible'
 }];
 
 const styles = StyleSheet.create({
@@ -164,7 +164,7 @@ class StatusView extends React.Component {
 		const { id, name } = item;
 		return (
 			<ListItem
-				title={name}
+				title={I18n.t(name)}
 				onPress={async() => {
 					if (user.status !== item.id) {
 						try {

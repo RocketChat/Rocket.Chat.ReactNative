@@ -6,7 +6,7 @@ import {
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
 
-import { analytics } from '../utils/log';
+import { logEvent, events } from '../utils/log';
 import sharedStyles from './Styles';
 import Button from '../containers/Button';
 import I18n from '../i18n';
@@ -17,7 +17,6 @@ import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import TextInput from '../containers/TextInput';
 import { loginRequest as loginRequestAction } from '../actions/login';
 import LoginServices from '../containers/LoginServices';
-import { isGooglePlayBuild } from '../constants/environment';
 
 const styles = StyleSheet.create({
 	registerDisabled: {
@@ -104,6 +103,7 @@ class LoginView extends React.Component {
 	}
 
 	forgotPassword = () => {
+		logEvent(events.FORGOT_PASSWORD);
 		const { navigation, Site_Name } = this.props;
 		navigation.navigate('ForgotPasswordView', { title: Site_Name });
 	}
@@ -122,9 +122,6 @@ class LoginView extends React.Component {
 		const { loginRequest } = this.props;
 		Keyboard.dismiss();
 		loginRequest({ user, password });
-		if (isGooglePlayBuild) {
-			analytics().logEvent('login');
-		}
 	}
 
 	renderUserForm = () => {

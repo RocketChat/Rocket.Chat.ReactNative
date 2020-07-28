@@ -5,8 +5,7 @@ apply plugin: "com.android.application"
 apply plugin: 'kotlin-android'
 
 if (!isFoss) {
-    apply plugin: "io.fabric"
-    apply plugin: "com.google.firebase.firebase-perf"
+    apply plugin: 'com.google.firebase.crashlytics'
     apply plugin: 'com.bugsnag.android.gradle'
 }
 
@@ -174,15 +173,20 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'])
             signingConfig signingConfigs.release
+            if (isPlay) {
+                firebaseCrashlytics {
+                    nativeSymbolUploadEnabled true
+                }
+            }
         }
     }
 
-    packagingOptions {
-        pickFirst '**/armeabi-v7a/libc++_shared.so'
-        pickFirst '**/x86/libc++_shared.so'
-        pickFirst '**/arm64-v8a/libc++_shared.so'
-        pickFirst '**/x86_64/libc++_shared.so'
-    }
+    // packagingOptions {
+    //     pickFirst '**/armeabi-v7a/libc++_shared.so'
+    //     pickFirst '**/x86/libc++_shared.so'
+    //     pickFirst '**/arm64-v8a/libc++_shared.so'
+    //     pickFirst '**/x86_64/libc++_shared.so'
+    // }
 
     // applicationVariants are e.g. debug, release
 
@@ -190,11 +194,11 @@ android {
     productFlavors {
         foss {
             dimension = "type"
-            buildConfigField "boolean", "PLAY_BUILD", "false"
+            buildConfigField "boolean", "FDROID_BUILD", "true"
         }
         play {
             dimension = "type"
-            buildConfigField "boolean", "PLAY_BUILD", "true"
+            buildConfigField "boolean", "FDROID_BUILD", "false"
         }
         official {
             dimension = "type"
@@ -240,11 +244,6 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
     playImplementation "com.google.firebase:firebase-messaging:18.0.0"
-    playImplementation "com.google.firebase:firebase-core:16.0.9"
-    playImplementation "com.google.firebase:firebase-perf:17.0.2"
-    playImplementation('com.crashlytics.sdk.android:crashlytics:2.9.9@aar') {
-        transitive = true
-    }
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
