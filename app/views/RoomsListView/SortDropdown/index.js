@@ -190,7 +190,7 @@ class Sort extends PureComponent {
 					</SortItemButton>
 					<SortItemButton onPress={this.toggleUnread} theme={theme}>
 						<SortItemContent
-							icon='eye-off'
+							icon='unread-on-top-disabled'
 							label='Unread_on_top'
 							checked={showUnread}
 							theme={theme}

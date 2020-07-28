@@ -164,7 +164,7 @@ class Sidebar extends Component {
 				<Separator theme={theme} />
 				<SidebarItem
 					text={I18n.t('Admin_Panel')}
-					left={<CustomIcon name='shield' size={20} color={themes[theme].titleText} />}
+					left={<CustomIcon name='settings' size={20} color={themes[theme].titleText} />}
 					onPress={() => Navigation.navigate(routeName)}
 					testID='sidebar-settings'
 					current={this.currentItemKey === routeName}
@@ -193,7 +193,7 @@ class Sidebar extends Component {
 				/>
 				<SidebarItem
 					text={I18n.t('Settings')}
-					left={<CustomIcon name='cog' size={20} color={themes[theme].titleText} />}
+					left={<CustomIcon name='administration' size={20} color={themes[theme].titleText} />}
 					onPress={() => this.sidebarNavigate('SettingsStackNavigator')}
 					testID='sidebar-settings'
 					current={this.currentItemKey === 'SettingsStackNavigator'}

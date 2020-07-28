@@ -12,8 +12,6 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		1E0DBC59247D75C40086559B /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1E0DBC58247D75C40086559B /* custom.ttf */; };
-		1E0DBC5A247D75C40086559B /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1E0DBC58247D75C40086559B /* custom.ttf */; };
 		1E1EA80A2326CD2200E22452 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E1EA8092326CD2200E22452 /* AVFoundation.framework */; };
 		1E1EA80C2326CD2800E22452 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E1EA80B2326CD2800E22452 /* AudioToolbox.framework */; };
 		1E1EA80E2326CD2F00E22452 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E1EA80D2326CD2F00E22452 /* CoreGraphics.framework */; };
@@ -30,10 +28,14 @@
 		1EC6ACF622CBA01500A41C61 /* ShareRocketChatRN.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EC6ACF522CBA01500A41C61 /* ShareRocketChatRN.m */; };
 		1ED59D4C22CBA77D00C54289 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1ED59D4B22CBA77D00C54289 /* GoogleService-Info.plist */; };
 		1EDDE57A22DFAD8E0078F69D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1EDDE57922DFAD8E0078F69D /* Images.xcassets */; };
+		1EFEB5982493B6640072EDC0 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFEB5972493B6640072EDC0 /* NotificationService.swift */; };
+		1EFEB59C2493B6640072EDC0 /* NotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1EFEB5952493B6640072EDC0 /* NotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		24A2AEF2383D44B586D31C01 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 06BB44DD4855498082A744AD /* libz.tbd */; };
 		50046CB6BDA69B9232CF66D9 /* libPods-RocketChatRN.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C235DC7B31A4D1578EDEF219 /* libPods-RocketChatRN.a */; };
 		7A006F14229C83B600803143 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A006F13229C83B600803143 /* GoogleService-Info.plist */; };
 		7A0D62D2242AB187006D5C06 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A0D62D1242AB187006D5C06 /* LaunchScreen.storyboard */; };
+		7A63763324C6104F00557D60 /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A63763224C6104F00557D60 /* custom.ttf */; };
+		7A63763424C6104F00557D60 /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A63763224C6104F00557D60 /* custom.ttf */; };
 		7AAA749E23043B1E00F1ADE9 /* Watermelon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAA749D23043B1E00F1ADE9 /* Watermelon.swift */; };
 		7AC99C1C2339361F0000A0CB /* Watermelon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAA749D23043B1E00F1ADE9 /* Watermelon.swift */; };
 		7ACD4897222860DE00442C55 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACD4853222860DE00442C55 /* JavaScriptCore.framework */; };
@@ -47,6 +49,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 1EC6ACAF22CB9FC300A41C61;
 			remoteInfo = ShareRocketChatRN;
+		};
+		1EFEB59A2493B6640072EDC0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1EFEB5942493B6640072EDC0;
+			remoteInfo = NotificationService;
 		};
 		7AAA749A23043AD300F1ADE9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +74,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				1EC6ACBB22CB9FC300A41C61 /* ShareRocketChatRN.appex in Embed App Extensions */,
+				1EFEB59C2493B6640072EDC0 /* NotificationService.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -82,7 +92,6 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RocketChatRN/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RocketChatRN/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = RocketChatRN/main.m; sourceTree = "<group>"; };
-		1E0DBC58247D75C40086559B /* custom.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = custom.ttf; sourceTree = "<group>"; };
 		1E1EA8092326CD2200E22452 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		1E1EA80B2326CD2800E22452 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		1E1EA80D2326CD2F00E22452 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -99,11 +108,16 @@
 		1EC6AD6022CBA20C00A41C61 /* ShareRocketChatRN.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareRocketChatRN.entitlements; sourceTree = "<group>"; };
 		1ED59D4B22CBA77D00C54289 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		1EDDE57922DFAD8E0078F69D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		1EFEB5952493B6640072EDC0 /* NotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		1EFEB5972493B6640072EDC0 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		1EFEB5992493B6640072EDC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1EFEB5A12493B67D0072EDC0 /* NotificationService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NotificationService.entitlements; sourceTree = "<group>"; };
 		290E43E48AD8418287FA99D6 /* WatermelonDB.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = WatermelonDB.xcodeproj; path = "../node_modules/@nozbe/watermelondb/native/ios/WatermelonDB.xcodeproj"; sourceTree = "<group>"; };
 		60B2A6A31FC4588700BD58E5 /* RocketChatRN.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = RocketChatRN.entitlements; path = RocketChatRN/RocketChatRN.entitlements; sourceTree = "<group>"; };
 		66D6B1D0567051BE541450C9 /* Pods-RocketChatRN.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RocketChatRN.release.xcconfig"; path = "Pods/Target Support Files/Pods-RocketChatRN/Pods-RocketChatRN.release.xcconfig"; sourceTree = "<group>"; };
 		7A006F13229C83B600803143 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7A0D62D1242AB187006D5C06 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		7A63763224C6104F00557D60 /* custom.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = custom.ttf; sourceTree = "<group>"; };
 		7AAA749C23043B1D00F1ADE9 /* RocketChatRN-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RocketChatRN-Bridging-Header.h"; sourceTree = "<group>"; };
 		7AAA749D23043B1E00F1ADE9 /* Watermelon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Watermelon.swift; sourceTree = "<group>"; };
 		7ACD4853222860DE00442C55 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -146,6 +160,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1EFEB5922493B6640072EDC0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -178,6 +199,16 @@
 				1EC6ACF522CBA01500A41C61 /* ShareRocketChatRN.m */,
 			);
 			path = ShareRocketChatRN;
+			sourceTree = "<group>";
+		};
+		1EFEB5962493B6640072EDC0 /* NotificationService */ = {
+			isa = PBXGroup;
+			children = (
+				1EFEB5A12493B67D0072EDC0 /* NotificationService.entitlements */,
+				1EFEB5972493B6640072EDC0 /* NotificationService.swift */,
+				1EFEB5992493B6640072EDC0 /* Info.plist */,
+			);
+			path = NotificationService;
 			sourceTree = "<group>";
 		};
 		22CA7F59107E0C79C2506C7C /* Pods */ = {
@@ -213,6 +244,7 @@
 				13B07FAE1A68108700A75B9A /* RocketChatRN */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				1EC6ACB122CB9FC300A41C61 /* ShareRocketChatRN */,
+				1EFEB5962493B6640072EDC0 /* NotificationService */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				BB4B591B5FC44CD9986DB2A6 /* Frameworks */,
 				AF5E16F0398347E6A80C8CBE /* Resources */,
@@ -228,6 +260,7 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* RocketChatRN.app */,
 				1EC6ACB022CB9FC300A41C61 /* ShareRocketChatRN.appex */,
+				1EFEB5952493B6640072EDC0 /* NotificationService.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -235,7 +268,7 @@
 		AF5E16F0398347E6A80C8CBE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				1E0DBC58247D75C40086559B /* custom.ttf */,
+				7A63763224C6104F00557D60 /* custom.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -293,6 +326,7 @@
 			);
 			dependencies = (
 				1EC6ACBA22CB9FC300A41C61 /* PBXTargetDependency */,
+				1EFEB59B2493B6640072EDC0 /* PBXTargetDependency */,
 			);
 			name = RocketChatRN;
 			productName = "Hello World";
@@ -321,6 +355,23 @@
 			productReference = 1EC6ACB022CB9FC300A41C61 /* ShareRocketChatRN.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		1EFEB5942493B6640072EDC0 /* NotificationService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1EFEB5A02493B6640072EDC0 /* Build configuration list for PBXNativeTarget "NotificationService" */;
+			buildPhases = (
+				1EFEB5912493B6640072EDC0 /* Sources */,
+				1EFEB5922493B6640072EDC0 /* Frameworks */,
+				1EFEB5932493B6640072EDC0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NotificationService;
+			productName = NotificationService;
+			productReference = 1EFEB5952493B6640072EDC0 /* NotificationService.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -328,6 +379,7 @@
 			isa = PBXProject;
 			attributes = {
 				DefaultBuildSystemTypeForWorkspace = Original;
+				LastSwiftUpdateCheck = 1150;
 				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
@@ -360,6 +412,11 @@
 							};
 						};
 					};
+					1EFEB5942493B6640072EDC0 = {
+						CreatedOnToolsVersion = 11.5;
+						DevelopmentTeam = S6UPZG7ZR3;
+						ProvisioningStyle = Manual;
+					};
 				};
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "RocketChatRN" */;
@@ -384,6 +441,7 @@
 			targets = (
 				13B07F861A680F5B00A75B9A /* RocketChatRN */,
 				1EC6ACAF22CB9FC300A41C61 /* ShareRocketChatRN */,
+				1EFEB5942493B6640072EDC0 /* NotificationService */,
 			);
 		};
 /* End PBXProject section */
@@ -404,7 +462,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				1E0DBC59247D75C40086559B /* custom.ttf in Resources */,
+				7A63763324C6104F00557D60 /* custom.ttf in Resources */,
 				7A006F14229C83B600803143 /* GoogleService-Info.plist in Resources */,
 				7A0D62D2242AB187006D5C06 /* LaunchScreen.storyboard in Resources */,
 			);
@@ -415,9 +473,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				1EDDE57A22DFAD8E0078F69D /* Images.xcassets in Resources */,
-				1E0DBC5A247D75C40086559B /* custom.ttf in Resources */,
+				7A63763424C6104F00557D60 /* custom.ttf in Resources */,
 				1EC6ACB722CB9FC300A41C61 /* MainInterface.storyboard in Resources */,
 				1ED59D4C22CBA77D00C54289 /* GoogleService-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1EFEB5932493B6640072EDC0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -720,6 +785,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1EFEB5912493B6640072EDC0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1EFEB5982493B6640072EDC0 /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -727,6 +800,11 @@
 			isa = PBXTargetDependency;
 			target = 1EC6ACAF22CB9FC300A41C61 /* ShareRocketChatRN */;
 			targetProxy = 1EC6ACB922CB9FC300A41C61 /* PBXContainerItemProxy */;
+		};
+		1EFEB59B2493B6640072EDC0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1EFEB5942493B6640072EDC0 /* NotificationService */;
+			targetProxy = 1EFEB59A2493B6640072EDC0 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -889,7 +967,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
+					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -955,7 +1033,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
+					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -973,6 +1051,68 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "chat.rocket.reactnative.ShareExtension AppStore";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		1EFEB59D2493B6640072EDC0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = NotificationService/NotificationService.entitlements;
+				CODE_SIGN_STYLE = Manual;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = NotificationService/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 4.10.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative.NotificationService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "chat.rocket.reactnative.NotificationService Development";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1EFEB59E2493B6640072EDC0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = NotificationService/NotificationService.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = NotificationService/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 4.10.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative.NotificationService;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "chat.rocket.reactnative.NotificationService AppStore";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1097,6 +1237,15 @@
 			buildConfigurations = (
 				1EC6ACBC22CB9FC300A41C61 /* Debug */,
 				1EC6ACBD22CB9FC300A41C61 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1EFEB5A02493B6640072EDC0 /* Build configuration list for PBXNativeTarget "NotificationService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1EFEB59D2493B6640072EDC0 /* Debug */,
+				1EFEB59E2493B6640072EDC0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

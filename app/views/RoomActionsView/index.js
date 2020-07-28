@@ -229,7 +229,7 @@ class RoomActionsView extends React.Component {
 		const isGroupChat = RocketChat.isGroupChat(room);
 
 		const notificationsAction = {
-			icon: 'bell',
+			icon: 'notification',
 			name: I18n.t('Notifications'),
 			route: 'NotificationPrefView',
 			params: { rid, room },
@@ -238,13 +238,13 @@ class RoomActionsView extends React.Component {
 
 		const jitsiActions = jitsiEnabled ? [
 			{
-				icon: 'mic',
+				icon: 'phone',
 				name: I18n.t('Voice_call'),
 				event: () => RocketChat.callJitsi(rid, true),
 				testID: 'room-actions-voice'
 			},
 			{
-				icon: 'video-1',
+				icon: 'camera', // TODO: change me
 				name: I18n.t('Video_call'),
 				event: () => RocketChat.callJitsi(rid),
 				testID: 'room-actions-video'
@@ -270,14 +270,14 @@ class RoomActionsView extends React.Component {
 		}, {
 			data: [
 				{
-					icon: 'clip',
+					icon: 'attach',
 					name: I18n.t('Files'),
 					route: 'MessagesView',
 					params: { rid, t, name: 'Files' },
 					testID: 'room-actions-files'
 				},
 				{
-					icon: 'at',
+					icon: 'mention',
 					name: I18n.t('Mentions'),
 					route: 'MessagesView',
 					params: { rid, t, name: 'Mentions' },
@@ -291,7 +291,7 @@ class RoomActionsView extends React.Component {
 					testID: 'room-actions-starred'
 				},
 				{
-					icon: 'magnifier',
+					icon: 'search',
 					name: I18n.t('Search'),
 					route: 'SearchMessagesView',
 					params: { rid },
@@ -365,7 +365,7 @@ class RoomActionsView extends React.Component {
 
 			if (canAddUser) {
 				actions.push({
-					icon: 'plus',
+					icon: 'add',
 					name: I18n.t('Add_users'),
 					route: 'SelectedUsersView',
 					params: {
@@ -378,7 +378,7 @@ class RoomActionsView extends React.Component {
 			}
 			if (canInviteUser) {
 				actions.push({
-					icon: 'add-user',
+					icon: 'user-add',
 					name: I18n.t('Invite_users'),
 					route: 'InviteUsersView',
 					params: {
@@ -394,7 +394,7 @@ class RoomActionsView extends React.Component {
 				sections.push({
 					data: [
 						{
-							icon: 'exit',
+							icon: 'logout',
 							name: I18n.t('Leave_channel'),
 							type: 'danger',
 							event: this.leaveChannel,
@@ -408,14 +408,14 @@ class RoomActionsView extends React.Component {
 			sections[2].data = [];
 
 			sections[2].data.push({
-				icon: 'cancel',
+				icon: 'close',
 				name: I18n.t('Close'),
 				event: this.closeLivechat
 			});
 
 			if (canForwardGuest) {
 				sections[2].data.push({
-					icon: 'transfer',
+					icon: 'user-forward',
 					name: I18n.t('Forward'),
 					route: 'ForwardLivechatView',
 					params: { rid }
