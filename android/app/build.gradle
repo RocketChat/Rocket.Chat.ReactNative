@@ -173,7 +173,7 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'])
             signingConfig signingConfigs.release
-            if (isPlay) {
+            if (!isFoss) {
                 firebaseCrashlytics {
                     nativeSymbolUploadEnabled true
                 }
@@ -204,7 +204,7 @@ android {
             dimension = "type"
             applicationId = "chat.rocket.android"
             resValue "string", "app_name", "Rocket Chat"
-            buildConfigField "boolean", "PLAY_BUILD", "true"
+            buildConfigField "boolean", "FDROID_BUILD", "false"
         }
     }
 
