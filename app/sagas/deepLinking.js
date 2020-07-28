@@ -63,7 +63,9 @@ const handleOpen = function* handleOpen({ params }) {
 
 	let { host } = params;
 	if (!/^(http|https)/.test(host)) {
-		host = `https://${ params.host }`;
+		host = `https://${ host }`;
+	} else {
+		host = host.replace('http://', 'https://');
 	}
 	// remove last "/" from host
 	if (host.slice(-1) === '/') {
@@ -75,7 +77,6 @@ const handleOpen = function* handleOpen({ params }) {
 		RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ host }`)
 	]);
 
-	// TODO: needs better test
 	// if deep link is from same server
 	if (server === host && user) {
 		const connected = yield select(state => state.server.connected);
