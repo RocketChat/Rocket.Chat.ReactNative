@@ -55,7 +55,8 @@ export default StyleSheet.create({
 	mention: {
 		fontSize: 16,
 		padding: 5,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		letterSpacing: 0.5
 	},
 	paragraph: {
 		marginTop: 0,
