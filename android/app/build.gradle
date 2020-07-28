@@ -1,10 +1,10 @@
 def taskRequests = getGradle().getStartParameter().getTaskRequests().toString().toLowerCase()
-def isPlay = !taskRequests.contains("foss")
+def isFoss = taskRequests.contains("foss")
 
 apply plugin: "com.android.application"
 apply plugin: 'kotlin-android'
 
-if (isPlay) {
+if (!isFoss) {
     apply plugin: "io.fabric"
     apply plugin: "com.google.firebase.firebase-perf"
     apply plugin: 'com.bugsnag.android.gradle'
@@ -196,6 +196,12 @@ android {
             dimension = "type"
             buildConfigField "boolean", "PLAY_BUILD", "true"
         }
+        official {
+            dimension = "type"
+            applicationId = "chat.rocket.android"
+            resValue "string", "app_name", "Rocket Chat"
+            buildConfigField "boolean", "PLAY_BUILD", "true"
+        }
     }
 
     applicationVariants.all { variant ->
@@ -271,6 +277,6 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
-if (isPlay) {
+if (!isFoss) {
     apply plugin: 'com.google.gms.google-services'
 }
