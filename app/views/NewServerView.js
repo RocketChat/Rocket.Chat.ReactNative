@@ -133,8 +133,8 @@ class NewServerView extends React.Component {
 	handleNewServerEvent = (event) => {
 		let { server } = event;
 		const { connectServer } = this.props;
-		this.setState({ text: server });
 		server = this.completeUrl(server);
+		this.setState({ text: server });
 		connectServer(server);
 	}
 
@@ -163,6 +163,7 @@ class NewServerView extends React.Component {
 		if (text) {
 			Keyboard.dismiss();
 			const server = this.completeUrl(text);
+			this.setState({ text: server });
 			await this.basicAuth(server, text);
 			connectServer(server, cert);
 		}
@@ -230,6 +231,8 @@ class NewServerView extends React.Component {
 				url = `http://${ url }`;
 			} else if (/^https?:\/\//.test(url) === false) {
 				url = `https://${ url }`;
+			} else if (/^http:\/\//.test(url)) {
+				url = url.replace('http://', 'https://');
 			}
 		}
 
