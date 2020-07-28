@@ -8,7 +8,7 @@ const ActionsButton = React.memo(({ theme, onPress }) => (
 		onPress={onPress}
 		testID='messagebox-actions'
 		accessibilityLabel='Message_actions'
-		icon='plus'
+		icon='add'
 		theme={theme}
 	/>
 ));
