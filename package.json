@@ -17,7 +17,8 @@
     "generate-source-maps-android": "bugsnag-sourcemaps",
     "postinstall": "patch-package && jetify",
     "play": "npx react-native run-android --variant=playDebug",
-    "foss": "npx react-native run-android --variant=fossDebug"
+    "foss": "npx react-native run-android --variant=fossDebug",
+    "official": "npx react-native run-android --variant=officialDebug"
   },
   "husky": {
     "hooks": {
