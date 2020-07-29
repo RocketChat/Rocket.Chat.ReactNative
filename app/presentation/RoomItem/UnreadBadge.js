@@ -6,7 +6,7 @@ import styles from './styles';
 import { themes } from '../../constants/colors';
 
 const UnreadBadge = React.memo(({
-	theme, unread, userMentions, type
+	theme, unread, userMentions, groupMentions
 }) => {
 	if (!unread || unread <= 0) {
 		return;
@@ -14,19 +14,26 @@ const UnreadBadge = React.memo(({
 	if (unread >= 1000) {
 		unread = '999+';
 	}
-	const mentioned = userMentions > 0 && type !== 'd';
+
+	let backgroundColor = themes[theme].unreadBackground;
+	const color = themes[theme].buttonText;
+	if (userMentions > 0) {
+		backgroundColor = themes[theme].mentionMeColor;
+	} else if (groupMentions > 0) {
+		backgroundColor = themes[theme].mentionGroupColor;
+	}
 
 	return (
 		<View
 			style={[
 				styles.unreadNumberContainer,
-				{ backgroundColor: mentioned ? themes[theme].tintColor : themes[theme].borderColor }
+				{ backgroundColor }
 			]}
 		>
 			<Text
 				style={[
 					styles.unreadText,
-					{ color: mentioned ? themes[theme].buttonText : themes[theme].bodyText }
+					{ color }
 				]}
 			>{ unread }
 			</Text>
@@ -38,7 +45,7 @@ UnreadBadge.propTypes = {
 	theme: PropTypes.string,
 	unread: PropTypes.number,
 	userMentions: PropTypes.number,
-	type: PropTypes.string
+	groupMentions: PropTypes.number
 };
 
 export default UnreadBadge;
