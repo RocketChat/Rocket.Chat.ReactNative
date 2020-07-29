@@ -18,6 +18,7 @@ import database from '../lib/database';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { appStart, ROOT_OUTSIDE, appReady } from '../actions/app';
+import { isOfficialBuild } from '../constants/environment';
 
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = yield RocketChat.getSortPreferences();
@@ -29,9 +30,13 @@ export const initLocalSettings = function* initLocalSettings() {
 
 const restore = function* restore() {
 	try {
-		let hasMigration;
-		if (isIOS) {
-			hasMigration = yield AsyncStorage.getItem('hasMigration');
+		if (isOfficialBuild) {
+			const hasMigration = yield AsyncStorage.getItem('hasMigration');
+		} else {
+			let hasMigration;
+			if (isIOS) {
+				hasMigration = yield AsyncStorage.getItem('hasMigration');
+			}
 		}
 
 		let { token, server } = yield all({

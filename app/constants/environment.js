@@ -1,3 +1,8 @@
 import RNConfigReader from 'react-native-config-reader';
 
-export const isFDroidBuild = RNConfigReader.FDROID_BUILD;
+// Checks for undefined values
+let fDroidBuild = RNConfigReader.FDROID_BUILD || false;
+let officialBuild = RNConfigReader.OFFICIAL_BUILD || false;
+
+export const isOfficialBuild = officialBuild;
+export const isFDroidBuild = fDroidBuild;

@@ -1,5 +1,6 @@
 def taskRequests = getGradle().getStartParameter().getTaskRequests().toString().toLowerCase()
 def isFoss = taskRequests.contains("foss")
+def isOfficial = taskRequests.contains("official")
 
 apply plugin: "com.android.application"
 apply plugin: 'kotlin-android'
@@ -143,7 +144,11 @@ android {
         applicationId "chat.rocket.reactnative"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode VERSIONCODE as Integer
+        if (isOfficial) {
+            versionCode OFFICIAL_VERSIONCODE as Integer
+        } else {
+            versionCode VERSIONCODE as Integer
+        }
         versionName "4.10.0"
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
@@ -195,16 +200,19 @@ android {
         foss {
             dimension = "type"
             buildConfigField "boolean", "FDROID_BUILD", "true"
+            buildConfigField "boolean", "OFFICIAL_BUILD", "false"
         }
         play {
             dimension = "type"
             buildConfigField "boolean", "FDROID_BUILD", "false"
+            buildConfigField "boolean", "OFFICIAL_BUILD", "false"
         }
         official {
             dimension = "type"
             applicationId = "chat.rocket.android"
             resValue "string", "app_name", "Rocket Chat"
             buildConfigField "boolean", "FDROID_BUILD", "false"
+            buildConfigField "boolean", "OFFICIAL_BUILD", "true"
         }
     }
 

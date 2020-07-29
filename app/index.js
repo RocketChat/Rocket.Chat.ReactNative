@@ -36,8 +36,8 @@ import Toast from './containers/Toast';
 import InAppNotification from './containers/InAppNotification';
 import { ActionSheetProvider } from './containers/ActionSheet';
 import debounce from './utils/debounce';
-import { isFDroidBuild } from './constants/environment';
-
+import { isFDroidBuild, isOfficialBuild } from './constants/environment';
+import { IDENTIFIER, ANDROID_PACKAGE_CONTEXT } from './constants/credentials';
 
 RNScreens.enableScreens();
 
@@ -102,6 +102,13 @@ export default class Root extends React.Component {
 	}
 
 	init = async() => {
+		if (isOfficialBuild) {
+			await RNUserDefaults.setName(IDENTIFIER);
+			if (isAndroid) {
+				await RNUserDefaults.setPackageContext(ANDROID_PACKAGE_CONTEXT);
+			}
+		}
+
 		RNUserDefaults.objectForKey(THEME_PREFERENCES_KEY).then(this.setTheme);
 		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);

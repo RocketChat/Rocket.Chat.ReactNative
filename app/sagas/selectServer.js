@@ -16,9 +16,12 @@ import database from '../lib/database';
 import log, { logServerVersion } from '../utils/log';
 import { extractHostname } from '../utils/server';
 import I18n from '../i18n';
-import { SERVERS, TOKEN, SERVER_URL } from '../constants/userDefaults';
+import {
+	SERVERS, TOKEN, SERVER_URL, USER_ID
+} from '../constants/credentials';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../utils/fetch';
 import { appStart, ROOT_INSIDE, ROOT_OUTSIDE } from '../actions/app';
+import { isOfficialBuild } from '../constants/environment';
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
@@ -84,12 +87,21 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 					roles: userRecord.roles
 				};
 			} catch (e) {
-				// We only run it if not has user on DB
-				const servers = yield RNUserDefaults.objectForKey(SERVERS);
-				const userCredentials = servers && servers.find(srv => srv[SERVER_URL] === server);
-				user = userCredentials && {
-					token: userCredentials[TOKEN]
-				};
+				if (isOfficialBuild) {
+					// if not have user on db we check on native credentials
+					const servers = yield RNUserDefaults.objectForKey(SERVERS);
+					const userCredentials = servers && servers.find(srv => srv[SERVER_URL] === server);
+					user = userCredentials && {
+						token: userCredentials[TOKEN].length > userCredentials[USER_ID].length ? userCredentials[TOKEN] : userCredentials[USER_ID]
+					};
+				} else {
+					// We only run it if not has user on DB
+					const servers = yield RNUserDefaults.objectForKey('kServers');
+					const userCredentials = servers && servers.find(srv => srv['kAuthServerURL'] === server);
+					user = userCredentials && {
+						token: userCredentials['kAuthToken']
+					};
+				}
 			}
 		}
 

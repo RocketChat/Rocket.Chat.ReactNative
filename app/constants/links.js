@@ -1,6 +1,8 @@
 import { getBundleId, isIOS } from '../utils/deviceInfo';
+import { isOfficialBuild } from './environment';
 
-const APP_STORE_ID = '1272915472';
+let appStoreID = (isOfficialBuild) ? '1148741252' :'1272915472';
+const APP_STORE_ID = appStoreID;
 
 export const PLAY_MARKET_LINK = `https://play.google.com/store/apps/details?id=${ getBundleId }`;
 export const FDROID_MARKET_LINK = 'https://f-droid.org/repo/chat.rocket.android_2057.apk'; // Once link is finalised, Update this

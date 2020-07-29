@@ -23,6 +23,7 @@ import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { ThemeContext } from './theme';
 import { localAuthenticate } from './utils/localAuthentication';
 import ScreenLockedView from './views/ScreenLockedView';
+import { IDENTIFIER, ANDROID_PACKAGE_CONTEXT } from './constants/credentials';
 
 // Outside Stack
 import WithoutServersView from './views/WithoutServersView';
@@ -35,6 +36,7 @@ import { setCurrentScreen } from './utils/log';
 import AuthLoadingView from './views/AuthLoadingView';
 import { DimensionsContext } from './dimensions';
 import debounce from './utils/debounce';
+import { isOfficialBuild } from './constants/environment';
 
 const Inside = createStackNavigator();
 const InsideStack = () => {
@@ -138,6 +140,13 @@ class Root extends React.Component {
 	}
 
 	init = async() => {
+		if (isOfficialBuild) {
+			await RNUserDefaults.setName(IDENTIFIER);
+			if (isAndroid) {
+				await RNUserDefaults.setPackageContext(ANDROID_PACKAGE_CONTEXT);
+			}
+		}
+
 		RNUserDefaults.objectForKey(THEME_PREFERENCES_KEY).then(this.setTheme);
 		const currentServer = await RNUserDefaults.get('currentServer');
 		const token = await RNUserDefaults.get(RocketChat.TOKEN_KEY);
