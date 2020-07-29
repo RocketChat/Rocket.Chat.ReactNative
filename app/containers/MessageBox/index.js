@@ -134,7 +134,7 @@ class MessageBox extends Component {
 			},
 			{
 				title: I18n.t('Take_a_video'),
-				icon: 'video-1',
+				icon: 'camera',
 				onPress: this.takeVideo
 			},
 			{
@@ -144,12 +144,12 @@ class MessageBox extends Component {
 			},
 			{
 				title: I18n.t('Choose_file'),
-				icon: 'folder',
+				icon: 'file',
 				onPress: this.chooseFile
 			},
 			{
 				title: I18n.t('Create_Discussion'),
-				icon: 'chat',
+				icon: 'discussions',
 				onPress: this.createDiscussion
 			}
 		];
