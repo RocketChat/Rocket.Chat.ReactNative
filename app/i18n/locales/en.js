@@ -622,5 +622,6 @@ export default {
 	Passcode_app_locked_title: 'App locked',
 	Passcode_app_locked_subtitle: 'Try again in {{timeLeft}} seconds',
 	After_seconds_set_by_admin: 'After {{seconds}} seconds (set by admin)',
-	Dont_activate: 'Don\'t activate now'
+	Dont_activate: 'Don\'t activate now',
+	Queued_chats: 'Queued chats'
 };

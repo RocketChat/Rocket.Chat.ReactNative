@@ -131,8 +131,7 @@ class RoomsListView extends React.Component {
 		isMasterDetail: PropTypes.bool,
 		rooms: PropTypes.array,
 		width: PropTypes.number,
-		insets: PropTypes.object,
-		queued: PropTypes.array
+		insets: PropTypes.object
 	};
 
 	constructor(props) {
@@ -218,11 +217,6 @@ class RoomsListView extends React.Component {
 		// eslint-disable-next-line react/destructuring-assignment
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
-			return true;
-		}
-
-		const { queued } = this.props;
-		if (!isEqual(nextProps.queued, queued)) {
 			return true;
 		}
 
@@ -448,9 +442,8 @@ class RoomsListView extends React.Component {
 
 
 		this.querySubscription = observable.subscribe((data) => {
-			const { queued } = this.props;
-			let tempChats = [...queued];
-			let chats = [...data, ...queued];
+			let tempChats = [];
+			let chats = data;
 
 			/**
 			 * We trigger re-render only when chats order changes
@@ -671,6 +664,15 @@ class RoomsListView extends React.Component {
 		}
 	};
 
+	goQueue = () => {
+		const { navigation, isMasterDetail } = this.props;
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', { screen: 'QueueListView' });
+		} else {
+			navigation.navigate('QueueListView');
+		}
+	};
+
 	goRoom = ({ item, isMasterDetail }) => {
 		const { item: currentItem } = this.state;
 		const { rooms } = this.props;
@@ -782,6 +784,7 @@ class RoomsListView extends React.Component {
 				sortBy={sortBy}
 				toggleSort={this.toggleSort}
 				goDirectory={this.goDirectory}
+				goQueue={this.goQueue}
 			/>
 		);
 	};
@@ -948,8 +951,7 @@ const mapStateToProps = state => ({
 	useRealName: state.settings.UI_Use_Real_Name,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	StoreLastMessage: state.settings.Store_Last_Message,
-	rooms: state.room.rooms,
-	queued: state.inquiry.queued
+	rooms: state.room.rooms
 });
 
 const mapDispatchToProps = dispatch => ({
