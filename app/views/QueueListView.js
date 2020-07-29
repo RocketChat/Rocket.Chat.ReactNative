@@ -69,9 +69,14 @@ class QueueListView extends React.Component {
 			navigation.navigate('RoomsListView');
 		}
 
-		// we're calling v as visitor on our mergeSubscriptionsRooms
-		item.visitor = item.v;
-		goRoom({ item, isMasterDetail });
+		goRoom({
+			item: {
+				...item,
+				// we're calling v as visitor on our mergeSubscriptionsRooms
+				visitor: item.v
+			},
+			isMasterDetail
+		});
 	};
 
 	getRoomTitle = item => RocketChat.getRoomTitle(item)

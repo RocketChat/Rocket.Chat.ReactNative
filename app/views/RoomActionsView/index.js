@@ -91,7 +91,7 @@ class RoomActionsView extends React.Component {
 		this.mounted = true;
 		const { room, member } = this.state;
 		if (room.rid) {
-			if (!room.id) {
+			if (!room.id && room.t !== 'l') {
 				try {
 					const result = await RocketChat.getChannelInfo(room.rid);
 					if (result.success) {
