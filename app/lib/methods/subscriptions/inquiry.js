@@ -21,14 +21,15 @@ export default function subscribeInquiry() {
 			return;
 		}
 
+		const { queued } = store.getState().inquiry;
 		if (sub.status !== 'queued') {
+			store.dispatch(inquirySuccess(queued.filter(item => item._id !== sub._id)));
 			return;
 		}
 
 		// TODO: lets debounce these messages, since they are sometimes multiple
 		// let's add this sub to a redux variable
 		// UPSERT QUEUED CHAT INTO INQUIRY QUEUED
-		const { queued } = store.getState().inquiry;
 		const idx = queued.findIndex(item => item._id === sub._id);
 		if (idx >= 0) {
 			store.dispatch(inquirySuccess(queued.map((item, index) => {
