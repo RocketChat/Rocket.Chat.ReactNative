@@ -49,7 +49,7 @@ const Video = React.memo(({
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
 			>
 				<CustomIcon
-					name='play'
+					name='play-filled'
 					size={54}
 					color={themes[theme].buttonText}
 				/>

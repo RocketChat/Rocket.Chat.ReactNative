@@ -209,7 +209,7 @@ class NewMessageView extends React.Component {
 					{this.renderButton({
 						onPress: this.createChannel,
 						title: I18n.t('Create_Channel'),
-						icon: 'hash',
+						icon: 'channel-public',
 						testID: 'new-message-view-create-channel',
 						showButton: hasCreateChannelPermission,
 						first: true
@@ -224,7 +224,7 @@ class NewMessageView extends React.Component {
 					{this.renderButton({
 						onPress: this.createDiscussion,
 						title: I18n.t('Create_Discussion'),
-						icon: 'chat',
+						icon: 'discussions',
 						testID: 'new-message-view-create-discussion',
 						showButton: hasCreatePrivateGroupPermission
 					})}

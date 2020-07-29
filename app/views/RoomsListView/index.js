@@ -335,7 +335,7 @@ class RoomsListView extends React.Component {
 				<CustomHeaderButtons left>
 					<Item
 						title='cancel'
-						iconName='Cross'
+						iconName='close'
 						onPress={this.cancelSearch}
 					/>
 				</CustomHeaderButtons>
@@ -357,7 +357,7 @@ class RoomsListView extends React.Component {
 				<CustomHeaderButtons>
 					<Item
 						title='new'
-						iconName='new-chat'
+						iconName='create'
 						onPress={isMasterDetail
 							? () => navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' })
 							: () => navigation.navigate('NewMessageStackNavigator')}
@@ -365,7 +365,7 @@ class RoomsListView extends React.Component {
 					/>
 					<Item
 						title='search'
-						iconName='magnifier'
+						iconName='search'
 						onPress={this.initSearching}
 						testID='rooms-list-view-search'
 					/>
