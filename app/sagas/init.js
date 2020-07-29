@@ -29,11 +29,11 @@ export const initLocalSettings = function* initLocalSettings() {
 };
 
 const restore = function* restore() {
+	let hasMigration;
 	try {
 		if (isOfficialBuild) {
-			const hasMigration = yield AsyncStorage.getItem('hasMigration');
+			hasMigration = yield AsyncStorage.getItem('hasMigration');
 		} else {
-			let hasMigration;
 			if (isIOS) {
 				hasMigration = yield AsyncStorage.getItem('hasMigration');
 			}
