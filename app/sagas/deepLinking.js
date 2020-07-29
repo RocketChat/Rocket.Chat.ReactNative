@@ -5,12 +5,12 @@ import RNUserDefaults from 'rn-user-defaults';
 
 import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
-import { selectServerRequest } from '../actions/server';
+import { selectServerRequest, serverInitAdd } from '../actions/server';
 import { inviteLinksSetToken, inviteLinksRequest } from '../actions/inviteLinks';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';
-import { appStart, ROOT_INSIDE } from '../actions/app';
+import { appStart, ROOT_INSIDE, ROOT_NEW_SERVER } from '../actions/app';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { goRoom } from '../utils/goRoom';
 
@@ -106,7 +106,8 @@ const handleOpen = function* handleOpen({ params }) {
 		if (!result.success) {
 			return;
 		}
-		Navigation.navigate('NewServerView', { previousServer: server });
+		yield put(appStart({ root: ROOT_NEW_SERVER }));
+		yield put(serverInitAdd(server));
 		yield delay(1000);
 		EventEmitter.emit('NewServer', { server: host });
 

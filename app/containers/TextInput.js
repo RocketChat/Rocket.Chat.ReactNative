@@ -111,7 +111,7 @@ export default class RCTextInput extends React.PureComponent {
 		return (
 			<BorderlessButton onPress={this.tooglePassword} style={[styles.iconContainer, styles.iconRight]}>
 				<CustomIcon
-					name={showPassword ? 'eye' : 'eye-off'}
+					name={showPassword ? 'unread-on-top' : 'unread-on-top-disabled'}
 					testID={testID ? `${ testID }-icon-right` : null}
 					style={{ color: themes[theme].auxiliaryText }}
 					size={20}
