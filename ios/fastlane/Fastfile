@@ -49,6 +49,7 @@ platform :ios do
       type: "appstore"
     ) # more information: https://codesigning.guide
     get_provisioning_profile(app_identifier: "chat.rocket.reactnative.ShareExtension")
+    get_provisioning_profile(app_identifier: "chat.rocket.reactnative.NotificationService")
     pem()
     gym(scheme: "RocketChatRN", workspace: "RocketChatRN.xcworkspace") # Build your app - more options available
     # frameit
