@@ -144,7 +144,7 @@ class MessageBox extends Component {
 			},
 			{
 				title: I18n.t('Choose_file'),
-				icon: 'file',
+				icon: 'attach',
 				onPress: this.chooseFile
 			},
 			{
