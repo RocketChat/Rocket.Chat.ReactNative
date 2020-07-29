@@ -92,7 +92,8 @@ const shouldUpdateProps = [
 	'theme',
 	'isMasterDetail',
 	'refreshing',
-	'queueSize'
+	'queueSize',
+	'inquiryEnabled'
 ];
 const getItemLayout = (data, index) => ({
 	length: ROW_HEIGHT,
@@ -134,7 +135,8 @@ class RoomsListView extends React.Component {
 		rooms: PropTypes.array,
 		width: PropTypes.number,
 		insets: PropTypes.object,
-		queueSize: PropTypes.number
+		queueSize: PropTypes.number,
+		inquiryEnabled: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -784,7 +786,7 @@ class RoomsListView extends React.Component {
 
 	renderListHeader = () => {
 		const { searching } = this.state;
-		const { sortBy, queueSize } = this.props;
+		const { sortBy, queueSize, inquiryEnabled } = this.props;
 		return (
 			<ListHeader
 				searching={searching}
@@ -793,6 +795,7 @@ class RoomsListView extends React.Component {
 				goDirectory={this.goDirectory}
 				goQueue={this.goQueue}
 				queueSize={queueSize}
+				inquiryEnabled={inquiryEnabled}
 			/>
 		);
 	};
@@ -960,7 +963,8 @@ const mapStateToProps = state => ({
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	StoreLastMessage: state.settings.Store_Last_Message,
 	rooms: state.room.rooms,
-	queueSize: state.inquiry.queued.length
+	queueSize: state.inquiry.queued.length,
+	inquiryEnabled: state.inquiry.enabled
 });
 
 const mapDispatchToProps = dispatch => ({

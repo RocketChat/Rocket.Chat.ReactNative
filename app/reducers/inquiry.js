@@ -1,6 +1,7 @@
 import { INQUIRY } from '../actions/actionsTypes';
 
 const initialState = {
+	enabled: false,
 	queued: [],
 	error: {}
 };
@@ -21,6 +22,11 @@ export default function inquiry(state = initialState, action) {
 			return {
 				...state,
 				queued: state.queued.filter(({ _id }) => _id !== action.inquiryId)
+			};
+		case INQUIRY.SET_ENABLED:
+			return {
+				...state,
+				enabled: action.enabled
 			};
 		default:
 			return state;

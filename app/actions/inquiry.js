@@ -7,6 +7,13 @@ export function inquiryTake(inquiryId) {
 	};
 }
 
+export function inquirySetEnabled(enabled) {
+	return {
+		type: types.INQUIRY.SET_ENABLED,
+		enabled
+	};
+}
+
 export function inquiryRequest() {
 	return {
 		type: types.INQUIRY.REQUEST

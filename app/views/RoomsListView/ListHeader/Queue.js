@@ -10,9 +10,9 @@ import { withTheme } from '../../../theme';
 import UnreadBadge from '../../../presentation/RoomItem/UnreadBadge';
 
 const Queue = React.memo(({
-	searching, goQueue, queueSize, theme
+	searching, goQueue, queueSize, inquiryEnabled, theme
 }) => {
-	if (searching > 0) {
+	if (searching > 0 || !inquiryEnabled) {
 		return null;
 	}
 	return (
@@ -41,6 +41,7 @@ Queue.propTypes = {
 	searching: PropTypes.bool,
 	goQueue: PropTypes.func,
 	queueSize: PropTypes.number,
+	inquiryEnabled: PropTypes.bool,
 	theme: PropTypes.string
 };
 

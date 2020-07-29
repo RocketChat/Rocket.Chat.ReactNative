@@ -208,6 +208,10 @@ const handleSetUser = function* handleSetUser({ user }) {
 		const userId = yield select(state => state.login.user.id);
 		yield put(setActiveUsers({ [userId]: user }));
 	}
+
+	if (user && user.statusLivechat) {
+		yield put(inquiryRequest());
+	}
 };
 
 const root = function* root() {

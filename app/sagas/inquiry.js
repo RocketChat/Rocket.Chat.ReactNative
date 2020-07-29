@@ -1,21 +1,29 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest, select } from 'redux-saga/effects';
 
 import * as types from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
-import { inquirySuccess, inquiryFailure } from '../actions/inquiry';
+import { inquirySuccess, inquiryFailure, inquirySetEnabled } from '../actions/inquiry';
 
 const handleRequest = function* handleRequest() {
 	try {
-		const result = yield RocketChat.getInquiriesQueued();
-		if (result.success) {
-			const { inquiries } = result;
+		const routingConfig = yield RocketChat.getRoutingConfig();
+		const statusLivechat = yield select(state => state.login.user.statusLivechat);
+		const showQueue = routingConfig.showQueue && statusLivechat === 'available';
 
-			// subscribe to inquiry queue changes
-			RocketChat.subscribeInquiry();
+		if (showQueue) {
+			const result = yield RocketChat.getInquiriesQueued();
+			if (result.success) {
+				const { inquiries } = result;
 
-			// put request result on redux state
-			yield put(inquirySuccess(inquiries));
+				// subscribe to inquiry queue changes
+				RocketChat.subscribeInquiry();
+
+				// put request result on redux state
+				yield put(inquirySuccess(inquiries));
+			}
 		}
+
+		yield put(inquirySetEnabled(showQueue));
 	} catch (e) {
 		yield put(inquiryFailure(e));
 	}
