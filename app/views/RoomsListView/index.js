@@ -62,6 +62,7 @@ import { goRoom } from '../../utils/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
+import { showErrorAlert } from '../../utils/info';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
@@ -667,7 +668,11 @@ class RoomsListView extends React.Component {
 	};
 
 	goQueue = () => {
-		const { navigation, isMasterDetail } = this.props;
+		const { navigation, isMasterDetail, queueSize } = this.props;
+		// prevent navigation to empty list
+		if (!queueSize) {
+			return showErrorAlert(I18n.t('Doesnt_have_any_chat_on_the_queue'), I18n.t('Oops'));
+		}
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', { screen: 'QueueListView' });
 		} else {
