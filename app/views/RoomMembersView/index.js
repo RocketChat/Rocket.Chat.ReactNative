@@ -146,7 +146,7 @@ class RoomMembersView extends React.Component {
 
 		showActionSheet({
 			options: [{
-				icon: userIsMuted ? 'volume' : 'volume-off',
+				icon: userIsMuted ? 'audio' : 'audio-disabled',
 				title: I18n.t(userIsMuted ? 'Unmute' : 'Mute'),
 				onPress: () => {
 					showConfirmationAlert({
