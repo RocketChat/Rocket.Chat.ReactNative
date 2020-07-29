@@ -137,8 +137,12 @@ export default {
 	THEME_SET_DARK_LEVEL: 'theme_set_dark_level',
 
 	// SCREEN LOCK CONFIG VIEW
-	// trivial+
 	SLC_SAVE_SCREEN_LOCK: 'slc_save_screen_lock',
+	SLC_TOGGLE_AUTOLOCK: 'slc_toggle_autolock',
+	SLC_TOGGLE_BIOMETRY: 'slc_toggle_biometry',
+	SLC_CHANGE_PASSCODE: 'slc_change_passcode',
+	SLC_CHANGE_AUTOLOCK_TIME: 'slc_change_autolock_time',
+
 
 	SEND_MESSAGE: 'send_message',
 	SHOW_EMOJI_KEYBOARD: 'show_emoji_keyboard',

@@ -114,9 +114,9 @@ class ScreenLockConfigView extends React.Component {
 	}
 
 	save = async() => {
+		logEvent(events.SLC_SAVE_SCREEN_LOCK);
 		const { autoLock, autoLockTime, biometry } = this.state;
 		const serversDB = database.servers;
-		logEvent(events.SLC_SAVE_SCREEN_LOCK, { autoLock, autoLockTime, biometry });
 		await serversDB.action(async() => {
 			await this.serverRecord?.update((record) => {
 				record.autoLock = autoLock;
@@ -127,10 +127,12 @@ class ScreenLockConfigView extends React.Component {
 	}
 
 	changePasscode = async({ force }) => {
+		logEvent(events.SLC_CHANGE_PASSCODE);
 		await changePasscode({ force });
 	}
 
 	toggleAutoLock = () => {
+		logEvent(events.SLC_TOGGLE_AUTOLOCK);
 		this.setState(({ autoLock }) => ({ autoLock: !autoLock, autoLockTime: DEFAULT_AUTO_LOCK }), async() => {
 			const { autoLock } = this.state;
 			if (autoLock) {
@@ -145,6 +147,7 @@ class ScreenLockConfigView extends React.Component {
 	}
 
 	toggleBiometry = () => {
+		logEvent(events.SLC_TOGGLE_BIOMETRY);
 		this.setState(({ biometry }) => ({ biometry: !biometry }), () => this.save());
 	}
 
@@ -154,6 +157,7 @@ class ScreenLockConfigView extends React.Component {
 	}
 
 	changeAutoLockTime = (autoLockTime) => {
+		logEvent(events.SLC_CHANGE_AUTOLOCK_TIME);
 		this.setState({ autoLockTime }, () => this.save());
 	}
 
