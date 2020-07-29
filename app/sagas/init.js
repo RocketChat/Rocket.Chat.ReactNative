@@ -48,7 +48,7 @@ const restore = function* restore() {
 				if (isIOS) {
 					token = servers[0][TOKEN];
 				}
-				if(isOfficialBuild) {
+				if (isOfficialBuild) {
 					token = servers[0][USER_ID].length > servers[0][TOKEN].length ? servers[0][USER_ID] : servers[0][TOKEN];
 				}
 			}
