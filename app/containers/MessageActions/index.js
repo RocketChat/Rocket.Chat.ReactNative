@@ -296,7 +296,7 @@ const MessageActions = React.memo(forwardRef(({
 		// Create Discussion
 		options.push({
 			title: I18n.t('Start_a_Discussion'),
-			icon: 'chat',
+			icon: 'discussions',
 			onPress: () => handleCreateDiscussion(message)
 		});
 
@@ -371,7 +371,7 @@ const MessageActions = React.memo(forwardRef(({
 		if (allowDelete(message)) {
 			options.push({
 				title: I18n.t('Delete'),
-				icon: 'trash',
+				icon: 'delete',
 				danger: true,
 				onPress: () => handleDelete(message)
 			});
