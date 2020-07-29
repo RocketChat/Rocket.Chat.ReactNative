@@ -11,7 +11,7 @@ export const INAPP_NOTIFICATION_EMITTER = 'NotificationInApp';
 const InAppNotification = memo(() => {
 	const show = (notification) => {
 		const { payload } = notification;
-		const state = Navigation.navigationRef.current.getRootState();
+		const state = Navigation.navigationRef.current?.getRootState();
 		const route = getActiveRoute(state);
 		if (payload.rid) {
 			if (route?.name === 'RoomView' && route.params?.rid === payload.rid) {

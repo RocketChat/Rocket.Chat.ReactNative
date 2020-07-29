@@ -141,7 +141,15 @@ class Sidebar extends Component {
 
 	get currentItemKey() {
 		const { state } = this.props;
-		return state.routeNames[state.index];
+		return state?.routeNames[state?.index];
+	}
+
+	onPressUser = () => {
+		const { navigation, isMasterDetail } = this.props;
+		if (isMasterDetail) {
+			return;
+		}
+		navigation.closeDrawer();
 	}
 
 	renderAdmin = () => {
@@ -156,7 +164,7 @@ class Sidebar extends Component {
 				<Separator theme={theme} />
 				<SidebarItem
 					text={I18n.t('Admin_Panel')}
-					left={<CustomIcon name='shield' size={20} color={themes[theme].titleText} />}
+					left={<CustomIcon name='settings' size={20} color={themes[theme].titleText} />}
 					onPress={() => Navigation.navigate(routeName)}
 					testID='sidebar-settings'
 					current={this.currentItemKey === routeName}
@@ -185,7 +193,7 @@ class Sidebar extends Component {
 				/>
 				<SidebarItem
 					text={I18n.t('Settings')}
-					left={<CustomIcon name='cog' size={20} color={themes[theme].titleText} />}
+					left={<CustomIcon name='administration' size={20} color={themes[theme].titleText} />}
 					onPress={() => this.sidebarNavigate('SettingsStackNavigator')}
 					testID='sidebar-settings'
 					current={this.currentItemKey === 'SettingsStackNavigator'}
@@ -210,7 +218,7 @@ class Sidebar extends Component {
 
 	render() {
 		const {
-			user, Site_Name, baseUrl, useRealName, allowStatusMessage, isMasterDetail, theme, navigation
+			user, Site_Name, baseUrl, useRealName, allowStatusMessage, isMasterDetail, theme
 		} = this.props;
 
 		if (!user) {
@@ -229,7 +237,7 @@ class Sidebar extends Component {
 					]}
 					{...scrollPersistTaps}
 				>
-					<TouchableWithoutFeedback onPress={() => navigation.closeDrawer()} testID='sidebar-close-drawer'>
+					<TouchableWithoutFeedback onPress={this.onPressUser} testID='sidebar-close-drawer'>
 						<View style={styles.header} theme={theme}>
 							<Avatar
 								text={user.username}

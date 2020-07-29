@@ -79,7 +79,7 @@ const Button = React.memo(({
 		{
 			loading
 				? <ActivityIndicator style={[styles.playPauseButton, styles.audioLoading]} theme={theme} />
-				: <CustomIcon name={paused ? 'play' : 'pause'} size={36} color={themes[theme].tintColor} />
+				: <CustomIcon name={paused ? 'play-filled' : 'pause-filled'} size={36} color={themes[theme].tintColor} />
 		}
 	</Touchable>
 ));
@@ -126,7 +126,6 @@ class MessageAudio extends React.Component {
 
 		this.setState({ loading: true });
 		try {
-			await Audio.setAudioModeAsync(mode);
 			await this.sound.loadAsync({ uri: `${ url }?rc_uid=${ user.id }&rc_token=${ user.token }` });
 		} catch {
 			// Do nothing
@@ -225,6 +224,7 @@ class MessageAudio extends React.Component {
 			if (paused) {
 				await this.sound.pauseAsync();
 			} else {
+				await Audio.setAudioModeAsync(mode);
 				await this.sound.playAsync();
 			}
 		} catch {

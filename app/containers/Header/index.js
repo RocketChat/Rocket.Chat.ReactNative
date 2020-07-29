@@ -20,6 +20,11 @@ export const getHeaderHeight = (isLandscape) => {
 	return 56;
 };
 
+export const getHeaderTitlePosition = insets => ({
+	left: 60 + insets.left,
+	right: 80 + insets.right
+});
+
 const styles = StyleSheet.create({
 	container: {
 		height: headerHeight,

@@ -68,6 +68,17 @@ class RightButtonsContainer extends React.PureComponent {
 		}
 	}
 
+	goSearchView = () => {
+		const {
+			rid, navigation, isMasterDetail
+		} = this.props;
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', { screen: 'SearchMessagesView', params: { rid, showCloseModal: true } });
+		} else {
+			navigation.navigate('SearchMessagesView', { rid });
+		}
+	}
+
 	toggleFollowThread = () => {
 		const { isFollowingThread } = this.state;
 		const { toggleFollowThread } = this.props;
@@ -87,7 +98,7 @@ class RightButtonsContainer extends React.PureComponent {
 				<CustomHeaderButtons>
 					<Item
 						title='bell'
-						iconName={isFollowingThread ? 'bell' : 'bell-off'}
+						iconName={isFollowingThread ? 'notification' : 'notification-disabled'}
 						onPress={this.toggleFollowThread}
 						testID={isFollowingThread ? 'room-view-header-unfollow' : 'room-view-header-follow'}
 					/>
@@ -104,6 +115,12 @@ class RightButtonsContainer extends React.PureComponent {
 						testID='room-view-header-threads'
 					/>
 				) : null}
+				<Item
+					title='search'
+					iconName='search'
+					onPress={this.goSearchView}
+					testID='room-view-search'
+				/>
 			</CustomHeaderButtons>
 		);
 	}

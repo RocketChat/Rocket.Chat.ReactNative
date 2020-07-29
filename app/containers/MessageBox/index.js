@@ -17,7 +17,7 @@ import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
 import database from '../../lib/database';
 import { emojis } from '../../emojis';
-import Recording from './Recording';
+import RecordAudio from './RecordAudio';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
@@ -122,6 +122,7 @@ class MessageBox extends Component {
 			command: {}
 		};
 		this.text = '';
+		this.selection = { start: 0, end: 0 };
 		this.focused = false;
 
 		// MessageBox Actions
@@ -133,7 +134,7 @@ class MessageBox extends Component {
 			},
 			{
 				title: I18n.t('Take_a_video'),
-				icon: 'video-1',
+				icon: 'camera',
 				onPress: this.takeVideo
 			},
 			{
@@ -143,12 +144,12 @@ class MessageBox extends Component {
 			},
 			{
 				title: I18n.t('Choose_file'),
-				icon: 'folder',
+				icon: 'file',
 				onPress: this.chooseFile
 			},
 			{
 				title: I18n.t('Create_Discussion'),
-				icon: 'chat',
+				icon: 'discussions',
 				onPress: this.createDiscussion
 			}
 		];
@@ -196,7 +197,7 @@ class MessageBox extends Component {
 					console.log('Messagebox.didMount: Thread not found');
 				}
 			} else if (!sharing) {
-				msg = this.room.draftMessage;
+				msg = this.room?.draftMessage;
 			}
 		} catch (e) {
 			log(e);
@@ -331,6 +332,10 @@ class MessageBox extends Component {
 		this.setInput(text);
 	}
 
+	onSelectionChange = (e) => {
+		this.selection = e.nativeEvent.selection;
+	}
+
 	// eslint-disable-next-line react/sort-comp
 	debouncedOnChangeText = debounce(async(text) => {
 		const { sharing } = this.props;
@@ -358,9 +363,9 @@ class MessageBox extends Component {
 
 		if (!isTextEmpty) {
 			try {
-				const { start, end } = this.component?.lastNativeSelection;
+				const { start, end } = this.selection;
 				const cursor = Math.max(start, end);
-				const lastNativeText = this.component?.lastNativeText || '';
+				const lastNativeText = this.text;
 				// matches if text either starts with '/' or have (@,#,:) then it groups whatever comes next of mention type
 				let regexp = /(#|@|:|^\/)([a-z0-9._-]+)$/im;
 
@@ -399,7 +404,7 @@ class MessageBox extends Component {
 		}
 		const { trackingType } = this.state;
 		const msg = this.text;
-		const { start, end } = this.component?.lastNativeSelection;
+		const { start, end } = this.selection;
 		const cursor = Math.max(start, end);
 		const regexp = /([a-z0-9._-]+)$/im;
 		const result = msg.substr(0, cursor).replace(regexp, '');
@@ -410,7 +415,8 @@ class MessageBox extends Component {
 		if ((trackingType === MENTIONS_TRACKING_TYPE_COMMANDS) && item.providesPreview) {
 			this.setState({ showCommandPreview: true });
 		}
-		this.setInput(text);
+		const newCursor = cursor + mentionName.length;
+		this.setInput(text, { start: newCursor, end: newCursor });
 		this.focus();
 		requestAnimationFrame(() => this.stopTrackingMention());
 	}
@@ -443,15 +449,11 @@ class MessageBox extends Component {
 		let newText = '';
 
 		// if messagebox has an active cursor
-		if (this.component?.lastNativeSelection) {
-			const { start, end } = this.component.lastNativeSelection;
-			const cursor = Math.max(start, end);
-			newText = `${ text.substr(0, cursor) }${ emoji }${ text.substr(cursor) }`;
-		} else {
-			// if messagebox doesn't have a cursor, just append selected emoji
-			newText = `${ text }${ emoji }`;
-		}
-		this.setInput(newText);
+		const { start, end } = this.selection;
+		const cursor = Math.max(start, end);
+		newText = `${ text.substr(0, cursor) }${ emoji }${ text.substr(cursor) }`;
+		const newCursor = cursor + emoji.length;
+		this.setInput(newText, { start: newCursor, end: newCursor });
 		this.setShowSend(true);
 	}
 
@@ -541,19 +543,22 @@ class MessageBox extends Component {
 	setCommandPreview = async(command, name, params) => {
 		const { rid } = this.props;
 		try	{
-			const { preview } = await RocketChat.getCommandPreview(name, rid, params);
-			this.setState({ commandPreview: preview.items, showCommandPreview: true, command });
+			const { success, preview } = await RocketChat.getCommandPreview(name, rid, params);
+			if (success) {
+				return this.setState({ commandPreview: preview?.items, showCommandPreview: true, command });
+			}
 		} catch (e) {
-			this.setState({ commandPreview: [], showCommandPreview: true, command: {} });
 			log(e);
 		}
+		this.setState({ commandPreview: [], showCommandPreview: true, command: {} });
 	}
 
-	setInput = (text) => {
+	setInput = (text, selection) => {
 		this.text = text;
-		if (this.component && this.component.setNativeProps) {
-			this.component.setNativeProps({ text });
+		if (selection) {
+			return this.component.setTextAndSelection(text, selection);
 		}
+		this.component.setNativeProps({ text });
 	}
 
 	setShowSend = (showSend) => {
@@ -632,7 +637,14 @@ class MessageBox extends Component {
 	}
 
 	openShareView = (attachments) => {
-		Navigation.navigate('ShareView', { room: this.room, thread: this.thread, attachments });
+		const { message, replyCancel, replyWithMention } = this.props;
+		// Start a thread with an attachment
+		let { thread } = this;
+		if (replyWithMention) {
+			thread = message;
+			replyCancel();
+		}
+		Navigation.navigate('ShareView', { room: this.room, thread, attachments });
 	}
 
 	createDiscussion = () => {
@@ -662,8 +674,7 @@ class MessageBox extends Component {
 		});
 	}
 
-	recordAudioMessage = async() => {
-		const recording = await Recording.permission();
+	recordingCallback = (recording) => {
 		this.setState({ recording });
 	}
 
@@ -672,9 +683,6 @@ class MessageBox extends Component {
 			rid, tmid, baseUrl: server, user
 		} = this.props;
 
-		this.setState({
-			recording: false
-		});
 		if (fileInfo) {
 			try {
 				if (this.canUploadFile(fileInfo)) {
@@ -837,63 +845,85 @@ class MessageBox extends Component {
 			returnKeyType: 'send'
 		} : {};
 
-		if (recording) {
-			return <Recording theme={theme} onFinish={this.finishAudioMessage} />;
-		}
-		return (
+		const recordAudio = showSend || !Message_AudioRecorderEnabled ? null : (
+			<RecordAudio
+				theme={theme}
+				recordingCallback={this.recordingCallback}
+				onFinish={this.finishAudioMessage}
+			/>
+		);
+
+		const commandsPreviewAndMentions = !recording ? (
 			<>
 				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
 				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
-				<View style={[styles.composer, { borderTopColor: themes[theme].separatorColor }]}>
-					<ReplyPreview
-						message={message}
-						close={replyCancel}
-						username={user.username}
-						replying={replying}
-						getCustomEmoji={getCustomEmoji}
-						theme={theme}
-					/>
+			</>
+		) : null;
+
+		const replyPreview = !recording ? (
+			<ReplyPreview
+				message={message}
+				close={replyCancel}
+				username={user.username}
+				replying={replying}
+				getCustomEmoji={getCustomEmoji}
+				theme={theme}
+			/>
+		) : null;
+
+		const textInputAndButtons = !recording ? (
+			<>
+				<LeftButtons
+					theme={theme}
+					showEmojiKeyboard={showEmojiKeyboard}
+					editing={editing}
+					showMessageBoxActions={this.showMessageBoxActions}
+					editCancel={this.editCancel}
+					openEmoji={this.openEmoji}
+					closeEmoji={this.closeEmoji}
+					isActionsEnabled={isActionsEnabled}
+				/>
+				<TextInput
+					ref={component => this.component = component}
+					style={styles.textBoxInput}
+					returnKeyType='default'
+					keyboardType='twitter'
+					blurOnSubmit={false}
+					placeholder={I18n.t('New_Message')}
+					onChangeText={this.onChangeText}
+					onSelectionChange={this.onSelectionChange}
+					underlineColorAndroid='transparent'
+					defaultValue=''
+					multiline
+					testID='messagebox-input'
+					theme={theme}
+					{...isAndroidTablet}
+				/>
+				<RightButtons
+					theme={theme}
+					showSend={showSend}
+					submit={this.submit}
+					showMessageBoxActions={this.showMessageBoxActions}
+					isActionsEnabled={isActionsEnabled}
+				/>
+			</>
+		) : null;
+
+		return (
+			<>
+				{commandsPreviewAndMentions}
+				<View style={[styles.composer, { borderTopColor: themes[theme].borderColor }]}>
+					{replyPreview}
 					<View
 						style={[
 							styles.textArea,
-							{ backgroundColor: themes[theme].messageboxBackground }, editing && { backgroundColor: themes[theme].chatComponentBackground }
+							{ backgroundColor: themes[theme].messageboxBackground },
+							!recording && editing && { backgroundColor: themes[theme].chatComponentBackground }
 						]}
 						testID='messagebox'
 					>
-						<LeftButtons
-							theme={theme}
-							showEmojiKeyboard={showEmojiKeyboard}
-							editing={editing}
-							showMessageBoxActions={this.showMessageBoxActions}
-							isActionsEnabled={isActionsEnabled}
-							editCancel={this.editCancel}
-							openEmoji={this.openEmoji}
-							closeEmoji={this.closeEmoji}
-						/>
-						<TextInput
-							ref={component => this.component = component}
-							style={styles.textBoxInput}
-							returnKeyType='default'
-							keyboardType='twitter'
-							blurOnSubmit={false}
-							placeholder={I18n.t('New_Message')}
-							onChangeText={this.onChangeText}
-							underlineColorAndroid='transparent'
-							defaultValue=''
-							multiline
-							testID='messagebox-input'
-							theme={theme}
-							{...isAndroidTablet}
-						/>
-						<RightButtons
-							theme={theme}
-							showSend={showSend}
-							submit={this.submit}
-							recordAudioMessage={this.recordAudioMessage}
-							recordAudioMessageEnabled={Message_AudioRecorderEnabled}
-							showMessageBoxActions={this.showMessageBoxActions}
-							isActionsEnabled={isActionsEnabled}
-						/>
+						{textInputAndButtons}
+						{recordAudio}
 					</View>
 				</View>
 				{children}
