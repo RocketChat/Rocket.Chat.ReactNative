@@ -20,9 +20,9 @@ export function inquirySuccess(inquiries) {
 	};
 }
 
-export function inquiryFailure(err) {
+export function inquiryFailure(error) {
 	return {
 		type: types.INQUIRY.FAILURE,
-		err
+		error
 	};
 }
