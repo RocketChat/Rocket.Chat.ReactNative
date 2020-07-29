@@ -218,7 +218,7 @@ const LivechatEditView = ({
 					<TextInput
 						inputRef={(e) => { inputs.tags = e; }}
 						label={I18n.t('Tags')}
-						iconRight='plus'
+						iconRight='add'
 						onIconRightPress={() => {
 							const lastText = inputs.tags._lastNativeText || '';
 							if (lastText.length) {

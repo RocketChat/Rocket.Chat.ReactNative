@@ -334,7 +334,7 @@ class RoomsListView extends React.Component {
 				<CustomHeaderButtons left>
 					<Item
 						title='cancel'
-						iconName='Cross'
+						iconName='close'
 						onPress={this.cancelSearch}
 					/>
 				</CustomHeaderButtons>
@@ -356,13 +356,13 @@ class RoomsListView extends React.Component {
 				<CustomHeaderButtons>
 					<Item
 						title='new'
-						iconName='new-chat'
+						iconName='create'
 						onPress={this.goToNewMessage}
 						testID='rooms-list-view-create-channel'
 					/>
 					<Item
 						title='search'
-						iconName='magnifier'
+						iconName='search'
 						onPress={this.initSearching}
 						testID='rooms-list-view-search'
 					/>

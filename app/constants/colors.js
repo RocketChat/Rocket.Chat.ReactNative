@@ -10,6 +10,16 @@ export const SWITCH_TRACK_COLOR = {
 	true: '#2de0a5'
 };
 
+const mentions = {
+	unreadBackground: '#414852',
+	mentionMeColor: '#f5455c',
+	mentionMeBackground: '#ffe9ec',
+	mentionGroupColor: '#f38c39',
+	mentionGroupBackground: '#fde8d7',
+	mentionOtherColor: '#b68d00',
+	mentionOtherBackground: '#fff6d6'
+};
+
 export const themes = {
 	light: {
 		backgroundColor: '#ffffff',
@@ -53,7 +63,8 @@ export const themes = {
 		passcodeDotEmpty: '#CBCED1',
 		passcodeDotFull: '#6C727A',
 		previewBackground: '#1F2329',
-		previewTintColor: '#ffffff'
+		previewTintColor: '#ffffff',
+		...mentions
 	},
 	dark: {
 		backgroundColor: '#030b1b',
@@ -97,7 +108,8 @@ export const themes = {
 		passcodeDotEmpty: '#CBCED1',
 		passcodeDotFull: '#6C727A',
 		previewBackground: '#030b1b',
-		previewTintColor: '#ffffff'
+		previewTintColor: '#ffffff',
+		...mentions
 	},
 	black: {
 		backgroundColor: '#000000',
@@ -141,6 +153,7 @@ export const themes = {
 		passcodeDotEmpty: '#CBCED1',
 		passcodeDotFull: '#6C727A',
 		previewBackground: '#000000',
-		previewTintColor: '#ffffff'
+		previewTintColor: '#ffffff',
+		...mentions
 	}
 };

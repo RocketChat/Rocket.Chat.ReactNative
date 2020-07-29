@@ -118,6 +118,17 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 9,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [
+						{ name: 'group_mentions', type: 'number', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });
