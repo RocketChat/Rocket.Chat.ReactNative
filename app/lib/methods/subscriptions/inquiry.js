@@ -1,7 +1,7 @@
 import log from '../../../utils/log';
 import store from '../../createStore';
 import RocketChat from '../../rocketchat';
-import { inquiryRequest } from '../../../actions/inquiry';
+import { inquiryRequest, inquirySuccess } from '../../../actions/inquiry';
 
 const removeListener = listener => listener.stop();
 
@@ -17,14 +17,29 @@ export default function subscribeInquiry() {
 	const handleQueueMessageReceived = (ddpMessage) => {
 		const [{ type, ...sub }] = ddpMessage.fields.args;
 
-		// removed is handled by rooms subscription
 		if (/removed/.test(type) || /added/.test(type)) {
+			return;
+		}
+
+		if (sub.status !== 'queued') {
 			return;
 		}
 
 		// TODO: lets debounce these messages, since they are sometimes multiple
 		// let's add this sub to a redux variable
-		console.log(sub);
+		// UPSERT QUEUED CHAT INTO INQUIRY QUEUED
+		const { queued } = store.getState().inquiry;
+		const idx = queued.findIndex(item => item._id === sub._id);
+		if (idx >= 0) {
+			store.dispatch(inquirySuccess(queued.map((item, index) => {
+				if (index === idx) {
+					return sub;
+				}
+				return item;
+			})));
+		} else {
+			store.dispatch(inquirySuccess([...queued, sub]));
+		}
 	};
 
 	const stop = () => {
