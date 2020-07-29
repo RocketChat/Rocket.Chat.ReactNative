@@ -97,9 +97,9 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 				} else {
 					// We only run it if not has user on DB
 					const servers = yield RNUserDefaults.objectForKey('kServers');
-					const userCredentials = servers && servers.find(srv => srv['kAuthServerURL'] === server);
+					const userCredentials = servers && servers.find(srv => srv.kAuthServerURL === server);
 					user = userCredentials && {
-						token: userCredentials['kAuthToken']
+						token: userCredentials.kAuthToken
 					};
 				}
 			}

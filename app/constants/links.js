@@ -1,7 +1,7 @@
 import { getBundleId, isIOS } from '../utils/deviceInfo';
 import { isOfficialBuild } from './environment';
 
-let appStoreID = (isOfficialBuild) ? '1148741252' :'1272915472';
+const appStoreID = (isOfficialBuild) ? '1148741252' : '1272915472';
 const APP_STORE_ID = appStoreID;
 
 export const PLAY_MARKET_LINK = `https://play.google.com/store/apps/details?id=${ getBundleId }`;

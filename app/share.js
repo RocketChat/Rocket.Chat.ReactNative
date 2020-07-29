@@ -15,7 +15,7 @@ import {
 } from './utils/theme';
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
-import { supportSystemTheme } from './utils/deviceInfo';
+import { supportSystemTheme, isAndroid } from './utils/deviceInfo';
 import {
 	defaultHeader, themedHeader, getActiveRouteName, navigationTheme
 } from './utils/navigation';

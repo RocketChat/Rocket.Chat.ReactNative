@@ -31,12 +31,8 @@ export const initLocalSettings = function* initLocalSettings() {
 const restore = function* restore() {
 	let hasMigration;
 	try {
-		if (isOfficialBuild) {
+		if (isOfficialBuild || isIOS) {
 			hasMigration = yield AsyncStorage.getItem('hasMigration');
-		} else {
-			if (isIOS) {
-				hasMigration = yield AsyncStorage.getItem('hasMigration');
-			}
 		}
 
 		let { token, server } = yield all({
@@ -44,12 +40,17 @@ const restore = function* restore() {
 			server: RNUserDefaults.get('currentServer')
 		});
 
-		if (!hasMigration && isIOS) {
+		if (!hasMigration && (isIOS || isOfficialBuild)) {
 			let servers = yield RNUserDefaults.objectForKey(SERVERS);
 			// if not have current
 			if (servers && servers.length !== 0 && (!token || !server)) {
 				server = servers[0][SERVER_URL];
-				token = servers[0][TOKEN];
+				if (isIOS) {
+					token = servers[0][TOKEN];
+				}
+				if(isOfficialBuild) {
+					token = servers[0][USER_ID].length > servers[0][TOKEN].length ? servers[0][USER_ID] : servers[0][TOKEN];
+				}
 			}
 
 			// get native credentials
