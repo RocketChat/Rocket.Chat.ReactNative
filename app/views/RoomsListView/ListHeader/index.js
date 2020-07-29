@@ -10,12 +10,13 @@ const ListHeader = React.memo(({
 	sortBy,
 	toggleSort,
 	goDirectory,
-	goQueue
+	goQueue,
+	queueSize
 }) => (
 	<>
 		<Directory searching={searching} goDirectory={goDirectory} />
 		<Sort searching={searching} sortBy={sortBy} toggleSort={toggleSort} />
-		<Queue searching={searching} goQueue={goQueue} />
+		<Queue searching={searching} goQueue={goQueue} queueSize={queueSize} />
 	</>
 ));
 
@@ -24,7 +25,8 @@ ListHeader.propTypes = {
 	sortBy: PropTypes.string,
 	toggleSort: PropTypes.func,
 	goDirectory: PropTypes.func,
-	goQueue: PropTypes.func
+	goQueue: PropTypes.func,
+	queueSize: PropTypes.number
 };
 
 export default ListHeader;
