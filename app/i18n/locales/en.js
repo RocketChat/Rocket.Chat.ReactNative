@@ -483,6 +483,7 @@ export default {
 	Tags: 'Tags',
 	Take_a_photo: 'Take a photo',
 	Take_a_video: 'Take a video',
+	Take_it: 'Take it!',
 	tap_to_change_status: 'tap to change status',
 	Tap_to_view_servers_list: 'Tap to view servers list',
 	Terms_of_Service: ' Terms of Service ',

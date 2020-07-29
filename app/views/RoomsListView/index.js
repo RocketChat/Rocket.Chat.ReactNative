@@ -131,7 +131,8 @@ class RoomsListView extends React.Component {
 		isMasterDetail: PropTypes.bool,
 		rooms: PropTypes.array,
 		width: PropTypes.number,
-		insets: PropTypes.object
+		insets: PropTypes.object,
+		queued: PropTypes.array
 	};
 
 	constructor(props) {
@@ -217,6 +218,11 @@ class RoomsListView extends React.Component {
 		// eslint-disable-next-line react/destructuring-assignment
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
+			return true;
+		}
+
+		const { queued } = this.props;
+		if (!isEqual(nextProps.queued, queued)) {
 			return true;
 		}
 
@@ -442,8 +448,9 @@ class RoomsListView extends React.Component {
 
 
 		this.querySubscription = observable.subscribe((data) => {
-			let tempChats = [];
-			let chats = data;
+			const { queued } = this.props;
+			let tempChats = [...queued];
+			let chats = [...data, ...queued];
 
 			/**
 			 * We trigger re-render only when chats order changes
@@ -941,7 +948,8 @@ const mapStateToProps = state => ({
 	useRealName: state.settings.UI_Use_Real_Name,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	StoreLastMessage: state.settings.Store_Last_Message,
-	rooms: state.room.rooms
+	rooms: state.room.rooms,
+	queued: state.inquiry.queued
 });
 
 const mapDispatchToProps = dispatch => ({

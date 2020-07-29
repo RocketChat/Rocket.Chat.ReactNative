@@ -55,6 +55,7 @@ import Navigation from '../../lib/Navigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { getHeaderTitlePosition } from '../../containers/Header';
+import { inquiryTake as inquiryTakeAction } from '../../actions/inquiry';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -94,7 +95,8 @@ class RoomView extends React.Component {
 		replyBroadcast: PropTypes.func,
 		width: PropTypes.number,
 		height: PropTypes.number,
-		insets: PropTypes.object
+		insets: PropTypes.object,
+		inquiryTake: PropTypes.func
 	};
 
 	constructor(props) {
@@ -280,6 +282,11 @@ class RoomView extends React.Component {
 		}
 		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
 		console.countReset(`${ this.constructor.name }.render calls`);
+	}
+
+	get isOmnichannel() {
+		const { room } = this.state;
+		return room.t === 'l';
 	}
 
 	setHeader = () => {
@@ -678,7 +685,14 @@ class RoomView extends React.Component {
 
 	joinRoom = async() => {
 		try {
-			await RocketChat.joinRoom(this.rid, this.t);
+			const { room } = this.state;
+			const { inquiryTake } = this.props;
+
+			if (this.isOmnichannel) {
+				inquiryTake(room._id);
+			} else {
+				await RocketChat.joinRoom(this.rid, this.t);
+			}
 			this.internalSetState({
 				joined: true
 			});
@@ -895,7 +909,7 @@ class RoomView extends React.Component {
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
 						theme={theme}
 					>
-						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-join-button'>{I18n.t('Join')}</Text>
+						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-join-button'>{I18n.t(this.isOmnichannel ? 'Take_it' : 'Join')}</Text>
 					</Touch>
 				</View>
 			);
@@ -1046,7 +1060,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	replyBroadcast: message => dispatch(replyBroadcastAction(message))
+	replyBroadcast: message => dispatch(replyBroadcastAction(message)),
+	inquiryTake: inquiryId => dispatch(inquiryTakeAction(inquiryId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomView))));

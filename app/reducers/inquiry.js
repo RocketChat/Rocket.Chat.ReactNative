@@ -20,7 +20,7 @@ export default function inquiry(state = initialState, action) {
 		case INQUIRY.TAKE:
 			return {
 				...state,
-				queued: state.queued.filter(({ _id }) => _id === action.inquiryId)
+				queued: state.queued.filter(({ _id }) => _id !== action.inquiryId)
 			};
 		default:
 			return state;
