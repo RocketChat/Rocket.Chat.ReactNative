@@ -50,7 +50,7 @@ const parseDeepLinking = (url) => {
 				return parseQuery(url);
 			}
 		}
-		const call = /^jitsi.rocket.chat\//;
+		const call = /^(https:\/\/)?jitsi.rocket.chat\//;
 		if (url.match(call)) {
 			url = url.replace(call, '').trim();
 			if (url) {
