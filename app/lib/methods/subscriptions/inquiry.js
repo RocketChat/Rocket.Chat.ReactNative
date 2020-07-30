@@ -22,20 +22,26 @@ export default function subscribeInquiry() {
 	const handleQueueMessageReceived = (ddpMessage) => {
 		const [{ type, ...sub }] = ddpMessage.fields.args;
 
-		if (/removed/.test(type) || /added/.test(type)) {
+		// added can be ignored, since it is handled by 'changed' event
+		if (/added/.test(type)) {
 			return;
 		}
 
-		const { queued } = store.getState().inquiry;
+		// if the sub isn't on the queue anymore
 		if (sub.status !== 'queued') {
+			// remove it from the queue
 			store.dispatch(inquiryQueueRemove(sub._id));
 			return;
 		}
 
+		const { queued } = store.getState().inquiry;
+		// check if this sub is on the current queue
 		const idx = queued.findIndex(item => item._id === sub._id);
 		if (idx >= 0) {
+			// if it is on the queue let's update
 			store.dispatch(inquiryQueueUpdate(sub));
 		} else {
+			// if it is not on the queue let's add
 			store.dispatch(inquiryQueueAdd(sub));
 		}
 	};
@@ -66,6 +72,7 @@ export default function subscribeInquiry() {
 				const { departments } = result;
 				const departmentIds = departments.map(({ departmentId }) => departmentId);
 				departmentIds.forEach((departmentId) => {
+					// we should subscribe to all departments of the agent
 					this.sdk.subscribe('stream-livechat-inquiry-queue-observer', `department/${ departmentId }`).catch(e => console.log(e));
 				});
 			}

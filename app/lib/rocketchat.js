@@ -850,6 +850,8 @@ const RocketChat = {
 		// RC 2.4.0
 		const result = await this.post('livechat/inquiries.take', { inquiryId });
 		if (result.success) {
+			// this inquiry is added to the db by the subscriptions stream
+			// so we can just remove it from the queue
 			reduxStore.dispatch(inquiryQueueRemove(inquiryId));
 		}
 	},
