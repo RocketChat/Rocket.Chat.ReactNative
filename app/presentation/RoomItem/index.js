@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import Avatar from '../../containers/Avatar';
 import I18n from '../../i18n';
 import styles, { ROW_HEIGHT } from './styles';
-import UnreadBadge from './UnreadBadge';
+import UnreadBadge from '../UnreadBadge';
 import TypeIcon from './TypeIcon';
 import LastMessage from './LastMessage';
 import { capitalize, formatDate } from '../../utils/room';

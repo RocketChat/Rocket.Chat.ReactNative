@@ -7,7 +7,7 @@ import I18n from '../../../i18n';
 import styles from '../styles';
 import { themes } from '../../../constants/colors';
 import { withTheme } from '../../../theme';
-import UnreadBadge from '../../../presentation/RoomItem/UnreadBadge';
+import UnreadBadge from '../../../presentation/UnreadBadge';
 
 const Queue = React.memo(({
 	searching, goQueue, queueSize, inquiryEnabled, theme
