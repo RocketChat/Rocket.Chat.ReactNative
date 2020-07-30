@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 4,
+	version: 5,
 	tables: [
 		tableSchema({
 			name: 'users',
@@ -28,7 +28,8 @@ export default appSchema({
 				{ name: 'last_local_authenticated_session', type: 'number', isOptional: true },
 				{ name: 'auto_lock', type: 'boolean', isOptional: true },
 				{ name: 'auto_lock_time', type: 'number', isOptional: true },
-				{ name: 'biometry', type: 'boolean', isOptional: true }
+				{ name: 'biometry', type: 'boolean', isOptional: true },
+				{ name: 'unique_id', type: 'string', isOptional: true }
 			]
 		})
 	]
