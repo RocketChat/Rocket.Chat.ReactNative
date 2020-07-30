@@ -24,11 +24,12 @@ const Queue = React.memo(({
 			<View
 				style={[
 					styles.dropdownContainerHeader,
-					{ borderBottomWidth: StyleSheet.hairlineWidth, borderColor: themes[theme].separatorColor, paddingRight: 12 }
+					{ borderBottomWidth: StyleSheet.hairlineWidth, borderColor: themes[theme].separatorColor }
 				]}
 			>
 				<Text style={[styles.sortToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Queued_chats')}</Text>
 				<UnreadBadge
+					style={styles.sortIcon}
 					unread={queueSize}
 					theme={theme}
 				/>
