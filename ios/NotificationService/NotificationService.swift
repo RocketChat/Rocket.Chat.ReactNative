@@ -22,11 +22,12 @@ struct PushResponse: Decodable {
                 let messageId: String
                 let notificationType: String?
                 let name: String?
+                let messageType: String?
 
                 struct Sender: Decodable, Encodable {
                     let _id: String
                     let username: String
-                    let name: String
+                    let name: String?
                 }
             }
         }
