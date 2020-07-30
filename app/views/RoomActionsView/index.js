@@ -249,7 +249,7 @@ class RoomActionsView extends React.Component {
 				testID: 'room-actions-voice'
 			},
 			{
-				icon: 'camera', // TODO: change me
+				icon: 'camera',
 				name: I18n.t('Video_call'),
 				event: () => RocketChat.callJitsi(rid),
 				testID: 'room-actions-video'
