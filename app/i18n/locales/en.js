@@ -624,5 +624,5 @@ export default {
 	After_seconds_set_by_admin: 'After {{seconds}} seconds (set by admin)',
 	Dont_activate: 'Don\'t activate now',
 	Queued_chats: 'Queued chats',
-	Doesnt_have_any_chat_on_the_queue: 'Doesn\'t have any chat on the queue'
+	Queue_is_empty: 'Queue is empty'
 };

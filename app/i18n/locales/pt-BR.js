@@ -551,5 +551,7 @@ export default {
 	Passcode_app_locked_title: 'Aplicativo bloqueado',
 	Passcode_app_locked_subtitle: 'Tente novamente em {{timeLeft}} segundos',
 	After_seconds_set_by_admin: 'Após {{seconds}} segundos (Configurado pelo adm)',
-	Dont_activate: 'Não ativar agora'
+	Dont_activate: 'Não ativar agora',
+	Queued_chats: 'Bate-papos na fila',
+	Queue_is_empty: 'A fila está vazia'
 };

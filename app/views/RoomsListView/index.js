@@ -680,7 +680,7 @@ class RoomsListView extends React.Component {
 		const { navigation, isMasterDetail, queueSize } = this.props;
 		// prevent navigation to empty list
 		if (!queueSize) {
-			return showErrorAlert(I18n.t('Doesnt_have_any_chat_on_the_queue'), I18n.t('Oops'));
+			return showErrorAlert(I18n.t('Queue_is_empty'), I18n.t('Oops'));
 		}
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', { screen: 'QueueListView' });
