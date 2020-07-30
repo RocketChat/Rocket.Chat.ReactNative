@@ -37,11 +37,11 @@ export default {
 	ENTER_WITH_APPLE_F: 'enter_with_apple_f',
 
 	// SIDEBAR VIEW
-	SIDEBAR_NAVIGATE_TO_ADM_PANEL: 'sidebar_navigate_to_adm_panel',
+	SIDEBAR_NAVIGATE_TO_STATUS: 'sidebar_navigate_to_status',
 	SIDEBAR_NAVIGATE_TO_CHATS: 'sidebar_navigate_to_chats',
 	SIDEBAR_NAVIGATE_TO_PROFILE: 'sidebar_navigate_to_profile',
 	SIDEBAR_NAVIGATE_TO_SETTINGS: 'sidebar_navigate_to_settings',
-	SIDEBAR_NAVIGATE_TO_STATUS_VIEW: 'sidebar_navigate_to_status_view',
+	SIDEBAR_NAVIGATE_TO_ADMINPANEL: 'sidebar_navigate_to_admin_panel',
 
 	// ROOMS LIST VIEW
 	RL_TOGGLE_SERVER_DROPDOWN: 'rl_toggle_server_dropdown',

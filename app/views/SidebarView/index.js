@@ -18,7 +18,6 @@ import { themes } from '../../constants/colors';
 import database from '../../lib/database';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
-import Navigation from '../../lib/Navigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 
 const Separator = React.memo(({ theme }) => <View style={[styles.separator, { borderColor: themes[theme].separatorColor }]} />);
@@ -135,7 +134,7 @@ class Sidebar extends Component {
 	}
 
 	sidebarNavigate = (route) => {
-		logEvent(events[`SIDEBAR_NAVIGATE_TO_${ route.replace('StackNavigator', '').toUpperCase() }`]);
+		logEvent(events[`SIDEBAR_NAVIGATE_TO_${ route.replace('StackNavigator', '').replace('View', '').toUpperCase() }`]);
 		const { navigation } = this.props;
 		navigation.navigate(route);
 	}
@@ -166,10 +165,7 @@ class Sidebar extends Component {
 				<SidebarItem
 					text={I18n.t('Admin_Panel')}
 					left={<CustomIcon name='settings' size={20} color={themes[theme].titleText} />}
-					onPress={() => {
-						logEvent(events.SIDEBAR_NAVIGATE_TO_ADM_PANEL);
-						Navigation.navigate(routeName);
-					}}
+					onPress={() => this.sidebarNavigate(routeName)}
 					testID='sidebar-settings'
 					current={this.currentItemKey === routeName}
 				/>
@@ -214,10 +210,7 @@ class Sidebar extends Component {
 				text={user.statusText || I18n.t('Edit_Status')}
 				left={<Status style={styles.status} size={12} status={user && user.status} />}
 				right={<CustomIcon name='edit' size={20} color={themes[theme].titleText} />}
-				onPress={() => {
-					logEvent(events.SIDEBAR_NAVIGATE_TO_STATUS_VIEW);
-					Navigation.navigate('StatusView');
-				}}
+				onPress={() => this.sidebarNavigate('StatusView')}
 				testID='sidebar-custom-status'
 			/>
 		);
