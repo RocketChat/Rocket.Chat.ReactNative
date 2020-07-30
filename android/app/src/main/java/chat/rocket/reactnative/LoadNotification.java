@@ -37,10 +37,13 @@ class JsonResponse {
         Sender sender;
         String messageId;
         String notificationType;
+        String name;
+        String messageType;
 
         class Sender {
-          String username;
           String _id;
+          String username;
+          String name;
         }
       }
     }
