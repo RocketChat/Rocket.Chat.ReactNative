@@ -832,7 +832,7 @@ const RocketChat = {
 	},
 	getAgentDepartments(uid) {
 		// RC 2.4.0
-		return this.sdk.get(`livechat/agents/${ uid }/departments`);
+		return this.sdk.get(`livechat/agents/${ uid }/departments?enabledDepartmentsOnly=true`);
 	},
 	getCustomFields() {
 		// RC 2.2.0
@@ -991,6 +991,14 @@ const RocketChat = {
 	getSingleMessage(msgId) {
 		// RC 0.47.0
 		return this.sdk.get('chat.getMessage', { msgId });
+	},
+	hasRole(role) {
+		const shareUser = reduxStore.getState().share.user;
+		const loginUser = reduxStore.getState().login.user;
+		// get user roles on the server from redux
+		const userRoles = (shareUser?.roles || loginUser?.roles) || [];
+
+		return userRoles.indexOf(r => r === role) > -1;
 	},
 	async hasPermission(permissions, rid) {
 		const db = database.active;

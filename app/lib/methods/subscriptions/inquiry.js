@@ -14,6 +14,8 @@ let connectedListener;
 let disconnectedListener;
 let queueListener;
 
+const streamTopic = 'stream-livechat-inquiry-queue-observer';
+
 export default function subscribeInquiry() {
 	const handleConnection = () => {
 		store.dispatch(inquiryRequest());
@@ -63,17 +65,22 @@ export default function subscribeInquiry() {
 
 	connectedListener = this.sdk.onStreamData('connected', handleConnection);
 	disconnectedListener = this.sdk.onStreamData('close', handleConnection);
-	queueListener = this.sdk.onStreamData('stream-livechat-inquiry-queue-observer', handleQueueMessageReceived);
+	queueListener = this.sdk.onStreamData(streamTopic, handleQueueMessageReceived);
 
 	try {
 		const { user } = store.getState().login;
 		RocketChat.getAgentDepartments(user.id).then((result) => {
 			if (result.success) {
 				const { departments } = result;
+
+				if (!departments.length || RocketChat.hasRole('livechat-manager')) {
+					this.sdk.subscribe(streamTopic, 'public').catch(e => console.log(e));
+				}
+
 				const departmentIds = departments.map(({ departmentId }) => departmentId);
 				departmentIds.forEach((departmentId) => {
 					// we should subscribe to all departments of the agent
-					this.sdk.subscribe('stream-livechat-inquiry-queue-observer', `department/${ departmentId }`).catch(e => console.log(e));
+					this.sdk.subscribe(streamTopic, `department/${ departmentId }`).catch(e => console.log(e));
 				});
 			}
 		});
