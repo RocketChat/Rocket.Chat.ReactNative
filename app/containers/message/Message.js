@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
+
+import MessageContext from './Context';
 
 import User from './User';
 import styles from './styles';
@@ -111,10 +113,11 @@ const MessageTouchable = React.memo((props) => {
 			</View>
 		);
 	}
+	const { onPress, onLongPress } = useContext(MessageContext);
 	return (
 		<Touchable
-			onLongPress={props.onLongPress}
-			onPress={props.onPress}
+			onLongPress={onLongPress}
+			onPress={onPress}
 			disabled={props.isInfo || props.archived || props.isTemp}
 		>
 			<View>
@@ -129,9 +132,7 @@ MessageTouchable.propTypes = {
 	hasError: PropTypes.bool,
 	isInfo: PropTypes.bool,
 	isTemp: PropTypes.bool,
-	archived: PropTypes.bool,
-	onLongPress: PropTypes.func,
-	onPress: PropTypes.func
+	archived: PropTypes.bool
 };
 
 Message.propTypes = {
@@ -143,7 +144,6 @@ Message.propTypes = {
 	hasError: PropTypes.bool,
 	style: PropTypes.any,
 	onLongPress: PropTypes.func,
-	onPress: PropTypes.func,
 	isReadReceiptEnabled: PropTypes.bool,
 	unread: PropTypes.bool,
 	theme: PropTypes.string

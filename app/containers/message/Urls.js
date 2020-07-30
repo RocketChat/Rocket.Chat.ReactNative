@@ -1,20 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
 	View, Text, StyleSheet, Clipboard
 } from 'react-native';
 import PropTypes from 'prop-types';
-import FastImage from 'react-native-fast-image';
-import Touchable from 'react-native-platform-touchable';
+import FastImage from '@rocket.chat/react-native-fast-image';
 import isEqual from 'lodash/isEqual';
 
+import Touchable from './Touchable';
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { withSplit } from '../../split';
 import { LISTENER } from '../Toast';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
+import MessageContext from './Context';
 
 const styles = StyleSheet.create({
 	button: {
@@ -52,10 +52,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-const UrlImage = React.memo(({ image, user, baseUrl }) => {
+const UrlImage = React.memo(({ image }) => {
 	if (!image) {
 		return null;
 	}
+	const { baseUrl, user } = useContext(MessageContext);
 	image = image.includes('http') ? image : `${ baseUrl }/${ image }?rc_uid=${ user.id }&rc_token=${ user.token }`;
 	return <FastImage source={{ uri: image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} />;
 }, (prevProps, nextProps) => prevProps.image === nextProps.image);
@@ -78,9 +79,7 @@ const UrlContent = React.memo(({ title, description, theme }) => (
 	return true;
 });
 
-const Url = React.memo(({
-	url, index, user, baseUrl, split, theme
-}) => {
+const Url = React.memo(({ url, index, theme }) => {
 	if (!url) {
 		return null;
 	}
@@ -103,35 +102,30 @@ const Url = React.memo(({
 				{
 					backgroundColor: themes[theme].chatComponentBackground,
 					borderColor: themes[theme].borderColor
-				},
-				split && sharedStyles.tabletContent
+				}
 			]}
 			background={Touchable.Ripple(themes[theme].bannerBackground)}
 		>
 			<>
-				<UrlImage image={url.image} user={user} baseUrl={baseUrl} />
+				<UrlImage image={url.image} />
 				<UrlContent title={url.title} description={url.description} theme={theme} />
 			</>
 		</Touchable>
 	);
-}, (oldProps, newProps) => isEqual(oldProps.url, newProps.url) && oldProps.split === newProps.split && oldProps.theme === newProps.theme);
+}, (oldProps, newProps) => isEqual(oldProps.url, newProps.url) && oldProps.theme === newProps.theme);
 
-const Urls = React.memo(({
-	urls, user, baseUrl, split, theme
-}) => {
+const Urls = React.memo(({ urls, theme }) => {
 	if (!urls || urls.length === 0) {
 		return null;
 	}
 
 	return urls.map((url, index) => (
-		<Url url={url} key={url.url} index={index} user={user} baseUrl={baseUrl} split={split} theme={theme} />
+		<Url url={url} key={url.url} index={index} theme={theme} />
 	));
-}, (oldProps, newProps) => isEqual(oldProps.urls, newProps.urls) && oldProps.split === newProps.split && oldProps.theme === newProps.theme);
+}, (oldProps, newProps) => isEqual(oldProps.urls, newProps.urls) && oldProps.theme === newProps.theme);
 
 UrlImage.propTypes = {
-	image: PropTypes.string,
-	user: PropTypes.object,
-	baseUrl: PropTypes.string
+	image: PropTypes.string
 };
 UrlImage.displayName = 'MessageUrlImage';
 
@@ -145,20 +139,14 @@ UrlContent.displayName = 'MessageUrlContent';
 Url.propTypes = {
 	url: PropTypes.object.isRequired,
 	index: PropTypes.number,
-	user: PropTypes.object,
-	baseUrl: PropTypes.string,
-	theme: PropTypes.string,
-	split: PropTypes.bool
+	theme: PropTypes.string
 };
 Url.displayName = 'MessageUrl';
 
 Urls.propTypes = {
 	urls: PropTypes.array,
-	user: PropTypes.object,
-	baseUrl: PropTypes.string,
-	theme: PropTypes.string,
-	split: PropTypes.bool
+	theme: PropTypes.string
 };
 Urls.displayName = 'MessageUrls';
 
-export default withTheme(withSplit(Urls));
+export default withTheme(Urls);

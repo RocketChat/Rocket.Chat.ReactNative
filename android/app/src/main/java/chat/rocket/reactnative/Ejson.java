@@ -9,6 +9,8 @@ public class Ejson {
     String rid;
     String type;
     Sender sender;
+    String messageId;
+    String notificationType;
 
     private String TOKEN_KEY = "reactnativemeteor_usertoken-";
     private SharedPreferences sharedPreferences = RNUserDefaultsModule.getPreferences(CustomPushNotification.reactApplicationContext);

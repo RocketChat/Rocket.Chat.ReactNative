@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import {
 	View, Text, Switch, ScrollView, StyleSheet, FlatList
 } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
 import TextInput from '../presentation/TextInput';
@@ -16,14 +15,14 @@ import KeyboardView from '../presentation/KeyboardView';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 import UserItem from '../presentation/UserItem';
-import { showErrorAlert } from '../utils/info';
 import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { SWITCH_TRACK_COLOR, themes } from '../constants/colors';
 import { withTheme } from '../theme';
-import { themedHeader } from '../utils/navigation';
 import { Review } from '../utils/review';
 import { getUserSelector } from '../selectors/login';
+import { logEvent, events } from '../utils/log';
+import SafeAreaView from '../containers/SafeAreaView';
 
 const styles = StyleSheet.create({
 	container: {
@@ -44,7 +43,7 @@ const styles = StyleSheet.create({
 		fontSize: 17,
 		...sharedStyles.textRegular
 	},
-	swithContainer: {
+	switchContainer: {
 		height: 54,
 		alignItems: 'center',
 		justifyContent: 'space-between',
@@ -74,22 +73,8 @@ const styles = StyleSheet.create({
 });
 
 class CreateChannelView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const submit = navigation.getParam('submit', () => {});
-		const showSubmit = navigation.getParam('showSubmit');
-		return {
-			...themedHeader(screenProps.theme),
-			title: I18n.t('Create_Channel'),
-			headerRight: (
-				showSubmit
-					? (
-						<CustomHeaderButtons>
-							<Item title={I18n.t('Create')} onPress={submit} testID='create-channel-submit' />
-						</CustomHeaderButtons>
-					)
-					: null
-			)
-		};
+	static navigationOptions = {
+		title: I18n.t('Create_Channel')
 	}
 
 	static propTypes = {
@@ -100,7 +85,6 @@ class CreateChannelView extends React.Component {
 		error: PropTypes.object,
 		failure: PropTypes.bool,
 		isFetching: PropTypes.bool,
-		result: PropTypes.object,
 		users: PropTypes.array.isRequired,
 		user: PropTypes.shape({
 			id: PropTypes.string,
@@ -116,18 +100,11 @@ class CreateChannelView extends React.Component {
 		broadcast: false
 	}
 
-	componentDidMount() {
-		const { navigation } = this.props;
-		navigation.setParams({ submit: this.submit });
-	}
-
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
 			channelName, type, readOnly, broadcast
 		} = this.state;
-		const {
-			error, failure, isFetching, result, users, theme
-		} = this.props;
+		const { users, isFetching, theme } = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
 		}
@@ -143,16 +120,7 @@ class CreateChannelView extends React.Component {
 		if (nextState.broadcast !== broadcast) {
 			return true;
 		}
-		if (nextProps.failure !== failure) {
-			return true;
-		}
 		if (nextProps.isFetching !== isFetching) {
-			return true;
-		}
-		if (!equal(nextProps.error, error)) {
-			return true;
-		}
-		if (!equal(nextProps.result, result)) {
 			return true;
 		}
 		if (!equal(nextProps.users, users)) {
@@ -161,28 +129,19 @@ class CreateChannelView extends React.Component {
 		return false;
 	}
 
-	componentDidUpdate(prevProps) {
-		const {
-			isFetching, failure, error, result, navigation
-		} = this.props;
-
-		if (!isFetching && isFetching !== prevProps.isFetching) {
-			setTimeout(() => {
-				if (failure) {
-					const msg = error.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_channel') });
-					showErrorAlert(msg);
-				} else {
-					const { type } = this.state;
-					const { rid, name } = result;
-					navigation.navigate('RoomView', { rid, name, t: type ? 'p' : 'c' });
-				}
-			}, 300);
-		}
+	toggleRightButton = (channelName) => {
+		const { navigation } = this.props;
+		navigation.setOptions({
+			headerRight: () => channelName.trim().length > 0 && (
+				<CustomHeaderButtons>
+					<Item title={I18n.t('Create')} onPress={this.submit} testID='create-channel-submit' />
+				</CustomHeaderButtons>
+			)
+		});
 	}
 
 	onChangeText = (channelName) => {
-		const { navigation } = this.props;
-		navigation.setParams({ showSubmit: channelName.trim().length > 0 });
+		this.toggleRightButton(channelName);
 		this.setState({ channelName });
 	}
 
@@ -208,6 +167,7 @@ class CreateChannelView extends React.Component {
 	}
 
 	removeUser = (user) => {
+		logEvent(events.CREATE_CHANNEL_REMOVE_USER);
 		const { removeUser } = this.props;
 		removeUser(user);
 	}
@@ -217,7 +177,7 @@ class CreateChannelView extends React.Component {
 	}) => {
 		const { theme } = this.props;
 		return (
-			<View style={[styles.swithContainer, { backgroundColor: themes[theme].backgroundColor }]}>
+			<View style={[styles.switchContainer, { backgroundColor: themes[theme].backgroundColor }]}>
 				<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t(label)}</Text>
 				<Switch
 					value={value}
@@ -236,7 +196,10 @@ class CreateChannelView extends React.Component {
 			id: 'type',
 			value: type,
 			label: 'Private_Channel',
-			onValueChange: value => this.setState({ type: value })
+			onValueChange: (value) => {
+				logEvent(events.CREATE_CHANNEL_TOGGLE_TYPE);
+				this.setState({ type: value });
+			}
 		});
 	}
 
@@ -246,7 +209,10 @@ class CreateChannelView extends React.Component {
 			id: 'readonly',
 			value: readOnly,
 			label: 'Read_Only_Channel',
-			onValueChange: value => this.setState({ readOnly: value }),
+			onValueChange: (value) => {
+				logEvent(events.CREATE_CHANNEL_TOGGLE_READ_ONLY);
+				this.setState({ readOnly: value });
+			},
 			disabled: broadcast
 		});
 	}
@@ -258,6 +224,7 @@ class CreateChannelView extends React.Component {
 			value: broadcast,
 			label: 'Broadcast_Channel',
 			onValueChange: (value) => {
+				logEvent(events.CREATE_CHANNEL_TOGGLE_BROADCAST);
 				this.setState({
 					broadcast: value,
 					readOnly: value ? true : readOnly
@@ -326,7 +293,7 @@ class CreateChannelView extends React.Component {
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar theme={theme} />
-				<SafeAreaView testID='create-channel-view' style={styles.container} forceInset={{ vertical: 'never' }}>
+				<SafeAreaView testID='create-channel-view' theme={theme}>
 					<ScrollView {...scrollPersistTaps}>
 						<View style={[sharedStyles.separatorVertical, { borderColor: themes[theme].separatorColor }]}>
 							<TextInput
@@ -365,10 +332,7 @@ class CreateChannelView extends React.Component {
 
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
-	error: state.createChannel.error,
-	failure: state.createChannel.failure,
 	isFetching: state.createChannel.isFetching,
-	result: state.createChannel.result,
 	users: state.selectedUsers.users,
 	user: getUserSelector(state)
 });

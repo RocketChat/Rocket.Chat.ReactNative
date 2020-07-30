@@ -1,10 +1,10 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        buildToolsVersion = "28.0.3"
+        buildToolsVersion = "29.0.2"
         minSdkVersion = 21
-        compileSdkVersion = 28
-        targetSdkVersion = 28
+        compileSdkVersion = 29
+        targetSdkVersion = 29
         glideVersion = "4.9.0"
         kotlin_version = "1.3.50"
         supportLibVersion = "28.0.0"
@@ -18,10 +18,9 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.2'
+        classpath 'com.android.tools.build:gradle:3.5.3'
         classpath 'com.google.gms:google-services:4.2.0'
-        classpath 'io.fabric.tools:gradle:1.28.1'
-        classpath 'com.google.firebase:perf-plugin:1.2.1'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.0.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.bugsnag:bugsnag-android-gradle-plugin:4.+'
 
@@ -42,16 +41,14 @@ allprojects {
             url("$rootDir/../node_modules/jsc-android/dist")
         }
         maven {
-            // We should change it when Jitsi-SDK release v2.4
-            url("$rootDir/../node_modules/react-native-jitsi-meet/jitsi-sdk")
-            // url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
+            url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
         }
 
         google()
         jcenter()
 
         maven { url 'https://maven.google.com' }
-        maven { url "https://jitpack.io" }
+        maven { url 'https://www.jitpack.io' }
     }
 }
 
@@ -63,6 +60,12 @@ subprojects { subproject ->
                 buildToolsVersion "28.0.3"
                 defaultConfig {
                     targetSdkVersion 28
+                }
+                variantFilter { variant ->
+                    def names = variant.flavors*.name
+                    if (names.contains("reactNative59")) {
+                        setIgnore(true)
+                    }
                 }
             }
         }

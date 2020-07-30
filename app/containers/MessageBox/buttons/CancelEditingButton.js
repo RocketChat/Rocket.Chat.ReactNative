@@ -8,7 +8,7 @@ const CancelEditingButton = React.memo(({ theme, onPress }) => (
 		onPress={onPress}
 		testID='messagebox-cancel-editing'
 		accessibilityLabel='Cancel_editing'
-		icon='cross'
+		icon='close'
 		theme={theme}
 	/>
 ));

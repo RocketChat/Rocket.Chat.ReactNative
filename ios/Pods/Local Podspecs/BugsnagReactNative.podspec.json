@@ -1,6 +1,6 @@
 {
   "name": "BugsnagReactNative",
-  "version": "2.23.2",
+  "version": "2.23.10",
   "license": "MIT",
   "summary": "Bugsnag crash and error reporting for React Native apps",
   "authors": {
@@ -9,7 +9,7 @@
   "homepage": "https://docs.bugsnag.com/platforms/react-native",
   "source": {
     "git": "https://github.com/bugsnag/bugsnag-react-native.git",
-    "tag": "v2.23.2"
+    "tag": "v2.23.10"
   },
   "platforms": {
     "ios": "8.0"
@@ -28,11 +28,11 @@
 
     ]
   },
-  "public_header_files": "cocoa/**/{Bugsnag,BugsnagReactNative,BugsnagMetaData,BugsnagConfiguration,BugsnagBreadcrumb,BugsnagCrashReport,BSG_KSCrashReportWriter}.h",
+  "public_header_files": "cocoa/**/BugsnagReactNative.h,cocoa/**/BSG_KSCrashReportWriter.h,cocoa/**/Bugsnag{,MetaData,Configuration,Breadcrumb,CrashReport,Plugin}.h",
   "source_files": [
     "cocoa/BugsnagReactNative.{h,m}",
     "cocoa/vendor/bugsnag-cocoa/Source/**/*.{h,m,mm,cpp,c}",
-    "cocoa/**/{Bugsnag,BugsnagReactNative,BugsnagMetaData,BugsnagConfiguration,BugsnagBreadcrumb,BugsnagCrashReport,BSG_KSCrashReportWriter}.h"
+    "cocoa/**/BugsnagReactNative.h,cocoa/**/BSG_KSCrashReportWriter.h,cocoa/**/Bugsnag{,MetaData,Configuration,Breadcrumb,CrashReport,Plugin}.h"
   ],
   "subspecs": [
     {

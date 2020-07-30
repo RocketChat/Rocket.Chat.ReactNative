@@ -4,7 +4,7 @@ import { Keyboard, View, StyleSheet } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
 
 import SearchBox from '../../../containers/SearchBox';
-import { CloseShareExtensionButton } from '../../../containers/HeaderButton';
+import { CancelModalButton } from '../../../containers/HeaderButton';
 import { themes } from '../../../constants/colors';
 
 import sharedStyles from '../../Styles';
@@ -52,7 +52,7 @@ const Header = React.memo(({
 			{
 				!searching
 					? (
-						<CloseShareExtensionButton
+						<CancelModalButton
 							onPress={ShareExtension.close}
 							testID='share-extension-close'
 						/>

@@ -35,11 +35,15 @@ export const newThemeState = (prevState, newTheme) => {
 	return { themePreferences, theme: getTheme(themePreferences) };
 };
 
-export const setNativeTheme = (themePreferences) => {
+export const setNativeTheme = async(themePreferences) => {
 	const theme = getTheme(themePreferences);
 	if (isAndroid) {
 		const iconsLight = theme === 'light';
-		changeNavigationBarColor(themes[theme].navbarBackground, iconsLight);
+		try {
+			await changeNavigationBarColor(themes[theme].navbarBackground, iconsLight);
+		} catch (error) {
+			// Do nothing
+		}
 	}
 	setRootViewColor(themes[theme].backgroundColor);
 };

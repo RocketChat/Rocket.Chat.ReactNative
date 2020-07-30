@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
+import isEqual from 'lodash/isEqual';
 
 import Markdown from '../markdown';
 import { CustomIcon } from '../../lib/Icons';
@@ -58,7 +59,7 @@ const ReplyPreview = React.memo(({
 		>
 			<View style={[styles.messageContainer, { backgroundColor: themes[theme].chatComponentBackground }]}>
 				<View style={styles.header}>
-					<Text style={[styles.username, { color: themes[theme].tintColor }]}>{message.u.username}</Text>
+					<Text style={[styles.username, { color: themes[theme].tintColor }]}>{message.u?.username}</Text>
 					<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 				</View>
 				<Markdown
@@ -71,10 +72,10 @@ const ReplyPreview = React.memo(({
 					theme={theme}
 				/>
 			</View>
-			<CustomIcon name='cross' color={themes[theme].auxiliaryText} size={20} style={styles.close} onPress={close} />
+			<CustomIcon name='close' color={themes[theme].auxiliaryText} size={20} style={styles.close} onPress={close} />
 		</View>
 	);
-}, (prevProps, nextProps) => prevProps.replying === nextProps.replying && prevProps.theme === nextProps.theme);
+}, (prevProps, nextProps) => prevProps.replying === nextProps.replying && prevProps.theme === nextProps.theme && isEqual(prevProps.message, nextProps.message));
 
 ReplyPreview.propTypes = {
 	replying: PropTypes.bool,
