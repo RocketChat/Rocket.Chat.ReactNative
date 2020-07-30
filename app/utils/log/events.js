@@ -43,6 +43,16 @@ export default {
 	SIDEBAR_NAVIGATE_TO_SETTINGS: 'sidebar_navigate_to_settings',
 	SIDEBAR_NAVIGATE_TO_ADMINPANEL: 'sidebar_navigate_to_admin_panel',
 
+	// STATUS VIEW
+	STATUS_DONE: 'status_done',
+	STATUS_ONLINE: 'status_online',
+	STATUS_BUSY: 'status_busy',
+	STATUS_AWAY: 'status_away',
+	STATUS_OFFLINE: 'status_offline',
+	STATUS_F: 'status_f',
+	STATUS_CUSTOM: 'status_custom',
+	STATUS_CUSTOM_F: 'status_custom_f',
+
 	// ROOMS LIST VIEW
 	RL_TOGGLE_SERVER_DROPDOWN: 'rl_toggle_server_dropdown',
 	RL_ADD_SERVER: 'rl_add_server',
@@ -62,7 +72,7 @@ export default {
 	RL_TOGGLE_SORT_DROPDOWN: 'rl_toggle_sort_dropdown',
 	RL_SORT_CHANNELS_BY_NAME: 'rl_sort_channels_by_name',
 	RL_SORT_CHANNELS_BY_ACTIVITY: 'rl_sort_channels_by_activity',
-	RL_SORT_CHANNELS_FAIL: 'rl_sort_channels_fail',
+	RL_SORT_CHANNELS_F: 'rl_sort_channels_f',
 	RL_GROUP_CHANNELS_BY_TYPE: 'rl_group_channels_by_type',
 	RL_GROUP_CHANNELS_BY_FAVORITE: 'rl_group_channels_by_favorite',
 	RL_GROUP_CHANNELS_BY_UNREAD: 'rl_group_channels_by_unread',
@@ -104,5 +114,84 @@ export default {
 	PROFILE_SAVE_AVATAR: 'profile_save_avatar',
 	PROFILE_SAVE_AVATAR_F: 'profile_save_avatar_f',
 	PROFILE_SAVE_CHANGES: 'profile_save_changes',
-	PROFILE_SAVE_CHANGES_F: 'profile_save_changes_f'
+	PROFILE_SAVE_CHANGES_F: 'profile_save_changes_f',
+
+	// SETTINGS VIEW
+	SE_CONTACT_US: 'se_contact_us',
+	SE_CONTACT_US_F: 'se_contact_us_f',
+	SE_NAVIGATE_TO_LANGUAGE: 'se_navigate_to_language',
+	SE_REVIEW_THIS_APP: 'se_review_this_app',
+	SE_REVIEW_THIS_APP_F: 'se_review_this_app_f',
+	SE_SHARE_THIS_APP: 'se_share_this_app',
+	SE_NAVIGATE_TO_DEFAULTBROWSER: 'se_navigate_to_default_browser',
+	SE_NAVIGATE_TO_THEME: 'se_navigate_to_theme',
+	SE_NAVIGATE_TO_SCREENLOCKCONFIG: 'se_navigate_to_screen_lock_cfg',
+	SE_NAVIGATE_TO_PROFILE: 'se_navigate_to_profile',
+	SE_READ_LICENSE: 'se_read_license',
+	SE_COPY_APP_VERSION: 'se_copy_app_version',
+	SE_COPY_SERVER_VERSION: 'se_copy_server_version',
+	SE_TOGGLE_CRASH_REPORT: 'se_toggle_crash_report',
+	SE_CLEAR_LOCAL_SERVER_CACHE: 'se_clear_local_server_cache',
+	SE_LOG_OUT: 'se_log_out',
+
+	// LANGUAGE VIEW
+	LANG_SET_LANGUAGE: 'lang_set_language',
+	LANG_SET_LANGUAGE_F: 'lang_set_language_f',
+
+	// DEFAULT BROWSER VIEW
+	DB_CHANGE_DEFAULT_BROWSER: 'db_change_default_browser',
+	DB_CHANGE_DEFAULT_BROWSER_F: 'db_change_default_browser_f',
+
+	// THEME VIEW
+	THEME_SET_THEME_GROUP: 'theme_set_theme_group',
+	THEME_SET_DARK_LEVEL: 'theme_set_dark_level',
+
+	// SCREEN LOCK CONFIG VIEW
+	SLC_SAVE_SCREEN_LOCK: 'slc_save_screen_lock',
+	SLC_TOGGLE_AUTOLOCK: 'slc_toggle_autolock',
+	SLC_TOGGLE_BIOMETRY: 'slc_toggle_biometry',
+	SLC_CHANGE_PASSCODE: 'slc_change_passcode',
+	SLC_CHANGE_AUTOLOCK_TIME: 'slc_change_autolock_time',
+
+	// ROOM VIEW
+	ROOM_SEND_MESSAGE: 'room_send_message',
+	ROOM_OPEN_EMOJI: 'room_open_emoji',
+	ROOM_AUDIO_RECORD: 'room_audio_record',
+	ROOM_AUDIO_RECORD_F: 'room_audio_record_f',
+	ROOM_AUDIO_FINISH: 'room_audio_finish',
+	ROOM_AUDIO_FINISH_F: 'room_audio_finish_f',
+	ROOM_AUDIO_CANCEL: 'room_audio_cancel',
+	ROOM_AUDIO_CANCEL_F: 'room_audio_cancel_f',
+	ROOM_SHOW_BOX_ACTIONS: 'room_show_box_actions',
+	ROOM_BOX_ACTION_PHOTO: 'room_box_action_photo',
+	ROOM_BOX_ACTION_PHOTO_F: 'room_box_action_photo_f',
+	ROOM_BOX_ACTION_VIDEO: 'room_box_action_video',
+	ROOM_BOX_ACTION_VIDEO_F: 'room_box_action_video_f',
+	ROOM_BOX_ACTION_LIBRARY: 'room_box_action_library',
+	ROOM_BOX_ACTION_LIBRARY_F: 'room_box_action_library_f',
+	ROOM_BOX_ACTION_FILE: 'room_box_action_file',
+	ROOM_BOX_ACTION_FILE_F: 'room_box_action_file_f',
+	ROOM_BOX_ACTION_DISCUSSION: 'room_box_action_discussion',
+	ROOM_SHOW_MSG_ACTIONS: 'room_show_msg_actions',
+	ROOM_MSG_ACTION_REPLY: 'room_msg_action_reply',
+	ROOM_MSG_ACTION_QUOTE: 'room_msg_action_quote',
+	ROOM_MSG_ACTION_EDIT: 'room_msg_action_edit',
+	ROOM_MSG_ACTION_DELETE: 'room_msg_action_delete',
+	ROOM_MSG_ACTION_DELETE_F: 'room_msg_action_delete_f',
+	ROOM_MSG_ACTION_PERMALINK: 'room_msg_action_permalink',
+	ROOM_MSG_ACTION_PERMALINK_F: 'room_msg_action_permalink_f',
+	ROOM_MSG_ACTION_DISCUSSION: 'room_msg_action_discussion',
+	ROOM_MSG_ACTION_UNREAD: 'room_msg_action_unread',
+	ROOM_MSG_ACTION_UNREAD_F: 'room_msg_action_unread_f',
+	ROOM_MSG_ACTION_COPY: 'room_msg_action_copy',
+	ROOM_MSG_ACTION_SHARE: 'room_msg_action_share',
+	ROOM_MSG_ACTION_SHARE_F: 'room_msg_action_share_f',
+	ROOM_MSG_ACTION_STAR: 'room_msg_action_star',
+	ROOM_MSG_ACTION_UNSTAR: 'room_msg_action_unstar',
+	ROOM_MSG_ACTION_STAR_F: 'room_msg_action_star_f',
+	ROOM_MSG_ACTION_PIN: 'room_msg_action_pin',
+	ROOM_MSG_ACTION_PIN_F: 'room_msg_action_pin_f',
+	ROOM_MSG_ACTION_REACTION: 'room_msg_action_reaction',
+	ROOM_MSG_ACTION_REPORT: 'room_msg_action_report',
+	ROOM_MSG_ACTION_REPORT_F: 'room_msg_action_report_f'
 };

@@ -183,7 +183,6 @@ class SelectedUsersView extends React.Component {
 			if (this.isGroupChat() && users.length === maxUsers) {
 				return showErrorAlert(I18n.t('Max_number_of_users_allowed_is_number', { maxUsers }), I18n.t('Oops'));
 			}
-
 			logEvent(events.SELECTED_USERS_ADD_USER);
 			addUser(user);
 		} else {

@@ -65,7 +65,7 @@ class Sort extends PureComponent {
 			setSortPreference(param);
 			RocketChat.saveSortPreference(param);
 		} catch (e) {
-			logEvent(events.RL_SORT_CHANNELS_FAIL);
+			logEvent(events.RL_SORT_CHANNELS_F);
 			log(e);
 		}
 	}

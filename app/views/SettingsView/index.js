@@ -26,7 +26,9 @@ import openLink from '../../utils/openLink';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
 import styles from './styles';
-import { loggerConfig, analytics } from '../../utils/log';
+import {
+	loggerConfig, analytics, logEvent, events
+} from '../../utils/log';
 import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/links';
 import { withTheme } from '../../theme';
 import SidebarView from '../SidebarView';
@@ -86,6 +88,7 @@ class SettingsView extends React.Component {
 	}
 
 	handleLogout = () => {
+		logEvent(events.SE_LOG_OUT);
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_of_this_application'),
 			callToAction: I18n.t('Logout'),
@@ -97,6 +100,7 @@ class SettingsView extends React.Component {
 	}
 
 	handleClearCache = () => {
+		logEvent(events.SE_CLEAR_LOCAL_SERVER_CACHE);
 		showConfirmationAlert({
 			message: I18n.t('This_will_clear_all_your_offline_data'),
 			callToAction: I18n.t('Clear'),
@@ -114,12 +118,12 @@ class SettingsView extends React.Component {
 	}
 
 	toggleCrashReport = (value) => {
+		logEvent(events.SE_TOGGLE_CRASH_REPORT);
 		AsyncStorage.setItem(CRASH_REPORT_KEY, JSON.stringify(value));
 		const { toggleCrashReport } = this.props;
 		toggleCrashReport(value);
 		loggerConfig.autoNotify = value;
 		analytics().setAnalyticsCollectionEnabled(value);
-
 		if (value) {
 			loggerConfig.clearBeforeSendCallbacks();
 		} else {
@@ -136,11 +140,13 @@ class SettingsView extends React.Component {
 	}
 
 	navigateToScreen = (screen) => {
+		logEvent(events[`SE_NAVIGATE_TO_${ screen.replace('View', '').toUpperCase() }`]);
 		const { navigation } = this.props;
 		navigation.navigate(screen);
 	}
 
 	sendEmail = async() => {
+		logEvent(events.SE_CONTACT_US);
 		const subject = encodeURI('React Native App Support');
 		const email = encodeURI('support@rocket.chat');
 		const description = encodeURI(`
@@ -150,20 +156,24 @@ class SettingsView extends React.Component {
 		try {
 			await Linking.openURL(`mailto:${ email }?subject=${ subject }&body=${ description }`);
 		} catch (e) {
+			logEvent(events.SE_CONTACT_US_F);
 			showErrorAlert(I18n.t('error-email-send-failed', { message: 'support@rocket.chat' }));
 		}
 	}
 
 	shareApp = () => {
+		logEvent(events.SE_SHARE_THIS_APP);
 		Share.share({ message: isAndroid ? PLAY_MARKET_LINK : APP_STORE_LINK });
 	}
 
 	copyServerVersion = () => {
-		const { server } = this.props;
-		this.saveToClipboard(server.version);
+		const { server: { version } } = this.props;
+		logEvent(events.SE_COPY_SERVER_VERSION, { serverVersion: version });
+		this.saveToClipboard(version);
 	}
 
 	copyAppVersion = () => {
+		logEvent(events.SE_COPY_APP_VERSION, { appVersion: getReadableVersion });
 		this.saveToClipboard(getReadableVersion);
 	}
 
@@ -173,6 +183,7 @@ class SettingsView extends React.Component {
 	}
 
 	onPressLicense = () => {
+		logEvent(events.SE_READ_LICENSE);
 		const { theme } = this.props;
 		openLink(LICENSE_LINK, theme);
 	}
