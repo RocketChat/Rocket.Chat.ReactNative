@@ -8,7 +8,6 @@ public class MainDebugApplication extends MainApplication  {
 
   @Override
   public void onCreate() {
-
     super.onCreate();
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
   }
@@ -21,6 +20,6 @@ public class MainDebugApplication extends MainApplication  {
    * @param reactInstanceManager
    */
   private static void initializeFlipper(Context context, ReactInstanceManager reactInstanceManager) {
-    com.rndiffapp.ReactNativeFlipper.initializeFlipper(context, reactInstanceManager);
+    ReactNativeFlipper.initializeFlipper(context, reactInstanceManager);
   }
 }
