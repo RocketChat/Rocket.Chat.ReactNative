@@ -10,7 +10,9 @@ import { inviteLinksSetToken, inviteLinksRequest } from '../actions/inviteLinks'
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';
-import { appStart, ROOT_INSIDE, ROOT_NEW_SERVER } from '../actions/app';
+import {
+	appStart, ROOT_INSIDE, ROOT_NEW_SERVER, appInit
+} from '../actions/app';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { goRoom } from '../utils/goRoom';
 import callJitsi from '../lib/methods/callJitsi';
@@ -61,6 +63,14 @@ const navigate = function* navigate({ params }) {
 	}
 };
 
+const fallbackNavigation = function* fallbackNavigation() {
+	const currentRoot = yield select(state => state.app.root);
+	if (currentRoot) {
+		return;
+	}
+	yield put(appInit());
+};
+
 const handleOpen = function* handleOpen({ params }) {
 	const serversDB = database.servers;
 	const serversCollection = serversDB.collections.get('servers');
@@ -76,11 +86,18 @@ const handleOpen = function* handleOpen({ params }) {
 		});
 	}
 
+	// If there's no host on the deep link params and the app is opened, just call appInit()
 	if (!host) {
+		yield fallbackNavigation();
 		return;
 	}
+
+	// If there's host, continue
 	if (!/^(http|https)/.test(host)) {
-		host = `https://${ params.host }`;
+		host = `https://${ host }`;
+	} else {
+		// Notification should always come from https
+		host = host.replace('http://', 'https://');
 	}
 	// remove last "/" from host
 	if (host.slice(-1) === '/') {
@@ -119,6 +136,8 @@ const handleOpen = function* handleOpen({ params }) {
 		// if deep link is from a different server
 		const result = yield RocketChat.getServerInfo(host);
 		if (!result.success) {
+			// Fallback to prevent the app from being stuck on splash screen
+			yield fallbackNavigation();
 			return;
 		}
 		yield put(appStart({ root: ROOT_NEW_SERVER }));
