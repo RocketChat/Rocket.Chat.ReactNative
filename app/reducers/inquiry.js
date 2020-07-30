@@ -18,11 +18,6 @@ export default function inquiry(state = initialState, action) {
 				...state,
 				error: action.error
 			};
-		case INQUIRY.TAKE:
-			return {
-				...state,
-				queued: state.queued.filter(({ _id }) => _id !== action.inquiryId)
-			};
 		case INQUIRY.SET_ENABLED:
 			return {
 				...state,

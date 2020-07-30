@@ -2,7 +2,12 @@ import { put, takeLatest, select } from 'redux-saga/effects';
 
 import * as types from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
-import { inquirySuccess, inquiryFailure, inquirySetEnabled } from '../actions/inquiry';
+import {
+	inquirySuccess,
+	inquiryFailure,
+	inquirySetEnabled,
+	inquiryQueueRemove
+} from '../actions/inquiry';
 
 const handleRequest = function* handleRequest() {
 	try {
@@ -32,8 +37,10 @@ const handleRequest = function* handleRequest() {
 // This action remove the inquiry queued room from the redux store on reducers
 const handleTake = function* handleTake({ inquiryId }) {
 	try {
-		// We don't need to use the return since it's added by subscriptions stream
-		yield RocketChat.takeInquiry(inquiryId);
+		const result = yield RocketChat.takeInquiry(inquiryId);
+		if (result.success) {
+			yield put(inquiryQueueRemove(inquiryId));
+		}
 	} catch {
 		// Do nothing
 	}
