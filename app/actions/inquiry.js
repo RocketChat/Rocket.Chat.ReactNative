@@ -14,6 +14,12 @@ export function inquirySetEnabled(enabled) {
 	};
 }
 
+export function inquiryReset() {
+	return {
+		type: types.INQUIRY.RESET
+	};
+}
+
 export function inquiryRequest() {
 	return {
 		type: types.INQUIRY.REQUEST

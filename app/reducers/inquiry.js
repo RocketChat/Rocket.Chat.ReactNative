@@ -28,6 +28,8 @@ export default function inquiry(state = initialState, action) {
 				...state,
 				enabled: action.enabled
 			};
+		case INQUIRY.RESET:
+			return initialState;
 		default:
 			return state;
 	}
