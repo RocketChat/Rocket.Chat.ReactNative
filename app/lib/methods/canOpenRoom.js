@@ -84,7 +84,8 @@ export default async function canOpenRoom({ rid, path, isCall }) {
 
 		const [type, name] = path.split('/');
 		try {
-			return open.call(this, { type, rid, name });
+			const result = await open.call(this, { type, rid, name });
+			return result;
 		} catch (e) {
 			return false;
 		}
