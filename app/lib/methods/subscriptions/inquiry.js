@@ -1,7 +1,12 @@
 import log from '../../../utils/log';
 import store from '../../createStore';
 import RocketChat from '../../rocketchat';
-import { inquiryRequest, inquirySuccess } from '../../../actions/inquiry';
+import {
+	inquiryRequest,
+	inquiryQueueAdd,
+	inquiryQueueUpdate,
+	inquiryQueueRemove
+} from '../../../actions/inquiry';
 
 const removeListener = listener => listener.stop();
 
@@ -23,7 +28,7 @@ export default function subscribeInquiry() {
 
 		const { queued } = store.getState().inquiry;
 		if (sub.status !== 'queued') {
-			store.dispatch(inquirySuccess(queued.filter(item => item._id !== sub._id)));
+			store.dispatch(inquiryQueueRemove(sub._id));
 			return;
 		}
 
@@ -32,14 +37,9 @@ export default function subscribeInquiry() {
 		// UPSERT QUEUED CHAT INTO INQUIRY QUEUED
 		const idx = queued.findIndex(item => item._id === sub._id);
 		if (idx >= 0) {
-			store.dispatch(inquirySuccess(queued.map((item, index) => {
-				if (index === idx) {
-					return sub;
-				}
-				return item;
-			})));
+			store.dispatch(inquiryQueueUpdate(sub));
 		} else {
-			store.dispatch(inquirySuccess([...queued, sub]));
+			store.dispatch(inquiryQueueAdd(sub));
 		}
 	};
 

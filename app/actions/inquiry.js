@@ -20,6 +20,27 @@ export function inquiryReset() {
 	};
 }
 
+export function inquiryQueueAdd(inquiry) {
+	return {
+		type: types.INQUIRY.QUEUE_ADD,
+		inquiry
+	};
+}
+
+export function inquiryQueueUpdate(inquiry) {
+	return {
+		type: types.INQUIRY.QUEUE_UPDATE,
+		inquiry
+	};
+}
+
+export function inquiryQueueRemove(inquiryId) {
+	return {
+		type: types.INQUIRY.QUEUE_REMOVE,
+		inquiryId
+	};
+}
+
 export function inquiryRequest() {
 	return {
 		type: types.INQUIRY.REQUEST
