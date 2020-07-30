@@ -644,7 +644,7 @@ class RoomView extends React.Component {
 	}
 
 	sendMessage = (message, tmid) => {
-		logEvent(events.SEND_MESSAGE);
+		logEvent(events.ROOM_SEND_MESSAGE);
 		const { user } = this.props;
 		RocketChat.sendMessage(this.rid, message, this.tmid || tmid, user).then(() => {
 			if (this.list && this.list.current) {
@@ -667,7 +667,6 @@ class RoomView extends React.Component {
 	getThreadMessages = () => RocketChat.loadThreadMessages({ tmid: this.tmid, rid: this.rid })
 
 	getCustomEmoji = (name) => {
-		logEvent(events.SHOW_CUSTOM_EMOJI);
 		const { customEmojis } = this.props;
 		const emoji = customEmojis[name];
 		if (emoji) {

@@ -585,41 +585,41 @@ class MessageBox extends Component {
 	}
 
 	takePhoto = async() => {
-		logEvent(events.TAKE_PHOTO);
+		logEvent(events.ROOM_BOX_ACTION_PHOTO);
 		try {
 			const image = await ImagePicker.openCamera(this.imagePickerConfig);
 			if (this.canUploadFile(image)) {
 				this.openShareView([image]);
 			}
 		} catch (e) {
-			logEvent(events.TAKE_PHOTO_FAIL);
+			logEvent(events.ROOM_BOX_ACTION_PHOTO_F);
 		}
 	}
 
 	takeVideo = async() => {
-		logEvent(events.TAKE_VIDEO);
+		logEvent(events.ROOM_BOX_ACTION_VIDEO);
 		try {
 			const video = await ImagePicker.openCamera(this.videoPickerConfig);
 			if (this.canUploadFile(video)) {
 				this.openShareView([video]);
 			}
 		} catch (e) {
-			logEvent(events.TAKE_VIDEO_FAIL);
+			logEvent(events.ROOM_BOX_ACTION_VIDEO_F);
 		}
 	}
 
 	chooseFromLibrary = async() => {
-		logEvent(events.CHOOSE_FROM_LIBRARY);
+		logEvent(events.ROOM_BOX_ACTION_LIBRARY);
 		try {
 			const attachments = await ImagePicker.openPicker(this.libraryPickerConfig);
 			this.openShareView(attachments);
 		} catch (e) {
-			logEvent(events.CHOOSE_FROM_LIBRARY_FAIL);
+			logEvent(events.ROOM_BOX_ACTION_LIBRARY_F);
 		}
 	}
 
 	chooseFile = async() => {
-		logEvent(events.CHOOSE_FILE);
+		logEvent(events.ROOM_BOX_ACTION_FILE);
 		try {
 			const res = await DocumentPicker.pick({
 				type: [DocumentPicker.types.allFiles]
@@ -635,7 +635,7 @@ class MessageBox extends Component {
 			}
 		} catch (e) {
 			if (!DocumentPicker.isCancel(e)) {
-				logEvent(events.CHOOSE_FILE_FAIL);
+				logEvent(events.ROOM_BOX_ACTION_FILE_F);
 				log(e);
 			}
 		}
@@ -653,7 +653,7 @@ class MessageBox extends Component {
 	}
 
 	createDiscussion = () => {
-		logEvent(events.CREATE_DISCUSSION_START);
+		logEvent(events.ROOM_BOX_ACTION_DISCUSSION);
 		const { isMasterDetail } = this.props;
 		const params = { channel: this.room, showCloseModal: true };
 		if (isMasterDetail) {
@@ -664,6 +664,7 @@ class MessageBox extends Component {
 	}
 
 	showMessageBoxActions = () => {
+		logEvent(events.ROOM_SHOW_BOX_ACTIONS);
 		const { showActionSheet } = this.props;
 		showActionSheet({ options: this.options });
 	}
@@ -675,12 +676,11 @@ class MessageBox extends Component {
 	}
 
 	openEmoji = () => {
-		logEvent(events.SHOW_EMOJI_KEYBOARD);
+		logEvent(events.ROOM_OPEN_EMOJI);
 		this.setState({ showEmojiKeyboard: true });
 	}
 
 	recordingCallback = (recording) => {
-		logEvent(events.START_AUDIO_RECORDING);
 		this.setState({ recording });
 	}
 
