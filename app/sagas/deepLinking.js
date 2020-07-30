@@ -63,6 +63,14 @@ const navigate = function* navigate({ params }) {
 	}
 };
 
+const fallbackNavigation = function* fallbackNavigation() {
+	const currentRoot = yield select(state => state.app.root);
+	if (currentRoot) {
+		return;
+	}
+	yield put(appInit());
+};
+
 const handleOpen = function* handleOpen({ params }) {
 	const serversDB = database.servers;
 	const serversCollection = serversDB.collections.get('servers');
@@ -80,11 +88,7 @@ const handleOpen = function* handleOpen({ params }) {
 
 	// If there's no host on the deep link params and the app is opened, just call appInit()
 	if (!host) {
-		const currentRoot = yield select(state => state.app.root);
-		if (currentRoot) {
-			return;
-		}
-		yield put(appInit());
+		yield fallbackNavigation();
 		return;
 	}
 
@@ -129,6 +133,8 @@ const handleOpen = function* handleOpen({ params }) {
 		// if deep link is from a different server
 		const result = yield RocketChat.getServerInfo(host);
 		if (!result.success) {
+			// Fallback to prevent the app from being stuck on splash screen
+			yield fallbackNavigation();
 			return;
 		}
 		yield put(appStart({ root: ROOT_NEW_SERVER }));
