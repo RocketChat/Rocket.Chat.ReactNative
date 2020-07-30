@@ -70,17 +70,17 @@ class OnboardingView extends React.Component {
 	}
 
 	connectServer = () => {
-		logEvent(events.JOIN_A_WORKSPACE);
+		logEvent(events.ONBOARD_JOIN_A_WORKSPACE);
 		const { navigation } = this.props;
 		navigation.navigate('NewServerView');
 	}
 
 	createWorkspace = async() => {
-		logEvent(events.CREATE_NEW_WORKSPACE);
+		logEvent(events.ONBOARD_CREATE_NEW_WORKSPACE);
 		try {
 			await Linking.openURL('https://cloud.rocket.chat/trial');
 		} catch {
-			logEvent(events.CREATE_NEW_WORKSPACE_FAIL);
+			logEvent(events.ONBOARD_CREATE_NEW_WORKSPACE_F);
 		}
 	}
 
