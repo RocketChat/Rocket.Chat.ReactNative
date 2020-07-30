@@ -32,9 +32,6 @@ export default function subscribeInquiry() {
 			return;
 		}
 
-		// TODO: lets debounce these messages, since they are sometimes multiple
-		// let's add this sub to a redux variable
-		// UPSERT QUEUED CHAT INTO INQUIRY QUEUED
 		const idx = queued.findIndex(item => item._id === sub._id);
 		if (idx >= 0) {
 			store.dispatch(inquiryQueueUpdate(sub));
