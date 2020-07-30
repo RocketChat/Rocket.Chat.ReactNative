@@ -18,7 +18,7 @@ import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
 import styles from './styles';
-import log from '../../utils/log';
+import log, { logEvent, events } from '../../utils/log';
 import I18n from '../../i18n';
 import SortDropdown from './SortDropdown';
 import ServerDropdown from './ServerDropdown';
@@ -357,9 +357,7 @@ class RoomsListView extends React.Component {
 					<Item
 						title='new'
 						iconName='create'
-						onPress={isMasterDetail
-							? () => navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' })
-							: () => navigation.navigate('NewMessageStackNavigator')}
+						onPress={this.goToNewMessage}
 						testID='rooms-list-view-create-channel'
 					/>
 					<Item
@@ -496,6 +494,7 @@ class RoomsListView extends React.Component {
 	}
 
 	initSearching = () => {
+		logEvent(events.RL_SEARCH);
 		const { openSearchHeader } = this.props;
 		this.internalSetState({ searching: true }, () => {
 			openSearchHeader();
@@ -583,6 +582,7 @@ class RoomsListView extends React.Component {
 	}
 
 	toggleSort = () => {
+		logEvent(events.RL_TOGGLE_SORT_DROPDOWN);
 		const { toggleSortDropdown } = this.props;
 
 		this.scrollToTop();
@@ -592,6 +592,7 @@ class RoomsListView extends React.Component {
 	};
 
 	toggleFav = async(rid, favorite) => {
+		logEvent(favorite ? events.RL_UNFAVORITE_CHANNEL : events.RL_FAVORITE_CHANNEL);
 		try {
 			const db = database.active;
 			const result = await RocketChat.toggleFavorite(rid, !favorite);
@@ -609,11 +610,13 @@ class RoomsListView extends React.Component {
 				});
 			}
 		} catch (e) {
+			logEvent(events.RL_TOGGLE_FAVORITE_FAIL);
 			log(e);
 		}
 	};
 
 	toggleRead = async(rid, isRead) => {
+		logEvent(isRead ? events.RL_UNREAD_CHANNEL : events.RL_READ_CHANNEL);
 		try {
 			const db = database.active;
 			const result = await RocketChat.toggleRead(isRead, rid);
@@ -631,11 +634,13 @@ class RoomsListView extends React.Component {
 				});
 			}
 		} catch (e) {
+			logEvent(events.RL_TOGGLE_READ_F);
 			log(e);
 		}
 	};
 
 	hideChannel = async(rid, type) => {
+		logEvent(events.RL_HIDE_CHANNEL);
 		try {
 			const db = database.active;
 			const result = await RocketChat.hideRoom(rid, type);
@@ -651,11 +656,13 @@ class RoomsListView extends React.Component {
 				});
 			}
 		} catch (e) {
+			logEvent(events.RL_HIDE_CHANNEL_F);
 			log(e);
 		}
 	};
 
 	goDirectory = () => {
+		logEvent(events.RL_NAVIGATE_TO_DIRECTORY);
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', { screen: 'DirectoryView' });
@@ -665,6 +672,7 @@ class RoomsListView extends React.Component {
 	};
 
 	goRoom = ({ item, isMasterDetail }) => {
+		logEvent(events.RL_GO_TO_ROOM);
 		const { item: currentItem } = this.state;
 		const { rooms } = this.props;
 		if (currentItem?.rid === item.rid || rooms?.includes(item.rid)) {
@@ -721,6 +729,17 @@ class RoomsListView extends React.Component {
 		const otherRoom = this.findOtherRoom(index, sign);
 		if (otherRoom) {
 			this.goRoom({ item: otherRoom, isMasterDetail });
+		}
+	}
+
+	goToNewMessage = () => {
+		logEvent(events.RL_NAVIGATE_TO_NEW_MSG);
+		const { navigation, isMasterDetail } = this.props;
+
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' });
+		} else {
+			navigation.navigate('NewMessageStackNavigator');
 		}
 	}
 

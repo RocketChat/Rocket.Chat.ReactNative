@@ -23,6 +23,7 @@ import { KEY_COMMAND, handleCommandSelectServer } from '../../commands';
 import { isTablet, isIOS } from '../../utils/deviceInfo';
 import { localAuthenticate } from '../../utils/localAuthentication';
 import { showConfirmationAlert } from '../../utils/info';
+import { logEvent, events } from '../../utils/log';
 import { headerHeight } from '../../containers/Header';
 import { goRoom } from '../../utils/goRoom';
 
@@ -134,6 +135,7 @@ class ServerDropdown extends Component {
 	}
 
 	addServer = () => {
+		logEvent(events.RL_ADD_SERVER);
 		const { server } = this.props;
 		this.close();
 		setTimeout(() => {
@@ -147,6 +149,7 @@ class ServerDropdown extends Component {
 		} = this.props;
 		this.close();
 		if (currentServer !== server) {
+			logEvent(events.RL_CHANGE_SERVER);
 			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
 			if (isMasterDetail) {
 				goRoom({ item: {}, isMasterDetail });
