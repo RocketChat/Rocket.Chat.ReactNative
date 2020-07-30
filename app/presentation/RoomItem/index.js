@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 
-import Avatar from '../../containers/Avatar';
 import I18n from '../../i18n';
-import styles, { ROW_HEIGHT } from './styles';
-import UnreadBadge from './UnreadBadge';
-import TypeIcon from './TypeIcon';
-import LastMessage from './LastMessage';
-import { capitalize, formatDate } from '../../utils/room';
-import Touchable from './Touchable';
-import { themes } from '../../constants/colors';
+import { ROW_HEIGHT } from './styles';
+import { formatDate } from '../../utils/room';
+import RoomItem from './RoomItem';
 
 export { ROW_HEIGHT };
 
@@ -27,7 +21,7 @@ const attrs = [
 
 const arePropsEqual = (oldProps, newProps) => attrs.every(key => oldProps[key] === newProps[key]);
 
-const RoomItem = React.memo(({
+const RoomItemContainer = React.memo(({
 	item,
 	onPress,
 	width,
@@ -97,12 +91,18 @@ const RoomItem = React.memo(({
 	}
 
 	return (
-		<Touchable
+		<RoomItem
+			name={name}
+			avatar={avatar}
+			isGroupChat={isGroupChat}
+			isRead={isRead}
 			onPress={_onPress}
+			date={date}
+			accessibilityLabel={accessibilityLabel}
+			userMentions={item.userMentions}
 			width={width}
 			favorite={item.f}
 			toggleFav={toggleFav}
-			isRead={isRead}
 			rid={item.rid}
 			toggleRead={toggleRead}
 			hideChannel={hideChannel}
@@ -110,96 +110,26 @@ const RoomItem = React.memo(({
 			type={item.t}
 			theme={theme}
 			isFocused={isFocused}
-		>
-			<View
-				style={styles.container}
-				accessibilityLabel={accessibilityLabel}
-			>
-				<Avatar
-					text={avatar}
-					size={avatarSize}
-					type={item.t}
-					baseUrl={baseUrl}
-					style={styles.avatar}
-					userId={userId}
-					token={token}
-				/>
-				<View
-					style={[
-						styles.centerContainer,
-						{
-							borderColor: themes[theme].separatorColor
-						}
-					]}
-				>
-					<View style={styles.titleContainer}>
-						<TypeIcon
-							type={item.t}
-							prid={item.prid}
-							status={status}
-							isGroupChat={isGroupChat}
-							theme={theme}
-						/>
-						<Text
-							style={[
-								styles.title,
-								item.alert && !item.hideUnreadStatus && styles.alert,
-								{ color: themes[theme].titleText }
-							]}
-							ellipsizeMode='tail'
-							numberOfLines={1}
-						>
-							{name}
-						</Text>
-						{item.roomUpdatedAt ? (
-							<Text
-								style={[
-									styles.date,
-									{
-										color:
-											themes[theme]
-												.auxiliaryText
-									},
-									item.alert && !item.hideUnreadStatus && [
-										styles.updateAlert,
-										{
-											color:
-												themes[theme]
-													.tintColor
-										}
-									]
-								]}
-								ellipsizeMode='tail'
-								numberOfLines={1}
-							>
-								{capitalize(date)}
-							</Text>
-						) : null}
-					</View>
-					<View style={styles.row}>
-						<LastMessage
-							lastMessage={item.lastMessage}
-							type={item.t}
-							showLastMessage={showLastMessage}
-							username={username}
-							alert={item.alert && !item.hideUnreadStatus}
-							useRealName={useRealName}
-							theme={theme}
-						/>
-						<UnreadBadge
-							unread={item.unread}
-							userMentions={item.userMentions}
-							groupMentions={item.groupMentions}
-							theme={theme}
-						/>
-					</View>
-				</View>
-			</View>
-		</Touchable>
+			size={avatarSize}
+			baseUrl={baseUrl}
+			userId={userId}
+			token={token}
+			prid={item.prid}
+			status={status}
+			hideUnreadStatus={item.hideUnreadStatus}
+			alert={item.alert}
+			roomUpdatedAt={item.roomUpdatedAt}
+			lastMessage={item.lastMessage}
+			showLastMessage={showLastMessage}
+			username={username}
+			useRealName={useRealName}
+			unread={item.unread}
+			groupMentions={item.groupMentions}
+		/>
 	);
 }, arePropsEqual);
 
-RoomItem.propTypes = {
+RoomItemContainer.propTypes = {
 	item: PropTypes.object.isRequired,
 	baseUrl: PropTypes.string.isRequired,
 	showLastMessage: PropTypes.bool,
@@ -226,7 +156,7 @@ RoomItem.propTypes = {
 	getIsRead: PropTypes.func
 };
 
-RoomItem.defaultProps = {
+RoomItemContainer.defaultProps = {
 	avatarSize: 48,
 	status: 'offline',
 	getUserPresence: () => {},
@@ -252,4 +182,4 @@ const mapStateToProps = (state, ownProps) => {
 	};
 };
 
-export default connect(mapStateToProps)(RoomItem);
+export default connect(mapStateToProps)(RoomItemContainer);
