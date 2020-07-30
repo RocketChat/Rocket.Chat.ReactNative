@@ -10,7 +10,9 @@ import { inviteLinksSetToken, inviteLinksRequest } from '../actions/inviteLinks'
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';
-import { appStart, ROOT_INSIDE, ROOT_NEW_SERVER } from '../actions/app';
+import {
+	appStart, ROOT_INSIDE, ROOT_NEW_SERVER, appInit
+} from '../actions/app';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { goRoom } from '../utils/goRoom';
 import callJitsi from '../lib/methods/callJitsi';
@@ -76,9 +78,17 @@ const handleOpen = function* handleOpen({ params }) {
 		});
 	}
 
+	// If there's no host on the deep link params and the app is opened, just call appInit()
 	if (!host) {
+		const currentRoot = yield select(state => state.app.root);
+		if (currentRoot) {
+			return;
+		}
+		yield put(appInit());
 		return;
 	}
+
+	// If there's host, continue
 	if (!/^(http|https)/.test(host)) {
 		host = `https://${ params.host }`;
 	}
