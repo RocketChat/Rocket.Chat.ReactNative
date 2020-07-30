@@ -140,12 +140,20 @@ To ensure that the code is formatted consistently, run the script
 before creating a PR.
 
 Travis will verify that any code changes are done in a style compliant way. Install
-`clang-format` and `swiftformat`:
+`clang-format` and `swiftformat`.
+These commands will get the right versions:
 
 ```
-brew install clang-format
-brew install swiftformat
+brew upgrade https://raw.githubusercontent.com/Homebrew/homebrew-core/c6f1cbd/Formula/clang-format.rb
+brew upgrade https://raw.githubusercontent.com/Homebrew/homebrew-core/c13eda8/Formula/swiftformat.rb
 ```
+
+Note: if you already have a newer version of these installed you may need to
+`brew switch` to this version.
+
+To update this section, find the versions of clang-format and swiftformat.rb to
+match the versions in the CI failure logs
+[here](https://github.com/Homebrew/homebrew-core/tree/master/Formula).
 
 ### Running Unit Tests
 
@@ -169,7 +177,12 @@ files without real values, but can be replaced with real plist files. To get you
 2. Create a new Firebase project, if you don't already have one
 3. For each sample app you want to test, create a new Firebase app with the sample app's bundle
 identifier (e.g. `com.google.Database-Example`)
-4. Download the resulting `GoogleService-Info.plist` and add it to the Xcode project.
+4. Download the resulting `GoogleService-Info.plist` and replace the appropriate dummy plist file
+(e.g. in [Example/Database/App/](Example/Database/App/));
+
+Some sample apps like Firebase Messaging ([Example/Messaging/App](Example/Messaging/App)) require
+special Apple capabilities, and you will have to change the sample app to use a unique bundle
+identifier that you can control in your own Apple Developer account.
 
 ## Specific Component Instructions
 See the sections below for any special instructions for those components.
@@ -189,7 +202,7 @@ To run against a local emulator instance, invoke `./scripts/run_database_emulato
 running the integration test.
 
 To run against a production instance, provide a valid GoogleServices-Info.plist and copy it to
-`FirebaseDatabase/Tests/Resources/GoogleService-Info.plist`. Your Security Rule must be set to
+`Example/Database/App/GoogleService-Info.plist`. Your Security Rule must be set to
 [public](https://firebase.google.com/docs/database/security/quickstart) while your tests are
 running.
 

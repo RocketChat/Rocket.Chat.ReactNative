@@ -183,7 +183,7 @@ const RoomItem = React.memo(({
 						<UnreadBadge
 							unread={item.unread}
 							userMentions={item.userMentions}
-							type={item.t}
+							groupMentions={item.groupMentions}
 							theme={theme}
 						/>
 					</View>

@@ -123,7 +123,7 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }) => {
 				hitSlop={BUTTON_HIT_SLOP}
 				background={Touchable.SelectableBackgroundBorderless()}
 			>
-				<CustomIcon name='Cross' style={[styles.close, { color: themes[theme].titleText }]} size={20} />
+				<CustomIcon name='close' style={[styles.close, { color: themes[theme].titleText }]} size={20} />
 			</Touchable>
 		</View>
 	);

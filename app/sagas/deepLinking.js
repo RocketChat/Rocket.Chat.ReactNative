@@ -5,14 +5,15 @@ import RNUserDefaults from 'rn-user-defaults';
 
 import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
-import { selectServerRequest } from '../actions/server';
+import { selectServerRequest, serverInitAdd } from '../actions/server';
 import { inviteLinksSetToken, inviteLinksRequest } from '../actions/inviteLinks';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';
-import { appStart, ROOT_INSIDE } from '../actions/app';
+import { appStart, ROOT_INSIDE, ROOT_NEW_SERVER } from '../actions/app';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { goRoom } from '../utils/goRoom';
+import callJitsi from '../lib/methods/callJitsi';
 
 const roomTypes = {
 	channel: 'c', direct: 'd', group: 'p', channels: 'l'
@@ -48,7 +49,11 @@ const navigate = function* navigate({ params }) {
 					roomUserId: RocketChat.getUidDirectMessage(room),
 					...room
 				};
-				goRoom({ item, isMasterDetail });
+				yield goRoom({ item, isMasterDetail });
+
+				if (params.isCall) {
+					callJitsi(item.rid);
+				}
 			}
 		} else {
 			yield handleInviteLink({ params });
@@ -57,11 +62,23 @@ const navigate = function* navigate({ params }) {
 };
 
 const handleOpen = function* handleOpen({ params }) {
-	if (!params.host) {
-		return;
-	}
+	const serversDB = database.servers;
+	const serversCollection = serversDB.collections.get('servers');
 
 	let { host } = params;
+	if (params.isCall && !host) {
+		const servers = yield serversCollection.query().fetch();
+		// search from which server is that call
+		servers.forEach(({ uniqueID, id }) => {
+			if (params.path.includes(uniqueID)) {
+				host = id;
+			}
+		});
+	}
+
+	if (!host) {
+		return;
+	}
 	if (!/^(http|https)/.test(host)) {
 		host = `https://${ params.host }`;
 	}
@@ -87,8 +104,6 @@ const handleOpen = function* handleOpen({ params }) {
 		yield navigate({ params });
 	} else {
 		// search if deep link's server already exists
-		const serversDB = database.servers;
-		const serversCollection = serversDB.collections.get('servers');
 		try {
 			const servers = yield serversCollection.find(host);
 			if (servers && user) {
@@ -106,7 +121,8 @@ const handleOpen = function* handleOpen({ params }) {
 		if (!result.success) {
 			return;
 		}
-		Navigation.navigate('NewServerView', { previousServer: server });
+		yield put(appStart({ root: ROOT_NEW_SERVER }));
+		yield put(serverInitAdd(server));
 		yield delay(1000);
 		EventEmitter.emit('NewServer', { server: host });
 

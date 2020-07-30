@@ -31,6 +31,17 @@ export default schemaMigrations({
 			toVersion: 5,
 			steps: [
 				addColumns({
+					table: 'servers',
+					columns: [
+						{ name: 'unique_id', type: 'string', isOptional: true }
+					]
+				})
+			]
+		},
+		{
+			toVersion: 6,
+			steps: [
+				addColumns({
 					table: 'users',
 					columns: [
 						{ name: 'avatar_etag', type: 'string', isOptional: true }
