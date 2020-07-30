@@ -55,7 +55,6 @@ import Navigation from '../../lib/Navigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { getHeaderTitlePosition } from '../../containers/Header';
-import { inquiryTake as inquiryTakeAction } from '../../actions/inquiry';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -95,8 +94,7 @@ class RoomView extends React.Component {
 		replyBroadcast: PropTypes.func,
 		width: PropTypes.number,
 		height: PropTypes.number,
-		insets: PropTypes.object,
-		inquiryTake: PropTypes.func
+		insets: PropTypes.object
 	};
 
 	constructor(props) {
@@ -686,10 +684,9 @@ class RoomView extends React.Component {
 	joinRoom = async() => {
 		try {
 			const { room } = this.state;
-			const { inquiryTake } = this.props;
 
 			if (this.isOmnichannel) {
-				inquiryTake(room._id);
+				await RocketChat.takeInquiry(room._id);
 			} else {
 				await RocketChat.joinRoom(this.rid, this.t);
 			}
@@ -1060,8 +1057,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	replyBroadcast: message => dispatch(replyBroadcastAction(message)),
-	inquiryTake: inquiryId => dispatch(inquiryTakeAction(inquiryId))
+	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomView))));

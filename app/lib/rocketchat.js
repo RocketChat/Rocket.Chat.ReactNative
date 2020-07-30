@@ -51,6 +51,7 @@ import I18n from '../i18n';
 import { twoFactor } from '../utils/twoFactor';
 import { selectServerFailure } from '../actions/server';
 import { useSsl } from '../utils/url';
+import { inquiryQueueRemove } from '../actions/inquiry';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
@@ -845,9 +846,12 @@ const RocketChat = {
 		// RC 2.4.0
 		return this.sdk.get('livechat/inquiries.queued');
 	},
-	takeInquiry(inquiryId) {
+	async takeInquiry(inquiryId) {
 		// RC 2.4.0
-		return this.post('livechat/inquiries.take', { inquiryId });
+		const result = await this.post('livechat/inquiries.take', { inquiryId });
+		if (result.success) {
+			reduxStore.dispatch(inquiryQueueRemove(inquiryId));
+		}
 	},
 
 	getUidDirectMessage(room) {

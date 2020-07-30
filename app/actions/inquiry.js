@@ -1,12 +1,5 @@
 import * as types from './actionsTypes';
 
-export function inquiryTake(inquiryId) {
-	return {
-		type: types.INQUIRY.TAKE,
-		inquiryId
-	};
-}
-
 export function inquirySetEnabled(enabled) {
 	return {
 		type: types.INQUIRY.SET_ENABLED,
