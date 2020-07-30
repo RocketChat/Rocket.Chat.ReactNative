@@ -1,3 +1,4 @@
+import semver from 'semver';
 import store from '../lib/createStore';
 
 const formatUrl = (url, baseUrl, uriSize, avatarAuthURLFragment) => (
@@ -13,8 +14,12 @@ export const avatarURL = ({
 	const uriSize = size === 100 ? 100 : 50;
 
 	let avatarAuthURLFragment = '';
+
+	const serverVersion = store.getState().server.version;
 	const { Accounts_AvatarBlockUnauthenticatedAccess } = store.getState().settings;
-	if (userId && token && Accounts_AvatarBlockUnauthenticatedAccess) {
+	// if server version is less than 3.5.0, always send auth, since Accounts_AvatarBlockUnauthenticatedAccess isn't public
+	const shouldSendAuth = (serverVersion && semver.lt(semver.coerce(serverVersion), '3.5.0')) || Accounts_AvatarBlockUnauthenticatedAccess;
+	if (userId && token && shouldSendAuth) {
 		avatarAuthURLFragment = `&rc_token=${ token }&rc_uid=${ userId }`;
 	}
 
