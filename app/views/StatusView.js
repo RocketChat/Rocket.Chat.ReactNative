@@ -92,7 +92,7 @@ class StatusView extends React.Component {
 	}
 
 	submit = async() => {
-		logEvent(events.EDIT_STATUS_DONE);
+		logEvent(events.STATUS_DONE);
 		const { statusText } = this.state;
 		const { user } = this.props;
 		if (statusText !== user.statusText) {
@@ -115,14 +115,14 @@ class StatusView extends React.Component {
 		try {
 			const result = await RocketChat.setUserStatus(user.status, statusText);
 			if (result.success) {
-				logEvent(events.SET_CUSTOM_STATUS);
+				logEvent(events.STATUS_CUSTOM);
 				EventEmitter.emit(LISTENER, { message: I18n.t('Status_saved_successfully') });
 			} else {
-				logEvent(events.SET_CUSTOM_STATUS_FAIL);
+				logEvent(events.STATUS_CUSTOM_F);
 				EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
 			}
 		} catch {
-			logEvent(events.SET_CUSTOM_STATUS_FAIL);
+			logEvent(events.STATUS_CUSTOM_F);
 			EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
 		}
 
@@ -170,7 +170,7 @@ class StatusView extends React.Component {
 			<ListItem
 				title={I18n.t(name)}
 				onPress={async() => {
-					logEvent(events[`SET_STATUS_${ item.id.toUpperCase() }`]);
+					logEvent(events[`STATUS_${ item.id.toUpperCase() }`]);
 					if (user.status !== item.id) {
 						try {
 							const result = await RocketChat.setUserStatus(item.id, statusText);

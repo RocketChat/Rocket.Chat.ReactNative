@@ -43,6 +43,16 @@ export default {
 	SIDEBAR_NAVIGATE_TO_SETTINGS: 'sidebar_navigate_to_settings',
 	SIDEBAR_NAVIGATE_TO_ADMINPANEL: 'sidebar_navigate_to_admin_panel',
 
+	// STATUS VIEW
+	STATUS_DONE: 'status_done',
+	STATUS_ONLINE: 'status_online',
+	STATUS_BUSY: 'status_busy',
+	STATUS_AWAY: 'status_away',
+	STATUS_OFFLINE: 'status_offline',
+	STATUS_F: 'status_f',
+	STATUS_CUSTOM: 'status_custom',
+	STATUS_CUSTOM_F: 'status_custom_f',
+
 	// ROOMS LIST VIEW
 	RL_TOGGLE_SERVER_DROPDOWN: 'rl_toggle_server_dropdown',
 	RL_ADD_SERVER: 'rl_add_server',
@@ -180,14 +190,7 @@ export default {
 	ACTION_ADD_RECENT_REACTION: 'action_add_recent_reaction',
 	ACTION_ADD_REACTION: 'action_add_reaction',
 	ACTION_REPORT: 'action_report',
-	ACTION_REPORT_FAIL: 'action_report_fail',
-	EDIT_STATUS_DONE: 'edit_status_done',
-	SET_STATUS_ONLINE: 'set_status_online',
-	SET_STATUS_BUSY: 'set_status_busy',
-	SET_STATUS_AWAY: 'set_status_away',
-	SET_STATUS_OFFLINE: 'set_status_offline',
-	SET_STATUS_FAIL: 'set_status_fail',
-	SET_CUSTOM_STATUS: 'set_custom_status',
-	SET_CUSTOM_STATUS_FAIL: 'set_custom_status_fail'
+	ACTION_REPORT_FAIL: 'action_report_fail'
+
 
 };
