@@ -25,6 +25,7 @@ import SelectUsers from './SelectUsers';
 import styles from './styles';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
+import { logEvent, events } from '../../utils/log';
 
 class CreateChannelView extends React.Component {
 	propTypes = {
@@ -129,6 +130,16 @@ class CreateChannelView extends React.Component {
 		);
 	};
 
+	selectChannel = ({ value }) => {
+		logEvent(events.CREATE_DISCUSSION_SELECT_CHANNEL);
+		this.setState({ channel: { rid: value } });
+	}
+
+	selectUsers = ({ value }) => {
+		logEvent(events.CREATE_DISCUSSION_SELECT_USERS);
+		this.setState({ users: value });
+	}
+
 	render() {
 		const { name, users } = this.state;
 		const {
@@ -149,7 +160,7 @@ class CreateChannelView extends React.Component {
 							userId={user.id}
 							token={user.token}
 							initial={this.channel && { text: RocketChat.getRoomTitle(this.channel) }}
-							onChannelSelect={({ value }) => this.setState({ channel: { rid: value } })}
+							onChannelSelect={this.selectChannel}
 							theme={theme}
 						/>
 						<TextInput
@@ -165,7 +176,7 @@ class CreateChannelView extends React.Component {
 							userId={user.id}
 							token={user.token}
 							selected={users}
-							onUserSelect={({ value }) => this.setState({ users: value })}
+							onUserSelect={this.selectUsers}
 							theme={theme}
 						/>
 						<TextInput

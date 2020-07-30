@@ -32,7 +32,7 @@ const loginCall = args => RocketChat.login(args);
 const logoutCall = args => RocketChat.logout(args);
 
 const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false }) {
-	logEvent(events.DEFAULT_LOGIN);
+	logEvent(events.LOGIN_DEFAULT_LOGIN);
 	try {
 		let result;
 		if (credentials.resume) {
@@ -53,7 +53,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 		if (logoutOnError && (e.data && e.data.message && /you've been logged out by the server/i.test(e.data.message))) {
 			yield put(logout(true));
 		} else {
-			logEvent(events.DEFAULT_LOGIN_FAIL);
+			logEvent(events.LOGIN_DEFAULT_LOGIN_F);
 			yield put(loginFailure(e));
 		}
 	}

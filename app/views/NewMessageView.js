@@ -14,7 +14,7 @@ import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
-import log from '../utils/log';
+import log, { logEvent, events } from '../utils/log';
 import SearchBox from '../containers/SearchBox';
 import { CustomIcon } from '../lib/Icons';
 import { CloseModalButton } from '../containers/HeaderButton';
@@ -133,11 +133,13 @@ class NewMessageView extends React.Component {
 	}
 
 	createChannel = () => {
+		logEvent(events.NEW_MSG_CREATE_CHANNEL);
 		const { navigation } = this.props;
 		navigation.navigate('SelectedUsersViewCreateChannel', { nextAction: () => navigation.navigate('CreateChannelView') });
 	}
 
 	createGroupChat = () => {
+		logEvent(events.NEW_MSG_CREATE_GROUP_CHAT);
 		const { createChannel, maxUsers, navigation } = this.props;
 		navigation.navigate('SelectedUsersViewCreateChannel', {
 			nextAction: () => createChannel({ group: true }),
@@ -147,6 +149,7 @@ class NewMessageView extends React.Component {
 	}
 
 	goRoom = (item) => {
+		logEvent(events.NEW_MSG_CHAT_WITH_USER);
 		const { isMasterDetail, navigation } = this.props;
 		if (isMasterDetail) {
 			navigation.pop();
@@ -174,6 +177,7 @@ class NewMessageView extends React.Component {
 	}
 
 	createDiscussion = () => {
+		logEvent(events.NEW_MSG_CREATE_DISCUSSION);
 		Navigation.navigate('CreateDiscussionView');
 	}
 
