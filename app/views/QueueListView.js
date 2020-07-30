@@ -117,6 +117,7 @@ class QueueListView extends React.Component {
 				getRoomTitle={this.getRoomTitle}
 				getRoomAvatar={this.getRoomAvatar}
 				visitor={item.v}
+				swipeEnabled={false}
 			/>
 		);
 	}

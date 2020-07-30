@@ -26,7 +26,8 @@ class Touchable extends React.Component {
 		hideChannel: PropTypes.func,
 		children: PropTypes.element,
 		theme: PropTypes.string,
-		isFocused: PropTypes.bool
+		isFocused: PropTypes.bool,
+		swipeEnabled: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -168,7 +169,7 @@ class Touchable extends React.Component {
 
 		render() {
 			const {
-				testID, isRead, width, favorite, children, theme, isFocused
+				testID, isRead, width, favorite, children, theme, isFocused, swipeEnabled
 			} = this.props;
 
 			return (
@@ -177,6 +178,7 @@ class Touchable extends React.Component {
 					minDeltaX={20}
 					onGestureEvent={this._onGestureEvent}
 					onHandlerStateChange={this._onHandlerStateChange}
+					enabled={swipeEnabled}
 				>
 					<Animated.View>
 						<LeftActions
