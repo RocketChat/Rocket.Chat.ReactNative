@@ -18,7 +18,7 @@ import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import RocketChat from '../../lib/rocketchat';
 import RCTextInput from '../../containers/TextInput';
-import log from '../../utils/log';
+import log, { logEvent, events } from '../../utils/log';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
@@ -223,8 +223,10 @@ class ProfileView extends React.Component {
 		try {
 			if (avatar.url) {
 				try {
+					logEvent(events.PROFILE_SAVE_AVATAR);
 					await RocketChat.setAvatarFromService(avatar);
 				} catch (e) {
+					logEvent(events.PROFILE_SAVE_AVATAR_F);
 					this.setState({ saving: false, currentPassword: null });
 					return this.handleError(e, 'setAvatarFromService', 'changing_avatar');
 				}
@@ -233,6 +235,7 @@ class ProfileView extends React.Component {
 			const result = await RocketChat.saveUserProfile(params, customFields);
 
 			if (result.success) {
+				logEvent(events.PROFILE_SAVE_CHANGES);
 				if (customFields) {
 					setUser({ customFields, ...params });
 				} else {
@@ -243,6 +246,7 @@ class ProfileView extends React.Component {
 			}
 			this.setState({ saving: false });
 		} catch (e) {
+			logEvent(events.PROFILE_SAVE_CHANGES_F);
 			this.setState({ saving: false, currentPassword: null });
 			this.handleError(e, 'saveUserProfile', 'saving_profile');
 		}
@@ -281,11 +285,18 @@ class ProfileView extends React.Component {
 			includeBase64: true
 		};
 		try {
+			logEvent(events.PROFILE_PICK_AVATAR);
 			const response = await ImagePicker.openPicker(options);
 			this.setAvatar({ url: response.path, data: `data:image/jpeg;base64,${ response.data }`, service: 'upload' });
 		} catch (error) {
+			logEvent(events.PROFILE_PICK_AVATAR_F);
 			console.warn(error);
 		}
+	}
+
+	pickImageWithURL = (avatarUrl) => {
+		logEvent(events.PROFILE_PICK_AVATAR_WITH_URL);
+		this.setAvatar({ url: avatarUrl, data: avatarUrl, service: 'url' });
 	}
 
 	renderAvatarButton = ({
@@ -331,7 +342,7 @@ class ProfileView extends React.Component {
 				})}
 				{this.renderAvatarButton({
 					child: <CustomIcon name='link' size={30} color={themes[theme].bodyText} />,
-					onPress: () => this.setAvatar({ url: avatarUrl, data: avatarUrl, service: 'url' }),
+					onPress: () => this.pickImageWithURL(avatarUrl),
 					disabled: !avatarUrl,
 					key: 'profile-view-avatar-url-button'
 				})}
