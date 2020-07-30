@@ -59,7 +59,7 @@ export default async function canOpenRoom({ rid, path, isCall }) {
 		const db = database.active;
 		const subsCollection = db.collections.get('subscriptions');
 
-		if (isCall) {
+		if (isCall && !rid) {
 			// Extract rid from a Jitsi URL
 			// Eg.: [Jitsi_URL_Room_Prefix][uniqueID][rid][?jwt]
 			const { Jitsi_URL_Room_Prefix, uniqueID } = store.getState().settings;

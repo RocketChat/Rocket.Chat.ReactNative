@@ -66,7 +66,7 @@ const handleOpen = function* handleOpen({ params }) {
 	const serversCollection = serversDB.collections.get('servers');
 
 	let { host } = params;
-	if (params.isCall) {
+	if (params.isCall && !host) {
 		const servers = yield serversCollection.query().fetch();
 		// search from which server is that call
 		servers.forEach(({ uniqueID, id }) => {
