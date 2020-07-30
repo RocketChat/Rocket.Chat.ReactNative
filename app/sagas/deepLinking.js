@@ -94,7 +94,10 @@ const handleOpen = function* handleOpen({ params }) {
 
 	// If there's host, continue
 	if (!/^(http|https)/.test(host)) {
-		host = `https://${ params.host }`;
+		host = `https://${ host }`;
+	} else {
+		// Notification should always come from https
+		host = host.replace('http://', 'https://');
 	}
 	// remove last "/" from host
 	if (host.slice(-1) === '/') {
