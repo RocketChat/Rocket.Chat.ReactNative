@@ -45,6 +45,10 @@ Avatar.propTypes = {
 	text: PropTypes.string,
 	type: PropTypes.string
 };
+Avatar.defaultProps = {
+	text: '',
+	type: 'd'
+};
 
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
