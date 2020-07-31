@@ -53,9 +53,9 @@ const OPTIONS = {
 };
 
 class InviteUsersView extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: I18n.t('Invite_users')
-	}
+	})
 
 	static propTypes = {
 		navigation: PropTypes.object,

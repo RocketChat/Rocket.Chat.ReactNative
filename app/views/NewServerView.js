@@ -62,9 +62,9 @@ const styles = StyleSheet.create({
 });
 
 class NewServerView extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: I18n.t('Workspaces')
-	}
+	})
 
 	static propTypes = {
 		navigation: PropTypes.object,

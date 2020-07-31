@@ -47,7 +47,8 @@ const RoomItemContainer = React.memo(({
 	getRoomTitle,
 	getRoomAvatar,
 	getIsGroupChat,
-	getIsRead
+	getIsRead,
+	swipeEnabled
 }) => {
 	const [, setForceUpdate] = useState(1);
 	const [avatarETag, setAvatarETag] = useState('');
@@ -149,6 +150,7 @@ const RoomItemContainer = React.memo(({
 			unread={item.unread}
 			groupMentions={item.groupMentions}
 			avatarETag={avatarETag}
+			swipeEnabled={swipeEnabled}
 		/>
 	);
 }, arePropsEqual);
@@ -177,7 +179,8 @@ RoomItemContainer.propTypes = {
 	getRoomTitle: PropTypes.func,
 	getRoomAvatar: PropTypes.func,
 	getIsGroupChat: PropTypes.func,
-	getIsRead: PropTypes.func
+	getIsRead: PropTypes.func,
+	swipeEnabled: PropTypes.bool
 };
 
 RoomItemContainer.defaultProps = {
@@ -187,7 +190,8 @@ RoomItemContainer.defaultProps = {
 	getRoomTitle: () => 'title',
 	getRoomAvatar: () => '',
 	getIsGroupChat: () => false,
-	getIsRead: () => false
+	getIsRead: () => false,
+	swipeEnabled: true
 };
 
 const mapStateToProps = (state, ownProps) => {

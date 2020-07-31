@@ -60,6 +60,7 @@ export default {
 	RL_NAVIGATE_TO_NEW_MSG: 'rl_navigate_to_new_msg',
 	RL_SEARCH: 'rl_search',
 	RL_NAVIGATE_TO_DIRECTORY: 'rl_navigate_to_directory',
+	RL_GO_QUEUE: 'rl_go_queue',
 	RL_GO_TO_ROOM: 'rl_go_to_room',
 	RL_FAVORITE_CHANNEL: 'rl_favorite_channel',
 	RL_UNFAVORITE_CHANNEL: 'rl_unfavorite_channel',
@@ -76,6 +77,8 @@ export default {
 	RL_GROUP_CHANNELS_BY_TYPE: 'rl_group_channels_by_type',
 	RL_GROUP_CHANNELS_BY_FAVORITE: 'rl_group_channels_by_favorite',
 	RL_GROUP_CHANNELS_BY_UNREAD: 'rl_group_channels_by_unread',
+
+	QL_GO_ROOM: 'ql_go_room',
 
 	// DIRECTORY VIEW
 	DIRECTORY_SEARCH_USERS: 'directory_search_users',
@@ -193,5 +196,6 @@ export default {
 	ROOM_MSG_ACTION_PIN_F: 'room_msg_action_pin_f',
 	ROOM_MSG_ACTION_REACTION: 'room_msg_action_reaction',
 	ROOM_MSG_ACTION_REPORT: 'room_msg_action_report',
-	ROOM_MSG_ACTION_REPORT_F: 'room_msg_action_report_f'
+	ROOM_MSG_ACTION_REPORT_F: 'room_msg_action_report_f',
+	ROOM_JOIN: 'room_join'
 };
