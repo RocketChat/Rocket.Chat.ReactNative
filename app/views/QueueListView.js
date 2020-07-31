@@ -18,6 +18,7 @@ import { goRoom } from '../utils/goRoom';
 import { CloseModalButton } from '../containers/HeaderButton';
 import RocketChat from '../lib/rocketchat';
 import { logEvent, events } from '../utils/log';
+import { getInquiryQueueSelector } from '../selectors/inquiry';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const getItemLayout = (data, index) => ({
@@ -154,6 +155,6 @@ const mapStateToProps = state => ({
 	isMasterDetail: state.app.isMasterDetail,
 	server: state.server.server,
 	useRealName: state.settings.UI_Use_Real_Name,
-	queued: state.inquiry.queued
+	queued: getInquiryQueueSelector(state)
 });
 export default connect(mapStateToProps)(withDimensions(withTheme(QueueListView)));

@@ -63,6 +63,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
 import { showErrorAlert } from '../../utils/info';
+import { getInquiryQueueSelector } from '../../selectors/inquiry';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
@@ -983,7 +984,7 @@ const mapStateToProps = state => ({
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	StoreLastMessage: state.settings.Store_Last_Message,
 	rooms: state.room.rooms,
-	queueSize: state.inquiry.queued.length,
+	queueSize: getInquiryQueueSelector(state).length,
 	inquiryEnabled: state.inquiry.enabled
 });
 
