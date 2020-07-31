@@ -40,7 +40,7 @@ const UpdatedAt = React.memo(({
 
 UpdatedAt.propTypes = {
 	roomUpdatedAt: PropTypes.instanceOf(Date),
-	date: PropTypes.instanceOf(Date),
+	date: PropTypes.string,
 	theme: PropTypes.string,
 	hideUnreadStatus: PropTypes.bool,
 	alert: PropTypes.bool

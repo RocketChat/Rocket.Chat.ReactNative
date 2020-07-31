@@ -61,75 +61,124 @@ const RoomItem = ({
 		theme={theme}
 		isFocused={isFocused}
 	>
-		<View
-			style={styles.container}
-			accessibilityLabel={accessibilityLabel}
-		>
-			<Avatar
-				text={avatar}
-				size={avatarSize}
-				type={type}
-				baseUrl={baseUrl}
-				style={styles.avatar}
-				userId={userId}
-				token={token}
-			/>
-			<View
-				style={[
-					styles.centerContainer,
-					{
-						borderColor: themes[theme].separatorColor
-					}
-				]}
-			>
-				<View style={styles.titleContainer}>
-					<TypeIcon
+		{showLastMessage
+			? (
+				<View
+					style={styles.container}
+					accessibilityLabel={accessibilityLabel}
+				>
+					<Avatar
+						text={avatar}
+						size={avatarSize}
 						type={type}
-						prid={prid}
-						status={status}
-						isGroupChat={isGroupChat}
-						theme={theme}
+						baseUrl={baseUrl}
+						style={styles.avatar}
+						userId={userId}
+						token={token}
 					/>
-					<Title
-						name={name}
-						theme={theme}
-						hideUnreadStatus={hideUnreadStatus}
-						alert={alert}
-					/>
-					<UpdatedAt
-						roomUpdatedAt={roomUpdatedAt}
-						date={date}
-						theme={theme}
-						hideUnreadStatus={hideUnreadStatus}
-						alert={alert}
-					/>
+					<View
+						style={[
+							styles.centerContainer,
+							{
+								borderColor: themes[theme].separatorColor
+							}
+						]}
+					>
+						<View style={styles.titleContainer}>
+							<TypeIcon
+								type={type}
+								prid={prid}
+								status={status}
+								isGroupChat={isGroupChat}
+								theme={theme}
+							/>
+							<Title
+								name={name}
+								theme={theme}
+								hideUnreadStatus={hideUnreadStatus}
+								alert={alert}
+							/>
+							<UpdatedAt
+								roomUpdatedAt={roomUpdatedAt}
+								date={date}
+								theme={theme}
+								hideUnreadStatus={hideUnreadStatus}
+								alert={alert}
+							/>
+						</View>
+						<View style={styles.row}>
+							<LastMessage
+								lastMessage={lastMessage}
+								type={type}
+								showLastMessage={showLastMessage}
+								username={username}
+								alert={alert && !hideUnreadStatus}
+								useRealName={useRealName}
+								theme={theme}
+							/>
+							<UnreadBadge
+								unread={unread}
+								userMentions={userMentions}
+								groupMentions={groupMentions}
+								theme={theme}
+							/>
+						</View>
+					</View>
 				</View>
-				<View style={styles.row}>
-					<LastMessage
-						lastMessage={lastMessage}
+			)
+			: (
+				<View
+					style={styles.container}
+					accessibilityLabel={accessibilityLabel}
+				>
+					<Avatar
+						text={avatar}
+						size={avatarSize}
 						type={type}
-						showLastMessage={showLastMessage}
-						username={username}
-						alert={alert && !hideUnreadStatus}
-						useRealName={useRealName}
-						theme={theme}
+						baseUrl={baseUrl}
+						style={styles.avatar}
+						userId={userId}
+						token={token}
 					/>
-					<UnreadBadge
-						unread={unread}
-						userMentions={userMentions}
-						groupMentions={groupMentions}
-						theme={theme}
-					/>
+					<View
+						style={[
+							styles.centerContainer,
+							{
+								borderColor: themes[theme].separatorColor
+							}
+						]}
+					>
+						<View style={[styles.titleContainer, { flex: 1 }]}>
+							<TypeIcon
+								type={type}
+								prid={prid}
+								status={status}
+								isGroupChat={isGroupChat}
+								theme={theme}
+							/>
+							<Title
+								name={name}
+								theme={theme}
+								hideUnreadStatus={hideUnreadStatus}
+								alert={alert}
+							/>
+							<UnreadBadge
+								unread={unread}
+								userMentions={userMentions}
+								groupMentions={groupMentions}
+								theme={theme}
+							/>
+						</View>
+					</View>
 				</View>
-			</View>
-		</View>
+			)}
 	</Touchable>
 );
 
 RoomItem.propTypes = {
 	rid: PropTypes.string.isRequired,
 	type: PropTypes.string.isRequired,
-	prid: PropTypes.string.isRequired,
+	prid: PropTypes.string,
 	name: PropTypes.string.isRequired,
 	avatar: PropTypes.string.isRequired,
 	baseUrl: PropTypes.string.isRequired,
@@ -146,9 +195,9 @@ RoomItem.propTypes = {
 	isFocused: PropTypes.bool,
 	isGroupChat: PropTypes.bool,
 	isRead: PropTypes.bool,
-	date: PropTypes.instanceOf(Date),
+	date: PropTypes.string,
 	accessibilityLabel: PropTypes.string,
-	lastMessage: PropTypes.string,
+	lastMessage: PropTypes.object,
 	favorite: PropTypes.bool,
 	alert: PropTypes.bool,
 	hideUnreadStatus: PropTypes.bool,
