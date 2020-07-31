@@ -79,7 +79,7 @@ export default function subscribeInquiry() {
 
 				const departmentIds = departments.map(({ departmentId }) => departmentId);
 				departmentIds.forEach((departmentId) => {
-					// we should subscribe to all departments of the agent
+					// subscribe to all departments of the agent
 					this.sdk.subscribe(streamTopic, `department/${ departmentId }`).catch(e => console.log(e));
 				});
 			}

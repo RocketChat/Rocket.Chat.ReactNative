@@ -8,7 +8,7 @@ const handleRequest = function* handleRequest() {
 	try {
 		const routingConfig = yield RocketChat.getRoutingConfig();
 		const statusLivechat = yield select(state => state.login.user.statusLivechat);
-		// if routingConfig showQueue is enabled and the user is available to omnichannel
+		// if routingConfig showQueue is enabled and omnichannel is enabled
 		const showQueue = routingConfig.showQueue && statusLivechat === 'available';
 
 		if (showQueue) {

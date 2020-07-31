@@ -135,7 +135,7 @@ class QueueListView extends React.Component {
 					data={queued}
 					extraData={queued}
 					keyExtractor={keyExtractor}
-					style={[{ backgroundColor: themes[theme].backgroundColor }]}
+					style={{ backgroundColor: themes[theme].backgroundColor }}
 					renderItem={this.renderItem}
 					getItemLayout={getItemLayout}
 					removeClippedSubviews={isIOS}
