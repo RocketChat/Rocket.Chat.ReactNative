@@ -4,7 +4,7 @@ import { View } from 'react-native';
 
 import styles from './styles';
 import Wrapper from './Wrapper';
-import UnreadBadge from './UnreadBadge';
+import UnreadBadge from '../UnreadBadge';
 import TypeIcon from './TypeIcon';
 import LastMessage from './LastMessage';
 import Title from './Title';
@@ -41,6 +41,7 @@ const RoomItem = ({
 	groupMentions,
 	roomUpdatedAt,
 	testID,
+	swipeEnabled,
 	onPress,
 	toggleFav,
 	toggleRead,
@@ -59,6 +60,7 @@ const RoomItem = ({
 		type={type}
 		theme={theme}
 		isFocused={isFocused}
+		swipeEnabled={swipeEnabled}
 	>
 		<Wrapper
 			accessibilityLabel={accessibilityLabel}
@@ -172,6 +174,7 @@ RoomItem.propTypes = {
 	userMentions: PropTypes.number,
 	groupMentions: PropTypes.number,
 	roomUpdatedAt: PropTypes.instanceOf(Date),
+	swipeEnabled: PropTypes.bool,
 	toggleFav: PropTypes.func,
 	toggleRead: PropTypes.func,
 	onPress: PropTypes.func,
@@ -180,7 +183,8 @@ RoomItem.propTypes = {
 
 RoomItem.defaultProps = {
 	avatarSize: 48,
-	status: 'offline'
+	status: 'offline',
+	swipeEnabled: true
 };
 
 export default RoomItem;

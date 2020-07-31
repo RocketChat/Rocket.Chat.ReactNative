@@ -16,6 +16,7 @@ import activeUsers from './activeUsers';
 import usersTyping from './usersTyping';
 import inviteLinks from './inviteLinks';
 import createDiscussion from './createDiscussion';
+import inquiry from './inquiry';
 
 export default combineReducers({
 	settings,
@@ -34,5 +35,6 @@ export default combineReducers({
 	activeUsers,
 	usersTyping,
 	inviteLinks,
-	createDiscussion
+	createDiscussion,
+	inquiry
 });
