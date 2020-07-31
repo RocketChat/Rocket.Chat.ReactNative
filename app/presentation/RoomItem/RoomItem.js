@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 
 import Avatar from '../../containers/Avatar';
 import styles from './styles';
 import UnreadBadge from './UnreadBadge';
 import TypeIcon from './TypeIcon';
 import LastMessage from './LastMessage';
-import { capitalize } from '../../utils/room';
+import Title from './Title';
+import UpdatedAt from './UpdatedAt';
 import Touchable from './Touchable';
 import { themes } from '../../constants/colors';
 
@@ -89,41 +90,19 @@ const RoomItem = ({
 						isGroupChat={isGroupChat}
 						theme={theme}
 					/>
-					<Text
-						style={[
-							styles.title,
-							alert && !hideUnreadStatus && styles.alert,
-							{ color: themes[theme].titleText }
-						]}
-						ellipsizeMode='tail'
-						numberOfLines={1}
-					>
-						{name}
-					</Text>
-					{roomUpdatedAt ? (
-						<Text
-							style={[
-								styles.date,
-								{
-									color:
-										themes[theme]
-											.auxiliaryText
-								},
-								alert && !hideUnreadStatus && [
-									styles.updateAlert,
-									{
-										color:
-											themes[theme]
-												.tintColor
-									}
-								]
-							]}
-							ellipsizeMode='tail'
-							numberOfLines={1}
-						>
-							{capitalize(date)}
-						</Text>
-					) : null}
+					<Title
+						name={name}
+						theme={theme}
+						hideUnreadStatus={hideUnreadStatus}
+						alert={alert}
+					/>
+					<UpdatedAt
+						roomUpdatedAt={roomUpdatedAt}
+						date={date}
+						theme={theme}
+						hideUnreadStatus={hideUnreadStatus}
+						alert={alert}
+					/>
 				</View>
 				<View style={styles.row}>
 					<LastMessage
