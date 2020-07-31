@@ -246,10 +246,6 @@ const RocketChat = {
 
 			this.usersListener = this.sdk.onStreamData('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
 
-			this.sdk.subscribe('stream-notify-logged', 'updateAvatar');
-
-			this.sdk.subscribe('stream-notify-logged', 'Users:NameChanged');
-
 			this.notifyLoggedListener = this.sdk.onStreamData('stream-notify-logged', protectedFunction(async(ddpMessage) => {
 				const { eventName } = ddpMessage.fields;
 				if (/user-status/.test(eventName)) {

@@ -22,6 +22,9 @@ export function subscribeUsersPresence() {
 	} else {
 		this.sdk.subscribe('stream-notify-logged', 'user-status');
 	}
+
+	this.sdk.subscribe('stream-notify-logged', 'updateAvatar');
+	this.sdk.subscribe('stream-notify-logged', 'Users:NameChanged');
 }
 
 let ids = [];
