@@ -4261,20 +4261,6 @@ exports[`Storyshots Message list message 1`] = `
             style={
               Array [
                 Object {
-                  "borderRadius": 4,
-                  "height": 36,
-                  "width": 36,
-                },
-                Object {
-                  "marginTop": 4,
-                },
-              ]
-            }
-          />
-          <View
-            style={
-              Array [
-                Object {
                   "flex": 1,
                   "marginLeft": 46,
                 },
