@@ -51,23 +51,6 @@ export default StyleSheet.create({
 	updateAlert: {
 		...sharedStyles.textSemibold
 	},
-	unreadNumberContainer: {
-		minWidth: 21,
-		height: 21,
-		paddingVertical: 3,
-		paddingHorizontal: 5,
-		borderRadius: 10.5,
-		alignItems: 'center',
-		justifyContent: 'center',
-		marginLeft: 10
-	},
-	unreadText: {
-		overflow: 'hidden',
-		fontSize: 13,
-		...sharedStyles.textMedium,
-		letterSpacing: 0.56,
-		textAlign: 'center'
-	},
 	status: {
 		marginLeft: 4,
 		marginRight: 7,

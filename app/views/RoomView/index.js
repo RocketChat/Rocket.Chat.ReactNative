@@ -282,6 +282,11 @@ class RoomView extends React.Component {
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
+	get isOmnichannel() {
+		const { room } = this.state;
+		return room.t === 'l';
+	}
+
 	setHeader = () => {
 		const { room, unreadsCount, roomUserId: stateRoomUserId } = this.state;
 		const {
@@ -678,8 +683,15 @@ class RoomView extends React.Component {
 	setLastOpen = lastOpen => this.setState({ lastOpen });
 
 	joinRoom = async() => {
+		logEvent(events.ROOM_JOIN);
 		try {
-			await RocketChat.joinRoom(this.rid, this.t);
+			const { room } = this.state;
+
+			if (this.isOmnichannel) {
+				await RocketChat.takeInquiry(room._id);
+			} else {
+				await RocketChat.joinRoom(this.rid, this.t);
+			}
 			this.internalSetState({
 				joined: true
 			});
@@ -896,7 +908,7 @@ class RoomView extends React.Component {
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
 						theme={theme}
 					>
-						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-join-button'>{I18n.t('Join')}</Text>
+						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-join-button'>{I18n.t(this.isOmnichannel ? 'Take_it' : 'Join')}</Text>
 					</Touch>
 				</View>
 			);
