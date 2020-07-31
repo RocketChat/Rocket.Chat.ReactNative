@@ -139,9 +139,9 @@ const OPTIONS = {
 };
 
 class NotificationPreferencesView extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: I18n.t('Notification_Preferences')
-	}
+	})
 
 	static propTypes = {
 		navigation: PropTypes.object,

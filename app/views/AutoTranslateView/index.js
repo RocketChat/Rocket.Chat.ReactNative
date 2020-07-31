@@ -48,13 +48,14 @@ SectionSeparator.propTypes = {
 };
 
 class AutoTranslateView extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: I18n.t('Auto_Translate')
-	}
+	})
 
 	static propTypes = {
 		route: PropTypes.object,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		navigation: PropTypes.object
 	}
 
 	constructor(props) {
