@@ -683,6 +683,7 @@ class RoomView extends React.Component {
 	setLastOpen = lastOpen => this.setState({ lastOpen });
 
 	joinRoom = async() => {
+		logEvent(events.ROOM_JOIN);
 		try {
 			const { room } = this.state;
 

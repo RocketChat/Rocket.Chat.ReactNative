@@ -17,6 +17,7 @@ import StatusBar from '../containers/StatusBar';
 import { goRoom } from '../utils/goRoom';
 import { CloseModalButton } from '../containers/HeaderButton';
 import RocketChat from '../lib/rocketchat';
+import { logEvent, events } from '../utils/log';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const getItemLayout = (data, index) => ({
@@ -62,6 +63,7 @@ class QueueListView extends React.Component {
 	}
 
 	onPressItem = (item = {}) => {
+		logEvent(events.QL_GO_ROOM);
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('DrawerNavigator');
