@@ -26,6 +26,17 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 5,
+			steps: [
+				addColumns({
+					table: 'servers',
+					columns: [
+						{ name: 'unique_id', type: 'string', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });

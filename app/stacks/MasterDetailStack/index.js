@@ -139,7 +139,6 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 				<ModalStack.Screen
 					name='MessagesView'
 					component={MessagesView}
-					options={MessagesView.navigationOptions}
 				/>
 				<ModalStack.Screen
 					name='AutoTranslateView'

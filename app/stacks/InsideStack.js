@@ -112,7 +112,6 @@ const ChatsStackNavigator = () => {
 			<ChatsStack.Screen
 				name='MessagesView'
 				component={MessagesView}
-				options={MessagesView.navigationOptions}
 			/>
 			<ChatsStack.Screen
 				name='AutoTranslateView'
