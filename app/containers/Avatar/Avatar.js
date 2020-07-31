@@ -8,7 +8,21 @@ import { avatarURL } from '../../utils/avatar';
 import Emoji from '../markdown/Emoji';
 
 const Avatar = React.memo(({
-	text, size, server, borderRadius, style, avatar, type, children, user, onPress, emoji, theme, getCustomEmoji, avatarETag
+	text,
+	size,
+	server,
+	borderRadius,
+	style,
+	avatar,
+	type,
+	children,
+	user,
+	onPress,
+	emoji,
+	theme,
+	getCustomEmoji,
+	avatarETag,
+	isStatic
 }) => {
 	if ((!text && !avatar) || !server) {
 		return null;
@@ -46,7 +60,7 @@ const Avatar = React.memo(({
 			<FastImage
 				style={avatarStyle}
 				source={{
-					uri,
+					uri: isStatic ? avatar : uri,
 					headers: RocketChatSettings.customHeaders,
 					priority: FastImage.priority.high
 				}}
@@ -82,7 +96,8 @@ Avatar.propTypes = {
 	theme: PropTypes.string,
 	onPress: PropTypes.func,
 	getCustomEmoji: PropTypes.func,
-	avatarETag: PropTypes.string
+	avatarETag: PropTypes.string,
+	isStatic: PropTypes.bool
 };
 
 Avatar.defaultProps = {

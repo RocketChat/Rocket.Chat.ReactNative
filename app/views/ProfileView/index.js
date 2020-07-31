@@ -452,7 +452,8 @@ class ProfileView extends React.Component {
 						<View style={styles.avatarContainer} testID='profile-view-avatar'>
 							<Avatar
 								text={username}
-								avatar={avatar && avatar.url}
+								avatar={avatar?.url}
+								isStatic={avatar?.url}
 								size={100}
 							/>
 						</View>
