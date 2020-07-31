@@ -427,6 +427,7 @@ class ProfileView extends React.Component {
 			name, username, email, newPassword, avatarUrl, customFields, avatar, saving
 		} = this.state;
 		const {
+			user,
 			theme,
 			Accounts_AllowEmailChange,
 			Accounts_AllowPasswordChange,
@@ -451,7 +452,7 @@ class ProfileView extends React.Component {
 					>
 						<View style={styles.avatarContainer} testID='profile-view-avatar'>
 							<Avatar
-								text={username}
+								text={user.username}
 								avatar={avatar?.url}
 								isStatic={avatar?.url}
 								size={100}
