@@ -8,6 +8,9 @@ export const SMALL_SWIPE = ACTION_WIDTH / 2;
 export const LONG_SWIPE = ACTION_WIDTH * 3;
 
 export default StyleSheet.create({
+	flex: {
+		flex: 1
+	},
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
