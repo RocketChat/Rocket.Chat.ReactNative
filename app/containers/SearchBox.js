@@ -61,7 +61,7 @@ const SearchBox = ({
 		]}
 	>
 		<View style={[styles.searchBox, { backgroundColor: themes[theme].searchboxBackground }]}>
-			<CustomIcon name='magnifier' size={14} color={themes[theme].auxiliaryText} />
+			<CustomIcon name='search' size={14} color={themes[theme].auxiliaryText} />
 			<TextInput
 				ref={inputRef}
 				autoCapitalize='none'

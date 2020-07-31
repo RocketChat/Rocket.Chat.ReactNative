@@ -71,58 +71,58 @@ Info.propTypes = {
 
 const OPTIONS = {
 	desktopNotifications: [{
-		label: I18n.t('Default'), value: 'default'
+		label: 'Default', value: 'default'
 	}, {
-		label: I18n.t('All_Messages'), value: 'all'
+		label: 'All_Messages', value: 'all'
 	}, {
-		label: I18n.t('Mentions'), value: 'mentions'
+		label: 'Mentions', value: 'mentions'
 	}, {
-		label: I18n.t('Nothing'), value: 'nothing'
+		label: 'Nothing', value: 'nothing'
 	}],
 	audioNotifications: [{
-		label: I18n.t('Default'), value: 'default'
+		label: 'Default', value: 'default'
 	}, {
-		label: I18n.t('All_Messages'), value: 'all'
+		label: 'All_Messages', value: 'all'
 	}, {
-		label: I18n.t('Mentions'), value: 'mentions'
+		label: 'Mentions', value: 'mentions'
 	}, {
-		label: I18n.t('Nothing'), value: 'nothing'
+		label: 'Nothing', value: 'nothing'
 	}],
 	mobilePushNotifications: [{
-		label: I18n.t('Default'), value: 'default'
+		label: 'Default', value: 'default'
 	}, {
-		label: I18n.t('All_Messages'), value: 'all'
+		label: 'All_Messages', value: 'all'
 	}, {
-		label: I18n.t('Mentions'), value: 'mentions'
+		label: 'Mentions', value: 'mentions'
 	}, {
-		label: I18n.t('Nothing'), value: 'nothing'
+		label: 'Nothing', value: 'nothing'
 	}],
 	emailNotifications: [{
-		label: I18n.t('Default'), value: 'default'
+		label: 'Default', value: 'default'
 	}, {
-		label: I18n.t('All_Messages'), value: 'all'
+		label: 'All_Messages', value: 'all'
 	}, {
-		label: I18n.t('Mentions'), value: 'mentions'
+		label: 'Mentions', value: 'mentions'
 	}, {
-		label: I18n.t('Nothing'), value: 'nothing'
+		label: 'Nothing', value: 'nothing'
 	}],
 	desktopNotificationDuration: [{
-		label: I18n.t('Default'), value: 0
+		label: 'Default', value: 0
 	}, {
-		label: I18n.t('Seconds', { second: 1 }), value: 1
+		label: 'Seconds', second: 1, value: 1
 	}, {
-		label: I18n.t('Seconds', { second: 2 }), value: 2
+		label: 'Seconds', second: 2, value: 2
 	}, {
-		label: I18n.t('Seconds', { second: 3 }), value: 3
+		label: 'Seconds', second: 3, value: 3
 	}, {
-		label: I18n.t('Seconds', { second: 4 }), value: 4
+		label: 'Seconds', second: 4, value: 4
 	}, {
-		label: I18n.t('Seconds', { second: 5 }), value: 5
+		label: 'Seconds', second: 5, value: 5
 	}],
 	audioNotificationValue: [{
 		label: 'None', value: 'none None'
 	}, {
-		label: I18n.t('Default'), value: '0 Default'
+		label: 'Default', value: '0 Default'
 	}, {
 		label: 'Beep', value: 'beep Beep'
 	}, {
@@ -229,7 +229,7 @@ class NotificationPreferencesView extends React.Component {
 		const { room } = this.state;
 		const { theme } = this.props;
 		const text = room[key] ? OPTIONS[key].find(option => option.value === room[key]) : OPTIONS[key][0];
-		return <Text style={[styles.pickerText, { color: themes[theme].actionTintColor }]}>{text?.label}</Text>;
+		return <Text style={[styles.pickerText, { color: themes[theme].actionTintColor }]}>{I18n.t(text?.label, { defaultValue: text?.label, second: text?.second })}</Text>;
 	}
 
 	renderSwitch = (key) => {

@@ -21,9 +21,6 @@ import SafeAreaView from '../../containers/SafeAreaView';
 
 const OPTIONS = {
 	days: [{
-		label: I18n.t('Never'), value: 0
-	},
-	{
 		label: '1', value: 1
 	},
 	{
@@ -36,9 +33,6 @@ const OPTIONS = {
 		label: '30', value: 30
 	}],
 	maxUses: [{
-		label: I18n.t('No_limit'), value: 0
-	},
-	{
 		label: '1', value: 1
 	},
 	{
@@ -91,9 +85,12 @@ class InviteUsersView extends React.Component {
 		navigation.pop();
 	}
 
-	renderPicker = (key) => {
+	renderPicker = (key, first) => {
 		const { props } = this;
 		const { theme } = props;
+		const firstEl = [{
+			label: I18n.t(first), value: 0
+		}];
 		return (
 			<RNPickerSelect
 				style={{ viewContainer: styles.viewContainer }}
@@ -102,7 +99,7 @@ class InviteUsersView extends React.Component {
 				useNativeAndroidPickerStyle={false}
 				placeholder={{}}
 				onValueChange={value => this.onValueChangePicker(key, value)}
-				items={OPTIONS[key]}
+				items={firstEl.concat(OPTIONS[key])}
 			/>
 		);
 	}
@@ -121,13 +118,13 @@ class InviteUsersView extends React.Component {
 					<Separator theme={theme} />
 					<ListItem
 						title={I18n.t('Expiration_Days')}
-						right={() => this.renderPicker('days')}
+						right={() => this.renderPicker('days', 'Never')}
 						theme={theme}
 					/>
 					<Separator theme={theme} />
 					<ListItem
 						title={I18n.t('Max_number_of_uses')}
-						right={() => this.renderPicker('maxUses')}
+						right={() => this.renderPicker('maxUses', 'No_limit')}
 						theme={theme}
 					/>
 					<Separator theme={theme} />

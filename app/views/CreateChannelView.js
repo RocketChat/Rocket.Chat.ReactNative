@@ -21,6 +21,7 @@ import { SWITCH_TRACK_COLOR, themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { Review } from '../utils/review';
 import { getUserSelector } from '../selectors/login';
+import { logEvent, events } from '../utils/log';
 import SafeAreaView from '../containers/SafeAreaView';
 
 const styles = StyleSheet.create({
@@ -166,6 +167,7 @@ class CreateChannelView extends React.Component {
 	}
 
 	removeUser = (user) => {
+		logEvent(events.CREATE_CHANNEL_REMOVE_USER);
 		const { removeUser } = this.props;
 		removeUser(user);
 	}
@@ -194,7 +196,10 @@ class CreateChannelView extends React.Component {
 			id: 'type',
 			value: type,
 			label: 'Private_Channel',
-			onValueChange: value => this.setState({ type: value })
+			onValueChange: (value) => {
+				logEvent(events.CREATE_CHANNEL_TOGGLE_TYPE);
+				this.setState({ type: value });
+			}
 		});
 	}
 
@@ -204,7 +209,10 @@ class CreateChannelView extends React.Component {
 			id: 'readonly',
 			value: readOnly,
 			label: 'Read_Only_Channel',
-			onValueChange: value => this.setState({ readOnly: value }),
+			onValueChange: (value) => {
+				logEvent(events.CREATE_CHANNEL_TOGGLE_READ_ONLY);
+				this.setState({ readOnly: value });
+			},
 			disabled: broadcast
 		});
 	}
@@ -216,6 +224,7 @@ class CreateChannelView extends React.Component {
 			value: broadcast,
 			label: 'Broadcast_Channel',
 			onValueChange: (value) => {
+				logEvent(events.CREATE_CHANNEL_TOGGLE_BROADCAST);
 				this.setState({
 					broadcast: value,
 					readOnly: value ? true : readOnly
