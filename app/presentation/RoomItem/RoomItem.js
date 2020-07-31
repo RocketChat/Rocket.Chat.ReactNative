@@ -2,15 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 
-import Avatar from '../../containers/Avatar';
 import styles from './styles';
+import Wrapper from './Wrapper';
 import UnreadBadge from './UnreadBadge';
 import TypeIcon from './TypeIcon';
 import LastMessage from './LastMessage';
 import Title from './Title';
 import UpdatedAt from './UpdatedAt';
 import Touchable from './Touchable';
-import { themes } from '../../constants/colors';
 
 const RoomItem = ({
 	rid,
@@ -61,29 +60,19 @@ const RoomItem = ({
 		theme={theme}
 		isFocused={isFocused}
 	>
-		{showLastMessage
-			? (
-				<View
-					style={styles.container}
-					accessibilityLabel={accessibilityLabel}
-				>
-					<Avatar
-						text={avatar}
-						size={avatarSize}
-						type={type}
-						baseUrl={baseUrl}
-						style={styles.avatar}
-						userId={userId}
-						token={token}
-					/>
-					<View
-						style={[
-							styles.centerContainer,
-							{
-								borderColor: themes[theme].separatorColor
-							}
-						]}
-					>
+		<Wrapper
+			accessibilityLabel={accessibilityLabel}
+			avatar={avatar}
+			avatarSize={avatarSize}
+			type={type}
+			baseUrl={baseUrl}
+			userId={userId}
+			token={token}
+			theme={theme}
+		>
+			{showLastMessage
+				? (
+					<>
 						<View style={styles.titleContainer}>
 							<TypeIcon
 								type={type}
@@ -123,55 +112,33 @@ const RoomItem = ({
 								theme={theme}
 							/>
 						</View>
+					</>
+				)
+				: (
+					<View style={[styles.titleContainer, styles.flex]}>
+						<TypeIcon
+							type={type}
+							prid={prid}
+							status={status}
+							isGroupChat={isGroupChat}
+							theme={theme}
+						/>
+						<Title
+							name={name}
+							theme={theme}
+							hideUnreadStatus={hideUnreadStatus}
+							alert={alert}
+						/>
+						<UnreadBadge
+							unread={unread}
+							userMentions={userMentions}
+							groupMentions={groupMentions}
+							theme={theme}
+						/>
 					</View>
-				</View>
-			)
-			: (
-				<View
-					style={styles.container}
-					accessibilityLabel={accessibilityLabel}
-				>
-					<Avatar
-						text={avatar}
-						size={avatarSize}
-						type={type}
-						baseUrl={baseUrl}
-						style={styles.avatar}
-						userId={userId}
-						token={token}
-					/>
-					<View
-						style={[
-							styles.centerContainer,
-							{
-								borderColor: themes[theme].separatorColor
-							}
-						]}
-					>
-						<View style={[styles.titleContainer, { flex: 1 }]}>
-							<TypeIcon
-								type={type}
-								prid={prid}
-								status={status}
-								isGroupChat={isGroupChat}
-								theme={theme}
-							/>
-							<Title
-								name={name}
-								theme={theme}
-								hideUnreadStatus={hideUnreadStatus}
-								alert={alert}
-							/>
-							<UnreadBadge
-								unread={unread}
-								userMentions={userMentions}
-								groupMentions={groupMentions}
-								theme={theme}
-							/>
-						</View>
-					</View>
-				</View>
-			)}
+				)
+			}
+		</Wrapper>
 	</Touchable>
 );
 
