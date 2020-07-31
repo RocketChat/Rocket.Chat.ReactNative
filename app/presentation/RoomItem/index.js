@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Q } from '@nozbe/watermelondb';
 
 import I18n from '../../i18n';
 import { ROW_HEIGHT } from './styles';
 import { formatDate } from '../../utils/room';
+import database from '../../lib/database';
 import RoomItem from './RoomItem';
 
 export { ROW_HEIGHT };
@@ -48,6 +50,7 @@ const RoomItemContainer = React.memo(({
 	getIsRead
 }) => {
 	const [, setForceUpdate] = useState(1);
+	const [avatarETag, setAvatarETag] = useState('');
 
 	useEffect(() => {
 		if (connected && item.t === 'd' && id) {
@@ -55,7 +58,27 @@ const RoomItemContainer = React.memo(({
 		}
 	}, [connected]);
 
+	const subscribeUser = async() => {
+		const db = database.active;
+		const usersCollection = db.collections.get('users');
+		try {
+			const [user] = await usersCollection.query(Q.where('username', Q.eq(username))).fetch();
+			if (user) {
+				const observable = user.observe();
+				observable.subscribe((u) => {
+					setAvatarETag(u.avatarETag);
+				});
+			}
+		} catch {
+			// Do nothing
+		}
+	};
+
 	useEffect(() => {
+		if (item.t === 'd') {
+			subscribeUser();
+		}
+
 		if (item?.observe) {
 			const observable = item.observe();
 			const subscription = observable?.subscribe?.(() => {
@@ -125,6 +148,7 @@ const RoomItemContainer = React.memo(({
 			useRealName={useRealName}
 			unread={item.unread}
 			groupMentions={item.groupMentions}
+			avatarETag={avatarETag}
 		/>
 	);
 }, arePropsEqual);

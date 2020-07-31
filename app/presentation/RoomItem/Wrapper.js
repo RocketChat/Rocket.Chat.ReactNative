@@ -10,6 +10,7 @@ const RoomItemInner = ({
 	accessibilityLabel,
 	avatar,
 	avatarSize,
+	avatarETag,
 	type,
 	baseUrl,
 	userId,
@@ -28,6 +29,7 @@ const RoomItemInner = ({
 			style={styles.avatar}
 			server={baseUrl}
 			user={{ id: userId, token }}
+			avatarETag={avatarETag}
 		/>
 		<View
 			style={[
@@ -46,6 +48,7 @@ RoomItemInner.propTypes = {
 	accessibilityLabel: PropTypes.string,
 	avatar: PropTypes.string,
 	avatarSize: PropTypes.number,
+	avatarETag: PropTypes.string,
 	type: PropTypes.string,
 	baseUrl: PropTypes.string,
 	userId: PropTypes.string,
