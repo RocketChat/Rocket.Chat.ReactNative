@@ -59,25 +59,24 @@ const RoomItemContainer = React.memo(({
 		}
 	}, [connected]);
 
-	const subscribeUser = async() => {
-		const db = database.active;
-		const usersCollection = db.collections.get('users');
-		try {
-			const [user] = await usersCollection.query(Q.where('username', Q.eq(username))).fetch();
-			if (user) {
-				const observable = user.observe();
-				observable.subscribe((u) => {
-					setAvatarETag(u.avatarETag);
-				});
-			}
-		} catch {
-			// Do nothing
-		}
-	};
-
 	useEffect(() => {
+		let userSub;
 		if (item.t === 'd') {
-			subscribeUser();
+			(async() => {
+				const db = database.active;
+				const usersCollection = db.collections.get('users');
+				try {
+					const [user] = await usersCollection.query(Q.where('username', Q.eq(username))).fetch();
+					if (user) {
+						const observable = user.observe();
+						userSub = observable.subscribe((u) => {
+							setAvatarETag(u.avatarETag);
+						});
+					}
+				} catch {
+					// Do nothing
+				}
+			})();
 		}
 
 		if (item?.observe) {
@@ -87,6 +86,7 @@ const RoomItemContainer = React.memo(({
 			});
 
 			return () => {
+				userSub?.unsubscribe?.();
 				subscription?.unsubscribe?.();
 			};
 		}

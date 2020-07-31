@@ -10,26 +10,28 @@ import Component from './Avatar';
 const Avatar = React.memo(({ type, text, ...props }) => {
 	const [avatarETag, setAvatarETag] = useState();
 
-	const subscribeAvatar = async() => {
-		if (type === 'd') {
-			const db = database.active;
-			const usersCollection = db.collections.get('users');
-			try {
-				const [userRecord] = await usersCollection.query(Q.where('username', text)).fetch();
-				if (userRecord) {
-					const observable = userRecord.observe();
-					observable.subscribe((u) => {
-						setAvatarETag(u.avatarETag);
-					});
-				}
-			} catch {
-				// Do nothing
-			}
-		}
-	};
-
 	useEffect(() => {
-		subscribeAvatar();
+		let subscription;
+		(async() => {
+			if (type === 'd') {
+				const db = database.active;
+				const usersCollection = db.collections.get('users');
+				try {
+					const [userRecord] = await usersCollection.query(Q.where('username', text)).fetch();
+					if (userRecord) {
+						const observable = userRecord.observe();
+						subscription = observable.subscribe((u) => {
+							setAvatarETag(u.avatarETag);
+						});
+					}
+				} catch {
+					// Do nothing
+				}
+			}
+		})();
+		return () => {
+			subscription?.unsubscribe?.();
+		};
 	}, []);
 
 	return (
