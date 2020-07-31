@@ -91,7 +91,7 @@ class RoomActionsView extends React.Component {
 		this.mounted = true;
 		const { room, member } = this.state;
 		if (room.rid) {
-			if (!room.id) {
+			if (!room.id && !this.isOmnichannelPreview) {
 				try {
 					const result = await RocketChat.getChannelInfo(room.rid);
 					if (result.success) {
@@ -133,6 +133,11 @@ class RoomActionsView extends React.Component {
 		if (this.subscription && this.subscription.unsubscribe) {
 			this.subscription.unsubscribe();
 		}
+	}
+
+	get isOmnichannelPreview() {
+		const { room } = this.state;
+		return room.t === 'l' && room.status === 'queued';
 	}
 
 	onPressTouchable = (item) => {
@@ -407,35 +412,37 @@ class RoomActionsView extends React.Component {
 		} else if (t === 'l') {
 			sections[2].data = [];
 
-			sections[2].data.push({
-				icon: 'close',
-				name: I18n.t('Close'),
-				event: this.closeLivechat
-			});
-
-			if (canForwardGuest) {
+			if (!this.isOmnichannelPreview) {
 				sections[2].data.push({
-					icon: 'user-forward',
-					name: I18n.t('Forward'),
-					route: 'ForwardLivechatView',
+					icon: 'close',
+					name: I18n.t('Close'),
+					event: this.closeLivechat
+				});
+
+				if (canForwardGuest) {
+					sections[2].data.push({
+						icon: 'user-forward',
+						name: I18n.t('Forward'),
+						route: 'ForwardLivechatView',
+						params: { rid }
+					});
+				}
+
+				if (canReturnQueue) {
+					sections[2].data.push({
+						icon: 'undo',
+						name: I18n.t('Return'),
+						event: this.returnLivechat
+					});
+				}
+
+				sections[2].data.push({
+					icon: 'history',
+					name: I18n.t('Navigation_history'),
+					route: 'VisitorNavigationView',
 					params: { rid }
 				});
 			}
-
-			if (canReturnQueue) {
-				sections[2].data.push({
-					icon: 'undo',
-					name: I18n.t('Return'),
-					event: this.returnLivechat
-				});
-			}
-
-			sections[2].data.push({
-				icon: 'history',
-				name: I18n.t('Navigation_history'),
-				route: 'VisitorNavigationView',
-				params: { rid }
-			});
 
 			sections.push({
 				data: [notificationsAction],

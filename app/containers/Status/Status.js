@@ -14,7 +14,7 @@ const Status = React.memo(({
 					borderRadius: size,
 					width: size,
 					height: size,
-					backgroundColor: STATUS_COLORS[status],
+					backgroundColor: STATUS_COLORS[status] ?? STATUS_COLORS.offline,
 					borderColor: themes[theme].backgroundColor
 				}
 			]}

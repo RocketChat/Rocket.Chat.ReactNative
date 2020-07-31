@@ -15,6 +15,7 @@ import {
 	loginFailure, loginSuccess, setUser, logout
 } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
+import { inquiryRequest } from '../actions/inquiry';
 import { toMomentLocale } from '../utils/moment';
 import RocketChat from '../lib/rocketchat';
 import log, { logEvent, events } from '../utils/log';
@@ -93,6 +94,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 
 		const server = yield select(getServer);
 		yield put(roomsRequest());
+		yield put(inquiryRequest());
 		yield fork(fetchPermissions);
 		yield fork(fetchCustomEmojis);
 		yield fork(fetchRoles);
@@ -205,6 +207,10 @@ const handleSetUser = function* handleSetUser({ user }) {
 	if (user && user.status) {
 		const userId = yield select(state => state.login.user.id);
 		yield put(setActiveUsers({ [userId]: user }));
+	}
+
+	if (user && user.statusLivechat) {
+		yield put(inquiryRequest());
 	}
 };
 
