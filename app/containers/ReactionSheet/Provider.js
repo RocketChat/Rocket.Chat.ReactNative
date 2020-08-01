@@ -18,8 +18,8 @@ export const ReactionSheetProvider = React.memo(({ children }) => {
 	const { theme } = useTheme();
 
 	const getContext = () => ({
-		showReactionSheet: (reactions) => {
-			ref.current?.showReactionSheet(reactions);
+		showReactionSheet: (data) => {
+			ref.current?.showReactionSheet(data);
 		},
 		hideReactionSheet: () => {
 			ref.current?.hideReactionSheet();

@@ -10,6 +10,7 @@ import { BUTTON_HIT_SLOP } from './utils';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import MessageContext from './Context';
+import { useReactionSheet } from '../ReactionSheet';
 
 const AddReaction = React.memo(({ theme }) => {
 	const { reactionInit } = useContext(MessageContext);
@@ -30,16 +31,17 @@ const AddReaction = React.memo(({ theme }) => {
 });
 
 const Reaction = React.memo(({
-	reaction, getCustomEmoji, theme
+	reaction, getCustomEmoji, theme, reactions
 }) => {
 	const {
 		onReactionPress, onReactionLongPress, baseUrl, user
 	} = useContext(MessageContext);
+	const { showReactionSheet } = useReactionSheet();
 	const reacted = reaction.usernames.findIndex(item => item === user.username) !== -1;
 	return (
 		<Touchable
 			onPress={() => onReactionPress(reaction.emoji)}
-			onLongPress={onReactionLongPress}
+			onLongPress={() => showReactionSheet({reactions, baseUrl, getCustomEmoji, user})}
 			key={reaction.emoji}
 			testID={`message-reaction-${ reaction.emoji }`}
 			style={[styles.reactionButton, { backgroundColor: reacted ? themes[theme].bannerBackground : themes[theme].backgroundColor }]}
@@ -72,6 +74,7 @@ const Reactions = React.memo(({
 				<Reaction
 					key={reaction.emoji}
 					reaction={reaction}
+					reactions={reactions}
 					getCustomEmoji={getCustomEmoji}
 					theme={theme}
 				/>

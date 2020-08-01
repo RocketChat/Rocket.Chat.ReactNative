@@ -21,6 +21,8 @@ import Animated, {
 import * as Haptics from 'expo-haptics';
 import { useBackHandler } from '@react-native-community/hooks';
 
+import { Header } from './Header';
+import { UserItem } from './UserItem';
 import { Handle } from './Handle';
 import { themes } from '../../constants/colors';
 import styles, { ITEM_HEIGHT } from './styles';
@@ -28,6 +30,7 @@ import { isTablet, isIOS } from '../../utils/deviceInfo';
 import Separator from '../Separator';
 import I18n from '../../i18n';
 import { useOrientation, useDimensions } from '../../dimensions';
+import { select } from 'redux-saga/effects';
 const getItemLayout = (data, index) => ({ length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index });
 
 const HANDLE_HEIGHT = isIOS ? 40 : 56;
@@ -46,6 +49,7 @@ const ReactionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
   const bottomSheetRef = useRef();
 	const [data, setData] = useState({});
 	const [isVisible, setVisible] = useState(false);
+	const [selected, setSelected] = useState({});
 	const { height } = useDimensions();
 	const { isLandscape } = useOrientation();
   
@@ -53,14 +57,16 @@ const ReactionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 	const openedSnapIndex = 0;
 	const closedSnapIndex = snaps.length - 1;
 
-  const toggleVisible = () => setVisible(!isVisible);
-  
+  const toggleVisible = () => {
+		setVisible(!isVisible);
+		setSelected({});
+	}
 	const hide = () => {
 		bottomSheetRef.current?.snapTo(closedSnapIndex);
 	};
 
-	const show = (reactions) => {
-		setData(reactions);
+	const show = (newData) => {
+		setData(newData);
     toggleVisible();
 	};
 
@@ -97,9 +103,17 @@ const ReactionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 
 	const renderHandle = useCallback(() => (
 		<>
-			<Handle theme={theme} data={data}/>
+			<Handle theme={theme} />
 		</>
 	));
+
+	const renderHeader = useCallback(() => (
+		<>
+			<Header theme={theme} data={data} setSelected={setSelected} selected={selected}/>
+		</>
+	));
+
+	const renderItem = useCallback(({ item }) => <UserItem user={item} getCustomEmoji={data.getCustomEmoji} baseUrl={data.baseUrl} userId={data.user.id} userToken={data.user.token}/>);
 
   const animatedPosition = React.useRef(new Value(0));
 	const opacity = interpolate(animatedPosition.current, {
@@ -141,16 +155,14 @@ const ReactionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 						]}
 						animationConfig={ANIMATION_CONFIG}
 						// FlatList props
-/* 						data={data?.options}
+						data={selected.usernames}
 						renderItem={renderItem}
-						keyExtractor={item => item.title}
+						keyExtractor={item => item}
 						style={{ backgroundColor: themes[theme].focusedBackground }}
 						contentContainerStyle={styles.content}
-						ItemSeparatorComponent={renderSeparator}
-						ListHeaderComponent={renderSeparator}
-						ListFooterComponent={renderFooter}
+						ListHeaderComponent={renderHeader}
 						getItemLayout={getItemLayout}
-						removeClippedSubviews={isIOS} */
+						removeClippedSubviews={isIOS}
 					/>
         </>
       )}
