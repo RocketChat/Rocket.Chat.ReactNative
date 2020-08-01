@@ -36,7 +36,7 @@ import Toast from './containers/Toast';
 import InAppNotification from './containers/InAppNotification';
 import { ActionSheetProvider } from './containers/ActionSheet';
 import debounce from './utils/debounce';
-
+import { ReactionSheetProvider } from './containers/ReactionSheet';
 
 RNScreens.enableScreens();
 
@@ -98,7 +98,7 @@ export default class Root extends React.Component {
 		}
 	}
 
-	init = async() => {
+	init = async () => {
 		RNUserDefaults.objectForKey(THEME_PREFERENCES_KEY).then(this.setTheme);
 		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
@@ -189,12 +189,14 @@ export default class Root extends React.Component {
 								}}
 							>
 								<ActionSheetProvider>
-									<AppContainer />
-									<TwoFactor />
-									<ScreenLockedView />
-									<ChangePasscodeView />
-									<InAppNotification />
-									<Toast />
+									<ReactionSheetProvider>
+										<AppContainer />
+										<TwoFactor />
+										<ScreenLockedView />
+										<ChangePasscodeView />
+										<InAppNotification />
+										<Toast />
+									</ReactionSheetProvider>
 								</ActionSheetProvider>
 							</DimensionsContext.Provider>
 						</ThemeContext.Provider>
