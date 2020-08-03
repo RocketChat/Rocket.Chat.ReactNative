@@ -8,6 +8,7 @@ import moment from 'moment';
 import * as Haptics from 'expo-haptics';
 import { Q } from '@nozbe/watermelondb';
 import isEqual from 'lodash/isEqual';
+import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Touch from '../../utils/touch';
 import {
@@ -23,10 +24,10 @@ import MessageBox from '../../containers/MessageBox';
 import ReactionPicker from './ReactionPicker';
 import UploadProgress from './UploadProgress';
 import styles from './styles';
-import log from '../../utils/log';
+import log, { logEvent, events } from '../../utils/log';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
-import RoomHeaderView, { RightButtons, RoomHeaderLeft } from './Header';
+import RoomHeaderView, { RightButtons, LeftButtons } from './Header';
 import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
 import { themes } from '../../constants/colors';
@@ -53,6 +54,7 @@ import Banner from './Banner';
 import Navigation from '../../lib/Navigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
+import { getHeaderTitlePosition } from '../../containers/Header';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -91,7 +93,8 @@ class RoomView extends React.Component {
 		theme: PropTypes.string,
 		replyBroadcast: PropTypes.func,
 		width: PropTypes.number,
-		height: PropTypes.number
+		height: PropTypes.number,
+		insets: PropTypes.object
 	};
 
 	constructor(props) {
@@ -178,7 +181,7 @@ class RoomView extends React.Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { state } = this;
 		const { roomUpdate, member } = state;
-		const { appState, theme } = this.props;
+		const { appState, theme, insets } = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
 		}
@@ -192,20 +195,21 @@ class RoomView extends React.Component {
 		if (stateUpdated) {
 			return true;
 		}
+		if (!isEqual(nextProps.insets, insets)) {
+			return true;
+		}
 		return roomAttrsUpdate.some(key => !isEqual(nextState.roomUpdate[key], roomUpdate[key]));
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		const { roomUpdate } = this.state;
-		const { appState } = this.props;
+		const { appState, insets } = this.props;
 
 		if (appState === 'foreground' && appState !== prevProps.appState && this.rid) {
-			this.onForegroundInteraction = InteractionManager.runAfterInteractions(() => {
-				// Fire List.init() just to keep observables working
-				if (this.list && this.list.current) {
-					this.list.current.init();
-				}
-			});
+			// Fire List.query() just to keep observables working
+			if (this.list && this.list.current) {
+				this.list.current?.query?.();
+			}
 		}
 		// If it's not direct message
 		if (this.t !== 'd') {
@@ -220,6 +224,9 @@ class RoomView extends React.Component {
 			}
 		}
 		if (((roomUpdate.fname !== prevState.roomUpdate.fname) || (roomUpdate.name !== prevState.roomUpdate.name)) && !this.tmid) {
+			this.setHeader();
+		}
+		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
 			this.setHeader();
 		}
 		this.setReadOnly();
@@ -258,9 +265,6 @@ class RoomView extends React.Component {
 		if (this.didMountInteraction && this.didMountInteraction.cancel) {
 			this.didMountInteraction.cancel();
 		}
-		if (this.onForegroundInteraction && this.onForegroundInteraction.cancel) {
-			this.onForegroundInteraction.cancel();
-		}
 		if (this.willBlurListener && this.willBlurListener.remove) {
 			this.willBlurListener.remove();
 		}
@@ -278,10 +282,15 @@ class RoomView extends React.Component {
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
+	get isOmnichannel() {
+		const { room } = this.state;
+		return room.t === 'l';
+	}
+
 	setHeader = () => {
 		const { room, unreadsCount, roomUserId: stateRoomUserId } = this.state;
 		const {
-			navigation, route, isMasterDetail, theme, baseUrl, user
+			navigation, route, isMasterDetail, theme, baseUrl, user, insets
 		} = this.props;
 		const rid = route.params?.rid;
 		const prid = route.params?.prid;
@@ -299,9 +308,29 @@ class RoomView extends React.Component {
 		if (!rid) {
 			return;
 		}
+		const headerTitlePosition = getHeaderTitlePosition(insets);
 		navigation.setOptions({
 			headerShown: true,
 			headerTitleAlign: 'left',
+			headerTitleContainerStyle: {
+				left: headerTitlePosition.left,
+				right: headerTitlePosition.right
+			},
+			headerLeft: () => (
+				<LeftButtons
+					tmid={tmid}
+					unreadsCount={unreadsCount}
+					navigation={navigation}
+					baseUrl={baseUrl}
+					userId={userId}
+					token={token}
+					title={avatar}
+					theme={theme}
+					t={t}
+					goRoomActionsView={this.goRoomActionsView}
+					isMasterDetail={isMasterDetail}
+				/>
+			),
 			headerTitle: () => (
 				<RoomHeaderView
 					rid={rid}
@@ -322,21 +351,6 @@ class RoomView extends React.Component {
 					t={t}
 					navigation={navigation}
 					toggleFollowThread={this.toggleFollowThread}
-				/>
-			),
-			headerLeft: () => (
-				<RoomHeaderLeft
-					tmid={tmid}
-					unreadsCount={unreadsCount}
-					navigation={navigation}
-					baseUrl={baseUrl}
-					userId={userId}
-					token={token}
-					title={avatar}
-					theme={theme}
-					t={t}
-					goRoomActionsView={this.goRoomActionsView}
-					isMasterDetail={isMasterDetail}
 				/>
 			)
 		});
@@ -635,6 +649,7 @@ class RoomView extends React.Component {
 	}
 
 	sendMessage = (message, tmid) => {
+		logEvent(events.ROOM_SEND_MESSAGE);
 		const { user } = this.props;
 		RocketChat.sendMessage(this.rid, message, this.tmid || tmid, user).then(() => {
 			if (this.list && this.list.current) {
@@ -668,8 +683,15 @@ class RoomView extends React.Component {
 	setLastOpen = lastOpen => this.setState({ lastOpen });
 
 	joinRoom = async() => {
+		logEvent(events.ROOM_JOIN);
 		try {
-			await RocketChat.joinRoom(this.rid, this.t);
+			const { room } = this.state;
+
+			if (this.isOmnichannel) {
+				await RocketChat.takeInquiry(room._id);
+			} else {
+				await RocketChat.joinRoom(this.rid, this.t);
+			}
 			this.internalSetState({
 				joined: true
 			});
@@ -755,7 +777,7 @@ class RoomView extends React.Component {
 			if (handleCommandScroll(event)) {
 				const offset = input === 'UIKeyInputUpArrow' ? 100 : -100;
 				this.offset += offset;
-				this.flatList.scrollToOffset({ offset: this.offset });
+				this.flatList?.scrollToOffset({ offset: this.offset });
 			} else if (handleCommandRoomActions(event)) {
 				this.goRoomActionsView();
 			} else if (handleCommandSearchMessages(event)) {
@@ -886,7 +908,7 @@ class RoomView extends React.Component {
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
 						theme={theme}
 					>
-						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-join-button'>{I18n.t('Join')}</Text>
+						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-join-button'>{I18n.t(this.isOmnichannel ? 'Take_it' : 'Join')}</Text>
 					</Touch>
 				</View>
 			);
@@ -1040,4 +1062,4 @@ const mapDispatchToProps = dispatch => ({
 	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(RoomView)));
+export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomView))));

@@ -5,31 +5,33 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Base64 } from 'js-base64';
+import * as AppleAuthentication from 'expo-apple-authentication';
 
 import { withTheme } from '../theme';
 import sharedStyles from '../views/Styles';
 import { themes } from '../constants/colors';
-import { loginRequest as loginRequestAction } from '../actions/login';
 import Button from './Button';
 import OrSeparator from './OrSeparator';
 import Touch from '../utils/touch';
 import I18n from '../i18n';
 import random from '../utils/random';
 import { logEvent, events } from '../utils/log';
+import RocketChat from '../lib/rocketchat';
 
-
+const BUTTON_HEIGHT = 48;
 const SERVICE_HEIGHT = 58;
+const BORDER_RADIUS = 2;
 const SERVICES_COLLAPSED_HEIGHT = 174;
 
 const styles = StyleSheet.create({
 	serviceButton: {
-		borderRadius: 2,
+		borderRadius: BORDER_RADIUS,
 		marginBottom: 10
 	},
 	serviceButtonContainer: {
-		borderRadius: 2,
+		borderRadius: BORDER_RADIUS,
 		width: '100%',
-		height: 48,
+		height: BUTTON_HEIGHT,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
@@ -76,6 +78,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressFacebook = () => {
+		logEvent(events.ENTER_WITH_FACEBOOK);
 		const { services, server } = this.props;
 		const { clientId } = services.facebook;
 		const endpoint = 'https://m.facebook.com/v2.9/dialog/oauth';
@@ -88,6 +91,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressGithub = () => {
+		logEvent(events.ENTER_WITH_GITHUB);
 		const { services, server } = this.props;
 		const { clientId } = services.github;
 		const endpoint = `https://github.com/login?client_id=${ clientId }&return_to=${ encodeURIComponent('/login/oauth/authorize') }`;
@@ -100,6 +104,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressGitlab = () => {
+		logEvent(events.ENTER_WITH_GITLAB);
 		const { services, server, Gitlab_URL } = this.props;
 		const { clientId } = services.gitlab;
 		const baseURL = Gitlab_URL ? Gitlab_URL.trim().replace(/\/*$/, '') : 'https://gitlab.com';
@@ -113,6 +118,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressGoogle = () => {
+		logEvent(events.ENTER_WITH_GOOGLE);
 		const { services, server } = this.props;
 		const { clientId } = services.google;
 		const endpoint = 'https://accounts.google.com/o/oauth2/auth';
@@ -125,6 +131,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressLinkedin = () => {
+		logEvent(events.ENTER_WITH_LINKEDIN);
 		const { services, server } = this.props;
 		const { clientId } = services.linkedin;
 		const endpoint = 'https://www.linkedin.com/oauth/v2/authorization';
@@ -137,6 +144,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressMeteor = () => {
+		logEvent(events.ENTER_WITH_METEOR);
 		const { services, server } = this.props;
 		const { clientId } = services['meteor-developer'];
 		const endpoint = 'https://www.meteor.com/oauth2/authorize';
@@ -148,6 +156,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressTwitter = () => {
+		logEvent(events.ENTER_WITH_TWITTER);
 		const { server } = this.props;
 		const state = this.getOAuthState();
 		const url = `${ server }/_oauth/twitter/?requestTokenAndRedirect=true&state=${ state }`;
@@ -156,6 +165,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressWordpress = () => {
+		logEvent(events.ENTER_WITH_WORDPRESS);
 		const { services, server } = this.props;
 		const { clientId, serverURL } = services.wordpress;
 		const endpoint = `${ serverURL }/oauth/authorize`;
@@ -168,6 +178,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressCustomOAuth = (loginService) => {
+		logEvent(events.ENTER_WITH_CUSTOM_OAUTH);
 		const { server } = this.props;
 		const {
 			serverURL, authorizePath, clientId, scope, service
@@ -183,6 +194,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressSaml = (loginService) => {
+		logEvent(events.ENTER_WITH_SAML);
 		const { server } = this.props;
 		const {	clientConfig } = loginService;
 		const {	provider } = clientConfig;
@@ -193,11 +205,28 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressCas = () => {
+		logEvent(events.ENTER_WITH_CAS);
 		const { server, CAS_login_url } = this.props;
 		const ssoToken = random(17);
 		const url = `${ CAS_login_url }?service=${ server }/_cas/${ ssoToken }`;
 		this.openOAuth({ url, ssoToken, authType: 'cas' });
 		logEvent(events.LOGIN_WITH_CAS);
+	}
+
+	onPressAppleLogin = async() => {
+		logEvent(events.ENTER_WITH_APPLE);
+		try {
+			const { fullName, email, identityToken } = await AppleAuthentication.signInAsync({
+				requestedScopes: [
+					AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+					AppleAuthentication.AppleAuthenticationScope.EMAIL
+				]
+			});
+
+			await RocketChat.loginOAuthOrSso({ fullName, email, identityToken });
+		} catch {
+			logEvent(events.ENTER_WITH_APPLE_F);
+		}
 	}
 
 	getOAuthState = () => {
@@ -275,6 +304,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	renderItem = (service) => {
+		const { CAS_enabled, theme } = this.props;
 		let { name } = service;
 		name = name === 'meteor-developer' ? 'meteor' : name;
 		const icon = `icon_${ name }`;
@@ -298,11 +328,27 @@ class LoginServices extends React.PureComponent {
 				onPress = () => this.onPressCas();
 				break;
 			}
+			case 'apple': {
+				onPress = () => this.onPressAppleLogin();
+				break;
+			}
 			default:
 				break;
 		}
+
+		if (name === 'apple') {
+			return (
+				<AppleAuthentication.AppleAuthenticationButton
+					buttonType={AppleAuthentication.AppleAuthenticationButtonType.CONTINUE}
+					buttonStyle={theme === 'light' ? AppleAuthentication.AppleAuthenticationButtonStyle.BLACK : AppleAuthentication.AppleAuthenticationButtonStyle.WHITE}
+					cornerRadius={BORDER_RADIUS}
+					style={[styles.serviceButton, { height: BUTTON_HEIGHT }]}
+					onPress={onPress}
+				/>
+			);
+		}
+
 		name = name.charAt(0).toUpperCase() + name.slice(1);
-		const { CAS_enabled, theme } = this.props;
 		let buttonText;
 		if (isSaml || (service.service === 'cas' && CAS_enabled)) {
 			buttonText = <Text style={[styles.serviceName, isSaml && { color: service.buttonLabelColor }]}>{name}</Text>;
@@ -369,8 +415,4 @@ const mapStateToProps = state => ({
 	services: state.login.services
 });
 
-const mapDispatchToProps = dispatch => ({
-	loginRequest: params => dispatch(loginRequestAction(params))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(LoginServices));
+export default connect(mapStateToProps)(withTheme(LoginServices));

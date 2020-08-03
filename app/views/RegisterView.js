@@ -114,6 +114,7 @@ class RegisterView extends React.Component {
 	}
 
 	submit = async() => {
+		logEvent(events.REGISTER_DEFAULT_SIGN_UP);
 		if (!this.valid()) {
 			return;
 		}
@@ -145,10 +146,13 @@ class RegisterView extends React.Component {
 				await loginRequest({ user: email, password });
 			}
 		} catch (e) {
-			if (e.data && e.data.errorType === 'username-invalid') {
+			if (e.data?.errorType === 'username-invalid') {
 				return loginRequest({ user: email, password });
 			}
-			showErrorAlert(e.data.error, I18n.t('Oops'));
+			if (e.data?.error) {
+				logEvent(events.REGISTER_DEFAULT_SIGN_UP_F);
+				showErrorAlert(e.data.error, I18n.t('Oops'));
+			}
 		}
 		this.setState({ saving: false });
 		logEvent(events.DEFAULT_SIGN_UP);

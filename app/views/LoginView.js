@@ -6,7 +6,6 @@ import {
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
 
-import { logEvent, events } from '../utils/log';
 import sharedStyles from './Styles';
 import Button from '../containers/Button';
 import I18n from '../i18n';
@@ -122,7 +121,6 @@ class LoginView extends React.Component {
 		const { loginRequest } = this.props;
 		Keyboard.dismiss();
 		loginRequest({ user, password });
-		logEvent(events.DEFAULT_LOGIN);
 	}
 
 	renderUserForm = () => {

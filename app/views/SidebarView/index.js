@@ -8,7 +8,7 @@ import { Q } from '@nozbe/watermelondb';
 
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status/Status';
-import log from '../../utils/log';
+import log, { logEvent, events } from '../../utils/log';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { CustomIcon } from '../../lib/Icons';
@@ -18,7 +18,6 @@ import { themes } from '../../constants/colors';
 import database from '../../lib/database';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
-import Navigation from '../../lib/Navigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 
 const Separator = React.memo(({ theme }) => <View style={[styles.separator, { borderColor: themes[theme].separatorColor }]} />);
@@ -135,13 +134,22 @@ class Sidebar extends Component {
 	}
 
 	sidebarNavigate = (route) => {
+		logEvent(events[`SIDEBAR_NAVIGATE_TO_${ route.replace('StackNavigator', '').replace('View', '').toUpperCase() }`]);
 		const { navigation } = this.props;
 		navigation.navigate(route);
 	}
 
 	get currentItemKey() {
 		const { state } = this.props;
-		return state.routeNames[state.index];
+		return state?.routeNames[state?.index];
+	}
+
+	onPressUser = () => {
+		const { navigation, isMasterDetail } = this.props;
+		if (isMasterDetail) {
+			return;
+		}
+		navigation.closeDrawer();
 	}
 
 	renderAdmin = () => {
@@ -156,8 +164,8 @@ class Sidebar extends Component {
 				<Separator theme={theme} />
 				<SidebarItem
 					text={I18n.t('Admin_Panel')}
-					left={<CustomIcon name='shield' size={20} color={themes[theme].titleText} />}
-					onPress={() => Navigation.navigate(routeName)}
+					left={<CustomIcon name='settings' size={20} color={themes[theme].titleText} />}
+					onPress={() => this.sidebarNavigate(routeName)}
 					testID='sidebar-settings'
 					current={this.currentItemKey === routeName}
 				/>
@@ -185,7 +193,7 @@ class Sidebar extends Component {
 				/>
 				<SidebarItem
 					text={I18n.t('Settings')}
-					left={<CustomIcon name='cog' size={20} color={themes[theme].titleText} />}
+					left={<CustomIcon name='administration' size={20} color={themes[theme].titleText} />}
 					onPress={() => this.sidebarNavigate('SettingsStackNavigator')}
 					testID='sidebar-settings'
 					current={this.currentItemKey === 'SettingsStackNavigator'}
@@ -202,7 +210,7 @@ class Sidebar extends Component {
 				text={user.statusText || I18n.t('Edit_Status')}
 				left={<Status style={styles.status} size={12} status={user && user.status} />}
 				right={<CustomIcon name='edit' size={20} color={themes[theme].titleText} />}
-				onPress={() => Navigation.navigate('StatusView')}
+				onPress={() => this.sidebarNavigate('StatusView')}
 				testID='sidebar-custom-status'
 			/>
 		);
@@ -210,7 +218,7 @@ class Sidebar extends Component {
 
 	render() {
 		const {
-			user, Site_Name, baseUrl, useRealName, allowStatusMessage, isMasterDetail, theme, navigation
+			user, Site_Name, baseUrl, useRealName, allowStatusMessage, isMasterDetail, theme
 		} = this.props;
 
 		if (!user) {
@@ -229,7 +237,7 @@ class Sidebar extends Component {
 					]}
 					{...scrollPersistTaps}
 				>
-					<TouchableWithoutFeedback onPress={() => navigation.closeDrawer()} testID='sidebar-close-drawer'>
+					<TouchableWithoutFeedback onPress={this.onPressUser} testID='sidebar-close-drawer'>
 						<View style={styles.header} theme={theme}>
 							<Avatar
 								text={user.username}

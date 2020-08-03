@@ -1,11 +1,12 @@
 import { Client } from 'bugsnag-react-native';
-import firebase from 'react-native-firebase';
+import analytics from '@react-native-firebase/analytics';
+import crashlytics from '@react-native-firebase/crashlytics';
 import config from '../../../config';
 import events from './events';
 
 const bugsnag = new Client(config.BUGSNAG_API_KEY);
 
-export const { analytics } = firebase;
+export { analytics };
 export const loggerConfig = bugsnag.config;
 export const { leaveBreadcrumb } = bugsnag;
 export { events };
@@ -19,7 +20,12 @@ export const logServerVersion = (serverVersion) => {
 };
 
 export const logEvent = (eventName, payload) => {
-	analytics().logEvent(eventName, payload);
+	try {
+		analytics().logEvent(eventName, payload);
+		leaveBreadcrumb(eventName, payload);
+	} catch {
+		// Do nothing
+	}
 };
 
 export const setCurrentScreen = (currentScreen) => {
@@ -36,6 +42,7 @@ export default (e) => {
 				}
 			};
 		});
+		crashlytics().recordError(e);
 	} else {
 		console.log(e);
 	}

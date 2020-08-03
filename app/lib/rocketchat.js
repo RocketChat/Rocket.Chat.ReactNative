@@ -20,6 +20,7 @@ import {
 } from '../actions/share';
 
 import subscribeRooms from './methods/subscriptions/rooms';
+import subscribeInquiry from './methods/subscriptions/inquiry';
 import getUsersPresence, { getUserPresence, subscribeUsersPresence } from './methods/getUsersPresence';
 
 import protectedFunction from './methods/helpers/protectedFunction';
@@ -67,6 +68,15 @@ const RocketChat = {
 		if (!this.roomsSub) {
 			try {
 				this.roomsSub = await subscribeRooms.call(this);
+			} catch (e) {
+				log(e);
+			}
+		}
+	},
+	async subscribeInquiry() {
+		if (!this.inquirySub) {
+			try {
+				this.inquirySub = await subscribeInquiry.call(this);
 			} catch (e) {
 				log(e);
 			}
@@ -203,6 +213,11 @@ const RocketChat = {
 				this.roomsSub = null;
 			}
 
+			if (this.inquirySub) {
+				this.inquirySub.stop();
+				this.inquirySub = null;
+			}
+
 			if (this.sdk) {
 				this.sdk.disconnect();
 				this.sdk = null;
@@ -288,6 +303,8 @@ const RocketChat = {
 		const serversDB = database.servers;
 		reduxStore.dispatch(shareSelectServer(server));
 
+		RocketChat.setCustomEmojis();
+
 		// set User info
 		try {
 			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
@@ -320,7 +337,7 @@ const RocketChat = {
 
 	updateJitsiTimeout(roomId) {
 		// RC 0.74.0
-		return this.post('jitsi.updateTimeout', { roomId });
+		return this.post('video-conference/jitsi.update-timeout', { roomId });
 	},
 
 	register(credentials) {
@@ -814,7 +831,7 @@ const RocketChat = {
 	},
 	getAgentDepartments(uid) {
 		// RC 2.4.0
-		return this.sdk.get(`livechat/agents/${ uid }/departments`);
+		return this.sdk.get(`livechat/agents/${ uid }/departments?enabledDepartmentsOnly=true`);
 	},
 	getCustomFields() {
 		// RC 2.2.0
@@ -823,6 +840,16 @@ const RocketChat = {
 	changeLivechatStatus() {
 		// RC 0.26.0
 		return this.methodCallWrapper('livechat:changeLivechatStatus');
+	},
+	getInquiriesQueued() {
+		// RC 2.4.0
+		return this.sdk.get('livechat/inquiries.queued');
+	},
+	takeInquiry(inquiryId) {
+		// this inquiry is added to the db by the subscriptions stream
+		// and will be removed by the queue stream
+		// RC 2.4.0
+		return this.methodCallWrapper('livechat:takeInquiry', inquiryId);
 	},
 
 	getUidDirectMessage(room) {
@@ -841,6 +868,12 @@ const RocketChat = {
 		const other = room && room.uids && room.uids.filter(uid => uid !== userId);
 
 		return other && other.length ? other[0] : me;
+	},
+
+	isRead(item) {
+		let isUnread = item.archived !== true && item.open === true; // item is not archived and not opened
+		isUnread = isUnread && (item.unread > 0 || item.alert === true); // either its unread count > 0 or its alert
+		return !isUnread;
 	},
 
 	isGroupChat(room) {
@@ -954,6 +987,14 @@ const RocketChat = {
 	getSingleMessage(msgId) {
 		// RC 0.47.0
 		return this.sdk.get('chat.getMessage', { msgId });
+	},
+	hasRole(role) {
+		const shareUser = reduxStore.getState().share.user;
+		const loginUser = reduxStore.getState().login.user;
+		// get user roles on the server from redux
+		const userRoles = (shareUser?.roles || loginUser?.roles) || [];
+
+		return userRoles.indexOf(r => r === role) > -1;
 	},
 	async hasPermission(permissions, rid) {
 		const db = database.active;
@@ -1073,6 +1114,10 @@ const RocketChat = {
 
 		if (service === 'cas') {
 			return 'cas';
+		}
+
+		if (authName === 'apple' && isIOS) {
+			return 'apple';
 		}
 
 		// TODO: remove this after other oauth providers are implemented. e.g. Drupal, github_enterprise

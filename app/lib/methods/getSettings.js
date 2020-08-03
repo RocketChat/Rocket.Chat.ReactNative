@@ -1,4 +1,3 @@
-import { InteractionManager } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
@@ -12,7 +11,7 @@ import protectedFunction from './helpers/protectedFunction';
 import fetch from '../../utils/fetch';
 import { DEFAULT_AUTO_LOCK } from '../../constants/localAuthentication';
 
-const serverInfoKeys = ['Site_Name', 'UI_Use_Real_Name', 'FileUpload_MediaTypeWhiteList', 'FileUpload_MaxFileSize', 'Force_Screen_Lock', 'Force_Screen_Lock_After'];
+const serverInfoKeys = ['Site_Name', 'UI_Use_Real_Name', 'FileUpload_MediaTypeWhiteList', 'FileUpload_MaxFileSize', 'Force_Screen_Lock', 'Force_Screen_Lock_After', 'uniqueID'];
 
 // these settings are used only on onboarding process
 const loginSettings = [
@@ -68,6 +67,9 @@ const serverInfoUpdate = async(serverInfo, iconSetting) => {
 			if (setting.valueAsNumber > 0 && forceScreenLock) {
 				return { ...allSettings, autoLockTime: setting.valueAsNumber };
 			}
+		}
+		if (setting._id === 'uniqueID') {
+			return { ...allSettings, uniqueID: setting.valueAsString };
 		}
 		return allSettings;
 	}, {});
@@ -132,48 +134,47 @@ export default async function() {
 		const filteredSettingsIds = filteredSettings.map(s => s._id);
 
 		reduxStore.dispatch(addSettings(this.parseSettings(filteredSettings)));
-		InteractionManager.runAfterInteractions(async() => {
-			// filter server info
-			const serverInfo = filteredSettings.filter(i1 => serverInfoKeys.includes(i1._id));
-			const iconSetting = data.find(item => item._id === 'Assets_favicon_512');
-			await serverInfoUpdate(serverInfo, iconSetting);
 
-			await db.action(async() => {
-				const settingsCollection = db.collections.get('settings');
-				const allSettingsRecords = await settingsCollection
-					.query(Q.where('id', Q.oneOf(filteredSettingsIds)))
-					.fetch();
+		// filter server info
+		const serverInfo = filteredSettings.filter(i1 => serverInfoKeys.includes(i1._id));
+		const iconSetting = data.find(item => item._id === 'Assets_favicon_512');
+		await serverInfoUpdate(serverInfo, iconSetting);
 
-				// filter settings
-				let settingsToCreate = filteredSettings.filter(i1 => !allSettingsRecords.find(i2 => i1._id === i2.id));
-				let settingsToUpdate = allSettingsRecords.filter(i1 => filteredSettings.find(i2 => i1.id === i2._id));
+		await db.action(async() => {
+			const settingsCollection = db.collections.get('settings');
+			const allSettingsRecords = await settingsCollection
+				.query(Q.where('id', Q.oneOf(filteredSettingsIds)))
+				.fetch();
 
-				// Create
-				settingsToCreate = settingsToCreate.map(setting => settingsCollection.prepareCreate(protectedFunction((s) => {
-					s._raw = sanitizedRaw({ id: setting._id }, settingsCollection.schema);
-					Object.assign(s, setting);
-				})));
+			// filter settings
+			let settingsToCreate = filteredSettings.filter(i1 => !allSettingsRecords.find(i2 => i1._id === i2.id));
+			let settingsToUpdate = allSettingsRecords.filter(i1 => filteredSettings.find(i2 => i1.id === i2._id));
 
-				// Update
-				settingsToUpdate = settingsToUpdate.map((setting) => {
-					const newSetting = filteredSettings.find(s => s._id === setting.id);
-					return setting.prepareUpdate(protectedFunction((s) => {
-						Object.assign(s, newSetting);
-					}));
-				});
+			// Create
+			settingsToCreate = settingsToCreate.map(setting => settingsCollection.prepareCreate(protectedFunction((s) => {
+				s._raw = sanitizedRaw({ id: setting._id }, settingsCollection.schema);
+				Object.assign(s, setting);
+			})));
 
-				const allRecords = [
-					...settingsToCreate,
-					...settingsToUpdate
-				];
-
-				try {
-					await db.batch(...allRecords);
-				} catch (e) {
-					log(e);
-				}
-				return allRecords.length;
+			// Update
+			settingsToUpdate = settingsToUpdate.map((setting) => {
+				const newSetting = filteredSettings.find(s => s._id === setting.id);
+				return setting.prepareUpdate(protectedFunction((s) => {
+					Object.assign(s, newSetting);
+				}));
 			});
+
+			const allRecords = [
+				...settingsToCreate,
+				...settingsToUpdate
+			];
+
+			try {
+				await db.batch(...allRecords);
+			} catch (e) {
+				log(e);
+			}
+			return allRecords.length;
 		});
 	} catch (e) {
 		log(e);

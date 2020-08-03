@@ -14,8 +14,9 @@ import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Person;
+import androidx.annotation.Nullable;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -33,15 +34,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 import static com.wix.reactnativenotifications.Defs.NOTIFICATION_RECEIVED_EVENT_NAME;
 
 public class CustomPushNotification extends PushNotification {
     public static ReactApplicationContext reactApplicationContext;
+    final NotificationManager notificationManager;
 
     public CustomPushNotification(Context context, Bundle bundle, AppLifecycleFacade appLifecycleFacade, AppLaunchHelper appLaunchHelper, JsIOHelper jsIoHelper) {
         super(context, bundle, appLifecycleFacade, appLaunchHelper, jsIoHelper);
         reactApplicationContext = new ReactApplicationContext(context);
+        notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
     private static Map<String, List<Bundle>> notificationMessages = new HashMap<String, List<Bundle>>();
@@ -54,29 +58,39 @@ public class CustomPushNotification extends PushNotification {
 
     @Override
     public void onReceived() throws InvalidNotificationException {
-        final Bundle bundle = mNotificationProps.asBundle();
+        Bundle received = mNotificationProps.asBundle();
+        Ejson receivedEjson = new Gson().fromJson(received.getString("ejson", "{}"), Ejson.class);
 
+        if (receivedEjson.notificationType != null && receivedEjson.notificationType.equals("message-id-only")) {
+            notificationLoad(receivedEjson.serverURL(), receivedEjson.messageId, new Callback() {
+                @Override
+                public void call(@Nullable Bundle bundle) {
+                    if (bundle != null) {
+                        mNotificationProps = createProps(bundle);
+                    }
+                }
+            });
+        }
+
+        // We should re-read these values since that can be changed by notificationLoad
+        Bundle bundle = mNotificationProps.asBundle();
+        Ejson loadedEjson = new Gson().fromJson(bundle.getString("ejson", "{}"), Ejson.class);
         String notId = bundle.getString("notId", "1");
-        String title = bundle.getString("title");
 
         if (notificationMessages.get(notId) == null) {
             notificationMessages.put(notId, new ArrayList<Bundle>());
         }
 
-        Gson gson = new Gson();
-        Ejson ejson = gson.fromJson(bundle.getString("ejson", "{}"), Ejson.class);
-
-        boolean hasSender = ejson.sender != null;
+        boolean hasSender = loadedEjson.sender != null;
+        String title = bundle.getString("title");
 
         bundle.putLong("time", new Date().getTime());
-        bundle.putString("username", hasSender ? ejson.sender.username : title);
-        bundle.putString("senderId", hasSender ? ejson.sender._id : "1");
-        bundle.putString("avatarUri", ejson.getAvatarUri());
+        bundle.putString("username", hasSender ? loadedEjson.sender.username : title);
+        bundle.putString("senderId", hasSender ? loadedEjson.sender._id : "1");
+        bundle.putString("avatarUri", loadedEjson.getAvatarUri());
 
         notificationMessages.get(notId).add(bundle);
-
-        super.postNotification(Integer.parseInt(notId));
-
+        postNotification(Integer.parseInt(notId));
         notifyReceivedToJS();
     }
 
@@ -96,9 +110,11 @@ public class CustomPushNotification extends PushNotification {
         String notId = bundle.getString("notId", "1");
         String title = bundle.getString("title");
         String message = bundle.getString("message");
+        Boolean notificationLoaded = bundle.getBoolean("notificationLoaded", false);
+        Ejson ejson = new Gson().fromJson(bundle.getString("ejson", "{}"), Ejson.class);
 
         notification
-            .setContentTitle(title)
+            .setContentTitle(title)	
             .setContentText(message)
             .setContentIntent(intent)
             .setPriority(Notification.PRIORITY_HIGH)
@@ -109,9 +125,33 @@ public class CustomPushNotification extends PushNotification {
         notificationColor(notification);
         notificationChannel(notification);
         notificationIcons(notification, bundle);
-        notificationStyle(notification, notificationId, bundle);
-        notificationReply(notification, notificationId, bundle);
         notificationDismiss(notification, notificationId);
+
+        // if notificationType is null (RC < 3.5) or notificationType is different of message-id-only or notification was loaded successfully
+        if (ejson.notificationType == null || !ejson.notificationType.equals("message-id-only") || notificationLoaded) {
+            notificationStyle(notification, notificationId, bundle);
+            notificationReply(notification, notificationId, bundle);
+
+        // message couldn't be loaded from server (Fallback notification)
+        } else {
+            Gson gson = new Gson();
+            // iterate over the current notification ids to dismiss fallback notifications from same server
+            for (Map.Entry<String, List<Bundle>> bundleList : notificationMessages.entrySet()) {
+                // iterate over the notifications with this id (same host + rid)
+                Iterator iterator = bundleList.getValue().iterator();
+                while (iterator.hasNext()) {
+                    Bundle not = (Bundle) iterator.next();
+                    // get the notification info
+                    Ejson notEjson = gson.fromJson(not.getString("ejson", "{}"), Ejson.class);
+                    // if already has a notification from same server
+                    if (ejson.serverURL().equals(notEjson.serverURL())) {
+                        String id = not.getString("notId");
+                        // cancel this notification
+                        notificationManager.cancel(Integer.parseInt(id));
+                    }
+                }
+            }
+        }
 
         return notification;
     }
@@ -300,4 +340,7 @@ public class CustomPushNotification extends PushNotification {
         notification.setDeleteIntent(dismissPendingIntent);
     }
 
+    private void notificationLoad(String server, String messageId, Callback callback) {
+        LoadNotification.load(reactApplicationContext, server, messageId, callback);
+    }
 }
