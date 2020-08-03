@@ -42,7 +42,6 @@ class MessageContainer extends React.Component {
 		reactionInit: PropTypes.func,
 		fetchThreadName: PropTypes.func,
 		showAttachment: PropTypes.func,
-		onReactionLongPress: PropTypes.func,
 		navToRoomInfo: PropTypes.func,
 		callJitsi: PropTypes.func,
 		blockAction: PropTypes.func,
@@ -60,7 +59,6 @@ class MessageContainer extends React.Component {
 		reactionInit: () => {},
 		fetchThreadName: () => {},
 		showAttachment: () => {},
-		onReactionLongPress: () => {},
 		navToRoomInfo: () => {},
 		callJitsi: () => {},
 		blockAction: () => {},
@@ -123,13 +121,6 @@ class MessageContainer extends React.Component {
 		const { onReactionPress, item } = this.props;
 		if (onReactionPress) {
 			onReactionPress(emoji, item.id);
-		}
-	}
-
-	onReactionLongPress = () => {
-		const { onReactionLongPress, item } = this.props;
-		if (onReactionLongPress) {
-			onReactionLongPress(item);
 		}
 	}
 
@@ -251,8 +242,7 @@ class MessageContainer extends React.Component {
 					onErrorPress: this.onErrorPress,
 					replyBroadcast: this.replyBroadcast,
 					onReactionPress: this.onReactionPress,
-					onDiscussionPress: this.onDiscussionPress,
-					onReactionLongPress: this.onReactionLongPress
+					onDiscussionPress: this.onDiscussionPress
 				}}
 			>
 				<Message

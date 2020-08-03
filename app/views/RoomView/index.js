@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
-import * as Haptics from 'expo-haptics';
 import { Q } from '@nozbe/watermelondb';
 import isEqual from 'lodash/isEqual';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
@@ -32,7 +31,6 @@ import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
 import { themes } from '../../constants/colors';
 import debounce from '../../utils/debounce';
-import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
 import { isBlocked } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
@@ -59,7 +57,6 @@ import { getHeaderTitlePosition } from '../../containers/Header';
 const stateAttrsUpdate = [
 	'joined',
 	'lastOpen',
-	'reactionsModalVisible',
 	'canAutoTranslate',
 	'selectedMessage',
 	'loading',
@@ -118,7 +115,6 @@ class RoomView extends React.Component {
 			roomUpdate: {},
 			member: {},
 			lastOpen: null,
-			reactionsModalVisible: false,
 			selectedMessage: selectedMessage || {},
 			canAutoTranslate: false,
 			loading: true,
@@ -565,15 +561,6 @@ class RoomView extends React.Component {
 		}
 	};
 
-	onReactionLongPress = (message) => {
-		this.setState({ selectedMessage: message, reactionsModalVisible: true });
-		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-	}
-
-	onCloseReactionsModal = () => {
-		this.setState({ selectedMessage: {}, reactionsModalVisible: false });
-	}
-
 	onDiscussionPress = debounce((item) => {
 		const { navigation } = this.props;
 		navigation.push('RoomView', {
@@ -970,7 +957,7 @@ class RoomView extends React.Component {
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
-			room, reactionsModalVisible, selectedMessage, loading, reacting
+			room, selectedMessage, loading, reacting
 		} = this.state;
 		const {
 			user, baseUrl, theme, navigation, Hide_System_Messages, width, height
@@ -1018,14 +1005,6 @@ class RoomView extends React.Component {
 					height={height}
 				/>
 				<UploadProgress rid={this.rid} user={user} baseUrl={baseUrl} width={width} />
-				<ReactionsModal
-					message={selectedMessage}
-					isVisible={reactionsModalVisible}
-					user={user}
-					baseUrl={baseUrl}
-					onClose={this.onCloseReactionsModal}
-					getCustomEmoji={this.getCustomEmoji}
-				/>
 			</SafeAreaView>
 		);
 	}

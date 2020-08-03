@@ -34,7 +34,7 @@ const Reaction = React.memo(({
 	reaction, getCustomEmoji, theme, reactions
 }) => {
 	const {
-		onReactionPress, onReactionLongPress, baseUrl, user
+		onReactionPress, baseUrl, user
 	} = useContext(MessageContext);
 	const { showReactionSheet } = useReactionSheet();
 	const reacted = reaction.usernames.findIndex(item => item === user.username) !== -1;
@@ -89,7 +89,8 @@ const Reactions = React.memo(({
 Reaction.propTypes = {
 	reaction: PropTypes.object,
 	getCustomEmoji: PropTypes.func,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	reactions: PropTypes.object
 };
 Reaction.displayName = 'MessageReaction';
 
