@@ -22,10 +22,9 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -89,10 +88,9 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -156,10 +154,9 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -355,10 +352,9 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -441,10 +437,9 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -547,10 +542,9 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -584,12 +578,16 @@ exports[`Storyshots Markdown list Markdown 1`] = `
           style={
             Array [
               Object {
-                "backgroundColor": "#1d74f5",
-                "color": "#ffffff",
+                "backgroundColor": "transparent",
                 "fontFamily": "System",
                 "fontSize": 16,
                 "fontWeight": "500",
+                "letterSpacing": 0.5,
                 "padding": 5,
+              },
+              Object {
+                "backgroundColor": "#ffe9ec",
+                "color": "#f5455c",
               },
             ]
           }
@@ -627,12 +625,16 @@ exports[`Storyshots Markdown list Markdown 1`] = `
           style={
             Array [
               Object {
-                "backgroundColor": "#E8F2FF",
-                "color": "#1d74f5",
+                "backgroundColor": "transparent",
                 "fontFamily": "System",
                 "fontSize": 16,
                 "fontWeight": "500",
+                "letterSpacing": 0.5,
                 "padding": 5,
+              },
+              Object {
+                "backgroundColor": "#fff6d6",
+                "color": "#b68d00",
               },
             ]
           }
@@ -669,15 +671,16 @@ exports[`Storyshots Markdown list Markdown 1`] = `
           style={
             Array [
               Object {
-                "backgroundColor": "#E8F2FF",
-                "color": "#ffffff",
+                "backgroundColor": "transparent",
                 "fontFamily": "System",
                 "fontSize": 16,
                 "fontWeight": "500",
+                "letterSpacing": 0.5,
                 "padding": 5,
               },
               Object {
-                "backgroundColor": "#FF5B5A",
+                "backgroundColor": "#fde8d7",
+                "color": "#f38c39",
               },
             ]
           }
@@ -714,15 +717,16 @@ exports[`Storyshots Markdown list Markdown 1`] = `
           style={
             Array [
               Object {
-                "backgroundColor": "#E8F2FF",
-                "color": "#ffffff",
+                "backgroundColor": "transparent",
                 "fontFamily": "System",
                 "fontSize": 16,
                 "fontWeight": "500",
+                "letterSpacing": 0.5,
                 "padding": 5,
               },
               Object {
-                "backgroundColor": "#FF5B5A",
+                "backgroundColor": "#fde8d7",
+                "color": "#f38c39",
               },
             ]
           }
@@ -781,10 +785,9 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -818,12 +821,16 @@ exports[`Storyshots Markdown list Markdown 1`] = `
           style={
             Array [
               Object {
-                "backgroundColor": "#1d74f5",
-                "color": "#ffffff",
+                "backgroundColor": "transparent",
                 "fontFamily": "System",
                 "fontSize": 16,
                 "fontWeight": "500",
+                "letterSpacing": 0.5,
                 "padding": 5,
+              },
+              Object {
+                "backgroundColor": "#ffe9ec",
+                "color": "#f5455c",
               },
             ]
           }
@@ -861,12 +868,16 @@ exports[`Storyshots Markdown list Markdown 1`] = `
           style={
             Array [
               Object {
-                "backgroundColor": "#E8F2FF",
-                "color": "#1d74f5",
+                "backgroundColor": "transparent",
                 "fontFamily": "System",
                 "fontSize": 16,
                 "fontWeight": "500",
+                "letterSpacing": 0.5,
                 "padding": 5,
+              },
+              Object {
+                "backgroundColor": "#fff6d6",
+                "color": "#b68d00",
               },
             ]
           }
@@ -903,15 +914,16 @@ exports[`Storyshots Markdown list Markdown 1`] = `
           style={
             Array [
               Object {
-                "backgroundColor": "#E8F2FF",
-                "color": "#ffffff",
+                "backgroundColor": "transparent",
                 "fontFamily": "System",
                 "fontSize": 16,
                 "fontWeight": "500",
+                "letterSpacing": 0.5,
                 "padding": 5,
               },
               Object {
-                "backgroundColor": "#FF5B5A",
+                "backgroundColor": "#fde8d7",
+                "color": "#f38c39",
               },
             ]
           }
@@ -948,15 +960,16 @@ exports[`Storyshots Markdown list Markdown 1`] = `
           style={
             Array [
               Object {
-                "backgroundColor": "#E8F2FF",
-                "color": "#ffffff",
+                "backgroundColor": "transparent",
                 "fontFamily": "System",
                 "fontSize": 16,
                 "fontWeight": "500",
+                "letterSpacing": 0.5,
                 "padding": 5,
               },
               Object {
-                "backgroundColor": "#FF5B5A",
+                "backgroundColor": "#fde8d7",
+                "color": "#f38c39",
               },
             ]
           }
@@ -1015,10 +1028,9 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -1052,17 +1064,21 @@ exports[`Storyshots Markdown list Markdown 1`] = `
           style={
             Array [
               Object {
-                "backgroundColor": "#E8F2FF",
-                "color": "#0072FE",
+                "backgroundColor": "transparent",
                 "fontFamily": "System",
                 "fontSize": 16,
                 "fontWeight": "500",
+                "letterSpacing": 0.5,
                 "padding": 5,
+              },
+              Object {
+                "backgroundColor": "#fff6d6",
+                "color": "#b68d00",
               },
             ]
           }
         >
-          test-channel
+          #test-channel
         </Text>
         <Text
           accessibilityLabel=" "
@@ -1116,10 +1132,9 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -1561,10 +1576,9 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -1697,10 +1711,9 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -1927,10 +1940,9 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -1982,10 +1994,9 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -2222,10 +2233,9 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -2306,10 +2316,9 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -2478,10 +2487,9 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -2828,10 +2836,9 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3016,10 +3023,9 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3167,10 +3173,9 @@ exports[`Storyshots Markdown list Markdown 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3209,10 +3214,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3231,10 +3235,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3253,10 +3256,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3275,10 +3277,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3297,10 +3298,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3319,10 +3319,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3341,10 +3340,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3363,10 +3361,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3385,10 +3382,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3407,10 +3403,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3429,10 +3424,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3451,10 +3445,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3473,10 +3466,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3495,10 +3487,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3517,10 +3508,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3539,10 +3529,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3561,10 +3550,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3583,10 +3571,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3605,10 +3592,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3627,10 +3613,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3649,10 +3634,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3671,10 +3655,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3693,10 +3676,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3715,10 +3697,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3889,10 +3870,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3911,10 +3891,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3933,10 +3912,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3955,10 +3933,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3977,10 +3954,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -3999,10 +3975,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4021,10 +3996,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4043,10 +4017,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4065,10 +4038,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4087,10 +4059,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4109,10 +4080,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4131,10 +4101,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4153,10 +4122,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4175,10 +4143,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4197,10 +4164,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4447,10 +4413,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4469,10 +4434,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4491,10 +4455,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4513,10 +4476,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4535,10 +4497,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4557,10 +4518,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4579,10 +4539,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4601,10 +4560,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4623,10 +4581,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4645,10 +4602,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4667,10 +4623,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4689,10 +4644,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4711,10 +4665,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4733,10 +4686,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4755,10 +4707,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4777,10 +4728,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4799,10 +4749,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4821,10 +4770,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4843,10 +4791,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4865,10 +4812,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4887,10 +4833,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4909,10 +4854,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4931,10 +4875,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4953,10 +4896,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4975,10 +4917,9 @@ exports[`Storyshots Message list message 1`] = `
             "fontSize": 20,
             "fontWeight": "300",
             "marginLeft": 10,
-            "marginTop": 30,
+            "marginVertical": 30,
           },
           Object {
-            "backgroundColor": "#ffffff",
             "color": "#0d0e12",
           },
           Object {
@@ -4990,6 +4931,157 @@ exports[`Storyshots Message list message 1`] = `
     >
       Markdown table
     </Text>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Storyshots RoomItem list roomitem 1`] = `
+<RCTScrollView
+  style={
+    Object {
+      "backgroundColor": "#efeff4",
+    }
+  }
+>
+  <View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginVertical": 30,
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          undefined,
+        ]
+      }
+    >
+      Basic
+    </Text>
+    View
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginVertical": 30,
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          undefined,
+        ]
+      }
+    >
+      User
+    </Text>
+    View
+    View
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginVertical": 30,
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          undefined,
+        ]
+      }
+    >
+      Type
+    </Text>
+    View
+    View
+    View
+    View
+    View
+    View
+    View
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginVertical": 30,
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          undefined,
+        ]
+      }
+    >
+      User status
+    </Text>
+    View
+    View
+    View
+    View
+    View
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginVertical": 30,
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          undefined,
+        ]
+      }
+    >
+      Alerts
+    </Text>
+    View
+    View
+    View
+    View
+    View
+    View
+    View
+    View
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginVertical": 30,
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          undefined,
+        ]
+      }
+    >
+      Last Message
+    </Text>
+    View
+    View
+    View
+    View
+    View
+    View
+    View
   </View>
 </RCTScrollView>
 `;
@@ -5026,10 +5118,9 @@ exports[`Storyshots UiKitMessage list uikitmessage 1`] = `
               "fontSize": 20,
               "fontWeight": "300",
               "marginLeft": 10,
-              "marginTop": 30,
+              "marginVertical": 30,
             },
             Object {
-              "backgroundColor": "#ffffff",
               "color": "#0d0e12",
             },
             undefined,
@@ -5045,10 +5136,9 @@ exports[`Storyshots UiKitMessage list uikitmessage 1`] = `
               "fontSize": 20,
               "fontWeight": "300",
               "marginLeft": 10,
-              "marginTop": 30,
+              "marginVertical": 30,
             },
             Object {
-              "backgroundColor": "#ffffff",
               "color": "#0d0e12",
             },
             undefined,
@@ -5064,10 +5154,9 @@ exports[`Storyshots UiKitMessage list uikitmessage 1`] = `
               "fontSize": 20,
               "fontWeight": "300",
               "marginLeft": 10,
-              "marginTop": 30,
+              "marginVertical": 30,
             },
             Object {
-              "backgroundColor": "#ffffff",
               "color": "#0d0e12",
             },
             undefined,
@@ -5083,10 +5172,9 @@ exports[`Storyshots UiKitMessage list uikitmessage 1`] = `
               "fontSize": 20,
               "fontWeight": "300",
               "marginLeft": 10,
-              "marginTop": 30,
+              "marginVertical": 30,
             },
             Object {
-              "backgroundColor": "#ffffff",
               "color": "#0d0e12",
             },
             undefined,
@@ -5102,10 +5190,9 @@ exports[`Storyshots UiKitMessage list uikitmessage 1`] = `
               "fontSize": 20,
               "fontWeight": "300",
               "marginLeft": 10,
-              "marginTop": 30,
+              "marginVertical": 30,
             },
             Object {
-              "backgroundColor": "#ffffff",
               "color": "#0d0e12",
             },
             undefined,
@@ -5121,10 +5208,9 @@ exports[`Storyshots UiKitMessage list uikitmessage 1`] = `
               "fontSize": 20,
               "fontWeight": "300",
               "marginLeft": 10,
-              "marginTop": 30,
+              "marginVertical": 30,
             },
             Object {
-              "backgroundColor": "#ffffff",
               "color": "#0d0e12",
             },
             undefined,
@@ -5140,10 +5226,9 @@ exports[`Storyshots UiKitMessage list uikitmessage 1`] = `
               "fontSize": 20,
               "fontWeight": "300",
               "marginLeft": 10,
-              "marginTop": 30,
+              "marginVertical": 30,
             },
             Object {
-              "backgroundColor": "#ffffff",
               "color": "#0d0e12",
             },
             undefined,
@@ -5159,10 +5244,9 @@ exports[`Storyshots UiKitMessage list uikitmessage 1`] = `
               "fontSize": 20,
               "fontWeight": "300",
               "marginLeft": 10,
-              "marginTop": 30,
+              "marginVertical": 30,
             },
             Object {
-              "backgroundColor": "#ffffff",
               "color": "#0d0e12",
             },
             undefined,
@@ -5178,10 +5262,9 @@ exports[`Storyshots UiKitMessage list uikitmessage 1`] = `
               "fontSize": 20,
               "fontWeight": "300",
               "marginLeft": 10,
-              "marginTop": 30,
+              "marginVertical": 30,
             },
             Object {
-              "backgroundColor": "#ffffff",
               "color": "#0d0e12",
             },
             undefined,
@@ -5197,10 +5280,9 @@ exports[`Storyshots UiKitMessage list uikitmessage 1`] = `
               "fontSize": 20,
               "fontWeight": "300",
               "marginLeft": 10,
-              "marginTop": 30,
+              "marginVertical": 30,
             },
             Object {
-              "backgroundColor": "#ffffff",
               "color": "#0d0e12",
             },
             undefined,
@@ -5216,10 +5298,9 @@ exports[`Storyshots UiKitMessage list uikitmessage 1`] = `
               "fontSize": 20,
               "fontWeight": "300",
               "marginLeft": 10,
-              "marginTop": 30,
+              "marginVertical": 30,
             },
             Object {
-              "backgroundColor": "#ffffff",
               "color": "#0d0e12",
             },
             undefined,
@@ -5235,10 +5316,9 @@ exports[`Storyshots UiKitMessage list uikitmessage 1`] = `
               "fontSize": 20,
               "fontWeight": "300",
               "marginLeft": 10,
-              "marginTop": 30,
+              "marginVertical": 30,
             },
             Object {
-              "backgroundColor": "#ffffff",
               "color": "#0d0e12",
             },
             undefined,
@@ -5254,10 +5334,9 @@ exports[`Storyshots UiKitMessage list uikitmessage 1`] = `
               "fontSize": 20,
               "fontWeight": "300",
               "marginLeft": 10,
-              "marginTop": 30,
+              "marginVertical": 30,
             },
             Object {
-              "backgroundColor": "#ffffff",
               "color": "#0d0e12",
             },
             undefined,
@@ -5303,10 +5382,9 @@ exports[`Storyshots UiKitModal list UiKitModal 1`] = `
               "fontSize": 20,
               "fontWeight": "300",
               "marginLeft": 10,
-              "marginTop": 30,
+              "marginVertical": 30,
             },
             Object {
-              "backgroundColor": "#ffffff",
               "color": "#0d0e12",
             },
             undefined,
@@ -5322,10 +5400,9 @@ exports[`Storyshots UiKitModal list UiKitModal 1`] = `
               "fontSize": 20,
               "fontWeight": "300",
               "marginLeft": 10,
-              "marginTop": 30,
+              "marginVertical": 30,
             },
             Object {
-              "backgroundColor": "#ffffff",
               "color": "#0d0e12",
             },
             undefined,
@@ -5341,10 +5418,9 @@ exports[`Storyshots UiKitModal list UiKitModal 1`] = `
               "fontSize": 20,
               "fontWeight": "300",
               "marginLeft": 10,
-              "marginTop": 30,
+              "marginVertical": 30,
             },
             Object {
-              "backgroundColor": "#ffffff",
               "color": "#0d0e12",
             },
             undefined,
@@ -5360,10 +5436,9 @@ exports[`Storyshots UiKitModal list UiKitModal 1`] = `
               "fontSize": 20,
               "fontWeight": "300",
               "marginLeft": 10,
-              "marginTop": 30,
+              "marginVertical": 30,
             },
             Object {
-              "backgroundColor": "#ffffff",
               "color": "#0d0e12",
             },
             undefined,
@@ -5379,10 +5454,9 @@ exports[`Storyshots UiKitModal list UiKitModal 1`] = `
               "fontSize": 20,
               "fontWeight": "300",
               "marginLeft": 10,
-              "marginTop": 30,
+              "marginVertical": 30,
             },
             Object {
-              "backgroundColor": "#ffffff",
               "color": "#0d0e12",
             },
             undefined,
@@ -5398,10 +5472,9 @@ exports[`Storyshots UiKitModal list UiKitModal 1`] = `
               "fontSize": 20,
               "fontWeight": "300",
               "marginLeft": 10,
-              "marginTop": 30,
+              "marginVertical": 30,
             },
             Object {
-              "backgroundColor": "#ffffff",
               "color": "#0d0e12",
             },
             undefined,
@@ -5417,10 +5490,9 @@ exports[`Storyshots UiKitModal list UiKitModal 1`] = `
               "fontSize": 20,
               "fontWeight": "300",
               "marginLeft": 10,
-              "marginTop": 30,
+              "marginVertical": 30,
             },
             Object {
-              "backgroundColor": "#ffffff",
               "color": "#0d0e12",
             },
             undefined,
@@ -5436,10 +5508,9 @@ exports[`Storyshots UiKitModal list UiKitModal 1`] = `
               "fontSize": 20,
               "fontWeight": "300",
               "marginLeft": 10,
-              "marginTop": 30,
+              "marginVertical": 30,
             },
             Object {
-              "backgroundColor": "#ffffff",
               "color": "#0d0e12",
             },
             undefined,
@@ -5455,10 +5526,9 @@ exports[`Storyshots UiKitModal list UiKitModal 1`] = `
               "fontSize": 20,
               "fontWeight": "300",
               "marginLeft": 10,
-              "marginTop": 30,
+              "marginVertical": 30,
             },
             Object {
-              "backgroundColor": "#ffffff",
               "color": "#0d0e12",
             },
             undefined,
@@ -5474,10 +5544,9 @@ exports[`Storyshots UiKitModal list UiKitModal 1`] = `
               "fontSize": 20,
               "fontWeight": "300",
               "marginLeft": 10,
-              "marginTop": 30,
+              "marginVertical": 30,
             },
             Object {
-              "backgroundColor": "#ffffff",
               "color": "#0d0e12",
             },
             undefined,

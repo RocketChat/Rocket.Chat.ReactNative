@@ -16,6 +16,7 @@ import { CustomIcon } from '../lib/Icons';
 import { THEME_PREFERENCES_KEY } from '../lib/rocketchat';
 import { supportSystemTheme } from '../utils/deviceInfo';
 import SafeAreaView from '../containers/SafeAreaView';
+import { events, logEvent } from '../utils/log';
 
 const THEME_GROUP = 'THEME_GROUP';
 const DARK_GROUP = 'DARK_GROUP';
@@ -68,9 +69,9 @@ const styles = StyleSheet.create({
 });
 
 class ThemeView extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: I18n.t('Theme')
-	}
+	})
 
 	static propTypes = {
 		theme: PropTypes.string,
@@ -96,9 +97,11 @@ class ThemeView extends React.Component {
 		const { value, group } = item;
 		let changes = {};
 		if (group === THEME_GROUP && currentTheme !== value) {
+			logEvent(events.THEME_SET_THEME_GROUP, { theme_group: value });
 			changes = { currentTheme: value };
 		}
 		if (group === DARK_GROUP && darkLevel !== value) {
+			logEvent(events.THEME_SET_DARK_LEVEL, { dark_level: value });
 			changes = { darkLevel: value };
 		}
 		this.setTheme(changes);

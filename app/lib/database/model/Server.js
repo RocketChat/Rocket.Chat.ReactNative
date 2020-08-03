@@ -25,4 +25,6 @@ export default class Server extends Model {
 	@field('auto_lock_time') autoLockTime;
 
 	@field('biometry') biometry;
+
+	@field('unique_id') uniqueID;
 }

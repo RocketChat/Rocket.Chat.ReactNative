@@ -13,9 +13,9 @@ import ServerAvatar from './ServerAvatar';
 import { getShowLoginButton } from '../../selectors/login';
 
 class WorkspaceView extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: I18n.t('Your_workspace')
-	}
+	})
 
 	static propTypes = {
 		navigation: PropTypes.object,

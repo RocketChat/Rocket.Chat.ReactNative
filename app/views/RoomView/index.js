@@ -24,7 +24,7 @@ import MessageBox from '../../containers/MessageBox';
 import ReactionPicker from './ReactionPicker';
 import UploadProgress from './UploadProgress';
 import styles from './styles';
-import log from '../../utils/log';
+import log, { logEvent, events } from '../../utils/log';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
 import RoomHeaderView, { RightButtons, LeftButtons } from './Header';
@@ -280,6 +280,11 @@ class RoomView extends React.Component {
 		}
 		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
 		console.countReset(`${ this.constructor.name }.render calls`);
+	}
+
+	get isOmnichannel() {
+		const { room } = this.state;
+		return room.t === 'l';
 	}
 
 	setHeader = () => {
@@ -655,6 +660,7 @@ class RoomView extends React.Component {
 	}
 
 	sendMessage = (message, tmid) => {
+		logEvent(events.ROOM_SEND_MESSAGE);
 		const { user } = this.props;
 		RocketChat.sendMessage(this.rid, message, this.tmid || tmid, user).then(() => {
 			if (this.list && this.list.current) {
@@ -688,8 +694,15 @@ class RoomView extends React.Component {
 	setLastOpen = lastOpen => this.setState({ lastOpen });
 
 	joinRoom = async() => {
+		logEvent(events.ROOM_JOIN);
 		try {
-			await RocketChat.joinRoom(this.rid, this.t);
+			const { room } = this.state;
+
+			if (this.isOmnichannel) {
+				await RocketChat.takeInquiry(room._id);
+			} else {
+				await RocketChat.joinRoom(this.rid, this.t);
+			}
 			this.internalSetState({
 				joined: true
 			});
@@ -906,7 +919,7 @@ class RoomView extends React.Component {
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
 						theme={theme}
 					>
-						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-join-button'>{I18n.t('Join')}</Text>
+						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-join-button'>{I18n.t(this.isOmnichannel ? 'Take_it' : 'Join')}</Text>
 					</Touch>
 				</View>
 			);

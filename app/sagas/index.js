@@ -10,6 +10,7 @@ import state from './state';
 import deepLinking from './deepLinking';
 import inviteLinks from './inviteLinks';
 import createDiscussion from './createDiscussion';
+import inquiry from './inquiry';
 
 const root = function* root() {
 	yield all([
@@ -23,7 +24,8 @@ const root = function* root() {
 		state(),
 		deepLinking(),
 		inviteLinks(),
-		createDiscussion()
+		createDiscussion(),
+		inquiry()
 	]);
 };
 

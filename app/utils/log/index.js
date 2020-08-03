@@ -20,8 +20,12 @@ export const logServerVersion = (serverVersion) => {
 };
 
 export const logEvent = (eventName, payload) => {
-	analytics().logEvent(eventName, payload);
-	leaveBreadcrumb(eventName, payload);
+	try {
+		analytics().logEvent(eventName, payload);
+		leaveBreadcrumb(eventName, payload);
+	} catch {
+		// Do nothing
+	}
 };
 
 export const setCurrentScreen = (currentScreen) => {

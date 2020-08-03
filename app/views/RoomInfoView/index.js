@@ -195,6 +195,7 @@ class RoomInfoView extends React.Component {
 	}
 
 	loadRoom = async() => {
+		const { room: roomState } = this.state;
 		const { route } = this.props;
 		let room = route.params?.room;
 		if (room && room.observe) {
@@ -208,7 +209,7 @@ class RoomInfoView extends React.Component {
 				const result = await RocketChat.getRoomInfo(this.rid);
 				if (result.success) {
 					({ room } = result);
-					this.setState({ room });
+					this.setState({ room: { ...roomState, ...room } });
 				}
 			} catch (e) {
 				log(e);
@@ -330,7 +331,7 @@ class RoomInfoView extends React.Component {
 		return (
 			<View style={styles.roomButtonsContainer}>
 				{this.renderButton(this.goRoom, 'message', I18n.t('Message'))}
-				{jitsiEnabled ? this.renderButton(this.videoCall, 'video-1', I18n.t('Video_call')) : null}
+				{jitsiEnabled ? this.renderButton(this.videoCall, 'camera', I18n.t('Video_call')) : null}
 			</View>
 		);
 	}
