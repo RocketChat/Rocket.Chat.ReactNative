@@ -98,7 +98,7 @@ export default class Root extends React.Component {
 		}
 	}
 
-	init = async () => {
+	init = async() => {
 		RNUserDefaults.objectForKey(THEME_PREFERENCES_KEY).then(this.setTheme);
 		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);

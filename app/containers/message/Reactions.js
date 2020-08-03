@@ -41,7 +41,9 @@ const Reaction = React.memo(({
 	return (
 		<Touchable
 			onPress={() => onReactionPress(reaction.emoji)}
-			onLongPress={() => showReactionSheet({reactions, baseUrl, getCustomEmoji, user})}
+			onLongPress={() => showReactionSheet({
+				reactions, reaction, baseUrl, getCustomEmoji, user
+			})}
 			key={reaction.emoji}
 			testID={`message-reaction-${ reaction.emoji }`}
 			style={[styles.reactionButton, { backgroundColor: reacted ? themes[theme].bannerBackground : themes[theme].backgroundColor }]}
