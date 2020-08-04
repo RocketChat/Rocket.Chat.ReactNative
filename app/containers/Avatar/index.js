@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
@@ -7,50 +7,64 @@ import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
 import Component from './Avatar';
 
-const Avatar = React.memo(({ type, text, ...props }) => {
-	const [avatarETag, setAvatarETag] = useState();
+class Avatar extends React.Component {
+	static propTypes = {
+		text: PropTypes.string,
+		type: PropTypes.string
+	};
 
-	useEffect(() => {
-		let subscription;
-		(async() => {
-			if (type === 'd') {
-				const db = database.active;
-				const usersCollection = db.collections.get('users');
-				try {
-					const [userRecord] = await usersCollection.query(Q.where('username', text)).fetch();
-					if (userRecord) {
-						const observable = userRecord.observe();
-						subscription = observable.subscribe((u) => {
-							setAvatarETag(u.avatarETag);
-						});
-					}
-				} catch {
-					// Do nothing
+	static defaultProps = {
+		text: '',
+		type: 'd'
+	};
+
+	constructor(props) {
+		super(props);
+		this.state = { avatarETag: '' };
+		this.init();
+	}
+
+	componentWillUnmount() {
+		if (this.userSubscription?.unsubscribe) {
+			this.userSubscription.unsubscribe();
+		}
+	}
+
+	get isDirect() {
+		const { type } = this.props;
+		return type === 'd';
+	}
+
+	init = async() => {
+		if (this.isDirect) {
+			const { text } = this.props;
+			const db = database.active;
+			const usersCollection = db.collections.get('users');
+			try {
+				const [user] = await usersCollection.query(Q.where('username', text)).fetch();
+				if (user) {
+					const observable = user.observe();
+					this.userSubscription = observable.subscribe((u) => {
+						const { avatarETag } = u;
+						this.setState({ avatarETag });
+					});
 				}
+			} catch {
+				// User was not found
 			}
-		})();
-		return () => {
-			subscription?.unsubscribe?.();
-		};
-	}, []);
+		}
+	}
 
-	return (
-		<Component
-			text={text}
-			type={type}
-			avatarETag={avatarETag}
-			{...props}
-		/>
-	);
-});
-Avatar.propTypes = {
-	text: PropTypes.string,
-	type: PropTypes.string
-};
-Avatar.defaultProps = {
-	text: '',
-	type: 'd'
-};
+	render() {
+		const { avatarETag } = this.state;
+		return (
+			<Component
+				avatarETag={avatarETag}
+				{...this.props}
+			/>
+		);
+	}
+}
 
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
