@@ -78,6 +78,7 @@ export default {
 	RL_GROUP_CHANNELS_BY_FAVORITE: 'rl_group_channels_by_favorite',
 	RL_GROUP_CHANNELS_BY_UNREAD: 'rl_group_channels_by_unread',
 
+	// QUEUE LIST VIEW
 	QL_GO_ROOM: 'ql_go_room',
 
 	// DIRECTORY VIEW
@@ -197,5 +198,16 @@ export default {
 	ROOM_MSG_ACTION_REACTION: 'room_msg_action_reaction',
 	ROOM_MSG_ACTION_REPORT: 'room_msg_action_report',
 	ROOM_MSG_ACTION_REPORT_F: 'room_msg_action_report_f',
-	ROOM_JOIN: 'room_join'
+	ROOM_JOIN: 'room_join',
+	ROOM_GO_TO_RA: 'room_go_to_ra',
+
+	// ROOM ACTION VIEW
+	RA_JITSI_VIDEO: 'ra_jitsi_video',
+	RA_JITSI_AUDIO: 'ra_jitsi_audio',
+	RA_JITSI_F: 'ra_jitsi_f',
+
+
+	// JITSI MEET VIEW
+	JM_CONFERENCE_JOIN: 'jm_conference_join',
+	JM_CONFERENCE_TERMINATE: 'jm_conference_terminate'
 };
