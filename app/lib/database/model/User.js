@@ -1,24 +1,14 @@
 import { Model } from '@nozbe/watermelondb';
-import { field, json } from '@nozbe/watermelondb/decorators';
-
-import { sanitizer } from '../utils';
+import { field } from '@nozbe/watermelondb/decorators';
 
 export default class User extends Model {
 	static table = 'users';
 
-	@field('token') token;
-
-	@field('username') username;
+	@field('_id') _id;
 
 	@field('name') name;
 
-	@field('language') language;
-
-	@field('status') status;
-
-	@field('statusText') statusText;
-
-	@json('roles', sanitizer) roles;
+	@field('username') username;
 
 	@field('avatar_etag') avatarETag;
 }
