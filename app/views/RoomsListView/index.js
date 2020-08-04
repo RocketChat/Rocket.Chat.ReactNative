@@ -668,7 +668,7 @@ class RoomsListView extends React.Component {
 	};
 
 	goDirectory = () => {
-		logEvent(events.RL_NAVIGATE_TO_DIRECTORY);
+		logEvent(events.RL_GO_TO_DIRECTORY);
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', { screen: 'DirectoryView' });
@@ -753,7 +753,7 @@ class RoomsListView extends React.Component {
 	}
 
 	goToNewMessage = () => {
-		logEvent(events.RL_NAVIGATE_TO_NEW_MSG);
+		logEvent(events.RL_GO_TO_NEW_MSG);
 		const { navigation, isMasterDetail } = this.props;
 
 		if (isMasterDetail) {
