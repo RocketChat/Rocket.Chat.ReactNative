@@ -2,7 +2,6 @@ package chat.rocket.reactnative;
 
 import android.os.Bundle;
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -54,19 +53,15 @@ public class LoadNotification {
   private static int RETRY_COUNT = 0;
   private static int[] TIMEOUT = new int[]{ 0, 1, 3, 5, 10 };
   private static String TOKEN_KEY = "reactnativemeteor_usertoken-";
-  private static SharedPreferences sharedPreferences = RNUserDefaultsModule.getPreferences(CustomPushNotification.reactApplicationContext);
 
-  public static void load(ReactApplicationContext reactApplicationContext, final String host, final String msgId, Callback callback) {
+  public static void load(ReactApplicationContext reactApplicationContext, final Ejson ejson, Callback callback) {
     final OkHttpClient client = new OkHttpClient();
-    HttpUrl.Builder url = HttpUrl.parse(host.concat("/api/v1/push.get")).newBuilder();
-
-    String userId = sharedPreferences.getString(TOKEN_KEY.concat(host), "");
-    String token = sharedPreferences.getString(TOKEN_KEY.concat(userId), "");
+    HttpUrl.Builder url = HttpUrl.parse(ejson.serverURL().concat("/api/v1/push.get")).newBuilder();
 
     Request request = new Request.Builder()
-      .header("x-user-id", userId)
-      .header("x-auth-token", token)
-      .url(url.addQueryParameter("id", msgId).build())
+      .header("x-user-id", ejson.userId())
+      .header("x-auth-token", ejson.token())
+      .url(url.addQueryParameter("id", ejson.messageId).build())
       .build();
 
     runRequest(client, request, callback);
