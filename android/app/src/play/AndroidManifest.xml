@@ -1,0 +1,7 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+		  xmlns:tools="http://schemas.android.com/tools"
+	package="chat.rocket.reactnative">
+		<meta-data
+				android:name="com.bugsnag.android.API_KEY"
+				android:value="${BugsnagAPIKey}" />
+</manifest>
