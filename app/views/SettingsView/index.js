@@ -29,7 +29,9 @@ import styles from './styles';
 import {
 	loggerConfig, analytics, logEvent, events
 } from '../../utils/log';
-import { PLAY_MARKET_LINK, FDROID_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/links';
+import {
+	PLAY_MARKET_LINK, FDROID_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK
+} from '../../constants/links';
 import { withTheme } from '../../theme';
 import SidebarView from '../SidebarView';
 import { LISTENER } from '../../containers/Toast';
