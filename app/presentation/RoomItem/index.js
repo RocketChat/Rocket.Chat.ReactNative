@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
@@ -21,178 +21,195 @@ const attrs = [
 	'showLastMessage'
 ];
 
-const arePropsEqual = (oldProps, newProps) => attrs.every(key => oldProps[key] === newProps[key]);
+class RoomItemContainer extends React.Component {
+	static propTypes = {
+		item: PropTypes.object.isRequired,
+		baseUrl: PropTypes.string.isRequired,
+		showLastMessage: PropTypes.bool,
+		id: PropTypes.string,
+		onPress: PropTypes.func,
+		userId: PropTypes.string,
+		username: PropTypes.string,
+		token: PropTypes.string,
+		avatarSize: PropTypes.number,
+		testID: PropTypes.string,
+		width: PropTypes.number,
+		status: PropTypes.string,
+		toggleFav: PropTypes.func,
+		toggleRead: PropTypes.func,
+		hideChannel: PropTypes.func,
+		useRealName: PropTypes.bool,
+		getUserPresence: PropTypes.func,
+		connected: PropTypes.bool,
+		theme: PropTypes.string,
+		isFocused: PropTypes.bool,
+		getRoomTitle: PropTypes.func,
+		getRoomAvatar: PropTypes.func,
+		getIsGroupChat: PropTypes.func,
+		getIsRead: PropTypes.func,
+		swipeEnabled: PropTypes.bool
+	};
 
-const RoomItemContainer = React.memo(({
-	item,
-	onPress,
-	width,
-	toggleFav,
-	toggleRead,
-	hideChannel,
-	testID,
-	avatarSize,
-	baseUrl,
-	userId,
-	username,
-	token,
-	id,
-	showLastMessage,
-	status,
-	useRealName,
-	getUserPresence,
-	connected,
-	theme,
-	isFocused,
-	getRoomTitle,
-	getRoomAvatar,
-	getIsGroupChat,
-	getIsRead,
-	swipeEnabled
-}) => {
-	const [, setForceUpdate] = useState(1);
-	const [avatarETag, setAvatarETag] = useState('');
+	static defaultProps = {
+		avatarSize: 48,
+		status: 'offline',
+		getUserPresence: () => {},
+		getRoomTitle: () => 'title',
+		getRoomAvatar: () => '',
+		getIsGroupChat: () => false,
+		getIsRead: () => false,
+		swipeEnabled: true
+	}
 
-	useEffect(() => {
-		if (connected && item.t === 'd' && id) {
+	constructor(props) {
+		super(props);
+		this.state = { avatarETag: '' };
+		this.init();
+	}
+
+	shouldComponentUpdate(nextProps) {
+		const { props } = this;
+		return !attrs.every(key => props[key] === nextProps[key]);
+	}
+
+	componentDidUpdate(prevProps) {
+		const { connected, getUserPresence, id } = this.props;
+		if (prevProps.connected !== connected && connected && this.isDirect) {
 			getUserPresence(id);
 		}
-	}, [connected]);
+	}
 
-	useEffect(() => {
-		let userSub;
-		if (item.t === 'd') {
-			(async() => {
-				const db = database.active;
-				const usersCollection = db.collections.get('users');
-				try {
-					const [user] = await usersCollection.query(Q.where('username', Q.eq(username))).fetch();
-					if (user) {
-						const observable = user.observe();
-						userSub = observable.subscribe((u) => {
-							setAvatarETag(u.avatarETag);
-						});
-					}
-				} catch {
-					// Do nothing
+	componentWillUnmount() {
+		if (this.userSubscription?.unsubscribe) {
+			this.userSubscription.unsubscribe();
+		}
+		if (this.roomSubscription?.unsubscribe) {
+			this.roomSubscription.unsubscribe();
+		}
+	}
+
+	get isDirect() {
+		const { item: { t } } = this.props;
+		return t === 'd';
+	}
+
+	init = async() => {
+		if (this.isDirect) {
+			const { username } = this.props;
+			const db = database.active;
+			const usersCollection = db.collections.get('users');
+			try {
+				const [user] = await usersCollection.query(Q.where('username', Q.eq(username))).fetch();
+				if (user) {
+					const observable = user.observe();
+					this.userSubscription = observable.subscribe((u) => {
+						const { avatarETag } = u;
+						this.setState({ avatarETag });
+					});
 				}
-			})();
+			} catch {
+				// Do nothing
+			}
 		}
 
+		const { item } = this.props;
 		if (item?.observe) {
 			const observable = item.observe();
-			const subscription = observable?.subscribe?.(() => {
-				setForceUpdate(prevForceUpdate => prevForceUpdate + 1);
+			this.roomSubscription = observable?.subscribe?.(() => {
+				this.forceUpdate();
 			});
-
-			return () => {
-				userSub?.unsubscribe?.();
-				subscription?.unsubscribe?.();
-			};
 		}
-	}, []);
-
-	const name = getRoomTitle(item);
-	const avatar = getRoomAvatar(item);
-	const isGroupChat = getIsGroupChat(item);
-	const isRead = getIsRead(item);
-	const _onPress = () => onPress(item);
-	const date = item.lastMessage?.ts && formatDate(item.lastMessage.ts);
-
-	let accessibilityLabel = name;
-	if (item.unread === 1) {
-		accessibilityLabel += `, ${ item.unread } ${ I18n.t('alert') }`;
-	} else if (item.unread > 1) {
-		accessibilityLabel += `, ${ item.unread } ${ I18n.t('alerts') }`;
 	}
 
-	if (item.userMentions > 0) {
-		accessibilityLabel += `, ${ I18n.t('you_were_mentioned') }`;
+	render() {
+		const { avatarETag } = this.state;
+		const {
+			item,
+			getRoomTitle,
+			getRoomAvatar,
+			getIsGroupChat,
+			getIsRead,
+			onPress,
+			width,
+			toggleFav,
+			toggleRead,
+			hideChannel,
+			testID,
+			theme,
+			isFocused,
+			avatarSize,
+			baseUrl,
+			userId,
+			token,
+			status,
+			showLastMessage,
+			username,
+			useRealName,
+			swipeEnabled
+		} = this.props;
+		const name = getRoomTitle(item);
+		const avatar = getRoomAvatar(item);
+		const isGroupChat = getIsGroupChat(item);
+		const isRead = getIsRead(item);
+		const _onPress = () => onPress(item);
+		const date = item.lastMessage?.ts && formatDate(item.lastMessage.ts);
+
+		let accessibilityLabel = name;
+		if (item.unread === 1) {
+			accessibilityLabel += `, ${ item.unread } ${ I18n.t('alert') }`;
+		} else if (item.unread > 1) {
+			accessibilityLabel += `, ${ item.unread } ${ I18n.t('alerts') }`;
+		}
+
+		if (item.userMentions > 0) {
+			accessibilityLabel += `, ${ I18n.t('you_were_mentioned') }`;
+		}
+
+		if (date) {
+			accessibilityLabel += `, ${ I18n.t('last_message') } ${ date }`;
+		}
+
+		return (
+			<RoomItem
+				name={name}
+				avatar={avatar}
+				isGroupChat={isGroupChat}
+				isRead={isRead}
+				onPress={_onPress}
+				date={date}
+				accessibilityLabel={accessibilityLabel}
+				userMentions={item.userMentions}
+				width={width}
+				favorite={item.f}
+				toggleFav={toggleFav}
+				rid={item.rid}
+				toggleRead={toggleRead}
+				hideChannel={hideChannel}
+				testID={testID}
+				type={item.t}
+				theme={theme}
+				isFocused={isFocused}
+				size={avatarSize}
+				baseUrl={baseUrl}
+				userId={userId}
+				token={token}
+				prid={item.prid}
+				status={status}
+				hideUnreadStatus={item.hideUnreadStatus}
+				alert={item.alert}
+				roomUpdatedAt={item.roomUpdatedAt}
+				lastMessage={item.lastMessage}
+				showLastMessage={showLastMessage}
+				username={username}
+				useRealName={useRealName}
+				unread={item.unread}
+				groupMentions={item.groupMentions}
+				avatarETag={avatarETag}
+				swipeEnabled={swipeEnabled}
+			/>
+		);
 	}
-
-	if (date) {
-		accessibilityLabel += `, ${ I18n.t('last_message') } ${ date }`;
-	}
-
-	return (
-		<RoomItem
-			name={name}
-			avatar={avatar}
-			isGroupChat={isGroupChat}
-			isRead={isRead}
-			onPress={_onPress}
-			date={date}
-			accessibilityLabel={accessibilityLabel}
-			userMentions={item.userMentions}
-			width={width}
-			favorite={item.f}
-			toggleFav={toggleFav}
-			rid={item.rid}
-			toggleRead={toggleRead}
-			hideChannel={hideChannel}
-			testID={testID}
-			type={item.t}
-			theme={theme}
-			isFocused={isFocused}
-			size={avatarSize}
-			baseUrl={baseUrl}
-			userId={userId}
-			token={token}
-			prid={item.prid}
-			status={status}
-			hideUnreadStatus={item.hideUnreadStatus}
-			alert={item.alert}
-			roomUpdatedAt={item.roomUpdatedAt}
-			lastMessage={item.lastMessage}
-			showLastMessage={showLastMessage}
-			username={username}
-			useRealName={useRealName}
-			unread={item.unread}
-			groupMentions={item.groupMentions}
-			avatarETag={avatarETag}
-			swipeEnabled={swipeEnabled}
-		/>
-	);
-}, arePropsEqual);
-
-RoomItemContainer.propTypes = {
-	item: PropTypes.object.isRequired,
-	baseUrl: PropTypes.string.isRequired,
-	showLastMessage: PropTypes.bool,
-	id: PropTypes.string,
-	onPress: PropTypes.func,
-	userId: PropTypes.string,
-	username: PropTypes.string,
-	token: PropTypes.string,
-	avatarSize: PropTypes.number,
-	testID: PropTypes.string,
-	width: PropTypes.number,
-	status: PropTypes.string,
-	toggleFav: PropTypes.func,
-	toggleRead: PropTypes.func,
-	hideChannel: PropTypes.func,
-	useRealName: PropTypes.bool,
-	getUserPresence: PropTypes.func,
-	connected: PropTypes.bool,
-	theme: PropTypes.string,
-	isFocused: PropTypes.bool,
-	getRoomTitle: PropTypes.func,
-	getRoomAvatar: PropTypes.func,
-	getIsGroupChat: PropTypes.func,
-	getIsRead: PropTypes.func,
-	swipeEnabled: PropTypes.bool
-};
-
-RoomItemContainer.defaultProps = {
-	avatarSize: 48,
-	status: 'offline',
-	getUserPresence: () => {},
-	getRoomTitle: () => 'title',
-	getRoomAvatar: () => '',
-	getIsGroupChat: () => false,
-	getIsRead: () => false,
-	swipeEnabled: true
-};
+}
 
 const mapStateToProps = (state, ownProps) => {
 	let status = 'offline';

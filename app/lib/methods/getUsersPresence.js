@@ -106,5 +106,7 @@ export function getUserPresence(uid) {
 		}, 2000);
 	}
 
-	ids.push(uid);
+	if (uid) {
+		ids.push(uid);
+	}
 }
