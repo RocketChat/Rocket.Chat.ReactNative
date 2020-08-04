@@ -1,39 +1,25 @@
-fastlane documentation
-================
-# Installation
+# Available Android Fastlane Actions
 
-Make sure you have the latest version of the Xcode command line tools installed:
+Play build for development
 
 ```
-xcode-select --install
+fastlane android playBuild
 ```
 
-Install _fastlane_ using
-```
-[sudo] gem install fastlane -NV
-```
-or alternatively using `brew cask install fastlane`
+Foss build for development
 
-# Available Actions
-## Android
-### android build
 ```
-fastlane android build
+fastlane android fossBuild
 ```
-Build App for development
-### android release
+Play build  for release
+
 ```
-fastlane android release
+fastlane android playRelease
 ```
-Build App for release
-### android alpha
-```
-fastlane android alpha
-```
+
 Upload App to Play store
+```
+fastlane android playAlpha
+```
 
 ----
-
-This README.md is auto-generated and will be re-generated every time [fastlane](https://fastlane.tools) is run.
-More information about fastlane can be found on [fastlane.tools](https://fastlane.tools).
-The documentation of fastlane can be found on [docs.fastlane.tools](https://docs.fastlane.tools).

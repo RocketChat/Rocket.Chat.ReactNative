@@ -146,7 +146,9 @@ android {
         versionCode VERSIONCODE as Integer
         versionName "4.10.0"
         vectorDrawables.useSupportLibrary = true
-        manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
+        if (isPlay) {
+            manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
+        }
         missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
     }
 
