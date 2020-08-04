@@ -200,6 +200,12 @@ export default {
 	ROOM_MSG_ACTION_REPORT_F: 'room_msg_action_report_f',
 	ROOM_JOIN: 'room_join',
 	ROOM_GO_TO_RA: 'room_go_to_ra',
+	ROOM_TOGGLE_FOLLOW_THREADS: 'room_toggle_follow_threads',
+	ROOM_GO_TO_SEARCH: 'room_go_to_search',
+	ROOM_GO_TO_THREADS: 'room_go_to_threads',
+	ROOM_GO_TO_ROOM_INFO: 'room_go_to_room_info',
+	ROOM_GO_TO_USER_INFO: 'room_go_to_user_info',
+	ROOM_MENTION_GO_TO_USER_INFO: 'room_mention_go_to_user_info',
 
 	// ROOM ACTION VIEW
 	RA_JITSI_VIDEO: 'ra_jitsi_video',
