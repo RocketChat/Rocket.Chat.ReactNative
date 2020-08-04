@@ -11,7 +11,7 @@ import protectedFunction from './helpers/protectedFunction';
 import fetch from '../../utils/fetch';
 import { DEFAULT_AUTO_LOCK } from '../../constants/localAuthentication';
 
-const serverInfoKeys = ['Site_Name', 'UI_Use_Real_Name', 'FileUpload_MediaTypeWhiteList', 'FileUpload_MaxFileSize', 'Force_Screen_Lock', 'Force_Screen_Lock_After'];
+const serverInfoKeys = ['Site_Name', 'UI_Use_Real_Name', 'FileUpload_MediaTypeWhiteList', 'FileUpload_MaxFileSize', 'Force_Screen_Lock', 'Force_Screen_Lock_After', 'uniqueID'];
 
 // these settings are used only on onboarding process
 const loginSettings = [
@@ -67,6 +67,9 @@ const serverInfoUpdate = async(serverInfo, iconSetting) => {
 			if (setting.valueAsNumber > 0 && forceScreenLock) {
 				return { ...allSettings, autoLockTime: setting.valueAsNumber };
 			}
+		}
+		if (setting._id === 'uniqueID') {
+			return { ...allSettings, uniqueID: setting.valueAsString };
 		}
 		return allSettings;
 	}, {});

@@ -21,9 +21,13 @@ export const logServerVersion = (serverVersion) => {
 };
 
 export const logEvent = (eventName, payload) => {
-	if (!isFDroidBuild) {
-		analytics().logEvent(eventName, payload);
-		leaveBreadcrumb(eventName, payload);
+	try {
+		if (!isFDroidBuild) {
+			analytics().logEvent(eventName, payload);
+			leaveBreadcrumb(eventName, payload);
+		}
+	} catch {
+		// Do nothing
 	}
 };
 

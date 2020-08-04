@@ -19,6 +19,7 @@ import I18n from '../i18n';
 import { SERVERS, TOKEN, SERVER_URL } from '../constants/userDefaults';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../utils/fetch';
 import { appStart, ROOT_INSIDE, ROOT_OUTSIDE } from '../actions/app';
+import { inquiryReset } from '../actions/inquiry';
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
@@ -65,6 +66,7 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }) {
 	try {
+		yield put(inquiryReset());
 		const serversDB = database.servers;
 		yield RNUserDefaults.set('currentServer', server);
 		const userId = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
