@@ -63,8 +63,13 @@ class RoomItemContainer extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.mounted = false;
 		this.state = { avatarETag: '' };
 		this.init();
+	}
+
+	componentDidMount() {
+		this.mounted = true;
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -104,7 +109,11 @@ class RoomItemContainer extends React.Component {
 					const observable = user.observe();
 					this.userSubscription = observable.subscribe((u) => {
 						const { avatarETag } = u;
-						this.setState({ avatarETag });
+						if (this.mounted) {
+							this.setState({ avatarETag });
+						} else {
+							this.state.avatarETag = avatarETag;
+						}
 					});
 				}
 			} catch {
