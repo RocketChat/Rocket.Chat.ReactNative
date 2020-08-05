@@ -538,7 +538,6 @@ class RoomActionsView extends React.Component {
 	};
 
 	leaveChannel = () => {
-		logEvent(events.RA_LEAVE);
 		const { room } = this.state;
 		const { leaveRoom } = this.props;
 

@@ -250,6 +250,7 @@ class RoomInfoView extends React.Component {
 	})
 
 	goRoom = () => {
+		logEvent(events.RI_GO_ROOM_USER);
 		const { roomUser, room } = this.state;
 		const { name, username } = roomUser;
 		const { rooms, navigation, isMasterDetail } = this.props;

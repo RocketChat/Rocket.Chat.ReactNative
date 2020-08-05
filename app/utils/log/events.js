@@ -294,10 +294,25 @@ export default {
 	RA_GO_NOTIFICATIONPREF: 'ra_go_notification_pref',
 	RA_SHARE: 'ra_share',
 	RA_LEAVE: 'ra_leave',
+	RA_LEAVE_F: 'ra_leave_f',
 
 	// ROOM INFO VIEW
 	RI_GO_RI_EDIT: 'ri_go_ri_edit',
 	RI_GO_LIVECHAT_EDIT: 'ri_go_livechat_edit',
+	RI_GO_ROOM_USER: 'ri_go_room_user',
+
+	// ROOM INFO EDIT VIEW
+	RI_EDIT_TOGGLE_ROOM_TYPE: 'ri_edit_toggle_room_type',
+	RI_EDIT_TOGGLE_READ_ONLY: 'ri_edit_toggle_read_only',
+	RI_EDIT_TOGGLE_REACTIONS: 'ri_edit_toggle_reactions',
+	RI_EDIT_TOGGLE_SYSTEM_MSG: 'ri_edit_toggle_system_msg',
+	RI_EDIT_SAVE: 'ri_edit_save',
+	RI_EDIT_SAVE_F: 'ri_edit_save_f',
+	RI_EDIT_RESET: 'ri_edit_reset',
+	RI_EDIT_TOGGLE_ARCHIVE: 'ri_edit_toggle_archive',
+	RI_EDIT_TOGGLE_ARCHIVE_F: 'ri_edit_toggle_archive_f',
+	RI_EDIT_DELETE: 'ri_edit_delete',
+	RI_EDIT_DELETE_F: 'ri_edit_delete_f',
 
 	// JITSI MEET VIEW
 	JM_CONFERENCE_JOIN: 'jm_conference_join',
