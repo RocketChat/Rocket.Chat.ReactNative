@@ -23,7 +23,9 @@ export function subscribeUsersPresence() {
 		this.sdk.subscribe('stream-notify-logged', 'user-status');
 	}
 
+	// RC 0.49.1
 	this.sdk.subscribe('stream-notify-logged', 'updateAvatar');
+	// RC 0.58.0
 	this.sdk.subscribe('stream-notify-logged', 'Users:NameChanged');
 }
 
