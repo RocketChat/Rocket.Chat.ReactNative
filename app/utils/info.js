@@ -3,14 +3,15 @@ import I18n from '../i18n';
 
 export const showErrorAlert = (message, title, onPress = () => {}) => Alert.alert(title, message, [{ text: 'OK', onPress }], { cancelable: true });
 
-export const showConfirmationAlert = ({ message, callToAction, onPress }) => (
+export const showConfirmationAlert = ({title, message, callToAction, onPress, onCancel }) => (
 	Alert.alert(
-		I18n.t('Are_you_sure_question_mark'),
+		title || I18n.t('Are_you_sure_question_mark'),
 		message,
 		[
 			{
 				text: I18n.t('Cancel'),
-				style: 'cancel'
+				onPress: onCancel,
+				style: 'cancel',
 			},
 			{
 				text: callToAction,
