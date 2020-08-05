@@ -140,7 +140,7 @@ class SettingsView extends React.Component {
 	}
 
 	navigateToScreen = (screen) => {
-		logEvent(events[`SE_NAVIGATE_TO_${ screen.replace('View', '').toUpperCase() }`]);
+		logEvent(events[`SE_GO_${ screen.replace('View', '').toUpperCase() }`]);
 		const { navigation } = this.props;
 		navigation.navigate(screen);
 	}

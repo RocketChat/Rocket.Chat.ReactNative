@@ -16,7 +16,7 @@ import RocketChat from '../../lib/rocketchat';
 import { withTheme } from '../../theme';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import SafeAreaView from '../../containers/SafeAreaView';
-import log from '../../utils/log';
+import log, { events, logEvent } from '../../utils/log';
 
 const SectionTitle = React.memo(({ title, theme }) => (
 	<Text
@@ -181,6 +181,7 @@ class NotificationPreferencesView extends React.Component {
 	}
 
 	saveNotificationSettings = async(key, value, params) => {
+		logEvent(events[`NP_${ key.toUpperCase() }`]);
 		const { room } = this.state;
 		const db = database.active;
 
@@ -206,6 +207,7 @@ class NotificationPreferencesView extends React.Component {
 				}));
 			});
 		} catch (e) {
+			logEvent(events[`NP_${ key.toUpperCase() }_F`]);
 			log(e);
 		}
 	}

@@ -15,6 +15,7 @@ import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
+import { logEvent, events } from '../../utils/log';
 
 const styles = StyleSheet.create({
 	contentContainerStyle: {
@@ -103,6 +104,7 @@ class AutoTranslateView extends React.Component {
 	}
 
 	toggleAutoTranslate = async() => {
+		logEvent(events.AT_TOGGLE_TRANSLATE);
 		const { enableAutoTranslate } = this.state;
 		try {
 			await RocketChat.saveAutoTranslate({
@@ -113,11 +115,13 @@ class AutoTranslateView extends React.Component {
 			});
 			this.setState({ enableAutoTranslate: !enableAutoTranslate });
 		} catch (error) {
+			logEvent(events.AT_TOGGLE_TRANSLATE_F);
 			console.log(error);
 		}
 	}
 
 	saveAutoTranslateLanguage = async(language) => {
+		logEvent(events.AT_SET_LANG);
 		try {
 			await RocketChat.saveAutoTranslate({
 				rid: this.rid,
@@ -126,6 +130,7 @@ class AutoTranslateView extends React.Component {
 			});
 			this.setState({ selectedLanguage: language });
 		} catch (error) {
+			logEvent(events.AT_SET_LANG_F);
 			console.log(error);
 		}
 	}

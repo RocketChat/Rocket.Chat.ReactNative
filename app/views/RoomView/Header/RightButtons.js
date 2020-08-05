@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { CustomHeaderButtons, Item } from '../../../containers/HeaderButton';
 import database from '../../../lib/database';
 import { getUserSelector } from '../../../selectors/login';
+import { logEvent, events } from '../../../utils/log';
 
 class RightButtonsContainer extends React.PureComponent {
 	static propTypes = {
@@ -58,6 +59,7 @@ class RightButtonsContainer extends React.PureComponent {
 	}
 
 	goThreadsView = () => {
+		logEvent(events.ROOM_GO_THREADS);
 		const {
 			rid, t, navigation, isMasterDetail
 		} = this.props;
@@ -69,6 +71,7 @@ class RightButtonsContainer extends React.PureComponent {
 	}
 
 	goSearchView = () => {
+		logEvent(events.ROOM_GO_SEARCH);
 		const {
 			rid, navigation, isMasterDetail
 		} = this.props;
@@ -80,6 +83,7 @@ class RightButtonsContainer extends React.PureComponent {
 	}
 
 	toggleFollowThread = () => {
+		logEvent(events.ROOM_TOGGLE_FOLLOW_THREADS);
 		const { isFollowingThread } = this.state;
 		const { toggleFollowThread } = this.props;
 		if (toggleFollowThread) {
