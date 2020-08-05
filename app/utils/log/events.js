@@ -316,5 +316,14 @@ export default {
 
 	// JITSI MEET VIEW
 	JM_CONFERENCE_JOIN: 'jm_conference_join',
-	JM_CONFERENCE_TERMINATE: 'jm_conference_terminate'
+	JM_CONFERENCE_TERMINATE: 'jm_conference_terminate',
+
+	// INVITE USERS VIEW
+	IU_SHARE: 'iu_share',
+	IU_GO_IU_EDIT: 'iu_go_iu_edit',
+
+	// INVITE USERS EDIT VIEW
+	IU_EDIT_SET_LINK_PARAM: 'iu_edit_set_link_param',
+	IU_EDIT_CREATE_LINK: 'iu_edit_create_link'
+
 };
