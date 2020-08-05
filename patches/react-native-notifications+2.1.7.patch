@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m b/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m
-index edc4fd4..85b5947 100644
+index edc4fd4..694f01f 100644
 --- a/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m
 +++ b/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m
 @@ -3,6 +3,8 @@
@@ -48,7 +48,7 @@ index edc4fd4..85b5947 100644
 +    NSMutableString *hex = [NSMutableString string];
 +    while (*utf8) [hex appendFormat:@"%02X", *utf8++ & 0x00FF];
 +
-+    return [NSString stringWithFormat:@"%@", hex];
++    return [[NSString stringWithFormat:@"%@", hex] lowercaseString];
 +}
 +
 +- (NSDictionary *) retrieveCredentialsForServer:(NSString *)serverURL {
