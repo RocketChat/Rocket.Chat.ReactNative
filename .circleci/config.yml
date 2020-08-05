@@ -75,29 +75,6 @@ restore_cache: &restore-gradle-cache
   name: Restore gradle cache
   key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
 
-restore-brew-cache: &restore-brew-cache
-  name: Restore Brew cache
-  key: brew-{{ checksum "yarn.lock" }}-{{ checksum ".circleci/config.yml" }}
-
-save-brew-cache: &save-brew-cache
-  name: Save brew cache
-  key: brew-{{ checksum "yarn.lock" }}-{{ checksum ".circleci/config.yml" }}
-  paths:
-    - /usr/local/Homebrew
-
-install-apple-sim-utils: &install-apple-sim-utils
-  name: Install appleSimUtils
-  command: |
-    brew update
-    brew tap wix/brew
-    brew install wix/brew/applesimutils
-
-rebuild-detox: &rebuild-detox
-  name: Rebuild Detox framework cache
-  command: |
-    npx detox clean-framework-cache
-    npx detox build-framework-cache
-
 version: 2.1
 
 # EXECUTORS
@@ -106,39 +83,6 @@ executors:
     <<: *macos
     environment:
       <<: *bash-env
-
-# COMMANDS
-commands:
-  detox-test:
-    parameters:
-      folder:
-        type: string
-    steps:
-      - checkout
-
-      - attach_workspace:
-          at: .
-
-      - restore_cache: *restore-npm-cache-mac
-
-      - restore_cache: *restore-brew-cache
-
-      - run: *install-node
-
-      - run: *install-apple-sim-utils
-
-      - run: *install-npm-modules
-      
-      - run: *rebuild-detox
-
-      - run:
-          name: Test
-          command: |
-            npx detox test << parameters.folder >> --configuration ios.sim.release --cleanup
-          when: always
-
-      - store_artifacts:
-          path: ./artifacts
 
 # JOBS
 jobs:
@@ -173,57 +117,6 @@ jobs:
             yarn codecov
 
       - save_cache: *save-npm-cache-linux
-
-  # E2E
-  e2e-build:
-    executor: mac-env
-
-    steps:
-      - checkout
-
-      - restore_cache: *restore-npm-cache-mac
-
-      - restore_cache: *restore-brew-cache
-
-      - run: *install-node
-
-      - run: *install-apple-sim-utils
-
-      - run: *install-npm-modules
-
-      - run: *rebuild-detox
-
-      - run:
-          name: Build
-          command: |
-            npx detox build --configuration ios.sim.release
-
-      - persist_to_workspace:
-          root: .
-          paths:
-            - ios/build/Build/Products/Release-iphonesimulator/RocketChatRN.app
-
-      - save_cache: *save-npm-cache-mac
-
-      - save_cache: *save-brew-cache
-
-  e2e-test-onboarding:
-    executor: mac-env
-    steps:
-      - detox-test:
-          folder: "./e2e/tests/onboarding"
-
-  e2e-test-room:
-    executor: mac-env
-    steps:
-      - detox-test:
-          folder: "./e2e/tests/room"
-
-  e2e-test-assorted:
-    executor: mac-env
-    steps:
-      - detox-test:
-          folder: "./e2e/tests/assorted"
 
   # Android builds
   android-build:
@@ -432,23 +325,6 @@ workflows:
   build-and-test:
     jobs:
       - lint-testunit
-
-      - e2e-hold:
-          type: approval
-          requires:
-            - lint-testunit
-      - e2e-build:
-          requires:
-            - e2e-hold
-      - e2e-test-onboarding:
-          requires:
-            - e2e-build
-      - e2e-test-room:
-          requires:
-            - e2e-build
-      - e2e-test-assorted:
-          requires:
-            - e2e-build
 
       - ios-build:
           requires:

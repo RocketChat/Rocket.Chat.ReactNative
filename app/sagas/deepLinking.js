@@ -10,9 +10,12 @@ import { inviteLinksSetToken, inviteLinksRequest } from '../actions/inviteLinks'
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';
-import { appStart, ROOT_INSIDE, ROOT_NEW_SERVER } from '../actions/app';
+import {
+	appStart, ROOT_INSIDE, ROOT_NEW_SERVER, appInit
+} from '../actions/app';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { goRoom } from '../utils/goRoom';
+import callJitsi from '../lib/methods/callJitsi';
 
 const roomTypes = {
 	channel: 'c', direct: 'd', group: 'p', channels: 'l'
@@ -48,7 +51,11 @@ const navigate = function* navigate({ params }) {
 					roomUserId: RocketChat.getUidDirectMessage(room),
 					...room
 				};
-				goRoom({ item, isMasterDetail });
+				yield goRoom({ item, isMasterDetail });
+
+				if (params.isCall) {
+					callJitsi(item.rid);
+				}
 			}
 		} else {
 			yield handleInviteLink({ params });
@@ -56,14 +63,41 @@ const navigate = function* navigate({ params }) {
 	}
 };
 
+const fallbackNavigation = function* fallbackNavigation() {
+	const currentRoot = yield select(state => state.app.root);
+	if (currentRoot) {
+		return;
+	}
+	yield put(appInit());
+};
+
 const handleOpen = function* handleOpen({ params }) {
-	if (!params.host) {
+	const serversDB = database.servers;
+	const serversCollection = serversDB.collections.get('servers');
+
+	let { host } = params;
+	if (params.isCall && !host) {
+		const servers = yield serversCollection.query().fetch();
+		// search from which server is that call
+		servers.forEach(({ uniqueID, id }) => {
+			if (params.path.includes(uniqueID)) {
+				host = id;
+			}
+		});
+	}
+
+	// If there's no host on the deep link params and the app is opened, just call appInit()
+	if (!host) {
+		yield fallbackNavigation();
 		return;
 	}
 
-	let { host } = params;
+	// If there's host, continue
 	if (!/^(http|https)/.test(host)) {
-		host = `https://${ params.host }`;
+		host = `https://${ host }`;
+	} else {
+		// Notification should always come from https
+		host = host.replace('http://', 'https://');
 	}
 	// remove last "/" from host
 	if (host.slice(-1) === '/') {
@@ -87,8 +121,6 @@ const handleOpen = function* handleOpen({ params }) {
 		yield navigate({ params });
 	} else {
 		// search if deep link's server already exists
-		const serversDB = database.servers;
-		const serversCollection = serversDB.collections.get('servers');
 		try {
 			const servers = yield serversCollection.find(host);
 			if (servers && user) {
@@ -104,6 +136,8 @@ const handleOpen = function* handleOpen({ params }) {
 		// if deep link is from a different server
 		const result = yield RocketChat.getServerInfo(host);
 		if (!result.success) {
+			// Fallback to prevent the app from being stuck on splash screen
+			yield fallbackNavigation();
 			return;
 		}
 		yield put(appStart({ root: ROOT_NEW_SERVER }));

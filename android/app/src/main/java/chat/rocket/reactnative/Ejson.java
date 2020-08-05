@@ -29,6 +29,8 @@ public class Ejson {
     String rid;
     String type;
     Sender sender;
+    String messageId;
+    String notificationType;
 
     private MMKV mmkv;
 

@@ -16,7 +16,7 @@ import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { CloseModalButton } from '../../containers/HeaderButton';
 import debounce from '../../utils/debounce';
-import log from '../../utils/log';
+import log, { logEvent, events } from '../../utils/log';
 import Options from './Options';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
@@ -115,6 +115,12 @@ class DirectoryView extends React.Component {
 
 	changeType = (type) => {
 		this.setState({ type, data: [] }, () => this.search());
+
+		if (type === 'users') {
+			logEvent(events.DIRECTORY_SEARCH_USERS);
+		} else if (type === 'channels') {
+			logEvent(events.DIRECTORY_SEARCH_CHANNELS);
+		}
 	}
 
 	toggleWorkspace = () => {
@@ -166,7 +172,7 @@ class DirectoryView extends React.Component {
 					theme={theme}
 				>
 					<View style={[sharedStyles.separatorVertical, styles.toggleDropdownContainer, { borderColor: themes[theme].separatorColor }]}>
-						<CustomIcon style={[styles.toggleDropdownIcon, { color: themes[theme].tintColor }]} size={20} name={type === 'users' ? 'user' : 'hash'} />
+						<CustomIcon style={[styles.toggleDropdownIcon, { color: themes[theme].tintColor }]} size={20} name={type === 'users' ? 'user' : 'channel-public'} />
 						<Text style={[styles.toggleDropdownText, { color: themes[theme].tintColor }]}>{type === 'users' ? I18n.t('Users') : I18n.t('Channels')}</Text>
 						<CustomIcon name='chevron-down' size={20} style={[styles.toggleDropdownArrow, { color: themes[theme].auxiliaryTintColor }]} />
 					</View>

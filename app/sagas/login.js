@@ -14,6 +14,7 @@ import {
 	loginFailure, loginSuccess, setUser, logout
 } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
+import { inquiryRequest } from '../actions/inquiry';
 import { toMomentLocale } from '../utils/moment';
 import RocketChat from '../lib/rocketchat';
 import log, { logEvent, events } from '../utils/log';
@@ -32,7 +33,7 @@ const loginCall = args => RocketChat.login(args);
 const logoutCall = args => RocketChat.logout(args);
 
 const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false }) {
-	logEvent(events.DEFAULT_LOGIN);
+	logEvent(events.LOGIN_DEFAULT_LOGIN);
 	try {
 		let result;
 		if (credentials.resume) {
@@ -53,7 +54,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 		if (logoutOnError && (e.data && e.data.message && /you've been logged out by the server/i.test(e.data.message))) {
 			yield put(logout(true));
 		} else {
-			logEvent(events.DEFAULT_LOGIN_FAIL);
+			logEvent(events.LOGIN_DEFAULT_LOGIN_F);
 			yield put(loginFailure(e));
 		}
 	}
@@ -93,6 +94,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 
 		const server = yield select(getServer);
 		yield put(roomsRequest());
+		yield put(inquiryRequest());
 		yield fork(fetchPermissions);
 		yield fork(fetchCustomEmojis);
 		yield fork(fetchRoles);
@@ -206,6 +208,10 @@ const handleSetUser = function* handleSetUser({ user }) {
 	if (user && user.status) {
 		const userId = yield select(state => state.login.user.id);
 		yield put(setActiveUsers({ [userId]: user }));
+	}
+
+	if (user && user.statusLivechat) {
+		yield put(inquiryRequest());
 	}
 };
 

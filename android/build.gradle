@@ -56,10 +56,10 @@ subprojects { subproject ->
     afterEvaluate {
         if ((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
             android {
-                compileSdkVersion 28
-                buildToolsVersion "28.0.3"
+                compileSdkVersion 29
+                buildToolsVersion "29.0.2"
                 defaultConfig {
-                    targetSdkVersion 28
+                    targetSdkVersion 29
                 }
                 variantFilter { variant ->
                     def names = variant.flavors*.name

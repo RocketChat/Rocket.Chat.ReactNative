@@ -16,6 +16,7 @@ import { DEFAULT_BROWSER_KEY } from '../utils/openLink';
 import { isIOS } from '../utils/deviceInfo';
 import SafeAreaView from '../containers/SafeAreaView';
 import UserPreferences from '../lib/userPreferences';
+import { logEvent, events } from '../utils/log';
 
 const DEFAULT_BROWSERS = [
 	{
@@ -59,9 +60,9 @@ const styles = StyleSheet.create({
 });
 
 class DefaultBrowserView extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: I18n.t('Default_browser')
-	}
+	})
 
 	static propTypes = {
 		theme: PropTypes.string
@@ -109,12 +110,13 @@ class DefaultBrowserView extends React.Component {
 	}
 
 	changeDefaultBrowser = async(newBrowser) => {
+		logEvent(events.DB_CHANGE_DEFAULT_BROWSER, { browser: newBrowser });
 		try {
 			const browser = newBrowser !== 'inApp' ? newBrowser : null;
 			await UserPreferences.setStringAsync(DEFAULT_BROWSER_KEY, browser);
 			this.setState({ browser });
 		} catch {
-			// do nothing
+			logEvent(events.DB_CHANGE_DEFAULT_BROWSER_F);
 		}
 	}
 
