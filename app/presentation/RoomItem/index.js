@@ -134,6 +134,11 @@ class RoomItemContainer extends React.Component {
 		}
 	}
 
+	onPress = () => {
+		const { item, onPress } = this.props;
+		return onPress(item);
+	}
+
 	render() {
 		const { avatarETag } = this.state;
 		const {
@@ -142,7 +147,6 @@ class RoomItemContainer extends React.Component {
 			getRoomAvatar,
 			getIsGroupChat,
 			getIsRead,
-			onPress,
 			width,
 			toggleFav,
 			toggleRead,
@@ -164,7 +168,6 @@ class RoomItemContainer extends React.Component {
 		const avatar = getRoomAvatar(item);
 		const isGroupChat = getIsGroupChat(item);
 		const isRead = getIsRead(item);
-		const _onPress = () => onPress(item);
 		const date = item.lastMessage?.ts && formatDate(item.lastMessage.ts);
 
 		let accessibilityLabel = name;
@@ -188,7 +191,7 @@ class RoomItemContainer extends React.Component {
 				avatar={avatar}
 				isGroupChat={isGroupChat}
 				isRead={isRead}
-				onPress={_onPress}
+				onPress={this.onPress}
 				date={date}
 				accessibilityLabel={accessibilityLabel}
 				userMentions={item.userMentions}
