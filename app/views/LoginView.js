@@ -120,7 +120,7 @@ class LoginView extends React.Component {
 		const { loginRequest } = this.props;
 		const loginEmailPassword = true;
 		Keyboard.dismiss();
-		loginRequest({ user, password, loginEmailPassword});
+		loginRequest({ user, password, loginEmailPassword });
 	}
 
 	renderUserForm = () => {
