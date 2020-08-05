@@ -70,7 +70,7 @@ class WorkspaceView extends React.Component {
 			<FormContainer theme={theme} testID='workspace-view'>
 				<FormContainerInner>
 					<View style={styles.alignItemsCenter}>
-						<ServerAvatar theme={theme} url={server} image={Assets_favicon_512 && Assets_favicon_512.defaultUrl} />
+						<ServerAvatar theme={theme} url={server} image={Assets_favicon_512?.url ?? Assets_favicon_512?.defaultUrl} />
 						<Text style={[styles.serverName, { color: themes[theme].titleText }]}>{Site_Name}</Text>
 						<Text style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]}>{Site_Url}</Text>
 					</View>
