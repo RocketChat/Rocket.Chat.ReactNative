@@ -330,7 +330,25 @@ export default {
 	AT_TOGGLE_TRANSLATE: 'at_toggle_translate',
 	AT_TOGGLE_TRANSLATE_F: 'at_toggle_translate_f',
 	AT_SET_LANG: 'at_set_lang',
-	AT_SET_LANG_F: 'at_set_lang_f'
+	AT_SET_LANG_F: 'at_set_lang_f',
 
-
+	// NOTIFICATION PREFERENCES VIEW
+	NP_DISABLENOTIFICATIONS: 'np_disable_notification',
+	NP_DISABLENOTIFICATIONS_F: 'np_disable_notification_f',
+	NP_MUTEGROUPMENTIONS: 'np_mute_group_mentions',
+	NP_MUTEGROUPMENTIONS_F: 'np_mute_group_mentions_f',
+	NP_HIDEUNREADSTATUS: 'np_hide_unread_status',
+	NP_HIDEUNREADSTATUS_F: 'np_hide_unread_status_f',
+	NP_DESKTOPNOTIFICATIONS: 'np_desktop_notifications',
+	NP_DESKTOPNOTIFICATIONS_F: 'np_desktop_notifications_f',
+	NP_MOBILEPUSHNOTIFICATIONS: 'np_mobile_push_notifications',
+	NP_MOBILEPUSHNOTIFICATIONS_F: 'np_mobile_push_notifications_f',
+	NP_AUDIONOTIFICATIONS: 'np_audio_notifications',
+	NP_AUDIONOTIFICATIONS_F: 'np_audio_notifications_f',
+	NP_AUDIONOTIFICATIONVALUE: 'np_audio_notification_value',
+	NP_AUDIONOTIFICATIONVALUE_F: 'np_audio_notification_value_f',
+	NP_DESKTOPNOTIFICATIONDURATION: 'np_desktopnotificationduration',
+	NP_DESKTOPNOTIFICATIONDURATION_F: 'np_desktopnotificationduration_f',
+	NP_EMAILNOTIFICATIONS: 'np_email_notifications',
+	NP_EMAILNOTIFICATIONS_F: 'np_email_notifications_f'
 };
