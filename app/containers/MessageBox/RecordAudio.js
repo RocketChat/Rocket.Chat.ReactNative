@@ -10,6 +10,7 @@ import styles from './styles';
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
+import { logEvent, events } from '../../utils/log';
 
 const RECORDING_EXTENSION = '.aac';
 const RECORDING_SETTINGS = {
@@ -103,6 +104,7 @@ export default class RecordAudio extends React.PureComponent {
 	}
 
 	startRecordingAudio = async() => {
+		logEvent(events.ROOM_AUDIO_RECORD);
 		if (!this.isRecorderBusy) {
 			this.isRecorderBusy = true;
 			try {
@@ -120,13 +122,14 @@ export default class RecordAudio extends React.PureComponent {
 					await Audio.requestPermissionsAsync();
 				}
 			} catch (error) {
-				// Do nothing
+				logEvent(events.ROOM_AUDIO_RECORD_F);
 			}
 			this.isRecorderBusy = false;
 		}
 	};
 
 	finishRecordingAudio = async() => {
+		logEvent(events.ROOM_AUDIO_FINISH);
 		if (!this.isRecorderBusy) {
 			const { onFinish } = this.props;
 
@@ -147,7 +150,7 @@ export default class RecordAudio extends React.PureComponent {
 
 				onFinish(fileInfo);
 			} catch (error) {
-				// Do nothing
+				logEvent(events.ROOM_AUDIO_FINISH_F);
 			}
 			this.setState({ isRecording: false, recordingDurationMillis: 0 });
 			deactivateKeepAwake();
@@ -156,12 +159,13 @@ export default class RecordAudio extends React.PureComponent {
 	};
 
 	cancelRecordingAudio = async() => {
+		logEvent(events.ROOM_AUDIO_CANCEL);
 		if (!this.isRecorderBusy) {
 			this.isRecorderBusy = true;
 			try {
 				await this.recording.stopAndUnloadAsync();
 			} catch (error) {
-				// Do nothing
+				logEvent(events.ROOM_AUDIO_CANCEL_F);
 			}
 			this.setState({ isRecording: false, recordingDurationMillis: 0 });
 			deactivateKeepAwake();

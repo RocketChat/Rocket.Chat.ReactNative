@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import { showErrorAlert } from '../../utils/info';
-import log from '../../utils/log';
+import log, { logEvent, events } from '../../utils/log';
 import { setUser as setUserAction } from '../../actions/login';
 import StatusBar from '../../containers/StatusBar';
 import { CustomIcon } from '../../lib/Icons';
@@ -58,9 +58,9 @@ const LANGUAGES = [
 ];
 
 class LanguageView extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: I18n.t('Change_Language')
-	}
+	})
 
 	static propTypes = {
 		user: PropTypes.object,
@@ -112,6 +112,7 @@ class LanguageView extends React.Component {
 	}
 
 	changeLanguage = async(language) => {
+		logEvent(events.LANG_SET_LANGUAGE);
 		const { user, setUser } = this.props;
 
 		const params = {};
@@ -134,10 +135,11 @@ class LanguageView extends React.Component {
 						record.language = params.language;
 					});
 				} catch (e) {
-					// do nothing
+					logEvent(events.LANG_SET_LANGUAGE_F);
 				}
 			});
 		} catch (e) {
+			logEvent(events.LANG_SET_LANGUAGE_F);
 			showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_preferences') }));
 			log(e);
 		}

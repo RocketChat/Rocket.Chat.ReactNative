@@ -8,9 +8,9 @@ import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 
 class MarkdownTableView extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: I18n.t('Table')
-	}
+	})
 
 	static propTypes = {
 		route: PropTypes.object,

@@ -114,7 +114,7 @@ class RegisterView extends React.Component {
 	}
 
 	submit = async() => {
-		logEvent(events.DEFAULT_SIGN_UP);
+		logEvent(events.REGISTER_DEFAULT_SIGN_UP);
 		if (!this.valid()) {
 			return;
 		}
@@ -150,7 +150,7 @@ class RegisterView extends React.Component {
 				return loginRequest({ user: email, password });
 			}
 			if (e.data?.error) {
-				logEvent(events.DEFAULT_SIGN_UP_FAIL);
+				logEvent(events.REGISTER_DEFAULT_SIGN_UP_F);
 				showErrorAlert(e.data.error, I18n.t('Oops'));
 			}
 		}
