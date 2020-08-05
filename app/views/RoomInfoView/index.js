@@ -119,7 +119,7 @@ class RoomInfoView extends React.Component {
 							iconName='edit'
 							onPress={() => {
 								const isLivechat = t === 'l';
-								logEvent(events[`RI_GO_TO_${ isLivechat ? 'LIVECHAT' : 'RI' }_EDIT`]);
+								logEvent(events[`RI_GO_${ isLivechat ? 'LIVECHAT' : 'RI' }_EDIT`]);
 								navigation.navigate(isLivechat ? 'LivechatEditView' : 'RoomInfoEditView', { rid, room, roomUser });
 							}}
 							testID='room-info-view-edit-button'

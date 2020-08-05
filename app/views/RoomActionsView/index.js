@@ -143,7 +143,7 @@ class RoomActionsView extends React.Component {
 	onPressTouchable = (item) => {
 		const { route, event, params } = item;
 		if (route) {
-			logEvent(events[`RA_GO_TO_${ route.replace('View', '').toUpperCase() }${ params.name ? params.name.toUpperCase() : '' }`]);
+			logEvent(events[`RA_GO_${ route.replace('View', '').toUpperCase() }${ params.name ? params.name.toUpperCase() : '' }`]);
 			const { navigation } = this.props;
 			navigation.navigate(route, params);
 		}

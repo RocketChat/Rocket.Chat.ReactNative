@@ -59,7 +59,7 @@ class RightButtonsContainer extends React.PureComponent {
 	}
 
 	goThreadsView = () => {
-		logEvent(events.ROOM_GO_TO_THREADS);
+		logEvent(events.ROOM_GO_THREADS);
 		const {
 			rid, t, navigation, isMasterDetail
 		} = this.props;
@@ -71,7 +71,7 @@ class RightButtonsContainer extends React.PureComponent {
 	}
 
 	goSearchView = () => {
-		logEvent(events.ROOM_GO_TO_SEARCH);
+		logEvent(events.ROOM_GO_SEARCH);
 		const {
 			rid, navigation, isMasterDetail
 		} = this.props;
