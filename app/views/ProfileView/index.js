@@ -6,7 +6,7 @@ import prompt from 'react-native-prompt-android';
 import SHA256 from 'js-sha256';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
-import equal from 'deep-equal';
+import { isEqual, omit } from 'lodash';
 
 import Touch from '../../utils/touch';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -81,16 +81,22 @@ class ProfileView extends React.Component {
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		const { user } = this.props;
-		if (!equal(user, nextProps.user)) {
+		/*
+		 * We need to ignore status because on Android ImagePicker
+		 * changes the activity, so, the user status changes and
+		 * it's resetting the avatar right after
+		 * select some image from gallery.
+		 */
+		if (!isEqual(omit(user, ['status']), omit(nextProps.user, ['status']))) {
 			this.init(nextProps.user);
 		}
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		if (!equal(nextState, this.state)) {
+		if (!isEqual(nextState, this.state)) {
 			return true;
 		}
-		if (!equal(nextProps, this.props)) {
+		if (!isEqual(nextProps, this.props)) {
 			return true;
 		}
 		return false;
