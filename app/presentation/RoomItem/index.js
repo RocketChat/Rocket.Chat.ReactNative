@@ -72,7 +72,11 @@ class RoomItemContainer extends React.Component {
 		this.mounted = true;
 	}
 
-	shouldComponentUpdate(nextProps) {
+	shouldComponentUpdate(nextProps, nextState) {
+		const { avatarETag } = this.state;
+		if (nextState.avatarETag !== avatarETag) {
+			return true;
+		}
 		const { props } = this;
 		return !attrs.every(key => props[key] === nextProps[key]);
 	}
@@ -99,6 +103,14 @@ class RoomItemContainer extends React.Component {
 	}
 
 	init = async() => {
+		const { item } = this.props;
+		if (item?.observe) {
+			const observable = item.observe();
+			this.roomSubscription = observable?.subscribe?.(() => {
+				this.forceUpdate();
+			});
+		}
+
 		if (this.isDirect) {
 			const { username } = this.props;
 			const db = database.active;
@@ -119,14 +131,6 @@ class RoomItemContainer extends React.Component {
 			} catch {
 				// Do nothing
 			}
-		}
-
-		const { item } = this.props;
-		if (item?.observe) {
-			const observable = item.observe();
-			this.roomSubscription = observable?.subscribe?.(() => {
-				this.forceUpdate();
-			});
 		}
 	}
 
