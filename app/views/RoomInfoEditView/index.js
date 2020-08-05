@@ -23,7 +23,7 @@ import RCTextInput from '../../containers/TextInput';
 import Loading from '../../containers/Loading';
 import SwitchContainer from './SwitchContainer';
 import random from '../../utils/random';
-import log from '../../utils/log';
+import log, { logEvent, events } from '../../utils/log';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
@@ -150,6 +150,7 @@ class RoomInfoEditView extends React.Component {
 	}
 
 	reset = () => {
+		logEvent(events.RI_EDIT_RESET);
 		this.clearErrors();
 		this.init(this.room);
 	}
@@ -173,6 +174,7 @@ class RoomInfoEditView extends React.Component {
 	}
 
 	submit = async() => {
+		logEvent(events.RI_EDIT_SAVE);
 		Keyboard.dismiss();
 		const {
 			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, systemMessages
@@ -242,6 +244,7 @@ class RoomInfoEditView extends React.Component {
 		await this.setState({ saving: false });
 		setTimeout(() => {
 			if (error) {
+				logEvent(events.RI_EDIT_SAVE_F);
 				showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_settings') }));
 			} else {
 				EventEmitter.emit(LISTENER, { message: I18n.t('Settings_succesfully_changed') });
@@ -289,8 +292,10 @@ class RoomInfoEditView extends React.Component {
 					style: 'destructive',
 					onPress: async() => {
 						try {
+							logEvent(events.RI_EDIT_TOGGLE_ARCHIVE);
 							await RocketChat.toggleArchiveRoom(rid, t, !archived);
 						} catch (e) {
+							logEvent(events.RI_EDIT_TOGGLE_ARCHIVE_F);
 							log(e);
 						}
 					}
@@ -331,6 +336,26 @@ class RoomInfoEditView extends React.Component {
 				theme={theme}
 			/>
 		);
+	}
+
+	toggleRoomType = (value) => {
+		logEvent(events.RI_EDIT_TOGGLE_ROOM_TYPE);
+		this.setState({ t: value });
+	}
+
+	toggleReadOnly = (value) => {
+		logEvent(events.RI_EDIT_TOGGLE_READ_ONLY);
+		this.setState({ ro: value });
+	}
+
+	toggleReactions = (value) => {
+		logEvent(events.RI_EDIT_TOGGLE_REACTIONS);
+		this.setState({ reactWhenReadOnly: value });
+	}
+
+	toggleHideSystemMessages = (value) => {
+		logEvent(events.RI_EDIT_TOGGLE_SYSTEM_MSG);
+		this.setState(({ systemMessages }) => ({ enableSysMes: value, systemMessages: value ? systemMessages : [] }));
 	}
 
 	render() {
@@ -410,7 +435,7 @@ class RoomInfoEditView extends React.Component {
 							leftLabelSecondary={I18n.t('Everyone_can_access_this_channel')}
 							rightLabelPrimary={I18n.t('Private')}
 							rightLabelSecondary={I18n.t('Just_invited_people_can_access_this_channel')}
-							onValueChange={value => this.setState({ t: value })}
+							onValueChange={this.toggleRoomType}
 							theme={theme}
 							testID='room-info-edit-view-t'
 						/>
@@ -420,7 +445,7 @@ class RoomInfoEditView extends React.Component {
 							leftLabelSecondary={I18n.t('All_users_in_the_channel_can_write_new_messages')}
 							rightLabelPrimary={I18n.t('Read_Only')}
 							rightLabelSecondary={I18n.t('Only_authorized_users_can_write_new_messages')}
-							onValueChange={value => this.setState({ ro: value })}
+							onValueChange={this.toggleReadOnly}
 							disabled={!permissions[PERMISSION_SET_READONLY] || room.broadcast}
 							theme={theme}
 							testID='room-info-edit-view-ro'
@@ -433,7 +458,7 @@ class RoomInfoEditView extends React.Component {
 									leftLabelSecondary={I18n.t('Reactions_are_disabled')}
 									rightLabelPrimary={I18n.t('Allow_Reactions')}
 									rightLabelSecondary={I18n.t('Reactions_are_enabled')}
-									onValueChange={value => this.setState({ reactWhenReadOnly: value })}
+									onValueChange={this.toggleReactions}
 									disabled={!permissions[PERMISSION_SET_REACT_WHEN_READONLY]}
 									theme={theme}
 									testID='room-info-edit-view-react-when-ro'
@@ -455,7 +480,7 @@ class RoomInfoEditView extends React.Component {
 								leftLabelSecondary={enableSysMes ? I18n.t('Overwrites_the_server_configuration_and_use_room_config') : I18n.t('Uses_server_configuration')}
 								theme={theme}
 								testID='room-info-edit-switch-system-messages'
-								onValueChange={value => this.setState(({ systemMessages }) => ({ enableSysMes: value, systemMessages: value ? systemMessages : [] }))}
+								onValueChange={this.toggleHideSystemMessages}
 								labelContainerStyle={styles.hideSystemMessages}
 								leftLabelStyle={styles.systemMessagesLabel}
 							>

@@ -18,6 +18,7 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import Separator from '../../containers/Separator';
 import SafeAreaView from '../../containers/SafeAreaView';
+import { logEvent, events } from '../../utils/log';
 
 const OPTIONS = {
 	days: [{
@@ -72,6 +73,7 @@ class InviteUsersView extends React.Component {
 	}
 
 	onValueChangePicker = (key, value) => {
+		logEvent(events.IU_EDIT_SET_LINK_PARAM);
 		const { inviteLinksSetParams } = this.props;
 		const params = {
 			[key]: value
@@ -80,6 +82,7 @@ class InviteUsersView extends React.Component {
 	}
 
 	createInviteLink = () => {
+		logEvent(events.IU_EDIT_CREATE_LINK);
 		const { createInviteLink, navigation } = this.props;
 		createInviteLink(this.rid);
 		navigation.pop();

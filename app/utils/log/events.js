@@ -37,11 +37,11 @@ export default {
 	ENTER_WITH_APPLE_F: 'enter_with_apple_f',
 
 	// SIDEBAR VIEW
-	SIDEBAR_NAVIGATE_TO_STATUS: 'sidebar_navigate_to_status',
-	SIDEBAR_NAVIGATE_TO_CHATS: 'sidebar_navigate_to_chats',
-	SIDEBAR_NAVIGATE_TO_PROFILE: 'sidebar_navigate_to_profile',
-	SIDEBAR_NAVIGATE_TO_SETTINGS: 'sidebar_navigate_to_settings',
-	SIDEBAR_NAVIGATE_TO_ADMINPANEL: 'sidebar_navigate_to_admin_panel',
+	SIDEBAR_GO_STATUS: 'sidebar_go_status',
+	SIDEBAR_GO_CHATS: 'sidebar_go_chats',
+	SIDEBAR_GO_PROFILE: 'sidebar_go_profile',
+	SIDEBAR_GO_SETTINGS: 'sidebar_go_settings',
+	SIDEBAR_GO_ADMINPANEL: 'sidebar_go_admin_panel',
 
 	// STATUS VIEW
 	STATUS_DONE: 'status_done',
@@ -57,11 +57,11 @@ export default {
 	RL_TOGGLE_SERVER_DROPDOWN: 'rl_toggle_server_dropdown',
 	RL_ADD_SERVER: 'rl_add_server',
 	RL_CHANGE_SERVER: 'rl_change_server',
-	RL_NAVIGATE_TO_NEW_MSG: 'rl_navigate_to_new_msg',
+	RL_GO_NEW_MSG: 'rl_go_new_msg',
 	RL_SEARCH: 'rl_search',
-	RL_NAVIGATE_TO_DIRECTORY: 'rl_navigate_to_directory',
+	RL_GO_DIRECTORY: 'rl_go_directory',
 	RL_GO_QUEUE: 'rl_go_queue',
-	RL_GO_TO_ROOM: 'rl_go_to_room',
+	RL_GO_ROOM: 'rl_go_room',
 	RL_FAVORITE_CHANNEL: 'rl_favorite_channel',
 	RL_UNFAVORITE_CHANNEL: 'rl_unfavorite_channel',
 	RL_TOGGLE_FAVORITE_F: 'rl_toggle_favorite_f',
@@ -78,6 +78,7 @@ export default {
 	RL_GROUP_CHANNELS_BY_FAVORITE: 'rl_group_channels_by_favorite',
 	RL_GROUP_CHANNELS_BY_UNREAD: 'rl_group_channels_by_unread',
 
+	// QUEUE LIST VIEW
 	QL_GO_ROOM: 'ql_go_room',
 
 	// DIRECTORY VIEW
@@ -122,14 +123,14 @@ export default {
 	// SETTINGS VIEW
 	SE_CONTACT_US: 'se_contact_us',
 	SE_CONTACT_US_F: 'se_contact_us_f',
-	SE_NAVIGATE_TO_LANGUAGE: 'se_navigate_to_language',
+	SE_GO_LANGUAGE: 'se_go_language',
 	SE_REVIEW_THIS_APP: 'se_review_this_app',
 	SE_REVIEW_THIS_APP_F: 'se_review_this_app_f',
 	SE_SHARE_THIS_APP: 'se_share_this_app',
-	SE_NAVIGATE_TO_DEFAULTBROWSER: 'se_navigate_to_default_browser',
-	SE_NAVIGATE_TO_THEME: 'se_navigate_to_theme',
-	SE_NAVIGATE_TO_SCREENLOCKCONFIG: 'se_navigate_to_screen_lock_cfg',
-	SE_NAVIGATE_TO_PROFILE: 'se_navigate_to_profile',
+	SE_GO_DEFAULTBROWSER: 'se_go_default_browser',
+	SE_GO_THEME: 'se_go_theme',
+	SE_GO_SCREENLOCKCONFIG: 'se_go_screen_lock_cfg',
+	SE_GO_PROFILE: 'se_go_profile',
 	SE_READ_LICENSE: 'se_read_license',
 	SE_COPY_APP_VERSION: 'se_copy_app_version',
 	SE_COPY_SERVER_VERSION: 'se_copy_server_version',
@@ -197,5 +198,93 @@ export default {
 	ROOM_MSG_ACTION_REACTION: 'room_msg_action_reaction',
 	ROOM_MSG_ACTION_REPORT: 'room_msg_action_report',
 	ROOM_MSG_ACTION_REPORT_F: 'room_msg_action_report_f',
-	ROOM_JOIN: 'room_join'
+	ROOM_JOIN: 'room_join',
+	ROOM_GO_RA: 'room_go_ra',
+	ROOM_TOGGLE_FOLLOW_THREADS: 'room_toggle_follow_threads',
+	ROOM_GO_SEARCH: 'room_go_search',
+	ROOM_GO_THREADS: 'room_go_threads',
+	ROOM_GO_ROOM_INFO: 'room_go_room_info',
+	ROOM_GO_USER_INFO: 'room_go_user_info',
+	ROOM_MENTION_GO_USER_INFO: 'room_mention_go_user_info',
+	COMMAND_RUN: 'command_run',
+	COMMAND_RUN_F: 'command_run_f',
+
+	// ROOM ACTIONS VIEW
+	RA_JITSI_VIDEO: 'ra_jitsi_video',
+	RA_JITSI_AUDIO: 'ra_jitsi_audio',
+	RA_JITSI_F: 'ra_jitsi_f',
+	RA_GO_ROOMINFO: 'ra_go_room_info',
+	RA_GO_ROOMMEMBERS: 'ra_go_room_members',
+	RA_GO_SELECTEDUSERS: 'ra_go_selected_users',
+	RA_GO_INVITEUSERS: 'ra_go_invite_users',
+	RA_GO_MESSAGESFILES: 'ra_go_messages_files',
+	RA_GO_MESSAGESMENTIONS: 'ra_go_messages_mentions',
+	RA_GO_MESSAGESSTARRED: 'ra_go_messages_starred',
+	RA_GO_SEARCHMESSAGES: 'ra_go_search_messages',
+	RA_GO_MESSAGESPINNED: 'ra_go_messages_pinned',
+	RA_GO_AUTOTRANSLATE: 'ra_go_autotranslate',
+	RA_GO_NOTIFICATIONPREF: 'ra_go_notification_pref',
+	RA_GO_FORWARDLIVECHAT: 'ra_go_forward_livechat',
+	RA_GO_VISITORNAVIGATION: 'ra_go_visitor_navigation',
+	RA_SHARE: 'ra_share',
+	RA_LEAVE: 'ra_leave',
+	RA_LEAVE_F: 'ra_leave_f',
+	RA_TOGGLE_BLOCK_USER: 'ra_toggle_block_user',
+	RA_TOGGLE_BLOCK_USER_F: 'ra_toggle_block_user_f',
+
+	// ROOM INFO VIEW
+	RI_GO_RI_EDIT: 'ri_go_ri_edit',
+	RI_GO_LIVECHAT_EDIT: 'ri_go_livechat_edit',
+	RI_GO_ROOM_USER: 'ri_go_room_user',
+
+	// ROOM INFO EDIT VIEW
+	RI_EDIT_TOGGLE_ROOM_TYPE: 'ri_edit_toggle_room_type',
+	RI_EDIT_TOGGLE_READ_ONLY: 'ri_edit_toggle_read_only',
+	RI_EDIT_TOGGLE_REACTIONS: 'ri_edit_toggle_reactions',
+	RI_EDIT_TOGGLE_SYSTEM_MSG: 'ri_edit_toggle_system_msg',
+	RI_EDIT_SAVE: 'ri_edit_save',
+	RI_EDIT_SAVE_F: 'ri_edit_save_f',
+	RI_EDIT_RESET: 'ri_edit_reset',
+	RI_EDIT_TOGGLE_ARCHIVE: 'ri_edit_toggle_archive',
+	RI_EDIT_TOGGLE_ARCHIVE_F: 'ri_edit_toggle_archive_f',
+	RI_EDIT_DELETE: 'ri_edit_delete',
+	RI_EDIT_DELETE_F: 'ri_edit_delete_f',
+
+	// JITSI MEET VIEW
+	JM_CONFERENCE_JOIN: 'jm_conference_join',
+	JM_CONFERENCE_TERMINATE: 'jm_conference_terminate',
+
+	// INVITE USERS VIEW
+	IU_SHARE: 'iu_share',
+	IU_GO_IU_EDIT: 'iu_go_iu_edit',
+
+	// INVITE USERS EDIT VIEW
+	IU_EDIT_SET_LINK_PARAM: 'iu_edit_set_link_param',
+	IU_EDIT_CREATE_LINK: 'iu_edit_create_link',
+
+	// AUTO TRANSLATE VIEW
+	AT_TOGGLE_TRANSLATE: 'at_toggle_translate',
+	AT_TOGGLE_TRANSLATE_F: 'at_toggle_translate_f',
+	AT_SET_LANG: 'at_set_lang',
+	AT_SET_LANG_F: 'at_set_lang_f',
+
+	// NOTIFICATION PREFERENCES VIEW
+	NP_DISABLENOTIFICATIONS: 'np_disable_notification',
+	NP_DISABLENOTIFICATIONS_F: 'np_disable_notification_f',
+	NP_MUTEGROUPMENTIONS: 'np_mute_group_mentions',
+	NP_MUTEGROUPMENTIONS_F: 'np_mute_group_mentions_f',
+	NP_HIDEUNREADSTATUS: 'np_hide_unread_status',
+	NP_HIDEUNREADSTATUS_F: 'np_hide_unread_status_f',
+	NP_DESKTOPNOTIFICATIONS: 'np_desktop_notifications',
+	NP_DESKTOPNOTIFICATIONS_F: 'np_desktop_notifications_f',
+	NP_MOBILEPUSHNOTIFICATIONS: 'np_mobile_push_notifications',
+	NP_MOBILEPUSHNOTIFICATIONS_F: 'np_mobile_push_notifications_f',
+	NP_AUDIONOTIFICATIONS: 'np_audio_notifications',
+	NP_AUDIONOTIFICATIONS_F: 'np_audio_notifications_f',
+	NP_AUDIONOTIFICATIONVALUE: 'np_audio_notification_value',
+	NP_AUDIONOTIFICATIONVALUE_F: 'np_audio_notification_value_f',
+	NP_DESKTOPNOTIFICATIONDURATION: 'np_desktopnotificationduration',
+	NP_DESKTOPNOTIFICATIONDURATION_F: 'np_desktopnotificationduration_f',
+	NP_EMAILNOTIFICATIONS: 'np_email_notifications',
+	NP_EMAILNOTIFICATIONS_F: 'np_email_notifications_f'
 };

@@ -134,7 +134,7 @@ class Sidebar extends Component {
 	}
 
 	sidebarNavigate = (route) => {
-		logEvent(events[`SIDEBAR_NAVIGATE_TO_${ route.replace('StackNavigator', '').replace('View', '').toUpperCase() }`]);
+		logEvent(events[`SIDEBAR_GO_${ route.replace('StackNavigator', '').replace('View', '').toUpperCase() }`]);
 		const { navigation } = this.props;
 		navigation.navigate(route);
 	}
