@@ -40,6 +40,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 			result = yield call(loginCall, credentials);
 		} else {
 			result = yield call(loginWithPasswordCall, credentials);
+			result.loginEmailPassword = credentials.loginEmailPassword;
 		}
 		if (!result.username) {
 			yield put(serverFinishAdd());
@@ -114,11 +115,13 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			language: user.language,
 			status: user.status,
 			statusText: user.statusText,
-			roles: user.roles
+			roles: user.roles,
+			loginEmailPassword: user.loginEmailPassword
 		};
 		yield serversDB.action(async() => {
 			try {
 				const userRecord = await usersCollection.find(user.id);
+				u.loginEmailPassword = userRecord?.loginEmailPassword;
 				await userRecord.update((record) => {
 					record._raw = sanitizedRaw({ id: user.id, ...record._raw }, usersCollection.schema);
 					Object.assign(record, u);
@@ -133,7 +136,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 
 		yield RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ server }`, user.id);
 		yield RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ user.id }`, user.token);
-		yield put(setUser(user));
+		yield put(setUser({...user, loginEmailPassword: u.loginEmailPassword}));
 		EventEmitter.emit('connected');
 
 		let currentRoot;
