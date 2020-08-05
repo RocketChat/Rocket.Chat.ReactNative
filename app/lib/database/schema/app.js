@@ -244,9 +244,9 @@ export default appSchema({
 		tableSchema({
 			name: 'users',
 			columns: [
-				{ name: '_id', type: 'string', isOptional: true },
+				{ name: '_id', type: 'string', isIndexed: true },
 				{ name: 'name', type: 'string', isOptional: true },
-				{ name: 'username', type: 'string', isOptional: true },
+				{ name: 'username', type: 'string', isIndexed: true },
 				{ name: 'avatar_etag', type: 'string', isOptional: true }
 			]
 		})
