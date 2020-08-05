@@ -297,6 +297,8 @@ export default {
 	RA_SHARE: 'ra_share',
 	RA_LEAVE: 'ra_leave',
 	RA_LEAVE_F: 'ra_leave_f',
+	RA_TOGGLE_BLOCK_USER: 'ra_toggle_block_user',
+	RA_TOGGLE_BLOCK_USER_F: 'ra_toggle_block_user_f',
 
 	// ROOM INFO VIEW
 	RI_GO_RI_EDIT: 'ri_go_ri_edit',

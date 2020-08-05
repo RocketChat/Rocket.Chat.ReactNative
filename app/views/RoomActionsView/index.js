@@ -515,12 +515,14 @@ class RoomActionsView extends React.Component {
 	}
 
 	toggleBlockUser = () => {
+		logEvent(events.RA_TOGGLE_BLOCK_USER);
 		const { room } = this.state;
 		const { rid, blocker } = room;
 		const { member } = this.state;
 		try {
 			RocketChat.toggleBlockUser(rid, member._id, !blocker);
 		} catch (e) {
+			logEvent(events.RA_TOGGLE_BLOCK_USER_F);
 			log(e);
 		}
 	}
