@@ -14,7 +14,7 @@ import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status';
 import RocketChat from '../../lib/rocketchat';
-import log from '../../utils/log';
+import log, { logEvent, events } from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
@@ -141,12 +141,14 @@ class RoomActionsView extends React.Component {
 	}
 
 	onPressTouchable = (item) => {
-		if (item.route) {
+		const { route, event, params } = item;
+		if (route) {
+			logEvent(events[`RA_GO_TO_${ route.replace('View', '').toUpperCase() }${ params.name ? params.name.toUpperCase() : '' }`]);
 			const { navigation } = this.props;
-			navigation.navigate(item.route, item.params);
+			navigation.navigate(route, params);
 		}
-		if (item.event) {
-			return item.event();
+		if (event) {
+			return event();
 		}
 	}
 
@@ -524,6 +526,7 @@ class RoomActionsView extends React.Component {
 	}
 
 	handleShare = () => {
+		logEvent(events.RA_SHARE);
 		const { room } = this.state;
 		const permalink = RocketChat.getPermalinkChannel(room);
 		if (!permalink) {
@@ -535,6 +538,7 @@ class RoomActionsView extends React.Component {
 	};
 
 	leaveChannel = () => {
+		logEvent(events.RA_LEAVE);
 		const { room } = this.state;
 		const { leaveRoom } = this.props;
 

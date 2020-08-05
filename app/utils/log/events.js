@@ -206,7 +206,6 @@ export default {
 	ROOM_GO_TO_ROOM_INFO: 'room_go_to_room_info',
 	ROOM_GO_TO_USER_INFO: 'room_go_to_user_info',
 	ROOM_MENTION_GO_TO_USER_INFO: 'room_mention_go_to_user_info',
-
 	COMMAND_SLACKBRIDGE_IMPORT: 'command_slackbridge_import',
 	COMMAND_SLACKBRIDGE_IMPORT_F: 'command_slackbridge_import_f',
 	COMMAND_ARCHIVE: 'command_archive',
@@ -282,7 +281,23 @@ export default {
 	RA_JITSI_VIDEO: 'ra_jitsi_video',
 	RA_JITSI_AUDIO: 'ra_jitsi_audio',
 	RA_JITSI_F: 'ra_jitsi_f',
+	RA_GO_TO_ROOMINFO: 'ra_go_to_room_info',
+	RA_GO_TO_ROOMMEMBERS: 'ra_go_to_room_members',
+	RA_GO_TO_SELECTEDUSERS: 'ra_go_to_selected_users',
+	RA_GO_TO_INVITEUSERS: 'ra_go_to_invit_eusers',
+	RA_GO_TO_MESSAGESFILES: 'ra_go_to_messages_files',
+	RA_GO_TO_MESSAGESMENTIONS: 'ra_go_to_messages_mentions',
+	RA_GO_TO_MESSAGESSTARRED: 'ra_go_to_messages_starred',
+	RA_GO_TO_SEARCHMESSAGES: 'ra_go_to_search_messages',
+	RA_GO_TO_MESSAGESPINNED: 'ra_go_to_messages_pinned',
+	RA_GO_TO_AUTOTRANSLATE: 'ra_go_to_autotranslate',
+	RA_GO_TO_NOTIFICATIONPREF: 'ra_go_to_notification_pref',
+	RA_SHARE: 'ra_share',
+	RA_LEAVE: 'ra_leave',
 
+	// ROOM INFO VIEW
+	RI_GO_TO_RI_EDIT: 'ri_go_to_ri_edit',
+	RI_GO_TO_LIVECHAT_EDIT: 'ri_go_to_livechat_edit',
 
 	// JITSI MEET VIEW
 	JM_CONFERENCE_JOIN: 'jm_conference_join',

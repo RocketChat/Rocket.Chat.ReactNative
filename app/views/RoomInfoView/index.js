@@ -17,7 +17,7 @@ import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import { CustomHeaderButtons, CloseModalButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
-import log from '../../utils/log';
+import log, { logEvent, events } from '../../utils/log';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
@@ -117,7 +117,11 @@ class RoomInfoView extends React.Component {
 					<CustomHeaderButtons>
 						<Item
 							iconName='edit'
-							onPress={() => navigation.navigate(t === 'l' ? 'LivechatEditView' : 'RoomInfoEditView', { rid, room, roomUser })}
+							onPress={() => {
+								const isLivechat = t === 'l';
+								logEvent(events[`RI_GO_TO_${ isLivechat ? 'LIVECHAT' : 'RI' }_EDIT`]);
+								navigation.navigate(isLivechat ? 'LivechatEditView' : 'RoomInfoEditView', { rid, room, roomUser });
+							}}
 							testID='room-info-view-edit-button'
 						/>
 					</CustomHeaderButtons>
