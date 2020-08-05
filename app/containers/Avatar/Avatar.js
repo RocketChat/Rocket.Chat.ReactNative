@@ -47,21 +47,24 @@ const Avatar = React.memo(({
 			/>
 		);
 	} else {
-		const uri = avatarURL({
-			type,
-			text,
-			size,
-			user,
-			avatar,
-			server,
-			avatarETag
-		});
+		let uri = avatar;
+		if (!isStatic) {
+			uri = avatarURL({
+				type,
+				text,
+				size,
+				user,
+				avatar,
+				server,
+				avatarETag
+			});
+		}
 
 		image = (
 			<FastImage
 				style={avatarStyle}
 				source={{
-					uri: isStatic ? avatar : uri,
+					uri,
 					headers: RocketChatSettings.customHeaders,
 					priority: FastImage.priority.high
 				}}
