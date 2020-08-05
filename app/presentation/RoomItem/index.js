@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Q } from '@nozbe/watermelondb';
 
 import I18n from '../../i18n';
 import { ROW_HEIGHT } from './styles';
@@ -97,9 +96,14 @@ class RoomItemContainer extends React.Component {
 		}
 	}
 
+	get isGroupChat() {
+		const { item, getIsGroupChat } = this.props;
+		return getIsGroupChat(item);
+	}
+
 	get isDirect() {
-		const { item: { t } } = this.props;
-		return t === 'd';
+		const { item: { t }, id } = this.props;
+		return t === 'd' && id && !this.isGroupChat;
 	}
 
 	init = async() => {
@@ -112,24 +116,22 @@ class RoomItemContainer extends React.Component {
 		}
 
 		if (this.isDirect) {
-			const { username } = this.props;
+			const { id } = this.props;
 			const db = database.active;
 			const usersCollection = db.collections.get('users');
 			try {
-				const [user] = await usersCollection.query(Q.where('username', Q.eq(username))).fetch();
-				if (user) {
-					const observable = user.observe();
-					this.userSubscription = observable.subscribe((u) => {
-						const { avatarETag } = u;
-						if (this.mounted) {
-							this.setState({ avatarETag });
-						} else {
-							this.state.avatarETag = avatarETag;
-						}
-					});
-				}
+				const user = await usersCollection.find(id);
+				const observable = user.observe();
+				this.userSubscription = observable.subscribe((u) => {
+					const { avatarETag } = u;
+					if (this.mounted) {
+						this.setState({ avatarETag });
+					} else {
+						this.state.avatarETag = avatarETag;
+					}
+				});
 			} catch {
-				// Do nothing
+				// User not found
 			}
 		}
 	}
@@ -145,7 +147,6 @@ class RoomItemContainer extends React.Component {
 			item,
 			getRoomTitle,
 			getRoomAvatar,
-			getIsGroupChat,
 			getIsRead,
 			width,
 			toggleFav,
@@ -166,7 +167,6 @@ class RoomItemContainer extends React.Component {
 		} = this.props;
 		const name = getRoomTitle(item);
 		const avatar = getRoomAvatar(item);
-		const isGroupChat = getIsGroupChat(item);
 		const isRead = getIsRead(item);
 		const date = item.lastMessage?.ts && formatDate(item.lastMessage.ts);
 
@@ -189,7 +189,7 @@ class RoomItemContainer extends React.Component {
 			<RoomItem
 				name={name}
 				avatar={avatar}
-				isGroupChat={isGroupChat}
+				isGroupChat={this.isGroupChat}
 				isRead={isRead}
 				onPress={this.onPress}
 				date={date}
