@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { View } from 'react-native';
 import FastImage from '@rocket.chat/react-native-fast-image';
 import Touchable from 'react-native-platform-touchable';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
@@ -68,14 +69,20 @@ const Avatar = React.memo(({
 		);
 	}
 
+	if (onPress) {
+		image = (
+			<Touchable onPress={onPress}>
+				{image}
+			</Touchable>
+		);
+	}
+
 
 	return (
-		<Touchable style={[avatarStyle, style]} disabled={!onPress} onPress={onPress}>
-			<>
-				{image}
-				{children}
-			</>
-		</Touchable>
+		<View style={[avatarStyle, style]}>
+			{image}
+			{children}
+		</View>
 	);
 });
 
