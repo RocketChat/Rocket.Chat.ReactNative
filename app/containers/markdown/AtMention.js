@@ -39,7 +39,7 @@ const AtMention = React.memo(({
 		};
 	}
 
-	const user = mentions && mentions.length && mentions.find(m => m.username === mention);
+	const user = mentions?.find?.(m => m && m.username === mention);
 
 	const handlePress = () => {
 		logEvent(events.ROOM_MENTION_GO_USER_INFO);
