@@ -81,7 +81,7 @@ const MessageErrorActions = forwardRef(({ tmid }, ref) => {
 				},
 				{
 					title: I18n.t('Delete'),
-					icon: 'trash',
+					icon: 'delete',
 					danger: true,
 					onPress: () => handleDelete(message)
 				}
