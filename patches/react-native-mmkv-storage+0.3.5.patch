@@ -18,20 +18,18 @@ index 568e369..229b911 100644
                      
                  }
 diff --git a/node_modules/react-native-mmkv-storage/ios/SecureStorage.m b/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
-index 70f3a01..b0c0e70 100644
+index 70f3a01..30d7251 100644
 --- a/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
 +++ b/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
-@@ -46,7 +46,8 @@ - (void) setSecureKey: (NSString *)key value:(NSString *)value
+@@ -46,7 +46,6 @@ - (void) setSecureKey: (NSString *)key value:(NSString *)value
  - (NSString *) getSecureKey:(NSString *)key
                     callback:(RCTResponseSenderBlock)callback
  {
 -    
-+    RCTLogInfo(@"key: %@", key);
-+    NSLog(@"key: %@", key);
      @try {
          [self handleAppUninstallation];
          NSString *value = [self searchKeychainCopyMatching:key];
-@@ -130,7 +131,8 @@ - (void) removeSecureKey:(NSString *)key
+@@ -130,7 +129,8 @@ - (void) removeSecureKey:(NSString *)key
  
  - (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
      NSMutableDictionary *searchDictionary = [[NSMutableDictionary alloc] init];
@@ -41,7 +39,7 @@ index 70f3a01..b0c0e70 100644
      
      [searchDictionary setObject:(id)kSecClassGenericPassword forKey:(id)kSecClass];
      
-@@ -139,6 +141,9 @@ - (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
+@@ -139,6 +139,9 @@ - (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
      [searchDictionary setObject:encodedIdentifier forKey:(id)kSecAttrAccount];
      [searchDictionary setObject:serviceName forKey:(id)kSecAttrService];
      
@@ -51,7 +49,7 @@ index 70f3a01..b0c0e70 100644
      return searchDictionary;
  }
  
-@@ -240,10 +245,13 @@ - (void)clearSecureKeyStore
+@@ -240,10 +243,13 @@ - (void)clearSecureKeyStore
  
  - (void)handleAppUninstallation
  {
