@@ -738,7 +738,7 @@ class MessageBox extends Component {
 				Q.where('id', Q.like(`${ Q.sanitizeLikeString(command) }%`))
 			).fetch();
 			if (slashCommand.length > 0) {
-				logEvent(events[`COMMAND_${ command.toUpperCase() }`]);
+				logEvent(events.COMMAND_RUN);
 				try {
 					const messageWithoutCommand = message.replace(/([^\s]+)/, '').trim();
 					const [{ appId }] = slashCommand;
@@ -746,7 +746,7 @@ class MessageBox extends Component {
 					RocketChat.runSlashCommand(command, roomId, messageWithoutCommand, triggerId, tmid || messageTmid);
 					replyCancel();
 				} catch (e) {
-					logEvent(events[`COMMAND_${ command.toUpperCase() }_F`]);
+					logEvent(events.COMMAND_RUN_F);
 					log(e);
 				}
 				this.clearInput();
