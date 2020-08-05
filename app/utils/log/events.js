@@ -324,6 +324,13 @@ export default {
 
 	// INVITE USERS EDIT VIEW
 	IU_EDIT_SET_LINK_PARAM: 'iu_edit_set_link_param',
-	IU_EDIT_CREATE_LINK: 'iu_edit_create_link'
+	IU_EDIT_CREATE_LINK: 'iu_edit_create_link',
+
+	// AUTO TRANSLATE VIEW
+	AT_TOGGLE_TRANSLATE: 'at_toggle_translate',
+	AT_TOGGLE_TRANSLATE_F: 'at_toggle_translate_f',
+	AT_SET_LANG: 'at_set_lang',
+	AT_SET_LANG_F: 'at_set_lang_f'
+
 
 };
