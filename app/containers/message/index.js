@@ -70,7 +70,9 @@ class MessageContainer extends React.Component {
 		theme: 'light'
 	}
 
-	state = {}
+	state = {
+		author: null
+	}
 
 	async componentDidMount() {
 		const { item } = this.props;
@@ -84,10 +86,10 @@ class MessageContainer extends React.Component {
 		const db = database.active;
 		const usersCollection = db.collections.get('users');
 		try {
-			const user = await usersCollection.find(item.u._id);
+			const user = await usersCollection.find(item.u?._id);
 			const observable = user.observe();
-			this.userSubscription = observable.subscribe((changes) => {
-				this.setState({ author: changes });
+			this.userSubscription = observable.subscribe((author) => {
+				this.setState({ author });
 				this.forceUpdate();
 			});
 		} catch {
