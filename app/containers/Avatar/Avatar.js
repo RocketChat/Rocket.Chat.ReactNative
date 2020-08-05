@@ -25,7 +25,7 @@ const Avatar = React.memo(({
 	avatarETag,
 	isStatic
 }) => {
-	if ((!text && !avatar) || !server) {
+	if ((!text && !avatar && !emoji) || !server) {
 		return null;
 	}
 
@@ -44,6 +44,7 @@ const Avatar = React.memo(({
 				getCustomEmoji={getCustomEmoji}
 				isMessageContainsOnlyEmoji
 				literal={emoji}
+				style={avatarStyle}
 			/>
 		);
 	} else {

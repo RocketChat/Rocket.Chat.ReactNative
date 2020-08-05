@@ -1,5 +1,926 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Storyshots Avatar list Avatar 1`] = `
+<RCTScrollView
+  style={
+    Object {
+      "backgroundColor": "#ffffff",
+    }
+  }
+>
+  <View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginVertical": 30,
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          undefined,
+        ]
+      }
+    >
+      Avatar by text
+    </Text>
+    <View
+      style={
+        Array [
+          Object {
+            "borderRadius": 4,
+            "height": 56,
+            "width": 56,
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "overflow": "hidden",
+            },
+            Object {
+              "borderRadius": 4,
+              "height": 56,
+              "width": 56,
+            },
+          ]
+        }
+      >
+        <FastImageView
+          resizeMode="cover"
+          source={
+            Object {
+              "headers": undefined,
+              "priority": "high",
+              "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=50",
+            }
+          }
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginVertical": 30,
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          undefined,
+        ]
+      }
+    >
+      Avatar by url
+    </Text>
+    <View
+      style={
+        Array [
+          Object {
+            "borderRadius": 4,
+            "height": 56,
+            "width": 56,
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "overflow": "hidden",
+            },
+            Object {
+              "borderRadius": 4,
+              "height": 56,
+              "width": 56,
+            },
+          ]
+        }
+      >
+        <FastImageView
+          resizeMode="cover"
+          source={
+            Object {
+              "headers": undefined,
+              "priority": "high",
+              "uri": "https://user-images.githubusercontent.com/29778115/89444446-14738480-d728-11ea-9412-75fd978d95fb.jpg",
+            }
+          }
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginVertical": 30,
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          undefined,
+        ]
+      }
+    >
+      Avatar by path
+    </Text>
+    <View
+      style={
+        Array [
+          Object {
+            "borderRadius": 4,
+            "height": 56,
+            "width": 56,
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "overflow": "hidden",
+            },
+            Object {
+              "borderRadius": 4,
+              "height": 56,
+              "width": 56,
+            },
+          ]
+        }
+      >
+        <FastImageView
+          resizeMode="cover"
+          source={
+            Object {
+              "headers": undefined,
+              "priority": "high",
+              "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50",
+            }
+          }
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginVertical": 30,
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          undefined,
+        ]
+      }
+    >
+      With ETag
+    </Text>
+    <View
+      style={
+        Array [
+          Object {
+            "borderRadius": 4,
+            "height": 56,
+            "width": 56,
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "overflow": "hidden",
+            },
+            Object {
+              "borderRadius": 4,
+              "height": 56,
+              "width": 56,
+            },
+          ]
+        }
+      >
+        <FastImageView
+          resizeMode="cover"
+          source={
+            Object {
+              "headers": undefined,
+              "priority": "high",
+              "uri": "https://open.rocket.chat/avatar/djorkaeff.alexandre?format=png&size=50&etag=5ag8KffJcZj9m5rCv",
+            }
+          }
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginVertical": 30,
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          undefined,
+        ]
+      }
+    >
+      Without ETag
+    </Text>
+    <View
+      style={
+        Array [
+          Object {
+            "borderRadius": 4,
+            "height": 56,
+            "width": 56,
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "overflow": "hidden",
+            },
+            Object {
+              "borderRadius": 4,
+              "height": 56,
+              "width": 56,
+            },
+          ]
+        }
+      >
+        <FastImageView
+          resizeMode="cover"
+          source={
+            Object {
+              "headers": undefined,
+              "priority": "high",
+              "uri": "https://open.rocket.chat/avatar/djorkaeff.alexandre?format=png&size=50",
+            }
+          }
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginVertical": 30,
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          undefined,
+        ]
+      }
+    >
+      Emoji
+    </Text>
+    <View
+      style={
+        Array [
+          Object {
+            "borderRadius": 4,
+            "height": 56,
+            "width": 56,
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "overflow": "hidden",
+            },
+            Array [
+              Object {
+                "height": 30,
+                "width": 30,
+              },
+              Object {
+                "borderRadius": 4,
+                "height": 56,
+                "width": 56,
+              },
+            ],
+          ]
+        }
+      >
+        <FastImageView
+          resizeMode="contain"
+          source={
+            Object {
+              "priority": "high",
+              "uri": "https://open.rocket.chat/emoji-custom/troll.jpg",
+            }
+          }
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginVertical": 30,
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          undefined,
+        ]
+      }
+    >
+      Direct
+    </Text>
+    <View
+      style={
+        Array [
+          Object {
+            "borderRadius": 4,
+            "height": 56,
+            "width": 56,
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "overflow": "hidden",
+            },
+            Object {
+              "borderRadius": 4,
+              "height": 56,
+              "width": 56,
+            },
+          ]
+        }
+      >
+        <FastImageView
+          resizeMode="cover"
+          source={
+            Object {
+              "headers": undefined,
+              "priority": "high",
+              "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=50",
+            }
+          }
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginVertical": 30,
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          undefined,
+        ]
+      }
+    >
+      Channel
+    </Text>
+    <View
+      style={
+        Array [
+          Object {
+            "borderRadius": 4,
+            "height": 56,
+            "width": 56,
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "overflow": "hidden",
+            },
+            Object {
+              "borderRadius": 4,
+              "height": 56,
+              "width": 56,
+            },
+          ]
+        }
+      >
+        <FastImageView
+          resizeMode="cover"
+          source={
+            Object {
+              "headers": undefined,
+              "priority": "high",
+              "uri": "https://open.rocket.chat/avatar/@general?format=png&size=50",
+            }
+          }
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginVertical": 30,
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          undefined,
+        ]
+      }
+    >
+      Touchable
+    </Text>
+    <View
+      style={
+        Array [
+          Object {
+            "borderRadius": 4,
+            "height": 56,
+            "width": 56,
+          },
+          undefined,
+        ]
+      }
+    />
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginVertical": 30,
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          undefined,
+        ]
+      }
+    >
+      Static
+    </Text>
+    <View
+      style={
+        Array [
+          Object {
+            "borderRadius": 4,
+            "height": 56,
+            "width": 56,
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "overflow": "hidden",
+            },
+            Object {
+              "borderRadius": 4,
+              "height": 56,
+              "width": 56,
+            },
+          ]
+        }
+      >
+        <FastImageView
+          resizeMode="cover"
+          source={
+            Object {
+              "headers": undefined,
+              "priority": "high",
+              "uri": "https://user-images.githubusercontent.com/29778115/89444446-14738480-d728-11ea-9412-75fd978d95fb.jpg",
+            }
+          }
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginVertical": 30,
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          undefined,
+        ]
+      }
+    >
+      Custom borderRadius
+    </Text>
+    <View
+      style={
+        Array [
+          Object {
+            "borderRadius": 28,
+            "height": 56,
+            "width": 56,
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "overflow": "hidden",
+            },
+            Object {
+              "borderRadius": 28,
+              "height": 56,
+              "width": 56,
+            },
+          ]
+        }
+      >
+        <FastImageView
+          resizeMode="cover"
+          source={
+            Object {
+              "headers": undefined,
+              "priority": "high",
+              "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=50",
+            }
+          }
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginVertical": 30,
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          undefined,
+        ]
+      }
+    >
+      Children
+    </Text>
+    <View
+      style={
+        Array [
+          Object {
+            "borderRadius": 4,
+            "height": 56,
+            "width": 56,
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "overflow": "hidden",
+            },
+            Object {
+              "borderRadius": 4,
+              "height": 56,
+              "width": 56,
+            },
+          ]
+        }
+      >
+        <FastImageView
+          resizeMode="cover"
+          source={
+            Object {
+              "headers": undefined,
+              "priority": "high",
+              "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=50",
+            }
+          }
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
+      <View
+        style={
+          Array [
+            Array [
+              Object {
+                "borderWidth": 3,
+                "bottom": -3,
+                "position": "absolute",
+                "right": -3,
+              },
+              Object {
+                "borderWidth": 4,
+                "bottom": -4,
+                "right": -4,
+              },
+            ],
+            Object {
+              "backgroundColor": "#cbced1",
+              "borderColor": "#ffffff",
+              "borderRadius": 24,
+              "height": 24,
+              "width": 24,
+            },
+          ]
+        }
+      />
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginVertical": 30,
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          undefined,
+        ]
+      }
+    >
+      Wrong server
+    </Text>
+    <View
+      style={
+        Array [
+          Object {
+            "borderRadius": 4,
+            "height": 56,
+            "width": 56,
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "overflow": "hidden",
+            },
+            Object {
+              "borderRadius": 4,
+              "height": 56,
+              "width": 56,
+            },
+          ]
+        }
+      >
+        <FastImageView
+          resizeMode="cover"
+          source={
+            Object {
+              "headers": undefined,
+              "priority": "high",
+              "uri": "https://google.com/avatar/Avatar?format=png&size=50",
+            }
+          }
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginVertical": 30,
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          undefined,
+        ]
+      }
+    >
+      Custom style
+    </Text>
+    <View
+      style={
+        Array [
+          Object {
+            "borderRadius": 4,
+            "height": 56,
+            "width": 56,
+          },
+          Object {
+            "padding": 16,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "overflow": "hidden",
+            },
+            Object {
+              "borderRadius": 4,
+              "height": 56,
+              "width": 56,
+            },
+          ]
+        }
+      >
+        <FastImageView
+          resizeMode="cover"
+          source={
+            Object {
+              "headers": undefined,
+              "priority": "high",
+              "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=50",
+            }
+          }
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
 exports[`Storyshots Markdown list Markdown 1`] = `
 <RCTScrollView
   contentContainerStyle={
@@ -1238,6 +2159,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "fontSize": 16,
                 "fontWeight": "400",
               },
+              Object {},
             ]
           }
         >
@@ -1255,6 +2177,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "fontSize": 16,
                 "fontWeight": "400",
               },
+              Object {},
             ]
           }
         >
@@ -1303,10 +2226,13 @@ exports[`Storyshots Markdown list Markdown 1`] = `
               Object {
                 "overflow": "hidden",
               },
-              Object {
-                "height": 20,
-                "width": 20,
-              },
+              Array [
+                Object {
+                  "height": 20,
+                  "width": 20,
+                },
+                Object {},
+              ],
             ]
           }
         >
@@ -1361,10 +2287,13 @@ exports[`Storyshots Markdown list Markdown 1`] = `
               Object {
                 "overflow": "hidden",
               },
-              Object {
-                "height": 20,
-                "width": 20,
-              },
+              Array [
+                Object {
+                  "height": 20,
+                  "width": 20,
+                },
+                Object {},
+              ],
             ]
           }
         >
@@ -1419,10 +2348,13 @@ exports[`Storyshots Markdown list Markdown 1`] = `
               Object {
                 "overflow": "hidden",
               },
-              Object {
-                "height": 20,
-                "width": 20,
-              },
+              Array [
+                Object {
+                  "height": 20,
+                  "width": 20,
+                },
+                Object {},
+              ],
             ]
           }
         >
@@ -1499,6 +2431,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "fontSize": 30,
                 "fontWeight": "400",
               },
+              Object {},
             ]
           }
         >
@@ -1541,10 +2474,13 @@ exports[`Storyshots Markdown list Markdown 1`] = `
               Object {
                 "overflow": "hidden",
               },
-              Object {
-                "height": 30,
-                "width": 30,
-              },
+              Array [
+                Object {
+                  "height": 30,
+                  "width": 30,
+                },
+                Object {},
+              ],
             ]
           }
         >
