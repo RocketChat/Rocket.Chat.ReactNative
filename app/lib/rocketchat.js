@@ -695,7 +695,7 @@ const RocketChat = {
 			c: 'channel',
 			d: 'direct'
 		}[room.t];
-		return `${ server }/${ roomType }/${ room.name }?msg=${ message.id }`;
+		return `${ server }/${ roomType }/${ this.isGroupChat(room) ? room.rid : room.name }?msg=${ message.id }`;
 	},
 	getPermalinkChannel(channel) {
 		const { server } = reduxStore.getState().server;
