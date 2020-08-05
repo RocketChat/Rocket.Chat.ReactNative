@@ -357,6 +357,7 @@ class RoomView extends React.Component {
 	}
 
 	goRoomActionsView = (screen) => {
+		logEvent(events.ROOM_GO_RA);
 		const { room, member } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
@@ -750,6 +751,7 @@ class RoomView extends React.Component {
 
 	navToRoomInfo = (navParam) => {
 		const { navigation, user, isMasterDetail } = this.props;
+		logEvent(events[`ROOM_GO_${ navParam.t === 'd' ? 'USER' : 'ROOM' }_INFO`]);
 		if (navParam.rid === user.id) {
 			return;
 		}
