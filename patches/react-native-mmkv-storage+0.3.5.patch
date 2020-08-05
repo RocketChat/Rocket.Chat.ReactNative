@@ -18,10 +18,20 @@ index 568e369..229b911 100644
                      
                  }
 diff --git a/node_modules/react-native-mmkv-storage/ios/SecureStorage.m b/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
-index 70f3a01..e30b5fb 100644
+index 70f3a01..b0c0e70 100644
 --- a/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
 +++ b/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
-@@ -130,7 +130,8 @@ - (void) removeSecureKey:(NSString *)key
+@@ -46,7 +46,8 @@ - (void) setSecureKey: (NSString *)key value:(NSString *)value
+ - (NSString *) getSecureKey:(NSString *)key
+                    callback:(RCTResponseSenderBlock)callback
+ {
+-    
++    RCTLogInfo(@"key: %@", key);
++    NSLog(@"key: %@", key);
+     @try {
+         [self handleAppUninstallation];
+         NSString *value = [self searchKeychainCopyMatching:key];
+@@ -130,7 +131,8 @@ - (void) removeSecureKey:(NSString *)key
  
  - (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
      NSMutableDictionary *searchDictionary = [[NSMutableDictionary alloc] init];
@@ -31,7 +41,7 @@ index 70f3a01..e30b5fb 100644
      
      [searchDictionary setObject:(id)kSecClassGenericPassword forKey:(id)kSecClass];
      
-@@ -139,6 +140,9 @@ - (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
+@@ -139,6 +141,9 @@ - (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
      [searchDictionary setObject:encodedIdentifier forKey:(id)kSecAttrAccount];
      [searchDictionary setObject:serviceName forKey:(id)kSecAttrService];
      
@@ -41,23 +51,23 @@ index 70f3a01..e30b5fb 100644
      return searchDictionary;
  }
  
-@@ -240,11 +244,11 @@ - (void)clearSecureKeyStore
+@@ -240,10 +245,13 @@ - (void)clearSecureKeyStore
  
  - (void)handleAppUninstallation
  {
 -    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"RnSksIsAppInstalled"]) {
--        [self clearSecureKeyStore];
++    // use app group user defaults to prevent clear when it's share extension
++    NSString *suiteName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
++    NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:suiteName];
++    if (![userDefaults boolForKey:@"RnSksIsAppInstalled"]) {
+         [self clearSecureKeyStore];
 -        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"RnSksIsAppInstalled"];
 -        [[NSUserDefaults standardUserDefaults] synchronize];
--    }
-+    // if (![[NSUserDefaults standardUserDefaults] boolForKey:@"RnSksIsAppInstalled"]) {
-+    //     [self clearSecureKeyStore];
-+    //     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"RnSksIsAppInstalled"];
-+    //     [[NSUserDefaults standardUserDefaults] synchronize];
-+    // }
++        [userDefaults setBool:YES forKey:@"RnSksIsAppInstalled"];
++        [userDefaults synchronize];
+     }
  }
  
- NSError * secureKeyStoreError(NSString *errMsg)
 diff --git a/node_modules/react-native-mmkv-storage/ios/StorageGetters.m b/node_modules/react-native-mmkv-storage/ios/StorageGetters.m
 index 909d056..d62814a 100644
 --- a/node_modules/react-native-mmkv-storage/ios/StorageGetters.m
@@ -147,3 +157,15 @@ index e7c914b..891cf93 100644
          return;
      }
      
+diff --git a/node_modules/react-native-mmkv-storage/src/loader.js b/node_modules/react-native-mmkv-storage/src/loader.js
+index 062563c..efc5fc8 100644
+--- a/node_modules/react-native-mmkv-storage/src/loader.js
++++ b/node_modules/react-native-mmkv-storage/src/loader.js
+@@ -29,6 +29,7 @@ export default class Loader {
+     this.initWithEncryption = true;
+     this.key = generatePassword();
+     this.alias = stringToHex(this.aliasPrefix + this.instanceID);
++    console.log(this.alias);
+     this.secureKeyStorage = true;
+     return this;
+   }

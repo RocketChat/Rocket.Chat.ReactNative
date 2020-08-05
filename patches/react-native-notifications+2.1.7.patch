@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m b/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m
-index edc4fd4..21f7f57 100644
+index edc4fd4..85b5947 100644
 --- a/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m
 +++ b/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m
 @@ -3,6 +3,8 @@
@@ -65,7 +65,7 @@ index edc4fd4..21f7f57 100644
 +  // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
 +  [secureStorage getSecureKey:[self stringToHex:@"com.MMKV.default"] callback:^(NSArray *response) {
 +    // error handling
-+    if ([response objectAtIndex:0]) {
++    if ([response objectAtIndex:0] != [NSNull null]) {
 +        return;
 +    }
 +    NSString *key = [response objectAtIndex:1];

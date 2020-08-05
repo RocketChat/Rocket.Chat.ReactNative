@@ -38,7 +38,7 @@ index 478af12..d3cd45c 100644
          ref.getNativeRef = getNativeRef;
        }
 diff --git a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
-index 274f381..429871e 100644
+index 274f381..0f26137 100644
 --- a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
 +++ b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
 @@ -8,11 +8,12 @@
@@ -132,7 +132,7 @@ index 274f381..429871e 100644
 +  // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
 +  [secureStorage getSecureKey:[self stringToHex:@"com.MMKV.default"] callback:^(NSArray *response) {
 +    // Error happened
-+    if ([response objectAtIndex:0]) {
++    if ([response objectAtIndex:0] != [NSNull null]) {
 +        return;
 +    }
 +    NSString *key = [response objectAtIndex:1];
@@ -158,7 +158,7 @@ index 274f381..429871e 100644
                           withDelegate:(id<RCTURLRequestDelegate>)delegate
  {
 diff --git a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
-index b967c14..3247c86 100644
+index b967c14..2d3c84f 100644
 --- a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
 +++ b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
 @@ -24,6 +24,9 @@
@@ -221,7 +221,7 @@ index b967c14..3247c86 100644
 +    // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
 +    [secureStorage getSecureKey:[self stringToHex:@"com.MMKV.default"] callback:^(NSArray *response) {
 +      // Error happened
-+      if ([response objectAtIndex:0]) {
++      if ([response objectAtIndex:0] != [NSNull null]) {
 +          return;
 +      }
 +      NSString *key = [response objectAtIndex:1];
