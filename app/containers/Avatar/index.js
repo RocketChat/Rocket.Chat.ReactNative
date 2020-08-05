@@ -5,9 +5,9 @@ import { Q } from '@nozbe/watermelondb';
 
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
-import Component from './Avatar';
+import Avatar from './Avatar';
 
-class Avatar extends React.Component {
+class AvatarContainer extends React.Component {
 	static propTypes = {
 		text: PropTypes.string,
 		type: PropTypes.string
@@ -58,7 +58,7 @@ class Avatar extends React.Component {
 	render() {
 		const { avatarETag } = this.state;
 		return (
-			<Component
+			<Avatar
 				avatarETag={avatarETag}
 				{...this.props}
 			/>
@@ -70,4 +70,4 @@ const mapStateToProps = state => ({
 	user: getUserSelector(state),
 	server: state.share.server || state.server.server
 });
-export default connect(mapStateToProps)(Avatar);
+export default connect(mapStateToProps)(AvatarContainer);
