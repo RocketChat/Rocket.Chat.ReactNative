@@ -309,7 +309,7 @@ const RocketChat = {
 							});
 						});
 					} catch {
-						// Not was found
+						// User not found
 						await db.action(async() => {
 							await userCollection.create((u) => {
 								u._raw = sanitizedRaw({ id: userNameChanged._id }, userCollection.schema);

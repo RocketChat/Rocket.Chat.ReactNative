@@ -78,7 +78,7 @@ export default async function getUsersPresence() {
 						});
 					});
 				} catch (e) {
-					// Not was found
+					// User not found
 					await db.action(async() => {
 						await userCollection.create((u) => {
 							u._raw = sanitizedRaw({ id: user._id }, userCollection.schema);
