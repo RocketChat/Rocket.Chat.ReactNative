@@ -6,7 +6,7 @@ import styles from './styles';
 import { themes } from '../../constants/colors';
 import Avatar from '../../containers/Avatar/Avatar';
 
-const RoomItemInner = ({
+const Wrapper = ({
 	accessibilityLabel,
 	avatar,
 	avatarSize,
@@ -44,7 +44,7 @@ const RoomItemInner = ({
 	</View>
 );
 
-RoomItemInner.propTypes = {
+Wrapper.propTypes = {
 	accessibilityLabel: PropTypes.string,
 	avatar: PropTypes.string,
 	avatarSize: PropTypes.number,
@@ -57,4 +57,4 @@ RoomItemInner.propTypes = {
 	children: PropTypes.element
 };
 
-export default RoomItemInner;
+export default Wrapper;
