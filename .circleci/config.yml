@@ -192,8 +192,8 @@ jobs:
               yarn generate-source-maps-android upload \
                 --api-key=$BUGSNAG_KEY \
                 --app-version=$CIRCLE_BUILD_NUM \
-                --minifiedFile=android/app/build/generated/assets/react/release/app.bundle \
-                --source-map=android/app/build/generated/sourcemaps/react/release/app.bundle.map \
+                --minifiedFile=android/app/build/generated/assets/react/play/release/app.bundle \
+                --source-map=android/app/build/generated/sourcemaps/react/play/release/app.bundle.map \
                 --minified-url=app.bundle \
                 --upload-sources
             fi
