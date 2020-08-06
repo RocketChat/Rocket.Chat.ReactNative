@@ -62,7 +62,7 @@ public class CustomPushNotification extends PushNotification {
         Ejson receivedEjson = new Gson().fromJson(received.getString("ejson", "{}"), Ejson.class);
 
         if (receivedEjson.notificationType != null && receivedEjson.notificationType.equals("message-id-only")) {
-            notificationLoad(receivedEjson.serverURL(), receivedEjson.messageId, new Callback() {
+            notificationLoad(receivedEjson, new Callback() {
                 @Override
                 public void call(@Nullable Bundle bundle) {
                     if (bundle != null) {
@@ -340,7 +340,7 @@ public class CustomPushNotification extends PushNotification {
         notification.setDeleteIntent(dismissPendingIntent);
     }
 
-    private void notificationLoad(String server, String messageId, Callback callback) {
-        LoadNotification.load(reactApplicationContext, server, messageId, callback);
+    private void notificationLoad(Ejson ejson, Callback callback) {
+        LoadNotification.load(reactApplicationContext, ejson, callback);
     }
 }

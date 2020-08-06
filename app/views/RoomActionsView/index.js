@@ -14,7 +14,7 @@ import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status';
 import RocketChat from '../../lib/rocketchat';
-import log from '../../utils/log';
+import log, { logEvent, events } from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
@@ -141,12 +141,14 @@ class RoomActionsView extends React.Component {
 	}
 
 	onPressTouchable = (item) => {
-		if (item.route) {
+		const { route, event, params } = item;
+		if (route) {
+			logEvent(events[`RA_GO_${ route.replace('View', '').toUpperCase() }${ params.name ? params.name.toUpperCase() : '' }`]);
 			const { navigation } = this.props;
-			navigation.navigate(item.route, item.params);
+			navigation.navigate(route, params);
 		}
-		if (item.event) {
-			return item.event();
+		if (event) {
+			return event();
 		}
 	}
 
@@ -513,17 +515,20 @@ class RoomActionsView extends React.Component {
 	}
 
 	toggleBlockUser = () => {
+		logEvent(events.RA_TOGGLE_BLOCK_USER);
 		const { room } = this.state;
 		const { rid, blocker } = room;
 		const { member } = this.state;
 		try {
 			RocketChat.toggleBlockUser(rid, member._id, !blocker);
 		} catch (e) {
+			logEvent(events.RA_TOGGLE_BLOCK_USER_F);
 			log(e);
 		}
 	}
 
 	handleShare = () => {
+		logEvent(events.RA_SHARE);
 		const { room } = this.state;
 		const permalink = RocketChat.getPermalinkChannel(room);
 		if (!permalink) {

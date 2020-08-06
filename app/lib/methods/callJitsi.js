@@ -1,5 +1,6 @@
 import reduxStore from '../createStore';
 import Navigation from '../Navigation';
+import { logEvent, events } from '../../utils/log';
 
 async function jitsiURL({ rid }) {
 	const { settings } = reduxStore.getState();
@@ -24,7 +25,7 @@ async function jitsiURL({ rid }) {
 			const accessToken = await this.methodCallWrapper('jitsi:generateAccessToken', rid);
 			queryString = `?jwt=${ accessToken }`;
 		} catch {
-			// do nothing
+			logEvent(events.RA_JITSI_F);
 		}
 	}
 
@@ -32,6 +33,7 @@ async function jitsiURL({ rid }) {
 }
 
 async function callJitsi(rid, onlyAudio = false) {
+	logEvent(onlyAudio ? events.RA_JITSI_AUDIO : events.RA_JITSI_VIDEO);
 	const url = await jitsiURL.call(this, { rid });
 	Navigation.navigate('JitsiMeetView', { url, onlyAudio, rid });
 }
