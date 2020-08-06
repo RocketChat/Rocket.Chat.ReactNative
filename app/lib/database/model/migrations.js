@@ -129,6 +129,17 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 10,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [
+						{ name: 'e2e_key', type: 'string', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });
