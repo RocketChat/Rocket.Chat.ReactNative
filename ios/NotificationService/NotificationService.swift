@@ -54,20 +54,36 @@ class NotificationService: UNNotificationServiceExtension {
 
             let notificationType = data.notificationType ?? ""
           
-            let instanceID = "com.MMKV.default"
-            let secureStorage = SecureStorage()
-            secureStorage.getSecureKey(instanceID.toHex()) { (response) -> () in
-              print(response)
-            }
-          
             // If the notification have the content at her payload, show it
             if notificationType != "message-id-only" {
                 contentHandler(bestAttemptContent)
                 return
             }
           
+            let mmapID = "default"
+            let instanceID = "com.MMKV.\(mmapID)"
+            let secureStorage = SecureStorage()
+            var cryptKey: Data = Data()
+            // get mmkv instance password from keychain
+            secureStorage.getSecureKey(instanceID.toHex()) { (response) -> () in
+              guard let password = response?[1] as? String else {
+                // kill the process and show notification as it came from APN
+                exit(0)
+              }
+              cryptKey = password.data(using: .utf8)!
+            }
+
+            // Get App Group directory
             let suiteName = Bundle.main.object(forInfoDictionaryKey: "AppGroup") as! String
-            let userDefaults = UserDefaults(suiteName: suiteName)
+            guard let directory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: suiteName) else {
+              return
+            }
+
+            // Set App Group dir
+            MMKV.initialize(rootDir: nil, groupDir: directory.path, logLevel: MMKVLogLevel.none)
+            guard let mmkv = MMKV(mmapID: mmapID, cryptKey: cryptKey, mode: MMKVMode.multiProcess) else {
+                return
+            }
 
             var server = data.host
             if (server.last == "/") {
@@ -75,8 +91,8 @@ class NotificationService: UNNotificationServiceExtension {
             }
             let msgId = data.messageId
 
-            let userId = userDefaults?.string(forKey: "reactnativemeteor_usertoken-\(server)") ?? ""
-            let token = userDefaults?.string(forKey: "reactnativemeteor_usertoken-\(userId)") ?? ""
+            let userId = mmkv.string(forKey: "reactnativemeteor_usertoken-\(server)") ?? ""
+            let token = mmkv.string(forKey: "reactnativemeteor_usertoken-\(userId)") ?? ""
           
             if userId.isEmpty || token.isEmpty {
                 contentHandler(bestAttemptContent)
