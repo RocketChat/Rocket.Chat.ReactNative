@@ -42,6 +42,7 @@
     "@rocket.chat/sdk": "djorkaeffalexandre/Rocket.Chat.js.SDK#test.fix-ddp",
     "@rocket.chat/ui-kit": "0.13.0",
     "bugsnag-react-native": "2.23.10",
+    "bytebuffer": "^5.0.1",
     "commonmark": "git+https://github.com/RocketChat/commonmark.js.git",
     "commonmark-react-renderer": "git+https://github.com/RocketChat/commonmark-react-renderer.git",
     "deep-equal": "2.0.3",
