@@ -67,9 +67,8 @@ Follow the [React Native Getting Started Guide](https://facebook.github.io/react
     $ npx react-native run-android
     ```
 
-### Running single server
-If you don't need multiple servers, there is a branch `single-server` just for that.
-Readme will guide you on how to config.
+### Whitelabel
+Follow our docs: https://docs.rocket.chat/guides/developer/mobile-apps/whitelabeling-mobile-apps
 
 ## Current priorities
 1) Omnichannel support
