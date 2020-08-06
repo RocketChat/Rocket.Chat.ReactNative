@@ -54,6 +54,12 @@ class NotificationService: UNNotificationServiceExtension {
 
             let notificationType = data.notificationType ?? ""
           
+            let instanceID = "com.MMKV.default"
+            let secureStorage = SecureStorage()
+            secureStorage.getSecureKey(instanceID.toHex()) { (response) -> () in
+              print(response)
+            }
+          
             // If the notification have the content at her payload, show it
             if notificationType != "message-id-only" {
                 contentHandler(bestAttemptContent)
