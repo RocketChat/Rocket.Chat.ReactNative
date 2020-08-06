@@ -155,15 +155,3 @@ index e7c914b..891cf93 100644
          return;
      }
      
-diff --git a/node_modules/react-native-mmkv-storage/src/loader.js b/node_modules/react-native-mmkv-storage/src/loader.js
-index 062563c..efc5fc8 100644
---- a/node_modules/react-native-mmkv-storage/src/loader.js
-+++ b/node_modules/react-native-mmkv-storage/src/loader.js
-@@ -29,6 +29,7 @@ export default class Loader {
-     this.initWithEncryption = true;
-     this.key = generatePassword();
-     this.alias = stringToHex(this.aliasPrefix + this.instanceID);
-+    console.log(this.alias);
-     this.secureKeyStorage = true;
-     return this;
-   }

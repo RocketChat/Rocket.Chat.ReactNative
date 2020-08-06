@@ -15,8 +15,6 @@ import java.io.IOException;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 
-import chat.rocket.userdefaults.RNUserDefaultsModule;
-
 class JsonResponse {
   Data data;
 
