@@ -29,9 +29,9 @@ const styles = StyleSheet.create({
 });
 
 class SelectServerView extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: I18n.t('Select_Server')
-	}
+	})
 
 	static propTypes = {
 		server: PropTypes.string,
