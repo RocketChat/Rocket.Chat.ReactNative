@@ -47,10 +47,14 @@ Follow the [React Native Getting Started Guide](https://facebook.github.io/react
     ```
 
 ## Whitelabel
-Follow our docs: https://docs.rocket.chat/guides/developer/mobile-apps/whitelabeling-mobile-apps
+Do you want to make the app run on your own server only?
+
+[Follow our whitelabel documentation](https://docs.rocket.chat/guides/developer/mobile-apps/whitelabeling-mobile-apps).
 
 ## E2E Testing
-Follow our docs: https://github.com/RocketChat/Rocket.Chat.ReactNative/tree/develop/e2e#e2e-testing
+We use Detox framework to end-to-end test our app and ensure everything is working properly.
+
+ [Follow this documentation to learn how to run it](https://github.com/RocketChat/Rocket.Chat.ReactNative/tree/develop/e2e#e2e-testing).
 
 ## Storybook
 - Open index.js
