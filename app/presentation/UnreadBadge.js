@@ -1,12 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
-import styles from './styles';
-import { themes } from '../../constants/colors';
+import sharedStyles from '../views/Styles';
+import { themes } from '../constants/colors';
+
+const styles = StyleSheet.create({
+	unreadNumberContainer: {
+		minWidth: 21,
+		height: 21,
+		paddingVertical: 3,
+		paddingHorizontal: 5,
+		borderRadius: 10.5,
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginLeft: 10
+	},
+	unreadText: {
+		overflow: 'hidden',
+		fontSize: 13,
+		...sharedStyles.textMedium,
+		letterSpacing: 0.56,
+		textAlign: 'center'
+	}
+});
 
 const UnreadBadge = React.memo(({
-	theme, unread, userMentions, groupMentions
+	theme, unread, userMentions, groupMentions, style
 }) => {
 	if (!unread || unread <= 0) {
 		return;
@@ -27,7 +47,8 @@ const UnreadBadge = React.memo(({
 		<View
 			style={[
 				styles.unreadNumberContainer,
-				{ backgroundColor }
+				{ backgroundColor },
+				style
 			]}
 		>
 			<Text
@@ -35,7 +56,7 @@ const UnreadBadge = React.memo(({
 					styles.unreadText,
 					{ color }
 				]}
-			>{ unread }
+			>{unread}
 			</Text>
 		</View>
 	);
@@ -45,7 +66,8 @@ UnreadBadge.propTypes = {
 	theme: PropTypes.string,
 	unread: PropTypes.number,
 	userMentions: PropTypes.number,
-	groupMentions: PropTypes.number
+	groupMentions: PropTypes.number,
+	style: PropTypes.object
 };
 
 export default UnreadBadge;

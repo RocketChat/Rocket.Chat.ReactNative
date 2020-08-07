@@ -60,9 +60,9 @@ const styles = StyleSheet.create({
 });
 
 class DefaultBrowserView extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: I18n.t('Default_browser')
-	}
+	})
 
 	static propTypes = {
 		theme: PropTypes.string

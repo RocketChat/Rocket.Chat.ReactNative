@@ -58,9 +58,9 @@ const LANGUAGES = [
 ];
 
 class LanguageView extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: I18n.t('Change_Language')
-	}
+	})
 
 	static propTypes = {
 		user: PropTypes.object,
