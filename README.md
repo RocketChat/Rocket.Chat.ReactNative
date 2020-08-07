@@ -21,9 +21,6 @@
 <a href="https://play.google.com/store/apps/details?id=chat.rocket.reactnative">
   <img alt="Download on Google Play" src="https://play.google.com/intl/en_us/badges/images/badge_new.png" height=43>
 </a>
-<a href="https://itunes.apple.com/us/app/rocket-chat-experimental/id1272915472">
-  <img alt="Download on App Store" src="https://user-images.githubusercontent.com/7317008/43209852-4ca39622-904b-11e8-8ce1-cdc3aee76ae9.png" height=43>
-</a>
 
 ## Beta Access
 
@@ -32,7 +29,7 @@
 You can signup to our TestFlight builds by accessing these links:
 
 - Official: https://testflight.apple.com/join/3gcYeoMr
-- Experimental: https://testflight.apple.com/join/7I3dLCNT.
+- Experimental: https://testflight.apple.com/join/7I3dLCNT
 
 ### Google Play beta
 
@@ -67,12 +64,11 @@ Follow the [React Native Getting Started Guide](https://facebook.github.io/react
     $ npx react-native run-android
     ```
 
-### Whitelabel
+## Whitelabel
 Follow our docs: https://docs.rocket.chat/guides/developer/mobile-apps/whitelabeling-mobile-apps
 
 ## Current priorities
-1) Omnichannel support
-2) E2E encryption
+1) E2E encryption
 
 ## Features
 | Feature                                                   	    | Status 	|
@@ -80,7 +76,7 @@ Follow our docs: https://docs.rocket.chat/guides/developer/mobile-apps/whitelabe
 | Jitsi Integration                                             	| ✅    	|
 | Federation (Directory)                                        	| ✅    	|
 | Discussions                                                     | ✅    	|
-| Omnichannel                                                     | ❌    	|
+| Omnichannel                                                     | ✅    	|
 | Threads                                                       	| ✅    	|
 | Record Audio                                                  	| ✅    	|
 | Record Video                                                  	| ✅    	|
@@ -106,7 +102,7 @@ Follow our docs: https://docs.rocket.chat/guides/developer/mobile-apps/whitelabe
 | Admin panel                                                   	| ✅    	|
 | Reply message from notification                               	| ✅    	|
 | Unread counter banner on message list                         	| ✅    	|
-| E2E Encryption                                                 	| ❌    	|
+| E2E Encryption                                                 	| ⏳    	|
 | Join a Protected Room                                         	| ❌    	|
 | Optional Analytics                                            	| ✅    	|
 | Settings -> About us                                          	| ❌    	|
@@ -203,20 +199,8 @@ Follow our docs: https://docs.rocket.chat/guides/developer/mobile-apps/whitelabe
 | Attachment List                                               	| ✅    	|
 | Join a Room                                                   	| ✅    	|
 
-## Detox (end-to-end tests)
-- Build your app
-
-```bash
-$ npx detox build --configuration ios.sim.release
-```
-
-- Run tests
-
-```bash
-$ npx detox test ./e2e/tests/onboarding --configuration ios.sim.release
-$ npx detox test ./e2e/tests/room --configuration ios.sim.release
-$ npx detox test ./e2e/tests/assorted --configuration ios.sim.release
-```
+## E2E Testing
+Follow our docs: https://github.com/RocketChat/Rocket.Chat.ReactNative/tree/develop/e2e#e2e-testing
 
 ## Storybook
 - Open index.js
