@@ -1,21 +1,14 @@
 package chat.rocket.reactnative;
 
 import android.os.Bundle;
-import android.content.Context;
-
-import okhttp3.Call;
-import okhttp3.OkHttpClient;
-import okhttp3.HttpUrl;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.Interceptor;
-
-import com.google.gson.Gson;
-import java.io.IOException;
 
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.google.gson.Gson;
 
-import chat.rocket.userdefaults.RNUserDefaultsModule;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 class JsonResponse {
   Data data;

@@ -1,12 +1,13 @@
 package chat.rocket.reactnative;
 
-import com.facebook.react.ReactActivityDelegate;
-import com.facebook.react.ReactRootView;
-import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
-import android.os.Bundle;
-import com.facebook.react.ReactFragmentActivity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Bundle;
+
+import com.facebook.react.ReactActivityDelegate;
+import com.facebook.react.ReactFragmentActivity;
+import com.facebook.react.ReactRootView;
+import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import com.zoontek.rnbootsplash.RNBootSplash;
 
 public class MainActivity extends ReactFragmentActivity {
