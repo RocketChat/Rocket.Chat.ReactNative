@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -10,7 +10,8 @@ import { BUTTON_HIT_SLOP } from './utils';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import MessageContext from './Context';
-import { useReactionSheet } from '../ReactionSheet';
+import { useActionSheet } from '../ActionSheet';
+import { Header, HEADER_HEIGHT } from './ReactionSheet';
 
 const AddReaction = React.memo(({ theme }) => {
 	const { reactionInit } = useContext(MessageContext);
@@ -31,21 +32,18 @@ const AddReaction = React.memo(({ theme }) => {
 });
 
 const Reaction = React.memo(({
-	reaction, getCustomEmoji, theme, reactions
+	reaction, getCustomEmoji, theme, onReactionLongPress
 }) => {
 	const {
 		onReactionPress, baseUrl, user
 	} = useContext(MessageContext);
-	const { showReactionSheet } = useReactionSheet();
 	const reacted = reaction.usernames.findIndex(item => item === user.username) !== -1;
 	return (
 		<Touchable
 			onPress={() => onReactionPress(reaction.emoji)}
-			onLongPress={() => showReactionSheet({
-				reactions, reaction, baseUrl, getCustomEmoji, user
-			})}
+			onLongPress={onReactionLongPress}
 			key={reaction.emoji}
-			testID={`message-reaction-${ reaction.emoji }`}
+			testID={`message-reaction-${reaction.emoji}`}
 			style={[styles.reactionButton, { backgroundColor: reacted ? themes[theme].bannerBackground : themes[theme].backgroundColor }]}
 			background={Touchable.Ripple(themes[theme].bannerBackground)}
 			hitSlop={BUTTON_HIT_SLOP}
@@ -58,7 +56,7 @@ const Reaction = React.memo(({
 					baseUrl={baseUrl}
 					getCustomEmoji={getCustomEmoji}
 				/>
-				<Text style={[styles.reactionCount, { color: themes[theme].tintColor }]}>{ reaction.usernames.length }</Text>
+				<Text style={[styles.reactionCount, { color: themes[theme].tintColor }]}>{reaction.usernames.length}</Text>
 			</View>
 		</Touchable>
 	);
@@ -67,6 +65,24 @@ const Reaction = React.memo(({
 const Reactions = React.memo(({
 	reactions, getCustomEmoji, theme
 }) => {
+	const {
+		baseUrl
+	} = useContext(MessageContext);
+	const [selected, setSelected] = useState({});
+	const { showActionSheet } = useActionSheet();
+	const onReactionLongPress = () => {
+		showActionSheet({
+			headerHeight: HEADER_HEIGHT,
+			customHeader: <Header
+				theme={theme}
+				reactions={reactions}
+				baseUrl={baseUrl}
+				getCustomEmoji={getCustomEmoji}
+				selected={selected}
+				setSelected={setSelected}
+			/>
+		});
+	}
 	if (!Array.isArray(reactions) || reactions.length === 0) {
 		return null;
 	}
@@ -79,6 +95,7 @@ const Reactions = React.memo(({
 					reactions={reactions}
 					getCustomEmoji={getCustomEmoji}
 					theme={theme}
+					onReactionLongPress={onReactionLongPress}
 				/>
 			))}
 			<AddReaction theme={theme} />
