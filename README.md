@@ -21,9 +21,6 @@
 <a href="https://play.google.com/store/apps/details?id=chat.rocket.reactnative">
   <img alt="Download on Google Play" src="https://play.google.com/intl/en_us/badges/images/badge_new.png" height=43>
 </a>
-<a href="https://itunes.apple.com/us/app/rocket-chat-experimental/id1272915472">
-  <img alt="Download on App Store" src="https://user-images.githubusercontent.com/7317008/43209852-4ca39622-904b-11e8-8ce1-cdc3aee76ae9.png" height=43>
-</a>
 
 ## Beta Access
 
@@ -32,7 +29,7 @@
 You can signup to our TestFlight builds by accessing these links:
 
 - Official: https://testflight.apple.com/join/3gcYeoMr
-- Experimental: https://testflight.apple.com/join/7I3dLCNT.
+- Experimental: https://testflight.apple.com/join/7I3dLCNT
 
 ### Google Play beta
 
@@ -67,13 +64,11 @@ Follow the [React Native Getting Started Guide](https://facebook.github.io/react
     $ npx react-native run-android
     ```
 
-### Running single server
-If you don't need multiple servers, there is a branch `single-server` just for that.
-Readme will guide you on how to config.
+## Whitelabel
+Follow our docs: https://docs.rocket.chat/guides/developer/mobile-apps/whitelabeling-mobile-apps
 
 ## Current priorities
-1) Omnichannel support
-2) E2E encryption
+1) E2E encryption
 
 ## Features
 | Feature                                                   	    | Status 	|
@@ -81,7 +76,7 @@ Readme will guide you on how to config.
 | Jitsi Integration                                             	| ✅    	|
 | Federation (Directory)                                        	| ✅    	|
 | Discussions                                                     | ✅    	|
-| Omnichannel                                                     | ❌    	|
+| Omnichannel                                                     | ✅    	|
 | Threads                                                       	| ✅    	|
 | Record Audio                                                  	| ✅    	|
 | Record Video                                                  	| ✅    	|
@@ -107,7 +102,7 @@ Readme will guide you on how to config.
 | Admin panel                                                   	| ✅    	|
 | Reply message from notification                               	| ✅    	|
 | Unread counter banner on message list                         	| ✅    	|
-| E2E Encryption                                                 	| ❌    	|
+| E2E Encryption                                                 	| ⏳    	|
 | Join a Protected Room                                         	| ❌    	|
 | Optional Analytics                                            	| ✅    	|
 | Settings -> About us                                          	| ❌    	|
@@ -204,20 +199,8 @@ Readme will guide you on how to config.
 | Attachment List                                               	| ✅    	|
 | Join a Room                                                   	| ✅    	|
 
-## Detox (end-to-end tests)
--  Build your app
-
-```bash
-$ npx detox build --configuration ios.sim.release
-```
-
-- Run tests
-
-```bash
-$ npx detox test ./e2e/tests/onboarding --configuration ios.sim.release
-$ npx detox test ./e2e/tests/room --configuration ios.sim.release
-$ npx detox test ./e2e/tests/assorted --configuration ios.sim.release
-```
+## E2E Testing
+Follow our docs: https://github.com/RocketChat/Rocket.Chat.ReactNative/tree/develop/e2e#e2e-testing
 
 ## Storybook
 - Open index.js
@@ -240,10 +223,9 @@ AppRegistry.registerComponent(appName, () => App);
 
 - Start your application again
 
-
-# Engage with us
-## Share your story
+## Engage with us
+### Share your story
 We’d love to hear about [your experience](https://survey.zohopublic.com/zs/e4BUFG) and potentially feature it on our [Blog](https://rocket.chat/case-studies/?utm_source=github&utm_medium=readme&utm_campaign=community).
 
-## Subscribe for Updates
+### Subscribe for Updates
 Once a month our marketing team releases an email update with news about product releases, company related topics, events and use cases. [Sign Up!](https://rocket.chat/newsletter/?utm_source=github&utm_medium=readme&utm_campaign=community)
