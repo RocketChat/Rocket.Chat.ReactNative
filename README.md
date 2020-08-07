@@ -26,56 +26,12 @@ Check [our docs](https://docs.rocket.chat/installation/mobile-and-desktop-apps#m
 
 Also check the [#react-native](https://open.rocket.chat/channel/react-native) community on [open.rocket.chat](https://open.rocket.chat). We'd like to help.
 
-## Installing dependencies
+## Contributing
 
-Follow the [React Native Getting Started Guide](https://facebook.github.io/react-native/docs/getting-started.html) for detailed instructions on setting up your local machine for development.
-
-## How to run
-- Clone repository and install dependencies:
-    ```bash
-    $ git clone git@github.com:RocketChat/Rocket.Chat.ReactNative.git
-    $ cd Rocket.Chat.ReactNative
-    $ yarn
-    ```
-
-- Run application
-    ```bash
-    $ npx react-native run-ios
-    ```
-    ```bash
-    $ npx react-native run-android
-    ```
+Are you a dev and would like to help? Found a bug that you would like to report or a missing feature that you would like to work on? Great! We have written down a [Contribution guide](https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/CONTRIBUTING.md) so you can start easily.
 
 ## Whitelabel
-Do you want to make the app run on your own server only?
-
-[Follow our whitelabel documentation](https://docs.rocket.chat/guides/developer/mobile-apps/whitelabeling-mobile-apps).
-
-## E2E Testing
-We use Detox framework to end-to-end test our app and ensure everything is working properly.
-
- [Follow this documentation to learn how to run it](https://github.com/RocketChat/Rocket.Chat.ReactNative/tree/develop/e2e#e2e-testing).
-
-## Storybook
-- Open index.js
-
-- Uncomment following line
-
-```bash
-import './storybook';
-```
-
-- Comment out following lines
-```bash
-import './app/ReactotronConfig';
-import { AppRegistry } from 'react-native';
-import App from './app/index';
-import { name as appName } from './app.json';
-
-AppRegistry.registerComponent(appName, () => App);
-```
-
-- Start your application again
+Do you want to make the app run on your own server only? [Follow our whitelabel documentation.](https://docs.rocket.chat/guides/developer/mobile-apps/whitelabeling-mobile-apps)
 
 ## Engage with us
 ### Share your story
