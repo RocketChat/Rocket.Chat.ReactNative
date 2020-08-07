@@ -9,6 +9,7 @@ import com.facebook.react.ReactFragmentActivity;
 import com.facebook.react.ReactRootView;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import com.zoontek.rnbootsplash.RNBootSplash;
+import chat.rocket.reactnative.resources.R;
 
 public class MainActivity extends ReactFragmentActivity {
 

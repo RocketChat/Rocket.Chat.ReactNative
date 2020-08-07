@@ -209,6 +209,7 @@ android {
 }
 
 dependencies {
+    implementation project(path: ':app:resources')
     addUnimodulesDependencies()
     implementation project(':watermelondb')
     implementation project(':reactnativenotifications')
