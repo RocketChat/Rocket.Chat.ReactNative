@@ -349,7 +349,7 @@ export default {
 	you_were_mentioned: 'vous avez été mentionné',
 	you: 'vous',
 	You: 'Vous',
-	You_will_not_be_able_to_recover_this_message: 'Vous ne serez pas en mesure de récupérer ce message!'
+	You_will_not_be_able_to_recover_this_message: 'Vous ne serez pas en mesure de récupérer ce message!',
 	Admin_Panel: 'Panneau d\'Administration',
 	A_meaningful_name_for_the_discussion_room: 'Un nom significatif pour la salle de discussion',
 	All_Messages: 'Tous les messages',
@@ -571,5 +571,5 @@ export default {
 	After_seconds_set_by_admin: 'Après {{seconds}} secondes (set by admin)',
 	Dont_activate: 'Ne pas activer maintenant',
 	Queued_chats: 'Discussions en file d\'attente',
-	Queue_is_empty: 'La file d\'attente est vide',
+	Queue_is_empty: 'La file d\'attente est vide'
 };
