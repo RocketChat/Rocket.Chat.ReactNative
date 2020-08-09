@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -11,7 +11,7 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import MessageContext from './Context';
 import { useActionSheet } from '../ActionSheet';
-import { Header, HEADER_HEIGHT } from './ReactionSheet';
+import { HEADER_HEIGHT } from '../ActionSheet/Reactions';
 
 const AddReaction = React.memo(({ theme }) => {
 	const { reactionInit } = useContext(MessageContext);
@@ -41,9 +41,9 @@ const Reaction = React.memo(({
 	return (
 		<Touchable
 			onPress={() => onReactionPress(reaction.emoji)}
-			onLongPress={onReactionLongPress}
+			onLongPress={() => onReactionLongPress(reaction)}
 			key={reaction.emoji}
-			testID={`message-reaction-${reaction.emoji}`}
+			testID={`message-reaction-${ reaction.emoji }`}
 			style={[styles.reactionButton, { backgroundColor: reacted ? themes[theme].bannerBackground : themes[theme].backgroundColor }]}
 			background={Touchable.Ripple(themes[theme].bannerBackground)}
 			hitSlop={BUTTON_HIT_SLOP}
@@ -66,23 +66,22 @@ const Reactions = React.memo(({
 	reactions, getCustomEmoji, theme
 }) => {
 	const {
-		baseUrl
+		baseUrl, user
 	} = useContext(MessageContext);
-	const [selected, setSelected] = useState({});
 	const { showActionSheet } = useActionSheet();
-	const onReactionLongPress = () => {
+	const onReactionLongPress = (reaction) => {
 		showActionSheet({
+			reactionsMode: true,
 			headerHeight: HEADER_HEIGHT,
-			customHeader: <Header
-				theme={theme}
-				reactions={reactions}
-				baseUrl={baseUrl}
-				getCustomEmoji={getCustomEmoji}
-				selected={selected}
-				setSelected={setSelected}
-			/>
+			options: reaction.usernames,
+			maxItems: reactions.reduce((acc, cur) => (cur.usernames.length > acc ? cur.usernames.length : acc), 0),
+			reactions,
+			reaction,
+			baseUrl,
+			getCustomEmoji,
+			user
 		});
-	}
+	};
 	if (!Array.isArray(reactions) || reactions.length === 0) {
 		return null;
 	}
@@ -107,7 +106,7 @@ Reaction.propTypes = {
 	reaction: PropTypes.object,
 	getCustomEmoji: PropTypes.func,
 	theme: PropTypes.string,
-	reactions: PropTypes.object
+	onReactionLongPress: PropTypes.func
 };
 Reaction.displayName = 'MessageReaction';
 

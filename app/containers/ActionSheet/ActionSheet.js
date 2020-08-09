@@ -30,6 +30,7 @@ import { isTablet, isIOS } from '../../utils/deviceInfo';
 import Separator from '../Separator';
 import I18n from '../../i18n';
 import { useOrientation, useDimensions } from '../../dimensions';
+import { Header } from './Reactions';
 
 const getItemLayout = (data, index) => ({ length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index });
 
@@ -48,6 +49,7 @@ const ANIMATION_CONFIG = {
 const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 	const bottomSheetRef = useRef();
 	const [data, setData] = useState({});
+	const [selected, setSelected] = useState({});
 	const [isVisible, setVisible] = useState(false);
 	const { height } = useDimensions();
 	const { isLandscape } = useOrientation();
@@ -57,7 +59,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 		(
 			height
 			// Items height
-			- (ITEM_HEIGHT * (data?.options?.length || 0))
+			- (ITEM_HEIGHT * (data?.maxItems || data?.options?.length || 0))
 			// Handle height
 			- HANDLE_HEIGHT
 			// Custom header height
@@ -69,6 +71,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 		),
 		MAX_SNAP_HEIGHT
 	);
+
 
 	/*
 	 * if the action sheet cover more
@@ -89,6 +92,9 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 
 	const show = (options) => {
 		setData(options);
+		if (options.reactionsMode) {
+			setSelected(options.reaction);
+		}
 		toggleVisible();
 	};
 
@@ -127,6 +133,8 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 		<>
 			<Handle theme={theme} />
 			{isValidElement(data?.customHeader) ? data.customHeader : null}
+			{data.reactionsMode
+				? <Header theme={theme} reactions={data.reactions} baseUrl={data.baseUrl} getCustomEmoji={data.getCustomEmoji} selected={selected} setSelected={setSelected} /> : null}
 		</>
 	));
 
@@ -144,7 +152,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 
 	const renderSeparator = useCallback(() => <Separator theme={theme} style={styles.separator} />);
 
-	const renderItem = useCallback(({ item }) => <Item item={item} hide={hide} theme={theme} />);
+	const renderItem = useCallback(({ item }) => <Item item={item} hide={hide} theme={theme} user={data?.user} baseUrl={data?.baseUrl} reactionsMode={data?.reactionsMode} />);
 
 	const animatedPosition = React.useRef(new Value(0));
 	const opacity = interpolate(animatedPosition.current, {
@@ -186,7 +194,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 						]}
 						animationConfig={ANIMATION_CONFIG}
 						// FlatList props
-						data={data?.options}
+						data={data?.reactionsMode ? selected?.usernames : data?.options}
 						renderItem={renderItem}
 						keyExtractor={item => item.title}
 						style={{ backgroundColor: themes[theme].focusedBackground }}
