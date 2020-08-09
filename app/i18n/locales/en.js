@@ -626,5 +626,7 @@ export default {
 	Queued_chats: 'Queued chats',
 	Queue_is_empty: 'Queue is empty',
 	Logout_from_other_logged_in_locations: 'Logout from other logged in locations',
-	You_will_be_logged_out_from_all_locations: 'You\'ll be logged out from all locations.'
+	You_will_be_logged_out_from_all_locations: 'You\'ll be logged out from all locations.',
+	Successfully_logged_out: 'Successfully logged out!',
+	Logout_failed: 'Logout failed!'
 };

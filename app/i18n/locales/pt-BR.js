@@ -571,5 +571,7 @@ export default {
 	Queued_chats: 'Bate-papos na fila',
 	Queue_is_empty: 'A fila está vazia',
 	Logout_from_other_logged_in_locations: 'Sair de outros locais logados',
-	You_will_be_logged_out_from_all_locations: 'Você sairá de todos os locais.'
+	You_will_be_logged_out_from_all_locations: 'Você sairá de todos os locais.',
+	Successfully_logged_out: 'Desconectado com sucesso!',
+	Logout_failed: 'Falha ao desconectar!'
 };

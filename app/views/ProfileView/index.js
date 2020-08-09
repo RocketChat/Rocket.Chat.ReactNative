@@ -431,8 +431,10 @@ class ProfileView extends React.Component {
 			onPress: async() => {
 				try {
 					await RocketChat.logoutOtherLocations();
+					EventEmitter.emit(LISTENER, { message: I18n.t('Successfully_logged_out') });
 				} catch {
 					logEvent(events.PROFILE_LOGOUT_OTHER_LOCATIONS_F);
+					EventEmitter.emit(LISTENER, { message: I18n.t('Logout_failed') });
 				}
 			}
 		});
