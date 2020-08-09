@@ -624,5 +624,7 @@ export default {
 	After_seconds_set_by_admin: 'After {{seconds}} seconds (set by admin)',
 	Dont_activate: 'Don\'t activate now',
 	Queued_chats: 'Queued chats',
-	Queue_is_empty: 'Queue is empty'
+	Queue_is_empty: 'Queue is empty',
+	Logout_from_other_logged_in_locations: 'Logout from other logged in locations',
+	You_will_be_logged_out_from_all_locations: 'You\'ll be logged out from all locations.'
 };

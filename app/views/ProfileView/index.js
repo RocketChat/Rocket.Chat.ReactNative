@@ -13,7 +13,7 @@ import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { showErrorAlert } from '../../utils/info';
+import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import RocketChat from '../../lib/rocketchat';
@@ -423,6 +423,21 @@ class ProfileView extends React.Component {
 		}
 	}
 
+	logoutOtherLocations = () => {
+		logEvent(events.PROFILE_LOGOUT_OTHER_LOCATIONS);
+		showConfirmationAlert({
+			message: I18n.t('You_will_be_logged_out_from_all_locations'),
+			callToAction: I18n.t('Logout'),
+			onPress: async() => {
+				try {
+					await RocketChat.logoutOtherLocations();
+				} catch {
+					logEvent(events.PROFILE_LOGOUT_OTHER_LOCATIONS_F);
+				}
+			}
+		});
+	}
+
 	render() {
 		const {
 			name, username, email, newPassword, avatarUrl, customFields, avatar, saving
@@ -547,6 +562,13 @@ class ProfileView extends React.Component {
 							disabled={!this.formIsChanged()}
 							testID='profile-view-submit'
 							loading={saving}
+							theme={theme}
+						/>
+						<Button
+							title={I18n.t('Logout_from_other_logged_in_locations')}
+							type='secondary'
+							onPress={this.logoutOtherLocations}
+							testID='profile-view-logout-other-locations'
 							theme={theme}
 						/>
 					</ScrollView>

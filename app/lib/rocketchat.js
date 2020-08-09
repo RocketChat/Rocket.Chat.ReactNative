@@ -421,6 +421,10 @@ const RocketChat = {
 		return user;
 	},
 	logout,
+	logoutOtherLocations() {
+		const { id: userId } = reduxStore.getState().login.user;
+		return this.methodCallWrapper('logoutOtherClients', { id: userId });
+	},
 	removeServer,
 	async clearCache({ server }) {
 		try {

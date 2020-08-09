@@ -569,5 +569,7 @@ export default {
 	After_seconds_set_by_admin: 'Após {{seconds}} segundos (Configurado pelo adm)',
 	Dont_activate: 'Não ativar agora',
 	Queued_chats: 'Bate-papos na fila',
-	Queue_is_empty: 'A fila está vazia'
+	Queue_is_empty: 'A fila está vazia',
+	Logout_from_other_logged_in_locations: 'Sair de outros locais logados',
+	You_will_be_logged_out_from_all_locations: 'Você sairá de todos os locais.'
 };
