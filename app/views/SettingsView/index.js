@@ -100,11 +100,9 @@ class SettingsView extends React.Component {
 				showConfirmationAlert({
 					title: I18n.t('Clear_all_cookies_from_login_oauth'),
 					message: I18n.t('Clear_cookies_desc'),
-					onPress: () => {
-						CookieManager.clearAll()
-							.then(() => {
-								logout();
-							});
+					onPress: async() => {
+						await CookieManager.clearAll();
+						logout();
 					},
 					onCancel: () => {
 						logout();
