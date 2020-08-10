@@ -51,7 +51,7 @@ yarn lint
 
 ## Tests
 
-It's always important to ensure everything is working properly and that's why tests are great. We unit and e2e tests on this project.
+It's always important to ensure everything is working properly and that's why tests are great. We have unit and e2e tests on this project.
 
 ### Unit tests
 
