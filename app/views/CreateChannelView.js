@@ -97,12 +97,13 @@ class CreateChannelView extends React.Component {
 		channelName: '',
 		type: true,
 		readOnly: false,
+		encrypted: false,
 		broadcast: false
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			channelName, type, readOnly, broadcast
+			channelName, type, readOnly, broadcast, encrypted
 		} = this.state;
 		const { users, isFetching, theme } = this.props;
 		if (nextProps.theme !== theme) {
@@ -115,6 +116,9 @@ class CreateChannelView extends React.Component {
 			return true;
 		}
 		if (nextState.readOnly !== readOnly) {
+			return true;
+		}
+		if (nextState.encrypted !== encrypted) {
 			return true;
 		}
 		if (nextState.broadcast !== broadcast) {
@@ -217,6 +221,20 @@ class CreateChannelView extends React.Component {
 		});
 	}
 
+	renderEncrypted() {
+		const { encrypted } = this.state;
+		return this.renderSwitch({
+			id: 'encrypted',
+			value: encrypted,
+			label: 'Encrypted',
+			onValueChange: (value) => {
+				// TODO: Log event
+				// logEvent();
+				this.setState({ encrypted: value });
+			}
+		});
+	}
+
 	renderBroadcast() {
 		const { broadcast, readOnly } = this.state;
 		return this.renderSwitch({
@@ -314,6 +332,8 @@ class CreateChannelView extends React.Component {
 							{this.renderType()}
 							{this.renderFormSeparator()}
 							{this.renderReadOnly()}
+							{this.renderFormSeparator()}
+							{this.renderEncrypted()}
 							{this.renderFormSeparator()}
 							{this.renderBroadcast()}
 						</View>
