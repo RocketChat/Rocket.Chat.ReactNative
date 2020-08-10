@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 });
 
 class WithoutServerView extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: 'Rocket.Chat',
 		headerLeft: () => (
 			<CancelModalButton
@@ -38,7 +38,7 @@ class WithoutServerView extends React.Component {
 				testID='share-extension-close'
 			/>
 		)
-	}
+	})
 
 	static propTypes = {
 		theme: PropTypes.string

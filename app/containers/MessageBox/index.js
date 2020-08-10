@@ -17,8 +17,8 @@ import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
 import database from '../../lib/database';
 import { emojis } from '../../emojis';
+import log, { logEvent, events } from '../../utils/log';
 import RecordAudio from './RecordAudio';
-import log from '../../utils/log';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
 import debounce from '../../utils/debounce';
@@ -122,6 +122,7 @@ class MessageBox extends Component {
 			command: {}
 		};
 		this.text = '';
+		this.selection = { start: 0, end: 0 };
 		this.focused = false;
 
 		// MessageBox Actions
@@ -133,7 +134,7 @@ class MessageBox extends Component {
 			},
 			{
 				title: I18n.t('Take_a_video'),
-				icon: 'video-1',
+				icon: 'camera',
 				onPress: this.takeVideo
 			},
 			{
@@ -143,12 +144,12 @@ class MessageBox extends Component {
 			},
 			{
 				title: I18n.t('Choose_file'),
-				icon: 'folder',
+				icon: 'attach',
 				onPress: this.chooseFile
 			},
 			{
 				title: I18n.t('Create_Discussion'),
-				icon: 'chat',
+				icon: 'discussions',
 				onPress: this.createDiscussion
 			}
 		];
@@ -331,6 +332,10 @@ class MessageBox extends Component {
 		this.setInput(text);
 	}
 
+	onSelectionChange = (e) => {
+		this.selection = e.nativeEvent.selection;
+	}
+
 	// eslint-disable-next-line react/sort-comp
 	debouncedOnChangeText = debounce(async(text) => {
 		const { sharing } = this.props;
@@ -358,9 +363,9 @@ class MessageBox extends Component {
 
 		if (!isTextEmpty) {
 			try {
-				const { start, end } = this.component?.lastNativeSelection;
+				const { start, end } = this.selection;
 				const cursor = Math.max(start, end);
-				const lastNativeText = this.component?.lastNativeText || '';
+				const lastNativeText = this.text;
 				// matches if text either starts with '/' or have (@,#,:) then it groups whatever comes next of mention type
 				let regexp = /(#|@|:|^\/)([a-z0-9._-]+)$/im;
 
@@ -399,7 +404,7 @@ class MessageBox extends Component {
 		}
 		const { trackingType } = this.state;
 		const msg = this.text;
-		const { start, end } = this.component?.lastNativeSelection;
+		const { start, end } = this.selection;
 		const cursor = Math.max(start, end);
 		const regexp = /([a-z0-9._-]+)$/im;
 		const result = msg.substr(0, cursor).replace(regexp, '');
@@ -410,7 +415,8 @@ class MessageBox extends Component {
 		if ((trackingType === MENTIONS_TRACKING_TYPE_COMMANDS) && item.providesPreview) {
 			this.setState({ showCommandPreview: true });
 		}
-		this.setInput(text);
+		const newCursor = cursor + mentionName.length;
+		this.setInput(text, { start: newCursor, end: newCursor });
 		this.focus();
 		requestAnimationFrame(() => this.stopTrackingMention());
 	}
@@ -443,15 +449,11 @@ class MessageBox extends Component {
 		let newText = '';
 
 		// if messagebox has an active cursor
-		if (this.component?.lastNativeSelection) {
-			const { start, end } = this.component.lastNativeSelection;
-			const cursor = Math.max(start, end);
-			newText = `${ text.substr(0, cursor) }${ emoji }${ text.substr(cursor) }`;
-		} else {
-			// if messagebox doesn't have a cursor, just append selected emoji
-			newText = `${ text }${ emoji }`;
-		}
-		this.setInput(newText);
+		const { start, end } = this.selection;
+		const cursor = Math.max(start, end);
+		newText = `${ text.substr(0, cursor) }${ emoji }${ text.substr(cursor) }`;
+		const newCursor = cursor + emoji.length;
+		this.setInput(newText, { start: newCursor, end: newCursor });
 		this.setShowSend(true);
 	}
 
@@ -551,11 +553,12 @@ class MessageBox extends Component {
 		this.setState({ commandPreview: [], showCommandPreview: true, command: {} });
 	}
 
-	setInput = (text) => {
+	setInput = (text, selection) => {
 		this.text = text;
-		if (this.component && this.component.setNativeProps) {
-			this.component.setNativeProps({ text });
+		if (selection) {
+			return this.component.setTextAndSelection(text, selection);
 		}
+		this.component.setNativeProps({ text });
 	}
 
 	setShowSend = (showSend) => {
@@ -582,37 +585,41 @@ class MessageBox extends Component {
 	}
 
 	takePhoto = async() => {
+		logEvent(events.ROOM_BOX_ACTION_PHOTO);
 		try {
 			const image = await ImagePicker.openCamera(this.imagePickerConfig);
 			if (this.canUploadFile(image)) {
 				this.openShareView([image]);
 			}
 		} catch (e) {
-			// Do nothing
+			logEvent(events.ROOM_BOX_ACTION_PHOTO_F);
 		}
 	}
 
 	takeVideo = async() => {
+		logEvent(events.ROOM_BOX_ACTION_VIDEO);
 		try {
 			const video = await ImagePicker.openCamera(this.videoPickerConfig);
 			if (this.canUploadFile(video)) {
 				this.openShareView([video]);
 			}
 		} catch (e) {
-			// Do nothing
+			logEvent(events.ROOM_BOX_ACTION_VIDEO_F);
 		}
 	}
 
 	chooseFromLibrary = async() => {
+		logEvent(events.ROOM_BOX_ACTION_LIBRARY);
 		try {
 			const attachments = await ImagePicker.openPicker(this.libraryPickerConfig);
 			this.openShareView(attachments);
 		} catch (e) {
-			// Do nothing
+			logEvent(events.ROOM_BOX_ACTION_LIBRARY_F);
 		}
 	}
 
 	chooseFile = async() => {
+		logEvent(events.ROOM_BOX_ACTION_FILE);
 		try {
 			const res = await DocumentPicker.pick({
 				type: [DocumentPicker.types.allFiles]
@@ -628,6 +635,7 @@ class MessageBox extends Component {
 			}
 		} catch (e) {
 			if (!DocumentPicker.isCancel(e)) {
+				logEvent(events.ROOM_BOX_ACTION_FILE_F);
 				log(e);
 			}
 		}
@@ -645,6 +653,7 @@ class MessageBox extends Component {
 	}
 
 	createDiscussion = () => {
+		logEvent(events.ROOM_BOX_ACTION_DISCUSSION);
 		const { isMasterDetail } = this.props;
 		const params = { channel: this.room, showCloseModal: true };
 		if (isMasterDetail) {
@@ -655,6 +664,7 @@ class MessageBox extends Component {
 	}
 
 	showMessageBoxActions = () => {
+		logEvent(events.ROOM_SHOW_BOX_ACTIONS);
 		const { showActionSheet } = this.props;
 		showActionSheet({ options: this.options });
 	}
@@ -665,10 +675,9 @@ class MessageBox extends Component {
 		this.clearInput();
 	}
 
-	openEmoji = async() => {
-		await this.setState({
-			showEmojiKeyboard: true
-		});
+	openEmoji = () => {
+		logEvent(events.ROOM_OPEN_EMOJI);
+		this.setState({ showEmojiKeyboard: true });
 	}
 
 	recordingCallback = (recording) => {
@@ -729,6 +738,7 @@ class MessageBox extends Component {
 				Q.where('id', Q.like(`${ Q.sanitizeLikeString(command) }%`))
 			).fetch();
 			if (slashCommand.length > 0) {
+				logEvent(events.COMMAND_RUN);
 				try {
 					const messageWithoutCommand = message.replace(/([^\s]+)/, '').trim();
 					const [{ appId }] = slashCommand;
@@ -736,6 +746,7 @@ class MessageBox extends Component {
 					RocketChat.runSlashCommand(command, roomId, messageWithoutCommand, triggerId, tmid || messageTmid);
 					replyCancel();
 				} catch (e) {
+					logEvent(events.COMMAND_RUN_F);
 					log(e);
 				}
 				this.clearInput();
@@ -888,6 +899,7 @@ class MessageBox extends Component {
 					blurOnSubmit={false}
 					placeholder={I18n.t('New_Message')}
 					onChangeText={this.onChangeText}
+					onSelectionChange={this.onSelectionChange}
 					underlineColorAndroid='transparent'
 					defaultValue=''
 					multiline

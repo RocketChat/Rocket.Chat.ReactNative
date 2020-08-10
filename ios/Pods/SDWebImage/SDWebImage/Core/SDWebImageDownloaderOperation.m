@@ -41,7 +41,7 @@ typedef NSMutableDictionary<NSString *, id> SDCallbacksDictionary;
 @property (strong, nonatomic, nullable) NSError *responseError;
 @property (assign, nonatomic) double previousProgress; // previous progress percent
 
-@property (strong, nonatomic, nullable) id<SDWebImageDownloaderResponseModifier> responseModifier; // modifiy original URLResponse
+@property (strong, nonatomic, nullable) id<SDWebImageDownloaderResponseModifier> responseModifier; // modify original URLResponse
 @property (strong, nonatomic, nullable) id<SDWebImageDownloaderDecryptor> decryptor; // decrypt image data
 
 // This is weak because it is injected by whoever manages this session. If this gets nil-ed out, we won't be able to run
@@ -390,7 +390,7 @@ didReceiveResponse:(NSURLResponse *)response
         // Get the image data
         NSData *imageData = [self.imageData copy];
         
-        // keep maxmium one progressive decode process during download
+        // keep maximum one progressive decode process during download
         if (self.coderQueue.operationCount == 0) {
             // NSOperation have autoreleasepool, don't need to create extra one
             [self.coderQueue addOperationWithBlock:^{
@@ -474,7 +474,8 @@ didReceiveResponse:(NSURLResponse *)response
                         UIImage *image = SDImageLoaderDecodeImageData(imageData, self.request.URL, [[self class] imageOptionsFromDownloaderOptions:self.options], self.context);
                         CGSize imageSize = image.size;
                         if (imageSize.width == 0 || imageSize.height == 0) {
-                            [self callCompletionBlocksWithError:[NSError errorWithDomain:SDWebImageErrorDomain code:SDWebImageErrorBadImageData userInfo:@{NSLocalizedDescriptionKey : @"Downloaded image has 0 pixels"}]];
+                            NSString *description = image == nil ? @"Downloaded image decode failed" : @"Downloaded image has 0 pixels";
+                            [self callCompletionBlocksWithError:[NSError errorWithDomain:SDWebImageErrorDomain code:SDWebImageErrorBadImageData userInfo:@{NSLocalizedDescriptionKey : description}]];
                         } else {
                             [self callCompletionBlocksWithImage:image imageData:imageData error:nil finished:YES];
                         }

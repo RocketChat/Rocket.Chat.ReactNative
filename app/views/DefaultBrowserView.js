@@ -16,14 +16,15 @@ import { CustomIcon } from '../lib/Icons';
 import { DEFAULT_BROWSER_KEY } from '../utils/openLink';
 import { isIOS } from '../utils/deviceInfo';
 import SafeAreaView from '../containers/SafeAreaView';
+import { logEvent, events } from '../utils/log';
 
 const DEFAULT_BROWSERS = [
 	{
-		title: I18n.t('In_app'),
+		title: 'In_app',
 		value: 'inApp'
 	},
 	{
-		title: isIOS ? 'Safari' : I18n.t('Browser'),
+		title: isIOS ? 'Safari' : 'Browser',
 		value: 'systemDefault:'
 	}
 ];
@@ -59,9 +60,9 @@ const styles = StyleSheet.create({
 });
 
 class DefaultBrowserView extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: I18n.t('Default_browser')
-	}
+	})
 
 	static propTypes = {
 		theme: PropTypes.string
@@ -113,12 +114,13 @@ class DefaultBrowserView extends React.Component {
 	}
 
 	changeDefaultBrowser = async(newBrowser) => {
+		logEvent(events.DB_CHANGE_DEFAULT_BROWSER, { browser: newBrowser });
 		try {
 			const browser = newBrowser !== 'inApp' ? newBrowser : null;
 			await RNUserDefaults.set(DEFAULT_BROWSER_KEY, browser);
 			this.setState({ browser });
 		} catch {
-			// do nothing
+			logEvent(events.DB_CHANGE_DEFAULT_BROWSER_F);
 		}
 	}
 
@@ -137,7 +139,7 @@ class DefaultBrowserView extends React.Component {
 		const { title, value } = item;
 		return (
 			<ListItem
-				title={title}
+				title={I18n.t(title, { defaultValue: title })}
 				onPress={() => this.changeDefaultBrowser(value)}
 				testID={`default-browser-view-${ title }`}
 				right={this.isSelected(value) ? this.renderIcon : null}
