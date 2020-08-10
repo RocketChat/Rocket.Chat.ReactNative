@@ -13,7 +13,7 @@ export const Item = React.memo(({
 }) => {
 	const onPress = () => {
 		hide();
-		item.onPress ? item.onPress() : () => { };
+		item?.onPress?.();
 	};
 
 	return (
