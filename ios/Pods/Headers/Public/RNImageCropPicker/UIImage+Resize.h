@@ -1,1 +1,0 @@
-../../../../../node_modules/react-native-image-crop-picker/ios/src/UIImage+Resize.h

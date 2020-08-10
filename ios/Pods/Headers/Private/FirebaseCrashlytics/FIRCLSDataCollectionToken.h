@@ -1,1 +1,0 @@
-../../../FirebaseCrashlytics/Crashlytics/Crashlytics/DataCollection/FIRCLSDataCollectionToken.h

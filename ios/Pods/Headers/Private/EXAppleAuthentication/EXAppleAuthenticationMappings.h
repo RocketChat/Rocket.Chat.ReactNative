@@ -1,1 +1,0 @@
-../../../../../node_modules/expo-apple-authentication/ios/EXAppleAuthentication/EXAppleAuthenticationMappings.h
