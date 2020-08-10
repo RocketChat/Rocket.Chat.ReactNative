@@ -335,6 +335,15 @@ const RocketChat = {
 		reduxStore.dispatch(shareSetUser({}));
 	},
 
+	e2eFetchMyKeys() {
+		// RC 0.70.0
+		return this.sdk.get('e2e.fetchMyKeys');
+	},
+	e2eSetUserPublicAndPrivateKeys(public_key, private_key) {
+		// RC 2.2.0
+		return this.post('e2e.setUserPublicAndPrivateKeys', { public_key, private_key });
+	},
+
 	updateJitsiTimeout(roomId) {
 		// RC 0.74.0
 		return this.post('video-conference/jitsi.update-timeout', { roomId });
