@@ -197,6 +197,7 @@ export default {
 	Empty_title: 'Título vazio',
 	Enable_Auto_Translate: 'Ativar a tradução automática',
 	Enable_notifications: 'Habilitar notificações',
+	Encrypted: 'Criptografado',
 	Everyone_can_access_this_channel: 'Todos podem acessar este canal',
 	Error_uploading: 'Erro subindo',
 	Expiration_Days: 'Expira em (dias)',

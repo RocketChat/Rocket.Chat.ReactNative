@@ -204,6 +204,7 @@ export default {
 	Empty_title: 'Empty title',
 	Enable_Auto_Translate: 'Enable Auto-Translate',
 	Enable_notifications: 'Enable notifications',
+	Encrypted: 'Encrypted',
 	Everyone_can_access_this_channel: 'Everyone can access this channel',
 	Error_uploading: 'Error uploading',
 	Expiration_Days: 'Expiration (Days)',
