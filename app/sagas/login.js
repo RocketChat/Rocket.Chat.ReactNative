@@ -40,7 +40,6 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 			result = yield call(loginCall, credentials);
 		} else {
 			result = yield call(loginWithPasswordCall, credentials);
-			result.loginEmailPassword = credentials.loginEmailPassword;
 		}
 		if (!result.username) {
 			yield put(serverFinishAdd());
@@ -136,7 +135,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 
 		yield RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ server }`, user.id);
 		yield RNUserDefaults.set(`${ RocketChat.TOKEN_KEY }-${ user.id }`, user.token);
-		yield put(setUser({ ...user, loginEmailPassword: u.loginEmailPassword }));
+		yield put(setUser(user));
 		EventEmitter.emit('connected');
 
 		let currentRoot;

@@ -131,6 +131,8 @@ export default {
 	Channels: 'Channels',
 	Chats: 'Chats',
 	Call_already_ended: 'Call already ended!',
+	Clear_all_cookies_from_login_oauth: 'Clear all cookies from login OAuth?',
+	Clear_cookies_desc: 'This action will clear all cookies from the OAuth/SSO webview, allowing you to login to other accounts via OAuth',
 	Click_to_join: 'Click to Join!',
 	Close: 'Close',
 	Close_emoji_selector: 'Close emoji selector',

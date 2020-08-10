@@ -39,6 +39,7 @@ import { appStart as appStartAction, ROOT_LOADING } from '../../actions/app';
 import { onReviewPress } from '../../utils/review';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
+import database from '../../lib/database';
 
 const SectionSeparator = React.memo(({ theme }) => (
 	<View
@@ -77,7 +78,7 @@ class SettingsView extends React.Component {
 		user: PropTypes.shape({
 			roles: PropTypes.array,
 			statusLivechat: PropTypes.string,
-			loginEmailPassword: PropTypes.bool
+			id: PropTypes.string
 		}),
 		appStart: PropTypes.func
 	}
@@ -89,24 +90,32 @@ class SettingsView extends React.Component {
 		return roles?.includes('livechat-agent');
 	}
 
-	logout = () => {
+	logout = async() => {
 		const { logout, user } = this.props;
-		if (!user.loginEmailPassword) {
-			showConfirmationAlert({
-				title: 'Clear all cookies from login OAuth?',
-				message: 'This action will clear all cookies from the OAuth/SSO webview, allowing you to login to other accounts via OAuth',
-				onPress: () => {
-					CookieManager.clearAll()
-						.then(() => {
-							logout();
-						});
-				},
-				onCancel: () => {
-					logout();
-				}
-			});
-		} else {
-			logout();
+		const db = database.servers;
+		const usersCollection = db.collections.get('users');
+		try {
+			const userRecord = await usersCollection.find(user.id);
+			if (!userRecord.loginEmailPassword) {
+				showConfirmationAlert({
+					title: I18n.t('Clear_all_cookies_from_login_oauth'),
+					message: I18n.t('Clear_cookies_desc'),
+					onPress: () => {
+						CookieManager.clearAll()
+							.then(() => {
+								logout();
+							});
+					},
+					onCancel: () => {
+						logout();
+					}
+
+				});
+			} else {
+				logout();
+			}
+		} catch {
+			// Do nothing: user not found
 		}
 	}
 
