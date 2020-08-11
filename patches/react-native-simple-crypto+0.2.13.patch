@@ -1,0 +1,54 @@
+diff --git a/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/RSA.java b/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/RSA.java
+index c835eaf..db8d281 100644
+--- a/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/RSA.java
++++ b/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/RSA.java
+@@ -122,7 +122,7 @@ public class RSA {
+     // This function will be called by encrypt and encrypt64
+     private byte[] encrypt(byte[] data) throws NoSuchAlgorithmException, InvalidKeySpecException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, InvalidKeyException {
+         String encodedMessage = null;
+-        final Cipher cipher = Cipher.getInstance("RSA/NONE/PKCS1Padding");
++        final Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
+         cipher.init(Cipher.ENCRYPT_MODE, this.publicKey);
+         byte[] cipherBytes = cipher.doFinal(data);
+         return cipherBytes;
+@@ -144,7 +144,7 @@ public class RSA {
+ 
+     private byte[] decrypt(byte[] cipherBytes) throws NoSuchAlgorithmException, InvalidKeySpecException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, InvalidKeyException {
+         String message = null;
+-        final Cipher cipher = Cipher.getInstance("RSA/NONE/PKCS1Padding");
++        final Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
+         cipher.init(Cipher.DECRYPT_MODE, this.privateKey);
+         byte[] data = cipher.doFinal(cipherBytes);
+         return data;
+diff --git a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Rsa.m b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Rsa.m
+index d31bc6b..70dce8b 100644
+--- a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Rsa.m
++++ b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Rsa.m
+@@ -99,11 +99,11 @@ - (NSData *)_encrypt:(NSData *)data {
+     void(^encryptor)(SecKeyRef) = ^(SecKeyRef publicKey) {
+         BOOL canEncrypt = SecKeyIsAlgorithmSupported(publicKey,
+                                                      kSecKeyOperationTypeEncrypt,
+-                                                     kSecKeyAlgorithmRSAEncryptionPKCS1);
++                                                     kSecKeyAlgorithmRSAEncryptionOAEPSHA256);
+         if (canEncrypt) {
+             CFErrorRef error = NULL;
+             cipherText = (NSData *)CFBridgingRelease(SecKeyCreateEncryptedData(publicKey,
+-                                                                               kSecKeyAlgorithmRSAEncryptionPKCS1,
++                                                                               kSecKeyAlgorithmRSAEncryptionOAEPSHA256,
+                                                                                (__bridge CFDataRef)data,
+                                                                                &error));
+             if (!cipherText) {
+@@ -136,11 +136,11 @@ - (NSData *)_decrypt:(NSData *)data {
+ 
+         BOOL canDecrypt = SecKeyIsAlgorithmSupported(privateKey,
+                                                      kSecKeyOperationTypeDecrypt,
+-                                                     kSecKeyAlgorithmRSAEncryptionPKCS1);
++                                                     kSecKeyAlgorithmRSAEncryptionOAEPSHA256);
+         if (canDecrypt) {
+             CFErrorRef error = NULL;
+             clearText = (NSData *)CFBridgingRelease(SecKeyCreateDecryptedData(privateKey,
+-                                                                              kSecKeyAlgorithmRSAEncryptionPKCS1,
++                                                                              kSecKeyAlgorithmRSAEncryptionOAEPSHA256,
+                                                                               (__bridge CFDataRef)data,
+                                                                               &error));
+             if (!clearText) {

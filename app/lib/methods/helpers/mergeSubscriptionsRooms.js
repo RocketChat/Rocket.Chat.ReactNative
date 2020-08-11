@@ -2,6 +2,7 @@ import EJSON from 'ejson';
 
 import normalizeMessage from './normalizeMessage';
 import findSubscriptionsRooms from './findSubscriptionsRooms';
+import E2E from '../../encryption/e2e';
 // TODO: delete and update
 
 export const merge = (subscription, room) => {
@@ -72,6 +73,14 @@ export default async(subscriptions = [], rooms = []) => {
 		rooms = rooms.update;
 	}
 
+	try {
+		rooms = await Promise.all(rooms.map(async(r) => {
+			const lastMessage = await E2E.decrypt(r.lastMessage);
+			return { ...r, lastMessage };
+		}));
+	} catch {
+		// Do nothing
+	}
 	({ subscriptions, rooms } = await findSubscriptionsRooms(subscriptions, rooms));
 
 	return {

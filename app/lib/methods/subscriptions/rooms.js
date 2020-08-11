@@ -16,6 +16,7 @@ import EventEmitter from '../../../utils/events';
 import { removedRoom } from '../../../actions/room';
 import { setUser } from '../../../actions/login';
 import { INAPP_NOTIFICATION_EMITTER } from '../../../containers/InAppNotification';
+import E2E from '../../encryption/e2e';
 
 const removeListener = listener => listener.stop();
 
@@ -118,6 +119,13 @@ const createOrUpdateSubscription = async(subscription, room) => {
 			} catch (error) {
 				// Do nothing
 			}
+		}
+
+		// TODO: Check if has a better way to do this
+		try {
+			room.lastMessage = await E2E.decrypt(room.lastMessage);
+		} catch {
+			// Do nothing
 		}
 
 		const tmp = merge(subscription, room);

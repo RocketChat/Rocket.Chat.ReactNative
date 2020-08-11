@@ -11,6 +11,7 @@ import { addUserTyping, removeUserTyping, clearUserTyping } from '../../../actio
 import debounce from '../../../utils/debounce';
 import RocketChat from '../../rocketchat';
 import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
+import E2E from '../../encryption/e2e';
 
 const WINDOW_TIME = 1000;
 
@@ -162,6 +163,13 @@ export default class RoomSubscription {
 			const msgCollection = db.collections.get('messages');
 			const threadsCollection = db.collections.get('threads');
 			const threadMessagesCollection = db.collections.get('thread_messages');
+
+			try {
+				// Decrypt the message if necessary
+				message = await E2E.decrypt(message);
+			} catch {
+				// Do nothing
+			}
 
 			// Create or update message
 			try {
