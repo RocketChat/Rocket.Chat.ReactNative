@@ -393,9 +393,6 @@ workflows:
       - android-play-build:
           requires:
             - lint-testunit
-      - android-foss-build:
-          requires:
-            - lint-testunit
       - android-hold-google-play-alpha:
           type: approval
           requires:
@@ -403,3 +400,11 @@ workflows:
       - android-google-play-alpha:
           requires:
             - android-hold-google-play-alpha
+
+      - android-hold-foss-build:
+          type: approval
+          requires:
+            - lint-testunit
+      - android-foss-build:
+          requires:
+            - android-hold-foss-build
