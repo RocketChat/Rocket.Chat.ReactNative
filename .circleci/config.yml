@@ -248,7 +248,7 @@ jobs:
 
       - run:
           name: Build Android Foss App
-          command: bundle exec fastlane android fossBuild
+          command: bundle exec fastlane android fossRelease
           working_directory: android
 
       - store_artifacts:
