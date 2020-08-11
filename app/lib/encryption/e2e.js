@@ -39,8 +39,6 @@ class E2E {
 
 		this.started = true;
 
-		await RNUserDefaults.clear(E2E_PUBLIC_KEY);
-		await RNUserDefaults.clear(E2E_PRIVATE_KEY);
 		const storedPublicKey = await RNUserDefaults.get(E2E_PUBLIC_KEY);
 		const storedPrivateKey = await RNUserDefaults.get(E2E_PRIVATE_KEY);
 
