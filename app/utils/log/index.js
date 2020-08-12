@@ -1,19 +1,19 @@
+import firebaseAnalytics from '@react-native-firebase/analytics';
 import { isFDroidBuild } from '../../constants/environment';
 import config from '../../../config';
 import events from './events';
 
-let firebaseAnalytics = '';
+const analytics = firebaseAnalytics || '';
 let bugsnag = '';
 let crashlytics;
 
 if (!isFDroidBuild) {
 	const { Client } = require('bugsnag-react-native');
-	firebaseAnalytics = require('@react-native-firebase/analytics');
 	crashlytics = require('@react-native-firebase/crashlytics');
 	bugsnag = new Client(config.BUGSNAG_API_KEY);
 }
 
-export const { analytics } = firebaseAnalytics;
+export { analytics };
 export const loggerConfig = bugsnag.config;
 export const { leaveBreadcrumb } = bugsnag;
 export { events };
