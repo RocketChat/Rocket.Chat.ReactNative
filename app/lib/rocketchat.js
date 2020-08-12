@@ -30,7 +30,7 @@ import getSettings, { getLoginSettings, setSettings } from './methods/getSetting
 import getRooms from './methods/getRooms';
 import getPermissions from './methods/getPermissions';
 import { getCustomEmojis, setCustomEmojis } from './methods/getCustomEmojis';
-import { getEnterpriseModules, setEnterpriseModules } from './methods/getEnterpriseModules';
+import { getEnterpriseModules, setEnterpriseModules, hasLicense } from './methods/enterpriseModules';
 import getSlashCommands from './methods/getSlashCommands';
 import getRoles from './methods/getRoles';
 import canOpenRoom from './methods/canOpenRoom';
@@ -628,6 +628,7 @@ const RocketChat = {
 	setCustomEmojis,
 	getEnterpriseModules,
 	setEnterpriseModules,
+	hasLicense,
 	getSlashCommands,
 	getRoles,
 	parseSettings: settings => settings.reduce((ret, item) => {

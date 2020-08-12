@@ -26,6 +26,7 @@ import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../utils/info';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { setActiveUsers } from '../actions/activeUsers';
+import { LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE } from '../lib/methods/enterpriseModules';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -68,10 +69,6 @@ const fetchCustomEmojis = function* fetchCustomEmojis() {
 	yield RocketChat.getCustomEmojis();
 };
 
-const fetchEnterpriseModules = function* fetchEnterpriseModules() {
-	yield RocketChat.getEnterpriseModules();
-};
-
 const fetchRoles = function* fetchRoles() {
 	yield RocketChat.getRoles();
 };
@@ -89,6 +86,15 @@ const fetchUsersPresence = function* fetchUserPresence() {
 	RocketChat.subscribeUsersPresence();
 };
 
+const fetchEnterpriseModules = function* fetchEnterpriseModules() {
+	yield RocketChat.getEnterpriseModules();
+
+	const hasOmnichannelLicense = RocketChat.hasLicense(LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE);
+	if (hasOmnichannelLicense) {
+		yield put(inquiryRequest());
+	}
+};
+
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
 		const adding = yield select(state => state.server.adding);
@@ -98,7 +104,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 
 		const server = yield select(getServer);
 		yield put(roomsRequest());
-		yield put(inquiryRequest());
 		yield fork(fetchPermissions);
 		yield fork(fetchCustomEmojis);
 		yield fork(fetchRoles);

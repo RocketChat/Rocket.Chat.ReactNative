@@ -5,6 +5,8 @@ import database from '../database';
 import log from '../../utils/log';
 import { setEnterpriseModules as setEnterpriseModulesAction } from '../../actions/enterpriseModules';
 
+export const LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE = 'omnichannel-mobile-enterprise';
+
 export async function setEnterpriseModules() {
 	try {
 		const { version: serverVersion, server: serverId } = reduxStore.getState().server;
@@ -45,4 +47,9 @@ export function getEnterpriseModules() {
 		}
 		return resolve();
 	});
+}
+
+export function hasLicense(module) {
+	const { enterpriseModules } = reduxStore.getState();
+	return enterpriseModules.includes(module);
 }
