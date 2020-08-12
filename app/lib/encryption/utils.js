@@ -5,7 +5,7 @@ import { NativeModules } from 'react-native';
 
 import random from '../../utils/random';
 
-export const { jwkToPkcs1 } = NativeModules.Encryption;
+export const { jwkToPkcs1, pkcs1ToJwk } = NativeModules.Encryption;
 export const b64ToBuffer = SimpleCrypto.utils.convertBase64ToArrayBuffer;
 export const bufferToUtf8 = SimpleCrypto.utils.convertArrayBufferToUtf8;
 export const utf8ToBuffer = SimpleCrypto.utils.convertUtf8ToArrayBuffer;

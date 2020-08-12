@@ -11,5 +11,6 @@
 @interface RCT_EXTERN_MODULE(Encryption, NSObject)
 
 RCT_EXTERN_METHOD(jwkToPkcs1:(NSDictionary *)jwk resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(pkcs1ToJwk:(NSString *)pkcs1 resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 
 @end

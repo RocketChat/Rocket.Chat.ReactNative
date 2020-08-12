@@ -48,6 +48,10 @@ export default class E2ERoom {
 			return message;
 		}
 
+		if (!this.roomKey) {
+			return message;
+		}
+
 		try {
 			const text = utf8ToBuffer(EJSON.stringify({
 				_id: message._id,
@@ -75,6 +79,10 @@ export default class E2ERoom {
 
 	// Decrypt messages
 	decrypt = async(message) => {
+		if (!this.roomKey) {
+			return message;
+		}
+
 		try {
 			const { t } = message;
 
