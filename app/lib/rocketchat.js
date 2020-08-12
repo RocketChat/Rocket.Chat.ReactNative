@@ -30,6 +30,7 @@ import getSettings, { getLoginSettings, setSettings } from './methods/getSetting
 import getRooms from './methods/getRooms';
 import getPermissions from './methods/getPermissions';
 import { getCustomEmojis, setCustomEmojis } from './methods/getCustomEmojis';
+import { getEnterpriseModules, setEnterpriseModules } from './methods/getEnterpriseModules';
 import getSlashCommands from './methods/getSlashCommands';
 import getRoles from './methods/getRoles';
 import canOpenRoom from './methods/canOpenRoom';
@@ -625,6 +626,8 @@ const RocketChat = {
 	getPermissions,
 	getCustomEmojis,
 	setCustomEmojis,
+	getEnterpriseModules,
+	setEnterpriseModules,
 	getSlashCommands,
 	getRoles,
 	parseSettings: settings => settings.reduce((ret, item) => {
@@ -1308,9 +1311,6 @@ const RocketChat = {
 	useInviteToken(token) {
 		// RC 2.4.0
 		return this.post('useInviteToken', { token });
-	},
-	getLicenseModules() {
-		return this.methodCallWrapper('license:getModules');
 	}
 };
 

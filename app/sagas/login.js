@@ -26,7 +26,6 @@ import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../utils/info';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { setActiveUsers } from '../actions/activeUsers';
-import { setEnterpriseModules } from '../actions/enterpriseModules';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -69,6 +68,10 @@ const fetchCustomEmojis = function* fetchCustomEmojis() {
 	yield RocketChat.getCustomEmojis();
 };
 
+const fetchEnterpriseModules = function* fetchEnterpriseModules() {
+	yield RocketChat.getEnterpriseModules();
+};
+
 const fetchRoles = function* fetchRoles() {
 	yield RocketChat.getRoles();
 };
@@ -102,9 +105,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchSlashCommands);
 		yield fork(registerPushToken);
 		yield fork(fetchUsersPresence);
-
-		const modules = yield RocketChat.getLicenseModules();
-		yield put(setEnterpriseModules(modules));
+		yield fork(fetchEnterpriseModules);
 
 		I18n.locale = user.language;
 		moment.locale(toMomentLocale(user.language));
