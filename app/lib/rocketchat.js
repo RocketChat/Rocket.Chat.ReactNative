@@ -1308,6 +1308,9 @@ const RocketChat = {
 	useInviteToken(token) {
 		// RC 2.4.0
 		return this.post('useInviteToken', { token });
+	},
+	getLicenseModules() {
+		return this.methodCallWrapper('license:getModules');
 	}
 };
 
