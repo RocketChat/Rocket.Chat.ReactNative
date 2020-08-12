@@ -53,6 +53,7 @@ public class MainApplication extends Application implements ReactApplication, IN
       packages.add(new RNNotificationsPackage(MainApplication.this));
       packages.add(new WatermelonDBPackage());
       packages.add(new RNCViewPagerPackage());
+      packages.add(new EncryptionPackage());
       // packages.add(new ModuleRegistryAdapter(mModuleRegistryProvider));
       List<ReactPackage> unimodules = Arrays.<ReactPackage>asList(
         new ModuleRegistryAdapter(mModuleRegistryProvider)
