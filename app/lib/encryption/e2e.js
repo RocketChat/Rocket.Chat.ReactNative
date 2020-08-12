@@ -23,9 +23,6 @@ class E2E {
 	constructor() {
 		this.started = false;
 		this.roomInstances = {};
-
-		// TODO: Await login success
-		setTimeout(this.start, 5000);
 	}
 
 	start = async() => {
