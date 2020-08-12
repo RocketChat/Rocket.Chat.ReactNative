@@ -27,7 +27,12 @@ class E2E {
 	}
 
 	start = async() => {
-		// TODO: Check if E2E is enabled
+		// TODO: Do this better
+		const { E2E_Enable } = store.getState().settings;
+		if (!E2E_Enable) {
+			return;
+		}
+
 		if (this.started) {
 			return;
 		}
@@ -161,6 +166,7 @@ class E2E {
 
 	// Decrypt messages
 	decrypt = async(message) => {
+		// TODO: We should await room instance handshake and this class ready
 		const roomE2E = await this.getRoomInstance(message.rid);
 		return roomE2E.decrypt(message);
 	}

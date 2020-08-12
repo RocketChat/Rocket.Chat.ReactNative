@@ -9,6 +9,7 @@ import {
 	splitVectorData
 } from './utils';
 import database from '../database';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from './constants';
 import e2e from './e2e';
 
 export default class E2ERoom {
@@ -42,7 +43,7 @@ export default class E2ERoom {
 		try {
 			const { t } = message;
 
-			if (t === 'e2e') {
+			if (t === E2E_MESSAGE_TYPE) {
 				let { msg } = message;
 				msg = b64ToBuffer(msg.slice(12));
 				const [vector, cipherText] = splitVectorData(msg);
@@ -54,7 +55,7 @@ export default class E2ERoom {
 				);
 
 				const m = EJSON.parse(bufferToUtf8(decrypted));
-				return { ...message, msg: m.text, e2e: 'done' };
+				return { ...message, msg: m.text, e2e: E2E_STATUS.DONE };
 			}
 		} catch {
 			// Do nothing

@@ -138,6 +138,24 @@ export default schemaMigrations({
 					columns: [
 						{ name: 'e2e_key', type: 'string', isOptional: true }
 					]
+				}),
+				addColumns({
+					table: 'messages',
+					columns: [
+						{ name: 'e2e', type: 'string', isOptional: true }
+					]
+				}),
+				addColumns({
+					table: 'thread_messages',
+					columns: [
+						{ name: 'e2e', type: 'string', isOptional: true }
+					]
+				}),
+				addColumns({
+					table: 'threads',
+					columns: [
+						{ name: 'e2e', type: 'string', isOptional: true }
+					]
 				})
 			]
 		}
