@@ -88,12 +88,12 @@ class ReviewApp {
 	positiveEventCount = 0;
 
 	pushPositiveEvent = () => {
-		if (this.positiveEventCount >= numberOfPositiveEvent) {
-			return;
-		}
-		this.positiveEventCount += 1;
-		if (this.positiveEventCount === numberOfPositiveEvent) {
-			if (!isFDroidBuild) {
+		if (!isFDroidBuild) {
+			if (this.positiveEventCount >= numberOfPositiveEvent) {
+				return;
+			}
+			this.positiveEventCount += 1;
+			if (this.positiveEventCount === numberOfPositiveEvent) {
 				tryReview();
 			}
 		}

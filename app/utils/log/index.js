@@ -1,13 +1,20 @@
-import { Client } from 'bugsnag-react-native';
-import analytics from '@react-native-firebase/analytics';
-import crashlytics from '@react-native-firebase/crashlytics';
 import { isFDroidBuild } from '../../constants/environment';
 import config from '../../../config';
 import events from './events';
 
-const bugsnag = new Client(config.BUGSNAG_API_KEY);
+let firebaseAnalytics = '';
+let bugsnag = '';
+let crashlytics;
+let Client;
 
-export { analytics };
+if (!isFDroidBuild) {
+	Client = require('bugsnag-react-native');
+	firebaseAnalytics = require('@react-native-firebase/analytics');
+	crashlytics = require('@react-native-firebase/crashlytics');
+	bugsnag = new Client(config.BUGSNAG_API_KEY);
+}
+
+export const { analytics } = firebaseAnalytics;
 export const loggerConfig = bugsnag.config;
 export const { leaveBreadcrumb } = bugsnag;
 export { events };
@@ -39,7 +46,7 @@ export const setCurrentScreen = (currentScreen) => {
 };
 
 export default (e) => {
-	if (e instanceof Error && e.message !== 'Aborted' && !__DEV__) {
+	if (e instanceof Error && bugsnag && e.message !== 'Aborted' && !__DEV__) {
 		bugsnag.notify(e, (report) => {
 			report.metadata = {
 				details: {
