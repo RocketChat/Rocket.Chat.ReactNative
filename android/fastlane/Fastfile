@@ -21,12 +21,12 @@ platform :android do
     gradle(task: "assemblePlayDebug")
   end
 
-  desc "Foss build for development"
-  lane :fossBuild do
-    gradle(task: "assembleFossDebug")
+  desc "Foss build for release"
+  lane :fossRelease do
+    gradle(task: "assembleFossRelease")
   end
 
-  desc "Play build  for release"
+  desc "Play build for release"
   lane :playRelease do
     gradle(task: "bundlePlayRelease")
   end

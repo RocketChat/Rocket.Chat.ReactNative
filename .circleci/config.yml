@@ -150,7 +150,7 @@ jobs:
             # echo -e "android.enableAapt2=false" >> ./gradle.properties
             echo -e "android.useAndroidX=true" >> ./gradle.properties
             echo -e "android.enableJetifier=true" >> ./gradle.properties
-            echo -e "FLIPPER_VERSION=0.33.1" >> ./gradle.properties
+            echo -e "FLIPPER_VERSION=0.51.0" >> ./gradle.properties
 
             if [[ $KEYSTORE ]]; then
               echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
@@ -242,13 +242,21 @@ jobs:
             # echo -e "android.enableAapt2=false" >> ./gradle.properties
             echo -e "android.useAndroidX=true" >> ./gradle.properties
             echo -e "android.enableJetifier=true" >> ./gradle.properties
-            echo -e "FLIPPER_VERSION=0.33.1" >> ./gradle.properties
+            echo -e "FLIPPER_VERSION=0.51.0" >> ./gradle.properties
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
+
+            if [[ $KEYSTORE ]]; then
+              echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
+              echo -e "KEYSTORE=$KEYSTORE" >> ./gradle.properties
+              echo -e "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+              echo -e "KEY_ALIAS=$KEY_ALIAS" >> ./gradle.properties
+              echo -e "KEY_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+            fi
           working_directory: android
 
       - run:
           name: Build Android Foss App
-          command: bundle exec fastlane android fossBuild
+          command: bundle exec fastlane android fossRelease
           working_directory: android
 
       - store_artifacts:
@@ -393,9 +401,6 @@ workflows:
       - android-play-build:
           requires:
             - lint-testunit
-      - android-foss-build:
-          requires:
-            - lint-testunit
       - android-hold-google-play-alpha:
           type: approval
           requires:
@@ -403,3 +408,11 @@ workflows:
       - android-google-play-alpha:
           requires:
             - android-hold-google-play-alpha
+
+      - android-hold-foss-build:
+          type: approval
+          requires:
+            - lint-testunit
+      - android-foss-build:
+          requires:
+            - android-hold-foss-build
