@@ -4,6 +4,7 @@ import messagesStatus from '../../constants/messagesStatus';
 import database from '../database';
 import log from '../../utils/log';
 import random from '../../utils/random';
+import E2E from '../encryption/e2e';
 
 const changeMessageStatus = async(id, tmid, status, message) => {
 	const db = database.active;
@@ -49,12 +50,11 @@ export async function sendMessageCall(message) {
 	} = message;
 	try {
 		const sdk = this.shareSDK || this.sdk;
-		// RC 0.60.0
-		const result = await sdk.post('chat.sendMessage', {
-			message: {
-				_id, rid, msg, tmid
-			}
+		message = await E2E.encrypt({
+			_id, rid, msg, tmid
 		});
+		// RC 0.60.0
+		const result = await sdk.post('chat.sendMessage', { message });
 		if (result.success) {
 			return changeMessageStatus(_id, tmid, messagesStatus.SENT, result.message);
 		}

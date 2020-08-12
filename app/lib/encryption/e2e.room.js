@@ -6,7 +6,10 @@ import {
 	toString,
 	b64ToBuffer,
 	bufferToUtf8,
-	splitVectorData
+	bufferToB64,
+	utf8ToBuffer,
+	splitVectorData,
+	joinVectorData
 } from './utils';
 import database from '../database';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from './constants';
@@ -21,9 +24,10 @@ export default class E2ERoom {
 	handshake = async() => {
 		const db = database.active;
 		const subCollection = db.collections.get('subscriptions');
-		const subscription = await subCollection.find(this.roomId);
+		// TODO: Should be an observable to check encrypted property
+		this.subscription = await subCollection.find(this.roomId);
 
-		await this.importRoomKey(subscription.E2EKey);
+		await this.importRoomKey(this.subscription.E2EKey);
 	}
 
 	// Import roomKey as an AES Decrypt key
@@ -36,6 +40,37 @@ export default class E2ERoom {
 
 		const { k } = EJSON.parse(sessionKey);
 		this.roomKey = b64ToBuffer(k);
+	}
+
+	// Encrypt messages
+	encrypt = async(message) => {
+		if (!this.subscription.encrypted) {
+			return message;
+		}
+
+		try {
+			const text = utf8ToBuffer(EJSON.stringify({
+				_id: message._id,
+				text: message.msg,
+				userId: this.userId,
+				ts: new Date()
+			}));
+			const vector = await SimpleCrypto.utils.randomBytes(16);
+			const data = await SimpleCrypto.AES.encrypt(
+				text,
+				this.roomKey,
+				vector
+			);
+			return {
+				...message,
+				t: E2E_MESSAGE_TYPE,
+				e2e: E2E_STATUS.PENDING,
+				msg: this.keyID + bufferToB64(joinVectorData(vector, data))
+			};
+		} catch {
+			// Do nothing
+		}
+		return message;
 	}
 
 	// Decrypt messages
@@ -55,7 +90,11 @@ export default class E2ERoom {
 				);
 
 				const m = EJSON.parse(bufferToUtf8(decrypted));
-				return { ...message, msg: m.text, e2e: E2E_STATUS.DONE };
+				return {
+					...message,
+					msg: m.text,
+					e2e: E2E_STATUS.DONE
+				};
 			}
 		} catch {
 			// Do nothing

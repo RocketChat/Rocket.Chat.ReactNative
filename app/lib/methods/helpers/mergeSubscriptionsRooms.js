@@ -28,6 +28,7 @@ export const merge = (subscription, room) => {
 		}
 		subscription.ro = room.ro;
 		subscription.broadcast = room.broadcast;
+		subscription.encrypted = room.encrypted;
 		if (!subscription.roles || !subscription.roles.length) {
 			subscription.roles = [];
 		}

@@ -111,4 +111,6 @@ export default class Subscription extends Model {
 	@json('tags', sanitizer) tags;
 
 	@field('e2e_key') E2EKey;
+
+	@field('encrypted') encrypted;
 }

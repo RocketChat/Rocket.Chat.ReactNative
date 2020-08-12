@@ -68,6 +68,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					joinCodeRequired: s.joinCodeRequired,
 					muted: s.muted,
 					broadcast: s.broadcast,
+					encrypted: s.encrypted,
 					prid: s.prid,
 					draftMessage: s.draftMessage,
 					lastThreadSync: s.lastThreadSync,

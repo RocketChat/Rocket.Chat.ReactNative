@@ -164,6 +164,13 @@ class E2E {
 		return roomE2E;
 	}
 
+	// Encrypt messages
+	encrypt = async(message) => {
+		// TODO: We should await room instance handshake and this class ready
+		const roomE2E = await this.getRoomInstance(message.rid);
+		return roomE2E.encrypt(message);
+	}
+
 	// Decrypt messages
 	decrypt = async(message) => {
 		// TODO: We should await room instance handshake and this class ready
