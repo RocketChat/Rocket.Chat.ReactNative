@@ -5,10 +5,9 @@ import events from './events';
 let firebaseAnalytics = '';
 let bugsnag = '';
 let crashlytics;
-let Client;
 
 if (!isFDroidBuild) {
-	Client = require('bugsnag-react-native');
+	const { Client } = require('bugsnag-react-native');
 	firebaseAnalytics = require('@react-native-firebase/analytics');
 	crashlytics = require('@react-native-firebase/crashlytics');
 	bugsnag = new Client(config.BUGSNAG_API_KEY);
