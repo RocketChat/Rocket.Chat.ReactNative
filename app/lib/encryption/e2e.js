@@ -18,6 +18,7 @@ import {
 import RocketChat from '../rocketchat';
 import E2ERoom from './e2e.room';
 import store from '../createStore';
+import I18n from '../../i18n';
 
 class E2E {
 	constructor() {
@@ -85,16 +86,16 @@ class E2E {
 	}
 
 	requestPassword = () => new Promise((resolve, reject) => prompt(
-		'Enter_your_E2E_password',
-		'E2E_password_request_text',
+		I18n.t('Enter_your_E2E_password'),
+		'',
 		[
 			{
-				text: 'I_ll_do_it_later',
+				text: I18n.t('I_ll_do_it_later'),
 				onPress: reject,
 				style: 'cancel'
 			},
 			{
-				text: 'Decode_Key',
+				text: I18n.t('Decode_Key'),
 				onPress: pw => resolve(pw)
 			}
 		],
