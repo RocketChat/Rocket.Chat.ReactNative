@@ -34,12 +34,14 @@ class Encryption: NSObject {
    func jwkToPkcs1(_ jwk: NSDictionary, resolver resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
       let rsakey = RSA_new()
       defer { RSA_free(rsakey) }
+      var isPublic = true
     
       rsakey?.pointee.n = try! base64URLToBignum(jwk["n"] as! String)
       rsakey?.pointee.e = try! base64URLToBignum(jwk["e"] as! String)
 
       if let d = jwk["d"] as? String {
           rsakey?.pointee.d = try! base64URLToBignum(d)
+          isPublic = false
       }
       if let p = jwk["p"] as? String {
           rsakey?.pointee.p = try! base64URLToBignum(p)
@@ -60,7 +62,12 @@ class Encryption: NSObject {
       let bio = BIO_new(BIO_s_mem())
       defer { BIO_free(bio) }
 
-      let retval = PEM_write_bio_RSAPrivateKey(bio, rsakey, nil, nil, 0, nil, nil)
+      var retval: Int32
+      if isPublic {
+        retval = PEM_write_bio_RSAPublicKey(bio, rsakey)
+      } else {
+        retval = PEM_write_bio_RSAPrivateKey(bio, rsakey, nil, nil, 0, nil, nil)
+      }
       let publicKeyLen = BIO_ctrl(bio, BIO_CTRL_PENDING, 0, nil)
     
       guard retval == 1, publicKeyLen > 0 else {
