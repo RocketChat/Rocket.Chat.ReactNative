@@ -64,6 +64,7 @@ import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
 import { showErrorAlert } from '../../utils/info';
 import { getInquiryQueueSelector } from '../../selectors/inquiry';
+import { LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE } from '../../lib/methods/enterpriseModules';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
@@ -418,6 +419,11 @@ class RoomsListView extends React.Component {
 			Q.where('open', true)
 		];
 
+		// Hide omnichannel if there's no license
+		if (!RocketChat.hasLicense(LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE)) {
+			defaultWhereClause.push(Q.where('t', Q.notEq('l')));
+		}
+
 		if (sortBy === 'alphabetical') {
 			defaultWhereClause.push(Q.experimentalSortBy(`${ this.useRealName ? 'fname' : 'name' }`, Q.asc));
 		} else {
@@ -443,7 +449,6 @@ class RoomsListView extends React.Component {
 				)
 				.observe();
 		}
-
 
 		this.querySubscription = observable.subscribe((data) => {
 			let tempChats = [];
