@@ -3,7 +3,7 @@ import semver from 'semver';
 import reduxStore from '../createStore';
 import database from '../database';
 import log from '../../utils/log';
-import { setEnterpriseModules as setEnterpriseModulesAction } from '../../actions/enterpriseModules';
+import { setEnterpriseModules as setEnterpriseModulesAction, clearEnterpriseModules } from '../../actions/enterpriseModules';
 
 export const LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE = 'omnichannel-mobile-enterprise';
 
@@ -16,8 +16,10 @@ export async function setEnterpriseModules() {
 			const server = await serversCollection.find(serverId);
 			if (server.enterpriseModules) {
 				reduxStore.dispatch(setEnterpriseModulesAction(server.enterpriseModules.split(',')));
+				return;
 			}
 		}
+		reduxStore.dispatch(clearEnterpriseModules());
 	} catch (e) {
 		log(e);
 	}
@@ -39,9 +41,10 @@ export function getEnterpriseModules() {
 						});
 					});
 					reduxStore.dispatch(setEnterpriseModulesAction(enterpriseModules));
+					return resolve();
 				}
-				return resolve();
 			}
+			reduxStore.dispatch(clearEnterpriseModules());
 		} catch (e) {
 			log(e);
 		}
