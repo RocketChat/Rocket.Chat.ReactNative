@@ -30,7 +30,7 @@ import getSettings, { getLoginSettings, setSettings } from './methods/getSetting
 import getRooms from './methods/getRooms';
 import getPermissions from './methods/getPermissions';
 import { getCustomEmojis, setCustomEmojis } from './methods/getCustomEmojis';
-import { getEnterpriseModules, setEnterpriseModules, hasLicense } from './methods/enterpriseModules';
+import { getEnterpriseModules, setEnterpriseModules, hasLicense, LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE } from './methods/enterpriseModules';
 import getSlashCommands from './methods/getSlashCommands';
 import getRoles from './methods/getRoles';
 import canOpenRoom from './methods/canOpenRoom';
@@ -525,6 +525,12 @@ const RocketChat = {
 		} else if (!filterUsers && filterRooms) {
 			data = data.filter(item => item.t !== 'd' || RocketChat.isGroupChat(item));
 		}
+
+		// Hide omnichannel if there's no license
+		if (!this.hasLicense(LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE)) {
+			data = data.filter(item => item.t !== 'l');
+		}
+
 		data = data.slice(0, 7);
 
 		data = data.map((sub) => {
