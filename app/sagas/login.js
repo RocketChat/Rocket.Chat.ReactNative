@@ -219,7 +219,7 @@ const handleSetUser = function* handleSetUser({ user }) {
 		yield put(setActiveUsers({ [userId]: user }));
 	}
 
-	if (user && user.statusLivechat) {
+	if (user && user.statusLivechat && RocketChat.hasLicense(LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE)) {
 		yield put(inquiryRequest());
 	}
 };
