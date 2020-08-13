@@ -50,7 +50,7 @@ class E2E {
 
 		const { publicKey, privateKey } = await this.fetchMyKeys();
 
-		const pubKey = storedPublicKey || publicKey;
+		const pubKey = EJSON.parse(storedPublicKey || publicKey || '{}');
 		let privKey = storedPrivateKey;
 		if (!storedPrivateKey && privateKey) {
 			privKey = await this.decodePrivateKey(privateKey);
@@ -71,8 +71,8 @@ class E2E {
 	// Load stored or sought on server keys
 	loadKeys = async(publicKey, privateKey) => {
 		try {
-			await RNUserDefaults.set(`${ this.server }-${ E2E_PUBLIC_KEY }`, EJSON.stringify(publicKey));
 			this.privateKey = await jwkToPkcs1(EJSON.parse(privateKey));
+			await RNUserDefaults.set(`${ this.server }-${ E2E_PUBLIC_KEY }`, EJSON.stringify(publicKey));
 			await RNUserDefaults.set(`${ this.server }-${ E2E_PRIVATE_KEY }`, privateKey);
 		} catch {
 			// Do nothing
