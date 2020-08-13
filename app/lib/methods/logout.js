@@ -9,11 +9,19 @@ import { BASIC_AUTH_KEY } from '../../utils/fetch';
 import database, { getDatabase } from '../database';
 import RocketChat from '../rocketchat';
 import { useSsl } from '../../utils/url';
+import {
+	E2E_PUBLIC_KEY,
+	E2E_PRIVATE_KEY,
+	E2E_RANDOM_PASSWORD_KEY
+} from '../encryption/constants';
 
 async function removeServerKeys({ server, userId }) {
 	await RNUserDefaults.clear(`${ RocketChat.TOKEN_KEY }-${ server }`);
 	await RNUserDefaults.clear(`${ RocketChat.TOKEN_KEY }-${ userId }`);
 	await RNUserDefaults.clear(`${ BASIC_AUTH_KEY }-${ server }`);
+	await RNUserDefaults.clear(`${ server }-${ E2E_PUBLIC_KEY }`);
+	await RNUserDefaults.clear(`${ server }-${ E2E_PRIVATE_KEY }`);
+	await RNUserDefaults.clear(`${ server }-${ E2E_RANDOM_PASSWORD_KEY }`);
 }
 
 async function removeSharedCredentials({ server }) {

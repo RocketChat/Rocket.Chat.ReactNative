@@ -20,7 +20,7 @@ public class EncryptionPackage implements ReactPackage {
   public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
     List<NativeModule> modules = new ArrayList<>();
 
-    modules.add(new Encryption(reactContext));
+    modules.add(new Encryption());
 
     return modules;
   }

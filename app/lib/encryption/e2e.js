@@ -50,7 +50,7 @@ class E2E {
 
 		const { publicKey, privateKey } = await this.fetchMyKeys();
 
-		const pubKey = EJSON.parse(storedPublicKey || publicKey);
+		const pubKey = storedPublicKey || publicKey;
 		let privKey = storedPrivateKey;
 		if (!storedPrivateKey && privateKey) {
 			privKey = await this.decodePrivateKey(privateKey);
@@ -72,7 +72,6 @@ class E2E {
 	loadKeys = async(publicKey, privateKey) => {
 		try {
 			await RNUserDefaults.set(`${ this.server }-${ E2E_PUBLIC_KEY }`, EJSON.stringify(publicKey));
-
 			this.privateKey = await jwkToPkcs1(EJSON.parse(privateKey));
 			await RNUserDefaults.set(`${ this.server }-${ E2E_PRIVATE_KEY }`, privateKey);
 		} catch {
@@ -82,15 +81,16 @@ class E2E {
 
 	// Could not obtain public-private keypair from server.
 	createKeys = async() => {
-		const key = await SimpleCrypto.RSA.generateKeys(2048);
-		const publicKey = await pkcs1ToJwk(key.public);
-		const privateKey = await pkcs1ToJwk(key.private);
-
-		this.loadKeys(publicKey, EJSON.stringify(privateKey));
 		try {
+			const key = await SimpleCrypto.RSA.generateKeys(2048);
+			const publicKey = await pkcs1ToJwk(key.public);
+			const privateKey = await pkcs1ToJwk(key.private);
+
+			this.loadKeys(publicKey, EJSON.stringify(privateKey));
 			const password = await this.createRandomPassword();
 			const encodedPrivateKey = await this.encodePrivateKey(EJSON.stringify(privateKey), password);
 			await RocketChat.e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
+			await RocketChat.e2eRequestSubscriptionKeys();
 		} catch {
 			// Do nothing
 		}

@@ -343,6 +343,10 @@ const RocketChat = {
 		// RC 2.2.0
 		return this.post('e2e.setUserPublicAndPrivateKeys', { public_key, private_key });
 	},
+	e2eRequestSubscriptionKeys() {
+		// RC 0.72.0
+		return this.methodCallWrapper('e2e.requestSubscriptionKeys');
+	},
 
 	updateJitsiTimeout(roomId) {
 		// RC 0.74.0
