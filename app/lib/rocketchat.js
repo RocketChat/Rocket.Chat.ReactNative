@@ -30,7 +30,9 @@ import getSettings, { getLoginSettings, setSettings } from './methods/getSetting
 import getRooms from './methods/getRooms';
 import getPermissions from './methods/getPermissions';
 import { getCustomEmojis, setCustomEmojis } from './methods/getCustomEmojis';
-import { getEnterpriseModules, setEnterpriseModules, hasLicense, LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE } from './methods/enterpriseModules';
+import {
+	getEnterpriseModules, setEnterpriseModules, hasLicense, LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE
+} from './methods/enterpriseModules';
 import getSlashCommands from './methods/getSlashCommands';
 import getRoles from './methods/getRoles';
 import canOpenRoom from './methods/canOpenRoom';
