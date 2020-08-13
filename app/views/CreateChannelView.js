@@ -151,7 +151,7 @@ class CreateChannelView extends React.Component {
 
 	submit = () => {
 		const {
-			channelName, type, readOnly, broadcast
+			channelName, type, readOnly, broadcast, encrypted
 		} = this.state;
 		const { users: usersProps, isFetching, create } = this.props;
 
@@ -164,7 +164,7 @@ class CreateChannelView extends React.Component {
 
 		// create channel
 		create({
-			name: channelName, users, type, readOnly, broadcast
+			name: channelName, users, type, readOnly, broadcast, encrypted
 		});
 
 		Review.pushPositiveEvent();

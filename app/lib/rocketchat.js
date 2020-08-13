@@ -84,10 +84,10 @@ const RocketChat = {
 	},
 	canOpenRoom,
 	createChannel({
-		name, users, type, readOnly, broadcast
+		name, users, type, readOnly, broadcast, encrypted
 	}) {
 		// RC 0.51.0
-		return this.methodCallWrapper(type ? 'createPrivateGroup' : 'createChannel', name, users, readOnly, {}, { broadcast });
+		return this.methodCallWrapper(type ? 'createPrivateGroup' : 'createChannel', name, users, readOnly, {}, { broadcast, encrypted });
 	},
 	async getUserToken() {
 		try {
@@ -346,6 +346,18 @@ const RocketChat = {
 	e2eRequestSubscriptionKeys() {
 		// RC 0.72.0
 		return this.methodCallWrapper('e2e.requestSubscriptionKeys');
+	},
+	e2eGetUsersOfRoomWithoutKey(rid) {
+		// RC 0.70.0
+		return this.sdk.get('e2e.getUsersOfRoomWithoutKey', { rid });
+	},
+	e2eSetRoomKeyID(rid, keyID) {
+		// RC 0.70.0
+		return this.post('e2e.setRoomKeyID', { rid, keyID });
+	},
+	e2eUpdateGroupKey(uid, rid, key) {
+		// RC 0.70.0
+		return this.post('e2e.updateGroupKey', { uid, rid, key });
 	},
 
 	updateJitsiTimeout(roomId) {
