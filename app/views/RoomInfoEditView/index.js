@@ -367,7 +367,7 @@ class RoomInfoEditView extends React.Component {
 	}
 
 	toggleEncrypted = (value) => {
-		// TODO: logEvent
+		logEvent(events.RI_EDIT_TOGGLE_ENCRYPTED);
 		this.setState({ encrypted: value });
 	}
 

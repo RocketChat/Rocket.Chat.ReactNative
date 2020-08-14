@@ -103,6 +103,7 @@ export default {
 	CREATE_CHANNEL_TOGGLE_TYPE: 'create_channel_toggle_type',
 	CREATE_CHANNEL_TOGGLE_READ_ONLY: 'create_channel_toggle_read_only',
 	CREATE_CHANNEL_TOGGLE_BROADCAST: 'create_channel_toggle_broadcast',
+	CREATE_CHANNEL_TOGGLE_ENCRYPTED: 'create_channel_toggle_encrypted',
 	CREATE_CHANNEL_REMOVE_USER: 'create_channel_remove_user',
 
 	// CREATE DISCUSSION VIEW
@@ -242,6 +243,7 @@ export default {
 	RI_EDIT_TOGGLE_READ_ONLY: 'ri_edit_toggle_read_only',
 	RI_EDIT_TOGGLE_REACTIONS: 'ri_edit_toggle_reactions',
 	RI_EDIT_TOGGLE_SYSTEM_MSG: 'ri_edit_toggle_system_msg',
+	RI_EDIT_TOGGLE_ENCRYPTED: 'ri_edit_toggle_encrypted',
 	RI_EDIT_SAVE: 'ri_edit_save',
 	RI_EDIT_SAVE_F: 'ri_edit_save_f',
 	RI_EDIT_RESET: 'ri_edit_reset',

@@ -228,8 +228,7 @@ class CreateChannelView extends React.Component {
 			value: encrypted,
 			label: 'Encrypted',
 			onValueChange: (value) => {
-				// TODO: Log event
-				// logEvent();
+				logEvent(events.CREATE_CHANNEL_TOGGLE_ENCRYPTED);
 				this.setState({ encrypted: value });
 			},
 			disabled: !type
