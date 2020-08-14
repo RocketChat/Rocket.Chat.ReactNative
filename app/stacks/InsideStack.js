@@ -49,6 +49,9 @@ import AdminPanelView from '../views/AdminPanelView';
 import NewMessageView from '../views/NewMessageView';
 import CreateChannelView from '../views/CreateChannelView';
 
+// E2ESavePassword Stack
+import E2ESavePasswordView from '../views/E2ESavePasswordView';
+
 // InsideStackNavigator
 import AttachmentView from '../views/AttachmentView';
 import ModalBlockView from '../views/ModalBlockView';
@@ -284,6 +287,22 @@ const NewMessageStackNavigator = () => {
 	);
 };
 
+// E2ESavePasswordStackNavigator
+const E2ESavePasswordStack = createStackNavigator();
+const E2ESavePasswordStackNavigator = () => {
+	const { theme } = React.useContext(ThemeContext);
+
+	return (
+		<E2ESavePasswordStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
+			<E2ESavePasswordStack.Screen
+				name='E2ESavePasswordView'
+				component={E2ESavePasswordView}
+				options={E2ESavePasswordView.navigationOptions}
+			/>
+		</E2ESavePasswordStack.Navigator>
+	);
+};
+
 // InsideStackNavigator
 const InsideStack = createStackNavigator();
 const InsideStackNavigator = () => {
@@ -299,6 +318,11 @@ const InsideStackNavigator = () => {
 			<InsideStack.Screen
 				name='NewMessageStackNavigator'
 				component={NewMessageStackNavigator}
+				options={{ headerShown: false }}
+			/>
+			<InsideStack.Screen
+				name='E2ESavePasswordStackNavigator'
+				component={E2ESavePasswordStackNavigator}
 				options={{ headerShown: false }}
 			/>
 			<InsideStack.Screen

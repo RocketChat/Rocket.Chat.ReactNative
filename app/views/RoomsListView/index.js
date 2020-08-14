@@ -361,6 +361,12 @@ class RoomsListView extends React.Component {
 			headerRight: () => (searching ? null : (
 				<CustomHeaderButtons>
 					<Item
+						title='encrypted'
+						iconName='encrypted'
+						onPress={this.goToEncrypted}
+						testID='rooms-list-view-encrypted'
+					/>
+					<Item
 						title='new'
 						iconName='create'
 						onPress={this.goToNewMessage}
@@ -760,6 +766,17 @@ class RoomsListView extends React.Component {
 			navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' });
 		} else {
 			navigation.navigate('NewMessageStackNavigator');
+		}
+	}
+
+	goToEncrypted = () => {
+		logEvent(events.RL_GO_E2E_SAVE_PASSWORD);
+		const { navigation, isMasterDetail } = this.props;
+
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', { screen: 'E2ESavePasswordView' });
+		} else {
+			navigation.navigate('E2ESavePasswordStackNavigator');
 		}
 	}
 

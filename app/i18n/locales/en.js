@@ -433,6 +433,7 @@ export default {
 	saving_profile: 'saving profile',
 	saving_settings: 'saving settings',
 	saved_to_gallery: 'Saved to gallery',
+	Save_Your_E2E_Password: 'Save Your E2E Password',
 	Search_Messages: 'Search Messages',
 	Search: 'Search',
 	Search_by: 'Search by',

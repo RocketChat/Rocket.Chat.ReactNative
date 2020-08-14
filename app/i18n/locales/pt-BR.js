@@ -404,6 +404,7 @@ export default {
 	saving_profile: 'salvando perfil',
 	saving_settings: 'salvando configurações',
 	saved_to_gallery: 'Salvo na galeria',
+	Save_Your_E2E_Password: 'Salve sua senha E2E',
 	Search_Messages: 'Buscar Mensagens',
 	Search: 'Buscar',
 	Search_by: 'Buscar por',

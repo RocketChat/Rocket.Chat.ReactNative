@@ -58,6 +58,7 @@ export default {
 	RL_ADD_SERVER: 'rl_add_server',
 	RL_CHANGE_SERVER: 'rl_change_server',
 	RL_GO_NEW_MSG: 'rl_go_new_msg',
+	RL_GO_E2E_SAVE_PASSWORD: 'rl_go_e2e_save_password',
 	RL_SEARCH: 'rl_search',
 	RL_GO_DIRECTORY: 'rl_go_directory',
 	RL_GO_QUEUE: 'rl_go_queue',
