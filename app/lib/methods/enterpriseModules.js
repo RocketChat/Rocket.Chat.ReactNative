@@ -6,6 +6,7 @@ import log from '../../utils/log';
 import { setEnterpriseModules as setEnterpriseModulesAction, clearEnterpriseModules } from '../../actions/enterpriseModules';
 
 export const LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE = 'omnichannel-mobile-enterprise';
+export const LICENSE_LIVECHAT_ENTERPRISE = 'livechat-enterprise';
 
 export async function setEnterpriseModules() {
 	try {
@@ -54,4 +55,9 @@ export function getEnterpriseModules() {
 export function hasLicense(module) {
 	const { enterpriseModules } = reduxStore.getState();
 	return enterpriseModules.includes(module);
+}
+
+export function isOmnichannelModuleAvailable() {
+	const { enterpriseModules } = reduxStore.getState();
+	return [LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE, LICENSE_LIVECHAT_ENTERPRISE].every(module => enterpriseModules.includes(module));
 }

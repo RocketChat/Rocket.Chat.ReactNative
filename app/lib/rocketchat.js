@@ -31,7 +31,7 @@ import getRooms from './methods/getRooms';
 import getPermissions from './methods/getPermissions';
 import { getCustomEmojis, setCustomEmojis } from './methods/getCustomEmojis';
 import {
-	getEnterpriseModules, setEnterpriseModules, hasLicense, LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE
+	getEnterpriseModules, setEnterpriseModules, hasLicense, isOmnichannelModuleAvailable
 } from './methods/enterpriseModules';
 import getSlashCommands from './methods/getSlashCommands';
 import getRoles from './methods/getRoles';
@@ -529,7 +529,7 @@ const RocketChat = {
 		}
 
 		// Hide omnichannel if there's no license
-		if (!this.hasLicense(LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE)) {
+		if (!this.isOmnichannelModuleAvailable()) {
 			data = data.filter(item => item.t !== 'l');
 		}
 
@@ -637,6 +637,7 @@ const RocketChat = {
 	getEnterpriseModules,
 	setEnterpriseModules,
 	hasLicense,
+	isOmnichannelModuleAvailable,
 	getSlashCommands,
 	getRoles,
 	parseSettings: settings => settings.reduce((ret, item) => {

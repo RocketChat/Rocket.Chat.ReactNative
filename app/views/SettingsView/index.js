@@ -38,7 +38,6 @@ import { appStart as appStartAction, ROOT_LOADING } from '../../actions/app';
 import { onReviewPress } from '../../utils/review';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE } from '../../lib/methods/enterpriseModules';
 
 const SectionSeparator = React.memo(({ theme }) => (
 	<View
@@ -85,7 +84,7 @@ class SettingsView extends React.Component {
 		const { user } = this.props;
 		const { roles } = user;
 
-		return RocketChat.hasLicense(LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE) && roles?.includes('livechat-agent');
+		return RocketChat.isOmnichannelModuleAvailable() && roles?.includes('livechat-agent');
 	}
 
 	handleLogout = () => {

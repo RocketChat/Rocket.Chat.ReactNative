@@ -26,7 +26,6 @@ import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../utils/info';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { setActiveUsers } from '../actions/activeUsers';
-import { LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE } from '../lib/methods/enterpriseModules';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -89,8 +88,7 @@ const fetchUsersPresence = function* fetchUserPresence() {
 const fetchEnterpriseModules = function* fetchEnterpriseModules() {
 	yield RocketChat.getEnterpriseModules();
 
-	const hasOmnichannelLicense = RocketChat.hasLicense(LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE);
-	if (hasOmnichannelLicense) {
+	if (RocketChat.isOmnichannelModuleAvailable()) {
 		yield put(inquiryRequest());
 	}
 };
@@ -219,7 +217,7 @@ const handleSetUser = function* handleSetUser({ user }) {
 		yield put(setActiveUsers({ [userId]: user }));
 	}
 
-	if (user && user.statusLivechat && RocketChat.hasLicense(LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE)) {
+	if (user && user.statusLivechat && RocketChat.isOmnichannelModuleAvailable()) {
 		yield put(inquiryRequest());
 	}
 };
