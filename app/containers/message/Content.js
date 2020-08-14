@@ -9,6 +9,7 @@ import Markdown from '../markdown';
 import { getInfoMessage } from './utils';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
+import E2E from './E2E';
 
 const Content = React.memo((props) => {
 	if (props.isInfo) {
@@ -48,8 +49,14 @@ const Content = React.memo((props) => {
 	}
 
 	return (
-		<View style={props.isTemp && styles.temp}>
-			{content}
+		<View style={[styles.flex, props.isTemp && styles.temp]}>
+			<View style={styles.contentContainer}>
+				{content}
+			</View>
+			<E2E
+				type={props.type}
+				theme={props.theme}
+			/>
 		</View>
 	);
 }, (prevProps, nextProps) => {
@@ -57,6 +64,9 @@ const Content = React.memo((props) => {
 		return false;
 	}
 	if (prevProps.msg !== nextProps.msg) {
+		return false;
+	}
+	if (prevProps.type !== nextProps.type) {
 		return false;
 	}
 	if (prevProps.theme !== nextProps.theme) {
@@ -83,7 +93,8 @@ Content.propTypes = {
 	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	navToRoomInfo: PropTypes.func,
-	useRealName: PropTypes.bool
+	useRealName: PropTypes.bool,
+	type: PropTypes.string
 };
 Content.displayName = 'MessageContent';
 

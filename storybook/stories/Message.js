@@ -99,6 +99,9 @@ export default ({ theme }) => {
 			<Separator title='Edited' theme={theme} />
 			<Message msg='Message' edited />
 
+			<Separator title='Encrypted' theme={theme} />
+			<Message msg='Message' type='e2e' />
+
 			<Separator title='Block Quote' theme={theme} />
 			<Message msg='> Testing block quote' />
 			<Message msg={'> Testing block quote\nTesting block quote'} />
