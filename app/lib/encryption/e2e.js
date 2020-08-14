@@ -49,27 +49,31 @@ class E2E {
 		this.server = store.getState().server.server;
 		this.userId = store.getState().login.user.id;
 
-		const storedPublicKey = await RNUserDefaults.get(`${ this.server }-${ E2E_PUBLIC_KEY }`);
-		const storedPrivateKey = await RNUserDefaults.get(`${ this.server }-${ E2E_PRIVATE_KEY }`);
+		try {
+			const storedPublicKey = await RNUserDefaults.get(`${ this.server }-${ E2E_PUBLIC_KEY }`);
+			const storedPrivateKey = await RNUserDefaults.get(`${ this.server }-${ E2E_PRIVATE_KEY }`);
 
-		const { publicKey, privateKey } = await this.fetchMyKeys();
+			const { publicKey, privateKey } = await this.fetchMyKeys();
 
-		const pubKey = EJSON.parse(storedPublicKey || publicKey || '{}');
-		let privKey = storedPrivateKey;
-		if (!storedPrivateKey && privateKey) {
-			privKey = await this.decodePrivateKey(privateKey);
+			const pubKey = EJSON.parse(storedPublicKey || publicKey || '{}');
+			let privKey = storedPrivateKey;
+			if (!storedPrivateKey && privateKey) {
+				privKey = await this.decodePrivateKey(privateKey);
+			}
+
+			if (pubKey && privKey) {
+				await this.loadKeys(pubKey, privKey);
+			} else {
+				await this.createKeys();
+			}
+
+			RocketChat.subscribeEncryption();
+
+			this.decryptPendingSubscriptions();
+			this.decryptPendingMessages();
+		} catch {
+			// Do nothing
 		}
-
-		if (pubKey && privKey) {
-			await this.loadKeys(pubKey, privKey);
-		} else {
-			await this.createKeys();
-		}
-
-		RocketChat.subscribeEncryption();
-
-		this.decryptPendingSubscriptions();
-		this.decryptPendingMessages();
 	}
 
 	stop = () => {
