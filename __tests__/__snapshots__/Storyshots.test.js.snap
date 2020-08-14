@@ -3352,6 +3352,27 @@ exports[`Storyshots Message list message 1`] = `
         ]
       }
     >
+      Encrypted
+    </Text>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginVertical": 30,
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          Object {
+            "marginBottom": 0,
+            "marginTop": 30,
+          },
+        ]
+      }
+    >
       Block Quote
     </Text>
     <Text
@@ -4255,46 +4276,63 @@ exports[`Storyshots Message list message 1`] = `
                 10:00 AM
               </Text>
             </View>
-            <View>
-              <Text
-                numberOfLines={0}
+            <View
+              style={
+                Array [
+                  Object {
+                    "flexDirection": "row",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              <View
                 style={
-                  Array [
-                    undefined,
-                    Object {
-                      "color": "#2f343d",
-                    },
-                  ]
+                  Object {
+                    "flex": 1,
+                  }
                 }
               >
                 <Text
-                  accessibilityLabel="This message has error"
                   numberOfLines={0}
                   style={
                     Array [
+                      undefined,
                       Object {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "System",
-                        "fontSize": 16,
-                        "fontWeight": "400",
+                        "color": "#2f343d",
                       },
-                      Array [
-                        Object {},
-                        Object {
-                          "alignItems": "flex-start",
-                          "flexDirection": "row",
-                          "flexWrap": "wrap",
-                          "justifyContent": "flex-start",
-                          "marginBottom": 0,
-                          "marginTop": 0,
-                        },
-                      ],
                     ]
                   }
                 >
-                  This message has error
+                  <Text
+                    accessibilityLabel="This message has error"
+                    numberOfLines={0}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "400",
+                        },
+                        Array [
+                          Object {},
+                          Object {
+                            "alignItems": "flex-start",
+                            "flexDirection": "row",
+                            "flexWrap": "wrap",
+                            "justifyContent": "flex-start",
+                            "marginBottom": 0,
+                            "marginTop": 0,
+                          },
+                        ],
+                      ]
+                    }
+                  >
+                    This message has error
+                  </Text>
                 </Text>
-              </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -4361,46 +4399,63 @@ exports[`Storyshots Message list message 1`] = `
                 10:00 AM
               </Text>
             </View>
-            <View>
-              <Text
-                numberOfLines={0}
+            <View
+              style={
+                Array [
+                  Object {
+                    "flexDirection": "row",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              <View
                 style={
-                  Array [
-                    undefined,
-                    Object {
-                      "color": "#2f343d",
-                    },
-                  ]
+                  Object {
+                    "flex": 1,
+                  }
                 }
               >
                 <Text
-                  accessibilityLabel="This message has error too"
                   numberOfLines={0}
                   style={
                     Array [
+                      undefined,
                       Object {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "System",
-                        "fontSize": 16,
-                        "fontWeight": "400",
+                        "color": "#2f343d",
                       },
-                      Array [
-                        Object {},
-                        Object {
-                          "alignItems": "flex-start",
-                          "flexDirection": "row",
-                          "flexWrap": "wrap",
-                          "justifyContent": "flex-start",
-                          "marginBottom": 0,
-                          "marginTop": 0,
-                        },
-                      ],
                     ]
                   }
                 >
-                  This message has error too
+                  <Text
+                    accessibilityLabel="This message has error too"
+                    numberOfLines={0}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "400",
+                        },
+                        Array [
+                          Object {},
+                          Object {
+                            "alignItems": "flex-start",
+                            "flexDirection": "row",
+                            "flexWrap": "wrap",
+                            "justifyContent": "flex-start",
+                            "marginBottom": 0,
+                            "marginTop": 0,
+                          },
+                        ],
+                      ]
+                    }
+                  >
+                    This message has error too
+                  </Text>
                 </Text>
-              </Text>
+              </View>
             </View>
           </View>
         </View>
