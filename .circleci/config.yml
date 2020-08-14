@@ -211,7 +211,7 @@ jobs:
             - android/fastlane/report.xml
             - android/app/build/outputs
 
-  android-google-play-alpha:
+  android-google-play-beta:
     <<: *defaults
     docker:
       - image: circleci/android:api-28-node
@@ -231,7 +231,7 @@ jobs:
 
       - run:
           name: Fastlane Play Store Upload
-          command: bundle exec fastlane android alpha
+          command: bundle exec fastlane android beta
           working_directory: android
 
   # iOS builds
@@ -340,10 +340,10 @@ workflows:
       - android-build:
           requires:
             - lint-testunit
-      - android-hold-google-play-alpha:
+      - android-hold-google-play-beta:
           type: approval
           requires:
             - android-build
-      - android-google-play-alpha:
+      - android-google-play-beta:
           requires:
-            - android-hold-google-play-alpha
+            - android-hold-google-play-beta
