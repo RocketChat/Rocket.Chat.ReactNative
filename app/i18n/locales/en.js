@@ -198,6 +198,7 @@ export default {
 	Edit: 'Edit',
 	Edit_Status: 'Edit Status',
 	Edit_Invite: 'Edit Invite',
+	End_to_end_encrypted_room: 'End to end encrypted room',
 	Email_or_password_field_is_empty: 'Email or password field is empty',
 	Email: 'Email',
 	EMAIL: 'EMAIL',

@@ -202,7 +202,7 @@ class CreateChannelView extends React.Component {
 			label: 'Private_Channel',
 			onValueChange: (value) => {
 				logEvent(events.CREATE_CHANNEL_TOGGLE_TYPE);
-				this.setState({ type: value });
+				this.setState(({ encrypted }) => ({ type: value, encrypted: value && encrypted }));
 			}
 		});
 	}
@@ -222,7 +222,7 @@ class CreateChannelView extends React.Component {
 	}
 
 	renderEncrypted() {
-		const { encrypted } = this.state;
+		const { type, encrypted } = this.state;
 		return this.renderSwitch({
 			id: 'encrypted',
 			value: encrypted,
@@ -231,7 +231,8 @@ class CreateChannelView extends React.Component {
 				// TODO: Log event
 				// logEvent();
 				this.setState({ encrypted: value });
-			}
+			},
+			disabled: !type
 		});
 	}
 

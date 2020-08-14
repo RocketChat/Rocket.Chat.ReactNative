@@ -192,6 +192,7 @@ export default {
 	Edit: 'Editar',
 	Edit_Invite: 'Editar convite',
 	Edit_Status: 'Editar Status',
+	End_to_end_encrypted_room: 'Sala criptografada de ponta a ponta',
 	Email_or_password_field_is_empty: 'Email ou senha estão vazios',
 	Email: 'Email',
 	email: 'e-mail',

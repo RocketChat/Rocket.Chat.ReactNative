@@ -76,7 +76,8 @@ class RoomInfoEditView extends React.Component {
 			reactWhenReadOnly: false,
 			archived: false,
 			systemMessages: [],
-			enableSysMes: false
+			enableSysMes: false,
+			encrypted: false
 		};
 		this.loadRoom();
 	}
@@ -123,7 +124,7 @@ class RoomInfoEditView extends React.Component {
 
 	init = (room) => {
 		const {
-			description, topic, announcement, t, ro, reactWhenReadOnly, joinCodeRequired, sysMes
+			description, topic, announcement, t, ro, reactWhenReadOnly, joinCodeRequired, sysMes, encrypted
 		} = room;
 		// fake password just to user knows about it
 		this.randomValue = random(15);
@@ -139,7 +140,8 @@ class RoomInfoEditView extends React.Component {
 			joinCode: joinCodeRequired ? this.randomValue : '',
 			archived: room.archived,
 			systemMessages: sysMes,
-			enableSysMes: sysMes && sysMes.length > 0
+			enableSysMes: sysMes && sysMes.length > 0,
+			encrypted
 		});
 	}
 
@@ -157,7 +159,7 @@ class RoomInfoEditView extends React.Component {
 
 	formIsChanged = () => {
 		const {
-			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, systemMessages, enableSysMes
+			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, systemMessages, enableSysMes, encrypted
 		} = this.state;
 		const { joinCodeRequired } = room;
 		return !(room.name === name
@@ -170,6 +172,7 @@ class RoomInfoEditView extends React.Component {
 			&& room.reactWhenReadOnly === reactWhenReadOnly
 			&& isEqual(room.sysMes, systemMessages)
 			&& enableSysMes === (room.sysMes && room.sysMes.length > 0)
+			&& room.encrypted === encrypted
 		);
 	}
 
@@ -177,7 +180,7 @@ class RoomInfoEditView extends React.Component {
 		logEvent(events.RI_EDIT_SAVE);
 		Keyboard.dismiss();
 		const {
-			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, systemMessages
+			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, systemMessages, encrypted
 		} = this.state;
 
 		this.setState({ saving: true });
@@ -229,6 +232,11 @@ class RoomInfoEditView extends React.Component {
 		// Join Code
 		if (this.randomValue !== joinCode) {
 			params.joinCode = joinCode;
+		}
+
+		// Encrypted
+		if (room.encrypted !== encrypted) {
+			params.encrypted = encrypted;
 		}
 
 		try {
@@ -340,7 +348,7 @@ class RoomInfoEditView extends React.Component {
 
 	toggleRoomType = (value) => {
 		logEvent(events.RI_EDIT_TOGGLE_ROOM_TYPE);
-		this.setState({ t: value });
+		this.setState(({ encrypted }) => ({ t: value, encrypted: value && encrypted }));
 	}
 
 	toggleReadOnly = (value) => {
@@ -358,9 +366,14 @@ class RoomInfoEditView extends React.Component {
 		this.setState(({ systemMessages }) => ({ enableSysMes: value, systemMessages: value ? systemMessages : [] }));
 	}
 
+	toggleEncrypted = (value) => {
+		// TODO: logEvent
+		this.setState({ encrypted: value });
+	}
+
 	render() {
 		const {
-			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode, saving, permissions, archived, enableSysMes
+			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode, saving, permissions, archived, enableSysMes, encrypted
 		} = this.state;
 		const { serverVersion, theme } = this.props;
 		const { dangerColor } = themes[theme];
@@ -487,6 +500,17 @@ class RoomInfoEditView extends React.Component {
 								{this.renderSystemMessages()}
 							</SwitchContainer>
 						) : null}
+						<SwitchContainer
+							value={encrypted}
+							disabled={!t}
+							leftLabelPrimary={I18n.t('Encrypted')}
+							leftLabelSecondary={I18n.t('End_to_end_encrypted_room')}
+							theme={theme}
+							testID='room-info-edit-switch-encrypted'
+							onValueChange={this.toggleEncrypted}
+							labelContainerStyle={styles.hideSystemMessages}
+							leftLabelStyle={styles.systemMessagesLabel}
+						/>
 						<TouchableOpacity
 							style={[
 								styles.buttonContainer,
