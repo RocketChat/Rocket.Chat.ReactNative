@@ -76,7 +76,7 @@ export default async(subscriptions = [], rooms = []) => {
 
 	try {
 		rooms = await Promise.all(rooms.map(async(r) => {
-			const lastMessage = await E2E.decrypt(r.lastMessage);
+			const lastMessage = await E2E.decryptMessage(r.lastMessage);
 			return { ...r, lastMessage };
 		}));
 	} catch {

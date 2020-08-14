@@ -124,7 +124,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 
 		// TODO: Check if has a better way to do this
 		try {
-			room.lastMessage = await E2E.decrypt(room.lastMessage);
+			room.lastMessage = await E2E.decryptMessage(room.lastMessage);
 		} catch {
 			// Do nothing
 		}

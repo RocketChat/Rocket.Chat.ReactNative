@@ -166,7 +166,7 @@ export default class RoomSubscription {
 
 			try {
 				// Decrypt the message if necessary
-				message = await E2E.decrypt(message);
+				message = await E2E.decryptMessage(message);
 			} catch {
 				// Do nothing
 			}

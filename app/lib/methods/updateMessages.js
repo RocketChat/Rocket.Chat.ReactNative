@@ -15,7 +15,7 @@ export default function updateMessages({ rid, update = [], remove = [] }) {
 		const db = database.active;
 		return db.action(async() => {
 			try {
-				update = await Promise.all(update.map(m => E2E.decrypt(m)));
+				update = await Promise.all(update.map(m => E2E.decryptMessage(m)));
 			} catch {
 				// Do nothing
 			}

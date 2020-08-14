@@ -21,6 +21,7 @@ import {
 
 import subscribeRooms from './methods/subscriptions/rooms';
 import subscribeInquiry from './methods/subscriptions/inquiry';
+import subscribeEncryption from './methods/subscriptions/encryption';
 import getUsersPresence, { getUserPresence, subscribeUsersPresence } from './methods/getUsersPresence';
 
 import protectedFunction from './methods/helpers/protectedFunction';
@@ -77,6 +78,15 @@ const RocketChat = {
 		if (!this.inquirySub) {
 			try {
 				this.inquirySub = await subscribeInquiry.call(this);
+			} catch (e) {
+				log(e);
+			}
+		}
+	},
+	async subscribeEncryption() {
+		if (!this.encryptionSub) {
+			try {
+				this.encryptionSub = await subscribeEncryption.call(this);
 			} catch (e) {
 				log(e);
 			}
@@ -216,6 +226,11 @@ const RocketChat = {
 			if (this.inquirySub) {
 				this.inquirySub.stop();
 				this.inquirySub = null;
+			}
+
+			if (this.encryptionSub) {
+				this.encryptionSub.stop();
+				this.encryptionSub = null;
 			}
 
 			if (this.sdk) {

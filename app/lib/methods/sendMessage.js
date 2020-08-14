@@ -50,7 +50,7 @@ export async function sendMessageCall(message) {
 	} = message;
 	try {
 		const sdk = this.shareSDK || this.sdk;
-		message = await E2E.encrypt({
+		message = await E2E.encryptMessage({
 			_id, rid, msg, tmid
 		});
 		// RC 0.60.0

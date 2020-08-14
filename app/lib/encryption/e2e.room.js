@@ -28,29 +28,30 @@ export default class E2ERoom {
 	handshake = async() => {
 		const db = database.active;
 		const subCollection = db.collections.get('subscriptions');
-		try {
-			// TODO: Should be an observable to check encrypted property
-			this.subscription = await subCollection.find(this.roomId);
+		// TODO: Should be an observable to check encrypted property
+		this.subscription = await subCollection.find(this.roomId);
 
-			const { E2EKey, e2eKeyId, encrypted } = this.subscription;
+		const { E2EKey, e2eKeyId, encrypted } = this.subscription;
 
-			if (!encrypted) {
-				return;
-			}
-
-			if (E2EKey) {
-				await this.importRoomKey(E2EKey);
-				return;
-			}
-
-			if (!e2eKeyId) {
-				await this.createRoomKey();
-			}
-
-			// Notifications.notifyUsersOfRoom(this.roomId, 'e2ekeyRequest', this.roomId, e2eKeyId);
-		} catch {
-			// Do nothing
+		if (!encrypted) {
+			return;
 		}
+
+		if (!e2e.privateKey) {
+			return Promise.reject();
+		}
+
+		if (E2EKey) {
+			await this.importRoomKey(E2EKey);
+			return;
+		}
+
+		if (!e2eKeyId) {
+			await this.createRoomKey();
+		}
+
+		// notify-room-users
+		// Notifications.notifyUsersOfRoom(this.roomId, 'e2ekeyRequest', this.roomId, e2eKeyId);
 	}
 
 	// Import roomKey as an AES Decrypt key
@@ -97,6 +98,7 @@ export default class E2ERoom {
 		}
 	}
 
+	// Create a encrypted key to this room base on users
 	encryptRoomKey = async() => {
 		const result = await RocketChat.e2eGetUsersOfRoomWithoutKey(this.roomId);
 		if (result.success) {
@@ -105,6 +107,7 @@ export default class E2ERoom {
 		}
 	}
 
+	// Encrypt the room key to each user in
 	encryptRoomKeyForUser = async(user) => {
 		if (user?.e2e?.public_key) {
 			const { public_key: publicKey } = user.e2e;
@@ -123,6 +126,19 @@ export default class E2ERoom {
 			} catch {
 				// Do nothing
 			}
+		}
+	}
+
+	// Provide this room key to a user
+	provideKeyToUser = async(keyId) => {
+		if (this.keyID !== keyId) {
+			return;
+		}
+
+		try {
+			await this.encryptRoomKey();
+		} catch {
+			// Do nothing
 		}
 	}
 
