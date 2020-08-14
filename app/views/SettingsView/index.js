@@ -62,7 +62,7 @@ class SettingsView extends React.Component {
 			<DrawerButton navigation={navigation} />
 		)),
 		headerRight: () => (
-			<PreferencesButton onPress={() => {}} testID='preferences-view-open' />
+			<PreferencesButton onPress={() => navigation.navigate('PreferencesView')} testID='preferences-view-open' />
 		),
 		title: I18n.t('Settings')
 	});
