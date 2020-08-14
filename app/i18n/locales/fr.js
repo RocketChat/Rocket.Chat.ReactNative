@@ -255,6 +255,7 @@ export default {
 	is_not_a_valid_RocketChat_instance: 'n\'est pas une instance valide de Rocket.Chat',
 	is_typing: 'est en train d\'écrire',
 	Invalid_or_expired_invite_token: 'Jeton d\'invitation non valide ou expiré',
+	Invalid_server_version: 'Le serveur que vous essayez de connecter utilise une version qui n\'est plus prise en charge par l\'application: {{currentVersion}}.\n\nNous exigeons la version {{minVersion}}',
 	Invite_Link: 'Lien d\'invitation',
 	Invite_users: 'Inviter utilisateur',
 	Join: 'Rejoindre',
@@ -322,6 +323,7 @@ export default {
 	No_Reactions: 'Aucune réaction',
 	No_Read_Receipts: 'Pas d\'accusé de lecture',
 	Not_logged: 'Non connecté',
+	Not_RC_Server: 'Ce n\'est pas un serveur Rocket.Chat.\n{{contact}}',
 	Nothing: 'Rien',
 	Nothing_to_save: 'Rien à enregistrer!',
 	Notify_active_in_this_room: 'Notifier les utilisateurs actifs dans cette salle',
@@ -486,6 +488,7 @@ export default {
 	Tap_to_view_servers_list: 'Appuyez pour afficher la liste des serveurs',
 	Terms_of_Service: 'Conditions d\'utilisation',
 	Theme: 'Thème',
+	The_URL_is_invalid: 'L\'URL que vous avez entrée n\'est pas valide. Vérifiez et essayez à nouveau!',
 	The_user_wont_be_able_to_type_in_roomName: 'L\'utilisateur ne pourra pas écrire dans {{roomName}}',
 	The_user_will_be_able_to_type_in_roomName: 'L\'utilisateur pourra écrire dans {{roomName}}',
 	There_was_an_error_while_action: 'Il y avait une erreur en {{action}}!',
@@ -542,6 +545,7 @@ export default {
 	View_Original: 'Voir l\'original',
 	Voice_call: 'Appel vocal',
 	Waiting_for_network: 'En attente du réseau ...',
+	Websocket_disabled: 'Le Websocket est désactivé pour ce serveur.\n{{contact}}',
 	Welcome: 'Bienvenue',
 	What_are_you_doing_right_now: 'Qu\'es ce que vous faites actuellement?',
 	Whats_your_2fa: 'Quel est votre code 2FA?',
@@ -619,5 +623,6 @@ export default {
 	Passcode_app_locked_subtitle: 'Réessayez dans {{timeLeft}} secondes',
 	After_seconds_set_by_admin: 'Après {{seconds}} secondes (défini par l\'administrateur)',
 	Dont_activate: 'Ne pas activer maintenant',
-	Queued_chats: 'Discussions en file d\'attente'
+	Queued_chats: 'Discussions en file d\'attente',
+	Queue_is_empty: 'La file d\'attente est vide'
 };
