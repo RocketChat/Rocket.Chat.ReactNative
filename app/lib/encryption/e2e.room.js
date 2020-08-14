@@ -16,6 +16,7 @@ import database from '../database';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from './constants';
 import RocketChat from '../rocketchat';
 import e2e from './e2e';
+import { isIOS } from '../../utils/deviceInfo';
 
 export default class E2ERoom {
 	constructor(roomId) {
@@ -75,10 +76,12 @@ export default class E2ERoom {
 			const key = await SimpleCrypto.utils.randomBytes(16);
 			this.roomKey = key;
 
+			let k = bufferToB64(this.roomKey);
+			k = k.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 			const sessionKeyExported = {
 				alg: 'A128CBC',
 				ext: true,
-				k: bufferToB64(this.roomKey).replace(/=/g, ''),
+				k,
 				key_ops: ['encrypt', 'decrypt'],
 				kty: 'oct'
 			};
@@ -107,9 +110,16 @@ export default class E2ERoom {
 			const { public_key: publicKey } = user.e2e;
 			try {
 				const userKey = await jwkToPkcs1(EJSON.parse(publicKey));
-				const encryptedUserKey = await SimpleCrypto.RSA.encrypt(this.sessionKeyExportedString, userKey);
+				let encryptedUserKey = await SimpleCrypto.RSA.encrypt(this.sessionKeyExportedString, userKey);
 				// these replaces are a trick that I need to see if I can do better
-				await RocketChat.e2eUpdateGroupKey(user._id, this.roomId, this.keyID + encryptedUserKey.replaceAll('\n', '').replaceAll('\r', ''));
+				if (isIOS) {
+					// replace all doesn't work on Android
+					encryptedUserKey = encryptedUserKey.replaceAll('\n', '').replaceAll('\r', '');
+				} else {
+					// This is not doing the same thing between iOS and Android
+					encryptedUserKey = encryptedUserKey.replace(/\n/g, '').replace(/\r/g, '');
+				}
+				await RocketChat.e2eUpdateGroupKey(user._id, this.roomId, this.keyID + encryptedUserKey);
 			} catch {
 				// Do nothing
 			}

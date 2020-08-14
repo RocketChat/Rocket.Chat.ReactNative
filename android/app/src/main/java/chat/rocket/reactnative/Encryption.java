@@ -9,8 +9,10 @@ import java.io.StringWriter;
 import java.math.BigInteger;
 import java.security.PrivateKey;
 import java.security.KeyFactory;
+import java.security.PublicKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.spec.RSAPrivateCrtKeySpec;
+import java.security.spec.RSAPublicKeySpec;
 import java.util.Arrays;
 
 import com.facebook.react.bridge.Arguments;
@@ -22,6 +24,7 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 
 import org.spongycastle.asn1.ASN1InputStream;
+import org.spongycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.spongycastle.util.io.pem.PemObject;
 import org.spongycastle.util.io.pem.PemReader;
 import org.spongycastle.util.io.pem.PemWriter;
@@ -37,35 +40,18 @@ public class Encryption extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void jwkToPkcs1(final ReadableMap jwk, final Promise promise) {
-    BigInteger modulus = toBigInteger(decodeSequence(jwk.getString("n")));
-    BigInteger publicExponent = toBigInteger(decodeSequence(jwk.getString("e")));
-    BigInteger privateExponent = toBigInteger(decodeSequence(jwk.getString("d")));
-    BigInteger primeP = toBigInteger(decodeSequence(jwk.getString("p")));
-    BigInteger primeQ = toBigInteger(decodeSequence(jwk.getString("q")));
-    BigInteger primeExpP = toBigInteger(decodeSequence(jwk.getString("dp")));
-    BigInteger primeExpQ = toBigInteger(decodeSequence(jwk.getString("dq")));
-    BigInteger crtCoefficient = toBigInteger(decodeSequence(jwk.getString("qi")));
+    Boolean isPrivate = jwk.hasKey("d");
 
     try {
-      KeyFactory factory = KeyFactory.getInstance("RSA");
-      RSAPrivateKey key = (RSAPrivateKey) factory.generatePrivate(new RSAPrivateCrtKeySpec(
-        modulus,
-        publicExponent,
-        privateExponent,
-        primeP,
-        primeQ,
-        primeExpP,
-        primeExpQ,
-        crtCoefficient
-      ));
+      String pkcs1;
 
-      PemObject pemObject = new PemObject("RSA PRIVATE KEY", privateKeyToPkcs1(key));
-      StringWriter stringWriter = new StringWriter();
-      PemWriter pemWriter = new PemWriter(stringWriter);
-      pemWriter.writeObject(pemObject);
-      pemWriter.close();
+      if (isPrivate) {
+        pkcs1 = jwkToPrivatePkcs1(jwk);
+      } else {
+        pkcs1 = jwkToPublicPkcs1(jwk);
+      }
 
-      promise.resolve(stringWriter.toString());
+      promise.resolve(pkcs1);
     } catch (Exception ex) {
       promise.reject(ex);
     }
@@ -98,6 +84,53 @@ public class Encryption extends ReactContextBaseJavaModule {
     }
   }
 
+  private String jwkToPublicPkcs1(final ReadableMap jwk) throws Exception {
+    BigInteger modulus = toBigInteger(decodeSequence(jwk.getString("n")));
+    BigInteger publicExponent = toBigInteger(decodeSequence(jwk.getString("e")));
+
+    KeyFactory factory = KeyFactory.getInstance("RSA");
+    PublicKey key = factory.generatePublic(new RSAPublicKeySpec(modulus, publicExponent));
+
+    PemObject pemObject = new PemObject("RSA PUBLIC KEY", publicKeyToPkcs1(key));
+    StringWriter stringWriter = new StringWriter();
+    PemWriter pemWriter = new PemWriter(stringWriter);
+    pemWriter.writeObject(pemObject);
+    pemWriter.close();
+
+    return stringWriter.toString();
+  }
+
+  private String jwkToPrivatePkcs1(final ReadableMap jwk) throws Exception {
+    BigInteger modulus = toBigInteger(decodeSequence(jwk.getString("n")));
+    BigInteger publicExponent = toBigInteger(decodeSequence(jwk.getString("e")));
+    BigInteger privateExponent = toBigInteger(decodeSequence(jwk.getString("d")));
+    BigInteger primeP = toBigInteger(decodeSequence(jwk.getString("p")));
+    BigInteger primeQ = toBigInteger(decodeSequence(jwk.getString("q")));
+    BigInteger primeExpP = toBigInteger(decodeSequence(jwk.getString("dp")));
+    BigInteger primeExpQ = toBigInteger(decodeSequence(jwk.getString("dq")));
+    BigInteger crtCoefficient = toBigInteger(decodeSequence(jwk.getString("qi")));
+
+    KeyFactory factory = KeyFactory.getInstance("RSA");
+    RSAPrivateKey key = (RSAPrivateKey) factory.generatePrivate(new RSAPrivateCrtKeySpec(
+            modulus,
+            publicExponent,
+            privateExponent,
+            primeP,
+            primeQ,
+            primeExpP,
+            primeExpQ,
+            crtCoefficient
+    ));
+
+    PemObject pemObject = new PemObject("RSA PRIVATE KEY", privateKeyToPkcs1(key));
+    StringWriter stringWriter = new StringWriter();
+    PemWriter pemWriter = new PemWriter(stringWriter);
+    pemWriter.writeObject(pemObject);
+    pemWriter.close();
+
+    return stringWriter.toString();
+  }
+
   private WritableMap pkcs1ToPublicKey(ASN1Primitive obj) {
     org.spongycastle.asn1.pkcs.RSAPublicKey keyStruct = org.spongycastle.asn1.pkcs.RSAPublicKey.getInstance(obj);
 
@@ -122,6 +155,12 @@ public class Encryption extends ReactContextBaseJavaModule {
     jwk.putString("qi", toString(keyStruct.getCoefficient(), false));
 
     return jwk;
+  }
+
+  private byte[] publicKeyToPkcs1(PublicKey publicKey) throws IOException {
+    SubjectPublicKeyInfo spkInfo = SubjectPublicKeyInfo.getInstance(publicKey.getEncoded());
+    ASN1Primitive primitive = spkInfo.parsePublicKey();
+    return primitive.getEncoded();
   }
 
   private static byte[] privateKeyToPkcs1(PrivateKey privateKey) throws IOException {
