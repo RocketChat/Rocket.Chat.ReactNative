@@ -5,6 +5,7 @@ import database from '../database';
 import log from '../../utils/log';
 import random from '../../utils/random';
 import E2E from '../encryption/e2e';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../encryption/constants';
 
 const changeMessageStatus = async(id, tmid, status, message) => {
 	const db = database.active;
@@ -46,13 +47,16 @@ const changeMessageStatus = async(id, tmid, status, message) => {
 
 export async function sendMessageCall(message) {
 	const {
-		id: _id, subscription: { id: rid }, msg, tmid
+		id: _id, subscription: { id: rid }, msg, tmid, encrypted
 	} = message;
 	try {
 		const sdk = this.shareSDK || this.sdk;
-		message = await E2E.encryptMessage({
+		message = {
 			_id, rid, msg, tmid
-		});
+		};
+		if (encrypted) {
+			message = await E2E.encryptMessage(message);
+		}
 		// RC 0.60.0
 		const result = await sdk.post('chat.sendMessage', { message });
 		if (result.success) {
@@ -64,7 +68,7 @@ export async function sendMessageCall(message) {
 	return changeMessageStatus(_id, tmid, messagesStatus.ERROR);
 }
 
-export default async function(rid, msg, tmid, user) {
+export default async function(rid, msg, tmid, user, encrypted) {
 	try {
 		const db = database.active;
 		const subsCollection = db.collections.get('subscriptions');
@@ -74,7 +78,7 @@ export default async function(rid, msg, tmid, user) {
 		const messageId = random(17);
 		const batch = [];
 		const message = {
-			id: messageId, subscription: { id: rid }, msg, tmid
+			id: messageId, subscription: { id: rid }, msg, tmid, encrypted
 		};
 		const messageDate = new Date();
 		let tMessageRecord;
@@ -106,6 +110,10 @@ export default async function(rid, msg, tmid, user) {
 							tm._updatedAt = messageDate;
 							tm.status = messagesStatus.SENT; // Original message was sent already
 							tm.u = tMessageRecord.u;
+							if (encrypted) {
+								tm.e2e = E2E_STATUS.DONE;
+								tm.t = E2E_MESSAGE_TYPE;
+							}
 						})
 					);
 				}
@@ -124,6 +132,10 @@ export default async function(rid, msg, tmid, user) {
 							_id: user.id || '1',
 							username: user.username
 						};
+						if (encrypted) {
+							tm.e2e = E2E_STATUS.DONE;
+							tm.t = E2E_MESSAGE_TYPE;
+						}
 					})
 				);
 			} catch (e) {
@@ -148,6 +160,10 @@ export default async function(rid, msg, tmid, user) {
 					m.tmid = tmid;
 					m.tlm = messageDate;
 					m.tmsg = tMessageRecord.msg;
+				}
+				if (encrypted) {
+					m.e2e = E2E_STATUS.DONE;
+					m.t = E2E_MESSAGE_TYPE;
 				}
 			})
 		);

@@ -7,8 +7,8 @@ import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 import styles from './styles';
 
-const E2E = React.memo(({ type, theme }) => {
-	if (type !== E2E_MESSAGE_TYPE) {
+const E2E = React.memo(({ type, hide, theme }) => {
+	if (type !== E2E_MESSAGE_TYPE || hide) {
 		return null;
 	}
 
@@ -20,6 +20,7 @@ const E2E = React.memo(({ type, theme }) => {
 });
 E2E.propTypes = {
 	type: PropTypes.string,
+	hide: PropTypes.string,
 	theme: PropTypes.string
 };
 

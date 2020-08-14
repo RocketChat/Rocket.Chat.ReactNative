@@ -55,6 +55,7 @@ const Content = React.memo((props) => {
 			</View>
 			<E2E
 				type={props.type}
+				hide={props.tmid && !props.isThreadRoom}
 				theme={props.theme}
 			/>
 		</View>
