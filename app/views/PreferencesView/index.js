@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import I18n from '../../i18n';
 import {
@@ -13,7 +14,8 @@ import StatusBar from '../../containers/StatusBar';
 import ListItem from '../../containers/ListItem';
 import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import { withTheme } from '../../theme';
-
+import RocketChat from '../../lib/rocketchat';
+import { getUserSelector } from '../../selectors/login';
 
 class PreferencesView extends React.Component {
 	static navigationOptions = () => ({
@@ -22,7 +24,22 @@ class PreferencesView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		user: PropTypes.shape({
+			id: PropTypes.string
+		}),
+	}
+
+	state = {
+    preferences: {},
+  }; 
+
+	async componentDidMount() {
+		const { user } = this.props;
+		const { id } = user;
+		const result = await RocketChat.getUserPreferences(id);
+		const { preferences } = result;
+		this.setState({preferences});
 	}
 
 	renderDisclosure = () => {
@@ -30,14 +47,15 @@ class PreferencesView extends React.Component {
 		return <DisclosureImage theme={theme} />;
 	}
 
-	navigateToScreen = (screen) => {
+	navigateToScreen = (screen, params) => {
 		logEvent(events[`SE_GO_${ screen.replace('View', '').toUpperCase() }`]);
 		const { navigation } = this.props;
-		navigation.navigate(screen);
+		navigation.navigate(screen, params);
 	}
 
 	render() {
 		const { theme } = this.props;
+		const { preferences } = this.state;
 
 		return (
 			<SafeAreaView testID='preferences-view' theme={theme}>
@@ -50,7 +68,7 @@ class PreferencesView extends React.Component {
 				>
 					<ListItem
 						title={I18n.t('Notifications')}
-						onPress={() => { }}
+						onPress={() => this.navigateToScreen('UserNotificationPrefView', { preferences })}
 						showActionIndicator
 						testID='preferences-view-notifications'
 						right={this.renderDisclosure}
@@ -63,4 +81,10 @@ class PreferencesView extends React.Component {
 	}
 }
 
-export default withTheme(PreferencesView);
+const mapStateToProps = state => ({
+	user: getUserSelector(state)
+});
+
+const mapDispatchToProps = () => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(PreferencesView));

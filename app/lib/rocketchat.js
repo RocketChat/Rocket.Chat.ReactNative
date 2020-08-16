@@ -780,6 +780,9 @@ const RocketChat = {
 		// RC 0.48.0
 		return this.sdk.get('users.info', { userId });
 	},
+	getUserPreferences(userId) {
+		return this.sdk.get('users.getPreferences', { userId });
+	},
 	getRoomInfo(roomId) {
 		// RC 0.72.0
 		return this.sdk.get('rooms.info', { roomId });
