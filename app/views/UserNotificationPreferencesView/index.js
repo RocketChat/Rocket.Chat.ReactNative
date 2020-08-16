@@ -153,9 +153,7 @@ class UserNotificationPreferencesView extends React.Component {
 					/>
 
 					<Separator theme={theme} />
-					<Info info={I18n.t('You need to verify your email address to get notifications')} theme={theme} />
-
-					<Separator theme={theme} />
+					<Info info={I18n.t('You_need_to_verifiy_your_email_address_to_get_notications')} theme={theme} />
 
 					<View style={[styles.marginBottom, { backgroundColor: themes[theme].auxiliaryBackground }]} />
 				</ScrollView>
