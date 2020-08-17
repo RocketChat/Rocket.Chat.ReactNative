@@ -3,6 +3,7 @@ import {
 	View, ScrollView, Text
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import { themes } from '../../constants/colors';
 import StatusBar from '../../containers/StatusBar';
@@ -22,6 +23,7 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import EventEmitter from '../../utils/events';
 import { INAPP_NOTIFICATION_EMITTER } from '../../containers/InAppNotification';
+import { getUserSelector } from '../../selectors/login';
 
 class UserNotificationPreferencesView extends React.Component {
 	static navigationOptions = () => ({
@@ -31,21 +33,22 @@ class UserNotificationPreferencesView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		route: PropTypes.object,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		user: PropTypes.shape({
+			id: PropTypes.string
+		})
 	};
 
 	constructor(props) {
 		super(props);
-		const user = props.route.params?.user;
 		this.state = {
 			preferences: {},
-			user: user || {},
 			loading: false
 		};
 	}
 
 	async componentDidMount() {
-		const { user } = this.state;
+		const { user } = this.props;
 		const { id } = user;
 		const result = await RocketChat.getUserPreferences(id);
 		const { preferences } = result;
@@ -82,7 +85,7 @@ class UserNotificationPreferencesView extends React.Component {
 	onValueChangePicker = (key, value) => this.saveNotificationPreferences({ [key]: value.toString() });
 
 	saveNotificationPreferences = async(params) => {
-		const { user } = this.state;
+		const { user } = this.props;
 		const { id } = user;
 		const result = await RocketChat.setUserPreferences(id, params);
 		const { user: { settings } } = result;
@@ -181,4 +184,8 @@ class UserNotificationPreferencesView extends React.Component {
 	}
 }
 
-export default withTheme(UserNotificationPreferencesView);
+const mapStateToProps = state => ({
+	user: getUserSelector(state)
+});
+
+export default connect(mapStateToProps)(withTheme(UserNotificationPreferencesView));

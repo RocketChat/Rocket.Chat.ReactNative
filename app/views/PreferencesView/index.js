@@ -1,7 +1,6 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 import I18n from '../../i18n';
 import {
@@ -14,7 +13,6 @@ import StatusBar from '../../containers/StatusBar';
 import ListItem from '../../containers/ListItem';
 import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import { withTheme } from '../../theme';
-import { getUserSelector } from '../../selectors/login';
 
 class PreferencesView extends React.Component {
 	static navigationOptions = () => ({
@@ -23,10 +21,7 @@ class PreferencesView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		theme: PropTypes.string,
-		user: PropTypes.shape({
-			id: PropTypes.string
-		})
+		theme: PropTypes.string
 	}
 
 	renderDisclosure = () => {
@@ -41,7 +36,7 @@ class PreferencesView extends React.Component {
 	}
 
 	render() {
-		const { theme, user } = this.props;
+		const { theme } = this.props;
 
 		return (
 			<SafeAreaView testID='preferences-view' theme={theme}>
@@ -54,7 +49,7 @@ class PreferencesView extends React.Component {
 				>
 					<ListItem
 						title={I18n.t('Notifications')}
-						onPress={() => this.navigateToScreen('UserNotificationPrefView', { user })}
+						onPress={() => this.navigateToScreen('UserNotificationPrefView')}
 						showActionIndicator
 						testID='preferences-view-notifications'
 						right={this.renderDisclosure}
@@ -67,10 +62,4 @@ class PreferencesView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
-	user: getUserSelector(state)
-});
-
-const mapDispatchToProps = () => ({});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(PreferencesView));
+export default withTheme(PreferencesView);
