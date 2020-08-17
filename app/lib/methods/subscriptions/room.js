@@ -11,7 +11,7 @@ import { addUserTyping, removeUserTyping, clearUserTyping } from '../../../actio
 import debounce from '../../../utils/debounce';
 import RocketChat from '../../rocketchat';
 import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
-import E2E from '../../encryption/e2e';
+import { Encryption } from '../../encryption';
 
 const WINDOW_TIME = 1000;
 
@@ -166,7 +166,7 @@ export default class RoomSubscription {
 
 			try {
 				// Decrypt the message if necessary
-				message = await E2E.decryptMessage(message);
+				message = await Encryption.decryptMessage(message);
 			} catch {
 				// Do nothing
 			}

@@ -21,12 +21,12 @@ import {
 	E2E_MESSAGE_TYPE
 } from './constants';
 import RocketChat from '../rocketchat';
-import E2ERoom from './e2e.room';
+import E2ERoom from './encryption.room';
 import store from '../createStore';
 import database from '../database';
 import I18n from '../../i18n';
 
-class E2E {
+class Encryption {
 	constructor() {
 		this.started = false;
 		this.roomInstances = {};
@@ -222,7 +222,7 @@ class E2E {
 		}
 
 		const roomE2E = new E2ERoom(rid);
-		await roomE2E.handshake();
+		await roomE2E.handshake(this.privateKey);
 		this.roomInstances[rid] = roomE2E;
 		return roomE2E;
 	}
@@ -260,9 +260,9 @@ class E2E {
 			subsToDecrypt.forEach(async(sub) => {
 				try {
 					const { lastMessage } = sub;
-					const decryptedMessage = await this.decryptMessage(lastMessage);
+					const decryptedSub = await this.decryptSubscription({ lastMessage });
 					db.action(() => sub.update((s) => {
-						s.lastMessage = decryptedMessage;
+						Object.assign(s, decryptedSub);
 					}));
 				} catch {
 					// Do nothing
@@ -271,6 +271,26 @@ class E2E {
 		} catch {
 			// Do nothing
 		}
+	}
+
+	decryptSubscription = async(subscription) => {
+		if (!subscription?.lastMessage) {
+			return;
+		}
+
+		try {
+			const { lastMessage } = subscription;
+			const roomE2E = await this.getRoomInstance(lastMessage.rid);
+			const decryptedMessage = await roomE2E.decrypt(lastMessage);
+			return {
+				...subscription,
+				lastMessage: decryptedMessage
+			};
+		} catch {
+			// Do nothing
+		}
+
+		return subscription;
 	}
 
 	encryptMessage = async(message) => {
@@ -298,5 +318,5 @@ class E2E {
 	}
 }
 
-const e2e = new E2E();
-export default e2e;
+const encryption = new Encryption();
+export default encryption;

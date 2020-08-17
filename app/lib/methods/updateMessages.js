@@ -5,7 +5,7 @@ import buildMessage from './helpers/buildMessage';
 import log from '../../utils/log';
 import database from '../database';
 import protectedFunction from './helpers/protectedFunction';
-import E2E from '../encryption/e2e';
+import { Encryption } from '../encryption';
 
 export default function updateMessages({ rid, update = [], remove = [] }) {
 	try {
@@ -15,7 +15,7 @@ export default function updateMessages({ rid, update = [], remove = [] }) {
 		const db = database.active;
 		return db.action(async() => {
 			try {
-				update = await Promise.all(update.map(m => E2E.decryptMessage(m)));
+				update = await Promise.all(update.map(m => Encryption.decryptMessage(m)));
 			} catch {
 				// Do nothing
 			}

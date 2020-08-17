@@ -15,17 +15,16 @@ import {
 import database from '../database';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from './constants';
 import RocketChat from '../rocketchat';
-import e2e from './e2e';
 import { isIOS } from '../../utils/deviceInfo';
 
-export default class E2ERoom {
+export default class EncryptionRoom {
 	constructor(roomId) {
 		this.roomId = roomId;
 		this.ready = false;
 	}
 
 	// Initialize the E2E room
-	handshake = async() => {
+	handshake = async(privateKey) => {
 		const db = database.active;
 		const subCollection = db.collections.get('subscriptions');
 		// TODO: Should be an observable to check encrypted property
@@ -37,12 +36,12 @@ export default class E2ERoom {
 			return;
 		}
 
-		if (!e2e.privateKey) {
+		if (!privateKey) {
 			return Promise.reject();
 		}
 
 		if (E2EKey) {
-			await this.importRoomKey(E2EKey);
+			await this.importRoomKey(E2EKey, privateKey);
 			return;
 		}
 
@@ -55,14 +54,14 @@ export default class E2ERoom {
 	}
 
 	// Import roomKey as an AES Decrypt key
-	importRoomKey = async(E2EKey) => {
+	importRoomKey = async(E2EKey, privateKey) => {
 		const roomE2EKey = E2EKey.slice(12);
 
-		if (!roomE2EKey || !e2e.privateKey) {
+		if (!roomE2EKey) {
 			return;
 		}
 
-		const decryptedKey = await SimpleCrypto.RSA.decrypt(roomE2EKey, e2e.privateKey);
+		const decryptedKey = await SimpleCrypto.RSA.decrypt(roomE2EKey, privateKey);
 		const sessionKey = toString(decryptedKey);
 
 		this.keyID = Base64.encode(sessionKey).slice(0, 12);

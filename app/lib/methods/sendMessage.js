@@ -4,7 +4,7 @@ import messagesStatus from '../../constants/messagesStatus';
 import database from '../database';
 import log from '../../utils/log';
 import random from '../../utils/random';
-import E2E from '../encryption/e2e';
+import { Encryption } from '../encryption';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../encryption/constants';
 
 const changeMessageStatus = async(id, tmid, status, message) => {
@@ -55,7 +55,7 @@ export async function sendMessageCall(message) {
 			_id, rid, msg, tmid
 		};
 		if (encrypted) {
-			message = await E2E.encryptMessage(message);
+			message = await Encryption.encryptMessage(message);
 		}
 		// RC 0.60.0
 		const result = await sdk.post('chat.sendMessage', { message });

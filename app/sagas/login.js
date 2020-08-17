@@ -26,7 +26,7 @@ import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../utils/info';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { setActiveUsers } from '../actions/activeUsers';
-import E2E from '../lib/encryption/e2e';
+import { Encryption } from '../lib/encryption';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -102,7 +102,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchSlashCommands);
 		yield fork(registerPushToken);
 		yield fork(fetchUsersPresence);
-		E2E.start();
+		Encryption.start();
 
 		I18n.locale = user.language;
 		moment.locale(toMomentLocale(user.language));
