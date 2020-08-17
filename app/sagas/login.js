@@ -26,6 +26,7 @@ import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../utils/info';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { setActiveUsers } from '../actions/activeUsers';
+import { notifyAllRequest } from '../actions/notifyAll';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -95,6 +96,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		const server = yield select(getServer);
 		yield put(roomsRequest());
 		yield put(inquiryRequest());
+		yield put(notifyAllRequest());
 		yield fork(fetchPermissions);
 		yield fork(fetchCustomEmojis);
 		yield fork(fetchRoles);

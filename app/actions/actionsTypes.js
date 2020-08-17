@@ -66,3 +66,4 @@ export const INVITE_LINKS = createRequestTypes('INVITE_LINKS', [
 ]);
 export const SETTINGS = createRequestTypes('SETTINGS', ['CLEAR', 'ADD']);
 export const APP_STATE = createRequestTypes('APP_STATE', ['FOREGROUND', 'BACKGROUND']);
+export const NOTIFY_ALL_REQUEST = 'NOTIFY_ALL_REQUEST';

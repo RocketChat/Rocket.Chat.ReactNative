@@ -82,6 +82,16 @@ const RocketChat = {
 			}
 		}
 	},
+	subscribeNotifyAll() {
+		if (!this.notifyAllSub) {
+			alert('Hello');
+			try {
+				this.notifyAllSub = '';
+			} catch (e) {
+				log(e);
+			}
+		}
+	},
 	canOpenRoom,
 	createChannel({
 		name, users, type, readOnly, broadcast
