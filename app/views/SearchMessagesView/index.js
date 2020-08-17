@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, FlatList, Text } from 'react-native';
+import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
 
@@ -20,6 +21,7 @@ import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { CloseModalButton } from '../../containers/HeaderButton';
+import database from '../../lib/database';
 
 class SearchMessagesView extends React.Component {
 	static navigationOptions = ({ navigation, route }) => {
@@ -79,10 +81,17 @@ class SearchMessagesView extends React.Component {
 		this.setState({ searchText, loading: true, messages: [] });
 
 		try {
+			const db = database.active;
+			const messagesCollection = db.collections.get('messages');
+			const data = await messagesCollection.query(
+				Q.where('rid', this.rid),
+				Q.where('msg', Q.like(`%${ Q.sanitizeLikeString(searchText) }%`))
+			).fetch();
+			// TODO: We should merge these values or use DB results only on Encrypted rooms
 			const result = await RocketChat.searchMessages(this.rid, searchText);
 			if (result.success) {
 				this.setState({
-					messages: result.messages || [],
+					messages: data || [],
 					loading: false
 				});
 			}
