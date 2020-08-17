@@ -256,7 +256,9 @@ jobs:
       - run:
           name: Set Google Services
           command: |
-            cp GoogleService-Info.prod.plist GoogleService-Info.plist
+            if [[ $KEYSTORE ]]; then
+              echo $GOOGLE_SERVICES_REACTNATIVE | base64 --decode > GoogleService-Info.plist
+            fi
           working_directory: ios
 
       - run:
