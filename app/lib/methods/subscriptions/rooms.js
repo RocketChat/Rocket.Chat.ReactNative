@@ -325,21 +325,7 @@ export default function subscribeRooms() {
 			} catch (e) {
 				// do nothing
 			}
-			const { login: { user: id } } = store.getState();
-			const { preferences } = await RocketChat.getUserPreferences(id);
-			const { desktopNotifications } = preferences;
-
-			if (desktopNotifications !== 'nothing') {
-				if (desktopNotifications !== 'mentions') {
-					EventEmitter.emit(INAPP_NOTIFICATION_EMITTER, notification);
-				} else {
-					const { payload: { message } } = notification;
-					const { login: { user } } = store.getState();
-					if (message.msg.includes('@here') || message.msg.includes('@all') || message.msg.includes(`@${ user.username }`)) {
-						EventEmitter.emit(INAPP_NOTIFICATION_EMITTER, notification);
-					}
-				}
-			}
+			EventEmitter.emit(INAPP_NOTIFICATION_EMITTER, notification);
 		}
 		if (/uiInteraction/.test(ev)) {
 			const { type: eventType, ...args } = type;
