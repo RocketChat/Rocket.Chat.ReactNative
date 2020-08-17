@@ -95,11 +95,12 @@ class UserNotificationPreferencesView extends React.Component {
 	}
 
 	testInAppNotification = () => {
-		const notification = {};
-		notification.title = I18n.t('INAPP_NOTIFICATION_TEST');
-		notification.text = I18n.t('This_is_an_in_app_notification');
-		notification.avatar = 'rocket.cat';
-		notification.payload = { example: true };
+		const notification = {
+			title: I18n.t('INAPP_NOTIFICATION_TEST'),
+			text: I18n.t('This_is_an_in_app_notification'),
+			avatar: 'rocket.cat',
+			payload: { example: true }
+		};
 		EventEmitter.emit(INAPP_NOTIFICATION_EMITTER, notification);
 	}
 
