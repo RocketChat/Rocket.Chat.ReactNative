@@ -33,11 +33,11 @@ class Encryption {
 	}
 
 	start = async() => {
-		// TODO: Do this better
-		const { E2E_Enable } = store.getState().settings;
-		if (!E2E_Enable) {
-			return;
-		}
+		// TODO: Do this better | Share Extension should set this value
+		// const { E2E_Enable } = store.getState().settings;
+		// if (!E2E_Enable) {
+		// 	return;
+		// }
 
 		if (this.started) {
 			return;
@@ -46,8 +46,8 @@ class Encryption {
 		this.started = true;
 
 		// TODO: Do this better
-		this.server = store.getState().server.server;
-		this.userId = store.getState().login.user.id;
+		this.server = store.getState().server.server || store.getState().share.server;
+		this.userId = store.getState().login.user?.id || store.getState().share.user.id;
 
 		try {
 			const storedPublicKey = await RNUserDefaults.get(`${ this.server }-${ E2E_PUBLIC_KEY }`);

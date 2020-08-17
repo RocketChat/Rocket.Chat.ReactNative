@@ -53,6 +53,9 @@ import { twoFactor } from '../utils/twoFactor';
 import { selectServerFailure } from '../actions/server';
 import { useSsl } from '../utils/url';
 
+// TODO: Fix this require cycle
+import { Encryption } from './encryption';
+
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
 export const THEME_PREFERENCES_KEY = 'RC_THEME_PREFERENCES_KEY';
@@ -335,6 +338,7 @@ const RocketChat = {
 				};
 			}
 			reduxStore.dispatch(shareSetUser(user));
+			Encryption.start();
 			await RocketChat.login({ resume: user.token });
 		} catch (e) {
 			log(e);
