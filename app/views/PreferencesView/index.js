@@ -14,7 +14,6 @@ import StatusBar from '../../containers/StatusBar';
 import ListItem from '../../containers/ListItem';
 import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import { withTheme } from '../../theme';
-import RocketChat from '../../lib/rocketchat';
 import { getUserSelector } from '../../selectors/login';
 
 class PreferencesView extends React.Component {
@@ -27,7 +26,7 @@ class PreferencesView extends React.Component {
 		theme: PropTypes.string,
 		user: PropTypes.shape({
 			id: PropTypes.string
-		}),
+		})
 	}
 
 	renderDisclosure = () => {

@@ -43,7 +43,7 @@ import NewMessageView from '../../views/NewMessageView';
 import CreateChannelView from '../../views/CreateChannelView';
 import QueueListView from '../../views/QueueListView';
 import PreferencesView from '../../views/PreferencesView';
-/* import UserNotificationPrefView from '../../views/UserNotificationPreferencesView'; */
+import UserNotificationPrefView from '../../views/UserNotificationPreferencesView';
 
 // InsideStackNavigator
 import AttachmentView from '../../views/AttachmentView';
