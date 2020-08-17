@@ -21,6 +21,7 @@ import {
 
 import subscribeRooms from './methods/subscriptions/rooms';
 import subscribeInquiry from './methods/subscriptions/inquiry';
+import subscribeNotifyAll from './methods/subscriptions/notifyAll';
 import getUsersPresence, { getUserPresence, subscribeUsersPresence } from './methods/getUsersPresence';
 
 import protectedFunction from './methods/helpers/protectedFunction';
@@ -84,9 +85,8 @@ const RocketChat = {
 	},
 	subscribeNotifyAll() {
 		if (!this.notifyAllSub) {
-			alert('Hello');
 			try {
-				this.notifyAllSub = '';
+				this.notifyAllSub = subscribeNotifyAll.call(this);
 			} catch (e) {
 				log(e);
 			}
@@ -226,6 +226,11 @@ const RocketChat = {
 			if (this.inquirySub) {
 				this.inquirySub.stop();
 				this.inquirySub = null;
+			}
+
+			if (this.notifyAllSub) {
+				this.notifyAllSub.stop();
+				this.notifyAllSub = null;
 			}
 
 			if (this.sdk) {
