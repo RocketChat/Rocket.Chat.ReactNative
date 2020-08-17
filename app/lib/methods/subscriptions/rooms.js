@@ -327,8 +327,18 @@ export default function subscribeRooms() {
 			}
 			const { login: { user: id } } = store.getState();
 			const { preferences } = await RocketChat.getUserPreferences(id);
-			if (preferences.desktopNotifications !== 'nothing') {
-				EventEmitter.emit(INAPP_NOTIFICATION_EMITTER, notification);
+			const { desktopNotifications } = preferences;
+
+			if (desktopNotifications !== 'nothing') {
+				if (desktopNotifications !== 'mentions') {
+					EventEmitter.emit(INAPP_NOTIFICATION_EMITTER, notification);
+				} else {
+					const { payload: { message } } = notification;
+					const { login: { user } } = store.getState();
+					if (message.msg.includes('@here') || message.msg.includes('@all') || message.msg.includes(`@${ user.username }`)) {
+						EventEmitter.emit(INAPP_NOTIFICATION_EMITTER, notification);
+					}
+				}
 			}
 		}
 		if (/uiInteraction/.test(ev)) {
