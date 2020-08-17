@@ -62,11 +62,11 @@ export default class EncryptionRoom {
 		}
 
 		const decryptedKey = await SimpleCrypto.RSA.decrypt(roomE2EKey, privateKey);
-		const sessionKey = toString(decryptedKey);
+		this.sessionKeyExportedString = toString(decryptedKey);
 
-		this.keyID = Base64.encode(sessionKey).slice(0, 12);
+		this.keyID = Base64.encode(this.sessionKeyExportedString).slice(0, 12);
 
-		const { k } = EJSON.parse(sessionKey);
+		const { k } = EJSON.parse(this.sessionKeyExportedString);
 		this.roomKey = b64ToBuffer(k);
 	}
 

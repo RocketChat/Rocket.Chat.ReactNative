@@ -337,6 +337,11 @@ export default function subscribeRooms() {
 			const { type: eventType, ...args } = type;
 			handlePayloadUserInteraction(eventType, args);
 		}
+		// TODO: Move to encryption file
+		if (/e2ekeyRequest/.test(ev)) {
+			const [roomId, keyId] = ddpMessage.fields.args;
+			Encryption.provideRoomKeyToUser(keyId, roomId);
+		}
 	});
 
 	const stop = () => {
