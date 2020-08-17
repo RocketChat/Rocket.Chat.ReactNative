@@ -325,7 +325,11 @@ export default function subscribeRooms() {
 			} catch (e) {
 				// do nothing
 			}
-			EventEmitter.emit(INAPP_NOTIFICATION_EMITTER, notification);
+			const { login: { user: id } } = store.getState();
+			const { preferences } = await RocketChat.getUserPreferences(id);
+			if (preferences.desktopNotifications !== 'nothing') {
+				EventEmitter.emit(INAPP_NOTIFICATION_EMITTER, notification);
+			}
 		}
 		if (/uiInteraction/.test(ev)) {
 			const { type: eventType, ...args } = type;

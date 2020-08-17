@@ -19,6 +19,9 @@ import SectionSeparator from '../NotificationPreferencesView/SectionSeparator';
 import Info from '../NotificationPreferencesView/Info';
 import { OPTIONS } from './options';
 import ActivityIndicator from '../../containers/ActivityIndicator';
+import { DisclosureImage } from '../../containers/DisclosureIndicator';
+import EventEmitter from '../../utils/events';
+import { INAPP_NOTIFICATION_EMITTER } from '../../containers/InAppNotification';
 
 class UserNotificationPreferencesView extends React.Component {
 	static navigationOptions = () => ({
@@ -86,6 +89,20 @@ class UserNotificationPreferencesView extends React.Component {
 		this.setState({ preferences: settings.preferences });
 	}
 
+	renderDisclosure = () => {
+		const { theme } = this.props;
+		return <DisclosureImage theme={theme} />;
+	}
+
+	testInAppNotification = () => {
+		const notification = {};
+		notification.title = I18n.t('INAPP_NOTIFICATION_TEST');
+		notification.text = I18n.t('This_is_an_in_app_notification');
+		notification.avatar = 'rocket.cat';
+		notification.payload = { example: true };
+		EventEmitter.emit(INAPP_NOTIFICATION_EMITTER, notification);
+	}
+
 	render() {
 		const { theme } = this.props;
 		const { loading } = this.state;
@@ -101,8 +118,19 @@ class UserNotificationPreferencesView extends React.Component {
 					{loading
 						? (
 							<>
+								<SectionTitle title={I18n.t('INAPP_NOTIFICATIONS')} theme={theme} />
+
+								<ListItem
+									title={I18n.t('INAPP_NOTIFICATION_TEST')}
+									onPress={() => this.testInAppNotification()}
+									showActionIndicator
+									testID='preferences-view-inapp-test'
+									right={this.renderDisclosure}
+									theme={theme}
+								/>
+
+								<SectionSeparator theme={theme} />
 								<SectionTitle title={I18n.t('IN_APP_AND_DESKTOP')} theme={theme} />
-								<Separator theme={theme} />
 
 								<ListItem
 									title={I18n.t('Alert')}
