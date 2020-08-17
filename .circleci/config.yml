@@ -150,7 +150,7 @@ jobs:
             # echo -e "android.enableAapt2=false" >> ./gradle.properties
             echo -e "android.useAndroidX=true" >> ./gradle.properties
             echo -e "android.enableJetifier=true" >> ./gradle.properties
-            echo -e "FLIPPER_VERSION=0.33.1" >> ./gradle.properties
+            echo -e "FLIPPER_VERSION=0.51.0" >> ./gradle.properties
 
             if [[ $KEYSTORE ]]; then
               echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
@@ -167,7 +167,9 @@ jobs:
       - run:
           name: Set Google Services
           command: |
-            cp google-services.prod.json google-services.json
+            if [[ $KEYSTORE ]]; then
+              echo $GOOGLE_SERVICES_ANDROID | base64 --decode > google-services.json
+            fi
           working_directory: android/app
 
       - run:
@@ -254,7 +256,9 @@ jobs:
       - run:
           name: Set Google Services
           command: |
-            cp GoogleService-Info.prod.plist GoogleService-Info.plist
+            if [[ $KEYSTORE ]]; then
+              echo $GOOGLE_SERVICES_REACTNATIVE | base64 --decode > GoogleService-Info.plist
+            fi
           working_directory: ios
 
       - run:
