@@ -47,10 +47,10 @@ export default class EncryptionRoom {
 
 		if (!e2eKeyId) {
 			await this.createRoomKey();
+			return;
 		}
 
-		// notify-room-users
-		// Notifications.notifyUsersOfRoom(this.roomId, 'e2ekeyRequest', this.roomId, e2eKeyId);
+		await RocketChat.methodCall('stream-notify-room-users', `${ this.roomId }/e2ekeyRequest`, this.roomId, e2eKeyId);
 	}
 
 	// Import roomKey as an AES Decrypt key

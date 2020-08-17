@@ -113,4 +113,6 @@ export default class Subscription extends Model {
 	@field('e2e_key') E2EKey;
 
 	@field('encrypted') encrypted;
+
+	@field('e2e_key_id') e2eKeyId;
 }

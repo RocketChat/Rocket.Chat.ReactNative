@@ -82,7 +82,7 @@ index 17c2c2b..cb094e8 100644
    success (result: any, ignore?: RegExp) {
      return (
 diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-index 247ce8b..c67179e 100644
+index 247ce8b..0ac6ca9 100644
 --- a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
 +++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
 @@ -538,7 +538,9 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
@@ -94,5 +94,15 @@ index 247ce8b..c67179e 100644
 +      'userData',
 +      'e2ekeyRequest'
      ].map(event => this.subscribe(topic, `${this.userId}/${event}`, false)))
+   }
+ 
+@@ -547,7 +549,8 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
+     return Promise.all([
+       this.subscribe('stream-room-messages', rid, ...args),
+       this.subscribe(topic, `${rid}/typing`, ...args),
+-      this.subscribe(topic, `${rid}/deleteMessage`, ...args)
++      this.subscribe(topic, `${rid}/deleteMessage`, ...args),
++      this.subscribe(topic, `${rid}/e2ekeyRequest`, ...args)
+     ])
    }
  

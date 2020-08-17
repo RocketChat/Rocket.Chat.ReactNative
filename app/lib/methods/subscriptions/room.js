@@ -146,6 +146,11 @@ export default class RoomSubscription {
 					}
 				}
 			});
+		// TODO: We can move this to encryption file?
+		// TODO: I don't know how we can reach this event
+		} else if (ev === 'e2ekeyRequest') {
+			const [keyId] = ddpMessage.fields.args;
+			Encryption.provideRoomKeyToUser(keyId, this.rid);
 		}
 	});
 

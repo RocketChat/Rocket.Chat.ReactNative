@@ -71,6 +71,8 @@ export default async(subscriptions = [], rooms = []) => {
 			uids: r.uids,
 			ro: r.ro,
 			broadcast: r.broadcast,
+			encrypted: r.encrypted,
+			e2eKeyId: r.e2eKeyId,
 			muted: r.muted,
 			sysMes: r.sysMes,
 			v: r.v,
