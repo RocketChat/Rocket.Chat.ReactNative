@@ -731,6 +731,9 @@ const RocketChat = {
 	setUserPresenceOnline() {
 		return this.methodCall('UserPresence:online');
 	},
+	setUserPreferences(userId, data) {
+		return this.sdk.post('users.setPreferences', { userId, data });
+	},
 	setUserStatus(status, message) {
 		// RC 1.2.0
 		return this.post('users.setStatus', { status, message });
