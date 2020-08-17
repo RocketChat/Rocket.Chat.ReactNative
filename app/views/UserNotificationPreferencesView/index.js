@@ -3,6 +3,7 @@ import {
 	View, ScrollView, Switch, Text
 } from 'react-native';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 import database from '../../lib/database';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
@@ -21,6 +22,7 @@ import SectionTitle from '../NotificationPreferencesView/SectionTitle';
 import SectionSeparator from '../NotificationPreferencesView/SectionSeparator';
 import Info from '../NotificationPreferencesView/Info';
 import { OPTIONS } from './options';
+import ActivityIndicator from '../../containers/ActivityIndicator';
 
 class UserNotificationPreferencesView extends React.Component {
 	static navigationOptions = () => ({
@@ -35,10 +37,20 @@ class UserNotificationPreferencesView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		const preferences = props.route.params?.preferences;
+		const user = props.route.params?.user;
 		this.state = {
-			preferences: preferences || {},
+			preferences: {},
+			user: user || {},
+			loading: false
 		};
+	}
+
+	async componentDidMount() {
+		const { user } = this.state;
+		const { id } = user;
+		const result = await RocketChat.getUserPreferences(id);
+		const { preferences } = result;
+		this.setState({preferences, loading: true});
 	}
 
 	findOption = (key) => {
@@ -48,6 +60,7 @@ class UserNotificationPreferencesView extends React.Component {
 	}
 	renderPickerOption = (key) => {
 		const { theme } = this.props;
+		const { preferences } = this.state;
 		const text = this.findOption(key);
 		return <Text style={[styles.pickerText, { color: themes[theme].actionTintColor }]}>{I18n.t(text?.label, { defaultValue: text?.label, second: text?.second })}</Text>;
 	}
@@ -56,8 +69,8 @@ class UserNotificationPreferencesView extends React.Component {
 		const { preferences } = this.state;
 		const { navigation } = this.props;
 		let values = OPTIONS[key];
-		if ( OPTIONS[key][0].value !== 'default') {
-			values = [{label: `${I18n.t('Default')} (${I18n.t(this.findOption(key).label)})`, value: preferences[key].value}, ...OPTIONS[key]]
+		if ( OPTIONS[key][0]?.value !== 'default') {
+			values = [{label: `${I18n.t('Default')} (${I18n.t(this.findOption(key).label)})`, value: preferences[key]?.value}, ...OPTIONS[key]]
 		}
 		navigation.navigate('PickerView', {
 			title,
@@ -67,43 +80,19 @@ class UserNotificationPreferencesView extends React.Component {
 		});
 	}
 
-	onValueChangePicker = (key, value) => this.saveNotificationSettings(key, value, { [key]: value.toString() });
+	onValueChangePicker = (key, value) => this.saveNotificationPreferences({ [key]: value.toString() });
 
-	saveNotificationSettings = async (key, value, params) => {
-		/* 		logEvent(events[`NP_${key.toUpperCase()}`]);
-				const { room } = this.state;
-				const db = database.active;
-		
-				try {
-					await db.action(async () => {
-						await room.update(protectedFunction((r) => {
-							r[key] = value;
-						}));
-					});
-		
-					try {
-						const result = await RocketChat.saveNotificationSettings(this.rid, params);
-						if (result.success) {
-							return;
-						}
-					} catch {
-						// do nothing
-					}
-		
-					await db.action(async () => {
-						await room.update(protectedFunction((r) => {
-							r[key] = room[key];
-						}));
-					});
-				} catch (e) {
-					logEvent(events[`NP_${key.toUpperCase()}_F`]);
-					log(e);
-				} */
+	saveNotificationPreferences = async (params) => {
+		const { user } = this.state;
+		const { id } = user;
+		const result = await RocketChat.setUserPreferences(id, params);
+		const { user: { settings } } = result;
+		this.setState({preferences: settings.preferences})
 	}
 
 	render() {
-		const { room, user } = this.state;
 		const { theme } = this.props;
+		const { loading } = this.state;
 		return (
 			<SafeAreaView testID='user-notification-preference-view' theme={theme}>
 				<StatusBar theme={theme} />
@@ -113,6 +102,8 @@ class UserNotificationPreferencesView extends React.Component {
 					contentContainerStyle={styles.contentContainer}
 					testID='user-notification-preference-view-list'
 				>
+					{loading ?
+					<>
 					<SectionTitle title={I18n.t('IN_APP_AND_DESKTOP')} theme={theme} />
 					<Separator theme={theme} />
 
@@ -122,7 +113,7 @@ class UserNotificationPreferencesView extends React.Component {
 						onPress={title => this.pickerSelection(title, 'desktopNotifications')}
 						right={() => this.renderPickerOption('desktopNotifications')}
 						theme={theme}
-					/>
+						/>
 					<Separator theme={theme} />
 					<Info info={I18n.t('In_App_and_Desktop_Alert_info')} theme={theme} />
 
@@ -136,7 +127,7 @@ class UserNotificationPreferencesView extends React.Component {
 						onPress={title => this.pickerSelection(title, 'mobileNotifications')}
 						right={() => this.renderPickerOption('mobileNotifications')}
 						theme={theme}
-					/>
+						/>
 					<Separator theme={theme} />
 					<Info info={I18n.t('Push_Notifications_Alert_Info')} theme={theme} />
 
@@ -150,11 +141,12 @@ class UserNotificationPreferencesView extends React.Component {
 						onPress={title => this.pickerSelection(title, 'emailNotificationMode')}
 						right={() => this.renderPickerOption('emailNotificationMode')}
 						theme={theme}
-					/>
+						/>
 
 					<Separator theme={theme} />
 					<Info info={I18n.t('You_need_to_verifiy_your_email_address_to_get_notications')} theme={theme} />
-
+						</> : <ActivityIndicator theme={theme} />
+					}
 					<View style={[styles.marginBottom, { backgroundColor: themes[theme].auxiliaryBackground }]} />
 				</ScrollView>
 			</SafeAreaView>

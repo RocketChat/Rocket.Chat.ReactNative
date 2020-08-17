@@ -30,18 +30,6 @@ class PreferencesView extends React.Component {
 		}),
 	}
 
-	state = {
-    preferences: {},
-  }; 
-
-	async componentDidMount() {
-		const { user } = this.props;
-		const { id } = user;
-		const result = await RocketChat.getUserPreferences(id);
-		const { preferences } = result;
-		this.setState({preferences});
-	}
-
 	renderDisclosure = () => {
 		const { theme } = this.props;
 		return <DisclosureImage theme={theme} />;
@@ -54,8 +42,7 @@ class PreferencesView extends React.Component {
 	}
 
 	render() {
-		const { theme } = this.props;
-		const { preferences } = this.state;
+		const { theme, user } = this.props;
 
 		return (
 			<SafeAreaView testID='preferences-view' theme={theme}>
@@ -68,7 +55,7 @@ class PreferencesView extends React.Component {
 				>
 					<ListItem
 						title={I18n.t('Notifications')}
-						onPress={() => this.navigateToScreen('UserNotificationPrefView', { preferences })}
+						onPress={() => this.navigateToScreen('UserNotificationPrefView', { user })}
 						showActionIndicator
 						testID='preferences-view-notifications'
 						right={this.renderDisclosure}
