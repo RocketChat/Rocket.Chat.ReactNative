@@ -26,15 +26,6 @@ export const OPTIONS = {
 	}, {
 		label: 'Nothing', value: 'nothing'
 	}],
-	mobileNotifications: [{
-		label: 'Default', value: 'default'
-	}, {
-		label: 'All_Messages', value: 'all'
-	}, {
-		label: 'Mentions', value: 'mentions'
-	}, {
-		label: 'Nothing', value: 'nothing'
-	}],
 	emailNotifications: [{
 		label: 'Default', value: 'default'
 	}, {
