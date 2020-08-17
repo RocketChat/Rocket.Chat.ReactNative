@@ -732,6 +732,7 @@ const RocketChat = {
 		return this.methodCall('UserPresence:online');
 	},
 	setUserPreferences(userId, data) {
+		// RC 0.62.0
 		return this.sdk.post('users.setPreferences', { userId, data });
 	},
 	setUserStatus(status, message) {
@@ -784,6 +785,7 @@ const RocketChat = {
 		return this.sdk.get('users.info', { userId });
 	},
 	getUserPreferences(userId) {
+		// RC 0.62.0
 		return this.sdk.get('users.getPreferences', { userId });
 	},
 	getRoomInfo(roomId) {
