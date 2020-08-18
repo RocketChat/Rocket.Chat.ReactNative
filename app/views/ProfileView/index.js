@@ -163,7 +163,7 @@ class ProfileView extends React.Component {
 		showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }));
 	}
 
-	submit = async() => {
+	submit = async () => {
 		Keyboard.dismiss();
 
 		if (!this.formIsChanged()) {
@@ -188,13 +188,13 @@ class ProfileView extends React.Component {
 			params.username = username;
 		}
 
-		// nickname
-		if (nickname) {
+		// Nickname
+		if (user.nickname !== nickname) {
 			params.nickname = nickname;
 		}
 
-		// bio
-		if (bio) {
+		// Bio
+		if (user.bio !== bio) {
 			params.bio = bio;
 		}
 
@@ -269,7 +269,7 @@ class ProfileView extends React.Component {
 		}
 	}
 
-	resetAvatar = async() => {
+	resetAvatar = async () => {
 		const { Accounts_AllowUserAvatarChange } = this.props;
 
 		if (!Accounts_AllowUserAvatarChange) {
@@ -286,7 +286,7 @@ class ProfileView extends React.Component {
 		}
 	}
 
-	pickImage = async() => {
+	pickImage = async () => {
 		const { Accounts_AllowUserAvatarChange } = this.props;
 
 		if (!Accounts_AllowUserAvatarChange) {
@@ -304,7 +304,7 @@ class ProfileView extends React.Component {
 		try {
 			logEvent(events.PROFILE_PICK_AVATAR);
 			const response = await ImagePicker.openPicker(options);
-			this.setAvatar({ url: response.path, data: `data:image/jpeg;base64,${ response.data }`, service: 'upload' });
+			this.setAvatar({ url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' });
 		} catch (error) {
 			logEvent(events.PROFILE_PICK_AVATAR_F);
 			console.warn(error);
@@ -346,7 +346,7 @@ class ProfileView extends React.Component {
 		return (
 			<View style={styles.avatarButtons}>
 				{this.renderAvatarButton({
-					child: <Avatar text={`@${ user.username }`} size={50} baseUrl={baseUrl} userId={user.id} token={user.token} />,
+					child: <Avatar text={`@${user.username}`} size={50} baseUrl={baseUrl} userId={user.id} token={user.token} />,
 					onPress: () => this.resetAvatar(),
 					disabled: !Accounts_AllowUserAvatarChange,
 					key: 'profile-view-reset-avatar'
@@ -367,7 +367,7 @@ class ProfileView extends React.Component {
 					const { url, blob, contentType } = avatarSuggestions[service];
 					return this.renderAvatarButton({
 						disabled: !Accounts_AllowUserAvatarChange,
-						key: `profile-view-avatar-${ service }`,
+						key: `profile-view-avatar-${service}`,
 						child: <Avatar avatar={url} size={50} baseUrl={baseUrl} userId={user.id} token={user.token} />,
 						onPress: () => this.setAvatar({
 							url, data: blob, service, contentType
