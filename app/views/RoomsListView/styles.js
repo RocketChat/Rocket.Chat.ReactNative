@@ -126,5 +126,21 @@ export default StyleSheet.create({
 		fontSize: 16,
 		flex: 1,
 		...sharedStyles.textRegular
+	},
+	encryptionButton: {
+		width: '100%',
+		flexDirection: 'row',
+		alignItems: 'center',
+		padding: 12
+	},
+	encryptionIcon: {
+		transform: [{ rotateY: '180deg' }],
+		...sharedStyles.textMedium
+	},
+	encryptionText: {
+		flex: 1,
+		fontSize: 16,
+		marginHorizontal: 16,
+		...sharedStyles.textMedium
 	}
 });

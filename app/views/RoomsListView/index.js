@@ -363,12 +363,6 @@ class RoomsListView extends React.Component {
 			headerRight: () => (searching ? null : (
 				<CustomHeaderButtons>
 					<Item
-						title='encrypted'
-						iconName='encrypted'
-						onPress={this.goToEncrypted}
-						testID='rooms-list-view-encrypted'
-					/>
-					<Item
 						title='new'
 						iconName='create'
 						onPress={this.goToNewMessage}
@@ -771,7 +765,7 @@ class RoomsListView extends React.Component {
 		}
 	}
 
-	goToEncrypted = async() => {
+	goEncryption = async() => {
 		logEvent(events.RL_GO_E2E_SAVE_PASSWORD);
 		const { navigation, isMasterDetail } = this.props;
 
@@ -837,6 +831,7 @@ class RoomsListView extends React.Component {
 				sortBy={sortBy}
 				toggleSort={this.toggleSort}
 				goDirectory={this.goDirectory}
+				goEncryption={this.goEncryption}
 				goQueue={this.goQueue}
 				queueSize={queueSize}
 				inquiryEnabled={inquiryEnabled}

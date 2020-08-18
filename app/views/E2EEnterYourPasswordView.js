@@ -5,8 +5,7 @@ import { Text } from 'react-native';
 import Button from '../containers/Button';
 import TextInput from '../containers/TextInput';
 import { CloseModalButton } from '../containers/HeaderButton';
-import SafeAreaView from '../containers/SafeAreaView';
-import { themes } from '../constants/colors';
+import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import { withTheme } from '../theme';
 import I18n from '../i18n';
 
@@ -36,31 +35,30 @@ class E2EEnterYourPasswordView extends React.Component {
 		const { password } = this.state;
 		const { theme } = this.props;
 		return (
-			<SafeAreaView
-				style={{ backgroundColor: themes[theme].backgroundColor }}
-				testID='e2e-enter-your-password-view'
-				theme={theme}
-			>
-				<TextInput
-					inputRef={(e) => { this.passwordInput = e; }}
-					placeholder={I18n.t('Password')}
-					returnKeyType='send'
-					secureTextEntry
-					onSubmitEditing={this.submit}
-					onChangeText={value => this.setState({ password: value })}
-					testID='e2e-enter-your-password-view-password'
-					textContentType='password'
-					autoCompleteType='password'
-					theme={theme}
-				/>
-				<Button
-					onPress={this.submit}
-					title={I18n.t('Confirm')}
-					disabled={!password}
-					theme={theme}
-				/>
-				<Text>This will allow you to access your encrypted private groups and direct messages. You need to enter the password to encode/decode messages every place you use the chat.</Text>
-			</SafeAreaView>
+			<FormContainer theme={theme} testID='register-view'>
+				<FormContainerInner>
+					<TextInput
+						inputRef={(e) => { this.passwordInput = e; }}
+						placeholder={I18n.t('Password')}
+						returnKeyType='send'
+						secureTextEntry
+						onSubmitEditing={this.submit}
+						onChangeText={value => this.setState({ password: value })}
+						testID='e2e-enter-your-password-view-password'
+						textContentType='password'
+						autoCompleteType='password'
+						theme={theme}
+					/>
+					<Button
+						onPress={this.submit}
+						title={I18n.t('Confirm')}
+						disabled={!password}
+						theme={theme}
+					/>
+					<Text>This will allow you to access your encrypted private groups and direct messages.</Text>
+					<Text>You need to enter the password to encode/decode messages every place you use the chat.</Text>
+				</FormContainerInner>
+			</FormContainer>
 		);
 	}
 }

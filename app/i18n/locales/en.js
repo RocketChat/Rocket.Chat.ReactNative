@@ -434,6 +434,7 @@ export default {
 	saving_settings: 'saving settings',
 	saved_to_gallery: 'Saved to gallery',
 	Save_Your_E2E_Password: 'Save Your E2E Password',
+	Save_Your_Encryption_Password: 'Save Your Encryption Password',
 	Search_Messages: 'Search Messages',
 	Search: 'Search',
 	Search_by: 'Search by',
