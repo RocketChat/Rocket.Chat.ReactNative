@@ -20,7 +20,7 @@ end
 
 # used to get user credentials
 target 'NotificationService' do
-  pod 'react-native-mmkv-storage', :path =>  '../node_modules/react-native-mmkv-storage'
+  pod 'MMKVAppExtension'
 end
 
 post_install do |installer|

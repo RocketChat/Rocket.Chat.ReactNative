@@ -3,4 +3,4 @@
 //
 
 #import "SecureStorage.h"
-#import <MMKV/MMKV.h>
+#import <MMKVAppExtension/MMKV.h>
