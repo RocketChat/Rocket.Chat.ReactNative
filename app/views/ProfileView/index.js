@@ -110,7 +110,7 @@ class ProfileView extends React.Component {
 	init = (user) => {
 		const { user: userProps } = this.props;
 		const {
-			name, username, emails, customFields
+			name, username, emails, customFields, nickname, bio
 		} = user || userProps;
 
 		this.setState({
@@ -121,7 +121,9 @@ class ProfileView extends React.Component {
 			currentPassword: null,
 			avatarUrl: null,
 			avatar: {},
-			customFields: customFields || {}
+			customFields: customFields || {},
+			nickname: nickname || '',
+			bio: bio || ''
 		});
 	}
 
@@ -369,6 +371,7 @@ class ProfileView extends React.Component {
 		const {
 			theme
 		} = this.props;
+
 
 		return (
 			<RCTextInput

@@ -37,6 +37,18 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 6,
+			steps: [
+				addColumns({
+					table: 'users',
+					columns: [
+						{ name: 'nickname', type: 'string', isOptional: true },
+						{ name: 'bio', type: 'string', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });

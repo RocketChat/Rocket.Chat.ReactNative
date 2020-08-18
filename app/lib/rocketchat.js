@@ -416,7 +416,9 @@ const RocketChat = {
 			customFields: result.me.customFields,
 			statusLivechat: result.me.statusLivechat,
 			emails: result.me.emails,
-			roles: result.me.roles
+			roles: result.me.roles,
+			nickname: result.me.nickname,
+			bio: result.me.bio
 		};
 		return user;
 	},
