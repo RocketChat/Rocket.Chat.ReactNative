@@ -83,7 +83,9 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 					language: userRecord.language,
 					status: userRecord.status,
 					statusText: userRecord.statusText,
-					roles: userRecord.roles
+					roles: userRecord.roles,
+					nickname: userRecord.nickname,
+					bio: userRecord.bio
 				};
 			} catch (e) {
 				// We only run it if not has user on DB

@@ -131,7 +131,7 @@ class ProfileView extends React.Component {
 
 	formIsChanged = () => {
 		const {
-			name, username, email, newPassword, avatar, customFields
+			name, username, email, newPassword, avatar, customFields, nickname, bio
 		} = this.state;
 		const { user } = this.props;
 		let customFieldsChanged = false;
@@ -151,6 +151,8 @@ class ProfileView extends React.Component {
 			&& (user.emails && user.emails[0].address === email)
 			&& !avatar.data
 			&& !customFieldsChanged
+			&& user.nickname === nickname
+			&& user.bio === bio
 		);
 	}
 
@@ -171,7 +173,7 @@ class ProfileView extends React.Component {
 		this.setState({ saving: true });
 
 		const {
-			name, username, email, newPassword, currentPassword, avatar, customFields
+			name, username, email, newPassword, currentPassword, avatar, customFields, nickname, bio
 		} = this.state;
 		const { user, setUser } = this.props;
 		const params = {};
@@ -184,6 +186,16 @@ class ProfileView extends React.Component {
 		// Username
 		if (user.username !== username) {
 			params.username = username;
+		}
+
+		// nickname
+		if (nickname) {
+			params.nickname = nickname;
+		}
+
+		// bio
+		if (bio) {
+			params.bio = bio;
 		}
 
 		// Email
@@ -562,8 +574,8 @@ class ProfileView extends React.Component {
 							testID='profile-view-username'
 							theme={theme}
 						/>
-						{ this.renderNicknameField() }
-						{ this.renderBioField() }
+						{this.renderNicknameField()}
+						{this.renderBioField()}
 						<RCTextInput
 							editable={Accounts_AllowEmailChange}
 							inputStyle={[
