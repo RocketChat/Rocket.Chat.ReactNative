@@ -22,7 +22,6 @@ import {
 } from './constants';
 import RocketChat from '../rocketchat';
 import E2ERoom from './encryption.room';
-import store from '../createStore';
 import database from '../database';
 import I18n from '../../i18n';
 
@@ -32,25 +31,7 @@ class Encryption {
 		this.roomInstances = {};
 	}
 
-	start = async() => {
-		const serversDB = database.servers;
-
-		// TODO: Do this better
-		const serversCollection = serversDB.collections.get('servers');
-		this.server = store.getState().server.server || store.getState().share.server;
-
-		let serverInfo = {};
-		try {
-			serverInfo = await serversCollection.find(this.server);
-		} catch {
-			// Do nothing
-		}
-		// TODO: Do this better
-		const { E2E_Enable } = serverInfo;
-		if (!E2E_Enable) {
-			return;
-		}
-
+	start = async(server, userId) => {
 		if (this.started) {
 			return;
 		}
@@ -58,7 +39,8 @@ class Encryption {
 		this.started = true;
 
 		// TODO: Do this better
-		this.userId = store.getState().login.user?.id || store.getState().share.user.id;
+		this.server = server;
+		this.userId = userId;
 
 		try {
 			const storedPublicKey = await RNUserDefaults.get(`${ this.server }-${ E2E_PUBLIC_KEY }`);
@@ -77,8 +59,6 @@ class Encryption {
 			} else {
 				await this.createKeys();
 			}
-
-			RocketChat.subscribeEncryption();
 
 			this.decryptPendingSubscriptions();
 			this.decryptPendingMessages();

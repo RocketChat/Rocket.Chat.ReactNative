@@ -13,6 +13,7 @@ import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
 import fetch from '../utils/fetch';
 
+import { encryptionInit } from '../actions/encryption';
 import { setUser, setLoginServices, loginRequest } from '../actions/login';
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
 import {
@@ -51,9 +52,6 @@ import I18n from '../i18n';
 import { twoFactor } from '../utils/twoFactor';
 import { selectServerFailure } from '../actions/server';
 import { useSsl } from '../utils/url';
-
-// TODO: Fix this require cycle
-import { Encryption } from './encryption';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
@@ -323,7 +321,7 @@ const RocketChat = {
 				};
 			}
 			reduxStore.dispatch(shareSetUser(user));
-			Encryption.start();
+			reduxStore.dispatch(encryptionInit());
 			await RocketChat.login({ resume: user.token });
 		} catch (e) {
 			log(e);

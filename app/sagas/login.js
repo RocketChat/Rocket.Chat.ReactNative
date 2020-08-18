@@ -26,7 +26,7 @@ import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../utils/info';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { setActiveUsers } from '../actions/activeUsers';
-import { Encryption } from '../lib/encryption';
+import { encryptionInit } from '../actions/encryption';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -86,6 +86,10 @@ const fetchUsersPresence = function* fetchUserPresence() {
 	RocketChat.subscribeUsersPresence();
 };
 
+const encryptionStart = function* encryptionStart() {
+	yield put(encryptionInit());
+};
+
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
 		const adding = yield select(state => state.server.adding);
@@ -102,7 +106,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchSlashCommands);
 		yield fork(registerPushToken);
 		yield fork(fetchUsersPresence);
-		Encryption.start();
+		yield fork(encryptionStart);
 
 		I18n.locale = user.language;
 		moment.locale(toMomentLocale(user.language));
