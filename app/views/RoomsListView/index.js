@@ -13,6 +13,7 @@ import isEqual from 'react-fast-compare';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import RNUserDefaults from 'rn-user-defaults';
 
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
@@ -64,6 +65,7 @@ import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
 import { showErrorAlert } from '../../utils/info';
 import { getInquiryQueueSelector } from '../../selectors/inquiry';
+import { E2E_RANDOM_PASSWORD_KEY } from '../../lib/encryption/constants';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
@@ -769,14 +771,18 @@ class RoomsListView extends React.Component {
 		}
 	}
 
-	goToEncrypted = () => {
+	goToEncrypted = async() => {
 		logEvent(events.RL_GO_E2E_SAVE_PASSWORD);
 		const { navigation, isMasterDetail } = this.props;
 
+		// TODO: It should be something on redux that is handled by encryption class
+		const randomPassword = await RNUserDefaults.get(E2E_RANDOM_PASSWORD_KEY);
 		if (isMasterDetail) {
-			navigation.navigate('ModalStackNavigator', { screen: 'E2ESavePasswordView' });
+			const screen = randomPassword ? 'E2ESavePasswordView' : 'E2EEnterYourPasswordView';
+			navigation.navigate('ModalStackNavigator', { screen });
 		} else {
-			navigation.navigate('E2ESavePasswordStackNavigator');
+			const screen = randomPassword ? 'E2ESavePasswordStackNavigator' : 'E2EEnterYourPasswordStackNavigator';
+			navigation.navigate(screen);
 		}
 	}
 

@@ -9,7 +9,7 @@ import Markdown from '../markdown';
 import { getInfoMessage } from './utils';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
-import E2E from './E2E';
+import Encrypted from './Encrypted';
 
 const Content = React.memo((props) => {
 	if (props.isInfo) {
@@ -53,7 +53,7 @@ const Content = React.memo((props) => {
 			<View style={styles.contentContainer}>
 				{content}
 			</View>
-			<E2E
+			<Encrypted
 				type={props.type}
 				hide={props.tmid && !props.isThreadRoom}
 				theme={props.theme}

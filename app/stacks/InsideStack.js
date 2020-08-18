@@ -49,8 +49,13 @@ import AdminPanelView from '../views/AdminPanelView';
 import NewMessageView from '../views/NewMessageView';
 import CreateChannelView from '../views/CreateChannelView';
 
+// TODO: We should use only one stack to these screens?
 // E2ESavePassword Stack
 import E2ESavePasswordView from '../views/E2ESavePasswordView';
+import E2EHowItWorksView from '../views/E2EHowItWorksView';
+
+// E2EEnterYourPassword Stack
+import E2EEnterYourPasswordView from '../views/E2EEnterYourPasswordView';
 
 // InsideStackNavigator
 import AttachmentView from '../views/AttachmentView';
@@ -299,7 +304,28 @@ const E2ESavePasswordStackNavigator = () => {
 				component={E2ESavePasswordView}
 				options={E2ESavePasswordView.navigationOptions}
 			/>
+			<E2ESavePasswordStack.Screen
+				name='E2EHowItWorksView'
+				component={E2EHowItWorksView}
+				options={E2EHowItWorksView.navigationOptions}
+			/>
 		</E2ESavePasswordStack.Navigator>
+	);
+};
+
+// E2EEnterYourPasswordStackNavigator
+const E2EEnterYourPasswordStack = createStackNavigator();
+const E2EEnterYourPasswordStackNavigator = () => {
+	const { theme } = React.useContext(ThemeContext);
+
+	return (
+		<E2EEnterYourPasswordStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
+			<E2EEnterYourPasswordStack.Screen
+				name='E2EEnterYourPasswordView'
+				component={E2EEnterYourPasswordView}
+				options={E2EEnterYourPasswordView.navigationOptions}
+			/>
+		</E2EEnterYourPasswordStack.Navigator>
 	);
 };
 
@@ -323,6 +349,11 @@ const InsideStackNavigator = () => {
 			<InsideStack.Screen
 				name='E2ESavePasswordStackNavigator'
 				component={E2ESavePasswordStackNavigator}
+				options={{ headerShown: false }}
+			/>
+			<InsideStack.Screen
+				name='E2EEnterYourPasswordStackNavigator'
+				component={E2EEnterYourPasswordStackNavigator}
 				options={{ headerShown: false }}
 			/>
 			<InsideStack.Screen

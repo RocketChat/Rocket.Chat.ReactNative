@@ -7,7 +7,7 @@ import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 import styles from './styles';
 
-const E2E = React.memo(({ type, hide, theme }) => {
+const Encrypted = React.memo(({ type, hide, theme }) => {
 	if (type !== E2E_MESSAGE_TYPE || hide) {
 		return null;
 	}
@@ -18,10 +18,10 @@ const E2E = React.memo(({ type, hide, theme }) => {
 		</View>
 	);
 });
-E2E.propTypes = {
+Encrypted.propTypes = {
 	type: PropTypes.string,
 	hide: PropTypes.string,
 	theme: PropTypes.string
 };
 
-export default E2E;
+export default Encrypted;

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import RNUserDefaults from 'rn-user-defaults';
-import { ScrollView, Text } from 'react-native';
+import { ScrollView, Text, Clipboard } from 'react-native';
 
 import { E2E_RANDOM_PASSWORD_KEY } from '../lib/encryption/constants';
 import { CloseModalButton } from '../containers/HeaderButton';
@@ -61,6 +61,16 @@ class E2ESavePasswordView extends React.Component {
 		navigation.pop();
 	}
 
+	onCopy = () => {
+		const { password } = this.state;
+		Clipboard.setString(password);
+	}
+
+	onHowItWorks = () => {
+		const { navigation } = this.props;
+		navigation.navigate('E2EHowItWorksView');
+	}
+
 	render() {
 		const { password } = this.state;
 		const { theme } = this.props;
@@ -80,16 +90,25 @@ class E2ESavePasswordView extends React.Component {
 					]}
 					{...scrollPersistTaps}
 				>
-					<Text>{password}</Text>
+					<Text>{I18n.t('Your_password_is')}</Text>
+					<Text style={{ fontSize: 24, padding: 50, color: '#000' }}>{password || '000-000-000'}</Text>
 					<Button
+						onPress={this.onCopy}
+						style={{ backgroundColor: themes[theme].auxiliaryBackground, width: 100 }}
+						title={I18n.t('Copy')}
+						type='secondary'
+						theme={theme}
+					/>
+					<Button
+						onPress={this.onHowItWorks}
 						style={{ backgroundColor: themes[theme].auxiliaryBackground }}
-						title='How It Works'
+						title={I18n.t('How_It_Works')}
 						type='secondary'
 						theme={theme}
 					/>
 					<Button
 						onPress={this.onSaved}
-						title='I Saved My E2E Password'
+						title={I18n.t('I_Saved_My_E2E_Password')}
 						theme={theme}
 					/>
 				</ScrollView>

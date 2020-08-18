@@ -50,6 +50,8 @@ import JitsiMeetView from '../../views/JitsiMeetView';
 import StatusView from '../../views/StatusView';
 import CreateDiscussionView from '../../views/CreateDiscussionView';
 import E2ESavePasswordView from '../../views/E2ESavePasswordView';
+import E2EHowItWorksView from '../../views/E2EHowItWorksView';
+import E2EEnterYourPasswordView from '../../views/E2EEnterYourPasswordView';
 
 import { setKeyCommands, deleteKeyCommands } from '../../commands';
 import ShareView from '../../views/ShareView';
@@ -258,6 +260,16 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 					name='E2ESavePasswordView'
 					component={E2ESavePasswordView}
 					options={E2ESavePasswordView.navigationOptions}
+				/>
+				<ModalStack.Screen
+					name='E2EHowItWorksView'
+					component={E2EHowItWorksView}
+					options={E2EHowItWorksView.navigationOptions}
+				/>
+				<ModalStack.Screen
+					name='E2EEnterYourPasswordView'
+					component={E2EEnterYourPasswordView}
+					options={E2EEnterYourPasswordView.navigationOptions}
 				/>
 			</ModalStack.Navigator>
 		</ModalContainer>
