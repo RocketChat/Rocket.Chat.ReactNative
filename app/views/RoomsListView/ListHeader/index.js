@@ -14,10 +14,11 @@ const ListHeader = React.memo(({
 	goEncryption,
 	goQueue,
 	queueSize,
-	inquiryEnabled
+	inquiryEnabled,
+	showEncryption
 }) => (
 	<>
-		<Encryption searching={searching} goEncryption={goEncryption} />
+		<Encryption searching={searching} goEncryption={goEncryption} showEncryption={showEncryption} />
 		<Directory searching={searching} goDirectory={goDirectory} />
 		<Sort searching={searching} sortBy={sortBy} toggleSort={toggleSort} />
 		<Queue searching={searching} goQueue={goQueue} queueSize={queueSize} inquiryEnabled={inquiryEnabled} />
@@ -32,7 +33,8 @@ ListHeader.propTypes = {
 	goEncryption: PropTypes.func,
 	goQueue: PropTypes.func,
 	queueSize: PropTypes.number,
-	inquiryEnabled: PropTypes.bool
+	inquiryEnabled: PropTypes.bool,
+	showEncryption: PropTypes.bool
 };
 
 export default ListHeader;

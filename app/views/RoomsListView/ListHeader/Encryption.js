@@ -9,8 +9,13 @@ import { themes } from '../../../constants/colors';
 import I18n from '../../../i18n';
 import styles from '../styles';
 
-const Encryption = React.memo(({ searching, goEncryption, theme }) => {
-	if (searching > 0) {
+const Encryption = React.memo(({
+	searching,
+	goEncryption,
+	showEncryption,
+	theme
+}) => {
+	if (searching > 0 || !showEncryption) {
 		return null;
 	}
 	// TODO: Check e2e is enabled | check if random password exists
@@ -25,6 +30,7 @@ const Encryption = React.memo(({ searching, goEncryption, theme }) => {
 Encryption.propTypes = {
 	searching: PropTypes.bool,
 	goEncryption: PropTypes.func,
+	showEncryption: PropTypes.bool,
 	theme: PropTypes.string
 };
 
