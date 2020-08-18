@@ -394,6 +394,7 @@ class ProfileView extends React.Component {
 		return (
 			<RCTextInput
 				editable
+				// https://github.com/RocketChat/Rocket.Chat/blob/10ea922d89b05f358c656996913d6492edd4c417/server/methods/saveUserProfile.js#L59
 				maxLength={120}
 				inputRef={(e) => { this.nickname = e; }}
 				label={I18n.t('Nickname')}
@@ -426,6 +427,7 @@ class ProfileView extends React.Component {
 				inputStyle={styles.bio}
 				containerStyle={styles.bioContainer}
 				numberOfLines={2}
+				// https://github.com/RocketChat/Rocket.Chat/blob/10ea922d89b05f358c656996913d6492edd4c417/server/methods/saveUserProfile.js#L50
 				maxLength={260}
 				multiline
 				inputRef={(e) => { this.bio = e; }}
