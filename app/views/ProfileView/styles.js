@@ -25,8 +25,11 @@ export default StyleSheet.create({
 		borderRadius: 2
 	},
 	bio: {
-		height: '5%',
+		textAlignVertical: 'top',
+		minHeight: '75%'
+	},
+	bioContainer: {
 		flex: 1,
-		textAlignVertical: 'top'
+		minHeight: 100
 	}
 });

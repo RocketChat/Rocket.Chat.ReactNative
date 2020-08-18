@@ -394,9 +394,6 @@ class ProfileView extends React.Component {
 		return (
 			<RCTextInput
 				editable
-				inputStyle={[
-					!true && styles.disabled
-				]}
 				maxLength={120}
 				inputRef={(e) => { this.nickname = e; }}
 				label={I18n.t('Nickname')}
@@ -418,7 +415,7 @@ class ProfileView extends React.Component {
 			theme, serverVersion
 		} = this.props;
 
-		// Bio was added to release 3.5.0
+		// Bio was added to release 3.1.0
 		if (semver.lte(serverVersion, '3.1.0')) {
 			return null;
 		}
@@ -426,10 +423,8 @@ class ProfileView extends React.Component {
 		return (
 			<RCTextInput
 				editable
-				inputStyle={[
-					!true && styles.disabled,
-					styles.bio
-				]}
+				inputStyle={styles.bio}
+				containerStyle={styles.bioContainer}
 				numberOfLines={2}
 				maxLength={260}
 				multiline

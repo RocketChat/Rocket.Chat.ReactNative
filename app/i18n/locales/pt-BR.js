@@ -115,6 +115,7 @@ export default {
 	Avatar_changed_successfully: 'Avatar alterado com sucesso!',
 	Avatar_Url: 'Avatar URL',
 	Away: 'Ausente',
+	Bio: 'Bio',
 	Back: 'Voltar',
 	Black: 'Preto',
 	Block_user: 'Bloquear usuário',
