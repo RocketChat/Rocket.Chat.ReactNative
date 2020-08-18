@@ -2,7 +2,7 @@ import EJSON from 'ejson';
 
 import normalizeMessage from './normalizeMessage';
 import findSubscriptionsRooms from './findSubscriptionsRooms';
-// import { Encryption } from '../../encryption';
+import { Encryption } from '../../encryption';
 // TODO: delete and update
 
 export const merge = (subscription, room) => {
@@ -76,7 +76,7 @@ export default async(subscriptions = [], rooms = []) => {
 	}
 
 	// TODO: This is blocking the first fetch after login
-	// rooms = await Promise.all(rooms.map(room => Encryption.decryptSubscription(room)));
+	rooms = await Promise.all(rooms.map(room => Encryption.decryptSubscription(room)));
 	({ subscriptions, rooms } = await findSubscriptionsRooms(subscriptions, rooms));
 
 	return {

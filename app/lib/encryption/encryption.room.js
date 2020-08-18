@@ -37,6 +37,7 @@ export default class EncryptionRoom {
 		}
 
 		if (!privateKey) {
+			// TODO: Improve this logic of handshake retry
 			return Promise.reject();
 		}
 
@@ -47,10 +48,11 @@ export default class EncryptionRoom {
 
 		if (!e2eKeyId) {
 			await this.createRoomKey();
-			return;
+			return Promise.reject();
 		}
 
 		await RocketChat.methodCall('stream-notify-room-users', `${ this.roomId }/e2ekeyRequest`, this.roomId, e2eKeyId);
+		return Promise.reject();
 	}
 
 	// Import roomKey as an AES Decrypt key

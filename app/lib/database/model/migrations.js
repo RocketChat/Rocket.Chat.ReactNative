@@ -158,6 +158,12 @@ export default schemaMigrations({
 					columns: [
 						{ name: 'e2e', type: 'string', isOptional: true }
 					]
+				}),
+				addColumns({
+					table: 'rooms',
+					columns: [
+						{ name: 'e2e_key_id', type: 'string', isOptional: true }
+					]
 				})
 			]
 		}

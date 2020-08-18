@@ -37,6 +37,7 @@ export default async(subscriptions = [], rooms = []) => {
 			muted: s.muted,
 			broadcast: s.broadcast,
 			encrypted: s.encrypted,
+			e2eKeyId: s.e2eKeyId,
 			prid: s.prid,
 			draftMessage: s.draftMessage,
 			lastThreadSync: s.lastThreadSync,

@@ -275,7 +275,7 @@ class Encryption {
 
 	decryptSubscription = async(subscription) => {
 		if (!subscription?.lastMessage) {
-			return;
+			return subscription;
 		}
 
 		try {

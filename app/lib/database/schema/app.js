@@ -66,7 +66,8 @@ export default appSchema({
 				{ name: 'department_id', type: 'string', isOptional: true },
 				{ name: 'served_by', type: 'string', isOptional: true },
 				{ name: 'livechat_data', type: 'string', isOptional: true },
-				{ name: 'tags', type: 'string', isOptional: true }
+				{ name: 'tags', type: 'string', isOptional: true },
+				{ name: 'e2e_key_id', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({
