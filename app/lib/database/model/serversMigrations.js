@@ -37,6 +37,17 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 6,
+			steps: [
+				addColumns({
+					table: 'servers',
+					columns: [
+						{ name: 'e2e_enable', type: 'boolean', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });

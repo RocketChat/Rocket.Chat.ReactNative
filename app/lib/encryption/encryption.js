@@ -33,11 +33,23 @@ class Encryption {
 	}
 
 	start = async() => {
-		// TODO: Do this better | Share Extension should set this value
-		// const { E2E_Enable } = store.getState().settings;
-		// if (!E2E_Enable) {
-		// 	return;
-		// }
+		const serversDB = database.servers;
+
+		// TODO: Do this better
+		const serversCollection = serversDB.collections.get('servers');
+		this.server = store.getState().server.server || store.getState().share.server;
+
+		let serverInfo = {};
+		try {
+			serverInfo = await serversCollection.find(this.server);
+		} catch {
+			// Do nothing
+		}
+		// TODO: Do this better
+		const { E2E_Enable } = serverInfo;
+		if (!E2E_Enable) {
+			return;
+		}
 
 		if (this.started) {
 			return;
@@ -46,7 +58,6 @@ class Encryption {
 		this.started = true;
 
 		// TODO: Do this better
-		this.server = store.getState().server.server || store.getState().share.server;
 		this.userId = store.getState().login.user?.id || store.getState().share.user.id;
 
 		try {
