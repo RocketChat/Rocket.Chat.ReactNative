@@ -23,5 +23,10 @@ export default StyleSheet.create({
 		marginRight: 15,
 		marginBottom: 15,
 		borderRadius: 2
+	},
+	bio: {
+		height: '5%',
+		flex: 1,
+		textAlignVertical: 'top'
 	}
 });

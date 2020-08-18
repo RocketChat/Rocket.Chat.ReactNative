@@ -65,12 +65,13 @@ class ProfileView extends React.Component {
 		avatarUrl: null,
 		avatar: {},
 		avatarSuggestions: {},
-		customFields: {}
+		customFields: {},
+		nickname: null,
+		bio: null
 	}
 
 	async componentDidMount() {
 		this.init();
-
 		try {
 			const result = await RocketChat.getAvatarSuggestion();
 			this.setState({ avatarSuggestions: result });
@@ -203,7 +204,7 @@ class ProfileView extends React.Component {
 				I18n.t('Please_enter_your_password'),
 				I18n.t('For_your_security_you_must_enter_your_current_password_to_continue'),
 				[
-					{ text: I18n.t('Cancel'), onPress: () => {}, style: 'cancel' },
+					{ text: I18n.t('Cancel'), onPress: () => { }, style: 'cancel' },
 					{
 						text: I18n.t('Save'),
 						onPress: (p) => {
@@ -361,6 +362,61 @@ class ProfileView extends React.Component {
 		);
 	}
 
+	renderNicknameField = () => {
+		const {
+			nickname
+		} = this.state;
+		const {
+			theme
+		} = this.props;
+
+		return (
+			<RCTextInput
+				editable
+				inputStyle={[
+					!true && styles.disabled
+				]}
+				inputRef={(e) => { this.nickname = e; }}
+				label={I18n.t('Nickname')}
+				placeholder={I18n.t('Nickname')}
+				value={nickname}
+				onChangeText={value => this.setState({ nickname: value })}
+				onSubmitEditing={() => { this.bio.focus(); }}
+				testID='profile-view-nickName'
+				theme={theme}
+			/>
+		);
+	}
+
+	renderBioField = () => {
+		const {
+			bio
+		} = this.state;
+		const {
+			theme
+		} = this.props;
+
+		return (
+			<RCTextInput
+				editable
+				inputStyle={[
+					!true && styles.disabled,
+					styles.bio
+				]}
+				numberOfLines={2}
+				multiline
+				inputRef={(e) => { this.bio = e; }}
+				label={I18n.t('Bio')}
+				placeholder={I18n.t('Bio')}
+				value={bio}
+				onChangeText={value => this.setState({ bio: value })}
+				onSubmitEditing={() => { this.email.focus(); }}
+				testID='profile-view-bio'
+				theme={theme}
+			/>
+		);
+	}
+
 	renderCustomFields = () => {
 		const { customFields } = this.state;
 		const { Accounts_CustomFields, theme } = this.props;
@@ -490,6 +546,8 @@ class ProfileView extends React.Component {
 							testID='profile-view-username'
 							theme={theme}
 						/>
+						{ this.renderNicknameField() }
+						{ this.renderBioField() }
 						<RCTextInput
 							editable={Accounts_AllowEmailChange}
 							inputStyle={[

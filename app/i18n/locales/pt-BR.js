@@ -290,6 +290,7 @@ export default {
 	New_Message: 'Nova Mensagem',
 	New_Password: 'Nova Senha',
 	Next: 'Próximo',
+	Nickname: 'Apelido',
 	No_files: 'Não há arquivos',
 	No_limit: 'Sem limite',
 	No_mentioned_messages: 'Não há menções',
