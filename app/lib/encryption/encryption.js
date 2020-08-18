@@ -9,9 +9,7 @@ import {
 	utf8ToBuffer,
 	splitVectorData,
 	joinVectorData,
-	randomPassword,
-	jwkToPkcs1,
-	pkcs1ToJwk
+	randomPassword
 } from './utils';
 import {
 	E2E_PUBLIC_KEY,
@@ -87,7 +85,7 @@ class Encryption {
 	// Load stored or sought on server keys
 	loadKeys = async(publicKey, privateKey) => {
 		try {
-			this.privateKey = await jwkToPkcs1(EJSON.parse(privateKey));
+			this.privateKey = await SimpleCrypto.RSA.importKey(EJSON.parse(privateKey));
 			await RNUserDefaults.set(`${ this.server }-${ E2E_PUBLIC_KEY }`, EJSON.stringify(publicKey));
 			await RNUserDefaults.set(`${ this.server }-${ E2E_PRIVATE_KEY }`, privateKey);
 		} catch {
@@ -99,8 +97,8 @@ class Encryption {
 	createKeys = async() => {
 		try {
 			const key = await SimpleCrypto.RSA.generateKeys(2048);
-			const publicKey = await pkcs1ToJwk(key.public);
-			const privateKey = await pkcs1ToJwk(key.private);
+			const publicKey = await SimpleCrypto.RSA.exportKey(key.public);
+			const privateKey = await SimpleCrypto.RSA.exportKey(key.private);
 
 			this.loadKeys(publicKey, EJSON.stringify(privateKey));
 			const password = await this.createRandomPassword();

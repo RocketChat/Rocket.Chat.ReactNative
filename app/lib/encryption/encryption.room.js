@@ -9,8 +9,7 @@ import {
 	bufferToB64,
 	utf8ToBuffer,
 	splitVectorData,
-	joinVectorData,
-	jwkToPkcs1
+	joinVectorData
 } from './utils';
 import database from '../database';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from './constants';
@@ -113,7 +112,7 @@ export default class EncryptionRoom {
 		if (user?.e2e?.public_key) {
 			const { public_key: publicKey } = user.e2e;
 			try {
-				const userKey = await jwkToPkcs1(EJSON.parse(publicKey));
+				const userKey = await SimpleCrypto.RSA.importKey(EJSON.parse(publicKey));
 				let encryptedUserKey = await SimpleCrypto.RSA.encrypt(this.sessionKeyExportedString, userKey);
 				// these replaces are a trick that I need to see if I can do better
 				if (isIOS) {

@@ -100,7 +100,7 @@
     "react-native-screens": "2.9.0",
     "react-native-scroll-bottom-sheet": "0.6.2",
     "react-native-scrollable-tab-view": "^1.0.0",
-    "react-native-simple-crypto": "^0.2.13",
+    "react-native-simple-crypto": "RocketChat/react-native-simple-crypto",
     "react-native-slowlog": "^1.0.2",
     "react-native-unimodules": "0.10.1",
     "react-native-vector-icons": "7.0.0",

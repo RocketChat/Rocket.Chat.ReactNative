@@ -12,9 +12,12 @@
   "platforms": {
     "ios": "8.0"
   },
-  "source_files": "ios/**/*.{h,m}",
+  "source_files": "ios/**/*.{h,m,swift}",
   "dependencies": {
     "React": [
+
+    ],
+    "OpenSSL-Universal": [
 
     ]
   }
