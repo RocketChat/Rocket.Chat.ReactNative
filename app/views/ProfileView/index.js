@@ -7,6 +7,7 @@ import SHA256 from 'js-sha256';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import equal from 'deep-equal';
+import semver from 'semver';
 
 import Touch from '../../utils/touch';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -52,7 +53,8 @@ class ProfileView extends React.Component {
 		Accounts_AllowUsernameChange: PropTypes.bool,
 		Accounts_CustomFields: PropTypes.string,
 		setUser: PropTypes.func,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		serverVersion: PropTypes.string
 	}
 
 	state = {
@@ -369,9 +371,13 @@ class ProfileView extends React.Component {
 			nickname
 		} = this.state;
 		const {
-			theme
+			theme, serverVersion
 		} = this.props;
 
+		// Nickname was added to release 3.5.0
+		if (semver.lte(serverVersion, '3.5.0')) {
+			return null;
+		}
 
 		return (
 			<RCTextInput
@@ -379,6 +385,7 @@ class ProfileView extends React.Component {
 				inputStyle={[
 					!true && styles.disabled
 				]}
+				maxLength={120}
 				inputRef={(e) => { this.nickname = e; }}
 				label={I18n.t('Nickname')}
 				placeholder={I18n.t('Nickname')}
@@ -396,8 +403,13 @@ class ProfileView extends React.Component {
 			bio
 		} = this.state;
 		const {
-			theme
+			theme, serverVersion
 		} = this.props;
+
+		// Bio was added to release 3.5.0
+		if (semver.lte(serverVersion, '3.1.0')) {
+			return null;
+		}
 
 		return (
 			<RCTextInput
@@ -407,6 +419,7 @@ class ProfileView extends React.Component {
 					styles.bio
 				]}
 				numberOfLines={2}
+				maxLength={260}
 				multiline
 				inputRef={(e) => { this.bio = e; }}
 				label={I18n.t('Bio')}
@@ -625,7 +638,8 @@ const mapStateToProps = state => ({
 	Accounts_AllowUserAvatarChange: state.settings.Accounts_AllowUserAvatarChange,
 	Accounts_AllowUsernameChange: state.settings.Accounts_AllowUsernameChange,
 	Accounts_CustomFields: state.settings.Accounts_CustomFields,
-	baseUrl: state.server.server
+	baseUrl: state.server.server,
+	serverVersion: state.server.version
 });
 
 const mapDispatchToProps = dispatch => ({
