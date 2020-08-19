@@ -754,12 +754,17 @@ const RocketChat = {
 		return this.methodCallWrapper('getUsersOfRoom', rid, allUsers, { skip, limit });
 	},
 
-	async methodCallWrapper(method, ...params) {
+	methodCallWrapper(method, ...params) {
 		const { API_Use_REST_For_DDP_Calls } = reduxStore.getState().settings;
 		if (API_Use_REST_For_DDP_Calls) {
-			const data = await this.post(`method.call/${ method }`, { message: JSON.stringify({ method, params }) });
-			const { result } = JSON.parse(data.message);
-			return result;
+			return new Promise(async(resolve, reject) => {
+				const data = await this.post(`method.call/${ method }`, { message: JSON.stringify({ method, params }) });
+				const response = JSON.parse(data.message);
+				if (response?.error) {
+					return reject(response.error);
+				}
+				return resolve(response.result);
+			});
 		}
 		return this.methodCall(method, ...params);
 	},
