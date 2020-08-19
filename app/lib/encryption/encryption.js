@@ -1,6 +1,5 @@
 import EJSON from 'ejson';
 import SimpleCrypto from 'react-native-simple-crypto';
-import prompt from 'react-native-prompt-android';
 import RNUserDefaults from 'rn-user-defaults';
 import { Q } from '@nozbe/watermelondb';
 
@@ -21,7 +20,6 @@ import {
 import RocketChat from '../rocketchat';
 import E2ERoom from './encryption.room';
 import database from '../database';
-import I18n from '../../i18n';
 
 class Encryption {
 	constructor() {
@@ -29,7 +27,7 @@ class Encryption {
 		this.roomInstances = {};
 	}
 
-	start = async(server, userId) => {
+	start = async(server, userId, password) => {
 		if (this.started) {
 			return;
 		}
@@ -39,6 +37,7 @@ class Encryption {
 		// TODO: Do this better
 		this.server = server;
 		this.userId = userId;
+		this.password = password;
 
 		try {
 			const storedPublicKey = await RNUserDefaults.get(`${ this.server }-${ E2E_PUBLIC_KEY }`);
@@ -114,11 +113,7 @@ class Encryption {
 		try {
 			const result = await RocketChat.e2eFetchMyKeys();
 			if (result.success) {
-				const { public_key, private_key } = result;
-				return {
-					publicKey: public_key,
-					privateKey: private_key
-				};
+				return result;
 			}
 		} catch {
 			// Do nothing
@@ -143,29 +138,9 @@ class Encryption {
 		}
 	}
 
-	requestPassword = () => new Promise((resolve, reject) => prompt(
-		I18n.t('Enter_your_E2E_password'),
-		'',
-		[
-			{
-				text: I18n.t('I_ll_do_it_later'),
-				onPress: reject,
-				style: 'cancel'
-			},
-			{
-				text: I18n.t('Decode_Key'),
-				onPress: pw => resolve(pw)
-			}
-		],
-		{
-			cancelable: true
-		}
-	))
-
 	decodePrivateKey = async(privateKey) => {
 		// TODO: Handle reject when user doesn't provide a password
-		const password = await this.requestPassword();
-		const masterKey = await this.getMasterKey(password);
+		const masterKey = await this.getMasterKey(this.password);
 		const [vector, cipherText] = splitVectorData(EJSON.parse(privateKey));
 
 		const privKey = await SimpleCrypto.AES.decrypt(
@@ -218,22 +193,31 @@ class Encryption {
 
 	decryptPendingMessages = async() => {
 		const db = database.active;
-		// TODO: We should do the same to thread messages
+
 		const messagesCollection = db.collections.get('messages');
+		const threadsCollection = db.collections.get('threads');
+		const threadMessagesCollection = db.collections.get('thread_messages');
+
+		// e2e status is 'pending' and message type is 'e2e'
+		const whereClause = [Q.where('e2e', E2E_STATUS.PENDING), Q.where('t', E2E_MESSAGE_TYPE)];
+
 		try {
-			const messagesToDecrypt = await messagesCollection.query(Q.where('e2e', E2E_STATUS.PENDING), Q.where('t', E2E_MESSAGE_TYPE)).fetch();
-			messagesToDecrypt.forEach(async(message) => {
-				try {
-					// We should do this to don't try to update the database object
-					const { rid, t, msg } = message;
-					const decryptedMessage = await this.decryptMessage({ rid, t, msg });
-					db.action(() => message.update((m) => {
-						Object.assign(m, decryptedMessage);
-					}));
-				} catch {
-					// Do nothing
-				}
-			});
+			// Find all messages/threads/threadsMessages that have pending e2e status
+			const messagesToDecrypt = await messagesCollection.query(...whereClause).fetch();
+			const threadsToDecrypt = await threadsCollection.query(...whereClause).fetch();
+			const threadMessagesToDecrypt = await threadMessagesCollection.query(...whereClause).fetch();
+
+			// Concat messages/threads/threadMessages
+			const toDecrypt = [...messagesToDecrypt, ...threadsToDecrypt, ...threadMessagesToDecrypt];
+
+			await Promise.all(toDecrypt.map(async(message) => {
+				// We should do this to don't try to update the database object
+				const { rid, t, msg } = message;
+				const decryptedMessage = await this.decryptMessage({ rid, t, msg });
+				return db.action(() => message.update((m) => {
+					Object.assign(m, decryptedMessage);
+				}));
+			}));
 		} catch {
 			// Do nothing
 		}
@@ -246,17 +230,13 @@ class Encryption {
 			const subsEncrypted = await subCollection.query(Q.where('encrypted', true)).fetch();
 			// We can't do this on database level since lastMessage is not a database object
 			const subsToDecrypt = subsEncrypted.filter(sub => sub?.lastMessage?.e2e === E2E_STATUS.PENDING);
-			subsToDecrypt.forEach(async(sub) => {
-				try {
-					const { lastMessage } = sub;
-					const decryptedSub = await this.decryptSubscription({ lastMessage });
-					db.action(() => sub.update((s) => {
-						Object.assign(s, decryptedSub);
-					}));
-				} catch {
-					// Do nothing
-				}
-			});
+			await Promise.all(subsToDecrypt.map(async(sub) => {
+				const { lastMessage } = sub;
+				const decryptedSub = await this.decryptSubscription({ lastMessage });
+				return db.action(() => sub.update((s) => {
+					Object.assign(s, decryptedSub);
+				}));
+			}));
 		} catch {
 			// Do nothing
 		}

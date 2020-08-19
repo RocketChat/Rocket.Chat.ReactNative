@@ -12,3 +12,10 @@ export function encryptionSet(enabled) {
 		enabled
 	};
 }
+
+export function encryptionSetBanner(banner) {
+	return {
+		type: types.ENCRYPTION.SET_BANNER,
+		banner
+	};
+}

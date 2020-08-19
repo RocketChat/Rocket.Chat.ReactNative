@@ -13,7 +13,6 @@ import isEqual from 'react-fast-compare';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
-import RNUserDefaults from 'rn-user-defaults';
 
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
@@ -65,7 +64,7 @@ import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
 import { showErrorAlert } from '../../utils/info';
 import { getInquiryQueueSelector } from '../../selectors/inquiry';
-import { E2E_RANDOM_PASSWORD_KEY } from '../../lib/encryption/constants';
+import { E2E_BANNER_TYPE } from '../../lib/encryption/constants';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
@@ -97,7 +96,7 @@ const shouldUpdateProps = [
 	'refreshing',
 	'queueSize',
 	'inquiryEnabled',
-	'showEncryption'
+	'encryptionBanner'
 ];
 const getItemLayout = (data, index) => ({
 	length: ROW_HEIGHT,
@@ -141,7 +140,7 @@ class RoomsListView extends React.Component {
 		insets: PropTypes.object,
 		queueSize: PropTypes.number,
 		inquiryEnabled: PropTypes.bool,
-		showEncryption: PropTypes.bool
+		encryptionBanner: PropTypes.string
 	};
 
 	constructor(props) {
@@ -767,17 +766,16 @@ class RoomsListView extends React.Component {
 		}
 	}
 
-	goEncryption = async() => {
+	goEncryption = () => {
 		logEvent(events.RL_GO_E2E_SAVE_PASSWORD);
-		const { navigation, isMasterDetail } = this.props;
+		const { navigation, isMasterDetail, encryptionBanner } = this.props;
 
-		// TODO: It should be something on redux that is handled by encryption class
-		const randomPassword = await RNUserDefaults.get(E2E_RANDOM_PASSWORD_KEY);
+		const isSavePassword = encryptionBanner === E2E_BANNER_TYPE.SAVE_PASSWORD;
 		if (isMasterDetail) {
-			const screen = randomPassword ? 'E2ESavePasswordView' : 'E2EEnterYourPasswordView';
+			const screen = isSavePassword ? 'E2ESavePasswordView' : 'E2EEnterYourPasswordView';
 			navigation.navigate('ModalStackNavigator', { screen });
 		} else {
-			const screen = randomPassword ? 'E2ESavePasswordStackNavigator' : 'E2EEnterYourPasswordStackNavigator';
+			const screen = isSavePassword ? 'E2ESavePasswordStackNavigator' : 'E2EEnterYourPasswordStackNavigator';
 			navigation.navigate(screen);
 		}
 	}
@@ -827,7 +825,7 @@ class RoomsListView extends React.Component {
 	renderListHeader = () => {
 		const { searching } = this.state;
 		const {
-			sortBy, queueSize, inquiryEnabled, showEncryption
+			sortBy, queueSize, inquiryEnabled, encryptionBanner
 		} = this.props;
 		return (
 			<ListHeader
@@ -839,7 +837,7 @@ class RoomsListView extends React.Component {
 				goQueue={this.goQueue}
 				queueSize={queueSize}
 				inquiryEnabled={inquiryEnabled}
-				showEncryption={showEncryption}
+				encryptionBanner={encryptionBanner}
 			/>
 		);
 	};
@@ -1009,7 +1007,7 @@ const mapStateToProps = state => ({
 	rooms: state.room.rooms,
 	queueSize: getInquiryQueueSelector(state).length,
 	inquiryEnabled: state.inquiry.enabled,
-	showEncryption: state.encryption.enabled
+	encryptionBanner: state.encryption.banner
 });
 
 const mapDispatchToProps = dispatch => ({

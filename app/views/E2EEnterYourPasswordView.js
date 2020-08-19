@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text } from 'react-native';
+import { connect } from 'react-redux';
 
 import Button from '../containers/Button';
 import TextInput from '../containers/TextInput';
@@ -8,6 +9,7 @@ import { CloseModalButton } from '../containers/HeaderButton';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import { withTheme } from '../theme';
 import I18n from '../i18n';
+import { Encryption } from '../lib/encryption';
 
 class E2EEnterYourPasswordView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
@@ -16,6 +18,8 @@ class E2EEnterYourPasswordView extends React.Component {
 	})
 
 	static propTypes = {
+		server: PropTypes.string,
+		user: PropTypes.object,
 		theme: PropTypes.string
 	}
 
@@ -28,7 +32,8 @@ class E2EEnterYourPasswordView extends React.Component {
 
 	submit = () => {
 		const { password } = this.state;
-		console.log(password);
+		const { server, user } = this.props;
+		Encryption.start(server, user.id, password);
 	}
 
 	render() {
@@ -63,4 +68,8 @@ class E2EEnterYourPasswordView extends React.Component {
 	}
 }
 
-export default withTheme(E2EEnterYourPasswordView);
+const mapStateToProps = state => ({
+	user: state.login.user,
+	server: state.server.server
+});
+export default connect(mapStateToProps)(withTheme(E2EEnterYourPasswordView));

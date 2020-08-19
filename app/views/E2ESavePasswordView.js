@@ -4,12 +4,15 @@ import { connect } from 'react-redux';
 import RNUserDefaults from 'rn-user-defaults';
 import { ScrollView, Text, Clipboard } from 'react-native';
 
+import { encryptionSetBanner as encryptionSetBannerAction } from '../actions/encryption';
 import { E2E_RANDOM_PASSWORD_KEY } from '../lib/encryption/constants';
 import { CloseModalButton } from '../containers/HeaderButton';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
+import { LISTENER } from '../containers/Toast';
 import { themes } from '../constants/colors';
+import EventEmitter from '../utils/events';
 import Button from '../containers/Button';
 import { withTheme } from '../theme';
 import I18n from '../i18n';
@@ -23,6 +26,7 @@ class E2ESavePasswordView extends React.Component {
 	static propTypes = {
 		server: PropTypes.string,
 		navigation: PropTypes.object,
+		encryptionSetBanner: PropTypes.func,
 		theme: PropTypes.string
 	}
 
@@ -52,18 +56,17 @@ class E2ESavePasswordView extends React.Component {
 	}
 
 	onSaved = async() => {
-		const { navigation, server } = this.props;
-		try {
-			await RNUserDefaults.clear(`${ server }-${ E2E_RANDOM_PASSWORD_KEY }`);
-		} catch {
-			// Do nothing
-		}
+		const { navigation, server, encryptionSetBanner } = this.props;
+		await RNUserDefaults.clear(`${ server }-${ E2E_RANDOM_PASSWORD_KEY }`);
+		// Hide encryption banner
+		encryptionSetBanner();
 		navigation.pop();
 	}
 
 	onCopy = () => {
 		const { password } = this.state;
 		Clipboard.setString(password);
+		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 	}
 
 	onHowItWorks = () => {
@@ -120,4 +123,7 @@ class E2ESavePasswordView extends React.Component {
 const mapStateToProps = state => ({
 	server: state.server.server
 });
-export default connect(mapStateToProps)(withTheme(E2ESavePasswordView));
+const mapDispatchToProps = dispatch => ({
+	encryptionSetBanner: () => dispatch(encryptionSetBannerAction())
+});
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(E2ESavePasswordView));

@@ -6,3 +6,7 @@ export const E2E_STATUS = {
 	PENDING: 'pending',
 	DONE: 'done'
 };
+export const E2E_BANNER_TYPE = {
+	REQUEST_PASSWORD: 'REQUEST_PASSWORD',
+	SAVE_PASSWORD: 'SAVE_PASSWORD'
+};

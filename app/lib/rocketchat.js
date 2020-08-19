@@ -337,9 +337,18 @@ const RocketChat = {
 		reduxStore.dispatch(shareSetUser({}));
 	},
 
-	e2eFetchMyKeys() {
+	async e2eFetchMyKeys() {
 		// RC 0.70.0
-		return this.sdk.get('e2e.fetchMyKeys');
+		const result = await this.sdk.get('e2e.fetchMyKeys');
+		// snake_case -> camelCase
+		if (result.success) {
+			return {
+				success: result.success,
+				publicKey: result.public_key,
+				privateKey: result.private_key
+			};
+		}
+		return result;
 	},
 	e2eSetUserPublicAndPrivateKeys(public_key, private_key) {
 		// RC 2.2.0
