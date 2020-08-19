@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, StyleSheet, Text, Animated, Easing, Image
+	View, StyleSheet, Text, Animated, Easing
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -17,6 +17,7 @@ import I18n from '../i18n';
 import random from '../utils/random';
 import { logEvent, events } from '../utils/log';
 import RocketChat from '../lib/rocketchat';
+import { CustomIcon } from '../lib/Icons';
 
 const BUTTON_HEIGHT = 48;
 const SERVICE_HEIGHT = 58;
@@ -296,7 +297,7 @@ class LoginServices extends React.PureComponent {
 		const { CAS_enabled, theme } = this.props;
 		let { name } = service;
 		name = name === 'meteor-developer' ? 'meteor' : name;
-		const icon = `icon_${ name }`;
+		const icon = `${ name }-monochromatic`;
 		const isSaml = service.service === 'saml';
 		let onPress = () => {};
 
@@ -361,7 +362,7 @@ class LoginServices extends React.PureComponent {
 				underlayColor={themes[theme].buttonText}
 			>
 				<View style={styles.serviceButtonContainer}>
-					{service.authType === 'oauth' ? <Image source={{ uri: icon }} style={styles.serviceIcon} /> : null}
+					{service.authType === 'oauth' ? <CustomIcon name={icon} size={24} color={themes[theme].titleText} style={styles.serviceIcon} /> : null}
 					<Text style={[styles.serviceText, { color: themes[theme].titleText }]}>{buttonText}</Text>
 				</View>
 			</Touch>
