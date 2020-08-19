@@ -52,6 +52,7 @@ class SearchMessagesView extends React.Component {
 			searchText: ''
 		};
 		this.rid = props.route.params?.rid;
+		this.encrypted = props.route.params?.encrypted;
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -73,28 +74,32 @@ class SearchMessagesView extends React.Component {
 	}
 
 	componentWillUnmount() {
-		this.search.stop();
+		this.search?.stop?.();
 	}
 
-	// eslint-disable-next-line react/sort-comp
+	searchMessages = async(searchText) => {
+		if (this.encrypted) {
+			const db = database.active;
+			const messagesCollection = db.collections.get('messages');
+			return messagesCollection
+				.query(Q.where('rid', this.rid), Q.where('msg', Q.like(`%${ Q.sanitizeLikeString(searchText) }%`)))
+				.fetch();
+		}
+		const result = await RocketChat.searchMessages(this.rid, searchText);
+		if (result.success) {
+			return result.messages;
+		}
+	}
+
 	search = debounce(async(searchText) => {
 		this.setState({ searchText, loading: true, messages: [] });
 
 		try {
-			const db = database.active;
-			const messagesCollection = db.collections.get('messages');
-			const data = await messagesCollection.query(
-				Q.where('rid', this.rid),
-				Q.where('msg', Q.like(`%${ Q.sanitizeLikeString(searchText) }%`))
-			).fetch();
-			// TODO: We should merge these values or use DB results only on Encrypted rooms
-			const result = await RocketChat.searchMessages(this.rid, searchText);
-			if (result.success) {
-				this.setState({
-					messages: data || [],
-					loading: false
-				});
-			}
+			const messages = await this.searchMessages(searchText);
+			this.setState({
+				messages: messages || [],
+				loading: false
+			});
 		} catch (e) {
 			this.setState({ loading: false });
 			log(e);

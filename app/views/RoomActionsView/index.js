@@ -231,7 +231,7 @@ class RoomActionsView extends React.Component {
 		} = this.state;
 		const { jitsiEnabled } = this.props;
 		const {
-			rid, t, blocker
+			rid, t, blocker, encrypted
 		} = room;
 		const isGroupChat = RocketChat.isGroupChat(room);
 
@@ -301,7 +301,7 @@ class RoomActionsView extends React.Component {
 					icon: 'search',
 					name: I18n.t('Search'),
 					route: 'SearchMessagesView',
-					params: { rid },
+					params: { rid, encrypted },
 					testID: 'room-actions-search'
 				},
 				{
