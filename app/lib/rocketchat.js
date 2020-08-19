@@ -761,7 +761,6 @@ const RocketChat = {
 				const data = await this.post(`method.call/${ method }`, { message: JSON.stringify({ method, params }) });
 				const response = JSON.parse(data.message);
 				if (response?.error) {
-					// eslint-disable-next-line prefer-promise-reject-errors
 					return reject(response.error);
 				}
 				return resolve(response.result);
