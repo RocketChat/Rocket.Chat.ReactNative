@@ -207,6 +207,8 @@ export default {
 	Enable_notifications: 'Enable notifications',
 	Encrypted: 'Encrypted',
 	Enter_Your_E2E_Password: 'Enter Your E2E Password',
+	Encryption_error_title: 'Your encryption password seems wrong',
+	Encryption_error_desc: 'Wasn\'t possible to decode your encryption key to be imported.',
 	Everyone_can_access_this_channel: 'Everyone can access this channel',
 	Error_uploading: 'Error uploading',
 	Expiration_Days: 'Expiration (Days)',

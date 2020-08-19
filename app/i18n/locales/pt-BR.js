@@ -200,6 +200,8 @@ export default {
 	Enable_notifications: 'Habilitar notificações',
 	Encrypted: 'Criptografado',
 	Enter_Your_E2E_Password: 'Digite Sua Senha E2E',
+	Encryption_error_title: 'Sua senha de criptografia parece errada',
+	Encryption_error_desc: 'Não foi possível decodificar sua chave de criptografia para ser importada.',
 	Everyone_can_access_this_channel: 'Todos podem acessar este canal',
 	Error_uploading: 'Erro subindo',
 	Expiration_Days: 'Expira em (dias)',

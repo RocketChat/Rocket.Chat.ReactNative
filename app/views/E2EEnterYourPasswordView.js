@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { Text } from 'react-native';
 import { connect } from 'react-redux';
 
+import I18n from '../i18n';
+import { withTheme } from '../theme';
 import Button from '../containers/Button';
 import TextInput from '../containers/TextInput';
 import { CloseModalButton } from '../containers/HeaderButton';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
-import { withTheme } from '../theme';
-import I18n from '../i18n';
-import { Encryption } from '../lib/encryption';
+import { encryptionDecodeKey as encryptionDecodeKeyAction } from '../actions/encryption';
 
 class E2EEnterYourPasswordView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
@@ -18,8 +18,7 @@ class E2EEnterYourPasswordView extends React.Component {
 	})
 
 	static propTypes = {
-		server: PropTypes.string,
-		user: PropTypes.object,
+		encryptionDecodeKey: PropTypes.func,
 		theme: PropTypes.string
 	}
 
@@ -32,8 +31,8 @@ class E2EEnterYourPasswordView extends React.Component {
 
 	submit = () => {
 		const { password } = this.state;
-		const { server, user } = this.props;
-		Encryption.start(server, user.id, password);
+		const { encryptionDecodeKey } = this.props;
+		encryptionDecodeKey(password);
 	}
 
 	render() {
@@ -68,8 +67,7 @@ class E2EEnterYourPasswordView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
-	user: state.login.user,
-	server: state.server.server
+const mapDispatchToProps = dispatch => ({
+	encryptionDecodeKey: password => dispatch(encryptionDecodeKeyAction(password))
 });
-export default connect(mapStateToProps)(withTheme(E2EEnterYourPasswordView));
+export default connect(null, mapDispatchToProps)(withTheme(E2EEnterYourPasswordView));

@@ -23,50 +23,16 @@ import database from '../database';
 
 class Encryption {
 	constructor() {
-		this.started = false;
 		this.roomInstances = {};
 	}
 
-	start = async(server, userId, password) => {
-		if (this.started) {
-			return;
-		}
-
-		this.started = true;
-
-		// TODO: Do this better
-		this.server = server;
-		this.userId = userId;
-		this.password = password;
-
-		try {
-			const storedPublicKey = await RNUserDefaults.get(`${ this.server }-${ E2E_PUBLIC_KEY }`);
-			const storedPrivateKey = await RNUserDefaults.get(`${ this.server }-${ E2E_PRIVATE_KEY }`);
-
-			const { publicKey, privateKey } = await this.fetchMyKeys();
-
-			const pubKey = EJSON.parse(storedPublicKey || publicKey || '{}');
-			let privKey = storedPrivateKey;
-			if (!storedPrivateKey && privateKey) {
-				privKey = await this.decodePrivateKey(privateKey);
-			}
-
-			if (pubKey && privKey) {
-				await this.loadKeys(pubKey, privKey);
-			} else {
-				await this.createKeys();
-			}
-
-			this.decryptPendingSubscriptions();
-			this.decryptPendingMessages();
-		} catch {
-			// Do nothing
-		}
-	}
-
-	stop = () => {
-		this.started = false;
+	initialize = () => {
 		this.roomInstances = {};
+
+		// Don't await these promises
+		// so these can run parallelized
+		this.decryptPendingSubscriptions();
+		this.decryptPendingMessages();
 	}
 
 	provideRoomKeyToUser = async(keyId, roomId) => {
@@ -82,26 +48,22 @@ class Encryption {
 	}
 
 	// Load stored or sought on server keys
-	loadKeys = async(publicKey, privateKey) => {
-		try {
-			this.privateKey = await SimpleCrypto.RSA.importKey(EJSON.parse(privateKey));
-			await RNUserDefaults.set(`${ this.server }-${ E2E_PUBLIC_KEY }`, EJSON.stringify(publicKey));
-			await RNUserDefaults.set(`${ this.server }-${ E2E_PRIVATE_KEY }`, privateKey);
-		} catch {
-			// Do nothing
-		}
+	loadKeys = async(server, publicKey, privateKey) => {
+		this.privateKey = await SimpleCrypto.RSA.importKey(EJSON.parse(privateKey));
+		await RNUserDefaults.set(`${ server }-${ E2E_PUBLIC_KEY }`, EJSON.stringify(publicKey));
+		await RNUserDefaults.set(`${ server }-${ E2E_PRIVATE_KEY }`, privateKey);
 	}
 
 	// Could not obtain public-private keypair from server.
-	createKeys = async() => {
+	createKeys = async(userId, server) => {
 		try {
 			const key = await SimpleCrypto.RSA.generateKeys(2048);
 			const publicKey = await SimpleCrypto.RSA.exportKey(key.public);
 			const privateKey = await SimpleCrypto.RSA.exportKey(key.private);
 
-			this.loadKeys(publicKey, EJSON.stringify(privateKey));
-			const password = await this.createRandomPassword();
-			const encodedPrivateKey = await this.encodePrivateKey(EJSON.stringify(privateKey), password);
+			this.loadKeys(server, publicKey, EJSON.stringify(privateKey));
+			const password = await this.createRandomPassword(server);
+			const encodedPrivateKey = await this.encodePrivateKey(EJSON.stringify(privateKey), password, userId);
 			await RocketChat.e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
 			await RocketChat.e2eRequestSubscriptionKeys();
 		} catch {
@@ -110,6 +72,8 @@ class Encryption {
 	}
 
 	fetchMyKeys = async() => {
+		// Handling errors here we're able to
+		// load the keys without network connect
 		try {
 			const result = await RocketChat.e2eFetchMyKeys();
 			if (result.success) {
@@ -121,8 +85,8 @@ class Encryption {
 		return {};
 	}
 
-	encodePrivateKey = async(privateKey, password) => {
-		const masterKey = await this.getMasterKey(password);
+	encodePrivateKey = async(privateKey, password, userId) => {
+		const masterKey = await this.getMasterKey(password, userId);
 
 		try {
 			const vector = await SimpleCrypto.utils.randomBytes(16);
@@ -138,9 +102,8 @@ class Encryption {
 		}
 	}
 
-	decodePrivateKey = async(privateKey) => {
-		// TODO: Handle reject when user doesn't provide a password
-		const masterKey = await this.getMasterKey(this.password);
+	decodePrivateKey = async(privateKey, password, userId) => {
+		const masterKey = await this.getMasterKey(password, userId);
 		const [vector, cipherText] = splitVectorData(EJSON.parse(privateKey));
 
 		const privKey = await SimpleCrypto.AES.decrypt(
@@ -152,13 +115,13 @@ class Encryption {
 		return toString(privKey);
 	}
 
-	getMasterKey = async(password) => {
+	getMasterKey = async(password, userId) => {
 		const iterations = 1000;
 		const hash = 'SHA256';
 		const keyLen = 32;
 
 		const passwordBuffer = utf8ToBuffer(password);
-		const saltBuffer = utf8ToBuffer(this.userId);
+		const saltBuffer = utf8ToBuffer(userId);
 		try {
 			const masterKey = await SimpleCrypto.PBKDF2.hash(
 				passwordBuffer,
@@ -174,9 +137,9 @@ class Encryption {
 		}
 	}
 
-	createRandomPassword = async() => {
+	createRandomPassword = async(server) => {
 		const password = randomPassword();
-		await RNUserDefaults.set(`${ this.server }-${ E2E_RANDOM_PASSWORD_KEY }`, password);
+		await RNUserDefaults.set(`${ server }-${ E2E_RANDOM_PASSWORD_KEY }`, password);
 		return password;
 	}
 
