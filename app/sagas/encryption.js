@@ -1,5 +1,4 @@
 import EJSON from 'ejson';
-import RNUserDefaults from 'rn-user-defaults';
 import { takeLatest, select, put } from 'redux-saga/effects';
 
 import { ENCRYPTION } from '../actions/actionsTypes';
@@ -14,6 +13,7 @@ import {
 } from '../lib/encryption/constants';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
+import UserPreferences from '../lib/userPreferences';
 import { getUserSelector } from '../selectors/login';
 import { getServerSelector } from '../selectors/server';
 import { showErrorAlert } from '../utils/info';
@@ -64,8 +64,8 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 		}
 
 		// Fetch stored e2e keys for this server
-		const storedPublicKey = yield RNUserDefaults.get(`${ server }-${ E2E_PUBLIC_KEY }`);
-		const storedPrivateKey = yield RNUserDefaults.get(`${ server }-${ E2E_PRIVATE_KEY }`);
+		const storedPublicKey = yield UserPreferences.getStringAsync(`${ server }-${ E2E_PUBLIC_KEY }`);
+		const storedPrivateKey = yield UserPreferences.getStringAsync(`${ server }-${ E2E_PRIVATE_KEY }`);
 
 		// Fetch server stored e2e keys
 		const keys = yield RocketChat.e2eFetchMyKeys();
@@ -80,7 +80,7 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 
 		// If the user has a private key stored
 		// but doesn't saved her random password yet
-		const storedRandomPassword = yield RNUserDefaults.get(`${ server }-${ E2E_RANDOM_PASSWORD_KEY }`);
+		const storedRandomPassword = yield UserPreferences.getStringAsync(`${ server }-${ E2E_RANDOM_PASSWORD_KEY }`);
 		if (storedRandomPassword) {
 			yield put(encryptionSetBanner(E2E_BANNER_TYPE.SAVE_PASSWORD));
 		}

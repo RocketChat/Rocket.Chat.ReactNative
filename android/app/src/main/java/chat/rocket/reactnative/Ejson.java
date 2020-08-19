@@ -1,8 +1,28 @@
 package chat.rocket.reactnative;
 
-import android.content.SharedPreferences;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.Callback;
 
-import chat.rocket.userdefaults.RNUserDefaultsModule;
+import com.ammarahmed.mmkv.SecureKeystore;
+import com.tencent.mmkv.MMKV;
+
+import java.math.BigInteger;
+
+class RNCallback implements Callback {
+    public void invoke(Object... args) {
+
+    }
+}
+
+class Utils {
+    static public String toHex(String arg) {
+        try {
+            return String.format("%x", new BigInteger(1, arg.getBytes("UTF-8")));
+        } catch (Exception e) {
+            return "";
+        }
+    }
+}
 
 public class Ejson {
     String host;
@@ -12,8 +32,32 @@ public class Ejson {
     String messageId;
     String notificationType;
 
+    private MMKV mmkv;
+
     private String TOKEN_KEY = "reactnativemeteor_usertoken-";
-    private SharedPreferences sharedPreferences = RNUserDefaultsModule.getPreferences(CustomPushNotification.reactApplicationContext);
+
+    public Ejson() {
+        ReactApplicationContext reactApplicationContext = CustomPushNotification.reactApplicationContext;
+
+        // Start MMKV container
+        MMKV.initialize(reactApplicationContext);
+        SecureKeystore secureKeystore = new SecureKeystore(reactApplicationContext);
+
+        // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
+        String alias = Utils.toHex("com.MMKV.default");
+
+        // Retrieve container password
+        secureKeystore.getSecureKey(alias, new RNCallback() {
+            @Override
+            public void invoke(Object... args) {
+                String error = (String) args[0];
+                if (error == null) {
+                    String password = (String) args[1];
+                    mmkv = MMKV.mmkvWithID("default", MMKV.SINGLE_PROCESS_MODE, password);
+                }
+            }
+        });
+    }
 
     public String getAvatarUri() {
         if (type == null) {
@@ -23,11 +67,17 @@ public class Ejson {
     }
 
     public String token() {
-        return sharedPreferences.getString(TOKEN_KEY.concat(userId()), "");
+        if (mmkv != null) {
+            return mmkv.decodeString(TOKEN_KEY.concat(userId()));
+        }
+        return "";
     }
 
     public String userId() {
-        return sharedPreferences.getString(TOKEN_KEY.concat(serverURL()), "");
+        if (mmkv != null) {
+            return mmkv.decodeString(TOKEN_KEY.concat(serverURL()));
+        }
+        return "";
     }
 
     public String serverURL() {

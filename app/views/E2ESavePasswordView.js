@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import RNUserDefaults from 'rn-user-defaults';
 import { ScrollView, Text, Clipboard } from 'react-native';
 
 import { encryptionSetBanner as encryptionSetBannerAction } from '../actions/encryption';
@@ -9,6 +8,7 @@ import { E2E_RANDOM_PASSWORD_KEY } from '../lib/encryption/constants';
 import { CloseModalButton } from '../containers/HeaderButton';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import SafeAreaView from '../containers/SafeAreaView';
+import UserPreferences from '../lib/userPreferences';
 import StatusBar from '../containers/StatusBar';
 import { LISTENER } from '../containers/Toast';
 import { themes } from '../constants/colors';
@@ -44,7 +44,7 @@ class E2ESavePasswordView extends React.Component {
 	init = async() => {
 		const { server } = this.props;
 		try {
-			const password = await RNUserDefaults.get(`${ server }-${ E2E_RANDOM_PASSWORD_KEY }`);
+			const password = await UserPreferences.getStringAsync(`${ server }-${ E2E_RANDOM_PASSWORD_KEY }`);
 			if (this.mounted) {
 				this.setState({ password });
 			} else {
@@ -57,7 +57,7 @@ class E2ESavePasswordView extends React.Component {
 
 	onSaved = async() => {
 		const { navigation, server, encryptionSetBanner } = this.props;
-		await RNUserDefaults.clear(`${ server }-${ E2E_RANDOM_PASSWORD_KEY }`);
+		await UserPreferences.removeItem(`${ server }-${ E2E_RANDOM_PASSWORD_KEY }`);
 		// Hide encryption banner
 		encryptionSetBanner();
 		navigation.pop();

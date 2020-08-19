@@ -1,6 +1,5 @@
 import EJSON from 'ejson';
 import SimpleCrypto from 'react-native-simple-crypto';
-import RNUserDefaults from 'rn-user-defaults';
 import { Q } from '@nozbe/watermelondb';
 
 import {
@@ -19,6 +18,7 @@ import {
 } from './constants';
 import RocketChat from '../rocketchat';
 import E2ERoom from './encryption.room';
+import UserPreferences from '../userPreferences';
 import database from '../database';
 
 class Encryption {
@@ -50,8 +50,8 @@ class Encryption {
 	// Load stored or sought on server keys
 	loadKeys = async(server, publicKey, privateKey) => {
 		this.privateKey = await SimpleCrypto.RSA.importKey(EJSON.parse(privateKey));
-		await RNUserDefaults.set(`${ server }-${ E2E_PUBLIC_KEY }`, EJSON.stringify(publicKey));
-		await RNUserDefaults.set(`${ server }-${ E2E_PRIVATE_KEY }`, privateKey);
+		await UserPreferences.setStringAsync(`${ server }-${ E2E_PUBLIC_KEY }`, EJSON.stringify(publicKey));
+		await UserPreferences.setStringAsync(`${ server }-${ E2E_PRIVATE_KEY }`, privateKey);
 	}
 
 	// Could not obtain public-private keypair from server.
@@ -139,7 +139,7 @@ class Encryption {
 
 	createRandomPassword = async(server) => {
 		const password = randomPassword();
-		await RNUserDefaults.set(`${ server }-${ E2E_RANDOM_PASSWORD_KEY }`, password);
+		await UserPreferences.setStringAsync(`${ server }-${ E2E_RANDOM_PASSWORD_KEY }`, password);
 		return password;
 	}
 
