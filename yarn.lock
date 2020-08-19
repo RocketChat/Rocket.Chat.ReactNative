@@ -12824,6 +12824,11 @@ react-native-mime-types@2.3.0:
   dependencies:
     mime-db "~1.37.0"
 
+react-native-mmkv-storage@^0.3.5:
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/react-native-mmkv-storage/-/react-native-mmkv-storage-0.3.5.tgz#9c2f064c0efdaf960e9646c68dc6ae7f11640fa5"
+  integrity sha512-xp0E55Qdi81k8CTeq3PUrXGwT2tMmfNfmYvZ7Emq9qWpvg3ko1/M6B1kXEXOgEou/hgqB503TGcsR/mpN5HSMA==
+
 react-native-modal@11.5.6:
   version "11.5.6"
   resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-11.5.6.tgz#bb25a78c35a5e24f45de060e5f64284397d38a87"
@@ -13669,11 +13674,6 @@ rn-root-view@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/rn-root-view/-/rn-root-view-1.0.3.tgz#a2cddc717278cb2175fb29b7c006e407b7f0d0e2"
   integrity sha512-BIKm8hY5q8+pxK9B5ugYjqutoI9xn2JfxIZKWoaFmAl1bOIM4oXjwFQrRM1e6lFgzz99MN6Mf2dK3Alsywnvvw==
-
-rn-user-defaults@^1.8.1:
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/rn-user-defaults/-/rn-user-defaults-1.8.1.tgz#ccb8048f3ce43388ae40ac33eb063bfa93071702"
-  integrity sha512-pnUiB6Xn++5YGzSA1BKOsRAdz/GPkW3MViN5Yii6XGp5d6arcP4pOVIGmiFlOfxIFrHD3GU440WFnt5L7ogMSg==
 
 rsvp@^3.3.3:
   version "3.6.2"
