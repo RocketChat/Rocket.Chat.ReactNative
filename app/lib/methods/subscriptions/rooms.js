@@ -22,6 +22,7 @@ const removeListener = listener => listener.stop();
 let connectedListener;
 let disconnectedListener;
 let streamListener;
+let notifyAllListener;
 let subServer;
 let subQueue = {};
 let subTimer = null;
@@ -346,6 +347,10 @@ export default function subscribeRooms() {
 			streamListener.then(removeListener);
 			streamListener = false;
 		}
+		if (notifyAllListener) {
+			notifyAllListener.then(removeListener);
+			notifyAllListener = false;
+		}
 		subQueue = {};
 		roomQueue = {};
 		if (subTimer) {
@@ -361,16 +366,21 @@ export default function subscribeRooms() {
 	connectedListener = this.sdk.onStreamData('connected', handleConnection);
 	disconnectedListener = this.sdk.onStreamData('close', handleConnection);
 	streamListener = this.sdk.onStreamData('stream-notify-user', handleStreamMessageReceived);
+	notifyAllListener = this.sdk.onStreamData('stream-notify-all', () => {
+		alert('Notify All in Rooms Subscription');
+	});
 
 	try {
 		// set the server that started this task
 		subServer = this.sdk.client.host;
 		this.sdk.subscribeNotifyUser().catch(e => console.log(e));
+		this.sdk.subscribeNotifyAll().catch(e => console.log(e));
 
 		return {
 			stop: () => stop()
 		};
 	} catch (e) {
+		alert('error');
 		log(e);
 		return Promise.reject();
 	}
