@@ -1,6 +1,5 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import { Alert } from 'react-native';
-import RNUserDefaults from 'rn-user-defaults';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import semver from 'semver';
 
@@ -16,9 +15,9 @@ import database from '../lib/database';
 import log, { logServerVersion } from '../utils/log';
 import { extractHostname } from '../utils/server';
 import I18n from '../i18n';
-import { SERVERS, TOKEN, SERVER_URL } from '../constants/userDefaults';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../utils/fetch';
 import { appStart, ROOT_INSIDE, ROOT_OUTSIDE } from '../actions/app';
+import UserPreferences from '../lib/userPreferences';
 import { inquiryReset } from '../actions/inquiry';
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
@@ -68,8 +67,8 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 	try {
 		yield put(inquiryReset());
 		const serversDB = database.servers;
-		yield RNUserDefaults.set('currentServer', server);
-		const userId = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
+		yield UserPreferences.setStringAsync(RocketChat.CURRENT_SERVER, server);
+		const userId = yield UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
 		const userCollections = serversDB.collections.get('users');
 		let user = null;
 		if (userId) {
@@ -85,17 +84,12 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 					statusText: userRecord.statusText,
 					roles: userRecord.roles
 				};
-			} catch (e) {
-				// We only run it if not has user on DB
-				const servers = yield RNUserDefaults.objectForKey(SERVERS);
-				const userCredentials = servers && servers.find(srv => srv[SERVER_URL] === server);
-				user = userCredentials && {
-					token: userCredentials[TOKEN]
-				};
+			} catch {
+				// Do nothing
 			}
 		}
 
-		const basicAuth = yield RNUserDefaults.get(`${ BASIC_AUTH_KEY }-${ server }`);
+		const basicAuth = yield UserPreferences.getStringAsync(`${ BASIC_AUTH_KEY }-${ server }`);
 		setBasicAuth(basicAuth);
 
 		// Check for running requests and abort them before connecting to the server
@@ -136,7 +130,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 const handleServerRequest = function* handleServerRequest({ server, certificate }) {
 	try {
 		if (certificate) {
-			yield RNUserDefaults.setObjectForKey(extractHostname(server), certificate);
+			yield UserPreferences.setMapAsync(extractHostname(server), certificate);
 		}
 
 		const serverInfo = yield getServerInfo({ server });
