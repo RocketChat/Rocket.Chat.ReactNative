@@ -418,11 +418,6 @@ class RoomsListView extends React.Component {
 			Q.where('open', true)
 		];
 
-		// Hide omnichannel if there's no license
-		if (!RocketChat.isOmnichannelModuleAvailable()) {
-			defaultWhereClause.push(Q.where('t', Q.notEq('l')));
-		}
-
 		if (sortBy === 'alphabetical') {
 			defaultWhereClause.push(Q.experimentalSortBy(`${ this.useRealName ? 'fname' : 'name' }`, Q.asc));
 		} else {
