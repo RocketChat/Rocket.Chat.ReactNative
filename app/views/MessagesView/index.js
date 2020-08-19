@@ -114,7 +114,6 @@ class MessagesView extends React.Component {
 						item={{
 							...item,
 							u: item.user,
-							ts: item.ts || item.uploadedAt,
 							attachments: [{
 								title: item.name,
 								description: item.description,
