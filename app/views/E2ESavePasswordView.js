@@ -1,7 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { ScrollView, Text, Clipboard } from 'react-native';
+import {
+	Text,
+	View,
+	Clipboard,
+	ScrollView,
+	StyleSheet
+} from 'react-native';
 
 import { encryptionSetBanner as encryptionSetBannerAction } from '../actions/encryption';
 import { E2E_RANDOM_PASSWORD_KEY } from '../lib/encryption/constants';
@@ -15,7 +21,42 @@ import { themes } from '../constants/colors';
 import EventEmitter from '../utils/events';
 import Button from '../containers/Button';
 import { withTheme } from '../theme';
+import sharedStyles from './Styles';
 import I18n from '../i18n';
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		padding: 44,
+		paddingTop: 32
+	},
+	content: {
+		marginVertical: 68,
+		alignItems: 'center'
+	},
+	warning: {
+		fontSize: 14,
+		...sharedStyles.textMedium
+	},
+	passwordText: {
+		marginBottom: 8,
+		...sharedStyles.textAlignCenter
+	},
+	password: {
+		fontSize: 24,
+		marginBottom: 24,
+		...sharedStyles.textBold
+	},
+	copyButton: {
+		width: 72,
+		height: 32
+	},
+	info: {
+		fontSize: 14,
+		marginBottom: 64,
+		...sharedStyles.textRegular
+	}
+});
 
 class E2ESavePasswordView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
@@ -44,6 +85,7 @@ class E2ESavePasswordView extends React.Component {
 	init = async() => {
 		const { server } = this.props;
 		try {
+			// Set stored password on local state
 			const password = await UserPreferences.getStringAsync(`${ server }-${ E2E_RANDOM_PASSWORD_KEY }`);
 			if (this.mounted) {
 				this.setState({ password });
@@ -57,6 +99,7 @@ class E2ESavePasswordView extends React.Component {
 
 	onSaved = async() => {
 		const { navigation, server, encryptionSetBanner } = this.props;
+		// Remove stored password
 		await UserPreferences.removeItem(`${ server }-${ E2E_RANDOM_PASSWORD_KEY }`);
 		// Hide encryption banner
 		encryptionSetBanner();
@@ -77,43 +120,39 @@ class E2ESavePasswordView extends React.Component {
 	render() {
 		const { password } = this.state;
 		const { theme } = this.props;
+
 		return (
-			<SafeAreaView
-				style={{ backgroundColor: themes[theme].backgroundColor }}
-				testID='e2e-save-password-view'
-				theme={theme}
-			>
+			<SafeAreaView theme={theme} style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<StatusBar theme={theme} />
-				<ScrollView
-					contentContainerStyle={[
-						{
-							backgroundColor: themes[theme].backgroundColor,
-							borderColor: themes[theme].separatorColor
-						}
-					]}
-					{...scrollPersistTaps}
-				>
-					<Text>{I18n.t('Your_password_is')}</Text>
-					<Text style={{ fontSize: 24, padding: 50, color: '#000' }}>{password || '000-000-000'}</Text>
-					<Button
-						onPress={this.onCopy}
-						style={{ backgroundColor: themes[theme].auxiliaryBackground, width: 100 }}
-						title={I18n.t('Copy')}
-						type='secondary'
-						theme={theme}
-					/>
-					<Button
-						onPress={this.onHowItWorks}
-						style={{ backgroundColor: themes[theme].auxiliaryBackground }}
-						title={I18n.t('How_It_Works')}
-						type='secondary'
-						theme={theme}
-					/>
-					<Button
-						onPress={this.onSaved}
-						title={I18n.t('I_Saved_My_E2E_Password')}
-						theme={theme}
-					/>
+				<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={sharedStyles.containerScrollView}>
+					<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
+						<Text style={[styles.warning, { color: themes[theme].dangerColor }]}>{I18n.t('Save_Your_Encryption_Password_warning')}</Text>
+						<View style={styles.content}>
+							<Text style={[styles.passwordText, { color: themes[theme].bodyText }]}>{I18n.t('Your_password_is')}</Text>
+							<Text style={[styles.password, { color: themes[theme].bodyText }]}>{password}</Text>
+							<Button
+								onPress={this.onCopy}
+								style={[styles.copyButton, { backgroundColor: themes[theme].auxiliaryBackground }]}
+								title={I18n.t('Copy')}
+								type='secondary'
+								fontSize={12}
+								theme={theme}
+							/>
+						</View>
+						<Text style={[styles.info, { color: themes[theme].bodyText }]}>{I18n.t('Save_Your_Encryption_Password_info')}</Text>
+						<Button
+							onPress={this.onHowItWorks}
+							style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+							title={I18n.t('How_It_Works')}
+							type='secondary'
+							theme={theme}
+						/>
+						<Button
+							onPress={this.onSaved}
+							title={I18n.t('I_Saved_My_E2E_Password')}
+							theme={theme}
+						/>
+					</View>
 				</ScrollView>
 			</SafeAreaView>
 		);
