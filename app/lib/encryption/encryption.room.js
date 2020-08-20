@@ -184,9 +184,9 @@ export default class EncryptionRoom {
 		}
 
 		try {
-			const { t } = message;
+			const { t, e2e } = message;
 
-			if (t === E2E_MESSAGE_TYPE) {
+			if (t === E2E_MESSAGE_TYPE && e2e !== E2E_STATUS.DONE) {
 				let { msg } = message;
 				msg = b64ToBuffer(msg.slice(12));
 				const [vector, cipherText] = splitVectorData(msg);
