@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { themes } from '../constants/colors';
@@ -17,10 +17,12 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const FormContainerInner = ({ children }) => (
-	<View style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]}>
-		{children}
-	</View>
+export const FormContainerInner = ({ children, onPress }) => (
+	<TouchableWithoutFeedback onPress={onPress}>
+		<View style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]}>
+			{children}
+		</View>
+	</TouchableWithoutFeedback>
 );
 
 const FormContainer = ({ children, theme, testID }) => (
@@ -42,11 +44,13 @@ const FormContainer = ({ children, theme, testID }) => (
 FormContainer.propTypes = {
 	theme: PropTypes.string,
 	testID: PropTypes.string,
-	children: PropTypes.element
+	children: PropTypes.element,
+	onPress: PropTypes.func
 };
 
 FormContainerInner.propTypes = {
-	children: PropTypes.element
+	children: PropTypes.element,
+	onPress: PropTypes.func
 };
 
 export default FormContainer;

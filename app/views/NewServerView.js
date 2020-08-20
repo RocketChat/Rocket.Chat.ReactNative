@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, Keyboard, StyleSheet, TouchableOpacity, View, Alert, BackHandler
+	Text, Keyboard, StyleSheet, TouchableOpacity, View, Alert, BackHandler, FlatList
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
@@ -27,6 +27,7 @@ import { withTheme } from '../theme';
 import { setBasicAuth, BASIC_AUTH_KEY } from '../utils/fetch';
 import { CloseModalButton } from '../containers/HeaderButton';
 import { showConfirmationAlert } from '../utils/info';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
 	title: {
@@ -58,8 +59,66 @@ const styles = StyleSheet.create({
 	},
 	connectButton: {
 		marginBottom: 0
-	}
+	},
+	item: {
+		padding: 10
+	},
+	itemText: {
+		...sharedStyles.textRegular,
+		fontSize: 16,
+	},
 });
+
+const DATA = [
+	{
+		id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+		title: "https://open.rocket.chat",
+	},
+	{
+		id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+		title: "https://open.rocket.chat",
+	},
+	{
+		id: "58694a0f-3da1-471f-bd96-145571e29d72",
+		title: "https://open.rocket.chat",
+	},
+	{
+		id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+		title: "https://open.rocket.chat",
+	},
+	{
+		id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+		title: "https://open.rocket.chat",
+	},
+	{
+		id: "58694a0f-3da1-471f-bd96-145571e29d72",
+		title: "https://open.rocket.chat",
+	},
+	{
+		id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+		title: "https://open.rocket.chat",
+	},
+	{
+		id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+		title: "https://open.rocket.chat",
+	},
+	{
+		id: "58694a0f-3da1-471f-bd96-145571e29d72",
+		title: "https://open.rocket.chat",
+	}
+];
+
+const Item = ({ item, onPress, theme }) => (
+	<TouchableWithoutFeedback style={styles.item} onPress={() => onPress(item.title)}>
+		<Text style={[styles.itemText, {color: themes[theme].titleText}]}>{item.title}</Text>
+	</TouchableWithoutFeedback>
+);
+
+Item.propTypes = {
+	item: PropTypes.object,
+	onPress: PropTypes.func,
+	theme: PropTypes.string
+};
 
 class NewServerView extends React.Component {
 	static navigationOptions = () => ({
@@ -84,7 +143,8 @@ class NewServerView extends React.Component {
 		this.state = {
 			text: '',
 			connectingOpen: false,
-			certificate: null
+			certificate: null,
+			focused: false
 		};
 		EventEmitter.addEventListener('NewServer', this.handleNewServerEvent);
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
@@ -138,7 +198,7 @@ class NewServerView extends React.Component {
 		connectServer(server);
 	}
 
-	submit = async() => {
+	submit = async () => {
 		logEvent(events.NEWSERVER_CONNECT_TO_WORKSPACE);
 		const { text, certificate } = this.state;
 		const { connectServer } = this.props;
@@ -147,7 +207,7 @@ class NewServerView extends React.Component {
 		this.setState({ connectingOpen: false });
 
 		if (certificate) {
-			const certificatePath = `${ FileSystem.documentDirectory }/${ certificate.name }`;
+			const certificatePath = `${FileSystem.documentDirectory}/${certificate.name}`;
 			try {
 				await FileSystem.copyAsync({ from: certificate.path, to: certificatePath });
 			} catch (e) {
@@ -175,12 +235,12 @@ class NewServerView extends React.Component {
 		connectServer('https://open.rocket.chat');
 	}
 
-	basicAuth = async(server, text) => {
+	basicAuth = async (server, text) => {
 		try {
 			const parsedUrl = parse(text, true);
 			if (parsedUrl.auth.length) {
 				const credentials = Base64.encode(parsedUrl.auth);
-				await RNUserDefaults.set(`${ BASIC_AUTH_KEY }-${ server }`, credentials);
+				await RNUserDefaults.set(`${BASIC_AUTH_KEY}-${server}`, credentials);
 				setBasicAuth(credentials);
 			}
 		} catch {
@@ -188,7 +248,7 @@ class NewServerView extends React.Component {
 		}
 	}
 
-	chooseCertificate = async() => {
+	chooseCertificate = async () => {
 		try {
 			const res = await DocumentPicker.pick({
 				type: ['com.rsa.pkcs-12']
@@ -222,14 +282,14 @@ class NewServerView extends React.Component {
 
 		if (/^(\w|[0-9-_]){3,}$/.test(url)
 			&& /^(htt(ps?)?)|(loca((l)?|(lh)?|(lho)?|(lhos)?|(lhost:?\d*)?)$)/.test(url) === false) {
-			url = `${ url }.rocket.chat`;
+			url = `${url}.rocket.chat`;
 		}
 
 		if (/^(https?:\/\/)?(((\w|[0-9-_])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
 			if (/^localhost(:\d+)?/.test(url)) {
-				url = `http://${ url }`;
+				url = `http://${url}`;
 			} else if (/^https?:\/\//.test(url) === false) {
-				url = `https://${ url }`;
+				url = `https://${url}`;
 			}
 		}
 
@@ -283,25 +343,42 @@ class NewServerView extends React.Component {
 
 	render() {
 		const { connecting, theme } = this.props;
-		const { text, connectingOpen } = this.state;
+		const { text, connectingOpen, history, focused } = this.state;
 		return (
-			<FormContainer theme={theme} testID='new-server-view'>
-				<FormContainerInner>
+			<FormContainer theme={theme} testID='new-server-view' >
+				<FormContainerInner onPress={() => {
+					this.setState({ history: !this.state.history});
+					Keyboard.dismiss();
+					}}>
 					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Join_your_workspace')}</Text>
-					<TextInput
-						label='Enter workspace URL'
-						placeholder='Ex. your-company.rocket.chat'
-						containerStyle={styles.inputContainer}
-						value={text}
-						returnKeyType='send'
-						onChangeText={this.onChangeText}
-						testID='new-server-view-input'
-						onSubmitEditing={this.submit}
-						clearButtonMode='while-editing'
-						keyboardType='url'
-						textContentType='URL'
-						theme={theme}
-					/>
+					<View>
+						<TextInput
+							label='Enter workspace URL'
+							placeholder='Ex. your-company.rocket.chat'
+							containerStyle={styles.inputContainer}
+							value={text}
+							returnKeyType='send'
+							onChangeText={this.onChangeText}
+							testID='new-server-view-input'
+							onSubmitEditing={this.submit}
+							clearButtonMode='while-editing'
+							keyboardType='url'
+							textContentType='URL'
+							theme={theme}
+							onFocus={() => this.setState({focused: true})} 
+							onBlur={() => this.setState({focused: false})}
+						/>
+						{
+							focused ?
+								<View style={{ backgroundColor: themes[theme].backgroundColor, maxHeight: 200, width: '100%', top: '75%', zIndex: 1, position: 'absolute',borderColor: themes[theme].separatorColor, borderWidth: 0.5 }}>
+									<FlatList
+										data={DATA}
+										renderItem={({ item }) => <Item item={item} onPress={this.onChangeText} theme={theme}/>}
+										keyExtractor={(item) => item.id}
+									/>
+								</View> : null
+						}
+					</View>
 					<Button
 						title={I18n.t('Connect')}
 						type='primary'
@@ -325,7 +402,7 @@ class NewServerView extends React.Component {
 						testID='new-server-view-open'
 					/>
 				</FormContainerInner>
-				{ isIOS ? this.renderCertificatePicker() : null }
+				{isIOS ? this.renderCertificatePicker() : null}
 			</FormContainer>
 		);
 	}
