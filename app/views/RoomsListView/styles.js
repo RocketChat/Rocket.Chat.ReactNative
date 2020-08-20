@@ -28,7 +28,6 @@ export default StyleSheet.create({
 	queueToggleText: {
 		fontSize: 16,
 		flex: 1,
-		marginLeft: 12,
 		...sharedStyles.textRegular
 	},
 	dropdownContainer: {
@@ -126,5 +125,8 @@ export default StyleSheet.create({
 	serverSeparator: {
 		height: StyleSheet.hairlineWidth,
 		marginLeft: 72
+	},
+	omnichannelToggle: {
+		marginRight: 12
 	}
 });

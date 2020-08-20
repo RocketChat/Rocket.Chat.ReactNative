@@ -812,7 +812,9 @@ class RoomsListView extends React.Component {
 
 	renderListHeader = () => {
 		const { searching } = this.state;
-		const { sortBy, queueSize, inquiryEnabled } = this.props;
+		const {
+			sortBy, queueSize, inquiryEnabled, user
+		} = this.props;
 		return (
 			<ListHeader
 				searching={searching}
@@ -822,6 +824,7 @@ class RoomsListView extends React.Component {
 				goQueue={this.goQueue}
 				queueSize={queueSize}
 				inquiryEnabled={inquiryEnabled}
+				user={user}
 			/>
 		);
 	};
