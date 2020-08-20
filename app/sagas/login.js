@@ -25,7 +25,7 @@ import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../utils/info';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { setActiveUsers } from '../actions/activeUsers';
-import { encryptionInit } from '../actions/encryption';
+import { encryptionInit, encryptionStop } from '../actions/encryption';
 import UserPreferences from '../lib/userPreferences';
 
 const getServer = state => state.server.server;
@@ -86,10 +86,6 @@ const fetchUsersPresence = function* fetchUserPresence() {
 	RocketChat.subscribeUsersPresence();
 };
 
-const encryptionStart = function* encryptionStart() {
-	yield put(encryptionInit());
-};
-
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
 		const adding = yield select(state => state.server.adding);
@@ -106,7 +102,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchSlashCommands);
 		yield fork(registerPushToken);
 		yield fork(fetchUsersPresence);
-		yield fork(encryptionStart);
+		yield put(encryptionInit());
 
 		I18n.locale = user.language;
 		moment.locale(toMomentLocale(user.language));
@@ -167,6 +163,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 };
 
 const handleLogout = function* handleLogout({ forcedByServer }) {
+	yield put(encryptionStop());
 	yield put(appStart({ root: ROOT_LOADING, text: I18n.t('Logging_out') }));
 	const server = yield select(getServer);
 	if (server) {

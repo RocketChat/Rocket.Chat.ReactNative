@@ -24,6 +24,7 @@ import database from '../database';
 
 class Encryption {
 	constructor() {
+		this.privateKey = null;
 		this.roomInstances = {};
 	}
 
@@ -35,6 +36,12 @@ class Encryption {
 		// so these can run parallelized
 		this.decryptPendingSubscriptions();
 		this.decryptPendingMessages();
+	}
+
+	// Stop Encryption client
+	stop = () => {
+		this.privateKey = null;
+		this.roomInstances = {};
 	}
 
 	// When a new participant join and request a new room encryption key

@@ -19,6 +19,7 @@ import { BASIC_AUTH_KEY, setBasicAuth } from '../utils/fetch';
 import { appStart, ROOT_INSIDE, ROOT_OUTSIDE } from '../actions/app';
 import UserPreferences from '../lib/userPreferences';
 import { inquiryReset } from '../actions/inquiry';
+import { encryptionStop } from '../actions/encryption';
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
@@ -66,6 +67,7 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }) {
 	try {
 		yield put(inquiryReset());
+		yield put(encryptionStop());
 		const serversDB = database.servers;
 		yield UserPreferences.setStringAsync(RocketChat.CURRENT_SERVER, server);
 		const userId = yield UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);

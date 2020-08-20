@@ -2,7 +2,7 @@ import EJSON from 'ejson';
 import { takeLatest, select, put } from 'redux-saga/effects';
 
 import { ENCRYPTION } from '../actions/actionsTypes';
-import { encryptionSetBanner } from '../actions/encryption';
+import { encryptionSetBanner, encryptionStop } from '../actions/encryption';
 import { Encryption } from '../lib/encryption';
 import Navigation from '../lib/Navigation';
 import {
@@ -19,37 +19,11 @@ import { getServerSelector } from '../selectors/server';
 import { showErrorAlert } from '../utils/info';
 import I18n from '../i18n';
 
-const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password }) {
-	try {
-		const server = yield select(getServerSelector);
-		const user = yield select(getUserSelector);
-
-		// Fetch server stored e2e keys, since we're not storing keys
-		// to prevent cases where the user reset their keys
-		const keys = yield RocketChat.e2eFetchMyKeys();
-
-		const publicKey = EJSON.parse(keys.publicKey);
-		// Decode the current server key
-		const privateKey = yield Encryption.decodePrivateKey(keys.privateKey, password, user.id);
-
-		// Load these decrypted keys
-		yield Encryption.loadKeys(server, publicKey, privateKey);
-
-		// Decrypt all pending messages/subscriptions
-		yield Encryption.initialize();
-
-		// Hide encryption banner
-		yield put(encryptionSetBanner());
-
-		Navigation.back();
-	} catch {
-		// Can't decrypt user private key
-		showErrorAlert(I18n.t('Encryption_error_desc'), I18n.t('Encryption_error_title'));
-	}
-};
-
 const handleEncryptionInit = function* handleEncryptionInit() {
 	try {
+		// Stop Encryption client
+		yield put(encryptionStop());
+
 		const server = yield select(getServerSelector);
 		const user = yield select(getUserSelector);
 
@@ -107,8 +81,50 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 	}
 };
 
+const handleEncryptionStop = function* handleEncryptionStop() {
+	try {
+		// Hide encryption banner
+		yield put(encryptionSetBanner());
+
+		// Stop Encryption client
+		Encryption.stop();
+	} catch {
+		// Do nothing
+	}
+};
+
+const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password }) {
+	try {
+		const server = yield select(getServerSelector);
+		const user = yield select(getUserSelector);
+
+		// Fetch server stored e2e keys, since we're not storing keys
+		// to prevent cases where the user reset their keys
+		const keys = yield RocketChat.e2eFetchMyKeys();
+
+		const publicKey = EJSON.parse(keys.publicKey);
+		// Decode the current server key
+		const privateKey = yield Encryption.decodePrivateKey(keys.privateKey, password, user.id);
+
+		// Load these decrypted keys
+		yield Encryption.loadKeys(server, publicKey, privateKey);
+
+		// Decrypt all pending messages/subscriptions
+		yield Encryption.initialize();
+
+		// Hide encryption banner
+		yield put(encryptionSetBanner());
+
+		Navigation.back();
+	} catch {
+		// Can't decrypt user private key
+		showErrorAlert(I18n.t('Encryption_error_desc'), I18n.t('Encryption_error_title'));
+	}
+};
+
 const root = function* root() {
 	yield takeLatest(ENCRYPTION.INIT, handleEncryptionInit);
+	yield takeLatest(ENCRYPTION.STOP, handleEncryptionStop);
 	yield takeLatest(ENCRYPTION.DECODE_KEY, handleEncryptionDecodeKey);
 };
 export default root;

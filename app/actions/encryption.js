@@ -6,6 +6,12 @@ export function encryptionInit() {
 	};
 }
 
+export function encryptionStop() {
+	return {
+		type: types.ENCRYPTION.STOP
+	};
+}
+
 export function encryptionSetBanner(banner) {
 	return {
 		type: types.ENCRYPTION.SET_BANNER,
