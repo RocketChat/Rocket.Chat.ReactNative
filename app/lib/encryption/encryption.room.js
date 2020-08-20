@@ -32,7 +32,7 @@ export default class EncryptionRoom {
 		const { E2EKey, e2eKeyId, encrypted } = this.subscription;
 
 		if (!encrypted) {
-			return;
+			return Promise.reject();
 		}
 
 		if (!privateKey) {

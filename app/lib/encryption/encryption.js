@@ -26,6 +26,7 @@ class Encryption {
 		this.roomInstances = {};
 	}
 
+	// Initialize Encryption client
 	initialize = () => {
 		this.roomInstances = {};
 
@@ -35,6 +36,7 @@ class Encryption {
 		this.decryptPendingMessages();
 	}
 
+	// When a new participant join and request a new room encryption key
 	provideRoomKeyToUser = async(keyId, roomId) => {
 		try {
 			const roomE2E = await this.getRoomInstance(roomId);
@@ -71,6 +73,7 @@ class Encryption {
 		}
 	}
 
+	// Fetch the server stored e2e keys
 	fetchMyKeys = async() => {
 		// Handling errors here we're able to
 		// load the keys without network connect
@@ -85,6 +88,7 @@ class Encryption {
 		return {};
 	}
 
+	// Encode a private key before send it to the server
 	encodePrivateKey = async(privateKey, password, userId) => {
 		const masterKey = await this.getMasterKey(password, userId);
 
@@ -102,6 +106,7 @@ class Encryption {
 		}
 	}
 
+	// Decode a private key fetched from server
 	decodePrivateKey = async(privateKey, password, userId) => {
 		const masterKey = await this.getMasterKey(password, userId);
 		const [vector, cipherText] = splitVectorData(EJSON.parse(privateKey));
@@ -115,6 +120,7 @@ class Encryption {
 		return toString(privKey);
 	}
 
+	// Get a user master key, this is based on userId and a password
 	getMasterKey = async(password, userId) => {
 		const iterations = 1000;
 		const hash = 'SHA256';
@@ -137,12 +143,14 @@ class Encryption {
 		}
 	}
 
+	// Create a random password to local created keys
 	createRandomPassword = async(server) => {
 		const password = randomPassword();
 		await UserPreferences.setStringAsync(`${ server }-${ E2E_RANDOM_PASSWORD_KEY }`, password);
 		return password;
 	}
 
+	// get a encryption room instance
 	getRoomInstance = async(rid) => {
 		if (this.roomInstances[rid]) {
 			return this.roomInstances[rid];
@@ -154,6 +162,8 @@ class Encryption {
 		return roomE2E;
 	}
 
+	// Logic to decrypt all pending messages/threads/threadMessages
+	// after initialize the encryption client
 	decryptPendingMessages = async() => {
 		const db = database.active;
 
@@ -186,6 +196,8 @@ class Encryption {
 		}
 	}
 
+	// Logic to decrypt all pending subscriptions
+	// after initialize the encryption client
 	decryptPendingSubscriptions = async() => {
 		const db = database.active;
 		const subCollection = db.collections.get('subscriptions');
@@ -205,6 +217,7 @@ class Encryption {
 		}
 	}
 
+	// Decrypt a subscription lastMessage
 	decryptSubscription = async(subscription) => {
 		if (!subscription?.lastMessage) {
 			return subscription;
@@ -225,6 +238,7 @@ class Encryption {
 		return subscription;
 	}
 
+	// Encrypt a message
 	encryptMessage = async(message) => {
 		try {
 			// TODO: We should await room instance handshake and this class ready
@@ -237,6 +251,7 @@ class Encryption {
 		return message;
 	}
 
+	// Decrypt a message
 	decryptMessage = async(message) => {
 		try {
 			// TODO: We should await room instance handshake and this class ready
