@@ -85,6 +85,7 @@ class CreateChannelView extends React.Component {
 		error: PropTypes.object,
 		failure: PropTypes.bool,
 		isFetching: PropTypes.bool,
+		e2eEnabled: PropTypes.bool,
 		users: PropTypes.array.isRequired,
 		user: PropTypes.shape({
 			id: PropTypes.string,
@@ -105,7 +106,9 @@ class CreateChannelView extends React.Component {
 		const {
 			channelName, type, readOnly, broadcast, encrypted
 		} = this.state;
-		const { users, isFetching, theme } = this.props;
+		const {
+			users, isFetching, e2eEnabled, theme
+		} = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
 		}
@@ -125,6 +128,9 @@ class CreateChannelView extends React.Component {
 			return true;
 		}
 		if (nextProps.isFetching !== isFetching) {
+			return true;
+		}
+		if (nextProps.e2eEnabled !== e2eEnabled) {
 			return true;
 		}
 		if (!equal(nextProps.users, users)) {
@@ -223,6 +229,12 @@ class CreateChannelView extends React.Component {
 
 	renderEncrypted() {
 		const { type, encrypted } = this.state;
+		const { e2eEnabled } = this.props;
+
+		if (!e2eEnabled) {
+			return null;
+		}
+
 		return this.renderSwitch({
 			id: 'encrypted',
 			value: encrypted,
@@ -353,6 +365,7 @@ class CreateChannelView extends React.Component {
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	isFetching: state.createChannel.isFetching,
+	e2eEnabled: state.settings.E2E_Enable || false,
 	users: state.selectedUsers.users,
 	user: getUserSelector(state)
 });

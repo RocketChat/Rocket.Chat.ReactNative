@@ -233,6 +233,8 @@ export default {
 	RA_LEAVE_F: 'ra_leave_f',
 	RA_TOGGLE_BLOCK_USER: 'ra_toggle_block_user',
 	RA_TOGGLE_BLOCK_USER_F: 'ra_toggle_block_user_f',
+	RA_TOGGLE_ENCRYPTED: 'ra_toggle_encrypted',
+	RA_TOGGLE_ENCRYPTED_F: 'ra_toggle_encrypted_f',
 
 	// ROOM INFO VIEW
 	RI_GO_RI_EDIT: 'ri_go_ri_edit',

@@ -56,6 +56,7 @@ class RoomInfoEditView extends React.Component {
 		route: PropTypes.object,
 		deleteRoom: PropTypes.func,
 		serverVersion: PropTypes.string,
+		e2eEnabled: PropTypes.bool,
 		theme: PropTypes.string
 	};
 
@@ -375,7 +376,7 @@ class RoomInfoEditView extends React.Component {
 		const {
 			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode, saving, permissions, archived, enableSysMes, encrypted
 		} = this.state;
-		const { serverVersion, theme } = this.props;
+		const { serverVersion, e2eEnabled, theme } = this.props;
 		const { dangerColor } = themes[theme];
 
 		return (
@@ -500,17 +501,19 @@ class RoomInfoEditView extends React.Component {
 								{this.renderSystemMessages()}
 							</SwitchContainer>
 						) : null}
-						<SwitchContainer
-							value={encrypted}
-							disabled={!t}
-							leftLabelPrimary={I18n.t('Encrypted')}
-							leftLabelSecondary={I18n.t('End_to_end_encrypted_room')}
-							theme={theme}
-							testID='room-info-edit-switch-encrypted'
-							onValueChange={this.toggleEncrypted}
-							labelContainerStyle={styles.hideSystemMessages}
-							leftLabelStyle={styles.systemMessagesLabel}
-						/>
+						{e2eEnabled ? (
+							<SwitchContainer
+								value={encrypted}
+								disabled={!t}
+								leftLabelPrimary={I18n.t('Encrypted')}
+								leftLabelSecondary={I18n.t('End_to_end_encrypted_room')}
+								theme={theme}
+								testID='room-info-edit-switch-encrypted'
+								onValueChange={this.toggleEncrypted}
+								labelContainerStyle={styles.hideSystemMessages}
+								leftLabelStyle={styles.systemMessagesLabel}
+							/>
+						) : null}
 						<TouchableOpacity
 							style={[
 								styles.buttonContainer,
@@ -601,7 +604,8 @@ class RoomInfoEditView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	serverVersion: state.server.version
+	serverVersion: state.server.version,
+	e2eEnabled: state.settings.E2E_Enable || false
 });
 
 const mapDispatchToProps = dispatch => ({
