@@ -273,7 +273,9 @@ class RecordAudio extends React.PureComponent {
 
 	startRecordingAudio = async() => {
 		logEvent(events.ROOM_AUDIO_RECORD);
-		if (!this.isRecorderBusy) {
+		const { isRecording } = this.state;
+
+		if (!this.isRecorderBusy && !isRecording) {
 			this.isRecorderBusy = true;
 			this.setState({ isRecordingPersisted: false });
 			try {
