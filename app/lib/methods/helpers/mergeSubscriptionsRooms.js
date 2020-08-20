@@ -75,7 +75,6 @@ export default async(subscriptions = [], rooms = []) => {
 		rooms = rooms.update;
 	}
 
-	// TODO: This is blocking the first fetch after login
 	rooms = await Promise.all(rooms.map(room => Encryption.decryptSubscription(room)));
 	({ subscriptions, rooms } = await findSubscriptionsRooms(subscriptions, rooms));
 
