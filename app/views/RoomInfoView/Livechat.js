@@ -44,7 +44,7 @@ const Livechat = ({ room, roomUser, theme }) => {
 		}
 	};
 
-	useEffect(() => { getRoom(); }, []);
+	useEffect(() => { getRoom(); }, [room]);
 
 	return (
 		<>

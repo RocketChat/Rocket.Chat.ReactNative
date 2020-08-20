@@ -2,9 +2,9 @@ import * as LocalAuthentication from 'expo-local-authentication';
 import moment from 'moment';
 import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-community/async-storage';
-import RNUserDefaults from 'rn-user-defaults';
 import { sha256 } from 'js-sha256';
 
+import UserPreferences from '../lib/userPreferences';
 import store from '../lib/createStore';
 import database from '../lib/database';
 import { isIOS } from './deviceInfo';
@@ -51,7 +51,7 @@ const openChangePasscodeModal = ({ force }) => new Promise((resolve, reject) => 
 
 export const changePasscode = async({ force = false }) => {
 	const passcode = await openChangePasscodeModal({ force });
-	await RNUserDefaults.set(PASSCODE_KEY, sha256(passcode));
+	await UserPreferences.setStringAsync(PASSCODE_KEY, sha256(passcode));
 };
 
 export const biometryAuth = force => LocalAuthentication.authenticateAsync({
@@ -80,7 +80,7 @@ const checkBiometry = async(serverRecord) => {
 };
 
 export const checkHasPasscode = async({ force = true, serverRecord }) => {
-	const storedPasscode = await RNUserDefaults.get(PASSCODE_KEY);
+	const storedPasscode = await UserPreferences.getStringAsync(PASSCODE_KEY);
 	if (!storedPasscode) {
 		await changePasscode({ force });
 		await checkBiometry(serverRecord);

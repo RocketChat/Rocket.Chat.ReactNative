@@ -35,7 +35,10 @@ platform :ios do
 
   desc "Submit a new Beta Build to Apple TestFlight"
   lane :beta do
-    pilot(ipa: 'ios/RocketChatRN.ipa')
+    pilot(
+      ipa: 'ios/RocketChatRN.ipa',
+      skip_waiting_for_build_processing: true
+    )
   end
 
   desc "Build App for release"
@@ -46,6 +49,7 @@ platform :ios do
       type: "appstore"
     ) # more information: https://codesigning.guide
     get_provisioning_profile(app_identifier: "chat.rocket.reactnative.ShareExtension")
+    get_provisioning_profile(app_identifier: "chat.rocket.reactnative.NotificationService")
     pem()
     gym(scheme: "RocketChatRN", workspace: "RocketChatRN.xcworkspace") # Build your app - more options available
     # frameit

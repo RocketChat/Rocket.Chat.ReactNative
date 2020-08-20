@@ -41,6 +41,7 @@ import ScreenLockConfigView from '../../views/ScreenLockConfigView';
 import AdminPanelView from '../../views/AdminPanelView';
 import NewMessageView from '../../views/NewMessageView';
 import CreateChannelView from '../../views/CreateChannelView';
+import QueueListView from '../../views/QueueListView';
 
 // InsideStackNavigator
 import AttachmentView from '../../views/AttachmentView';
@@ -139,7 +140,6 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 				<ModalStack.Screen
 					name='MessagesView'
 					component={MessagesView}
-					options={MessagesView.navigationOptions}
 				/>
 				<ModalStack.Screen
 					name='AutoTranslateView'
@@ -150,6 +150,11 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 					name='DirectoryView'
 					component={DirectoryView}
 					options={props => DirectoryView.navigationOptions({ ...props, isMasterDetail: true })}
+				/>
+				<ModalStack.Screen
+					name='QueueListView'
+					component={QueueListView}
+					options={props => QueueListView.navigationOptions({ ...props, isMasterDetail: true })}
 				/>
 				<ModalStack.Screen
 					name='NotificationPrefView'

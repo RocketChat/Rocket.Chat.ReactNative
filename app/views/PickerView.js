@@ -42,7 +42,7 @@ const Item = React.memo(({
 	theme
 }) => (
 	<ListItem
-		title={item.label}
+		title={I18n.t(item.label, { defaultValue: item.label, second: item?.second })}
 		right={selected && (() => <Check theme={theme} style={styles.check} />)}
 		onPress={onItemPress}
 		theme={theme}

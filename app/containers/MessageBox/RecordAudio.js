@@ -17,6 +17,7 @@ import { withDimensions } from '../../dimensions';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import { SendButton } from './buttons';
 
+import { logEvent, events } from '../../utils/log';
 
 const RECORDING_EXTENSION = '.aac';
 const RECORDING_SETTINGS = {
@@ -271,6 +272,7 @@ class RecordAudio extends React.PureComponent {
 	}
 
 	startRecordingAudio = async() => {
+		logEvent(events.ROOM_AUDIO_RECORD);
 		if (!this.isRecorderBusy) {
 			this.isRecorderBusy = true;
 			this.setState({ isRecordingPersisted: false });
@@ -289,13 +291,14 @@ class RecordAudio extends React.PureComponent {
 					await Audio.requestPermissionsAsync();
 				}
 			} catch (error) {
-				// Do nothing
+				logEvent(events.ROOM_AUDIO_RECORD_F);
 			}
 			this.isRecorderBusy = false;
 		}
 	};
 
 	finishRecordingAudio = async() => {
+		logEvent(events.ROOM_AUDIO_FINISH);
 		if (!this.isRecorderBusy) {
 			const { onFinish } = this.props;
 
@@ -316,7 +319,7 @@ class RecordAudio extends React.PureComponent {
 
 				onFinish(fileInfo);
 			} catch (error) {
-				// Do nothing
+				logEvent(events.ROOM_AUDIO_FINISH_F);
 			}
 			this.setState({ isRecording: false, recordingDurationMillis: 0, isRecordingPersisted: false });
 			deactivateKeepAwake();
@@ -325,12 +328,13 @@ class RecordAudio extends React.PureComponent {
 	};
 
 	cancelRecordingAudio = async() => {
+		logEvent(events.ROOM_AUDIO_CANCEL);
 		if (!this.isRecorderBusy) {
 			this.isRecorderBusy = true;
 			try {
 				await this.recording.stopAndUnloadAsync();
 			} catch (error) {
-				// Do nothing
+				logEvent(events.ROOM_AUDIO_CANCEL_F);
 			}
 			this.setState({ isRecording: false, recordingDurationMillis: 0, isRecordingPersisted: false });
 			deactivateKeepAwake();
@@ -436,7 +440,7 @@ class RecordAudio extends React.PureComponent {
 										accessibilityLabel={I18n.t('Send_audio_message')}
 										accessibilityTraits='button'
 									>
-										<CustomIcon style={{ zIndex: 1 }} name='mic' size={23} color={buttonIconColor} />
+										<CustomIcon style={{ zIndex: 1 }} name='microphone' size={23} color={buttonIconColor} />
 										<View style={{ position: 'absolute' }}>
 											<Animated.View
 												style={[styles.recordingButtonBubble, {

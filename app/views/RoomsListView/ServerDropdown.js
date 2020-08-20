@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
 import {
-	View, Text, Animated, Easing, TouchableWithoutFeedback, TouchableOpacity, FlatList, Image
+	View, Text, Animated, Easing, TouchableWithoutFeedback, TouchableOpacity, FlatList, Image, Pressable
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect, batch } from 'react-redux';
 import equal from 'deep-equal';
-import RNUserDefaults from 'rn-user-defaults';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction, serverInitAdd as serverInitAddAction } from '../../actions/server';
 import { appStart as appStartAction, ROOT_NEW_SERVER } from '../../actions/app';
 import styles from './styles';
-import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
@@ -21,12 +19,13 @@ import database from '../../lib/database';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { KEY_COMMAND, handleCommandSelectServer } from '../../commands';
-import { isTablet } from '../../utils/deviceInfo';
+import { isTablet, isIOS } from '../../utils/deviceInfo';
 import { localAuthenticate } from '../../utils/localAuthentication';
 import { showConfirmationAlert } from '../../utils/info';
-import LongPress from '../../utils/longPress';
+import { logEvent, events } from '../../utils/log';
 import { headerHeight } from '../../containers/Header';
 import { goRoom } from '../../utils/goRoom';
+import UserPreferences from '../../lib/userPreferences';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
@@ -136,6 +135,7 @@ class ServerDropdown extends Component {
 	}
 
 	addServer = () => {
+		logEvent(events.RL_ADD_SERVER);
 		const { server } = this.props;
 		this.close();
 		setTimeout(() => {
@@ -149,7 +149,8 @@ class ServerDropdown extends Component {
 		} = this.props;
 		this.close();
 		if (currentServer !== server) {
-			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
+			logEvent(events.RL_CHANGE_SERVER);
+			const userId = await UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
 			if (isMasterDetail) {
 				goRoom({ item: {}, isMasterDetail });
 			}
@@ -201,37 +202,43 @@ class ServerDropdown extends Component {
 		const { server, theme } = this.props;
 
 		return (
-			<LongPress onLongPress={() => (item.id === server || this.remove(item.id))}>
-				<Touch
-					onPress={() => this.select(item.id)}
-					testID={`rooms-list-header-server-${ item.id }`}
-					theme={theme}
-				>
-					<View style={styles.serverItemContainer}>
-						{item.iconURL
-							? (
-								<Image
-									source={{ uri: item.iconURL }}
-									defaultSource={{ uri: 'logo' }}
-									style={styles.serverIcon}
-									onError={() => console.warn('error loading serverIcon')}
-								/>
-							)
-							: (
-								<Image
-									source={{ uri: 'logo' }}
-									style={styles.serverIcon}
-								/>
-							)
-						}
-						<View style={styles.serverTextContainer}>
-							<Text style={[styles.serverName, { color: themes[theme].titleText }]} numberOfLines={1}>{item.name || item.id}</Text>
-							<Text style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{item.id}</Text>
-						</View>
-						{item.id === server ? <Check theme={theme} /> : null}
+			<Pressable
+				onPress={() => this.select(item.id)}
+				onLongPress={() => (item.id === server || this.remove(item.id))}
+				testID={`rooms-list-header-server-${ item.id }`}
+				android_ripple={{
+					color: themes[theme].bannerBackground
+				}}
+				style={({ pressed }) => ({
+					backgroundColor: isIOS && pressed
+						? themes[theme].bannerBackground
+						: 'transparent'
+				})}
+			>
+				<View style={styles.serverItemContainer}>
+					{item.iconURL
+						? (
+							<Image
+								source={{ uri: item.iconURL }}
+								defaultSource={{ uri: 'logo' }}
+								style={styles.serverIcon}
+								onError={() => console.warn('error loading serverIcon')}
+							/>
+						)
+						: (
+							<Image
+								source={{ uri: 'logo' }}
+								style={styles.serverIcon}
+							/>
+						)
+					}
+					<View style={styles.serverTextContainer}>
+						<Text style={[styles.serverName, { color: themes[theme].titleText }]} numberOfLines={1}>{item.name || item.id}</Text>
+						<Text style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{item.id}</Text>
 					</View>
-				</Touch>
-			</LongPress>
+					{item.id === server ? <Check theme={theme} /> : null}
+				</View>
+			</Pressable>
 		);
 	}
 

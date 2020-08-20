@@ -17,7 +17,7 @@ import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import { CustomHeaderButtons, CloseModalButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
-import log from '../../utils/log';
+import log, { logEvent, events } from '../../utils/log';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
@@ -117,7 +117,11 @@ class RoomInfoView extends React.Component {
 					<CustomHeaderButtons>
 						<Item
 							iconName='edit'
-							onPress={() => navigation.navigate(t === 'l' ? 'LivechatEditView' : 'RoomInfoEditView', { rid, room, roomUser })}
+							onPress={() => {
+								const isLivechat = t === 'l';
+								logEvent(events[`RI_GO_${ isLivechat ? 'LIVECHAT' : 'RI' }_EDIT`]);
+								navigation.navigate(isLivechat ? 'LivechatEditView' : 'RoomInfoEditView', { rid, room, roomUser });
+							}}
 							testID='room-info-view-edit-button'
 						/>
 					</CustomHeaderButtons>
@@ -195,6 +199,7 @@ class RoomInfoView extends React.Component {
 	}
 
 	loadRoom = async() => {
+		const { room: roomState } = this.state;
 		const { route } = this.props;
 		let room = route.params?.room;
 		if (room && room.observe) {
@@ -208,7 +213,7 @@ class RoomInfoView extends React.Component {
 				const result = await RocketChat.getRoomInfo(this.rid);
 				if (result.success) {
 					({ room } = result);
-					this.setState({ room });
+					this.setState({ room: { ...roomState, ...room } });
 				}
 			} catch (e) {
 				log(e);
@@ -245,6 +250,7 @@ class RoomInfoView extends React.Component {
 	})
 
 	goRoom = () => {
+		logEvent(events.RI_GO_ROOM_USER);
 		const { roomUser, room } = this.state;
 		const { name, username } = roomUser;
 		const { rooms, navigation, isMasterDetail } = this.props;
@@ -330,7 +336,7 @@ class RoomInfoView extends React.Component {
 		return (
 			<View style={styles.roomButtonsContainer}>
 				{this.renderButton(this.goRoom, 'message', I18n.t('Message'))}
-				{jitsiEnabled ? this.renderButton(this.videoCall, 'video-1', I18n.t('Video_call')) : null}
+				{jitsiEnabled ? this.renderButton(this.videoCall, 'camera', I18n.t('Video_call')) : null}
 			</View>
 		);
 	}

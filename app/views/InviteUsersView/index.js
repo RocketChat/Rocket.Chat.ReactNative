@@ -18,11 +18,12 @@ import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
+import { logEvent, events } from '../../utils/log';
 
 class InviteUsersView extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: I18n.t('Invite_users')
-	}
+	})
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -50,6 +51,7 @@ class InviteUsersView extends React.Component {
 	}
 
 	share = () => {
+		logEvent(events.IU_SHARE);
 		const { invite } = this.props;
 		if (!invite || !invite.url) {
 			return;
@@ -58,6 +60,7 @@ class InviteUsersView extends React.Component {
 	}
 
 	edit = () => {
+		logEvent(events.IU_GO_IU_EDIT);
 		const { navigation } = this.props;
 		navigation.navigate('InviteUsersEditView', { rid: this.rid });
 	}

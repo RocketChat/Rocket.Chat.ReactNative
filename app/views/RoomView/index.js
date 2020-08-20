@@ -24,7 +24,7 @@ import MessageBox from '../../containers/MessageBox';
 import ReactionPicker from './ReactionPicker';
 import UploadProgress from './UploadProgress';
 import styles from './styles';
-import log from '../../utils/log';
+import log, { logEvent, events } from '../../utils/log';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
 import RoomHeaderView, { RightButtons, LeftButtons } from './Header';
@@ -206,12 +206,10 @@ class RoomView extends React.Component {
 		const { appState, insets } = this.props;
 
 		if (appState === 'foreground' && appState !== prevProps.appState && this.rid) {
-			this.onForegroundInteraction = InteractionManager.runAfterInteractions(() => {
-				// Fire List.init() just to keep observables working
-				if (this.list && this.list.current) {
-					this.list.current.init();
-				}
-			});
+			// Fire List.query() just to keep observables working
+			if (this.list && this.list.current) {
+				this.list.current?.query?.();
+			}
 		}
 		// If it's not direct message
 		if (this.t !== 'd') {
@@ -267,9 +265,6 @@ class RoomView extends React.Component {
 		if (this.didMountInteraction && this.didMountInteraction.cancel) {
 			this.didMountInteraction.cancel();
 		}
-		if (this.onForegroundInteraction && this.onForegroundInteraction.cancel) {
-			this.onForegroundInteraction.cancel();
-		}
 		if (this.willBlurListener && this.willBlurListener.remove) {
 			this.willBlurListener.remove();
 		}
@@ -285,6 +280,11 @@ class RoomView extends React.Component {
 		}
 		EventEmitter.removeListener('ROOM_REMOVED', this.handleRoomRemoved);
 		console.countReset(`${ this.constructor.name }.render calls`);
+	}
+
+	get isOmnichannel() {
+		const { room } = this.state;
+		return room.t === 'l';
 	}
 
 	setHeader = () => {
@@ -357,6 +357,7 @@ class RoomView extends React.Component {
 	}
 
 	goRoomActionsView = (screen) => {
+		logEvent(events.ROOM_GO_RA);
 		const { room, member } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
@@ -649,6 +650,7 @@ class RoomView extends React.Component {
 	}
 
 	sendMessage = (message, tmid) => {
+		logEvent(events.ROOM_SEND_MESSAGE);
 		const { user } = this.props;
 		RocketChat.sendMessage(this.rid, message, this.tmid || tmid, user).then(() => {
 			if (this.list && this.list.current) {
@@ -682,8 +684,15 @@ class RoomView extends React.Component {
 	setLastOpen = lastOpen => this.setState({ lastOpen });
 
 	joinRoom = async() => {
+		logEvent(events.ROOM_JOIN);
 		try {
-			await RocketChat.joinRoom(this.rid, this.t);
+			const { room } = this.state;
+
+			if (this.isOmnichannel) {
+				await RocketChat.takeInquiry(room._id);
+			} else {
+				await RocketChat.joinRoom(this.rid, this.t);
+			}
 			this.internalSetState({
 				joined: true
 			});
@@ -742,6 +751,7 @@ class RoomView extends React.Component {
 
 	navToRoomInfo = (navParam) => {
 		const { navigation, user, isMasterDetail } = this.props;
+		logEvent(events[`ROOM_GO_${ navParam.t === 'd' ? 'USER' : 'ROOM' }_INFO`]);
 		if (navParam.rid === user.id) {
 			return;
 		}
@@ -900,7 +910,7 @@ class RoomView extends React.Component {
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
 						theme={theme}
 					>
-						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-join-button'>{I18n.t('Join')}</Text>
+						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-join-button'>{I18n.t(this.isOmnichannel ? 'Take_it' : 'Join')}</Text>
 					</Touch>
 				</View>
 			);

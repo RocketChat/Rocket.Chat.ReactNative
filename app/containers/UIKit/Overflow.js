@@ -82,7 +82,7 @@ export const Overflow = ({
 				hitSlop={BUTTON_HIT_SLOP}
 				style={styles.menu}
 			>
-				{!loading ? <CustomIcon size={18} name='menu' color={themes[theme].bodyText} /> : <ActivityIndicator style={styles.loading} theme={theme} />}
+				{!loading ? <CustomIcon size={18} name='kebab' color={themes[theme].bodyText} /> : <ActivityIndicator style={styles.loading} theme={theme} />}
 			</Touchable>
 			<Popover
 				isVisible={show}

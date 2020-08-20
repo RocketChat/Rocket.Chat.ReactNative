@@ -7,12 +7,14 @@ import { CREATE_DISCUSSION, LOGIN } from '../actions/actionsTypes';
 import { createDiscussionSuccess, createDiscussionFailure } from '../actions/createDiscussion';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
+import { logEvent, events } from '../utils/log';
 
 const create = function* create(data) {
 	return yield RocketChat.createDiscussion(data);
 };
 
 const handleRequest = function* handleRequest({ data }) {
+	logEvent(events.CREATE_DISCUSSION_CREATE);
 	try {
 		const auth = yield select(state => state.login.isAuthenticated);
 		if (!auth) {
@@ -35,12 +37,13 @@ const handleRequest = function* handleRequest({ data }) {
 			} catch {
 				// do nothing
 			}
-
 			yield put(createDiscussionSuccess(sub));
 		} else {
+			logEvent(events.CREATE_DISCUSSION_CREATE_F);
 			yield put(createDiscussionFailure(result));
 		}
 	} catch (err) {
+		logEvent(events.CREATE_DISCUSSION_CREATE_F);
 		yield put(createDiscussionFailure(err));
 	}
 };

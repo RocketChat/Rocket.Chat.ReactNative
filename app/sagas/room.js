@@ -8,7 +8,7 @@ import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
 import { removedRoom } from '../actions/room';
 import RocketChat from '../lib/rocketchat';
-import log from '../utils/log';
+import log, { logEvent, events } from '../utils/log';
 import I18n from '../i18n';
 import { showErrorAlert } from '../utils/info';
 
@@ -48,12 +48,14 @@ const handleRemovedRoom = function* handleRemovedRoom() {
 };
 
 const handleLeaveRoom = function* handleLeaveRoom({ rid, t }) {
+	logEvent(events.RA_LEAVE);
 	try {
 		const result = yield RocketChat.leaveRoom(rid, t);
 		if (result.success) {
 			yield handleRemovedRoom();
 		}
 	} catch (e) {
+		logEvent(events.RA_LEAVE_F);
 		if (e.data && e.data.errorType === 'error-you-are-last-owner') {
 			Alert.alert(I18n.t('Oops'), I18n.t(e.data.errorType));
 		} else {
@@ -63,12 +65,14 @@ const handleLeaveRoom = function* handleLeaveRoom({ rid, t }) {
 };
 
 const handleDeleteRoom = function* handleDeleteRoom({ rid, t }) {
+	logEvent(events.RI_EDIT_DELETE);
 	try {
 		const result = yield RocketChat.deleteRoom(rid, t);
 		if (result.success) {
 			yield handleRemovedRoom();
 		}
 	} catch (e) {
+		logEvent(events.RI_EDIT_DELETE_F);
 		Alert.alert(I18n.t('Oops'), I18n.t('There_was_an_error_while_action', { action: I18n.t('deleting_room') }));
 	}
 };

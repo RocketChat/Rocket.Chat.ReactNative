@@ -72,11 +72,7 @@
         "DISCONNECTED": "Desconnectat",
         "DISCONNECTING": "Desconnexion en cors",
         "ERROR": "Error",
-        "RECONNECTING": "Un problèma ret s'es produita. Reconnexion en cors...",
-        "LOW_BANDWIDTH": "",
-        "GOT_SESSION_ID": "",
-        "GET_SESSION_ID_ERROR": "",
-        "FETCH_SESSION_ID": ""
+        "RECONNECTING": "Un problèma ret s'es produita. Reconnexion en cors..."
     },
     "connectionindicator": {
         "address": "Adreça :",
@@ -105,9 +101,7 @@
         "remoteport_plural": "Pòrts distants :",
         "resolution": "Resolucion :",
         "status": "Connexion :",
-        "transport": "Transpòrt :",
-        "transport_plural": "",
-        "e2e_rtt": ""
+        "transport": "Transpòrt :"
     },
     "dateUtils": {
         "earlier": "Mai d’ora",
@@ -121,7 +115,7 @@
         "downloadApp": "Telecargar l’aplicacion",
         "launchWebButton": "Lançar del navigador",
         "openApp": "Telecargar l’aplicacion",
-        "title": "Aviada de vòstra conferéncia dins {{app}}…",
+        "title": "Aviada de vòstra conferéncia dins {{app}}...",
         "tryAgainButton": "Tornar ensajar del burèu"
     },
     "defaultLink": "ex. {{url}}",
@@ -156,9 +150,9 @@
         "cameraUnsupportedResolutionError": "Vòstra camèra pren pas en carga la resolucion vidèo que cal.",
         "Cancel": "Anullar",
         "close": "Tampar",
-        "conferenceDisconnectMsg": "Vos cal benlèu verificar vòstra connexion al malhum. Nòva connexion dins {{seconds}} segondas…",
+        "conferenceDisconnectMsg": "Vos cal benlèu verificar vòstra connexion al malhum. Nòva connexion dins {{seconds}} segondas...",
         "conferenceDisconnectTitle": "Sètz estat desconnectat.",
-        "conferenceReloadMsg": "Sèm a reglar aquò ! Nòva connexion dins {{seconds}} segondas…",
+        "conferenceReloadMsg": "Sèm a reglar aquò ! Nòva connexion dins {{seconds}} segondas...",
         "conferenceReloadTitle": "Malurosament, quicòm truquèt.",
         "confirm": "Confirmar",
         "confirmNo": "Non",
@@ -271,14 +265,7 @@
         "WaitForHostMsgWOk": "La conferéncia <b>{{room}}</b> a pas encara començat. Se sètz l’òst volgatz ben clicar Ok per vos identificar. Autrament esperatz qu’arribe l’òste.",
         "WaitingForHost": "Òm pòt pas que partejar una vidèo a l'encòp",
         "Yes": "Òc",
-        "yourEntireScreen": "Vòstre ecran complet",
-        "screenSharingAudio": "",
-        "muteEveryoneStartMuted": "",
-        "muteEveryoneSelf": "",
-        "muteEveryoneTitle": "",
-        "muteEveryoneDialog": "",
-        "muteEveryoneElseTitle": "",
-        "muteEveryoneElseDialog": ""
+        "yourEntireScreen": "Vòstre ecran complet"
     },
     "dialOut": {
         "statusMessage": "ara es {{status}}"
@@ -375,7 +362,7 @@
         "errorLiveStreamNotEnabled": "La difusion en dirècte es pas activada per  {{email}}. Volgatz ben activar la difusion en dirècte o vos connectar amb un compte que l’a activada.",
         "expandedOff": "La difusion en dirècte es estada arrestada",
         "expandedOn": "La conferéncia es difusada sus YouTube.",
-        "expandedPending": "La difusion en dirècte comença…",
+        "expandedPending": "La difusion en dirècte comença...",
         "failedToStart": "La difusion en dirècte a pas capitat de s'aviar",
         "getStreamKeyManually": "Avèm pas pogut recuperar cap de flux en dirècte. Ensajatz d’obténer vòstre clau de difusion sus YouTube.",
         "invalidStreamKey": "La clau de difusion en dirècte es benlèu pas corrècta.",
@@ -383,7 +370,7 @@
         "offBy": "{{name}} a arrestat la difusion en dirècte",
         "on": "La difusion en dirècte es estada arrestada",
         "onBy": "{{name}} a començat la difusion en dirècte",
-        "pending": "Començar lo dirècte…",
+        "pending": "Començar lo dirècte...",
         "serviceName": "Servici de difusion en dirècte",
         "signedInAs": "Sètz connectat coma :",
         "signIn": "Se connectar amb Google",
@@ -391,9 +378,7 @@
         "signOut": "Se desconnectar",
         "start": "Aviar una difusion en dirècte",
         "streamIdHelp": "Qu’es aquò ?",
-        "unavailableTitle": "Difusion en dirècte indisponibla",
-        "googlePrivacyPolicy": "",
-        "youtubeTerms": ""
+        "unavailableTitle": "Difusion en dirècte indisponibla"
     },
     "localRecording": {
         "clientState": {
@@ -463,22 +448,22 @@
     "poweredby": "produit per",
     "presenceStatus": {
         "busy": "Ocupat",
-        "calling": "Sonada…",
+        "calling": "Sonada...",
         "connected": "Connectat",
-        "connecting": "Connexion en cors…",
+        "connecting": "Connexion en cors...",
         "connecting2": "Connexion*...",
         "disconnected": "Desconnectat",
         "expired": "Expirat",
         "ignored": "Ignorat",
-        "initializingCall": "Començament de la sonada…",
+        "initializingCall": "Començament de la sonada...",
         "invited": "Convidat",
         "rejected": "Refusat",
-        "ringing": "A sonar…"
+        "ringing": "A sonar..."
     },
     "profile": {
         "setDisplayNameLabel": "Causissètz vòstre escais",
         "setEmailInput": "Picatz lo corrièl",
-        "setEmailLabel": "Definissètz vòstre corrièl per Gravatar",
+        "setEmailLabel": "Definissètz vòstre corrièl per gravatar",
         "title": "Perfil"
     },
     "raisedHand": "Volriá charrar",
@@ -491,7 +476,7 @@
         "error": "Fracàs de l'enregistrament. Mercés de tornar ensajar.",
         "expandedOff": "Enregistrament arrestat",
         "expandedOn": "La conferéncia es enregistrada.",
-        "expandedPending": "Aviada de l’enregistrament…",
+        "expandedPending": "Aviada de l’enregistrament...",
         "failedToStart": "L'enregistrament n'as pas réussi a démarrer",
         "fileSharingdescription": "Partejar l’enregistrament amb los participants de la reünion",
         "live": "DIRÈCTE",
@@ -500,7 +485,7 @@
         "offBy": "{{name}} a arrestat l’enregistrament",
         "on": "Enregistrament",
         "onBy": "{{name}} a començat l’enregistrament",
-        "pending": "Preparacion de l’enregistrament de la conferéncia…",
+        "pending": "Preparacion de l’enregistrament de la conferéncia...",
         "rec": "ENRG",
         "serviceDescription": "Vòstre enregistrament serà salvagardat pel servici dedicat.",
         "serviceName": "Servici d’enregistrament",
@@ -533,9 +518,7 @@
         "selectMic": "Microfòn",
         "startAudioMuted": "Començan totes sens son",
         "startVideoMuted": "Començan totes sens vidèo",
-        "title": "Paramètres",
-        "speakers": "",
-        "microphones": ""
+        "title": "Paramètres"
     },
     "settingsView": {
         "advanced": "Avançat",
@@ -605,7 +588,7 @@
             "recording": "Passar al enregistraments",
             "remoteMute": "Copar lo son del participant",
             "Settings": "Passar als paramètres",
-            "sharedvideo": "Passar al partatge de vidèo YouTube",
+            "sharedvideo": "Passar al partatge de vidèo Youtube",
             "shareRoom": "Convidar qualqu’un",
             "shareYourScreen": "Passar a la captura d’ecran",
             "shortcuts": "Passar als acorchis",
@@ -614,9 +597,7 @@
             "tileView": "Activar/Desactivar la vista en mosaïc",
             "toggleCamera": "Passar a la camèra",
             "videomute": "Silenciar la vidèo",
-            "videoblur": "Enfoscar o non la vidèo",
-            "muteEveryone": "",
-            "moreOptions": ""
+            "videoblur": "Enfoscar o non la vidèo"
         },
         "addPeople": "Ajustar de monde a vòstra sonada",
         "audioOnlyOff": "Desactivar lo mòde connexion febla",
@@ -666,13 +647,7 @@
         "toggleCamera": "Passar a la camèra",
         "videomute": "Aviar / Arrestar la camèra",
         "startvideoblur": "Trebolar mon rèire-plan",
-        "stopvideoblur": "Desactivar lo borrolatge del rèire-plan",
-        "noisyAudioInputDesc": "",
-        "noisyAudioInputTitle": "",
-        "noAudioSignalDialInLinkDesc": "",
-        "noAudioSignalDialInDesc": "",
-        "muteEveryone": "",
-        "moreOptions": ""
+        "stopvideoblur": "Desactivar lo borrolatge del rèire-plan"
     },
     "transcribing": {
         "ccButtonTooltip": "Aviar / Arrestat los sostítols",
@@ -681,7 +656,7 @@
         "failedToStart": "Fracàs de l’aviada de la transcripcion",
         "labelToolTip": "La conferéncia es a èsser transcricha",
         "off": "Transcripcion arrestada",
-        "pending": "Preparacion de l’enregistrament de la conferéncia…",
+        "pending": "Preparacion de l’enregistrament de la conferéncia...",
         "start": "Mostrar los sostítols",
         "stop": "Levar los sostítols",
         "tr": "TR"
@@ -738,8 +713,7 @@
         "muted": "Mut",
         "remoteControl": "Contraròtle alonhat",
         "show": "Mostrar davant",
-        "videomute": "Lo participant a arrestat la camèra",
-        "domuteOthers": ""
+        "videomute": "Lo participant a arrestat la camèra"
     },
     "welcomepage": {
         "accessibilityLabel": {
@@ -769,19 +743,6 @@
         "roomnameHint": "Picatz lo nom o l’URL de la sala que volètz jónher. Podètz inventar un nom, cal pas que lo monde que volètz convidar lo sàpian. ",
         "sendFeedback": "Mandar vòstra opinion",
         "terms": "Tèrmes",
-        "title": "Conferéncias vidèo securizadas amb plen de foncionalitats e complètament gratuitas",
-        "getHelp": ""
-    },
-    "helpView": {
-        "header": ""
-    },
-    "lonelyMeetingExperience": {
-        "youAreAlone": "",
-        "button": ""
-    },
-    "chromeExtensionBanner": {
-        "dontShowAgain": "",
-        "buttonText": "",
-        "installExtensionText": ""
+        "title": "Conferéncias vidèo securizadas amb plen de foncionalitats e complètament gratuitas"
     }
 }
