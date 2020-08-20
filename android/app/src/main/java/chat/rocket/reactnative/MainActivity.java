@@ -72,9 +72,15 @@ public class MainActivity extends ReactFragmentActivity {
               SortPreferences sortPreferences = new Gson().fromJson(sortJson, SortPreferences.class);
               WritableMap sortMap = new Arguments().createMap();
               sortMap.putString("sortBy", sortPreferences.sortBy);
-              sortMap.putBoolean("groupByType", sortPreferences.groupByType);
-              sortMap.putBoolean("showFavorites", sortPreferences.showFavorites);
-              sortMap.putBoolean("showUnread", sortPreferences.showUnread);
+              if (sortPreferences.groupByType != null) {
+                sortMap.putBoolean("groupByType", sortPreferences.groupByType);
+              }
+              if (sortPreferences.showFavorites != null) {
+                sortMap.putBoolean("showFavorites", sortPreferences.showFavorites);
+              }
+              if (sortPreferences.showUnread != null) {
+                sortMap.putBoolean("showUnread", sortPreferences.showUnread);
+              }
               Bundle bundle = Arguments.toBundle(sortMap);
               mmkv.encode(SORT_PREFS_KEY, bundle);
             }
