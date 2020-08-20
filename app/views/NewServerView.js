@@ -6,10 +6,10 @@ import {
 import { connect } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
 import DocumentPicker from 'react-native-document-picker';
-import RNUserDefaults from 'rn-user-defaults';
 import { Base64 } from 'js-base64';
 import parse from 'url-parse';
 
+import UserPreferences from '../lib/userPreferences';
 import EventEmitter from '../utils/events';
 import { selectServerRequest, serverRequest } from '../actions/server';
 import { inviteLinksClear as inviteLinksClearAction } from '../actions/inviteLinks';
@@ -180,7 +180,7 @@ class NewServerView extends React.Component {
 			const parsedUrl = parse(text, true);
 			if (parsedUrl.auth.length) {
 				const credentials = Base64.encode(parsedUrl.auth);
-				await RNUserDefaults.set(`${ BASIC_AUTH_KEY }-${ server }`, credentials);
+				await UserPreferences.setStringAsync(`${ BASIC_AUTH_KEY }-${ server }`, credentials);
 				setBasicAuth(credentials);
 			}
 		} catch {

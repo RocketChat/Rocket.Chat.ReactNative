@@ -240,6 +240,7 @@ dependencies {
     implementation "com.google.code.gson:gson:2.8.5"
     implementation "com.github.bumptech.glide:glide:4.9.0"
     annotationProcessor "com.github.bumptech.glide:compiler:4.9.0"
+    implementation "com.tencent:mmkv-static:1.2.1"
 }
 
 // Run this once to be able to run the application with BUCK

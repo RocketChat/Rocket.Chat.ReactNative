@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useAsyncStorage } from '@react-native-community/async-storage';
-import RNUserDefaults from 'rn-user-defaults';
 import PropTypes from 'prop-types';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
@@ -14,6 +13,7 @@ import {
 } from '../../constants/localAuthentication';
 import { resetAttempts, biometryAuth } from '../../utils/localAuthentication';
 import { getLockedUntil, getDiff } from './utils';
+import UserPreferences from '../../lib/userPreferences';
 import I18n from '../../i18n';
 
 const PasscodeEnter = ({ theme, hasBiometry, finishProcess }) => {
@@ -26,7 +26,7 @@ const PasscodeEnter = ({ theme, hasBiometry, finishProcess }) => {
 	const { setItem: setLockedUntil } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
 
 	const fetchPasscode = async() => {
-		const p = await RNUserDefaults.get(PASSCODE_KEY);
+		const p = await UserPreferences.getStringAsync(PASSCODE_KEY);
 		setPasscode(p);
 	};
 
