@@ -27,9 +27,9 @@ const Queue = React.memo(({
 					{ borderBottomWidth: StyleSheet.hairlineWidth, borderColor: themes[theme].separatorColor }
 				]}
 			>
-				<Text style={[styles.sortToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Queued_chats')}</Text>
+				<Text style={[styles.queueToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Queued_chats')}</Text>
 				<UnreadBadge
-					style={styles.sortIcon}
+					style={styles.queueIcon}
 					unread={queueSize}
 					theme={theme}
 				/>
