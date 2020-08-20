@@ -116,15 +116,5 @@ export default StyleSheet.create({
 	serverSeparator: {
 		height: StyleSheet.hairlineWidth,
 		marginLeft: 72
-	},
-	directoryIcon: {
-		width: 22,
-		height: 22,
-		marginHorizontal: 12
-	},
-	directoryText: {
-		fontSize: 16,
-		flex: 1,
-		...sharedStyles.textRegular
 	}
 });
