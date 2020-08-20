@@ -169,12 +169,8 @@ export default class RoomSubscription {
 			const threadsCollection = db.collections.get('threads');
 			const threadMessagesCollection = db.collections.get('thread_messages');
 
-			try {
-				// Decrypt the message if necessary
-				message = await Encryption.decryptMessage(message);
-			} catch {
-				// Do nothing
-			}
+			// Decrypt the message if necessary
+			message = await Encryption.decryptMessage(message);
 
 			// Create or update message
 			try {
