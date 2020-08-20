@@ -59,6 +59,32 @@ export async function sendMessageCall(message) {
 	return changeMessageStatus(_id, tmid, messagesStatus.ERROR);
 }
 
+export async function resendMessage(message, tmid) {
+	const db = database.active;
+	try {
+		await db.action(async() => {
+			await message.update((m) => {
+				m.status = messagesStatus.TEMP;
+			});
+		});
+		let m = {
+			_id: message.id,
+			rid: message.subscription.id,
+			msg: message.msg
+		};
+		if (tmid) {
+			m = {
+				...m,
+				tmid
+			};
+		}
+		m = await Encryption.encryptMessage(m);
+		await sendMessageCall.call(this, m);
+	} catch (e) {
+		log(e);
+	}
+}
+
 export default async function(rid, msg, tmid, user) {
 	try {
 		const db = database.active;

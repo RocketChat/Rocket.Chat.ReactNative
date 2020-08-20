@@ -6,7 +6,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
-import messagesStatus from '../constants/messagesStatus';
 import database from './database';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
@@ -39,7 +38,7 @@ import loadMessagesForRoom from './methods/loadMessagesForRoom';
 import loadMissedMessages from './methods/loadMissedMessages';
 import loadThreadMessages from './methods/loadThreadMessages';
 
-import sendMessage, { sendMessageCall } from './methods/sendMessage';
+import sendMessage, { resendMessage } from './methods/sendMessage';
 import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFileMessage';
 
 import callJitsi from './methods/callJitsi';
@@ -509,30 +508,7 @@ const RocketChat = {
 	sendMessage,
 	getRooms,
 	readMessages,
-	async resendMessage(message, tmid) {
-		const db = database.active;
-		try {
-			await db.action(async() => {
-				await message.update((m) => {
-					m.status = messagesStatus.TEMP;
-				});
-			});
-			let m = {
-				id: message.id,
-				msg: message.msg,
-				subscription: { id: message.subscription.id }
-			};
-			if (tmid) {
-				m = {
-					...m,
-					tmid
-				};
-			}
-			await sendMessageCall.call(this, m);
-		} catch (e) {
-			log(e);
-		}
-	},
+	resendMessage,
 
 	async search({ text, filterUsers = true, filterRooms = true }) {
 		const searchText = text.trim();
