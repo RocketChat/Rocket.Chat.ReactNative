@@ -69,6 +69,7 @@ export default class EncryptionRoom {
 
 		const { k } = EJSON.parse(this.sessionKeyExportedString);
 		this.roomKey = b64ToBuffer(k);
+		this.ready = true;
 	}
 
 	// Create a key to a room

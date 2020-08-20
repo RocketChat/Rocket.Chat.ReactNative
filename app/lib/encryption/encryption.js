@@ -152,14 +152,41 @@ class Encryption {
 
 	// get a encryption room instance
 	getRoomInstance = async(rid) => {
-		if (this.roomInstances[rid]) {
+		// Prevent find the sub again
+		if (this.roomInstances[rid]?.ready) {
 			return this.roomInstances[rid];
 		}
 
-		const roomE2E = new E2ERoom(rid);
-		await roomE2E.handshake(this.privateKey);
-		this.roomInstances[rid] = roomE2E;
-		return roomE2E;
+		try {
+			const db = database.active;
+			const subCollection = db.collections.get('subscriptions');
+			// TODO: Prevent find the sub again if it's not a encrypted room ?
+			// Find the subscription
+			const sub = await subCollection.find(rid);
+
+			// If this is not a direct or a private room
+			if (!['d', 'p'].includes(sub.t)) {
+				return;
+			}
+
+			// If it's not encrypted at the moment
+			if (!sub.encrypted) {
+				return;
+			}
+
+			// If it's not created by parallel getRoomInstance
+			if (!this.roomInstances[rid]) {
+				this.roomInstances[rid] = new E2ERoom(rid);
+			}
+
+			const roomE2E = this.roomInstances[rid];
+
+			// Start Encryption Room instance handshake
+			await roomE2E.handshake(this.privateKey);
+			return roomE2E;
+		} catch {
+			// Sub not found
+		}
 	}
 
 	// Logic to decrypt all pending messages/threads/threadMessages
@@ -223,45 +250,34 @@ class Encryption {
 			return subscription;
 		}
 
-		try {
-			const { lastMessage } = subscription;
-			const roomE2E = await this.getRoomInstance(lastMessage.rid);
-			const decryptedMessage = await roomE2E.decrypt(lastMessage);
-			return {
-				...subscription,
-				lastMessage: decryptedMessage
-			};
-		} catch {
-			// Do nothing
-		}
-
-		return subscription;
+		const { lastMessage } = subscription;
+		const decryptedMessage = await this.decryptMessage(lastMessage);
+		return {
+			...subscription,
+			lastMessage: decryptedMessage
+		};
 	}
 
 	// Encrypt a message
 	encryptMessage = async(message) => {
-		try {
-			// TODO: We should await room instance handshake and this class ready
-			const roomE2E = await this.getRoomInstance(message.rid);
-			return roomE2E.encrypt(message);
-		} catch {
-			// Do nothing
+		const roomE2E = await this.getRoomInstance(message.rid);
+
+		if (!roomE2E) {
+			return message;
 		}
 
-		return message;
+		return roomE2E.encrypt(message);
 	}
 
 	// Decrypt a message
 	decryptMessage = async(message) => {
-		try {
-			// TODO: We should await room instance handshake and this class ready
-			const roomE2E = await this.getRoomInstance(message.rid);
-			return roomE2E.decrypt(message);
-		} catch {
-			// Do nothing
+		const roomE2E = await this.getRoomInstance(message.rid);
+
+		if (!roomE2E) {
+			return message;
 		}
 
-		return message;
+		return roomE2E.decrypt(message);
 	}
 }
 
