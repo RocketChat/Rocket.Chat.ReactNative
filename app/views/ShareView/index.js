@@ -199,7 +199,7 @@ class ShareView extends Component {
 
 			// Send text message
 			} else if (text.length) {
-				await RocketChat.sendMessage(room.rid, text, thread?.id, { id: user.id, token: user.token }, room.encrypted);
+				await RocketChat.sendMessage(room.rid, text, thread?.id, { id: user.id, token: user.token });
 			}
 		} catch {
 			// Do nothing

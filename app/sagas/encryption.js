@@ -68,7 +68,7 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 		const storedPrivateKey = yield UserPreferences.getStringAsync(`${ server }-${ E2E_PRIVATE_KEY }`);
 
 		// Fetch server stored e2e keys
-		const keys = yield RocketChat.e2eFetchMyKeys();
+		const keys = yield Encryption.fetchMyKeys();
 
 		// User doesn't have a private key stored
 		// so, we'll use the server private key, but it needs the password

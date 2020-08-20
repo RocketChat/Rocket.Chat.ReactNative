@@ -316,8 +316,8 @@ const RocketChat = {
 				};
 			}
 			reduxStore.dispatch(shareSetUser(user));
-			reduxStore.dispatch(encryptionInit());
 			await RocketChat.login({ resume: user.token });
+			reduxStore.dispatch(encryptionInit());
 		} catch (e) {
 			log(e);
 		}
@@ -334,7 +334,8 @@ const RocketChat = {
 
 	async e2eFetchMyKeys() {
 		// RC 0.70.0
-		const result = await this.sdk.get('e2e.fetchMyKeys');
+		const sdk = this.shareSDK || this.sdk;
+		const result = await sdk.get('e2e.fetchMyKeys');
 		// snake_case -> camelCase
 		if (result.success) {
 			return {
