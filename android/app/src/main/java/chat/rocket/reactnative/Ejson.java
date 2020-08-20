@@ -67,15 +67,17 @@ public class Ejson {
     }
 
     public String token() {
-        if (mmkv != null) {
-            return mmkv.decodeString(TOKEN_KEY.concat(userId()));
+        String userId = userId();
+        if (mmkv != null && userId != null) {
+            return mmkv.decodeString(TOKEN_KEY.concat(userId));
         }
         return "";
     }
 
     public String userId() {
-        if (mmkv != null) {
-            return mmkv.decodeString(TOKEN_KEY.concat(serverURL()));
+        String serverURL = serverURL();
+        if (mmkv != null && serverURL != null) {
+            return mmkv.decodeString(TOKEN_KEY.concat(serverURL));
         }
         return "";
     }
