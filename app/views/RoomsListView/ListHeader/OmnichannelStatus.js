@@ -68,7 +68,10 @@ Sort.propTypes = {
 	queueSize: PropTypes.number,
 	inquiryEnabled: PropTypes.bool,
 	theme: PropTypes.string,
-	user: PropTypes.object
+	user: PropTypes.shape({
+		roles: PropTypes.array,
+		statusLivechat: PropTypes.string
+	})
 };
 
 export default withTheme(Sort);
