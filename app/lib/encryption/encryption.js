@@ -14,7 +14,8 @@ import {
 	E2E_PRIVATE_KEY,
 	E2E_RANDOM_PASSWORD_KEY,
 	E2E_STATUS,
-	E2E_MESSAGE_TYPE
+	E2E_MESSAGE_TYPE,
+	E2E_ROOM_TYPES
 } from './constants';
 import RocketChat from '../rocketchat';
 import E2ERoom from './encryption.room';
@@ -157,36 +158,37 @@ class Encryption {
 			return this.roomInstances[rid];
 		}
 
-		try {
-			const db = database.active;
-			const subCollection = db.collections.get('subscriptions');
-			// TODO: Prevent find the sub again if it's not a encrypted room ?
-			// Find the subscription
-			const sub = await subCollection.find(rid);
-
-			// If this is not a direct or a private room
-			if (!['d', 'p'].includes(sub.t)) {
-				return;
-			}
-
-			// If it's not encrypted at the moment
-			if (!sub.encrypted) {
-				return;
-			}
-
-			// If doesn't have a instance of this room
-			if (!this.roomInstances[rid]) {
-				this.roomInstances[rid] = new E2ERoom(rid);
-			}
-
-			const roomE2E = this.roomInstances[rid];
-
-			// Start Encryption Room instance handshake
-			await roomE2E.handshake(sub, this.privateKey);
-			return roomE2E;
-		} catch {
-			// Sub not found
+		// If user privateKey was not loaded yet
+		if (!this.privateKey) {
+			return;
 		}
+
+		const db = database.active;
+		const subCollection = db.collections.get('subscriptions');
+		// TODO: Prevent find the sub again if it's not a encrypted room ?
+		// Find the subscription
+		const sub = await subCollection.find(rid);
+
+		// If this is not a direct or a private room
+		if (!E2E_ROOM_TYPES[sub.t]) {
+			return;
+		}
+
+		// If it's not encrypted at the moment
+		if (!sub.encrypted) {
+			return;
+		}
+
+		// If doesn't have a instance of this room
+		if (!this.roomInstances[rid]) {
+			this.roomInstances[rid] = new E2ERoom(rid);
+		}
+
+		const roomE2E = this.roomInstances[rid];
+
+		// Start Encryption Room instance handshake
+		await roomE2E.handshake(sub, this.privateKey);
+		return roomE2E;
 	}
 
 	// Logic to decrypt all pending messages/threads/threadMessages

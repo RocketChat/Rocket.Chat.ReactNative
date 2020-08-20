@@ -28,27 +28,25 @@ export default class EncryptionRoom {
 
 		const { E2EKey, e2eKeyId, encrypted } = this.subscription;
 
+		// If it's not an encrypted room
 		if (!encrypted) {
-			return Promise.reject();
+			return;
 		}
 
-		if (!privateKey) {
-			// TODO: Improve this logic of handshake retry
-			return Promise.reject();
-		}
-
+		// If this room has a E2EKey let's import this
 		if (E2EKey) {
 			await this.importRoomKey(E2EKey, privateKey);
 			return;
 		}
 
+		// If doesn't have a e2eKeyId we need to create keys to this room
 		if (!e2eKeyId) {
 			await this.createRoomKey();
-			return Promise.reject();
+			return;
 		}
 
+		// Request a E2EKey for this room to other users
 		await RocketChat.methodCall('stream-notify-room-users', `${ this.roomId }/e2ekeyRequest`, this.roomId, e2eKeyId);
-		return Promise.reject();
 	}
 
 	// Import roomKey as an AES Decrypt key
