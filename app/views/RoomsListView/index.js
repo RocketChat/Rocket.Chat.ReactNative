@@ -372,6 +372,12 @@ class RoomsListView extends React.Component {
 						onPress={this.initSearching}
 						testID='rooms-list-view-search'
 					/>
+					<Item
+						title='directory'
+						iconName='directory'
+						onPress={this.goDirectory}
+						testID='rooms-list-view-directory'
+					/>
 				</CustomHeaderButtons>
 			))
 		};
