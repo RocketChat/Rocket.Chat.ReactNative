@@ -76,7 +76,7 @@ class Encryption {
 	// Fetch the server stored e2e keys
 	fetchMyKeys = async() => {
 		// Handling errors here we're able to
-		// load the keys without network connect
+		// load the stored keys if it fails
 		try {
 			const result = await RocketChat.e2eFetchMyKeys();
 			if (result.success) {
@@ -174,7 +174,7 @@ class Encryption {
 				return;
 			}
 
-			// If it's not created by parallel getRoomInstance
+			// If doesn't have a instance of this room
 			if (!this.roomInstances[rid]) {
 				this.roomInstances[rid] = new E2ERoom(rid);
 			}
