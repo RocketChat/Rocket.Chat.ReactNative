@@ -109,7 +109,8 @@ class RoomsListView extends React.Component {
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			username: PropTypes.string,
-			token: PropTypes.string
+			token: PropTypes.string,
+			statusLivechat: PropTypes.string
 		}),
 		server: PropTypes.string,
 		searchText: PropTypes.string,
