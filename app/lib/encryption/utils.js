@@ -1,4 +1,3 @@
-/* eslint-disable new-cap, no-proto */
 import ByteBuffer from 'bytebuffer';
 import SimpleCrypto from 'react-native-simple-crypto';
 
@@ -23,6 +22,7 @@ export const toString = (thing) => {
 	if (typeof thing === 'string') {
 		return thing;
 	}
+	// eslint-disable-next-line new-cap
 	return new ByteBuffer.wrap(thing).toString('binary');
 };
 export const randomPassword = () => `${ random(3) }-${ random(3) }-${ random(3) }`.toLowerCase();
