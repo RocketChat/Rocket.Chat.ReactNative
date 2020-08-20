@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import {
 	View, Text, StyleSheet, Switch
 } from 'react-native';
@@ -13,13 +13,18 @@ import { withTheme } from '../../../theme';
 import UnreadBadge from '../../../presentation/UnreadBadge';
 import RocketChat from '../../../lib/rocketchat';
 
-const Sort = React.memo(({
+const OmnichannelStatus = memo(({
 	searching, goQueue, theme, queueSize, inquiryEnabled, user
 }) => {
 	if (searching > 0 || !(RocketChat.isOmnichannelModuleAvailable() && user?.roles?.includes('livechat-agent'))) {
 		return null;
 	}
-	const [status, setStatus] = React.useState(user?.statusLivechat === 'available');
+	const [status, setStatus] = useState(user?.statusLivechat === 'available');
+
+	useEffect(() => {
+		setStatus(user.statusLivechat === 'available');
+	}, [user.statusLivechat]);
+
 	const toggleLivechat = async() => {
 		try {
 			setStatus(v => !v);
@@ -28,6 +33,7 @@ const Sort = React.memo(({
 			// Do nothing
 		}
 	};
+
 	return (
 		<Touch
 			onPress={goQueue}
@@ -62,7 +68,7 @@ const Sort = React.memo(({
 	);
 });
 
-Sort.propTypes = {
+OmnichannelStatus.propTypes = {
 	searching: PropTypes.bool,
 	goQueue: PropTypes.func,
 	queueSize: PropTypes.number,
@@ -74,4 +80,4 @@ Sort.propTypes = {
 	})
 };
 
-export default withTheme(Sort);
+export default withTheme(OmnichannelStatus);

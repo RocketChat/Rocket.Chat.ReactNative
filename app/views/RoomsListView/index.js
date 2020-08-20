@@ -684,7 +684,12 @@ class RoomsListView extends React.Component {
 
 	goQueue = () => {
 		logEvent(events.RL_GO_QUEUE);
-		const { navigation, isMasterDetail, queueSize } = this.props;
+		const {
+			navigation, isMasterDetail, queueSize, inquiryEnabled
+		} = this.props;
+		if (!inquiryEnabled) {
+			return;
+		}
 		// prevent navigation to empty list
 		if (!queueSize) {
 			return showErrorAlert(I18n.t('Queue_is_empty'), I18n.t('Oops'));
