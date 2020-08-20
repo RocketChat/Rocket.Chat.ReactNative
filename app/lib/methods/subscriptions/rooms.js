@@ -17,6 +17,7 @@ import { removedRoom } from '../../../actions/room';
 import { setUser } from '../../../actions/login';
 import { INAPP_NOTIFICATION_EMITTER } from '../../../containers/InAppNotification';
 import { Encryption } from '../../encryption';
+import { E2E_MESSAGE_TYPE } from '../../encryption/constants';
 
 const removeListener = listener => listener.stop();
 
@@ -326,10 +327,23 @@ export default function subscribeRooms() {
 		if (/notification/.test(ev)) {
 			const [notification] = ddpMessage.fields.args;
 			try {
-				const { payload: { rid } } = notification;
+				const { payload: { rid, message, sender } } = notification;
 				const room = await RocketChat.getRoom(rid);
 				notification.title = RocketChat.getRoomTitle(room);
 				notification.avatar = RocketChat.getRoomAvatar(room);
+
+				// If it's from a encrypted room
+				if (message.t === E2E_MESSAGE_TYPE) {
+					// Decrypt this message content
+					const { msg } = await Encryption.decryptMessage({ ...message, rid });
+					// If it's a direct the content is the message decrypted
+					if (room.t === 'd') {
+						notification.text = msg;
+					// If it's a private group we should add the sender name
+					} else {
+						notification.text = `${ RocketChat.getSenderName(sender) }: ${ msg }`;
+					}
+				}
 			} catch (e) {
 				// do nothing
 			}
