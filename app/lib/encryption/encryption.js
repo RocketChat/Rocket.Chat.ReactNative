@@ -182,7 +182,7 @@ class Encryption {
 			const roomE2E = this.roomInstances[rid];
 
 			// Start Encryption Room instance handshake
-			await roomE2E.handshake(this.privateKey);
+			await roomE2E.handshake(sub, this.privateKey);
 			return roomE2E;
 		} catch {
 			// Sub not found

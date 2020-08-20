@@ -11,7 +11,6 @@ import {
 	splitVectorData,
 	joinVectorData
 } from './utils';
-import database from '../database';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from './constants';
 import RocketChat from '../rocketchat';
 import { isIOS } from '../../utils/deviceInfo';
@@ -23,11 +22,9 @@ export default class EncryptionRoom {
 	}
 
 	// Initialize the E2E room
-	handshake = async(privateKey) => {
-		const db = database.active;
-		const subCollection = db.collections.get('subscriptions');
+	handshake = async(subscription, privateKey) => {
 		// TODO: Should be an observable to check encrypted property
-		this.subscription = await subCollection.find(this.roomId);
+		this.subscription = subscription;
 
 		const { E2EKey, e2eKeyId, encrypted } = this.subscription;
 

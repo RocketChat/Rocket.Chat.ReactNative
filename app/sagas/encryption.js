@@ -92,7 +92,7 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 		}
 
 		if (publicKey && storedPrivateKey) {
-			// Start the Encryption client for this server
+			// Load saved keys
 			yield Encryption.loadKeys(server, publicKey, storedPrivateKey);
 		} else {
 			// Create new keys since the user doesn't have any
