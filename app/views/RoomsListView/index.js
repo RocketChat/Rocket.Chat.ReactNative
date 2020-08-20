@@ -375,6 +375,12 @@ class RoomsListView extends React.Component {
 						onPress={this.initSearching}
 						testID='rooms-list-view-search'
 					/>
+					<Item
+						title='directory'
+						iconName='directory'
+						onPress={this.goDirectory}
+						testID='rooms-list-view-directory'
+					/>
 				</CustomHeaderButtons>
 			))
 		};
@@ -832,7 +838,6 @@ class RoomsListView extends React.Component {
 				searching={searching}
 				sortBy={sortBy}
 				toggleSort={this.toggleSort}
-				goDirectory={this.goDirectory}
 				goEncryption={this.goEncryption}
 				goQueue={this.goQueue}
 				queueSize={queueSize}
