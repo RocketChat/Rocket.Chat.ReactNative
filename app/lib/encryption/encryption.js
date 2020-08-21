@@ -274,10 +274,16 @@ class Encryption {
 		const db = database.active;
 		const subCollection = db.collections.get('subscriptions');
 		try {
-			// Find all encrypted rooms
-			const subsEncrypted = await subCollection.query(Q.where('encrypted', true)).fetch();
+			// Find all rooms that can have a lastMessage encrypted
+			// If we select only encrypted rooms we can miss some room that changed their encrypted status
+			const subsEncrypted = await subCollection.query(Q.where('e2e_key_id', Q.notEq(null))).fetch();
 			// We can't do this on database level since lastMessage is not a database object
-			const subsToDecrypt = subsEncrypted.filter(sub => sub?.lastMessage?.e2e === E2E_STATUS.PENDING);
+			const subsToDecrypt = subsEncrypted.filter(sub => (
+				// Encrypted message
+				sub?.lastMessage?.t === E2E_MESSAGE_TYPE
+				// Message pending decrypt
+				&& sub?.lastMessage?.e2e === E2E_STATUS.PENDING
+			));
 			await Promise.all(subsToDecrypt.map(async(sub) => {
 				const { lastMessage } = sub;
 				const newSub = await this.decryptSubscription({ lastMessage });

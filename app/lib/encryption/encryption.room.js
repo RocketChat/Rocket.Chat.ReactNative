@@ -135,11 +135,11 @@ export default class EncryptionRoom {
 
 	// Encrypt messages
 	encrypt = async(message) => {
-		if (!this.subscription.encrypted) {
+		if (!this.ready) {
 			return message;
 		}
 
-		if (!this.roomKey) {
+		if (!this.subscription?.encrypted) {
 			return message;
 		}
 
@@ -165,12 +165,13 @@ export default class EncryptionRoom {
 		} catch {
 			// Do nothing
 		}
+
 		return message;
 	}
 
 	// Decrypt messages
 	decrypt = async(message) => {
-		if (!this.roomKey) {
+		if (!this.ready) {
 			return message;
 		}
 
