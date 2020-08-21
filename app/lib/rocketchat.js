@@ -51,6 +51,7 @@ import { twoFactor } from '../utils/twoFactor';
 import { selectServerFailure } from '../actions/server';
 import { useSsl } from '../utils/url';
 import UserPreferences from './userPreferences';
+import { Encryption } from './encryption';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
@@ -653,10 +654,10 @@ const RocketChat = {
 		// RC 0.48.0
 		return this.post('chat.delete', { msgId: messageId, roomId: rid });
 	},
-	editMessage(message) {
-		const { id, msg, rid } = message;
+	async editMessage(message) {
+		const { rid, msg } = await Encryption.encryptMessage(message);
 		// RC 0.49.0
-		return this.post('chat.update', { roomId: rid, msgId: id, text: msg });
+		return this.post('chat.update', { roomId: rid, msgId: message.id, text: msg });
 	},
 	markAsUnread({ messageId }) {
 		return this.post('subscriptions.unread', { firstUnreadMessage: { _id: messageId } });
