@@ -14,7 +14,7 @@ import {
 	loginFailure, loginSuccess, setUser, logout
 } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
-import { inquiryRequest } from '../actions/inquiry';
+import { inquiryRequest, inquiryReset } from '../actions/inquiry';
 import { toMomentLocale } from '../utils/moment';
 import RocketChat from '../lib/rocketchat';
 import log, { logEvent, events } from '../utils/log';
@@ -85,6 +85,14 @@ const fetchUsersPresence = function* fetchUserPresence() {
 	RocketChat.subscribeUsersPresence();
 };
 
+const fetchEnterpriseModules = function* fetchEnterpriseModules({ user }) {
+	yield RocketChat.getEnterpriseModules();
+
+	if (user && user.statusLivechat === 'available' && RocketChat.isOmnichannelModuleAvailable()) {
+		yield put(inquiryRequest());
+	}
+};
+
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
 		const adding = yield select(state => state.server.adding);
@@ -94,13 +102,13 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 
 		const server = yield select(getServer);
 		yield put(roomsRequest());
-		yield put(inquiryRequest());
 		yield fork(fetchPermissions);
 		yield fork(fetchCustomEmojis);
 		yield fork(fetchRoles);
 		yield fork(fetchSlashCommands);
 		yield fork(registerPushToken);
 		yield fork(fetchUsersPresence);
+		yield fork(fetchEnterpriseModules, { user });
 
 		I18n.locale = user.language;
 		moment.locale(toMomentLocale(user.language));
@@ -210,8 +218,12 @@ const handleSetUser = function* handleSetUser({ user }) {
 		yield put(setActiveUsers({ [userId]: user }));
 	}
 
-	if (user && user.statusLivechat) {
-		yield put(inquiryRequest());
+	if (user?.statusLivechat && RocketChat.isOmnichannelModuleAvailable()) {
+		if (user.statusLivechat === 'available') {
+			yield put(inquiryRequest());
+		} else {
+			yield put(inquiryReset());
+		}
 	}
 };
 

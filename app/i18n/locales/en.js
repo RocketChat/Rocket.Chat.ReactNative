@@ -339,6 +339,7 @@ export default {
 	Offline: 'Offline',
 	Oops: 'Oops!',
 	Omnichannel: 'Omnichannel',
+	Omnichannel_enable_alert: 'You\'re not available on Omnichannel. Would you like to be available?',
 	Onboarding_description: 'A workspace is your team or organization’s space to collaborate. Ask the workspace admin for address to join or create one for your team.',
 	Onboarding_join_workspace: 'Join a workspace',
 	Onboarding_subtitle: 'Beyond Team Collaboration',

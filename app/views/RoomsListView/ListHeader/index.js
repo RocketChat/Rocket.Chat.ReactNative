@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Queue from './Queue';
 import Sort from './Sort';
+import OmnichannelStatus from './OmnichannelStatus';
 
 const ListHeader = React.memo(({
 	searching,
@@ -10,11 +10,12 @@ const ListHeader = React.memo(({
 	toggleSort,
 	goQueue,
 	queueSize,
-	inquiryEnabled
+	inquiryEnabled,
+	user
 }) => (
 	<>
 		<Sort searching={searching} sortBy={sortBy} toggleSort={toggleSort} />
-		<Queue searching={searching} goQueue={goQueue} queueSize={queueSize} inquiryEnabled={inquiryEnabled} />
+		<OmnichannelStatus searching={searching} goQueue={goQueue} inquiryEnabled={inquiryEnabled} queueSize={queueSize} user={user} />
 	</>
 ));
 
@@ -24,7 +25,8 @@ ListHeader.propTypes = {
 	toggleSort: PropTypes.func,
 	goQueue: PropTypes.func,
 	queueSize: PropTypes.number,
-	inquiryEnabled: PropTypes.bool
+	inquiryEnabled: PropTypes.bool,
+	user: PropTypes.object
 };
 
 export default ListHeader;

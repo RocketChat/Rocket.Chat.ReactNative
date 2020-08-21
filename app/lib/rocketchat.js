@@ -29,6 +29,9 @@ import getSettings, { getLoginSettings, setSettings } from './methods/getSetting
 import getRooms from './methods/getRooms';
 import getPermissions from './methods/getPermissions';
 import { getCustomEmojis, setCustomEmojis } from './methods/getCustomEmojis';
+import {
+	getEnterpriseModules, setEnterpriseModules, hasLicense, isOmnichannelModuleAvailable
+} from './methods/enterpriseModules';
 import getSlashCommands from './methods/getSlashCommands';
 import getRoles from './methods/getRoles';
 import canOpenRoom from './methods/canOpenRoom';
@@ -519,6 +522,7 @@ const RocketChat = {
 		} else if (!filterUsers && filterRooms) {
 			data = data.filter(item => item.t !== 'd' || RocketChat.isGroupChat(item));
 		}
+
 		data = data.slice(0, 7);
 
 		data = data.map((sub) => {
@@ -620,6 +624,10 @@ const RocketChat = {
 	getPermissions,
 	getCustomEmojis,
 	setCustomEmojis,
+	getEnterpriseModules,
+	setEnterpriseModules,
+	hasLicense,
+	isOmnichannelModuleAvailable,
 	getSlashCommands,
 	getRoles,
 	parseSettings: settings => settings.reduce((ret, item) => {
