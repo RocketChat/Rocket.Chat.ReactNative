@@ -44,6 +44,17 @@ export default schemaMigrations({
 				addColumns({
 					table: 'servers',
 					columns: [
+						{ name: 'enterprise_modules', type: 'string', isOptional: true }
+					]
+				})
+			]
+		},
+		{
+			toVersion: 7,
+			steps: [
+				addColumns({
+					table: 'servers',
+					columns: [
 						{ name: 'e2e_enable', type: 'boolean', isOptional: true }
 					]
 				})

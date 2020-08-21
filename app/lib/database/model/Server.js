@@ -28,5 +28,7 @@ export default class Server extends Model {
 
 	@field('unique_id') uniqueID;
 
+	@field('enterprise_modules') enterpriseModules;
+
 	@field('e2e_enable') E2E_Enable;
 }

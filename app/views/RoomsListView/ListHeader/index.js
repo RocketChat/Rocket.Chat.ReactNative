@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Encryption from './Encryption';
 import Sort from './Sort';
-import Queue from './Queue';
+import Encryption from './Encryption';
+import OmnichannelStatus from './OmnichannelStatus';
 
 const ListHeader = React.memo(({
 	searching,
@@ -13,12 +13,13 @@ const ListHeader = React.memo(({
 	goQueue,
 	queueSize,
 	inquiryEnabled,
-	encryptionBanner
+	encryptionBanner,
+	user
 }) => (
 	<>
 		<Encryption searching={searching} goEncryption={goEncryption} encryptionBanner={encryptionBanner} />
 		<Sort searching={searching} sortBy={sortBy} toggleSort={toggleSort} />
-		<Queue searching={searching} goQueue={goQueue} queueSize={queueSize} inquiryEnabled={inquiryEnabled} />
+		<OmnichannelStatus searching={searching} goQueue={goQueue} inquiryEnabled={inquiryEnabled} queueSize={queueSize} user={user} />
 	</>
 ));
 
@@ -30,7 +31,8 @@ ListHeader.propTypes = {
 	goQueue: PropTypes.func,
 	queueSize: PropTypes.number,
 	inquiryEnabled: PropTypes.bool,
-	encryptionBanner: PropTypes.string
+	encryptionBanner: PropTypes.string,
+	user: PropTypes.object
 };
 
 export default ListHeader;

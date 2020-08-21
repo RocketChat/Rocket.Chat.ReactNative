@@ -17,6 +17,7 @@ import usersTyping from './usersTyping';
 import inviteLinks from './inviteLinks';
 import createDiscussion from './createDiscussion';
 import inquiry from './inquiry';
+import enterpriseModules from './enterpriseModules';
 import encryption from './encryption';
 
 export default combineReducers({
@@ -38,5 +39,6 @@ export default combineReducers({
 	inviteLinks,
 	createDiscussion,
 	inquiry,
+	enterpriseModules,
 	encryption
 });

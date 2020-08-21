@@ -42,6 +42,8 @@ import AdminPanelView from '../../views/AdminPanelView';
 import NewMessageView from '../../views/NewMessageView';
 import CreateChannelView from '../../views/CreateChannelView';
 import QueueListView from '../../views/QueueListView';
+import PreferencesView from '../../views/PreferencesView';
+import UserNotificationPrefView from '../../views/UserNotificationPreferencesView';
 
 // InsideStackNavigator
 import AttachmentView from '../../views/AttachmentView';
@@ -270,6 +272,16 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 					name='E2EEnterYourPasswordView'
 					component={E2EEnterYourPasswordView}
 					options={E2EEnterYourPasswordView.navigationOptions}
+				/>
+				<ModalStack.Screen
+					name='PreferencesView'
+					component={PreferencesView}
+					options={PreferencesView.navigationOptions}
+				/>
+				<ModalStack.Screen
+					name='UserNotificationPrefView'
+					component={UserNotificationPrefView}
+					options={UserNotificationPrefView.navigationOptions}
 				/>
 			</ModalStack.Navigator>
 		</ModalContainer>
