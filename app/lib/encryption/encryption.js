@@ -208,8 +208,10 @@ class Encryption {
 			return;
 		}
 
-		// If it's not encrypted at the moment
-		if (!sub.encrypted) {
+		// If it's not encrypted and doesn't have a keyId
+		// We should create a instance to rooms that are not encrypted at the moment
+		// to decrypt old messages that are loaded after room encrypted be false
+		if (!sub.encrypted && !sub.e2eKeyId) {
 			return;
 		}
 

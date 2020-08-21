@@ -26,12 +26,7 @@ export default class EncryptionRoom {
 		// TODO: Should be an observable to check encrypted property
 		this.subscription = subscription;
 
-		const { E2EKey, e2eKeyId, encrypted } = this.subscription;
-
-		// If it's not an encrypted room
-		if (!encrypted) {
-			return;
-		}
+		const { E2EKey, e2eKeyId } = this.subscription;
 
 		// If this room has a E2EKey let's import this
 		if (E2EKey) {
