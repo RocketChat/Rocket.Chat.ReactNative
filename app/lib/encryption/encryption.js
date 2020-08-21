@@ -333,6 +333,9 @@ class Encryption {
 
 		return roomE2E.decrypt(message);
 	}
+
+	// Decrypt multiple messages
+	decryptMessages = messages => Promise.all(messages.map(m => this.decryptMessage(m)))
 }
 
 const encryption = new Encryption();

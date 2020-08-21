@@ -33,7 +33,7 @@ export default function loadThreadMessages({ tmid, rid, offset = 0 }) {
 				InteractionManager.runAfterInteractions(async() => {
 					try {
 						data = data.map(m => buildMessage(m));
-						data = await Promise.all(data.map(m => Encryption.decryptMessage(m)));
+						data = await Encryption.decryptMessages(data);
 						const db = database.active;
 						const threadMessagesCollection = db.collections.get('thread_messages');
 						const allThreadMessagesRecords = await threadMessagesCollection.query(Q.where('rid', tmid)).fetch();

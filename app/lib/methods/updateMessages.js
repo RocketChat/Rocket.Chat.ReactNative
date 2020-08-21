@@ -15,7 +15,7 @@ export default function updateMessages({ rid, update = [], remove = [] }) {
 		const db = database.active;
 		return db.action(async() => {
 			// Decrypt these messages
-			update = await Promise.all(update.map(m => Encryption.decryptMessage(m)));
+			update = await Encryption.decryptMessages(update);
 			const subCollection = db.collections.get('subscriptions');
 			let sub;
 			try {
