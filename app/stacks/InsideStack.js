@@ -41,6 +41,8 @@ import LanguageView from '../views/LanguageView';
 import ThemeView from '../views/ThemeView';
 import DefaultBrowserView from '../views/DefaultBrowserView';
 import ScreenLockConfigView from '../views/ScreenLockConfigView';
+import PreferencesView from '../views/PreferencesView';
+import UserNotificationPrefView from '../views/UserNotificationPreferencesView';
 
 // Admin Stack
 import AdminPanelView from '../views/AdminPanelView';
@@ -219,6 +221,21 @@ const SettingsStackNavigator = () => {
 				name='ScreenLockConfigView'
 				component={ScreenLockConfigView}
 				options={ScreenLockConfigView.navigationOptions}
+			/>
+			<SettingsStack.Screen
+				name='PreferencesView'
+				component={PreferencesView}
+				options={PreferencesView.navigationOptions}
+			/>
+			<SettingsStack.Screen
+				name='UserNotificationPrefView'
+				component={UserNotificationPrefView}
+				options={UserNotificationPrefView.navigationOptions}
+			/>
+			<SettingsStack.Screen
+				name='PickerView'
+				component={PickerView}
+				options={PickerView.navigationOptions}
 			/>
 		</SettingsStack.Navigator>
 	);
