@@ -109,6 +109,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		// and block the selectServerSuccess raising multiples errors
 		RocketChat.setSettings();
 		RocketChat.setCustomEmojis();
+		RocketChat.setEnterpriseModules();
 
 		let serverInfo;
 		if (fetchVersion) {

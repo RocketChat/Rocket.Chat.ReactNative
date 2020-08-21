@@ -169,7 +169,7 @@ class ShareListView extends React.Component {
 					? null
 					: (
 						<CustomHeaderButtons>
-							<Item title='search' iconName='magnifier' onPress={this.initSearch} />
+							<Item title='search' iconName='search' onPress={this.initSearch} />
 						</CustomHeaderButtons>
 					)
 			)

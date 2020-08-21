@@ -29,6 +29,9 @@ import getSettings, { getLoginSettings, setSettings } from './methods/getSetting
 import getRooms from './methods/getRooms';
 import getPermissions from './methods/getPermissions';
 import { getCustomEmojis, setCustomEmojis } from './methods/getCustomEmojis';
+import {
+	getEnterpriseModules, setEnterpriseModules, hasLicense, isOmnichannelModuleAvailable
+} from './methods/enterpriseModules';
 import getSlashCommands from './methods/getSlashCommands';
 import getRoles from './methods/getRoles';
 import canOpenRoom from './methods/canOpenRoom';
@@ -519,6 +522,7 @@ const RocketChat = {
 		} else if (!filterUsers && filterRooms) {
 			data = data.filter(item => item.t !== 'd' || RocketChat.isGroupChat(item));
 		}
+
 		data = data.slice(0, 7);
 
 		data = data.map((sub) => {
@@ -620,6 +624,10 @@ const RocketChat = {
 	getPermissions,
 	getCustomEmojis,
 	setCustomEmojis,
+	getEnterpriseModules,
+	setEnterpriseModules,
+	hasLicense,
+	isOmnichannelModuleAvailable,
 	getSlashCommands,
 	getRoles,
 	parseSettings: settings => settings.reduce((ret, item) => {
@@ -726,6 +734,10 @@ const RocketChat = {
 	setUserPresenceOnline() {
 		return this.methodCall('UserPresence:online');
 	},
+	setUserPreferences(userId, data) {
+		// RC 0.62.0
+		return this.sdk.post('users.setPreferences', { userId, data });
+	},
 	setUserStatus(status, message) {
 		// RC 1.2.0
 		return this.post('users.setStatus', { status, message });
@@ -779,6 +791,10 @@ const RocketChat = {
 	getUserInfo(userId) {
 		// RC 0.48.0
 		return this.sdk.get('users.info', { userId });
+	},
+	getUserPreferences(userId) {
+		// RC 0.62.0
+		return this.sdk.get('users.getPreferences', { userId });
 	},
 	getRoomInfo(roomId) {
 		// RC 0.72.0
