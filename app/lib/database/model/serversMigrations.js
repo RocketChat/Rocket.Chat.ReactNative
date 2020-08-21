@@ -37,6 +37,17 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 6,
+			steps: [
+				addColumns({
+					table: 'servers',
+					columns: [
+						{ name: 'enterprise_modules', type: 'string', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });
