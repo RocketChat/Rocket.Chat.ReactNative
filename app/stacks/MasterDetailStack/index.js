@@ -42,6 +42,8 @@ import AdminPanelView from '../../views/AdminPanelView';
 import NewMessageView from '../../views/NewMessageView';
 import CreateChannelView from '../../views/CreateChannelView';
 import QueueListView from '../../views/QueueListView';
+import PreferencesView from '../../views/PreferencesView';
+import UserNotificationPrefView from '../../views/UserNotificationPreferencesView';
 
 // InsideStackNavigator
 import AttachmentView from '../../views/AttachmentView';
@@ -252,6 +254,16 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 				<ModalStack.Screen
 					name='CreateDiscussionView'
 					component={CreateDiscussionView}
+				/>
+				<ModalStack.Screen
+					name='PreferencesView'
+					component={PreferencesView}
+					options={PreferencesView.navigationOptions}
+				/>
+				<ModalStack.Screen
+					name='UserNotificationPrefView'
+					component={UserNotificationPrefView}
+					options={UserNotificationPrefView.navigationOptions}
 				/>
 			</ModalStack.Navigator>
 		</ModalContainer>
