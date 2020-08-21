@@ -52,15 +52,13 @@ class Encryption {
 
 	// When a new participant join and request a new room encryption key
 	provideRoomKeyToUser = async(keyId, roomId) => {
-		try {
-			const roomE2E = await this.getRoomInstance(roomId);
-			if (!roomE2E) {
-				return;
-			}
-			roomE2E.provideKeyToUser(keyId);
-		} catch {
-			// Do nothing
+		const roomE2E = await this.getRoomInstance(roomId);
+
+		if (!roomE2E) {
+			return;
 		}
+
+		return roomE2E.provideKeyToUser(keyId);
 	}
 
 	// Load stored or sought on server keys
