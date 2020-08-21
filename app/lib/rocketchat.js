@@ -523,11 +523,6 @@ const RocketChat = {
 			data = data.filter(item => item.t !== 'd' || RocketChat.isGroupChat(item));
 		}
 
-		// Hide omnichannel if there's no license
-		if (!this.isOmnichannelModuleAvailable()) {
-			data = data.filter(item => item.t !== 'l');
-		}
-
 		data = data.slice(0, 7);
 
 		data = data.map((sub) => {

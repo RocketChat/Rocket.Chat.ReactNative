@@ -30,7 +30,7 @@ const OmnichannelStatus = memo(({
 			setStatus(v => !v);
 			await RocketChat.changeLivechatStatus();
 		} catch {
-			// Do nothing
+			setStatus(v => !v);
 		}
 	};
 
@@ -46,8 +46,8 @@ const OmnichannelStatus = memo(({
 					{ borderBottomWidth: StyleSheet.hairlineWidth, borderColor: themes[theme].separatorColor }
 				]}
 			>
-				<CustomIcon style={[styles.sortIcon, { color: themes[theme].auxiliaryText }]} size={22} name='omnichannel' />
-				<Text style={[styles.sortToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Omnichannel')}</Text>
+				<CustomIcon style={[styles.queueIcon, { color: themes[theme].auxiliaryText }]} size={22} name='omnichannel' />
+				<Text style={[styles.queueToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Omnichannel')}</Text>
 				{inquiryEnabled
 					? (
 						<UnreadBadge
