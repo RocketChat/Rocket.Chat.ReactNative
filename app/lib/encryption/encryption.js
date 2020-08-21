@@ -21,6 +21,7 @@ import RocketChat from '../rocketchat';
 import E2ERoom from './encryption.room';
 import UserPreferences from '../userPreferences';
 import database from '../database';
+import protectedFunction from '../methods/helpers/protectedFunction';
 
 class Encryption {
 	constructor() {
@@ -208,7 +209,7 @@ class Encryption {
 		const threadMessagesCollection = db.collections.get('thread_messages');
 
 		// e2e status is 'pending' and message type is 'e2e'
-		const whereClause = [Q.where('e2e', E2E_STATUS.PENDING), Q.where('t', E2E_MESSAGE_TYPE)];
+		const whereClause = [Q.where('t', E2E_MESSAGE_TYPE), Q.where('e2e', E2E_STATUS.PENDING)];
 
 		try {
 			// Find all messages/threads/threadsMessages that have pending e2e status
@@ -217,16 +218,22 @@ class Encryption {
 			const threadMessagesToDecrypt = await threadMessagesCollection.query(...whereClause).fetch();
 
 			// Concat messages/threads/threadMessages
-			const toDecrypt = [...messagesToDecrypt, ...threadsToDecrypt, ...threadMessagesToDecrypt];
-
-			await Promise.all(toDecrypt.map(async(message) => {
-				// We should do this to don't try to update the database object
+			let toDecrypt = [...messagesToDecrypt, ...threadsToDecrypt, ...threadMessagesToDecrypt];
+			toDecrypt = await Promise.all(toDecrypt.map(async(message) => {
 				const { rid, t, msg } = message;
-				const decryptedMessage = await this.decryptMessage({ rid, t, msg });
-				return db.action(() => message.update((m) => {
-					Object.assign(m, decryptedMessage);
+				const newMessage = await this.decryptMessage({ rid, t, msg });
+				if (message._hasPendingUpdate) {
+					console.log(message);
+					return;
+				}
+				return message.prepareUpdate(protectedFunction((m) => {
+					Object.assign(m, newMessage);
 				}));
 			}));
+
+			await db.action(async() => {
+				await db.batch(...toDecrypt);
+			});
 		} catch {
 			// Do nothing
 		}
@@ -238,16 +245,25 @@ class Encryption {
 		const db = database.active;
 		const subCollection = db.collections.get('subscriptions');
 		try {
+			// Find all encrypted rooms
 			const subsEncrypted = await subCollection.query(Q.where('encrypted', true)).fetch();
 			// We can't do this on database level since lastMessage is not a database object
 			const subsToDecrypt = subsEncrypted.filter(sub => sub?.lastMessage?.e2e === E2E_STATUS.PENDING);
 			await Promise.all(subsToDecrypt.map(async(sub) => {
 				const { lastMessage } = sub;
-				const decryptedSub = await this.decryptSubscription({ lastMessage });
-				return db.action(() => sub.update((s) => {
-					Object.assign(s, decryptedSub);
+				const newSub = await this.decryptSubscription({ lastMessage });
+				if (sub._hasPendingUpdate) {
+					console.log(sub);
+					return;
+				}
+				return sub.prepareUpdate(protectedFunction((m) => {
+					Object.assign(m, newSub);
 				}));
 			}));
+
+			await db.action(async() => {
+				await db.batch(...subsToDecrypt);
+			});
 		} catch {
 			// Do nothing
 		}
