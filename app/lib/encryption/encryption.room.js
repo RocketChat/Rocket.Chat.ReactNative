@@ -23,7 +23,7 @@ export default class EncryptionRoom {
 
 	// Initialize the E2E room
 	handshake = async(subscription, privateKey) => {
-		// TODO: Should be an observable to check encrypted property
+		// TODO: Should be an observable to check encrypted property?
 		this.subscription = subscription;
 
 		const { E2EKey, e2eKeyId } = this.subscription;
