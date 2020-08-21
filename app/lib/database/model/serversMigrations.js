@@ -1,4 +1,4 @@
-import { schemaMigrations, addColumns } from '@nozbe/watermelondb/Schema/migrations';
+import { schemaMigrations, addColumns, createTable } from '@nozbe/watermelondb/Schema/migrations';
 
 export default schemaMigrations({
 	migrations: [
@@ -34,6 +34,17 @@ export default schemaMigrations({
 					table: 'servers',
 					columns: [
 						{ name: 'unique_id', type: 'string', isOptional: true }
+					]
+				})
+			]
+		},
+		{
+			toVersion: 6,
+			steps: [
+				createTable({
+					name: 'server_links',
+					columns: [
+						{ name: 'link', type: 'string', isOptional: true }
 					]
 				})
 			]

@@ -17,6 +17,7 @@ import Permission from './model/Permission';
 import SlashCommand from './model/SlashCommand';
 import User from './model/User';
 import Server from './model/Server';
+import ServerLinks from './model/ServerLinks';
 
 import serversSchema from './schema/servers';
 import appSchema from './schema/app';
@@ -71,7 +72,7 @@ class DB {
 				schema: serversSchema,
 				migrations: serversMigrations
 			}),
-			modelClasses: [Server, User],
+			modelClasses: [Server, User, ServerLinks],
 			actionsEnabled: true
 		})
 	}

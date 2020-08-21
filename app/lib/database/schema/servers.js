@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 5,
+	version: 6,
 	tables: [
 		tableSchema({
 			name: 'users',
@@ -30,6 +30,12 @@ export default appSchema({
 				{ name: 'auto_lock_time', type: 'number', isOptional: true },
 				{ name: 'biometry', type: 'boolean', isOptional: true },
 				{ name: 'unique_id', type: 'string', isOptional: true }
+			]
+		}),
+		tableSchema({
+			name: 'server_links',
+			columns: [
+				{ name: 'link', type: 'string', isOptional: true },
 			]
 		})
 	]
