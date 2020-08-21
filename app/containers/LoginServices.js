@@ -326,18 +326,6 @@ class LoginServices extends React.PureComponent {
 				break;
 		}
 
-		if (name === 'apple') {
-			return (
-				<AppleAuthentication.AppleAuthenticationButton
-					buttonType={AppleAuthentication.AppleAuthenticationButtonType.CONTINUE}
-					buttonStyle={theme === 'light' ? AppleAuthentication.AppleAuthenticationButtonStyle.BLACK : AppleAuthentication.AppleAuthenticationButtonStyle.WHITE}
-					cornerRadius={BORDER_RADIUS}
-					style={[styles.serviceButton, { height: BUTTON_HEIGHT }]}
-					onPress={onPress}
-				/>
-			);
-		}
-
 		name = name.charAt(0).toUpperCase() + name.slice(1);
 		let buttonText;
 		if (isSaml || (service.service === 'cas' && CAS_enabled)) {
@@ -362,7 +350,7 @@ class LoginServices extends React.PureComponent {
 				underlayColor={themes[theme].buttonText}
 			>
 				<View style={styles.serviceButtonContainer}>
-					{service.authType === 'oauth' ? <CustomIcon name={icon} size={24} color={themes[theme].titleText} style={styles.serviceIcon} /> : null}
+					{service.authType === 'oauth' || service.authType === 'apple' ? <CustomIcon name={icon} size={24} color={themes[theme].titleText} style={styles.serviceIcon} /> : null}
 					<Text style={[styles.serviceText, { color: themes[theme].titleText }]}>{buttonText}</Text>
 				</View>
 			</Touch>
