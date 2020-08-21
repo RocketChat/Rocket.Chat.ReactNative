@@ -25,6 +25,7 @@ import protectedFunction from '../methods/helpers/protectedFunction';
 
 class Encryption {
 	constructor() {
+		this.ready = false;
 		this.privateKey = null;
 		this.roomInstances = {};
 	}
@@ -37,10 +38,14 @@ class Encryption {
 		// so these can run parallelized
 		this.decryptPendingSubscriptions();
 		this.decryptPendingMessages();
+
+		// Mark Encryption client as ready
+		this.ready = true;
 	}
 
 	// Stop Encryption client
 	stop = () => {
+		this.ready = false;
 		this.privateKey = null;
 		this.roomInstances = {};
 	}
@@ -161,12 +166,17 @@ class Encryption {
 
 	// get a encryption room instance
 	getRoomInstance = async(rid) => {
+		// If Encryption client is not ready yet
+		if (!this.ready) {
+			return;
+		}
+
 		// Prevent find the sub again
 		if (this.roomInstances[rid]?.ready) {
 			return this.roomInstances[rid];
 		}
 
-		// If user privateKey was not loaded yet
+		// If something goes wrong importing privateKey
 		if (!this.privateKey) {
 			return;
 		}
