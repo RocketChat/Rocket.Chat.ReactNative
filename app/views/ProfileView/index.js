@@ -40,7 +40,7 @@ class ProfileView extends React.Component {
 			options.headerLeft = () => <DrawerButton navigation={navigation} />;
 		}
 		options.headerRight = () => (
-			<PreferencesButton onPress={() => navigation.navigate('PreferencesView')} testID='preferences-view-open' />
+			<PreferencesButton onPress={() => navigation.navigate('UserPreferencesView')} testID='preferences-view-open' />
 		);
 		return options;
 	}

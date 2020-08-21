@@ -34,7 +34,7 @@ import QueueListView from '../views/QueueListView';
 
 // Profile Stack
 import ProfileView from '../views/ProfileView';
-import PreferencesView from '../views/PreferencesView';
+import UserPreferencesView from '../views/UserPreferencesView';
 import UserNotificationPrefView from '../views/UserNotificationPreferencesView';
 
 // Settings Stack
@@ -187,9 +187,9 @@ const ProfileStackNavigator = () => {
 				options={ProfileView.navigationOptions}
 			/>
 			<ProfileStack.Screen
-				name='PreferencesView'
-				component={PreferencesView}
-				options={PreferencesView.navigationOptions}
+				name='UserPreferencesView'
+				component={UserPreferencesView}
+				options={UserPreferencesView.navigationOptions}
 			/>
 			<ProfileStack.Screen
 				name='UserNotificationPrefView'
