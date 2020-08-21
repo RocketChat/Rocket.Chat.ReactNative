@@ -11,7 +11,7 @@ import { logout as logoutAction } from '../../actions/login';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
 import { toggleCrashReport as toggleCrashReportAction } from '../../actions/crashReport';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
-import { DrawerButton, CloseModalButton, PreferencesButton } from '../../containers/HeaderButton';
+import { DrawerButton, CloseModalButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ListItem from '../../containers/ListItem';
 import ItemInfo from '../../containers/ItemInfo';
@@ -61,9 +61,6 @@ class SettingsView extends React.Component {
 		) : (
 			<DrawerButton navigation={navigation} />
 		)),
-		headerRight: () => (
-			<PreferencesButton onPress={() => navigation.navigate('PreferencesView')} testID='preferences-view-open' />
-		),
 		title: I18n.t('Settings')
 	});
 
