@@ -14,7 +14,7 @@ import ListItem from '../../containers/ListItem';
 import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import { withTheme } from '../../theme';
 
-class PreferencesView extends React.Component {
+class UserPreferencesView extends React.Component {
 	static navigationOptions = () => ({
 		title: I18n.t('Preferences')
 	});
@@ -62,4 +62,4 @@ class PreferencesView extends React.Component {
 	}
 }
 
-export default withTheme(PreferencesView);
+export default withTheme(UserPreferencesView);
