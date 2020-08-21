@@ -73,14 +73,26 @@ class Encryption {
 	// Could not obtain public-private keypair from server.
 	createKeys = async(userId, server) => {
 		try {
+			// Generate new keys
 			const key = await SimpleCrypto.RSA.generateKeys(2048);
+
+			// Cast these keys to the properly server format
 			const publicKey = await SimpleCrypto.RSA.exportKey(key.public);
 			const privateKey = await SimpleCrypto.RSA.exportKey(key.private);
 
+			// Load these new keys
 			this.loadKeys(server, publicKey, EJSON.stringify(privateKey));
+
+			// Create a password to encode the private key
 			const password = await this.createRandomPassword(server);
+
+			// Encode the private key
 			const encodedPrivateKey = await this.encodePrivateKey(EJSON.stringify(privateKey), password, userId);
+
+			// Send the new keys to the server
 			await RocketChat.e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
+
+			// Request e2e keys of all encrypted rooms of this user
 			await RocketChat.e2eRequestSubscriptionKeys();
 		} catch {
 			// Do nothing
