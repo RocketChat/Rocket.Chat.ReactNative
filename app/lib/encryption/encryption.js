@@ -183,21 +183,27 @@ class Encryption {
 			return;
 		}
 
-		// Prevent find the sub again
-		if (this.roomInstances[rid]?.ready) {
-			return this.roomInstances[rid];
-		}
-
 		// If something goes wrong importing privateKey
 		if (!this.privateKey) {
 			return;
 		}
 
+		// Prevent find the sub again
+		if (this.roomInstances[rid]?.ready) {
+			return this.roomInstances[rid];
+		}
+
 		const db = database.active;
 		const subCollection = db.collections.get('subscriptions');
 		// TODO: Prevent find the sub again if it's not a encrypted room ?
-		// Find the subscription
-		const sub = await subCollection.find(rid);
+		let sub;
+		try {
+			// Find the subscription
+			sub = await subCollection.find(rid);
+		} catch {
+			// Subscription not found
+			return;
+		}
 
 		// If this is not a direct or a private room
 		if (!E2E_ROOM_TYPES[sub.t]) {
@@ -218,6 +224,7 @@ class Encryption {
 
 		// Start Encryption Room instance handshake
 		await roomE2E.handshake(sub, this.privateKey);
+
 		return roomE2E;
 	}
 
