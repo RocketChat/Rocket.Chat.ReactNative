@@ -34,6 +34,8 @@ import QueueListView from '../views/QueueListView';
 
 // Profile Stack
 import ProfileView from '../views/ProfileView';
+import UserPreferencesView from '../views/UserPreferencesView';
+import UserNotificationPrefView from '../views/UserNotificationPreferencesView';
 
 // Settings Stack
 import SettingsView from '../views/SettingsView';
@@ -41,8 +43,6 @@ import LanguageView from '../views/LanguageView';
 import ThemeView from '../views/ThemeView';
 import DefaultBrowserView from '../views/DefaultBrowserView';
 import ScreenLockConfigView from '../views/ScreenLockConfigView';
-import PreferencesView from '../views/PreferencesView';
-import UserNotificationPrefView from '../views/UserNotificationPreferencesView';
 
 // Admin Stack
 import AdminPanelView from '../views/AdminPanelView';
@@ -186,6 +186,21 @@ const ProfileStackNavigator = () => {
 				component={ProfileView}
 				options={ProfileView.navigationOptions}
 			/>
+			<ProfileStack.Screen
+				name='UserPreferencesView'
+				component={UserPreferencesView}
+				options={UserPreferencesView.navigationOptions}
+			/>
+			<ProfileStack.Screen
+				name='UserNotificationPrefView'
+				component={UserNotificationPrefView}
+				options={UserNotificationPrefView.navigationOptions}
+			/>
+			<ProfileStack.Screen
+				name='PickerView'
+				component={PickerView}
+				options={PickerView.navigationOptions}
+			/>
 		</ProfileStack.Navigator>
 	);
 };
@@ -221,21 +236,6 @@ const SettingsStackNavigator = () => {
 				name='ScreenLockConfigView'
 				component={ScreenLockConfigView}
 				options={ScreenLockConfigView.navigationOptions}
-			/>
-			<SettingsStack.Screen
-				name='PreferencesView'
-				component={PreferencesView}
-				options={PreferencesView.navigationOptions}
-			/>
-			<SettingsStack.Screen
-				name='UserNotificationPrefView'
-				component={UserNotificationPrefView}
-				options={UserNotificationPrefView.navigationOptions}
-			/>
-			<SettingsStack.Screen
-				name='PickerView'
-				component={PickerView}
-				options={PickerView.navigationOptions}
 			/>
 		</SettingsStack.Navigator>
 	);
