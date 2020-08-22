@@ -37,11 +37,11 @@ export default class EncryptionRoom {
 		// If doesn't have a e2eKeyId we need to create keys to this room
 		if (!e2eKeyId) {
 			await this.createRoomKey();
-			return;
+			// return;
 		}
 
 		// Request a E2EKey for this room to other users
-		await RocketChat.methodCall('stream-notify-room-users', `${ this.roomId }/e2ekeyRequest`, this.roomId, e2eKeyId);
+		// await RocketChat.methodCall('stream-notify-room-users', `${ this.roomId }/e2ekeyRequest`, this.roomId, e2eKeyId);
 	}
 
 	// Import roomKey as an AES Decrypt key
