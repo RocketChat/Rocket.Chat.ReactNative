@@ -35,7 +35,7 @@ export default appSchema({
 		tableSchema({
 			name: 'server_links',
 			columns: [
-				{ name: 'link', type: 'string', isOptional: true },
+				{ name: 'link', type: 'string', isOptional: true }
 			]
 		})
 	]

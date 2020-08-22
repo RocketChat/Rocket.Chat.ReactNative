@@ -44,7 +44,7 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 
 		const serversDB = database.servers;
 		const serversCollection = serversDB.collections.get('servers');
-		yield serversDB.action(async () => {
+		yield serversDB.action(async() => {
 			try {
 				const serverRecord = await serversCollection.find(server);
 				await serverRecord.update((record) => {
@@ -69,7 +69,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		yield put(inquiryReset());
 		const serversDB = database.servers;
 		yield RNUserDefaults.set('currentServer', server);
-		const userId = yield RNUserDefaults.get(`${RocketChat.TOKEN_KEY}-${server}`);
+		const userId = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
 		const userCollections = serversDB.collections.get('users');
 		let user = null;
 		if (userId) {
@@ -95,7 +95,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			}
 		}
 
-		const basicAuth = yield RNUserDefaults.get(`${BASIC_AUTH_KEY}-${server}`);
+		const basicAuth = yield RNUserDefaults.get(`${ BASIC_AUTH_KEY }-${ server }`);
 		setBasicAuth(basicAuth);
 
 		// Check for running requests and abort them before connecting to the server
@@ -147,10 +147,10 @@ const handleServerRequest = function* handleServerRequest({ server, certificate 
 			yield RocketChat.getLoginServices(server);
 			yield RocketChat.getLoginSettings({ server });
 			Navigation.navigate('WorkspaceView');
-			yield serversDB.action(async () => {
+			yield serversDB.action(async() => {
 				try {
 					const allServerLinks = await serverLinksCollection.query().fetch();
-					if ( !allServerLinks.find( savedServer => savedServer.link === server) ) {
+					if (!allServerLinks.find(savedServer => savedServer.link === server)) {
 						await serverLinksCollection.create((record) => {
 							record.link = server;
 						});

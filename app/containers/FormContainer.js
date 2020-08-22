@@ -1,5 +1,7 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
+import {
+	ScrollView, StyleSheet, View, TouchableWithoutFeedback
+} from 'react-native';
 import PropTypes from 'prop-types';
 
 import { themes } from '../constants/colors';

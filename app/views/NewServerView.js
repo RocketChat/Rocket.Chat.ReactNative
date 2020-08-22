@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, Keyboard, StyleSheet, TouchableOpacity, View, Alert, BackHandler, FlatList
+	Text, Keyboard, StyleSheet, View, Alert, BackHandler, FlatList
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
@@ -10,6 +10,7 @@ import RNUserDefaults from 'rn-user-defaults';
 import { Base64 } from 'js-base64';
 import parse from 'url-parse';
 
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import EventEmitter from '../utils/events';
 import { selectServerRequest, serverRequest } from '../actions/server';
 import { inviteLinksClear as inviteLinksClearAction } from '../actions/inviteLinks';
@@ -27,7 +28,8 @@ import { withTheme } from '../theme';
 import { setBasicAuth, BASIC_AUTH_KEY } from '../utils/fetch';
 import { CloseModalButton } from '../containers/HeaderButton';
 import { showConfirmationAlert } from '../utils/info';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import database from '../lib/database';
+import { CustomIcon } from '../lib/Icons';
 
 const styles = StyleSheet.create({
 	title: {
@@ -61,63 +63,43 @@ const styles = StyleSheet.create({
 		marginBottom: 0
 	},
 	item: {
-		padding: 10
+		padding: 15,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between'
 	},
 	itemText: {
 		...sharedStyles.textRegular,
-		fontSize: 16,
+		fontSize: 16
 	},
+	serverHistory: {
+		maxHeight: 180,
+		width: '100%',
+		top: '75%',
+		zIndex: 1,
+		position: 'absolute',
+		borderWidth: 0.5
+	}
 });
 
-const DATA = [
-	{
-		id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-		title: "https://open.rocket.chat",
-	},
-	{
-		id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-		title: "https://open.rocket.chat",
-	},
-	{
-		id: "58694a0f-3da1-471f-bd96-145571e29d72",
-		title: "https://open.rocket.chat",
-	},
-	{
-		id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-		title: "https://open.rocket.chat",
-	},
-	{
-		id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-		title: "https://open.rocket.chat",
-	},
-	{
-		id: "58694a0f-3da1-471f-bd96-145571e29d72",
-		title: "https://open.rocket.chat",
-	},
-	{
-		id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-		title: "https://open.rocket.chat",
-	},
-	{
-		id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-		title: "https://open.rocket.chat",
-	},
-	{
-		id: "58694a0f-3da1-471f-bd96-145571e29d72",
-		title: "https://open.rocket.chat",
-	}
-];
-
-const Item = ({ item, onPress, theme }) => (
-	<TouchableWithoutFeedback style={styles.item} onPress={() => onPress(item.title)}>
-		<Text style={[styles.itemText, {color: themes[theme].titleText}]}>{item.title}</Text>
-	</TouchableWithoutFeedback>
+const Item = ({
+	item, onPress, theme, deleteServerLink
+}) => (
+	<View style={styles.item}>
+		<TouchableOpacity onPress={() => onPress(item.link)}>
+			<Text style={[styles.itemText, { color: themes[theme].titleText }]}>{item.link}</Text>
+		</TouchableOpacity>
+		<TouchableOpacity onPress={() => deleteServerLink(item)}>
+			<CustomIcon name='close' size={16} color={themes[theme].auxiliaryText} />
+		</TouchableOpacity>
+	</View>
 );
 
 Item.propTypes = {
 	item: PropTypes.object,
+	theme: PropTypes.string,
 	onPress: PropTypes.func,
-	theme: PropTypes.string
+	deleteServerLink: PropTypes.func
 };
 
 class NewServerView extends React.Component {
@@ -144,10 +126,22 @@ class NewServerView extends React.Component {
 			text: '',
 			connectingOpen: false,
 			certificate: null,
-			focused: false
+			focused: false,
+			serverLinks: []
 		};
 		EventEmitter.addEventListener('NewServer', this.handleNewServerEvent);
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+	}
+
+	async componentDidMount() {
+		const db = database.servers;
+		try {
+			const serverLinksCollection = db.collections.get('server_links');
+			const serverLinks = await serverLinksCollection.query().fetch();
+			this.setState({ serverLinks });
+		} catch {
+			// Do nothing
+		}
 	}
 
 	componentDidUpdate(prevProps) {
@@ -198,7 +192,7 @@ class NewServerView extends React.Component {
 		connectServer(server);
 	}
 
-	submit = async () => {
+	submit = async() => {
 		logEvent(events.NEWSERVER_CONNECT_TO_WORKSPACE);
 		const { text, certificate } = this.state;
 		const { connectServer } = this.props;
@@ -207,7 +201,7 @@ class NewServerView extends React.Component {
 		this.setState({ connectingOpen: false });
 
 		if (certificate) {
-			const certificatePath = `${FileSystem.documentDirectory}/${certificate.name}`;
+			const certificatePath = `${ FileSystem.documentDirectory }/${ certificate.name }`;
 			try {
 				await FileSystem.copyAsync({ from: certificate.path, to: certificatePath });
 			} catch (e) {
@@ -235,12 +229,12 @@ class NewServerView extends React.Component {
 		connectServer('https://open.rocket.chat');
 	}
 
-	basicAuth = async (server, text) => {
+	basicAuth = async(server, text) => {
 		try {
 			const parsedUrl = parse(text, true);
 			if (parsedUrl.auth.length) {
 				const credentials = Base64.encode(parsedUrl.auth);
-				await RNUserDefaults.set(`${BASIC_AUTH_KEY}-${server}`, credentials);
+				await RNUserDefaults.set(`${ BASIC_AUTH_KEY }-${ server }`, credentials);
 				setBasicAuth(credentials);
 			}
 		} catch {
@@ -248,7 +242,7 @@ class NewServerView extends React.Component {
 		}
 	}
 
-	chooseCertificate = async () => {
+	chooseCertificate = async() => {
 		try {
 			const res = await DocumentPicker.pick({
 				type: ['com.rsa.pkcs-12']
@@ -282,14 +276,14 @@ class NewServerView extends React.Component {
 
 		if (/^(\w|[0-9-_]){3,}$/.test(url)
 			&& /^(htt(ps?)?)|(loca((l)?|(lh)?|(lho)?|(lhos)?|(lhost:?\d*)?)$)/.test(url) === false) {
-			url = `${url}.rocket.chat`;
+			url = `${ url }.rocket.chat`;
 		}
 
 		if (/^(https?:\/\/)?(((\w|[0-9-_])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
 			if (/^localhost(:\d+)?/.test(url)) {
-				url = `http://${url}`;
+				url = `http://${ url }`;
 			} else if (/^https?:\/\//.test(url) === false) {
-				url = `https://${url}`;
+				url = `https://${ url }`;
 			}
 		}
 
@@ -309,6 +303,20 @@ class NewServerView extends React.Component {
 			callToAction: I18n.t('Remove'),
 			onPress: this.setState({ certificate: null }) // We not need delete file from DocumentPicker because it is a temp file
 		});
+	}
+
+	deleteServerLink = async(item) => {
+		const { serverLinks } = this.state;
+		const db = database.servers;
+		try {
+			await db.action(async() => {
+				await item.destroyPermanently();
+			});
+			const newServerLinks = serverLinks.filter(server => server.link !== item.link);
+			this.setState({ serverLinks: newServerLinks });
+		} catch {
+			// Nothing
+		}
 	}
 
 	renderCertificatePicker = () => {
@@ -343,13 +351,12 @@ class NewServerView extends React.Component {
 
 	render() {
 		const { connecting, theme } = this.props;
-		const { text, connectingOpen, history, focused } = this.state;
+		const {
+			text, connectingOpen, serverLinks, focused
+		} = this.state;
 		return (
-			<FormContainer theme={theme} testID='new-server-view' >
-				<FormContainerInner onPress={() => {
-					this.setState({ history: !this.state.history});
-					Keyboard.dismiss();
-					}}>
+			<FormContainer theme={theme} testID='new-server-view'>
+				<FormContainerInner onPress={() => Keyboard.dismiss()}>
 					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Join_your_workspace')}</Text>
 					<View>
 						<TextInput
@@ -365,18 +372,20 @@ class NewServerView extends React.Component {
 							keyboardType='url'
 							textContentType='URL'
 							theme={theme}
-							onFocus={() => this.setState({focused: true})} 
-							onBlur={() => this.setState({focused: false})}
+							onFocus={() => this.setState({ focused: true })}
+							onBlur={() => this.setState({ focused: false })}
 						/>
 						{
-							focused ?
-								<View style={{ backgroundColor: themes[theme].backgroundColor, maxHeight: 200, width: '100%', top: '75%', zIndex: 1, position: 'absolute',borderColor: themes[theme].separatorColor, borderWidth: 0.5 }}>
-									<FlatList
-										data={DATA}
-										renderItem={({ item }) => <Item item={item} onPress={this.onChangeText} theme={theme}/>}
-										keyExtractor={(item) => item.id}
-									/>
-								</View> : null
+							focused
+								? (
+									<View style={[{ backgroundColor: themes[theme].backgroundColor, borderColor: themes[theme].separatorColor }, styles.serverHistory]}>
+										<FlatList
+											data={serverLinks}
+											renderItem={({ item }) => <Item item={item} onPress={this.onChangeText} theme={theme} deleteServerLink={this.deleteServerLink} />}
+											keyExtractor={item => item.id}
+										/>
+									</View>
+								) : null
 						}
 					</View>
 					<Button
