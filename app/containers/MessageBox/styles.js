@@ -112,15 +112,10 @@ export default StyleSheet.create({
 		flex: 1,
 		justifyContent: 'space-between'
 	},
-	recordingCancelText: {
-		fontSize: 17,
-		...sharedStyles.textRegular
-	},
 	recordingTooltipContainer: {
 		position: 'absolute',
 		bottom: '120%',
-		right: 16,
-		zIndex: 10
+		right: 16
 	},
 	recordingTooltip: {
 		alignSelf: 'flex-end',

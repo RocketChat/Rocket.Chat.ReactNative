@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import { Audio } from 'expo-av';
 import {
-	LongPressGestureHandler, State, PanGestureHandler, RectButton
+	LongPressGestureHandler, State, PanGestureHandler
 } from 'react-native-gesture-handler';
 import { getInfoAsync } from 'expo-file-system';
 import { deactivateKeepAwake, activateKeepAwake } from 'expo-keep-awake';
@@ -16,7 +16,8 @@ import { CustomIcon } from '../../lib/Icons';
 import { withDimensions } from '../../dimensions';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import { SendButton } from './buttons';
-
+import sharedStyles from '../../views/Styles';
+import Touch from '../../utils/touch';
 import { logEvent, events } from '../../utils/log';
 
 const RECORDING_EXTENSION = '.aac';
@@ -126,7 +127,7 @@ const RecordingTooltip = ({ visible, theme, width }) => {
 					borderColor: themes[theme].borderColor
 				}]}
 			>
-				<Text style={{ color: themes[theme].bodyText }}>
+				<Text style={[sharedStyles.textRegular, { color: themes[theme].bodyText }]}>
 					{I18n.t('Recording_tooltip')}
 				</Text>
 			</View>
@@ -394,19 +395,20 @@ class RecordAudio extends React.PureComponent {
 							{
 								isRecordingPersisted ? (
 									<View style={styles.recordingSlideToCancel}>
-										<RectButton
+										<Touch
 											onPress={this.cancelRecordingAudio}
 											style={styles.recordingCancelButton}
+											theme={theme}
 										>
-											<Text style={[styles.cancelRecordingText, { color: themes[theme].tintColor }]}>
+											<Text style={[sharedStyles.textMedium, { color: themes[theme].tintColor }]}>
 												{I18n.t('Recording_cancel_button')}
 											</Text>
-										</RectButton>
+										</Touch>
 									</View>
 								) : (
 									<Animated.View style={[styles.recordingSlideToCancel, { transform: [{ translateX: this._cancelTranslationX }] }]}>
 										<CustomIcon name='chevron-left' size={32} color={themes[theme].auxiliaryTintColor} />
-										<Text style={[styles.cancelRecordingText, {
+										<Text style={[sharedStyles.textMedium, {
 											color: themes[theme].auxiliaryText
 										}]}
 										>
@@ -445,7 +447,6 @@ class RecordAudio extends React.PureComponent {
 										accessibilityLabel={I18n.t('Send_audio_message')}
 										accessibilityTraits='button'
 									>
-										<CustomIcon style={{ zIndex: 1 }} name='microphone' size={23} color={buttonIconColor} />
 										<View style={styles.recordingButtonBubbleContainer}>
 											<Animated.View
 												style={[styles.recordingButtonBubble, {
@@ -455,6 +456,7 @@ class RecordAudio extends React.PureComponent {
 												}]}
 											/>
 										</View>
+										<CustomIcon name='microphone' size={24} color={buttonIconColor} />
 									</Animated.View>
 								)
 							}
