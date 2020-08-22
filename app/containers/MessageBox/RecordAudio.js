@@ -116,6 +116,31 @@ function runButtonPressTimer(clock, toValue) {
 	]);
 }
 
+const RecordingTooltip = ({ visible, theme, width }) => {
+	if (!visible) { return null; }
+	return (
+		<View style={[styles.recordingTooltipContainer, { width }]}>
+			<View
+				style={[styles.recordingTooltip, {
+					backgroundColor: themes[theme].bannerBackground,
+					borderColor: themes[theme].borderColor
+				}]}
+			>
+				<Text style={{ color: themes[theme].bodyText }}>
+					{I18n.t('Recording_tooltip')}
+				</Text>
+			</View>
+
+		</View>
+	);
+};
+
+RecordingTooltip.propTypes = {
+	visible: PropTypes.bool,
+	theme: PropTypes.string,
+	width: PropTypes.number
+};
+
 class RecordAudio extends React.PureComponent {
 	static propTypes = {
 		theme: PropTypes.string,
@@ -356,23 +381,7 @@ class RecordAudio extends React.PureComponent {
 
 		return (
 			<>
-				{
-					isRecordingTooltipVisible && (
-						<View style={[styles.recordingTooltipContainer, { width }]}>
-							<View
-								style={[styles.recordingTooltip, {
-									backgroundColor: themes[theme].bannerBackground,
-									borderColor: themes[theme].borderColor
-								}]}
-							>
-								<Text style={{ color: themes[theme].bodyText }}>
-									{I18n.t('Recording_tooltip')}
-								</Text>
-							</View>
-
-						</View>
-					)
-				}
+				<RecordingTooltip visible={isRecordingTooltipVisible} theme={theme} width={width} />
 
 				{
 					isRecording && (
