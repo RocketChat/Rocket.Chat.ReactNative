@@ -62,7 +62,7 @@ import { goRoom } from '../../utils/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
-import { showErrorAlert } from '../../utils/info';
+import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
 import { getInquiryQueueSelector } from '../../selectors/inquiry';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
@@ -109,7 +109,8 @@ class RoomsListView extends React.Component {
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			username: PropTypes.string,
-			token: PropTypes.string
+			token: PropTypes.string,
+			statusLivechat: PropTypes.string
 		}),
 		server: PropTypes.string,
 		searchText: PropTypes.string,
@@ -450,7 +451,6 @@ class RoomsListView extends React.Component {
 				.observe();
 		}
 
-
 		this.querySubscription = observable.subscribe((data) => {
 			let tempChats = [];
 			let chats = data;
@@ -685,7 +685,28 @@ class RoomsListView extends React.Component {
 
 	goQueue = () => {
 		logEvent(events.RL_GO_QUEUE);
-		const { navigation, isMasterDetail, queueSize } = this.props;
+		const {
+			navigation, isMasterDetail, queueSize, inquiryEnabled, user
+		} = this.props;
+
+		// if not-available, prompt to change to available
+		if (user?.statusLivechat !== 'available') {
+			showConfirmationAlert({
+				message: I18n.t('Omnichannel_enable_alert'),
+				callToAction: I18n.t('Yes'),
+				onPress: async() => {
+					try {
+						await RocketChat.changeLivechatStatus();
+					} catch {
+						// Do nothing
+					}
+				}
+			});
+		}
+
+		if (!inquiryEnabled) {
+			return;
+		}
 		// prevent navigation to empty list
 		if (!queueSize) {
 			return showErrorAlert(I18n.t('Queue_is_empty'), I18n.t('Oops'));
@@ -813,7 +834,9 @@ class RoomsListView extends React.Component {
 
 	renderListHeader = () => {
 		const { searching } = this.state;
-		const { sortBy, queueSize, inquiryEnabled } = this.props;
+		const {
+			sortBy, queueSize, inquiryEnabled, user
+		} = this.props;
 		return (
 			<ListHeader
 				searching={searching}
@@ -823,6 +846,7 @@ class RoomsListView extends React.Component {
 				goQueue={this.goQueue}
 				queueSize={queueSize}
 				inquiryEnabled={inquiryEnabled}
+				user={user}
 			/>
 		);
 	};
