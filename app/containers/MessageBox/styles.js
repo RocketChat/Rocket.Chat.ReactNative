@@ -105,7 +105,7 @@ export default StyleSheet.create({
 		maxHeight: SCROLLVIEW_MENTION_HEIGHT
 	},
 	buttonsWhitespace: {
-		width: 15
+		width: 16
 	},
 	recordingContent: {
 		flexDirection: 'row',
@@ -119,15 +119,14 @@ export default StyleSheet.create({
 	recordingTooltipContainer: {
 		position: 'absolute',
 		bottom: '120%',
-		right: 14,
+		right: 16,
 		zIndex: 10
 	},
 	recordingTooltip: {
 		alignSelf: 'flex-end',
-		padding: 10,
+		padding: 12,
 		borderRadius: 4,
-		borderWidth: 1,
-		opacity: 0.96
+		borderWidth: 1
 	},
 	recordingSlideToCancel: {
 		flexDirection: 'row',
@@ -136,18 +135,19 @@ export default StyleSheet.create({
 	},
 	recordingDurationText: {
 		textAlignVertical: 'center',
-		fontSize: 17,
-		margin: 10,
+		fontSize: 16,
+		margin: 12,
 		letterSpacing: 0,
 		...sharedStyles.textRegular
 	},
 	recordingButtonBubble: {
-		width: 1,
-		height: 1,
 		borderRadius: 200
 	},
 	recordingCancelButton: {
 		paddingVertical: 12,
-		paddingHorizontal: 6
+		paddingHorizontal: 4
+	},
+	recordingButtonBubbleContainer: {
+		position: 'absolute'
 	}
 });

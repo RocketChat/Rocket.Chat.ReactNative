@@ -47,17 +47,11 @@ const RECORDING_MODE = {
 	interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
 	interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX
 };
-const RECORDING_MINIMUM_DURATION = 300;		// Cancel if recording < this duration (in ms)
-const RECORDING_DEFER_END_IOS = 300;		// Ms to wait before ending the recording (ios).
-const RECORDING_DEFER_END_ANDROID = 400;	// Ms to wait before ending the recording (android).
-const RECORDING_TOOLTIP_DURATION = 1500;	// Duration to show recording tooltip (in ms)
-const RECORDING_CANCEL_DISTANCE = -120;		// Swipe left gesture to cancel recording
-const RECORDING_PERSIST_DISTANCE = -80;		// Swipe up gesture to persist recording
-
-const RECORDING_TOOLTIP_TEXT = 'Hold to record. Release to send';
-const RECORDING_SLIDE_TO_CANCEL_TEXT = 'Slide to cancel';
-const RECORDING_CANCEL_BUTTON_TEXT = 'Cancel';
-
+const RECORDING_MINIMUM_DURATION = 300;	// Cancel if recording < this duration (in ms)
+const RECORDING_DEFER_END = isIOS ? 300 : 400; // Ms to wait before ending the recording
+const RECORDING_TOOLTIP_DURATION = 1500; // Duration to show recording tooltip (in ms)
+const RECORDING_CANCEL_DISTANCE = -120; // Swipe left gesture to cancel recording
+const RECORDING_PERSIST_DISTANCE = -80; // Swipe up gesture to persist recording
 
 const formatTime = function(seconds) {
 	let minutes = Math.floor(seconds / 60);
@@ -179,7 +173,7 @@ class RecordAudio extends React.PureComponent {
 					cond(greaterThan(sub(longPressClock, longPressStartTime), RECORDING_MINIMUM_DURATION), [
 						call([], this.finishRecordingAudio)
 					], [
-						call([], () => this.cancelRecordingAndShowTooltip(RECORDING_DEFER_END_IOS))
+						call([], () => this.cancelRecordingAndShowTooltip(RECORDING_DEFER_END))
 					])
 				])
 			])
@@ -219,7 +213,7 @@ class RecordAudio extends React.PureComponent {
 						cond(greaterThan(sub(longPressClock, longPressStartTime), RECORDING_MINIMUM_DURATION), [
 							call([], this.finishRecordingAudio)
 						], [
-							call([], () => this.cancelRecordingAndShowTooltip(RECORDING_DEFER_END_ANDROID))
+							call([], () => this.cancelRecordingAndShowTooltip(RECORDING_DEFER_END))
 						])
 					])
 				])
@@ -372,7 +366,7 @@ class RecordAudio extends React.PureComponent {
 								}]}
 							>
 								<Text style={{ color: themes[theme].bodyText }}>
-									{RECORDING_TOOLTIP_TEXT}
+									{I18n.t('Recording_tooltip')}
 								</Text>
 							</View>
 
@@ -396,18 +390,18 @@ class RecordAudio extends React.PureComponent {
 											style={styles.recordingCancelButton}
 										>
 											<Text style={[styles.cancelRecordingText, { color: themes[theme].tintColor }]}>
-												{RECORDING_CANCEL_BUTTON_TEXT}
+												{I18n.t('Recording_cancel_button')}
 											</Text>
 										</RectButton>
 									</View>
 								) : (
 									<Animated.View style={[styles.recordingSlideToCancel, { transform: [{ translateX: this._cancelTranslationX }] }]}>
-										<CustomIcon name='chevron-left' size={30} color={themes[theme].auxiliaryTintColor} />
+										<CustomIcon name='chevron-left' size={32} color={themes[theme].auxiliaryTintColor} />
 										<Text style={[styles.cancelRecordingText, {
 											color: themes[theme].auxiliaryText
 										}]}
 										>
-											{RECORDING_SLIDE_TO_CANCEL_TEXT}
+											{I18n.t('Recording_slide_to_cancel')}
 										</Text>
 									</Animated.View>
 								)
@@ -417,7 +411,7 @@ class RecordAudio extends React.PureComponent {
 				}
 
 				{
-					isRecordingPersisted && <SendButton theme={theme} onPress={this.finishRecordingAudio} />
+					isRecordingPersisted ? <SendButton theme={theme} onPress={this.finishRecordingAudio} /> : null
 				}
 
 				<PanGestureHandler
@@ -443,11 +437,12 @@ class RecordAudio extends React.PureComponent {
 										accessibilityTraits='button'
 									>
 										<CustomIcon style={{ zIndex: 1 }} name='microphone' size={23} color={buttonIconColor} />
-										<View style={{ position: 'absolute' }}>
+										<View style={styles.recordingButtonBubbleContainer}>
 											<Animated.View
 												style={[styles.recordingButtonBubble, {
 													backgroundColor: themes[theme].tintColor,
-													transform: [{ scale: this._buttonGrow }]
+													width: this._buttonGrow,
+													height: this._buttonGrow
 												}]}
 											/>
 										</View>
