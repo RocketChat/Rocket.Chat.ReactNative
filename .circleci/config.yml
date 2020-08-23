@@ -419,5 +419,3 @@ workflows:
       - android-foss-build:
           requires:
             - android-hold-foss-build
-            - android-build
-
