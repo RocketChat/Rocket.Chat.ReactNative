@@ -31,11 +31,11 @@ platform :android do
     gradle(task: "bundlePlayRelease")
   end
 
-  desc "Upload App to Play store"
-  lane :playAlpha do
+  desc "Upload App to Play Store Internal"
+  lane :beta do
     upload_to_play_store(
-      track: 'alpha', 
-      aab: 'android/app/build/outputs/bundle/play/release/app-release.aab'
+      track: 'internal',
+      aab: 'android/app/build/outputs/bundle/release/app-release.aab'
     )
   end
 end

@@ -38,7 +38,6 @@ import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import { appStart as appStartAction, ROOT_LOADING } from '../../actions/app';
 import { onReviewPress } from '../../utils/review';
-import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { isFDroidBuild } from '../../constants/environment';
 
@@ -77,18 +76,7 @@ class SettingsView extends React.Component {
 		isMasterDetail: PropTypes.bool,
 		logout: PropTypes.func.isRequired,
 		selectServerRequest: PropTypes.func,
-		user: PropTypes.shape({
-			roles: PropTypes.array,
-			statusLivechat: PropTypes.string
-		}),
 		appStart: PropTypes.func
-	}
-
-	get showLivechat() {
-		const { user } = this.props;
-		const { roles } = user;
-
-		return roles?.includes('livechat-agent');
 	}
 
 	handleLogout = () => {
@@ -134,14 +122,6 @@ class SettingsView extends React.Component {
 			} else {
 				loggerConfig.registerBeforeSendCallback(() => false);
 			}
-		}
-	}
-
-	toggleLivechat = async() => {
-		try {
-			await RocketChat.changeLivechatStatus();
-		} catch {
-			// Do nothing
 		}
 	}
 
@@ -214,18 +194,6 @@ class SettingsView extends React.Component {
 				value={allowCrashReport}
 				trackColor={SWITCH_TRACK_COLOR}
 				onValueChange={this.toggleCrashReport}
-			/>
-		);
-	}
-
-	renderLivechatSwitch = () => {
-		const { user } = this.props;
-		const { statusLivechat } = user;
-		return (
-			<Switch
-				value={statusLivechat === 'available'}
-				trackColor={SWITCH_TRACK_COLOR}
-				onValueChange={this.toggleLivechat}
 			/>
 		);
 	}
@@ -409,7 +377,6 @@ class SettingsView extends React.Component {
 
 const mapStateToProps = state => ({
 	server: state.server,
-	user: getUserSelector(state),
 	allowCrashReport: state.crashReport.allowCrashReport,
 	isMasterDetail: state.app.isMasterDetail
 });

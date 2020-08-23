@@ -167,7 +167,9 @@ jobs:
       - run:
           name: Set Google Services
           command: |
-            cp google-services.prod.json google-services.json
+            if [[ $KEYSTORE ]]; then
+              echo $GOOGLE_SERVICES_ANDROID | base64 --decode > google-services.json
+            fi
           working_directory: android/app
 
       - run:
@@ -272,7 +274,7 @@ jobs:
             - android/fastlane/report.xml
             - android/app/build/outputs
 
-  android-google-play-alpha:
+  android-google-play-beta:
     <<: *defaults
     docker:
       - image: circleci/android:api-28-node
@@ -292,7 +294,7 @@ jobs:
 
       - run:
           name: Fastlane Play Store Upload
-          command: bundle exec fastlane android playAlpha
+          command: bundle exec fastlane android beta
           working_directory: android
 
   # iOS builds
@@ -315,7 +317,9 @@ jobs:
       - run:
           name: Set Google Services
           command: |
-            cp GoogleService-Info.prod.plist GoogleService-Info.plist
+            if [[ $KEYSTORE ]]; then
+              echo $GOOGLE_SERVICES_REACTNATIVE | base64 --decode > GoogleService-Info.plist
+            fi
           working_directory: ios
 
       - run:
@@ -401,14 +405,13 @@ workflows:
       - android-play-build:
           requires:
             - lint-testunit
-      - android-hold-google-play-alpha:
+      - android-hold-google-play-beta:
           type: approval
           requires:
             - android-play-build
-      - android-google-play-alpha:
+      - android-google-play-beta:
           requires:
-            - android-hold-google-play-alpha
-
+            - android-hold-google-play-beta
       - android-hold-foss-build:
           type: approval
           requires:
@@ -416,3 +419,5 @@ workflows:
       - android-foss-build:
           requires:
             - android-hold-foss-build
+            - android-build
+
