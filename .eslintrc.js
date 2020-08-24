@@ -87,6 +87,7 @@ module.exports = {
 		"no-regex-spaces": 2,
 		"no-undef": 2,
 		"no-unreachable": 2,
+		"no-unused-expressions": 0,
 		"no-unused-vars": [2, {
 			"vars": "all",
 			"args": "after-used"
@@ -131,7 +132,23 @@ module.exports = {
 		"react-native/no-unused-styles": 2,
 		"react/jsx-one-expression-per-line": 0,
 		"require-await": 2,
-		"func-names": 0
+		"func-names": 0,
+		"react/sort-comp": ["error", {
+			"order": [
+				"static-variables",
+				"static-methods",
+				"lifecycle",
+				"everything-else",
+				"render"
+			]
+		}],
+		"react/static-property-placement": [0],
+		"arrow-parens": ["error", "as-needed", { requireForBlockBody: true }],
+		"react/jsx-props-no-spreading": [1],
+		"react/jsx-curly-newline": [0],
+		"react/state-in-constructor": [0],
+		"no-async-promise-executor": [0],
+		"max-classes-per-file": [0]
 	},
 	"globals": {
 		"__DEV__": true

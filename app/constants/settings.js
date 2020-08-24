@@ -50,6 +50,18 @@ export default {
 	Accounts_ManuallyApproveNewUsers: {
 		type: 'valueAsBoolean'
 	},
+	API_Use_REST_For_DDP_Calls: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_iframe_enabled: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_Iframe_api_url: {
+		type: 'valueAsString'
+	},
+	Accounts_Iframe_api_method: {
+		type: 'valueAsString'
+	},
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
 	},
@@ -66,6 +78,9 @@ export default {
 		type: 'valueAsArray'
 	},
 	LDAP_Enable: {
+		type: 'valueAsBoolean'
+	},
+	Livechat_request_comment_when_closing_conversation: {
 		type: 'valueAsBoolean'
 	},
 	Jitsi_Enabled: {
@@ -125,6 +140,9 @@ export default {
 	uniqueID: {
 		type: 'valueAsString'
 	},
+	UI_Allow_room_names_with_special_chars: {
+		type: 'valueAsBoolean'
+	},
 	UI_Use_Real_Name: {
 		type: 'valueAsBoolean'
 	},
@@ -157,5 +175,11 @@ export default {
 	},
 	CAS_login_url: {
 		type: 'valueAsString'
+	},
+	Force_Screen_Lock: {
+		type: 'valueAsBoolean'
+	},
+	Force_Screen_Lock_After: {
+		type: 'valueAsNumber'
 	}
 };

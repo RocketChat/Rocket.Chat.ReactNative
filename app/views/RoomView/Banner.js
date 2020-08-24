@@ -6,17 +6,18 @@ import Modal from 'react-native-modal';
 
 import Markdown from '../../containers/markdown';
 
+import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 import styles from './styles';
 
 const Banner = React.memo(({
-	text, title, theme
+	text, title, theme, bannerClosed, closeBanner
 }) => {
 	const [showModal, openModal] = useState(false);
 
 	const toggleModal = () => openModal(prevState => !prevState);
 
-	if (text) {
+	if (text && !bannerClosed) {
 		return (
 			<>
 				<BorderlessButton
@@ -28,8 +29,16 @@ const Banner = React.memo(({
 						msg={text}
 						theme={theme}
 						numberOfLines={1}
+						style={[styles.bannerText]}
 						preview
 					/>
+					<BorderlessButton onPress={closeBanner}>
+						<CustomIcon
+							color={themes[theme].auxiliaryText}
+							name='close'
+							size={20}
+						/>
+					</BorderlessButton>
 				</BorderlessButton>
 				<Modal
 					onBackdropPress={toggleModal}
@@ -54,12 +63,14 @@ const Banner = React.memo(({
 	}
 
 	return null;
-}, (prevProps, nextProps) => prevProps.text === nextProps.text && prevProps.theme === nextProps.theme);
+}, (prevProps, nextProps) => prevProps.text === nextProps.text && prevProps.theme === nextProps.theme && prevProps.bannerClosed === nextProps.bannerClosed);
 
 Banner.propTypes = {
 	text: PropTypes.string,
 	title: PropTypes.string,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	bannerClosed: PropTypes.bool,
+	closeBanner: PropTypes.func
 };
 
 export default Banner;

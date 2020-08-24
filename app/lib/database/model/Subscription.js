@@ -40,6 +40,8 @@ export default class Subscription extends Model {
 
 	@field('user_mentions') userMentions;
 
+	@field('group_mentions') groupMentions;
+
 	@date('room_updated_at') roomUpdatedAt;
 
 	@field('ro') ro;
@@ -49,6 +51,8 @@ export default class Subscription extends Model {
 	@field('description') description;
 
 	@field('announcement') announcement;
+
+	@field('banner_closed') bannerClosed;
 
 	@field('topic') topic;
 
@@ -95,4 +99,14 @@ export default class Subscription extends Model {
 	@json('uids', sanitizer) uids;
 
 	@json('usernames', sanitizer) usernames;
+
+	@json('visitor', sanitizer) visitor;
+
+	@field('department_id') departmentId;
+
+	@json('served_by', sanitizer) servedBy;
+
+	@json('livechat_data', sanitizer) livechatData;
+
+	@json('tags', sanitizer) tags;
 }

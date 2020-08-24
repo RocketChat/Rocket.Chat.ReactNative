@@ -62,7 +62,7 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 			formData.append('file', {
 				uri: fileInfo.path,
 				type: fileInfo.type,
-				name: fileInfo.name || 'fileMessage'
+				name: encodeURI(fileInfo.name) || 'fileMessage'
 			});
 
 			if (fileInfo.description) {

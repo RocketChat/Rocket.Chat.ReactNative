@@ -3,11 +3,8 @@ import PropTypes from 'prop-types';
 import {
 	StyleSheet, FlatList, View, Text, Linking
 } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
-import RNUserDefaults from 'rn-user-defaults';
 
 import I18n from '../i18n';
-import { themedHeader } from '../utils/navigation';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import sharedStyles from './Styles';
@@ -17,14 +14,17 @@ import ListItem from '../containers/ListItem';
 import { CustomIcon } from '../lib/Icons';
 import { DEFAULT_BROWSER_KEY } from '../utils/openLink';
 import { isIOS } from '../utils/deviceInfo';
+import SafeAreaView from '../containers/SafeAreaView';
+import UserPreferences from '../lib/userPreferences';
+import { logEvent, events } from '../utils/log';
 
 const DEFAULT_BROWSERS = [
 	{
-		title: I18n.t('In_app'),
+		title: 'In_app',
 		value: 'inApp'
 	},
 	{
-		title: isIOS ? 'Safari' : I18n.t('Browser'),
+		title: isIOS ? 'Safari' : 'Browser',
 		value: 'systemDefault:'
 	}
 ];
@@ -60,22 +60,20 @@ const styles = StyleSheet.create({
 });
 
 class DefaultBrowserView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Default_browser'),
-		...themedHeader(screenProps.theme)
+	static navigationOptions = () => ({
+		title: I18n.t('Default_browser')
 	})
 
 	static propTypes = {
 		theme: PropTypes.string
 	}
 
-	state = {
-		browser: null,
-		supported: []
-	}
-
 	constructor(props) {
 		super(props);
+		this.state = {
+			browser: null,
+			supported: []
+		};
 		if (isIOS) {
 			this.init();
 		}
@@ -83,12 +81,8 @@ class DefaultBrowserView extends React.Component {
 
 	async componentDidMount() {
 		this.mounted = true;
-		try {
-			const browser = await RNUserDefaults.get(DEFAULT_BROWSER_KEY);
-			this.setState({ browser });
-		} catch {
-			// do nothing
-		}
+		const browser = await UserPreferences.getStringAsync(DEFAULT_BROWSER_KEY);
+		this.setState({ browser });
 	}
 
 	init = () => {
@@ -116,12 +110,13 @@ class DefaultBrowserView extends React.Component {
 	}
 
 	changeDefaultBrowser = async(newBrowser) => {
+		logEvent(events.DB_CHANGE_DEFAULT_BROWSER, { browser: newBrowser });
 		try {
 			const browser = newBrowser !== 'inApp' ? newBrowser : null;
-			await RNUserDefaults.set(DEFAULT_BROWSER_KEY, browser);
+			await UserPreferences.setStringAsync(DEFAULT_BROWSER_KEY, browser);
 			this.setState({ browser });
 		} catch {
-			// do nothing
+			logEvent(events.DB_CHANGE_DEFAULT_BROWSER_F);
 		}
 	}
 
@@ -140,7 +135,7 @@ class DefaultBrowserView extends React.Component {
 		const { title, value } = item;
 		return (
 			<ListItem
-				title={title}
+				title={I18n.t(title, { defaultValue: title })}
 				onPress={() => this.changeDefaultBrowser(value)}
 				testID={`default-browser-view-${ title }`}
 				right={this.isSelected(value) ? this.renderIcon : null}
@@ -165,11 +160,7 @@ class DefaultBrowserView extends React.Component {
 		const { supported } = this.state;
 		const { theme } = this.props;
 		return (
-			<SafeAreaView
-				style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
-				forceInset={{ vertical: 'never' }}
-				testID='default-browser-view'
-			>
+			<SafeAreaView testID='default-browser-view' theme={theme}>
 				<StatusBar theme={theme} />
 				<FlatList
 					data={DEFAULT_BROWSERS.concat(supported)}

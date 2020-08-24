@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {
 	Text, ScrollView, View, StyleSheet
 } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import Touch from '../utils/touch';
@@ -15,12 +14,9 @@ import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
 import openLink from '../utils/openLink';
 import { withTheme } from '../theme';
-import { themedHeader } from '../utils/navigation';
+import SafeAreaView from '../containers/SafeAreaView';
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1
-	},
 	scroll: {
 		marginTop: 35,
 		borderTopWidth: StyleSheet.hairlineWidth,
@@ -52,11 +48,6 @@ Separator.propTypes = {
 };
 
 class LegalView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Legal'),
-		...themedHeader(screenProps.theme)
-	})
-
 	static propTypes = {
 		server: PropTypes.string,
 		theme: PropTypes.string
@@ -88,14 +79,7 @@ class LegalView extends React.Component {
 	render() {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView
-				style={[
-					styles.container,
-					{ backgroundColor: themes[theme].auxiliaryBackground }
-				]}
-				forceInset={{ vertical: 'never' }}
-				testID='legal-view'
-			>
+			<SafeAreaView testID='legal-view' theme={theme}>
 				<StatusBar theme={theme} />
 				<ScrollView
 					contentContainerStyle={[
@@ -119,5 +103,9 @@ class LegalView extends React.Component {
 const mapStateToProps = state => ({
 	server: state.server.server
 });
+
+LegalView.navigationOptions = {
+	title: I18n.t('Legal')
+};
 
 export default connect(mapStateToProps)(withTheme(LegalView));

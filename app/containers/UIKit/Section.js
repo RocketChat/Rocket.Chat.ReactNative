@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import { themes } from '../../constants/colors';
-import sharedStyles from '../../views/Styles';
 
 const styles = StyleSheet.create({
 	content: {
@@ -18,11 +17,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		flex: 1,
-		padding: 4,
-		fontSize: 16,
-		lineHeight: 22,
-		textAlignVertical: 'center',
-		...sharedStyles.textRegular
+		padding: 4
 	},
 	field: {
 		marginVertical: 6
@@ -54,7 +49,7 @@ export const Section = ({
 			accessory && accessoriesRight.includes(accessory.type) ? styles.row : styles.column
 		]}
 	>
-		{text ? <Text style={[styles.text, { color: themes[theme].bodyText }]}>{parser.text(text)}</Text> : null}
+		{text ? <View style={styles.text}>{parser.text(text)}</View> : null}
 		{fields ? <Fields fields={fields} theme={theme} parser={parser} /> : null}
 		{accessory ? <Accessory element={{ blockId, appId, ...accessory }} parser={parser} /> : null}
 	</View>

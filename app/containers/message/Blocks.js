@@ -6,8 +6,7 @@ const Blocks = React.memo(({
 	blocks, id: mid, rid, blockAction
 }) => {
 	if (blocks && blocks.length > 0) {
-		const [, secondBlock] = blocks;
-		const { appId = '' } = secondBlock;
+		const appId = blocks[0]?.appId || '';
 		return React.createElement(
 			messageBlockWithContext({
 				action: async({ actionId, value, blockId }) => {

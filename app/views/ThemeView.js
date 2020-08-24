@@ -3,11 +3,8 @@ import PropTypes from 'prop-types';
 import {
 	FlatList, Text, View, StyleSheet
 } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
-import RNUserDefaults from 'rn-user-defaults';
 
 import I18n from '../i18n';
-import { themedHeader } from '../utils/navigation';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import sharedStyles from './Styles';
@@ -17,33 +14,36 @@ import ListItem from '../containers/ListItem';
 import { CustomIcon } from '../lib/Icons';
 import { THEME_PREFERENCES_KEY } from '../lib/rocketchat';
 import { supportSystemTheme } from '../utils/deviceInfo';
+import SafeAreaView from '../containers/SafeAreaView';
+import UserPreferences from '../lib/userPreferences';
+import { events, logEvent } from '../utils/log';
 
 const THEME_GROUP = 'THEME_GROUP';
 const DARK_GROUP = 'DARK_GROUP';
 
 const SYSTEM_THEME = {
-	label: I18n.t('Automatic'),
+	label: 'Automatic',
 	value: 'automatic',
 	group: THEME_GROUP
 };
 
 const THEMES = [
 	{
-		label: I18n.t('Light'),
+		label: 'Light',
 		value: 'light',
 		group: THEME_GROUP
 	}, {
-		label: I18n.t('Dark'),
+		label: 'Dark',
 		value: 'dark',
 		group: THEME_GROUP
 	}, {
-		label: I18n.t('Dark'),
+		label: 'Dark',
 		value: 'dark',
 		separator: true,
-		header: I18n.t('Dark_level'),
+		header: 'Dark_level',
 		group: DARK_GROUP
 	}, {
-		label: I18n.t('Black'),
+		label: 'Black',
 		value: 'black',
 		group: DARK_GROUP
 	}
@@ -69,9 +69,8 @@ const styles = StyleSheet.create({
 });
 
 class ThemeView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Theme'),
-		...themedHeader(screenProps.theme)
+	static navigationOptions = () => ({
+		title: I18n.t('Theme')
 	})
 
 	static propTypes = {
@@ -98,9 +97,11 @@ class ThemeView extends React.Component {
 		const { value, group } = item;
 		let changes = {};
 		if (group === THEME_GROUP && currentTheme !== value) {
+			logEvent(events.THEME_SET_THEME_GROUP, { theme_group: value });
 			changes = { currentTheme: value };
 		}
 		if (group === DARK_GROUP && darkLevel !== value) {
+			logEvent(events.THEME_SET_DARK_LEVEL, { dark_level: value });
 			changes = { darkLevel: value };
 		}
 		this.setTheme(changes);
@@ -110,7 +111,7 @@ class ThemeView extends React.Component {
 		const { setTheme, themePreferences } = this.props;
 		const newTheme = { ...themePreferences, ...theme };
 		setTheme(newTheme);
-		await RNUserDefaults.setObjectForKey(THEME_PREFERENCES_KEY, newTheme);
+		await UserPreferences.setMapAsync(THEME_PREFERENCES_KEY, newTheme);
 	};
 
 	renderSeparator = () => {
@@ -131,7 +132,7 @@ class ThemeView extends React.Component {
 			<>
 				{item.separator || isFirst ? this.renderSectionHeader(item.header) : null}
 				<ListItem
-					title={label}
+					title={I18n.t(label)}
 					onPress={() => this.onClick(item)}
 					testID={`theme-view-${ value }`}
 					right={this.isSelected(item) ? this.renderIcon : null}
@@ -141,12 +142,12 @@ class ThemeView extends React.Component {
 		);
 	}
 
-	renderSectionHeader = (header = I18n.t('Theme')) => {
+	renderSectionHeader = (header = 'Theme') => {
 		const { theme } = this.props;
 		return (
 			<>
 				<View style={styles.info}>
-					<Text style={[styles.infoText, { color: themes[theme].infoText }]}>{header}</Text>
+					<Text style={[styles.infoText, { color: themes[theme].infoText }]}>{I18n.t(header)}</Text>
 				</View>
 				{this.renderSeparator()}
 			</>
@@ -167,15 +168,11 @@ class ThemeView extends React.Component {
 	render() {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView
-				style={[sharedStyles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
-				forceInset={{ vertical: 'never' }}
-				testID='theme-view'
-			>
+			<SafeAreaView testID='theme-view' theme={theme}>
 				<StatusBar theme={theme} />
 				<FlatList
 					data={THEMES}
-					keyExtractor={item => item.value}
+					keyExtractor={item => item.value + item.group}
 					contentContainerStyle={[
 						styles.list,
 						{ borderColor: themes[theme].separatorColor }

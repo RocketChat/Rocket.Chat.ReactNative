@@ -6,26 +6,19 @@ import {
 
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
-import { isAndroid, isTablet } from '../../../utils/deviceInfo';
 import Icon from './Icon';
 import { themes } from '../../../constants/colors';
 import Markdown from '../../../containers/markdown';
-
-const androidMarginLeft = isTablet ? 0 : 4;
 
 const TITLE_SIZE = 16;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		marginRight: isAndroid ? 15 : 5,
-		marginLeft: isAndroid ? androidMarginLeft : -10
+		justifyContent: 'center'
 	},
 	titleContainer: {
 		alignItems: 'center',
 		flexDirection: 'row'
-	},
-	threadContainer: {
-		marginRight: isAndroid ? 20 : undefined
 	},
 	title: {
 		...sharedStyles.textSemibold,
@@ -85,12 +78,8 @@ SubTitle.propTypes = {
 };
 
 const HeaderTitle = React.memo(({
-	title, tmid, prid, scale, connecting, theme
+	title, tmid, prid, scale, theme
 }) => {
-	if (connecting) {
-		title = I18n.t('Connecting');
-	}
-
 	if (!tmid && !prid) {
 		return (
 			<Text
@@ -120,12 +109,11 @@ HeaderTitle.propTypes = {
 	tmid: PropTypes.string,
 	prid: PropTypes.string,
 	scale: PropTypes.number,
-	connecting: PropTypes.bool,
 	theme: PropTypes.string
 };
 
 const Header = React.memo(({
-	title, subtitle, type, status, usersTyping, width, height, prid, tmid, widthOffset, connecting, goRoomActionsView, roomUserId, theme
+	title, subtitle, type, status, usersTyping, width, height, prid, tmid, connecting, goRoomActionsView, roomUserId, theme
 }) => {
 	const portrait = height > width;
 	let scale = 1;
@@ -142,10 +130,10 @@ const Header = React.memo(({
 		<TouchableOpacity
 			testID='room-view-header-actions'
 			onPress={onPress}
-			style={[styles.container, { width: width - widthOffset }]}
+			style={styles.container}
 			disabled={tmid}
 		>
-			<View style={[styles.titleContainer, tmid && styles.threadContainer]}>
+			<View style={styles.titleContainer}>
 				<Icon type={prid ? 'discussion' : type} status={status} roomUserId={roomUserId} theme={theme} />
 				<HeaderTitle
 					title={title}
@@ -172,7 +160,6 @@ Header.propTypes = {
 	status: PropTypes.string,
 	theme: PropTypes.string,
 	usersTyping: PropTypes.array,
-	widthOffset: PropTypes.number,
 	connecting: PropTypes.bool,
 	roomUserId: PropTypes.string,
 	goRoomActionsView: PropTypes.func

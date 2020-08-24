@@ -1,0 +1,24 @@
+{
+  "name": "ReactNativeKeyboardTrackingView",
+  "version": "5.7.0",
+  "summary": "React Native Keyboard Tracking View",
+  "authors": "Wix.com",
+  "homepage": "https://github.com/wix/react-native-keyboard-tracking-view",
+  "license": "MIT",
+  "platforms": {
+    "ios": "9.0",
+    "tvos": "9.2"
+  },
+  "module_name": "ReactNativeKeyboardTrackingView",
+  "source": {
+    "git": "https://github.com/wix/react-native-keyboard-tracking-view",
+    "tag": "5.7.0"
+  },
+  "source_files": "lib/**/*.{h,m}",
+  "dependencies": {
+    "React": [
+
+    ]
+  },
+  "frameworks": "UIKit"
+}

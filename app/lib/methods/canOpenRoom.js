@@ -1,4 +1,5 @@
 import database from '../database';
+import store from '../createStore';
 
 const restTypes = {
 	channel: 'channels', direct: 'im', group: 'groups'
@@ -53,23 +54,38 @@ async function open({ type, rid, name }) {
 	}
 }
 
-export default async function canOpenRoom({ rid, path }) {
+export default async function canOpenRoom({ rid, path, isCall }) {
 	try {
 		const db = database.active;
 		const subsCollection = db.collections.get('subscriptions');
-		const [type, name] = path.split('/');
+
+		if (isCall && !rid) {
+			// Extract rid from a Jitsi URL
+			// Eg.: [Jitsi_URL_Room_Prefix][uniqueID][rid][?jwt]
+			const { Jitsi_URL_Room_Prefix, uniqueID } = store.getState().settings;
+			rid = path.replace(`${ Jitsi_URL_Room_Prefix }${ uniqueID }`, '').replace(/\?(.*)/g, '');
+		}
 
 		if (rid) {
 			try {
-				await subsCollection.find(rid);
-				return { rid };
+				const room = await subsCollection.find(rid);
+				return {
+					rid,
+					t: room.t,
+					name: room.name,
+					fname: room.fname,
+					prid: room.prid,
+					uids: room.uids
+				};
 			} catch (e) {
 				// Do nothing
 			}
 		}
 
+		const [type, name] = path.split('/');
 		try {
-			return await open.call(this, { type, rid, name });
+			const result = await open.call(this, { type, rid, name });
+			return result;
 		} catch (e) {
 			return false;
 		}

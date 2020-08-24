@@ -17,4 +17,16 @@ export default class Server extends Model {
 	@date('rooms_updated_at') roomsUpdatedAt;
 
 	@field('version') version;
+
+	@date('last_local_authenticated_session') lastLocalAuthenticatedSession;
+
+	@field('auto_lock') autoLock;
+
+	@field('auto_lock_time') autoLockTime;
+
+	@field('biometry') biometry;
+
+	@field('unique_id') uniqueID;
+
+	@field('enterprise_modules') enterpriseModules;
 }

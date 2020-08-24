@@ -34,11 +34,30 @@ export const merge = (subscription, room) => {
 		} else {
 			subscription.muted = [];
 		}
+		if (room.v) {
+			subscription.visitor = room.v;
+		}
+		if (room.departmentId) {
+			subscription.departmentId = room.departmentId;
+		}
+		if (room.servedBy) {
+			subscription.servedBy = room.servedBy;
+		}
+		if (room.livechatData) {
+			subscription.livechatData = room.livechatData;
+		}
+		if (room.tags) {
+			subscription.tags = room.tags;
+		}
 		subscription.sysMes = room.sysMes;
 	}
 
 	if (!subscription.name) {
 		subscription.name = subscription.fname;
+	}
+
+	if (!subscription.autoTranslate) {
+		subscription.autoTranslate = false;
 	}
 
 	subscription.blocker = !!subscription.blocker;

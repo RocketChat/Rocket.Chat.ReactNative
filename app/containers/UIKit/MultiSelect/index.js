@@ -43,14 +43,14 @@ export const MultiSelect = React.memo(({
 	inputStyle,
 	theme
 }) => {
-	const [selected, select] = useState(values || []);
+	const [selected, select] = useState(Array.isArray(values) ? values : []);
 	const [open, setOpen] = useState(false);
 	const [search, onSearchChange] = useState('');
 	const [currentValue, setCurrentValue] = useState('');
 	const [showContent, setShowContent] = useState(false);
 
 	useEffect(() => {
-		if (values) {
+		if (Array.isArray(values)) {
 			select(values);
 		}
 	}, [values]);
@@ -136,7 +136,7 @@ export const MultiSelect = React.memo(({
 		/>
 	) : (
 		<Input
-			open={onShow}
+			onPress={onShow}
 			theme={theme}
 			loading={loading}
 			disabled={disabled}
@@ -150,7 +150,7 @@ export const MultiSelect = React.memo(({
 		const items = options.filter(option => selected.includes(option.value));
 		button = (
 			<Input
-				open={onShow}
+				onPress={onShow}
 				theme={theme}
 				loading={loading}
 				disabled={disabled}

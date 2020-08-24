@@ -1,5 +1,5 @@
 import React from 'react';
-import FastImage from 'react-native-fast-image';
+import FastImage from '@rocket.chat/react-native-fast-image';
 import PropTypes from 'prop-types';
 
 const CustomEmoji = React.memo(({ baseUrl, emoji, style }) => (

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { CustomHeaderButtons, Item } from '../../../containers/HeaderButton';
 import database from '../../../lib/database';
 import { getUserSelector } from '../../../selectors/login';
+import { logEvent, events } from '../../../utils/log';
 
 class RightButtonsContainer extends React.PureComponent {
 	static propTypes = {
@@ -14,6 +15,7 @@ class RightButtonsContainer extends React.PureComponent {
 		t: PropTypes.string,
 		tmid: PropTypes.string,
 		navigation: PropTypes.object,
+		isMasterDetail: PropTypes.bool,
 		toggleFollowThread: PropTypes.func
 	};
 
@@ -57,11 +59,31 @@ class RightButtonsContainer extends React.PureComponent {
 	}
 
 	goThreadsView = () => {
-		const { rid, t, navigation } = this.props;
-		navigation.navigate('ThreadMessagesView', { rid, t });
+		logEvent(events.ROOM_GO_THREADS);
+		const {
+			rid, t, navigation, isMasterDetail
+		} = this.props;
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', { screen: 'ThreadMessagesView', params: { rid, t } });
+		} else {
+			navigation.navigate('ThreadMessagesView', { rid, t });
+		}
+	}
+
+	goSearchView = () => {
+		logEvent(events.ROOM_GO_SEARCH);
+		const {
+			rid, navigation, isMasterDetail
+		} = this.props;
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', { screen: 'SearchMessagesView', params: { rid, showCloseModal: true } });
+		} else {
+			navigation.navigate('SearchMessagesView', { rid });
+		}
 	}
 
 	toggleFollowThread = () => {
+		logEvent(events.ROOM_TOGGLE_FOLLOW_THREADS);
 		const { isFollowingThread } = this.state;
 		const { toggleFollowThread } = this.props;
 		if (toggleFollowThread) {
@@ -80,7 +102,7 @@ class RightButtonsContainer extends React.PureComponent {
 				<CustomHeaderButtons>
 					<Item
 						title='bell'
-						iconName={isFollowingThread ? 'bell' : 'Bell-off'}
+						iconName={isFollowingThread ? 'notification' : 'notification-disabled'}
 						onPress={this.toggleFollowThread}
 						testID={isFollowingThread ? 'room-view-header-unfollow' : 'room-view-header-follow'}
 					/>
@@ -91,12 +113,18 @@ class RightButtonsContainer extends React.PureComponent {
 			<CustomHeaderButtons>
 				{threadsEnabled ? (
 					<Item
-						title='thread'
-						iconName='thread'
+						title='threads'
+						iconName='threads'
 						onPress={this.goThreadsView}
 						testID='room-view-header-threads'
 					/>
 				) : null}
+				<Item
+					title='search'
+					iconName='search'
+					onPress={this.goSearchView}
+					testID='room-view-search'
+				/>
 			</CustomHeaderButtons>
 		);
 	}
@@ -104,7 +132,8 @@ class RightButtonsContainer extends React.PureComponent {
 
 const mapStateToProps = state => ({
 	userId: getUserSelector(state).id,
-	threadsEnabled: state.settings.Threads_enabled
+	threadsEnabled: state.settings.Threads_enabled,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 export default connect(mapStateToProps)(RightButtonsContainer);

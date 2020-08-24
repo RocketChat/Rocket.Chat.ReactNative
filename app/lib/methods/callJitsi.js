@@ -1,41 +1,41 @@
 import reduxStore from '../createStore';
 import Navigation from '../Navigation';
+import { logEvent, events } from '../../utils/log';
 
-const jitsiBaseUrl = ({
-	Jitsi_Enabled, Jitsi_SSL, Jitsi_Domain, Jitsi_URL_Room_Prefix, uniqueID
-}) => {
+async function jitsiURL({ rid }) {
+	const { settings } = reduxStore.getState();
+	const { Jitsi_Enabled } = settings;
+
 	if (!Jitsi_Enabled) {
 		return '';
 	}
-	const uniqueIdentifier = uniqueID || 'undefined';
-	const domain = Jitsi_Domain;
+
+	const {
+		Jitsi_Domain, Jitsi_URL_Room_Prefix, Jitsi_SSL, Jitsi_Enabled_TokenAuth, uniqueID
+	} = settings;
+
+	const domain = `${ Jitsi_Domain }/`;
 	const prefix = Jitsi_URL_Room_Prefix;
+	const uniqueIdentifier = uniqueID || 'undefined';
+	const protocol = Jitsi_SSL ? 'https://' : 'http://';
 
-	const urlProtocol = Jitsi_SSL ? 'https://' : 'http://';
-	const urlDomain = `${ domain }/`;
-
-	return `${ urlProtocol }${ urlDomain }${ prefix }${ uniqueIdentifier }`;
-};
-
-async function callJitsi(rid, onlyAudio = false) {
-	let accessToken;
 	let queryString = '';
-	const { settings } = reduxStore.getState();
-	const { Jitsi_Enabled_TokenAuth } = settings;
-
 	if (Jitsi_Enabled_TokenAuth) {
 		try {
-			accessToken = await this.sdk.methodCall('jitsi:generateAccessToken', rid);
-		} catch (e) {
-			// do nothing
+			const accessToken = await this.methodCallWrapper('jitsi:generateAccessToken', rid);
+			queryString = `?jwt=${ accessToken }`;
+		} catch {
+			logEvent(events.RA_JITSI_F);
 		}
 	}
 
-	if (accessToken) {
-		queryString = `?jwt=${ accessToken }`;
-	}
+	return `${ protocol }${ domain }${ prefix }${ uniqueIdentifier }${ rid }${ queryString }`;
+}
 
-	Navigation.navigate('JitsiMeetView', { url: `${ jitsiBaseUrl(settings) }${ rid }${ queryString }`, onlyAudio, rid });
+async function callJitsi(rid, onlyAudio = false) {
+	logEvent(onlyAudio ? events.RA_JITSI_AUDIO : events.RA_JITSI_VIDEO);
+	const url = await jitsiURL.call(this, { rid });
+	Navigation.navigate('JitsiMeetView', { url, onlyAudio, rid });
 }
 
 export default callJitsi;

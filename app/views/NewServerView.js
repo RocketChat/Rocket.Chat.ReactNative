@@ -1,35 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, Keyboard, StyleSheet, TouchableOpacity, View, Alert
+	Text, Keyboard, StyleSheet, TouchableOpacity, View, Alert, BackHandler
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
 import DocumentPicker from 'react-native-document-picker';
-import ActionSheet from 'react-native-action-sheet';
-import RNUserDefaults from 'rn-user-defaults';
-import { encode } from 'base-64';
+import { Base64 } from 'js-base64';
 import parse from 'url-parse';
 
+import UserPreferences from '../lib/userPreferences';
 import EventEmitter from '../utils/events';
-import {
-	selectServerRequest, serverRequest, serverInitAdd, serverFinishAdd
-} from '../actions/server';
-import { appStart as appStartAction } from '../actions';
+import { selectServerRequest, serverRequest } from '../actions/server';
+import { inviteLinksClear as inviteLinksClearAction } from '../actions/inviteLinks';
 import sharedStyles from './Styles';
 import Button from '../containers/Button';
 import TextInput from '../containers/TextInput';
-import OnboardingSeparator from '../containers/OnboardingSeparator';
+import OrSeparator from '../containers/OrSeparator';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import I18n from '../i18n';
 import { isIOS } from '../utils/deviceInfo';
 import { themes } from '../constants/colors';
-import log from '../utils/log';
+import log, { logEvent, events } from '../utils/log';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
 import { setBasicAuth, BASIC_AUTH_KEY } from '../utils/fetch';
-import { themedHeader } from '../utils/navigation';
 import { CloseModalButton } from '../containers/HeaderButton';
+import { showConfirmationAlert } from '../utils/info';
 
 const styles = StyleSheet.create({
 	title: {
@@ -65,15 +62,9 @@ const styles = StyleSheet.create({
 });
 
 class NewServerView extends React.Component {
-	static navigationOptions = ({ screenProps, navigation }) => {
-		const previousServer = navigation.getParam('previousServer', null);
-		const close = navigation.getParam('close', () => {});
-		return {
-			headerLeft: previousServer ? <CloseModalButton navigation={navigation} onPress={close} /> : undefined,
-			title: I18n.t('Workspaces'),
-			...themedHeader(screenProps.theme)
-		};
-	}
+	static navigationOptions = () => ({
+		title: I18n.t('Workspaces')
+	})
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -81,23 +72,14 @@ class NewServerView extends React.Component {
 		connecting: PropTypes.bool.isRequired,
 		connectServer: PropTypes.func.isRequired,
 		selectServer: PropTypes.func.isRequired,
-		currentServer: PropTypes.string,
-		initAdd: PropTypes.func,
-		finishAdd: PropTypes.func
+		adding: PropTypes.bool,
+		previousServer: PropTypes.string,
+		inviteLinksClear: PropTypes.func
 	}
 
 	constructor(props) {
 		super(props);
-		this.previousServer = props.navigation.getParam('previousServer');
-		props.navigation.setParams({ close: this.close, previousServer: this.previousServer });
-
-		// Cancel
-		this.options = [I18n.t('Cancel')];
-		this.CANCEL_INDEX = 0;
-
-		// Delete
-		this.options.push(I18n.t('Delete'));
-		this.DELETE_INDEX = 1;
+		this.setHeader();
 
 		this.state = {
 			text: '',
@@ -105,17 +87,37 @@ class NewServerView extends React.Component {
 			certificate: null
 		};
 		EventEmitter.addEventListener('NewServer', this.handleNewServerEvent);
+		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
-	componentDidMount() {
-		const { initAdd } = this.props;
-		if (this.previousServer) {
-			initAdd();
+	componentDidUpdate(prevProps) {
+		const { adding } = this.props;
+		if (prevProps.adding !== adding) {
+			this.setHeader();
 		}
 	}
 
 	componentWillUnmount() {
 		EventEmitter.removeListener('NewServer', this.handleNewServerEvent);
+		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+	}
+
+	setHeader = () => {
+		const { adding, navigation } = this.props;
+		if (adding) {
+			navigation.setOptions({
+				headerLeft: () => <CloseModalButton navigation={navigation} onPress={this.close} testID='new-server-view-close' />
+			});
+		}
+	}
+
+	handleBackPress = () => {
+		const { navigation, previousServer } = this.props;
+		if (navigation.isFocused() && previousServer) {
+			this.close();
+			return true;
+		}
+		return false;
 	}
 
 	onChangeText = (text) => {
@@ -123,11 +125,9 @@ class NewServerView extends React.Component {
 	}
 
 	close = () => {
-		const { selectServer, currentServer, finishAdd } = this.props;
-		if (this.previousServer !== currentServer) {
-			selectServer(this.previousServer);
-		}
-		finishAdd();
+		const { selectServer, previousServer, inviteLinksClear } = this.props;
+		inviteLinksClear();
+		selectServer(previousServer);
 	}
 
 	handleNewServerEvent = (event) => {
@@ -139,6 +139,7 @@ class NewServerView extends React.Component {
 	}
 
 	submit = async() => {
+		logEvent(events.NEWSERVER_CONNECT_TO_WORKSPACE);
 		const { text, certificate } = this.state;
 		const { connectServer } = this.props;
 		let cert = null;
@@ -150,6 +151,7 @@ class NewServerView extends React.Component {
 			try {
 				await FileSystem.copyAsync({ from: certificate.path, to: certificatePath });
 			} catch (e) {
+				logEvent(events.NEWSERVER_CONNECT_TO_WORKSPACE_F);
 				log(e);
 			}
 			cert = {
@@ -167,6 +169,7 @@ class NewServerView extends React.Component {
 	}
 
 	connectOpen = () => {
+		logEvent(events.NEWSERVER_JOIN_OPEN_WORKSPACE);
 		this.setState({ connectingOpen: true });
 		const { connectServer } = this.props;
 		connectServer('https://open.rocket.chat');
@@ -176,8 +179,8 @@ class NewServerView extends React.Component {
 		try {
 			const parsedUrl = parse(text, true);
 			if (parsedUrl.auth.length) {
-				const credentials = encode(parsedUrl.auth);
-				await RNUserDefaults.set(`${ BASIC_AUTH_KEY }-${ server }`, credentials);
+				const credentials = Base64.encode(parsedUrl.auth);
+				await UserPreferences.setStringAsync(`${ BASIC_AUTH_KEY }-${ server }`, credentials);
 				setBasicAuth(credentials);
 			}
 		} catch {
@@ -240,15 +243,11 @@ class NewServerView extends React.Component {
 		this.setState({ certificate });
 	}
 
-	handleDelete = () => this.setState({ certificate: null }); // We not need delete file from DocumentPicker because it is a temp file
-
-	showActionSheet = () => {
-		ActionSheet.showActionSheetWithOptions({
-			options: this.options,
-			cancelButtonIndex: this.CANCEL_INDEX,
-			destructiveButtonIndex: this.DELETE_INDEX
-		}, (actionIndex) => {
-			if (actionIndex === this.DELETE_INDEX) { this.handleDelete(); }
+	handleRemove = () => {
+		showConfirmationAlert({
+			message: I18n.t('You_will_unset_a_certificate_for_this_server'),
+			callToAction: I18n.t('Remove'),
+			onPress: this.setState({ certificate: null }) // We not need delete file from DocumentPicker because it is a temp file
 		});
 	}
 
@@ -266,7 +265,7 @@ class NewServerView extends React.Component {
 					{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
 				</Text>
 				<TouchableOpacity
-					onPress={certificate ? this.showActionSheet : this.chooseCertificate}
+					onPress={certificate ? this.handleRemove : this.chooseCertificate}
 					testID='new-server-choose-certificate'
 				>
 					<Text
@@ -286,7 +285,7 @@ class NewServerView extends React.Component {
 		const { connecting, theme } = this.props;
 		const { text, connectingOpen } = this.state;
 		return (
-			<FormContainer theme={theme}>
+			<FormContainer theme={theme} testID='new-server-view'>
 				<FormContainerInner>
 					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Join_your_workspace')}</Text>
 					<TextInput
@@ -310,10 +309,10 @@ class NewServerView extends React.Component {
 						disabled={!text || connecting}
 						loading={!connectingOpen && connecting}
 						style={styles.connectButton}
-						testID='new-server-view-button'
 						theme={theme}
+						testID='new-server-view-button'
 					/>
-					<OnboardingSeparator theme={theme} />
+					<OrSeparator theme={theme} />
 					<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Onboarding_join_open_description')}</Text>
 					<Button
 						title={I18n.t('Join_our_open_workspace')}
@@ -323,6 +322,7 @@ class NewServerView extends React.Component {
 						disabled={connecting}
 						loading={connectingOpen && connecting}
 						theme={theme}
+						testID='new-server-view-open'
 					/>
 				</FormContainerInner>
 				{ isIOS ? this.renderCertificatePicker() : null }
@@ -332,15 +332,15 @@ class NewServerView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	connecting: state.server.connecting
+	connecting: state.server.connecting,
+	adding: state.server.adding,
+	previousServer: state.server.previousServer
 });
 
 const mapDispatchToProps = dispatch => ({
 	connectServer: (server, certificate) => dispatch(serverRequest(server, certificate)),
-	initAdd: () => dispatch(serverInitAdd()),
-	finishAdd: () => dispatch(serverFinishAdd()),
 	selectServer: server => dispatch(selectServerRequest(server)),
-	appStart: root => dispatch(appStartAction(root))
+	inviteLinksClear: () => dispatch(inviteLinksClearAction())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(NewServerView));

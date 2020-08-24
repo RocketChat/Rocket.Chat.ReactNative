@@ -4,7 +4,6 @@ import {
 	Text, View, ScrollView, TouchableOpacity, Keyboard, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 import isEqual from 'lodash/isEqual';
@@ -24,14 +23,14 @@ import RCTextInput from '../../containers/TextInput';
 import Loading from '../../containers/Loading';
 import SwitchContainer from './SwitchContainer';
 import random from '../../utils/random';
-import log from '../../utils/log';
+import log, { logEvent, events } from '../../utils/log';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
-import { themedHeader } from '../../utils/navigation';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { MessageTypeValues } from '../../utils/messageTypes';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 const PERMISSION_SET_READONLY = 'set-readonly';
 const PERMISSION_SET_REACT_WHEN_READONLY = 'set-react-when-readonly';
@@ -49,13 +48,12 @@ const PERMISSIONS_ARRAY = [
 ];
 
 class RoomInfoEditView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Room_Info_Edit'),
-		...themedHeader(screenProps.theme)
+	static navigationOptions = () => ({
+		title: I18n.t('Room_Info_Edit')
 	})
 
 	static propTypes = {
-		navigation: PropTypes.object,
+		route: PropTypes.object,
 		deleteRoom: PropTypes.func,
 		serverVersion: PropTypes.string,
 		theme: PropTypes.string
@@ -101,8 +99,8 @@ class RoomInfoEditView extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	loadRoom = async() => {
-		const { navigation } = this.props;
-		const rid = navigation.getParam('rid', null);
+		const { route } = this.props;
+		const rid = route.params?.rid;
 		if (!rid) {
 			return;
 		}
@@ -125,13 +123,13 @@ class RoomInfoEditView extends React.Component {
 
 	init = (room) => {
 		const {
-			name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCodeRequired, sysMes
+			description, topic, announcement, t, ro, reactWhenReadOnly, joinCodeRequired, sysMes
 		} = room;
 		// fake password just to user knows about it
 		this.randomValue = random(15);
 		this.setState({
 			room,
-			name,
+			name: RocketChat.getRoomTitle(room),
 			description,
 			topic,
 			announcement,
@@ -152,6 +150,7 @@ class RoomInfoEditView extends React.Component {
 	}
 
 	reset = () => {
+		logEvent(events.RI_EDIT_RESET);
 		this.clearErrors();
 		this.init(this.room);
 	}
@@ -175,6 +174,7 @@ class RoomInfoEditView extends React.Component {
 	}
 
 	submit = async() => {
+		logEvent(events.RI_EDIT_SAVE);
 		Keyboard.dismiss();
 		const {
 			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, systemMessages
@@ -244,6 +244,7 @@ class RoomInfoEditView extends React.Component {
 		await this.setState({ saving: false });
 		setTimeout(() => {
 			if (error) {
+				logEvent(events.RI_EDIT_SAVE_F);
 				showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_settings') }));
 			} else {
 				EventEmitter.emit(LISTENER, { message: I18n.t('Settings_succesfully_changed') });
@@ -291,8 +292,10 @@ class RoomInfoEditView extends React.Component {
 					style: 'destructive',
 					onPress: async() => {
 						try {
+							logEvent(events.RI_EDIT_TOGGLE_ARCHIVE);
 							await RocketChat.toggleArchiveRoom(rid, t, !archived);
 						} catch (e) {
+							logEvent(events.RI_EDIT_TOGGLE_ARCHIVE_F);
 							log(e);
 						}
 					}
@@ -335,6 +338,26 @@ class RoomInfoEditView extends React.Component {
 		);
 	}
 
+	toggleRoomType = (value) => {
+		logEvent(events.RI_EDIT_TOGGLE_ROOM_TYPE);
+		this.setState({ t: value });
+	}
+
+	toggleReadOnly = (value) => {
+		logEvent(events.RI_EDIT_TOGGLE_READ_ONLY);
+		this.setState({ ro: value });
+	}
+
+	toggleReactions = (value) => {
+		logEvent(events.RI_EDIT_TOGGLE_REACTIONS);
+		this.setState({ reactWhenReadOnly: value });
+	}
+
+	toggleHideSystemMessages = (value) => {
+		logEvent(events.RI_EDIT_TOGGLE_SYSTEM_MSG);
+		this.setState(({ systemMessages }) => ({ enableSysMes: value, systemMessages: value ? systemMessages : [] }));
+	}
+
 	render() {
 		const {
 			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode, saving, permissions, archived, enableSysMes
@@ -349,12 +372,16 @@ class RoomInfoEditView extends React.Component {
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar theme={theme} />
-				<ScrollView
-					contentContainerStyle={sharedStyles.containerScrollView}
-					testID='room-info-edit-view-list'
-					{...scrollPersistTaps}
+				<SafeAreaView
+					testID='room-info-edit-view'
+					theme={theme}
+					style={{ backgroundColor: themes[theme].backgroundColor }}
 				>
-					<SafeAreaView style={sharedStyles.container} testID='room-info-edit-view' forceInset={{ vertical: 'never' }}>
+					<ScrollView
+						contentContainerStyle={sharedStyles.containerScrollView}
+						testID='room-info-edit-view-list'
+						{...scrollPersistTaps}
+					>
 						<RCTextInput
 							inputRef={(e) => { this.name = e; }}
 							label={I18n.t('Name')}
@@ -408,7 +435,7 @@ class RoomInfoEditView extends React.Component {
 							leftLabelSecondary={I18n.t('Everyone_can_access_this_channel')}
 							rightLabelPrimary={I18n.t('Private')}
 							rightLabelSecondary={I18n.t('Just_invited_people_can_access_this_channel')}
-							onValueChange={value => this.setState({ t: value })}
+							onValueChange={this.toggleRoomType}
 							theme={theme}
 							testID='room-info-edit-view-t'
 						/>
@@ -418,7 +445,7 @@ class RoomInfoEditView extends React.Component {
 							leftLabelSecondary={I18n.t('All_users_in_the_channel_can_write_new_messages')}
 							rightLabelPrimary={I18n.t('Read_Only')}
 							rightLabelSecondary={I18n.t('Only_authorized_users_can_write_new_messages')}
-							onValueChange={value => this.setState({ ro: value })}
+							onValueChange={this.toggleReadOnly}
 							disabled={!permissions[PERMISSION_SET_READONLY] || room.broadcast}
 							theme={theme}
 							testID='room-info-edit-view-ro'
@@ -431,7 +458,7 @@ class RoomInfoEditView extends React.Component {
 									leftLabelSecondary={I18n.t('Reactions_are_disabled')}
 									rightLabelPrimary={I18n.t('Allow_Reactions')}
 									rightLabelSecondary={I18n.t('Reactions_are_enabled')}
-									onValueChange={value => this.setState({ reactWhenReadOnly: value })}
+									onValueChange={this.toggleReactions}
 									disabled={!permissions[PERMISSION_SET_REACT_WHEN_READONLY]}
 									theme={theme}
 									testID='room-info-edit-view-react-when-ro'
@@ -453,7 +480,7 @@ class RoomInfoEditView extends React.Component {
 								leftLabelSecondary={enableSysMes ? I18n.t('Overwrites_the_server_configuration_and_use_room_config') : I18n.t('Uses_server_configuration')}
 								theme={theme}
 								testID='room-info-edit-switch-system-messages'
-								onValueChange={value => this.setState(({ systemMessages }) => ({ enableSysMes: value, systemMessages: value ? systemMessages : [] }))}
+								onValueChange={this.toggleHideSystemMessages}
 								labelContainerStyle={styles.hideSystemMessages}
 								leftLabelStyle={styles.systemMessagesLabel}
 							>
@@ -542,8 +569,8 @@ class RoomInfoEditView extends React.Component {
 							</Text>
 						</TouchableOpacity>
 						<Loading visible={saving} />
-					</SafeAreaView>
-				</ScrollView>
+					</ScrollView>
+				</SafeAreaView>
 			</KeyboardView>
 		);
 	}

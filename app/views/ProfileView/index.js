@@ -6,8 +6,6 @@ import prompt from 'react-native-prompt-android';
 import SHA256 from 'js-sha256';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
-import { SafeAreaView } from 'react-navigation';
-import { HeaderBackButton } from 'react-navigation-stack';
 import equal from 'deep-equal';
 
 import Touch from '../../utils/touch';
@@ -20,32 +18,32 @@ import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import RocketChat from '../../lib/rocketchat';
 import RCTextInput from '../../containers/TextInput';
-import log from '../../utils/log';
+import log, { logEvent, events } from '../../utils/log';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
 import { setUser as setUserAction } from '../../actions/login';
 import { CustomIcon } from '../../lib/Icons';
-import { DrawerButton } from '../../containers/HeaderButton';
+import { DrawerButton, PreferencesButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
 import { getUserSelector } from '../../selectors/login';
+import SafeAreaView from '../../containers/SafeAreaView';
 
 class ProfileView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => ({
-		...themedHeader(screenProps.theme),
-		headerLeft: screenProps.split ? (
-			<HeaderBackButton
-				onPress={() => navigation.navigate('SettingsView')}
-				tintColor={themes[screenProps.theme].headerTintColor}
-			/>
-		) : (
-			<DrawerButton navigation={navigation} />
-		),
-		title: I18n.t('Profile')
-	})
+	static navigationOptions = ({ navigation, isMasterDetail }) => {
+		const options = {
+			title: I18n.t('Profile')
+		};
+		if (!isMasterDetail) {
+			options.headerLeft = () => <DrawerButton navigation={navigation} />;
+		}
+		options.headerRight = () => (
+			<PreferencesButton onPress={() => navigation.navigate('UserPreferencesView')} testID='preferences-view-open' />
+		);
+		return options;
+	}
 
 	static propTypes = {
 		baseUrl: PropTypes.string,
@@ -84,7 +82,7 @@ class ProfileView extends React.Component {
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		const { user } = this.props;
 		if (!equal(user, nextProps.user)) {
 			this.init(nextProps.user);
@@ -228,8 +226,10 @@ class ProfileView extends React.Component {
 		try {
 			if (avatar.url) {
 				try {
+					logEvent(events.PROFILE_SAVE_AVATAR);
 					await RocketChat.setAvatarFromService(avatar);
 				} catch (e) {
+					logEvent(events.PROFILE_SAVE_AVATAR_F);
 					this.setState({ saving: false, currentPassword: null });
 					return this.handleError(e, 'setAvatarFromService', 'changing_avatar');
 				}
@@ -238,6 +238,7 @@ class ProfileView extends React.Component {
 			const result = await RocketChat.saveUserProfile(params, customFields);
 
 			if (result.success) {
+				logEvent(events.PROFILE_SAVE_CHANGES);
 				if (customFields) {
 					setUser({ customFields, ...params });
 				} else {
@@ -248,6 +249,7 @@ class ProfileView extends React.Component {
 			}
 			this.setState({ saving: false });
 		} catch (e) {
+			logEvent(events.PROFILE_SAVE_CHANGES_F);
 			this.setState({ saving: false, currentPassword: null });
 			this.handleError(e, 'saveUserProfile', 'saving_profile');
 		}
@@ -286,11 +288,18 @@ class ProfileView extends React.Component {
 			includeBase64: true
 		};
 		try {
+			logEvent(events.PROFILE_PICK_AVATAR);
 			const response = await ImagePicker.openPicker(options);
 			this.setAvatar({ url: response.path, data: `data:image/jpeg;base64,${ response.data }`, service: 'upload' });
 		} catch (error) {
+			logEvent(events.PROFILE_PICK_AVATAR_F);
 			console.warn(error);
 		}
+	}
+
+	pickImageWithURL = (avatarUrl) => {
+		logEvent(events.PROFILE_PICK_AVATAR_WITH_URL);
+		this.setAvatar({ url: avatarUrl, data: avatarUrl, service: 'url' });
 	}
 
 	renderAvatarButton = ({
@@ -335,8 +344,8 @@ class ProfileView extends React.Component {
 					key: 'profile-view-upload-avatar'
 				})}
 				{this.renderAvatarButton({
-					child: <CustomIcon name='permalink' size={30} color={themes[theme].bodyText} />,
-					onPress: () => this.setAvatar({ url: avatarUrl, data: avatarUrl, service: 'url' }),
+					child: <CustomIcon name='link' size={30} color={themes[theme].bodyText} />,
+					onPress: () => this.pickImageWithURL(avatarUrl),
 					disabled: !avatarUrl,
 					key: 'profile-view-avatar-url-button'
 				})}
@@ -440,7 +449,7 @@ class ProfileView extends React.Component {
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar theme={theme} />
-				<SafeAreaView style={sharedStyles.container} testID='profile-view' forceInset={{ vertical: 'never' }}>
+				<SafeAreaView testID='profile-view' theme={theme}>
 					<ScrollView
 						contentContainerStyle={sharedStyles.containerScrollView}
 						testID='profile-view-list'
