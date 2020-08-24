@@ -62,7 +62,7 @@ import { goRoom } from '../../utils/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
-import { showErrorAlert } from '../../utils/info';
+import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
 import { getInquiryQueueSelector } from '../../selectors/inquiry';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
@@ -109,7 +109,8 @@ class RoomsListView extends React.Component {
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			username: PropTypes.string,
-			token: PropTypes.string
+			token: PropTypes.string,
+			statusLivechat: PropTypes.string
 		}),
 		server: PropTypes.string,
 		searchText: PropTypes.string,
@@ -372,6 +373,12 @@ class RoomsListView extends React.Component {
 						onPress={this.initSearching}
 						testID='rooms-list-view-search'
 					/>
+					<Item
+						title='directory'
+						iconName='directory'
+						onPress={this.goDirectory}
+						testID='rooms-list-view-directory'
+					/>
 				</CustomHeaderButtons>
 			))
 		};
@@ -443,7 +450,6 @@ class RoomsListView extends React.Component {
 				)
 				.observe();
 		}
-
 
 		this.querySubscription = observable.subscribe((data) => {
 			let tempChats = [];
@@ -668,7 +674,7 @@ class RoomsListView extends React.Component {
 	};
 
 	goDirectory = () => {
-		logEvent(events.RL_NAVIGATE_TO_DIRECTORY);
+		logEvent(events.RL_GO_DIRECTORY);
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', { screen: 'DirectoryView' });
@@ -679,7 +685,28 @@ class RoomsListView extends React.Component {
 
 	goQueue = () => {
 		logEvent(events.RL_GO_QUEUE);
-		const { navigation, isMasterDetail, queueSize } = this.props;
+		const {
+			navigation, isMasterDetail, queueSize, inquiryEnabled, user
+		} = this.props;
+
+		// if not-available, prompt to change to available
+		if (user?.statusLivechat !== 'available') {
+			showConfirmationAlert({
+				message: I18n.t('Omnichannel_enable_alert'),
+				callToAction: I18n.t('Yes'),
+				onPress: async() => {
+					try {
+						await RocketChat.changeLivechatStatus();
+					} catch {
+						// Do nothing
+					}
+				}
+			});
+		}
+
+		if (!inquiryEnabled) {
+			return;
+		}
 		// prevent navigation to empty list
 		if (!queueSize) {
 			return showErrorAlert(I18n.t('Queue_is_empty'), I18n.t('Oops'));
@@ -692,7 +719,7 @@ class RoomsListView extends React.Component {
 	};
 
 	goRoom = ({ item, isMasterDetail }) => {
-		logEvent(events.RL_GO_TO_ROOM);
+		logEvent(events.RL_GO_ROOM);
 		const { item: currentItem } = this.state;
 		const { rooms } = this.props;
 		if (currentItem?.rid === item.rid || rooms?.includes(item.rid)) {
@@ -753,7 +780,7 @@ class RoomsListView extends React.Component {
 	}
 
 	goToNewMessage = () => {
-		logEvent(events.RL_NAVIGATE_TO_NEW_MSG);
+		logEvent(events.RL_GO_NEW_MSG);
 		const { navigation, isMasterDetail } = this.props;
 
 		if (isMasterDetail) {
@@ -807,7 +834,9 @@ class RoomsListView extends React.Component {
 
 	renderListHeader = () => {
 		const { searching } = this.state;
-		const { sortBy, queueSize, inquiryEnabled } = this.props;
+		const {
+			sortBy, queueSize, inquiryEnabled, user
+		} = this.props;
 		return (
 			<ListHeader
 				searching={searching}
@@ -817,6 +846,7 @@ class RoomsListView extends React.Component {
 				goQueue={this.goQueue}
 				queueSize={queueSize}
 				inquiryEnabled={inquiryEnabled}
+				user={user}
 			/>
 		);
 	};

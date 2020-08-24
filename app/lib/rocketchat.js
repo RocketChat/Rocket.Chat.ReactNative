@@ -1,7 +1,6 @@
 import { InteractionManager } from 'react-native';
 import semver from 'semver';
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
-import RNUserDefaults from 'rn-user-defaults';
 import { Q } from '@nozbe/watermelondb';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -30,6 +29,9 @@ import getSettings, { getLoginSettings, setSettings } from './methods/getSetting
 import getRooms from './methods/getRooms';
 import getPermissions from './methods/getPermissions';
 import { getCustomEmojis, setCustomEmojis } from './methods/getCustomEmojis';
+import {
+	getEnterpriseModules, setEnterpriseModules, hasLicense, isOmnichannelModuleAvailable
+} from './methods/enterpriseModules';
 import getSlashCommands from './methods/getSlashCommands';
 import getRoles from './methods/getRoles';
 import canOpenRoom from './methods/canOpenRoom';
@@ -51,8 +53,10 @@ import I18n from '../i18n';
 import { twoFactor } from '../utils/twoFactor';
 import { selectServerFailure } from '../actions/server';
 import { useSsl } from '../utils/url';
+import UserPreferences from './userPreferences';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
+const CURRENT_SERVER = 'currentServer';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
 export const THEME_PREFERENCES_KEY = 'RC_THEME_PREFERENCES_KEY';
 export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
@@ -63,6 +67,7 @@ const STATUSES = ['offline', 'online', 'away', 'busy'];
 
 const RocketChat = {
 	TOKEN_KEY,
+	CURRENT_SERVER,
 	callJitsi,
 	async subscribeRooms() {
 		if (!this.roomsSub) {
@@ -88,13 +93,6 @@ const RocketChat = {
 	}) {
 		// RC 0.51.0
 		return this.methodCallWrapper(type ? 'createPrivateGroup' : 'createChannel', name, users, readOnly, {}, { broadcast });
-	},
-	async getUserToken() {
-		try {
-			return await RNUserDefaults.get(TOKEN_KEY);
-		} catch (error) {
-			console.warn(`RNUserDefaults error: ${ error.message }`);
-		}
 	},
 	async getWebsocketInfo({ server }) {
 		const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
@@ -307,7 +305,7 @@ const RocketChat = {
 
 		// set User info
 		try {
-			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
+			const userId = await UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
 			const userCollections = serversDB.collections.get('users');
 			let user = null;
 			if (userId) {
@@ -527,6 +525,7 @@ const RocketChat = {
 		} else if (!filterUsers && filterRooms) {
 			data = data.filter(item => item.t !== 'd' || RocketChat.isGroupChat(item));
 		}
+
 		data = data.slice(0, 7);
 
 		data = data.map((sub) => {
@@ -628,6 +627,10 @@ const RocketChat = {
 	getPermissions,
 	getCustomEmojis,
 	setCustomEmojis,
+	getEnterpriseModules,
+	setEnterpriseModules,
+	hasLicense,
+	isOmnichannelModuleAvailable,
 	getSlashCommands,
 	getRoles,
 	parseSettings: settings => settings.reduce((ret, item) => {
@@ -698,7 +701,7 @@ const RocketChat = {
 			c: 'channel',
 			d: 'direct'
 		}[room.t];
-		return `${ server }/${ roomType }/${ room.name }?msg=${ message.id }`;
+		return `${ server }/${ roomType }/${ this.isGroupChat(room) ? room.rid : room.name }?msg=${ message.id }`;
 	},
 	getPermalinkChannel(channel) {
 		const { server } = reduxStore.getState().server;
@@ -734,6 +737,10 @@ const RocketChat = {
 	setUserPresenceOnline() {
 		return this.methodCall('UserPresence:online');
 	},
+	setUserPreferences(userId, data) {
+		// RC 0.62.0
+		return this.sdk.post('users.setPreferences', { userId, data });
+	},
 	setUserStatus(status, message) {
 		// RC 1.2.0
 		return this.post('users.setStatus', { status, message });
@@ -757,12 +764,17 @@ const RocketChat = {
 		return this.methodCallWrapper('getUsersOfRoom', rid, allUsers, { skip, limit });
 	},
 
-	async methodCallWrapper(method, ...params) {
+	methodCallWrapper(method, ...params) {
 		const { API_Use_REST_For_DDP_Calls } = reduxStore.getState().settings;
 		if (API_Use_REST_For_DDP_Calls) {
-			const data = await this.post(`method.call/${ method }`, { message: JSON.stringify({ method, params }) });
-			const { result } = JSON.parse(data.message);
-			return result;
+			return new Promise(async(resolve, reject) => {
+				const data = await this.post(`method.call/${ method }`, { message: JSON.stringify({ method, params }) });
+				const response = JSON.parse(data.message);
+				if (response?.error) {
+					return reject(response.error);
+				}
+				return resolve(response.result);
+			});
 		}
 		return this.methodCall(method, ...params);
 	},
@@ -782,6 +794,10 @@ const RocketChat = {
 	getUserInfo(userId) {
 		// RC 0.48.0
 		return this.sdk.get('users.info', { userId });
+	},
+	getUserPreferences(userId) {
+		// RC 0.62.0
+		return this.sdk.get('users.getPreferences', { userId });
 	},
 	getRoomInfo(roomId) {
 		// RC 0.72.0
@@ -1060,17 +1076,13 @@ const RocketChat = {
 		return JSON.parse(allowCrashReport);
 	},
 	async getSortPreferences() {
-		const prefs = await RNUserDefaults.objectForKey(SORT_PREFS_KEY);
+		const prefs = await UserPreferences.getMapAsync(SORT_PREFS_KEY);
 		return prefs;
 	},
 	async saveSortPreference(param) {
-		try {
-			let prefs = await RocketChat.getSortPreferences();
-			prefs = { ...prefs, ...param };
-			return await RNUserDefaults.setObjectForKey(SORT_PREFS_KEY, prefs);
-		} catch (error) {
-			console.warn(error);
-		}
+		let prefs = await RocketChat.getSortPreferences();
+		prefs = { ...prefs, ...param };
+		return UserPreferences.setMapAsync(SORT_PREFS_KEY, prefs);
 	},
 	async getLoginServices(server) {
 		try {

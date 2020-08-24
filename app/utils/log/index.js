@@ -1,10 +1,17 @@
-import { Client } from 'bugsnag-react-native';
-import analytics from '@react-native-firebase/analytics';
-import crashlytics from '@react-native-firebase/crashlytics';
+import firebaseAnalytics from '@react-native-firebase/analytics';
+import { isFDroidBuild } from '../../constants/environment';
 import config from '../../../config';
 import events from './events';
 
-const bugsnag = new Client(config.BUGSNAG_API_KEY);
+const analytics = firebaseAnalytics || '';
+let bugsnag = '';
+let crashlytics;
+
+if (!isFDroidBuild) {
+	const { Client } = require('bugsnag-react-native');
+	crashlytics = require('@react-native-firebase/crashlytics');
+	bugsnag = new Client(config.BUGSNAG_API_KEY);
+}
 
 export { analytics };
 export const loggerConfig = bugsnag.config;
@@ -21,20 +28,24 @@ export const logServerVersion = (serverVersion) => {
 
 export const logEvent = (eventName, payload) => {
 	try {
-		analytics().logEvent(eventName, payload);
-		leaveBreadcrumb(eventName, payload);
+		if (!isFDroidBuild) {
+			analytics().logEvent(eventName, payload);
+			leaveBreadcrumb(eventName, payload);
+		}
 	} catch {
 		// Do nothing
 	}
 };
 
 export const setCurrentScreen = (currentScreen) => {
-	analytics().setCurrentScreen(currentScreen);
-	leaveBreadcrumb(currentScreen, { type: 'navigation' });
+	if (!isFDroidBuild) {
+		analytics().setCurrentScreen(currentScreen);
+		leaveBreadcrumb(currentScreen, { type: 'navigation' });
+	}
 };
 
 export default (e) => {
-	if (e instanceof Error && e.message !== 'Aborted' && !__DEV__) {
+	if (e instanceof Error && bugsnag && e.message !== 'Aborted' && !__DEV__) {
 		bugsnag.notify(e, (report) => {
 			report.metadata = {
 				details: {
@@ -42,7 +53,9 @@ export default (e) => {
 				}
 			};
 		});
-		crashlytics().recordError(e);
+		if (!isFDroidBuild) {
+			crashlytics().recordError(e);
+		}
 	} else {
 		console.log(e);
 	}

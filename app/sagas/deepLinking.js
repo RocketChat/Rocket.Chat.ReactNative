@@ -1,8 +1,8 @@
 import {
 	takeLatest, take, select, put, all, delay
 } from 'redux-saga/effects';
-import RNUserDefaults from 'rn-user-defaults';
 
+import UserPreferences from '../lib/userPreferences';
 import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
 import { selectServerRequest, serverInitAdd } from '../actions/server';
@@ -105,8 +105,8 @@ const handleOpen = function* handleOpen({ params }) {
 	}
 
 	const [server, user] = yield all([
-		RNUserDefaults.get('currentServer'),
-		RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ host }`)
+		UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER),
+		UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ host }`)
 	]);
 
 	// TODO: needs better test

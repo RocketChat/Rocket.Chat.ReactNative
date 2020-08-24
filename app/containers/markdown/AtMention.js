@@ -5,6 +5,7 @@ import { Text } from 'react-native';
 import { themes } from '../../constants/colors';
 
 import styles from './styles';
+import { logEvent, events } from '../../utils/log';
 
 const AtMention = React.memo(({
 	mention, mentions, username, navToRoomInfo, style = [], useRealName, theme
@@ -38,9 +39,10 @@ const AtMention = React.memo(({
 		};
 	}
 
-	const user = mentions && mentions.length && mentions.find(m => m.username === mention);
+	const user = mentions?.find?.(m => m && m.username === mention);
 
 	const handlePress = () => {
+		logEvent(events.ROOM_MENTION_GO_USER_INFO);
 		const navParam = {
 			t: 'd',
 			rid: user && user._id

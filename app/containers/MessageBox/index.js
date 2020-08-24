@@ -129,7 +129,7 @@ class MessageBox extends Component {
 		this.options = [
 			{
 				title: I18n.t('Take_a_photo'),
-				icon: 'image',
+				icon: 'camera-photo',
 				onPress: this.takePhoto
 			},
 			{
@@ -139,7 +139,7 @@ class MessageBox extends Component {
 			},
 			{
 				title: I18n.t('Choose_from_library'),
-				icon: 'share',
+				icon: 'image',
 				onPress: this.chooseFromLibrary
 			},
 			{
@@ -738,6 +738,7 @@ class MessageBox extends Component {
 				Q.where('id', Q.like(`${ Q.sanitizeLikeString(command) }%`))
 			).fetch();
 			if (slashCommand.length > 0) {
+				logEvent(events.COMMAND_RUN);
 				try {
 					const messageWithoutCommand = message.replace(/([^\s]+)/, '').trim();
 					const [{ appId }] = slashCommand;
@@ -745,6 +746,7 @@ class MessageBox extends Component {
 					RocketChat.runSlashCommand(command, roomId, messageWithoutCommand, triggerId, tmid || messageTmid);
 					replyCancel();
 				} catch (e) {
+					logEvent(events.COMMAND_RUN_F);
 					log(e);
 				}
 				this.clearInput();

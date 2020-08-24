@@ -1,4 +1,4 @@
-# e2e Testing
+# E2E Testing
 
 ## Contents
 
