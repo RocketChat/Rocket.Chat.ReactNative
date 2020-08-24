@@ -16,20 +16,25 @@
 default_platform(:android)
 
 platform :android do
-  desc "Build App for development"
-  lane :build do
-    gradle(task: "assembleDebug")
+  desc "Play build for development"
+  lane :playBuild do
+    gradle(task: "assemblePlayDebug")
   end
 
-  desc "Build App for release"
-  lane :release do
-    gradle(task: "bundleRelease")
+  desc "Foss build for release"
+  lane :fossRelease do
+    gradle(task: "assembleFossRelease")
+  end
+
+  desc "Play build for release"
+  lane :playRelease do
+    gradle(task: "bundlePlayRelease")
   end
 
   desc "Upload App to Play Store Internal"
   lane :beta do
     upload_to_play_store(
-      track: 'internal', 
+      track: 'internal',
       aab: 'android/app/build/outputs/bundle/release/app-release.aab'
     )
   end
