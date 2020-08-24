@@ -123,10 +123,8 @@ const createOrUpdateSubscription = async(subscription, room) => {
 			}
 		}
 
-		// TODO: We should do this here?
-		room = await Encryption.decryptSubscription(room);
-
-		const tmp = merge(subscription, room);
+		let tmp = merge(subscription, room);
+		tmp = await Encryption.decryptSubscription(tmp);
 		await db.action(async() => {
 			let sub;
 			try {
