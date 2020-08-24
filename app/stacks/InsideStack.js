@@ -30,7 +30,7 @@ import PickerView from '../views/PickerView';
 import ThreadMessagesView from '../views/ThreadMessagesView';
 import MarkdownTableView from '../views/MarkdownTableView';
 import ReadReceiptsView from '../views/ReadReceiptView';
-import QueueListView from '../views/QueueListView';
+import QueueListView from '../ee/omnichannel/views/QueueListView';
 
 // Profile Stack
 import ProfileView from '../views/ProfileView';

@@ -6,7 +6,7 @@ import {
 	inquiryQueueAdd,
 	inquiryQueueUpdate,
 	inquiryQueueRemove
-} from '../../../actions/inquiry';
+} from '../../../ee/omnichannel/actions/inquiry';
 
 const removeListener = listener => listener.stop();
 

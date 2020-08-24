@@ -853,20 +853,6 @@ const RocketChat = {
 		// RC 2.2.0
 		return this.sdk.get('livechat/custom-fields');
 	},
-	changeLivechatStatus() {
-		// RC 0.26.0
-		return this.methodCallWrapper('livechat:changeLivechatStatus');
-	},
-	getInquiriesQueued() {
-		// RC 2.4.0
-		return this.sdk.get('livechat/inquiries.queued');
-	},
-	takeInquiry(inquiryId) {
-		// this inquiry is added to the db by the subscriptions stream
-		// and will be removed by the queue stream
-		// RC 2.4.0
-		return this.methodCallWrapper('livechat:takeInquiry', inquiryId);
-	},
 
 	getUidDirectMessage(room) {
 		const { id: userId } = reduxStore.getState().login.user;
