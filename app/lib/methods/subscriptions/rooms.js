@@ -25,7 +25,6 @@ let streamListener;
 let subServer;
 let queue = {};
 let subTimer = null;
-let roomTimer = null;
 const WINDOW_TIME = 500;
 
 const createOrUpdateSubscription = async(subscription, room) => {
@@ -353,10 +352,6 @@ export default function subscribeRooms() {
 		if (subTimer) {
 			clearTimeout(subTimer);
 			subTimer = false;
-		}
-		if (roomTimer) {
-			clearTimeout(roomTimer);
-			roomTimer = false;
 		}
 	};
 
