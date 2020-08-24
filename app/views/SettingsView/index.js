@@ -9,7 +9,7 @@ import FastImage from '@rocket.chat/react-native-fast-image';
 
 import { logout as logoutAction } from '../../actions/login';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
-import { toggleCrashReport as toggleCrashReportAction } from '../../actions/crashReport';
+import { toggleCrashReport as toggleCrashReportAction, toggleAnalyticsEvents as toggleAnalyticsEventsAction } from '../../actions/crashReport';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { DrawerButton, CloseModalButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
@@ -67,7 +67,9 @@ class SettingsView extends React.Component {
 		navigation: PropTypes.object,
 		server:	PropTypes.object,
 		allowCrashReport: PropTypes.bool,
+		allowAnalyticsEvents: PropTypes.bool,
 		toggleCrashReport: PropTypes.func,
+		toggleAnalyticsEvents: PropTypes.func,
 		theme: PropTypes.string,
 		isMasterDetail: PropTypes.bool,
 		logout: PropTypes.func.isRequired,
@@ -111,12 +113,22 @@ class SettingsView extends React.Component {
 		const { toggleCrashReport } = this.props;
 		toggleCrashReport(value);
 		loggerConfig.autoNotify = value;
-		analytics().setAnalyticsCollectionEnabled(value);
+		// analytics().setAnalyticsCollectionEnabled(value);
 		if (value) {
 			loggerConfig.clearBeforeSendCallbacks();
 		} else {
 			loggerConfig.registerBeforeSendCallback(() => false);
 		}
+	}
+
+	toggleAnalyticsEvents = (value) => {
+		logEvent(events.SE_TOGGLE_ANALYTICS_EVENTS);
+		const { toggleAnalyticsEvents } = this.props;
+
+		// store value in AsyncStorage and retrieve on init
+
+		toggleAnalyticsEvents(value);
+		analytics().setAnalyticsCollectionEnabled(value);
 	}
 
 	navigateToScreen = (screen) => {
@@ -180,6 +192,18 @@ class SettingsView extends React.Component {
 				value={allowCrashReport}
 				trackColor={SWITCH_TRACK_COLOR}
 				onValueChange={this.toggleCrashReport}
+			/>
+		);
+	}
+
+	renderAnalyticsEventsSwitch = () => {
+		const { allowAnalyticsEvents } = this.props;
+		// alert(allowAnalyticsEvents);
+		return (
+			<Switch
+				value={allowAnalyticsEvents}
+				trackColor={SWITCH_TRACK_COLOR}
+				onValueChange={this.toggleAnalyticsEvents}
 			/>
 		);
 	}
@@ -310,6 +334,12 @@ class SettingsView extends React.Component {
 						right={() => this.renderCrashReportSwitch()}
 						theme={theme}
 					/>
+					<ListItem
+						title={I18n.t('Log_analytics_events')}
+						testID='settings-view-analytics-events'
+						right={() => this.renderAnalyticsEventsSwitch()}
+						theme={theme}
+					/>
 					<Separator theme={theme} />
 					<ItemInfo
 						info={I18n.t('Crash_report_disclaimer')}
@@ -344,6 +374,7 @@ class SettingsView extends React.Component {
 const mapStateToProps = state => ({
 	server: state.server,
 	allowCrashReport: state.crashReport.allowCrashReport,
+	allowAnalyticsEvents: state.crashReport.allowAnalyticsEvents,
 	isMasterDetail: state.app.isMasterDetail
 });
 
@@ -351,6 +382,7 @@ const mapDispatchToProps = dispatch => ({
 	logout: () => dispatch(logoutAction()),
 	selectServerRequest: params => dispatch(selectServerRequestAction(params)),
 	toggleCrashReport: params => dispatch(toggleCrashReportAction(params)),
+	toggleAnalyticsEvents: params => dispatch(toggleAnalyticsEventsAction(params)),
 	appStart: params => dispatch(appStartAction(params))
 });
 

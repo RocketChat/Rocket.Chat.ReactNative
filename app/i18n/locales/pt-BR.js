@@ -576,5 +576,6 @@ export default {
 	After_seconds_set_by_admin: 'Após {{seconds}} segundos (Configurado pelo adm)',
 	Dont_activate: 'Não ativar agora',
 	Queued_chats: 'Bate-papos na fila',
-	Queue_is_empty: 'A fila está vazia'
+	Queue_is_empty: 'A fila está vazia',
+	Log_analytics_events: 'Logar eventos no analytics'
 };
