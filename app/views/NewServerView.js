@@ -6,12 +6,13 @@ import {
 import { connect } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
 import DocumentPicker from 'react-native-document-picker';
-import RNUserDefaults from 'rn-user-defaults';
 import { Base64 } from 'js-base64';
 import parse from 'url-parse';
 
+import UserPreferences from '../lib/userPreferences';
 import EventEmitter from '../utils/events';
 import { selectServerRequest, serverRequest } from '../actions/server';
+import { inviteLinksClear as inviteLinksClearAction } from '../actions/inviteLinks';
 import sharedStyles from './Styles';
 import Button from '../containers/Button';
 import TextInput from '../containers/TextInput';
@@ -20,7 +21,7 @@ import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import I18n from '../i18n';
 import { isIOS } from '../utils/deviceInfo';
 import { themes } from '../constants/colors';
-import log from '../utils/log';
+import log, { logEvent, events } from '../utils/log';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
 import { setBasicAuth, BASIC_AUTH_KEY } from '../utils/fetch';
@@ -61,9 +62,9 @@ const styles = StyleSheet.create({
 });
 
 class NewServerView extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: I18n.t('Workspaces')
-	}
+	})
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -72,16 +73,13 @@ class NewServerView extends React.Component {
 		connectServer: PropTypes.func.isRequired,
 		selectServer: PropTypes.func.isRequired,
 		adding: PropTypes.bool,
-		previousServer: PropTypes.string
+		previousServer: PropTypes.string,
+		inviteLinksClear: PropTypes.func
 	}
 
 	constructor(props) {
 		super(props);
-		if (props.adding) {
-			props.navigation.setOptions({
-				headerLeft: () => <CloseModalButton navigation={props.navigation} onPress={this.close} testID='new-server-view-close' />
-			});
-		}
+		this.setHeader();
 
 		this.state = {
 			text: '',
@@ -92,9 +90,25 @@ class NewServerView extends React.Component {
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
+	componentDidUpdate(prevProps) {
+		const { adding } = this.props;
+		if (prevProps.adding !== adding) {
+			this.setHeader();
+		}
+	}
+
 	componentWillUnmount() {
 		EventEmitter.removeListener('NewServer', this.handleNewServerEvent);
 		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+	}
+
+	setHeader = () => {
+		const { adding, navigation } = this.props;
+		if (adding) {
+			navigation.setOptions({
+				headerLeft: () => <CloseModalButton navigation={navigation} onPress={this.close} testID='new-server-view-close' />
+			});
+		}
 	}
 
 	handleBackPress = () => {
@@ -111,7 +125,8 @@ class NewServerView extends React.Component {
 	}
 
 	close = () => {
-		const { selectServer, previousServer } = this.props;
+		const { selectServer, previousServer, inviteLinksClear } = this.props;
+		inviteLinksClear();
 		selectServer(previousServer);
 	}
 
@@ -124,6 +139,7 @@ class NewServerView extends React.Component {
 	}
 
 	submit = async() => {
+		logEvent(events.NEWSERVER_CONNECT_TO_WORKSPACE);
 		const { text, certificate } = this.state;
 		const { connectServer } = this.props;
 		let cert = null;
@@ -135,6 +151,7 @@ class NewServerView extends React.Component {
 			try {
 				await FileSystem.copyAsync({ from: certificate.path, to: certificatePath });
 			} catch (e) {
+				logEvent(events.NEWSERVER_CONNECT_TO_WORKSPACE_F);
 				log(e);
 			}
 			cert = {
@@ -152,6 +169,7 @@ class NewServerView extends React.Component {
 	}
 
 	connectOpen = () => {
+		logEvent(events.NEWSERVER_JOIN_OPEN_WORKSPACE);
 		this.setState({ connectingOpen: true });
 		const { connectServer } = this.props;
 		connectServer('https://open.rocket.chat');
@@ -162,7 +180,7 @@ class NewServerView extends React.Component {
 			const parsedUrl = parse(text, true);
 			if (parsedUrl.auth.length) {
 				const credentials = Base64.encode(parsedUrl.auth);
-				await RNUserDefaults.set(`${ BASIC_AUTH_KEY }-${ server }`, credentials);
+				await UserPreferences.setStringAsync(`${ BASIC_AUTH_KEY }-${ server }`, credentials);
 				setBasicAuth(credentials);
 			}
 		} catch {
@@ -321,7 +339,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	connectServer: (server, certificate) => dispatch(serverRequest(server, certificate)),
-	selectServer: server => dispatch(selectServerRequest(server))
+	selectServer: server => dispatch(selectServerRequest(server)),
+	inviteLinksClear: () => dispatch(inviteLinksClearAction())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(NewServerView));

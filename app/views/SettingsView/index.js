@@ -26,16 +26,21 @@ import openLink from '../../utils/openLink';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
 import styles from './styles';
-import { loggerConfig, analytics } from '../../utils/log';
-import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/links';
+import {
+	loggerConfig, analytics, logEvent, events
+} from '../../utils/log';
+import {
+	PLAY_MARKET_LINK, FDROID_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK
+} from '../../constants/links';
 import { withTheme } from '../../theme';
 import SidebarView from '../SidebarView';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import { appStart as appStartAction, ROOT_LOADING } from '../../actions/app';
 import { onReviewPress } from '../../utils/review';
-import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
+import { isFDroidBuild } from '../../constants/environment';
+
 
 const SectionSeparator = React.memo(({ theme }) => (
 	<View
@@ -71,21 +76,11 @@ class SettingsView extends React.Component {
 		isMasterDetail: PropTypes.bool,
 		logout: PropTypes.func.isRequired,
 		selectServerRequest: PropTypes.func,
-		user: PropTypes.shape({
-			roles: PropTypes.array,
-			statusLivechat: PropTypes.string
-		}),
 		appStart: PropTypes.func
 	}
 
-	get showLivechat() {
-		const { user } = this.props;
-		const { roles } = user;
-
-		return roles?.includes('livechat-agent');
-	}
-
 	handleLogout = () => {
+		logEvent(events.SE_LOG_OUT);
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_of_this_application'),
 			callToAction: I18n.t('Logout'),
@@ -97,6 +92,7 @@ class SettingsView extends React.Component {
 	}
 
 	handleClearCache = () => {
+		logEvent(events.SE_CLEAR_LOCAL_SERVER_CACHE);
 		showConfirmationAlert({
 			message: I18n.t('This_will_clear_all_your_offline_data'),
 			callToAction: I18n.t('Clear'),
@@ -114,33 +110,29 @@ class SettingsView extends React.Component {
 	}
 
 	toggleCrashReport = (value) => {
+		logEvent(events.SE_TOGGLE_CRASH_REPORT);
 		AsyncStorage.setItem(CRASH_REPORT_KEY, JSON.stringify(value));
 		const { toggleCrashReport } = this.props;
 		toggleCrashReport(value);
-		loggerConfig.autoNotify = value;
-		analytics().setAnalyticsCollectionEnabled(value);
-
-		if (value) {
-			loggerConfig.clearBeforeSendCallbacks();
-		} else {
-			loggerConfig.registerBeforeSendCallback(() => false);
-		}
-	}
-
-	toggleLivechat = async() => {
-		try {
-			await RocketChat.changeLivechatStatus();
-		} catch {
-			// Do nothing
+		if (!isFDroidBuild) {
+			loggerConfig.autoNotify = value;
+			analytics().setAnalyticsCollectionEnabled(value);
+			if (value) {
+				loggerConfig.clearBeforeSendCallbacks();
+			} else {
+				loggerConfig.registerBeforeSendCallback(() => false);
+			}
 		}
 	}
 
 	navigateToScreen = (screen) => {
+		logEvent(events[`SE_GO_${ screen.replace('View', '').toUpperCase() }`]);
 		const { navigation } = this.props;
 		navigation.navigate(screen);
 	}
 
 	sendEmail = async() => {
+		logEvent(events.SE_CONTACT_US);
 		const subject = encodeURI('React Native App Support');
 		const email = encodeURI('support@rocket.chat');
 		const description = encodeURI(`
@@ -150,20 +142,32 @@ class SettingsView extends React.Component {
 		try {
 			await Linking.openURL(`mailto:${ email }?subject=${ subject }&body=${ description }`);
 		} catch (e) {
+			logEvent(events.SE_CONTACT_US_F);
 			showErrorAlert(I18n.t('error-email-send-failed', { message: 'support@rocket.chat' }));
 		}
 	}
 
 	shareApp = () => {
-		Share.share({ message: isAndroid ? PLAY_MARKET_LINK : APP_STORE_LINK });
+		let message;
+		if (isAndroid) {
+			message = PLAY_MARKET_LINK;
+			if (isFDroidBuild) {
+				message = FDROID_MARKET_LINK;
+			}
+		} else {
+			message = APP_STORE_LINK;
+		}
+		Share.share({ message });
 	}
 
 	copyServerVersion = () => {
-		const { server } = this.props;
-		this.saveToClipboard(server.version);
+		const { server: { version } } = this.props;
+		logEvent(events.SE_COPY_SERVER_VERSION, { serverVersion: version });
+		this.saveToClipboard(version);
 	}
 
 	copyAppVersion = () => {
+		logEvent(events.SE_COPY_APP_VERSION, { appVersion: getReadableVersion });
 		this.saveToClipboard(getReadableVersion);
 	}
 
@@ -173,6 +177,7 @@ class SettingsView extends React.Component {
 	}
 
 	onPressLicense = () => {
+		logEvent(events.SE_READ_LICENSE);
 		const { theme } = this.props;
 		openLink(LICENSE_LINK, theme);
 	}
@@ -189,18 +194,6 @@ class SettingsView extends React.Component {
 				value={allowCrashReport}
 				trackColor={SWITCH_TRACK_COLOR}
 				onValueChange={this.toggleCrashReport}
-			/>
-		);
-	}
-
-	renderLivechatSwitch = () => {
-		const { user } = this.props;
-		const { statusLivechat } = user;
-		return (
-			<Switch
-				value={statusLivechat === 'available'}
-				trackColor={SWITCH_TRACK_COLOR}
-				onValueChange={this.toggleLivechat}
 			/>
 		);
 	}
@@ -251,14 +244,18 @@ class SettingsView extends React.Component {
 						theme={theme}
 					/>
 					<Separator theme={theme} />
-					<ListItem
-						title={I18n.t('Review_this_app')}
-						showActionIndicator
-						onPress={onReviewPress}
-						testID='settings-view-review-app'
-						right={this.renderDisclosure}
-						theme={theme}
-					/>
+					{!isFDroidBuild ? (
+						<>
+							<ListItem
+								title={I18n.t('Review_this_app')}
+								showActionIndicator
+								onPress={onReviewPress}
+								testID='settings-view-review-app'
+								right={this.renderDisclosure}
+								theme={theme}
+							/>
+						</>
+					) : null}
 					<Separator theme={theme} />
 					<ListItem
 						title={I18n.t('Share_this_app')}
@@ -337,17 +334,21 @@ class SettingsView extends React.Component {
 						</>
 					) : null}
 
-					<ListItem
-						title={I18n.t('Send_crash_report')}
-						testID='settings-view-crash-report'
-						right={() => this.renderCrashReportSwitch()}
-						theme={theme}
-					/>
-					<Separator theme={theme} />
-					<ItemInfo
-						info={I18n.t('Crash_report_disclaimer')}
-						theme={theme}
-					/>
+					{!isFDroidBuild ? (
+						<>
+							<ListItem
+								title={I18n.t('Send_crash_report')}
+								testID='settings-view-crash-report'
+								right={() => this.renderCrashReportSwitch()}
+								theme={theme}
+							/>
+							<Separator theme={theme} />
+							<ItemInfo
+								info={I18n.t('Crash_report_disclaimer')}
+								theme={theme}
+							/>
+						</>
+					) : null}
 
 					<Separator theme={theme} />
 					<ListItem
@@ -376,7 +377,6 @@ class SettingsView extends React.Component {
 
 const mapStateToProps = state => ({
 	server: state.server,
-	user: getUserSelector(state),
 	allowCrashReport: state.crashReport.allowCrashReport,
 	isMasterDetail: state.app.isMasterDetail
 });

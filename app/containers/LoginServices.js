@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, StyleSheet, Text, Animated, Easing, Image
+	View, StyleSheet, Text, Animated, Easing
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -15,7 +15,9 @@ import OrSeparator from './OrSeparator';
 import Touch from '../utils/touch';
 import I18n from '../i18n';
 import random from '../utils/random';
+import { logEvent, events } from '../utils/log';
 import RocketChat from '../lib/rocketchat';
+import { CustomIcon } from '../lib/Icons';
 
 const BUTTON_HEIGHT = 48;
 const SERVICE_HEIGHT = 58;
@@ -77,6 +79,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressFacebook = () => {
+		logEvent(events.ENTER_WITH_FACEBOOK);
 		const { services, server } = this.props;
 		const { clientId } = services.facebook;
 		const endpoint = 'https://m.facebook.com/v2.9/dialog/oauth';
@@ -88,6 +91,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressGithub = () => {
+		logEvent(events.ENTER_WITH_GITHUB);
 		const { services, server } = this.props;
 		const { clientId } = services.github;
 		const endpoint = `https://github.com/login?client_id=${ clientId }&return_to=${ encodeURIComponent('/login/oauth/authorize') }`;
@@ -99,6 +103,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressGitlab = () => {
+		logEvent(events.ENTER_WITH_GITLAB);
 		const { services, server, Gitlab_URL } = this.props;
 		const { clientId } = services.gitlab;
 		const baseURL = Gitlab_URL ? Gitlab_URL.trim().replace(/\/*$/, '') : 'https://gitlab.com';
@@ -111,6 +116,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressGoogle = () => {
+		logEvent(events.ENTER_WITH_GOOGLE);
 		const { services, server } = this.props;
 		const { clientId } = services.google;
 		const endpoint = 'https://accounts.google.com/o/oauth2/auth';
@@ -122,6 +128,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressLinkedin = () => {
+		logEvent(events.ENTER_WITH_LINKEDIN);
 		const { services, server } = this.props;
 		const { clientId } = services.linkedin;
 		const endpoint = 'https://www.linkedin.com/oauth/v2/authorization';
@@ -133,6 +140,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressMeteor = () => {
+		logEvent(events.ENTER_WITH_METEOR);
 		const { services, server } = this.props;
 		const { clientId } = services['meteor-developer'];
 		const endpoint = 'https://www.meteor.com/oauth2/authorize';
@@ -143,6 +151,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressTwitter = () => {
+		logEvent(events.ENTER_WITH_TWITTER);
 		const { server } = this.props;
 		const state = this.getOAuthState();
 		const url = `${ server }/_oauth/twitter/?requestTokenAndRedirect=true&state=${ state }`;
@@ -150,6 +159,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressWordpress = () => {
+		logEvent(events.ENTER_WITH_WORDPRESS);
 		const { services, server } = this.props;
 		const { clientId, serverURL } = services.wordpress;
 		const endpoint = `${ serverURL }/oauth/authorize`;
@@ -161,6 +171,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressCustomOAuth = (loginService) => {
+		logEvent(events.ENTER_WITH_CUSTOM_OAUTH);
 		const { server } = this.props;
 		const {
 			serverURL, authorizePath, clientId, scope, service
@@ -175,6 +186,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressSaml = (loginService) => {
+		logEvent(events.ENTER_WITH_SAML);
 		const { server } = this.props;
 		const {	clientConfig } = loginService;
 		const {	provider } = clientConfig;
@@ -184,6 +196,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressCas = () => {
+		logEvent(events.ENTER_WITH_CAS);
 		const { server, CAS_login_url } = this.props;
 		const ssoToken = random(17);
 		const url = `${ CAS_login_url }?service=${ server }/_cas/${ ssoToken }`;
@@ -191,6 +204,7 @@ class LoginServices extends React.PureComponent {
 	}
 
 	onPressAppleLogin = async() => {
+		logEvent(events.ENTER_WITH_APPLE);
 		try {
 			const { fullName, email, identityToken } = await AppleAuthentication.signInAsync({
 				requestedScopes: [
@@ -201,7 +215,7 @@ class LoginServices extends React.PureComponent {
 
 			await RocketChat.loginOAuthOrSso({ fullName, email, identityToken });
 		} catch {
-			// Do nothing
+			logEvent(events.ENTER_WITH_APPLE_F);
 		}
 	}
 
@@ -283,7 +297,7 @@ class LoginServices extends React.PureComponent {
 		const { CAS_enabled, theme } = this.props;
 		let { name } = service;
 		name = name === 'meteor-developer' ? 'meteor' : name;
-		const icon = `icon_${ name }`;
+		const icon = `${ name }-monochromatic`;
 		const isSaml = service.service === 'saml';
 		let onPress = () => {};
 
@@ -312,18 +326,6 @@ class LoginServices extends React.PureComponent {
 				break;
 		}
 
-		if (name === 'apple') {
-			return (
-				<AppleAuthentication.AppleAuthenticationButton
-					buttonType={AppleAuthentication.AppleAuthenticationButtonType.CONTINUE}
-					buttonStyle={theme === 'light' ? AppleAuthentication.AppleAuthenticationButtonStyle.BLACK : AppleAuthentication.AppleAuthenticationButtonStyle.WHITE}
-					cornerRadius={BORDER_RADIUS}
-					style={[styles.serviceButton, { height: BUTTON_HEIGHT }]}
-					onPress={onPress}
-				/>
-			);
-		}
-
 		name = name.charAt(0).toUpperCase() + name.slice(1);
 		let buttonText;
 		if (isSaml || (service.service === 'cas' && CAS_enabled)) {
@@ -348,7 +350,7 @@ class LoginServices extends React.PureComponent {
 				underlayColor={themes[theme].buttonText}
 			>
 				<View style={styles.serviceButtonContainer}>
-					{service.authType === 'oauth' ? <Image source={{ uri: icon }} style={styles.serviceIcon} /> : null}
+					{service.authType === 'oauth' || service.authType === 'apple' ? <CustomIcon name={icon} size={24} color={themes[theme].titleText} style={styles.serviceIcon} /> : null}
 					<Text style={[styles.serviceText, { color: themes[theme].titleText }]}>{buttonText}</Text>
 				</View>
 			</Touch>

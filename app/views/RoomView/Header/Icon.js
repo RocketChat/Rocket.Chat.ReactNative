@@ -36,17 +36,17 @@ const Icon = React.memo(({
 
 	let icon;
 	if (type === 'discussion') {
-		icon = 'chat';
+		icon = 'discussions';
 	} else if (type === 'thread') {
 		icon = 'threads';
 	} else if (type === 'c') {
-		icon = 'hash';
+		icon = 'channel-public';
 	} else if (type === 'l') {
-		icon = 'livechat';
+		icon = 'omnichannel';
 	} else if (type === 'd') {
 		icon = 'team';
 	} else {
-		icon = 'lock';
+		icon = 'channel-private';
 	}
 	return (
 		<CustomIcon

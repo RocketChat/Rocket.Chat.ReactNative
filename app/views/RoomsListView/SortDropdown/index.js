@@ -10,7 +10,7 @@ import styles from '../styles';
 import Touch from '../../../utils/touch';
 import RocketChat from '../../../lib/rocketchat';
 import { setPreference } from '../../../actions/sortPreferences';
-import log from '../../../utils/log';
+import log, { logEvent, events } from '../../../utils/log';
 import I18n from '../../../i18n';
 import { CustomIcon } from '../../../lib/Icons';
 import { withTheme } from '../../../theme';
@@ -65,31 +65,37 @@ class Sort extends PureComponent {
 			setSortPreference(param);
 			RocketChat.saveSortPreference(param);
 		} catch (e) {
+			logEvent(events.RL_SORT_CHANNELS_F);
 			log(e);
 		}
 	}
 
 	sortByName = () => {
+		logEvent(events.RL_SORT_CHANNELS_BY_NAME);
 		this.setSortPreference({ sortBy: 'alphabetical' });
 		this.close();
 	}
 
 	sortByActivity = () => {
+		logEvent(events.RL_SORT_CHANNELS_BY_ACTIVITY);
 		this.setSortPreference({ sortBy: 'activity' });
 		this.close();
 	}
 
 	toggleGroupByType = () => {
+		logEvent(events.RL_GROUP_CHANNELS_BY_TYPE);
 		const { groupByType } = this.props;
 		this.setSortPreference({ groupByType: !groupByType });
 	}
 
 	toggleGroupByFavorites = () => {
+		logEvent(events.RL_GROUP_CHANNELS_BY_FAVORITE);
 		const { showFavorites } = this.props;
 		this.setSortPreference({ showFavorites: !showFavorites });
 	}
 
 	toggleUnread = () => {
+		logEvent(events.RL_GROUP_CHANNELS_BY_UNREAD);
 		const { showUnread } = this.props;
 		this.setSortPreference({ showUnread: !showUnread });
 	}
@@ -150,8 +156,8 @@ class Sort extends PureComponent {
 					>
 						<View style={[styles.dropdownContainerHeader, { borderColor: themes[theme].separatorColor }]}>
 							<View style={styles.sortItemContainer}>
+								<CustomIcon style={[styles.sortIcon, { color: themes[theme].auxiliaryText }]} size={22} name='sort' />
 								<Text style={[styles.sortToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Sorting_by', { key: I18n.t(sortBy === 'alphabetical' ? 'name' : 'activity') })}</Text>
-								<CustomIcon style={[styles.sortIcon, { color: themes[theme].auxiliaryText }]} size={22} name='sort-az' />
 							</View>
 						</View>
 					</Touch>
@@ -190,7 +196,7 @@ class Sort extends PureComponent {
 					</SortItemButton>
 					<SortItemButton onPress={this.toggleUnread} theme={theme}>
 						<SortItemContent
-							icon='eye-off'
+							icon='unread-on-top-disabled'
 							label='Unread_on_top'
 							checked={showUnread}
 							theme={theme}

@@ -16,132 +16,16 @@ import RocketChat from '../../lib/rocketchat';
 import { withTheme } from '../../theme';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import SafeAreaView from '../../containers/SafeAreaView';
-import log from '../../utils/log';
-
-const SectionTitle = React.memo(({ title, theme }) => (
-	<Text
-		style={[
-			styles.sectionTitle,
-			{
-				backgroundColor: themes[theme].auxiliaryBackground,
-				color: themes[theme].infoText
-			}
-		]}
-	>
-		{title}
-	</Text>
-));
-
-const SectionSeparator = React.memo(({ theme }) => (
-	<View
-		style={[
-			styles.sectionSeparatorBorder,
-			{ backgroundColor: themes[theme].auxiliaryBackground }
-		]}
-	/>
-));
-
-const Info = React.memo(({ info, theme }) => (
-	<Text
-		style={[
-			styles.infoText,
-			{
-				color: themes[theme].infoText,
-				backgroundColor: themes[theme].auxiliaryBackground
-			}
-		]}
-	>
-		{info}
-	</Text>
-));
-
-SectionTitle.propTypes = {
-	title: PropTypes.string,
-	theme: PropTypes.string
-};
-
-SectionSeparator.propTypes = {
-	theme: PropTypes.string
-};
-
-Info.propTypes = {
-	info: PropTypes.string,
-	theme: PropTypes.string
-};
-
-const OPTIONS = {
-	desktopNotifications: [{
-		label: I18n.t('Default'), value: 'default'
-	}, {
-		label: I18n.t('All_Messages'), value: 'all'
-	}, {
-		label: I18n.t('Mentions'), value: 'mentions'
-	}, {
-		label: I18n.t('Nothing'), value: 'nothing'
-	}],
-	audioNotifications: [{
-		label: I18n.t('Default'), value: 'default'
-	}, {
-		label: I18n.t('All_Messages'), value: 'all'
-	}, {
-		label: I18n.t('Mentions'), value: 'mentions'
-	}, {
-		label: I18n.t('Nothing'), value: 'nothing'
-	}],
-	mobilePushNotifications: [{
-		label: I18n.t('Default'), value: 'default'
-	}, {
-		label: I18n.t('All_Messages'), value: 'all'
-	}, {
-		label: I18n.t('Mentions'), value: 'mentions'
-	}, {
-		label: I18n.t('Nothing'), value: 'nothing'
-	}],
-	emailNotifications: [{
-		label: I18n.t('Default'), value: 'default'
-	}, {
-		label: I18n.t('All_Messages'), value: 'all'
-	}, {
-		label: I18n.t('Mentions'), value: 'mentions'
-	}, {
-		label: I18n.t('Nothing'), value: 'nothing'
-	}],
-	desktopNotificationDuration: [{
-		label: I18n.t('Default'), value: 0
-	}, {
-		label: I18n.t('Seconds', { second: 1 }), value: 1
-	}, {
-		label: I18n.t('Seconds', { second: 2 }), value: 2
-	}, {
-		label: I18n.t('Seconds', { second: 3 }), value: 3
-	}, {
-		label: I18n.t('Seconds', { second: 4 }), value: 4
-	}, {
-		label: I18n.t('Seconds', { second: 5 }), value: 5
-	}],
-	audioNotificationValue: [{
-		label: 'None', value: 'none None'
-	}, {
-		label: I18n.t('Default'), value: '0 Default'
-	}, {
-		label: 'Beep', value: 'beep Beep'
-	}, {
-		label: 'Ding', value: 'ding Ding'
-	}, {
-		label: 'Chelle', value: 'chelle Chelle'
-	}, {
-		label: 'Droplet', value: 'droplet Droplet'
-	}, {
-		label: 'Highbell', value: 'highbell Highbell'
-	}, {
-		label: 'Seasons', value: 'seasons Seasons'
-	}]
-};
+import log, { events, logEvent } from '../../utils/log';
+import SectionTitle from './SectionTitle';
+import SectionSeparator from './SectionSeparator';
+import Info from './Info';
+import { OPTIONS } from './options';
 
 class NotificationPreferencesView extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: I18n.t('Notification_Preferences')
-	}
+	})
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -181,6 +65,7 @@ class NotificationPreferencesView extends React.Component {
 	}
 
 	saveNotificationSettings = async(key, value, params) => {
+		logEvent(events[`NP_${ key.toUpperCase() }`]);
 		const { room } = this.state;
 		const db = database.active;
 
@@ -206,6 +91,7 @@ class NotificationPreferencesView extends React.Component {
 				}));
 			});
 		} catch (e) {
+			logEvent(events[`NP_${ key.toUpperCase() }_F`]);
 			log(e);
 		}
 	}
@@ -229,7 +115,7 @@ class NotificationPreferencesView extends React.Component {
 		const { room } = this.state;
 		const { theme } = this.props;
 		const text = room[key] ? OPTIONS[key].find(option => option.value === room[key]) : OPTIONS[key][0];
-		return <Text style={[styles.pickerText, { color: themes[theme].actionTintColor }]}>{text?.label}</Text>;
+		return <Text style={[styles.pickerText, { color: themes[theme].actionTintColor }]}>{I18n.t(text?.label, { defaultValue: text?.label, second: text?.second })}</Text>;
 	}
 
 	renderSwitch = (key) => {

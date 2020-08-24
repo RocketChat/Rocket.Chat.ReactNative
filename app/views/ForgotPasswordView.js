@@ -12,6 +12,7 @@ import RocketChat from '../lib/rocketchat';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
+import { logEvent, events } from '../utils/log';
 
 class ForgotPasswordView extends React.Component {
 	static navigationOptions = ({ route }) => ({
@@ -56,6 +57,7 @@ class ForgotPasswordView extends React.Component {
 	}
 
 	resetPassword = async() => {
+		logEvent(events.FP_FORGOT_PASSWORD);
 		const { email, invalidEmail } = this.state;
 		if (invalidEmail || !email) {
 			return;
@@ -69,6 +71,7 @@ class ForgotPasswordView extends React.Component {
 				showErrorAlert(I18n.t('Forgot_password_If_this_email_is_registered'), I18n.t('Alert'));
 			}
 		} catch (e) {
+			logEvent(events.FP_FORGOT_PASSWORD_F);
 			const msg = (e.data && e.data.error) || I18n.t('There_was_an_error_while_action', { action: I18n.t('resetting_password') });
 			showErrorAlert(msg, I18n.t('Alert'));
 		}

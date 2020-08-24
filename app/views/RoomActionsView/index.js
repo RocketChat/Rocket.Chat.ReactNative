@@ -14,7 +14,7 @@ import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status';
 import RocketChat from '../../lib/rocketchat';
-import log from '../../utils/log';
+import log, { logEvent, events } from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
@@ -91,7 +91,7 @@ class RoomActionsView extends React.Component {
 		this.mounted = true;
 		const { room, member } = this.state;
 		if (room.rid) {
-			if (!room.id) {
+			if (!room.id && !this.isOmnichannelPreview) {
 				try {
 					const result = await RocketChat.getChannelInfo(room.rid);
 					if (result.success) {
@@ -135,13 +135,20 @@ class RoomActionsView extends React.Component {
 		}
 	}
 
+	get isOmnichannelPreview() {
+		const { room } = this.state;
+		return room.t === 'l' && room.status === 'queued';
+	}
+
 	onPressTouchable = (item) => {
-		if (item.route) {
+		const { route, event, params } = item;
+		if (route) {
+			logEvent(events[`RA_GO_${ route.replace('View', '').toUpperCase() }${ params.name ? params.name.toUpperCase() : '' }`]);
 			const { navigation } = this.props;
-			navigation.navigate(item.route, item.params);
+			navigation.navigate(route, params);
 		}
-		if (item.event) {
-			return item.event();
+		if (event) {
+			return event();
 		}
 	}
 
@@ -229,7 +236,7 @@ class RoomActionsView extends React.Component {
 		const isGroupChat = RocketChat.isGroupChat(room);
 
 		const notificationsAction = {
-			icon: 'bell',
+			icon: 'notification',
 			name: I18n.t('Notifications'),
 			route: 'NotificationPrefView',
 			params: { rid, room },
@@ -238,13 +245,13 @@ class RoomActionsView extends React.Component {
 
 		const jitsiActions = jitsiEnabled ? [
 			{
-				icon: 'mic',
+				icon: 'phone',
 				name: I18n.t('Voice_call'),
 				event: () => RocketChat.callJitsi(rid, true),
 				testID: 'room-actions-voice'
 			},
 			{
-				icon: 'video-1',
+				icon: 'camera',
 				name: I18n.t('Video_call'),
 				event: () => RocketChat.callJitsi(rid),
 				testID: 'room-actions-video'
@@ -270,14 +277,14 @@ class RoomActionsView extends React.Component {
 		}, {
 			data: [
 				{
-					icon: 'clip',
+					icon: 'attach',
 					name: I18n.t('Files'),
 					route: 'MessagesView',
 					params: { rid, t, name: 'Files' },
 					testID: 'room-actions-files'
 				},
 				{
-					icon: 'at',
+					icon: 'mention',
 					name: I18n.t('Mentions'),
 					route: 'MessagesView',
 					params: { rid, t, name: 'Mentions' },
@@ -291,7 +298,7 @@ class RoomActionsView extends React.Component {
 					testID: 'room-actions-starred'
 				},
 				{
-					icon: 'magnifier',
+					icon: 'search',
 					name: I18n.t('Search'),
 					route: 'SearchMessagesView',
 					params: { rid },
@@ -365,7 +372,7 @@ class RoomActionsView extends React.Component {
 
 			if (canAddUser) {
 				actions.push({
-					icon: 'plus',
+					icon: 'add',
 					name: I18n.t('Add_users'),
 					route: 'SelectedUsersView',
 					params: {
@@ -378,7 +385,7 @@ class RoomActionsView extends React.Component {
 			}
 			if (canInviteUser) {
 				actions.push({
-					icon: 'add-user',
+					icon: 'user-add',
 					name: I18n.t('Invite_users'),
 					route: 'InviteUsersView',
 					params: {
@@ -394,7 +401,7 @@ class RoomActionsView extends React.Component {
 				sections.push({
 					data: [
 						{
-							icon: 'exit',
+							icon: 'logout',
 							name: I18n.t('Leave_channel'),
 							type: 'danger',
 							event: this.leaveChannel,
@@ -407,35 +414,37 @@ class RoomActionsView extends React.Component {
 		} else if (t === 'l') {
 			sections[2].data = [];
 
-			sections[2].data.push({
-				icon: 'cancel',
-				name: I18n.t('Close'),
-				event: this.closeLivechat
-			});
-
-			if (canForwardGuest) {
+			if (!this.isOmnichannelPreview) {
 				sections[2].data.push({
-					icon: 'transfer',
-					name: I18n.t('Forward'),
-					route: 'ForwardLivechatView',
+					icon: 'close',
+					name: I18n.t('Close'),
+					event: this.closeLivechat
+				});
+
+				if (canForwardGuest) {
+					sections[2].data.push({
+						icon: 'user-forward',
+						name: I18n.t('Forward'),
+						route: 'ForwardLivechatView',
+						params: { rid }
+					});
+				}
+
+				if (canReturnQueue) {
+					sections[2].data.push({
+						icon: 'undo',
+						name: I18n.t('Return'),
+						event: this.returnLivechat
+					});
+				}
+
+				sections[2].data.push({
+					icon: 'history',
+					name: I18n.t('Navigation_history'),
+					route: 'VisitorNavigationView',
 					params: { rid }
 				});
 			}
-
-			if (canReturnQueue) {
-				sections[2].data.push({
-					icon: 'undo',
-					name: I18n.t('Return'),
-					event: this.returnLivechat
-				});
-			}
-
-			sections[2].data.push({
-				icon: 'history',
-				name: I18n.t('Navigation_history'),
-				route: 'VisitorNavigationView',
-				params: { rid }
-			});
 
 			sections.push({
 				data: [notificationsAction],
@@ -506,17 +515,20 @@ class RoomActionsView extends React.Component {
 	}
 
 	toggleBlockUser = () => {
+		logEvent(events.RA_TOGGLE_BLOCK_USER);
 		const { room } = this.state;
 		const { rid, blocker } = room;
 		const { member } = this.state;
 		try {
 			RocketChat.toggleBlockUser(rid, member._id, !blocker);
 		} catch (e) {
+			logEvent(events.RA_TOGGLE_BLOCK_USER_F);
 			log(e);
 		}
 	}
 
 	handleShare = () => {
+		logEvent(events.RA_SHARE);
 		const { room } = this.state;
 		const permalink = RocketChat.getPermalinkChannel(room);
 		if (!permalink) {
