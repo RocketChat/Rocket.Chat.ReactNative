@@ -29,7 +29,9 @@ import styles from './styles';
 import {
 	loggerConfig, analytics, logEvent, events
 } from '../../utils/log';
-import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/links';
+import {
+	PLAY_MARKET_LINK, FDROID_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK
+} from '../../constants/links';
 import { withTheme } from '../../theme';
 import SidebarView from '../SidebarView';
 import { LISTENER } from '../../containers/Toast';
@@ -37,6 +39,8 @@ import EventEmitter from '../../utils/events';
 import { appStart as appStartAction, ROOT_LOADING } from '../../actions/app';
 import { onReviewPress } from '../../utils/review';
 import SafeAreaView from '../../containers/SafeAreaView';
+import { isFDroidBuild } from '../../constants/environment';
+
 
 const SectionSeparator = React.memo(({ theme }) => (
 	<View
@@ -110,12 +114,14 @@ class SettingsView extends React.Component {
 		AsyncStorage.setItem(CRASH_REPORT_KEY, JSON.stringify(value));
 		const { toggleCrashReport } = this.props;
 		toggleCrashReport(value);
-		loggerConfig.autoNotify = value;
-		analytics().setAnalyticsCollectionEnabled(value);
-		if (value) {
-			loggerConfig.clearBeforeSendCallbacks();
-		} else {
-			loggerConfig.registerBeforeSendCallback(() => false);
+		if (!isFDroidBuild) {
+			loggerConfig.autoNotify = value;
+			analytics().setAnalyticsCollectionEnabled(value);
+			if (value) {
+				loggerConfig.clearBeforeSendCallbacks();
+			} else {
+				loggerConfig.registerBeforeSendCallback(() => false);
+			}
 		}
 	}
 
@@ -142,8 +148,16 @@ class SettingsView extends React.Component {
 	}
 
 	shareApp = () => {
-		logEvent(events.SE_SHARE_THIS_APP);
-		Share.share({ message: isAndroid ? PLAY_MARKET_LINK : APP_STORE_LINK });
+		let message;
+		if (isAndroid) {
+			message = PLAY_MARKET_LINK;
+			if (isFDroidBuild) {
+				message = FDROID_MARKET_LINK;
+			}
+		} else {
+			message = APP_STORE_LINK;
+		}
+		Share.share({ message });
 	}
 
 	copyServerVersion = () => {
@@ -230,14 +244,18 @@ class SettingsView extends React.Component {
 						theme={theme}
 					/>
 					<Separator theme={theme} />
-					<ListItem
-						title={I18n.t('Review_this_app')}
-						showActionIndicator
-						onPress={onReviewPress}
-						testID='settings-view-review-app'
-						right={this.renderDisclosure}
-						theme={theme}
-					/>
+					{!isFDroidBuild ? (
+						<>
+							<ListItem
+								title={I18n.t('Review_this_app')}
+								showActionIndicator
+								onPress={onReviewPress}
+								testID='settings-view-review-app'
+								right={this.renderDisclosure}
+								theme={theme}
+							/>
+						</>
+					) : null}
 					<Separator theme={theme} />
 					<ListItem
 						title={I18n.t('Share_this_app')}
@@ -304,17 +322,33 @@ class SettingsView extends React.Component {
 
 					<SectionSeparator theme={theme} />
 
-					<ListItem
-						title={I18n.t('Send_crash_report')}
-						testID='settings-view-crash-report'
-						right={() => this.renderCrashReportSwitch()}
-						theme={theme}
-					/>
-					<Separator theme={theme} />
-					<ItemInfo
-						info={I18n.t('Crash_report_disclaimer')}
-						theme={theme}
-					/>
+					{this.showLivechat ? (
+						<>
+							<ListItem
+								title={I18n.t('Omnichannel')}
+								testID='settings-view-livechat'
+								right={() => this.renderLivechatSwitch()}
+								theme={theme}
+							/>
+							<SectionSeparator theme={theme} />
+						</>
+					) : null}
+
+					{!isFDroidBuild ? (
+						<>
+							<ListItem
+								title={I18n.t('Send_crash_report')}
+								testID='settings-view-crash-report'
+								right={() => this.renderCrashReportSwitch()}
+								theme={theme}
+							/>
+							<Separator theme={theme} />
+							<ItemInfo
+								info={I18n.t('Crash_report_disclaimer')}
+								theme={theme}
+							/>
+						</>
+					) : null}
 
 					<Separator theme={theme} />
 					<ListItem
