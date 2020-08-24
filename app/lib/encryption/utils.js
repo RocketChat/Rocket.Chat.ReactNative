@@ -4,9 +4,15 @@ import SimpleCrypto from 'react-native-simple-crypto';
 import random from '../../utils/random';
 
 export const b64ToBuffer = SimpleCrypto.utils.convertBase64ToArrayBuffer;
-export const bufferToUtf8 = SimpleCrypto.utils.convertArrayBufferToUtf8;
 export const utf8ToBuffer = SimpleCrypto.utils.convertUtf8ToArrayBuffer;
 export const bufferToB64 = SimpleCrypto.utils.convertArrayBufferToBase64;
+// SimpleCrypto.utils.convertArrayBufferToUtf8 is not working with unicode emoji
+export const bufferToUtf8 = (buffer) => {
+	const uintArray = new Uint8Array(buffer);
+	const encodedString = String.fromCharCode.apply(null, uintArray);
+	const decodedString = decodeURIComponent(escape(encodedString));
+	return decodedString;
+};
 export const splitVectorData = (text) => {
 	const vector = text.slice(0, 16);
 	const data = text.slice(16);
