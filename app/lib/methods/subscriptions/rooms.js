@@ -192,6 +192,10 @@ const createOrUpdateSubscription = async(subscription, room) => {
 	}
 };
 
+const getSubQueueId = rid => `SUB-${ rid }`;
+
+const getRoomQueueId = rid => `ROOM-${ rid }`;
+
 const debouncedUpdate = (subscription) => {
 	if (!subTimer) {
 		subTimer = setTimeout(() => {
@@ -200,16 +204,26 @@ const debouncedUpdate = (subscription) => {
 			subTimer = null;
 			Object.keys(batch).forEach((key) => {
 				InteractionManager.runAfterInteractions(() => {
-					if (/SUB/.test(key)) {
-						createOrUpdateSubscription(batch[key]);
-					} else {
-						createOrUpdateSubscription(null, batch[key]);
+					if (batch[key]) {
+						if (/SUB/.test(key)) {
+							const sub = batch[key];
+							const roomQueueId = getRoomQueueId(sub.rid);
+							const room = batch[roomQueueId];
+							delete batch[roomQueueId];
+							createOrUpdateSubscription(sub, room);
+						} else {
+							const room = batch[key];
+							const subQueueId = getSubQueueId(room._id);
+							const sub = batch[subQueueId];
+							delete batch[subQueueId];
+							createOrUpdateSubscription(sub, room);
+						}
 					}
 				});
 			});
 		}, WINDOW_TIME);
 	}
-	queue[subscription.rid ? `SUB-${ subscription.rid }` : `ROOM-${ subscription._id }`] = subscription;
+	queue[subscription.rid ? getSubQueueId(subscription.rid) : getRoomQueueId(subscription._id)] = subscription;
 };
 
 export default function subscribeRooms() {
