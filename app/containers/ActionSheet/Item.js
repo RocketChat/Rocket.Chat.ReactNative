@@ -22,7 +22,7 @@ export const Item = React.memo(({
 			style={[styles.item, { backgroundColor: themes[theme].focusedBackground }]}
 			theme={theme}
 		>
-			{reactionsMode
+			{ !item.icon
 				? (
 					<Avatar
 						text={item}
