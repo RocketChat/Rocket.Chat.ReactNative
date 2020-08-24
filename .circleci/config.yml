@@ -119,7 +119,7 @@ jobs:
       - save_cache: *save-npm-cache-linux
 
   # Android builds
-  android-build:
+  android-play-build:
     <<: *defaults
     docker:
       - image: circleci/android:api-28-node
@@ -178,12 +178,12 @@ jobs:
             echo -e "export default { BUGSNAG_API_KEY: '$BUGSNAG_KEY' };" > ./config.js
 
       - run:
-          name: Build Android App
+          name: Build Android Play App
           command: |
             if [[ $KEYSTORE ]]; then
-              bundle exec fastlane android release
+              bundle exec fastlane android playRelease
             else
-              bundle exec fastlane android build
+              bundle exec fastlane android playBuild
             fi
           working_directory: android
 
@@ -194,11 +194,72 @@ jobs:
               yarn generate-source-maps-android upload \
                 --api-key=$BUGSNAG_KEY \
                 --app-version=$CIRCLE_BUILD_NUM \
-                --minifiedFile=android/app/build/generated/assets/react/release/app.bundle \
-                --source-map=android/app/build/generated/sourcemaps/react/release/app.bundle.map \
+                --minifiedFile=android/app/build/generated/assets/react/play/release/app.bundle \
+                --source-map=android/app/build/generated/sourcemaps/react/play/release/app.bundle.map \
                 --minified-url=app.bundle \
                 --upload-sources
             fi
+
+      - store_artifacts:
+          path: android/app/build/outputs
+
+      - save_cache: *save-npm-cache-linux
+
+      - save_cache: *save-gradle-cache
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - android/fastlane/report.xml
+            - android/app/build/outputs
+
+  android-foss-build:
+    <<: *defaults
+    docker:
+      - image: circleci/android:api-28-node
+
+    environment:
+      JAVA_OPTS: '-Xms512m -Xmx2g'
+      GRADLE_OPTS: '-Xmx3g -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx2g -XX:+HeapDumpOnOutOfMemoryError"'
+      TERM: dumb
+      <<: *bash-env
+
+    steps:
+      - checkout
+
+      - run: *install-node
+
+      - restore_cache: *restore-npm-cache-linux
+
+      - run: *install-npm-modules
+
+      - run: *update-fastlane-android
+
+      - restore_cache: *restore-gradle-cache
+
+      - run:
+          name: Configure Gradle
+          command: |
+            echo -e "" > ./gradle.properties
+            # echo -e "android.enableAapt2=false" >> ./gradle.properties
+            echo -e "android.useAndroidX=true" >> ./gradle.properties
+            echo -e "android.enableJetifier=true" >> ./gradle.properties
+            echo -e "FLIPPER_VERSION=0.51.0" >> ./gradle.properties
+            echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
+
+            if [[ $KEYSTORE ]]; then
+              echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
+              echo -e "KEYSTORE=$KEYSTORE" >> ./gradle.properties
+              echo -e "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+              echo -e "KEY_ALIAS=$KEY_ALIAS" >> ./gradle.properties
+              echo -e "KEY_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+            fi
+          working_directory: android
+
+      - run:
+          name: Build Android Foss App
+          command: bundle exec fastlane android fossRelease
+          working_directory: android
 
       - store_artifacts:
           path: android/app/build/outputs
@@ -341,13 +402,20 @@ workflows:
           requires:
             - ios-hold-testflight
 
-      - android-build:
+      - android-play-build:
           requires:
             - lint-testunit
       - android-hold-google-play-beta:
           type: approval
           requires:
-            - android-build
+            - android-play-build
       - android-google-play-beta:
           requires:
             - android-hold-google-play-beta
+      - android-hold-foss-build:
+          type: approval
+          requires:
+            - lint-testunit
+      - android-foss-build:
+          requires:
+            - android-hold-foss-build

@@ -36,6 +36,7 @@ import Toast from './containers/Toast';
 import InAppNotification from './containers/InAppNotification';
 import { ActionSheetProvider } from './containers/ActionSheet';
 import debounce from './utils/debounce';
+import { isFDroidBuild } from './constants/environment';
 
 RNScreens.enableScreens();
 
@@ -64,7 +65,9 @@ export default class Root extends React.Component {
 	constructor(props) {
 		super(props);
 		this.init();
-		this.initCrashReport();
+		if (!isFDroidBuild) {
+			this.initCrashReport();
+		}
 		const { width, height, scale } = Dimensions.get('window');
 		this.state = {
 			theme: defaultTheme(),
