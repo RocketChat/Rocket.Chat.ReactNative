@@ -34,6 +34,8 @@ import QueueListView from '../views/QueueListView';
 
 // Profile Stack
 import ProfileView from '../views/ProfileView';
+import UserPreferencesView from '../views/UserPreferencesView';
+import UserNotificationPrefView from '../views/UserNotificationPreferencesView';
 
 // Settings Stack
 import SettingsView from '../views/SettingsView';
@@ -183,6 +185,21 @@ const ProfileStackNavigator = () => {
 				name='ProfileView'
 				component={ProfileView}
 				options={ProfileView.navigationOptions}
+			/>
+			<ProfileStack.Screen
+				name='UserPreferencesView'
+				component={UserPreferencesView}
+				options={UserPreferencesView.navigationOptions}
+			/>
+			<ProfileStack.Screen
+				name='UserNotificationPrefView'
+				component={UserNotificationPrefView}
+				options={UserNotificationPrefView.navigationOptions}
+			/>
+			<ProfileStack.Screen
+				name='PickerView'
+				component={PickerView}
+				options={PickerView.navigationOptions}
 			/>
 		</ProfileStack.Navigator>
 	);
