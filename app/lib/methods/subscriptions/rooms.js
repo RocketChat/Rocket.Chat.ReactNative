@@ -244,7 +244,9 @@ export default function subscribeRooms() {
 		const [, ev] = ddpMessage.fields.eventName.split('/');
 		if (/userData/.test(ev)) {
 			const [{ diff }] = ddpMessage.fields.args;
-			store.dispatch(setUser({ statusLivechat: diff?.statusLivechat }));
+			if (diff?.statusLivechat) {
+				store.dispatch(setUser({ statusLivechat: diff.statusLivechat }));
+			}
 		}
 		if (/subscriptions/.test(ev)) {
 			if (type === 'removed') {

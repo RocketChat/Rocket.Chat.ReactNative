@@ -2,7 +2,6 @@ import React from 'react';
 import { Linking, Dimensions } from 'react-native';
 import { AppearanceProvider } from 'react-native-appearance';
 import { Provider } from 'react-redux';
-import RNUserDefaults from 'rn-user-defaults';
 import { KeyCommandsEmitter } from 'react-native-keycommands';
 import RNScreens from 'react-native-screens';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
@@ -13,6 +12,7 @@ import {
 	subscribeTheme,
 	unsubscribeTheme
 } from './utils/theme';
+import UserPreferences from './lib/userPreferences';
 import EventEmitter from './utils/events';
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -36,7 +36,6 @@ import Toast from './containers/Toast';
 import InAppNotification from './containers/InAppNotification';
 import { ActionSheetProvider } from './containers/ActionSheet';
 import debounce from './utils/debounce';
-
 
 RNScreens.enableScreens();
 
@@ -106,7 +105,7 @@ export default class Root extends React.Component {
 	}
 
 	init = async() => {
-		RNUserDefaults.objectForKey(THEME_PREFERENCES_KEY).then(this.setTheme);
+		UserPreferences.getMapAsync(THEME_PREFERENCES_KEY).then(this.setTheme);
 		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
 		store.dispatch(appInitLocalSettings());
