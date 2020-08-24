@@ -384,7 +384,7 @@ PODS:
     - React
   - react-native-safe-area-context (3.1.1):
     - React
-  - react-native-simple-crypto (0.2.13):
+  - react-native-simple-crypto (0.3.0):
     - OpenSSL-Universal
     - React
   - react-native-slider (3.0.2):
@@ -466,6 +466,8 @@ PODS:
   - RNCAsyncStorage (1.11.0):
     - React
   - RNCMaskedView (0.1.10):
+    - React
+  - RNConfigReader (1.0.0):
     - React
   - RNDateTimePicker (2.6.0):
     - React
@@ -617,6 +619,7 @@ DEPENDENCIES:
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
+  - RNConfigReader (from `../node_modules/react-native-config-reader`)
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - "RNFastImage (from `../node_modules/@rocket.chat/react-native-fast-image`)"
@@ -797,6 +800,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/async-storage"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
+  RNConfigReader:
+    :path: "../node_modules/react-native-config-reader"
   RNDateTimePicker:
     :path: "../node_modules/@react-native-community/datetimepicker"
   RNDeviceInfo:
@@ -918,7 +923,7 @@ SPEC CHECKSUMS:
   react-native-notifications: ee8fd739853e72694f3af8b374c8ccb106b7b227
   react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
   react-native-safe-area-context: 344b969c45af3d8464d36e8dea264942992ef033
-  react-native-simple-crypto: 1cff37c1dfa5169c33da00ca10ddf048bab37fdb
+  react-native-simple-crypto: 34da7fb1c67d9029e1e99faa48718fc46ecb2ae2
   react-native-slider: 0221b417686c5957f6e77cd9ac22c1478a165355
   react-native-webview: 679b6f400176e2ea8a785acf7ae16cf282e7d1eb
   React-RCTActionSheet: 1702a1a85e550b5c36e2e03cb2bd3adea053de95
@@ -939,6 +944,7 @@ SPEC CHECKSUMS:
   RNBootSplash: b3836aa90c5bec690c6cd3c9ab355fcf98d0fe1d
   RNCAsyncStorage: d059c3ee71738c39834a627476322a5a8cd5bf36
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
+  RNConfigReader: 396da6a6444182a76e8ae0930b9436c7575045cb
   RNDateTimePicker: e386ff4ef3300964ed0cad97ce6f206e0effbfdb
   RNDeviceInfo: ed8557a8bd6443cbc0ab5d375e6808a38a279744
   RNFastImage: 35ae972d6727c84ee3f5c6897e07f84d0a3445e9
