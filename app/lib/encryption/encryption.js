@@ -217,13 +217,13 @@ class Encryption {
 
 		// If doesn't have a instance of this room
 		if (!this.roomInstances[rid]) {
-			this.roomInstances[rid] = new E2ERoom(rid);
+			this.roomInstances[rid] = new E2ERoom(sub);
 		}
 
 		const roomE2E = this.roomInstances[rid];
 
 		// Start Encryption Room instance handshake
-		await roomE2E.handshake(sub, this.privateKey);
+		await roomE2E.handshake(this.privateKey);
 
 		return roomE2E;
 	}

@@ -17,8 +17,7 @@ import { isIOS } from '../../utils/deviceInfo';
 import Deferred from '../../utils/deferred';
 
 export default class EncryptionRoom {
-	constructor(roomId) {
-		this.roomId = roomId;
+	constructor(subscription) {
 		this.ready = false;
 		this.establishing = false;
 		this.readyPromise = new Deferred();
@@ -28,10 +27,11 @@ export default class EncryptionRoom {
 			// Mark as established
 			this.establishing = false;
 		});
+		this.subscription = subscription;
 	}
 
 	// Initialize the E2E room
-	handshake = async(subscription, privateKey) => {
+	handshake = async(privateKey) => {
 		// If it's already ready we don't need to handshake again
 		if (this.ready) {
 			return;
@@ -46,10 +46,7 @@ export default class EncryptionRoom {
 		// We're establishing a new room encryption client
 		this.establishing = true;
 
-		// TODO: Should be an observable to check encrypted property?
-		this.subscription = subscription;
-
-		const { E2EKey, e2eKeyId } = this.subscription;
+		const { rid, E2EKey, e2eKeyId } = this.subscription;
 
 		// If this room has a E2EKey let's import this
 		if (E2EKey) {
@@ -66,7 +63,7 @@ export default class EncryptionRoom {
 		}
 
 		// Request a E2EKey for this room to other users
-		await RocketChat.methodCall('stream-notify-room-users', `${ this.roomId }/e2ekeyRequest`, this.roomId, e2eKeyId);
+		await RocketChat.methodCall('stream-notify-room-users', `${ rid }/e2ekeyRequest`, rid, e2eKeyId);
 
 		// The messages not will be decrypted until the key was received
 		this.readyPromise.resolve();
@@ -108,7 +105,8 @@ export default class EncryptionRoom {
 			this.sessionKeyExportedString = EJSON.stringify(sessionKeyExported);
 			this.keyID = Base64.encode(this.sessionKeyExportedString).slice(0, 12);
 
-			await RocketChat.e2eSetRoomKeyID(this.roomId, this.keyID);
+			const { rid } = this.subscription;
+			await RocketChat.e2eSetRoomKeyID(rid, this.keyID);
 
 			await this.encryptRoomKey();
 		} catch {
@@ -118,15 +116,16 @@ export default class EncryptionRoom {
 
 	// Create a encrypted key to this room base on users
 	encryptRoomKey = async() => {
-		const result = await RocketChat.e2eGetUsersOfRoomWithoutKey(this.roomId);
+		const { rid } = this.subscription;
+		const result = await RocketChat.e2eGetUsersOfRoomWithoutKey(rid);
 		if (result.success) {
 			const { users } = result;
-			await Promise.all(users.map(user => this.encryptRoomKeyForUser(user)));
+			await Promise.all(users.map(user => this.encryptRoomKeyForUser(user, rid)));
 		}
 	}
 
 	// Encrypt the room key to each user in
-	encryptRoomKeyForUser = async(user) => {
+	encryptRoomKeyForUser = async(user, roomId) => {
 		if (user?.e2e?.public_key) {
 			const { public_key: publicKey } = user.e2e;
 			try {
@@ -140,7 +139,7 @@ export default class EncryptionRoom {
 					// This is not doing the same thing between iOS and Android
 					encryptedUserKey = encryptedUserKey.replace(/\n/g, '').replace(/\r/g, '');
 				}
-				await RocketChat.e2eUpdateGroupKey(user._id, this.roomId, this.keyID + encryptedUserKey);
+				await RocketChat.e2eUpdateGroupKey(user._id, roomId, this.keyID + encryptedUserKey);
 			} catch {
 				// Do nothing
 			}
