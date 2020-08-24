@@ -356,7 +356,7 @@ class NewServerView extends React.Component {
 		} = this.state;
 		return (
 			<FormContainer theme={theme} testID='new-server-view'>
-				<FormContainerInner onPress={() => Keyboard.dismiss()}>
+				<FormContainerInner>
 					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Join_your_workspace')}</Text>
 					<View>
 						<TextInput

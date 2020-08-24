@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-	ScrollView, StyleSheet, View, TouchableWithoutFeedback
-} from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { themes } from '../constants/colors';
@@ -19,12 +17,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const FormContainerInner = ({ children, onPress }) => (
-	<TouchableWithoutFeedback onPress={onPress}>
-		<View style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]}>
-			{children}
-		</View>
-	</TouchableWithoutFeedback>
+export const FormContainerInner = ({ children }) => (
+	<View style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]}>
+		{children}
+	</View>
 );
 
 const FormContainer = ({ children, theme, testID }) => (
@@ -34,7 +30,7 @@ const FormContainer = ({ children, theme, testID }) => (
 		keyboardVerticalOffset={128}
 	>
 		<StatusBar theme={theme} />
-		<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}>
+		<ScrollView {...scrollPersistTaps} keyboardShouldPersistTaps='never' style={sharedStyles.container} contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}>
 			<SafeAreaView testID={testID} theme={theme} style={{ backgroundColor: themes[theme].backgroundColor }}>
 				{children}
 				<AppVersion theme={theme} />
@@ -46,13 +42,11 @@ const FormContainer = ({ children, theme, testID }) => (
 FormContainer.propTypes = {
 	theme: PropTypes.string,
 	testID: PropTypes.string,
-	children: PropTypes.element,
-	onPress: PropTypes.func
+	children: PropTypes.element
 };
 
 FormContainerInner.propTypes = {
-	children: PropTypes.element,
-	onPress: PropTypes.func
+	children: PropTypes.element
 };
 
 export default FormContainer;
