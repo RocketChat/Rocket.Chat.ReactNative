@@ -14,15 +14,38 @@ import {
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from './constants';
 import RocketChat from '../rocketchat';
 import { isIOS } from '../../utils/deviceInfo';
+import Deferred from '../../utils/deferred';
 
 export default class EncryptionRoom {
 	constructor(roomId) {
 		this.roomId = roomId;
 		this.ready = false;
+		this.establishing = false;
+		this.readyPromise = new Deferred();
+		this.readyPromise.then(() => {
+			// Mark as ready
+			this.ready = true;
+			// Mark as established
+			this.establishing = false;
+		});
 	}
 
 	// Initialize the E2E room
 	handshake = async(subscription, privateKey) => {
+		// If it's already ready we don't need to handshake again
+		if (this.ready) {
+			return;
+		}
+
+		// If it's already establishing
+		if (this.establishing) {
+			// Return the ready promise to wait this client ready
+			return this.readyPromise;
+		}
+
+		// We're establishing a new room encryption client
+		this.establishing = true;
+
 		// TODO: Should be an observable to check encrypted property?
 		this.subscription = subscription;
 
@@ -31,17 +54,22 @@ export default class EncryptionRoom {
 		// If this room has a E2EKey let's import this
 		if (E2EKey) {
 			await this.importRoomKey(E2EKey, privateKey);
+			this.readyPromise.resolve();
 			return;
 		}
 
 		// If doesn't have a e2eKeyId we need to create keys to this room
 		if (!e2eKeyId) {
 			await this.createRoomKey();
-			// return;
+			this.readyPromise.resolve();
+			return;
 		}
 
 		// Request a E2EKey for this room to other users
-		// await RocketChat.methodCall('stream-notify-room-users', `${ this.roomId }/e2ekeyRequest`, this.roomId, e2eKeyId);
+		await RocketChat.methodCall('stream-notify-room-users', `${ this.roomId }/e2ekeyRequest`, this.roomId, e2eKeyId);
+
+		// The messages not will be decrypted until the key was received
+		this.readyPromise.resolve();
 	}
 
 	// Import roomKey as an AES Decrypt key
@@ -59,7 +87,6 @@ export default class EncryptionRoom {
 
 		const { k } = EJSON.parse(this.sessionKeyExportedString);
 		this.roomKey = b64ToBuffer(k);
-		this.ready = true;
 	}
 
 	// Create a key to a room
