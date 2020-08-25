@@ -64,6 +64,9 @@ export default class EncryptionRoom {
 
 		// Request a E2EKey for this room to other users
 		await this.requestRoomKey();
+
+		// The room encryption client should be established by the next handshake
+		this.establishing = false;
 	}
 
 	// Import roomKey as an AES Decrypt key
