@@ -707,7 +707,7 @@ class RoomsListView extends React.Component {
 		if (user?.statusLivechat !== 'available') {
 			showConfirmationAlert({
 				message: I18n.t('Omnichannel_enable_alert'),
-				callToAction: I18n.t('Yes'),
+				confirmationText: I18n.t('Yes'),
 				onPress: async() => {
 					try {
 						await RocketChat.changeLivechatStatus();

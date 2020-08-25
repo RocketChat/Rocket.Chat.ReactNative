@@ -53,6 +53,17 @@ export default schemaMigrations({
 			toVersion: 7,
 			steps: [
 				addColumns({
+					table: 'users',
+					columns: [
+						{ name: 'login_email_password', type: 'boolean', isOptional: true }
+					]
+				})
+			]
+		},
+		{
+			toVersion: 8,
+			steps: [
+				addColumns({
 					table: 'servers',
 					columns: [
 						{ name: 'e2e_enable', type: 'boolean', isOptional: true }
