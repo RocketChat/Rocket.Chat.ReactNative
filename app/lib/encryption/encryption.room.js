@@ -64,9 +64,6 @@ export default class EncryptionRoom {
 
 		// Request a E2EKey for this room to other users
 		await RocketChat.methodCall('stream-notify-room-users', `${ rid }/e2ekeyRequest`, rid, e2eKeyId);
-
-		// The messages not will be decrypted until the key was received
-		this.readyPromise.resolve();
 	}
 
 	// Import roomKey as an AES Decrypt key

@@ -331,6 +331,13 @@ class Encryption {
 
 	// Decrypt a message
 	decryptMessage = async(message) => {
+		const { t, e2e } = message;
+
+		// Prevent create a new instance if this room was encrypted sometime ago
+		if (t !== E2E_MESSAGE_TYPE || e2e === E2E_STATUS.DONE) {
+			return message;
+		}
+
 		const roomE2E = await this.getRoomInstance(message.rid);
 
 		if (!roomE2E) {
