@@ -317,6 +317,7 @@ export default {
 	No_available_agents_to_transfer: 'Nenhum agente disponível para transferência',
 	Offline: 'Offline',
 	Omnichannel: 'Omnichannel',
+	Open_Livechats: 'Bate-papos em Andamento',
 	Omnichannel_enable_alert: 'Você não está disponível no Omnichannel. Você quer ficar disponível?',
 	Oops: 'Ops!',
 	Onboarding_description: 'Workspace é o espaço de colaboração do seu time ou organização. Peça um convite ou o endereço ao seu administrador ou crie uma workspace para o seu time.',
@@ -578,5 +579,9 @@ export default {
 	After_seconds_set_by_admin: 'Após {{seconds}} segundos (Configurado pelo adm)',
 	Dont_activate: 'Não ativar agora',
 	Queued_chats: 'Bate-papos na fila',
-	Queue_is_empty: 'A fila está vazia'
+	Queue_is_empty: 'A fila está vazia',
+	Logout_from_other_logged_in_locations: 'Sair de outros locais logados',
+	You_will_be_logged_out_from_other_locations: 'Você perderá a sessão de outros clientes',
+	Logged_out_of_other_clients_successfully: 'Desconectado de outros clientes com sucesso',
+	Logout_failed: 'Falha ao desconectar!'
 };

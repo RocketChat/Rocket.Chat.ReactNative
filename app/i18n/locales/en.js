@@ -341,6 +341,7 @@ export default {
 	Offline: 'Offline',
 	Oops: 'Oops!',
 	Omnichannel: 'Omnichannel',
+	Open_Livechats: 'Chats in Progress',
 	Omnichannel_enable_alert: 'You\'re not available on Omnichannel. Would you like to be available?',
 	Onboarding_description: 'A workspace is your team or organization’s space to collaborate. Ask the workspace admin for address to join or create one for your team.',
 	Onboarding_join_workspace: 'Join a workspace',
@@ -632,5 +633,9 @@ export default {
 	After_seconds_set_by_admin: 'After {{seconds}} seconds (set by admin)',
 	Dont_activate: 'Don\'t activate now',
 	Queued_chats: 'Queued chats',
-	Queue_is_empty: 'Queue is empty'
+	Queue_is_empty: 'Queue is empty',
+	Logout_from_other_logged_in_locations: 'Logout from other logged in locations',
+	You_will_be_logged_out_from_other_locations: 'You\'ll be logged out from other locations.',
+	Logged_out_of_other_clients_successfully: 'Logged out of other clients successfully',
+	Logout_failed: 'Logout failed!'
 };

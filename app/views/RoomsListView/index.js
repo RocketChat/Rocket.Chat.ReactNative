@@ -73,10 +73,12 @@ const DISCUSSIONS_HEADER = 'Discussions';
 const CHANNELS_HEADER = 'Channels';
 const DM_HEADER = 'Direct_Messages';
 const GROUPS_HEADER = 'Private_Groups';
+const OMNICHANNEL_HEADER = 'Open_Livechats';
 const QUERY_SIZE = 20;
 
 const filterIsUnread = s => (s.unread > 0 || s.alert) && !s.hideUnreadStatus;
 const filterIsFavorite = s => s.f;
+const filterIsOmnichannel = s => s.t === 'l';
 
 const shouldUpdateProps = [
 	'searchText',
@@ -110,7 +112,8 @@ class RoomsListView extends React.Component {
 			id: PropTypes.string,
 			username: PropTypes.string,
 			token: PropTypes.string,
-			statusLivechat: PropTypes.string
+			statusLivechat: PropTypes.string,
+			roles: PropTypes.object
 		}),
 		server: PropTypes.string,
 		searchText: PropTypes.string,
@@ -414,7 +417,8 @@ class RoomsListView extends React.Component {
 			sortBy,
 			showUnread,
 			showFavorites,
-			groupByType
+			groupByType,
+			user
 		} = this.props;
 
 		const db = database.active;
@@ -461,6 +465,13 @@ class RoomsListView extends React.Component {
 			 */
 			const chatsOrder = data.map(item => item.rid);
 
+			const isOmnichannelAgent = user?.roles?.includes('livechat-agent');
+			if (isOmnichannelAgent) {
+				const omnichannel = chats.filter(s => filterIsOmnichannel(s));
+				chats = chats.filter(s => !filterIsOmnichannel(s));
+				tempChats = this.addRoomsGroup(omnichannel, OMNICHANNEL_HEADER, tempChats);
+			}
+
 			// unread
 			if (showUnread) {
 				const unread = chats.filter(s => filterIsUnread(s));
@@ -485,7 +496,7 @@ class RoomsListView extends React.Component {
 				tempChats = this.addRoomsGroup(channels, CHANNELS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(privateGroup, GROUPS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(direct, DM_HEADER, tempChats);
-			} else if (showUnread || showFavorites) {
+			} else if (showUnread || showFavorites || isOmnichannelAgent) {
 				tempChats = this.addRoomsGroup(chats, CHATS_HEADER, tempChats);
 			} else {
 				tempChats = chats;
