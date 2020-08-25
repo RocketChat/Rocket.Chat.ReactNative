@@ -18,7 +18,7 @@ import {
 	E2E_ROOM_TYPES
 } from './constants';
 import RocketChat from '../rocketchat';
-import E2ERoom from './encryption.room';
+import EncryptionRoom from './encryption.room';
 import UserPreferences from '../userPreferences';
 import database from '../database';
 import protectedFunction from '../methods/helpers/protectedFunction';
@@ -217,7 +217,7 @@ class Encryption {
 
 		// If doesn't have a instance of this room
 		if (!this.roomInstances[rid]) {
-			this.roomInstances[rid] = new E2ERoom(sub);
+			this.roomInstances[rid] = new EncryptionRoom(sub);
 		}
 
 		const roomE2E = this.roomInstances[rid];
