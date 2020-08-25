@@ -579,7 +579,7 @@ export default {
 	Queued_chats: 'Bate-papos na fila',
 	Queue_is_empty: 'A fila está vazia',
 	Logout_from_other_logged_in_locations: 'Sair de outros locais logados',
-	You_will_be_logged_out_from_all_locations: 'Você sairá de todos os locais.',
-	Successfully_logged_out: 'Desconectado com sucesso!',
+	You_will_be_logged_out_from_other_locations: 'Você perderá a sessão de outros clientes',
+	Logged_out_of_other_clients_successfully: 'Desconectado de outros clientes com sucesso',
 	Logout_failed: 'Falha ao desconectar!'
 };
