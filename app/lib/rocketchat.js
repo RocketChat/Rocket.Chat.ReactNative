@@ -348,10 +348,10 @@ const RocketChat = {
 		return this.post('users.forgotPassword', { email }, false);
 	},
 
-	loginTOTP(params) {
+	loginTOTP(params, loginEmailPassword) {
 		return new Promise(async(resolve, reject) => {
 			try {
-				const result = await this.login(params);
+				const result = await this.login(params, loginEmailPassword);
 				return resolve(result);
 			} catch (e) {
 				if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
@@ -390,7 +390,9 @@ const RocketChat = {
 			};
 		}
 
-		return this.loginTOTP(params);
+		const loginEmailPassword = true;
+
+		return this.loginTOTP(params, loginEmailPassword);
 	},
 
 	async loginOAuthOrSso(params) {
@@ -398,7 +400,7 @@ const RocketChat = {
 		reduxStore.dispatch(loginRequest({ resume: result.token }));
 	},
 
-	async login(params) {
+	async login(params, loginEmailPassword) {
 		const sdk = this.shareSDK || this.sdk;
 		// RC 0.64.0
 		await sdk.login(params);
@@ -414,7 +416,8 @@ const RocketChat = {
 			customFields: result.me.customFields,
 			statusLivechat: result.me.statusLivechat,
 			emails: result.me.emails,
-			roles: result.me.roles
+			roles: result.me.roles,
+			loginEmailPassword
 		};
 		return user;
 	},
