@@ -87,7 +87,6 @@ class MessagesView extends React.Component {
 			baseUrl,
 			user,
 			author: item.u || item.user,
-			ts: item.ts || item.uploadedAt,
 			timeFormat: 'MMM Do YYYY, h:mm:ss a',
 			isEdited: !!item.editedAt,
 			isHeader: true,
@@ -114,6 +113,7 @@ class MessagesView extends React.Component {
 						item={{
 							...item,
 							u: item.user,
+							ts: item.ts || item.uploadedAt,
 							attachments: [{
 								title: item.name,
 								description: item.description,
