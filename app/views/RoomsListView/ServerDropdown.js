@@ -5,7 +5,6 @@ import {
 import PropTypes from 'prop-types';
 import { connect, batch } from 'react-redux';
 import equal from 'deep-equal';
-import RNUserDefaults from 'rn-user-defaults';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
@@ -26,6 +25,7 @@ import { showConfirmationAlert } from '../../utils/info';
 import { logEvent, events } from '../../utils/log';
 import { headerHeight } from '../../containers/Header';
 import { goRoom } from '../../utils/goRoom';
+import UserPreferences from '../../lib/userPreferences';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
@@ -150,7 +150,7 @@ class ServerDropdown extends Component {
 		this.close();
 		if (currentServer !== server) {
 			logEvent(events.RL_CHANGE_SERVER);
-			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
+			const userId = await UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
 			if (isMasterDetail) {
 				goRoom({ item: {}, isMasterDetail });
 			}

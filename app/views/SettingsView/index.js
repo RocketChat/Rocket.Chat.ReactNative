@@ -29,15 +29,18 @@ import styles from './styles';
 import {
 	loggerConfig, analytics, logEvent, events
 } from '../../utils/log';
-import { PLAY_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK } from '../../constants/links';
+import {
+	PLAY_MARKET_LINK, FDROID_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK
+} from '../../constants/links';
 import { withTheme } from '../../theme';
 import SidebarView from '../SidebarView';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import { appStart as appStartAction, ROOT_LOADING } from '../../actions/app';
 import { onReviewPress } from '../../utils/review';
-import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
+import { isFDroidBuild } from '../../constants/environment';
+
 
 const SectionSeparator = React.memo(({ theme }) => (
 	<View
@@ -73,18 +76,7 @@ class SettingsView extends React.Component {
 		isMasterDetail: PropTypes.bool,
 		logout: PropTypes.func.isRequired,
 		selectServerRequest: PropTypes.func,
-		user: PropTypes.shape({
-			roles: PropTypes.array,
-			statusLivechat: PropTypes.string
-		}),
 		appStart: PropTypes.func
-	}
-
-	get showLivechat() {
-		const { user } = this.props;
-		const { roles } = user;
-
-		return roles?.includes('livechat-agent');
 	}
 
 	handleLogout = () => {
@@ -122,20 +114,14 @@ class SettingsView extends React.Component {
 		AsyncStorage.setItem(CRASH_REPORT_KEY, JSON.stringify(value));
 		const { toggleCrashReport } = this.props;
 		toggleCrashReport(value);
-		loggerConfig.autoNotify = value;
-		analytics().setAnalyticsCollectionEnabled(value);
-		if (value) {
-			loggerConfig.clearBeforeSendCallbacks();
-		} else {
-			loggerConfig.registerBeforeSendCallback(() => false);
-		}
-	}
-
-	toggleLivechat = async() => {
-		try {
-			await RocketChat.changeLivechatStatus();
-		} catch {
-			// Do nothing
+		if (!isFDroidBuild) {
+			loggerConfig.autoNotify = value;
+			analytics().setAnalyticsCollectionEnabled(value);
+			if (value) {
+				loggerConfig.clearBeforeSendCallbacks();
+			} else {
+				loggerConfig.registerBeforeSendCallback(() => false);
+			}
 		}
 	}
 
@@ -162,8 +148,16 @@ class SettingsView extends React.Component {
 	}
 
 	shareApp = () => {
-		logEvent(events.SE_SHARE_THIS_APP);
-		Share.share({ message: isAndroid ? PLAY_MARKET_LINK : APP_STORE_LINK });
+		let message;
+		if (isAndroid) {
+			message = PLAY_MARKET_LINK;
+			if (isFDroidBuild) {
+				message = FDROID_MARKET_LINK;
+			}
+		} else {
+			message = APP_STORE_LINK;
+		}
+		Share.share({ message });
 	}
 
 	copyServerVersion = () => {
@@ -200,18 +194,6 @@ class SettingsView extends React.Component {
 				value={allowCrashReport}
 				trackColor={SWITCH_TRACK_COLOR}
 				onValueChange={this.toggleCrashReport}
-			/>
-		);
-	}
-
-	renderLivechatSwitch = () => {
-		const { user } = this.props;
-		const { statusLivechat } = user;
-		return (
-			<Switch
-				value={statusLivechat === 'available'}
-				trackColor={SWITCH_TRACK_COLOR}
-				onValueChange={this.toggleLivechat}
 			/>
 		);
 	}
@@ -262,14 +244,18 @@ class SettingsView extends React.Component {
 						theme={theme}
 					/>
 					<Separator theme={theme} />
-					<ListItem
-						title={I18n.t('Review_this_app')}
-						showActionIndicator
-						onPress={onReviewPress}
-						testID='settings-view-review-app'
-						right={this.renderDisclosure}
-						theme={theme}
-					/>
+					{!isFDroidBuild ? (
+						<>
+							<ListItem
+								title={I18n.t('Review_this_app')}
+								showActionIndicator
+								onPress={onReviewPress}
+								testID='settings-view-review-app'
+								right={this.renderDisclosure}
+								theme={theme}
+							/>
+						</>
+					) : null}
 					<Separator theme={theme} />
 					<ListItem
 						title={I18n.t('Share_this_app')}
@@ -348,17 +334,21 @@ class SettingsView extends React.Component {
 						</>
 					) : null}
 
-					<ListItem
-						title={I18n.t('Send_crash_report')}
-						testID='settings-view-crash-report'
-						right={() => this.renderCrashReportSwitch()}
-						theme={theme}
-					/>
-					<Separator theme={theme} />
-					<ItemInfo
-						info={I18n.t('Crash_report_disclaimer')}
-						theme={theme}
-					/>
+					{!isFDroidBuild ? (
+						<>
+							<ListItem
+								title={I18n.t('Send_crash_report')}
+								testID='settings-view-crash-report'
+								right={() => this.renderCrashReportSwitch()}
+								theme={theme}
+							/>
+							<Separator theme={theme} />
+							<ItemInfo
+								info={I18n.t('Crash_report_disclaimer')}
+								theme={theme}
+							/>
+						</>
+					) : null}
 
 					<Separator theme={theme} />
 					<ListItem
@@ -387,7 +377,6 @@ class SettingsView extends React.Component {
 
 const mapStateToProps = state => ({
 	server: state.server,
-	user: getUserSelector(state),
 	allowCrashReport: state.crashReport.allowCrashReport,
 	isMasterDetail: state.app.isMasterDetail
 });

@@ -20,6 +20,7 @@
 #import <UMCore/UMModuleRegistry.h>
 #import <UMReactNativeAdapter/UMNativeModulesProxy.h>
 #import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
+#import <MMKV/MMKV.h>
 
 #if DEBUG
 #import <FlipperKit/FlipperClient.h>
@@ -63,6 +64,31 @@ static void InitializeFlipper(UIApplication *application) {
     self.window.rootViewController = rootViewController;
     [self.window makeKeyAndVisible];
     [RNNotifications startMonitorNotifications];
+  
+    // AppGroup MMKV
+    NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
+    [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
+  
+    // Start the MMKV container
+    MMKV *defaultMMKV = [MMKV defaultMMKV];
+    BOOL alreadyMigrated = [defaultMMKV getBoolForKey:@"alreadyMigrated"];
+
+    if (!alreadyMigrated) {
+      // MMKV Instance that will be used by JS
+      MMKV *mmkv = [MMKV mmkvWithID:@"default" mode:MMKVMultiProcess];
+
+      // NSUserDefaults -> MMKV (Migration)
+      NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]];
+      [mmkv migrateFromUserDefaults:userDefaults];
+
+      // Remove our own keys of NSUserDefaults
+      for (NSString *key in [userDefaults dictionaryRepresentation].keyEnumerator) {
+        [userDefaults removeObjectForKey:key];
+      }
+
+      // Mark migration complete
+      [defaultMMKV setBool:YES forKey:@"alreadyMigrated"];
+    }
 
     return YES;
 }

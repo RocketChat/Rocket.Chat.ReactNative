@@ -1,16 +1,17 @@
 diff --git a/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m b/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m
-index edc4fd4..7cd77f6 100644
+index edc4fd4..694f01f 100644
 --- a/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m
 +++ b/node_modules/react-native-notifications/RNNotifications/RNNotificationEventHandler.m
-@@ -3,6 +3,7 @@
+@@ -3,6 +3,8 @@
  #import "RNNotificationUtils.h"
  #import "RCTConvert+RNNotifications.h"
  #import "RNNotificationParser.h"
-+#import "RNUserDefaults.h"
++#import <MMKV/MMKV.h>
++#import "SecureStorage.h"
  
  @implementation RNNotificationEventHandler {
      RNNotificationsStore* _store;
-@@ -28,9 +29,91 @@ - (void)didReceiveForegroundNotification:(UNNotification *)notification withComp
+@@ -28,9 +30,140 @@ - (void)didReceiveForegroundNotification:(UNNotification *)notification withComp
      [RNEventEmitter sendEvent:RNNotificationReceivedForeground body:[RNNotificationParser parseNotification:notification]];
  }
  
@@ -31,7 +32,7 @@ index edc4fd4..7cd77f6 100644
 +/*
 + * Remove trailing slash on server url from notification
 +*/
-+-(NSString *)serverURL:(NSString *)host {
++- (NSString *)serverURL:(NSString *)host {
 +    if ([host length] > 0) {
 +        unichar last = [host characterAtIndex:[host length] - 1];
 +        if (last == '/') {
@@ -39,6 +40,55 @@ index edc4fd4..7cd77f6 100644
 +        }
 +    }
 +    return host;
++}
++
++- (NSString *)stringToHex:(NSString *)string
++{
++    char *utf8 = (char *)[string UTF8String];
++    NSMutableString *hex = [NSMutableString string];
++    while (*utf8) [hex appendFormat:@"%02X", *utf8++ & 0x00FF];
++
++    return [[NSString stringWithFormat:@"%@", hex] lowercaseString];
++}
++
++- (NSDictionary *) retrieveCredentialsForServer:(NSString *)serverURL {
++  // AppGroup MMKV
++  NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
++
++  // Make sure MMKV is using the group directory
++  [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
++
++  // Start the MMKV container
++  __block MMKV *mmkv;
++  SecureStorage *secureStorage = [[SecureStorage alloc] init];
++
++  // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
++  [secureStorage getSecureKey:[self stringToHex:@"com.MMKV.default"] callback:^(NSArray *response) {
++    // error handling
++    if ([response objectAtIndex:0] != [NSNull null]) {
++        return;
++    }
++    NSString *key = [response objectAtIndex:1];
++    NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
++    mmkv = [MMKV mmkvWithID:@"default" cryptKey:cryptKey mode:MMKVMultiProcess];
++  }];
++
++  if (!mmkv) {
++      return @{
++          @"userId": @"",
++          @"userToken": @""
++      };
++  }
++  // Get credentials
++  NSString *TOKEN_KEY = @"reactnativemeteor_usertoken";
++  NSString *userId = [mmkv getStringForKey:[NSString stringWithFormat:@"%@-%@", TOKEN_KEY, serverURL]];
++  NSString *userToken = [mmkv getStringForKey:[NSString stringWithFormat:@"%@-%@", TOKEN_KEY, userId]];
++  
++  // Retrive a NSDictionary with the credentials
++  return @{
++    @"userId": userId,
++    @"userToken": userToken
++  };
 +}
 +
  - (void)didReceiveNotificationResponse:(UNNotificationResponse *)response completionHandler:(void (^)(void))completionHandler {
@@ -62,9 +112,9 @@ index edc4fd4..7cd77f6 100644
 +        NSString *msg = [(UNTextInputNotificationResponse *)response userText];
 +
 +        // get credentials
-+        NSString *TOKEN_KEY = @"reactnativemeteor_usertoken";
-+        NSString *userId = [[RNUserDefaults getDefaultUser] stringForKey:[NSString stringWithFormat:@"%@-%@", TOKEN_KEY, [self serverURL:host]]];
-+        NSString *token = [[RNUserDefaults getDefaultUser] stringForKey:[NSString stringWithFormat:@"%@-%@", TOKEN_KEY, userId]];
++        NSDictionary *credentials = [self retrieveCredentialsForServer:[self serverURL:host]];
++        NSString *userId = [credentials valueForKey:@"userId"];
++        NSString *token = [credentials valueForKey:@"userToken"];
 +
 +        // background task - we need this because fetch doesn't work if app is closed/killed
 +        UIApplication *app = [UIApplication sharedApplication];

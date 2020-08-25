@@ -5,7 +5,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { AppearanceProvider } from 'react-native-appearance';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
-import RNUserDefaults from 'rn-user-defaults';
 
 import {
 	defaultTheme,
@@ -13,6 +12,7 @@ import {
 	subscribeTheme,
 	unsubscribeTheme
 } from './utils/theme';
+import UserPreferences from './lib/userPreferences';
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
 import { supportSystemTheme } from './utils/deviceInfo';
@@ -138,9 +138,9 @@ class Root extends React.Component {
 	}
 
 	init = async() => {
-		RNUserDefaults.objectForKey(THEME_PREFERENCES_KEY).then(this.setTheme);
-		const currentServer = await RNUserDefaults.get('currentServer');
-		const token = await RNUserDefaults.get(RocketChat.TOKEN_KEY);
+		UserPreferences.getMapAsync(THEME_PREFERENCES_KEY).then(this.setTheme);
+
+		const [currentServer, token] = await Promise.all([UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER), UserPreferences.getStringAsync(RocketChat.TOKEN_KEY)]);
 
 		if (currentServer && token) {
 			await localAuthenticate(currentServer);
