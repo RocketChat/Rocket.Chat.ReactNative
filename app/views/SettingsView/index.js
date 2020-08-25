@@ -86,7 +86,7 @@ class SettingsView extends React.Component {
 		appStart: PropTypes.func
 	}
 
-	logout = async() => { // TODO: rename
+	checkCookiesAndLogout = async() => {
 		const { logout, user } = this.props;
 		const db = database.servers;
 		const usersCollection = db.collections.get('users');
@@ -119,7 +119,7 @@ class SettingsView extends React.Component {
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_of_this_application'),
 			confirmationText: I18n.t('Logout'),
-			onPress: this.logout
+			onPress: this.checkCookiesAndLogout
 		});
 	}
 
