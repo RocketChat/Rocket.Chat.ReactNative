@@ -94,10 +94,10 @@ class SettingsView extends React.Component {
 			const userRecord = await usersCollection.find(user.id);
 			if (!userRecord.loginEmailPassword) {
 				showConfirmationAlert({
-					title: I18n.t('Clear_all_cookies_from_login_oauth'),
+					title: I18n.t('Clear_cookies_alert'),
 					message: I18n.t('Clear_cookies_desc'),
-					confirmationText: 'Yes, clear cookies', // TODO: missing i18n
-					dismissText: 'No, keep cookies', // TODO: missing i18n
+					confirmationText: I18n.t('Clear_cookies_yes'),
+					dismissText: I18n.t('Clear_cookies_no'),
 					onPress: async() => {
 						await CookieManager.clearAll(true);
 						logout();
