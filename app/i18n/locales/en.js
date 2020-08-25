@@ -211,6 +211,7 @@ export default {
 	Enable_Auto_Translate: 'Enable Auto-Translate',
 	Enable_notifications: 'Enable notifications',
 	Encrypted: 'Encrypted',
+	Encrypted_message: 'Encrypted message',
 	Enter_Your_E2E_Password: 'Enter Your E2E Password',
 	Enter_Your_Encryption_Password_desc1: 'This will allow you to access your encrypted private groups and direct messages.',
 	Enter_Your_Encryption_Password_desc2: 'You need to enter the password to encode/decode messages every place you use the chat.',

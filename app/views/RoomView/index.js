@@ -580,6 +580,17 @@ class RoomView extends React.Component {
 		this.setState({ selectedMessage: {}, reactionsModalVisible: false });
 	}
 
+	onEncryptedPress = () => {
+		const { navigation, isMasterDetail } = this.props;
+
+		const screen = { screen: 'E2EHowItWorksView', params: { showCloseModal: true } };
+
+		if (isMasterDetail) {
+			return navigation.navigate('ModalStackNavigator', screen);
+		}
+		navigation.navigate('E2ESavePasswordStackNavigator', screen);
+	}
+
 	onDiscussionPress = debounce((item) => {
 		const { navigation } = this.props;
 		navigation.push('RoomView', {
@@ -856,6 +867,7 @@ class RoomView extends React.Component {
 				onReactionPress={this.onReactionPress}
 				onReactionLongPress={this.onReactionLongPress}
 				onLongPress={this.onMessageLongPress}
+				onEncryptedPress={this.onEncryptedPress}
 				onDiscussionPress={this.onDiscussionPress}
 				onThreadPress={this.onThreadPress}
 				showAttachment={this.showAttachment}

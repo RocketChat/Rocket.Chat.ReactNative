@@ -204,6 +204,7 @@ export default {
 	Enable_Auto_Translate: 'Ativar a tradução automática',
 	Enable_notifications: 'Habilitar notificações',
 	Encrypted: 'Criptografado',
+	Encrypted_message: 'Mensagem criptografada',
 	Enter_Your_E2E_Password: 'Digite Sua Senha E2E',
 	Enter_Your_Encryption_Password_desc1: 'Isso permitirá que você acesse seus grupos privados e mensagens diretas criptografadas.',
 	Enter_Your_Encryption_Password_desc2: 'Você precisa inserir a senha para codificar/decodificar mensagens em todos os lugares em que usar o chat.',

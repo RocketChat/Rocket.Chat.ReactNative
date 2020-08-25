@@ -7,6 +7,7 @@ import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
+import { CloseModalButton } from '../containers/HeaderButton';
 
 const styles = StyleSheet.create({
 	container: {
@@ -22,9 +23,13 @@ const styles = StyleSheet.create({
 });
 
 class E2EHowItWorksView extends React.Component {
-	static navigationOptions = ({
-		title: I18n.t('How_It_Works')
-	})
+	static navigationOptions = ({ route, navigation }) => {
+		const showCloseModal = route.params?.showCloseModal;
+		return {
+			title: I18n.t('How_It_Works'),
+			headerLeft: showCloseModal ? () => <CloseModalButton navigation={navigation} /> : undefined
+		};
+	}
 
 	static propTypes = {
 		theme: PropTypes.string
