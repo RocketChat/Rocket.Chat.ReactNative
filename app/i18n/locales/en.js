@@ -200,6 +200,7 @@ export default {
 	Edit_Status: 'Edit Status',
 	Edit_Invite: 'Edit Invite',
 	End_to_end_encrypted_room: 'End to end encrypted room',
+	end_to_end_encryption: 'end to end encryption',
 	Email_Notification_Mode_All: 'Every Mention/DM',
 	Email_Notification_Mode_Disabled: 'Disabled',
 	Email_or_password_field_is_empty: 'Email or password field is empty',

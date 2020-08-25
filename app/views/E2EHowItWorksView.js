@@ -33,16 +33,26 @@ class E2EHowItWorksView extends React.Component {
 	render() {
 		const { theme } = this.props;
 
+		const infoStyle = [styles.info, { color: themes[theme].bodyText }];
+
 		return (
 			<SafeAreaView
 				style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}
 				testID='e2e-how-it-works-view'
 				theme={theme}
 			>
-				<Text style={[styles.info, { color: themes[theme].bodyText }]}>You can now create encrypted private groups and direct messages. You may also change existing private groups or DMs to encrypted.</Text>
-				<Text style={[styles.info, { color: themes[theme].bodyText }]}>This is <Text style={sharedStyles.textBold}>end to end encryption</Text> so the key to encode/decode your messages and they will not be saved on the server. For that reason <Text style={sharedStyles.textBold}>you need to store this password somewhere safe</Text> which you can access later if you may need.</Text>
-				<Text style={[styles.info, { color: themes[theme].bodyText }]}>If you proceed, it will be auto generated an E2E password.</Text>
-				<Text style={[styles.info, { color: themes[theme].bodyText }]}>You can also setup a new password for your encryption key any time from any browser you have entered the existing E2E password.</Text>
+				<Text style={infoStyle}>
+					You can now create encrypted private groups and direct messages. You may also change existing private groups or DMs to encrypted.
+				</Text>
+				<Text style={infoStyle}>
+					This is <Text style={sharedStyles.textBold}>{I18n.t('end_to_end_encryption')}</Text> so the key to encode/decode your messages and they will not be saved on the server. For that reason <Text style={sharedStyles.textBold}>you need to store this password somewhere safe</Text> which you can access later if you may need.
+				</Text>
+				<Text style={infoStyle}>
+					If you proceed, it will be auto generated an E2E password.
+				</Text>
+				<Text style={infoStyle}>
+					You can also setup a new password for your encryption key any time from any browser you have entered the existing E2E password.
+				</Text>
 			</SafeAreaView>
 		);
 	}
