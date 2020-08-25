@@ -46,7 +46,7 @@ export default class EncryptionRoom {
 		// We're establishing a new room encryption client
 		this.establishing = true;
 
-		const { rid, E2EKey, e2eKeyId } = this.subscription;
+		const { E2EKey, e2eKeyId } = this.subscription;
 
 		// If this room has a E2EKey let's import this
 		if (E2EKey) {
@@ -63,7 +63,7 @@ export default class EncryptionRoom {
 		}
 
 		// Request a E2EKey for this room to other users
-		await RocketChat.methodCall('stream-notify-room-users', `${ rid }/e2ekeyRequest`, rid, e2eKeyId);
+		await this.requestRoomKey();
 	}
 
 	// Import roomKey as an AES Decrypt key
@@ -110,6 +110,16 @@ export default class EncryptionRoom {
 			await RocketChat.e2eSetRoomKeyID(rid, this.keyID);
 
 			await this.encryptRoomKey();
+		} catch {
+			// Do nothing
+		}
+	}
+
+	// Request a key to this room
+	requestRoomKey = async() => {
+		const { rid, e2eKeyId } = this.subscription;
+		try {
+			await RocketChat.methodCall('stream-notify-room-users', `${ rid }/e2ekeyRequest`, rid, e2eKeyId);
 		} catch {
 			// Do nothing
 		}
