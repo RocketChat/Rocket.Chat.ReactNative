@@ -153,7 +153,7 @@ class RoomMembersView extends React.Component {
 						message: I18n.t(`The_user_${ userIsMuted ? 'will' : 'wont' }_be_able_to_type_in_roomName`, {
 							roomName: RocketChat.getRoomTitle(room)
 						}),
-						callToAction: I18n.t(userIsMuted ? 'Unmute' : 'Mute'),
+						confirmationText: I18n.t(userIsMuted ? 'Unmute' : 'Mute'),
 						onPress: () => this.handleMute(user)
 					});
 				}

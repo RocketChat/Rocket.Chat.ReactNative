@@ -42,6 +42,7 @@ import { onReviewPress } from '../../utils/review';
 import SafeAreaView from '../../containers/SafeAreaView';
 import database from '../../lib/database';
 import { isFDroidBuild } from '../../constants/environment';
+import { getUserSelector } from '../../selectors/login';
 
 
 const SectionSeparator = React.memo(({ theme }) => (
@@ -80,20 +81,12 @@ class SettingsView extends React.Component {
 		selectServerRequest: PropTypes.func,
 		user: PropTypes.shape({
 			roles: PropTypes.array,
-			statusLivechat: PropTypes.string,
 			id: PropTypes.string
 		}),
 		appStart: PropTypes.func
 	}
 
-	get showLivechat() {
-		const { user } = this.props;
-		const { roles } = user;
-
-		return roles?.includes('livechat-agent');
-	}
-
-	logout = async() => {
+	logout = async() => { // TODO: rename
 		const { logout, user } = this.props;
 		const db = database.servers;
 		const usersCollection = db.collections.get('users');
@@ -103,6 +96,8 @@ class SettingsView extends React.Component {
 				showConfirmationAlert({
 					title: I18n.t('Clear_all_cookies_from_login_oauth'),
 					message: I18n.t('Clear_cookies_desc'),
+					confirmationText: 'Yes, clear cookies', // TODO: missing i18n
+					dismissText: 'No, keep cookies', // TODO: missing i18n
 					onPress: async() => {
 						await CookieManager.clearAll();
 						logout();
@@ -110,7 +105,6 @@ class SettingsView extends React.Component {
 					onCancel: () => {
 						logout();
 					}
-
 				});
 			} else {
 				logout();
@@ -124,7 +118,7 @@ class SettingsView extends React.Component {
 		logEvent(events.SE_LOG_OUT);
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_of_this_application'),
-			callToAction: I18n.t('Logout'),
+			confirmationText: I18n.t('Logout'),
 			onPress: this.logout
 		});
 	}
@@ -133,7 +127,7 @@ class SettingsView extends React.Component {
 		logEvent(events.SE_CLEAR_LOCAL_SERVER_CACHE);
 		showConfirmationAlert({
 			message: I18n.t('This_will_clear_all_your_offline_data'),
-			callToAction: I18n.t('Clear'),
+			confirmationText: I18n.t('Clear'),
 			onPress: async() => {
 				const {
 					server: { server }, appStart, selectServerRequest
@@ -415,6 +409,7 @@ class SettingsView extends React.Component {
 
 const mapStateToProps = state => ({
 	server: state.server,
+	user: getUserSelector(state),
 	allowCrashReport: state.crashReport.allowCrashReport,
 	isMasterDetail: state.app.isMasterDetail
 });
