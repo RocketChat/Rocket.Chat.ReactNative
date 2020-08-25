@@ -77,14 +77,22 @@ class SearchMessagesView extends React.Component {
 		this.search?.stop?.();
 	}
 
+	// Handle encrypted rooms search messages
 	searchMessages = async(searchText) => {
+		// If it's a encrypted, room we'll search only on the local stored messages
 		if (this.encrypted) {
 			const db = database.active;
 			const messagesCollection = db.collections.get('messages');
 			return messagesCollection
-				.query(Q.where('rid', this.rid), Q.where('msg', Q.like(`%${ Q.sanitizeLikeString(searchText) }%`)))
+				.query(
+					// Messages of this room
+					Q.where('rid', this.rid),
+					// Message content is like the search text
+					Q.where('msg', Q.like(`%${ Q.sanitizeLikeString(searchText) }%`))
+				)
 				.fetch();
 		}
+		// If it's not a encrypted room, search messages on Server
 		const result = await RocketChat.searchMessages(this.rid, searchText);
 		if (result.success) {
 			return result.messages;
