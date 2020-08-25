@@ -47,6 +47,7 @@ export default class RoomSubscription {
 	unsubscribe = async() => {
 		console.log(`[RCRN] Unsubscribing from room ${ this.rid }`);
 		this.isAlive = false;
+		reduxStore.dispatch(unsubscribeRoom(this.rid));
 		if (this.promises) {
 			try {
 				const subscriptions = await this.promises || [];
@@ -63,8 +64,6 @@ export default class RoomSubscription {
 		if (this.timer) {
 			clearTimeout(this.timer);
 		}
-
-		reduxStore.dispatch(unsubscribeRoom(this.rid));
 	}
 
 	removeListener = async(promise) => {
