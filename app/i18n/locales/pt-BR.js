@@ -315,6 +315,7 @@ export default {
 	No_available_agents_to_transfer: 'Nenhum agente disponível para transferência',
 	Offline: 'Offline',
 	Omnichannel: 'Omnichannel',
+	Open_Livechats: 'Bate-papos em Andamento',
 	Omnichannel_enable_alert: 'Você não está disponível no Omnichannel. Você quer ficar disponível?',
 	Oops: 'Ops!',
 	Onboarding_description: 'Workspace é o espaço de colaboração do seu time ou organização. Peça um convite ou o endereço ao seu administrador ou crie uma workspace para o seu time.',
