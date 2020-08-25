@@ -119,7 +119,7 @@ export default class EncryptionRoom {
 	requestRoomKey = async() => {
 		const { rid, e2eKeyId } = this.subscription;
 		try {
-			await RocketChat.methodCall('stream-notify-room-users', `${ rid }/e2ekeyRequest`, rid, e2eKeyId);
+			await RocketChat.e2eRequestRoomKey(rid, e2eKeyId);
 		} catch {
 			// Do nothing
 		}

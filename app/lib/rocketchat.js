@@ -369,6 +369,10 @@ const RocketChat = {
 		// RC 0.70.0
 		return this.post('e2e.updateGroupKey', { uid, rid, key });
 	},
+	e2eRequestRoomKey(rid, e2eKeyId) {
+		// RC 0.70.0
+		return this.methodCallWrapper('stream-notify-room-users', `${ rid }/e2ekeyRequest`, rid, e2eKeyId);
+	},
 
 	updateJitsiTimeout(roomId) {
 		// RC 0.74.0
