@@ -68,19 +68,23 @@ export default class EncryptionRoom {
 
 	// Import roomKey as an AES Decrypt key
 	importRoomKey = async(E2EKey, privateKey) => {
-		const roomE2EKey = E2EKey.slice(12);
+		try {
+			const roomE2EKey = E2EKey.slice(12);
 
-		if (!roomE2EKey) {
-			return;
+			if (!roomE2EKey) {
+				return;
+			}
+
+			const decryptedKey = await SimpleCrypto.RSA.decrypt(roomE2EKey, privateKey);
+			this.sessionKeyExportedString = toString(decryptedKey);
+
+			this.keyID = Base64.encode(this.sessionKeyExportedString).slice(0, 12);
+
+			const { k } = EJSON.parse(this.sessionKeyExportedString);
+			this.roomKey = b64ToBuffer(k);
+		} catch {
+			// Do nothing
 		}
-
-		const decryptedKey = await SimpleCrypto.RSA.decrypt(roomE2EKey, privateKey);
-		this.sessionKeyExportedString = toString(decryptedKey);
-
-		this.keyID = Base64.encode(this.sessionKeyExportedString).slice(0, 12);
-
-		const { k } = EJSON.parse(this.sessionKeyExportedString);
-		this.roomKey = b64ToBuffer(k);
 	}
 
 	// Create a key to a room
