@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 import FastImage from '@rocket.chat/react-native-fast-image';
+import CookieManager from '@react-native-community/cookies';
 
 import { logout as logoutAction } from '../../actions/login';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
@@ -39,7 +40,9 @@ import EventEmitter from '../../utils/events';
 import { appStart as appStartAction, ROOT_LOADING } from '../../actions/app';
 import { onReviewPress } from '../../utils/review';
 import SafeAreaView from '../../containers/SafeAreaView';
+import database from '../../lib/database';
 import { isFDroidBuild } from '../../constants/environment';
+import { getUserSelector } from '../../selectors/login';
 
 
 const SectionSeparator = React.memo(({ theme }) => (
@@ -69,25 +72,54 @@ class SettingsView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		server:	PropTypes.object,
+		server: PropTypes.object,
 		allowCrashReport: PropTypes.bool,
 		toggleCrashReport: PropTypes.func,
 		theme: PropTypes.string,
 		isMasterDetail: PropTypes.bool,
 		logout: PropTypes.func.isRequired,
 		selectServerRequest: PropTypes.func,
+		user: PropTypes.shape({
+			roles: PropTypes.array,
+			id: PropTypes.string
+		}),
 		appStart: PropTypes.func
+	}
+
+	checkCookiesAndLogout = async() => {
+		const { logout, user } = this.props;
+		const db = database.servers;
+		const usersCollection = db.collections.get('users');
+		try {
+			const userRecord = await usersCollection.find(user.id);
+			if (!userRecord.loginEmailPassword) {
+				showConfirmationAlert({
+					title: I18n.t('Clear_cookies_alert'),
+					message: I18n.t('Clear_cookies_desc'),
+					confirmationText: I18n.t('Clear_cookies_yes'),
+					dismissText: I18n.t('Clear_cookies_no'),
+					onPress: async() => {
+						await CookieManager.clearAll(true);
+						logout();
+					},
+					onCancel: () => {
+						logout();
+					}
+				});
+			} else {
+				logout();
+			}
+		} catch {
+			// Do nothing: user not found
+		}
 	}
 
 	handleLogout = () => {
 		logEvent(events.SE_LOG_OUT);
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_of_this_application'),
-			callToAction: I18n.t('Logout'),
-			onPress: () => {
-				const { logout } = this.props;
-				logout();
-			}
+			confirmationText: I18n.t('Logout'),
+			onPress: this.checkCookiesAndLogout
 		});
 	}
 
@@ -95,7 +127,7 @@ class SettingsView extends React.Component {
 		logEvent(events.SE_CLEAR_LOCAL_SERVER_CACHE);
 		showConfirmationAlert({
 			message: I18n.t('This_will_clear_all_your_offline_data'),
-			callToAction: I18n.t('Clear'),
+			confirmationText: I18n.t('Clear'),
 			onPress: async() => {
 				const {
 					server: { server }, appStart, selectServerRequest
@@ -377,6 +409,7 @@ class SettingsView extends React.Component {
 
 const mapStateToProps = state => ({
 	server: state.server,
+	user: getUserSelector(state),
 	allowCrashReport: state.crashReport.allowCrashReport,
 	isMasterDetail: state.app.isMasterDetail
 });
