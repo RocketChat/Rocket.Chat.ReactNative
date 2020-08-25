@@ -122,11 +122,13 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			language: user.language,
 			status: user.status,
 			statusText: user.statusText,
-			roles: user.roles
+			roles: user.roles,
+			loginEmailPassword: user.loginEmailPassword
 		};
 		yield serversDB.action(async() => {
 			try {
 				const userRecord = await usersCollection.find(user.id);
+				u.loginEmailPassword = userRecord?.loginEmailPassword;
 				await userRecord.update((record) => {
 					record._raw = sanitizedRaw({ id: user.id, ...record._raw }, usersCollection.schema);
 					Object.assign(record, u);

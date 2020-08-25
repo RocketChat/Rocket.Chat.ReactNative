@@ -48,6 +48,17 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 7,
+			steps: [
+				addColumns({
+					table: 'users',
+					columns: [
+						{ name: 'login_email_password', type: 'boolean', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });
