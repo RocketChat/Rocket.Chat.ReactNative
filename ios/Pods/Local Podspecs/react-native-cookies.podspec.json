@@ -1,0 +1,25 @@
+{
+  "name": "react-native-cookies",
+  "version": "4.0.0",
+  "summary": "Cookie Manager for React Native",
+  "homepage": "https://github.com/react-native-community/cookies#readme",
+  "license": "MIT",
+  "authors": {
+    "Jason Safaiyeh": "safaiyeh@protonmail.com"
+  },
+  "source": {
+    "git": "git@github.com:react-native-community/cookies.git",
+    "tag": "v4.0.0"
+  },
+  "requires_arc": true,
+  "platforms": {
+    "ios": "7.0"
+  },
+  "preserve_paths": "*.framework",
+  "source_files": "ios/**/*.{h,m}",
+  "dependencies": {
+    "React": [
+
+    ]
+  }
+}
