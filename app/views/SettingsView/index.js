@@ -99,7 +99,7 @@ class SettingsView extends React.Component {
 					confirmationText: 'Yes, clear cookies', // TODO: missing i18n
 					dismissText: 'No, keep cookies', // TODO: missing i18n
 					onPress: async() => {
-						await CookieManager.clearAll();
+						await CookieManager.clearAll(true);
 						logout();
 					},
 					onCancel: () => {
