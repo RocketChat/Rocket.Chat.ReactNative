@@ -15,6 +15,7 @@ import { E2E_MESSAGE_TYPE, E2E_STATUS } from './constants';
 import RocketChat from '../rocketchat';
 import { isIOS } from '../../utils/deviceInfo';
 import Deferred from '../../utils/deferred';
+import debounce from '../../utils/debounce';
 
 export default class EncryptionRoom {
 	constructor(subscription) {
@@ -43,13 +44,12 @@ export default class EncryptionRoom {
 			return this.readyPromise;
 		}
 
-		// We're establishing a new room encryption client
-		this.establishing = true;
-
 		const { E2EKey, e2eKeyId } = this.subscription;
 
 		// If this room has a E2EKey let's import this
 		if (E2EKey) {
+			// We're establishing a new room encryption client
+			this.establishing = true;
 			await this.importRoomKey(E2EKey, privateKey);
 			this.readyPromise.resolve();
 			return;
@@ -57,6 +57,8 @@ export default class EncryptionRoom {
 
 		// If doesn't have a e2eKeyId we need to create keys to this room
 		if (!e2eKeyId) {
+			// We're establishing a new room encryption client
+			this.establishing = true;
 			await this.createRoomKey();
 			this.readyPromise.resolve();
 			return;
@@ -64,9 +66,6 @@ export default class EncryptionRoom {
 
 		// Request a E2EKey for this room to other users
 		await this.requestRoomKey();
-
-		// The room encryption client should be established by the next handshake
-		this.establishing = false;
 	}
 
 	// Import roomKey as an AES Decrypt key
@@ -119,14 +118,19 @@ export default class EncryptionRoom {
 	}
 
 	// Request a key to this room
-	requestRoomKey = async() => {
+	// We're debouncing this function to avoid multiple calls
+	// when you join a room with a lot of messages and nobody
+	// can send the encryption key at the moment.
+	// Each time you see a encrypted message of a room that you don't have a key
+	// this will be called again and run once in 5 seconds
+	requestRoomKey = debounce(async() => {
 		const { rid, e2eKeyId } = this.subscription;
 		try {
 			await RocketChat.e2eRequestRoomKey(rid, e2eKeyId);
 		} catch {
 			// Do nothing
 		}
-	}
+	}, 5000, true)
 
 	// Create a encrypted key to this room base on users
 	encryptRoomKey = async() => {

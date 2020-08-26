@@ -107,7 +107,7 @@ class MessageContainer extends React.Component {
 
 	onLongPress = () => {
 		const { archived, onLongPress, item } = this.props;
-		if (this.isInfo || this.hasError || archived) {
+		if (this.isInfo || this.hasError || this.isEncrypted || archived) {
 			return;
 		}
 		if (onLongPress) {
