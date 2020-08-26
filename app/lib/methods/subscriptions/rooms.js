@@ -133,6 +133,21 @@ const createOrUpdateSubscription = async(subscription, room) => {
 				// Do nothing
 			}
 
+			// If we're receiving a E2EKey of a room
+			if (!sub?.E2EKey && subscription?.E2EKey) {
+				// Assing info from database subscription to tmp
+				// It should be a plain object
+				tmp = Object.assign(tmp, {
+					rid: sub.rid,
+					encrypted: sub.encrypted,
+					lastMessage: sub.lastMessage,
+					E2EKey: subscription.E2EKey,
+					e2eKeyId: sub.e2eKeyId
+				});
+				// Decrypt lastMessage using the received E2EKey
+				tmp = await Encryption.decryptSubscription(tmp);
+			}
+
 			const batch = [];
 			if (sub) {
 				try {

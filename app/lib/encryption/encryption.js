@@ -324,28 +324,39 @@ class Encryption {
 			return subscription;
 		}
 
-		const db = database.active;
-		const subCollection = db.collections.get('subscriptions');
-		const { E2EKey } = subscription;
 		const { rid } = lastMessage;
-		try {
-			// Check if the subscription exists
-			await subCollection.find(rid);
-		} catch {
-			// If privateKey is not ready yet
-			if (!this.privateKey) {
-				return subscription;
+		// If it doesn't have a ready instance yet
+		// let's create a instance based on the sub that will be decrypted
+		if (!this.roomInstances[rid]?.ready) {
+			const db = database.active;
+			const subCollection = db.collections.get('subscriptions');
+
+			let sub = subscription;
+			try {
+				sub = await subCollection.find(rid);
+				// We should do this to avoid update database object
+				sub = {
+					rid: sub.rid,
+					encrypted: sub.encrypted,
+					lastMessage: sub.lastMessage,
+					E2EKey: sub.E2EKey || subscription.E2EKey,
+					e2eKeyId: sub.e2eKeyId,
+					...subscription
+				};
+			} catch {
+				// Subscription not found
 			}
-			// Subscription not found
-			// Create a new room encryption client
-			const roomE2E = new EncryptionRoom(subscription);
-			// If it doesn't have a E2EKey
-			if (!E2EKey) {
+
+			// Create a new Room Encryption client
+			const roomE2E = new EncryptionRoom(sub);
+			// If sub doesn't have a E2EKey yet
+			if (!sub?.E2EKey) {
 				// Request this room key
 				await roomE2E.requestRoomKey();
 				// Return as a encrypted message
 				return subscription;
 			}
+
 			// Set the instance
 			this.roomInstances[rid] = roomE2E;
 			// Do the handshake to get a ready client
