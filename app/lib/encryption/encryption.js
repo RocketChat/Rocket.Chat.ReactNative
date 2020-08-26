@@ -389,6 +389,9 @@ class Encryption {
 
 	// Decrypt multiple messages
 	decryptMessages = messages => Promise.all(messages.map(m => this.decryptMessage(m)))
+
+	// Decrypt multiple subscriptions
+	decryptSubscriptions = subscriptions => Promise.all(subscriptions.map(s => this.decryptSubscription(s)))
 }
 
 const encryption = new Encryption();

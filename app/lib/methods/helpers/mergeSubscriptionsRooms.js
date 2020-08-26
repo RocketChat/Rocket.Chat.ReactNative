@@ -75,18 +75,23 @@ export default async(subscriptions = [], rooms = []) => {
 		rooms = rooms.update;
 	}
 
-	rooms = await Promise.all(rooms.map(room => Encryption.decryptSubscription(room)));
+	// Find missing rooms/subscriptions on local database
 	({ subscriptions, rooms } = await findSubscriptionsRooms(subscriptions, rooms));
+	// Merge each subscription into a room
+	subscriptions = subscriptions.map((s) => {
+		const index = rooms.findIndex(({ _id }) => _id === s.rid);
+		// Room not found
+		if (index < 0) {
+			return merge(s);
+		}
+		const [room] = rooms.splice(index, 1);
+		return merge(s, room);
+	});
+	// Decrypt all needing decrypt subscriptions
+	subscriptions = await Encryption.decryptSubscriptions(subscriptions);
 
 	return {
-		subscriptions: subscriptions.map((s) => {
-			const index = rooms.findIndex(({ _id }) => _id === s.rid);
-			if (index < 0) {
-				return merge(s);
-			}
-			const [room] = rooms.splice(index, 1);
-			return merge(s, room);
-		}),
+		subscriptions,
 		rooms
 	};
 };
