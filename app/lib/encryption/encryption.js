@@ -235,7 +235,7 @@ class Encryption {
 
 	// Logic to decrypt all pending messages/threads/threadMessages
 	// after initialize the encryption client
-	decryptPendingMessages = async() => {
+	decryptPendingMessages = async(roomId) => {
 		const db = database.active;
 
 		const messagesCollection = db.collections.get('messages');
@@ -243,7 +243,15 @@ class Encryption {
 		const threadMessagesCollection = db.collections.get('thread_messages');
 
 		// e2e status is 'pending' and message type is 'e2e'
-		const whereClause = [Q.where('t', E2E_MESSAGE_TYPE), Q.where('e2e', E2E_STATUS.PENDING)];
+		const whereClause = [
+			Q.where('t', E2E_MESSAGE_TYPE),
+			Q.where('e2e', E2E_STATUS.PENDING)
+		];
+
+		// decrypt messages of a room
+		if (roomId) {
+			whereClause.push(Q.where('rid', roomId));
+		}
 
 		try {
 			// Find all messages/threads/threadsMessages that have pending e2e status
