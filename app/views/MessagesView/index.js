@@ -25,7 +25,8 @@ class MessagesView extends React.Component {
 		route: PropTypes.object,
 		customEmojis: PropTypes.object,
 		theme: PropTypes.string,
-		showActionSheet: PropTypes.func
+		showActionSheet: PropTypes.func,
+		useRealName: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -81,7 +82,9 @@ class MessagesView extends React.Component {
 	}
 
 	defineMessagesViewContent = (name) => {
-		const { user, baseUrl, theme } = this.props;
+		const {
+			user, baseUrl, theme, useRealName
+		} = this.props;
 		const renderItemCommonProps = item => ({
 			item,
 			baseUrl,
@@ -91,6 +94,7 @@ class MessagesView extends React.Component {
 			isEdited: !!item.editedAt,
 			isHeader: true,
 			attachments: item.attachments || [],
+			useRealName,
 			showAttachment: this.showAttachment,
 			getCustomEmoji: this.getCustomEmoji,
 			navToRoomInfo: this.navToRoomInfo
@@ -311,7 +315,8 @@ class MessagesView extends React.Component {
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
-	customEmojis: state.customEmojis
+	customEmojis: state.customEmojis,
+	useRealName: state.settings.UI_Use_Real_Name
 });
 
 export default connect(mapStateToProps)(withTheme(withActionSheet(MessagesView)));
