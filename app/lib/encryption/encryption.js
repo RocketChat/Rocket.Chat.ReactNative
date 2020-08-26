@@ -332,6 +332,10 @@ class Encryption {
 			// Check if the subscription exists
 			await subCollection.find(rid);
 		} catch {
+			// If privateKey is not ready yet
+			if (!this.privateKey) {
+				return subscription;
+			}
 			// Subscription not found
 			// Create a new room encryption client
 			const roomE2E = new EncryptionRoom(subscription);
