@@ -35,7 +35,7 @@ platform :android do
   lane :beta do
     upload_to_play_store(
       track: 'internal',
-      aab: 'android/app/build/outputs/bundle/release/app-release.aab'
+      aab: 'android/app/build/outputs/bundle/playRelease/app-play-release.aab'
     )
   end
 end
