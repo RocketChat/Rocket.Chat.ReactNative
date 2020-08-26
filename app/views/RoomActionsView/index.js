@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, SectionList, Text, Alert, Share
+	View, SectionList, Text, Alert, Share, Switch
 } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -21,7 +21,7 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { CustomIcon } from '../../lib/Icons';
 import DisclosureIndicator from '../../containers/DisclosureIndicator';
 import StatusBar from '../../containers/StatusBar';
-import { themes } from '../../constants/colors';
+import { themes, SWITCH_TRACK_COLOR } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { CloseModalButton } from '../../containers/HeaderButton';
 import { getUserSelector } from '../../selectors/login';
@@ -29,6 +29,8 @@ import Markdown from '../../containers/markdown';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { E2E_ROOM_TYPES } from '../../lib/encryption/constants';
+import protectedFunction from '../../lib/methods/helpers/protectedFunction';
+import database from '../../lib/database';
 
 class RoomActionsView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => {
@@ -253,7 +255,8 @@ class RoomActionsView extends React.Component {
 			name: I18n.t('Notifications'),
 			route: 'NotificationPrefView',
 			params: { rid, room },
-			testID: 'room-actions-notifications'
+			testID: 'room-actions-notifications',
+			right: this.renderDisclosure
 		};
 
 		const jitsiActions = jitsiEnabled ? [
@@ -261,13 +264,15 @@ class RoomActionsView extends React.Component {
 				icon: 'phone',
 				name: I18n.t('Voice_call'),
 				event: () => RocketChat.callJitsi(rid, true),
-				testID: 'room-actions-voice'
+				testID: 'room-actions-voice',
+				right: this.renderDisclosure
 			},
 			{
 				icon: 'camera',
 				name: I18n.t('Video_call'),
 				event: () => RocketChat.callJitsi(rid),
-				testID: 'room-actions-video'
+				testID: 'room-actions-video',
+				right: this.renderDisclosure
 			}
 		] : [];
 
@@ -294,41 +299,47 @@ class RoomActionsView extends React.Component {
 					name: I18n.t('Files'),
 					route: 'MessagesView',
 					params: { rid, t, name: 'Files' },
-					testID: 'room-actions-files'
+					testID: 'room-actions-files',
+					right: this.renderDisclosure
 				},
 				{
 					icon: 'mention',
 					name: I18n.t('Mentions'),
 					route: 'MessagesView',
 					params: { rid, t, name: 'Mentions' },
-					testID: 'room-actions-mentioned'
+					testID: 'room-actions-mentioned',
+					right: this.renderDisclosure
 				},
 				{
 					icon: 'star',
 					name: I18n.t('Starred'),
 					route: 'MessagesView',
 					params: { rid, t, name: 'Starred' },
-					testID: 'room-actions-starred'
+					testID: 'room-actions-starred',
+					right: this.renderDisclosure
 				},
 				{
 					icon: 'search',
 					name: I18n.t('Search'),
 					route: 'SearchMessagesView',
 					params: { rid, encrypted },
-					testID: 'room-actions-search'
+					testID: 'room-actions-search',
+					right: this.renderDisclosure
 				},
 				{
 					icon: 'share',
 					name: I18n.t('Share'),
 					event: this.handleShare,
-					testID: 'room-actions-share'
+					testID: 'room-actions-share',
+					right: this.renderDisclosure
 				},
 				{
 					icon: 'pin',
 					name: I18n.t('Pinned'),
 					route: 'MessagesView',
 					params: { rid, t, name: 'Pinned' },
-					testID: 'room-actions-pinned'
+					testID: 'room-actions-pinned',
+					right: this.renderDisclosure
 				}
 			],
 			renderItem: this.renderItem
@@ -340,7 +351,8 @@ class RoomActionsView extends React.Component {
 				name: I18n.t('Auto_Translate'),
 				route: 'AutoTranslateView',
 				params: { rid, room },
-				testID: 'room-actions-auto-translate'
+				testID: 'room-actions-auto-translate',
+				right: this.renderDisclosure
 			});
 		}
 
@@ -351,7 +363,8 @@ class RoomActionsView extends React.Component {
 				description: membersCount > 0 ? `${ membersCount } ${ I18n.t('members') }` : null,
 				route: 'RoomMembersView',
 				params: { rid, room },
-				testID: 'room-actions-members'
+				testID: 'room-actions-members',
+				right: this.renderDisclosure
 			});
 		}
 
@@ -363,7 +376,8 @@ class RoomActionsView extends React.Component {
 						name: I18n.t(`${ blocker ? 'Unblock' : 'Block' }_user`),
 						type: 'danger',
 						event: this.toggleBlockUser,
-						testID: 'room-actions-block-user'
+						testID: 'room-actions-block-user',
+						right: this.renderDisclosure
 					}
 				],
 				renderItem: this.renderItem
@@ -379,7 +393,8 @@ class RoomActionsView extends React.Component {
 					description: membersCount > 0 ? `${ membersCount } ${ I18n.t('members') }` : null,
 					route: 'RoomMembersView',
 					params: { rid, room },
-					testID: 'room-actions-members'
+					testID: 'room-actions-members',
+					right: this.renderDisclosure
 				});
 			}
 
@@ -393,7 +408,8 @@ class RoomActionsView extends React.Component {
 						title: I18n.t('Add_users'),
 						nextAction: this.addUser
 					},
-					testID: 'room-actions-add-user'
+					testID: 'room-actions-add-user',
+					right: this.renderDisclosure
 				});
 			}
 			if (canInviteUser) {
@@ -404,7 +420,8 @@ class RoomActionsView extends React.Component {
 					params: {
 						rid
 					},
-					testID: 'room-actions-invite-user'
+					testID: 'room-actions-invite-user',
+					right: this.renderDisclosure
 				});
 			}
 			sections[2].data = [...actions, ...sections[2].data];
@@ -418,7 +435,8 @@ class RoomActionsView extends React.Component {
 							name: I18n.t('Leave_channel'),
 							type: 'danger',
 							event: this.leaveChannel,
-							testID: 'room-actions-leave-channel'
+							testID: 'room-actions-leave-channel',
+							right: this.renderDisclosure
 						}
 					],
 					renderItem: this.renderItem
@@ -431,7 +449,8 @@ class RoomActionsView extends React.Component {
 				sections[2].data.push({
 					icon: 'close',
 					name: I18n.t('Close'),
-					event: this.closeLivechat
+					event: this.closeLivechat,
+					right: this.renderDisclosure
 				});
 
 				if (canForwardGuest) {
@@ -439,7 +458,8 @@ class RoomActionsView extends React.Component {
 						icon: 'user-forward',
 						name: I18n.t('Forward'),
 						route: 'ForwardLivechatView',
-						params: { rid }
+						params: { rid },
+						right: this.renderDisclosure
 					});
 				}
 
@@ -447,7 +467,8 @@ class RoomActionsView extends React.Component {
 					sections[2].data.push({
 						icon: 'undo',
 						name: I18n.t('Return'),
-						event: this.returnLivechat
+						event: this.returnLivechat,
+						right: this.renderDisclosure
 					});
 				}
 
@@ -455,7 +476,8 @@ class RoomActionsView extends React.Component {
 					icon: 'history',
 					name: I18n.t('Navigation_history'),
 					route: 'VisitorNavigationView',
-					params: { rid }
+					params: { rid },
+					right: this.renderDisclosure
 				});
 			}
 
@@ -465,21 +487,46 @@ class RoomActionsView extends React.Component {
 			});
 		}
 
+		// If can edit this room
+		// If this room type can be Encrypted
+		// If e2e is enabled for this server
 		if (canEdit && E2E_ROOM_TYPES[t] && e2eEnabled) {
-			sections[2].data.push({
-				icon: 'encrypted',
-				name: I18n.t('Encrypted'),
-				event: this.toggleEncrypted,
-				testID: 'room-actions-encrypt'
+			// Insert after jitsi section
+			sections.splice(2, 0, {
+				data: [{
+					icon: 'encrypted',
+					name: I18n.t('Encrypted'),
+					testID: 'room-actions-encrypt',
+					right: this.renderEncryptedSwitch
+				}],
+				renderItem: this.renderItem
 			});
 		}
 
 		return sections;
 	}
 
+	renderDisclosure = () => {
+		const { theme } = this.props;
+		return <DisclosureIndicator theme={theme} />;
+	}
+
 	renderSeparator = () => {
 		const { theme } = this.props;
 		return <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
+	}
+
+	renderEncryptedSwitch = () => {
+		const { room } = this.state;
+		const { encrypted } = room;
+		return (
+			<Switch
+				value={encrypted}
+				trackColor={SWITCH_TRACK_COLOR}
+				onValueChange={this.toggleEncrypted}
+				style={styles.encryptedSwitch}
+			/>
+		);
 	}
 
 	closeLivechat = () => {
@@ -552,9 +599,36 @@ class RoomActionsView extends React.Component {
 	toggleEncrypted = async() => {
 		logEvent(events.RA_TOGGLE_ENCRYPTED);
 		const { room } = this.state;
-		const { rid, encrypted } = room;
+		const { rid } = room;
+		const db = database.active;
+
+		// Toggle encrypted value
+		const encrypted = !room.encrypted;
 		try {
-			await RocketChat.saveRoomSettings(rid, { encrypted: !encrypted });
+			// Instantly feedback to the user
+			await db.action(async() => {
+				await room.update(protectedFunction((r) => {
+					r.encrypted = encrypted;
+				}));
+			});
+
+			try {
+				// Send new room setting value to server
+				const { result } = await RocketChat.saveRoomSettings(rid, { encrypted });
+				// If it was saved successfully
+				if (result) {
+					return;
+				}
+			} catch {
+				// do nothing
+			}
+
+			// If something goes wrong we go back to the previous value
+			await db.action(async() => {
+				await room.update(protectedFunction((r) => {
+					r.encrypted = room.encrypted;
+				}));
+			});
 		} catch (e) {
 			logEvent(events.RA_TOGGLE_ENCRYPTED_F);
 			log(e);
@@ -672,7 +746,7 @@ class RoomActionsView extends React.Component {
 				<CustomIcon name={item.icon} size={24} style={[styles.sectionItemIcon, { color: themes[theme].bodyText }]} />
 				<Text style={[styles.sectionItemName, { color: themes[theme].bodyText }]}>{ item.name }</Text>
 				{item.description ? <Text style={[styles.sectionItemDescription, { color: themes[theme].auxiliaryText }]}>{ item.description }</Text> : null}
-				<DisclosureIndicator theme={theme} />
+				{item?.right?.()}
 			</>
 		);
 		return this.renderTouchableItem(subview, item);
