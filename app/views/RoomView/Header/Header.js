@@ -129,6 +129,7 @@ const Header = React.memo(({
 	return (
 		<TouchableOpacity
 			testID='room-view-header-actions'
+			accessibilityLabel={title}
 			onPress={onPress}
 			style={styles.container}
 			disabled={tmid}
