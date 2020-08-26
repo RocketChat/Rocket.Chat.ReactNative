@@ -7,6 +7,7 @@ import {
 	b64ToBuffer,
 	bufferToUtf8,
 	bufferToB64,
+	bufferToB64URI,
 	utf8ToBuffer,
 	splitVectorData,
 	joinVectorData
@@ -95,12 +96,11 @@ export default class EncryptionRoom {
 			const key = await SimpleCrypto.utils.randomBytes(16);
 			this.roomKey = key;
 
-			let k = bufferToB64(this.roomKey);
-			k = k.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+			// Web Crypto format of a Secret Key
 			const sessionKeyExported = {
 				alg: 'A128CBC',
 				ext: true,
-				k,
+				k: bufferToB64URI(this.roomKey),
 				key_ops: ['encrypt', 'decrypt'],
 				kty: 'oct'
 			};

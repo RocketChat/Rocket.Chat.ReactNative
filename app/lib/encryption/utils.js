@@ -3,9 +3,33 @@ import SimpleCrypto from 'react-native-simple-crypto';
 
 import random from '../../utils/random';
 
+const BASE64URI = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+
 export const b64ToBuffer = SimpleCrypto.utils.convertBase64ToArrayBuffer;
 export const utf8ToBuffer = SimpleCrypto.utils.convertUtf8ToArrayBuffer;
 export const bufferToB64 = SimpleCrypto.utils.convertArrayBufferToBase64;
+// ArrayBuffer -> Base64 URI Safe
+// https://github.com/herrjemand/Base64URL-ArrayBuffer/blob/master/lib/base64url-arraybuffer.js
+export const bufferToB64URI = (buffer) => {
+	const uintArray = new Uint8Array(buffer);
+	const len = uintArray.length;
+	let base64 = '';
+
+	for (let i = 0; i < len; i += 3) {
+		base64 += BASE64URI[uintArray[i] >> 2]; // eslint-disable-line no-bitwise
+		base64 += BASE64URI[((uintArray[i] & 3) << 4) | (uintArray[i + 1] >> 4)]; // eslint-disable-line no-bitwise
+		base64 += BASE64URI[((uintArray[i + 1] & 15) << 2) | (uintArray[i + 2] >> 6)]; // eslint-disable-line no-bitwise
+		base64 += BASE64URI[uintArray[i + 2] & 63]; // eslint-disable-line no-bitwise
+	}
+
+	if ((len % 3) === 2) {
+		base64 = base64.substring(0, base64.length - 1);
+	} else if (len % 3 === 1) {
+		base64 = base64.substring(0, base64.length - 2);
+	}
+
+	return base64;
+};
 // SimpleCrypto.utils.convertArrayBufferToUtf8 is not working with unicode emoji
 export const bufferToUtf8 = (buffer) => {
 	const uintArray = new Uint8Array(buffer);
