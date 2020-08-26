@@ -354,18 +354,6 @@ class SettingsView extends React.Component {
 
 					<SectionSeparator theme={theme} />
 
-					{this.showLivechat ? (
-						<>
-							<ListItem
-								title={I18n.t('Omnichannel')}
-								testID='settings-view-livechat'
-								right={() => this.renderLivechatSwitch()}
-								theme={theme}
-							/>
-							<SectionSeparator theme={theme} />
-						</>
-					) : null}
-
 					{!isFDroidBuild ? (
 						<>
 							<ListItem
