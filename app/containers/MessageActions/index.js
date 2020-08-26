@@ -268,7 +268,7 @@ const MessageActions = React.memo(forwardRef(({
 	const handleDelete = (message) => {
 		showConfirmationAlert({
 			message: I18n.t('You_will_not_be_able_to_recover_this_message'),
-			callToAction: I18n.t('Delete'),
+			confirmationText: I18n.t('Delete'),
 			onPress: async() => {
 				try {
 					logEvent(events.ROOM_MSG_ACTION_DELETE);
