@@ -83,6 +83,10 @@ export default class EncryptionRoom {
 
 			this.keyID = Base64.encode(this.sessionKeyExportedString).slice(0, 12);
 
+			// Extract K from Web Crypto Secret Key
+			// K is a base64URL encoded array of bytes
+			// Web Crypto API uses this as a private key to decrypt/encrypt things
+			// Reference: https://www.javadoc.io/doc/com.nimbusds/nimbus-jose-jwt/5.1/com/nimbusds/jose/jwk/OctetSequenceKey.html
 			const { k } = EJSON.parse(this.sessionKeyExportedString);
 			this.roomKey = b64ToBuffer(k);
 		} catch {
@@ -98,11 +102,15 @@ export default class EncryptionRoom {
 
 			// Web Crypto format of a Secret Key
 			const sessionKeyExported = {
+				// Type of Secret Key
+				kty: 'oct',
+				// Algorithm
 				alg: 'A128CBC',
-				ext: true,
+				// Base64URI encoded array of bytes
 				k: bufferToB64URI(this.roomKey),
-				key_ops: ['encrypt', 'decrypt'],
-				kty: 'oct'
+				// Specific Web Crypto properties
+				ext: true,
+				key_ops: ['encrypt', 'decrypt']
 			};
 
 			this.sessionKeyExportedString = EJSON.stringify(sessionKeyExported);
