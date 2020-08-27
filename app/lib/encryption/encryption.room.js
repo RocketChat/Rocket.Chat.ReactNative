@@ -74,7 +74,7 @@ export default class EncryptionRoom {
 		try {
 			const roomE2EKey = E2EKey.slice(12);
 
-			if (!roomE2EKey) {
+			if (!roomE2EKey || !privateKey) {
 				return;
 			}
 
