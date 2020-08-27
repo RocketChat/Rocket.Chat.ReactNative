@@ -12963,8 +12963,8 @@ react-native-scrollable-tab-view@^1.0.0:
     react-timer-mixin "^0.13.3"
 
 react-native-simple-crypto@RocketChat/react-native-simple-crypto:
-  version "0.3.0"
-  resolved "https://codeload.github.com/RocketChat/react-native-simple-crypto/tar.gz/cdd6cca36e77c3d535ac46b37459f1c2d452f471"
+  version "0.3.1"
+  resolved "https://codeload.github.com/RocketChat/react-native-simple-crypto/tar.gz/b3deaf18e83cd4acc418fe65adb2d837164c2a20"
   dependencies:
     base64-js "^1.3.0"
     hex-lite "^1.5.0"

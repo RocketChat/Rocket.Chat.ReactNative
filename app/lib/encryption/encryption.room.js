@@ -14,7 +14,6 @@ import {
 } from './utils';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from './constants';
 import RocketChat from '../rocketchat';
-import { isIOS } from '../../utils/deviceInfo';
 import Deferred from '../../utils/deferred';
 import debounce from '../../utils/debounce';
 
@@ -156,15 +155,7 @@ export default class EncryptionRoom {
 			const { public_key: publicKey } = user.e2e;
 			try {
 				const userKey = await SimpleCrypto.RSA.importKey(EJSON.parse(publicKey));
-				let encryptedUserKey = await SimpleCrypto.RSA.encrypt(this.sessionKeyExportedString, userKey);
-				// these replaces are a trick that I need to see if I can do better
-				if (isIOS) {
-					// replace all doesn't work on Android
-					encryptedUserKey = encryptedUserKey.replaceAll('\n', '').replaceAll('\r', '');
-				} else {
-					// This is not doing the same thing between iOS and Android
-					encryptedUserKey = encryptedUserKey.replace(/\n/g, '').replace(/\r/g, '');
-				}
+				const encryptedUserKey = await SimpleCrypto.RSA.encrypt(this.sessionKeyExportedString, userKey);
 				await RocketChat.e2eUpdateGroupKey(user._id, roomId, this.keyID + encryptedUserKey);
 			} catch {
 				// Do nothing
