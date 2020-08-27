@@ -19,7 +19,7 @@ import {
 } from '../actions/share';
 
 import subscribeRooms from './methods/subscriptions/rooms';
-import subscribeInquiry from './methods/subscriptions/inquiry';
+import subscribeInquiry from '../ee/omnichannel/lib/subscriptions/inquiry';
 import getUsersPresence, { getUserPresence, subscribeUsersPresence } from './methods/getUsersPresence';
 
 import protectedFunction from './methods/helpers/protectedFunction';
