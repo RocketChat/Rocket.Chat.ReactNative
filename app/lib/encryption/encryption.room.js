@@ -73,6 +73,7 @@ export default class EncryptionRoom {
 		try {
 			const roomE2EKey = E2EKey.slice(12);
 
+			// Check these params to never send null to decrypt
 			if (!roomE2EKey || !privateKey) {
 				return;
 			}
@@ -221,6 +222,7 @@ export default class EncryptionRoom {
 		try {
 			const { t, e2e } = message;
 
+			// If message type is e2e and not was decrypted yet
 			if (t === E2E_MESSAGE_TYPE && e2e !== E2E_STATUS.DONE) {
 				let { msg } = message;
 				msg = b64ToBuffer(msg.slice(12));
