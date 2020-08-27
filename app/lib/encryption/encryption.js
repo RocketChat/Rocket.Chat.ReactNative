@@ -198,7 +198,6 @@ class Encryption {
 
 		const db = database.active;
 		const subCollection = db.collections.get('subscriptions');
-		// TODO: Prevent find the sub again if it's not a encrypted room ?
 		let sub;
 		try {
 			// Find the subscription
