@@ -390,9 +390,7 @@ const RocketChat = {
 			};
 		}
 
-		const loginEmailPassword = true;
-
-		return this.loginTOTP(params, loginEmailPassword);
+		return this.loginTOTP(params, true);
 	},
 
 	async loginOAuthOrSso(params) {
