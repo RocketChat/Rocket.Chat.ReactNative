@@ -82,15 +82,10 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 };
 
 const handleEncryptionStop = function* handleEncryptionStop() {
-	try {
-		// Hide encryption banner
-		yield put(encryptionSetBanner());
-
-		// Stop Encryption client
-		Encryption.stop();
-	} catch {
-		// Do nothing
-	}
+	// Hide encryption banner
+	yield put(encryptionSetBanner());
+	// Stop Encryption client
+	Encryption.stop();
 };
 
 const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password }) {
