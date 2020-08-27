@@ -6,7 +6,7 @@ import { themes } from '../../app/constants/colors';
 
 const styles = StyleSheet.create({
 	separator: {
-		marginTop: 30,
+		marginVertical: 30,
 		marginLeft: 10,
 		fontSize: 20,
 		fontWeight: '300'
@@ -18,8 +18,7 @@ const Separator = ({ title, style, theme }) => (
 		style={[
 			styles.separator,
 			{
-				color: themes[theme].titleText,
-				backgroundColor: themes[theme].backgroundColor
+				color: themes[theme].titleText
 			},
 			style
 		]}

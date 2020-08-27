@@ -1,10 +1,10 @@
 /* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions */
 import React from 'react';
-// import { Provider } from 'react-redux';
-// import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
+import { createStore, combineReducers } from 'redux';
 import { storiesOf } from '@storybook/react-native';
 
-// import RoomItem from './RoomItem';
+import RoomItem from './RoomItem';
 import Message from './Message';
 import UiKitMessage from './UiKitMessage';
 import UiKitModal from './UiKitModal';
@@ -24,17 +24,17 @@ const user = {
 // Change here to see themed storybook
 const theme = 'light';
 
-// const reducers = combineReducers({
-// 	settings: () => ({}),
-// 	login: () => ({
-// 		user: {
-// 			username: 'diego.mello'
-// 		}
-// 	}),
-// 	meteor: () => ({ connected: true }),
-// 	activeUsers: () => ({ abc: { status: 'online', statusText: 'dog' } })
-// });
-// const store = createStore(reducers);
+const reducers = combineReducers({
+	settings: () => ({}),
+	login: () => ({
+		user: {
+			username: 'diego.mello'
+		}
+	}),
+	meteor: () => ({ connected: true }),
+	activeUsers: () => ({ abc: { status: 'online', statusText: 'dog' } })
+});
+const store = createStore(reducers);
 
 const messageDecorator = story => (
 	<MessageContext.Provider
@@ -55,9 +55,9 @@ const messageDecorator = story => (
 	</MessageContext.Provider>
 );
 
-// storiesOf('RoomItem', module)
-// 	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
-// 	.add('list roomitem', () => <RoomItem theme={theme} />);
+storiesOf('RoomItem', module)
+	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
+	.add('list roomitem', () => <RoomItem theme={theme} />);
 storiesOf('Message', module)
 	.addDecorator(messageDecorator)
 	.add('list message', () => <Message theme={theme} />);

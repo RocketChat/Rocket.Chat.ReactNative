@@ -33,6 +33,7 @@ export const ROOMS = createRequestTypes('ROOMS', [
 	'CLOSE_SEARCH_HEADER'
 ]);
 export const ROOM = createRequestTypes('ROOM', ['SUBSCRIBE', 'UNSUBSCRIBE', 'LEAVE', 'DELETE', 'REMOVED', 'CLOSE', 'FORWARD', 'USER_TYPING']);
+export const INQUIRY = createRequestTypes('INQUIRY', [...defaultTypes, 'SET_ENABLED', 'RESET', 'QUEUE_ADD', 'QUEUE_UPDATE', 'QUEUE_REMOVE']);
 export const APP = createRequestTypes('APP', ['START', 'READY', 'INIT', 'INIT_LOCAL_SETTINGS', 'SET_MASTER_DETAIL']);
 export const MESSAGES = createRequestTypes('MESSAGES', ['REPLY_BROADCAST']);
 export const CREATE_CHANNEL = createRequestTypes('CREATE_CHANNEL', [...defaultTypes]);
@@ -65,3 +66,4 @@ export const INVITE_LINKS = createRequestTypes('INVITE_LINKS', [
 ]);
 export const SETTINGS = createRequestTypes('SETTINGS', ['CLEAR', 'ADD']);
 export const APP_STATE = createRequestTypes('APP_STATE', ['FOREGROUND', 'BACKGROUND']);
+export const ENTERPRISE_MODULES = createRequestTypes('ENTERPRISE_MODULES', ['CLEAR', 'SET']);

@@ -6,10 +6,10 @@ import {
 import { connect } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
 import DocumentPicker from 'react-native-document-picker';
-import RNUserDefaults from 'rn-user-defaults';
 import { Base64 } from 'js-base64';
 import parse from 'url-parse';
 
+import UserPreferences from '../lib/userPreferences';
 import EventEmitter from '../utils/events';
 import { selectServerRequest, serverRequest } from '../actions/server';
 import { inviteLinksClear as inviteLinksClearAction } from '../actions/inviteLinks';
@@ -62,9 +62,9 @@ const styles = StyleSheet.create({
 });
 
 class NewServerView extends React.Component {
-	static navigationOptions = {
+	static navigationOptions = () => ({
 		title: I18n.t('Workspaces')
-	}
+	})
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -139,7 +139,7 @@ class NewServerView extends React.Component {
 	}
 
 	submit = async() => {
-		logEvent(events.CONNECT_TO_WORKSPACE);
+		logEvent(events.NEWSERVER_CONNECT_TO_WORKSPACE);
 		const { text, certificate } = this.state;
 		const { connectServer } = this.props;
 		let cert = null;
@@ -151,7 +151,7 @@ class NewServerView extends React.Component {
 			try {
 				await FileSystem.copyAsync({ from: certificate.path, to: certificatePath });
 			} catch (e) {
-				logEvent(events.CONNECT_TO_WORKSPACE_FAIL);
+				logEvent(events.NEWSERVER_CONNECT_TO_WORKSPACE_F);
 				log(e);
 			}
 			cert = {
@@ -169,7 +169,7 @@ class NewServerView extends React.Component {
 	}
 
 	connectOpen = () => {
-		logEvent(events.JOIN_OPEN_WORKSPACE);
+		logEvent(events.NEWSERVER_JOIN_OPEN_WORKSPACE);
 		this.setState({ connectingOpen: true });
 		const { connectServer } = this.props;
 		connectServer('https://open.rocket.chat');
@@ -180,7 +180,7 @@ class NewServerView extends React.Component {
 			const parsedUrl = parse(text, true);
 			if (parsedUrl.auth.length) {
 				const credentials = Base64.encode(parsedUrl.auth);
-				await RNUserDefaults.set(`${ BASIC_AUTH_KEY }-${ server }`, credentials);
+				await UserPreferences.setStringAsync(`${ BASIC_AUTH_KEY }-${ server }`, credentials);
 				setBasicAuth(credentials);
 			}
 		} catch {
@@ -246,7 +246,7 @@ class NewServerView extends React.Component {
 	handleRemove = () => {
 		showConfirmationAlert({
 			message: I18n.t('You_will_unset_a_certificate_for_this_server'),
-			callToAction: I18n.t('Remove'),
+			confirmationText: I18n.t('Remove'),
 			onPress: this.setState({ certificate: null }) // We not need delete file from DocumentPicker because it is a temp file
 		});
 	}

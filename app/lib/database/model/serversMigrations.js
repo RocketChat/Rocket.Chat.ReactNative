@@ -26,6 +26,39 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 5,
+			steps: [
+				addColumns({
+					table: 'servers',
+					columns: [
+						{ name: 'unique_id', type: 'string', isOptional: true }
+					]
+				})
+			]
+		},
+		{
+			toVersion: 6,
+			steps: [
+				addColumns({
+					table: 'servers',
+					columns: [
+						{ name: 'enterprise_modules', type: 'string', isOptional: true }
+					]
+				})
+			]
+		},
+		{
+			toVersion: 7,
+			steps: [
+				addColumns({
+					table: 'users',
+					columns: [
+						{ name: 'login_email_password', type: 'boolean', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });

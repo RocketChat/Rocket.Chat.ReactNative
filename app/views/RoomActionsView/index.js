@@ -14,7 +14,7 @@ import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status';
 import RocketChat from '../../lib/rocketchat';
-import log from '../../utils/log';
+import log, { logEvent, events } from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
@@ -91,7 +91,7 @@ class RoomActionsView extends React.Component {
 		this.mounted = true;
 		const { room, member } = this.state;
 		if (room.rid) {
-			if (!room.id) {
+			if (!room.id && !this.isOmnichannelPreview) {
 				try {
 					const result = await RocketChat.getChannelInfo(room.rid);
 					if (result.success) {
@@ -135,13 +135,20 @@ class RoomActionsView extends React.Component {
 		}
 	}
 
+	get isOmnichannelPreview() {
+		const { room } = this.state;
+		return room.t === 'l' && room.status === 'queued';
+	}
+
 	onPressTouchable = (item) => {
-		if (item.route) {
+		const { route, event, params } = item;
+		if (route) {
+			logEvent(events[`RA_GO_${ route.replace('View', '').toUpperCase() }${ params.name ? params.name.toUpperCase() : '' }`]);
 			const { navigation } = this.props;
-			navigation.navigate(item.route, item.params);
+			navigation.navigate(route, params);
 		}
-		if (item.event) {
-			return item.event();
+		if (event) {
+			return event();
 		}
 	}
 
@@ -244,7 +251,7 @@ class RoomActionsView extends React.Component {
 				testID: 'room-actions-voice'
 			},
 			{
-				icon: 'camera', // TODO: change me
+				icon: 'camera',
 				name: I18n.t('Video_call'),
 				event: () => RocketChat.callJitsi(rid),
 				testID: 'room-actions-video'
@@ -407,35 +414,37 @@ class RoomActionsView extends React.Component {
 		} else if (t === 'l') {
 			sections[2].data = [];
 
-			sections[2].data.push({
-				icon: 'close',
-				name: I18n.t('Close'),
-				event: this.closeLivechat
-			});
-
-			if (canForwardGuest) {
+			if (!this.isOmnichannelPreview) {
 				sections[2].data.push({
-					icon: 'user-forward',
-					name: I18n.t('Forward'),
-					route: 'ForwardLivechatView',
+					icon: 'close',
+					name: I18n.t('Close'),
+					event: this.closeLivechat
+				});
+
+				if (canForwardGuest) {
+					sections[2].data.push({
+						icon: 'user-forward',
+						name: I18n.t('Forward'),
+						route: 'ForwardLivechatView',
+						params: { rid }
+					});
+				}
+
+				if (canReturnQueue) {
+					sections[2].data.push({
+						icon: 'undo',
+						name: I18n.t('Return'),
+						event: this.returnLivechat
+					});
+				}
+
+				sections[2].data.push({
+					icon: 'history',
+					name: I18n.t('Navigation_history'),
+					route: 'VisitorNavigationView',
 					params: { rid }
 				});
 			}
-
-			if (canReturnQueue) {
-				sections[2].data.push({
-					icon: 'undo',
-					name: I18n.t('Return'),
-					event: this.returnLivechat
-				});
-			}
-
-			sections[2].data.push({
-				icon: 'history',
-				name: I18n.t('Navigation_history'),
-				route: 'VisitorNavigationView',
-				params: { rid }
-			});
 
 			sections.push({
 				data: [notificationsAction],
@@ -462,7 +471,7 @@ class RoomActionsView extends React.Component {
 		const { room: { rid } } = this.state;
 		showConfirmationAlert({
 			message: I18n.t('Would_you_like_to_return_the_inquiry'),
-			callToAction: I18n.t('Yes'),
+			confirmationText: I18n.t('Yes'),
 			onPress: async() => {
 				try {
 					await RocketChat.returnLivechat(rid);
@@ -506,17 +515,20 @@ class RoomActionsView extends React.Component {
 	}
 
 	toggleBlockUser = () => {
+		logEvent(events.RA_TOGGLE_BLOCK_USER);
 		const { room } = this.state;
 		const { rid, blocker } = room;
 		const { member } = this.state;
 		try {
 			RocketChat.toggleBlockUser(rid, member._id, !blocker);
 		} catch (e) {
+			logEvent(events.RA_TOGGLE_BLOCK_USER_F);
 			log(e);
 		}
 	}
 
 	handleShare = () => {
+		logEvent(events.RA_SHARE);
 		const { room } = this.state;
 		const permalink = RocketChat.getPermalinkChannel(room);
 		if (!permalink) {

@@ -18,7 +18,7 @@ import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
 import styles from './styles';
-import log from '../../utils/log';
+import log, { logEvent, events } from '../../utils/log';
 import I18n from '../../i18n';
 import SortDropdown from './SortDropdown';
 import ServerDropdown from './ServerDropdown';
@@ -62,6 +62,8 @@ import { goRoom } from '../../utils/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
+import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
+import { getInquiryQueueSelector } from '../../selectors/inquiry';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
@@ -71,10 +73,12 @@ const DISCUSSIONS_HEADER = 'Discussions';
 const CHANNELS_HEADER = 'Channels';
 const DM_HEADER = 'Direct_Messages';
 const GROUPS_HEADER = 'Private_Groups';
+const OMNICHANNEL_HEADER = 'Open_Livechats';
 const QUERY_SIZE = 20;
 
 const filterIsUnread = s => (s.unread > 0 || s.alert) && !s.hideUnreadStatus;
 const filterIsFavorite = s => s.f;
+const filterIsOmnichannel = s => s.t === 'l';
 
 const shouldUpdateProps = [
 	'searchText',
@@ -90,7 +94,9 @@ const shouldUpdateProps = [
 	'appState',
 	'theme',
 	'isMasterDetail',
-	'refreshing'
+	'refreshing',
+	'queueSize',
+	'inquiryEnabled'
 ];
 const getItemLayout = (data, index) => ({
 	length: ROW_HEIGHT,
@@ -105,7 +111,9 @@ class RoomsListView extends React.Component {
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			username: PropTypes.string,
-			token: PropTypes.string
+			token: PropTypes.string,
+			statusLivechat: PropTypes.string,
+			roles: PropTypes.object
 		}),
 		server: PropTypes.string,
 		searchText: PropTypes.string,
@@ -131,7 +139,9 @@ class RoomsListView extends React.Component {
 		isMasterDetail: PropTypes.bool,
 		rooms: PropTypes.array,
 		width: PropTypes.number,
-		insets: PropTypes.object
+		insets: PropTypes.object,
+		queueSize: PropTypes.number,
+		inquiryEnabled: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -357,9 +367,7 @@ class RoomsListView extends React.Component {
 					<Item
 						title='new'
 						iconName='create'
-						onPress={isMasterDetail
-							? () => navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' })
-							: () => navigation.navigate('NewMessageStackNavigator')}
+						onPress={this.goToNewMessage}
 						testID='rooms-list-view-create-channel'
 					/>
 					<Item
@@ -367,6 +375,12 @@ class RoomsListView extends React.Component {
 						iconName='search'
 						onPress={this.initSearching}
 						testID='rooms-list-view-search'
+					/>
+					<Item
+						title='directory'
+						iconName='directory'
+						onPress={this.goDirectory}
+						testID='rooms-list-view-directory'
 					/>
 				</CustomHeaderButtons>
 			))
@@ -403,7 +417,8 @@ class RoomsListView extends React.Component {
 			sortBy,
 			showUnread,
 			showFavorites,
-			groupByType
+			groupByType,
+			user
 		} = this.props;
 
 		const db = database.active;
@@ -440,7 +455,6 @@ class RoomsListView extends React.Component {
 				.observe();
 		}
 
-
 		this.querySubscription = observable.subscribe((data) => {
 			let tempChats = [];
 			let chats = data;
@@ -450,6 +464,13 @@ class RoomsListView extends React.Component {
 			 * RoomItem handles its own re-render
 			 */
 			const chatsOrder = data.map(item => item.rid);
+
+			const isOmnichannelAgent = user?.roles?.includes('livechat-agent');
+			if (isOmnichannelAgent) {
+				const omnichannel = chats.filter(s => filterIsOmnichannel(s));
+				chats = chats.filter(s => !filterIsOmnichannel(s));
+				tempChats = this.addRoomsGroup(omnichannel, OMNICHANNEL_HEADER, tempChats);
+			}
 
 			// unread
 			if (showUnread) {
@@ -475,7 +496,7 @@ class RoomsListView extends React.Component {
 				tempChats = this.addRoomsGroup(channels, CHANNELS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(privateGroup, GROUPS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(direct, DM_HEADER, tempChats);
-			} else if (showUnread || showFavorites) {
+			} else if (showUnread || showFavorites || isOmnichannelAgent) {
 				tempChats = this.addRoomsGroup(chats, CHATS_HEADER, tempChats);
 			} else {
 				tempChats = chats;
@@ -496,6 +517,7 @@ class RoomsListView extends React.Component {
 	}
 
 	initSearching = () => {
+		logEvent(events.RL_SEARCH);
 		const { openSearchHeader } = this.props;
 		this.internalSetState({ searching: true }, () => {
 			openSearchHeader();
@@ -583,6 +605,7 @@ class RoomsListView extends React.Component {
 	}
 
 	toggleSort = () => {
+		logEvent(events.RL_TOGGLE_SORT_DROPDOWN);
 		const { toggleSortDropdown } = this.props;
 
 		this.scrollToTop();
@@ -592,6 +615,7 @@ class RoomsListView extends React.Component {
 	};
 
 	toggleFav = async(rid, favorite) => {
+		logEvent(favorite ? events.RL_UNFAVORITE_CHANNEL : events.RL_FAVORITE_CHANNEL);
 		try {
 			const db = database.active;
 			const result = await RocketChat.toggleFavorite(rid, !favorite);
@@ -609,11 +633,13 @@ class RoomsListView extends React.Component {
 				});
 			}
 		} catch (e) {
+			logEvent(events.RL_TOGGLE_FAVORITE_FAIL);
 			log(e);
 		}
 	};
 
 	toggleRead = async(rid, isRead) => {
+		logEvent(isRead ? events.RL_UNREAD_CHANNEL : events.RL_READ_CHANNEL);
 		try {
 			const db = database.active;
 			const result = await RocketChat.toggleRead(isRead, rid);
@@ -631,11 +657,13 @@ class RoomsListView extends React.Component {
 				});
 			}
 		} catch (e) {
+			logEvent(events.RL_TOGGLE_READ_F);
 			log(e);
 		}
 	};
 
 	hideChannel = async(rid, type) => {
+		logEvent(events.RL_HIDE_CHANNEL);
 		try {
 			const db = database.active;
 			const result = await RocketChat.hideRoom(rid, type);
@@ -651,11 +679,13 @@ class RoomsListView extends React.Component {
 				});
 			}
 		} catch (e) {
+			logEvent(events.RL_HIDE_CHANNEL_F);
 			log(e);
 		}
 	};
 
 	goDirectory = () => {
+		logEvent(events.RL_GO_DIRECTORY);
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', { screen: 'DirectoryView' });
@@ -664,7 +694,43 @@ class RoomsListView extends React.Component {
 		}
 	};
 
+	goQueue = () => {
+		logEvent(events.RL_GO_QUEUE);
+		const {
+			navigation, isMasterDetail, queueSize, inquiryEnabled, user
+		} = this.props;
+
+		// if not-available, prompt to change to available
+		if (user?.statusLivechat !== 'available') {
+			showConfirmationAlert({
+				message: I18n.t('Omnichannel_enable_alert'),
+				confirmationText: I18n.t('Yes'),
+				onPress: async() => {
+					try {
+						await RocketChat.changeLivechatStatus();
+					} catch {
+						// Do nothing
+					}
+				}
+			});
+		}
+
+		if (!inquiryEnabled) {
+			return;
+		}
+		// prevent navigation to empty list
+		if (!queueSize) {
+			return showErrorAlert(I18n.t('Queue_is_empty'), I18n.t('Oops'));
+		}
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', { screen: 'QueueListView' });
+		} else {
+			navigation.navigate('QueueListView');
+		}
+	};
+
 	goRoom = ({ item, isMasterDetail }) => {
+		logEvent(events.RL_GO_ROOM);
 		const { item: currentItem } = this.state;
 		const { rooms } = this.props;
 		if (currentItem?.rid === item.rid || rooms?.includes(item.rid)) {
@@ -724,6 +790,17 @@ class RoomsListView extends React.Component {
 		}
 	}
 
+	goToNewMessage = () => {
+		logEvent(events.RL_GO_NEW_MSG);
+		const { navigation, isMasterDetail } = this.props;
+
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' });
+		} else {
+			navigation.navigate('NewMessageStackNavigator');
+		}
+	}
+
 	handleCommands = ({ event }) => {
 		const { navigation, server, isMasterDetail } = this.props;
 		const { input } = event;
@@ -768,13 +845,19 @@ class RoomsListView extends React.Component {
 
 	renderListHeader = () => {
 		const { searching } = this.state;
-		const { sortBy } = this.props;
+		const {
+			sortBy, queueSize, inquiryEnabled, user
+		} = this.props;
 		return (
 			<ListHeader
 				searching={searching}
 				sortBy={sortBy}
 				toggleSort={this.toggleSort}
 				goDirectory={this.goDirectory}
+				goQueue={this.goQueue}
+				queueSize={queueSize}
+				inquiryEnabled={inquiryEnabled}
+				user={user}
 			/>
 		);
 	};
@@ -941,7 +1024,9 @@ const mapStateToProps = state => ({
 	useRealName: state.settings.UI_Use_Real_Name,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	StoreLastMessage: state.settings.Store_Last_Message,
-	rooms: state.room.rooms
+	rooms: state.room.rooms,
+	queueSize: getInquiryQueueSelector(state).length,
+	inquiryEnabled: state.inquiry.enabled
 });
 
 const mapDispatchToProps = dispatch => ({
