@@ -333,9 +333,9 @@ class Encryption {
 		}
 
 		const { rid } = lastMessage;
-		// If it doesn't have a ready instance yet
+		// If it doesn't have a ready room encryption instance yet and Encryption client is ready
 		// let's create a instance based on the sub that will be decrypted
-		if (!this.roomInstances[rid]?.ready) {
+		if (!this.roomInstances[rid]?.ready && this.ready) {
 			const db = database.active;
 			const subCollection = db.collections.get('subscriptions');
 
