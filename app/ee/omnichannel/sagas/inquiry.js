@@ -2,6 +2,7 @@ import { put, takeLatest, select } from 'redux-saga/effects';
 
 import * as types from '../../../actions/actionsTypes';
 import RocketChat from '../../../lib/rocketchat';
+import EventEmitter from '../../../utils/events';
 import { inquirySuccess, inquiryFailure, inquirySetEnabled } from '../actions/inquiry';
 import { isOmnichannelStatusAvailable, getInquiriesQueued } from '../lib';
 
@@ -19,7 +20,7 @@ const handleRequest = function* handleRequest() {
 				const { inquiries } = result;
 
 				// subscribe to inquiry queue changes
-				RocketChat.subscribeInquiry();
+				EventEmitter.emit('INQUIRY_SUBSCRIBE');
 
 				// put request result on redux state
 				yield put(inquirySuccess(inquiries));
