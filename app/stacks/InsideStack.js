@@ -51,7 +51,7 @@ import AdminPanelView from '../views/AdminPanelView';
 import NewMessageView from '../views/NewMessageView';
 import CreateChannelView from '../views/CreateChannelView';
 
-// E2ESavePassword Stack
+// E2ESaveYourPassword Stack
 import E2ESaveYourPasswordView from '../views/E2ESaveYourPasswordView';
 import E2EHowItWorksView from '../views/E2EHowItWorksView';
 
@@ -308,24 +308,24 @@ const NewMessageStackNavigator = () => {
 	);
 };
 
-// E2ESavePasswordStackNavigator
-const E2ESavePasswordStack = createStackNavigator();
-const E2ESavePasswordStackNavigator = () => {
+// E2ESaveYourPasswordStackNavigator
+const E2ESaveYourPasswordStack = createStackNavigator();
+const E2ESaveYourPasswordStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<E2ESavePasswordStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
-			<E2ESavePasswordStack.Screen
+		<E2ESaveYourPasswordStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
+			<E2ESaveYourPasswordStack.Screen
 				name='E2ESaveYourPasswordView'
 				component={E2ESaveYourPasswordView}
 				options={E2ESaveYourPasswordView.navigationOptions}
 			/>
-			<E2ESavePasswordStack.Screen
+			<E2ESaveYourPasswordStack.Screen
 				name='E2EHowItWorksView'
 				component={E2EHowItWorksView}
 				options={E2EHowItWorksView.navigationOptions}
 			/>
-		</E2ESavePasswordStack.Navigator>
+		</E2ESaveYourPasswordStack.Navigator>
 	);
 };
 
@@ -363,8 +363,8 @@ const InsideStackNavigator = () => {
 				options={{ headerShown: false }}
 			/>
 			<InsideStack.Screen
-				name='E2ESavePasswordStackNavigator'
-				component={E2ESavePasswordStackNavigator}
+				name='E2ESaveYourPasswordStackNavigator'
+				component={E2ESaveYourPasswordStackNavigator}
 				options={{ headerShown: false }}
 			/>
 			<InsideStack.Screen

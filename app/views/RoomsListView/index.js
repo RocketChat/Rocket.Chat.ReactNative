@@ -810,10 +810,10 @@ class RoomsListView extends React.Component {
 
 		const isSavePassword = encryptionBanner === E2E_BANNER_TYPE.SAVE_PASSWORD;
 		if (isMasterDetail) {
-			const screen = isSavePassword ? 'E2ESavePasswordView' : 'E2EEnterYourPasswordView';
+			const screen = isSavePassword ? 'E2ESaveYourPasswordView' : 'E2EEnterYourPasswordView';
 			navigation.navigate('ModalStackNavigator', { screen });
 		} else {
-			const screen = isSavePassword ? 'E2ESavePasswordStackNavigator' : 'E2EEnterYourPasswordStackNavigator';
+			const screen = isSavePassword ? 'E2ESaveYourPasswordStackNavigator' : 'E2EEnterYourPasswordStackNavigator';
 			navigation.navigate(screen);
 		}
 	}

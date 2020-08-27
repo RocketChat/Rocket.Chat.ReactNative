@@ -588,7 +588,7 @@ class RoomView extends React.Component {
 		if (isMasterDetail) {
 			return navigation.navigate('ModalStackNavigator', screen);
 		}
-		navigation.navigate('E2ESavePasswordStackNavigator', screen);
+		navigation.navigate('E2ESaveYourPasswordStackNavigator', screen);
 	}
 
 	onDiscussionPress = debounce((item) => {
