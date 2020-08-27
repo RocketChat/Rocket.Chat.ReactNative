@@ -51,7 +51,7 @@ import ModalBlockView from '../../views/ModalBlockView';
 import JitsiMeetView from '../../views/JitsiMeetView';
 import StatusView from '../../views/StatusView';
 import CreateDiscussionView from '../../views/CreateDiscussionView';
-import E2ESavePasswordView from '../../views/E2ESavePasswordView';
+import E2ESaveYourPasswordView from '../../views/E2ESaveYourPasswordView';
 import E2EHowItWorksView from '../../views/E2EHowItWorksView';
 import E2EEnterYourPasswordView from '../../views/E2EEnterYourPasswordView';
 
@@ -259,9 +259,9 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 					component={CreateDiscussionView}
 				/>
 				<ModalStack.Screen
-					name='E2ESavePasswordView'
-					component={E2ESavePasswordView}
-					options={E2ESavePasswordView.navigationOptions}
+					name='E2ESaveYourPasswordView'
+					component={E2ESaveYourPasswordView}
+					options={E2ESaveYourPasswordView.navigationOptions}
 				/>
 				<ModalStack.Screen
 					name='E2EHowItWorksView'

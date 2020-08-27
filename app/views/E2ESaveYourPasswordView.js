@@ -58,9 +58,9 @@ const styles = StyleSheet.create({
 	}
 });
 
-class E2ESavePasswordView extends React.Component {
+class E2ESaveYourPasswordView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
-		headerLeft: () => <CloseModalButton navigation={navigation} testID='e2e-save-password-view-close' />,
+		headerLeft: () => <CloseModalButton navigation={navigation} testID='e2e-save-your-password-view-close' />,
 		title: I18n.t('Save_Your_E2E_Password')
 	})
 
@@ -165,4 +165,4 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	encryptionSetBanner: () => dispatch(encryptionSetBannerAction())
 });
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(E2ESavePasswordView));
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(E2ESaveYourPasswordView));
