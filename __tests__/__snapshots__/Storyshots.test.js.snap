@@ -4276,63 +4276,46 @@ exports[`Storyshots Message list message 1`] = `
                 10:00 AM
               </Text>
             </View>
-            <View
-              style={
-                Array [
-                  Object {
-                    "flexDirection": "row",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              <View
+            <View>
+              <Text
+                numberOfLines={0}
                 style={
-                  Object {
-                    "flex": 1,
-                  }
+                  Array [
+                    undefined,
+                    Object {
+                      "color": "#2f343d",
+                    },
+                  ]
                 }
               >
                 <Text
+                  accessibilityLabel="This message has error"
                   numberOfLines={0}
                   style={
                     Array [
-                      undefined,
                       Object {
-                        "color": "#2f343d",
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 16,
+                        "fontWeight": "400",
                       },
+                      Array [
+                        Object {},
+                        Object {
+                          "alignItems": "flex-start",
+                          "flexDirection": "row",
+                          "flexWrap": "wrap",
+                          "justifyContent": "flex-start",
+                          "marginBottom": 0,
+                          "marginTop": 0,
+                        },
+                      ],
                     ]
                   }
                 >
-                  <Text
-                    accessibilityLabel="This message has error"
-                    numberOfLines={0}
-                    style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        },
-                        Array [
-                          Object {},
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
-                        ],
-                      ]
-                    }
-                  >
-                    This message has error
-                  </Text>
+                  This message has error
                 </Text>
-              </View>
+              </Text>
             </View>
           </View>
         </View>
@@ -4399,63 +4382,46 @@ exports[`Storyshots Message list message 1`] = `
                 10:00 AM
               </Text>
             </View>
-            <View
-              style={
-                Array [
-                  Object {
-                    "flexDirection": "row",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              <View
+            <View>
+              <Text
+                numberOfLines={0}
                 style={
-                  Object {
-                    "flex": 1,
-                  }
+                  Array [
+                    undefined,
+                    Object {
+                      "color": "#2f343d",
+                    },
+                  ]
                 }
               >
                 <Text
+                  accessibilityLabel="This message has error too"
                   numberOfLines={0}
                   style={
                     Array [
-                      undefined,
                       Object {
-                        "color": "#2f343d",
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 16,
+                        "fontWeight": "400",
                       },
+                      Array [
+                        Object {},
+                        Object {
+                          "alignItems": "flex-start",
+                          "flexDirection": "row",
+                          "flexWrap": "wrap",
+                          "justifyContent": "flex-start",
+                          "marginBottom": 0,
+                          "marginTop": 0,
+                        },
+                      ],
                     ]
                   }
                 >
-                  <Text
-                    accessibilityLabel="This message has error too"
-                    numberOfLines={0}
-                    style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                        },
-                        Array [
-                          Object {},
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
-                        ],
-                      ]
-                    }
-                  >
-                    This message has error too
-                  </Text>
+                  This message has error too
                 </Text>
-              </View>
+              </Text>
             </View>
           </View>
         </View>

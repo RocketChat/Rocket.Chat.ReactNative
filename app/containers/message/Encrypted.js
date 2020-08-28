@@ -9,8 +9,8 @@ import { BUTTON_HIT_SLOP } from './utils';
 import MessageContext from './Context';
 import styles from './styles';
 
-const Encrypted = React.memo(({ type, hide, theme }) => {
-	if (type !== E2E_MESSAGE_TYPE || hide) {
+const Encrypted = React.memo(({ type, theme }) => {
+	if (type !== E2E_MESSAGE_TYPE) {
 		return null;
 	}
 
@@ -23,7 +23,6 @@ const Encrypted = React.memo(({ type, hide, theme }) => {
 });
 Encrypted.propTypes = {
 	type: PropTypes.string,
-	hide: PropTypes.string,
 	theme: PropTypes.string
 };
 

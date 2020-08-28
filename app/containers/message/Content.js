@@ -10,6 +10,7 @@ import { getInfoMessage } from './utils';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 import Encrypted from './Encrypted';
+import { E2E_MESSAGE_TYPE } from '../../lib/encryption/constants';
 
 const Content = React.memo((props) => {
 	if (props.isInfo) {
@@ -23,6 +24,7 @@ const Content = React.memo((props) => {
 		);
 	}
 
+	const isPreview = props.tmid && !props.isThreadRoom;
 	let content = null;
 
 	if (props.tmid && !props.msg) {
@@ -38,8 +40,8 @@ const Content = React.memo((props) => {
 				getCustomEmoji={props.getCustomEmoji}
 				username={user.username}
 				isEdited={props.isEdited}
-				numberOfLines={(props.tmid && !props.isThreadRoom) ? 1 : 0}
-				preview={props.tmid && !props.isThreadRoom}
+				numberOfLines={isPreview ? 1 : 0}
+				preview={isPreview}
 				channels={props.channels}
 				mentions={props.mentions}
 				navToRoomInfo={props.navToRoomInfo}
@@ -50,16 +52,24 @@ const Content = React.memo((props) => {
 		);
 	}
 
-	return (
-		<View style={[styles.flex, props.isTemp && styles.temp]}>
-			<View style={styles.contentContainer}>
-				{content}
+	// If this is a encrypted message and is not a preview
+	if (props.type === E2E_MESSAGE_TYPE && !isPreview) {
+		content = (
+			<View style={styles.flex}>
+				<View style={styles.contentContainer}>
+					{content}
+				</View>
+				<Encrypted
+					type={props.type}
+					theme={props.theme}
+				/>
 			</View>
-			<Encrypted
-				type={props.type}
-				hide={props.tmid && !props.isThreadRoom}
-				theme={props.theme}
-			/>
+		);
+	}
+
+	return (
+		<View style={props.isTemp && styles.temp}>
+			{content}
 		</View>
 	);
 }, (prevProps, nextProps) => {
