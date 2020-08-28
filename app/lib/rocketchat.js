@@ -19,7 +19,6 @@ import {
 } from '../actions/share';
 
 import subscribeRooms from './methods/subscriptions/rooms';
-import subscribeInquiry from './methods/subscriptions/inquiry';
 import getUsersPresence, { getUserPresence, subscribeUsersPresence } from './methods/getUsersPresence';
 
 import protectedFunction from './methods/helpers/protectedFunction';
@@ -55,6 +54,7 @@ import { selectServerFailure } from '../actions/server';
 import { useSsl } from '../utils/url';
 import UserPreferences from './userPreferences';
 import { Encryption } from './encryption';
+import EventEmitter from '../utils/events';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
@@ -74,15 +74,6 @@ const RocketChat = {
 		if (!this.roomsSub) {
 			try {
 				this.roomsSub = await subscribeRooms.call(this);
-			} catch (e) {
-				log(e);
-			}
-		}
-	},
-	async subscribeInquiry() {
-		if (!this.inquirySub) {
-			try {
-				this.inquirySub = await subscribeInquiry.call(this);
 			} catch (e) {
 				log(e);
 			}
@@ -212,10 +203,7 @@ const RocketChat = {
 				this.roomsSub = null;
 			}
 
-			if (this.inquirySub) {
-				this.inquirySub.stop();
-				this.inquirySub = null;
-			}
+			EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
 
 			if (this.sdk) {
 				this.sdk.disconnect();
@@ -875,20 +863,6 @@ const RocketChat = {
 	getCustomFields() {
 		// RC 2.2.0
 		return this.sdk.get('livechat/custom-fields');
-	},
-	changeLivechatStatus() {
-		// RC 0.26.0
-		return this.methodCallWrapper('livechat:changeLivechatStatus');
-	},
-	getInquiriesQueued() {
-		// RC 2.4.0
-		return this.sdk.get('livechat/inquiries.queued');
-	},
-	takeInquiry(inquiryId) {
-		// this inquiry is added to the db by the subscriptions stream
-		// and will be removed by the queue stream
-		// RC 2.4.0
-		return this.methodCallWrapper('livechat:takeInquiry', inquiryId);
 	},
 
 	getUidDirectMessage(room) {
