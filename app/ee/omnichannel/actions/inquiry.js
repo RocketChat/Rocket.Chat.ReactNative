@@ -1,4 +1,4 @@
-import * as types from './actionsTypes';
+import * as types from '../../../actions/actionsTypes';
 
 export function inquirySetEnabled(enabled) {
 	return {

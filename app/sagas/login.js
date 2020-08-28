@@ -14,7 +14,6 @@ import {
 	loginFailure, loginSuccess, setUser, logout
 } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
-import { inquiryRequest, inquiryReset } from '../actions/inquiry';
 import { toMomentLocale } from '../utils/moment';
 import RocketChat from '../lib/rocketchat';
 import log, { logEvent, events } from '../utils/log';
@@ -26,6 +25,9 @@ import { showErrorAlert } from '../utils/info';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { setActiveUsers } from '../actions/activeUsers';
 import UserPreferences from '../lib/userPreferences';
+
+import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry';
+import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -88,7 +90,7 @@ const fetchUsersPresence = function* fetchUserPresence() {
 const fetchEnterpriseModules = function* fetchEnterpriseModules({ user }) {
 	yield RocketChat.getEnterpriseModules();
 
-	if (user && user.statusLivechat === 'available' && RocketChat.isOmnichannelModuleAvailable()) {
+	if (isOmnichannelStatusAvailable(user) && RocketChat.isOmnichannelModuleAvailable()) {
 		yield put(inquiryRequest());
 	}
 };
@@ -221,7 +223,7 @@ const handleSetUser = function* handleSetUser({ user }) {
 	}
 
 	if (user?.statusLivechat && RocketChat.isOmnichannelModuleAvailable()) {
-		if (user.statusLivechat === 'available') {
+		if (isOmnichannelStatusAvailable(user)) {
 			yield put(inquiryRequest());
 		} else {
 			yield put(inquiryReset());

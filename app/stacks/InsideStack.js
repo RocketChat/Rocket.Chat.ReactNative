@@ -30,7 +30,6 @@ import PickerView from '../views/PickerView';
 import ThreadMessagesView from '../views/ThreadMessagesView';
 import MarkdownTableView from '../views/MarkdownTableView';
 import ReadReceiptsView from '../views/ReadReceiptView';
-import QueueListView from '../views/QueueListView';
 
 // Profile Stack
 import ProfileView from '../views/ProfileView';
@@ -58,6 +57,8 @@ import JitsiMeetView from '../views/JitsiMeetView';
 import StatusView from '../views/StatusView';
 import ShareView from '../views/ShareView';
 import CreateDiscussionView from '../views/CreateDiscussionView';
+
+import QueueListView from '../ee/omnichannel/views/QueueListView';
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator();
