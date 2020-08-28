@@ -54,6 +54,8 @@ import CreateDiscussionView from '../../views/CreateDiscussionView';
 import { setKeyCommands, deleteKeyCommands } from '../../commands';
 import ShareView from '../../views/ShareView';
 
+import QueueListView from '../../ee/omnichannel/views/QueueListView';
+
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator();
 const ChatsStackNavigator = React.memo(() => {
