@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Sort from './Sort';
-import OmnichannelStatus from './OmnichannelStatus';
+
+import OmnichannelStatus from '../../../ee/omnichannel/containers/OmnichannelStatus';
 
 const ListHeader = React.memo(({
 	searching,

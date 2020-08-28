@@ -41,7 +41,6 @@ import ScreenLockConfigView from '../../views/ScreenLockConfigView';
 import AdminPanelView from '../../views/AdminPanelView';
 import NewMessageView from '../../views/NewMessageView';
 import CreateChannelView from '../../views/CreateChannelView';
-import QueueListView from '../../views/QueueListView';
 import UserPreferencesView from '../../views/UserPreferencesView';
 import UserNotificationPrefView from '../../views/UserNotificationPreferencesView';
 
@@ -54,6 +53,8 @@ import CreateDiscussionView from '../../views/CreateDiscussionView';
 
 import { setKeyCommands, deleteKeyCommands } from '../../commands';
 import ShareView from '../../views/ShareView';
+
+import QueueListView from '../../ee/omnichannel/views/QueueListView';
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator();

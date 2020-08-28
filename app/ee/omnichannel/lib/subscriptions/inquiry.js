@@ -1,12 +1,12 @@
-import log from '../../../utils/log';
-import store from '../../createStore';
-import RocketChat from '../../rocketchat';
+import log from '../../../../utils/log';
+import store from '../../../../lib/createStore';
+import RocketChat from '../../../../lib/rocketchat';
 import {
 	inquiryRequest,
 	inquiryQueueAdd,
 	inquiryQueueUpdate,
 	inquiryQueueRemove
-} from '../../../actions/inquiry';
+} from '../../actions/inquiry';
 
 const removeListener = listener => listener.stop();
 
@@ -63,9 +63,9 @@ export default function subscribeInquiry() {
 		}
 	};
 
-	connectedListener = this.sdk.onStreamData('connected', handleConnection);
-	disconnectedListener = this.sdk.onStreamData('close', handleConnection);
-	queueListener = this.sdk.onStreamData(streamTopic, handleQueueMessageReceived);
+	connectedListener = RocketChat.onStreamData('connected', handleConnection);
+	disconnectedListener = RocketChat.onStreamData('close', handleConnection);
+	queueListener = RocketChat.onStreamData(streamTopic, handleQueueMessageReceived);
 
 	try {
 		const { user } = store.getState().login;
@@ -74,13 +74,13 @@ export default function subscribeInquiry() {
 				const { departments } = result;
 
 				if (!departments.length || RocketChat.hasRole('livechat-manager')) {
-					this.sdk.subscribe(streamTopic, 'public').catch(e => console.log(e));
+					RocketChat.subscribe(streamTopic, 'public').catch(e => console.log(e));
 				}
 
 				const departmentIds = departments.map(({ departmentId }) => departmentId);
 				departmentIds.forEach((departmentId) => {
 					// subscribe to all departments of the agent
-					this.sdk.subscribe(streamTopic, `department/${ departmentId }`).catch(e => console.log(e));
+					RocketChat.subscribe(streamTopic, `department/${ departmentId }`).catch(e => console.log(e));
 				});
 			}
 		});
