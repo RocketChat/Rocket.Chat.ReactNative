@@ -55,6 +55,7 @@ import Navigation from '../../lib/Navigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { getHeaderTitlePosition } from '../../containers/Header';
+
 import { takeInquiry } from '../../ee/omnichannel/lib';
 
 const stateAttrsUpdate = [
