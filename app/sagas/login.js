@@ -26,9 +26,6 @@ import { localAuthenticate } from '../utils/localAuthentication';
 import { setActiveUsers } from '../actions/activeUsers';
 import UserPreferences from '../lib/userPreferences';
 
-import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry';
-import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
-
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
 const loginCall = args => RocketChat.login(args);
@@ -87,12 +84,8 @@ const fetchUsersPresence = function* fetchUserPresence() {
 	RocketChat.subscribeUsersPresence();
 };
 
-const fetchEnterpriseModules = function* fetchEnterpriseModules({ user }) {
+const fetchEnterpriseModules = function* fetchEnterpriseModules() {
 	yield RocketChat.getEnterpriseModules();
-
-	if (isOmnichannelStatusAvailable(user) && RocketChat.isOmnichannelModuleAvailable()) {
-		yield put(inquiryRequest());
-	}
 };
 
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
@@ -220,14 +213,6 @@ const handleSetUser = function* handleSetUser({ user }) {
 	if (user && user.status) {
 		const userId = yield select(state => state.login.user.id);
 		yield put(setActiveUsers({ [userId]: user }));
-	}
-
-	if (user?.statusLivechat && RocketChat.isOmnichannelModuleAvailable()) {
-		if (isOmnichannelStatusAvailable(user)) {
-			yield put(inquiryRequest());
-		} else {
-			yield put(inquiryReset());
-		}
 	}
 };
 

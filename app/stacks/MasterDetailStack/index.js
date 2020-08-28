@@ -54,8 +54,6 @@ import CreateDiscussionView from '../../views/CreateDiscussionView';
 import { setKeyCommands, deleteKeyCommands } from '../../commands';
 import ShareView from '../../views/ShareView';
 
-import QueueListView from '../../ee/omnichannel/views/QueueListView';
-
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator();
 const ChatsStackNavigator = React.memo(() => {
@@ -153,11 +151,6 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 					name='DirectoryView'
 					component={DirectoryView}
 					options={props => DirectoryView.navigationOptions({ ...props, isMasterDetail: true })}
-				/>
-				<ModalStack.Screen
-					name='QueueListView'
-					component={QueueListView}
-					options={props => QueueListView.navigationOptions({ ...props, isMasterDetail: true })}
 				/>
 				<ModalStack.Screen
 					name='NotificationPrefView'

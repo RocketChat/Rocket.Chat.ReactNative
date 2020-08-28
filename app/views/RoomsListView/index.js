@@ -62,10 +62,6 @@ import { goRoom } from '../../utils/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
-import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
-
-import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
-import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../../ee/omnichannel/lib';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
@@ -141,9 +137,7 @@ class RoomsListView extends React.Component {
 		isMasterDetail: PropTypes.bool,
 		rooms: PropTypes.array,
 		width: PropTypes.number,
-		insets: PropTypes.object,
-		queueSize: PropTypes.number,
-		inquiryEnabled: PropTypes.bool
+		insets: PropTypes.object
 	};
 
 	constructor(props) {
@@ -696,41 +690,6 @@ class RoomsListView extends React.Component {
 		}
 	};
 
-	goQueue = () => {
-		logEvent(events.RL_GO_QUEUE);
-		const {
-			navigation, isMasterDetail, queueSize, inquiryEnabled, user
-		} = this.props;
-
-		// if not-available, prompt to change to available
-		if (!isOmnichannelStatusAvailable(user)) {
-			showConfirmationAlert({
-				message: I18n.t('Omnichannel_enable_alert'),
-				confirmationText: I18n.t('Yes'),
-				onPress: async() => {
-					try {
-						await changeLivechatStatus();
-					} catch {
-						// Do nothing
-					}
-				}
-			});
-		}
-
-		if (!inquiryEnabled) {
-			return;
-		}
-		// prevent navigation to empty list
-		if (!queueSize) {
-			return showErrorAlert(I18n.t('Queue_is_empty'), I18n.t('Oops'));
-		}
-		if (isMasterDetail) {
-			navigation.navigate('ModalStackNavigator', { screen: 'QueueListView' });
-		} else {
-			navigation.navigate('QueueListView');
-		}
-	};
-
 	goRoom = ({ item, isMasterDetail }) => {
 		logEvent(events.RL_GO_ROOM);
 		const { item: currentItem } = this.state;
@@ -848,7 +807,7 @@ class RoomsListView extends React.Component {
 	renderListHeader = () => {
 		const { searching } = this.state;
 		const {
-			sortBy, queueSize, inquiryEnabled, user
+			sortBy, user
 		} = this.props;
 		return (
 			<ListHeader
@@ -857,8 +816,6 @@ class RoomsListView extends React.Component {
 				toggleSort={this.toggleSort}
 				goDirectory={this.goDirectory}
 				goQueue={this.goQueue}
-				queueSize={queueSize}
-				inquiryEnabled={inquiryEnabled}
 				user={user}
 			/>
 		);
@@ -1026,9 +983,7 @@ const mapStateToProps = state => ({
 	useRealName: state.settings.UI_Use_Real_Name,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	StoreLastMessage: state.settings.Store_Last_Message,
-	rooms: state.room.rooms,
-	queueSize: getInquiryQueueSelector(state).length,
-	inquiryEnabled: state.inquiry.enabled
+	rooms: state.room.rooms
 });
 
 const mapDispatchToProps = dispatch => ({
