@@ -359,7 +359,7 @@ const RocketChat = {
 					try {
 						reduxStore.dispatch(setUser({ username: params.user || params.username }));
 						const code = await twoFactor({ method: details?.method || 'totp', invalid: e.data.error === 'totp-invalid' });
-						return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }));
+						return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
 					} catch {
 						// twoFactor was canceled
 						return reject();
@@ -390,9 +390,7 @@ const RocketChat = {
 			};
 		}
 
-		const loginEmailPassword = true;
-
-		return this.loginTOTP(params, loginEmailPassword);
+		return this.loginTOTP(params, true);
 	},
 
 	async loginOAuthOrSso(params) {
