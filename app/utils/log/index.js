@@ -9,7 +9,7 @@ let crashlytics;
 
 if (!isFDroidBuild) {
 	const { Client } = require('bugsnag-react-native');
-	crashlytics = require('@react-native-firebase/crashlytics');
+	crashlytics = require('@react-native-firebase/crashlytics').default;
 	bugsnag = new Client(config.BUGSNAG_API_KEY);
 }
 
