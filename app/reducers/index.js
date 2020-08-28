@@ -18,8 +18,6 @@ import inviteLinks from './inviteLinks';
 import createDiscussion from './createDiscussion';
 import enterpriseModules from './enterpriseModules';
 
-import inquiry from '../ee/omnichannel/reducers/inquiry';
-
 export default combineReducers({
 	settings,
 	login,

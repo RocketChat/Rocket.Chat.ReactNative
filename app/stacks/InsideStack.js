@@ -58,8 +58,6 @@ import StatusView from '../views/StatusView';
 import ShareView from '../views/ShareView';
 import CreateDiscussionView from '../views/CreateDiscussionView';
 
-import QueueListView from '../ee/omnichannel/views/QueueListView';
-
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator();
 const ChatsStackNavigator = () => {
