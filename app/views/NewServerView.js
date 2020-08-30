@@ -246,7 +246,7 @@ class NewServerView extends React.Component {
 	handleRemove = () => {
 		showConfirmationAlert({
 			message: I18n.t('You_will_unset_a_certificate_for_this_server'),
-			callToAction: I18n.t('Remove'),
+			confirmationText: I18n.t('Remove'),
 			onPress: this.setState({ certificate: null }) // We not need delete file from DocumentPicker because it is a temp file
 		});
 	}

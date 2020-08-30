@@ -1,8 +1,13 @@
+def taskRequests = getGradle().getStartParameter().getTaskRequests().toString().toLowerCase()
+def isPlay = !taskRequests.contains("foss")
+
 apply plugin: "com.android.application"
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.bugsnag.android.gradle'
+
+if (isPlay) {
+    apply plugin: 'com.google.firebase.crashlytics'
+    apply plugin: 'com.bugsnag.android.gradle'
+}
 
 import com.android.build.OutputFile
 
@@ -141,7 +146,9 @@ android {
         versionCode VERSIONCODE as Integer
         versionName "4.11.0"
         vectorDrawables.useSupportLibrary = true
-        manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
+        if (isPlay) {
+            manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
+        }
         missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
     }
 
@@ -168,8 +175,10 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'])
             signingConfig signingConfigs.release
-            firebaseCrashlytics {
-                nativeSymbolUploadEnabled true
+            if (isPlay) {
+                firebaseCrashlytics {
+                    nativeSymbolUploadEnabled true
+                }
             }
         }
     }
@@ -182,6 +191,19 @@ android {
     // }
 
     // applicationVariants are e.g. debug, release
+
+    flavorDimensions "type"
+    productFlavors {
+        foss {
+            dimension = "type"
+            buildConfigField "boolean", "FDROID_BUILD", "true"
+        }
+        play {
+            dimension = "type"
+            buildConfigField "boolean", "FDROID_BUILD", "false"
+        }
+    }
+
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             // For each separate APK per architecture, set a unique version code as described here:
@@ -217,7 +239,7 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
-    implementation "com.google.firebase:firebase-messaging:18.0.0"
+    playImplementation "com.google.firebase:firebase-messaging:18.0.0"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
@@ -251,3 +273,6 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+if (isPlay) {
+    apply plugin: 'com.google.gms.google-services'
+}

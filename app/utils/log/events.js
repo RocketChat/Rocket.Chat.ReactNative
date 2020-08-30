@@ -119,6 +119,8 @@ export default {
 	PROFILE_SAVE_AVATAR_F: 'profile_save_avatar_f',
 	PROFILE_SAVE_CHANGES: 'profile_save_changes',
 	PROFILE_SAVE_CHANGES_F: 'profile_save_changes_f',
+	PROFILE_LOGOUT_OTHER_LOCATIONS: 'profile_logout_other_locations',
+	PROFILE_LOGOUT_OTHER_LOCATIONS_F: 'profile_logout_other_locations_f',
 
 	// SETTINGS VIEW
 	SE_CONTACT_US: 'se_contact_us',

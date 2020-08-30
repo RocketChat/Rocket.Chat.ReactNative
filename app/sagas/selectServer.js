@@ -18,7 +18,8 @@ import I18n from '../i18n';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../utils/fetch';
 import { appStart, ROOT_INSIDE, ROOT_OUTSIDE } from '../actions/app';
 import UserPreferences from '../lib/userPreferences';
-import { inquiryReset } from '../actions/inquiry';
+
+import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {

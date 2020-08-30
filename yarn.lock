@@ -2073,6 +2073,13 @@
     sudo-prompt "^9.0.0"
     wcwidth "^1.0.1"
 
+"@react-native-community/cookies@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/cookies/-/cookies-4.0.0.tgz#561f7788e706b9902e25eefb80a093fe8ec5cd93"
+  integrity sha512-6j5Qatc0lVvaUgnhCydbmWofrwDURXxYp8f0cnfpN1LEltsxbhQU26n1ItXY79ZBnvxkkW6lEkw55Egah6uUKQ==
+  dependencies:
+    invariant "^2.2.4"
+
 "@react-native-community/datetimepicker@2.6.0":
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-2.6.0.tgz#260715abc88dac2485f525f046bd33ac0e62a281"
@@ -12730,6 +12737,11 @@ react-native-bootsplash@2.2.5:
     chalk "4.1.0"
     jimp "0.14.0"
     prompts "2.3.2"
+
+react-native-config-reader@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-config-reader/-/react-native-config-reader-4.1.1.tgz#478b69e32adcc2e9a14f6ef5fa2cbbe012b9a27e"
+  integrity sha512-f+I9DkmJS5UYE++vgSBIFG/TUxxCy9GSpcDFmVj7TDNW9w+Nozc98pdene/VYFzg9QRE7hejRoA6yV1Lv+QbCw==
 
 react-native-console-time-polyfill@^1.2.1:
   version "1.2.1"

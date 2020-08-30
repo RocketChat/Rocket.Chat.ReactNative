@@ -19,7 +19,6 @@ import {
 } from '../actions/share';
 
 import subscribeRooms from './methods/subscriptions/rooms';
-import subscribeInquiry from './methods/subscriptions/inquiry';
 import getUsersPresence, { getUserPresence, subscribeUsersPresence } from './methods/getUsersPresence';
 
 import protectedFunction from './methods/helpers/protectedFunction';
@@ -54,6 +53,7 @@ import { twoFactor } from '../utils/twoFactor';
 import { selectServerFailure } from '../actions/server';
 import { useSsl } from '../utils/url';
 import UserPreferences from './userPreferences';
+import EventEmitter from '../utils/events';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
@@ -73,15 +73,6 @@ const RocketChat = {
 		if (!this.roomsSub) {
 			try {
 				this.roomsSub = await subscribeRooms.call(this);
-			} catch (e) {
-				log(e);
-			}
-		}
-	},
-	async subscribeInquiry() {
-		if (!this.inquirySub) {
-			try {
-				this.inquirySub = await subscribeInquiry.call(this);
 			} catch (e) {
 				log(e);
 			}
@@ -211,10 +202,7 @@ const RocketChat = {
 				this.roomsSub = null;
 			}
 
-			if (this.inquirySub) {
-				this.inquirySub.stop();
-				this.inquirySub = null;
-			}
+			EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
 
 			if (this.sdk) {
 				this.sdk.disconnect();
@@ -348,10 +336,10 @@ const RocketChat = {
 		return this.post('users.forgotPassword', { email }, false);
 	},
 
-	loginTOTP(params) {
+	loginTOTP(params, loginEmailPassword) {
 		return new Promise(async(resolve, reject) => {
 			try {
-				const result = await this.login(params);
+				const result = await this.login(params, loginEmailPassword);
 				return resolve(result);
 			} catch (e) {
 				if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
@@ -359,7 +347,7 @@ const RocketChat = {
 					try {
 						reduxStore.dispatch(setUser({ username: params.user || params.username }));
 						const code = await twoFactor({ method: details?.method || 'totp', invalid: e.data.error === 'totp-invalid' });
-						return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }));
+						return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
 					} catch {
 						// twoFactor was canceled
 						return reject();
@@ -390,7 +378,7 @@ const RocketChat = {
 			};
 		}
 
-		return this.loginTOTP(params);
+		return this.loginTOTP(params, true);
 	},
 
 	async loginOAuthOrSso(params) {
@@ -398,7 +386,7 @@ const RocketChat = {
 		reduxStore.dispatch(loginRequest({ resume: result.token }));
 	},
 
-	async login(params) {
+	async login(params, loginEmailPassword) {
 		const sdk = this.shareSDK || this.sdk;
 		// RC 0.64.0
 		await sdk.login(params);
@@ -414,11 +402,16 @@ const RocketChat = {
 			customFields: result.me.customFields,
 			statusLivechat: result.me.statusLivechat,
 			emails: result.me.emails,
-			roles: result.me.roles
+			roles: result.me.roles,
+			loginEmailPassword
 		};
 		return user;
 	},
 	logout,
+	logoutOtherLocations() {
+		const { id: userId } = reduxStore.getState().login.user;
+		return this.sdk.post('users.removeOtherTokens', { userId });
+	},
 	removeServer,
 	async clearCache({ server }) {
 		try {
@@ -852,20 +845,6 @@ const RocketChat = {
 	getCustomFields() {
 		// RC 2.2.0
 		return this.sdk.get('livechat/custom-fields');
-	},
-	changeLivechatStatus() {
-		// RC 0.26.0
-		return this.methodCallWrapper('livechat:changeLivechatStatus');
-	},
-	getInquiriesQueued() {
-		// RC 2.4.0
-		return this.sdk.get('livechat/inquiries.queued');
-	},
-	takeInquiry(inquiryId) {
-		// this inquiry is added to the db by the subscriptions stream
-		// and will be removed by the queue stream
-		// RC 2.4.0
-		return this.methodCallWrapper('livechat:takeInquiry', inquiryId);
 	},
 
 	getUidDirectMessage(room) {
