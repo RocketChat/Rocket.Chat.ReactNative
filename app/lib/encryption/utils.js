@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 import ByteBuffer from 'bytebuffer';
 import SimpleCrypto from 'react-native-simple-crypto';
 
@@ -16,10 +17,10 @@ export const bufferToB64URI = (buffer) => {
 	let base64 = '';
 
 	for (let i = 0; i < len; i += 3) {
-		base64 += BASE64URI[uintArray[i] >> 2]; // eslint-disable-line no-bitwise
-		base64 += BASE64URI[((uintArray[i] & 3) << 4) | (uintArray[i + 1] >> 4)]; // eslint-disable-line no-bitwise
-		base64 += BASE64URI[((uintArray[i + 1] & 15) << 2) | (uintArray[i + 2] >> 6)]; // eslint-disable-line no-bitwise
-		base64 += BASE64URI[uintArray[i + 2] & 63]; // eslint-disable-line no-bitwise
+		base64 += BASE64URI[uintArray[i] >> 2];
+		base64 += BASE64URI[((uintArray[i] & 3) << 4) | (uintArray[i + 1] >> 4)];
+		base64 += BASE64URI[((uintArray[i + 1] & 15) << 2) | (uintArray[i + 2] >> 6)];
+		base64 += BASE64URI[uintArray[i + 2] & 63];
 	}
 
 	if ((len % 3) === 2) {
