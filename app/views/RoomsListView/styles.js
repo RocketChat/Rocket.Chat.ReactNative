@@ -133,7 +133,6 @@ export default StyleSheet.create({
 		padding: 12
 	},
 	encryptionIcon: {
-		transform: [{ rotateY: '180deg' }],
 		...sharedStyles.textMedium
 	},
 	encryptionText: {
