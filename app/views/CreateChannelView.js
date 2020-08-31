@@ -365,7 +365,7 @@ class CreateChannelView extends React.Component {
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	isFetching: state.createChannel.isFetching,
-	e2eEnabled: state.settings.E2E_Enable || false,
+	e2eEnabled: state.settings.E2E_Enable,
 	users: state.selectedUsers.users,
 	user: getUserSelector(state)
 });
