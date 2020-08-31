@@ -64,8 +64,8 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 		}
 
 		if (publicKey && storedPrivateKey) {
-			// Load saved keys
-			yield Encryption.loadKeys(server, publicKey, storedPrivateKey);
+			// Persist these keys
+			yield Encryption.persistKeys(server, publicKey, storedPrivateKey);
 		} else {
 			// Create new keys since the user doesn't have any
 			yield Encryption.createKeys(user.id, server);
@@ -99,8 +99,8 @@ const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password
 		// Decode the current server key
 		const privateKey = yield Encryption.decodePrivateKey(keys?.privateKey, password, user.id);
 
-		// Load these decrypted keys
-		yield Encryption.loadKeys(server, publicKey, privateKey);
+		// Persist these decrypted keys
+		yield Encryption.persistKeys(server, publicKey, privateKey);
 
 		// Decrypt all pending messages/subscriptions
 		yield Encryption.initialize();

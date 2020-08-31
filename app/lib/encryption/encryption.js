@@ -61,8 +61,8 @@ class Encryption {
 		return roomE2E.provideKeyToUser(keyId);
 	}
 
-	// Load stored or sought on server keys
-	loadKeys = async(server, publicKey, privateKey) => {
+	// Persist keys on UserPreferences
+	persistKeys = async(server, publicKey, privateKey) => {
 		this.privateKey = await SimpleCrypto.RSA.importKey(EJSON.parse(privateKey));
 		await UserPreferences.setStringAsync(`${ server }-${ E2E_PUBLIC_KEY }`, EJSON.stringify(publicKey));
 		await UserPreferences.setStringAsync(`${ server }-${ E2E_PRIVATE_KEY }`, privateKey);
@@ -78,8 +78,8 @@ class Encryption {
 			const publicKey = await SimpleCrypto.RSA.exportKey(key.public);
 			const privateKey = await SimpleCrypto.RSA.exportKey(key.private);
 
-			// Load these new keys
-			this.loadKeys(server, publicKey, EJSON.stringify(privateKey));
+			// Persist these new keys
+			this.persistKeys(server, publicKey, EJSON.stringify(privateKey));
 
 			// Create a password to encode the private key
 			const password = await this.createRandomPassword(server);
