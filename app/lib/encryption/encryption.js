@@ -114,7 +114,7 @@ class Encryption {
 
 	// Encode a private key before send it to the server
 	encodePrivateKey = async(privateKey, password, userId) => {
-		const masterKey = await this.getMasterKey(password, userId);
+		const masterKey = await this.generateMasterKey(password, userId);
 
 		try {
 			const vector = await SimpleCrypto.utils.randomBytes(16);
@@ -132,7 +132,7 @@ class Encryption {
 
 	// Decode a private key fetched from server
 	decodePrivateKey = async(privateKey, password, userId) => {
-		const masterKey = await this.getMasterKey(password, userId);
+		const masterKey = await this.generateMasterKey(password, userId);
 		const [vector, cipherText] = splitVectorData(EJSON.parse(privateKey));
 
 		const privKey = await SimpleCrypto.AES.decrypt(
@@ -144,8 +144,8 @@ class Encryption {
 		return toString(privKey);
 	}
 
-	// Get a user master key, this is based on userId and a password
-	getMasterKey = async(password, userId) => {
+	// Generate a user master key, this is based on userId and a password
+	generateMasterKey = async(password, userId) => {
 		const iterations = 1000;
 		const hash = 'SHA256';
 		const keyLen = 32;
