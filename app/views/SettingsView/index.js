@@ -19,7 +19,7 @@ import ItemInfo from '../../containers/ItemInfo';
 import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import Separator from '../../containers/Separator';
 import I18n from '../../i18n';
-import RocketChat, { CRASH_REPORT_KEY } from '../../lib/rocketchat';
+import RocketChat, { CRASH_REPORT_KEY, ANALYTICS_EVENTS_KEY } from '../../lib/rocketchat';
 import {
 	getReadableVersion, getDeviceModel, isAndroid
 } from '../../utils/deviceInfo';
@@ -150,7 +150,6 @@ class SettingsView extends React.Component {
 		toggleCrashReport(value);
 		if (!isFDroidBuild) {
 			loggerConfig.autoNotify = value;
-			// analytics().setAnalyticsCollectionEnabled(value);
 			if (value) {
 				loggerConfig.clearBeforeSendCallbacks();
 			} else {
@@ -162,9 +161,7 @@ class SettingsView extends React.Component {
 	toggleAnalyticsEvents = (value) => {
 		logEvent(events.SE_TOGGLE_ANALYTICS_EVENTS);
 		const { toggleAnalyticsEvents } = this.props;
-
-		// store value in AsyncStorage and retrieve on init
-
+		AsyncStorage.setItem(ANALYTICS_EVENTS_KEY, JSON.stringify(value));
 		toggleAnalyticsEvents(value);
 		analytics().setAnalyticsCollectionEnabled(value);
 	}
@@ -244,7 +241,6 @@ class SettingsView extends React.Component {
 
 	renderAnalyticsEventsSwitch = () => {
 		const { allowAnalyticsEvents } = this.props;
-		// alert(allowAnalyticsEvents);
 		return (
 			<Switch
 				value={allowAnalyticsEvents}
