@@ -153,13 +153,13 @@ export default class EncryptionRoom {
 	}
 
 	// Encrypt the room key to each user in
-	encryptRoomKeyForUser = async(user, roomId) => {
+	encryptRoomKeyForUser = async(user, rid) => {
 		if (user?.e2e?.public_key) {
 			const { public_key: publicKey } = user.e2e;
 			try {
 				const userKey = await SimpleCrypto.RSA.importKey(EJSON.parse(publicKey));
 				const encryptedUserKey = await SimpleCrypto.RSA.encrypt(this.sessionKeyExportedString, userKey);
-				await RocketChat.e2eUpdateGroupKey(user?._id, roomId, this.keyID + encryptedUserKey);
+				await RocketChat.e2eUpdateGroupKey(user?._id, rid, this.keyID + encryptedUserKey);
 			} catch {
 				// Do nothing
 			}
