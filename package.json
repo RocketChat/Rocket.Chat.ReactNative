@@ -42,7 +42,7 @@
     "@react-navigation/native": "5.7.0",
     "@react-navigation/stack": "5.7.0",
     "@rocket.chat/react-native-fast-image": "^8.1.5",
-    "@rocket.chat/sdk": "djorkaeffalexandre/Rocket.Chat.js.SDK#test.fix-ddp",
+    "@rocket.chat/sdk": "RocketChat/Rocket.Chat.js.SDK#mobile",
     "@rocket.chat/ui-kit": "0.13.0",
     "bugsnag-react-native": "2.23.10",
     "commonmark": "git+https://github.com/RocketChat/commonmark.js.git",
