@@ -32,7 +32,7 @@ export default class EncryptionRoom {
 	}
 
 	// Initialize the E2E room
-	handshake = async(privateKey) => {
+	handshake = async(privateKey, E2EKey = this.subscription.E2EKey) => {
 		// If it's already ready we don't need to handshake again
 		if (this.ready) {
 			return;
@@ -44,7 +44,7 @@ export default class EncryptionRoom {
 			return this.readyPromise;
 		}
 
-		const { E2EKey, e2eKeyId } = this.subscription;
+		const { e2eKeyId } = this.subscription;
 
 		// If this room has a E2EKey let's import this
 		if (E2EKey) {

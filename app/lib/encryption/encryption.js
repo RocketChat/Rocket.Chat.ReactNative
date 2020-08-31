@@ -341,23 +341,15 @@ class Encryption {
 			let sub = subscription;
 			try {
 				sub = await subCollection.find(rid);
-				// We should do this to avoid update database object
-				sub = {
-					rid: sub.rid,
-					encrypted: sub.encrypted,
-					lastMessage: sub.lastMessage,
-					E2EKey: sub.E2EKey || subscription.E2EKey,
-					e2eKeyId: sub.e2eKeyId,
-					...subscription
-				};
 			} catch {
 				// Subscription not found
 			}
+			const E2EKey = sub?.E2EKey || subscription.E2EKey;
 
 			// Create a new Room Encryption client
 			const roomE2E = new EncryptionRoom(sub);
 			// If sub doesn't have a E2EKey yet
-			if (!sub?.E2EKey) {
+			if (!E2EKey) {
 				// Request this room key
 				await roomE2E.requestRoomKey();
 				// Return as a encrypted message
@@ -369,7 +361,7 @@ class Encryption {
 			// Do the handshake to get a ready client
 			// this will prevent find the sub again
 			// since maybe it doesn't exist on database yet
-			await roomE2E.handshake(this.privateKey);
+			await roomE2E.handshake(this.privateKey, E2EKey);
 		}
 
 		// Decrypt the message and send it back
