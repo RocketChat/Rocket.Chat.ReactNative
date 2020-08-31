@@ -92,7 +92,7 @@ class SearchMessagesView extends React.Component {
 				)
 				.fetch();
 		}
-		// If it's not a encrypted room, search messages on Server
+		// If it's not a encrypted room, search messages on the server
 		const result = await RocketChat.searchMessages(this.rid, searchText);
 		if (result.success) {
 			return result.messages;

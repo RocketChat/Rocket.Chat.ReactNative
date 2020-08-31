@@ -46,7 +46,7 @@ export default class EncryptionRoom {
 
 		const { e2eKeyId } = this.subscription;
 
-		// If this room has a E2EKey let's import this
+		// If this room has a E2EKey, we import it
 		if (E2EKey) {
 			// We're establishing a new room encryption client
 			this.establishing = true;
@@ -55,7 +55,7 @@ export default class EncryptionRoom {
 			return;
 		}
 
-		// If doesn't have a e2eKeyId we need to create keys to this room
+		// If it doesn't have a e2eKeyId, we need to create keys to the room
 		if (!e2eKeyId) {
 			// We're establishing a new room encryption client
 			this.establishing = true;
@@ -140,7 +140,7 @@ export default class EncryptionRoom {
 		}
 	}, 5000, true)
 
-	// Create a encrypted key to this room base on users
+	// Create an encrypted key for this room based on users
 	encryptRoomKey = async() => {
 		const { rid } = this.subscription;
 		const result = await RocketChat.e2eGetUsersOfRoomWithoutKey(rid);
@@ -157,7 +157,7 @@ export default class EncryptionRoom {
 			try {
 				const userKey = await SimpleCrypto.RSA.importKey(EJSON.parse(publicKey));
 				const encryptedUserKey = await SimpleCrypto.RSA.encrypt(this.sessionKeyExportedString, userKey);
-				await RocketChat.e2eUpdateGroupKey(user._id, roomId, this.keyID + encryptedUserKey);
+				await RocketChat.e2eUpdateGroupKey(user?._id, roomId, this.keyID + encryptedUserKey);
 			} catch {
 				// Do nothing
 			}
@@ -222,7 +222,7 @@ export default class EncryptionRoom {
 		try {
 			const { t, e2e } = message;
 
-			// If message type is e2e and not was decrypted yet
+			// If message type is e2e and it's encrypted still
 			if (t === E2E_MESSAGE_TYPE && e2e !== E2E_STATUS.DONE) {
 				let { msg } = message;
 				msg = b64ToBuffer(msg.slice(12));

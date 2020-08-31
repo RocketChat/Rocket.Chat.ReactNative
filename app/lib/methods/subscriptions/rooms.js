@@ -146,8 +146,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 				});
 				// Decrypt lastMessage using the received E2EKey
 				tmp = await Encryption.decryptSubscription(tmp);
-				// Decrypt all pending messages of this room
-				// Let's run this parallelized, so, don't await
+				// Decrypt all pending messages of this room in parallel
 				Encryption.decryptPendingMessages(tmp.rid);
 			}
 

@@ -32,7 +32,7 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 		const serversCollection = serversDB.collections.get('servers');
 		const serverInfo = yield serversCollection.find(server);
 
-		// If E2E is disabled on server don't start
+		// If E2E is disabled on server, skip
 		if (!serverInfo?.E2E_Enable) {
 			return;
 		}
@@ -44,16 +44,14 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 		// Fetch server stored e2e keys
 		const keys = yield Encryption.fetchMyKeys();
 
-		// User doesn't have a private key stored
-		// so, we'll use the server private key, but it needs the password
-		// then the encryption client can't be started yet
+		// A private key was received from the server, but it's not saved locally yet
+		// Show the banner asking for the password
 		if (!storedPrivateKey && keys?.privateKey) {
 			yield put(encryptionSetBanner(E2E_BANNER_TYPE.REQUEST_PASSWORD));
 			return;
 		}
 
-		// If the user has a private key stored
-		// but doesn't saved her random password yet
+		// If the user has a private key stored, but never entered the password
 		const storedRandomPassword = yield UserPreferences.getStringAsync(`${ server }-${ E2E_RANDOM_PASSWORD_KEY }`);
 		if (storedRandomPassword) {
 			yield put(encryptionSetBanner(E2E_BANNER_TYPE.SAVE_PASSWORD));
@@ -93,13 +91,13 @@ const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password
 		const server = yield select(getServerSelector);
 		const user = yield select(getUserSelector);
 
-		// Fetch server stored e2e keys, since we're not storing keys
-		// to prevent cases where the user reset their keys
+		// Fetch server stored e2e keys
 		const keys = yield RocketChat.e2eFetchMyKeys();
 
-		const publicKey = EJSON.parse(keys.publicKey);
+		const publicKey = EJSON.parse(keys?.publicKey);
+
 		// Decode the current server key
-		const privateKey = yield Encryption.decodePrivateKey(keys.privateKey, password, user.id);
+		const privateKey = yield Encryption.decodePrivateKey(keys?.privateKey, password, user.id);
 
 		// Load these decrypted keys
 		yield Encryption.loadKeys(server, publicKey, privateKey);

@@ -87,7 +87,7 @@ export default async(subscriptions = [], rooms = []) => {
 		const [room] = rooms.splice(index, 1);
 		return merge(s, room);
 	});
-	// Decrypt all needing decrypt subscriptions
+	// Decrypt all subscriptions missing decryption
 	subscriptions = await Encryption.decryptSubscriptions(subscriptions);
 
 	return {

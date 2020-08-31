@@ -35,7 +35,7 @@ class Encryption {
 		this.roomInstances = {};
 
 		// Don't await these promises
-		// so these can run parallelized
+		// so they can run parallelized
 		this.decryptPendingSubscriptions();
 		this.decryptPendingMessages();
 
@@ -90,7 +90,7 @@ class Encryption {
 			// Send the new keys to the server
 			await RocketChat.e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
 
-			// Request e2e keys of all encrypted rooms of this user
+			// Request e2e keys of all encrypted rooms
 			await RocketChat.e2eRequestSubscriptionKeys();
 		} catch {
 			// Do nothing
