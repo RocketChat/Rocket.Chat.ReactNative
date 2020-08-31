@@ -145,11 +145,6 @@ export default class RoomSubscription {
 					}
 				}
 			});
-		// TODO: I don't know how we can reach this event
-		// https://github.com/RocketChat/Rocket.Chat/blob/develop/app/e2e/client/rocketchat.e2e.room.js#L43
-		} else if (ev === 'e2ekeyRequest') {
-			const [keyId] = ddpMessage.fields.args;
-			Encryption.provideRoomKeyToUser(keyId, this.rid);
 		}
 	});
 
