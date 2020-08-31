@@ -67,7 +67,6 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					joinCodeRequired: s.joinCodeRequired,
 					muted: s.muted,
 					broadcast: s.broadcast,
-					encrypted: s.encrypted,
 					prid: s.prid,
 					draftMessage: s.draftMessage,
 					lastThreadSync: s.lastThreadSync,
@@ -83,8 +82,9 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					servedBy: s.servedBy,
 					livechatData: s.livechatData,
 					tags: s.tags,
-					E2EKey: s.E2EKey,
-					e2eKeyId: s.e2eKeyId
+					encrypted: s.encrypted,
+					e2eKeyId: s.e2eKeyId,
+					E2EKey: s.E2EKey
 				};
 			} catch (error) {
 				try {
