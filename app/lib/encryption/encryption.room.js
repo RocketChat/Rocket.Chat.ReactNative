@@ -44,6 +44,8 @@ export default class EncryptionRoom {
 			return this.readyPromise;
 		}
 
+		// E2EKey = subscription property that user uses to decrypt messages
+		// e2eKeyId = room property that flag if someone has a E2EKey of this room and the identifier of this
 		const { e2eKeyId } = this.subscription;
 
 		// If this room has a E2EKey, we import it
