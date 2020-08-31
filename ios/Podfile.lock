@@ -386,7 +386,7 @@ PODS:
     - React
   - react-native-safe-area-context (3.1.1):
     - React
-  - react-native-simple-crypto (0.3.0):
+  - react-native-simple-crypto (0.3.1):
     - OpenSSL-Universal
     - React
   - react-native-slider (3.0.2):
@@ -461,8 +461,6 @@ PODS:
     - React
   - rn-extensions-share (2.4.0):
     - React
-  - rn-fetch-blob (0.12.0):
-    - React-Core
   - RNBootSplash (2.2.5):
     - React
   - RNCAsyncStorage (1.11.0):
@@ -618,7 +616,6 @@ DEPENDENCIES:
   - ReactNativeKeyboardInput (from `../node_modules/react-native-keyboard-input`)
   - ReactNativeKeyboardTrackingView (from `../node_modules/react-native-keyboard-tracking-view`)
   - rn-extensions-share (from `../node_modules/rn-extensions-share`)
-  - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
@@ -797,8 +794,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-keyboard-tracking-view"
   rn-extensions-share:
     :path: "../node_modules/rn-extensions-share"
-  rn-fetch-blob:
-    :path: "../node_modules/rn-fetch-blob"
   RNBootSplash:
     :path: "../node_modules/react-native-bootsplash"
   RNCAsyncStorage:
@@ -929,7 +924,7 @@ SPEC CHECKSUMS:
   react-native-notifications: ee8fd739853e72694f3af8b374c8ccb106b7b227
   react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
   react-native-safe-area-context: 344b969c45af3d8464d36e8dea264942992ef033
-  react-native-simple-crypto: 34da7fb1c67d9029e1e99faa48718fc46ecb2ae2
+  react-native-simple-crypto: 5e4f2877f71675d95baabf5823cd0cc0c379d0e6
   react-native-slider: 0221b417686c5957f6e77cd9ac22c1478a165355
   react-native-webview: 679b6f400176e2ea8a785acf7ae16cf282e7d1eb
   React-RCTActionSheet: 1702a1a85e550b5c36e2e03cb2bd3adea053de95
@@ -946,7 +941,6 @@ SPEC CHECKSUMS:
   ReactNativeKeyboardInput: c37e26821519869993b3b61844350feb9177ff37
   ReactNativeKeyboardTrackingView: 02137fac3b2ebd330d74fa54ead48b14750a2306
   rn-extensions-share: 8db79372089567cbc5aefe8444869bbc808578d3
-  rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNBootSplash: b3836aa90c5bec690c6cd3c9ab355fcf98d0fe1d
   RNCAsyncStorage: d059c3ee71738c39834a627476322a5a8cd5bf36
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
