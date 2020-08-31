@@ -208,6 +208,7 @@ class CreateChannelView extends React.Component {
 			label: 'Private_Channel',
 			onValueChange: (value) => {
 				logEvent(events.CREATE_CHANNEL_TOGGLE_TYPE);
+				// If we set the channel as public, encrypted status should be false
 				this.setState(({ encrypted }) => ({ type: value, encrypted: value && encrypted }));
 			}
 		});
