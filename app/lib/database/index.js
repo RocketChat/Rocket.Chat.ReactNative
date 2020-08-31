@@ -1,7 +1,6 @@
 import { Database } from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 import logger from '@nozbe/watermelondb/utils/common/logger';
-import RNFetchBlob from 'rn-fetch-blob';
 
 import Subscription from './model/Subscription';
 import Room from './model/Room';
@@ -26,8 +25,9 @@ import migrations from './model/migrations';
 import serversMigrations from './model/serversMigrations';
 
 import { isIOS } from '../../utils/deviceInfo';
+import appGroup from '../../utils/appGroup';
 
-const appGroupPath = isIOS ? `${ RNFetchBlob.fs.syncPathAppGroup('group.ios.chat.rocket') }/` : '';
+const appGroupPath = isIOS ? appGroup.path : '';
 
 if (__DEV__ && isIOS) {
 	console.log(appGroupPath);
