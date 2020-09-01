@@ -15,6 +15,7 @@ import { encryptionDecodeKey as encryptionDecodeKeyAction } from '../actions/enc
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import KeyboardView from '../presentation/KeyboardView';
 import StatusBar from '../containers/StatusBar';
+import { logEvent, events } from '../utils/log';
 
 const styles = StyleSheet.create({
 	container: {
@@ -45,6 +46,7 @@ class E2EEnterYourPasswordView extends React.Component {
 	}
 
 	submit = () => {
+		logEvent(events.E2E_ENTER_PW_SUBMIT);
 		const { password } = this.state;
 		const { encryptionDecodeKey } = this.props;
 		encryptionDecodeKey(password);

@@ -583,6 +583,7 @@ class RoomView extends React.Component {
 	}
 
 	onEncryptedPress = () => {
+		logEvent(events.ROOM_ENCRYPTED_PRESS);
 		const { navigation, isMasterDetail } = this.props;
 
 		const screen = { screen: 'E2EHowItWorksView', params: { showCloseModal: true } };

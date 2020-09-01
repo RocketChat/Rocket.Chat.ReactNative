@@ -163,6 +163,7 @@ export default {
 
 	// ROOM VIEW
 	ROOM_SEND_MESSAGE: 'room_send_message',
+	ROOM_ENCRYPTED_PRESS: 'room_encrypted_press',
 	ROOM_OPEN_EMOJI: 'room_open_emoji',
 	ROOM_AUDIO_RECORD: 'room_audio_record',
 	ROOM_AUDIO_RECORD_F: 'room_audio_record_f',
@@ -293,5 +294,13 @@ export default {
 	NP_DESKTOPNOTIFICATIONDURATION: 'np_desktopnotificationduration',
 	NP_DESKTOPNOTIFICATIONDURATION_F: 'np_desktopnotificationduration_f',
 	NP_EMAILNOTIFICATIONS: 'np_email_notifications',
-	NP_EMAILNOTIFICATIONS_F: 'np_email_notifications_f'
+	NP_EMAILNOTIFICATIONS_F: 'np_email_notifications_f',
+
+	// E2E SAVE YOUR PASSWORD VIEW
+	E2E_SAVE_PW_SAVED: 'e2e_save_pw_saved',
+	E2E_SAVE_PW_COPY: 'e2e_save_pw_copy',
+	E2E_SAVE_PW_HOW_IT_WORKS: 'e2e_save_pw_how_it_works',
+
+	// E2E ENTER YOUR PASSWORD VIEW
+	E2E_ENTER_PW_SUBMIT: 'e2e_enter_pw_submit'
 };

@@ -15,6 +15,7 @@ import { CloseModalButton } from '../containers/HeaderButton';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import SafeAreaView from '../containers/SafeAreaView';
 import UserPreferences from '../lib/userPreferences';
+import { logEvent, events } from '../utils/log';
 import StatusBar from '../containers/StatusBar';
 import { LISTENER } from '../containers/Toast';
 import { themes } from '../constants/colors';
@@ -98,6 +99,7 @@ class E2ESaveYourPasswordView extends React.Component {
 	}
 
 	onSaved = async() => {
+		logEvent(events.E2E_SAVE_PW_SAVED);
 		const { navigation, server, encryptionSetBanner } = this.props;
 		// Remove stored password
 		await UserPreferences.removeItem(`${ server }-${ E2E_RANDOM_PASSWORD_KEY }`);
@@ -107,12 +109,14 @@ class E2ESaveYourPasswordView extends React.Component {
 	}
 
 	onCopy = () => {
+		logEvent(events.E2E_SAVE_PW_COPY);
 		const { password } = this.state;
 		Clipboard.setString(password);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 	}
 
 	onHowItWorks = () => {
+		logEvent(events.E2E_SAVE_PW_HOW_IT_WORKS);
 		const { navigation } = this.props;
 		navigation.navigate('E2EHowItWorksView');
 	}
