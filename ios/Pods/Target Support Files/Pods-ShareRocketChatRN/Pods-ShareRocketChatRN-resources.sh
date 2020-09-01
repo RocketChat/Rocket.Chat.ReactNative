@@ -114,6 +114,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"
   install_resource "${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"
   install_resource "${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -134,6 +135,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"
   install_resource "${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"
   install_resource "${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"
+  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle"
   install_resource "${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle"
 fi
 
@@ -148,7 +150,7 @@ rm -f "$RESOURCES_TO_COPY"
 if [[ -n "${WRAPPER_EXTENSION}" ]] && [ "`xcrun --find actool`" ] && [ -n "${XCASSET_FILES:-}" ]
 then
   # Find all other xcassets (this unfortunately includes those of path pods and other targets).
-  OTHER_XCASSETS=$(find "$PWD" -iname "*.xcassets" -type d)
+  OTHER_XCASSETS=$(find -L "$PWD" -iname "*.xcassets" -type d)
   while read line; do
     if [[ $line != "${PODS_ROOT}*" ]]; then
       XCASSET_FILES+=("$line")

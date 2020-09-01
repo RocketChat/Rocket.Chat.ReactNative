@@ -9,7 +9,7 @@ import {
 	RefreshControl
 } from 'react-native';
 import { connect } from 'react-redux';
-import { isEqual, orderBy } from 'lodash';
+import isEqual from 'react-fast-compare';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
@@ -18,7 +18,7 @@ import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
 import styles from './styles';
-import log from '../../utils/log';
+import log, { logEvent, events } from '../../utils/log';
 import I18n from '../../i18n';
 import SortDropdown from './SortDropdown';
 import ServerDropdown from './ServerDropdown';
@@ -62,6 +62,8 @@ import { goRoom } from '../../utils/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
+import { showErrorAlert } from '../../utils/info';
+import { getInquiryQueueSelector } from '../../selectors/inquiry';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
@@ -71,6 +73,7 @@ const DISCUSSIONS_HEADER = 'Discussions';
 const CHANNELS_HEADER = 'Channels';
 const DM_HEADER = 'Direct_Messages';
 const GROUPS_HEADER = 'Private_Groups';
+const QUERY_SIZE = 20;
 
 const filterIsUnread = s => (s.unread > 0 || s.alert) && !s.hideUnreadStatus;
 const filterIsFavorite = s => s.f;
@@ -89,7 +92,9 @@ const shouldUpdateProps = [
 	'appState',
 	'theme',
 	'isMasterDetail',
-	'refreshing'
+	'refreshing',
+	'queueSize',
+	'inquiryEnabled'
 ];
 const getItemLayout = (data, index) => ({
 	length: ROW_HEIGHT,
@@ -130,7 +135,9 @@ class RoomsListView extends React.Component {
 		isMasterDetail: PropTypes.bool,
 		rooms: PropTypes.array,
 		width: PropTypes.number,
-		insets: PropTypes.object
+		insets: PropTypes.object,
+		queueSize: PropTypes.number,
+		inquiryEnabled: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -140,11 +147,12 @@ class RoomsListView extends React.Component {
 
 		this.gotSubscriptions = false;
 		this.animated = false;
+		this.count = 0;
 		this.state = {
 			searching: false,
 			search: [],
 			loading: true,
-			allChats: [],
+			chatsOrder: [],
 			chats: [],
 			item: {}
 		};
@@ -211,7 +219,7 @@ class RoomsListView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { allChats, searching, item } = this.state;
+		const { chatsOrder, searching, item } = this.state;
 		// eslint-disable-next-line react/destructuring-assignment
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
@@ -219,7 +227,7 @@ class RoomsListView extends React.Component {
 		}
 
 		// Compare changes only once
-		const chatsNotEqual = !isEqual(nextState.allChats, allChats);
+		const chatsNotEqual = !isEqual(nextState.chatsOrder, chatsOrder);
 
 		// If they aren't equal, set to update if focused
 		if (chatsNotEqual) {
@@ -290,7 +298,7 @@ class RoomsListView extends React.Component {
 				&& prevProps.showUnread === showUnread
 			)
 		) {
-			this.getSubscriptions(true);
+			this.getSubscriptions();
 		} else if (
 			appState === 'foreground'
 			&& appState !== prevProps.appState
@@ -309,9 +317,7 @@ class RoomsListView extends React.Component {
 	}
 
 	componentWillUnmount() {
-		if (this.querySubscription && this.querySubscription.unsubscribe) {
-			this.querySubscription.unsubscribe();
-		}
+		this.unsubscribeQuery();
 		if (this.unsubscribeFocus) {
 			this.unsubscribeFocus();
 		}
@@ -334,7 +340,7 @@ class RoomsListView extends React.Component {
 				<CustomHeaderButtons left>
 					<Item
 						title='cancel'
-						iconName='Cross'
+						iconName='close'
 						onPress={this.cancelSearch}
 					/>
 				</CustomHeaderButtons>
@@ -356,15 +362,13 @@ class RoomsListView extends React.Component {
 				<CustomHeaderButtons>
 					<Item
 						title='new'
-						iconName='new-chat'
-						onPress={isMasterDetail
-							? () => navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' })
-							: () => navigation.navigate('NewMessageStackNavigator')}
+						iconName='create'
+						onPress={this.goToNewMessage}
 						testID='rooms-list-view-create-channel'
 					/>
 					<Item
 						title='search'
-						iconName='magnifier'
+						iconName='search'
 						onPress={this.initSearching}
 						testID='rooms-list-view-search'
 					/>
@@ -396,17 +400,8 @@ class RoomsListView extends React.Component {
 		return allData;
 	}
 
-	getSubscriptions = async(force = false) => {
-		if (this.gotSubscriptions && !force) {
-			return;
-		}
-		this.gotSubscriptions = true;
-
-		if (this.querySubscription && this.querySubscription.unsubscribe) {
-			this.querySubscription.unsubscribe();
-		}
-
-		this.setState({ loading: true });
+	getSubscriptions = async() => {
+		this.unsubscribeQuery();
 
 		const {
 			sortBy,
@@ -416,41 +411,49 @@ class RoomsListView extends React.Component {
 		} = this.props;
 
 		const db = database.active;
-		const observable = await db.collections
-			.get('subscriptions')
-			.query(
-				Q.where('archived', false),
-				Q.where('open', true)
-			)
-			.observeWithColumns(['room_updated_at', 'unread', 'alert', 'user_mentions', 'f', 't']);
+		let observable;
+
+		const defaultWhereClause = [
+			Q.where('archived', false),
+			Q.where('open', true)
+		];
+
+		if (sortBy === 'alphabetical') {
+			defaultWhereClause.push(Q.experimentalSortBy(`${ this.useRealName ? 'fname' : 'name' }`, Q.asc));
+		} else {
+			defaultWhereClause.push(Q.experimentalSortBy('room_updated_at', Q.desc));
+		}
+
+		// When we're grouping by something
+		if (this.isGrouping) {
+			observable = await db.collections
+				.get('subscriptions')
+				.query(...defaultWhereClause)
+				.observe();
+
+		// When we're NOT grouping
+		} else {
+			this.count += QUERY_SIZE;
+			observable = await db.collections
+				.get('subscriptions')
+				.query(
+					...defaultWhereClause,
+					Q.experimentalSkip(0),
+					Q.experimentalTake(this.count)
+				)
+				.observe();
+		}
+
 
 		this.querySubscription = observable.subscribe((data) => {
 			let tempChats = [];
-			let chats = [];
-			if (sortBy === 'alphabetical') {
-				chats = orderBy(data, [`${ this.useRealName ? 'fname' : 'name' }`], ['asc']);
-			} else {
-				chats = orderBy(data, ['roomUpdatedAt'], ['desc']);
-			}
+			let chats = data;
 
-			// it's better to map and test all subs altogether then testing them individually
-			const allChats = data.map(item => ({
-				alert: item.alert,
-				unread: item.unread,
-				userMentions: item.userMentions,
-				isRead: this.getIsRead(item),
-				favorite: item.f,
-				lastMessage: item.lastMessage,
-				name: this.getRoomTitle(item),
-				_updatedAt: item.roomUpdatedAt,
-				key: item._id,
-				rid: item.rid,
-				type: item.t,
-				prid: item.prid,
-				uids: item.uids,
-				usernames: item.usernames,
-				visitor: item.visitor
-			}));
+			/**
+			 * We trigger re-render only when chats order changes
+			 * RoomItem handles its own re-render
+			 */
+			const chatsOrder = data.map(item => item.rid);
 
 			// unread
 			if (showUnread) {
@@ -484,13 +487,20 @@ class RoomsListView extends React.Component {
 
 			this.internalSetState({
 				chats: tempChats,
-				allChats,
+				chatsOrder,
 				loading: false
 			});
 		});
 	}
 
+	unsubscribeQuery = () => {
+		if (this.querySubscription && this.querySubscription.unsubscribe) {
+			this.querySubscription.unsubscribe();
+		}
+	}
+
 	initSearching = () => {
+		logEvent(events.RL_SEARCH);
 		const { openSearchHeader } = this.props;
 		this.internalSetState({ searching: true }, () => {
 			openSearchHeader();
@@ -548,9 +558,18 @@ class RoomsListView extends React.Component {
 
 	getRoomAvatar = item => RocketChat.getRoomAvatar(item)
 
+	isGroupChat = item => RocketChat.isGroupChat(item)
+
+	isRead = item => RocketChat.isRead(item)
+
 	getUserPresence = uid => RocketChat.getUserPresence(uid)
 
 	getUidDirectMessage = room => RocketChat.getUidDirectMessage(room);
+
+	get isGrouping() {
+		const { showUnread, showFavorites, groupByType } = this.props;
+		return showUnread || showFavorites || groupByType;
+	}
 
 	onPressItem = (item = {}) => {
 		const { navigation, isMasterDetail } = this.props;
@@ -566,9 +585,10 @@ class RoomsListView extends React.Component {
 		if (this.scroll?.scrollToOffset) {
 			this.scroll.scrollToOffset({ offset: 0 });
 		}
-	};
+	}
 
 	toggleSort = () => {
+		logEvent(events.RL_TOGGLE_SORT_DROPDOWN);
 		const { toggleSortDropdown } = this.props;
 
 		this.scrollToTop();
@@ -578,6 +598,7 @@ class RoomsListView extends React.Component {
 	};
 
 	toggleFav = async(rid, favorite) => {
+		logEvent(favorite ? events.RL_UNFAVORITE_CHANNEL : events.RL_FAVORITE_CHANNEL);
 		try {
 			const db = database.active;
 			const result = await RocketChat.toggleFavorite(rid, !favorite);
@@ -595,11 +616,13 @@ class RoomsListView extends React.Component {
 				});
 			}
 		} catch (e) {
+			logEvent(events.RL_TOGGLE_FAVORITE_FAIL);
 			log(e);
 		}
 	};
 
 	toggleRead = async(rid, isRead) => {
+		logEvent(isRead ? events.RL_UNREAD_CHANNEL : events.RL_READ_CHANNEL);
 		try {
 			const db = database.active;
 			const result = await RocketChat.toggleRead(isRead, rid);
@@ -617,11 +640,13 @@ class RoomsListView extends React.Component {
 				});
 			}
 		} catch (e) {
+			logEvent(events.RL_TOGGLE_READ_F);
 			log(e);
 		}
 	};
 
 	hideChannel = async(rid, type) => {
+		logEvent(events.RL_HIDE_CHANNEL);
 		try {
 			const db = database.active;
 			const result = await RocketChat.hideRoom(rid, type);
@@ -637,11 +662,13 @@ class RoomsListView extends React.Component {
 				});
 			}
 		} catch (e) {
+			logEvent(events.RL_HIDE_CHANNEL_F);
 			log(e);
 		}
 	};
 
 	goDirectory = () => {
+		logEvent(events.RL_GO_DIRECTORY);
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', { screen: 'DirectoryView' });
@@ -650,7 +677,22 @@ class RoomsListView extends React.Component {
 		}
 	};
 
+	goQueue = () => {
+		logEvent(events.RL_GO_QUEUE);
+		const { navigation, isMasterDetail, queueSize } = this.props;
+		// prevent navigation to empty list
+		if (!queueSize) {
+			return showErrorAlert(I18n.t('Queue_is_empty'), I18n.t('Oops'));
+		}
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', { screen: 'QueueListView' });
+		} else {
+			navigation.navigate('QueueListView');
+		}
+	};
+
 	goRoom = ({ item, isMasterDetail }) => {
+		logEvent(events.RL_GO_ROOM);
 		const { item: currentItem } = this.state;
 		const { rooms } = this.props;
 		if (currentItem?.rid === item.rid || rooms?.includes(item.rid)) {
@@ -710,6 +752,17 @@ class RoomsListView extends React.Component {
 		}
 	}
 
+	goToNewMessage = () => {
+		logEvent(events.RL_GO_NEW_MSG);
+		const { navigation, isMasterDetail } = this.props;
+
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' });
+		} else {
+			navigation.navigate('NewMessageStackNavigator');
+		}
+	}
+
 	handleCommands = ({ event }) => {
 		const { navigation, server, isMasterDetail } = this.props;
 		const { input } = event;
@@ -743,17 +796,27 @@ class RoomsListView extends React.Component {
 		roomsRequest({ allData: true });
 	}
 
+	onEndReached = () => {
+		// Run only when we're not grouping by anything
+		if (!this.isGrouping) {
+			this.getSubscriptions();
+		}
+	}
+
 	getScrollRef = ref => (this.scroll = ref);
 
 	renderListHeader = () => {
 		const { searching } = this.state;
-		const { sortBy } = this.props;
+		const { sortBy, queueSize, inquiryEnabled } = this.props;
 		return (
 			<ListHeader
 				searching={searching}
 				sortBy={sortBy}
 				toggleSort={this.toggleSort}
 				goDirectory={this.goDirectory}
+				goQueue={this.goQueue}
+				queueSize={queueSize}
+				inquiryEnabled={inquiryEnabled}
 			/>
 		);
 	};
@@ -773,12 +836,6 @@ class RoomsListView extends React.Component {
 			/>
 		);
 	}
-
-	getIsRead = (item) => {
-		let isUnread = item.archived !== true && item.open === true; // item is not archived and not opened
-		isUnread = isUnread && (item.unread > 0 || item.alert === true); // either its unread count > 0 or its alert
-		return !isUnread;
-	};
 
 	renderItem = ({ item }) => {
 		if (item.separator) {
@@ -800,32 +857,19 @@ class RoomsListView extends React.Component {
 			width
 		} = this.props;
 		const id = this.getUidDirectMessage(item);
-		const isGroupChat = RocketChat.isGroupChat(item);
 
 		return (
 			<RoomItem
+				item={item}
 				theme={theme}
-				alert={item.alert}
-				unread={item.unread}
-				hideUnreadStatus={item.hideUnreadStatus}
-				userMentions={item.userMentions}
-				isRead={this.getIsRead(item)}
-				favorite={item.f}
-				avatar={this.getRoomAvatar(item)}
-				lastMessage={item.lastMessage}
-				name={this.getRoomTitle(item)}
-				_updatedAt={item.roomUpdatedAt}
-				key={item._id}
 				id={id}
+				type={item.t}
 				userId={userId}
 				username={username}
 				token={token}
-				rid={item.rid}
-				type={item.t}
 				baseUrl={server}
-				prid={item.prid}
 				showLastMessage={StoreLastMessage}
-				onPress={() => this.onPressItem(item)}
+				onPress={this.onPressItem}
 				testID={`rooms-list-view-item-${ item.name }`}
 				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
 				toggleFav={this.toggleFav}
@@ -833,7 +877,10 @@ class RoomsListView extends React.Component {
 				hideChannel={this.hideChannel}
 				useRealName={useRealName}
 				getUserPresence={this.getUserPresence}
-				isGroupChat={isGroupChat}
+				getRoomTitle={this.getRoomTitle}
+				getRoomAvatar={this.getRoomAvatar}
+				getIsGroupChat={this.isGroupChat}
+				getIsRead={this.isRead}
 				visitor={item.visitor}
 				isFocused={currentItem?.rid === item.rid}
 			/>
@@ -880,6 +927,8 @@ class RoomsListView extends React.Component {
 					/>
 				)}
 				windowSize={9}
+				onEndReached={this.onEndReached}
+				onEndReachedThreshold={0.5}
 			/>
 		);
 	};
@@ -934,7 +983,9 @@ const mapStateToProps = state => ({
 	useRealName: state.settings.UI_Use_Real_Name,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	StoreLastMessage: state.settings.Store_Last_Message,
-	rooms: state.room.rooms
+	rooms: state.room.rooms,
+	queueSize: getInquiryQueueSelector(state).length,
+	inquiryEnabled: state.inquiry.enabled
 });
 
 const mapDispatchToProps = dispatch => ({

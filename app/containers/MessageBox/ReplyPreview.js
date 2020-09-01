@@ -72,7 +72,7 @@ const ReplyPreview = React.memo(({
 					theme={theme}
 				/>
 			</View>
-			<CustomIcon name='Cross' color={themes[theme].auxiliaryText} size={20} style={styles.close} onPress={close} />
+			<CustomIcon name='close' color={themes[theme].auxiliaryText} size={20} style={styles.close} onPress={close} />
 		</View>
 	);
 }, (prevProps, nextProps) => prevProps.replying === nextProps.replying && prevProps.theme === nextProps.theme && isEqual(prevProps.message, nextProps.message));

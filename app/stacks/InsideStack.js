@@ -30,6 +30,7 @@ import PickerView from '../views/PickerView';
 import ThreadMessagesView from '../views/ThreadMessagesView';
 import MarkdownTableView from '../views/MarkdownTableView';
 import ReadReceiptsView from '../views/ReadReceiptView';
+import QueueListView from '../views/QueueListView';
 
 // Profile Stack
 import ProfileView from '../views/ProfileView';
@@ -112,7 +113,6 @@ const ChatsStackNavigator = () => {
 			<ChatsStack.Screen
 				name='MessagesView'
 				component={MessagesView}
-				options={MessagesView.navigationOptions}
 			/>
 			<ChatsStack.Screen
 				name='AutoTranslateView'
@@ -163,6 +163,11 @@ const ChatsStackNavigator = () => {
 				name='ReadReceiptsView'
 				component={ReadReceiptsView}
 				options={ReadReceiptsView.navigationOptions}
+			/>
+			<ChatsStack.Screen
+				name='QueueListView'
+				component={QueueListView}
+				options={QueueListView.navigationOptions}
 			/>
 		</ChatsStack.Navigator>
 	);

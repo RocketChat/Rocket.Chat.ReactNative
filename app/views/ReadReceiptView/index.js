@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import Avatar from '../../containers/Avatar';
 import styles from './styles';
 import ActivityIndicator from '../../containers/ActivityIndicator';
+import { CloseModalButton } from '../../containers/HeaderButton';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
@@ -17,8 +18,14 @@ import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 
 class ReadReceiptView extends React.Component {
-	static navigationOptions = {
-		title: I18n.t('Read_Receipt')
+	static navigationOptions = ({ navigation, isMasterDetail }) => {
+		const options = {
+			title: I18n.t('Read_Receipt')
+		};
+		if (isMasterDetail) {
+			options.headerLeft = () => <CloseModalButton navigation={navigation} testID='read-receipt-view-close' />;
+		}
+		return options;
 	}
 
 	static propTypes = {

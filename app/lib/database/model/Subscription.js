@@ -40,6 +40,8 @@ export default class Subscription extends Model {
 
 	@field('user_mentions') userMentions;
 
+	@field('group_mentions') groupMentions;
+
 	@date('room_updated_at') roomUpdatedAt;
 
 	@field('ro') ro;

@@ -10,7 +10,7 @@ export const onNotification = (notification) => {
 		if (data) {
 			try {
 				const {
-					rid, name, sender, type, host
+					rid, name, sender, type, host, messageType
 				} = EJSON.parse(data.ejson);
 
 				const types = {
@@ -24,7 +24,8 @@ export const onNotification = (notification) => {
 				const params = {
 					host,
 					rid,
-					path: `${ types[type] }/${ roomName }`
+					path: `${ types[type] }/${ roomName }`,
+					isCall: messageType === 'jitsi_call_started'
 				};
 				store.dispatch(deepLinkingOpen(params));
 			} catch (e) {

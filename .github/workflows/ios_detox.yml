@@ -1,0 +1,221 @@
+name: iOS Detox
+
+on: [pull_request]
+
+jobs:
+  detox-build:
+    runs-on: macos-latest
+    timeout-minutes: 60
+
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_11.5.app
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+
+    - name: Generate Detox app cache key
+      run: echo $(git rev-parse HEAD:app) > "./app-git-revision.txt"
+
+    - name: Cache Detox app
+      uses: actions/cache@v1
+      id: detoxappcache
+      with:
+        path: ios/build/Build/Products/Release-iphonesimulator
+        key: iOSDetoxRelease-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('ios/Podfile.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
+
+    - name: Node
+      if: steps.detoxappcache.outputs.cache-hit != 'true'
+      uses: actions/setup-node@v1
+
+    - name: Cache node modules
+      if: steps.detoxappcache.outputs.cache-hit != 'true'
+      uses: actions/cache@v1
+      id: npmcache
+      with:
+        path: node_modules
+        key: node-modules-${{ hashFiles('**/yarn.lock') }}
+
+    - name: Rebuild detox
+      if: steps.detoxappcache.outputs.cache-hit != 'true' && steps.npmcache.outputs.cache-hit == 'true'
+      run: yarn detox clean-framework-cache && yarn detox build-framework-cache
+
+    - name: Install Dependencies
+      if: steps.detoxappcache.outputs.cache-hit != 'true' && steps.npmcache.outputs.cache-hit != 'true'
+      run: yarn install
+
+    - run: yarn detox build e2e --configuration ios.sim.release
+      if: steps.detoxappcache.outputs.cache-hit != 'true'
+
+  detox-test-rooms:
+    needs: detox-build
+    runs-on: macos-latest
+    timeout-minutes: 60
+
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_11.5.app
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+
+    - name: Generate Detox app cache key
+      run: echo $(git rev-parse HEAD:app) > "./app-git-revision.txt"
+
+    - name: Cache Detox app
+      uses: actions/cache@v1
+      id: detoxappcache
+      with:
+        path: ios/build/Build/Products/Release-iphonesimulator
+        key: iOSDetoxRelease-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('ios/Podfile.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
+
+    - name: Check for Detox app
+      if: steps.detoxappcache.outputs.cache-hit != 'true'
+      run: exit 1
+
+    - name: Node
+      uses: actions/setup-node@v1
+
+    - name: Cache node modules
+      uses: actions/cache@v1
+      id: npmcache
+      with:
+        path: node_modules
+        key: node-modules-${{ hashFiles('**/yarn.lock') }}
+
+    - name: Rebuild detox
+      if: steps.npmcache.outputs.cache-hit == 'true'
+      run: yarn detox clean-framework-cache && yarn detox build-framework-cache
+
+    - name: Install Dependencies
+      if: steps.npmcache.outputs.cache-hit != 'true'
+      run: yarn install
+
+    - run: brew tap wix/brew
+    - run: brew install applesimutils
+    - run: yarn detox test e2e/tests/room --configuration ios.sim.release --cleanup
+
+    - name: Upload test artifacts
+      if: ${{ failure() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: artifacts
+        path: artifacts
+
+  detox-test-assorted:
+    needs: detox-build
+    runs-on: macos-latest
+    timeout-minutes: 60
+
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_11.5.app
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+
+    - name: Generate Detox app cache key
+      run: echo $(git rev-parse HEAD:app) > "./app-git-revision.txt"
+
+    - name: Cache Detox app
+      uses: actions/cache@v1
+      id: detoxappcache
+      with:
+        path: ios/build/Build/Products/Release-iphonesimulator
+        key: iOSDetoxRelease-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('ios/Podfile.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
+
+    - name: Check for Detox app
+      if: steps.detoxappcache.outputs.cache-hit != 'true'
+      run: exit 1
+
+    - name: Node
+      uses: actions/setup-node@v1
+
+    - name: Cache node modules
+      uses: actions/cache@v1
+      id: npmcache
+      with:
+        path: node_modules
+        key: node-modules-${{ hashFiles('**/yarn.lock') }}
+
+    - name: Rebuild detox
+      if: steps.npmcache.outputs.cache-hit == 'true'
+      run: yarn detox clean-framework-cache && yarn detox build-framework-cache
+
+    - name: Install Dependencies
+      if: steps.npmcache.outputs.cache-hit != 'true'
+      run: yarn install
+
+    - run: brew tap wix/brew
+    - run: brew install applesimutils
+    - run: yarn detox test e2e/tests/assorted --configuration ios.sim.release --cleanup
+
+    - name: Upload test artifacts
+      if: ${{ failure() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: artifacts
+        path: artifacts
+
+  detox-test-onboarding:
+    needs: detox-build
+    runs-on: macos-latest
+    timeout-minutes: 60
+
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_11.5.app
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+
+    - name: Generate Detox app cache key
+      run: echo $(git rev-parse HEAD:app) > "./app-git-revision.txt"
+
+    - name: Cache Detox app
+      uses: actions/cache@v1
+      id: detoxappcache
+      with:
+        path: ios/build/Build/Products/Release-iphonesimulator
+        key: iOSDetoxRelease-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('ios/Podfile.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
+
+    - name: Check for Detox app
+      if: steps.detoxappcache.outputs.cache-hit != 'true'
+      run: exit 1
+
+    - name: Node
+      uses: actions/setup-node@v1
+
+    - name: Cache node modules
+      uses: actions/cache@v1
+      id: npmcache
+      with:
+        path: node_modules
+        key: node-modules-${{ hashFiles('**/yarn.lock') }}
+
+    - name: Rebuild detox
+      if: steps.npmcache.outputs.cache-hit == 'true'
+      run: yarn detox clean-framework-cache && yarn detox build-framework-cache
+
+    - name: Install Dependencies
+      if: steps.npmcache.outputs.cache-hit != 'true'
+      run: yarn install
+
+    - run: brew tap wix/brew
+    - run: brew install applesimutils
+    - run: yarn detox test e2e/tests/onboarding --configuration ios.sim.release --cleanup
+
+    - name: Upload test artifacts
+      if: ${{ failure() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: artifacts
+        path: artifacts
