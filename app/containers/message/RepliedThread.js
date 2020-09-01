@@ -22,7 +22,7 @@ const RepliedThread = React.memo(({
 	}
 
 	let msg = shortnameToUnicode(tmsg);
-    msg = msg.replace(/\s\s+/g, ' ')
+	msg = msg.replace(/\s\s+/g, ' ');
 	msg = removeMarkdown(msg);
 
 	return (

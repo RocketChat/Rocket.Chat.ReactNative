@@ -384,7 +384,7 @@ class Markdown extends PureComponent {
 
 		if (preview) {
 			m = shortnameToUnicode(m);
-			m = m.replace(/\s\s+/g, ' ')
+			m = m.replace(/\s\s+/g, ' ');
 			m = removeMarkdown(m);
 			m = m.replace(/\n+/g, ' ');
 			return (
