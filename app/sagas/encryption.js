@@ -15,16 +15,17 @@ import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import UserPreferences from '../lib/userPreferences';
 import { getUserSelector } from '../selectors/login';
-import { getServerSelector } from '../selectors/server';
 import { showErrorAlert } from '../utils/info';
 import I18n from '../i18n';
+
+const getServer = state => state.share.server || state.server.server;
 
 const handleEncryptionInit = function* handleEncryptionInit() {
 	try {
 		// Stop Encryption client
 		yield put(encryptionStop());
 
-		const server = yield select(getServerSelector);
+		const server = yield select(getServer);
 		const user = yield select(getUserSelector);
 
 		// Fetch server info to check E2E enable
@@ -88,7 +89,7 @@ const handleEncryptionStop = function* handleEncryptionStop() {
 
 const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password }) {
 	try {
-		const server = yield select(getServerSelector);
+		const server = yield select(getServer);
 		const user = yield select(getUserSelector);
 
 		// Fetch server stored e2e keys
