@@ -156,11 +156,7 @@ export default class EncryptionRoom {
 			return;
 		}
 
-		try {
-			await this.encryptRoomKey();
-		} catch (e) {
-			log(e);
-		}
+		await this.encryptRoomKey();
 	}
 
 	// Encrypt messages

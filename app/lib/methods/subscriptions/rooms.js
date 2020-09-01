@@ -372,7 +372,11 @@ export default function subscribeRooms() {
 		}
 		if (/e2ekeyRequest/.test(ev)) {
 			const [roomId, keyId] = ddpMessage.fields.args;
-			Encryption.provideRoomKeyToUser(keyId, roomId);
+			try {
+				await Encryption.provideRoomKeyToUser(keyId, roomId);
+			} catch (e) {
+				log(e);
+			}
 		}
 	});
 
