@@ -16,6 +16,7 @@ import { E2E_MESSAGE_TYPE, E2E_STATUS } from './constants';
 import RocketChat from '../rocketchat';
 import Deferred from '../../utils/deferred';
 import debounce from '../../utils/debounce';
+import log from '../../utils/log';
 
 export default class EncryptionRoom {
 	constructor(subscription) {
@@ -48,78 +49,74 @@ export default class EncryptionRoom {
 		// e2eKeyId = room property that flag if someone has a E2EKey of this room and the identifier of this
 		const { e2eKeyId } = this.subscription;
 
-		// If this room has a E2EKey, we import it
-		if (E2EKey) {
-			// We're establishing a new room encryption client
-			this.establishing = true;
-			await this.importRoomKey(E2EKey, privateKey);
-			this.readyPromise.resolve();
-			return;
-		}
+		try {
+			// If this room has a E2EKey, we import it
+			if (E2EKey) {
+				// We're establishing a new room encryption client
+				this.establishing = true;
+				await this.importRoomKey(E2EKey, privateKey);
+				this.readyPromise.resolve();
+				return;
+			}
 
-		// If it doesn't have a e2eKeyId, we need to create keys to the room
-		if (!e2eKeyId) {
-			// We're establishing a new room encryption client
-			this.establishing = true;
-			await this.createRoomKey();
-			this.readyPromise.resolve();
-			return;
-		}
+			// If it doesn't have a e2eKeyId, we need to create keys to the room
+			if (!e2eKeyId) {
+				// We're establishing a new room encryption client
+				this.establishing = true;
+				await this.createRoomKey();
+				this.readyPromise.resolve();
+				return;
+			}
 
-		// Request a E2EKey for this room to other users
-		await this.requestRoomKey();
+			// Request a E2EKey for this room to other users
+			await this.requestRoomKey();
+		} catch (e) {
+			log(e);
+		}
 	}
 
 	// Import roomKey as an AES Decrypt key
 	importRoomKey = async(E2EKey, privateKey) => {
-		try {
-			const roomE2EKey = E2EKey.slice(12);
+		const roomE2EKey = E2EKey.slice(12);
 
-			const decryptedKey = await SimpleCrypto.RSA.decrypt(roomE2EKey, privateKey);
-			this.sessionKeyExportedString = toString(decryptedKey);
+		const decryptedKey = await SimpleCrypto.RSA.decrypt(roomE2EKey, privateKey);
+		this.sessionKeyExportedString = toString(decryptedKey);
 
-			this.keyID = Base64.encode(this.sessionKeyExportedString).slice(0, 12);
+		this.keyID = Base64.encode(this.sessionKeyExportedString).slice(0, 12);
 
-			// Extract K from Web Crypto Secret Key
-			// K is a base64URL encoded array of bytes
-			// Web Crypto API uses this as a private key to decrypt/encrypt things
-			// Reference: https://www.javadoc.io/doc/com.nimbusds/nimbus-jose-jwt/5.1/com/nimbusds/jose/jwk/OctetSequenceKey.html
-			const { k } = EJSON.parse(this.sessionKeyExportedString);
-			this.roomKey = b64ToBuffer(k);
-		} catch {
-			// Do nothing
-		}
+		// Extract K from Web Crypto Secret Key
+		// K is a base64URL encoded array of bytes
+		// Web Crypto API uses this as a private key to decrypt/encrypt things
+		// Reference: https://www.javadoc.io/doc/com.nimbusds/nimbus-jose-jwt/5.1/com/nimbusds/jose/jwk/OctetSequenceKey.html
+		const { k } = EJSON.parse(this.sessionKeyExportedString);
+		this.roomKey = b64ToBuffer(k);
 	}
 
 	// Create a key to a room
 	createRoomKey = async() => {
-		try {
-			const key = await SimpleCrypto.utils.randomBytes(16);
-			this.roomKey = key;
+		const key = await SimpleCrypto.utils.randomBytes(16);
+		this.roomKey = key;
 
-			// Web Crypto format of a Secret Key
-			const sessionKeyExported = {
-				// Type of Secret Key
-				kty: 'oct',
-				// Algorithm
-				alg: 'A128CBC',
-				// Base64URI encoded array of bytes
-				k: bufferToB64URI(this.roomKey),
-				// Specific Web Crypto properties
-				ext: true,
-				key_ops: ['encrypt', 'decrypt']
-			};
+		// Web Crypto format of a Secret Key
+		const sessionKeyExported = {
+			// Type of Secret Key
+			kty: 'oct',
+			// Algorithm
+			alg: 'A128CBC',
+			// Base64URI encoded array of bytes
+			k: bufferToB64URI(this.roomKey),
+			// Specific Web Crypto properties
+			ext: true,
+			key_ops: ['encrypt', 'decrypt']
+		};
 
-			this.sessionKeyExportedString = EJSON.stringify(sessionKeyExported);
-			this.keyID = Base64.encode(this.sessionKeyExportedString).slice(0, 12);
+		this.sessionKeyExportedString = EJSON.stringify(sessionKeyExported);
+		this.keyID = Base64.encode(this.sessionKeyExportedString).slice(0, 12);
 
-			const { rid } = this.subscription;
-			await RocketChat.e2eSetRoomKeyID(rid, this.keyID);
+		const { rid } = this.subscription;
+		await RocketChat.e2eSetRoomKeyID(rid, this.keyID);
 
-			await this.encryptRoomKey();
-		} catch {
-			// Do nothing
-		}
+		await this.encryptRoomKey();
 	}
 
 	// Request a key to this room
@@ -130,11 +127,7 @@ export default class EncryptionRoom {
 	// this will be called again and run once in 5 seconds
 	requestRoomKey = debounce(async() => {
 		const { rid, e2eKeyId } = this.subscription;
-		try {
-			await RocketChat.e2eRequestRoomKey(rid, e2eKeyId);
-		} catch {
-			// Do nothing
-		}
+		await RocketChat.e2eRequestRoomKey(rid, e2eKeyId);
 	}, 5000, true)
 
 	// Create an encrypted key for this room based on users
@@ -151,13 +144,9 @@ export default class EncryptionRoom {
 	encryptRoomKeyForUser = async(user, rid) => {
 		if (user?.e2e?.public_key) {
 			const { public_key: publicKey } = user.e2e;
-			try {
-				const userKey = await SimpleCrypto.RSA.importKey(EJSON.parse(publicKey));
-				const encryptedUserKey = await SimpleCrypto.RSA.encrypt(this.sessionKeyExportedString, userKey);
-				await RocketChat.e2eUpdateGroupKey(user?._id, rid, this.keyID + encryptedUserKey);
-			} catch {
-				// Do nothing
-			}
+			const userKey = await SimpleCrypto.RSA.importKey(EJSON.parse(publicKey));
+			const encryptedUserKey = await SimpleCrypto.RSA.encrypt(this.sessionKeyExportedString, userKey);
+			await RocketChat.e2eUpdateGroupKey(user?._id, rid, this.keyID + encryptedUserKey);
 		}
 	}
 
@@ -169,8 +158,8 @@ export default class EncryptionRoom {
 
 		try {
 			await this.encryptRoomKey();
-		} catch {
-			// Do nothing
+		} catch (e) {
+			log(e);
 		}
 	}
 

@@ -22,6 +22,7 @@ import EncryptionRoom from './encryption.room';
 import UserPreferences from '../userPreferences';
 import database from '../database';
 import protectedFunction from '../methods/helpers/protectedFunction';
+import log from '../../utils/log';
 
 class Encryption {
 	constructor() {
@@ -92,8 +93,8 @@ class Encryption {
 
 			// Request e2e keys of all encrypted rooms
 			await RocketChat.e2eRequestSubscriptionKeys();
-		} catch {
-			// Do nothing
+		} catch (e) {
+			log(e);
 		}
 	}
 
@@ -101,18 +102,14 @@ class Encryption {
 	encodePrivateKey = async(privateKey, password, userId) => {
 		const masterKey = await this.generateMasterKey(password, userId);
 
-		try {
-			const vector = await SimpleCrypto.utils.randomBytes(16);
-			const data = await SimpleCrypto.AES.encrypt(
-				utf8ToBuffer(privateKey),
-				masterKey,
-				vector
-			);
+		const vector = await SimpleCrypto.utils.randomBytes(16);
+		const data = await SimpleCrypto.AES.encrypt(
+			utf8ToBuffer(privateKey),
+			masterKey,
+			vector
+		);
 
-			return EJSON.stringify(new Uint8Array(joinVectorData(vector, data)));
-		} catch {
-			// Do nothing
-		}
+		return EJSON.stringify(new Uint8Array(joinVectorData(vector, data)));
 	}
 
 	// Decode a private key fetched from server
@@ -137,19 +134,16 @@ class Encryption {
 
 		const passwordBuffer = utf8ToBuffer(password);
 		const saltBuffer = utf8ToBuffer(userId);
-		try {
-			const masterKey = await SimpleCrypto.PBKDF2.hash(
-				passwordBuffer,
-				saltBuffer,
-				iterations,
-				keyLen,
-				hash
-			);
 
-			return masterKey;
-		} catch {
-			// Do nothing
-		}
+		const masterKey = await SimpleCrypto.PBKDF2.hash(
+			passwordBuffer,
+			saltBuffer,
+			iterations,
+			keyLen,
+			hash
+		);
+
+		return masterKey;
 	}
 
 	// Create a random password to local created keys
@@ -260,8 +254,8 @@ class Encryption {
 			await db.action(async() => {
 				await db.batch(...toDecrypt);
 			});
-		} catch {
-			// Do nothing
+		} catch (e) {
+			log(e);
 		}
 	}
 
@@ -296,8 +290,8 @@ class Encryption {
 			await db.action(async() => {
 				await db.batch(...subsToDecrypt);
 			});
-		} catch {
-			// Do nothing
+		} catch (e) {
+			log(e);
 		}
 	}
 
