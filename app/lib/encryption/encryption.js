@@ -52,8 +52,8 @@ class Encryption {
 	}
 
 	// When a new participant join and request a new room encryption key
-	provideRoomKeyToUser = async(keyId, roomId) => {
-		const roomE2E = await this.getRoomInstance(roomId);
+	provideRoomKeyToUser = async(keyId, rid) => {
+		const roomE2E = await this.getRoomInstance({ rid });
 
 		if (!roomE2E) {
 			return;
@@ -154,21 +154,13 @@ class Encryption {
 	}
 
 	// get a encryption room instance
-	getRoomInstance = async(rid) => {
-		// If rid is undefined
-		if (!rid) {
-			return;
-		}
-
+	getRoomInstance = async(subscription) => {
 		// If Encryption client is not ready yet
 		if (!this.ready) {
 			return;
 		}
 
-		// If something goes wrong importing privateKey
-		if (!this.privateKey) {
-			return;
-		}
+		const { rid } = subscription;
 
 		// Prevent find the sub again
 		if (this.roomInstances[rid]?.ready) {
@@ -177,13 +169,15 @@ class Encryption {
 
 		const db = database.active;
 		const subCollection = db.collections.get('subscriptions');
-		let sub;
+		let sub = subscription;
 		try {
 			// Find the subscription
 			sub = await subCollection.find(rid);
 		} catch {
 			// Subscription not found
-			return;
+			// Probably was not created yet
+			// Let's try to use the subscription received
+			// if it has all the necessary attributes
 		}
 
 		// If this is not a direct or a private room
@@ -206,7 +200,9 @@ class Encryption {
 		const roomE2E = this.roomInstances[rid];
 
 		// Start Encryption Room instance handshake
-		await roomE2E.handshake(this.privateKey);
+		// Maybe the subscription was not updated yet with the E2EKey
+		// but the received object has it, so, we can use as a fallback
+		await roomE2E.handshake(this.privateKey, sub.E2EKey || subscription.E2EKey);
 
 		return roomE2E;
 	}
@@ -240,7 +236,8 @@ class Encryption {
 			// Concat messages/threads/threadMessages
 			let toDecrypt = [...messagesToDecrypt, ...threadsToDecrypt, ...threadMessagesToDecrypt];
 			toDecrypt = await Promise.all(toDecrypt.map(async(message) => {
-				const { rid, t, msg } = message;
+				const { subscription, t, msg } = message;
+				const { id: rid } = subscription;
 				const newMessage = await this.decryptMessage({ rid, t, msg });
 				if (message._hasPendingUpdate) {
 					console.log(message);
@@ -276,8 +273,8 @@ class Encryption {
 				&& sub?.lastMessage?.e2e === E2E_STATUS.PENDING
 			));
 			await Promise.all(subsToDecrypt.map(async(sub) => {
-				const { lastMessage } = sub;
-				const newSub = await this.decryptSubscription({ lastMessage });
+				const { rid, lastMessage } = sub;
+				const newSub = await this.decryptSubscription({ rid, lastMessage });
 				if (sub._hasPendingUpdate) {
 					console.log(sub);
 					return;
@@ -310,41 +307,16 @@ class Encryption {
 			return subscription;
 		}
 
-		const { rid } = lastMessage;
-		// If it doesn't have a ready room encryption instance yet and Encryption client is ready
-		// let's create a instance based on the sub that will be decrypted
-		if (!this.roomInstances[rid]?.ready && this.ready) {
-			const db = database.active;
-			const subCollection = db.collections.get('subscriptions');
+		// Get a instance using the subscription
+		const roomE2E = await this.getRoomInstance(subscription);
 
-			let sub = subscription;
-			try {
-				sub = await subCollection.find(rid);
-			} catch {
-				// Subscription not found
-			}
-			const E2EKey = sub?.E2EKey || subscription.E2EKey;
-
-			// Create a new Room Encryption client
-			const roomE2E = new EncryptionRoom(sub);
-			// If sub doesn't have a E2EKey yet
-			if (!E2EKey) {
-				// Request this room key
-				await roomE2E.requestRoomKey();
-				// Return as a encrypted message
-				return subscription;
-			}
-
-			// Set the instance
-			this.roomInstances[rid] = roomE2E;
-			// Do the handshake to get a ready client
-			// this will prevent find the sub again
-			// since maybe it doesn't exist on database yet
-			await roomE2E.handshake(this.privateKey, E2EKey);
+		// If the instance can't be initialized
+		if (!roomE2E) {
+			return subscription;
 		}
 
 		// Decrypt the message and send it back
-		const decryptedMessage = await this.decryptMessage(lastMessage);
+		const decryptedMessage = await roomE2E.decrypt(lastMessage);
 		return {
 			...subscription,
 			lastMessage: decryptedMessage
@@ -353,8 +325,10 @@ class Encryption {
 
 	// Encrypt a message
 	encryptMessage = async(message) => {
-		const roomE2E = await this.getRoomInstance(message.rid);
+		const { rid } = message;
+		const roomE2E = await this.getRoomInstance({ rid });
 
+		// If the instance can't be initialized
 		if (!roomE2E) {
 			return message;
 		}
@@ -371,8 +345,10 @@ class Encryption {
 			return message;
 		}
 
-		const roomE2E = await this.getRoomInstance(message.rid);
+		const { rid } = message;
+		const roomE2E = await this.getRoomInstance({ rid });
 
+		// If the instance can't be initialized
 		if (!roomE2E) {
 			return message;
 		}
