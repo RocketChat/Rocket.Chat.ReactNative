@@ -97,21 +97,6 @@ class Encryption {
 		}
 	}
 
-	// Fetch the server stored e2e keys
-	fetchMyKeys = async() => {
-		// Handling errors here we're able to
-		// load the stored keys if it fails
-		try {
-			const result = await RocketChat.e2eFetchMyKeys();
-			if (result.success) {
-				return result;
-			}
-		} catch {
-			// Do nothing
-		}
-		return {};
-	}
-
 	// Encode a private key before send it to the server
 	encodePrivateKey = async(privateKey, password, userId) => {
 		const masterKey = await this.generateMasterKey(password, userId);

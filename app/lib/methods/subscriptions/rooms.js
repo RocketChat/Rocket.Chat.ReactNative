@@ -362,7 +362,7 @@ export default function subscribeRooms() {
 					}
 				}
 			} catch (e) {
-				// do nothing
+				log(e);
 			}
 			EventEmitter.emit(INAPP_NOTIFICATION_EMITTER, notification);
 		}

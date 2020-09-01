@@ -17,6 +17,7 @@ import UserPreferences from '../lib/userPreferences';
 import { getUserSelector } from '../selectors/login';
 import { showErrorAlert } from '../utils/info';
 import I18n from '../i18n';
+import log from '../utils/log';
 
 const getServer = state => state.share.server || state.server.server;
 
@@ -42,7 +43,7 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 		const storedPrivateKey = yield UserPreferences.getStringAsync(`${ server }-${ E2E_PRIVATE_KEY }`);
 
 		// Fetch server stored e2e keys
-		const keys = yield Encryption.fetchMyKeys();
+		const keys = yield RocketChat.e2eFetchMyKeys();
 
 		// A private key was received from the server, but it's not saved locally yet
 		// Show the banner asking for the password
@@ -74,9 +75,9 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 		}
 
 		// Decrypt all pending messages/subscriptions
-		yield Encryption.initialize();
-	} catch {
-		// Do nothing
+		Encryption.initialize();
+	} catch (e) {
+		log(e);
 	}
 };
 
@@ -104,7 +105,7 @@ const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password
 		yield Encryption.persistKeys(server, publicKey, privateKey);
 
 		// Decrypt all pending messages/subscriptions
-		yield Encryption.initialize();
+		Encryption.initialize();
 
 		// Hide encryption banner
 		yield put(encryptionSetBanner());
