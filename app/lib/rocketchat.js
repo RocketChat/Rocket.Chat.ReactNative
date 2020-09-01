@@ -113,7 +113,6 @@ const RocketChat = {
 				// Try to resolve as json
 				const jsonRes = response.json();
 				if (!(jsonRes?.success)) {
-					// TODO: return `not rc server` or `invalid url`?
 					return {
 						success: false,
 						message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
@@ -132,26 +131,23 @@ const RocketChat = {
 			} catch (error) {
 				// Request is successful, but response isn't a json
 			}
-		} catch (error) {
-			if (error?.message) {
+		} catch (e) {
+			if (e?.message) {
+				if (e.message === 'Aborted') {
+					reduxStore.dispatch(selectServerFailure());
+					throw e;
+				}
 				return {
 					success: false,
-					message: error.message
+					message: e.message
 				};
 			}
 		}
 
-		// TODO: return `not rc server` or `invalid url`?
 		return {
 			success: false,
-			message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
+			message: I18n.t('The_URL_is_invalid', { contact: I18n.t('Contact_your_server_admin') })
 		};
-		// return {
-		// 	success: false,
-		// 	message: 'The_URL_is_invalid',
-		// 	messageOptions: {
-		// 		contact: I18n.t('Contact_your_server_admin')
-		// 	}
 	},
 	stopListener(listener) {
 		return listener && listener.stop();
