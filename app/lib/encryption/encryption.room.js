@@ -75,11 +75,6 @@ export default class EncryptionRoom {
 		try {
 			const roomE2EKey = E2EKey.slice(12);
 
-			// Check these params to never send null to decrypt
-			if (!roomE2EKey || !privateKey) {
-				return;
-			}
-
 			const decryptedKey = await SimpleCrypto.RSA.decrypt(roomE2EKey, privateKey);
 			this.sessionKeyExportedString = toString(decryptedKey);
 
