@@ -491,7 +491,6 @@ class RoomActionsView extends React.Component {
 		// If this room type can be Encrypted
 		// If e2e is enabled for this server
 		if (canEdit && E2E_ROOM_TYPES[t] && e2eEnabled) {
-			// Insert after jitsi section
 			sections.splice(2, 0, {
 				data: [{
 					icon: 'encrypted',
