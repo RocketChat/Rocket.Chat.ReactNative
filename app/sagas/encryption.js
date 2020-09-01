@@ -38,8 +38,7 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 			return;
 		}
 
-		// Fetch stored e2e keys for this server
-		const storedPublicKey = yield UserPreferences.getStringAsync(`${ server }-${ E2E_PUBLIC_KEY }`);
+		// Fetch stored private e2e key for this server
 		const storedPrivateKey = yield UserPreferences.getStringAsync(`${ server }-${ E2E_PRIVATE_KEY }`);
 
 		// Fetch server stored e2e keys
@@ -58,15 +57,16 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 			yield put(encryptionSetBanner(E2E_BANNER_TYPE.SAVE_PASSWORD));
 		}
 
-		// If we don't have a public key stored use the server stored public key
-		let publicKey = storedPublicKey || keys?.publicKey;
-		if (publicKey) {
-			publicKey = EJSON.parse(publicKey);
+		// Fetch stored public e2e key for this server
+		let storedPublicKey = yield UserPreferences.getStringAsync(`${ server }-${ E2E_PUBLIC_KEY }`);
+		// Prevent parse undefined
+		if (storedPublicKey) {
+			storedPublicKey = EJSON.parse(storedPublicKey);
 		}
 
-		if (publicKey && storedPrivateKey) {
+		if (storedPublicKey && storedPrivateKey) {
 			// Persist these keys
-			yield Encryption.persistKeys(server, publicKey, storedPrivateKey);
+			yield Encryption.persistKeys(server, storedPublicKey, storedPrivateKey);
 		} else {
 			// Create new keys since the user doesn't have any
 			yield Encryption.createKeys(user.id, server);
