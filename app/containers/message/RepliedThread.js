@@ -22,13 +22,14 @@ const RepliedThread = React.memo(({
 	}
 
 	let msg = shortnameToUnicode(tmsg);
+	msg = msg.replace(/\s\s+/g, ' ')
 	msg = removeMarkdown(msg);
 
 	return (
-		<View style={styles.repliedThread} testID={`message-thread-replied-on-${ msg }`}>
-			<CustomIcon name='threads' size={20} style={styles.repliedThreadIcon} color={themes[theme].tintColor} />
-			<Text style={[styles.repliedThreadName, { color: themes[theme].tintColor }]} numberOfLines={1}>{msg}</Text>
-			<DisclosureIndicator theme={theme} />
+		<View style={ styles.repliedThread } testID={ `message-thread-replied-on-${msg}` }>
+			<CustomIcon name='threads' size={ 20 } style={ styles.repliedThreadIcon } color={ themes[theme].tintColor } />
+			<Text style={ [styles.repliedThreadName, { color: themes[theme].tintColor }] } numberOfLines={ 1 }>{ msg }</Text>
+			<DisclosureIndicator theme={ theme } />
 		</View>
 	);
 }, (prevProps, nextProps) => {

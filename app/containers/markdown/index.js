@@ -27,7 +27,7 @@ import { isValidURL } from '../../utils/url';
 // Support <http://link|Text>
 const formatText = text => text.replace(
 	new RegExp('(?:<|<)((?:https|http):\\/\\/[^\\|]+)\\|(.+?)(?=>|>)(?:>|>)', 'gm'),
-	(match, url, title) => `[${ title }](${ url })`
+	(match, url, title) => `[${title}](${url})`
 );
 
 const emojiRanges = [
@@ -85,7 +85,7 @@ class Markdown extends PureComponent {
 		style: PropTypes.array
 	};
 
-	constructor(props) {
+	constructor (props) {
 		super(props);
 		this.renderer = this.createRenderer();
 	}
@@ -153,11 +153,11 @@ class Markdown extends PureComponent {
 		];
 		return (
 			<Text
-				accessibilityLabel={literal}
-				style={[styles.text, defaultStyle, ...style]}
-				numberOfLines={numberOfLines}
+				accessibilityLabel={ literal }
+				style={ [styles.text, defaultStyle, ...style] }
+				numberOfLines={ numberOfLines }
 			>
-				{literal}
+				{ literal }
 			</Text>
 		);
 	}
@@ -166,7 +166,7 @@ class Markdown extends PureComponent {
 		const { theme, style = [] } = this.props;
 		return (
 			<Text
-				style={[
+				style={ [
 					{
 						...styles.codeInline,
 						color: themes[theme].bodyText,
@@ -174,9 +174,9 @@ class Markdown extends PureComponent {
 						borderColor: themes[theme].bannerBackground
 					},
 					...style
-				]}
+				] }
 			>
-				{literal}
+				{ literal }
 			</Text>
 		);
 	};
@@ -185,7 +185,7 @@ class Markdown extends PureComponent {
 		const { theme, style = [] } = this.props;
 		return (
 			<Text
-				style={[
+				style={ [
 					{
 						...styles.codeBlock,
 						color: themes[theme].bodyText,
@@ -193,16 +193,16 @@ class Markdown extends PureComponent {
 						borderColor: themes[theme].bannerBackground
 					},
 					...style
-				]}
+				] }
 			>
-				{literal}
+				{ literal }
 			</Text>
 		);
 	};
 
 	renderBreak = () => {
 		const { tmid } = this.props;
-		return <Text>{tmid ? ' ' : '\n'}</Text>;
+		return <Text>{ tmid ? ' ' : '\n' }</Text>;
 	}
 
 	renderParagraph = ({ children }) => {
@@ -211,8 +211,8 @@ class Markdown extends PureComponent {
 			return null;
 		}
 		return (
-			<Text style={[style, { color: themes[theme].bodyText }]} numberOfLines={numberOfLines}>
-				{children}
+			<Text style={ [style, { color: themes[theme].bodyText }] } numberOfLines={ numberOfLines }>
+				{ children }
 			</Text>
 		);
 	};
@@ -221,10 +221,10 @@ class Markdown extends PureComponent {
 		const { theme } = this.props;
 		return (
 			<MarkdownLink
-				link={href}
-				theme={theme}
+				link={ href }
+				theme={ theme }
 			>
-				{children}
+				{ children }
 			</MarkdownLink>
 		);
 	}
@@ -235,11 +235,11 @@ class Markdown extends PureComponent {
 		} = this.props;
 		return (
 			<MarkdownHashtag
-				hashtag={hashtag}
-				channels={channels}
-				navToRoomInfo={navToRoomInfo}
-				theme={theme}
-				style={style}
+				hashtag={ hashtag }
+				channels={ channels }
+				navToRoomInfo={ navToRoomInfo }
+				theme={ theme }
+				style={ style }
 			/>
 		);
 	}
@@ -250,13 +250,13 @@ class Markdown extends PureComponent {
 		} = this.props;
 		return (
 			<MarkdownAtMention
-				mentions={mentions}
-				mention={mentionName}
-				useRealName={useRealName}
-				username={username}
-				navToRoomInfo={navToRoomInfo}
-				theme={theme}
-				style={style}
+				mentions={ mentions }
+				mention={ mentionName }
+				useRealName={ useRealName }
+				username={ username }
+				navToRoomInfo={ navToRoomInfo }
+				theme={ theme }
+				style={ style }
 			/>
 		);
 	}
@@ -267,13 +267,13 @@ class Markdown extends PureComponent {
 		} = this.props;
 		return (
 			<MarkdownEmoji
-				literal={literal}
-				isMessageContainsOnlyEmoji={this.isMessageContainsOnlyEmoji}
-				getCustomEmoji={getCustomEmoji}
-				baseUrl={baseUrl}
-				customEmojis={customEmojis}
-				style={style}
-				theme={theme}
+				literal={ literal }
+				isMessageContainsOnlyEmoji={ this.isMessageContainsOnlyEmoji }
+				getCustomEmoji={ getCustomEmoji }
+				baseUrl={ baseUrl }
+				customEmojis={ customEmojis }
+				style={ style }
+				theme={ theme }
 			/>
 		);
 	}
@@ -285,23 +285,23 @@ class Markdown extends PureComponent {
 
 		return (
 			<Image
-				style={styles.inlineImage}
-				source={{ uri: encodeURI(src) }}
+				style={ styles.inlineImage }
+				source={ { uri: encodeURI(src) } }
 			/>
 		);
 	}
 
 	renderEditedIndicator = () => {
 		const { theme } = this.props;
-		return <Text style={[styles.edited, { color: themes[theme].auxiliaryText }]}> ({I18n.t('edited')})</Text>;
+		return <Text style={ [styles.edited, { color: themes[theme].auxiliaryText }] }> ({ I18n.t('edited') })</Text>;
 	}
 
 	renderHeading = ({ children, level }) => {
 		const { numberOfLines, theme } = this.props;
-		const textStyle = styles[`heading${ level }Text`];
+		const textStyle = styles[`heading${level}Text`];
 		return (
-			<Text numberOfLines={numberOfLines} style={[textStyle, { color: themes[theme].bodyText }]}>
-				{children}
+			<Text numberOfLines={ numberOfLines } style={ [textStyle, { color: themes[theme].bodyText }] }>
+				{ children }
 			</Text>
 		);
 	};
@@ -312,12 +312,12 @@ class Markdown extends PureComponent {
 		const { numberOfLines } = this.props;
 		return (
 			<MarkdownList
-				ordered={type !== 'bullet'}
-				start={start}
-				tight={tight}
-				numberOfLines={numberOfLines}
+				ordered={ type !== 'bullet' }
+				start={ start }
+				tight={ tight }
+				numberOfLines={ numberOfLines }
 			>
-				{children}
+				{ children }
 			</MarkdownList>
 		);
 	};
@@ -330,11 +330,11 @@ class Markdown extends PureComponent {
 
 		return (
 			<MarkdownListItem
-				level={level}
-				theme={theme}
-				{...otherProps}
+				level={ level }
+				theme={ theme }
+				{ ...otherProps }
 			>
-				{children}
+				{ children }
 			</MarkdownListItem>
 		);
 	};
@@ -342,8 +342,8 @@ class Markdown extends PureComponent {
 	renderBlockQuote = ({ children }) => {
 		const { theme } = this.props;
 		return (
-			<MarkdownBlockQuote theme={theme}>
-				{children}
+			<MarkdownBlockQuote theme={ theme }>
+				{ children }
 			</MarkdownBlockQuote>
 		);
 	}
@@ -351,20 +351,20 @@ class Markdown extends PureComponent {
 	renderTable = ({ children, numColumns }) => {
 		const { theme } = this.props;
 		return (
-			<MarkdownTable numColumns={numColumns} theme={theme}>
-				{children}
+			<MarkdownTable numColumns={ numColumns } theme={ theme }>
+				{ children }
 			</MarkdownTable>
 		);
 	}
 
 	renderTableRow = (args) => {
 		const { theme } = this.props;
-		return <MarkdownTableRow {...args} theme={theme} />;
+		return <MarkdownTableRow { ...args } theme={ theme } />;
 	}
 
 	renderTableCell = (args) => {
 		const { theme } = this.props;
-		return <MarkdownTableCell {...args} theme={theme} />;
+		return <MarkdownTableCell { ...args } theme={ theme } />;
 	}
 
 	render() {
@@ -384,11 +384,12 @@ class Markdown extends PureComponent {
 
 		if (preview) {
 			m = shortnameToUnicode(m);
+			m = m.replace(/\s\s+/g, ' ')
 			m = removeMarkdown(m);
 			m = m.replace(/\n+/g, ' ');
 			return (
-				<Text accessibilityLabel={m} style={[styles.text, { color: themes[theme].bodyText }, ...style]} numberOfLines={numberOfLines} testID={testID}>
-					{m}
+				<Text accessibilityLabel={ m } style={ [styles.text, { color: themes[theme].bodyText }, ...style] } numberOfLines={ numberOfLines } testID={ testID }>
+					{ m }
 				</Text>
 			);
 		}
