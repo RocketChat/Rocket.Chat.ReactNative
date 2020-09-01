@@ -488,7 +488,6 @@ export default {
 	Tap_to_view_servers_list: 'Appuyez pour afficher la liste des serveurs',
 	Terms_of_Service: ' Conditions d\'utilisation ',
 	Theme: 'Thème',
-	The_URL_is_invalid: 'L\'URL que vous avez entrée n\'est pas valide. Vérifiez et essayez à nouveau!',
 	The_user_wont_be_able_to_type_in_roomName: 'L\'utilisateur ne pourra pas écrire dans {{roomName}}',
 	The_user_will_be_able_to_type_in_roomName: 'L\'utilisateur pourra écrire dans {{roomName}}',
 	There_was_an_error_while_action: 'Il y avait une erreur en {{action}}!',

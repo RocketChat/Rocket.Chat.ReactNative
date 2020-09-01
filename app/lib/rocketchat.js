@@ -146,7 +146,7 @@ const RocketChat = {
 
 		return {
 			success: false,
-			message: I18n.t('The_URL_is_invalid', { contact: I18n.t('Contact_your_server_admin') })
+			message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
 		};
 	},
 	stopListener(listener) {
