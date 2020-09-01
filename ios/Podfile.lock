@@ -184,6 +184,11 @@ PODS:
   - libwebp/mux (1.1.0):
     - libwebp/demux
   - libwebp/webp (1.1.0)
+  - MMKV (1.2.1):
+    - MMKVCore (~> 1.2.1)
+  - MMKVAppExtension (1.2.1):
+    - MMKVCore (~> 1.2.1)
+  - MMKVCore (1.2.1)
   - nanopb (1.30905.0):
     - nanopb/decode (= 1.30905.0)
     - nanopb/encode (= 1.30905.0)
@@ -365,10 +370,15 @@ PODS:
     - React
   - react-native-cameraroll (4.0.0):
     - React
+  - react-native-cookies (4.0.0):
+    - React
   - react-native-document-picker (3.5.3):
     - React
   - react-native-jitsi-meet (2.1.1):
     - JitsiMeetSDK (= 2.8.1)
+    - React
+  - react-native-mmkv-storage (0.3.5):
+    - MMKV (= 1.2.1)
     - React
   - react-native-notifications (2.1.7):
     - React
@@ -448,13 +458,13 @@ PODS:
     - React
   - rn-extensions-share (2.4.0):
     - React
-  - rn-fetch-blob (0.12.0):
-    - React-Core
   - RNBootSplash (2.2.5):
     - React
   - RNCAsyncStorage (1.11.0):
     - React
   - RNCMaskedView (0.1.10):
+    - React
+  - RNConfigReader (1.0.0):
     - React
   - RNDateTimePicker (2.6.0):
     - React
@@ -494,8 +504,6 @@ PODS:
   - RNRootView (1.0.3):
     - React
   - RNScreens (2.9.0):
-    - React
-  - RNUserDefaults (1.8.1):
     - React
   - RNVectorIcons (7.0.0):
     - React
@@ -565,6 +573,7 @@ DEPENDENCIES:
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - KeyCommands (from `../node_modules/react-native-keycommands`)
+  - MMKVAppExtension
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
   - React (from `../node_modules/react-native/`)
@@ -580,8 +589,10 @@ DEPENDENCIES:
   - react-native-appearance (from `../node_modules/react-native-appearance`)
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
+  - "react-native-cookies (from `../node_modules/@react-native-community/cookies`)"
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-jitsi-meet (from `../node_modules/react-native-jitsi-meet`)
+  - react-native-mmkv-storage (from `../node_modules/react-native-mmkv-storage`)
   - react-native-notifications (from `../node_modules/react-native-notifications`)
   - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -601,10 +612,10 @@ DEPENDENCIES:
   - ReactNativeKeyboardInput (from `../node_modules/react-native-keyboard-input`)
   - ReactNativeKeyboardTrackingView (from `../node_modules/react-native-keyboard-tracking-view`)
   - rn-extensions-share (from `../node_modules/rn-extensions-share`)
-  - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
+  - RNConfigReader (from `../node_modules/react-native-config-reader`)
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - "RNFastImage (from `../node_modules/@rocket.chat/react-native-fast-image`)"
@@ -617,7 +628,6 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNRootView (from `../node_modules/rn-root-view`)
   - RNScreens (from `../node_modules/react-native-screens`)
-  - RNUserDefaults (from `../node_modules/rn-user-defaults`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - UMAppLoader (from `../node_modules/unimodules-app-loader/ios`)
   - UMBarCodeScannerInterface (from `../node_modules/unimodules-barcode-scanner-interface/ios`)
@@ -658,6 +668,9 @@ SPEC REPOS:
     - GoogleUtilities
     - JitsiMeetSDK
     - libwebp
+    - MMKV
+    - MMKVAppExtension
+    - MMKVCore
     - nanopb
     - OpenSSL-Universal
     - PromisesObjC
@@ -729,10 +742,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-background-timer"
   react-native-cameraroll:
     :path: "../node_modules/@react-native-community/cameraroll"
+  react-native-cookies:
+    :path: "../node_modules/@react-native-community/cookies"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
   react-native-jitsi-meet:
     :path: "../node_modules/react-native-jitsi-meet"
+  react-native-mmkv-storage:
+    :path: "../node_modules/react-native-mmkv-storage"
   react-native-notifications:
     :path: "../node_modules/react-native-notifications"
   react-native-orientation-locker:
@@ -771,14 +788,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-keyboard-tracking-view"
   rn-extensions-share:
     :path: "../node_modules/rn-extensions-share"
-  rn-fetch-blob:
-    :path: "../node_modules/rn-fetch-blob"
   RNBootSplash:
     :path: "../node_modules/react-native-bootsplash"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
+  RNConfigReader:
+    :path: "../node_modules/react-native-config-reader"
   RNDateTimePicker:
     :path: "../node_modules/@react-native-community/datetimepicker"
   RNDeviceInfo:
@@ -803,8 +820,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/rn-root-view"
   RNScreens:
     :path: "../node_modules/react-native-screens"
-  RNUserDefaults:
-    :path: "../node_modules/rn-user-defaults"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   UMAppLoader:
@@ -877,6 +892,9 @@ SPEC CHECKSUMS:
   JitsiMeetSDK: 2984eac1343690bf1c0c72bde75b48b0148d0f79
   KeyCommands: f66c535f698ed14b3d3a4e58859d79a827ea907e
   libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
+  MMKV: 67253edee25a34edf332f91d73fa94a9e038b971
+  MMKVAppExtension: d792aa7bd301285e2c3100c5ce15aa44fa26456f
+  MMKVCore: fe398984acac1fa33f92795d1b5fd0a334c944af
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
   OpenSSL-Universal: 8b48cc0d10c1b2923617dfe5c178aa9ed2689355
   PromisesObjC: b48e0338dbbac2207e611750777895f7a5811b75
@@ -893,8 +911,10 @@ SPEC CHECKSUMS:
   react-native-appearance: 0f0e5fc2fcef70e03d48c8fe6b00b9158c2ba8aa
   react-native-background-timer: 1f7d560647b40e6a60b01c452ba29c54bf581fc4
   react-native-cameraroll: ae0a7c0cc8462508855707ff623b1e789b692865
+  react-native-cookies: d79e5015a5d3a38e08f5cb39c4948532be7e9c2b
   react-native-document-picker: 825552b827012282baf4b7cbf119d3b37a280c90
   react-native-jitsi-meet: f89bcb2cfbd5b15403b9c40738036c4f1af45d05
+  react-native-mmkv-storage: 48729fe90e850ef2fdc9d3714b7030c7c51d82b0
   react-native-notifications: ee8fd739853e72694f3af8b374c8ccb106b7b227
   react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
   react-native-safe-area-context: 344b969c45af3d8464d36e8dea264942992ef033
@@ -914,10 +934,10 @@ SPEC CHECKSUMS:
   ReactNativeKeyboardInput: c37e26821519869993b3b61844350feb9177ff37
   ReactNativeKeyboardTrackingView: 02137fac3b2ebd330d74fa54ead48b14750a2306
   rn-extensions-share: 8db79372089567cbc5aefe8444869bbc808578d3
-  rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNBootSplash: b3836aa90c5bec690c6cd3c9ab355fcf98d0fe1d
   RNCAsyncStorage: d059c3ee71738c39834a627476322a5a8cd5bf36
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
+  RNConfigReader: 396da6a6444182a76e8ae0930b9436c7575045cb
   RNDateTimePicker: e386ff4ef3300964ed0cad97ce6f206e0effbfdb
   RNDeviceInfo: ed8557a8bd6443cbc0ab5d375e6808a38a279744
   RNFastImage: 35ae972d6727c84ee3f5c6897e07f84d0a3445e9
@@ -930,7 +950,6 @@ SPEC CHECKSUMS:
   RNReanimated: b5ccb50650ba06f6e749c7c329a1bc3ae0c88b43
   RNRootView: 895a4813dedeaca82db2fa868ca1c333d790e494
   RNScreens: c526239bbe0e957b988dacc8d75ac94ec9cb19da
-  RNUserDefaults: c421fd97ad06b35c16608c5d0fe675db353f632d
   RNVectorIcons: da6fe858f5a65d7bbc3379540a889b0b12aa5976
   SDWebImage: cf6922231e95550934da2ada0f20f2becf2ceba9
   SDWebImageWebPCoder: 36f8f47bd9879a8aea6044765c1351120fd8e3a8
@@ -951,6 +970,6 @@ SPEC CHECKSUMS:
   Yoga: d5bd05a2b6b94c52323745c2c2b64557c8c66f64
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 55c04243097892160d63f79f3a23157165b7ac68
+PODFILE CHECKSUM: 4916aa46fbfaed764171540e6ed76fb07a8a95e7
 
 COCOAPODS: 1.9.3

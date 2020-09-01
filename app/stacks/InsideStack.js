@@ -30,10 +30,11 @@ import PickerView from '../views/PickerView';
 import ThreadMessagesView from '../views/ThreadMessagesView';
 import MarkdownTableView from '../views/MarkdownTableView';
 import ReadReceiptsView from '../views/ReadReceiptView';
-import QueueListView from '../views/QueueListView';
 
 // Profile Stack
 import ProfileView from '../views/ProfileView';
+import UserPreferencesView from '../views/UserPreferencesView';
+import UserNotificationPrefView from '../views/UserNotificationPreferencesView';
 
 // Settings Stack
 import SettingsView from '../views/SettingsView';
@@ -56,6 +57,8 @@ import JitsiMeetView from '../views/JitsiMeetView';
 import StatusView from '../views/StatusView';
 import ShareView from '../views/ShareView';
 import CreateDiscussionView from '../views/CreateDiscussionView';
+
+import QueueListView from '../ee/omnichannel/views/QueueListView';
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator();
@@ -183,6 +186,21 @@ const ProfileStackNavigator = () => {
 				name='ProfileView'
 				component={ProfileView}
 				options={ProfileView.navigationOptions}
+			/>
+			<ProfileStack.Screen
+				name='UserPreferencesView'
+				component={UserPreferencesView}
+				options={UserPreferencesView.navigationOptions}
+			/>
+			<ProfileStack.Screen
+				name='UserNotificationPrefView'
+				component={UserNotificationPrefView}
+				options={UserNotificationPrefView.navigationOptions}
+			/>
+			<ProfileStack.Screen
+				name='PickerView'
+				component={PickerView}
+				options={PickerView.navigationOptions}
 			/>
 		</ProfileStack.Navigator>
 	);
