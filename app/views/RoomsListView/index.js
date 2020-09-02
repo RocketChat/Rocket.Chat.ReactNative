@@ -63,7 +63,9 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
 import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
-import { getInquiryQueueSelector } from '../../selectors/inquiry';
+
+import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
+import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../../ee/omnichannel/lib';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
@@ -701,13 +703,13 @@ class RoomsListView extends React.Component {
 		} = this.props;
 
 		// if not-available, prompt to change to available
-		if (user?.statusLivechat !== 'available') {
+		if (!isOmnichannelStatusAvailable(user)) {
 			showConfirmationAlert({
 				message: I18n.t('Omnichannel_enable_alert'),
 				confirmationText: I18n.t('Yes'),
 				onPress: async() => {
 					try {
-						await RocketChat.changeLivechatStatus();
+						await changeLivechatStatus();
 					} catch {
 						// Do nothing
 					}
