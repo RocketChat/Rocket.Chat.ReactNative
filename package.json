@@ -8,15 +8,14 @@
     "test-update": "jest --updateSnapshot",
     "lint": "eslint .",
     "ci": "npm run precommit && codecov",
-    "ios": "react-native run-ios",
+    "ios": "npx react-native run-ios",
+    "android": "npx react-native run-android --variant=playDebug",
     "log-android": "react-native log-android",
-    "android": "react-native run-android",
     "snyk-protect": "snyk protect",
     "precommit": "eslint . && jest",
     "generate-source-maps-ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios-release.bundle --sourcemap-output ios-release.bundle.map",
     "generate-source-maps-android": "bugsnag-sourcemaps",
     "postinstall": "patch-package && jetify",
-    "play": "npx react-native run-android --variant=playDebug",
     "foss": "npx react-native run-android --variant=fossDebug"
   },
   "husky": {
