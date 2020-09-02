@@ -216,10 +216,13 @@ class Encryption {
 		const threadsCollection = db.collections.get('threads');
 		const threadMessagesCollection = db.collections.get('thread_messages');
 
-		// e2e status is 'pending' and message type is 'e2e'
+		// e2e status is null or 'pending' and message type is 'e2e'
 		const whereClause = [
 			Q.where('t', E2E_MESSAGE_TYPE),
-			Q.where('e2e', E2E_STATUS.PENDING)
+			Q.or(
+				Q.where('e2e', null),
+				Q.where('e2e', E2E_STATUS.PENDING)
+			)
 		];
 
 		// decrypt messages of a room

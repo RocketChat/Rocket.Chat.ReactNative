@@ -29,6 +29,7 @@ import UserPreferences from '../lib/userPreferences';
 
 import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
+import { E2E_REFRESH_MESSAGES_KEY } from '../lib/encryption/constants';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -96,6 +97,35 @@ const fetchEnterpriseModules = function* fetchEnterpriseModules({ user }) {
 	}
 };
 
+const fetchRooms = function* fetchRooms({ server }) {
+	try {
+		// Read the flag to check if refresh was already done
+		const refreshed = yield UserPreferences.getBoolAsync(E2E_REFRESH_MESSAGES_KEY);
+		if (!refreshed) {
+			const serversDB = database.servers;
+			const serversCollection = serversDB.collections.get('servers');
+
+			const serverRecord = yield serversCollection.find(server);
+
+			// We need to reset roomsUpdatedAt to request all rooms again
+			// and save their respective E2EKeys to decrypt all pending messages and lastMessage
+			// that are already inserted on local database by other app version
+			yield serversDB.action(async() => {
+				await serverRecord.update((s) => {
+					s.roomsUpdatedAt = null;
+				});
+			});
+
+			// Set the flag to indicate that already refreshed
+			yield UserPreferences.setBoolAsync(E2E_REFRESH_MESSAGES_KEY, true);
+		}
+	} catch (e) {
+		log(e);
+	}
+
+	yield put(roomsRequest());
+};
+
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
 		const adding = yield select(state => state.server.adding);
@@ -104,7 +134,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		RocketChat.getUserPresence(user.id);
 
 		const server = yield select(getServer);
-		yield put(roomsRequest());
+		yield fork(fetchRooms, { server });
 		yield fork(fetchPermissions);
 		yield fork(fetchCustomEmojis);
 		yield fork(fetchRoles);
