@@ -329,14 +329,34 @@ class Encryption {
 	// Encrypt a message
 	encryptMessage = async(message) => {
 		const { rid } = message;
-		const roomE2E = await this.getRoomInstance({ rid });
+		const db = database.active;
+		const subCollection = db.collections.get('subscriptions');
 
-		// If the instance can't be initialized
-		if (!roomE2E) {
-			return message;
+		try {
+			// Find the subscription
+			const subRecord = await subCollection.find(rid);
+
+			// Subscription is not encrypted at the moment
+			if (!subRecord.encrypted) {
+				// Send a non encrypted message
+				return message;
+			}
+
+			const roomE2E = await this.getRoomInstance(subRecord);
+
+			// If the instance can't be initialized
+			if (!roomE2E) {
+				// Send a non encrypted message
+				return message;
+			}
+
+			return roomE2E.encrypt(message);
+		} catch {
+			// Do nothing
 		}
 
-		return roomE2E.encrypt(message);
+		// Send a non encrypted message
+		return message;
 	}
 
 	// Decrypt a message
