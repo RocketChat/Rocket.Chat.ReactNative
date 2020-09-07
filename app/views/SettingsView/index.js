@@ -377,15 +377,15 @@ class SettingsView extends React.Component {
 					{!isFDroidBuild ? (
 						<>
 							<ListItem
-								title={I18n.t('Send_crash_report')}
-								testID='settings-view-crash-report'
-								right={() => this.renderCrashReportSwitch()}
-								theme={theme}
-							/>
-							<ListItem
 								title={I18n.t('Log_analytics_events')}
 								testID='settings-view-analytics-events'
 								right={() => this.renderAnalyticsEventsSwitch()}
+								theme={theme}
+							/>
+							<ListItem
+								title={I18n.t('Send_crash_report')}
+								testID='settings-view-crash-report'
+								right={() => this.renderCrashReportSwitch()}
 								theme={theme}
 							/>
 							<Separator theme={theme} />

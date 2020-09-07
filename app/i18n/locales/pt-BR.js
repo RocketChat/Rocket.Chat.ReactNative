@@ -536,7 +536,7 @@ export default {
 	Write_External_Permission_Message: 'Rocket.Chat precisa de acesso à sua galeria para salvar imagens',
 	Write_External_Permission: 'Acesso à Galeria',
 	Yes: 'Sim',
-	Crash_report_disclaimer: 'Nós não rastreamos o conteúdo das suas conversas. O relatório de erros apenas contém informações relevantes para identificarmos problemas e corrigí-los.',
+	Crash_report_disclaimer: 'Nós não rastreamos o conteúdo das suas conversas. O relatório de erros e os eventos do analytics apenas contém informações relevantes para identificarmos problemas e corrigí-los.',
 	Type_message: 'Digitar mensagem',
 	Room_search: 'Busca de sala',
 	Room_selection: 'Selecionar sala 1...9',
