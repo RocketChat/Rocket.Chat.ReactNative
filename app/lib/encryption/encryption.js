@@ -28,9 +28,17 @@ import store from '../createStore';
 
 class Encryption {
 	constructor() {
+		this.isReady = false;
 		this.privateKey = null;
 		this.roomInstances = {};
 		this.readyPromise = new Deferred();
+		this.readyPromise
+			.then(() => {
+				this.isReady = true;
+			})
+			.catch(() => {
+				this.isReady = false;
+			});
 	}
 
 	// Initialize Encryption client
@@ -43,14 +51,15 @@ class Encryption {
 		this.decryptPendingMessages();
 
 		// Mark Encryption client as ready
-		this.readyPromise.resolve(true);
+		this.readyPromise.resolve();
 	}
 
 	get ready() {
 		const { banner } = store.getState().encryption;
 		// If the password was not inserted yet
 		if (banner === E2E_BANNER_TYPE.REQUEST_PASSWORD) {
-			return Promise.resolve(false);
+			// We can't decrypt/encrypt, so, reject this try
+			return Promise.reject();
 		}
 
 		// Wait the client ready state
@@ -61,6 +70,18 @@ class Encryption {
 	stop = () => {
 		this.privateKey = null;
 		this.roomInstances = {};
+		// Cancel ongoing encryption/decryption requests
+		this.readyPromise.reject();
+		// Reset Deferred
+		this.isReady = false;
+		this.readyPromise = new Deferred();
+		this.readyPromise
+			.then(() => {
+				this.isReady = true;
+			})
+			.catch(() => {
+				this.isReady = false;
+			});
 	}
 
 	// When a new participant join and request a new room encryption key
@@ -163,12 +184,6 @@ class Encryption {
 
 	// get a encryption room instance
 	getRoomInstance = async(subscription) => {
-		// If Encryption client is not ready yet
-		const shouldDecrypt = await this.ready;
-		if (!shouldDecrypt) {
-			return;
-		}
-
 		const { rid } = subscription;
 
 		// Prevent find the sub again
@@ -307,6 +322,18 @@ class Encryption {
 			return subscription;
 		}
 
+		// If the client is not ready
+		if (!this.isReady) {
+			try {
+				// Wait for ready status
+				await this.ready;
+			} catch {
+				// If it can't be initialized (e.g. missing password)
+				// return the encrypted message
+				return subscription;
+			}
+		}
+
 		// Get a instance using the subscription
 		const roomE2E = await this.getRoomInstance(subscription);
 
@@ -339,6 +366,18 @@ class Encryption {
 				return message;
 			}
 
+			// If the client is not ready
+			if (!this.isReady) {
+				try {
+					// Wait for ready status
+					await this.ready;
+				} catch {
+					// If it can't be initialized (e.g. missing password)
+					// return the plain text message
+					return message;
+				}
+			}
+
 			const roomE2E = await this.getRoomInstance(subRecord);
 
 			// If the instance can't be initialized
@@ -363,6 +402,18 @@ class Encryption {
 		// Prevent create a new instance if this room was encrypted sometime ago
 		if (t !== E2E_MESSAGE_TYPE || e2e === E2E_STATUS.DONE) {
 			return message;
+		}
+
+		// If the client is not ready
+		if (!this.isReady) {
+			try {
+				// Wait for ready status
+				await this.ready;
+			} catch {
+				// If it can't be initialized (e.g. missing password)
+				// return the encrypted message
+				return message;
+			}
 		}
 
 		const { rid } = message;
