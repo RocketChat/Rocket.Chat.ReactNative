@@ -28,16 +28,16 @@ import store from '../createStore';
 
 class Encryption {
 	constructor() {
-		this.isReady = false;
+		this.ready = false;
 		this.privateKey = null;
 		this.roomInstances = {};
 		this.readyPromise = new Deferred();
 		this.readyPromise
 			.then(() => {
-				this.isReady = true;
+				this.ready = true;
 			})
 			.catch(() => {
-				this.isReady = false;
+				this.ready = false;
 			});
 	}
 
@@ -54,7 +54,7 @@ class Encryption {
 		this.readyPromise.resolve();
 	}
 
-	get ready() {
+	get establishing() {
 		const { banner } = store.getState().encryption;
 		// If the password was not inserted yet
 		if (banner === E2E_BANNER_TYPE.REQUEST_PASSWORD) {
@@ -73,14 +73,14 @@ class Encryption {
 		// Cancel ongoing encryption/decryption requests
 		this.readyPromise.reject();
 		// Reset Deferred
-		this.isReady = false;
+		this.ready = false;
 		this.readyPromise = new Deferred();
 		this.readyPromise
 			.then(() => {
-				this.isReady = true;
+				this.ready = true;
 			})
 			.catch(() => {
-				this.isReady = false;
+				this.ready = false;
 			});
 	}
 
@@ -323,10 +323,10 @@ class Encryption {
 		}
 
 		// If the client is not ready
-		if (!this.isReady) {
+		if (!this.ready) {
 			try {
 				// Wait for ready status
-				await this.ready;
+				await this.establishing;
 			} catch {
 				// If it can't be initialized (e.g. missing password)
 				// return the encrypted message
@@ -367,10 +367,10 @@ class Encryption {
 			}
 
 			// If the client is not ready
-			if (!this.isReady) {
+			if (!this.ready) {
 				try {
 					// Wait for ready status
-					await this.ready;
+					await this.establishing;
 				} catch {
 					// If it can't be initialized (e.g. missing password)
 					// return the plain text message
@@ -405,10 +405,10 @@ class Encryption {
 		}
 
 		// If the client is not ready
-		if (!this.isReady) {
+		if (!this.ready) {
 			try {
 				// Wait for ready status
-				await this.ready;
+				await this.establishing;
 			} catch {
 				// If it can't be initialized (e.g. missing password)
 				// return the encrypted message
