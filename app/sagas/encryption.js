@@ -2,7 +2,7 @@ import EJSON from 'ejson';
 import { takeLatest, select, put } from 'redux-saga/effects';
 
 import { ENCRYPTION } from '../actions/actionsTypes';
-import { encryptionSetBanner, encryptionStop } from '../actions/encryption';
+import { encryptionSetBanner } from '../actions/encryption';
 import { Encryption } from '../lib/encryption';
 import Navigation from '../lib/Navigation';
 import {
@@ -23,9 +23,6 @@ const getServer = state => state.share.server || state.server.server;
 
 const handleEncryptionInit = function* handleEncryptionInit() {
 	try {
-		// Stop Encryption client
-		yield put(encryptionStop());
-
 		const server = yield select(getServer);
 		const user = yield select(getUserSelector);
 
