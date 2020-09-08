@@ -15,20 +15,23 @@ import {
 	E2E_RANDOM_PASSWORD_KEY,
 	E2E_STATUS,
 	E2E_MESSAGE_TYPE,
-	E2E_ROOM_TYPES
+	E2E_ROOM_TYPES,
+	E2E_BANNER_TYPE
 } from './constants';
 import RocketChat from '../rocketchat';
 import EncryptionRoom from './encryption.room';
 import UserPreferences from '../userPreferences';
 import database from '../database';
 import protectedFunction from '../methods/helpers/protectedFunction';
+import Deferred from '../../utils/deferred';
 import log from '../../utils/log';
+import store from '../createStore';
 
 class Encryption {
 	constructor() {
-		this.ready = false;
 		this.privateKey = null;
 		this.roomInstances = {};
+		this.readyPromise = new Deferred();
 	}
 
 	// Initialize Encryption client
@@ -41,12 +44,22 @@ class Encryption {
 		this.decryptPendingMessages();
 
 		// Mark Encryption client as ready
-		this.ready = true;
+		this.readyPromise.resolve(true);
+	}
+
+	get ready() {
+		const { banner } = store.getState().encryption;
+		// If the password was not inserted yet
+		if (banner === E2E_BANNER_TYPE.REQUEST_PASSWORD) {
+			return Promise.resolve(false);
+		}
+
+		// Wait the client ready state
+		return this.readyPromise;
 	}
 
 	// Stop Encryption client
 	stop = () => {
-		this.ready = false;
 		this.privateKey = null;
 		this.roomInstances = {};
 	}
@@ -156,7 +169,8 @@ class Encryption {
 	// get a encryption room instance
 	getRoomInstance = async(subscription) => {
 		// If Encryption client is not ready yet
-		if (!this.ready) {
+		const shouldDecrypt = await this.ready;
+		if (!shouldDecrypt) {
 			return;
 		}
 
