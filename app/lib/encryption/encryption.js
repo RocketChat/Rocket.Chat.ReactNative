@@ -199,7 +199,7 @@ class Encryption {
 		// Start Encryption Room instance handshake
 		// Maybe the subscription was not updated yet with the E2EKey
 		// but the received object has it, so, we can use as a fallback
-		await roomE2E.handshake(this.privateKey, sub.E2EKey || subscription.E2EKey);
+		await roomE2E.handshake(sub.E2EKey || subscription.E2EKey);
 
 		return roomE2E;
 	}

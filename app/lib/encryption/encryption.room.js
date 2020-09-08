@@ -16,6 +16,7 @@ import { E2E_MESSAGE_TYPE, E2E_STATUS } from './constants';
 import RocketChat from '../rocketchat';
 import Deferred from '../../utils/deferred';
 import debounce from '../../utils/debounce';
+import { Encryption } from './index';
 import log from '../../utils/log';
 
 export default class EncryptionRoom {
@@ -33,7 +34,7 @@ export default class EncryptionRoom {
 	}
 
 	// Initialize the E2E room
-	handshake = async(privateKey, E2EKey = this.subscription.E2EKey) => {
+	handshake = async(E2EKey = this.subscription.E2EKey) => {
 		// If it's already ready we don't need to handshake again
 		if (this.ready) {
 			return;
@@ -54,7 +55,7 @@ export default class EncryptionRoom {
 			if (E2EKey) {
 				// We're establishing a new room encryption client
 				this.establishing = true;
-				await this.importRoomKey(E2EKey, privateKey);
+				await this.importRoomKey(E2EKey, Encryption.privateKey);
 				this.readyPromise.resolve();
 				return;
 			}
