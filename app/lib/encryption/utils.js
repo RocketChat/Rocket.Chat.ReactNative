@@ -3,12 +3,13 @@ import ByteBuffer from 'bytebuffer';
 import SimpleCrypto from 'react-native-simple-crypto';
 
 import random from '../../utils/random';
+import { fromByteArray, toByteArray } from '../../utils/base64-js';
 
 const BASE64URI = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 
-export const b64ToBuffer = SimpleCrypto.utils.convertBase64ToArrayBuffer;
+export const b64ToBuffer = base64 => toByteArray(base64).buffer;
 export const utf8ToBuffer = SimpleCrypto.utils.convertUtf8ToArrayBuffer;
-export const bufferToB64 = SimpleCrypto.utils.convertArrayBufferToBase64;
+export const bufferToB64 = arrayBuffer => fromByteArray(new Uint8Array(arrayBuffer));
 // ArrayBuffer -> Base64 URI Safe
 // https://github.com/herrjemand/Base64URL-ArrayBuffer/blob/master/lib/base64url-arraybuffer.js
 export const bufferToB64URI = (buffer) => {
