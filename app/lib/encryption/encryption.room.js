@@ -152,6 +152,8 @@ export default class EncryptionRoom {
 
 	// Provide this room key to a user
 	provideKeyToUser = async(keyId) => {
+		// Don't provide a key if the keyId received
+		// is different than the current one
 		if (this.keyID !== keyId) {
 			return;
 		}
