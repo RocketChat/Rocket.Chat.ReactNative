@@ -15,7 +15,6 @@ import {
 	E2E_RANDOM_PASSWORD_KEY,
 	E2E_STATUS,
 	E2E_MESSAGE_TYPE,
-	E2E_ROOM_TYPES,
 	E2E_BANNER_TYPE
 } from './constants';
 import RocketChat from '../rocketchat';
@@ -188,18 +187,6 @@ class Encryption {
 			// Probably was not created yet
 			// Let's try to use the subscription received
 			// if it has all the necessary attributes
-		}
-
-		// If this is not a direct or a private room
-		if (!E2E_ROOM_TYPES[sub.t]) {
-			return;
-		}
-
-		// If it's not encrypted and doesn't have a keyId
-		// We should create a instance to rooms that are not encrypted at the moment
-		// to decrypt old messages that are loaded after room encrypted be false
-		if (!sub.encrypted && !sub.e2eKeyId) {
-			return;
 		}
 
 		// If doesn't have a instance of this room
