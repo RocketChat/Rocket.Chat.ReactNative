@@ -99,11 +99,6 @@ class Encryption {
 		}
 
 		const roomE2E = await this.getRoomInstance({ rid });
-
-		if (!roomE2E) {
-			return;
-		}
-
 		return roomE2E.provideKeyToUser(keyId);
 	}
 
@@ -357,13 +352,6 @@ class Encryption {
 
 		// Get a instance using the subscription
 		const roomE2E = await this.getRoomInstance(subscription);
-
-		// If the instance can't be initialized
-		if (!roomE2E) {
-			return subscription;
-		}
-
-		// Decrypt the message and send it back
 		const decryptedMessage = await roomE2E.decrypt(lastMessage);
 		return {
 			...subscription,
@@ -394,13 +382,6 @@ class Encryption {
 			}
 
 			const roomE2E = await this.getRoomInstance(subRecord);
-
-			// If the instance can't be initialized
-			if (!roomE2E) {
-				// Send a non encrypted message
-				return message;
-			}
-
 			return roomE2E.encrypt(message);
 		} catch {
 			// Subscription not found
@@ -434,12 +415,6 @@ class Encryption {
 
 		const { rid } = message;
 		const roomE2E = await this.getRoomInstance({ rid });
-
-		// If the instance can't be initialized
-		if (!roomE2E) {
-			return message;
-		}
-
 		return roomE2E.decrypt(message);
 	}
 
