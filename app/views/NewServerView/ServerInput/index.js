@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import TextInput from '../../../containers/TextInput';
 import { themes } from '../../../constants/colors';
 import Item from './Item';
+import Separator from '../../../containers/Separator';
 
 const styles = StyleSheet.create({
 	container: {
@@ -62,6 +63,7 @@ const ServerInput = ({
 							<FlatList
 								data={serversHistory}
 								renderItem={({ item }) => <Item item={item} onPress={onChangeText} theme={theme} deleteServerLink={deleteServerLink} />}
+								ItemSeparatorComponent={() => <Separator theme={theme} />}
 								keyExtractor={item => item.id}
 							/>
 						</View>

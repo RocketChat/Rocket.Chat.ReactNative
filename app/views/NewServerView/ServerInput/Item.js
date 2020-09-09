@@ -1,22 +1,30 @@
 import React from 'react';
 import {
-	View, StyleSheet, TouchableOpacity, Text
+	View, StyleSheet, Text
 } from 'react-native';
 import PropTypes from 'prop-types';
+import { BorderlessButton } from 'react-native-gesture-handler';
 
 import { themes } from '../../../constants/colors';
 import { CustomIcon } from '../../../lib/Icons';
 import sharedStyles from '../../Styles';
+import Touch from '../../../utils/touch';
 
 const styles = StyleSheet.create({
-	item: {
-		padding: 15,
+	container: {
+		height: 56,
+		paddingHorizontal: 15,
+		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'space-between'
+		justifyContent: 'center'
 	},
-	itemText: {
-		...sharedStyles.textRegular,
+	content: {
+		flex: 1,
+		flexDirection: 'column'
+	},
+	server: {
+		...sharedStyles.textMedium,
 		fontSize: 16
 	}
 });
@@ -24,14 +32,15 @@ const styles = StyleSheet.create({
 const Item = ({
 	item, onPress, theme, deleteServerLink
 }) => (
-	<View style={styles.item}>
-		<TouchableOpacity onPress={() => onPress(item.link)}>
-			<Text style={[styles.itemText, { color: themes[theme].titleText }]}>{item.link}</Text>
-		</TouchableOpacity>
-		<TouchableOpacity onPress={() => deleteServerLink(item)}>
-			<CustomIcon name='close' size={16} color={themes[theme].auxiliaryText} />
-		</TouchableOpacity>
-	</View>
+	<Touch style={styles.container} onPress={() => onPress(item.url)} theme={theme}>
+		<View style={styles.content}>
+			<Text style={[styles.server, { color: themes[theme].bodyText }]}>{item.url}</Text>
+			<Text style={[styles.username, { color: themes[theme].auxiliaryText }]}>{item.username}</Text>
+		</View>
+		<BorderlessButton onPress={() => deleteServerLink(item)}>
+			<CustomIcon name='delete' size={24} color={themes[theme].auxiliaryText} />
+		</BorderlessButton>
+	</Touch>
 );
 
 Item.propTypes = {

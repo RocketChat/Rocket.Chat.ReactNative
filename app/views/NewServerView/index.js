@@ -94,7 +94,11 @@ class NewServerView extends React.Component {
 		const db = database.servers;
 		try {
 			const serversHistoryCollection = db.collections.get('servers_history');
-			const serversHistory = await serversHistoryCollection.query(Q.experimentalSortBy('updated_at', Q.desc)).fetch();
+			const serversHistory = await serversHistoryCollection.query(
+				Q.where('username', Q.notEq(null)),
+				Q.experimentalSortBy('updated_at', Q.desc),
+				Q.experimentalTake(3)
+			).fetch();
 			this.setState({ serversHistory });
 		} catch {
 			// Do nothing
