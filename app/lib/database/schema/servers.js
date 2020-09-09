@@ -35,9 +35,10 @@ export default appSchema({
 			]
 		}),
 		tableSchema({
-			name: 'server_links',
+			name: 'servers_history',
 			columns: [
-				{ name: 'link', type: 'string', isOptional: true }
+				{ name: 'url', type: 'string', isIndexed: true },
+				{ name: 'username', type: 'string', isOptional: true }
 			]
 		})
 	]

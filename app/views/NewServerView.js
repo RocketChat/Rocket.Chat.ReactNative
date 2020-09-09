@@ -136,8 +136,8 @@ class NewServerView extends React.Component {
 	async componentDidMount() {
 		const db = database.servers;
 		try {
-			const serverLinksCollection = db.collections.get('server_links');
-			const serverLinks = await serverLinksCollection.query().fetch();
+			const serversHistoryCollection = db.collections.get('servers_history');
+			const serverLinks = await serversHistoryCollection.query().fetch();
 			this.setState({ serverLinks });
 		} catch {
 			// Do nothing

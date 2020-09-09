@@ -137,7 +137,7 @@ const handleServerRequest = function* handleServerRequest({ server, certificate 
 
 		const serverInfo = yield getServerInfo({ server });
 		const serversDB = database.servers;
-		const serverLinksCollection = serversDB.collections.get('server_links');
+		const serversHistoryCollection = serversDB.collections.get('servers_history');
 
 		if (serverInfo) {
 			yield RocketChat.getLoginServices(server);
@@ -145,9 +145,9 @@ const handleServerRequest = function* handleServerRequest({ server, certificate 
 			Navigation.navigate('WorkspaceView');
 			yield serversDB.action(async() => {
 				try {
-					const allServerLinks = await serverLinksCollection.query().fetch();
+					const allServerLinks = await serversHistoryCollection.query().fetch();
 					if (!allServerLinks.find(savedServer => savedServer.link === server)) {
-						await serverLinksCollection.create((record) => {
+						await serversHistoryCollection.create((record) => {
 							record.link = server;
 						});
 					}
