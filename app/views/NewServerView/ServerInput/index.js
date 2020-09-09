@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
-import TextInput from '../../containers/TextInput';
-import { themes } from '../../constants/colors';
-import sharedStyles from '../Styles';
+import TextInput from '../../../containers/TextInput';
+import { themes } from '../../../constants/colors';
 import Item from './Item';
 
 const styles = StyleSheet.create({
+	container: {
+		zIndex: 1
+	},
 	inputContainer: {
 		marginTop: 24,
 		marginBottom: 32
@@ -32,7 +34,7 @@ const ServerInput = ({
 }) => {
 	const [focused, setFocused] = useState(false);
 	return (
-		<View>
+		<View style={styles.container}>
 			<TextInput
 				label='Enter workspace URL'
 				placeholder='Ex. your-company.rocket.chat'
@@ -63,6 +65,15 @@ const ServerInput = ({
 			}
 		</View>
 	);
+};
+
+ServerInput.propTypes = {
+	text: PropTypes.string,
+	theme: PropTypes.string,
+	serversHistory: PropTypes.array,
+	onChangeText: PropTypes.func,
+	submit: PropTypes.func,
+	deleteServerLink: PropTypes.func
 };
 
 export default ServerInput;

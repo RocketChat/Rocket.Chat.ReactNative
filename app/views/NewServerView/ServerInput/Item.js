@@ -4,9 +4,9 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { themes } from '../../constants/colors';
-import { CustomIcon } from '../../lib/Icons';
-import sharedStyles from '../Styles';
+import { themes } from '../../../constants/colors';
+import { CustomIcon } from '../../../lib/Icons';
+import sharedStyles from '../../Styles';
 
 const styles = StyleSheet.create({
 	item: {
