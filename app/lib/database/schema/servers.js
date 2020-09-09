@@ -38,7 +38,8 @@ export default appSchema({
 			name: 'servers_history',
 			columns: [
 				{ name: 'url', type: 'string', isIndexed: true },
-				{ name: 'username', type: 'string', isOptional: true }
+				{ name: 'username', type: 'string', isOptional: true },
+				{ name: 'updated_at', type: 'number' }
 			]
 		})
 	]

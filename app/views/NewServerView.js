@@ -8,6 +8,7 @@ import * as FileSystem from 'expo-file-system';
 import DocumentPicker from 'react-native-document-picker';
 import { Base64 } from 'js-base64';
 import parse from 'url-parse';
+import { Q } from '@nozbe/watermelondb';
 
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import UserPreferences from '../lib/userPreferences';
@@ -137,7 +138,7 @@ class NewServerView extends React.Component {
 		const db = database.servers;
 		try {
 			const serversHistoryCollection = db.collections.get('servers_history');
-			const serversHistory = await serversHistoryCollection.query().fetch();
+			const serversHistory = await serversHistoryCollection.query(Q.experimentalSortBy('updated_at', Q.desc)).fetch();
 			this.setState({ serversHistory });
 		} catch {
 			// Do nothing

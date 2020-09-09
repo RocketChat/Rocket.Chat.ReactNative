@@ -1,5 +1,5 @@
 import { Model } from '@nozbe/watermelondb';
-import { field } from '@nozbe/watermelondb/decorators';
+import { field, date, readonly } from '@nozbe/watermelondb/decorators';
 
 export default class ServersHistory extends Model {
 	static table = 'servers_history';
@@ -7,4 +7,6 @@ export default class ServersHistory extends Model {
 	@field('url') url;
 
 	@field('username') username;
+
+	@readonly @date('updated_at') updatedAt
 }
