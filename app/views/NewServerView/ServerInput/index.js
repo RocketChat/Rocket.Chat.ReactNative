@@ -8,19 +8,23 @@ import Item from './Item';
 
 const styles = StyleSheet.create({
 	container: {
-		zIndex: 1
-	},
-	inputContainer: {
+		zIndex: 1,
 		marginTop: 24,
 		marginBottom: 32
+	},
+	inputContainer: {
+		marginTop: 0,
+		marginBottom: 0
 	},
 	serverHistory: {
 		maxHeight: 180,
 		width: '100%',
-		top: '75%',
+		top: '100%',
 		zIndex: 1,
 		position: 'absolute',
-		borderWidth: 0.5
+		borderWidth: StyleSheet.hairlineWidth,
+		borderRadius: 2,
+		borderTopWidth: 0
 	}
 });
 
@@ -54,7 +58,7 @@ const ServerInput = ({
 			{
 				focused
 					? (
-						<View style={[{ backgroundColor: themes[theme].backgroundColor, borderColor: themes[theme].separatorColor }, styles.serverHistory]}>
+						<View style={[styles.serverHistory, { backgroundColor: themes[theme].backgroundColor, borderColor: themes[theme].separatorColor }]}>
 							<FlatList
 								data={serversHistory}
 								renderItem={({ item }) => <Item item={item} onPress={onChangeText} theme={theme} deleteServerLink={deleteServerLink} />}
