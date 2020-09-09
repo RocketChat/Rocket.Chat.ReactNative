@@ -79,7 +79,8 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					departmentId: s.departmentId,
 					servedBy: s.servedBy,
 					livechatData: s.livechatData,
-					tags: s.tags
+					tags: s.tags,
+					avatarETag: s.avatarETag
 				};
 			} catch (error) {
 				try {

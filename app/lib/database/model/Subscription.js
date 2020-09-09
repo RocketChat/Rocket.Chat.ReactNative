@@ -84,6 +84,8 @@ export default class Subscription extends Model {
 
 	@field('auto_translate_language') autoTranslateLanguage;
 
+	@field('avatar_e_tag') avatarETag;
+
 	@json('last_message', sanitizer) lastMessage;
 
 	@children('messages') messages;

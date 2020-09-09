@@ -20,6 +20,8 @@ export default class Room extends Model {
 
 	@field('department_id') departmentId;
 
+	@field('avatar_e_tag') avatarETag;
+
 	@json('livechat_data', sanitizer) livechatData;
 
 	@json('tags', sanitizer) tags;

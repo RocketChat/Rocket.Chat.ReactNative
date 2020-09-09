@@ -129,6 +129,23 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 10,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [
+						{ name: 'avatar_e_tag', type: 'string', isOptional: true }
+					]
+				}),
+				addColumns({
+					table: 'rooms',
+					columns: [
+						{ name: 'avatar_e_tag', type: 'string', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });

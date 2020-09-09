@@ -24,6 +24,7 @@ export const merge = (subscription, room) => {
 			subscription.jitsiTimeout = room.jitsiTimeout;
 			subscription.usernames = room.usernames;
 			subscription.uids = room.uids;
+			subscription.avatarETag = room.avatarETag;
 		}
 		subscription.ro = room.ro;
 		subscription.broadcast = room.broadcast;
