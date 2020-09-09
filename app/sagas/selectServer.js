@@ -1,6 +1,7 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { Q } from '@nozbe/watermelondb';
 import semver from 'semver';
 
 import Navigation from '../lib/Navigation';
@@ -145,10 +146,10 @@ const handleServerRequest = function* handleServerRequest({ server, certificate 
 			Navigation.navigate('WorkspaceView');
 			yield serversDB.action(async() => {
 				try {
-					const allServerLinks = await serversHistoryCollection.query().fetch();
-					if (!allServerLinks.find(savedServer => savedServer.link === server)) {
-						await serversHistoryCollection.create((record) => {
-							record.link = server;
+					const serversHistory = await serversHistoryCollection.query(Q.where('url', server));
+					if (!serversHistory?.length) {
+						await serversHistoryCollection.create((s) => {
+							s.url = server;
 						});
 					}
 				} catch (e) {

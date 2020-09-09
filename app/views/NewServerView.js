@@ -127,7 +127,7 @@ class NewServerView extends React.Component {
 			connectingOpen: false,
 			certificate: null,
 			focused: false,
-			serverLinks: []
+			serversHistory: []
 		};
 		EventEmitter.addEventListener('NewServer', this.handleNewServerEvent);
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
@@ -137,8 +137,8 @@ class NewServerView extends React.Component {
 		const db = database.servers;
 		try {
 			const serversHistoryCollection = db.collections.get('servers_history');
-			const serverLinks = await serversHistoryCollection.query().fetch();
-			this.setState({ serverLinks });
+			const serversHistory = await serversHistoryCollection.query().fetch();
+			this.setState({ serversHistory });
 		} catch {
 			// Do nothing
 		}
@@ -306,14 +306,13 @@ class NewServerView extends React.Component {
 	}
 
 	deleteServerLink = async(item) => {
-		const { serverLinks } = this.state;
+		const { serversHistory } = this.state;
 		const db = database.servers;
 		try {
 			await db.action(async() => {
 				await item.destroyPermanently();
 			});
-			const newServerLinks = serverLinks.filter(server => server.link !== item.link);
-			this.setState({ serverLinks: newServerLinks });
+			this.setState({ serversHistory: serversHistory.filter(server => server.link !== item.link) });
 		} catch {
 			// Nothing
 		}
@@ -352,7 +351,7 @@ class NewServerView extends React.Component {
 	render() {
 		const { connecting, theme } = this.props;
 		const {
-			text, connectingOpen, serverLinks, focused
+			text, connectingOpen, serversHistory, focused
 		} = this.state;
 		return (
 			<FormContainer theme={theme} testID='new-server-view'>
@@ -380,7 +379,7 @@ class NewServerView extends React.Component {
 								? (
 									<View style={[{ backgroundColor: themes[theme].backgroundColor, borderColor: themes[theme].separatorColor }, styles.serverHistory]}>
 										<FlatList
-											data={serverLinks}
+											data={serversHistory}
 											renderItem={({ item }) => <Item item={item} onPress={this.onChangeText} theme={theme} deleteServerLink={this.deleteServerLink} />}
 											keyExtractor={item => item.id}
 										/>
