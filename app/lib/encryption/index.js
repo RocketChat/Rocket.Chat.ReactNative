@@ -1,4 +1,4 @@
 import Encryption from './encryption';
-import EncryptionRoom from './encryptionRoom';
+import EncryptionRoom from './room';
 
 export { Encryption, EncryptionRoom };

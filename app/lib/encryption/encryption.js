@@ -18,7 +18,7 @@ import {
 	E2E_BANNER_TYPE
 } from './constants';
 import RocketChat from '../rocketchat';
-import EncryptionRoom from './encryptionRoom';
+import EncryptionRoom from './room';
 import UserPreferences from '../userPreferences';
 import database from '../database';
 import protectedFunction from '../methods/helpers/protectedFunction';
@@ -193,20 +193,21 @@ class Encryption {
 
 		const db = database.active;
 		const subCollection = db.collections.get('subscriptions');
-		let sub = subscription;
+		let subRecord = {};
 		try {
 			// Find the subscription
-			sub = await subCollection.find(rid);
+			subRecord = await subCollection.find(rid);
 		} catch {
 			// Subscription not found
 			// Probably was not created yet
 			// Let's try to use the subscription received
 			// if it has all the necessary attributes
+			subRecord = subscription;
 		}
 
 		// If doesn't have a instance of this room
 		if (!this.roomInstances[rid]) {
-			this.roomInstances[rid] = new EncryptionRoom(sub);
+			this.roomInstances[rid] = new EncryptionRoom(subRecord);
 		}
 
 		const roomE2E = this.roomInstances[rid];
@@ -214,7 +215,7 @@ class Encryption {
 		// Start Encryption Room instance handshake
 		// Maybe the subscription was not updated yet with the E2EKey
 		// but the received object has it, so, we can use as a fallback
-		await roomE2E.handshake(sub.E2EKey || subscription.E2EKey);
+		await roomE2E.handshake(subRecord.E2EKey || subscription.E2EKey);
 
 		return roomE2E;
 	}
