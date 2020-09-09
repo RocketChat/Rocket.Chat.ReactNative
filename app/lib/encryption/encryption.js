@@ -92,7 +92,7 @@ class Encryption {
 				// Wait for ready status
 				await this.establishing;
 			} catch {
-				// If it can't be initialized (e.g. missing password)
+				// If it can't be initialized (missing password)
 				// return and don't provide a key
 				return;
 			}
@@ -344,7 +344,7 @@ class Encryption {
 				// Wait for ready status
 				await this.establishing;
 			} catch {
-				// If it can't be initialized (e.g. missing password)
+				// If it can't be initialized (missing password)
 				// return the encrypted message
 				return subscription;
 			}
@@ -407,7 +407,7 @@ class Encryption {
 				// Wait for ready status
 				await this.establishing;
 			} catch {
-				// If it can't be initialized (e.g. missing password)
+				// If it can't be initialized (missing password)
 				// return the encrypted message
 				return message;
 			}
