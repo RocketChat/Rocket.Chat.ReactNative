@@ -146,7 +146,7 @@ const handleServerRequest = function* handleServerRequest({ server, certificate 
 			Navigation.navigate('WorkspaceView');
 			yield serversDB.action(async() => {
 				try {
-					const serversHistory = await serversHistoryCollection.query(Q.where('url', server));
+					const serversHistory = await serversHistoryCollection.query(Q.where('url', server)).fetch();
 					if (!serversHistory?.length) {
 						await serversHistoryCollection.create((s) => {
 							s.url = server;
