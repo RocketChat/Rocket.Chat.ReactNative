@@ -86,6 +86,18 @@ class Encryption {
 
 	// When a new participant join and request a new room encryption key
 	provideRoomKeyToUser = async(keyId, rid) => {
+		// If the client is not ready
+		if (!this.ready) {
+			try {
+				// Wait for ready status
+				await this.establishing;
+			} catch {
+				// If it can't be initialized (e.g. missing password)
+				// return and don't provide a key
+				return;
+			}
+		}
+
 		const roomE2E = await this.getRoomInstance({ rid });
 
 		if (!roomE2E) {
