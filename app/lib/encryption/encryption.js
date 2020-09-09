@@ -381,14 +381,8 @@ class Encryption {
 
 			// If the client is not ready
 			if (!this.ready) {
-				try {
-					// Wait for ready status
-					await this.establishing;
-				} catch {
-					// If it can't be initialized (e.g. missing password)
-					// return the plain text message
-					return message;
-				}
+				// Wait for ready status
+				await this.establishing;
 			}
 
 			const roomE2E = await this.getRoomInstance(subRecord);
@@ -401,7 +395,8 @@ class Encryption {
 
 			return roomE2E.encrypt(message);
 		} catch {
-			// Do nothing
+			// Subscription not found
+			// or client can't be initialized (missing password)
 		}
 
 		// Send a non encrypted message
