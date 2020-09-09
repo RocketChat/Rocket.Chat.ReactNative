@@ -166,10 +166,6 @@ export default class EncryptionRoom {
 			return message;
 		}
 
-		if (!this.subscription?.encrypted) {
-			return message;
-		}
-
 		try {
 			const text = utf8ToBuffer(EJSON.stringify({
 				_id: message._id,
