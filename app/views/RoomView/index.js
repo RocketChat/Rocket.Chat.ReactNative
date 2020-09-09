@@ -56,6 +56,8 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { getHeaderTitlePosition } from '../../containers/Header';
 
+import { takeInquiry } from '../../ee/omnichannel/lib';
+
 const stateAttrsUpdate = [
 	'joined',
 	'lastOpen',
@@ -689,7 +691,7 @@ class RoomView extends React.Component {
 			const { room } = this.state;
 
 			if (this.isOmnichannel) {
-				await RocketChat.takeInquiry(room._id);
+				await takeInquiry(room._id);
 			} else {
 				await RocketChat.joinRoom(this.rid, this.t);
 			}

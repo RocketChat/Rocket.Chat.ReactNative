@@ -298,8 +298,8 @@ describe('Room screen', () => {
 			});
 
 			it('should navigate to thread from thread name', async() => {
-				await waitFor(element(by.id('room-view-header-actions').and(by.label(` ${ mainRoom }`)))).toBeVisible().withTimeout(2000);	
-				await waitFor(element(by.id('room-view-header-actions').and(by.label(` ${ data.random }thread`)))).toBeNotVisible().withTimeout(2000);	
+				await waitFor(element(by.id('room-view-header-actions').and(by.label(`${ mainRoom }`)))).toBeVisible().withTimeout(2000);	
+				await waitFor(element(by.id('room-view-header-actions').and(by.label(`${ data.random }thread`)))).toBeNotVisible().withTimeout(2000);	
 				await sleep(500) //TODO: Find a better way to wait for the animation to finish and the messagebox-input to be available and usable :(
 				
 				await mockMessage('dummymessagebetweenthethread');

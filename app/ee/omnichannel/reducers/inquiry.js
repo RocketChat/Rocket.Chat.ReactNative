@@ -1,4 +1,4 @@
-import { INQUIRY } from '../actions/actionsTypes';
+import { INQUIRY } from '../../../actions/actionsTypes';
 
 const initialState = {
 	enabled: false,
