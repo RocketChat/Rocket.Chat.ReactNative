@@ -224,10 +224,18 @@ class Encryption {
 
 		const roomE2E = this.roomInstances[rid];
 
+		// If the room instance doesn't have a E2EKey we'll try to use the received E2EKey
+		// --- Test Case ---
+		// Add the logged user to a room that already has messages,
+		// the lastMessage should be decrypted
+		if (!roomE2E.subscription.E2EKey && subscription.E2EKey) {
+			roomE2E.subscription.E2EKey = subscription.E2EKey;
+		}
+
 		// Start Encryption Room instance handshake
 		// Maybe the subscription was not updated yet with the E2EKey
 		// but the received object has it, so, we can use as a fallback
-		await roomE2E.handshake(subRecord.E2EKey || subscription.E2EKey);
+		await roomE2E.handshake();
 
 		return roomE2E;
 	}
