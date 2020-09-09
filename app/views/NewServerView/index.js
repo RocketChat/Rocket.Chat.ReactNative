@@ -11,35 +11,31 @@ import parse from 'url-parse';
 import { Q } from '@nozbe/watermelondb';
 
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import UserPreferences from '../lib/userPreferences';
-import EventEmitter from '../utils/events';
-import { selectServerRequest, serverRequest } from '../actions/server';
-import { inviteLinksClear as inviteLinksClearAction } from '../actions/inviteLinks';
-import sharedStyles from './Styles';
-import Button from '../containers/Button';
-import TextInput from '../containers/TextInput';
-import OrSeparator from '../containers/OrSeparator';
-import FormContainer, { FormContainerInner } from '../containers/FormContainer';
-import I18n from '../i18n';
-import { isIOS } from '../utils/deviceInfo';
-import { themes } from '../constants/colors';
-import log, { logEvent, events } from '../utils/log';
-import { animateNextTransition } from '../utils/layoutAnimation';
-import { withTheme } from '../theme';
-import { setBasicAuth, BASIC_AUTH_KEY } from '../utils/fetch';
-import { CloseModalButton } from '../containers/HeaderButton';
-import { showConfirmationAlert } from '../utils/info';
-import database from '../lib/database';
-import { CustomIcon } from '../lib/Icons';
+import UserPreferences from '../../lib/userPreferences';
+import EventEmitter from '../../utils/events';
+import { selectServerRequest, serverRequest } from '../../actions/server';
+import { inviteLinksClear as inviteLinksClearAction } from '../../actions/inviteLinks';
+import sharedStyles from '../Styles';
+import Button from '../../containers/Button';
+import TextInput from '../../containers/TextInput';
+import OrSeparator from '../../containers/OrSeparator';
+import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
+import I18n from '../../i18n';
+import { isIOS } from '../../utils/deviceInfo';
+import { themes } from '../../constants/colors';
+import log, { logEvent, events } from '../../utils/log';
+import { animateNextTransition } from '../../utils/layoutAnimation';
+import { withTheme } from '../../theme';
+import { setBasicAuth, BASIC_AUTH_KEY } from '../../utils/fetch';
+import { CloseModalButton } from '../../containers/HeaderButton';
+import { showConfirmationAlert } from '../../utils/info';
+import database from '../../lib/database';
+import ServerInput from './ServerInput';
 
 const styles = StyleSheet.create({
 	title: {
 		...sharedStyles.textBold,
 		fontSize: 22
-	},
-	inputContainer: {
-		marginTop: 24,
-		marginBottom: 32
 	},
 	certificatePicker: {
 		marginBottom: 32,
@@ -62,46 +58,8 @@ const styles = StyleSheet.create({
 	},
 	connectButton: {
 		marginBottom: 0
-	},
-	item: {
-		padding: 15,
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'space-between'
-	},
-	itemText: {
-		...sharedStyles.textRegular,
-		fontSize: 16
-	},
-	serverHistory: {
-		maxHeight: 180,
-		width: '100%',
-		top: '75%',
-		zIndex: 1,
-		position: 'absolute',
-		borderWidth: 0.5
 	}
 });
-
-const Item = ({
-	item, onPress, theme, deleteServerLink
-}) => (
-	<View style={styles.item}>
-		<TouchableOpacity onPress={() => onPress(item.link)}>
-			<Text style={[styles.itemText, { color: themes[theme].titleText }]}>{item.link}</Text>
-		</TouchableOpacity>
-		<TouchableOpacity onPress={() => deleteServerLink(item)}>
-			<CustomIcon name='close' size={16} color={themes[theme].auxiliaryText} />
-		</TouchableOpacity>
-	</View>
-);
-
-Item.propTypes = {
-	item: PropTypes.object,
-	theme: PropTypes.string,
-	onPress: PropTypes.func,
-	deleteServerLink: PropTypes.func
-};
 
 class NewServerView extends React.Component {
 	static navigationOptions = () => ({
@@ -127,7 +85,6 @@ class NewServerView extends React.Component {
 			text: '',
 			connectingOpen: false,
 			certificate: null,
-			focused: false,
 			serversHistory: []
 		};
 		EventEmitter.addEventListener('NewServer', this.handleNewServerEvent);
@@ -352,42 +309,20 @@ class NewServerView extends React.Component {
 	render() {
 		const { connecting, theme } = this.props;
 		const {
-			text, connectingOpen, serversHistory, focused
+			text, connectingOpen, serversHistory
 		} = this.state;
 		return (
 			<FormContainer theme={theme} testID='new-server-view'>
 				<FormContainerInner>
 					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Join_your_workspace')}</Text>
-					<View>
-						<TextInput
-							label='Enter workspace URL'
-							placeholder='Ex. your-company.rocket.chat'
-							containerStyle={styles.inputContainer}
-							value={text}
-							returnKeyType='send'
-							onChangeText={this.onChangeText}
-							testID='new-server-view-input'
-							onSubmitEditing={this.submit}
-							clearButtonMode='while-editing'
-							keyboardType='url'
-							textContentType='URL'
-							theme={theme}
-							onFocus={() => this.setState({ focused: true })}
-							onBlur={() => this.setState({ focused: false })}
-						/>
-						{
-							focused
-								? (
-									<View style={[{ backgroundColor: themes[theme].backgroundColor, borderColor: themes[theme].separatorColor }, styles.serverHistory]}>
-										<FlatList
-											data={serversHistory}
-											renderItem={({ item }) => <Item item={item} onPress={this.onChangeText} theme={theme} deleteServerLink={this.deleteServerLink} />}
-											keyExtractor={item => item.id}
-										/>
-									</View>
-								) : null
-						}
-					</View>
+					<ServerInput
+						text={text}
+						theme={theme}
+						serversHistory={serversHistory}
+						onChangeText={this.onChangeText}
+						submit={this.submit}
+						deleteServerLink={this.deleteServerLink}
+					/>
 					<Button
 						title={I18n.t('Connect')}
 						type='primary'
