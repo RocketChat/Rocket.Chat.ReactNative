@@ -30,7 +30,7 @@ const FormContainer = ({ children, theme, testID }) => (
 		keyboardVerticalOffset={128}
 	>
 		<StatusBar theme={theme} />
-		<ScrollView {...scrollPersistTaps} keyboardShouldPersistTaps='never' style={sharedStyles.container} contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}>
+		<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}>
 			<SafeAreaView testID={testID} theme={theme} style={{ backgroundColor: themes[theme].backgroundColor }}>
 				{children}
 				<AppVersion theme={theme} />
