@@ -339,22 +339,30 @@ class Encryption {
 		}
 
 		try {
-			await db.action(async() => {
-				// If the subscription doesn't exists yet
-				if (!subRecord) {
-					// Let's create the subscription with the data received
-					await subCollection.create((s) => {
-						s._raw = sanitizedRaw({ id: rid }, subCollection.schema);
-						Object.assign(s, subscription);
-					});
-				// If the subscription already exists but doesn't have the E2EKey yet
-				} else if (!subRecord.E2EKey && subscription.E2EKey) {
+			const batch = [];
+			// If the subscription doesn't exists yet
+			if (!subRecord) {
+				// Let's create the subscription with the data received
+				batch.push(subCollection.prepareCreate((s) => {
+					s._raw = sanitizedRaw({ id: rid }, subCollection.schema);
+					Object.assign(s, subscription);
+				}));
+			// If the subscription already exists but doesn't have the E2EKey yet
+			} else if (!subRecord.E2EKey && subscription.E2EKey) {
+				if (!subRecord._hasPendingUpdate) {
 					// Let's update the subscription with the received E2EKey
-					await subRecord.update((s) => {
+					batch.push(subRecord.prepareUpdate((s) => {
 						s.E2EKey = subscription.E2EKey;
-					});
+					}));
 				}
-			});
+			}
+
+			// If batch has some operation
+			if (batch.length) {
+				await db.action(async() => {
+					await db.batch(...batch);
+				});
+			}
 		} catch {
 			// Abort the decryption process
 			// Return as received
