@@ -53,23 +53,23 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 			yield localAuthenticate(server);
 
 			// Saves username on server history
-			if (!credentials.resume) {
-				const serversDB = database.servers;
-				const serversHistoryCollection = serversDB.collections.get('servers_history');
-				yield serversDB.action(async() => {
-					try {
-						const serversHistory = await serversHistoryCollection.query(Q.where('url', server)).fetch();
-						if (serversHistory?.length) {
-							const serverHistoryRecord = serversHistory[0];
-							await serverHistoryRecord.update((s) => {
-								s.username = result.username;
-							});
-						}
-					} catch (e) {
-						log(e);
+			const serversDB = database.servers;
+			const serversHistoryCollection = serversDB.collections.get('servers_history');
+			yield serversDB.action(async() => {
+				try {
+					const serversHistory = await serversHistoryCollection.query(Q.where('url', server)).fetch();
+					if (serversHistory?.length) {
+						const serverHistoryRecord = serversHistory[0];
+						// this is updating on every login just to save `updated_at`
+						// keeping this server as the most recent on autocomplete order
+						await serverHistoryRecord.update((s) => {
+							s.username = result.username;
+						});
 					}
-				});
-			}
+				} catch (e) {
+					log(e);
+				}
+			});
 
 			yield put(loginSuccess(result));
 		}
