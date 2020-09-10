@@ -5,6 +5,7 @@ import database from '../database';
 import log from '../../utils/log';
 import random from '../../utils/random';
 import { Encryption } from '../encryption';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../encryption/constants';
 
 const changeMessageStatus = async(id, tmid, status, message) => {
 	const db = database.active;
@@ -131,6 +132,9 @@ export default async function(rid, msg, tmid, user) {
 							tm.status = messagesStatus.SENT; // Original message was sent already
 							tm.u = tMessageRecord.u;
 							tm.t = message.t;
+							if (message.t === E2E_MESSAGE_TYPE) {
+								tm.e2e = E2E_STATUS.DONE;
+							}
 						})
 					);
 				}
@@ -150,6 +154,9 @@ export default async function(rid, msg, tmid, user) {
 							username: user.username
 						};
 						tm.t = message.t;
+						if (message.t === E2E_MESSAGE_TYPE) {
+							tm.e2e = E2E_STATUS.DONE;
+						}
 					})
 				);
 			} catch (e) {
@@ -176,6 +183,9 @@ export default async function(rid, msg, tmid, user) {
 					m.tmsg = tMessageRecord.msg;
 				}
 				m.t = message.t;
+				if (message.t === E2E_MESSAGE_TYPE) {
+					m.e2e = E2E_STATUS.DONE;
+				}
 			})
 		);
 

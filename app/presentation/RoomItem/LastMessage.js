@@ -31,7 +31,7 @@ const formatMsg = ({
 	}
 
 	// Encrypted message pending decrypt
-	if (lastMessage.t === E2E_MESSAGE_TYPE && lastMessage.e2e === E2E_STATUS.PENDING) {
+	if (lastMessage.t === E2E_MESSAGE_TYPE && lastMessage.e2e !== E2E_STATUS.DONE) {
 		lastMessage.msg = I18n.t('Encrypted_message');
 	}
 

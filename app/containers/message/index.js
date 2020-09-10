@@ -209,7 +209,7 @@ class MessageContainer extends React.Component {
 	get isEncrypted() {
 		const { item } = this.props;
 		const { t, e2e } = item;
-		return t === E2E_MESSAGE_TYPE && e2e === E2E_STATUS.PENDING;
+		return t === E2E_MESSAGE_TYPE && e2e !== E2E_STATUS.DONE;
 	}
 
 	get isInfo() {
