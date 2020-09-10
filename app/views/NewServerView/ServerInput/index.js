@@ -34,8 +34,8 @@ const ServerInput = ({
 	theme,
 	serversHistory,
 	onChangeText,
-	submit,
-	deleteServerLink
+	onSubmit,
+	onDelete
 }) => {
 	const [focused, setFocused] = useState(false);
 	return (
@@ -48,7 +48,7 @@ const ServerInput = ({
 				returnKeyType='send'
 				onChangeText={onChangeText}
 				testID='new-server-view-input'
-				onSubmitEditing={submit}
+				onSubmitEditing={onSubmit}
 				clearButtonMode='while-editing'
 				keyboardType='url'
 				textContentType='URL'
@@ -62,7 +62,7 @@ const ServerInput = ({
 						<View style={[styles.serverHistory, { backgroundColor: themes[theme].backgroundColor, borderColor: themes[theme].separatorColor }]}>
 							<FlatList
 								data={serversHistory}
-								renderItem={({ item }) => <Item item={item} onPress={onChangeText} theme={theme} deleteServerLink={deleteServerLink} />}
+								renderItem={({ item }) => <Item item={item} theme={theme} onPress={onChangeText} onDelete={onDelete} />}
 								ItemSeparatorComponent={() => <Separator theme={theme} />}
 								keyExtractor={item => item.id}
 							/>
@@ -78,8 +78,8 @@ ServerInput.propTypes = {
 	theme: PropTypes.string,
 	serversHistory: PropTypes.array,
 	onChangeText: PropTypes.func,
-	submit: PropTypes.func,
-	deleteServerLink: PropTypes.func
+	onSubmit: PropTypes.func,
+	onDelete: PropTypes.func
 };
 
 export default ServerInput;

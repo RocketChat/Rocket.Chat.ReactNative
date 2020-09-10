@@ -30,14 +30,14 @@ const styles = StyleSheet.create({
 });
 
 const Item = ({
-	item, onPress, theme, deleteServerLink
+	item, theme, onPress, onDelete
 }) => (
 	<Touch style={styles.container} onPress={() => onPress(item.url)} theme={theme}>
 		<View style={styles.content}>
 			<Text style={[styles.server, { color: themes[theme].bodyText }]}>{item.url}</Text>
 			<Text style={[styles.username, { color: themes[theme].auxiliaryText }]}>{item.username}</Text>
 		</View>
-		<BorderlessButton onPress={() => deleteServerLink(item)}>
+		<BorderlessButton onPress={() => onDelete(item)}>
 			<CustomIcon name='delete' size={24} color={themes[theme].auxiliaryText} />
 		</BorderlessButton>
 	</Touch>
@@ -47,7 +47,7 @@ Item.propTypes = {
 	item: PropTypes.object,
 	theme: PropTypes.string,
 	onPress: PropTypes.func,
-	deleteServerLink: PropTypes.func
+	onDelete: PropTypes.func
 };
 
 export default Item;

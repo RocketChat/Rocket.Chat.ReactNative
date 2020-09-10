@@ -279,14 +279,14 @@ class NewServerView extends React.Component {
 		});
 	}
 
-	deleteServerLink = async(item) => {
+	deleteServerHistory = async(item) => {
 		const { serversHistory } = this.state;
 		const db = database.servers;
 		try {
 			await db.action(async() => {
 				await item.destroyPermanently();
 			});
-			this.setState({ serversHistory: serversHistory.filter(server => server.link !== item.link) });
+			this.setState({ serversHistory: serversHistory.filter(server => server.id !== item.id) });
 		} catch {
 			// Nothing
 		}
@@ -336,8 +336,8 @@ class NewServerView extends React.Component {
 						theme={theme}
 						serversHistory={serversHistory}
 						onChangeText={this.onChangeText}
-						submit={this.submit}
-						deleteServerLink={this.deleteServerLink}
+						onSubmit={this.submit}
+						onDelete={this.deleteServerHistory}
 					/>
 					<Button
 						title={I18n.t('Connect')}
