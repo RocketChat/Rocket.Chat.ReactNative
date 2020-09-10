@@ -17,6 +17,7 @@ import {
 import List from './List';
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
+import { Encryption } from '../../lib/encryption';
 import Message from '../../containers/message';
 import MessageActions from '../../containers/MessageActions';
 import MessageErrorActions from '../../containers/MessageErrorActions';
@@ -735,7 +736,8 @@ class RoomView extends React.Component {
 					});
 				});
 			} else {
-				const { message: thread } = await RocketChat.getSingleMessage(tmid);
+				let { message: thread } = await RocketChat.getSingleMessage(tmid);
+				thread = await Encryption.decryptMessage(thread);
 				await db.action(async() => {
 					await db.batch(
 						threadCollection.prepareCreate((t) => {

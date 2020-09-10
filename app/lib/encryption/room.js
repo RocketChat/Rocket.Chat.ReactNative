@@ -163,6 +163,19 @@ export default class EncryptionRoom {
 		await this.encryptRoomKey();
 	}
 
+	// Encrypt text
+	encryptText = async(text) => {
+		text = utf8ToBuffer(text);
+		const vector = await SimpleCrypto.utils.randomBytes(16);
+		const data = await SimpleCrypto.AES.encrypt(
+			text,
+			this.roomKey,
+			vector
+		);
+
+		return this.keyID + bufferToB64(joinVectorData(vector, data));
+	}
+
 	// Encrypt messages
 	encrypt = async(message) => {
 		if (!this.ready) {
@@ -170,29 +183,40 @@ export default class EncryptionRoom {
 		}
 
 		try {
-			const text = utf8ToBuffer(EJSON.stringify({
+			const msg = await this.encryptText(EJSON.stringify({
 				_id: message._id,
 				text: message.msg,
 				userId: this.userId,
 				ts: new Date()
 			}));
-			const vector = await SimpleCrypto.utils.randomBytes(16);
-			const data = await SimpleCrypto.AES.encrypt(
-				text,
-				this.roomKey,
-				vector
-			);
+
 			return {
 				...message,
 				t: E2E_MESSAGE_TYPE,
 				e2e: E2E_STATUS.PENDING,
-				msg: this.keyID + bufferToB64(joinVectorData(vector, data))
+				msg
 			};
 		} catch {
 			// Do nothing
 		}
 
 		return message;
+	}
+
+	// Decrypt text
+	decryptText = async(msg) => {
+		msg = b64ToBuffer(msg.slice(12));
+		const [vector, cipherText] = splitVectorData(msg);
+
+		const decrypted = await SimpleCrypto.AES.decrypt(
+			cipherText,
+			this.roomKey,
+			vector
+		);
+
+		const m = EJSON.parse(bufferToUtf8(decrypted));
+
+		return m.text;
 	}
 
 	// Decrypt messages
@@ -206,20 +230,19 @@ export default class EncryptionRoom {
 
 			// If message type is e2e and it's encrypted still
 			if (t === E2E_MESSAGE_TYPE && e2e !== E2E_STATUS.DONE) {
-				let { msg } = message;
-				msg = b64ToBuffer(msg.slice(12));
-				const [vector, cipherText] = splitVectorData(msg);
+				let { msg, tmsg } = message;
+				// Decrypt msg
+				msg = await this.decryptText(msg);
 
-				const decrypted = await SimpleCrypto.AES.decrypt(
-					cipherText,
-					this.roomKey,
-					vector
-				);
+				// Decrypt tmsg
+				if (tmsg) {
+					tmsg = await this.decryptText(tmsg);
+				}
 
-				const m = EJSON.parse(bufferToUtf8(decrypted));
 				return {
 					...message,
-					msg: m.text,
+					tmsg,
+					msg,
 					e2e: E2E_STATUS.DONE
 				};
 			}

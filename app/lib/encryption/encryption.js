@@ -242,9 +242,15 @@ class Encryption {
 			// Concat messages/threads/threadMessages
 			let toDecrypt = [...messagesToDecrypt, ...threadsToDecrypt, ...threadMessagesToDecrypt];
 			toDecrypt = await Promise.all(toDecrypt.map(async(message) => {
-				const { subscription, t, msg } = message;
-				const { id: rid } = subscription;
-				const newMessage = await this.decryptMessage({ rid, t, msg });
+				const { t, msg, tmsg } = message;
+				const { id: rid } = message.subscription;
+				// WM Object -> Plain Object
+				const newMessage = await this.decryptMessage({
+					t,
+					rid,
+					msg,
+					tmsg
+				});
 				if (message._hasPendingUpdate) {
 					console.log(message);
 					return;
