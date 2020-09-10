@@ -17,11 +17,13 @@ import RocketChat from '../rocketchat';
 import Deferred from '../../utils/deferred';
 import debounce from '../../utils/debounce';
 import { Encryption } from './index';
+import database from '../database';
 import log from '../../utils/log';
 
 export default class EncryptionRoom {
-	constructor(subscription) {
+	constructor(roomId) {
 		this.ready = false;
+		this.roomId = roomId;
 		this.establishing = false;
 		this.readyPromise = new Deferred();
 		this.readyPromise.then(() => {
@@ -30,7 +32,6 @@ export default class EncryptionRoom {
 			// Mark as established
 			this.establishing = false;
 		});
-		this.subscription = subscription;
 	}
 
 	// Initialize the E2E room
@@ -46,9 +47,14 @@ export default class EncryptionRoom {
 			return this.readyPromise;
 		}
 
-		const { E2EKey, e2eKeyId } = this.subscription;
-
+		const db = database.active;
+		const subCollection = db.collections.get('subscriptions');
 		try {
+			// Find the subscription
+			const subscription = await subCollection.find(this.roomId);
+
+			const { E2EKey, e2eKeyId } = subscription;
+
 			// If this room has a E2EKey, we import it
 			if (E2EKey) {
 				// We're establishing a new room encryption client
@@ -68,7 +74,7 @@ export default class EncryptionRoom {
 			}
 
 			// Request a E2EKey for this room to other users
-			await this.requestRoomKey();
+			await this.requestRoomKey(e2eKeyId);
 		} catch (e) {
 			log(e);
 		}
@@ -112,8 +118,7 @@ export default class EncryptionRoom {
 		this.sessionKeyExportedString = EJSON.stringify(sessionKeyExported);
 		this.keyID = Base64.encode(this.sessionKeyExportedString).slice(0, 12);
 
-		const { rid } = this.subscription;
-		await RocketChat.e2eSetRoomKeyID(rid, this.keyID);
+		await RocketChat.e2eSetRoomKeyID(this.roomId, this.keyID);
 
 		await this.encryptRoomKey();
 	}
@@ -124,28 +129,26 @@ export default class EncryptionRoom {
 	// can send the encryption key at the moment.
 	// Each time you see a encrypted message of a room that you don't have a key
 	// this will be called again and run once in 5 seconds
-	requestRoomKey = debounce(async() => {
-		const { rid, e2eKeyId } = this.subscription;
-		await RocketChat.e2eRequestRoomKey(rid, e2eKeyId);
+	requestRoomKey = debounce(async(e2eKeyId) => {
+		await RocketChat.e2eRequestRoomKey(this.roomId, e2eKeyId);
 	}, 5000, true)
 
 	// Create an encrypted key for this room based on users
 	encryptRoomKey = async() => {
-		const { rid } = this.subscription;
-		const result = await RocketChat.e2eGetUsersOfRoomWithoutKey(rid);
+		const result = await RocketChat.e2eGetUsersOfRoomWithoutKey(this.roomId);
 		if (result.success) {
 			const { users } = result;
-			await Promise.all(users.map(user => this.encryptRoomKeyForUser(user, rid)));
+			await Promise.all(users.map(user => this.encryptRoomKeyForUser(user)));
 		}
 	}
 
 	// Encrypt the room key to each user in
-	encryptRoomKeyForUser = async(user, rid) => {
+	encryptRoomKeyForUser = async(user) => {
 		if (user?.e2e?.public_key) {
 			const { public_key: publicKey } = user.e2e;
 			const userKey = await SimpleCrypto.RSA.importKey(EJSON.parse(publicKey));
 			const encryptedUserKey = await SimpleCrypto.RSA.encrypt(this.sessionKeyExportedString, userKey);
-			await RocketChat.e2eUpdateGroupKey(user?._id, rid, this.keyID + encryptedUserKey);
+			await RocketChat.e2eUpdateGroupKey(user?._id, this.roomId, this.keyID + encryptedUserKey);
 		}
 	}
 

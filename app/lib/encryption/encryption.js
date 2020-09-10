@@ -1,5 +1,6 @@
 import EJSON from 'ejson';
 import SimpleCrypto from 'react-native-simple-crypto';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
 import {
@@ -98,7 +99,7 @@ class Encryption {
 			}
 		}
 
-		const roomE2E = await this.getRoomInstance({ rid });
+		const roomE2E = await this.getRoomInstance(rid);
 		return roomE2E.provideKeyToUser(keyId);
 	}
 
@@ -190,42 +191,18 @@ class Encryption {
 	}
 
 	// get a encryption room instance
-	getRoomInstance = async(subscription) => {
-		const { rid } = subscription;
-
+	getRoomInstance = async(rid) => {
 		// Prevent find the sub again
 		if (this.roomInstances[rid]?.ready) {
 			return this.roomInstances[rid];
 		}
 
-		const db = database.active;
-		const subCollection = db.collections.get('subscriptions');
-		let subRecord = {};
-		try {
-			// Find the subscription
-			subRecord = await subCollection.find(rid);
-		} catch {
-			// Subscription not found
-			// Probably was not created yet
-			// Let's try to use the subscription received
-			// if it has all the necessary attributes
-			subRecord = subscription;
-		}
-
 		// If doesn't have a instance of this room
 		if (!this.roomInstances[rid]) {
-			this.roomInstances[rid] = new EncryptionRoom(subRecord);
+			this.roomInstances[rid] = new EncryptionRoom(rid);
 		}
 
 		const roomE2E = this.roomInstances[rid];
-
-		// If the room instance doesn't have a E2EKey we'll try to use the received E2EKey
-		// --- Test Case ---
-		// Add the logged user to a room that already has messages,
-		// the lastMessage should be decrypted
-		if (!roomE2E.subscription.E2EKey && subscription.E2EKey) {
-			roomE2E.subscription.E2EKey = subscription.E2EKey;
-		}
 
 		// Start Encryption Room instance handshake
 		// Maybe the subscription was not updated yet with the E2EKey
@@ -350,8 +327,42 @@ class Encryption {
 			}
 		}
 
+		const { rid } = subscription;
+		const db = database.active;
+		const subCollection = db.collections.get('subscriptions');
+
+		let subRecord;
+		try {
+			subRecord = await subCollection.find(rid);
+		} catch {
+			// Do nothing
+		}
+
+		try {
+			await db.action(async() => {
+				// If the subscription doesn't exists yet
+				if (!subRecord) {
+					// Let's create the subscription with the data received
+					await subCollection.create((s) => {
+						s._raw = sanitizedRaw({ id: rid }, subCollection.schema);
+						Object.assign(s, subscription);
+					});
+				// If the subscription already exists but doesn't have the E2EKey yet
+				} else if (!subRecord.E2EKey && subscription.E2EKey) {
+					// Let's update the subscription with the received E2EKey
+					await subRecord.update((s) => {
+						s.E2EKey = subscription.E2EKey;
+					});
+				}
+			});
+		} catch {
+			// Abort the decryption process
+			// Return as received
+			return subscription;
+		}
+
 		// Get a instance using the subscription
-		const roomE2E = await this.getRoomInstance(subscription);
+		const roomE2E = await this.getRoomInstance(rid);
 		const decryptedMessage = await roomE2E.decrypt(lastMessage);
 		return {
 			...subscription,
@@ -381,7 +392,7 @@ class Encryption {
 				await this.establishing;
 			}
 
-			const roomE2E = await this.getRoomInstance(subRecord);
+			const roomE2E = await this.getRoomInstance(rid);
 			return roomE2E.encrypt(message);
 		} catch {
 			// Subscription not found
@@ -414,7 +425,7 @@ class Encryption {
 		}
 
 		const { rid } = message;
-		const roomE2E = await this.getRoomInstance({ rid });
+		const roomE2E = await this.getRoomInstance(rid);
 		return roomE2E.decrypt(message);
 	}
 

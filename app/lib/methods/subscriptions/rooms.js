@@ -125,89 +125,89 @@ const createOrUpdateSubscription = async(subscription, room) => {
 
 		let tmp = merge(subscription, room);
 		tmp = await Encryption.decryptSubscription(tmp);
-		await db.action(async() => {
-			let sub;
+		let sub;
+		try {
+			sub = await subCollection.find(tmp.rid);
+		} catch (error) {
+			// Do nothing
+		}
+
+		// If we're receiving a E2EKey of a room
+		if (sub && !sub.E2EKey && subscription?.E2EKey) {
+			// Assing info from database subscription to tmp
+			// It should be a plain object
+			tmp = Object.assign(tmp, {
+				rid: sub.rid,
+				encrypted: sub.encrypted,
+				lastMessage: sub.lastMessage,
+				E2EKey: subscription.E2EKey,
+				e2eKeyId: sub.e2eKeyId
+			});
+			// Decrypt lastMessage using the received E2EKey
+			tmp = await Encryption.decryptSubscription(tmp);
+			// Decrypt all pending messages of this room in parallel
+			Encryption.decryptPendingMessages(tmp.rid);
+		}
+
+		const batch = [];
+		if (sub) {
 			try {
-				sub = await subCollection.find(tmp.rid);
+				const update = sub.prepareUpdate((s) => {
+					Object.assign(s, tmp);
+					if (subscription.announcement) {
+						if (subscription.announcement !== sub.announcement) {
+							s.bannerClosed = false;
+						}
+					}
+				});
+				batch.push(update);
+			} catch (e) {
+				console.log(e);
+			}
+		} else {
+			try {
+				const create = subCollection.prepareCreate((s) => {
+					s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
+					Object.assign(s, tmp);
+					if (s.roomUpdatedAt) {
+						s.roomUpdatedAt = new Date();
+					}
+				});
+				batch.push(create);
+			} catch (e) {
+				console.log(e);
+			}
+		}
+
+		const { rooms } = store.getState().room;
+		if (tmp.lastMessage && !rooms.includes(tmp.rid)) {
+			const lastMessage = buildMessage(tmp.lastMessage);
+			const messagesCollection = db.collections.get('messages');
+			let messageRecord;
+			try {
+				messageRecord = await messagesCollection.find(lastMessage._id);
 			} catch (error) {
 				// Do nothing
 			}
 
-			// If we're receiving a E2EKey of a room
-			if (!sub?.E2EKey && subscription?.E2EKey) {
-				// Assing info from database subscription to tmp
-				// It should be a plain object
-				tmp = Object.assign(tmp, {
-					rid: sub.rid,
-					encrypted: sub.encrypted,
-					lastMessage: sub.lastMessage,
-					E2EKey: subscription.E2EKey,
-					e2eKeyId: sub.e2eKeyId
-				});
-				// Decrypt lastMessage using the received E2EKey
-				tmp = await Encryption.decryptSubscription(tmp);
-				// Decrypt all pending messages of this room in parallel
-				Encryption.decryptPendingMessages(tmp.rid);
-			}
-
-			const batch = [];
-			if (sub) {
-				try {
-					const update = sub.prepareUpdate((s) => {
-						Object.assign(s, tmp);
-						if (subscription.announcement) {
-							if (subscription.announcement !== sub.announcement) {
-								s.bannerClosed = false;
-							}
-						}
-					});
-					batch.push(update);
-				} catch (e) {
-					console.log(e);
-				}
+			if (messageRecord) {
+				batch.push(
+					messageRecord.prepareUpdate(() => {
+						Object.assign(messageRecord, lastMessage);
+					})
+				);
 			} else {
-				try {
-					const create = subCollection.prepareCreate((s) => {
-						s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
-						Object.assign(s, tmp);
-						if (s.roomUpdatedAt) {
-							s.roomUpdatedAt = new Date();
-						}
-					});
-					batch.push(create);
-				} catch (e) {
-					console.log(e);
-				}
+				batch.push(
+					messagesCollection.prepareCreate((m) => {
+						m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
+						m.subscription.id = lastMessage.rid;
+						return Object.assign(m, lastMessage);
+					})
+				);
 			}
+		}
 
-			const { rooms } = store.getState().room;
-			if (tmp.lastMessage && !rooms.includes(tmp.rid)) {
-				const lastMessage = buildMessage(tmp.lastMessage);
-				const messagesCollection = db.collections.get('messages');
-				let messageRecord;
-				try {
-					messageRecord = await messagesCollection.find(lastMessage._id);
-				} catch (error) {
-					// Do nothing
-				}
-
-				if (messageRecord) {
-					batch.push(
-						messageRecord.prepareUpdate(() => {
-							Object.assign(messageRecord, lastMessage);
-						})
-					);
-				} else {
-					batch.push(
-						messagesCollection.prepareCreate((m) => {
-							m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
-							m.subscription.id = lastMessage.rid;
-							return Object.assign(m, lastMessage);
-						})
-					);
-				}
-			}
-
+		await db.action(async() => {
 			await db.batch(...batch);
 		});
 	} catch (e) {
