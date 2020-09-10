@@ -130,7 +130,9 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 	}
 };
 
-const handleServerRequest = function* handleServerRequest({ server, certificate }) {
+const handleServerRequest = function* handleServerRequest({
+	server, certificate, username, fromServerHistory
+}) {
 	try {
 		if (certificate) {
 			yield UserPreferences.setMapAsync(extractHostname(server), certificate);
@@ -143,7 +145,12 @@ const handleServerRequest = function* handleServerRequest({ server, certificate 
 		if (serverInfo) {
 			yield RocketChat.getLoginServices(server);
 			yield RocketChat.getLoginSettings({ server });
-			Navigation.navigate('WorkspaceView');
+			yield Navigation.navigate('WorkspaceView');
+
+			if (fromServerHistory) {
+				yield Navigation.navigate('LoginView', { username });
+			}
+
 			yield serversDB.action(async() => {
 				try {
 					const serversHistory = await serversHistoryCollection.query(Q.where('url', server)).fetch();

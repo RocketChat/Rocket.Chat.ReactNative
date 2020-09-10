@@ -145,7 +145,6 @@ class NewServerView extends React.Component {
 				];
 			}
 			const serversHistory = await serversHistoryCollection.query(...whereClause).fetch();
-			console.log('NewServerView -> queryServerHistory -> serversHistory', serversHistory);
 			this.setState({ serversHistory });
 		} catch {
 			// Do nothing
@@ -166,7 +165,11 @@ class NewServerView extends React.Component {
 		connectServer(server);
 	}
 
-	submit = async() => {
+	onPressServerHistory = (serverHistory) => {
+		this.setState({ text: serverHistory?.url }, () => this.submit({ fromServerHistory: true, username: serverHistory?.username }));
+	}
+
+	submit = async({ fromServerHistory = false, username }) => {
 		logEvent(events.NEWSERVER_CONNECT_TO_WORKSPACE);
 		const { text, certificate } = this.state;
 		const { connectServer } = this.props;
@@ -192,7 +195,11 @@ class NewServerView extends React.Component {
 			Keyboard.dismiss();
 			const server = this.completeUrl(text);
 			await this.basicAuth(server, text);
-			connectServer(server, cert);
+			if (fromServerHistory) {
+				connectServer(server, cert, username, true);
+			} else {
+				connectServer(server, cert);
+			}
 		}
 	}
 
@@ -338,6 +345,7 @@ class NewServerView extends React.Component {
 						onChangeText={this.onChangeText}
 						onSubmit={this.submit}
 						onDelete={this.deleteServerHistory}
+						onPressServerHistory={this.onPressServerHistory}
 					/>
 					<Button
 						title={I18n.t('Connect')}
@@ -375,7 +383,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	connectServer: (server, certificate) => dispatch(serverRequest(server, certificate)),
+	connectServer: (server, certificate, username, fromServerHistory) => dispatch(serverRequest(server, certificate, username, fromServerHistory)),
 	selectServer: server => dispatch(selectServerRequest(server)),
 	inviteLinksClear: () => dispatch(inviteLinksClearAction())
 });

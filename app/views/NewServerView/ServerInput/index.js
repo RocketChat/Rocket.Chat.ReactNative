@@ -35,7 +35,8 @@ const ServerInput = ({
 	serversHistory,
 	onChangeText,
 	onSubmit,
-	onDelete
+	onDelete,
+	onPressServerHistory
 }) => {
 	const [focused, setFocused] = useState(false);
 	return (
@@ -62,7 +63,7 @@ const ServerInput = ({
 						<View style={[styles.serverHistory, { backgroundColor: themes[theme].backgroundColor, borderColor: themes[theme].separatorColor }]}>
 							<FlatList
 								data={serversHistory}
-								renderItem={({ item }) => <Item item={item} theme={theme} onPress={onChangeText} onDelete={onDelete} />}
+								renderItem={({ item }) => <Item item={item} theme={theme} onPress={() => onPressServerHistory(item)} onDelete={onDelete} />}
 								ItemSeparatorComponent={() => <Separator theme={theme} />}
 								keyExtractor={item => item.id}
 							/>
@@ -79,7 +80,8 @@ ServerInput.propTypes = {
 	serversHistory: PropTypes.array,
 	onChangeText: PropTypes.func,
 	onSubmit: PropTypes.func,
-	onDelete: PropTypes.func
+	onDelete: PropTypes.func,
+	onPressServerHistory: PropTypes.func
 };
 
 export default ServerInput;
