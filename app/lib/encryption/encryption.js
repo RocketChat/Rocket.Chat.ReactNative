@@ -192,7 +192,7 @@ class Encryption {
 
 	// get a encryption room instance
 	getRoomInstance = async(rid) => {
-		// Prevent find the sub again
+		// Prevent handshake again
 		if (this.roomInstances[rid]?.ready) {
 			return this.roomInstances[rid];
 		}
@@ -205,8 +205,6 @@ class Encryption {
 		const roomE2E = this.roomInstances[rid];
 
 		// Start Encryption Room instance handshake
-		// Maybe the subscription was not updated yet with the E2EKey
-		// but the received object has it, so, we can use as a fallback
 		await roomE2E.handshake();
 
 		return roomE2E;
