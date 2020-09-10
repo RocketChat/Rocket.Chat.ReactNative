@@ -90,19 +90,8 @@ class NewServerView extends React.Component {
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	}
 
-	async componentDidMount() {
-		const db = database.servers;
-		try {
-			const serversHistoryCollection = db.collections.get('servers_history');
-			const serversHistory = await serversHistoryCollection.query(
-				Q.where('username', Q.notEq(null)),
-				Q.experimentalSortBy('updated_at', Q.desc),
-				Q.experimentalTake(3)
-			).fetch();
-			this.setState({ serversHistory });
-		} catch {
-			// Do nothing
-		}
+	componentDidMount() {
+		this.queryServerHistory();
 	}
 
 	componentDidUpdate(prevProps) {
@@ -137,6 +126,30 @@ class NewServerView extends React.Component {
 
 	onChangeText = (text) => {
 		this.setState({ text });
+		this.queryServerHistory(text);
+	}
+
+	queryServerHistory = async(text) => {
+		const db = database.servers;
+		try {
+			const serversHistoryCollection = db.collections.get('servers_history');
+			let whereClause = [
+				Q.where('username', Q.notEq(null)),
+				Q.experimentalSortBy('updated_at', Q.desc),
+				Q.experimentalTake(3)
+			];
+			if (text) {
+				whereClause = [
+					...whereClause,
+					Q.where('url', Q.like(`%${ Q.sanitizeLikeString(text) }%`))
+				];
+			}
+			const serversHistory = await serversHistoryCollection.query(...whereClause).fetch();
+			console.log('NewServerView -> queryServerHistory -> serversHistory', serversHistory);
+			this.setState({ serversHistory });
+		} catch {
+			// Do nothing
+		}
 	}
 
 	close = () => {
