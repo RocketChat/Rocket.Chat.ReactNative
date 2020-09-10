@@ -19,7 +19,7 @@ import {
 	E2E_BANNER_TYPE
 } from './constants';
 import RocketChat from '../rocketchat';
-import EncryptionRoom from './room';
+import { EncryptionRoom } from './index';
 import UserPreferences from '../userPreferences';
 import database from '../database';
 import protectedFunction from '../methods/helpers/protectedFunction';
