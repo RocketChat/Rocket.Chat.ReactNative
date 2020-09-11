@@ -77,4 +77,6 @@ export default class Message extends Model {
 	@field('tmsg') tmsg;
 
 	@json('blocks', sanitizer) blocks;
+
+	@field('e2e') e2e;
 }

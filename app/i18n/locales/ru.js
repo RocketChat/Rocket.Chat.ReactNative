@@ -371,7 +371,6 @@ export default {
 	Tap_to_view_servers_list: 'Нажмите, чтобы просмотреть список серверов',
 	Terms_of_Service: ' Условия использования ',
 	Theme: 'Тема',
-	The_URL_is_invalid: 'IНеверный URL или невозможно установить безопасное соединение.\n{{contact}}',
 	There_was_an_error_while_action: 'Произошла ошибка в процессе {{action}}!',
 	This_room_is_blocked: 'Этот канал заблокирован',
 	This_room_is_read_only: 'Этот канал доступен только для чтения',

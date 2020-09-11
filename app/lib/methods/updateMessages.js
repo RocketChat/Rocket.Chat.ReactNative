@@ -5,6 +5,7 @@ import buildMessage from './helpers/buildMessage';
 import log from '../../utils/log';
 import database from '../database';
 import protectedFunction from './helpers/protectedFunction';
+import { Encryption } from '../encryption';
 
 export default function updateMessages({ rid, update = [], remove = [] }) {
 	try {
@@ -13,6 +14,8 @@ export default function updateMessages({ rid, update = [], remove = [] }) {
 		}
 		const db = database.active;
 		return db.action(async() => {
+			// Decrypt these messages
+			update = await Encryption.decryptMessages(update);
 			const subCollection = db.collections.get('subscriptions');
 			let sub;
 			try {

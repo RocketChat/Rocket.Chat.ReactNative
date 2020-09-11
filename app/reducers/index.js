@@ -17,6 +17,7 @@ import usersTyping from './usersTyping';
 import inviteLinks from './inviteLinks';
 import createDiscussion from './createDiscussion';
 import enterpriseModules from './enterpriseModules';
+import encryption from './encryption';
 
 import inquiry from '../ee/omnichannel/reducers/inquiry';
 
@@ -39,5 +40,6 @@ export default combineReducers({
 	inviteLinks,
 	createDiscussion,
 	inquiry,
-	enterpriseModules
+	enterpriseModules,
+	encryption
 });

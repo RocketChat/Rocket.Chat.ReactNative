@@ -126,6 +126,21 @@ export default StyleSheet.create({
 		height: StyleSheet.hairlineWidth,
 		marginLeft: 72
 	},
+	encryptionButton: {
+		width: '100%',
+		flexDirection: 'row',
+		alignItems: 'center',
+		padding: 12
+	},
+	encryptionIcon: {
+		...sharedStyles.textMedium
+	},
+	encryptionText: {
+		flex: 1,
+		fontSize: 16,
+		marginHorizontal: 16,
+		...sharedStyles.textMedium
+	},
 	omnichannelToggle: {
 		marginRight: 12
 	}
