@@ -378,7 +378,6 @@ export default {
 	Tap_to_view_servers_list: 'Pulsa para ver la lista de servidores',
 	Terms_of_Service: 'Términos de servicio',
 	Theme: 'Tema',
-	The_URL_is_invalid: 'URL inválida o no se puede establecer una conexión segura.\n{{contact}}',
 	There_was_an_error_while_action: 'Ha habido un error mientras {{action}}!',
 	This_room_is_blocked: 'La sala está bloqueada',
 	This_room_is_read_only: 'Esta sala es de sólo lectura',

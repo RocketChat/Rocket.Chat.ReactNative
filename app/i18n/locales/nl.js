@@ -398,7 +398,6 @@ export default {
 	Tap_to_view_servers_list: 'Tik om een server lijst te weergeven',
 	Terms_of_Service: ' Servicevoorwaarden ',
 	Theme: 'Thema',
-	The_URL_is_invalid: 'Ongeldige URL of niet mogelijk een veilige verbinding op te zetten.\n{{contact}}',
 	There_was_an_error_while_action: 'Er was eer fout tijdens {{action}}!',
 	This_room_is_blocked: 'Deze kamer is geblokkeerd',
 	This_room_is_read_only: 'Deze kamer is alleen-lezen',
