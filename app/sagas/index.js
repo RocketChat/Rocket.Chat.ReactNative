@@ -10,6 +10,7 @@ import state from './state';
 import deepLinking from './deepLinking';
 import inviteLinks from './inviteLinks';
 import createDiscussion from './createDiscussion';
+import encryption from './encryption';
 
 import inquiry from '../ee/omnichannel/sagas/inquiry';
 
@@ -26,7 +27,8 @@ const root = function* root() {
 		deepLinking(),
 		inviteLinks(),
 		createDiscussion(),
-		inquiry()
+		inquiry(),
+		encryption()
 	]);
 };
 

@@ -8,6 +8,7 @@ import debounce from '../../utils/debounce';
 import { SYSTEM_MESSAGES, getMessageTranslation } from './utils';
 import messagesStatus from '../../constants/messagesStatus';
 import { withTheme } from '../../theme';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
 
 class MessageContainer extends React.Component {
 	static propTypes = {
@@ -35,6 +36,7 @@ class MessageContainer extends React.Component {
 		getCustomEmoji: PropTypes.func,
 		onLongPress: PropTypes.func,
 		onReactionPress: PropTypes.func,
+		onEncryptedPress: PropTypes.func,
 		onDiscussionPress: PropTypes.func,
 		onThreadPress: PropTypes.func,
 		errorActionsShow: PropTypes.func,
@@ -53,6 +55,7 @@ class MessageContainer extends React.Component {
 		getCustomEmoji: () => {},
 		onLongPress: () => {},
 		onReactionPress: () => {},
+		onEncryptedPress: () => {},
 		onDiscussionPress: () => {},
 		onThreadPress: () => {},
 		errorActionsShow: () => {},
@@ -104,7 +107,7 @@ class MessageContainer extends React.Component {
 
 	onLongPress = () => {
 		const { archived, onLongPress, item } = this.props;
-		if (this.isInfo || this.hasError || archived) {
+		if (this.isInfo || this.hasError || this.isEncrypted || archived) {
 			return;
 		}
 		if (onLongPress) {
@@ -130,6 +133,13 @@ class MessageContainer extends React.Component {
 		const { onReactionLongPress, item } = this.props;
 		if (onReactionLongPress) {
 			onReactionLongPress(item);
+		}
+	}
+
+	onEncryptedPress = () => {
+		const { onEncryptedPress } = this.props;
+		if (onEncryptedPress) {
+			onEncryptedPress();
 		}
 	}
 
@@ -196,6 +206,12 @@ class MessageContainer extends React.Component {
 		return false;
 	}
 
+	get isEncrypted() {
+		const { item } = this.props;
+		const { t, e2e } = item;
+		return t === E2E_MESSAGE_TYPE && e2e !== E2E_STATUS.DONE;
+	}
+
 	get isInfo() {
 		const { item } = this.props;
 		return SYSTEM_MESSAGES.includes(item.t);
@@ -251,6 +267,7 @@ class MessageContainer extends React.Component {
 					onErrorPress: this.onErrorPress,
 					replyBroadcast: this.replyBroadcast,
 					onReactionPress: this.onReactionPress,
+					onEncryptedPress: this.onEncryptedPress,
 					onDiscussionPress: this.onDiscussionPress,
 					onReactionLongPress: this.onReactionLongPress
 				}}
@@ -295,6 +312,7 @@ class MessageContainer extends React.Component {
 					isThreadRoom={isThreadRoom}
 					isInfo={this.isInfo}
 					isTemp={this.isTemp}
+					isEncrypted={this.isEncrypted}
 					hasError={this.hasError}
 					showAttachment={showAttachment}
 					getCustomEmoji={getCustomEmoji}
