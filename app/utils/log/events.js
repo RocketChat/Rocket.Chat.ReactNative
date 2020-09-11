@@ -139,6 +139,7 @@ export default {
 	SE_COPY_APP_VERSION: 'se_copy_app_version',
 	SE_COPY_SERVER_VERSION: 'se_copy_server_version',
 	SE_TOGGLE_CRASH_REPORT: 'se_toggle_crash_report',
+	SE_TOGGLE_ANALYTICS_EVENTS: 'se_toggle_analytics_events',
 	SE_CLEAR_LOCAL_SERVER_CACHE: 'se_clear_local_server_cache',
 	SE_LOG_OUT: 'se_log_out',
 
