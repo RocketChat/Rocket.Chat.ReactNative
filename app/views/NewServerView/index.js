@@ -1,41 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, Keyboard, StyleSheet, TouchableOpacity, View, Alert, BackHandler
+	Text, Keyboard, StyleSheet, View, Alert, BackHandler
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
 import DocumentPicker from 'react-native-document-picker';
 import { Base64 } from 'js-base64';
 import parse from 'url-parse';
+import { Q } from '@nozbe/watermelondb';
 
-import UserPreferences from '../lib/userPreferences';
-import EventEmitter from '../utils/events';
-import { selectServerRequest, serverRequest } from '../actions/server';
-import { inviteLinksClear as inviteLinksClearAction } from '../actions/inviteLinks';
-import sharedStyles from './Styles';
-import Button from '../containers/Button';
-import TextInput from '../containers/TextInput';
-import OrSeparator from '../containers/OrSeparator';
-import FormContainer, { FormContainerInner } from '../containers/FormContainer';
-import I18n from '../i18n';
-import { isIOS } from '../utils/deviceInfo';
-import { themes } from '../constants/colors';
-import log, { logEvent, events } from '../utils/log';
-import { animateNextTransition } from '../utils/layoutAnimation';
-import { withTheme } from '../theme';
-import { setBasicAuth, BASIC_AUTH_KEY } from '../utils/fetch';
-import { CloseModalButton } from '../containers/HeaderButton';
-import { showConfirmationAlert } from '../utils/info';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import UserPreferences from '../../lib/userPreferences';
+import EventEmitter from '../../utils/events';
+import { selectServerRequest, serverRequest } from '../../actions/server';
+import { inviteLinksClear as inviteLinksClearAction } from '../../actions/inviteLinks';
+import sharedStyles from '../Styles';
+import Button from '../../containers/Button';
+import OrSeparator from '../../containers/OrSeparator';
+import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
+import I18n from '../../i18n';
+import { isIOS } from '../../utils/deviceInfo';
+import { themes } from '../../constants/colors';
+import log, { logEvent, events } from '../../utils/log';
+import { animateNextTransition } from '../../utils/layoutAnimation';
+import { withTheme } from '../../theme';
+import { setBasicAuth, BASIC_AUTH_KEY } from '../../utils/fetch';
+import { CloseModalButton } from '../../containers/HeaderButton';
+import { showConfirmationAlert } from '../../utils/info';
+import database from '../../lib/database';
+import ServerInput from './ServerInput';
 
 const styles = StyleSheet.create({
 	title: {
 		...sharedStyles.textBold,
 		fontSize: 22
-	},
-	inputContainer: {
-		marginTop: 24,
-		marginBottom: 32
 	},
 	certificatePicker: {
 		marginBottom: 32,
@@ -84,10 +83,15 @@ class NewServerView extends React.Component {
 		this.state = {
 			text: '',
 			connectingOpen: false,
-			certificate: null
+			certificate: null,
+			serversHistory: []
 		};
 		EventEmitter.addEventListener('NewServer', this.handleNewServerEvent);
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+	}
+
+	componentDidMount() {
+		this.queryServerHistory();
 	}
 
 	componentDidUpdate(prevProps) {
@@ -122,6 +126,29 @@ class NewServerView extends React.Component {
 
 	onChangeText = (text) => {
 		this.setState({ text });
+		this.queryServerHistory(text);
+	}
+
+	queryServerHistory = async(text) => {
+		const db = database.servers;
+		try {
+			const serversHistoryCollection = db.collections.get('servers_history');
+			let whereClause = [
+				Q.where('username', Q.notEq(null)),
+				Q.experimentalSortBy('updated_at', Q.desc),
+				Q.experimentalTake(3)
+			];
+			if (text) {
+				whereClause = [
+					...whereClause,
+					Q.where('url', Q.like(`%${ Q.sanitizeLikeString(text) }%`))
+				];
+			}
+			const serversHistory = await serversHistoryCollection.query(...whereClause).fetch();
+			this.setState({ serversHistory });
+		} catch {
+			// Do nothing
+		}
 	}
 
 	close = () => {
@@ -138,7 +165,11 @@ class NewServerView extends React.Component {
 		connectServer(server);
 	}
 
-	submit = async() => {
+	onPressServerHistory = (serverHistory) => {
+		this.setState({ text: serverHistory?.url }, () => this.submit({ fromServerHistory: true, username: serverHistory?.username }));
+	}
+
+	submit = async({ fromServerHistory = false, username }) => {
 		logEvent(events.NEWSERVER_CONNECT_TO_WORKSPACE);
 		const { text, certificate } = this.state;
 		const { connectServer } = this.props;
@@ -164,7 +195,11 @@ class NewServerView extends React.Component {
 			Keyboard.dismiss();
 			const server = this.completeUrl(text);
 			await this.basicAuth(server, text);
-			connectServer(server, cert);
+			if (fromServerHistory) {
+				connectServer(server, cert, username, true);
+			} else {
+				connectServer(server, cert);
+			}
 		}
 	}
 
@@ -251,6 +286,19 @@ class NewServerView extends React.Component {
 		});
 	}
 
+	deleteServerHistory = async(item) => {
+		const { serversHistory } = this.state;
+		const db = database.servers;
+		try {
+			await db.action(async() => {
+				await item.destroyPermanently();
+			});
+			this.setState({ serversHistory: serversHistory.filter(server => server.id !== item.id) });
+		} catch {
+			// Nothing
+		}
+	}
+
 	renderCertificatePicker = () => {
 		const { certificate } = this.state;
 		const { theme } = this.props;
@@ -283,24 +331,25 @@ class NewServerView extends React.Component {
 
 	render() {
 		const { connecting, theme } = this.props;
-		const { text, connectingOpen } = this.state;
+		const {
+			text, connectingOpen, serversHistory
+		} = this.state;
 		return (
-			<FormContainer theme={theme} testID='new-server-view'>
+			<FormContainer
+				theme={theme}
+				testID='new-server-view'
+				keyboardShouldPersistTaps='never'
+			>
 				<FormContainerInner>
 					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Join_your_workspace')}</Text>
-					<TextInput
-						label='Enter workspace URL'
-						placeholder='Ex. your-company.rocket.chat'
-						containerStyle={styles.inputContainer}
-						value={text}
-						returnKeyType='send'
-						onChangeText={this.onChangeText}
-						testID='new-server-view-input'
-						onSubmitEditing={this.submit}
-						clearButtonMode='while-editing'
-						keyboardType='url'
-						textContentType='URL'
+					<ServerInput
+						text={text}
 						theme={theme}
+						serversHistory={serversHistory}
+						onChangeText={this.onChangeText}
+						onSubmit={this.submit}
+						onDelete={this.deleteServerHistory}
+						onPressServerHistory={this.onPressServerHistory}
 					/>
 					<Button
 						title={I18n.t('Connect')}
@@ -325,7 +374,7 @@ class NewServerView extends React.Component {
 						testID='new-server-view-open'
 					/>
 				</FormContainerInner>
-				{ isIOS ? this.renderCertificatePicker() : null }
+				{isIOS ? this.renderCertificatePicker() : null}
 			</FormContainer>
 		);
 	}
@@ -338,7 +387,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	connectServer: (server, certificate) => dispatch(serverRequest(server, certificate)),
+	connectServer: (server, certificate, username, fromServerHistory) => dispatch(serverRequest(server, certificate, username, fromServerHistory)),
 	selectServer: server => dispatch(selectServerRequest(server)),
 	inviteLinksClear: () => dispatch(inviteLinksClearAction())
 });

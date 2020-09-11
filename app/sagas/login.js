@@ -4,6 +4,7 @@ import {
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
 import 'moment/min/locales';
+import { Q } from '@nozbe/watermelondb';
 
 import * as types from '../actions/actionsTypes';
 import {
@@ -52,6 +53,26 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 		} else {
 			const server = yield select(getServer);
 			yield localAuthenticate(server);
+
+			// Saves username on server history
+			const serversDB = database.servers;
+			const serversHistoryCollection = serversDB.collections.get('servers_history');
+			yield serversDB.action(async() => {
+				try {
+					const serversHistory = await serversHistoryCollection.query(Q.where('url', server)).fetch();
+					if (serversHistory?.length) {
+						const serverHistoryRecord = serversHistory[0];
+						// this is updating on every login just to save `updated_at`
+						// keeping this server as the most recent on autocomplete order
+						await serverHistoryRecord.update((s) => {
+							s.username = result.username;
+						});
+					}
+				} catch (e) {
+					log(e);
+				}
+			});
+
 			yield put(loginSuccess(result));
 		}
 	} catch (e) {
