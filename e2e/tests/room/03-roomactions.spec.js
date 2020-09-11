@@ -245,7 +245,7 @@ describe('Room actions screen', () => {
 				//Back into Room Actions
 				await element(by.id('room-view-header-actions')).tap();
 				await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
-
+				await element(by.type('UIScrollView')).atIndex(1).scrollTo('bottom');
 				await waitFor(element(by.id('room-actions-pinned'))).toExist();
 				await element(by.id('room-actions-pinned')).tap();
 				await waitFor(element(by.id('pinned-messages-view'))).toExist().withTimeout(2000);
@@ -281,6 +281,7 @@ describe('Room actions screen', () => {
 
 		describe('Notification', async() => {
 			it('should navigate to notification preference view', async() => {
+				await element(by.type('UIScrollView')).atIndex(1).scrollTo('bottom');
 				await waitFor(element(by.id('room-actions-notifications'))).toExist().withTimeout(2000);
 				await element(by.id('room-actions-notifications')).tap();
 				await waitFor(element(by.id('notification-preference-view'))).toExist().withTimeout(2000);

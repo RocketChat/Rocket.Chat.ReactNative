@@ -58,5 +58,8 @@ export default StyleSheet.create({
 		paddingRight: 16,
 		flexDirection: 'row',
 		alignItems: 'center'
+	},
+	encryptedSwitch: {
+		marginHorizontal: 16
 	}
 });

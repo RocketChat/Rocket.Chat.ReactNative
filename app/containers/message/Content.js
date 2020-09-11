@@ -9,6 +9,8 @@ import Markdown from '../markdown';
 import { getInfoMessage } from './utils';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
+import Encrypted from './Encrypted';
+import { E2E_MESSAGE_TYPE } from '../../lib/encryption/constants';
 
 const Content = React.memo((props) => {
 	if (props.isInfo) {
@@ -22,10 +24,13 @@ const Content = React.memo((props) => {
 		);
 	}
 
+	const isPreview = props.tmid && !props.isThreadRoom;
 	let content = null;
 
 	if (props.tmid && !props.msg) {
 		content = <Text style={[styles.text, { color: themes[props.theme].bodyText }]}>{I18n.t('Sent_an_attachment')}</Text>;
+	} else if (props.isEncrypted) {
+		content = <Text style={[styles.textInfo, { color: themes[props.theme].auxiliaryText }]}>{I18n.t('Encrypted_message')}</Text>;
 	} else {
 		const { baseUrl, user } = useContext(MessageContext);
 		content = (
@@ -35,8 +40,8 @@ const Content = React.memo((props) => {
 				getCustomEmoji={props.getCustomEmoji}
 				username={user.username}
 				isEdited={props.isEdited}
-				numberOfLines={(props.tmid && !props.isThreadRoom) ? 1 : 0}
-				preview={props.tmid && !props.isThreadRoom}
+				numberOfLines={isPreview ? 1 : 0}
+				preview={isPreview}
 				channels={props.channels}
 				mentions={props.mentions}
 				navToRoomInfo={props.navToRoomInfo}
@@ -44,6 +49,21 @@ const Content = React.memo((props) => {
 				useRealName={props.useRealName}
 				theme={props.theme}
 			/>
+		);
+	}
+
+	// If this is a encrypted message and is not a preview
+	if (props.type === E2E_MESSAGE_TYPE && !isPreview) {
+		content = (
+			<View style={styles.flex}>
+				<View style={styles.contentContainer}>
+					{content}
+				</View>
+				<Encrypted
+					type={props.type}
+					theme={props.theme}
+				/>
+			</View>
 		);
 	}
 
@@ -59,7 +79,13 @@ const Content = React.memo((props) => {
 	if (prevProps.msg !== nextProps.msg) {
 		return false;
 	}
+	if (prevProps.type !== nextProps.type) {
+		return false;
+	}
 	if (prevProps.theme !== nextProps.theme) {
+		return false;
+	}
+	if (prevProps.isEncrypted !== nextProps.isEncrypted) {
 		return false;
 	}
 	if (!equal(prevProps.mentions, nextProps.mentions)) {
@@ -79,11 +105,13 @@ Content.propTypes = {
 	msg: PropTypes.string,
 	theme: PropTypes.string,
 	isEdited: PropTypes.bool,
+	isEncrypted: PropTypes.bool,
 	getCustomEmoji: PropTypes.func,
 	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	navToRoomInfo: PropTypes.func,
-	useRealName: PropTypes.bool
+	useRealName: PropTypes.bool,
+	type: PropTypes.string
 };
 Content.displayName = 'MessageContent';
 

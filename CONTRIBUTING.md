@@ -20,13 +20,13 @@ yarn
 
 Run the app:
 ```sh
-npx react-native run-ios
+yarn ios
 ```
 
 or
 
 ```sh
-npx react-native run-android
+yarn android
 ```
 
 At this point, the app should be running on the simulator or on your device!

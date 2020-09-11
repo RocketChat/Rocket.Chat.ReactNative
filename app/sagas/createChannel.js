@@ -36,8 +36,18 @@ const handleRequest = function* handleRequest({ data }) {
 				({ room: sub } = result);
 			}
 		} else {
-			const { type, readOnly, broadcast } = data;
-			logEvent(events.CREATE_CHANNEL_CREATE, { type: type ? 'private' : 'public', readOnly, broadcast });
+			const {
+				type,
+				readOnly,
+				broadcast,
+				encrypted
+			} = data;
+			logEvent(events.CREATE_CHANNEL_CREATE, {
+				type: type ? 'private' : 'public',
+				readOnly,
+				broadcast,
+				encrypted
+			});
 			sub = yield call(createChannel, data);
 		}
 

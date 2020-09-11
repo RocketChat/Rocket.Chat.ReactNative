@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, FlatList, Text } from 'react-native';
+import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
 
@@ -20,6 +21,7 @@ import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { CloseModalButton } from '../../containers/HeaderButton';
+import database from '../../lib/database';
 
 class SearchMessagesView extends React.Component {
 	static navigationOptions = ({ navigation, route }) => {
@@ -50,6 +52,7 @@ class SearchMessagesView extends React.Component {
 			searchText: ''
 		};
 		this.rid = props.route.params?.rid;
+		this.encrypted = props.route.params?.encrypted;
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -71,21 +74,40 @@ class SearchMessagesView extends React.Component {
 	}
 
 	componentWillUnmount() {
-		this.search.stop();
+		this.search?.stop?.();
 	}
 
-	// eslint-disable-next-line react/sort-comp
+	// Handle encrypted rooms search messages
+	searchMessages = async(searchText) => {
+		// If it's a encrypted, room we'll search only on the local stored messages
+		if (this.encrypted) {
+			const db = database.active;
+			const messagesCollection = db.collections.get('messages');
+			return messagesCollection
+				.query(
+					// Messages of this room
+					Q.where('rid', this.rid),
+					// Message content is like the search text
+					Q.where('msg', Q.like(`%${ Q.sanitizeLikeString(searchText) }%`))
+				)
+				.fetch();
+		}
+		// If it's not a encrypted room, search messages on the server
+		const result = await RocketChat.searchMessages(this.rid, searchText);
+		if (result.success) {
+			return result.messages;
+		}
+	}
+
 	search = debounce(async(searchText) => {
 		this.setState({ searchText, loading: true, messages: [] });
 
 		try {
-			const result = await RocketChat.searchMessages(this.rid, searchText);
-			if (result.success) {
-				this.setState({
-					messages: result.messages || [],
-					loading: false
-				});
-			}
+			const messages = await this.searchMessages(searchText);
+			this.setState({
+				messages: messages || [],
+				loading: false
+			});
 		} catch (e) {
 			this.setState({ loading: false });
 			log(e);

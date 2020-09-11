@@ -63,6 +63,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
 import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
+import { E2E_BANNER_TYPE } from '../../lib/encryption/constants';
 
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
 import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../../ee/omnichannel/lib';
@@ -98,7 +99,8 @@ const shouldUpdateProps = [
 	'isMasterDetail',
 	'refreshing',
 	'queueSize',
-	'inquiryEnabled'
+	'inquiryEnabled',
+	'encryptionBanner'
 ];
 const getItemLayout = (data, index) => ({
 	length: ROW_HEIGHT,
@@ -143,7 +145,8 @@ class RoomsListView extends React.Component {
 		width: PropTypes.number,
 		insets: PropTypes.object,
 		queueSize: PropTypes.number,
-		inquiryEnabled: PropTypes.bool
+		inquiryEnabled: PropTypes.bool,
+		encryptionBanner: PropTypes.string
 	};
 
 	constructor(props) {
@@ -803,6 +806,20 @@ class RoomsListView extends React.Component {
 		}
 	}
 
+	goEncryption = () => {
+		logEvent(events.RL_GO_E2E_SAVE_PASSWORD);
+		const { navigation, isMasterDetail, encryptionBanner } = this.props;
+
+		const isSavePassword = encryptionBanner === E2E_BANNER_TYPE.SAVE_PASSWORD;
+		if (isMasterDetail) {
+			const screen = isSavePassword ? 'E2ESaveYourPasswordView' : 'E2EEnterYourPasswordView';
+			navigation.navigate('ModalStackNavigator', { screen });
+		} else {
+			const screen = isSavePassword ? 'E2ESaveYourPasswordStackNavigator' : 'E2EEnterYourPasswordStackNavigator';
+			navigation.navigate(screen);
+		}
+	}
+
 	handleCommands = ({ event }) => {
 		const { navigation, server, isMasterDetail } = this.props;
 		const { input } = event;
@@ -848,17 +865,18 @@ class RoomsListView extends React.Component {
 	renderListHeader = () => {
 		const { searching } = this.state;
 		const {
-			sortBy, queueSize, inquiryEnabled, user
+			sortBy, queueSize, inquiryEnabled, encryptionBanner, user
 		} = this.props;
 		return (
 			<ListHeader
 				searching={searching}
 				sortBy={sortBy}
 				toggleSort={this.toggleSort}
-				goDirectory={this.goDirectory}
+				goEncryption={this.goEncryption}
 				goQueue={this.goQueue}
 				queueSize={queueSize}
 				inquiryEnabled={inquiryEnabled}
+				encryptionBanner={encryptionBanner}
 				user={user}
 			/>
 		);
@@ -1028,7 +1046,8 @@ const mapStateToProps = state => ({
 	StoreLastMessage: state.settings.Store_Last_Message,
 	rooms: state.room.rooms,
 	queueSize: getInquiryQueueSelector(state).length,
-	inquiryEnabled: state.inquiry.enabled
+	inquiryEnabled: state.inquiry.enabled,
+	encryptionBanner: state.encryption.banner
 });
 
 const mapDispatchToProps = dispatch => ({
