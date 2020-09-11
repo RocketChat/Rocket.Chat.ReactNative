@@ -58,7 +58,7 @@ const ServerInput = ({
 				onBlur={() => setFocused(false)}
 			/>
 			{
-				focused
+				focused && serversHistory?.length
 					? (
 						<View style={[styles.serverHistory, { backgroundColor: themes[theme].backgroundColor, borderColor: themes[theme].separatorColor }]}>
 							<FlatList
