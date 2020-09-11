@@ -295,7 +295,6 @@ export default {
 	tap_to_change_status: '点按即可更改状态',
 	Tap_to_view_servers_list: '点击查看服务器列表',
 	Terms_of_Service: ' 服务条款 ',
-	The_URL_is_invalid: '您输入的URL无效。请检查一下，再试一次!',
 	There_was_an_error_while_action: '{{action}}出现错误!',
 	This_room_is_blocked: '这个房间被锁了',
 	This_room_is_read_only: '这个房间是只读的',

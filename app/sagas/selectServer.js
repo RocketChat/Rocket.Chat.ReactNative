@@ -1,6 +1,7 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { Q } from '@nozbe/watermelondb';
 import semver from 'semver';
 
 import Navigation from '../lib/Navigation';
@@ -18,6 +19,7 @@ import I18n from '../i18n';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../utils/fetch';
 import { appStart, ROOT_INSIDE, ROOT_OUTSIDE } from '../actions/app';
 import UserPreferences from '../lib/userPreferences';
+import { encryptionStop } from '../actions/encryption';
 
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 
@@ -31,7 +33,7 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 		if (!serverInfo.success || !websocketInfo.success) {
 			if (raiseError) {
 				const info = serverInfo.success ? websocketInfo : serverInfo;
-				Alert.alert(I18n.t('Oops'), I18n.t(info.message, info.messageOptions));
+				Alert.alert(I18n.t('Oops'), info.message);
 			}
 			yield put(serverFailure());
 			return;
@@ -67,6 +69,7 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }) {
 	try {
 		yield put(inquiryReset());
+		yield put(encryptionStop());
 		const serversDB = database.servers;
 		yield UserPreferences.setStringAsync(RocketChat.CURRENT_SERVER, server);
 		const userId = yield UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
@@ -129,18 +132,39 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 	}
 };
 
-const handleServerRequest = function* handleServerRequest({ server, certificate }) {
+const handleServerRequest = function* handleServerRequest({
+	server, certificate, username, fromServerHistory
+}) {
 	try {
 		if (certificate) {
 			yield UserPreferences.setMapAsync(extractHostname(server), certificate);
 		}
 
 		const serverInfo = yield getServerInfo({ server });
+		const serversDB = database.servers;
+		const serversHistoryCollection = serversDB.collections.get('servers_history');
 
 		if (serverInfo) {
 			yield RocketChat.getLoginServices(server);
 			yield RocketChat.getLoginSettings({ server });
 			Navigation.navigate('WorkspaceView');
+
+			if (fromServerHistory) {
+				Navigation.navigate('LoginView', { username });
+			}
+
+			yield serversDB.action(async() => {
+				try {
+					const serversHistory = await serversHistoryCollection.query(Q.where('url', server)).fetch();
+					if (!serversHistory?.length) {
+						await serversHistoryCollection.create((s) => {
+							s.url = server;
+						});
+					}
+				} catch (e) {
+					log(e);
+				}
+			});
 			yield put(selectServerRequest(server, serverInfo.version, false));
 		}
 	} catch (e) {
