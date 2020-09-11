@@ -335,7 +335,11 @@ class NewServerView extends React.Component {
 			text, connectingOpen, serversHistory
 		} = this.state;
 		return (
-			<FormContainer theme={theme} testID='new-server-view'>
+			<FormContainer
+				theme={theme}
+				testID='new-server-view'
+				keyboardShouldPersistTaps='never'
+			>
 				<FormContainerInner>
 					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Join_your_workspace')}</Text>
 					<ServerInput
