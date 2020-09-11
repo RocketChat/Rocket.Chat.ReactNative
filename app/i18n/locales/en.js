@@ -608,7 +608,7 @@ export default {
 	You_will_not_be_able_to_recover_this_message: 'You will not be able to recover this message!',
 	You_will_unset_a_certificate_for_this_server: 'You will unset a certificate for this server',
 	Change_Language: 'Change Language',
-	Crash_report_disclaimer: 'We never track the content of your chats. The crash report and analytics events only contains relevant information for us in order to identify problems and fix it.',
+	Crash_report_disclaimer: 'We never track the content of your chats. The crash report and analytics events only contains relevant information for us in order to identify and fix issues.',
 	Type_message: 'Type message',
 	Room_search: 'Rooms search',
 	Room_selection: 'Room selection 1...9',

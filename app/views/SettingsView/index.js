@@ -382,6 +382,7 @@ class SettingsView extends React.Component {
 								right={() => this.renderAnalyticsEventsSwitch()}
 								theme={theme}
 							/>
+							<Separator theme={theme} />
 							<ListItem
 								title={I18n.t('Send_crash_report')}
 								testID='settings-view-crash-report'
@@ -393,10 +394,10 @@ class SettingsView extends React.Component {
 								info={I18n.t('Crash_report_disclaimer')}
 								theme={theme}
 							/>
+							<Separator theme={theme} />
 						</>
 					) : null}
 
-					<Separator theme={theme} />
 					<ListItem
 						title={I18n.t('Clear_cache')}
 						testID='settings-clear-cache'
