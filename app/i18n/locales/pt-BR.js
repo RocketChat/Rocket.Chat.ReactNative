@@ -552,7 +552,7 @@ export default {
 	Write_External_Permission_Message: 'Rocket.Chat precisa de acesso à sua galeria para salvar imagens',
 	Write_External_Permission: 'Acesso à Galeria',
 	Yes: 'Sim',
-	Crash_report_disclaimer: 'Nós não rastreamos o conteúdo das suas conversas. O relatório de erros apenas contém informações relevantes para identificarmos problemas e corrigí-los.',
+	Crash_report_disclaimer: 'Nós não rastreamos o conteúdo das suas conversas. O relatório de erros e os eventos do analytics apenas contém informações relevantes para identificarmos problemas e corrigí-los.',
 	Type_message: 'Digitar mensagem',
 	Room_search: 'Busca de sala',
 	Room_selection: 'Selecionar sala 1...9',
@@ -601,5 +601,6 @@ export default {
 	Logout_from_other_logged_in_locations: 'Sair de outros locais logados',
 	You_will_be_logged_out_from_other_locations: 'Você perderá a sessão de outros clientes',
 	Logged_out_of_other_clients_successfully: 'Desconectado de outros clientes com sucesso',
-	Logout_failed: 'Falha ao desconectar!'
+	Logout_failed: 'Falha ao desconectar!',
+	Log_analytics_events: 'Logar eventos no analytics'
 };

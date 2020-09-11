@@ -62,6 +62,7 @@ const CURRENT_SERVER = 'currentServer';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
 export const THEME_PREFERENCES_KEY = 'RC_THEME_PREFERENCES_KEY';
 export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
+export const ANALYTICS_EVENTS_KEY = 'RC_ANALYTICS_EVENTS_KEY';
 const returnAnArray = obj => obj || [];
 const MIN_ROCKETCHAT_VERSION = '0.70.0';
 
@@ -1060,6 +1061,13 @@ const RocketChat = {
 			return true;
 		}
 		return JSON.parse(allowCrashReport);
+	},
+	async getAllowAnalyticsEvents() {
+		const allowAnalyticsEvents = await AsyncStorage.getItem(ANALYTICS_EVENTS_KEY);
+		if (allowAnalyticsEvents === null) {
+			return true;
+		}
+		return JSON.parse(allowAnalyticsEvents);
 	},
 	async getSortPreferences() {
 		const prefs = await UserPreferences.getMapAsync(SORT_PREFS_KEY);

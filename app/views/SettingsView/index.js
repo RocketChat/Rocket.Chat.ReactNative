@@ -10,7 +10,7 @@ import CookieManager from '@react-native-community/cookies';
 
 import { logout as logoutAction } from '../../actions/login';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
-import { toggleCrashReport as toggleCrashReportAction } from '../../actions/crashReport';
+import { toggleCrashReport as toggleCrashReportAction, toggleAnalyticsEvents as toggleAnalyticsEventsAction } from '../../actions/crashReport';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { DrawerButton, CloseModalButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
@@ -19,7 +19,7 @@ import ItemInfo from '../../containers/ItemInfo';
 import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import Separator from '../../containers/Separator';
 import I18n from '../../i18n';
-import RocketChat, { CRASH_REPORT_KEY } from '../../lib/rocketchat';
+import RocketChat, { CRASH_REPORT_KEY, ANALYTICS_EVENTS_KEY } from '../../lib/rocketchat';
 import {
 	getReadableVersion, getDeviceModel, isAndroid
 } from '../../utils/deviceInfo';
@@ -74,7 +74,9 @@ class SettingsView extends React.Component {
 		navigation: PropTypes.object,
 		server: PropTypes.object,
 		allowCrashReport: PropTypes.bool,
+		allowAnalyticsEvents: PropTypes.bool,
 		toggleCrashReport: PropTypes.func,
+		toggleAnalyticsEvents: PropTypes.func,
 		theme: PropTypes.string,
 		isMasterDetail: PropTypes.bool,
 		logout: PropTypes.func.isRequired,
@@ -148,13 +150,20 @@ class SettingsView extends React.Component {
 		toggleCrashReport(value);
 		if (!isFDroidBuild) {
 			loggerConfig.autoNotify = value;
-			analytics().setAnalyticsCollectionEnabled(value);
 			if (value) {
 				loggerConfig.clearBeforeSendCallbacks();
 			} else {
 				loggerConfig.registerBeforeSendCallback(() => false);
 			}
 		}
+	}
+
+	toggleAnalyticsEvents = (value) => {
+		logEvent(events.SE_TOGGLE_ANALYTICS_EVENTS);
+		const { toggleAnalyticsEvents } = this.props;
+		AsyncStorage.setItem(ANALYTICS_EVENTS_KEY, JSON.stringify(value));
+		toggleAnalyticsEvents(value);
+		analytics().setAnalyticsCollectionEnabled(value);
 	}
 
 	navigateToScreen = (screen) => {
@@ -226,6 +235,17 @@ class SettingsView extends React.Component {
 				value={allowCrashReport}
 				trackColor={SWITCH_TRACK_COLOR}
 				onValueChange={this.toggleCrashReport}
+			/>
+		);
+	}
+
+	renderAnalyticsEventsSwitch = () => {
+		const { allowAnalyticsEvents } = this.props;
+		return (
+			<Switch
+				value={allowAnalyticsEvents}
+				trackColor={SWITCH_TRACK_COLOR}
+				onValueChange={this.toggleAnalyticsEvents}
 			/>
 		);
 	}
@@ -357,6 +377,13 @@ class SettingsView extends React.Component {
 					{!isFDroidBuild ? (
 						<>
 							<ListItem
+								title={I18n.t('Log_analytics_events')}
+								testID='settings-view-analytics-events'
+								right={() => this.renderAnalyticsEventsSwitch()}
+								theme={theme}
+							/>
+							<Separator theme={theme} />
+							<ListItem
 								title={I18n.t('Send_crash_report')}
 								testID='settings-view-crash-report'
 								right={() => this.renderCrashReportSwitch()}
@@ -367,10 +394,10 @@ class SettingsView extends React.Component {
 								info={I18n.t('Crash_report_disclaimer')}
 								theme={theme}
 							/>
+							<Separator theme={theme} />
 						</>
 					) : null}
 
-					<Separator theme={theme} />
 					<ListItem
 						title={I18n.t('Clear_cache')}
 						testID='settings-clear-cache'
@@ -399,6 +426,7 @@ const mapStateToProps = state => ({
 	server: state.server,
 	user: getUserSelector(state),
 	allowCrashReport: state.crashReport.allowCrashReport,
+	allowAnalyticsEvents: state.crashReport.allowAnalyticsEvents,
 	isMasterDetail: state.app.isMasterDetail
 });
 
@@ -406,6 +434,7 @@ const mapDispatchToProps = dispatch => ({
 	logout: () => dispatch(logoutAction()),
 	selectServerRequest: params => dispatch(selectServerRequestAction(params)),
 	toggleCrashReport: params => dispatch(toggleCrashReportAction(params)),
+	toggleAnalyticsEvents: params => dispatch(toggleAnalyticsEventsAction(params)),
 	appStart: params => dispatch(appStartAction(params))
 });
 
