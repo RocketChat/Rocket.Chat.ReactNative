@@ -147,10 +147,10 @@ const handleServerRequest = function* handleServerRequest({
 		if (serverInfo) {
 			yield RocketChat.getLoginServices(server);
 			yield RocketChat.getLoginSettings({ server });
-			yield Navigation.navigate('WorkspaceView');
+			Navigation.navigate('WorkspaceView');
 
 			if (fromServerHistory) {
-				yield Navigation.navigate('LoginView', { username });
+				Navigation.navigate('LoginView', { username });
 			}
 
 			yield serversDB.action(async() => {
