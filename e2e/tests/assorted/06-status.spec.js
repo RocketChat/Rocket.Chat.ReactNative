@@ -7,7 +7,7 @@ const data = require('../../data');
 const testuser = data.users.regular
 
 async function waitForToast() {
-	await sleep(1);
+	await sleep(300);
 }
 
 describe('Status screen', () => {

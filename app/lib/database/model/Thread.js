@@ -73,4 +73,6 @@ export default class Thread extends Model {
 	@field('auto_translate') autoTranslate;
 
 	@json('translations', sanitizer) translations;
+
+	@field('e2e') e2e;
 }

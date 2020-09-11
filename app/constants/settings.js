@@ -68,6 +68,9 @@ export default {
 	DirectMesssage_maxUsers: {
 		type: 'valueAsNumber'
 	},
+	E2E_Enable: {
+		type: 'valueAsBoolean'
+	},
 	Accounts_Directory_DefaultView: {
 		type: 'valueAsString'
 	},

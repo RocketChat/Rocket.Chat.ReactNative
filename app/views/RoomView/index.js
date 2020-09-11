@@ -17,6 +17,7 @@ import {
 import List from './List';
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
+import { Encryption } from '../../lib/encryption';
 import Message from '../../containers/message';
 import MessageActions from '../../containers/MessageActions';
 import MessageErrorActions from '../../containers/MessageErrorActions';
@@ -55,6 +56,7 @@ import Navigation from '../../lib/Navigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { getHeaderTitlePosition } from '../../containers/Header';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
 
 import { takeInquiry } from '../../ee/omnichannel/lib';
 
@@ -582,6 +584,18 @@ class RoomView extends React.Component {
 		this.setState({ selectedMessage: {}, reactionsModalVisible: false });
 	}
 
+	onEncryptedPress = () => {
+		logEvent(events.ROOM_ENCRYPTED_PRESS);
+		const { navigation, isMasterDetail } = this.props;
+
+		const screen = { screen: 'E2EHowItWorksView', params: { showCloseModal: true } };
+
+		if (isMasterDetail) {
+			return navigation.navigate('ModalStackNavigator', screen);
+		}
+		navigation.navigate('E2ESaveYourPasswordStackNavigator', screen);
+	}
+
 	onDiscussionPress = debounce((item) => {
 		const { navigation } = this.props;
 		navigation.push('RoomView', {
@@ -616,8 +630,12 @@ class RoomView extends React.Component {
 			if (!item.tmsg) {
 				await this.fetchThreadName(item.tmid, item.id);
 			}
+			let name = item.tmsg;
+			if (item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
+				name = I18n.t('Encrypted_message');
+			}
 			navigation.push('RoomView', {
-				rid: item.subscription.id, tmid: item.tmid, name: item.tmsg, t: 'thread'
+				rid: item.subscription.id, tmid: item.tmid, name, t: 'thread'
 			});
 		} else if (item.tlm) {
 			navigation.push('RoomView', {
@@ -723,7 +741,8 @@ class RoomView extends React.Component {
 					});
 				});
 			} else {
-				const { message: thread } = await RocketChat.getSingleMessage(tmid);
+				let { message: thread } = await RocketChat.getSingleMessage(tmid);
+				thread = await Encryption.decryptMessage(thread);
 				await db.action(async() => {
 					await db.batch(
 						threadCollection.prepareCreate((t) => {
@@ -858,6 +877,7 @@ class RoomView extends React.Component {
 				onReactionPress={this.onReactionPress}
 				onReactionLongPress={this.onReactionLongPress}
 				onLongPress={this.onMessageLongPress}
+				onEncryptedPress={this.onEncryptedPress}
 				onDiscussionPress={this.onDiscussionPress}
 				onThreadPress={this.onThreadPress}
 				showAttachment={this.showAttachment}
