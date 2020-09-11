@@ -3,6 +3,7 @@ import semver from 'semver';
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import { Q } from '@nozbe/watermelondb';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNFetchBlob from 'rn-fetch-blob';
 
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
@@ -95,10 +96,7 @@ const RocketChat = {
 			if (err.message && err.message.includes('400')) {
 				return {
 					success: false,
-					message: 'Websocket_disabled',
-					messageOptions: {
-						contact: I18n.t('Contact_your_server_admin')
-					}
+					message: I18n.t('Websocket_disabled', { contact: I18n.t('Contact_your_server_admin') })
 				};
 			}
 		}
@@ -110,52 +108,46 @@ const RocketChat = {
 		};
 	},
 	async getServerInfo(server) {
-		const notRCServer = {
-			success: false,
-			message: 'Not_RC_Server',
-			messageOptions: {
-				contact: I18n.t('Contact_your_server_admin')
-			}
-		};
 		try {
-			const result = await fetch(`${ server }/api/info`).then(async(response) => {
-				let res = notRCServer;
-				try {
-					res = await response.json();
-					if (!(res && res.success)) {
-						return notRCServer;
-					}
-				} catch (e) {
-					// do nothing
-				}
-				return res;
-			});
-			if (result.success) {
-				if (semver.lt(result.version, MIN_ROCKETCHAT_VERSION)) {
+			const response = await RNFetchBlob.fetch('GET', `${ server }/api/info`);
+			try {
+				// Try to resolve as json
+				const jsonRes = response.json();
+				if (!(jsonRes?.success)) {
 					return {
 						success: false,
-						message: 'Invalid_server_version',
-						messageOptions: {
-							currentVersion: result.version,
-							minVersion: MIN_ROCKETCHAT_VERSION
-						}
+						message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
 					};
 				}
+				if (semver.lt(jsonRes.version, MIN_ROCKETCHAT_VERSION)) {
+					return {
+						success: false,
+						message: I18n.t('Invalid_server_version', {
+							currentVersion: jsonRes.version,
+							minVersion: MIN_ROCKETCHAT_VERSION
+						})
+					};
+				}
+				return jsonRes;
+			} catch (error) {
+				// Request is successful, but response isn't a json
 			}
-			return result;
 		} catch (e) {
-			if (e.message === 'Aborted') {
-				reduxStore.dispatch(selectServerFailure());
-				throw e;
+			if (e?.message) {
+				if (e.message === 'Aborted') {
+					reduxStore.dispatch(selectServerFailure());
+					throw e;
+				}
+				return {
+					success: false,
+					message: e.message
+				};
 			}
-			log(e);
 		}
+
 		return {
 			success: false,
-			message: 'The_URL_is_invalid',
-			messageOptions: {
-				contact: I18n.t('Contact_your_server_admin')
-			}
+			message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
 		};
 	},
 	stopListener(listener) {

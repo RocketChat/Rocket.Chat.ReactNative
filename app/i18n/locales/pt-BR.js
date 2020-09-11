@@ -475,7 +475,6 @@ export default {
 	Theme: 'Tema',
 	The_user_wont_be_able_to_type_in_roomName: 'O usuário não poderá digitar em {{roomName}}',
 	The_user_will_be_able_to_type_in_roomName: 'O usuário poderá digitar em {{roomName}}',
-	The_URL_is_invalid: 'A URL fornecida é inválida ou incapaz de estabelecer uma conexão segura.\n{{contact}}',
 	There_was_an_error_while_action: 'Aconteceu um erro {{action}}!',
 	This_room_is_blocked: 'Este quarto está bloqueado',
 	This_room_is_read_only: 'Este quarto é apenas de leitura',

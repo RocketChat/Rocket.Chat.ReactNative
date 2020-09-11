@@ -391,7 +391,6 @@ export default {
 	Tap_to_view_servers_list: 'Tocca per vedere la lista server',
 	Terms_of_Service: ' Termini di servizio ',
 	Theme: 'Tema',
-	The_URL_is_invalid: 'URL non valido o errore nello stabilimento di una connessione sicura.\n{{contact}}',
 	There_was_an_error_while_action: 'Si è verificato un errore nel {{action}}!',
 	This_room_is_blocked: 'Questa stanza è bloccata',
 	This_room_is_read_only: 'Questa stanza è in sola lettura',

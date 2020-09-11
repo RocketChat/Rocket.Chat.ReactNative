@@ -32,7 +32,7 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 		if (!serverInfo.success || !websocketInfo.success) {
 			if (raiseError) {
 				const info = serverInfo.success ? websocketInfo : serverInfo;
-				Alert.alert(I18n.t('Oops'), I18n.t(info.message, info.messageOptions));
+				Alert.alert(I18n.t('Oops'), info.message);
 			}
 			yield put(serverFailure());
 			return;
