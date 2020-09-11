@@ -13,6 +13,9 @@ export default StyleSheet.create({
 		paddingHorizontal: 14,
 		flexDirection: 'column'
 	},
+	contentContainer: {
+		flex: 1
+	},
 	messageContent: {
 		flex: 1,
 		marginLeft: 46
@@ -163,5 +166,8 @@ export default StyleSheet.create({
 	},
 	readReceipt: {
 		lineHeight: 20
+	},
+	encrypted: {
+		justifyContent: 'center'
 	}
 });
