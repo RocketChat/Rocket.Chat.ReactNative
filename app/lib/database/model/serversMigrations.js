@@ -1,4 +1,4 @@
-import { schemaMigrations, addColumns } from '@nozbe/watermelondb/Schema/migrations';
+import { schemaMigrations, addColumns, createTable } from '@nozbe/watermelondb/Schema/migrations';
 
 export default schemaMigrations({
 	migrations: [
@@ -67,6 +67,19 @@ export default schemaMigrations({
 					table: 'servers',
 					columns: [
 						{ name: 'e2e_enable', type: 'boolean', isOptional: true }
+					]
+				})
+			]
+		},
+		{
+			toVersion: 9,
+			steps: [
+				createTable({
+					name: 'servers_history',
+					columns: [
+						{ name: 'url', type: 'string', isIndexed: true },
+						{ name: 'username', type: 'string', isOptional: true },
+						{ name: 'updated_at', type: 'number' }
 					]
 				})
 			]

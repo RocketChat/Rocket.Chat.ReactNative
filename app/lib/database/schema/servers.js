@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 8,
+	version: 9,
 	tables: [
 		tableSchema({
 			name: 'users',
@@ -33,6 +33,14 @@ export default appSchema({
 				{ name: 'unique_id', type: 'string', isOptional: true },
 				{ name: 'enterprise_modules', type: 'string', isOptional: true },
 				{ name: 'e2e_enable', type: 'boolean', isOptional: true }
+			]
+		}),
+		tableSchema({
+			name: 'servers_history',
+			columns: [
+				{ name: 'url', type: 'string', isIndexed: true },
+				{ name: 'username', type: 'string', isOptional: true },
+				{ name: 'updated_at', type: 'number' }
 			]
 		})
 	]
