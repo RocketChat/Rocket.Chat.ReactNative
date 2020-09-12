@@ -15,7 +15,8 @@ const RoomItemInner = ({
 	userId,
 	token,
 	theme,
-	children
+	children,
+	roomId
 }) => (
 	<View
 		style={styles.container}
@@ -29,6 +30,7 @@ const RoomItemInner = ({
 			style={styles.avatar}
 			userId={userId}
 			token={token}
+			roomId={roomId}
 		/>
 		<View
 			style={[
@@ -52,7 +54,8 @@ RoomItemInner.propTypes = {
 	userId: PropTypes.string,
 	token: PropTypes.string,
 	theme: PropTypes.string,
-	children: PropTypes.element
+	children: PropTypes.element,
+	roomId: PropTypes.string
 };
 
 export default RoomItemInner;

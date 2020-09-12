@@ -77,7 +77,7 @@ export default async(subscriptions = [], rooms = []) => {
 			servedBy: r.servedBy,
 			livechatData: r.livechatData,
 			tags: r.tags,
-			avatarETag: s.avatarETag
+			avatarETag: r.avatarETag
 		}));
 		rooms = rooms.concat(existingRooms);
 	} catch {

@@ -3,7 +3,7 @@ const formatUrl = (url, baseUrl, uriSize, avatarAuthURLFragment) => (
 );
 
 export const avatarURL = ({
-	type, text, size, userId, token, avatar, baseUrl
+	type, text, size, userId, token, avatar, baseUrl, roomId
 }) => {
 	const room = type === 'd' ? text : `@${ text }`;
 
@@ -19,6 +19,8 @@ export const avatarURL = ({
 	let uri;
 	if (avatar) {
 		uri = avatar.includes('http') ? avatar : formatUrl(avatar, baseUrl, uriSize, avatarAuthURLFragment);
+	} else if (type !== 'd') {
+		uri = formatUrl(`/avatar/room/${ roomId }`, baseUrl, uriSize, avatarAuthURLFragment);
 	} else {
 		uri = formatUrl(`/avatar/${ room }`, baseUrl, uriSize, avatarAuthURLFragment);
 	}
