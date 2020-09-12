@@ -225,6 +225,7 @@ class DirectoryView extends React.Component {
 				description={item.topic}
 				rightLabel={I18n.t('N_users', { n: item.usersCount })}
 				type='c'
+				roomId={item._id}
 				{...commonProps}
 			/>
 		);

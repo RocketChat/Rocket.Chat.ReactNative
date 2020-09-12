@@ -74,7 +74,7 @@ const NotifierComponent = React.memo(({
 
 	const { id: userId, token } = user;
 	const { text, payload } = notification;
-	const { type } = payload;
+	const { type, rid } = payload;
 	const name = type === 'd' ? payload.sender.username : payload.name;
 	// if sub is not on local database, title and avatar will be null, so we use payload from notification
 	const { title = name, avatar = name } = notification;
@@ -115,7 +115,7 @@ const NotifierComponent = React.memo(({
 				background={Touchable.SelectableBackgroundBorderless()}
 			>
 				<>
-					<Avatar text={avatar} size={AVATAR_SIZE} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
+					<Avatar text={avatar} size={AVATAR_SIZE} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} roomId={rid} />
 					<View style={styles.inner}>
 						<Text style={[styles.roomName, { color: themes[theme].titleText }]} numberOfLines={1}>{title}</Text>
 						<Text style={[styles.message, { color: themes[theme].titleText }]} numberOfLines={1}>{text}</Text>

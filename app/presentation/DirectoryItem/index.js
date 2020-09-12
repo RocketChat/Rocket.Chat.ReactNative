@@ -18,7 +18,7 @@ const DirectoryItemLabel = React.memo(({ text, theme }) => {
 });
 
 const DirectoryItem = ({
-	title, description, avatar, onPress, testID, style, baseUrl, user, rightLabel, type, theme
+	title, description, avatar, onPress, testID, style, baseUrl, user, rightLabel, type, theme, roomId
 }) => (
 	<Touch
 		onPress={onPress}
@@ -35,6 +35,7 @@ const DirectoryItem = ({
 				baseUrl={baseUrl}
 				userId={user.id}
 				token={user.token}
+				roomId={roomId}
 			/>
 			<View style={styles.directoryItemTextContainer}>
 				<View style={styles.directoryItemTextTitle}>
@@ -62,7 +63,8 @@ DirectoryItem.propTypes = {
 	testID: PropTypes.string.isRequired,
 	style: PropTypes.any,
 	rightLabel: PropTypes.string,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	roomId: PropTypes.string
 };
 
 DirectoryItemLabel.propTypes = {
