@@ -8,6 +8,7 @@
 
 import Foundation
 import CommonCrypto
+import class react_native_simple_crypto.RCTRsaUtils
 
 struct Message: Decodable {
   let text: String
@@ -19,6 +20,24 @@ struct RoomKey: Decodable {
 
 final class Encryption {
   static let privateKey = ""
+  
+  static func readUserKey(mmkv: MMKV, server: String) {
+    if let userKey = mmkv.string(forKey: "\(server)-RC_E2E_PRIVATE_KEY") {
+      guard let json = try? JSONSerialization.jsonObject(with: userKey.data(using: .utf8)!, options: []) as? [String: Any] else {
+        // appropriate error handling
+        return
+      }
+      func resolve(response: Any?) {
+        print("[RCTRsaUtils][RESOLVE] \(response ?? "")")
+      }
+      func reject(code: String?, message: String?, _: Error?) {
+        print("[RCTRsaUtils][REJECT] \(code ?? ""): \(message ?? "")")
+      }
+      let utils = RCTRsaUtils()
+      let k = NSMutableDictionary(dictionary: json)
+      utils.importKey(k, resolver: resolve, rejecter: reject)
+    }
+  }
 
   static func decryptRoomKey(rid: String) -> String {
     let E2EKey = ""
