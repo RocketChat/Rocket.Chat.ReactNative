@@ -86,7 +86,7 @@ class NotificationService: UNNotificationServiceExtension {
             }
           
             if let msg = data.msg {
-                Watermelon().readRoom(rid: data.rid!, server: server) { response in
+                Database(server: server).readRoom(rid: data.rid!) { response in
                     if let room = response as? [String: Any] {
                       if let E2EKey = room["e2e_key"] as? String {
                         Encryption.readUserKey(mmkv: mmkv, server: server) { response in
