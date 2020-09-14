@@ -44,11 +44,9 @@ final class Encryption {
     
     if let message = message?.data(using: .utf8) {
       if let key = try? (JSONDecoder().decode(RoomKey.self, from: message)) {
-        // TODO: Extension to padding
-        var base64Encoded = key.k.padding(toLength: ((key.k.count + 3) / 4) * 4, withPad: "=", startingAt: 0)
-        // Decode URL safe encoded base64
-        base64Encoded = base64Encoded.replacingOccurrences(of: "-", with: "+").replacingOccurrences(of: "_", with: "/")
-        return Shared.toHex(Data(base64Encoded: base64Encoded, options: .ignoreUnknownCharacters))
+        if let base64Encoded = key.k.toBase64() {
+          return Shared.toHex(base64Encoded)
+        }
       }
     }
     
@@ -58,10 +56,8 @@ final class Encryption {
   static func decrypt(E2EKey: String, userKey: String, message: String) -> String {
     let index = message.index(message.startIndex, offsetBy: 12)
     let msg = String(message[index...])
-    let base64Encoded = msg.padding(toLength: ((msg.count + 3) / 4) * 4, withPad: "=", startingAt: 0)
-    let data = Data(base64Encoded: base64Encoded, options: [])
     
-    if let data = data {
+    if let data = msg.toBase64() {
       let iv = data.subdata(in: 0..<kCCBlockSizeAES128)
       let cypher = data.subdata(in: kCCBlockSizeAES128..<data.count)
       if let key = decryptRoomKey(E2EKey: E2EKey, userKey: userKey) {
