@@ -1,0 +1,78 @@
+diff --git a/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/Database.swift b/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/Database.swift
+index 43f2c9c..e231f89 100644
+--- a/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/Database.swift
++++ b/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/Database.swift
+@@ -1,8 +1,8 @@
+ import Foundation
+ 
+-class Database {
++public class Database {
+     typealias SQL = String
+-    typealias TableName = String
++    public typealias TableName = String
+     typealias QueryArgs = [Any]
+ 
+     private let fmdb: FMDatabase
+diff --git a/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/DatabaseBridge.swift b/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/DatabaseBridge.swift
+index 70f168e..ccad070 100644
+--- a/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/DatabaseBridge.swift
++++ b/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/DatabaseBridge.swift
+@@ -2,7 +2,7 @@ import Foundation
+ 
+ @objc(DatabaseBridge)
+ final public class DatabaseBridge: NSObject {
+-    typealias ConnectionTag = NSNumber
++    public typealias ConnectionTag = NSNumber
+ 
+     @objc var bridge: RCTBridge?
+     @objc static let requiresMainQueueSetup: Bool = false
+@@ -26,7 +26,7 @@ final public class DatabaseBridge: NSObject {
+ 
+ extension DatabaseBridge {
+     @objc(initialize:databaseName:schemaVersion:resolve:reject:)
+-    func initialize(tag: ConnectionTag,
++    public func initialize(tag: ConnectionTag,
+                     databaseName: String,
+                     schemaVersion: NSNumber,
+                     resolve: RCTPromiseResolveBlock,
+@@ -151,7 +151,7 @@ extension DatabaseBridge {
+ 
+ extension DatabaseBridge {
+     @objc(find:table:id:resolve:reject:)
+-    func find(tag: ConnectionTag,
++    public func find(tag: ConnectionTag,
+               table: Database.TableName,
+               id: DatabaseDriver.RecordId,
+               resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
+diff --git a/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/DatabaseDriver.swift b/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/DatabaseDriver.swift
+index c97c75f..f47b101 100644
+--- a/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/DatabaseDriver.swift
++++ b/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/DatabaseDriver.swift
+@@ -1,7 +1,7 @@
+ import Foundation
+ 
+-class DatabaseDriver {
+-    typealias SchemaVersion = Int
++public class DatabaseDriver {
++    public typealias SchemaVersion = Int
+     typealias Schema = (version: SchemaVersion, sql: Database.SQL)
+     typealias MigrationSet = (from: SchemaVersion, to: SchemaVersion, sql: Database.SQL)
+ 
+@@ -12,7 +12,7 @@ class DatabaseDriver {
+ 
+     let database: Database
+ 
+-    convenience init(dbName: String, schemaVersion: SchemaVersion) throws {
++    public convenience init(dbName: String, schemaVersion: SchemaVersion) throws {
+         self.init(dbName: dbName)
+ 
+         switch isCompatible(withVersion: schemaVersion) {
+@@ -154,7 +154,7 @@ class DatabaseDriver {
+ 
+ // MARK: - Record caching
+ 
+-    typealias RecordId = String
++    public typealias RecordId = String
+ 
+     // Rewritten to use good ol' mutable Objective C for performance
+     // The swifty implementation in debug took >100s to execute on a 65K batch. This: 6ms. Yes. Really.
