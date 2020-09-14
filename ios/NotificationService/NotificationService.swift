@@ -55,17 +55,6 @@ class NotificationService: UNNotificationServiceExtension {
 
             let notificationType = data.notificationType ?? ""
           
-            if let msg = data.msg {
-                let message = Encryption.decrypt(rid: "", message: msg)
-                bestAttemptContent.body = message
-            }
-          
-            // If the notification have the content at her payload, show it
-            if notificationType != "message-id-only" {
-                contentHandler(bestAttemptContent)
-                return
-            }
-          
             let mmapID = "default"
             let instanceID = "com.MMKV.\(mmapID)"
             let secureStorage = SecureStorage()
@@ -95,6 +84,28 @@ class NotificationService: UNNotificationServiceExtension {
             if (server.last == "/") {
                 server.removeLast()
             }
+          
+            if let msg = data.msg {
+                Watermelon().readRoom(rid: data.rid!, server: server) { response in
+                    if let room = response as? [String: Any] {
+                      if let E2EKey = room["e2e_key"] as? String {
+                        Encryption.readUserKey(mmkv: mmkv, server: server) { response in
+                            if let userKey = response as? String {
+                                let message = Encryption.decrypt(E2EKey: E2EKey, userKey: userKey, message: msg)
+                                bestAttemptContent.body = message
+                            }
+                        }
+                      }
+                    }
+                }
+            }
+          
+            // If the notification have the content at her payload, show it
+            if notificationType != "message-id-only" {
+                contentHandler(bestAttemptContent)
+                return
+            }
+
             let msgId = data.messageId
 
             let userId = mmkv.string(forKey: "reactnativemeteor_usertoken-\(server)") ?? ""

@@ -19,62 +19,61 @@ struct RoomKey: Decodable {
 }
 
 final class Encryption {
-  static let privateKey = ""
-  
-  static func readUserKey(mmkv: MMKV, server: String) {
+  static func readUserKey(mmkv: MMKV, server: String, completion: @escaping (_ response: Any?) -> Void) {
     if let userKey = mmkv.string(forKey: "\(server)-RC_E2E_PRIVATE_KEY") {
       guard let json = try? JSONSerialization.jsonObject(with: userKey.data(using: .utf8)!, options: []) as? [String: Any] else {
-        // appropriate error handling
         return
       }
       func resolve(response: Any?) {
-        print("[RCTRsaUtils][RESOLVE] \(response ?? "")")
+
       }
       func reject(code: String?, message: String?, _: Error?) {
-        print("[RCTRsaUtils][REJECT] \(code ?? ""): \(message ?? "")")
+
       }
       let utils = RCTRsaUtils()
       let k = NSMutableDictionary(dictionary: json)
-      utils.importKey(k, resolver: resolve, rejecter: reject)
+      utils.importKey(k, resolver: completion, rejecter: reject)
     }
   }
 
-  static func decryptRoomKey(rid: String) -> String {
-    let E2EKey = ""
-
+  static func decryptRoomKey(E2EKey: String, userKey: String) -> String? {
     let index = E2EKey.index(E2EKey.startIndex, offsetBy: 12)
     let roomKey = String(E2EKey[index...])
-    
+
     let rsa = Rsa()
-    rsa.privateKey = privateKey
+    rsa.privateKey = userKey
     let message = rsa.decrypt(roomKey)
 
     if let message = message?.data(using: .utf8) {
         if let key = try? (JSONDecoder().decode(RoomKey.self, from: message)) {
             // TODO: Extension to padding
-            return Shared.toHex(Data(base64Encoded: "\(key.k)==", options: .ignoreUnknownCharacters))
+            var base64Encoded = key.k.padding(toLength: ((key.k.count + 3) / 4) * 4, withPad: "=", startingAt: 0)
+            // Decode URL safe encoded base64
+            base64Encoded = base64Encoded.replacingOccurrences(of: "-", with: "+").replacingOccurrences(of: "_", with: "/")
+            return Shared.toHex(Data(base64Encoded: base64Encoded, options: .ignoreUnknownCharacters))
         }
     }
     
-    return ""
+    return nil
   }
 
-  static func decrypt(rid: String, message: String) -> String {
+  static func decrypt(E2EKey: String, userKey: String, message: String) -> String {
     let index = message.index(message.startIndex, offsetBy: 12)
     let msg = String(message[index...])
-    let data = Data(base64Encoded: msg, options: [])
+    let base64Encoded = msg.padding(toLength: ((msg.count + 3) / 4) * 4, withPad: "=", startingAt: 0)
+    let data = Data(base64Encoded: base64Encoded, options: [])
     
     if let data = data {
         let iv = data.subdata(in: 0..<kCCBlockSizeAES128)
         let cypher = data.subdata(in: kCCBlockSizeAES128..<data.count)
-        let key = decryptRoomKey(rid: rid)
-        let decrypted = Aes.aes128CBC("decrypt", data: cypher, key: key, iv: Shared.toHex(iv))
-      
-        if let decrypted = decrypted {
-            if let m = try? (JSONDecoder().decode(Message.self, from: decrypted)) {
-                return m.text
-            }
-        }
+        if let key = decryptRoomKey(E2EKey: E2EKey, userKey: userKey) {
+              let decrypted = Aes.aes128CBC("decrypt", data: cypher, key: key, iv: Shared.toHex(iv))
+              if let decrypted = decrypted {
+                  if let m = try? (JSONDecoder().decode(Message.self, from: decrypted)) {
+                      return m.text
+                  }
+              }
+          }
     }
     
     // Fallback message
