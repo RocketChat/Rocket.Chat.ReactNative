@@ -56,7 +56,7 @@ class NotificationService: UNNotificationServiceExtension {
             let notificationType = data.notificationType ?? ""
           
             if let msg = data.msg {
-                let message = Encryption.decrypt(message: msg)
+                let message = Encryption.decrypt(rid: "", message: msg)
                 bestAttemptContent.body = message
             }
           
