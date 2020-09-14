@@ -35,6 +35,7 @@
 		1ED59D4C22CBA77D00C54289 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1ED59D4B22CBA77D00C54289 /* GoogleService-Info.plist */; };
 		1EDDE57A22DFAD8E0078F69D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1EDDE57922DFAD8E0078F69D /* Images.xcassets */; };
 		1EF5FBCF250C0E7A00614FEA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A006F13229C83B600803143 /* GoogleService-Info.plist */; };
+		1EF5FBD1250C109E00614FEA /* Encryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF5FBD0250C109E00614FEA /* Encryption.swift */; };
 		1EFEB5982493B6640072EDC0 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFEB5972493B6640072EDC0 /* NotificationService.swift */; };
 		1EFEB59C2493B6640072EDC0 /* NotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1EFEB5952493B6640072EDC0 /* NotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		24A2AEF2383D44B586D31C01 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 06BB44DD4855498082A744AD /* libz.tbd */; };
@@ -119,6 +120,7 @@
 		1EC6AD6022CBA20C00A41C61 /* ShareRocketChatRN.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareRocketChatRN.entitlements; sourceTree = "<group>"; };
 		1ED59D4B22CBA77D00C54289 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		1EDDE57922DFAD8E0078F69D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		1EF5FBD0250C109E00614FEA /* Encryption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encryption.swift; sourceTree = "<group>"; };
 		1EFEB5952493B6640072EDC0 /* NotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EFEB5972493B6640072EDC0 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		1EFEB5992493B6640072EDC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 				1EFEB5992493B6640072EDC0 /* Info.plist */,
 				1E6737FF24DC52660009E081 /* NotificationService-Bridging-Header.h */,
 				1E67380324DC529B0009E081 /* String+Hex.swift */,
+				1EF5FBD0250C109E00614FEA /* Encryption.swift */,
 			);
 			path = NotificationService;
 			sourceTree = "<group>";
@@ -420,7 +423,7 @@
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = S6UPZG7ZR3;
 						LastSwiftMigration = 1030;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -439,7 +442,7 @@
 					1EC6ACAF22CB9FC300A41C61 = {
 						CreatedOnToolsVersion = 10.2.1;
 						DevelopmentTeam = S6UPZG7ZR3;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -449,7 +452,7 @@
 					1EFEB5942493B6640072EDC0 = {
 						CreatedOnToolsVersion = 11.5;
 						DevelopmentTeam = S6UPZG7ZR3;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -924,6 +927,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1EF5FBD1250C109E00614FEA /* Encryption.swift in Sources */,
 				1E67380424DC529B0009E081 /* String+Hex.swift in Sources */,
 				1EFEB5982493B6640072EDC0 /* NotificationService.swift in Sources */,
 			);
@@ -966,12 +970,12 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = RocketChatRN/RocketChatRN.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 100;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1000,7 +1004,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative;
 				PRODUCT_NAME = RocketChatRN;
-				PROVISIONING_PROFILE_SPECIFIER = "chat.rocket.reactnative Development";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "RocketChatRN-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1083,11 +1087,11 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = ShareRocketChatRN/ShareRocketChatRN.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1120,7 +1124,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative.ShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Development chat.rocket.reactnative.ShareExtension";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1204,9 +1208,10 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = NotificationService/NotificationService.entitlements;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = S6UPZG7ZR3;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = NotificationService/Info.plist;
@@ -1217,7 +1222,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative.NotificationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "chat.rocket.reactnative.NotificationService Development";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "NotificationService/NotificationService-Bridging-Header.h";

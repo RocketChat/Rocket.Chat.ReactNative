@@ -23,6 +23,7 @@ struct PushResponse: Decodable {
                 let notificationType: String?
                 let name: String?
                 let messageType: String?
+                let msg: String?
 
                 struct Sender: Decodable, Encodable {
                     let _id: String
@@ -53,6 +54,11 @@ class NotificationService: UNNotificationServiceExtension {
             }
 
             let notificationType = data.notificationType ?? ""
+          
+            if let msg = data.msg {
+                let message = Encryption.decrypt(message: msg)
+                bestAttemptContent.body = message
+            }
           
             // If the notification have the content at her payload, show it
             if notificationType != "message-id-only" {
