@@ -21,7 +21,7 @@ import AuthenticationWebView from '../views/AuthenticationWebView';
 
 // Outside
 const Outside = createStackNavigator();
-const _OutsideStack = ({ root }) => {
+const _OutsideStack = (/*{ root }*/) => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
