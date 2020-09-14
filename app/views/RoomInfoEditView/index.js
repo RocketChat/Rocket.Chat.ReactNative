@@ -31,6 +31,7 @@ import { withTheme } from '../../theme';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { MessageTypeValues } from '../../utils/messageTypes';
 import SafeAreaView from '../../containers/SafeAreaView';
+import Avatar from '../../containers/Avatar';
 
 const PERMISSION_SET_READONLY = 'set-readonly';
 const PERMISSION_SET_REACT_WHEN_READONLY = 'set-react-when-readonly';
@@ -76,7 +77,9 @@ class RoomInfoEditView extends React.Component {
 			reactWhenReadOnly: false,
 			archived: false,
 			systemMessages: [],
-			enableSysMes: false
+			enableSysMes: false,
+			baseUrl: '',
+			user: {}
 		};
 		this.loadRoom();
 	}
@@ -101,6 +104,9 @@ class RoomInfoEditView extends React.Component {
 	loadRoom = async() => {
 		const { route } = this.props;
 		const rid = route.params?.rid;
+		const baseUrl = route.params?.baseUrl;
+		const user = route.params?.user;
+
 		if (!rid) {
 			return;
 		}
@@ -111,7 +117,7 @@ class RoomInfoEditView extends React.Component {
 
 			this.querySubscription = observable.subscribe((data) => {
 				this.room = data;
-				this.init(this.room);
+				this.init(this.room, baseUrl, user);
 			});
 
 			const permissions = await RocketChat.hasPermission(PERMISSIONS_ARRAY, rid);
@@ -121,7 +127,7 @@ class RoomInfoEditView extends React.Component {
 		}
 	}
 
-	init = (room) => {
+	init = (room, baseUrl, user) => {
 		const {
 			description, topic, announcement, t, ro, reactWhenReadOnly, joinCodeRequired, sysMes
 		} = room;
@@ -139,7 +145,9 @@ class RoomInfoEditView extends React.Component {
 			joinCode: joinCodeRequired ? this.randomValue : '',
 			archived: room.archived,
 			systemMessages: sysMes,
-			enableSysMes: sysMes && sysMes.length > 0
+			enableSysMes: sysMes && sysMes.length > 0,
+			baseUrl,
+			user
 		});
 	}
 
@@ -358,6 +366,25 @@ class RoomInfoEditView extends React.Component {
 		this.setState(({ systemMessages }) => ({ enableSysMes: value, systemMessages: value ? systemMessages : [] }));
 	}
 
+	renderAvatar = () => {
+		const {
+			room, t, baseUrl, user
+		} = this.state;
+
+		return (
+			<Avatar
+				text={room.name}
+				size={200}
+				style={styles.avatar}
+				type={t}
+				baseUrl={baseUrl}
+				userId={user.id}
+				token={user.token}
+				roomId={room.rid}
+			/>
+		);
+	}
+
 	render() {
 		const {
 			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode, saving, permissions, archived, enableSysMes
@@ -382,6 +409,9 @@ class RoomInfoEditView extends React.Component {
 						testID='room-info-edit-view-list'
 						{...scrollPersistTaps}
 					>
+						<View style={styles.avatarContainer}>
+							{this.renderAvatar()}
+						</View>
 						<RCTextInput
 							inputRef={(e) => { this.name = e; }}
 							label={I18n.t('Name')}
@@ -517,6 +547,7 @@ class RoomInfoEditView extends React.Component {
 										styles.button_inverted,
 										{ color: themes[theme].bodyText }
 									]}
+									Edit
 									accessibilityTraits='button'
 								>
 									{I18n.t('RESET')}
@@ -540,7 +571,7 @@ class RoomInfoEditView extends React.Component {
 										{ color: dangerColor }
 									]}
 								>
-									{ archived ? I18n.t('UNARCHIVE') : I18n.t('ARCHIVE') }
+									{archived ? I18n.t('UNARCHIVE') : I18n.t('ARCHIVE')}
 								</Text>
 							</TouchableOpacity>
 						</View>

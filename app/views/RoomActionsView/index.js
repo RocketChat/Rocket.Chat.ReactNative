@@ -562,7 +562,9 @@ class RoomActionsView extends React.Component {
 
 	renderRoomInfo = ({ item }) => {
 		const { room, member } = this.state;
-		const { name, t, topic, rid } = room;
+		const {
+			name, t, topic, rid
+		} = room;
 		const { baseUrl, user, theme } = this.props;
 
 		const avatar = RocketChat.getRoomAvatar(room);

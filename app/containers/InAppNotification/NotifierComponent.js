@@ -80,7 +80,7 @@ const NotifierComponent = React.memo(({
 	const { title = name, avatar = name } = notification;
 
 	const onPress = () => {
-		const { rid, prid } = payload;
+		const { prid } = payload;
 		if (!rid) {
 			return;
 		}

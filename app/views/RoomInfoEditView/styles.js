@@ -72,5 +72,15 @@ export default StyleSheet.create({
 	},
 	switchMargin: {
 		marginBottom: 16
+	},
+	avatar: {
+		marginHorizontal: 10
+	},
+	avatarContainer: {
+		minHeight: 240,
+		flexDirection: 'column',
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginBottom: 10
 	}
 });

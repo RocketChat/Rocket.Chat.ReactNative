@@ -105,7 +105,9 @@ class RoomInfoView extends React.Component {
 
 	setHeader = () => {
 		const { roomUser, room, showEdit } = this.state;
-		const { navigation, route } = this.props;
+		const {
+			navigation, route, baseUrl, user
+		} = this.props;
 		const t = route.params?.t;
 		const rid = route.params?.rid;
 		const showCloseModal = route.params?.showCloseModal;
@@ -120,7 +122,9 @@ class RoomInfoView extends React.Component {
 							onPress={() => {
 								const isLivechat = t === 'l';
 								logEvent(events[`RI_GO_${ isLivechat ? 'LIVECHAT' : 'RI' }_EDIT`]);
-								navigation.navigate(isLivechat ? 'LivechatEditView' : 'RoomInfoEditView', { rid, room, roomUser });
+								navigation.navigate(isLivechat ? 'LivechatEditView' : 'RoomInfoEditView', {
+									rid, room, roomUser, baseUrl, user
+								});
 							}}
 							testID='room-info-view-edit-button'
 						/>
