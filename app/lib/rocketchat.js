@@ -56,6 +56,7 @@ import { useSsl } from '../utils/url';
 import UserPreferences from './userPreferences';
 import { Encryption } from './encryption';
 import EventEmitter from '../utils/events';
+import { sanitizeLikeString } from './database/utils';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
@@ -517,8 +518,12 @@ const RocketChat = {
 		}
 
 		const db = database.active;
+		const likeString = sanitizeLikeString(searchText);
 		let data = await db.collections.get('subscriptions').query(
-			Q.where('name', Q.like(`%${ Q.sanitizeLikeString(searchText) }%`))
+			Q.or(
+				Q.where('name', Q.like(`%${ likeString }%`)),
+				Q.where('fname', Q.like(`%${ likeString }%`))
+			)
 		).fetch();
 
 		if (filterUsers && !filterRooms) {

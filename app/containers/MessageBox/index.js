@@ -46,6 +46,7 @@ import CommandsPreview from './CommandsPreview';
 import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/Navigation';
 import { withActionSheet } from '../ActionSheet';
+import { sanitizeLikeString } from '../../lib/database/utils';
 
 const imagePickerConfig = {
 	cropping: true,
@@ -491,8 +492,9 @@ class MessageBox extends Component {
 		const db = database.active;
 		if (keyword) {
 			const customEmojisCollection = db.collections.get('custom_emojis');
+			const likeString = sanitizeLikeString(keyword);
 			let customEmojis = await customEmojisCollection.query(
-				Q.where('name', Q.like(`${ Q.sanitizeLikeString(keyword) }%`))
+				Q.where('name', Q.like(`${ likeString }%`))
 			).fetch();
 			customEmojis = customEmojis.slice(0, MENTIONS_COUNT_TO_DISPLAY);
 			const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
@@ -504,8 +506,9 @@ class MessageBox extends Component {
 	getSlashCommands = debounce(async(keyword) => {
 		const db = database.active;
 		const commandsCollection = db.collections.get('slash_commands');
+		const likeString = sanitizeLikeString(keyword);
 		const commands = await commandsCollection.query(
-			Q.where('id', Q.like(`${ Q.sanitizeLikeString(keyword) }%`))
+			Q.where('id', Q.like(`${ likeString }%`))
 		).fetch();
 		this.setState({ mentions: commands || [] });
 	}, 300)
@@ -734,8 +737,9 @@ class MessageBox extends Component {
 			const db = database.active;
 			const commandsCollection = db.collections.get('slash_commands');
 			const command = message.replace(/ .*/, '').slice(1);
+			const likeString = sanitizeLikeString(command);
 			const slashCommand = await commandsCollection.query(
-				Q.where('id', Q.like(`${ Q.sanitizeLikeString(command) }%`))
+				Q.where('id', Q.like(`${ likeString }%`))
 			).fetch();
 			if (slashCommand.length > 0) {
 				logEvent(events.COMMAND_RUN);
