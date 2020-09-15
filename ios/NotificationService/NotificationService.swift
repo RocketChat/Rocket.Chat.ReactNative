@@ -60,8 +60,8 @@ class NotificationService: UNNotificationServiceExtension {
         server.removeLast()
       }
       
-      if let msg = data.msg {
-        Database(server: server).readRoom(rid: data.rid!) { response in
+      if let msg = data.msg, let rid = data.rid {
+        Database(server: server).readRoom(rid: rid) { response in
           if let room = response as? [String: Any] {
             if let E2EKey = room["e2e_key"] as? String {
               if let userKey = Encryption.readUserKey(server: server) {
