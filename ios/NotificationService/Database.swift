@@ -26,7 +26,7 @@ final class Database {
     return nil
   }
   
-  func connect(server: String) -> Int? {
+  func setup(server: String) -> Int? {
     if let tag = databases[server] {
       return tag
     }
@@ -35,7 +35,8 @@ final class Database {
       if let domain = url.domain, let directory = self.directory {
         self.tag += 1
         let tag = DatabaseBridge.ConnectionTag(value: self.tag)
-        bridge.initializeSynchronous(tag: tag, databaseName: "\(directory)/\(domain).db", schemaVersion: 10)
+        let _ = bridge.initializeSynchronous(tag: tag, databaseName: "\(directory)/\(domain).db", schemaVersion: 10)
+        // databases[server] = self.tag
         return self.tag
       }
     }
@@ -44,7 +45,7 @@ final class Database {
   }
   
   func readRoomEncryptionKey(rid: String, server: String) -> String? {
-    if let tag = connect(server: server) {
+    if let tag = setup(server: server) {
       if let room = bridge.findSynchronous(tag: DatabaseBridge.ConnectionTag(value: tag), table: "subscriptions", id: rid) as? [String: Any] {
         if let result = room["result"] as? [String: Any] {
           if let e2e = result["e2e_key"] as? String {

@@ -10,14 +10,6 @@ import Foundation
 import CommonCrypto
 import class react_native_simple_crypto.RCTRsaUtils
 
-struct Message: Decodable {
-  let text: String
-}
-
-struct RoomKey: Decodable {
-  let k: String
-}
-
 final class Encryption {
   static func readUserKey(server: String) -> String? {
     if let userKey = Storage.shared.getPrivateKey(server: server) {
