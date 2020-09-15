@@ -1,4 +1,3 @@
-import CoreLocation
 import UserNotifications
 
 struct PushResponse: Decodable {
