@@ -14,34 +14,36 @@ struct Room: Decodable {
 }
 
 class Database {
-  let databaseBridge = DatabaseBridge()
+  final let driver: DatabaseDriver?
   
   init(server: String) {
     let suiteName = Bundle.main.object(forInfoDictionaryKey: "AppGroup") as! String
     guard let directory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: suiteName) else {
+      self.driver = nil
       return
-    }
-    
-    func resolve(response: Any?) {
-      
-    }
-    func reject(code: String?, message: String?, _: Error?) {
-      
     }
     
     if let url = URL(string: server) {
       let scheme = url.scheme ?? ""
       let domain = url.absoluteString.replacingOccurrences(of: "\(scheme)://", with: "")
       
-      databaseBridge.initialize(tag: 3, databaseName: "\(directory.path)/\(domain).db", schemaVersion: 10, resolve: resolve, reject: reject)
-    }
-  }
-  
-  func readRoom(rid: String, completion: @escaping (_ response: Any?) -> Void) {
-    func reject(code: String?, message: String?, _: Error?) {
       
+      if let driver = try? DatabaseDriver(dbName: "\(directory.path)/\(domain).db", schemaVersion: 10) {
+        self.driver = driver
+        return
+      }
     }
     
-    databaseBridge.find(tag: 3, table: "subscriptions", id: rid, resolve: completion, reject: reject)
+    self.driver = nil
+  }
+  
+  func readRoomEncryptionKey(rid: String) -> String? {
+    if let room = (try? self.driver?.find(table: "subscriptions", id: rid)) as? [String : Any] {
+      if let encryptionKey = room["e2e_key"] as? String {
+        return encryptionKey
+      }
+    }
+    
+    return nil
   }
 }

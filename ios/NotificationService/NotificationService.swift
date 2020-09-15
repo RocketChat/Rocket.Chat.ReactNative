@@ -60,14 +60,10 @@ class NotificationService: UNNotificationServiceExtension {
       }
       
       if let msg = data.msg, let rid = data.rid {
-        Database(server: server).readRoom(rid: rid) { response in
-          if let room = response as? [String: Any] {
-            if let E2EKey = room["e2e_key"] as? String {
-              if let userKey = Encryption.readUserKey(server: server) {
-                let message = Encryption.decrypt(E2EKey: E2EKey, userKey: userKey, message: msg)
-                bestAttemptContent.body = message
-              }
-            }
+        if let E2EKey = Database(server: server).readRoomEncryptionKey(rid: rid) {
+          if let userKey = Encryption.readUserKey(server: server) {
+            let message = Encryption.decrypt(E2EKey: E2EKey, userKey: userKey, message: msg)
+            bestAttemptContent.body = message
           }
         }
       }

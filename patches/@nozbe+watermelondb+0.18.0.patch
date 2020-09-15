@@ -13,39 +13,8 @@ index 43f2c9c..e231f89 100644
      typealias QueryArgs = [Any]
  
      private let fmdb: FMDatabase
-diff --git a/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/DatabaseBridge.swift b/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/DatabaseBridge.swift
-index 70f168e..ccad070 100644
---- a/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/DatabaseBridge.swift
-+++ b/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/DatabaseBridge.swift
-@@ -2,7 +2,7 @@ import Foundation
- 
- @objc(DatabaseBridge)
- final public class DatabaseBridge: NSObject {
--    typealias ConnectionTag = NSNumber
-+    public typealias ConnectionTag = NSNumber
- 
-     @objc var bridge: RCTBridge?
-     @objc static let requiresMainQueueSetup: Bool = false
-@@ -26,7 +26,7 @@ final public class DatabaseBridge: NSObject {
- 
- extension DatabaseBridge {
-     @objc(initialize:databaseName:schemaVersion:resolve:reject:)
--    func initialize(tag: ConnectionTag,
-+    public func initialize(tag: ConnectionTag,
-                     databaseName: String,
-                     schemaVersion: NSNumber,
-                     resolve: RCTPromiseResolveBlock,
-@@ -151,7 +151,7 @@ extension DatabaseBridge {
- 
- extension DatabaseBridge {
-     @objc(find:table:id:resolve:reject:)
--    func find(tag: ConnectionTag,
-+    public func find(tag: ConnectionTag,
-               table: Database.TableName,
-               id: DatabaseDriver.RecordId,
-               resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
 diff --git a/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/DatabaseDriver.swift b/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/DatabaseDriver.swift
-index c97c75f..f47b101 100644
+index c97c75f..708ce79 100644
 --- a/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/DatabaseDriver.swift
 +++ b/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/DatabaseDriver.swift
 @@ -1,7 +1,7 @@
@@ -67,6 +36,15 @@ index c97c75f..f47b101 100644
          self.init(dbName: dbName)
  
          switch isCompatible(withVersion: schemaVersion) {
+@@ -43,7 +43,7 @@ class DatabaseDriver {
+         self.database = Database(path: getPath(dbName: dbName))
+     }
+ 
+-    func find(table: Database.TableName, id: RecordId) throws -> Any? {
++    public func find(table: Database.TableName, id: RecordId) throws -> Any? {
+         guard !isCached(table, id) else {
+             return id
+         }
 @@ -154,7 +154,7 @@ class DatabaseDriver {
  
  // MARK: - Record caching
