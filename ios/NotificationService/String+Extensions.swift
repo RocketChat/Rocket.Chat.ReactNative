@@ -11,7 +11,7 @@ extension String {
     return unicodeScalars.map{ .init($0.value, radix: 16, uppercase: false) }.joined()
   }
   
-  func toBase64() -> Data? {
+  func toData() -> Data? {
     // Add padding if needed
     var base64Encoded = self.padding(toLength: ((self.count + 3) / 4) * 4, withPad: "=", startingAt: 0)
     // Decode URL safe encoded base64

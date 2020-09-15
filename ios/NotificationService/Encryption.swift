@@ -45,7 +45,7 @@ final class Encryption {
     
     if let message = message?.data(using: .utf8) {
       if let key = try? (JSONDecoder().decode(RoomKey.self, from: message)) {
-        if let base64Encoded = key.k.toBase64() {
+        if let base64Encoded = key.k.toData() {
           return Shared.toHex(base64Encoded)
         }
       }
@@ -58,7 +58,7 @@ final class Encryption {
     let index = message.index(message.startIndex, offsetBy: 12)
     let msg = String(message[index...])
     
-    if let data = msg.toBase64() {
+    if let data = msg.toData() {
       let iv = data.subdata(in: 0..<kCCBlockSizeAES128)
       let cypher = data.subdata(in: kCCBlockSizeAES128..<data.count)
       if let key = decryptRoomKey(E2EKey: E2EKey, userKey: userKey) {

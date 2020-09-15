@@ -55,7 +55,7 @@ class NotificationService: UNNotificationServiceExtension {
       
       let notificationType = data.notificationType ?? ""
       
-      var server = "http://10.0.0.50:3000"
+      var server = data.host
       if (server.last == "/") {
         server.removeLast()
       }
