@@ -25,6 +25,9 @@ const LANGUAGES = [
 		label: '简体中文',
 		value: 'zh-CN'
 	}, {
+		label: '繁體中文',
+		value: 'zh_TW'
+	}, {
 		label: 'Deutsch',
 		value: 'de'
 	}, {
