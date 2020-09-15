@@ -19,8 +19,9 @@ struct RoomKey: Decodable {
 }
 
 final class Encryption {
-  static func readUserKey(mmkv: MMKV, server: String) -> String? {
-    if let userKey = mmkv.string(forKey: "\(server)-RC_E2E_PRIVATE_KEY") {
+  static func readUserKey(server: String) -> String? {
+    let storage = Storage(server: server)
+    if let userKey = storage.privateKey {
       guard let json = try? JSONSerialization.jsonObject(with: userKey.data(using: .utf8)!, options: []) as? [String: Any] else {
         return nil
       }

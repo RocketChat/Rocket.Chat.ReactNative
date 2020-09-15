@@ -55,32 +55,7 @@ class NotificationService: UNNotificationServiceExtension {
       
       let notificationType = data.notificationType ?? ""
       
-      let mmapID = "default"
-      let instanceID = "com.MMKV.\(mmapID)"
-      let secureStorage = SecureStorage()
-      var cryptKey: Data = Data()
-      // get mmkv instance password from keychain
-      secureStorage.getSecureKey(instanceID.toHex()) { (response) -> () in
-        guard let password = response?[1] as? String else {
-          // kill the process and show notification as it came from APN
-          exit(0)
-        }
-        cryptKey = password.data(using: .utf8)!
-      }
-      
-      // Get App Group directory
-      let suiteName = Bundle.main.object(forInfoDictionaryKey: "AppGroup") as! String
-      guard let directory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: suiteName) else {
-        return
-      }
-      
-      // Set App Group dir
-      MMKV.initialize(rootDir: nil, groupDir: directory.path, logLevel: MMKVLogLevel.none)
-      guard let mmkv = MMKV(mmapID: mmapID, cryptKey: cryptKey, mode: MMKVMode.multiProcess) else {
-        return
-      }
-      
-      var server = data.host
+      var server = "http://10.0.0.50:3000"
       if (server.last == "/") {
         server.removeLast()
       }
@@ -89,7 +64,7 @@ class NotificationService: UNNotificationServiceExtension {
         Database(server: server).readRoom(rid: data.rid!) { response in
           if let room = response as? [String: Any] {
             if let E2EKey = room["e2e_key"] as? String {
-              if let userKey = Encryption.readUserKey(mmkv: mmkv, server: server) {
+              if let userKey = Encryption.readUserKey(server: server) {
                 let message = Encryption.decrypt(E2EKey: E2EKey, userKey: userKey, message: msg)
                 bestAttemptContent.body = message
               }
@@ -106,10 +81,8 @@ class NotificationService: UNNotificationServiceExtension {
       
       let msgId = data.messageId
       
-      let userId = mmkv.string(forKey: "reactnativemeteor_usertoken-\(server)") ?? ""
-      let token = mmkv.string(forKey: "reactnativemeteor_usertoken-\(userId)") ?? ""
-      
-      if userId.isEmpty || token.isEmpty {
+      let storage = Storage(server: server)
+      guard let credentials = storage.credentials else {
         contentHandler(bestAttemptContent)
         return
       }
@@ -120,8 +93,8 @@ class NotificationService: UNNotificationServiceExtension {
       
       var request = URLRequest(url: urlComponents.url!)
       request.httpMethod = "GET"
-      request.addValue(userId, forHTTPHeaderField: "x-user-id")
-      request.addValue(token, forHTTPHeaderField: "x-auth-token")
+      request.addValue(credentials.userId, forHTTPHeaderField: "x-user-id")
+      request.addValue(credentials.userToken, forHTTPHeaderField: "x-auth-token")
       
       runRequest(request: request, bestAttemptContent: bestAttemptContent, contentHandler: contentHandler)
     }
