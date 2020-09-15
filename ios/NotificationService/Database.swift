@@ -9,17 +9,12 @@
 import Foundation
 import WatermelonDB
 
-struct Room: Decodable {
-  let E2EKey: String
-}
-
 class Database {
-  final let driver: DatabaseDriver?
+  final var driver: DatabaseDriver? = nil
   
   init(server: String) {
     let suiteName = Bundle.main.object(forInfoDictionaryKey: "AppGroup") as! String
     guard let directory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: suiteName) else {
-      self.driver = nil
       return
     }
     
@@ -27,14 +22,10 @@ class Database {
       let scheme = url.scheme ?? ""
       let domain = url.absoluteString.replacingOccurrences(of: "\(scheme)://", with: "")
       
-      
       if let driver = try? DatabaseDriver(dbName: "\(directory.path)/\(domain).db", schemaVersion: 10) {
         self.driver = driver
-        return
       }
     }
-    
-    self.driver = nil
   }
   
   func readRoomEncryptionKey(rid: String) -> String? {
