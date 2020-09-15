@@ -13,6 +13,37 @@ index 43f2c9c..e231f89 100644
      typealias QueryArgs = [Any]
  
      private let fmdb: FMDatabase
+diff --git a/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/DatabaseBridge.swift b/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/DatabaseBridge.swift
+index 70f168e..92a9f12 100644
+--- a/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/DatabaseBridge.swift
++++ b/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/DatabaseBridge.swift
+@@ -2,7 +2,7 @@ import Foundation
+ 
+ @objc(DatabaseBridge)
+ final public class DatabaseBridge: NSObject {
+-    typealias ConnectionTag = NSNumber
++    public typealias ConnectionTag = NSNumber
+ 
+     @objc var bridge: RCTBridge?
+     @objc static let requiresMainQueueSetup: Bool = false
+@@ -95,7 +95,7 @@ extension DatabaseBridge {
+     }
+ 
+     @objc(initializeSynchronous:databaseName:schemaVersion:)
+-    func initializeSynchronous(tag: ConnectionTag,
++    public func initializeSynchronous(tag: ConnectionTag,
+                                databaseName: String,
+                                schemaVersion: NSNumber) -> NSDictionary {
+         return synchronously {
+@@ -263,7 +263,7 @@ extension DatabaseBridge {
+ 
+ extension DatabaseBridge {
+     @objc(findSynchronous:table:id:)
+-    func findSynchronous(tag: ConnectionTag, table: Database.TableName, id: DatabaseDriver.RecordId) -> NSDictionary {
++    public func findSynchronous(tag: ConnectionTag, table: Database.TableName, id: DatabaseDriver.RecordId) -> NSDictionary {
+         return withDriverSynchronous(tag) {
+             try $0.find(table: table, id: id) as Any
+         }
 diff --git a/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/DatabaseDriver.swift b/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/DatabaseDriver.swift
 index c97c75f..708ce79 100644
 --- a/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/DatabaseDriver.swift

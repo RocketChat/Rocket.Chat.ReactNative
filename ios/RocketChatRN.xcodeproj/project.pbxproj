@@ -13,6 +13,11 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		1E01C81C2511208400FEF824 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C81B2511208400FEF824 /* URL+Extensions.swift */; };
+		1E01C8212511301400FEF824 /* PushResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C8202511301400FEF824 /* PushResponse.swift */; };
+		1E01C8252511303100FEF824 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C8242511303100FEF824 /* Notification.swift */; };
+		1E01C8272511303900FEF824 /* Payload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C8262511303900FEF824 /* Payload.swift */; };
+		1E01C8292511304100FEF824 /* Sender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C8282511304100FEF824 /* Sender.swift */; };
 		1E068CFE24FD2DC700A0FFC1 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E068CFD24FD2DC700A0FFC1 /* AppGroup.swift */; };
 		1E068CFF24FD2DC700A0FFC1 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E068CFD24FD2DC700A0FFC1 /* AppGroup.swift */; };
 		1E068D0124FD2E0500A0FFC1 /* AppGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E068D0024FD2E0500A0FFC1 /* AppGroup.m */; };
@@ -103,6 +108,11 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RocketChatRN/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RocketChatRN/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = RocketChatRN/main.m; sourceTree = "<group>"; };
+		1E01C81B2511208400FEF824 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
+		1E01C8202511301400FEF824 /* PushResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushResponse.swift; sourceTree = "<group>"; };
+		1E01C8242511303100FEF824 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		1E01C8262511303900FEF824 /* Payload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payload.swift; sourceTree = "<group>"; };
+		1E01C8282511304100FEF824 /* Sender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sender.swift; sourceTree = "<group>"; };
 		1E068CFD24FD2DC700A0FFC1 /* AppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
 		1E068D0024FD2E0500A0FFC1 /* AppGroup.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppGroup.m; sourceTree = "<group>"; };
 		1E1C2F7F250FCB69005DCE7D /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
@@ -211,6 +221,26 @@
 			name = RocketChatRN;
 			sourceTree = "<group>";
 		};
+		1E01C81E25112FE900FEF824 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				1E67380324DC529B0009E081 /* String+Extensions.swift */,
+				1E01C81B2511208400FEF824 /* URL+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		1E01C81F25112FFF00FEF824 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1E01C8202511301400FEF824 /* PushResponse.swift */,
+				1E01C8242511303100FEF824 /* Notification.swift */,
+				1E01C8262511303900FEF824 /* Payload.swift */,
+				1E01C8282511304100FEF824 /* Sender.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		1E068CFB24FD2DAF00A0FFC1 /* AppGroup */ = {
 			isa = PBXGroup;
 			children = (
@@ -236,11 +266,12 @@
 		1EFEB5962493B6640072EDC0 /* NotificationService */ = {
 			isa = PBXGroup;
 			children = (
+				1E01C81F25112FFF00FEF824 /* Models */,
+				1E01C81E25112FE900FEF824 /* Extensions */,
 				1EFEB5A12493B67D0072EDC0 /* NotificationService.entitlements */,
 				1EFEB5972493B6640072EDC0 /* NotificationService.swift */,
 				1EFEB5992493B6640072EDC0 /* Info.plist */,
 				1E6737FF24DC52660009E081 /* NotificationService-Bridging-Header.h */,
-				1E67380324DC529B0009E081 /* String+Extensions.swift */,
 				1EF5FBD0250C109E00614FEA /* Encryption.swift */,
 				1E1C2F7F250FCB69005DCE7D /* Database.swift */,
 				1EB8EF712510F1EE00F352B7 /* Storage.swift */,
@@ -936,10 +967,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				1EF5FBD1250C109E00614FEA /* Encryption.swift in Sources */,
+				1E01C81C2511208400FEF824 /* URL+Extensions.swift in Sources */,
+				1E01C8252511303100FEF824 /* Notification.swift in Sources */,
 				1E1C2F80250FCB69005DCE7D /* Database.swift in Sources */,
 				1E67380424DC529B0009E081 /* String+Extensions.swift in Sources */,
+				1E01C8292511304100FEF824 /* Sender.swift in Sources */,
+				1E01C8212511301400FEF824 /* PushResponse.swift in Sources */,
 				1EFEB5982493B6640072EDC0 /* NotificationService.swift in Sources */,
 				1EB8EF722510F1EE00F352B7 /* Storage.swift in Sources */,
+				1E01C8272511303900FEF824 /* Payload.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

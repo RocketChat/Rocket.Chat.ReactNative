@@ -14,12 +14,11 @@ struct Credentials {
 }
 
 class Storage {
-  final let server: String
-  final let mmkv: MMKV?
+  static let shared = Storage()
 
-  init(server: String) {
-    self.server = server
-    
+  final var mmkv: MMKV? = nil
+
+  init() {
     let mmapID = "default"
     let instanceID = "com.MMKV.\(mmapID)"
     let secureStorage = SecureStorage()
@@ -33,14 +32,12 @@ class Storage {
     }
     
     guard let cryptKey = key else {
-      self.mmkv = nil
       return
     }
     
     // Get App Group directory
     let suiteName = Bundle.main.object(forInfoDictionaryKey: "AppGroup") as! String
     guard let directory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: suiteName) else {
-      self.mmkv = nil
       return
     }
     
@@ -49,7 +46,7 @@ class Storage {
     self.mmkv = MMKV(mmapID: mmapID, cryptKey: cryptKey, mode: MMKVMode.multiProcess)
   }
   
-  var credentials: Credentials? {
+  func getCredentials(server: String) -> Credentials? {
     if let userId = self.mmkv?.string(forKey: "reactnativemeteor_usertoken-\(server)") {
       if let userToken = self.mmkv?.string(forKey: "reactnativemeteor_usertoken-\(userId)") {
         return Credentials(userId: userId, userToken: userToken)
@@ -59,7 +56,7 @@ class Storage {
     return nil
   }
   
-  var privateKey: String? {
+  func getPrivateKey(server: String) -> String? {
     return self.mmkv?.string(forKey: "\(server)-RC_E2E_PRIVATE_KEY")
   }
 }

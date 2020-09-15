@@ -1,39 +1,5 @@
 import UserNotifications
 
-struct PushResponse: Decodable {
-  let success: Bool
-  let data: Data
-  
-  struct Data: Decodable {
-    let notification: Notification
-    
-    struct Notification: Decodable {
-      let notId: Int
-      let title: String
-      let text: String
-      let payload: Payload
-      
-      struct Payload: Decodable, Encodable {
-        let host: String
-        let rid: String?
-        let type: String?
-        let sender: Sender?
-        let messageId: String
-        let notificationType: String?
-        let name: String?
-        let messageType: String?
-        let msg: String?
-        
-        struct Sender: Decodable, Encodable {
-          let _id: String
-          let username: String
-          let name: String?
-        }
-      }
-    }
-  }
-}
-
 class NotificationService: UNNotificationServiceExtension {
   
   var contentHandler: ((UNNotificationContent) -> Void)?
@@ -48,42 +14,39 @@ class NotificationService: UNNotificationServiceExtension {
     
     if let bestAttemptContent = bestAttemptContent {
       let ejson = (bestAttemptContent.userInfo["ejson"] as? String ?? "").data(using: .utf8)!
-      guard let data = try? (JSONDecoder().decode(PushResponse.Data.Notification.Payload.self, from: ejson)) else {
+      guard let data = try? (JSONDecoder().decode(Payload.self, from: ejson)) else {
         return
       }
-      
-      let notificationType = data.notificationType ?? ""
       
       var server = data.host
       if (server.last == "/") {
         server.removeLast()
       }
       
-      if let msg = data.msg, let rid = data.rid {
-        if let E2EKey = Database(server: server).readRoomEncryptionKey(rid: rid) {
-          if let userKey = Encryption.readUserKey(server: server) {
-            let message = Encryption.decrypt(E2EKey: E2EKey, userKey: userKey, message: msg)
-            bestAttemptContent.body = message
+      if data.messageType == "e2e" {
+          if let msg = data.msg, let rid = data.rid {
+            if let E2EKey = Database.shared.readRoomEncryptionKey(rid: rid, server: server) {
+              if let userKey = Encryption.readUserKey(server: server) {
+                let message = Encryption.decrypt(E2EKey: E2EKey, userKey: userKey, message: msg)
+                bestAttemptContent.body = message
+              }
+            }
           }
-        }
       }
       
       // If the notification have the content at her payload, show it
-      if notificationType != "message-id-only" {
+      if data.notificationType != "message-id-only" {
         contentHandler(bestAttemptContent)
         return
       }
       
-      let msgId = data.messageId
-      
-      let storage = Storage(server: server)
-      guard let credentials = storage.credentials else {
+      guard let credentials = Storage.shared.getCredentials(server: server) else {
         contentHandler(bestAttemptContent)
         return
       }
       
       var urlComponents = URLComponents(string: "\(server)/api/v1/push.get")!
-      let queryItems = [URLQueryItem(name: "id", value: msgId)]
+      let queryItems = [URLQueryItem(name: "id", value: data.messageId)]
       urlComponents.queryItems = queryItems
       
       var request = URLRequest(url: urlComponents.url!)
@@ -91,11 +54,11 @@ class NotificationService: UNNotificationServiceExtension {
       request.addValue(credentials.userId, forHTTPHeaderField: "x-user-id")
       request.addValue(credentials.userToken, forHTTPHeaderField: "x-auth-token")
       
-      runRequest(request: request, bestAttemptContent: bestAttemptContent, contentHandler: contentHandler)
+      runRequest(server: server, request: request, bestAttemptContent: bestAttemptContent, contentHandler: contentHandler)
     }
   }
   
-  func runRequest(request: URLRequest, bestAttemptContent: UNMutableNotificationContent, contentHandler: @escaping (UNNotificationContent) -> Void) {
+  func runRequest(server: String, request: URLRequest, bestAttemptContent: UNMutableNotificationContent, contentHandler: @escaping (UNNotificationContent) -> Void) {
     let task = URLSession.shared.dataTask(with: request) {(data, response, error) in
       
       func retryRequest() {
@@ -103,7 +66,7 @@ class NotificationService: UNNotificationServiceExtension {
         if self.retryCount < self.retryTimeout.count {
           // Try again after X seconds
           DispatchQueue.main.asyncAfter(deadline: .now() + self.retryTimeout[self.retryCount], execute: {
-            self.runRequest(request: request, bestAttemptContent: bestAttemptContent, contentHandler: contentHandler)
+            self.runRequest(server: server, request: request, bestAttemptContent: bestAttemptContent, contentHandler: contentHandler)
             self.retryCount += 1
           })
         }
@@ -130,6 +93,18 @@ class NotificationService: UNNotificationServiceExtension {
                 bestAttemptContent.title = push.data.notification.title
                 bestAttemptContent.body = push.data.notification.text
                 
+                let data = push.data.notification.payload
+                if data.messageType == "e2e" {
+                    if let msg = data.msg, let rid = data.rid {
+                      if let E2EKey = Database.shared.readRoomEncryptionKey(rid: rid, server: server) {
+                        if let userKey = Encryption.readUserKey(server: server) {
+                          let message = Encryption.decrypt(E2EKey: E2EKey, userKey: userKey, message: msg)
+                          bestAttemptContent.body = message
+                        }
+                      }
+                    }
+                }
+                
                 let payload = try? (JSONEncoder().encode(push.data.notification.payload))
                 if let payload = payload {
                   bestAttemptContent.userInfo["ejson"] = String(data: payload, encoding: .utf8) ?? "{}"
@@ -147,14 +122,6 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     task.resume()
-  }
-  
-  override func serviceExtensionTimeWillExpire() {
-    // Called just before the extension will be terminated by the system.
-    // Use this as an opportunity to deliver your "best attempt" at modified content, otherwise the original push payload will be used.
-    if let contentHandler = contentHandler, let bestAttemptContent =  bestAttemptContent {
-      contentHandler(bestAttemptContent)
-    }
   }
   
 }

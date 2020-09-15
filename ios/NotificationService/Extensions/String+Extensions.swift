@@ -1,10 +1,12 @@
 //
-//  String+Hex.swift
+//  String+Extensions.swift
 //  NotificationService
 //
 //  Created by Djorkaeff Alexandre Vilela Pereira on 8/6/20.
 //  Copyright © 2020 Facebook. All rights reserved.
 //
+
+import Foundation
 
 extension String {
   func toHex() -> String {

@@ -20,8 +20,7 @@ struct RoomKey: Decodable {
 
 final class Encryption {
   static func readUserKey(server: String) -> String? {
-    let storage = Storage(server: server)
-    if let userKey = storage.privateKey {
+    if let userKey = Storage.shared.getPrivateKey(server: server) {
       guard let json = try? JSONSerialization.jsonObject(with: userKey.data(using: .utf8)!, options: []) as? [String: Any] else {
         return nil
       }
