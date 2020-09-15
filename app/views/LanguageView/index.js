@@ -22,6 +22,9 @@ import SafeAreaView from '../../containers/SafeAreaView';
 
 const LANGUAGES = [
 	{
+		label: 'English',
+		value: 'en'
+	}, {
 		label: '简体中文',
 		value: 'zh-CN'
 	}, {
@@ -30,9 +33,6 @@ const LANGUAGES = [
 	}, {
 		label: 'Deutsch',
 		value: 'de'
-	}, {
-		label: 'English',
-		value: 'en'
 	}, {
 		label: 'Español (ES)',
 		value: 'es-ES'

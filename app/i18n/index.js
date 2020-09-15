@@ -20,7 +20,7 @@ i18n.translations = {
 	ru,
 	'pt-BR': ptBR,
 	'zh-CN': zhCN,
-	zh_TW: zhTW,
+	'zh-tw': zhTW,
 	fr,
 	de,
 	'pt-PT': ptPT,
