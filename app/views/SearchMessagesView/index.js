@@ -22,6 +22,7 @@ import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { CloseModalButton } from '../../containers/HeaderButton';
 import database from '../../lib/database';
+import { sanitizeLikeString } from '../../lib/database/utils';
 
 class SearchMessagesView extends React.Component {
 	static navigationOptions = ({ navigation, route }) => {
@@ -83,12 +84,13 @@ class SearchMessagesView extends React.Component {
 		if (this.encrypted) {
 			const db = database.active;
 			const messagesCollection = db.collections.get('messages');
+			const likeString = sanitizeLikeString(searchText);
 			return messagesCollection
 				.query(
 					// Messages of this room
 					Q.where('rid', this.rid),
 					// Message content is like the search text
-					Q.where('msg', Q.like(`%${ Q.sanitizeLikeString(searchText) }%`))
+					Q.where('msg', Q.like(`%${ likeString }%`))
 				)
 				.fetch();
 		}
