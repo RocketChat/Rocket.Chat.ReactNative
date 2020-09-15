@@ -10,8 +10,9 @@ import Foundation
 import WatermelonDB
 
 final class Database {
-  private var tag: Int = 1
+  private var tag: Int = 0
   private var databases: [String: Int] = [:]
+  private var cacheSet: [String: String] = [:]
   private final let bridge = DatabaseBridge()
   
   static let shared = Database()
@@ -36,7 +37,7 @@ final class Database {
         self.tag += 1
         let tag = DatabaseBridge.ConnectionTag(value: self.tag)
         let _ = bridge.initializeSynchronous(tag: tag, databaseName: "\(directory)/\(domain).db", schemaVersion: 10)
-        // databases[server] = self.tag
+        databases[server] = self.tag
         return self.tag
       }
     }
@@ -45,11 +46,16 @@ final class Database {
   }
   
   func readRoomEncryptionKey(rid: String, server: String) -> String? {
+    if let e2e = cacheSet[rid] {
+      return e2e
+    }
+
     if let tag = setup(server: server) {
       if let room = bridge.findSynchronous(tag: DatabaseBridge.ConnectionTag(value: tag), table: "subscriptions", id: rid) as? [String: Any] {
         if let result = room["result"] as? [String: Any] {
           if let e2e = result["e2e_key"] as? String {
-            return e2e
+            cacheSet[rid] = e2e
+            return cacheSet[rid]
           }
         }
       }
