@@ -188,7 +188,7 @@ class AttachmentView extends React.Component {
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
-	Allow_Save_Media_to_Gallery: state.settings.Allow_Save_Media_to_Gallery
+	Allow_Save_Media_to_Gallery: state.settings.Allow_Save_Media_to_Gallery ?? true
 });
 
 export default connect(mapStateToProps)(withTheme(withDimensions(withSafeAreaInsets(AttachmentView))));
