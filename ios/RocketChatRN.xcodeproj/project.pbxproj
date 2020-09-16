@@ -272,14 +272,25 @@
 			path = AppGroup;
 			sourceTree = "<group>";
 		};
-		1E2F615925128F8D00871711 /* RocketChat */ = {
+		1E17C1332512ADC500901CCD /* API */ = {
 			isa = PBXGroup;
 			children = (
-				1E2F61622512954500871711 /* Requests */,
 				1E2F615A25128F9A00871711 /* API.swift */,
 				1E2F615C25128FA300871711 /* Response.swift */,
 				1E2F61632512955D00871711 /* HTTPMethod.swift */,
 				1E680ED82512990700C9257A /* Request.swift */,
+				1E2F61622512954500871711 /* Requests */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		1E2F615925128F8D00871711 /* RocketChat */ = {
+			isa = PBXGroup;
+			children = (
+				1E17C1332512ADC500901CCD /* API */,
+				1EF5FBD0250C109E00614FEA /* Encryption.swift */,
+				1E1C2F7F250FCB69005DCE7D /* Database.swift */,
+				1EB8EF712510F1EE00F352B7 /* Storage.swift */,
 			);
 			path = RocketChat;
 			sourceTree = "<group>";
@@ -315,9 +326,6 @@
 				1EFEB5972493B6640072EDC0 /* NotificationService.swift */,
 				1EFEB5992493B6640072EDC0 /* Info.plist */,
 				1E6737FF24DC52660009E081 /* NotificationService-Bridging-Header.h */,
-				1EF5FBD0250C109E00614FEA /* Encryption.swift */,
-				1E1C2F7F250FCB69005DCE7D /* Database.swift */,
-				1EB8EF712510F1EE00F352B7 /* Storage.swift */,
 			);
 			path = NotificationService;
 			sourceTree = "<group>";
