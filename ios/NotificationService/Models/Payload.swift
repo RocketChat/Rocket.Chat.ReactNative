@@ -14,8 +14,8 @@ struct Payload: Codable {
   let type: String?
   let sender: Sender?
   let messageId: String
-  let notificationType: String?
+  let notificationType: NotificationType?
   let name: String?
-  let messageType: String?
+  let messageType: MessageType?
   let msg: String?
 }

@@ -44,20 +44,20 @@ final class Database {
     if let e2eKey = cache[rid] {
       return e2eKey
     }
-
+    
     if let database = setup(server: server) {
-      let results = try! database.queryRaw("select * from subscriptions where id == ? limit 1", [rid])
-
+      if let results = try? database.queryRaw("select * from subscriptions where id == ? limit 1", [rid]) {
         guard let record = results.next() else {
-            return nil
+          return nil
         }
-
-        if let room = record.resultDictionary! as? [String: Any] {
+        
+        if let room = record.resultDictionary as? [String: Any] {
           if let e2eKey = room["e2e_key"] as? String {
             cache[rid] = e2eKey
             return cache[rid]
           }
         }
+      }
     }
     
     return nil

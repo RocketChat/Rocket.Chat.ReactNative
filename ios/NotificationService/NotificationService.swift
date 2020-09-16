@@ -23,25 +23,12 @@ class NotificationService: UNNotificationServiceExtension {
         server.removeLast()
       }
       
-      if data.messageType == "e2e" {
-        if let msg = data.msg, let rid = data.rid {
-          if let E2EKey = Database.shared.readRoomEncryptionKey(rid: rid, server: server) {
-            if let userKey = Encryption.readUserKey(server: server) {
-              let message = Encryption.decrypt(E2EKey: E2EKey, userKey: userKey, message: msg)
-              bestAttemptContent.body = message
-            }
-          }
-        }
-      }
-      
       // If the notification have the content at her payload, show it
-      if data.notificationType != "message-id-only" {
-        contentHandler(bestAttemptContent)
+      if data.notificationType != .messageIdOnly {
         return
       }
       
       guard let credentials = Storage.shared.getCredentials(server: server) else {
-        contentHandler(bestAttemptContent)
         return
       }
       
@@ -54,11 +41,11 @@ class NotificationService: UNNotificationServiceExtension {
       request.addValue(credentials.userId, forHTTPHeaderField: "x-user-id")
       request.addValue(credentials.userToken, forHTTPHeaderField: "x-auth-token")
       
-      runRequest(server: server, request: request, bestAttemptContent: bestAttemptContent, contentHandler: contentHandler)
+      runRequest(server: server, request: request, contentHandler: contentHandler)
     }
   }
   
-  func runRequest(server: String, request: URLRequest, bestAttemptContent: UNMutableNotificationContent, contentHandler: @escaping (UNNotificationContent) -> Void) {
+  func runRequest(server: String, request: URLRequest, contentHandler: @escaping (UNNotificationContent) -> Void) {
     let task = URLSession.shared.dataTask(with: request) {(data, response, error) in
       
       func retryRequest() {
@@ -66,7 +53,7 @@ class NotificationService: UNNotificationServiceExtension {
         if self.retryCount < self.retryTimeout.count {
           // Try again after X seconds
           DispatchQueue.main.asyncAfter(deadline: .now() + self.retryTimeout[self.retryCount], execute: {
-            self.runRequest(server: server, request: request, bestAttemptContent: bestAttemptContent, contentHandler: contentHandler)
+            self.runRequest(server: server, request: request, contentHandler: contentHandler)
             self.retryCount += 1
           })
         }
@@ -89,28 +76,7 @@ class NotificationService: UNNotificationServiceExtension {
             // Parse data of response
             let push = try? (JSONDecoder().decode(PushResponse.self, from: data))
             if let push = push, push.success {
-              bestAttemptContent.title = push.data.notification.title
-              bestAttemptContent.body = push.data.notification.text
-              
-              let data = push.data.notification.payload
-              if data.messageType == "e2e" {
-                if let msg = data.msg, let rid = data.rid {
-                  if let E2EKey = Database.shared.readRoomEncryptionKey(rid: rid, server: server) {
-                    if let userKey = Encryption.readUserKey(server: server) {
-                      let message = Encryption.decrypt(E2EKey: E2EKey, userKey: userKey, message: msg)
-                      bestAttemptContent.body = message
-                    }
-                  }
-                }
-              }
-              
-              let payload = try? (JSONEncoder().encode(push.data.notification.payload))
-              if let payload = payload {
-                bestAttemptContent.userInfo["ejson"] = String(data: payload, encoding: .utf8) ?? "{}"
-              }
-              
-              // Show notification with the content modified
-              contentHandler(bestAttemptContent)
+              self.processPayload(notification: push.data.notification)
               return
             }
           }
@@ -120,6 +86,31 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     task.resume()
+  }
+  
+  func processPayload(notification: Notification) {
+    if let bestAttemptContent = bestAttemptContent, let contentHandler = contentHandler {
+      bestAttemptContent.title = notification.title
+      bestAttemptContent.body = notification.text
+      
+      let data = notification.payload
+      if data.messageType == .e2e {
+        if let msg = data.msg, let rid = data.rid {
+          if let E2EKey = Database.shared.readRoomEncryptionKey(rid: rid, server: data.host) {
+            if let userKey = Encryption.readUserKey(server: data.host) {
+              let message = Encryption.decrypt(E2EKey: E2EKey, userKey: userKey, message: msg)
+              bestAttemptContent.body = message
+            }
+          }
+        }
+      }
+      
+      if let payload = try? (JSONEncoder().encode(data)) {
+        bestAttemptContent.userInfo["ejson"] = String(data: payload, encoding: .utf8) ?? "{}"
+      }
+      
+      contentHandler(bestAttemptContent)
+    }
   }
   
 }
