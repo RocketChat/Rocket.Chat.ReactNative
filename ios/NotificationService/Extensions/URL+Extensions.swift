@@ -3,7 +3,7 @@
 //  NotificationService
 //
 //  Created by Djorkaeff Alexandre Vilela Pereira on 9/15/20.
-//  Copyright © 2020 Facebook. All rights reserved.
+//  Copyright © 2020 Rocket.Chat. All rights reserved.
 //
 
 import Foundation
@@ -18,6 +18,14 @@ extension URL {
     }
     
     return nil
+  }
+  
+  init?(server: String) {
+    var url = server
+    if (url.last == "/") {
+      url.removeLast()
+    }
+    self.init(string: url)
   }
 }
 

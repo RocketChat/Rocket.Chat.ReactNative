@@ -3,7 +3,7 @@
 //  NotificationService
 //
 //  Created by Djorkaeff Alexandre Vilela Pereira on 8/6/20.
-//  Copyright © 2020 Facebook. All rights reserved.
+//  Copyright © 2020 Rocket.Chat. All rights reserved.
 //
 
 import Foundation

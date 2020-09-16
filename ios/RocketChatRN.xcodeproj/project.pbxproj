@@ -44,6 +44,7 @@
 		1E51D965251263D600DC95DE /* NotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E51D964251263D600DC95DE /* NotificationType.swift */; };
 		1E55FDB32320675C0048D2F9 /* libWatermelonDB.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AAA749B23043AD300F1ADE9 /* libWatermelonDB.a */; };
 		1E67380424DC529B0009E081 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67380324DC529B0009E081 /* String+Extensions.swift */; };
+		1E680ED92512990700C9257A /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E680ED82512990700C9257A /* Request.swift */; };
 		1EB8EF722510F1EE00F352B7 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB8EF712510F1EE00F352B7 /* Storage.swift */; };
 		1EC6ACB722CB9FC300A41C61 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1EC6ACB522CB9FC300A41C61 /* MainInterface.storyboard */; };
 		1EC6ACBB22CB9FC300A41C61 /* ShareRocketChatRN.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1EC6ACB022CB9FC300A41C61 /* ShareRocketChatRN.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -143,6 +144,7 @@
 		1E51D964251263D600DC95DE /* NotificationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationType.swift; sourceTree = "<group>"; };
 		1E6737FF24DC52660009E081 /* NotificationService-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NotificationService-Bridging-Header.h"; sourceTree = "<group>"; };
 		1E67380324DC529B0009E081 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		1E680ED82512990700C9257A /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		1EB8EF712510F1EE00F352B7 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		1EC6ACB022CB9FC300A41C61 /* ShareRocketChatRN.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareRocketChatRN.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EC6ACB622CB9FC300A41C61 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
@@ -277,6 +279,7 @@
 				1E2F615A25128F9A00871711 /* API.swift */,
 				1E2F615C25128FA300871711 /* Response.swift */,
 				1E2F61632512955D00871711 /* HTTPMethod.swift */,
+				1E680ED82512990700C9257A /* Request.swift */,
 			);
 			path = RocketChat;
 			sourceTree = "<group>";
@@ -1018,6 +1021,7 @@
 				1E51D962251263CD00DC95DE /* MessageType.swift in Sources */,
 				1E01C82B2511335A00FEF824 /* Message.swift in Sources */,
 				1E01C8212511301400FEF824 /* PushResponse.swift in Sources */,
+				1E680ED92512990700C9257A /* Request.swift in Sources */,
 				1E2F61642512955D00871711 /* HTTPMethod.swift in Sources */,
 				1E2F61662512958900871711 /* Push.swift in Sources */,
 				1EFEB5982493B6640072EDC0 /* NotificationService.swift in Sources */,

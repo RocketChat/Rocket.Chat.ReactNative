@@ -18,7 +18,7 @@ class NotificationService: UNNotificationServiceExtension {
         return
       }
       
-      var server = data.host
+      var server = "http://10.0.0.50:3000"
       if (server.last == "/") {
         server.removeLast()
       }
@@ -27,15 +27,8 @@ class NotificationService: UNNotificationServiceExtension {
       if data.notificationType != .messageIdOnly {
         return
       }
-      
-      var urlComponents = URLComponents(string: "\(server)/api/v1/push.get")!
-      let queryItems = [URLQueryItem(name: "id", value: data.messageId)]
-      urlComponents.queryItems = queryItems
-      
-      var request = URLRequest(url: urlComponents.url!)
-      request.httpMethod = "GET"
 
-      API(server: server).fetch(request: request) { (response: PushResponse) -> Void in
+      API(server: server)?.fetch(request: PushRequest(msgId: data.messageId)) { (response: PushResponse) -> Void in
         self.processNotification(notification: response.data.notification)
       }
     }
@@ -49,7 +42,7 @@ class NotificationService: UNNotificationServiceExtension {
       let payload = notification.payload
       if payload.messageType == .e2e {
         if let message = payload.msg, let rid = payload.rid {
-          bestAttemptContent.body = Encryption.getInstance(server: payload.host, rid: rid).decryptMessage(message: message)
+          bestAttemptContent.body = Encryption.getInstance(server: "http://10.0.0.50:3000", rid: rid).decryptMessage(message: message)
         }
       }
       
