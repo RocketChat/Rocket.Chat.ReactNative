@@ -74,9 +74,8 @@ class NotificationService: UNNotificationServiceExtension {
           // Process data
           if let data = data {
             // Parse data of response
-            let push = try? (JSONDecoder().decode(PushResponse.self, from: data))
-            if let push = push, push.success {
-              self.processPayload(notification: push.data.notification)
+            if let push = try? (JSONDecoder().decode(PushResponse.self, from: data)), push.success {
+              self.processNotification(notification: push.data.notification)
               return
             }
           }
@@ -88,24 +87,19 @@ class NotificationService: UNNotificationServiceExtension {
     task.resume()
   }
   
-  func processPayload(notification: Notification) {
+  func processNotification(notification: Notification) {
     if let bestAttemptContent = bestAttemptContent, let contentHandler = contentHandler {
       bestAttemptContent.title = notification.title
       bestAttemptContent.body = notification.text
       
-      let data = notification.payload
-      if data.messageType == .e2e {
-        if let msg = data.msg, let rid = data.rid {
-          if let E2EKey = Database.shared.readRoomEncryptionKey(rid: rid, server: data.host) {
-            if let userKey = Encryption.readUserKey(server: data.host) {
-              let message = Encryption.decrypt(E2EKey: E2EKey, userKey: userKey, message: msg)
-              bestAttemptContent.body = message
-            }
-          }
+      let payload = notification.payload
+      if payload.messageType == .e2e {
+        if let message = payload.msg, let rid = payload.rid {
+          bestAttemptContent.body = Encryption.getInstance(server: payload.host, rid: rid).decryptMessage(message: message)
         }
       }
       
-      if let payload = try? (JSONEncoder().encode(data)) {
+      if let payload = try? (JSONEncoder().encode(payload)) {
         bestAttemptContent.userInfo["ejson"] = String(data: payload, encoding: .utf8) ?? "{}"
       }
       

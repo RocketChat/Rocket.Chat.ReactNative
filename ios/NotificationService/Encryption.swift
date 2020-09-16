@@ -11,7 +11,27 @@ import CommonCrypto
 import class react_native_simple_crypto.RCTRsaUtils
 
 final class Encryption {
-  static func readUserKey(server: String) -> String? {
+  private static var instances: [String: Encryption] = [:]
+  
+  final var roomKey: String? = ""
+  
+  init(server: String, rid: String) {
+    if let E2EKey = Database.shared.readRoomEncryptionKey(rid: rid, server: server), let userKey = readUserKey(server: server) {
+      roomKey = decryptRoomKey(E2EKey: E2EKey, userKey: userKey)
+    }
+  }
+  
+  static func getInstance(server: String, rid: String) -> Encryption {
+    if let instance = instances[rid] {
+      return instance
+    }
+    
+    let instance = Encryption(server: server, rid: rid)
+    instances[rid] = instance
+    return instance
+  }
+  
+  func readUserKey(server: String) -> String? {
     if let userKey = Storage.shared.getPrivateKey(server: server) {
       guard let json = try? JSONSerialization.jsonObject(with: userKey.data(using: .utf8)!, options: []) as? [String: Any] else {
         return nil
@@ -26,7 +46,7 @@ final class Encryption {
     return nil
   }
   
-  static func decryptRoomKey(E2EKey: String, userKey: String) -> String? {
+  func decryptRoomKey(E2EKey: String, userKey: String) -> String? {
     let index = E2EKey.index(E2EKey.startIndex, offsetBy: 12)
     let roomKey = String(E2EKey[index...])
     
@@ -45,15 +65,15 @@ final class Encryption {
     return nil
   }
   
-  static func decrypt(E2EKey: String, userKey: String, message: String) -> String {
-    let index = message.index(message.startIndex, offsetBy: 12)
-    let msg = String(message[index...])
-    
-    if let data = msg.toData() {
-      let iv = data.subdata(in: 0..<kCCBlockSizeAES128)
-      let cypher = data.subdata(in: kCCBlockSizeAES128..<data.count)
-      if let key = decryptRoomKey(E2EKey: E2EKey, userKey: userKey) {
-        let decrypted = Aes.aes128CBC("decrypt", data: cypher, key: key, iv: Shared.toHex(iv))
+  func decryptMessage(message: String) -> String {
+    if let roomKey = self.roomKey {
+      let index = message.index(message.startIndex, offsetBy: 12)
+      let msg = String(message[index...])
+      
+      if let data = msg.toData() {
+        let iv = data.subdata(in: 0..<kCCBlockSizeAES128)
+        let cypher = data.subdata(in: kCCBlockSizeAES128..<data.count)
+        let decrypted = Aes.aes128CBC("decrypt", data: cypher, key: roomKey, iv: Shared.toHex(iv))
         if let decrypted = decrypted {
           if let m = try? (JSONDecoder().decode(Message.self, from: decrypted)) {
             return m.text
