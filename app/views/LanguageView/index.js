@@ -22,14 +22,17 @@ import SafeAreaView from '../../containers/SafeAreaView';
 
 const LANGUAGES = [
 	{
+		label: 'English',
+		value: 'en'
+	}, {
 		label: '简体中文',
 		value: 'zh-CN'
 	}, {
+		label: '繁體中文',
+		value: 'zh-TW'
+	}, {
 		label: 'Deutsch',
 		value: 'de'
-	}, {
-		label: 'English',
-		value: 'en'
 	}, {
 		label: 'Español (ES)',
 		value: 'es-ES'

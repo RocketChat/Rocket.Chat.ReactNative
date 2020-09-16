@@ -9,6 +9,7 @@ import de from './locales/de';
 import nl from './locales/nl';
 import ptBR from './locales/pt-BR';
 import zhCN from './locales/zh-CN';
+import zhTW from './locales/zh_TW';
 import ptPT from './locales/pt-PT';
 import esES from './locales/es-ES';
 import it from './locales/it';
@@ -19,6 +20,7 @@ i18n.translations = {
 	ru,
 	'pt-BR': ptBR,
 	'zh-CN': zhCN,
+	'zh-TW': zhTW,
 	fr,
 	de,
 	'pt-PT': ptPT,
