@@ -4,8 +4,13 @@ import * as utils from './utils';
 describe('sanitizeLikeStringTester', () => {
 	// example chars that shouldn't return
 	const disallowedChars = ',./;[]!@#$%^&*()_-=+~';
-
 	const sanitizeLikeStringTester = str => expect(utils.sanitizeLikeString(`${ str }${ disallowedChars }`)).toBe(`${ str }${ '_'.repeat(disallowedChars.length) }`);
+
+	test('render empty', () => {
+		expect(utils.sanitizeLikeString(null)).toBe(undefined);
+		expect(utils.sanitizeLikeString('')).toBe('');
+		expect(utils.sanitizeLikeString(undefined)).toBe(undefined);
+	});
 
 	// Testing a couple of different alphabets
 	test('render test (latin)', () => {
