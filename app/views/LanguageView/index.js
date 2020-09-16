@@ -29,7 +29,7 @@ const LANGUAGES = [
 		value: 'zh-CN'
 	}, {
 		label: '繁體中文',
-		value: 'zh_TW'
+		value: 'zh-TW'
 	}, {
 		label: 'Deutsch',
 		value: 'de'
