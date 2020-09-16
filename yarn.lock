@@ -1922,14 +1922,13 @@
   resolved "https://registry.yarnpkg.com/@nozbe/sqlite/-/sqlite-3.31.1.tgz#ffd394ad7c188c6b73f89fd6e1ccb849a1b96dba"
   integrity sha512-z5+GdcHZl9OQ1g0pnygORAnwCYUlYw/gQxdW/8rS0HxD2Gnn/k3DBQOvqQIH4Z3Z3KWVMbGUYhcH1v4SqTAdwg==
 
-"@nozbe/watermelondb@^0.18.0":
-  version "0.18.0"
-  resolved "https://registry.yarnpkg.com/@nozbe/watermelondb/-/watermelondb-0.18.0.tgz#f174d8a4b9e8665bb9e8a7825a682905a43cd92c"
-  integrity sha512-jybGScFR+b0wp8QDNJw9cfd7Qfu51SegivjIniX6dXV/KZxjjhQ+IJxUB6bp2f2tWJIQcxC5e9syctLsrh/PiQ==
+"@nozbe/watermelondb@^0.19.0":
+  version "0.19.0"
+  resolved "https://registry.yarnpkg.com/@nozbe/watermelondb/-/watermelondb-0.19.0.tgz#70dae4bfca9dde8d61819a6092846e178a50e2f7"
+  integrity sha512-x7sclLu/4RDmLzANIYQioKjWdmoIxgqYw7OJnS7UtWEtJGn28l5Z69SWojll/RM0X2KOEem0BIcjqM46CA53GA==
   dependencies:
     "@nozbe/sqlite" "3.31.1"
-    lodash.clonedeep "^4.5.0"
-    lokijs "git+https://github.com/Nozbe/LokiJS.git#fabe503"
+    lokijs "npm:@nozbe/lokijs@1.5.10-wmelon0"
     rambdax "2.15.0"
     rxjs "^6.2.2"
     rxjs-compat "^6.3.2"
@@ -10218,11 +10217,6 @@ lodash.assign@^4.2.0:
   resolved "https://registry.yarnpkg.com/lodash.assign/-/lodash.assign-4.2.0.tgz#0d99f3ccd7a6d261d19bdaeb9245005d285808e7"
   integrity sha1-DZnzzNem0mHRm9rrkkUAXShYCOc=
 
-lodash.clonedeep@^4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
-  integrity sha1-4j8/nE+Pvd6HJSnBBxhXoIblzO8=
-
 lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
@@ -10286,9 +10280,10 @@ logkitty@^0.7.1:
     dayjs "^1.8.15"
     yargs "^15.1.0"
 
-"lokijs@git+https://github.com/Nozbe/LokiJS.git#fabe503":
-  version "1.5.9"
-  resolved "git+https://github.com/Nozbe/LokiJS.git#fabe503e4fc7887b76b0e4892b28fbd0753da27d"
+"lokijs@npm:@nozbe/lokijs@1.5.10-wmelon0":
+  version "1.5.10-wmelon0"
+  resolved "https://registry.yarnpkg.com/@nozbe/lokijs/-/lokijs-1.5.10-wmelon0.tgz#dcad682083b85c238d14cdcd1f016125fff54336"
+  integrity sha512-GSLyRUTxCPwWLLKxMxA8/Pujm2xAgPGSehze9ICHZDG9yyMMfuWYae+qY+fQctgA1HuKiwoRUEvrrKBCQj9jzA==
 
 lolex@^5.0.0:
   version "5.1.2"
