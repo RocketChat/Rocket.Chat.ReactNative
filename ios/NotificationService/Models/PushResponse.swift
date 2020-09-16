@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct PushResponse: Decodable {
+struct PushResponse: Response {
   let success: Bool
   let data: Data
   
