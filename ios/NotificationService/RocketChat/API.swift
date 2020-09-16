@@ -18,7 +18,7 @@ final class API {
   static var instances: [Server: API] = [:]
   
   convenience init?(server: Server) {
-    guard let server = URL(server: server) else {
+    guard let server = URL(server: server.removeTrailingSlash()) else {
       return nil
     }
     

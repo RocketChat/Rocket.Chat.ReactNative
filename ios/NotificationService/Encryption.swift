@@ -26,7 +26,7 @@ final class Encryption {
       return instance
     }
     
-    let instance = Encryption(server: server, rid: rid)
+    let instance = Encryption(server: server.removeTrailingSlash(), rid: rid)
     instances[rid] = instance
     return instance
   }

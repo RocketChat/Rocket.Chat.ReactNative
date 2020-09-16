@@ -21,4 +21,12 @@ extension String {
 
     return Data(base64Encoded: base64Encoded, options: .ignoreUnknownCharacters)
   }
+  
+  func removeTrailingSlash() -> String {
+    var url = self
+    if (url.last == "/") {
+      url.removeLast()
+    }
+    return url
+  }
 }
