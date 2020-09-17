@@ -4,7 +4,7 @@ import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 
 import RocketChat from '../../lib/rocketchat';
-import I18n from '../../i18n';
+import I18n, { LANGUAGES } from '../../i18n';
 import { showErrorAlert } from '../../utils/info';
 import log, { logEvent, events } from '../../utils/log';
 import { setUser as setUserAction } from '../../actions/login';
@@ -19,46 +19,6 @@ import { appStart as appStartAction, ROOT_LOADING, ROOT_INSIDE } from '../../act
 import { getUserSelector } from '../../selectors/login';
 import database from '../../lib/database';
 import SafeAreaView from '../../containers/SafeAreaView';
-
-const LANGUAGES = [
-	{
-		label: 'English',
-		value: 'en'
-	}, {
-		label: '简体中文',
-		value: 'zh-CN'
-	}, {
-		label: '繁體中文',
-		value: 'zh-TW'
-	}, {
-		label: 'Deutsch',
-		value: 'de'
-	}, {
-		label: 'Español (ES)',
-		value: 'es-ES'
-	}, {
-		label: 'Français',
-		value: 'fr'
-	}, {
-		label: 'Português (BR)',
-		value: 'pt-BR'
-	}, {
-		label: 'Português (PT)',
-		value: 'pt-PT'
-	}, {
-		label: 'Russian',
-		value: 'ru'
-	}, {
-		label: 'Nederlands',
-		value: 'nl'
-	}, {
-		label: 'Italiano',
-		value: 'it'
-	}, {
-		label: '日本語',
-		value: 'ja'
-	}
-];
 
 class LanguageView extends React.Component {
 	static navigationOptions = () => ({
