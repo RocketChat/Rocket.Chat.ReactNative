@@ -11,24 +11,12 @@ import CommonCrypto
 import class react_native_simple_crypto.RCTRsaUtils
 
 final class Encryption {
-  private static var instances: [String: Encryption] = [:]
-  
   final var roomKey: String? = ""
   
   init(server: String, rid: String) {
     if let E2EKey = Database.shared.readRoomEncryptionKey(rid: rid, server: server), let userKey = readUserKey(server: server) {
       roomKey = decryptRoomKey(E2EKey: E2EKey, userKey: userKey)
     }
-  }
-  
-  static func getInstance(server: String, rid: String) -> Encryption {
-    if let instance = instances[rid] {
-      return instance
-    }
-    
-    let instance = Encryption(server: server.removeTrailingSlash(), rid: rid)
-    instances[rid] = instance
-    return instance
   }
   
   func readUserKey(server: String) -> String? {

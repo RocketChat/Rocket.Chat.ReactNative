@@ -22,16 +22,12 @@ class NotificationService: UNNotificationServiceExtension {
       }
       
       // Request the content from server
-      API(server: data.host)?.fetch(request: PushRequest(msgId: data.messageId), retry: Retry(retries: 4)) { response in
-        switch response {
-          case .resource(let response):
-            let notification = response.data.notification
-            self.bestAttemptContent?.title = notification.title
-            self.bestAttemptContent?.body = notification.text
-            self.processPayload(payload: notification.payload)
-
-          case .error:
-            break
+      let rocketchat = RocketChat.current(server: data.host)
+      rocketchat.getPushWithId(data.messageId) { notification in
+        if let notification = notification {
+          self.bestAttemptContent?.title = notification.title
+          self.bestAttemptContent?.body = notification.text
+          self.processPayload(payload: notification.payload)
         }
       }
     }
@@ -39,11 +35,12 @@ class NotificationService: UNNotificationServiceExtension {
   
   func processPayload(payload: Payload) {
     if let bestAttemptContent = bestAttemptContent, let contentHandler = contentHandler {
-      // If is a encrypted message
+      // If it's a encrypted message
       if payload.messageType == .e2e {
         if let message = payload.msg, let rid = payload.rid {
           // Decrypt the message and set the decrypted content on notification body
-          bestAttemptContent.body = Encryption.getInstance(server: payload.host, rid: rid).decryptMessage(message: message)
+          let rocketchat = RocketChat.current(server: payload.host)
+          bestAttemptContent.body = rocketchat.decryptMessage(rid: rid, message: message)
         }
       }
       

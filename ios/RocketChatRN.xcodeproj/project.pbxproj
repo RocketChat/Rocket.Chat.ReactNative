@@ -40,6 +40,7 @@
 		1E2F615D25128FA300871711 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2F615C25128FA300871711 /* Response.swift */; };
 		1E2F61642512955D00871711 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2F61632512955D00871711 /* HTTPMethod.swift */; };
 		1E2F61662512958900871711 /* Push.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2F61652512958900871711 /* Push.swift */; };
+		1E470E832513A71E00E3DD1D /* RocketChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E470E822513A71E00E3DD1D /* RocketChat.swift */; };
 		1E51D962251263CD00DC95DE /* MessageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E51D961251263CD00DC95DE /* MessageType.swift */; };
 		1E51D965251263D600DC95DE /* NotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E51D964251263D600DC95DE /* NotificationType.swift */; };
 		1E55FDB32320675C0048D2F9 /* libWatermelonDB.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AAA749B23043AD300F1ADE9 /* libWatermelonDB.a */; };
@@ -140,6 +141,7 @@
 		1E2F615C25128FA300871711 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		1E2F61632512955D00871711 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
 		1E2F61652512958900871711 /* Push.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Push.swift; sourceTree = "<group>"; };
+		1E470E822513A71E00E3DD1D /* RocketChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketChat.swift; sourceTree = "<group>"; };
 		1E51D961251263CD00DC95DE /* MessageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageType.swift; sourceTree = "<group>"; };
 		1E51D964251263D600DC95DE /* NotificationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationType.swift; sourceTree = "<group>"; };
 		1E6737FF24DC52660009E081 /* NotificationService-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NotificationService-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -291,6 +293,7 @@
 				1EF5FBD0250C109E00614FEA /* Encryption.swift */,
 				1E1C2F7F250FCB69005DCE7D /* Database.swift */,
 				1EB8EF712510F1EE00F352B7 /* Storage.swift */,
+				1E470E822513A71E00E3DD1D /* RocketChat.swift */,
 			);
 			path = RocketChat;
 			sourceTree = "<group>";
@@ -1020,6 +1023,7 @@
 				1E51D965251263D600DC95DE /* NotificationType.swift in Sources */,
 				1EF5FBD1250C109E00614FEA /* Encryption.swift in Sources */,
 				1E01C81C2511208400FEF824 /* URL+Extensions.swift in Sources */,
+				1E470E832513A71E00E3DD1D /* RocketChat.swift in Sources */,
 				1E2F615D25128FA300871711 /* Response.swift in Sources */,
 				1E01C82D2511337700FEF824 /* RoomKey.swift in Sources */,
 				1E01C8252511303100FEF824 /* Notification.swift in Sources */,
