@@ -20,15 +20,19 @@ class NotificationService: UNNotificationServiceExtension {
         self.processPayload(payload: data)
         return
       }
-
+      
       // Request the content from server
-      API(server: data.host)?.fetch(request: PushRequest(msgId: data.messageId)) { (response: PushResponse) -> Void in
-        let notification = response.data.notification
+      API(server: data.host)?.fetch(request: PushRequest(msgId: data.messageId), retry: Retry(retries: 4)) { response in
+        switch response {
+          case .resource(let response):
+            let notification = response.data.notification
+            self.bestAttemptContent?.title = notification.title
+            self.bestAttemptContent?.body = notification.text
+            self.processPayload(payload: notification.payload)
 
-        self.bestAttemptContent?.title = notification.title
-        self.bestAttemptContent?.body = notification.text
-        
-        self.processPayload(payload: notification.payload)
+          case .error:
+            break
+        }
       }
     }
   }

@@ -11,3 +11,8 @@ import Foundation
 protocol Response: Decodable {
   var success: Bool { get }
 }
+
+enum APIResponse<T: Response> {
+    case resource(T)
+    case error
+}
