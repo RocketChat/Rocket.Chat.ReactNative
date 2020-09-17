@@ -4,6 +4,7 @@ class NotificationService: UNNotificationServiceExtension {
   
   var contentHandler: ((UNNotificationContent) -> Void)?
   var bestAttemptContent: UNMutableNotificationContent?
+  var rocketchat: RocketChat?
   
   override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
     self.contentHandler = contentHandler
@@ -15,6 +16,8 @@ class NotificationService: UNNotificationServiceExtension {
         return
       }
       
+      rocketchat = RocketChat.instanceForServer(server: data.host)
+      
       // If the notification have the content at her payload, show it
       if data.notificationType != .messageIdOnly {
         self.processPayload(payload: data)
@@ -22,8 +25,7 @@ class NotificationService: UNNotificationServiceExtension {
       }
       
       // Request the content from server
-      let rocketchat = RocketChat.current(server: data.host)
-      rocketchat.getPushWithId(data.messageId) { notification in
+      rocketchat?.getPushWithId(data.messageId) { notification in
         if let notification = notification {
           self.bestAttemptContent?.title = notification.title
           self.bestAttemptContent?.body = notification.text
@@ -34,18 +36,17 @@ class NotificationService: UNNotificationServiceExtension {
   }
   
   func processPayload(payload: Payload) {
-    if let bestAttemptContent = bestAttemptContent, let contentHandler = contentHandler {
-      // If it's a encrypted message
-      if payload.messageType == .e2e {
-        if let message = payload.msg, let rid = payload.rid {
-          // Decrypt the message and set the decrypted content on notification body
-          let rocketchat = RocketChat.current(server: payload.host)
-          bestAttemptContent.body = rocketchat.decryptMessage(rid: rid, message: message)
+    // If is a encrypted message
+    if payload.messageType == .e2e {
+      if let message = payload.msg, let rid = payload.rid {
+        if let decryptedMessage = rocketchat?.decryptMessage(rid: rid, message: message) {
+          bestAttemptContent?.body = decryptedMessage
         }
       }
-      
-      contentHandler(bestAttemptContent)
+    }
+    
+    if let bestAttemptContent = bestAttemptContent {
+      contentHandler?(bestAttemptContent)
     }
   }
-  
 }

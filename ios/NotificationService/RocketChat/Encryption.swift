@@ -53,7 +53,7 @@ final class Encryption {
     return nil
   }
   
-  func decryptMessage(message: String) -> String {
+  func decryptMessage(message: String) -> String? {
     if let roomKey = self.roomKey {
       let index = message.index(message.startIndex, offsetBy: 12)
       let msg = String(message[index...])
@@ -70,6 +70,6 @@ final class Encryption {
       }
     }
     
-    return message
+    return nil
   }
 }

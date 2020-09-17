@@ -11,7 +11,6 @@ import WatermelonDB
 
 final class Database {
   private var databases: [String: WatermelonDB.Database] = [:]
-  private var cache: [String: String] = [:]
   
   static let shared = Database()
   
@@ -41,10 +40,6 @@ final class Database {
   }
   
   func readRoomEncryptionKey(rid: String, server: String) -> String? {
-    if let e2eKey = cache[rid] {
-      return e2eKey
-    }
-    
     if let database = setup(server: server) {
       if let results = try? database.queryRaw("select * from subscriptions where id == ? limit 1", [rid]) {
         guard let record = results.next() else {
@@ -53,8 +48,7 @@ final class Database {
         
         if let room = record.resultDictionary as? [String: Any] {
           if let e2eKey = room["e2e_key"] as? String {
-            cache[rid] = e2eKey
-            return cache[rid]
+            return e2eKey
           }
         }
       }
