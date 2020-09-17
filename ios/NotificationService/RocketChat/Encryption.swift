@@ -70,7 +70,6 @@ final class Encryption {
       }
     }
     
-    // Fallback message
-    return "Encrypted Message"
+    return message
   }
 }
