@@ -19,13 +19,5 @@ extension URL {
     
     return nil
   }
-  
-  init?(server: String) {
-    var url = server
-    if (url.last == "/") {
-      url.removeLast()
-    }
-    self.init(string: url)
-  }
 }
 
