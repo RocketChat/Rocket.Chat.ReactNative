@@ -11,7 +11,7 @@ import CommonCrypto
 import class react_native_simple_crypto.RCTRsaUtils
 
 final class Encryption {
-  final var roomKey: String? = ""
+  final var roomKey: String? = nil
   
   init(server: String, rid: String) {
     if let E2EKey = Database.shared.readRoomEncryptionKey(rid: rid, server: server), let userKey = readUserKey(server: server) {
