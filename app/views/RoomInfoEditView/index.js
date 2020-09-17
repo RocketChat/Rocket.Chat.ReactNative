@@ -32,6 +32,7 @@ import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { MessageTypeValues } from '../../utils/messageTypes';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Avatar from '../../containers/Avatar';
+import { CustomIcon } from '../../lib/Icons';
 
 const PERMISSION_SET_READONLY = 'set-readonly';
 const PERMISSION_SET_REACT_WHEN_READONLY = 'set-react-when-readonly';
@@ -374,14 +375,36 @@ class RoomInfoEditView extends React.Component {
 		return (
 			<Avatar
 				text={room.name}
-				size={200}
+				size={150}
 				style={styles.avatar}
 				type={t}
 				baseUrl={baseUrl}
 				userId={user.id}
 				token={user.token}
 				roomId={room.rid}
-			/>
+			>
+				<View style={{
+					position: 'absolute', bottom: 0, right: 0, flexDirection: 'row'
+				}}
+				>
+					<TouchableOpacity
+						onPress={() => { }}
+						style={{
+							backgroundColor: 'white', margin: 3, padding: 3, paddingHorizontal: 6, alignItems: 'center'
+						}}
+					>
+						<CustomIcon name='upload' size={20} color='black' />
+					</TouchableOpacity>
+					<TouchableOpacity
+						onPress={() => { }}
+						style={{
+							backgroundColor: 'red', margin: 3, padding: 3, paddingHorizontal: 6, alignItems: 'center'
+						}}
+					>
+						<CustomIcon name='delete' size={20} color='white' />
+					</TouchableOpacity>
+				</View>
+			</Avatar>
 		);
 	}
 
