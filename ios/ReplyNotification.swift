@@ -42,7 +42,7 @@ class ReplyNotification: RNNotificationEventHandler {
     let originalMethod = class_getInstanceMethod(instance, #selector(didReceive))
     let swizzledMethod = class_getInstanceMethod(instance, #selector(replyNotification_didReceiveNotificationResponse))
     if let originalMethod = originalMethod, let swizzledMethod = swizzledMethod {
-        method_exchangeImplementations(originalMethod, swizzledMethod)
+      method_exchangeImplementations(originalMethod, swizzledMethod)
     }
   }()
   
@@ -58,7 +58,7 @@ class ReplyNotification: RNNotificationEventHandler {
         if let data = (notification["ejson"] as? String)?.data(using: .utf8) {
           if let ejson = try? JSONDecoder().decode(Ejson.self, from: data), let rid = ejson.rid {
             if let msg = (response as? UNTextInputNotificationResponse)?.userText {
-              var server = "http://10.0.0.50:3000"
+              var server = ejson.host
               if server.last == "/" {
                 server.removeLast()
               }
@@ -72,11 +72,11 @@ class ReplyNotification: RNNotificationEventHandler {
               
               let id = String.random(length: 17)
               let body = MessageBody(message: MessageBody.Message(_id: id, msg: msg, rid: rid))
-
+              
               var request = URLRequest(url: url)
               request.httpMethod = "POST"
               request.httpBody = try? JSONEncoder().encode(body)
-
+              
               let credentials = Storage.shared.getCredentials(server: server)
               if let userId = credentials?.userId {
                 request.addValue(userId, forHTTPHeaderField: "x-user-id")
@@ -85,7 +85,7 @@ class ReplyNotification: RNNotificationEventHandler {
                 request.addValue(userToken, forHTTPHeaderField: "x-auth-token")
               }
               request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-
+              
               let backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
               let task = URLSession.shared.dataTask(with: request) {(data, _, error) in
                 func replyFailure() {
@@ -94,7 +94,7 @@ class ReplyNotification: RNNotificationEventHandler {
                   let request = UNNotificationRequest(identifier: "replyFailure", content: content, trigger: nil)
                   UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
                 }
-
+                
                 if let _ = error {
                   replyFailure()
                   return
@@ -109,7 +109,7 @@ class ReplyNotification: RNNotificationEventHandler {
                   replyFailure()
                   return
                 }
-
+                
                 UIApplication.shared.endBackgroundTask(backgroundTask)
               }
               
