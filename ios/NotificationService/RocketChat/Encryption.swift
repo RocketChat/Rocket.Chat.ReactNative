@@ -12,15 +12,15 @@ import class react_native_simple_crypto.RCTRsaUtils
 
 final class Encryption {
   final var roomKey: String? = nil
+  final var keyId: String? = nil
   
-  init(server: String, rid: String) {
-    if let E2EKey = Database.shared.readRoomEncryptionKey(rid: rid, server: server), let userKey = readUserKey(server: server) {
-      roomKey = decryptRoomKey(E2EKey: E2EKey, userKey: userKey)
-    }
-  }
+  private let privateKey: String?
+  private let credentials: Credentials?
+  private let server: String
+  private let rid: String
   
-  func readUserKey(server: String) -> String? {
-    if let userKey = Storage.shared.getPrivateKey(server: server) {
+  private var userKey: String? {
+    if let userKey = self.privateKey {
       guard let json = try? JSONSerialization.jsonObject(with: userKey.data(using: .utf8)!, options: []) as? [String: Any] else {
         return nil
       }
@@ -34,18 +34,34 @@ final class Encryption {
     return nil
   }
   
-  func decryptRoomKey(E2EKey: String, userKey: String) -> String? {
-    let index = E2EKey.index(E2EKey.startIndex, offsetBy: 12)
-    let roomKey = String(E2EKey[index...])
+  private final let encoder = JSONEncoder()
+  
+  init(server: String, rid: String) {
+    self.privateKey = Storage.shared.getPrivateKey(server: server)
+    self.credentials = Storage.shared.getCredentials(server: server)
+    self.server = server
+    self.rid = rid
     
-    let rsa = Rsa()
-    rsa.privateKey = userKey
-    let message = rsa.decrypt(roomKey)
-    
-    if let message = message?.data(using: .utf8) {
-      if let key = try? (JSONDecoder().decode(RoomKey.self, from: message)) {
-        if let base64Encoded = key.k.toData() {
-          return Shared.toHex(base64Encoded)
+    if let E2EKey = Database.shared.readRoomEncryptionKey(rid: rid, server: server) {
+      self.roomKey = decryptRoomKey(E2EKey: E2EKey)
+    }
+  }
+  
+  func decryptRoomKey(E2EKey: String) -> String? {
+    if let userKey = userKey {
+      let index = E2EKey.index(E2EKey.startIndex, offsetBy: 12)
+      let roomKey = String(E2EKey[index...])
+      keyId = String(E2EKey[..<index])
+      
+      let rsa = Rsa()
+      rsa.privateKey = userKey
+      let message = rsa.decrypt(roomKey)
+      
+      if let message = message?.data(using: .utf8) {
+        if let key = try? (JSONDecoder().decode(RoomKey.self, from: message)) {
+          if let base64Encoded = key.k.toData() {
+            return Shared.toHex(base64Encoded)
+          }
         }
       }
     }
@@ -57,12 +73,10 @@ final class Encryption {
     if let roomKey = self.roomKey {
       let index = message.index(message.startIndex, offsetBy: 12)
       let msg = String(message[index...])
-      
       if let data = msg.toData() {
         let iv = data.subdata(in: 0..<kCCBlockSizeAES128)
         let cypher = data.subdata(in: kCCBlockSizeAES128..<data.count)
-        let decrypted = Aes.aes128CBC("decrypt", data: cypher, key: roomKey, iv: Shared.toHex(iv))
-        if let decrypted = decrypted {
+        if let decrypted = Aes.aes128CBC("decrypt", data: cypher, key: roomKey, iv: Shared.toHex(iv)) {
           if let m = try? (JSONDecoder().decode(Message.self, from: decrypted)) {
             return m.text
           }
@@ -71,5 +85,19 @@ final class Encryption {
     }
     
     return nil
+  }
+  
+  func encryptMessage(id: String, message: String) -> String {
+    if let userId = credentials?.userId, let roomKey = roomKey {
+      let m = Message(_id: id, text: message, userId: userId)
+      let iv = Data.randomBytes(length: kCCBlockSizeAES128)
+      let cypher = try? encoder.encode(m)
+      if let keyId = keyId, let cypher = cypher, let data = Aes.aes128CBC("encrypt", data: cypher, key: roomKey, iv: Shared.toHex(iv)) {
+        let joined = Data.join(vector: iv, data: data)
+        return keyId + joined.base64EncodedString()
+      }
+    }
+    
+    return message
   }
 }

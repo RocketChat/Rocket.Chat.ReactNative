@@ -51,6 +51,27 @@ final class RocketChat {
     }
   }
   
+  func sendMessage(rid: String, message: String, completion: @escaping((MessageResponse?) -> Void)) {
+    let id = String.random(length: 17)
+    
+    var msg = message
+    let encrypted = Database.shared.readRoomEncrypted(rid: rid, server: server)
+    if encrypted {
+      msg = encryptMessage(rid: rid, id: id, message: message)
+    }
+    
+    api?.fetch(request: SendMessageRequest(id: id, roomId: rid, text: msg, messageType: encrypted ? .e2e : nil )) { response in
+      switch response {
+      case .resource(let response):
+        completion(response)
+        
+      case .error:
+        completion(nil)
+        break
+      }
+    }
+  }
+  
   func decryptMessage(rid: String, message: String) -> String? {
     if let encryption = encryptionInstances[rid] {
       return encryption.decryptMessage(message: message)
@@ -59,5 +80,15 @@ final class RocketChat {
     let encryption = Encryption(server: server, rid: rid)
     encryptionInstances[rid] = encryption
     return encryption.decryptMessage(message: message)
+  }
+  
+  func encryptMessage(rid: String, id: String, message: String) -> String {
+    if let encryption = encryptionInstances[rid] {
+      return encryption.encryptMessage(id: id, message: message)
+    }
+    
+    let encryption = Encryption(server: server, rid: rid)
+    encryptionInstances[rid] = encryption
+    return encryption.encryptMessage(id: id, message: message)
   }
 }

@@ -44,6 +44,9 @@
 		1E51D962251263CD00DC95DE /* MessageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E51D961251263CD00DC95DE /* MessageType.swift */; };
 		1E51D965251263D600DC95DE /* NotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E51D964251263D600DC95DE /* NotificationType.swift */; };
 		1E55FDB32320675C0048D2F9 /* libWatermelonDB.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AAA749B23043AD300F1ADE9 /* libWatermelonDB.a */; };
+		1E598AE42515057D002BDFBD /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE32515057D002BDFBD /* Date+Extensions.swift */; };
+		1E598AE725150660002BDFBD /* Data+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE625150660002BDFBD /* Data+Extensions.swift */; };
+		1E598AE925151A63002BDFBD /* SendMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE825151A63002BDFBD /* SendMessage.swift */; };
 		1E67380424DC529B0009E081 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E67380324DC529B0009E081 /* String+Extensions.swift */; };
 		1E680ED92512990700C9257A /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E680ED82512990700C9257A /* Request.swift */; };
 		1E6CC61F2513DBF400965591 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A006F13229C83B600803143 /* GoogleService-Info.plist */; };
@@ -143,6 +146,9 @@
 		1E470E822513A71E00E3DD1D /* RocketChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketChat.swift; sourceTree = "<group>"; };
 		1E51D961251263CD00DC95DE /* MessageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageType.swift; sourceTree = "<group>"; };
 		1E51D964251263D600DC95DE /* NotificationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationType.swift; sourceTree = "<group>"; };
+		1E598AE32515057D002BDFBD /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
+		1E598AE625150660002BDFBD /* Data+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extensions.swift"; sourceTree = "<group>"; };
+		1E598AE825151A63002BDFBD /* SendMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessage.swift; sourceTree = "<group>"; };
 		1E6737FF24DC52660009E081 /* NotificationService-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NotificationService-Bridging-Header.h"; sourceTree = "<group>"; };
 		1E67380324DC529B0009E081 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		1E680ED82512990700C9257A /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
@@ -244,6 +250,8 @@
 			children = (
 				1E67380324DC529B0009E081 /* String+Extensions.swift */,
 				1E01C81B2511208400FEF824 /* URL+Extensions.swift */,
+				1E598AE32515057D002BDFBD /* Date+Extensions.swift */,
+				1E598AE625150660002BDFBD /* Data+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -300,6 +308,7 @@
 			isa = PBXGroup;
 			children = (
 				1E2F61652512958900871711 /* Push.swift */,
+				1E598AE825151A63002BDFBD /* SendMessage.swift */,
 			);
 			path = Requests;
 			sourceTree = "<group>";
@@ -1018,6 +1027,7 @@
 			files = (
 				1E51D965251263D600DC95DE /* NotificationType.swift in Sources */,
 				1EF5FBD1250C109E00614FEA /* Encryption.swift in Sources */,
+				1E598AE42515057D002BDFBD /* Date+Extensions.swift in Sources */,
 				1E01C81C2511208400FEF824 /* URL+Extensions.swift in Sources */,
 				1E470E832513A71E00E3DD1D /* RocketChat.swift in Sources */,
 				1E2F615D25128FA300871711 /* Response.swift in Sources */,
@@ -1031,9 +1041,11 @@
 				1E01C8212511301400FEF824 /* PushResponse.swift in Sources */,
 				1E680ED92512990700C9257A /* Request.swift in Sources */,
 				1E2F61642512955D00871711 /* HTTPMethod.swift in Sources */,
+				1E598AE925151A63002BDFBD /* SendMessage.swift in Sources */,
 				1E2F61662512958900871711 /* Push.swift in Sources */,
 				1EFEB5982493B6640072EDC0 /* NotificationService.swift in Sources */,
 				1EB8EF722510F1EE00F352B7 /* Storage.swift in Sources */,
+				1E598AE725150660002BDFBD /* Data+Extensions.swift in Sources */,
 				1E2F615B25128F9A00871711 /* API.swift in Sources */,
 				1E01C8272511303900FEF824 /* Payload.swift in Sources */,
 			);

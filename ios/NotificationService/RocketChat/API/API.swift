@@ -49,7 +49,7 @@ final class API {
     self.credentials = Storage.shared.getCredentials(server: server.absoluteString)
   }
   
-  func fetch<T: Request>(request: T, retry: Retry?, completion: @escaping((APIResponse<T.ResponseType>) -> Void)) {
+  func fetch<T: Request>(request: T, retry: Retry? = nil, completion: @escaping((APIResponse<T.ResponseType>) -> Void)) {
     func onError() {
       if let retry = retry, retry.retries > 0 {
         DispatchQueue.main.asyncAfter(deadline: .now() + retry.timeout, execute: {
