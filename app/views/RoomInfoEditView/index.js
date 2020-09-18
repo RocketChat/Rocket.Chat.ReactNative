@@ -80,7 +80,8 @@ class RoomInfoEditView extends React.Component {
 			systemMessages: [],
 			enableSysMes: false,
 			baseUrl: '',
-			user: {}
+			user: {},
+			resetAvatar: false
 		};
 		this.loadRoom();
 	}
@@ -369,42 +370,80 @@ class RoomInfoEditView extends React.Component {
 
 	renderAvatar = () => {
 		const {
-			room, t, baseUrl, user
+			room, t, baseUrl, user, resetAvatar
 		} = this.state;
 
 		return (
-			<Avatar
-				text={room.name}
-				size={150}
-				style={styles.avatar}
-				type={t}
-				baseUrl={baseUrl}
-				userId={user.id}
-				token={user.token}
-				roomId={room.rid}
-			>
-				<View style={{
-					position: 'absolute', bottom: 0, right: 0, flexDirection: 'row'
-				}}
-				>
-					<TouchableOpacity
-						onPress={() => { }}
-						style={{
-							backgroundColor: 'white', margin: 3, padding: 3, paddingHorizontal: 6, alignItems: 'center'
-						}}
-					>
-						<CustomIcon name='upload' size={20} color='black' />
-					</TouchableOpacity>
-					<TouchableOpacity
-						onPress={() => { }}
-						style={{
-							backgroundColor: 'red', margin: 3, padding: 3, paddingHorizontal: 6, alignItems: 'center'
-						}}
-					>
-						<CustomIcon name='delete' size={20} color='white' />
-					</TouchableOpacity>
-				</View>
-			</Avatar>
+			<>
+				{resetAvatar
+					? (
+						<Avatar
+							text={`@${ room.name }`}
+							size={150}
+							style={styles.avatar}
+							baseUrl={baseUrl}
+							userId={user.id}
+							token={user.token}
+						>
+							<View style={{
+								position: 'absolute', bottom: 0, right: 0, flexDirection: 'row'
+							}}
+							>
+								<TouchableOpacity
+									onPress={() => { }}
+									style={{
+										backgroundColor: 'white', margin: 3, padding: 3, paddingHorizontal: 6, alignItems: 'center'
+									}}
+								>
+									<CustomIcon name='upload' size={20} color='black' />
+								</TouchableOpacity>
+								<TouchableOpacity
+									onPress={() => this.setState({ resetAvatar: !resetAvatar })}
+									style={{
+										backgroundColor: 'red', margin: 3, padding: 3, paddingHorizontal: 6, alignItems: 'center'
+									}}
+								>
+									<CustomIcon name='delete' size={20} color='white' />
+								</TouchableOpacity>
+							</View>
+						</Avatar>
+					)
+					: (
+						<Avatar
+							text={room.name}
+							size={150}
+							style={styles.avatar}
+							type={t}
+							baseUrl={baseUrl}
+							userId={user.id}
+							token={user.token}
+							roomId={room.rid}
+						>
+							<View style={{
+								position: 'absolute', bottom: 0, right: 0, flexDirection: 'row'
+							}}
+							>
+								<TouchableOpacity
+									onPress={() => { }}
+									style={{
+										backgroundColor: 'white', margin: 3, padding: 3, paddingHorizontal: 6, alignItems: 'center'
+									}}
+								>
+									<CustomIcon name='upload' size={20} color='black' />
+								</TouchableOpacity>
+								<TouchableOpacity
+									onPress={() => this.setState({ resetAvatar: !resetAvatar })}
+									style={{
+										backgroundColor: 'red', margin: 3, padding: 3, paddingHorizontal: 6, alignItems: 'center'
+									}}
+								>
+									<CustomIcon name='delete' size={20} color='white' />
+								</TouchableOpacity>
+							</View>
+						</Avatar>
+					)
+				}
+			</>
 		);
 	}
 
