@@ -16,7 +16,7 @@ class NotificationService: UNNotificationServiceExtension {
         return
       }
       
-      rocketchat = RocketChat.instanceForServer(server: "http://10.0.0.50:3000")
+      rocketchat = RocketChat.instanceForServer(server: data.host)
       
       // If the notification have the content at her payload, show it
       if data.notificationType != .messageIdOnly {
