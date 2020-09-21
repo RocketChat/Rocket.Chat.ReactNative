@@ -81,7 +81,8 @@ class RoomInfoEditView extends React.Component {
 			enableSysMes: false,
 			baseUrl: '',
 			user: {},
-			resetAvatar: false
+			resetAvatar: false,
+			roomAvatar: ''
 		};
 		this.loadRoom();
 	}
@@ -167,7 +168,7 @@ class RoomInfoEditView extends React.Component {
 
 	formIsChanged = () => {
 		const {
-			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, systemMessages, enableSysMes
+			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, systemMessages, enableSysMes, resetAvatar
 		} = this.state;
 		const { joinCodeRequired } = room;
 		return !(room.name === name
@@ -180,6 +181,7 @@ class RoomInfoEditView extends React.Component {
 			&& room.reactWhenReadOnly === reactWhenReadOnly
 			&& isEqual(room.sysMes, systemMessages)
 			&& enableSysMes === (room.sysMes && room.sysMes.length > 0)
+			&& !resetAvatar
 		);
 	}
 
@@ -187,7 +189,7 @@ class RoomInfoEditView extends React.Component {
 		logEvent(events.RI_EDIT_SAVE);
 		Keyboard.dismiss();
 		const {
-			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, systemMessages
+			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, systemMessages, resetAvatar
 		} = this.state;
 
 		this.setState({ saving: true });
@@ -202,6 +204,10 @@ class RoomInfoEditView extends React.Component {
 		await this.clearErrors();
 
 		const params = {};
+
+		if (resetAvatar)  {
+			params.roomAvatar = null;
+		}
 
 		// Name
 		if (room.name !== name) {
@@ -240,7 +246,7 @@ class RoomInfoEditView extends React.Component {
 		if (this.randomValue !== joinCode) {
 			params.joinCode = joinCode;
 		}
-
+		
 		try {
 			await RocketChat.saveRoomSettings(room.rid, params);
 		} catch (e) {
@@ -398,6 +404,7 @@ class RoomInfoEditView extends React.Component {
 									<CustomIcon name='upload' size={20} color='black' />
 								</TouchableOpacity>
 								<TouchableOpacity
+									disabled={true}
 									onPress={() => this.setState({ resetAvatar: !resetAvatar })}
 									style={{
 										backgroundColor: 'red', margin: 3, padding: 3, paddingHorizontal: 6, alignItems: 'center'
