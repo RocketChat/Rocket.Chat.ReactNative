@@ -62,6 +62,7 @@ final class API {
     }
 
     guard let request = request.request(for: self) else {
+      completion(.error)
       return
     }
     
@@ -78,7 +79,10 @@ final class API {
       
       if let response = try? self.decoder.decode(T.ResponseType.self, from: data), response.success {
         completion(.resource(response))
+        return
       }
+      
+      onError()
     }
     
     task.resume()
