@@ -16,7 +16,7 @@ class NotificationService: UNNotificationServiceExtension {
         return
       }
       
-      rocketchat = RocketChat.instanceForServer(server: data.host)
+      rocketchat = RocketChat.instanceForServer(server: "http://10.0.0.50:3000")
       
       // If the notification have the content at her payload, show it
       if data.notificationType != .messageIdOnly {
@@ -40,7 +40,7 @@ class NotificationService: UNNotificationServiceExtension {
     if payload.messageType == .e2e {
       if let message = payload.msg, let rid = payload.rid {
         if let decryptedMessage = rocketchat?.decryptMessage(rid: rid, message: message) {
-          bestAttemptContent?.body = decryptedMessage
+          bestAttemptContent?.body = processSender(roomType: payload.type, decryptedMessage: decryptedMessage)
         }
       }
     }
@@ -48,5 +48,17 @@ class NotificationService: UNNotificationServiceExtension {
     if let bestAttemptContent = bestAttemptContent {
       contentHandler?(bestAttemptContent)
     }
+  }
+  
+  // Trick to join the sender name from the original body to decrypted message
+  func processSender(roomType: String?, decryptedMessage: String) -> String {
+    if let roomType = roomType, roomType == "p", let body = bestAttemptContent?.body {
+      if let index = body.firstIndex(of: ":") {
+        let sender = String(body[...index])
+        return "\(sender) \(decryptedMessage)"
+      }
+    }
+    
+    return decryptedMessage
   }
 }
