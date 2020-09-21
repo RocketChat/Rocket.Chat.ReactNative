@@ -19,6 +19,7 @@ final class RocketChat {
   var encryptionInstances: [RoomId: Encryption] = [:]
   
   static private var queue = DispatchQueue(label: "chat.rocket.instanceQueue")
+  private var encryptionQueue = DispatchQueue(label: "chat.rocket.encryptionQueue")
   
   init(server: Server) {
     self.server = server
@@ -55,7 +56,7 @@ final class RocketChat {
     let id = String.random(length: 17)
     
     var msg = message
-    let encrypted = Database.shared.readRoomEncrypted(rid: rid, server: server)
+    let encrypted = Database(server: server).readRoomEncrypted(rid: rid)
     if encrypted {
       msg = encryptMessage(rid: rid, id: id, message: message)
     }
@@ -73,22 +74,26 @@ final class RocketChat {
   }
   
   func decryptMessage(rid: String, message: String) -> String? {
-    if let encryption = encryptionInstances[rid] {
+    encryptionQueue.sync {
+      if let encryption = encryptionInstances[rid] {
+        return encryption.decryptMessage(message: message)
+      }
+      
+      let encryption = Encryption(server: server, rid: rid)
+      encryptionInstances[rid] = encryption
       return encryption.decryptMessage(message: message)
     }
-    
-    let encryption = Encryption(server: server, rid: rid)
-    encryptionInstances[rid] = encryption
-    return encryption.decryptMessage(message: message)
   }
   
   func encryptMessage(rid: String, id: String, message: String) -> String {
-    if let encryption = encryptionInstances[rid] {
+    encryptionQueue.sync {
+      if let encryption = encryptionInstances[rid] {
+        return encryption.encryptMessage(id: id, message: message)
+      }
+      
+      let encryption = Encryption(server: server, rid: rid)
+      encryptionInstances[rid] = encryption
       return encryption.encryptMessage(id: id, message: message)
     }
-    
-    let encryption = Encryption(server: server, rid: rid)
-    encryptionInstances[rid] = encryption
-    return encryption.encryptMessage(id: id, message: message)
   }
 }

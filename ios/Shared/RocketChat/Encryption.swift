@@ -42,7 +42,7 @@ final class Encryption {
     self.server = server
     self.rid = rid
     
-    if let E2EKey = Database.shared.readRoomEncryptionKey(rid: rid, server: server) {
+    if let E2EKey = Database(server: server).readRoomEncryptionKey(rid: rid) {
       self.roomKey = decryptRoomKey(E2EKey: E2EKey)
     }
   }
