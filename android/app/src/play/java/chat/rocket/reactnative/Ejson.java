@@ -1,9 +1,28 @@
 package chat.rocket.reactnative;
 
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.Callback;
 
 import com.ammarahmed.mmkv.SecureKeystore;
 import com.tencent.mmkv.MMKV;
+
+import java.math.BigInteger;
+
+class RNCallback implements Callback {
+    public void invoke(Object... args) {
+
+    }
+}
+
+class Utils {
+    static public String toHex(String arg) {
+        try {
+            return String.format("%x", new BigInteger(1, arg.getBytes("UTF-8")));
+        } catch (Exception e) {
+            return "";
+        }
+    }
+}
 
 public class Ejson {
     String host;
@@ -63,6 +82,14 @@ public class Ejson {
             return mmkv.decodeString(TOKEN_KEY.concat(serverURL));
         }
         return "";
+    }
+
+    public String privateKey() {
+        String serverURL = serverURL();
+        if (mmkv != null && serverURL != null) {
+            return mmkv.decodeString(serverURL.concat("-RC_E2E_PRIVATE_KEY"));
+        }
+        return null;
     }
 
     public String serverURL() {

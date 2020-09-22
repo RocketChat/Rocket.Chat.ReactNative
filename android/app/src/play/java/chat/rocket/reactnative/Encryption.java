@@ -88,7 +88,10 @@ class Encryption {
     }
 
     public String readUserKey(final Ejson ejson) throws Exception {
-        String privateKey = new Storage(reactContext).getPrivateKey(ejson.serverURL());
+        String privateKey = ejson.privateKey();
+        if (privateKey == null) {
+            return null;
+        }
 
         PrivateKey privKey = gson.fromJson(privateKey, PrivateKey.class);
 
