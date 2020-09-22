@@ -20,6 +20,8 @@
 		1E01C8292511304100FEF824 /* Sender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C8282511304100FEF824 /* Sender.swift */; };
 		1E01C82B2511335A00FEF824 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C82A2511335A00FEF824 /* Message.swift */; };
 		1E01C82D2511337700FEF824 /* RoomKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C82C2511337700FEF824 /* RoomKey.swift */; };
+		1E0426E6251A5467008F022C /* RoomType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0426E5251A5467008F022C /* RoomType.swift */; };
+		1E0426E7251A54B4008F022C /* RoomType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0426E5251A5467008F022C /* RoomType.swift */; };
 		1E068CFE24FD2DC700A0FFC1 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E068CFD24FD2DC700A0FFC1 /* AppGroup.swift */; };
 		1E068CFF24FD2DC700A0FFC1 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E068CFD24FD2DC700A0FFC1 /* AppGroup.swift */; };
 		1E068D0124FD2E0500A0FFC1 /* AppGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E068D0024FD2E0500A0FFC1 /* AppGroup.m */; };
@@ -150,6 +152,7 @@
 		1E01C8282511304100FEF824 /* Sender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sender.swift; sourceTree = "<group>"; };
 		1E01C82A2511335A00FEF824 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		1E01C82C2511337700FEF824 /* RoomKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomKey.swift; sourceTree = "<group>"; };
+		1E0426E5251A5467008F022C /* RoomType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomType.swift; sourceTree = "<group>"; };
 		1E068CFD24FD2DC700A0FFC1 /* AppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
 		1E068D0024FD2E0500A0FFC1 /* AppGroup.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppGroup.m; sourceTree = "<group>"; };
 		1E1C2F7F250FCB69005DCE7D /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
@@ -344,6 +347,7 @@
 				1E01C82C2511337700FEF824 /* RoomKey.swift */,
 				1E51D961251263CD00DC95DE /* MessageType.swift */,
 				1E51D964251263D600DC95DE /* NotificationType.swift */,
+				1E0426E5251A5467008F022C /* RoomType.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1040,6 +1044,7 @@
 				1ED00BB12513E04400A1331F /* ReplyNotification.swift in Sources */,
 				1E76CBC2251529560067298C /* Storage.swift in Sources */,
 				1E76CBD925152C8C0067298C /* Push.swift in Sources */,
+				1E0426E6251A5467008F022C /* RoomType.swift in Sources */,
 				1E76CBCD25152C2C0067298C /* MessageType.swift in Sources */,
 				1E76CBC925152C1F0067298C /* PushResponse.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
@@ -1089,6 +1094,7 @@
 				1E2F615D25128FA300871711 /* Response.swift in Sources */,
 				1E01C82D2511337700FEF824 /* RoomKey.swift in Sources */,
 				1E01C8252511303100FEF824 /* Notification.swift in Sources */,
+				1E0426E7251A54B4008F022C /* RoomType.swift in Sources */,
 				1E1C2F80250FCB69005DCE7D /* Database.swift in Sources */,
 				1E67380424DC529B0009E081 /* String+Extensions.swift in Sources */,
 				1E01C8292511304100FEF824 /* Sender.swift in Sources */,

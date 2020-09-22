@@ -11,11 +11,12 @@ import Foundation
 struct Payload: Codable {
   let host: String
   let rid: String?
-  let type: String?
+  let type: RoomType?
   let sender: Sender?
   let messageId: String
   let notificationType: NotificationType?
   let name: String?
   let messageType: MessageType?
   let msg: String?
+  let senderName: String?
 }
