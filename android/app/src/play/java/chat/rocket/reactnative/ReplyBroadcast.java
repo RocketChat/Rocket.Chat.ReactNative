@@ -11,10 +11,12 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+
 import java.io.IOException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -101,7 +103,7 @@ public class ReplyBroadcast extends BroadcastReceiver {
         int count = 17;
         StringBuilder builder = new StringBuilder();
         while (count-- != 0) {
-            int character = (int)(Math.random()*ALPHA_NUMERIC_STRING.length());
+            int character = (int) (Math.random() * ALPHA_NUMERIC_STRING.length());
             builder.append(ALPHA_NUMERIC_STRING.charAt(character));
         }
         return builder.toString();

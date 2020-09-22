@@ -25,30 +25,30 @@ import java.util.Arrays;
 import java.security.SecureRandom;
 
 class Message {
-  String _id;
-  String userId;
-  String text;
+    String _id;
+    String userId;
+    String text;
 
-  Message(String id, String userId, String text) {
-    this._id = id;
-    this.userId = userId;
-    this.text = text;
-  }
+    Message(String id, String userId, String text) {
+        this._id = id;
+        this.userId = userId;
+        this.text = text;
+    }
 }
 
 class PrivateKey {
-  String d;
-  String dp;
-  String dq;
-  String e;
-  String n;
-  String p;
-  String q;
-  String qi;
+    String d;
+    String dp;
+    String dq;
+    String e;
+    String n;
+    String p;
+    String q;
+    String qi;
 }
 
 class RoomKey {
-  String k;
+    String k;
 }
 
 class Room {
@@ -62,12 +62,12 @@ class Room {
 }
 
 class Encryption {
-  private Gson gson = new Gson();
-  private String E2ERoomKey;
-  private String keyId;
+    private Gson gson = new Gson();
+    private String E2ERoomKey;
+    private String keyId;
 
-  public static Encryption shared = new Encryption();
-  private ReactApplicationContext reactContext;
+    public static Encryption shared = new Encryption();
+    private ReactApplicationContext reactContext;
 
     public Room readRoom(final Ejson ejson) {
         Database database = new Database(ejson.serverURL().replace("https://", "") + ".db", reactContext);
@@ -187,25 +187,23 @@ class Encryption {
         return message;
     }
 
-  static byte[] concat(byte[]...arrays) {
-    // Determine the length of the result array
-    int totalLength = 0;
-    for (int i = 0; i < arrays.length; i++)
-    {
-        totalLength += arrays[i].length;
+    static byte[] concat(byte[]... arrays) {
+        // Determine the length of the result array
+        int totalLength = 0;
+        for (int i = 0; i < arrays.length; i++) {
+            totalLength += arrays[i].length;
+        }
+
+        // create the result array
+        byte[] result = new byte[totalLength];
+
+        // copy the source arrays into the result array
+        int currentIndex = 0;
+        for (int i = 0; i < arrays.length; i++) {
+            System.arraycopy(arrays[i], 0, result, currentIndex, arrays[i].length);
+            currentIndex += arrays[i].length;
+        }
+
+        return result;
     }
-
-    // create the result array
-    byte[] result = new byte[totalLength];
-
-    // copy the source arrays into the result array
-    int currentIndex = 0;
-    for (int i = 0; i < arrays.length; i++)
-    {
-        System.arraycopy(arrays[i], 0, result, currentIndex, arrays[i].length);
-        currentIndex += arrays[i].length;
-    }
-
-    return result;
-  }
 }
