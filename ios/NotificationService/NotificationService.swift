@@ -40,11 +40,10 @@ class NotificationService: UNNotificationServiceExtension {
     if payload.messageType == .e2e {
       if let message = payload.msg, let rid = payload.rid {
         if let decryptedMessage = rocketchat?.decryptMessage(rid: rid, message: message) {
-          var body = decryptedMessage
+          bestAttemptContent?.body = decryptedMessage
           if let roomType = payload.type, roomType == .group, let sender = payload.senderName {
-            body = "\(sender): \(decryptedMessage)"
+            bestAttemptContent?.body = "\(sender): \(decryptedMessage)"
           }
-          bestAttemptContent?.body = body
         }
       }
     }
