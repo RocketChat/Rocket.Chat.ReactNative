@@ -84,6 +84,15 @@ public class CustomPushNotification extends PushNotification {
         boolean hasSender = loadedEjson.sender != null;
         String title = bundle.getString("title");
 
+        // If it has a encrypted message
+        if (loadedEjson.msg != null) {
+            // Override message with the decrypted content
+            String decrypted = Encryption.shared.decryptMessage(loadedEjson, reactApplicationContext);
+            if (decrypted != null) {
+                bundle.putString("message", decrypted);
+            }
+        }
+
         bundle.putLong("time", new Date().getTime());
         bundle.putString("username", hasSender ? loadedEjson.sender.username : title);
         bundle.putString("senderId", hasSender ? loadedEjson.sender._id : "1");
@@ -279,9 +288,14 @@ public class CustomPushNotification extends PushNotification {
                     } else {
                         Bitmap avatar = getAvatar(avatarUri);
 
+                        String name = username;
+                        if (ejson.senderName != null) {
+                            name = ejson.senderName;
+                        }
+
                         Person.Builder sender = new Person.Builder()
                             .setKey(senderId)
-                            .setName(username);
+                            .setName(name);
 
                         if (avatar != null) {
                             sender.setIcon(Icon.createWithBitmap(avatar));

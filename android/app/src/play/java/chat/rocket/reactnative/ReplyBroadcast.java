@@ -64,7 +64,7 @@ public class ReplyBroadcast extends BroadcastReceiver {
         final OkHttpClient client = new OkHttpClient();
         final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-        String json = buildMessage(rid, message.toString());
+        String json = buildMessage(rid, message.toString(), ejson);
 
         CustomPushNotification.clearMessages(notId);
 
@@ -107,19 +107,26 @@ public class ReplyBroadcast extends BroadcastReceiver {
         return builder.toString();
     }
 
-    protected String buildMessage(String rid, String message) {
+    protected String buildMessage(String rid, String message, Ejson ejson) {
         Gson gsonBuilder = new GsonBuilder().create();
 
+        String id = getMessageId();
+
+        String msg = Encryption.shared.encryptMessage(message, id, ejson);
+
         Map msgMap = new HashMap();
-        msgMap.put("_id", getMessageId());
+        msgMap.put("_id", id);
         msgMap.put("rid", rid);
-        msgMap.put("msg", message);
+        msgMap.put("msg", msg);
+        if (msg != message) {
+            msgMap.put("t", "e2e");
+        }
         msgMap.put("tmid", null);
 
-        Map msg = new HashMap();
-        msg.put("message", msgMap);
+        Map m = new HashMap();
+        m.put("message", msgMap);
 
-        String json = gsonBuilder.toJson(msg);
+        String json = gsonBuilder.toJson(m);
 
         return json;
     }

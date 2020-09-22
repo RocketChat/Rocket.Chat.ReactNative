@@ -1,28 +1,9 @@
 package chat.rocket.reactnative;
 
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.Callback;
 
 import com.ammarahmed.mmkv.SecureKeystore;
 import com.tencent.mmkv.MMKV;
-
-import java.math.BigInteger;
-
-class RNCallback implements Callback {
-    public void invoke(Object... args) {
-
-    }
-}
-
-class Utils {
-    static public String toHex(String arg) {
-        try {
-            return String.format("%x", new BigInteger(1, arg.getBytes("UTF-8")));
-        } catch (Exception e) {
-            return "";
-        }
-    }
-}
 
 public class Ejson {
     String host;
@@ -31,6 +12,8 @@ public class Ejson {
     Sender sender;
     String messageId;
     String notificationType;
+    String senderName;
+    String msg;
 
     private MMKV mmkv;
 
