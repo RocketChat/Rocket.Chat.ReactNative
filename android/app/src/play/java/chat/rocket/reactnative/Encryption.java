@@ -105,13 +105,7 @@ class Encryption {
         return new RCTRsaUtils().jwkToPrivatePkcs1(jwk);
     }
 
-    public String readRoomKey(final Ejson ejson) throws Exception {
-        Room room = readRoom(ejson);
-        if (room == null || room.e2eKey == null) {
-            return null;
-        }
-
-        String e2eKey = room.e2eKey;
+    public String decryptRoomKey(final String e2eKey, final Ejson ejson) throws Exception {
         String key = e2eKey.substring(12, e2eKey.length());
         keyId = e2eKey.substring(0, 12);
 
@@ -134,7 +128,11 @@ class Encryption {
         try {
             this.reactContext = reactContext;
 
-            String e2eKey = readRoomKey(ejson);
+            Room room = readRoom(ejson);
+            if (room == null || room.e2eKey == null) {
+                return null;
+            }
+            String e2eKey = decryptRoomKey(room.e2eKey, ejson);
             if (e2eKey == null) {
                 return null;
             }
@@ -160,11 +158,11 @@ class Encryption {
     public String encryptMessage(final String message, final String id, final Ejson ejson) {
         try {
             Room room = readRoom(ejson);
-            if (room == null || !room.encrypted) {
+            if (room == null || !room.encrypted || room.e2eKey == null) {
                 return message;
             }
 
-            String e2eKey = readRoomKey(ejson);
+            String e2eKey = decryptRoomKey(room.e2eKey, ejson);
             if (e2eKey == null) {
                 return message;
             }
