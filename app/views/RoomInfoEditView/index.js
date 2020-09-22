@@ -105,7 +105,7 @@ class RoomInfoEditView extends React.Component {
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	loadRoom = async () => {
+	loadRoom = async() => {
 		const { route } = this.props;
 		const rid = route.params?.rid;
 		const baseUrl = route.params?.baseUrl;
@@ -187,7 +187,7 @@ class RoomInfoEditView extends React.Component {
 		);
 	}
 
-	submit = async () => {
+	submit = async() => {
 		logEvent(events.RI_EDIT_SAVE);
 		Keyboard.dismiss();
 		const {
@@ -212,7 +212,7 @@ class RoomInfoEditView extends React.Component {
 		}
 
 		if (avatar) {
-			params.roomAvatar = avatar.url;
+			params.roomAvatar = avatar.data;
 		}
 
 		// Name
@@ -300,7 +300,7 @@ class RoomInfoEditView extends React.Component {
 		const { room } = this.state;
 		const { rid, archived, t } = room;
 
-		const action = I18n.t(`${archived ? 'un' : ''}archive`);
+		const action = I18n.t(`${ archived ? 'un' : '' }archive`);
 		Alert.alert(
 			I18n.t('Are_you_sure_question_mark'),
 			I18n.t('Do_you_really_want_to_key_this_room_question_mark', { key: action }),
@@ -312,7 +312,7 @@ class RoomInfoEditView extends React.Component {
 				{
 					text: I18n.t('Yes_action_it', { action }),
 					style: 'destructive',
-					onPress: async () => {
+					onPress: async() => {
 						try {
 							logEvent(events.RI_EDIT_TOGGLE_ARCHIVE);
 							await RocketChat.toggleArchiveRoom(rid, t, !archived);
@@ -380,7 +380,7 @@ class RoomInfoEditView extends React.Component {
 		this.setState(({ systemMessages }) => ({ enableSysMes: value, systemMessages: value ? systemMessages : [] }));
 	}
 
-	pickImage = async () => {
+	pickImage = async() => {
 		const options = {
 			cropping: true,
 			compressImageQuality: 0.8,
@@ -392,7 +392,7 @@ class RoomInfoEditView extends React.Component {
 		try {
 			/* logEvent(events.PROFILE_PICK_AVATAR); */
 			const response = await ImagePicker.openPicker(options);
-			this.setState({ avatar: { url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' } });
+			this.setState({ avatar: { url: response.path, data: `data:image/jpeg;base64,${ response.data }`, service: 'upload' } });
 			console.log(this.state.avatar);
 		} catch (error) {
 			/* logEvent(events.PROFILE_PICK_AVATAR_F); */
@@ -404,12 +404,12 @@ class RoomInfoEditView extends React.Component {
 		const {
 			room, t, baseUrl, user, resetAvatar, avatar
 		} = this.state;
-		
+
 		return (
 			<>
 				{
-					avatar ?
-						(
+					avatar
+						? (
 							<Avatar
 								localUri={avatar.url}
 								size={150}
@@ -431,7 +431,7 @@ class RoomInfoEditView extends React.Component {
 										<CustomIcon name='upload' size={20} color='black' />
 									</TouchableOpacity>
 									<TouchableOpacity
-										disabled={true}
+										disabled
 										onPress={() => this.setState({ resetAvatar: !resetAvatar })}
 										style={{
 											backgroundColor: 'red', margin: 3, padding: 3, paddingHorizontal: 6, alignItems: 'center'
@@ -441,11 +441,11 @@ class RoomInfoEditView extends React.Component {
 									</TouchableOpacity>
 								</View>
 							</Avatar>
-						) :
-						resetAvatar
+						)
+						: resetAvatar
 							? (
 								<Avatar
-									text={`@${room.name}`}
+									text={`@${ room.name }`}
 									size={150}
 									style={styles.avatar}
 									baseUrl={baseUrl}
@@ -465,7 +465,7 @@ class RoomInfoEditView extends React.Component {
 											<CustomIcon name='upload' size={20} color='black' />
 										</TouchableOpacity>
 										<TouchableOpacity
-											disabled={true}
+											disabled
 											onPress={() => this.setState({ resetAvatar: !resetAvatar })}
 											style={{
 												backgroundColor: 'red', margin: 3, padding: 3, paddingHorizontal: 6, alignItems: 'center'

@@ -21,7 +21,7 @@ const Avatar = React.memo(({
 		return null;
 	}
 
-	const uri = localUri ? localUri : avatarURL({
+	const uri = localUri || avatarURL({
 		type, text, size, userId, token, avatar, baseUrl, roomId
 	});
 
@@ -75,7 +75,8 @@ Avatar.propTypes = {
 	theme: PropTypes.string,
 	onPress: PropTypes.func,
 	getCustomEmoji: PropTypes.func,
-	roomId: PropTypes.roomId
+	roomId: PropTypes.roomId,
+	localUri: PropTypes.localUri
 };
 
 Avatar.defaultProps = {
