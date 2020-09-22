@@ -1,4 +1,4 @@
-import { schemaMigrations, addColumns, createTable } from '@nozbe/watermelondb/Schema/migrations';
+import { schemaMigrations, addColumns, createTable, unsafeExecuteSql } from '@nozbe/watermelondb/Schema/migrations';
 
 export default schemaMigrations({
 	migrations: [
@@ -41,6 +41,12 @@ export default schemaMigrations({
 		{
 			toVersion: 6,
 			steps: [
+				unsafeExecuteSql('')
+			]
+		},
+		{
+			toVersion: 7,
+			steps: [
 				addColumns({
 					table: 'servers',
 					columns: [
@@ -50,7 +56,7 @@ export default schemaMigrations({
 			]
 		},
 		{
-			toVersion: 7,
+			toVersion: 8,
 			steps: [
 				addColumns({
 					table: 'users',
@@ -61,7 +67,7 @@ export default schemaMigrations({
 			]
 		},
 		{
-			toVersion: 8,
+			toVersion: 9,
 			steps: [
 				addColumns({
 					table: 'servers',
@@ -72,7 +78,7 @@ export default schemaMigrations({
 			]
 		},
 		{
-			toVersion: 9,
+			toVersion: 10,
 			steps: [
 				createTable({
 					name: 'servers_history',

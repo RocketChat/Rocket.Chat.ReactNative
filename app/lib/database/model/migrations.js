@@ -1,4 +1,4 @@
-import { schemaMigrations, addColumns } from '@nozbe/watermelondb/Schema/migrations';
+import { schemaMigrations, addColumns, unsafeExecuteSql } from '@nozbe/watermelondb/Schema/migrations';
 
 export default schemaMigrations({
 	migrations: [
@@ -132,6 +132,12 @@ export default schemaMigrations({
 		},
 		{
 			toVersion: 10,
+			steps: [
+				unsafeExecuteSql('')
+			]
+		},
+		{
+			toVersion: 11,
 			steps: [
 				addColumns({
 					table: 'subscriptions',
