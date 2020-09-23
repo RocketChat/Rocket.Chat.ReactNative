@@ -150,7 +150,11 @@ export default async function() {
 		// filter server info
 		const serverInfo = filteredSettings.filter(i1 => serverInfoKeys.includes(i1._id));
 		const iconSetting = data.find(item => item._id === 'Assets_favicon_512');
-		await serverInfoUpdate(serverInfo, iconSetting);
+		try {
+			await serverInfoUpdate(serverInfo, iconSetting);
+		} catch {
+			// Server not found
+		}
 
 		await db.action(async() => {
 			const settingsCollection = db.collections.get('settings');

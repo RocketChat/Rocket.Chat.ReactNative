@@ -77,6 +77,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		let user = null;
 		if (userId) {
 			try {
+				// search credentials on database
 				const userRecord = yield userCollections.find(userId);
 				user = {
 					id: userRecord.id,
@@ -89,7 +90,11 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 					roles: userRecord.roles
 				};
 			} catch {
-				// Do nothing
+				// search credentials on shared credentials (Experimental/Official)
+				const token = yield UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ userId }`);
+				if (token) {
+					user = { token };
+				}
 			}
 		}
 
