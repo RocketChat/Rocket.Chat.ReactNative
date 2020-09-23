@@ -1,0 +1,13 @@
+diff --git a/node_modules/@nozbe/watermelondb/decorators/date/index.js b/node_modules/@nozbe/watermelondb/decorators/date/index.js
+index 65690af..ce71aa0 100644
+--- a/node_modules/@nozbe/watermelondb/decorators/date/index.js
++++ b/node_modules/@nozbe/watermelondb/decorators/date/index.js
+@@ -44,7 +44,7 @@ var dateDecorator = (0, _makeDecorator.default)(function (columnName) {
+         var rawValue = date ? +new Date(date) : null;
+ 
+         if (rawValue && date) {
+-          cache.set(rawValue, date);
++          cache.set(rawValue, new Date(date));
+         }
+ 
+         this.asModel._setRaw(columnName, rawValue);
