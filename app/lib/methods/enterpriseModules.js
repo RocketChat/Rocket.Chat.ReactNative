@@ -13,8 +13,13 @@ export async function setEnterpriseModules() {
 		const { server: serverId } = reduxStore.getState().server;
 		const serversDB = database.servers;
 		const serversCollection = serversDB.collections.get('servers');
-		const server = await serversCollection.find(serverId);
-		if (server.enterpriseModules) {
+		let server;
+		try {
+			server = await serversCollection.find(serverId);
+		} catch {
+			// Server not found
+		}
+		if (server?.enterpriseModules) {
 			reduxStore.dispatch(setEnterpriseModulesAction(server.enterpriseModules.split(',')));
 			return;
 		}
