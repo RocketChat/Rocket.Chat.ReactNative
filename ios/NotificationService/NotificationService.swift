@@ -18,7 +18,7 @@ class NotificationService: UNNotificationServiceExtension {
       
       rocketchat = RocketChat.instanceForServer(server: data.host)
       
-      // If the notification have the content at her payload, show it
+      // If the notification has the content on the payload, show it
       if data.notificationType != .messageIdOnly {
         self.processPayload(payload: data)
         return
