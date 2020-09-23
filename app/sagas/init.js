@@ -40,8 +40,13 @@ const restore = function* restore() {
 			const serversDB = database.servers;
 			const serverCollections = serversDB.collections.get('servers');
 
-			yield localAuthenticate(server);
-			const serverObj = yield serverCollections.find(server);
+			let serverObj;
+			try {
+				yield localAuthenticate(server);
+				serverObj = yield serverCollections.find(server);
+			} catch {
+				// Server not found
+			}
 			yield put(selectServerRequest(server, serverObj && serverObj.version));
 		}
 
