@@ -108,9 +108,7 @@ class RoomInfoEditView extends React.Component {
 	loadRoom = async() => {
 		const { route } = this.props;
 		const rid = route.params?.rid;
-		const baseUrl = route.params?.baseUrl;
-		const user = route.params?.user;
-
+		
 		if (!rid) {
 			return;
 		}
@@ -121,7 +119,7 @@ class RoomInfoEditView extends React.Component {
 
 			this.querySubscription = observable.subscribe((data) => {
 				this.room = data;
-				this.init(this.room, baseUrl, user);
+				this.init(this.room);
 			});
 
 			const permissions = await RocketChat.hasPermission(PERMISSIONS_ARRAY, rid);
@@ -131,10 +129,14 @@ class RoomInfoEditView extends React.Component {
 		}
 	}
 
-	init = (room, baseUrl, user) => {
+	init = (room) => {
+		const { route } = this.props;
+		const baseUrl = route.params?.baseUrl;
+		const user = route.params?.user;
 		const {
 			description, topic, announcement, t, ro, reactWhenReadOnly, joinCodeRequired, sysMes
 		} = room;
+
 		// fake password just to user knows about it
 		this.randomValue = random(15);
 		this.setState({
@@ -151,7 +153,9 @@ class RoomInfoEditView extends React.Component {
 			systemMessages: sysMes,
 			enableSysMes: sysMes && sysMes.length > 0,
 			baseUrl,
-			user
+			user,
+			resetAvatar: false,
+			avatar: null
 		});
 	}
 
