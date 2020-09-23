@@ -25,7 +25,7 @@ final class Database {
   init(server: String) {
     if let url = URL(string: server) {
       if let domain = url.domain, let directory = directory {
-        self.database = WatermelonDB.Database(path: "\(directory)/\(domain).db")
+        self.database = WatermelonDB.Database(path: "\(directory)/\(domain)-experimental.db")
       }
     }
   }
