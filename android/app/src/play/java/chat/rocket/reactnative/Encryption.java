@@ -70,7 +70,7 @@ class Encryption {
     private ReactApplicationContext reactContext;
 
     public Room readRoom(final Ejson ejson) {
-        Database database = new Database(ejson.serverURL().replace("https://", "") + ".db", reactContext);
+        Database database = new Database(ejson.serverURL().replace("https://", "") + "-experimental.db", reactContext);
         String[] query = {ejson.rid};
         Cursor cursor = database.rawQuery("select * from subscriptions where id == ? limit 1", query);
 
