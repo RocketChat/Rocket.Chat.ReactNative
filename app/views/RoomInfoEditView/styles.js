@@ -82,5 +82,25 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginBottom: 10
+	},
+	avatarButtonsContainer: {
+		position: 'absolute',
+		bottom: 0,
+		right: 0,
+		flexDirection: 'row'
+	},
+	avatarUpload: {
+		backgroundColor: 'white',
+		margin: 3,
+		padding: 3,
+		paddingHorizontal: 6,
+		alignItems: 'center'
+	},
+	avatarReset: {
+		backgroundColor: 'red',
+		margin: 3,
+		padding: 3,
+		paddingHorizontal: 6,
+		alignItems: 'center'
 	}
 });

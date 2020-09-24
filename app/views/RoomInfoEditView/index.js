@@ -8,7 +8,6 @@ import equal from 'deep-equal';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 import isEqual from 'lodash/isEqual';
 import semver from 'semver';
-import ImagePicker from 'react-native-image-crop-picker';
 
 import database from '../../lib/database';
 import { deleteRoom as deleteRoomAction } from '../../actions/room';
@@ -32,8 +31,8 @@ import { withTheme } from '../../theme';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { MessageTypeValues } from '../../utils/messageTypes';
 import SafeAreaView from '../../containers/SafeAreaView';
-import Avatar from '../../containers/Avatar';
-import { CustomIcon } from '../../lib/Icons';
+import RoomAvatarEditor from './RoomAvatarEditor';
+
 
 const PERMISSION_SET_READONLY = 'set-readonly';
 const PERMISSION_SET_REACT_WHEN_READONLY = 'set-react-when-readonly';
@@ -82,7 +81,7 @@ class RoomInfoEditView extends React.Component {
 			enableSysMes: false,
 			baseUrl: '',
 			user: {},
-			resetAvatar: false,
+			avatarUpdated: false,
 			avatar: null
 		};
 		this.loadRoom();
@@ -108,7 +107,7 @@ class RoomInfoEditView extends React.Component {
 	loadRoom = async() => {
 		const { route } = this.props;
 		const rid = route.params?.rid;
-		
+
 		if (!rid) {
 			return;
 		}
@@ -154,7 +153,7 @@ class RoomInfoEditView extends React.Component {
 			enableSysMes: sysMes && sysMes.length > 0,
 			baseUrl,
 			user,
-			resetAvatar: false,
+			avatarUpdated: false,
 			avatar: null
 		});
 	}
@@ -173,7 +172,7 @@ class RoomInfoEditView extends React.Component {
 
 	formIsChanged = () => {
 		const {
-			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, systemMessages, enableSysMes, resetAvatar, avatar
+			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, systemMessages, enableSysMes, avatarUpdated
 		} = this.state;
 		const { joinCodeRequired } = room;
 		return !(room.name === name
@@ -186,8 +185,7 @@ class RoomInfoEditView extends React.Component {
 			&& room.reactWhenReadOnly === reactWhenReadOnly
 			&& isEqual(room.sysMes, systemMessages)
 			&& enableSysMes === (room.sysMes && room.sysMes.length > 0)
-			&& !resetAvatar
-			&& !avatar
+			&& !avatarUpdated
 		);
 	}
 
@@ -195,7 +193,7 @@ class RoomInfoEditView extends React.Component {
 		logEvent(events.RI_EDIT_SAVE);
 		Keyboard.dismiss();
 		const {
-			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, systemMessages, resetAvatar, avatar
+			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, systemMessages, avatarUpdated, avatar
 		} = this.state;
 
 		this.setState({ saving: true });
@@ -211,14 +209,10 @@ class RoomInfoEditView extends React.Component {
 
 		const params = {};
 
-		if (resetAvatar) {
-			params.roomAvatar = null;
+		// Avatar
+		if (avatarUpdated) {
+			params.roomAvatar = avatar?.data || null;
 		}
-
-		if (avatar) {
-			params.roomAvatar = avatar.data;
-		}
-
 		// Name
 		if (room.name !== name) {
 			params.roomName = name;
@@ -384,138 +378,25 @@ class RoomInfoEditView extends React.Component {
 		this.setState(({ systemMessages }) => ({ enableSysMes: value, systemMessages: value ? systemMessages : [] }));
 	}
 
-	pickImage = async() => {
-		const options = {
-			cropping: true,
-			compressImageQuality: 0.8,
-			cropperAvoidEmptySpaceAroundImage: false,
-			cropperChooseText: I18n.t('Choose'),
-			cropperCancelText: I18n.t('Cancel'),
-			includeBase64: true
-		};
-		try {
-			/* logEvent(events.PROFILE_PICK_AVATAR); */
-			const response = await ImagePicker.openPicker(options);
-			this.setState({ avatar: { url: response.path, data: `data:image/jpeg;base64,${ response.data }`, service: 'upload' } });
-			console.log(this.state.avatar);
-		} catch (error) {
-			/* logEvent(events.PROFILE_PICK_AVATAR_F); */
-			console.warn(error);
-		}
+	setAvatar = (avatar) => {
+		this.setState({ avatar, avatarUpdated: true });
 	}
 
 	renderAvatar = () => {
 		const {
-			room, t, baseUrl, user, resetAvatar, avatar
+			room, t, baseUrl, user, avatarUpdated, avatar
 		} = this.state;
 
 		return (
-			<>
-				{
-					avatar
-						? (
-							<Avatar
-								localUri={avatar.url}
-								size={150}
-								style={styles.avatar}
-								baseUrl={baseUrl}
-								userId={user.id}
-								token={user.token}
-							>
-								<View style={{
-									position: 'absolute', bottom: 0, right: 0, flexDirection: 'row'
-								}}
-								>
-									<TouchableOpacity
-										onPress={() => { }}
-										style={{
-											backgroundColor: 'white', margin: 3, padding: 3, paddingHorizontal: 6, alignItems: 'center'
-										}}
-									>
-										<CustomIcon name='upload' size={20} color='black' />
-									</TouchableOpacity>
-									<TouchableOpacity
-										disabled
-										onPress={() => this.setState({ resetAvatar: !resetAvatar })}
-										style={{
-											backgroundColor: 'red', margin: 3, padding: 3, paddingHorizontal: 6, alignItems: 'center'
-										}}
-									>
-										<CustomIcon name='delete' size={20} color='white' />
-									</TouchableOpacity>
-								</View>
-							</Avatar>
-						)
-						: resetAvatar
-							? (
-								<Avatar
-									text={`@${ room.name }`}
-									size={150}
-									style={styles.avatar}
-									baseUrl={baseUrl}
-									userId={user.id}
-									token={user.token}
-								>
-									<View style={{
-										position: 'absolute', bottom: 0, right: 0, flexDirection: 'row'
-									}}
-									>
-										<TouchableOpacity
-											onPress={() => { }}
-											style={{
-												backgroundColor: 'white', margin: 3, padding: 3, paddingHorizontal: 6, alignItems: 'center'
-											}}
-										>
-											<CustomIcon name='upload' size={20} color='black' />
-										</TouchableOpacity>
-										<TouchableOpacity
-											disabled
-											onPress={() => this.setState({ resetAvatar: !resetAvatar })}
-											style={{
-												backgroundColor: 'red', margin: 3, padding: 3, paddingHorizontal: 6, alignItems: 'center'
-											}}
-										>
-											<CustomIcon name='delete' size={20} color='white' />
-										</TouchableOpacity>
-									</View>
-								</Avatar>
-							)
-							: (
-								<Avatar
-									text={room.name}
-									size={150}
-									style={styles.avatar}
-									type={t}
-									baseUrl={baseUrl}
-									userId={user.id}
-									token={user.token}
-									roomId={room.rid}
-								>
-									<View style={{
-										position: 'absolute', bottom: 0, right: 0, flexDirection: 'row'
-									}}
-									>
-										<TouchableOpacity
-											onPress={() => this.pickImage()}
-											style={{
-												backgroundColor: 'white', margin: 3, padding: 3, paddingHorizontal: 6, alignItems: 'center'
-											}}
-										>
-											<CustomIcon name='upload' size={20} color='black' />
-										</TouchableOpacity>
-										<TouchableOpacity
-											onPress={() => this.setState({ resetAvatar: !resetAvatar })}
-											style={{
-												backgroundColor: 'red', margin: 3, padding: 3, paddingHorizontal: 6, alignItems: 'center'
-											}}
-										>
-											<CustomIcon name='delete' size={20} color='white' />
-										</TouchableOpacity>
-									</View>
-								</Avatar>
-							)
-				}
-			</>
+			<RoomAvatarEditor
+				room={room}
+				t={t}
+				baseUrl={baseUrl}
+				user={user}
+				avatarUpdated={avatarUpdated}
+				avatar={avatar}
+				setAvatar={this.setAvatar}
+			/>
 		);
 	}
 
