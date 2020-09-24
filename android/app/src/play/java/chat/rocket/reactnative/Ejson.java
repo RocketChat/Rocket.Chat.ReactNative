@@ -31,6 +31,8 @@ public class Ejson {
     Sender sender;
     String messageId;
     String notificationType;
+    String senderName;
+    String msg;
 
     private MMKV mmkv;
 
@@ -80,6 +82,14 @@ public class Ejson {
             return mmkv.decodeString(TOKEN_KEY.concat(serverURL));
         }
         return "";
+    }
+
+    public String privateKey() {
+        String serverURL = serverURL();
+        if (mmkv != null && serverURL != null) {
+            return mmkv.decodeString(serverURL.concat("-RC_E2E_PRIVATE_KEY"));
+        }
+        return null;
     }
 
     public String serverURL() {
