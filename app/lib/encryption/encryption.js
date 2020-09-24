@@ -43,7 +43,8 @@ class Encryption {
 	}
 
 	// Initialize Encryption client
-	initialize = () => {
+	initialize = (userId) => {
+		this.userId = userId;
 		this.roomInstances = {};
 
 		// Don't await these promises
@@ -69,6 +70,7 @@ class Encryption {
 
 	// Stop Encryption client
 	stop = () => {
+		this.userId = null;
 		this.privateKey = null;
 		this.roomInstances = {};
 		// Cancel ongoing encryption/decryption requests
@@ -199,7 +201,7 @@ class Encryption {
 
 		// If doesn't have a instance of this room
 		if (!this.roomInstances[rid]) {
-			this.roomInstances[rid] = new EncryptionRoom(rid);
+			this.roomInstances[rid] = new EncryptionRoom(rid, this.userId);
 		}
 
 		const roomE2E = this.roomInstances[rid];

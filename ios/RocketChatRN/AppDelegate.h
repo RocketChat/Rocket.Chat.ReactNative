@@ -10,6 +10,7 @@
 #import <UIKit/UIKit.h>
 #import <React/RCTBridgeDelegate.h>
 #import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
+#import "RocketChatRN-Swift.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, RCTBridgeDelegate>
 

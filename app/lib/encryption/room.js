@@ -21,9 +21,10 @@ import database from '../database';
 import log from '../../utils/log';
 
 export default class EncryptionRoom {
-	constructor(roomId) {
+	constructor(roomId, userId) {
 		this.ready = false;
 		this.roomId = roomId;
+		this.userId = userId;
 		this.establishing = false;
 		this.readyPromise = new Deferred();
 		this.readyPromise.then(() => {

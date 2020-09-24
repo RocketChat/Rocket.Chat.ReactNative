@@ -186,8 +186,6 @@ PODS:
   - libwebp/webp (1.1.0)
   - MMKV (1.2.1):
     - MMKVCore (~> 1.2.1)
-  - MMKVAppExtension (1.2.1):
-    - MMKVCore (~> 1.2.1)
   - MMKVCore (1.2.1)
   - nanopb (1.30905.0):
     - nanopb/decode (= 1.30905.0)
@@ -386,7 +384,7 @@ PODS:
     - React
   - react-native-safe-area-context (3.1.1):
     - React
-  - react-native-simple-crypto (0.3.1):
+  - react-native-simple-crypto (0.4.0):
     - OpenSSL-Universal
     - React
   - react-native-slider (3.0.2):
@@ -578,7 +576,6 @@ DEPENDENCIES:
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - KeyCommands (from `../node_modules/react-native-keycommands`)
-  - MMKVAppExtension
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
   - React (from `../node_modules/react-native/`)
@@ -676,7 +673,6 @@ SPEC REPOS:
     - JitsiMeetSDK
     - libwebp
     - MMKV
-    - MMKVAppExtension
     - MMKVCore
     - nanopb
     - OpenSSL-Universal
@@ -904,7 +900,6 @@ SPEC CHECKSUMS:
   KeyCommands: f66c535f698ed14b3d3a4e58859d79a827ea907e
   libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
   MMKV: 67253edee25a34edf332f91d73fa94a9e038b971
-  MMKVAppExtension: d792aa7bd301285e2c3100c5ce15aa44fa26456f
   MMKVCore: fe398984acac1fa33f92795d1b5fd0a334c944af
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
   OpenSSL-Universal: 8b48cc0d10c1b2923617dfe5c178aa9ed2689355
@@ -929,7 +924,7 @@ SPEC CHECKSUMS:
   react-native-notifications: ee8fd739853e72694f3af8b374c8ccb106b7b227
   react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
   react-native-safe-area-context: 344b969c45af3d8464d36e8dea264942992ef033
-  react-native-simple-crypto: 5e4f2877f71675d95baabf5823cd0cc0c379d0e6
+  react-native-simple-crypto: 564740fd8124827d82e9e8ded4a0de8c695c8a4d
   react-native-slider: 0221b417686c5957f6e77cd9ac22c1478a165355
   react-native-webview: 679b6f400176e2ea8a785acf7ae16cf282e7d1eb
   React-RCTActionSheet: 1702a1a85e550b5c36e2e03cb2bd3adea053de95
@@ -983,6 +978,6 @@ SPEC CHECKSUMS:
   Yoga: d5bd05a2b6b94c52323745c2c2b64557c8c66f64
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 4916aa46fbfaed764171540e6ed76fb07a8a95e7
+PODFILE CHECKSUM: 19c78b598c807d2c6b988fd11b24544ac1895a35
 
 COCOAPODS: 1.9.3

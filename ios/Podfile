@@ -20,7 +20,7 @@ end
 
 # used to get user credentials
 target 'NotificationService' do
-  pod 'MMKVAppExtension'
+  all_pods
 end
 
 post_install do |installer|
