@@ -9,11 +9,11 @@ export const LANGUAGES = [
 		file: require('./locales/en').default
 	}, {
 		label: '简体中文',
-		value: 'zh-cn',
+		value: 'zh-CN',
 		file: require('./locales/zh-CN').default
 	}, {
 		label: '繁體中文',
-		value: 'zh-tw',
+		value: 'zh-TW',
 		file: require('./locales/zh-TW').default
 	}, {
 		label: 'Deutsch',
@@ -21,7 +21,7 @@ export const LANGUAGES = [
 		file: require('./locales/de').default
 	}, {
 		label: 'Español (ES)',
-		value: 'es',
+		value: 'es-ES',
 		file: require('./locales/es-ES').default
 	}, {
 		label: 'Français',
@@ -29,11 +29,11 @@ export const LANGUAGES = [
 		file: require('./locales/fr').default
 	}, {
 		label: 'Português (BR)',
-		value: 'pt-br',
+		value: 'pt-BR',
 		file: require('./locales/pt-BR').default
 	}, {
 		label: 'Português (PT)',
-		value: 'pt',
+		value: 'pt-PT',
 		file: require('./locales/pt-PT').default
 	}, {
 		label: 'Russian',
