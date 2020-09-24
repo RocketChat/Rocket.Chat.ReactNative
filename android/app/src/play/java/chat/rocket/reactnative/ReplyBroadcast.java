@@ -11,10 +11,12 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+
 import java.io.IOException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,7 +66,7 @@ public class ReplyBroadcast extends BroadcastReceiver {
         final OkHttpClient client = new OkHttpClient();
         final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-        String json = buildMessage(rid, message.toString());
+        String json = buildMessage(rid, message.toString(), ejson);
 
         CustomPushNotification.clearMessages(notId);
 
@@ -101,25 +103,32 @@ public class ReplyBroadcast extends BroadcastReceiver {
         int count = 17;
         StringBuilder builder = new StringBuilder();
         while (count-- != 0) {
-            int character = (int)(Math.random()*ALPHA_NUMERIC_STRING.length());
+            int character = (int) (Math.random() * ALPHA_NUMERIC_STRING.length());
             builder.append(ALPHA_NUMERIC_STRING.charAt(character));
         }
         return builder.toString();
     }
 
-    protected String buildMessage(String rid, String message) {
+    protected String buildMessage(String rid, String message, Ejson ejson) {
         Gson gsonBuilder = new GsonBuilder().create();
 
+        String id = getMessageId();
+
+        String msg = Encryption.shared.encryptMessage(message, id, ejson);
+
         Map msgMap = new HashMap();
-        msgMap.put("_id", getMessageId());
+        msgMap.put("_id", id);
         msgMap.put("rid", rid);
-        msgMap.put("msg", message);
+        msgMap.put("msg", msg);
+        if (msg != message) {
+            msgMap.put("t", "e2e");
+        }
         msgMap.put("tmid", null);
 
-        Map msg = new HashMap();
-        msg.put("message", msgMap);
+        Map m = new HashMap();
+        m.put("message", msgMap);
 
-        String json = gsonBuilder.toJson(msg);
+        String json = gsonBuilder.toJson(m);
 
         return json;
     }

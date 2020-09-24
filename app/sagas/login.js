@@ -18,7 +18,7 @@ import { roomsRequest } from '../actions/rooms';
 import { toMomentLocale } from '../utils/moment';
 import RocketChat from '../lib/rocketchat';
 import log, { logEvent, events } from '../utils/log';
-import I18n from '../i18n';
+import I18n, { LANGUAGES } from '../i18n';
 import database from '../lib/database';
 import EventEmitter from '../utils/events';
 import { inviteLinksRequest } from '../actions/inviteLinks';
@@ -267,8 +267,9 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 
 const handleSetUser = function* handleSetUser({ user }) {
 	if (user && user.language) {
-		I18n.locale = user.language;
-		moment.locale(toMomentLocale(user.language));
+		const locale = LANGUAGES.find(l => l.value.toLowerCase() === user.language)?.value || user.language;
+		I18n.locale = locale;
+		moment.locale(toMomentLocale(locale));
 	}
 
 	if (user && user.status) {
