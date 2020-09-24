@@ -1,6 +1,9 @@
 import { InteractionManager } from 'react-native';
 import semver from 'semver';
-import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
+import {
+	Rocketchat as RocketchatClient,
+	settings as RocketChatSettings
+} from '@rocket.chat/sdk';
 import { Q } from '@nozbe/watermelondb';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNFetchBlob from 'rn-fetch-blob';
@@ -111,7 +114,7 @@ const RocketChat = {
 	},
 	async getServerInfo(server) {
 		try {
-			const response = await RNFetchBlob.fetch('GET', `${ server }/api/info`);
+			const response = await RNFetchBlob.fetch('GET', `${ server }/api/info`, { ...RocketChatSettings.customHeaders });
 			try {
 				// Try to resolve as json
 				const jsonRes = response.json();
