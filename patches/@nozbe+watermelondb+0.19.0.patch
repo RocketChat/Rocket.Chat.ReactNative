@@ -1,3 +1,36 @@
+diff --git a/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/Database.swift b/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/Database.swift
+index 43f2c9c..e24a24f 100644
+--- a/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/Database.swift
++++ b/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/Database.swift
+@@ -1,14 +1,14 @@
+ import Foundation
+ 
+-class Database {
+-    typealias SQL = String
+-    typealias TableName = String
+-    typealias QueryArgs = [Any]
++public class Database {
++    public typealias SQL = String
++    public typealias TableName = String
++    public typealias QueryArgs = [Any]
+ 
+     private let fmdb: FMDatabase
+     private let path: String
+ 
+-    init(path: String) {
++    public init(path: String) {
+         self.path = path
+         fmdb = FMDatabase(path: path)
+         open()
+@@ -53,7 +53,7 @@ class Database {
+         }
+     }
+ 
+-    func queryRaw(_ query: SQL, _ args: QueryArgs = []) throws -> AnyIterator<FMResultSet> {
++    public func queryRaw(_ query: SQL, _ args: QueryArgs = []) throws -> AnyIterator<FMResultSet> {
+         let resultSet = try fmdb.executeQuery(query, values: args)
+ 
+         return AnyIterator {
 diff --git a/node_modules/@nozbe/watermelondb/native/android/src/main/java/com/nozbe/watermelondb/Database.kt b/node_modules/@nozbe/watermelondb/native/android/src/main/java/com/nozbe/watermelondb/Database.kt
 index 2217222..5b2eb73 100644
 --- a/node_modules/@nozbe/watermelondb/native/android/src/main/java/com/nozbe/watermelondb/Database.kt
