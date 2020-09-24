@@ -1,3 +1,25 @@
+diff --git a/node_modules/@nozbe/watermelondb/native/android/src/main/java/com/nozbe/watermelondb/Database.kt b/node_modules/@nozbe/watermelondb/native/android/src/main/java/com/nozbe/watermelondb/Database.kt
+index 2217222..5b2eb73 100644
+--- a/node_modules/@nozbe/watermelondb/native/android/src/main/java/com/nozbe/watermelondb/Database.kt
++++ b/node_modules/@nozbe/watermelondb/native/android/src/main/java/com/nozbe/watermelondb/Database.kt
+@@ -5,7 +5,7 @@ import android.database.Cursor
+ import android.database.sqlite.SQLiteDatabase
+ import java.io.File
+ 
+-class Database(private val name: String, private val context: Context) {
++public class Database(private val name: String, private val context: Context) {
+ 
+     private val db: SQLiteDatabase by lazy {
+         SQLiteDatabase.openOrCreateDatabase(
+@@ -41,7 +41,7 @@ class Database(private val name: String, private val context: Context) {
+ 
+     fun delete(query: SQL, args: QueryArgs) = db.execSQL(query, args)
+ 
+-    fun rawQuery(query: SQL, args: RawQueryArgs = emptyArray()): Cursor = db.rawQuery(query, args)
++    public fun rawQuery(query: SQL, args: RawQueryArgs = emptyArray()): Cursor = db.rawQuery(query, args)
+ 
+     fun count(query: SQL, args: RawQueryArgs = emptyArray()): Int =
+             rawQuery(query, args).use {
 diff --git a/node_modules/@nozbe/watermelondb/decorators/date/index.js b/node_modules/@nozbe/watermelondb/decorators/date/index.js
 index 65690af..ce71aa0 100644
 --- a/node_modules/@nozbe/watermelondb/decorators/date/index.js

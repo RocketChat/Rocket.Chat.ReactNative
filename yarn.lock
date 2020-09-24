@@ -1922,7 +1922,7 @@
   resolved "https://registry.yarnpkg.com/@nozbe/sqlite/-/sqlite-3.31.1.tgz#ffd394ad7c188c6b73f89fd6e1ccb849a1b96dba"
   integrity sha512-z5+GdcHZl9OQ1g0pnygORAnwCYUlYw/gQxdW/8rS0HxD2Gnn/k3DBQOvqQIH4Z3Z3KWVMbGUYhcH1v4SqTAdwg==
 
-"@nozbe/watermelondb@^0.19.0":
+"@nozbe/watermelondb@0.19.0":
   version "0.19.0"
   resolved "https://registry.yarnpkg.com/@nozbe/watermelondb/-/watermelondb-0.19.0.tgz#70dae4bfca9dde8d61819a6092846e178a50e2f7"
   integrity sha512-x7sclLu/4RDmLzANIYQioKjWdmoIxgqYw7OJnS7UtWEtJGn28l5Z69SWojll/RM0X2KOEem0BIcjqM46CA53GA==
@@ -12848,7 +12848,7 @@ react-native-mime-types@2.3.0:
   dependencies:
     mime-db "~1.37.0"
 
-react-native-mmkv-storage@^0.3.5:
+react-native-mmkv-storage@0.3.5:
   version "0.3.5"
   resolved "https://registry.yarnpkg.com/react-native-mmkv-storage/-/react-native-mmkv-storage-0.3.5.tgz#9c2f064c0efdaf960e9646c68dc6ae7f11640fa5"
   integrity sha512-xp0E55Qdi81k8CTeq3PUrXGwT2tMmfNfmYvZ7Emq9qWpvg3ko1/M6B1kXEXOgEou/hgqB503TGcsR/mpN5HSMA==
@@ -12958,8 +12958,8 @@ react-native-scrollable-tab-view@^1.0.0:
     react-timer-mixin "^0.13.3"
 
 react-native-simple-crypto@RocketChat/react-native-simple-crypto:
-  version "0.3.1"
-  resolved "https://codeload.github.com/RocketChat/react-native-simple-crypto/tar.gz/b3deaf18e83cd4acc418fe65adb2d837164c2a20"
+  version "0.4.0"
+  resolved "https://codeload.github.com/RocketChat/react-native-simple-crypto/tar.gz/21d36ccc8c75771428239f9dcca19afe0c95e95f"
   dependencies:
     base64-js "^1.3.0"
     hex-lite "^1.5.0"
