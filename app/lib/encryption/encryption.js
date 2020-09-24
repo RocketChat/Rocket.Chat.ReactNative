@@ -58,7 +58,7 @@ class Encryption {
 	get establishing() {
 		const { banner } = store.getState().encryption;
 		// If the password was not inserted yet
-		if (banner === E2E_BANNER_TYPE.REQUEST_PASSWORD) {
+		if (!banner || banner === E2E_BANNER_TYPE.REQUEST_PASSWORD) {
 			// We can't decrypt/encrypt, so, reject this try
 			return Promise.reject();
 		}

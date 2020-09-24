@@ -16,13 +16,17 @@ import protectedFunction from '../lib/methods/helpers/protectedFunction';
 const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 	const serversDB = database.servers;
 	const serversCollection = serversDB.collections.get('servers');
-	const serverRecord = yield serversCollection.find(server);
+	try {
+		const serverRecord = yield serversCollection.find(server);
 
-	return serversDB.action(async() => {
-		await serverRecord.update((record) => {
-			record.roomsUpdatedAt = newRoomsUpdatedAt;
+		return serversDB.action(async() => {
+			await serverRecord.update((record) => {
+				record.roomsUpdatedAt = newRoomsUpdatedAt;
+			});
 		});
-	});
+	} catch {
+		// Server not found
+	}
 };
 
 const handleRoomsRequest = function* handleRoomsRequest({ params }) {
@@ -36,8 +40,12 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 			yield put(roomsRefresh());
 		} else {
 			const serversCollection = serversDB.collections.get('servers');
-			const serverRecord = yield serversCollection.find(server);
-			({ roomsUpdatedAt } = serverRecord);
+			try {
+				const serverRecord = yield serversCollection.find(server);
+				({ roomsUpdatedAt } = serverRecord);
+			} catch {
+				// Server not found
+			}
 		}
 		const [subscriptionsResult, roomsResult] = yield RocketChat.getRooms(roomsUpdatedAt);
 		const { subscriptions } = yield mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
