@@ -79,7 +79,7 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 		}
 
 		// Decrypt all pending messages/subscriptions
-		Encryption.initialize();
+		Encryption.initialize(user.id);
 	} catch (e) {
 		log(e);
 	}
@@ -109,7 +109,7 @@ const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password
 		yield Encryption.persistKeys(server, publicKey, privateKey);
 
 		// Decrypt all pending messages/subscriptions
-		Encryption.initialize();
+		Encryption.initialize(user.id);
 
 		// Hide encryption banner
 		yield put(encryptionSetBanner());

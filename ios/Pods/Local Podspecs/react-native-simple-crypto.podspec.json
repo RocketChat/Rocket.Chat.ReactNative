@@ -1,6 +1,6 @@
 {
   "name": "react-native-simple-crypto",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "summary": "A simpler React-Native crypto library",
   "authors": "Gary Button <gary.button.public@gmail.com>",
   "license": "MIT",
