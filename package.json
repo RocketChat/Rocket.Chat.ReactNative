@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@codler/react-native-keyboard-aware-scroll-view": "^1.0.1",
-    "@nozbe/watermelondb": "^0.19.0",
+    "@nozbe/watermelondb": "0.19.0",
     "@react-native-community/art": "^1.2.0",
     "@react-native-community/async-storage": "1.11.0",
     "@react-native-community/cameraroll": "4.0.0",
@@ -88,7 +88,7 @@
     "react-native-keycommands": "2.0.3",
     "react-native-localize": "1.4.0",
     "react-native-mime-types": "2.3.0",
-    "react-native-mmkv-storage": "^0.3.5",
+    "react-native-mmkv-storage": "0.3.5",
     "react-native-modal": "11.5.6",
     "react-native-navigation-bar-color": "2.0.1",
     "react-native-notifications": "2.1.7",

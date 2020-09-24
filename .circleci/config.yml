@@ -170,7 +170,7 @@ jobs:
             if [[ $KEYSTORE ]]; then
               echo $GOOGLE_SERVICES_ANDROID | base64 --decode > google-services.json
             fi
-          working_directory: android/app
+          working_directory: android/app/src/play
 
       - run:
           name: Config variables

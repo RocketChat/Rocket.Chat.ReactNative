@@ -14,12 +14,14 @@ import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Person;
+
 import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+
 import java.util.concurrent.ExecutionException;
 import java.lang.InterruptedException;
 
@@ -84,6 +86,15 @@ public class CustomPushNotification extends PushNotification {
         boolean hasSender = loadedEjson.sender != null;
         String title = bundle.getString("title");
 
+        // If it has a encrypted message
+        if (loadedEjson.msg != null) {
+            // Override message with the decrypted content
+            String decrypted = Encryption.shared.decryptMessage(loadedEjson, reactApplicationContext);
+            if (decrypted != null) {
+                bundle.putString("message", decrypted);
+            }
+        }
+
         bundle.putLong("time", new Date().getTime());
         bundle.putString("username", hasSender ? loadedEjson.sender.username : title);
         bundle.putString("senderId", hasSender ? loadedEjson.sender._id : "1");
@@ -114,12 +125,12 @@ public class CustomPushNotification extends PushNotification {
         Ejson ejson = new Gson().fromJson(bundle.getString("ejson", "{}"), Ejson.class);
 
         notification
-            .setContentTitle(title)
-            .setContentText(message)
-            .setContentIntent(intent)
-            .setPriority(Notification.PRIORITY_HIGH)
-            .setDefaults(Notification.DEFAULT_ALL)
-            .setAutoCancel(true);
+                .setContentTitle(title)
+                .setContentText(message)
+                .setContentIntent(intent)
+                .setPriority(Notification.PRIORITY_HIGH)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setAutoCancel(true);
 
         Integer notificationId = Integer.parseInt(notId);
         notificationColor(notification);
@@ -132,7 +143,7 @@ public class CustomPushNotification extends PushNotification {
             notificationStyle(notification, notificationId, bundle);
             notificationReply(notification, notificationId, bundle);
 
-        // message couldn't be loaded from server (Fallback notification)
+            // message couldn't be loaded from server (Fallback notification)
         } else {
             Gson gson = new Gson();
             // iterate over the current notification ids to dismiss fallback notifications from same server
@@ -163,11 +174,11 @@ public class CustomPushNotification extends PushNotification {
     private Bitmap getAvatar(String uri) {
         try {
             return Glide.with(mContext)
-                .asBitmap()
-                .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
-                .load(uri)
-                .submit(100, 100)
-                .get();
+                    .asBitmap()
+                    .apply(RequestOptions.bitmapTransform(new RoundedCorners(10)))
+                    .load(uri)
+                    .submit(100, 100)
+                    .get();
         } catch (final ExecutionException | InterruptedException e) {
             return largeIcon();
         }
@@ -203,8 +214,8 @@ public class CustomPushNotification extends PushNotification {
             String CHANNEL_NAME = "All";
 
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
-                                                                  CHANNEL_NAME,
-                                                                  NotificationManager.IMPORTANCE_DEFAULT);
+                    CHANNEL_NAME,
+                    NotificationManager.IMPORTANCE_DEFAULT);
 
             final NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(channel);
@@ -253,9 +264,9 @@ public class CustomPushNotification extends PushNotification {
                 messageStyle = new Notification.MessagingStyle("");
             } else {
                 Person sender = new Person.Builder()
-                    .setKey("")
-                    .setName("")
-                    .build();
+                        .setKey("")
+                        .setName("")
+                        .build();
                 messageStyle = new Notification.MessagingStyle(sender);
             }
 
@@ -279,9 +290,14 @@ public class CustomPushNotification extends PushNotification {
                     } else {
                         Bitmap avatar = getAvatar(avatarUri);
 
+                        String name = username;
+                        if (ejson.senderName != null) {
+                            name = ejson.senderName;
+                        }
+
                         Person.Builder sender = new Person.Builder()
-                            .setKey(senderId)
-                            .setName(username);
+                                .setKey(senderId)
+                                .setName(name);
 
                         if (avatar != null) {
                             sender.setIcon(Icon.createWithBitmap(avatar));
@@ -317,18 +333,18 @@ public class CustomPushNotification extends PushNotification {
         PendingIntent replyPendingIntent = PendingIntent.getBroadcast(mContext, notificationId, replyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         RemoteInput remoteInput = new RemoteInput.Builder(KEY_REPLY)
-            .setLabel(label)
-            .build();
+                .setLabel(label)
+                .build();
 
         CharSequence title = label;
         Notification.Action replyAction = new Notification.Action.Builder(smallIconResId, title, replyPendingIntent)
-            .addRemoteInput(remoteInput)
-            .setAllowGeneratedReplies(true)
-            .build();
+                .addRemoteInput(remoteInput)
+                .setAllowGeneratedReplies(true)
+                .build();
 
         notification
-            .setShowWhen(true)
-            .addAction(replyAction);
+                .setShowWhen(true)
+                .addAction(replyAction);
     }
 
     private void notificationDismiss(Notification.Builder notification, int notificationId) {
