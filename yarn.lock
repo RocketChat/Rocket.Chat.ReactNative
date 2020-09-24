@@ -1922,7 +1922,7 @@
   resolved "https://registry.yarnpkg.com/@nozbe/sqlite/-/sqlite-3.31.1.tgz#ffd394ad7c188c6b73f89fd6e1ccb849a1b96dba"
   integrity sha512-z5+GdcHZl9OQ1g0pnygORAnwCYUlYw/gQxdW/8rS0HxD2Gnn/k3DBQOvqQIH4Z3Z3KWVMbGUYhcH1v4SqTAdwg==
 
-"@nozbe/watermelondb@^0.19.0":
+"@nozbe/watermelondb@0.19.0":
   version "0.19.0"
   resolved "https://registry.yarnpkg.com/@nozbe/watermelondb/-/watermelondb-0.19.0.tgz#70dae4bfca9dde8d61819a6092846e178a50e2f7"
   integrity sha512-x7sclLu/4RDmLzANIYQioKjWdmoIxgqYw7OJnS7UtWEtJGn28l5Z69SWojll/RM0X2KOEem0BIcjqM46CA53GA==
