@@ -114,10 +114,10 @@ const RocketChat = {
 	},
 	async getServerInfo(server) {
 		try {
-			const response = await RNFetchBlob.fetch('GET', `${ server }/api/info`, { ...RocketChatSettings.customHeaders });
+			const response = await fetch(`${ server }/api/info`);
 			try {
 				// Try to resolve as json
-				const jsonRes = response.json();
+				const jsonRes = await response.json();
 				if (!(jsonRes?.success)) {
 					return {
 						success: false,

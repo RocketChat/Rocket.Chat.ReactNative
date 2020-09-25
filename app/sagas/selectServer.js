@@ -1,5 +1,5 @@
 import { put, takeLatest } from 'redux-saga/effects';
-import { Alert } from 'react-native';
+import { Alert, NativeModules } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 import semver from 'semver';
@@ -22,6 +22,8 @@ import UserPreferences from '../lib/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
+
+const { SSLPinning } = NativeModules;
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
@@ -68,6 +70,9 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }) {
 	try {
+		const certificate = yield UserPreferences.getStringAsync(extractHostname(server));
+		yield SSLPinning.setCertificate(certificate);
+
 		yield put(inquiryReset());
 		yield put(encryptionStop());
 		const serversDB = database.servers;
@@ -142,7 +147,8 @@ const handleServerRequest = function* handleServerRequest({
 }) {
 	try {
 		if (certificate) {
-			yield UserPreferences.setMapAsync(extractHostname(server), certificate);
+			yield SSLPinning.setCertificate(certificate);
+			yield UserPreferences.setStringAsync(extractHostname(server), certificate);
 		}
 
 		const serverInfo = yield getServerInfo({ server });
