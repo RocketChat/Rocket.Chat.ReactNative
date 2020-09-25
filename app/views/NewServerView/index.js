@@ -30,6 +30,7 @@ import { CloseModalButton } from '../../containers/HeaderButton';
 import { showConfirmationAlert } from '../../utils/info';
 import database from '../../lib/database';
 import ServerInput from './ServerInput';
+import { sanitizeLikeString } from '../../lib/database/utils';
 
 const styles = StyleSheet.create({
 	title: {
@@ -138,10 +139,11 @@ class NewServerView extends React.Component {
 				Q.experimentalSortBy('updated_at', Q.desc),
 				Q.experimentalTake(3)
 			];
+			const likeString = sanitizeLikeString(text);
 			if (text) {
 				whereClause = [
 					...whereClause,
-					Q.where('url', Q.like(`%${ Q.sanitizeLikeString(text) }%`))
+					Q.where('url', Q.like(`%${ likeString }%`))
 				];
 			}
 			const serversHistory = await serversHistoryCollection.query(...whereClause).fetch();

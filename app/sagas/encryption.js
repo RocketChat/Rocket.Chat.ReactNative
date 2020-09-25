@@ -20,19 +20,26 @@ import I18n from '../i18n';
 import log from '../utils/log';
 
 const getServer = state => state.share.server || state.server.server;
+const getE2eEnable = state => state.settings.E2E_Enable;
 
 const handleEncryptionInit = function* handleEncryptionInit() {
 	try {
 		const server = yield select(getServer);
 		const user = yield select(getUserSelector);
+		const E2E_Enable = yield select(getE2eEnable);
 
 		// Fetch server info to check E2E enable
 		const serversDB = database.servers;
 		const serversCollection = serversDB.collections.get('servers');
-		const serverInfo = yield serversCollection.find(server);
+		let serverInfo;
+		try {
+			serverInfo = yield serversCollection.find(server);
+		} catch {
+			// Server not found
+		}
 
 		// If E2E is disabled on server, skip
-		if (!serverInfo?.E2E_Enable) {
+		if (!serverInfo?.E2E_Enable && !E2E_Enable) {
 			return;
 		}
 
@@ -72,7 +79,7 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 		}
 
 		// Decrypt all pending messages/subscriptions
-		Encryption.initialize();
+		Encryption.initialize(user.id);
 	} catch (e) {
 		log(e);
 	}
@@ -102,7 +109,7 @@ const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password
 		yield Encryption.persistKeys(server, publicKey, privateKey);
 
 		// Decrypt all pending messages/subscriptions
-		Encryption.initialize();
+		Encryption.initialize(user.id);
 
 		// Hide encryption banner
 		yield put(encryptionSetBanner());

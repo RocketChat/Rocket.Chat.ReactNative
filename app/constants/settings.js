@@ -184,5 +184,8 @@ export default {
 	},
 	Force_Screen_Lock_After: {
 		type: 'valueAsNumber'
+	},
+	Allow_Save_Media_to_Gallery: {
+		type: 'valueAsBoolean'
 	}
 };

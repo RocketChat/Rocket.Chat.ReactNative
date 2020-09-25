@@ -64,13 +64,14 @@ static void InitializeFlipper(UIApplication *application) {
     self.window.rootViewController = rootViewController;
     [self.window makeKeyAndVisible];
     [RNNotifications startMonitorNotifications];
+    [ReplyNotification configure];
   
     // AppGroup MMKV
     NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
     [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
   
     // Start the MMKV container
-    MMKV *defaultMMKV = [MMKV defaultMMKV];
+    MMKV *defaultMMKV = [MMKV mmkvWithID:@"migration" mode:MMKVMultiProcess];
     BOOL alreadyMigrated = [defaultMMKV getBoolForKey:@"alreadyMigrated"];
 
     if (!alreadyMigrated) {
