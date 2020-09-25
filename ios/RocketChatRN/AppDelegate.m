@@ -71,7 +71,7 @@ static void InitializeFlipper(UIApplication *application) {
     [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
   
     // Start the MMKV container
-    MMKV *defaultMMKV = [MMKV defaultMMKV];
+    MMKV *defaultMMKV = [MMKV mmkvWithID:@"migration" mode:MMKVMultiProcess];
     BOOL alreadyMigrated = [defaultMMKV getBoolForKey:@"alreadyMigrated"];
 
     if (!alreadyMigrated) {
