@@ -23,11 +23,13 @@ export function selectServerFailure() {
 	};
 }
 
-export function serverRequest(server, certificate = null) {
+export function serverRequest(server, certificate = null, username = null, fromServerHistory = false) {
 	return {
 		type: SERVER.REQUEST,
 		server,
-		certificate
+		certificate,
+		username,
+		fromServerHistory
 	};
 }
 

@@ -2,6 +2,7 @@ import EJSON from 'ejson';
 
 import normalizeMessage from './normalizeMessage';
 import findSubscriptionsRooms from './findSubscriptionsRooms';
+import { Encryption } from '../../encryption';
 // TODO: delete and update
 
 export const merge = (subscription, room) => {
@@ -27,6 +28,8 @@ export const merge = (subscription, room) => {
 		}
 		subscription.ro = room.ro;
 		subscription.broadcast = room.broadcast;
+		subscription.encrypted = room.encrypted;
+		subscription.e2eKeyId = room.e2eKeyId;
 		if (!subscription.roles || !subscription.roles.length) {
 			subscription.roles = [];
 		}
@@ -72,17 +75,23 @@ export default async(subscriptions = [], rooms = []) => {
 		rooms = rooms.update;
 	}
 
+	// Find missing rooms/subscriptions on local database
 	({ subscriptions, rooms } = await findSubscriptionsRooms(subscriptions, rooms));
+	// Merge each subscription into a room
+	subscriptions = subscriptions.map((s) => {
+		const index = rooms.findIndex(({ _id }) => _id === s.rid);
+		// Room not found
+		if (index < 0) {
+			return merge(s);
+		}
+		const [room] = rooms.splice(index, 1);
+		return merge(s, room);
+	});
+	// Decrypt all subscriptions missing decryption
+	subscriptions = await Encryption.decryptSubscriptions(subscriptions);
 
 	return {
-		subscriptions: subscriptions.map((s) => {
-			const index = rooms.findIndex(({ _id }) => _id === s.rid);
-			if (index < 0) {
-				return merge(s);
-			}
-			const [room] = rooms.splice(index, 1);
-			return merge(s, room);
-		}),
+		subscriptions,
 		rooms
 	};
 };

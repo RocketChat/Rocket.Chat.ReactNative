@@ -26,6 +26,7 @@ import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import RocketChat from '../../lib/rocketchat';
+import { sanitizeLikeString } from '../../lib/database/utils';
 
 const permission = {
 	title: I18n.t('Read_External_Permission'),
@@ -169,7 +170,7 @@ class ShareListView extends React.Component {
 					? null
 					: (
 						<CustomHeaderButtons>
-							<Item title='search' iconName='magnifier' onPress={this.initSearch} />
+							<Item title='search' iconName='search' onPress={this.initSearch} />
 						</CustomHeaderButtons>
 					)
 			)
@@ -195,13 +196,14 @@ class ShareListView extends React.Component {
 			Q.experimentalSortBy('room_updated_at', Q.desc)
 		];
 		if (text) {
+			const likeString = sanitizeLikeString(text);
 			return db.collections
 				.get('subscriptions')
 				.query(
 					...defaultWhereClause,
 					Q.or(
-						Q.where('name', Q.like(`%${ Q.sanitizeLikeString(text) }%`)),
-						Q.where('fname', Q.like(`%${ Q.sanitizeLikeString(text) }%`))
+						Q.where('name', Q.like(`%${ likeString }%`)),
+						Q.where('fname', Q.like(`%${ likeString }%`))
 					)
 				).fetch();
 		}

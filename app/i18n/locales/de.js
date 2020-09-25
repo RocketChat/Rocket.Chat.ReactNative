@@ -487,7 +487,6 @@ export default {
 	Tap_to_view_servers_list: 'Hier tippen, um die Serverliste anzuzeigen',
 	Terms_of_Service: ' Nutzungsbedingungen',
 	Theme: 'Erscheinungsbild',
-	The_URL_is_invalid: 'Die eingegebene URL ist ungültig. Überprüfe sie bitte noch einmal und versuche es erneut!',
 	The_user_wont_be_able_to_type_in_roomName: 'Dem Nutzer wird es nicht möglich sein in {{roomName}} zu schreiben',
 	The_user_will_be_able_to_type_in_roomName: 'Der Nutzer wird in {{roomName}} schreiben können',
 	There_was_an_error_while_action: 'Während {{action}} ist ein Fehler aufgetreten!',

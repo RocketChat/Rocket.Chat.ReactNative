@@ -99,6 +99,70 @@ export default ({ theme }) => {
 			<Separator title='Edited' theme={theme} />
 			<Message msg='Message' edited />
 
+			<Separator title='Encrypted' theme={theme} />
+			<Message
+				msg='Message'
+				type='e2e'
+			/>
+			<Message
+				msg='Message Encrypted without Header'
+				isHeader={false}
+				type='e2e'
+			/>
+			<Message
+				msg='Message Encrypted with Reactions'
+				reactions={[{
+					emoji: ':joy:',
+					usernames: [{ value: 'username' }]
+				}, {
+					emoji: ':marioparty:',
+					usernames: [{ value: 'username' }]
+				}, {
+					emoji: ':thinking:',
+					usernames: [{ value: 'username' }]
+				}]}
+				onReactionPress={() => {}}
+				type='e2e'
+			/>
+			<Message
+				msg='Thread reply encrypted'
+				tmid='1'
+				tmsg='Thread with emoji :) :joy:'
+				isThreadReply
+				type='e2e'
+			/>
+			<Message
+				msg='Temp message encrypted'
+				status={messagesStatus.TEMP}
+				isTemp
+				type='e2e'
+			/>
+			<Message
+				msg='Message Edited encrypted'
+				edited
+				type='e2e'
+			/>
+			<Message
+				hasError
+				msg='This message has error and is encrypted'
+				status={messagesStatus.ERROR}
+				onErrorPress={() => alert('Error pressed')}
+				type='e2e'
+			/>
+			<Message
+				msg='Read Receipt encrypted with Header'
+				isReadReceiptEnabled
+				read
+				type='e2e'
+			/>
+			<Message
+				msg='Read Receipt encrypted without Header'
+				isReadReceiptEnabled
+				read
+				isHeader={false}
+				type='e2e'
+			/>
+
 			<Separator title='Block Quote' theme={theme} />
 			<Message msg='> Testing block quote' />
 			<Message msg={'> Testing block quote\nTesting block quote'} />

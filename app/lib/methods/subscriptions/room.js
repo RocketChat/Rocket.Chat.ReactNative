@@ -11,6 +11,7 @@ import { addUserTyping, removeUserTyping, clearUserTyping } from '../../../actio
 import debounce from '../../../utils/debounce';
 import RocketChat from '../../rocketchat';
 import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
+import { Encryption } from '../../encryption';
 
 const WINDOW_TIME = 1000;
 
@@ -46,6 +47,7 @@ export default class RoomSubscription {
 	unsubscribe = async() => {
 		console.log(`[RCRN] Unsubscribing from room ${ this.rid }`);
 		this.isAlive = false;
+		reduxStore.dispatch(unsubscribeRoom(this.rid));
 		if (this.promises) {
 			try {
 				const subscriptions = await this.promises || [];
@@ -62,8 +64,6 @@ export default class RoomSubscription {
 		if (this.timer) {
 			clearTimeout(this.timer);
 		}
-
-		reduxStore.dispatch(unsubscribeRoom(this.rid));
 	}
 
 	removeListener = async(promise) => {
@@ -162,6 +162,9 @@ export default class RoomSubscription {
 			const msgCollection = db.collections.get('messages');
 			const threadsCollection = db.collections.get('threads');
 			const threadMessagesCollection = db.collections.get('thread_messages');
+
+			// Decrypt the message if necessary
+			message = await Encryption.decryptMessage(message);
 
 			// Create or update message
 			try {

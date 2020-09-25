@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {
 	FlatList, Text, View, StyleSheet
 } from 'react-native';
-import RNUserDefaults from 'rn-user-defaults';
 
 import I18n from '../i18n';
 import { withTheme } from '../theme';
@@ -16,6 +15,7 @@ import { CustomIcon } from '../lib/Icons';
 import { THEME_PREFERENCES_KEY } from '../lib/rocketchat';
 import { supportSystemTheme } from '../utils/deviceInfo';
 import SafeAreaView from '../containers/SafeAreaView';
+import UserPreferences from '../lib/userPreferences';
 import { events, logEvent } from '../utils/log';
 
 const THEME_GROUP = 'THEME_GROUP';
@@ -111,7 +111,7 @@ class ThemeView extends React.Component {
 		const { setTheme, themePreferences } = this.props;
 		const newTheme = { ...themePreferences, ...theme };
 		setTheme(newTheme);
-		await RNUserDefaults.setObjectForKey(THEME_PREFERENCES_KEY, newTheme);
+		await UserPreferences.setMapAsync(THEME_PREFERENCES_KEY, newTheme);
 	};
 
 	renderSeparator = () => {
