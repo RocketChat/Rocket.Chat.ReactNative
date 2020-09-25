@@ -205,7 +205,8 @@ class DirectoryView extends React.Component {
 			testID: `federation-view-item-${ item.name }`,
 			style,
 			user,
-			theme
+			theme,
+			rid: item._id
 		};
 
 		if (type === 'users') {

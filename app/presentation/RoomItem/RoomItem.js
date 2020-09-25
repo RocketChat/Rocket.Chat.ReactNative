@@ -73,6 +73,7 @@ const RoomItem = ({
 			userId={userId}
 			token={token}
 			theme={theme}
+			rid={rid}
 		>
 			{showLastMessage
 				? (
