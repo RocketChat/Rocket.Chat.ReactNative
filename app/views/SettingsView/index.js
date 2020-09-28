@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-	View, Linking, ScrollView, Switch, Share, Clipboard
-} from 'react-native';
+import { Linking, Switch, Share, Clipboard } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -14,7 +12,7 @@ import { toggleCrashReport as toggleCrashReportAction, toggleAnalyticsEvents as 
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { DrawerButton, CloseModalButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
-import * as List from '../../containers/List/List';
+import * as List from '../../containers/List';
 import ItemInfo from '../../containers/ItemInfo';
 import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import Separator from '../../containers/Separator';
@@ -26,7 +24,6 @@ import {
 import openLink from '../../utils/openLink';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
-import styles from './styles';
 import {
 	loggerConfig, analytics, logEvent, events
 } from '../../utils/log';
@@ -239,12 +236,7 @@ class SettingsView extends React.Component {
 		return (
 			<SafeAreaView testID='settings-view'>
 				<StatusBar />
-				<ScrollView
-					{...scrollPersistTaps}
-					contentContainerStyle={styles.listPadding}
-					showsVerticalScrollIndicator={false}
-					testID='settings-view-list'
-				>
+				<List.Container testID='settings-view-list'>
 					{isMasterDetail ? (
 						<>
 							<List.Section>
@@ -397,7 +389,7 @@ class SettingsView extends React.Component {
 						/>
 						<Separator />
 					</List.Section>
-				</ScrollView>
+				</List.Container>
 			</SafeAreaView>
 		);
 	}

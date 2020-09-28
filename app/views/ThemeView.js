@@ -10,7 +10,7 @@ import { themes } from '../constants/colors';
 import sharedStyles from './Styles';
 import StatusBar from '../containers/StatusBar';
 import Separator from '../containers/Separator';
-import * as List from '../containers/List/List';
+import * as List from '../containers/List';
 import { CustomIcon } from '../lib/Icons';
 import { THEME_PREFERENCES_KEY } from '../lib/rocketchat';
 import { supportSystemTheme } from '../utils/deviceInfo';
