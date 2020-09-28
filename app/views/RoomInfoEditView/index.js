@@ -6,6 +6,7 @@ import {
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
+import ImagePicker from 'react-native-image-crop-picker';
 import isEqual from 'lodash/isEqual';
 import semver from 'semver';
 
@@ -31,6 +32,7 @@ import { withTheme } from '../../theme';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { MessageTypeValues } from '../../utils/messageTypes';
 import SafeAreaView from '../../containers/SafeAreaView';
+import Avatar from '../../containers/Avatar';
 
 const PERMISSION_SET_READONLY = 'set-readonly';
 const PERMISSION_SET_REACT_WHEN_READONLY = 'set-react-when-readonly';
@@ -64,6 +66,7 @@ class RoomInfoEditView extends React.Component {
 		super(props);
 		this.state = {
 			room: {},
+			avatar: {},
 			permissions: {},
 			name: '',
 			description: '',
@@ -136,6 +139,7 @@ class RoomInfoEditView extends React.Component {
 			topic,
 			announcement,
 			t: t === 'p',
+			avatar: {},
 			ro,
 			reactWhenReadOnly,
 			joinCode: joinCodeRequired ? this.randomValue : '',
@@ -160,7 +164,7 @@ class RoomInfoEditView extends React.Component {
 
 	formIsChanged = () => {
 		const {
-			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, systemMessages, enableSysMes, encrypted
+			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, systemMessages, enableSysMes, encrypted, avatar
 		} = this.state;
 		const { joinCodeRequired } = room;
 		return !(room.name === name
@@ -174,6 +178,7 @@ class RoomInfoEditView extends React.Component {
 			&& isEqual(room.sysMes, systemMessages)
 			&& enableSysMes === (room.sysMes && room.sysMes.length > 0)
 			&& room.encrypted === encrypted
+			&& !avatar.data
 		);
 	}
 
@@ -181,7 +186,7 @@ class RoomInfoEditView extends React.Component {
 		logEvent(events.RI_EDIT_SAVE);
 		Keyboard.dismiss();
 		const {
-			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, systemMessages, encrypted
+			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, systemMessages, encrypted, avatar
 		} = this.state;
 
 		this.setState({ saving: true });
@@ -200,6 +205,10 @@ class RoomInfoEditView extends React.Component {
 		// Name
 		if (room.name !== name) {
 			params.roomName = name;
+		}
+		// Avatar
+		if (avatar.data) {
+			params.roomAvatar = avatar.data;
 		}
 		// Description
 		if (room.description !== description) {
@@ -347,6 +356,24 @@ class RoomInfoEditView extends React.Component {
 		);
 	}
 
+	changeAvatar = async() => {
+		const options = {
+			cropping: true,
+			compressImageQuality: 0.8,
+			cropperAvoidEmptySpaceAroundImage: false,
+			cropperChooseText: I18n.t('Choose'),
+			cropperCancelText: I18n.t('Cancel'),
+			includeBase64: true
+		};
+
+		try {
+			const response = await ImagePicker.openPicker(options);
+			this.setState({ avatar: { url: response.path, data: `data:image/jpeg;base64,${ response.data }`, service: 'upload' } });
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
 	toggleRoomType = (value) => {
 		logEvent(events.RI_EDIT_TOGGLE_ROOM_TYPE);
 		this.setState(({ encrypted }) => ({ t: value, encrypted: value && encrypted }));
@@ -374,7 +401,7 @@ class RoomInfoEditView extends React.Component {
 
 	render() {
 		const {
-			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode, saving, permissions, archived, enableSysMes, encrypted
+			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode, saving, permissions, archived, enableSysMes, encrypted, avatar
 		} = this.state;
 		const { serverVersion, e2eEnabled, theme } = this.props;
 		const { dangerColor } = themes[theme];
@@ -396,6 +423,16 @@ class RoomInfoEditView extends React.Component {
 						testID='room-info-edit-view-list'
 						{...scrollPersistTaps}
 					>
+						<TouchableOpacity style={styles.avatarContainer} onPress={this.changeAvatar}>
+							<Avatar
+								type={room.t}
+								text={room.name}
+								avatar={avatar?.url}
+								isStatic={avatar?.url}
+								rid={room.rid}
+								size={100}
+							/>
+						</TouchableOpacity>
 						<RCTextInput
 							inputRef={(e) => { this.name = e; }}
 							label={I18n.t('Name')}

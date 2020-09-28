@@ -72,5 +72,10 @@ export default StyleSheet.create({
 	},
 	switchMargin: {
 		marginBottom: 16
+	},
+	avatarContainer: {
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginBottom: 10
 	}
 });
