@@ -579,6 +579,7 @@ const RocketChat = {
 					rid: sub.rid,
 					name: sub.name,
 					fname: sub.fname,
+					avatarETag: sub.avatarETag,
 					t: sub.t,
 					search: true
 				});
