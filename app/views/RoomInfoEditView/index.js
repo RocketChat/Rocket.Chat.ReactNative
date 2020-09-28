@@ -8,6 +8,7 @@ import equal from 'deep-equal';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 import ImagePicker from 'react-native-image-crop-picker';
 import isEqual from 'lodash/isEqual';
+import isEmpty from 'lodash/isEmpty';
 import semver from 'semver';
 
 import database from '../../lib/database';
@@ -33,6 +34,7 @@ import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { MessageTypeValues } from '../../utils/messageTypes';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Avatar from '../../containers/Avatar';
+import { CustomIcon } from '../../lib/Icons';
 
 const PERMISSION_SET_READONLY = 'set-readonly';
 const PERMISSION_SET_REACT_WHEN_READONLY = 'set-react-when-readonly';
@@ -178,7 +180,7 @@ class RoomInfoEditView extends React.Component {
 			&& isEqual(room.sysMes, systemMessages)
 			&& enableSysMes === (room.sysMes && room.sysMes.length > 0)
 			&& room.encrypted === encrypted
-			&& !avatar.data
+			&& isEmpty(avatar)
 		);
 	}
 
@@ -207,7 +209,7 @@ class RoomInfoEditView extends React.Component {
 			params.roomName = name;
 		}
 		// Avatar
-		if (avatar.data) {
+		if (!isEmpty(avatar)) {
 			params.roomAvatar = avatar.data;
 		}
 		// Description
@@ -374,6 +376,10 @@ class RoomInfoEditView extends React.Component {
 		}
 	}
 
+	resetAvatar = () => {
+		this.setState({ avatar: { data: null } });
+	}
+
 	toggleRoomType = (value) => {
 		logEvent(events.RI_EDIT_TOGGLE_ROOM_TYPE);
 		this.setState(({ encrypted }) => ({ t: value, encrypted: value && encrypted }));
@@ -429,9 +435,13 @@ class RoomInfoEditView extends React.Component {
 								text={room.name}
 								avatar={avatar?.url}
 								isStatic={avatar?.url}
-								rid={room.rid}
+								rid={isEmpty(avatar) && room.rid}
 								size={100}
-							/>
+							>
+								<TouchableOpacity style={[styles.resetButton, { backgroundColor: themes[theme].dangerColor }]} onPress={this.resetAvatar}>
+									<CustomIcon name='delete' color={themes[theme].backgroundColor} size={24} />
+								</TouchableOpacity>
+							</Avatar>
 						</TouchableOpacity>
 						<RCTextInput
 							inputRef={(e) => { this.name = e; }}

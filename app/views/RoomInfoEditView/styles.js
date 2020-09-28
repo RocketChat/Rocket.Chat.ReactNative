@@ -77,5 +77,12 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginBottom: 10
+	},
+	resetButton: {
+		padding: 4,
+		borderRadius: 4,
+		position: 'absolute',
+		bottom: -8,
+		right: -8
 	}
 });
