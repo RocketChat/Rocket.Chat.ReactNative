@@ -13,7 +13,7 @@ export const avatarURL = ({
 	}
 
 	// Avoid requesting several sizes by having only two sizes on cache
-	const uriSize = size === 100 ? 100 : 50;
+	const uriSize = size > 100 ? size : 100;
 
 	const { id, token } = user;
 	let query = '';
