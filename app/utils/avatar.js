@@ -3,7 +3,7 @@ const formatUrl = (url, size, query) => `${ url }?format=png&size=${ size }${ qu
 export const avatarURL = ({
 	type, text, size, user = {}, avatar, server, avatarETag, rid
 }) => {
-	let room = `room/${ rid }`;
+	let room;
 	if (type === 'd') {
 		room = text;
 	} else if (rid) {
