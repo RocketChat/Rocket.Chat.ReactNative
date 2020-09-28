@@ -151,7 +151,6 @@ class E2ESaveYourPasswordView extends React.Component {
 							type='secondary'
 							theme={theme}
 							testID='e2e-save-password-view-how-it-works'
-							accessibilityLabel={I18n.t('How_It_Works')}
 						/>
 						<Button
 							onPress={this.onSaved}
