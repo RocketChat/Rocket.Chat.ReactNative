@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import I18n from '../i18n';
 import Separator from '../containers/Separator';
-import * as List from '../../containers/List/List';
+import * as List from '../containers/List/List';
 import Status from '../containers/Status/Status';
 import TextInput from '../containers/TextInput';
 import EventEmitter from '../utils/events';
@@ -167,7 +167,7 @@ class StatusView extends React.Component {
 		const { theme, user } = this.props;
 		const { id, name } = item;
 		return (
-			<ListItem
+			<List.Item
 				title={I18n.t(name)}
 				onPress={async() => {
 					logEvent(events[`STATUS_${ item.id.toUpperCase() }`]);

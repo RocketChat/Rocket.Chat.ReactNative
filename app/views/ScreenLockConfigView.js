@@ -8,7 +8,7 @@ import { withTheme } from '../theme';
 import { themes, SWITCH_TRACK_COLOR } from '../constants/colors';
 import StatusBar from '../containers/StatusBar';
 import Separator from '../containers/Separator';
-import * as List from '../../containers/List/List';
+import * as List from '../containers/List/List';
 import ItemInfo from '../containers/ItemInfo';
 import { CustomIcon } from '../lib/Icons';
 import database from '../lib/database';
@@ -176,7 +176,7 @@ class ScreenLockConfigView extends React.Component {
 		const { title, value, disabled } = item;
 		return (
 			<>
-				<ListItem
+				<List.Item
 					title={title}
 					onPress={() => this.changeAutoLockTime(value)}
 					right={this.isSelected(value) ? this.renderIcon : null}
@@ -254,7 +254,7 @@ class ScreenLockConfigView extends React.Component {
 		return (
 			<>
 				<Separator theme={theme} />
-				<ListItem
+				<List.Item
 					title={I18n.t('Local_authentication_unlock_with_label', { label: biometryLabel })}
 					right={() => this.renderBiometrySwitch()}
 					theme={theme}
@@ -275,7 +275,7 @@ class ScreenLockConfigView extends React.Component {
 					contentContainerStyle={styles.listPadding}
 				>
 					<Separator theme={theme} />
-					<ListItem
+					<List.Item
 						title={I18n.t('Local_authentication_unlock_option')}
 						right={() => this.renderAutoLockSwitch()}
 						theme={theme}
@@ -284,7 +284,7 @@ class ScreenLockConfigView extends React.Component {
 						? (
 							<>
 								<Separator theme={theme} />
-								<ListItem
+								<List.Item
 									title={I18n.t('Local_authentication_change_passcode')}
 									theme={theme}
 									right={this.renderDisclosure}

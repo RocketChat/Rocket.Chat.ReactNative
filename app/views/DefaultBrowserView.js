@@ -10,7 +10,7 @@ import { themes } from '../constants/colors';
 import sharedStyles from './Styles';
 import StatusBar from '../containers/StatusBar';
 import Separator from '../containers/Separator';
-import * as List from '../../containers/List/List';
+import * as List from '../containers/List/List';
 import { CustomIcon } from '../lib/Icons';
 import { DEFAULT_BROWSER_KEY } from '../utils/openLink';
 import { isIOS } from '../utils/deviceInfo';
@@ -134,7 +134,7 @@ class DefaultBrowserView extends React.Component {
 		const { theme } = this.props;
 		const { title, value } = item;
 		return (
-			<ListItem
+			<List.Item
 				title={I18n.t(title, { defaultValue: title })}
 				onPress={() => this.changeDefaultBrowser(value)}
 				testID={`default-browser-view-${ title }`}

@@ -119,13 +119,13 @@ class InviteUsersView extends React.Component {
 				>
 					<StatusBar theme={theme} />
 					<Separator theme={theme} />
-					<ListItem
+					<List.Item
 						title={I18n.t('Expiration_Days')}
 						right={() => this.renderPicker('days', 'Never')}
 						theme={theme}
 					/>
 					<Separator theme={theme} />
-					<ListItem
+					<List.Item
 						title={I18n.t('Max_number_of_uses')}
 						right={() => this.renderPicker('maxUses', 'No_limit')}
 						theme={theme}

@@ -47,7 +47,7 @@ class UserPreferencesView extends React.Component {
 					showsVerticalScrollIndicator={false}
 					testID='preferences-view-list'
 				>
-					<ListItem
+					<List.Item
 						title={I18n.t('Notifications')}
 						onPress={() => this.navigateToScreen('UserNotificationPrefView')}
 						showActionIndicator

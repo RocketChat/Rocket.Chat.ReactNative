@@ -10,7 +10,7 @@ import { themes } from '../constants/colors';
 import sharedStyles from './Styles';
 import StatusBar from '../containers/StatusBar';
 import Separator from '../containers/Separator';
-import * as List from '../../containers/List/List';
+import * as List from '../containers/List/List';
 import { CustomIcon } from '../lib/Icons';
 import { THEME_PREFERENCES_KEY } from '../lib/rocketchat';
 import { supportSystemTheme } from '../utils/deviceInfo';
@@ -131,7 +131,7 @@ class ThemeView extends React.Component {
 		return (
 			<>
 				{item.separator || isFirst ? this.renderSectionHeader(item.header) : null}
-				<ListItem
+				<List.Item
 					title={I18n.t(label)}
 					onPress={() => this.onClick(item)}
 					testID={`theme-view-${ value }`}

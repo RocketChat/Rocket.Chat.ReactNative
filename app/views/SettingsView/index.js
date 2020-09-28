@@ -263,159 +263,171 @@ class SettingsView extends React.Component {
 				>
 					{isMasterDetail ? (
 						<>
-							<Separator theme={theme} />
-							<SidebarView theme={theme} />
-							<SectionSeparator theme={theme} />
-							<List.Item
-								title={I18n.t('Profile')}
-								onPress={() => this.navigateToScreen('ProfileView')}
-								showActionIndicator
-								testID='settings-profile'
-								right={this.renderDisclosure}
-								theme={theme}
-							/>
+							<List.Section>
+								<Separator />
+								<SidebarView />
+								<Separator />
+							</List.Section>
+							<List.Section>
+								<Separator />
+								<List.Item
+									title={I18n.t('Profile')}
+									onPress={() => this.navigateToScreen('ProfileView')}
+									showActionIndicator
+									testID='settings-profile'
+									right={this.renderDisclosure}
+									theme={theme}
+								/>
+								<Separator />
+							</List.Section>
 						</>
 					) : null}
 
-					<Separator theme={theme} />
-					<List.Item
-						title={I18n.t('Contact_us')}
-						onPress={this.sendEmail}
-						showActionIndicator
-						testID='settings-view-contact'
-						right={this.renderDisclosure}
-						theme={theme}
-					/>
-					<Separator theme={theme} />
-					<List.Item
-						title={I18n.t('Language')}
-						onPress={() => this.navigateToScreen('LanguageView')}
-						showActionIndicator
-						testID='settings-view-language'
-						right={this.renderDisclosure}
-						theme={theme}
-					/>
-					<Separator theme={theme} />
+					<List.Section>
+						<Separator />
+						<List.Item
+							title={I18n.t('Contact_us')}
+							onPress={this.sendEmail}
+							showActionIndicator
+							testID='settings-view-contact'
+							right={this.renderDisclosure}
+							theme={theme}
+						/>
+						<Separator />
+						<List.Item
+							title={I18n.t('Language')}
+							onPress={() => this.navigateToScreen('LanguageView')}
+							showActionIndicator
+							testID='settings-view-language'
+							right={this.renderDisclosure}
+							theme={theme}
+						/>
+						<Separator />
+						{!isFDroidBuild ? (
+							<>
+								<List.Item
+									title={I18n.t('Review_this_app')}
+									showActionIndicator
+									onPress={onReviewPress}
+									testID='settings-view-review-app'
+									right={this.renderDisclosure}
+									theme={theme}
+								/>
+							</>
+						) : null}
+						<Separator />
+						<List.Item
+							title={I18n.t('Share_this_app')}
+							showActionIndicator
+							onPress={this.shareApp}
+							testID='settings-view-share-app'
+							right={this.renderDisclosure}
+							theme={theme}
+						/>
+						<Separator />
+						<List.Item
+							title={I18n.t('Default_browser')}
+							showActionIndicator
+							onPress={() => this.navigateToScreen('DefaultBrowserView')}
+							testID='settings-view-default-browser'
+							right={this.renderDisclosure}
+							theme={theme}
+						/>
+						<Separator />
+						<List.Item
+							title={I18n.t('Theme')}
+							showActionIndicator
+							onPress={() => this.navigateToScreen('ThemeView')}
+							testID='settings-view-theme'
+							right={this.renderDisclosure}
+							theme={theme}
+						/>
+						<Separator />
+						<List.Item
+							title={I18n.t('Screen_lock')}
+							showActionIndicator
+							onPress={() => this.navigateToScreen('ScreenLockConfigView')}
+							right={this.renderDisclosure}
+							theme={theme}
+						/>
+						<Separator />
+					</List.Section>
+
+					<List.Section>
+						<Separator />
+						<List.Item
+							title={I18n.t('License')}
+							onPress={this.onPressLicense}
+							showActionIndicator
+							testID='settings-view-license'
+							right={this.renderDisclosure}
+							theme={theme}
+						/>
+						<Separator />
+						<List.Item
+							title={I18n.t('Version_no', { version: getReadableVersion })}
+							onPress={this.copyAppVersion}
+							testID='settings-view-version'
+							theme={theme}
+						/>
+						<Separator />
+						<List.Item
+							title={I18n.t('Server_version', { version: server.version })}
+							onPress={this.copyServerVersion}
+							subtitle={`${ server.server.split('//')[1] }`}
+							testID='settings-view-server-version'
+							theme={theme}
+						/>
+						<Separator />
+					</List.Section>
+
 					{!isFDroidBuild ? (
 						<>
-							<List.Item
-								title={I18n.t('Review_this_app')}
-								showActionIndicator
-								onPress={onReviewPress}
-								testID='settings-view-review-app'
-								right={this.renderDisclosure}
-								theme={theme}
-							/>
-						</>
-					) : null}
-					<Separator theme={theme} />
-					<List.Item
-						title={I18n.t('Share_this_app')}
-						showActionIndicator
-						onPress={this.shareApp}
-						testID='settings-view-share-app'
-						right={this.renderDisclosure}
-						theme={theme}
-					/>
-					<Separator theme={theme} />
-					<List.Item
-						title={I18n.t('Default_browser')}
-						showActionIndicator
-						onPress={() => this.navigateToScreen('DefaultBrowserView')}
-						testID='settings-view-default-browser'
-						right={this.renderDisclosure}
-						theme={theme}
-					/>
-					<Separator theme={theme} />
-					<List.Item
-						title={I18n.t('Theme')}
-						showActionIndicator
-						onPress={() => this.navigateToScreen('ThemeView')}
-						testID='settings-view-theme'
-						right={this.renderDisclosure}
-						theme={theme}
-					/>
-					<Separator theme={theme} />
-					<List.Item
-						title={I18n.t('Screen_lock')}
-						showActionIndicator
-						onPress={() => this.navigateToScreen('ScreenLockConfigView')}
-						right={this.renderDisclosure}
-						theme={theme}
-					/>
-
-					<SectionSeparator theme={theme} />
-
-					<List.Item
-						title={I18n.t('License')}
-						onPress={this.onPressLicense}
-						showActionIndicator
-						testID='settings-view-license'
-						right={this.renderDisclosure}
-						theme={theme}
-					/>
-
-					<Separator theme={theme} />
-					<List.Item
-						title={I18n.t('Version_no', { version: getReadableVersion })}
-						onPress={this.copyAppVersion}
-						testID='settings-view-version'
-						theme={theme}
-					/>
-					<Separator theme={theme} />
-
-					<List.Item
-						title={I18n.t('Server_version', { version: server.version })}
-						onPress={this.copyServerVersion}
-						subtitle={`${ server.server.split('//')[1] }`}
-						testID='settings-view-server-version'
-						theme={theme}
-					/>
-
-					<SectionSeparator theme={theme} />
-
-					{!isFDroidBuild ? (
-						<>
-							<List.Item
-								title={I18n.t('Log_analytics_events')}
-								testID='settings-view-analytics-events'
-								right={() => this.renderAnalyticsEventsSwitch()}
-								theme={theme}
-							/>
-							<Separator theme={theme} />
-							<List.Item
-								title={I18n.t('Send_crash_report')}
-								testID='settings-view-crash-report'
-								right={() => this.renderCrashReportSwitch()}
-								theme={theme}
-							/>
-							<Separator theme={theme} />
-							<ItemInfo
-								info={I18n.t('Crash_report_disclaimer')}
-								theme={theme}
-							/>
-							<Separator theme={theme} />
+							<List.Section>
+								<Separator />
+								<List.Item
+									title={I18n.t('Log_analytics_events')}
+									testID='settings-view-analytics-events'
+									right={() => this.renderAnalyticsEventsSwitch()}
+									theme={theme}
+								/>
+								<Separator />
+								<List.Item
+									title={I18n.t('Send_crash_report')}
+									testID='settings-view-crash-report'
+									right={() => this.renderCrashReportSwitch()}
+									theme={theme}
+								/>
+								<Separator />
+								<ItemInfo
+									info={I18n.t('Crash_report_disclaimer')}
+									theme={theme}
+								/>
+							</List.Section>
 						</>
 					) : null}
 
-					<List.Item
-						title={I18n.t('Clear_cache')}
-						testID='settings-clear-cache'
-						onPress={this.handleClearCache}
-						right={this.renderDisclosure}
-						color={themes[theme].dangerColor}
-						theme={theme}
-					/>
-					<Separator theme={theme} />
-					<List.Item
-						title={I18n.t('Logout')}
-						testID='settings-logout'
-						onPress={this.handleLogout}
-						right={this.renderDisclosure}
-						color={themes[theme].dangerColor}
-						theme={theme}
-					/>
-					<Separator theme={theme} />
+					<List.Section>
+						<Separator />
+						<List.Item
+							title={I18n.t('Clear_cache')}
+							testID='settings-clear-cache'
+							onPress={this.handleClearCache}
+							right={this.renderDisclosure}
+							color={themes[theme].dangerColor}
+							theme={theme}
+						/>
+						<Separator />
+						<List.Item
+							title={I18n.t('Logout')}
+							testID='settings-logout'
+							onPress={this.handleLogout}
+							right={this.renderDisclosure}
+							color={themes[theme].dangerColor}
+							theme={theme}
+						/>
+						<Separator />
+					</List.Section>
 				</ScrollView>
 			</SafeAreaView>
 		);

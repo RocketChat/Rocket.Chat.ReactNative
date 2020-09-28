@@ -10,7 +10,7 @@ import { themes } from '../constants/colors';
 import debounce from '../utils/debounce';
 import sharedStyles from './Styles';
 
-import * as List from '../../containers/List/List';
+import * as List from '../containers/List/List';
 import Check from '../containers/Check';
 import Separator from '../containers/Separator';
 import SearchBox from '../containers/SearchBox';
@@ -41,7 +41,7 @@ const Item = React.memo(({
 	onItemPress,
 	theme
 }) => (
-	<ListItem
+	<List.Item
 		title={I18n.t(item.label, { defaultValue: item.label, second: item?.second })}
 		right={selected && (() => <Check theme={theme} style={styles.check} />)}
 		onPress={onItemPress}

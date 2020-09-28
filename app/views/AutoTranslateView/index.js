@@ -163,7 +163,7 @@ class AutoTranslateView extends React.Component {
 		const isSelected = selectedLanguage === language;
 
 		return (
-			<ListItem
+			<List.Item
 				title={name || language}
 				onPress={() => this.saveAutoTranslateLanguage(language)}
 				testID={`auto-translate-view-${ language }`}
@@ -190,7 +190,7 @@ class AutoTranslateView extends React.Component {
 					]}
 					testID='auto-translate-view-list'
 				>
-					<ListItem
+					<List.Item
 						title={I18n.t('Enable_Auto_Translate')}
 						testID='auto-translate-view-switch'
 						right={() => this.renderSwitch()}

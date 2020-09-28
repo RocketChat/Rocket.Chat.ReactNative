@@ -10,7 +10,7 @@ import openLink from '../utils/openLink';
 import I18n from '../i18n';
 import debounce from '../utils/debounce';
 import sharedStyles from './Styles';
-import * as List from '../../containers/List/List';
+import * as List from '../containers/List/List';
 
 const styles = StyleSheet.create({
 	noResult: {
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 });
 
 const Item = ({ item, theme }) => (
-	<ListItem
+	<List.Item
 		title={item.navigation?.page?.title || I18n.t('Empty_title')}
 		onPress={() => openLink(item.navigation?.page?.location?.href)}
 		theme={theme}

@@ -125,7 +125,7 @@ class LanguageView extends React.Component {
 		const isSelected = language === value;
 
 		return (
-			<ListItem
+			<List.Item
 				title={label}
 				onPress={() => this.submit(value)}
 				testID={`language-view-${ value }`}

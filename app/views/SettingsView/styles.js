@@ -8,6 +8,6 @@ export default StyleSheet.create({
 		height: 36
 	},
 	listPadding: {
-		paddingVertical: 36
+		paddingVertical: 16
 	}
 });

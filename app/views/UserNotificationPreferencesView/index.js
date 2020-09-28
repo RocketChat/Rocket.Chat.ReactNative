@@ -113,7 +113,7 @@ class UserNotificationPreferencesView extends React.Component {
 								<SectionSeparator theme={theme} />
 								<SectionTitle title={I18n.t('DESKTOP_NOTIFICATIONS')} theme={theme} />
 
-								<ListItem
+								<List.Item
 									title={I18n.t('Alert')}
 									testID='user-notification-preference-view-alert'
 									onPress={title => this.pickerSelection(title, 'desktopNotifications')}
@@ -127,7 +127,7 @@ class UserNotificationPreferencesView extends React.Component {
 								<SectionTitle title={I18n.t('PUSH_NOTIFICATIONS')} theme={theme} />
 								<Separator theme={theme} />
 
-								<ListItem
+								<List.Item
 									title={I18n.t('Alert')}
 									testID='user-notification-preference-view-push-notification'
 									onPress={title => this.pickerSelection(title, 'mobileNotifications')}
@@ -141,7 +141,7 @@ class UserNotificationPreferencesView extends React.Component {
 								<SectionTitle title={I18n.t('EMAIL')} theme={theme} />
 								<Separator theme={theme} />
 
-								<ListItem
+								<List.Item
 									title={I18n.t('Alert')}
 									testID='user-notification-preference-view-email-alert'
 									onPress={title => this.pickerSelection(title, 'emailNotificationMode')}
