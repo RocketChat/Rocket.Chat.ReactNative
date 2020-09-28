@@ -38,6 +38,7 @@ import UserNotificationPrefView from '../views/UserNotificationPreferencesView';
 
 // Settings Stack
 import SettingsView from '../views/SettingsView';
+import SecurityPrivacyView from '../views/SecurityPrivacyView';
 import LanguageView from '../views/LanguageView';
 import ThemeView from '../views/ThemeView';
 import DefaultBrowserView from '../views/DefaultBrowserView';
@@ -224,6 +225,11 @@ const SettingsStackNavigator = () => {
 				name='SettingsView'
 				component={SettingsView}
 				options={SettingsView.navigationOptions}
+			/>
+			<SettingsStack.Screen
+				name='SecurityPrivacyView'
+				component={SecurityPrivacyView}
+				options={SecurityPrivacyView.navigationOptions}
 			/>
 			<SettingsStack.Screen
 				name='LanguageView'
