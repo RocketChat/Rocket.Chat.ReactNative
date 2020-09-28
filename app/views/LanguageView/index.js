@@ -121,7 +121,6 @@ class LanguageView extends React.Component {
 	renderItem = ({ item }) => {
 		const { value, label } = item;
 		const { language } = this.state;
-		const { theme } = this.props;
 		const isSelected = language === value;
 
 		return (
@@ -130,7 +129,6 @@ class LanguageView extends React.Component {
 				onPress={() => this.submit(value)}
 				testID={`language-view-${ value }`}
 				right={isSelected ? this.renderIcon : null}
-				theme={theme}
 			/>
 		);
 	}
@@ -151,7 +149,7 @@ class LanguageView extends React.Component {
 						}
 					]}
 					renderItem={this.renderItem}
-					ItemSeparatorComponent={this.renderSeparator}
+					ItemSeparatorComponent={Separator}
 				/>
 			</SafeAreaView>
 		);
