@@ -90,6 +90,71 @@ exports[`Storyshots Avatar list Avatar 1`] = `
         ]
       }
     >
+      Avatar by roomId
+    </Text>
+    <View
+      style={
+        Array [
+          Object {
+            "borderRadius": 4,
+            "height": 56,
+            "width": 56,
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "overflow": "hidden",
+            },
+            Object {
+              "borderRadius": 4,
+              "height": 56,
+              "width": 56,
+            },
+          ]
+        }
+      >
+        <FastImageView
+          resizeMode="cover"
+          source={
+            Object {
+              "headers": undefined,
+              "priority": "high",
+              "uri": "https://open.rocket.chat/avatar/room/devWBbYr7inwupPqK?format=png&size=50",
+            }
+          }
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginVertical": 30,
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          undefined,
+        ]
+      }
+    >
       Avatar by url
     </Text>
     <View
