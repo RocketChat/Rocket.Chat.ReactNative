@@ -35,7 +35,7 @@ At this point, the app should be running on the simulator or on your device!
 
 ### How to inspect the app
 
-We use [Reactotron](https://github.com/infinitered/reactotron) for inspecting our React-native app.
+We use [Reactotron](https://github.com/infinitered/reactotron) to inspect logs, redux state, redux-sagas, HTTP requests, etc.
 
 ## Issues needing help
 
