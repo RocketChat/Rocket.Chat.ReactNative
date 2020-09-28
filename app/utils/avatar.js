@@ -5,7 +5,7 @@ const formatUrl = (url, baseUrl, uriSize, avatarAuthURLFragment) => (
 export const avatarURL = ({
 	type, text, size, userId, token, avatar, baseUrl
 }) => {
-	const room = type === 'd' ? text : `@${ text }`;
+	const room = encodeURIComponent(type === 'd' ? text : `@${ text }`);
 
 	// Avoid requesting several sizes by having only two sizes on cache
 	const uriSize = size === 100 ? 100 : 50;
