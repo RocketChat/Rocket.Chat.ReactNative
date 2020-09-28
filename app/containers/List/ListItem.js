@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Touch from '../../utils/touch';
 import { themes } from '../../constants/colors';
 import sharedStyles from '../../views/Styles';
+import { withTheme } from '../../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -99,4 +100,4 @@ Button.defaultProps = {
 	disabled: false
 };
 
-export default Item;
+export default withTheme(Item);

@@ -44,22 +44,6 @@ import database from '../../lib/database';
 import { isFDroidBuild } from '../../constants/environment';
 import { getUserSelector } from '../../selectors/login';
 
-
-const SectionSeparator = React.memo(({ theme }) => (
-	<View
-		style={[
-			styles.sectionSeparatorBorder,
-			{
-				borderColor: themes[theme].separatorColor,
-				backgroundColor: themes[theme].auxiliaryBackground
-			}
-		]}
-	/>
-));
-SectionSeparator.propTypes = {
-	theme: PropTypes.string
-};
-
 class SettingsView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => ({
 		headerLeft: () => (isMasterDetail ? (
@@ -253,8 +237,8 @@ class SettingsView extends React.Component {
 	render() {
 		const { server, isMasterDetail, theme } = this.props;
 		return (
-			<SafeAreaView testID='settings-view' theme={theme}>
-				<StatusBar theme={theme} />
+			<SafeAreaView testID='settings-view'>
+				<StatusBar />
 				<ScrollView
 					{...scrollPersistTaps}
 					contentContainerStyle={styles.listPadding}
@@ -276,7 +260,6 @@ class SettingsView extends React.Component {
 									showActionIndicator
 									testID='settings-profile'
 									right={this.renderDisclosure}
-									theme={theme}
 								/>
 								<Separator />
 							</List.Section>
@@ -291,7 +274,6 @@ class SettingsView extends React.Component {
 							showActionIndicator
 							testID='settings-view-contact'
 							right={this.renderDisclosure}
-							theme={theme}
 						/>
 						<Separator />
 						<List.Item
@@ -300,7 +282,6 @@ class SettingsView extends React.Component {
 							showActionIndicator
 							testID='settings-view-language'
 							right={this.renderDisclosure}
-							theme={theme}
 						/>
 						<Separator />
 						{!isFDroidBuild ? (
@@ -311,7 +292,6 @@ class SettingsView extends React.Component {
 									onPress={onReviewPress}
 									testID='settings-view-review-app'
 									right={this.renderDisclosure}
-									theme={theme}
 								/>
 							</>
 						) : null}
@@ -322,7 +302,6 @@ class SettingsView extends React.Component {
 							onPress={this.shareApp}
 							testID='settings-view-share-app'
 							right={this.renderDisclosure}
-							theme={theme}
 						/>
 						<Separator />
 						<List.Item
@@ -331,7 +310,6 @@ class SettingsView extends React.Component {
 							onPress={() => this.navigateToScreen('DefaultBrowserView')}
 							testID='settings-view-default-browser'
 							right={this.renderDisclosure}
-							theme={theme}
 						/>
 						<Separator />
 						<List.Item
@@ -340,7 +318,6 @@ class SettingsView extends React.Component {
 							onPress={() => this.navigateToScreen('ThemeView')}
 							testID='settings-view-theme'
 							right={this.renderDisclosure}
-							theme={theme}
 						/>
 						<Separator />
 						<List.Item
@@ -348,7 +325,6 @@ class SettingsView extends React.Component {
 							showActionIndicator
 							onPress={() => this.navigateToScreen('ScreenLockConfigView')}
 							right={this.renderDisclosure}
-							theme={theme}
 						/>
 						<Separator />
 					</List.Section>
@@ -361,14 +337,12 @@ class SettingsView extends React.Component {
 							showActionIndicator
 							testID='settings-view-license'
 							right={this.renderDisclosure}
-							theme={theme}
 						/>
 						<Separator />
 						<List.Item
 							title={I18n.t('Version_no', { version: getReadableVersion })}
 							onPress={this.copyAppVersion}
 							testID='settings-view-version'
-							theme={theme}
 						/>
 						<Separator />
 						<List.Item
@@ -376,7 +350,6 @@ class SettingsView extends React.Component {
 							onPress={this.copyServerVersion}
 							subtitle={`${ server.server.split('//')[1] }`}
 							testID='settings-view-server-version'
-							theme={theme}
 						/>
 						<Separator />
 					</List.Section>
@@ -389,19 +362,16 @@ class SettingsView extends React.Component {
 									title={I18n.t('Log_analytics_events')}
 									testID='settings-view-analytics-events'
 									right={() => this.renderAnalyticsEventsSwitch()}
-									theme={theme}
 								/>
 								<Separator />
 								<List.Item
 									title={I18n.t('Send_crash_report')}
 									testID='settings-view-crash-report'
 									right={() => this.renderCrashReportSwitch()}
-									theme={theme}
 								/>
 								<Separator />
 								<ItemInfo
 									info={I18n.t('Crash_report_disclaimer')}
-									theme={theme}
 								/>
 							</List.Section>
 						</>
@@ -415,7 +385,6 @@ class SettingsView extends React.Component {
 							onPress={this.handleClearCache}
 							right={this.renderDisclosure}
 							color={themes[theme].dangerColor}
-							theme={theme}
 						/>
 						<Separator />
 						<List.Item
@@ -424,7 +393,6 @@ class SettingsView extends React.Component {
 							onPress={this.handleLogout}
 							right={this.renderDisclosure}
 							color={themes[theme].dangerColor}
-							theme={theme}
 						/>
 						<Separator />
 					</List.Section>
