@@ -361,7 +361,6 @@ class RoomInfoView extends React.Component {
 				<StatusBar />
 				<SafeAreaView
 					style={{ backgroundColor: themes[theme].backgroundColor }}
-					theme={theme}
 					testID='room-info-view'
 				>
 					<View style={[styles.avatarContainer, this.isDirect && styles.avatarContainerDirectRoom, { backgroundColor: themes[theme].auxiliaryBackground }]}>

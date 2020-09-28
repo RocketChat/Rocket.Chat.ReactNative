@@ -177,7 +177,7 @@ class AutoTranslateView extends React.Component {
 		const { languages } = this.state;
 		const { theme } = this.props;
 		return (
-			<SafeAreaView testID='auto-translate-view' theme={theme}>
+			<SafeAreaView testID='auto-translate-view'>
 				<StatusBar />
 				<ScrollView
 					{...scrollPersistTaps}

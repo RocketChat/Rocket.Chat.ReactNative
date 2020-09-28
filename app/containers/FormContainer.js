@@ -38,7 +38,7 @@ const FormContainer = ({
 			{...scrollPersistTaps}
 			{...props}
 		>
-			<SafeAreaView testID={testID} theme={theme} style={{ backgroundColor: themes[theme].backgroundColor }}>
+			<SafeAreaView testID={testID} style={{ backgroundColor: themes[theme].backgroundColor }}>
 				{children}
 				<AppVersion theme={theme} />
 			</SafeAreaView>

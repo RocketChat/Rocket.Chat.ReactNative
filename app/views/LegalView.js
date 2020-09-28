@@ -79,7 +79,7 @@ class LegalView extends React.Component {
 	render() {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView testID='legal-view' theme={theme}>
+			<SafeAreaView testID='legal-view'>
 				<StatusBar />
 				<ScrollView
 					contentContainerStyle={[

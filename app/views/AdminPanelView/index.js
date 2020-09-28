@@ -18,17 +18,16 @@ class AdminPanelView extends React.Component {
 
 	static propTypes = {
 		baseUrl: PropTypes.string,
-		token: PropTypes.string,
-		theme: PropTypes.string
+		token: PropTypes.string
 	}
 
 	render() {
-		const { baseUrl, token, theme } = this.props;
+		const { baseUrl, token } = this.props;
 		if (!baseUrl) {
 			return null;
 		}
 		return (
-			<SafeAreaView theme={theme}>
+			<SafeAreaView>
 				<StatusBar />
 				<WebView
 					// https://github.com/react-native-community/react-native-webview/issues/1311

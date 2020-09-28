@@ -168,7 +168,7 @@ class ThemeView extends React.Component {
 	render() {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView testID='theme-view' theme={theme}>
+			<SafeAreaView testID='theme-view'>
 				<StatusBar />
 				<FlatList
 					data={THEMES}

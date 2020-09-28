@@ -126,7 +126,7 @@ class E2ESaveYourPasswordView extends React.Component {
 		const { theme } = this.props;
 
 		return (
-			<SafeAreaView theme={theme} style={{ backgroundColor: themes[theme].backgroundColor }}>
+			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<StatusBar />
 				<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={sharedStyles.containerScrollView}>
 					<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>

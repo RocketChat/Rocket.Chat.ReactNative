@@ -324,7 +324,7 @@ class CreateChannelView extends React.Component {
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
-				<SafeAreaView testID='create-channel-view' theme={theme}>
+				<SafeAreaView testID='create-channel-view'>
 					<ScrollView {...scrollPersistTaps}>
 						<View style={[sharedStyles.separatorVertical, { borderColor: themes[theme].separatorColor }]}>
 							<TextInput

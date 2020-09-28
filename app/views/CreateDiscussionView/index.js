@@ -152,7 +152,7 @@ class CreateChannelView extends React.Component {
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
-				<SafeAreaView testID='create-discussion-view' style={styles.container} theme={theme}>
+				<SafeAreaView testID='create-discussion-view' style={styles.container}>
 					<ScrollView {...scrollPersistTaps}>
 						<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Discussion_Desc')}</Text>
 						<SelectChannel

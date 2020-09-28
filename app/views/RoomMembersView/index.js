@@ -250,7 +250,7 @@ class RoomMembersView extends React.Component {
 		} = this.state;
 		const { theme } = this.props;
 		return (
-			<SafeAreaView testID='room-members-view' theme={theme}>
+			<SafeAreaView testID='room-members-view'>
 				<StatusBar />
 				<FlatList
 					data={filtering ? membersFiltered : members}

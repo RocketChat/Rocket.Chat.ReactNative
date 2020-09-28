@@ -11,7 +11,7 @@ import { setUser as setUserAction } from '../../actions/login';
 import StatusBar from '../../containers/StatusBar';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../Styles';
-import ListItem from '../../containers/List/ListItem';
+import * as List from '../../containers/List/List';
 import Separator from '../../containers/Separator';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
@@ -138,7 +138,7 @@ class LanguageView extends React.Component {
 	render() {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView testID='language-view' theme={theme}>
+			<SafeAreaView testID='language-view'>
 				<StatusBar />
 				<FlatList
 					data={LANGUAGES}

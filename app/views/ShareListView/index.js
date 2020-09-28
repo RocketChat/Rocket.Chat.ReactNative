@@ -458,9 +458,8 @@ class ShareListView extends React.Component {
 	}
 
 	render() {
-		const { theme } = this.props;
 		return (
-			<SafeAreaView theme={theme}>
+			<SafeAreaView>
 				<StatusBar />
 				{this.renderContent()}
 			</SafeAreaView>

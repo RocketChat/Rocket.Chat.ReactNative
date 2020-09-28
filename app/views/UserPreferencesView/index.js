@@ -39,7 +39,7 @@ class UserPreferencesView extends React.Component {
 		const { theme } = this.props;
 
 		return (
-			<SafeAreaView testID='preferences-view' theme={theme}>
+			<SafeAreaView testID='preferences-view'>
 				<StatusBar />
 				<ScrollView
 					{...scrollPersistTaps}

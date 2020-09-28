@@ -372,6 +372,7 @@ class SettingsView extends React.Component {
 								<Separator />
 								<ItemInfo
 									info={I18n.t('Crash_report_disclaimer')}
+									theme={theme}
 								/>
 							</List.Section>
 						</>

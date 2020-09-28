@@ -194,7 +194,7 @@ class StatusView extends React.Component {
 		const { loading } = this.state;
 		const { theme } = this.props;
 		return (
-			<SafeAreaView testID='status-view' theme={theme}>
+			<SafeAreaView testID='status-view'>
 				<FlatList
 					data={STATUS}
 					keyExtractor={item => item.id}

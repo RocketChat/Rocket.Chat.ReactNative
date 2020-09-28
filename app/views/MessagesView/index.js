@@ -296,7 +296,6 @@ class MessagesView extends React.Component {
 			<SafeAreaView
 				style={{ backgroundColor: themes[theme].backgroundColor }}
 				testID={this.content.testID}
-				theme={theme}
 			>
 				<StatusBar />
 				<FlatList

@@ -239,7 +239,6 @@ class DirectoryView extends React.Component {
 			<SafeAreaView
 				style={{ backgroundColor: themes[theme].backgroundColor }}
 				testID='directory-view'
-				theme={theme}
 			>
 				<StatusBar />
 				<FlatList

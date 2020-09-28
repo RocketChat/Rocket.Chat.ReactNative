@@ -388,7 +388,6 @@ class RoomInfoEditView extends React.Component {
 				<StatusBar />
 				<SafeAreaView
 					testID='room-info-edit-view'
-					theme={theme}
 					style={{ backgroundColor: themes[theme].backgroundColor }}
 				>
 					<ScrollView

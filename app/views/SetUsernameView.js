@@ -106,7 +106,7 @@ class SetUsernameView extends React.Component {
 			>
 				<StatusBar />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
-					<SafeAreaView testID='set-username-view' theme={theme}>
+					<SafeAreaView testID='set-username-view'>
 						<Text
 							style={[
 								sharedStyles.loginTitle,

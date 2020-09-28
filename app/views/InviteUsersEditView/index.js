@@ -110,7 +110,7 @@ class InviteUsersView extends React.Component {
 	render() {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} theme={theme}>
+			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<ScrollView
 					{...scrollPersistTaps}
 					style={{ backgroundColor: themes[theme].auxiliaryBackground }}

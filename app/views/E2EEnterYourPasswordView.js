@@ -64,7 +64,7 @@ class E2EEnterYourPasswordView extends React.Component {
 			>
 				<StatusBar />
 				<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}>
-					<SafeAreaView theme={theme} style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
+					<SafeAreaView style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
 						<TextInput
 							inputRef={(e) => { this.passwordInput = e; }}
 							placeholder={I18n.t('Password')}
