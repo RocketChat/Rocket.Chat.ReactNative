@@ -220,7 +220,7 @@ class RoomItemContainer extends React.Component {
 				useRealName={useRealName}
 				unread={item.unread}
 				groupMentions={item.groupMentions}
-				avatarETag={avatarETag}
+				avatarETag={avatarETag || item.avatarETag}
 				swipeEnabled={swipeEnabled}
 			/>
 		);
