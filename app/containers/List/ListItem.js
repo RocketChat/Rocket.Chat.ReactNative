@@ -6,6 +6,7 @@ import Touch from '../../utils/touch';
 import { themes } from '../../constants/colors';
 import sharedStyles from '../../views/Styles';
 import { withTheme } from '../../theme';
+import I18n from '../../i18n';
 
 const styles = StyleSheet.create({
 	container: {
@@ -34,14 +35,14 @@ const styles = StyleSheet.create({
 });
 
 const Content = React.memo(({
-	title, subtitle, disabled, testID, left, right, color, theme
+	title, subtitle, disabled, testID, left, right, color, theme, translateTitle, translateSubtitle
 }) => (
 	<View style={[styles.container, disabled && styles.disabled]} testID={testID}>
 		{left ? left() : null}
 		<View style={styles.textContainer}>
-			<Text style={[styles.title, { color: color || themes[theme].titleText }]}>{title}</Text>
+			<Text style={[styles.title, { color: color || themes[theme].titleText }]}>{translateTitle ? I18n.t(title) : title}</Text>
 			{subtitle
-				? <Text style={[styles.subtitle, { color: themes[theme].bodyText }]}>{subtitle}</Text>
+				? <Text style={[styles.subtitle, { color: themes[theme].bodyText }]}>{translateSubtitle ? I18n.t(subtitle) : subtitle}</Text>
 				: null
 			}
 		</View>
@@ -86,7 +87,14 @@ Content.propTypes = {
 	disabled: PropTypes.bool,
 	testID: PropTypes.string,
 	theme: PropTypes.string,
-	color: PropTypes.string
+	color: PropTypes.string,
+	translateTitle: PropTypes.bool,
+	translateSubtitle: PropTypes.bool
+};
+
+Content.defaultProps = {
+	translateTitle: true,
+	translateSubtitle: true
 };
 
 Button.propTypes = {

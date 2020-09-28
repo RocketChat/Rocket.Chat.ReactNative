@@ -247,7 +247,7 @@ class SettingsView extends React.Component {
 							<List.Section>
 								<Separator />
 								<List.Item
-									title={I18n.t('Profile')}
+									title='Profile'
 									onPress={() => this.navigateToScreen('ProfileView')}
 									showActionIndicator
 									testID='settings-profile'
@@ -261,7 +261,7 @@ class SettingsView extends React.Component {
 					<List.Section>
 						<Separator />
 						<List.Item
-							title={I18n.t('Contact_us')}
+							title='Contact_us'
 							onPress={this.sendEmail}
 							showActionIndicator
 							testID='settings-view-contact'
@@ -269,7 +269,7 @@ class SettingsView extends React.Component {
 						/>
 						<Separator />
 						<List.Item
-							title={I18n.t('Language')}
+							title='Language'
 							onPress={() => this.navigateToScreen('LanguageView')}
 							showActionIndicator
 							testID='settings-view-language'
@@ -279,7 +279,7 @@ class SettingsView extends React.Component {
 						{!isFDroidBuild ? (
 							<>
 								<List.Item
-									title={I18n.t('Review_this_app')}
+									title='Review_this_app'
 									showActionIndicator
 									onPress={onReviewPress}
 									testID='settings-view-review-app'
@@ -289,7 +289,7 @@ class SettingsView extends React.Component {
 						) : null}
 						<Separator />
 						<List.Item
-							title={I18n.t('Share_this_app')}
+							title='Share_this_app'
 							showActionIndicator
 							onPress={this.shareApp}
 							testID='settings-view-share-app'
@@ -297,7 +297,7 @@ class SettingsView extends React.Component {
 						/>
 						<Separator />
 						<List.Item
-							title={I18n.t('Default_browser')}
+							title='Default_browser'
 							showActionIndicator
 							onPress={() => this.navigateToScreen('DefaultBrowserView')}
 							testID='settings-view-default-browser'
@@ -305,7 +305,7 @@ class SettingsView extends React.Component {
 						/>
 						<Separator />
 						<List.Item
-							title={I18n.t('Theme')}
+							title='Theme'
 							showActionIndicator
 							onPress={() => this.navigateToScreen('ThemeView')}
 							testID='settings-view-theme'
@@ -313,7 +313,7 @@ class SettingsView extends React.Component {
 						/>
 						<Separator />
 						<List.Item
-							title={I18n.t('Screen_lock')}
+							title='Screen_lock'
 							showActionIndicator
 							onPress={() => this.navigateToScreen('ScreenLockConfigView')}
 							right={this.renderDisclosure}
@@ -324,7 +324,7 @@ class SettingsView extends React.Component {
 					<List.Section>
 						<Separator />
 						<List.Item
-							title={I18n.t('License')}
+							title='License'
 							onPress={this.onPressLicense}
 							showActionIndicator
 							testID='settings-view-license'
@@ -335,6 +335,7 @@ class SettingsView extends React.Component {
 							title={I18n.t('Version_no', { version: getReadableVersion })}
 							onPress={this.copyAppVersion}
 							testID='settings-view-version'
+							translateTitle={false}
 						/>
 						<Separator />
 						<List.Item
@@ -342,6 +343,8 @@ class SettingsView extends React.Component {
 							onPress={this.copyServerVersion}
 							subtitle={`${ server.server.split('//')[1] }`}
 							testID='settings-view-server-version'
+							translateTitle={false}
+							translateSubtitle={false}
 						/>
 						<Separator />
 					</List.Section>
@@ -351,13 +354,13 @@ class SettingsView extends React.Component {
 							<List.Section>
 								<Separator />
 								<List.Item
-									title={I18n.t('Log_analytics_events')}
+									title='Log_analytics_events'
 									testID='settings-view-analytics-events'
 									right={() => this.renderAnalyticsEventsSwitch()}
 								/>
 								<Separator />
 								<List.Item
-									title={I18n.t('Send_crash_report')}
+									title='Send_crash_report'
 									testID='settings-view-crash-report'
 									right={() => this.renderCrashReportSwitch()}
 								/>
@@ -373,7 +376,7 @@ class SettingsView extends React.Component {
 					<List.Section>
 						<Separator />
 						<List.Item
-							title={I18n.t('Clear_cache')}
+							title='Clear_cache'
 							testID='settings-clear-cache'
 							onPress={this.handleClearCache}
 							right={this.renderDisclosure}
@@ -381,7 +384,7 @@ class SettingsView extends React.Component {
 						/>
 						<Separator />
 						<List.Item
-							title={I18n.t('Logout')}
+							title='Logout'
 							testID='settings-logout'
 							onPress={this.handleLogout}
 							right={this.renderDisclosure}
