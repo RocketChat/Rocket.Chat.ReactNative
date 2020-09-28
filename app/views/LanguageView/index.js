@@ -11,7 +11,7 @@ import { setUser as setUserAction } from '../../actions/login';
 import StatusBar from '../../containers/StatusBar';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../Styles';
-import ListItem from '../../containers/ListItem';
+import ListItem from '../../containers/List/ListItem';
 import Separator from '../../containers/Separator';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';

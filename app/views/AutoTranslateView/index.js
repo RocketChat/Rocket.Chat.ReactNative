@@ -9,7 +9,7 @@ import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../Styles';
-import ListItem from '../../containers/ListItem';
+import ListItem from '../../containers/List/ListItem';
 import Separator from '../../containers/Separator';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';

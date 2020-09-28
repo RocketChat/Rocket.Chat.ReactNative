@@ -14,7 +14,7 @@ import { toggleCrashReport as toggleCrashReportAction, toggleAnalyticsEvents as 
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { DrawerButton, CloseModalButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
-import ListItem from '../../containers/ListItem';
+import * as List from '../../containers/List/List';
 import ItemInfo from '../../containers/ItemInfo';
 import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import Separator from '../../containers/Separator';
@@ -266,7 +266,7 @@ class SettingsView extends React.Component {
 							<Separator theme={theme} />
 							<SidebarView theme={theme} />
 							<SectionSeparator theme={theme} />
-							<ListItem
+							<List.Item
 								title={I18n.t('Profile')}
 								onPress={() => this.navigateToScreen('ProfileView')}
 								showActionIndicator
@@ -278,7 +278,7 @@ class SettingsView extends React.Component {
 					) : null}
 
 					<Separator theme={theme} />
-					<ListItem
+					<List.Item
 						title={I18n.t('Contact_us')}
 						onPress={this.sendEmail}
 						showActionIndicator
@@ -287,7 +287,7 @@ class SettingsView extends React.Component {
 						theme={theme}
 					/>
 					<Separator theme={theme} />
-					<ListItem
+					<List.Item
 						title={I18n.t('Language')}
 						onPress={() => this.navigateToScreen('LanguageView')}
 						showActionIndicator
@@ -298,7 +298,7 @@ class SettingsView extends React.Component {
 					<Separator theme={theme} />
 					{!isFDroidBuild ? (
 						<>
-							<ListItem
+							<List.Item
 								title={I18n.t('Review_this_app')}
 								showActionIndicator
 								onPress={onReviewPress}
@@ -309,7 +309,7 @@ class SettingsView extends React.Component {
 						</>
 					) : null}
 					<Separator theme={theme} />
-					<ListItem
+					<List.Item
 						title={I18n.t('Share_this_app')}
 						showActionIndicator
 						onPress={this.shareApp}
@@ -318,7 +318,7 @@ class SettingsView extends React.Component {
 						theme={theme}
 					/>
 					<Separator theme={theme} />
-					<ListItem
+					<List.Item
 						title={I18n.t('Default_browser')}
 						showActionIndicator
 						onPress={() => this.navigateToScreen('DefaultBrowserView')}
@@ -327,7 +327,7 @@ class SettingsView extends React.Component {
 						theme={theme}
 					/>
 					<Separator theme={theme} />
-					<ListItem
+					<List.Item
 						title={I18n.t('Theme')}
 						showActionIndicator
 						onPress={() => this.navigateToScreen('ThemeView')}
@@ -336,7 +336,7 @@ class SettingsView extends React.Component {
 						theme={theme}
 					/>
 					<Separator theme={theme} />
-					<ListItem
+					<List.Item
 						title={I18n.t('Screen_lock')}
 						showActionIndicator
 						onPress={() => this.navigateToScreen('ScreenLockConfigView')}
@@ -346,7 +346,7 @@ class SettingsView extends React.Component {
 
 					<SectionSeparator theme={theme} />
 
-					<ListItem
+					<List.Item
 						title={I18n.t('License')}
 						onPress={this.onPressLicense}
 						showActionIndicator
@@ -356,7 +356,7 @@ class SettingsView extends React.Component {
 					/>
 
 					<Separator theme={theme} />
-					<ListItem
+					<List.Item
 						title={I18n.t('Version_no', { version: getReadableVersion })}
 						onPress={this.copyAppVersion}
 						testID='settings-view-version'
@@ -364,7 +364,7 @@ class SettingsView extends React.Component {
 					/>
 					<Separator theme={theme} />
 
-					<ListItem
+					<List.Item
 						title={I18n.t('Server_version', { version: server.version })}
 						onPress={this.copyServerVersion}
 						subtitle={`${ server.server.split('//')[1] }`}
@@ -376,14 +376,14 @@ class SettingsView extends React.Component {
 
 					{!isFDroidBuild ? (
 						<>
-							<ListItem
+							<List.Item
 								title={I18n.t('Log_analytics_events')}
 								testID='settings-view-analytics-events'
 								right={() => this.renderAnalyticsEventsSwitch()}
 								theme={theme}
 							/>
 							<Separator theme={theme} />
-							<ListItem
+							<List.Item
 								title={I18n.t('Send_crash_report')}
 								testID='settings-view-crash-report'
 								right={() => this.renderCrashReportSwitch()}
@@ -398,7 +398,7 @@ class SettingsView extends React.Component {
 						</>
 					) : null}
 
-					<ListItem
+					<List.Item
 						title={I18n.t('Clear_cache')}
 						testID='settings-clear-cache'
 						onPress={this.handleClearCache}
@@ -407,7 +407,7 @@ class SettingsView extends React.Component {
 						theme={theme}
 					/>
 					<Separator theme={theme} />
-					<ListItem
+					<List.Item
 						title={I18n.t('Logout')}
 						testID='settings-logout'
 						onPress={this.handleLogout}

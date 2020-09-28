@@ -10,7 +10,7 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import Separator from '../../containers/Separator';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
-import ListItem from '../../containers/ListItem';
+import ListItem from '../../containers/List/ListItem';
 import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import { withTheme } from '../../theme';
 

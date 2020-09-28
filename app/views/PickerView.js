@@ -10,7 +10,7 @@ import { themes } from '../constants/colors';
 import debounce from '../utils/debounce';
 import sharedStyles from './Styles';
 
-import ListItem from '../containers/ListItem';
+import * as List from '../../containers/List/List';
 import Check from '../containers/Check';
 import Separator from '../containers/Separator';
 import SearchBox from '../containers/SearchBox';

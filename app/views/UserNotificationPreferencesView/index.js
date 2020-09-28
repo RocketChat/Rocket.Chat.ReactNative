@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 import { themes } from '../../constants/colors';
 import StatusBar from '../../containers/StatusBar';
-import ListItem from '../../containers/ListItem';
+import ListItem from '../../containers/List/ListItem';
 import Separator from '../../containers/Separator';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';

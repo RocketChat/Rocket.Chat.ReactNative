@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import I18n from '../i18n';
 import Separator from '../containers/Separator';
-import ListItem from '../containers/ListItem';
+import * as List from '../../containers/List/List';
 import Status from '../containers/Status/Status';
 import TextInput from '../containers/TextInput';
 import EventEmitter from '../utils/events';

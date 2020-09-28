@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import database from '../../lib/database';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import StatusBar from '../../containers/StatusBar';
-import ListItem from '../../containers/ListItem';
+import ListItem from '../../containers/List/ListItem';
 import Separator from '../../containers/Separator';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';

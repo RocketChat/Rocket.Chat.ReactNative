@@ -8,7 +8,7 @@ import { withTheme } from '../theme';
 import { themes, SWITCH_TRACK_COLOR } from '../constants/colors';
 import StatusBar from '../containers/StatusBar';
 import Separator from '../containers/Separator';
-import ListItem from '../containers/ListItem';
+import * as List from '../../containers/List/List';
 import ItemInfo from '../containers/ItemInfo';
 import { CustomIcon } from '../lib/Icons';
 import database from '../lib/database';

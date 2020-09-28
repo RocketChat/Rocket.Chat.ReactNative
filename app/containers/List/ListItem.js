@@ -2,9 +2,9 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
-import Touch from '../utils/touch';
-import { themes } from '../constants/colors';
-import sharedStyles from '../views/Styles';
+import Touch from '../../utils/touch';
+import { themes } from '../../constants/colors';
+import sharedStyles from '../../views/Styles';
 
 const styles = StyleSheet.create({
 	container: {

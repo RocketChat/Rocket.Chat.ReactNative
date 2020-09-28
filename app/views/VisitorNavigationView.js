@@ -10,7 +10,7 @@ import openLink from '../utils/openLink';
 import I18n from '../i18n';
 import debounce from '../utils/debounce';
 import sharedStyles from './Styles';
-import ListItem from '../containers/ListItem';
+import * as List from '../../containers/List/List';
 
 const styles = StyleSheet.create({
 	noResult: {

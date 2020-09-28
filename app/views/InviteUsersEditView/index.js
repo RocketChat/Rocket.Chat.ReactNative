@@ -8,7 +8,7 @@ import {
 	inviteLinksSetParams as inviteLinksSetParamsAction,
 	inviteLinksCreate as inviteLinksCreateAction
 } from '../../actions/inviteLinks';
-import ListItem from '../../containers/ListItem';
+import ListItem from '../../containers/List/ListItem';
 import styles from './styles';
 import Button from '../../containers/Button';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
