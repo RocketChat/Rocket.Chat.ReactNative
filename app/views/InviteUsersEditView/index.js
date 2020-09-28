@@ -117,7 +117,7 @@ class InviteUsersView extends React.Component {
 					contentContainerStyle={styles.contentContainer}
 					showsVerticalScrollIndicator={false}
 				>
-					<StatusBar theme={theme} />
+					<StatusBar />
 					<Separator theme={theme} />
 					<List.Item
 						title={I18n.t('Expiration_Days')}

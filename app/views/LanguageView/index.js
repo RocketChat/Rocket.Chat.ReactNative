@@ -139,7 +139,7 @@ class LanguageView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<SafeAreaView testID='language-view' theme={theme}>
-				<StatusBar theme={theme} />
+				<StatusBar />
 				<FlatList
 					data={LANGUAGES}
 					keyExtractor={item => item.value}

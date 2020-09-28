@@ -298,7 +298,7 @@ class MessagesView extends React.Component {
 				testID={this.content.testID}
 				theme={theme}
 			>
-				<StatusBar theme={theme} />
+				<StatusBar />
 				<FlatList
 					data={messages}
 					renderItem={this.renderItem}

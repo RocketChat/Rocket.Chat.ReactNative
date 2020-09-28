@@ -161,7 +161,7 @@ class DefaultBrowserView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<SafeAreaView testID='default-browser-view' theme={theme}>
-				<StatusBar theme={theme} />
+				<StatusBar />
 				<FlatList
 					data={DEFAULT_BROWSERS.concat(supported)}
 					keyExtractor={item => item.value}

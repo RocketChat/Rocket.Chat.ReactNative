@@ -135,7 +135,7 @@ class NotificationPreferencesView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<SafeAreaView testID='notification-preference-view' theme={theme}>
-				<StatusBar theme={theme} />
+				<StatusBar />
 				<ScrollView
 					{...scrollPersistTaps}
 					style={{ backgroundColor: themes[theme].auxiliaryBackground }}

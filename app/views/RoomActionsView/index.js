@@ -766,7 +766,7 @@ class RoomActionsView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<SafeAreaView testID='room-actions-view' theme={theme}>
-				<StatusBar theme={theme} />
+				<StatusBar />
 				<SectionList
 					contentContainerStyle={[styles.contentContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}
 					style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}

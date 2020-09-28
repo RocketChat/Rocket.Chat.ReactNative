@@ -241,7 +241,7 @@ class DirectoryView extends React.Component {
 				testID='directory-view'
 				theme={theme}
 			>
-				<StatusBar theme={theme} />
+				<StatusBar />
 				<FlatList
 					data={data}
 					style={styles.list}

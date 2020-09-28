@@ -29,7 +29,7 @@ class AdminPanelView extends React.Component {
 		}
 		return (
 			<SafeAreaView theme={theme}>
-				<StatusBar theme={theme} />
+				<StatusBar />
 				<WebView
 					// https://github.com/react-native-community/react-native-webview/issues/1311
 					onMessage={() => {}}

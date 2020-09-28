@@ -1009,7 +1009,7 @@ class RoomsListView extends React.Component {
 
 		return (
 			<SafeAreaView testID='rooms-list-view' theme={theme} style={{ backgroundColor: themes[theme].backgroundColor }}>
-				<StatusBar theme={theme} />
+				<StatusBar />
 				{this.renderHeader()}
 				{this.renderScroll()}
 				{showSortDropdown ? (

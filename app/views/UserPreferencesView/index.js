@@ -40,7 +40,7 @@ class UserPreferencesView extends React.Component {
 
 		return (
 			<SafeAreaView testID='preferences-view' theme={theme}>
-				<StatusBar theme={theme} />
+				<StatusBar />
 				<ScrollView
 					{...scrollPersistTaps}
 					contentContainerStyle={{ paddingVertical: 36 }}

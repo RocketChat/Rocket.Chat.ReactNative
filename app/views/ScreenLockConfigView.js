@@ -269,7 +269,7 @@ class ScreenLockConfigView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<SafeAreaView theme={theme}>
-				<StatusBar theme={theme} />
+				<StatusBar />
 				<ScrollView
 					keyExtractor={item => item.value}
 					contentContainerStyle={styles.listPadding}

@@ -31,7 +31,7 @@ const FormContainer = ({
 		contentContainerStyle={sharedStyles.container}
 		keyboardVerticalOffset={128}
 	>
-		<StatusBar theme={theme} />
+		<StatusBar />
 		<ScrollView
 			style={sharedStyles.container}
 			contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}

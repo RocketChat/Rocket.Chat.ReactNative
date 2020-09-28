@@ -109,7 +109,7 @@ class InviteUsersView extends React.Component {
 					contentContainerStyle={styles.contentContainer}
 					showsVerticalScrollIndicator={false}
 				>
-					<StatusBar theme={theme} />
+					<StatusBar />
 					<View style={styles.innerContainer}>
 						<RCTextInput
 							label={I18n.t('Invite_Link')}
