@@ -26,7 +26,7 @@ const Avatar = React.memo(({
 	isStatic,
 	rid
 }) => {
-	if ((!text && !avatar && !emoji) || !server) {
+	if ((!text && !avatar && !emoji && !rid) || !server) {
 		return null;
 	}
 

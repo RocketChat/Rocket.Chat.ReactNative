@@ -3,10 +3,13 @@ const formatUrl = (url, size, query) => `${ url }?format=png&size=${ size }${ qu
 export const avatarURL = ({
 	type, text, size, user = {}, avatar, server, avatarETag, rid
 }) => {
-	let room = type === 'd' ? text : `@${ text }`;
-
-	if (rid && type !== 'd') {
+	let room = `room/${ rid }`;
+	if (type === 'd') {
+		room = text;
+	} else if (rid) {
 		room = `room/${ rid }`;
+	} else {
+		room = `@${ text }`;
 	}
 
 	// Avoid requesting several sizes by having only two sizes on cache
