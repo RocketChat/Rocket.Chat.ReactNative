@@ -10,17 +10,19 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ListSection = ({ children, title, translateTitle }) => (
+const ListSection = React.memo(({ children, title, translateTitle }) => (
 	<View style={styles.container}>
 		{title ? <Header {...{ title, translateTitle }} /> : null}
 		{children}
 	</View>
-);
+));
 
 ListSection.propTypes = {
-	children: PropTypes.element.isRequired,
+	children: PropTypes.array.isRequired,
 	title: PropTypes.string,
 	translateTitle: PropTypes.bool
 };
+
+ListSection.displayName = 'List.Section';
 
 export default withTheme(ListSection);

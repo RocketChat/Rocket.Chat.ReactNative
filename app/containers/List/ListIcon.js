@@ -22,9 +22,12 @@ const ListIcon = React.memo(({ theme, name }) => (
 		/>
 	</View>
 ));
+
 ListIcon.propTypes = {
 	theme: PropTypes.string,
 	name: PropTypes.string
 };
+
+ListIcon.displayName = 'List.Icon';
 
 export default withTheme(ListIcon);

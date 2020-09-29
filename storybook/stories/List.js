@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions, react/prop-types */
 import React from 'react';
-import { FlatList, Text } from 'react-native';
+import { FlatList } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 
 import * as List from '../../app/containers/List';

@@ -19,11 +19,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ListHeader = ({ title, theme, translateTitle }) => (
+const ListHeader = React.memo(({ title, theme, translateTitle }) => (
 	<View style={styles.container}>
 		<Text style={[styles.title, { color: themes[theme].infoText }]} numberOfLines={1}>{translateTitle ? I18n.t(title) : title}</Text>
 	</View>
-);
+));
 
 ListHeader.propTypes = {
 	title: PropTypes.string,
@@ -34,5 +34,7 @@ ListHeader.propTypes = {
 ListHeader.defaultProps = {
 	translateTitle: true
 };
+
+ListHeader.displayName = 'List.Header';
 
 export default withTheme(ListHeader);

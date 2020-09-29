@@ -84,7 +84,7 @@ const Button = React.memo(({
 	</Touch>
 ));
 
-const Item = React.memo(({ ...props }) => {
+const ListItem = React.memo(({ ...props }) => {
 	if (props.onPress) {
 		return <Button {...props} />;
 	}
@@ -95,10 +95,12 @@ const Item = React.memo(({ ...props }) => {
 	);
 });
 
-Item.propTypes = {
+ListItem.propTypes = {
 	onPress: PropTypes.func,
 	theme: PropTypes.string
 };
+
+ListItem.displayName = 'List.Item';
 
 Content.propTypes = {
 	title: PropTypes.string.isRequired,
@@ -131,4 +133,4 @@ Button.defaultProps = {
 	disabled: false
 };
 
-export default withTheme(Item);
+export default withTheme(ListItem);

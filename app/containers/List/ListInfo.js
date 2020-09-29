@@ -35,4 +35,6 @@ ListInfo.defaultProps = {
 	translateInfo: true
 };
 
+ListInfo.displayName = 'List.Info';
+
 export default withTheme(ListInfo);

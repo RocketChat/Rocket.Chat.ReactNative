@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const List = ({ children, ...props }) => (
+const ListContainer = React.memo(({ children, ...props }) => (
 	<ScrollView
 		contentContainerStyle={styles.container}
 		showsVerticalScrollIndicator={false} // FIXME: we shouldn't need this, but vertical scroll is weird without it
@@ -19,10 +19,12 @@ const List = ({ children, ...props }) => (
 	>
 		{children}
 	</ScrollView>
-);
+));
 
-List.propTypes = {
+ListContainer.propTypes = {
 	children: PropTypes.array.isRequired
 };
 
-export default withTheme(List);
+ListContainer.displayName = 'List.Container';
+
+export default withTheme(ListContainer);

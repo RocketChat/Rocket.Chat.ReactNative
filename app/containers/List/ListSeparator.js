@@ -27,4 +27,6 @@ ListSeparator.propTypes = {
 	theme: PropTypes.string
 };
 
+ListSeparator.displayName = 'List.Separator';
+
 export default withTheme(ListSeparator);
