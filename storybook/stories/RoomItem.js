@@ -4,12 +4,12 @@ import { ScrollView, Dimensions } from 'react-native';
 
 import { themes } from '../../app/constants/colors';
 import RoomItemComponent from '../../app/presentation/RoomItem/RoomItem';
+import { longText } from '../utils';
 import StoriesSeparator from './StoriesSeparator';
 
 const baseUrl = 'https://open.rocket.chat';
 const { width } = Dimensions.get('window');
 let _theme = 'light';
-const longText = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries';
 const lastMessage = {
 	u: {
 		username: 'diego.mello'

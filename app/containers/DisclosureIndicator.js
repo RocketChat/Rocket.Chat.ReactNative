@@ -7,8 +7,8 @@ import { CustomIcon } from '../lib/Icons';
 
 const styles = StyleSheet.create({
 	disclosureContainer: {
-		marginLeft: 6,
-		marginRight: 9,
+		marginLeft: 4,
+		marginRight: 4,
 		alignItems: 'center',
 		justifyContent: 'center'
 	}

@@ -8,6 +8,8 @@ import sharedStyles from '../../views/Styles';
 import { withTheme } from '../../theme';
 import I18n from '../../i18n';
 
+const padding = 15;
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -15,7 +17,13 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		height: 46,
-		paddingHorizontal: 15
+		paddingHorizontal: padding
+	},
+	leftContainer: {
+		paddingRight: padding
+	},
+	rightContainer: {
+		paddingLeft: padding
 	},
 	disabled: {
 		opacity: 0.3
@@ -38,15 +46,27 @@ const Content = React.memo(({
 	title, subtitle, disabled, testID, left, right, color, theme, translateTitle, translateSubtitle
 }) => (
 	<View style={[styles.container, disabled && styles.disabled]} testID={testID}>
-		{left ? left() : null}
+		{left
+			? (
+				<View style={styles.leftContainer}>
+					{left()}
+				</View>
+			)
+			: null}
 		<View style={styles.textContainer}>
-			<Text style={[styles.title, { color: color || themes[theme].titleText }]}>{translateTitle ? I18n.t(title) : title}</Text>
+			<Text style={[styles.title, { color: color || themes[theme].titleText }]} numberOfLines={1}>{translateTitle ? I18n.t(title) : title}</Text>
 			{subtitle
-				? <Text style={[styles.subtitle, { color: themes[theme].bodyText }]}>{translateSubtitle ? I18n.t(subtitle) : subtitle}</Text>
+				? <Text style={[styles.subtitle, { color: themes[theme].bodyText }]} numberOfLines={1}>{translateSubtitle ? I18n.t(subtitle) : subtitle}</Text>
 				: null
 			}
 		</View>
-		{right ? right() : null}
+		{right
+			? (
+				<View style={styles.rightContainer}>
+					{right()}
+				</View>
+			)
+			: null}
 	</View>
 ));
 

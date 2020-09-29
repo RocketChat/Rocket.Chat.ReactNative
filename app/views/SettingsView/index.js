@@ -265,7 +265,7 @@ class SettingsView extends React.Component {
 							onPress={this.sendEmail}
 							showActionIndicator
 							testID='settings-view-contact'
-							right={this.renderDisclosure}
+							right={() => <List.Icon name='chevron-right' />}
 						/>
 						<Separator />
 						<List.Item

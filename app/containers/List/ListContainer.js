@@ -21,7 +21,7 @@ const List = ({ children, ...props }) => (
 );
 
 List.propTypes = {
-	children: PropTypes.element.isRequired
+	children: PropTypes.array.isRequired
 };
 
 export default withTheme(List);
