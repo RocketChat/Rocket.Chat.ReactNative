@@ -1,5 +1,7 @@
 import React from 'react';
-import { Linking, Switch, Share, Clipboard } from 'react-native';
+import {
+	Linking, Switch, Share, Clipboard
+} from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -13,7 +15,6 @@ import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { DrawerButton, CloseModalButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
-import ItemInfo from '../../containers/ItemInfo';
 import Separator from '../../containers/Separator';
 import I18n from '../../i18n';
 import RocketChat, { CRASH_REPORT_KEY, ANALYTICS_EVENTS_KEY } from '../../lib/rocketchat';
@@ -350,7 +351,7 @@ class SettingsView extends React.Component {
 								/>
 								<Separator />
 								<List.Info
-									info={I18n.t('Crash_report_disclaimer')}
+									info='Crash_report_disclaimer'
 									theme={theme}
 								/>
 							</List.Section>
