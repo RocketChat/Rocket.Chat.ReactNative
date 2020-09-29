@@ -50,7 +50,7 @@ stories.add('separator', () => (
 	</List.Container>
 ));
 
-stories.add('with section', () => (
+stories.add('with section and info', () => (
 	<SafeAreaView>
 		<List.Container>
 			<List.Section>
@@ -73,6 +73,7 @@ stories.add('with section', () => (
 				<List.Separator />
 				<List.Item title='Section Item' translateTitle={false} />
 				<List.Separator />
+				<List.Info info='Chats' />
 			</List.Section>
 			<List.Section title={longText} translateTitle={false}>
 				<List.Separator />
@@ -80,6 +81,7 @@ stories.add('with section', () => (
 				<List.Separator />
 				<List.Item title='Section Item' translateTitle={false} />
 				<List.Separator />
+				<List.Info info={longText} translateInfo={false} />
 			</List.Section>
 		</List.Container>
 	</SafeAreaView>

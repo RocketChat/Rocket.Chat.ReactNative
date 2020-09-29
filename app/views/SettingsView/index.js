@@ -14,7 +14,6 @@ import { DrawerButton, CloseModalButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import ItemInfo from '../../containers/ItemInfo';
-import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import Separator from '../../containers/Separator';
 import I18n from '../../i18n';
 import RocketChat, { CRASH_REPORT_KEY, ANALYTICS_EVENTS_KEY } from '../../lib/rocketchat';
@@ -22,7 +21,6 @@ import {
 	getReadableVersion, getDeviceModel, isAndroid
 } from '../../utils/deviceInfo';
 import openLink from '../../utils/openLink';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
 import {
 	loggerConfig, analytics, logEvent, events
@@ -351,7 +349,7 @@ class SettingsView extends React.Component {
 									right={() => this.renderCrashReportSwitch()}
 								/>
 								<Separator />
-								<ItemInfo
+								<List.Info
 									info={I18n.t('Crash_report_disclaimer')}
 									theme={theme}
 								/>
