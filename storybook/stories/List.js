@@ -1,10 +1,11 @@
-/* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions */
+/* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions, react/prop-types */
 import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 
 import * as List from '../../app/containers/List';
 import SafeAreaView from '../../app/containers/SafeAreaView';
 import { longText } from '../utils';
+import { ThemeContext } from '../../app/theme';
 
 const stories = storiesOf('List', module);
 
@@ -114,4 +115,50 @@ stories.add('with custom color', () => (
 		<List.Item title='Chats' color='red' />
 		<List.Separator />
 	</List.Container>
+));
+
+const ListItemFull = ({ ...props }) => (
+	<List.Item
+		title='Chats'
+		subtitle='All'
+		onPress={() => alert('Hi')}
+		left={() => <List.Icon name='emoji' />}
+		right={() => <List.Icon name='emoji' />}
+		{...props}
+	/>
+);
+
+const ThemeStory = ({ theme }) => (
+	<ThemeContext.Provider
+		value={{ theme }}
+	>
+		<SafeAreaView>
+			<List.Container>
+				<List.Section title='Chats'>
+					<List.Separator />
+					<ListItemFull />
+					<List.Separator />
+					<ListItemFull disabled />
+					<List.Separator />
+					<List.Info info='Chats' />
+				</List.Section>
+				<List.Section title='Chats'>
+					<List.Separator />
+					<ListItemFull />
+					<List.Separator />
+					<ListItemFull disabled />
+					<List.Separator />
+					<List.Info info='Chats' />
+				</List.Section>
+			</List.Container>
+		</SafeAreaView>
+	</ThemeContext.Provider>
+);
+
+stories.add('with dark theme', () => (
+	<ThemeStory theme='dark' />
+));
+
+stories.add('with black theme', () => (
+	<ThemeStory theme='black' />
 ));
