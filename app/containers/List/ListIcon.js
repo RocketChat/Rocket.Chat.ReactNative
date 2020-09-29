@@ -8,8 +8,6 @@ import { withTheme } from '../../theme';
 
 const styles = StyleSheet.create({
 	disclosureContainer: {
-		// marginLeft: 0,
-		// marginRight: 0,
 		alignItems: 'center',
 		justifyContent: 'center'
 	}

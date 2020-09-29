@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { withTheme } from '../../theme';
+import { Header } from '.';
 
 const styles = StyleSheet.create({
 	container: {
@@ -9,16 +10,17 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ListSection = ({ children, title }) => (
+const ListSection = ({ children, title, translateTitle }) => (
 	<View style={styles.container}>
-		{title ? <Text>{title}</Text> : null}
+		{title ? <Header {...{ title, translateTitle }} /> : null}
 		{children}
 	</View>
 );
 
 ListSection.propTypes = {
 	children: PropTypes.element.isRequired,
-	title: PropTypes.string
+	title: PropTypes.string,
+	translateTitle: PropTypes.bool
 };
 
 export default withTheme(ListSection);

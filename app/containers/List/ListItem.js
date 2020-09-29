@@ -8,8 +8,7 @@ import sharedStyles from '../../views/Styles';
 import { withTheme } from '../../theme';
 import I18n from '../../i18n';
 import { Icon } from '.';
-
-const padding = 15;
+import { paddingHorizontal } from './constants';
 
 const styles = StyleSheet.create({
 	container: {
@@ -18,13 +17,13 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		height: 46,
-		paddingHorizontal: padding
+		paddingHorizontal
 	},
 	leftContainer: {
-		paddingRight: padding
+		paddingRight: paddingHorizontal
 	},
 	rightContainer: {
-		paddingLeft: padding
+		paddingLeft: paddingHorizontal
 	},
 	disabled: {
 		opacity: 0.3
@@ -111,12 +110,14 @@ Content.propTypes = {
 	theme: PropTypes.string,
 	color: PropTypes.string,
 	translateTitle: PropTypes.bool,
-	translateSubtitle: PropTypes.bool
+	translateSubtitle: PropTypes.bool,
+	showActionIndicator: PropTypes.bool
 };
 
 Content.defaultProps = {
 	translateTitle: true,
-	translateSubtitle: true
+	translateSubtitle: true,
+	showActionIndicator: false
 };
 
 Button.propTypes = {
