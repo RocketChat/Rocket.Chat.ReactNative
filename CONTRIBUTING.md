@@ -33,6 +33,10 @@ At this point, the app should be running on the simulator or on your device!
 
 *Note: npm won't work on this project*
 
+### How to inspect the app
+
+We use [Reactotron](https://github.com/infinitered/reactotron) to inspect logs, redux state, redux-sagas, HTTP requests, etc.
+
 ## Issues needing help
 
 Didn't find a bug or want a new feature not already reported? Check out the [help wanted](https://github.com/RocketChat/Rocket.Chat.ReactNative/issues?q=is%3Aissue+is%3Aopen+label%3A%22%F0%9F%91%8B+help+wanted%22) or the [good first issue](https://github.com/RocketChat/Rocket.Chat.ReactNative/issues?q=is%3Aissue+is%3Aopen+label%3A%22%F0%9F%8D%AD+good+first+issue%22) labels.
