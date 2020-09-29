@@ -45,5 +45,7 @@ stories.add('with icon', () => (
 			right={() => <List.Icon name='emoji' />}
 		/>
 		<List.Separator />
+		<List.Item title='Show Action Indicator' translateTitle={false} showActionIndicator />
+		<List.Separator />
 	</List.Container>
 ));

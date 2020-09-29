@@ -7,6 +7,7 @@ import { themes } from '../../constants/colors';
 import sharedStyles from '../../views/Styles';
 import { withTheme } from '../../theme';
 import I18n from '../../i18n';
+import { Icon } from '.';
 
 const padding = 15;
 
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
 });
 
 const Content = React.memo(({
-	title, subtitle, disabled, testID, left, right, color, theme, translateTitle, translateSubtitle
+	title, subtitle, disabled, testID, left, right, color, theme, translateTitle, translateSubtitle, showActionIndicator
 }) => (
 	<View style={[styles.container, disabled && styles.disabled]} testID={testID}>
 		{left
@@ -60,10 +61,11 @@ const Content = React.memo(({
 				: null
 			}
 		</View>
-		{right
+		{right || showActionIndicator
 			? (
 				<View style={styles.rightContainer}>
-					{right()}
+					{right ? right() : null}
+					{showActionIndicator ? <Icon name='chevron-right' /> : null}
 				</View>
 			)
 			: null}

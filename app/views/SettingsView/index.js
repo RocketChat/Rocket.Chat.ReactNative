@@ -204,11 +204,6 @@ class SettingsView extends React.Component {
 		openLink(LICENSE_LINK, theme);
 	}
 
-	renderDisclosure = () => {
-		const { theme } = this.props;
-		return <DisclosureImage theme={theme} />;
-	}
-
 	renderCrashReportSwitch = () => {
 		const { allowCrashReport } = this.props;
 		return (
@@ -251,7 +246,6 @@ class SettingsView extends React.Component {
 									onPress={() => this.navigateToScreen('ProfileView')}
 									showActionIndicator
 									testID='settings-profile'
-									right={this.renderDisclosure}
 								/>
 								<Separator />
 							</List.Section>
@@ -265,7 +259,6 @@ class SettingsView extends React.Component {
 							onPress={this.sendEmail}
 							showActionIndicator
 							testID='settings-view-contact'
-							right={() => <List.Icon name='chevron-right' />}
 						/>
 						<Separator />
 						<List.Item
@@ -273,7 +266,6 @@ class SettingsView extends React.Component {
 							onPress={() => this.navigateToScreen('LanguageView')}
 							showActionIndicator
 							testID='settings-view-language'
-							right={this.renderDisclosure}
 						/>
 						<Separator />
 						{!isFDroidBuild ? (
@@ -283,7 +275,6 @@ class SettingsView extends React.Component {
 									showActionIndicator
 									onPress={onReviewPress}
 									testID='settings-view-review-app'
-									right={this.renderDisclosure}
 								/>
 							</>
 						) : null}
@@ -293,7 +284,6 @@ class SettingsView extends React.Component {
 							showActionIndicator
 							onPress={this.shareApp}
 							testID='settings-view-share-app'
-							right={this.renderDisclosure}
 						/>
 						<Separator />
 						<List.Item
@@ -301,7 +291,6 @@ class SettingsView extends React.Component {
 							showActionIndicator
 							onPress={() => this.navigateToScreen('DefaultBrowserView')}
 							testID='settings-view-default-browser'
-							right={this.renderDisclosure}
 						/>
 						<Separator />
 						<List.Item
@@ -309,14 +298,12 @@ class SettingsView extends React.Component {
 							showActionIndicator
 							onPress={() => this.navigateToScreen('ThemeView')}
 							testID='settings-view-theme'
-							right={this.renderDisclosure}
 						/>
 						<Separator />
 						<List.Item
 							title='Screen_lock'
 							showActionIndicator
 							onPress={() => this.navigateToScreen('ScreenLockConfigView')}
-							right={this.renderDisclosure}
 						/>
 						<Separator />
 					</List.Section>
@@ -328,7 +315,6 @@ class SettingsView extends React.Component {
 							onPress={this.onPressLicense}
 							showActionIndicator
 							testID='settings-view-license'
-							right={this.renderDisclosure}
 						/>
 						<Separator />
 						<List.Item
@@ -379,7 +365,7 @@ class SettingsView extends React.Component {
 							title='Clear_cache'
 							testID='settings-clear-cache'
 							onPress={this.handleClearCache}
-							right={this.renderDisclosure}
+							showActionIndicator
 							color={themes[theme].dangerColor}
 						/>
 						<Separator />
@@ -387,7 +373,7 @@ class SettingsView extends React.Component {
 							title='Logout'
 							testID='settings-logout'
 							onPress={this.handleLogout}
-							right={this.renderDisclosure}
+							showActionIndicator
 							color={themes[theme].dangerColor}
 						/>
 						<Separator />

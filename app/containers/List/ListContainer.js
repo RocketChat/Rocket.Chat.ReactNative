@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
 const List = ({ children, ...props }) => (
 	<ScrollView
 		contentContainerStyle={styles.container}
+		showsVerticalScrollIndicator={false} // FIXME: we shouldn't need this, but vertical scroll is weird without it
 		{...scrollPersistTaps}
 		{...props}
 	>
