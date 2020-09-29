@@ -6,7 +6,8 @@ import { storiesOf } from '@storybook/react-native';
 import * as List from '../../app/containers/List';
 import SafeAreaView from '../../app/containers/SafeAreaView';
 import { longText } from '../utils';
-import { ThemeContext } from '../../app/theme';
+import { ThemeContext, useTheme } from '../../app/theme';
+import { themes } from '../../app/constants/colors';
 
 const stories = storiesOf('List', module);
 
@@ -165,11 +166,15 @@ stories.add('with black theme', () => (
 ));
 
 stories.add('with FlatList', () => (
-	<FlatList
-		data={['1', '2', '3']}
-		renderItem={({ item }) => <List.Item title={item} translateTitle={false} />}
-		ListHeaderComponent={() => <List.Header title='Header' translateTitle={false} />}
-		ItemSeparatorComponent={List.Separator}
-		keyExtractor={item => item}
-	/>
-))
+	<SafeAreaView>
+		<FlatList
+			data={[...Array(30).keys()]}
+			contentContainerStyle={List.styles.contentContainerStyleFlatList}
+			renderItem={({ item }) => <List.Item title={item} translateTitle={false} />}
+			ListHeaderComponent={List.Separator}
+			ListFooterComponent={List.Separator}
+			ItemSeparatorComponent={List.Separator}
+			keyExtractor={item => item}
+		/>
+	</SafeAreaView>
+));
