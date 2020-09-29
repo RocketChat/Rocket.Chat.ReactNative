@@ -1,5 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions, react/prop-types */
 import React from 'react';
+import { FlatList, Text } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 
 import * as List from '../../app/containers/List';
@@ -162,3 +163,13 @@ stories.add('with dark theme', () => (
 stories.add('with black theme', () => (
 	<ThemeStory theme='black' />
 ));
+
+stories.add('with FlatList', () => (
+	<FlatList
+		data={['1', '2', '3']}
+		renderItem={({ item }) => <List.Item title={item} translateTitle={false} />}
+		ListHeaderComponent={() => <List.Header title='Header' translateTitle={false} />}
+		ItemSeparatorComponent={List.Separator}
+		keyExtractor={item => item}
+	/>
+))
