@@ -100,7 +100,6 @@ export default {
 	announcement: '公告',
 	Announcement: '公告',
 	Apply_Your_Certificate: '使用自己的凭证',
-	Applying_a_theme_will_change_how_the_app_looks: '套用主题将会改变 App 的外观',
 	ARCHIVE: '封存',
 	archive: '封存',
 	are_typing: '正在输入',

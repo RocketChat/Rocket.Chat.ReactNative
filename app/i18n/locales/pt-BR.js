@@ -102,7 +102,6 @@ export default {
 	and: 'e',
 	announcement: 'anúncio',
 	Announcement: 'Anúncio',
-	Applying_a_theme_will_change_how_the_app_looks: 'Aplicar um tema mudará a aparência do app.',
 	ARCHIVE: 'ARQUIVAR',
 	archive: 'arquivar',
 	are_typing: 'estão digitando',

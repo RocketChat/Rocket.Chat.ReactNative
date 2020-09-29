@@ -95,7 +95,6 @@ export default {
 	announcement: 'anuncio',
 	Announcement: 'Anuncio',
 	Apply_Your_Certificate: 'Applica tu Certificación',
-	Applying_a_theme_will_change_how_the_app_looks: 'Aplicando un tema modificará el aspecto de la App.',
 	ARCHIVE: 'FICHERO',
 	archive: 'Fichero',
 	are_typing: 'escribiendo',

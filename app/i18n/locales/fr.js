@@ -100,7 +100,6 @@ export default {
 	announcement: 'annonce',
 	Announcement: 'Annonce',
 	Apply_Your_Certificate: 'Valider le Certificat',
-	Applying_a_theme_will_change_how_the_app_looks: 'Valider un thème va modifier l\'affichage de l\'application.',
 	ARCHIVE: 'ARCHIVER',
 	archive: 'archiver',
 	are_typing: 'sont en train d\'écrire',

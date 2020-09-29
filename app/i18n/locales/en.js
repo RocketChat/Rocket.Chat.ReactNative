@@ -100,7 +100,6 @@ export default {
 	announcement: 'announcement',
 	Announcement: 'Announcement',
 	Apply_Your_Certificate: 'Apply Your Certificate',
-	Applying_a_theme_will_change_how_the_app_looks: 'Applying a theme will change how the app looks.',
 	ARCHIVE: 'ARCHIVE',
 	archive: 'archive',
 	are_typing: 'are typing',

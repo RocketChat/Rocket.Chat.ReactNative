@@ -96,7 +96,6 @@ export default {
 	announcement: 'aankondiging',
 	Announcement: 'Aankondiging',
 	Apply_Your_Certificate: 'Gebruik je certificaat',
-	Applying_a_theme_will_change_how_the_app_looks: 'Een thema toepassen verandert de looks van de app.',
 	ARCHIVE: 'ARCHIVEER',
 	archive: 'archiveer',
 	are_typing: 'zijn aan het typen',

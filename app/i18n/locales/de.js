@@ -100,7 +100,6 @@ export default {
 	announcement: 'Ankündigung',
 	Announcement: 'Ankündigung',
 	Apply_Your_Certificate: 'Wende dein Zertifikat an',
-	Applying_a_theme_will_change_how_the_app_looks: 'Das Erscheinungsbild festzulegen wird das Aussehen der Anwendung ändern.',
 	ARCHIVE: 'ARCHIV',
 	archive: 'Archiv',
 	are_typing: 'tippen',

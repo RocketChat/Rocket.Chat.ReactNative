@@ -110,8 +110,6 @@ export default {
 	announcement: 'アナウンス',
 	Announcement: 'アナウンス',
 	Apply_Your_Certificate: '証明書を適用する',
-	Applying_a_theme_will_change_how_the_app_looks:
-    'テーマを変更すると見た目が変わります',
 	ARCHIVE: 'アーカイブ',
 	archive: 'アーカイブ',
 	are_typing: 'が入力中',
