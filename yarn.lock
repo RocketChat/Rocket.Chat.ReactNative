@@ -12891,7 +12891,7 @@ react-native-picker-select@7.0.0:
   dependencies:
     lodash.isequal "^4.5.0"
 
-react-native-platform-touchable@^1.1.1:
+react-native-platform-touchable@1.1.1, react-native-platform-touchable@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/react-native-platform-touchable/-/react-native-platform-touchable-1.1.1.tgz#fde4acc65eea585d28b164d0c3716a42129a68e4"
   integrity sha1-/eSsxl7qWF0osWTQw3FqQhKaaOQ=
