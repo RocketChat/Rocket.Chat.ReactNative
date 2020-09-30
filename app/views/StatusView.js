@@ -37,9 +37,6 @@ const STATUS = [{
 }];
 
 const styles = StyleSheet.create({
-	status: {
-		marginRight: 16
-	},
 	inputContainer: {
 		marginTop: 32,
 		marginBottom: 32
@@ -157,18 +154,18 @@ class StatusView extends React.Component {
 					placeholder={I18n.t('What_are_you_doing_right_now')}
 					testID='status-view-input'
 				/>
-				<Separator theme={theme} />
+				<List.Separator />
 			</>
 		);
 	}
 
 	renderItem = ({ item }) => {
 		const { statusText } = this.state;
-		const { theme, user } = this.props;
+		const { user } = this.props;
 		const { id, name } = item;
 		return (
 			<List.Item
-				title={I18n.t(name)}
+				title={name}
 				onPress={async() => {
 					logEvent(events[`STATUS_${ item.id.toUpperCase() }`]);
 					if (user.status !== item.id) {
@@ -184,25 +181,22 @@ class StatusView extends React.Component {
 					}
 				}}
 				testID={`status-view-${ id }`}
-				left={() => <Status style={styles.status} size={12} status={item.id} />}
-				theme={theme}
+				left={() => <Status size={12} status={item.id} />}
 			/>
 		);
 	}
 
 	render() {
 		const { loading } = this.state;
-		const { theme } = this.props;
 		return (
 			<SafeAreaView testID='status-view'>
 				<FlatList
 					data={STATUS}
 					keyExtractor={item => item.id}
-					contentContainerStyle={{ borderColor: themes[theme].separatorColor }}
 					renderItem={this.renderItem}
 					ListHeaderComponent={this.renderHeader}
-					ListFooterComponent={() => <Separator theme={theme} />}
-					ItemSeparatorComponent={this.renderSeparator}
+					ListFooterComponent={List.Separator}
+					ItemSeparatorComponent={List.Separator}
 				/>
 				<Loading visible={loading} />
 			</SafeAreaView>
