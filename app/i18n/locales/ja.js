@@ -196,7 +196,6 @@ export default {
 	Edit_Invite: '編集に招待',
 	Email_or_password_field_is_empty: 'メールアドレスかパスワードの入力欄が空です',
 	Email: 'メールアドレス',
-	EMAIL: 'メールアドレス',
 	email: 'メールアドレス',
 	Enable_Auto_Translate: '自動翻訳を有効にする',
 	Enable_markdown: 'マークダウンを有効にする',
@@ -330,7 +329,7 @@ export default {
 	Profile: 'プロフィール',
 	Public_Channel: 'パブリックチャンネル',
 	Public: 'パブリック',
-	PUSH_NOTIFICATIONS: 'プッシュ通知',
+	Push_Notifications: 'プッシュ通知',
 	Push_Notifications_Alert_Info:
     '通知はアプリを開いていない時に送られます。',
 	Quote: '引用',

@@ -11,14 +11,10 @@ import debounce from '../utils/debounce';
 import sharedStyles from './Styles';
 
 import * as List from '../containers/List';
-import Check from '../containers/Check';
 import Separator from '../containers/Separator';
 import SearchBox from '../containers/SearchBox';
 
 const styles = StyleSheet.create({
-	check: {
-		marginHorizontal: 0
-	},
 	search: {
 		width: '100%',
 		height: 56
@@ -43,9 +39,9 @@ const Item = React.memo(({
 }) => (
 	<List.Item
 		title={I18n.t(item.label, { defaultValue: item.label, second: item?.second })}
-		right={selected && (() => <Check theme={theme} style={styles.check} />)}
+		right={selected && (() => <List.Icon name='check' color={themes[theme].tintColor} />)}
 		onPress={onItemPress}
-		theme={theme}
+		translateTitle={false}
 	/>
 ));
 Item.propTypes = {
