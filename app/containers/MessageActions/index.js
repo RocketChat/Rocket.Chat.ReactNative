@@ -179,7 +179,13 @@ const MessageActions = React.memo(forwardRef(({
 
 	const handlePin = async(message) => {
 		try {
-			await RocketChat.togglePinMessage(message.id, message.pinned);
+			const db = database.active;
+			await db.action(async() => {
+				await message.update((m) => {
+					m.pinned = !m.pinned;
+				});
+			});
+			await RocketChat.togglePinMessage(message.id, !message.pinned);
 		} catch (e) {
 			log(e);
 		}
