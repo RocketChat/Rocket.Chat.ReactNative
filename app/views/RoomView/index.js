@@ -113,6 +113,7 @@ class RoomView extends React.Component {
 		const search = props.route.params?.search;
 		const prid = props.route.params?.prid;
 		this.state = {
+			joinCode: '',
 			joined: true,
 			room: room || {
 				rid: this.rid, t: this.t, name, fname, prid
@@ -688,12 +689,12 @@ class RoomView extends React.Component {
 	joinRoom = async() => {
 		logEvent(events.ROOM_JOIN);
 		try {
-			const { room } = this.state;
+			const { room, joinCode } = this.state;
 
 			if (this.isOmnichannel) {
 				await takeInquiry(room._id);
 			} else {
-				await RocketChat.joinRoom(this.rid, this.t);
+				await RocketChat.joinRoom(this.rid, joinCode, this.t);
 			}
 			this.internalSetState({
 				joined: true
