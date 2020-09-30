@@ -213,9 +213,11 @@ public class CustomPushNotification extends PushNotification {
             String CHANNEL_ID = "rocketchatrn_channel_01";
             String CHANNEL_NAME = "All";
 
+            // User-visible importance level: Urgent - Makes a sound and appears as a heads-up notification
+            // https://developer.android.com/training/notify-user/channels#importance
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
                     CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_DEFAULT);
+                    NotificationManager.IMPORTANCE_HIGH);
 
             final NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(channel);
