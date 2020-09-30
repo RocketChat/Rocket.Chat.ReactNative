@@ -177,7 +177,7 @@ export default {
 	DELETE: 'EXCLUIR',
 	deleting_room: 'excluindo sala',
 	Direct_Messages: 'Mensagens Diretas',
-	DESKTOP_OPTIONS: 'OPÇÕES DE ÁREA DE TRABALHO',
+	Desktop_Options: 'Opções De Área De Trabalho',
 	Desktop_Notifications: 'Notificações da Área de Trabalho',
 	Desktop_Alert_info: 'Essas notificações são entregues a você na área de trabalho',
 	Directory: 'Diretório',

@@ -181,7 +181,7 @@ export default {
 	deleting_room: 'ルームを削除',
 	description: '概要',
 	Description: '概要',
-	DESKTOP_OPTIONS: 'デスクトップオプション',
+	Desktop_Options: 'デスクトップオプション',
 	Directory: 'ディレクトリ',
 	Direct_Messages: 'ダイレクトメッセージ',
 	Disable_notifications: '通知を無効化',
@@ -224,7 +224,7 @@ export default {
 	Has_joined_the_channel: 'はチャンネルに参加しました',
 	Has_joined_the_conversation: 'は会話に参加しました',
 	Has_left_the_channel: 'はチャンネルを退出しました',
-	IN_APP_AND_DESKTOP: 'アプリ内とデスクトップ',
+	In_App_And_Desktop: 'アプリ内とデスクトップ',
 	In_App_and_Desktop_Alert_info:
     'アプリを表示中にはバナーを上部に表示し、デスクトップには通知を送ります。',
 	Invisible: '状態を隠す',
