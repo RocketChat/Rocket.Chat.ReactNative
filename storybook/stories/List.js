@@ -6,8 +6,7 @@ import { storiesOf } from '@storybook/react-native';
 import * as List from '../../app/containers/List';
 import SafeAreaView from '../../app/containers/SafeAreaView';
 import { longText } from '../utils';
-import { ThemeContext, useTheme } from '../../app/theme';
-import { themes } from '../../app/constants/colors';
+import { ThemeContext } from '../../app/theme';
 
 const stories = storiesOf('List', module);
 
