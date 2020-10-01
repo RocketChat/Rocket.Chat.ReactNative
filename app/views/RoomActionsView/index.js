@@ -13,6 +13,7 @@ import styles from './styles';
 import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status';
+import * as List from '../../containers/List';
 import RocketChat from '../../lib/rocketchat';
 import log, { logEvent, events } from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
@@ -523,7 +524,6 @@ class RoomActionsView extends React.Component {
 				value={encrypted}
 				trackColor={SWITCH_TRACK_COLOR}
 				onValueChange={this.toggleEncrypted}
-				style={styles.encryptedSwitch}
 			/>
 		);
 	}
@@ -762,22 +762,70 @@ class RoomActionsView extends React.Component {
 		return null;
 	}
 
+	renderJitsi = () => {
+		const { room } = this.state;
+		const { jitsiEnabled } = this.props;
+		if (!jitsiEnabled) {
+			return null;
+		}
+		return (
+			<List.Section>
+				<List.Separator />
+				<List.Item
+					title='Voice_call'
+					onPress={() => RocketChat.callJitsi(room?.rid, true)}
+					testID='room-actions-voice'
+					left={() => <List.Icon name='phone' />}
+					showActionIndicator
+				/>
+				<List.Separator />
+				<List.Item
+					title='Video_call'
+					onPress={() => RocketChat.callJitsi(room?.rid)}
+					testID='room-actions-video'
+					left={() => <List.Icon name='camera' />}
+					showActionIndicator
+				/>
+				<List.Separator />
+			</List.Section>
+		);
+	}
+
+	renderE2EEncryption = () => {
+		const {
+			room, canEdit
+		} = this.state;
+		const { e2eEnabled } = this.props;
+
+		// If can edit this room
+		// If this room type can be Encrypted
+		// If e2e is enabled for this server
+		if (canEdit && E2E_ROOM_TYPES[room?.t] && e2eEnabled) {
+			return (
+				<List.Section>
+					<List.Separator />
+					<List.Item
+						title='Encrypted'
+						testID='room-actions-encrypt'
+						left={() => <List.Icon name='encrypted' />}
+						right={this.renderEncryptedSwitch}
+					/>
+					<List.Separator />
+				</List.Section>
+			);
+		}
+		return null;
+	}
+
 	render() {
-		const { theme } = this.props;
 		return (
 			<SafeAreaView testID='room-actions-view'>
 				<StatusBar />
-				<SectionList
-					contentContainerStyle={[styles.contentContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}
-					style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
-					stickySectionHeadersEnabled={false}
-					sections={this.sections}
-					SectionSeparatorComponent={this.renderSectionSeparator}
-					ItemSeparatorComponent={this.renderSeparator}
-					keyExtractor={item => item.name}
-					testID='room-actions-list'
-					{...scrollPersistTaps}
-				/>
+				<List.Container>
+					{/* {this.renderRoomInfo()} */}
+					{this.renderJitsi()}
+					{this.renderE2EEncryption()}
+				</List.Container>
 			</SafeAreaView>
 		);
 	}
