@@ -11,8 +11,8 @@ import debounce from '../utils/debounce';
 import sharedStyles from './Styles';
 
 import * as List from '../containers/List';
-import Separator from '../containers/Separator';
 import SearchBox from '../containers/SearchBox';
+import SafeAreaView from '../containers/SafeAreaView';
 
 const styles = StyleSheet.create({
 	search: {
@@ -24,10 +24,6 @@ const styles = StyleSheet.create({
 		paddingVertical: 56,
 		...sharedStyles.textAlignCenter,
 		...sharedStyles.textSemibold
-	},
-	withoutBorder: {
-		borderBottomWidth: 0,
-		borderTopWidth: 0
 	}
 });
 
@@ -105,7 +101,7 @@ class PickerView extends React.PureComponent {
 		const { theme } = this.props;
 
 		return (
-			<>
+			<SafeAreaView>
 				{this.renderSearch()}
 				<FlatList
 					data={data}
@@ -118,19 +114,13 @@ class PickerView extends React.PureComponent {
 							onItemPress={() => this.onChangeValue(item.value)}
 						/>
 					)}
-					ItemSeparatorComponent={() => <Separator theme={theme} />}
+					ItemSeparatorComponent={List.Separator}
+					ListHeaderComponent={List.Separator}
+					ListFooterComponent={List.Separator}
 					ListEmptyComponent={() => <Text style={[styles.noResult, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>}
-					contentContainerStyle={[
-						sharedStyles.listContentContainer,
-						{
-							backgroundColor: themes[theme].auxiliaryBackground,
-							borderColor: themes[theme].separatorColor
-						},
-						!data.length && styles.withoutBorder
-					]}
-					style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+					contentContainerStyle={[List.styles.contentContainerStyleFlatList]}
 				/>
-			</>
+			</SafeAreaView>
 		);
 	}
 }

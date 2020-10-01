@@ -6,7 +6,6 @@ import I18n from '../i18n';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import StatusBar from '../containers/StatusBar';
-import Separator from '../containers/Separator';
 import * as List from '../containers/List';
 import { DEFAULT_BROWSER_KEY } from '../utils/openLink';
 import { isIOS } from '../utils/deviceInfo';
@@ -99,11 +98,6 @@ class DefaultBrowserView extends React.Component {
 		} catch {
 			logEvent(events.DB_CHANGE_DEFAULT_BROWSER_F);
 		}
-	}
-
-	renderSeparator = () => {
-		const { theme } = this.props;
-		return <Separator theme={theme} />;
 	}
 
 	renderIcon = () => {

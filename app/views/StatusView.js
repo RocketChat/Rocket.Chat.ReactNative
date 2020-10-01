@@ -4,7 +4,6 @@ import { FlatList, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
 import I18n from '../i18n';
-import Separator from '../containers/Separator';
 import * as List from '../containers/List';
 import Status from '../containers/Status/Status';
 import TextInput from '../containers/TextInput';
@@ -14,7 +13,6 @@ import RocketChat from '../lib/rocketchat';
 import log, { logEvent, events } from '../utils/log';
 
 import { LISTENER } from '../containers/Toast';
-import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { getUserSelector } from '../selectors/login';
 import { CustomHeaderButtons, Item, CancelModalButton } from '../containers/HeaderButton';
@@ -124,11 +122,6 @@ class StatusView extends React.Component {
 		}
 
 		this.setState({ loading: false });
-	}
-
-	renderSeparator = () => {
-		const { theme } = this.props;
-		return <Separator theme={theme} />;
 	}
 
 	renderHeader = () => {

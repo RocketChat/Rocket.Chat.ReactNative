@@ -105,11 +105,6 @@ class LanguageView extends React.Component {
 		}
 	}
 
-	renderSeparator = () => {
-		const { theme } = this.props;
-		return <List.Separator theme={theme} />;
-	}
-
 	renderIcon = () => {
 		const { theme } = this.props;
 		return <List.Icon name='check' color={themes[theme].tintColor} />;

@@ -6,7 +6,6 @@ import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
-import Separator from '../../containers/Separator';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -102,11 +101,6 @@ class AutoTranslateView extends React.Component {
 			logEvent(events.AT_SET_LANG_F);
 			console.log(error);
 		}
-	}
-
-	renderSeparator = () => {
-		const { theme } = this.props;
-		return <Separator theme={theme} />;
 	}
 
 	renderIcon = () => {

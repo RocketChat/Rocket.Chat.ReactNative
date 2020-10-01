@@ -5,12 +5,9 @@ import I18n from '../../i18n';
 import {
 	logEvent, events
 } from '../../utils/log';
-import Separator from '../../containers/Separator';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
-import { DisclosureImage } from '../../containers/DisclosureIndicator';
-import { withTheme } from '../../theme';
 
 class UserPreferencesView extends React.Component {
 	static navigationOptions = () => ({
@@ -18,13 +15,7 @@ class UserPreferencesView extends React.Component {
 	});
 
 	static propTypes = {
-		navigation: PropTypes.object,
-		theme: PropTypes.string
-	}
-
-	renderDisclosure = () => {
-		const { theme } = this.props;
-		return <DisclosureImage theme={theme} />;
+		navigation: PropTypes.object
 	}
 
 	navigateToScreen = (screen, params) => {
@@ -34,21 +25,19 @@ class UserPreferencesView extends React.Component {
 	}
 
 	render() {
-		const { theme } = this.props;
-
 		return (
 			<SafeAreaView testID='preferences-view'>
 				<StatusBar />
 				<List.Container>
 					<List.Section>
-						<Separator theme={theme} />
+						<List.Separator />
 						<List.Item
 							title={I18n.t('Notifications')}
 							onPress={() => this.navigateToScreen('UserNotificationPrefView')}
 							showActionIndicator
 							testID='preferences-view-notifications'
 						/>
-						<Separator theme={theme} />
+						<List.Separator />
 					</List.Section>
 				</List.Container>
 			</SafeAreaView>
@@ -56,4 +45,4 @@ class UserPreferencesView extends React.Component {
 	}
 }
 
-export default withTheme(UserPreferencesView);
+export default UserPreferencesView;
