@@ -349,10 +349,7 @@ class SettingsView extends React.Component {
 									right={() => this.renderCrashReportSwitch()}
 								/>
 								<List.Separator />
-								<List.Info
-									info='Crash_report_disclaimer'
-									theme={theme}
-								/>
+								<List.Info info='Crash_report_disclaimer' />
 							</List.Section>
 						</>
 					) : null}

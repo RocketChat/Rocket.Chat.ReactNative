@@ -100,16 +100,14 @@ class ThemeView extends React.Component {
 	}
 
 	renderItem = ({ item }) => {
-		const { theme } = this.props;
 		const { label, value } = item;
 		return (
 			<>
 				<List.Item
-					title={I18n.t(label)}
+					title={label}
 					onPress={() => this.onClick(item)}
 					testID={`theme-view-${ value }`}
 					right={this.isSelected(item) ? this.renderIcon : null}
-					theme={theme}
 				/>
 				<List.Separator />
 			</>
