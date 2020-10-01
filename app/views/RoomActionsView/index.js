@@ -940,6 +940,113 @@ class RoomActionsView extends React.Component {
 								</>
 							)
 							: null}
+
+						{['c', 'p', 'd'].includes(t)
+							? (
+								<>
+									<List.Item
+										title='Files'
+										onPress={() => this.onPressTouchable({
+											route: 'MessagesView',
+											params: { rid, t, name: 'Files' }
+										})}
+										testID='room-actions-files'
+										left={() => <List.Icon name='attach' />}
+										showActionIndicator
+									/>
+									<List.Separator />
+								</>
+							)
+							: null}
+
+						{['c', 'p', 'd'].includes(t)
+							? (
+								<>
+									<List.Item
+										title='Mentions'
+										onPress={() => this.onPressTouchable({
+											route: 'MessagesView',
+											params: { rid, t, name: 'Mentions' }
+										})}
+										testID='room-actions-mentioned'
+										left={() => <List.Icon name='mention' />}
+										showActionIndicator
+									/>
+									<List.Separator />
+								</>
+							)
+							: null}
+
+						{['c', 'p', 'd'].includes(t)
+							? (
+								<>
+									<List.Item
+										title='Starred'
+										onPress={() => this.onPressTouchable({
+											route: 'MessagesView',
+											params: { rid, t, name: 'Starred' }
+										})}
+										testID='room-actions-starred'
+										left={() => <List.Icon name='star' />}
+										showActionIndicator
+									/>
+									<List.Separator />
+								</>
+							)
+							: null}
+
+						{['c', 'p', 'd'].includes(t)
+							? (
+								<>
+									<List.Item
+										title='Search'
+										onPress={() => this.onPressTouchable({
+											route: 'SearchMessagesView',
+											params: { rid, encrypted }
+										})}
+										testID='room-actions-search'
+										left={() => <List.Icon name='search' />}
+										showActionIndicator
+									/>
+									<List.Separator />
+								</>
+							)
+							: null}
+
+						{['c', 'p', 'd'].includes(t)
+							? (
+								<>
+									<List.Item
+										title='Share'
+										onPress={() => this.onPressTouchable({
+											event: this.handleShare
+										})}
+										testID='room-actions-share'
+										left={() => <List.Icon name='share' />}
+										showActionIndicator
+									/>
+									<List.Separator />
+								</>
+							)
+							: null}
+
+						{['c', 'p', 'd'].includes(t)
+							? (
+								<>
+									<List.Item
+										title='Pinned'
+										onPress={() => this.onPressTouchable({
+											route: 'MessagesView',
+											params: { rid, t, name: 'Pinned' }
+										})}
+										testID='room-actions-pinned'
+										left={() => <List.Icon name='pin' />}
+										showActionIndicator
+									/>
+									<List.Separator />
+								</>
+							)
+							: null}
 					</List.Section>
 
 					{this.renderLastSection()}
