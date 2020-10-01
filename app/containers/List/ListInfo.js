@@ -5,13 +5,13 @@ import PropTypes from 'prop-types';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { paddingHorizontal } from './constants';
+import { PADDING_HORIZONTAL } from './constants';
 import I18n from '../../i18n';
 
 const styles = StyleSheet.create({
 	container: {
 		paddingTop: 8,
-		paddingHorizontal
+		paddingHorizontal: PADDING_HORIZONTAL
 	},
 	text: {
 		fontSize: 14,

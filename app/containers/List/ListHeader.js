@@ -6,12 +6,12 @@ import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
 import { withTheme } from '../../theme';
-import { paddingHorizontal } from './constants';
+import { PADDING_HORIZONTAL } from './constants';
 
 const styles = StyleSheet.create({
 	container: {
 		paddingBottom: 12,
-		paddingHorizontal
+		paddingHorizontal: PADDING_HORIZONTAL
 	},
 	title: {
 		fontSize: 16,

@@ -7,6 +7,7 @@ import * as List from '../../app/containers/List';
 import SafeAreaView from '../../app/containers/SafeAreaView';
 import { longText } from '../utils';
 import { ThemeContext } from '../../app/theme';
+import { DimensionsContext } from '../../app/dimensions';
 
 const stories = storiesOf('List', module);
 
@@ -129,40 +130,56 @@ const ListItemFull = ({ ...props }) => (
 	/>
 );
 
+const ListFull = () => (
+	<SafeAreaView>
+		<List.Container>
+			<List.Section title='Chats'>
+				<List.Separator />
+				<ListItemFull />
+				<List.Separator />
+				<ListItemFull disabled />
+				<List.Separator />
+				<List.Info info='Chats' />
+			</List.Section>
+			<List.Section title='Chats'>
+				<List.Separator />
+				<ListItemFull />
+				<List.Separator />
+				<ListItemFull disabled />
+				<List.Separator />
+				<List.Info info='Chats' />
+			</List.Section>
+		</List.Container>
+	</SafeAreaView>
+);
+
 const ThemeStory = ({ theme }) => (
 	<ThemeContext.Provider
 		value={{ theme }}
 	>
-		<SafeAreaView>
-			<List.Container>
-				<List.Section title='Chats'>
-					<List.Separator />
-					<ListItemFull />
-					<List.Separator />
-					<ListItemFull disabled />
-					<List.Separator />
-					<List.Info info='Chats' />
-				</List.Section>
-				<List.Section title='Chats'>
-					<List.Separator />
-					<ListItemFull />
-					<List.Separator />
-					<ListItemFull disabled />
-					<List.Separator />
-					<List.Info info='Chats' />
-				</List.Section>
-			</List.Container>
-		</SafeAreaView>
+		<ListFull />
 	</ThemeContext.Provider>
 );
 
-stories.add('with dark theme', () => (
-	<ThemeStory theme='dark' />
-));
+stories.add('with dark theme', () => <ThemeStory theme='dark' />);
 
-stories.add('with black theme', () => (
-	<ThemeStory theme='black' />
-));
+stories.add('with black theme', () => <ThemeStory theme='black' />);
+
+const FontStory = ({ fontScale }) => (
+	<DimensionsContext.Provider
+		value={{ fontScale }}
+	>
+		<ListFull />
+	</DimensionsContext.Provider>
+);
+
+/**
+ * It's going to test height only.
+ * Font scale on text and icons is applied based on OS setting
+ */
+stories.add('with small font', () => <FontStory fontScale={0.8} />);
+
+stories.add('with bigger font', () => <FontStory fontScale={1.5} />);
 
 stories.add('with FlatList', () => (
 	<SafeAreaView>

@@ -8,7 +8,8 @@ import sharedStyles from '../../views/Styles';
 import { withTheme } from '../../theme';
 import I18n from '../../i18n';
 import { Icon } from '.';
-import { paddingHorizontal } from './constants';
+import { BASE_HEIGHT, PADDING_HORIZONTAL } from './constants';
+import { withDimensions } from '../../dimensions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -16,14 +17,13 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-		height: 46,
-		paddingHorizontal
+		paddingHorizontal: PADDING_HORIZONTAL
 	},
 	leftContainer: {
-		paddingRight: paddingHorizontal
+		paddingRight: PADDING_HORIZONTAL
 	},
 	rightContainer: {
-		paddingLeft: paddingHorizontal
+		paddingLeft: PADDING_HORIZONTAL
 	},
 	disabled: {
 		opacity: 0.3
@@ -43,9 +43,9 @@ const styles = StyleSheet.create({
 });
 
 const Content = React.memo(({
-	title, subtitle, disabled, testID, left, right, color, theme, translateTitle, translateSubtitle, showActionIndicator
+	title, subtitle, disabled, testID, left, right, color, theme, translateTitle, translateSubtitle, showActionIndicator, fontScale
 }) => (
-	<View style={[styles.container, disabled && styles.disabled]} testID={testID}>
+	<View style={[styles.container, disabled && styles.disabled, { height: BASE_HEIGHT * fontScale }]} testID={testID}>
 		{left
 			? (
 				<View style={styles.leftContainer}>
@@ -133,4 +133,4 @@ Button.defaultProps = {
 	disabled: false
 };
 
-export default withTheme(ListItem);
+export default withTheme(withDimensions(ListItem));
