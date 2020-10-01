@@ -387,44 +387,44 @@ class RoomActionsView extends React.Component {
 		} else if (t === 'c' || t === 'p') {
 			const actions = [];
 
-			if (canViewMembers) {
-				actions.push({
-					icon: 'team',
-					name: I18n.t('Members'),
-					description: membersCount > 0 ? `${ membersCount } ${ I18n.t('members') }` : null,
-					route: 'RoomMembersView',
-					params: { rid, room },
-					testID: 'room-actions-members',
-					right: this.renderDisclosure
-				});
-			}
+			// if (canViewMembers) {
+			// 	actions.push({
+			// 		icon: 'team',
+			// 		name: I18n.t('Members'),
+			// 		description: membersCount > 0 ? `${ membersCount } ${ I18n.t('members') }` : null,
+			// 		route: 'RoomMembersView',
+			// 		params: { rid, room },
+			// 		testID: 'room-actions-members',
+			// 		right: this.renderDisclosure
+			// 	});
+			// }
 
-			if (canAddUser) {
-				actions.push({
-					icon: 'add',
-					name: I18n.t('Add_users'),
-					route: 'SelectedUsersView',
-					params: {
-						rid,
-						title: I18n.t('Add_users'),
-						nextAction: this.addUser
-					},
-					testID: 'room-actions-add-user',
-					right: this.renderDisclosure
-				});
-			}
-			if (canInviteUser) {
-				actions.push({
-					icon: 'user-add',
-					name: I18n.t('Invite_users'),
-					route: 'InviteUsersView',
-					params: {
-						rid
-					},
-					testID: 'room-actions-invite-user',
-					right: this.renderDisclosure
-				});
-			}
+			// if (canAddUser) {
+			// 	actions.push({
+			// 		icon: 'add',
+			// 		name: I18n.t('Add_users'),
+			// 		route: 'SelectedUsersView',
+			// 		params: {
+			// 			rid,
+			// 			title: I18n.t('Add_users'),
+			// 			nextAction: this.addUser
+			// 		},
+			// 		testID: 'room-actions-add-user',
+			// 		right: this.renderDisclosure
+			// 	});
+			// }
+			// if (canInviteUser) {
+			// 	actions.push({
+			// 		icon: 'user-add',
+			// 		name: I18n.t('Invite_users'),
+			// 		route: 'InviteUsersView',
+			// 		params: {
+			// 			rid
+			// 		},
+			// 		testID: 'room-actions-invite-user',
+			// 		right: this.renderDisclosure
+			// 	});
+			// }
 			sections[2].data = [...actions, ...sections[2].data];
 
 			if (joined) {
@@ -491,17 +491,17 @@ class RoomActionsView extends React.Component {
 		// If can edit this room
 		// If this room type can be Encrypted
 		// If e2e is enabled for this server
-		if (canEdit && E2E_ROOM_TYPES[t] && e2eEnabled) {
-			sections.splice(2, 0, {
-				data: [{
-					icon: 'encrypted',
-					name: I18n.t('Encrypted'),
-					testID: 'room-actions-encrypt',
-					right: this.renderEncryptedSwitch
-				}],
-				renderItem: this.renderItem
-			});
-		}
+		// if (canEdit && E2E_ROOM_TYPES[t] && e2eEnabled) {
+		// 	sections.splice(2, 0, {
+		// 		data: [{
+		// 			icon: 'encrypted',
+		// 			name: I18n.t('Encrypted'),
+		// 			testID: 'room-actions-encrypt',
+		// 			right: this.renderEncryptedSwitch
+		// 		}],
+		// 		renderItem: this.renderItem
+		// 	});
+		// }
 
 		return sections;
 	}
@@ -817,7 +817,63 @@ class RoomActionsView extends React.Component {
 		return null;
 	}
 
+	renderLastSection = () => {
+		const { room, joined } = this.state;
+		const { theme } = this.props;
+		const { t, blocker } = room;
+
+		if (!joined || t === 'l') {
+			return null;
+		}
+
+		if (t === 'd') {
+			return (
+				<List.Section>
+					<List.Separator />
+					<List.Item
+						title={`${ blocker ? 'Unblock' : 'Block' }_user`}
+						onPress={() => this.onPressTouchable({
+							event: this.toggleBlockUser
+						})}
+						testID='room-actions-block-user'
+						left={() => <List.Icon name='ban' color={themes[theme].dangerColor} />}
+						showActionIndicator
+						color={themes[theme].dangerColor}
+					/>
+					<List.Separator />
+				</List.Section>
+			);
+		}
+
+		if (t === 'p' || t === 'c') {
+			return (
+				<List.Section>
+					<List.Separator />
+					<List.Item
+						title='Leave_channel'
+						onPress={() => this.onPressTouchable({
+							event: this.leaveChannel
+						})}
+						testID='room-actions-leave-channel'
+						left={() => <List.Icon name='logout' color={themes[theme].dangerColor} />}
+						showActionIndicator
+						color={themes[theme].dangerColor}
+					/>
+					<List.Separator />
+				</List.Section>
+			);
+		}
+	}
+
 	render() {
+		const {
+			room, member, membersCount, canViewMembers, canAddUser, canInviteUser, joined, canAutoTranslate, canForwardGuest, canReturnQueue, canEdit
+		} = this.state;
+		const { jitsiEnabled, e2eEnabled } = this.props;
+		const {
+			rid, t, blocker, encrypted
+		} = room;
+		const isGroupChat = RocketChat.isGroupChat(room);
 		return (
 			<SafeAreaView testID='room-actions-view'>
 				<StatusBar />
@@ -825,6 +881,68 @@ class RoomActionsView extends React.Component {
 					{/* {this.renderRoomInfo()} */}
 					{this.renderJitsi()}
 					{this.renderE2EEncryption()}
+					<List.Section>
+						<List.Separator />
+
+						{['c', 'p'].includes(t) && canViewMembers
+							? (
+								<>
+									<List.Item
+										title='Members'
+										subtitle={membersCount > 0 ? `${ membersCount } ${ I18n.t('members') }` : null}
+										onPress={() => this.onPressTouchable({ route: 'RoomMembersView', params: { rid, room } })}
+										testID='room-actions-members'
+										left={() => <List.Icon name='team' />}
+										showActionIndicator
+										translateSubtitle={false}
+									/>
+									<List.Separator />
+								</>
+							)
+							: null}
+
+						{['c', 'p'].includes(t) && canAddUser
+							? (
+								<>
+									<List.Item
+										title='Add_users'
+										onPress={() => this.onPressTouchable({
+											route: 'SelectedUsersView',
+											params: {
+												rid,
+												title: I18n.t('Add_users'),
+												nextAction: this.addUser
+											}
+										})}
+										testID='room-actions-add-user'
+										left={() => <List.Icon name='add' />}
+										showActionIndicator
+									/>
+									<List.Separator />
+								</>
+							)
+							: null}
+
+						{['c', 'p'].includes(t) && canInviteUser
+							? (
+								<>
+									<List.Item
+										title='Invite_users'
+										onPress={() => this.onPressTouchable({
+											route: 'InviteUsersView',
+											params: { rid }
+										})}
+										testID='room-actions-invite-user'
+										left={() => <List.Icon name='user-add' />}
+										showActionIndicator
+									/>
+									<List.Separator />
+								</>
+							)
+							: null}
+					</List.Section>
+
+					{this.renderLastSection()}
 				</List.Container>
 			</SafeAreaView>
 		);

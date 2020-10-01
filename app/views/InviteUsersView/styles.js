@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
-import { paddingHorizontal } from '../../containers/List/constants';
+import { PADDING_HORIZONTAL } from '../../containers/List/constants';
 
 export default StyleSheet.create({
 	innerContainer: {
-		padding: paddingHorizontal,
+		padding: PADDING_HORIZONTAL,
 		paddingBottom: 0
 	},
 	divider: {
