@@ -1047,6 +1047,42 @@ class RoomActionsView extends React.Component {
 								</>
 							)
 							: null}
+
+						{['c', 'p', 'd'].includes(t) && canAutoTranslate
+							? (
+								<>
+									<List.Item
+										title='Auto_Translate'
+										onPress={() => this.onPressTouchable({
+											route: 'AutoTranslateView',
+											params: { rid, room }
+										})}
+										testID='room-actions-auto-translate'
+										left={() => <List.Icon name='language' />}
+										showActionIndicator
+									/>
+									<List.Separator />
+								</>
+							)
+							: null}
+
+						{['c', 'p', 'd'].includes(t) && joined
+							? (
+								<>
+									<List.Item
+										title='Notifications'
+										onPress={() => this.onPressTouchable({
+											route: 'NotificationPrefView',
+											params: { rid, room }
+										})}
+										testID='room-actions-notifications'
+										left={() => <List.Icon name='notification' />}
+										showActionIndicator
+									/>
+									<List.Separator />
+								</>
+							)
+							: null}
 					</List.Section>
 
 					{this.renderLastSection()}
