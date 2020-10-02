@@ -37,11 +37,24 @@ index 478af12..d3cd45c 100644
          ref.isFocused = isFocused;
          ref.getNativeRef = getNativeRef;
        }
+diff --git a/node_modules/react-native/Libraries/Image/RCTUIImageViewAnimated.m b/node_modules/react-native/Libraries/Image/RCTUIImageViewAnimated.m
+index af4becd..55bc2c8 100644
+--- a/node_modules/react-native/Libraries/Image/RCTUIImageViewAnimated.m
++++ b/node_modules/react-native/Libraries/Image/RCTUIImageViewAnimated.m
+@@ -275,6 +275,8 @@ - (void)displayLayer:(CALayer *)layer
+   if (_currentFrame) {
+     layer.contentsScale = self.animatedImageScale;
+     layer.contents = (__bridge id)_currentFrame.CGImage;
++  } else {
++    [super displayLayer:layer];
+   }
+ }
+ 
 diff --git a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
-index 274f381..fa74a27 100644
+index 274f381..c7749ef 100644
 --- a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
 +++ b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
-@@ -8,11 +8,12 @@
+@@ -8,11 +8,13 @@
  #import <React/RCTHTTPRequestHandler.h>
  
  #import <mutex>
@@ -49,13 +62,14 @@ index 274f381..fa74a27 100644
 +#import <MMKV/MMKV.h>
  #import <React/RCTNetworking.h>
  #import <ReactCommon/RCTTurboModule.h>
++#import <SDWebImage/SDWebImageDownloader.h>
  
  #import "RCTNetworkPlugins.h"
 +#import "SecureStorage.h"
  
  @interface RCTHTTPRequestHandler () <NSURLSessionDataDelegate, RCTTurboModule>
  
-@@ -58,6 +59,101 @@ - (BOOL)canHandleRequest:(NSURLRequest *)request
+@@ -58,6 +60,103 @@ - (BOOL)canHandleRequest:(NSURLRequest *)request
    return [schemes containsObject:request.URL.scheme.lowercaseString];
  }
  
@@ -105,6 +119,8 @@ index 274f381..fa74a27 100644
 +
 +    NSMutableArray *certificates = [[NSMutableArray alloc] init];
 +    [certificates addObject:CFBridgingRelease(certificate)];
++
++    [SDWebImageDownloader sharedDownloader].config.urlCredential = [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
 +
 +    return [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
 +  }

@@ -5,6 +5,7 @@ import { createStore, combineReducers } from 'redux';
 import { storiesOf } from '@storybook/react-native';
 
 import RoomItem from './RoomItem';
+import './List';
 import Message from './Message';
 import UiKitMessage from './UiKitMessage';
 import UiKitModal from './UiKitModal';
