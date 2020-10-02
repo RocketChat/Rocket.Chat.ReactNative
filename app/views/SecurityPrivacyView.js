@@ -4,19 +4,18 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import { toggleCrashReport as toggleCrashReportAction, toggleAnalyticsEvents as toggleAnalyticsEventsAction } from '../../actions/crashReport';
-import { SWITCH_TRACK_COLOR } from '../../constants/colors';
-import StatusBar from '../../containers/StatusBar';
-import * as List from '../../containers/List';
-import I18n from '../../i18n';
-import { CRASH_REPORT_KEY, ANALYTICS_EVENTS_KEY } from '../../lib/rocketchat';
+import { toggleCrashReport as toggleCrashReportAction, toggleAnalyticsEvents as toggleAnalyticsEventsAction } from '../actions/crashReport';
+import { SWITCH_TRACK_COLOR } from '../constants/colors';
+import StatusBar from '../containers/StatusBar';
+import * as List from '../containers/List';
+import I18n from '../i18n';
+import { CRASH_REPORT_KEY, ANALYTICS_EVENTS_KEY } from '../lib/rocketchat';
 import {
 	loggerConfig, analytics, logEvent, events
-} from '../../utils/log';
-import { withTheme } from '../../theme';
-import SafeAreaView from '../../containers/SafeAreaView';
-import { isFDroidBuild } from '../../constants/environment';
-import { getUserSelector } from '../../selectors/login';
+} from '../utils/log';
+import SafeAreaView from '../containers/SafeAreaView';
+import { isFDroidBuild } from '../constants/environment';
+import { getUserSelector } from '../selectors/login';
 
 class SecurityPrivacyView extends React.Component {
 	static navigationOptions = () => ({
@@ -29,7 +28,6 @@ class SecurityPrivacyView extends React.Component {
 		allowAnalyticsEvents: PropTypes.bool,
 		toggleCrashReport: PropTypes.func,
 		toggleAnalyticsEvents: PropTypes.func,
-		theme: PropTypes.string,
 		user: PropTypes.shape({
 			roles: PropTypes.array,
 			id: PropTypes.string
@@ -88,17 +86,16 @@ class SecurityPrivacyView extends React.Component {
 	}
 
 	render() {
-		const { theme } = this.props;
 		return (
-			<SafeAreaView testID='settings-view' theme={theme}>
-				<StatusBar theme={theme} />
+			<SafeAreaView testID='settings-view'>
+				<StatusBar />
 				<List.Container testID='security-privacy-view-list'>
 					<List.Section>
 						<List.Separator />
 						<List.Item
 							title='E2E_Encryption'
 							showActionIndicator
-							onPress={() => this.navigateToScreen('ThemeView')}
+							onPress={() => this.navigateToScreen('E2EEncryptionSecurityView')}
 							testID='security-privacy-view-e2e-encryption'
 						/>
 						<List.Separator />
@@ -145,7 +142,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	toggleCrashReport: params => dispatch(toggleCrashReportAction(params)),
-	toggleAnalyticsEvents: params => dispatch(toggleAnalyticsEventsAction(params)),
+	toggleAnalyticsEvents: params => dispatch(toggleAnalyticsEventsAction(params))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(SecurityPrivacyView));
+export default connect(mapStateToProps, mapDispatchToProps)(SecurityPrivacyView);
