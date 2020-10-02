@@ -12,7 +12,7 @@ import { themes } from '../../constants/colors';
 import styles from './styles';
 
 const SelectChannel = ({
-	server, token, userId, onChannelSelect, initial, theme
+	server, token, userId, onChannelSelect, initial, blockUnauthenticatedAccess, theme
 }) => {
 	const [channels, setChannels] = useState([]);
 
@@ -26,7 +26,7 @@ const SelectChannel = ({
 	}, 300);
 
 	const getAvatar = (text, type) => avatarURL({
-		text, type, userId, token, baseUrl: server
+		text, type, userId, token, baseUrl: server, blockUnauthenticatedAccess
 	});
 
 	return (
@@ -56,6 +56,7 @@ SelectChannel.propTypes = {
 	userId: PropTypes.string,
 	initial: PropTypes.object,
 	onChannelSelect: PropTypes.func,
+	blockUnauthenticatedAccess: PropTypes.bool,
 	theme: PropTypes.string
 };
 

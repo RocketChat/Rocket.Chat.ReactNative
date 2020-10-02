@@ -7,6 +7,13 @@ export function shareSelectServer(server) {
 	};
 }
 
+export function shareSetSettings(settings) {
+	return {
+		type: SHARE.SET_SETTINGS,
+		settings
+	};
+}
+
 export function shareSetUser(user) {
 	return {
 		type: SHARE.SET_USER,

@@ -13,7 +13,7 @@ import styles from './styles';
 import { themes } from '../../constants/colors';
 
 const SelectUsers = ({
-	server, token, userId, selected, onUserSelect, theme
+	server, token, userId, selected, onUserSelect, blockUnauthenticatedAccess, theme
 }) => {
 	const [users, setUsers] = useState([]);
 
@@ -27,7 +27,7 @@ const SelectUsers = ({
 	}, 300);
 
 	const getAvatar = text => avatarURL({
-		text, type: 'd', userId, token, baseUrl: server
+		text, type: 'd', userId, token, baseUrl: server, blockUnauthenticatedAccess
 	});
 
 	return (
@@ -57,6 +57,7 @@ SelectUsers.propTypes = {
 	userId: PropTypes.string,
 	selected: PropTypes.array,
 	onUserSelect: PropTypes.func,
+	blockUnauthenticatedAccess: PropTypes.bool,
 	theme: PropTypes.string
 };
 

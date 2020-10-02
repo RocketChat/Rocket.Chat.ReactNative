@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
+import { connect } from 'react-redux';
 import FastImage from '@rocket.chat/react-native-fast-image';
 import Touchable from 'react-native-platform-touchable';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
@@ -9,7 +10,7 @@ import { avatarURL } from '../utils/avatar';
 import Emoji from './markdown/Emoji';
 
 const Avatar = React.memo(({
-	text, size, baseUrl, borderRadius, style, avatar, type, children, userId, token, onPress, theme, emoji, getCustomEmoji
+	text, size, baseUrl, borderRadius, style, avatar, type, children, userId, token, onPress, theme, emoji, getCustomEmoji, blockUnauthenticatedAccess
 }) => {
 	const avatarStyle = {
 		width: size,
@@ -22,7 +23,7 @@ const Avatar = React.memo(({
 	}
 
 	const uri = avatarURL({
-		type, text, size, userId, token, avatar, baseUrl
+		type, text, size, userId, token, avatar, baseUrl, blockUnauthenticatedAccess
 	});
 
 	let image = emoji ? (
@@ -74,7 +75,8 @@ Avatar.propTypes = {
 	token: PropTypes.string,
 	theme: PropTypes.string,
 	onPress: PropTypes.func,
-	getCustomEmoji: PropTypes.func
+	getCustomEmoji: PropTypes.func,
+	blockUnauthenticatedAccess: PropTypes.bool
 };
 
 Avatar.defaultProps = {
@@ -84,4 +86,7 @@ Avatar.defaultProps = {
 	borderRadius: 4
 };
 
-export default Avatar;
+const mapStateToProps = ({ share, settings }) => ({
+	blockUnauthenticatedAccess: share.settings?.Accounts_AvatarBlockUnauthenticatedAccess ?? settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true
+});
+export default connect(mapStateToProps)(Avatar);

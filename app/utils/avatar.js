@@ -3,7 +3,7 @@ const formatUrl = (url, baseUrl, uriSize, avatarAuthURLFragment) => (
 );
 
 export const avatarURL = ({
-	type, text, size, userId, token, avatar, baseUrl
+	type, text, size, userId, token, avatar, baseUrl, blockUnauthenticatedAccess
 }) => {
 	const room = type === 'd' ? text : `@${ text }`;
 
@@ -11,8 +11,8 @@ export const avatarURL = ({
 	const uriSize = size === 100 ? 100 : 50;
 
 	let avatarAuthURLFragment = '';
-	if (userId && token) {
-		avatarAuthURLFragment = `&rc_token=${ token }&rc_uid=${ userId }`;
+	if (userId && token && blockUnauthenticatedAccess) {
+		avatarAuthURLFragment = `rc_token=${ token }&rc_uid=${ userId }`;
 	}
 
 
