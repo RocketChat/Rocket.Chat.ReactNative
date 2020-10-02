@@ -261,8 +261,7 @@ class NewMessageView extends React.Component {
 		);
 	}
 
-	render = () => {
-		const { theme } = this.props;
+	render() {
 		return (
 			<SafeAreaView testID='new-message-view'>
 				<StatusBar />
