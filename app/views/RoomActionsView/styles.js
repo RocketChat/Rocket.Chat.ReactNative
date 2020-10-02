@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { PADDING_HORIZONTAL } from '../../containers/List/constants';
 
 import sharedStyles from '../Styles';
 
@@ -10,7 +11,8 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	sectionItem: {
-		paddingVertical: 11,
+		paddingHorizontal: PADDING_HORIZONTAL,
+		height: 72,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
@@ -38,7 +40,7 @@ export default StyleSheet.create({
 		borderTopWidth: StyleSheet.hairlineWidth
 	},
 	avatar: {
-		marginHorizontal: 16
+		marginRight: PADDING_HORIZONTAL
 	},
 	roomTitleContainer: {
 		flex: 1

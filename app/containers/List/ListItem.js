@@ -113,7 +113,8 @@ Content.propTypes = {
 	color: PropTypes.string,
 	translateTitle: PropTypes.bool,
 	translateSubtitle: PropTypes.bool,
-	showActionIndicator: PropTypes.bool
+	showActionIndicator: PropTypes.bool,
+	fontScale: PropTypes.number
 };
 
 Content.defaultProps = {

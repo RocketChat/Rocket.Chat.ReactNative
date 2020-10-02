@@ -7,14 +7,14 @@ import { CustomIcon } from '../../lib/Icons';
 import { withTheme } from '../../theme';
 
 const styles = StyleSheet.create({
-	disclosureContainer: {
+	icon: {
 		alignItems: 'center',
 		justifyContent: 'center'
 	}
 });
 
 const ListIcon = React.memo(({ theme, name, color }) => (
-	<View style={styles.disclosureContainer}>
+	<View style={styles.icon}>
 		<CustomIcon
 			name={name}
 			color={color ?? themes[theme].auxiliaryText}

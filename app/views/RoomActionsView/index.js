@@ -667,49 +667,70 @@ class RoomActionsView extends React.Component {
 		);
 	}
 
-	renderRoomInfo = ({ item }) => {
+	renderRoomInfo = () => {
 		const { room, member } = this.state;
-		const { name, t, topic } = room;
+		const {
+			rid, name, t, topic
+		} = room;
 		const { baseUrl, user, theme } = this.props;
 
 		const avatar = RocketChat.getRoomAvatar(room);
+		const isGroupChat = RocketChat.isGroupChat(room);
 
 		return (
-			this.renderTouchableItem((
-				<>
-					<Avatar
-						text={avatar}
-						size={50}
-						style={styles.avatar}
-						type={t}
-						baseUrl={baseUrl}
-						userId={user.id}
-						token={user.token}
-					>
-						{t === 'd' && member._id ? <Status style={sharedStyles.status} id={member._id} /> : null }
-					</Avatar>
-					<View style={[styles.roomTitleContainer, item.disabled && styles.roomTitlePadding]}>
-						{room.t === 'd'
-							? <Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{room.fname}</Text>
-							: (
-								<View style={styles.roomTitleRow}>
-									<RoomTypeIcon type={room.prid ? 'discussion' : room.t} status={room.visitor?.status} theme={theme} />
-									<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{RocketChat.getRoomTitle(room)}</Text>
-								</View>
-							)
+			<List.Section>
+				<List.Separator />
+				<Touch
+					onPress={() => this.onPressTouchable({
+						route: 'RoomInfoView',
+						// forward room only if room isn't joined
+						params: {
+							rid, t, room, member
 						}
-						<Markdown
-							preview
-							msg={t === 'd' ? `@${ name }` : topic}
-							style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]}
-							numberOfLines={1}
-							theme={theme}
-						/>
-						{room.t === 'd' && <Markdown msg={member.statusText} style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]} preview theme={theme} numberOfLines={1} />}
+					})}
+					style={{ backgroundColor: themes[theme].backgroundColor }}
+					accessibilityLabel={I18n.t('Room_Info')}
+					accessibilityTraits='button'
+					enabled={!isGroupChat}
+					testID='room-actions-info'
+					theme={theme}
+				>
+					<View style={styles.sectionItem}>
+						<Avatar
+							text={avatar}
+							size={50}
+							style={styles.avatar}
+							type={t}
+							baseUrl={baseUrl}
+							userId={user.id}
+							token={user.token}
+						>
+							{t === 'd' && member._id ? <Status style={sharedStyles.status} id={member._id} /> : null }
+						</Avatar>
+						<View style={[styles.roomTitleContainer, isGroupChat && { opacity: 0.7 }]}>
+							{room.t === 'd'
+								? <Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{room.fname}</Text>
+								: (
+									<View style={styles.roomTitleRow}>
+										<RoomTypeIcon type={room.prid ? 'discussion' : room.t} status={room.visitor?.status} theme={theme} />
+										<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{RocketChat.getRoomTitle(room)}</Text>
+									</View>
+								)
+							}
+							<Markdown
+								preview
+								msg={t === 'd' ? `@${ name }` : topic}
+								style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]}
+								numberOfLines={1}
+								theme={theme}
+							/>
+							{room.t === 'd' && <Markdown msg={member.statusText} style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]} preview theme={theme} numberOfLines={1} />}
+						</View>
+						{isGroupChat ? null : <List.Icon name='chevron-right' />}
 					</View>
-					{!item.disabled && <DisclosureIndicator theme={theme} />}
-				</>
-			), item)
+				</Touch>
+				<List.Separator />
+			</List.Section>
 		);
 	}
 
@@ -878,13 +899,13 @@ class RoomActionsView extends React.Component {
 			<SafeAreaView testID='room-actions-view'>
 				<StatusBar />
 				<List.Container>
-					{/* {this.renderRoomInfo()} */}
+					{this.renderRoomInfo()}
 					{this.renderJitsi()}
 					{this.renderE2EEncryption()}
 					<List.Section>
 						<List.Separator />
 
-						{['c', 'p'].includes(t) && canViewMembers
+						{(['c', 'p'].includes(t) && canViewMembers) || isGroupChat
 							? (
 								<>
 									<List.Item
@@ -1077,6 +1098,72 @@ class RoomActionsView extends React.Component {
 										})}
 										testID='room-actions-notifications'
 										left={() => <List.Icon name='notification' />}
+										showActionIndicator
+									/>
+									<List.Separator />
+								</>
+							)
+							: null}
+
+						{['l'].includes(t) && !this.isOmnichannelPreview
+							? (
+								<>
+									<List.Item
+										title='Close'
+										onPress={() => this.onPressTouchable({
+											event: this.closeLivechat
+										})}
+										left={() => <List.Icon name='close' />}
+										showActionIndicator
+									/>
+									<List.Separator />
+								</>
+							)
+							: null}
+
+						{['l'].includes(t) && !this.isOmnichannelPreview && canForwardGuest
+							? (
+								<>
+									<List.Item
+										title='Forward'
+										onPress={() => this.onPressTouchable({
+											route: 'ForwardLivechatView',
+											params: { rid }
+										})}
+										left={() => <List.Icon name='user-forward' />}
+										showActionIndicator
+									/>
+									<List.Separator />
+								</>
+							)
+							: null}
+
+						{['l'].includes(t) && !this.isOmnichannelPreview && canReturnQueue
+							? (
+								<>
+									<List.Item
+										title='Return'
+										onPress={() => this.onPressTouchable({
+											event: this.returnLivechat
+										})}
+										left={() => <List.Icon name='undo' />}
+										showActionIndicator
+									/>
+									<List.Separator />
+								</>
+							)
+							: null}
+
+						{['l'].includes(t) && !this.isOmnichannelPreview
+							? (
+								<>
+									<List.Item
+										title='Navigation_history'
+										onPress={() => this.onPressTouchable({
+											route: 'VisitorNavigationView',
+											params: { rid }
+										})}
+										left={() => <List.Icon name='history' />}
 										showActionIndicator
 									/>
 									<List.Separator />
