@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	Linking, Switch, Share, Clipboard
+	Linking, Share, Clipboard
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -20,9 +20,7 @@ import {
 } from '../../utils/deviceInfo';
 import openLink from '../../utils/openLink';
 import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
-import {
-	loggerConfig, analytics, logEvent, events
-} from '../../utils/log';
+import { logEvent, events } from '../../utils/log';
 import {
 	PLAY_MARKET_LINK, FDROID_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK
 } from '../../constants/links';
@@ -173,28 +171,6 @@ class SettingsView extends React.Component {
 		openLink(LICENSE_LINK, theme);
 	}
 
-	// renderCrashReportSwitch = () => {
-	// 	const { allowCrashReport } = this.props;
-	// 	return (
-	// 		<Switch
-	// 			value={allowCrashReport}
-	// 			trackColor={SWITCH_TRACK_COLOR}
-	// 			onValueChange={this.toggleCrashReport}
-	// 		/>
-	// 	);
-	// }
-
-	// renderAnalyticsEventsSwitch = () => {
-	// 	const { allowAnalyticsEvents } = this.props;
-	// 	return (
-	// 		<Switch
-	// 			value={allowAnalyticsEvents}
-	// 			trackColor={SWITCH_TRACK_COLOR}
-	// 			onValueChange={this.toggleAnalyticsEvents}
-	// 		/>
-	// 	);
-	// }
-
 	render() {
 		const { server, isMasterDetail, theme } = this.props;
 		return (
@@ -270,9 +246,9 @@ class SettingsView extends React.Component {
 						/>
 						<List.Separator />
 						<List.Item
-							title='Screen_lock'
+							title='Security_and_privacy'
 							showActionIndicator
-							onPress={() => this.navigateToScreen('ScreenLockConfigView')}
+							onPress={() => this.navigateToScreen('SecurityPrivacyView')}
 						/>
 						<List.Separator />
 					</List.Section>
@@ -303,27 +279,6 @@ class SettingsView extends React.Component {
 						/>
 						<List.Separator />
 					</List.Section>
-
-					{!isFDroidBuild ? (
-						<>
-							<List.Section>
-								<List.Separator />
-								<List.Item
-									title='Log_analytics_events'
-									testID='settings-view-analytics-events'
-									right={() => this.renderAnalyticsEventsSwitch()}
-								/>
-								<List.Separator />
-								<List.Item
-									title='Send_crash_report'
-									testID='settings-view-crash-report'
-									right={() => this.renderCrashReportSwitch()}
-								/>
-								<List.Separator />
-								<List.Info info='Crash_report_disclaimer' />
-							</List.Section>
-						</>
-					) : null}
 
 					<List.Section>
 						<List.Separator />

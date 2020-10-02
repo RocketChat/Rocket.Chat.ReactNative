@@ -462,7 +462,7 @@ export default {
 	Search_global_users: 'Search for global users',
 	Search_global_users_description: 'If you turn-on, you can search for any user from others companies or servers.',
 	Seconds: '{{second}} seconds',
-	Security_and_Privacy: 'Security and Privacy',
+	Security_and_privacy: 'Security and privacy',
 	Select_Avatar: 'Select Avatar',
 	Select_Server: 'Select Server',
 	Select_Users: 'Select Users',

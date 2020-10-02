@@ -1,20 +1,15 @@
 import React from 'react';
-import { View, ScrollView, Switch } from 'react-native';
+import { Switch } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import { toggleCrashReport as toggleCrashReportAction, toggleAnalyticsEvents as toggleAnalyticsEventsAction } from '../../actions/crashReport';
-import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
+import { SWITCH_TRACK_COLOR } from '../../constants/colors';
 import StatusBar from '../../containers/StatusBar';
-import ListItem from '../../containers/ListItem';
-import ItemInfo from '../../containers/ItemInfo';
-import { DisclosureImage } from '../../containers/DisclosureIndicator';
-import Separator from '../../containers/Separator';
+import * as List from '../../containers/List';
 import I18n from '../../i18n';
 import { CRASH_REPORT_KEY, ANALYTICS_EVENTS_KEY } from '../../lib/rocketchat';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import styles from './styles';
 import {
 	loggerConfig, analytics, logEvent, events
 } from '../../utils/log';
@@ -23,25 +18,9 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import { isFDroidBuild } from '../../constants/environment';
 import { getUserSelector } from '../../selectors/login';
 
-
-const SectionSeparator = React.memo(({ theme }) => (
-	<View
-		style={[
-			styles.sectionSeparatorBorder,
-			{
-				borderColor: themes[theme].separatorColor,
-				backgroundColor: themes[theme].auxiliaryBackground
-			}
-		]}
-	/>
-));
-SectionSeparator.propTypes = {
-	theme: PropTypes.string
-};
-
 class SecurityPrivacyView extends React.Component {
 	static navigationOptions = () => ({
-		title: I18n.t('Security_and_Privacy')
+		title: I18n.t('Security_and_privacy')
 	});
 
 	static propTypes = {
@@ -81,14 +60,9 @@ class SecurityPrivacyView extends React.Component {
 	}
 
 	navigateToScreen = (screen) => {
-		logEvent(events[`SE_GO_${ screen.replace('View', '').toUpperCase() }`]);
+		logEvent(events[`SP_GO_${ screen.replace('View', '').toUpperCase() }`]);
 		const { navigation } = this.props;
 		navigation.navigate(screen);
-	}
-
-	renderDisclosure = () => {
-		const { theme } = this.props;
-		return <DisclosureImage theme={theme} />;
 	}
 
 	renderCrashReportSwitch = () => {
@@ -118,55 +92,46 @@ class SecurityPrivacyView extends React.Component {
 		return (
 			<SafeAreaView testID='settings-view' theme={theme}>
 				<StatusBar theme={theme} />
-				<ScrollView
-					{...scrollPersistTaps}
-					contentContainerStyle={styles.listPadding}
-					showsVerticalScrollIndicator={false}
-					testID='settings-view-list'
-				>
-					<Separator theme={theme} />
-					<ListItem
-						title={I18n.t('E2E_Encryption')}
-						showActionIndicator
-						onPress={() => this.navigateToScreen('ThemeView')}
-						testID='settings-view-e2e-encryption'
-						right={this.renderDisclosure}
-						theme={theme}
-					/>
-					<Separator theme={theme} />
-					<ListItem
-						title={I18n.t('Screen_lock')}
-						showActionIndicator
-						onPress={() => this.navigateToScreen('ScreenLockConfigView')}
-						right={this.renderDisclosure}
-						theme={theme}
-					/>
-
-					<SectionSeparator theme={theme} />
+				<List.Container testID='security-privacy-view-list'>
+					<List.Section>
+						<List.Separator />
+						<List.Item
+							title='E2E_Encryption'
+							showActionIndicator
+							onPress={() => this.navigateToScreen('ThemeView')}
+							testID='security-privacy-view-e2e-encryption'
+						/>
+						<List.Separator />
+						<List.Item
+							title='Screen_lock'
+							showActionIndicator
+							onPress={() => this.navigateToScreen('ScreenLockConfigView')}
+							testID='security-privacy-view-screen-lock'
+						/>
+						<List.Separator />
+					</List.Section>
 
 					{!isFDroidBuild ? (
 						<>
-							<ListItem
-								title={I18n.t('Log_analytics_events')}
-								testID='settings-view-analytics-events'
-								right={() => this.renderAnalyticsEventsSwitch()}
-								theme={theme}
-							/>
-							<Separator theme={theme} />
-							<ListItem
-								title={I18n.t('Send_crash_report')}
-								testID='settings-view-crash-report'
-								right={() => this.renderCrashReportSwitch()}
-								theme={theme}
-							/>
-							<Separator theme={theme} />
-							<ItemInfo
-								info={I18n.t('Crash_report_disclaimer')}
-								theme={theme}
-							/>
+							<List.Section>
+								<List.Separator />
+								<List.Item
+									title='Log_analytics_events'
+									testID='settings-view-analytics-events'
+									right={() => this.renderAnalyticsEventsSwitch()}
+								/>
+								<List.Separator />
+								<List.Item
+									title='Send_crash_report'
+									testID='settings-view-crash-report'
+									right={() => this.renderCrashReportSwitch()}
+								/>
+								<List.Separator />
+								<List.Info info='Crash_report_disclaimer' />
+							</List.Section>
 						</>
 					) : null}
-				</ScrollView>
+				</List.Container>
 			</SafeAreaView>
 		);
 	}
