@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 9,
+	version: 10,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -49,7 +49,8 @@ export default appSchema({
 				{ name: 'department_id', type: 'string', isOptional: true },
 				{ name: 'served_by', type: 'string', isOptional: true },
 				{ name: 'livechat_data', type: 'string', isOptional: true },
-				{ name: 'tags', type: 'string', isOptional: true }
+				{ name: 'tags', type: 'string', isOptional: true },
+				{ name: 'join_code', type: 'string', isOptional: false }
 			]
 		}),
 		tableSchema({

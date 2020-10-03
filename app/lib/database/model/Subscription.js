@@ -109,4 +109,6 @@ export default class Subscription extends Model {
 	@json('livechat_data', sanitizer) livechatData;
 
 	@json('tags', sanitizer) tags;
+
+	@field('join_code') joinCode;
 }

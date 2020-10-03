@@ -129,6 +129,17 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 10,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [
+						{ name: 'join_code', type: 'string', isOptional: false }
+					]
+				})
+			]
 		}
 	]
 });

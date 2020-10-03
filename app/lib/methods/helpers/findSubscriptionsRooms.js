@@ -49,7 +49,8 @@ export default async(subscriptions = [], rooms = []) => {
 			departmentId: s.departmentId,
 			servedBy: s.servedBy,
 			livechatData: s.livechatData,
-			tags: s.tags
+			tags: s.tags,
+			joinCode: s.joinCode
 		}));
 		subscriptions = subscriptions.concat(existingSubs);
 

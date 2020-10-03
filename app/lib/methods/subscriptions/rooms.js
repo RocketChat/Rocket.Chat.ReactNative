@@ -32,7 +32,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 		const db = database.active;
 		const subCollection = db.collections.get('subscriptions');
 		const roomsCollection = db.collections.get('rooms');
-
+		subscription.joinCodeRequired = room.joinCodeRequired;
 		if (!subscription) {
 			try {
 				const s = await subCollection.find(room._id);
@@ -79,7 +79,8 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					departmentId: s.departmentId,
 					servedBy: s.servedBy,
 					livechatData: s.livechatData,
-					tags: s.tags
+					tags: s.tags,
+					joinCode: s.joinCode
 				};
 			} catch (error) {
 				try {
