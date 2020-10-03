@@ -55,7 +55,7 @@ import Navigation from '../../lib/Navigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { getHeaderTitlePosition } from '../../containers/Header';
-
+import TextInput from '../../presentation/TextInput';
 import { takeInquiry } from '../../ee/omnichannel/lib';
 
 const stateAttrsUpdate = [
@@ -908,6 +908,14 @@ class RoomView extends React.Component {
 			return (
 				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>
 					<Text accessibilityLabel={I18n.t('You_are_in_preview_mode')} style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('You_are_in_preview_mode')}</Text>
+					<TextInput
+						returnKeyType='default'
+						placeholder={I18n.t('Join_Code')}
+						onChangeText={(value) => { this.setState({ joinCode: value }); }}
+						underlineColorAndroid='transparent'
+						style={[styles.joinInput, { borderColor: theme === 'light' ? 'black' : 'white' }]}
+						theme={theme}
+					/>
 					<Touch
 						onPress={this.joinRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}

@@ -70,5 +70,11 @@ export default StyleSheet.create({
 	previewMode: {
 		fontSize: 16,
 		...sharedStyles.textMedium
+	},
+	joinInput: {
+		marginTop: 10,
+		borderWidth: 2,
+		width: '90%',
+		textAlign: 'center'
 	}
 });
