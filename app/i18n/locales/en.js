@@ -267,6 +267,7 @@ export default {
 	Invite_Link: 'Invite Link',
 	Invite_users: 'Invite users',
 	Join: 'Join',
+	Join_Code: 'Join Code',
 	Join_our_open_workspace: 'Join our open workspace',
 	Join_your_workspace: 'Join your workspace',
 	Just_invited_people_can_access_this_channel: 'Just invited people can access this channel',
