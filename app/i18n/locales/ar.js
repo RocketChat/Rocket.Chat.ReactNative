@@ -407,7 +407,7 @@ export default {
 	Share_Link: 'مشاركة رابط',
 	Share_this_app: 'مشاركة هذا البرنامج',
 	Show_more: 'إظهار أكثر..',
-	Show_Unread_Counter: 'Sإظهار العداد غير المقروء',
+	Show_Unread_Counter: 'إظهار عدد غير المقروء',
 	Show_Unread_Counter_Info: 'تم عرض العداد غير المقروء كشارة على يمين القناة في القائمة',
 	Sign_in_your_server: 'تسجيل الدخول إلى الخادم الخاص بك',
 	Sign_Up: 'تسجيل جديد',
