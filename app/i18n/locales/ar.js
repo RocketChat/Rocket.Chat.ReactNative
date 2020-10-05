@@ -9,7 +9,7 @@ export default {
 	'error-cant-invite-for-direct-room': 'لا يمكن دعوة المستخدم في الغرفة المباشرة',
 	'error-could-not-change-email': 'لم يتمكن من تغير عنوان البريد اﻹلكتروني',
 	'error-could-not-change-name': 'لم يتمكن من تغير اﻹسم',
-	'error-could-not-change-username': 'لم يتمكن من تغير إسم المستخدم',
+	'error-could-not-change-username': 'تعذر تغيير اسم المستخدم',
 	'error-delete-protected-role': 'لا يمكن حذف وظيفة محمية',
 	'error-department-not-found': 'القسم غير موجود',
 	'error-direct-message-file-upload-not-allowed': 'مشاركة الملفات غير مسموح في المحادثة المباشرة',
