@@ -8,7 +8,7 @@ export default {
 	'error-avatar-url-handling': 'خطأ في معالجة الصورة الرمزية ({{url}}) للمستخدم {{username}}',
 	'error-cant-invite-for-direct-room': 'لا يمكن دعوة المستخدم في الغرفة المباشرة',
 	'error-could-not-change-email': 'تعذر تغيير البريد الإلكتروني',
-	'error-could-not-change-name': 'لم يتمكن من تغير اﻹسم',
+	'error-could-not-change-name': 'تعذر تغيير الاسم',
 	'error-could-not-change-username': 'تعذر تغيير اسم المستخدم',
 	'error-delete-protected-role': 'لا يمكن حذف وظيفة محمية',
 	'error-department-not-found': 'القسم غير موجود',
