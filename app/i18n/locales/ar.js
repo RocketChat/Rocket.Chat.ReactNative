@@ -476,7 +476,7 @@ export default {
 	Validating: 'التحقق',
 	Verify_email_title: 'نجح التسجيل!',
 	Verify_email_desc: 'لقد أرسلنا إليك بريدًا إلكترونيًا لتأكيد تسجيلك. إذا لم تتلق بريدًا إلكترونيًا قريبًا ، فيرجى العودة والمحاولة مرة أخرى.',
-	Video_call: 'مكالمة فيديوا',
+	Video_call: 'مكالمة فيديو',
 	View_Original: 'عرض المحتوى الأصلي',
 	Voice_call: 'مكالمة صوتية',
 	Websocket_disabled: 'تم تعطيل Websocket لهذا الخادم.\n{{contact}}',
