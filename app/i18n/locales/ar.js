@@ -489,7 +489,7 @@ export default {
 	Yes_action_it: 'نعم, {{action}}!',
 	Yesterday: 'أمس',
 	You_are_in_preview_mode: 'أنت في وضع المعاينة',
-	You_are_offline: 'انت غير متصل',
+	You_are_offline: 'أنت غير متصل',
 	You_can_search_using_RegExp_eg: 'يمكنك استخدام RegExp. مثال:  `/^text$/i`',
 	You_colon: 'أنت: ',
 	you_were_mentioned: 'تمت الإشارة إليك',
