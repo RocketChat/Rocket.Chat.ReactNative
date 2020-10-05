@@ -11,7 +11,16 @@ import protectedFunction from './helpers/protectedFunction';
 import fetch from '../../utils/fetch';
 import { DEFAULT_AUTO_LOCK } from '../../constants/localAuthentication';
 
-const serverInfoKeys = ['Site_Name', 'UI_Use_Real_Name', 'FileUpload_MediaTypeWhiteList', 'FileUpload_MaxFileSize', 'Force_Screen_Lock', 'Force_Screen_Lock_After', 'uniqueID'];
+const serverInfoKeys = [
+	'Site_Name',
+	'UI_Use_Real_Name',
+	'FileUpload_MediaTypeWhiteList',
+	'FileUpload_MaxFileSize',
+	'Force_Screen_Lock',
+	'Force_Screen_Lock_After',
+	'uniqueID',
+	'E2E_Enable'
+];
 
 // these settings are used only on onboarding process
 const loginSettings = [
@@ -70,6 +79,9 @@ const serverInfoUpdate = async(serverInfo, iconSetting) => {
 		}
 		if (setting._id === 'uniqueID') {
 			return { ...allSettings, uniqueID: setting.valueAsString };
+		}
+		if (setting._id === 'E2E_Enable') {
+			return { ...allSettings, E2E_Enable: setting.valueAsBoolean };
 		}
 		return allSettings;
 	}, {});
@@ -138,7 +150,11 @@ export default async function() {
 		// filter server info
 		const serverInfo = filteredSettings.filter(i1 => serverInfoKeys.includes(i1._id));
 		const iconSetting = data.find(item => item._id === 'Assets_favicon_512');
-		await serverInfoUpdate(serverInfo, iconSetting);
+		try {
+			await serverInfoUpdate(serverInfo, iconSetting);
+		} catch {
+			// Server not found
+		}
 
 		await db.action(async() => {
 			const settingsCollection = db.collections.get('settings');

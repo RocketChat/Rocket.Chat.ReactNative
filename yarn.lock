@@ -1922,14 +1922,13 @@
   resolved "https://registry.yarnpkg.com/@nozbe/sqlite/-/sqlite-3.31.1.tgz#ffd394ad7c188c6b73f89fd6e1ccb849a1b96dba"
   integrity sha512-z5+GdcHZl9OQ1g0pnygORAnwCYUlYw/gQxdW/8rS0HxD2Gnn/k3DBQOvqQIH4Z3Z3KWVMbGUYhcH1v4SqTAdwg==
 
-"@nozbe/watermelondb@^0.18.0":
-  version "0.18.0"
-  resolved "https://registry.yarnpkg.com/@nozbe/watermelondb/-/watermelondb-0.18.0.tgz#f174d8a4b9e8665bb9e8a7825a682905a43cd92c"
-  integrity sha512-jybGScFR+b0wp8QDNJw9cfd7Qfu51SegivjIniX6dXV/KZxjjhQ+IJxUB6bp2f2tWJIQcxC5e9syctLsrh/PiQ==
+"@nozbe/watermelondb@0.19.0":
+  version "0.19.0"
+  resolved "https://registry.yarnpkg.com/@nozbe/watermelondb/-/watermelondb-0.19.0.tgz#70dae4bfca9dde8d61819a6092846e178a50e2f7"
+  integrity sha512-x7sclLu/4RDmLzANIYQioKjWdmoIxgqYw7OJnS7UtWEtJGn28l5Z69SWojll/RM0X2KOEem0BIcjqM46CA53GA==
   dependencies:
     "@nozbe/sqlite" "3.31.1"
-    lodash.clonedeep "^4.5.0"
-    lokijs "git+https://github.com/Nozbe/LokiJS.git#fabe503"
+    lokijs "npm:@nozbe/lokijs@1.5.10-wmelon0"
     rambdax "2.15.0"
     rxjs "^6.2.2"
     rxjs-compat "^6.3.2"
@@ -2072,6 +2071,13 @@
     strip-ansi "^5.2.0"
     sudo-prompt "^9.0.0"
     wcwidth "^1.0.1"
+
+"@react-native-community/cookies@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/cookies/-/cookies-4.0.0.tgz#561f7788e706b9902e25eefb80a093fe8ec5cd93"
+  integrity sha512-6j5Qatc0lVvaUgnhCydbmWofrwDURXxYp8f0cnfpN1LEltsxbhQU26n1ItXY79ZBnvxkkW6lEkw55Egah6uUKQ==
+  dependencies:
+    invariant "^2.2.4"
 
 "@react-native-community/datetimepicker@2.6.0":
   version "2.6.0"
@@ -2220,9 +2226,9 @@
   resolved "https://registry.yarnpkg.com/@rocket.chat/react-native-fast-image/-/react-native-fast-image-8.1.5.tgz#325d80ebb351fb024436093b3e2add280696aba3"
   integrity sha512-ZjSt7NXiCkJ9KQr4b/b+mYgiwDAIGHfHdChgEU020C9sBbhSk6VxslqnfdZoAjxRW7doWMbhWkoYMjx2TnsGRw==
 
-"@rocket.chat/sdk@djorkaeffalexandre/Rocket.Chat.js.SDK#test.fix-ddp":
-  version "1.0.0-dj.15"
-  resolved "https://codeload.github.com/djorkaeffalexandre/Rocket.Chat.js.SDK/tar.gz/216de62f7e52dd4a9f73d7989d6943ced550a92a"
+"@rocket.chat/sdk@RocketChat/Rocket.Chat.js.SDK#mobile":
+  version "1.0.0-mobile"
+  resolved "https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/0a97c818e60670d7660868ea107b96e5ebb631af"
   dependencies:
     js-sha256 "^0.9.0"
     lru-cache "^4.1.1"
@@ -4207,7 +4213,7 @@ base-64@0.1.0:
   resolved "https://registry.yarnpkg.com/base-64/-/base-64-0.1.0.tgz#780a99c84e7d600260361511c4877613bf24f6bb"
   integrity sha1-eAqZyE59YAJgNhURxId2E78k9rs=
 
-base64-js@^1.0.2, base64-js@^1.1.2, base64-js@^1.2.3:
+base64-js@^1.0.2, base64-js@^1.1.2, base64-js@^1.2.3, base64-js@^1.3.0:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.3.1.tgz#58ece8cb75dd07e71ed08c736abc5fac4dbf8df1"
   integrity sha512-mLQ4i2QO1ytvGWFWmcngKO//JXAQueZvwEKtjgQFM4jIK0kU+ytMfplL8j+n5mspOfjHwoAg+9yhb7BwAHm36g==
@@ -4594,6 +4600,13 @@ bunyan@^1.8.12:
     moment "^2.10.6"
     mv "~2"
     safe-json-stringify "~1"
+
+bytebuffer@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/bytebuffer/-/bytebuffer-5.0.1.tgz#582eea4b1a873b6d020a48d58df85f0bba6cfddd"
+  integrity sha1-WC7qSxqHO20CCkjVjfhfC7ps/d0=
+  dependencies:
+    long "~3"
 
 bytes@3.0.0:
   version "3.0.0"
@@ -7840,6 +7853,11 @@ hermes-engine@~0.5.0:
   resolved "https://registry.yarnpkg.com/hermes-engine/-/hermes-engine-0.5.0.tgz#d914acce72e9657b3c98875ad3f9094d8643f327"
   integrity sha512-jSuHiOhdh2+IF3bH2gLpQ37eMkdUrEb9GK6PoG3rLRaUDK3Zn2Y9fXM+wyDfoUTA3gz9EET0/IIWk5k21qp4kw==
 
+hex-lite@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/hex-lite/-/hex-lite-1.5.0.tgz#482db64f673dcacdb8be93c629a799ce5a76b24d"
+  integrity sha512-bXFMCFoKcksmJ1kDRq6B0+Go5Wgq84Dq/3rX99+0OzBQZKUBEMLguPd1lZSpvmzJACb516n07eyswF4KHAF9cg==
+
 highlight.js@~9.13.0:
   version "9.13.1"
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.13.1.tgz#054586d53a6863311168488a0f58d6c505ce641e"
@@ -10199,11 +10217,6 @@ lodash.assign@^4.2.0:
   resolved "https://registry.yarnpkg.com/lodash.assign/-/lodash.assign-4.2.0.tgz#0d99f3ccd7a6d261d19bdaeb9245005d285808e7"
   integrity sha1-DZnzzNem0mHRm9rrkkUAXShYCOc=
 
-lodash.clonedeep@^4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
-  integrity sha1-4j8/nE+Pvd6HJSnBBxhXoIblzO8=
-
 lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
@@ -10234,10 +10247,10 @@ lodash.throttle@^4.1.1:
   resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
   integrity sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
 
-lodash@4.17.19:
-  version "4.17.19"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
-  integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
+lodash@4.17.20:
+  version "4.17.20"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
+  integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
 
 lodash@4.x.x, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.3.0, lodash@^4.5.0:
   version "4.17.15"
@@ -10267,9 +10280,10 @@ logkitty@^0.7.1:
     dayjs "^1.8.15"
     yargs "^15.1.0"
 
-"lokijs@git+https://github.com/Nozbe/LokiJS.git#fabe503":
-  version "1.5.9"
-  resolved "git+https://github.com/Nozbe/LokiJS.git#fabe503e4fc7887b76b0e4892b28fbd0753da27d"
+"lokijs@npm:@nozbe/lokijs@1.5.10-wmelon0":
+  version "1.5.10-wmelon0"
+  resolved "https://registry.yarnpkg.com/@nozbe/lokijs/-/lokijs-1.5.10-wmelon0.tgz#dcad682083b85c238d14cdcd1f016125fff54336"
+  integrity sha512-GSLyRUTxCPwWLLKxMxA8/Pujm2xAgPGSehze9ICHZDG9yyMMfuWYae+qY+fQctgA1HuKiwoRUEvrrKBCQj9jzA==
 
 lolex@^5.0.0:
   version "5.1.2"
@@ -10277,6 +10291,11 @@ lolex@^5.0.0:
   integrity sha512-h4hmjAvHTmd+25JSwrtTIuwbKdwg5NzZVRMLn9saij4SZaepCrTCxPr35H/3bjwfMJtN+t3CX8672UIkglz28A==
   dependencies:
     "@sinonjs/commons" "^1.7.0"
+
+long@~3:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/long/-/long-3.2.0.tgz#d821b7138ca1cb581c172990ef14db200b5c474b"
+  integrity sha1-2CG3E4yhy1gcFymQ7xTbIAtcR0s=
 
 loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.3.1, loose-envify@^1.4.0:
   version "1.4.0"
@@ -12731,6 +12750,11 @@ react-native-bootsplash@2.2.5:
     jimp "0.14.0"
     prompts "2.3.2"
 
+react-native-config-reader@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-config-reader/-/react-native-config-reader-4.1.1.tgz#478b69e32adcc2e9a14f6ef5fa2cbbe012b9a27e"
+  integrity sha512-f+I9DkmJS5UYE++vgSBIFG/TUxxCy9GSpcDFmVj7TDNW9w+Nozc98pdene/VYFzg9QRE7hejRoA6yV1Lv+QbCw==
+
 react-native-console-time-polyfill@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/react-native-console-time-polyfill/-/react-native-console-time-polyfill-1.2.1.tgz#3bf9a1d1d1ce3a05325fe1f2e5c4e5a1c25d910f"
@@ -12791,7 +12815,7 @@ react-native-iphone-x-helper@^1.0.3, react-native-iphone-x-helper@^1.2.1:
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.1.tgz#645e2ffbbb49e80844bb4cbbe34a126fda1e6772"
   integrity sha512-/VbpIEp8tSNNHIvstuA3Swx610whci1Zpc9mqNkqn14DkMbw+ORviln2u0XyHG1kPvvwTNGZY6QpeFwxYaSdbQ==
 
-react-native-jitsi-meet@2.1.1:
+react-native-jitsi-meet@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/react-native-jitsi-meet/-/react-native-jitsi-meet-2.1.1.tgz#cf47f5ae43c6030b57a8301c6317636f0ac63ee3"
   integrity sha512-qDgVuYX5Q6s0/WEKPcekDBPjx1gPIrqsLnHPdlxYGiTjMI8u9wyHw+L5+Ai8PF1HMPjhZV/jHx8N1gTQu2A0cw==
@@ -12823,6 +12847,11 @@ react-native-mime-types@2.3.0:
   integrity sha512-9l/kkT1QM0i0xAKkOADkP6jIMhqiS+R/eSKBS/lsUmuMYMqboClyrwTFFZwUcaVIN0SpeH4wOKhYTqCnFgRsEw==
   dependencies:
     mime-db "~1.37.0"
+
+react-native-mmkv-storage@0.3.5:
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/react-native-mmkv-storage/-/react-native-mmkv-storage-0.3.5.tgz#9c2f064c0efdaf960e9646c68dc6ae7f11640fa5"
+  integrity sha512-xp0E55Qdi81k8CTeq3PUrXGwT2tMmfNfmYvZ7Emq9qWpvg3ko1/M6B1kXEXOgEou/hgqB503TGcsR/mpN5HSMA==
 
 react-native-modal@11.5.6:
   version "11.5.6"
@@ -12927,6 +12956,13 @@ react-native-scrollable-tab-view@^1.0.0:
     create-react-class "^15.6.2"
     prop-types "^15.6.0"
     react-timer-mixin "^0.13.3"
+
+react-native-simple-crypto@RocketChat/react-native-simple-crypto:
+  version "0.4.0"
+  resolved "https://codeload.github.com/RocketChat/react-native-simple-crypto/tar.gz/21d36ccc8c75771428239f9dcca19afe0c95e95f"
+  dependencies:
+    base64-js "^1.3.0"
+    hex-lite "^1.5.0"
 
 react-native-slowlog@^1.0.2:
   version "1.0.2"
@@ -13305,7 +13341,7 @@ redent@^1.0.0:
     indent-string "^2.1.0"
     strip-indent "^1.0.1"
 
-redux-immutable-state-invariant@^2.1.0:
+redux-immutable-state-invariant@2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/redux-immutable-state-invariant/-/redux-immutable-state-invariant-2.1.0.tgz#308fd3cc7415a0e7f11f51ec997b6379c7055ce1"
   integrity sha512-3czbDKs35FwiBRsx/3KabUk5zSOoTXC+cgVofGkpBNv3jQcqIe5JrHcF5AmVt7B/4hyJ8MijBIpCJ8cife6yJg==
@@ -13669,11 +13705,6 @@ rn-root-view@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/rn-root-view/-/rn-root-view-1.0.3.tgz#a2cddc717278cb2175fb29b7c006e407b7f0d0e2"
   integrity sha512-BIKm8hY5q8+pxK9B5ugYjqutoI9xn2JfxIZKWoaFmAl1bOIM4oXjwFQrRM1e6lFgzz99MN6Mf2dK3Alsywnvvw==
-
-rn-user-defaults@^1.8.1:
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/rn-user-defaults/-/rn-user-defaults-1.8.1.tgz#ccb8048f3ce43388ae40ac33eb063bfa93071702"
-  integrity sha512-pnUiB6Xn++5YGzSA1BKOsRAdz/GPkW3MViN5Yii6XGp5d6arcP4pOVIGmiFlOfxIFrHD3GU440WFnt5L7ogMSg==
 
 rsvp@^3.3.3:
   version "3.6.2"
@@ -16073,7 +16104,7 @@ xregexp@4.1.1:
   resolved "https://registry.yarnpkg.com/xregexp/-/xregexp-4.1.1.tgz#eb8a032aa028d403f7b1b22c47a5f16c24b21d8d"
   integrity sha512-QJ1gfSUV7kEOLfpKFCjBJRnfPErUzkNKFMso4kDSmGpp3x6ZgkyKf74inxI7PnnQCFYq5TqYJCd7DrgDN8Q05A==
 
-xregexp@^4.2.4:
+xregexp@^4.2.4, xregexp@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/xregexp/-/xregexp-4.3.0.tgz#7e92e73d9174a99a59743f67a4ce879a04b5ae50"
   integrity sha512-7jXDIFXh5yJ/orPn4SXjuVrWWoi4Cr8jfV1eHv9CixKSbU+jY4mxfrBwAuDvupPNKpMUY+FeIqsVw/JLT9+B8g==

@@ -85,6 +85,7 @@ class CreateChannelView extends React.Component {
 		error: PropTypes.object,
 		failure: PropTypes.bool,
 		isFetching: PropTypes.bool,
+		e2eEnabled: PropTypes.bool,
 		users: PropTypes.array.isRequired,
 		user: PropTypes.shape({
 			id: PropTypes.string,
@@ -97,14 +98,17 @@ class CreateChannelView extends React.Component {
 		channelName: '',
 		type: true,
 		readOnly: false,
+		encrypted: false,
 		broadcast: false
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			channelName, type, readOnly, broadcast
+			channelName, type, readOnly, broadcast, encrypted
 		} = this.state;
-		const { users, isFetching, theme } = this.props;
+		const {
+			users, isFetching, e2eEnabled, theme
+		} = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
 		}
@@ -117,10 +121,16 @@ class CreateChannelView extends React.Component {
 		if (nextState.readOnly !== readOnly) {
 			return true;
 		}
+		if (nextState.encrypted !== encrypted) {
+			return true;
+		}
 		if (nextState.broadcast !== broadcast) {
 			return true;
 		}
 		if (nextProps.isFetching !== isFetching) {
+			return true;
+		}
+		if (nextProps.e2eEnabled !== e2eEnabled) {
 			return true;
 		}
 		if (!equal(nextProps.users, users)) {
@@ -147,7 +157,7 @@ class CreateChannelView extends React.Component {
 
 	submit = () => {
 		const {
-			channelName, type, readOnly, broadcast
+			channelName, type, readOnly, broadcast, encrypted
 		} = this.state;
 		const { users: usersProps, isFetching, create } = this.props;
 
@@ -160,7 +170,7 @@ class CreateChannelView extends React.Component {
 
 		// create channel
 		create({
-			name: channelName, users, type, readOnly, broadcast
+			name: channelName, users, type, readOnly, broadcast, encrypted
 		});
 
 		Review.pushPositiveEvent();
@@ -198,7 +208,8 @@ class CreateChannelView extends React.Component {
 			label: 'Private_Channel',
 			onValueChange: (value) => {
 				logEvent(events.CREATE_CHANNEL_TOGGLE_TYPE);
-				this.setState({ type: value });
+				// If we set the channel as public, encrypted status should be false
+				this.setState(({ encrypted }) => ({ type: value, encrypted: value && encrypted }));
 			}
 		});
 	}
@@ -214,6 +225,26 @@ class CreateChannelView extends React.Component {
 				this.setState({ readOnly: value });
 			},
 			disabled: broadcast
+		});
+	}
+
+	renderEncrypted() {
+		const { type, encrypted } = this.state;
+		const { e2eEnabled } = this.props;
+
+		if (!e2eEnabled) {
+			return null;
+		}
+
+		return this.renderSwitch({
+			id: 'encrypted',
+			value: encrypted,
+			label: 'Encrypted',
+			onValueChange: (value) => {
+				logEvent(events.CREATE_CHANNEL_TOGGLE_ENCRYPTED);
+				this.setState({ encrypted: value });
+			},
+			disabled: !type
 		});
 	}
 
@@ -315,6 +346,8 @@ class CreateChannelView extends React.Component {
 							{this.renderFormSeparator()}
 							{this.renderReadOnly()}
 							{this.renderFormSeparator()}
+							{this.renderEncrypted()}
+							{this.renderFormSeparator()}
 							{this.renderBroadcast()}
 						</View>
 						<View style={styles.invitedHeader}>
@@ -333,6 +366,7 @@ class CreateChannelView extends React.Component {
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	isFetching: state.createChannel.isFetching,
+	e2eEnabled: state.settings.E2E_Enable,
 	users: state.selectedUsers.users,
 	user: getUserSelector(state)
 });

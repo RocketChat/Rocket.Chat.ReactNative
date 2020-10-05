@@ -14,8 +14,8 @@ async function navigateToRoomActions(type) {
 		room = data.groups.private.name;
 	}
 	await searchRoom(room);
-	await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toExist().withTimeout(60000);
-	await element(by.id(`rooms-list-view-item-${ room }`)).tap();
+	await waitFor(element(by.id(`rooms-list-view-item-${ room }`)).atIndex(0)).toExist().withTimeout(60000);
+	await element(by.id(`rooms-list-view-item-${ room }`)).atIndex(0).tap();
 	await waitFor(element(by.id('room-view'))).toExist().withTimeout(2000);
 	await element(by.id('room-view-header-actions')).tap();
 	await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
@@ -245,7 +245,7 @@ describe('Room actions screen', () => {
 				//Back into Room Actions
 				await element(by.id('room-view-header-actions')).tap();
 				await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
-
+				await element(by.type('UIScrollView')).atIndex(1).scrollTo('bottom');
 				await waitFor(element(by.id('room-actions-pinned'))).toExist();
 				await element(by.id('room-actions-pinned')).tap();
 				await waitFor(element(by.id('pinned-messages-view'))).toExist().withTimeout(2000);
@@ -281,6 +281,7 @@ describe('Room actions screen', () => {
 
 		describe('Notification', async() => {
 			it('should navigate to notification preference view', async() => {
+				await element(by.type('UIScrollView')).atIndex(1).scrollTo('bottom');
 				await waitFor(element(by.id('room-actions-notifications'))).toExist().withTimeout(2000);
 				await element(by.id('room-actions-notifications')).tap();
 				await waitFor(element(by.id('notification-preference-view'))).toExist().withTimeout(2000);
@@ -332,6 +333,7 @@ describe('Room actions screen', () => {
 			const user = data.users.alternate
 
 			it('should tap on leave channel and raise alert', async() => {
+				await element(by.type('UIScrollView')).atIndex(1).scrollTo('bottom');
 				await waitFor(element(by.id('room-actions-leave-channel'))).toExist().withTimeout(2000);
 				await element(by.id('room-actions-leave-channel')).tap();
 				await waitFor(element(by.text('Yes, leave it!'))).toExist().withTimeout(2000);
@@ -352,6 +354,7 @@ describe('Room actions screen', () => {
 				await waitFor(element(by.id(`selected-user-${ user.username }`))).toExist().withTimeout(5000);
 				await element(by.id('selected-users-view-submit')).tap();
 				await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(2000);
+				await waitFor(element(by.id('room-actions-members'))).toExist().withTimeout(2000);
 				await element(by.id('room-actions-members')).tap();
 				await element(by.id('room-members-view-toggle-status')).tap();
 				await waitFor(element(by.id(`room-members-view-item-${ user.username }`))).toExist().withTimeout(60000);
