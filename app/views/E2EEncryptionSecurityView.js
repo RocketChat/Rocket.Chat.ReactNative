@@ -17,6 +17,7 @@ import { getUserSelector } from '../selectors/login';
 import { PADDING_HORIZONTAL } from '../containers/List/constants';
 import sharedStyles from './Styles';
 import { themes } from '../constants/colors';
+import { Encryption } from '../lib/encryption';
 
 const styles = StyleSheet.create({
 	title: {
@@ -43,6 +44,16 @@ class E2EEncryptionSecurityView extends React.Component {
 		})
 	}
 
+	changePassword = async() => {
+		const { server } = this.props;
+		try {
+			await Encryption.changePassword(server, '123123');
+			alert('done!')
+		} catch (error) {
+			alert(error)
+		}
+	}
+
 	render() {
 		const { theme } = this.props;
 		return (
@@ -63,7 +74,7 @@ class E2EEncryptionSecurityView extends React.Component {
 								theme={theme}
 							/>
 							<Button
-								onPress={this.submit}
+								onPress={this.changePassword}
 								title={I18n.t('Save_Changes')}
 								// disabled={!password}
 								theme={theme}
@@ -93,6 +104,7 @@ class E2EEncryptionSecurityView extends React.Component {
 }
 
 const mapStateToProps = state => ({
+	server: state.server.server,
 	user: getUserSelector(state)
 });
 
