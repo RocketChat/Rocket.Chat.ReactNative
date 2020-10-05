@@ -13,7 +13,7 @@ export default {
 	'error-delete-protected-role': 'لا يمكن حذف وظيفة محمية',
 	'error-department-not-found': 'القسم غير موجود',
 	'error-direct-message-file-upload-not-allowed': 'مشاركة الملفات غير مسموح في المحادثة المباشرة',
-	'error-duplicate-channel-name': 'القناة إسم {{channel_name}} موجودة بالفعل',
+	'error-duplicate-channel-name': 'القناة {{channel_name}} موجودة بالفعل',
 	'error-email-domain-blacklisted': 'عنوان اﻹيميل محظور',
 	'error-email-send-failed': 'خطأ في ارسال البريد اﻹلكتروني: {{message}}',
 	'error-save-image': 'خطأ عند حفظ الصورة',
