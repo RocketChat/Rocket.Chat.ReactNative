@@ -3,7 +3,7 @@ export default {
 	'1_user': 'مستخدم 1',
 	'error-action-not-allowed': 'هذ {{action}} غير مسموح',
 	'error-application-not-found': 'التطبيق غير موجود',
-	'error-archived-duplicate-name': 'هناك قناة مؤرشفه بإسم {{room_name}}',
+	'error-archived-duplicate-name': 'هناك قناة مؤرشفة باسم {{room_name}}',
 	'error-avatar-invalid-url': 'عنوان الصورة الرمزية غير صحيح: {{url}}',
 	'error-avatar-url-handling': 'خطأ في معالجة الصورة الرمزية ({{url}}) للمستخدم {{username}}',
 	'error-cant-invite-for-direct-room': 'لا يمكن دعوة المستخدم في الغرفة المباشرة',
