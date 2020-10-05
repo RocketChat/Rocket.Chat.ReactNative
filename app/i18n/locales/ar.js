@@ -425,7 +425,7 @@ export default {
 	Submit: 'أرسال',
 	Table: 'جدول',
 	Take_a_photo: 'التقاط صورة',
-	Take_a_video: 'التقاط فيديوا',
+	Take_a_video: 'التقاط فيديو',
 	tap_to_change_status: 'انقر لتغيير الحالة',
 	Tap_to_view_servers_list: 'انقر لعرض قائمة الخوادم',
 	Terms_of_Service: ' شروط الخدمة ',
