@@ -1,0 +1,1 @@
+../../../../../node_modules/react-native-jitsi-meet/ios/RNJitsiMeetViewManager.h

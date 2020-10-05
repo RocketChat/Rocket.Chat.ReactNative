@@ -41,7 +41,8 @@ import ScreenLockConfigView from '../../views/ScreenLockConfigView';
 import AdminPanelView from '../../views/AdminPanelView';
 import NewMessageView from '../../views/NewMessageView';
 import CreateChannelView from '../../views/CreateChannelView';
-import QueueListView from '../../views/QueueListView';
+import UserPreferencesView from '../../views/UserPreferencesView';
+import UserNotificationPrefView from '../../views/UserNotificationPreferencesView';
 
 // InsideStackNavigator
 import AttachmentView from '../../views/AttachmentView';
@@ -49,9 +50,14 @@ import ModalBlockView from '../../views/ModalBlockView';
 import JitsiMeetView from '../../views/JitsiMeetView';
 import StatusView from '../../views/StatusView';
 import CreateDiscussionView from '../../views/CreateDiscussionView';
+import E2ESaveYourPasswordView from '../../views/E2ESaveYourPasswordView';
+import E2EHowItWorksView from '../../views/E2EHowItWorksView';
+import E2EEnterYourPasswordView from '../../views/E2EEnterYourPasswordView';
 
 import { setKeyCommands, deleteKeyCommands } from '../../commands';
 import ShareView from '../../views/ShareView';
+
+import QueueListView from '../../ee/omnichannel/views/QueueListView';
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator();
@@ -252,6 +258,31 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 				<ModalStack.Screen
 					name='CreateDiscussionView'
 					component={CreateDiscussionView}
+				/>
+				<ModalStack.Screen
+					name='E2ESaveYourPasswordView'
+					component={E2ESaveYourPasswordView}
+					options={E2ESaveYourPasswordView.navigationOptions}
+				/>
+				<ModalStack.Screen
+					name='E2EHowItWorksView'
+					component={E2EHowItWorksView}
+					options={E2EHowItWorksView.navigationOptions}
+				/>
+				<ModalStack.Screen
+					name='E2EEnterYourPasswordView'
+					component={E2EEnterYourPasswordView}
+					options={E2EEnterYourPasswordView.navigationOptions}
+				/>
+				<ModalStack.Screen
+					name='UserPreferencesView'
+					component={UserPreferencesView}
+					options={UserPreferencesView.navigationOptions}
+				/>
+				<ModalStack.Screen
+					name='UserNotificationPrefView'
+					component={UserNotificationPrefView}
+					options={UserNotificationPrefView.navigationOptions}
 				/>
 			</ModalStack.Navigator>
 		</ModalContainer>

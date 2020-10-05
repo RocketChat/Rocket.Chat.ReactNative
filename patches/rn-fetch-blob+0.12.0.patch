@@ -1,0 +1,129 @@
+diff --git a/node_modules/rn-fetch-blob/ios/RNFetchBlobRequest.m b/node_modules/rn-fetch-blob/ios/RNFetchBlobRequest.m
+index cdbe6b1..bee6228 100644
+--- a/node_modules/rn-fetch-blob/ios/RNFetchBlobRequest.m
++++ b/node_modules/rn-fetch-blob/ios/RNFetchBlobRequest.m
+@@ -15,6 +15,9 @@
+ #import "IOS7Polyfill.h"
+ #import <CommonCrypto/CommonDigest.h>
+ 
++#import "SecureStorage.h"
++#import <MMKV/MMKV.h>
++
+ 
+ typedef NS_ENUM(NSUInteger, ResponseFormat) {
+     UTF8,
+@@ -450,16 +453,109 @@ - (void) URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didSen
+     }
+ }
+ 
++-(NSURLCredential *)getUrlCredential:(NSURLAuthenticationChallenge *)challenge path:(NSString *)path password:(NSString *)password
++{
++  NSString *authMethod = [[challenge protectionSpace] authenticationMethod];
++  SecTrustRef serverTrust = challenge.protectionSpace.serverTrust;
++
++  if ([authMethod isEqualToString:NSURLAuthenticationMethodServerTrust] || path == nil || password == nil) {
++    return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++  } else if (path && password) {
++    NSMutableArray *policies = [NSMutableArray array];
++    [policies addObject:(__bridge_transfer id)SecPolicyCreateSSL(true, (__bridge CFStringRef)challenge.protectionSpace.host)];
++    SecTrustSetPolicies(serverTrust, (__bridge CFArrayRef)policies);
++
++    SecTrustResultType result;
++    SecTrustEvaluate(serverTrust, &result);
++
++    if (![[NSFileManager defaultManager] fileExistsAtPath:path])
++    {
++      return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++    }
++
++    NSData *p12data = [NSData dataWithContentsOfFile:path];
++    NSDictionary* options = @{ (id)kSecImportExportPassphrase:password };
++    CFArrayRef rawItems = NULL;
++    OSStatus status = SecPKCS12Import((__bridge CFDataRef)p12data,
++                                      (__bridge CFDictionaryRef)options,
++                                      &rawItems);
++
++    if (status != noErr) {
++      return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++    }
++
++    NSArray* items = (NSArray*)CFBridgingRelease(rawItems);
++    NSDictionary* firstItem = nil;
++    if ((status == errSecSuccess) && ([items count]>0)) {
++        firstItem = items[0];
++    }
++
++    SecIdentityRef identity = (SecIdentityRef)CFBridgingRetain(firstItem[(id)kSecImportItemIdentity]);
++    SecCertificateRef certificate = NULL;
++    if (identity) {
++        SecIdentityCopyCertificate(identity, &certificate);
++        if (certificate) { CFRelease(certificate); }
++    }
++
++    NSMutableArray *certificates = [[NSMutableArray alloc] init];
++    [certificates addObject:CFBridgingRelease(certificate)];
++
++    return [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
++  }
+ 
+-- (void) URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable credantial))completionHandler
++  return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++}
++
++- (NSString *)stringToHex:(NSString *)string
+ {
+-    if ([[options valueForKey:CONFIG_TRUSTY] boolValue]) {
+-        completionHandler(NSURLSessionAuthChallengeUseCredential, [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]);
+-    } else {
+-        completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]);
++  char *utf8 = (char *)[string UTF8String];
++  NSMutableString *hex = [NSMutableString string];
++  while (*utf8) [hex appendFormat:@"%02X", *utf8++ & 0x00FF];
++
++  return [[NSString stringWithFormat:@"%@", hex] lowercaseString];
++}
++
++-(void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler
++{
++  NSString *host = challenge.protectionSpace.host;
++  
++  // Read the clientSSL info from MMKV
++  __block NSDictionary *clientSSL;
++  SecureStorage *secureStorage = [[SecureStorage alloc] init];
++
++  // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
++  [secureStorage getSecureKey:[self stringToHex:@"com.MMKV.default"] callback:^(NSArray *response) {
++    // Error happened
++    if ([response objectAtIndex:0] != [NSNull null]) {
++        return;
+     }
++    NSString *key = [response objectAtIndex:1];
++    NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
++    MMKV *mmkv = [MMKV mmkvWithID:@"default" cryptKey:cryptKey mode:MMKVMultiProcess];
++
++    clientSSL = [mmkv getObjectOfClass:[NSDictionary class] forKey:host];
++  }];
++
++  NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++
++  if (clientSSL != (id)[NSNull null]) {
++    NSString *path = [clientSSL objectForKey:@"path"];
++    NSString *password = [clientSSL objectForKey:@"password"];
++    credential = [self getUrlCredential:challenge path:path password:password];
++  }
++
++  completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
+ }
+ 
++// - (void) URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable credantial))completionHandler
++// {
++//     if ([[options valueForKey:CONFIG_TRUSTY] boolValue]) {
++//         completionHandler(NSURLSessionAuthChallengeUseCredential, [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]);
++//     } else {
++//         completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]);
++//     }
++// }
++
+ 
+ - (void) URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession *)session
+ {

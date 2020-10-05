@@ -1,0 +1,31 @@
+{
+  "name": "RNRootView",
+  "version": "1.0.3",
+  "summary": "React Native Root View",
+  "description": "Change Root View Background color on React Native",
+  "license": "MIT",
+  "authors": {
+    "name": "Djorkaeff Alexandre",
+    "email": "djorkaeff.alexandre@rocket.chat"
+  },
+  "homepage": "https://github.com/RocketChat/rn-root-view",
+  "source": {
+    "git": "https://github.com/RocketChat/rn-root-view.git",
+    "tag": "master"
+  },
+  "requires_arc": true,
+  "platforms": {
+    "ios": "7.0"
+  },
+  "preserve_paths": [
+    "README.md",
+    "package.json",
+    "index.js"
+  ],
+  "source_files": "iOS/*.{h,m}",
+  "dependencies": {
+    "React": [
+
+    ]
+  }
+}

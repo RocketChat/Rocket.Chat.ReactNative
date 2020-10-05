@@ -100,6 +100,9 @@ class ReadReceiptView extends React.Component {
 			Message_TimeFormat, user: { id: userId, token }, baseUrl, theme
 		} = this.props;
 		const time = moment(item.ts).format(Message_TimeFormat);
+		if (!item?.user?.username) {
+			return null;
+		}
 		return (
 			<View style={[styles.itemContainer, { backgroundColor: themes[theme].backgroundColor }]}>
 				<Avatar
@@ -112,7 +115,7 @@ class ReadReceiptView extends React.Component {
 				<View style={styles.infoContainer}>
 					<View style={styles.item}>
 						<Text style={[styles.name, { color: themes[theme].titleText }]}>
-							{item.user.name}
+							{item?.user?.name}
 						</Text>
 						<Text style={{ color: themes[theme].auxiliaryText }}>
 							{time}
@@ -142,25 +145,23 @@ class ReadReceiptView extends React.Component {
 		return (
 			<SafeAreaView testID='read-receipt-view' theme={theme}>
 				<StatusBar theme={theme} />
-				<View>
-					{loading
-						? <ActivityIndicator theme={theme} />
-						: (
-							<FlatList
-								data={receipts}
-								renderItem={this.renderItem}
-								ItemSeparatorComponent={this.renderSeparator}
-								style={[
-									styles.list,
-									{
-										backgroundColor: themes[theme].chatComponentBackground,
-										borderColor: themes[theme].separatorColor
-									}
-								]}
-								keyExtractor={item => item._id}
-							/>
-						)}
-				</View>
+				{loading
+					? <ActivityIndicator theme={theme} />
+					: (
+						<FlatList
+							data={receipts}
+							renderItem={this.renderItem}
+							ItemSeparatorComponent={this.renderSeparator}
+							style={[
+								styles.list,
+								{
+									backgroundColor: themes[theme].chatComponentBackground,
+									borderColor: themes[theme].separatorColor
+								}
+							]}
+							keyExtractor={item => item._id}
+						/>
+					)}
 			</SafeAreaView>
 		);
 	}

@@ -56,6 +56,7 @@ class LoginView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		Site_Name: PropTypes.string,
 		Accounts_RegistrationForm: PropTypes.string,
 		Accounts_RegistrationForm_LinkReplacementText: PropTypes.string,
@@ -74,7 +75,7 @@ class LoginView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			user: '',
+			user: props.route.params?.username ?? '',
 			password: ''
 		};
 	}
@@ -123,6 +124,7 @@ class LoginView extends React.Component {
 	}
 
 	renderUserForm = () => {
+		const { user } = this.state;
 		const {
 			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, Accounts_PasswordReset, Accounts_RegistrationForm_LinkReplacementText, isFetching, theme, Accounts_ShowFormLogin
 		} = this.props;
@@ -146,6 +148,7 @@ class LoginView extends React.Component {
 					textContentType='username'
 					autoCompleteType='username'
 					theme={theme}
+					value={user}
 				/>
 				<TextInput
 					label='Password'
