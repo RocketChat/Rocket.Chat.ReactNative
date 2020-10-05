@@ -408,7 +408,7 @@ export default {
 	Share_this_app: 'مشاركة هذا البرنامج',
 	Show_more: 'إظهار أكثر..',
 	Show_Unread_Counter: 'إظهار عدد غير المقروء',
-	Show_Unread_Counter_Info: 'تم عرض العداد غير المقروء كشارة على يمين القناة في القائمة',
+	Show_Unread_Counter_Info: 'يتم عرض العدد غير المقروء كشارة على يمين القناة في القائمة',
 	Sign_in_your_server: 'تسجيل الدخول إلى الخادم الخاص بك',
 	Sign_Up: 'تسجيل جديد',
 	Some_field_is_invalid_or_empty: 'بعض الحقول غير صالحة أو فارغة',
