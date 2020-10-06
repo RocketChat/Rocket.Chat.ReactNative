@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { Image, View } from 'react-native';
+import { View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import MessageContext from './Context';
@@ -19,6 +19,7 @@ import Discussion from './Discussion';
 import Content from './Content';
 import ReadReceipt from './ReadReceipt';
 import CallButton from './CallButton';
+import ImagePreview from './ImagePreview';
 
 const MessageInner = React.memo((props) => {
 	if (props.type === 'discussion-created') {
@@ -54,6 +55,7 @@ const MessageInner = React.memo((props) => {
 			<Content {...props} />
 			<Attachments {...props} />
 			<Urls {...props} />
+			<ImagePreview {...props} />
 			<Thread {...props} />
 			<Reactions {...props} />
 			<Broadcast {...props} />
@@ -63,21 +65,6 @@ const MessageInner = React.memo((props) => {
 MessageInner.displayName = 'MessageInner';
 
 const Message = React.memo((props) => {
-	const [previewImage, setPreviewImage] = useState();
-
-	useEffect(() => {
-		const firstImgMatch = props.msg.match(/(https?:\/\/.*\.(?:png|jpg))/);
-
-		if (firstImgMatch) {
-			const imgUrl = firstImgMatch[0];
-			fetch(imgUrl).then(({ status }) => {
-				if (status === 200) {
-					setPreviewImage(imgUrl);
-				}
-			});
-		}
-	}, []);
-
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
 		return (
@@ -115,7 +102,6 @@ const Message = React.memo((props) => {
 					unread={props.unread}
 					theme={props.theme}
 				/>
-				{previewImage && <Image source={{ uri: previewImage }} style={{ width: 100, height: 100 }} resizeMode='cover' />}
 			</View>
 		</View>
 	);
@@ -163,13 +149,13 @@ Message.propTypes = {
 	onLongPress: PropTypes.func,
 	isReadReceiptEnabled: PropTypes.bool,
 	unread: PropTypes.bool,
-	theme: PropTypes.string,
-	msg: PropTypes.string
+	theme: PropTypes.string
 };
 
 MessageInner.propTypes = {
 	type: PropTypes.string,
-	blocks: PropTypes.array
+	blocks: PropTypes.array,
+	msg: PropTypes.string
 };
 
 export default MessageTouchable;
