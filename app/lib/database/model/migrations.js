@@ -136,7 +136,7 @@ export default schemaMigrations({
 				addColumns({
 					table: 'subscriptions',
 					columns: [
-						{ name: 'join_code', type: 'string', isOptional: false }
+						{ name: 'join_code_required', type: 'boolean' }
 					]
 				})
 			]

@@ -33,7 +33,6 @@ export default async(subscriptions = [], rooms = []) => {
 			blocker: s.blocker,
 			reactWhenReadOnly: s.reactWhenReadOnly,
 			archived: s.archived,
-			joinCodeRequired: s.joinCodeRequired,
 			muted: s.muted,
 			broadcast: s.broadcast,
 			prid: s.prid,
@@ -50,7 +49,7 @@ export default async(subscriptions = [], rooms = []) => {
 			servedBy: s.servedBy,
 			livechatData: s.livechatData,
 			tags: s.tags,
-			joinCode: s.joinCode
+			joinCodeRequired: s.joinCodeRequired
 		}));
 		subscriptions = subscriptions.concat(existingSubs);
 
@@ -64,7 +63,6 @@ export default async(subscriptions = [], rooms = []) => {
 			announcement: r.announcement,
 			reactWhenReadOnly: r.reactWhenReadOnly,
 			archived: r.archived,
-			joinCodeRequired: r.joinCodeRequired,
 			jitsiTimeout: r.jitsiTimeout,
 			usernames: r.usernames,
 			uids: r.uids,
@@ -76,7 +74,8 @@ export default async(subscriptions = [], rooms = []) => {
 			departmentId: r.departmentId,
 			servedBy: r.servedBy,
 			livechatData: r.livechatData,
-			tags: r.tags
+			tags: r.tags,
+			joinCodeRequired: r.joinCodeRequired
 		}));
 		rooms = rooms.concat(existingRooms);
 	} catch {

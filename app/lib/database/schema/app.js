@@ -32,7 +32,6 @@ export default appSchema({
 				{ name: 'blocker', type: 'boolean', isOptional: true },
 				{ name: 'react_when_read_only', type: 'boolean', isOptional: true },
 				{ name: 'archived', type: 'boolean' },
-				{ name: 'join_code_required', type: 'boolean', isOptional: true },
 				{ name: 'muted', type: 'string', isOptional: true },
 				{ name: 'broadcast', type: 'boolean', isOptional: true },
 				{ name: 'prid', type: 'string', isOptional: true },
@@ -50,7 +49,7 @@ export default appSchema({
 				{ name: 'served_by', type: 'string', isOptional: true },
 				{ name: 'livechat_data', type: 'string', isOptional: true },
 				{ name: 'tags', type: 'string', isOptional: true },
-				{ name: 'join_code', type: 'string', isOptional: false }
+				{ name: 'join_code_required', type: 'boolean' }
 			]
 		}),
 		tableSchema({

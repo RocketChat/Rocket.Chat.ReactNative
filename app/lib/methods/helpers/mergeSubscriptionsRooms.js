@@ -26,6 +26,7 @@ export const merge = (subscription, room) => {
 			subscription.uids = room.uids;
 		}
 		subscription.ro = room.ro;
+		subscription.joinCodeRequired = room.joinCodeRequired;
 		subscription.broadcast = room.broadcast;
 		if (!subscription.roles || !subscription.roles.length) {
 			subscription.roles = [];

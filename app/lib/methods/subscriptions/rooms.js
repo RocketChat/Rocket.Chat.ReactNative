@@ -32,7 +32,6 @@ const createOrUpdateSubscription = async(subscription, room) => {
 		const db = database.active;
 		const subCollection = db.collections.get('subscriptions');
 		const roomsCollection = db.collections.get('rooms');
-		subscription.joinCodeRequired = room.joinCodeRequired;
 		if (!subscription) {
 			try {
 				const s = await subCollection.find(room._id);
@@ -62,7 +61,6 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					blocker: s.blocker,
 					reactWhenReadOnly: s.reactWhenReadOnly,
 					archived: s.archived,
-					joinCodeRequired: s.joinCodeRequired,
 					muted: s.muted,
 					broadcast: s.broadcast,
 					prid: s.prid,
@@ -80,7 +78,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					servedBy: s.servedBy,
 					livechatData: s.livechatData,
 					tags: s.tags,
-					joinCode: s.joinCode
+					joinCodeRequired: s.joinCodeRequired
 				};
 			} catch (error) {
 				try {
@@ -111,7 +109,8 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					broadcast: r.broadcast,
 					customFields: r.customFields,
 					departmentId: r.departmentId,
-					livechatData: r.livechatData
+					livechatData: r.livechatData,
+					joinCodeRequired: r.joinCodeRequired
 				};
 			} catch (error) {
 				// Do nothing
