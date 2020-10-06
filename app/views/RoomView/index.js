@@ -109,11 +109,12 @@ class RoomView extends React.Component {
 		const room = props.route.params?.room;
 		const selectedMessage = props.route.params?.message;
 		const name = props.route.params?.name;
+		const { joinCodeRequired } = props.route.params.room;
 		const fname = props.route.params?.fname;
 		const search = props.route.params?.search;
 		const prid = props.route.params?.prid;
 		this.state = {
-			joinCode: '',
+			joinCodeRequired,
 			joined: true,
 			room: room || {
 				rid: this.rid, t: this.t, name, fname, prid
@@ -897,7 +898,7 @@ class RoomView extends React.Component {
 
 	renderFooter = () => {
 		const {
-			joined, room, selectedMessage, editing, replying, replyWithMention, readOnly
+			joined, room, selectedMessage, editing, replying, replyWithMention, readOnly, joinCodeRequired
 		} = this.state;
 		const { navigation, theme } = this.props;
 
@@ -907,15 +908,23 @@ class RoomView extends React.Component {
 		if (!joined && !this.tmid) {
 			return (
 				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>
-					<Text accessibilityLabel={I18n.t('You_are_in_preview_mode')} style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('You_are_in_preview_mode')}</Text>
-					<TextInput
-						returnKeyType='default'
-						placeholder={I18n.t('Join_Code')}
-						onChangeText={(value) => { this.setState({ joinCode: value }); }}
-						underlineColorAndroid='transparent'
-						style={[styles.joinInput, { borderColor: theme === 'light' ? 'black' : 'white' }]}
-						theme={theme}
-					/>
+					{
+						joinCodeRequired
+							? (
+								<>
+									<Text accessibilityLabel={I18n.t('Insert_Join_Code')} style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('Insert_Join_Code')}</Text>
+									<TextInput
+										returnKeyType='default'
+										placeholder={I18n.t('Join_Code')}
+										onChangeText={(value) => { this.setState({ joinCode: value }); }}
+										underlineColorAndroid='transparent'
+										style={[styles.joinInput, { borderColor: theme === 'light' ? 'black' : 'white' }]}
+										theme={theme}
+									/>
+								</>
+							)
+							: <Text accessibilityLabel={I18n.t('You_are_in_preview_mode')} style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('You_are_in_preview_mode')}</Text>
+					}
 					<Touch
 						onPress={this.joinRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
