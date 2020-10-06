@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
+import { Image, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import MessageContext from './Context';
@@ -63,6 +63,21 @@ const MessageInner = React.memo((props) => {
 MessageInner.displayName = 'MessageInner';
 
 const Message = React.memo((props) => {
+	const [previewImage, setPreviewImage] = useState();
+
+	useEffect(() => {
+		const firstImgMatch = props.msg.match(/(https?:\/\/.*\.(?:png|jpg))/);
+
+		if (firstImgMatch) {
+			const imgUrl = firstImgMatch[0];
+			fetch(imgUrl).then(({ status }) => {
+				if (status === 200) {
+					setPreviewImage(imgUrl);
+				}
+			});
+		}
+	}, []);
+
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
 		return (
@@ -82,6 +97,7 @@ const Message = React.memo((props) => {
 			</View>
 		);
 	}
+
 	return (
 		<View style={[styles.container, props.style]}>
 			<View style={styles.flex}>
@@ -99,6 +115,7 @@ const Message = React.memo((props) => {
 					unread={props.unread}
 					theme={props.theme}
 				/>
+				{previewImage && <Image source={{ uri: previewImage }} style={{ width: 100, height: 100 }} resizeMode='cover' />}
 			</View>
 		</View>
 	);
@@ -146,7 +163,8 @@ Message.propTypes = {
 	onLongPress: PropTypes.func,
 	isReadReceiptEnabled: PropTypes.bool,
 	unread: PropTypes.bool,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	msg: PropTypes.string
 };
 
 MessageInner.propTypes = {
