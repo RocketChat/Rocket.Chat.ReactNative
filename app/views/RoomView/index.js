@@ -56,7 +56,7 @@ import Navigation from '../../lib/Navigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { getHeaderTitlePosition } from '../../containers/Header';
-import TextInput from '../../presentation/TextInput';
+import TextInput from '../../containers/TextInput';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
 
 import { takeInquiry } from '../../ee/omnichannel/lib';
@@ -939,7 +939,7 @@ class RoomView extends React.Component {
 										placeholder={I18n.t('Join_Code')}
 										onChangeText={(value) => { this.setState({ joinCode: value }); }}
 										underlineColorAndroid='transparent'
-										style={[styles.joinInput, { borderColor: theme === 'light' ? 'black' : 'white' }]}
+										containerStyle={styles.joinCodeInput}
 										theme={theme}
 									/>
 								</>

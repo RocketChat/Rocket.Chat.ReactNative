@@ -71,10 +71,7 @@ export default StyleSheet.create({
 		fontSize: 16,
 		...sharedStyles.textMedium
 	},
-	joinInput: {
-		marginTop: 10,
-		borderWidth: 2,
-		width: '90%',
-		textAlign: 'center'
+	joinCodeInput: {
+		padding: 8
 	}
 });
