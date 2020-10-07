@@ -358,6 +358,10 @@ const RocketChat = {
 		// RC 0.70.0
 		return this.methodCallWrapper('stream-notify-room-users', `${ rid }/e2ekeyRequest`, rid, e2eKeyId);
 	},
+	e2eResetOwnKey() {
+		// RC 0.72.0
+		return this.methodCallWrapper('e2e.resetOwnE2EKey');
+	},
 
 	updateJitsiTimeout(roomId) {
 		// RC 0.74.0

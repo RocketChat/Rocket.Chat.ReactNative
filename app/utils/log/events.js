@@ -307,5 +307,9 @@ export default {
 	E2E_SAVE_PW_HOW_IT_WORKS: 'e2e_save_pw_how_it_works',
 
 	// E2E ENTER YOUR PASSWORD VIEW
-	E2E_ENTER_PW_SUBMIT: 'e2e_enter_pw_submit'
+	E2E_ENTER_PW_SUBMIT: 'e2e_enter_pw_submit',
+
+	// E2E ENCRYPTION SECURITY VIEW
+	E2E_SEC_CHANGE_PASSWORD: 'e2e_sec_change_password',
+	E2E_SEC_RESET_OWN_KEY: 'e2e_sec_reset_own_key'
 };

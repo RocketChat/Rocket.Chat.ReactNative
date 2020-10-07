@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import I18n from '../i18n';
-import {
+import log, {
 	loggerConfig, analytics, logEvent, events
 } from '../utils/log';
 import { withTheme } from '../theme';
@@ -18,6 +18,8 @@ import { PADDING_HORIZONTAL } from '../containers/List/constants';
 import sharedStyles from './Styles';
 import { themes } from '../constants/colors';
 import { Encryption } from '../lib/encryption';
+import RocketChat from '../lib/rocketchat';
+import { logout as logoutAction } from '../actions/login';
 
 const styles = StyleSheet.create({
 	title: {
@@ -41,16 +43,29 @@ class E2EEncryptionSecurityView extends React.Component {
 		user: PropTypes.shape({
 			roles: PropTypes.array,
 			id: PropTypes.string
-		})
+		}),
+		logout: PropTypes.func
 	}
 
 	changePassword = async() => {
-		const { server } = this.props;
+		logEvent(events.E2E_SEC_CHANGE_PASSWORD);
 		try {
+			const { server } = this.props;
 			await Encryption.changePassword(server, '123123');
 			alert('done!')
 		} catch (error) {
 			alert(error)
+		}
+	}
+
+	resetOwnKey = async() => {
+		logEvent(events.E2E_SEC_RESET_OWN_KEY);
+		try {
+			const { logout } = this.props;
+			await RocketChat.e2eResetOwnKey();
+			logout();
+		} catch (error) {
+			log(error);
 		}
 	}
 
@@ -88,7 +103,7 @@ class E2EEncryptionSecurityView extends React.Component {
 							<Text style={[styles.title, { color: themes[theme].titleColor }]}>{I18n.t('E2E_encryption_reset_title')}</Text>
 							<Text style={[styles.description, { color: themes[theme].bodyText }]}>{I18n.t('E2E_encryption_reset_description')}</Text>
 							<Button
-								onPress={this.submit}
+								onPress={this.resetOwnKey}
 								title={I18n.t('E2E_encryption_reset_button')}
 								// disabled={!password}
 								theme={theme}
@@ -108,4 +123,9 @@ const mapStateToProps = state => ({
 	user: getUserSelector(state)
 });
 
-export default connect(mapStateToProps)(withTheme(E2EEncryptionSecurityView));
+const mapDispatchToProps = dispatch => ({
+	logout: () => dispatch(logoutAction())
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(E2EEncryptionSecurityView));
