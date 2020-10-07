@@ -72,6 +72,7 @@ class ShareListView extends React.Component {
 			if (isAndroid) {
 				await this.askForPermission(data);
 			}
+			console.log(data);
 			const info = await Promise.all(data.filter(item => item.type === 'media').map(file => FileSystem.getInfoAsync(this.uriToPath(file.value), { size: true })));
 			const attachments = info.map(file => ({
 				filename: file.uri.substring(file.uri.lastIndexOf('/') + 1),
@@ -247,7 +248,7 @@ class ShareListView extends React.Component {
 		return Promise.resolve();
 	}
 
-	uriToPath = uri => decodeURIComponent(isIOS ? uri.replace(/^file:\/\//, '') : uri);
+	uriToPath = uri => decodeURIComponent(isIOS ? uri.replace(/^file:\/\//, '') : `file://${ uri }`);
 
 	getRoomTitle = (item) => {
 		const { serverInfo } = this.state;

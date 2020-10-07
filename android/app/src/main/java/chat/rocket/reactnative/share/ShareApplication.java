@@ -2,7 +2,7 @@ package chat.rocket.reactnative.share;
 
 import chat.rocket.reactnative.BuildConfig;
 
-import chat.rocket.SharePackage;
+import chat.rocket.rnshareextension.SharePackage;
 
 import android.app.Application;
 
