@@ -49,7 +49,6 @@ export default async(subscriptions = [], rooms = []) => {
 			servedBy: s.servedBy,
 			livechatData: s.livechatData,
 			tags: s.tags,
-			joinCodeRequired: s.joinCodeRequired,
 			encrypted: s.encrypted,
 			e2eKeyId: s.e2eKeyId,
 			E2EKey: s.E2EKey
@@ -78,7 +77,6 @@ export default async(subscriptions = [], rooms = []) => {
 			servedBy: r.servedBy,
 			livechatData: r.livechatData,
 			tags: r.tags,
-			joinCodeRequired: r.joinCodeRequired,
 			encrypted: r.encrypted,
 			e2eKeyId: r.e2eKeyId
 		}));

@@ -49,7 +49,6 @@ export default appSchema({
 				{ name: 'served_by', type: 'string', isOptional: true },
 				{ name: 'livechat_data', type: 'string', isOptional: true },
 				{ name: 'tags', type: 'string', isOptional: true },
-				{ name: 'join_code_required', type: 'boolean' },
 				{ name: 'e2e_key', type: 'string', isOptional: true },
 				{ name: 'encrypted', type: 'boolean', isOptional: true },
 				{ name: 'e2e_key_id', type: 'string', isOptional: true }

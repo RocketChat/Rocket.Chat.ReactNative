@@ -80,7 +80,6 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					servedBy: s.servedBy,
 					livechatData: s.livechatData,
 					tags: s.tags,
-					joinCodeRequired: s.joinCodeRequired,
 					encrypted: s.encrypted,
 					e2eKeyId: s.e2eKeyId,
 					E2EKey: s.E2EKey
@@ -115,8 +114,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					broadcast: r.broadcast,
 					customFields: r.customFields,
 					departmentId: r.departmentId,
-					livechatData: r.livechatData,
-					joinCodeRequired: r.joinCodeRequired
+					livechatData: r.livechatData
 				};
 			} catch (error) {
 				// Do nothing
