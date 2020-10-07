@@ -436,8 +436,6 @@ export default {
 	Tap_to_view_servers_list: 'タップしてサーバーリストを見る',
 	Terms_of_Service: ' 利用規約 ',
 	Theme: 'テーマ',
-	The_URL_is_invalid:
-    '不正なURLか、セキュアな接続を確立できませんでした。\n{{contact}}',
 	There_was_an_error_while_action: '{{action}}の最中にエラーが発生しました！',
 	This_room_is_blocked: 'このルームはブロックされています。',
 	This_room_is_read_only: 'このルームは読み取り専用です。',

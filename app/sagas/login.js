@@ -4,6 +4,7 @@ import {
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
 import 'moment/min/locales';
+import { Q } from '@nozbe/watermelondb';
 
 import * as types from '../actions/actionsTypes';
 import {
@@ -17,17 +18,19 @@ import { roomsRequest } from '../actions/rooms';
 import { toMomentLocale } from '../utils/moment';
 import RocketChat from '../lib/rocketchat';
 import log, { logEvent, events } from '../utils/log';
-import I18n from '../i18n';
+import I18n, { LANGUAGES } from '../i18n';
 import database from '../lib/database';
 import EventEmitter from '../utils/events';
 import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../utils/info';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { setActiveUsers } from '../actions/activeUsers';
+import { encryptionInit, encryptionStop } from '../actions/encryption';
 import UserPreferences from '../lib/userPreferences';
 
 import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
+import { E2E_REFRESH_MESSAGES_KEY } from '../lib/encryption/constants';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -50,6 +53,26 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 		} else {
 			const server = yield select(getServer);
 			yield localAuthenticate(server);
+
+			// Saves username on server history
+			const serversDB = database.servers;
+			const serversHistoryCollection = serversDB.collections.get('servers_history');
+			yield serversDB.action(async() => {
+				try {
+					const serversHistory = await serversHistoryCollection.query(Q.where('url', server)).fetch();
+					if (serversHistory?.length) {
+						const serverHistoryRecord = serversHistory[0];
+						// this is updating on every login just to save `updated_at`
+						// keeping this server as the most recent on autocomplete order
+						await serverHistoryRecord.update((s) => {
+							s.username = result.username;
+						});
+					}
+				} catch (e) {
+					log(e);
+				}
+			});
+
 			yield put(loginSuccess(result));
 		}
 	} catch (e) {
@@ -95,6 +118,35 @@ const fetchEnterpriseModules = function* fetchEnterpriseModules({ user }) {
 	}
 };
 
+const fetchRooms = function* fetchRooms({ server }) {
+	try {
+		// Read the flag to check if refresh was already done
+		const refreshed = yield UserPreferences.getBoolAsync(E2E_REFRESH_MESSAGES_KEY);
+		if (!refreshed) {
+			const serversDB = database.servers;
+			const serversCollection = serversDB.collections.get('servers');
+
+			const serverRecord = yield serversCollection.find(server);
+
+			// We need to reset roomsUpdatedAt to request all rooms again
+			// and save their respective E2EKeys to decrypt all pending messages and lastMessage
+			// that are already inserted on local database by other app version
+			yield serversDB.action(async() => {
+				await serverRecord.update((s) => {
+					s.roomsUpdatedAt = null;
+				});
+			});
+
+			// Set the flag to indicate that already refreshed
+			yield UserPreferences.setBoolAsync(E2E_REFRESH_MESSAGES_KEY, true);
+		}
+	} catch (e) {
+		log(e);
+	}
+
+	yield put(roomsRequest());
+};
+
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
 		const adding = yield select(state => state.server.adding);
@@ -103,7 +155,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		RocketChat.getUserPresence(user.id);
 
 		const server = yield select(getServer);
-		yield put(roomsRequest());
+		yield fork(fetchRooms, { server });
 		yield fork(fetchPermissions);
 		yield fork(fetchCustomEmojis);
 		yield fork(fetchRoles);
@@ -111,6 +163,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(registerPushToken);
 		yield fork(fetchUsersPresence);
 		yield fork(fetchEnterpriseModules, { user });
+		yield put(encryptionInit());
 
 		I18n.locale = user.language;
 		moment.locale(toMomentLocale(user.language));
@@ -173,6 +226,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 };
 
 const handleLogout = function* handleLogout({ forcedByServer }) {
+	yield put(encryptionStop());
 	yield put(appStart({ root: ROOT_LOADING, text: I18n.t('Logging_out') }));
 	const server = yield select(getServer);
 	if (server) {
@@ -213,8 +267,9 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 
 const handleSetUser = function* handleSetUser({ user }) {
 	if (user && user.language) {
-		I18n.locale = user.language;
-		moment.locale(toMomentLocale(user.language));
+		const locale = LANGUAGES.find(l => l.value.toLowerCase() === user.language)?.value || user.language;
+		I18n.locale = locale;
+		moment.locale(toMomentLocale(locale));
 	}
 
 	if (user && user.status) {

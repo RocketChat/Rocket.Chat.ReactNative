@@ -4,7 +4,7 @@ import RNBootSplash from 'react-native-bootsplash';
 import UserPreferences from '../lib/userPreferences';
 import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
-import { toggleCrashReport } from '../actions/crashReport';
+import { toggleCrashReport, toggleAnalyticsEvents } from '../actions/crashReport';
 import { APP } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
@@ -18,6 +18,9 @@ export const initLocalSettings = function* initLocalSettings() {
 
 	const allowCrashReport = yield RocketChat.getAllowCrashReport();
 	yield put(toggleCrashReport(allowCrashReport));
+
+	const allowAnalyticsEvents = yield RocketChat.getAllowAnalyticsEvents();
+	yield put(toggleAnalyticsEvents(allowAnalyticsEvents));
 };
 
 const restore = function* restore() {
@@ -37,8 +40,13 @@ const restore = function* restore() {
 			const serversDB = database.servers;
 			const serverCollections = serversDB.collections.get('servers');
 
-			yield localAuthenticate(server);
-			const serverObj = yield serverCollections.find(server);
+			let serverObj;
+			try {
+				yield localAuthenticate(server);
+				serverObj = yield serverCollections.find(server);
+			} catch {
+				// Server not found
+			}
 			yield put(selectServerRequest(server, serverObj && serverObj.version));
 		}
 

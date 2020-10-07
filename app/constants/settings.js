@@ -68,6 +68,9 @@ export default {
 	DirectMesssage_maxUsers: {
 		type: 'valueAsNumber'
 	},
+	E2E_Enable: {
+		type: 'valueAsBoolean'
+	},
 	Accounts_Directory_DefaultView: {
 		type: 'valueAsString'
 	},
@@ -181,5 +184,8 @@ export default {
 	},
 	Force_Screen_Lock_After: {
 		type: 'valueAsNumber'
+	},
+	Allow_Save_Media_to_Gallery: {
+		type: 'valueAsBoolean'
 	}
 };

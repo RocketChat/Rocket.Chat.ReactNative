@@ -1,17 +1,21 @@
 import { InteractionManager } from 'react-native';
 import semver from 'semver';
-import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
+import {
+	Rocketchat as RocketchatClient,
+	settings as RocketChatSettings
+} from '@rocket.chat/sdk';
 import { Q } from '@nozbe/watermelondb';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNFetchBlob from 'rn-fetch-blob';
 
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
-import messagesStatus from '../constants/messagesStatus';
 import database from './database';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
 import fetch from '../utils/fetch';
 
+import { encryptionInit } from '../actions/encryption';
 import { setUser, setLoginServices, loginRequest } from '../actions/login';
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
 import {
@@ -40,7 +44,7 @@ import loadMessagesForRoom from './methods/loadMessagesForRoom';
 import loadMissedMessages from './methods/loadMissedMessages';
 import loadThreadMessages from './methods/loadThreadMessages';
 
-import sendMessage, { sendMessageCall } from './methods/sendMessage';
+import sendMessage, { resendMessage } from './methods/sendMessage';
 import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFileMessage';
 
 import callJitsi from './methods/callJitsi';
@@ -53,13 +57,16 @@ import { twoFactor } from '../utils/twoFactor';
 import { selectServerFailure } from '../actions/server';
 import { useSsl } from '../utils/url';
 import UserPreferences from './userPreferences';
+import { Encryption } from './encryption';
 import EventEmitter from '../utils/events';
+import { sanitizeLikeString } from './database/utils';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
 export const THEME_PREFERENCES_KEY = 'RC_THEME_PREFERENCES_KEY';
 export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
+export const ANALYTICS_EVENTS_KEY = 'RC_ANALYTICS_EVENTS_KEY';
 const returnAnArray = obj => obj || [];
 const MIN_ROCKETCHAT_VERSION = '0.70.0';
 
@@ -80,10 +87,10 @@ const RocketChat = {
 	},
 	canOpenRoom,
 	createChannel({
-		name, users, type, readOnly, broadcast
+		name, users, type, readOnly, broadcast, encrypted
 	}) {
 		// RC 0.51.0
-		return this.methodCallWrapper(type ? 'createPrivateGroup' : 'createChannel', name, users, readOnly, {}, { broadcast });
+		return this.methodCallWrapper(type ? 'createPrivateGroup' : 'createChannel', name, users, readOnly, {}, { broadcast, encrypted });
 	},
 	async getWebsocketInfo({ server }) {
 		const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
@@ -94,10 +101,7 @@ const RocketChat = {
 			if (err.message && err.message.includes('400')) {
 				return {
 					success: false,
-					message: 'Websocket_disabled',
-					messageOptions: {
-						contact: I18n.t('Contact_your_server_admin')
-					}
+					message: I18n.t('Websocket_disabled', { contact: I18n.t('Contact_your_server_admin') })
 				};
 			}
 		}
@@ -109,52 +113,46 @@ const RocketChat = {
 		};
 	},
 	async getServerInfo(server) {
-		const notRCServer = {
-			success: false,
-			message: 'Not_RC_Server',
-			messageOptions: {
-				contact: I18n.t('Contact_your_server_admin')
-			}
-		};
 		try {
-			const result = await fetch(`${ server }/api/info`).then(async(response) => {
-				let res = notRCServer;
-				try {
-					res = await response.json();
-					if (!(res && res.success)) {
-						return notRCServer;
-					}
-				} catch (e) {
-					// do nothing
-				}
-				return res;
-			});
-			if (result.success) {
-				if (semver.lt(result.version, MIN_ROCKETCHAT_VERSION)) {
+			const response = await RNFetchBlob.fetch('GET', `${ server }/api/info`, { ...RocketChatSettings.customHeaders });
+			try {
+				// Try to resolve as json
+				const jsonRes = response.json();
+				if (!(jsonRes?.success)) {
 					return {
 						success: false,
-						message: 'Invalid_server_version',
-						messageOptions: {
-							currentVersion: result.version,
-							minVersion: MIN_ROCKETCHAT_VERSION
-						}
+						message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
 					};
 				}
+				if (semver.lt(jsonRes.version, MIN_ROCKETCHAT_VERSION)) {
+					return {
+						success: false,
+						message: I18n.t('Invalid_server_version', {
+							currentVersion: jsonRes.version,
+							minVersion: MIN_ROCKETCHAT_VERSION
+						})
+					};
+				}
+				return jsonRes;
+			} catch (error) {
+				// Request is successful, but response isn't a json
 			}
-			return result;
 		} catch (e) {
-			if (e.message === 'Aborted') {
-				reduxStore.dispatch(selectServerFailure());
-				throw e;
+			if (e?.message) {
+				if (e.message === 'Aborted') {
+					reduxStore.dispatch(selectServerFailure());
+					throw e;
+				}
+				return {
+					success: false,
+					message: e.message
+				};
 			}
-			log(e);
 		}
+
 		return {
 			success: false,
-			message: 'The_URL_is_invalid',
-			messageOptions: {
-				contact: I18n.t('Contact_your_server_admin')
-			}
+			message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
 		};
 	},
 	stopListener(listener) {
@@ -307,6 +305,7 @@ const RocketChat = {
 			}
 			reduxStore.dispatch(shareSetUser(user));
 			await RocketChat.login({ resume: user.token });
+			reduxStore.dispatch(encryptionInit());
 		} catch (e) {
 			log(e);
 		}
@@ -319,6 +318,45 @@ const RocketChat = {
 		database.share = null;
 
 		reduxStore.dispatch(shareSetUser({}));
+	},
+
+	async e2eFetchMyKeys() {
+		// RC 0.70.0
+		const sdk = this.shareSDK || this.sdk;
+		const result = await sdk.get('e2e.fetchMyKeys');
+		// snake_case -> camelCase
+		if (result.success) {
+			return {
+				success: result.success,
+				publicKey: result.public_key,
+				privateKey: result.private_key
+			};
+		}
+		return result;
+	},
+	e2eSetUserPublicAndPrivateKeys(public_key, private_key) {
+		// RC 2.2.0
+		return this.post('e2e.setUserPublicAndPrivateKeys', { public_key, private_key });
+	},
+	e2eRequestSubscriptionKeys() {
+		// RC 0.72.0
+		return this.methodCallWrapper('e2e.requestSubscriptionKeys');
+	},
+	e2eGetUsersOfRoomWithoutKey(rid) {
+		// RC 0.70.0
+		return this.sdk.get('e2e.getUsersOfRoomWithoutKey', { rid });
+	},
+	e2eSetRoomKeyID(rid, keyID) {
+		// RC 0.70.0
+		return this.post('e2e.setRoomKeyID', { rid, keyID });
+	},
+	e2eUpdateGroupKey(uid, rid, key) {
+		// RC 0.70.0
+		return this.post('e2e.updateGroupKey', { uid, rid, key });
+	},
+	e2eRequestRoomKey(rid, e2eKeyId) {
+		// RC 0.70.0
+		return this.methodCallWrapper('stream-notify-room-users', `${ rid }/e2ekeyRequest`, rid, e2eKeyId);
 	},
 
 	updateJitsiTimeout(roomId) {
@@ -468,30 +506,7 @@ const RocketChat = {
 	sendMessage,
 	getRooms,
 	readMessages,
-	async resendMessage(message, tmid) {
-		const db = database.active;
-		try {
-			await db.action(async() => {
-				await message.update((m) => {
-					m.status = messagesStatus.TEMP;
-				});
-			});
-			let m = {
-				id: message.id,
-				msg: message.msg,
-				subscription: { id: message.subscription.id }
-			};
-			if (tmid) {
-				m = {
-					...m,
-					tmid
-				};
-			}
-			await sendMessageCall.call(this, m);
-		} catch (e) {
-			log(e);
-		}
-	},
+	resendMessage,
 
 	async search({ text, filterUsers = true, filterRooms = true }) {
 		const searchText = text.trim();
@@ -506,8 +521,12 @@ const RocketChat = {
 		}
 
 		const db = database.active;
+		const likeString = sanitizeLikeString(searchText);
 		let data = await db.collections.get('subscriptions').query(
-			Q.where('name', Q.like(`%${ Q.sanitizeLikeString(searchText) }%`))
+			Q.or(
+				Q.where('name', Q.like(`%${ likeString }%`)),
+				Q.where('fname', Q.like(`%${ likeString }%`))
+			)
 		).fetch();
 
 		if (filterUsers && !filterRooms) {
@@ -641,10 +660,10 @@ const RocketChat = {
 		// RC 0.48.0
 		return this.post('chat.delete', { msgId: messageId, roomId: rid });
 	},
-	editMessage(message) {
-		const { id, msg, rid } = message;
+	async editMessage(message) {
+		const { rid, msg } = await Encryption.encryptMessage(message);
 		// RC 0.49.0
-		return this.post('chat.update', { roomId: rid, msgId: id, text: msg });
+		return this.post('chat.update', { roomId: rid, msgId: message.id, text: msg });
 	},
 	markAsUnread({ messageId }) {
 		return this.post('subscriptions.unread', { firstUnreadMessage: { _id: messageId } });
@@ -1051,6 +1070,13 @@ const RocketChat = {
 		}
 		return JSON.parse(allowCrashReport);
 	},
+	async getAllowAnalyticsEvents() {
+		const allowAnalyticsEvents = await AsyncStorage.getItem(ANALYTICS_EVENTS_KEY);
+		if (allowAnalyticsEvents === null) {
+			return true;
+		}
+		return JSON.parse(allowAnalyticsEvents);
+	},
 	async getSortPreferences() {
 		const prefs = await UserPreferences.getMapAsync(SORT_PREFS_KEY);
 		return prefs;
@@ -1269,6 +1295,10 @@ const RocketChat = {
 	},
 	translateMessage(message, targetLanguage) {
 		return this.methodCallWrapper('autoTranslate.translateMessage', message, targetLanguage);
+	},
+	getSenderName(sender) {
+		const { UI_Use_Real_Name: useRealName } = reduxStore.getState().settings;
+		return useRealName ? sender.name : sender.username;
 	},
 	getRoomTitle(room) {
 		const { UI_Use_Real_Name: useRealName, UI_Allow_room_names_with_special_chars: allowSpecialChars } = reduxStore.getState().settings;

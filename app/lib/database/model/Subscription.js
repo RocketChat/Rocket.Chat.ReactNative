@@ -109,4 +109,10 @@ export default class Subscription extends Model {
 	@json('tags', sanitizer) tags;
 
 	@field('join_code_required') joinCodeRequired;
+
+	@field('e2e_key') E2EKey;
+
+	@field('encrypted') encrypted;
+
+	@field('e2e_key_id') e2eKeyId;
 }

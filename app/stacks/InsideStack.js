@@ -50,6 +50,13 @@ import AdminPanelView from '../views/AdminPanelView';
 import NewMessageView from '../views/NewMessageView';
 import CreateChannelView from '../views/CreateChannelView';
 
+// E2ESaveYourPassword Stack
+import E2ESaveYourPasswordView from '../views/E2ESaveYourPasswordView';
+import E2EHowItWorksView from '../views/E2EHowItWorksView';
+
+// E2EEnterYourPassword Stack
+import E2EEnterYourPasswordView from '../views/E2EEnterYourPasswordView';
+
 // InsideStackNavigator
 import AttachmentView from '../views/AttachmentView';
 import ModalBlockView from '../views/ModalBlockView';
@@ -302,6 +309,43 @@ const NewMessageStackNavigator = () => {
 	);
 };
 
+// E2ESaveYourPasswordStackNavigator
+const E2ESaveYourPasswordStack = createStackNavigator();
+const E2ESaveYourPasswordStackNavigator = () => {
+	const { theme } = React.useContext(ThemeContext);
+
+	return (
+		<E2ESaveYourPasswordStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
+			<E2ESaveYourPasswordStack.Screen
+				name='E2ESaveYourPasswordView'
+				component={E2ESaveYourPasswordView}
+				options={E2ESaveYourPasswordView.navigationOptions}
+			/>
+			<E2ESaveYourPasswordStack.Screen
+				name='E2EHowItWorksView'
+				component={E2EHowItWorksView}
+				options={E2EHowItWorksView.navigationOptions}
+			/>
+		</E2ESaveYourPasswordStack.Navigator>
+	);
+};
+
+// E2EEnterYourPasswordStackNavigator
+const E2EEnterYourPasswordStack = createStackNavigator();
+const E2EEnterYourPasswordStackNavigator = () => {
+	const { theme } = React.useContext(ThemeContext);
+
+	return (
+		<E2EEnterYourPasswordStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
+			<E2EEnterYourPasswordStack.Screen
+				name='E2EEnterYourPasswordView'
+				component={E2EEnterYourPasswordView}
+				options={E2EEnterYourPasswordView.navigationOptions}
+			/>
+		</E2EEnterYourPasswordStack.Navigator>
+	);
+};
+
 // InsideStackNavigator
 const InsideStack = createStackNavigator();
 const InsideStackNavigator = () => {
@@ -317,6 +361,16 @@ const InsideStackNavigator = () => {
 			<InsideStack.Screen
 				name='NewMessageStackNavigator'
 				component={NewMessageStackNavigator}
+				options={{ headerShown: false }}
+			/>
+			<InsideStack.Screen
+				name='E2ESaveYourPasswordStackNavigator'
+				component={E2ESaveYourPasswordStackNavigator}
+				options={{ headerShown: false }}
+			/>
+			<InsideStack.Screen
+				name='E2EEnterYourPasswordStackNavigator'
+				component={E2EEnterYourPasswordStackNavigator}
 				options={{ headerShown: false }}
 			/>
 			<InsideStack.Screen

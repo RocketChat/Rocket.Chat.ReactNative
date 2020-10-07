@@ -49,7 +49,10 @@ export default async(subscriptions = [], rooms = []) => {
 			servedBy: s.servedBy,
 			livechatData: s.livechatData,
 			tags: s.tags,
-			joinCodeRequired: s.joinCodeRequired
+			joinCodeRequired: s.joinCodeRequired,
+			encrypted: s.encrypted,
+			e2eKeyId: s.e2eKeyId,
+			E2EKey: s.E2EKey
 		}));
 		subscriptions = subscriptions.concat(existingSubs);
 
@@ -75,7 +78,9 @@ export default async(subscriptions = [], rooms = []) => {
 			servedBy: r.servedBy,
 			livechatData: r.livechatData,
 			tags: r.tags,
-			joinCodeRequired: r.joinCodeRequired
+			joinCodeRequired: r.joinCodeRequired,
+			encrypted: r.encrypted,
+			e2eKeyId: r.e2eKeyId
 		}));
 		rooms = rooms.concat(existingRooms);
 	} catch {

@@ -16,6 +16,7 @@ import Permission from './model/Permission';
 import SlashCommand from './model/SlashCommand';
 import User from './model/User';
 import Server from './model/Server';
+import ServersHistory from './model/ServersHistory';
 
 import serversSchema from './schema/servers';
 import appSchema from './schema/app';
@@ -35,7 +36,7 @@ if (__DEV__ && isIOS) {
 
 export const getDatabase = (database = '') => {
 	const path = database.replace(/(^\w+:|^)\/\//, '').replace(/\//g, '.');
-	const dbName = `${ appGroupPath }${ path }.db`;
+	const dbName = `${ appGroupPath }${ path }-experimental.db`;
 
 	const adapter = new SQLiteAdapter({
 		dbName,
@@ -67,11 +68,11 @@ class DB {
 	databases = {
 		serversDB: new Database({
 			adapter: new SQLiteAdapter({
-				dbName: `${ appGroupPath }default.db`,
+				dbName: `${ appGroupPath }default-experimental.db`,
 				schema: serversSchema,
 				migrations: serversMigrations
 			}),
-			modelClasses: [Server, User],
+			modelClasses: [Server, User, ServersHistory],
 			actionsEnabled: true
 		})
 	}
@@ -94,7 +95,7 @@ class DB {
 
 	setShareDB(database = '') {
 		const path = database.replace(/(^\w+:|^)\/\//, '').replace(/\//g, '.');
-		const dbName = `${ appGroupPath }${ path }.db`;
+		const dbName = `${ appGroupPath }${ path }-experimental.db`;
 
 		const adapter = new SQLiteAdapter({
 			dbName,

@@ -12,6 +12,8 @@ export default class Room extends Model {
 
 	@field('encrypted') encrypted;
 
+	@field('e2e_key_id') e2eKeyId;
+
 	@field('ro') ro;
 
 	@json('v', sanitizer) v;
