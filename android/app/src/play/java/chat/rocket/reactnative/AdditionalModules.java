@@ -1,5 +1,7 @@
 package chat.rocket.reactnative;
 
+import android.app.Application;
+
 import com.facebook.react.ReactPackage;
 import com.wix.reactnativenotifications.RNNotificationsPackage;
 
