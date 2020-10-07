@@ -1,12 +1,15 @@
 import Navigation from '../lib/Navigation';
 import RocketChat from '../lib/rocketchat';
 
-const navigate = ({ item, isMasterDetail, ...props }) => {
+const navigate = async({ item, isMasterDetail, ...props }) => {
 	let navigationMethod = Navigation.navigate;
 
 	if (isMasterDetail) {
 		navigationMethod = Navigation.replace;
 	}
+
+	const { room } = await RocketChat.getRoomInfo(item.rid);
+	item.joinCodeRequired = room.joinCodeRequired;
 
 	navigationMethod('RoomView', {
 		rid: item.rid,

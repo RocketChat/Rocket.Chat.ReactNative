@@ -71,7 +71,7 @@ const stateAttrsUpdate = [
 	'readOnly',
 	'member'
 ];
-const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement', 'sysMes', 'topic', 'name', 'fname', 'roles', 'bannerClosed', 'visitor'];
+const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement', 'sysMes', 'topic', 'name', 'fname', 'roles', 'bannerClosed', 'visitor', 'joinCodeRequired'];
 
 class RoomView extends React.Component {
 	static propTypes = {
@@ -109,12 +109,11 @@ class RoomView extends React.Component {
 		const room = props.route.params?.room;
 		const selectedMessage = props.route.params?.message;
 		const name = props.route.params?.name;
-		const { joinCodeRequired } = props.route.params.room;
 		const fname = props.route.params?.fname;
 		const search = props.route.params?.search;
 		const prid = props.route.params?.prid;
 		this.state = {
-			joinCodeRequired,
+			joinCode: '',
 			joined: true,
 			room: room || {
 				rid: this.rid, t: this.t, name, fname, prid
@@ -898,9 +897,10 @@ class RoomView extends React.Component {
 
 	renderFooter = () => {
 		const {
-			joined, room, selectedMessage, editing, replying, replyWithMention, readOnly, joinCodeRequired
+			joined, room, selectedMessage, editing, replying, replyWithMention, readOnly
 		} = this.state;
 		const { navigation, theme } = this.props;
+		const { joinCodeRequired } = room;
 
 		if (!this.rid) {
 			return null;
