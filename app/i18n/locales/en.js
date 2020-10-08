@@ -662,7 +662,13 @@ export default {
 	Log_analytics_events: 'Log analytics events',
 	E2E_encryption_change_password_title: 'Change Encryption Password',
 	E2E_encryption_change_password_description: 'You can now create encrypted private groups and direct messages. You may also change existing private groups or DMs to encrypted. \nThis is end to end encryption so the key to encode/decode your messages will not be saved on the server. For that reason you need to store your password somewhere safe. You will be required to enter it on other devices you wish to use e2e encryption on.',
+	E2E_encryption_change_password_error: 'Error while changing E2E key password!',
+	E2E_encryption_change_password_success: 'E2E key password changed successfully!',
 	E2E_encryption_reset_title: 'Reset E2E Key',
 	E2E_encryption_reset_description: 'This option will remove your current E2E key and log you out. \nWhen you login again, Rocket.Chat will generate you a new key and restore your access to any encrypted room that has one or more members online. \nDue to the nature of the E2E encryption, Rocket.Chat will not be able to restore access to any encrypted room that has no member online.',
-	E2E_encryption_reset_button: 'Reset E2E Key'
+	E2E_encryption_reset_button: 'Reset E2E Key',
+	E2E_encryption_reset_error: 'Error while resetting E2E key!',
+	E2E_encryption_reset_success: 'E2E key resetted successfully. You have to login again.',
+	E2E_encryption_reset_message: 'You\'re going to be logged out.',
+	E2E_encryption_reset_confirmation_button: 'Yes, reset my E2E Key'
 };

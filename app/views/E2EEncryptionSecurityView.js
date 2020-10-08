@@ -20,6 +20,9 @@ import { themes } from '../constants/colors';
 import { Encryption } from '../lib/encryption';
 import RocketChat from '../lib/rocketchat';
 import { logout as logoutAction } from '../actions/login';
+import { showConfirmationAlert, showErrorAlert } from '../utils/info';
+import EventEmitter from '../utils/events';
+import { LISTENER } from '../containers/Toast';
 
 const styles = StyleSheet.create({
 	title: {
@@ -51,22 +54,31 @@ class E2EEncryptionSecurityView extends React.Component {
 		logEvent(events.E2E_SEC_CHANGE_PASSWORD);
 		try {
 			const { server } = this.props;
+			// are you sure?
 			await Encryption.changePassword(server, '123123');
-			alert('done!')
-		} catch (error) {
-			alert(error)
-		}
-	}
-
-	resetOwnKey = async() => {
-		logEvent(events.E2E_SEC_RESET_OWN_KEY);
-		try {
-			const { logout } = this.props;
-			await RocketChat.e2eResetOwnKey();
-			logout();
+			
 		} catch (error) {
 			log(error);
 		}
+	}
+
+	resetOwnKey = () => {
+		showConfirmationAlert({
+			title: I18n.t('Are_you_sure_question_mark'),
+			message: I18n.t('E2E_encryption_reset_message'),
+			confirmationText: I18n.t('E2E_encryption_reset_confirmation_button'),
+			onPress: async() => {
+				logEvent(events.E2E_SEC_RESET_OWN_KEY);
+				try {
+					const { logout } = this.props;
+					await RocketChat.e2eResetOwnKey();
+					logout();
+				} catch (e) {
+					log(e);
+					showErrorAlert(I18n.t('E2E_encryption_reset_error'));
+				}
+			}
+		});
 	}
 
 	render() {
@@ -124,7 +136,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	logout: () => dispatch(logoutAction())
+	logout: () => dispatch(logoutAction(true))
 });
 
 
