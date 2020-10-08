@@ -41,13 +41,14 @@ const MessageActions = React.memo(forwardRef(({
 
 	const getPermissions = async() => {
 		try {
-			const permission = ['edit-message', 'delete-message', 'force-delete-message', 'pin-message'];
+			const permission = ['edit-message', 'delete-message', 'force-delete-message', 'pin-message', 'delete-own-message'];
 			const result = await RocketChat.hasPermission(permission, room.rid);
 			permissions = {
 				hasEditPermission: result[permission[0]],
 				hasDeletePermission: result[permission[1]],
 				hasForceDeletePermission: result[permission[2]],
-				hasPinPermission: result[permission[3]]
+				hasPinPermission: result[permission[3]],
+				hasOwnDeletePermission: result[permission[4]]
 			};
 		} catch {
 			// Do nothing
@@ -90,7 +91,7 @@ const MessageActions = React.memo(forwardRef(({
 			return false;
 		}
 		const deleteOwn = isOwn(message);
-		if (!(permissions.hasDeletePermission || (Message_AllowDeleting && deleteOwn) || permissions.hasForceDeletePermission)) {
+		if (!(permissions.hasOwnDeletePermission || (Message_AllowDeleting && deleteOwn) || permissions.hasForceDeletePermission)) {
 			return false;
 		}
 		if (permissions.hasForceDeletePermission) {
