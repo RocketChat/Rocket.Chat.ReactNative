@@ -6,9 +6,7 @@ import { connect } from 'react-redux';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import I18n from '../i18n';
-import log, {
-	loggerConfig, analytics, logEvent, events
-} from '../utils/log';
+import log, { logEvent, events } from '../utils/log';
 import { withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import TextInput from '../containers/TextInput';
@@ -23,6 +21,7 @@ import { logout as logoutAction } from '../actions/login';
 import { showConfirmationAlert, showErrorAlert } from '../utils/info';
 import EventEmitter from '../utils/events';
 import { LISTENER } from '../containers/Toast';
+import debounce from '../utils/debounce';
 
 const styles = StyleSheet.create({
 	title: {
@@ -33,6 +32,9 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		paddingVertical: 10,
 		...sharedStyles.textRegular
+	},
+	changePasswordButton: {
+		marginBottom: 4
 	}
 });
 
@@ -47,26 +49,44 @@ class E2EEncryptionSecurityView extends React.Component {
 			roles: PropTypes.array,
 			id: PropTypes.string
 		}),
+		server: PropTypes.string,
 		logout: PropTypes.func
 	}
 
-	changePassword = async() => {
-		logEvent(events.E2E_SEC_CHANGE_PASSWORD);
-		try {
-			const { server } = this.props;
-			// are you sure?
-			await Encryption.changePassword(server, '123123');
-			
-		} catch (error) {
-			log(error);
+	state = { newPassword: '' }
+
+	onChangePasswordText = debounce(text => this.setState({ newPassword: text }), 300)
+
+	changePassword = () => {
+		const { newPassword } = this.state;
+		if (!newPassword.trim()) {
+			return;
 		}
+		showConfirmationAlert({
+			title: I18n.t('Are_you_sure_question_mark'),
+			message: I18n.t('E2E_encryption_change_password_message'),
+			confirmationText: I18n.t('E2E_encryption_change_password_confirmation'),
+			onPress: async() => {
+				logEvent(events.E2E_SEC_CHANGE_PASSWORD);
+				try {
+					const { server } = this.props;
+					await Encryption.changePassword(server, newPassword);
+					EventEmitter.emit(LISTENER, { message: I18n.t('E2E_encryption_change_password_success') });
+					this.passwordInput?.clear();
+					this.passwordInput?.blur();
+				} catch (e) {
+					log(e);
+					showErrorAlert(I18n.t('E2E_encryption_change_password_error'));
+				}
+			}
+		});
 	}
 
 	resetOwnKey = () => {
 		showConfirmationAlert({
 			title: I18n.t('Are_you_sure_question_mark'),
 			message: I18n.t('E2E_encryption_reset_message'),
-			confirmationText: I18n.t('E2E_encryption_reset_confirmation_button'),
+			confirmationText: I18n.t('E2E_encryption_reset_confirmation'),
 			onPress: async() => {
 				logEvent(events.E2E_SEC_RESET_OWN_KEY);
 				try {
@@ -82,6 +102,7 @@ class E2EEncryptionSecurityView extends React.Component {
 	}
 
 	render() {
+		const { newPassword } = this.state;
 		const { theme } = this.props;
 		return (
 			<SafeAreaView testID='settings-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
@@ -92,20 +113,21 @@ class E2EEncryptionSecurityView extends React.Component {
 							<Text style={[styles.title, { color: themes[theme].titleColor }]}>{I18n.t('E2E_encryption_change_password_title')}</Text>
 							<Text style={[styles.description, { color: themes[theme].bodyText }]}>{I18n.t('E2E_encryption_change_password_description')}</Text>
 							<TextInput
-								inputRef={(e) => { this.passwordInput = e; }}
+								inputRef={e => this.passwordInput = e}
 								placeholder={I18n.t('New_Password')}
 								returnKeyType='send'
 								secureTextEntry
-								onSubmitEditing={this.submit}
+								onSubmitEditing={this.changePassword}
 								testID='e2e-enter-your-password-view-password'
 								theme={theme}
+								onChangeText={this.onChangePasswordText}
 							/>
 							<Button
 								onPress={this.changePassword}
 								title={I18n.t('Save_Changes')}
-								// disabled={!password}
 								theme={theme}
-								style={{ marginBottom: 4 }}
+								disabled={!newPassword.trim()}
+								style={styles.changePasswordButton}
 							/>
 						</List.Section>
 
@@ -117,7 +139,6 @@ class E2EEncryptionSecurityView extends React.Component {
 							<Button
 								onPress={this.resetOwnKey}
 								title={I18n.t('E2E_encryption_reset_button')}
-								// disabled={!password}
 								theme={theme}
 								type='secondary'
 								backgroundColor={themes[theme].chatComponentBackground}
