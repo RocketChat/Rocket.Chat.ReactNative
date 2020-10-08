@@ -24,6 +24,9 @@ import { LISTENER } from '../containers/Toast';
 import debounce from '../utils/debounce';
 
 const styles = StyleSheet.create({
+	container: {
+		paddingHorizontal: PADDING_HORIZONTAL
+	},
 	title: {
 		fontSize: 16,
 		...sharedStyles.textMedium
@@ -101,37 +104,50 @@ class E2EEncryptionSecurityView extends React.Component {
 		});
 	}
 
-	render() {
+	renderChangePassword = () => {
 		const { newPassword } = this.state;
+		const { theme } = this.props;
+		const { hasPrivateKey } = Encryption;
+		if (!hasPrivateKey) {
+			return null;
+		}
+		return (
+			<>
+				<List.Section>
+					<Text style={[styles.title, { color: themes[theme].titleColor }]}>{I18n.t('E2E_encryption_change_password_title')}</Text>
+					<Text style={[styles.description, { color: themes[theme].bodyText }]}>{I18n.t('E2E_encryption_change_password_description')}</Text>
+					<TextInput
+						inputRef={e => this.passwordInput = e}
+						placeholder={I18n.t('New_Password')}
+						returnKeyType='send'
+						secureTextEntry
+						onSubmitEditing={this.changePassword}
+						testID='e2e-enter-your-password-view-password'
+						theme={theme}
+						onChangeText={this.onChangePasswordText}
+					/>
+					<Button
+						onPress={this.changePassword}
+						title={I18n.t('Save_Changes')}
+						theme={theme}
+						disabled={!newPassword.trim()}
+						style={styles.changePasswordButton}
+					/>
+				</List.Section>
+
+				<List.Separator />
+			</>
+		);
+	}
+
+	render() {
 		const { theme } = this.props;
 		return (
 			<SafeAreaView testID='settings-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<StatusBar theme={theme} />
 				<List.Container>
-					<View style={{ paddingHorizontal: PADDING_HORIZONTAL }}>
-						<List.Section>
-							<Text style={[styles.title, { color: themes[theme].titleColor }]}>{I18n.t('E2E_encryption_change_password_title')}</Text>
-							<Text style={[styles.description, { color: themes[theme].bodyText }]}>{I18n.t('E2E_encryption_change_password_description')}</Text>
-							<TextInput
-								inputRef={e => this.passwordInput = e}
-								placeholder={I18n.t('New_Password')}
-								returnKeyType='send'
-								secureTextEntry
-								onSubmitEditing={this.changePassword}
-								testID='e2e-enter-your-password-view-password'
-								theme={theme}
-								onChangeText={this.onChangePasswordText}
-							/>
-							<Button
-								onPress={this.changePassword}
-								title={I18n.t('Save_Changes')}
-								theme={theme}
-								disabled={!newPassword.trim()}
-								style={styles.changePasswordButton}
-							/>
-						</List.Section>
-
-						<List.Separator />
+					<View style={styles.container}>
+						{this.renderChangePassword()}
 
 						<List.Section>
 							<Text style={[styles.title, { color: themes[theme].titleColor }]}>{I18n.t('E2E_encryption_reset_title')}</Text>

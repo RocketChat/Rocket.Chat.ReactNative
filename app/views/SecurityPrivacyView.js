@@ -26,6 +26,7 @@ class SecurityPrivacyView extends React.Component {
 		navigation: PropTypes.object,
 		allowCrashReport: PropTypes.bool,
 		allowAnalyticsEvents: PropTypes.bool,
+		e2eEnabled: PropTypes.bool,
 		toggleCrashReport: PropTypes.func,
 		toggleAnalyticsEvents: PropTypes.func,
 		user: PropTypes.shape({
@@ -86,19 +87,27 @@ class SecurityPrivacyView extends React.Component {
 	}
 
 	render() {
+		const { e2eEnabled } = this.props;
 		return (
 			<SafeAreaView testID='settings-view'>
 				<StatusBar />
 				<List.Container testID='security-privacy-view-list'>
 					<List.Section>
 						<List.Separator />
-						<List.Item
-							title='E2E_Encryption'
-							showActionIndicator
-							onPress={() => this.navigateToScreen('E2EEncryptionSecurityView')}
-							testID='security-privacy-view-e2e-encryption'
-						/>
-						<List.Separator />
+						{e2eEnabled
+							? (
+								<>
+									<List.Item
+										title='E2E_Encryption'
+										showActionIndicator
+										onPress={() => this.navigateToScreen('E2EEncryptionSecurityView')}
+										testID='security-privacy-view-e2e-encryption'
+									/>
+									<List.Separator />
+								</>
+							)
+							: null
+						}
 						<List.Item
 							title='Screen_lock'
 							showActionIndicator
@@ -137,7 +146,8 @@ class SecurityPrivacyView extends React.Component {
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
 	allowCrashReport: state.crashReport.allowCrashReport,
-	allowAnalyticsEvents: state.crashReport.allowAnalyticsEvents
+	allowAnalyticsEvents: state.crashReport.allowAnalyticsEvents,
+	e2eEnabled: state.settings.E2E_Enable
 });
 
 const mapDispatchToProps = dispatch => ({
