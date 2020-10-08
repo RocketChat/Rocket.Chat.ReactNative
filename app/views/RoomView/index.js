@@ -933,7 +933,7 @@ class RoomView extends React.Component {
 						joinCodeRequired
 							? (
 								<>
-									<Text accessibilityLabel={I18n.t('Insert_Join_Code')} style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('Insert_Join_Code')}</Text>
+									<Text label={I18n.t('Insert_Join_Code')} style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('Insert_Join_Code')}</Text>
 									<TextInput
 										returnKeyType='default'
 										placeholder={I18n.t('Join_Code')}
@@ -941,10 +941,12 @@ class RoomView extends React.Component {
 										underlineColorAndroid='transparent'
 										containerStyle={styles.joinCodeInput}
 										theme={theme}
+										onSubmitEditing={this.joinRoom}
+										secureTextEntry
 									/>
 								</>
 							)
-							: <Text accessibilityLabel={I18n.t('You_are_in_preview_mode')} style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('You_are_in_preview_mode')}</Text>
+							: <Text label={I18n.t('You_are_in_preview_mode')} style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('You_are_in_preview_mode')}</Text>
 					}
 					<Touch
 						onPress={this.joinRoom}

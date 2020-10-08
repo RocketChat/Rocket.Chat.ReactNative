@@ -72,6 +72,8 @@ export default StyleSheet.create({
 		...sharedStyles.textMedium
 	},
 	joinCodeInput: {
-		padding: 8
+		padding: 8,
+		width: 200,
+		marginHorizontal: 16
 	}
 });
