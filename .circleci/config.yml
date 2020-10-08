@@ -97,6 +97,8 @@ jobs:
     steps:
       - checkout
 
+      - run: ./demo.js
+
       - restore_cache: *restore-npm-cache-linux
 
       - run: *install-npm-modules
