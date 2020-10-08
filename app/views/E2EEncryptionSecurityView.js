@@ -42,23 +42,13 @@ const styles = StyleSheet.create({
 });
 
 class E2EEncryptionSecurityView extends React.Component {
-	static navigationOptions = () => ({
-		title: I18n.t('E2E_Encryption')
-	});
-
-	static propTypes = {
-		theme: PropTypes.string,
-		user: PropTypes.shape({
-			roles: PropTypes.array,
-			id: PropTypes.string
-		}),
-		server: PropTypes.string,
-		logout: PropTypes.func
-	}
-
 	state = { newPassword: '' }
 
+	newPasswordInputRef = React.createRef();
+
 	onChangePasswordText = debounce(text => this.setState({ newPassword: text }), 300)
+
+	setNewPasswordRef = ref => this.newPasswordInputRef = ref;
 
 	changePassword = () => {
 		const { newPassword } = this.state;
@@ -75,8 +65,8 @@ class E2EEncryptionSecurityView extends React.Component {
 					const { server } = this.props;
 					await Encryption.changePassword(server, newPassword);
 					EventEmitter.emit(LISTENER, { message: I18n.t('E2E_encryption_change_password_success') });
-					this.passwordInput?.clear();
-					this.passwordInput?.blur();
+					this.newPasswordInputRef?.clear();
+					this.newPasswordInputRef?.blur();
 				} catch (e) {
 					log(e);
 					showErrorAlert(I18n.t('E2E_encryption_change_password_error'));
@@ -117,7 +107,7 @@ class E2EEncryptionSecurityView extends React.Component {
 					<Text style={[styles.title, { color: themes[theme].titleColor }]}>{I18n.t('E2E_encryption_change_password_title')}</Text>
 					<Text style={[styles.description, { color: themes[theme].bodyText }]}>{I18n.t('E2E_encryption_change_password_description')}</Text>
 					<TextInput
-						inputRef={e => this.passwordInput = e}
+						inputRef={this.setNewPasswordRef}
 						placeholder={I18n.t('New_Password')}
 						returnKeyType='send'
 						secureTextEntry
@@ -176,5 +166,18 @@ const mapDispatchToProps = dispatch => ({
 	logout: () => dispatch(logoutAction(true))
 });
 
+E2EEncryptionSecurityView.navigationOptions = () => ({
+	title: I18n.t('E2E_Encryption')
+});
+
+E2EEncryptionSecurityView.propTypes = {
+	theme: PropTypes.string,
+	user: PropTypes.shape({
+		roles: PropTypes.array,
+		id: PropTypes.string
+	}),
+	server: PropTypes.string,
+	logout: PropTypes.func
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(E2EEncryptionSecurityView));
