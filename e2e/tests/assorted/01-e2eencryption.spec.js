@@ -4,6 +4,7 @@ const {
 const { navigateToLogin, login, sleep, tapBack, mockMessage, searchRoom, logout } = require('../../helpers/app');
 
 const data = require('../../data');
+
 const testuser = data.users.regular
 const otheruser = data.users.alternate
 
@@ -174,9 +175,6 @@ describe('E2E Encryption', () => {
 
 		describe('Reset E2E key', async() => {
 			it('should reset e2e key', async() => {
-				// await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-				// await navigateToLogin();
-				// await login(testuser.username, testuser.password);
 				await tapBack();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 				await navigateSecurityPrivacy();
