@@ -12815,9 +12815,9 @@ react-native-iphone-x-helper@^1.0.3, react-native-iphone-x-helper@^1.2.1:
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.1.tgz#645e2ffbbb49e80844bb4cbbe34a126fda1e6772"
   integrity sha512-/VbpIEp8tSNNHIvstuA3Swx610whci1Zpc9mqNkqn14DkMbw+ORviln2u0XyHG1kPvvwTNGZY6QpeFwxYaSdbQ==
 
-react-native-jitsi-meet@RocketChat/react-native-jitsi-meet#use-android-fork:
-  version "2.2.1"
-  resolved "https://codeload.github.com/RocketChat/react-native-jitsi-meet/tar.gz/90080daef9bfffb2e2cb8bb6d8b468e340743112"
+react-native-jitsi-meet@RocketChat/react-native-jitsi-meet:
+  version "2.3.0"
+  resolved "https://codeload.github.com/RocketChat/react-native-jitsi-meet/tar.gz/1962e72b7f6f28ae68529a37fec5d5be01724b23"
 
 react-native-keyboard-input@RocketChat/react-native-keyboard-input:
   version "6.0.0"
