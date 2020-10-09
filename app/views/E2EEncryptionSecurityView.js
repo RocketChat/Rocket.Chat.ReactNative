@@ -80,12 +80,11 @@ class E2EEncryptionSecurityView extends React.Component {
 			title: I18n.t('Are_you_sure_question_mark'),
 			message: I18n.t('E2E_encryption_reset_message'),
 			confirmationText: I18n.t('E2E_encryption_reset_confirmation'),
-			onPress: async() => {
+			onPress: () => {
 				logEvent(events.E2E_SEC_RESET_OWN_KEY);
 				try {
-					const { logout } = this.props;
-					// we can't await, because socket connection might be lost
 					RocketChat.e2eResetOwnKey();
+					const { logout } = this.props;
 					logout();
 				} catch (e) {
 					log(e);
