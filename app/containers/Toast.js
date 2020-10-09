@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 
 import { themes } from '../constants/colors';
 import sharedStyles from '../views/Styles';
-import EventEmitter from '../utils/events';
 import { withTheme } from '../theme';
 
 const styles = StyleSheet.create({
@@ -20,15 +19,17 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const LISTENER = 'Toast';
+const getToastRef = toast => this.toast = toast;
+
+export const showToast = ({ message }) => {
+	if (this.toast && this.toast.show) {
+		this.toast.show(message, 1000);
+	}
+}
 
 class Toast extends React.Component {
 	static propTypes = {
 		theme: PropTypes.string
-	}
-
-	componentDidMount() {
-		EventEmitter.addEventListener(LISTENER, this.showToast);
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -39,23 +40,11 @@ class Toast extends React.Component {
 		return false;
 	}
 
-	componentWillUnmount() {
-		EventEmitter.removeListener(LISTENER);
-	}
-
-	getToastRef = toast => this.toast = toast;
-
-	showToast = ({ message }) => {
-		if (this.toast && this.toast.show) {
-			this.toast.show(message, 1000);
-		}
-	}
-
 	render() {
 		const { theme } = this.props;
 		return (
 			<EasyToast
-				ref={this.getToastRef}
+				ref={getToastRef}
 				position='center'
 				style={[styles.toast, { backgroundColor: themes[theme].toastBackground }]}
 				textStyle={[styles.text, { color: themes[theme].buttonText }]}

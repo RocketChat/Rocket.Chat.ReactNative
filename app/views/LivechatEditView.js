@@ -11,7 +11,7 @@ import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
 
 import sharedStyles from './Styles';
-import { LISTENER } from '../containers/Toast';
+import { showToast } from '../containers/Toast';
 import EventEmitter from '../utils/events';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import { getUserSelector } from '../selectors/login';
@@ -130,9 +130,9 @@ const LivechatEditView = ({
 
 		const { error } = await RocketChat.editLivechat(userData, roomData);
 		if (error) {
-			EventEmitter.emit(LISTENER, { message: error });
+			showToast({ message: error });
 		} else {
-			EventEmitter.emit(LISTENER, { message: I18n.t('Saved') });
+			showToast({ message: I18n.t('Saved') });
 			navigation.goBack();
 		}
 	};

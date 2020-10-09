@@ -8,12 +8,11 @@ import Separator from '../containers/Separator';
 import ListItem from '../containers/ListItem';
 import Status from '../containers/Status/Status';
 import TextInput from '../containers/TextInput';
-import EventEmitter from '../utils/events';
 import Loading from '../containers/Loading';
 import RocketChat from '../lib/rocketchat';
 import log, { logEvent, events } from '../utils/log';
 
-import { LISTENER } from '../containers/Toast';
+import { showToast } from '../containers/Toast';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { getUserSelector } from '../selectors/login';
@@ -116,14 +115,14 @@ class StatusView extends React.Component {
 			const result = await RocketChat.setUserStatus(user.status, statusText);
 			if (result.success) {
 				logEvent(events.STATUS_CUSTOM);
-				EventEmitter.emit(LISTENER, { message: I18n.t('Status_saved_successfully') });
+				showToast({ message: I18n.t('Status_saved_successfully') });
 			} else {
 				logEvent(events.STATUS_CUSTOM_F);
-				EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
+				showToast({ message: I18n.t('error-could-not-change-status') });
 			}
 		} catch {
 			logEvent(events.STATUS_CUSTOM_F);
-			EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
+			showToast({ message: I18n.t('error-could-not-change-status') });
 		}
 
 		this.setState({ loading: false });

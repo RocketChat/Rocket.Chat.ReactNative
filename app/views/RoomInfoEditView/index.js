@@ -16,7 +16,7 @@ import sharedStyles from '../Styles';
 import styles from './styles';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert } from '../../utils/info';
-import { LISTENER } from '../../containers/Toast';
+import { showToast } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import RocketChat from '../../lib/rocketchat';
 import RCTextInput from '../../containers/TextInput';
@@ -256,7 +256,8 @@ class RoomInfoEditView extends React.Component {
 				logEvent(events.RI_EDIT_SAVE_F);
 				showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_settings') }));
 			} else {
-				EventEmitter.emit(LISTENER, { message: I18n.t('Settings_succesfully_changed') });
+				showToast({ message: I18n.t('Settings_succesfully_changed') });
+				
 			}
 		}, 100);
 	}

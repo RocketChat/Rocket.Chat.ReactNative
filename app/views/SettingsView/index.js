@@ -35,8 +35,7 @@ import {
 } from '../../constants/links';
 import { withTheme } from '../../theme';
 import SidebarView from '../SidebarView';
-import { LISTENER } from '../../containers/Toast';
-import EventEmitter from '../../utils/events';
+import { showToast } from '../../containers/Toast';
 import { appStart as appStartAction, ROOT_LOADING } from '../../actions/app';
 import { onReviewPress } from '../../utils/review';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -214,7 +213,7 @@ class SettingsView extends React.Component {
 
 	saveToClipboard = async(content) => {
 		await Clipboard.setString(content);
-		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
+		showToast({ message: I18n.t('Copied_to_clipboard') });
 	}
 
 	onPressLicense = () => {

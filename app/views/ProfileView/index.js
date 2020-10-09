@@ -14,7 +14,7 @@ import sharedStyles from '../Styles';
 import styles from './styles';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
-import { LISTENER } from '../../containers/Toast';
+import { showToast } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import RocketChat from '../../lib/rocketchat';
 import RCTextInput from '../../containers/TextInput';
@@ -244,7 +244,7 @@ class ProfileView extends React.Component {
 				} else {
 					setUser({ ...params });
 				}
-				EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
+				showToast({ message: I18n.t('Profile_saved_successfully') });
 				this.init();
 			}
 			this.setState({ saving: false });
@@ -265,7 +265,7 @@ class ProfileView extends React.Component {
 		try {
 			const { user } = this.props;
 			await RocketChat.resetAvatar(user.id);
-			EventEmitter.emit(LISTENER, { message: I18n.t('Avatar_changed_successfully') });
+			showToast({ message: I18n.t('Avatar_changed_successfully') });
 			this.init();
 		} catch (e) {
 			this.handleError(e, 'resetAvatar', 'changing_avatar');
@@ -434,10 +434,11 @@ class ProfileView extends React.Component {
 			onPress: async() => {
 				try {
 					await RocketChat.logoutOtherLocations();
-					EventEmitter.emit(LISTENER, { message: I18n.t('Logged_out_of_other_clients_successfully') });
+					showToast({ message: I18n.t('Logged_out_of_other_clients_successfully') });
+					
 				} catch {
 					logEvent(events.PROFILE_LOGOUT_OTHER_LOCATIONS_F);
-					EventEmitter.emit(LISTENER, { message: I18n.t('Logout_failed') });
+					showToast({ message: I18n.t('Logout_failed') });
 				}
 			}
 		});

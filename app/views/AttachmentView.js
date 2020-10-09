@@ -9,7 +9,7 @@ import { Video } from 'expo-av';
 import SHA256 from 'js-sha256';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { LISTENER } from '../containers/Toast';
+import { showToast } from '../containers/Toast';
 import EventEmitter from '../utils/events';
 import I18n from '../i18n';
 import { withTheme } from '../theme';
@@ -122,9 +122,9 @@ class AttachmentView extends React.Component {
 			const file = `${ FileSystem.documentDirectory + SHA256(url) + extension }`;
 			const { uri } = await FileSystem.downloadAsync(mediaAttachment, file);
 			await CameraRoll.save(uri, { album: 'Rocket.Chat' });
-			EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
+			showToast({ message: I18n.t('saved_to_gallery') });
 		} catch (e) {
-			EventEmitter.emit(LISTENER, { message: I18n.t(image_url ? 'error-save-image' : 'error-save-video') });
+			showToast({ message: I18n.t(image_url ? 'error-save-image' : 'error-save-video') });
 		}
 		this.setState({ loading: false });
 	};

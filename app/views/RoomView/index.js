@@ -34,7 +34,7 @@ import Separator from './Separator';
 import { themes } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import ReactionsModal from '../../containers/ReactionsModal';
-import { LISTENER } from '../../containers/Toast';
+import { showToast } from '../../containers/Toast';
 import { isBlocked } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
@@ -764,7 +764,7 @@ class RoomView extends React.Component {
 	toggleFollowThread = async(isFollowingThread) => {
 		try {
 			await RocketChat.toggleFollowMessage(this.tmid, !isFollowingThread);
-			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
+			showToast({ message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
 		} catch (e) {
 			log(e);
 		}

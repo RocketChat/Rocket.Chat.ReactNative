@@ -10,12 +10,13 @@ import I18n from '../../i18n';
 import log, { logEvent } from '../../utils/log';
 import Navigation from '../../lib/Navigation';
 import { getMessageTranslation } from '../message/utils';
-import { LISTENER } from '../Toast';
+import { showToast } from '../Toast';
 import EventEmitter from '../../utils/events';
 import { showConfirmationAlert } from '../../utils/info';
 import { useActionSheet } from '../ActionSheet';
 import Header, { HEADER_HEIGHT } from './Header';
 import events from '../../utils/log/events';
+import { show } from 'react-native-bootsplash';
 
 const MessageActions = React.memo(forwardRef(({
 	room,
@@ -163,7 +164,7 @@ const MessageActions = React.memo(forwardRef(({
 		try {
 			const permalink = await getPermalink(message);
 			Clipboard.setString(permalink);
-			EventEmitter.emit(LISTENER, { message: I18n.t('Permalink_copied_to_clipboard') });
+			showToast({ message: I18n.t('Permalink_copied_to_clipboard') });
 		} catch {
 			logEvent(events.ROOM_MSG_ACTION_PERMALINK_F);
 		}
@@ -172,7 +173,7 @@ const MessageActions = React.memo(forwardRef(({
 	const handleCopy = async(message) => {
 		logEvent(events.ROOM_MSG_ACTION_COPY);
 		await Clipboard.setString(message.msg);
-		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
+		showToast({ message: I18n.t('Copied_to_clipboard') });
 	};
 
 	const handleShare = async(message) => {
@@ -194,7 +195,7 @@ const MessageActions = React.memo(forwardRef(({
 		logEvent(message.starred ? events.ROOM_MSG_ACTION_UNSTAR : events.ROOM_MSG_ACTION_STAR);
 		try {
 			await RocketChat.toggleStarMessage(message.id, message.starred);
-			EventEmitter.emit(LISTENER, { message: message.starred ? I18n.t('Message_unstarred') : I18n.t('Message_starred') });
+			showToast({ message: message.starred ? I18n.t('Message_unstarred') : I18n.t('Message_starred') });
 		} catch (e) {
 			logEvent(events.ROOM_MSG_ACTION_STAR_F);
 			log(e);

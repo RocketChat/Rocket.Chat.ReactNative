@@ -17,7 +17,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import UserPreferences from '../lib/userPreferences';
 import { logEvent, events } from '../utils/log';
 import StatusBar from '../containers/StatusBar';
-import { LISTENER } from '../containers/Toast';
+import { showToast } from '../containers/Toast';
 import { themes } from '../constants/colors';
 import EventEmitter from '../utils/events';
 import Button from '../containers/Button';
@@ -112,7 +112,7 @@ class E2ESaveYourPasswordView extends React.Component {
 		logEvent(events.E2E_SAVE_PW_COPY);
 		const { password } = this.state;
 		Clipboard.setString(password);
-		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
+		showToast({ message: I18n.t('Copied_to_clipboard') });
 	}
 
 	onHowItWorks = () => {

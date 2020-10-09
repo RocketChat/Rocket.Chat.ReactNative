@@ -11,7 +11,7 @@ import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { LISTENER } from '../Toast';
+import { showToast } from '../Toast';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
 import MessageContext from './Context';
@@ -88,7 +88,7 @@ const Url = React.memo(({ url, index, theme }) => {
 
 	const onLongPress = () => {
 		Clipboard.setString(url.url);
-		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
+		showToast({ message: I18n.t('Copied_to_clipboard') });
 	};
 
 	return (

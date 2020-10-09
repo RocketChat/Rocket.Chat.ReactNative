@@ -9,7 +9,7 @@ import UserItem from '../../presentation/UserItem';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
 import database from '../../lib/database';
-import { LISTENER } from '../../containers/Toast';
+import { showToast } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import log from '../../utils/log';
 import I18n from '../../i18n';
@@ -212,7 +212,7 @@ class RoomMembersView extends React.Component {
 		const { rid } = this.state;
 		try {
 			await RocketChat.toggleMuteUserInRoom(rid, user?.username, !user?.muted);
-			EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_key', { key: user?.muted ? I18n.t('unmuted') : I18n.t('muted') }) });
+			showToast({ message: I18n.t('User_has_been_key', { key: user?.muted ? I18n.t('unmuted') : I18n.t('muted') }) });
 		} catch (e) {
 			log(e);
 		}

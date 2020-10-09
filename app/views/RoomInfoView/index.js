@@ -22,7 +22,7 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import Markdown from '../../containers/markdown';
-import { LISTENER } from '../../containers/Toast';
+import { showToast } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 
 import Livechat from './Livechat';
@@ -312,7 +312,7 @@ class RoomInfoView extends React.Component {
 				await this.createDirect();
 				onPress();
 			} catch {
-				EventEmitter.emit(LISTENER, { message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') }) });
+				showToast({ message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') }) });
 			}
 		};
 
