@@ -89,7 +89,7 @@ class SecurityPrivacyView extends React.Component {
 	render() {
 		const { e2eEnabled } = this.props;
 		return (
-			<SafeAreaView testID='settings-view'>
+			<SafeAreaView testID='security-privacy-view'>
 				<StatusBar />
 				<List.Container testID='security-privacy-view-list'>
 					<List.Section>
@@ -123,13 +123,13 @@ class SecurityPrivacyView extends React.Component {
 								<List.Separator />
 								<List.Item
 									title='Log_analytics_events'
-									testID='settings-view-analytics-events'
+									testID='security-privacy-view-analytics-events'
 									right={() => this.renderAnalyticsEventsSwitch()}
 								/>
 								<List.Separator />
 								<List.Item
 									title='Send_crash_report'
-									testID='settings-view-crash-report'
+									testID='security-privacy-view-crash-report'
 									right={() => this.renderCrashReportSwitch()}
 								/>
 								<List.Separator />

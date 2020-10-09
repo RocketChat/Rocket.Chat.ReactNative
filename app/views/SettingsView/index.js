@@ -40,7 +40,7 @@ class SettingsView extends React.Component {
 		headerLeft: () => (isMasterDetail ? (
 			<CloseModalButton navigation={navigation} testID='settings-view-close' />
 		) : (
-			<DrawerButton navigation={navigation} />
+			<DrawerButton navigation={navigation} testID='settings-view-drawer' />
 		)),
 		title: I18n.t('Settings')
 	});
@@ -249,6 +249,7 @@ class SettingsView extends React.Component {
 							title='Security_and_privacy'
 							showActionIndicator
 							onPress={() => this.navigateToScreen('SecurityPrivacyView')}
+							testID='settings-view-security-privacy'
 						/>
 						<List.Separator />
 					</List.Section>

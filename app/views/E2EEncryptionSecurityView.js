@@ -84,7 +84,8 @@ class E2EEncryptionSecurityView extends React.Component {
 				logEvent(events.E2E_SEC_RESET_OWN_KEY);
 				try {
 					const { logout } = this.props;
-					await RocketChat.e2eResetOwnKey();
+					// we can't await, because socket connection might be lost
+					RocketChat.e2eResetOwnKey();
 					logout();
 				} catch (e) {
 					log(e);
@@ -112,7 +113,7 @@ class E2EEncryptionSecurityView extends React.Component {
 						returnKeyType='send'
 						secureTextEntry
 						onSubmitEditing={this.changePassword}
-						testID='e2e-enter-your-password-view-password'
+						testID='e2e-encryption-security-view-password'
 						theme={theme}
 						onChangeText={this.onChangePasswordText}
 					/>
@@ -122,6 +123,7 @@ class E2EEncryptionSecurityView extends React.Component {
 						theme={theme}
 						disabled={!newPassword.trim()}
 						style={styles.changePasswordButton}
+						testID='e2e-encryption-security-view-change-password'
 					/>
 				</List.Section>
 
@@ -133,7 +135,7 @@ class E2EEncryptionSecurityView extends React.Component {
 	render() {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView testID='settings-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
+			<SafeAreaView testID='e2e-encryption-security-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<StatusBar theme={theme} />
 				<List.Container>
 					<View style={styles.container}>
@@ -148,6 +150,7 @@ class E2EEncryptionSecurityView extends React.Component {
 								theme={theme}
 								type='secondary'
 								backgroundColor={themes[theme].chatComponentBackground}
+								testID='e2e-encryption-security-view-reset-key'
 							/>
 						</List.Section>
 					</View>
