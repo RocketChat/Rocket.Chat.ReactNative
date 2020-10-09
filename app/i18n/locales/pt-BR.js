@@ -602,5 +602,17 @@ export default {
 	You_will_be_logged_out_from_other_locations: 'Você perderá a sessão de outros clientes',
 	Logged_out_of_other_clients_successfully: 'Desconectado de outros clientes com sucesso',
 	Logout_failed: 'Falha ao desconectar!',
-	Log_analytics_events: 'Logar eventos no analytics'
+	Log_analytics_events: 'Logar eventos no analytics',
+	E2E_encryption_change_password_title: 'Alterar Senha de Criptografia',
+	E2E_encryption_change_password_description: 'Agora você pode criar grupos privados criptografados e mensagens diretas. Você também pode alterar os grupos privados ou DMs existentes para criptografados. Esta é uma criptografia de ponta a ponta, logo a chave para codificar / decodificar suas mensagens não será salva no servidor. Por esse motivo, você precisa armazenar sua senha em algum lugar seguro. Será solicitada a inserção de senha em outros dispositivos nos quais deseja usar a criptografia E2E.',
+	E2E_encryption_change_password_error: 'Erro ao alterar senha de criptografia!',
+	E2E_encryption_change_password_success: 'Senha de criptografia alterada com sucesso!',
+	E2E_encryption_change_password_message: 'Certifique-se de tê-la guardado em local seguro.',
+	E2E_encryption_change_password_confirmation: 'Sim, alterar',
+	E2E_encryption_reset_title: 'Redefinir Chave de Criptografia',
+	E2E_encryption_reset_description: 'Essa opção irá remover a chave de criptografia corrente e desconectá-lo. \nQuando você se conectar novamente, uma nova chave será gerada e restaurará acesso a qualquer canal com uma ou mais pessoas online. \nDevico à natureza da criptografia ponta a ponta, não será possível restaurar acesso a canais sem membros online.',
+	E2E_encryption_reset_button: 'Redefinir',
+	E2E_encryption_reset_error: 'Erro ao redefinir chave!',
+	E2E_encryption_reset_message: 'Você será desconectado.',
+	E2E_encryption_reset_confirmation: 'Sim, redefinir'
 };
