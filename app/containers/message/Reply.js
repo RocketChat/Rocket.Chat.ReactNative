@@ -146,8 +146,8 @@ const Reply = React.memo(({
 		openLink(url, theme);
 	};
 
-	return (
-		<View>
+	if (attachment.desctiption) {
+		return (
 			<Touchable
 				onPress={onPress}
 				style={[
@@ -155,13 +155,16 @@ const Reply = React.memo(({
 					index > 0 && styles.marginTop,
 					{
 						backgroundColor: themes[theme].chatComponentBackground,
-						borderColor: themes[theme].borderColor
-					}
+						borderColor: themes[theme].borderColor,
+					},
 				]}
-				background={Touchable.Ripple(themes[theme].bannerBackground)}
-			>
+				background={Touchable.Ripple(themes[theme].bannerBackground)}>
 				<View style={styles.attachmentContainer}>
-					<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
+					<Title
+						attachment={attachment}
+						timeFormat={timeFormat}
+						theme={theme}
+					/>
 					<Description
 						attachment={attachment}
 						timeFormat={timeFormat}
@@ -170,9 +173,41 @@ const Reply = React.memo(({
 					/>
 					<Fields attachment={attachment} theme={theme} />
 				</View>
+				<Markdown
+					msg={attachment.description}
+					baseUrl={baseUrl}
+					username={user.username}
+					getCustomEmoji={getCustomEmoji}
+					theme={theme}
+				/>
 			</Touchable>
-			<Markdown msg={attachment.description} theme={theme} />
-		</View>
+		);
+	}
+
+	return (
+		<Touchable
+			onPress={onPress}
+			style={[
+				styles.button,
+				index > 0 && styles.marginTop,
+				{
+					backgroundColor: themes[theme].chatComponentBackground,
+					borderColor: themes[theme].borderColor
+				}
+			]}
+			background={Touchable.Ripple(themes[theme].bannerBackground)}
+		>
+			<View style={styles.attachmentContainer}>
+				<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
+				<Description
+					attachment={attachment}
+					timeFormat={timeFormat}
+					getCustomEmoji={getCustomEmoji}
+					theme={theme}
+				/>
+				<Fields attachment={attachment} theme={theme} />
+			</View>
+		</Touchable>
 	);
 }, (prevProps, nextProps) => isEqual(prevProps.attachment, nextProps.attachment) && prevProps.theme === nextProps.theme);
 
