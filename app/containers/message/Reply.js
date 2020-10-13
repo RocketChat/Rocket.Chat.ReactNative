@@ -146,44 +146,6 @@ const Reply = React.memo(({
 		openLink(url, theme);
 	};
 
-	if (attachment.desctiption) {
-		return (
-			<Touchable
-				onPress={onPress}
-				style={[
-					styles.button,
-					index > 0 && styles.marginTop,
-					{
-						backgroundColor: themes[theme].chatComponentBackground,
-						borderColor: themes[theme].borderColor,
-					},
-				]}
-				background={Touchable.Ripple(themes[theme].bannerBackground)}>
-				<View style={styles.attachmentContainer}>
-					<Title
-						attachment={attachment}
-						timeFormat={timeFormat}
-						theme={theme}
-					/>
-					<Description
-						attachment={attachment}
-						timeFormat={timeFormat}
-						getCustomEmoji={getCustomEmoji}
-						theme={theme}
-					/>
-					<Fields attachment={attachment} theme={theme} />
-				</View>
-				<Markdown
-					msg={attachment.description}
-					baseUrl={baseUrl}
-					username={user.username}
-					getCustomEmoji={getCustomEmoji}
-					theme={theme}
-				/>
-			</Touchable>
-		);
-	}
-
 	return (
 		<Touchable
 			onPress={onPress}
@@ -197,16 +159,25 @@ const Reply = React.memo(({
 			]}
 			background={Touchable.Ripple(themes[theme].bannerBackground)}
 		>
-			<View style={styles.attachmentContainer}>
-				<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
-				<Description
-					attachment={attachment}
-					timeFormat={timeFormat}
+		 	<>
+				<View style={styles.attachmentContainer}>
+					<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
+					<Description
+						attachment={attachment}
+						timeFormat={timeFormat}
+						getCustomEmoji={getCustomEmoji}
+						theme={theme}
+					/>
+					<Fields attachment={attachment} theme={theme} />
+				</View>
+				 <Markdown
+					msg={attachment.description}
+					baseUrl={baseUrl}
+					username={user.username}
 					getCustomEmoji={getCustomEmoji}
 					theme={theme}
 				/>
-				<Fields attachment={attachment} theme={theme} />
-			</View>
+		 	</>
 		</Touchable>
 	);
 }, (prevProps, nextProps) => isEqual(prevProps.attachment, nextProps.attachment) && prevProps.theme === nextProps.theme);
