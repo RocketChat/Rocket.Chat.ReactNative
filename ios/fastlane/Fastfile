@@ -17,12 +17,7 @@ default_platform :ios
 
 platform :ios do
   before_all do
-    setup_circle_ci	
-    create_keychain(	
-      name: ENV["MATCH_KEYCHAIN_NAME"],	
-      password: ENV["MATCH_KEYCHAIN_PASSWORD"],	
-      timeout: 1200	
-    )	
+    setup_circle_ci
   end
 
   desc "Runs all the tests"
@@ -73,13 +68,5 @@ platform :ios do
         "CODE_SIGN_IDENTITY" => ""
       }
     )
-  end
-
-  after_all do |lane|
-    delete_keychain(name: ENV["MATCH_KEYCHAIN_NAME"])	
-  end	
-
-  error do |lane, exception|
-    delete_keychain(name: ENV["MATCH_KEYCHAIN_NAME"])	
   end
 end
