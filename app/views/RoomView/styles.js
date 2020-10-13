@@ -70,10 +70,5 @@ export default StyleSheet.create({
 	previewMode: {
 		fontSize: 16,
 		...sharedStyles.textMedium
-	},
-	joinCodeInput: {
-		padding: 8,
-		width: 200,
-		marginHorizontal: 16
 	}
 });

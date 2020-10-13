@@ -24,6 +24,7 @@ import MessageErrorActions from '../../containers/MessageErrorActions';
 import MessageBox from '../../containers/MessageBox';
 import ReactionPicker from './ReactionPicker';
 import UploadProgress from './UploadProgress';
+import JoinCode from './JoinCode';
 import styles from './styles';
 import log, { logEvent, events } from '../../utils/log';
 import EventEmitter from '../../utils/events';
@@ -56,7 +57,6 @@ import Navigation from '../../lib/Navigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { getHeaderTitlePosition } from '../../containers/Header';
-import TextInput from '../../containers/TextInput';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
 
 import { takeInquiry } from '../../ee/omnichannel/lib';
@@ -116,7 +116,6 @@ class RoomView extends React.Component {
 		const search = props.route.params?.search;
 		const prid = props.route.params?.prid;
 		this.state = {
-			joinCode: '',
 			joined: true,
 			room: room || {
 				rid: this.rid, t: this.t, name, fname, prid
@@ -152,6 +151,7 @@ class RoomView extends React.Component {
 
 		this.messagebox = React.createRef();
 		this.list = React.createRef();
+		this.joinCode = React.createRef();
 		this.mounted = false;
 		if (this.rid) {
 			this.sub = new RoomClass(this.rid);
@@ -705,19 +705,28 @@ class RoomView extends React.Component {
 
 	setLastOpen = lastOpen => this.setState({ lastOpen });
 
+	onJoin = () => {
+		this.internalSetState({
+			joined: true
+		});
+	}
+
 	joinRoom = async() => {
 		logEvent(events.ROOM_JOIN);
 		try {
-			const { room, joinCode } = this.state;
+			const { room } = this.state;
 
 			if (this.isOmnichannel) {
 				await takeInquiry(room._id);
 			} else {
-				await RocketChat.joinRoom(this.rid, joinCode, this.t);
+				const { joinCodeRequired } = room;
+				if (joinCodeRequired) {
+					this.joinCode.current?.show();
+				} else {
+					await RocketChat.joinRoom(this.rid, null, this.t);
+					this.onJoin();
+				}
 			}
-			this.internalSetState({
-				joined: true
-			});
 		} catch (e) {
 			log(e);
 		}
@@ -921,7 +930,6 @@ class RoomView extends React.Component {
 			joined, room, selectedMessage, editing, replying, replyWithMention, readOnly
 		} = this.state;
 		const { navigation, theme } = this.props;
-		const { joinCodeRequired } = room;
 
 		if (!this.rid) {
 			return null;
@@ -929,25 +937,7 @@ class RoomView extends React.Component {
 		if (!joined && !this.tmid) {
 			return (
 				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>
-					{
-						joinCodeRequired
-							? (
-								<>
-									<Text label={I18n.t('Insert_Join_Code')} style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('Insert_Join_Code')}</Text>
-									<TextInput
-										returnKeyType='default'
-										placeholder={I18n.t('Join_Code')}
-										onChangeText={(value) => { this.setState({ joinCode: value }); }}
-										underlineColorAndroid='transparent'
-										containerStyle={styles.joinCodeInput}
-										theme={theme}
-										onSubmitEditing={this.joinRoom}
-										secureTextEntry
-									/>
-								</>
-							)
-							: <Text label={I18n.t('You_are_in_preview_mode')} style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('You_are_in_preview_mode')}</Text>
-					}
+					<Text label={I18n.t('You_are_in_preview_mode')} style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('You_are_in_preview_mode')}</Text>
 					<Touch
 						onPress={this.joinRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
@@ -1083,6 +1073,13 @@ class RoomView extends React.Component {
 					baseUrl={baseUrl}
 					onClose={this.onCloseReactionsModal}
 					getCustomEmoji={this.getCustomEmoji}
+				/>
+				<JoinCode
+					ref={this.joinCode}
+					onJoin={this.onJoin}
+					rid={rid}
+					t={t}
+					theme={theme}
 				/>
 			</SafeAreaView>
 		);
