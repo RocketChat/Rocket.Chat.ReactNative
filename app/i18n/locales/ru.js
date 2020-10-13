@@ -415,6 +415,7 @@ export default {
 	Video_call: 'Видеозвонок',
 	View_Original: 'Посмотреть оригинал',
 	Voice_call: 'Голосовой вызов',
+	Waiting_for_network: 'Ожидание сети...',
 	Websocket_disabled: 'Websocket отключен для этого сервера.\n{{contact}}',
 	Welcome: 'Добро пожаловать,',
 	Whats_your_2fa: 'Какой у вас код 2FA?',
