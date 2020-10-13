@@ -12,6 +12,7 @@ import MessageError from './MessageError';
 import sharedStyles from '../../views/Styles';
 import messageStyles from './styles';
 import MessageContext from './Context';
+import { SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME } from './utils';
 
 const styles = StyleSheet.create({
 	container: {
@@ -22,6 +23,10 @@ const styles = StyleSheet.create({
 	username: {
 		fontSize: 16,
 		lineHeight: 22,
+		...sharedStyles.textMedium
+	},
+	usernameInfoMessage: {
+		fontSize: 16,
 		...sharedStyles.textMedium
 	},
 	titleContainer: {
@@ -36,7 +41,7 @@ const styles = StyleSheet.create({
 });
 
 const User = React.memo(({
-	isHeader, useRealName, author, alias, ts, timeFormat, hasError, theme, navToRoomInfo, ...props
+	isHeader, useRealName, author, alias, ts, timeFormat, hasError, theme, navToRoomInfo, type, ...props
 }) => {
 	if (isHeader || hasError) {
 		const navParam = {
@@ -47,6 +52,19 @@ const User = React.memo(({
 		const username = (useRealName && author.name) || author.username;
 		const aliasUsername = alias ? (<Text style={[styles.alias, { color: themes[theme].auxiliaryText }]}> @{username}</Text>) : null;
 		const time = moment(ts).format(timeFormat);
+
+		if (SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME.includes(type)) {
+			return (
+				<Text
+					onPress={() => navToRoomInfo(navParam)}
+					disabled={author._id === user.id}
+					style={[styles.usernameInfoMessage, { color: themes[theme].titleText }]}
+				>
+					{alias || username}
+					{aliasUsername}
+				</Text>
+			);
+		}
 
 		return (
 			<View style={styles.container}>
@@ -77,7 +95,8 @@ User.propTypes = {
 	ts: PropTypes.instanceOf(Date),
 	timeFormat: PropTypes.string,
 	theme: PropTypes.string,
-	navToRoomInfo: PropTypes.func
+	navToRoomInfo: PropTypes.func,
+	type: PropTypes.string
 };
 User.displayName = 'MessageUser';
 

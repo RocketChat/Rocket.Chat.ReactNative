@@ -53,6 +53,24 @@ export const SYSTEM_MESSAGES = [
 	'thread-created'
 ];
 
+export const SYSTEM_MESSAGE_TYPES = {
+	MESSAGE_REMOVED: 'rm',
+	MESSAGE_PINNED: 'message_pinned',
+	MESSAGE_SNIPPETED: 'message_snippeted',
+	USER_JOINED_CHANNEL: 'uj',
+	USER_JOINED_DISCUSSION: 'ut',
+	USER_LEFT_CHANNEL: 'ul'
+};
+
+export const SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME = [
+	SYSTEM_MESSAGE_TYPES.MESSAGE_REMOVED,
+	SYSTEM_MESSAGE_TYPES.MESSAGE_PINNED,
+	SYSTEM_MESSAGE_TYPES.MESSAGE_SNIPPETED,
+	SYSTEM_MESSAGE_TYPES.USER_JOINED_CHANNEL,
+	SYSTEM_MESSAGE_TYPES.USER_JOINED_DISCUSSION,
+	SYSTEM_MESSAGE_TYPES.USER_LEFT_CHANNEL
+];
+
 export const getInfoMessage = ({
 	type, role, msg, author
 }) => {
@@ -60,9 +78,9 @@ export const getInfoMessage = ({
 	if (type === 'rm') {
 		return I18n.t('Message_removed');
 	} else if (type === 'uj') {
-		return I18n.t('Has_joined_the_channel');
+		return I18n.t('Has_joined_the_channel').toLowerCase();
 	} else if (type === 'ut') {
-		return I18n.t('Has_joined_the_conversation');
+		return I18n.t('Has_joined_the_conversation').toLowerCase();
 	} else if (type === 'r') {
 		return I18n.t('Room_name_changed', { name: msg, userBy: username });
 	} else if (type === 'message_pinned') {
@@ -70,7 +88,7 @@ export const getInfoMessage = ({
 	} else if (type === 'jitsi_call_started') {
 		return I18n.t('Started_call', { userBy: username });
 	} else if (type === 'ul') {
-		return I18n.t('Has_left_the_channel');
+		return I18n.t('Has_left_the_channel').toLowerCase();
 	} else if (type === 'ru') {
 		return I18n.t('User_removed_by', { userRemoved: msg, userBy: username });
 	} else if (type === 'au') {
@@ -92,7 +110,7 @@ export const getInfoMessage = ({
 	} else if (type === 'room_changed_privacy') {
 		return I18n.t('Room_changed_privacy', { type: msg, userBy: username });
 	} else if (type === 'message_snippeted') {
-		return I18n.t('Created_snippet');
+		return I18n.t('Created_snippet').toLowerCase();
 	}
 	return '';
 };
