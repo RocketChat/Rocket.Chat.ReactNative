@@ -32,6 +32,7 @@ export default appSchema({
 				{ name: 'blocker', type: 'boolean', isOptional: true },
 				{ name: 'react_when_read_only', type: 'boolean', isOptional: true },
 				{ name: 'archived', type: 'boolean' },
+				{ name: 'join_code_required', type: 'boolean', isOptional: true },
 				{ name: 'muted', type: 'string', isOptional: true },
 				{ name: 'broadcast', type: 'boolean', isOptional: true },
 				{ name: 'prid', type: 'string', isOptional: true },

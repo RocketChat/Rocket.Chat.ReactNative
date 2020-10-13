@@ -34,6 +34,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 		const db = database.active;
 		const subCollection = db.collections.get('subscriptions');
 		const roomsCollection = db.collections.get('rooms');
+
 		if (!subscription) {
 			try {
 				const s = await subCollection.find(room._id);
@@ -63,6 +64,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					blocker: s.blocker,
 					reactWhenReadOnly: s.reactWhenReadOnly,
 					archived: s.archived,
+					joinCodeRequired: s.joinCodeRequired,
 					muted: s.muted,
 					broadcast: s.broadcast,
 					prid: s.prid,

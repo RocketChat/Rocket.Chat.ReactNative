@@ -64,6 +64,8 @@ export default class Subscription extends Model {
 
 	@field('archived') archived;
 
+	@field('join_code_required') joinCodeRequired;
+
 	@field('notifications') notifications;
 
 	@json('muted', sanitizer) muted;

@@ -27,7 +27,6 @@ export const merge = (subscription, room) => {
 			subscription.uids = room.uids;
 		}
 		subscription.ro = room.ro;
-		subscription.joinCodeRequired = room.joinCodeRequired;
 		subscription.broadcast = room.broadcast;
 		subscription.encrypted = room.encrypted;
 		subscription.e2eKeyId = room.e2eKeyId;
