@@ -3,37 +3,30 @@ package chat.rocket.reactnative;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 
 import com.facebook.react.PackageList;
-import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
-import com.facebook.react.bridge.JavaScriptExecutorFactory;
 import com.facebook.react.ReactApplication;
-import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
-import java.lang.reflect.InvocationTargetException;
-
-import chat.rocket.reactnative.generated.BasePackageList;
-
-import org.unimodules.adapters.react.ModuleRegistryAdapter;
-import org.unimodules.adapters.react.ReactModuleRegistryProvider;
-import org.unimodules.core.interfaces.SingletonModule;
-
-import com.wix.reactnativenotifications.RNNotificationsPackage;
+import com.nozbe.watermelondb.WatermelonDBPackage;
+import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
+import com.wix.reactnativekeyboardinput.KeyboardInputPackage;
 import com.wix.reactnativenotifications.core.AppLaunchHelper;
 import com.wix.reactnativenotifications.core.AppLifecycleFacade;
 import com.wix.reactnativenotifications.core.JsIOHelper;
 import com.wix.reactnativenotifications.core.notification.INotificationsApplication;
 import com.wix.reactnativenotifications.core.notification.IPushNotification;
-import com.wix.reactnativekeyboardinput.KeyboardInputPackage;
 
-import com.nozbe.watermelondb.WatermelonDBPackage;
-import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
+import org.unimodules.adapters.react.ModuleRegistryAdapter;
+import org.unimodules.adapters.react.ReactModuleRegistryProvider;
 
 import java.util.Arrays;
 import java.util.List;
+
+import chat.rocket.reactnative.generated.BasePackageList;
 
 public class MainApplication extends Application implements ReactApplication, INotificationsApplication {
 
@@ -49,17 +42,15 @@ public class MainApplication extends Application implements ReactApplication, IN
     protected List<ReactPackage> getPackages() {
       @SuppressWarnings("UnnecessaryLocalVariable")
       List<ReactPackage> packages = new PackageList(this).getPackages();
-      if (!BuildConfig.FDROID_BUILD) {
-        packages.add(new RNNotificationsPackage(MainApplication.this));
-      }
       packages.add(new KeyboardInputPackage(MainApplication.this));
       packages.add(new WatermelonDBPackage());
       packages.add(new RNCViewPagerPackage());
-      // packages.add(new ModuleRegistryAdapter(mModuleRegistryProvider));
       List<ReactPackage> unimodules = Arrays.<ReactPackage>asList(
         new ModuleRegistryAdapter(mModuleRegistryProvider)
       );
       packages.addAll(unimodules);
+      List<ReactPackage> additionalModules = new AdditionalModules().getAdditionalModules(MainApplication.this);
+      packages.addAll(additionalModules);
       return packages;
     }
 
