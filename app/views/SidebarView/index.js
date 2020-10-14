@@ -20,6 +20,7 @@ import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Navigation from '../../lib/Navigation';
+import Touch from '../../utils/touch';
 
 const Separator = React.memo(({ theme }) => <View style={[styles.separator, { borderColor: themes[theme].separatorColor }]} />);
 Separator.propTypes = {
@@ -185,13 +186,6 @@ class Sidebar extends Component {
 					current={this.currentItemKey === 'ChatsStackNavigator'}
 				/>
 				<SidebarItem
-					text={I18n.t('Profile')}
-					left={<CustomIcon name='user' size={20} color={themes[theme].titleText} />}
-					onPress={() => this.sidebarNavigate('ProfileStackNavigator')}
-					testID='sidebar-profile'
-					current={this.currentItemKey === 'ProfileStackNavigator'}
-				/>
-				<SidebarItem
 					text={I18n.t('Settings')}
 					left={<CustomIcon name='administration' size={20} color={themes[theme].titleText} />}
 					onPress={() => this.sidebarNavigate('SettingsStackNavigator')}
@@ -225,19 +219,24 @@ class Sidebar extends Component {
 			return null;
 		}
 		return (
-			<SafeAreaView testID='sidebar-view' style={{ backgroundColor: themes[theme].focusedBackground }} vertical={isMasterDetail} theme={theme}>
+			<SafeAreaView
+				testID='sidebar-view'
+				style={{ backgroundColor: themes[theme].focusedBackground }}
+				vertical={isMasterDetail}
+				theme={theme}>
 				<ScrollView
 					style={[
 						styles.container,
 						{
 							backgroundColor: isMasterDetail
 								? themes[theme].backgroundColor
-								: themes[theme].focusedBackground
-						}
+								: themes[theme].focusedBackground,
+						},
 					]}
-					{...scrollPersistTaps}
-				>
-					<TouchableWithoutFeedback onPress={this.onPressUser} testID='sidebar-close-drawer'>
+					{...scrollPersistTaps}>
+					<TouchableWithoutFeedback
+						onPress={this.onPressUser}
+						testID='sidebar-close-drawer'>
 						<View style={styles.header} theme={theme}>
 							<Avatar
 								text={user.username}
@@ -249,15 +248,43 @@ class Sidebar extends Component {
 							/>
 							<View style={styles.headerTextContainer}>
 								<View style={styles.headerUsername}>
-									<Text numberOfLines={1} style={[styles.username, { color: themes[theme].titleText }]}>{useRealName ? user.name : user.username}</Text>
+									<Text
+										numberOfLines={1}
+										style={[
+											styles.username,
+											{ color: themes[theme].titleText },
+										]}>
+										{useRealName
+											? user.name
+											: user.username}
+									</Text>
 								</View>
 								<Text
-									style={[styles.currentServerText, { color: themes[theme].titleText }]}
+									style={[
+										styles.currentServerText,
+										{ color: themes[theme].titleText },
+									]}
 									numberOfLines={1}
-									accessibilityLabel={`Connected to ${ baseUrl }`}
-								>{Site_Name}
+									accessibilityLabel={`Connected to ${baseUrl}`}>
+									{Site_Name}
 								</Text>
 							</View>
+							<Touch
+								onPress={() => this.sidebarNavigate('ProfileStackNavigator')}
+								testID='sidebar-profile'
+								current={this.currentItemKey === 'ProfileStackNavigator'}
+								theme={theme}>
+								<View
+									style={styles.itemHorizontal}
+									padding={5}
+								>
+									<CustomIcon
+										name='edit'
+										size={20}
+										color={themes[theme].titleText}
+									/>
+								</View>
+							</Touch>
 						</View>
 					</TouchableWithoutFeedback>
 
@@ -271,9 +298,7 @@ class Sidebar extends Component {
 							<Separator theme={theme} />
 						</>
 					) : (
-						<>
-							{this.renderAdmin()}
-						</>
+						<>{this.renderAdmin()}</>
 					)}
 				</ScrollView>
 			</SafeAreaView>
