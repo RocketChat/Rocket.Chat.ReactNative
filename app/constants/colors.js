@@ -12,12 +12,9 @@ export const SWITCH_TRACK_COLOR = {
 
 const mentions = {
 	unreadBackground: '#414852',
-	mentionMeColor: '#f5455c',
-	mentionMeBackground: '#ffe9ec',
-	mentionGroupColor: '#f38c39',
-	mentionGroupBackground: '#fde8d7',
-	mentionOtherColor: '#b68d00',
-	mentionOtherBackground: '#fff6d6'
+	mentionMeColor: '#DB0C27',
+	mentionGroupColor: '#E26D0E',
+	mentionOtherColor: '#DFAC00'
 };
 
 export const themes = {
