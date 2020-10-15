@@ -36,7 +36,7 @@ import RoomsListHeaderView from './Header';
 import {
 	DrawerButton,
 	CustomHeaderButtons,
-	Item
+	Item, HeaderButtonContainer, HeaderButtonItem
 } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -368,26 +368,23 @@ class RoomsListView extends React.Component {
 				right: headerTitlePosition.right
 			},
 			headerRight: () => (searching ? null : (
-				<CustomHeaderButtons>
-					<Item
-						title='new'
-						iconName='create'
+				<HeaderButtonContainer>
+					<HeaderButtonItem
+						name='create'
 						onPress={this.goToNewMessage}
 						testID='rooms-list-view-create-channel'
 					/>
-					<Item
-						title='search'
-						iconName='search'
+					<HeaderButtonItem
+						name='search'
 						onPress={this.initSearching}
 						testID='rooms-list-view-search'
 					/>
-					<Item
-						title='directory'
-						iconName='directory'
+					<HeaderButtonItem
+						name='directory'
 						onPress={this.goDirectory}
 						testID='rooms-list-view-directory'
 					/>
-				</CustomHeaderButtons>
+				</HeaderButtonContainer>
 			))
 		};
 	}
