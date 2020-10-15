@@ -1,16 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { View } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 
 import { CustomHeaderButtons, HeaderButtonContainer, HeaderButtonItem, Item } from '../../../containers/HeaderButton';
 import database from '../../../lib/database';
 import { getUserSelector } from '../../../selectors/login';
 import { logEvent, events } from '../../../utils/log';
-import { CustomIcon } from '../../../lib/Icons';
-import { BUTTON_HIT_SLOP } from '../../../containers/message/utils';
-import { Text } from 'react-native';
 
 
 class RightButtonsContainer extends React.PureComponent {
