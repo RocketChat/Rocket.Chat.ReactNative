@@ -1,10 +1,11 @@
 import React from 'react';
-import { Linking, Dimensions } from 'react-native';
+import { Linking, Dimensions, DeviceEventEmitter } from 'react-native';
 import { AppearanceProvider } from 'react-native-appearance';
 import { Provider } from 'react-redux';
 import { KeyCommandsEmitter } from 'react-native-keycommands';
 import RNScreens from 'react-native-screens';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
+import QuickActions from 'react-native-quick-actions';
 
 import {
 	defaultTheme,
@@ -94,6 +95,27 @@ export default class Root extends React.Component {
 			});
 		}, 5000);
 		Dimensions.addEventListener('change', this.onDimensionsChange);
+		QuickActions.setShortcutItems([
+			{
+				type: 'ADD_SERVER',
+				title: 'Add Server',
+				icon: 'Compose',
+				userInfo: {
+					url: ''
+				}
+			},
+			{
+				type: 'SEARCH_ROOMS',
+				title: 'Search Rooms',
+				icon: 'Compose',
+				userInfo: {
+					url: ''
+				}
+			}
+		]);
+		DeviceEventEmitter.addListener('quickActionShortcut', (data) => {
+			alert(data.type);
+		});
 	}
 
 	componentWillUnmount() {
