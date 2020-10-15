@@ -67,6 +67,7 @@ import { E2E_BANNER_TYPE } from '../../lib/encryption/constants';
 
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
 import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../../ee/omnichannel/lib';
+import configQuickActions from '../../utils/quickActions';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
@@ -173,6 +174,7 @@ class RoomsListView extends React.Component {
 			navigation, closeServerDropdown, appState
 		} = this.props;
 
+		configQuickActions(this.props);
 		/**
 		 * - When didMount is triggered and appState is foreground,
 		 * it means the user is logging in and selectServer has ran, so we can getSubscriptions
