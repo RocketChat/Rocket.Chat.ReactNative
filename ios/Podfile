@@ -12,7 +12,6 @@ end
 
 target 'RocketChatRN' do
   all_pods
-  pod 'RNQuickAction', :path => '../node_modules/react-native-quick-actions'
 
 end
 
