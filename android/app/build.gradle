@@ -148,8 +148,8 @@ android {
         vectorDrawables.useSupportLibrary = true
         if (isPlay) {
             manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
+            missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
         }
-        missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
     }
 
     signingConfigs {
@@ -234,9 +234,9 @@ android {
 dependencies {
     addUnimodulesDependencies()
     implementation project(':watermelondb')
-    implementation project(':reactnativenotifications')
     implementation project(":reactnativekeyboardinput")
     implementation project(':@react-native-community_viewpager')
+    playImplementation project(':reactnativenotifications')
     playImplementation project(':@react-native-firebase_app')
     playImplementation project(':@react-native-firebase_analytics')
     playImplementation project(':@react-native-firebase_crashlytics')
