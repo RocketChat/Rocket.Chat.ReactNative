@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import isEqual from 'deep-equal';
-
+import Image from './Image';
 import Touchable from './Touchable';
 import Markdown from '../markdown';
 import openLink from '../../utils/openLink';
@@ -126,6 +126,22 @@ const Fields = React.memo(({ attachment, theme }) => {
 		</View>
 	);
 }, (prevProps, nextProps) => isEqual(prevProps.attachment.fields, nextProps.attachment.fields) && prevProps.theme === nextProps.theme);
+
+const renderImage = ({
+	attachment, user, baseUrl, customEmojis
+}) => {
+	if (attachment.attachments.length === 0) {
+		return null;
+	}
+
+	return attachment.attachments.map((attach) => {
+		if (!attach.image_url) {
+			return null;
+		}
+
+		return <Image key={attach.image_url} file={attach} user={user} baseUrl={baseUrl} customEmojis={customEmojis} />;
+	});
+};
 
 const Reply = React.memo(({
 	attachment, timeFormat, index, getCustomEmoji, theme
