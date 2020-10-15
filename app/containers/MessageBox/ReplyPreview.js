@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import isEqual from 'lodash/isEqual';
-
+import FastImage from '@rocket.chat/react-native-fast-image';
 import Markdown from '../markdown';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
@@ -42,6 +42,33 @@ const styles = StyleSheet.create({
 	}
 });
 
+const renderImage = () => {
+	const {
+		message, baseUrl, user
+	} = this.props;
+
+	if (!message.attachments) {
+		return null;
+	} else {
+		const p = [];
+		Object.keys(message.attachments).forEach((key) => {
+			if (!message.attachments[key].image_url) {
+				return null;
+			}
+
+			const img = `${ baseUrl }${ message.attachments[key].image_url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
+			p.push(
+				<FastImage
+					source={{ uri: encodeURI(img) }}
+					resizeMode={FastImage.resizeMode.cover}
+					style={styles.thumbnail}
+				/>
+			);
+		});
+		return p;
+	}
+};
+
 const ReplyPreview = React.memo(({
 	message, Message_TimeFormat, baseUrl, username, replying, getCustomEmoji, close, theme
 }) => {
@@ -72,6 +99,7 @@ const ReplyPreview = React.memo(({
 					theme={theme}
 				/>
 			</View>
+			{renderImage()}
 			<CustomIcon name='close' color={themes[theme].auxiliaryText} size={20} style={styles.close} onPress={close} />
 		</View>
 	);
