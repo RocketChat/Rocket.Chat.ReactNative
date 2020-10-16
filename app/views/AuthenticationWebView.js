@@ -10,7 +10,7 @@ import StatusBar from '../containers/StatusBar';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { withTheme } from '../theme';
 import debounce from '../utils/debounce';
-import { CloseModalButton } from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/HeaderButton';
 
 const userAgent = isIOS
 	? 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1'
@@ -185,7 +185,7 @@ const mapStateToProps = state => ({
 AuthenticationWebView.navigationOptions = ({ route, navigation }) => {
 	const { authType } = route.params;
 	return {
-		headerLeft: () => <CloseModalButton navigation={navigation} />,
+		headerLeft: () => <HeaderButton.CloseModal navigation={navigation} />,
 		title: ['saml', 'cas', 'iframe'].includes(authType) ? 'SSO' : 'OAuth'
 	};
 };

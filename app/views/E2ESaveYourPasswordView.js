@@ -11,7 +11,7 @@ import {
 
 import { encryptionSetBanner as encryptionSetBannerAction } from '../actions/encryption';
 import { E2E_RANDOM_PASSWORD_KEY } from '../lib/encryption/constants';
-import { CloseModalButton } from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/HeaderButton';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import SafeAreaView from '../containers/SafeAreaView';
 import UserPreferences from '../lib/userPreferences';
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
 
 class E2ESaveYourPasswordView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
-		headerLeft: () => <CloseModalButton navigation={navigation} testID='e2e-save-your-password-view-close' />,
+		headerLeft: () => <HeaderButton.CloseModal navigation={navigation} testID='e2e-save-your-password-view-close' />,
 		title: I18n.t('Save_Your_E2E_Password')
 	})
 

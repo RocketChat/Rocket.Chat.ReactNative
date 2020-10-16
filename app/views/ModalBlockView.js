@@ -8,7 +8,7 @@ import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scr
 import { withTheme } from '../theme';
 import EventEmitter from '../utils/events';
 import { themes } from '../constants/colors';
-import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/HeaderButton';
 import { modalBlockWithContext } from '../containers/UIKit/MessageBlock';
 import RocketChat from '../lib/rocketchat';
 import ActivityIndicator from '../containers/ActivityIndicator';
@@ -128,24 +128,24 @@ class ModalBlockView extends React.Component {
 		navigation.setOptions({
 			title: textParser([title]),
 			headerLeft: close ? () => (
-				<CustomHeaderButtons>
-					<Item
+				<HeaderButton.Container>
+					<HeaderButton.Item
 						title={textParser([close.text])}
 						style={styles.submit}
 						onPress={this.cancel}
 						testID='close-modal-uikit'
 					/>
-				</CustomHeaderButtons>
+				</HeaderButton.Container>
 			) : null,
 			headerRight: submit ? () => (
-				<CustomHeaderButtons>
-					<Item
+				<HeaderButton.Container>
+					<HeaderButton.Item
 						title={textParser([submit.text])}
 						style={styles.submit}
 						onPress={this.submit}
 						testID='submit-modal-uikit'
 					/>
-				</CustomHeaderButtons>
+				</HeaderButton.Container>
 			) : null
 		});
 	}

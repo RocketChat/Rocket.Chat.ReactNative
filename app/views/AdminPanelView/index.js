@@ -5,14 +5,14 @@ import { connect } from 'react-redux';
 
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
-import { DrawerButton } from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/HeaderButton';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 
 class AdminPanelView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => ({
-		headerLeft: isMasterDetail ? undefined : () => <DrawerButton navigation={navigation} />,
+		headerLeft: isMasterDetail ? undefined : () => <HeaderButton.Drawer navigation={navigation} />,
 		title: I18n.t('Admin_Panel')
 	})
 

@@ -1,5 +1,951 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Storyshots Header Buttons badge 1`] = `
+<RNCSafeAreaView
+  edges={
+    Array [
+      "top",
+      "left",
+      "right",
+    ]
+  }
+  style={
+    Object {
+      "backgroundColor": "#EEEFF1",
+    }
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "elevation": 4,
+          "flexDirection": "row",
+          "height": 44,
+          "justifyContent": "center",
+        },
+        Object {
+          "backgroundColor": "#EEEFF1",
+          "borderBottomColor": "#B2B2B2",
+          "borderBottomWidth": 0.5,
+          "elevation": 0,
+        },
+      ]
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "justifyContent": "center",
+          },
+          Object {
+            "marginLeft": 5,
+          },
+        ]
+      }
+    />
+    <View
+      style={
+        Object {
+          "flex": 1,
+        }
+      }
+    />
+  </View>
+</RNCSafeAreaView>
+`;
+
+exports[`Storyshots Header Buttons common 1`] = `
+Array [
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            Object {
+              "marginLeft": 5,
+            },
+          ]
+        }
+      />
+      <View
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
+      />
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            Object {
+              "marginLeft": 5,
+            },
+          ]
+        }
+      />
+      <View
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
+      />
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            Object {
+              "marginLeft": 5,
+            },
+          ]
+        }
+      />
+      <View
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
+      />
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
+      />
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            Object {
+              "marginRight": 5,
+            },
+          ]
+        }
+      />
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
+      />
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            Object {
+              "marginRight": 5,
+            },
+          ]
+        }
+      />
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
+      />
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            Object {
+              "marginRight": 5,
+            },
+          ]
+        }
+      />
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
+      />
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            Object {
+              "marginRight": 5,
+            },
+          ]
+        }
+      />
+    </View>
+  </RNCSafeAreaView>,
+]
+`;
+
+exports[`Storyshots Header Buttons icons 1`] = `
+Array [
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            Object {
+              "marginLeft": 5,
+            },
+          ]
+        }
+      />
+      <View
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
+      />
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            Object {
+              "marginRight": 5,
+            },
+          ]
+        }
+      />
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            Object {
+              "marginLeft": 5,
+            },
+          ]
+        }
+      />
+      <View
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
+      />
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            Object {
+              "marginRight": 5,
+            },
+          ]
+        }
+      />
+    </View>
+  </RNCSafeAreaView>,
+]
+`;
+
+exports[`Storyshots Header Buttons themes 1`] = `
+Array [
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            Object {
+              "marginLeft": 5,
+            },
+          ]
+        }
+      />
+      <View
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
+      />
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            Object {
+              "marginRight": 5,
+            },
+          ]
+        }
+      />
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#0b182c",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#0b182c",
+            "borderBottomColor": "#2F3A4B",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            Object {
+              "marginLeft": 5,
+            },
+          ]
+        }
+      />
+      <View
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
+      />
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            Object {
+              "marginRight": 5,
+            },
+          ]
+        }
+      />
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#0d0d0d",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#0d0d0d",
+            "borderBottomColor": "#323232",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            Object {
+              "marginLeft": 5,
+            },
+          ]
+        }
+      />
+      <View
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
+      />
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            Object {
+              "marginRight": 5,
+            },
+          ]
+        }
+      />
+    </View>
+  </RNCSafeAreaView>,
+]
+`;
+
+exports[`Storyshots Header Buttons title 1`] = `
+Array [
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            Object {
+              "marginLeft": 5,
+            },
+          ]
+        }
+      />
+      <View
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
+      />
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            Object {
+              "marginRight": 5,
+            },
+          ]
+        }
+      />
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            Object {
+              "marginLeft": 5,
+            },
+          ]
+        }
+      />
+      <View
+        style={
+          Object {
+            "flex": 1,
+          }
+        }
+      />
+      <View
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "center",
+            },
+            Object {
+              "marginRight": 5,
+            },
+          ]
+        }
+      />
+    </View>
+  </RNCSafeAreaView>,
+]
+`;
+
 exports[`Storyshots Markdown list Markdown 1`] = `
 <RCTScrollView
   contentContainerStyle={

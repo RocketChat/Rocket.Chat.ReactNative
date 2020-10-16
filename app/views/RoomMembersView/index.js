@@ -15,7 +15,7 @@ import log from '../../utils/log';
 import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
-import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { withTheme } from '../../theme';
@@ -97,9 +97,9 @@ class RoomMembersView extends React.Component {
 		navigation.setOptions({
 			title: I18n.t('Members'),
 			headerRight: () => (
-				<CustomHeaderButtons>
-					<Item title={toggleText} onPress={this.toggleStatus} testID='room-members-view-toggle-status' />
-				</CustomHeaderButtons>
+				<HeaderButton.Container>
+					<HeaderButton.Item title={toggleText} onPress={this.toggleStatus} testID='room-members-view-toggle-status' />
+				</HeaderButton.Container>
 			)
 		});
 	}

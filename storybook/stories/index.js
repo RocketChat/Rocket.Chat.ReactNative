@@ -9,6 +9,7 @@ import Message from './Message';
 import UiKitMessage from './UiKitMessage';
 import UiKitModal from './UiKitModal';
 import Markdown from './Markdown';
+import './HeaderButtons';
 // import RoomViewHeader from './RoomViewHeader';
 
 import MessageContext from '../../app/containers/message/Context';

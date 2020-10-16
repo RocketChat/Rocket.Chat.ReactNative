@@ -9,11 +9,7 @@ import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
 import styles from './styles';
 import Loading from '../../containers/Loading';
-import {
-	Item,
-	CloseModalButton,
-	CustomHeaderButtons
-} from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/HeaderButton';
 import { isBlocked } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { withTheme } from '../../theme';
@@ -75,18 +71,18 @@ class ShareView extends Component {
 
 		// if is share extension show default back button
 		if (!this.isShareExtension) {
-			options.headerLeft = () => <CloseModalButton navigation={navigation} buttonStyle={{ color: themes[theme].previewTintColor }} />;
+			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} buttonStyle={{ color: themes[theme].previewTintColor }} />;
 		}
 
 		if (!attachments.length && !readOnly) {
 			options.headerRight = () => (
-				<CustomHeaderButtons>
-					<Item
+				<HeaderButton.Container>
+					<HeaderButton.Item
 						title={I18n.t('Send')}
 						onPress={this.send}
 						buttonStyle={[styles.send, { color: themes[theme].previewTintColor }]}
 					/>
-				</CustomHeaderButtons>
+				</HeaderButton.Container>
 			);
 		}
 

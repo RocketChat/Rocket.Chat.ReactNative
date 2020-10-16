@@ -33,11 +33,7 @@ import { appStart as appStartAction, ROOT_BACKGROUND } from '../../actions/app';
 import debounce from '../../utils/debounce';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
 import RoomsListHeaderView from './Header';
-import {
-	DrawerButton,
-	CustomHeaderButtons,
-	Item
-} from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import ListHeader from './ListHeader';
@@ -346,15 +342,14 @@ class RoomsListView extends React.Component {
 		return {
 			headerTitleAlign: 'left',
 			headerLeft: () => (searching ? (
-				<CustomHeaderButtons left>
-					<Item
-						title='cancel'
+				<HeaderButton.Container left>
+					<HeaderButton.Item
 						iconName='close'
 						onPress={this.cancelSearch}
 					/>
-				</CustomHeaderButtons>
+				</HeaderButton.Container>
 			) : (
-				<DrawerButton
+				<HeaderButton.Drawer
 					navigation={navigation}
 					testID='rooms-list-view-sidebar'
 					onPress={isMasterDetail
@@ -368,26 +363,23 @@ class RoomsListView extends React.Component {
 				right: headerTitlePosition.right
 			},
 			headerRight: () => (searching ? null : (
-				<CustomHeaderButtons>
-					<Item
-						title='new'
+				<HeaderButton.Container>
+					<HeaderButton.Item
 						iconName='create'
 						onPress={this.goToNewMessage}
 						testID='rooms-list-view-create-channel'
 					/>
-					<Item
-						title='search'
+					<HeaderButton.Item
 						iconName='search'
 						onPress={this.initSearching}
 						testID='rooms-list-view-search'
 					/>
-					<Item
-						title='directory'
+					<HeaderButton.Item
 						iconName='directory'
 						onPress={this.goDirectory}
 						testID='rooms-list-view-directory'
 					/>
-				</CustomHeaderButtons>
+				</HeaderButton.Container>
 			))
 		};
 	}
@@ -883,7 +875,7 @@ class RoomsListView extends React.Component {
 	};
 
 	renderHeader = () => {
-		const { isMasterDetail, theme } = this.props;
+		const { isMasterDetail } = this.props;
 
 		if (!isMasterDetail) {
 			return null;
@@ -892,7 +884,6 @@ class RoomsListView extends React.Component {
 		const options = this.getHeader();
 		return (
 			<Header
-				theme={theme}
 				{...options}
 			/>
 		);
