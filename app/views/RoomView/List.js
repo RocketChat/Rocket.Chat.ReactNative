@@ -173,7 +173,11 @@ class List extends React.Component {
 					Q.where('rid', rid),
 					Q.experimentalSortBy('ts', Q.desc),
 					Q.experimentalSkip(0),
-					Q.experimentalTake(this.count)
+					Q.experimentalTake(this.count),
+					Q.or(
+						Q.where('tmid', null),
+						Q.where('tshow', Q.eq(true))
+					)
 				)
 				.observe();
 		}

@@ -166,6 +166,17 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 11,
+			steps: [
+				addColumns({
+					table: 'messages',
+					columns: [
+						{ name: 'tshow', type: 'boolean', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });
