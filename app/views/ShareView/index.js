@@ -10,9 +10,7 @@ import I18n from '../../i18n';
 import styles from './styles';
 import Loading from '../../containers/Loading';
 import {
-	Item,
-	CloseModalButton,
-	CustomHeaderButtons
+	CloseModalButton, HeaderButtonContainer, HeaderButtonItem
 } from '../../containers/HeaderButton';
 import { isBlocked } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
@@ -80,13 +78,13 @@ class ShareView extends Component {
 
 		if (!attachments.length && !readOnly) {
 			options.headerRight = () => (
-				<CustomHeaderButtons>
-					<Item
+				<HeaderButtonContainer>
+					<HeaderButtonItem
 						title={I18n.t('Send')}
 						onPress={this.send}
 						buttonStyle={[styles.send, { color: themes[theme].previewTintColor }]}
 					/>
-				</CustomHeaderButtons>
+				</HeaderButtonContainer>
 			);
 		}
 

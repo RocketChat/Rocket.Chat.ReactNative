@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { CustomHeaderButtons, HeaderButtonContainer, HeaderButtonItem, Item } from '../../../containers/HeaderButton';
+import { HeaderButtonContainer, HeaderButtonItem } from '../../../containers/HeaderButton';
 import database from '../../../lib/database';
 import { getUserSelector } from '../../../selectors/login';
 import { logEvent, events } from '../../../utils/log';
@@ -100,27 +100,26 @@ class RightButtonsContainer extends React.PureComponent {
 		}
 		if (tmid) {
 			return (
-				<CustomHeaderButtons>
-					<Item
-						title='bell'
+				<HeaderButtonContainer>
+					<HeaderButtonItem
 						iconName={isFollowingThread ? 'notification' : 'notification-disabled'}
 						onPress={this.toggleFollowThread}
 						testID={isFollowingThread ? 'room-view-header-unfollow' : 'room-view-header-follow'}
 					/>
-				</CustomHeaderButtons>
+				</HeaderButtonContainer>
 			);
 		}
 		return (
 			<HeaderButtonContainer>
 				{threadsEnabled ? (
 					<HeaderButtonItem
-						name='threads'
+						iconName='threads'
 						onPress={this.goThreadsView}
 						testID='room-view-header-threads'
 					/>
 				) : null}
 				<HeaderButtonItem
-					name='search'
+					iconName='search'
 					onPress={this.goSearchView}
 					testID='room-view-search'
 				/>

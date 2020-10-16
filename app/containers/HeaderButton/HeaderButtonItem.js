@@ -1,11 +1,14 @@
 import React from 'react';
-import { Text, View, StyleSheet, Platform } from 'react-native';
+import {
+	Text, View, StyleSheet, Platform
+} from 'react-native';
 import PropTypes from 'prop-types';
 import Touchable from 'react-native-platform-touchable';
 
 import { CustomIcon } from '../../lib/Icons';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
+import sharedStyles from '../../views/Styles';
 
 export const BUTTON_HIT_SLOP = {
 	top: 5, right: 5, bottom: 5, left: 5
@@ -31,15 +34,13 @@ const styles = StyleSheet.create({
 	title: {
 		...Platform.select({
 			android: {
-				fontFamily: 'sans-serif-medium',
-				fontSize: 14,
-				// marginHorizontal: 11
+				fontSize: 14
 			},
 			default: {
-				fontSize: 17,
-				// marginHorizontal: 10,
+				fontSize: 17
 			}
-		})
+		}),
+		...sharedStyles.textRegular
 	}
 });
 

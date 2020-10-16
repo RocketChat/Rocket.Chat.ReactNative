@@ -34,9 +34,7 @@ import debounce from '../../utils/debounce';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
 import RoomsListHeaderView from './Header';
 import {
-	DrawerButton,
-	CustomHeaderButtons,
-	Item, HeaderButtonContainer, HeaderButtonItem
+	DrawerButton, HeaderButtonContainer, HeaderButtonItem
 } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -346,13 +344,12 @@ class RoomsListView extends React.Component {
 		return {
 			headerTitleAlign: 'left',
 			headerLeft: () => (searching ? (
-				<CustomHeaderButtons left>
-					<Item
-						title='cancel'
+				<HeaderButtonContainer left>
+					<HeaderButtonItem
 						iconName='close'
 						onPress={this.cancelSearch}
 					/>
-				</CustomHeaderButtons>
+				</HeaderButtonContainer>
 			) : (
 				<DrawerButton
 					navigation={navigation}
@@ -370,17 +367,17 @@ class RoomsListView extends React.Component {
 			headerRight: () => (searching ? null : (
 				<HeaderButtonContainer>
 					<HeaderButtonItem
-						name='create'
+						iconName='create'
 						onPress={this.goToNewMessage}
 						testID='rooms-list-view-create-channel'
 					/>
 					<HeaderButtonItem
-						name='search'
+						iconName='search'
 						onPress={this.initSearching}
 						testID='rooms-list-view-search'
 					/>
 					<HeaderButtonItem
-						name='directory'
+						iconName='directory'
 						onPress={this.goDirectory}
 						testID='rooms-list-view-directory'
 					/>

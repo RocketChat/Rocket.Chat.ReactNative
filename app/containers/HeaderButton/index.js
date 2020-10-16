@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { HeaderButtons, HeaderButton, Item } from 'react-navigation-header-buttons';
+import { HeaderButton, Item } from 'react-navigation-header-buttons';
 
 import { CustomIcon } from '../../lib/Icons';
 import { isIOS } from '../../utils/deviceInfo';
@@ -23,52 +23,52 @@ const CustomHeaderButton = React.memo(withTheme(({ theme, ...props }) => (
 	/>
 )));
 
-export const CustomHeaderButtons = React.memo(props => (
-	<HeaderButtons
-		HeaderButtonComponent={CustomHeaderButton}
-		{...props}
-	/>
-));
+// export const HeaderButtonContainer = React.memo(props => (
+// 	<HeaderButtons
+// 		HeaderButtonComponent={CustomHeaderButton}
+// 		{...props}
+// 	/>
+// ));
 
 export const DrawerButton = React.memo(({ navigation, testID, ...otherProps }) => (
-	<CustomHeaderButtons left>
-		<HeaderButtonItem title='drawer' iconName='hamburguer' onPress={navigation.toggleDrawer} testID={testID} {...otherProps} />
-	</CustomHeaderButtons>
+	<HeaderButtonContainer left>
+		<HeaderButtonItem iconName='hamburguer' onPress={navigation.toggleDrawer} testID={testID} {...otherProps} />
+	</HeaderButtonContainer>
 ));
 
 export const CloseModalButton = React.memo(({
 	navigation, testID, onPress = () => navigation.pop(), ...props
 }) => (
-	<CustomHeaderButtons left>
-		<Item title='close' iconName='close' onPress={onPress} testID={testID} {...props} />
-	</CustomHeaderButtons>
+	<HeaderButtonContainer left>
+		<HeaderButtonItem iconName='close' onPress={onPress} testID={testID} {...props} />
+	</HeaderButtonContainer>
 ));
 
 export const CancelModalButton = React.memo(({ onPress, testID }) => (
-	<CustomHeaderButtons left>
+	<HeaderButtonContainer left>
 		{isIOS
-			? <Item title={I18n.t('Cancel')} onPress={onPress} testID={testID} />
-			: <Item title='close' iconName='close' onPress={onPress} testID={testID} />
+			? <HeaderButtonItem title={I18n.t('Cancel')} onPress={onPress} testID={testID} />
+			: <HeaderButtonItem iconName='close' onPress={onPress} testID={testID} />
 		}
-	</CustomHeaderButtons>
+	</HeaderButtonContainer>
 ));
 
 export const MoreButton = React.memo(({ onPress, testID }) => (
-	<CustomHeaderButtons>
-		<Item title='more' iconName='kebab' onPress={onPress} testID={testID} />
-	</CustomHeaderButtons>
+	<HeaderButtonContainer>
+		<HeaderButtonItem iconName='kebab' onPress={onPress} testID={testID} />
+	</HeaderButtonContainer>
 ));
 
 export const SaveButton = React.memo(({ onPress, testID, ...props }) => (
-	<CustomHeaderButtons>
-		<Item title='save' iconName='download' onPress={onPress} testID={testID} {...props} />
-	</CustomHeaderButtons>
+	<HeaderButtonContainer>
+		<HeaderButtonItem iconName='download' onPress={onPress} testID={testID} {...props} />
+	</HeaderButtonContainer>
 ));
 
 export const PreferencesButton = React.memo(({ onPress, testID, ...props }) => (
-	<CustomHeaderButtons>
-		<Item title='preferences' iconName='settings' onPress={onPress} testID={testID} {...props} />
-	</CustomHeaderButtons>
+	<HeaderButtonContainer>
+		<HeaderButtonItem iconName='settings' onPress={onPress} testID={testID} {...props} />
+	</HeaderButtonContainer>
 ));
 
 export const LegalButton = React.memo(({ navigation, testID }) => (
