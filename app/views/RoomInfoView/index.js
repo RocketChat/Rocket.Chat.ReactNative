@@ -15,7 +15,7 @@ import sharedStyles from '../Styles';
 import RocketChat from '../../lib/rocketchat';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
-import { HeaderButtonContainer, CloseModalButton, HeaderButtonItem } from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import log, { logEvent, events } from '../../utils/log';
 import { themes } from '../../constants/colors';
@@ -109,12 +109,12 @@ class RoomInfoView extends React.Component {
 		const rid = route.params?.rid;
 		const showCloseModal = route.params?.showCloseModal;
 		navigation.setOptions({
-			headerLeft: showCloseModal ? () => <CloseModalButton navigation={navigation} /> : undefined,
+			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal navigation={navigation} /> : undefined,
 			title: t === 'd' ? I18n.t('User_Info') : I18n.t('Room_Info'),
 			headerRight: showEdit
 				? () => (
-					<HeaderButtonContainer>
-						<HeaderButtonItem
+					<HeaderButton.Container>
+						<HeaderButton.Item
 							iconName='edit'
 							onPress={() => {
 								const isLivechat = t === 'l';
@@ -123,7 +123,7 @@ class RoomInfoView extends React.Component {
 							}}
 							testID='room-info-view-edit-button'
 						/>
-					</HeaderButtonContainer>
+					</HeaderButton.Container>
 				)
 				: null
 		});

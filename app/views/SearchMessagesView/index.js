@@ -20,7 +20,7 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { CloseModalButton } from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/HeaderButton';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 
@@ -31,7 +31,7 @@ class SearchMessagesView extends React.Component {
 		};
 		const showCloseModal = route.params?.showCloseModal;
 		if (showCloseModal) {
-			options.headerLeft = () => <CloseModalButton navigation={navigation} />;
+			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
 		}
 		return options;
 	}

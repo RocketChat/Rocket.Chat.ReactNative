@@ -8,7 +8,7 @@ import Loading from '../../containers/Loading';
 import KeyboardView from '../../presentation/KeyboardView';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
-import { HeaderButtonContainer, CloseModalButton, HeaderButtonItem } from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
@@ -95,13 +95,13 @@ class CreateChannelView extends React.Component {
 			headerRight: (
 				this.valid()
 					? () => (
-						<HeaderButtonContainer>
-							<HeaderButtonItem title={I18n.t('Create')} onPress={this.submit} testID='create-discussion-submit' />
-						</HeaderButtonContainer>
+						<HeaderButton.Container>
+							<HeaderButton.Item title={I18n.t('Create')} onPress={this.submit} testID='create-discussion-submit' />
+						</HeaderButton.Container>
 					)
 					: null
 			),
-			headerLeft: showCloseModal ? () => <CloseModalButton navigation={navigation} /> : undefined
+			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal navigation={navigation} /> : undefined
 		});
 	}
 

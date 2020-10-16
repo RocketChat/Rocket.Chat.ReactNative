@@ -17,7 +17,7 @@ import { LISTENER } from '../containers/Toast';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { getUserSelector } from '../selectors/login';
-import { HeaderButtonContainer, CancelModalButton, HeaderButtonItem } from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/HeaderButton';
 import store from '../lib/createStore';
 import { setUser } from '../actions/login';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -78,15 +78,15 @@ class StatusView extends React.Component {
 		const { navigation, isMasterDetail } = this.props;
 		navigation.setOptions({
 			title: I18n.t('Edit_Status'),
-			headerLeft: isMasterDetail ? undefined : () => <CancelModalButton onPress={this.close} />,
+			headerLeft: isMasterDetail ? undefined : () => <HeaderButton.CancelModal onPress={this.close} />,
 			headerRight: () => (
-				<HeaderButtonContainer>
-					<HeaderButtonItem
+				<HeaderButton.Container>
+					<HeaderButton.Item
 						title={I18n.t('Done')}
 						onPress={this.submit}
 						testID='status-view-submit'
 					/>
-				</HeaderButtonContainer>
+				</HeaderButton.Container>
 			)
 		});
 	}

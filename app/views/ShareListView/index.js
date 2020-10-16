@@ -15,7 +15,7 @@ import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import DirectoryItem, { ROW_HEIGHT } from '../../presentation/DirectoryItem';
 import ServerItem from '../../presentation/ServerItem';
-import { CancelModalButton, HeaderButtonContainer, HeaderButtonItem } from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/HeaderButton';
 import ShareListHeader from './Header';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 
@@ -154,12 +154,12 @@ class ShareListView extends React.Component {
 		navigation.setOptions({
 			headerLeft: () => (searching
 				? (
-					<HeaderButtonContainer left>
-						<HeaderButtonItem title='cancel' iconName='close' onPress={this.cancelSearch} />
-					</HeaderButtonContainer>
+					<HeaderButton.Container left>
+						<HeaderButton.Item title='cancel' iconName='close' onPress={this.cancelSearch} />
+					</HeaderButton.Container>
 				)
 				: (
-					<CancelModalButton
+					<HeaderButton.CancelModal
 						onPress={ShareExtension.close}
 						testID='share-extension-close'
 					/>
@@ -169,9 +169,9 @@ class ShareListView extends React.Component {
 				searching
 					? null
 					: (
-						<HeaderButtonContainer>
-							<HeaderButtonItem iconName='search' onPress={this.initSearch} />
-						</HeaderButtonContainer>
+						<HeaderButton.Container>
+							<HeaderButton.Item iconName='search' onPress={this.initSearch} />
+						</HeaderButton.Container>
 					)
 			)
 		});

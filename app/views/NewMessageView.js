@@ -17,7 +17,7 @@ import I18n from '../i18n';
 import log, { logEvent, events } from '../utils/log';
 import SearchBox from '../containers/SearchBox';
 import { CustomIcon } from '../lib/Icons';
-import { CloseModalButton } from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
 
 class NewMessageView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
-		headerLeft: () => <CloseModalButton navigation={navigation} testID='new-message-view-close' />,
+		headerLeft: () => <HeaderButton.CloseModal navigation={navigation} testID='new-message-view-close' />,
 		title: I18n.t('New_Message')
 	})
 

@@ -3,7 +3,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 import { View } from 'react-native';
 
-import { HeaderButtonContainer, HeaderButtonItem } from '../../app/containers/HeaderButton';
+import * as HeaderButton from '../../app/containers/HeaderButton';
 import Header from '../../app/containers/Header';
 import { ThemeContext } from '../../app/theme';
 
@@ -21,28 +21,28 @@ stories.add('title', () => (
 	<>
 		<HeaderExample
 			left={() => (
-				<HeaderButtonContainer left>
-					<HeaderButtonItem title='threads' />
-				</HeaderButtonContainer>
+				<HeaderButton.Container left>
+					<HeaderButton.Item title='threads' />
+				</HeaderButton.Container>
 			)}
 			right={() => (
-				<HeaderButtonContainer>
-					<HeaderButtonItem title='threads' />
-				</HeaderButtonContainer>
+				<HeaderButton.Container>
+					<HeaderButton.Item title='threads' />
+				</HeaderButton.Container>
 			)}
 		/>
 		<HeaderExample
 			left={() => (
-				<HeaderButtonContainer left>
-					<HeaderButtonItem title='threads' />
-					<HeaderButtonItem title='search' />
-				</HeaderButtonContainer>
+				<HeaderButton.Container left>
+					<HeaderButton.Item title='threads' />
+					<HeaderButton.Item title='search' />
+				</HeaderButton.Container>
 			)}
 			right={() => (
-				<HeaderButtonContainer>
-					<HeaderButtonItem title='threads' />
-					<HeaderButtonItem title='search' />
-				</HeaderButtonContainer>
+				<HeaderButton.Container>
+					<HeaderButton.Item title='threads' />
+					<HeaderButton.Item title='search' />
+				</HeaderButton.Container>
 			)}
 		/>
 	</>
@@ -52,28 +52,28 @@ stories.add('icons', () => (
 	<>
 		<HeaderExample
 			left={() => (
-				<HeaderButtonContainer left>
-					<HeaderButtonItem iconName='threads' />
-				</HeaderButtonContainer>
+				<HeaderButton.Container left>
+					<HeaderButton.Item iconName='threads' />
+				</HeaderButton.Container>
 			)}
 			right={() => (
-				<HeaderButtonContainer>
-					<HeaderButtonItem iconName='threads' />
-				</HeaderButtonContainer>
+				<HeaderButton.Container>
+					<HeaderButton.Item iconName='threads' />
+				</HeaderButton.Container>
 			)}
 		/>
 		<HeaderExample
 			left={() => (
-				<HeaderButtonContainer left>
-					<HeaderButtonItem iconName='threads' />
-					<HeaderButtonItem iconName='search' />
-				</HeaderButtonContainer>
+				<HeaderButton.Container left>
+					<HeaderButton.Item iconName='threads' />
+					<HeaderButton.Item iconName='search' />
+				</HeaderButton.Container>
 			)}
 			right={() => (
-				<HeaderButtonContainer>
-					<HeaderButtonItem iconName='threads' />
-					<HeaderButtonItem iconName='search' />
-				</HeaderButtonContainer>
+				<HeaderButton.Container>
+					<HeaderButton.Item iconName='threads' />
+					<HeaderButton.Item iconName='search' />
+				</HeaderButton.Container>
 			)}
 		/>
 	</>
@@ -83,11 +83,11 @@ stories.add('badge', () => (
 	<>
 		<HeaderExample
 			left={() => (
-				<HeaderButtonContainer left>
-					<HeaderButtonItem iconName='threads' badgeText='9' badgeColor='red' />
-					<HeaderButtonItem iconName='threads' badgeText='99' badgeColor='red' />
-					<HeaderButtonItem iconName='threads' badgeText='999' badgeColor='red' />
-				</HeaderButtonContainer>
+				<HeaderButton.Container left>
+					<HeaderButton.Item iconName='threads' badgeText='9' badgeColor='red' />
+					<HeaderButton.Item iconName='threads' badgeText='99' badgeColor='red' />
+					<HeaderButton.Item iconName='threads' badgeText='999' badgeColor='red' />
+				</HeaderButton.Container>
 			)}
 		/>
 	</>
@@ -99,15 +99,15 @@ const ThemeStory = ({ theme }) => (
 	>
 		<HeaderExample
 			left={() => (
-				<HeaderButtonContainer left>
-					<HeaderButtonItem iconName='threads' />
-				</HeaderButtonContainer>
+				<HeaderButton.Container left>
+					<HeaderButton.Item iconName='threads' />
+				</HeaderButton.Container>
 			)}
 			right={() => (
-				<HeaderButtonContainer>
-					<HeaderButtonItem title='Threads' />
-					<HeaderButtonItem iconName='threads' badgeText='9' badgeColor='red' />
-				</HeaderButtonContainer>
+				<HeaderButton.Container>
+					<HeaderButton.Item title='Threads' />
+					<HeaderButton.Item iconName='threads' badgeText='9' badgeColor='red' />
+				</HeaderButton.Container>
 			)}
 		/>
 	</ThemeContext.Provider>
@@ -118,5 +118,45 @@ stories.add('themes', () => (
 		<ThemeStory theme='light' />
 		<ThemeStory theme='dark' />
 		<ThemeStory theme='black' />
+	</>
+));
+
+stories.add('common', () => (
+	<>
+		<HeaderExample
+			left={() => (
+				<HeaderButton.Drawer />
+			)}
+		/>
+		<HeaderExample
+			left={() => (
+				<HeaderButton.CloseModal />
+			)}
+		/>
+		<HeaderExample
+			left={() => (
+				<HeaderButton.CancelModal />
+			)}
+		/>
+		<HeaderExample
+			right={() => (
+				<HeaderButton.More />
+			)}
+		/>
+		<HeaderExample
+			right={() => (
+				<HeaderButton.Download />
+			)}
+		/>
+		<HeaderExample
+			right={() => (
+				<HeaderButton.Preferences />
+			)}
+		/>
+		<HeaderExample
+			right={() => (
+				<HeaderButton.Legal />
+			)}
+		/>
 	</>
 ));

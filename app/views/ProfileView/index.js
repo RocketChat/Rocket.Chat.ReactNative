@@ -24,7 +24,7 @@ import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
 import { setUser as setUserAction } from '../../actions/login';
 import { CustomIcon } from '../../lib/Icons';
-import { DrawerButton, PreferencesButton } from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
@@ -37,10 +37,10 @@ class ProfileView extends React.Component {
 			title: I18n.t('Profile')
 		};
 		if (!isMasterDetail) {
-			options.headerLeft = () => <DrawerButton navigation={navigation} />;
+			options.headerLeft = () => <HeaderButton.Drawer navigation={navigation} />;
 		}
 		options.headerRight = () => (
-			<PreferencesButton onPress={() => navigation.navigate('UserPreferencesView')} testID='preferences-view-open' />
+			<HeaderButton.Preferences onPress={() => navigation.navigate('UserPreferencesView')} testID='preferences-view-open' />
 		);
 		return options;
 	}

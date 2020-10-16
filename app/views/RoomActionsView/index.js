@@ -23,7 +23,7 @@ import DisclosureIndicator from '../../containers/DisclosureIndicator';
 import StatusBar from '../../containers/StatusBar';
 import { themes, SWITCH_TRACK_COLOR } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { CloseModalButton } from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/HeaderButton';
 import { getUserSelector } from '../../selectors/login';
 import Markdown from '../../containers/markdown';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
@@ -38,7 +38,7 @@ class RoomActionsView extends React.Component {
 			title: I18n.t('Actions')
 		};
 		if (isMasterDetail) {
-			options.headerLeft = () => <CloseModalButton navigation={navigation} testID='room-actions-view-close' />;
+			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='room-actions-view-close' />;
 		}
 		return options;
 	}

@@ -62,7 +62,7 @@ const Badge = ({ text, backgroundColor, theme }) => {
 	);
 };
 
-const HeaderButtonItem = ({
+const Item = ({
 	title, iconName, onPress, testID, theme, badgeText, badgeColor
 }) => (
 	<Touchable onPress={onPress} testID={testID} hitSlop={BUTTON_HIT_SLOP} style={styles.container}>
@@ -83,7 +83,7 @@ Badge.propTypes = {
 	theme: PropTypes.string
 };
 
-HeaderButtonItem.propTypes = {
+Item.propTypes = {
 	onPress: PropTypes.func.isRequired,
 	title: PropTypes.string,
 	iconName: PropTypes.string,
@@ -93,4 +93,6 @@ HeaderButtonItem.propTypes = {
 	badgeColor: PropTypes.string
 };
 
-export default withTheme(HeaderButtonItem);
+Item.displayName = 'HeaderButton.Item';
+
+export default withTheme(Item);
