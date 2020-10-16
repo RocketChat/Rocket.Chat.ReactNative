@@ -1,38 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { HeaderButton, Item } from 'react-navigation-header-buttons';
 
-import { CustomIcon } from '../../lib/Icons';
 import { isIOS } from '../../utils/deviceInfo';
-import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
-import { withTheme } from '../../theme';
 import HeaderButtonContainer from './HeaderButtonContainer';
 import HeaderButtonItem from './HeaderButtonItem';
 
-export const headerIconSize = 23;
+export { HeaderButtonContainer, HeaderButtonItem };
 
-export { HeaderButtonContainer, HeaderButtonItem }
-
-const CustomHeaderButton = React.memo(withTheme(({ theme, ...props }) => (
-	<HeaderButton
-		{...props}
-		IconComponent={CustomIcon}
-		iconSize={headerIconSize}
-		color={themes[theme].headerTintColor}
-	/>
-)));
-
-// export const HeaderButtonContainer = React.memo(props => (
-// 	<HeaderButtons
-// 		HeaderButtonComponent={CustomHeaderButton}
-// 		{...props}
-// 	/>
-// ));
-
-export const DrawerButton = React.memo(({ navigation, testID, ...otherProps }) => (
+export const DrawerButton = React.memo(({ navigation, testID, ...props }) => (
 	<HeaderButtonContainer left>
-		<HeaderButtonItem iconName='hamburguer' onPress={navigation.toggleDrawer} testID={testID} {...otherProps} />
+		<HeaderButtonItem iconName='hamburguer' onPress={navigation.toggleDrawer} testID={testID} {...props} />
 	</HeaderButtonContainer>
 ));
 
@@ -75,9 +53,6 @@ export const LegalButton = React.memo(({ navigation, testID }) => (
 	<MoreButton onPress={() => navigation.navigate('LegalView')} testID={testID} />
 ));
 
-CustomHeaderButton.propTypes = {
-	theme: PropTypes.string
-};
 DrawerButton.propTypes = {
 	navigation: PropTypes.object.isRequired,
 	testID: PropTypes.string.isRequired
@@ -107,5 +82,3 @@ LegalButton.propTypes = {
 	navigation: PropTypes.object.isRequired,
 	testID: PropTypes.string.isRequired
 };
-
-export { Item };
