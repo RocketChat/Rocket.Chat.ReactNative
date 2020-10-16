@@ -17,85 +17,76 @@ const HeaderExample = ({ left, right }) => (
 	/>
 );
 
-stories.add('left buttons', () => (
+stories.add('title', () => (
 	<>
 		<HeaderExample
 			left={() => (
 				<HeaderButtonContainer left>
-					<HeaderButtonItem name='threads' />
+					<HeaderButtonItem title='threads' />
+				</HeaderButtonContainer>
+			)}
+			right={() => (
+				<HeaderButtonContainer>
+					<HeaderButtonItem title='threads' />
 				</HeaderButtonContainer>
 			)}
 		/>
 		<HeaderExample
 			left={() => (
 				<HeaderButtonContainer left>
-					<HeaderButtonItem name='threads' />
-					<HeaderButtonItem name='search' />
+					<HeaderButtonItem title='threads' />
+					<HeaderButtonItem title='search' />
+				</HeaderButtonContainer>
+			)}
+			right={() => (
+				<HeaderButtonContainer>
+					<HeaderButtonItem title='threads' />
+					<HeaderButtonItem title='search' />
 				</HeaderButtonContainer>
 			)}
 		/>
 	</>
 ));
 
-stories.add('right buttons', () => (
+stories.add('icons', () => (
 	<>
 		<HeaderExample
+			left={() => (
+				<HeaderButtonContainer left>
+					<HeaderButtonItem iconName='threads' />
+				</HeaderButtonContainer>
+			)}
 			right={() => (
 				<HeaderButtonContainer>
-					<HeaderButtonItem name='threads' />
+					<HeaderButtonItem iconName='threads' />
 				</HeaderButtonContainer>
 			)}
 		/>
 		<HeaderExample
+			left={() => (
+				<HeaderButtonContainer left>
+					<HeaderButtonItem iconName='threads' />
+					<HeaderButtonItem iconName='search' />
+				</HeaderButtonContainer>
+			)}
 			right={() => (
 				<HeaderButtonContainer>
-					<HeaderButtonItem name='threads' />
-					<HeaderButtonItem name='search' />
+					<HeaderButtonItem iconName='threads' />
+					<HeaderButtonItem iconName='search' />
 				</HeaderButtonContainer>
 			)}
 		/>
 	</>
 ));
 
-stories.add('left and right buttons', () => (
+stories.add('badge', () => (
 	<>
 		<HeaderExample
 			left={() => (
 				<HeaderButtonContainer left>
-					<HeaderButtonItem name='threads' />
-				</HeaderButtonContainer>
-			)}
-			right={() => (
-				<HeaderButtonContainer>
-					<HeaderButtonItem name='threads' />
-				</HeaderButtonContainer>
-			)}
-		/>
-		<HeaderExample
-			left={() => (
-				<HeaderButtonContainer left>
-					<HeaderButtonItem name='threads' />
-					<HeaderButtonItem name='search' />
-				</HeaderButtonContainer>
-			)}
-			right={() => (
-				<HeaderButtonContainer>
-					<HeaderButtonItem name='threads' />
-					<HeaderButtonItem name='search' />
-				</HeaderButtonContainer>
-			)}
-		/>
-	</>
-));
-
-stories.add('with badge', () => (
-	<>
-		<HeaderExample
-			left={() => (
-				<HeaderButtonContainer left>
-					<HeaderButtonItem name='threads' badgeText='9' badgeColor='red' />
-					<HeaderButtonItem name='threads' badgeText='99' badgeColor='red' />
-					<HeaderButtonItem name='threads' badgeText='999' badgeColor='red' />
+					<HeaderButtonItem iconName='threads' badgeText='9' badgeColor='red' />
+					<HeaderButtonItem iconName='threads' badgeText='99' badgeColor='red' />
+					<HeaderButtonItem iconName='threads' badgeText='999' badgeColor='red' />
 				</HeaderButtonContainer>
 			)}
 		/>
@@ -109,13 +100,13 @@ const ThemeStory = ({ theme }) => (
 		<HeaderExample
 			left={() => (
 				<HeaderButtonContainer left>
-					<HeaderButtonItem name='threads' />
+					<HeaderButtonItem iconName='threads' />
 				</HeaderButtonContainer>
 			)}
 			right={() => (
 				<HeaderButtonContainer>
-					<HeaderButtonItem name='threads' />
-					<HeaderButtonItem name='threads' badgeText='9' badgeColor='red' />
+					<HeaderButtonItem title='Threads' />
+					<HeaderButtonItem iconName='threads' badgeText='9' badgeColor='red' />
 				</HeaderButtonContainer>
 			)}
 		/>

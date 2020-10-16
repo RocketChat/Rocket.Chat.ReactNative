@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import Touchable from 'react-native-platform-touchable';
 
@@ -27,6 +27,19 @@ const styles = StyleSheet.create({
 	badgeText: {
 		fontSize: 10,
 		fontWeight: '600'
+	},
+	title: {
+		...Platform.select({
+			android: {
+				fontFamily: 'sans-serif-medium',
+				fontSize: 14,
+				// marginHorizontal: 11
+			},
+			default: {
+				fontSize: 17,
+				// marginHorizontal: 10,
+			}
+		})
 	}
 });
 
@@ -49,11 +62,15 @@ const Badge = ({ text, backgroundColor, theme }) => {
 };
 
 const HeaderButtonItem = ({
-	name, onPress, testID, theme, badgeText, badgeColor
+	title, iconName, onPress, testID, theme, badgeText, badgeColor
 }) => (
 	<Touchable onPress={onPress} testID={testID} hitSlop={BUTTON_HIT_SLOP} style={styles.container}>
 		<>
-			<CustomIcon name={name} size={24} color={themes[theme].headerTintColor} />
+			{
+				iconName
+					? <CustomIcon name={iconName} size={24} color={themes[theme].headerTintColor} />
+					: <Text style={[styles.title, { color: themes[theme].headerTintColor }]}>{title}</Text>
+			}
 			<Badge text={badgeText} backgroundColor={badgeColor} theme={theme} />
 		</>
 	</Touchable>
@@ -66,8 +83,9 @@ Badge.propTypes = {
 };
 
 HeaderButtonItem.propTypes = {
-	name: PropTypes.string.isRequired,
 	onPress: PropTypes.func.isRequired,
+	title: PropTypes.string,
+	iconName: PropTypes.string,
 	testID: PropTypes.string,
 	theme: PropTypes.string,
 	badgeText: PropTypes.number,

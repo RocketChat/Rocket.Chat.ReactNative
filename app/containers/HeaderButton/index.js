@@ -32,7 +32,7 @@ export const CustomHeaderButtons = React.memo(props => (
 
 export const DrawerButton = React.memo(({ navigation, testID, ...otherProps }) => (
 	<CustomHeaderButtons left>
-		<Item title='drawer' iconName='hamburguer' onPress={navigation.toggleDrawer} testID={testID} {...otherProps} />
+		<HeaderButtonItem title='drawer' iconName='hamburguer' onPress={navigation.toggleDrawer} testID={testID} {...otherProps} />
 	</CustomHeaderButtons>
 ));
 
