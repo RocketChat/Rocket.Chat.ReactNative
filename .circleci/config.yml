@@ -347,7 +347,7 @@ jobs:
               echo $APP_STORE_CONNECT_API_KEY | base64 --decode > ./fastlane/app_store_connect_api_key.p8
               bundle exec fastlane ios release
             else
-              bundle exec fastlane ios build
+              bundle exec fastlane ios build_fork
             fi
           working_directory: ios
 

@@ -59,20 +59,9 @@ platform :ios do
     gym(scheme: "RocketChatRN", workspace: "RocketChatRN.xcworkspace")
   end
 
-  desc "Build App for development"
-  lane :build do |options|
-    xcodebuild(
-      workspace: "RocketChatRN.xcworkspace",
-      scheme: "RocketChatRN",
-      configuration: "Debug",
-      clean: options[:clean],
-      build: true,
-      destination: "generic/platform=iOS",
-      build_settings: {
-        "CODE_SIGNING_REQUIRED" => "NO",
-        "CODE_SIGN_IDENTITY" => ""
-      }
-    )
+  desc "Build fork app"
+  lane :build_fork do
+    gym(scheme: "RocketChatRN", workspace: "RocketChatRN.xcworkspace", skip_codesigning: true, skip_archive: true)
   end
 
   after_all do |lane|
