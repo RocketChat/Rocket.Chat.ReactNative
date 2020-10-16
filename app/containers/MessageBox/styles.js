@@ -109,5 +109,16 @@ export default StyleSheet.create({
 	},
 	buttonsWhitespace: {
 		width: 15
+	},
+	sendToChannelButton: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		paddingVertical: 8,
+		paddingHorizontal: 18
+	},
+	sendToChannelText: {
+		fontSize: 12,
+		marginLeft: 4,
+		...sharedStyles.textRegular
 	}
 });

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Alert, Keyboard, NativeModules
+	View, Alert, Keyboard, NativeModules, Text
 } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-keyboard-input';
@@ -9,6 +9,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import equal from 'deep-equal';
 import DocumentPicker from 'react-native-document-picker';
 import { Q } from '@nozbe/watermelondb';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import { generateTriggerId } from '../../lib/methods/actions';
 import TextInput from '../../presentation/TextInput';
@@ -47,6 +48,7 @@ import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/Navigation';
 import { withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
+import { CustomIcon } from '../../lib/Icons';
 
 const imagePickerConfig = {
 	cropping: true,
@@ -120,7 +122,8 @@ class MessageBox extends Component {
 			trackingType: '',
 			commandPreview: [],
 			showCommandPreview: false,
-			command: {}
+			command: {},
+			sendToChannel: false
 		};
 		this.text = '';
 		this.selection = { start: 0, end: 0 };
@@ -253,7 +256,7 @@ class MessageBox extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			showEmojiKeyboard, showSend, recording, mentions, commandPreview
+			showEmojiKeyboard, showSend, recording, mentions, commandPreview, sendToChannel
 		} = this.state;
 
 		const {
@@ -281,6 +284,9 @@ class MessageBox extends Component {
 			return true;
 		}
 		if (nextState.recording !== recording) {
+			return true;
+		}
+		if (nextState.sendToChannel !== sendToChannel) {
 			return true;
 		}
 		if (!equal(nextState.mentions, mentions)) {
@@ -843,6 +849,24 @@ class MessageBox extends Component {
 		}
 	}
 
+	onPressSendToChannel = () => this.setState(({ sendToChannel }) => ({ sendToChannel: !sendToChannel }))
+
+	renderSendToChannel = () => {
+		const { sendToChannel } = this.state;
+		const { theme, tmid } = this.props;
+
+		if (!tmid) {
+			return null;
+		}
+		// TODO: i18n missing
+		return (
+			<TouchableWithoutFeedback style={styles.sendToChannelButton} onPress={this.onPressSendToChannel}>
+				<CustomIcon name={sendToChannel ? 'checkbox-checked' : 'checkbox-unchecked'} size={24} color={themes[theme].auxiliaryText} />
+				<Text style={[styles.sendToChannelText, { color: themes[theme].auxiliaryText }]}>Send to channel</Text>
+			</TouchableWithoutFeedback>
+		);
+	}
+
 	renderContent = () => {
 		const {
 			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview
@@ -938,6 +962,7 @@ class MessageBox extends Component {
 						{textInputAndButtons}
 						{recordAudio}
 					</View>
+					{this.renderSendToChannel()}
 				</View>
 				{children}
 			</>
