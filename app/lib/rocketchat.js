@@ -441,7 +441,8 @@ const RocketChat = {
 			statusLivechat: result.me.statusLivechat,
 			emails: result.me.emails,
 			roles: result.me.roles,
-			loginEmailPassword
+			loginEmailPassword,
+			showMessageInMainThread: result.me.settings.preferences.showMessageInMainThread
 		};
 		return user;
 	},
