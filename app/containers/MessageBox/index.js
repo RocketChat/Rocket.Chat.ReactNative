@@ -123,7 +123,7 @@ class MessageBox extends Component {
 			commandPreview: [],
 			showCommandPreview: false,
 			command: {},
-			sendToChannel: false
+			tshow: false
 		};
 		this.text = '';
 		this.selection = { start: 0, end: 0 };
@@ -256,7 +256,7 @@ class MessageBox extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			showEmojiKeyboard, showSend, recording, mentions, commandPreview, sendToChannel
+			showEmojiKeyboard, showSend, recording, mentions, commandPreview, tshow
 		} = this.state;
 
 		const {
@@ -286,7 +286,7 @@ class MessageBox extends Component {
 		if (nextState.recording !== recording) {
 			return true;
 		}
-		if (nextState.sendToChannel !== sendToChannel) {
+		if (nextState.tshow !== tshow) {
 			return true;
 		}
 		if (!equal(nextState.mentions, mentions)) {
@@ -714,6 +714,7 @@ class MessageBox extends Component {
 	}
 
 	submit = async() => {
+		const { tshow } = this.state;
 		const {
 			onSubmit, rid: roomId, tmid, showSend, sharing
 		} = this.props;
@@ -777,7 +778,7 @@ class MessageBox extends Component {
 
 			// Thread
 			if (threadsEnabled && replyWithMention) {
-				onSubmit(message, replyingMessage.id);
+				onSubmit(message, replyingMessage.id, tshow);
 
 			// Legacy reply or quote (quote is a reply without mention)
 			} else {
@@ -797,7 +798,7 @@ class MessageBox extends Component {
 
 		// Normal message
 		} else {
-			onSubmit(message);
+			onSubmit(message, undefined, tshow);
 		}
 	}
 
@@ -849,10 +850,10 @@ class MessageBox extends Component {
 		}
 	}
 
-	onPressSendToChannel = () => this.setState(({ sendToChannel }) => ({ sendToChannel: !sendToChannel }))
+	onPressSendToChannel = () => this.setState(({ tshow }) => ({ tshow: !tshow }))
 
 	renderSendToChannel = () => {
-		const { sendToChannel } = this.state;
+		const { tshow } = this.state;
 		const { theme, tmid } = this.props;
 
 		if (!tmid) {
@@ -861,7 +862,7 @@ class MessageBox extends Component {
 		// TODO: i18n missing
 		return (
 			<TouchableWithoutFeedback style={styles.sendToChannelButton} onPress={this.onPressSendToChannel}>
-				<CustomIcon name={sendToChannel ? 'checkbox-checked' : 'checkbox-unchecked'} size={24} color={themes[theme].auxiliaryText} />
+				<CustomIcon name={tshow ? 'checkbox-checked' : 'checkbox-unchecked'} size={24} color={themes[theme].auxiliaryText} />
 				<Text style={[styles.sendToChannelText, { color: themes[theme].auxiliaryText }]}>Send to channel</Text>
 			</TouchableWithoutFeedback>
 		);
