@@ -75,6 +75,7 @@ const RoomItemContainer = React.memo(({
 	const isRead = getIsRead(item);
 	const _onPress = () => onPress(item);
 	const date = item.lastMessage?.ts && formatDate(item.lastMessage.ts);
+	const alert = (item.alert || item.tunread?.length);
 
 	let accessibilityLabel = name;
 	if (item.unread === 1) {
@@ -118,13 +119,14 @@ const RoomItemContainer = React.memo(({
 			prid={item.prid}
 			status={status}
 			hideUnreadStatus={item.hideUnreadStatus}
-			alert={item.alert}
+			alert={alert}
 			roomUpdatedAt={item.roomUpdatedAt}
 			lastMessage={item.lastMessage}
 			showLastMessage={showLastMessage}
 			username={username}
 			useRealName={useRealName}
 			unread={item.unread}
+			tunread={item.tunread}
 			groupMentions={item.groupMentions}
 			swipeEnabled={swipeEnabled}
 		/>

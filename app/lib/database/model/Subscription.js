@@ -42,6 +42,8 @@ export default class Subscription extends Model {
 
 	@field('group_mentions') groupMentions;
 
+	@json('tunread', sanitizer) tunread;
+
 	@date('room_updated_at') roomUpdatedAt;
 
 	@field('ro') ro;

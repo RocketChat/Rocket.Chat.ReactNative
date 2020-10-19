@@ -75,7 +75,7 @@ const GROUPS_HEADER = 'Private_Groups';
 const OMNICHANNEL_HEADER = 'Open_Livechats';
 const QUERY_SIZE = 20;
 
-const filterIsUnread = s => (s.unread > 0 || s.alert) && !s.hideUnreadStatus;
+const filterIsUnread = s => (s.unread > 0 || s.tunread?.length > 0 || s.alert) && !s.hideUnreadStatus;
 const filterIsFavorite = s => s.f;
 const filterIsOmnichannel = s => s.t === 'l';
 

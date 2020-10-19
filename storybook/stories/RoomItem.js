@@ -72,11 +72,15 @@ export default ({ theme }) => {
 			<RoomItem alert />
 			<RoomItem alert name='unread' unread={1} />
 			<RoomItem alert name='unread' unread={1000} />
+			<RoomItem alert name='thread unread' tunread={[1]} />
+			<RoomItem alert name='thread unread' tunread={new Array(1000)} />
 			<RoomItem alert name='user mentions' unread={1} userMentions={1} />
 			<RoomItem alert name='user mentions' unread={1000} userMentions={1} />
 			<RoomItem alert name='group mentions' unread={1} groupMentions={1} />
 			<RoomItem alert name='group mentions' unread={1000} groupMentions={1} />
-			<RoomItem name='user mentions > group mentions' alert unread={1000} userMentions={1} groupMentions={1} />
+			<RoomItem name='user mentions priority 1' alert unread={1000} userMentions={1} groupMentions={1} tunread={[1]} />
+			<RoomItem name='group mentions priority 2' alert unread={1000} groupMentions={1} tunread={[1]} />
+			<RoomItem name='thread unread priority 3' alert unread={1000} tunread={[1]} />
 
 			<Separator title='Last Message' />
 			<RoomItem
@@ -120,7 +124,7 @@ export default ({ theme }) => {
 			<RoomItem
 				showLastMessage
 				alert
-				unread={1000}
+				tunread={[1]}
 				lastMessage={lastMessage}
 			/>
 		</ScrollView>

@@ -25,14 +25,16 @@ const styles = StyleSheet.create({
 	}
 });
 
-const UnreadBadge = React.memo(({
-	theme, unread, userMentions, groupMentions, style
+const UnreadBadge = ({
+	theme, unread, userMentions, groupMentions, tunread, style
 }) => {
-	if (!unread || unread <= 0) {
-		return;
+	if ((!unread || unread <= 0) && (!tunread?.length)) {
+		return null;
 	}
-	if (unread >= 1000) {
-		unread = '999+';
+
+	let text = unread || tunread.length;
+	if (text >= 1000) {
+		text = '999+';
 	}
 
 	let backgroundColor = themes[theme].unreadBackground;
@@ -41,6 +43,8 @@ const UnreadBadge = React.memo(({
 		backgroundColor = themes[theme].mentionMeColor;
 	} else if (groupMentions > 0) {
 		backgroundColor = themes[theme].mentionGroupColor;
+	} else if (tunread?.length > 0) {
+		backgroundColor = themes[theme].tunreadBackground;
 	}
 
 	return (
@@ -56,17 +60,18 @@ const UnreadBadge = React.memo(({
 					styles.unreadText,
 					{ color }
 				]}
-			>{unread}
+			>{text}
 			</Text>
 		</View>
 	);
-});
+};
 
 UnreadBadge.propTypes = {
 	theme: PropTypes.string,
 	unread: PropTypes.number,
 	userMentions: PropTypes.number,
 	groupMentions: PropTypes.number,
+	tunread: PropTypes.array,
 	style: PropTypes.object
 };
 

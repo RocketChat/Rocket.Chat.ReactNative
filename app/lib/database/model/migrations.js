@@ -175,6 +175,12 @@ export default schemaMigrations({
 					columns: [
 						{ name: 'tshow', type: 'boolean', isOptional: true }
 					]
+				}),
+				addColumns({
+					table: 'subscriptions',
+					columns: [
+						{ name: 'tunread', type: 'string', isOptional: true }
+					]
 				})
 			]
 		}
