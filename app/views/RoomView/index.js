@@ -82,7 +82,8 @@ class RoomView extends React.Component {
 		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
 			username: PropTypes.string.isRequired,
-			token: PropTypes.string.isRequired
+			token: PropTypes.string.isRequired,
+			showMessageInMainThread: PropTypes.bool
 		}),
 		appState: PropTypes.string,
 		useRealName: PropTypes.bool,
@@ -1043,6 +1044,7 @@ class RoomView extends React.Component {
 					loading={loading}
 					navigation={navigation}
 					hideSystemMessages={Array.isArray(sysMes) ? sysMes : Hide_System_Messages}
+					showMessageInMainThread={user.showMessageInMainThread}
 				/>
 				{this.renderFooter()}
 				{this.renderActions()}
