@@ -5,6 +5,10 @@ import { getUnreadStyle } from './getUnreadStyle';
 const testsForTheme = (theme) => {
 	const getUnreadStyleUtil = ({ ...props }) => getUnreadStyle({ theme, ...props });
 
+	test('render empty', () => {
+		expect(getUnreadStyleUtil({})).toEqual({});
+	});
+
 	test('render unread', () => {
 		expect(getUnreadStyleUtil({
 			unread: 1
