@@ -204,6 +204,16 @@ android {
             buildConfigField "boolean", "FDROID_BUILD", "false"
         }
     }
+    sourceSets {
+        playDebug {
+            java.srcDirs = ['src/main/java', 'src/play/java']
+            manifest.srcFile 'src/play/AndroidManifest.xml'
+        }
+        playRelease {
+            java.srcDirs = ['src/main/java', 'src/play/java']
+            manifest.srcFile 'src/play/AndroidManifest.xml'
+        }
+    }
 
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
