@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 
-import sharedStyles from '../views/Styles';
-import { themes } from '../constants/colors';
+import sharedStyles from '../../views/Styles';
+import { getUnreadStyle } from './getUnreadStyle';
 
 const styles = StyleSheet.create({
 	unreadNumberContainer: {
@@ -28,23 +28,17 @@ const styles = StyleSheet.create({
 const UnreadBadge = ({
 	theme, unread, userMentions, groupMentions, tunread, style
 }) => {
-	if ((!unread || unread <= 0) && (!tunread?.length)) {
+	const { backgroundColor, color } = getUnreadStyle({
+		theme, unread, userMentions, groupMentions, tunread
+	});
+
+	if (!backgroundColor) {
 		return null;
 	}
 
 	let text = unread || tunread.length;
 	if (text >= 1000) {
 		text = '999+';
-	}
-
-	let backgroundColor = themes[theme].unreadBackground;
-	const color = themes[theme].buttonText;
-	if (userMentions > 0) {
-		backgroundColor = themes[theme].mentionMeColor;
-	} else if (groupMentions > 0) {
-		backgroundColor = themes[theme].mentionGroupColor;
-	} else if (tunread?.length > 0) {
-		backgroundColor = themes[theme].tunreadBackground;
 	}
 
 	return (
