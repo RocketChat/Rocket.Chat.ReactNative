@@ -1527,13 +1527,10 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "System",
                 "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0.5,
-                "padding": 5,
+                "fontWeight": "600",
               },
               Object {
-                "backgroundColor": "#ffe9ec",
-                "color": "#f5455c",
+                "color": "#DB0C27",
               },
             ]
           }
@@ -1574,13 +1571,10 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "System",
                 "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0.5,
-                "padding": 5,
+                "fontWeight": "600",
               },
               Object {
-                "backgroundColor": "#fff6d6",
-                "color": "#b68d00",
+                "color": "#DFAC00",
               },
             ]
           }
@@ -1620,13 +1614,10 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "System",
                 "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0.5,
-                "padding": 5,
+                "fontWeight": "600",
               },
               Object {
-                "backgroundColor": "#fde8d7",
-                "color": "#f38c39",
+                "color": "#E26D0E",
               },
             ]
           }
@@ -1666,13 +1657,10 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "System",
                 "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0.5,
-                "padding": 5,
+                "fontWeight": "600",
               },
               Object {
-                "backgroundColor": "#fde8d7",
-                "color": "#f38c39",
+                "color": "#E26D0E",
               },
             ]
           }
@@ -1770,13 +1758,10 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "System",
                 "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0.5,
-                "padding": 5,
+                "fontWeight": "600",
               },
               Object {
-                "backgroundColor": "#ffe9ec",
-                "color": "#f5455c",
+                "color": "#DB0C27",
               },
             ]
           }
@@ -1817,13 +1802,10 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "System",
                 "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0.5,
-                "padding": 5,
+                "fontWeight": "600",
               },
               Object {
-                "backgroundColor": "#fff6d6",
-                "color": "#b68d00",
+                "color": "#DFAC00",
               },
             ]
           }
@@ -1863,13 +1845,10 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "System",
                 "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0.5,
-                "padding": 5,
+                "fontWeight": "600",
               },
               Object {
-                "backgroundColor": "#fde8d7",
-                "color": "#f38c39",
+                "color": "#E26D0E",
               },
             ]
           }
@@ -1909,13 +1888,10 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "System",
                 "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0.5,
-                "padding": 5,
+                "fontWeight": "600",
               },
               Object {
-                "backgroundColor": "#fde8d7",
-                "color": "#f38c39",
+                "color": "#E26D0E",
               },
             ]
           }
@@ -2013,13 +1989,10 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "backgroundColor": "transparent",
                 "fontFamily": "System",
                 "fontSize": 16,
-                "fontWeight": "500",
-                "letterSpacing": 0.5,
-                "padding": 5,
+                "fontWeight": "600",
               },
               Object {
-                "backgroundColor": "#fff6d6",
-                "color": "#b68d00",
+                "color": "#DFAC00",
               },
             ]
           }
@@ -6154,6 +6127,10 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
     >
       Alerts
     </Text>
+    View
+    View
+    View
+    View
     View
     View
     View
