@@ -125,6 +125,7 @@ const RoomItemContainer = React.memo(({
 			username={username}
 			useRealName={useRealName}
 			unread={item.unread}
+			tunread={item.tunread}
 			groupMentions={item.groupMentions}
 			swipeEnabled={swipeEnabled}
 		/>
