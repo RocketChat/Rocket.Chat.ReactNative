@@ -10,7 +10,7 @@ import I18n from '../../../i18n';
 import styles from '../../../views/RoomsListView/styles';
 import { themes, SWITCH_TRACK_COLOR } from '../../../constants/colors';
 import { withTheme } from '../../../theme';
-import UnreadBadge from '../../../presentation/UnreadBadge';
+import { UnreadBadge } from '../../../presentation/UnreadBadge';
 import RocketChat from '../../../lib/rocketchat';
 import { isOmnichannelStatusAvailable, changeLivechatStatus } from '../lib';
 
