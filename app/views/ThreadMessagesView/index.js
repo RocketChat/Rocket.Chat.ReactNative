@@ -11,6 +11,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import styles from './styles';
 import Message from '../../containers/message';
+import Item from './Item';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
@@ -303,25 +304,26 @@ class ThreadMessagesView extends React.Component {
 		const {
 			user, navigation, baseUrl, useRealName
 		} = this.props;
-		return (
-			<Message
-				key={item.id}
-				item={item}
-				user={user}
-				archived={false}
-				broadcast={false}
-				status={item.status}
-				navigation={navigation}
-				timeFormat='MMM D'
-				customThreadTimeFormat='MMM Do YYYY, h:mm:ss a'
-				onThreadPress={this.onThreadPress}
-				baseUrl={baseUrl}
-				useRealName={useRealName}
-				getCustomEmoji={this.getCustomEmoji}
-				navToRoomInfo={this.navToRoomInfo}
-				showAttachment={this.showAttachment}
-			/>
-		);
+		return <Item {...{ item, user, navigation, baseUrl, useRealName }} />;
+		// return (
+		// 	<Message
+		// 		key={item.id}
+		// 		item={item}
+		// 		user={user}
+		// 		archived={false}
+		// 		broadcast={false}
+		// 		status={item.status}
+		// 		navigation={navigation}
+		// 		timeFormat='MMM D'
+		// 		customThreadTimeFormat='MMM Do YYYY, h:mm:ss a'
+		// 		onThreadPress={this.onThreadPress}
+		// 		baseUrl={baseUrl}
+		// 		useRealName={useRealName}
+		// 		getCustomEmoji={this.getCustomEmoji}
+		// 		navToRoomInfo={this.navToRoomInfo}
+		// 		showAttachment={this.showAttachment}
+		// 	/>
+		// );
 	}
 
 	render() {
