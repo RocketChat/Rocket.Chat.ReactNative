@@ -85,7 +85,11 @@ UnreadBadge.propTypes = {
 	unread: PropTypes.number,
 	userMentions: PropTypes.number,
 	groupMentions: PropTypes.number,
-	style: PropTypes.object
+	style: PropTypes.object,
+	tunread: PropTypes.array,
+	tunreadUser: PropTypes.array,
+	tunreadGroup: PropTypes.array,
+	small: PropTypes.bool
 };
 
 export default withTheme(UnreadBadge);
