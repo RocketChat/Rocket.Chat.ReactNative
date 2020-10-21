@@ -5,7 +5,6 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
@@ -301,7 +300,6 @@ class ThreadMessagesView extends React.Component {
 		const { subscription } = this.state;
 		const { theme } = this.props;
 		if (subscription?.tunreadUser?.includes(item?.id)) {
-			// console.log(item?.id, this.subscription?.tunread)
 			return themes[theme].mentionMeBackground;
 		}
 		if (subscription?.tunreadGroup?.includes(item?.id)) {
@@ -331,25 +329,6 @@ class ThreadMessagesView extends React.Component {
 				onPress={this.onThreadPress}
 			/>
 		);
-		// return (
-		// 	<Message
-		// 		key={item.id}
-		// 		item={item}
-		// 		user={user}
-		// 		archived={false}
-		// 		broadcast={false}
-		// 		status={item.status}
-		// 		navigation={navigation}
-		// 		timeFormat='MMM D'
-		// 		customThreadTimeFormat='MMM Do YYYY, h:mm:ss a'
-		// 		onThreadPress={this.onThreadPress}
-		// 		baseUrl={baseUrl}
-		// 		useRealName={useRealName}
-		// 		getCustomEmoji={this.getCustomEmoji}
-		// 		navToRoomInfo={this.navToRoomInfo}
-		// 		showAttachment={this.showAttachment}
-		// 	/>
-		// );
 	}
 
 	render() {

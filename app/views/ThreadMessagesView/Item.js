@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 import moment from 'moment';
@@ -13,13 +13,20 @@ import { CustomIcon } from '../../lib/Icons';
 import { formatDate } from '../../utils/room';
 
 const styles = StyleSheet.create({
+	container: {
+		flexDirection: 'row',
+		padding: 16
+	},
+	contentContainer: {
+		flexDirection: 'column',
+		flex: 1
+	},
 	titleContainer: {
 		flexDirection: 'row',
 		marginBottom: 2,
 		alignItems: 'center'
 	},
 	title: {
-		// flexGrow: 1,
 		flexShrink: 1,
 		fontSize: 18,
 		...sharedStyles.textMedium
@@ -56,7 +63,7 @@ const styles = StyleSheet.create({
 		height: 12,
 		borderRadius: 6
 	}
-})
+});
 
 const Item = ({
 	item, baseUrl, theme, useRealName, user, badgeColor, onPress
@@ -69,7 +76,7 @@ const Item = ({
 
 	return (
 		<Touch theme={theme} onPress={() => onPress(item)}>
-			<View style={{ flexDirection: 'row', padding: 16 }}>
+			<View style={styles.container}>
 				<Avatar
 					style={styles.avatar}
 					text={item?.u?.username}
@@ -80,7 +87,7 @@ const Item = ({
 					token={user?.token}
 					theme={theme}
 				/>
-				<View style={{ flexDirection: 'column', flex: 1 }}>
+				<View style={styles.contentContainer}>
 					<View style={styles.titleContainer}>
 						<Text style={[styles.title, { color: themes[theme].titleText }]} numberOfLines={1}>{username}</Text>
 						<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
@@ -113,6 +120,16 @@ const Item = ({
 			</View>
 		</Touch>
 	);
+};
+
+Item.propTypes = {
+	item: PropTypes.object,
+	baseUrl: PropTypes.string,
+	theme: PropTypes.string,
+	useRealName: PropTypes.bool,
+	user: PropTypes.object,
+	badgeColor: PropTypes.string,
+	onPress: PropTypes.func
 };
 
 export default withTheme(Item);
