@@ -46,7 +46,6 @@ class ThreadMessagesView extends React.Component {
 		baseUrl: PropTypes.string,
 		useRealName: PropTypes.bool,
 		theme: PropTypes.string,
-		customEmojis: PropTypes.object,
 		isMasterDetail: PropTypes.bool
 	}
 
@@ -250,15 +249,6 @@ class ThreadMessagesView extends React.Component {
 		}) : null
 	)
 
-	getCustomEmoji = (name) => {
-		const { customEmojis } = this.props;
-		const emoji = customEmojis[name];
-		if (emoji) {
-			return emoji;
-		}
-		return null;
-	}
-
 	showAttachment = (attachment) => {
 		const { navigation } = this.props;
 		navigation.navigate('AttachmentView', { attachment });
@@ -325,7 +315,6 @@ class ThreadMessagesView extends React.Component {
 					useRealName,
 					badgeColor
 				}}
-				getCustomEmoji={this.getCustomEmoji}
 				onPress={this.onThreadPress}
 			/>
 		);
@@ -366,7 +355,6 @@ const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	useRealName: state.settings.UI_Use_Real_Name,
-	customEmojis: state.customEmojis,
 	isMasterDetail: state.app.isMasterDetail
 });
 
