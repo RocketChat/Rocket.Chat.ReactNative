@@ -84,9 +84,9 @@ stories.add('badge', () => (
 		<HeaderExample
 			left={() => (
 				<HeaderButton.Container left>
-					<HeaderButton.Item iconName='threads' badgeText='9' badgeColor='red' />
-					<HeaderButton.Item iconName='threads' badgeText='99' badgeColor='red' />
-					<HeaderButton.Item iconName='threads' badgeText='999' badgeColor='red' />
+					<HeaderButton.Item iconName='threads' badge={() => <HeaderButton.Badge tunread={[1]} />} />
+					<HeaderButton.Item iconName='threads' badge={() => <HeaderButton.Badge tunread={[1]} tunreadUser={[1]} />} />
+					<HeaderButton.Item iconName='threads' badge={() => <HeaderButton.Badge tunread={[1]} tunreadGroup={[1]} />} />
 				</HeaderButton.Container>
 			)}
 		/>
@@ -106,7 +106,7 @@ const ThemeStory = ({ theme }) => (
 			right={() => (
 				<HeaderButton.Container>
 					<HeaderButton.Item title='Threads' />
-					<HeaderButton.Item iconName='threads' badgeText='9' badgeColor='red' />
+					<HeaderButton.Item iconName='threads' badge={() => <HeaderButton.Badge tunread={[1]} />} />
 				</HeaderButton.Container>
 			)}
 		/>

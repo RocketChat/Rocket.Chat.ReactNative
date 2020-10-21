@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-	Text, View, StyleSheet, Platform
-} from 'react-native';
+import { Text, StyleSheet, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import Touchable from 'react-native-platform-touchable';
 
@@ -18,19 +16,6 @@ const styles = StyleSheet.create({
 	container: {
 		marginHorizontal: 6
 	},
-	badgeContainer: {
-		padding: 2,
-		position: 'absolute',
-		right: -3,
-		top: -3,
-		borderRadius: 10,
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	badgeText: {
-		fontSize: 10,
-		fontWeight: '600'
-	},
 	title: {
 		...Platform.select({
 			android: {
@@ -44,26 +29,8 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Badge = ({ text, backgroundColor, theme }) => {
-	if (!text) {
-		return null;
-	}
-
-	if (text > 99) {
-		text = '+99';
-	}
-
-	const minWidth = 11 + text.length * 5;
-
-	return (
-		<View style={[styles.badgeContainer, { minWidth, backgroundColor }]}>
-			<Text style={[styles.badgeText, { color: themes[theme].buttonText }]} numberOfLines={1}>{text}</Text>
-		</View>
-	);
-};
-
 const Item = ({
-	title, iconName, onPress, testID, theme, badgeText, badgeColor
+	title, iconName, onPress, testID, theme, badge
 }) => (
 	<Touchable onPress={onPress} testID={testID} hitSlop={BUTTON_HIT_SLOP} style={styles.container}>
 		<>
@@ -72,16 +39,10 @@ const Item = ({
 					? <CustomIcon name={iconName} size={24} color={themes[theme].headerTintColor} />
 					: <Text style={[styles.title, { color: themes[theme].headerTintColor }]}>{title}</Text>
 			}
-			<Badge text={badgeText} backgroundColor={badgeColor} theme={theme} />
+			{badge ? badge() : null}
 		</>
 	</Touchable>
 );
-
-Badge.propTypes = {
-	text: PropTypes.string,
-	backgroundColor: PropTypes.string,
-	theme: PropTypes.string
-};
 
 Item.propTypes = {
 	onPress: PropTypes.func.isRequired,
@@ -89,8 +50,7 @@ Item.propTypes = {
 	iconName: PropTypes.string,
 	testID: PropTypes.string,
 	theme: PropTypes.string,
-	badgeText: PropTypes.number,
-	badgeColor: PropTypes.string
+	badge: PropTypes.func
 };
 
 Item.displayName = 'HeaderButton.Item';
