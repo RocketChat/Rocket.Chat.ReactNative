@@ -198,6 +198,7 @@ android {
             applicationId "chat.rocket.android"
             dimension = "type"
             buildConfigField "boolean", "FDROID_BUILD", "true"
+            resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
         }
         play {
             dimension = "type"
