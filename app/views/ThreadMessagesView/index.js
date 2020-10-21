@@ -10,7 +10,6 @@ import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import styles from './styles';
-import Message from '../../containers/message';
 import Item from './Item';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
@@ -26,11 +25,7 @@ import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/HeaderButton';
-
-const Separator = React.memo(({ theme }) => <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />);
-Separator.propTypes = {
-	theme: PropTypes.string
-};
+import Separator from '../../containers/Separator';
 
 const API_FETCH_COUNT = 50;
 
@@ -349,7 +344,7 @@ class ThreadMessagesView extends React.Component {
 					onEndReachedThreshold={0.5}
 					maxToRenderPerBatch={5}
 					initialNumToRender={1}
-					ItemSeparatorComponent={this.renderSeparator}
+					ItemSeparatorComponent={Separator}
 					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 				/>
 			</SafeAreaView>

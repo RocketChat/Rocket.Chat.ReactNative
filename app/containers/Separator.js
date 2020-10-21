@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { themes } from '../constants/colors';
+import { withTheme } from '../theme';
 
 const styles = StyleSheet.create({
 	separator: {
@@ -26,4 +27,4 @@ Separator.propTypes = {
 	theme: PropTypes.string
 };
 
-export default Separator;
+export default withTheme(Separator);
