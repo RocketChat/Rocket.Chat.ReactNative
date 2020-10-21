@@ -10,6 +10,7 @@ import sharedStyles from '../Styles';
 import { themes } from '../../constants/colors';
 import Markdown from '../../containers/markdown';
 import { CustomIcon } from '../../lib/Icons';
+import { formatDate } from '../../utils/room';
 
 const styles = StyleSheet.create({
 	titleContainer: {
@@ -43,7 +44,8 @@ const styles = StyleSheet.create({
 	},
 	detailText: {
 		fontSize: 10,
-		...sharedStyles.textMedium
+		marginLeft: 2,
+		...sharedStyles.textSemibold
 	},
 	badgeContainer: {
 		marginLeft: 8,
@@ -57,7 +59,7 @@ const styles = StyleSheet.create({
 })
 
 const Item = ({
-	item, baseUrl, theme, useRealName, user
+	item, baseUrl, theme, useRealName, user, badgeColor, onPress
 }) => {
 	const username = (useRealName && item?.u?.name) || item?.u?.username;
 	let time;
@@ -66,7 +68,7 @@ const Item = ({
 	}
 
 	return (
-		<Touch theme={theme}>
+		<Touch theme={theme} onPress={() => onPress(item)}>
 			<View style={{ flexDirection: 'row', padding: 16 }}>
 				<Avatar
 					style={styles.avatar}
@@ -87,23 +89,27 @@ const Item = ({
 					<View style={styles.detailsContainer}>
 						<View style={styles.detailContainer}>
 							<CustomIcon name='threads' size={20} color={themes[theme].auxiliaryText} />
-							<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]}>123</Text>
+							<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]}>{item?.tcount}</Text>
 						</View>
 
 						<View style={styles.detailContainer}>
 							<CustomIcon name='user' size={20} color={themes[theme].auxiliaryText} />
-							<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]}>123</Text>
+							<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]}>{item?.replies?.length}</Text>
 						</View>
 
 						<View style={styles.detailContainer}>
 							<CustomIcon name='clock' size={20} color={themes[theme].auxiliaryText} />
-							<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]}>123</Text>
+							<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]}>{formatDate(item?.tlm)}</Text>
 						</View>
 					</View>
 				</View>
-				<View style={styles.badgeContainer}>
-					<View style={[styles.badge, { backgroundColor: 'red' }]} />
-				</View>
+				{badgeColor
+					? (
+						<View style={styles.badgeContainer}>
+							<View style={[styles.badge, { backgroundColor: badgeColor }]} />
+						</View>
+					)
+					: null}
 			</View>
 		</Touch>
 	);

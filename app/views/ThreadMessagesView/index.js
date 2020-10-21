@@ -59,7 +59,8 @@ class ThreadMessagesView extends React.Component {
 		this.state = {
 			loading: false,
 			end: false,
-			messages: []
+			messages: [],
+			subscription: {}
 		};
 		this.subscribeData();
 	}
@@ -97,18 +98,17 @@ class ThreadMessagesView extends React.Component {
 			const observable = subscription.observe();
 			this.subSubscription = observable
 				.subscribe((data) => {
-					this.subscription = data;
+					this.setState({ subscription: data });
 				});
 			this.messagesObservable = db.collections
 				.get('threads')
 				.query(
 					Q.where('rid', this.rid),
-					Q.where('t', Q.notEq('rm'))
+					Q.experimentalSortBy('tlm', Q.desc)
 				)
 				.observeWithColumns(['updated_at']);
 			this.messagesSubscription = this.messagesObservable
-				.subscribe((data) => {
-					const messages = orderBy(data, ['ts'], ['desc']);
+				.subscribe((messages) => {
 					if (this.mounted) {
 						this.setState({ messages });
 					} else {
@@ -122,13 +122,14 @@ class ThreadMessagesView extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	init = () => {
-		if (!this.subscription) {
+		const { subscription } = this.state;
+		if (!subscription) {
 			return this.load();
 		}
 		try {
 			const lastThreadSync = new Date();
-			if (this.subscription.lastThreadSync) {
-				this.sync(this.subscription.lastThreadSync);
+			if (subscription.lastThreadSync) {
+				this.sync(subscription.lastThreadSync);
 			} else {
 				this.load(lastThreadSync);
 			}
@@ -138,9 +139,10 @@ class ThreadMessagesView extends React.Component {
 	}
 
 	updateThreads = async({ update, remove, lastThreadSync }) => {
+		const { subscription } = this.state;
 		// if there's no subscription, manage data on this.state.messages
 		// note: sync will never be called without subscription
-		if (!this.subscription) {
+		if (!subscription) {
 			this.setState(({ messages }) => ({ messages: [...messages, ...update] }));
 			return;
 		}
@@ -148,7 +150,7 @@ class ThreadMessagesView extends React.Component {
 		try {
 			const db = database.active;
 			const threadsCollection = db.collections.get('threads');
-			const allThreadsRecords = await this.subscription.threads.fetch();
+			const allThreadsRecords = await subscription.threads.fetch();
 			let threadsToCreate = [];
 			let threadsToUpdate = [];
 			let threadsToDelete = [];
@@ -160,7 +162,7 @@ class ThreadMessagesView extends React.Component {
 				threadsToUpdate = allThreadsRecords.filter(i1 => update.find(i2 => i1.id === i2._id));
 				threadsToCreate = threadsToCreate.map(thread => threadsCollection.prepareCreate(protectedFunction((t) => {
 					t._raw = sanitizedRaw({ id: thread._id }, threadsCollection.schema);
-					t.subscription.set(this.subscription);
+					t.subscription.set(subscription);
 					Object.assign(t, thread);
 				})));
 				threadsToUpdate = threadsToUpdate.map((thread) => {
@@ -181,7 +183,7 @@ class ThreadMessagesView extends React.Component {
 					...threadsToCreate,
 					...threadsToUpdate,
 					...threadsToDelete,
-					this.subscription.prepareUpdate((s) => {
+					subscription.prepareUpdate((s) => {
 						s.lastThreadSync = lastThreadSync;
 					})
 				);
@@ -295,11 +297,40 @@ class ThreadMessagesView extends React.Component {
 		navigation.navigate('RoomInfoView', navParam);
 	}
 
+	getBadgeColor = (item) => {
+		const { subscription } = this.state;
+		const { theme } = this.props;
+		if (subscription?.tunreadUser?.includes(item?.id)) {
+			// console.log(item?.id, this.subscription?.tunread)
+			return themes[theme].mentionMeBackground;
+		}
+		if (subscription?.tunreadGroup?.includes(item?.id)) {
+			return themes[theme].mentionGroupBackground;
+		}
+		if (subscription?.tunread?.includes(item?.id)) {
+			return themes[theme].tunreadBackground;
+		}
+	}
+
 	renderItem = ({ item }) => {
 		const {
 			user, navigation, baseUrl, useRealName
 		} = this.props;
-		return <Item {...{ item, user, navigation, baseUrl, useRealName }} />;
+		const badgeColor = this.getBadgeColor(item);
+		return (
+			<Item
+				{...{
+					item,
+					user,
+					navigation,
+					baseUrl,
+					useRealName,
+					badgeColor
+				}}
+				getCustomEmoji={this.getCustomEmoji}
+				onPress={this.onThreadPress}
+			/>
+		);
 		// return (
 		// 	<Message
 		// 		key={item.id}
