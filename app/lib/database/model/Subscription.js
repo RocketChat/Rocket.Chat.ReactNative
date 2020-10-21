@@ -44,6 +44,10 @@ export default class Subscription extends Model {
 
 	@json('tunread', sanitizer) tunread;
 
+	@json('tunread_user', sanitizer) tunreadUser;
+
+	@json('tunread_group', sanitizer) tunreadGroup;
+
 	@date('room_updated_at') roomUpdatedAt;
 
 	@field('ro') ro;

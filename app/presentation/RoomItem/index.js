@@ -101,7 +101,6 @@ const RoomItemContainer = React.memo(({
 			onPress={_onPress}
 			date={date}
 			accessibilityLabel={accessibilityLabel}
-			userMentions={item.userMentions}
 			width={width}
 			favorite={item.f}
 			toggleFav={toggleFav}
@@ -126,8 +125,11 @@ const RoomItemContainer = React.memo(({
 			username={username}
 			useRealName={useRealName}
 			unread={item.unread}
-			tunread={item.tunread}
+			userMentions={item.userMentions}
 			groupMentions={item.groupMentions}
+			tunread={item.tunread}
+			tunreadUser={item.tunreadUser}
+			tunreadGroup={item.tunreadGroup}
 			swipeEnabled={swipeEnabled}
 		/>
 	);

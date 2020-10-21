@@ -179,7 +179,9 @@ export default schemaMigrations({
 				addColumns({
 					table: 'subscriptions',
 					columns: [
-						{ name: 'tunread', type: 'string', isOptional: true }
+						{ name: 'tunread', type: 'string', isOptional: true },
+						{ name: 'tunread_user', type: 'string', isOptional: true },
+						{ name: 'tunread_group', type: 'string', isOptional: true }
 					]
 				})
 			]

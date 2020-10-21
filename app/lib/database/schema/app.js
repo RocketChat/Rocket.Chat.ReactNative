@@ -21,6 +21,8 @@ export default appSchema({
 				{ name: 'user_mentions', type: 'number' },
 				{ name: 'group_mentions', type: 'number' },
 				{ name: 'tunread', type: 'string', isOptional: true },
+				{ name: 'tunread_user', type: 'string', isOptional: true },
+				{ name: 'tunread_group', type: 'string', isOptional: true },
 				{ name: 'room_updated_at', type: 'number' },
 				{ name: 'ro', type: 'boolean' },
 				{ name: 'last_open', type: 'number', isOptional: true },
