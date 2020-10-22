@@ -26,6 +26,7 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import Separator from '../../containers/Separator';
 import FilterItem from './FilterItem';
 import FilterDropdown from './FilterDropdown';
+import { FILTER } from './filters';
 
 const API_FETCH_COUNT = 50;
 
@@ -60,7 +61,8 @@ class ThreadMessagesView extends React.Component {
 			end: false,
 			messages: [],
 			subscription: {},
-			showFilterDropdown: false
+			showFilterDropdown: false,
+			currentFilter: FILTER.ALL
 		};
 		this.subscribeData();
 	}
@@ -279,6 +281,11 @@ class ThreadMessagesView extends React.Component {
 
 	closeFilterDropdown = () => this.setState({ showFilterDropdown: false })
 
+	onFilterSelected = (filter) => {
+    console.log('onFilterSelected -> filter', filter);
+		this.setState({ currentFilter: filter })
+	}
+
 	renderItem = ({ item }) => {
 		const {
 			user, navigation, baseUrl, useRealName
@@ -315,7 +322,9 @@ class ThreadMessagesView extends React.Component {
 
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
-		const { loading, messages, showFilterDropdown } = this.state;
+		const {
+			loading, messages, showFilterDropdown, currentFilter
+		} = this.state;
 		const { theme } = this.props;
 
 		if (!loading && messages.length === 0) {
@@ -340,7 +349,15 @@ class ThreadMessagesView extends React.Component {
 					ListHeaderComponent={this.renderHeader}
 					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 				/>
-				{showFilterDropdown ? <FilterDropdown close={this.closeFilterDropdown} /> : null}
+				{showFilterDropdown
+					? (
+						<FilterDropdown
+							currentFilter={currentFilter}
+							onFilterSelected={this.onFilterSelected}
+							onClose={this.closeFilterDropdown}
+						/>
+					)
+					: null}
 			</SafeAreaView>
 		);
 	}

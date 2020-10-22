@@ -10,7 +10,7 @@ import sharedStyles from '../Styles';
 
 const styles = StyleSheet.create({
 	container: {
-		paddingVertical: 10,
+		paddingVertical: 8,
 		minHeight: 40,
 		paddingHorizontal: 16,
 		flexDirection: 'row',

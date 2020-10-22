@@ -11,15 +11,18 @@ import { withTheme } from '../../theme';
 import FilterItem from './FilterItem';
 import { headerHeight } from '../../containers/Header';
 import Separator from '../../containers/Separator';
+import { FILTER } from './filters';
+import FilterItemContainer from './FilterItemContainer';
 
 const ANIMATION_DURATION = 200;
 
 class FilterDropdown extends React.Component {
 	static propTypes = {
-		close: PropTypes.func,
 		isMasterDetail: PropTypes.bool,
 		theme: PropTypes.string,
-		insets: PropTypes.object
+		insets: PropTypes.object,
+		onClose: PropTypes.func,
+		onFilterSelected: PropTypes.func
 
 	}
 
@@ -41,7 +44,7 @@ class FilterDropdown extends React.Component {
 	}
 
 	close = () => {
-		const { close } = this.props;
+		const { onClose } = this.props;
 		Animated.timing(
 			this.animatedValue,
 			{
@@ -50,12 +53,14 @@ class FilterDropdown extends React.Component {
 				easing: Easing.inOut(Easing.quad),
 				useNativeDriver: true
 			}
-		).start(() => close());
+		).start(() => onClose());
 	}
 
 	render() {
 		// TODO: test on tablet
-		const { isMasterDetail, insets, theme } = this.props;
+		const {
+			isMasterDetail, insets, theme, currentFilter, onFilterSelected
+		} = this.props;
 		const statusBarHeight = insets?.top ?? 0;
 		const heightDestination = isMasterDetail ? headerHeight + statusBarHeight : 0;
 		const translateY = this.animatedValue.interpolate({
@@ -90,9 +95,9 @@ class FilterDropdown extends React.Component {
 				>
 					<FilterItem text='Displaying Following' iconName='filter' onPress={this.close} />
 					<Separator />
-					<FilterItem text='All' iconName='check' />
-					<FilterItem text='Following' />
-					<FilterItem text='Unread' />
+					<FilterItemContainer currentFilter={currentFilter} value={FILTER.ALL} onPress={onFilterSelected} />
+					<FilterItemContainer currentFilter={currentFilter} value={FILTER.FOLLOWING} onPress={onFilterSelected} />
+					<FilterItemContainer currentFilter={currentFilter} value={FILTER.UNREAD} onPress={onFilterSelected} />
 				</Animated.View>
 			</>
 		);
