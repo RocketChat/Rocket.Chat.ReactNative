@@ -861,7 +861,10 @@ class MessageBox extends Component {
 		}
 		// TODO: i18n missing
 		return (
-			<TouchableWithoutFeedback style={styles.sendToChannelButton} onPress={this.onPressSendToChannel}>
+			<TouchableWithoutFeedback
+				style={[styles.sendToChannelButton, { backgroundColor: themes[theme].messageboxBackground }]}
+				onPress={this.onPressSendToChannel}
+			>
 				<CustomIcon name={tshow ? 'checkbox-checked' : 'checkbox-unchecked'} size={24} color={themes[theme].auxiliaryText} />
 				<Text style={[styles.sendToChannelText, { color: themes[theme].auxiliaryText }]}>Send to channel</Text>
 			</TouchableWithoutFeedback>
