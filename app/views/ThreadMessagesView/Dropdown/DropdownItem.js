@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const DropdownItem = ({
+const DropdownItem = React.memo(({
 	theme, onPress, iconName, text
 }) => (
 	<Touch theme={theme} onPress={onPress}>
@@ -32,7 +32,7 @@ const DropdownItem = ({
 			{iconName ? <CustomIcon name={iconName} size={22} color={themes[theme].auxiliaryText} /> : null}
 		</View>
 	</Touch>
-);
+));
 
 DropdownItem.propTypes = {
 	text: PropTypes.string,

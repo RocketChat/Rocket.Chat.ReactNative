@@ -18,9 +18,7 @@ const DropdownItemHeader = ({ currentFilter, onPress }) => {
 			text = I18n.t('Threads_displaying_all');
 			break;
 	}
-	return (
-		<DropdownItem text={text} iconName='filter' onPress={onPress} />
-	);
+	return <DropdownItem text={text} iconName='filter' onPress={onPress} />;
 };
 
 DropdownItemHeader.propTypes = {

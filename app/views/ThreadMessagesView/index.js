@@ -371,8 +371,6 @@ class ThreadMessagesView extends React.Component {
 					keyExtractor={item => item._id}
 					onEndReached={this.load}
 					onEndReachedThreshold={0.5}
-					maxToRenderPerBatch={5}
-					initialNumToRender={1}
 					ItemSeparatorComponent={Separator}
 					ListHeaderComponent={this.renderHeader}
 					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
