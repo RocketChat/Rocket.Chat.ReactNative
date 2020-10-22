@@ -32,7 +32,7 @@ const testsForTheme = (theme) => {
 			unread: 1,
 			userMentions: 1
 		})).toEqual({
-			backgroundColor: themes[theme].mentionMeColor,
+			backgroundColor: themes[theme].mentionMeBackground,
 			color: themes[theme].buttonText
 		});
 	});
@@ -42,7 +42,7 @@ const testsForTheme = (theme) => {
 			unread: 1,
 			groupMentions: 1
 		})).toEqual({
-			backgroundColor: themes[theme].mentionGroupColor,
+			backgroundColor: themes[theme].mentionGroupBackground,
 			color: themes[theme].buttonText
 		});
 	});
@@ -54,7 +54,7 @@ const testsForTheme = (theme) => {
 			groupMentions: 1,
 			tunread: [1]
 		})).toEqual({
-			backgroundColor: themes[theme].mentionMeColor,
+			backgroundColor: themes[theme].mentionMeBackground,
 			color: themes[theme].buttonText
 		});
 		expect(getUnreadStyleUtil({
@@ -62,7 +62,7 @@ const testsForTheme = (theme) => {
 			groupMentions: 1,
 			tunread: [1]
 		})).toEqual({
-			backgroundColor: themes[theme].mentionGroupColor,
+			backgroundColor: themes[theme].mentionGroupBackground,
 			color: themes[theme].buttonText
 		});
 		expect(getUnreadStyleUtil({

@@ -261,7 +261,7 @@ class ThreadMessagesView extends React.Component {
 	}
 
 	onSearchPress = () => {
-		alert('tbd')
+		alert('tbd');
 	}
 
 	onThreadPress = debounce((item) => {

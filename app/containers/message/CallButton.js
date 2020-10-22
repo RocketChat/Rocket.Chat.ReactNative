@@ -11,26 +11,23 @@ import { themes } from '../../constants/colors';
 
 const CallButton = React.memo(({
 	theme, callJitsi
-}) => {
-	return (
-		<View style={styles.buttonContainer}>
-			<Touchable
-				onPress={callJitsi}
-				background={Touchable.Ripple(themes[theme].bannerBackground)}
-				style={[styles.button, { backgroundColor: themes[theme].tintColor }]}
-				hitSlop={BUTTON_HIT_SLOP}
-			>
-				<>
-					<CustomIcon name='camera' size={16} style={styles.buttonIcon} color={themes[theme].buttonText} />
-					<Text style={[styles.buttonText, { color: themes[theme].buttonText }]}>{I18n.t('Click_to_join')}</Text>
-				</>
-			</Touchable>
-		</View>
-	);
-});
+}) => (
+	<View style={styles.buttonContainer}>
+		<Touchable
+			onPress={callJitsi}
+			background={Touchable.Ripple(themes[theme].bannerBackground)}
+			style={[styles.button, { backgroundColor: themes[theme].tintColor }]}
+			hitSlop={BUTTON_HIT_SLOP}
+		>
+			<>
+				<CustomIcon name='camera' size={16} style={styles.buttonIcon} color={themes[theme].buttonText} />
+				<Text style={[styles.buttonText, { color: themes[theme].buttonText }]}>{I18n.t('Click_to_join')}</Text>
+			</>
+		</Touchable>
+	</View>
+));
 
 CallButton.propTypes = {
-	dlm: PropTypes.string,
 	theme: PropTypes.string,
 	callJitsi: PropTypes.func
 };
