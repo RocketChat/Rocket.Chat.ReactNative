@@ -8,26 +8,23 @@ import styles from './styles';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
-import { formatDateThreads } from '../../utils/room';
 
 const CallButton = React.memo(({
-	dlm, theme, callJitsi
+	theme, callJitsi
 }) => {
-	const time = formatDateThreads(dlm);
 	return (
 		<View style={styles.buttonContainer}>
 			<Touchable
 				onPress={callJitsi}
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
-				style={[styles.button, styles.smallButton, { backgroundColor: themes[theme].tintColor }]}
+				style={[styles.button, { backgroundColor: themes[theme].tintColor }]}
 				hitSlop={BUTTON_HIT_SLOP}
 			>
 				<>
-					<CustomIcon name='camera' size={20} style={styles.buttonIcon} color={themes[theme].buttonText} />
+					<CustomIcon name='camera' size={16} style={styles.buttonIcon} color={themes[theme].buttonText} />
 					<Text style={[styles.buttonText, { color: themes[theme].buttonText }]}>{I18n.t('Click_to_join')}</Text>
 				</>
 			</Touchable>
-			<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 		</View>
 	);
 });

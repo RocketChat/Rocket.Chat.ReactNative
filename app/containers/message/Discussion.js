@@ -15,7 +15,10 @@ import { formatDateThreads } from '../../utils/room';
 const Discussion = React.memo(({
 	msg, dcount, dlm, theme
 }) => {
-	const time = formatDateThreads(dlm);
+	let time;
+	if (dlm) {
+		time = formatDateThreads(dlm);
+	}
 	const buttonText = formatMessageCount(dcount, DISCUSSION);
 	const { onDiscussionPress } = useContext(MessageContext);
 	return (
@@ -26,11 +29,11 @@ const Discussion = React.memo(({
 				<Touchable
 					onPress={onDiscussionPress}
 					background={Touchable.Ripple(themes[theme].bannerBackground)}
-					style={[styles.button, styles.smallButton, { backgroundColor: themes[theme].tintColor }]}
+					style={[styles.button, { backgroundColor: themes[theme].tintColor }]}
 					hitSlop={BUTTON_HIT_SLOP}
 				>
 					<>
-						<CustomIcon name='discussions' size={20} style={styles.buttonIcon} color={themes[theme].buttonText} />
+						<CustomIcon name='discussions' size={16} style={styles.buttonIcon} color={themes[theme].buttonText} />
 						<Text style={[styles.buttonText, { color: themes[theme].buttonText }]}>{buttonText}</Text>
 					</>
 				</Touchable>

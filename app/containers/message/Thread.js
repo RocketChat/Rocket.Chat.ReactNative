@@ -21,10 +21,10 @@ const Thread = React.memo(({
 	return (
 		<View style={styles.buttonContainer}>
 			<View
-				style={[styles.button, styles.smallButton, { backgroundColor: themes[theme].tintColor }]}
+				style={[styles.button, { backgroundColor: themes[theme].tintColor }]}
 				testID={`message-thread-button-${ msg }`}
 			>
-				<CustomIcon name='threads' size={20} style={[styles.buttonIcon, { color: themes[theme].buttonText }]} />
+				<CustomIcon name='threads' size={16} style={[styles.buttonIcon, { color: themes[theme].buttonText }]} />
 				<Text style={[styles.buttonText, { color: themes[theme].buttonText }]}>{buttonText}</Text>
 			</View>
 			<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
