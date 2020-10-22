@@ -663,5 +663,8 @@ export default {
 	Following: 'Following',
 	Threads_displaying_all: 'Displaying All',
 	Threads_displaying_following: 'Displaying Following',
-	Threads_displaying_unread: 'Displaying Unread'
+	Threads_displaying_unread: 'Displaying Unread',
+	No_threads: 'There are no threads',
+	No_threads_following: 'You are not following any threads',
+	No_threads_unread: 'There are no unread threads',
 };

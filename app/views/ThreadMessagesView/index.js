@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	FlatList, View, Text, InteractionManager
-} from 'react-native';
+import { FlatList, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
@@ -27,6 +25,7 @@ import Separator from '../../containers/Separator';
 import Dropdown from './Dropdown';
 import DropdownItemHeader from './Dropdown/DropdownItemHeader';
 import { FILTER } from './filters';
+import NoDataFound from './NoDataFound';
 
 const API_FETCH_COUNT = 50;
 
@@ -262,15 +261,6 @@ class ThreadMessagesView extends React.Component {
 		});
 	}, 1000, true)
 
-	renderEmpty = () => {
-		const { theme } = this.props;
-		return (
-			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].backgroundColor }]} testID='thread-messages-view'>
-				<Text style={[styles.noDataFound, { color: themes[theme].titleText }]}>{I18n.t('No_thread_messages')}</Text>
-			</View>
-		);
-	}
-
 	getBadgeColor = (item) => {
 		const { subscription } = this.state;
 		const { theme } = this.props;
@@ -348,33 +338,52 @@ class ThreadMessagesView extends React.Component {
 		);
 	}
 
+	renderContent = () => {
+		const { loading, messages, displayingThreads, currentFilter } = this.state;
+		const { theme } = this.props;
+		if (!messages?.length || !displayingThreads?.length) {
+			let text;
+			if (currentFilter === FILTER.FOLLOWING) {
+				text = I18n.t('No_threads_following');
+			} else if (currentFilter === FILTER.UNREAD) {
+				text = I18n.t('No_threads_unread');
+			} else {
+				text = I18n.t('No_threads');
+			}
+			return (
+				<>
+					{this.renderHeader()}
+					<NoDataFound text={text} />
+				</>
+			);
+		}
+
+		return (
+			<FlatList
+				data={displayingThreads}
+				extraData={this.state}
+				renderItem={this.renderItem}
+				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
+				contentContainerStyle={styles.contentContainer}
+				keyExtractor={item => item._id} // TODO: is this correct?
+				onEndReached={this.load}
+				onEndReachedThreshold={0.5}
+				ItemSeparatorComponent={Separator}
+				ListHeaderComponent={this.renderHeader}
+				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
+			/>
+		);
+	}
+
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
-		const {
-			loading, messages, displayingThreads, showFilterDropdown, currentFilter
-		} = this.state;
+		const { showFilterDropdown, currentFilter } = this.state;
 		const { theme } = this.props;
-
-		if (!loading && messages.length === 0) {
-			return this.renderEmpty();
-		}
 
 		return (
 			<SafeAreaView testID='thread-messages-view' theme={theme}>
 				<StatusBar theme={theme} />
-				<FlatList
-					data={displayingThreads}
-					extraData={this.state}
-					renderItem={this.renderItem}
-					style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
-					contentContainerStyle={styles.contentContainer}
-					keyExtractor={item => item._id}
-					onEndReached={this.load}
-					onEndReachedThreshold={0.5}
-					ItemSeparatorComponent={Separator}
-					ListHeaderComponent={this.renderHeader}
-					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
-				/>
+				{this.renderContent()}
 				{showFilterDropdown
 					? (
 						<Dropdown
