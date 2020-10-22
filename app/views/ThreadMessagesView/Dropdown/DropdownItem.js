@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 
-import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
-import Touch from '../../utils/touch';
-import { CustomIcon } from '../../lib/Icons';
-import sharedStyles from '../Styles';
+import { themes } from '../../../constants/colors';
+import { withTheme } from '../../../theme';
+import Touch from '../../../utils/touch';
+import { CustomIcon } from '../../../lib/Icons';
+import sharedStyles from '../../Styles';
 
 const styles = StyleSheet.create({
 	container: {
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const FilterItem = ({
+const DropdownItem = ({
 	theme, onPress, iconName, text
 }) => (
 	<Touch theme={theme} onPress={onPress}>
@@ -34,11 +34,11 @@ const FilterItem = ({
 	</Touch>
 );
 
-FilterItem.propTypes = {
+DropdownItem.propTypes = {
 	text: PropTypes.string,
 	iconName: PropTypes.string,
 	theme: PropTypes.string,
 	onPress: PropTypes.func
 };
 
-export default withTheme(FilterItem);
+export default withTheme(DropdownItem);

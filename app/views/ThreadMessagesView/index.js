@@ -24,8 +24,8 @@ import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/HeaderButton';
 import Separator from '../../containers/Separator';
-import FilterItem from './FilterItem';
-import FilterDropdown from './FilterDropdown';
+import DropdownItem from './Dropdown/DropdownItem';
+import Dropdown from './Dropdown';
 import { FILTER } from './filters';
 
 const API_FETCH_COUNT = 50;
@@ -282,8 +282,7 @@ class ThreadMessagesView extends React.Component {
 	closeFilterDropdown = () => this.setState({ showFilterDropdown: false })
 
 	onFilterSelected = (filter) => {
-    console.log('onFilterSelected -> filter', filter);
-		this.setState({ currentFilter: filter })
+		this.setState({ currentFilter: filter });
 	}
 
 	renderItem = ({ item }) => {
@@ -314,7 +313,7 @@ class ThreadMessagesView extends React.Component {
 
 		return (
 			<>
-				<FilterItem onPress={this.showFilterDropdown} text='Displaying Following' iconName='filter' showBorder />
+				<DropdownItem onPress={this.showFilterDropdown} text='Displaying Following' iconName='filter' showBorder />
 				<Separator />
 			</>
 		);
@@ -351,7 +350,7 @@ class ThreadMessagesView extends React.Component {
 				/>
 				{showFilterDropdown
 					? (
-						<FilterDropdown
+						<Dropdown
 							currentFilter={currentFilter}
 							onFilterSelected={this.onFilterSelected}
 							onClose={this.closeFilterDropdown}

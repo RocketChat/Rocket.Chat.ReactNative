@@ -5,25 +5,25 @@ import {
 } from 'react-native';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
-import styles from './styles';
-import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
-import FilterItem from './FilterItem';
-import { headerHeight } from '../../containers/Header';
-import Separator from '../../containers/Separator';
-import { FILTER } from './filters';
-import FilterItemContainer from './FilterItemContainer';
+import styles from '../styles';
+import { themes } from '../../../constants/colors';
+import { withTheme } from '../../../theme';
+import DropdownItem from './DropdownItem';
+import { headerHeight } from '../../../containers/Header';
+import Separator from '../../../containers/Separator';
+import { FILTER } from '../filters';
+import DropdownItemFilter from './DropdownItemFilter';
 
 const ANIMATION_DURATION = 200;
 
-class FilterDropdown extends React.Component {
+class Dropdown extends React.Component {
 	static propTypes = {
 		isMasterDetail: PropTypes.bool,
 		theme: PropTypes.string,
 		insets: PropTypes.object,
+		currentFilter: PropTypes.string,
 		onClose: PropTypes.func,
 		onFilterSelected: PropTypes.func
-
 	}
 
 	constructor(props) {
@@ -93,15 +93,15 @@ class FilterDropdown extends React.Component {
 						}
 					]}
 				>
-					<FilterItem text='Displaying Following' iconName='filter' onPress={this.close} />
+					<DropdownItem text='Displaying Following' iconName='filter' onPress={this.close} />
 					<Separator />
-					<FilterItemContainer currentFilter={currentFilter} value={FILTER.ALL} onPress={onFilterSelected} />
-					<FilterItemContainer currentFilter={currentFilter} value={FILTER.FOLLOWING} onPress={onFilterSelected} />
-					<FilterItemContainer currentFilter={currentFilter} value={FILTER.UNREAD} onPress={onFilterSelected} />
+					<DropdownItemFilter currentFilter={currentFilter} value={FILTER.ALL} onPress={onFilterSelected} />
+					<DropdownItemFilter currentFilter={currentFilter} value={FILTER.FOLLOWING} onPress={onFilterSelected} />
+					<DropdownItemFilter currentFilter={currentFilter} value={FILTER.UNREAD} onPress={onFilterSelected} />
 				</Animated.View>
 			</>
 		);
 	}
 }
 
-export default withTheme(withSafeAreaInsets(FilterDropdown));
+export default withTheme(withSafeAreaInsets(Dropdown));
