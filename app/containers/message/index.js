@@ -47,7 +47,9 @@ class MessageContainer extends React.Component {
 		navToRoomInfo: PropTypes.func,
 		callJitsi: PropTypes.func,
 		blockAction: PropTypes.func,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		getBadgeColor: PropTypes.func,
+		toggleFollowThread: PropTypes.func
 	}
 
 	static defaultProps = {
@@ -242,10 +244,10 @@ class MessageContainer extends React.Component {
 
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, showAttachment, timeFormat, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, showAttachment, timeFormat, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme, getBadgeColor, toggleFollowThread
 		} = this.props;
 		const {
-			id, msg, ts, attachments, urls, reactions, t, avatar, emoji, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, blocks, autoTranslate: autoTranslateMessage
+			id, msg, ts, attachments, urls, reactions, t, avatar, emoji, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, blocks, autoTranslate: autoTranslateMessage, replies
 		} = item;
 
 		let message = msg;
@@ -268,7 +270,10 @@ class MessageContainer extends React.Component {
 					onReactionPress: this.onReactionPress,
 					onEncryptedPress: this.onEncryptedPress,
 					onDiscussionPress: this.onDiscussionPress,
-					onReactionLongPress: this.onReactionLongPress
+					onReactionLongPress: this.onReactionLongPress,
+					getBadgeColor,
+					toggleFollowThread,
+					replies
 				}}
 			>
 				<Message

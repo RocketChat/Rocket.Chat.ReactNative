@@ -762,12 +762,26 @@ class RoomView extends React.Component {
 		}
 	}
 
-	toggleFollowThread = async(isFollowingThread) => {
+	toggleFollowThread = async(isFollowingThread, tmid) => {
 		try {
-			await RocketChat.toggleFollowMessage(this.tmid, !isFollowingThread);
+			await RocketChat.toggleFollowMessage(tmid ?? this.tmid, !isFollowingThread);
 			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
 		} catch (e) {
 			log(e);
+		}
+	}
+
+	getBadgeColor = (messageId) => {
+		const { room } = this.state;
+		const { theme } = this.props;
+		if (room?.tunreadUser?.includes(messageId)) {
+			return themes[theme].mentionMeBackground;
+		}
+		if (room?.tunreadGroup?.includes(messageId)) {
+			return themes[theme].mentionGroupBackground;
+		}
+		if (room?.tunread?.includes(messageId)) {
+			return themes[theme].tunreadBackground;
 		}
 	}
 
@@ -896,6 +910,8 @@ class RoomView extends React.Component {
 				getCustomEmoji={this.getCustomEmoji}
 				callJitsi={this.callJitsi}
 				blockAction={this.blockAction}
+				getBadgeColor={this.getBadgeColor}
+				toggleFollowThread={this.toggleFollowThread}
 			/>
 		);
 

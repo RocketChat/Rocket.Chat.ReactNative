@@ -159,6 +159,15 @@ export default StyleSheet.create({
 		flex: 1,
 		...sharedStyles.textRegular
 	},
+	threadBadge: {
+		width: 8,
+		height: 8,
+		borderRadius: 4,
+		marginLeft: 8
+	},
+	threadBell: {
+		marginLeft: 8
+	},
 	readReceipt: {
 		lineHeight: 20
 	},
