@@ -60,9 +60,10 @@ class ThreadMessagesView extends React.Component {
 			loading: false,
 			end: false,
 			messages: [],
+			displayingThreads: [],
 			subscription: {},
 			showFilterDropdown: false,
-			currentFilter: FILTER.ALL
+			currentFilter: FILTER.FOLLOWING
 		};
 		this.subscribeData();
 	}
@@ -94,6 +95,8 @@ class ThreadMessagesView extends React.Component {
 	subscribeData = async() => {
 		try {
 			const db = database.active;
+
+			// subscription query
 			const subscription = await db.collections
 				.get('subscriptions')
 				.find(this.rid);
@@ -102,6 +105,8 @@ class ThreadMessagesView extends React.Component {
 				.subscribe((data) => {
 					this.setState({ subscription: data });
 				});
+
+			// threads query
 			this.messagesObservable = db.collections
 				.get('threads')
 				.query(
@@ -111,14 +116,17 @@ class ThreadMessagesView extends React.Component {
 				.observeWithColumns(['updated_at']);
 			this.messagesSubscription = this.messagesObservable
 				.subscribe((messages) => {
+					const { currentFilter } = this.state;
+					const displayingThreads = this.getFilteredThreads(messages, subscription, currentFilter);
 					if (this.mounted) {
-						this.setState({ messages });
+						this.setState({ messages, displayingThreads });
 					} else {
 						this.state.messages = messages;
+						this.state.displayingThreads = displayingThreads;
 					}
 				});
 		} catch (e) {
-			// Do nothing
+			log(e);
 		}
 	}
 
@@ -277,12 +285,33 @@ class ThreadMessagesView extends React.Component {
 		}
 	}
 
+	// helper to query threads
+	getFilteredThreads = (messages, subscription, currentFilter) => {
+		// const { currentFilter } = this.state;
+		const { user } = this.props;
+		if (currentFilter === FILTER.FOLLOWING) {
+			return messages?.filter(item => item?.replies?.find(u => u === user.id));
+		} else if (currentFilter === FILTER.UNREAD) {
+			return messages?.filter(item => subscription?.tunread?.includes(item?.id));
+		}
+		return messages;
+	}
+
+	// method to update state with filtered threads
+	filterThreads = () => {
+		const { messages, subscription } = this.state;
+		const displayingThreads = this.getFilteredThreads(messages, subscription);
+		this.setState({ displayingThreads });
+	}
+
 	showFilterDropdown = () => this.setState({ showFilterDropdown: true })
 
 	closeFilterDropdown = () => this.setState({ showFilterDropdown: false })
 
 	onFilterSelected = (filter) => {
-		this.setState({ currentFilter: filter });
+		const { messages, subscription } = this.state;
+		const displayingThreads = this.getFilteredThreads(messages, subscription, filter);
+		this.setState({ currentFilter: filter, displayingThreads });
 	}
 
 	renderItem = ({ item }) => {
@@ -313,7 +342,7 @@ class ThreadMessagesView extends React.Component {
 
 		return (
 			<>
-				<DropdownItem onPress={this.showFilterDropdown} text='Displaying Following' iconName='filter' showBorder />
+				<DropdownItem onPress={this.showFilterDropdown} text='Displaying Following' iconName='filter' />
 				<Separator />
 			</>
 		);
@@ -322,7 +351,7 @@ class ThreadMessagesView extends React.Component {
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
-			loading, messages, showFilterDropdown, currentFilter
+			loading, messages, displayingThreads, showFilterDropdown, currentFilter
 		} = this.state;
 		const { theme } = this.props;
 
@@ -334,7 +363,7 @@ class ThreadMessagesView extends React.Component {
 			<SafeAreaView testID='thread-messages-view' theme={theme}>
 				<StatusBar theme={theme} />
 				<FlatList
-					data={messages}
+					data={displayingThreads}
 					extraData={this.state}
 					renderItem={this.renderItem}
 					style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
