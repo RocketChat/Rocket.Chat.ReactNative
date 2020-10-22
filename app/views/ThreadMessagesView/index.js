@@ -26,6 +26,7 @@ import Dropdown from './Dropdown';
 import DropdownItemHeader from './Dropdown/DropdownItemHeader';
 import { FILTER } from './filters';
 import NoDataFound from './NoDataFound';
+import { isIOS } from '../../utils/deviceInfo';
 
 const API_FETCH_COUNT = 50;
 
@@ -339,7 +340,9 @@ class ThreadMessagesView extends React.Component {
 	}
 
 	renderContent = () => {
-		const { loading, messages, displayingThreads, currentFilter } = this.state;
+		const {
+			loading, messages, displayingThreads, currentFilter
+		} = this.state;
 		const { theme } = this.props;
 		if (!messages?.length || !displayingThreads?.length) {
 			let text;
@@ -365,9 +368,12 @@ class ThreadMessagesView extends React.Component {
 				renderItem={this.renderItem}
 				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 				contentContainerStyle={styles.contentContainer}
-				keyExtractor={item => item._id} // TODO: is this correct?
 				onEndReached={this.load}
 				onEndReachedThreshold={0.5}
+				maxToRenderPerBatch={5}
+				windowSize={10}
+				initialNumToRender={7}
+				removeClippedSubviews={isIOS}
 				ItemSeparatorComponent={Separator}
 				ListHeaderComponent={this.renderHeader}
 				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
