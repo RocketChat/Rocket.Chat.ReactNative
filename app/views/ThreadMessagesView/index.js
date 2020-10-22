@@ -32,16 +32,6 @@ import { getBadgeColor } from '../../utils/room';
 const API_FETCH_COUNT = 50;
 
 class ThreadMessagesView extends React.Component {
-	static navigationOptions = ({ navigation, isMasterDetail }) => {
-		const options = {
-			title: I18n.t('Threads')
-		};
-		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
-		}
-		return options;
-	}
-
 	static propTypes = {
 		user: PropTypes.object,
 		navigation: PropTypes.object,
@@ -66,6 +56,7 @@ class ThreadMessagesView extends React.Component {
 			showFilterDropdown: false,
 			currentFilter: FILTER.ALL
 		};
+		this.setHeader();
 		this.subscribeData();
 	}
 
@@ -90,6 +81,22 @@ class ThreadMessagesView extends React.Component {
 		if (this.messagesSubscription && this.messagesSubscription.unsubscribe) {
 			this.messagesSubscription.unsubscribe();
 		}
+	}
+
+	setHeader = () => {
+		const { navigation, isMasterDetail } = this.props;
+		const options = {
+			title: I18n.t('Threads')
+		};
+		if (isMasterDetail) {
+			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
+		}
+		options.headerRight = () => (
+			<HeaderButton.Container>
+				<HeaderButton.Item iconName='search' onPress={this.onSearchPress} />
+			</HeaderButton.Container>
+		);
+		navigation.setOptions(options);
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -251,6 +258,10 @@ class ThreadMessagesView extends React.Component {
 			log(e);
 			this.setState({ loading: false });
 		}
+	}
+
+	onSearchPress = () => {
+		alert('tbd')
 	}
 
 	onThreadPress = debounce((item) => {
