@@ -4,7 +4,6 @@ import {
 	FlatList, View, Text, InteractionManager
 } from 'react-native';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
@@ -25,6 +24,8 @@ import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/HeaderButton';
 import Separator from '../../containers/Separator';
+import FilterItem from './FilterItem';
+import FilterDropdown from './FilterDropdown';
 
 const API_FETCH_COUNT = 50;
 
@@ -58,7 +59,8 @@ class ThreadMessagesView extends React.Component {
 			loading: false,
 			end: false,
 			messages: [],
-			subscription: {}
+			subscription: {},
+			showFilterDropdown: false
 		};
 		this.subscribeData();
 	}
@@ -240,20 +242,6 @@ class ThreadMessagesView extends React.Component {
 		}
 	}
 
-	formatMessage = lm => (
-		lm ? moment(lm).calendar(null, {
-			lastDay: `[${ I18n.t('Yesterday') }]`,
-			sameDay: 'h:mm A',
-			lastWeek: 'dddd',
-			sameElse: 'MMM D'
-		}) : null
-	)
-
-	showAttachment = (attachment) => {
-		const { navigation } = this.props;
-		navigation.navigate('AttachmentView', { attachment });
-	}
-
 	onThreadPress = debounce((item) => {
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
@@ -264,11 +252,6 @@ class ThreadMessagesView extends React.Component {
 		});
 	}, 1000, true)
 
-	renderSeparator = () => {
-		const { theme } = this.props;
-		return <Separator theme={theme} />;
-	}
-
 	renderEmpty = () => {
 		const { theme } = this.props;
 		return (
@@ -276,14 +259,6 @@ class ThreadMessagesView extends React.Component {
 				<Text style={[styles.noDataFound, { color: themes[theme].titleText }]}>{I18n.t('No_thread_messages')}</Text>
 			</View>
 		);
-	}
-
-	navToRoomInfo = (navParam) => {
-		const { navigation, user } = this.props;
-		if (navParam.rid === user.id) {
-			return;
-		}
-		navigation.navigate('RoomInfoView', navParam);
 	}
 
 	getBadgeColor = (item) => {
@@ -299,6 +274,10 @@ class ThreadMessagesView extends React.Component {
 			return themes[theme].tunreadBackground;
 		}
 	}
+
+	showFilterDropdown = () => this.setState({ showFilterDropdown: true })
+
+	closeFilterDropdown = () => this.setState({ showFilterDropdown: false })
 
 	renderItem = ({ item }) => {
 		const {
@@ -320,9 +299,23 @@ class ThreadMessagesView extends React.Component {
 		);
 	}
 
+	renderHeader = () => {
+		const { messages } = this.state;
+		if (!messages.length) {
+			return null;
+		}
+
+		return (
+			<>
+				<FilterItem onPress={this.showFilterDropdown} text='Displaying Following' iconName='filter' showBorder />
+				<Separator />
+			</>
+		);
+	}
+
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
-		const { loading, messages } = this.state;
+		const { loading, messages, showFilterDropdown } = this.state;
 		const { theme } = this.props;
 
 		if (!loading && messages.length === 0) {
@@ -344,8 +337,10 @@ class ThreadMessagesView extends React.Component {
 					maxToRenderPerBatch={5}
 					initialNumToRender={1}
 					ItemSeparatorComponent={Separator}
+					ListHeaderComponent={this.renderHeader}
 					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 				/>
+				{showFilterDropdown ? <FilterDropdown close={this.closeFilterDropdown} /> : null}
 			</SafeAreaView>
 		);
 	}
