@@ -51,12 +51,12 @@ const renderImage = () => {
 	if (!message.attachments) {
 		return null;
 	} else {
-		const p = [];
+		const attachmentComponent = [];
 		Object.keys(message.attachments).forEach((key) => {
 			// attachment is image
 			if (message.attachments[key].image_url) {
 				const img = `${ baseUrl }${ message.attachments[key].image_url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
-				p.push(
+				attachmentComponent.push(
 					<FastImage
 						source={{ uri: encodeURI(img) }}
 						resizeMode={FastImage.resizeMode.cover}
@@ -65,7 +65,7 @@ const renderImage = () => {
 				);
 			} else if (message.attachments[key].video_url) {
 				// attachment is video
-				p.push(
+				attachmentComponent.push(
 					<RectButton
 						style={styles.buttonVideo}
 						activeOpacity={0.5}
@@ -80,7 +80,7 @@ const renderImage = () => {
 				);
 			} else if (message.attachments[key].audio_url) {
 				// attachment is audio
-				p.push(
+				attachmentComponent.push(
 					<RectButton
 						style={styles.buttonAudio}
 						activeOpacity={0.5}
@@ -95,7 +95,7 @@ const renderImage = () => {
 				);
 			}
 		});
-		return p;
+		return attachmentComponent;
 	}
 };
 
