@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { themes } from '../constants/colors';
 
 import I18n from '../i18n';
 
@@ -30,3 +31,15 @@ export const formatDateThreads = date => moment(date).calendar(null, {
 	lastWeek: 'dddd LT',
 	sameElse: 'LL'
 });
+
+export const getBadgeColor = ({ subscription, messageId, theme }) => {
+	if (subscription?.tunreadUser?.includes(messageId)) {
+		return themes[theme].mentionMeBackground;
+	}
+	if (subscription?.tunreadGroup?.includes(messageId)) {
+		return themes[theme].mentionGroupBackground;
+	}
+	if (subscription?.tunread?.includes(messageId)) {
+		return themes[theme].tunreadBackground;
+	}
+};

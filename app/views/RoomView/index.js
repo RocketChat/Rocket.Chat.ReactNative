@@ -35,7 +35,7 @@ import { themes } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
-import { isBlocked } from '../../utils/room';
+import { getBadgeColor, isBlocked } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
 import { showErrorAlert } from '../../utils/info';
@@ -774,15 +774,7 @@ class RoomView extends React.Component {
 	getBadgeColor = (messageId) => {
 		const { room } = this.state;
 		const { theme } = this.props;
-		if (room?.tunreadUser?.includes(messageId)) {
-			return themes[theme].mentionMeBackground;
-		}
-		if (room?.tunreadGroup?.includes(messageId)) {
-			return themes[theme].mentionGroupBackground;
-		}
-		if (room?.tunread?.includes(messageId)) {
-			return themes[theme].tunreadBackground;
-		}
+		return getBadgeColor({ subscription: room, theme, messageId });
 	}
 
 	navToRoomInfo = (navParam) => {

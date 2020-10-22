@@ -27,6 +27,7 @@ import DropdownItemHeader from './Dropdown/DropdownItemHeader';
 import { FILTER } from './filters';
 import NoDataFound from './NoDataFound';
 import { isIOS } from '../../utils/deviceInfo';
+import { getBadgeColor } from '../../utils/room';
 
 const API_FETCH_COUNT = 50;
 
@@ -265,15 +266,7 @@ class ThreadMessagesView extends React.Component {
 	getBadgeColor = (item) => {
 		const { subscription } = this.state;
 		const { theme } = this.props;
-		if (subscription?.tunreadUser?.includes(item?.id)) {
-			return themes[theme].mentionMeBackground;
-		}
-		if (subscription?.tunreadGroup?.includes(item?.id)) {
-			return themes[theme].mentionGroupBackground;
-		}
-		if (subscription?.tunread?.includes(item?.id)) {
-			return themes[theme].tunreadBackground;
-		}
+		return getBadgeColor({ subscription, theme, messageId: item?.id });
 	}
 
 	// helper to query threads
