@@ -8,11 +8,11 @@ import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import styles from '../styles';
 import { themes } from '../../../constants/colors';
 import { withTheme } from '../../../theme';
-import DropdownItem from './DropdownItem';
 import { headerHeight } from '../../../containers/Header';
 import Separator from '../../../containers/Separator';
 import { FILTER } from '../filters';
 import DropdownItemFilter from './DropdownItemFilter';
+import DropdownItemHeader from './DropdownItemHeader';
 
 const ANIMATION_DURATION = 200;
 
@@ -93,7 +93,7 @@ class Dropdown extends React.Component {
 						}
 					]}
 				>
-					<DropdownItem text='Displaying Following' iconName='filter' onPress={this.close} />
+					<DropdownItemHeader currentFilter={currentFilter} onPress={this.close} />
 					<Separator />
 					<DropdownItemFilter currentFilter={currentFilter} value={FILTER.ALL} onPress={onFilterSelected} />
 					<DropdownItemFilter currentFilter={currentFilter} value={FILTER.FOLLOWING} onPress={onFilterSelected} />

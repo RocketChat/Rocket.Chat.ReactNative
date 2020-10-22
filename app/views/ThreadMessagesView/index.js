@@ -24,8 +24,8 @@ import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/HeaderButton';
 import Separator from '../../containers/Separator';
-import DropdownItem from './Dropdown/DropdownItem';
 import Dropdown from './Dropdown';
+import DropdownItemHeader from './Dropdown/DropdownItemHeader';
 import { FILTER } from './filters';
 
 const API_FETCH_COUNT = 50;
@@ -335,14 +335,14 @@ class ThreadMessagesView extends React.Component {
 	}
 
 	renderHeader = () => {
-		const { messages } = this.state;
+		const { messages, currentFilter } = this.state;
 		if (!messages.length) {
 			return null;
 		}
 
 		return (
 			<>
-				<DropdownItem onPress={this.showFilterDropdown} text='Displaying Following' iconName='filter' />
+				<DropdownItemHeader currentFilter={currentFilter} onPress={this.showFilterDropdown} />
 				<Separator />
 			</>
 		);
