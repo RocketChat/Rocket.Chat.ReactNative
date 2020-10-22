@@ -63,7 +63,7 @@ class ThreadMessagesView extends React.Component {
 			displayingThreads: [],
 			subscription: {},
 			showFilterDropdown: false,
-			currentFilter: FILTER.FOLLOWING
+			currentFilter: FILTER.ALL
 		};
 		this.subscribeData();
 	}
