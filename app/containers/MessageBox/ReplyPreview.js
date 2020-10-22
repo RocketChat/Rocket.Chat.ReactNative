@@ -5,6 +5,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 import FastImage from '@rocket.chat/react-native-fast-image';
+import { RectButton } from 'react-native-gesture-handler';
 import Markdown from '../markdown';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
@@ -52,18 +53,47 @@ const renderImage = () => {
 	} else {
 		const p = [];
 		Object.keys(message.attachments).forEach((key) => {
-			if (!message.attachments[key].image_url) {
-				return null;
+			// attachment is image
+			if (message.attachments[key].image_url) {
+				const img = `${ baseUrl }${ message.attachments[key].image_url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
+				p.push(
+					<FastImage
+						source={{ uri: encodeURI(img) }}
+						resizeMode={FastImage.resizeMode.cover}
+						style={styles.thumbnail}
+					/>
+				);
+			} else if (message.attachments[key].video_url) {
+				// attachment is video
+				p.push(
+					<RectButton
+						style={styles.buttonVideo}
+						activeOpacity={0.5}
+						underlayColor='#fff'
+					>
+						<CustomIcon
+							name='play'
+							size={20}
+							style={styles.playVideo}
+						/>
+					</RectButton>
+				);
+			} else if (message.attachments[key].audio_url) {
+				// attachment is audio
+				p.push(
+					<RectButton
+						style={styles.buttonAudio}
+						activeOpacity={0.5}
+						underlayColor='#fff'
+					>
+						<CustomIcon
+							name='Files-audio'
+							size={20}
+							style={styles.playAudio}
+						/>
+					</RectButton>
+				);
 			}
-
-			const img = `${ baseUrl }${ message.attachments[key].image_url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
-			p.push(
-				<FastImage
-					source={{ uri: encodeURI(img) }}
-					resizeMode={FastImage.resizeMode.cover}
-					style={styles.thumbnail}
-				/>
-			);
 		});
 		return p;
 	}
