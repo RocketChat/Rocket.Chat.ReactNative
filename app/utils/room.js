@@ -21,5 +21,12 @@ export const formatDate = date => moment(date).calendar(null, {
 	lastDay: `[${ I18n.t('Yesterday') }]`,
 	sameDay: 'LT',
 	lastWeek: 'dddd',
-	sameElse: 'MMM D'
+	sameElse: 'L'
+});
+
+export const formatDateThreads = date => moment(date).calendar(null, {
+	sameDay: 'LT',
+	lastDay: `[${ I18n.t('Yesterday') }] LT`,
+	lastWeek: 'dddd LT',
+	sameElse: 'LL'
 });

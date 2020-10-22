@@ -3,16 +3,17 @@ import { View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Touchable from './Touchable';
-import { formatLastMessage, BUTTON_HIT_SLOP } from './utils';
+import { BUTTON_HIT_SLOP } from './utils';
 import styles from './styles';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
+import { formatDateThreads } from '../../utils/room';
 
 const CallButton = React.memo(({
 	dlm, theme, callJitsi
 }) => {
-	const time = formatLastMessage(dlm);
+	const time = formatDateThreads(dlm);
 	return (
 		<View style={styles.buttonContainer}>
 			<Touchable

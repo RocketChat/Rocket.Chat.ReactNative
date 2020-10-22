@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
-import moment from 'moment';
 
 import { withTheme } from '../../theme';
 import Avatar from '../../containers/Avatar';
@@ -10,7 +9,7 @@ import sharedStyles from '../Styles';
 import { themes } from '../../constants/colors';
 import Markdown from '../../containers/markdown';
 import { CustomIcon } from '../../lib/Icons';
-import { formatDate } from '../../utils/room';
+import { formatDateThreads } from '../../utils/room';
 
 const styles = StyleSheet.create({
 	container: {
@@ -71,7 +70,7 @@ const Item = ({
 	const username = (useRealName && item?.u?.name) || item?.u?.username;
 	let time;
 	if (item?.ts) {
-		time = moment(item.ts).format('MMM D');
+		time = formatDateThreads(item.ts);
 	}
 
 	return (
@@ -106,7 +105,7 @@ const Item = ({
 
 						<View style={styles.detailContainer}>
 							<CustomIcon name='clock' size={20} color={themes[theme].auxiliaryText} />
-							<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]}>{formatDate(item?.tlm)}</Text>
+							<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]}>{formatDateThreads(item?.tlm)}</Text>
 						</View>
 					</View>
 				</View>

@@ -3,18 +3,19 @@ import { View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Touchable from './Touchable';
-import { formatLastMessage, formatMessageCount, BUTTON_HIT_SLOP } from './utils';
+import { formatMessageCount, BUTTON_HIT_SLOP } from './utils';
 import styles from './styles';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 import { DISCUSSION } from './constants';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
+import { formatDateThreads } from '../../utils/room';
 
 const Discussion = React.memo(({
 	msg, dcount, dlm, theme
 }) => {
-	const time = formatLastMessage(dlm);
+	const time = formatDateThreads(dlm);
 	const buttonText = formatMessageCount(dcount, DISCUSSION);
 	const { onDiscussionPress } = useContext(MessageContext);
 	return (
