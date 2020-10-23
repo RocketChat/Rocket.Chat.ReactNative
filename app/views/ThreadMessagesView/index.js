@@ -4,6 +4,8 @@ import { FlatList, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import { HeaderBackButton } from '@react-navigation/stack';
 
 import styles from './styles';
 import Item from './Item';
@@ -28,6 +30,8 @@ import { FILTER } from './filters';
 import NoDataFound from './NoDataFound';
 import { isIOS } from '../../utils/deviceInfo';
 import { getBadgeColor } from '../../utils/room';
+import { getHeaderTitlePosition } from '../../containers/Header';
+import SearchHeader from './SearchHeader';
 
 const API_FETCH_COUNT = 50;
 
@@ -54,7 +58,8 @@ class ThreadMessagesView extends React.Component {
 			displayingThreads: [],
 			subscription: {},
 			showFilterDropdown: false,
-			currentFilter: FILTER.ALL
+			currentFilter: FILTER.ALL,
+			isSearching: false
 		};
 		this.setHeader();
 		this.subscribeData();
@@ -65,6 +70,15 @@ class ThreadMessagesView extends React.Component {
 		this.mountInteraction = InteractionManager.runAfterInteractions(() => {
 			this.init();
 		});
+	}
+
+	componentDidUpdate(prevProps) {
+		const {
+			insets
+		} = this.props;
+		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
+			this.setHeader();
+		}
 	}
 
 	componentWillUnmount() {
@@ -83,19 +97,64 @@ class ThreadMessagesView extends React.Component {
 		}
 	}
 
-	setHeader = () => {
-		const { navigation, isMasterDetail } = this.props;
+	getHeader = () => {
+		const { isSearching } = this.state;
+		const {
+			navigation, isMasterDetail, insets, theme
+		} = this.props;
+		const headerTitlePosition = getHeaderTitlePosition(insets);
+
+		if (isSearching) {
+			return {
+				headerTitleAlign: 'left',
+				headerLeft: () => (
+					<HeaderButton.Container left>
+						<HeaderButton.Item
+							iconName='close'
+							onPress={this.onCancelSearchPress}
+						/>
+					</HeaderButton.Container>
+				),
+				headerTitle: () => <SearchHeader />,
+				headerTitleContainerStyle: {
+					left: headerTitlePosition.left,
+					right: headerTitlePosition.right
+				},
+				headerRight: () => null
+			};
+		}
+
 		const options = {
-			title: I18n.t('Threads')
+			headerLeft: () => (
+				<HeaderBackButton
+					labelVisible={false}
+					onPress={() => navigation.pop()}
+					tintColor={themes[theme].headerTintColor}
+				/>
+			),
+			headerTitleAlign: 'center',
+			headerTitle: I18n.t('Threads'),
+			headerTitleContainerStyle: {
+				left: null,
+				right: null
+			}
 		};
+
 		if (isMasterDetail) {
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
 		}
+
 		options.headerRight = () => (
 			<HeaderButton.Container>
 				<HeaderButton.Item iconName='search' onPress={this.onSearchPress} />
 			</HeaderButton.Container>
 		);
+		return options;
+	}
+
+	setHeader = () => {
+		const { navigation } = this.props;
+		const options = this.getHeader();
 		navigation.setOptions(options);
 	}
 
@@ -261,7 +320,11 @@ class ThreadMessagesView extends React.Component {
 	}
 
 	onSearchPress = () => {
-		alert('tbd');
+		this.setState({ isSearching: true }, () => this.setHeader());
+	}
+
+	onCancelSearchPress = () => {
+		this.setState({ isSearching: false }, () => this.setHeader());
 	}
 
 	onThreadPress = debounce((item) => {
@@ -415,4 +478,4 @@ const mapStateToProps = state => ({
 	isMasterDetail: state.app.isMasterDetail
 });
 
-export default connect(mapStateToProps)(withTheme(ThreadMessagesView));
+export default connect(mapStateToProps)(withTheme(withSafeAreaInsets(ThreadMessagesView)));
