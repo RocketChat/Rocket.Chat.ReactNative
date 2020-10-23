@@ -109,17 +109,18 @@ class RoomView extends React.Component {
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;
 		this.tmid = props.route.params?.tmid;
-		const room = props.route.params?.room;
 		const selectedMessage = props.route.params?.message;
 		const name = props.route.params?.name;
 		const fname = props.route.params?.fname;
 		const search = props.route.params?.search;
 		const prid = props.route.params?.prid;
+		const room = props.route.params?.room ?? {
+			rid: this.rid, t: this.t, name, fname, prid
+		};
+		const roomUserId = props.route.params?.roomUserId ?? RocketChat.getUidDirectMessage(room);
 		this.state = {
 			joined: true,
-			room: room || {
-				rid: this.rid, t: this.t, name, fname, prid
-			},
+			room,
 			roomUpdate: {},
 			member: {},
 			lastOpen: null,
@@ -133,7 +134,7 @@ class RoomView extends React.Component {
 			reacting: false,
 			readOnly: false,
 			unreadsCount: null,
-			roomUserId: null
+			roomUserId
 		};
 		this.setHeader();
 
@@ -293,24 +294,28 @@ class RoomView extends React.Component {
 	}
 
 	setHeader = () => {
-		const { room, unreadsCount, roomUserId: stateRoomUserId } = this.state;
 		const {
-			navigation, route, isMasterDetail, theme, baseUrl, user, insets
+			room, unreadsCount, roomUserId
+		} = this.state;
+		const {
+			navigation, isMasterDetail, theme, baseUrl, user, insets, route
 		} = this.props;
-		const rid = route.params?.rid;
-		const prid = route.params?.prid;
+		const { rid, tmid } = this;
+		const prid = room?.prid;
 		let title = route.params?.name;
-		if ((room.id || room.rid) && !this.tmid) {
+		let parentTitle;
+		if ((room.id || room.rid) && !tmid) {
 			title = RocketChat.getRoomTitle(room);
 		}
+		if (tmid) {
+			parentTitle = RocketChat.getRoomTitle(room);
+		}
 		const subtitle = room?.topic;
-		const t = route.params?.t || room?.t;
-		const tmid = route.params?.tmid;
+		const t = room?.t;
 		const { id: userId, token } = user;
 		const avatar = room?.name;
-		const roomUserId = route.params?.roomUserId || stateRoomUserId;
 		const visitor = room?.visitor;
-		if (!rid) {
+		if (!room?.rid) {
 			return;
 		}
 		const headerTitlePosition = getHeaderTitlePosition(insets);
@@ -342,6 +347,7 @@ class RoomView extends React.Component {
 					prid={prid}
 					tmid={tmid}
 					title={title}
+					parentTitle={parentTitle}
 					subtitle={subtitle}
 					type={t}
 					roomUserId={roomUserId}
@@ -626,6 +632,7 @@ class RoomView extends React.Component {
 	};
 
 	onThreadPress = debounce(async(item) => {
+		const { roomUserId } = this.state;
 		const { navigation } = this.props;
 		if (item.tmid) {
 			if (!item.tmsg) {
@@ -636,11 +643,11 @@ class RoomView extends React.Component {
 				name = I18n.t('Encrypted_message');
 			}
 			navigation.push('RoomView', {
-				rid: item.subscription.id, tmid: item.tmid, name, t: 'thread'
+				rid: item.subscription.id, tmid: item.tmid, name, t: 'thread', roomUserId
 			});
 		} else if (item.tlm) {
 			navigation.push('RoomView', {
-				rid: item.subscription.id, tmid: item.id, name: item.msg, t: 'thread'
+				rid: item.subscription.id, tmid: item.id, name: item.msg, t: 'thread', roomUserId
 			});
 		}
 	}, 1000, true)

@@ -24,9 +24,6 @@ const styles = StyleSheet.create({
 		...sharedStyles.textSemibold,
 		fontSize: TITLE_SIZE
 	},
-	scroll: {
-		alignItems: 'center'
-	},
 	subtitle: {
 		...sharedStyles.textRegular,
 		fontSize: 12
@@ -36,11 +33,9 @@ const styles = StyleSheet.create({
 	}
 });
 
-const SubTitle = React.memo(({ usersTyping, subtitle, theme }) => {
-	if (!subtitle && !usersTyping.length) {
-		return null;
-	}
-
+const SubTitle = React.memo(({
+	usersTyping, subtitle, renderFunc, theme
+}) => {
 	// typing
 	if (usersTyping.length) {
 		let usersText;
@@ -57,6 +52,11 @@ const SubTitle = React.memo(({ usersTyping, subtitle, theme }) => {
 		);
 	}
 
+	// renderFunc
+	if (renderFunc) {
+		return renderFunc();
+	}
+
 	// subtitle
 	if (subtitle) {
 		return (
@@ -69,6 +69,8 @@ const SubTitle = React.memo(({ usersTyping, subtitle, theme }) => {
 			/>
 		);
 	}
+
+	return null;
 });
 
 SubTitle.propTypes = {
@@ -113,7 +115,7 @@ HeaderTitle.propTypes = {
 };
 
 const Header = React.memo(({
-	title, subtitle, type, status, usersTyping, width, height, prid, tmid, connecting, goRoomActionsView, roomUserId, theme
+	title, subtitle, parentTitle, type, status, usersTyping, width, height, prid, tmid, connecting, goRoomActionsView, roomUserId, theme
 }) => {
 	const portrait = height > width;
 	let scale = 1;
@@ -126,6 +128,22 @@ const Header = React.memo(({
 
 	const onPress = () => goRoomActionsView();
 
+	let renderFunc;
+	if (tmid) {
+		renderFunc = () => (
+			<View style={styles.titleContainer}>
+				<Icon
+					type={prid ? 'discussion' : type}
+					tmid={tmid}
+					status={status}
+					roomUserId={roomUserId}
+					theme={theme}
+				/>
+				<Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]}>{parentTitle}</Text>
+			</View>
+		);
+	}
+
 	return (
 		<TouchableOpacity
 			testID='room-view-header-actions'
@@ -135,7 +153,7 @@ const Header = React.memo(({
 			disabled={tmid}
 		>
 			<View style={styles.titleContainer}>
-				<Icon type={prid ? 'discussion' : type} status={status} roomUserId={roomUserId} theme={theme} />
+				{tmid ? null : <Icon type={prid ? 'discussion' : type} status={status} roomUserId={roomUserId} theme={theme} />}
 				<HeaderTitle
 					title={title}
 					tmid={tmid}
@@ -145,7 +163,7 @@ const Header = React.memo(({
 					theme={theme}
 				/>
 			</View>
-			{tmid ? null : <SubTitle usersTyping={usersTyping} subtitle={subtitle} theme={theme} />}
+			<SubTitle usersTyping={usersTyping} subtitle={subtitle} theme={theme} renderFunc={renderFunc} />
 		</TouchableOpacity>
 	);
 });

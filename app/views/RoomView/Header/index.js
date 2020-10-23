@@ -75,7 +75,7 @@ class RoomHeaderView extends Component {
 
 	render() {
 		const {
-			title, subtitle: subtitleProp, type, prid, tmid, widthOffset, status = 'offline', statusText, connecting, connected, usersTyping, goRoomActionsView, roomUserId, theme, width, height
+			title, subtitle: subtitleProp, type, prid, tmid, widthOffset, status = 'offline', statusText, connecting, connected, usersTyping, goRoomActionsView, roomUserId, theme, width, height, parentTitle
 		} = this.props;
 
 		let subtitle;
@@ -103,6 +103,7 @@ class RoomHeaderView extends Component {
 				roomUserId={roomUserId}
 				goRoomActionsView={goRoomActionsView}
 				connecting={connecting}
+				parentTitle={parentTitle}
 			/>
 		);
 	}
@@ -111,10 +112,12 @@ class RoomHeaderView extends Component {
 const mapStateToProps = (state, ownProps) => {
 	let statusText;
 	let status = 'offline';
-	const { roomUserId, type, visitor = {} } = ownProps;
+	const {
+		roomUserId, type, visitor = {}, tmid
+	} = ownProps;
 
 	if (state.meteor.connected) {
-		if (type === 'd' && state.activeUsers[roomUserId]) {
+		if ((type === 'd' || (tmid && roomUserId)) && state.activeUsers[roomUserId]) {
 			({ status, statusText } = state.activeUsers[roomUserId]);
 		} else if (type === 'l' && visitor?.status) {
 			({ status } = visitor);
