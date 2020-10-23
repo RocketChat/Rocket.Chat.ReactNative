@@ -13,6 +13,7 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
 import database from '../../lib/database';
+import { sanitizeLikeString } from '../../lib/database/utils';
 import StatusBar from '../../containers/StatusBar';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import log from '../../utils/log';
@@ -43,7 +44,8 @@ class ThreadMessagesView extends React.Component {
 		baseUrl: PropTypes.string,
 		useRealName: PropTypes.bool,
 		theme: PropTypes.string,
-		isMasterDetail: PropTypes.bool
+		isMasterDetail: PropTypes.bool,
+		insets: PropTypes.object
 	}
 
 	constructor(props) {
@@ -59,10 +61,12 @@ class ThreadMessagesView extends React.Component {
 			subscription: {},
 			showFilterDropdown: false,
 			currentFilter: FILTER.ALL,
-			isSearching: false
+			isSearching: false,
+			searchText: ''
 		};
 		this.setHeader();
-		this.subscribeData();
+		this.initSubscription();
+		this.subscribeMessages();
 	}
 
 	componentDidMount() {
@@ -115,7 +119,7 @@ class ThreadMessagesView extends React.Component {
 						/>
 					</HeaderButton.Container>
 				),
-				headerTitle: () => <SearchHeader />,
+				headerTitle: () => <SearchHeader onSearchChangeText={this.onSearchChangeText} />,
 				headerTitleContainerStyle: {
 					left: headerTitlePosition.left,
 					right: headerTitlePosition.right
@@ -158,8 +162,7 @@ class ThreadMessagesView extends React.Component {
 		navigation.setOptions(options);
 	}
 
-	// eslint-disable-next-line react/sort-comp
-	subscribeData = async() => {
+	initSubscription = async() => {
 		try {
 			const db = database.active;
 
@@ -173,13 +176,32 @@ class ThreadMessagesView extends React.Component {
 					this.setState({ subscription: data });
 				});
 
-			// threads query
+			this.subscribeMessages(subscription);
+		} catch (e) {
+			log(e);
+		}
+	}
+
+	subscribeMessages = (subscription, searchText) => {
+		try {
+			const db = database.active;
+
+			if (this.messagesSubscription && this.messagesSubscription.unsubscribe) {
+				this.messagesSubscription.unsubscribe();
+			}
+
+			const whereClause = [
+				Q.where('rid', this.rid),
+				Q.experimentalSortBy('tlm', Q.desc)
+			];
+
+			if (searchText?.trim()) {
+				whereClause.push(Q.where('msg', Q.like(`%${ sanitizeLikeString(searchText.trim()) }%`)));
+			}
+
 			this.messagesObservable = db.collections
 				.get('threads')
-				.query(
-					Q.where('rid', this.rid),
-					Q.experimentalSortBy('tlm', Q.desc)
-				)
+				.query(...whereClause)
 				.observeWithColumns(['updated_at']);
 			this.messagesSubscription = this.messagesObservable
 				.subscribe((messages) => {
@@ -197,7 +219,6 @@ class ThreadMessagesView extends React.Component {
 		}
 	}
 
-	// eslint-disable-next-line react/sort-comp
 	init = () => {
 		const { subscription } = this.state;
 		if (!subscription) {
@@ -272,7 +293,9 @@ class ThreadMessagesView extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	load = debounce(async(lastThreadSync) => {
-		const { loading, end, messages } = this.state;
+		const {
+			loading, end, messages, searchText
+		} = this.state;
 		if (end || loading || !this.mounted) {
 			return;
 		}
@@ -281,7 +304,7 @@ class ThreadMessagesView extends React.Component {
 
 		try {
 			const result = await RocketChat.getThreadsList({
-				rid: this.rid, count: API_FETCH_COUNT, offset: messages.length
+				rid: this.rid, count: API_FETCH_COUNT, offset: messages.length, text: searchText
 			});
 			if (result.success) {
 				this.updateThreads({ update: result.threads, lastThreadSync });
@@ -324,8 +347,18 @@ class ThreadMessagesView extends React.Component {
 	}
 
 	onCancelSearchPress = () => {
-		this.setState({ isSearching: false }, () => this.setHeader());
+		this.setState({ isSearching: false, searchText: '' }, () => {
+			const { subscription } = this.state;
+			this.setHeader();
+			this.subscribeMessages(subscription);
+		});
 	}
+
+	onSearchChangeText = debounce((searchText) => {
+		const { subscription } = this.state;
+		this.setState({ searchText }, () => this.subscribeMessages(subscription, searchText));
+	}, 300)
+
 
 	onThreadPress = debounce((item) => {
 		const { navigation, isMasterDetail } = this.props;
