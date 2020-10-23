@@ -179,7 +179,7 @@ export default async function(rid, msg, tmid, user, tshow) {
 				};
 				if (tmid && tMessageRecord) {
 					m.tmid = tmid;
-					m.tlm = messageDate;
+					// m.tlm = messageDate; // I don't think this is necessary... leaving it commented just in case...
 					m.tmsg = tMessageRecord.msg;
 					m.tshow = tshow;
 				}
