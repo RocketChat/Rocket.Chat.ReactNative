@@ -74,7 +74,7 @@ const Item = ({
 	}
 
 	return (
-		<Touch theme={theme} onPress={() => onPress(item)}>
+		<Touch theme={theme} onPress={() => onPress(item)} testID={`thread-messages-view-${ item.msg }`}>
 			<View style={styles.container}>
 				<Avatar
 					style={styles.avatar}

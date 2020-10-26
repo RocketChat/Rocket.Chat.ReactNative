@@ -864,6 +864,7 @@ class MessageBox extends Component {
 			<TouchableWithoutFeedback
 				style={[styles.sendToChannelButton, { backgroundColor: themes[theme].messageboxBackground }]}
 				onPress={this.onPressSendToChannel}
+				testID='messagebox-send-to-channel'
 			>
 				<CustomIcon name={tshow ? 'checkbox-checked' : 'checkbox-unchecked'} size={24} color={themes[theme].auxiliaryText} />
 				<Text style={[styles.sendToChannelText, { color: themes[theme].auxiliaryText }]}>Send to channel</Text>
