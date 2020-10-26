@@ -159,7 +159,7 @@ const Reply = React.memo(({
 			]}
 			background={Touchable.Ripple(themes[theme].bannerBackground)}
 		>
-		 	<>
+			<>
 				<View style={styles.attachmentContainer}>
 					<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
 					<Description
@@ -170,14 +170,14 @@ const Reply = React.memo(({
 					/>
 					<Fields attachment={attachment} theme={theme} />
 				</View>
-				 <Markdown
+				<Markdown
 					msg={attachment.description}
 					baseUrl={baseUrl}
 					username={user.username}
 					getCustomEmoji={getCustomEmoji}
 					theme={theme}
 				/>
-		 	</>
+			</>
 		</Touchable>
 	);
 }, (prevProps, nextProps) => isEqual(prevProps.attachment, nextProps.attachment) && prevProps.theme === nextProps.theme);
