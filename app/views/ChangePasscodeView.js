@@ -10,7 +10,7 @@ import Touchable from 'react-native-platform-touchable';
 import { withTheme } from '../theme';
 import { isTablet, hasNotch } from '../utils/deviceInfo';
 import { TYPE } from '../containers/Passcode/constants';
-import { PasscodeChoose } from '../containers/Passcode';
+import { PasscodeChange } from '../containers/Passcode';
 import EventEmitter from '../utils/events';
 import { CustomIcon } from '../lib/Icons';
 import { CHANGE_PASSCODE_EMITTER } from '../constants/localAuthentication';
@@ -79,7 +79,7 @@ const ChangePasscodeView = React.memo(({ theme }) => {
 			hideModalContentWhileAnimating
 			style={styles.modal}
 		>
-			<PasscodeChoose theme={theme} type={TYPE.choose} finishProcess={onSubmit} force={data?.force} />
+			<PasscodeChange theme={theme} type={TYPE.choose} finishProcess={onSubmit} force={data?.force} />
 			{!data?.force
 				? (
 					<Touchable onPress={onCancel} style={styles.close}>

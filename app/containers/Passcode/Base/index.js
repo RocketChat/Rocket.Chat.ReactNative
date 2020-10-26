@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, {
 	useState, forwardRef, useImperativeHandle, useRef
 } from 'react';
@@ -40,6 +41,9 @@ const Base = forwardRef(({
 		const currentPasscode = p + text;
 		if (currentPasscode?.length === PASSCODE_LENGTH) {
 			switch (type) {
+				case TYPE.VALIDATE:
+					onEndProcess(currentPasscode);
+					break;
 				case TYPE.CHOOSE:
 					onEndProcess(currentPasscode);
 					break;
