@@ -30,7 +30,7 @@ import DropdownItemHeader from './Dropdown/DropdownItemHeader';
 import { FILTER } from './filters';
 import NoDataFound from './NoDataFound';
 import { isIOS } from '../../utils/deviceInfo';
-import { getBadgeColor } from '../../utils/room';
+import { getBadgeColor, makeThreadName } from '../../utils/room';
 import { getHeaderTitlePosition } from '../../containers/Header';
 import SearchHeader from './SearchHeader';
 
@@ -366,7 +366,7 @@ class ThreadMessagesView extends React.Component {
 			navigation.pop();
 		}
 		navigation.push('RoomView', {
-			rid: item.subscription.id, tmid: item.id, name: item.msg, t: 'thread'
+			rid: item.subscription.id, tmid: item.id, name: makeThreadName(item), t: 'thread'
 		});
 	}, 1000, true)
 

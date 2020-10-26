@@ -9,7 +9,7 @@ import sharedStyles from '../Styles';
 import { themes } from '../../constants/colors';
 import Markdown from '../../containers/markdown';
 import { CustomIcon } from '../../lib/Icons';
-import { formatDateThreads } from '../../utils/room';
+import { formatDateThreads, makeThreadName } from '../../utils/room';
 
 const styles = StyleSheet.create({
 	container: {
@@ -91,7 +91,7 @@ const Item = ({
 						<Text style={[styles.title, { color: themes[theme].titleText }]} numberOfLines={1}>{username}</Text>
 						<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 					</View>
-					<Markdown msg={item?.msg} baseUrl={baseUrl} username={username} theme={theme} numberOfLines={2} preview />
+					<Markdown msg={makeThreadName(item)} baseUrl={baseUrl} username={username} theme={theme} numberOfLines={2} preview />
 					<View style={styles.detailsContainer}>
 						<View style={styles.detailContainer}>
 							<CustomIcon name='threads' size={20} color={themes[theme].auxiliaryText} />

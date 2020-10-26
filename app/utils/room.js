@@ -43,3 +43,5 @@ export const getBadgeColor = ({ subscription, messageId, theme }) => {
 		return themes[theme].tunreadBackground;
 	}
 };
+
+export const makeThreadName = messageRecord => messageRecord.msg || messageRecord?.attachments[0]?.title;

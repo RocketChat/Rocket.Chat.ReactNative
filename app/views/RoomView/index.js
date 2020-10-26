@@ -35,7 +35,7 @@ import { themes } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
-import { getBadgeColor, isBlocked } from '../../utils/room';
+import { getBadgeColor, isBlocked, makeThreadName } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
 import { showErrorAlert } from '../../utils/info';
@@ -647,7 +647,7 @@ class RoomView extends React.Component {
 			});
 		} else if (item.tlm) {
 			navigation.push('RoomView', {
-				rid: item.subscription.id, tmid: item.id, name: item.msg, t: 'thread', roomUserId
+				rid: item.subscription.id, tmid: item.id, name: makeThreadName(item), t: 'thread', roomUserId
 			});
 		}
 	}, 1000, true)
