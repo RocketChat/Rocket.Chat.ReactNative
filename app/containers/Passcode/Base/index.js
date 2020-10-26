@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, {
 	useState, forwardRef, useImperativeHandle, useRef
 } from 'react';
