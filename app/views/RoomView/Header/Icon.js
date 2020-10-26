@@ -66,6 +66,7 @@ Icon.propTypes = {
 	roomUserId: PropTypes.string,
 	type: PropTypes.string,
 	status: PropTypes.string,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	tmid: PropTypes.string
 };
 export default Icon;

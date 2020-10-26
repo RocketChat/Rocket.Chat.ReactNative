@@ -76,7 +76,8 @@ const SubTitle = React.memo(({
 SubTitle.propTypes = {
 	usersTyping: PropTypes.array,
 	theme: PropTypes.string,
-	subtitle: PropTypes.string
+	subtitle: PropTypes.string,
+	renderFunc: PropTypes.func
 };
 
 const HeaderTitle = React.memo(({
@@ -181,6 +182,7 @@ Header.propTypes = {
 	usersTyping: PropTypes.array,
 	connecting: PropTypes.bool,
 	roomUserId: PropTypes.string,
+	parentTitle: PropTypes.string,
 	goRoomActionsView: PropTypes.func
 };
 

@@ -27,7 +27,8 @@ class RoomHeaderView extends Component {
 		widthOffset: PropTypes.number,
 		goRoomActionsView: PropTypes.func,
 		width: PropTypes.number,
-		height: PropTypes.number
+		height: PropTypes.number,
+		parentTitle: PropTypes.string
 	};
 
 	shouldComponentUpdate(nextProps) {
