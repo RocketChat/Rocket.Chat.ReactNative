@@ -73,8 +73,13 @@ const Item = ({
 		time = formatDateThreads(item.ts);
 	}
 
+	let tlm;
+	if (item?.tlm) {
+		tlm = formatDateThreads(item.tlm);
+	}
+
 	return (
-		<Touch theme={theme} onPress={() => onPress(item)} testID={`thread-messages-view-${ item.msg }`}>
+		<Touch theme={theme} onPress={() => onPress(item)} testID={`thread-messages-view-${ item.msg }`} style={{ backgroundColor: themes[theme].backgroundColor }}>
 			<View style={styles.container}>
 				<Avatar
 					style={styles.avatar}
@@ -105,7 +110,7 @@ const Item = ({
 
 						<View style={styles.detailContainer}>
 							<CustomIcon name='clock' size={20} color={themes[theme].auxiliaryText} />
-							<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]}>{formatDateThreads(item?.tlm)}</Text>
+							<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]}>{tlm}</Text>
 						</View>
 					</View>
 				</View>

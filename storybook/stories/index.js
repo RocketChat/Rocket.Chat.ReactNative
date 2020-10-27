@@ -11,9 +11,11 @@ import UiKitModal from './UiKitModal';
 import Markdown from './Markdown';
 import './HeaderButtons';
 import './UnreadBadge';
+import '../../app/views/ThreadMessagesView/Item.stories.js';
 // import RoomViewHeader from './RoomViewHeader';
 
 import MessageContext from '../../app/containers/message/Context';
+import { themes } from '../../app/constants/colors';
 
 // MessageProvider
 const baseUrl = 'https://open.rocket.chat';
@@ -50,7 +52,8 @@ const messageDecorator = story => (
 			replyBroadcast: () => {},
 			onReactionPress: () => {},
 			onDiscussionPress: () => {},
-			onReactionLongPress: () => {}
+			onReactionLongPress: () => {},
+			getBadgeColor: () => themes.light.tunreadBackground
 		}}
 	>
 		{story()}

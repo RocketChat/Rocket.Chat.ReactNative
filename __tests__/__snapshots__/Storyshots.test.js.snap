@@ -6164,6 +6164,195 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
 </RCTScrollView>
 `;
 
+exports[`Storyshots Thread Messages.Item badge 1`] = `
+<RCTScrollView>
+  <View>
+    <View
+      style={
+        Array [
+          Object {
+            "height": 0.5,
+          },
+          undefined,
+          Object {
+            "backgroundColor": "#cbcbcc",
+          },
+        ]
+      }
+    />
+    View
+    <View
+      style={
+        Array [
+          Object {
+            "height": 0.5,
+          },
+          undefined,
+          Object {
+            "backgroundColor": "#cbcbcc",
+          },
+        ]
+      }
+    />
+    View
+    <View
+      style={
+        Array [
+          Object {
+            "height": 0.5,
+          },
+          undefined,
+          Object {
+            "backgroundColor": "#cbcbcc",
+          },
+        ]
+      }
+    />
+    View
+    View
+    <View
+      style={
+        Array [
+          Object {
+            "height": 0.5,
+          },
+          undefined,
+          Object {
+            "backgroundColor": "#cbcbcc",
+          },
+        ]
+      }
+    />
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Storyshots Thread Messages.Item content 1`] = `
+<RCTScrollView>
+  <View>
+    <View
+      style={
+        Array [
+          Object {
+            "height": 0.5,
+          },
+          undefined,
+          Object {
+            "backgroundColor": "#cbcbcc",
+          },
+        ]
+      }
+    />
+    View
+    <View
+      style={
+        Array [
+          Object {
+            "height": 0.5,
+          },
+          undefined,
+          Object {
+            "backgroundColor": "#cbcbcc",
+          },
+        ]
+      }
+    />
+    View
+    <View
+      style={
+        Array [
+          Object {
+            "height": 0.5,
+          },
+          undefined,
+          Object {
+            "backgroundColor": "#cbcbcc",
+          },
+        ]
+      }
+    />
+    View
+    <View
+      style={
+        Array [
+          Object {
+            "height": 0.5,
+          },
+          undefined,
+          Object {
+            "backgroundColor": "#cbcbcc",
+          },
+        ]
+      }
+    />
+    View
+    <View
+      style={
+        Array [
+          Object {
+            "height": 0.5,
+          },
+          undefined,
+          Object {
+            "backgroundColor": "#cbcbcc",
+          },
+        ]
+      }
+    />
+    View
+    <View
+      style={
+        Array [
+          Object {
+            "height": 0.5,
+          },
+          undefined,
+          Object {
+            "backgroundColor": "#cbcbcc",
+          },
+        ]
+      }
+    />
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Storyshots Thread Messages.Item themes 1`] = `
+<RCTScrollView>
+  <View>
+    <View
+      style={
+        Array [
+          Object {
+            "height": 0.5,
+          },
+          undefined,
+          Object {
+            "backgroundColor": "#cbcbcc",
+          },
+        ]
+      }
+    />
+    View
+    View
+    View
+    <View
+      style={
+        Array [
+          Object {
+            "height": 0.5,
+          },
+          undefined,
+          Object {
+            "backgroundColor": "#cbcbcc",
+          },
+        ]
+      }
+    />
+  </View>
+</RCTScrollView>
+`;
+
 exports[`Storyshots UiKitMessage list uikitmessage 1`] = `
 <RCTSafeAreaView
   emulateUnlessSupported={true}
