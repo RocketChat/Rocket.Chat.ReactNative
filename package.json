@@ -17,11 +17,6 @@
     "generate-source-maps-android": "bugsnag-sourcemaps",
     "postinstall": "patch-package && jetify"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run precommit"
-    }
-  },
   "dependencies": {
     "@codler/react-native-keyboard-aware-scroll-view": "^1.0.1",
     "@nozbe/watermelondb": "^0.18.0",
@@ -146,7 +141,6 @@
     "eslint-plugin-jsx-a11y": "6.3.1",
     "eslint-plugin-react": "7.20.3",
     "eslint-plugin-react-native": "3.8.1",
-    "husky": "3.0.9",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^25.1.0",
     "jest-cli": "^23.6.0",

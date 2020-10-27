@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 import Item from './Item';
 
-const CustomFields = ({ customFields, theme }) => {
+const CustomFields = ({ customFields, theme, user }) => {
+	console.log('customFields', customFields);
 	if (customFields) {
 		return (
 			Object.keys(customFields).map((title) => {
@@ -25,6 +26,7 @@ const CustomFields = ({ customFields, theme }) => {
 };
 CustomFields.propTypes = {
 	customFields: PropTypes.object,
+	user: PropTypes.object,
 	theme: PropTypes.string
 };
 

@@ -65,7 +65,7 @@ class ProfileView extends React.Component {
 		avatarUrl: null,
 		avatar: {},
 		avatarSuggestions: {},
-		customFields: {}
+		customFields: '',
 	}
 
 	async componentDidMount() {

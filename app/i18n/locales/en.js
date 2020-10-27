@@ -410,6 +410,7 @@ export default {
 	Review_this_app: 'Review this app',
 	Remove: 'Remove',
 	Roles: 'Roles',
+	Badges: 'Badges',
 	Room_actions: 'Room actions',
 	Room_changed_announcement: 'Room announcement changed to: {{announcement}} by {{userBy}}',
 	Room_changed_description: 'Room description changed to: {{description}} by {{userBy}}',

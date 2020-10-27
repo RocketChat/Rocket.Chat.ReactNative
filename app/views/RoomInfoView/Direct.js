@@ -12,7 +12,7 @@ import styles from './styles';
 
 const Roles = ({ roles, theme }) => (roles && roles.length ? (
 	<View style={styles.item}>
-		<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t('Roles')}</Text>
+		<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t('Badges')}</Text>
 		<View style={styles.rolesContainer}>
 			{roles.map(role => (role ? (
 				<View style={[styles.roleBadge, { backgroundColor: themes[theme].auxiliaryBackground }]} key={role}>
@@ -30,8 +30,7 @@ Roles.propTypes = {
 const Direct = ({ roomUser, theme }) => (
 	<>
 		<Roles roles={roomUser.parsedRoles} theme={theme} />
-		<Timezone utcOffset={roomUser.utcOffset} theme={theme} />
-		<CustomFields customFields={roomUser.customFields} theme={theme} />
+		<CustomFields customFields={roomUser.customFields} user={roomUser} theme={theme} />
 	</>
 );
 Direct.propTypes = {
