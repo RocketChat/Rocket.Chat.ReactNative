@@ -1,13 +1,22 @@
 diff --git a/node_modules/react-native-jitsi-meet/android/build.gradle b/node_modules/react-native-jitsi-meet/android/build.gradle
-index 27d041a..981fa95 100644
+index 27d041a..5e398c9 100644
 --- a/node_modules/react-native-jitsi-meet/android/build.gradle
 +++ b/node_modules/react-native-jitsi-meet/android/build.gradle
+@@ -37,7 +37,7 @@ android {
+ 
+ repositories {
+   maven {
+-      url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
++      url "https://github.com/RocketChat/jitsi-maven-repository/raw/libre/releases"
+   }
+   google()
+   mavenCentral()
 @@ -45,7 +45,14 @@ repositories {
  }
  
  dependencies {
 -    implementation ('org.jitsi.react:jitsi-meet-sdk:2.4.0') {
-+    implementation ('org.jitsi.react:jitsi-meet-sdk:2.9.+') {
++    implementation ('org.jitsi.react:jitsi-meet-sdk:+') {
 +      exclude group: 'com.facebook.react', module:'react-native-vector-icons'
 +      exclude group: 'com.facebook.react', module:'react-native-webview'
 +      exclude group: 'com.facebook.react', module:'react-native-youtube'
