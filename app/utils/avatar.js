@@ -12,7 +12,6 @@ export const avatarURL = ({
 		room = `@${ text }`;
 	}
 
-	// Avoid requesting several sizes by having only two sizes on cache
 	const uriSize = size > 100 ? size : 100;
 
 	const { id, token } = user;
