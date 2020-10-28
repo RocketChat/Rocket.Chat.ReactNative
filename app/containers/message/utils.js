@@ -49,6 +49,7 @@ export const SYSTEM_MESSAGES = [
 	'room_changed_announcement',
 	'room_changed_topic',
 	'room_changed_privacy',
+	'room_changed_avatar',
 	'message_snippeted',
 	'thread-created'
 ];
@@ -91,6 +92,8 @@ export const getInfoMessage = ({
 		return I18n.t('Room_changed_topic', { topic: msg, userBy: username });
 	} else if (type === 'room_changed_privacy') {
 		return I18n.t('Room_changed_privacy', { type: msg, userBy: username });
+	} else if (type === 'room_changed_avatar') {
+		return I18n.t('Room_changed_avatar', { userBy: username });
 	} else if (type === 'message_snippeted') {
 		return I18n.t('Created_snippet');
 	}

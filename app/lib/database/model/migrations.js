@@ -178,6 +178,18 @@ export default schemaMigrations({
 						{ name: 'username', type: 'string', isIndexed: true },
 						{ name: 'avatar_etag', type: 'string', isOptional: true }
 					]
+				}),
+				addColumns({
+					table: 'subscriptions',
+					columns: [
+						{ name: 'avatar_etag', type: 'string', isOptional: true }
+					]
+				}),
+				addColumns({
+					table: 'rooms',
+					columns: [
+						{ name: 'avatar_etag', type: 'string', isOptional: true }
+					]
 				})
 			]
 		}

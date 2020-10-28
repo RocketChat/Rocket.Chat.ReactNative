@@ -88,8 +88,8 @@ class RoomItemContainer extends React.Component {
 	}
 
 	componentWillUnmount() {
-		if (this.userSubscription?.unsubscribe) {
-			this.userSubscription.unsubscribe();
+		if (this.avatarSubscription?.unsubscribe) {
+			this.avatarSubscription.unsubscribe();
 		}
 		if (this.roomSubscription?.unsubscribe) {
 			this.roomSubscription.unsubscribe();
@@ -115,14 +115,23 @@ class RoomItemContainer extends React.Component {
 			});
 		}
 
-		if (this.isDirect) {
+		const db = database.active;
+		const usersCollection = db.collections.get('users');
+		const subsCollection = db.collections.get('subscriptions');
+		try {
 			const { id } = this.props;
-			const db = database.active;
-			const usersCollection = db.collections.get('users');
-			try {
-				const user = await usersCollection.find(id);
-				const observable = user.observe();
-				this.userSubscription = observable.subscribe((u) => {
+			const { rid } = item;
+
+			let record;
+			if (this.isDirect) {
+				record = await usersCollection.find(id);
+			} else {
+				record = await subsCollection.find(rid);
+			}
+
+			if (record) {
+				const observable = record.observe();
+				this.avatarSubscription = observable.subscribe((u) => {
 					const { avatarETag } = u;
 					if (this.mounted) {
 						this.setState({ avatarETag });
@@ -130,9 +139,9 @@ class RoomItemContainer extends React.Component {
 						this.state.avatarETag = avatarETag;
 					}
 				});
-			} catch {
-				// User not found
 			}
+		} catch {
+			// Record not found
 		}
 	}
 
@@ -220,7 +229,7 @@ class RoomItemContainer extends React.Component {
 				useRealName={useRealName}
 				unread={item.unread}
 				groupMentions={item.groupMentions}
-				avatarETag={avatarETag}
+				avatarETag={avatarETag || item.avatarETag}
 				swipeEnabled={swipeEnabled}
 			/>
 		);

@@ -16,6 +16,7 @@ const Wrapper = ({
 	userId,
 	token,
 	theme,
+	rid,
 	children
 }) => (
 	<View
@@ -30,6 +31,7 @@ const Wrapper = ({
 			server={baseUrl}
 			user={{ id: userId, token }}
 			avatarETag={avatarETag}
+			rid={rid}
 		/>
 		<View
 			style={[
@@ -54,6 +56,7 @@ Wrapper.propTypes = {
 	userId: PropTypes.string,
 	token: PropTypes.string,
 	theme: PropTypes.string,
+	rid: PropTypes.string,
 	children: PropTypes.element
 };
 

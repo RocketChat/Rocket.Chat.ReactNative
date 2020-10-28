@@ -23,9 +23,10 @@ const Avatar = React.memo(({
 	theme,
 	getCustomEmoji,
 	avatarETag,
-	isStatic
+	isStatic,
+	rid
 }) => {
-	if ((!text && !avatar && !emoji) || !server) {
+	if ((!text && !avatar && !emoji && !rid) || !server) {
 		return null;
 	}
 
@@ -57,7 +58,8 @@ const Avatar = React.memo(({
 				user,
 				avatar,
 				server,
-				avatarETag
+				avatarETag,
+				rid
 			});
 		}
 
@@ -108,7 +110,8 @@ Avatar.propTypes = {
 	onPress: PropTypes.func,
 	getCustomEmoji: PropTypes.func,
 	avatarETag: PropTypes.string,
-	isStatic: PropTypes.bool
+	isStatic: PropTypes.bool,
+	rid: PropTypes.string
 };
 
 Avatar.defaultProps = {
