@@ -236,6 +236,9 @@ dependencies {
     implementation project(':reactnativenotifications')
     implementation project(":reactnativekeyboardinput")
     implementation project(':@react-native-community_viewpager')
+    playImplementation project(':@react-native-firebase_app')
+    playImplementation project(':@react-native-firebase_analytics')
+    playImplementation project(':@react-native-firebase_crashlytics')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
