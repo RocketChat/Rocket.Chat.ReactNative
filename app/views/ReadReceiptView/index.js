@@ -14,7 +14,6 @@ import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
-import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 
 class ReadReceiptView extends React.Component {
@@ -31,8 +30,6 @@ class ReadReceiptView extends React.Component {
 	static propTypes = {
 		route: PropTypes.object,
 		Message_TimeFormat: PropTypes.string,
-		baseUrl: PropTypes.string,
-		user: PropTypes.object,
 		theme: PropTypes.string
 	}
 
@@ -96,9 +93,7 @@ class ReadReceiptView extends React.Component {
 	}
 
 	renderItem = ({ item }) => {
-		const {
-			Message_TimeFormat, user: { id: userId, token }, baseUrl, theme
-		} = this.props;
+		const { Message_TimeFormat, theme } = this.props;
 		const time = moment(item.ts).format(Message_TimeFormat);
 		if (!item?.user?.username) {
 			return null;
@@ -108,9 +103,6 @@ class ReadReceiptView extends React.Component {
 				<Avatar
 					text={item.user.username}
 					size={40}
-					baseUrl={baseUrl}
-					userId={userId}
-					token={token}
 				/>
 				<View style={styles.infoContainer}>
 					<View style={styles.item}>
@@ -168,9 +160,7 @@ class ReadReceiptView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	Message_TimeFormat: state.settings.Message_TimeFormat,
-	baseUrl: state.server.server,
-	user: getUserSelector(state)
+	Message_TimeFormat: state.settings.Message_TimeFormat
 });
 
 export default connect(mapStateToProps)(withTheme(ReadReceiptView));

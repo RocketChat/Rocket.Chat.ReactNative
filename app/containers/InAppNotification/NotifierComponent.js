@@ -11,7 +11,6 @@ import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import { useTheme } from '../../theme';
-import { getUserSelector } from '../../selectors/login';
 import { ROW_HEIGHT } from '../../presentation/RoomItem';
 import { goRoom } from '../../utils/goRoom';
 import Navigation from '../../lib/Navigation';
@@ -65,14 +64,11 @@ const styles = StyleSheet.create({
 
 const hideNotification = () => Notifier.hideNotification();
 
-const NotifierComponent = React.memo(({
-	baseUrl, user, notification, isMasterDetail
-}) => {
+const NotifierComponent = React.memo(({ notification, isMasterDetail }) => {
 	const { theme } = useTheme();
 	const insets = useSafeAreaInsets();
 	const { isLandscape } = useOrientation();
 
-	const { id: userId, token } = user;
 	const { text, payload } = notification;
 	const { type } = payload;
 	const name = type === 'd' ? payload.sender.username : payload.name;
@@ -115,7 +111,7 @@ const NotifierComponent = React.memo(({
 				background={Touchable.SelectableBackgroundBorderless()}
 			>
 				<>
-					<Avatar text={avatar} size={AVATAR_SIZE} type={type} baseUrl={baseUrl} style={styles.avatar} userId={userId} token={token} />
+					<Avatar text={avatar} size={AVATAR_SIZE} type={type} style={styles.avatar} />
 					<View style={styles.inner}>
 						<Text style={[styles.roomName, { color: themes[theme].titleText }]} numberOfLines={1}>{title}</Text>
 						<Text style={[styles.message, { color: themes[theme].titleText }]} numberOfLines={1}>{text}</Text>
@@ -134,15 +130,11 @@ const NotifierComponent = React.memo(({
 });
 
 NotifierComponent.propTypes = {
-	baseUrl: PropTypes.string,
-	user: PropTypes.object,
 	notification: PropTypes.object,
 	isMasterDetail: PropTypes.bool
 };
 
 const mapStateToProps = state => ({
-	user: getUserSelector(state),
-	baseUrl: state.server.server,
 	isMasterDetail: state.app.isMasterDetail
 });
 

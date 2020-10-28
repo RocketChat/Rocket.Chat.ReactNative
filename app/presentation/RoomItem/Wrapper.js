@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 
 import styles from './styles';
 import { themes } from '../../constants/colors';
-import Avatar from '../../containers/Avatar';
+import Avatar from '../../containers/Avatar/Avatar';
 
-const RoomItemInner = ({
+const Wrapper = ({
 	accessibilityLabel,
 	avatar,
 	avatarSize,
+	avatarETag,
 	type,
 	baseUrl,
 	userId,
@@ -25,10 +26,10 @@ const RoomItemInner = ({
 			text={avatar}
 			size={avatarSize}
 			type={type}
-			baseUrl={baseUrl}
 			style={styles.avatar}
-			userId={userId}
-			token={token}
+			server={baseUrl}
+			user={{ id: userId, token }}
+			avatarETag={avatarETag}
 		/>
 		<View
 			style={[
@@ -43,10 +44,11 @@ const RoomItemInner = ({
 	</View>
 );
 
-RoomItemInner.propTypes = {
+Wrapper.propTypes = {
 	accessibilityLabel: PropTypes.string,
 	avatar: PropTypes.string,
 	avatarSize: PropTypes.number,
+	avatarETag: PropTypes.string,
 	type: PropTypes.string,
 	baseUrl: PropTypes.string,
 	userId: PropTypes.string,
@@ -55,4 +57,4 @@ RoomItemInner.propTypes = {
 	children: PropTypes.element
 };
 
-export default RoomItemInner;
+export default Wrapper;
