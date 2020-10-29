@@ -76,7 +76,6 @@ class Dropdown extends React.Component {
 				<TouchableWithoutFeedback onPress={this.close}>
 					<Animated.View style={[styles.backdrop,
 						{
-							...StyleSheet.absoluteFillObject,
 							backgroundColor: themes[theme].backdropColor,
 							opacity: backdropOpacity,
 							top: heightDestination
