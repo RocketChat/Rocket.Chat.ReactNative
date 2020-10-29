@@ -609,5 +609,6 @@ export default {
 	Threads_displaying_unread: 'Mostrando Não Lidos',
 	No_threads: 'Não há tópicos',
 	No_threads_following: 'Você não está seguindo tópicos',
-	No_threads_unread: 'Não há tópicos não lidos'
+	No_threads_unread: 'Não há tópicos não lidos',
+	Messagebox_Send_to_channel: 'Mostrar no canal'
 };

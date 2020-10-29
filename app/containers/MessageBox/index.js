@@ -860,7 +860,6 @@ class MessageBox extends Component {
 		if (!tmid && !replying) {
 			return null;
 		}
-		// TODO: i18n missing
 		return (
 			<TouchableWithoutFeedback
 				style={[styles.sendToChannelButton, { backgroundColor: themes[theme].messageboxBackground }]}
@@ -868,7 +867,7 @@ class MessageBox extends Component {
 				testID='messagebox-send-to-channel'
 			>
 				<CustomIcon name={tshow ? 'checkbox-checked' : 'checkbox-unchecked'} size={24} color={themes[theme].auxiliaryText} />
-				<Text style={[styles.sendToChannelText, { color: themes[theme].auxiliaryText }]}>Send to channel</Text>
+				<Text style={[styles.sendToChannelText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Messagebox_Send_to_channel')}</Text>
 			</TouchableWithoutFeedback>
 		);
 	}

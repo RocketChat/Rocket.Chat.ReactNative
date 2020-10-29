@@ -666,5 +666,6 @@ export default {
 	Threads_displaying_unread: 'Displaying Unread',
 	No_threads: 'There are no threads',
 	No_threads_following: 'You are not following any threads',
-	No_threads_unread: 'There are no unread threads'
+	No_threads_unread: 'There are no unread threads',
+	Messagebox_Send_to_channel: 'Send to channel'
 };
