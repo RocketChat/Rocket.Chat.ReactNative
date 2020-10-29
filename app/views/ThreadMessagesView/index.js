@@ -482,6 +482,7 @@ class ThreadMessagesView extends React.Component {
 				ItemSeparatorComponent={Separator}
 				ListHeaderComponent={this.renderHeader}
 				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
+				scrollIndicatorInsets={{ right: 1 }} // https://github.com/facebook/react-native/issues/26610#issuecomment-539843444
 			/>
 		);
 	}
