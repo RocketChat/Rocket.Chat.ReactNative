@@ -57,7 +57,6 @@ class Dropdown extends React.Component {
 	}
 
 	render() {
-		// TODO: test on tablet
 		const {
 			isMasterDetail, insets, theme, currentFilter, onFilterSelected
 		} = this.props;
@@ -65,7 +64,7 @@ class Dropdown extends React.Component {
 		const heightDestination = isMasterDetail ? headerHeight + statusBarHeight : 0;
 		const translateY = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [-326, heightDestination]
+			outputRange: [-300, heightDestination] // approximated height of the component when closed/open
 		});
 		const backdropOpacity = this.animatedValue.interpolate({
 			inputRange: [0, 1],
