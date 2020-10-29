@@ -14,8 +14,12 @@ export const merge = (subscription, room) => {
 	}
 	if (room) {
 		if (room._updatedAt) {
-			subscription.roomUpdatedAt = room._updatedAt;
 			subscription.lastMessage = normalizeMessage(room.lastMessage);
+			if (subscription.lastMessage) {
+				subscription.roomUpdatedAt = subscription.lastMessage.ts;
+			} else {
+				subscription.roomUpdatedAt = room._updatedAt;
+			}
 			subscription.description = room.description;
 			subscription.topic = room.topic;
 			subscription.announcement = room.announcement;

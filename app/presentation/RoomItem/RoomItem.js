@@ -37,9 +37,11 @@ const RoomItem = ({
 	alert,
 	hideUnreadStatus,
 	unread,
-	tunread,
 	userMentions,
 	groupMentions,
+	tunread,
+	tunreadUser,
+	tunreadGroup,
 	roomUpdatedAt,
 	testID,
 	swipeEnabled,
@@ -113,10 +115,11 @@ const RoomItem = ({
 							/>
 							<UnreadBadge
 								unread={unread}
-								tunread={tunread}
 								userMentions={userMentions}
 								groupMentions={groupMentions}
-								theme={theme}
+								tunread={tunread}
+								tunreadUser={tunreadUser}
+								tunreadGroup={tunreadGroup}
 							/>
 						</View>
 					</>
@@ -138,10 +141,11 @@ const RoomItem = ({
 						/>
 						<UnreadBadge
 							unread={unread}
-							tunread={tunread}
 							userMentions={userMentions}
 							groupMentions={groupMentions}
-							theme={theme}
+							tunread={tunread}
+							tunreadUser={tunreadUser}
+							tunreadGroup={tunreadGroup}
 						/>
 					</View>
 				)
@@ -177,9 +181,11 @@ RoomItem.propTypes = {
 	alert: PropTypes.bool,
 	hideUnreadStatus: PropTypes.bool,
 	unread: PropTypes.number,
-	tunread: PropTypes.array,
 	userMentions: PropTypes.number,
 	groupMentions: PropTypes.number,
+	tunread: PropTypes.array,
+	tunreadUser: PropTypes.array,
+	tunreadGroup: PropTypes.array,
 	roomUpdatedAt: PropTypes.instanceOf(Date),
 	swipeEnabled: PropTypes.bool,
 	toggleFav: PropTypes.func,

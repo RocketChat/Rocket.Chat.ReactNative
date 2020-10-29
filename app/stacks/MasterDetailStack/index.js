@@ -190,7 +190,6 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 				<ModalStack.Screen
 					name='ThreadMessagesView'
 					component={ThreadMessagesView}
-					options={props => ThreadMessagesView.navigationOptions({ ...props, isMasterDetail: true })}
 				/>
 				<ModalStack.Screen
 					name='MarkdownTableView'

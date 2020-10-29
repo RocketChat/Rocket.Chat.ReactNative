@@ -106,7 +106,7 @@ const ThemeStory = ({ theme }) => (
 			right={() => (
 				<HeaderButton.Container>
 					<HeaderButton.Item title='Threads' />
-					<HeaderButton.Item iconName='threads' badge={() => <HeaderButton.Badge tunread={999} />} />
+					<HeaderButton.Item iconName='threads' badge={() => <HeaderButton.Badge tunread={[1]} />} />
 				</HeaderButton.Container>
 			)}
 		/>

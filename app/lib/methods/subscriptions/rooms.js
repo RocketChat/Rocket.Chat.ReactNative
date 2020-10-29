@@ -273,6 +273,9 @@ export default function subscribeRooms() {
 			if (diff?.statusLivechat) {
 				store.dispatch(setUser({ statusLivechat: diff.statusLivechat }));
 			}
+			if (['settings.preferences.showMessageInMainThread'] in diff) {
+				store.dispatch(setUser({ showMessageInMainThread: diff['settings.preferences.showMessageInMainThread'] }));
+			}
 		}
 		if (/subscriptions/.test(ev)) {
 			if (type === 'removed') {

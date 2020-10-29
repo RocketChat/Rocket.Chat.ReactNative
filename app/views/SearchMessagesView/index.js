@@ -149,7 +149,7 @@ class SearchMessagesView extends React.Component {
 				item={item}
 				baseUrl={baseUrl}
 				user={user}
-				timeFormat='MMM Do YYYY, h:mm:ss a'
+				timeFormat='LLL'
 				isHeader
 				showAttachment={() => {}}
 				getCustomEmoji={this.getCustomEmoji}

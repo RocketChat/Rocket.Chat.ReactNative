@@ -180,9 +180,18 @@ export default schemaMigrations({
 					]
 				}),
 				addColumns({
+					table: 'messages',
+					columns: [
+						{ name: 'tshow', type: 'boolean', isOptional: true }
+					]
+				}),
+				addColumns({
 					table: 'subscriptions',
 					columns: [
-						{ name: 'avatar_etag', type: 'string', isOptional: true }
+						{ name: 'avatar_etag', type: 'string', isOptional: true },
+						{ name: 'tunread', type: 'string', isOptional: true },
+						{ name: 'tunread_user', type: 'string', isOptional: true },
+						{ name: 'tunread_group', type: 'string', isOptional: true }
 					]
 				}),
 				addColumns({
