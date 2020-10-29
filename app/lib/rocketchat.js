@@ -362,7 +362,6 @@ const RocketChat = {
 		return this.methodCallWrapper('stream-notify-room-users', `${ rid }/e2ekeyRequest`, rid, e2eKeyId);
 	},
 	e2eResetOwnKey() {
-		//
 		this.unsubscribeRooms();
 
 		// RC 0.72.0
