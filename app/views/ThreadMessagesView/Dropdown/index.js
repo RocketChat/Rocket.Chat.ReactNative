@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Animated, Easing, StyleSheet, TouchableWithoutFeedback
+	Animated, Easing, TouchableWithoutFeedback
 } from 'react-native';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
