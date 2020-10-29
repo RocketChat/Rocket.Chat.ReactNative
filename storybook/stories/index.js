@@ -11,6 +11,8 @@ import UiKitMessage from './UiKitMessage';
 import UiKitModal from './UiKitModal';
 import Markdown from './Markdown';
 import Avatar from './Avatar';
+import './HeaderButtons';
+import './UnreadBadge';
 // import RoomViewHeader from './RoomViewHeader';
 
 import MessageContext from '../../app/containers/message/Context';

@@ -231,6 +231,7 @@ class RoomItemContainer extends React.Component {
 				groupMentions={item.groupMentions}
 				avatarETag={avatarETag || item.avatarETag}
 				swipeEnabled={swipeEnabled}
+				tunread={item.tunread}
 			/>
 		);
 	}

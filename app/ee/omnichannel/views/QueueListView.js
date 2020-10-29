@@ -15,7 +15,7 @@ import SafeAreaView from '../../../containers/SafeAreaView';
 import { themes } from '../../../constants/colors';
 import StatusBar from '../../../containers/StatusBar';
 import { goRoom } from '../../../utils/goRoom';
-import { CloseModalButton } from '../../../containers/HeaderButton';
+import * as HeaderButton from '../../../containers/HeaderButton';
 import RocketChat from '../../../lib/rocketchat';
 import { logEvent, events } from '../../../utils/log';
 import { getInquiryQueueSelector } from '../selectors/inquiry';
@@ -34,7 +34,7 @@ class QueueListView extends React.Component {
 			title: I18n.t('Queued_chats')
 		};
 		if (isMasterDetail) {
-			options.headerLeft = () => <CloseModalButton navigation={navigation} testID='directory-view-close' />;
+			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='directory-view-close' />;
 		}
 		return options;
 	}

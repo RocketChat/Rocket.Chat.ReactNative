@@ -12,7 +12,7 @@ import { logout as logoutAction } from '../../actions/login';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
 import { toggleCrashReport as toggleCrashReportAction, toggleAnalyticsEvents as toggleAnalyticsEventsAction } from '../../actions/crashReport';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
-import { DrawerButton, CloseModalButton } from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
@@ -42,9 +42,9 @@ import { getUserSelector } from '../../selectors/login';
 class SettingsView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => ({
 		headerLeft: () => (isMasterDetail ? (
-			<CloseModalButton navigation={navigation} testID='settings-view-close' />
+			<HeaderButton.CloseModal navigation={navigation} testID='settings-view-close' />
 		) : (
-			<DrawerButton navigation={navigation} />
+			<HeaderButton.Drawer navigation={navigation} />
 		)),
 		title: I18n.t('Settings')
 	});

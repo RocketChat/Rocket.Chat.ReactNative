@@ -15,7 +15,7 @@ import KeyboardView from '../presentation/KeyboardView';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 import UserItem from '../presentation/UserItem';
-import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { SWITCH_TRACK_COLOR, themes } from '../constants/colors';
 import { withTheme } from '../theme';
@@ -143,9 +143,9 @@ class CreateChannelView extends React.Component {
 		const { navigation } = this.props;
 		navigation.setOptions({
 			headerRight: () => channelName.trim().length > 0 && (
-				<CustomHeaderButtons>
-					<Item title={I18n.t('Create')} onPress={this.submit} testID='create-channel-submit' />
-				</CustomHeaderButtons>
+				<HeaderButton.Container>
+					<HeaderButton.Item title={I18n.t('Create')} onPress={this.submit} testID='create-channel-submit' />
+				</HeaderButton.Container>
 			)
 		});
 	}
