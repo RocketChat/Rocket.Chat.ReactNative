@@ -38,9 +38,9 @@ const UnreadBadge = React.memo(({
 	let backgroundColor = themes[theme].unreadBackground;
 	const color = themes[theme].buttonText;
 	if (userMentions > 0) {
-		backgroundColor = themes[theme].mentionMeColor;
+		backgroundColor = themes[theme].mentionMeBackground;
 	} else if (groupMentions > 0) {
-		backgroundColor = themes[theme].mentionGroupColor;
+		backgroundColor = themes[theme].mentionGroupBackground;
 	}
 
 	return (
