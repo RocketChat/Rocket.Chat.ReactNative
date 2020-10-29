@@ -581,6 +581,7 @@ class MessageBox extends Component {
 	clearInput = () => {
 		this.setInput('');
 		this.setShowSend(false);
+		this.setState({ tshow: false });
 	}
 
 	canUploadFile = (file) => {
