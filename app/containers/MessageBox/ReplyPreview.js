@@ -33,13 +33,48 @@ const styles = StyleSheet.create({
 	},
 	time: {
 		fontSize: 12,
-		lineHeight: 16,
+		lineHeight: 20,
 		marginLeft: 6,
 		...sharedStyles.textRegular,
 		fontWeight: '300'
 	},
 	close: {
 		marginRight: 10
+	},
+	thumbnail: {
+		marginLeft: 'auto',
+		width: 38,
+		height: 38
+	},
+	text: {
+		flex: 1,
+		flexDirection: 'column',
+		paddingRight: 5
+	},
+	details: {
+		flexDirection: 'row'
+	},
+	buttonVideo: {
+		height: 38,
+		width: 38,
+		backgroundColor: '#1f2329',
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginLeft: 'auto'
+	},
+	buttonAudio: {
+		height: 38,
+		width: 38,
+		backgroundColor: '#f7f8fa',
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginLeft: 'auto'
+	},
+	playVideo: {
+		color: '#f7f8fa'
+	},
+	playAudio: {
+		color: '#1D74F5'
 	}
 });
 
@@ -107,6 +142,7 @@ const ReplyPreview = React.memo(({
 	}
 
 	const time = moment(message.ts).format(Message_TimeFormat);
+	const description = (message.msg === '') ? message.attachments[0].description : message.msg;
 	return (
 		<View
 			style={[
@@ -120,7 +156,7 @@ const ReplyPreview = React.memo(({
 					<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 				</View>
 				<Markdown
-					msg={message.msg}
+					msg={description}
 					baseUrl={baseUrl}
 					username={username}
 					getCustomEmoji={getCustomEmoji}
@@ -128,8 +164,8 @@ const ReplyPreview = React.memo(({
 					preview
 					theme={theme}
 				/>
+				{renderImage()}
 			</View>
-			{renderImage()}
 			<CustomIcon name='close' color={themes[theme].auxiliaryText} size={20} style={styles.close} onPress={close} />
 		</View>
 	);
