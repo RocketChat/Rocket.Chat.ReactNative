@@ -361,12 +361,17 @@ class ThreadMessagesView extends React.Component {
 
 
 	onThreadPress = debounce((item) => {
+		const { subscription } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			navigation.pop();
 		}
 		navigation.push('RoomView', {
-			rid: item.subscription.id, tmid: item.id, name: makeThreadName(item), t: 'thread'
+			rid: item.subscription.id,
+			tmid: item.id,
+			name: makeThreadName(item),
+			t: 'thread',
+			roomUserId: RocketChat.getUidDirectMessage(subscription)
 		});
 	}, 1000, true)
 
