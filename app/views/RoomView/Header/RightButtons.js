@@ -45,7 +45,6 @@ class RightButtonsContainer extends Component {
 			try {
 				const subCollection = db.collections.get('subscriptions');
 				const subRecord = await subCollection.find(rid);
-				this.updateSubscription(subRecord);
 				this.observeSubscription(subRecord);
 			} catch (e) {
 				console.log('Can\'t find subscription to observe.');
