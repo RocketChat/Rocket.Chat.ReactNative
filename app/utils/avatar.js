@@ -1,7 +1,7 @@
 const formatUrl = (url, size, query) => `${ url }?format=png&size=${ size }${ query }`;
 
 export const avatarURL = ({
-	type, text, size, user = {}, avatar, server, avatarETag, rid
+	type, text, size, user = {}, avatar, server, avatarETag, rid, blockUnauthenticatedAccess
 }) => {
 	let room;
 	if (type === 'd') {
@@ -16,7 +16,7 @@ export const avatarURL = ({
 
 	const { id, token } = user;
 	let query = '';
-	if (id && token) {
+	if (id && token && blockUnauthenticatedAccess) {
 		query += `&rc_token=${ token }&rc_uid=${ id }`;
 	}
 	if (avatarETag) {

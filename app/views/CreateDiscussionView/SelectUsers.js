@@ -15,7 +15,7 @@ import styles from './styles';
 import { themes } from '../../constants/colors';
 
 const SelectUsers = ({
-	server, token, userId, selected, onUserSelect, theme
+	server, token, userId, selected, onUserSelect, blockUnauthenticatedAccess, theme
 }) => {
 	const [users, setUsers] = useState([]);
 
@@ -48,7 +48,7 @@ const SelectUsers = ({
 	}, 300);
 
 	const getAvatar = item => avatarURL({
-		text: RocketChat.getRoomAvatar(item), type: 'd', user: { id: userId, token }, server, avatarETag: item.avatarETag
+		text: RocketChat.getRoomAvatar(item), type: 'd', user: { id: userId, token }, server, avatarETag: item.avatarETag, blockUnauthenticatedAccess
 	});
 
 	return (
@@ -78,6 +78,7 @@ SelectUsers.propTypes = {
 	userId: PropTypes.string,
 	selected: PropTypes.array,
 	onUserSelect: PropTypes.func,
+	blockUnauthenticatedAccess: PropTypes.bool,
 	theme: PropTypes.string
 };
 
