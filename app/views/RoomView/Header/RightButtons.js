@@ -36,7 +36,7 @@ class RightButtonsContainer extends Component {
 		if (tmid) {
 			try {
 				const threadRecord = await db.collections.get('messages').find(tmid);
-				this.observeThead(threadRecord);
+				this.observeThread(threadRecord);
 			} catch (e) {
 				console.log('Can\'t find message to observe.');
 			}
@@ -75,9 +75,12 @@ class RightButtonsContainer extends Component {
 		if (this.threadSubscription && this.threadSubscription.unsubscribe) {
 			this.threadSubscription.unsubscribe();
 		}
+		if (this.subSubscription && this.subSubscription.unsubscribe) {
+			this.subSubscription.unsubscribe();
+		}
 	}
 
-	observeThead = (threadRecord) => {
+	observeThread = (threadRecord) => {
 		const threadObservable = threadRecord.observe();
 		this.threadSubscription = threadObservable
 			.subscribe(thread => this.updateThread(thread));
@@ -91,8 +94,8 @@ class RightButtonsContainer extends Component {
 	}
 
 	observeSubscription = (subRecord) => {
-		const threadObservable = subRecord.observe();
-		this.threadSubscription = threadObservable
+		const subObservable = subRecord.observe();
+		this.subSubscription = subObservable
 			.subscribe((sub) => {
 				this.updateSubscription(sub);
 			});

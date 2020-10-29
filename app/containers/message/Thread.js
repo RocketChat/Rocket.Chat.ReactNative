@@ -62,7 +62,7 @@ Thread.propTypes = {
 	theme: PropTypes.string,
 	tlm: PropTypes.string,
 	isThreadRoom: PropTypes.bool,
-	id: PropTypes.number
+	id: PropTypes.string
 };
 Thread.displayName = 'MessageThread';
 
