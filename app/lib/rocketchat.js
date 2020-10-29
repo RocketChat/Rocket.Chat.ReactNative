@@ -442,7 +442,7 @@ const RocketChat = {
 			emails: result.me.emails,
 			roles: result.me.roles,
 			loginEmailPassword,
-			showMessageInMainThread: result.me.settings.preferences.showMessageInMainThread
+			showMessageInMainThread: result.me.settings?.preferences?.showMessageInMainThread ?? true
 		};
 		return user;
 	},
