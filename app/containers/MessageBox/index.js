@@ -855,9 +855,9 @@ class MessageBox extends Component {
 
 	renderSendToChannel = () => {
 		const { tshow } = this.state;
-		const { theme, tmid } = this.props;
+		const { theme, tmid, replying } = this.props;
 
-		if (!tmid) {
+		if (!tmid && !replying) {
 			return null;
 		}
 		// TODO: i18n missing
