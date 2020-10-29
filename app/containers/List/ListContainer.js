@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 const ListContainer = React.memo(({ children, ...props }) => (
 	<ScrollView
 		contentContainerStyle={styles.container}
-		showsVerticalScrollIndicator={false} // FIXME: we shouldn't need this, but vertical scroll is weird without it
+		scrollIndicatorInsets={{ right: 1 }} // https://github.com/facebook/react-native/issues/26610#issuecomment-539843444
 		{...scrollPersistTaps}
 		{...props}
 	>
