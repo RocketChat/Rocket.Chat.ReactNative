@@ -602,5 +602,13 @@ export default {
 	You_will_be_logged_out_from_other_locations: 'Você perderá a sessão de outros clientes',
 	Logged_out_of_other_clients_successfully: 'Desconectado de outros clientes com sucesso',
 	Logout_failed: 'Falha ao desconectar!',
-	Log_analytics_events: 'Logar eventos no analytics'
+	Log_analytics_events: 'Logar eventos no analytics',
+	Following: 'Seguindo',
+	Threads_displaying_all: 'Mostrando Tudo',
+	Threads_displaying_following: 'Mostrando Seguindo',
+	Threads_displaying_unread: 'Mostrando Não Lidos',
+	No_threads: 'Não há tópicos',
+	No_threads_following: 'Você não está seguindo tópicos',
+	No_threads_unread: 'Não há tópicos não lidos',
+	Messagebox_Send_to_channel: 'Mostrar no canal'
 };

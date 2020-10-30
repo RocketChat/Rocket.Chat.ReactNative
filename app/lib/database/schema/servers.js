@@ -14,6 +14,7 @@ export default appSchema({
 				{ name: 'statusText', type: 'string', isOptional: true },
 				{ name: 'roles', type: 'string', isOptional: true },
 				{ name: 'login_email_password', type: 'boolean', isOptional: true },
+				{ name: 'show_message_in_main_thread', type: 'boolean', isOptional: true },
 				{ name: 'avatar_etag', type: 'string', isOptional: true }
 			]
 		}),

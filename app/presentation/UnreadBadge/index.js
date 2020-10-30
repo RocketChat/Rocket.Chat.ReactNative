@@ -22,10 +22,8 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	unreadText: {
-		// overflow: 'hidden',
 		fontSize: 13,
-		...sharedStyles.textSemibold,
-		fontWeight: '600'
+		...sharedStyles.textSemibold
 	},
 	textSmall: {
 		fontSize: 10

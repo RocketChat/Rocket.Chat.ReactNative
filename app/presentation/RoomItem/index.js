@@ -178,6 +178,7 @@ class RoomItemContainer extends React.Component {
 		const avatar = getRoomAvatar(item);
 		const isRead = getIsRead(item);
 		const date = item.lastMessage?.ts && formatDate(item.lastMessage.ts);
+		const alert = (item.alert || item.tunread?.length);
 
 		let accessibilityLabel = name;
 		if (item.unread === 1) {
@@ -203,7 +204,6 @@ class RoomItemContainer extends React.Component {
 				onPress={this.onPress}
 				date={date}
 				accessibilityLabel={accessibilityLabel}
-				userMentions={item.userMentions}
 				width={width}
 				favorite={item.f}
 				toggleFav={toggleFav}
@@ -221,15 +221,18 @@ class RoomItemContainer extends React.Component {
 				prid={item.prid}
 				status={status}
 				hideUnreadStatus={item.hideUnreadStatus}
-				alert={item.alert}
+				alert={alert}
 				roomUpdatedAt={item.roomUpdatedAt}
 				lastMessage={item.lastMessage}
 				showLastMessage={showLastMessage}
 				username={username}
 				useRealName={useRealName}
 				unread={item.unread}
-				tunread={item.tunread}
+				userMentions={item.userMentions}
 				groupMentions={item.groupMentions}
+				tunread={item.tunread}
+				tunreadUser={item.tunreadUser}
+				tunreadGroup={item.tunreadGroup}
 				avatarETag={avatarETag || item.avatarETag}
 				swipeEnabled={swipeEnabled}
 			/>

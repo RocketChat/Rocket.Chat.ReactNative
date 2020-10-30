@@ -18,10 +18,13 @@ export default StyleSheet.create({
 	contentContainer: {
 		paddingBottom: 30
 	},
-	separator: {
-		height: StyleSheet.hairlineWidth,
+	dropdownContainer: {
 		width: '100%',
-		marginLeft: 60,
-		marginTop: 10
+		position: 'absolute',
+		top: 0,
+		borderBottomWidth: StyleSheet.hairlineWidth
+	},
+	backdrop: {
+		...StyleSheet.absoluteFill
 	}
 });
