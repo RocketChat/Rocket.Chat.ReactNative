@@ -40,7 +40,7 @@ class SettingsView extends React.Component {
 		headerLeft: () => (isMasterDetail ? (
 			<HeaderButton.CloseModal navigation={navigation} testID='settings-view-close' />
 		) : (
-			<HeaderButton.Drawer navigation={navigation} />
+			<HeaderButton.Drawer navigation={navigation} testID='settings-view-drawer' />
 		)),
 		title: I18n.t('Settings')
 	});
