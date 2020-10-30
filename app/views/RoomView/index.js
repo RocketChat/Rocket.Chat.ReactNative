@@ -1020,9 +1020,8 @@ class RoomView extends React.Component {
 			<SafeAreaView
 				style={{ backgroundColor: themes[theme].backgroundColor }}
 				testID='room-view'
-				theme={theme}
 			>
-				<StatusBar theme={theme} />
+				<StatusBar />
 				<Banner
 					rid={rid}
 					title={I18n.t('Announcement')}

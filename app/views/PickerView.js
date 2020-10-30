@@ -10,15 +10,11 @@ import { themes } from '../constants/colors';
 import debounce from '../utils/debounce';
 import sharedStyles from './Styles';
 
-import ListItem from '../containers/ListItem';
-import Check from '../containers/Check';
-import Separator from '../containers/Separator';
+import * as List from '../containers/List';
 import SearchBox from '../containers/SearchBox';
+import SafeAreaView from '../containers/SafeAreaView';
 
 const styles = StyleSheet.create({
-	check: {
-		marginHorizontal: 0
-	},
 	search: {
 		width: '100%',
 		height: 56
@@ -28,10 +24,6 @@ const styles = StyleSheet.create({
 		paddingVertical: 56,
 		...sharedStyles.textAlignCenter,
 		...sharedStyles.textSemibold
-	},
-	withoutBorder: {
-		borderBottomWidth: 0,
-		borderTopWidth: 0
 	}
 });
 
@@ -41,11 +33,11 @@ const Item = React.memo(({
 	onItemPress,
 	theme
 }) => (
-	<ListItem
+	<List.Item
 		title={I18n.t(item.label, { defaultValue: item.label, second: item?.second })}
-		right={selected && (() => <Check theme={theme} style={styles.check} />)}
+		right={selected && (() => <List.Icon name='check' color={themes[theme].tintColor} />)}
 		onPress={onItemPress}
-		theme={theme}
+		translateTitle={false}
 	/>
 ));
 Item.propTypes = {
@@ -109,7 +101,7 @@ class PickerView extends React.PureComponent {
 		const { theme } = this.props;
 
 		return (
-			<>
+			<SafeAreaView>
 				{this.renderSearch()}
 				<FlatList
 					data={data}
@@ -122,19 +114,13 @@ class PickerView extends React.PureComponent {
 							onItemPress={() => this.onChangeValue(item.value)}
 						/>
 					)}
-					ItemSeparatorComponent={() => <Separator theme={theme} />}
+					ItemSeparatorComponent={List.Separator}
+					ListHeaderComponent={List.Separator}
+					ListFooterComponent={List.Separator}
 					ListEmptyComponent={() => <Text style={[styles.noResult, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>}
-					contentContainerStyle={[
-						sharedStyles.listContentContainer,
-						{
-							backgroundColor: themes[theme].auxiliaryBackground,
-							borderColor: themes[theme].separatorColor
-						},
-						!data.length && styles.withoutBorder
-					]}
-					style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+					contentContainerStyle={[List.styles.contentContainerStyleFlatList]}
 				/>
-			</>
+			</SafeAreaView>
 		);
 	}
 }

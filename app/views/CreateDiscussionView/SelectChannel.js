@@ -25,8 +25,14 @@ const SelectChannel = ({
 		}
 	}, 300);
 
-	const getAvatar = (text, type) => avatarURL({
-		text, type, userId, token, baseUrl: server, blockUnauthenticatedAccess
+	const getAvatar = item => avatarURL({
+		text: RocketChat.getRoomAvatar(item),
+		type: item.t,
+		user: { id: userId, token },
+		server,
+		avatarETag: item.avatarETag,
+		rid: item.rid,
+		blockUnauthenticatedAccess
 	});
 
 	return (
@@ -42,7 +48,7 @@ const SelectChannel = ({
 				options={channels.map(channel => ({
 					value: channel.rid,
 					text: { text: RocketChat.getRoomTitle(channel) },
-					imageUrl: getAvatar(RocketChat.getRoomAvatar(channel), channel.t)
+					imageUrl: getAvatar(channel)
 				}))}
 				onClose={() => setChannels([])}
 				placeholder={{ text: `${ I18n.t('Select_a_Channel') }...` }}
