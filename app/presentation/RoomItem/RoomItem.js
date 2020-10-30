@@ -45,7 +45,8 @@ const RoomItem = ({
 	onPress,
 	toggleFav,
 	toggleRead,
-	hideChannel
+	hideChannel,
+	avatarETag
 }) => (
 	<Touchable
 		onPress={onPress}
@@ -66,11 +67,13 @@ const RoomItem = ({
 			accessibilityLabel={accessibilityLabel}
 			avatar={avatar}
 			avatarSize={avatarSize}
+			avatarETag={avatarETag}
 			type={type}
 			baseUrl={baseUrl}
 			userId={userId}
 			token={token}
 			theme={theme}
+			rid={rid}
 		>
 			{showLastMessage
 				? (
@@ -178,7 +181,8 @@ RoomItem.propTypes = {
 	toggleFav: PropTypes.func,
 	toggleRead: PropTypes.func,
 	onPress: PropTypes.func,
-	hideChannel: PropTypes.func
+	hideChannel: PropTypes.func,
+	avatarETag: PropTypes.string
 };
 
 RoomItem.defaultProps = {

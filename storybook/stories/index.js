@@ -10,6 +10,7 @@ import Message from './Message';
 import UiKitMessage from './UiKitMessage';
 import UiKitModal from './UiKitModal';
 import Markdown from './Markdown';
+import Avatar from './Avatar';
 // import RoomViewHeader from './RoomViewHeader';
 
 import MessageContext from '../../app/containers/message/Context';
@@ -71,6 +72,8 @@ storiesOf('UiKitModal', module)
 	.add('list UiKitModal', () => <UiKitModal theme={theme} />);
 storiesOf('Markdown', module)
 	.add('list Markdown', () => <Markdown theme={theme} />);
+storiesOf('Avatar', module)
+	.add('list Avatar', () => <Avatar theme={theme} />);
 
 // FIXME: I couldn't make these pass on jest :(
 // storiesOf('RoomViewHeader', module)
