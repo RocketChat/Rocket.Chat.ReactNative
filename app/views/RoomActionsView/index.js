@@ -670,7 +670,7 @@ class RoomActionsView extends React.Component {
 	renderRoomInfo = ({ item }) => {
 		const { room, member } = this.state;
 		const { name, t, topic } = room;
-		const { baseUrl, user, theme } = this.props;
+		const { theme } = this.props;
 
 		const avatar = RocketChat.getRoomAvatar(room);
 
@@ -679,12 +679,9 @@ class RoomActionsView extends React.Component {
 				<>
 					<Avatar
 						text={avatar}
-						size={50}
 						style={styles.avatar}
+						size={50}
 						type={t}
-						baseUrl={baseUrl}
-						userId={user.id}
-						token={user.token}
 					>
 						{t === 'd' && member._id ? <Status style={sharedStyles.status} id={member._id} /> : null }
 					</Avatar>
