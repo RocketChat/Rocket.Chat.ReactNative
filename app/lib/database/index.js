@@ -15,15 +15,16 @@ import Role from './model/Role';
 import Permission from './model/Permission';
 import SlashCommand from './model/SlashCommand';
 import User from './model/User';
-import Server from './model/Server';
+
+import LoggedUser from './model/servers/User';
+import Server from './model/servers/Server';
 import ServersHistory from './model/ServersHistory';
 
 import serversSchema from './schema/servers';
 import appSchema from './schema/app';
 
 import migrations from './model/migrations';
-
-import serversMigrations from './model/serversMigrations';
+import serversMigrations from './model/servers/migrations';
 
 import { isIOS } from '../../utils/deviceInfo';
 import appGroup from '../../utils/appGroup';
@@ -58,7 +59,8 @@ export const getDatabase = (database = '') => {
 			Setting,
 			Role,
 			Permission,
-			SlashCommand
+			SlashCommand,
+			User
 		],
 		actionsEnabled: true
 	});
@@ -72,7 +74,7 @@ class DB {
 				schema: serversSchema,
 				migrations: serversMigrations
 			}),
-			modelClasses: [Server, User, ServersHistory],
+			modelClasses: [Server, LoggedUser, ServersHistory],
 			actionsEnabled: true
 		})
 	}
@@ -113,7 +115,8 @@ class DB {
 				Upload,
 				Permission,
 				CustomEmoji,
-				FrequentlyUsedEmoji
+				FrequentlyUsedEmoji,
+				User
 			],
 			actionsEnabled: true
 		});
