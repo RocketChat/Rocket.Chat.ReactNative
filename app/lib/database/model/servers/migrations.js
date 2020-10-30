@@ -90,7 +90,8 @@ export default schemaMigrations({
 				addColumns({
 					table: 'users',
 					columns: [
-						{ name: 'show_message_in_main_thread', type: 'boolean', isOptional: true }
+						{ name: 'show_message_in_main_thread', type: 'boolean', isOptional: true },
+						{ name: 'avatar_etag', type: 'string', isOptional: true }
 					]
 				})
 			]

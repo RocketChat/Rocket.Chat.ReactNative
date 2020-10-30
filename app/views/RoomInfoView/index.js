@@ -20,7 +20,6 @@ import StatusBar from '../../containers/StatusBar';
 import log, { logEvent, events } from '../../utils/log';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { getUserSelector } from '../../selectors/login';
 import Markdown from '../../containers/markdown';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
@@ -53,11 +52,6 @@ class RoomInfoView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		route: PropTypes.object,
-		user: PropTypes.shape({
-			id: PropTypes.string,
-			token: PropTypes.string
-		}),
-		baseUrl: PropTypes.string,
 		rooms: PropTypes.array,
 		theme: PropTypes.string,
 		isMasterDetail: PropTypes.bool,
@@ -286,17 +280,15 @@ class RoomInfoView extends React.Component {
 	}
 
 	renderAvatar = (room, roomUser) => {
-		const { baseUrl, user, theme } = this.props;
+		const { theme } = this.props;
 
 		return (
 			<Avatar
 				text={room.name || roomUser.username}
-				size={100}
 				style={styles.avatar}
 				type={this.t}
-				baseUrl={baseUrl}
-				userId={user.id}
-				token={user.token}
+				size={100}
+				rid={room?.rid}
 			>
 				{this.t === 'd' && roomUser._id ? <Status style={[sharedStyles.status, styles.status]} theme={theme} size={24} id={roomUser._id} /> : null}
 			</Avatar>
@@ -357,10 +349,9 @@ class RoomInfoView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<ScrollView style={[styles.scroll, { backgroundColor: themes[theme].backgroundColor }]}>
-				<StatusBar theme={theme} />
+				<StatusBar />
 				<SafeAreaView
 					style={{ backgroundColor: themes[theme].backgroundColor }}
-					theme={theme}
 					testID='room-info-view'
 				>
 					<View style={[styles.avatarContainer, this.isDirect && styles.avatarContainerDirectRoom, { backgroundColor: themes[theme].auxiliaryBackground }]}>
@@ -376,8 +367,6 @@ class RoomInfoView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.server.server,
-	user: getUserSelector(state),
 	rooms: state.room.rooms,
 	isMasterDetail: state.app.isMasterDetail,
 	jitsiEnabled: state.settings.Jitsi_Enabled || false

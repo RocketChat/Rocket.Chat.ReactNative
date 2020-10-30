@@ -2,8 +2,8 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { themes } from '../constants/colors';
-import { withTheme } from '../theme';
+import { themes } from '../../constants/colors';
+import { withTheme } from '../../theme';
 
 const styles = StyleSheet.create({
 	separator: {
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 });
 
 
-const Separator = React.memo(({ style, theme }) => (
+const ListSeparator = React.memo(({ style, theme }) => (
 	<View
 		style={[
 			styles.separator,
@@ -22,9 +22,11 @@ const Separator = React.memo(({ style, theme }) => (
 	/>
 ));
 
-Separator.propTypes = {
+ListSeparator.propTypes = {
 	style: PropTypes.object,
 	theme: PropTypes.string
 };
 
-export default withTheme(Separator);
+ListSeparator.displayName = 'List.Separator';
+
+export default withTheme(ListSeparator);

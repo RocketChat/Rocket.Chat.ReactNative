@@ -9,7 +9,7 @@ import styles from '../styles';
 import { themes } from '../../../constants/colors';
 import { withTheme } from '../../../theme';
 import { headerHeight } from '../../../containers/Header';
-import Separator from '../../../containers/Separator';
+import * as List from '../../../containers/List';
 import { FILTER } from '../filters';
 import DropdownItemFilter from './DropdownItemFilter';
 import DropdownItemHeader from './DropdownItemHeader';
@@ -92,7 +92,7 @@ class Dropdown extends React.Component {
 					]}
 				>
 					<DropdownItemHeader currentFilter={currentFilter} onPress={this.close} />
-					<Separator />
+					<List.Separator />
 					<DropdownItemFilter currentFilter={currentFilter} value={FILTER.ALL} onPress={onFilterSelected} />
 					<DropdownItemFilter currentFilter={currentFilter} value={FILTER.FOLLOWING} onPress={onFilterSelected} />
 					<DropdownItemFilter currentFilter={currentFilter} value={FILTER.UNREAD} onPress={onFilterSelected} />

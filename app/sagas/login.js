@@ -179,7 +179,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			statusText: user.statusText,
 			roles: user.roles,
 			loginEmailPassword: user.loginEmailPassword,
-			showMessageInMainThread: user.showMessageInMainThread
+			showMessageInMainThread: user.showMessageInMainThread,
+			avatarETag: user.avatarETag
 		};
 		yield serversDB.action(async() => {
 			try {

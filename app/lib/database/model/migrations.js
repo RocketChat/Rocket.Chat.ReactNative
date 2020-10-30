@@ -1,4 +1,4 @@
-import { schemaMigrations, addColumns } from '@nozbe/watermelondb/Schema/migrations';
+import { schemaMigrations, addColumns, createTable } from '@nozbe/watermelondb/Schema/migrations';
 
 export default schemaMigrations({
 	migrations: [
@@ -176,12 +176,28 @@ export default schemaMigrations({
 						{ name: 'tshow', type: 'boolean', isOptional: true }
 					]
 				}),
+				createTable({
+					name: 'users',
+					columns: [
+						{ name: '_id', type: 'string', isIndexed: true },
+						{ name: 'name', type: 'string', isOptional: true },
+						{ name: 'username', type: 'string', isIndexed: true },
+						{ name: 'avatar_etag', type: 'string', isOptional: true }
+					]
+				}),
 				addColumns({
 					table: 'subscriptions',
 					columns: [
 						{ name: 'tunread', type: 'string', isOptional: true },
 						{ name: 'tunread_user', type: 'string', isOptional: true },
-						{ name: 'tunread_group', type: 'string', isOptional: true }
+						{ name: 'tunread_group', type: 'string', isOptional: true },
+						{ name: 'avatar_etag', type: 'string', isOptional: true }
+					]
+				}),
+				addColumns({
+					table: 'rooms',
+					columns: [
+						{ name: 'avatar_etag', type: 'string', isOptional: true }
 					]
 				})
 			]

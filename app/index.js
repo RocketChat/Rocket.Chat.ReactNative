@@ -68,7 +68,9 @@ export default class Root extends React.Component {
 		if (!isFDroidBuild) {
 			this.initCrashReport();
 		}
-		const { width, height, scale } = Dimensions.get('window');
+		const {
+			width, height, scale, fontScale
+		} = Dimensions.get('window');
 		this.state = {
 			theme: defaultTheme(),
 			themePreferences: {
@@ -77,7 +79,8 @@ export default class Root extends React.Component {
 			},
 			width,
 			height,
-			scale
+			scale,
+			fontScale
 		};
 		if (isTablet) {
 			this.initTablet();
@@ -134,8 +137,14 @@ export default class Root extends React.Component {
 	};
 
 	// Dimensions update fires twice
-	onDimensionsChange = debounce(({ window: { width, height, scale } }) => {
-		this.setDimensions({ width, height, scale });
+	onDimensionsChange = debounce(({
+		window: {
+			width, height, scale, fontScale
+		}
+	}) => {
+		this.setDimensions({
+			width, height, scale, fontScale
+		});
 		this.setMasterDetail(width);
 	})
 
@@ -148,8 +157,12 @@ export default class Root extends React.Component {
 		});
 	}
 
-	setDimensions = ({ width, height, scale }) => {
-		this.setState({ width, height, scale });
+	setDimensions = ({
+		width, height, scale, fontScale
+	}) => {
+		this.setState({
+			width, height, scale, fontScale
+		});
 	}
 
 	initTablet = () => {
@@ -176,7 +189,7 @@ export default class Root extends React.Component {
 
 	render() {
 		const {
-			themePreferences, theme, width, height, scale
+			themePreferences, theme, width, height, scale, fontScale
 		} = this.state;
 		return (
 			<SafeAreaProvider initialMetrics={initialWindowMetrics}>
@@ -194,6 +207,7 @@ export default class Root extends React.Component {
 									width,
 									height,
 									scale,
+									fontScale,
 									setDimensions: this.setDimensions
 								}}
 							>

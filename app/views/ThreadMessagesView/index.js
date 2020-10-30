@@ -24,7 +24,7 @@ import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/HeaderButton';
-import Separator from '../../containers/Separator';
+import * as List from '../../containers/List';
 import Dropdown from './Dropdown';
 import DropdownItemHeader from './Dropdown/DropdownItemHeader';
 import { FILTER } from './filters';
@@ -439,7 +439,7 @@ class ThreadMessagesView extends React.Component {
 		return (
 			<>
 				<DropdownItemHeader currentFilter={currentFilter} onPress={this.showFilterDropdown} />
-				<Separator />
+				<List.Separator />
 			</>
 		);
 	}
@@ -479,7 +479,7 @@ class ThreadMessagesView extends React.Component {
 				windowSize={10}
 				initialNumToRender={7}
 				removeClippedSubviews={isIOS}
-				ItemSeparatorComponent={Separator}
+				ItemSeparatorComponent={List.Separator}
 				ListHeaderComponent={this.renderHeader}
 				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 				scrollIndicatorInsets={{ right: 1 }} // https://github.com/facebook/react-native/issues/26610#issuecomment-539843444
@@ -490,11 +490,10 @@ class ThreadMessagesView extends React.Component {
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { showFilterDropdown, currentFilter } = this.state;
-		const { theme } = this.props;
 
 		return (
-			<SafeAreaView testID='thread-messages-view' theme={theme}>
-				<StatusBar theme={theme} />
+			<SafeAreaView testID='thread-messages-view'>
+				<StatusBar />
 				{this.renderContent()}
 				{showFilterDropdown
 					? (

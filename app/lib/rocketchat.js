@@ -6,6 +6,7 @@ import {
 } from '@rocket.chat/sdk';
 import { Q } from '@nozbe/watermelondb';
 import AsyncStorage from '@react-native-community/async-storage';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import RNFetchBlob from 'rn-fetch-blob';
 
 import reduxStore from './createStore';
@@ -18,9 +19,7 @@ import fetch from '../utils/fetch';
 import { encryptionInit } from '../actions/encryption';
 import { setUser, setLoginServices, loginRequest } from '../actions/login';
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
-import {
-	shareSelectServer, shareSetUser
-} from '../actions/share';
+import { shareSelectServer, shareSetUser, shareSetSettings } from '../actions/share';
 
 import subscribeRooms from './methods/subscriptions/rooms';
 import getUsersPresence, { getUserPresence, subscribeUsersPresence } from './methods/getUsersPresence';
@@ -244,9 +243,9 @@ const RocketChat = {
 
 			this.usersListener = this.sdk.onStreamData('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
 
-			this.notifyLoggedListener = this.sdk.onStreamData('stream-notify-logged', protectedFunction((ddpMessage) => {
+			this.notifyLoggedListener = this.sdk.onStreamData('stream-notify-logged', protectedFunction(async(ddpMessage) => {
 				const { eventName } = ddpMessage.fields;
-				if (eventName === 'user-status') {
+				if (/user-status/.test(eventName)) {
 					this.activeUsers = this.activeUsers || {};
 					if (!this._setUserTimer) {
 						this._setUserTimer = setTimeout(() => {
@@ -265,6 +264,40 @@ const RocketChat = {
 					const { user: loggedUser } = reduxStore.getState().login;
 					if (loggedUser && loggedUser.id === id) {
 						reduxStore.dispatch(setUser({ status: STATUSES[status], statusText }));
+					}
+				} else if (/updateAvatar/.test(eventName)) {
+					const { username, etag } = ddpMessage.fields.args[0];
+					const db = database.active;
+					const userCollection = db.collections.get('users');
+					try {
+						const [userRecord] = await userCollection.query(Q.where('username', Q.eq(username))).fetch();
+						await db.action(async() => {
+							await userRecord.update((u) => {
+								u.avatarETag = etag;
+							});
+						});
+					} catch {
+						// We can't create a new record since we don't receive the user._id
+					}
+				} else if (/Users:NameChanged/.test(eventName)) {
+					const userNameChanged = ddpMessage.fields.args[0];
+					const db = database.active;
+					const userCollection = db.collections.get('users');
+					try {
+						const userRecord = await userCollection.find(userNameChanged._id);
+						await db.action(async() => {
+							await userRecord.update((u) => {
+								Object.assign(u, userNameChanged);
+							});
+						});
+					} catch {
+						// User not found
+						await db.action(async() => {
+							await userCollection.create((u) => {
+								u._raw = sanitizedRaw({ id: userNameChanged._id }, userCollection.schema);
+								Object.assign(u, userNameChanged);
+							});
+						});
 					}
 				}
 			}));
@@ -289,8 +322,23 @@ const RocketChat = {
 
 		RocketChat.setCustomEmojis();
 
-		// set User info
 		try {
+			// set Settings
+			const settings = ['Accounts_AvatarBlockUnauthenticatedAccess'];
+			const db = database.active;
+			const settingsCollection = db.collections.get('settings');
+			const settingsRecords = await settingsCollection.query(Q.where('id', Q.oneOf(settings))).fetch();
+			const parsed = Object.values(settingsRecords).map(item => ({
+				_id: item.id,
+				valueAsString: item.valueAsString,
+				valueAsBoolean: item.valueAsBoolean,
+				valueAsNumber: item.valueAsNumber,
+				valueAsArray: item.valueAsArray,
+				_updatedAt: item._updatedAt
+			}));
+			reduxStore.dispatch(shareSetSettings(this.parseSettings(parsed)));
+
+			// set User info
 			const userId = await UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
 			const userCollections = serversDB.collections.get('users');
 			let user = null;
@@ -318,6 +366,7 @@ const RocketChat = {
 		database.share = null;
 
 		reduxStore.dispatch(shareSetUser({}));
+		reduxStore.dispatch(shareSetSettings({}));
 	},
 
 	async e2eFetchMyKeys() {
@@ -441,6 +490,7 @@ const RocketChat = {
 			statusLivechat: result.me.statusLivechat,
 			emails: result.me.emails,
 			roles: result.me.roles,
+			avatarETag: result.me.avatarETag,
 			loginEmailPassword,
 			showMessageInMainThread: result.me.settings?.preferences?.showMessageInMainThread ?? true
 		};
@@ -544,6 +594,7 @@ const RocketChat = {
 					rid: sub.rid,
 					name: sub.name,
 					fname: sub.fname,
+					avatarETag: sub.avatarETag,
 					t: sub.t,
 					search: true
 				});

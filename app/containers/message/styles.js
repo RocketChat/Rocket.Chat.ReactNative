@@ -159,6 +159,12 @@ export default StyleSheet.create({
 		flex: 1,
 		...sharedStyles.textRegular
 	},
+	repliedThreadDisclosure: {
+		marginLeft: 4,
+		marginRight: 4,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
 	threadBadge: {
 		width: 8,
 		height: 8,

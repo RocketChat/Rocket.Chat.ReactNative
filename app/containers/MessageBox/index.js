@@ -53,7 +53,8 @@ import { CustomIcon } from '../../lib/Icons';
 const imagePickerConfig = {
 	cropping: true,
 	compressImageQuality: 0.8,
-	avoidEmptySpaceAroundImage: false
+	avoidEmptySpaceAroundImage: false,
+	freeStyleCropEnabled: true
 };
 
 const libraryPickerConfig = {

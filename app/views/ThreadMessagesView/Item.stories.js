@@ -2,9 +2,11 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 import { ScrollView } from 'react-native';
+import { combineReducers, createStore } from 'redux';
+import { Provider } from 'react-redux';
 
 import Item from './Item';
-import Separator from '../../containers/Separator';
+import * as List from '../../containers/List';
 import { themes } from '../../constants/colors';
 import { ThemeContext } from '../../theme';
 
@@ -40,38 +42,57 @@ const BaseItem = ({ item, ...props }) => (
 
 const listDecorator = story => (
 	<ScrollView>
-		<Separator />
+		<List.Separator />
 		{story()}
-		<Separator />
+		<List.Separator />
 	</ScrollView>
 );
 
-const stories = storiesOf('Thread Messages.Item', module).addDecorator(listDecorator);
+const reducers = combineReducers({
+	login: () => ({
+		user: {
+			id: 'abc',
+			username: 'rocket.cat',
+			name: 'Rocket Cat'
+		}
+	}),
+	share: () => ({
+		server: 'https://open.rocket.chat'
+	}),
+	settings: () => ({
+		blockUnauthenticatedAccess: false
+	})
+});
+const store = createStore(reducers);
+
+const stories = storiesOf('Thread Messages.Item', module)
+	.addDecorator(listDecorator)
+	.addDecorator(story => <Provider store={store}>{story()}</Provider>);
 
 stories.add('content', () => (
 	<>
 		<BaseItem />
-		<Separator />
+		<List.Separator />
 		<BaseItem
 			item={{
 				msg: longText
 			}}
 		/>
-		<Separator />
+		<List.Separator />
 		<BaseItem
 			item={{
 				tcount: 1000,
 				replies: [...new Array(1000)]
 			}}
 		/>
-		<Separator />
+		<List.Separator />
 		<BaseItem
 			item={{
 				msg: '',
 				attachments: [{ title: 'Attachment title' }]
 			}}
 		/>
-		<Separator />
+		<List.Separator />
 		<BaseItem useRealName />
 	</>
 ));
@@ -81,11 +102,11 @@ stories.add('badge', () => (
 		<BaseItem
 			badgeColor={themes.light.mentionMeBackground}
 		/>
-		<Separator />
+		<List.Separator />
 		<BaseItem
 			badgeColor={themes.light.mentionGroupBackground}
 		/>
-		<Separator />
+		<List.Separator />
 		<BaseItem
 			badgeColor={themes.light.tunreadBackground}
 		/>

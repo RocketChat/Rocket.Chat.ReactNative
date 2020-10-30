@@ -167,6 +167,7 @@ describe('Room info screen', () => {
 				await element(by.id('room-info-edit-view-name')).replaceText(`${ privateRoomName }new`);
 				await element(by.type('UIScrollView')).atIndex(1).swipe('up');
 				await element(by.id('room-info-edit-view-submit')).tap();
+				await waitForToast();
 				await tapBack();
 				await waitFor(element(by.id('room-info-view'))).toExist().withTimeout(2000);
 				await expect(element(by.id('room-info-view-name'))).toHaveLabel(`${ privateRoomName }new`);

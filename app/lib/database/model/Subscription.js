@@ -121,4 +121,6 @@ export default class Subscription extends Model {
 	@field('encrypted') encrypted;
 
 	@field('e2e_key_id') e2eKeyId;
+
+	@field('avatar_etag') avatarETag;
 }
