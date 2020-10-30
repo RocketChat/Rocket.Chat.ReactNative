@@ -37,6 +37,7 @@ const RoomItem = ({
 	alert,
 	hideUnreadStatus,
 	unread,
+	tunread,
 	userMentions,
 	groupMentions,
 	roomUpdatedAt,
@@ -112,6 +113,7 @@ const RoomItem = ({
 							/>
 							<UnreadBadge
 								unread={unread}
+								tunread={tunread}
 								userMentions={userMentions}
 								groupMentions={groupMentions}
 								theme={theme}
@@ -136,6 +138,7 @@ const RoomItem = ({
 						/>
 						<UnreadBadge
 							unread={unread}
+							tunread={tunread}
 							userMentions={userMentions}
 							groupMentions={groupMentions}
 							theme={theme}
@@ -174,6 +177,7 @@ RoomItem.propTypes = {
 	alert: PropTypes.bool,
 	hideUnreadStatus: PropTypes.bool,
 	unread: PropTypes.number,
+	tunread: PropTypes.array,
 	userMentions: PropTypes.number,
 	groupMentions: PropTypes.number,
 	roomUpdatedAt: PropTypes.instanceOf(Date),

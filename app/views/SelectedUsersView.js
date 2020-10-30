@@ -14,7 +14,7 @@ import I18n from '../i18n';
 import log, { logEvent, events } from '../utils/log';
 import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
-import { Item, CustomHeaderButtons } from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
 import { animateNextTransition } from '../utils/layoutAnimation';
@@ -119,9 +119,9 @@ class SelectedUsersView extends React.Component {
 			title,
 			headerRight: () => (
 				(!maxUsers || showButton) && (
-					<CustomHeaderButtons>
-						<Item title={buttonText} onPress={nextAction} testID='selected-users-view-submit' />
-					</CustomHeaderButtons>
+					<HeaderButton.Container>
+						<HeaderButton.Item title={buttonText} onPress={nextAction} testID='selected-users-view-submit' />
+					</HeaderButton.Container>
 				)
 			)
 		};
