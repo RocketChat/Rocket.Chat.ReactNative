@@ -16,5 +16,7 @@ export default class User extends Model {
 
 	@field('login_email_password') loginEmailPassword;
 
+	@field('show_message_in_main_thread') showMessageInMainThread;
+
 	@json('roles', sanitizer) roles;
 }

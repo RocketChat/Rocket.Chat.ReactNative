@@ -491,7 +491,8 @@ const RocketChat = {
 			emails: result.me.emails,
 			roles: result.me.roles,
 			avatarETag: result.me.avatarETag,
-			loginEmailPassword
+			loginEmailPassword,
+			showMessageInMainThread: result.me.settings?.preferences?.showMessageInMainThread ?? true
 		};
 		return user;
 	},
@@ -920,8 +921,12 @@ const RocketChat = {
 	getUidDirectMessage(room) {
 		const { id: userId } = reduxStore.getState().login.user;
 
+		if (!room) {
+			return false;
+		}
+
 		// legacy method
-		if (!room.uids && room.rid && room.t === 'd') {
+		if (!room?.uids && room.rid && room.t === 'd') {
 			return room.rid.replace(userId, '').trim();
 		}
 
@@ -929,8 +934,8 @@ const RocketChat = {
 			return false;
 		}
 
-		const me = room && room.uids && room.uids.find(uid => uid === userId);
-		const other = room && room.uids && room.uids.filter(uid => uid !== userId);
+		const me = room.uids?.find(uid => uid === userId);
+		const other = room.uids?.filter(uid => uid !== userId);
 
 		return other && other.length ? other[0] : me;
 	},
@@ -1242,11 +1247,18 @@ const RocketChat = {
 		}
 		return this.post('chat.unfollowMessage', { mid });
 	},
-	getThreadsList({ rid, count, offset }) {
-		// RC 1.0
-		return this.sdk.get('chat.getThreadsList', {
+	getThreadsList({
+		rid, count, offset, text
+	}) {
+		const params = {
 			rid, count, offset, sort: { ts: -1 }
-		});
+		};
+		if (text) {
+			params.text = text;
+		}
+
+		// RC 1.0
+		return this.sdk.get('chat.getThreadsList', params);
 	},
 	getSyncThreadsList({ rid, updatedSince }) {
 		// RC 1.0

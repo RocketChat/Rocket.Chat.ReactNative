@@ -1,20 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	FlatList, View, Text, InteractionManager
-} from 'react-native';
+import { FlatList, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
-import moment from 'moment';
-import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import { HeaderBackButton } from '@react-navigation/stack';
 
 import styles from './styles';
-import Message from '../../containers/message';
+import Item from './Item';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
 import database from '../../lib/database';
+import { sanitizeLikeString } from '../../lib/database/utils';
 import StatusBar from '../../containers/StatusBar';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import log from '../../utils/log';
@@ -25,25 +24,19 @@ import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/HeaderButton';
-
-const Separator = React.memo(({ theme }) => <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />);
-Separator.propTypes = {
-	theme: PropTypes.string
-};
+import * as List from '../../containers/List';
+import Dropdown from './Dropdown';
+import DropdownItemHeader from './Dropdown/DropdownItemHeader';
+import { FILTER } from './filters';
+import NoDataFound from './NoDataFound';
+import { isIOS } from '../../utils/deviceInfo';
+import { getBadgeColor, makeThreadName } from '../../utils/room';
+import { getHeaderTitlePosition } from '../../containers/Header';
+import SearchHeader from './SearchHeader';
 
 const API_FETCH_COUNT = 50;
 
 class ThreadMessagesView extends React.Component {
-	static navigationOptions = ({ navigation, isMasterDetail }) => {
-		const options = {
-			title: I18n.t('Threads')
-		};
-		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
-		}
-		return options;
-	}
-
 	static propTypes = {
 		user: PropTypes.object,
 		navigation: PropTypes.object,
@@ -51,8 +44,8 @@ class ThreadMessagesView extends React.Component {
 		baseUrl: PropTypes.string,
 		useRealName: PropTypes.bool,
 		theme: PropTypes.string,
-		customEmojis: PropTypes.object,
-		isMasterDetail: PropTypes.bool
+		isMasterDetail: PropTypes.bool,
+		insets: PropTypes.object
 	}
 
 	constructor(props) {
@@ -63,9 +56,17 @@ class ThreadMessagesView extends React.Component {
 		this.state = {
 			loading: false,
 			end: false,
-			messages: []
+			messages: [],
+			displayingThreads: [],
+			subscription: {},
+			showFilterDropdown: false,
+			currentFilter: FILTER.ALL,
+			isSearching: false,
+			searchText: ''
 		};
-		this.subscribeData();
+		this.setHeader();
+		this.initSubscription();
+		this.subscribeMessages();
 	}
 
 	componentDidMount() {
@@ -73,6 +74,15 @@ class ThreadMessagesView extends React.Component {
 		this.mountInteraction = InteractionManager.runAfterInteractions(() => {
 			this.init();
 		});
+	}
+
+	componentDidUpdate(prevProps) {
+		const {
+			insets
+		} = this.props;
+		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
+			this.setHeader();
+		}
 	}
 
 	componentWillUnmount() {
@@ -91,48 +101,133 @@ class ThreadMessagesView extends React.Component {
 		}
 	}
 
-	// eslint-disable-next-line react/sort-comp
-	subscribeData = async() => {
+	getHeader = () => {
+		const { isSearching } = this.state;
+		const {
+			navigation, isMasterDetail, insets, theme
+		} = this.props;
+		const headerTitlePosition = getHeaderTitlePosition(insets);
+
+		if (isSearching) {
+			return {
+				headerTitleAlign: 'left',
+				headerLeft: () => (
+					<HeaderButton.Container left>
+						<HeaderButton.Item
+							iconName='close'
+							onPress={this.onCancelSearchPress}
+						/>
+					</HeaderButton.Container>
+				),
+				headerTitle: () => <SearchHeader onSearchChangeText={this.onSearchChangeText} />,
+				headerTitleContainerStyle: {
+					left: headerTitlePosition.left,
+					right: headerTitlePosition.right
+				},
+				headerRight: () => null
+			};
+		}
+
+		const options = {
+			headerLeft: () => (
+				<HeaderBackButton
+					labelVisible={false}
+					onPress={() => navigation.pop()}
+					tintColor={themes[theme].headerTintColor}
+				/>
+			),
+			headerTitleAlign: 'center',
+			headerTitle: I18n.t('Threads'),
+			headerTitleContainerStyle: {
+				left: null,
+				right: null
+			}
+		};
+
+		if (isMasterDetail) {
+			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
+		}
+
+		options.headerRight = () => (
+			<HeaderButton.Container>
+				<HeaderButton.Item iconName='search' onPress={this.onSearchPress} />
+			</HeaderButton.Container>
+		);
+		return options;
+	}
+
+	setHeader = () => {
+		const { navigation } = this.props;
+		const options = this.getHeader();
+		navigation.setOptions(options);
+	}
+
+	initSubscription = async() => {
 		try {
 			const db = database.active;
+
+			// subscription query
 			const subscription = await db.collections
 				.get('subscriptions')
 				.find(this.rid);
 			const observable = subscription.observe();
 			this.subSubscription = observable
 				.subscribe((data) => {
-					this.subscription = data;
+					this.setState({ subscription: data });
 				});
-			this.messagesObservable = db.collections
-				.get('threads')
-				.query(
-					Q.where('rid', this.rid),
-					Q.where('t', Q.notEq('rm'))
-				)
-				.observeWithColumns(['updated_at']);
-			this.messagesSubscription = this.messagesObservable
-				.subscribe((data) => {
-					const messages = orderBy(data, ['ts'], ['desc']);
-					if (this.mounted) {
-						this.setState({ messages });
-					} else {
-						this.state.messages = messages;
-					}
-				});
+
+			this.subscribeMessages(subscription);
 		} catch (e) {
-			// Do nothing
+			log(e);
 		}
 	}
 
-	// eslint-disable-next-line react/sort-comp
+	subscribeMessages = (subscription, searchText) => {
+		try {
+			const db = database.active;
+
+			if (this.messagesSubscription && this.messagesSubscription.unsubscribe) {
+				this.messagesSubscription.unsubscribe();
+			}
+
+			const whereClause = [
+				Q.where('rid', this.rid),
+				Q.experimentalSortBy('tlm', Q.desc)
+			];
+
+			if (searchText?.trim()) {
+				whereClause.push(Q.where('msg', Q.like(`%${ sanitizeLikeString(searchText.trim()) }%`)));
+			}
+
+			this.messagesObservable = db.collections
+				.get('threads')
+				.query(...whereClause)
+				.observeWithColumns(['updated_at']);
+			this.messagesSubscription = this.messagesObservable
+				.subscribe((messages) => {
+					const { currentFilter } = this.state;
+					const displayingThreads = this.getFilteredThreads(messages, subscription, currentFilter);
+					if (this.mounted) {
+						this.setState({ messages, displayingThreads });
+					} else {
+						this.state.messages = messages;
+						this.state.displayingThreads = displayingThreads;
+					}
+				});
+		} catch (e) {
+			log(e);
+		}
+	}
+
 	init = () => {
-		if (!this.subscription) {
+		const { subscription } = this.state;
+		if (!subscription) {
 			return this.load();
 		}
 		try {
 			const lastThreadSync = new Date();
-			if (this.subscription.lastThreadSync) {
-				this.sync(this.subscription.lastThreadSync);
+			if (subscription.lastThreadSync) {
+				this.sync(subscription.lastThreadSync);
 			} else {
 				this.load(lastThreadSync);
 			}
@@ -142,9 +237,10 @@ class ThreadMessagesView extends React.Component {
 	}
 
 	updateThreads = async({ update, remove, lastThreadSync }) => {
+		const { subscription } = this.state;
 		// if there's no subscription, manage data on this.state.messages
 		// note: sync will never be called without subscription
-		if (!this.subscription) {
+		if (!subscription) {
 			this.setState(({ messages }) => ({ messages: [...messages, ...update] }));
 			return;
 		}
@@ -152,7 +248,7 @@ class ThreadMessagesView extends React.Component {
 		try {
 			const db = database.active;
 			const threadsCollection = db.collections.get('threads');
-			const allThreadsRecords = await this.subscription.threads.fetch();
+			const allThreadsRecords = await subscription.threads.fetch();
 			let threadsToCreate = [];
 			let threadsToUpdate = [];
 			let threadsToDelete = [];
@@ -164,7 +260,7 @@ class ThreadMessagesView extends React.Component {
 				threadsToUpdate = allThreadsRecords.filter(i1 => update.find(i2 => i1.id === i2._id));
 				threadsToCreate = threadsToCreate.map(thread => threadsCollection.prepareCreate(protectedFunction((t) => {
 					t._raw = sanitizedRaw({ id: thread._id }, threadsCollection.schema);
-					t.subscription.set(this.subscription);
+					t.subscription.set(subscription);
 					Object.assign(t, thread);
 				})));
 				threadsToUpdate = threadsToUpdate.map((thread) => {
@@ -185,7 +281,7 @@ class ThreadMessagesView extends React.Component {
 					...threadsToCreate,
 					...threadsToUpdate,
 					...threadsToDelete,
-					this.subscription.prepareUpdate((s) => {
+					subscription.prepareUpdate((s) => {
 						s.lastThreadSync = lastThreadSync;
 					})
 				);
@@ -197,7 +293,9 @@ class ThreadMessagesView extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	load = debounce(async(lastThreadSync) => {
-		const { loading, end, messages } = this.state;
+		const {
+			loading, end, messages, searchText
+		} = this.state;
 		if (end || loading || !this.mounted) {
 			return;
 		}
@@ -206,7 +304,7 @@ class ThreadMessagesView extends React.Component {
 
 		try {
 			const result = await RocketChat.getThreadsList({
-				rid: this.rid, count: API_FETCH_COUNT, offset: messages.length
+				rid: this.rid, count: API_FETCH_COUNT, offset: messages.length, text: searchText
 			});
 			if (result.success) {
 				this.updateThreads({ update: result.threads, lastThreadSync });
@@ -244,112 +342,168 @@ class ThreadMessagesView extends React.Component {
 		}
 	}
 
-	formatMessage = lm => (
-		lm ? moment(lm).calendar(null, {
-			lastDay: `[${ I18n.t('Yesterday') }]`,
-			sameDay: 'h:mm A',
-			lastWeek: 'dddd',
-			sameElse: 'MMM D'
-		}) : null
-	)
-
-	getCustomEmoji = (name) => {
-		const { customEmojis } = this.props;
-		const emoji = customEmojis[name];
-		if (emoji) {
-			return emoji;
-		}
-		return null;
+	onSearchPress = () => {
+		this.setState({ isSearching: true }, () => this.setHeader());
 	}
 
-	showAttachment = (attachment) => {
-		const { navigation } = this.props;
-		navigation.navigate('AttachmentView', { attachment });
+	onCancelSearchPress = () => {
+		this.setState({ isSearching: false, searchText: '' }, () => {
+			const { subscription } = this.state;
+			this.setHeader();
+			this.subscribeMessages(subscription);
+		});
 	}
+
+	onSearchChangeText = debounce((searchText) => {
+		const { subscription } = this.state;
+		this.setState({ searchText }, () => this.subscribeMessages(subscription, searchText));
+	}, 300)
+
 
 	onThreadPress = debounce((item) => {
+		const { subscription } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			navigation.pop();
 		}
 		navigation.push('RoomView', {
-			rid: item.subscription.id, tmid: item.id, name: item.msg, t: 'thread'
+			rid: item.subscription.id,
+			tmid: item.id,
+			name: makeThreadName(item),
+			t: 'thread',
+			roomUserId: RocketChat.getUidDirectMessage(subscription)
 		});
 	}, 1000, true)
 
-	renderSeparator = () => {
+	getBadgeColor = (item) => {
+		const { subscription } = this.state;
 		const { theme } = this.props;
-		return <Separator theme={theme} />;
+		return getBadgeColor({ subscription, theme, messageId: item?.id });
 	}
 
-	renderEmpty = () => {
-		const { theme } = this.props;
-		return (
-			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].backgroundColor }]} testID='thread-messages-view'>
-				<Text style={[styles.noDataFound, { color: themes[theme].titleText }]}>{I18n.t('No_thread_messages')}</Text>
-			</View>
-		);
-	}
-
-	navToRoomInfo = (navParam) => {
-		const { navigation, user } = this.props;
-		if (navParam.rid === user.id) {
-			return;
+	// helper to query threads
+	getFilteredThreads = (messages, subscription, currentFilter) => {
+		// const { currentFilter } = this.state;
+		const { user } = this.props;
+		if (currentFilter === FILTER.FOLLOWING) {
+			return messages?.filter(item => item?.replies?.find(u => u === user.id));
+		} else if (currentFilter === FILTER.UNREAD) {
+			return messages?.filter(item => subscription?.tunread?.includes(item?.id));
 		}
-		navigation.navigate('RoomInfoView', navParam);
+		return messages;
+	}
+
+	// method to update state with filtered threads
+	filterThreads = () => {
+		const { messages, subscription } = this.state;
+		const displayingThreads = this.getFilteredThreads(messages, subscription);
+		this.setState({ displayingThreads });
+	}
+
+	showFilterDropdown = () => this.setState({ showFilterDropdown: true })
+
+	closeFilterDropdown = () => this.setState({ showFilterDropdown: false })
+
+	onFilterSelected = (filter) => {
+		const { messages, subscription } = this.state;
+		const displayingThreads = this.getFilteredThreads(messages, subscription, filter);
+		this.setState({ currentFilter: filter, displayingThreads });
 	}
 
 	renderItem = ({ item }) => {
 		const {
 			user, navigation, baseUrl, useRealName
 		} = this.props;
+		const badgeColor = this.getBadgeColor(item);
 		return (
-			<Message
-				key={item.id}
-				item={item}
-				user={user}
-				archived={false}
-				broadcast={false}
-				status={item.status}
-				navigation={navigation}
-				timeFormat='MMM D'
-				customThreadTimeFormat='MMM Do YYYY, h:mm:ss a'
-				onThreadPress={this.onThreadPress}
-				baseUrl={baseUrl}
-				useRealName={useRealName}
-				getCustomEmoji={this.getCustomEmoji}
-				navToRoomInfo={this.navToRoomInfo}
-				showAttachment={this.showAttachment}
+			<Item
+				{...{
+					item,
+					user,
+					navigation,
+					baseUrl,
+					useRealName,
+					badgeColor
+				}}
+				onPress={this.onThreadPress}
+			/>
+		);
+	}
+
+	renderHeader = () => {
+		const { messages, currentFilter } = this.state;
+		if (!messages.length) {
+			return null;
+		}
+
+		return (
+			<>
+				<DropdownItemHeader currentFilter={currentFilter} onPress={this.showFilterDropdown} />
+				<List.Separator />
+			</>
+		);
+	}
+
+	renderContent = () => {
+		const {
+			loading, messages, displayingThreads, currentFilter
+		} = this.state;
+		const { theme } = this.props;
+		if (!messages?.length || !displayingThreads?.length) {
+			let text;
+			if (currentFilter === FILTER.FOLLOWING) {
+				text = I18n.t('No_threads_following');
+			} else if (currentFilter === FILTER.UNREAD) {
+				text = I18n.t('No_threads_unread');
+			} else {
+				text = I18n.t('No_threads');
+			}
+			return (
+				<>
+					{this.renderHeader()}
+					<NoDataFound text={text} />
+				</>
+			);
+		}
+
+		return (
+			<FlatList
+				data={displayingThreads}
+				extraData={this.state}
+				renderItem={this.renderItem}
+				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
+				contentContainerStyle={styles.contentContainer}
+				onEndReached={this.load}
+				onEndReachedThreshold={0.5}
+				maxToRenderPerBatch={5}
+				windowSize={10}
+				initialNumToRender={7}
+				removeClippedSubviews={isIOS}
+				ItemSeparatorComponent={List.Separator}
+				ListHeaderComponent={this.renderHeader}
+				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
+				scrollIndicatorInsets={{ right: 1 }} // https://github.com/facebook/react-native/issues/26610#issuecomment-539843444
 			/>
 		);
 	}
 
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
-		const { loading, messages } = this.state;
-		const { theme } = this.props;
-
-		if (!loading && messages.length === 0) {
-			return this.renderEmpty();
-		}
+		const { showFilterDropdown, currentFilter } = this.state;
 
 		return (
 			<SafeAreaView testID='thread-messages-view'>
 				<StatusBar />
-				<FlatList
-					data={messages}
-					extraData={this.state}
-					renderItem={this.renderItem}
-					style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
-					contentContainerStyle={styles.contentContainer}
-					keyExtractor={item => item._id}
-					onEndReached={this.load}
-					onEndReachedThreshold={0.5}
-					maxToRenderPerBatch={5}
-					initialNumToRender={1}
-					ItemSeparatorComponent={this.renderSeparator}
-					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
-				/>
+				{this.renderContent()}
+				{showFilterDropdown
+					? (
+						<Dropdown
+							currentFilter={currentFilter}
+							onFilterSelected={this.onFilterSelected}
+							onClose={this.closeFilterDropdown}
+						/>
+					)
+					: null}
 			</SafeAreaView>
 		);
 	}
@@ -359,8 +513,7 @@ const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	useRealName: state.settings.UI_Use_Real_Name,
-	customEmojis: state.customEmojis,
 	isMasterDetail: state.app.isMasterDetail
 });
 
-export default connect(mapStateToProps)(withTheme(ThreadMessagesView));
+export default connect(mapStateToProps)(withTheme(withSafeAreaInsets(ThreadMessagesView)));

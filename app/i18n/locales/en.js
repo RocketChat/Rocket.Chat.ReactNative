@@ -658,5 +658,13 @@ export default {
 	You_will_be_logged_out_from_other_locations: 'You\'ll be logged out from other locations.',
 	Logged_out_of_other_clients_successfully: 'Logged out of other clients successfully',
 	Logout_failed: 'Logout failed!',
-	Log_analytics_events: 'Log analytics events'
+	Log_analytics_events: 'Log analytics events',
+	Following: 'Following',
+	Threads_displaying_all: 'Displaying All',
+	Threads_displaying_following: 'Displaying Following',
+	Threads_displaying_unread: 'Displaying Unread',
+	No_threads: 'There are no threads',
+	No_threads_following: 'You are not following any threads',
+	No_threads_unread: 'There are no unread threads',
+	Messagebox_Send_to_channel: 'Send to channel'
 };

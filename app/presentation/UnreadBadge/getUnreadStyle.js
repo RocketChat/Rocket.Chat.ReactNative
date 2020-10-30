@@ -10,9 +10,9 @@ export const getUnreadStyle = ({
 	let backgroundColor = themes[theme].unreadBackground;
 	const color = themes[theme].buttonText;
 	if (userMentions > 0 || tunreadUser?.length) {
-		backgroundColor = themes[theme].mentionMeColor;
+		backgroundColor = themes[theme].mentionMeBackground;
 	} else if (groupMentions > 0 || tunreadGroup?.length) {
-		backgroundColor = themes[theme].mentionGroupColor;
+		backgroundColor = themes[theme].mentionGroupBackground;
 	} else if (tunread?.length > 0) {
 		backgroundColor = themes[theme].tunreadBackground;
 	}

@@ -20,6 +20,9 @@ export default appSchema({
 				{ name: 'unread', type: 'number' },
 				{ name: 'user_mentions', type: 'number' },
 				{ name: 'group_mentions', type: 'number' },
+				{ name: 'tunread', type: 'string', isOptional: true },
+				{ name: 'tunread_user', type: 'string', isOptional: true },
+				{ name: 'tunread_group', type: 'string', isOptional: true },
 				{ name: 'room_updated_at', type: 'number' },
 				{ name: 'ro', type: 'boolean' },
 				{ name: 'last_open', type: 'number', isOptional: true },
@@ -108,7 +111,8 @@ export default appSchema({
 				{ name: 'translations', type: 'string', isOptional: true },
 				{ name: 'tmsg', type: 'string', isOptional: true },
 				{ name: 'blocks', type: 'string', isOptional: true },
-				{ name: 'e2e', type: 'string', isOptional: true }
+				{ name: 'e2e', type: 'string', isOptional: true },
+				{ name: 'tshow', type: 'boolean', isOptional: true }
 			]
 		}),
 		tableSchema({
