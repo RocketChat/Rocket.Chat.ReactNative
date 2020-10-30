@@ -350,10 +350,9 @@ class RoomInfoView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<ScrollView style={[styles.scroll, { backgroundColor: themes[theme].backgroundColor }]}>
-				<StatusBar theme={theme} />
+				<StatusBar />
 				<SafeAreaView
 					style={{ backgroundColor: themes[theme].backgroundColor }}
-					theme={theme}
 					testID='room-info-view'
 				>
 					<View style={[styles.avatarContainer, this.isDirect && styles.avatarContainerDirectRoom, { backgroundColor: themes[theme].auxiliaryBackground }]}>

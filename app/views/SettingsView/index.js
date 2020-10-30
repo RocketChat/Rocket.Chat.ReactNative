@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, Linking, ScrollView, Switch, Share, Clipboard
+	Linking, Switch, Share, Clipboard
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -14,19 +14,14 @@ import { toggleCrashReport as toggleCrashReportAction, toggleAnalyticsEvents as 
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { DrawerButton, CloseModalButton } from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
-import ListItem from '../../containers/ListItem';
-import ItemInfo from '../../containers/ItemInfo';
-import { DisclosureImage } from '../../containers/DisclosureIndicator';
-import Separator from '../../containers/Separator';
+import * as List from '../../containers/List';
 import I18n from '../../i18n';
 import RocketChat, { CRASH_REPORT_KEY, ANALYTICS_EVENTS_KEY } from '../../lib/rocketchat';
 import {
 	getReadableVersion, getDeviceModel, isAndroid
 } from '../../utils/deviceInfo';
 import openLink from '../../utils/openLink';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
-import styles from './styles';
 import {
 	loggerConfig, analytics, logEvent, events
 } from '../../utils/log';
@@ -43,22 +38,6 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import database from '../../lib/database';
 import { isFDroidBuild } from '../../constants/environment';
 import { getUserSelector } from '../../selectors/login';
-
-
-const SectionSeparator = React.memo(({ theme }) => (
-	<View
-		style={[
-			styles.sectionSeparatorBorder,
-			{
-				borderColor: themes[theme].separatorColor,
-				backgroundColor: themes[theme].auxiliaryBackground
-			}
-		]}
-	/>
-));
-SectionSeparator.propTypes = {
-	theme: PropTypes.string
-};
 
 class SettingsView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => ({
@@ -223,11 +202,6 @@ class SettingsView extends React.Component {
 		openLink(LICENSE_LINK, theme);
 	}
 
-	renderDisclosure = () => {
-		const { theme } = this.props;
-		return <DisclosureImage theme={theme} />;
-	}
-
 	renderCrashReportSwitch = () => {
 		const { allowCrashReport } = this.props;
 		return (
@@ -253,170 +227,153 @@ class SettingsView extends React.Component {
 	render() {
 		const { server, isMasterDetail, theme } = this.props;
 		return (
-			<SafeAreaView testID='settings-view' theme={theme}>
-				<StatusBar theme={theme} />
-				<ScrollView
-					{...scrollPersistTaps}
-					contentContainerStyle={styles.listPadding}
-					showsVerticalScrollIndicator={false}
-					testID='settings-view-list'
-				>
+			<SafeAreaView testID='settings-view'>
+				<StatusBar />
+				<List.Container testID='settings-view-list'>
 					{isMasterDetail ? (
 						<>
-							<Separator theme={theme} />
-							<SidebarView theme={theme} />
-							<SectionSeparator theme={theme} />
-							<ListItem
-								title={I18n.t('Profile')}
-								onPress={() => this.navigateToScreen('ProfileView')}
-								showActionIndicator
-								testID='settings-profile'
-								right={this.renderDisclosure}
-								theme={theme}
-							/>
+							<List.Section>
+								<List.Separator />
+								<SidebarView />
+								<List.Separator />
+							</List.Section>
+							<List.Section>
+								<List.Separator />
+								<List.Item
+									title='Profile'
+									onPress={() => this.navigateToScreen('ProfileView')}
+									showActionIndicator
+									testID='settings-profile'
+								/>
+								<List.Separator />
+							</List.Section>
 						</>
 					) : null}
 
-					<Separator theme={theme} />
-					<ListItem
-						title={I18n.t('Contact_us')}
-						onPress={this.sendEmail}
-						showActionIndicator
-						testID='settings-view-contact'
-						right={this.renderDisclosure}
-						theme={theme}
-					/>
-					<Separator theme={theme} />
-					<ListItem
-						title={I18n.t('Language')}
-						onPress={() => this.navigateToScreen('LanguageView')}
-						showActionIndicator
-						testID='settings-view-language'
-						right={this.renderDisclosure}
-						theme={theme}
-					/>
-					<Separator theme={theme} />
-					{!isFDroidBuild ? (
-						<>
-							<ListItem
-								title={I18n.t('Review_this_app')}
-								showActionIndicator
-								onPress={onReviewPress}
-								testID='settings-view-review-app'
-								right={this.renderDisclosure}
-								theme={theme}
-							/>
-						</>
-					) : null}
-					<Separator theme={theme} />
-					<ListItem
-						title={I18n.t('Share_this_app')}
-						showActionIndicator
-						onPress={this.shareApp}
-						testID='settings-view-share-app'
-						right={this.renderDisclosure}
-						theme={theme}
-					/>
-					<Separator theme={theme} />
-					<ListItem
-						title={I18n.t('Default_browser')}
-						showActionIndicator
-						onPress={() => this.navigateToScreen('DefaultBrowserView')}
-						testID='settings-view-default-browser'
-						right={this.renderDisclosure}
-						theme={theme}
-					/>
-					<Separator theme={theme} />
-					<ListItem
-						title={I18n.t('Theme')}
-						showActionIndicator
-						onPress={() => this.navigateToScreen('ThemeView')}
-						testID='settings-view-theme'
-						right={this.renderDisclosure}
-						theme={theme}
-					/>
-					<Separator theme={theme} />
-					<ListItem
-						title={I18n.t('Screen_lock')}
-						showActionIndicator
-						onPress={() => this.navigateToScreen('ScreenLockConfigView')}
-						right={this.renderDisclosure}
-						theme={theme}
-					/>
+					<List.Section>
+						<List.Separator />
+						<List.Item
+							title='Contact_us'
+							onPress={this.sendEmail}
+							showActionIndicator
+							testID='settings-view-contact'
+						/>
+						<List.Separator />
+						<List.Item
+							title='Language'
+							onPress={() => this.navigateToScreen('LanguageView')}
+							showActionIndicator
+							testID='settings-view-language'
+						/>
+						<List.Separator />
+						{!isFDroidBuild ? (
+							<>
+								<List.Item
+									title='Review_this_app'
+									showActionIndicator
+									onPress={onReviewPress}
+									testID='settings-view-review-app'
+								/>
+							</>
+						) : null}
+						<List.Separator />
+						<List.Item
+							title='Share_this_app'
+							showActionIndicator
+							onPress={this.shareApp}
+							testID='settings-view-share-app'
+						/>
+						<List.Separator />
+						<List.Item
+							title='Default_browser'
+							showActionIndicator
+							onPress={() => this.navigateToScreen('DefaultBrowserView')}
+							testID='settings-view-default-browser'
+						/>
+						<List.Separator />
+						<List.Item
+							title='Theme'
+							showActionIndicator
+							onPress={() => this.navigateToScreen('ThemeView')}
+							testID='settings-view-theme'
+						/>
+						<List.Separator />
+						<List.Item
+							title='Screen_lock'
+							showActionIndicator
+							onPress={() => this.navigateToScreen('ScreenLockConfigView')}
+						/>
+						<List.Separator />
+					</List.Section>
 
-					<SectionSeparator theme={theme} />
-
-					<ListItem
-						title={I18n.t('License')}
-						onPress={this.onPressLicense}
-						showActionIndicator
-						testID='settings-view-license'
-						right={this.renderDisclosure}
-						theme={theme}
-					/>
-
-					<Separator theme={theme} />
-					<ListItem
-						title={I18n.t('Version_no', { version: getReadableVersion })}
-						onPress={this.copyAppVersion}
-						testID='settings-view-version'
-						theme={theme}
-					/>
-					<Separator theme={theme} />
-
-					<ListItem
-						title={I18n.t('Server_version', { version: server.version })}
-						onPress={this.copyServerVersion}
-						subtitle={`${ server.server.split('//')[1] }`}
-						testID='settings-view-server-version'
-						theme={theme}
-					/>
-
-					<SectionSeparator theme={theme} />
+					<List.Section>
+						<List.Separator />
+						<List.Item
+							title='License'
+							onPress={this.onPressLicense}
+							showActionIndicator
+							testID='settings-view-license'
+						/>
+						<List.Separator />
+						<List.Item
+							title={I18n.t('Version_no', { version: getReadableVersion })}
+							onPress={this.copyAppVersion}
+							testID='settings-view-version'
+							translateTitle={false}
+						/>
+						<List.Separator />
+						<List.Item
+							title={I18n.t('Server_version', { version: server.version })}
+							onPress={this.copyServerVersion}
+							subtitle={`${ server.server.split('//')[1] }`}
+							testID='settings-view-server-version'
+							translateTitle={false}
+							translateSubtitle={false}
+						/>
+						<List.Separator />
+					</List.Section>
 
 					{!isFDroidBuild ? (
 						<>
-							<ListItem
-								title={I18n.t('Log_analytics_events')}
-								testID='settings-view-analytics-events'
-								right={() => this.renderAnalyticsEventsSwitch()}
-								theme={theme}
-							/>
-							<Separator theme={theme} />
-							<ListItem
-								title={I18n.t('Send_crash_report')}
-								testID='settings-view-crash-report'
-								right={() => this.renderCrashReportSwitch()}
-								theme={theme}
-							/>
-							<Separator theme={theme} />
-							<ItemInfo
-								info={I18n.t('Crash_report_disclaimer')}
-								theme={theme}
-							/>
-							<Separator theme={theme} />
+							<List.Section>
+								<List.Separator />
+								<List.Item
+									title='Log_analytics_events'
+									testID='settings-view-analytics-events'
+									right={() => this.renderAnalyticsEventsSwitch()}
+								/>
+								<List.Separator />
+								<List.Item
+									title='Send_crash_report'
+									testID='settings-view-crash-report'
+									right={() => this.renderCrashReportSwitch()}
+								/>
+								<List.Separator />
+								<List.Info info='Crash_report_disclaimer' />
+							</List.Section>
 						</>
 					) : null}
 
-					<ListItem
-						title={I18n.t('Clear_cache')}
-						testID='settings-clear-cache'
-						onPress={this.handleClearCache}
-						right={this.renderDisclosure}
-						color={themes[theme].dangerColor}
-						theme={theme}
-					/>
-					<Separator theme={theme} />
-					<ListItem
-						title={I18n.t('Logout')}
-						testID='settings-logout'
-						onPress={this.handleLogout}
-						right={this.renderDisclosure}
-						color={themes[theme].dangerColor}
-						theme={theme}
-					/>
-					<Separator theme={theme} />
-				</ScrollView>
+					<List.Section>
+						<List.Separator />
+						<List.Item
+							title='Clear_cache'
+							testID='settings-clear-cache'
+							onPress={this.handleClearCache}
+							showActionIndicator
+							color={themes[theme].dangerColor}
+						/>
+						<List.Separator />
+						<List.Item
+							title='Logout'
+							testID='settings-logout'
+							onPress={this.handleLogout}
+							showActionIndicator
+							color={themes[theme].dangerColor}
+						/>
+						<List.Separator />
+					</List.Section>
+				</List.Container>
 			</SafeAreaView>
 		);
 	}

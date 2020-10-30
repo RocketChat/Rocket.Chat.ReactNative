@@ -1,52 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	FlatList, Switch, View, StyleSheet, ScrollView
-} from 'react-native';
+import { FlatList, Switch, StyleSheet } from 'react-native';
 
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
-import { CustomIcon } from '../../lib/Icons';
-import sharedStyles from '../Styles';
-import ListItem from '../../containers/ListItem';
-import Separator from '../../containers/Separator';
+import * as List from '../../containers/List';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { logEvent, events } from '../../utils/log';
 
 const styles = StyleSheet.create({
-	contentContainerStyle: {
-		borderTopWidth: StyleSheet.hairlineWidth,
-		marginTop: 10,
-		paddingBottom: 30
-	},
-	flatListContainerStyle: {
-		borderBottomWidth: StyleSheet.hairlineWidth
-	},
-	sectionSeparator: {
-		...sharedStyles.separatorVertical,
-		height: 10
+	list: {
+		paddingTop: 16
 	}
 });
-
-const SectionSeparator = React.memo(({ theme }) => (
-	<View
-		style={[
-			styles.sectionSeparator,
-			{
-				backgroundColor: themes[theme].auxiliaryBackground,
-				borderColor: themes[theme].separatorColor
-			}
-		]}
-	/>
-));
-
-SectionSeparator.propTypes = {
-	theme: PropTypes.string
-};
 
 class AutoTranslateView extends React.Component {
 	static navigationOptions = () => ({
@@ -55,8 +24,7 @@ class AutoTranslateView extends React.Component {
 
 	static propTypes = {
 		route: PropTypes.object,
-		theme: PropTypes.string,
-		navigation: PropTypes.object
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
@@ -135,14 +103,9 @@ class AutoTranslateView extends React.Component {
 		}
 	}
 
-	renderSeparator = () => {
-		const { theme } = this.props;
-		return <Separator theme={theme} />;
-	}
-
 	renderIcon = () => {
 		const { theme } = this.props;
-		return <CustomIcon name='check' size={20} style={{ color: themes[theme].tintColor }} />;
+		return <List.Icon name='check' style={{ color: themes[theme].tintColor }} />;
 	}
 
 	renderSwitch = () => {
@@ -158,54 +121,46 @@ class AutoTranslateView extends React.Component {
 
 	renderItem = ({ item }) => {
 		const { selectedLanguage } = this.state;
-		const { theme } = this.props;
 		const { language, name } = item;
 		const isSelected = selectedLanguage === language;
 
 		return (
-			<ListItem
+			<List.Item
 				title={name || language}
 				onPress={() => this.saveAutoTranslateLanguage(language)}
 				testID={`auto-translate-view-${ language }`}
 				right={isSelected ? this.renderIcon : null}
-				theme={theme}
+				translateTitle={false}
 			/>
 		);
 	}
 
 	render() {
 		const { languages } = this.state;
-		const { theme } = this.props;
 		return (
-			<SafeAreaView testID='auto-translate-view' theme={theme}>
-				<StatusBar theme={theme} />
-				<ScrollView
-					{...scrollPersistTaps}
-					contentContainerStyle={[
-						styles.contentContainerStyle,
-						{
-							backgroundColor: themes[theme].auxiliaryBackground,
-							borderColor: themes[theme].separatorColor
-						}
-					]}
-					testID='auto-translate-view-list'
-				>
-					<ListItem
-						title={I18n.t('Enable_Auto_Translate')}
-						testID='auto-translate-view-switch'
-						right={() => this.renderSwitch()}
-						theme={theme}
-					/>
-					<SectionSeparator theme={theme} />
+			<SafeAreaView testID='auto-translate-view'>
+				<StatusBar />
+				<List.Container testID='auto-translate-view-list'>
+					<List.Section>
+						<List.Separator />
+						<List.Item
+							title='Enable_Auto_Translate'
+							testID='auto-translate-view-switch'
+							right={() => this.renderSwitch()}
+						/>
+						<List.Separator />
+					</List.Section>
 					<FlatList
 						data={languages}
 						extraData={this.state}
 						keyExtractor={item => item.language}
 						renderItem={this.renderItem}
-						ItemSeparatorComponent={this.renderSeparator}
-						contentContainerStyle={[styles.flatListContainerStyle, { borderColor: themes[theme].separatorColor }]}
+						ItemSeparatorComponent={List.Separator}
+						ListFooterComponent={List.Separator}
+						ListHeaderComponent={List.Separator}
+						contentContainerStyle={[List.styles.contentContainerStyleFlatList, styles.list]}
 					/>
-				</ScrollView>
+				</List.Container>
 			</SafeAreaView>
 		);
 	}

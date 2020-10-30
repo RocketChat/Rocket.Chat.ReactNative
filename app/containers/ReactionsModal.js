@@ -99,7 +99,7 @@ const ModalContent = React.memo(({
 }) => {
 	if (message && message.reactions) {
 		return (
-			<SafeAreaView theme={props.theme} style={styles.safeArea}>
+			<SafeAreaView style={styles.safeArea}>
 				<Touchable onPress={onClose}>
 					<View style={styles.titleContainer}>
 						<CustomIcon

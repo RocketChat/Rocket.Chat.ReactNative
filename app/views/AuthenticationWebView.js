@@ -155,7 +155,7 @@ class AuthenticationWebView extends React.PureComponent {
 
 		return (
 			<>
-				<StatusBar theme={theme} />
+				<StatusBar />
 				<WebView
 					source={{ uri: url }}
 					userAgent={userAgent}

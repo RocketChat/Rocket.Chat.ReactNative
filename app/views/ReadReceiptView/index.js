@@ -135,8 +135,8 @@ class ReadReceiptView extends React.Component {
 		}
 
 		return (
-			<SafeAreaView testID='read-receipt-view' theme={theme}>
-				<StatusBar theme={theme} />
+			<SafeAreaView testID='read-receipt-view'>
+				<StatusBar />
 				{loading
 					? <ActivityIndicator theme={theme} />
 					: (
