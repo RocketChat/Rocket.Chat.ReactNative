@@ -1,27 +1,26 @@
 import React from 'react';
-import {
-	View, ScrollView, Text
-} from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { themes } from '../../constants/colors';
 import StatusBar from '../../containers/StatusBar';
-import ListItem from '../../containers/ListItem';
-import Separator from '../../containers/Separator';
+import * as List from '../../containers/List';
 import I18n from '../../i18n';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import styles from './styles';
 import RocketChat from '../../lib/rocketchat';
 import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
-import SectionTitle from './SectionTitle';
-import SectionSeparator from './SectionSeparator';
-import Info from './Info';
 import { OPTIONS } from './options';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-import { DisclosureImage } from '../../containers/DisclosureIndicator';
 import { getUserSelector } from '../../selectors/login';
+import sharedStyles from '../Styles';
+
+const styles = StyleSheet.create({
+	pickerText: {
+		...sharedStyles.textRegular,
+		fontSize: 16
+	}
+});
 
 class UserNotificationPreferencesView extends React.Component {
 	static navigationOptions = () => ({
@@ -30,7 +29,6 @@ class UserNotificationPreferencesView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		route: PropTypes.object,
 		theme: PropTypes.string,
 		user: PropTypes.shape({
 			id: PropTypes.string
@@ -90,72 +88,55 @@ class UserNotificationPreferencesView extends React.Component {
 		this.setState({ preferences: settings.preferences });
 	}
 
-	renderDisclosure = () => {
-		const { theme } = this.props;
-		return <DisclosureImage theme={theme} />;
-	}
-
 	render() {
 		const { theme } = this.props;
 		const { loading } = this.state;
 		return (
-			<SafeAreaView testID='user-notification-preference-view' theme={theme}>
-				<StatusBar theme={theme} />
-				<ScrollView
-					{...scrollPersistTaps}
-					style={{ backgroundColor: themes[theme].auxiliaryBackground }}
-					contentContainerStyle={styles.contentContainer}
-					testID='user-notification-preference-view-list'
-				>
+			<SafeAreaView testID='user-notification-preference-view'>
+				<StatusBar />
+				<List.Container>
 					{loading
 						? (
 							<>
-								<SectionSeparator theme={theme} />
-								<SectionTitle title={I18n.t('DESKTOP_NOTIFICATIONS')} theme={theme} />
+								<List.Section title='Desktop_Notifications'>
+									<List.Separator />
+									<List.Item
+										title='Alert'
+										testID='user-notification-preference-view-alert'
+										onPress={title => this.pickerSelection(title, 'desktopNotifications')}
+										right={() => this.renderPickerOption('desktopNotifications')}
+									/>
+									<List.Separator />
+									<List.Info info='Desktop_Alert_info' />
+								</List.Section>
 
-								<ListItem
-									title={I18n.t('Alert')}
-									testID='user-notification-preference-view-alert'
-									onPress={title => this.pickerSelection(title, 'desktopNotifications')}
-									right={() => this.renderPickerOption('desktopNotifications')}
-									theme={theme}
-								/>
-								<Separator theme={theme} />
-								<Info info={I18n.t('Desktop_Alert_info')} theme={theme} />
+								<List.Section title='Push_Notifications'>
+									<List.Separator />
+									<List.Item
+										title='Alert'
+										testID='user-notification-preference-view-push-notification'
+										onPress={title => this.pickerSelection(title, 'mobileNotifications')}
+										right={() => this.renderPickerOption('mobileNotifications')}
+									/>
+									<List.Separator />
+									<List.Info info='Push_Notifications_Alert_Info' />
+								</List.Section>
 
-								<SectionSeparator theme={theme} />
-								<SectionTitle title={I18n.t('PUSH_NOTIFICATIONS')} theme={theme} />
-								<Separator theme={theme} />
-
-								<ListItem
-									title={I18n.t('Alert')}
-									testID='user-notification-preference-view-push-notification'
-									onPress={title => this.pickerSelection(title, 'mobileNotifications')}
-									right={() => this.renderPickerOption('mobileNotifications')}
-									theme={theme}
-								/>
-								<Separator theme={theme} />
-								<Info info={I18n.t('Push_Notifications_Alert_Info')} theme={theme} />
-
-								<SectionSeparator theme={theme} />
-								<SectionTitle title={I18n.t('EMAIL')} theme={theme} />
-								<Separator theme={theme} />
-
-								<ListItem
-									title={I18n.t('Alert')}
-									testID='user-notification-preference-view-email-alert'
-									onPress={title => this.pickerSelection(title, 'emailNotificationMode')}
-									right={() => this.renderPickerOption('emailNotificationMode')}
-									theme={theme}
-								/>
-
-								<Separator theme={theme} />
-								<Info info={I18n.t('You_need_to_verifiy_your_email_address_to_get_notications')} theme={theme} />
+								<List.Section title='Email'>
+									<List.Separator />
+									<List.Item
+										title='Alert'
+										testID='user-notification-preference-view-email-alert'
+										onPress={title => this.pickerSelection(title, 'emailNotificationMode')}
+										right={() => this.renderPickerOption('emailNotificationMode')}
+									/>
+									<List.Separator />
+									<List.Info info='You_need_to_verifiy_your_email_address_to_get_notications' />
+								</List.Section>
 							</>
 						) : <ActivityIndicator theme={theme} />
 					}
-					<View style={[styles.marginBottom, { backgroundColor: themes[theme].auxiliaryBackground }]} />
-				</ScrollView>
+				</List.Container>
 			</SafeAreaView>
 		);
 	}

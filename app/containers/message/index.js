@@ -6,9 +6,10 @@ import Message from './Message';
 import MessageContext from './Context';
 import debounce from '../../utils/debounce';
 import { SYSTEM_MESSAGES, getMessageTranslation } from './utils';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
 import messagesStatus from '../../constants/messagesStatus';
 import { withTheme } from '../../theme';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
+import database from '../../lib/database';
 
 class MessageContainer extends React.Component {
 	static propTypes = {
@@ -72,13 +73,30 @@ class MessageContainer extends React.Component {
 		theme: 'light'
 	}
 
-	componentDidMount() {
+	state = {
+		author: null
+	}
+
+	async componentDidMount() {
 		const { item } = this.props;
 		if (item && item.observe) {
 			const observable = item.observe();
 			this.subscription = observable.subscribe(() => {
 				this.forceUpdate();
 			});
+		}
+
+		const db = database.active;
+		const usersCollection = db.collections.get('users');
+		try {
+			const user = await usersCollection.find(item.u?._id);
+			const observable = user.observe();
+			this.userSubscription = observable.subscribe((author) => {
+				this.setState({ author });
+				this.forceUpdate();
+			});
+		} catch {
+			// Do nothing
 		}
 	}
 
@@ -93,6 +111,9 @@ class MessageContainer extends React.Component {
 	componentWillUnmount() {
 		if (this.subscription && this.subscription.unsubscribe) {
 			this.subscription.unsubscribe();
+		}
+		if (this.userSubscription && this.userSubscription.unsubscribe) {
+			this.userSubscription.unsubscribe();
 		}
 	}
 
@@ -242,6 +263,7 @@ class MessageContainer extends React.Component {
 	}
 
 	render() {
+		const { author } = this.state;
 		const {
 			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, showAttachment, timeFormat, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme
 		} = this.props;
@@ -276,7 +298,7 @@ class MessageContainer extends React.Component {
 					id={id}
 					msg={message}
 					rid={rid}
-					author={u}
+					author={author || u}
 					ts={ts}
 					type={t}
 					attachments={attachments}

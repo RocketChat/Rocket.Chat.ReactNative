@@ -39,7 +39,8 @@ class CreateChannelView extends React.Component {
 		failure: PropTypes.bool,
 		error: PropTypes.object,
 		theme: PropTypes.string,
-		isMasterDetail: PropTypes.bool
+		isMasterDetail: PropTypes.bool,
+		blockUnauthenticatedAccess: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -143,7 +144,7 @@ class CreateChannelView extends React.Component {
 	render() {
 		const { name, users } = this.state;
 		const {
-			server, user, loading, theme
+			server, user, loading, blockUnauthenticatedAccess, theme
 		} = this.props;
 		return (
 			<KeyboardView
@@ -151,8 +152,8 @@ class CreateChannelView extends React.Component {
 				contentContainerStyle={styles.container}
 				keyboardVerticalOffset={128}
 			>
-				<StatusBar theme={theme} />
-				<SafeAreaView testID='create-discussion-view' style={styles.container} theme={theme}>
+				<StatusBar />
+				<SafeAreaView testID='create-discussion-view' style={styles.container}>
 					<ScrollView {...scrollPersistTaps}>
 						<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Discussion_Desc')}</Text>
 						<SelectChannel
@@ -161,6 +162,7 @@ class CreateChannelView extends React.Component {
 							token={user.token}
 							initial={this.channel && { text: RocketChat.getRoomTitle(this.channel) }}
 							onChannelSelect={this.selectChannel}
+							blockUnauthenticatedAccess={blockUnauthenticatedAccess}
 							theme={theme}
 						/>
 						<TextInput
@@ -177,6 +179,7 @@ class CreateChannelView extends React.Component {
 							token={user.token}
 							selected={users}
 							onUserSelect={this.selectUsers}
+							blockUnauthenticatedAccess={blockUnauthenticatedAccess}
 							theme={theme}
 						/>
 						<TextInput
@@ -203,6 +206,7 @@ const mapStateToProps = state => ({
 	failure: state.createDiscussion.failure,
 	loading: state.createDiscussion.isFetching,
 	result: state.createDiscussion.result,
+	blockUnauthenticatedAccess: state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true,
 	isMasterDetail: state.app.isMasterDetail
 });
 

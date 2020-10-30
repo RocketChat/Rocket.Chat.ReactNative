@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 
 const AuthLoadingView = React.memo(({ theme, text }) => (
 	<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
-		<StatusBar theme={theme} />
+		<StatusBar />
 		{text && (
 			<>
 				<ActivityIndicator color={themes[theme].auxiliaryText} size='large' />

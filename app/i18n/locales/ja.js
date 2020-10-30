@@ -110,8 +110,6 @@ export default {
 	announcement: 'アナウンス',
 	Announcement: 'アナウンス',
 	Apply_Your_Certificate: '証明書を適用する',
-	Applying_a_theme_will_change_how_the_app_looks:
-    'テーマを変更すると見た目が変わります',
 	ARCHIVE: 'アーカイブ',
 	archive: 'アーカイブ',
 	are_typing: 'が入力中',
@@ -183,7 +181,7 @@ export default {
 	deleting_room: 'ルームを削除',
 	description: '概要',
 	Description: '概要',
-	DESKTOP_OPTIONS: 'デスクトップオプション',
+	Desktop_Options: 'デスクトップオプション',
 	Directory: 'ディレクトリ',
 	Direct_Messages: 'ダイレクトメッセージ',
 	Disable_notifications: '通知を無効化',
@@ -198,7 +196,6 @@ export default {
 	Edit_Invite: '編集に招待',
 	Email_or_password_field_is_empty: 'メールアドレスかパスワードの入力欄が空です',
 	Email: 'メールアドレス',
-	EMAIL: 'メールアドレス',
 	email: 'メールアドレス',
 	Enable_Auto_Translate: '自動翻訳を有効にする',
 	Enable_markdown: 'マークダウンを有効にする',
@@ -227,7 +224,7 @@ export default {
 	Has_joined_the_channel: 'はチャンネルに参加しました',
 	Has_joined_the_conversation: 'は会話に参加しました',
 	Has_left_the_channel: 'はチャンネルを退出しました',
-	IN_APP_AND_DESKTOP: 'アプリ内とデスクトップ',
+	In_App_And_Desktop: 'アプリ内とデスクトップ',
 	In_App_and_Desktop_Alert_info:
     'アプリを表示中にはバナーを上部に表示し、デスクトップには通知を送ります。',
 	Invisible: '状態を隠す',
@@ -332,7 +329,7 @@ export default {
 	Profile: 'プロフィール',
 	Public_Channel: 'パブリックチャンネル',
 	Public: 'パブリック',
-	PUSH_NOTIFICATIONS: 'プッシュ通知',
+	Push_Notifications: 'プッシュ通知',
 	Push_Notifications_Alert_Info:
     '通知はアプリを開いていない時に送られます。',
 	Quote: '引用',
