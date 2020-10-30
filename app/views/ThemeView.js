@@ -115,10 +115,9 @@ class ThemeView extends React.Component {
 	}
 
 	render() {
-		const { theme } = this.props;
 		return (
-			<SafeAreaView testID='theme-view' theme={theme}>
-				<StatusBar theme={theme} />
+			<SafeAreaView testID='theme-view'>
+				<StatusBar />
 				<List.Container>
 					<List.Section title='Theme'>
 						<List.Separator />

@@ -436,6 +436,7 @@ export default {
 	Roles: 'Roles',
 	Room_actions: 'Room actions',
 	Room_changed_announcement: 'Room announcement changed to: {{announcement}} by {{userBy}}',
+	Room_changed_avatar: 'Room avatar changed by {{userBy}}',
 	Room_changed_description: 'Room description changed to: {{description}} by {{userBy}}',
 	Room_changed_privacy: 'Room type changed to: {{type}} by {{userBy}}',
 	Room_changed_topic: 'Room topic changed to: {{topic}} by {{userBy}}',
@@ -671,5 +672,13 @@ export default {
 	E2E_encryption_reset_button: 'Reset E2E Key',
 	E2E_encryption_reset_error: 'Error while resetting E2E key!',
 	E2E_encryption_reset_message: 'You\'re going to be logged out.',
-	E2E_encryption_reset_confirmation: 'Yes, reset it'
+	E2E_encryption_reset_confirmation: 'Yes, reset it',
+	Following: 'Following',
+	Threads_displaying_all: 'Displaying All',
+	Threads_displaying_following: 'Displaying Following',
+	Threads_displaying_unread: 'Displaying Unread',
+	No_threads: 'There are no threads',
+	No_threads_following: 'You are not following any threads',
+	No_threads_unread: 'There are no unread threads',
+	Messagebox_Send_to_channel: 'Send to channel'
 };

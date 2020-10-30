@@ -27,8 +27,5 @@ export default StyleSheet.create({
 		paddingRight: 16,
 		flexDirection: 'row',
 		alignItems: 'center'
-	},
-	roomTitleDisabled: {
-		opacity: 0.7
 	}
 });

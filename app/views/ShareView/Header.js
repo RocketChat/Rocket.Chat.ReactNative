@@ -9,6 +9,7 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { isAndroid, isTablet } from '../../utils/deviceInfo';
 import sharedStyles from '../Styles';
+import { makeThreadName } from '../../utils/room';
 
 const androidMarginLeft = isTablet ? 0 : 4;
 
@@ -64,6 +65,13 @@ const Header = React.memo(({ room, thread, theme }) => {
 
 	const textColor = themes[theme].previewTintColor;
 
+	let title;
+	if (thread?.id) {
+		title = makeThreadName(thread);
+	} else {
+		title = RocketChat.getRoomTitle(room);
+	}
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.inner}>
@@ -78,7 +86,7 @@ const Header = React.memo(({ room, thread, theme }) => {
 						style={[styles.name, { color: textColor }]}
 						numberOfLines={1}
 					>
-						{thread?.msg ?? RocketChat.getRoomTitle(room)}
+						{title}
 					</Text>
 				</Text>
 			</View>

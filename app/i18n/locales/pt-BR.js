@@ -614,5 +614,13 @@ export default {
 	E2E_encryption_reset_button: 'Redefinir',
 	E2E_encryption_reset_error: 'Erro ao redefinir chave!',
 	E2E_encryption_reset_message: 'Você será desconectado.',
-	E2E_encryption_reset_confirmation: 'Sim, redefinir'
+	E2E_encryption_reset_confirmation: 'Sim, redefinir',
+	Following: 'Seguindo',
+	Threads_displaying_all: 'Mostrando Tudo',
+	Threads_displaying_following: 'Mostrando Seguindo',
+	Threads_displaying_unread: 'Mostrando Não Lidos',
+	No_threads: 'Não há tópicos',
+	No_threads_following: 'Você não está seguindo tópicos',
+	No_threads_unread: 'Não há tópicos não lidos',
+	Messagebox_Send_to_channel: 'Mostrar no canal'
 };

@@ -21,8 +21,7 @@ import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import { themes, SWITCH_TRACK_COLOR } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { CloseModalButton } from '../../containers/HeaderButton';
-import { getUserSelector } from '../../selectors/login';
+import * as HeaderButton from '../../containers/HeaderButton';
 import Markdown from '../../containers/markdown';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -37,19 +36,14 @@ class RoomActionsView extends React.Component {
 			title: I18n.t('Actions')
 		};
 		if (isMasterDetail) {
-			options.headerLeft = () => <CloseModalButton navigation={navigation} testID='room-actions-view-close' />;
+			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='room-actions-view-close' />;
 		}
 		return options;
 	}
 
 	static propTypes = {
-		baseUrl: PropTypes.string,
 		navigation: PropTypes.object,
 		route: PropTypes.object,
-		user: PropTypes.shape({
-			id: PropTypes.string,
-			token: PropTypes.string
-		}),
 		leaveRoom: PropTypes.func,
 		jitsiEnabled: PropTypes.bool,
 		e2eEnabled: PropTypes.bool,
@@ -396,9 +390,7 @@ class RoomActionsView extends React.Component {
 		const {
 			rid, name, t, topic
 		} = room;
-		const {
-			baseUrl, user, theme, fontScale
-		} = this.props;
+		const { theme, fontScale } = this.props;
 
 		const avatar = RocketChat.getRoomAvatar(room);
 		const isGroupChat = RocketChat.isGroupChat(room);
@@ -424,16 +416,14 @@ class RoomActionsView extends React.Component {
 					<View style={[styles.roomInfoContainer, { height: 72 * fontScale }]}>
 						<Avatar
 							text={avatar}
-							size={50 * fontScale}
 							style={styles.avatar}
+							size={50 * fontScale}
 							type={t}
-							baseUrl={baseUrl}
-							userId={user.id}
-							token={user.token}
+							rid={rid}
 						>
 							{t === 'd' && member._id ? <Status style={sharedStyles.status} id={member._id} /> : null }
 						</Avatar>
-						<View style={[styles.roomTitleContainer, isGroupChat && styles.roomTitleDisabled]}>
+						<View style={styles.roomTitleContainer}>
 							{room.t === 'd'
 								? <Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{room.fname}</Text>
 								: (
@@ -856,8 +846,6 @@ class RoomActionsView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	user: getUserSelector(state),
-	baseUrl: state.server.server,
 	jitsiEnabled: state.settings.Jitsi_Enabled || false,
 	e2eEnabled: state.settings.E2E_Enable || false
 });

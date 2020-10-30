@@ -10,7 +10,7 @@ import Button from '../containers/Button';
 import { themes } from '../constants/colors';
 import TextInput from '../containers/TextInput';
 import SafeAreaView from '../containers/SafeAreaView';
-import { CloseModalButton } from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/HeaderButton';
 import { encryptionDecodeKey as encryptionDecodeKeyAction } from '../actions/encryption';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import KeyboardView from '../presentation/KeyboardView';
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 });
 class E2EEnterYourPasswordView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
-		headerLeft: () => <CloseModalButton navigation={navigation} testID='e2e-enter-your-password-view-close' />,
+		headerLeft: () => <HeaderButton.CloseModal navigation={navigation} testID='e2e-enter-your-password-view-close' />,
 		title: I18n.t('Enter_Your_E2E_Password')
 	})
 
