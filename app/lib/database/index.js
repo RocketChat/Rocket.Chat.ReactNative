@@ -116,6 +116,7 @@ class DB {
 				Permission,
 				CustomEmoji,
 				FrequentlyUsedEmoji,
+				Setting,
 				User
 			],
 			actionsEnabled: true

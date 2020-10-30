@@ -33,6 +33,7 @@ const reducers = combineReducers({
 			username: 'diego.mello'
 		}
 	}),
+	share: () => ({ settings: {} }),
 	meteor: () => ({ connected: true }),
 	activeUsers: () => ({ abc: { status: 'online', statusText: 'dog' } })
 });
@@ -61,6 +62,7 @@ storiesOf('RoomItem', module)
 	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
 	.add('list roomitem', () => <RoomItem theme={theme} />);
 storiesOf('Message', module)
+	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
 	.addDecorator(messageDecorator)
 	.add('list message', () => <Message theme={theme} />);
 

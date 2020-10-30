@@ -108,8 +108,11 @@ class ShareListView extends React.Component {
 			return true;
 		}
 
-		const { server, theme } = this.props;
+		const { server, theme, userId } = this.props;
 		if (server !== nextProps.server) {
+			return true;
+		}
+		if (userId !== nextProps.userId) {
 			return true;
 		}
 		if (theme !== nextProps.theme) {
