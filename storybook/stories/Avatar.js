@@ -35,6 +35,13 @@ const AvatarStories = ({ theme }) => (
 			server={server}
 			size={56}
 		/>
+		<Separator title='Avatar by roomId' theme={theme} />
+		<Avatar
+			type='p'
+			rid='devWBbYr7inwupPqK'
+			server={server}
+			size={56}
+		/>
 		<Separator title='Avatar by url' theme={theme} />
 		<Avatar
 			avatar='https://user-images.githubusercontent.com/29778115/89444446-14738480-d728-11ea-9412-75fd978d95fb.jpg'

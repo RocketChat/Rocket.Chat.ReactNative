@@ -289,6 +289,7 @@ class RoomInfoView extends React.Component {
 				style={styles.avatar}
 				type={this.t}
 				size={100}
+				rid={room?.rid}
 			>
 				{this.t === 'd' && roomUser._id ? <Status style={[sharedStyles.status, styles.status]} theme={theme} size={24} id={roomUser._id} /> : null}
 			</Avatar>
