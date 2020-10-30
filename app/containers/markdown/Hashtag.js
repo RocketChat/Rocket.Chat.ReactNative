@@ -24,8 +24,7 @@ const Hashtag = React.memo(({
 				style={[
 					styles.mention,
 					{
-						color: themes[theme].mentionOtherColor,
-						backgroundColor: themes[theme].mentionOtherBackground
+						color: themes[theme].mentionOtherColor
 					},
 					...style]}
 				onPress={handlePress}
