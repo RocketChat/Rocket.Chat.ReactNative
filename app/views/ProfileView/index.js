@@ -288,6 +288,7 @@ class ProfileView extends React.Component {
 		const options = {
 			cropping: true,
 			compressImageQuality: 0.8,
+			freeStyleCropEnabled: true,
 			cropperAvoidEmptySpaceAroundImage: false,
 			cropperChooseText: I18n.t('Choose'),
 			cropperCancelText: I18n.t('Cancel'),
