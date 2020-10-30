@@ -31,6 +31,7 @@ import UserPreferences from '../lib/userPreferences';
 import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
 import { E2E_REFRESH_MESSAGES_KEY } from '../lib/encryption/constants';
+import Navigation from '../lib/Navigation';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -239,6 +240,9 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 			if (forcedByServer) {
 				yield put(appStart({ root: ROOT_OUTSIDE }));
 				showErrorAlert(I18n.t('Logged_out_by_server'), I18n.t('Oops'));
+				yield delay(300);
+				Navigation.navigate('NewServerView');
+				yield delay(300);
 				EventEmitter.emit('NewServer', { server });
 			} else {
 				const serversDB = database.servers;

@@ -84,6 +84,12 @@ const RocketChat = {
 			}
 		}
 	},
+	unsubscribeRooms() {
+		if (this.roomsSub) {
+			this.roomsSub.stop();
+			this.roomsSub = null;
+		}
+	},
 	canOpenRoom,
 	createChannel({
 		name, users, type, readOnly, broadcast, encrypted
@@ -194,10 +200,7 @@ const RocketChat = {
 				this.notifyLoggedListener.then(this.stopListener);
 			}
 
-			if (this.roomsSub) {
-				this.roomsSub.stop();
-				this.roomsSub = null;
-			}
+			this.unsubscribeRooms();
 
 			EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
 
@@ -406,6 +409,12 @@ const RocketChat = {
 	e2eRequestRoomKey(rid, e2eKeyId) {
 		// RC 0.70.0
 		return this.methodCallWrapper('stream-notify-room-users', `${ rid }/e2ekeyRequest`, rid, e2eKeyId);
+	},
+	e2eResetOwnKey() {
+		this.unsubscribeRooms();
+
+		// RC 0.72.0
+		return this.methodCallWrapper('e2e.resetOwnE2EKey');
 	},
 
 	updateJitsiTimeout(roomId) {

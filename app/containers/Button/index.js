@@ -82,6 +82,7 @@ export default class Button extends React.PureComponent {
 									{ color: textColor },
 									fontSize && { fontSize }
 								]}
+								accessibilityLabel={title}
 							>
 								{title}
 							</Text>

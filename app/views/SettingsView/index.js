@@ -1,30 +1,26 @@
 import React from 'react';
 import {
-	Linking, Switch, Share, Clipboard
+	Linking, Share, Clipboard
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import AsyncStorage from '@react-native-community/async-storage';
 import FastImage from '@rocket.chat/react-native-fast-image';
 import CookieManager from '@react-native-community/cookies';
 
 import { logout as logoutAction } from '../../actions/login';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
-import { toggleCrashReport as toggleCrashReportAction, toggleAnalyticsEvents as toggleAnalyticsEventsAction } from '../../actions/crashReport';
-import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
-import RocketChat, { CRASH_REPORT_KEY, ANALYTICS_EVENTS_KEY } from '../../lib/rocketchat';
+import RocketChat from '../../lib/rocketchat';
 import {
 	getReadableVersion, getDeviceModel, isAndroid
 } from '../../utils/deviceInfo';
 import openLink from '../../utils/openLink';
 import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
-import {
-	loggerConfig, analytics, logEvent, events
-} from '../../utils/log';
+import { logEvent, events } from '../../utils/log';
 import {
 	PLAY_MARKET_LINK, FDROID_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK
 } from '../../constants/links';
@@ -44,7 +40,7 @@ class SettingsView extends React.Component {
 		headerLeft: () => (isMasterDetail ? (
 			<HeaderButton.CloseModal navigation={navigation} testID='settings-view-close' />
 		) : (
-			<HeaderButton.Drawer navigation={navigation} />
+			<HeaderButton.Drawer navigation={navigation} testID='settings-view-drawer' />
 		)),
 		title: I18n.t('Settings')
 	});
@@ -52,10 +48,6 @@ class SettingsView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		server: PropTypes.object,
-		allowCrashReport: PropTypes.bool,
-		allowAnalyticsEvents: PropTypes.bool,
-		toggleCrashReport: PropTypes.func,
-		toggleAnalyticsEvents: PropTypes.func,
 		theme: PropTypes.string,
 		isMasterDetail: PropTypes.bool,
 		logout: PropTypes.func.isRequired,
@@ -122,29 +114,6 @@ class SettingsView extends React.Component {
 		});
 	}
 
-	toggleCrashReport = (value) => {
-		logEvent(events.SE_TOGGLE_CRASH_REPORT);
-		AsyncStorage.setItem(CRASH_REPORT_KEY, JSON.stringify(value));
-		const { toggleCrashReport } = this.props;
-		toggleCrashReport(value);
-		if (!isFDroidBuild) {
-			loggerConfig.autoNotify = value;
-			if (value) {
-				loggerConfig.clearBeforeSendCallbacks();
-			} else {
-				loggerConfig.registerBeforeSendCallback(() => false);
-			}
-		}
-	}
-
-	toggleAnalyticsEvents = (value) => {
-		logEvent(events.SE_TOGGLE_ANALYTICS_EVENTS);
-		const { toggleAnalyticsEvents } = this.props;
-		AsyncStorage.setItem(ANALYTICS_EVENTS_KEY, JSON.stringify(value));
-		toggleAnalyticsEvents(value);
-		analytics().setAnalyticsCollectionEnabled(value);
-	}
-
 	navigateToScreen = (screen) => {
 		logEvent(events[`SE_GO_${ screen.replace('View', '').toUpperCase() }`]);
 		const { navigation } = this.props;
@@ -200,28 +169,6 @@ class SettingsView extends React.Component {
 		logEvent(events.SE_READ_LICENSE);
 		const { theme } = this.props;
 		openLink(LICENSE_LINK, theme);
-	}
-
-	renderCrashReportSwitch = () => {
-		const { allowCrashReport } = this.props;
-		return (
-			<Switch
-				value={allowCrashReport}
-				trackColor={SWITCH_TRACK_COLOR}
-				onValueChange={this.toggleCrashReport}
-			/>
-		);
-	}
-
-	renderAnalyticsEventsSwitch = () => {
-		const { allowAnalyticsEvents } = this.props;
-		return (
-			<Switch
-				value={allowAnalyticsEvents}
-				trackColor={SWITCH_TRACK_COLOR}
-				onValueChange={this.toggleAnalyticsEvents}
-			/>
-		);
 	}
 
 	render() {
@@ -299,9 +246,10 @@ class SettingsView extends React.Component {
 						/>
 						<List.Separator />
 						<List.Item
-							title='Screen_lock'
+							title='Security_and_privacy'
 							showActionIndicator
-							onPress={() => this.navigateToScreen('ScreenLockConfigView')}
+							onPress={() => this.navigateToScreen('SecurityPrivacyView')}
+							testID='settings-view-security-privacy'
 						/>
 						<List.Separator />
 					</List.Section>
@@ -333,27 +281,6 @@ class SettingsView extends React.Component {
 						<List.Separator />
 					</List.Section>
 
-					{!isFDroidBuild ? (
-						<>
-							<List.Section>
-								<List.Separator />
-								<List.Item
-									title='Log_analytics_events'
-									testID='settings-view-analytics-events'
-									right={() => this.renderAnalyticsEventsSwitch()}
-								/>
-								<List.Separator />
-								<List.Item
-									title='Send_crash_report'
-									testID='settings-view-crash-report'
-									right={() => this.renderCrashReportSwitch()}
-								/>
-								<List.Separator />
-								<List.Info info='Crash_report_disclaimer' />
-							</List.Section>
-						</>
-					) : null}
-
 					<List.Section>
 						<List.Separator />
 						<List.Item
@@ -382,16 +309,12 @@ class SettingsView extends React.Component {
 const mapStateToProps = state => ({
 	server: state.server,
 	user: getUserSelector(state),
-	allowCrashReport: state.crashReport.allowCrashReport,
-	allowAnalyticsEvents: state.crashReport.allowAnalyticsEvents,
 	isMasterDetail: state.app.isMasterDetail
 });
 
 const mapDispatchToProps = dispatch => ({
 	logout: () => dispatch(logoutAction()),
 	selectServerRequest: params => dispatch(selectServerRequestAction(params)),
-	toggleCrashReport: params => dispatch(toggleCrashReportAction(params)),
-	toggleAnalyticsEvents: params => dispatch(toggleAnalyticsEventsAction(params)),
 	appStart: params => dispatch(appStartAction(params))
 });
 
