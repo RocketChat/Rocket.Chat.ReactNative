@@ -128,8 +128,8 @@ class QueueListView extends React.Component {
 	render() {
 		const { queued, theme } = this.props;
 		return (
-			<SafeAreaView testID='queue-list-view' theme={theme} style={{ backgroundColor: themes[theme].backgroundColor }}>
-				<StatusBar theme={theme} />
+			<SafeAreaView testID='queue-list-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
+				<StatusBar />
 				<FlatList
 					ref={this.getScrollRef}
 					data={queued}

@@ -1,31 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Switch, ScrollView } from 'react-native';
+import { Switch } from 'react-native';
 import { connect } from 'react-redux';
 
 import I18n from '../i18n';
 import { withTheme } from '../theme';
 import { themes, SWITCH_TRACK_COLOR } from '../constants/colors';
 import StatusBar from '../containers/StatusBar';
-import Separator from '../containers/Separator';
-import ListItem from '../containers/ListItem';
-import ItemInfo from '../containers/ItemInfo';
-import { CustomIcon } from '../lib/Icons';
+import * as List from '../containers/List';
 import database from '../lib/database';
 import { supportedBiometryLabel, changePasscode, checkHasPasscode } from '../utils/localAuthentication';
-import { DisclosureImage } from '../containers/DisclosureIndicator';
 import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
 import SafeAreaView from '../containers/SafeAreaView';
 import { events, logEvent } from '../utils/log';
-
-const styles = StyleSheet.create({
-	listPadding: {
-		paddingVertical: 36
-	},
-	emptySpace: {
-		marginTop: 36
-	}
-});
 
 const DEFAULT_BIOMETRY = false;
 
@@ -161,29 +148,23 @@ class ScreenLockConfigView extends React.Component {
 		this.setState({ autoLockTime }, () => this.save());
 	}
 
-	renderSeparator = () => {
-		const { theme } = this.props;
-		return <Separator theme={theme} />;
-	}
-
 	renderIcon = () => {
 		const { theme } = this.props;
-		return <CustomIcon name='check' size={20} color={themes[theme].tintColor} />;
+		return <List.Icon name='check' color={themes[theme].tintColor} />;
 	}
 
 	renderItem = ({ item }) => {
-		const { theme } = this.props;
 		const { title, value, disabled } = item;
 		return (
 			<>
-				<ListItem
+				<List.Item
 					title={title}
 					onPress={() => this.changeAutoLockTime(value)}
 					right={this.isSelected(value) ? this.renderIcon : null}
-					theme={theme}
 					disabled={disabled}
+					translateTitle={false}
 				/>
-				<Separator theme={theme} />
+				<List.Separator />
 			</>
 		);
 	}
@@ -214,7 +195,7 @@ class ScreenLockConfigView extends React.Component {
 
 	renderAutoLockItems = () => {
 		const { autoLock, autoLockTime } = this.state;
-		const { theme, Force_Screen_Lock_After, Force_Screen_Lock } = this.props;
+		const { Force_Screen_Lock_After, Force_Screen_Lock } = this.props;
 		if (!autoLock) {
 			return null;
 		}
@@ -233,75 +214,62 @@ class ScreenLockConfigView extends React.Component {
 			});
 		}
 		return (
-			<>
-				<Separator style={styles.emptySpace} theme={theme} />
+			<List.Section>
+				<List.Separator />
 				{items.map(item => this.renderItem({ item }))}
-			</>
+			</List.Section>
 		);
-	}
-
-	renderDisclosure = () => {
-		const { theme } = this.props;
-		return <DisclosureImage theme={theme} />;
 	}
 
 	renderBiometry = () => {
 		const { autoLock, biometryLabel } = this.state;
-		const { theme } = this.props;
 		if (!autoLock || !biometryLabel) {
 			return null;
 		}
 		return (
-			<>
-				<Separator theme={theme} />
-				<ListItem
+			<List.Section>
+				<List.Separator />
+				<List.Item
 					title={I18n.t('Local_authentication_unlock_with_label', { label: biometryLabel })}
 					right={() => this.renderBiometrySwitch()}
-					theme={theme}
+					translateTitle={false}
 				/>
-				<Separator theme={theme} />
-			</>
+				<List.Separator />
+			</List.Section>
 		);
 	}
 
 	render() {
 		const { autoLock } = this.state;
-		const { theme } = this.props;
 		return (
-			<SafeAreaView theme={theme}>
-				<StatusBar theme={theme} />
-				<ScrollView
-					keyExtractor={item => item.value}
-					contentContainerStyle={styles.listPadding}
-				>
-					<Separator theme={theme} />
-					<ListItem
-						title={I18n.t('Local_authentication_unlock_option')}
-						right={() => this.renderAutoLockSwitch()}
-						theme={theme}
-					/>
-					{autoLock
-						? (
-							<>
-								<Separator theme={theme} />
-								<ListItem
-									title={I18n.t('Local_authentication_change_passcode')}
-									theme={theme}
-									right={this.renderDisclosure}
-									onPress={this.changePasscode}
-								/>
-							</>
-						)
-						: null
-					}
-					<Separator theme={theme} />
-					<ItemInfo
-						info={I18n.t('Local_authentication_info')}
-						theme={theme}
-					/>
+			<SafeAreaView>
+				<StatusBar />
+				<List.Container>
+					<List.Section>
+						<List.Separator />
+						<List.Item
+							title='Local_authentication_unlock_option'
+							right={() => this.renderAutoLockSwitch()}
+						/>
+						{autoLock
+							? (
+								<>
+									<List.Separator />
+									<List.Item
+										title='Local_authentication_change_passcode'
+										onPress={this.changePasscode}
+										showActionIndicator
+									/>
+								</>
+							)
+							: null
+						}
+						<List.Separator />
+						<List.Info info='Local_authentication_info' />
+					</List.Section>
 					{this.renderBiometry()}
 					{this.renderAutoLockItems()}
-				</ScrollView>
+				</List.Container>
 			</SafeAreaView>
 		);
 	}
