@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
+import isEqual from 'react-fast-compare';
 
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
@@ -9,6 +10,7 @@ import Avatar from './Avatar';
 
 class AvatarContainer extends React.Component {
 	static propTypes = {
+		rid: PropTypes.string,
 		text: PropTypes.string,
 		type: PropTypes.string
 	};
@@ -29,9 +31,15 @@ class AvatarContainer extends React.Component {
 		this.mounted = true;
 	}
 
+	componentDidUpdate(prevProps) {
+		if (!isEqual(prevProps, this.props)) {
+			this.init();
+		}
+	}
+
 	componentWillUnmount() {
-		if (this.userSubscription?.unsubscribe) {
-			this.userSubscription.unsubscribe();
+		if (this.subscription?.unsubscribe) {
+			this.subscription.unsubscribe();
 		}
 	}
 
@@ -41,26 +49,34 @@ class AvatarContainer extends React.Component {
 	}
 
 	init = async() => {
-		if (this.isDirect) {
-			const { text } = this.props;
-			const db = database.active;
-			const usersCollection = db.collections.get('users');
-			try {
+		const db = database.active;
+		const usersCollection = db.collections.get('users');
+		const subsCollection = db.collections.get('subscriptions');
+
+		let record;
+		try {
+			if (this.isDirect) {
+				const { text } = this.props;
 				const [user] = await usersCollection.query(Q.where('username', text)).fetch();
-				if (user) {
-					const observable = user.observe();
-					this.userSubscription = observable.subscribe((u) => {
-						const { avatarETag } = u;
-						if (this.mounted) {
-							this.setState({ avatarETag });
-						} else {
-							this.state.avatarETag = avatarETag;
-						}
-					});
-				}
-			} catch {
-				// User was not found
+				record = user;
+			} else {
+				const { rid } = this.props;
+				record = await subsCollection.find(rid);
 			}
+		} catch {
+			// Record not found
+		}
+
+		if (record) {
+			const observable = record.observe();
+			this.subscription = observable.subscribe((r) => {
+				const { avatarETag } = r;
+				if (this.mounted) {
+					this.setState({ avatarETag });
+				} else {
+					this.state.avatarETag = avatarETag;
+				}
+			});
 		}
 	}
 

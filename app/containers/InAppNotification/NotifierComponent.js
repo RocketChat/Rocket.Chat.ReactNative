@@ -70,13 +70,13 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }) => {
 	const { isLandscape } = useOrientation();
 
 	const { text, payload } = notification;
-	const { type } = payload;
+	const { type, rid } = payload;
 	const name = type === 'd' ? payload.sender.username : payload.name;
 	// if sub is not on local database, title and avatar will be null, so we use payload from notification
 	const { title = name, avatar = name } = notification;
 
 	const onPress = () => {
-		const { rid, prid } = payload;
+		const { prid } = payload;
 		if (!rid) {
 			return;
 		}
@@ -111,7 +111,7 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }) => {
 				background={Touchable.SelectableBackgroundBorderless()}
 			>
 				<>
-					<Avatar text={avatar} size={AVATAR_SIZE} type={type} style={styles.avatar} />
+					<Avatar text={avatar} size={AVATAR_SIZE} type={type} rid={rid} style={styles.avatar} />
 					<View style={styles.inner}>
 						<Text style={[styles.roomName, { color: themes[theme].titleText }]} numberOfLines={1}>{title}</Text>
 						<Text style={[styles.message, { color: themes[theme].titleText }]} numberOfLines={1}>{text}</Text>

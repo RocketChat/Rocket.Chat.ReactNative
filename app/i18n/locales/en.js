@@ -437,6 +437,7 @@ export default {
 	Roles: 'Roles',
 	Room_actions: 'Room actions',
 	Room_changed_announcement: 'Room announcement changed to: {{announcement}} by {{userBy}}',
+	Room_changed_avatar: 'Room avatar changed by {{userBy}}',
 	Room_changed_description: 'Room description changed to: {{description}} by {{userBy}}',
 	Room_changed_privacy: 'Room type changed to: {{type}} by {{userBy}}',
 	Room_changed_topic: 'Room topic changed to: {{topic}} by {{userBy}}',
