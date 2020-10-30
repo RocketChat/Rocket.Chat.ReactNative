@@ -19,9 +19,7 @@ import fetch from '../utils/fetch';
 import { encryptionInit } from '../actions/encryption';
 import { setUser, setLoginServices, loginRequest } from '../actions/login';
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
-import {
-	shareSelectServer, shareSetUser
-} from '../actions/share';
+import { shareSelectServer, shareSetUser, shareSetSettings } from '../actions/share';
 
 import subscribeRooms from './methods/subscriptions/rooms';
 import getUsersPresence, { getUserPresence, subscribeUsersPresence } from './methods/getUsersPresence';
@@ -324,8 +322,23 @@ const RocketChat = {
 
 		RocketChat.setCustomEmojis();
 
-		// set User info
 		try {
+			// set Settings
+			const settings = ['Accounts_AvatarBlockUnauthenticatedAccess'];
+			const db = database.active;
+			const settingsCollection = db.collections.get('settings');
+			const settingsRecords = await settingsCollection.query(Q.where('id', Q.oneOf(settings))).fetch();
+			const parsed = Object.values(settingsRecords).map(item => ({
+				_id: item.id,
+				valueAsString: item.valueAsString,
+				valueAsBoolean: item.valueAsBoolean,
+				valueAsNumber: item.valueAsNumber,
+				valueAsArray: item.valueAsArray,
+				_updatedAt: item._updatedAt
+			}));
+			reduxStore.dispatch(shareSetSettings(this.parseSettings(parsed)));
+
+			// set User info
 			const userId = await UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
 			const userCollections = serversDB.collections.get('users');
 			let user = null;
@@ -353,6 +366,7 @@ const RocketChat = {
 		database.share = null;
 
 		reduxStore.dispatch(shareSetUser({}));
+		reduxStore.dispatch(shareSetSettings({}));
 	},
 
 	async e2eFetchMyKeys() {

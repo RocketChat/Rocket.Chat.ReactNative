@@ -12,7 +12,8 @@ class AvatarContainer extends React.Component {
 	static propTypes = {
 		rid: PropTypes.string,
 		text: PropTypes.string,
-		type: PropTypes.string
+		type: PropTypes.string,
+		blockUnauthenticatedAccess: PropTypes.bool
 	};
 
 	static defaultProps = {
@@ -93,6 +94,10 @@ class AvatarContainer extends React.Component {
 
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
-	server: state.share.server || state.server.server
+	server: state.share.server || state.server.server,
+	blockUnauthenticatedAccess:
+		state.share.settings?.Accounts_AvatarBlockUnauthenticatedAccess
+		?? state.settings.Accounts_AvatarBlockUnauthenticatedAccess
+		?? true
 });
 export default connect(mapStateToProps)(AvatarContainer);
