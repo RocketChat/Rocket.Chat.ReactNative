@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import { CustomIcon } from '../../lib/Icons';
-import DisclosureIndicator from '../DisclosureIndicator';
 import styles from './styles';
 import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
@@ -33,7 +32,13 @@ const RepliedThread = React.memo(({
 		<View style={styles.repliedThread} testID={`message-thread-replied-on-${ msg }`}>
 			<CustomIcon name='threads' size={20} style={styles.repliedThreadIcon} color={themes[theme].tintColor} />
 			<Text style={[styles.repliedThreadName, { color: themes[theme].tintColor }]} numberOfLines={1}>{msg}</Text>
-			<DisclosureIndicator theme={theme} />
+			<View style={styles.repliedThreadDisclosure}>
+				<CustomIcon
+					name='chevron-right'
+					color={themes[theme].auxiliaryText}
+					size={20}
+				/>
+			</View>
 		</View>
 	);
 }, (prevProps, nextProps) => {

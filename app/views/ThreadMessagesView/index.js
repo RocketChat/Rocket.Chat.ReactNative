@@ -334,8 +334,8 @@ class ThreadMessagesView extends React.Component {
 		}
 
 		return (
-			<SafeAreaView testID='thread-messages-view' theme={theme}>
-				<StatusBar theme={theme} />
+			<SafeAreaView testID='thread-messages-view'>
+				<StatusBar />
 				<FlatList
 					data={messages}
 					extraData={this.state}
