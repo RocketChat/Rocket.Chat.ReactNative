@@ -417,7 +417,7 @@ class RoomActionsView extends React.Component {
 						<Avatar
 							text={avatar}
 							style={styles.avatar}
-							size={50}
+							size={50 * fontScale}
 							type={t}
 							rid={rid}
 						>

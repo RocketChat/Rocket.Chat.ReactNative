@@ -43,6 +43,8 @@ import NewMessageView from '../../views/NewMessageView';
 import CreateChannelView from '../../views/CreateChannelView';
 import UserPreferencesView from '../../views/UserPreferencesView';
 import UserNotificationPrefView from '../../views/UserNotificationPreferencesView';
+import SecurityPrivacyView from '../../views/SecurityPrivacyView';
+import E2EEncryptionSecurityView from '../../views/E2EEncryptionSecurityView';
 
 // InsideStackNavigator
 import AttachmentView from '../../views/AttachmentView';
@@ -282,6 +284,16 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 					name='UserNotificationPrefView'
 					component={UserNotificationPrefView}
 					options={UserNotificationPrefView.navigationOptions}
+				/>
+				<ModalStack.Screen
+					name='SecurityPrivacyView'
+					component={SecurityPrivacyView}
+					options={SecurityPrivacyView.navigationOptions}
+				/>
+				<ModalStack.Screen
+					name='E2EEncryptionSecurityView'
+					component={E2EEncryptionSecurityView}
+					options={E2EEncryptionSecurityView.navigationOptions}
 				/>
 			</ModalStack.Navigator>
 		</ModalContainer>

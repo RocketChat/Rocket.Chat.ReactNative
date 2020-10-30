@@ -126,7 +126,7 @@ class E2ESaveYourPasswordView extends React.Component {
 		const { theme } = this.props;
 
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
+			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='e2e-save-password-view'>
 				<StatusBar />
 				<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={sharedStyles.containerScrollView}>
 					<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
@@ -150,11 +150,13 @@ class E2ESaveYourPasswordView extends React.Component {
 							title={I18n.t('How_It_Works')}
 							type='secondary'
 							theme={theme}
+							testID='e2e-save-password-view-how-it-works'
 						/>
 						<Button
 							onPress={this.onSaved}
 							title={I18n.t('I_Saved_My_E2E_Password')}
 							theme={theme}
+							testID='e2e-save-password-view-saved-password'
 						/>
 					</View>
 				</ScrollView>
