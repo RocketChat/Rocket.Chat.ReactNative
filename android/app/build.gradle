@@ -195,6 +195,7 @@ android {
     flavorDimensions "type"
     productFlavors {
         foss {
+            applicationId "chat.rocket.android"
             dimension = "type"
             buildConfigField "boolean", "FDROID_BUILD", "true"
         }
