@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import Avatar from '../../containers/Avatar';
 import styles from './styles';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-import { CloseModalButton } from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/HeaderButton';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
@@ -22,7 +22,7 @@ class ReadReceiptView extends React.Component {
 			title: I18n.t('Read_Receipt')
 		};
 		if (isMasterDetail) {
-			options.headerLeft = () => <CloseModalButton navigation={navigation} testID='read-receipt-view-close' />;
+			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='read-receipt-view-close' />;
 		}
 		return options;
 	}

@@ -10,6 +10,8 @@ import Message from './Message';
 import UiKitMessage from './UiKitMessage';
 import UiKitModal from './UiKitModal';
 import Markdown from './Markdown';
+import './HeaderButtons';
+import './UnreadBadge';
 import Avatar from './Avatar';
 // import RoomViewHeader from './RoomViewHeader';
 

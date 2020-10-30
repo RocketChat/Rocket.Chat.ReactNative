@@ -24,7 +24,7 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { CloseModalButton } from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/HeaderButton';
 
 const Separator = React.memo(({ theme }) => <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />);
 Separator.propTypes = {
@@ -39,7 +39,7 @@ class ThreadMessagesView extends React.Component {
 			title: I18n.t('Threads')
 		};
 		if (isMasterDetail) {
-			options.headerLeft = () => <CloseModalButton navigation={navigation} />;
+			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
 		}
 		return options;
 	}

@@ -12891,7 +12891,7 @@ react-native-picker-select@7.0.0:
   dependencies:
     lodash.isequal "^4.5.0"
 
-react-native-platform-touchable@1.1.1, react-native-platform-touchable@^1.1.1:
+react-native-platform-touchable@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/react-native-platform-touchable/-/react-native-platform-touchable-1.1.1.tgz#fde4acc65eea585d28b164d0c3716a42129a68e4"
   integrity sha1-/eSsxl7qWF0osWTQw3FqQhKaaOQ=
@@ -13067,13 +13067,6 @@ react-native@^0.63.1:
     stacktrace-parser "^0.1.3"
     use-subscription "^1.0.0"
     whatwg-fetch "^3.0.0"
-
-react-navigation-header-buttons@3.0.5:
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/react-navigation-header-buttons/-/react-navigation-header-buttons-3.0.5.tgz#5b8c0fc32bc59382f02015e4b2f19a135b99dca4"
-  integrity sha512-b1AsL9k6Klp72CnAq4IF0xgw94FClBIsUr/pGUKa1PI+mStdF0AYZzi9qtYgqQNDIOpqxQ2xYUM9azL2VmPUeQ==
-  dependencies:
-    react-native-platform-touchable "^1.1.1"
 
 react-popper-tooltip@^2.8.3:
   version "2.11.1"
