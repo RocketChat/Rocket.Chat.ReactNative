@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 
-import Avatar from '../Avatar';
+import Avatar from '../Avatar/Avatar';
 import styles from './styles';
 import MessageContext from './Context';
 
@@ -22,11 +22,11 @@ const MessageAvatar = React.memo(({
 				borderRadius={small ? 2 : 4}
 				onPress={author._id === user.id ? undefined : () => navToRoomInfo(navParam)}
 				getCustomEmoji={getCustomEmoji}
+				user={user}
+				server={baseUrl}
+				avatarETag={author.avatarETag}
 				avatar={avatar}
 				emoji={emoji}
-				baseUrl={baseUrl}
-				userId={user.id}
-				token={user.token}
 				theme={theme}
 			/>
 		);

@@ -5,31 +5,30 @@ import { connect } from 'react-redux';
 
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
-import { DrawerButton } from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/HeaderButton';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 
 class AdminPanelView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => ({
-		headerLeft: isMasterDetail ? undefined : () => <DrawerButton navigation={navigation} />,
+		headerLeft: isMasterDetail ? undefined : () => <HeaderButton.Drawer navigation={navigation} />,
 		title: I18n.t('Admin_Panel')
 	})
 
 	static propTypes = {
 		baseUrl: PropTypes.string,
-		token: PropTypes.string,
-		theme: PropTypes.string
+		token: PropTypes.string
 	}
 
 	render() {
-		const { baseUrl, token, theme } = this.props;
+		const { baseUrl, token } = this.props;
 		if (!baseUrl) {
 			return null;
 		}
 		return (
-			<SafeAreaView theme={theme}>
-				<StatusBar theme={theme} />
+			<SafeAreaView>
+				<StatusBar />
 				<WebView
 					// https://github.com/react-native-community/react-native-webview/issues/1311
 					onMessage={() => {}}

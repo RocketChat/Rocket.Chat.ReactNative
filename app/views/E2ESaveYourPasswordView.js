@@ -11,7 +11,7 @@ import {
 
 import { encryptionSetBanner as encryptionSetBannerAction } from '../actions/encryption';
 import { E2E_RANDOM_PASSWORD_KEY } from '../lib/encryption/constants';
-import { CloseModalButton } from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/HeaderButton';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import SafeAreaView from '../containers/SafeAreaView';
 import UserPreferences from '../lib/userPreferences';
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
 
 class E2ESaveYourPasswordView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
-		headerLeft: () => <CloseModalButton navigation={navigation} testID='e2e-save-your-password-view-close' />,
+		headerLeft: () => <HeaderButton.CloseModal navigation={navigation} testID='e2e-save-your-password-view-close' />,
 		title: I18n.t('Save_Your_E2E_Password')
 	})
 
@@ -126,8 +126,8 @@ class E2ESaveYourPasswordView extends React.Component {
 		const { theme } = this.props;
 
 		return (
-			<SafeAreaView theme={theme} style={{ backgroundColor: themes[theme].backgroundColor }}>
-				<StatusBar theme={theme} />
+			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
+				<StatusBar />
 				<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={sharedStyles.containerScrollView}>
 					<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
 						<Text style={[styles.warning, { color: themes[theme].dangerColor }]}>{I18n.t('Save_Your_Encryption_Password_warning')}</Text>

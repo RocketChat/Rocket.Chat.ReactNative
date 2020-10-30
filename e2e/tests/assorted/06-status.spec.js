@@ -37,7 +37,7 @@ describe('Status screen', () => {
 	describe('Usage', async () => {
 		it('should change status', async () => {
 			await element(by.id('status-view-busy')).tap();
-			await expect(element(by.id('status-view-current-busy'))).toExist();
+			await waitFor(element(by.id('status-view-current-busy'))).toExist().withTimeout(2000);
 		});
 
 		it('should change status text', async () => {
