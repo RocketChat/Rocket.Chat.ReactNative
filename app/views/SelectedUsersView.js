@@ -307,10 +307,10 @@ class SelectedUsersView extends React.Component {
 	}
 
 	render = () => {
-		const { loading, theme } = this.props;
+		const { loading } = this.props;
 		return (
-			<SafeAreaView testID='select-users-view' theme={theme}>
-				<StatusBar theme={theme} />
+			<SafeAreaView testID='select-users-view'>
+				<StatusBar />
 				{this.renderList()}
 				<Loading visible={loading} />
 			</SafeAreaView>

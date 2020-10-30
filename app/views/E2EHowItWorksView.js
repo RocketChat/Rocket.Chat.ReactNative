@@ -43,7 +43,6 @@ class E2EHowItWorksView extends React.Component {
 			<SafeAreaView
 				style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}
 				testID='e2e-how-it-works-view'
-				theme={theme}
 			>
 				<Markdown
 					msg={I18n.t('E2E_How_It_Works_info1')}
