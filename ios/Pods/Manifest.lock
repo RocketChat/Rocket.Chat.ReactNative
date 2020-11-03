@@ -172,7 +172,7 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (6.7.1):
     - GoogleUtilities/Logger
-  - JitsiMeetSDK (2.8.1)
+  - JitsiMeetSDK (2.10.2)
   - KeyCommands (2.0.3):
     - React
   - libwebp (1.1.0):
@@ -372,8 +372,8 @@ PODS:
     - React
   - react-native-document-picker (3.5.3):
     - React
-  - react-native-jitsi-meet (2.1.1):
-    - JitsiMeetSDK (= 2.8.1)
+  - react-native-jitsi-meet (2.3.0):
+    - JitsiMeetSDK
     - React
   - react-native-mmkv-storage (0.3.5):
     - MMKV (= 1.2.1)
@@ -575,6 +575,7 @@ DEPENDENCIES:
   - FlipperKit/SKIOSNetworkPlugin (~> 0.41.1)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - JitsiMeetSDK (from `https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git`)
   - KeyCommands (from `../node_modules/react-native-keycommands`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -670,7 +671,6 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleDataTransportCCTSupport
     - GoogleUtilities
-    - JitsiMeetSDK
     - libwebp
     - MMKV
     - MMKVCore
@@ -717,6 +717,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  JitsiMeetSDK:
+    :git: https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git
   KeyCommands:
     :path: "../node_modules/react-native-keycommands"
   RCTRequired:
@@ -858,6 +860,11 @@ EXTERNAL SOURCES:
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
+CHECKOUT OPTIONS:
+  JitsiMeetSDK:
+    :commit: c48962b64633fa80eb5c417dad6b627ba7afef1c
+    :git: https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git
+
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BugsnagReactNative: 98fb350df4bb0c94cce903023531a1a5cc11fa51
@@ -896,7 +903,7 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 9a8a16f79feffc7f42096743de2a7c4815e84020
   GoogleDataTransportCCTSupport: 489c1265d2c85b68187a83a911913d190012158d
   GoogleUtilities: e121a3867449ce16b0e35ddf1797ea7a389ffdf2
-  JitsiMeetSDK: 2984eac1343690bf1c0c72bde75b48b0148d0f79
+  JitsiMeetSDK: ef6dd5cfa6d9badf009c7dba1a2c1365bfaae6b0
   KeyCommands: f66c535f698ed14b3d3a4e58859d79a827ea907e
   libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
   MMKV: 67253edee25a34edf332f91d73fa94a9e038b971
@@ -919,7 +926,7 @@ SPEC CHECKSUMS:
   react-native-cameraroll: ae0a7c0cc8462508855707ff623b1e789b692865
   react-native-cookies: d79e5015a5d3a38e08f5cb39c4948532be7e9c2b
   react-native-document-picker: 825552b827012282baf4b7cbf119d3b37a280c90
-  react-native-jitsi-meet: f89bcb2cfbd5b15403b9c40738036c4f1af45d05
+  react-native-jitsi-meet: bf3d58dbdbf7c0889bc26f66911deba8aaadad88
   react-native-mmkv-storage: 48729fe90e850ef2fdc9d3714b7030c7c51d82b0
   react-native-notifications: ee8fd739853e72694f3af8b374c8ccb106b7b227
   react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
@@ -978,6 +985,6 @@ SPEC CHECKSUMS:
   Yoga: d5bd05a2b6b94c52323745c2c2b64557c8c66f64
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 19c78b598c807d2c6b988fd11b24544ac1895a35
+PODFILE CHECKSUM: c38f9a91b5c154453863a4ee1ccc203da58ad2f2
 
 COCOAPODS: 1.9.3
