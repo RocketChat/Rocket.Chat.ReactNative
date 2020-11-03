@@ -82,7 +82,7 @@
     "react-native-gesture-handler": "^1.6.1",
     "react-native-image-crop-picker": "RocketChat/react-native-image-crop-picker",
     "react-native-image-progress": "^1.1.1",
-    "react-native-jitsi-meet": "^2.1.1",
+    "react-native-jitsi-meet": "RocketChat/react-native-jitsi-meet",
     "react-native-keyboard-input": "RocketChat/react-native-keyboard-input",
     "react-native-keyboard-tracking-view": "5.7.0",
     "react-native-keycommands": "2.0.3",
