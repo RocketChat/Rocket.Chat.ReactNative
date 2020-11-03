@@ -1,12 +1,19 @@
+import semver from 'semver';
+
+import reduxStore from '../lib/createStore';
+
 const formatUrl = (url, size, query) => `${ url }?format=png&size=${ size }${ query }`;
 
 export const avatarURL = ({
 	type, text, size, user = {}, avatar, server, avatarETag, rid, blockUnauthenticatedAccess
 }) => {
+	const { version: serverVersion } = reduxStore.getState().server;
+	const isLegacy = serverVersion && semver.lt(semver.coerce(serverVersion), '3.6.0');
+
 	let room;
 	if (type === 'd') {
 		room = text;
-	} else if (rid) {
+	} else if (rid && !isLegacy) {
 		room = `room/${ rid }`;
 	} else {
 		room = `@${ text }`;
