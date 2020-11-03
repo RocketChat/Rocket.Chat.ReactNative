@@ -86,7 +86,7 @@ export async function resendMessage(message, tmid) {
 	}
 }
 
-export default async function(rid, msg, tmid, user) {
+export default async function(rid, msg, tmid, user, tshow) {
 	try {
 		const db = database.active;
 		const subsCollection = db.collections.get('subscriptions');
@@ -97,7 +97,7 @@ export default async function(rid, msg, tmid, user) {
 		const batch = [];
 
 		let message = {
-			_id: messageId, rid, msg, tmid
+			_id: messageId, rid, msg, tmid, tshow
 		};
 		message = await Encryption.encryptMessage(message);
 
@@ -179,8 +179,9 @@ export default async function(rid, msg, tmid, user) {
 				};
 				if (tmid && tMessageRecord) {
 					m.tmid = tmid;
-					m.tlm = messageDate;
+					// m.tlm = messageDate; // I don't think this is necessary... leaving it commented just in case...
 					m.tmsg = tMessageRecord.msg;
+					m.tshow = tshow;
 				}
 				m.t = message.t;
 				if (message.t === E2E_MESSAGE_TYPE) {

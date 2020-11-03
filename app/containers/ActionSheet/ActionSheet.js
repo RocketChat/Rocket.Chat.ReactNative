@@ -27,7 +27,7 @@ import { Button } from './Button';
 import { themes } from '../../constants/colors';
 import styles, { ITEM_HEIGHT } from './styles';
 import { isTablet, isIOS } from '../../utils/deviceInfo';
-import Separator from '../Separator';
+import * as List from '../List';
 import I18n from '../../i18n';
 import { useOrientation, useDimensions } from '../../dimensions';
 
@@ -142,8 +142,6 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 		</Button>
 	) : null));
 
-	const renderSeparator = useCallback(() => <Separator theme={theme} style={styles.separator} />);
-
 	const renderItem = useCallback(({ item }) => <Item item={item} hide={hide} theme={theme} />);
 
 	const animatedPosition = React.useRef(new Value(0));
@@ -191,8 +189,8 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 						keyExtractor={item => item.title}
 						style={{ backgroundColor: themes[theme].focusedBackground }}
 						contentContainerStyle={styles.content}
-						ItemSeparatorComponent={renderSeparator}
-						ListHeaderComponent={renderSeparator}
+						ItemSeparatorComponent={List.Separator}
+						ListHeaderComponent={List.Separator}
 						ListFooterComponent={renderFooter}
 						getItemLayout={getItemLayout}
 						removeClippedSubviews={isIOS}
