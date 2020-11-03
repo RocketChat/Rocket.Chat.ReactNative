@@ -36,7 +36,7 @@ import { themes } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
-import { isBlocked } from '../../utils/room';
+import { getBadgeColor, isBlocked, makeThreadName } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
 import { showErrorAlert } from '../../utils/info';
@@ -83,7 +83,8 @@ class RoomView extends React.Component {
 		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
 			username: PropTypes.string.isRequired,
-			token: PropTypes.string.isRequired
+			token: PropTypes.string.isRequired,
+			showMessageInMainThread: PropTypes.bool
 		}),
 		appState: PropTypes.string,
 		useRealName: PropTypes.bool,
@@ -109,17 +110,18 @@ class RoomView extends React.Component {
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;
 		this.tmid = props.route.params?.tmid;
-		const room = props.route.params?.room;
 		const selectedMessage = props.route.params?.message;
 		const name = props.route.params?.name;
 		const fname = props.route.params?.fname;
 		const search = props.route.params?.search;
 		const prid = props.route.params?.prid;
+		const room = props.route.params?.room ?? {
+			rid: this.rid, t: this.t, name, fname, prid
+		};
+		const roomUserId = props.route.params?.roomUserId ?? RocketChat.getUidDirectMessage(room);
 		this.state = {
 			joined: true,
-			room: room || {
-				rid: this.rid, t: this.t, name, fname, prid
-			},
+			room,
 			roomUpdate: {},
 			member: {},
 			lastOpen: null,
@@ -133,7 +135,7 @@ class RoomView extends React.Component {
 			reacting: false,
 			readOnly: false,
 			unreadsCount: null,
-			roomUserId: null
+			roomUserId
 		};
 		this.setHeader();
 
@@ -294,24 +296,28 @@ class RoomView extends React.Component {
 	}
 
 	setHeader = () => {
-		const { room, unreadsCount, roomUserId: stateRoomUserId } = this.state;
 		const {
-			navigation, route, isMasterDetail, theme, baseUrl, user, insets
+			room, unreadsCount, roomUserId
+		} = this.state;
+		const {
+			navigation, isMasterDetail, theme, baseUrl, user, insets, route
 		} = this.props;
-		const rid = route.params?.rid;
-		const prid = route.params?.prid;
+		const { rid, tmid } = this;
+		const prid = room?.prid;
 		let title = route.params?.name;
-		if ((room.id || room.rid) && !this.tmid) {
+		let parentTitle;
+		if ((room.id || room.rid) && !tmid) {
 			title = RocketChat.getRoomTitle(room);
 		}
+		if (tmid) {
+			parentTitle = RocketChat.getRoomTitle(room);
+		}
 		const subtitle = room?.topic;
-		const t = route.params?.t || room?.t;
-		const tmid = route.params?.tmid;
+		const t = room?.t;
 		const { id: userId, token } = user;
 		const avatar = room?.name;
-		const roomUserId = route.params?.roomUserId || stateRoomUserId;
 		const visitor = room?.visitor;
-		if (!rid) {
+		if (!room?.rid) {
 			return;
 		}
 		const headerTitlePosition = getHeaderTitlePosition(insets);
@@ -343,6 +349,7 @@ class RoomView extends React.Component {
 					prid={prid}
 					tmid={tmid}
 					title={title}
+					parentTitle={parentTitle}
 					subtitle={subtitle}
 					type={t}
 					roomUserId={roomUserId}
@@ -627,6 +634,7 @@ class RoomView extends React.Component {
 	};
 
 	onThreadPress = debounce(async(item) => {
+		const { roomUserId } = this.state;
 		const { navigation } = this.props;
 		if (item.tmid) {
 			if (!item.tmsg) {
@@ -637,11 +645,11 @@ class RoomView extends React.Component {
 				name = I18n.t('Encrypted_message');
 			}
 			navigation.push('RoomView', {
-				rid: item.subscription.id, tmid: item.tmid, name, t: 'thread'
+				rid: item.subscription.id, tmid: item.tmid, name, t: 'thread', roomUserId
 			});
 		} else if (item.tlm) {
 			navigation.push('RoomView', {
-				rid: item.subscription.id, tmid: item.id, name: item.msg, t: 'thread'
+				rid: item.subscription.id, tmid: item.id, name: makeThreadName(item), t: 'thread', roomUserId
 			});
 		}
 	}, 1000, true)
@@ -671,10 +679,10 @@ class RoomView extends React.Component {
 		this.setState(...args);
 	}
 
-	sendMessage = (message, tmid) => {
+	sendMessage = (message, tmid, tshow) => {
 		logEvent(events.ROOM_SEND_MESSAGE);
 		const { user } = this.props;
-		RocketChat.sendMessage(this.rid, message, this.tmid || tmid, user).then(() => {
+		RocketChat.sendMessage(this.rid, message, this.tmid || tmid, user, tshow).then(() => {
 			if (this.list && this.list.current) {
 				this.list.current.update();
 			}
@@ -772,13 +780,19 @@ class RoomView extends React.Component {
 		}
 	}
 
-	toggleFollowThread = async(isFollowingThread) => {
+	toggleFollowThread = async(isFollowingThread, tmid) => {
 		try {
-			await RocketChat.toggleFollowMessage(this.tmid, !isFollowingThread);
+			await RocketChat.toggleFollowMessage(tmid ?? this.tmid, !isFollowingThread);
 			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
 		} catch (e) {
 			log(e);
 		}
+	}
+
+	getBadgeColor = (messageId) => {
+		const { room } = this.state;
+		const { theme } = this.props;
+		return getBadgeColor({ subscription: room, theme, messageId });
 	}
 
 	navToRoomInfo = (navParam) => {
@@ -906,6 +920,8 @@ class RoomView extends React.Component {
 				getCustomEmoji={this.getCustomEmoji}
 				callJitsi={this.callJitsi}
 				blockAction={this.blockAction}
+				getBadgeColor={this.getBadgeColor}
+				toggleFollowThread={this.toggleFollowThread}
 			/>
 		);
 
@@ -1031,9 +1047,8 @@ class RoomView extends React.Component {
 			<SafeAreaView
 				style={{ backgroundColor: themes[theme].backgroundColor }}
 				testID='room-view'
-				theme={theme}
 			>
-				<StatusBar theme={theme} />
+				<StatusBar />
 				<Banner
 					rid={rid}
 					title={I18n.t('Announcement')}
@@ -1054,6 +1069,7 @@ class RoomView extends React.Component {
 					loading={loading}
 					navigation={navigation}
 					hideSystemMessages={Array.isArray(sysMes) ? sysMes : Hide_System_Messages}
+					showMessageInMainThread={user.showMessageInMainThread}
 				/>
 				{this.renderFooter()}
 				{this.renderActions()}

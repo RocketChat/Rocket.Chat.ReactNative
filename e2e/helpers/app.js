@@ -54,9 +54,9 @@ async function logout() {
 }
 
 async function mockMessage(message) {
-	await element(by.id('messagebox-input')).tap();
-	await element(by.id('messagebox-input')).typeText(`${ data.random }${ message }`);
-	await element(by.id('messagebox-send-message')).tap();
+	await element(by.id('messagebox-input')).atIndex(0).tap();
+	await element(by.id('messagebox-input')).atIndex(0).typeText(`${ data.random }${ message }`);
+	await element(by.id('messagebox-send-message')).atIndex(0).tap();
 	await waitFor(element(by.label(`${ data.random }${ message }`)).atIndex(0)).toExist().withTimeout(60000);
     await expect(element(by.label(`${ data.random }${ message }`)).atIndex(0)).toExist();
     await element(by.label(`${ data.random }${ message }`)).atIndex(0).tap();

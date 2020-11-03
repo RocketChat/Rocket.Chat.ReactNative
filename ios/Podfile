@@ -11,6 +11,9 @@ def all_pods
 end
 
 target 'RocketChatRN' do
+  # force use our own JitsiMeetSDK
+  pod 'JitsiMeetSDK', :git => 'https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git'
+
   all_pods
 end
 
