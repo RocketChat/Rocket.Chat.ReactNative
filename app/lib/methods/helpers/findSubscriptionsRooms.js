@@ -52,7 +52,8 @@ export default async(subscriptions = [], rooms = []) => {
 			tags: s.tags,
 			encrypted: s.encrypted,
 			e2eKeyId: s.e2eKeyId,
-			E2EKey: s.E2EKey
+			E2EKey: s.E2EKey,
+			avatarETag: s.avatarETag
 		}));
 		subscriptions = subscriptions.concat(existingSubs);
 
@@ -80,7 +81,8 @@ export default async(subscriptions = [], rooms = []) => {
 			livechatData: r.livechatData,
 			tags: r.tags,
 			encrypted: r.encrypted,
-			e2eKeyId: r.e2eKeyId
+			e2eKeyId: r.e2eKeyId,
+			avatarETag: r.avatarETag
 		}));
 		rooms = rooms.concat(existingRooms);
 	} catch {

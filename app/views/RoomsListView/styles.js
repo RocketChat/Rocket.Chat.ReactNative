@@ -63,8 +63,6 @@ export default StyleSheet.create({
 		marginHorizontal: 12
 	},
 	queueIcon: {
-		width: 22,
-		height: 22,
 		marginHorizontal: 12
 	},
 	groupTitleContainer: {

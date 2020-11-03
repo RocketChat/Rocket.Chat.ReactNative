@@ -15,7 +15,7 @@ import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import DirectoryItem, { ROW_HEIGHT } from '../../presentation/DirectoryItem';
 import ServerItem from '../../presentation/ServerItem';
-import { CancelModalButton, CustomHeaderButtons, Item } from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/HeaderButton';
 import ShareListHeader from './Header';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 
@@ -108,8 +108,11 @@ class ShareListView extends React.Component {
 			return true;
 		}
 
-		const { server, theme } = this.props;
+		const { server, theme, userId } = this.props;
 		if (server !== nextProps.server) {
+			return true;
+		}
+		if (userId !== nextProps.userId) {
 			return true;
 		}
 		if (theme !== nextProps.theme) {
@@ -154,12 +157,12 @@ class ShareListView extends React.Component {
 		navigation.setOptions({
 			headerLeft: () => (searching
 				? (
-					<CustomHeaderButtons left>
-						<Item title='cancel' iconName='close' onPress={this.cancelSearch} />
-					</CustomHeaderButtons>
+					<HeaderButton.Container left>
+						<HeaderButton.Item title='cancel' iconName='close' onPress={this.cancelSearch} />
+					</HeaderButton.Container>
 				)
 				: (
-					<CancelModalButton
+					<HeaderButton.CancelModal
 						onPress={ShareExtension.close}
 						testID='share-extension-close'
 					/>
@@ -169,9 +172,9 @@ class ShareListView extends React.Component {
 				searching
 					? null
 					: (
-						<CustomHeaderButtons>
-							<Item title='search' iconName='search' onPress={this.initSearch} />
-						</CustomHeaderButtons>
+						<HeaderButton.Container>
+							<HeaderButton.Item iconName='search' onPress={this.initSearch} />
+						</HeaderButton.Container>
 					)
 			)
 		});
@@ -458,10 +461,9 @@ class ShareListView extends React.Component {
 	}
 
 	render() {
-		const { theme } = this.props;
 		return (
-			<SafeAreaView theme={theme}>
-				<StatusBar theme={theme} />
+			<SafeAreaView>
+				<StatusBar />
 				{this.renderContent()}
 			</SafeAreaView>
 		);

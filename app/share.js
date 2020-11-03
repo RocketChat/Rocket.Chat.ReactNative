@@ -117,7 +117,9 @@ App.propTypes = {
 class Root extends React.Component {
 	constructor(props) {
 		super(props);
-		const { width, height, scale } = Dimensions.get('screen');
+		const {
+			width, height, scale, fontScale
+		} = Dimensions.get('screen');
 		this.state = {
 			theme: defaultTheme(),
 			themePreferences: {
@@ -127,7 +129,8 @@ class Root extends React.Component {
 			root: '',
 			width,
 			height,
-			scale
+			scale,
+			fontScale
 		};
 		this.init();
 	}
@@ -166,18 +169,28 @@ class Root extends React.Component {
 	}
 
 	// Dimensions update fires twice
-	onDimensionsChange = debounce(({ window: { width, height, scale } }) => {
-		this.setDimensions({ width, height, scale });
+	onDimensionsChange = debounce(({
+		window: {
+			width, height, scale, fontScale
+		}
+	}) => {
+		this.setDimensions({
+			width, height, scale, fontScale
+		});
 		this.setMasterDetail(width);
 	})
 
-	setDimensions = ({ width, height, scale }) => {
-		this.setState({ width, height, scale });
+	setDimensions = ({
+		width, height, scale, fontScale
+	}) => {
+		this.setState({
+			width, height, scale, fontScale
+		});
 	}
 
 	render() {
 		const {
-			theme, root, width, height, scale
+			theme, root, width, height, scale, fontScale
 		} = this.state;
 		const navTheme = navigationTheme(theme);
 		return (
@@ -189,6 +202,7 @@ class Root extends React.Component {
 								width,
 								height,
 								scale,
+								fontScale,
 								setDimensions: this.setDimensions
 							}}
 						>

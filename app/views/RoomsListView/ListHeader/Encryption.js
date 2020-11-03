@@ -26,7 +26,13 @@ const Encryption = React.memo(({
 	}
 
 	return (
-		<BorderlessButton style={[styles.encryptionButton, { backgroundColor: themes[theme].actionTintColor }]} theme={theme} onPress={goEncryption}>
+		<BorderlessButton
+			style={[styles.encryptionButton, { backgroundColor: themes[theme].actionTintColor }]}
+			theme={theme}
+			onPress={goEncryption}
+			testID='listheader-encryption'
+			accessibilityLabel={text}
+		>
 			<CustomIcon name='encrypted' size={24} color={themes[theme].buttonText} style={styles.encryptionIcon} />
 			<Text style={[styles.encryptionText, { color: themes[theme].buttonText }]}>{text}</Text>
 		</BorderlessButton>
