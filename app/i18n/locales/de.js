@@ -391,7 +391,7 @@ export default {
 	replies: 'Antworten',
 	reply: 'Antworten',
 	Reply: 'Antworten',
-	Report: 'Bericht',
+	Report: 'Melden',
 	Receive_Notification: 'Erhalte Benachrichtigungen',
 	Receive_notifications_from: 'Erhalte Benachrichtigungen von {{name}}',
 	Resend: 'Erneut senden',
