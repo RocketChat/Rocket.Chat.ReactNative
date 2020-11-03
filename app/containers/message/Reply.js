@@ -147,21 +147,25 @@ const Reply = React.memo(({
 	};
 
 	return (
-		<Touchable
-			onPress={onPress}
-			style={[
-				styles.button,
-				index > 0 && styles.marginTop,
-				{
-					backgroundColor: themes[theme].chatComponentBackground,
-					borderColor: themes[theme].borderColor
-				}
-			]}
-			background={Touchable.Ripple(themes[theme].bannerBackground)}
-		>
-			<>
+		<>
+			<Touchable
+				onPress={onPress}
+				style={[
+					styles.button,
+					index > 0 && styles.marginTop,
+					{
+						backgroundColor: themes[theme].chatComponentBackground,
+						borderColor: themes[theme].borderColor
+					}
+				]}
+				background={Touchable.Ripple(themes[theme].bannerBackground)}
+			>
 				<View style={styles.attachmentContainer}>
-					<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
+					<Title
+						attachment={attachment}
+						timeFormat={timeFormat}
+						theme={theme}
+					/>
 					<Description
 						attachment={attachment}
 						timeFormat={timeFormat}
@@ -170,15 +174,15 @@ const Reply = React.memo(({
 					/>
 					<Fields attachment={attachment} theme={theme} />
 				</View>
-				<Markdown
-					msg={attachment.description}
-					baseUrl={baseUrl}
-					username={user.username}
-					getCustomEmoji={getCustomEmoji}
-					theme={theme}
-				/>
-			</>
-		</Touchable>
+			</Touchable>
+			<Markdown
+				msg={attachment.description}
+				baseUrl={baseUrl}
+				username={user.username}
+				getCustomEmoji={getCustomEmoji}
+				theme={theme}
+			/>
+		</>
 	);
 }, (prevProps, nextProps) => isEqual(prevProps.attachment, nextProps.attachment) && prevProps.theme === nextProps.theme);
 
