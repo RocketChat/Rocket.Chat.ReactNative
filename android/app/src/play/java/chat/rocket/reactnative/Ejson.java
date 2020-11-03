@@ -41,6 +41,10 @@ public class Ejson {
     public Ejson() {
         ReactApplicationContext reactApplicationContext = CustomPushNotification.reactApplicationContext;
 
+        if (reactApplicationContext == null) {
+            return;
+        }
+
         // Start MMKV container
         MMKV.initialize(reactApplicationContext);
         SecureKeystore secureKeystore = new SecureKeystore(reactApplicationContext);
