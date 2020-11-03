@@ -30,7 +30,8 @@ class List extends React.Component {
 		loading: PropTypes.bool,
 		listRef: PropTypes.func,
 		hideSystemMessages: PropTypes.array,
-		navigation: PropTypes.object
+		navigation: PropTypes.object,
+		showMessageInMainThread: PropTypes.bool
 	};
 
 	// this.state.loading works for this.onEndReached and RoomView.init
@@ -140,7 +141,7 @@ class List extends React.Component {
 
 	query = async() => {
 		this.count += QUERY_SIZE;
-		const { rid, tmid } = this.props;
+		const { rid, tmid, showMessageInMainThread } = this.props;
 		const db = database.active;
 
 		// handle servers with version < 3.0.0
@@ -167,14 +168,23 @@ class List extends React.Component {
 				)
 				.observe();
 		} else if (rid) {
+			const whereClause = [
+				Q.where('rid', rid),
+				Q.experimentalSortBy('ts', Q.desc),
+				Q.experimentalSkip(0),
+				Q.experimentalTake(this.count)
+			];
+			if (!showMessageInMainThread) {
+				whereClause.push(
+					Q.or(
+						Q.where('tmid', null),
+						Q.where('tshow', Q.eq(true))
+					)
+				);
+			}
 			this.messagesObservable = db.collections
 				.get('messages')
-				.query(
-					Q.where('rid', rid),
-					Q.experimentalSortBy('ts', Q.desc),
-					Q.experimentalSkip(0),
-					Q.experimentalTake(this.count)
-				)
+				.query(...whereClause)
 				.observe();
 		}
 

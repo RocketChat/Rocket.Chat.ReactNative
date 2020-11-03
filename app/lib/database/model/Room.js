@@ -25,4 +25,6 @@ export default class Room extends Model {
 	@json('livechat_data', sanitizer) livechatData;
 
 	@json('tags', sanitizer) tags;
+
+	@field('avatar_etag') avatarETag;
 }
