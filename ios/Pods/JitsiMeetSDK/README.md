@@ -56,7 +56,7 @@ you may want to set `UIViewControllerBasedStatusBarAppearance` to `NO` in your
 
 ## API
 
-The API is documented [here]().
+The API is documented [here](https://jitsi.github.io/handbook/docs/dev-guide/dev-guide-ios-sdk).
 
 ## Issues
 
@@ -64,5 +64,3 @@ Please report all issues related to this SDK to the [Jitsi Meet]() repository.
 
 [CocoaPods]: https://cocoapods.org
 [Jitsi Meet]: https://github.com/jitsi/jitsi-meet
-[here]: https://github.com/jitsi/jitsi-meet/blob/master/ios/README.md
-

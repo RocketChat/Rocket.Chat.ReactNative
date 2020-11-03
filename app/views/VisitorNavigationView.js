@@ -5,12 +5,12 @@ import PropTypes from 'prop-types';
 import { withTheme } from '../theme';
 import RocketChat from '../lib/rocketchat';
 import { themes } from '../constants/colors';
-import Separator from '../containers/Separator';
 import openLink from '../utils/openLink';
 import I18n from '../i18n';
 import debounce from '../utils/debounce';
 import sharedStyles from './Styles';
-import ListItem from '../containers/ListItem';
+import * as List from '../containers/List';
+import SafeAreaView from '../containers/SafeAreaView';
 
 const styles = StyleSheet.create({
 	noResult: {
@@ -18,23 +18,18 @@ const styles = StyleSheet.create({
 		paddingVertical: 56,
 		...sharedStyles.textAlignCenter,
 		...sharedStyles.textSemibold
-	},
-	withoutBorder: {
-		borderBottomWidth: 0,
-		borderTopWidth: 0
 	}
 });
 
-const Item = ({ item, theme }) => (
-	<ListItem
+const Item = ({ item }) => (
+	<List.Item
 		title={item.navigation?.page?.title || I18n.t('Empty_title')}
 		onPress={() => openLink(item.navigation?.page?.location?.href)}
-		theme={theme}
+		translateTitle={false}
 	/>
 );
 Item.propTypes = {
-	item: PropTypes.object,
-	theme: PropTypes.string
+	item: PropTypes.object
 };
 
 const VisitorNavigationView = ({ route, theme }) => {
@@ -67,24 +62,20 @@ const VisitorNavigationView = ({ route, theme }) => {
 	}, 300);
 
 	return (
-		<FlatList
-			data={pages}
-			renderItem={({ item }) => <Item item={item} theme={theme} />}
-			ItemSeparatorComponent={() => <Separator theme={theme} />}
-			contentContainerStyle={[
-				sharedStyles.listContentContainer,
-				{
-					backgroundColor: themes[theme].auxiliaryBackground,
-					borderColor: themes[theme].separatorColor
-				},
-				!pages.length && styles.withoutBorder
-			]}
-			style={{ backgroundColor: themes[theme].auxiliaryBackground }}
-			ListEmptyComponent={() => <Text style={[styles.noResult, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>}
-			keyExtractor={item => item}
-			onEndReached={onEndReached}
-			onEndReachedThreshold={5}
-		/>
+		<SafeAreaView>
+			<FlatList
+				data={pages}
+				renderItem={({ item }) => <Item item={item} theme={theme} />}
+				ItemSeparatorComponent={List.Separator}
+				ListFooterComponent={List.Separator}
+				ListHeaderComponent={List.Separator}
+				contentContainerStyle={List.styles.contentContainerStyleFlatList}
+				ListEmptyComponent={() => <Text style={[styles.noResult, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>}
+				keyExtractor={item => item}
+				onEndReached={onEndReached}
+				onEndReachedThreshold={5}
+			/>
+		</SafeAreaView>
 	);
 };
 VisitorNavigationView.propTypes = {
