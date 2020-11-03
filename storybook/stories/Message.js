@@ -210,6 +210,21 @@ export default ({ theme }) => {
 					name: 'general'
 				}]}
 			/>
+			<Message
+				msg='@rocket.cat Lorem ipsum dolor @diego.mello sit amet, @all consectetur adipiscing @here elit, sed do eiusmod tempor #general incididunt ut labore et dolore magna aliqua.'
+				mentions={[{
+					username: 'rocket.cat'
+				}, {
+					username: 'diego.mello'
+				}, {
+					username: 'all'
+				}, {
+					username: 'here'
+				}]}
+				channels={[{
+					name: 'general'
+				}]}
+			/>
 
 			<Separator title='Emojis' theme={theme} />
 			<Message msg='👊🤙👏' />

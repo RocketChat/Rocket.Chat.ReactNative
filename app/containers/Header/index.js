@@ -5,6 +5,7 @@ import { View, StyleSheet } from 'react-native';
 import { themes } from '../../constants/colors';
 import { themedHeader } from '../../utils/navigation';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
+import { withTheme } from '../../theme';
 
 // Get from https://github.com/react-navigation/react-navigation/blob/master/packages/stack/src/views/Header/HeaderSegment.tsx#L69
 export const headerHeight = isIOS ? 44 : 56;
@@ -53,4 +54,4 @@ Header.propTypes = {
 	headerRight: PropTypes.element
 };
 
-export default Header;
+export default withTheme(Header);

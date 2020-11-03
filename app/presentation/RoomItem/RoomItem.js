@@ -39,13 +39,17 @@ const RoomItem = ({
 	unread,
 	userMentions,
 	groupMentions,
+	tunread,
+	tunreadUser,
+	tunreadGroup,
 	roomUpdatedAt,
 	testID,
 	swipeEnabled,
 	onPress,
 	toggleFav,
 	toggleRead,
-	hideChannel
+	hideChannel,
+	avatarETag
 }) => (
 	<Touchable
 		onPress={onPress}
@@ -66,11 +70,13 @@ const RoomItem = ({
 			accessibilityLabel={accessibilityLabel}
 			avatar={avatar}
 			avatarSize={avatarSize}
+			avatarETag={avatarETag}
 			type={type}
 			baseUrl={baseUrl}
 			userId={userId}
 			token={token}
 			theme={theme}
+			rid={rid}
 		>
 			{showLastMessage
 				? (
@@ -111,7 +117,9 @@ const RoomItem = ({
 								unread={unread}
 								userMentions={userMentions}
 								groupMentions={groupMentions}
-								theme={theme}
+								tunread={tunread}
+								tunreadUser={tunreadUser}
+								tunreadGroup={tunreadGroup}
 							/>
 						</View>
 					</>
@@ -135,7 +143,9 @@ const RoomItem = ({
 							unread={unread}
 							userMentions={userMentions}
 							groupMentions={groupMentions}
-							theme={theme}
+							tunread={tunread}
+							tunreadUser={tunreadUser}
+							tunreadGroup={tunreadGroup}
 						/>
 					</View>
 				)
@@ -173,12 +183,16 @@ RoomItem.propTypes = {
 	unread: PropTypes.number,
 	userMentions: PropTypes.number,
 	groupMentions: PropTypes.number,
+	tunread: PropTypes.array,
+	tunreadUser: PropTypes.array,
+	tunreadGroup: PropTypes.array,
 	roomUpdatedAt: PropTypes.instanceOf(Date),
 	swipeEnabled: PropTypes.bool,
 	toggleFav: PropTypes.func,
 	toggleRead: PropTypes.func,
 	onPress: PropTypes.func,
-	hideChannel: PropTypes.func
+	hideChannel: PropTypes.func,
+	avatarETag: PropTypes.string
 };
 
 RoomItem.defaultProps = {
