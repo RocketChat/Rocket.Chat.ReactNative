@@ -83,8 +83,8 @@ class SelectServerView extends React.Component {
 		const { servers } = this.state;
 		const { theme } = this.props;
 		return (
-			<SafeAreaView theme={theme}>
-				<StatusBar theme={theme} />
+			<SafeAreaView>
+				<StatusBar />
 				<View style={[styles.list, { borderColor: themes[theme].separatorColor }]}>
 					<FlatList
 						data={servers}

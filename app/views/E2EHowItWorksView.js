@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 
 import SafeAreaView from '../containers/SafeAreaView';
 import { themes } from '../constants/colors';
-import { CloseModalButton } from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/HeaderButton';
 import Markdown from '../containers/markdown';
 import { withTheme } from '../theme';
 import I18n from '../i18n';
@@ -26,7 +26,7 @@ class E2EHowItWorksView extends React.Component {
 		const showCloseModal = route.params?.showCloseModal;
 		return {
 			title: I18n.t('How_It_Works'),
-			headerLeft: showCloseModal ? () => <CloseModalButton navigation={navigation} /> : undefined
+			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal navigation={navigation} /> : undefined
 		};
 	}
 
@@ -43,7 +43,6 @@ class E2EHowItWorksView extends React.Component {
 			<SafeAreaView
 				style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}
 				testID='e2e-how-it-works-view'
-				theme={theme}
 			>
 				<Markdown
 					msg={I18n.t('E2E_How_It_Works_info1')}

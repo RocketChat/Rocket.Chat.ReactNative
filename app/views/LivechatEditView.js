@@ -151,7 +151,7 @@ const LivechatEditView = ({
 			keyboardVerticalOffset={128}
 		>
 			<ScrollView {...scrollPersistTaps} style={styles.container}>
-				<SafeAreaView theme={theme}>
+				<SafeAreaView>
 					<Title
 						title={visitor?.username}
 						theme={theme}

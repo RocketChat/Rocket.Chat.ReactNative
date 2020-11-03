@@ -54,7 +54,6 @@ const OmnichannelStatus = memo(({
 						<UnreadBadge
 							style={styles.queueIcon}
 							unread={queueSize}
-							theme={theme}
 						/>
 					)
 					: null}
