@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>224331746637-gj78fkpj7ora9kas8etsj3ev2k3u0bhj.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.224331746637-gj78fkpj7ora9kas8etsj3ev2k3u0bhj</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBh_r1ERbuRriMNzhoGquaTUS0lXu_4ds8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>224331746637</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>chat.rocket.reachout</string>
+	<key>PROJECT_ID</key>
+	<string>reachout-290218</string>
+	<key>STORAGE_BUCKET</key>
+	<string>reachout-290218.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:224331746637:ios:9de4398b729482dd043b04</string>
+	<key>DATABASE_URL</key>
+	<string>https://reachout-290218.firebaseio.com</string>
+</dict>
+</plist>
