@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import I18n from '../../i18n';
 import { ROW_HEIGHT } from './styles';
 import { formatDate } from '../../utils/room';
-import database from '../../lib/database';
 import RoomItem from './RoomItem';
 
 export { ROW_HEIGHT };
@@ -23,13 +22,10 @@ const attrs = [
 class RoomItemContainer extends React.Component {
 	static propTypes = {
 		item: PropTypes.object.isRequired,
-		baseUrl: PropTypes.string.isRequired,
 		showLastMessage: PropTypes.bool,
 		id: PropTypes.string,
 		onPress: PropTypes.func,
-		userId: PropTypes.string,
 		username: PropTypes.string,
-		token: PropTypes.string,
 		avatarSize: PropTypes.number,
 		testID: PropTypes.string,
 		width: PropTypes.number,
@@ -63,7 +59,6 @@ class RoomItemContainer extends React.Component {
 	constructor(props) {
 		super(props);
 		this.mounted = false;
-		this.state = { avatarETag: '' };
 		this.init();
 	}
 
@@ -71,11 +66,7 @@ class RoomItemContainer extends React.Component {
 		this.mounted = true;
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const { avatarETag } = this.state;
-		if (nextState.avatarETag !== avatarETag) {
-			return true;
-		}
+	shouldComponentUpdate(nextProps) {
 		const { props } = this;
 		return !attrs.every(key => props[key] === nextProps[key]);
 	}
@@ -88,9 +79,6 @@ class RoomItemContainer extends React.Component {
 	}
 
 	componentWillUnmount() {
-		if (this.avatarSubscription?.unsubscribe) {
-			this.avatarSubscription.unsubscribe();
-		}
 		if (this.roomSubscription?.unsubscribe) {
 			this.roomSubscription.unsubscribe();
 		}
@@ -106,42 +94,13 @@ class RoomItemContainer extends React.Component {
 		return t === 'd' && id && !this.isGroupChat;
 	}
 
-	init = async() => {
+	init = () => {
 		const { item } = this.props;
 		if (item?.observe) {
 			const observable = item.observe();
 			this.roomSubscription = observable?.subscribe?.(() => {
 				this.forceUpdate();
 			});
-		}
-
-		const db = database.active;
-		const usersCollection = db.collections.get('users');
-		const subsCollection = db.collections.get('subscriptions');
-		try {
-			const { id } = this.props;
-			const { rid } = item;
-
-			let record;
-			if (this.isDirect) {
-				record = await usersCollection.find(id);
-			} else {
-				record = await subsCollection.find(rid);
-			}
-
-			if (record) {
-				const observable = record.observe();
-				this.avatarSubscription = observable.subscribe((u) => {
-					const { avatarETag } = u;
-					if (this.mounted) {
-						this.setState({ avatarETag });
-					} else {
-						this.state.avatarETag = avatarETag;
-					}
-				});
-			}
-		} catch {
-			// Record not found
 		}
 	}
 
@@ -151,7 +110,6 @@ class RoomItemContainer extends React.Component {
 	}
 
 	render() {
-		const { avatarETag } = this.state;
 		const {
 			item,
 			getRoomTitle,
@@ -165,9 +123,6 @@ class RoomItemContainer extends React.Component {
 			theme,
 			isFocused,
 			avatarSize,
-			baseUrl,
-			userId,
-			token,
 			status,
 			showLastMessage,
 			username,
@@ -215,9 +170,6 @@ class RoomItemContainer extends React.Component {
 				theme={theme}
 				isFocused={isFocused}
 				size={avatarSize}
-				baseUrl={baseUrl}
-				userId={userId}
-				token={token}
 				prid={item.prid}
 				status={status}
 				hideUnreadStatus={item.hideUnreadStatus}
@@ -233,7 +185,6 @@ class RoomItemContainer extends React.Component {
 				tunread={item.tunread}
 				tunreadUser={item.tunreadUser}
 				tunreadGroup={item.tunreadGroup}
-				avatarETag={avatarETag || item.avatarETag}
 				swipeEnabled={swipeEnabled}
 			/>
 		);

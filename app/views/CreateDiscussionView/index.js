@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { ScrollView, Text } from 'react-native';
 import isEqual from 'lodash/isEqual';
+import semver from 'semver';
 
 import Loading from '../../containers/Loading';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -40,7 +41,8 @@ class CreateChannelView extends React.Component {
 		error: PropTypes.object,
 		theme: PropTypes.string,
 		isMasterDetail: PropTypes.bool,
-		blockUnauthenticatedAccess: PropTypes.bool
+		blockUnauthenticatedAccess: PropTypes.bool,
+		serverVersion: PropTypes.string
 	}
 
 	constructor(props) {
@@ -86,6 +88,11 @@ class CreateChannelView extends React.Component {
 				}
 			}, 300);
 		}
+	}
+
+	get isLegacy() {
+		const { serverVersion } = this.props;
+		return serverVersion && semver.lt(semver.coerce(serverVersion), '3.6.0');
 	}
 
 	setHeader = () => {
@@ -163,6 +170,7 @@ class CreateChannelView extends React.Component {
 							initial={this.channel && { text: RocketChat.getRoomTitle(this.channel) }}
 							onChannelSelect={this.selectChannel}
 							blockUnauthenticatedAccess={blockUnauthenticatedAccess}
+							isLegacy={this.isLegacy}
 							theme={theme}
 						/>
 						<TextInput
@@ -180,6 +188,7 @@ class CreateChannelView extends React.Component {
 							selected={users}
 							onUserSelect={this.selectUsers}
 							blockUnauthenticatedAccess={blockUnauthenticatedAccess}
+							isLegacy={this.isLegacy}
 							theme={theme}
 						/>
 						<TextInput
@@ -207,6 +216,7 @@ const mapStateToProps = state => ({
 	loading: state.createDiscussion.isFetching,
 	result: state.createDiscussion.result,
 	blockUnauthenticatedAccess: state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true,
+	serverVersion: state.share.server.version || state.server.version,
 	isMasterDetail: state.app.isMasterDetail
 });
 

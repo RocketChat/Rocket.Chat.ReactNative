@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import isEqual from 'react-fast-compare';
+import semver from 'semver';
 
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
@@ -13,7 +14,8 @@ class AvatarContainer extends React.Component {
 		rid: PropTypes.string,
 		text: PropTypes.string,
 		type: PropTypes.string,
-		blockUnauthenticatedAccess: PropTypes.bool
+		blockUnauthenticatedAccess: PropTypes.bool,
+		serverVersion: PropTypes.string
 	};
 
 	static defaultProps = {
@@ -47,6 +49,11 @@ class AvatarContainer extends React.Component {
 	get isDirect() {
 		const { type } = this.props;
 		return type === 'd';
+	}
+
+	get isLegacy() {
+		const { serverVersion } = this.props;
+		return serverVersion && semver.lt(semver.coerce(serverVersion), '3.6.0');
 	}
 
 	init = async() => {
@@ -86,6 +93,7 @@ class AvatarContainer extends React.Component {
 		return (
 			<Avatar
 				avatarETag={avatarETag}
+				isLegacy={this.isLegacy}
 				{...this.props}
 			/>
 		);
@@ -94,7 +102,8 @@ class AvatarContainer extends React.Component {
 
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
-	server: state.share.server || state.server.server,
+	server: state.share.server.server || state.server.server,
+	serverVersion: state.share.server.version || state.server.version,
 	blockUnauthenticatedAccess:
 		state.share.settings?.Accounts_AvatarBlockUnauthenticatedAccess
 		?? state.settings.Accounts_AvatarBlockUnauthenticatedAccess

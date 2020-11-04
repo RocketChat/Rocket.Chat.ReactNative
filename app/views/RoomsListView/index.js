@@ -896,12 +896,7 @@ class RoomsListView extends React.Component {
 
 		const { item: currentItem } = this.state;
 		const {
-			user: {
-				id: userId,
-				username,
-				token
-			},
-			server,
+			user: { username },
 			StoreLastMessage,
 			useRealName,
 			theme,
@@ -916,10 +911,7 @@ class RoomsListView extends React.Component {
 				theme={theme}
 				id={id}
 				type={item.t}
-				userId={userId}
 				username={username}
-				token={token}
-				baseUrl={server}
 				showLastMessage={StoreLastMessage}
 				onPress={this.onPressItem}
 				testID={`rooms-list-view-item-${ item.name }`}

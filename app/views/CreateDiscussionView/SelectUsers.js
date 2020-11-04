@@ -15,7 +15,7 @@ import styles from './styles';
 import { themes } from '../../constants/colors';
 
 const SelectUsers = ({
-	server, token, userId, selected, onUserSelect, blockUnauthenticatedAccess, theme
+	server, token, userId, selected, onUserSelect, blockUnauthenticatedAccess, isLegacy, theme
 }) => {
 	const [users, setUsers] = useState([]);
 
@@ -53,7 +53,8 @@ const SelectUsers = ({
 		user: { id: userId, token },
 		server,
 		avatarETag: item.avatarETag,
-		blockUnauthenticatedAccess
+		blockUnauthenticatedAccess,
+		isLegacy
 	});
 
 	return (
@@ -84,6 +85,7 @@ SelectUsers.propTypes = {
 	selected: PropTypes.array,
 	onUserSelect: PropTypes.func,
 	blockUnauthenticatedAccess: PropTypes.bool,
+	isLegacy: PropTypes.bool,
 	theme: PropTypes.string
 };
 
