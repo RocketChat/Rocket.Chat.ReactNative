@@ -1,9 +1,11 @@
 import { InteractionManager } from 'react-native';
 import semver from 'semver';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import reduxStore from '../createStore';
 import { setActiveUsers } from '../../actions/activeUsers';
 import { setUser } from '../../actions/login';
+import database from '../database';
 
 export function subscribeUsersPresence() {
 	const serverVersion = reduxStore.getState().server.version;
@@ -20,6 +22,11 @@ export function subscribeUsersPresence() {
 	} else {
 		this.sdk.subscribe('stream-notify-logged', 'user-status');
 	}
+
+	// RC 0.49.1
+	this.sdk.subscribe('stream-notify-logged', 'updateAvatar');
+	// RC 0.58.0
+	this.sdk.subscribe('stream-notify-logged', 'Users:NameChanged');
 }
 
 let ids = [];
@@ -46,7 +53,9 @@ export default async function getUsersPresence() {
 			// RC 1.1.0
 			const result = await this.sdk.get('users.presence', params);
 			if (result.success) {
-				const activeUsers = result.users.reduce((ret, item) => {
+				const { users } = result;
+
+				const activeUsers = users.reduce((ret, item) => {
 					const { _id, status, statusText } = item;
 
 					if (loggedUser && loggedUser.id === _id) {
@@ -60,6 +69,27 @@ export default async function getUsersPresence() {
 					reduxStore.dispatch(setActiveUsers(activeUsers));
 				});
 				ids = [];
+
+				const db = database.active;
+				const userCollection = db.collections.get('users');
+				users.forEach(async(user) => {
+					try {
+						const userRecord = await userCollection.find(user._id);
+						await db.action(async() => {
+							await userRecord.update((u) => {
+								Object.assign(u, user);
+							});
+						});
+					} catch (e) {
+						// User not found
+						await db.action(async() => {
+							await userCollection.create((u) => {
+								u._raw = sanitizedRaw({ id: user._id }, userCollection.schema);
+								Object.assign(u, user);
+							});
+						});
+					}
+				});
 			}
 		} catch {
 			// do nothing
@@ -80,5 +110,7 @@ export function getUserPresence(uid) {
 		}, 2000);
 	}
 
-	ids.push(uid);
+	if (uid) {
+		ids.push(uid);
+	}
 }

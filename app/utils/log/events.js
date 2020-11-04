@@ -133,15 +133,19 @@ export default {
 	SE_SHARE_THIS_APP: 'se_share_this_app',
 	SE_GO_DEFAULTBROWSER: 'se_go_default_browser',
 	SE_GO_THEME: 'se_go_theme',
-	SE_GO_SCREENLOCKCONFIG: 'se_go_screen_lock_cfg',
 	SE_GO_PROFILE: 'se_go_profile',
+	SE_GO_SECURITYPRIVACY: 'se_go_securityprivacy',
 	SE_READ_LICENSE: 'se_read_license',
 	SE_COPY_APP_VERSION: 'se_copy_app_version',
 	SE_COPY_SERVER_VERSION: 'se_copy_server_version',
-	SE_TOGGLE_CRASH_REPORT: 'se_toggle_crash_report',
-	SE_TOGGLE_ANALYTICS_EVENTS: 'se_toggle_analytics_events',
 	SE_CLEAR_LOCAL_SERVER_CACHE: 'se_clear_local_server_cache',
 	SE_LOG_OUT: 'se_log_out',
+
+	// SECURITY PRIVACY VIEW
+	SP_GO_E2EENCRYPTIONSECURITY: 'sp_go_e2e_encryption_security',
+	SP_GO_SCREENLOCKCONFIG: 'sp_go_screen_lock_cfg',
+	SP_TOGGLE_CRASH_REPORT: 'sp_toggle_crash_report',
+	SP_TOGGLE_ANALYTICS_EVENTS: 'sp_toggle_analytics_events',
 
 	// LANGUAGE VIEW
 	LANG_SET_LANGUAGE: 'lang_set_language',
@@ -303,5 +307,9 @@ export default {
 	E2E_SAVE_PW_HOW_IT_WORKS: 'e2e_save_pw_how_it_works',
 
 	// E2E ENTER YOUR PASSWORD VIEW
-	E2E_ENTER_PW_SUBMIT: 'e2e_enter_pw_submit'
+	E2E_ENTER_PW_SUBMIT: 'e2e_enter_pw_submit',
+
+	// E2E ENCRYPTION SECURITY VIEW
+	E2E_SEC_CHANGE_PASSWORD: 'e2e_sec_change_password',
+	E2E_SEC_RESET_OWN_KEY: 'e2e_sec_reset_own_key'
 };
