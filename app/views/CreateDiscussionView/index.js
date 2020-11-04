@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { ScrollView, Text } from 'react-native';
 import isEqual from 'lodash/isEqual';
-import semver from 'semver';
 
 import Loading from '../../containers/Loading';
 import KeyboardView from '../../presentation/KeyboardView';

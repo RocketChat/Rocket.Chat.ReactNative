@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import isEqual from 'react-fast-compare';
-import semver from 'semver';
 
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
