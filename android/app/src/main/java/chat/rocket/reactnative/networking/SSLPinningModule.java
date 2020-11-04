@@ -2,17 +2,11 @@ package chat.rocket.reactnative;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
-import com.facebook.react.modules.network.OkHttpClientFactory;
-import com.facebook.react.modules.network.OkHttpClientProvider;
 import com.facebook.react.modules.network.NetworkingModule;
 import com.facebook.react.modules.network.NetworkingModule.CustomClientBuilder;
-//import com.facebook.react.modules.network.CustomClientBuilder;
-//import com.facebook.react.modules.websocket.WebSocketModule;
 import com.facebook.react.modules.network.ReactCookieJarContainer;
 //import com.facebook.react.modules.fresco.ReactOkHttpNetworkFetcher;
-import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.bridge.WritableNativeMap;
+//import com.facebook.react.modules.websocket.WebSocketModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Promise;
 
@@ -33,6 +27,8 @@ import javax.net.ssl.KeyManager;
 import android.security.KeyChain;
 import android.security.KeyChainAliasCallback;
 import java.util.concurrent.TimeUnit;
+
+import com.RNFetchBlob.RNFetchBlob;
 
 public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyChainAliasCallback {
 
@@ -76,7 +72,7 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
 
     @Override
     public String getName() {
-        return "UrlCredentials";
+        return "SSLPinning";
     }
 
     @Override
@@ -91,6 +87,7 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
         this.alias = data;
 
         NetworkingModule.setCustomClientBuilder(new CustomClient());
+        RNFetchBlob.applyCustomOkHttpClient(getOkHttpClient());
         //        WebSocketModule.setCustomClientBuilder(new CustomClient());
         //        ReactOkHttpNetworkFetcher.setOkHttpClient(getOkHttpClient());
 

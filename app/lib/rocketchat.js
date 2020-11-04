@@ -63,6 +63,7 @@ import { sanitizeLikeString } from './database/utils';
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
+const CERTIFICATE_KEY = 'RC_CERTIFICATE_KEY';
 export const THEME_PREFERENCES_KEY = 'RC_THEME_PREFERENCES_KEY';
 export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
 export const ANALYTICS_EVENTS_KEY = 'RC_ANALYTICS_EVENTS_KEY';
@@ -74,6 +75,7 @@ const STATUSES = ['offline', 'online', 'away', 'busy'];
 const RocketChat = {
 	TOKEN_KEY,
 	CURRENT_SERVER,
+	CERTIFICATE_KEY,
 	callJitsi,
 	async subscribeRooms() {
 		if (!this.roomsSub) {
@@ -98,20 +100,20 @@ const RocketChat = {
 		return this.methodCallWrapper(type ? 'createPrivateGroup' : 'createChannel', name, users, readOnly, {}, { broadcast, encrypted });
 	},
 	async getWebsocketInfo({ server }) {
-		const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
+		// const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
 
-		try {
-			await sdk.connect();
-		} catch (err) {
-			if (err.message && err.message.includes('400')) {
-				return {
-					success: false,
-					message: I18n.t('Websocket_disabled', { contact: I18n.t('Contact_your_server_admin') })
-				};
-			}
-		}
+		// try {
+		// 	await sdk.connect();
+		// } catch (err) {
+		// 	if (err.message && err.message.includes('400')) {
+		// 		return {
+		// 			success: false,
+		// 			message: I18n.t('Websocket_disabled', { contact: I18n.t('Contact_your_server_admin') })
+		// 		};
+		// 	}
+		// }
 
-		sdk.disconnect();
+		// sdk.disconnect();
 
 		return {
 			success: true
