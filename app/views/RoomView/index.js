@@ -552,7 +552,7 @@ class RoomView extends React.Component {
 	}
 
 	onReplyCancel = () => {
-		this.setState({ selectedMessage: {}, replying: false });
+		this.setState({ selectedMessage: {}, replying: false, replyWithMention: false });
 	}
 
 	onReactionInit = (message) => {
