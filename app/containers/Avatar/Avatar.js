@@ -26,7 +26,7 @@ const Avatar = React.memo(({
 	isStatic,
 	rid,
 	blockUnauthenticatedAccess,
-	isLegacy
+	serverVersion
 }) => {
 	if ((!text && !avatar && !emoji && !rid) || !server) {
 		return null;
@@ -61,7 +61,7 @@ const Avatar = React.memo(({
 				avatar,
 				server,
 				avatarETag,
-				isLegacy,
+				serverVersion,
 				rid,
 				blockUnauthenticatedAccess
 			});
@@ -117,7 +117,7 @@ Avatar.propTypes = {
 	isStatic: PropTypes.bool,
 	rid: PropTypes.string,
 	blockUnauthenticatedAccess: PropTypes.bool,
-	isLegacy: PropTypes.bool
+	serverVersion: PropTypes.string
 };
 
 Avatar.defaultProps = {

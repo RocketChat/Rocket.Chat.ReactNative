@@ -90,11 +90,6 @@ class CreateChannelView extends React.Component {
 		}
 	}
 
-	get isLegacy() {
-		const { serverVersion } = this.props;
-		return serverVersion && semver.lt(semver.coerce(serverVersion), '3.6.0');
-	}
-
 	setHeader = () => {
 		const { navigation, route } = this.props;
 		const showCloseModal = route.params?.showCloseModal;
@@ -151,7 +146,7 @@ class CreateChannelView extends React.Component {
 	render() {
 		const { name, users } = this.state;
 		const {
-			server, user, loading, blockUnauthenticatedAccess, theme
+			server, user, loading, blockUnauthenticatedAccess, theme, serverVersion
 		} = this.props;
 		return (
 			<KeyboardView
@@ -170,7 +165,7 @@ class CreateChannelView extends React.Component {
 							initial={this.channel && { text: RocketChat.getRoomTitle(this.channel) }}
 							onChannelSelect={this.selectChannel}
 							blockUnauthenticatedAccess={blockUnauthenticatedAccess}
-							isLegacy={this.isLegacy}
+							serverVersion={serverVersion}
 							theme={theme}
 						/>
 						<TextInput
@@ -188,7 +183,7 @@ class CreateChannelView extends React.Component {
 							selected={users}
 							onUserSelect={this.selectUsers}
 							blockUnauthenticatedAccess={blockUnauthenticatedAccess}
-							isLegacy={this.isLegacy}
+							serverVersion={serverVersion}
 							theme={theme}
 						/>
 						<TextInput

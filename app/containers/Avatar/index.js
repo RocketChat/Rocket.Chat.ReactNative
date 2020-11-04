@@ -51,11 +51,6 @@ class AvatarContainer extends React.Component {
 		return type === 'd';
 	}
 
-	get isLegacy() {
-		const { serverVersion } = this.props;
-		return serverVersion && semver.lt(semver.coerce(serverVersion), '3.6.0');
-	}
-
 	init = async() => {
 		const db = database.active;
 		const usersCollection = db.collections.get('users');
@@ -90,10 +85,11 @@ class AvatarContainer extends React.Component {
 
 	render() {
 		const { avatarETag } = this.state;
+		const { serverVersion } = this.props;
 		return (
 			<Avatar
 				avatarETag={avatarETag}
-				isLegacy={this.isLegacy}
+				serverVersion={serverVersion}
 				{...this.props}
 			/>
 		);
