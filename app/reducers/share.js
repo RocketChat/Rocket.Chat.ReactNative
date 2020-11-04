@@ -2,7 +2,7 @@ import { SHARE } from '../actions/actionsTypes';
 
 const initialState = {
 	user: {},
-	server: '',
+	server: {},
 	settings: {}
 };
 
