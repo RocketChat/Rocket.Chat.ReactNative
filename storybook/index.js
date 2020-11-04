@@ -4,11 +4,6 @@ import { getStorybookUI, configure } from '@storybook/react-native'; // eslint-d
 import RNBootSplash from 'react-native-bootsplash';
 import 'react-native-gesture-handler';
 
-// eslint-disable-next-line no-undef
-jest.mock('../app/lib/database', () => jest.fn(() => null)); // comment this line to make storybook work
-// eslint-disable-next-line no-undef
-global.Date.now = jest.fn(() => new Date('2019-10-10').getTime()); // comment this line to make storybook work
-
 RNBootSplash.hide();
 
 // import stories
