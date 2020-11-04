@@ -405,6 +405,11 @@ class RoomInfoEditView extends React.Component {
 		this.setState({ encrypted: value });
 	}
 
+	isServerVersionLowerThan = (version) => {
+		const { serverVersion } = this.props;
+		return serverVersion && semver.lt(semver.coerce(serverVersion), version);
+	}
+
 	render() {
 		const {
 			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode, saving, permissions, archived, enableSysMes, encrypted, avatar
@@ -428,7 +433,11 @@ class RoomInfoEditView extends React.Component {
 						testID='room-info-edit-view-list'
 						{...scrollPersistTaps}
 					>
-						<TouchableOpacity style={styles.avatarContainer} onPress={this.changeAvatar}>
+						<TouchableOpacity
+							style={styles.avatarContainer}
+							onPress={this.changeAvatar}
+							disabled={this.isServerVersionLowerThan('3.6.0')}
+						>
 							<Avatar
 								type={room.t}
 								text={room.name}
@@ -437,9 +446,14 @@ class RoomInfoEditView extends React.Component {
 								rid={isEmpty(avatar) && room.rid}
 								size={100}
 							>
-								<TouchableOpacity style={[styles.resetButton, { backgroundColor: themes[theme].dangerColor }]} onPress={this.resetAvatar}>
-									<CustomIcon name='delete' color={themes[theme].backgroundColor} size={24} />
-								</TouchableOpacity>
+								{this.isServerVersionLowerThan('3.6.0')
+									? null
+									: (
+										<TouchableOpacity style={[styles.resetButton, { backgroundColor: themes[theme].dangerColor }]} onPress={this.resetAvatar}>
+											<CustomIcon name='delete' color={themes[theme].backgroundColor} size={24} />
+										</TouchableOpacity>
+									)
+								}
 							</Avatar>
 						</TouchableOpacity>
 						<RCTextInput
@@ -650,7 +664,7 @@ class RoomInfoEditView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	serverVersion: state.server.version,
+	serverVersion: state.share.server.version || state.server.version,
 	e2eEnabled: state.settings.E2E_Enable || false
 });
 
