@@ -9,7 +9,7 @@ import equal from 'deep-equal';
 import sharedStyles from './Styles';
 import Button from '../containers/Button';
 import I18n from '../i18n';
-import { LegalButton } from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/HeaderButton';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
 class LoginView extends React.Component {
 	static navigationOptions = ({ route, navigation }) => ({
 		title: route.params?.title ?? 'Rocket.Chat',
-		headerRight: () => <LegalButton testID='login-view-more' navigation={navigation} />
+		headerRight: () => <HeaderButton.Legal testID='login-view-more' navigation={navigation} />
 	})
 
 	static propTypes = {
