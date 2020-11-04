@@ -62,6 +62,9 @@ const styles = StyleSheet.create({
 	},
 	marginTop: {
 		marginTop: 4
+	},
+	marginBottom: {
+		marginBottom: 4
 	}
 });
 
@@ -153,6 +156,7 @@ const Reply = React.memo(({
 				style={[
 					styles.button,
 					index > 0 && styles.marginTop,
+					attachment.description && styles.marginBottom,
 					{
 						backgroundColor: themes[theme].chatComponentBackground,
 						borderColor: themes[theme].borderColor
