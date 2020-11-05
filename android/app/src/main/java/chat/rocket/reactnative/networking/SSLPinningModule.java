@@ -30,6 +30,8 @@ import java.util.concurrent.TimeUnit;
 
 import com.RNFetchBlob.RNFetchBlob;
 
+import com.reactnativecommunity.webview.RNCWebViewManager;
+
 public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyChainAliasCallback {
 
     private Promise promise;
@@ -94,6 +96,8 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
         ReactOkHttpNetworkFetcher.setOkHttpClient(getOkHttpClient());
         // RNFetchBlob networking layer
         RNFetchBlob.applyCustomOkHttpClient(getOkHttpClient());
+        // RNCWebView onReceivedClientCertRequest
+        RNCWebViewManager.setCertificateAlias(data);
 
         promise.resolve(null);
     }
