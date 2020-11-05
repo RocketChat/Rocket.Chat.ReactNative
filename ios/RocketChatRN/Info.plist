@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>AppGroup</key>
+	<string>group.ios.chat.rocket</string>
 	<key>BugsnagAPIKey</key>
 	<string></string>
 	<key>CFBundleDevelopmentRegion</key>
@@ -39,6 +41,13 @@
 	<string>100</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>googlechrome</string>
+		<string>googlechromes</string>
+		<string>firefox</string>
+		<string>brave</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -58,6 +67,8 @@
 	<string>Take photos to share with other users</string>
 	<key>NSContactsUsageDescription</key>
 	<string>Allow $(PRODUCT_NAME) to access your contacts</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Unlock the app with FaceID</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>This permission stems from a library we use and will never be called anyway. If you see this, deny access</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -67,15 +78,13 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Use your microphone to record audio messages</string>
 	<key>NSMotionUsageDescription</key>
-	<string>Allow $(PRODUCT_NAME) to access your device&apos;s accelerometer</string>
+	<string>Allow $(PRODUCT_NAME) to access your device's accelerometer</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Give $(PRODUCT_NAME) permission to save photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Upload photos to share with other users or to change your avatar</string>
 	<key>NSRemindersUsageDescription</key>
 	<string>Allow $(PRODUCT_NAME) to access your reminders</string>
-	<key>NSFaceIDUsageDescription</key>
-	<string>Unlock the app with FaceID</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>custom.ttf</string>
@@ -105,14 +114,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>googlechrome</string>
-		<string>googlechromes</string>
-		<string>firefox</string>
-		<string>brave</string>
-	</array>
-	<key>AppGroup</key>
-	<string>group.ios.chat.rocket</string>
 </dict>
 </plist>
