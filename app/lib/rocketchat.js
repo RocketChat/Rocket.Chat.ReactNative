@@ -100,20 +100,20 @@ const RocketChat = {
 		return this.methodCallWrapper(type ? 'createPrivateGroup' : 'createChannel', name, users, readOnly, {}, { broadcast, encrypted });
 	},
 	async getWebsocketInfo({ server }) {
-		// const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
+		const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
 
-		// try {
-		// 	await sdk.connect();
-		// } catch (err) {
-		// 	if (err.message && err.message.includes('400')) {
-		// 		return {
-		// 			success: false,
-		// 			message: I18n.t('Websocket_disabled', { contact: I18n.t('Contact_your_server_admin') })
-		// 		};
-		// 	}
-		// }
+		try {
+			await sdk.connect();
+		} catch (err) {
+			if (err.message && err.message.includes('400')) {
+				return {
+					success: false,
+					message: I18n.t('Websocket_disabled', { contact: I18n.t('Contact_your_server_admin') })
+				};
+			}
+		}
 
-		// sdk.disconnect();
+		sdk.disconnect();
 
 		return {
 			success: true

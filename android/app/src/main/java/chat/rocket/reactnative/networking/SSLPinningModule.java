@@ -3,10 +3,9 @@ package chat.rocket.reactnative;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.modules.network.NetworkingModule;
-import com.facebook.react.modules.network.NetworkingModule.CustomClientBuilder;
+import com.facebook.react.modules.network.CustomClientBuilder;
 import com.facebook.react.modules.network.ReactCookieJarContainer;
-//import com.facebook.react.modules.fresco.ReactOkHttpNetworkFetcher;
-//import com.facebook.react.modules.websocket.WebSocketModule;
+import com.facebook.react.modules.websocket.WebSocketModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Promise;
 
@@ -87,9 +86,8 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
         this.alias = data;
 
         NetworkingModule.setCustomClientBuilder(new CustomClient());
+        WebSocketModule.setCustomClientBuilder(new CustomClient());
         RNFetchBlob.applyCustomOkHttpClient(getOkHttpClient());
-        //        WebSocketModule.setCustomClientBuilder(new CustomClient());
-        //        ReactOkHttpNetworkFetcher.setOkHttpClient(getOkHttpClient());
 
         promise.resolve(null);
     }
