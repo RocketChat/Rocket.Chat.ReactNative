@@ -19,7 +19,7 @@ import { showErrorAlert } from '../utils/info';
 import I18n from '../i18n';
 import log from '../utils/log';
 
-const getServer = state => state.share.server || state.server.server;
+const getServer = state => state.share.server.server || state.server.server;
 const getE2eEnable = state => state.settings.E2E_Enable;
 
 const handleEncryptionInit = function* handleEncryptionInit() {

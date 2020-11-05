@@ -14,8 +14,8 @@ async function navigateToRoomInfo(type) {
 		room = privateRoomName;
 	}
 	await searchRoom(room);
-	await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toExist().withTimeout(60000);
-	await element(by.id(`rooms-list-view-item-${ room }`)).tap();
+	await waitFor(element(by.id(`rooms-list-view-item-${ room }`)).atIndex(0)).toExist().withTimeout(60000);
+	await element(by.id(`rooms-list-view-item-${ room }`)).atIndex(0).tap();
 	await waitFor(element(by.id('room-view'))).toExist().withTimeout(2000);
 	await element(by.id('room-view-header-actions')).tap();
 	await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
@@ -167,6 +167,7 @@ describe('Room info screen', () => {
 				await element(by.id('room-info-edit-view-name')).replaceText(`${ privateRoomName }new`);
 				await element(by.type('UIScrollView')).atIndex(1).swipe('up');
 				await element(by.id('room-info-edit-view-submit')).tap();
+				await waitForToast();
 				await tapBack();
 				await waitFor(element(by.id('room-info-view'))).toExist().withTimeout(2000);
 				await expect(element(by.id('room-info-view-name'))).toHaveLabel(`${ privateRoomName }new`);

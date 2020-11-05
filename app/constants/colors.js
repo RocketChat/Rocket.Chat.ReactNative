@@ -11,13 +11,13 @@ export const SWITCH_TRACK_COLOR = {
 };
 
 const mentions = {
-	unreadBackground: '#414852',
-	mentionMeColor: '#f5455c',
-	mentionMeBackground: '#ffe9ec',
-	mentionGroupColor: '#f38c39',
-	mentionGroupBackground: '#fde8d7',
-	mentionOtherColor: '#b68d00',
-	mentionOtherBackground: '#fff6d6'
+	unreadBackground: '#6C727A',
+	tunreadBackground: '#1d74f5',
+	mentionMeColor: '#DB0C27',
+	mentionMeBackground: '#F5455C',
+	mentionGroupColor: '#E26D0E',
+	mentionGroupBackground: '#F38C39',
+	mentionOtherColor: '#DFAC00'
 };
 
 export const themes = {
@@ -37,7 +37,7 @@ export const themes = {
 		auxiliaryText: '#9ca2a8',
 		infoText: '#6d6d72',
 		tintColor: '#1d74f5',
-		auxiliaryTintColor: '#caced1',
+		auxiliaryTintColor: '#6C727A',
 		actionTintColor: '#1d74f5',
 		separatorColor: '#cbcbcc',
 		navbarBackground: '#ffffff',
@@ -82,7 +82,7 @@ export const themes = {
 		auxiliaryText: '#9297a2',
 		infoText: '#6D6D72',
 		tintColor: '#1d74f5',
-		auxiliaryTintColor: '#cdcdcd',
+		auxiliaryTintColor: '#f9f9f9',
 		actionTintColor: '#1d74f5',
 		separatorColor: '#2b2b2d',
 		navbarBackground: '#0b182c',
@@ -127,7 +127,7 @@ export const themes = {
 		auxiliaryText: '#b2b8c6',
 		infoText: '#6d6d72',
 		tintColor: '#1e9bfe',
-		auxiliaryTintColor: '#cdcdcd',
+		auxiliaryTintColor: '#f9f9f9',
 		actionTintColor: '#1e9bfe',
 		separatorColor: '#272728',
 		navbarBackground: '#0d0d0d',

@@ -294,24 +294,42 @@ describe('Room screen', () => {
 				await element(by.id('room-view-header-follow')).tap();
 				await waitFor(element(by.id('room-view-header-unfollow'))).toExist().withTimeout(60000);
 				await expect(element(by.id('room-view-header-unfollow'))).toExist();
-				await tapBack();
 			});
 
-			it('should navigate to thread from thread name', async() => {
+			it('should send message in thread only', async() => {
+				const messageText = 'threadonly';
+				await mockMessage(messageText);
+				await tapBack();
 				await waitFor(element(by.id('room-view-header-actions').and(by.label(`${ mainRoom }`)))).toBeVisible().withTimeout(2000);	
 				await waitFor(element(by.id('room-view-header-actions').and(by.label(`${ data.random }thread`)))).toBeNotVisible().withTimeout(2000);	
 				await sleep(500) //TODO: Find a better way to wait for the animation to finish and the messagebox-input to be available and usable :(
-				
-				await mockMessage('dummymessagebetweenthethread');
-				await element(by.label(thread)).atIndex(0).longPress();
-				await expect(element(by.id('action-sheet'))).toExist();
-				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by.label('Reply in Thread')).tap();
-				await element(by.id('messagebox-input')).typeText('repliedagain');
+				await waitFor(element(by.label(`${ data.random }${ messageText }`)).atIndex(0)).toNotExist().withTimeout(2000);
+			});
+
+			it('should mark send to channel and show on main channel', async() => {
+				const messageText = 'sendToChannel';
+				await element(by.id(`message-thread-button-${ thread }`)).tap();
+				await element(by.id('messagebox-input')).atIndex(0).typeText(messageText);
+				await element(by.id('messagebox-send-to-channel')).tap();
 				await element(by.id('messagebox-send-message')).tap();
-				await waitFor(element(by.id(`message-thread-replied-on-${ thread }`))).toExist().withTimeout(5000);
-				await expect(element(by.id(`message-thread-replied-on-${ thread }`))).toExist();
+				await tapBack();
+				await waitFor(element(by.id('room-view-header-actions').and(by.label(`${ mainRoom }`)))).toBeVisible().withTimeout(2000);	
+				await waitFor(element(by.id('room-view-header-actions').and(by.label(`${ data.random }thread`)))).toBeNotVisible().withTimeout(2000);	
+				await sleep(500) //TODO: Find a better way to wait for the animation to finish and the messagebox-input to be available and usable :(
+				await waitFor(element(by.label(messageText)).atIndex(0)).toExist().withTimeout(2000);
+			});
+
+			it('should navigate to thread from thread name', async() => {
+				const messageText = 'navthreadname';
+				await mockMessage('dummymessagebetweenthethread');
+				await element(by.id(`message-thread-button-${ thread }`)).tap();
+				await element(by.id('messagebox-input')).atIndex(0).typeText(messageText);
+				await element(by.id('messagebox-send-to-channel')).tap();
+				await element(by.id('messagebox-send-message')).tap();
+				await tapBack();
+				await waitFor(element(by.id('room-view-header-actions').and(by.label(`${ mainRoom }`)))).toBeVisible().withTimeout(2000);	
+				await waitFor(element(by.id('room-view-header-actions').and(by.label(`${ data.random }thread`)))).toBeNotVisible().withTimeout(2000);	
+				await sleep(500) //TODO: Find a better way to wait for the animation to finish and the messagebox-input to be available and usable :(
 
 				await element(by.id(`message-thread-replied-on-${ thread }`)).tap();
 				await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
@@ -325,7 +343,7 @@ describe('Room screen', () => {
 				await element(by.id('room-view-header-threads')).tap();
 				await waitFor(element(by.id('thread-messages-view'))).toExist().withTimeout(5000);
 				await expect(element(by.id('thread-messages-view'))).toExist();
-				await element(by.id(`message-thread-button-${ thread }`)).atIndex(0).tap();
+				await element(by.id(`thread-messages-view-${ thread }`)).atIndex(0).tap();
 				await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 				await waitFor(element(by.id(`room-view-title-${ thread }`))).toExist().withTimeout(5000);
 				await expect(element(by.id(`room-view-title-${ thread }`))).toExist();

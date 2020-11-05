@@ -26,7 +26,7 @@ import log, { logEvent, events } from '../../utils/log';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import { setBasicAuth, BASIC_AUTH_KEY } from '../../utils/fetch';
-import { CloseModalButton } from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/HeaderButton';
 import { showConfirmationAlert } from '../../utils/info';
 import database from '../../lib/database';
 import ServerInput from './ServerInput';
@@ -111,7 +111,7 @@ class NewServerView extends React.Component {
 		const { adding, navigation } = this.props;
 		if (adding) {
 			navigation.setOptions({
-				headerLeft: () => <CloseModalButton navigation={navigation} onPress={this.close} testID='new-server-view-close' />
+				headerLeft: () => <HeaderButton.CloseModal navigation={navigation} onPress={this.close} testID='new-server-view-close' />
 			});
 		}
 	}
