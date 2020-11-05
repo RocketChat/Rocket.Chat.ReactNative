@@ -6,6 +6,7 @@ import com.facebook.react.modules.network.NetworkingModule;
 import com.facebook.react.modules.network.CustomClientBuilder;
 import com.facebook.react.modules.network.ReactCookieJarContainer;
 import com.facebook.react.modules.websocket.WebSocketModule;
+import com.facebook.react.modules.fresco.ReactOkHttpNetworkFetcher;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Promise;
 
@@ -85,8 +86,13 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
     public void setCertificate(String data, Promise promise) {
         this.alias = data;
 
+        // HTTP Fetch react-native layer
         NetworkingModule.setCustomClientBuilder(new CustomClient());
+        // Websocket react-native layer
         WebSocketModule.setCustomClientBuilder(new CustomClient());
+        // Image networking react-native layer
+        ReactOkHttpNetworkFetcher.setOkHttpClient(getOkHttpClient());
+        // RNFetchBlob networking layer
         RNFetchBlob.applyCustomOkHttpClient(getOkHttpClient());
 
         promise.resolve(null);

@@ -12992,7 +12992,7 @@ react-native-windows@^0.62.0-0:
 
 react-native@RocketChat/react-native#0.63.2:
   version "0.63.2"
-  resolved "https://codeload.github.com/RocketChat/react-native/tar.gz/cbbd502f05450cdf0b58281e2688d26d594ff46b"
+  resolved "https://codeload.github.com/RocketChat/react-native/tar.gz/21bf1860837f2dc9d671727eb72e76a35e85599a"
   dependencies:
     "@babel/runtime" "^7.0.0"
     "@react-native-community/cli" "^4.7.0"
