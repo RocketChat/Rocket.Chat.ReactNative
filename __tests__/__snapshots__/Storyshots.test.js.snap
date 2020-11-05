@@ -11188,6 +11188,104 @@ exports[`Storyshots Markdown list Markdown 1`] = `
           />
         </View>
       </Text>
+      <Text
+        style={
+          Array [
+            undefined,
+            Object {
+              "color": "#2f343d",
+            },
+          ]
+        }
+      >
+        <Text
+          accessibilityLabel="🤙"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          🤙
+        </Text>
+        <View
+          style={
+            Array [
+              Object {
+                "overflow": "hidden",
+              },
+              Array [
+                Object {
+                  "height": 20,
+                  "width": 20,
+                },
+                Object {},
+              ],
+            ]
+          }
+        >
+          <FastImageView
+            resizeMode="contain"
+            source={
+              Object {
+                "priority": "high",
+                "uri": "https://open.rocket.chat/emoji-custom/react_rocket.png",
+              }
+            }
+            style={
+              Object {
+                "bottom": 0,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              }
+            }
+          />
+        </View>
+        <Text
+          accessibilityLabel="ひ"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          ひ
+        </Text>
+      </Text>
     </View>
     <Text
       style={

@@ -171,6 +171,13 @@ export default ({ theme }) => {
 					getCustomEmoji={getCustomEmoji}
 					baseUrl={baseUrl}
 				/>
+				{/* Emojis + non-latin characters */}
+				<Markdown
+					msg='🤙:react_rocket:ひ'
+					theme={theme}
+					getCustomEmoji={getCustomEmoji}
+					baseUrl={baseUrl}
+				/>
 			</View>
 
 			<StoriesSeparator style={styles.separator} title='Block Quote' theme={theme} />

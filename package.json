@@ -49,6 +49,7 @@
     "commonmark-react-renderer": "git+https://github.com/RocketChat/commonmark-react-renderer.git",
     "deep-equal": "2.0.3",
     "ejson": "2.2.0",
+    "emoji-regex": "^9.2.0",
     "eslint-config-airbnb": "^18.1.0",
     "expo-apple-authentication": "^2.2.1",
     "expo-av": "8.2.1",

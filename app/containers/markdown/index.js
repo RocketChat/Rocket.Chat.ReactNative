@@ -4,6 +4,7 @@ import { Parser, Node } from 'commonmark';
 import Renderer from 'commonmark-react-renderer';
 import PropTypes from 'prop-types';
 import removeMarkdown from 'remove-markdown';
+import emojiRegex from 'emoji-regex/RGI_Emoji';
 
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import I18n from '../../i18n';
@@ -31,36 +32,22 @@ const formatText = text => text.replace(
 );
 
 const emojiRanges = [
-	'\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]', // unicode emoji from https://www.regextester.com/106421
+	emojiRegex(),
 	':.{1,40}:', // custom emoji
 	' |\n' // allow spaces and line breaks
 ].join('|');
 
+const emojisRegex = new RegExp(emojiRanges, 'g');
+
 const removeSpaces = str => str && str.replace(/\s/g, '');
 
-const removeAllEmoji = str => str.replace(new RegExp(emojiRanges, 'g'), '');
+const removeAllEmoji = str => str.replace(emojisRegex, '');
+
+const emojiCount = str => str?.match(emojisRegex, '')?.length;
 
 const isOnlyEmoji = (str) => {
 	str = removeSpaces(str);
-	return !removeAllEmoji(str).length;
-};
-
-const removeOneEmoji = str => str.replace(new RegExp(emojiRanges), '');
-
-const emojiCount = (str) => {
-	str = removeSpaces(str);
-	let oldLength = 0;
-	let counter = 0;
-
-	while (oldLength !== str.length) {
-		oldLength = str.length;
-		str = removeOneEmoji(str);
-		if (oldLength !== str.length) {
-			counter += 1;
-		}
-	}
-
-	return counter;
+	return !removeAllEmoji(str).length && emojiCount(str) <= 3;
 };
 
 const parser = new Parser();
@@ -395,7 +382,7 @@ class Markdown extends PureComponent {
 
 		let ast = parser.parse(m);
 		ast = mergeTextNodes(ast);
-		this.isMessageContainsOnlyEmoji = isOnlyEmoji(m) && emojiCount(m) <= 3;
+		this.isMessageContainsOnlyEmoji = isOnlyEmoji(m);
 		this.editedMessage(ast);
 		return this.renderer.render(ast);
 	}
