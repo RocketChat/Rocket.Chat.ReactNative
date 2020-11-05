@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="chat.rocket.reactnative">
 
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <application
+        android:name=".MainDebugApplication"
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:replace="android:name"
+        tools:targetApi="28"
+        android:networkSecurityConfig="@xml/network_security_config" />
 
-    <application tools:targetApi="28" tools:ignore="GoogleAppIndexingWarning" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 </manifest>

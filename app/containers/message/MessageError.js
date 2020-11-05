@@ -1,16 +1,18 @@
-import React from 'react';
-import Touchable from 'react-native-platform-touchable';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 
+import Touchable from './Touchable';
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 import { BUTTON_HIT_SLOP } from './utils';
 import { themes } from '../../constants/colors';
+import MessageContext from './Context';
 
-const MessageError = React.memo(({ hasError, onErrorPress, theme }) => {
+const MessageError = React.memo(({ hasError, theme }) => {
 	if (!hasError) {
 		return null;
 	}
+	const { onErrorPress } = useContext(MessageContext);
 	return (
 		<Touchable onPress={onErrorPress} style={styles.errorButton} hitSlop={BUTTON_HIT_SLOP}>
 			<CustomIcon name='warning' color={themes[theme].dangerColor} size={18} />
@@ -20,7 +22,6 @@ const MessageError = React.memo(({ hasError, onErrorPress, theme }) => {
 
 MessageError.propTypes = {
 	hasError: PropTypes.bool,
-	onErrorPress: PropTypes.func,
 	theme: PropTypes.string
 };
 MessageError.displayName = 'MessageError';

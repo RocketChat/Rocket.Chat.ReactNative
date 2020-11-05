@@ -1,0 +1,41 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Play build for development"
+  lane :playBuild do
+    gradle(task: "assemblePlayDebug")
+  end
+
+  desc "Foss build for release"
+  lane :fossRelease do
+    gradle(task: "assembleFossRelease")
+  end
+
+  desc "Play build for release"
+  lane :playRelease do
+    gradle(task: "bundlePlayRelease")
+  end
+
+  desc "Upload App to Play Store Internal"
+  lane :beta do
+    upload_to_play_store(
+      track: 'internal',
+      aab: 'android/app/build/outputs/bundle/playRelease/app-play-release.aab'
+    )
+  end
+end

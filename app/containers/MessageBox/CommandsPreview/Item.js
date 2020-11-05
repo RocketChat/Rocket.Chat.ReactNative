@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import FastImage from '@rocket.chat/react-native-fast-image';
 
 import styles from '../styles';
 import { CustomIcon } from '../../../lib/Icons';
@@ -32,7 +32,7 @@ const Item = ({ item, theme }) => {
 						{ loading ? <ActivityIndicator theme={theme} /> : null }
 					</FastImage>
 				)
-				: <CustomIcon name='file-generic' size={36} color={themes[theme].actionTintColor} />
+				: <CustomIcon name='attach' size={36} color={themes[theme].actionTintColor} />
 			}
 		</TouchableOpacity>
 	);

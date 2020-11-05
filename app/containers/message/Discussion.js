@@ -1,20 +1,26 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 import PropTypes from 'prop-types';
 
-import { formatLastMessage, formatMessageCount, BUTTON_HIT_SLOP } from './utils';
+import Touchable from './Touchable';
+import { formatMessageCount, BUTTON_HIT_SLOP } from './utils';
 import styles from './styles';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 import { DISCUSSION } from './constants';
 import { themes } from '../../constants/colors';
+import MessageContext from './Context';
+import { formatDateThreads } from '../../utils/room';
 
 const Discussion = React.memo(({
-	msg, dcount, dlm, onDiscussionPress, theme
+	msg, dcount, dlm, theme
 }) => {
-	const time = formatLastMessage(dlm);
+	let time;
+	if (dlm) {
+		time = formatDateThreads(dlm);
+	}
 	const buttonText = formatMessageCount(dcount, DISCUSSION);
+	const { onDiscussionPress } = useContext(MessageContext);
 	return (
 		<>
 			<Text style={[styles.startedDiscussion, { color: themes[theme].auxiliaryText }]}>{I18n.t('Started_discussion')}</Text>
@@ -23,11 +29,11 @@ const Discussion = React.memo(({
 				<Touchable
 					onPress={onDiscussionPress}
 					background={Touchable.Ripple(themes[theme].bannerBackground)}
-					style={[styles.button, styles.smallButton, { backgroundColor: themes[theme].tintColor }]}
+					style={[styles.button, { backgroundColor: themes[theme].tintColor }]}
 					hitSlop={BUTTON_HIT_SLOP}
 				>
 					<>
-						<CustomIcon name='chat' size={20} style={styles.buttonIcon} color={themes[theme].buttonText} />
+						<CustomIcon name='discussions' size={16} style={styles.buttonIcon} color={themes[theme].buttonText} />
 						<Text style={[styles.buttonText, { color: themes[theme].buttonText }]}>{buttonText}</Text>
 					</>
 				</Touchable>
@@ -55,8 +61,7 @@ Discussion.propTypes = {
 	msg: PropTypes.string,
 	dcount: PropTypes.number,
 	dlm: PropTypes.string,
-	theme: PropTypes.string,
-	onDiscussionPress: PropTypes.func
+	theme: PropTypes.string
 };
 Discussion.displayName = 'MessageDiscussion';
 

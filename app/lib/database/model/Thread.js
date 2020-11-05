@@ -30,6 +30,8 @@ export default class Thread extends Model {
 
 	@field('avatar') avatar;
 
+	@field('emoji') emoji;
+
 	@json('attachments', sanitizer) attachments;
 
 	@json('urls', sanitizer) urls;
@@ -71,4 +73,6 @@ export default class Thread extends Model {
 	@field('auto_translate') autoTranslate;
 
 	@json('translations', sanitizer) translations;
+
+	@field('e2e') e2e;
 }

@@ -1,9 +1,12 @@
-import { Alert, Linking, AsyncStorage } from 'react-native';
+import { Alert, Linking } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import { isIOS } from './deviceInfo';
 import I18n from '../i18n';
 import { showErrorAlert } from './info';
 import { STORE_REVIEW_LINK } from '../constants/links';
+import { isFDroidBuild } from '../constants/environment';
+import { logEvent, events } from './log';
 
 const store = isIOS ? 'App Store' : 'Play Store';
 
@@ -30,6 +33,7 @@ const onCancelPress = () => {
 };
 
 export const onReviewPress = async() => {
+	logEvent(events.SE_REVIEW_THIS_APP);
 	await onCancelPress();
 	try {
 		const supported = await Linking.canOpenURL(STORE_REVIEW_LINK);
@@ -37,6 +41,7 @@ export const onReviewPress = async() => {
 			Linking.openURL(STORE_REVIEW_LINK);
 		}
 	} catch (e) {
+		logEvent(events.SE_REVIEW_THIS_APP_F);
 		showErrorAlert(I18n.t('Review_app_unable_store', { store }));
 	}
 };
@@ -83,12 +88,14 @@ class ReviewApp {
 	positiveEventCount = 0;
 
 	pushPositiveEvent = () => {
-		if (this.positiveEventCount >= numberOfPositiveEvent) {
-			return;
-		}
-		this.positiveEventCount += 1;
-		if (this.positiveEventCount === numberOfPositiveEvent) {
-			tryReview();
+		if (!isFDroidBuild) {
+			if (this.positiveEventCount >= numberOfPositiveEvent) {
+				return;
+			}
+			this.positiveEventCount += 1;
+			if (this.positiveEventCount === numberOfPositiveEvent) {
+				tryReview();
+			}
 		}
 	}
 }

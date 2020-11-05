@@ -99,6 +99,70 @@ export default ({ theme }) => {
 			<Separator title='Edited' theme={theme} />
 			<Message msg='Message' edited />
 
+			<Separator title='Encrypted' theme={theme} />
+			<Message
+				msg='Message'
+				type='e2e'
+			/>
+			<Message
+				msg='Message Encrypted without Header'
+				isHeader={false}
+				type='e2e'
+			/>
+			<Message
+				msg='Message Encrypted with Reactions'
+				reactions={[{
+					emoji: ':joy:',
+					usernames: [{ value: 'username' }]
+				}, {
+					emoji: ':marioparty:',
+					usernames: [{ value: 'username' }]
+				}, {
+					emoji: ':thinking:',
+					usernames: [{ value: 'username' }]
+				}]}
+				onReactionPress={() => {}}
+				type='e2e'
+			/>
+			<Message
+				msg='Thread reply encrypted'
+				tmid='1'
+				tmsg='Thread with emoji :) :joy:'
+				isThreadReply
+				type='e2e'
+			/>
+			<Message
+				msg='Temp message encrypted'
+				status={messagesStatus.TEMP}
+				isTemp
+				type='e2e'
+			/>
+			<Message
+				msg='Message Edited encrypted'
+				edited
+				type='e2e'
+			/>
+			<Message
+				hasError
+				msg='This message has error and is encrypted'
+				status={messagesStatus.ERROR}
+				onErrorPress={() => alert('Error pressed')}
+				type='e2e'
+			/>
+			<Message
+				msg='Read Receipt encrypted with Header'
+				isReadReceiptEnabled
+				read
+				type='e2e'
+			/>
+			<Message
+				msg='Read Receipt encrypted without Header'
+				isReadReceiptEnabled
+				read
+				isHeader={false}
+				type='e2e'
+			/>
+
 			<Separator title='Block Quote' theme={theme} />
 			<Message msg='> Testing block quote' />
 			<Message msg={'> Testing block quote\nTesting block quote'} />
@@ -133,6 +197,21 @@ export default ({ theme }) => {
 			<Separator title='Mentions' theme={theme} />
 			<Message
 				msg='@rocket.cat @diego.mello @all @here #general'
+				mentions={[{
+					username: 'rocket.cat'
+				}, {
+					username: 'diego.mello'
+				}, {
+					username: 'all'
+				}, {
+					username: 'here'
+				}]}
+				channels={[{
+					name: 'general'
+				}]}
+			/>
+			<Message
+				msg='@rocket.cat Lorem ipsum dolor @diego.mello sit amet, @all consectetur adipiscing @here elit, sed do eiusmod tempor #general incididunt ut labore et dolore magna aliqua.'
 				mentions={[{
 					username: 'rocket.cat'
 				}, {
@@ -267,14 +346,14 @@ export default ({ theme }) => {
 				attachments={[{
 					title: 'This is a title',
 					description: 'This is a description',
-					image_url: '/file-upload/2ZrxuwcGeTrsoh376/Clipboard%20-%20September%205,%202018%204:10%20PM'
+					image_url: '/dummypath'
 				}]}
 			/>
 			<Message
 				attachments={[{
 					title: 'This is a title',
 					description: 'This is a description :nyan_rocket:',
-					image_url: '/file-upload/sxLXBzjwuqxMnebyP/Clipboard%20-%2029%20de%20Agosto%20de%202018%20%C3%A0s%2018:10'
+					image_url: '/dummypath'
 				}]}
 			/>
 
@@ -283,13 +362,13 @@ export default ({ theme }) => {
 				attachments={[{
 					title: 'This is a title',
 					description: 'This is a description :nyan_rocket:',
-					video_url: '/file-upload/cqnKqb6kdajky5Rxj/WhatsApp%20Video%202018-08-22%20at%2019.09.55.mp4'
+					video_url: '/dummypath'
 				}]}
 			/>
 			<Message
 				attachments={[{
 					title: 'This is a title',
-					video_url: '/file-upload/cqnKqb6kdajky5Rxj/WhatsApp%20Video%202018-08-22%20at%2019.09.55.mp4'
+					video_url: '/dummypath'
 				}]}
 			/>
 
@@ -298,7 +377,7 @@ export default ({ theme }) => {
 				attachments={[{
 					title: 'This is a title',
 					description: 'This is a description :nyan_rocket:',
-					audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
+					audio_url: '/dummypath'
 				}]}
 			/>
 			<Message msg='First message' isHeader={false} />
@@ -306,21 +385,36 @@ export default ({ theme }) => {
 				attachments={[{
 					title: 'This is a title',
 					description: 'This is a description',
-					audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
+					audio_url: '/dummypath'
 				}]}
 				isHeader={false}
 			/>
 			<Message
 				attachments={[{
 					title: 'This is a title',
-					audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
+					audio_url: '/dummypath'
 				}]}
 				isHeader={false}
 			/>
 			<Message
 				attachments={[{
 					title: 'This is a title',
-					audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
+					audio_url: '/dummypath'
+				}]}
+				isHeader={false}
+			/>
+
+			<Separator title='With file' theme={theme} />
+			<Message
+				attachments={[{
+					text: 'File.pdf',
+					description: 'This is a description :nyan_rocket:'
+				}]}
+			/>
+			<Message
+				attachments={[{
+					text: 'File.pdf',
+					description: 'This is a description :nyan_rocket:'
 				}]}
 				isHeader={false}
 			/>

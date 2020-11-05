@@ -6,33 +6,23 @@ import {
 
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
-import { isAndroid, isTablet } from '../../../utils/deviceInfo';
 import Icon from './Icon';
 import { themes } from '../../../constants/colors';
 import Markdown from '../../../containers/markdown';
-
-const androidMarginLeft = isTablet ? 0 : 4;
 
 const TITLE_SIZE = 16;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		marginRight: isAndroid ? 15 : 5,
-		marginLeft: isAndroid ? androidMarginLeft : -10
+		justifyContent: 'center'
 	},
 	titleContainer: {
 		alignItems: 'center',
 		flexDirection: 'row'
 	},
-	threadContainer: {
-		marginRight: isAndroid ? 20 : undefined
-	},
 	title: {
 		...sharedStyles.textSemibold,
 		fontSize: TITLE_SIZE
-	},
-	scroll: {
-		alignItems: 'center'
 	},
 	subtitle: {
 		...sharedStyles.textRegular,
@@ -43,11 +33,9 @@ const styles = StyleSheet.create({
 	}
 });
 
-const SubTitle = React.memo(({ usersTyping, subtitle, theme }) => {
-	if (!subtitle && !usersTyping.length) {
-		return null;
-	}
-
+const SubTitle = React.memo(({
+	usersTyping, subtitle, renderFunc, theme
+}) => {
 	// typing
 	if (usersTyping.length) {
 		let usersText;
@@ -64,6 +52,11 @@ const SubTitle = React.memo(({ usersTyping, subtitle, theme }) => {
 		);
 	}
 
+	// renderFunc
+	if (renderFunc) {
+		return renderFunc();
+	}
+
 	// subtitle
 	if (subtitle) {
 		return (
@@ -76,21 +69,20 @@ const SubTitle = React.memo(({ usersTyping, subtitle, theme }) => {
 			/>
 		);
 	}
+
+	return null;
 });
 
 SubTitle.propTypes = {
 	usersTyping: PropTypes.array,
 	theme: PropTypes.string,
-	subtitle: PropTypes.string
+	subtitle: PropTypes.string,
+	renderFunc: PropTypes.func
 };
 
 const HeaderTitle = React.memo(({
-	title, tmid, prid, scale, connecting, theme
+	title, tmid, prid, scale, theme
 }) => {
-	if (connecting) {
-		title = I18n.t('Connecting');
-	}
-
 	if (!tmid && !prid) {
 		return (
 			<Text
@@ -120,12 +112,11 @@ HeaderTitle.propTypes = {
 	tmid: PropTypes.string,
 	prid: PropTypes.string,
 	scale: PropTypes.number,
-	connecting: PropTypes.bool,
 	theme: PropTypes.string
 };
 
 const Header = React.memo(({
-	title, subtitle, type, status, usersTyping, width, height, prid, tmid, widthOffset, connecting, goRoomActionsView, roomUserId, theme
+	title, subtitle, parentTitle, type, status, usersTyping, width, height, prid, tmid, connecting, goRoomActionsView, roomUserId, theme
 }) => {
 	const portrait = height > width;
 	let scale = 1;
@@ -138,15 +129,32 @@ const Header = React.memo(({
 
 	const onPress = () => goRoomActionsView();
 
+	let renderFunc;
+	if (tmid) {
+		renderFunc = () => (
+			<View style={styles.titleContainer}>
+				<Icon
+					type={prid ? 'discussion' : type}
+					tmid={tmid}
+					status={status}
+					roomUserId={roomUserId}
+					theme={theme}
+				/>
+				<Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]}>{parentTitle}</Text>
+			</View>
+		);
+	}
+
 	return (
 		<TouchableOpacity
 			testID='room-view-header-actions'
+			accessibilityLabel={title}
 			onPress={onPress}
-			style={[styles.container, { width: width - widthOffset }]}
+			style={styles.container}
 			disabled={tmid}
 		>
-			<View style={[styles.titleContainer, tmid && styles.threadContainer]}>
-				<Icon type={prid ? 'discussion' : type} status={status} roomUserId={roomUserId} theme={theme} />
+			<View style={styles.titleContainer}>
+				{tmid ? null : <Icon type={prid ? 'discussion' : type} status={status} roomUserId={roomUserId} theme={theme} />}
 				<HeaderTitle
 					title={title}
 					tmid={tmid}
@@ -156,7 +164,7 @@ const Header = React.memo(({
 					theme={theme}
 				/>
 			</View>
-			{tmid ? null : <SubTitle usersTyping={usersTyping} subtitle={subtitle} theme={theme} />}
+			<SubTitle usersTyping={usersTyping} subtitle={subtitle} theme={theme} renderFunc={renderFunc} />
 		</TouchableOpacity>
 	);
 });
@@ -172,9 +180,9 @@ Header.propTypes = {
 	status: PropTypes.string,
 	theme: PropTypes.string,
 	usersTyping: PropTypes.array,
-	widthOffset: PropTypes.number,
 	connecting: PropTypes.bool,
 	roomUserId: PropTypes.string,
+	parentTitle: PropTypes.string,
 	goRoomActionsView: PropTypes.func
 };
 

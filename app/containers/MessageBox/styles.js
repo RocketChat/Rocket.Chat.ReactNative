@@ -7,15 +7,9 @@ const MENTION_HEIGHT = 50;
 const SCROLLVIEW_MENTION_HEIGHT = 4 * MENTION_HEIGHT;
 
 export default StyleSheet.create({
-	textBox: {
-		flex: 0,
-		alignItems: 'center',
-		borderTopWidth: StyleSheet.hairlineWidth,
-		zIndex: 2
-	},
 	composer: {
 		flexDirection: 'column',
-		borderTopWidth: StyleSheet.hairlineWidth
+		borderTopWidth: 1
 	},
 	textArea: {
 		flexDirection: 'row',
@@ -24,7 +18,7 @@ export default StyleSheet.create({
 	},
 	textBoxInput: {
 		textAlignVertical: 'center',
-		maxHeight: 242,
+		maxHeight: 240,
 		flexGrow: 1,
 		width: 1,
 		// paddingVertical: 12, needs to be paddingTop/paddingBottom because of iOS/Android's TextInput differences on rendering
@@ -32,7 +26,7 @@ export default StyleSheet.create({
 		paddingBottom: 12,
 		paddingLeft: 0,
 		paddingRight: 0,
-		fontSize: 17,
+		fontSize: 16,
 		letterSpacing: 0,
 		...sharedStyles.textRegular
 	},
@@ -40,7 +34,7 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		width: 60,
-		height: 56
+		height: 48
 	},
 	mentionList: {
 		maxHeight: MENTION_HEIGHT * 4
@@ -103,5 +97,28 @@ export default StyleSheet.create({
 	},
 	scrollViewMention: {
 		maxHeight: SCROLLVIEW_MENTION_HEIGHT
+	},
+	recordingContent: {
+		flexDirection: 'row',
+		flex: 1,
+		justifyContent: 'space-between'
+	},
+	recordingCancelText: {
+		fontSize: 16,
+		...sharedStyles.textRegular
+	},
+	buttonsWhitespace: {
+		width: 15
+	},
+	sendToChannelButton: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		paddingVertical: 8,
+		paddingHorizontal: 18
+	},
+	sendToChannelText: {
+		fontSize: 12,
+		marginLeft: 4,
+		...sharedStyles.textRegular
 	}
 });

@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	ScrollView, Text, View, SafeAreaView
+	ScrollView, Text, View, TouchableWithoutFeedback
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
+import isEqual from 'react-fast-compare';
 
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status/Status';
-import log from '../../utils/log';
+import log, { logEvent, events } from '../../utils/log';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { CustomIcon } from '../../lib/Icons';
@@ -17,8 +18,8 @@ import SidebarItem from './SidebarItem';
 import { themes } from '../../constants/colors';
 import database from '../../lib/database';
 import { withTheme } from '../../theme';
-import { withSplit } from '../../split';
 import { getUserSelector } from '../../selectors/login';
+import SafeAreaView from '../../containers/SafeAreaView';
 import Navigation from '../../lib/Navigation';
 
 const Separator = React.memo(({ theme }) => <View style={[styles.separator, { borderColor: themes[theme].separatorColor }]} />);
@@ -39,12 +40,12 @@ class Sidebar extends Component {
 		navigation: PropTypes.object,
 		Site_Name: PropTypes.string.isRequired,
 		user: PropTypes.object,
-		activeItemKey: PropTypes.string,
+		state: PropTypes.string,
 		theme: PropTypes.string,
 		loadingServer: PropTypes.bool,
 		useRealName: PropTypes.bool,
 		allowStatusMessage: PropTypes.bool,
-		split: PropTypes.bool
+		isMasterDetail: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -59,7 +60,7 @@ class Sidebar extends Component {
 		this.setIsAdmin();
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		const { loadingServer } = this.props;
 		if (loadingServer && nextProps.loadingServer !== loadingServer) {
 			this.setIsAdmin();
@@ -69,8 +70,12 @@ class Sidebar extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { showStatus, isAdmin } = this.state;
 		const {
-			Site_Name, user, baseUrl, activeItemKey, split, useRealName, theme
+			Site_Name, user, baseUrl, state, isMasterDetail, useRealName, theme
 		} = this.props;
+		// Drawer navigation state
+		if (state?.index !== nextProps.state?.index) {
+			return true;
+		}
 		if (nextState.showStatus !== showStatus) {
 			return true;
 		}
@@ -83,27 +88,13 @@ class Sidebar extends Component {
 		if (nextProps.baseUrl !== baseUrl) {
 			return true;
 		}
-		if (nextProps.activeItemKey !== activeItemKey) {
-			return true;
-		}
 		if (nextProps.theme !== theme) {
 			return true;
 		}
-		if (nextProps.user && user) {
-			if (nextProps.user.language !== user.language) {
-				return true;
-			}
-			if (nextProps.user.status !== user.status) {
-				return true;
-			}
-			if (nextProps.user.username !== user.username) {
-				return true;
-			}
-			if (nextProps.user.statusText !== user.statusText) {
-				return true;
-			}
+		if (!isEqual(nextProps.user, user)) {
+			return true;
 		}
-		if (nextProps.split !== split) {
+		if (nextProps.isMasterDetail !== isMasterDetail) {
 			return true;
 		}
 		if (nextProps.useRealName !== useRealName) {
@@ -134,45 +125,70 @@ class Sidebar extends Component {
 	}
 
 	sidebarNavigate = (route) => {
-		const { navigation } = this.props;
-		navigation.navigate(route);
+		logEvent(events[`SIDEBAR_GO_${ route.replace('StackNavigator', '').replace('View', '').toUpperCase() }`]);
+		Navigation.navigate(route);
+	}
+
+	get currentItemKey() {
+		const { state } = this.props;
+		return state?.routeNames[state?.index];
+	}
+
+	onPressUser = () => {
+		const { navigation, isMasterDetail } = this.props;
+		if (isMasterDetail) {
+			return;
+		}
+		navigation.closeDrawer();
+	}
+
+	renderAdmin = () => {
+		const { isAdmin } = this.state;
+		const { theme, isMasterDetail } = this.props;
+		if (!isAdmin) {
+			return null;
+		}
+		const routeName = isMasterDetail ? 'AdminPanelView' : 'AdminPanelStackNavigator';
+		return (
+			<>
+				<Separator theme={theme} />
+				<SidebarItem
+					text={I18n.t('Admin_Panel')}
+					left={<CustomIcon name='settings' size={20} color={themes[theme].titleText} />}
+					onPress={() => this.sidebarNavigate(routeName)}
+					testID='sidebar-settings'
+					current={this.currentItemKey === routeName}
+				/>
+			</>
+		);
 	}
 
 	renderNavigation = () => {
-		const { isAdmin } = this.state;
-		const { activeItemKey, theme } = this.props;
+		const { theme } = this.props;
 		return (
 			<>
 				<SidebarItem
 					text={I18n.t('Chats')}
 					left={<CustomIcon name='message' size={20} color={themes[theme].titleText} />}
-					onPress={() => this.sidebarNavigate('RoomsListView')}
+					onPress={() => this.sidebarNavigate('ChatsStackNavigator')}
 					testID='sidebar-chats'
-					current={activeItemKey === 'ChatsStack'}
+					current={this.currentItemKey === 'ChatsStackNavigator'}
 				/>
 				<SidebarItem
 					text={I18n.t('Profile')}
 					left={<CustomIcon name='user' size={20} color={themes[theme].titleText} />}
-					onPress={() => this.sidebarNavigate('ProfileView')}
+					onPress={() => this.sidebarNavigate('ProfileStackNavigator')}
 					testID='sidebar-profile'
-					current={activeItemKey === 'ProfileStack'}
+					current={this.currentItemKey === 'ProfileStackNavigator'}
 				/>
 				<SidebarItem
 					text={I18n.t('Settings')}
-					left={<CustomIcon name='cog' size={20} color={themes[theme].titleText} />}
-					onPress={() => this.sidebarNavigate('SettingsView')}
+					left={<CustomIcon name='administration' size={20} color={themes[theme].titleText} />}
+					onPress={() => this.sidebarNavigate('SettingsStackNavigator')}
 					testID='sidebar-settings'
-					current={activeItemKey === 'SettingsStack'}
+					current={this.currentItemKey === 'SettingsStackNavigator'}
 				/>
-				{isAdmin ? (
-					<SidebarItem
-						text={I18n.t('Admin_Panel')}
-						left={<CustomIcon name='shield-alt' size={20} color={themes[theme].titleText} />}
-						onPress={() => this.sidebarNavigate('AdminPanelView')}
-						testID='sidebar-settings'
-						current={activeItemKey === 'AdminPanelStack'}
-					/>
-				) : null}
+				{this.renderAdmin()}
 			</>
 		);
 	}
@@ -184,7 +200,7 @@ class Sidebar extends Component {
 				text={user.statusText || I18n.t('Edit_Status')}
 				left={<Status style={styles.status} size={12} status={user && user.status} />}
 				right={<CustomIcon name='edit' size={20} color={themes[theme].titleText} />}
-				onPress={() => Navigation.navigate('StatusView')}
+				onPress={() => this.sidebarNavigate('StatusView')}
 				testID='sidebar-custom-status'
 			/>
 		);
@@ -192,52 +208,60 @@ class Sidebar extends Component {
 
 	render() {
 		const {
-			user, Site_Name, baseUrl, useRealName, allowStatusMessage, split, theme
+			user, Site_Name, baseUrl, useRealName, allowStatusMessage, isMasterDetail, theme
 		} = this.props;
 
 		if (!user) {
 			return null;
 		}
 		return (
-			<SafeAreaView testID='sidebar-view' style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]}>
+			<SafeAreaView testID='sidebar-view' style={{ backgroundColor: themes[theme].focusedBackground }} vertical={isMasterDetail}>
 				<ScrollView
 					style={[
 						styles.container,
 						{
-							backgroundColor: split
+							backgroundColor: isMasterDetail
 								? themes[theme].backgroundColor
 								: themes[theme].focusedBackground
 						}
 					]}
 					{...scrollPersistTaps}
 				>
-					<View style={styles.header} theme={theme}>
-						<Avatar
-							text={user.username}
-							size={30}
-							style={styles.avatar}
-							baseUrl={baseUrl}
-							userId={user.id}
-							token={user.token}
-						/>
-						<View style={styles.headerTextContainer}>
-							<View style={styles.headerUsername}>
-								<Text numberOfLines={1} style={[styles.username, { color: themes[theme].titleText }]}>{useRealName ? user.name : user.username}</Text>
+					<TouchableWithoutFeedback onPress={this.onPressUser} testID='sidebar-close-drawer'>
+						<View style={styles.header} theme={theme}>
+							<Avatar
+								text={user.username}
+								style={styles.avatar}
+								size={30}
+							/>
+							<View style={styles.headerTextContainer}>
+								<View style={styles.headerUsername}>
+									<Text numberOfLines={1} style={[styles.username, { color: themes[theme].titleText }]}>{useRealName ? user.name : user.username}</Text>
+								</View>
+								<Text
+									style={[styles.currentServerText, { color: themes[theme].titleText }]}
+									numberOfLines={1}
+									accessibilityLabel={`Connected to ${ baseUrl }`}
+								>{Site_Name}
+								</Text>
 							</View>
-							<Text style={[styles.currentServerText, { color: themes[theme].titleText }]} numberOfLines={1}>{Site_Name}</Text>
 						</View>
-					</View>
+					</TouchableWithoutFeedback>
 
 					<Separator theme={theme} />
 
 					{allowStatusMessage ? this.renderCustomStatus() : null}
-					{!split ? (
+					{!isMasterDetail ? (
 						<>
 							<Separator theme={theme} />
 							{this.renderNavigation()}
 							<Separator theme={theme} />
 						</>
-					) : null}
+					) : (
+						<>
+							{this.renderAdmin()}
+						</>
+					)}
 				</ScrollView>
 			</SafeAreaView>
 		);
@@ -250,7 +274,8 @@ const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	loadingServer: state.server.loading,
 	useRealName: state.settings.UI_Use_Real_Name,
-	allowStatusMessage: state.settings.Accounts_AllowUserStatusMessageChange
+	allowStatusMessage: state.settings.Accounts_AllowUserStatusMessageChange,
+	isMasterDetail: state.app.isMasterDetail
 });
 
-export default connect(mapStateToProps)(withTheme(withSplit(Sidebar)));
+export default connect(mapStateToProps)(withTheme(Sidebar));

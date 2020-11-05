@@ -21,10 +21,15 @@ const Hashtag = React.memo(({
 	if (channels && channels.length && channels.findIndex(channel => channel.name === hashtag) !== -1) {
 		return (
 			<Text
-				style={[styles.mention, ...style]}
+				style={[
+					styles.mention,
+					{
+						color: themes[theme].mentionOtherColor
+					},
+					...style]}
 				onPress={handlePress}
 			>
-				{hashtag}
+				{`#${ hashtag }`}
 			</Text>
 		);
 	}

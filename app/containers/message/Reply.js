@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import Touchable from 'react-native-platform-touchable';
 import isEqual from 'deep-equal';
 
+import Touchable from './Touchable';
 import Markdown from '../markdown';
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
-import { withSplit } from '../../split';
+import MessageContext from './Context';
 
 const styles = StyleSheet.create({
 	button: {
@@ -62,6 +62,9 @@ const styles = StyleSheet.create({
 	},
 	marginTop: {
 		marginTop: 4
+	},
+	marginBottom: {
+		marginBottom: 4
 	}
 });
 
@@ -79,12 +82,13 @@ const Title = React.memo(({ attachment, timeFormat, theme }) => {
 });
 
 const Description = React.memo(({
-	attachment, baseUrl, user, getCustomEmoji, theme
+	attachment, getCustomEmoji, theme
 }) => {
 	const text = attachment.text || attachment.title;
 	if (!text) {
 		return null;
 	}
+	const { baseUrl, user } = useContext(MessageContext);
 	return (
 		<Markdown
 			msg={text}
@@ -124,11 +128,12 @@ const Fields = React.memo(({ attachment, theme }) => {
 }, (prevProps, nextProps) => isEqual(prevProps.attachment.fields, nextProps.attachment.fields) && prevProps.theme === nextProps.theme);
 
 const Reply = React.memo(({
-	attachment, timeFormat, baseUrl, user, index, getCustomEmoji, split, theme
+	attachment, timeFormat, index, getCustomEmoji, theme
 }) => {
 	if (!attachment) {
 		return null;
 	}
+	const { baseUrl, user } = useContext(MessageContext);
 
 	const onPress = () => {
 		let url = attachment.title_link || attachment.author_link;
@@ -136,50 +141,61 @@ const Reply = React.memo(({
 			return;
 		}
 		if (attachment.type === 'file') {
-			url = `${ baseUrl }${ url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
+			if (!url.startsWith('http')) {
+				url = `${ baseUrl }${ url }`;
+			}
+			url = `${ url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
 		}
 		openLink(url, theme);
 	};
 
 	return (
-		<Touchable
-			onPress={onPress}
-			style={[
-				styles.button,
-				index > 0 && styles.marginTop,
-				{
-					backgroundColor: themes[theme].chatComponentBackground,
-					borderColor: themes[theme].borderColor
-				},
-				split && sharedStyles.tabletContent
-			]}
-			background={Touchable.Ripple(themes[theme].bannerBackground)}
-		>
-			<View style={styles.attachmentContainer}>
-				<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
-				<Description
-					attachment={attachment}
-					timeFormat={timeFormat}
-					baseUrl={baseUrl}
-					user={user}
-					getCustomEmoji={getCustomEmoji}
-					theme={theme}
-				/>
-				<Fields attachment={attachment} theme={theme} />
-			</View>
-		</Touchable>
+		<>
+			<Touchable
+				onPress={onPress}
+				style={[
+					styles.button,
+					index > 0 && styles.marginTop,
+					attachment.description && styles.marginBottom,
+					{
+						backgroundColor: themes[theme].chatComponentBackground,
+						borderColor: themes[theme].borderColor
+					}
+				]}
+				background={Touchable.Ripple(themes[theme].bannerBackground)}
+			>
+				<View style={styles.attachmentContainer}>
+					<Title
+						attachment={attachment}
+						timeFormat={timeFormat}
+						theme={theme}
+					/>
+					<Description
+						attachment={attachment}
+						timeFormat={timeFormat}
+						getCustomEmoji={getCustomEmoji}
+						theme={theme}
+					/>
+					<Fields attachment={attachment} theme={theme} />
+				</View>
+			</Touchable>
+			<Markdown
+				msg={attachment.description}
+				baseUrl={baseUrl}
+				username={user.username}
+				getCustomEmoji={getCustomEmoji}
+				theme={theme}
+			/>
+		</>
 	);
-}, (prevProps, nextProps) => isEqual(prevProps.attachment, nextProps.attachment) && prevProps.split === nextProps.split && prevProps.theme === nextProps.theme);
+}, (prevProps, nextProps) => isEqual(prevProps.attachment, nextProps.attachment) && prevProps.theme === nextProps.theme);
 
 Reply.propTypes = {
 	attachment: PropTypes.object,
 	timeFormat: PropTypes.string,
-	baseUrl: PropTypes.string,
-	user: PropTypes.object,
 	index: PropTypes.number,
 	theme: PropTypes.string,
-	getCustomEmoji: PropTypes.func,
-	split: PropTypes.bool
+	getCustomEmoji: PropTypes.func
 };
 Reply.displayName = 'MessageReply';
 
@@ -192,8 +208,6 @@ Title.displayName = 'MessageReplyTitle';
 
 Description.propTypes = {
 	attachment: PropTypes.object,
-	baseUrl: PropTypes.string,
-	user: PropTypes.object,
 	getCustomEmoji: PropTypes.func,
 	theme: PropTypes.string
 };
@@ -205,4 +219,4 @@ Fields.propTypes = {
 };
 Fields.displayName = 'MessageReplyFields';
 
-export default withSplit(Reply);
+export default Reply;

@@ -1,0 +1,406 @@
+diff --git a/node_modules/react-native/Libraries/Components/TextInput/TextInput.js b/node_modules/react-native/Libraries/Components/TextInput/TextInput.js
+index 478af12..d3cd45c 100644
+--- a/node_modules/react-native/Libraries/Components/TextInput/TextInput.js
++++ b/node_modules/react-native/Libraries/Components/TextInput/TextInput.js
+@@ -700,6 +700,7 @@ export type Props = $ReadOnly<{|
+ 
+ type ImperativeMethods = $ReadOnly<{|
+   clear: () => void,
++  setTextAndSelection: () => void,
+   isFocused: () => boolean,
+   getNativeRef: () => ?React.ElementRef<HostComponent<mixed>>,
+ |}>;
+@@ -947,6 +948,18 @@ function InternalTextInput(props: Props): React.Node {
+     }
+   }
+ 
++  function setTextAndSelection(_text, _selection): void {
++    if (inputRef.current != null) {
++      viewCommands.setTextAndSelection(
++        inputRef.current,
++        mostRecentEventCount,
++        _text,
++        _selection?.start ?? -1,
++        _selection?.end ?? -1,
++      );
++    }
++  }
++
+   // TODO: Fix this returning true on null === null, when no input is focused
+   function isFocused(): boolean {
+     return TextInputState.currentlyFocusedInput() === inputRef.current;
+@@ -985,6 +998,7 @@ function InternalTextInput(props: Props): React.Node {
+         */
+       if (ref) {
+         ref.clear = clear;
++        ref.setTextAndSelection = setTextAndSelection;
+         ref.isFocused = isFocused;
+         ref.getNativeRef = getNativeRef;
+       }
+diff --git a/node_modules/react-native/Libraries/Image/RCTUIImageViewAnimated.m b/node_modules/react-native/Libraries/Image/RCTUIImageViewAnimated.m
+index af4becd..55bc2c8 100644
+--- a/node_modules/react-native/Libraries/Image/RCTUIImageViewAnimated.m
++++ b/node_modules/react-native/Libraries/Image/RCTUIImageViewAnimated.m
+@@ -275,6 +275,8 @@ - (void)displayLayer:(CALayer *)layer
+   if (_currentFrame) {
+     layer.contentsScale = self.animatedImageScale;
+     layer.contents = (__bridge id)_currentFrame.CGImage;
++  } else {
++    [super displayLayer:layer];
+   }
+ }
+ 
+diff --git a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
+index 274f381..c7749ef 100644
+--- a/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
++++ b/node_modules/react-native/Libraries/Network/RCTHTTPRequestHandler.mm
+@@ -8,11 +8,13 @@
+ #import <React/RCTHTTPRequestHandler.h>
+ 
+ #import <mutex>
+-
++#import <MMKV/MMKV.h>
+ #import <React/RCTNetworking.h>
+ #import <ReactCommon/RCTTurboModule.h>
++#import <SDWebImage/SDWebImageDownloader.h>
+ 
+ #import "RCTNetworkPlugins.h"
++#import "SecureStorage.h"
+ 
+ @interface RCTHTTPRequestHandler () <NSURLSessionDataDelegate, RCTTurboModule>
+ 
+@@ -58,6 +60,103 @@ - (BOOL)canHandleRequest:(NSURLRequest *)request
+   return [schemes containsObject:request.URL.scheme.lowercaseString];
+ }
+ 
++-(NSURLCredential *)getUrlCredential:(NSURLAuthenticationChallenge *)challenge path:(NSString *)path password:(NSString *)password
++{
++  NSString *authMethod = [[challenge protectionSpace] authenticationMethod];
++  SecTrustRef serverTrust = challenge.protectionSpace.serverTrust;
++
++  if ([authMethod isEqualToString:NSURLAuthenticationMethodServerTrust] || path == nil || password == nil) {
++    return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++  } else if (path && password) {
++    NSMutableArray *policies = [NSMutableArray array];
++    [policies addObject:(__bridge_transfer id)SecPolicyCreateSSL(true, (__bridge CFStringRef)challenge.protectionSpace.host)];
++    SecTrustSetPolicies(serverTrust, (__bridge CFArrayRef)policies);
++
++    SecTrustResultType result;
++    SecTrustEvaluate(serverTrust, &result);
++
++    if (![[NSFileManager defaultManager] fileExistsAtPath:path])
++    {
++      return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++    }
++
++    NSData *p12data = [NSData dataWithContentsOfFile:path];
++    NSDictionary* options = @{ (id)kSecImportExportPassphrase:password };
++    CFArrayRef rawItems = NULL;
++    OSStatus status = SecPKCS12Import((__bridge CFDataRef)p12data,
++                                      (__bridge CFDictionaryRef)options,
++                                      &rawItems);
++
++    if (status != noErr) {
++      return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++    }
++
++    NSArray* items = (NSArray*)CFBridgingRelease(rawItems);
++    NSDictionary* firstItem = nil;
++    if ((status == errSecSuccess) && ([items count]>0)) {
++        firstItem = items[0];
++    }
++
++    SecIdentityRef identity = (SecIdentityRef)CFBridgingRetain(firstItem[(id)kSecImportItemIdentity]);
++    SecCertificateRef certificate = NULL;
++    if (identity) {
++        SecIdentityCopyCertificate(identity, &certificate);
++        if (certificate) { CFRelease(certificate); }
++    }
++
++    NSMutableArray *certificates = [[NSMutableArray alloc] init];
++    [certificates addObject:CFBridgingRelease(certificate)];
++
++    [SDWebImageDownloader sharedDownloader].config.urlCredential = [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
++
++    return [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
++  }
++
++  return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++}
++
++- (NSString *)stringToHex:(NSString *)string
++{
++  char *utf8 = (char *)[string UTF8String];
++  NSMutableString *hex = [NSMutableString string];
++  while (*utf8) [hex appendFormat:@"%02X", *utf8++ & 0x00FF];
++
++  return [[NSString stringWithFormat:@"%@", hex] lowercaseString];
++}
++
++-(void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler {
++
++  NSString *host = challenge.protectionSpace.host;
++  
++  // Read the clientSSL info from MMKV
++  __block NSDictionary *clientSSL;
++  SecureStorage *secureStorage = [[SecureStorage alloc] init];
++
++  // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
++  [secureStorage getSecureKey:[self stringToHex:@"com.MMKV.default"] callback:^(NSArray *response) {
++    // Error happened
++    if ([response objectAtIndex:0] != [NSNull null]) {
++        return;
++    }
++    NSString *key = [response objectAtIndex:1];
++    NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
++    MMKV *mmkv = [MMKV mmkvWithID:@"default" cryptKey:cryptKey mode:MMKVMultiProcess];
++
++    clientSSL = [mmkv getObjectOfClass:[NSDictionary class] forKey:host];
++  }];
++
++  NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++
++  if (clientSSL != (id)[NSNull null]) {
++    NSString *path = [clientSSL objectForKey:@"path"];
++    NSString *password = [clientSSL objectForKey:@"password"];
++    credential = [self getUrlCredential:challenge path:path password:password];
++  }
++
++  completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
++}
++
++
+ - (NSURLSessionDataTask *)sendRequest:(NSURLRequest *)request
+                          withDelegate:(id<RCTURLRequestDelegate>)delegate
+ {
+diff --git a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
+index b967c14..5ffc258 100644
+--- a/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
++++ b/node_modules/react-native/Libraries/WebSocket/RCTSRWebSocket.m
+@@ -24,6 +24,9 @@
+ #import <React/RCTAssert.h>
+ #import <React/RCTLog.h>
+ 
++#import <MMKV/MMKV.h>
++#import "SecureStorage.h"
++
+ typedef NS_ENUM(NSInteger, RCTSROpCode)  {
+   RCTSROpCodeTextFrame = 0x1,
+   RCTSROpCodeBinaryFrame = 0x2,
+@@ -478,6 +481,38 @@ - (void)didConnect
+   [self _readHTTPHeader];
+ }
+ 
++- (void)setClientSSL:(NSString *)path password:(NSString *)password options:(NSMutableDictionary *)options;
++{    
++    if ([[NSFileManager defaultManager] fileExistsAtPath:path])
++    {
++      NSData *pkcs12data = [[NSData alloc] initWithContentsOfFile:path];
++      NSDictionary* certOptions = @{ (id)kSecImportExportPassphrase:password };
++      CFArrayRef keyref = NULL;
++      OSStatus sanityChesk = SecPKCS12Import((__bridge CFDataRef)pkcs12data,
++                                              (__bridge CFDictionaryRef)certOptions,
++                                              &keyref);
++      if (sanityChesk == noErr) {
++        CFDictionaryRef identityDict = CFArrayGetValueAtIndex(keyref, 0);
++        SecIdentityRef identityRef = (SecIdentityRef)CFDictionaryGetValue(identityDict, kSecImportItemIdentity);
++        SecCertificateRef cert = NULL;
++        OSStatus status = SecIdentityCopyCertificate(identityRef, &cert);
++        if (!status) {
++          NSArray *certificates = [[NSArray alloc] initWithObjects:(__bridge id)identityRef, (__bridge id)cert, nil];
++          [options setObject:certificates forKey:(NSString *)kCFStreamSSLCertificates];
++        }
++      }
++    }
++}
++
++- (NSString *)stringToHex:(NSString *)string
++{
++  char *utf8 = (char *)[string UTF8String];
++  NSMutableString *hex = [NSMutableString string];
++  while (*utf8) [hex appendFormat:@"%02X", *utf8++ & 0x00FF];
++
++  return [[NSString stringWithFormat:@"%@", hex] lowercaseString];
++}
++
+ - (void)_initializeStreams
+ {
+   assert(_url.port.unsignedIntValue <= UINT32_MAX);
+@@ -515,6 +550,31 @@ - (void)_initializeStreams
+     RCTLogInfo(@"SocketRocket: In debug mode.  Allowing connection to any root cert");
+ #endif
+ 
++    // Read the clientSSL info from MMKV
++    __block NSDictionary *clientSSL;
++    SecureStorage *secureStorage = [[SecureStorage alloc] init];
++
++    // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
++    [secureStorage getSecureKey:[self stringToHex:@"com.MMKV.default"] callback:^(NSArray *response) {
++      // Error happened
++      if ([response objectAtIndex:0] != [NSNull null]) {
++          return;
++      }
++      NSString *key = [response objectAtIndex:1];
++      NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
++      MMKV *mmkv = [MMKV mmkvWithID:@"default" cryptKey:cryptKey mode:MMKVMultiProcess];
++
++      clientSSL = [mmkv getObjectOfClass:[NSDictionary class] forKey:host];
++    }];
++
++    if (clientSSL != (id)[NSNull null]) {
++      NSString *path = [clientSSL objectForKey:@"path"];
++      NSString *password = [clientSSL objectForKey:@"password"];
++
++      [self setClientSSL:path password:password options:SSLOptions];
++    }
++
++
+     [_outputStream setProperty:SSLOptions
+                         forKey:(__bridge id)kCFStreamPropertySSLSettings];
+   }
+@@ -594,6 +654,7 @@ - (void)closeWithCode:(NSInteger)code reason:(NSString *)reason
+       }
+     }
+ 
++    [self.delegate webSocket:self didCloseWithCode:code reason:reason wasClean:YES];
+     [self _sendFrameWithOpcode:RCTSROpCodeConnectionClose data:payload];
+   });
+ }
+diff --git a/node_modules/react-native/React/Base/RCTKeyCommands.h b/node_modules/react-native/React/Base/RCTKeyCommands.h
+index 983348e..95742f4 100644
+--- a/node_modules/react-native/React/Base/RCTKeyCommands.h
++++ b/node_modules/react-native/React/Base/RCTKeyCommands.h
+@@ -18,6 +18,12 @@
+                       modifierFlags:(UIKeyModifierFlags)flags
+                              action:(void (^)(UIKeyCommand *command))block;
+ 
++- (void)registerKeyCommand:(NSString *)input
++                      modifierFlags:(UIKeyModifierFlags)flags
++               discoverabilityTitle:(NSString *)discoverabilityTitle
++                             action:(void (^)(UIKeyCommand *))block;
++
++
+ /**
+  * Unregister a single-press keyboard command.
+  */
+diff --git a/node_modules/react-native/React/Base/RCTKeyCommands.m b/node_modules/react-native/React/Base/RCTKeyCommands.m
+index d48ba93..387d551 100644
+--- a/node_modules/react-native/React/Base/RCTKeyCommands.m
++++ b/node_modules/react-native/React/Base/RCTKeyCommands.m
+@@ -12,8 +12,6 @@
+ #import "RCTDefines.h"
+ #import "RCTUtils.h"
+ 
+-#if RCT_DEV
+-
+ @interface RCTKeyCommand : NSObject <NSCopying>
+ 
+ @property (nonatomic, strong) UIKeyCommand *keyCommand;
+@@ -115,7 +113,9 @@ - (void)RCT_handleKeyCommand:(UIKeyCommand *)key
+   // NOTE: throttle the key handler because on iOS 9 the handleKeyCommand:
+   // method gets called repeatedly if the command key is held down.
+   static NSTimeInterval lastCommand = 0;
+-  if (CACurrentMediaTime() - lastCommand > 0.5) {
++  if (CACurrentMediaTime() - lastCommand > 0.5 ||
++    [key.input isEqualToString:@"UIKeyInputUpArrow"] || // repeat command if is scroll
++    [key.input isEqualToString:@"UIKeyInputDownArrow"]) {
+     for (RCTKeyCommand *command in [RCTKeyCommands sharedInstance].commands) {
+       if ([command.keyCommand.input isEqualToString:key.input] &&
+           command.keyCommand.modifierFlags == key.modifierFlags) {
+@@ -178,6 +178,8 @@ - (void)RCT_handleDoublePressKeyCommand:(UIKeyCommand *)key
+ 
+ @end
+ 
++#if RCT_DEV
++
+ @implementation RCTKeyCommands
+ 
+ + (void)initialize
+@@ -220,6 +222,23 @@ - (void)registerKeyCommandWithInput:(NSString *)input
+   [_commands addObject:keyCommand];
+ }
+ 
++- (void)registerKeyCommand:(NSString *)input
++                      modifierFlags:(UIKeyModifierFlags)flags
++               discoverabilityTitle:(NSString *)discoverabilityTitle
++                             action:(void (^)(UIKeyCommand *))block
++{
++  RCTAssertMainQueue();
++
++  UIKeyCommand *command = [UIKeyCommand keyCommandWithInput:input
++                                              modifierFlags:flags
++                                                     action:@selector(RCT_handleKeyCommand:)
++                                       discoverabilityTitle:discoverabilityTitle];
++
++  RCTKeyCommand *keyCommand = [[RCTKeyCommand alloc] initWithKeyCommand:command block:block];
++  [_commands removeObject:keyCommand];
++  [_commands addObject:keyCommand];
++}
++
+ - (void)unregisterKeyCommandWithInput:(NSString *)input modifierFlags:(UIKeyModifierFlags)flags
+ {
+   RCTAssertMainQueue();
+@@ -289,9 +308,48 @@ - (BOOL)isDoublePressKeyCommandRegisteredForInput:(NSString *)input modifierFlag
+ 
+ @implementation RCTKeyCommands
+ 
+++ (void)initialize
++{
++  // swizzle UIResponder
++  RCTSwapInstanceMethods([UIResponder class],
++                         @selector(keyCommands),
++                         @selector(RCT_keyCommands));
++}
++
+ + (instancetype)sharedInstance
+ {
+-  return nil;
++  static RCTKeyCommands *sharedInstance;
++  static dispatch_once_t onceToken;
++  dispatch_once(&onceToken, ^{
++    sharedInstance = [self new];
++  });
++
++  return sharedInstance;
++}
++
++- (instancetype)init
++{
++  if ((self = [super init])) {
++    _commands = [NSMutableSet new];
++  }
++  return self;
++}
++
++- (void)registerKeyCommand:(NSString *)input
++                      modifierFlags:(UIKeyModifierFlags)flags
++                discoverabilityTitle:(NSString *)discoverabilityTitle
++                              action:(void (^)(UIKeyCommand *))block
++{
++  RCTAssertMainQueue();
++
++  UIKeyCommand *command = [UIKeyCommand keyCommandWithInput:input
++                                              modifierFlags:flags
++                                                      action:@selector(RCT_handleKeyCommand:)
++                                        discoverabilityTitle:discoverabilityTitle];
++
++  RCTKeyCommand *keyCommand = [[RCTKeyCommand alloc] initWithKeyCommand:command block:block];
++  [_commands removeObject:keyCommand];
++  [_commands addObject:keyCommand];
+ }
+ 
+ - (void)registerKeyCommandWithInput:(NSString *)input
+@@ -302,6 +360,13 @@ - (void)registerKeyCommandWithInput:(NSString *)input
+ 
+ - (void)unregisterKeyCommandWithInput:(NSString *)input modifierFlags:(UIKeyModifierFlags)flags
+ {
++  RCTAssertMainQueue();
++  for (RCTKeyCommand *command in _commands.allObjects) {
++    if ([command matchesInput:input flags:flags]) {
++      [_commands removeObject:command];
++      break;
++    }
++  }
+ }
+ 
+ - (BOOL)isKeyCommandRegisteredForInput:(NSString *)input modifierFlags:(UIKeyModifierFlags)flags

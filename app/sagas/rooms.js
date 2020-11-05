@@ -1,10 +1,9 @@
 import {
 	put, select, race, take, fork, cancel, delay
 } from 'redux-saga/effects';
-import { BACKGROUND, INACTIVE } from 'redux-enhancer-react-native-appstate';
 import { Q } from '@nozbe/watermelondb';
-
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+
 import * as types from '../actions/actionsTypes';
 import { roomsSuccess, roomsFailure, roomsRefresh } from '../actions/rooms';
 import database from '../lib/database';
@@ -17,13 +16,17 @@ import protectedFunction from '../lib/methods/helpers/protectedFunction';
 const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 	const serversDB = database.servers;
 	const serversCollection = serversDB.collections.get('servers');
-	const serverRecord = yield serversCollection.find(server);
+	try {
+		const serverRecord = yield serversCollection.find(server);
 
-	return serversDB.action(async() => {
-		await serverRecord.update((record) => {
-			record.roomsUpdatedAt = newRoomsUpdatedAt;
+		return serversDB.action(async() => {
+			await serverRecord.update((record) => {
+				record.roomsUpdatedAt = newRoomsUpdatedAt;
+			});
 		});
-	});
+	} catch {
+		// Server not found
+	}
 };
 
 const handleRoomsRequest = function* handleRoomsRequest({ params }) {
@@ -37,8 +40,12 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 			yield put(roomsRefresh());
 		} else {
 			const serversCollection = serversDB.collections.get('servers');
-			const serverRecord = yield serversCollection.find(server);
-			({ roomsUpdatedAt } = serverRecord);
+			try {
+				const serverRecord = yield serversCollection.find(server);
+				({ roomsUpdatedAt } = serverRecord);
+			} catch {
+				// Server not found
+			}
 		}
 		const [subscriptionsResult, roomsResult] = yield RocketChat.getRooms(roomsUpdatedAt);
 		const { subscriptions } = yield mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
@@ -47,12 +54,12 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 		const subCollection = db.collections.get('subscriptions');
 		const messagesCollection = db.collections.get('messages');
 
-		if (subscriptions.length) {
-			const subsIds = subscriptions.map(sub => sub.rid);
+		const subsIds = subscriptions.map(sub => sub.rid).concat(roomsResult.remove.map(room => room._id));
+		if (subsIds.length) {
 			const existingSubs = yield subCollection.query(Q.where('id', Q.oneOf(subsIds))).fetch();
 			const subsToUpdate = existingSubs.filter(i1 => subscriptions.find(i2 => i1._id === i2._id));
 			const subsToCreate = subscriptions.filter(i1 => !existingSubs.find(i2 => i1._id === i2._id));
-			// TODO: subsToDelete?
+			const subsToDelete = existingSubs.filter(i1 => !subscriptions.find(i2 => i1._id === i2._id));
 
 			const lastMessages = subscriptions
 				.map(sub => sub.lastMessage && buildMessage(sub.lastMessage))
@@ -70,9 +77,15 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 				...subsToUpdate.map((subscription) => {
 					const newSub = subscriptions.find(s => s._id === subscription._id);
 					return subscription.prepareUpdate(() => {
+						if (newSub.announcement) {
+							if (newSub.announcement !== subscription.announcement) {
+								subscription.bannerClosed = false;
+							}
+						}
 						Object.assign(subscription, newSub);
 					});
 				}),
+				...subsToDelete.map(subscription => subscription.prepareDestroyPermanently()),
 				...messagesToCreate.map(message => messagesCollection.prepareCreate(protectedFunction((m) => {
 					m._raw = sanitizedRaw({ id: message._id }, messagesCollection.schema);
 					m.subscription.id = message.rid;
@@ -109,8 +122,7 @@ const root = function* root() {
 				roomsSuccess: take(types.ROOMS.SUCCESS),
 				roomsFailure: take(types.ROOMS.FAILURE),
 				serverReq: take(types.SERVER.SELECT_REQUEST),
-				background: take(BACKGROUND),
-				inactive: take(INACTIVE),
+				background: take(types.APP_STATE.BACKGROUND),
 				logout: take(types.LOGOUT),
 				timeout: delay(30000)
 			});

@@ -1,1 +1,1 @@
-../../../FirebaseCore/FirebaseCore/Sources/Private/FIRAnalyticsConfiguration.h
+../../../FirebaseCore/FirebaseCore/Sources/FIRAnalyticsConfiguration.h

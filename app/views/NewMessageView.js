@@ -4,7 +4,6 @@ import {
 	View, StyleSheet, FlatList, Text
 } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import { orderBy } from 'lodash';
 import { Q } from '@nozbe/watermelondb';
@@ -15,22 +14,20 @@ import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
-import log from '../utils/log';
+import log, { logEvent, events } from '../utils/log';
 import SearchBox from '../containers/SearchBox';
 import { CustomIcon } from '../lib/Icons';
-import { CloseModalButton } from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
-import { themedHeader } from '../utils/navigation';
 import { getUserSelector } from '../selectors/login';
 import Navigation from '../lib/Navigation';
 import { createChannelRequest } from '../actions/createChannel';
+import { goRoom } from '../utils/goRoom';
+import SafeAreaView from '../containers/SafeAreaView';
 
 const styles = StyleSheet.create({
-	safeAreaView: {
-		flex: 1
-	},
 	separator: {
 		marginLeft: 60
 	},
@@ -53,9 +50,8 @@ const styles = StyleSheet.create({
 });
 
 class NewMessageView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => ({
-		...themedHeader(screenProps.theme),
-		headerLeft: <CloseModalButton navigation={navigation} testID='new-message-view-close' />,
+	static navigationOptions = ({ navigation }) => ({
+		headerLeft: () => <HeaderButton.CloseModal navigation={navigation} testID='new-message-view-close' />,
 		title: I18n.t('New_Message')
 	})
 
@@ -68,7 +64,8 @@ class NewMessageView extends React.Component {
 		}),
 		createChannel: PropTypes.func,
 		maxUsers: PropTypes.number,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		isMasterDetail: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -123,12 +120,6 @@ class NewMessageView extends React.Component {
 		this.search(text);
 	}
 
-	onPressItem = (item) => {
-		const { navigation } = this.props;
-		const onPressItem = navigation.getParam('onPressItem', () => {});
-		onPressItem(item);
-	}
-
 	dismiss = () => {
 		const { navigation } = this.props;
 		return navigation.pop();
@@ -142,17 +133,28 @@ class NewMessageView extends React.Component {
 	}
 
 	createChannel = () => {
+		logEvent(events.NEW_MSG_CREATE_CHANNEL);
 		const { navigation } = this.props;
 		navigation.navigate('SelectedUsersViewCreateChannel', { nextAction: () => navigation.navigate('CreateChannelView') });
 	}
 
 	createGroupChat = () => {
+		logEvent(events.NEW_MSG_CREATE_GROUP_CHAT);
 		const { createChannel, maxUsers, navigation } = this.props;
 		navigation.navigate('SelectedUsersViewCreateChannel', {
 			nextAction: () => createChannel({ group: true }),
 			buttonText: I18n.t('Create'),
 			maxUsers
 		});
+	}
+
+	goRoom = (item) => {
+		logEvent(events.NEW_MSG_CHAT_WITH_USER);
+		const { isMasterDetail, navigation } = this.props;
+		if (isMasterDetail) {
+			navigation.pop();
+		}
+		goRoom({ item, isMasterDetail });
 	}
 
 	renderButton = ({
@@ -175,6 +177,7 @@ class NewMessageView extends React.Component {
 	}
 
 	createDiscussion = () => {
+		logEvent(events.NEW_MSG_CREATE_DISCUSSION);
 		Navigation.navigate('CreateDiscussionView');
 	}
 
@@ -187,7 +190,7 @@ class NewMessageView extends React.Component {
 					{this.renderButton({
 						onPress: this.createChannel,
 						title: I18n.t('Create_Channel'),
-						icon: 'hashtag',
+						icon: 'channel-public',
 						testID: 'new-message-view-create-channel',
 						first: true
 					})}
@@ -200,7 +203,7 @@ class NewMessageView extends React.Component {
 					{this.renderButton({
 						onPress: this.createDiscussion,
 						title: I18n.t('Create_Discussion'),
-						icon: 'chat',
+						icon: 'discussions',
 						testID: 'new-message-view-create-discussion'
 					})}
 				</View>
@@ -231,7 +234,7 @@ class NewMessageView extends React.Component {
 			<UserItem
 				name={item.search ? item.name : item.fname}
 				username={item.search ? item.username : item.name}
-				onPress={() => this.onPressItem(item)}
+				onPress={() => this.goRoom(item)}
 				baseUrl={baseUrl}
 				testID={`new-message-view-item-${ item.name }`}
 				style={style}
@@ -258,15 +261,10 @@ class NewMessageView extends React.Component {
 		);
 	}
 
-	render = () => {
-		const { theme } = this.props;
+	render() {
 		return (
-			<SafeAreaView
-				style={[styles.safeAreaView, { backgroundColor: themes[theme].auxiliaryBackground }]}
-				forceInset={{ vertical: 'never' }}
-				testID='new-message-view'
-			>
-				<StatusBar theme={theme} />
+			<SafeAreaView testID='new-message-view'>
+				<StatusBar />
 				{this.renderList()}
 			</SafeAreaView>
 		);
@@ -274,6 +272,7 @@ class NewMessageView extends React.Component {
 }
 
 const mapStateToProps = state => ({
+	isMasterDetail: state.app.isMasterDetail,
 	baseUrl: state.server.server,
 	maxUsers: state.settings.DirectMesssage_maxUsers || 1,
 	user: getUserSelector(state)

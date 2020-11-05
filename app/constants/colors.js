@@ -1,5 +1,3 @@
-import { isIOS, isAndroid } from '../utils/deviceInfo';
-
 export const STATUS_COLORS = {
 	online: '#2de0a5',
 	busy: '#f5455c',
@@ -8,8 +6,18 @@ export const STATUS_COLORS = {
 };
 
 export const SWITCH_TRACK_COLOR = {
-	false: isAndroid ? '#f5455c' : null,
+	false: '#f5455c',
 	true: '#2de0a5'
+};
+
+const mentions = {
+	unreadBackground: '#6C727A',
+	tunreadBackground: '#1d74f5',
+	mentionMeColor: '#DB0C27',
+	mentionMeBackground: '#F5455C',
+	mentionGroupColor: '#E26D0E',
+	mentionGroupBackground: '#F38C39',
+	mentionOtherColor: '#DFAC00'
 };
 
 export const themes = {
@@ -29,16 +37,16 @@ export const themes = {
 		auxiliaryText: '#9ca2a8',
 		infoText: '#6d6d72',
 		tintColor: '#1d74f5',
-		auxiliaryTintColor: '#caced1',
+		auxiliaryTintColor: '#6C727A',
 		actionTintColor: '#1d74f5',
 		separatorColor: '#cbcbcc',
 		navbarBackground: '#ffffff',
 		headerBorder: '#B2B2B2',
-		headerBackground: isIOS ? '#f8f8f8' : '#2f343d',
+		headerBackground: '#EEEFF1',
 		headerSecondaryBackground: '#ffffff',
-		headerTintColor: isAndroid ? '#ffffff' : '#1d74f5',
-		headerTitleColor: isAndroid ? '#ffffff' : '#0d0e12',
-		headerSecondaryText: isAndroid ? '#9ca2a8' : '#1d74f5',
+		headerTintColor: '#6C727A',
+		headerTitleColor: '#0C0D0F',
+		headerSecondaryText: '#1d74f5',
 		toastBackground: '#0C0D0F',
 		videoBackground: '#1f2329',
 		favoriteBackground: '#ffbb00',
@@ -46,7 +54,17 @@ export const themes = {
 		messageboxBackground: '#ffffff',
 		searchboxBackground: '#E6E6E7',
 		buttonBackground: '#414852',
-		buttonText: '#ffffff'
+		buttonText: '#ffffff',
+		passcodeBackground: '#EEEFF1',
+		passcodeButtonActive: '#E4E7EA',
+		passcodeLockIcon: '#6C727A',
+		passcodePrimary: '#2F343D',
+		passcodeSecondary: '#6C727A',
+		passcodeDotEmpty: '#CBCED1',
+		passcodeDotFull: '#6C727A',
+		previewBackground: '#1F2329',
+		previewTintColor: '#ffffff',
+		...mentions
 	},
 	dark: {
 		backgroundColor: '#030b1b',
@@ -54,7 +72,7 @@ export const themes = {
 		chatComponentBackground: '#192132',
 		auxiliaryBackground: '#07101e',
 		bannerBackground: '#0e1f38',
-		titleText: '#FFFFFF',
+		titleText: '#f9f9f9',
 		bodyText: '#e8ebed',
 		backdropColor: '#000000',
 		dangerColor: '#f5455c',
@@ -64,16 +82,16 @@ export const themes = {
 		auxiliaryText: '#9297a2',
 		infoText: '#6D6D72',
 		tintColor: '#1d74f5',
-		auxiliaryTintColor: '#cdcdcd',
+		auxiliaryTintColor: '#f9f9f9',
 		actionTintColor: '#1d74f5',
 		separatorColor: '#2b2b2d',
 		navbarBackground: '#0b182c',
 		headerBorder: '#2F3A4B',
 		headerBackground: '#0b182c',
 		headerSecondaryBackground: '#0b182c',
-		headerTintColor: isAndroid ? '#ffffff' : '#1d74f5',
-		headerTitleColor: '#FFFFFF',
-		headerSecondaryText: isAndroid ? '#9297a2' : '#1d74f5',
+		headerTintColor: '#f9f9f9',
+		headerTitleColor: '#f9f9f9',
+		headerSecondaryText: '#9297a2',
 		toastBackground: '#0C0D0F',
 		videoBackground: '#1f2329',
 		favoriteBackground: '#ffbb00',
@@ -81,7 +99,17 @@ export const themes = {
 		messageboxBackground: '#0b182c',
 		searchboxBackground: '#192d4d',
 		buttonBackground: '#414852',
-		buttonText: '#ffffff'
+		buttonText: '#ffffff',
+		passcodeBackground: '#030C1B',
+		passcodeButtonActive: '#0B182C',
+		passcodeLockIcon: '#6C727A',
+		passcodePrimary: '#FFFFFF',
+		passcodeSecondary: '#CBCED1',
+		passcodeDotEmpty: '#CBCED1',
+		passcodeDotFull: '#6C727A',
+		previewBackground: '#030b1b',
+		previewTintColor: '#ffffff',
+		...mentions
 	},
 	black: {
 		backgroundColor: '#000000',
@@ -99,16 +127,16 @@ export const themes = {
 		auxiliaryText: '#b2b8c6',
 		infoText: '#6d6d72',
 		tintColor: '#1e9bfe',
-		auxiliaryTintColor: '#cdcdcd',
-		actionTintColor: '#1ea1fe',
+		auxiliaryTintColor: '#f9f9f9',
+		actionTintColor: '#1e9bfe',
 		separatorColor: '#272728',
 		navbarBackground: '#0d0d0d',
 		headerBorder: '#323232',
 		headerBackground: '#0d0d0d',
 		headerSecondaryBackground: '#0d0d0d',
-		headerTintColor: isAndroid ? '#ffffff' : '#1e9bfe',
+		headerTintColor: '#f9f9f9',
 		headerTitleColor: '#f9f9f9',
-		headerSecondaryText: isAndroid ? '#b2b8c6' : '#1e9bfe',
+		headerSecondaryText: '#b2b8c6',
 		toastBackground: '#0C0D0F',
 		videoBackground: '#1f2329',
 		favoriteBackground: '#ffbb00',
@@ -116,6 +144,16 @@ export const themes = {
 		messageboxBackground: '#0d0d0d',
 		searchboxBackground: '#1f1f1f',
 		buttonBackground: '#414852',
-		buttonText: '#ffffff'
+		buttonText: '#ffffff',
+		passcodeBackground: '#000000',
+		passcodeButtonActive: '#0E0D0D',
+		passcodeLockIcon: '#6C727A',
+		passcodePrimary: '#FFFFFF',
+		passcodeSecondary: '#CBCED1',
+		passcodeDotEmpty: '#CBCED1',
+		passcodeDotFull: '#6C727A',
+		previewBackground: '#000000',
+		previewTintColor: '#ffffff',
+		...mentions
 	}
 };

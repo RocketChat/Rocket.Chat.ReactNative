@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 import { orderBy } from 'lodash';
 import { Q } from '@nozbe/watermelondb';
@@ -12,15 +11,14 @@ import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
 import Loading from '../containers/Loading';
 import I18n from '../i18n';
-import log from '../utils/log';
+import log, { logEvent, events } from '../utils/log';
 import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
-import { Item, CustomHeaderButtons } from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
-import { themedHeader } from '../utils/navigation';
 import { getUserSelector } from '../selectors/login';
 import {
 	reset as resetAction,
@@ -28,36 +26,15 @@ import {
 	removeUser as removeUserAction
 } from '../actions/selectedUsers';
 import { showErrorAlert } from '../utils/info';
+import SafeAreaView from '../containers/SafeAreaView';
 
 const styles = StyleSheet.create({
-	safeAreaView: {
-		flex: 1
-	},
 	separator: {
 		marginLeft: 60
 	}
 });
 
 class SelectedUsersView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const title = navigation.getParam('title', I18n.t('Select_Users'));
-		const buttonText = navigation.getParam('buttonText', I18n.t('Next'));
-		const showButton = navigation.getParam('showButton', false);
-		const maxUsers = navigation.getParam('maxUsers');
-		const nextAction = navigation.getParam('nextAction', () => {});
-		return {
-			...themedHeader(screenProps.theme),
-			title,
-			headerRight: (
-				(!maxUsers || showButton) && (
-					<CustomHeaderButtons>
-						<Item title={buttonText} onPress={nextAction} testID='selected-users-view-submit' />
-					</CustomHeaderButtons>
-				)
-			)
-		};
-	}
-
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		addUser: PropTypes.func.isRequired,
@@ -72,6 +49,7 @@ class SelectedUsersView extends React.Component {
 			name: PropTypes.string
 		}),
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		theme: PropTypes.string
 	};
 
@@ -79,7 +57,7 @@ class SelectedUsersView extends React.Component {
 		super(props);
 		this.init();
 
-		const maxUsers = props.navigation.getParam('maxUsers');
+		const maxUsers = props.route.params?.maxUsers;
 		this.state = {
 			maxUsers,
 			search: [],
@@ -89,6 +67,7 @@ class SelectedUsersView extends React.Component {
 		if (this.isGroupChat()) {
 			props.addUser({ _id: user.id, name: user.username, fname: user.name });
 		}
+		this.setHeader(props.route.params?.showButton);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -114,13 +93,9 @@ class SelectedUsersView extends React.Component {
 
 	componentDidUpdate(prevProps) {
 		if (this.isGroupChat()) {
-			const { users, navigation } = this.props;
+			const { users } = this.props;
 			if (prevProps.users.length !== users.length) {
-				if (users.length) {
-					navigation.setParams({ showButton: true });
-				} else {
-					navigation.setParams({ showButton: false });
-				}
+				this.setHeader(users.length > 0);
 			}
 		}
 	}
@@ -131,6 +106,26 @@ class SelectedUsersView extends React.Component {
 		if (this.querySubscription && this.querySubscription.unsubscribe) {
 			this.querySubscription.unsubscribe();
 		}
+	}
+
+	// showButton can be sent as route params or updated by the component
+	setHeader = (showButton) => {
+		const { navigation, route } = this.props;
+		const title = route.params?.title ?? I18n.t('Select_Users');
+		const buttonText = route.params?.buttonText ?? I18n.t('Next');
+		const maxUsers = route.params?.maxUsers;
+		const nextAction = route.params?.nextAction ?? (() => {});
+		const options = {
+			title,
+			headerRight: () => (
+				(!maxUsers || showButton) && (
+					<HeaderButton.Container>
+						<HeaderButton.Item title={buttonText} onPress={nextAction} testID='selected-users-view-submit' />
+					</HeaderButton.Container>
+				)
+			)
+		};
+		navigation.setOptions(options);
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -188,9 +183,10 @@ class SelectedUsersView extends React.Component {
 			if (this.isGroupChat() && users.length === maxUsers) {
 				return showErrorAlert(I18n.t('Max_number_of_users_allowed_is_number', { maxUsers }), I18n.t('Oops'));
 			}
-
+			logEvent(events.SELECTED_USERS_ADD_USER);
 			addUser(user);
 		} else {
+			logEvent(events.SELECTED_USERS_REMOVE_USER);
 			removeUser(user);
 		}
 	}
@@ -311,14 +307,10 @@ class SelectedUsersView extends React.Component {
 	}
 
 	render = () => {
-		const { loading, theme } = this.props;
+		const { loading } = this.props;
 		return (
-			<SafeAreaView
-				style={[styles.safeAreaView, { backgroundColor: themes[theme].auxiliaryBackground }]}
-				forceInset={{ vertical: 'never' }}
-				testID='select-users-view'
-			>
-				<StatusBar theme={theme} />
+			<SafeAreaView testID='select-users-view'>
+				<StatusBar />
 				{this.renderList()}
 				<Loading visible={loading} />
 			</SafeAreaView>

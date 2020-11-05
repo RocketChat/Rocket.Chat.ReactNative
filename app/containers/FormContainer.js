@@ -1,7 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { SafeAreaView } from 'react-navigation';
 
 import { themes } from '../constants/colors';
 import sharedStyles from '../views/Styles';
@@ -10,6 +9,7 @@ import KeyboardView from '../presentation/KeyboardView';
 import StatusBar from './StatusBar';
 import AppVersion from './AppVersion';
 import { isTablet } from '../utils/deviceInfo';
+import SafeAreaView from './SafeAreaView';
 
 const styles = StyleSheet.create({
 	scrollView: {
@@ -23,15 +23,22 @@ export const FormContainerInner = ({ children }) => (
 	</View>
 );
 
-const FormContainer = ({ children, theme }) => (
+const FormContainer = ({
+	children, theme, testID, ...props
+}) => (
 	<KeyboardView
 		style={{ backgroundColor: themes[theme].backgroundColor }}
 		contentContainerStyle={sharedStyles.container}
 		keyboardVerticalOffset={128}
 	>
-		<StatusBar theme={theme} />
-		<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}>
-			<SafeAreaView style={sharedStyles.container} forceInset={{ top: 'never' }}>
+		<StatusBar />
+		<ScrollView
+			style={sharedStyles.container}
+			contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}
+			{...scrollPersistTaps}
+			{...props}
+		>
+			<SafeAreaView testID={testID} style={{ backgroundColor: themes[theme].backgroundColor }}>
 				{children}
 				<AppVersion theme={theme} />
 			</SafeAreaView>
@@ -41,6 +48,7 @@ const FormContainer = ({ children, theme }) => (
 
 FormContainer.propTypes = {
 	theme: PropTypes.string,
+	testID: PropTypes.string,
 	children: PropTypes.element
 };
 

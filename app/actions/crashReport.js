@@ -6,3 +6,10 @@ export function toggleCrashReport(value) {
 		payload: value
 	};
 }
+
+export function toggleAnalyticsEvents(value) {
+	return {
+		type: types.TOGGLE_ANALYTICS_EVENTS,
+		payload: value
+	};
+}

@@ -1,10 +1,10 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        buildToolsVersion = "28.0.3"
-        minSdkVersion = 21
-        compileSdkVersion = 28
-        targetSdkVersion = 28
+        buildToolsVersion = "29.0.2"
+        minSdkVersion = 23
+        compileSdkVersion = 29
+        targetSdkVersion = 29
         glideVersion = "4.9.0"
         kotlin_version = "1.3.50"
         supportLibVersion = "28.0.0"
@@ -17,16 +17,18 @@ buildscript {
             url 'https://maven.fabric.io/public'
         }
     }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.2'
-        classpath 'com.google.gms:google-services:4.2.0'
-        classpath 'io.fabric.tools:gradle:1.28.1'
-        classpath 'com.google.firebase:perf-plugin:1.2.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.bugsnag:bugsnag-android-gradle-plugin:4.+'
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+    def taskRequests = getGradle().getStartParameter().getTaskRequests().toString().toLowerCase()
+    def isPlay = !taskRequests.contains("foss")
+
+    dependencies {
+        if (isPlay) {
+            classpath 'com.google.gms:google-services:4.2.0'
+            classpath 'com.google.firebase:firebase-crashlytics-gradle:2.0.0'
+            classpath 'com.bugsnag:bugsnag-android-gradle-plugin:4.+'
+        }
+        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
@@ -38,20 +40,14 @@ allprojects {
             url("$rootDir/../node_modules/react-native/android")
         }
         maven {
-            // Android JSC is installed from npm
-            url("$rootDir/../node_modules/jsc-android/dist")
-        }
-        maven {
-            // We should change it when Jitsi-SDK release v2.4
-            url("$rootDir/../node_modules/react-native-jitsi-meet/jitsi-sdk")
-            // url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
+            url "https://github.com/RocketChat/jitsi-maven-repository/raw/master/releases"
         }
 
         google()
         jcenter()
 
         maven { url 'https://maven.google.com' }
-        maven { url "https://jitpack.io" }
+        maven { url 'https://www.jitpack.io' }
     }
 }
 
@@ -59,10 +55,16 @@ subprojects { subproject ->
     afterEvaluate {
         if ((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
             android {
-                compileSdkVersion 28
-                buildToolsVersion "28.0.3"
+                compileSdkVersion 29
+                buildToolsVersion "29.0.2"
                 defaultConfig {
-                    targetSdkVersion 28
+                    targetSdkVersion 29
+                }
+                variantFilter { variant ->
+                    def names = variant.flavors*.name
+                    if (names.contains("reactNative59")) {
+                        setIgnore(true)
+                    }
                 }
             }
         }

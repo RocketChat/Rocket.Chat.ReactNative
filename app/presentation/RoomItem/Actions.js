@@ -91,7 +91,7 @@ export const RightActions = React.memo(({
 			>
 				<RectButton style={[styles.actionButton, { backgroundColor: themes[theme].favoriteBackground }]} onPress={toggleFav}>
 					<>
-						<CustomIcon size={20} name={favorite ? 'Star-filled' : 'star'} color={themes[theme].buttonText} />
+						<CustomIcon size={20} name={favorite ? 'star-filled' : 'star'} color={themes[theme].buttonText} />
 						<Text style={[styles.actionText, { color: themes[theme].buttonText }]}>{I18n.t(favorite ? 'Unfavorite' : 'Favorite')}</Text>
 					</>
 				</RectButton>
@@ -107,7 +107,7 @@ export const RightActions = React.memo(({
 			>
 				<RectButton style={[styles.actionButton, { backgroundColor: themes[theme].hideBackground }]} onPress={onHidePress}>
 					<>
-						<CustomIcon size={20} name='eye-off' color={themes[theme].buttonText} />
+						<CustomIcon size={20} name='unread-on-top-disabled' color={themes[theme].buttonText} />
 						<Text style={[styles.actionText, { color: themes[theme].buttonText }]}>{I18n.t('Hide')}</Text>
 					</>
 				</RectButton>

@@ -10,6 +10,8 @@ import reduxStore from '../../createStore';
 import { addUserTyping, removeUserTyping, clearUserTyping } from '../../../actions/usersTyping';
 import debounce from '../../../utils/debounce';
 import RocketChat from '../../rocketchat';
+import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
+import { Encryption } from '../../encryption';
 
 const WINDOW_TIME = 1000;
 
@@ -38,11 +40,14 @@ export default class RoomSubscription {
 		if (!this.isAlive) {
 			this.unsubscribe();
 		}
+
+		reduxStore.dispatch(subscribeRoom(this.rid));
 	}
 
 	unsubscribe = async() => {
 		console.log(`[RCRN] Unsubscribing from room ${ this.rid }`);
 		this.isAlive = false;
+		reduxStore.dispatch(unsubscribeRoom(this.rid));
 		if (this.promises) {
 			try {
 				const subscriptions = await this.promises || [];
@@ -84,12 +89,14 @@ export default class RoomSubscription {
 		}
 		if (ev === 'typing') {
 			const { user } = reduxStore.getState().login;
-			const [username, typing] = ddpMessage.fields.args;
-			if (username !== user.username) {
+			const { UI_Use_Real_Name } = reduxStore.getState().settings;
+			const [name, typing] = ddpMessage.fields.args;
+			const key = UI_Use_Real_Name ? 'name' : 'username';
+			if (name !== user[key]) {
 				if (typing) {
-					reduxStore.dispatch(addUserTyping(username));
+					reduxStore.dispatch(addUserTyping(name));
 				} else {
-					reduxStore.dispatch(removeUserTyping(username));
+					reduxStore.dispatch(removeUserTyping(name));
 				}
 			}
 		} else if (ev === 'deleteMessage') {
@@ -155,22 +162,20 @@ export default class RoomSubscription {
 			const msgCollection = db.collections.get('messages');
 			const threadsCollection = db.collections.get('threads');
 			const threadMessagesCollection = db.collections.get('thread_messages');
-			let messageRecord;
-			let threadRecord;
-			let threadMessageRecord;
+
+			// Decrypt the message if necessary
+			message = await Encryption.decryptMessage(message);
 
 			// Create or update message
 			try {
-				messageRecord = await msgCollection.find(message._id);
-			} catch (error) {
-				// Do nothing
-			}
-			if (messageRecord) {
-				const update = messageRecord.prepareUpdate((m) => {
-					Object.assign(m, message);
-				});
-				this._messagesBatch[message._id] = update;
-			} else {
+				const messageRecord = await msgCollection.find(message._id);
+				if (!messageRecord._hasPendingUpdate) {
+					const update = messageRecord.prepareUpdate(protectedFunction((m) => {
+						Object.assign(m, message);
+					}));
+					this._messagesBatch[message._id] = update;
+				}
+			} catch {
 				const create = msgCollection.prepareCreate(protectedFunction((m) => {
 					m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
 					m.subscription.id = this.rid;
@@ -182,17 +187,14 @@ export default class RoomSubscription {
 			// Create or update thread
 			if (message.tlm) {
 				try {
-					threadRecord = await threadsCollection.find(message._id);
-				} catch (error) {
-					// Do nothing
-				}
-
-				if (threadRecord) {
-					const updateThread = threadRecord.prepareUpdate(protectedFunction((t) => {
-						Object.assign(t, message);
-					}));
-					this._threadsBatch[message._id] = updateThread;
-				} else {
+					const threadRecord = await threadsCollection.find(message._id);
+					if (!threadRecord._hasPendingUpdate) {
+						const updateThread = threadRecord.prepareUpdate(protectedFunction((t) => {
+							Object.assign(t, message);
+						}));
+						this._threadsBatch[message._id] = updateThread;
+					}
+				} catch {
 					const createThread = threadsCollection.prepareCreate(protectedFunction((t) => {
 						t._raw = sanitizedRaw({ id: message._id }, threadsCollection.schema);
 						t.subscription.id = this.rid;
@@ -205,19 +207,16 @@ export default class RoomSubscription {
 			// Create or update thread message
 			if (message.tmid) {
 				try {
-					threadMessageRecord = await threadMessagesCollection.find(message._id);
-				} catch (error) {
-					// Do nothing
-				}
-
-				if (threadMessageRecord) {
-					const updateThreadMessage = threadMessageRecord.prepareUpdate(protectedFunction((tm) => {
-						Object.assign(tm, message);
-						tm.rid = message.tmid;
-						delete tm.tmid;
-					}));
-					this._threadMessagesBatch[message._id] = updateThreadMessage;
-				} else {
+					const threadMessageRecord = await threadMessagesCollection.find(message._id);
+					if (!threadMessageRecord._hasPendingUpdate) {
+						const updateThreadMessage = threadMessageRecord.prepareUpdate(protectedFunction((tm) => {
+							Object.assign(tm, message);
+							tm.rid = message.tmid;
+							delete tm.tmid;
+						}));
+						this._threadMessagesBatch[message._id] = updateThreadMessage;
+					}
+				} catch {
 					const createThreadMessage = threadMessagesCollection.prepareCreate(protectedFunction((tm) => {
 						tm._raw = sanitizedRaw({ id: message._id }, threadMessagesCollection.schema);
 						Object.assign(tm, message);

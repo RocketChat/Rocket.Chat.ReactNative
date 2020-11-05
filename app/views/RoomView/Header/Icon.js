@@ -5,9 +5,8 @@ import PropTypes from 'prop-types';
 import { STATUS_COLORS, themes } from '../../../constants/colors';
 import { CustomIcon } from '../../../lib/Icons';
 import Status from '../../../containers/Status/Status';
-import { isAndroid } from '../../../utils/deviceInfo';
 
-const ICON_SIZE = 18;
+const ICON_SIZE = 15;
 
 const styles = StyleSheet.create({
 	type: {
@@ -22,32 +21,30 @@ const styles = StyleSheet.create({
 });
 
 const Icon = React.memo(({
-	roomUserId, type, status, theme
+	roomUserId, type, status, theme, tmid
 }) => {
-	if (type === 'd' && roomUserId) {
+	if ((type === 'd' || tmid) && roomUserId) {
 		return <Status size={10} style={styles.status} status={status} />;
 	}
 
 	let colorStyle = {};
-	if (type === 'd' && roomUserId) {
+	if (type === 'l') {
 		colorStyle = { color: STATUS_COLORS[status] };
 	} else {
-		colorStyle = { color: isAndroid && theme === 'light' ? themes[theme].buttonText : themes[theme].auxiliaryText };
+		colorStyle = { color: themes[theme].auxiliaryText };
 	}
 
 	let icon;
 	if (type === 'discussion') {
-		icon = 'chat';
-	} else if (type === 'thread') {
-		icon = 'thread';
+		icon = 'discussions';
 	} else if (type === 'c') {
-		icon = 'hashtag';
+		icon = 'channel-public';
 	} else if (type === 'l') {
-		icon = 'livechat';
+		icon = 'omnichannel';
 	} else if (type === 'd') {
 		icon = 'team';
 	} else {
-		icon = 'lock';
+		icon = 'channel-private';
 	}
 	return (
 		<CustomIcon
@@ -69,6 +66,7 @@ Icon.propTypes = {
 	roomUserId: PropTypes.string,
 	type: PropTypes.string,
 	status: PropTypes.string,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	tmid: PropTypes.string
 };
 export default Icon;

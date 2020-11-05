@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { KeyboardUtils } from 'react-native-keyboard-input';
 
 import Message from './Message';
+import MessageContext from './Context';
 import debounce from '../../utils/debounce';
 import { SYSTEM_MESSAGES, getMessageTranslation } from './utils';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
 import messagesStatus from '../../constants/messagesStatus';
 import { withTheme } from '../../theme';
 
@@ -18,7 +20,6 @@ class MessageContainer extends React.Component {
 		}),
 		rid: PropTypes.string,
 		timeFormat: PropTypes.string,
-		customThreadTimeFormat: PropTypes.string,
 		style: PropTypes.any,
 		archived: PropTypes.bool,
 		broadcast: PropTypes.bool,
@@ -34,6 +35,7 @@ class MessageContainer extends React.Component {
 		getCustomEmoji: PropTypes.func,
 		onLongPress: PropTypes.func,
 		onReactionPress: PropTypes.func,
+		onEncryptedPress: PropTypes.func,
 		onDiscussionPress: PropTypes.func,
 		onThreadPress: PropTypes.func,
 		errorActionsShow: PropTypes.func,
@@ -45,13 +47,16 @@ class MessageContainer extends React.Component {
 		navToRoomInfo: PropTypes.func,
 		callJitsi: PropTypes.func,
 		blockAction: PropTypes.func,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		getBadgeColor: PropTypes.func,
+		toggleFollowThread: PropTypes.func
 	}
 
 	static defaultProps = {
 		getCustomEmoji: () => {},
 		onLongPress: () => {},
 		onReactionPress: () => {},
+		onEncryptedPress: () => {},
 		onDiscussionPress: () => {},
 		onThreadPress: () => {},
 		errorActionsShow: () => {},
@@ -103,7 +108,7 @@ class MessageContainer extends React.Component {
 
 	onLongPress = () => {
 		const { archived, onLongPress, item } = this.props;
-		if (this.isInfo || this.hasError || archived) {
+		if (this.isInfo || this.hasError || this.isEncrypted || archived) {
 			return;
 		}
 		if (onLongPress) {
@@ -129,6 +134,13 @@ class MessageContainer extends React.Component {
 		const { onReactionLongPress, item } = this.props;
 		if (onReactionLongPress) {
 			onReactionLongPress(item);
+		}
+	}
+
+	onEncryptedPress = () => {
+		const { onEncryptedPress } = this.props;
+		if (onEncryptedPress) {
+			onEncryptedPress();
 		}
 	}
 
@@ -195,6 +207,12 @@ class MessageContainer extends React.Component {
 		return false;
 	}
 
+	get isEncrypted() {
+		const { item } = this.props;
+		const { t, e2e } = item;
+		return t === E2E_MESSAGE_TYPE && e2e !== E2E_STATUS.DONE;
+	}
+
 	get isInfo() {
 		const { item } = this.props;
 		return SYSTEM_MESSAGES.includes(item.t);
@@ -226,10 +244,10 @@ class MessageContainer extends React.Component {
 
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, customThreadTimeFormat, showAttachment, timeFormat, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, showAttachment, timeFormat, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme, getBadgeColor, toggleFollowThread
 		} = this.props;
 		const {
-			id, msg, ts, attachments, urls, reactions, t, avatar, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, blocks, autoTranslate: autoTranslateMessage
+			id, msg, ts, attachments, urls, reactions, t, avatar, emoji, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, blocks, autoTranslate: autoTranslateMessage, replies
 		} = item;
 
 		let message = msg;
@@ -240,63 +258,73 @@ class MessageContainer extends React.Component {
 		}
 
 		return (
-			<Message
-				id={id}
-				msg={message}
-				rid={rid}
-				author={u}
-				ts={ts}
-				type={t}
-				attachments={attachments}
-				blocks={blocks}
-				urls={urls}
-				reactions={reactions}
-				alias={alias}
-				avatar={avatar}
-				user={user}
-				timeFormat={timeFormat}
-				customThreadTimeFormat={customThreadTimeFormat}
-				style={style}
-				archived={archived}
-				broadcast={broadcast}
-				baseUrl={baseUrl}
-				useRealName={useRealName}
-				isReadReceiptEnabled={isReadReceiptEnabled}
-				unread={unread}
-				role={role}
-				drid={drid}
-				dcount={dcount}
-				dlm={dlm}
-				tmid={tmid}
-				tcount={tcount}
-				tlm={tlm}
-				tmsg={tmsg}
-				fetchThreadName={fetchThreadName}
-				mentions={mentions}
-				channels={channels}
-				isEdited={editedBy && !!editedBy.username}
-				isHeader={this.isHeader}
-				isThreadReply={this.isThreadReply}
-				isThreadSequential={this.isThreadSequential}
-				isThreadRoom={isThreadRoom}
-				isInfo={this.isInfo}
-				isTemp={this.isTemp}
-				hasError={this.hasError}
-				onErrorPress={this.onErrorPress}
-				onPress={this.onPress}
-				onLongPress={this.onLongPress}
-				onReactionLongPress={this.onReactionLongPress}
-				onReactionPress={this.onReactionPress}
-				replyBroadcast={this.replyBroadcast}
-				reactionInit={this.reactionInit}
-				onDiscussionPress={this.onDiscussionPress}
-				showAttachment={showAttachment}
-				getCustomEmoji={getCustomEmoji}
-				navToRoomInfo={navToRoomInfo}
-				callJitsi={callJitsi}
-				blockAction={blockAction}
-				theme={theme}
-			/>
+			<MessageContext.Provider
+				value={{
+					user,
+					baseUrl,
+					onPress: this.onPress,
+					onLongPress: this.onLongPress,
+					reactionInit: this.reactionInit,
+					onErrorPress: this.onErrorPress,
+					replyBroadcast: this.replyBroadcast,
+					onReactionPress: this.onReactionPress,
+					onEncryptedPress: this.onEncryptedPress,
+					onDiscussionPress: this.onDiscussionPress,
+					onReactionLongPress: this.onReactionLongPress,
+					getBadgeColor,
+					toggleFollowThread,
+					replies
+				}}
+			>
+				<Message
+					id={id}
+					msg={message}
+					rid={rid}
+					author={u}
+					ts={ts}
+					type={t}
+					attachments={attachments}
+					blocks={blocks}
+					urls={urls}
+					reactions={reactions}
+					alias={alias}
+					avatar={avatar}
+					emoji={emoji}
+					timeFormat={timeFormat}
+					style={style}
+					archived={archived}
+					broadcast={broadcast}
+					useRealName={useRealName}
+					isReadReceiptEnabled={isReadReceiptEnabled}
+					unread={unread}
+					role={role}
+					drid={drid}
+					dcount={dcount}
+					dlm={dlm}
+					tmid={tmid}
+					tcount={tcount}
+					tlm={tlm}
+					tmsg={tmsg}
+					fetchThreadName={fetchThreadName}
+					mentions={mentions}
+					channels={channels}
+					isEdited={editedBy && !!editedBy.username}
+					isHeader={this.isHeader}
+					isThreadReply={this.isThreadReply}
+					isThreadSequential={this.isThreadSequential}
+					isThreadRoom={isThreadRoom}
+					isInfo={this.isInfo}
+					isTemp={this.isTemp}
+					isEncrypted={this.isEncrypted}
+					hasError={this.hasError}
+					showAttachment={showAttachment}
+					getCustomEmoji={getCustomEmoji}
+					navToRoomInfo={navToRoomInfo}
+					callJitsi={callJitsi}
+					blockAction={blockAction}
+					theme={theme}
+				/>
+			</MessageContext.Provider>
 		);
 	}
 }

@@ -6,23 +6,21 @@ import I18n from '../i18n';
 import { isIOS } from '../utils/deviceInfo';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
-import { themedHeader } from '../utils/navigation';
 
 class MarkdownTableView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		...themedHeader(screenProps.theme),
+	static navigationOptions = () => ({
 		title: I18n.t('Table')
-	});
+	})
 
 	static propTypes = {
-		navigation: PropTypes.object,
+		route: PropTypes.object,
 		theme: PropTypes.string
 	}
 
 	render() {
-		const { navigation, theme } = this.props;
-		const renderRows = navigation.getParam('renderRows');
-		const tableWidth = navigation.getParam('tableWidth');
+		const { route, theme } = this.props;
+		const renderRows = route.params?.renderRows;
+		const tableWidth = route.params?.tableWidth;
 
 		if (isIOS) {
 			return (

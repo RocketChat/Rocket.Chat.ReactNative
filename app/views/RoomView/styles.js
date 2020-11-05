@@ -28,7 +28,11 @@ export default StyleSheet.create({
 	bannerContainer: {
 		paddingVertical: 12,
 		paddingHorizontal: 15,
+		flexDirection: 'row',
 		alignItems: 'center'
+	},
+	bannerText: {
+		flex: 1
 	},
 	bannerModalTitle: {
 		fontSize: 16,

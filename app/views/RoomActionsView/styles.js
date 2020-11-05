@@ -1,51 +1,22 @@
 import { StyleSheet } from 'react-native';
+import { PADDING_HORIZONTAL } from '../../containers/List/constants';
 
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
-	contentContainer: {
-		paddingBottom: 30
-	},
-	container: {
-		flex: 1
-	},
-	sectionItem: {
-		paddingVertical: 11,
+	roomInfoContainer: {
+		paddingHorizontal: PADDING_HORIZONTAL,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
-	sectionItemIcon: {
-		width: 56,
-		textAlign: 'center'
-	},
-	sectionItemName: {
-		flex: 1,
-		fontSize: 14,
-		...sharedStyles.textRegular
-	},
-	sectionItemDescription: {
-		fontSize: 14,
-		...sharedStyles.textRegular
-	},
-	separator: {
-		height: StyleSheet.hairlineWidth
-	},
-	sectionSeparator: {
-		borderBottomWidth: StyleSheet.hairlineWidth,
-		height: 36
-	},
-	sectionSeparatorBorder: {
-		borderTopWidth: StyleSheet.hairlineWidth
-	},
 	avatar: {
-		marginHorizontal: 16
+		marginRight: PADDING_HORIZONTAL
 	},
 	roomTitleContainer: {
 		flex: 1
 	},
 	roomTitle: {
 		fontSize: 16,
-		paddingRight: 16,
 		...sharedStyles.textMedium
 	},
 	roomDescription: {
@@ -53,6 +24,7 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	roomTitleRow: {
+		paddingRight: 16,
 		flexDirection: 'row',
 		alignItems: 'center'
 	}

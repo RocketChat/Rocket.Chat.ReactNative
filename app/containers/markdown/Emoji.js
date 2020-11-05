@@ -9,15 +9,18 @@ import { themes } from '../../constants/colors';
 import styles from './styles';
 
 const Emoji = React.memo(({
-	emojiName, literal, isMessageContainsOnlyEmoji, getCustomEmoji, baseUrl, customEmojis, style = [], theme
+	literal, isMessageContainsOnlyEmoji, getCustomEmoji, baseUrl, customEmojis = true, style = {}, theme
 }) => {
 	const emojiUnicode = shortnameToUnicode(literal);
-	const emoji = getCustomEmoji && getCustomEmoji(emojiName);
+	const emoji = getCustomEmoji && getCustomEmoji(literal.replace(/:/g, ''));
 	if (emoji && customEmojis) {
 		return (
 			<CustomEmoji
 				baseUrl={baseUrl}
-				style={isMessageContainsOnlyEmoji ? styles.customEmojiBig : styles.customEmoji}
+				style={[
+					isMessageContainsOnlyEmoji ? styles.customEmojiBig : styles.customEmoji,
+					style
+				]}
 				emoji={emoji}
 			/>
 		);
@@ -27,7 +30,7 @@ const Emoji = React.memo(({
 			style={[
 				{ color: themes[theme].bodyText },
 				isMessageContainsOnlyEmoji ? styles.textBig : styles.text,
-				...style
+				style
 			]}
 		>
 			{emojiUnicode}
@@ -36,13 +39,12 @@ const Emoji = React.memo(({
 });
 
 Emoji.propTypes = {
-	emojiName: PropTypes.string,
 	literal: PropTypes.string,
 	isMessageContainsOnlyEmoji: PropTypes.bool,
 	getCustomEmoji: PropTypes.func,
 	baseUrl: PropTypes.string,
 	customEmojis: PropTypes.bool,
-	style: PropTypes.array,
+	style: PropTypes.object,
 	theme: PropTypes.string
 };
 

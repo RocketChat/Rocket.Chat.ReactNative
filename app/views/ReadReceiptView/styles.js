@@ -28,11 +28,7 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		padding: 10
 	},
-	container: {
-		flex: 1
-	},
 	list: {
-		...sharedStyles.separatorVertical,
-		marginVertical: 10
+		...sharedStyles.separatorVertical
 	}
 });

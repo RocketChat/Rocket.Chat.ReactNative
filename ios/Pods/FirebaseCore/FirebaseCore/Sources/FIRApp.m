@@ -22,14 +22,14 @@
 #import <AppKit/AppKit.h>
 #endif
 
-#import <FirebaseCore/FIRApp.h>
+#import "FirebaseCore/Sources/Public/FIRApp.h"
 
+#import "FirebaseCore/Sources/FIRAnalyticsConfiguration.h"
 #import "FirebaseCore/Sources/FIRBundleUtil.h"
+#import "FirebaseCore/Sources/FIRComponentContainerInternal.h"
+#import "FirebaseCore/Sources/FIRConfigurationInternal.h"
 #import "FirebaseCore/Sources/FIRVersion.h"
-#import "FirebaseCore/Sources/Private/FIRAnalyticsConfiguration.h"
 #import "FirebaseCore/Sources/Private/FIRAppInternal.h"
-#import "FirebaseCore/Sources/Private/FIRComponentContainerInternal.h"
-#import "FirebaseCore/Sources/Private/FIRConfigurationInternal.h"
 #import "FirebaseCore/Sources/Private/FIRCoreDiagnosticsConnector.h"
 #import "FirebaseCore/Sources/Private/FIRLibrary.h"
 #import "FirebaseCore/Sources/Private/FIRLogger.h"
@@ -78,6 +78,7 @@ NSString *const kFIRAppDiagnosticsErrorKey = @"Error";
 NSString *const kFIRAppDiagnosticsFIRAppKey = @"FIRApp";
 NSString *const kFIRAppDiagnosticsSDKNameKey = @"SDKName";
 NSString *const kFIRAppDiagnosticsSDKVersionKey = @"SDKVersion";
+NSString *const kFIRAppDiagnosticsApplePlatformPrefix = @"apple-platform";
 
 // Auth internal notification notification and key.
 NSString *const FIRAuthStateDidChangeInternalNotification =
@@ -165,7 +166,7 @@ static dispatch_once_t sFirebaseUserAgentOnceToken;
 
   if ([name isEqualToString:kFIRDefaultAppName]) {
     if (sDefaultApp) {
-      // The default app already exixts. Handle duplicate `configure` calls and return.
+      // The default app already exists. Handle duplicate `configure` calls and return.
       [self appWasConfiguredTwice:sDefaultApp usingOptions:options];
       return;
     }
@@ -287,6 +288,8 @@ static dispatch_once_t sFirebaseUserAgentOnceToken;
     if (sAllApps && sAllApps[self.name]) {
       FIRLogDebug(kFIRLoggerCore, @"I-COR000006", @"Deleting app named %@", self.name);
 
+      // Remove all registered libraries from the container to avoid creating new instances.
+      [self.container removeAllComponents];
       // Remove all cached instances from the container before deleting the app.
       [self.container removeAllCachedInstances];
 
@@ -577,6 +580,9 @@ static dispatch_once_t sFirebaseUserAgentOnceToken;
 
       NSString *swiftFlagValue = [self hasSwiftRuntime] ? @"true" : @"false";
       [FIRApp registerLibrary:@"swift" withVersion:swiftFlagValue];
+
+      [FIRApp registerLibrary:kFIRAppDiagnosticsApplePlatformPrefix
+                  withVersion:[self applePlatform]];
     });
 
     NSMutableArray<NSString *> *libraries =
@@ -602,6 +608,26 @@ static dispatch_once_t sFirebaseUserAgentOnceToken;
       objc_getClass("_TtCs12_SwiftObject") != nil;
 
   return hasSwiftRuntime;
+}
+
++ (NSString *)applePlatform {
+  NSString *applePlatform = @"unknown";
+
+  // When a Catalyst app is run on macOS then both `TARGET_OS_MACCATALYST` and `TARGET_OS_IOS` are
+  // `true`, which means the condition list is order-sensitive.
+#if TARGET_OS_MACCATALYST
+  applePlatform = @"maccatalyst";
+#elif TARGET_OS_IOS
+  applePlatform = @"ios";
+#elif TARGET_OS_TV
+  applePlatform = @"tvos";
+#elif TARGET_OS_OSX
+  applePlatform = @"macos";
+#elif TARGET_OS_WATCH
+  applePlatform = @"watchos";
+#endif
+
+  return applePlatform;
 }
 
 - (void)checkExpectedBundleID {

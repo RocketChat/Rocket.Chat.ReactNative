@@ -17,7 +17,7 @@ const MentionItem = ({
 	item, trackingType, theme
 }) => {
 	const context = useContext(MessageboxContext);
-	const { baseUrl, user, onPressMention } = context;
+	const { onPressMention } = context;
 
 	const defineTestID = (type) => {
 		switch (type) {
@@ -43,9 +43,6 @@ const MentionItem = ({
 				text={item.username || item.name}
 				size={30}
 				type={item.t}
-				baseUrl={baseUrl}
-				userId={user.id}
-				token={user.token}
 			/>
 			<Text style={[styles.mentionText, { color: themes[theme].titleText }]}>{ item.username || item.name || item }</Text>
 		</>
@@ -64,7 +61,7 @@ const MentionItem = ({
 		content = (
 			<>
 				<Text style={[styles.slash, { backgroundColor: themes[theme].borderColor, color: themes[theme].tintColor }]}>/</Text>
-				<Text style={[styles.mentionText, { color: themes[theme].titleText }]}>{ item.command}</Text>
+				<Text style={[styles.mentionText, { color: themes[theme].titleText }]}>{item.id}</Text>
 			</>
 		);
 	}

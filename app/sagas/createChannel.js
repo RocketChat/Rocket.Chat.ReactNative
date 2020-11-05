@@ -10,6 +10,8 @@ import RocketChat from '../lib/rocketchat';
 import Navigation from '../lib/Navigation';
 import database from '../lib/database';
 import I18n from '../i18n';
+import { logEvent, events } from '../utils/log';
+import { goRoom } from '../utils/goRoom';
 
 const createChannel = function createChannel(data) {
 	return RocketChat.createChannel(data);
@@ -28,11 +30,24 @@ const handleRequest = function* handleRequest({ data }) {
 
 		let sub;
 		if (data.group) {
+			logEvent(events.SELECTED_USERS_CREATE_GROUP);
 			const result = yield call(createGroupChat);
 			if (result.success) {
 				({ room: sub } = result);
 			}
 		} else {
+			const {
+				type,
+				readOnly,
+				broadcast,
+				encrypted
+			} = data;
+			logEvent(events.CREATE_CHANNEL_CREATE, {
+				type: type ? 'private' : 'public',
+				readOnly,
+				broadcast,
+				encrypted
+			});
 			sub = yield call(createChannel, data);
 		}
 
@@ -51,13 +66,17 @@ const handleRequest = function* handleRequest({ data }) {
 
 		yield put(createChannelSuccess(sub));
 	} catch (err) {
+		logEvent(events[data.group ? 'SELECTED_USERS_CREATE_GROUP_F' : 'CREATE_CHANNEL_CREATE_F']);
 		yield put(createChannelFailure(err));
 	}
 };
 
-const handleSuccess = function handleSuccess({ data }) {
-	const { rid, t } = data;
-	Navigation.navigate('RoomView', { rid, t, name: RocketChat.getRoomTitle(data) });
+const handleSuccess = function* handleSuccess({ data }) {
+	const isMasterDetail = yield select(state => state.app.isMasterDetail);
+	if (isMasterDetail) {
+		Navigation.navigate('DrawerNavigator');
+	}
+	goRoom({ item: data, isMasterDetail });
 };
 
 const handleFailure = function handleFailure({ err }) {

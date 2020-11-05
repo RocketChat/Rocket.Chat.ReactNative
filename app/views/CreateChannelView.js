@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import {
 	View, Text, Switch, ScrollView, StyleSheet, FlatList
 } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
 import equal from 'deep-equal';
 
 import TextInput from '../presentation/TextInput';
@@ -16,13 +15,14 @@ import KeyboardView from '../presentation/KeyboardView';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 import UserItem from '../presentation/UserItem';
-import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { SWITCH_TRACK_COLOR, themes } from '../constants/colors';
 import { withTheme } from '../theme';
-import { themedHeader } from '../utils/navigation';
 import { Review } from '../utils/review';
 import { getUserSelector } from '../selectors/login';
+import { logEvent, events } from '../utils/log';
+import SafeAreaView from '../containers/SafeAreaView';
 
 const styles = StyleSheet.create({
 	container: {
@@ -73,23 +73,9 @@ const styles = StyleSheet.create({
 });
 
 class CreateChannelView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const submit = navigation.getParam('submit', () => {});
-		const showSubmit = navigation.getParam('showSubmit');
-		return {
-			...themedHeader(screenProps.theme),
-			title: I18n.t('Create_Channel'),
-			headerRight: (
-				showSubmit
-					? (
-						<CustomHeaderButtons>
-							<Item title={I18n.t('Create')} onPress={submit} testID='create-channel-submit' />
-						</CustomHeaderButtons>
-					)
-					: null
-			)
-		};
-	}
+	static navigationOptions = () => ({
+		title: I18n.t('Create_Channel')
+	});
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -99,6 +85,7 @@ class CreateChannelView extends React.Component {
 		error: PropTypes.object,
 		failure: PropTypes.bool,
 		isFetching: PropTypes.bool,
+		e2eEnabled: PropTypes.bool,
 		users: PropTypes.array.isRequired,
 		user: PropTypes.shape({
 			id: PropTypes.string,
@@ -111,19 +98,17 @@ class CreateChannelView extends React.Component {
 		channelName: '',
 		type: true,
 		readOnly: false,
+		encrypted: false,
 		broadcast: false
-	}
-
-	componentDidMount() {
-		const { navigation } = this.props;
-		navigation.setParams({ submit: this.submit });
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			channelName, type, readOnly, broadcast
+			channelName, type, readOnly, broadcast, encrypted
 		} = this.state;
-		const { users, isFetching, theme } = this.props;
+		const {
+			users, isFetching, e2eEnabled, theme
+		} = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
 		}
@@ -136,10 +121,16 @@ class CreateChannelView extends React.Component {
 		if (nextState.readOnly !== readOnly) {
 			return true;
 		}
+		if (nextState.encrypted !== encrypted) {
+			return true;
+		}
 		if (nextState.broadcast !== broadcast) {
 			return true;
 		}
 		if (nextProps.isFetching !== isFetching) {
+			return true;
+		}
+		if (nextProps.e2eEnabled !== e2eEnabled) {
 			return true;
 		}
 		if (!equal(nextProps.users, users)) {
@@ -148,15 +139,25 @@ class CreateChannelView extends React.Component {
 		return false;
 	}
 
-	onChangeText = (channelName) => {
+	toggleRightButton = (channelName) => {
 		const { navigation } = this.props;
-		navigation.setParams({ showSubmit: channelName.trim().length > 0 });
+		navigation.setOptions({
+			headerRight: () => channelName.trim().length > 0 && (
+				<HeaderButton.Container>
+					<HeaderButton.Item title={I18n.t('Create')} onPress={this.submit} testID='create-channel-submit' />
+				</HeaderButton.Container>
+			)
+		});
+	}
+
+	onChangeText = (channelName) => {
+		this.toggleRightButton(channelName);
 		this.setState({ channelName });
 	}
 
 	submit = () => {
 		const {
-			channelName, type, readOnly, broadcast
+			channelName, type, readOnly, broadcast, encrypted
 		} = this.state;
 		const { users: usersProps, isFetching, create } = this.props;
 
@@ -169,13 +170,14 @@ class CreateChannelView extends React.Component {
 
 		// create channel
 		create({
-			name: channelName, users, type, readOnly, broadcast
+			name: channelName, users, type, readOnly, broadcast, encrypted
 		});
 
 		Review.pushPositiveEvent();
 	}
 
 	removeUser = (user) => {
+		logEvent(events.CREATE_CHANNEL_REMOVE_USER);
 		const { removeUser } = this.props;
 		removeUser(user);
 	}
@@ -204,7 +206,11 @@ class CreateChannelView extends React.Component {
 			id: 'type',
 			value: type,
 			label: 'Private_Channel',
-			onValueChange: value => this.setState({ type: value })
+			onValueChange: (value) => {
+				logEvent(events.CREATE_CHANNEL_TOGGLE_TYPE);
+				// If we set the channel as public, encrypted status should be false
+				this.setState(({ encrypted }) => ({ type: value, encrypted: value && encrypted }));
+			}
 		});
 	}
 
@@ -214,8 +220,31 @@ class CreateChannelView extends React.Component {
 			id: 'readonly',
 			value: readOnly,
 			label: 'Read_Only_Channel',
-			onValueChange: value => this.setState({ readOnly: value }),
+			onValueChange: (value) => {
+				logEvent(events.CREATE_CHANNEL_TOGGLE_READ_ONLY);
+				this.setState({ readOnly: value });
+			},
 			disabled: broadcast
+		});
+	}
+
+	renderEncrypted() {
+		const { type, encrypted } = this.state;
+		const { e2eEnabled } = this.props;
+
+		if (!e2eEnabled) {
+			return null;
+		}
+
+		return this.renderSwitch({
+			id: 'encrypted',
+			value: encrypted,
+			label: 'Encrypted',
+			onValueChange: (value) => {
+				logEvent(events.CREATE_CHANNEL_TOGGLE_ENCRYPTED);
+				this.setState({ encrypted: value });
+			},
+			disabled: !type
 		});
 	}
 
@@ -226,6 +255,7 @@ class CreateChannelView extends React.Component {
 			value: broadcast,
 			label: 'Broadcast_Channel',
 			onValueChange: (value) => {
+				logEvent(events.CREATE_CHANNEL_TOGGLE_BROADCAST);
 				this.setState({
 					broadcast: value,
 					readOnly: value ? true : readOnly
@@ -293,8 +323,8 @@ class CreateChannelView extends React.Component {
 				contentContainerStyle={[sharedStyles.container, styles.container]}
 				keyboardVerticalOffset={128}
 			>
-				<StatusBar theme={theme} />
-				<SafeAreaView testID='create-channel-view' style={styles.container} forceInset={{ vertical: 'never' }}>
+				<StatusBar />
+				<SafeAreaView testID='create-channel-view'>
 					<ScrollView {...scrollPersistTaps}>
 						<View style={[sharedStyles.separatorVertical, { borderColor: themes[theme].separatorColor }]}>
 							<TextInput
@@ -316,6 +346,8 @@ class CreateChannelView extends React.Component {
 							{this.renderFormSeparator()}
 							{this.renderReadOnly()}
 							{this.renderFormSeparator()}
+							{this.renderEncrypted()}
+							{this.renderFormSeparator()}
 							{this.renderBroadcast()}
 						</View>
 						<View style={styles.invitedHeader}>
@@ -334,6 +366,7 @@ class CreateChannelView extends React.Component {
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	isFetching: state.createChannel.isFetching,
+	e2eEnabled: state.settings.E2E_Enable,
 	users: state.selectedUsers.users,
 	user: getUserSelector(state)
 });

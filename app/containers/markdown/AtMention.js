@@ -5,31 +5,41 @@ import { Text } from 'react-native';
 import { themes } from '../../constants/colors';
 
 import styles from './styles';
+import { logEvent, events } from '../../utils/log';
 
 const AtMention = React.memo(({
 	mention, mentions, username, navToRoomInfo, style = [], useRealName, theme
 }) => {
-	let mentionStyle = { ...styles.mention, color: themes[theme].buttonText };
 	if (mention === 'all' || mention === 'here') {
+		return (
+			<Text
+				style={[
+					styles.mention,
+					{
+						color: themes[theme].mentionGroupColor
+					},
+					...style
+				]}
+			>{mention}
+			</Text>
+		);
+	}
+
+	let mentionStyle = {};
+	if (mention === username) {
 		mentionStyle = {
-			...mentionStyle,
-			...styles.mentionAll
-		};
-	} else if (mention === username) {
-		mentionStyle = {
-			...mentionStyle,
-			backgroundColor: themes[theme].actionTintColor
+			color: themes[theme].mentionMeColor
 		};
 	} else {
 		mentionStyle = {
-			...mentionStyle,
-			color: themes[theme].actionTintColor
+			color: themes[theme].mentionOtherColor
 		};
 	}
 
-	const user = mentions && mentions.length && mentions.find(m => m.username === mention);
+	const user = mentions?.find?.(m => m && m.username === mention);
 
 	const handlePress = () => {
+		logEvent(events.ROOM_MENTION_GO_USER_INFO);
 		const navParam = {
 			t: 'd',
 			rid: user && user._id
@@ -40,7 +50,7 @@ const AtMention = React.memo(({
 	if (user) {
 		return (
 			<Text
-				style={[mentionStyle, ...style]}
+				style={[styles.mention, mentionStyle, ...style]}
 				onPress={handlePress}
 			>
 				{useRealName && user.name ? user.name : user.username}

@@ -1,12 +1,95 @@
 defaults: &defaults
   working_directory: ~/repo
 
-version: 2
+macos: &macos
+  macos:
+    xcode: "12.1.0"
+
+bash-env: &bash-env
+  BASH_ENV: "~/.nvm/nvm.sh"
+
+install-npm-modules: &install-npm-modules
+  name: Install NPM modules
+  command: yarn
+
+restore-npm-cache-linux: &restore-npm-cache-linux
+  name: Restore NPM cache
+  key: node-modules-{{ checksum "yarn.lock" }}
+
+save-npm-cache-linux: &save-npm-cache-linux
+  key: node-modules-{{ checksum "yarn.lock" }}
+  name: Save NPM cache
+  paths:
+    - ./node_modules
+
+restore-npm-cache-mac: &restore-npm-cache-mac
+  name: Restore NPM cache
+  key: node-v1-mac-{{ checksum "yarn.lock" }}
+
+save-npm-cache-mac: &save-npm-cache-mac
+  key: node-v1-mac-{{ checksum "yarn.lock" }}
+  name: Save NPM cache
+  paths:
+    - ./node_modules
+
+install-node: &install-node
+  name: Install Node
+  command: |
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+    source ~/.nvm/nvm.sh
+    INSTALLED_NODE=`nvm which current`
+    echo "export PATH=\"${INSTALLED_NODE%%/node}:\$PATH\"" >> ~/.bash_profile
+    source ~/.bash_profile
+
+restore-gems-cache: &restore-gems-cache
+  name: Restore gems cache
+  key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
+
+save-gems-cache: &save-gems-cache
+  name: Save gems cache
+  key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
+  paths:
+    - vendor/bundle
+
+update-fastlane-ios: &update-fastlane-ios
+  name: Update Fastlane
+  command: |
+    echo "ruby-2.6.4" > ~/.ruby-version
+    bundle install
+  working_directory: ios
+
+update-fastlane-android: &update-fastlane-android
+  name: Update Fastlane
+  command: |
+    echo "ruby-2.6.4" > ~/.ruby-version
+    bundle install
+  working_directory: android
+
+save-gradle-cache: &save-gradle-cache
+  name: Save gradle cache
+  key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+  paths:
+    - ~/.gradle
+
+restore_cache: &restore-gradle-cache
+  name: Restore gradle cache
+  key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+
+version: 2.1
+
+# EXECUTORS
+executors:
+  mac-env:
+    <<: *macos
+    environment:
+      <<: *bash-env
+
+# JOBS
 jobs:
   lint-testunit:
     <<: *defaults
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:10
 
     environment:
       CODECOV_TOKEN: caa771ab-3d45-4756-8e2a-e1f25996fef6
@@ -14,14 +97,9 @@ jobs:
     steps:
       - checkout
 
-      - restore_cache:
-          name: Restore NPM cache
-          key: node-modules-{{ checksum "yarn.lock" }}
+      - restore_cache: *restore-npm-cache-linux
 
-      - run:
-          name: Install NPM modules
-          command: |
-            yarn
+      - run: *install-npm-modules
 
       - run:
           name: Lint
@@ -38,166 +116,32 @@ jobs:
           command: |
             yarn codecov
 
-      - save_cache:
-          key: node-modules-{{ checksum "yarn.lock" }}
-          name: Save NPM cache
-          paths:
-            - ./node_modules
+      - save_cache: *save-npm-cache-linux
 
-  e2e-build:
-    macos:
-      xcode: "11.2.1"
-
-    environment:
-      BASH_ENV: "~/.nvm/nvm.sh"
-
-    steps:
-      - checkout
-
-      - restore_cache:
-          name: Restore NPM cache
-          key: node-v1-mac-{{ checksum "yarn.lock" }}
-
-      - run:
-          name: Install Node 8
-          command: |
-            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
-            source ~/.nvm/nvm.sh
-            # https://github.com/creationix/nvm/issues/1394
-            set +e
-            nvm install 8
-
-      - run:
-          name: Install appleSimUtils
-          command: |
-            brew update
-            brew tap wix/brew
-            brew install wix/brew/applesimutils
-
-      - run:
-          name: Install NPM modules
-          command: |
-            yarn global add detox-cli
-            yarn
-
-      - run:
-          name: Rebuild Detox framework cache
-          command: |
-            detox clean-framework-cache
-            detox build-framework-cache
-
-      - run:
-          name: Build
-          command: |
-            detox build --configuration ios.sim.release
-
-      - persist_to_workspace:
-          root: .
-          paths:
-            - ios/build/Build/Products/Release-iphonesimulator/RocketChatRN.app
-
-      - save_cache:
-          name: Save NPM cache
-          key: node-v1-mac-{{ checksum "yarn.lock" }}
-          paths:
-            - node_modules
-
-  e2e-test:
-    macos:
-      xcode: "11.2.1"
-
-    environment:
-      BASH_ENV: "~/.nvm/nvm.sh"
-
-    steps:
-      - checkout
-
-      - attach_workspace:
-          at: .
-
-      - restore_cache:
-          name: Restore NPM cache
-          key: node-v1-mac-{{ checksum "yarn.lock" }}
-
-      - run:
-          name: Install Node 8
-          command: |
-            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
-            source ~/.nvm/nvm.sh
-            # https://github.com/creationix/nvm/issues/1394
-            set +e
-            nvm install 8
-
-      - run:
-          name: Install appleSimUtils
-          command: |
-            brew update
-            brew tap wix/brew
-            brew install wix/brew/applesimutils
-
-      - run:
-          name: Install NPM modules
-          command: |
-            yarn global add detox-cli
-            yarn
-      
-      - run:
-          name: Rebuild Detox framework cache
-          command: |
-            detox clean-framework-cache
-            detox build-framework-cache
-
-      - run:
-          name: Test
-          command: |
-            detox test --configuration ios.sim.release --cleanup
-
-      - save_cache:
-          name: Save NPM cache
-          key: node-v1-mac-{{ checksum "yarn.lock" }}
-          paths:
-            - node_modules
-
-  android-build:
+  # Android builds
+  android-play-build:
     <<: *defaults
     docker:
       - image: circleci/android:api-28-node
 
     environment:
-      # GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4096m -XX:+HeapDumpOnOutOfMemoryError"
-      # GRADLE_OPTS: -Xmx2048m -Dorg.gradle.daemon=false
-      # JVM_OPTS: -Xmx4096m
       JAVA_OPTS: '-Xms512m -Xmx2g'
       GRADLE_OPTS: '-Xmx3g -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx2g -XX:+HeapDumpOnOutOfMemoryError"'
       TERM: dumb
-      BASH_ENV: "~/.nvm/nvm.sh"
+      <<: *bash-env
 
     steps:
       - checkout
 
-      - run:
-          name: Install Node 8
-          command: |
-            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
-            source ~/.nvm/nvm.sh
-            # https://github.com/creationix/nvm/issues/1394
-            set +e
-            nvm install 8
-            echo 'export PATH="/home/circleci/.nvm/versions/node/v8.16.0/bin:$PATH"' >> ~/.bash_profile
-            source ~/.bash_profile
+      - run: *install-node
 
-      - restore_cache:
-          name: Restore NPM cache
-          key: node-modules-{{ checksum "yarn.lock" }}
+      - restore_cache: *restore-npm-cache-linux
 
-      - run:
-          name: Install NPM modules
-          command: |
-            yarn
+      - run: *install-npm-modules
 
-      - restore_cache:
-          name: Restore gradle cache
-          key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
+      - run: *update-fastlane-android
+
+      - restore_cache: *restore-gradle-cache
 
       - run:
           name: Configure Gradle
@@ -206,6 +150,7 @@ jobs:
             # echo -e "android.enableAapt2=false" >> ./gradle.properties
             echo -e "android.useAndroidX=true" >> ./gradle.properties
             echo -e "android.enableJetifier=true" >> ./gradle.properties
+            echo -e "FLIPPER_VERSION=0.51.0" >> ./gradle.properties
 
             if [[ $KEYSTORE ]]; then
               echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
@@ -222,8 +167,10 @@ jobs:
       - run:
           name: Set Google Services
           command: |
-            cp google-services.prod.json google-services.json
-          working_directory: android/app
+            if [[ $KEYSTORE ]]; then
+              echo $GOOGLE_SERVICES_ANDROID | base64 --decode > google-services.json
+            fi
+          working_directory: android/app/src/play
 
       - run:
           name: Config variables
@@ -231,18 +178,13 @@ jobs:
             echo -e "export default { BUGSNAG_API_KEY: '$BUGSNAG_KEY' };" > ./config.js
 
       - run:
-          name: Build Android App
+          name: Build Android Play App
           command: |
             if [[ $KEYSTORE ]]; then
-              # TODO: enable app bundle again
-              ./gradlew assembleRelease
+              bundle exec fastlane android playRelease
             else
-              ./gradlew assembleDebug
+              bundle exec fastlane android playBuild
             fi
-
-            mkdir -p /tmp/build
-
-            mv app/build/outputs /tmp/build/
           working_directory: android
 
       - run:
@@ -252,70 +194,132 @@ jobs:
               yarn generate-source-maps-android upload \
                 --api-key=$BUGSNAG_KEY \
                 --app-version=$CIRCLE_BUILD_NUM \
-                --minifiedFile=android/app/build/generated/assets/react/release/app.bundle \
-                --source-map=android/app/build/generated/sourcemaps/react/release/app.bundle.map \
+                --minifiedFile=android/app/build/generated/assets/react/play/release/app.bundle \
+                --source-map=android/app/build/generated/sourcemaps/react/play/release/app.bundle.map \
                 --minified-url=app.bundle \
                 --upload-sources
             fi
 
       - store_artifacts:
-          path: /tmp/build/outputs
+          path: android/app/build/outputs
 
-      - save_cache:
-          name: Save NPM cache
-          key: node-modules-{{ checksum "yarn.lock" }}
+      - save_cache: *save-npm-cache-linux
+
+      - save_cache: *save-gradle-cache
+
+      - persist_to_workspace:
+          root: .
           paths:
-            - ./node_modules
+            - android/fastlane/report.xml
+            - android/app/build/outputs
 
-      - save_cache:
-          name: Save gradle cache
-          key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
-          paths:
-            - ~/.gradle
-
-  ios-build:
-    macos:
-      xcode: "11.2.1"
+  android-foss-build:
+    <<: *defaults
+    docker:
+      - image: circleci/android:api-28-node
 
     environment:
-      BASH_ENV: "~/.nvm/nvm.sh"
+      JAVA_OPTS: '-Xms512m -Xmx2g'
+      GRADLE_OPTS: '-Xmx3g -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx2g -XX:+HeapDumpOnOutOfMemoryError"'
+      TERM: dumb
+      <<: *bash-env
 
     steps:
       - checkout
 
-      - restore_cache:
-          name: Restore gems cache
-          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
+      - run: *install-node
 
-      - restore_cache:
-          name: Restore NPM cache
-          key: node-v1-mac-{{ checksum "yarn.lock" }}
+      - restore_cache: *restore-npm-cache-linux
 
-      - run:
-          name: Install Node 8
-          command: |
-            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
-            source ~/.nvm/nvm.sh
-            # https://github.com/creationix/nvm/issues/1394
-            set +e
-            nvm install 8
+      - run: *install-npm-modules
+
+      - run: *update-fastlane-android
+
+      - restore_cache: *restore-gradle-cache
 
       - run:
-          name: Install NPM modules
+          name: Configure Gradle
           command: |
-            yarn
+            echo -e "" > ./gradle.properties
+            # echo -e "android.enableAapt2=false" >> ./gradle.properties
+            echo -e "android.useAndroidX=true" >> ./gradle.properties
+            echo -e "android.enableJetifier=true" >> ./gradle.properties
+            echo -e "FLIPPER_VERSION=0.51.0" >> ./gradle.properties
+            echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
+
+            if [[ $KEYSTORE ]]; then
+              echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
+              echo -e "KEYSTORE=$KEYSTORE" >> ./gradle.properties
+              echo -e "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+              echo -e "KEY_ALIAS=$KEY_ALIAS" >> ./gradle.properties
+              echo -e "KEY_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+            fi
+          working_directory: android
 
       - run:
-          name: Update Fastlane
-          command: |
-            echo "ruby-2.6.4" > ~/.ruby-version
-            bundle install
-          working_directory: ios
+          name: Build Android Foss App
+          command: bundle exec fastlane android fossRelease
+          working_directory: android
+
+      - store_artifacts:
+          path: android/app/build/outputs
+
+      - save_cache: *save-npm-cache-linux
+
+      - save_cache: *save-gradle-cache
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - android/fastlane/report.xml
+            - android/app/build/outputs
+
+  android-google-play-beta:
+    <<: *defaults
+    docker:
+      - image: circleci/android:api-28-node
+
+    steps:
+      - checkout
+
+      - attach_workspace:
+          at: android
+
+      - run:
+          name: Store the google service account key
+          command: echo "$FASTLANE_GOOGLE_SERVICE_ACCOUNT" | base64 --decode > service_account.json
+          working_directory: android
+
+      - run: *update-fastlane-android
+
+      - run:
+          name: Fastlane Play Store Upload
+          command: bundle exec fastlane android beta
+          working_directory: android
+
+  # iOS builds
+  ios-build:
+    executor: mac-env
+
+    steps:
+      - checkout
+
+      - restore_cache: *restore-gems-cache
+
+      - restore_cache: *restore-npm-cache-mac
+
+      - run: *install-node
+
+      - run: *install-npm-modules
+
+      - run: *update-fastlane-ios
 
       - run:
           name: Set Google Services
           command: |
-            cp GoogleService-Info.prod.plist GoogleService-Info.plist
+            if [[ $KEYSTORE ]]; then
+              echo $GOOGLE_SERVICES_REACTNATIVE | base64 --decode > GoogleService-Info.plist
+            fi
           working_directory: ios
 
       - run:
@@ -339,26 +343,17 @@ jobs:
             agvtool new-version -all $CIRCLE_BUILD_NUM
             /usr/libexec/PlistBuddy -c "Set BugsnagAPIKey $BUGSNAG_KEY" ./RocketChatRN/Info.plist
 
-            if [[ $MATCH_KEYCHAIN_NAME ]]; then
+            if [[ $APP_STORE_CONNECT_API_KEY ]]; then
+              echo $APP_STORE_CONNECT_API_KEY | base64 --decode > ./fastlane/app_store_connect_api_key.p8
               bundle exec fastlane ios release
             else
-              export MATCH_KEYCHAIN_NAME="temp"
-              export MATCH_KEYCHAIN_PASSWORD="temp"
-              bundle exec fastlane ios build
+              bundle exec fastlane ios build_fork
             fi
           working_directory: ios
 
-      - save_cache:
-          name: Save NPM cache
-          key: node-v1-mac-{{ checksum "yarn.lock" }}
-          paths:
-            - node_modules
+      - save_cache: *save-npm-cache-mac
 
-      - save_cache:
-          name: Save gems cache
-          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
-          paths:
-            - vendor/bundle
+      - save_cache: *save-gems-cache
 
       - store_artifacts:
           path: ios/RocketChatRN.ipa
@@ -370,8 +365,7 @@ jobs:
             - ios/fastlane/report.xml
 
   ios-testflight:
-    macos:
-      xcode: "11.2.1"
+    executor: mac-env
 
     steps:
       - checkout
@@ -379,45 +373,23 @@ jobs:
       - attach_workspace:
           at: ios
 
-      - restore_cache:
-          name: Restore gems cache
-          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
+      - restore_cache: *restore-gems-cache
 
-      - run:
-          name: Update Fastlane
-          command: |
-            echo "ruby-2.4" > ~/.ruby-version
-            bundle install
-          working_directory: ios
+      - run: *update-fastlane-ios
 
       - run:
           name: Fastlane Tesflight Upload
           command: |
+            echo $APP_STORE_CONNECT_API_KEY | base64 --decode > ./fastlane/app_store_connect_api_key.p8
             bundle exec fastlane ios beta
           working_directory: ios
 
-      - save_cache:
-          name: Save gems cache
-          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
-          paths:
-            - vendor/bundle
+      - save_cache: *save-gems-cache
 
 workflows:
-  version: 2
   build-and-test:
     jobs:
       - lint-testunit
-
-      - e2e-hold:
-          type: approval
-          requires:
-            - lint-testunit
-      - e2e-build:
-          requires:
-            - e2e-hold
-      - e2e-test:
-          requires:
-            - e2e-build
 
       - ios-build:
           requires:
@@ -430,6 +402,20 @@ workflows:
           requires:
             - ios-hold-testflight
 
-      - android-build:
+      - android-play-build:
           requires:
             - lint-testunit
+      - android-hold-google-play-beta:
+          type: approval
+          requires:
+            - android-play-build
+      - android-google-play-beta:
+          requires:
+            - android-hold-google-play-beta
+      - android-hold-foss-build:
+          type: approval
+          requires:
+            - lint-testunit
+      - android-foss-build:
+          requires:
+            - android-hold-foss-build

@@ -5,11 +5,10 @@ import {
 import PropTypes from 'prop-types';
 import ShareExtension from 'rn-extensions-share';
 
-import { CancelModalButton } from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/HeaderButton';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
 import { themes } from '../constants/colors';
-import { themedHeader } from '../utils/navigation';
 import { withTheme } from '../theme';
 
 const styles = StyleSheet.create({
@@ -31,10 +30,10 @@ const styles = StyleSheet.create({
 });
 
 class WithoutServerView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		...themedHeader(screenProps.theme),
-		headerLeft: (
-			<CancelModalButton
+	static navigationOptions = () => ({
+		title: 'Rocket.Chat',
+		headerLeft: () => (
+			<HeaderButton.CancelModal
 				onPress={ShareExtension.close}
 				testID='share-extension-close'
 			/>

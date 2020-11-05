@@ -1,17 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 import PropTypes from 'prop-types';
 
+import Touchable from './Touchable';
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 import { BUTTON_HIT_SLOP } from './utils';
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
+import MessageContext from './Context';
 
 const Broadcast = React.memo(({
-	author, user, broadcast, replyBroadcast, theme
+	author, broadcast, theme
 }) => {
+	const { user, replyBroadcast } = useContext(MessageContext);
 	const isOwn = author._id === user.id;
 	if (broadcast && !isOwn) {
 		return (
@@ -24,7 +26,7 @@ const Broadcast = React.memo(({
 					testID='message-broadcast-reply'
 				>
 					<>
-						<CustomIcon name='back' size={20} style={styles.buttonIcon} color={themes[theme].buttonText} />
+						<CustomIcon name='arrow-back' size={20} style={styles.buttonIcon} color={themes[theme].buttonText} />
 						<Text style={[styles.buttonText, { color: themes[theme].buttonText }]}>{I18n.t('Reply')}</Text>
 					</>
 				</Touchable>
@@ -36,10 +38,8 @@ const Broadcast = React.memo(({
 
 Broadcast.propTypes = {
 	author: PropTypes.object,
-	user: PropTypes.object,
 	broadcast: PropTypes.bool,
-	theme: PropTypes.string,
-	replyBroadcast: PropTypes.func
+	theme: PropTypes.string
 };
 Broadcast.displayName = 'MessageBroadcast';
 

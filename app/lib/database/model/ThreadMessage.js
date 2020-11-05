@@ -32,6 +32,8 @@ export default class ThreadMessage extends Model {
 
 	@field('avatar') avatar;
 
+	@field('emoji') emoji;
+
 	@json('attachments', sanitizer) attachments;
 
 	@json('urls', sanitizer) urls;
@@ -73,4 +75,6 @@ export default class ThreadMessage extends Model {
 	@json('translations', sanitizer) translations;
 
 	@field('draft_message') draftMessage;
+
+	@field('e2e') e2e;
 }

@@ -8,6 +8,7 @@ import RocketChat from '../lib/rocketchat';
 import { getUserSelector } from '../selectors/login';
 
 import sharedStyles from './Styles';
+import { logEvent, events } from '../utils/log';
 
 const formatUrl = (url, baseUrl, uriSize, avatarAuthURLFragment) => (
 	`${ baseUrl }/avatar/${ url }?format=png&width=${ uriSize }&height=${ uriSize }${ avatarAuthURLFragment }`
@@ -16,6 +17,7 @@ const formatUrl = (url, baseUrl, uriSize, avatarAuthURLFragment) => (
 class JitsiMeetView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		baseUrl: PropTypes.string,
 		user: PropTypes.shape({
 			id: PropTypes.string,
@@ -27,14 +29,14 @@ class JitsiMeetView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.rid = props.navigation.getParam('rid');
+		this.rid = props.route.params?.rid;
 		this.onConferenceTerminated = this.onConferenceTerminated.bind(this);
 		this.onConferenceJoined = this.onConferenceJoined.bind(this);
 		this.jitsiTimeout = null;
 	}
 
 	componentDidMount() {
-		const { navigation, user, baseUrl } = this.props;
+		const { route, user, baseUrl } = this.props;
 		const {
 			name: displayName, id: userId, token, username
 		} = user;
@@ -47,8 +49,8 @@ class JitsiMeetView extends React.Component {
 				displayName,
 				avatar
 			};
-			const url = navigation.getParam('url');
-			const onlyAudio = navigation.getParam('onlyAudio', false);
+			const url = route.params?.url;
+			const onlyAudio = route.params?.onlyAudio ?? false;
 			if (onlyAudio) {
 				JitsiMeet.audioCall(url, userInfo);
 			} else {
@@ -58,6 +60,7 @@ class JitsiMeetView extends React.Component {
 	}
 
 	componentWillUnmount() {
+		logEvent(events.JM_CONFERENCE_TERMINATE);
 		if (this.jitsiTimeout) {
 			BackgroundTimer.clearInterval(this.jitsiTimeout);
 		}
@@ -67,6 +70,7 @@ class JitsiMeetView extends React.Component {
 	// Jitsi Update Timeout needs to be called every 10 seconds to make sure
 	// call is not ended and is available to web users.
 	onConferenceJoined = () => {
+		logEvent(events.JM_CONFERENCE_JOIN);
 		RocketChat.updateJitsiTimeout(this.rid).catch(e => console.log(e));
 		if (this.jitsiTimeout) {
 			BackgroundTimer.clearInterval(this.jitsiTimeout);
@@ -77,6 +81,7 @@ class JitsiMeetView extends React.Component {
 	}
 
 	onConferenceTerminated = () => {
+		logEvent(events.JM_CONFERENCE_TERMINATE);
 		const { navigation } = this.props;
 		if (this.jitsiTimeout) {
 			BackgroundTimer.clearInterval(this.jitsiTimeout);

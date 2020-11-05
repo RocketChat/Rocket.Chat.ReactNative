@@ -5,10 +5,10 @@ import Popover from 'react-native-popover-view';
 import Touchable from 'react-native-platform-touchable';
 
 import { CustomIcon } from '../../lib/Icons';
-import Separator from '../Separator';
 import ActivityIndicator from '../ActivityIndicator';
 import { themes } from '../../constants/colors';
 import { BUTTON_HIT_SLOP } from '../message/utils';
+import * as List from '../List';
 
 const keyExtractor = item => item.value;
 
@@ -50,7 +50,7 @@ const Options = ({
 		data={options}
 		renderItem={({ item }) => <Option option={item} onOptionPress={onOptionPress} parser={parser} theme={theme} />}
 		keyExtractor={keyExtractor}
-		ItemSeparatorComponent={() => <Separator theme={theme} />}
+		ItemSeparatorComponent={List.Separator}
 	/>
 );
 Options.propTypes = {
@@ -82,7 +82,7 @@ export const Overflow = ({
 				hitSlop={BUTTON_HIT_SLOP}
 				style={styles.menu}
 			>
-				{!loading ? <CustomIcon size={18} name='menu' color={themes[theme].bodyText} /> : <ActivityIndicator style={styles.loading} theme={theme} />}
+				{!loading ? <CustomIcon size={18} name='kebab' color={themes[theme].bodyText} /> : <ActivityIndicator style={styles.loading} theme={theme} />}
 			</Touchable>
 			<Popover
 				isVisible={show}

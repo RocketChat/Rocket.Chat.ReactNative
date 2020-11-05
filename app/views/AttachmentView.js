@@ -7,19 +7,22 @@ import * as mime from 'react-native-mime-types';
 import { FileSystem } from 'react-native-unimodules';
 import { Video } from 'expo-av';
 import SHA256 from 'js-sha256';
+import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { LISTENER } from '../containers/Toast';
 import EventEmitter from '../utils/events';
 import I18n from '../i18n';
 import { withTheme } from '../theme';
-import ImageViewer from '../presentation/ImageViewer';
-import { themedHeader } from '../utils/navigation';
+import { ImageViewer } from '../presentation/ImageViewer';
 import { themes } from '../constants/colors';
 import { formatAttachmentUrl } from '../lib/utils';
 import RCActivityIndicator from '../containers/ActivityIndicator';
-import { SaveButton, CloseModalButton } from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/HeaderButton';
 import { isAndroid } from '../utils/deviceInfo';
 import { getUserSelector } from '../selectors/login';
+import { withDimensions } from '../dimensions';
+import { getHeaderHeight } from '../containers/Header';
+import StatusBar from '../containers/StatusBar';
 
 const styles = StyleSheet.create({
 	container: {
@@ -28,45 +31,31 @@ const styles = StyleSheet.create({
 });
 
 class AttachmentView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const { theme } = screenProps;
-		const attachment = navigation.getParam('attachment');
-		const from = navigation.getParam('from');
-		const handleSave = navigation.getParam('handleSave', () => {});
-		const { title, video_url } = attachment;
-		const options = {
-			title,
-			...themedHeader(theme),
-			headerRight: !video_url ? <SaveButton testID='save-image' onPress={handleSave} /> : null
-		};
-		if (from !== 'MessagesView') {
-			options.gesturesEnabled = false;
-			options.headerLeft = <CloseModalButton testID='close-attachment-view' navigation={navigation} />;
-		}
-		return options;
-	}
-
 	static propTypes = {
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		theme: PropTypes.string,
 		baseUrl: PropTypes.string,
+		width: PropTypes.number,
+		height: PropTypes.number,
+		insets: PropTypes.object,
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			token: PropTypes.string
-		})
+		}),
+		Allow_Save_Media_to_Gallery: PropTypes.bool
 	}
 
 	constructor(props) {
 		super(props);
-		const attachment = props.navigation.getParam('attachment');
+		const attachment = props.route.params?.attachment;
 		this.state = { attachment, loading: true };
+		this.setHeader();
 	}
 
 	componentDidMount() {
 		const { navigation } = this.props;
-		navigation.setParams({ handleSave: this.handleSave });
-
-		this.willBlurListener = navigation.addListener('willBlur', () => {
+		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			if (this.videoRef && this.videoRef.stopAsync) {
 				this.videoRef.stopAsync();
 			}
@@ -74,9 +63,35 @@ class AttachmentView extends React.Component {
 	}
 
 	componentWillUnmount() {
-		if (this.willBlurListener && this.willBlurListener.remove) {
-			this.willBlurListener.remove();
+		if (this.unsubscribeBlur) {
+			this.unsubscribeBlur();
 		}
+	}
+
+	setHeader = () => {
+		const {
+			route, navigation, theme, Allow_Save_Media_to_Gallery
+		} = this.props;
+		const attachment = route.params?.attachment;
+		let { title } = attachment;
+		try {
+			title = decodeURI(title);
+		} catch {
+			// Do nothing
+		}
+		const options = {
+			title,
+			headerLeft: () => <HeaderButton.CloseModal testID='close-attachment-view' navigation={navigation} buttonStyle={{ color: themes[theme].previewTintColor }} />,
+			headerRight: () => (
+				Allow_Save_Media_to_Gallery
+					? <HeaderButton.Download testID='save-image' onPress={this.handleSave} buttonStyle={{ color: themes[theme].previewTintColor }} />
+					: null
+			),
+			headerBackground: () => <View style={{ flex: 1, backgroundColor: themes[theme].previewBackground }} />,
+			headerTintColor: themes[theme].previewTintColor,
+			headerTitleStyle: { color: themes[theme].previewTintColor, marginHorizontal: 10 }
+		};
+		navigation.setOptions(options);
 	}
 
 	getVideoRef = ref => this.videoRef = ref;
@@ -84,8 +99,11 @@ class AttachmentView extends React.Component {
 	handleSave = async() => {
 		const { attachment } = this.state;
 		const { user, baseUrl } = this.props;
-		const { image_url, image_type } = attachment;
-		const img = formatAttachmentUrl(image_url, user.id, user.token, baseUrl);
+		const {
+			image_url, image_type, video_url, video_type
+		} = attachment;
+		const url = image_url || video_url;
+		const mediaAttachment = formatAttachmentUrl(url, user.id, user.token, baseUrl);
 
 		if (isAndroid) {
 			const rationale = {
@@ -100,23 +118,32 @@ class AttachmentView extends React.Component {
 
 		this.setState({ loading: true });
 		try {
-			const extension = `.${ mime.extension(image_type) || 'jpg' }`;
-			const file = `${ FileSystem.documentDirectory + SHA256(image_url) + extension }`;
-			const { uri } = await FileSystem.downloadAsync(img, file);
+			const extension = image_url ? `.${ mime.extension(image_type) || 'jpg' }` : `.${ mime.extension(video_type) || 'mp4' }`;
+			const file = `${ FileSystem.documentDirectory + SHA256(url) + extension }`;
+			const { uri } = await FileSystem.downloadAsync(mediaAttachment, file);
 			await CameraRoll.save(uri, { album: 'Rocket.Chat' });
 			EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
 		} catch (e) {
-			EventEmitter.emit(LISTENER, { message: I18n.t('error-save-image') });
+			EventEmitter.emit(LISTENER, { message: I18n.t(image_url ? 'error-save-image' : 'error-save-video') });
 		}
 		this.setState({ loading: false });
 	};
 
-	renderImage = uri => (
-		<ImageViewer
-			uri={uri}
-			onLoadEnd={() => this.setState({ loading: false })}
-		/>
-	);
+	renderImage = (uri) => {
+		const {
+			theme, width, height, insets
+		} = this.props;
+		const headerHeight = getHeaderHeight(width > height);
+		return (
+			<ImageViewer
+				uri={uri}
+				onLoadEnd={() => this.setState({ loading: false })}
+				theme={theme}
+				width={width}
+				height={height - insets.top - insets.bottom - headerHeight}
+			/>
+		);
+	}
 
 	renderVideo = uri => (
 		<Video
@@ -150,6 +177,7 @@ class AttachmentView extends React.Component {
 
 		return (
 			<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
+				<StatusBar barStyle='light-content' backgroundColor={themes[theme].previewBackground} />
 				{content}
 				{loading ? <RCActivityIndicator absolute size='large' theme={theme} /> : null}
 			</View>
@@ -159,7 +187,8 @@ class AttachmentView extends React.Component {
 
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
-	user: getUserSelector(state)
+	user: getUserSelector(state),
+	Allow_Save_Media_to_Gallery: state.settings.Allow_Save_Media_to_Gallery ?? true
 });
 
-export default connect(mapStateToProps)(withTheme(AttachmentView));
+export default connect(mapStateToProps)(withTheme(withDimensions(withSafeAreaInsets(AttachmentView))));

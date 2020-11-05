@@ -12,46 +12,41 @@
 
 #import <Foundation/Foundation.h>
 
-/// Add Payment Info event. This event signifies that a user has submitted their payment information
-/// to your app.
+/// Add Payment Info event. This event signifies that a user has submitted their payment
+/// information. Note: If you supply the @c kFIRParameterValue parameter, you must also supply the
+/// @c kFIRParameterCurrency parameter so that revenue metrics can be computed accurately. Params:
+///
+/// <ul>
+///     <li>@c kFIRParameterCoupon (NSString) (optional)</li>
+///     <li>@c kFIRParameterCurrency (NSString) (optional)</li>
+///     <li>@c kFIRParameterItems (NSArray) (optional)</li>
+///     <li>@c kFIRParameterPaymentType (NSString) (optional)</li>
+///     <li>@c kFIRParameterValue (double as NSNumber) (optional)</li>
+/// </ul>
 static NSString *const kFIREventAddPaymentInfo NS_SWIFT_NAME(AnalyticsEventAddPaymentInfo) =
     @"add_payment_info";
 
-/// E-Commerce Add To Cart event. This event signifies that an item was added to a cart for
-/// purchase. Add this event to a funnel with kFIREventEcommercePurchase to gauge the effectiveness
-/// of your checkout process. Note: If you supply the @c kFIRParameterValue parameter, you must
-/// also supply the @c kFIRParameterCurrency parameter so that revenue metrics can be computed
+/// E-Commerce Add To Cart event. This event signifies that an item(s) was added to a cart for
+/// purchase. Add this event to a funnel with @c kFIREventPurchase to gauge the effectiveness of
+/// your checkout process. Note: If you supply the @c kFIRParameterValue parameter, you must also
+/// supply the @c kFIRParameterCurrency parameter so that revenue metrics can be computed
 /// accurately. Params:
 ///
 /// <ul>
-///     <li>@c kFIRParameterQuantity (signed 64-bit integer as NSNumber)</li>
-///     <li>@c kFIRParameterItemID (NSString)</li>
-///     <li>@c kFIRParameterItemName (NSString)</li>
-///     <li>@c kFIRParameterItemCategory (NSString)</li>
-///     <li>@c kFIRParameterItemLocationID (NSString) (optional)</li>
-///     <li>@c kFIRParameterPrice (double as NSNumber) (optional)</li>
 ///     <li>@c kFIRParameterCurrency (NSString) (optional)</li>
+///     <li>@c kFIRParameterItems (NSArray) (optional)</li>
 ///     <li>@c kFIRParameterValue (double as NSNumber) (optional)</li>
-///     <li>@c kFIRParameterOrigin (NSString) (optional)</li>
-///     <li>@c kFIRParameterDestination (NSString) (optional)</li>
-///     <li>@c kFIRParameterStartDate (NSString) (optional)</li>
-///     <li>@c kFIRParameterEndDate (NSString) (optional)</li>
 /// </ul>
 static NSString *const kFIREventAddToCart NS_SWIFT_NAME(AnalyticsEventAddToCart) = @"add_to_cart";
 
-/// E-Commerce Add To Wishlist event. This event signifies that an item was added to a wishlist.
-/// Use this event to identify popular gift items in your app. Note: If you supply the
-/// @c kFIRParameterValue parameter, you must also supply the @c kFIRParameterCurrency
-/// parameter so that revenue metrics can be computed accurately. Params:
+/// E-Commerce Add To Wishlist event. This event signifies that an item was added to a wishlist. Use
+/// this event to identify popular gift items. Note: If you supply the @c kFIRParameterValue
+/// parameter, you must also supply the @c kFIRParameterCurrency parameter so that revenue metrics
+/// can be computed accurately. Params:
 ///
 /// <ul>
-///     <li>@c kFIRParameterQuantity (signed 64-bit integer as NSNumber)</li>
-///     <li>@c kFIRParameterItemID (NSString)</li>
-///     <li>@c kFIRParameterItemName (NSString)</li>
-///     <li>@c kFIRParameterItemCategory (NSString)</li>
-///     <li>@c kFIRParameterItemLocationID (NSString) (optional)</li>
-///     <li>@c kFIRParameterPrice (double as NSNumber) (optional)</li>
 ///     <li>@c kFIRParameterCurrency (NSString) (optional)</li>
+///     <li>@c kFIRParameterItems (NSArray) (optional)</li>
 ///     <li>@c kFIRParameterValue (double as NSNumber) (optional)</li>
 /// </ul>
 static NSString *const kFIREventAddToWishlist NS_SWIFT_NAME(AnalyticsEventAddToWishlist) =
@@ -64,26 +59,16 @@ static NSString *const kFIREventAddToWishlist NS_SWIFT_NAME(AnalyticsEventAddToW
 static NSString *const kFIREventAppOpen NS_SWIFT_NAME(AnalyticsEventAppOpen) = @"app_open";
 
 /// E-Commerce Begin Checkout event. This event signifies that a user has begun the process of
-/// checking out. Add this event to a funnel with your kFIREventEcommercePurchase event to gauge the
-/// effectiveness of your checkout process. Note: If you supply the @c kFIRParameterValue
-/// parameter, you must also supply the @c kFIRParameterCurrency parameter so that revenue
-/// metrics can be computed accurately. Params:
+/// checking out. Add this event to a funnel with your @c kFIREventPurchase event to gauge the
+/// effectiveness of your checkout process. Note: If you supply the @c kFIRParameterValue parameter,
+/// you must also supply the @c kFIRParameterCurrency parameter so that revenue metrics can be
+/// computed accurately. Params:
 ///
 /// <ul>
-///     <li>@c kFIRParameterValue (double as NSNumber) (optional)</li>
+///     <li>@c kFIRParameterCoupon (NSString) (optional)</li>
 ///     <li>@c kFIRParameterCurrency (NSString) (optional)</li>
-///     <li>@c kFIRParameterTransactionID (NSString) (optional)</li>
-///     <li>@c kFIRParameterStartDate (NSString) (optional)</li>
-///     <li>@c kFIRParameterEndDate (NSString) (optional)</li>
-///     <li>@c kFIRParameterNumberOfNights (signed 64-bit integer as NSNumber) (optional) for
-///         hotel bookings</li>
-///     <li>@c kFIRParameterNumberOfRooms (signed 64-bit integer as NSNumber) (optional) for
-///         hotel bookings</li>
-///     <li>@c kFIRParameterNumberOfPassengers (signed 64-bit integer as NSNumber) (optional)
-///         for travel bookings</li>
-///     <li>@c kFIRParameterOrigin (NSString) (optional)</li>
-///     <li>@c kFIRParameterDestination (NSString) (optional)</li>
-///     <li>@c kFIRParameterTravelClass (NSString) (optional) for travel bookings</li>
+///     <li>@c kFIRParameterItems (NSArray) (optional)</li>
+///     <li>@c kFIRParameterValue (double as NSNumber) (optional)</li>
 /// </ul>
 static NSString *const kFIREventBeginCheckout NS_SWIFT_NAME(AnalyticsEventBeginCheckout) =
     @"begin_checkout";
@@ -110,6 +95,7 @@ static NSString *const kFIREventCampaignDetails NS_SWIFT_NAME(AnalyticsEventCamp
 ///    <li>@c kFIRParameterCheckoutStep (unsigned 64-bit integer as NSNumber)</li>
 ///    <li>@c kFIRParameterCheckoutOption (NSString) (optional)</li>
 /// </ul>
+/// <b>This constant has been deprecated.</b>
 static NSString *const kFIREventCheckoutProgress NS_SWIFT_NAME(AnalyticsEventCheckoutProgress) =
     @"checkout_progress";
 
@@ -150,6 +136,7 @@ static NSString *const kFIREventEarnVirtualCurrency
 ///     <li>@c kFIRParameterDestination (NSString) (optional)</li>
 ///     <li>@c kFIRParameterTravelClass (NSString) (optional) for travel bookings</li>
 /// </ul>
+/// <b>This constant has been deprecated. Use @c kFIREventPurchase constant instead.</b>
 static NSString *const kFIREventEcommercePurchase NS_SWIFT_NAME(AnalyticsEventEcommercePurchase) =
     @"ecommerce_purchase";
 
@@ -172,6 +159,21 @@ static NSString *const kFIREventGenerateLead NS_SWIFT_NAME(AnalyticsEventGenerat
 ///     <li>@c kFIRParameterGroupID (NSString)</li>
 /// </ul>
 static NSString *const kFIREventJoinGroup NS_SWIFT_NAME(AnalyticsEventJoinGroup) = @"join_group";
+
+/// Level End event. Log this event when the user finishes a level. Params:
+///
+/// <ul>
+///     <li>@c kFIRParameterLevelName (NSString)</li>
+///     <li>@c kFIRParameterSuccess (NSString)</li>
+/// </ul>
+static NSString *const kFIREventLevelEnd NS_SWIFT_NAME(AnalyticsEventLevelEnd) = @"level_end";
+
+/// Level Start event. Log this event when the user starts a new level. Params:
+///
+/// <ul>
+///     <li>@c kFIRParameterLevelName (NSString)</li>
+/// </ul>
+static NSString *const kFIREventLevelStart NS_SWIFT_NAME(AnalyticsEventLevelStart) = @"level_start";
 
 /// Level Up event. This event signifies that a player has leveled up in your gaming app. It can
 /// help you gauge the level distribution of your userbase and help you identify certain levels that
@@ -214,6 +216,7 @@ static NSString *const kFIREventPostScore NS_SWIFT_NAME(AnalyticsEventPostScore)
 ///     <li>@c kFIRParameterCurrency (NSString) (optional)</li>
 ///     <li>@c kFIRParameterValue (double as NSNumber) (optional)</li>
 /// </ul>
+/// <b>This constant has been deprecated. Use @c kFIREventViewPromotion constant instead.</b>
 static NSString *const kFIREventPresentOffer NS_SWIFT_NAME(AnalyticsEventPresentOffer) =
     @"present_offer";
 
@@ -227,24 +230,18 @@ static NSString *const kFIREventPresentOffer NS_SWIFT_NAME(AnalyticsEventPresent
 ///     <li>@c kFIRParameterValue (double as NSNumber) (optional)</li>
 ///     <li>@c kFIRParameterTransactionID (NSString) (optional)</li>
 /// </ul>
+/// <b>This constant has been deprecated. Use @c kFIREventRefund constant instead.</b>
 static NSString *const kFIREventPurchaseRefund NS_SWIFT_NAME(AnalyticsEventPurchaseRefund) =
     @"purchase_refund";
 
-/// Remove from cart event. Params:
+/// E-Commerce Remove from Cart event. This event signifies that an item(s) was removed from a cart.
+/// Note: If you supply the @c kFIRParameterValue parameter, you must also supply the @c
+/// kFIRParameterCurrency parameter so that revenue metrics can be computed accurately. Params:
 ///
 /// <ul>
-///     <li>@c kFIRParameterQuantity (signed 64-bit integer as NSNumber)</li>
-///     <li>@c kFIRParameterItemID (NSString)</li>
-///     <li>@c kFIRParameterItemName (NSString)</li>
-///     <li>@c kFIRParameterItemCategory (NSString)</li>
-///     <li>@c kFIRParameterItemLocationID (NSString) (optional)</li>
-///     <li>@c kFIRParameterPrice (double as NSNumber) (optional)</li>
 ///     <li>@c kFIRParameterCurrency (NSString) (optional)</li>
+///     <li>@c kFIRParameterItems (NSArray) (optional)</li>
 ///     <li>@c kFIRParameterValue (double as NSNumber) (optional)</li>
-///     <li>@c kFIRParameterOrigin (NSString) (optional)</li>
-///     <li>@c kFIRParameterDestination (NSString) (optional)</li>
-///     <li>@c kFIRParameterStartDate (NSString) (optional)</li>
-///     <li>@c kFIRParameterEndDate (NSString) (optional)</li>
 /// </ul>
 static NSString *const kFIREventRemoveFromCart NS_SWIFT_NAME(AnalyticsEventRemoveFromCart) =
     @"remove_from_cart";
@@ -286,6 +283,7 @@ static NSString *const kFIREventSelectContent NS_SWIFT_NAME(AnalyticsEventSelect
 ///    <li>@c kFIRParameterCheckoutStep (unsigned 64-bit integer as NSNumber)</li>
 ///    <li>@c kFIRParameterCheckoutOption (NSString)</li>
 /// </ul>
+/// <b>This constant has been deprecated.</b>
 static NSString *const kFIREventSetCheckoutOption NS_SWIFT_NAME(AnalyticsEventSetCheckoutOption) =
     @"set_checkout_option";
 
@@ -340,43 +338,24 @@ static NSString *const kFIREventTutorialComplete NS_SWIFT_NAME(AnalyticsEventTut
 static NSString *const kFIREventUnlockAchievement NS_SWIFT_NAME(AnalyticsEventUnlockAchievement) =
     @"unlock_achievement";
 
-/// View Item event. This event signifies that some content was shown to the user. This content may
-/// be a product, a webpage or just a simple image or text. Use the appropriate parameters to
-/// contextualize the event. Use this event to discover the most popular items viewed in your app.
-/// Note: If you supply the @c kFIRParameterValue parameter, you must also supply the
-/// @c kFIRParameterCurrency parameter so that revenue metrics can be computed accurately.
-/// Params:
+/// View Item event. This event signifies that a user has viewed an item. Use the appropriate
+/// parameters to contextualize the event. Use this event to discover the most popular items viewed
+/// in your app. Note: If you supply the @c kFIRParameterValue parameter, you must also supply the
+/// @c kFIRParameterCurrency parameter so that revenue metrics can be computed accurately. Params:
 ///
 /// <ul>
-///     <li>@c kFIRParameterItemID (NSString)</li>
-///     <li>@c kFIRParameterItemName (NSString)</li>
-///     <li>@c kFIRParameterItemCategory (NSString)</li>
-///     <li>@c kFIRParameterItemLocationID (NSString) (optional)</li>
-///     <li>@c kFIRParameterPrice (double as NSNumber) (optional)</li>
-///     <li>@c kFIRParameterQuantity (signed 64-bit integer as NSNumber) (optional)</li>
 ///     <li>@c kFIRParameterCurrency (NSString) (optional)</li>
+///     <li>@c kFIRParameterItems (NSArray) (optional)</li>
 ///     <li>@c kFIRParameterValue (double as NSNumber) (optional)</li>
-///     <li>@c kFIRParameterStartDate (NSString) (optional)</li>
-///     <li>@c kFIRParameterEndDate (NSString) (optional)</li>
-///     <li>@c kFIRParameterFlightNumber (NSString) (optional) for travel bookings</li>
-///     <li>@c kFIRParameterNumberOfPassengers (signed 64-bit integer as NSNumber) (optional)
-///         for travel bookings</li>
-///     <li>@c kFIRParameterNumberOfNights (signed 64-bit integer as NSNumber) (optional) for
-///         travel bookings</li>
-///     <li>@c kFIRParameterNumberOfRooms (signed 64-bit integer as NSNumber) (optional) for
-///         travel bookings</li>
-///     <li>@c kFIRParameterOrigin (NSString) (optional)</li>
-///     <li>@c kFIRParameterDestination (NSString) (optional)</li>
-///     <li>@c kFIRParameterSearchTerm (NSString) (optional) for travel bookings</li>
-///     <li>@c kFIRParameterTravelClass (NSString) (optional) for travel bookings</li>
 /// </ul>
 static NSString *const kFIREventViewItem NS_SWIFT_NAME(AnalyticsEventViewItem) = @"view_item";
 
-/// View Item List event. Log this event when the user has been presented with a list of items of a
-/// certain category. Params:
+/// View Item List event. Log this event when a user sees a list of items or offerings. Params:
 ///
 /// <ul>
-///     <li>@c kFIRParameterItemCategory (NSString)</li>
+///     <li>@c kFIRParameterItems (NSArray) (optional)</li>
+///     <li>@c kFIRParameterItemListID (NSString) (optional)</li>
+///     <li>@c kFIRParameterItemListName (NSString) (optional)</li>
 /// </ul>
 static NSString *const kFIREventViewItemList NS_SWIFT_NAME(AnalyticsEventViewItemList) =
     @"view_item_list";
@@ -390,18 +369,103 @@ static NSString *const kFIREventViewItemList NS_SWIFT_NAME(AnalyticsEventViewIte
 static NSString *const kFIREventViewSearchResults NS_SWIFT_NAME(AnalyticsEventViewSearchResults) =
     @"view_search_results";
 
-/// Level Start event. Log this event when the user starts a new level. Params:
+/// Add Shipping Info event. This event signifies that a user has submitted their shipping
+/// information. Note: If you supply the @c kFIRParameterValue parameter, you must also supply the
+/// @c kFIRParameterCurrency parameter so that revenue metrics can be computed accurately. Params:
 ///
 /// <ul>
-///     <li>@c kFIRParameterLevelName (NSString)</li>
+///     <li>@c kFIRParameterCoupon (NSString) (optional)</li>
+///     <li>@c kFIRParameterCurrency (NSString) (optional)</li>
+///     <li>@c kFIRParameterItems (NSArray) (optional)</li>
+///     <li>@c kFIRParameterShippingTier (NSString) (optional)</li>
+///     <li>@c kFIRParameterValue (double as NSNumber) (optional)</li>
 /// </ul>
-static NSString *const kFIREventLevelStart NS_SWIFT_NAME(AnalyticsEventLevelStart) =
-    @"level_start";
+static NSString *const kFIREventAddShippingInfo NS_SWIFT_NAME(AnalyticsEventAddShippingInfo) =
+    @"add_shipping_info";
 
-/// Level End event. Log this event when the user finishes a level. Params:
+/// E-Commerce Purchase event. This event signifies that an item(s) was purchased by a user. Note:
+/// This is different from the in-app purchase event, which is reported automatically for App
+/// Store-based apps. Note: If you supply the @c kFIRParameterValue parameter, you must also supply
+/// the @c kFIRParameterCurrency parameter so that revenue metrics can be computed accurately.
+/// Params:
 ///
 /// <ul>
-///     <li>@c kFIRParameterLevelName (NSString)</li>
-///     <li>@c kFIRParameterSuccess (NSString)</li>
+///     <li>@c kFIRParameterAffiliation (NSString) (optional)</li>
+///     <li>@c kFIRParameterCoupon (NSString) (optional)</li>
+///     <li>@c kFIRParameterCurrency (NSString) (optional)</li>
+///     <li>@c kFIRParameterItems (NSArray) (optional)</li>
+///     <li>@c kFIRParameterShipping (double as NSNumber) (optional)</li>
+///     <li>@c kFIRParameterTax (double as NSNumber) (optional)</li>
+///     <li>@c kFIRParameterTransactionID (NSString) (optional)</li>
+///     <li>@c kFIRParameterValue (double as NSNumber) (optional)</li>
 /// </ul>
-static NSString *const kFIREventLevelEnd NS_SWIFT_NAME(AnalyticsEventLevelEnd) = @"level_end";
+static NSString *const kFIREventPurchase NS_SWIFT_NAME(AnalyticsEventPurchase) = @"purchase";
+
+/// E-Commerce Refund event. This event signifies that a refund was issued. Note: If you supply the
+/// @c kFIRParameterValue parameter, you must also supply the @c kFIRParameterCurrency parameter so
+/// that revenue metrics can be computed accurately. Params:
+///
+/// <ul>
+///     <li>@c kFIRParameterAffiliation (NSString) (optional)</li>
+///     <li>@c kFIRParameterCoupon (NSString) (optional)</li>
+///     <li>@c kFIRParameterCurrency (NSString) (optional)</li>
+///     <li>@c kFIRParameterItems (NSArray) (optional)</li>
+///     <li>@c kFIRParameterShipping (double as NSNumber) (optional)</li>
+///     <li>@c kFIRParameterTax (double as NSNumber) (optional)</li>
+///     <li>@c kFIRParameterTransactionID (NSString) (optional)</li>
+///     <li>@c kFIRParameterValue (double as NSNumber) (optional)</li>
+/// </ul>
+static NSString *const kFIREventRefund NS_SWIFT_NAME(AnalyticsEventRefund) = @"refund";
+
+/// Select Item event. This event signifies that an item was selected by a user from a list. Use the
+/// appropriate parameters to contextualize the event. Use this event to discover the most popular
+/// items selected. Params:
+///
+/// <ul>
+///     <li>@c kFIRParameterItems (NSArray) (optional)</li>
+///     <li>@c kFIRParameterItemListID (NSString) (optional)</li>
+///     <li>@c kFIRParameterItemListName (NSString) (optional)</li>
+/// </ul>
+static NSString *const kFIREventSelectItem NS_SWIFT_NAME(AnalyticsEventSelectItem) = @"select_item";
+
+/// Select promotion event. This event signifies that a user has selected a promotion offer. Use the
+/// appropriate parameters to contextualize the event, such as the item(s) for which the promotion
+/// applies. Params:
+///
+/// <ul>
+///     <li>@c kFIRParameterCreativeName (NSString) (optional)</li>
+///     <li>@c kFIRParameterCreativeSlot (NSString) (optional)</li>
+///     <li>@c kFIRParameterItems (NSArray) (optional)</li>
+///     <li>@c kFIRParameterLocationID (NSString) (optional)</li>
+///     <li>@c kFIRParameterPromotionID (NSString) (optional)</li>
+///     <li>@c kFIRParameterPromotionName (NSString) (optional)</li>
+/// </ul>
+static NSString *const kFIREventSelectPromotion NS_SWIFT_NAME(AnalyticsEventSelectPromotion) =
+    @"select_promotion";
+
+/// E-commerce View Cart event. This event signifies that a user has viewed their cart. Use this to
+/// analyze your purchase funnel. Note: If you supply the @c kFIRParameterValue parameter, you must
+/// also supply the @c kFIRParameterCurrency parameter so that revenue metrics can be computed
+/// accurately. Params:
+///
+/// <ul>
+///     <li>@c kFIRParameterCurrency (NSString) (optional)</li>
+///     <li>@c kFIRParameterItems (NSArray) (optional)</li>
+///     <li>@c kFIRParameterValue (double as NSNumber) (optional)</li>
+/// </ul>
+static NSString *const kFIREventViewCart NS_SWIFT_NAME(AnalyticsEventViewCart) = @"view_cart";
+
+/// View Promotion event. This event signifies that a promotion was shown to a user. Add this event
+/// to a funnel with the @c kFIREventAddToCart and @c kFIREventPurchase to gauge your conversion
+/// process. Params:
+///
+/// <ul>
+///     <li>@c kFIRParameterCreativeName (NSString) (optional)</li>
+///     <li>@c kFIRParameterCreativeSlot (NSString) (optional)</li>
+///     <li>@c kFIRParameterItems (NSArray) (optional)</li>
+///     <li>@c kFIRParameterLocationID (NSString) (optional)</li>
+///     <li>@c kFIRParameterPromotionID (NSString) (optional)</li>
+///     <li>@c kFIRParameterPromotionName (NSString) (optional)</li>
+/// </ul>
+static NSString *const kFIREventViewPromotion NS_SWIFT_NAME(AnalyticsEventViewPromotion) =
+    @"view_promotion";

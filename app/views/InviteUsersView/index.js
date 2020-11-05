@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Share, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
@@ -18,16 +17,17 @@ import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
+import SafeAreaView from '../../containers/SafeAreaView';
+import { logEvent, events } from '../../utils/log';
 
 class InviteUsersView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		title: I18n.t('Invite_users'),
-		...themedHeader(screenProps.theme)
+	static navigationOptions = () => ({
+		title: I18n.t('Invite_users')
 	})
 
 	static propTypes = {
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		theme: PropTypes.string,
 		timeDateFormat: PropTypes.string,
 		invite: PropTypes.object,
@@ -37,7 +37,7 @@ class InviteUsersView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.rid = props.navigation.getParam('rid');
+		this.rid = props.route.params?.rid;
 	}
 
 	componentDidMount() {
@@ -51,6 +51,7 @@ class InviteUsersView extends React.Component {
 	}
 
 	share = () => {
+		logEvent(events.IU_SHARE);
 		const { invite } = this.props;
 		if (!invite || !invite.url) {
 			return;
@@ -59,6 +60,7 @@ class InviteUsersView extends React.Component {
 	}
 
 	edit = () => {
+		logEvent(events.IU_GO_IU_EDIT);
 		const { navigation } = this.props;
 		navigation.navigate('InviteUsersEditView', { rid: this.rid });
 	}
@@ -100,14 +102,14 @@ class InviteUsersView extends React.Component {
 			theme, invite
 		} = this.props;
 		return (
-			<SafeAreaView style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]} forceInset={{ vertical: 'never' }}>
+			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<ScrollView
 					{...scrollPersistTaps}
 					style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 					contentContainerStyle={styles.contentContainer}
 					showsVerticalScrollIndicator={false}
 				>
-					<StatusBar theme={theme} />
+					<StatusBar />
 					<View style={styles.innerContainer}>
 						<RCTextInput
 							label={I18n.t('Invite_Link')}

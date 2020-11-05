@@ -1,0 +1,28 @@
+diff --git a/node_modules/react-native-notifications/android/app/src/main/java/com/wix/reactnativenotifications/core/notification/PushNotification.java b/node_modules/react-native-notifications/android/app/src/main/java/com/wix/reactnativenotifications/core/notification/PushNotification.java
+index 524ff07..70f22d5 100644
+--- a/node_modules/react-native-notifications/android/app/src/main/java/com/wix/reactnativenotifications/core/notification/PushNotification.java
++++ b/node_modules/react-native-notifications/android/app/src/main/java/com/wix/reactnativenotifications/core/notification/PushNotification.java
+@@ -31,7 +31,7 @@ public class PushNotification implements IPushNotification {
+     final protected AppLifecycleFacade mAppLifecycleFacade;
+     final protected AppLaunchHelper mAppLaunchHelper;
+     final protected JsIOHelper mJsIOHelper;
+-    final protected PushNotificationProps mNotificationProps;
++    protected PushNotificationProps mNotificationProps;
+     final protected AppVisibilityListener mAppVisibilityListener = new AppVisibilityListener() {
+         @Override
+         public void onAppVisible() {
+diff --git a/node_modules/react-native-notifications/android/app/src/reactNative59/java/com/wix/reactnativenotifications/NotificationManagerCompatFacade.java b/node_modules/react-native-notifications/android/app/src/reactNative59/java/com/wix/reactnativenotifications/NotificationManagerCompatFacade.java
+index f9c858b..94ea188 100644
+--- a/node_modules/react-native-notifications/android/app/src/reactNative59/java/com/wix/reactnativenotifications/NotificationManagerCompatFacade.java
++++ b/node_modules/react-native-notifications/android/app/src/reactNative59/java/com/wix/reactnativenotifications/NotificationManagerCompatFacade.java
+@@ -2,8 +2,8 @@
+ package com.wix.reactnativenotifications;
+ 
+ import android.content.Context;
+-import android.support.annotation.NonNull;
+-import android.support.v4.app.NotificationManagerCompat;
++import androidx.annotation.NonNull;
++import androidx.core.app.NotificationManagerCompat;
+ 
+ public abstract class NotificationManagerCompatFacade {
+     public static NotificationManagerCompat from(@NonNull Context context) {

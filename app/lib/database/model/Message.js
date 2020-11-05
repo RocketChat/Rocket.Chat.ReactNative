@@ -30,6 +30,8 @@ export default class Message extends Model {
 
 	@field('avatar') avatar;
 
+	@field('emoji') emoji;
+
 	@json('attachments', sanitizer) attachments;
 
 	@json('urls', sanitizer) urls;
@@ -75,4 +77,8 @@ export default class Message extends Model {
 	@field('tmsg') tmsg;
 
 	@json('blocks', sanitizer) blocks;
+
+	@field('e2e') e2e;
+
+	@field('tshow') tshow;
 }

@@ -1,5 +1,5 @@
 /* eslint-disable no-bitwise */
-import { constants } from 'react-native-keycommands';
+import KeyCommands, { constants } from 'react-native-keycommands';
 
 import I18n from './i18n';
 
@@ -17,7 +17,7 @@ const KEY_ADD_SERVER = __DEV__ ? 'l' : 'n';
 const KEY_SEND_MESSAGE = '\r';
 const KEY_SELECT = '123456789';
 
-export const defaultCommands = [
+const keyCommands = [
 	{
 		// Focus messageBox
 		input: KEY_TYPING,
@@ -29,10 +29,7 @@ export const defaultCommands = [
 		input: KEY_SEND_MESSAGE,
 		modifierFlags: 0,
 		discoverabilityTitle: I18n.t('Send')
-	}
-];
-
-export const keyCommands = [
+	},
 	{
 		// Open Preferences Modal
 		input: KEY_PREFERENCES,
@@ -138,6 +135,10 @@ export const keyCommands = [
 		modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate
 	})))
 ];
+
+export const setKeyCommands = () => KeyCommands.setKeyCommands(keyCommands);
+
+export const deleteKeyCommands = () => KeyCommands.deleteKeyCommands(keyCommands);
 
 export const KEY_COMMAND = 'KEY_COMMAND';
 

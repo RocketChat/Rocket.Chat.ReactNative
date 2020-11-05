@@ -1,6 +1,6 @@
 {
   "name": "react-native-jitsi-meet",
-  "version": "2.1.0",
+  "version": "2.3.0",
   "summary": "Jitsi Meet SDK wrapper for React Native.",
   "license": "Apache-2.0",
   "authors": {
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/skrafft/react-native-jitsi-meet.git",
-    "tag": "v2.1.0"
+    "tag": "v2.3.0"
   },
   "source_files": "ios/**/*.{h,m}",
   "dependencies": {
