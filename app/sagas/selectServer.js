@@ -71,7 +71,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
 		const certificate = yield UserPreferences.getStringAsync(`${ RocketChat.CERTIFICATE_KEY }-${ server }`);
 		if (certificate) {
-			yield SSLPinning.setCertificate(certificate);
+			yield SSLPinning.setCertificate(certificate, server);
 		}
 
 		yield put(inquiryReset());
@@ -149,7 +149,7 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
 		const certificate = yield UserPreferences.getStringAsync(`${ RocketChat.CERTIFICATE_KEY }-${ server }`);
 		if (certificate) {
-			yield SSLPinning.setCertificate(certificate);
+			yield SSLPinning.setCertificate(certificate, server);
 		}
 
 		const serverInfo = yield getServerInfo({ server });
