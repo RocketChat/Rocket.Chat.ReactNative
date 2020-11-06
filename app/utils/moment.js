@@ -9,7 +9,7 @@ const localeKeys = {
 	it: 'it',
 	ja: 'ja',
 	nl: 'nl',
-	'es-ES': 'es-es',
+	'es-ES': 'es',
 	'zh-TW': 'zh-tw'
 };
 
