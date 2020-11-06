@@ -23,7 +23,7 @@ const Thread = React.memo(({
 	} = useContext(MessageContext);
 	const time = formatDateThreads(tlm);
 	const buttonText = formatMessageCount(tcount, THREAD);
-	const badgeColor = getBadgeColor(id);
+	const badgeColor = getBadgeColor?.(id);
 	const isFollowing = replies?.find(u => u === user.id);
 	return (
 		<View style={styles.buttonContainer}>
