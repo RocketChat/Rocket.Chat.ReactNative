@@ -137,9 +137,9 @@ class RoomMembersView extends React.Component {
 		}
 	}
 
-	onLongPressUser = (user) => {
+	onLongPressUser = (selectedUser) => {
 		const { room } = this.state;
-		const { showActionSheet } = this.props;
+		const { showActionSheet, user } = this.props;
 
 		const options = [];
 
@@ -147,8 +147,8 @@ class RoomMembersView extends React.Component {
 
 		if (this.permissions['mute-user']) {
 			const { muted } = room;
-			const userIsMuted = !!(muted || []).find(m => m === user.username);
-			user.muted = userIsMuted;
+			const userIsMuted = !!(muted || []).find(m => m === selectedUser.username);
+			selectedUser.muted = userIsMuted;
 			options.push({
 				icon: userIsMuted ? 'audio' : 'audio-disabled',
 				title: I18n.t(userIsMuted ? 'Unmute' : 'Mute'),
@@ -158,7 +158,7 @@ class RoomMembersView extends React.Component {
 							roomName: RocketChat.getRoomTitle(room)
 						}),
 						confirmationText: I18n.t(userIsMuted ? 'Unmute' : 'Mute'),
-						onPress: () => this.handleMute(user)
+						onPress: () => this.handleMute(selectedUser)
 					});
 				}
 			});
@@ -166,34 +166,45 @@ class RoomMembersView extends React.Component {
 
 		// Owner
 		if (this.permissions['set-owner']) {
-			const userRoleResult = this.roomRoles.find(r => r.u._id === user._id);
+			const userRoleResult = this.roomRoles.find(r => r.u._id === selectedUser._id);
 			const isOwner = userRoleResult?.roles.includes('owner');
 			options.push({
 				icon: 'shield-check',
 				title: isOwner ? 'Remove_as_owner' : 'Set_as_owner',
-				onPress: () => this.handleOwner(user._id, !isOwner)
+				onPress: () => this.handleOwner(selectedUser._id, !isOwner)
 			});
 		}
 
 		// Leader
 		if (this.permissions['set-leader']) {
-			const userRoleResult = this.roomRoles.find(r => r.u._id === user._id);
+			const userRoleResult = this.roomRoles.find(r => r.u._id === selectedUser._id);
 			const isLeader = userRoleResult?.roles.includes('leader');
 			options.push({
 				icon: 'shield-alt',
 				title: isLeader ? 'Remove_as_leader' : 'Set_as_leader',
-				onPress: () => this.handleLeader(user._id, !isLeader)
+				onPress: () => this.handleLeader(selectedUser._id, !isLeader)
 			});
 		}
 
 		// Moderator
 		if (this.permissions['set-moderator']) {
-			const userRoleResult = this.roomRoles.find(r => r.u._id === user._id);
+			const userRoleResult = this.roomRoles.find(r => r.u._id === selectedUser._id);
 			const isModerator = userRoleResult?.roles.includes('moderator');
 			options.push({
 				icon: 'shield',
 				title: isModerator ? 'Remove_as_moderator' : 'Set_as_moderator',
-				onPress: () => this.handleModerator(user._id, !isModerator)
+				onPress: () => this.handleModerator(selectedUser._id, !isModerator)
+			});
+		}
+
+		// Ignore
+		if (selectedUser._id !== user.id) {
+			const userRoleResult = this.roomRoles.find(r => r.u._id === selectedUser._id);
+			const isModerator = userRoleResult?.roles.includes('moderator');
+			options.push({
+				icon: 'ban',
+				title: isModerator ? 'Remove_as_moderator' : 'Set_as_moderator',
+				onPress: () => this.handleModerator(selectedUser._id, !isModerator)
 			});
 		}
 
@@ -207,13 +218,11 @@ class RoomMembersView extends React.Component {
 					showConfirmationAlert({
 						message: 'The_user_will_be_removed_from_s',
 						confirmationText: 'Yes_remove_user',
-						onPress: () => this.handleRemoveUserFromRoom(user._id)
+						onPress: () => this.handleRemoveUserFromRoom(selectedUser._id)
 					});
 				}
 			});
 		}
-
-		// TODO: ignore
 
 		showActionSheet({
 			options,
