@@ -4,12 +4,12 @@ import { ScrollView, Dimensions } from 'react-native';
 
 import { themes } from '../../app/constants/colors';
 import RoomItemComponent from '../../app/presentation/RoomItem/RoomItem';
+import { longText } from '../utils';
 import StoriesSeparator from './StoriesSeparator';
 
 const baseUrl = 'https://open.rocket.chat';
 const { width } = Dimensions.get('window');
 let _theme = 'light';
-const longText = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries';
 const lastMessage = {
 	u: {
 		username: 'diego.mello'
@@ -73,10 +73,13 @@ export default ({ theme }) => {
 			<RoomItem alert name='unread' unread={1} />
 			<RoomItem alert name='unread' unread={1000} />
 			<RoomItem alert name='user mentions' unread={1} userMentions={1} />
-			<RoomItem alert name='user mentions' unread={1000} userMentions={1} />
 			<RoomItem alert name='group mentions' unread={1} groupMentions={1} />
-			<RoomItem alert name='group mentions' unread={1000} groupMentions={1} />
-			<RoomItem name='user mentions > group mentions' alert unread={1000} userMentions={1} groupMentions={1} />
+			<RoomItem alert name='thread unread' tunread={[1]} />
+			<RoomItem alert name='thread unread user' tunread={[1]} tunreadUser={[1]} />
+			<RoomItem alert name='thread unread group' tunread={[1]} tunreadGroup={[1]} />
+			<RoomItem name='user mentions priority 1' alert unread={1} userMentions={1} groupMentions={1} tunread={[1]} />
+			<RoomItem name='group mentions priority 2' alert unread={1} groupMentions={1} tunread={[1]} />
+			<RoomItem name='thread unread priority 3' alert unread={1} tunread={[1]} />
 
 			<Separator title='Last Message' />
 			<RoomItem
@@ -120,7 +123,7 @@ export default ({ theme }) => {
 			<RoomItem
 				showLastMessage
 				alert
-				unread={1000}
+				tunread={[1]}
 				lastMessage={lastMessage}
 			/>
 		</ScrollView>

@@ -14,7 +14,7 @@ import SearchBox from '../../containers/SearchBox';
 import { CustomIcon } from '../../lib/Icons';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-import { CloseModalButton } from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/HeaderButton';
 import debounce from '../../utils/debounce';
 import log, { logEvent, events } from '../../utils/log';
 import Options from './Options';
@@ -31,7 +31,7 @@ class DirectoryView extends React.Component {
 			title: I18n.t('Directory')
 		};
 		if (isMasterDetail) {
-			options.headerLeft = () => <CloseModalButton navigation={navigation} testID='directory-view-close' />;
+			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='directory-view-close' />;
 		}
 		return options;
 	}
@@ -67,7 +67,7 @@ class DirectoryView extends React.Component {
 	}
 
 	onSearchChangeText = (text) => {
-		this.setState({ text });
+		this.setState({ text }, this.search);
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -205,7 +205,8 @@ class DirectoryView extends React.Component {
 			testID: `federation-view-item-${ item.name }`,
 			style,
 			user,
-			theme
+			theme,
+			rid: item._id
 		};
 
 		if (type === 'users') {
@@ -239,9 +240,8 @@ class DirectoryView extends React.Component {
 			<SafeAreaView
 				style={{ backgroundColor: themes[theme].backgroundColor }}
 				testID='directory-view'
-				theme={theme}
 			>
-				<StatusBar theme={theme} />
+				<StatusBar />
 				<FlatList
 					data={data}
 					style={styles.list}

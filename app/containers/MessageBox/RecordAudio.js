@@ -186,7 +186,7 @@ export default class RecordAudio extends React.PureComponent {
 					accessibilityLabel={I18n.t('Send_audio_message')}
 					accessibilityTraits='button'
 				>
-					<CustomIcon name='microphone' size={23} color={themes[theme].tintColor} />
+					<CustomIcon name='microphone' size={24} color={themes[theme].auxiliaryTintColor} />
 				</BorderlessButton>
 			);
 		}
@@ -201,7 +201,7 @@ export default class RecordAudio extends React.PureComponent {
 						style={styles.actionButton}
 					>
 						<CustomIcon
-							size={22}
+							size={24}
 							color={themes[theme].dangerColor}
 							name='close'
 						/>
@@ -219,7 +219,7 @@ export default class RecordAudio extends React.PureComponent {
 					style={styles.actionButton}
 				>
 					<CustomIcon
-						size={22}
+						size={24}
 						color={themes[theme].successColor}
 						name='check'
 					/>

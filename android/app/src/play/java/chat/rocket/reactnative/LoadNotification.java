@@ -57,9 +57,16 @@ public class LoadNotification {
         final OkHttpClient client = new OkHttpClient();
         HttpUrl.Builder url = HttpUrl.parse(ejson.serverURL().concat("/api/v1/push.get")).newBuilder();
 
+        final String userId = ejson.userId();
+        final String userToken = ejson.token();
+
+        if (userId == null || userToken == null) {
+            return;
+        }
+
         Request request = new Request.Builder()
-                .header("x-user-id", ejson.userId())
-                .header("x-auth-token", ejson.token())
+                .header("x-user-id", userId)
+                .header("x-auth-token", userToken)
                 .url(url.addQueryParameter("id", ejson.messageId).build())
                 .build();
 
