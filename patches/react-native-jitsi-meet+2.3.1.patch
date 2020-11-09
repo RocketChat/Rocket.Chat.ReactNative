@@ -1,0 +1,41 @@
+diff --git a/node_modules/react-native-jitsi-meet/android/build.gradle b/node_modules/react-native-jitsi-meet/android/build.gradle
+index 1b5ac28..3169486 100644
+--- a/node_modules/react-native-jitsi-meet/android/build.gradle
++++ b/node_modules/react-native-jitsi-meet/android/build.gradle
+@@ -16,6 +16,10 @@ def DEFAULT_BUILD_TOOLS_VERSION = "27.0.3"
+ def DEFAULT_TARGET_SDK_VERSION  = 22
+ def DEFAULT_MIN_SDK_VERSION     = 17
+ 
++def safeExtGet(prop, fallback) {
++    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
++}
++
+ android {
+   compileSdkVersion rootProject.hasProperty('compileSdkVersion') ? rootProject.compileSdkVersion : DEFAULT_COMPILE_SDK_VERSION
+   buildToolsVersion rootProject.hasProperty('buildToolsVersion') ? rootProject.buildToolsVersion : DEFAULT_BUILD_TOOLS_VERSION
+@@ -37,7 +41,7 @@ android {
+ 
+ repositories {
+   maven {
+-      url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
++      url safeExtGet("jitsi_url", "https://github.com/RocketChat/jitsi-maven-repository/raw/master/releases")
+   }
+   google()
+   mavenCentral()
+@@ -45,13 +49,13 @@ repositories {
+ }
+ 
+ dependencies {
+-    implementation ('org.jitsi.react:jitsi-meet-sdk:+') {
+-      exclude group: 'com.facebook.react', module:'react-native-fast-image'
++    def jitsi_version = safeExtGet("jitsi_version", "+")
++    implementation ("org.jitsi.react:jitsi-meet-sdk:$jitsi_version") {
+       exclude group: 'com.facebook.react', module:'react-native-vector-icons'
+       exclude group: 'com.facebook.react', module:'react-native-webview'
+-      exclude group: 'com.facebook.react', module:'react-native-background-timer'
+       exclude group: 'com.facebook.react', module:'react-native-youtube'
+       exclude group: 'com.facebook.react', module:'react-native-community-async-storage'
++      exclude group: 'com.facebook.react', module:'react-native-background-timer'
+       exclude group: 'com.facebook', module:'hermes'
+       transitive = true
+     }
