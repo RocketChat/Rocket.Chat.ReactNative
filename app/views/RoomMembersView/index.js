@@ -142,6 +142,9 @@ class RoomMembersView extends React.Component {
 		const { showActionSheet } = this.props;
 
 		const options = [];
+
+		// TODO: nav to
+
 		if (this.permissions['mute-user']) {
 			const { muted } = room;
 			const userIsMuted = !!(muted || []).find(m => m === user.username);
@@ -171,6 +174,30 @@ class RoomMembersView extends React.Component {
 				onPress: () => this.handleOwner(user._id, !isOwner)
 			});
 		}
+
+		// Leader
+		if (this.permissions['set-leader']) {
+			const userRoleResult = this.roomRoles.find(r => r.u._id === user._id);
+			const isLeader = userRoleResult?.roles.includes('leader');
+			options.push({
+				icon: 'shield-alt',
+				title: isLeader ? 'Remove_as_leader' : 'Set_as_leader',
+				onPress: () => this.handleLeader(user._id, !isLeader)
+			});
+		}
+
+		// Moderator
+		if (this.permissions['set-moderator']) {
+			const userRoleResult = this.roomRoles.find(r => r.u._id === user._id);
+			const isModerator = userRoleResult?.roles.includes('moderator');
+			options.push({
+				icon: 'shield',
+				title: isModerator ? 'Remove_as_moderator' : 'Set_as_moderator',
+				onPress: () => this.handleModerator(user._id, !isModerator)
+			});
+		}
+
+		// TODO: ignore
 
 		showActionSheet({
 			options,
@@ -253,6 +280,46 @@ class RoomMembersView extends React.Component {
 			});
 			const message = isOwner ? 'User__username__is_now_a_owner_of__room_name_' : 'User__username__removed_from__room_name__owners';
 			EventEmitter.emit(LISTENER, { message });
+		} catch (e) {
+			log(e);
+		}
+		this.fetchRoomMembersRoles();
+	}
+
+	handleLeader = async(userId, isLeader) => {
+		try {
+			const { room } = this.state;
+			await RocketChat.toggleRoomLeader({
+				roomId: room.rid, t: room.t, userId, isLeader
+			});
+			const message = isLeader ? 'User__username__is_now_a_leader_of__room_name_' : 'User__username__removed_from__room_name__leaders';
+			EventEmitter.emit(LISTENER, { message });
+		} catch (e) {
+			log(e);
+		}
+		this.fetchRoomMembersRoles();
+	}
+
+	handleModerator = async(userId, isModerator) => {
+		try {
+			const { room } = this.state;
+			await RocketChat.toggleRoomModerator({
+				roomId: room.rid, t: room.t, userId, isModerator
+			});
+			const message = isModerator ? 'User__username__is_now_a_moderator_of__room_name_' : 'User__username__removed_from__room_name__moderators';
+			EventEmitter.emit(LISTENER, { message });
+		} catch (e) {
+			log(e);
+		}
+		this.fetchRoomMembersRoles();
+	}
+
+	removeUserFromRoom = async(userId) => {
+		try {
+			const { room } = this.state;
+			await RocketChat.removeUserFromRoom({ roomId: room.rid, t: room.t, userId });
+			// const message = isModerator ? 'User__username__is_now_a_moderator_of__room_name_' : 'User__username__removed_from__room_name__moderators';
+			// EventEmitter.emit(LISTENER, { message });
 		} catch (e) {
 			log(e);
 		}
