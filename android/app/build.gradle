@@ -148,8 +148,8 @@ android {
         vectorDrawables.useSupportLibrary = true
         if (isPlay) {
             manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
+            missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
         }
-        missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
     }
 
     signingConfigs {
@@ -198,10 +198,21 @@ android {
             applicationId "chat.rocket.android"
             dimension = "type"
             buildConfigField "boolean", "FDROID_BUILD", "true"
+            resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
         }
         play {
             dimension = "type"
             buildConfigField "boolean", "FDROID_BUILD", "false"
+        }
+    }
+    sourceSets {
+        playDebug {
+            java.srcDirs = ['src/main/java', 'src/play/java']
+            manifest.srcFile 'src/play/AndroidManifest.xml'
+        }
+        playRelease {
+            java.srcDirs = ['src/main/java', 'src/play/java']
+            manifest.srcFile 'src/play/AndroidManifest.xml'
         }
     }
 
@@ -234,9 +245,9 @@ android {
 dependencies {
     addUnimodulesDependencies()
     implementation project(':watermelondb')
-    implementation project(':reactnativenotifications')
     implementation project(":reactnativekeyboardinput")
     implementation project(':@react-native-community_viewpager')
+    playImplementation project(':reactnativenotifications')
     playImplementation project(':@react-native-firebase_app')
     playImplementation project(':@react-native-firebase_analytics')
     playImplementation project(':@react-native-firebase_crashlytics')
