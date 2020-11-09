@@ -4,7 +4,7 @@
 	package="chat.rocket.reactnative">
 
 	<application
-		android:name=".MainApplication"
+		android:name=".MainPlayApplication"
 		android:label="@string/app_name"
 		android:icon="@mipmap/ic_launcher"
 		android:theme="@style/AppTheme"
