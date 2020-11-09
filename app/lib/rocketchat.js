@@ -992,6 +992,14 @@ const RocketChat = {
 		// RC 0.51.0
 		return this.methodCallWrapper('unmuteUserInRoom', { rid, username });
 	},
+	toggleRoomOwner(rid, userId, add) {
+		if (add) {
+			// RC 0.51.0
+			return this.methodCallWrapper('addRoomOwner', { rid, userId });
+		}
+		// RC 0.51.0
+		return this.methodCallWrapper('removeRoomOwner', { rid, userId });
+	},
 	toggleArchiveRoom(roomId, t, archive) {
 		if (archive) {
 			// RC 0.48.0
@@ -1083,6 +1091,10 @@ const RocketChat = {
 		const userRoles = (shareUser?.roles || loginUser?.roles) || [];
 
 		return userRoles.indexOf(r => r === role) > -1;
+	},
+	getRoomRoles(roomId, type) {
+		// RC ?
+		return this.sdk.get(`${ this.roomTypeToApiType(type) }.roles`, { roomId });
 	},
 	async hasPermission(permissions, rid) {
 		const db = database.active;

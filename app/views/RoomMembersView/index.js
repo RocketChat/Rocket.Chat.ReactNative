@@ -59,7 +59,9 @@ class RoomMembersView extends React.Component {
 			members: [],
 			membersFiltered: [],
 			room: room || {},
-			end: false
+			end: false,
+			permissions: [],
+			roomRoles: []
 		};
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
@@ -79,9 +81,20 @@ class RoomMembersView extends React.Component {
 		this.mounted = true;
 		this.fetchMembers();
 
-		const { route } = this.props;
-		const rid = route.params?.rid;
-		this.permissions = await RocketChat.hasPermission(['mute-user'], rid);
+		const { room } = this.state;
+		this.permissions = await RocketChat.hasPermission(['mute-user', 'set-leader', 'set-owner', 'set-moderator', 'remove-user'], room.rid);
+
+		const hasSinglePermission = Object.values(this.permissions).some(p => !!p);
+		if (hasSinglePermission) {
+			try {
+				const result = await RocketChat.getRoomRoles(room.rid, room.t);
+				if (result?.success) {
+					this.roomRoles = result.roles;
+				}
+			} catch (e) {
+				log(e);
+			}
+		}
 	}
 
 	componentWillUnmount() {
@@ -134,9 +147,6 @@ class RoomMembersView extends React.Component {
 	}
 
 	onLongPressUser = (user) => {
-		if (!this.permissions['mute-user']) {
-			return;
-		}
 		const { room } = this.state;
 		const { showActionSheet } = this.props;
 		const { muted } = room;
@@ -144,8 +154,9 @@ class RoomMembersView extends React.Component {
 		const userIsMuted = !!(muted || []).find(m => m === user.username);
 		user.muted = userIsMuted;
 
-		showActionSheet({
-			options: [{
+		const options = [];
+		if (this.permissions['mute-user']) {
+			options.push({
 				icon: userIsMuted ? 'audio' : 'audio-disabled',
 				title: I18n.t(userIsMuted ? 'Unmute' : 'Mute'),
 				onPress: () => {
@@ -157,7 +168,19 @@ class RoomMembersView extends React.Component {
 						onPress: () => this.handleMute(user)
 					});
 				}
-			}],
+			});
+		}
+
+		if (this.permissions['remove-user']) {
+			options.push({
+				icon: userIsMuted ? 'audio' : 'audio-disabled',
+				title: 'Remove user',
+				onPress: () => this.handleOwner(user)
+			});
+		}
+
+		showActionSheet({
+			options,
 			hasCancel: true
 		});
 	}
@@ -213,6 +236,17 @@ class RoomMembersView extends React.Component {
 		try {
 			await RocketChat.toggleMuteUserInRoom(rid, user?.username, !user?.muted);
 			EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_key', { key: user?.muted ? I18n.t('unmuted') : I18n.t('muted') }) });
+		} catch (e) {
+			log(e);
+		}
+	}
+
+	handleOwner = async(user) => {
+		const { room } = this.state;
+		console.log('user', user, room);
+		try {
+			// await RocketChat.toggleRoomOwner(rid, user?.id, !user?.muted);
+			// EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_key', { key: user?.muted ? I18n.t('unmuted') : I18n.t('muted') }) });
 		} catch (e) {
 			log(e);
 		}
