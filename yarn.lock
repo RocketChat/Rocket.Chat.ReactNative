@@ -2233,7 +2233,7 @@
   resolved "https://registry.yarnpkg.com/@redux-saga/types/-/types-1.1.0.tgz#0e81ce56b4883b4b2a3001ebe1ab298b84237204"
   integrity sha512-afmTuJrylUU/0OtqzaRkbyYFFNgCF73Bvel/sw90pvGrWIZ+vyoIJqA6eMSoA6+nb443kTmulmBtC9NerXboNg==
 
-"@rocket.chat/react-native-fast-image@8.1.5":
+"@rocket.chat/react-native-fast-image@^8.1.5":
   version "8.1.5"
   resolved "https://registry.yarnpkg.com/@rocket.chat/react-native-fast-image/-/react-native-fast-image-8.1.5.tgz#325d80ebb351fb024436093b3e2add280696aba3"
   integrity sha512-ZjSt7NXiCkJ9KQr4b/b+mYgiwDAIGHfHdChgEU020C9sBbhSk6VxslqnfdZoAjxRW7doWMbhWkoYMjx2TnsGRw==
