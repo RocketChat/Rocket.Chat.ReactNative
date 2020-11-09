@@ -1002,6 +1002,32 @@ const RocketChat = {
 		// RC ?
 		return this.post(`${ this.roomTypeToApiType(t) }.removeOwner`, { roomId, userId });
 	},
+	toggleRoomLeader({
+		roomId, t, userId, isLeader
+	}) {
+		if (isLeader) {
+			// RC ?
+			return this.post(`${ this.roomTypeToApiType(t) }.addLeader`, { roomId, userId });
+		}
+		// RC ?
+		return this.post(`${ this.roomTypeToApiType(t) }.removeLeader`, { roomId, userId });
+	},
+	toggleRoomModerator({
+		roomId, t, userId, isModerator
+	}) {
+		if (isModerator) {
+			// RC ?
+			return this.post(`${ this.roomTypeToApiType(t) }.addModerator`, { roomId, userId });
+		}
+		// RC ?
+		return this.post(`${ this.roomTypeToApiType(t) }.removeModerator`, { roomId, userId });
+	},
+	removeUserFromRoom({
+		roomId, t, userId
+	}) {
+		// RC ?
+		return this.post(`${ this.roomTypeToApiType(t) }.kick`, { roomId, userId });
+	},
 	toggleArchiveRoom(roomId, t, archive) {
 		if (archive) {
 			// RC 0.48.0
