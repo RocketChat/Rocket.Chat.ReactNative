@@ -197,6 +197,22 @@ class RoomMembersView extends React.Component {
 			});
 		}
 
+		// Remove from room
+		if (this.permissions['remove-user']) {
+			options.push({
+				icon: 'logout',
+				title: 'Remove_from_room',
+				danger: true,
+				onPress: () => {
+					showConfirmationAlert({
+						message: 'The_user_will_be_removed_from_s',
+						confirmationText: 'Yes_remove_user',
+						onPress: () => this.handleRemoveUserFromRoom(user._id)
+					});
+				}
+			});
+		}
+
 		// TODO: ignore
 
 		showActionSheet({
@@ -314,16 +330,19 @@ class RoomMembersView extends React.Component {
 		this.fetchRoomMembersRoles();
 	}
 
-	removeUserFromRoom = async(userId) => {
+	handleRemoveUserFromRoom = async(userId) => {
 		try {
-			const { room } = this.state;
+			const { room, members, membersFiltered } = this.state;
 			await RocketChat.removeUserFromRoom({ roomId: room.rid, t: room.t, userId });
-			// const message = isModerator ? 'User__username__is_now_a_moderator_of__room_name_' : 'User__username__removed_from__room_name__moderators';
-			// EventEmitter.emit(LISTENER, { message });
+			const message = 'User_has_been_removed_from_s';
+			EventEmitter.emit(LISTENER, { message });
+			this.setState({
+				members: members.filter(member => member._id !== userId),
+				membersFiltered: membersFiltered.filter(member => member._id !== userId)
+			});
 		} catch (e) {
 			log(e);
 		}
-		this.fetchRoomMembersRoles();
 	}
 
 	renderSearchBar = () => (
