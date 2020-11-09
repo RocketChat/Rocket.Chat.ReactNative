@@ -12772,8 +12772,8 @@ react-native-iphone-x-helper@^1.0.3, react-native-iphone-x-helper@^1.2.1:
   integrity sha512-/VbpIEp8tSNNHIvstuA3Swx610whci1Zpc9mqNkqn14DkMbw+ORviln2u0XyHG1kPvvwTNGZY6QpeFwxYaSdbQ==
 
 react-native-jitsi-meet@RocketChat/react-native-jitsi-meet:
-  version "2.3.1"
-  resolved "https://codeload.github.com/RocketChat/react-native-jitsi-meet/tar.gz/39c2c36c82b2dbb2f80c58aa788e15b526681c65"
+  version "2.4.0"
+  resolved "https://codeload.github.com/RocketChat/react-native-jitsi-meet/tar.gz/806ea2fb24d8fce90d983766af15b9fc71b3bb9a"
 
 react-native-keyboard-input@RocketChat/react-native-keyboard-input:
   version "6.0.0"
