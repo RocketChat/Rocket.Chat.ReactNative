@@ -992,13 +992,15 @@ const RocketChat = {
 		// RC 0.51.0
 		return this.methodCallWrapper('unmuteUserInRoom', { rid, username });
 	},
-	toggleRoomOwner(rid, userId, add) {
-		if (add) {
-			// RC 0.51.0
-			return this.methodCallWrapper('addRoomOwner', { rid, userId });
+	toggleRoomOwner({
+		roomId, t, userId, isOwner
+	}) {
+		if (isOwner) {
+			// RC ?
+			return this.post(`${ this.roomTypeToApiType(t) }.addOwner`, { roomId, userId });
 		}
-		// RC 0.51.0
-		return this.methodCallWrapper('removeRoomOwner', { rid, userId });
+		// RC ?
+		return this.post(`${ this.roomTypeToApiType(t) }.removeOwner`, { roomId, userId });
 	},
 	toggleArchiveRoom(roomId, t, archive) {
 		if (archive) {

@@ -59,9 +59,7 @@ class RoomMembersView extends React.Component {
 			members: [],
 			membersFiltered: [],
 			room: room || {},
-			end: false,
-			permissions: [],
-			roomRoles: []
+			end: false
 		};
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
@@ -86,14 +84,7 @@ class RoomMembersView extends React.Component {
 
 		const hasSinglePermission = Object.values(this.permissions).some(p => !!p);
 		if (hasSinglePermission) {
-			try {
-				const result = await RocketChat.getRoomRoles(room.rid, room.t);
-				if (result?.success) {
-					this.roomRoles = result.roles;
-				}
-			} catch (e) {
-				log(e);
-			}
+			this.fetchRoomMembersRoles();
 		}
 	}
 
@@ -149,13 +140,12 @@ class RoomMembersView extends React.Component {
 	onLongPressUser = (user) => {
 		const { room } = this.state;
 		const { showActionSheet } = this.props;
-		const { muted } = room;
-
-		const userIsMuted = !!(muted || []).find(m => m === user.username);
-		user.muted = userIsMuted;
 
 		const options = [];
 		if (this.permissions['mute-user']) {
+			const { muted } = room;
+			const userIsMuted = !!(muted || []).find(m => m === user.username);
+			user.muted = userIsMuted;
 			options.push({
 				icon: userIsMuted ? 'audio' : 'audio-disabled',
 				title: I18n.t(userIsMuted ? 'Unmute' : 'Mute'),
@@ -171,11 +161,14 @@ class RoomMembersView extends React.Component {
 			});
 		}
 
-		if (this.permissions['remove-user']) {
+		// Owner
+		if (this.permissions['set-owner']) {
+			const userRoleResult = this.roomRoles.find(r => r.u._id === user._id);
+			const isOwner = userRoleResult?.roles.includes('owner');
 			options.push({
-				icon: userIsMuted ? 'audio' : 'audio-disabled',
-				title: 'Remove user',
-				onPress: () => this.handleOwner(user)
+				icon: 'shield-check',
+				title: isOwner ? 'Remove_as_owner' : 'Set_as_owner',
+				onPress: () => this.handleOwner(user._id, !isOwner)
 			});
 		}
 
@@ -196,7 +189,18 @@ class RoomMembersView extends React.Component {
 		}
 	}
 
-	// eslint-disable-next-line react/sort-comp
+	fetchRoomMembersRoles = async() => {
+		try {
+			const { room } = this.state;
+			const result = await RocketChat.getRoomRoles(room.rid, room.t);
+			if (result?.success) {
+				this.roomRoles = result.roles;
+			}
+		} catch (e) {
+			log(e);
+		}
+	}
+
 	fetchMembers = async() => {
 		const {
 			rid, members, isLoading, allUsers, end
@@ -241,15 +245,18 @@ class RoomMembersView extends React.Component {
 		}
 	}
 
-	handleOwner = async(user) => {
-		const { room } = this.state;
-		console.log('user', user, room);
+	handleOwner = async(userId, isOwner) => {
 		try {
-			// await RocketChat.toggleRoomOwner(rid, user?.id, !user?.muted);
-			// EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_key', { key: user?.muted ? I18n.t('unmuted') : I18n.t('muted') }) });
+			const { room } = this.state;
+			await RocketChat.toggleRoomOwner({
+				roomId: room.rid, t: room.t, userId, isOwner
+			});
+			const message = isOwner ? 'User__username__is_now_a_owner_of__room_name_' : 'User__username__removed_from__room_name__owners';
+			EventEmitter.emit(LISTENER, { message });
 		} catch (e) {
 			log(e);
 		}
+		this.fetchRoomMembersRoles();
 	}
 
 	renderSearchBar = () => (
