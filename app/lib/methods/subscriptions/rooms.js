@@ -84,7 +84,8 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					tags: s.tags,
 					encrypted: s.encrypted,
 					e2eKeyId: s.e2eKeyId,
-					E2EKey: s.E2EKey
+					E2EKey: s.E2EKey,
+					avatarETag: s.avatarETag
 				};
 			} catch (error) {
 				try {
@@ -116,7 +117,8 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					broadcast: r.broadcast,
 					customFields: r.customFields,
 					departmentId: r.departmentId,
-					livechatData: r.livechatData
+					livechatData: r.livechatData,
+					avatarETag: r.avatarETag
 				};
 			} catch (error) {
 				// Do nothing
@@ -270,6 +272,9 @@ export default function subscribeRooms() {
 			const [{ diff }] = ddpMessage.fields.args;
 			if (diff?.statusLivechat) {
 				store.dispatch(setUser({ statusLivechat: diff.statusLivechat }));
+			}
+			if (['settings.preferences.showMessageInMainThread'] in diff) {
+				store.dispatch(setUser({ showMessageInMainThread: diff['settings.preferences.showMessageInMainThread'] }));
 			}
 		}
 		if (/subscriptions/.test(ev)) {

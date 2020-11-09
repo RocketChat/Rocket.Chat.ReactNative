@@ -68,6 +68,10 @@ class Encryption {
 		return this.readyPromise;
 	}
 
+	get hasPrivateKey() {
+		return !!this.privateKey;
+	}
+
 	// Stop Encryption client
 	stop = () => {
 		this.userId = null;
@@ -190,6 +194,18 @@ class Encryption {
 		const password = randomPassword();
 		await UserPreferences.setStringAsync(`${ server }-${ E2E_RANDOM_PASSWORD_KEY }`, password);
 		return password;
+	}
+
+	changePassword = async(server, password) => {
+		// Cast key to the format server is expecting
+		const privateKey = await SimpleCrypto.RSA.exportKey(this.privateKey);
+
+		// Encode the private key
+		const encodedPrivateKey = await this.encodePrivateKey(EJSON.stringify(privateKey), password, this.userId);
+		const publicKey = await UserPreferences.getStringAsync(`${ server }-${ E2E_PUBLIC_KEY }`);
+
+		// Send the new keys to the server
+		await RocketChat.e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
 	}
 
 	// get a encryption room instance

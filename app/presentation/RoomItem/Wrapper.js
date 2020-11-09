@@ -6,15 +6,13 @@ import styles from './styles';
 import { themes } from '../../constants/colors';
 import Avatar from '../../containers/Avatar';
 
-const RoomItemInner = ({
+const Wrapper = ({
 	accessibilityLabel,
 	avatar,
 	avatarSize,
 	type,
-	baseUrl,
-	userId,
-	token,
 	theme,
+	rid,
 	children
 }) => (
 	<View
@@ -25,10 +23,8 @@ const RoomItemInner = ({
 			text={avatar}
 			size={avatarSize}
 			type={type}
-			baseUrl={baseUrl}
 			style={styles.avatar}
-			userId={userId}
-			token={token}
+			rid={rid}
 		/>
 		<View
 			style={[
@@ -43,16 +39,14 @@ const RoomItemInner = ({
 	</View>
 );
 
-RoomItemInner.propTypes = {
+Wrapper.propTypes = {
 	accessibilityLabel: PropTypes.string,
 	avatar: PropTypes.string,
 	avatarSize: PropTypes.number,
 	type: PropTypes.string,
-	baseUrl: PropTypes.string,
-	userId: PropTypes.string,
-	token: PropTypes.string,
 	theme: PropTypes.string,
+	rid: PropTypes.string,
 	children: PropTypes.element
 };
 
-export default RoomItemInner;
+export default Wrapper;

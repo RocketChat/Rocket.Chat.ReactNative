@@ -17,7 +17,7 @@ import { ImageViewer } from '../presentation/ImageViewer';
 import { themes } from '../constants/colors';
 import { formatAttachmentUrl } from '../lib/utils';
 import RCActivityIndicator from '../containers/ActivityIndicator';
-import { SaveButton, CloseModalButton } from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/HeaderButton';
 import { isAndroid } from '../utils/deviceInfo';
 import { getUserSelector } from '../selectors/login';
 import { withDimensions } from '../dimensions';
@@ -81,10 +81,10 @@ class AttachmentView extends React.Component {
 		}
 		const options = {
 			title,
-			headerLeft: () => <CloseModalButton testID='close-attachment-view' navigation={navigation} buttonStyle={{ color: themes[theme].previewTintColor }} />,
+			headerLeft: () => <HeaderButton.CloseModal testID='close-attachment-view' navigation={navigation} buttonStyle={{ color: themes[theme].previewTintColor }} />,
 			headerRight: () => (
 				Allow_Save_Media_to_Gallery
-					? <SaveButton testID='save-image' onPress={this.handleSave} buttonStyle={{ color: themes[theme].previewTintColor }} />
+					? <HeaderButton.Download testID='save-image' onPress={this.handleSave} buttonStyle={{ color: themes[theme].previewTintColor }} />
 					: null
 			),
 			headerBackground: () => <View style={{ flex: 1, backgroundColor: themes[theme].previewBackground }} />,

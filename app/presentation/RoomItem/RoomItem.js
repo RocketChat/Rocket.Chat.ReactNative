@@ -19,10 +19,7 @@ const RoomItem = ({
 	avatar,
 	width,
 	avatarSize,
-	baseUrl,
-	userId,
 	username,
-	token,
 	showLastMessage,
 	status,
 	useRealName,
@@ -39,6 +36,9 @@ const RoomItem = ({
 	unread,
 	userMentions,
 	groupMentions,
+	tunread,
+	tunreadUser,
+	tunreadGroup,
 	roomUpdatedAt,
 	testID,
 	swipeEnabled,
@@ -67,10 +67,8 @@ const RoomItem = ({
 			avatar={avatar}
 			avatarSize={avatarSize}
 			type={type}
-			baseUrl={baseUrl}
-			userId={userId}
-			token={token}
 			theme={theme}
+			rid={rid}
 		>
 			{showLastMessage
 				? (
@@ -111,7 +109,9 @@ const RoomItem = ({
 								unread={unread}
 								userMentions={userMentions}
 								groupMentions={groupMentions}
-								theme={theme}
+								tunread={tunread}
+								tunreadUser={tunreadUser}
+								tunreadGroup={tunreadGroup}
 							/>
 						</View>
 					</>
@@ -135,7 +135,9 @@ const RoomItem = ({
 							unread={unread}
 							userMentions={userMentions}
 							groupMentions={groupMentions}
-							theme={theme}
+							tunread={tunread}
+							tunreadUser={tunreadUser}
+							tunreadGroup={tunreadGroup}
 						/>
 					</View>
 				)
@@ -150,11 +152,8 @@ RoomItem.propTypes = {
 	prid: PropTypes.string,
 	name: PropTypes.string.isRequired,
 	avatar: PropTypes.string.isRequired,
-	baseUrl: PropTypes.string.isRequired,
 	showLastMessage: PropTypes.bool,
-	userId: PropTypes.string,
 	username: PropTypes.string,
-	token: PropTypes.string,
 	avatarSize: PropTypes.number,
 	testID: PropTypes.string,
 	width: PropTypes.number,
@@ -173,6 +172,9 @@ RoomItem.propTypes = {
 	unread: PropTypes.number,
 	userMentions: PropTypes.number,
 	groupMentions: PropTypes.number,
+	tunread: PropTypes.array,
+	tunreadUser: PropTypes.array,
+	tunreadGroup: PropTypes.array,
 	roomUpdatedAt: PropTypes.instanceOf(Date),
 	swipeEnabled: PropTypes.bool,
 	toggleFav: PropTypes.func,
