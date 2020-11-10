@@ -140,11 +140,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "chat.rocket.reactnative"
+        applicationId APPLICATIONID as String
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode VERSIONCODE as Integer
-        versionName "4.12.0"
+        versionName VERSIONNAME as String
         vectorDrawables.useSupportLibrary = true
         if (isPlay) {
             manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
@@ -171,10 +171,14 @@ android {
         }
     }
     buildTypes {
+        debug {
+            resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
+        }
         release {
             minifyEnabled enableProguardInReleaseBuilds
             setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'])
             signingConfig signingConfigs.release
+            resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
             if (isPlay) {
                 firebaseCrashlytics {
                     nativeSymbolUploadEnabled true
