@@ -90,7 +90,7 @@ const MessageActions = React.memo(forwardRef(({
 		if (tmid === message.id) {
 			return false;
 		}
-		const deleteOwn = isOwn(message);
+		const deleteOwn = permissions.hasDeletePermission;
 		if (!(permissions.hasOwnDeletePermission || (Message_AllowDeleting && deleteOwn) || permissions.hasForceDeletePermission)) {
 			return false;
 		}
