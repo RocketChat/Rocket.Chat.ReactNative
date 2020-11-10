@@ -106,9 +106,9 @@ class ThreadMessagesView extends React.Component {
 		const {
 			navigation, isMasterDetail, insets, theme
 		} = this.props;
-		const headerTitlePosition = getHeaderTitlePosition(insets);
 
 		if (isSearching) {
+			const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: 1 });
 			return {
 				headerTitleAlign: 'left',
 				headerLeft: () => (

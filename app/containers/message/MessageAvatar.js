@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 
-import Avatar from '../Avatar/Avatar';
+import Avatar from '../Avatar';
 import styles from './styles';
 import MessageContext from './Context';
 
 const MessageAvatar = React.memo(({
 	isHeader, avatar, author, small, navToRoomInfo, emoji, getCustomEmoji, theme
 }) => {
-	const { baseUrl, user } = useContext(MessageContext);
+	const { user } = useContext(MessageContext);
 	if (isHeader && author) {
 		const navParam = {
 			t: 'd',
@@ -22,9 +22,6 @@ const MessageAvatar = React.memo(({
 				borderRadius={small ? 2 : 4}
 				onPress={author._id === user.id ? undefined : () => navToRoomInfo(navParam)}
 				getCustomEmoji={getCustomEmoji}
-				user={user}
-				server={baseUrl}
-				avatarETag={author.avatarETag}
 				avatar={avatar}
 				emoji={emoji}
 				theme={theme}

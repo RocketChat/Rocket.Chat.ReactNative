@@ -51,7 +51,7 @@ class UserNotificationPreferencesView extends React.Component {
 		this.setState({ preferences, loading: true });
 	}
 
-	findOption = (key) => {
+	findDefaultOption = (key) => {
 		const { preferences } = this.state;
 		const option = preferences[key] ? OPTIONS[key].find(item => item.value === preferences[key]) : OPTIONS[key][0];
 		return option;
@@ -59,7 +59,7 @@ class UserNotificationPreferencesView extends React.Component {
 
 	renderPickerOption = (key) => {
 		const { theme } = this.props;
-		const text = this.findOption(key);
+		const text = this.findDefaultOption(key);
 		return <Text style={[styles.pickerText, { color: themes[theme].actionTintColor }]}>{I18n.t(text?.label, { defaultValue: text?.label, second: text?.second })}</Text>;
 	}
 
@@ -67,14 +67,17 @@ class UserNotificationPreferencesView extends React.Component {
 		const { preferences } = this.state;
 		const { navigation } = this.props;
 		let values = OPTIONS[key];
+
+		const defaultOption = this.findDefaultOption(key);
 		if (OPTIONS[key][0]?.value !== 'default') {
-			values = [{ label: `${ I18n.t('Default') } (${ I18n.t(this.findOption(key).label) })`, value: preferences[key]?.value }, ...OPTIONS[key]];
+			values = [{ label: `${ I18n.t('Default') } (${ I18n.t(defaultOption.label) })` }, ...OPTIONS[key]];
 		}
+
 		navigation.navigate('PickerView', {
 			title,
 			data: values,
 			value: preferences[key],
-			onChangeValue: value => this.onValueChangePicker(key, value)
+			onChangeValue: value => this.onValueChangePicker(key, value ?? defaultOption.value)
 		});
 	}
 

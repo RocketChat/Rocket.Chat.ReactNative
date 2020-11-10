@@ -40,7 +40,8 @@ class CreateChannelView extends React.Component {
 		error: PropTypes.object,
 		theme: PropTypes.string,
 		isMasterDetail: PropTypes.bool,
-		blockUnauthenticatedAccess: PropTypes.bool
+		blockUnauthenticatedAccess: PropTypes.bool,
+		serverVersion: PropTypes.string
 	}
 
 	constructor(props) {
@@ -144,7 +145,7 @@ class CreateChannelView extends React.Component {
 	render() {
 		const { name, users } = this.state;
 		const {
-			server, user, loading, blockUnauthenticatedAccess, theme
+			server, user, loading, blockUnauthenticatedAccess, theme, serverVersion
 		} = this.props;
 		return (
 			<KeyboardView
@@ -163,6 +164,7 @@ class CreateChannelView extends React.Component {
 							initial={this.channel && { text: RocketChat.getRoomTitle(this.channel) }}
 							onChannelSelect={this.selectChannel}
 							blockUnauthenticatedAccess={blockUnauthenticatedAccess}
+							serverVersion={serverVersion}
 							theme={theme}
 						/>
 						<TextInput
@@ -180,6 +182,7 @@ class CreateChannelView extends React.Component {
 							selected={users}
 							onUserSelect={this.selectUsers}
 							blockUnauthenticatedAccess={blockUnauthenticatedAccess}
+							serverVersion={serverVersion}
 							theme={theme}
 						/>
 						<TextInput
@@ -207,6 +210,7 @@ const mapStateToProps = state => ({
 	loading: state.createDiscussion.isFetching,
 	result: state.createDiscussion.result,
 	blockUnauthenticatedAccess: state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true,
+	serverVersion: state.share.server.version || state.server.version,
 	isMasterDetail: state.app.isMasterDetail
 });
 
