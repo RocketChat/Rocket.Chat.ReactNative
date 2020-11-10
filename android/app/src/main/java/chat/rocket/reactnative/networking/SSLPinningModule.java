@@ -32,6 +32,8 @@ import com.RNFetchBlob.RNFetchBlob;
 
 import com.reactnativecommunity.webview.RNCWebViewManager;
 
+import com.dylanvann.fastimage.FastImageOkHttpUrlLoader;
+
 public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyChainAliasCallback {
 
     private Promise promise;
@@ -98,6 +100,8 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
         RNFetchBlob.applyCustomOkHttpClient(getOkHttpClient());
         // RNCWebView onReceivedClientCertRequest
         RNCWebViewManager.setCertificateAlias(data);
+        // FastImage Glide network layer
+        FastImageOkHttpUrlLoader.setOkHttpClient(getOkHttpClient());
 
         promise.resolve(null);
     }
