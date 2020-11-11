@@ -700,5 +700,6 @@ export default {
 	User__username__removed_from__room_name__moderators: 'User {{username}} removed from {{room_name}} moderators',
 	User__username__removed_from__room_name__owners: 'User {{username}} removed from {{room_name}} owners',
 	The_user_will_be_removed_from_s: 'The user will be removed from {{s}}',
-	Yes_remove_user: 'Yes, remove user!'
+	Yes_remove_user: 'Yes, remove user!',
+	Direct_message: 'Direct message'
 };

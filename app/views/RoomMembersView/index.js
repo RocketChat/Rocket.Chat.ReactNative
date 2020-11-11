@@ -119,7 +119,7 @@ class RoomMembersView extends React.Component {
 		this.setState({ filtering: !!text, membersFiltered });
 	})
 
-	onPressUser = async(item) => {
+	navToDirectMessage = async(item) => {
 		try {
 			const db = database.active;
 			const subsCollection = db.collections.get('subscriptions');
@@ -138,13 +138,15 @@ class RoomMembersView extends React.Component {
 		}
 	}
 
-	onLongPressUser = (selectedUser) => {
+	onPressUser = (selectedUser) => {
 		const { room } = this.state;
 		const { showActionSheet, user } = this.props;
 
-		const options = [];
-
-		// TODO: nav to
+		const options = [{
+			icon: 'message',
+			title: I18n.t('Direct_message'),
+			onPress: () => this.navToDirectMessage(selectedUser)
+		}];
 
 		// Owner
 		if (this.permissions['set-owner']) {
@@ -406,7 +408,6 @@ class RoomMembersView extends React.Component {
 				name={item.name}
 				username={item.username}
 				onPress={() => this.onPressUser(item)}
-				onLongPress={() => this.onLongPressUser(item)}
 				baseUrl={baseUrl}
 				testID={`room-members-view-item-${ item.username }`}
 				user={user}
