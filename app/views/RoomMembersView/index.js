@@ -202,7 +202,7 @@ class RoomMembersView extends React.Component {
 			const { ignored } = room;
 			const isIgnored = ignored?.includes?.(selectedUser._id);
 			options.push({
-				icon: 'ban',
+				icon: 'ignore',
 				title: isIgnored ? 'Unignore' : 'Ignore',
 				onPress: () => this.handleIgnore(selectedUser._id, !isIgnored)
 			});
