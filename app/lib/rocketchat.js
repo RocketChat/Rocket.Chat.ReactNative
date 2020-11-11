@@ -1028,6 +1028,9 @@ const RocketChat = {
 		// RC ?
 		return this.post(`${ this.roomTypeToApiType(t) }.kick`, { roomId, userId });
 	},
+	ignoreUser({ rid, userId, ignore }) {
+		return this.sdk.get('chat.ignoreUser', { rid, userId, ignore });
+	},
 	toggleArchiveRoom(roomId, t, archive) {
 		if (archive) {
 			// RC 0.48.0

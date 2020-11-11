@@ -199,12 +199,12 @@ class RoomMembersView extends React.Component {
 
 		// Ignore
 		if (selectedUser._id !== user.id) {
-			const userRoleResult = this.roomRoles.find(r => r.u._id === selectedUser._id);
-			const isModerator = userRoleResult?.roles.includes('moderator');
+			const { ignored } = room;
+			const isIgnored = ignored?.includes?.(selectedUser._id);
 			options.push({
 				icon: 'ban',
-				title: isModerator ? 'Remove_as_moderator' : 'Set_as_moderator',
-				onPress: () => this.handleModerator(selectedUser._id, !isModerator)
+				title: isIgnored ? 'Unignore' : 'Ignore',
+				onPress: () => this.handleIgnore(selectedUser._id, !isIgnored)
 			});
 		}
 
@@ -337,6 +337,19 @@ class RoomMembersView extends React.Component {
 			log(e);
 		}
 		this.fetchRoomMembersRoles();
+	}
+
+	handleIgnore = async(userId, ignore) => {
+		try {
+			const { room } = this.state;
+			await RocketChat.ignoreUser({
+				rid: room.rid, userId, ignore
+			});
+			const message = ignore ? 'User_has_been_ignored' : 'User_has_been_unignored';
+			EventEmitter.emit(LISTENER, { message });
+		} catch (e) {
+			log(e);
+		}
 	}
 
 	handleRemoveUserFromRoom = async(userId) => {
