@@ -862,7 +862,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   JitsiMeetSDK:
-    :commit: 4aaee88a10524a59178abdf5a748ba1686667cf3
+    :commit: 0dd91aa4a81aef7dac70172c8a53aad17339246c
     :git: https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git
 
 SPEC CHECKSUMS:
