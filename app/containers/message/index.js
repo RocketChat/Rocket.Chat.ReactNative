@@ -32,6 +32,7 @@ class MessageContainer extends React.Component {
 		autoTranslateRoom: PropTypes.bool,
 		autoTranslateLanguage: PropTypes.string,
 		status: PropTypes.number,
+		isIgnored: PropTypes.bool,
 		getCustomEmoji: PropTypes.func,
 		onLongPress: PropTypes.func,
 		onReactionPress: PropTypes.func,
@@ -70,7 +71,19 @@ class MessageContainer extends React.Component {
 		blockAction: () => {},
 		archived: false,
 		broadcast: false,
+		isIgnored: false,
 		theme: 'light'
+	}
+
+	state = { isIgnored: false };
+
+	static getDerivedStateFromProps(props, state) {
+		if (props.isIgnored !== state.isIgnored) {
+			return {
+				isIgnored: props.isIgnored
+			};
+		}
+		return null;
 	}
 
 	componentDidMount() {
@@ -83,13 +96,16 @@ class MessageContainer extends React.Component {
 		}
 	}
 
-	shouldComponentUpdate(nextProps) {
-		const { theme } = this.props;
-		if (nextProps.theme !== theme) {
-			return true;
-		}
-		return false;
-	}
+	// shouldComponentUpdate(nextProps) {
+	// 	const { theme, isIgnored } = this.props;
+	// 	if (nextProps.theme !== theme) {
+	// 		return true;
+	// 	}
+	// 	if (nextProps.isIgnored !== isIgnored) {
+	// 		return true;
+	// 	}
+	// 	return false;
+	// }
 
 	componentWillUnmount() {
 		if (this.subscription && this.subscription.unsubscribe) {
@@ -98,6 +114,12 @@ class MessageContainer extends React.Component {
 	}
 
 	onPress = debounce(() => {
+		const { isIgnored } = this.state;
+
+		if (isIgnored) {
+			return this.onIgnoredMessagePress();
+		}
+
 		const { item, isThreadRoom } = this.props;
 		KeyboardUtils.dismiss();
 
@@ -156,6 +178,11 @@ class MessageContainer extends React.Component {
 		if (onThreadPress) {
 			onThreadPress(item);
 		}
+	}
+
+	onIgnoredMessagePress = () => {
+		this.setState({ isIgnored: false });
+		this.forceUpdate();
 	}
 
 	get isHeader() {
@@ -243,6 +270,7 @@ class MessageContainer extends React.Component {
 	}
 
 	render() {
+		const { isIgnored } = this.state;
 		const {
 			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, showAttachment, timeFormat, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme, getBadgeColor, toggleFollowThread
 		} = this.props;
@@ -308,6 +336,7 @@ class MessageContainer extends React.Component {
 					fetchThreadName={fetchThreadName}
 					mentions={mentions}
 					channels={channels}
+					isIgnored={isIgnored}
 					isEdited={editedBy && !!editedBy.username}
 					isHeader={this.isHeader}
 					isThreadReply={this.isThreadReply}

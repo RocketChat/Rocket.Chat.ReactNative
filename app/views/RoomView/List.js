@@ -76,7 +76,7 @@ class List extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { loading, end, refreshing } = this.state;
-		const { hideSystemMessages, theme } = this.props;
+		const { hideSystemMessages, theme, room } = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
 		}
@@ -90,6 +90,9 @@ class List extends React.Component {
 			return true;
 		}
 		if (!isEqual(hideSystemMessages, nextProps.hideSystemMessages)) {
+			return true;
+		}
+		if (!isEqual(room?.ignored, nextProps.room?.ignored)) {
 			return true;
 		}
 		return false;

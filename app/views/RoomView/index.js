@@ -73,7 +73,7 @@ const stateAttrsUpdate = [
 	'readOnly',
 	'member'
 ];
-const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement', 'sysMes', 'topic', 'name', 'fname', 'roles', 'bannerClosed', 'visitor'];
+const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'ignored', 'jitsiTimeout', 'announcement', 'sysMes', 'topic', 'name', 'fname', 'roles', 'bannerClosed', 'visitor'];
 
 class RoomView extends React.Component {
 	static propTypes = {
@@ -857,6 +857,11 @@ class RoomView extends React.Component {
 		}
 	};
 
+	isIgnored = (message) => {
+		const { room } = this.state;
+		return room?.ignored?.includes?.(message?.u?._id) ?? false;
+	}
+
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
@@ -886,6 +891,7 @@ class RoomView extends React.Component {
 				broadcast={room.broadcast}
 				status={item.status}
 				isThreadRoom={!!this.tmid}
+				isIgnored={this.isIgnored(item)}
 				previousItem={previousItem}
 				fetchThreadName={this.fetchThreadName}
 				onReactionPress={this.onReactionPress}
