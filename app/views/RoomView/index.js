@@ -318,7 +318,7 @@ class RoomView extends React.Component {
 		if (!room?.rid) {
 			return;
 		}
-		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: 2 });
+		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: tmid ? 1 : 2 });
 		navigation.setOptions({
 			headerShown: true,
 			headerTitleAlign: 'left',
