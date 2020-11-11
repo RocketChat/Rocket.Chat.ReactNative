@@ -378,7 +378,7 @@ class RoomMembersView extends React.Component {
 			const { room, members, membersFiltered } = this.state;
 			const userId = selectedUser._id;
 			await RocketChat.removeUserFromRoom({ roomId: room.rid, t: room.t, userId });
-			const message = I18n.t('User_has_been_removed_from_s', { s: 'rooom name' });
+			const message = I18n.t('User_has_been_removed_from_s', { s: RocketChat.getRoomTitle(room) });
 			EventEmitter.emit(LISTENER, { message });
 			this.setState({
 				members: members.filter(member => member._id !== userId),
