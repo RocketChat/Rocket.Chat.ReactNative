@@ -34,6 +34,8 @@ import com.reactnativecommunity.webview.RNCWebViewManager;
 
 import com.dylanvann.fastimage.FastImageOkHttpUrlLoader;
 
+import expo.modules.av.player.datasource.SharedCookiesDataSourceFactory;
+
 public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyChainAliasCallback {
 
     private Promise promise;
@@ -102,6 +104,8 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
         RNCWebViewManager.setCertificateAlias(data);
         // FastImage Glide network layer
         FastImageOkHttpUrlLoader.setOkHttpClient(getOkHttpClient());
+        // Expo AV network layer
+        SharedCookiesDataSourceFactory.setOkHttpClient(getOkHttpClient());
 
         promise.resolve(null);
     }
