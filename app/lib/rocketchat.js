@@ -15,6 +15,7 @@ import database from './database';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
 import fetch from '../utils/fetch';
+import SSLPinning from '../utils/sslPinning';
 
 import { encryptionInit } from '../actions/encryption';
 import { setUser, setLoginServices, loginRequest } from '../actions/login';
@@ -313,6 +314,13 @@ const RocketChat = {
 
 	async shareExtensionInit(server) {
 		database.setShareDB(server);
+
+		try {
+			const certificate = await UserPreferences.getStringAsync(`${ RocketChat.CERTIFICATE_KEY }-${ server }`);
+			await SSLPinning.setCertificate(certificate, server);
+		} catch {
+			// Do nothing
+		}
 
 		if (this.shareSDK) {
 			this.shareSDK.disconnect();

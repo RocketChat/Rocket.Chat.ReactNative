@@ -49,8 +49,10 @@ const RCSSLPinning = Platform.select({
 			}
 		}),
 		setCertificate: async(alias, server) => {
-			const certificate = await UserPreferences.getMapAsync(alias);
-			await UserPreferences.setMapAsync(extractHostname(server), certificate);
+			if (alias) {
+				const certificate = await UserPreferences.getMapAsync(alias);
+				await UserPreferences.setMapAsync(extractHostname(server), certificate);
+			}
 		}
 	},
 	android: {
