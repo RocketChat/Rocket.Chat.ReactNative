@@ -143,7 +143,7 @@ const Header = React.memo(({
 					roomUserId={roomUserId}
 					theme={theme}
 				/>
-				<Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]}>{parentTitle}</Text>
+				<Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{parentTitle}</Text>
 			</View>
 		);
 	}
