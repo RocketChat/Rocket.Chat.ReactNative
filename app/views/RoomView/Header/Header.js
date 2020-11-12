@@ -10,6 +10,9 @@ import Icon from './Icon';
 import { themes } from '../../../constants/colors';
 import Markdown from '../../../containers/markdown';
 
+const HIT_SLOP = {
+	top: 5, right: 5, bottom: 5, left: 5
+};
 const TITLE_SIZE = 16;
 const styles = StyleSheet.create({
 	container: {
@@ -152,6 +155,7 @@ const Header = React.memo(({
 			onPress={onPress}
 			style={styles.container}
 			disabled={tmid}
+			hitSlop={HIT_SLOP}
 		>
 			<View style={styles.titleContainer}>
 				{tmid ? null : <Icon type={prid ? 'discussion' : type} status={status} roomUserId={roomUserId} theme={theme} />}
