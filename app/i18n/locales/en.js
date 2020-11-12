@@ -701,5 +701,6 @@ export default {
 	User__username__removed_from__room_name__owners: 'User {{username}} removed from {{room_name}} owners',
 	The_user_will_be_removed_from_s: 'The user will be removed from {{s}}',
 	Yes_remove_user: 'Yes, remove user!',
-	Direct_message: 'Direct message'
+	Direct_message: 'Direct message',
+	Message_Ignored: 'Message ignored. Tap to display it.'
 };

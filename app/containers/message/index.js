@@ -89,11 +89,14 @@ class MessageContainer extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { isManualUnignored } = this.state;
-		const { theme, threadBadgeColor } = this.props;
+		const { theme, threadBadgeColor, isIgnored } = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
 		}
 		if (nextProps.threadBadgeColor !== threadBadgeColor) {
+			return true;
+		}
+		if (nextProps.isIgnored !== isIgnored) {
 			return true;
 		}
 		if (nextState.isManualUnignored !== isManualUnignored) {

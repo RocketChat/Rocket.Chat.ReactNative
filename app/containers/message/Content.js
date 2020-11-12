@@ -68,7 +68,7 @@ const Content = React.memo((props) => {
 	}
 
 	if (props.isIgnored) {
-		content = <Text style={[styles.textInfo, { color: themes[props.theme].auxiliaryText }]}>Message ignored. Tap to display it.</Text>;
+		content = <Text style={[styles.textInfo, { color: themes[props.theme].auxiliaryText }]}>{I18n.t('Message_Ignored')}</Text>;
 	}
 
 	return (
@@ -118,6 +118,7 @@ Content.propTypes = {
 	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	navToRoomInfo: PropTypes.func,
 	useRealName: PropTypes.bool,
+	isIgnored: PropTypes.bool,
 	type: PropTypes.string
 };
 Content.displayName = 'MessageContent';
