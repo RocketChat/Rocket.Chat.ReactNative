@@ -372,7 +372,7 @@ PODS:
     - React
   - react-native-document-picker (3.5.3):
     - React
-  - react-native-jitsi-meet (2.3.0):
+  - react-native-jitsi-meet (2.4.0):
     - JitsiMeetSDK
     - React
   - react-native-mmkv-storage (0.3.5):
@@ -862,7 +862,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   JitsiMeetSDK:
-    :commit: c48962b64633fa80eb5c417dad6b627ba7afef1c
+    :commit: 93bc9c44d1c6d48ebd1e298dd5391db0d5d3a948
     :git: https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git
 
 SPEC CHECKSUMS:
@@ -926,7 +926,7 @@ SPEC CHECKSUMS:
   react-native-cameraroll: ae0a7c0cc8462508855707ff623b1e789b692865
   react-native-cookies: d79e5015a5d3a38e08f5cb39c4948532be7e9c2b
   react-native-document-picker: 825552b827012282baf4b7cbf119d3b37a280c90
-  react-native-jitsi-meet: bf3d58dbdbf7c0889bc26f66911deba8aaadad88
+  react-native-jitsi-meet: f2407aca85566e031ee7b222e497ee5ecb6623de
   react-native-mmkv-storage: 48729fe90e850ef2fdc9d3714b7030c7c51d82b0
   react-native-notifications: ee8fd739853e72694f3af8b374c8ccb106b7b227
   react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
