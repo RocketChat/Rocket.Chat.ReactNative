@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+	View, Text, StyleSheet, Image
+} from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
@@ -8,7 +10,6 @@ import Markdown from '../markdown';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
-import Attachments from '../message/Attachments';
 
 const styles = StyleSheet.create({
 	container: {
@@ -83,7 +84,6 @@ const ReplyPreview = React.memo(({
 	if (!replying) {
 		return null;
 	}
-
 	const time = moment(message.ts).format(Message_TimeFormat);
 	const description = (message.msg === '') ? message.attachments[0].description : message.msg;
 	return (
@@ -108,12 +108,9 @@ const ReplyPreview = React.memo(({
 					theme={theme}
 				/>
 			</View>
-			<Attachments
-				attachments={message.attachments}
-				timeFormat={Message_TimeFormat}
-				showAttachment
-				getCustomEmoji={getCustomEmoji}
-				theme={theme}
+			<Image
+				style={styles.thumbnail}
+				source={{ uri: baseUrl + message.attachments[0].image_url }}
 			/>
 			<CustomIcon name='close' color={themes[theme].auxiliaryText} size={20} style={styles.close} onPress={close} />
 		</View>

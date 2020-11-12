@@ -9,6 +9,7 @@ import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
+import Attachments from './Attachments';
 
 const styles = StyleSheet.create({
 	button: {
@@ -176,6 +177,10 @@ const Reply = React.memo(({
 						theme={theme}
 					/>
 					<Fields attachment={attachment} theme={theme} />
+					<Attachments
+						attachments={attachment.attachments}
+						theme={theme}
+					/>
 				</View>
 			</Touchable>
 			<Markdown
