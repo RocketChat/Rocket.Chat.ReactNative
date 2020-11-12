@@ -18,6 +18,7 @@ export const LOGIN = createRequestTypes('LOGIN', [
 export const SHARE = createRequestTypes('SHARE', [
 	'SELECT_SERVER',
 	'SET_USER',
+	'SET_SETTINGS',
 	'SET_SERVER_INFO'
 ]);
 export const USER = createRequestTypes('USER', ['SET']);

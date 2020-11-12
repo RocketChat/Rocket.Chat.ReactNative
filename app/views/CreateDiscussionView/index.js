@@ -8,7 +8,7 @@ import Loading from '../../containers/Loading';
 import KeyboardView from '../../presentation/KeyboardView';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
-import { CustomHeaderButtons, Item, CloseModalButton } from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
@@ -39,7 +39,9 @@ class CreateChannelView extends React.Component {
 		failure: PropTypes.bool,
 		error: PropTypes.object,
 		theme: PropTypes.string,
-		isMasterDetail: PropTypes.bool
+		isMasterDetail: PropTypes.bool,
+		blockUnauthenticatedAccess: PropTypes.bool,
+		serverVersion: PropTypes.string
 	}
 
 	constructor(props) {
@@ -95,13 +97,13 @@ class CreateChannelView extends React.Component {
 			headerRight: (
 				this.valid()
 					? () => (
-						<CustomHeaderButtons>
-							<Item title={I18n.t('Create')} onPress={this.submit} testID='create-discussion-submit' />
-						</CustomHeaderButtons>
+						<HeaderButton.Container>
+							<HeaderButton.Item title={I18n.t('Create')} onPress={this.submit} testID='create-discussion-submit' />
+						</HeaderButton.Container>
 					)
 					: null
 			),
-			headerLeft: showCloseModal ? () => <CloseModalButton navigation={navigation} /> : undefined
+			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal navigation={navigation} /> : undefined
 		});
 	}
 
@@ -143,7 +145,7 @@ class CreateChannelView extends React.Component {
 	render() {
 		const { name, users } = this.state;
 		const {
-			server, user, loading, theme
+			server, user, loading, blockUnauthenticatedAccess, theme, serverVersion
 		} = this.props;
 		return (
 			<KeyboardView
@@ -151,8 +153,8 @@ class CreateChannelView extends React.Component {
 				contentContainerStyle={styles.container}
 				keyboardVerticalOffset={128}
 			>
-				<StatusBar theme={theme} />
-				<SafeAreaView testID='create-discussion-view' style={styles.container} theme={theme}>
+				<StatusBar />
+				<SafeAreaView testID='create-discussion-view' style={styles.container}>
 					<ScrollView {...scrollPersistTaps}>
 						<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Discussion_Desc')}</Text>
 						<SelectChannel
@@ -161,6 +163,8 @@ class CreateChannelView extends React.Component {
 							token={user.token}
 							initial={this.channel && { text: RocketChat.getRoomTitle(this.channel) }}
 							onChannelSelect={this.selectChannel}
+							blockUnauthenticatedAccess={blockUnauthenticatedAccess}
+							serverVersion={serverVersion}
 							theme={theme}
 						/>
 						<TextInput
@@ -177,6 +181,8 @@ class CreateChannelView extends React.Component {
 							token={user.token}
 							selected={users}
 							onUserSelect={this.selectUsers}
+							blockUnauthenticatedAccess={blockUnauthenticatedAccess}
+							serverVersion={serverVersion}
 							theme={theme}
 						/>
 						<TextInput
@@ -203,6 +209,8 @@ const mapStateToProps = state => ({
 	failure: state.createDiscussion.failure,
 	loading: state.createDiscussion.isFetching,
 	result: state.createDiscussion.result,
+	blockUnauthenticatedAccess: state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true,
+	serverVersion: state.share.server.version || state.server.version,
 	isMasterDetail: state.app.isMasterDetail
 });
 

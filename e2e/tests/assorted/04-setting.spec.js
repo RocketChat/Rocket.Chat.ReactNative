@@ -30,12 +30,24 @@ describe('Settings screen', () => {
 			await expect(element(by.id('settings-view-language'))).toExist();
 		});
 
-		it('should have theme', async() => {
-			await expect(element(by.id('settings-view-theme'))).toExist();
+		it('should have review app', async() => {
+			await expect(element(by.id('settings-view-review-app'))).toExist();
 		});
 
 		it('should have share app', async() => {
 			await expect(element(by.id('settings-view-share-app'))).toExist();
+		});
+
+		it('should have default browser', async() => {
+			await expect(element(by.id('settings-view-default-browser'))).toExist();
+		});
+
+		it('should have theme', async() => {
+			await expect(element(by.id('settings-view-theme'))).toExist();
+		});
+
+		it('should have security and privacy', async() => {
+			await expect(element(by.id('settings-view-security-privacy'))).toExist();
 		});
 
 		it('should have licence', async() => {
