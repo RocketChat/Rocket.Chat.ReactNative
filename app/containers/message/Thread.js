@@ -19,11 +19,10 @@ const Thread = React.memo(({
 	}
 
 	const {
-		getBadgeColor, toggleFollowThread, user, replies
+		threadBadgeColor, toggleFollowThread, user, replies
 	} = useContext(MessageContext);
 	const time = formatDateThreads(tlm);
 	const buttonText = formatMessageCount(tcount, THREAD);
-	const badgeColor = getBadgeColor?.(id);
 	const isFollowing = replies?.find(u => u === user.id);
 	return (
 		<View style={styles.buttonContainer}>
@@ -35,7 +34,7 @@ const Thread = React.memo(({
 				<Text style={[styles.buttonText, { color: themes[theme].buttonText }]}>{buttonText}</Text>
 			</View>
 			<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
-			{badgeColor ? <View style={[styles.threadBadge, { backgroundColor: badgeColor }]} /> : null}
+			{threadBadgeColor ? <View style={[styles.threadBadge, { backgroundColor: threadBadgeColor }]} /> : null}
 			<Touchable onPress={() => toggleFollowThread(isFollowing, id)}>
 				<CustomIcon
 					name={isFollowing ? 'notification' : 'notification-disabled'}
