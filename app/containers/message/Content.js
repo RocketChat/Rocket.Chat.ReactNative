@@ -92,6 +92,9 @@ const Content = React.memo((props) => {
 	if (prevProps.isEncrypted !== nextProps.isEncrypted) {
 		return false;
 	}
+	if (prevProps.isIgnored !== nextProps.isIgnored) {
+		return false;
+	}
 	if (!equal(prevProps.mentions, nextProps.mentions)) {
 		return false;
 	}

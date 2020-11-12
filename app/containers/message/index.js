@@ -87,19 +87,20 @@ class MessageContainer extends React.Component {
 		}
 	}
 
-	// shouldComponentUpdate(nextProps) {
-	// 	const { theme, threadBadgeColor, isIgnored } = this.props;
-	// 	if (nextProps.theme !== theme) {
-	// 		return true;
-	// 	}
-	// 	if (nextProps.threadBadgeColor !== threadBadgeColor) {
-	// 		return true;
-	// 	}
-	// 	// 	if (nextProps.isIgnored !== isIgnored) {
-	// 	// 		return true;
-	// 	// 	}
-	// 	return false;
-	// }
+	shouldComponentUpdate(nextProps, nextState) {
+		const { isManualUnignored } = this.state;
+		const { theme, threadBadgeColor } = this.props;
+		if (nextProps.theme !== theme) {
+			return true;
+		}
+		if (nextProps.threadBadgeColor !== threadBadgeColor) {
+			return true;
+		}
+		if (nextState.isManualUnignored !== isManualUnignored) {
+			return true;
+		}
+		return false;
+	}
 
 	componentWillUnmount() {
 		if (this.subscription && this.subscription.unsubscribe) {
@@ -173,7 +174,7 @@ class MessageContainer extends React.Component {
 	}
 
 	onIgnoredMessagePress = () => {
-		this.setState({ isManualUnignored: true }, () => this.forceUpdate());
+		this.setState({ isManualUnignored: true });
 	}
 
 	get isHeader() {
