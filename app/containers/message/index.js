@@ -75,16 +75,7 @@ class MessageContainer extends React.Component {
 		theme: 'light'
 	}
 
-	state = { isIgnored: false };
-
-	static getDerivedStateFromProps(props, state) {
-		if (props.isIgnored !== state.isIgnored) {
-			return {
-				isIgnored: props.isIgnored
-			};
-		}
-		return null;
-	}
+	state = { isManualUnignored: false };
 
 	componentDidMount() {
 		const { item } = this.props;
@@ -117,9 +108,7 @@ class MessageContainer extends React.Component {
 	}
 
 	onPress = debounce(() => {
-		const { isIgnored } = this.state;
-
-		if (isIgnored) {
+		if (this.isIgnored) {
 			return this.onIgnoredMessagePress();
 		}
 
@@ -184,8 +173,7 @@ class MessageContainer extends React.Component {
 	}
 
 	onIgnoredMessagePress = () => {
-		this.setState({ isIgnored: false });
-		this.forceUpdate();
+		this.setState({ isManualUnignored: true }, () => this.forceUpdate());
 	}
 
 	get isHeader() {
@@ -253,6 +241,12 @@ class MessageContainer extends React.Component {
 		return item.status === messagesStatus.TEMP || item.status === messagesStatus.ERROR;
 	}
 
+	get isIgnored() {
+		const { isManualUnignored } = this.state;
+		const { isIgnored } = this.props;
+		return isManualUnignored ? false : isIgnored;
+	}
+
 	get hasError() {
 		const { item } = this.props;
 		return item.status === messagesStatus.ERROR;
@@ -273,7 +267,6 @@ class MessageContainer extends React.Component {
 	}
 
 	render() {
-		const { isIgnored } = this.state;
 		const {
 			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, showAttachment, timeFormat, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme, threadBadgeColor, toggleFollowThread
 		} = this.props;
@@ -339,7 +332,7 @@ class MessageContainer extends React.Component {
 					fetchThreadName={fetchThreadName}
 					mentions={mentions}
 					channels={channels}
-					isIgnored={isIgnored}
+					isIgnored={this.isIgnored}
 					isEdited={editedBy && !!editedBy.username}
 					isHeader={this.isHeader}
 					isThreadReply={this.isThreadReply}

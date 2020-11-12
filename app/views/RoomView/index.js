@@ -1060,6 +1060,7 @@ class RoomView extends React.Component {
 					tmid={this.tmid}
 					theme={theme}
 					tunread={room?.tunread}
+					ignored={room?.ignored}
 					renderRow={this.renderItem}
 					loading={loading}
 					navigation={navigation}
