@@ -140,16 +140,17 @@ android {
     }
 
     defaultConfig {
-        applicationId APPLICATIONID as String
+        applicationId "chat.rocket.reactnative"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode VERSIONCODE as Integer
-        versionName VERSIONNAME as String
+        versionName "4.12.0"
         vectorDrawables.useSupportLibrary = true
         if (isPlay) {
             manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
             missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
         }
+        resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
     }
 
     signingConfigs {
@@ -171,14 +172,10 @@ android {
         }
     }
     buildTypes {
-        debug {
-            resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
-        }
         release {
             minifyEnabled enableProguardInReleaseBuilds
             setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'])
             signingConfig signingConfigs.release
-            resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
             if (isPlay) {
                 firebaseCrashlytics {
                     nativeSymbolUploadEnabled true
@@ -202,7 +199,6 @@ android {
             applicationId "chat.rocket.android"
             dimension = "type"
             buildConfigField "boolean", "FDROID_BUILD", "true"
-            resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
         }
         play {
             dimension = "type"
