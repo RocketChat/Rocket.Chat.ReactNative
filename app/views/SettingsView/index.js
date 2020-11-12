@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, Linking, ScrollView, Switch, Share, Clipboard
+	View, Linking, ScrollView, Switch, Share, Clipboard, PermissionsAndroid
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -74,6 +74,7 @@ class SettingsView extends React.Component {
 		navigation: PropTypes.object,
 		server: PropTypes.object,
 		allowCrashReport: PropTypes.bool,
+		allowBootOptionEvents: PropTypes.bool,
 		allowAnalyticsEvents: PropTypes.bool,
 		toggleCrashReport: PropTypes.func,
 		toggleAnalyticsEvents: PropTypes.func,
@@ -143,6 +144,13 @@ class SettingsView extends React.Component {
 		});
 	}
 
+	// toggleBootOptions = (value) => {
+	// 		const result = await PermissionsAndroid.request(android.permission.RECEIVE_BOOT_COMPLETED, value);
+	// 		if (!(result || result === PermissionsAndroid.RESULTS.GRANTED)) {
+	// 			return;
+	// 		}	
+	// 	}
+	// }
 	toggleCrashReport = (value) => {
 		logEvent(events.SE_TOGGLE_CRASH_REPORT);
 		AsyncStorage.setItem(CRASH_REPORT_KEY, JSON.stringify(value));
@@ -228,8 +236,23 @@ class SettingsView extends React.Component {
 		return <DisclosureImage theme={theme} />;
 	}
 
+
+	renderBootModal = () =>{
+		const { allowBootOptionEvents } = this.props;
+		return (
+			<Modal>
+				animationType="slide"
+				transparent={true}
+				visible={modalVisible}
+				onRequestClose={() => {
+					Alert.alert("Modal has been closed.");
+				}}
+			</Modal>
+		);
+	}
+
 	renderCrashReportSwitch = () => {
-		const { allowCrashReport } = this.props;
+		const { FallowCrashReport } = this.props;
 		return (
 			<Switch
 				value={allowCrashReport}
@@ -296,18 +319,12 @@ class SettingsView extends React.Component {
 						theme={theme}
 					/>
 					<Separator theme={theme} />
-					{!isFDroidBuild ? (
-						<>
-							<ListItem
-								title={I18n.t('Review_this_app')}
-								showActionIndicator
-								onPress={onReviewPress}
-								testID='settings-view-review-app'
-								right={this.renderDisclosure}
-								theme={theme}
-							/>
-						</>
-					) : null}
+					<ListItem
+						title={I18n.t('boot_options')}
+						testID='settings-view-boot-events'
+						right={() => this.renderBootModal()}
+						theme={theme}
+					/>
 					<Separator theme={theme} />
 					<ListItem
 						title={I18n.t('Share_this_app')}
@@ -343,6 +360,19 @@ class SettingsView extends React.Component {
 						right={this.renderDisclosure}
 						theme={theme}
 					/>
+					<Separator theme={theme} />
+					{!isFDroidBuild ? (
+						<>
+							<ListItem
+								title={I18n.t('Review_this_app')}
+								showActionIndicator
+								onPress={onReviewPress}
+								testID='settings-view-review-app'
+								right={this.renderDisclosure}
+								theme={theme}
+							/>
+						</>
+					) : null}
 
 					<SectionSeparator theme={theme} />
 
@@ -427,6 +457,7 @@ const mapStateToProps = state => ({
 	user: getUserSelector(state),
 	allowCrashReport: state.crashReport.allowCrashReport,
 	allowAnalyticsEvents: state.crashReport.allowAnalyticsEvents,
+	//allowBootOptionEvents:state.crashReport.allowBootOptionEvents,
 	isMasterDetail: state.app.isMasterDetail
 });
 
@@ -435,6 +466,7 @@ const mapDispatchToProps = dispatch => ({
 	selectServerRequest: params => dispatch(selectServerRequestAction(params)),
 	toggleCrashReport: params => dispatch(toggleCrashReportAction(params)),
 	toggleAnalyticsEvents: params => dispatch(toggleAnalyticsEventsAction(params)),
+	//toggleBootOptions: params => dispatch(toggleBootOptions(params)),
 	appStart: params => dispatch(appStartAction(params))
 });
 
