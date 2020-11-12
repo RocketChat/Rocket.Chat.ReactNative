@@ -4,12 +4,11 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import isEqual from 'lodash/isEqual';
-import FastImage from '@rocket.chat/react-native-fast-image';
-import { RectButton } from 'react-native-gesture-handler';
 import Markdown from '../markdown';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
+import Attachments from '../message/Attachments';
 
 const styles = StyleSheet.create({
 	container: {
@@ -78,62 +77,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-const renderImage = () => {
-	const {
-		message, baseUrl, user
-	} = this.props;
-
-	if (!message.attachments) {
-		return null;
-	} else {
-		const attachmentComponent = [];
-		Object.keys(message.attachments).forEach((key) => {
-			// attachment is image
-			if (message.attachments[key].image_url) {
-				const img = `${ baseUrl }${ message.attachments[key].image_url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
-				attachmentComponent.push(
-					<FastImage
-						source={{ uri: encodeURI(img) }}
-						resizeMode={FastImage.resizeMode.cover}
-						style={styles.thumbnail}
-					/>
-				);
-			} else if (message.attachments[key].video_url) {
-				// attachment is video
-				attachmentComponent.push(
-					<RectButton
-						style={styles.buttonVideo}
-						activeOpacity={0.5}
-						underlayColor='#fff'
-					>
-						<CustomIcon
-							name='play'
-							size={20}
-							style={styles.playVideo}
-						/>
-					</RectButton>
-				);
-			} else if (message.attachments[key].audio_url) {
-				// attachment is audio
-				attachmentComponent.push(
-					<RectButton
-						style={styles.buttonAudio}
-						activeOpacity={0.5}
-						underlayColor='#fff'
-					>
-						<CustomIcon
-							name='Files-audio'
-							size={20}
-							style={styles.playAudio}
-						/>
-					</RectButton>
-				);
-			}
-		});
-		return attachmentComponent;
-	}
-};
-
 const ReplyPreview = React.memo(({
 	message, Message_TimeFormat, baseUrl, username, replying, getCustomEmoji, close, theme
 }) => {
@@ -164,8 +107,14 @@ const ReplyPreview = React.memo(({
 					preview
 					theme={theme}
 				/>
-				{renderImage()}
 			</View>
+			<Attachments
+				attachments={message.attachments}
+				timeFormat={Message_TimeFormat}
+				showAttachment
+				getCustomEmoji={getCustomEmoji}
+				theme={theme}
+			/>
 			<CustomIcon name='close' color={themes[theme].auxiliaryText} size={20} style={styles.close} onPress={close} />
 		</View>
 	);
