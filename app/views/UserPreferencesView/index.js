@@ -32,7 +32,7 @@ class UserPreferencesView extends React.Component {
 					<List.Section>
 						<List.Separator />
 						<List.Item
-							title={I18n.t('Notifications')}
+							title='Notifications'
 							onPress={() => this.navigateToScreen('UserNotificationPrefView')}
 							showActionIndicator
 							testID='preferences-view-notifications'
