@@ -48,7 +48,7 @@ class MessageContainer extends React.Component {
 		callJitsi: PropTypes.func,
 		blockAction: PropTypes.func,
 		theme: PropTypes.string,
-		getBadgeColor: PropTypes.func,
+		threadBadgeColor: PropTypes.string,
 		toggleFollowThread: PropTypes.func
 	}
 
@@ -84,8 +84,11 @@ class MessageContainer extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		const { theme } = this.props;
+		const { theme, threadBadgeColor } = this.props;
 		if (nextProps.theme !== theme) {
+			return true;
+		}
+		if (nextProps.threadBadgeColor !== threadBadgeColor) {
 			return true;
 		}
 		return false;
@@ -244,7 +247,7 @@ class MessageContainer extends React.Component {
 
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, showAttachment, timeFormat, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme, getBadgeColor, toggleFollowThread
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, showAttachment, timeFormat, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme, threadBadgeColor, toggleFollowThread
 		} = this.props;
 		const {
 			id, msg, ts, attachments, urls, reactions, t, avatar, emoji, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, blocks, autoTranslate: autoTranslateMessage, replies
@@ -271,7 +274,7 @@ class MessageContainer extends React.Component {
 					onEncryptedPress: this.onEncryptedPress,
 					onDiscussionPress: this.onDiscussionPress,
 					onReactionLongPress: this.onReactionLongPress,
-					getBadgeColor,
+					threadBadgeColor,
 					toggleFollowThread,
 					replies
 				}}
