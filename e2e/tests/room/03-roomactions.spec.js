@@ -3,6 +3,7 @@ const {
 } = require('detox');
 const data = require('../../data');
 const { navigateToLogin, login, tapBack, sleep, searchRoom, mockMessage, starMessage, pinMessage } = require('../../helpers/app');
+const { sendMessage } = require('../../helpers/data_setup')
 
 async function navigateToRoomActions(type) {
 	let room;
@@ -481,9 +482,29 @@ describe('Room actions screen', () => {
 					await closeActionSheet();
 				});
 
-				// TODO: ignore
+				it('should ignore user', async() => {
+					const message = `${ data.random }ignoredmessagecontent`;
+					const channelName = data.groups.private.name;
+					await sendMessage(user, channelName, message);
+					await openActionSheet(user.username);
+					await element(by.label('Ignore')).tap();
+					await waitForToast();
+					await backToActions();
+					await tapBack();
+					await waitFor(element(by.id('room-view'))).toExist().withTimeout(60000);
+					await waitFor(element(by.label('Message ignored. Tap to display it.')).atIndex(0)).toExist().withTimeout(60000);
+					await element(by.label('Message ignored. Tap to display it.')).atIndex(0).tap();
+					await waitFor(element(by.label(message)).atIndex(0)).toExist().withTimeout(60000);
+					await element(by.label(message)).atIndex(0).tap();
+				});
 
 				it('should navigate to direct message', async() => {
+					await element(by.id('room-view-header-actions')).tap();
+					await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
+					await element(by.id('room-actions-members')).tap();
+					await waitFor(element(by.id('room-members-view'))).toExist().withTimeout(2000);
+					await element(by.id('room-members-view-toggle-status')).tap();
+					await waitFor(element(by.id(`room-members-view-item-${ user.username }`))).toExist().withTimeout(60000);
 					await openActionSheet(user.username);
 					await element(by.label('Direct message')).tap();
 					await waitFor(element(by.id('room-view'))).toExist().withTimeout(60000);

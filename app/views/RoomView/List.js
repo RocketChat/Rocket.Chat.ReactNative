@@ -31,6 +31,7 @@ class List extends React.Component {
 		listRef: PropTypes.func,
 		hideSystemMessages: PropTypes.array,
 		tunread: PropTypes.array,
+		ignored: PropTypes.array,
 		navigation: PropTypes.object,
 		showMessageInMainThread: PropTypes.bool
 	};

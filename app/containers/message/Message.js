@@ -147,7 +147,8 @@ Message.propTypes = {
 	onLongPress: PropTypes.func,
 	isReadReceiptEnabled: PropTypes.bool,
 	unread: PropTypes.bool,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	isIgnored: PropTypes.bool
 };
 
 MessageInner.propTypes = {
