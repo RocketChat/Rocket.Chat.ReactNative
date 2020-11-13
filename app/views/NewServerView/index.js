@@ -161,6 +161,9 @@ class NewServerView extends React.Component {
 
 	handleNewServerEvent = (event) => {
 		let { server } = event;
+		if (!server) {
+			return;
+		}
 		const { connectServer } = this.props;
 		this.setState({ text: server });
 		server = this.completeUrl(server);
