@@ -150,6 +150,7 @@ android {
             manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
             missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
         }
+        resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
     }
 
     signingConfigs {
@@ -198,7 +199,6 @@ android {
             applicationId "chat.rocket.android"
             dimension = "type"
             buildConfigField "boolean", "FDROID_BUILD", "true"
-            resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
         }
         play {
             dimension = "type"
