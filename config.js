@@ -1,3 +1,4 @@
 export default {
-	BUGSNAG_API_KEY: ''
+	BUGSNAG_API_KEY: '',
+	SENTRY_API_KEY: ''
 };

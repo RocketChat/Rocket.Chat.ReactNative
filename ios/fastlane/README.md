@@ -31,11 +31,11 @@ Submit a new Beta Build to Apple TestFlight
 fastlane ios release
 ```
 Build App for release
-### ios build
+### ios build_fork
 ```
-fastlane ios build
+fastlane ios build_fork
 ```
-Build App for development
+Build fork app
 
 ----
 

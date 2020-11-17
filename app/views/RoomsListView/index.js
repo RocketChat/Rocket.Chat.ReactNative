@@ -736,17 +736,18 @@ class RoomsListView extends React.Component {
 	};
 
 	goRoom = ({ item, isMasterDetail }) => {
-		logEvent(events.RL_GO_ROOM);
-		const { item: currentItem } = this.state;
-		const { rooms } = this.props;
-		if (currentItem?.rid === item.rid || rooms?.includes(item.rid)) {
-			return;
-		}
-		// Only mark room as focused when in master detail layout
-		if (isMasterDetail) {
-			this.setState({ item });
-		}
-		goRoom({ item, isMasterDetail });
+		// logEvent(events.RL_GO_ROOM);
+		// const { item: currentItem } = this.state;
+		// const { rooms } = this.props;
+		// if (currentItem?.rid === item.rid || rooms?.includes(item.rid)) {
+		// 	return;
+		// }
+		// // Only mark room as focused when in master detail layout
+		// if (isMasterDetail) {
+		// 	this.setState({ item });
+		// }
+		// goRoom({ item, isMasterDetail });
+		throw new Error("My first Sentry error!");
 	}
 
 	goRoomByIndex = (index) => {

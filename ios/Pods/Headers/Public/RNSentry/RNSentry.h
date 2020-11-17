@@ -1,0 +1,1 @@
+../../../../../node_modules/@sentry/react-native/ios/RNSentry.h
