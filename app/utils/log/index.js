@@ -22,10 +22,11 @@ export const loggerConfig = bugsnag.config;
 export const { leaveBreadcrumb } = bugsnag;
 export { events };
 
-let metadata = {};
+// https://docs.sentry.io/platforms/react-native/enriching-events/context/
+let extra = {};
 
 export const logServerVersion = (serverVersion) => {
-	metadata = {
+	extra = {
 		serverVersion
 	};
 };
@@ -35,6 +36,11 @@ export const logEvent = (eventName, payload) => {
 		if (!isFDroidBuild) {
 			analytics().logEvent(eventName, payload);
 			leaveBreadcrumb(eventName, payload);
+			sentry.addBreadcrumb({
+				category: 'manual',
+				message: eventName,
+				data: payload
+			});
 		}
 	} catch {
 		// Do nothing
@@ -45,19 +51,17 @@ export const setCurrentScreen = (currentScreen) => {
 	if (!isFDroidBuild) {
 		analytics().setCurrentScreen(currentScreen);
 		leaveBreadcrumb(currentScreen, { type: 'navigation' });
+		sentry.addBreadcrumb({
+			category: 'navigation',
+			message: currentScreen
+		});
 	}
 };
 
 export default (e) => {
-	if (e instanceof Error && bugsnag && e.message !== 'Aborted' && !__DEV__) {
-		bugsnag.notify(e, (report) => {
-			report.metadata = {
-				details: {
-					...metadata
-				}
-			};
-		});
-		if (!isFDroidBuild) {
+	if (e.message !== 'Aborted') {
+		sentry.captureException(e, { extra });
+		if (!isFDroidBuild && e instanceof Error) {
 			crashlytics().recordError(e);
 		}
 	} else {
