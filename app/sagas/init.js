@@ -7,20 +7,24 @@ import { setAllPreferences } from '../actions/sortPreferences';
 import { toggleCrashReport, toggleAnalyticsEvents } from '../actions/crashReport';
 import { APP } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
-import log from '../utils/log';
+import log, { setCrashReportEnabled } from '../utils/log';
 import database from '../lib/database';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { appStart, ROOT_OUTSIDE, appReady } from '../actions/app';
+import { isFDroidBuild } from '../constants/environment';
 
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = yield RocketChat.getSortPreferences();
 	yield put(setAllPreferences(sortPreferences));
 
-	const allowCrashReport = yield RocketChat.getAllowCrashReport();
-	yield put(toggleCrashReport(allowCrashReport));
+	if (!isFDroidBuild) {
+		const allowCrashReport = yield RocketChat.getAllowCrashReport();
+		yield put(toggleCrashReport(allowCrashReport));
+		setCrashReportEnabled(allowCrashReport);
 
-	const allowAnalyticsEvents = yield RocketChat.getAllowAnalyticsEvents();
-	yield put(toggleAnalyticsEvents(allowAnalyticsEvents));
+		const allowAnalyticsEvents = yield RocketChat.getAllowAnalyticsEvents();
+		yield put(toggleAnalyticsEvents(allowAnalyticsEvents));
+	}
 };
 
 const restore = function* restore() {

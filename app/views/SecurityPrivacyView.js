@@ -11,7 +11,7 @@ import * as List from '../containers/List';
 import I18n from '../i18n';
 import { CRASH_REPORT_KEY, ANALYTICS_EVENTS_KEY } from '../lib/rocketchat';
 import {
-	loggerConfig, analytics, logEvent, events
+	loggerConfig, analytics, logEvent, events, setCrashReportEnabled, setAnalyticsEnabled
 } from '../utils/log';
 import SafeAreaView from '../containers/SafeAreaView';
 import { isFDroidBuild } from '../constants/environment';
@@ -40,22 +40,15 @@ class SecurityPrivacyView extends React.Component {
 		AsyncStorage.setItem(CRASH_REPORT_KEY, JSON.stringify(value));
 		const { toggleCrashReport } = this.props;
 		toggleCrashReport(value);
-		if (!isFDroidBuild) {
-			loggerConfig.autoNotify = value;
-			if (value) {
-				loggerConfig.clearBeforeSendCallbacks();
-			} else {
-				loggerConfig.registerBeforeSendCallback(() => false);
-			}
-		}
+		setCrashReportEnabled(value);
 	}
 
 	toggleAnalyticsEvents = (value) => {
 		logEvent(events.SE_TOGGLE_ANALYTICS_EVENTS);
-		const { toggleAnalyticsEvents } = this.props;
 		AsyncStorage.setItem(ANALYTICS_EVENTS_KEY, JSON.stringify(value));
+		const { toggleAnalyticsEvents } = this.props;
 		toggleAnalyticsEvents(value);
-		analytics().setAnalyticsCollectionEnabled(value);
+		setAnalyticsEnabled(value);
 	}
 
 	navigateToScreen = (screen) => {

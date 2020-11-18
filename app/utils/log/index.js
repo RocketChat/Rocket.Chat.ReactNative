@@ -7,6 +7,8 @@ const analytics = firebaseAnalytics || '';
 let bugsnag = '';
 let crashlytics;
 let sentry;
+// https://docs.sentry.io/platforms/react-native/enriching-events/context/
+let extra = {};
 
 if (!isFDroidBuild) {
 	const { Client } = require('bugsnag-react-native');
@@ -19,11 +21,16 @@ if (!isFDroidBuild) {
 
 export { analytics };
 export const loggerConfig = bugsnag.config;
-export const { leaveBreadcrumb } = bugsnag;
 export { events };
 
-// https://docs.sentry.io/platforms/react-native/enriching-events/context/
-let extra = {};
+export const setCrashReportEnabled = (enabled) => {
+	sentry.init({ dsn: enabled ? config.SENTRY_API_KEY : '' });
+	crashlytics().setCrashlyticsCollectionEnabled(enabled);
+};
+
+export const setAnalyticsEnabled = (enabled) => {
+	analytics().setAnalyticsCollectionEnabled(enabled);
+};
 
 export const logServerVersion = (serverVersion) => {
 	extra = {
@@ -35,7 +42,7 @@ export const logEvent = (eventName, payload) => {
 	try {
 		if (!isFDroidBuild) {
 			analytics().logEvent(eventName, payload);
-			leaveBreadcrumb(eventName, payload);
+			bugsnag.leaveBreadcrumb(eventName, payload);
 			sentry.addBreadcrumb({
 				category: 'manual',
 				message: eventName,
@@ -50,7 +57,7 @@ export const logEvent = (eventName, payload) => {
 export const setCurrentScreen = (currentScreen) => {
 	if (!isFDroidBuild) {
 		analytics().setCurrentScreen(currentScreen);
-		leaveBreadcrumb(currentScreen, { type: 'navigation' });
+		bugsnag.leaveBreadcrumb(currentScreen, { type: 'navigation' });
 		sentry.addBreadcrumb({
 			category: 'navigation',
 			message: currentScreen
