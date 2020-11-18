@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import * as Sentry from "@sentry/react-native";
 import {
 	View,
 	FlatList,
@@ -693,12 +692,13 @@ class RoomsListView extends React.Component {
 
 	goDirectory = () => {
 		logEvent(events.RL_GO_DIRECTORY);
-		const { navigation, isMasterDetail } = this.props;
-		if (isMasterDetail) {
-			navigation.navigate('ModalStackNavigator', { screen: 'DirectoryView' });
-		} else {
-			navigation.navigate('DirectoryView');
-		}
+		// const { navigation, isMasterDetail } = this.props;
+		// if (isMasterDetail) {
+		// 	navigation.navigate('ModalStackNavigator', { screen: 'DirectoryView' });
+		// } else {
+		// 	navigation.navigate('DirectoryView');
+		// }
+		throw new Error('My first Sentry error!');
 	};
 
 	goQueue = () => {
@@ -748,9 +748,6 @@ class RoomsListView extends React.Component {
 			this.setState({ item });
 		}
 		goRoom({ item, isMasterDetail });
-		// throw new Error("My first Sentry error!");
-		// log(new Error("LOG THIS!"))
-		// Sentry.nativeCrash();
 	}
 
 	goRoomByIndex = (index) => {
