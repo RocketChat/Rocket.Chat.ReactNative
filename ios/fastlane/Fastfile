@@ -16,14 +16,14 @@ fastlane_version "2.63.0"
 default_platform :ios
 
 platform :ios do
-  # before_all do
-  #   setup_circle_ci	
-  #   create_keychain(	
-  #     name: ENV["MATCH_KEYCHAIN_NAME"],	
-  #     password: ENV["MATCH_KEYCHAIN_PASSWORD"],	
-  #     timeout: 1200	
-  #   )	
-  # end
+  before_all do
+    setup_circle_ci	
+    create_keychain(	
+      name: ENV["MATCH_KEYCHAIN_NAME"],	
+      password: ENV["MATCH_KEYCHAIN_PASSWORD"],	
+      timeout: 1200	
+    )	
+  end
 
   desc "Runs all the tests"
   lane :test do
@@ -64,11 +64,11 @@ platform :ios do
     gym(scheme: "RocketChatRN", workspace: "RocketChatRN.xcworkspace", skip_codesigning: true, skip_archive: true)
   end
 
-  # after_all do |lane|
-  #   delete_keychain(name: ENV["MATCH_KEYCHAIN_NAME"])	
-  # end	
+  after_all do |lane|
+    delete_keychain(name: ENV["MATCH_KEYCHAIN_NAME"])	
+  end	
 
-  # error do |lane, exception|
-  #   delete_keychain(name: ENV["MATCH_KEYCHAIN_NAME"])	
-  # end
+  error do |lane, exception|
+    delete_keychain(name: ENV["MATCH_KEYCHAIN_NAME"])	
+  end
 end
