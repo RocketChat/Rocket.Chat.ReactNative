@@ -20,7 +20,7 @@
 
     ],
     "Sentry": [
-      "~> 6.0.3"
+
     ]
   },
   "source_files": "ios/RNSentry.{h,m}",

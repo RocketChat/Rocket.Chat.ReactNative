@@ -31,11 +31,11 @@ Foss build for release
 fastlane android playRelease
 ```
 Play build for release
-### android playAlpha
+### android beta
 ```
-fastlane android playAlpha
+fastlane android beta
 ```
-Upload App to Play store
+Upload App to Play Store Internal
 
 ----
 
