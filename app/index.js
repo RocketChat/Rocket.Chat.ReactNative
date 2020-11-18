@@ -19,10 +19,9 @@ import { deepLinkingOpen } from './actions/deepLinking';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications, onNotification } from './notifications/push';
 import store from './lib/createStore';
-import { loggerConfig, analytics } from './utils/log';
 import { ThemeContext } from './theme';
 import { DimensionsContext } from './dimensions';
-import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
+import { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { MIN_WIDTH_MASTER_DETAIL_LAYOUT } from './constants/tablet';
 import {
 	isTablet, supportSystemTheme
@@ -174,17 +173,6 @@ export default class Root extends React.Component {
 				EventEmitter.emit(KEY_COMMAND, { event: command });
 			}
 		);
-	}
-
-	initCrashReport = () => {
-		RocketChat.getAllowCrashReport()
-			.then((allowCrashReport) => {
-				if (!allowCrashReport) {
-					loggerConfig.autoNotify = false;
-					loggerConfig.registerBeforeSendCallback(() => false);
-					analytics().setAnalyticsCollectionEnabled(false);
-				}
-			});
 	}
 
 	render() {

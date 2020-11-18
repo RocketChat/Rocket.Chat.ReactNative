@@ -129,7 +129,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		// Return server version even when offline
 		const serverVersion = (serverInfo && serverInfo.version) || version;
 
-		// we'll set serverVersion as metadata for bugsnag
+		// set serverVersion for crash reporting
 		logServerVersion(serverVersion);
 		yield put(selectServerSuccess(server, serverVersion));
 	} catch (e) {

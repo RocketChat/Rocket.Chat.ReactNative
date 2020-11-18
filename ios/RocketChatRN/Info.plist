@@ -4,8 +4,6 @@
 <dict>
 	<key>KeychainGroup</key>
 	<string>$(AppIdentifierPrefix)chat.rocket.reactnative</string>
-	<key>BugsnagAPIKey</key>
-	<string></string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>

@@ -6,7 +6,6 @@ apply plugin: 'kotlin-android'
 
 if (isPlay) {
     apply plugin: 'com.google.firebase.crashlytics'
-    apply plugin: 'com.bugsnag.android.gradle'
 }
 
 import com.android.build.OutputFile
@@ -148,7 +147,6 @@ android {
         versionName "4.12.1"
         vectorDrawables.useSupportLibrary = true
         if (isPlay) {
-            manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
             missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
         }
         resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"

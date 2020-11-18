@@ -175,7 +175,8 @@ jobs:
       - run:
           name: Config variables
           command: |
-            echo -e "export default { BUGSNAG_API_KEY: '$BUGSNAG_KEY' };" > ./config.js
+            # echo -e "export default { BUGSNAG_API_KEY: '$BUGSNAG_KEY' };" > ./config.js
+            echo -e "export default { SENTRY_API_KEY: '$SENTRY_API_KEY' };" > ./config.js
 
       - run:
           name: Build Android Play App
@@ -187,18 +188,18 @@ jobs:
             fi
           working_directory: android
 
-      - run:
-          name: Upload sourcemaps to Bugsnag
-          command: |
-            if [[ $BUGSNAG_KEY ]]; then
-              yarn generate-source-maps-android upload \
-                --api-key=$BUGSNAG_KEY \
-                --app-version=$CIRCLE_BUILD_NUM \
-                --minifiedFile=android/app/build/generated/assets/react/play/release/app.bundle \
-                --source-map=android/app/build/generated/sourcemaps/react/play/release/app.bundle.map \
-                --minified-url=app.bundle \
-                --upload-sources
-            fi
+      # - run:
+      #     name: Upload sourcemaps to Bugsnag
+      #     command: |
+      #       if [[ $BUGSNAG_KEY ]]; then
+      #         yarn generate-source-maps-android upload \
+      #           --api-key=$BUGSNAG_KEY \
+      #           --app-version=$CIRCLE_BUILD_NUM \
+      #           --minifiedFile=android/app/build/generated/assets/react/play/release/app.bundle \
+      #           --source-map=android/app/build/generated/sourcemaps/react/play/release/app.bundle.map \
+      #           --minified-url=app.bundle \
+      #           --upload-sources
+      #       fi
 
       - store_artifacts:
           path: android/app/build/outputs
@@ -322,26 +323,26 @@ jobs:
             fi
           working_directory: ios
 
-      - run:
-          name: Upload sourcemaps to Bugsnag
-          command: |
-            if [[ $BUGSNAG_KEY ]]; then
-              yarn generate-source-maps-ios
-              curl https://upload.bugsnag.com/react-native-source-map \
-                -F apiKey=$BUGSNAG_KEY \
-                -F appBundleVersion=$CIRCLE_BUILD_NUM \
-                -F dev=false \
-                -F platform=ios \
-                -F sourceMap=@ios-release.bundle.map \
-                -F bundle=@ios-release.bundle
-            fi
+      # - run:
+      #     name: Upload sourcemaps to Bugsnag
+      #     command: |
+      #       if [[ $BUGSNAG_KEY ]]; then
+      #         yarn generate-source-maps-ios
+      #         curl https://upload.bugsnag.com/react-native-source-map \
+      #           -F apiKey=$BUGSNAG_KEY \
+      #           -F appBundleVersion=$CIRCLE_BUILD_NUM \
+      #           -F dev=false \
+      #           -F platform=ios \
+      #           -F sourceMap=@ios-release.bundle.map \
+      #           -F bundle=@ios-release.bundle
+      #       fi
 
       - run:
           name: Fastlane Build
           no_output_timeout: 1200
           command: |
             agvtool new-version -all $CIRCLE_BUILD_NUM
-            /usr/libexec/PlistBuddy -c "Set BugsnagAPIKey $BUGSNAG_KEY" ./RocketChatRN/Info.plist
+            # /usr/libexec/PlistBuddy -c "Set BugsnagAPIKey $BUGSNAG_KEY" ./RocketChatRN/Info.plist
 
             if [[ $APP_STORE_CONNECT_API_KEY ]]; then
               echo $APP_STORE_CONNECT_API_KEY | base64 --decode > ./fastlane/app_store_connect_api_key.p8

@@ -11,7 +11,7 @@ import * as List from '../containers/List';
 import I18n from '../i18n';
 import { CRASH_REPORT_KEY, ANALYTICS_EVENTS_KEY } from '../lib/rocketchat';
 import {
-	loggerConfig, analytics, logEvent, events, setCrashReportEnabled, setAnalyticsEnabled
+	logEvent, events, setCrashReportEnabled, setAnalyticsEnabled
 } from '../utils/log';
 import SafeAreaView from '../containers/SafeAreaView';
 import { isFDroidBuild } from '../constants/environment';

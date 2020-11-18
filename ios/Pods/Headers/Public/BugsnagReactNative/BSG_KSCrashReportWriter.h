@@ -1,1 +1,0 @@
-../../../../../node_modules/bugsnag-react-native/cocoa/vendor/bugsnag-cocoa/Source/BSG_KSCrashReportWriter.h
