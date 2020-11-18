@@ -7,7 +7,7 @@ import { setAllPreferences } from '../actions/sortPreferences';
 import { toggleCrashReport, toggleAnalyticsEvents } from '../actions/crashReport';
 import { APP } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
-import log, { setCrashReportEnabled } from '../utils/log';
+import log, { setAnalyticsEnabled, setCrashReportEnabled } from '../utils/log';
 import database from '../lib/database';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { appStart, ROOT_OUTSIDE, appReady } from '../actions/app';
@@ -24,6 +24,7 @@ export const initLocalSettings = function* initLocalSettings() {
 
 		const allowAnalyticsEvents = yield RocketChat.getAllowAnalyticsEvents();
 		yield put(toggleAnalyticsEvents(allowAnalyticsEvents));
+		setAnalyticsEnabled(allowAnalyticsEvents);
 	}
 };
 
