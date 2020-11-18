@@ -7,8 +7,6 @@ const analytics = firebaseAnalytics || '';
 let bugsnag = '';
 let crashlytics;
 let sentry;
-// https://docs.sentry.io/platforms/react-native/enriching-events/context/
-let extra = {};
 
 if (!isFDroidBuild) {
 	const { Client } = require('bugsnag-react-native');
@@ -33,9 +31,9 @@ export const setAnalyticsEnabled = (enabled) => {
 };
 
 export const logServerVersion = (serverVersion) => {
-	extra = {
+	sentry.setContext('extra', {
 		serverVersion
-	};
+	});
 };
 
 export const logEvent = (eventName, payload) => {
@@ -67,7 +65,7 @@ export const setCurrentScreen = (currentScreen) => {
 
 export default (e) => {
 	if (e.message !== 'Aborted') {
-		sentry.captureException(e, { extra });
+		sentry.captureException(e);
 		if (!isFDroidBuild && e instanceof Error) {
 			crashlytics().recordError(e);
 		}
