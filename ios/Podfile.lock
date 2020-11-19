@@ -503,9 +503,9 @@ PODS:
     - React
   - RNScreens (2.9.0):
     - React
-  - RNSentry (2.0.0):
+  - RNSentry (2.0.1):
     - React-Core
-    - Sentry
+    - Sentry (= 6.0.8)
   - RNVectorIcons (7.0.0):
     - React
   - SDWebImage (5.8.4):
@@ -514,9 +514,9 @@ PODS:
   - SDWebImageWebPCoder (0.4.1):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.5)
-  - Sentry (6.0.9):
-    - Sentry/Core (= 6.0.9)
-  - Sentry/Core (6.0.9)
+  - Sentry (6.0.8):
+    - Sentry/Core (= 6.0.8)
+  - Sentry/Core (6.0.8)
   - TOCropViewController (2.5.3)
   - UMAppLoader (1.2.0)
   - UMBarCodeScannerInterface (5.2.1)
@@ -966,11 +966,11 @@ SPEC CHECKSUMS:
   RNReanimated: b5ccb50650ba06f6e749c7c329a1bc3ae0c88b43
   RNRootView: 895a4813dedeaca82db2fa868ca1c333d790e494
   RNScreens: c526239bbe0e957b988dacc8d75ac94ec9cb19da
-  RNSentry: be5dfc9813fee14fab9df8926d88666f1237d4aa
+  RNSentry: 5408304a9fc37053c5589cfa4123a7ad2dce2456
   RNVectorIcons: da6fe858f5a65d7bbc3379540a889b0b12aa5976
   SDWebImage: cf6922231e95550934da2ada0f20f2becf2ceba9
   SDWebImageWebPCoder: 36f8f47bd9879a8aea6044765c1351120fd8e3a8
-  Sentry: 388c9dc093b2fd3a264466a5c5b21e25959610a9
+  Sentry: 6ab9f44a413dec7ebf5e82b166048afb5f60b895
   TOCropViewController: 20a14b6a7a098308bf369e7c8d700dc983a974e6
   UMAppLoader: 61049c8d55590b74e9ae1d5429bf68d96b4a2528
   UMBarCodeScannerInterface: e5e4c87797d3d01214e25cd1618866caf5d4f17f

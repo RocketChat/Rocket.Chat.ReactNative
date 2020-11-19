@@ -253,29 +253,7 @@ SentryScope ()
     [self notifyListeners];
 }
 
-- (NSDictionary<NSString *, id> *)serialize
-{
-    @synchronized(self) {
-        NSMutableDictionary *serializedData = [NSMutableDictionary new];
-        [serializedData setValue:[self.tagDictionary copy] forKey:@"tags"];
-        [serializedData setValue:[self.extraDictionary copy] forKey:@"extra"];
-        [serializedData setValue:[self.contextDictionary copy] forKey:@"context"];
-        [serializedData setValue:[self.userObject serialize] forKey:@"user"];
-        [serializedData setValue:self.distString forKey:@"dist"];
-        [serializedData setValue:self.environmentString forKey:@"environment"];
-        [serializedData setValue:[self.fingerprintArray copy] forKey:@"fingerprint"];
-        if (self.levelEnum != kSentryLevelNone) {
-            [serializedData setValue:SentryLevelNames[self.levelEnum] forKey:@"level"];
-        }
-        NSArray *crumbs = [self serializeBreadcrumbs];
-        if (crumbs.count > 0) {
-            [serializedData setValue:crumbs forKey:@"breadcrumbs"];
-        }
-        return serializedData;
-    }
-}
-
-- (NSArray *)serializeBreadcrumbs
+- (NSDictionary<NSString *, id> *)serializeBreadcrumbs
 {
     NSMutableArray *crumbs = [NSMutableArray new];
 
@@ -283,7 +261,30 @@ SentryScope ()
         [crumbs addObject:[crumb serialize]];
     }
 
-    return crumbs;
+    NSMutableDictionary *serializedData = [NSMutableDictionary new];
+    if (crumbs.count > 0) {
+        [serializedData setValue:crumbs forKey:@"breadcrumbs"];
+    }
+
+    return serializedData;
+}
+
+- (NSDictionary<NSString *, id> *)serialize
+{
+    @synchronized(self) {
+        NSMutableDictionary *serializedData = [[self serializeBreadcrumbs] mutableCopy];
+        [serializedData setValue:self.tagDictionary forKey:@"tags"];
+        [serializedData setValue:self.extraDictionary forKey:@"extra"];
+        [serializedData setValue:self.contextDictionary forKey:@"context"];
+        [serializedData setValue:[self.userObject serialize] forKey:@"user"];
+        [serializedData setValue:self.distString forKey:@"dist"];
+        [serializedData setValue:self.environmentString forKey:@"environment"];
+        [serializedData setValue:self.fingerprintArray forKey:@"fingerprint"];
+        if (self.levelEnum != kSentryLevelNone) {
+            [serializedData setValue:SentryLevelNames[self.levelEnum] forKey:@"level"];
+        }
+        return serializedData;
+    }
 }
 
 - (void)applyToSession:(SentrySession *)session

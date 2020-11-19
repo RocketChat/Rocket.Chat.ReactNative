@@ -41,7 +41,7 @@
     "@rocket.chat/react-native-fast-image": "^8.1.5",
     "@rocket.chat/sdk": "RocketChat/Rocket.Chat.js.SDK#mobile",
     "@rocket.chat/ui-kit": "0.13.0",
-    "@sentry/react-native": "^2.0.0",
+    "@sentry/react-native": "^2.0.1",
     "bytebuffer": "^5.0.1",
     "commonmark": "git+https://github.com/RocketChat/commonmark.js.git",
     "commonmark-react-renderer": "git+https://github.com/RocketChat/commonmark-react-renderer.git",
