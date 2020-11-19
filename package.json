@@ -100,6 +100,7 @@
     "react-native-progress": "4.1.2",
     "react-native-prompt-android": "^1.1.0",
     "react-native-reanimated": "1.9.0",
+    "react-native-restart": "^0.0.17",
     "react-native-safe-area-context": "3.1.1",
     "react-native-screens": "2.9.0",
     "react-native-scroll-bottom-sheet": "0.6.2",

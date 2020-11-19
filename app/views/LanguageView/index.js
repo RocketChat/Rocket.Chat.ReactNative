@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
+import RNRestart from 'react-native-restart';
 
 import RocketChat from '../../lib/rocketchat';
 import I18n, { LANGUAGES } from '../../i18n';
@@ -16,6 +17,7 @@ import { appStart as appStartAction, ROOT_LOADING, ROOT_INSIDE } from '../../act
 import { getUserSelector } from '../../selectors/login';
 import database from '../../lib/database';
 import SafeAreaView from '../../containers/SafeAreaView';
+import { isRTL } from '../../utils/rtl';
 
 class LanguageView extends React.Component {
 	static navigationOptions = () => ({
@@ -61,14 +63,20 @@ class LanguageView extends React.Component {
 			return;
 		}
 
-		const { appStart } = this.props;
+		const { appStart, user } = this.props;
+
+		const shouldRestart = isRTL(language) || isRTL(user.language);
 
 		await appStart({ root: ROOT_LOADING, text: I18n.t('Change_language_loading') });
 
 		// shows loading for at least 300ms
 		await Promise.all([this.changeLanguage(language), new Promise(resolve => setTimeout(resolve, 300))]);
 
-		await appStart({ root: ROOT_INSIDE });
+		if (shouldRestart) {
+			await RNRestart.Restart();
+		} else {
+			await appStart({ root: ROOT_INSIDE });
+		}
 	}
 
 	changeLanguage = async(language) => {
