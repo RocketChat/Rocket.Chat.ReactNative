@@ -442,7 +442,7 @@ class RoomActionsView extends React.Component {
 							/>
 							{room.t === 'd' && <Markdown msg={member.statusText} style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]} preview theme={theme} numberOfLines={1} />}
 						</View>
-						{isGroupChat ? null : <List.Icon name='chevron-right' />}
+						{isGroupChat ? null : <List.Icon name='chevron-right' style={styles.actionIndicator} />}
 					</View>
 				</Touch>
 				<List.Separator />

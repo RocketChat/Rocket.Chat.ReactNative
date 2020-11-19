@@ -11,7 +11,7 @@ import ActivityIndicator from './ActivityIndicator';
 
 const styles = StyleSheet.create({
 	error: {
-		textAlign: 'center',
+		...sharedStyles.textAlignCenter,
 		paddingTop: 5
 	},
 	inputContainer: {

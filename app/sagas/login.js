@@ -5,6 +5,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
 import 'moment/min/locales';
 import { Q } from '@nozbe/watermelondb';
+import { I18nManager } from 'react-native';
 
 import * as types from '../actions/actionsTypes';
 import {
@@ -23,6 +24,7 @@ import database from '../lib/database';
 import EventEmitter from '../utils/events';
 import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../utils/info';
+import { isRTL } from '../utils/rtl';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { setActiveUsers } from '../actions/activeUsers';
 import { encryptionInit, encryptionStop } from '../actions/encryption';
@@ -275,6 +277,7 @@ const handleSetUser = function* handleSetUser({ user }) {
 	if (user && user.language) {
 		const locale = LANGUAGES.find(l => l.value.toLowerCase() === user.language)?.value || user.language;
 		I18n.locale = locale;
+		I18nManager.forceRTL(isRTL(locale));
 		moment.locale(toMomentLocale(locale));
 	}
 

@@ -23,9 +23,9 @@ const styles = StyleSheet.create({
 		paddingVertical: 10
 	},
 	title: {
-		textAlign: 'center',
 		fontSize: 16,
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
+		...sharedStyles.textAlignCenter
 	},
 	reactCount: {
 		fontSize: 13,
