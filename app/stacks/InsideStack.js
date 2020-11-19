@@ -1,10 +1,11 @@
 import React from 'react';
+import { I18nManager } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { ThemeContext } from '../theme';
 import {
-	defaultHeader, themedHeader, ModalAnimation, StackAnimation
+	defaultHeader, themedHeader, ModalAnimation
 } from '../utils/navigation';
 import Sidebar from '../views/SidebarView';
 
@@ -74,7 +75,7 @@ const ChatsStack = createStackNavigator();
 const ChatsStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
-		<ChatsStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
+		<ChatsStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			<ChatsStack.Screen
 				name='RoomsListView'
 				component={RoomsListView}
@@ -190,7 +191,7 @@ const ProfileStack = createStackNavigator();
 const ProfileStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
-		<ProfileStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
+		<ProfileStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			<ProfileStack.Screen
 				name='ProfileView'
 				component={ProfileView}
@@ -221,7 +222,7 @@ const SettingsStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<SettingsStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
+		<SettingsStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			<SettingsStack.Screen
 				name='SettingsView'
 				component={SettingsView}
@@ -267,7 +268,7 @@ const AdminPanelStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<AdminPanelStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
+		<AdminPanelStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			<AdminPanelStack.Screen
 				name='AdminPanelView'
 				component={AdminPanelView}
@@ -282,6 +283,7 @@ const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => (
 	<Drawer.Navigator
 		drawerContent={({ navigation, state }) => <Sidebar navigation={navigation} state={state} />}
+		drawerPosition={I18nManager.isRTL ? 'right' : 'left'}
 		screenOptions={{ swipeEnabled: false }}
 		drawerType='back'
 	>
@@ -298,7 +300,7 @@ const NewMessageStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<NewMessageStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
+		<NewMessageStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			<NewMessageStack.Screen
 				name='NewMessageView'
 				component={NewMessageView}
@@ -327,7 +329,7 @@ const E2ESaveYourPasswordStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<E2ESaveYourPasswordStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
+		<E2ESaveYourPasswordStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			<E2ESaveYourPasswordStack.Screen
 				name='E2ESaveYourPasswordView'
 				component={E2ESaveYourPasswordView}
@@ -348,7 +350,7 @@ const E2EEnterYourPasswordStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<E2EEnterYourPasswordStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
+		<E2EEnterYourPasswordStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			<E2EEnterYourPasswordStack.Screen
 				name='E2EEnterYourPasswordView'
 				component={E2EEnterYourPasswordView}

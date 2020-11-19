@@ -278,6 +278,7 @@ const handleSetUser = function* handleSetUser({ user }) {
 		const locale = LANGUAGES.find(l => l.value.toLowerCase() === user.language)?.value || user.language;
 		I18n.locale = locale;
 		I18nManager.forceRTL(isRTL(locale));
+		I18nManager.swapLeftAndRightInRTL(isRTL(locale));
 		moment.locale(toMomentLocale(locale));
 	}
 
