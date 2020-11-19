@@ -362,7 +362,7 @@ export default {
 	Onboarding_description: 'A workspace is your team or organization’s space to collaborate. Ask the workspace admin for address to join or create one for your team.',
 	Onboarding_join_workspace: 'Join a workspace',
 	Onboarding_subtitle: 'Beyond Team Collaboration',
-	Onboarding_title: 'Welcome to Rocket.Chat',
+	Onboarding_title: 'Welcome to Natter Chat',
 	Onboarding_join_open_description: 'Join our open workspace to chat with the Rocket.Chat team and community.',
 	Onboarding_agree_terms: 'By continuing, you agree to Rocket.Chat',
 	Onboarding_less_options: 'Less options',
