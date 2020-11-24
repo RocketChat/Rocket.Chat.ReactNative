@@ -4,7 +4,7 @@ import {
 	View, Alert, Keyboard, NativeModules, Text
 } from 'react-native';
 import { connect } from 'react-redux';
-import { KeyboardAccessoryView } from 'react-native-keyboard-input';
+import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import ImagePicker from 'react-native-image-crop-picker';
 import equal from 'deep-equal';
 import DocumentPicker from 'react-native-document-picker';
@@ -108,7 +108,7 @@ class MessageBox extends Component {
 			id: ''
 		},
 		sharing: false,
-		iOSScrollBehavior: NativeModules.KeyboardTrackingViewManager?.KeyboardTrackingScrollBehaviorFixedOffset,
+		iOSScrollBehavior: NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset,
 		isActionsEnabled: true,
 		getCustomEmoji: () => {}
 	}

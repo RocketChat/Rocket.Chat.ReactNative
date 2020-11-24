@@ -1,0 +1,24 @@
+{
+  "name": "ReactNativeUiLib",
+  "version": "3.0.4",
+  "summary": "React Native UI Library",
+  "authors": "Wix.com",
+  "homepage": "https://github.com/wix/react-native-ui-lib",
+  "license": "MIT",
+  "platforms": {
+    "ios": "9.0",
+    "tvos": "9.2"
+  },
+  "module_name": "ReactNativeUiLib",
+  "source": {
+    "git": "https://github.com/wix/react-native-ui-lib.git",
+    "tag": "3.0.4"
+  },
+  "source_files": "ios/**/*.{h,m}",
+  "dependencies": {
+    "React": [
+
+    ]
+  },
+  "frameworks": "UIKit"
+}
