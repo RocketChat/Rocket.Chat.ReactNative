@@ -22,64 +22,74 @@ import log from '../utils/log';
 const getServer = state => state.share.server.server || state.server.server;
 const getE2eEnable = state => state.settings.E2E_Enable;
 
+function* isServerE2EActivated(server) {
+	const E2E_Enable = yield select(getE2eEnable);
+	const serversDB = database.servers;
+	const serversCollection = serversDB.collections.get('servers');
+
+	let serverInfo;
+	try {
+		serverInfo = yield serversCollection.find(server);
+	} catch {
+		return false;
+	}
+
+	return !serverInfo?.E2E_Enable && !E2E_Enable;
+}
+
+function* showBannerToSaveLocalKey(storedServerE2EKey) {
+	const allStoredServerE2EKeys = yield RocketChat.e2eFetchMyKeys();
+
+	if (!storedServerE2EKey && allStoredServerE2EKeys?.privateKey) {
+		yield put(encryptionSetBanner(E2E_BANNER_TYPE.REQUEST_PASSWORD));
+	}
+}
+
+function* saveUserPassword(server) {
+	const storedRandomPassword = yield UserPreferences.getStringAsync(`${ server }-${ E2E_RANDOM_PASSWORD_KEY }`);
+	if (storedRandomPassword) {
+		yield put(encryptionSetBanner(E2E_BANNER_TYPE.SAVE_PASSWORD));
+	}
+}
+
+function* getPublicE2EServerKey(server) {
+	const storedPublicKey = yield UserPreferences.getStringAsync(`${ server }-${ E2E_PUBLIC_KEY }`);
+	if (storedPublicKey) {
+		return EJSON.parse(storedPublicKey);
+	}
+}
+
+function* createNewUserE2EKey(userId, server) {
+	yield Encryption.createKeys(userId, server);
+	yield put(encryptionSetBanner(E2E_BANNER_TYPE.SAVE_PASSWORD));
+}
+
+function decryptAllPendingSubscriptions(userId) {
+	Encryption.initialize(userId);
+}
+
 const handleEncryptionInit = function* handleEncryptionInit() {
 	try {
 		const server = yield select(getServer);
 		const user = yield select(getUserSelector);
-		const E2E_Enable = yield select(getE2eEnable);
 
-		// Fetch server info to check E2E enable
-		const serversDB = database.servers;
-		const serversCollection = serversDB.collections.get('servers');
-		let serverInfo;
-		try {
-			serverInfo = yield serversCollection.find(server);
-		} catch {
-			// Server not found
-		}
-
-		// If E2E is disabled on server, skip
-		if (!serverInfo?.E2E_Enable && !E2E_Enable) {
+		if (!isServerE2EActivated(server)) {
 			return;
 		}
 
-		// Fetch stored private e2e key for this server
-		const storedPrivateKey = yield UserPreferences.getStringAsync(`${ server }-${ E2E_PRIVATE_KEY }`);
+		const storedServerE2EKey = yield UserPreferences.getStringAsync(`${ server }-${ E2E_PRIVATE_KEY }`);
+		const storedPublicKey = getPublicE2EServerKey(server);
 
-		// Fetch server stored e2e keys
-		const keys = yield RocketChat.e2eFetchMyKeys();
+		showBannerToSaveLocalKey(storedServerE2EKey);
+		saveUserPassword(server);
 
-		// A private key was received from the server, but it's not saved locally yet
-		// Show the banner asking for the password
-		if (!storedPrivateKey && keys?.privateKey) {
-			yield put(encryptionSetBanner(E2E_BANNER_TYPE.REQUEST_PASSWORD));
-			return;
-		}
-
-		// If the user has a private key stored, but never entered the password
-		const storedRandomPassword = yield UserPreferences.getStringAsync(`${ server }-${ E2E_RANDOM_PASSWORD_KEY }`);
-		if (storedRandomPassword) {
-			yield put(encryptionSetBanner(E2E_BANNER_TYPE.SAVE_PASSWORD));
-		}
-
-		// Fetch stored public e2e key for this server
-		let storedPublicKey = yield UserPreferences.getStringAsync(`${ server }-${ E2E_PUBLIC_KEY }`);
-		// Prevent parse undefined
-		if (storedPublicKey) {
-			storedPublicKey = EJSON.parse(storedPublicKey);
-		}
-
-		if (storedPublicKey && storedPrivateKey) {
-			// Persist these keys
-			yield Encryption.persistKeys(server, storedPublicKey, storedPrivateKey);
+		if (storedPublicKey && storedServerE2EKey) {
+			yield Encryption.persistKeys(server, storedPublicKey, storedServerE2EKey);
 		} else {
-			// Create new keys since the user doesn't have any
-			yield Encryption.createKeys(user.id, server);
-			yield put(encryptionSetBanner(E2E_BANNER_TYPE.SAVE_PASSWORD));
+			createNewUserE2EKey(user.id, server);
 		}
 
-		// Decrypt all pending messages/subscriptions
-		Encryption.initialize(user.id);
+		decryptAllPendingSubscriptions(user.id);
 	} catch (e) {
 		log(e);
 	}
