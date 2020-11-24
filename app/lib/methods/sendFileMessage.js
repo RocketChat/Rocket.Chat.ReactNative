@@ -1,7 +1,7 @@
-import RNFetchBlob from 'rn-fetch-blob';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
+import FileUpload from '../../utils/fileUpload';
 import database from '../database';
 import log from '../../utils/log';
 
@@ -58,13 +58,12 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 				}
 			}
 
-			const data = await RNFetchBlob.wrap(fileInfo.path);
 			const formData = [];
 			formData.push({
 				name: 'file',
 				type: fileInfo.type,
 				filename: fileInfo.name || 'fileMessage',
-				data
+				uri: fileInfo.path
 			});
 
 			if (fileInfo.description) {
@@ -88,7 +87,7 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 				'X-User-Id': id
 			};
 
-			uploadQueue[fileInfo.path] = RNFetchBlob.fetch('POST', uploadUrl, headers, formData);
+			uploadQueue[fileInfo.path] = FileUpload.fetch('POST', uploadUrl, headers, formData);
 
 			uploadQueue[fileInfo.path].uploadProgress(async(loaded, total) => {
 				try {
