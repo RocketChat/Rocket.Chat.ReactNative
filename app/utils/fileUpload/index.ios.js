@@ -37,6 +37,11 @@ class FileUpload {
 	uploadProgress = (callback) => {
 		this._xhr.upload.onprogress = ({ total, loaded }) => callback(loaded, total);
 	}
+
+	cancel = () => {
+		this._xhr.abort();
+		return Promise.resolve();
+	}
 }
 
 const fileUpload = new FileUpload();
