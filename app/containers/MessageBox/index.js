@@ -50,6 +50,10 @@ import { withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../../lib/Icons';
 
+if (isAndroid) {
+	require('./EmojiKeyboard');
+}
+
 const imagePickerConfig = {
 	cropping: true,
 	compressImageQuality: 0.8,
@@ -211,10 +215,6 @@ class MessageBox extends Component {
 		if (msg) {
 			this.setInput(msg);
 			this.setShowSend(true);
-		}
-
-		if (isAndroid) {
-			require('./EmojiKeyboard');
 		}
 
 		if (isTablet) {
