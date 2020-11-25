@@ -55,9 +55,7 @@ const ThreadDetails = ({
 		tlm = formatDateThreads(item.tlm);
 	}
 
-	const isFollowing = item.replies?.find(u => u === user.id);
-
-	console.log(badgeColor);
+	const isFollowing = item.replies?.find(u => u === user?.id);
 
 	return (
 		<View style={[styles.container, style]}>
