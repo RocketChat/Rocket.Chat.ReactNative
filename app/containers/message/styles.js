@@ -179,5 +179,9 @@ export default StyleSheet.create({
 	},
 	encrypted: {
 		justifyContent: 'center'
+	},
+	threadDetails: {
+		flex: 1,
+		marginLeft: 12
 	}
 });
