@@ -69,5 +69,6 @@ const { languageTag, isRTL } = RNLocalize.findBestAvailableLanguage(availableLan
 I18nManager.forceRTL(isRTL);
 I18nManager.swapLeftAndRightInRTL(isRTL);
 i18n.locale = languageTag;
+i18n.isRTL = I18nManager.isRTL;
 
 export default i18n;
