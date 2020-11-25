@@ -13100,7 +13100,7 @@ react-native-text-size@4.0.0-rc.1:
 
 react-native-ui-lib@RocketChat/react-native-ui-lib#new.apply-diff:
   version "4.2.0"
-  resolved "https://codeload.github.com/RocketChat/react-native-ui-lib/tar.gz/4cf5e96034bf83691f7ea0612652be4a758f67f8"
+  resolved "https://codeload.github.com/RocketChat/react-native-ui-lib/tar.gz/dda341ded240f09b58f474b78b78635b29741f1c"
   dependencies:
     babel-plugin-transform-inline-environment-variables "^0.0.2"
     color "^3.1.0"
