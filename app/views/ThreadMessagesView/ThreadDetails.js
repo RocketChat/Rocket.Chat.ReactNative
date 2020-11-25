@@ -64,6 +64,13 @@ const ThreadDetails = ({
 		tcount = '+99';
 	}
 
+	let replies = item?.replies?.length ?? 0;
+	if (replies >= 1000) {
+		replies = '+999';
+	} else if (replies >= 100) {
+		replies = '+99';
+	}
+
 	const isFollowing = item.replies?.find(u => u === user?.id);
 
 	return (
@@ -76,7 +83,7 @@ const ThreadDetails = ({
 
 				<View style={styles.detailContainer}>
 					<CustomIcon name='user' size={20} color={themes[theme].auxiliaryText} />
-					<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{item?.replies?.length}</Text>
+					<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{replies}</Text>
 				</View>
 
 				<View style={styles.detailContainer}>
