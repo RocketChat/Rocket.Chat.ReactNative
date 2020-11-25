@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import isEqual from 'react-fast-compare';
 import { View, Text, StyleSheet } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
@@ -43,7 +42,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ThreadDetails = React.memo(({
+const ThreadDetails = ({
 	item,
 	user,
 	badgeColor,
@@ -57,6 +56,8 @@ const ThreadDetails = React.memo(({
 	}
 
 	const isFollowing = item.replies?.find(u => u === user.id);
+
+	console.log(badgeColor);
 
 	return (
 		<View style={[styles.container, style]}>
@@ -89,21 +90,7 @@ const ThreadDetails = React.memo(({
 			</Touchable>
 		</View>
 	);
-}, (prevProps, nextProps) => {
-	if (!isEqual(prevProps.item, nextProps.item)) {
-		return false;
-	}
-	if (!isEqual(prevProps.user, nextProps.user)) {
-		return false;
-	}
-	if (prevProps.badgeColor !== nextProps.badgeColor) {
-		return false;
-	}
-	if (prevProps.theme !== nextProps.theme) {
-		return false;
-	}
-	return true;
-});
+};
 ThreadDetails.propTypes = {
 	item: PropTypes.object,
 	user: PropTypes.object,
