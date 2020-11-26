@@ -23,7 +23,6 @@ import E2ESaveYourPasswordStackNavigator from "./InsideStack/E2ESaveYourPassword
 // E2ESaveYourPassword Stack
 
 // E2EEnterYourPassword Stack
-import E2EEnterYourPasswordView from "../views/E2EEnterYourPasswordView";
 
 // InsideStackNavigator
 import AttachmentView from "../views/AttachmentView";
@@ -47,26 +46,6 @@ import ShareView from "../views/ShareView";
 // E2ESaveYourPasswordStackNavigator
 
 // E2EEnterYourPasswordStackNavigator
-const E2EEnterYourPasswordStack = createStackNavigator();
-const E2EEnterYourPasswordStackNavigator = () => {
-  const { theme } = React.useContext(ThemeContext);
-
-  return (
-    <E2EEnterYourPasswordStack.Navigator
-      screenOptions={{
-        ...defaultHeader,
-        ...themedHeader(theme),
-        ...StackAnimation,
-      }}
-    >
-      <E2EEnterYourPasswordStack.Screen
-        name="E2EEnterYourPasswordView"
-        component={E2EEnterYourPasswordView}
-        options={E2EEnterYourPasswordView.navigationOptions}
-      />
-    </E2EEnterYourPasswordStack.Navigator>
-  );
-};
 
 // InsideStackNavigator
 const InsideStack = createStackNavigator();
