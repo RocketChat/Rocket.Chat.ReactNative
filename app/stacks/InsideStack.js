@@ -12,23 +12,11 @@ import {
 import Sidebar from "../views/SidebarView";
 
 import ChatsStackNavigator from "./InsideStack/ChatStackNavigator";
+import ProfileStackNavigator from "./InsideStack/ProfileStackNavigator";
 
 import SelectedUsersView from "../views/SelectedUsersView";
-import PickerView from "../views/PickerView";
-
-// Profile Stack
-import ProfileView from "../views/ProfileView";
-import UserPreferencesView from "../views/UserPreferencesView";
-import UserNotificationPrefView from "../views/UserNotificationPreferencesView";
 
 // Settings Stack
-import SettingsView from "../views/SettingsView";
-import SecurityPrivacyView from "../views/SecurityPrivacyView";
-import E2EEncryptionSecurityView from "../views/E2EEncryptionSecurityView";
-import LanguageView from "../views/LanguageView";
-import ThemeView from "../views/ThemeView";
-import DefaultBrowserView from "../views/DefaultBrowserView";
-import ScreenLockConfigView from "../views/ScreenLockConfigView";
 
 // Admin Stack
 import AdminPanelView from "../views/AdminPanelView";
@@ -52,97 +40,11 @@ import StatusView from "../views/StatusView";
 import ShareView from "../views/ShareView";
 import CreateDiscussionView from "../views/CreateDiscussionView";
 
-import QueueListView from "../ee/omnichannel/views/QueueListView";
-
 // ChatsStackNavigator
 
 // ProfileStackNavigator
-const ProfileStack = createStackNavigator();
-const ProfileStackNavigator = () => {
-  const { theme } = React.useContext(ThemeContext);
-  return (
-    <ProfileStack.Navigator
-      screenOptions={{
-        ...defaultHeader,
-        ...themedHeader(theme),
-        ...StackAnimation,
-      }}
-    >
-      <ProfileStack.Screen
-        name="ProfileView"
-        component={ProfileView}
-        options={ProfileView.navigationOptions}
-      />
-      <ProfileStack.Screen
-        name="UserPreferencesView"
-        component={UserPreferencesView}
-        options={UserPreferencesView.navigationOptions}
-      />
-      <ProfileStack.Screen
-        name="UserNotificationPrefView"
-        component={UserNotificationPrefView}
-        options={UserNotificationPrefView.navigationOptions}
-      />
-      <ProfileStack.Screen
-        name="PickerView"
-        component={PickerView}
-        options={PickerView.navigationOptions}
-      />
-    </ProfileStack.Navigator>
-  );
-};
 
 // SettingsStackNavigator
-const SettingsStack = createStackNavigator();
-const SettingsStackNavigator = () => {
-  const { theme } = React.useContext(ThemeContext);
-
-  return (
-    <SettingsStack.Navigator
-      screenOptions={{
-        ...defaultHeader,
-        ...themedHeader(theme),
-        ...StackAnimation,
-      }}
-    >
-      <SettingsStack.Screen
-        name="SettingsView"
-        component={SettingsView}
-        options={SettingsView.navigationOptions}
-      />
-      <SettingsStack.Screen
-        name="SecurityPrivacyView"
-        component={SecurityPrivacyView}
-        options={SecurityPrivacyView.navigationOptions}
-      />
-      <SettingsStack.Screen
-        name="E2EEncryptionSecurityView"
-        component={E2EEncryptionSecurityView}
-        options={E2EEncryptionSecurityView.navigationOptions}
-      />
-      <SettingsStack.Screen
-        name="LanguageView"
-        component={LanguageView}
-        options={LanguageView.navigationOptions}
-      />
-      <SettingsStack.Screen
-        name="ThemeView"
-        component={ThemeView}
-        options={ThemeView.navigationOptions}
-      />
-      <SettingsStack.Screen
-        name="DefaultBrowserView"
-        component={DefaultBrowserView}
-        options={DefaultBrowserView.navigationOptions}
-      />
-      <SettingsStack.Screen
-        name="ScreenLockConfigView"
-        component={ScreenLockConfigView}
-        options={ScreenLockConfigView.navigationOptions}
-      />
-    </SettingsStack.Navigator>
-  );
-};
 
 // AdminPanelStackNavigator
 const AdminPanelStack = createStackNavigator();

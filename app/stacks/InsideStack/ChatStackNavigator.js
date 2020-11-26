@@ -22,6 +22,7 @@ import PickerView from "../views/PickerView";
 import ThreadMessagesView from "../views/ThreadMessagesView";
 import MarkdownTableView from "../views/MarkdownTableView";
 import ReadReceiptsView from "../views/ReadReceiptView";
+import QueueListView from "../ee/omnichannel/views/QueueListView";
 
 const ChatsStack = createStackNavigator();
 const ChatsStackNavigator = () => {
