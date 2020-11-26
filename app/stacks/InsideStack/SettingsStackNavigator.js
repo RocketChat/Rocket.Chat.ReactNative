@@ -59,3 +59,5 @@ const SettingsStackNavigator = () => {
     </SettingsStack.Navigator>
   );
 };
+
+export default SettingsStackNavigator;

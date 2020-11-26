@@ -13,13 +13,14 @@ import Sidebar from "../views/SidebarView";
 
 import ChatsStackNavigator from "./InsideStack/ChatStackNavigator";
 import ProfileStackNavigator from "./InsideStack/ProfileStackNavigator";
+import SettingsStackNavigator from "./InsideStack/SettingsStackNavigator";
+import AdminPanelStackNavigator from "./InsideStack/AdminPanelStackNavigator";
 
 import SelectedUsersView from "../views/SelectedUsersView";
 
 // Settings Stack
 
 // Admin Stack
-import AdminPanelView from "../views/AdminPanelView";
 
 // NewMessage Stack
 import NewMessageView from "../views/NewMessageView";
@@ -47,26 +48,6 @@ import CreateDiscussionView from "../views/CreateDiscussionView";
 // SettingsStackNavigator
 
 // AdminPanelStackNavigator
-const AdminPanelStack = createStackNavigator();
-const AdminPanelStackNavigator = () => {
-  const { theme } = React.useContext(ThemeContext);
-
-  return (
-    <AdminPanelStack.Navigator
-      screenOptions={{
-        ...defaultHeader,
-        ...themedHeader(theme),
-        ...StackAnimation,
-      }}
-    >
-      <AdminPanelStack.Screen
-        name="AdminPanelView"
-        component={AdminPanelView}
-        options={AdminPanelView.navigationOptions}
-      />
-    </AdminPanelStack.Navigator>
-  );
-};
 
 // DrawerNavigator
 const Drawer = createDrawerNavigator();
