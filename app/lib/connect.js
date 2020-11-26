@@ -11,11 +11,11 @@ const Connect = {
 		return listener && listener.stop();
     },
     onStreamData(...args) {
-		return this.sdk.onStreamData(...args);
+		return this.rocketChatInstance.onStreamData(...args);
 	},
     connect({ server, user, logoutOnError = false }) {
         return new Promise((resolve) => {
-            if (!this.sdk || this.sdk.client.host !== server) {
+            if (!this.rocketChatInstance || this.rocketChatInstance.client.host !== server) {
                 database.setActiveDB(server);
             }
             reduxStore.dispatch(connectRequest());
@@ -44,19 +44,21 @@ const Connect = {
 
             EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
 
-            if (this.sdk) {
-                this.sdk.disconnect();
-                this.sdk = null;
+            if (this.rocketChatInstance) {
+                this.rocketChatInstance.disconnect();
+                this.rocketChatInstance = null;
             }
 
             if (this.code) {
                 this.code = null;
             }
 
-            this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
+            this.rocketChatInstance = new RocketchatClient({ host: server, 
+                                                             protocol: 'ddp', 
+                                                             useSsl: useSsl(server) });
             RocketChat.getSettings();
 
-            const sdkConnect = () => this.sdk.connect()
+            const sdkConnect = () => this.rocketChatInstance.connect()
                 .then(() => {
                     const { server: currentServer } = reduxStore.getState().server;
                     if (user && user.token && server === currentServer) {
@@ -68,7 +70,7 @@ const Connect = {
 
                     // when `connect` raises an error, we try again in 10 seconds
                     this.connectTimeout = setTimeout(() => {
-                        if (this.sdk?.client?.host === server) {
+                        if (this.rocketChatInstance?.client?.host === server) {
                             sdkConnect();
                         }
                     }, 10000);
@@ -76,20 +78,23 @@ const Connect = {
 
             sdkConnect();
 
-            this.connectedListener = this.sdk.onStreamData('connected', () => {
+            this.connectedListener = this.rocketChatInstance.onStreamData('connected', () => {
                 reduxStore.dispatch(connectSuccess());
             });
 
-            this.closeListener = this.sdk.onStreamData('close', () => {
+            this.closeListener = this.rocketChatInstance.onStreamData('close', () => {
                 reduxStore.dispatch(disconnect());
             });
 
-            this.usersListener = this.sdk.onStreamData('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
+            this.usersListener = this.rocketChatInstance.onStreamData('users', 
+                                    protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
 
-            this.notifyLoggedListener = this.sdk.onStreamData('stream-notify-logged', protectedFunction(async(ddpMessage) => {
+            this.notifyLoggedListener = this.rocketChatInstance.onStreamData('stream-notify-logged', 
+            protectedFunction(async(ddpMessage) => {
                 const { eventName } = ddpMessage.fields;
                 if (/user-status/.test(eventName)) {
                     this.activeUsers = this.activeUsers || {};
+                    // Check if timer has ran out if it exists
                     if (!this._setUserTimer) {
                         this._setUserTimer = setTimeout(() => {
                             const activeUsersBatch = this.activeUsers;
@@ -113,7 +118,8 @@ const Connect = {
                     const db = database.active;
                     const userCollection = db.collections.get('users');
                     try {
-                        const [userRecord] = await userCollection.query(Q.where('username', Q.eq(username))).fetch();
+                        const [userRecord] = await userCollection.query(Q.where('username', 
+                                                                        Q.eq(username))).fetch();
                         await db.action(async() => {
                             await userRecord.update((u) => {
                                 u.avatarETag = etag;
