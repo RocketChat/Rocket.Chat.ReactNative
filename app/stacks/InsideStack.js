@@ -1,6 +1,5 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import { ThemeContext } from "../theme";
 import {
@@ -11,16 +10,13 @@ import {
 } from "../utils/navigation";
 
 import DrawerNavigator from "./InsideStack/DrawerNavigator";
-
-import SelectedUsersView from "../views/SelectedUsersView";
+import NewMessageStackNavigator from "./InsideStack/NewMessageStackNavigator";
 
 // Settings Stack
 
 // Admin Stack
 
 // NewMessage Stack
-import NewMessageView from "../views/NewMessageView";
-import CreateChannelView from "../views/CreateChannelView";
 
 // E2ESaveYourPassword Stack
 import E2ESaveYourPasswordView from "../views/E2ESaveYourPasswordView";
@@ -35,7 +31,6 @@ import ModalBlockView from "../views/ModalBlockView";
 import JitsiMeetView from "../views/JitsiMeetView";
 import StatusView from "../views/StatusView";
 import ShareView from "../views/ShareView";
-import CreateDiscussionView from "../views/CreateDiscussionView";
 
 // ChatsStackNavigator
 
@@ -48,39 +43,6 @@ import CreateDiscussionView from "../views/CreateDiscussionView";
 // DrawerNavigator
 
 // NewMessageStackNavigator
-const NewMessageStack = createStackNavigator();
-const NewMessageStackNavigator = () => {
-  const { theme } = React.useContext(ThemeContext);
-
-  return (
-    <NewMessageStack.Navigator
-      screenOptions={{
-        ...defaultHeader,
-        ...themedHeader(theme),
-        ...StackAnimation,
-      }}
-    >
-      <NewMessageStack.Screen
-        name="NewMessageView"
-        component={NewMessageView}
-        options={NewMessageView.navigationOptions}
-      />
-      <NewMessageStack.Screen
-        name="SelectedUsersViewCreateChannel"
-        component={SelectedUsersView}
-      />
-      <NewMessageStack.Screen
-        name="CreateChannelView"
-        component={CreateChannelView}
-        options={CreateChannelView.navigationOptions}
-      />
-      <NewMessageStack.Screen
-        name="CreateDiscussionView"
-        component={CreateDiscussionView}
-      />
-    </NewMessageStack.Navigator>
-  );
-};
 
 // E2ESaveYourPasswordStackNavigator
 const E2ESaveYourPasswordStack = createStackNavigator();
