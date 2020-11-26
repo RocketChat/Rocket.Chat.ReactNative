@@ -9,12 +9,8 @@ import {
   ModalAnimation,
   StackAnimation,
 } from "../utils/navigation";
-import Sidebar from "../views/SidebarView";
 
-import ChatsStackNavigator from "./InsideStack/ChatStackNavigator";
-import ProfileStackNavigator from "./InsideStack/ProfileStackNavigator";
-import SettingsStackNavigator from "./InsideStack/SettingsStackNavigator";
-import AdminPanelStackNavigator from "./InsideStack/AdminPanelStackNavigator";
+import DrawerNavigator from "./InsideStack/DrawerNavigator";
 
 import SelectedUsersView from "../views/SelectedUsersView";
 
@@ -50,30 +46,6 @@ import CreateDiscussionView from "../views/CreateDiscussionView";
 // AdminPanelStackNavigator
 
 // DrawerNavigator
-const Drawer = createDrawerNavigator();
-const DrawerNavigator = () => (
-  <Drawer.Navigator
-    drawerContent={({ navigation, state }) => (
-      <Sidebar navigation={navigation} state={state} />
-    )}
-    screenOptions={{ swipeEnabled: false }}
-    drawerType="back"
-  >
-    <Drawer.Screen name="ChatsStackNavigator" component={ChatsStackNavigator} />
-    <Drawer.Screen
-      name="ProfileStackNavigator"
-      component={ProfileStackNavigator}
-    />
-    <Drawer.Screen
-      name="SettingsStackNavigator"
-      component={SettingsStackNavigator}
-    />
-    <Drawer.Screen
-      name="AdminPanelStackNavigator"
-      component={AdminPanelStackNavigator}
-    />
-  </Drawer.Navigator>
-);
 
 // NewMessageStackNavigator
 const NewMessageStack = createStackNavigator();
