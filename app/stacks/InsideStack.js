@@ -14,40 +14,12 @@ import DrawerNavigator from "./InsideStack/DrawerNavigator";
 import NewMessageStackNavigator from "./InsideStack/NewMessageStackNavigator";
 import E2ESaveYourPasswordStackNavigator from "./InsideStack/E2ESaveYourPasswordStackNavigator";
 
-// Settings Stack
-
-// Admin Stack
-
-// NewMessage Stack
-
-// E2ESaveYourPassword Stack
-
-// E2EEnterYourPassword Stack
-
-// InsideStackNavigator
 import AttachmentView from "../views/AttachmentView";
 import ModalBlockView from "../views/ModalBlockView";
 import JitsiMeetView from "../views/JitsiMeetView";
 import StatusView from "../views/StatusView";
 import ShareView from "../views/ShareView";
 
-// ChatsStackNavigator
-
-// ProfileStackNavigator
-
-// SettingsStackNavigator
-
-// AdminPanelStackNavigator
-
-// DrawerNavigator
-
-// NewMessageStackNavigator
-
-// E2ESaveYourPasswordStackNavigator
-
-// E2EEnterYourPasswordStackNavigator
-
-// InsideStackNavigator
 const InsideStack = createStackNavigator();
 const InsideStackNavigator = () => {
   const { theme } = React.useContext(ThemeContext);
