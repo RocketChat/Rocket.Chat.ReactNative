@@ -1,6 +1,7 @@
 import database from './database';
 import EventEmitter from '../utils/events';
 import { useSsl } from '../utils/url';
+import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
 import reduxStore from './createStore';
 
 const CURRENT_SERVER = 'currentServer';
