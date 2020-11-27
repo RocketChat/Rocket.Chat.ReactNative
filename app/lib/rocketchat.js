@@ -1252,6 +1252,14 @@ const RocketChat = {
 			query, count, offset, sort
 		});
 	},
+	getProfileLibrary({
+		query, count, offset, sort
+	}) {
+		// RC 1.0
+		return this.sdk.get('profile_library', {
+			query, count, offset, sort
+		});
+	},
 	async canAutoTranslate() {
 		const db = database.active;
 		try {

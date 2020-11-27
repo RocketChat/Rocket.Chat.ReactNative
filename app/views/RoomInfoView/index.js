@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import UAParser from 'ua-parser-js';
 import _ from 'lodash';
 
+import Button from '../../containers/Button';
 import database from '../../lib/database';
 import { CustomIcon } from '../../lib/Icons';
 import Status from '../../containers/Status';
@@ -71,7 +72,9 @@ class RoomInfoView extends React.Component {
 		const roomUser = props.route.params?.member;
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;
+		this.isPeerSupporter = props.route?.isPeerSupporter;
 		this.state = {
+			saving: false,
 			room: room || { rid: this.rid, t: this.t },
 			roomUser: roomUser || {},
 			showEdit: false
@@ -306,29 +309,46 @@ class RoomInfoView extends React.Component {
 
 	renderButton = (onPress, iconName, text) => {
 		const { theme } = this.props;
+		const { navigation, route } = this.props;
+		const isPeerSupporter = route.params?.isPeerSupporter;
+		const { saving } = this.state;
 
-		const onActionPress = async() => {
-			try {
-				await this.createDirect();
-				onPress();
-			} catch {
-				EventEmitter.emit(LISTENER, { message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') }) });
+			if (isPeerSupporter) {
+				return (
+					<Button
+						title={I18n.t('Connect')}
+						type='primary'
+						onPress={this.submit}
+						disabled={false}
+						testID='profile-library-view-connect'
+						loading={saving}
+						theme={theme}
+					/>
+				);
+			} else {
+				const onActionPress = async() => {
+					try {
+						await this.createDirect();
+						onPress();
+					} catch {
+						EventEmitter.emit(LISTENER, { message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') }) });
+					}
+				};
+		
+				return (
+					<BorderlessButton
+						onPress={onActionPress}
+						style={styles.roomButton}
+					>
+						<CustomIcon
+							name={iconName}
+							size={30}
+							color={themes[theme].actionTintColor}
+						/>
+						<Text style={[styles.roomButtonText, { color: themes[theme].actionTintColor }]}>{text}</Text>
+					</BorderlessButton>
+				);
 			}
-		};
-
-		return (
-			<BorderlessButton
-				onPress={onActionPress}
-				style={styles.roomButton}
-			>
-				<CustomIcon
-					name={iconName}
-					size={30}
-					color={themes[theme].actionTintColor}
-				/>
-				<Text style={[styles.roomButtonText, { color: themes[theme].actionTintColor }]}>{text}</Text>
-			</BorderlessButton>
-		);
 	}
 
 	renderButtons = () => {
