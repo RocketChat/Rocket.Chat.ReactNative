@@ -193,9 +193,9 @@ class RoomMembersView extends React.Component {
 		}
 
 		if (this.permissions['mute-user']) {
-			const { muted } = room;
-			const userIsMuted = !!(muted || []).find(m => m === selectedUser.username);
-			selectedUser.muted = userIsMuted;
+			const { muted = [] } = room;
+			const userIsMuted = muted.find?.(m => m === selectedUser.username);
+			selectedUser.muted = !!userIsMuted;
 			options.push({
 				icon: userIsMuted ? 'audio' : 'audio-disabled',
 				title: I18n.t(userIsMuted ? 'Unmute' : 'Mute'),
