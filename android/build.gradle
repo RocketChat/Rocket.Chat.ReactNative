@@ -12,7 +12,7 @@ buildscript {
         minSdkVersion = 23
         compileSdkVersion = 29
         targetSdkVersion = 29
-        glideVersion = "4.9.0"
+        glideVersion = "4.11.0"
         kotlin_version = "1.3.50"
         supportLibVersion = "28.0.0"
         libre_build = !(isPlay.toBoolean())
