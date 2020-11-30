@@ -38,6 +38,7 @@ public class MainApplication extends Application implements ReactApplication {
       packages.add(new KeyboardInputPackage(MainApplication.this));
       packages.add(new WatermelonDBPackage());
       packages.add(new RNCViewPagerPackage());
+      packages.add(new SSLPinningPackage());
       List<ReactPackage> unimodules = Arrays.<ReactPackage>asList(
         new ModuleRegistryAdapter(mModuleRegistryProvider)
       );

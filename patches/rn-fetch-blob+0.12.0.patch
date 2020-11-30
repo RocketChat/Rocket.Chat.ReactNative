@@ -1,3 +1,27 @@
+diff --git a/node_modules/rn-fetch-blob/android/src/main/java/com/RNFetchBlob/RNFetchBlob.java b/node_modules/rn-fetch-blob/android/src/main/java/com/RNFetchBlob/RNFetchBlob.java
+index 602d51d..920d975 100644
+--- a/node_modules/rn-fetch-blob/android/src/main/java/com/RNFetchBlob/RNFetchBlob.java
++++ b/node_modules/rn-fetch-blob/android/src/main/java/com/RNFetchBlob/RNFetchBlob.java
+@@ -38,7 +38,7 @@ import static com.RNFetchBlob.RNFetchBlobConst.GET_CONTENT_INTENT;
+ 
+ public class RNFetchBlob extends ReactContextBaseJavaModule {
+ 
+-    private final OkHttpClient mClient;
++    static private OkHttpClient mClient;
+ 
+     static ReactApplicationContext RCTContext;
+     private static LinkedBlockingQueue<Runnable> taskQueue = new LinkedBlockingQueue<>();
+@@ -75,6 +75,10 @@ public class RNFetchBlob extends ReactContextBaseJavaModule {
+         });
+     }
+ 
++    public static void applyCustomOkHttpClient(OkHttpClient client) {
++        mClient = client;
++    }
++
+     @Override
+     public String getName() {
+         return "RNFetchBlob";
 diff --git a/node_modules/rn-fetch-blob/ios/RNFetchBlobRequest.m b/node_modules/rn-fetch-blob/ios/RNFetchBlobRequest.m
 index cdbe6b1..bee6228 100644
 --- a/node_modules/rn-fetch-blob/ios/RNFetchBlobRequest.m

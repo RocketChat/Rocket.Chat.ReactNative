@@ -12,8 +12,8 @@
 		android:icon="@mipmap/ic_launcher"
 		android:theme="@style/AppTheme"
 		android:networkSecurityConfig="@xml/network_security_config"
-		android:allowBackup="false"
 		android:requestLegacyExternalStorage="true"
+		android:allowBackup="false"
 		tools:replace="android:allowBackup"
 	>
 		<activity
