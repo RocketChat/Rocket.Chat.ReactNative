@@ -464,7 +464,7 @@ export default {
 	Users: 'ユーザー',
 	User_added_by: '{{userBy}} が {{userAdded}} を追加しました',
 	User_Info: 'ユーザー情報',
-	User_has_been_key: 'ユーザーは{{ key }}！',
+	User_has_been_key: 'ユーザーは{{ key }}',
 	User_is_no_longer_role_by_: '{{userBy}} は {{user}} のロール {{role}} を削除しました。',
 	User_muted_by: '{{userBy}} は {{userMuted}} をミュートしました。',
 	User_removed_by: '{{userBy}} は {{userRemoved}} を退出させました。',

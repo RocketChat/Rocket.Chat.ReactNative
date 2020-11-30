@@ -32,6 +32,7 @@ class MessageContainer extends React.Component {
 		autoTranslateRoom: PropTypes.bool,
 		autoTranslateLanguage: PropTypes.string,
 		status: PropTypes.number,
+		isIgnored: PropTypes.bool,
 		getCustomEmoji: PropTypes.func,
 		onLongPress: PropTypes.func,
 		onReactionPress: PropTypes.func,
@@ -70,8 +71,11 @@ class MessageContainer extends React.Component {
 		blockAction: () => {},
 		archived: false,
 		broadcast: false,
+		isIgnored: false,
 		theme: 'light'
 	}
+
+	state = { isManualUnignored: false };
 
 	componentDidMount() {
 		const { item } = this.props;
@@ -83,12 +87,19 @@ class MessageContainer extends React.Component {
 		}
 	}
 
-	shouldComponentUpdate(nextProps) {
-		const { theme, threadBadgeColor } = this.props;
+	shouldComponentUpdate(nextProps, nextState) {
+		const { isManualUnignored } = this.state;
+		const { theme, threadBadgeColor, isIgnored } = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
 		}
 		if (nextProps.threadBadgeColor !== threadBadgeColor) {
+			return true;
+		}
+		if (nextProps.isIgnored !== isIgnored) {
+			return true;
+		}
+		if (nextState.isManualUnignored !== isManualUnignored) {
 			return true;
 		}
 		return false;
@@ -101,6 +112,10 @@ class MessageContainer extends React.Component {
 	}
 
 	onPress = debounce(() => {
+		if (this.isIgnored) {
+			return this.onIgnoredMessagePress();
+		}
+
 		const { item, isThreadRoom } = this.props;
 		KeyboardUtils.dismiss();
 
@@ -159,6 +174,10 @@ class MessageContainer extends React.Component {
 		if (onThreadPress) {
 			onThreadPress(item);
 		}
+	}
+
+	onIgnoredMessagePress = () => {
+		this.setState({ isManualUnignored: true });
 	}
 
 	get isHeader() {
@@ -224,6 +243,12 @@ class MessageContainer extends React.Component {
 	get isTemp() {
 		const { item } = this.props;
 		return item.status === messagesStatus.TEMP || item.status === messagesStatus.ERROR;
+	}
+
+	get isIgnored() {
+		const { isManualUnignored } = this.state;
+		const { isIgnored } = this.props;
+		return isManualUnignored ? false : isIgnored;
 	}
 
 	get hasError() {
@@ -311,6 +336,7 @@ class MessageContainer extends React.Component {
 					fetchThreadName={fetchThreadName}
 					mentions={mentions}
 					channels={channels}
+					isIgnored={this.isIgnored}
 					isEdited={editedBy && !!editedBy.username}
 					isHeader={this.isHeader}
 					isThreadReply={this.isThreadReply}

@@ -524,7 +524,7 @@ class RoomActionsView extends React.Component {
 							event: this.toggleBlockUser
 						})}
 						testID='room-actions-block-user'
-						left={() => <List.Icon name='ban' color={themes[theme].dangerColor} />}
+						left={() => <List.Icon name='ignore' color={themes[theme].dangerColor} />}
 						showActionIndicator
 						color={themes[theme].dangerColor}
 					/>
