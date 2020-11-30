@@ -481,7 +481,7 @@ export default {
 	Sent_an_attachment: '发送附件',
 	Server: '服务器',
 	Servers: '服务器',
-	Server_version: '服务器版本',
+	Server_version: '服务器版本: {{version}}',
 	Set_username_subtitle: '用户名是用來让其他人在信息中提到您',
 	Set_custom_status: '设定自订状态',
 	Set_status: '设定状态',
