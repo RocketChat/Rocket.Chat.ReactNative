@@ -10,8 +10,7 @@ const USES_RTL_LAYOUT = [
 	'ps',
 	'ug',
 	'ur',
-	'yi',
-	'pt-BR'
+	'yi'
 ];
 
 export const isRTL = locale => USES_RTL_LAYOUT.includes(locale);
