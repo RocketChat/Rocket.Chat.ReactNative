@@ -55,13 +55,13 @@ export default StyleSheet.create({
 		width: 46,
 		height: 36,
 		fontSize: isIOS ? 30 : 25,
-		textAlign: 'center'
+		...sharedStyles.textAlignCenter
 	},
 	fixedMentionAvatar: {
-		textAlign: 'center',
 		width: 46,
 		fontSize: 14,
-		...sharedStyles.textBold
+		...sharedStyles.textBold,
+		...sharedStyles.textAlignCenter
 	},
 	mentionText: {
 		fontSize: 14,
