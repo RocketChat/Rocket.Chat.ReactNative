@@ -36,6 +36,7 @@ public class MainApplication extends Application implements ReactApplication {
       List<ReactPackage> packages = new PackageList(this).getPackages();
       packages.add(new WatermelonDBPackage());
       packages.add(new RNCViewPagerPackage());
+      packages.add(new SSLPinningPackage());
       List<ReactPackage> unimodules = Arrays.<ReactPackage>asList(
         new ModuleRegistryAdapter(mModuleRegistryProvider)
       );
