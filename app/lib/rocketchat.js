@@ -1006,36 +1006,36 @@ const RocketChat = {
 		roomId, t, userId, isOwner
 	}) {
 		if (isOwner) {
-			// RC ?
+			// RC 0.49.4
 			return this.post(`${ this.roomTypeToApiType(t) }.addOwner`, { roomId, userId });
 		}
-		// RC ?
+		// RC 0.49.4
 		return this.post(`${ this.roomTypeToApiType(t) }.removeOwner`, { roomId, userId });
 	},
 	toggleRoomLeader({
 		roomId, t, userId, isLeader
 	}) {
 		if (isLeader) {
-			// RC ?
+			// RC 0.58.0
 			return this.post(`${ this.roomTypeToApiType(t) }.addLeader`, { roomId, userId });
 		}
-		// RC ?
+		// RC 0.58.0
 		return this.post(`${ this.roomTypeToApiType(t) }.removeLeader`, { roomId, userId });
 	},
 	toggleRoomModerator({
 		roomId, t, userId, isModerator
 	}) {
 		if (isModerator) {
-			// RC ?
+			// RC 0.49.4
 			return this.post(`${ this.roomTypeToApiType(t) }.addModerator`, { roomId, userId });
 		}
-		// RC ?
+		// RC 0.49.4
 		return this.post(`${ this.roomTypeToApiType(t) }.removeModerator`, { roomId, userId });
 	},
 	removeUserFromRoom({
 		roomId, t, userId
 	}) {
-		// RC ?
+		// RC 0.48.0
 		return this.post(`${ this.roomTypeToApiType(t) }.kick`, { roomId, userId });
 	},
 	ignoreUser({ rid, userId, ignore }) {
@@ -1134,7 +1134,7 @@ const RocketChat = {
 		return userRoles.indexOf(r => r === role) > -1;
 	},
 	getRoomRoles(roomId, type) {
-		// RC ?
+		// RC 0.65.0
 		return this.sdk.get(`${ this.roomTypeToApiType(type) }.roles`, { roomId });
 	},
 	async hasPermission(permissions, rid) {
