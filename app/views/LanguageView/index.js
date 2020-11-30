@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import RNRestart from 'react-native-restart';
 
 import RocketChat from '../../lib/rocketchat';
-import I18n, { LANGUAGES } from '../../i18n';
+import I18n, { LANGUAGES, isRTL } from '../../i18n';
 import { showErrorAlert } from '../../utils/info';
 import log, { logEvent, events } from '../../utils/log';
 import { setUser as setUserAction } from '../../actions/login';
@@ -17,7 +17,6 @@ import { appStart as appStartAction, ROOT_LOADING, ROOT_INSIDE } from '../../act
 import { getUserSelector } from '../../selectors/login';
 import database from '../../lib/database';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { isRTL } from '../../utils/rtl';
 
 class LanguageView extends React.Component {
 	static navigationOptions = () => ({

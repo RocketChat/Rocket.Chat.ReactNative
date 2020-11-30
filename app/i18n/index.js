@@ -2,6 +2,8 @@ import i18n from 'i18n-js';
 import { I18nManager } from 'react-native';
 import * as RNLocalize from 'react-native-localize';
 
+export * from './isRTL';
+
 export const LANGUAGES = [
 	{
 		label: 'English',
