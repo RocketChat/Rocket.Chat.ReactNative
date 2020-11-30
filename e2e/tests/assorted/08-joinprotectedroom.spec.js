@@ -20,6 +20,11 @@ async function navigateToRoomActions() {
 	await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(5000);
 }
 
+async function openJoinCode() {
+	await element(by.id('room-view-join-button')).tap();
+	await waitFor(element(by.id('join-code'))).toBeVisible().withTimeout(5000);
+}
+
 describe('Join public room', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
@@ -117,9 +122,14 @@ describe('Join public room', () => {
 	});
 
 	describe('Usage', async() => {
+		it('should cancel join room', async() => {
+			await openJoinCode();
+			await element(by.id('join-code-cancel')).tap();
+			await waitFor(element(by.id('join-code'))).toBeNotVisible().withTimeout(5000);
+		});
+
 		it('should join room', async() => {
-			await element(by.id('room-view-join-button')).tap();
-      await waitFor(element(by.id('join-code'))).toBeVisible().withTimeout(5000);
+			await openJoinCode();
       await element(by.id('join-code-input')).replaceText(joinCode);
       await element(by.id('join-code-submit')).tap();
       await waitFor(element(by.id('join-code'))).toBeNotVisible().withTimeout(5000);

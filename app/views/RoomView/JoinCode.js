@@ -109,6 +109,7 @@ const JoinCode = React.memo(forwardRef(({
 							style={styles.button}
 							backgroundColor={themes[theme].chatComponentBackground}
 							theme={theme}
+							testID='join-code-cancel'
 							onPress={hide}
 						/>
 						<Button
