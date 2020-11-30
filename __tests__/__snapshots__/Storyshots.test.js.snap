@@ -13953,7 +13953,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -14213,7 +14213,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -14473,7 +14473,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -14712,7 +14712,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -15155,7 +15155,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -15557,7 +15557,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -15815,7 +15815,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -16075,7 +16075,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -16335,7 +16335,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -16800,7 +16800,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -17676,7 +17676,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -17983,7 +17983,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -18268,7 +18268,7 @@ exports[`Storyshots Message list message 1`] = `
                       "fontFamily": "System",
                       "fontSize": 12,
                       "fontWeight": "400",
-                      "paddingLeft": 8,
+                      "marginLeft": 8,
                       "textAlign": "left",
                     },
                     Object {
@@ -18615,7 +18615,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -19145,7 +19145,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -19416,7 +19416,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -19755,7 +19755,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -20239,7 +20239,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -20630,7 +20630,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -21076,7 +21076,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -21336,7 +21336,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -21596,7 +21596,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -22012,7 +22012,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -22477,7 +22477,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -22743,7 +22743,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -23009,7 +23009,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -23414,7 +23414,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -23681,7 +23681,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -23982,7 +23982,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -24305,7 +24305,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -24565,7 +24565,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -25166,7 +25166,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -26211,7 +26211,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -26450,7 +26450,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -26689,7 +26689,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -26928,7 +26928,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -27188,7 +27188,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -27491,7 +27491,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -27878,7 +27878,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -28163,7 +28163,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -28423,7 +28423,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -28739,7 +28739,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -29111,7 +29111,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -29426,7 +29426,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -29682,7 +29682,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -30791,7 +30791,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -31383,7 +31383,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -31752,7 +31752,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -32177,7 +32177,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -32518,7 +32518,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -32924,7 +32924,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -33066,7 +33066,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -33310,7 +33310,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -33452,7 +33452,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -35353,7 +35353,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -35495,7 +35495,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -36899,7 +36899,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -37038,7 +37038,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -37226,7 +37226,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -37365,7 +37365,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -37555,7 +37555,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -37694,7 +37694,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -37884,7 +37884,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -38023,7 +38023,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -38234,7 +38234,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -38606,7 +38606,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -39103,7 +39103,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -39753,7 +39753,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -40493,7 +40493,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -40836,7 +40836,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -41080,7 +41080,7 @@ exports[`Storyshots Message list message 1`] = `
                       "fontFamily": "System",
                       "fontSize": 12,
                       "fontWeight": "400",
-                      "paddingLeft": 8,
+                      "marginLeft": 8,
                       "textAlign": "left",
                     },
                     Object {
@@ -41281,7 +41281,7 @@ exports[`Storyshots Message list message 1`] = `
                       "fontFamily": "System",
                       "fontSize": 12,
                       "fontWeight": "400",
-                      "paddingLeft": 8,
+                      "marginLeft": 8,
                       "textAlign": "left",
                     },
                     Object {
@@ -41587,7 +41587,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -41853,7 +41853,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -44623,7 +44623,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -44883,7 +44883,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -45472,7 +45472,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -45919,7 +45919,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -46385,7 +46385,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -46631,7 +46631,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -47003,7 +47003,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -47295,7 +47295,7 @@ exports[`Storyshots Message list message 1`] = `
                         "fontFamily": "System",
                         "fontSize": 12,
                         "fontWeight": "400",
-                        "paddingLeft": 8,
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
