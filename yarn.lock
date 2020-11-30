@@ -2233,10 +2233,10 @@
   resolved "https://registry.yarnpkg.com/@redux-saga/types/-/types-1.1.0.tgz#0e81ce56b4883b4b2a3001ebe1ab298b84237204"
   integrity sha512-afmTuJrylUU/0OtqzaRkbyYFFNgCF73Bvel/sw90pvGrWIZ+vyoIJqA6eMSoA6+nb443kTmulmBtC9NerXboNg==
 
-"@rocket.chat/react-native-fast-image@^8.1.5":
-  version "8.1.5"
-  resolved "https://registry.yarnpkg.com/@rocket.chat/react-native-fast-image/-/react-native-fast-image-8.1.5.tgz#325d80ebb351fb024436093b3e2add280696aba3"
-  integrity sha512-ZjSt7NXiCkJ9KQr4b/b+mYgiwDAIGHfHdChgEU020C9sBbhSk6VxslqnfdZoAjxRW7doWMbhWkoYMjx2TnsGRw==
+"@rocket.chat/react-native-fast-image@^8.2.0":
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/@rocket.chat/react-native-fast-image/-/react-native-fast-image-8.2.0.tgz#4f48858f95f40afcb10b39cee9b1239c150d6c51"
+  integrity sha512-NF5KlFt642ZucP/KHnYGBNYLD6O7bcrZMKfRQlH5Y3/1xpnPX1g4wuygtiV7XArMU1FopQT+qmCUPPj8IMDTcw==
 
 "@rocket.chat/sdk@RocketChat/Rocket.Chat.js.SDK#mobile":
   version "1.0.0-mobile"
@@ -12990,10 +12990,9 @@ react-native-windows@^0.62.0-0:
     uuid "^3.3.2"
     xml-parser "^1.2.1"
 
-react-native@^0.63.1:
-  version "0.63.1"
-  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.63.1.tgz#af814c47fc6b9e938b1c3b11e9d1555b7e8c669b"
-  integrity sha512-7SYBgLSu9p6uKPZIUEcAPGUe8a07UGi/2TdCWqkIazH6/2B93yuvDULAzyDT2hhSJPxUAvb6tGowoWVnZQQVtw==
+react-native@RocketChat/react-native#0.63.2:
+  version "0.63.2"
+  resolved "https://codeload.github.com/RocketChat/react-native/tar.gz/21bf1860837f2dc9d671727eb72e76a35e85599a"
   dependencies:
     "@babel/runtime" "^7.0.0"
     "@react-native-community/cli" "^4.7.0"

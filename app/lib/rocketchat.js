@@ -15,6 +15,7 @@ import database from './database';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
 import fetch from '../utils/fetch';
+import SSLPinning from '../utils/sslPinning';
 
 import { encryptionInit } from '../actions/encryption';
 import { setUser, setLoginServices, loginRequest } from '../actions/login';
@@ -63,6 +64,7 @@ import { sanitizeLikeString } from './database/utils';
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
+const CERTIFICATE_KEY = 'RC_CERTIFICATE_KEY';
 export const THEME_PREFERENCES_KEY = 'RC_THEME_PREFERENCES_KEY';
 export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
 export const ANALYTICS_EVENTS_KEY = 'RC_ANALYTICS_EVENTS_KEY';
@@ -74,6 +76,7 @@ const STATUSES = ['offline', 'online', 'away', 'busy'];
 const RocketChat = {
 	TOKEN_KEY,
 	CURRENT_SERVER,
+	CERTIFICATE_KEY,
 	callJitsi,
 	async subscribeRooms() {
 		if (!this.roomsSub) {
@@ -311,6 +314,13 @@ const RocketChat = {
 
 	async shareExtensionInit(server) {
 		database.setShareDB(server);
+
+		try {
+			const certificate = await UserPreferences.getStringAsync(`${ RocketChat.CERTIFICATE_KEY }-${ server }`);
+			await SSLPinning.setCertificate(certificate, server);
+		} catch {
+			// Do nothing
+		}
 
 		if (this.shareSDK) {
 			this.shareSDK.disconnect();

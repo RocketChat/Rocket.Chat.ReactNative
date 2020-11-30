@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, Keyboard, StyleSheet, View, Alert, BackHandler
+	Text, Keyboard, StyleSheet, View, BackHandler
 } from 'react-native';
 import { connect } from 'react-redux';
-import * as FileSystem from 'expo-file-system';
-import DocumentPicker from 'react-native-document-picker';
 import { Base64 } from 'js-base64';
 import parse from 'url-parse';
 import { Q } from '@nozbe/watermelondb';
@@ -20,9 +18,8 @@ import Button from '../../containers/Button';
 import OrSeparator from '../../containers/OrSeparator';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import I18n from '../../i18n';
-import { isIOS } from '../../utils/deviceInfo';
 import { themes } from '../../constants/colors';
-import log, { logEvent, events } from '../../utils/log';
+import { logEvent, events } from '../../utils/log';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import { setBasicAuth, BASIC_AUTH_KEY } from '../../utils/fetch';
@@ -31,6 +28,8 @@ import { showConfirmationAlert } from '../../utils/info';
 import database from '../../lib/database';
 import ServerInput from './ServerInput';
 import { sanitizeLikeString } from '../../lib/database/utils';
+import SSLPinning from '../../utils/sslPinning';
+import RocketChat from '../../lib/rocketchat';
 
 const styles = StyleSheet.create({
 	title: {
@@ -178,32 +177,23 @@ class NewServerView extends React.Component {
 		logEvent(events.NEWSERVER_CONNECT_TO_WORKSPACE);
 		const { text, certificate } = this.state;
 		const { connectServer } = this.props;
-		let cert = null;
 
 		this.setState({ connectingOpen: false });
-
-		if (certificate) {
-			const certificatePath = `${ FileSystem.documentDirectory }/${ certificate.name }`;
-			try {
-				await FileSystem.copyAsync({ from: certificate.path, to: certificatePath });
-			} catch (e) {
-				logEvent(events.NEWSERVER_CONNECT_TO_WORKSPACE_F);
-				log(e);
-			}
-			cert = {
-				path: this.uriToPath(certificatePath), // file:// isn't allowed by obj-C
-				password: certificate.password
-			};
-		}
 
 		if (text) {
 			Keyboard.dismiss();
 			const server = this.completeUrl(text);
+
+			// Save info - SSL Pinning
+			await UserPreferences.setStringAsync(`${ RocketChat.CERTIFICATE_KEY }-${ server }`, certificate);
+
+			// Save info - HTTP Basic Authentication
 			await this.basicAuth(server, text);
+
 			if (fromServerHistory) {
-				connectServer(server, cert, username, true);
+				connectServer(server, username, true);
 			} else {
-				connectServer(server, cert);
+				connectServer(server);
 			}
 		}
 	}
@@ -230,25 +220,10 @@ class NewServerView extends React.Component {
 
 	chooseCertificate = async() => {
 		try {
-			const res = await DocumentPicker.pick({
-				type: ['com.rsa.pkcs-12']
-			});
-			const { uri: path, name } = res;
-			Alert.prompt(
-				I18n.t('Certificate_password'),
-				I18n.t('Whats_the_password_for_your_certificate'),
-				[
-					{
-						text: 'OK',
-						onPress: password => this.saveCertificate({ path, name, password })
-					}
-				],
-				'secure-text'
-			);
-		} catch (e) {
-			if (!DocumentPicker.isCancel(e)) {
-				log(e);
-			}
+			const certificate = await SSLPinning.pickCertificate();
+			this.setState({ certificate });
+		} catch {
+			// Do nothing
 		}
 	}
 
@@ -327,7 +302,7 @@ class NewServerView extends React.Component {
 							{ color: themes[theme].tintColor }
 						]}
 					>
-						{certificate ? certificate.name : I18n.t('Apply_Your_Certificate')}
+						{certificate ?? I18n.t('Apply_Your_Certificate')}
 					</Text>
 				</TouchableOpacity>
 			</View>
@@ -379,7 +354,7 @@ class NewServerView extends React.Component {
 						testID='new-server-view-open'
 					/>
 				</FormContainerInner>
-				{isIOS ? this.renderCertificatePicker() : null}
+				{this.renderCertificatePicker()}
 			</FormContainer>
 		);
 	}
@@ -392,7 +367,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	connectServer: (server, certificate, username, fromServerHistory) => dispatch(serverRequest(server, certificate, username, fromServerHistory)),
+	connectServer: (...params) => dispatch(serverRequest(...params)),
 	selectServer: server => dispatch(selectServerRequest(server)),
 	inviteLinksClear: () => dispatch(inviteLinksClearAction())
 });
