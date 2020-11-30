@@ -29,9 +29,9 @@ export default StyleSheet.create({
 	},
 	description: {
 		...sharedStyles.textRegular,
+		...sharedStyles.textAlignCenter,
 		fontSize: moderateScale(14),
 		alignSelf: 'center',
-		textAlign: 'center',
 		marginHorizontal: 20
 	},
 	buttonsContainer: {

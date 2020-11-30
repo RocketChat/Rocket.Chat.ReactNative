@@ -382,6 +382,8 @@ PODS:
     - React
   - react-native-orientation-locker (1.1.8):
     - React
+  - react-native-restart (0.0.17):
+    - React
   - react-native-safe-area-context (3.1.1):
     - React
   - react-native-simple-crypto (0.4.0):
@@ -598,6 +600,7 @@ DEPENDENCIES:
   - react-native-mmkv-storage (from `../node_modules/react-native-mmkv-storage`)
   - react-native-notifications (from `../node_modules/react-native-notifications`)
   - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
+  - react-native-restart (from `../node_modules/react-native-restart`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-simple-crypto (from `../node_modules/react-native-simple-crypto`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
@@ -759,6 +762,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-notifications"
   react-native-orientation-locker:
     :path: "../node_modules/react-native-orientation-locker"
+  react-native-restart:
+    :path: "../node_modules/react-native-restart"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-simple-crypto:
@@ -930,6 +935,7 @@ SPEC CHECKSUMS:
   react-native-mmkv-storage: 48729fe90e850ef2fdc9d3714b7030c7c51d82b0
   react-native-notifications: ee8fd739853e72694f3af8b374c8ccb106b7b227
   react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
+  react-native-restart: d19a0f8d053d065fe64cd2baebb6487111c77149
   react-native-safe-area-context: 344b969c45af3d8464d36e8dea264942992ef033
   react-native-simple-crypto: 564740fd8124827d82e9e8ded4a0de8c695c8a4d
   react-native-slider: 0221b417686c5957f6e77cd9ac22c1478a165355
