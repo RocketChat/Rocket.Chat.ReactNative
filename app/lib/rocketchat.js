@@ -462,6 +462,15 @@ const RocketChat = {
 					try {
 						reduxStore.dispatch(setUser({ username: params.user || params.username }));
 						const code = await twoFactor({ method: details?.method || 'totp', invalid: e.data.error === 'totp-invalid' });
+
+						// Force normalized params for 2FA starting RC 3.9.0.
+						const serverVersion = reduxStore.getState().server.version;
+						if (serverVersion && semver.gte(semver.coerce(serverVersion), '3.9.0')) {
+							const user = params.user ?? params.username;
+							const password = params.password ?? params.ldapPass ?? params.crowdPassword;
+							params = { user, password };
+						}
+
 						return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
 					} catch {
 						// twoFactor was canceled
