@@ -67,6 +67,10 @@ const Content = React.memo((props) => {
 		);
 	}
 
+	if (props.isIgnored) {
+		content = <Text style={[styles.textInfo, { color: themes[props.theme].auxiliaryText }]}>{I18n.t('Message_Ignored')}</Text>;
+	}
+
 	return (
 		<View style={props.isTemp && styles.temp}>
 			{content}
@@ -86,6 +90,9 @@ const Content = React.memo((props) => {
 		return false;
 	}
 	if (prevProps.isEncrypted !== nextProps.isEncrypted) {
+		return false;
+	}
+	if (prevProps.isIgnored !== nextProps.isIgnored) {
 		return false;
 	}
 	if (!equal(prevProps.mentions, nextProps.mentions)) {
@@ -111,6 +118,7 @@ Content.propTypes = {
 	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	navToRoomInfo: PropTypes.func,
 	useRealName: PropTypes.bool,
+	isIgnored: PropTypes.bool,
 	type: PropTypes.string
 };
 Content.displayName = 'MessageContent';

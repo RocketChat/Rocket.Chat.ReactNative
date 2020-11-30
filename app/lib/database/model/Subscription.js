@@ -76,6 +76,8 @@ export default class Subscription extends Model {
 
 	@json('muted', sanitizer) muted;
 
+	@json('ignored', sanitizer) ignored;
+
 	@field('broadcast') broadcast;
 
 	@field('prid') prid;

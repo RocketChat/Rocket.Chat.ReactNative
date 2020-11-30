@@ -1002,6 +1002,45 @@ const RocketChat = {
 		// RC 0.51.0
 		return this.methodCallWrapper('unmuteUserInRoom', { rid, username });
 	},
+	toggleRoomOwner({
+		roomId, t, userId, isOwner
+	}) {
+		if (isOwner) {
+			// RC 0.49.4
+			return this.post(`${ this.roomTypeToApiType(t) }.addOwner`, { roomId, userId });
+		}
+		// RC 0.49.4
+		return this.post(`${ this.roomTypeToApiType(t) }.removeOwner`, { roomId, userId });
+	},
+	toggleRoomLeader({
+		roomId, t, userId, isLeader
+	}) {
+		if (isLeader) {
+			// RC 0.58.0
+			return this.post(`${ this.roomTypeToApiType(t) }.addLeader`, { roomId, userId });
+		}
+		// RC 0.58.0
+		return this.post(`${ this.roomTypeToApiType(t) }.removeLeader`, { roomId, userId });
+	},
+	toggleRoomModerator({
+		roomId, t, userId, isModerator
+	}) {
+		if (isModerator) {
+			// RC 0.49.4
+			return this.post(`${ this.roomTypeToApiType(t) }.addModerator`, { roomId, userId });
+		}
+		// RC 0.49.4
+		return this.post(`${ this.roomTypeToApiType(t) }.removeModerator`, { roomId, userId });
+	},
+	removeUserFromRoom({
+		roomId, t, userId
+	}) {
+		// RC 0.48.0
+		return this.post(`${ this.roomTypeToApiType(t) }.kick`, { roomId, userId });
+	},
+	ignoreUser({ rid, userId, ignore }) {
+		return this.sdk.get('chat.ignoreUser', { rid, userId, ignore });
+	},
 	toggleArchiveRoom(roomId, t, archive) {
 		if (archive) {
 			// RC 0.48.0
@@ -1093,6 +1132,10 @@ const RocketChat = {
 		const userRoles = (shareUser?.roles || loginUser?.roles) || [];
 
 		return userRoles.indexOf(r => r === role) > -1;
+	},
+	getRoomRoles(roomId, type) {
+		// RC 0.65.0
+		return this.sdk.get(`${ this.roomTypeToApiType(type) }.roles`, { roomId });
 	},
 	async hasPermission(permissions, rid) {
 		const db = database.active;
