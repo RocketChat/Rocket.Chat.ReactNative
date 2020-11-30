@@ -14,6 +14,7 @@
 		android:networkSecurityConfig="@xml/network_security_config"
 		android:requestLegacyExternalStorage="true"
 		android:allowBackup="false"
+		android:requestLegacyExternalStorage="true"
 		tools:replace="android:allowBackup"
 	>
 		<activity
