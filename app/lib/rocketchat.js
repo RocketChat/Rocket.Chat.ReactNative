@@ -320,8 +320,16 @@ const RocketChat = {
 		this.shareSDK = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
 
 		// set Server
+		const currentServer = { server };
 		const serversDB = database.servers;
-		reduxStore.dispatch(shareSelectServer(server));
+		const serversCollection = serversDB.collections.get('servers');
+		try {
+			const serverRecord = await serversCollection.find(server);
+			currentServer.version = serverRecord.version;
+		} catch {
+			// Record not found
+		}
+		reduxStore.dispatch(shareSelectServer(currentServer));
 
 		RocketChat.setCustomEmojis();
 
@@ -368,6 +376,7 @@ const RocketChat = {
 		}
 		database.share = null;
 
+		reduxStore.dispatch(shareSelectServer({}));
 		reduxStore.dispatch(shareSetUser({}));
 		reduxStore.dispatch(shareSetSettings({}));
 	},

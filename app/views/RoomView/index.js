@@ -74,7 +74,7 @@ const stateAttrsUpdate = [
 	'readOnly',
 	'member'
 ];
-const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'jitsiTimeout', 'announcement', 'sysMes', 'topic', 'name', 'fname', 'roles', 'bannerClosed', 'visitor', 'joinCodeRequired'];
+const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'tunread', 'jitsiTimeout', 'announcement', 'sysMes', 'topic', 'name', 'fname', 'roles', 'bannerClosed', 'visitor', 'joinCodeRequired'];
 
 class RoomView extends React.Component {
 	static propTypes = {
@@ -320,7 +320,7 @@ class RoomView extends React.Component {
 		if (!room?.rid) {
 			return;
 		}
-		const headerTitlePosition = getHeaderTitlePosition(insets);
+		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: tmid ? 1 : 2 });
 		navigation.setOptions({
 			headerShown: true,
 			headerTitleAlign: 'left',
@@ -554,7 +554,7 @@ class RoomView extends React.Component {
 	}
 
 	onReplyCancel = () => {
-		this.setState({ selectedMessage: {}, replying: false });
+		this.setState({ selectedMessage: {}, replying: false, replyWithMention: false });
 	}
 
 	onReactionInit = (message) => {
@@ -920,7 +920,7 @@ class RoomView extends React.Component {
 				getCustomEmoji={this.getCustomEmoji}
 				callJitsi={this.callJitsi}
 				blockAction={this.blockAction}
-				getBadgeColor={this.getBadgeColor}
+				threadBadgeColor={this.getBadgeColor(item?.id)}
 				toggleFollowThread={this.toggleFollowThread}
 			/>
 		);
@@ -1064,7 +1064,7 @@ class RoomView extends React.Component {
 					t={t}
 					tmid={this.tmid}
 					theme={theme}
-					room={room}
+					tunread={room?.tunread}
 					renderRow={this.renderItem}
 					loading={loading}
 					navigation={navigation}

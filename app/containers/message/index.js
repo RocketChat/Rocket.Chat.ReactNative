@@ -9,7 +9,6 @@ import { SYSTEM_MESSAGES, getMessageTranslation } from './utils';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
 import messagesStatus from '../../constants/messagesStatus';
 import { withTheme } from '../../theme';
-import database from '../../lib/database';
 
 class MessageContainer extends React.Component {
 	static propTypes = {
@@ -49,7 +48,7 @@ class MessageContainer extends React.Component {
 		callJitsi: PropTypes.func,
 		blockAction: PropTypes.func,
 		theme: PropTypes.string,
-		getBadgeColor: PropTypes.func,
+		threadBadgeColor: PropTypes.string,
 		toggleFollowThread: PropTypes.func
 	}
 
@@ -74,11 +73,7 @@ class MessageContainer extends React.Component {
 		theme: 'light'
 	}
 
-	state = {
-		author: null
-	}
-
-	async componentDidMount() {
+	componentDidMount() {
 		const { item } = this.props;
 		if (item && item.observe) {
 			const observable = item.observe();
@@ -86,24 +81,14 @@ class MessageContainer extends React.Component {
 				this.forceUpdate();
 			});
 		}
-
-		const db = database.active;
-		const usersCollection = db.collections.get('users');
-		try {
-			const user = await usersCollection.find(item.u?._id);
-			const observable = user.observe();
-			this.userSubscription = observable.subscribe((author) => {
-				this.setState({ author });
-				this.forceUpdate();
-			});
-		} catch {
-			// Do nothing
-		}
 	}
 
 	shouldComponentUpdate(nextProps) {
-		const { theme } = this.props;
+		const { theme, threadBadgeColor } = this.props;
 		if (nextProps.theme !== theme) {
+			return true;
+		}
+		if (nextProps.threadBadgeColor !== threadBadgeColor) {
 			return true;
 		}
 		return false;
@@ -112,9 +97,6 @@ class MessageContainer extends React.Component {
 	componentWillUnmount() {
 		if (this.subscription && this.subscription.unsubscribe) {
 			this.subscription.unsubscribe();
-		}
-		if (this.userSubscription && this.userSubscription.unsubscribe) {
-			this.userSubscription.unsubscribe();
 		}
 	}
 
@@ -264,9 +246,8 @@ class MessageContainer extends React.Component {
 	}
 
 	render() {
-		const { author } = this.state;
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, showAttachment, timeFormat, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme, getBadgeColor, toggleFollowThread
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, showAttachment, timeFormat, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme, threadBadgeColor, toggleFollowThread
 		} = this.props;
 		const {
 			id, msg, ts, attachments, urls, reactions, t, avatar, emoji, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, blocks, autoTranslate: autoTranslateMessage, replies
@@ -293,7 +274,7 @@ class MessageContainer extends React.Component {
 					onEncryptedPress: this.onEncryptedPress,
 					onDiscussionPress: this.onDiscussionPress,
 					onReactionLongPress: this.onReactionLongPress,
-					getBadgeColor,
+					threadBadgeColor,
 					toggleFollowThread,
 					replies
 				}}
@@ -302,7 +283,7 @@ class MessageContainer extends React.Component {
 					id={id}
 					msg={message}
 					rid={rid}
-					author={author || u}
+					author={u}
 					ts={ts}
 					type={t}
 					attachments={attachments}
