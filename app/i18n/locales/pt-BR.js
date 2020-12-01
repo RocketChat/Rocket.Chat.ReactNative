@@ -270,7 +270,7 @@ export default {
 	Invite_Link: 'Link de Convite',
 	Invite_users: 'Convidar usuários',
 	Join: 'Entrar',
-	Join_Code: 'Insira o Código da sala',
+	Join_Code: 'Insira o Código da Sala',
 	Insert_Join_Code: 'Insira o código para entrar na sala',
 	Join_our_open_workspace: 'Entra na nossa workspace pública',
 	Join_your_workspace: 'Entre na sua workspace',

@@ -45,9 +45,9 @@ describe('Join public room', () => {
 
 		it('should join room', async() => {
 			await openJoinCode();
-      await element(by.id('join-code-input')).replaceText(joinCode);
-      await element(by.id('join-code-submit')).tap();
-      await waitFor(element(by.id('join-code'))).toBeNotVisible().withTimeout(5000);
+			await element(by.id('join-code-input')).replaceText(joinCode);
+			await element(by.id('join-code-submit')).tap();
+			await waitFor(element(by.id('join-code'))).toBeNotVisible().withTimeout(5000);
 			await waitFor(element(by.id('messagebox'))).toBeVisible().withTimeout(60000);
 			await expect(element(by.id('messagebox'))).toBeVisible();
 			await expect(element(by.id('room-view-join'))).toBeNotVisible();
