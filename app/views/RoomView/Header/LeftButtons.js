@@ -32,16 +32,14 @@ const LeftButtons = React.memo(({
 		);
 	}
 	const onPress = useCallback(() => goRoomActionsView(), []);
+
 	if (baseUrl && userId && token) {
 		return (
 			<Avatar
 				text={title}
 				size={30}
 				type={t}
-				baseUrl={baseUrl}
 				style={styles.avatar}
-				userId={userId}
-				token={token}
 				onPress={onPress}
 			/>
 		);

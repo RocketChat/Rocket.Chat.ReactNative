@@ -66,6 +66,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					archived: s.archived,
 					joinCodeRequired: s.joinCodeRequired,
 					muted: s.muted,
+					ignored: s.ignored,
 					broadcast: s.broadcast,
 					prid: s.prid,
 					draftMessage: s.draftMessage,
@@ -84,7 +85,8 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					tags: s.tags,
 					encrypted: s.encrypted,
 					e2eKeyId: s.e2eKeyId,
-					E2EKey: s.E2EKey
+					E2EKey: s.E2EKey,
+					avatarETag: s.avatarETag
 				};
 			} catch (error) {
 				try {
@@ -116,7 +118,8 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					broadcast: r.broadcast,
 					customFields: r.customFields,
 					departmentId: r.departmentId,
-					livechatData: r.livechatData
+					livechatData: r.livechatData,
+					avatarETag: r.avatarETag
 				};
 			} catch (error) {
 				// Do nothing
@@ -271,6 +274,9 @@ export default function subscribeRooms() {
 			if (diff?.statusLivechat) {
 				store.dispatch(setUser({ statusLivechat: diff.statusLivechat }));
 			}
+			if (['settings.preferences.showMessageInMainThread'] in diff) {
+				store.dispatch(setUser({ showMessageInMainThread: diff['settings.preferences.showMessageInMainThread'] }));
+			}
 		}
 		if (/subscriptions/.test(ev)) {
 			if (type === 'removed') {
@@ -350,7 +356,7 @@ export default function subscribeRooms() {
 				notification.avatar = RocketChat.getRoomAvatar(room);
 
 				// If it's from a encrypted room
-				if (message.t === E2E_MESSAGE_TYPE) {
+				if (message?.t === E2E_MESSAGE_TYPE) {
 					// Decrypt this message content
 					const { msg } = await Encryption.decryptMessage({ ...message, rid });
 					// If it's a direct the content is the message decrypted

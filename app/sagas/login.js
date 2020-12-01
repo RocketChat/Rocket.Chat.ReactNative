@@ -5,6 +5,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
 import 'moment/min/locales';
 import { Q } from '@nozbe/watermelondb';
+import { I18nManager } from 'react-native';
 
 import * as types from '../actions/actionsTypes';
 import {
@@ -18,7 +19,7 @@ import { roomsRequest } from '../actions/rooms';
 import { toMomentLocale } from '../utils/moment';
 import RocketChat from '../lib/rocketchat';
 import log, { logEvent, events } from '../utils/log';
-import I18n, { LANGUAGES } from '../i18n';
+import I18n, { LANGUAGES, isRTL } from '../i18n';
 import database from '../lib/database';
 import EventEmitter from '../utils/events';
 import { inviteLinksRequest } from '../actions/inviteLinks';
@@ -31,6 +32,7 @@ import UserPreferences from '../lib/userPreferences';
 import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
 import { E2E_REFRESH_MESSAGES_KEY } from '../lib/encryption/constants';
+import Navigation from '../lib/Navigation';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -178,7 +180,9 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			status: user.status,
 			statusText: user.statusText,
 			roles: user.roles,
-			loginEmailPassword: user.loginEmailPassword
+			loginEmailPassword: user.loginEmailPassword,
+			showMessageInMainThread: user.showMessageInMainThread,
+			avatarETag: user.avatarETag
 		};
 		yield serversDB.action(async() => {
 			try {
@@ -237,6 +241,9 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 			if (forcedByServer) {
 				yield put(appStart({ root: ROOT_OUTSIDE }));
 				showErrorAlert(I18n.t('Logged_out_by_server'), I18n.t('Oops'));
+				yield delay(300);
+				Navigation.navigate('NewServerView');
+				yield delay(300);
 				EventEmitter.emit('NewServer', { server });
 			} else {
 				const serversDB = database.servers;
@@ -269,6 +276,8 @@ const handleSetUser = function* handleSetUser({ user }) {
 	if (user && user.language) {
 		const locale = LANGUAGES.find(l => l.value.toLowerCase() === user.language)?.value || user.language;
 		I18n.locale = locale;
+		I18nManager.forceRTL(isRTL(locale));
+		I18nManager.swapLeftAndRightInRTL(isRTL(locale));
 		moment.locale(toMomentLocale(locale));
 	}
 

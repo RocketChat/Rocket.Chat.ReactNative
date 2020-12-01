@@ -3,9 +3,9 @@ import { View, FlatList, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 import TextInput from '../../../containers/TextInput';
+import * as List from '../../../containers/List';
 import { themes } from '../../../constants/colors';
 import Item from './Item';
-import Separator from '../../../containers/Separator';
 
 const styles = StyleSheet.create({
 	container: {
@@ -64,7 +64,7 @@ const ServerInput = ({
 							<FlatList
 								data={serversHistory}
 								renderItem={({ item }) => <Item item={item} theme={theme} onPress={() => onPressServerHistory(item)} onDelete={onDelete} />}
-								ItemSeparatorComponent={() => <Separator theme={theme} />}
+								ItemSeparatorComponent={List.Separator}
 								keyExtractor={item => item.id}
 							/>
 						</View>

@@ -5,13 +5,19 @@ import { createStore, combineReducers } from 'redux';
 import { storiesOf } from '@storybook/react-native';
 
 import RoomItem from './RoomItem';
+import './List';
 import Message from './Message';
 import UiKitMessage from './UiKitMessage';
 import UiKitModal from './UiKitModal';
 import Markdown from './Markdown';
+import './HeaderButtons';
+import './UnreadBadge';
+import '../../app/views/ThreadMessagesView/Item.stories.js';
+import Avatar from './Avatar';
 // import RoomViewHeader from './RoomViewHeader';
 
 import MessageContext from '../../app/containers/message/Context';
+import { themes } from '../../app/constants/colors';
 
 // MessageProvider
 const baseUrl = 'https://open.rocket.chat';
@@ -31,6 +37,15 @@ const reducers = combineReducers({
 			username: 'diego.mello'
 		}
 	}),
+	server: () => ({
+		server: 'https://open.rocket.chat',
+		version: '3.7.0'
+	}),
+	share: () => ({
+		server: 'https://open.rocket.chat',
+		version: '3.7.0',
+		settings: {}
+	}),
 	meteor: () => ({ connected: true }),
 	activeUsers: () => ({ abc: { status: 'online', statusText: 'dog' } })
 });
@@ -48,7 +63,8 @@ const messageDecorator = story => (
 			replyBroadcast: () => {},
 			onReactionPress: () => {},
 			onDiscussionPress: () => {},
-			onReactionLongPress: () => {}
+			onReactionLongPress: () => {},
+			threadBadgeColor: themes.light.tunreadBackground
 		}}
 	>
 		{story()}
@@ -59,6 +75,7 @@ storiesOf('RoomItem', module)
 	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
 	.add('list roomitem', () => <RoomItem theme={theme} />);
 storiesOf('Message', module)
+	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
 	.addDecorator(messageDecorator)
 	.add('list message', () => <Message theme={theme} />);
 
@@ -70,6 +87,8 @@ storiesOf('UiKitModal', module)
 	.add('list UiKitModal', () => <UiKitModal theme={theme} />);
 storiesOf('Markdown', module)
 	.add('list Markdown', () => <Markdown theme={theme} />);
+storiesOf('Avatar', module)
+	.add('list Avatar', () => <Avatar theme={theme} />);
 
 // FIXME: I couldn't make these pass on jest :(
 // storiesOf('RoomViewHeader', module)

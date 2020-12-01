@@ -79,4 +79,6 @@ export default class Message extends Model {
 	@json('blocks', sanitizer) blocks;
 
 	@field('e2e') e2e;
+
+	@field('tshow') tshow;
 }

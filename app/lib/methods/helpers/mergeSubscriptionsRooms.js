@@ -14,8 +14,12 @@ export const merge = (subscription, room) => {
 	}
 	if (room) {
 		if (room._updatedAt) {
-			subscription.roomUpdatedAt = room._updatedAt;
 			subscription.lastMessage = normalizeMessage(room.lastMessage);
+			if (subscription.lastMessage) {
+				subscription.roomUpdatedAt = subscription.lastMessage.ts;
+			} else {
+				subscription.roomUpdatedAt = room._updatedAt;
+			}
 			subscription.description = room.description;
 			subscription.topic = room.topic;
 			subscription.announcement = room.announcement;
@@ -30,8 +34,12 @@ export const merge = (subscription, room) => {
 		subscription.broadcast = room.broadcast;
 		subscription.encrypted = room.encrypted;
 		subscription.e2eKeyId = room.e2eKeyId;
+		subscription.avatarETag = room.avatarETag;
 		if (!subscription.roles || !subscription.roles.length) {
 			subscription.roles = [];
+		}
+		if (!subscription.ignored?.length) {
+			subscription.ignored = [];
 		}
 		if (room.muted && room.muted.length) {
 			subscription.muted = room.muted.filter(muted => !!muted);

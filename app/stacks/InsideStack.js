@@ -1,4 +1,5 @@
 import React from 'react';
+import { I18nManager } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
@@ -38,6 +39,8 @@ import UserNotificationPrefView from '../views/UserNotificationPreferencesView';
 
 // Settings Stack
 import SettingsView from '../views/SettingsView';
+import SecurityPrivacyView from '../views/SecurityPrivacyView';
+import E2EEncryptionSecurityView from '../views/E2EEncryptionSecurityView';
 import LanguageView from '../views/LanguageView';
 import ThemeView from '../views/ThemeView';
 import DefaultBrowserView from '../views/DefaultBrowserView';
@@ -226,6 +229,16 @@ const SettingsStackNavigator = () => {
 				options={SettingsView.navigationOptions}
 			/>
 			<SettingsStack.Screen
+				name='SecurityPrivacyView'
+				component={SecurityPrivacyView}
+				options={SecurityPrivacyView.navigationOptions}
+			/>
+			<SettingsStack.Screen
+				name='E2EEncryptionSecurityView'
+				component={E2EEncryptionSecurityView}
+				options={E2EEncryptionSecurityView.navigationOptions}
+			/>
+			<SettingsStack.Screen
 				name='LanguageView'
 				component={LanguageView}
 				options={LanguageView.navigationOptions}
@@ -270,6 +283,7 @@ const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => (
 	<Drawer.Navigator
 		drawerContent={({ navigation, state }) => <Sidebar navigation={navigation} state={state} />}
+		drawerPosition={I18nManager.isRTL ? 'right' : 'left'}
 		screenOptions={{ swipeEnabled: false }}
 		drawerType='back'
 	>

@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+import sharedStyles from '../../views/Styles';
+
 export default StyleSheet.create({
 	container: {
 		flex: 1
@@ -46,8 +48,8 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	categoryEmoji: {
+		...sharedStyles.textAlignCenter,
 		backgroundColor: 'transparent',
-		textAlign: 'center',
 		color: '#ffffff'
 	},
 	customCategoryEmoji: {

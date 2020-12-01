@@ -63,6 +63,7 @@ export default StyleSheet.create({
 		borderLeftWidth: StyleSheet.hairlineWidth
 	},
 	textRegular: {
+		textAlign: 'left',
 		backgroundColor: 'transparent',
 		...Platform.select({
 			ios: {
@@ -77,6 +78,7 @@ export default StyleSheet.create({
 		})
 	},
 	textMedium: {
+		textAlign: 'left',
 		backgroundColor: 'transparent',
 		...Platform.select({
 			ios: {
@@ -91,6 +93,7 @@ export default StyleSheet.create({
 		})
 	},
 	textSemibold: {
+		textAlign: 'left',
 		backgroundColor: 'transparent',
 		...Platform.select({
 			ios: {
@@ -105,6 +108,7 @@ export default StyleSheet.create({
 		})
 	},
 	textBold: {
+		textAlign: 'left',
 		backgroundColor: 'transparent',
 		...Platform.select({
 			ios: {
@@ -120,11 +124,6 @@ export default StyleSheet.create({
 	},
 	inputLastChild: {
 		marginBottom: 15
-	},
-	listContentContainer: {
-		borderTopWidth: StyleSheet.hairlineWidth,
-		borderBottomWidth: StyleSheet.hairlineWidth,
-		marginVertical: 36
 	},
 	notchLandscapeContainer: {
 		marginTop: -34,
