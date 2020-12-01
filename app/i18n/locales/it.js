@@ -549,7 +549,7 @@ export default {
 	Users: 'Utenti',
 	User_added_by: 'Utente {{userAdded}} aggiunto da {{userBy}}',
 	User_Info: 'Informazioni utente',
-	User_has_been_key: 'Utente {{key}}!',
+	User_has_been_key: 'Utente {{key}}',
 	User_is_no_longer_role_by_: '{{user}} non è più {{role}} da {{userBy}}',
 	User_muted_by: 'Utente {{userMuted}} silenziato da {{userBy}}',
 	User_removed_by: 'Utente {{userRemoved}} rimosso da {{userBy}}',

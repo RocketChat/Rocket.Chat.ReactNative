@@ -442,7 +442,7 @@ class RoomActionsView extends React.Component {
 							/>
 							{room.t === 'd' && <Markdown msg={member.statusText} style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]} preview theme={theme} numberOfLines={1} />}
 						</View>
-						{isGroupChat ? null : <List.Icon name='chevron-right' />}
+						{isGroupChat ? null : <List.Icon name='chevron-right' style={styles.actionIndicator} />}
 					</View>
 				</Touch>
 				<List.Separator />
@@ -524,7 +524,7 @@ class RoomActionsView extends React.Component {
 							event: this.toggleBlockUser
 						})}
 						testID='room-actions-block-user'
-						left={() => <List.Icon name='ban' color={themes[theme].dangerColor} />}
+						left={() => <List.Icon name='ignore' color={themes[theme].dangerColor} />}
 						showActionIndicator
 						color={themes[theme].dangerColor}
 					/>

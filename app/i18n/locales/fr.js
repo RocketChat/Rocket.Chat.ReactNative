@@ -520,7 +520,7 @@ export default {
 	Users: 'Utilisateurs',
 	User_added_by: 'L\'utilisateur {{userAdded}} a été ajouté par {{userBy}}',
 	User_Info: 'Info d\'utilisateur',
-	User_has_been_key: 'L\'utilisateur a été {{key}}!',
+	User_has_been_key: 'L\'utilisateur a été {{key}}',
 	User_is_no_longer_role_by_: '{{user}} n\'est plus {{role}} par {{userBy}}',
 	User_muted_by: 'L\'utilisateur {{userMuted}} a été rendu muet par {{userBy}}',
 	User_removed_by: 'L\'utilisateur {{userRemoved}} a été  retiré par {{userBy}}',

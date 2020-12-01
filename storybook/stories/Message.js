@@ -826,6 +826,9 @@ export default ({ theme }) => {
 			<Separator title='Changed type' theme={theme} />
 			<Message msg='public' type='room_changed_privacy' isInfo />
 
+			<Separator title='Ignored' theme={theme} />
+			<Message isIgnored />
+
 			<Separator title='Custom style' theme={theme} />
 			<Message msg='Message' style={[styles.normalize, { backgroundColor: '#ddd' }]} />
 
