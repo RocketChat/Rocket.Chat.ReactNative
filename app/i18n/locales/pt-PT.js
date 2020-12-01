@@ -324,7 +324,7 @@ export default {
 	Uploading: 'A enviar',
 	Upload_file_question_mark: 'Enviar ficheiro?',
 	User_added_by: 'Utilizador {{userAdded}} adicionado por {{userBy}}',
-	User_has_been_key: 'Utilizador foi {{key}}!',
+	User_has_been_key: 'Utilizador foi {{key}}',
 	User_is_no_longer_role_by_: '{{userBy}} removeu o estatuto de {{role}} de {{user}}',
 	User_muted_by: 'Utilizador {{userMuted}} foi silenciado por {{userBy}}',
 	User_removed_by: 'Utilizador {{userRemoved}} removido por {{userBy}}',

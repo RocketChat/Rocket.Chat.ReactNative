@@ -549,7 +549,7 @@ export default {
 	Users: '使用者',
 	User_added_by: '由{{userBy}}添加的使用者 {{useradd}}',
 	User_Info: '使用者資訊',
-	User_has_been_key: '使用者已被{{key}}!',
+	User_has_been_key: '使用者已被{{key}}',
 	User_is_no_longer_role_by_: '{{userBy}}將角色 {{role}} 從使用者 {{user}} 身上移除',
 	User_muted_by: '使用者 {{userMuted}} 被 {{userBy}} 靜音',
 	User_removed_by: '使用者 {{userRemoved}} 被 {{userBy}} 移除',

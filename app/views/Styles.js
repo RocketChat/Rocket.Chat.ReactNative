@@ -63,6 +63,7 @@ export default StyleSheet.create({
 		borderLeftWidth: StyleSheet.hairlineWidth
 	},
 	textRegular: {
+		textAlign: 'left',
 		backgroundColor: 'transparent',
 		...Platform.select({
 			ios: {
@@ -77,6 +78,7 @@ export default StyleSheet.create({
 		})
 	},
 	textMedium: {
+		textAlign: 'left',
 		backgroundColor: 'transparent',
 		...Platform.select({
 			ios: {
@@ -91,6 +93,7 @@ export default StyleSheet.create({
 		})
 	},
 	textSemibold: {
+		textAlign: 'left',
 		backgroundColor: 'transparent',
 		...Platform.select({
 			ios: {
@@ -105,6 +108,7 @@ export default StyleSheet.create({
 		})
 	},
 	textBold: {
+		textAlign: 'left',
 		backgroundColor: 'transparent',
 		...Platform.select({
 			ios: {

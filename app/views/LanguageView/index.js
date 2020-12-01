@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
+import RNRestart from 'react-native-restart';
 
 import RocketChat from '../../lib/rocketchat';
-import I18n, { LANGUAGES } from '../../i18n';
+import I18n, { LANGUAGES, isRTL } from '../../i18n';
 import { showErrorAlert } from '../../utils/info';
 import log, { logEvent, events } from '../../utils/log';
 import { setUser as setUserAction } from '../../actions/login';
@@ -61,14 +62,20 @@ class LanguageView extends React.Component {
 			return;
 		}
 
-		const { appStart } = this.props;
+		const { appStart, user } = this.props;
+
+		const shouldRestart = isRTL(language) || isRTL(user.language);
 
 		await appStart({ root: ROOT_LOADING, text: I18n.t('Change_language_loading') });
 
 		// shows loading for at least 300ms
 		await Promise.all([this.changeLanguage(language), new Promise(resolve => setTimeout(resolve, 300))]);
 
-		await appStart({ root: ROOT_INSIDE });
+		if (shouldRestart) {
+			await RNRestart.Restart();
+		} else {
+			await appStart({ root: ROOT_INSIDE });
+		}
 	}
 
 	changeLanguage = async(language) => {

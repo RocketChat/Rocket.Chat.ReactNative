@@ -62,12 +62,24 @@ const createGroupIfNotExists = async (groupname) => {
         })
     } catch (createError) {
         try { //Maybe it exists already?
-            await rocketchat.get(`group.info?roomName=${groupname}`)
+            await rocketchat.get(`groups.info?roomName=${groupname}`)
         } catch (infoError) {
             console.log(JSON.stringify(createError))
             console.log(JSON.stringify(infoError))
             throw "Failed to find or create private group"
         }
+    }
+}
+
+const sendMessage = async (user, groupname, msg) => {
+    console.log(`Sending message to ${groupname}`)
+    try {
+        await login(user.username, user.password);
+        await rocketchat.post('chat.postMessage', { channel: `#${groupname}`, msg });
+    } catch (infoError) {
+        console.log(JSON.stringify(createError))
+        console.log(JSON.stringify(infoError))
+        throw "Failed to find or create private group"
     }
 }
 
@@ -100,4 +112,6 @@ const setup = async () => {
     return
 }
 
-module.exports = setup
+module.exports = {
+    setup, sendMessage
+}

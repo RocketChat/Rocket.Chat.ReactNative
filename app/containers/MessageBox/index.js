@@ -4,7 +4,7 @@ import {
 	View, Alert, Keyboard, NativeModules, Text
 } from 'react-native';
 import { connect } from 'react-redux';
-import { KeyboardAccessoryView } from 'react-native-keyboard-input';
+import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import ImagePicker from 'react-native-image-crop-picker';
 import equal from 'deep-equal';
 import DocumentPicker from 'react-native-document-picker';
@@ -49,6 +49,10 @@ import Navigation from '../../lib/Navigation';
 import { withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../../lib/Icons';
+
+if (isAndroid) {
+	require('./EmojiKeyboard');
+}
 
 const imagePickerConfig = {
 	cropping: true,
@@ -108,7 +112,7 @@ class MessageBox extends Component {
 			id: ''
 		},
 		sharing: false,
-		iOSScrollBehavior: NativeModules.KeyboardTrackingViewManager?.KeyboardTrackingScrollBehaviorFixedOffset,
+		iOSScrollBehavior: NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset,
 		isActionsEnabled: true,
 		getCustomEmoji: () => {}
 	}
@@ -211,10 +215,6 @@ class MessageBox extends Component {
 		if (msg) {
 			this.setInput(msg);
 			this.setShowSend(true);
-		}
-
-		if (isAndroid) {
-			require('./EmojiKeyboard');
 		}
 
 		if (isTablet) {

@@ -84,7 +84,8 @@ export default StyleSheet.create({
 		position: 'absolute',
 		height: ROW_HEIGHT,
 		justifyContent: 'center',
-		top: 0
+		top: 0,
+		right: 0
 	},
 	actionRightButtonContainer: {
 		position: 'absolute',
