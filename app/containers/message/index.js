@@ -217,16 +217,11 @@ class MessageContainer extends React.Component {
 	}
 
 	get isThreadSequential() {
-		const {
-			item, previousItem, isThreadRoom
-		} = this.props;
+		const { item, isThreadRoom } = this.props;
 		if (isThreadRoom) {
 			return false;
 		}
-		if (previousItem && item.tmid && ((previousItem.tmid === item.tmid) || (previousItem.id === item.tmid))) {
-			return true;
-		}
-		return false;
+		return item.tmid;
 	}
 
 	get isEncrypted() {
