@@ -56,7 +56,7 @@ export default StyleSheet.create({
 	},
 	text: {
 		fontSize: 16,
-		textAlign: 'center',
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		...sharedStyles.textAlignCenter
 	}
 });

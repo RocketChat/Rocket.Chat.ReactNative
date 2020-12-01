@@ -14,12 +14,12 @@ import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
 import log, { logServerVersion } from '../utils/log';
-import { extractHostname } from '../utils/server';
 import I18n from '../i18n';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../utils/fetch';
 import { appStart, ROOT_INSIDE, ROOT_OUTSIDE } from '../actions/app';
 import UserPreferences from '../lib/userPreferences';
 import { encryptionStop } from '../actions/encryption';
+import SSLPinning from '../utils/sslPinning';
 
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 
@@ -68,6 +68,10 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }) {
 	try {
+		// SSL Pinning - Read certificate alias and set it to be used by network requests
+		const certificate = yield UserPreferences.getStringAsync(`${ RocketChat.CERTIFICATE_KEY }-${ server }`);
+		yield SSLPinning.setCertificate(certificate, server);
+
 		yield put(inquiryReset());
 		yield put(encryptionStop());
 		const serversDB = database.servers;
@@ -138,13 +142,11 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 	}
 };
 
-const handleServerRequest = function* handleServerRequest({
-	server, certificate, username, fromServerHistory
-}) {
+const handleServerRequest = function* handleServerRequest({ server, username, fromServerHistory }) {
 	try {
-		if (certificate) {
-			yield UserPreferences.setMapAsync(extractHostname(server), certificate);
-		}
+		// SSL Pinning - Read certificate alias and set it to be used by network requests
+		const certificate = yield UserPreferences.getStringAsync(`${ RocketChat.CERTIFICATE_KEY }-${ server }`);
+		yield SSLPinning.setCertificate(certificate, server);
 
 		const serverInfo = yield getServerInfo({ server });
 		const serversDB = database.servers;

@@ -552,7 +552,7 @@ export default {
 	Users: 'Пользователи',
 	User_added_by: 'Пользователь {{userAdded}} добавлен по решению {{userBy}}',
 	User_Info: 'Информация о пользователе',
-	User_has_been_key: 'Пользователь был {{key}}!',
+	User_has_been_key: 'Пользователь был {{key}}',
 	User_is_no_longer_role_by_: '{{user}} больше не {{role}} по решению {{userBy}}',
 	User_muted_by: 'Пользователь {{userMuted}} заглушен по решению {{userBy}}',
 	User_removed_by: 'Пользователь {{userRemoved}} удален по решению {{userBy}}',
