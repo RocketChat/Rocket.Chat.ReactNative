@@ -8,7 +8,7 @@ class FileUpload {
 					name: item.name,
 					type: item.type,
 					filename: item.filename,
-					data: RNFetchBlob.wrap(item.uri)
+					data: RNFetchBlob.wrap(decodeURI(item.uri))
 				};
 			}
 			return item;
