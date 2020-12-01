@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { KeyboardRegistry } from 'react-native-keyboard-input';
+import { KeyboardRegistry } from 'react-native-ui-lib/keyboard';
 import PropTypes from 'prop-types';
 
 import store from '../../lib/createStore';

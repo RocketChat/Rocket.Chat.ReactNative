@@ -140,7 +140,7 @@ export default StyleSheet.create({
 	},
 	time: {
 		fontSize: 12,
-		paddingLeft: 8,
+		marginLeft: 8,
 		...sharedStyles.textRegular
 	},
 	repliedThread: {

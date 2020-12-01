@@ -22,8 +22,8 @@ const styles = StyleSheet.create({
 	noResult: {
 		fontSize: 16,
 		paddingVertical: 56,
-		...sharedStyles.textAlignCenter,
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
+		...sharedStyles.textAlignCenter
 	}
 });
 

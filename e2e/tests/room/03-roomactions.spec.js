@@ -3,8 +3,7 @@ const {
 } = require('detox');
 const data = require('../../data');
 const { navigateToLogin, login, tapBack, sleep, searchRoom, mockMessage, starMessage, pinMessage } = require('../../helpers/app');
-
-const scrollDown = 200;
+const { sendMessage } = require('../../helpers/data_setup')
 
 async function navigateToRoomActions(type) {
 	let room;
@@ -31,6 +30,10 @@ async function backToRoomsList() {
 	await waitFor(element(by.id('room-view'))).toExist().withTimeout(2000);
 	await tapBack();
 	await waitFor(element(by.id('rooms-list-view'))).toExist().withTimeout(2000);
+}
+
+async function waitForToast() {
+	await sleep(1000);
 }
 
 describe('Room actions screen', () => {
@@ -343,18 +346,26 @@ describe('Room actions screen', () => {
 				await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(2000);
 			});
 
-			it('should add user to the room', async() => {
+			it('should add users to the room', async() => {
 				await waitFor(element(by.id('room-actions-add-user'))).toExist().withTimeout(4000);
 				await element(by.id('room-actions-add-user')).tap();
+
+				// add rocket.cat
+				const rocketCat = 'rocket.cat';
+				await waitFor(element(by.id(`select-users-view-item-${ rocketCat }`))).toExist().withTimeout(10000);
+				await element(by.id(`select-users-view-item-${ rocketCat }`)).tap();
+				await waitFor(element(by.id(`selected-user-${ rocketCat }`))).toExist().withTimeout(5000);
+
 				await waitFor(element(by.id('select-users-view-search'))).toExist().withTimeout(4000);
 				await element(by.id('select-users-view-search')).tap();
 				await element(by.id('select-users-view-search')).replaceText(user.username);
 				await waitFor(element(by.id(`select-users-view-item-${ user.username }`))).toExist().withTimeout(10000);
 				await element(by.id(`select-users-view-item-${ user.username }`)).tap();
 				await waitFor(element(by.id(`selected-user-${ user.username }`))).toExist().withTimeout(5000);
+
 				await element(by.id('selected-users-view-submit')).tap();
-				await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(2000);
-				await waitFor(element(by.id('room-actions-members'))).toExist().withTimeout(2000);
+				await sleep(300);
+				await waitFor(element(by.id('room-actions-members'))).toExist().withTimeout(10000);
 				await element(by.id('room-actions-members')).tap();
 				await element(by.id('room-members-view-toggle-status')).tap();
 				await waitFor(element(by.id(`room-members-view-item-${ user.username }`))).toExist().withTimeout(60000);
@@ -381,30 +392,121 @@ describe('Room actions screen', () => {
 					await waitFor(element(by.id(`room-members-view-item-${ user.username }`))).toExist().withTimeout(60000);
 				});
 
-				// FIXME: mute/unmute isn't working
-				// it('should mute user', async() => {
-				// 	await sleep(1000);
-				// 	await element(by.id(`room-members-view-item-${ user.username }`)).longPress(1500);
-				// 	await waitFor(element(by.text('Mute'))).toExist().withTimeout(5000);
-				// 	await expect(element(by.text('Mute'))).toExist();
-				// 	await element(by.text('Mute')).tap();
-				// 	await waitFor(element(by.id('toast'))).toExist().withTimeout(10000);
-				// 	await expect(element(by.id('toast'))).toExist();
-				// 	await waitFor(element(by.id('toast'))).toBeNotVisible().withTimeout(10000);
-				// 	await expect(element(by.id('toast'))).toBeNotVisible();
-				// 	await element(by.id(`room-members-view-item-${ user.username }`)).longPress(1500);
-				// 	await waitFor(element(by.text('Unmute'))).toExist().withTimeout(2000);
-				// 	await expect(element(by.text('Unmute'))).toExist();
-				// 	await element(by.text('Unmute')).tap();
-				// 	await waitFor(element(by.id('toast'))).toExist().withTimeout(10000);
-				// 	await expect(element(by.id('toast'))).toExist();
-				// 	await waitFor(element(by.id('toast'))).toBeNotVisible().withTimeout(10000);
-				// 	await expect(element(by.id('toast'))).toBeNotVisible();
-				// });
+				it('should remove user from room', async() => {
+					await openActionSheet('rocket.cat');
+					await element(by.label('Remove from room')).tap();
+					await waitFor(element(by.label('Are you sure?'))).toExist().withTimeout(5000);
+					await element(by.label('Yes, remove user!').and(by.type('_UIAlertControllerActionView'))).tap();
+					await waitFor(element(by.id('room-members-view-item-rocket.cat'))).toBeNotVisible().withTimeout(60000);
+				});
 
-				it('should navigate to direct room', async() => {
-					await waitFor(element(by.id(`room-members-view-item-${ user.username }`))).toExist().withTimeout(5000);
-					await element(by.id(`room-members-view-item-${ user.username }`)).tap();
+				it('should clear search', async() => {
+					await element(by.id('room-members-view-search')).tap();
+					await element(by.id('room-members-view-search')).clearText('');
+					await waitFor(element(by.id(`room-members-view-item-${ user.username }`))).toExist().withTimeout(60000);
+				});
+
+				const openActionSheet = async(username) => {
+					await waitFor(element(by.id(`room-members-view-item-${ username }`))).toExist().withTimeout(5000);
+					await element(by.id(`room-members-view-item-${ username }`)).tap();
+					await sleep(300);
+					await expect(element(by.id('action-sheet'))).toExist();
+					await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				}
+
+				const closeActionSheet = async() => {
+					await element(by.id('action-sheet-backdrop')).tap();
+				}
+
+				it('should set/remove as owner', async() => {
+					await openActionSheet(user.username);
+					await element(by.label('Set as owner')).tap();
+					await waitForToast();
+
+					await openActionSheet(user.username);
+					await element(by.label('Remove as owner')).tap();
+					await waitForToast();
+
+					await openActionSheet(user.username);
+					// Tests if Remove as owner worked
+					await waitFor(element(by.label('Set as owner'))).toExist().withTimeout(5000);
+					await closeActionSheet();
+				});
+
+				it('should set/remove as leader', async() => {
+					await openActionSheet(user.username);
+					await element(by.label('Set as leader')).tap();
+					await waitForToast();
+
+					await openActionSheet(user.username);
+					await element(by.label('Remove as leader')).tap();
+					await waitForToast();
+
+					await openActionSheet(user.username);
+					// Tests if Remove as leader worked
+					await waitFor(element(by.label('Set as leader'))).toExist().withTimeout(5000);
+					await closeActionSheet();
+				});
+
+				it('should set/remove as moderator', async() => {
+					await openActionSheet(user.username);
+					await element(by.label('Set as moderator')).tap();
+					await waitForToast();
+
+					await openActionSheet(user.username);
+					await element(by.label('Remove as moderator')).tap();
+					await waitForToast();
+
+					await openActionSheet(user.username);
+					// Tests if Remove as moderator worked
+					await waitFor(element(by.label('Set as moderator'))).toExist().withTimeout(5000);
+					await closeActionSheet();
+				});
+
+				it('should set/remove as mute', async() => {
+					await openActionSheet(user.username);
+					await element(by.label('Mute')).tap();
+					await waitFor(element(by.label('Are you sure?'))).toExist().withTimeout(5000);
+					await element(by.label('Mute').and(by.type('_UIAlertControllerActionView'))).tap();
+					await waitForToast();
+
+					await openActionSheet(user.username);
+					await element(by.label('Unmute')).tap();
+					await waitFor(element(by.label('Are you sure?'))).toExist().withTimeout(5000);
+					await element(by.label('Unmute').and(by.type('_UIAlertControllerActionView'))).tap();
+					await waitForToast();
+
+					await openActionSheet(user.username);
+					// Tests if Remove as mute worked
+					await waitFor(element(by.label('Mute'))).toExist().withTimeout(5000);
+					await closeActionSheet();
+				});
+
+				it('should ignore user', async() => {
+					const message = `${ data.random }ignoredmessagecontent`;
+					const channelName = data.groups.private.name;
+					await sendMessage(user, channelName, message);
+					await openActionSheet(user.username);
+					await element(by.label('Ignore')).tap();
+					await waitForToast();
+					await backToActions();
+					await tapBack();
+					await waitFor(element(by.id('room-view'))).toExist().withTimeout(60000);
+					await waitFor(element(by.label('Message ignored. Tap to display it.')).atIndex(0)).toExist().withTimeout(60000);
+					await element(by.label('Message ignored. Tap to display it.')).atIndex(0).tap();
+					await waitFor(element(by.label(message)).atIndex(0)).toExist().withTimeout(60000);
+					await element(by.label(message)).atIndex(0).tap();
+				});
+
+				it('should navigate to direct message', async() => {
+					await element(by.id('room-view-header-actions')).tap();
+					await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
+					await element(by.id('room-actions-members')).tap();
+					await waitFor(element(by.id('room-members-view'))).toExist().withTimeout(2000);
+					await element(by.id('room-members-view-toggle-status')).tap();
+					await waitFor(element(by.id(`room-members-view-item-${ user.username }`))).toExist().withTimeout(60000);
+					await openActionSheet(user.username);
+					await element(by.label('Direct message')).tap();
 					await waitFor(element(by.id('room-view'))).toExist().withTimeout(60000);
 					await waitFor(element(by.id(`room-view-title-${ user.username }`))).toExist().withTimeout(60000);
 					await tapBack();

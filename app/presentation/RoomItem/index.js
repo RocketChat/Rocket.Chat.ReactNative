@@ -64,6 +64,10 @@ class RoomItemContainer extends React.Component {
 
 	componentDidMount() {
 		this.mounted = true;
+		const { connected, getUserPresence, id } = this.props;
+		if (connected && this.isDirect) {
+			getUserPresence(id);
+		}
 	}
 
 	shouldComponentUpdate(nextProps) {
