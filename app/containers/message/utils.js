@@ -65,9 +65,9 @@ export const getInfoMessage = ({
 	if (type === 'rm') {
 		return I18n.t('Message_removed');
 	} else if (type === 'uj') {
-		return I18n.t('Has_joined_the_channel').toLowerCase();
+		return I18n.t('Has_joined_the_channel');
 	} else if (type === 'ut') {
-		return I18n.t('Has_joined_the_conversation').toLowerCase();
+		return I18n.t('Has_joined_the_conversation');
 	} else if (type === 'r') {
 		return I18n.t('Room_name_changed', { name: msg, userBy: username });
 	} else if (type === 'message_pinned') {
@@ -75,7 +75,7 @@ export const getInfoMessage = ({
 	} else if (type === 'jitsi_call_started') {
 		return I18n.t('Started_call', { userBy: username });
 	} else if (type === 'ul') {
-		return I18n.t('Has_left_the_channel').toLowerCase();
+		return I18n.t('Has_left_the_channel');
 	} else if (type === 'ru') {
 		return I18n.t('User_removed_by', { userRemoved: msg, userBy: username });
 	} else if (type === 'au') {
@@ -99,7 +99,7 @@ export const getInfoMessage = ({
 	} else if (type === 'room_changed_avatar') {
 		return I18n.t('Room_changed_avatar', { userBy: username });
 	} else if (type === 'message_snippeted') {
-		return I18n.t('Created_snippet').toLowerCase();
+		return I18n.t('Created_snippet');
 	}
 	return '';
 };
