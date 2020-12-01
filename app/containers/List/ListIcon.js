@@ -13,8 +13,13 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ListIcon = React.memo(({ theme, name, color }) => (
-	<View style={styles.icon}>
+const ListIcon = React.memo(({
+	theme,
+	name,
+	color,
+	style
+}) => (
+	<View style={[styles.icon, style]}>
 		<CustomIcon
 			name={name}
 			color={color ?? themes[theme].auxiliaryText}
@@ -26,7 +31,8 @@ const ListIcon = React.memo(({ theme, name, color }) => (
 ListIcon.propTypes = {
 	theme: PropTypes.string,
 	name: PropTypes.string,
-	color: PropTypes.string
+	color: PropTypes.string,
+	style: PropTypes.object
 };
 
 ListIcon.displayName = 'List.Icon';
