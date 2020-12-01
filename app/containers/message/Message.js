@@ -68,7 +68,7 @@ const Message = React.memo((props) => {
 		return (
 			<View style={[styles.container, props.style]}>
 				{thread}
-				<View style={[styles.flex, styles.center]}>
+				<View style={styles.flex}>
 					<MessageAvatar small {...props} />
 					<View
 						style={[
