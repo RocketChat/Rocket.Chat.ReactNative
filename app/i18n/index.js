@@ -53,6 +53,10 @@ export const LANGUAGES = [
 		label: '日本語',
 		value: 'ja',
 		file: require('./locales/ja').default
+	}, {
+		label: 'العربية',
+		value: 'ar',
+		file: require('./locales/ar').default
 	}
 ];
 
