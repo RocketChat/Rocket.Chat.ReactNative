@@ -3,6 +3,7 @@
         <item name="android:colorEdgeEffect">#aaaaaa</item>
         <item name="colorPrimaryDark">@color/splashBackground</item>
         <item name="android:navigationBarColor">@color/splashBackground</item>
+        <item name="android:forceDarkAllowed">false</item>
     </style>
     
     <style name="Share.Window" parent="android:Theme">
