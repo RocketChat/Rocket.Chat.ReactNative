@@ -427,7 +427,7 @@ export default {
 	Users: 'Gebruikers',
 	User_added_by: 'Gebruiker {{userAdded}} toegevoegd door {{userBy}}',
 	User_Info: 'Gebruiker Info',
-	User_has_been_key: 'Gebruiker is {{key}}!',
+	User_has_been_key: 'Gebruiker is {{key}}',
 	User_is_no_longer_role_by_: '{{user}} is geen {{role}} meer door {{userBy}}',
 	User_muted_by: 'Gebruiker {{userMuted}} gedempt door {{userBy}}',
 	User_removed_by: 'Gebruiker {{userRemoved}} verwijderd door {{userBy}}',
