@@ -1,0 +1,12 @@
+diff --git a/node_modules/react-native-image-crop-picker/android/src/main/java/com/reactnative/ivpusic/imagepicker/PickerModule.java b/node_modules/react-native-image-crop-picker/android/src/main/java/com/reactnative/ivpusic/imagepicker/PickerModule.java
+index 3500542..94e45b6 100644
+--- a/node_modules/react-native-image-crop-picker/android/src/main/java/com/reactnative/ivpusic/imagepicker/PickerModule.java
++++ b/node_modules/react-native-image-crop-picker/android/src/main/java/com/reactnative/ivpusic/imagepicker/PickerModule.java
+@@ -584,6 +584,7 @@ class PickerModule extends ReactContextBaseJavaModule implements ActivityEventLi
+         image.putInt("height", options.outHeight);
+         image.putString("mime", options.outMimeType);
+         image.putInt("size", (int) new File(compressedImagePath).length());
++        image.putString("filename", compressedImage.getName());
+         image.putString("modificationDate", String.valueOf(modificationDate));
+ 
+         if (includeBase64) {
