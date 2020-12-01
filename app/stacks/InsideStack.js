@@ -1,4 +1,5 @@
 import React from 'react';
+import { I18nManager } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
@@ -282,6 +283,7 @@ const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => (
 	<Drawer.Navigator
 		drawerContent={({ navigation, state }) => <Sidebar navigation={navigation} state={state} />}
+		drawerPosition={I18nManager.isRTL ? 'right' : 'left'}
 		screenOptions={{ swipeEnabled: false }}
 		drawerType='back'
 	>

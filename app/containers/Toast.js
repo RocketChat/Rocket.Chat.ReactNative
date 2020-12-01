@@ -14,9 +14,9 @@ const styles = StyleSheet.create({
 		padding: 10
 	},
 	text: {
-		...sharedStyles.textRegular,
 		fontSize: 14,
-		textAlign: 'center'
+		...sharedStyles.textRegular,
+		...sharedStyles.textAlignCenter
 	}
 });
 

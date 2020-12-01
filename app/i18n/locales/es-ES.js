@@ -406,7 +406,7 @@ export default {
 	Upload_file_question_mark: 'Subir fichero?',
 	Users: 'Usuarios',
 	User_added_by: 'Usuario {{userAdded}} añadido por {{userBy}}',
-	User_has_been_key: 'El usuario ha sido {{key}}!',
+	User_has_been_key: 'El usuario ha sido {{key}}',
 	User_is_no_longer_role_by_: '{{user}} ha dejado de ser {{role}} por {{userBy}}',
 	User_muted_by: 'Usuario {{userMuted}} muteado por {{userBy}}',
 	User_removed_by: 'Usuario {{userRemoved}} eliminado por {{userBy}}',
