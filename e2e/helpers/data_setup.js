@@ -40,12 +40,14 @@ const createUser = async (username, password, name, email) => {
 const createChannelIfNotExists = async (channelname) => {
     console.log(`Creating public channel ${channelname}`)
     try {
-        await rocketchat.post('channels.create', {
+        const room = await rocketchat.post('channels.create', {
             "name": channelname
         })
+        return room
     } catch (createError) {
         try { //Maybe it exists already?
-            await rocketchat.get(`channels.info?roomName=${channelname}`)
+            const room = rocketchat.get(`channels.info?roomName=${channelname}`)
+            return room
         } catch (infoError) {
             console.log(JSON.stringify(createError))
             console.log(JSON.stringify(infoError))
@@ -68,6 +70,24 @@ const createGroupIfNotExists = async (groupname) => {
             console.log(JSON.stringify(infoError))
             throw "Failed to find or create private group"
         }
+    }
+}
+
+const changeChannelJoinCode = async (roomId, joinCode) => {
+    console.log(`Changing channel Join Code ${roomId}`)
+    try {
+        await rocketchat.post('method.call/saveRoomSettings', {
+            message: JSON.stringify({
+                method: 'saveRoomSettings',
+                params: [
+                    roomId,
+                    { joinCode }
+                ]
+            })
+        })
+    } catch (createError) {
+        console.log(JSON.stringify(createError))
+        throw "Failed to create protected channel"
     }
 }
 
@@ -96,7 +116,11 @@ const setup = async () => {
     for (var channelKey in data.channels) {
         if (data.channels.hasOwnProperty(channelKey)) {
             const channel = data.channels[channelKey]
-            await createChannelIfNotExists(channel.name)
+            const { data: { channel: { _id } } } = await createChannelIfNotExists(channel.name)
+
+            if (channel.joinCode) {
+                await changeChannelJoinCode(_id, channel.joinCode);
+            }
         }
     }
 
