@@ -21,4 +21,8 @@ export default class User extends Model {
 	@json('roles', sanitizer) roles;
 
 	@field('avatar_etag') avatarETag;
+
+	@field('login_email_password') loginEmailPassword;
+
+	@field('show_message_in_main_thread') showMessageInMainThread;
 }

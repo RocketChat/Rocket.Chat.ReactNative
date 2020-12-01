@@ -1,12 +1,14 @@
+import semver from 'semver';
+
 const formatUrl = (url, size, query) => `${ url }?format=png&size=${ size }${ query }`;
 
 export const avatarURL = ({
-	type, text, size, user = {}, avatar, server, avatarETag, rid, blockUnauthenticatedAccess
+	type, text, size, user = {}, avatar, server, avatarETag, rid, blockUnauthenticatedAccess, serverVersion
 }) => {
 	let room;
 	if (type === 'd') {
 		room = text;
-	} else if (rid) {
+	} else if (rid && !(serverVersion && semver.lt(semver.coerce(serverVersion), '3.6.0'))) {
 		room = `room/${ rid }`;
 	} else {
 		room = `@${ text }`;

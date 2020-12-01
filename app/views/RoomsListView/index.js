@@ -157,7 +157,7 @@ class RoomsListView extends React.Component {
 			searching: false,
 			search: [],
 			loading: true,
-			chatsOrder: [],
+			chatsUpdate: [],
 			chats: [],
 			item: {}
 		};
@@ -224,7 +224,7 @@ class RoomsListView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { chatsOrder, searching, item } = this.state;
+		const { chatsUpdate, searching, item } = this.state;
 		// eslint-disable-next-line react/destructuring-assignment
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
@@ -232,7 +232,7 @@ class RoomsListView extends React.Component {
 		}
 
 		// Compare changes only once
-		const chatsNotEqual = !isEqual(nextState.chatsOrder, chatsOrder);
+		const chatsNotEqual = !isEqual(nextState.chatsUpdate, chatsUpdate);
 
 		// If they aren't equal, set to update if focused
 		if (chatsNotEqual) {
@@ -338,7 +338,7 @@ class RoomsListView extends React.Component {
 	getHeader = () => {
 		const { searching } = this.state;
 		const { navigation, isMasterDetail, insets } = this.props;
-		const headerTitlePosition = getHeaderTitlePosition(insets);
+		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: 3 });
 		return {
 			headerTitleAlign: 'left',
 			headerLeft: () => (searching ? (
@@ -437,7 +437,7 @@ class RoomsListView extends React.Component {
 			observable = await db.collections
 				.get('subscriptions')
 				.query(...defaultWhereClause)
-				.observe();
+				.observeWithColumns(['alert']);
 
 		// When we're NOT grouping
 		} else {
@@ -456,11 +456,20 @@ class RoomsListView extends React.Component {
 			let tempChats = [];
 			let chats = data;
 
-			/**
-			 * We trigger re-render only when chats order changes
-			 * RoomItem handles its own re-render
-			 */
-			const chatsOrder = data.map(item => item.rid);
+			let chatsUpdate = [];
+			if (showUnread) {
+				/**
+				 * If unread on top, we trigger re-render based on order changes and sub.alert
+				 * RoomItem handles its own re-render
+				 */
+				chatsUpdate = data.map(item => ({ rid: item.rid, alert: item.alert }));
+			} else {
+				/**
+				 * Otherwise, we trigger re-render only when chats order changes
+				 * RoomItem handles its own re-render
+				 */
+				chatsUpdate = data.map(item => item.rid);
+			}
 
 			const isOmnichannelAgent = user?.roles?.includes('livechat-agent');
 			if (isOmnichannelAgent) {
@@ -501,7 +510,7 @@ class RoomsListView extends React.Component {
 
 			this.internalSetState({
 				chats: tempChats,
-				chatsOrder,
+				chatsUpdate,
 				loading: false
 			});
 		});
@@ -896,12 +905,7 @@ class RoomsListView extends React.Component {
 
 		const { item: currentItem } = this.state;
 		const {
-			user: {
-				id: userId,
-				username,
-				token
-			},
-			server,
+			user: { username },
 			StoreLastMessage,
 			useRealName,
 			theme,
@@ -916,10 +920,7 @@ class RoomsListView extends React.Component {
 				theme={theme}
 				id={id}
 				type={item.t}
-				userId={userId}
 				username={username}
-				token={token}
-				baseUrl={server}
 				showLastMessage={StoreLastMessage}
 				onPress={this.onPressItem}
 				testID={`rooms-list-view-item-${ item.name }`}

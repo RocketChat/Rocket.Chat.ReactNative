@@ -201,6 +201,17 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 12,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [
+						{ name: 'ignored', type: 'string', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });

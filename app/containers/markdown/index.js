@@ -211,7 +211,7 @@ class Markdown extends PureComponent {
 			return null;
 		}
 		return (
-			<Text style={[style, { color: themes[theme].bodyText }]} numberOfLines={numberOfLines}>
+			<Text style={[styles.text, style, { color: themes[theme].bodyText }]} numberOfLines={numberOfLines}>
 				{children}
 			</Text>
 		);

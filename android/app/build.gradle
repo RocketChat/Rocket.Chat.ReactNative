@@ -144,12 +144,13 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode VERSIONCODE as Integer
-        versionName "4.12.0"
+        versionName "4.13.0"
         vectorDrawables.useSupportLibrary = true
         if (isPlay) {
             manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
+            missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
         }
-        missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
+        resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
     }
 
     signingConfigs {
@@ -204,6 +205,16 @@ android {
             buildConfigField "boolean", "FDROID_BUILD", "false"
         }
     }
+    sourceSets {
+        playDebug {
+            java.srcDirs = ['src/main/java', 'src/play/java']
+            manifest.srcFile 'src/play/AndroidManifest.xml'
+        }
+        playRelease {
+            java.srcDirs = ['src/main/java', 'src/play/java']
+            manifest.srcFile 'src/play/AndroidManifest.xml'
+        }
+    }
 
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
@@ -234,9 +245,8 @@ android {
 dependencies {
     addUnimodulesDependencies()
     implementation project(':watermelondb')
-    implementation project(':reactnativenotifications')
-    implementation project(":reactnativekeyboardinput")
     implementation project(':@react-native-community_viewpager')
+    playImplementation project(':reactnativenotifications')
     playImplementation project(':@react-native-firebase_app')
     playImplementation project(':@react-native-firebase_analytics')
     playImplementation project(':@react-native-firebase_crashlytics')

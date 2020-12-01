@@ -15,6 +15,7 @@ import database from './database';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
 import fetch from '../utils/fetch';
+import SSLPinning from '../utils/sslPinning';
 
 import { encryptionInit } from '../actions/encryption';
 import { setUser, setLoginServices, loginRequest } from '../actions/login';
@@ -63,6 +64,7 @@ import { sanitizeLikeString } from './database/utils';
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
+const CERTIFICATE_KEY = 'RC_CERTIFICATE_KEY';
 export const THEME_PREFERENCES_KEY = 'RC_THEME_PREFERENCES_KEY';
 export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
 export const ANALYTICS_EVENTS_KEY = 'RC_ANALYTICS_EVENTS_KEY';
@@ -74,6 +76,7 @@ const STATUSES = ['offline', 'online', 'away', 'busy'];
 const RocketChat = {
 	TOKEN_KEY,
 	CURRENT_SERVER,
+	CERTIFICATE_KEY,
 	callJitsi,
 	async subscribeRooms() {
 		if (!this.roomsSub) {
@@ -312,6 +315,13 @@ const RocketChat = {
 	async shareExtensionInit(server) {
 		database.setShareDB(server);
 
+		try {
+			const certificate = await UserPreferences.getStringAsync(`${ RocketChat.CERTIFICATE_KEY }-${ server }`);
+			await SSLPinning.setCertificate(certificate, server);
+		} catch {
+			// Do nothing
+		}
+
 		if (this.shareSDK) {
 			this.shareSDK.disconnect();
 			this.shareSDK = null;
@@ -320,8 +330,16 @@ const RocketChat = {
 		this.shareSDK = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
 
 		// set Server
+		const currentServer = { server };
 		const serversDB = database.servers;
-		reduxStore.dispatch(shareSelectServer(server));
+		const serversCollection = serversDB.collections.get('servers');
+		try {
+			const serverRecord = await serversCollection.find(server);
+			currentServer.version = serverRecord.version;
+		} catch {
+			// Record not found
+		}
+		reduxStore.dispatch(shareSelectServer(currentServer));
 
 		RocketChat.setCustomEmojis();
 
@@ -368,6 +386,7 @@ const RocketChat = {
 		}
 		database.share = null;
 
+		reduxStore.dispatch(shareSelectServer({}));
 		reduxStore.dispatch(shareSetUser({}));
 		reduxStore.dispatch(shareSetSettings({}));
 	},
@@ -443,6 +462,15 @@ const RocketChat = {
 					try {
 						reduxStore.dispatch(setUser({ username: params.user || params.username }));
 						const code = await twoFactor({ method: details?.method || 'totp', invalid: e.data.error === 'totp-invalid' });
+
+						// Force normalized params for 2FA starting RC 3.9.0.
+						const serverVersion = reduxStore.getState().server.version;
+						if (serverVersion && semver.gte(semver.coerce(serverVersion), '3.9.0')) {
+							const user = params.user ?? params.username;
+							const password = params.password ?? params.ldapPass ?? params.crowdPassword;
+							params = { user, password };
+						}
+
 						return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
 					} catch {
 						// twoFactor was canceled
@@ -677,13 +705,13 @@ const RocketChat = {
 		});
 	},
 
-	joinRoom(roomId, type) {
+	joinRoom(roomId, joinCode, type) {
 		// TODO: join code
 		// RC 0.48.0
 		if (type === 'p') {
 			return this.methodCallWrapper('joinRoom', roomId);
 		}
-		return this.post('channels.join', { roomId });
+		return this.post('channels.join', { roomId, joinCode });
 	},
 	triggerBlockAction,
 	triggerSubmitView,
@@ -983,6 +1011,45 @@ const RocketChat = {
 		// RC 0.51.0
 		return this.methodCallWrapper('unmuteUserInRoom', { rid, username });
 	},
+	toggleRoomOwner({
+		roomId, t, userId, isOwner
+	}) {
+		if (isOwner) {
+			// RC 0.49.4
+			return this.post(`${ this.roomTypeToApiType(t) }.addOwner`, { roomId, userId });
+		}
+		// RC 0.49.4
+		return this.post(`${ this.roomTypeToApiType(t) }.removeOwner`, { roomId, userId });
+	},
+	toggleRoomLeader({
+		roomId, t, userId, isLeader
+	}) {
+		if (isLeader) {
+			// RC 0.58.0
+			return this.post(`${ this.roomTypeToApiType(t) }.addLeader`, { roomId, userId });
+		}
+		// RC 0.58.0
+		return this.post(`${ this.roomTypeToApiType(t) }.removeLeader`, { roomId, userId });
+	},
+	toggleRoomModerator({
+		roomId, t, userId, isModerator
+	}) {
+		if (isModerator) {
+			// RC 0.49.4
+			return this.post(`${ this.roomTypeToApiType(t) }.addModerator`, { roomId, userId });
+		}
+		// RC 0.49.4
+		return this.post(`${ this.roomTypeToApiType(t) }.removeModerator`, { roomId, userId });
+	},
+	removeUserFromRoom({
+		roomId, t, userId
+	}) {
+		// RC 0.48.0
+		return this.post(`${ this.roomTypeToApiType(t) }.kick`, { roomId, userId });
+	},
+	ignoreUser({ rid, userId, ignore }) {
+		return this.sdk.get('chat.ignoreUser', { rid, userId, ignore });
+	},
 	toggleArchiveRoom(roomId, t, archive) {
 		if (archive) {
 			// RC 0.48.0
@@ -1074,6 +1141,10 @@ const RocketChat = {
 		const userRoles = (shareUser?.roles || loginUser?.roles) || [];
 
 		return userRoles.indexOf(r => r === role) > -1;
+	},
+	getRoomRoles(roomId, type) {
+		// RC 0.65.0
+		return this.sdk.get(`${ this.roomTypeToApiType(type) }.roles`, { roomId });
 	},
 	async hasPermission(permissions, rid) {
 		const db = database.active;

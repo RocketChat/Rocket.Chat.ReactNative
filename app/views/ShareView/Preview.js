@@ -24,9 +24,9 @@ const styles = StyleSheet.create({
 	},
 	fileName: {
 		fontSize: 16,
-		textAlign: 'center',
 		marginHorizontal: 10,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		...sharedStyles.textAlignCenter
 	},
 	fileSize: {
 		fontSize: 14,

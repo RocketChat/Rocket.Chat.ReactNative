@@ -30,6 +30,8 @@ class List extends React.Component {
 		loading: PropTypes.bool,
 		listRef: PropTypes.func,
 		hideSystemMessages: PropTypes.array,
+		tunread: PropTypes.array,
+		ignored: PropTypes.array,
 		navigation: PropTypes.object,
 		showMessageInMainThread: PropTypes.bool
 	};
@@ -76,7 +78,9 @@ class List extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { loading, end, refreshing } = this.state;
-		const { hideSystemMessages, theme } = this.props;
+		const {
+			hideSystemMessages, theme, tunread, ignored
+		} = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
 		}
@@ -90,6 +94,12 @@ class List extends React.Component {
 			return true;
 		}
 		if (!isEqual(hideSystemMessages, nextProps.hideSystemMessages)) {
+			return true;
+		}
+		if (!isEqual(tunread, nextProps.tunread)) {
+			return true;
+		}
+		if (!isEqual(ignored, nextProps.ignored)) {
 			return true;
 		}
 		return false;

@@ -56,8 +56,13 @@ const reducers = combineReducers({
 			name: 'Rocket Cat'
 		}
 	}),
+	server: () => ({
+		server: 'https://open.rocket.chat',
+		version: '3.7.0'
+	}),
 	share: () => ({
-		server: 'https://open.rocket.chat'
+		server: 'https://open.rocket.chat',
+		version: '3.7.0'
 	}),
 	settings: () => ({
 		blockUnauthenticatedAccess: false

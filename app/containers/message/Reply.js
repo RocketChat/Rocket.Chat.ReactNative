@@ -62,6 +62,9 @@ const styles = StyleSheet.create({
 	},
 	marginTop: {
 		marginTop: 4
+	},
+	marginBottom: {
+		marginBottom: 4
 	}
 });
 
@@ -147,29 +150,43 @@ const Reply = React.memo(({
 	};
 
 	return (
-		<Touchable
-			onPress={onPress}
-			style={[
-				styles.button,
-				index > 0 && styles.marginTop,
-				{
-					backgroundColor: themes[theme].chatComponentBackground,
-					borderColor: themes[theme].borderColor
-				}
-			]}
-			background={Touchable.Ripple(themes[theme].bannerBackground)}
-		>
-			<View style={styles.attachmentContainer}>
-				<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
-				<Description
-					attachment={attachment}
-					timeFormat={timeFormat}
-					getCustomEmoji={getCustomEmoji}
-					theme={theme}
-				/>
-				<Fields attachment={attachment} theme={theme} />
-			</View>
-		</Touchable>
+		<>
+			<Touchable
+				onPress={onPress}
+				style={[
+					styles.button,
+					index > 0 && styles.marginTop,
+					attachment.description && styles.marginBottom,
+					{
+						backgroundColor: themes[theme].chatComponentBackground,
+						borderColor: themes[theme].borderColor
+					}
+				]}
+				background={Touchable.Ripple(themes[theme].bannerBackground)}
+			>
+				<View style={styles.attachmentContainer}>
+					<Title
+						attachment={attachment}
+						timeFormat={timeFormat}
+						theme={theme}
+					/>
+					<Description
+						attachment={attachment}
+						timeFormat={timeFormat}
+						getCustomEmoji={getCustomEmoji}
+						theme={theme}
+					/>
+					<Fields attachment={attachment} theme={theme} />
+				</View>
+			</Touchable>
+			<Markdown
+				msg={attachment.description}
+				baseUrl={baseUrl}
+				username={user.username}
+				getCustomEmoji={getCustomEmoji}
+				theme={theme}
+			/>
+		</>
 	);
 }, (prevProps, nextProps) => isEqual(prevProps.attachment, nextProps.attachment) && prevProps.theme === nextProps.theme);
 

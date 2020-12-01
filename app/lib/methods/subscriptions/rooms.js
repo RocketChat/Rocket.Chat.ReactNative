@@ -66,6 +66,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 					archived: s.archived,
 					joinCodeRequired: s.joinCodeRequired,
 					muted: s.muted,
+					ignored: s.ignored,
 					broadcast: s.broadcast,
 					prid: s.prid,
 					draftMessage: s.draftMessage,
@@ -355,7 +356,7 @@ export default function subscribeRooms() {
 				notification.avatar = RocketChat.getRoomAvatar(room);
 
 				// If it's from a encrypted room
-				if (message.t === E2E_MESSAGE_TYPE) {
+				if (message?.t === E2E_MESSAGE_TYPE) {
 					// Decrypt this message content
 					const { msg } = await Encryption.decryptMessage({ ...message, rid });
 					// If it's a direct the content is the message decrypted

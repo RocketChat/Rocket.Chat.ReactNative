@@ -7,7 +7,7 @@
 
 - **Supported server versions:** 0.70.0+
 - **Supported iOS versions**: 11+
-- **Supported Android versions**: 5.0+
+- **Supported Android versions**: 6.0+
 
 ## Download
 
@@ -35,7 +35,7 @@ Do you want to make the app run on your own server only? [Follow our whitelabel 
 
 ## Engage with us
 ### Share your story
-We’d love to hear about [your experience](https://survey.zohopublic.com/zs/e4BUFG) and potentially feature it on our [Blog](https://rocket.chat/case-studies/?utm_source=github&utm_medium=readme&utm_campaign=community).
+We’d love to hear about [your experience](https://survey.zohopublic.com/zs/e4BUFG) and potentially feature it on our [blog](https://rocket.chat/case-studies/?utm_source=github&utm_medium=readme&utm_campaign=community).
 
 ### Subscribe for Updates
-Once a month our marketing team releases an email update with news about product releases, company related topics, events and use cases. [Sign Up!](https://rocket.chat/newsletter/?utm_source=github&utm_medium=readme&utm_campaign=community)
+Once a month our marketing team releases an email update with news about product releases, company related topics, events and use cases. [Sign up!](https://rocket.chat/newsletter/?utm_source=github&utm_medium=readme&utm_campaign=community)
