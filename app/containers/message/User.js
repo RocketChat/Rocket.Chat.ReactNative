@@ -52,16 +52,24 @@ const User = React.memo(({
 		const username = (useRealName && author.name) || author.username;
 		const aliasUsername = alias ? (<Text style={[styles.alias, { color: themes[theme].auxiliaryText }]}> @{username}</Text>) : null;
 		const time = moment(ts).format(timeFormat);
+		const onUserPress = () => navToRoomInfo(navParam);
+		const isDisabled = author._id === user.id;
+
+		const textContent = (
+			<>
+				{alias || username}
+				{aliasUsername}
+			</>
+		);
 
 		if (SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME.includes(type)) {
 			return (
 				<Text
-					onPress={() => navToRoomInfo(navParam)}
-					disabled={author._id === user.id}
 					style={[styles.usernameInfoMessage, { color: themes[theme].titleText }]}
+					onPress={onUserPress}
+					disabled={isDisabled}
 				>
-					{alias || username}
-					{aliasUsername}
+					{textContent}
 				</Text>
 			);
 		}
@@ -70,12 +78,11 @@ const User = React.memo(({
 			<View style={styles.container}>
 				<TouchableOpacity
 					style={styles.titleContainer}
-					onPress={() => navToRoomInfo(navParam)}
-					disabled={author._id === user.id}
+					onPress={onUserPress}
+					disabled={isDisabled}
 				>
 					<Text style={[styles.username, { color: themes[theme].titleText }]} numberOfLines={1}>
-						{alias || username}
-						{aliasUsername}
+						{textContent}
 					</Text>
 				</TouchableOpacity>
 				<Text style={[messageStyles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
