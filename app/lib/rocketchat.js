@@ -705,13 +705,13 @@ const RocketChat = {
 		});
 	},
 
-	joinRoom(roomId, type) {
+	joinRoom(roomId, joinCode, type) {
 		// TODO: join code
 		// RC 0.48.0
 		if (type === 'p') {
 			return this.methodCallWrapper('joinRoom', roomId);
 		}
-		return this.post('channels.join', { roomId });
+		return this.post('channels.join', { roomId, joinCode });
 	},
 	triggerBlockAction,
 	triggerSubmitView,
