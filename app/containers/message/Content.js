@@ -26,14 +26,12 @@ const Content = React.memo((props) => {
 			</Text>
 		);
 
-		const renderMessageContentWithAuthorName = (
-			<Text>
-				<User {...props} /> {renderMessageContent}
-			</Text>
-		);
-
 		if (SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME.includes(props.type)) {
-			return renderMessageContentWithAuthorName;
+			return (
+				<Text>
+					<User {...props} /> {renderMessageContent}
+				</Text>
+			);
 		}
 
 		return renderMessageContent;
