@@ -25,12 +25,35 @@ export const formatDate = date => moment(date).calendar(null, {
 	sameElse: 'L'
 });
 
-export const formatDateThreads = date => moment(date).calendar(null, {
-	sameDay: 'LT',
-	lastDay: `[${ I18n.t('Yesterday') }] LT`,
-	lastWeek: 'dddd LT',
-	sameElse: 'LL'
-});
+export const formatDateThreads = (date) => {
+	const now = moment();
+	const momentDate = moment(date);
+	const diff = momentDate.diff(now, 'days', true);
+
+	// If it is more than one week ago
+	if (diff < -6) {
+		let format = momentDate.format('ll');
+
+		// If it is same year
+		if (now.year() === momentDate.year()) {
+			format = format.replace(momentDate.format('YYYY'), ''); // Remove year
+		}
+
+		return format
+			.replace(/[рг]\./, '') 	// Remove year letter from RU/UK locales
+			.replace(/de/g, '') 		// Remove preposition from PT
+			.replace(/b\.$/, '') 		// Remove year prefix from SE
+			.trim() 								// Remove spaces from the start and the end
+			.replace(/,$/g, ''); 		// Remove comma from the end
+	}
+
+	return momentDate.calendar(null, {
+		sameDay: 'LT',
+		lastDay: `[${ I18n.t('Yesterday') }] LT`,
+		lastWeek: 'dddd LT',
+		sameElse: 'll'
+	});
+};
 
 export const getBadgeColor = ({ subscription, messageId, theme }) => {
 	if (subscription?.tunreadUser?.includes(messageId)) {
