@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { KeyboardUtils } from 'react-native-keyboard-input';
+import { Keyboard } from 'react-native';
 
 import Message from './Message';
 import MessageContext from './Context';
@@ -117,7 +117,7 @@ class MessageContainer extends React.Component {
 		}
 
 		const { item, isThreadRoom } = this.props;
-		KeyboardUtils.dismiss();
+		Keyboard.dismiss();
 
 		if (((item.tlm || item.tmid) && !isThreadRoom)) {
 			this.onThreadPress();
