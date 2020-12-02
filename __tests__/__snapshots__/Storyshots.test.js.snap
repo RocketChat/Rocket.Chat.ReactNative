@@ -33045,8 +33045,9 @@ exports[`Storyshots Message list message 1`] = `
                   <View
                     style={
                       Object {
+                        "flex": 1,
                         "flexDirection": "row",
-                        "justifyContent": "center",
+                        "marginRight": 48,
                       }
                     }
                   >
@@ -33055,8 +33056,8 @@ exports[`Storyshots Message list message 1`] = `
                         Object {
                           "alignItems": "center",
                           "flexDirection": "row",
-                          "justifyContent": "center",
                           "marginRight": 8,
+                          "maxWidth": "32%",
                         }
                       }
                     >
@@ -33106,8 +33107,8 @@ exports[`Storyshots Message list message 1`] = `
                         Object {
                           "alignItems": "center",
                           "flexDirection": "row",
-                          "justifyContent": "center",
                           "marginRight": 8,
+                          "maxWidth": "32%",
                         }
                       }
                     >
@@ -33154,12 +33155,18 @@ exports[`Storyshots Message list message 1`] = `
                     </View>
                     <View
                       style={
-                        Object {
-                          "alignItems": "center",
-                          "flexDirection": "row",
-                          "justifyContent": "center",
-                          "marginRight": 8,
-                        }
+                        Array [
+                          Object {
+                            "alignItems": "center",
+                            "flexDirection": "row",
+                            "marginRight": 8,
+                            "maxWidth": "32%",
+                          },
+                          Object {
+                            "flex": 1,
+                            "maxWidth": "50%",
+                          },
+                        ]
                       }
                     >
                       <Text
@@ -33566,8 +33573,9 @@ exports[`Storyshots Message list message 1`] = `
                   <View
                     style={
                       Object {
+                        "flex": 1,
                         "flexDirection": "row",
-                        "justifyContent": "center",
+                        "marginRight": 48,
                       }
                     }
                   >
@@ -33576,8 +33584,8 @@ exports[`Storyshots Message list message 1`] = `
                         Object {
                           "alignItems": "center",
                           "flexDirection": "row",
-                          "justifyContent": "center",
                           "marginRight": 8,
+                          "maxWidth": "32%",
                         }
                       }
                     >
@@ -33627,8 +33635,8 @@ exports[`Storyshots Message list message 1`] = `
                         Object {
                           "alignItems": "center",
                           "flexDirection": "row",
-                          "justifyContent": "center",
                           "marginRight": 8,
+                          "maxWidth": "32%",
                         }
                       }
                     >
@@ -33675,12 +33683,18 @@ exports[`Storyshots Message list message 1`] = `
                     </View>
                     <View
                       style={
-                        Object {
-                          "alignItems": "center",
-                          "flexDirection": "row",
-                          "justifyContent": "center",
-                          "marginRight": 8,
-                        }
+                        Array [
+                          Object {
+                            "alignItems": "center",
+                            "flexDirection": "row",
+                            "marginRight": 8,
+                            "maxWidth": "32%",
+                          },
+                          Object {
+                            "flex": 1,
+                            "maxWidth": "50%",
+                          },
+                        ]
                       }
                     >
                       <Text
@@ -35709,8 +35723,9 @@ exports[`Storyshots Message list message 1`] = `
                   <View
                     style={
                       Object {
+                        "flex": 1,
                         "flexDirection": "row",
-                        "justifyContent": "center",
+                        "marginRight": 48,
                       }
                     }
                   >
@@ -35719,8 +35734,8 @@ exports[`Storyshots Message list message 1`] = `
                         Object {
                           "alignItems": "center",
                           "flexDirection": "row",
-                          "justifyContent": "center",
                           "marginRight": 8,
+                          "maxWidth": "32%",
                         }
                       }
                     >
@@ -35770,8 +35785,8 @@ exports[`Storyshots Message list message 1`] = `
                         Object {
                           "alignItems": "center",
                           "flexDirection": "row",
-                          "justifyContent": "center",
                           "marginRight": 8,
+                          "maxWidth": "32%",
                         }
                       }
                     >
@@ -35818,12 +35833,18 @@ exports[`Storyshots Message list message 1`] = `
                     </View>
                     <View
                       style={
-                        Object {
-                          "alignItems": "center",
-                          "flexDirection": "row",
-                          "justifyContent": "center",
-                          "marginRight": 8,
-                        }
+                        Array [
+                          Object {
+                            "alignItems": "center",
+                            "flexDirection": "row",
+                            "marginRight": 8,
+                            "maxWidth": "32%",
+                          },
+                          Object {
+                            "flex": 1,
+                            "maxWidth": "50%",
+                          },
+                        ]
                       }
                     >
                       <Text
@@ -61619,8 +61640,9 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
             <View
               style={
                 Object {
+                  "flex": 1,
                   "flexDirection": "row",
-                  "justifyContent": "center",
+                  "marginRight": 48,
                 }
               }
             >
@@ -61629,8 +61651,8 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                   Object {
                     "alignItems": "center",
                     "flexDirection": "row",
-                    "justifyContent": "center",
                     "marginRight": 8,
+                    "maxWidth": "32%",
                   }
                 }
               >
@@ -61680,8 +61702,8 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                   Object {
                     "alignItems": "center",
                     "flexDirection": "row",
-                    "justifyContent": "center",
                     "marginRight": 8,
+                    "maxWidth": "32%",
                   }
                 }
               >
@@ -61728,12 +61750,18 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
               </View>
               <View
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "marginRight": 8,
-                  }
+                  Array [
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "marginRight": 8,
+                      "maxWidth": "32%",
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxWidth": "50%",
+                    },
+                  ]
                 }
               >
                 <Text
@@ -62021,8 +62049,9 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
             <View
               style={
                 Object {
+                  "flex": 1,
                   "flexDirection": "row",
-                  "justifyContent": "center",
+                  "marginRight": 48,
                 }
               }
             >
@@ -62031,8 +62060,8 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                   Object {
                     "alignItems": "center",
                     "flexDirection": "row",
-                    "justifyContent": "center",
                     "marginRight": 8,
+                    "maxWidth": "32%",
                   }
                 }
               >
@@ -62082,8 +62111,8 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                   Object {
                     "alignItems": "center",
                     "flexDirection": "row",
-                    "justifyContent": "center",
                     "marginRight": 8,
+                    "maxWidth": "32%",
                   }
                 }
               >
@@ -62130,12 +62159,18 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
               </View>
               <View
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "marginRight": 8,
-                  }
+                  Array [
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "marginRight": 8,
+                      "maxWidth": "32%",
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxWidth": "50%",
+                    },
+                  ]
                 }
               >
                 <Text
@@ -62423,8 +62458,9 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
             <View
               style={
                 Object {
+                  "flex": 1,
                   "flexDirection": "row",
-                  "justifyContent": "center",
+                  "marginRight": 48,
                 }
               }
             >
@@ -62433,8 +62469,8 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                   Object {
                     "alignItems": "center",
                     "flexDirection": "row",
-                    "justifyContent": "center",
                     "marginRight": 8,
+                    "maxWidth": "32%",
                   }
                 }
               >
@@ -62484,8 +62520,8 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                   Object {
                     "alignItems": "center",
                     "flexDirection": "row",
-                    "justifyContent": "center",
                     "marginRight": 8,
+                    "maxWidth": "32%",
                   }
                 }
               >
@@ -62532,12 +62568,18 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
               </View>
               <View
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "marginRight": 8,
-                  }
+                  Array [
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "marginRight": 8,
+                      "maxWidth": "32%",
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxWidth": "50%",
+                    },
+                  ]
                 }
               >
                 <Text
@@ -62812,8 +62854,9 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
             <View
               style={
                 Object {
+                  "flex": 1,
                   "flexDirection": "row",
-                  "justifyContent": "center",
+                  "marginRight": 48,
                 }
               }
             >
@@ -62822,8 +62865,8 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                   Object {
                     "alignItems": "center",
                     "flexDirection": "row",
-                    "justifyContent": "center",
                     "marginRight": 8,
+                    "maxWidth": "32%",
                   }
                 }
               >
@@ -62873,8 +62916,8 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                   Object {
                     "alignItems": "center",
                     "flexDirection": "row",
-                    "justifyContent": "center",
                     "marginRight": 8,
+                    "maxWidth": "32%",
                   }
                 }
               >
@@ -62921,12 +62964,18 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
               </View>
               <View
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "marginRight": 8,
-                  }
+                  Array [
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "marginRight": 8,
+                      "maxWidth": "32%",
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxWidth": "50%",
+                    },
+                  ]
                 }
               >
                 <Text
@@ -63234,8 +63283,9 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
             <View
               style={
                 Object {
+                  "flex": 1,
                   "flexDirection": "row",
-                  "justifyContent": "center",
+                  "marginRight": 48,
                 }
               }
             >
@@ -63244,8 +63294,8 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                   Object {
                     "alignItems": "center",
                     "flexDirection": "row",
-                    "justifyContent": "center",
                     "marginRight": 8,
+                    "maxWidth": "32%",
                   }
                 }
               >
@@ -63295,8 +63345,8 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                   Object {
                     "alignItems": "center",
                     "flexDirection": "row",
-                    "justifyContent": "center",
                     "marginRight": 8,
+                    "maxWidth": "32%",
                   }
                 }
               >
@@ -63343,12 +63393,18 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
               </View>
               <View
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "marginRight": 8,
-                  }
+                  Array [
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "marginRight": 8,
+                      "maxWidth": "32%",
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxWidth": "50%",
+                    },
+                  ]
                 }
               >
                 <Text
@@ -63621,8 +63677,9 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
             <View
               style={
                 Object {
+                  "flex": 1,
                   "flexDirection": "row",
-                  "justifyContent": "center",
+                  "marginRight": 48,
                 }
               }
             >
@@ -63631,8 +63688,8 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                   Object {
                     "alignItems": "center",
                     "flexDirection": "row",
-                    "justifyContent": "center",
                     "marginRight": 8,
+                    "maxWidth": "32%",
                   }
                 }
               >
@@ -63682,8 +63739,8 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                   Object {
                     "alignItems": "center",
                     "flexDirection": "row",
-                    "justifyContent": "center",
                     "marginRight": 8,
+                    "maxWidth": "32%",
                   }
                 }
               >
@@ -63730,12 +63787,18 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
               </View>
               <View
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "marginRight": 8,
-                  }
+                  Array [
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "marginRight": 8,
+                      "maxWidth": "32%",
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxWidth": "50%",
+                    },
+                  ]
                 }
               >
                 <Text
@@ -64008,8 +64071,9 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
             <View
               style={
                 Object {
+                  "flex": 1,
                   "flexDirection": "row",
-                  "justifyContent": "center",
+                  "marginRight": 48,
                 }
               }
             >
@@ -64018,8 +64082,8 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                   Object {
                     "alignItems": "center",
                     "flexDirection": "row",
-                    "justifyContent": "center",
                     "marginRight": 8,
+                    "maxWidth": "32%",
                   }
                 }
               >
@@ -64069,8 +64133,8 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                   Object {
                     "alignItems": "center",
                     "flexDirection": "row",
-                    "justifyContent": "center",
                     "marginRight": 8,
+                    "maxWidth": "32%",
                   }
                 }
               >
@@ -64117,12 +64181,18 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
               </View>
               <View
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "marginRight": 8,
-                  }
+                  Array [
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "marginRight": 8,
+                      "maxWidth": "32%",
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxWidth": "50%",
+                    },
+                  ]
                 }
               >
                 <Text
@@ -64395,8 +64465,9 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
             <View
               style={
                 Object {
+                  "flex": 1,
                   "flexDirection": "row",
-                  "justifyContent": "center",
+                  "marginRight": 48,
                 }
               }
             >
@@ -64405,8 +64476,8 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                   Object {
                     "alignItems": "center",
                     "flexDirection": "row",
-                    "justifyContent": "center",
                     "marginRight": 8,
+                    "maxWidth": "32%",
                   }
                 }
               >
@@ -64456,8 +64527,8 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                   Object {
                     "alignItems": "center",
                     "flexDirection": "row",
-                    "justifyContent": "center",
                     "marginRight": 8,
+                    "maxWidth": "32%",
                   }
                 }
               >
@@ -64504,12 +64575,18 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
               </View>
               <View
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "marginRight": 8,
-                  }
+                  Array [
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "marginRight": 8,
+                      "maxWidth": "32%",
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxWidth": "50%",
+                    },
+                  ]
                 }
               >
                 <Text
@@ -64782,8 +64859,9 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
             <View
               style={
                 Object {
+                  "flex": 1,
                   "flexDirection": "row",
-                  "justifyContent": "center",
+                  "marginRight": 48,
                 }
               }
             >
@@ -64792,8 +64870,8 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                   Object {
                     "alignItems": "center",
                     "flexDirection": "row",
-                    "justifyContent": "center",
                     "marginRight": 8,
+                    "maxWidth": "32%",
                   }
                 }
               >
@@ -64843,8 +64921,8 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                   Object {
                     "alignItems": "center",
                     "flexDirection": "row",
-                    "justifyContent": "center",
                     "marginRight": 8,
+                    "maxWidth": "32%",
                   }
                 }
               >
@@ -64891,12 +64969,18 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
               </View>
               <View
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "marginRight": 8,
-                  }
+                  Array [
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "marginRight": 8,
+                      "maxWidth": "32%",
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxWidth": "50%",
+                    },
+                  ]
                 }
               >
                 <Text
@@ -65189,8 +65273,9 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
             <View
               style={
                 Object {
+                  "flex": 1,
                   "flexDirection": "row",
-                  "justifyContent": "center",
+                  "marginRight": 48,
                 }
               }
             >
@@ -65199,8 +65284,8 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                   Object {
                     "alignItems": "center",
                     "flexDirection": "row",
-                    "justifyContent": "center",
                     "marginRight": 8,
+                    "maxWidth": "32%",
                   }
                 }
               >
@@ -65250,8 +65335,8 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                   Object {
                     "alignItems": "center",
                     "flexDirection": "row",
-                    "justifyContent": "center",
                     "marginRight": 8,
+                    "maxWidth": "32%",
                   }
                 }
               >
@@ -65298,12 +65383,18 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
               </View>
               <View
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "marginRight": 8,
-                  }
+                  Array [
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "marginRight": 8,
+                      "maxWidth": "32%",
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxWidth": "50%",
+                    },
+                  ]
                 }
               >
                 <Text
@@ -65578,8 +65669,9 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
             <View
               style={
                 Object {
+                  "flex": 1,
                   "flexDirection": "row",
-                  "justifyContent": "center",
+                  "marginRight": 48,
                 }
               }
             >
@@ -65588,8 +65680,8 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                   Object {
                     "alignItems": "center",
                     "flexDirection": "row",
-                    "justifyContent": "center",
                     "marginRight": 8,
+                    "maxWidth": "32%",
                   }
                 }
               >
@@ -65639,8 +65731,8 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                   Object {
                     "alignItems": "center",
                     "flexDirection": "row",
-                    "justifyContent": "center",
                     "marginRight": 8,
+                    "maxWidth": "32%",
                   }
                 }
               >
@@ -65687,12 +65779,18 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
               </View>
               <View
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "marginRight": 8,
-                  }
+                  Array [
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "marginRight": 8,
+                      "maxWidth": "32%",
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxWidth": "50%",
+                    },
+                  ]
                 }
               >
                 <Text
@@ -65967,8 +66065,9 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
             <View
               style={
                 Object {
+                  "flex": 1,
                   "flexDirection": "row",
-                  "justifyContent": "center",
+                  "marginRight": 48,
                 }
               }
             >
@@ -65977,8 +66076,8 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                   Object {
                     "alignItems": "center",
                     "flexDirection": "row",
-                    "justifyContent": "center",
                     "marginRight": 8,
+                    "maxWidth": "32%",
                   }
                 }
               >
@@ -66028,8 +66127,8 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                   Object {
                     "alignItems": "center",
                     "flexDirection": "row",
-                    "justifyContent": "center",
                     "marginRight": 8,
+                    "maxWidth": "32%",
                   }
                 }
               >
@@ -66076,12 +66175,18 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
               </View>
               <View
                 style={
-                  Object {
-                    "alignItems": "center",
-                    "flexDirection": "row",
-                    "justifyContent": "center",
-                    "marginRight": 8,
-                  }
+                  Array [
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "marginRight": 8,
+                      "maxWidth": "32%",
+                    },
+                    Object {
+                      "flex": 1,
+                      "maxWidth": "50%",
+                    },
+                  ]
                 }
               >
                 <Text
