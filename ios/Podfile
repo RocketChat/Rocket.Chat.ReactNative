@@ -12,7 +12,7 @@ end
 
 target 'RocketChatRN' do
   # force use our own JitsiMeetSDK
-  pod 'JitsiMeetSDK', :git => 'https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git'
+  pod 'JitsiMeetSDK', :git => 'https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git', :branch => 'regression.reenable-chat'
 
   all_pods
 end
