@@ -1,5 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+	View,
+	Text,
+	StyleSheet,
+	I18nManager
+} from 'react-native';
 import PropTypes from 'prop-types';
 
 import Touch from '../../utils/touch';
@@ -39,6 +44,11 @@ const styles = StyleSheet.create({
 	subtitle: {
 		fontSize: 14,
 		...sharedStyles.textRegular
+	},
+	actionIndicator: {
+		...I18nManager.isRTL
+			? { transform: [{ rotate: '180deg' }] }
+			: {}
 	}
 });
 
@@ -64,7 +74,7 @@ const Content = React.memo(({
 			? (
 				<View style={styles.rightContainer}>
 					{right ? right() : null}
-					{showActionIndicator ? <Icon name='chevron-right' /> : null}
+					{showActionIndicator ? <Icon name='chevron-right' style={styles.actionIndicator} /> : null}
 				</View>
 			)
 			: null}

@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
 	},
 	content: {
 		fontSize: 14,
-		...sharedStyles.textAlignCenter,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		...sharedStyles.textAlignCenter
 	}
 });
 
