@@ -5,7 +5,7 @@ import Touchable from 'react-native-platform-touchable';
 
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
-import { formatDateThreads } from '../../utils/room';
+import { formatDate } from '../../utils/room';
 import sharedStyles from '../Styles';
 
 const styles = StyleSheet.create({
@@ -59,7 +59,7 @@ const ThreadDetails = ({
 }) => {
 	let tlm;
 	if (item?.tlm) {
-		tlm = formatDateThreads(item.tlm);
+		tlm = formatDate(item.tlm);
 	}
 
 	let { tcount } = item;

@@ -18,14 +18,7 @@ export const capitalize = (s) => {
 	return s.charAt(0).toUpperCase() + s.slice(1);
 };
 
-export const formatDate = date => moment(date).calendar(null, {
-	lastDay: `[${ I18n.t('Yesterday') }]`,
-	sameDay: 'LT',
-	lastWeek: 'dddd',
-	sameElse: 'L'
-});
-
-export const formatDateThreads = (date) => {
+export const formatDate = (date) => {
 	const now = moment();
 	const momentDate = moment(date);
 	const diff = momentDate.diff(now, 'days', true);
