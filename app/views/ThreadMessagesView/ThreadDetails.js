@@ -16,18 +16,19 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	detailsContainer: {
-		flexDirection: 'row',
-		justifyContent: 'center'
+		flex: 1,
+		marginRight: 36,
+		flexDirection: 'row'
 	},
 	detailContainer: {
-		marginRight: 8,
 		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'center'
+		marginRight: 8
 	},
 	detailText: {
 		fontSize: 10,
 		marginLeft: 2,
+		flexShrink: 1,
 		...sharedStyles.textSemibold
 	},
 	badgeContainer: {
