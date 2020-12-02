@@ -17,18 +17,22 @@ const styles = StyleSheet.create({
 	},
 	detailsContainer: {
 		flex: 1,
-		marginRight: 36,
+		marginRight: 48,
 		flexDirection: 'row'
 	},
 	detailContainer: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginRight: 8
+		marginRight: 8,
+		maxWidth: '32%'
+	},
+	timeDetailContainer: {
+		flex: 1,
+		maxWidth: '50%'
 	},
 	detailText: {
 		fontSize: 10,
 		marginLeft: 2,
-		flexShrink: 1,
 		...sharedStyles.textSemibold
 	},
 	badgeContainer: {
@@ -87,7 +91,7 @@ const ThreadDetails = ({
 					<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{replies}</Text>
 				</View>
 
-				<View style={styles.detailContainer}>
+				<View style={[styles.detailContainer, styles.timeDetailContainer]}>
 					<CustomIcon name='clock' size={20} color={themes[theme].auxiliaryText} />
 					<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{tlm}</Text>
 				</View>
