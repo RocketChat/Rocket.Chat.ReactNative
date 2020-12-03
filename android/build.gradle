@@ -52,7 +52,9 @@ allprojects {
             url("$rootDir/../node_modules/jsc-android/dist")
         }
 
-        maven { url jitsi_url }
+        maven {
+            url jitsi_url
+        }
 
         google()
         jcenter()
