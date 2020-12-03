@@ -141,7 +141,7 @@ jobs:
 
       - run: *update-fastlane-android
 
-      # - restore_cache: *restore-gradle-cache
+      - restore_cache: *restore-gradle-cache
 
       - run:
           name: Configure Gradle
@@ -205,7 +205,7 @@ jobs:
 
       - save_cache: *save-npm-cache-linux
 
-      # - save_cache: *save-gradle-cache
+      - save_cache: *save-gradle-cache
 
       - persist_to_workspace:
           root: .
