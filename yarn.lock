@@ -12931,7 +12931,7 @@ react-native-iphone-x-helper@^1.0.3, react-native-iphone-x-helper@^1.2.1:
 
 react-native-jitsi-meet@RocketChat/react-native-jitsi-meet:
   version "2.4.0"
-  resolved "https://codeload.github.com/RocketChat/react-native-jitsi-meet/tar.gz/736ac57044c0723185fcc9e2b768a1ee53be7e13"
+  resolved "https://codeload.github.com/RocketChat/react-native-jitsi-meet/tar.gz/e45a042bc916d53c05d1d4e09becb2186144bc72"
 
 react-native-keycommands@2.0.3:
   version "2.0.3"
