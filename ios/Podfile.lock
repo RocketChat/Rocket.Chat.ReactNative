@@ -581,7 +581,7 @@ DEPENDENCIES:
   - FlipperKit/SKIOSNetworkPlugin (~> 0.41.1)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
-  - JitsiMeetSDK (from `https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git`, branch `regression.reenable-chat`)
+  - JitsiMeetSDK (from `https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git`)
   - KeyCommands (from `../node_modules/react-native-keycommands`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -727,7 +727,6 @@ EXTERNAL SOURCES:
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   JitsiMeetSDK:
-    :branch: regression.reenable-chat
     :git: https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git
   KeyCommands:
     :path: "../node_modules/react-native-keycommands"
@@ -878,7 +877,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   JitsiMeetSDK:
-    :commit: 9806d933a16e504f4454fe3b8592c143e1b723fe
+    :commit: 34660a3a34798fe28fcfd340f9ad30184b9fa0d1
     :git: https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git
 
 SPEC CHECKSUMS:
@@ -1004,6 +1003,6 @@ SPEC CHECKSUMS:
   Yoga: 7740b94929bbacbddda59bf115b5317e9a161598
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 3d6566787f7750e815785f4a7951b4d660a21497
+PODFILE CHECKSUM: c38f9a91b5c154453863a4ee1ccc203da58ad2f2
 
 COCOAPODS: 1.9.3
