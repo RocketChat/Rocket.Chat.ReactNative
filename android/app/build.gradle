@@ -140,7 +140,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "chat.rocket.reactnative"
+        applicationId APPLICATION_ID
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode VERSIONCODE as Integer
@@ -196,7 +196,7 @@ android {
     flavorDimensions "type"
     productFlavors {
         foss {
-            applicationId "chat.rocket.android"
+            applicationId APPLICATION_ID
             dimension = "type"
             buildConfigField "boolean", "FDROID_BUILD", "true"
         }

@@ -151,6 +151,9 @@ jobs:
             echo -e "android.useAndroidX=true" >> ./gradle.properties
             echo -e "android.enableJetifier=true" >> ./gradle.properties
             echo -e "FLIPPER_VERSION=0.51.0" >> ./gradle.properties
+            echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
+            echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
+            echo -e "BugsnagAPIKey=$BUGSNAG_KEY" >> ./gradle.properties
 
             if [[ $KEYSTORE ]]; then
               echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
@@ -159,9 +162,6 @@ jobs:
               echo -e "KEY_ALIAS=$KEY_ALIAS" >> ./gradle.properties
               echo -e "KEY_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
             fi
-
-            echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
-            echo -e "BugsnagAPIKey=$BUGSNAG_KEY" >> ./gradle.properties
           working_directory: android
 
       - run:
@@ -246,6 +246,7 @@ jobs:
             echo -e "android.enableJetifier=true" >> ./gradle.properties
             echo -e "FLIPPER_VERSION=0.51.0" >> ./gradle.properties
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
+            echo -e "APPLICATION_ID=chat.rocket.android" >> ./gradle.properties
 
             if [[ $KEYSTORE ]]; then
               echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE

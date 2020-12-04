@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-		  xmlns:tools="http://schemas.android.com/tools"
-	package="chat.rocket.reactnative">
+		  xmlns:tools="http://schemas.android.com/tools">
 
 	<application
-		android:name=".MainPlayApplication"
+		android:name="chat.rocket.reactnative.MainPlayApplication"
 		android:label="@string/app_name"
 		android:icon="@mipmap/ic_launcher"
 		android:theme="@style/AppTheme"
@@ -12,11 +11,11 @@
 		tools:replace="android:name"
 	>
 		<receiver
-			android:name=".ReplyBroadcast"
+			android:name="chat.rocket.reactnative.ReplyBroadcast"
 			android:enabled="true"
 			android:exported="false" />
 		<receiver
-			android:name=".DismissNotification"
+			android:name="chat.rocket.reactnative.DismissNotification"
 			android:enabled="true"
 			android:exported="false" >
 		</receiver>
