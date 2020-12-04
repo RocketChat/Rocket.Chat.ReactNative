@@ -7,6 +7,7 @@ import {
 import { Q } from '@nozbe/watermelondb';
 import AsyncStorage from '@react-native-community/async-storage';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import BackgroundTimer from 'react-native-background-timer';
 import RNFetchBlob from 'rn-fetch-blob';
 
 import reduxStore from './createStore';
@@ -216,7 +217,12 @@ const RocketChat = {
 				this.code = null;
 			}
 
-			this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
+			this.sdk = new RocketchatClient({
+				host: server,
+				protocol: 'ddp',
+				useSsl: useSsl(server),
+				timer: BackgroundTimer
+			});
 			this.getSettings();
 
 			const sdkConnect = () => this.sdk.connect()
