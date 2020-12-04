@@ -26,9 +26,6 @@ export default StyleSheet.create({
 	messageContentWithError: {
 		marginLeft: 0
 	},
-	center: {
-		alignItems: 'center'
-	},
 	flex: {
 		flexDirection: 'row'
 		// flex: 1
