@@ -214,7 +214,7 @@
 		037C33B0D9A54FB4CB670FB7 /* Pods-ShareRocketChatRN.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareRocketChatRN.release.xcconfig"; path = "Pods/Target Support Files/Pods-ShareRocketChatRN/Pods-ShareRocketChatRN.release.xcconfig"; sourceTree = "<group>"; };
 		0383633C4523666C176CAA52 /* Pods-ShareRocketChatRN.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareRocketChatRN.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ShareRocketChatRN/Pods-ShareRocketChatRN.debug.xcconfig"; sourceTree = "<group>"; };
 		06BB44DD4855498082A744AD /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		13B07F961A680F5B00A75B9A /* RocketChatRN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RocketChatRN.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* Rocket.Chat Experimental.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rocket.Chat Experimental.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = RocketChatRN/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = RocketChatRN/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RocketChatRN/Images.xcassets; sourceTree = "<group>"; };
@@ -275,8 +275,7 @@
 		7A3268F524F04FFE0050E241 /* custom.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = custom.ttf; sourceTree = "<group>"; };
 		7AAA749C23043B1D00F1ADE9 /* RocketChatRN-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RocketChatRN-Bridging-Header.h"; sourceTree = "<group>"; };
 		7AAA749D23043B1E00F1ADE9 /* Watermelon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Watermelon.swift; sourceTree = "<group>"; };
-		7AAB3E52257E6A6E00707CF6 /* RocketChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RocketChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		7AAB3E54257E6A6F00707CF6 /* RocketChatRN copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "RocketChatRN copy-Info.plist"; path = "/Users/diegomello/Development/Work/Rocket.Chat.ReactNative/ios/RocketChatRN copy-Info.plist"; sourceTree = "<absolute>"; };
+		7AAB3E52257E6A6E00707CF6 /* Rocket.Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rocket.Chat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7ACD4853222860DE00442C55 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		81411D280138EF5344596C2F /* libPods-NotificationService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NotificationService.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9730F55A254AC78BC5361659 /* Pods-NotificationService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NotificationService.release.xcconfig"; path = "Pods/Target Support Files/Pods-NotificationService/Pods-NotificationService.release.xcconfig"; sourceTree = "<group>"; };
@@ -516,7 +515,6 @@
 				AF5E16F0398347E6A80C8CBE /* Resources */,
 				B8E79A681F3CCC69005B464F /* Recovered References */,
 				22CA7F59107E0C79C2506C7C /* Pods */,
-				7AAB3E54257E6A6F00707CF6 /* RocketChatRN copy-Info.plist */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -525,10 +523,10 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* RocketChatRN.app */,
+				13B07F961A680F5B00A75B9A /* Rocket.Chat Experimental.app */,
 				1EC6ACB022CB9FC300A41C61 /* ShareRocketChatRN.appex */,
 				1EFEB5952493B6640072EDC0 /* NotificationService.appex */,
-				7AAB3E52257E6A6E00707CF6 /* RocketChat.app */,
+				7AAB3E52257E6A6E00707CF6 /* Rocket.Chat.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -599,7 +597,7 @@
 			);
 			name = RocketChatRN;
 			productName = "Hello World";
-			productReference = 13B07F961A680F5B00A75B9A /* RocketChatRN.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Rocket.Chat Experimental.app */;
 			productType = "com.apple.product-type.application";
 		};
 		1EC6ACAF22CB9FC300A41C61 /* ShareRocketChatRN */ = {
@@ -645,9 +643,9 @@
 			productReference = 1EFEB5952493B6640072EDC0 /* NotificationService.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		7AAB3E0D257E6A6E00707CF6 /* RocketChat */ = {
+		7AAB3E0D257E6A6E00707CF6 /* Rocket.Chat */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7AAB3E4F257E6A6E00707CF6 /* Build configuration list for PBXNativeTarget "RocketChat" */;
+			buildConfigurationList = 7AAB3E4F257E6A6E00707CF6 /* Build configuration list for PBXNativeTarget "Rocket.Chat" */;
 			buildPhases = (
 				7AAB3E12257E6A6E00707CF6 /* [CP] Check Pods Manifest.lock */,
 				7AAB3E13257E6A6E00707CF6 /* Start Packager */,
@@ -668,9 +666,9 @@
 				7AAB3E0E257E6A6E00707CF6 /* PBXTargetDependency */,
 				7AAB3E10257E6A6E00707CF6 /* PBXTargetDependency */,
 			);
-			name = RocketChat;
+			name = Rocket.Chat;
 			productName = "Hello World";
-			productReference = 7AAB3E52257E6A6E00707CF6 /* RocketChat.app */;
+			productReference = 7AAB3E52257E6A6E00707CF6 /* Rocket.Chat.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -747,7 +745,7 @@
 				13B07F861A680F5B00A75B9A /* RocketChatRN */,
 				1EC6ACAF22CB9FC300A41C61 /* ShareRocketChatRN */,
 				1EFEB5942493B6640072EDC0 /* NotificationService */,
-				7AAB3E0D257E6A6E00707CF6 /* RocketChat */,
+				7AAB3E0D257E6A6E00707CF6 /* Rocket.Chat */,
 			);
 		};
 /* End PBXProject section */
@@ -1534,9 +1532,10 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative;
-				PRODUCT_NAME = RocketChatRN;
+				PRODUCT_NAME = "Rocket.Chat Experimental";
 				PROVISIONING_PROFILE_SPECIFIER = "chat.rocket.reactnative Development";
 				SWIFT_OBJC_BRIDGING_HEADER = "RocketChatRN-Bridging-Header.h";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "RocketChatRN-Swift.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1587,9 +1586,10 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative;
-				PRODUCT_NAME = RocketChatRN;
+				PRODUCT_NAME = "Rocket.Chat Experimental";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore chat.rocket.reactnative";
 				SWIFT_OBJC_BRIDGING_HEADER = "RocketChatRN-Bridging-Header.h";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "RocketChatRN-Swift.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1823,7 +1823,7 @@
 					"$(SRCROOT)/../../../react-native/React/**",
 					"$(SRCROOT)/../node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/SupportingFiles/**",
 				);
-				INFOPLIST_FILE = "RocketChatRN copy-Info.plist";
+				INFOPLIST_FILE = RocketChatRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -1877,7 +1877,7 @@
 					"$(SRCROOT)/../../../react-native/React/**",
 					"$(SRCROOT)/../node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/SupportingFiles/**",
 				);
-				INFOPLIST_FILE = "RocketChatRN copy-Info.plist";
+				INFOPLIST_FILE = RocketChatRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -2036,7 +2036,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7AAB3E4F257E6A6E00707CF6 /* Build configuration list for PBXNativeTarget "RocketChat" */ = {
+		7AAB3E4F257E6A6E00707CF6 /* Build configuration list for PBXNativeTarget "Rocket.Chat" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7AAB3E50257E6A6E00707CF6 /* Debug */,
