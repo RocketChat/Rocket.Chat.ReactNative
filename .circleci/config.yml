@@ -470,9 +470,9 @@ workflows:
             - ios-hold-testflight
 
       - ios-hold-official:
-        type: approval
-        requires:
-          - lint-testunit
+          type: approval
+          requires:
+            - lint-testunit
       - ios-build-official:
           requires:
             - ios-hold-official
