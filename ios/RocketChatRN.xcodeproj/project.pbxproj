@@ -1502,7 +1502,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 100;
+				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = S6UPZG7ZR3;
 				ENABLE_BITCODE = NO;
@@ -1533,7 +1533,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative;
 				PRODUCT_NAME = "Rocket.Chat Experimental";
-				PROVISIONING_PROFILE_SPECIFIER = "chat.rocket.reactnative Development";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development chat.rocket.reactnative";
 				SWIFT_OBJC_BRIDGING_HEADER = "RocketChatRN-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "RocketChatRN-Swift.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1556,7 +1556,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 100;
+				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = S6UPZG7ZR3;
 				ENABLE_BITCODE = NO;
@@ -1655,7 +1655,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative.ShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "chat.rocket.reactnative.ShareExtension Development";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development chat.rocket.reactnative.ShareExtension";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1752,7 +1752,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = chat.rocket.reactnative.NotificationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "chat.rocket.reactnative.NotificationService Development";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development chat.rocket.reactnative.NotificationService";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "NotificationService/NotificationService-Bridging-Header.h";
@@ -1808,7 +1808,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = RocketChatRN/RocketChatRN.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 100;
+				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = S6UPZG7ZR3;
 				ENABLE_BITCODE = NO;
@@ -1860,7 +1860,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = RocketChatRN/RocketChatRN.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 100;
+				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = S6UPZG7ZR3;
 				ENABLE_BITCODE = NO;
