@@ -469,13 +469,14 @@ workflows:
           requires:
             - ios-hold-testflight
 
-      - ios-hold-official:
-          type: approval
-          requires:
-            - lint-testunit
-      - ios-build-official:
-          requires:
-            - ios-hold-official
+      - ios-build-official
+      # - ios-hold-official:
+      #     type: approval
+      #     requires:
+      #       - lint-testunit
+      # - ios-build-official:
+      #     requires:
+      #       - ios-hold-official
       # - ios-hold-testflight-official:
       #     type: approval
       #     requires:
