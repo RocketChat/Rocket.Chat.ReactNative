@@ -74,7 +74,10 @@ platform :ios do
       profile_name: '',
       code_sign_identity: 'iPhone Developer'
     )
-    gym(scheme: "RocketChat", workspace: "RocketChatRN.xcworkspace", skip_profile_detection: true)
+    # get_provisioning_profile(app_identifier: "chat.rocket.ios")
+    # get_provisioning_profile(app_identifier: "chat.rocket.ios.Rocket-Chat-ShareExtension")
+    # get_provisioning_profile(app_identifier: "chat.rocket.ios.NotificationService")
+    build_app(scheme: "RocketChat", workspace: "RocketChatRN.xcworkspace", skip_profile_detection: true, export_xcargs: "-allowProvisioningUpdates")
     # match(type: "development")
     # build_app(
     #   scheme: "RocketChat",
