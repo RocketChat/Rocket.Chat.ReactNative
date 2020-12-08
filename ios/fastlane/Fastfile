@@ -67,24 +67,27 @@ platform :ios do
   desc "Build official"
   lane :build_official do
     sh "../../scripts/prepare_ios_official.sh"
-    enable_automatic_code_signing(
+    update_code_signing_settings(
       path: "RocketChatRN.xcodeproj",
       use_automatic_signing: true,
-      targets: ["Rocket.Chat", "NotificationService", "ShareRocketChatRN"]
+      targets: ["Rocket.Chat", "NotificationService", "ShareRocketChatRN"],
+      profile_name: '',
+      code_sign_identity: 'iPhone Developer'
     )
+    gym(scheme: "RocketChat", workspace: "RocketChatRN.xcworkspace", skip_profile_detection: true)
     # match(type: "development")
-    build_app(
-      scheme: "RocketChat",
-      workspace: "RocketChatRN.xcworkspace",
-      export_options: {
-        method: "development",
-        provisioningProfiles: {
-          "chat.rocket.ios": '',
-          "chat.rocket.NotificationService": '',
-          "chat.rocket.ios.Rocket-Chat-ShareExtension": '',
-        }
-      }
-    )
+    # build_app(
+    #   scheme: "RocketChat",
+    #   workspace: "RocketChatRN.xcworkspace",
+    #   export_options: {
+    #     method: "development",
+    #     provisioningProfiles: {
+    #       "chat.rocket.ios": '',
+    #       "chat.rocket.NotificationService": '',
+    #       "chat.rocket.ios.Rocket-Chat-ShareExtension": '',
+    #     }
+    #   }
+    # )
     # gym(scheme: "Rocket.Chat", workspace: "RocketChatRN.xcworkspace", skip_codesigning: true, skip_archive: true)
   end
 
