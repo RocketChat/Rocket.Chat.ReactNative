@@ -407,36 +407,34 @@ jobs:
           name: Set Google Services
           command: |
             if [[ $KEYSTORE ]]; then
-              echo $GOOGLE_SERVICES_REACTNATIVE | base64 --decode > GoogleService-Info.plist
+              echo $GOOGLE_SERVICES_IOS | base64 --decode > GoogleService-Info.plist
             fi
           working_directory: ios
 
-      # - run:
-      #     name: Upload sourcemaps to Bugsnag
-      #     command: |
-      #       if [[ $BUGSNAG_KEY ]]; then
-      #         yarn generate-source-maps-ios
-      #         curl https://upload.bugsnag.com/react-native-source-map \
-      #           -F apiKey=$BUGSNAG_KEY \
-      #           -F appBundleVersion=$CIRCLE_BUILD_NUM \
-      #           -F dev=false \
-      #           -F platform=ios \
-      #           -F sourceMap=@ios-release.bundle.map \
-      #           -F bundle=@ios-release.bundle
-      #       fi
+      - run:
+          name: Upload sourcemaps to Bugsnag
+          command: |
+            if [[ $BUGSNAG_KEY ]]; then
+              yarn generate-source-maps-ios
+              curl https://upload.bugsnag.com/react-native-source-map \
+                -F apiKey=$BUGSNAG_KEY_OFFICIAL \
+                -F appBundleVersion=$CIRCLE_BUILD_NUM \
+                -F dev=false \
+                -F platform=ios \
+                -F sourceMap=@ios-release.bundle.map \
+                -F bundle=@ios-release.bundle
+            fi
 
       - run:
           name: Fastlane Build
           no_output_timeout: 1200
           command: |
             agvtool new-version -all $CIRCLE_BUILD_NUM
-            # /usr/libexec/PlistBuddy -c "Set BugsnagAPIKey $BUGSNAG_KEY" ./RocketChatRN/Info.plist
+            # /usr/libexec/PlistBuddy -c "Set BugsnagAPIKey $BUGSNAG_KEY_OFFICIAL" ./RocketChatRN/Info.plist
 
             if [[ $APP_STORE_CONNECT_API_KEY ]]; then
               echo $APP_STORE_CONNECT_API_KEY | base64 --decode > ./fastlane/app_store_connect_api_key.p8
               bundle exec fastlane ios build_official
-            else
-              bundle exec fastlane ios build_fork
             fi
           working_directory: ios
 
@@ -445,7 +443,7 @@ jobs:
       - save_cache: *save-gems-cache
 
       - store_artifacts:
-          path: ios/RocketChat.ipa
+          path: ios/Rocket.Chat.ipa
 
       - persist_to_workspace:
           root: .
@@ -456,18 +454,18 @@ jobs:
 workflows:
   build-and-test:
     jobs:
-      - lint-testunit
+      # - lint-testunit
 
-      - ios-build:
-          requires:
-            - lint-testunit
-      - ios-hold-testflight:
-          type: approval
-          requires:
-            - ios-build
-      - ios-testflight:
-          requires:
-            - ios-hold-testflight
+      # - ios-build:
+      #     requires:
+      #       - lint-testunit
+      # - ios-hold-testflight:
+      #     type: approval
+      #     requires:
+      #       - ios-build
+      # - ios-testflight:
+      #     requires:
+      #       - ios-hold-testflight
 
       - ios-build-official
       # - ios-hold-official:
@@ -481,24 +479,24 @@ workflows:
       #     type: approval
       #     requires:
       #       - ios-build-official
-      # - ios-testflight-official:
-      #     requires:
-      #       - ios-hold-testflight-official
+      - ios-testflight:
+          requires:
+            - ios-build-official
 
-      - android-play-build:
-          requires:
-            - lint-testunit
-      - android-hold-google-play-beta:
-          type: approval
-          requires:
-            - android-play-build
-      - android-google-play-beta:
-          requires:
-            - android-hold-google-play-beta
-      - android-hold-foss-build:
-          type: approval
-          requires:
-            - lint-testunit
-      - android-foss-build:
-          requires:
-            - android-hold-foss-build
+      # - android-play-build:
+      #     requires:
+      #       - lint-testunit
+      # - android-hold-google-play-beta:
+      #     type: approval
+      #     requires:
+      #       - android-play-build
+      # - android-google-play-beta:
+      #     requires:
+      #       - android-hold-google-play-beta
+      # - android-hold-foss-build:
+      #     type: approval
+      #     requires:
+      #       - lint-testunit
+      # - android-foss-build:
+      #     requires:
+      #       - android-hold-foss-build

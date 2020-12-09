@@ -39,7 +39,7 @@ platform :ios do
       in_house: false
     )
     pilot(
-      ipa: 'ios/RocketChatRN.ipa',
+      # ipa: 'ios/RocketChatRN.ipa',
       skip_waiting_for_build_processing: true
     )
   end
