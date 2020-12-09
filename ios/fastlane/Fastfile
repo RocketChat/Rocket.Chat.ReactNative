@@ -31,7 +31,7 @@ platform :ios do
   end
 
   desc "Submit a new Beta Build to Apple TestFlight"
-  lane :beta do
+  lane :beta do |options|
     api_key = app_store_connect_api_key(
       key_id: "F296L2294Y",
       issuer_id: "69a6de8e-75cf-47e3-e053-5b8c7c11a4d1",
@@ -39,12 +39,13 @@ platform :ios do
       in_house: false
     )
     pilot(
-      # ipa: 'ios/RocketChatRN.ipa',
+      ipa: options[:official] ? 'ios/Rocket.Chat.ipa' : 'ios/RocketChatRN.ipa',
+      app_identifier: options[:official] ? 'chat.rocket.ios' : 'chat.rocket.reactnative',
       skip_waiting_for_build_processing: true
     )
   end
 
-  desc "Build App for release"
+  desc "Build Experimental app for release"
   lane :release do
     api_key = app_store_connect_api_key(
       key_id: "F296L2294Y",
@@ -64,33 +65,16 @@ platform :ios do
     gym(scheme: "RocketChatRN", workspace: "RocketChatRN.xcworkspace", skip_codesigning: true, skip_archive: true)
   end
 
-  desc "Build official"
+  desc "Build Official app for release"
   lane :build_official do
     sh "../../scripts/prepare_ios_official.sh"
-    # update_code_signing_settings(
-    #   path: "RocketChatRN.xcodeproj",
-    #   use_automatic_signing: true,
-    #   targets: ["Rocket.Chat", "NotificationService", "ShareRocketChatRN"],
-    #   profile_name: '',
-    #   code_sign_identity: 'iPhone Developer'
-    # )
-    
+
     match(
       type: "appstore",
       app_identifier: ["chat.rocket.ios", "chat.rocket.ios.NotificationService", "chat.rocket.ios.Rocket-Chat-ShareExtension"],
       readonly: true,
       output_path: './'
     )
-    # get_provisioning_profile(app_identifier: "chat.rocket.ios.Rocket-Chat-ShareExtension")
-    # get_provisioning_profile(app_identifier: "chat.rocket.ios.NotificationService")
-
-    # build_app(scheme: "RocketChat", workspace: "RocketChatRN.xcworkspace", skip_profile_detection: true, export_xcargs: "-allowProvisioningUpdates")
-
-    # settings_to_override = {
-    #   :BUNDLE_IDENTIFIER => MY_APP_ID,
-    #   :PROVISIONING_PROFILE_SPECIFIER => MY_PROFILE,
-    #   :DEVELOPMENT_TEAM => MY_TEAM
-    # }
 
     update_project_provisioning(
       xcodeproj: 'RocketChatRN.xcodeproj',
@@ -111,29 +95,8 @@ platform :ios do
     gym(
       scheme: "RocketChat",
       workspace: "RocketChatRN.xcworkspace",
-      xcargs: "-allowProvisioningUpdates",
-      # export_options: {
-      #   provisioningProfiles: {
-      #     # "chat.rocket.ios": '',
-      #     "chat.rocket.NotificationService": 'match AppStore chat.rocket.ios.NotificationService',
-      #     "chat.rocket.ios.Rocket-Chat-ShareExtension": 'match AppStore chat.rocket.ios.Rocket-Chat-ShareExtension',
-      #   }
-      # }
+      xcargs: "-allowProvisioningUpdates"
     )
-    # match(type: "development")
-    # build_app(
-    #   scheme: "RocketChat",
-    #   workspace: "RocketChatRN.xcworkspace",
-    #   export_options: {
-    #     method: "development",
-    #     provisioningProfiles: {
-    #       "chat.rocket.ios": '',
-    #       "chat.rocket.NotificationService": '',
-    #       "chat.rocket.ios.Rocket-Chat-ShareExtension": '',
-    #     }
-    #   }
-    # )
-    # gym(scheme: "Rocket.Chat", workspace: "RocketChatRN.xcworkspace", skip_codesigning: true, skip_archive: true)
   end
 
   after_all do |lane|

@@ -75,6 +75,27 @@ restore_cache: &restore-gradle-cache
   name: Restore gradle cache
   key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
 
+# COMMANDS
+commands:
+  upload-to-testflight:
+    description: "Upload to testlight"
+    parameters:
+      official:
+        type: boolean
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ios
+      - restore_cache: *restore-gems-cache
+      - run: *update-fastlane-ios
+      - run:
+          name: Fastlane Tesflight Upload
+          command: |
+            echo $APP_STORE_CONNECT_API_KEY | base64 --decode > ./fastlane/app_store_connect_api_key.p8
+            bundle exec fastlane ios beta official:<< parameters.official >>
+          working_directory: ios
+      - save_cache: *save-gems-cache
+
 version: 2.1
 
 # EXECUTORS
@@ -365,28 +386,6 @@ jobs:
             - ios/*.ipa
             - ios/fastlane/report.xml
 
-  ios-testflight:
-    executor: mac-env
-
-    steps:
-      - checkout
-
-      - attach_workspace:
-          at: ios
-
-      - restore_cache: *restore-gems-cache
-
-      - run: *update-fastlane-ios
-
-      - run:
-          name: Fastlane Tesflight Upload
-          command: |
-            echo $APP_STORE_CONNECT_API_KEY | base64 --decode > ./fastlane/app_store_connect_api_key.p8
-            bundle exec fastlane ios beta
-          working_directory: ios
-
-      - save_cache: *save-gems-cache
-
   ios-build-official:
     executor: mac-env
 
@@ -451,6 +450,18 @@ jobs:
             - ios/*.ipa
             - ios/fastlane/report.xml
 
+  ios-testflight:
+    executor: mac-env
+    steps:
+      - upload-to-testflight:
+          official: false
+
+  ios-testflight-official:
+    executor: mac-env
+    steps:
+      - upload-to-testflight:
+          official: true
+
 workflows:
   build-and-test:
     jobs:
@@ -479,7 +490,7 @@ workflows:
       #     type: approval
       #     requires:
       #       - ios-build-official
-      - ios-testflight:
+      - ios-testflight-official:
           requires:
             - ios-build-official
 
