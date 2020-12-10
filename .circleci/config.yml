@@ -8,6 +8,11 @@ macos: &macos
 bash-env: &bash-env
   BASH_ENV: "~/.nvm/nvm.sh"
 
+android-env: &android-env
+  JAVA_OPTS: '-Xms512m -Xmx2g'
+  GRADLE_OPTS: '-Xmx3g -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx2g -XX:+HeapDumpOnOutOfMemoryError"'
+  TERM: dumb
+
 install-npm-modules: &install-npm-modules
   name: Install NPM modules
   command: yarn
@@ -246,9 +251,7 @@ jobs:
       - image: circleci/android:api-28-node
 
     environment:
-      JAVA_OPTS: '-Xms512m -Xmx2g'
-      GRADLE_OPTS: '-Xmx3g -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx2g -XX:+HeapDumpOnOutOfMemoryError"'
-      TERM: dumb
+      <<: *android-env
       <<: *bash-env
 
     steps:
@@ -260,9 +263,7 @@ jobs:
       - image: circleci/android:api-28-node
 
     environment:
-      JAVA_OPTS: '-Xms512m -Xmx2g'
-      GRADLE_OPTS: '-Xmx3g -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx2g -XX:+HeapDumpOnOutOfMemoryError"'
-      TERM: dumb
+      <<: *android-env
       <<: *bash-env
 
     steps:
