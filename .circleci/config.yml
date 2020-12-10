@@ -140,7 +140,7 @@ jobs:
       - save_cache: *save-npm-cache-linux
 
   # Android builds
-  android-play-build:
+  android-experimental-play-build:
     <<: *defaults
     docker:
       - image: circleci/android:api-28-node
@@ -217,6 +217,98 @@ jobs:
                 --app-version=$CIRCLE_BUILD_NUM \
                 --minifiedFile=android/app/build/generated/assets/react/play/release/app.bundle \
                 --source-map=android/app/build/generated/sourcemaps/react/play/release/app.bundle.map \
+                --minified-url=app.bundle \
+                --upload-sources
+            fi
+
+      - store_artifacts:
+          path: android/app/build/outputs
+
+      - save_cache: *save-npm-cache-linux
+
+      - save_cache: *save-gradle-cache
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - android/fastlane/report.xml
+            - android/app/build/outputs
+  
+  android-official-play-build:
+    <<: *defaults
+    docker:
+      - image: circleci/android:api-28-node
+
+    environment:
+      JAVA_OPTS: '-Xms512m -Xmx2g'
+      GRADLE_OPTS: '-Xmx3g -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx2g -XX:+HeapDumpOnOutOfMemoryError"'
+      TERM: dumb
+      <<: *bash-env
+
+    steps:
+      - checkout
+
+      - run: *install-node
+
+      - restore_cache: *restore-npm-cache-linux
+
+      - run: *install-npm-modules
+
+      - run: *update-fastlane-android
+
+      - restore_cache: *restore-gradle-cache
+
+      - run:
+          name: Configure Gradle
+          command: |
+            echo -e "" > ./gradle.properties
+            # echo -e "android.enableAapt2=false" >> ./gradle.properties
+            echo -e "android.useAndroidX=true" >> ./gradle.properties
+            echo -e "android.enableJetifier=true" >> ./gradle.properties
+            echo -e "FLIPPER_VERSION=0.51.0" >> ./gradle.properties
+            echo -e "APPLICATION_ID=chat.rocket.android" >> ./gradle.properties
+            echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
+            echo -e "BugsnagAPIKey=$BUGSNAG_KEY_OFFICIAL" >> ./gradle.properties
+
+            if [[ $KEYSTORE ]]; then
+              echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
+              echo -e "KEYSTORE=$KEYSTORE" >> ./gradle.properties
+              echo -e "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+              echo -e "KEY_ALIAS=$KEY_ALIAS" >> ./gradle.properties
+              echo -e "KEY_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+            fi
+          working_directory: android
+
+      - run:
+          name: Set Google Services
+          command: |
+            if [[ $KEYSTORE ]]; then
+              echo $GOOGLE_SERVICES_ANDROID | base64 --decode > google-services.json
+            fi
+          working_directory: android/app/src/play
+
+      - run:
+          name: Config variables
+          command: |
+            echo -e "export default { BUGSNAG_API_KEY: '$BUGSNAG_KEY_OFFICIAL' };" > ./config.js
+
+      - run:
+          name: Build Android Play App
+          command: |
+            if [[ $KEYSTORE ]]; then
+              bundle exec fastlane android officialPlayRelease
+            fi
+          working_directory: android
+
+      - run:
+          name: Upload sourcemaps to Bugsnag
+          command: |
+            if [[ $BUGSNAG_KEY_OFFICIAL ]]; then
+              yarn generate-source-maps-android upload \
+                --api-key=$BUGSNAG_KEY_OFFICIAL \
+                --app-version=$CIRCLE_BUILD_NUM \
+                --minifiedFile=android/app/build/generated/assets/react/officialPlay/release/app.bundle \
+                --source-map=android/app/build/generated/sourcemaps/react/officialPlay/release/app.bundle.map \
                 --minified-url=app.bundle \
                 --upload-sources
             fi
@@ -413,7 +505,7 @@ jobs:
       - run:
           name: Upload sourcemaps to Bugsnag
           command: |
-            if [[ $BUGSNAG_KEY ]]; then
+            if [[ $BUGSNAG_KEY_OFFICIAL ]]; then
               yarn generate-source-maps-ios
               curl https://upload.bugsnag.com/react-native-source-map \
                 -F apiKey=$BUGSNAG_KEY_OFFICIAL \
@@ -511,3 +603,5 @@ workflows:
       # - android-foss-build:
       #     requires:
       #       - android-hold-foss-build
+
+      - android-official-play-build
