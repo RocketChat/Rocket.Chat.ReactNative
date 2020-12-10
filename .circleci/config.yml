@@ -264,8 +264,27 @@ commands:
             - ios/*.ipa
             - ios/*.zip
 
+  upload-to-google-play-beta:
+    description: "Upload to Google Play beta"
+    parameters:
+      official:
+        type: boolean
+    steps:
+      - checkout
+      - attach_workspace:
+          at: android
+      - run:
+          name: Store the google service account key
+          command: echo "$FASTLANE_GOOGLE_SERVICE_ACCOUNT" | base64 --decode > service_account.json
+          working_directory: android
+      - run: *update-fastlane-android
+      - run:
+          name: Fastlane Play Store Upload
+          command: bundle exec fastlane android beta official:<< parameters.official >>
+          working_directory: android
+
   upload-to-testflight:
-    description: "Upload to testlight"
+    description: "Upload to TestFlight"
     parameters:
       official:
         type: boolean
@@ -347,28 +366,23 @@ jobs:
     steps:
       - android-build
 
-  android-google-play-beta:
+  android-google-play-beta-experimental:
     <<: *defaults
     docker:
       - image: circleci/android:api-28-node
 
     steps:
-      - checkout
+      - upload-to-google-play-beta:
+          official: false
 
-      - attach_workspace:
-          at: android
+  android-google-play-beta-official:
+    <<: *defaults
+    docker:
+      - image: circleci/android:api-28-node
 
-      - run:
-          name: Store the google service account key
-          command: echo "$FASTLANE_GOOGLE_SERVICE_ACCOUNT" | base64 --decode > service_account.json
-          working_directory: android
-
-      - run: *update-fastlane-android
-
-      - run:
-          name: Fastlane Play Store Upload
-          command: bundle exec fastlane android beta
-          working_directory: android
+    steps:
+      - upload-to-google-play-beta:
+          official: true
 
   # iOS builds
   ios-build:
