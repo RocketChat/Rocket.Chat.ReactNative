@@ -254,8 +254,6 @@ jobs:
 
       - run: *install-npm-modules
 
-      - run: *update-fastlane-android
-
       - restore_cache: *restore-gradle-cache
 
       - run:
@@ -293,10 +291,10 @@ jobs:
             echo -e "export default { BUGSNAG_API_KEY: '$BUGSNAG_KEY_OFFICIAL' };" > ./config.js
 
       - run:
-          name: Build Android Play App
+          name: Build Official Play App
           command: |
             if [[ $KEYSTORE ]]; then
-              bundle exec fastlane android officialPlayRelease
+              ./gradlew bundleOfficialPlayRelease
             fi
           working_directory: android
 
@@ -323,7 +321,6 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - android/fastlane/report.xml
             - android/app/build/outputs
 
   android-foss-build:
