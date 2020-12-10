@@ -151,7 +151,7 @@ commands:
               ./gradlew bundleExperimentalPlayRelease
             fi
             if [[ ! $KEYSTORE ]]; then
-              ./gradlew assembleExperimentalPlayBuild
+              ./gradlew assembleExperimentalPlayDebug
             fi
           working_directory: android
 
