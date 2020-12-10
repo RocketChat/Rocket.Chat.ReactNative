@@ -122,13 +122,15 @@ commands:
             echo -e "android.useAndroidX=true" >> ./gradle.properties
             echo -e "android.enableJetifier=true" >> ./gradle.properties
             echo -e "FLIPPER_VERSION=0.51.0" >> ./gradle.properties
-            if [[ $CIRCLE_JOB=android-experimental-play-build ]]; then
-              echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
-              echo -e "BugsnagAPIKey=$BUGSNAG_KEY" >> ./gradle.properties
-            else
+
+            if [[ $CIRCLE_JOB == "android-official-play-build" ]]; then
               echo -e "APPLICATION_ID=chat.rocket.android" >> ./gradle.properties
               echo -e "BugsnagAPIKey=$BUGSNAG_KEY_OFFICIAL" >> ./gradle.properties
+            else
+              echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
+              echo -e "BugsnagAPIKey=$BUGSNAG_KEY" >> ./gradle.properties
             fi
+
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
 
             if [[ $KEYSTORE ]]; then
@@ -151,20 +153,20 @@ commands:
       - run:
           name: Config variables
           command: |
-            if [[ $CIRCLE_JOB=android-experimental-play-build ]]; then
-              echo -e "export default { BUGSNAG_API_KEY: '$BUGSNAG_KEY' };" > ./config.js
-            else
+            if [[ $CIRCLE_JOB == "android-official-play-build" ]]; then
               echo -e "export default { BUGSNAG_API_KEY: '$BUGSNAG_KEY_OFFICIAL' };" > ./config.js
+            else
+              echo -e "export default { BUGSNAG_API_KEY: '$BUGSNAG_KEY' };" > ./config.js
             fi
 
       - run:
           name: Build Official Play App
           command: |
-            if [[ $CIRCLE_JOB=android-experimental-play-build ]]; then
-              ./gradlew bundleExperimentalPlayRelease
-            fi
-            if [[ $CIRCLE_JOB=android-official-play-build ]]; then
+            if [[ $CIRCLE_JOB == "android-official-play-build" ]]; then
               ./gradlew bundleOfficialPlayRelease
+            fi
+            if [[ $CIRCLE_JOB == "android-experimental-play-build" ]]; then
+              ./gradlew bundleExperimentalPlayRelease
             fi
             if [[ ! $KEYSTORE ]]; then
               ./gradlew assembleExperimentalPlayBuild
@@ -174,20 +176,21 @@ commands:
       - run:
           name: Upload sourcemaps to Bugsnag
           command: |
-            if [[ $CIRCLE_JOB=android-experimental-play-build ]]; then
-              yarn generate-source-maps-android upload \
-                --api-key=$BUGSNAG_KEY \
-                --app-version=$CIRCLE_BUILD_NUM \
-                --minifiedFile=android/app/build/generated/assets/react/experimentalPlay/release/app.bundle \
-                --source-map=android/app/build/generated/sourcemaps/react/experimentalPlay/release/app.bundle.map \
-                --minified-url=app.bundle \
-                --upload-sources
-            else
+            if [[ $CIRCLE_JOB == "android-official-play-build" ]]; then
               yarn generate-source-maps-android upload \
                 --api-key=$BUGSNAG_KEY_OFFICIAL \
                 --app-version=$CIRCLE_BUILD_NUM \
                 --minifiedFile=android/app/build/generated/assets/react/officialPlay/release/app.bundle \
                 --source-map=android/app/build/generated/sourcemaps/react/officialPlay/release/app.bundle.map \
+                --minified-url=app.bundle \
+                --upload-sources
+            fi
+            if [[ $CIRCLE_JOB == "android-experimental-play-build" ]]; then
+              yarn generate-source-maps-android upload \
+                --api-key=$BUGSNAG_KEY \
+                --app-version=$CIRCLE_BUILD_NUM \
+                --minifiedFile=android/app/build/generated/assets/react/experimentalPlay/release/app.bundle \
+                --source-map=android/app/build/generated/sourcemaps/react/experimentalPlay/release/app.bundle.map \
                 --minified-url=app.bundle \
                 --upload-sources
             fi
