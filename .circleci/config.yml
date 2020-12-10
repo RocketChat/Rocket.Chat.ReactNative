@@ -162,8 +162,12 @@ commands:
           command: |
             if [[ $CIRCLE_JOB=android-experimental-play-build ]]; then
               ./gradlew bundleExperimentalPlayRelease
-            else
+            fi
+            if [[ $CIRCLE_JOB=android-official-play-build ]]; then
               ./gradlew bundleOfficialPlayRelease
+            fi
+            if [[ ! $KEYSTORE ]]; then
+              ./gradlew assembleExperimentalPlayBuild
             fi
           working_directory: android
 
