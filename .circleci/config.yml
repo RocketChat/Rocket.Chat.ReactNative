@@ -207,6 +207,79 @@ commands:
           paths:
             - android/app/build/outputs
 
+  ios-build:
+    description: "Build iOS app"
+    steps:
+      - checkout
+      - restore_cache: *restore-gems-cache
+      - restore_cache: *restore-npm-cache-mac
+      - run: *install-node
+      - run: *install-npm-modules
+      - run: *update-fastlane-ios
+      - run:
+          name: Set Google Services
+          command: |
+            if [[ $KEYSTORE ]]; then
+              echo $GOOGLE_SERVICES_IOS | base64 --decode > GoogleService-Info.plist
+            fi
+          working_directory: ios
+      - run:
+          name: Upload sourcemaps to Bugsnag
+          command: |
+            if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
+              yarn generate-source-maps-ios
+              curl https://upload.bugsnag.com/react-native-source-map \
+                -F apiKey=$BUGSNAG_KEY_OFFICIAL \
+                -F appBundleVersion=$CIRCLE_BUILD_NUM \
+                -F dev=false \
+                -F platform=ios \
+                -F sourceMap=@ios-release.bundle.map \
+                -F bundle=@ios-release.bundle
+            fi
+            if [[ $CIRCLE_JOB == "ios-build-experimental" ]]; then
+              yarn generate-source-maps-ios
+              curl https://upload.bugsnag.com/react-native-source-map \
+                -F apiKey=$BUGSNAG_KEY \
+                -F appBundleVersion=$CIRCLE_BUILD_NUM \
+                -F dev=false \
+                -F platform=ios \
+                -F sourceMap=@ios-release.bundle.map \
+                -F bundle=@ios-release.bundle
+            fi
+      - run:
+          name: Fastlane Build
+          no_output_timeout: 1200
+          command: |
+            agvtool new-version -all $CIRCLE_BUILD_NUM
+            if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
+              /usr/libexec/PlistBuddy -c "Set BugsnagAPIKey $BUGSNAG_KEY_OFFICIAL" ./RocketChatRN/Info.plist
+            else
+              /usr/libexec/PlistBuddy -c "Set BugsnagAPIKey $BUGSNAG_KEY" ./RocketChatRN/Info.plist
+            fi
+
+            if [[ $APP_STORE_CONNECT_API_KEY ]]; then
+              echo $APP_STORE_CONNECT_API_KEY | base64 --decode > ./fastlane/app_store_connect_api_key.p8
+              if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
+                bundle exec fastlane ios build_official
+              else
+                if [[ $KEYSTORE ]]; then
+                  bundle exec fastlane ios release # TODO: rename
+                else
+                  bundle exec fastlane ios build_fork
+                fi
+              fi
+
+            fi
+          working_directory: ios
+      - save_cache: *save-npm-cache-mac
+      - save_cache: *save-gems-cache
+      - store_artifacts:
+          path: ios/*.ipa
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ios/*.ipa
+            - ios/fastlane/report.xml
 
 version: 2.1
 
@@ -256,11 +329,9 @@ jobs:
     <<: *defaults
     docker:
       - image: circleci/android:api-28-node
-
     environment:
       <<: *android-env
       <<: *bash-env
-
     steps:
       - android-build
   
@@ -268,11 +339,9 @@ jobs:
     <<: *defaults
     docker:
       - image: circleci/android:api-28-node
-
     environment:
       <<: *android-env
       <<: *bash-env
-
     steps:
       - android-build
 
@@ -302,133 +371,13 @@ jobs:
   # iOS builds
   ios-build:
     executor: mac-env
-
     steps:
-      - checkout
-
-      - restore_cache: *restore-gems-cache
-
-      - restore_cache: *restore-npm-cache-mac
-
-      - run: *install-node
-
-      - run: *install-npm-modules
-
-      - run: *update-fastlane-ios
-
-      - run:
-          name: Set Google Services
-          command: |
-            if [[ $KEYSTORE ]]; then
-              echo $GOOGLE_SERVICES_REACTNATIVE | base64 --decode > GoogleService-Info.plist
-            fi
-          working_directory: ios
-
-      - run:
-          name: Upload sourcemaps to Bugsnag
-          command: |
-            if [[ $BUGSNAG_KEY ]]; then
-              yarn generate-source-maps-ios
-              curl https://upload.bugsnag.com/react-native-source-map \
-                -F apiKey=$BUGSNAG_KEY \
-                -F appBundleVersion=$CIRCLE_BUILD_NUM \
-                -F dev=false \
-                -F platform=ios \
-                -F sourceMap=@ios-release.bundle.map \
-                -F bundle=@ios-release.bundle
-            fi
-
-      - run:
-          name: Fastlane Build
-          no_output_timeout: 1200
-          command: |
-            agvtool new-version -all $CIRCLE_BUILD_NUM
-            /usr/libexec/PlistBuddy -c "Set BugsnagAPIKey $BUGSNAG_KEY" ./RocketChatRN/Info.plist
-
-            if [[ $APP_STORE_CONNECT_API_KEY ]]; then
-              echo $APP_STORE_CONNECT_API_KEY | base64 --decode > ./fastlane/app_store_connect_api_key.p8
-              bundle exec fastlane ios release
-            else
-              bundle exec fastlane ios build_fork
-            fi
-          working_directory: ios
-
-      - save_cache: *save-npm-cache-mac
-
-      - save_cache: *save-gems-cache
-
-      - store_artifacts:
-          path: ios/RocketChatRN.ipa
-
-      - persist_to_workspace:
-          root: .
-          paths:
-            - ios/*.ipa
-            - ios/fastlane/report.xml
+      - ios-build
 
   ios-build-official:
     executor: mac-env
-
     steps:
-      - checkout
-
-      - restore_cache: *restore-gems-cache
-
-      - restore_cache: *restore-npm-cache-mac
-
-      - run: *install-node
-
-      - run: *install-npm-modules
-
-      - run: *update-fastlane-ios
-
-      - run:
-          name: Set Google Services
-          command: |
-            if [[ $KEYSTORE ]]; then
-              echo $GOOGLE_SERVICES_IOS | base64 --decode > GoogleService-Info.plist
-            fi
-          working_directory: ios
-
-      - run:
-          name: Upload sourcemaps to Bugsnag
-          command: |
-            if [[ $BUGSNAG_KEY_OFFICIAL ]]; then
-              yarn generate-source-maps-ios
-              curl https://upload.bugsnag.com/react-native-source-map \
-                -F apiKey=$BUGSNAG_KEY_OFFICIAL \
-                -F appBundleVersion=$CIRCLE_BUILD_NUM \
-                -F dev=false \
-                -F platform=ios \
-                -F sourceMap=@ios-release.bundle.map \
-                -F bundle=@ios-release.bundle
-            fi
-
-      - run:
-          name: Fastlane Build
-          no_output_timeout: 1200
-          command: |
-            agvtool new-version -all $CIRCLE_BUILD_NUM
-            # /usr/libexec/PlistBuddy -c "Set BugsnagAPIKey $BUGSNAG_KEY_OFFICIAL" ./RocketChatRN/Info.plist
-
-            if [[ $APP_STORE_CONNECT_API_KEY ]]; then
-              echo $APP_STORE_CONNECT_API_KEY | base64 --decode > ./fastlane/app_store_connect_api_key.p8
-              bundle exec fastlane ios build_official
-            fi
-          working_directory: ios
-
-      - save_cache: *save-npm-cache-mac
-
-      - save_cache: *save-gems-cache
-
-      - store_artifacts:
-          path: ios/Rocket.Chat.ipa
-
-      - persist_to_workspace:
-          root: .
-          paths:
-            - ios/*.ipa
-            - ios/fastlane/report.xml
+      - ios-build
 
   ios-testflight:
     executor: mac-env
