@@ -273,12 +273,14 @@ commands:
       - save_cache: *save-npm-cache-mac
       - save_cache: *save-gems-cache
       - store_artifacts:
-          path: ios/*.ipa
+          path: ios/Rocket.Chat.ipa
+      - store_artifacts:
+          path: ios/Rocket.Chat.app.dSYM.zip
       - persist_to_workspace:
           root: .
           paths:
             - ios/*.ipa
-            - ios/fastlane/report.xml
+            - ios/*.zip
 
 version: 2.1
 

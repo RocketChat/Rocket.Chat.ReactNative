@@ -25,11 +25,6 @@ platform :ios do
     )	
   end
 
-  desc "Runs all the tests"
-  lane :test do
-    scan
-  end
-
   desc "Submit a new Beta Build to Apple TestFlight"
   lane :beta do |options|
     api_key = app_store_connect_api_key(
@@ -39,13 +34,14 @@ platform :ios do
       in_house: false
     )
     pilot(
-      ipa: options[:official] ? 'ios/Rocket.Chat.ipa' : 'ios/RocketChatRN.ipa',
+      ipa: 'ios/Rocket.Chat.ipa',
       app_identifier: options[:official] ? 'chat.rocket.ios' : 'chat.rocket.reactnative',
       skip_waiting_for_build_processing: true
     )
+    upload_symbols_to_crashlytics(dsym_path: "./ios/Rocket.Chat.app.dSYM.zip")
   end
 
-  desc "Build Experimental app for release"
+  desc "Build Experimental app"
   lane :release do
     api_key = app_store_connect_api_key(
       key_id: "F296L2294Y",
@@ -57,7 +53,11 @@ platform :ios do
     get_provisioning_profile(app_identifier: "chat.rocket.reactnative.ShareExtension")
     get_provisioning_profile(app_identifier: "chat.rocket.reactnative.NotificationService")
     # pem(api_key: api_key) # still uses Spaceship http://docs.fastlane.tools/actions/pem/#how-does-it-work
-    gym(scheme: "RocketChatRN", workspace: "RocketChatRN.xcworkspace")
+    gym(
+      scheme: "RocketChatRN",
+      workspace: "RocketChatRN.xcworkspace",
+      output_name: "Rocket.Chat"
+    )
   end
 
   desc "Build fork app"
@@ -65,7 +65,7 @@ platform :ios do
     gym(scheme: "RocketChatRN", workspace: "RocketChatRN.xcworkspace", skip_codesigning: true, skip_archive: true)
   end
 
-  desc "Build Official app for release"
+  desc "Build Official app"
   lane :build_official do
     sh "../../scripts/prepare_ios_official.sh"
 
@@ -95,7 +95,8 @@ platform :ios do
     gym(
       scheme: "RocketChat",
       workspace: "RocketChatRN.xcworkspace",
-      xcargs: "-allowProvisioningUpdates"
+      xcargs: "-allowProvisioningUpdates",
+      output_name: "Rocket.Chat"
     )
   end
 
