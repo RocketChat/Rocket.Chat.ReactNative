@@ -104,18 +104,19 @@ commands:
             echo -e "android.useAndroidX=true" >> ./gradle.properties
             echo -e "android.enableJetifier=true" >> ./gradle.properties
             echo -e "FLIPPER_VERSION=0.51.0" >> ./gradle.properties
+            echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
 
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
               echo -e "APPLICATION_ID=chat.rocket.android" >> ./gradle.properties
               echo -e "BugsnagAPIKey=$BUGSNAG_KEY_OFFICIAL" >> ./gradle.properties
+              echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
+              echo -e "KEYSTORE=$CHAT_ROCKET_ANDROID_STORE_FILE_BASE64_JKS" >> ./gradle.properties
+              echo -e "KEYSTORE_PASSWORD=$CHAT_ROCKET_ANDROID_STORE_PASSWORD" >> ./gradle.properties
+              echo -e "KEY_ALIAS=$CHAT_ROCKET_ANDROID_KEY_ALIAS" >> ./gradle.properties
+              echo -e "KEY_PASSWORD=$CHAT_ROCKET_ANDROID_KEY_PASSWORD" >> ./gradle.properties
             else
               echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
               echo -e "BugsnagAPIKey=$BUGSNAG_KEY" >> ./gradle.properties
-            fi
-
-            echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
-
-            if [[ $KEYSTORE ]]; then
               echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
               echo -e "KEYSTORE=$KEYSTORE" >> ./gradle.properties
               echo -e "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
