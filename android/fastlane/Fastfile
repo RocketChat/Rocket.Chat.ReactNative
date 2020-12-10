@@ -17,7 +17,7 @@ default_platform(:android)
 
 platform :android do
   desc "Upload App to Play Store Internal"
-  lane :beta do
+  lane :beta do |options|
     if options[:official]
       upload_to_play_store(
         track: 'internal',
