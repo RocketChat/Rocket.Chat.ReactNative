@@ -102,7 +102,7 @@ commands:
       - save_cache: *save-gems-cache
 
   android-build:
-    description: "Build android app based on circleci job"
+    description: "Build Android app"
     steps:
       - checkout
 
@@ -123,7 +123,7 @@ commands:
             echo -e "android.enableJetifier=true" >> ./gradle.properties
             echo -e "FLIPPER_VERSION=0.51.0" >> ./gradle.properties
 
-            if [[ $CIRCLE_JOB == "android-official-play-build" ]]; then
+            if [[ $CIRCLE_JOB == "android-build-official-play" ]]; then
               echo -e "APPLICATION_ID=chat.rocket.android" >> ./gradle.properties
               echo -e "BugsnagAPIKey=$BUGSNAG_KEY_OFFICIAL" >> ./gradle.properties
             else
@@ -153,7 +153,7 @@ commands:
       - run:
           name: Config variables
           command: |
-            if [[ $CIRCLE_JOB == "android-official-play-build" ]]; then
+            if [[ $CIRCLE_JOB == "android-build-official-play" ]]; then
               echo -e "export default { BUGSNAG_API_KEY: '$BUGSNAG_KEY_OFFICIAL' };" > ./config.js
             else
               echo -e "export default { BUGSNAG_API_KEY: '$BUGSNAG_KEY' };" > ./config.js
@@ -162,10 +162,10 @@ commands:
       - run:
           name: Build App
           command: |
-            if [[ $CIRCLE_JOB == "android-official-play-build" ]]; then
+            if [[ $CIRCLE_JOB == "android-build-official-play" ]]; then
               ./gradlew bundleOfficialPlayRelease
             fi
-            if [[ $CIRCLE_JOB == "android-experimental-play-build" ]]; then
+            if [[ $CIRCLE_JOB == "android-build-experimental-play" ]]; then
               ./gradlew bundleExperimentalPlayRelease
             fi
             if [[ ! $KEYSTORE ]]; then
@@ -176,7 +176,7 @@ commands:
       - run:
           name: Upload sourcemaps to Bugsnag
           command: |
-            if [[ $CIRCLE_JOB == "android-official-play-build" ]]; then
+            if [[ $CIRCLE_JOB == "android-build-official-play" ]]; then
               yarn generate-source-maps-android upload \
                 --api-key=$BUGSNAG_KEY_OFFICIAL \
                 --app-version=$CIRCLE_BUILD_NUM \
@@ -185,7 +185,7 @@ commands:
                 --minified-url=app.bundle \
                 --upload-sources
             fi
-            if [[ $CIRCLE_JOB == "android-experimental-play-build" ]]; then
+            if [[ $CIRCLE_JOB == "android-build-experimental-play" ]]; then
               yarn generate-source-maps-android upload \
                 --api-key=$BUGSNAG_KEY \
                 --app-version=$CIRCLE_BUILD_NUM \
@@ -268,7 +268,6 @@ commands:
                   bundle exec fastlane ios build_fork
                 fi
               fi
-
             fi
           working_directory: ios
       - save_cache: *save-npm-cache-mac
@@ -325,7 +324,7 @@ jobs:
       - save_cache: *save-npm-cache-linux
 
   # Android builds
-  android-experimental-play-build:
+  android-build-experimental-play:
     <<: *defaults
     docker:
       - image: circleci/android:api-28-node
@@ -335,7 +334,7 @@ jobs:
     steps:
       - android-build
   
-  android-official-play-build:
+  android-build-official-play:
     <<: *defaults
     docker:
       - image: circleci/android:api-28-node
@@ -441,4 +440,4 @@ workflows:
       #     requires:
       #       - android-hold-foss-build
 
-      - android-official-play-build
+      - android-build-official-play
