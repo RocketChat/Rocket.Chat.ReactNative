@@ -105,7 +105,7 @@ commands:
             echo -e "android.enableJetifier=true" >> ./gradle.properties
             echo -e "FLIPPER_VERSION=0.51.0" >> ./gradle.properties
 
-            if [[ $CIRCLE_JOB == "android-build-official-play" ]]; then
+            if [[ $CIRCLE_JOB == "android-build-official" ]]; then
               echo -e "APPLICATION_ID=chat.rocket.android" >> ./gradle.properties
               echo -e "BugsnagAPIKey=$BUGSNAG_KEY_OFFICIAL" >> ./gradle.properties
             else
@@ -135,7 +135,7 @@ commands:
       - run:
           name: Config variables
           command: |
-            if [[ $CIRCLE_JOB == "android-build-official-play" ]]; then
+            if [[ $CIRCLE_JOB == "android-build-official" ]]; then
               echo -e "export default { BUGSNAG_API_KEY: '$BUGSNAG_KEY_OFFICIAL' };" > ./config.js
             else
               echo -e "export default { BUGSNAG_API_KEY: '$BUGSNAG_KEY' };" > ./config.js
@@ -144,10 +144,10 @@ commands:
       - run:
           name: Build App
           command: |
-            if [[ $CIRCLE_JOB == "android-build-official-play" ]]; then
+            if [[ $CIRCLE_JOB == "android-build-official" ]]; then
               ./gradlew bundleOfficialPlayRelease
             fi
-            if [[ $CIRCLE_JOB == "android-build-experimental-play" ]]; then
+            if [[ $CIRCLE_JOB == "android-build-experimental" ]]; then
               ./gradlew bundleExperimentalPlayRelease
             fi
             if [[ ! $KEYSTORE ]]; then
@@ -158,7 +158,7 @@ commands:
       - run:
           name: Upload sourcemaps to Bugsnag
           command: |
-            if [[ $CIRCLE_JOB == "android-build-official-play" ]]; then
+            if [[ $CIRCLE_JOB == "android-build-official" ]]; then
               yarn generate-source-maps-android upload \
                 --api-key=$BUGSNAG_KEY_OFFICIAL \
                 --app-version=$CIRCLE_BUILD_NUM \
@@ -167,7 +167,7 @@ commands:
                 --minified-url=app.bundle \
                 --upload-sources
             fi
-            if [[ $CIRCLE_JOB == "android-build-experimental-play" ]]; then
+            if [[ $CIRCLE_JOB == "android-build-experimental" ]]; then
               yarn generate-source-maps-android upload \
                 --api-key=$BUGSNAG_KEY \
                 --app-version=$CIRCLE_BUILD_NUM \
@@ -385,7 +385,7 @@ jobs:
           official: true
 
   # iOS builds
-  ios-build:
+  ios-build-experimental:
     executor: mac-env
     steps:
       - ios-build
@@ -395,7 +395,7 @@ jobs:
     steps:
       - ios-build
 
-  ios-testflight:
+  ios-testflight-experimental:
     executor: mac-env
     steps:
       - upload-to-testflight:
@@ -425,13 +425,13 @@ workflows:
             - ios-hold-testflight-experimental
 
       # iOS Official
-      - ios-hold-testflight-official:
+      - ios-hold-build-official:
           type: approval
           requires:
             - lint-testunit
       - ios-build-official:
           requires:
-            - ios-hold-testflight-official
+            - ios-hold-build-official
       - ios-hold-testflight-official:
           type: approval
           requires:
@@ -456,7 +456,7 @@ workflows:
       - android-hold-build-official:
           type: approval
           requires:
-            - android-play-build
+            - lint-testunit
       - android-build-official:
           requires:
             - android-hold-build-official
