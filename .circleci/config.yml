@@ -326,7 +326,7 @@ jobs:
       - save_cache: *save-npm-cache-linux
 
   # Android builds
-  android-build-experimental-play:
+  android-build-experimental:
     <<: *defaults
     docker:
       - image: circleci/android:api-28-node
@@ -336,7 +336,7 @@ jobs:
     steps:
       - android-build
   
-  android-build-official-play:
+  android-build-official:
     <<: *defaults
     docker:
       - image: circleci/android:api-28-node
@@ -395,51 +395,60 @@ jobs:
 workflows:
   build-and-test:
     jobs:
-      # - lint-testunit
+      - lint-testunit
 
-      # - ios-build:
-      #     requires:
-      #       - lint-testunit
-      # - ios-hold-testflight:
-      #     type: approval
-      #     requires:
-      #       - ios-build
-      # - ios-testflight:
-      #     requires:
-      #       - ios-hold-testflight
+      # iOS Experimental
+      - ios-build-experimental:
+          requires:
+            - lint-testunit
+      - ios-hold-testflight-experimental:
+          type: approval
+          requires:
+            - ios-build-experimental
+      - ios-testflight-experimental:
+          requires:
+            - ios-hold-testflight-experimental
 
-      - ios-build-official
-      # - ios-hold-official:
-      #     type: approval
-      #     requires:
-      #       - lint-testunit
-      # - ios-build-official:
-      #     requires:
-      #       - ios-hold-official
-      # - ios-hold-testflight-official:
-      #     type: approval
-      #     requires:
-      #       - ios-build-official
-      - ios-testflight-official:
+      # iOS Official
+      - ios-hold-testflight-official:
+          type: approval
+          requires:
+            - lint-testunit
+      - ios-build-official:
+          requires:
+            - ios-hold-testflight-official
+      - ios-hold-testflight-official:
+          type: approval
           requires:
             - ios-build-official
+      - ios-testflight-official:
+          requires:
+            - ios-hold-testflight-official
 
-      # - android-play-build:
-      #     requires:
-      #       - lint-testunit
-      # - android-hold-google-play-beta:
-      #     type: approval
-      #     requires:
-      #       - android-play-build
-      # - android-google-play-beta:
-      #     requires:
-      #       - android-hold-google-play-beta
-      # - android-hold-foss-build:
-      #     type: approval
-      #     requires:
-      #       - lint-testunit
-      # - android-foss-build:
-      #     requires:
-      #       - android-hold-foss-build
-
-      - android-build-official-play
+      # Android Experimental
+      - android-build-experimental:
+          requires:
+            - lint-testunit
+      - android-hold-google-play-beta-experimental:
+          type: approval
+          requires:
+            - android-build-experimental
+      - android-google-play-beta-experimental:
+          requires:
+            - android-hold-google-play-beta-experimental
+      
+      # Android Official
+      - android-hold-build-official:
+          type: approval
+          requires:
+            - android-play-build
+      - android-build-official:
+          requires:
+            - android-hold-build-official
+      - android-hold-google-play-beta-official:
+          type: approval
+          requires:
+            - android-build-official
+      - android-google-play-beta-official:
+          requires:
+            - android-hold-google-play-beta-official
