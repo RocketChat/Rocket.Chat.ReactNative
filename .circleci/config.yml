@@ -148,7 +148,7 @@ commands:
             if [[ $KEYSTORE ]]; then
               echo $GOOGLE_SERVICES_ANDROID | base64 --decode > google-services.json
             fi
-          working_directory: android/app/src/play
+          working_directory: android/app
 
       - run:
           name: Config variables
@@ -160,7 +160,7 @@ commands:
             fi
 
       - run:
-          name: Build Official Play App
+          name: Build App
           command: |
             if [[ $CIRCLE_JOB == "android-official-play-build" ]]; then
               ./gradlew bundleOfficialPlayRelease
