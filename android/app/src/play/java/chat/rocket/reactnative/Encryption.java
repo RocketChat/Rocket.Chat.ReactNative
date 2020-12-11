@@ -162,7 +162,7 @@ class Encryption {
 
             return m.text;
         } catch (Exception e) {
-            Log.d("[ROCKETCHAT][ENCRYPTION]", Log.getStackTraceString(e));
+            Log.d("[ROCKETCHAT][E2E]", Log.getStackTraceString(e));
         }
 
         return null;
@@ -192,7 +192,7 @@ class Encryption {
 
             return keyId + Base64.encodeToString(concat(bytes, data), Base64.NO_WRAP);
         } catch (Exception e) {
-            Log.d("[ROCKETCHAT][ENCRYPTION]", Log.getStackTraceString(e));
+            Log.d("[ROCKETCHAT][E2E]", Log.getStackTraceString(e));
         }
 
         return message;
