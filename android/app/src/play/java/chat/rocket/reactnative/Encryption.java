@@ -1,28 +1,21 @@
 package chat.rocket.reactnative;
 
-import android.util.Log;
-import android.util.Base64;
 import android.database.Cursor;
+import android.util.Base64;
+import android.util.Log;
 
-import com.pedrouid.crypto.RSA;
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.WritableMap;
+import com.google.gson.Gson;
+import com.nozbe.watermelondb.Database;
 import com.pedrouid.crypto.RCTAes;
 import com.pedrouid.crypto.RCTRsaUtils;
+import com.pedrouid.crypto.RSA;
 import com.pedrouid.crypto.Util;
 
-import com.google.gson.Gson;
-
-import com.facebook.react.bridge.Promise;
-import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
-
-import com.nozbe.watermelondb.Database;
-
-import java.util.Arrays;
 import java.security.SecureRandom;
+import java.util.Arrays;
 
 class Message {
     String _id;
