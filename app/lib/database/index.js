@@ -28,6 +28,7 @@ import serversMigrations from './model/servers/migrations';
 
 import { isIOS } from '../../utils/deviceInfo';
 import appGroup from '../../utils/appGroup';
+import { isOfficial } from '../../constants/environment';
 
 const appGroupPath = isIOS ? appGroup.path : '';
 
@@ -37,7 +38,7 @@ if (__DEV__ && isIOS) {
 
 export const getDatabase = (database = '') => {
 	const path = database.replace(/(^\w+:|^)\/\//, '').replace(/\//g, '.');
-	const dbName = `${ appGroupPath }${ path }-experimental.db`;
+	const dbName = `${ appGroupPath }${ path }${ isOfficial ? '' : '-experimental' }.db`;
 
 	const adapter = new SQLiteAdapter({
 		dbName,
