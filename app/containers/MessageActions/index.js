@@ -199,15 +199,15 @@ const MessageActions = React.memo(forwardRef(({
 					m.starred = !m.starred;
 				});
 			});
-			let result = await RocketChat.toggleStarMessage(message.id, !message.starred);
-			if(result.success == true){
-			EventEmitter.emit(LISTENER, { message: !message.starred ? I18n.t('Message_unstarred') : I18n.t('Message_starred') });
-			}else{
-					await db.action(async() => {
-						await message.update((m) => {
-							m.starred = !m.starred;
-						});
+			const result = await RocketChat.toggleStarMessage(message.id, !message.starred);
+			if (result.success === true) {
+				EventEmitter.emit(LISTENER, { message: !message.starred ? I18n.t('Message_unstarred') : I18n.t('Message_starred') });
+			} else {
+				await db.action(async() => {
+					await message.update((m) => {
+						m.starred = !m.starred;
 					});
+				});
 			}
 		} catch (e) {
 			logEvent(events.ROOM_MSG_ACTION_STAR_F);
@@ -224,8 +224,8 @@ const MessageActions = React.memo(forwardRef(({
 					m.pinned = !m.pinned;
 				});
 			});
-			let result = await RocketChat.togglePinMessage(message.id, !message.pinned);
-			if(result.success != true){
+			const result = await RocketChat.togglePinMessage(message.id, !message.pinned);
+			if (result.success !== true) {
 				await db.action(async() => {
 					await message.update((m) => {
 						m.pinned = !m.pinned;
