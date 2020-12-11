@@ -197,9 +197,11 @@ android {
     productFlavors {
         official {
             dimension = "app"
+            buildConfigField "boolean", "IS_OFFICIAL", "true"
         }
         experimental {
             dimension = "app"
+            buildConfigField "boolean", "IS_OFFICIAL", "false"
         }
         foss {
             dimension = "type"
@@ -211,8 +213,21 @@ android {
         }
     }
     sourceSets {
-        play {
-            java.srcDirs = ['src/main/java', 'src/play/java', 'src/official/java']
+        // TODO: refactor making sure notifications are working properly both on debug and release
+        experimentalPlayDebug {
+            java.srcDirs = ['src/main/java', 'src/play/java']
+            manifest.srcFile 'src/play/AndroidManifest.xml'
+        }
+        experimentalPlayRelease {
+            java.srcDirs = ['src/main/java', 'src/play/java']
+            manifest.srcFile 'src/play/AndroidManifest.xml'
+        }
+        officialPlayDebug {
+            java.srcDirs = ['src/main/java', 'src/play/java']
+            manifest.srcFile 'src/play/AndroidManifest.xml'
+        }
+        officialPlayRelease {
+            java.srcDirs = ['src/main/java', 'src/play/java']
             manifest.srcFile 'src/play/AndroidManifest.xml'
         }
     }

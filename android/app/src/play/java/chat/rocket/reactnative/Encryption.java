@@ -14,6 +14,7 @@ import com.pedrouid.crypto.RCTRsaUtils;
 import com.pedrouid.crypto.RSA;
 import com.pedrouid.crypto.Util;
 
+import java.lang.reflect.Field;
 import java.security.SecureRandom;
 import java.util.Arrays;
 
@@ -62,8 +63,24 @@ class Encryption {
     public static Encryption shared = new Encryption();
     private ReactApplicationContext reactContext;
 
-    public Room readRoom(final Ejson ejson) {
-        Database database = new Database(ejson.serverURL().replace("https://", "") + "-experimental.db", reactContext);
+    public Room readRoom(final Ejson ejson) throws NoSuchFieldException {
+        int resId = reactContext.getResources().getIdentifier("rn_config_reader_custom_package", "string", reactContext.getPackageName());
+        String className = reactContext.getString(resId);
+        Class clazz = null;
+        Boolean isOfficial = false;
+        try {
+            clazz = Class.forName(className + ".BuildConfig");
+            Field IS_OFFICIAL = clazz.getField("IS_OFFICIAL");
+            isOfficial = (Boolean) IS_OFFICIAL.get(null);
+        } catch (ClassNotFoundException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        String dbName = ejson.serverURL().replace("https://", "");
+        if (!isOfficial) {
+            dbName += "-experimental";
+        }
+        dbName += ".db";
+        Database database = new Database(dbName, reactContext);
         String[] query = {ejson.rid};
         Cursor cursor = database.rawQuery("select * from subscriptions where id == ? limit 1", query);
 
