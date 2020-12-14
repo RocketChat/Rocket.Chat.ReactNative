@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "115198584049",
+    "firebase_url": "https://rocketchat-reactnative-test.firebaseio.com",
+    "project_id": "rocketchat-reactnative-test",
+    "storage_bucket": "rocketchat-reactnative-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115198584049:android:a79216ae48935d2c9ab550",
+        "android_client_info": {
+          "package_name": "chat.rocket.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "115198584049-ack609b1338b827fta26s9rd2ab1aad5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWwowhAfACHBw3YxmDOXY3QyakgjhJLqc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "115198584049-ack609b1338b827fta26s9rd2ab1aad5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "115198584049-0efgfvm0oh9ap55g7epmqnjm27mq3j4e.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "chat.rocket.reactnative"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115198584049:android:8be27b1f7c42a2ed",
+        "android_client_info": {
+          "package_name": "chat.rocket.reactnative"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "115198584049-ack609b1338b827fta26s9rd2ab1aad5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWwowhAfACHBw3YxmDOXY3QyakgjhJLqc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "115198584049-ack609b1338b827fta26s9rd2ab1aad5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "115198584049-0efgfvm0oh9ap55g7epmqnjm27mq3j4e.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "chat.rocket.reactnative"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

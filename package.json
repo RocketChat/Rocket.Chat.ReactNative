@@ -190,7 +190,7 @@
     "specs": "e2e/tests",
     "configurations": {
       "ios.sim.debug": {
-        "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/RocketChatRN.app",
+        "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/Rocket.Chat Experimental.app",
         "build": "xcodebuild -workspace ios/RocketChatRN.xcworkspace -scheme RocketChatRN -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
         "type": "ios.simulator",
         "device": {
@@ -198,7 +198,7 @@
         }
       },
       "ios.sim.release": {
-        "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/RocketChatRN.app",
+        "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/Rocket.Chat Experimental.app",
         "build": "xcodebuild -workspace ios/RocketChatRN.xcworkspace -scheme RocketChatRN -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
         "type": "ios.simulator",
         "device": {
