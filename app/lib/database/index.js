@@ -36,9 +36,11 @@ if (__DEV__ && isIOS) {
 	console.log(appGroupPath);
 }
 
+const getDatabasePath = name => `${ appGroupPath }${ name }${ isOfficial ? '' : '-experimental' }.db`;
+
 export const getDatabase = (database = '') => {
 	const path = database.replace(/(^\w+:|^)\/\//, '').replace(/\//g, '.');
-	const dbName = `${ appGroupPath }${ path }${ isOfficial ? '' : '-experimental' }.db`;
+	const dbName = getDatabasePath(path);
 
 	const adapter = new SQLiteAdapter({
 		dbName,
@@ -71,7 +73,7 @@ class DB {
 	databases = {
 		serversDB: new Database({
 			adapter: new SQLiteAdapter({
-				dbName: `${ appGroupPath }default-experimental.db`,
+				dbName: getDatabasePath('default'),
 				schema: serversSchema,
 				migrations: serversMigrations
 			}),
@@ -98,7 +100,7 @@ class DB {
 
 	setShareDB(database = '') {
 		const path = database.replace(/(^\w+:|^)\/\//, '').replace(/\//g, '.');
-		const dbName = `${ appGroupPath }${ path }-experimental.db`;
+		const dbName = getDatabasePath(path);
 
 		const adapter = new SQLiteAdapter({
 			dbName,
