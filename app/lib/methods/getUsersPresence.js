@@ -55,8 +55,9 @@ export default async function getUsersPresence() {
 			if (result.success) {
 				const { users } = result;
 
-				const activeUsers = users.reduce((ret, item) => {
-					const { _id, status, statusText } = item;
+				const activeUsers = ids.reduce((ret, id) => {
+					const user = users.find(u => u._id === id) ?? { _id: id, status: 'offline' };
+					const { _id, status, statusText } = user;
 
 					if (loggedUser && loggedUser.id === _id) {
 						reduxStore.dispatch(setUser({ status, statusText }));
