@@ -24,7 +24,7 @@ const Icon = React.memo(({
 	roomUserId, type, status, theme, tmid
 }) => {
 	if ((type === 'd' || tmid) && roomUserId) {
-		return <Status size={10} style={styles.status} status={status} />;
+		return <Status size={20} style={styles.status} status={status} />;
 	}
 
 	let colorStyle = {};
