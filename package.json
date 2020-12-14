@@ -55,7 +55,7 @@
     "ejson": "2.2.0",
     "eslint-config-airbnb": "^18.1.0",
     "expo-apple-authentication": "^2.2.1",
-    "expo-av": "8.2.1",
+    "expo-av": "^8.2.1",
     "expo-file-system": "9.0.1",
     "expo-haptics": "8.2.1",
     "expo-keep-awake": "8.2.1",
