@@ -24,6 +24,16 @@ export default StyleSheet.create({
 		overflow: 'hidden',
 		borderRadius: 10
 	},
+	status: {
+		position: 'absolute',
+		bottom: -8,
+		right: -8,
+		width: 21,
+		height: 21,
+		borderRadius: 11,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
 	textAlignCenter: {
 		textAlign: 'center'
 	},

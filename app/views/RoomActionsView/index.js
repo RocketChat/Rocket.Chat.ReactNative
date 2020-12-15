@@ -10,6 +10,7 @@ import Touch from '../../utils/touch';
 import { setLoading as setLoadingAction } from '../../actions/selectedUsers';
 import { leaveRoom as leaveRoomAction, closeRoom as closeRoomAction } from '../../actions/room';
 import styles from './styles';
+import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status';
 import * as List from '../../containers/List';
@@ -422,7 +423,7 @@ class RoomActionsView extends React.Component {
 						>
 							{t === 'd' && member._id
 								? (
-									<View style={[styles.status, { backgroundColor: themes[theme].backgroundColor }]}>
+									<View style={[sharedStyles.status, { backgroundColor: themes[theme].backgroundColor }]}>
 										<Status size={20} id={member._id} />
 									</View>
 								) : null

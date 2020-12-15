@@ -32,15 +32,5 @@ export default StyleSheet.create({
 		...I18nManager.isRTL
 			? { transform: [{ rotate: '180deg' }] }
 			: {}
-	},
-	status: {
-		position: 'absolute',
-		bottom: -8,
-		right: -8,
-		width: 21,
-		height: 21,
-		borderRadius: 11,
-		justifyContent: 'center',
-		alignItems: 'center'
 	}
 });
