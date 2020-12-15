@@ -16,11 +16,6 @@ or alternatively using `brew install fastlane`
 
 # Available Actions
 ## iOS
-### ios test
-```
-fastlane ios test
-```
-Runs all the tests
 ### ios beta
 ```
 fastlane ios beta
@@ -30,12 +25,17 @@ Submit a new Beta Build to Apple TestFlight
 ```
 fastlane ios release
 ```
-Build App for release
-### ios build
+Build Experimental app
+### ios build_fork
 ```
-fastlane ios build
+fastlane ios build_fork
 ```
-Build App for development
+Build fork app
+### ios build_official
+```
+fastlane ios build_official
+```
+Build Official app
 
 ----
 

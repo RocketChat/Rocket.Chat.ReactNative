@@ -1,10 +1,10 @@
 def taskRequests = getGradle().getStartParameter().getTaskRequests().toString().toLowerCase()
-def isPlay = !taskRequests.contains("foss")
+def isFoss = taskRequests.contains("foss")
 
 apply plugin: "com.android.application"
 apply plugin: 'kotlin-android'
 
-if (isPlay) {
+if (!isFoss) {
     apply plugin: 'com.google.firebase.crashlytics'
     apply plugin: 'com.bugsnag.android.gradle'
 }
@@ -146,7 +146,7 @@ android {
         versionCode VERSIONCODE as Integer
         versionName "4.13.0"
         vectorDrawables.useSupportLibrary = true
-        if (isPlay) {
+        if (!isFoss) {
             manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
             missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
         }
@@ -176,7 +176,7 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'])
             signingConfig signingConfigs.release
-            if (isPlay) {
+            if (!isFoss) {
                 firebaseCrashlytics {
                     nativeSymbolUploadEnabled true
                 }
@@ -193,10 +193,17 @@ android {
 
     // applicationVariants are e.g. debug, release
 
-    flavorDimensions "type"
+    flavorDimensions "app", "type"
     productFlavors {
+        official {
+            dimension = "app"
+            buildConfigField "boolean", "IS_OFFICIAL", "true"
+        }
+        experimental {
+            dimension = "app"
+            buildConfigField "boolean", "IS_OFFICIAL", "false"
+        }
         foss {
-            applicationId APPLICATION_ID
             dimension = "type"
             buildConfigField "boolean", "FDROID_BUILD", "true"
         }
@@ -206,11 +213,20 @@ android {
         }
     }
     sourceSets {
-        playDebug {
+        // TODO: refactor making sure notifications are working properly both on debug and release
+        experimentalPlayDebug {
             java.srcDirs = ['src/main/java', 'src/play/java']
             manifest.srcFile 'src/play/AndroidManifest.xml'
         }
-        playRelease {
+        experimentalPlayRelease {
+            java.srcDirs = ['src/main/java', 'src/play/java']
+            manifest.srcFile 'src/play/AndroidManifest.xml'
+        }
+        officialPlayDebug {
+            java.srcDirs = ['src/main/java', 'src/play/java']
+            manifest.srcFile 'src/play/AndroidManifest.xml'
+        }
+        officialPlayRelease {
             java.srcDirs = ['src/main/java', 'src/play/java']
             manifest.srcFile 'src/play/AndroidManifest.xml'
         }
@@ -287,6 +303,6 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
-if (isPlay) {
+if (!isFoss) {
     apply plugin: 'com.google.gms.google-services'
 }
