@@ -885,10 +885,14 @@ exports[`Storyshots Avatar list Avatar 1`] = `
             },
             Array [
               Object {
-                "borderWidth": 3,
-                "bottom": -3,
+                "alignItems": "center",
+                "borderRadius": 11,
+                "bottom": -8,
+                "height": 21,
+                "justifyContent": "center",
                 "position": "absolute",
-                "right": -3,
+                "right": -8,
+                "width": 21,
               },
               Object {
                 "borderWidth": 4,
