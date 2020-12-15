@@ -6,7 +6,8 @@ import equal from 'deep-equal';
 import I18n from '../../i18n';
 import styles from './styles';
 import Markdown from '../markdown';
-import { getInfoMessage } from './utils';
+import User from './User';
+import { getInfoMessage, SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME } from './utils';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 import Encrypted from './Encrypted';
@@ -15,13 +16,25 @@ import { E2E_MESSAGE_TYPE } from '../../lib/encryption/constants';
 const Content = React.memo((props) => {
 	if (props.isInfo) {
 		const infoMessage = getInfoMessage({ ...props });
-		return (
+
+		const renderMessageContent = (
 			<Text
 				style={[styles.textInfo, { color: themes[props.theme].auxiliaryText }]}
 				accessibilityLabel={infoMessage}
-			>{infoMessage}
+			>
+				{infoMessage}
 			</Text>
 		);
+
+		if (SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME.includes(props.type)) {
+			return (
+				<Text>
+					<User {...props} /> {renderMessageContent}
+				</Text>
+			);
+		}
+
+		return renderMessageContent;
 	}
 
 	const isPreview = props.tmid && !props.isThreadRoom;
@@ -67,6 +80,10 @@ const Content = React.memo((props) => {
 		);
 	}
 
+	if (props.isIgnored) {
+		content = <Text style={[styles.textInfo, { color: themes[props.theme].auxiliaryText }]}>{I18n.t('Message_Ignored')}</Text>;
+	}
+
 	return (
 		<View style={props.isTemp && styles.temp}>
 			{content}
@@ -86,6 +103,9 @@ const Content = React.memo((props) => {
 		return false;
 	}
 	if (prevProps.isEncrypted !== nextProps.isEncrypted) {
+		return false;
+	}
+	if (prevProps.isIgnored !== nextProps.isIgnored) {
 		return false;
 	}
 	if (!equal(prevProps.mentions, nextProps.mentions)) {
@@ -111,6 +131,7 @@ Content.propTypes = {
 	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	navToRoomInfo: PropTypes.func,
 	useRealName: PropTypes.bool,
+	isIgnored: PropTypes.bool,
 	type: PropTypes.string
 };
 Content.displayName = 'MessageContent';

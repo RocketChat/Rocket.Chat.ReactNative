@@ -1,1 +1,0 @@
-../../../../../node_modules/react-native-keyboard-input/lib/ios/LNInterpolation/LNInterpolable.h

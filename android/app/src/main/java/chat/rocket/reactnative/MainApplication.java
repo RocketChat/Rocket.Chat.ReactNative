@@ -11,7 +11,6 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.nozbe.watermelondb.WatermelonDBPackage;
 import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
-import com.wix.reactnativekeyboardinput.KeyboardInputPackage;
 
 import org.unimodules.adapters.react.ModuleRegistryAdapter;
 import org.unimodules.adapters.react.ReactModuleRegistryProvider;
@@ -20,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import chat.rocket.reactnative.generated.BasePackageList;
+import chat.rocket.reactnative.networking.SSLPinningPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -35,9 +35,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       @SuppressWarnings("UnnecessaryLocalVariable")
       List<ReactPackage> packages = new PackageList(this).getPackages();
-      packages.add(new KeyboardInputPackage(MainApplication.this));
       packages.add(new WatermelonDBPackage());
       packages.add(new RNCViewPagerPackage());
+      packages.add(new SSLPinningPackage());
       List<ReactPackage> unimodules = Arrays.<ReactPackage>asList(
         new ModuleRegistryAdapter(mModuleRegistryProvider)
       );

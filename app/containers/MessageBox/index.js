@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Alert, Keyboard, NativeModules, Text
+	View, Alert, Keyboard, NativeModules, Text, InteractionManager
 } from 'react-native';
 import { connect } from 'react-redux';
-import { KeyboardAccessoryView } from 'react-native-keyboard-input';
+import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import ImagePicker from 'react-native-image-crop-picker';
 import equal from 'deep-equal';
 import DocumentPicker from 'react-native-document-picker';
@@ -49,6 +49,10 @@ import Navigation from '../../lib/Navigation';
 import { withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../../lib/Icons';
+
+if (isAndroid) {
+	require('./EmojiKeyboard');
+}
 
 const imagePickerConfig = {
 	cropping: true,
@@ -108,7 +112,7 @@ class MessageBox extends Component {
 			id: ''
 		},
 		sharing: false,
-		iOSScrollBehavior: NativeModules.KeyboardTrackingViewManager?.KeyboardTrackingScrollBehaviorFixedOffset,
+		iOSScrollBehavior: NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset,
 		isActionsEnabled: true,
 		getCustomEmoji: () => {}
 	}
@@ -213,18 +217,19 @@ class MessageBox extends Component {
 			this.setShowSend(true);
 		}
 
-		if (isAndroid) {
-			require('./EmojiKeyboard');
-		}
-
 		if (isTablet) {
 			EventEmiter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
 
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
-			if (this.tracking && this.tracking.resetTracking) {
-				this.tracking.resetTracking();
-			}
+			// didFocus
+			// We should wait pushed views be dismissed
+			InteractionManager.runAfterInteractions(() => {
+				if (this.tracking && this.tracking.resetTracking) {
+					// Reset messageBox keyboard tracking
+					this.tracking.resetTracking();
+				}
+			});
 		});
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			this.component?.blur();

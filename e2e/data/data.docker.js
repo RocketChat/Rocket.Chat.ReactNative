@@ -31,6 +31,10 @@ const data = {
     channels: {
         detoxpublic: {
             name: 'detox-public'
+        },
+        detoxpublicprotected: {
+            name: 'detox-public-protected',
+            joinCode: '123'
         }
     },
     groups: {

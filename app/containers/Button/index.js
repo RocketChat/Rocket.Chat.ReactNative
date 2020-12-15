@@ -17,8 +17,8 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		fontSize: 16,
-		textAlign: 'center',
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		...sharedStyles.textAlignCenter
 	},
 	disabled: {
 		opacity: 0.3
