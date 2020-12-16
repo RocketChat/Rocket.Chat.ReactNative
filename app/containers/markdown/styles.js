@@ -153,5 +153,8 @@ export default StyleSheet.create({
 	},
 	alignRight: {
 		textAlign: 'right'
+	},
+	separator: {
+		height: 1
 	}
 });

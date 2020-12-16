@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Text, Image } from 'react-native';
+import { Text, Image, View } from 'react-native';
 import { Parser, Node } from 'commonmark';
 import Renderer from 'commonmark-react-renderer';
 import PropTypes from 'prop-types';
@@ -367,6 +367,11 @@ class Markdown extends PureComponent {
 		return <MarkdownTableCell {...args} theme={theme} />;
 	}
 
+	renderSeparator = () => {
+		const { theme } = this.props;
+		return <View style={{ ...styles.separator, backgroundColor: themes[theme].borderColor }} />;
+	}
+
 	render() {
 		const {
 			msg, numberOfLines, preview = false, theme, style = [], testID
@@ -391,6 +396,10 @@ class Markdown extends PureComponent {
 					{m}
 				</Text>
 			);
+		}
+
+		if (m === '****') {
+			return this.renderSeparator();
 		}
 
 		let ast = parser.parse(m);
