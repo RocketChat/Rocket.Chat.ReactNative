@@ -9,15 +9,14 @@
     "lint": "eslint .",
     "ci": "npm run precommit && codecov",
     "ios": "npx react-native run-ios",
-    "android": "npx react-native run-android --variant=playDebug",
-    "android-whitelabel": "npx react-native run-android --main-activity chat.rocket.reactnative.MainActivity --variant=playDebug --appId",
+    "android": "npx react-native run-android --variant=experimentalPlayDebug",
+    "android-whitelabel": "npx react-native run-android --main-activity chat.rocket.reactnative.MainActivity --variant=experimentalPlayDebug --appId",
     "log-android": "react-native log-android",
     "snyk-protect": "snyk protect",
     "precommit": "eslint . && jest",
     "generate-source-maps-ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios-release.bundle --sourcemap-output ios-release.bundle.map",
     "generate-source-maps-android": "bugsnag-sourcemaps",
-    "postinstall": "patch-package && jetify",
-    "foss": "npx react-native run-android --variant=fossDebug"
+    "postinstall": "patch-package && jetify"
   },
   "husky": {
     "hooks": {
