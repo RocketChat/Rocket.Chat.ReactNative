@@ -60,11 +60,6 @@ platform :ios do
     )
   end
 
-  desc "Build fork app"
-  lane :build_fork do
-    gym(scheme: "RocketChatRN", workspace: "RocketChatRN.xcworkspace", skip_codesigning: true, skip_archive: true)
-  end
-
   desc "Build Official app"
   lane :build_official do
     sh "../../scripts/prepare_ios_official.sh"
@@ -98,6 +93,11 @@ platform :ios do
       xcargs: "-allowProvisioningUpdates",
       output_name: "Rocket.Chat"
     )
+  end
+
+  desc "Build fork app"
+  lane :build_fork do
+    gym(scheme: "RocketChatRN", workspace: "RocketChatRN.xcworkspace", skip_codesigning: true, skip_archive: true)
   end
 
   after_all do |lane|
