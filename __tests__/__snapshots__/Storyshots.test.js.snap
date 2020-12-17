@@ -10480,7 +10480,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "textAlign": "left",
               },
               Object {
-                "color": "#DB0C27",
+                "color": "#F5455C",
               },
             ]
           }
@@ -10526,7 +10526,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "textAlign": "left",
               },
               Object {
-                "color": "#DFAC00",
+                "color": "#F3BE08",
               },
             ]
           }
@@ -10571,7 +10571,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "textAlign": "left",
               },
               Object {
-                "color": "#E26D0E",
+                "color": "#F38C39",
               },
             ]
           }
@@ -10616,7 +10616,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "textAlign": "left",
               },
               Object {
-                "color": "#E26D0E",
+                "color": "#F38C39",
               },
             ]
           }
@@ -10727,7 +10727,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "textAlign": "left",
               },
               Object {
-                "color": "#DB0C27",
+                "color": "#F5455C",
               },
             ]
           }
@@ -10773,7 +10773,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "textAlign": "left",
               },
               Object {
-                "color": "#DFAC00",
+                "color": "#F3BE08",
               },
             ]
           }
@@ -10818,7 +10818,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "textAlign": "left",
               },
               Object {
-                "color": "#E26D0E",
+                "color": "#F38C39",
               },
             ]
           }
@@ -10863,7 +10863,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "textAlign": "left",
               },
               Object {
-                "color": "#E26D0E",
+                "color": "#F38C39",
               },
             ]
           }
@@ -10974,7 +10974,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "textAlign": "left",
               },
               Object {
-                "color": "#DFAC00",
+                "color": "#F3BE08",
               },
             ]
           }
@@ -21634,7 +21634,7 @@ exports[`Storyshots Message list message 1`] = `
                           "textAlign": "left",
                         },
                         Object {
-                          "color": "#DFAC00",
+                          "color": "#F3BE08",
                         },
                       ]
                     }
@@ -21681,7 +21681,7 @@ exports[`Storyshots Message list message 1`] = `
                           "textAlign": "left",
                         },
                         Object {
-                          "color": "#DB0C27",
+                          "color": "#F5455C",
                         },
                       ]
                     }
@@ -21727,7 +21727,7 @@ exports[`Storyshots Message list message 1`] = `
                           "textAlign": "left",
                         },
                         Object {
-                          "color": "#E26D0E",
+                          "color": "#F38C39",
                         },
                       ]
                     }
@@ -21773,7 +21773,7 @@ exports[`Storyshots Message list message 1`] = `
                           "textAlign": "left",
                         },
                         Object {
-                          "color": "#E26D0E",
+                          "color": "#F38C39",
                         },
                       ]
                     }
@@ -21820,7 +21820,7 @@ exports[`Storyshots Message list message 1`] = `
                           "textAlign": "left",
                         },
                         Object {
-                          "color": "#DFAC00",
+                          "color": "#F3BE08",
                         },
                       ]
                     }
@@ -22050,7 +22050,7 @@ exports[`Storyshots Message list message 1`] = `
                           "textAlign": "left",
                         },
                         Object {
-                          "color": "#DFAC00",
+                          "color": "#F3BE08",
                         },
                       ]
                     }
@@ -22097,7 +22097,7 @@ exports[`Storyshots Message list message 1`] = `
                           "textAlign": "left",
                         },
                         Object {
-                          "color": "#DB0C27",
+                          "color": "#F5455C",
                         },
                       ]
                     }
@@ -22143,7 +22143,7 @@ exports[`Storyshots Message list message 1`] = `
                           "textAlign": "left",
                         },
                         Object {
-                          "color": "#E26D0E",
+                          "color": "#F38C39",
                         },
                       ]
                     }
@@ -22189,7 +22189,7 @@ exports[`Storyshots Message list message 1`] = `
                           "textAlign": "left",
                         },
                         Object {
-                          "color": "#E26D0E",
+                          "color": "#F38C39",
                         },
                       ]
                     }
@@ -22236,7 +22236,7 @@ exports[`Storyshots Message list message 1`] = `
                           "textAlign": "left",
                         },
                         Object {
-                          "color": "#DFAC00",
+                          "color": "#F3BE08",
                         },
                       ]
                     }
