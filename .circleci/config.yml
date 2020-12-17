@@ -248,7 +248,7 @@ commands:
                 bundle exec fastlane ios build_official
               else
                 if [[ $KEYSTORE ]]; then
-                  bundle exec fastlane ios release # TODO: rename
+                  bundle exec fastlane ios build_experimental
                 else
                   bundle exec fastlane ios build_fork
                 fi
