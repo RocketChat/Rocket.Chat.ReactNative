@@ -53,20 +53,16 @@ class List extends React.Component {
 		this.count = 0;
 		this.needsFetch = false;
 		this.mounted = false;
+		this.animated = false;
 		this.state = {
 			loading: true,
 			end: false,
 			messages: [],
-			refreshing: false,
-			animated: false
+			refreshing: false
 		};
 		this.query();
 		this.unsubscribeFocus = props.navigation.addListener('focus', () => {
-			if (this.mounted) {
-				this.setState({ animated: true });
-			} else {
-				this.state.animated = true;
-			}
+			this.animated = true;
 		});
 		console.timeEnd(`${ this.constructor.name } init`);
 	}
@@ -290,8 +286,7 @@ class List extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	update = () => {
-		const { animated } = this.state;
-		if (animated) {
+		if (this.animated) {
 			animateNextTransition();
 		}
 		this.forceUpdate();
