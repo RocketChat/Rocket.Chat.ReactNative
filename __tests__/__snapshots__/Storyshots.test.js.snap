@@ -17402,7 +17402,7 @@ exports[`Storyshots Message list message 1`] = `
                 "marginTop": 6,
               }
             }
-            testID="message-thread-replied-on-Thread with emoji🙂 😂"
+            testID="message-thread-replied-on-Thread with emoji :) :joy:"
           >
             <Text
               allowFontScaling={false}
@@ -17428,9 +17428,20 @@ exports[`Storyshots Message list message 1`] = `
               
             </Text>
             <Text
+              accessibilityLabel="Thread with emoji🙂 😂"
               numberOfLines={1}
               style={
                 Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
                   Object {
                     "backgroundColor": "transparent",
                     "flex": 1,
@@ -33677,9 +33688,20 @@ exports[`Storyshots Message list message 1`] = `
               
             </Text>
             <Text
+              accessibilityLabel="How are you?"
               numberOfLines={1}
               style={
                 Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
                   Object {
                     "backgroundColor": "transparent",
                     "flex": 1,
@@ -33880,7 +33902,7 @@ exports[`Storyshots Message list message 1`] = `
                 "marginTop": 6,
               }
             }
-            testID="message-thread-replied-on-Thread with emoji🙂 😂"
+            testID="message-thread-replied-on-Thread with emoji :) :joy:"
           >
             <Text
               allowFontScaling={false}
@@ -33906,9 +33928,20 @@ exports[`Storyshots Message list message 1`] = `
               
             </Text>
             <Text
+              accessibilityLabel="Thread with emoji🙂 😂"
               numberOfLines={1}
               style={
                 Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
                   Object {
                     "backgroundColor": "transparent",
                     "flex": 1,
@@ -34109,7 +34142,7 @@ exports[`Storyshots Message list message 1`] = `
                 "marginTop": 6,
               }
             }
-            testID="message-thread-replied-on-Markdown: link block code"
+            testID="message-thread-replied-on-Markdown: [link](http://www.google.com/) \`\`\`block code\`\`\`"
           >
             <Text
               allowFontScaling={false}
@@ -34135,9 +34168,20 @@ exports[`Storyshots Message list message 1`] = `
               
             </Text>
             <Text
+              accessibilityLabel="Markdown: link block code"
               numberOfLines={1}
               style={
                 Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
                   Object {
                     "backgroundColor": "transparent",
                     "flex": 1,
@@ -34364,9 +34408,20 @@ exports[`Storyshots Message list message 1`] = `
               
             </Text>
             <Text
+              accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
               numberOfLines={1}
               style={
                 Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
                   Object {
                     "backgroundColor": "transparent",
                     "flex": 1,
@@ -34593,9 +34648,20 @@ exports[`Storyshots Message list message 1`] = `
               
             </Text>
             <Text
+              accessibilityLabel="How are you?"
               numberOfLines={1}
               style={
                 Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
                   Object {
                     "backgroundColor": "transparent",
                     "flex": 1,
@@ -34822,9 +34888,20 @@ exports[`Storyshots Message list message 1`] = `
               
             </Text>
             <Text
+              accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
               numberOfLines={1}
               style={
                 Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
                   Object {
                     "backgroundColor": "transparent",
                     "flex": 1,
@@ -35051,9 +35128,20 @@ exports[`Storyshots Message list message 1`] = `
               
             </Text>
             <Text
+              accessibilityLabel="Thread with attachment"
               numberOfLines={1}
               style={
                 Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
                   Object {
                     "backgroundColor": "transparent",
                     "flex": 1,
@@ -36133,9 +36221,20 @@ exports[`Storyshots Message list message 1`] = `
               
             </Text>
             <Text
+              accessibilityLabel="How are you?"
               numberOfLines={1}
               style={
                 Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
                   Object {
                     "backgroundColor": "transparent",
                     "flex": 1,
