@@ -26,6 +26,7 @@ d
 
 
 e`;
+const sequentialEmptySpacesText = 'a       b                                                                             c';
 
 const getCustomEmoji = (content) => {
 	const customEmoji = {
@@ -69,6 +70,14 @@ export default ({ theme }) => {
 				/>
 			</View>
 
+			<StoriesSeparator style={styles.separator} title='Sequential empty spaces' theme={theme} />
+			<View style={styles.container}>
+				<Markdown
+					msg={sequentialEmptySpacesText}
+					theme={theme}
+				/>
+			</View>
+
 			<StoriesSeparator style={styles.separator} title='Edited' theme={theme} />
 			<View style={styles.container}>
 				<Markdown
@@ -88,6 +97,12 @@ export default ({ theme }) => {
 				/>
 				<Markdown
 					msg={lineBreakText}
+					theme={theme}
+					numberOfLines={1}
+					preview
+				/>
+				<Markdown
+					msg={sequentialEmptySpacesText}
 					theme={theme}
 					numberOfLines={1}
 					preview
