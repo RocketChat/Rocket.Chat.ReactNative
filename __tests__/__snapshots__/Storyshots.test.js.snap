@@ -10239,6 +10239,80 @@ exports[`Storyshots Markdown list Markdown 1`] = `
         ]
       }
     >
+      Sequential empty spaces
+    </Text>
+    <View
+      style={
+        Object {
+          "marginHorizontal": 15,
+        }
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            undefined,
+            Object {
+              "color": "#2f343d",
+            },
+          ]
+        }
+      >
+        <Text
+          accessibilityLabel="a       b                                                                             c"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          a       b                                                                             c
+        </Text>
+      </Text>
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginVertical": 30,
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          Object {
+            "marginHorizontal": 10,
+            "marginVertical": 10,
+          },
+        ]
+      }
+    >
       Edited
     </Text>
     <View
@@ -10381,6 +10455,26 @@ exports[`Storyshots Markdown list Markdown 1`] = `
         }
       >
         a b c d e
+      </Text>
+      <Text
+        accessibilityLabel="a b c"
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            Object {
+              "color": "#2f343d",
+            },
+          ]
+        }
+      >
+        a b c
       </Text>
       <Text
         accessibilityLabel="@rocket.cat @name1 @all @here @unknown #general #unknown"
