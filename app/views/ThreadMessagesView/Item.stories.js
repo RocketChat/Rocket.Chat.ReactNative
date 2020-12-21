@@ -105,21 +105,21 @@ stories.add('content', () => (
 stories.add('badge', () => (
 	<>
 		<BaseItem
-			badgeColor={themes.light.mentionMeBackground}
+			badgeColor={themes.light.mentionMeColor}
 		/>
 		<List.Separator />
 		<BaseItem
-			badgeColor={themes.light.mentionGroupBackground}
+			badgeColor={themes.light.mentionGroupColor}
 		/>
 		<List.Separator />
 		<BaseItem
-			badgeColor={themes.light.tunreadBackground}
+			badgeColor={themes.light.tunreadColor}
 		/>
 		<BaseItem
 			item={{
 				msg: longText
 			}}
-			badgeColor={themes.light.tunreadBackground}
+			badgeColor={themes.light.tunreadColor}
 		/>
 	</>
 ));
@@ -129,7 +129,7 @@ const ThemeStory = ({ theme }) => (
 		value={{ theme }}
 	>
 		<BaseItem
-			badgeColor={themes[theme].mentionMeBackground}
+			badgeColor={themes[theme].mentionMeColor}
 		/>
 	</ThemeContext.Provider>
 );

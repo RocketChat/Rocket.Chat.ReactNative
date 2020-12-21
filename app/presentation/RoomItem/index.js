@@ -64,6 +64,10 @@ class RoomItemContainer extends React.Component {
 
 	componentDidMount() {
 		this.mounted = true;
+		const { connected, getUserPresence, id } = this.props;
+		if (connected && this.isDirect) {
+			getUserPresence(id);
+		}
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -132,7 +136,7 @@ class RoomItemContainer extends React.Component {
 		const name = getRoomTitle(item);
 		const avatar = getRoomAvatar(item);
 		const isRead = getIsRead(item);
-		const date = item.lastMessage?.ts && formatDate(item.lastMessage.ts);
+		const date = item.roomUpdatedAt && formatDate(item.roomUpdatedAt);
 		const alert = (item.alert || item.tunread?.length);
 
 		let accessibilityLabel = name;
@@ -174,7 +178,6 @@ class RoomItemContainer extends React.Component {
 				status={status}
 				hideUnreadStatus={item.hideUnreadStatus}
 				alert={alert}
-				roomUpdatedAt={item.roomUpdatedAt}
 				lastMessage={item.lastMessage}
 				showLastMessage={showLastMessage}
 				username={username}

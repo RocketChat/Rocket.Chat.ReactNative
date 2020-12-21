@@ -24,6 +24,7 @@ import MessageErrorActions from '../../containers/MessageErrorActions';
 import MessageBox from '../../containers/MessageBox';
 import ReactionPicker from './ReactionPicker';
 import UploadProgress from './UploadProgress';
+import JoinCode from './JoinCode';
 import styles from './styles';
 import log, { logEvent, events } from '../../utils/log';
 import EventEmitter from '../../utils/events';
@@ -73,7 +74,7 @@ const stateAttrsUpdate = [
 	'readOnly',
 	'member'
 ];
-const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'muted', 'tunread', 'jitsiTimeout', 'announcement', 'sysMes', 'topic', 'name', 'fname', 'roles', 'bannerClosed', 'visitor'];
+const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'tunread', 'muted', 'ignored', 'jitsiTimeout', 'announcement', 'sysMes', 'topic', 'name', 'fname', 'roles', 'bannerClosed', 'visitor', 'joinCodeRequired'];
 
 class RoomView extends React.Component {
 	static propTypes = {
@@ -152,6 +153,7 @@ class RoomView extends React.Component {
 
 		this.messagebox = React.createRef();
 		this.list = React.createRef();
+		this.joinCode = React.createRef();
 		this.mounted = false;
 		if (this.rid) {
 			this.sub = new RoomClass(this.rid);
@@ -711,6 +713,12 @@ class RoomView extends React.Component {
 
 	setLastOpen = lastOpen => this.setState({ lastOpen });
 
+	onJoin = () => {
+		this.internalSetState({
+			joined: true
+		});
+	}
+
 	joinRoom = async() => {
 		logEvent(events.ROOM_JOIN);
 		try {
@@ -719,11 +727,14 @@ class RoomView extends React.Component {
 			if (this.isOmnichannel) {
 				await takeInquiry(room._id);
 			} else {
-				await RocketChat.joinRoom(this.rid, this.t);
+				const { joinCodeRequired } = room;
+				if (joinCodeRequired) {
+					this.joinCode.current?.show();
+				} else {
+					await RocketChat.joinRoom(this.rid, null, this.t);
+					this.onJoin();
+				}
 			}
-			this.internalSetState({
-				joined: true
-			});
 		} catch (e) {
 			log(e);
 		}
@@ -857,6 +868,11 @@ class RoomView extends React.Component {
 		}
 	};
 
+	isIgnored = (message) => {
+		const { room } = this.state;
+		return room?.ignored?.includes?.(message?.u?._id) ?? false;
+	}
+
 	renderItem = (item, previousItem) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
@@ -886,6 +902,7 @@ class RoomView extends React.Component {
 				broadcast={room.broadcast}
 				status={item.status}
 				isThreadRoom={!!this.tmid}
+				isIgnored={this.isIgnored(item)}
 				previousItem={previousItem}
 				fetchThreadName={this.fetchThreadName}
 				onReactionPress={this.onReactionPress}
@@ -991,12 +1008,7 @@ class RoomView extends React.Component {
 
 	renderActions = () => {
 		const { room, readOnly } = this.state;
-		const {
-			user, navigation
-		} = this.props;
-		if (!navigation.isFocused()) {
-			return null;
-		}
+		const { user } = this.props;
 		return (
 			<>
 				<MessageActions
@@ -1054,6 +1066,7 @@ class RoomView extends React.Component {
 					tmid={this.tmid}
 					theme={theme}
 					tunread={room?.tunread}
+					ignored={room?.ignored}
 					renderRow={this.renderItem}
 					loading={loading}
 					navigation={navigation}
@@ -1078,6 +1091,13 @@ class RoomView extends React.Component {
 					baseUrl={baseUrl}
 					onClose={this.onCloseReactionsModal}
 					getCustomEmoji={this.getCustomEmoji}
+				/>
+				<JoinCode
+					ref={this.joinCode}
+					onJoin={this.onJoin}
+					rid={rid}
+					t={t}
+					theme={theme}
 				/>
 			</SafeAreaView>
 		);

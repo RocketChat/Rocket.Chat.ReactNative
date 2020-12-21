@@ -135,23 +135,23 @@ describe('Room screen', () => {
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.label('Permalink')).tap();
-		
+
 				// TODO: test clipboard
 			});
-		
+
 			it('should copy message', async() => {
 				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.label('Copy')).tap();
-		
+
 				// TODO: test clipboard
 			});
-		
+
 			it('should star message', async() => {
 				await starMessage('message')
-		
+
 				await sleep(1000) //https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/2324
 				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
@@ -160,7 +160,7 @@ describe('Room screen', () => {
 				await waitFor(element(by.label('Unstar'))).toBeVisible().withTimeout(2000);
 				await element(by.id('action-sheet-backdrop')).tap();
 			});
-		
+
 			it('should react to message', async() => {
 				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
@@ -183,7 +183,7 @@ describe('Room screen', () => {
 				await element(by.id('message-actions-emoji-+1')).tap();
 				await waitFor(element(by.id('message-reaction-:+1:'))).toBeVisible().withTimeout(60000);
 			});
-		
+
 			it('should show reaction picker on add reaction button pressed and have frequently used emoji', async() => {
 				await element(by.id('message-add-reaction')).tap();
 				await waitFor(element(by.id('reaction-picker'))).toExist().withTimeout(2000);
@@ -197,12 +197,12 @@ describe('Room screen', () => {
 			it('should ask for review', async() => {
 				await dismissReviewNag() //TODO: Create a proper test for this elsewhere.
 			})
-		
+
 			it('should remove reaction', async() => {
 				await element(by.id('message-reaction-:grinning:')).tap();
 				await waitFor(element(by.id('message-reaction-:grinning:'))).toBeNotVisible().withTimeout(60000);
 			});
-		
+
 			it('should edit message', async() => {
 				await mockMessage('edit');
 				await element(by.label(`${ data.random }edit`)).atIndex(0).longPress();
@@ -214,7 +214,7 @@ describe('Room screen', () => {
 				await element(by.id('messagebox-send-message')).tap();
 				await waitFor(element(by.label(`${ data.random }edited (edited)`)).atIndex(0)).toExist().withTimeout(60000);
 			});
-		
+
 			it('should quote message', async() => {
 				await mockMessage('quote');
 				await element(by.label(`${ data.random }quote`)).atIndex(0).longPress();
@@ -224,16 +224,16 @@ describe('Room screen', () => {
 				await element(by.label('Quote')).tap();
 				await element(by.id('messagebox-input')).typeText(`${ data.random }quoted`);
 				await element(by.id('messagebox-send-message')).tap();
-		
+
 				// TODO: test if quote was sent
 			});
-		
+
 			it('should pin message', async() => {
 				await mockMessage('pin')
 				await pinMessage('pin')
-						
+
 				await waitFor(element(by.label(`${ data.random }pin`)).atIndex(0)).toBeVisible().withTimeout(2000);
-				await waitFor(element(by.label('Message pinned')).atIndex(0)).toBeVisible().withTimeout(2000);
+				await waitFor(element(by.label(`${ data.users.regular.username } Message pinned`)).atIndex(0)).toBeVisible().withTimeout(2000);
 				await element(by.label(`${ data.random }pin`)).atIndex(0).longPress();
 				await waitFor(element(by.id('action-sheet'))).toExist().withTimeout(1000);
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();

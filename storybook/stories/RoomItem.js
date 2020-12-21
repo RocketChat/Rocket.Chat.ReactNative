@@ -17,8 +17,7 @@ const lastMessage = {
 	msg: longText
 };
 const updatedAt = {
-	date: '10:00',
-	roomUpdatedAt: new Date('2020-01-01')
+	date: '10:00'
 };
 
 const RoomItem = props => (

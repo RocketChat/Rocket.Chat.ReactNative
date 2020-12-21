@@ -15,11 +15,9 @@ export const merge = (subscription, room) => {
 	if (room) {
 		if (room._updatedAt) {
 			subscription.lastMessage = normalizeMessage(room.lastMessage);
-			if (subscription.lastMessage) {
-				subscription.roomUpdatedAt = subscription.lastMessage.ts;
-			} else {
-				subscription.roomUpdatedAt = room._updatedAt;
-			}
+			const updatedAt = room?._updatedAt ? new Date(room._updatedAt) : null;
+			const lastMessageTs = subscription?.lastMessage?.ts ? new Date(subscription.lastMessage.ts) : null;
+			subscription.roomUpdatedAt = Math.max(updatedAt, lastMessageTs);
 			subscription.description = room.description;
 			subscription.topic = room.topic;
 			subscription.announcement = room.announcement;
@@ -37,6 +35,9 @@ export const merge = (subscription, room) => {
 		subscription.avatarETag = room.avatarETag;
 		if (!subscription.roles || !subscription.roles.length) {
 			subscription.roles = [];
+		}
+		if (!subscription.ignored?.length) {
+			subscription.ignored = [];
 		}
 		if (room.muted && room.muted.length) {
 			subscription.muted = room.muted.filter(muted => !!muted);

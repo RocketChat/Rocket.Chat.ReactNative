@@ -7,14 +7,14 @@ export const getUnreadStyle = ({
 		return {};
 	}
 
-	let backgroundColor = themes[theme].unreadBackground;
+	let backgroundColor = themes[theme].unreadColor;
 	const color = themes[theme].buttonText;
 	if (userMentions > 0 || tunreadUser?.length) {
-		backgroundColor = themes[theme].mentionMeBackground;
+		backgroundColor = themes[theme].mentionMeColor;
 	} else if (groupMentions > 0 || tunreadGroup?.length) {
-		backgroundColor = themes[theme].mentionGroupBackground;
+		backgroundColor = themes[theme].mentionGroupColor;
 	} else if (tunread?.length > 0) {
-		backgroundColor = themes[theme].tunreadBackground;
+		backgroundColor = themes[theme].tunreadColor;
 	}
 
 	return {
