@@ -64,7 +64,7 @@ const messageDecorator = story => (
 			onReactionPress: () => {},
 			onDiscussionPress: () => {},
 			onReactionLongPress: () => {},
-			threadBadgeColor: themes.light.tunreadBackground
+			threadBadgeColor: themes.light.tunreadColor
 		}}
 	>
 		{story()}
