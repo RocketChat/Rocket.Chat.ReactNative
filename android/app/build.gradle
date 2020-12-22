@@ -143,7 +143,7 @@ android {
         applicationId APPLICATION_ID
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode VERSIONCODE
+        versionCode VERSIONCODE as Integer
         versionName "4.13.0"
         vectorDrawables.useSupportLibrary = true
         if (!isFoss) {
