@@ -1972,10 +1972,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/cameraroll/-/cameraroll-4.0.0.tgz#97a4be5d01bc05c387c26599ffa559e1b425e415"
   integrity sha512-ZqzWbNHklgq/sPUmlDgi/SvfbkIVKNYXhcDGRcabXRsX9aIyNEX2dk2fkCSJoKWqBF8uSUnVznonpTP3TlwdyQ==
 
-"@react-native-community/cli-debugger-ui@^4.9.0":
-  version "4.9.0"
-  resolved "https://registry.yarnpkg.com/@react-native-community/cli-debugger-ui/-/cli-debugger-ui-4.9.0.tgz#4177764ba69243c97aa26829d59d9501acb2bd71"
-  integrity sha512-fBFGamHm4VUrDqkBGnsrwQL8OC6Om7K6EBQb4xj0nWekpXt1HSa3ScylYHTTWwYcpRf9htGMRGiv4dQDY/odAw==
+"@react-native-community/cli-debugger-ui@^4.13.1":
+  version "4.13.1"
+  resolved "https://registry.yarnpkg.com/@react-native-community/cli-debugger-ui/-/cli-debugger-ui-4.13.1.tgz#07de6d4dab80ec49231de1f1fbf658b4ad39b32c"
+  integrity sha512-UFnkg5RTq3s2X15fSkrWY9+5BKOFjihNSnJjTV2H5PtTUFbd55qnxxPw8CxSfK0bXb1IrSvCESprk2LEpqr5cg==
   dependencies:
     serve-static "^1.13.1"
 
@@ -1990,7 +1990,7 @@
     hermes-profile-transformer "^0.0.6"
     ip "^1.1.5"
 
-"@react-native-community/cli-platform-android@^4.13.0", "@react-native-community/cli-platform-android@^4.7.0":
+"@react-native-community/cli-platform-android@^4.10.0", "@react-native-community/cli-platform-android@^4.13.0":
   version "4.13.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli-platform-android/-/cli-platform-android-4.13.0.tgz#922681ec82ee1aadd993598b814df1152118be02"
   integrity sha512-3i8sX8GklEytUZwPnojuoFbCjIRzMugCdzDIdZ9UNmi/OhD4/8mLGO0dgXfT4sMWjZwu3qjy45sFfk2zOAgHbA==
@@ -2006,7 +2006,7 @@
     slash "^3.0.0"
     xmldoc "^1.1.2"
 
-"@react-native-community/cli-platform-ios@^4.7.0":
+"@react-native-community/cli-platform-ios@^4.10.0":
   version "4.13.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli-platform-ios/-/cli-platform-ios-4.13.0.tgz#a738915c68cac86df54e578b59a1311ea62b1aef"
   integrity sha512-6THlTu8zp62efkzimfGr3VIuQJ2514o+vScZERJCV1xgEi8XtV7mb/ZKt9o6Y9WGxKKkc0E0b/aVAtgy+L27CA==
@@ -2019,16 +2019,17 @@
     plist "^3.0.1"
     xcode "^2.0.0"
 
-"@react-native-community/cli-server-api@^4.13.0":
-  version "4.13.0"
-  resolved "https://registry.yarnpkg.com/@react-native-community/cli-server-api/-/cli-server-api-4.13.0.tgz#ef0e53fe0edc7356d62bca725ca47cb368f748a5"
-  integrity sha512-ER138ChLc1YYX7j9yE6fDm4DdNdsHThr+pla/B6iZoKje1r7TwymDdKaUvOsYalG7sWG9glW3bofcCq+Yh0Dvw==
+"@react-native-community/cli-server-api@^4.13.1":
+  version "4.13.1"
+  resolved "https://registry.yarnpkg.com/@react-native-community/cli-server-api/-/cli-server-api-4.13.1.tgz#bee7ee9702afce848e9d6ca3dcd5669b99b125bd"
+  integrity sha512-vQzsFKD9CjHthA2ehTQX8c7uIzlI9A7ejaIow1I9RlEnLraPH2QqVDmzIdbdh5Od47UPbRzamCgAP8Bnqv3qwQ==
   dependencies:
-    "@react-native-community/cli-debugger-ui" "^4.9.0"
+    "@react-native-community/cli-debugger-ui" "^4.13.1"
     "@react-native-community/cli-tools" "^4.13.0"
     compression "^1.7.1"
     connect "^3.6.5"
     errorhandler "^1.5.0"
+    nocache "^2.1.0"
     pretty-format "^25.1.0"
     serve-static "^1.13.1"
     ws "^1.1.0"
@@ -2050,15 +2051,15 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/cli-types/-/cli-types-4.10.1.tgz#d68a2dcd1649d3b3774823c64e5e9ce55bfbe1c9"
   integrity sha512-ael2f1onoPF3vF7YqHGWy7NnafzGu+yp88BbFbP0ydoCP2xGSUzmZVw0zakPTC040Id+JQ9WeFczujMkDy6jYQ==
 
-"@react-native-community/cli@^4.7.0":
-  version "4.13.0"
-  resolved "https://registry.yarnpkg.com/@react-native-community/cli/-/cli-4.13.0.tgz#04d5032f9b2b423c61ceef6be83b1bcc8a37db75"
-  integrity sha512-R+1VehIQ6VTLf+e7YOwzJk0F9tstfeSC4xy7oT6GSgB3FnXbTJGHFUp4siyO68Ae/gzGqt8SiUO145teWkP+ZA==
+"@react-native-community/cli@^4.10.0":
+  version "4.13.1"
+  resolved "https://registry.yarnpkg.com/@react-native-community/cli/-/cli-4.13.1.tgz#60148723e77cafe3ae260317d6bffe91853a2d20"
+  integrity sha512-+/TeRVToADpQPSprsPkwi9KY8x64YcuJpjzMBVISwWP+aWzsIDuWJmyMXTADlCg2EBMJqJR7bn1W/IkfzVRCWA==
   dependencies:
     "@hapi/joi" "^15.0.3"
-    "@react-native-community/cli-debugger-ui" "^4.9.0"
+    "@react-native-community/cli-debugger-ui" "^4.13.1"
     "@react-native-community/cli-hermes" "^4.13.0"
-    "@react-native-community/cli-server-api" "^4.13.0"
+    "@react-native-community/cli-server-api" "^4.13.1"
     "@react-native-community/cli-tools" "^4.13.0"
     "@react-native-community/cli-types" "^4.10.1"
     chalk "^3.0.0"
@@ -11284,6 +11285,11 @@ no-case@^3.0.3:
     lower-case "^2.0.1"
     tslib "^1.10.0"
 
+nocache@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/nocache/-/nocache-2.1.0.tgz#120c9ffec43b5729b1d5de88cd71aa75a0ba491f"
+  integrity sha512-0L9FvHG3nfnnmaEQPjT9xhfN4ISk0A8/2j4M37Np4mcDesJjHgEUfgPhdCyZuFI954tjokaIj/A3NdpFNdEh4Q==
+
 node-environment-flags@1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/node-environment-flags/-/node-environment-flags-1.0.6.tgz#a30ac13621f6f7d674260a54dede048c3982c088"
@@ -13183,14 +13189,14 @@ react-native-windows@^0.62.0-0:
     uuid "^3.3.2"
     xml-parser "^1.2.1"
 
-react-native@RocketChat/react-native#0.63.2:
-  version "0.63.2"
-  resolved "https://codeload.github.com/RocketChat/react-native/tar.gz/21bf1860837f2dc9d671727eb72e76a35e85599a"
+react-native@RocketChat/react-native#0.63.4:
+  version "0.63.4"
+  resolved "https://codeload.github.com/RocketChat/react-native/tar.gz/616299bbc01eeb56cb7d5b52e543051e1ad2d136"
   dependencies:
     "@babel/runtime" "^7.0.0"
-    "@react-native-community/cli" "^4.7.0"
-    "@react-native-community/cli-platform-android" "^4.7.0"
-    "@react-native-community/cli-platform-ios" "^4.7.0"
+    "@react-native-community/cli" "^4.10.0"
+    "@react-native-community/cli-platform-android" "^4.10.0"
+    "@react-native-community/cli-platform-ios" "^4.10.0"
     abort-controller "^3.0.0"
     anser "^1.4.9"
     base64-js "^1.1.2"

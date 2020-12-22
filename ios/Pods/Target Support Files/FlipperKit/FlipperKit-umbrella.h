@@ -13,6 +13,7 @@
 #import "FlipperClient.h"
 #import "FlipperConnection.h"
 #import "FlipperDiagnosticsViewController.h"
+#import "FlipperKitCertificateProvider.h"
 #import "FlipperPlugin.h"
 #import "FlipperResponder.h"
 #import "FlipperStateUpdateListener.h"
