@@ -15,7 +15,7 @@ import { selectServerRequest, serverRequest } from '../../actions/server';
 import { inviteLinksClear as inviteLinksClearAction } from '../../actions/inviteLinks';
 import sharedStyles from '../Styles';
 import Button from '../../containers/Button';
-import OrSeparator from '../../containers/OrSeparator';
+
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
@@ -48,12 +48,6 @@ const styles = StyleSheet.create({
 	chooseCertificate: {
 		fontSize: 13,
 		...sharedStyles.textSemibold
-	},
-	description: {
-		...sharedStyles.textRegular,
-		fontSize: 14,
-		textAlign: 'left',
-		marginBottom: 24
 	},
 	connectButton: {
 		marginBottom: 0
@@ -340,18 +334,6 @@ class NewServerView extends React.Component {
 						style={styles.connectButton}
 						theme={theme}
 						testID='new-server-view-button'
-					/>
-					<OrSeparator theme={theme} />
-					<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Onboarding_join_open_description')}</Text>
-					<Button
-						title={I18n.t('Join_our_open_workspace')}
-						type='secondary'
-						backgroundColor={themes[theme].chatComponentBackground}
-						onPress={this.connectOpen}
-						disabled={connecting}
-						loading={connectingOpen && connecting}
-						theme={theme}
-						testID='new-server-view-open'
 					/>
 				</FormContainerInner>
 				{this.renderCertificatePicker()}

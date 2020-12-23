@@ -89,7 +89,7 @@ class OnboardingView extends React.Component {
 		return (
 			<FormContainer theme={theme} testID='onboarding-view'>
 				<FormContainerInner>
-					<Image style={styles.onboarding} source={{ uri: 'logo' }} fadeDuration={0} />
+					<Image style={styles.onboarding} source={{ uri: 'logo_full' }} fadeDuration={0} />
 					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Onboarding_title')}</Text>
 					<Text style={[styles.subtitle, { color: themes[theme].controlText }]}>{I18n.t('Onboarding_subtitle')}</Text>
 					<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Onboarding_description')}</Text>
@@ -101,21 +101,12 @@ class OnboardingView extends React.Component {
 							theme={theme}
 							testID='join-workspace'
 						/>
-						<Button
-							title={I18n.t('Create_a_new_workspace')}
-							type='secondary'
-							backgroundColor={themes[theme].chatComponentBackground}
-							onPress={this.createWorkspace}
-							theme={theme}
-							testID='create-workspace-button'
-						/>
 					</View>
 				</FormContainerInner>
 			</FormContainer>
 		);
 	}
 }
-
 const mapDispatchToProps = dispatch => ({
 	appStart: params => dispatch(appStartAction(params))
 });

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "987618484208",
+    "firebase_url": "https://natterchat-4272b.firebaseio.com",
+    "project_id": "natterchat-4272b",
+    "storage_bucket": "natterchat-4272b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:987618484208:android:c5e58859f0a495bdbe4735",
+        "android_client_info": {
+          "package_name": "chat.rocket.natterchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "987618484208-m5lldsi85h8lnvg6a4dccfuohnhb5cri.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXfA6my0hMXVcM45ixJxmYCxJAlI_Ce9s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "987618484208-m5lldsi85h8lnvg6a4dccfuohnhb5cri.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "987618484208-3hrnrsd2vd6b2ead6p9tfpkocea0c9uh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "chat.rocket.natterchat"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

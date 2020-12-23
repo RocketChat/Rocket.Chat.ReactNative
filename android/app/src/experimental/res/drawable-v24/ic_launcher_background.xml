@@ -1,24 +1,36 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:aapt="http://schemas.android.com/aapt"
-    android:width="108dp"
-    android:height="108dp"
-    android:viewportWidth="512"
-    android:viewportHeight="512">
-  <group>
-    <clip-path android:pathData="M0,0h512v512h-512z M 0,0"/>
-    <path
-        android:pathData="M0,0h512v512h-512z">
-      <aapt:attr name="android:fillColor">
-        <gradient 
-            android:startY="0"
-            android:startX="256"
-            android:endY="512"
-            android:endX="256"
-            android:type="linear">
-          <item android:offset="0" android:color="#FF1C82FF"/>
-          <item android:offset="1" android:color="#FF0066E3"/>
-        </gradient>
-      </aapt:attr>
-    </path>
-  </group>
+    android:width="512.000000dp"
+    android:height="512.000000dp"
+    android:viewportWidth="512.000000"
+    android:viewportHeight="512.000000">
+
+    <group
+            android:translateY="512.000000"
+            android:scaleX="0.100000"
+            android:scaleY="-0.100000">
+        <path
+            android:fillColor="#000000"
+            android:strokeWidth="1"
+            android:pathData="M1680 4111 c-19 -11 -45 -30 -56 -43 -12 -12 -206 -340 -430 -728 -398 -688 -408
+-706 -412 -765 -3 -55 0 -67 41 -145 72 -139 777 -1353 801 -1378 11 -13 38 -33 58
+-43 36 -18 71 -19 878 -19 807 0 842 1 878 19 20 10 47 30 58 43 24 25 729 1239
+801 1378 41 78 44 90 41 145 -4 59 -14 77 -412 765 -224 388 -418 716 -430 728 -11
+13 -38 33 -58 43 -36 18 -71 19 -880 19 -802 -1 -845 -2 -878 -19z m1733 -79 c37
+-23 836 -1399 844 -1454 3 -22 0 -47 -9 -65 -60 -115 -126 -232 -448 -787 -281
+-486 -369 -630 -391 -641 -42 -22 -1656 -22 -1698 0 -22 11 -110 155 -391 641 -322
+555 -388 672 -448 787 -9 18 -12 43 -9 65 8 55 807 1431 844 1454 26 17 86 18 853
+18 767 0 827 -1 853 -18z" />
+        <path
+            android:fillColor="#000000"
+            android:strokeWidth="1"
+            android:pathData="M1371 3249 l-394 -681 16 -31 c46 -90 151 -274 447 -785 l325 -562 795 0 795 0 325
+561 c295 510 400 694 447 786 l16 31 -394 681 -394 681 -795 0 -795 0 -394 -681z
+m970 -234 l644 -496 3 496 2 495 75 0 75 0 0 -559 0 -559 65 -51 c35 -28 67 -51 70
+-51 3 0 5 275 5 610 l0 610 75 0 75 0 0 -765 c0 -421 -2 -765 -5 -765 -9 0 -529
+401 -545 420 -8 10 -244 194 -525 409 l-510 392 -5 -798 -5 -798 -72 -3 -73 -3 0
+956 c0 525 2 955 4 955 1 0 293 -223 647 -495z m-23 -347 c180 -139 338 -263 352
+-277 14 -15 190 -152 392 -306 l367 -280 0 -98 c1 -76 -2 -96 -11 -90 -34 20 -976
+748 -993 767 -21 23 -282 226 -290 226 -3 0 -5 -227 -5 -505 l0 -505 -75 0 -75 0 0
+660 c0 363 2 660 5 660 3 0 153 -113 333 -252z" />
+    </group>
 </vector>
