@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>115198584049-0efgfvm0oh9ap55g7epmqnjm27mq3j4e.apps.googleusercontent.com</string>
+	<string>987618484208-mrhlv178lp4vsntakhgv8tq5ho8m2u09.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.115198584049-0efgfvm0oh9ap55g7epmqnjm27mq3j4e</string>
+	<string>com.googleusercontent.apps.987618484208-mrhlv178lp4vsntakhgv8tq5ho8m2u09</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDEMLMz0En0vwFBlLSQkQ9oyhmCMPcpZxc</string>
+	<string>AIzaSyCr2WnsJmMZESXXwy8uq7bbdH3nNGe5wLU</string>
 	<key>GCM_SENDER_ID</key>
-	<string>115198584049</string>
+	<string>987618484208</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>chat.rocket.reactnative</string>
+	<string>chat.rocket.natter</string>
 	<key>PROJECT_ID</key>
-	<string>rocketchat-reactnative-test</string>
+	<string>natterchat-4272b</string>
 	<key>STORAGE_BUCKET</key>
-	<string>rocketchat-reactnative-test.appspot.com</string>
+	<string>natterchat-4272b.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:115198584049:ios:8be27b1f7c42a2ed</string>
+	<string>1:987618484208:ios:07c67b276e72a712be4735</string>
 	<key>DATABASE_URL</key>
-	<string>https://rocketchat-reactnative-test.firebaseio.com</string>
+	<string>https://natterchat-4272b.firebaseio.com</string>
 </dict>
 </plist>
