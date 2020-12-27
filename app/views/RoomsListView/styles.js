@@ -136,7 +136,7 @@ export default StyleSheet.create({
 	encryptionText: {
 		flex: 1,
 		fontSize: 16,
-		marginHorizontal: 16,
+		marginHorizontal: 10,
 		...sharedStyles.textMedium
 	},
 	omnichannelToggle: {
