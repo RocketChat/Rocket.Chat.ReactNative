@@ -49,6 +49,9 @@ import AdminPanelView from '../views/AdminPanelView';
 import NewMessageView from '../views/NewMessageView';
 import CreateChannelView from '../views/CreateChannelView';
 
+//Profile Library Stack
+import ProfileLibraryView from '../views/ProfileLibrary';
+
 // InsideStackNavigator
 import AttachmentView from '../views/AttachmentView';
 import ModalBlockView from '../views/ModalBlockView';
@@ -184,6 +187,11 @@ const ProfileStackNavigator = () => {
 				component={ProfileView}
 				options={ProfileView.navigationOptions}
 			/>
+			<ProfileStack.Screen
+				name='RoomInfoView'
+				component={RoomInfoView}
+				options={RoomInfoView.navigationOptions}
+			/>
 		</ProfileStack.Navigator>
 	);
 };
@@ -240,6 +248,21 @@ const AdminPanelStackNavigator = () => {
 	);
 };
 
+// ProfileStackNavigator
+const ProfileLibraryStack = createStackNavigator();
+const ProfileLibraryStackNavigator = () => {
+	const { theme } = React.useContext(ThemeContext);
+	return (
+		<ProfileStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
+			<ProfileStack.Screen
+				name='ProfileLibraryView'
+				component={ProfileLibraryView}
+				options={ProfileLibraryView.navigationOptions}
+			/>
+		</ProfileStack.Navigator>
+	);
+};
+
 // DrawerNavigator
 const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => (
@@ -249,6 +272,7 @@ const DrawerNavigator = () => (
 		drawerType='back'
 	>
 		<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
+		<Drawer.Screen name='ProfileLibraryNavigator' component={ProfileLibraryStackNavigator} />
 		<Drawer.Screen name='ProfileStackNavigator' component={ProfileStackNavigator} />
 		<Drawer.Screen name='SettingsStackNavigator' component={SettingsStackNavigator} />
 		<Drawer.Screen name='AdminPanelStackNavigator' component={AdminPanelStackNavigator} />

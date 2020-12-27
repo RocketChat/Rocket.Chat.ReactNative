@@ -371,6 +371,7 @@ export default {
 	Processing: 'Processing...',
 	Profile_saved_successfully: 'Profile saved successfully!',
 	Profile: 'Profile',
+	Profile_library: 'Profile Library',
 	Public_Channel: 'Public Channel',
 	Public: 'Public',
 	PUSH_NOTIFICATIONS: 'PUSH NOTIFICATIONS',
