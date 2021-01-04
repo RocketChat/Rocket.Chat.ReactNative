@@ -10239,6 +10239,80 @@ exports[`Storyshots Markdown list Markdown 1`] = `
         ]
       }
     >
+      Sequential empty spaces
+    </Text>
+    <View
+      style={
+        Object {
+          "marginHorizontal": 15,
+        }
+      }
+    >
+      <Text
+        style={
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            undefined,
+            Object {
+              "color": "#2f343d",
+            },
+          ]
+        }
+      >
+        <Text
+          accessibilityLabel="a       b                                                                             c"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              Array [
+                Object {},
+                Object {
+                  "alignItems": "flex-start",
+                  "flexDirection": "row",
+                  "flexWrap": "wrap",
+                  "justifyContent": "flex-start",
+                  "marginBottom": 0,
+                  "marginTop": 0,
+                },
+              ],
+            ]
+          }
+        >
+          a       b                                                                             c
+        </Text>
+      </Text>
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginVertical": 30,
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          Object {
+            "marginHorizontal": 10,
+            "marginVertical": 10,
+          },
+        ]
+      }
+    >
       Edited
     </Text>
     <View
@@ -10383,6 +10457,26 @@ exports[`Storyshots Markdown list Markdown 1`] = `
         a b c d e
       </Text>
       <Text
+        accessibilityLabel="a b c"
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            Object {
+              "color": "#2f343d",
+            },
+          ]
+        }
+      >
+        a b c
+      </Text>
+      <Text
         accessibilityLabel="@rocket.cat @name1 @all @here @unknown #general #unknown"
         numberOfLines={1}
         style={
@@ -10480,7 +10574,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "textAlign": "left",
               },
               Object {
-                "color": "#DB0C27",
+                "color": "#F5455C",
               },
             ]
           }
@@ -10526,7 +10620,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "textAlign": "left",
               },
               Object {
-                "color": "#DFAC00",
+                "color": "#F3BE08",
               },
             ]
           }
@@ -10571,7 +10665,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "textAlign": "left",
               },
               Object {
-                "color": "#E26D0E",
+                "color": "#F38C39",
               },
             ]
           }
@@ -10616,7 +10710,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "textAlign": "left",
               },
               Object {
-                "color": "#E26D0E",
+                "color": "#F38C39",
               },
             ]
           }
@@ -10727,7 +10821,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "textAlign": "left",
               },
               Object {
-                "color": "#DB0C27",
+                "color": "#F5455C",
               },
             ]
           }
@@ -10773,7 +10867,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "textAlign": "left",
               },
               Object {
-                "color": "#DFAC00",
+                "color": "#F3BE08",
               },
             ]
           }
@@ -10818,7 +10912,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "textAlign": "left",
               },
               Object {
-                "color": "#E26D0E",
+                "color": "#F38C39",
               },
             ]
           }
@@ -10863,7 +10957,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "textAlign": "left",
               },
               Object {
-                "color": "#E26D0E",
+                "color": "#F38C39",
               },
             ]
           }
@@ -10974,7 +11068,7 @@ exports[`Storyshots Markdown list Markdown 1`] = `
                 "textAlign": "left",
               },
               Object {
-                "color": "#DFAC00",
+                "color": "#F3BE08",
               },
             ]
           }
@@ -17308,7 +17402,7 @@ exports[`Storyshots Message list message 1`] = `
                 "marginTop": 6,
               }
             }
-            testID="message-thread-replied-on-Thread with emoji🙂 😂"
+            testID="message-thread-replied-on-Thread with emoji :) :joy:"
           >
             <Text
               allowFontScaling={false}
@@ -17334,9 +17428,20 @@ exports[`Storyshots Message list message 1`] = `
               
             </Text>
             <Text
+              accessibilityLabel="Thread with emoji🙂 😂"
               numberOfLines={1}
               style={
                 Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
                   Object {
                     "backgroundColor": "transparent",
                     "flex": 1,
@@ -17387,14 +17492,9 @@ exports[`Storyshots Message list message 1`] = `
           </View>
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -21639,7 +21739,7 @@ exports[`Storyshots Message list message 1`] = `
                           "textAlign": "left",
                         },
                         Object {
-                          "color": "#DFAC00",
+                          "color": "#F3BE08",
                         },
                       ]
                     }
@@ -21686,7 +21786,7 @@ exports[`Storyshots Message list message 1`] = `
                           "textAlign": "left",
                         },
                         Object {
-                          "color": "#DB0C27",
+                          "color": "#F5455C",
                         },
                       ]
                     }
@@ -21732,7 +21832,7 @@ exports[`Storyshots Message list message 1`] = `
                           "textAlign": "left",
                         },
                         Object {
-                          "color": "#E26D0E",
+                          "color": "#F38C39",
                         },
                       ]
                     }
@@ -21778,7 +21878,7 @@ exports[`Storyshots Message list message 1`] = `
                           "textAlign": "left",
                         },
                         Object {
-                          "color": "#E26D0E",
+                          "color": "#F38C39",
                         },
                       ]
                     }
@@ -21825,7 +21925,7 @@ exports[`Storyshots Message list message 1`] = `
                           "textAlign": "left",
                         },
                         Object {
-                          "color": "#DFAC00",
+                          "color": "#F3BE08",
                         },
                       ]
                     }
@@ -22055,7 +22155,7 @@ exports[`Storyshots Message list message 1`] = `
                           "textAlign": "left",
                         },
                         Object {
-                          "color": "#DFAC00",
+                          "color": "#F3BE08",
                         },
                       ]
                     }
@@ -22102,7 +22202,7 @@ exports[`Storyshots Message list message 1`] = `
                           "textAlign": "left",
                         },
                         Object {
-                          "color": "#DB0C27",
+                          "color": "#F5455C",
                         },
                       ]
                     }
@@ -22148,7 +22248,7 @@ exports[`Storyshots Message list message 1`] = `
                           "textAlign": "left",
                         },
                         Object {
-                          "color": "#E26D0E",
+                          "color": "#F38C39",
                         },
                       ]
                     }
@@ -22194,7 +22294,7 @@ exports[`Storyshots Message list message 1`] = `
                           "textAlign": "left",
                         },
                         Object {
-                          "color": "#E26D0E",
+                          "color": "#F38C39",
                         },
                       ]
                     }
@@ -22241,7 +22341,7 @@ exports[`Storyshots Message list message 1`] = `
                           "textAlign": "left",
                         },
                         Object {
-                          "color": "#DFAC00",
+                          "color": "#F3BE08",
                         },
                       ]
                     }
@@ -33588,9 +33688,20 @@ exports[`Storyshots Message list message 1`] = `
               
             </Text>
             <Text
+              accessibilityLabel="How are you?"
               numberOfLines={1}
               style={
                 Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
                   Object {
                     "backgroundColor": "transparent",
                     "flex": 1,
@@ -33641,14 +33752,9 @@ exports[`Storyshots Message list message 1`] = `
           </View>
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -33796,7 +33902,7 @@ exports[`Storyshots Message list message 1`] = `
                 "marginTop": 6,
               }
             }
-            testID="message-thread-replied-on-Thread with emoji🙂 😂"
+            testID="message-thread-replied-on-Thread with emoji :) :joy:"
           >
             <Text
               allowFontScaling={false}
@@ -33822,9 +33928,20 @@ exports[`Storyshots Message list message 1`] = `
               
             </Text>
             <Text
+              accessibilityLabel="Thread with emoji🙂 😂"
               numberOfLines={1}
               style={
                 Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
                   Object {
                     "backgroundColor": "transparent",
                     "flex": 1,
@@ -33875,14 +33992,9 @@ exports[`Storyshots Message list message 1`] = `
           </View>
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -34030,7 +34142,7 @@ exports[`Storyshots Message list message 1`] = `
                 "marginTop": 6,
               }
             }
-            testID="message-thread-replied-on-Markdown: link block code"
+            testID="message-thread-replied-on-Markdown: [link](http://www.google.com/) \`\`\`block code\`\`\`"
           >
             <Text
               allowFontScaling={false}
@@ -34056,9 +34168,20 @@ exports[`Storyshots Message list message 1`] = `
               
             </Text>
             <Text
+              accessibilityLabel="Markdown: link block code"
               numberOfLines={1}
               style={
                 Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
                   Object {
                     "backgroundColor": "transparent",
                     "flex": 1,
@@ -34109,14 +34232,9 @@ exports[`Storyshots Message list message 1`] = `
           </View>
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -34290,9 +34408,20 @@ exports[`Storyshots Message list message 1`] = `
               
             </Text>
             <Text
+              accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
               numberOfLines={1}
               style={
                 Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
                   Object {
                     "backgroundColor": "transparent",
                     "flex": 1,
@@ -34343,14 +34472,9 @@ exports[`Storyshots Message list message 1`] = `
           </View>
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -34524,9 +34648,20 @@ exports[`Storyshots Message list message 1`] = `
               
             </Text>
             <Text
+              accessibilityLabel="How are you?"
               numberOfLines={1}
               style={
                 Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
                   Object {
                     "backgroundColor": "transparent",
                     "flex": 1,
@@ -34577,14 +34712,9 @@ exports[`Storyshots Message list message 1`] = `
           </View>
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -34758,9 +34888,20 @@ exports[`Storyshots Message list message 1`] = `
               
             </Text>
             <Text
+              accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
               numberOfLines={1}
               style={
                 Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
                   Object {
                     "backgroundColor": "transparent",
                     "flex": 1,
@@ -34811,14 +34952,9 @@ exports[`Storyshots Message list message 1`] = `
           </View>
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -34992,9 +35128,20 @@ exports[`Storyshots Message list message 1`] = `
               
             </Text>
             <Text
+              accessibilityLabel="Thread with attachment"
               numberOfLines={1}
               style={
                 Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
                   Object {
                     "backgroundColor": "transparent",
                     "flex": 1,
@@ -35045,14 +35192,9 @@ exports[`Storyshots Message list message 1`] = `
           </View>
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -35598,14 +35740,9 @@ exports[`Storyshots Message list message 1`] = `
         >
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -35746,14 +35883,9 @@ exports[`Storyshots Message list message 1`] = `
         >
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -35894,14 +36026,9 @@ exports[`Storyshots Message list message 1`] = `
         >
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -36094,9 +36221,20 @@ exports[`Storyshots Message list message 1`] = `
               
             </Text>
             <Text
+              accessibilityLabel="How are you?"
               numberOfLines={1}
               style={
                 Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
                   Object {
                     "backgroundColor": "transparent",
                     "flex": 1,
@@ -36147,14 +36285,9 @@ exports[`Storyshots Message list message 1`] = `
           </View>
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -36295,14 +36428,9 @@ exports[`Storyshots Message list message 1`] = `
         >
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -36443,14 +36571,9 @@ exports[`Storyshots Message list message 1`] = `
         >
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -36591,14 +36714,9 @@ exports[`Storyshots Message list message 1`] = `
         >
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -41972,14 +42090,9 @@ exports[`Storyshots Message list message 1`] = `
         >
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -42061,25 +42174,48 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
-              <Text
-                accessibilityLabel="Message removed"
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 16,
-                      "fontStyle": "italic",
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#9ca2a8",
-                    },
-                  ]
-                }
-              >
-                Message removed
+              <Text>
+                <Text
+                  disabled={false}
+                  onPress={[Function]}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 16,
+                        "fontWeight": "500",
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#0d0e12",
+                      },
+                    ]
+                  }
+                >
+                  diego.mello
+                </Text>
+                 
+                <Text
+                  accessibilityLabel="Message removed"
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 16,
+                        "fontStyle": "italic",
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  Message removed
+                </Text>
               </Text>
             </View>
           </View>
@@ -42139,14 +42275,9 @@ exports[`Storyshots Message list message 1`] = `
         >
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -42228,25 +42359,48 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
-              <Text
-                accessibilityLabel="Has joined the channel"
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 16,
-                      "fontStyle": "italic",
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#9ca2a8",
-                    },
-                  ]
-                }
-              >
-                Has joined the channel
+              <Text>
+                <Text
+                  disabled={false}
+                  onPress={[Function]}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 16,
+                        "fontWeight": "500",
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#0d0e12",
+                      },
+                    ]
+                  }
+                >
+                  diego.mello
+                </Text>
+                 
+                <Text
+                  accessibilityLabel="has joined the channel"
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 16,
+                        "fontStyle": "italic",
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  has joined the channel
+                </Text>
               </Text>
             </View>
           </View>
@@ -42306,14 +42460,9 @@ exports[`Storyshots Message list message 1`] = `
         >
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -42473,14 +42622,9 @@ exports[`Storyshots Message list message 1`] = `
         >
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -42562,25 +42706,48 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
-              <Text
-                accessibilityLabel="Message pinned"
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 16,
-                      "fontStyle": "italic",
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#9ca2a8",
-                    },
-                  ]
-                }
-              >
-                Message pinned
+              <Text>
+                <Text
+                  disabled={false}
+                  onPress={[Function]}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 16,
+                        "fontWeight": "500",
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#0d0e12",
+                      },
+                    ]
+                  }
+                >
+                  diego.mello
+                </Text>
+                 
+                <Text
+                  accessibilityLabel="Message pinned"
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 16,
+                        "fontStyle": "italic",
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  Message pinned
+                </Text>
               </Text>
             </View>
           </View>
@@ -42640,14 +42807,9 @@ exports[`Storyshots Message list message 1`] = `
         >
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -42729,25 +42891,48 @@ exports[`Storyshots Message list message 1`] = `
                 ]
               }
             >
-              <Text
-                accessibilityLabel="Has left the channel"
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 16,
-                      "fontStyle": "italic",
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#9ca2a8",
-                    },
-                  ]
-                }
-              >
-                Has left the channel
+              <Text>
+                <Text
+                  disabled={false}
+                  onPress={[Function]}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 16,
+                        "fontWeight": "500",
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#0d0e12",
+                      },
+                    ]
+                  }
+                >
+                  diego.mello
+                </Text>
+                 
+                <Text
+                  accessibilityLabel="has left the channel"
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 16,
+                        "fontStyle": "italic",
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  has left the channel
+                </Text>
               </Text>
             </View>
           </View>
@@ -42807,14 +42992,9 @@ exports[`Storyshots Message list message 1`] = `
         >
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -42974,14 +43154,9 @@ exports[`Storyshots Message list message 1`] = `
         >
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -43141,14 +43316,9 @@ exports[`Storyshots Message list message 1`] = `
         >
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -43308,14 +43478,9 @@ exports[`Storyshots Message list message 1`] = `
         >
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -43475,14 +43640,9 @@ exports[`Storyshots Message list message 1`] = `
         >
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -43642,14 +43802,9 @@ exports[`Storyshots Message list message 1`] = `
         >
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -43809,14 +43964,9 @@ exports[`Storyshots Message list message 1`] = `
         >
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -43976,14 +44126,9 @@ exports[`Storyshots Message list message 1`] = `
         >
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -44143,14 +44288,9 @@ exports[`Storyshots Message list message 1`] = `
         >
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -44310,14 +44450,9 @@ exports[`Storyshots Message list message 1`] = `
         >
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
@@ -44477,14 +44612,9 @@ exports[`Storyshots Message list message 1`] = `
         >
           <View
             style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "alignItems": "center",
-                },
-              ]
+              Object {
+                "flexDirection": "row",
+              }
             }
           >
             <View
