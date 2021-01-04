@@ -1,28 +1,22 @@
 package chat.rocket.reactnative;
 
-import android.util.Log;
-import android.util.Base64;
 import android.database.Cursor;
+import android.util.Base64;
+import android.util.Log;
 
-import com.pedrouid.crypto.RSA;
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.WritableMap;
+import com.google.gson.Gson;
+import com.nozbe.watermelondb.Database;
 import com.pedrouid.crypto.RCTAes;
 import com.pedrouid.crypto.RCTRsaUtils;
+import com.pedrouid.crypto.RSA;
 import com.pedrouid.crypto.Util;
 
-import com.google.gson.Gson;
-
-import com.facebook.react.bridge.Promise;
-import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
-
-import com.nozbe.watermelondb.Database;
-
-import java.util.Arrays;
+import java.lang.reflect.Field;
 import java.security.SecureRandom;
+import java.util.Arrays;
 
 class Message {
     String _id;
@@ -69,8 +63,24 @@ class Encryption {
     public static Encryption shared = new Encryption();
     private ReactApplicationContext reactContext;
 
-    public Room readRoom(final Ejson ejson) {
-        Database database = new Database(ejson.serverURL().replace("https://", "") + "-experimental.db", reactContext);
+    public Room readRoom(final Ejson ejson) throws NoSuchFieldException {
+        int resId = reactContext.getResources().getIdentifier("rn_config_reader_custom_package", "string", reactContext.getPackageName());
+        String className = reactContext.getString(resId);
+        Class clazz = null;
+        Boolean isOfficial = false;
+        try {
+            clazz = Class.forName(className + ".BuildConfig");
+            Field IS_OFFICIAL = clazz.getField("IS_OFFICIAL");
+            isOfficial = (Boolean) IS_OFFICIAL.get(null);
+        } catch (ClassNotFoundException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        String dbName = ejson.serverURL().replace("https://", "");
+        if (!isOfficial) {
+            dbName += "-experimental";
+        }
+        dbName += ".db";
+        Database database = new Database(dbName, reactContext);
         String[] query = {ejson.rid};
         Cursor cursor = database.rawQuery("select * from subscriptions where id == ? limit 1", query);
 
@@ -152,7 +162,7 @@ class Encryption {
 
             return m.text;
         } catch (Exception e) {
-            Log.d("[ROCKETCHAT][ENCRYPTION]", Log.getStackTraceString(e));
+            Log.d("[ROCKETCHAT][E2E]", Log.getStackTraceString(e));
         }
 
         return null;
@@ -182,7 +192,7 @@ class Encryption {
 
             return keyId + Base64.encodeToString(concat(bytes, data), Base64.NO_WRAP);
         } catch (Exception e) {
-            Log.d("[ROCKETCHAT][ENCRYPTION]", Log.getStackTraceString(e));
+            Log.d("[ROCKETCHAT][E2E]", Log.getStackTraceString(e));
         }
 
         return message;

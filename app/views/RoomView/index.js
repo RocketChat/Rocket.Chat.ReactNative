@@ -1008,12 +1008,7 @@ class RoomView extends React.Component {
 
 	renderActions = () => {
 		const { room, readOnly } = this.state;
-		const {
-			user, navigation
-		} = this.props;
-		if (!navigation.isFocused()) {
-			return null;
-		}
+		const { user } = this.props;
 		return (
 			<>
 				<MessageActions

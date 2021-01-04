@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import chat.rocket.reactnative.generated.BasePackageList;
+import chat.rocket.reactnative.networking.SSLPinningPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
