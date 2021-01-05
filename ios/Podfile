@@ -10,11 +10,14 @@ def all_pods
   use_flipper!
 end
 
-target 'RocketChatRN' do
+abstract_target 'defaults' do
   # force use our own JitsiMeetSDK
   pod 'JitsiMeetSDK', :git => 'https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git'
 
   all_pods
+
+  target 'RocketChatRN' # Experimental app
+  target 'Rocket.Chat' # Official app
 end
 
 target 'ShareRocketChatRN' do
