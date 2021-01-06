@@ -70,7 +70,7 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 				.filter(sub => !openedRooms.includes(sub.rid))
 				.map(sub => sub.lastMessage && buildMessage(sub.lastMessage))
 				.filter(lm => lm);
-			const lastMessagesIds = lastMessages.map(lm => lm._id);
+			const lastMessagesIds = lastMessages.map(lm => lm._id).filter(lm => lm);
 			const existingMessages = yield messagesCollection.query(Q.where('id', Q.oneOf(lastMessagesIds))).fetch();
 			const messagesToUpdate = existingMessages.filter(i1 => lastMessages.find(i2 => i1.id === i2._id));
 			const messagesToCreate = lastMessages.filter(i1 => !existingMessages.find(i2 => i1._id === i2.id));
