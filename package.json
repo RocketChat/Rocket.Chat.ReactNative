@@ -135,7 +135,7 @@
     "@storybook/addon-storyshots": "5.3.19",
     "@storybook/react-native": "5.3.19",
     "@types/react-native": "^0.62.7",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "babel-core": "^6.26.3",
     "babel-eslint": "^9.0.0",
     "babel-jest": "^25.1.0",
