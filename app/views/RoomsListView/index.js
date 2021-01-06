@@ -117,6 +117,7 @@ class RoomsListView extends React.Component {
 		}),
 		server: PropTypes.string,
 		searchText: PropTypes.string,
+		changingServer: PropTypes.bool,
 		loadingServer: PropTypes.bool,
 		showServerDropdown: PropTypes.bool,
 		showSortDropdown: PropTypes.bool,
@@ -196,14 +197,17 @@ class RoomsListView extends React.Component {
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
-		const { loadingServer, searchText, server } = this.props;
+		const {
+			loadingServer, searchText, server, changingServer
+		} = this.props;
 
-		if (server !== nextProps.server && loadingServer !== nextProps.loadingServer) {
-			if (nextProps.loadingServer) {
-				this.setState({ loading: true });
-			} else {
-				this.getSubscriptions();
-			}
+		// when the server is changed
+		if (server !== nextProps.server && loadingServer !== nextProps.loadingServer && nextProps.loadingServer) {
+			this.setState({ loading: true });
+		}
+		// when the server is changing and stopped loading
+		if (changingServer && loadingServer !== nextProps.loadingServer && !nextProps.loadingServer) {
+			this.getSubscriptions();
 		}
 		if (searchText !== nextProps.searchText) {
 			this.search(nextProps.searchText);
@@ -1016,6 +1020,7 @@ const mapStateToProps = state => ({
 	user: getUserSelector(state),
 	isMasterDetail: state.app.isMasterDetail,
 	server: state.server.server,
+	changingServer: state.server.changingServer,
 	connected: state.server.connected,
 	searchText: state.rooms.searchText,
 	loadingServer: state.server.loading,
