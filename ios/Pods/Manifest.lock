@@ -388,8 +388,8 @@ PODS:
     - React
   - react-native-restart (0.0.17):
     - React
-  - react-native-safe-area-context (3.1.1):
-    - React
+  - react-native-safe-area-context (3.1.9):
+    - React-Core
   - react-native-simple-crypto (0.4.0):
     - OpenSSL-Universal
     - React
@@ -948,7 +948,7 @@ SPEC CHECKSUMS:
   react-native-notifications: ee8fd739853e72694f3af8b374c8ccb106b7b227
   react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
   react-native-restart: d19a0f8d053d065fe64cd2baebb6487111c77149
-  react-native-safe-area-context: 344b969c45af3d8464d36e8dea264942992ef033
+  react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
   react-native-simple-crypto: 564740fd8124827d82e9e8ded4a0de8c695c8a4d
   react-native-slider: 0221b417686c5957f6e77cd9ac22c1478a165355
   react-native-webview: 679b6f400176e2ea8a785acf7ae16cf282e7d1eb

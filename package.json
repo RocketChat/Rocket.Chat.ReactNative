@@ -102,7 +102,7 @@
     "react-native-prompt-android": "^1.1.0",
     "react-native-reanimated": "1.9.0",
     "react-native-restart": "^0.0.17",
-    "react-native-safe-area-context": "3.1.1",
+    "react-native-safe-area-context": "^3.1.9",
     "react-native-screens": "^2.16.1",
     "react-native-scroll-bottom-sheet": "0.6.2",
     "react-native-scrollable-tab-view": "^1.0.0",
