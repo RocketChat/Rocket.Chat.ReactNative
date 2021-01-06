@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Sort from './Sort';
-import Encryption from './Encryption';
+import Banner from './Banner';
 
 import OmnichannelStatus from '../../../ee/omnichannel/containers/OmnichannelStatus';
 
@@ -18,8 +17,8 @@ const ListHeader = React.memo(({
 	user
 }) => (
 	<>
-		<Encryption searching={searching} goEncryption={goEncryption} encryptionBanner={encryptionBanner} />
-		<Sort searching={searching} sortBy={sortBy} toggleSort={toggleSort} />
+		<Banner searching={searching} goEncryption={goEncryption} encryptionBanner={encryptionBanner} />
+		<Banner searching={searching} sortBy={sortBy} toggleSort={toggleSort} isSort={true}/>
 		<OmnichannelStatus searching={searching} goQueue={goQueue} inquiryEnabled={inquiryEnabled} queueSize={queueSize} user={user} />
 	</>
 ));

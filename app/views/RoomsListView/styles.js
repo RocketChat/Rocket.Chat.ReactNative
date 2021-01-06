@@ -57,9 +57,7 @@ export default StyleSheet.create({
 		marginHorizontal: 12,
 		flex: 1
 	},
-	sortIcon: {
-		width: 22,
-		height: 22,
+	bannerIcon: {
 		marginHorizontal: 12
 	},
 	queueIcon: {
@@ -128,15 +126,11 @@ export default StyleSheet.create({
 		width: '100%',
 		flexDirection: 'row',
 		alignItems: 'center',
-		padding: 12
-	},
-	encryptionIcon: {
-		...sharedStyles.textMedium
+		paddingVertical: 12
 	},
 	encryptionText: {
 		flex: 1,
 		fontSize: 16,
-		marginHorizontal: 16,
 		...sharedStyles.textMedium
 	},
 	omnichannelToggle: {
