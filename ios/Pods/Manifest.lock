@@ -8,36 +8,36 @@ PODS:
   - CocoaAsyncSocket (7.6.4)
   - CocoaLibEvent (1.0.0)
   - DoubleConversion (1.1.6)
-  - EXAppleAuthentication (2.2.1):
+  - EXAppleAuthentication (2.2.2):
     - UMCore
-  - EXAV (8.2.1):
+  - EXAV (8.7.0):
     - UMCore
     - UMFileSystemInterface
     - UMPermissionsInterface
   - EXConstants (9.1.1):
     - UMConstantsInterface
     - UMCore
-  - EXFileSystem (9.0.1):
+  - EXFileSystem (9.3.0):
     - UMCore
     - UMFileSystemInterface
-  - EXHaptics (8.2.1):
+  - EXHaptics (8.4.0):
     - UMCore
   - EXImageLoader (1.1.1):
     - React-Core
     - UMCore
     - UMImageLoaderInterface
-  - EXKeepAwake (8.2.1):
+  - EXKeepAwake (8.4.0):
     - UMCore
-  - EXLocalAuthentication (9.2.0):
+  - EXLocalAuthentication (9.5.0):
     - UMConstantsInterface
     - UMCore
   - EXPermissions (9.0.1):
     - UMCore
     - UMPermissionsInterface
-  - EXVideoThumbnails (4.2.1):
+  - EXVideoThumbnails (4.4.0):
     - UMCore
     - UMFileSystemInterface
-  - EXWebBrowser (8.3.1):
+  - EXWebBrowser (8.6.0):
     - UMCore
   - FBLazyVector (0.63.4)
   - FBReactNativeSpec (0.63.4):
@@ -364,8 +364,8 @@ PODS:
   - React-jsinspector (0.63.4)
   - react-native-appearance (0.3.4):
     - React
-  - react-native-background-timer (2.2.0):
-    - React
+  - react-native-background-timer (2.4.1):
+    - React-Core
   - react-native-blur (0.8.0):
     - React
   - react-native-cameraroll (4.0.1):
@@ -380,11 +380,11 @@ PODS:
   - react-native-mmkv-storage (0.3.5):
     - MMKV (= 1.2.1)
     - React
-  - react-native-netinfo (5.9.9):
+  - react-native-netinfo (5.9.10):
     - React-Core
   - react-native-notifications (2.1.7):
     - React
-  - react-native-orientation-locker (1.1.8):
+  - react-native-orientation-locker (1.2.0):
     - React
   - react-native-restart (0.0.17):
     - React
@@ -393,7 +393,7 @@ PODS:
   - react-native-simple-crypto (0.4.0):
     - OpenSSL-Universal
     - React
-  - react-native-slider (3.0.2):
+  - react-native-slider (3.0.3):
     - React
   - react-native-webview (10.3.2):
     - React
@@ -467,8 +467,8 @@ PODS:
     - React-Core
   - RNBootSplash (2.2.5):
     - React
-  - RNCAsyncStorage (1.11.0):
-    - React
+  - RNCAsyncStorage (1.12.1):
+    - React-Core
   - RNCMaskedView (0.1.10):
     - React
   - RNConfigReader (1.0.0):
@@ -514,7 +514,7 @@ PODS:
     - React
   - RNScreens (2.16.1):
     - React-Core
-  - RNVectorIcons (7.0.0):
+  - RNVectorIcons (7.1.0):
     - React
   - SDWebImage (5.8.4):
     - SDWebImage/Core (= 5.8.4)
@@ -886,17 +886,17 @@ SPEC CHECKSUMS:
   CocoaAsyncSocket: 694058e7c0ed05a9e217d1b3c7ded962f4180845
   CocoaLibEvent: 2fab71b8bd46dd33ddb959f7928ec5909f838e3f
   DoubleConversion: cde416483dac037923206447da6e1454df403714
-  EXAppleAuthentication: 5b3da71bada29e2423d8ea27e5538ef0d75aba62
-  EXAV: 86344030966e0da7e00556fbb97269d9ad16071d
+  EXAppleAuthentication: 97d5db59f3fb7aefc6cb06e351ba0828c8982232
+  EXAV: e32adf44c10a82f723172d5b01d5693890888dd6
   EXConstants: f907b3b6ce16e20d1750f22af1e095e924574bcb
-  EXFileSystem: 76875135b61708b9afa7e6a89b72a60ba0fdfa20
-  EXHaptics: 5428b344a216ca5d9df6ca8f65720b2a1ad9f109
+  EXFileSystem: 0e4974ab77bff04cda68d2886d070cbe64b93a6b
+  EXHaptics: 6d2e09387f0eb4d3c8dc97ae905cbea8afe33651
   EXImageLoader: 02ca02c9cd5cc8a97b423207a73a791e0a86bea5
-  EXKeepAwake: 8b0f68242f036b971f9f8976341823cbe6f50812
-  EXLocalAuthentication: 985c65e08a6eb84f8f98b51f7435df138b18b9e8
+  EXKeepAwake: 615c5a6fca5c2afedf611bb6f7f2ca323246de94
+  EXLocalAuthentication: acb740dcb15753d8f0ce90d93609322a2545cd41
   EXPermissions: 80ac3acbdb145930079810fe5b08c022b3428aa8
-  EXVideoThumbnails: f70bdc5511749f3181028f5000bcb7be203c631d
-  EXWebBrowser: d37a5ffdea1b65947352bc001dd9f732463725d4
+  EXVideoThumbnails: 8ff241784f1d89fdd451bcdb7f733d06361d44a8
+  EXWebBrowser: cb4811e6c883876d2e2ba1c10527de96963d410a
   FBLazyVector: 3bb422f41b18121b71783a905c10e58606f7dc3e
   FBReactNativeSpec: f2c97f2529dd79c083355182cc158c9f98f4bd6e
   Firebase: 919186c8e119dd9372a45fd1dd17a8a942bc1892
@@ -937,20 +937,20 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 93bd528844ad21dc07aab1c67cb10abae6df6949
   React-jsinspector: 58aef7155bc9a9683f5b60b35eccea8722a4f53a
   react-native-appearance: 0f0e5fc2fcef70e03d48c8fe6b00b9158c2ba8aa
-  react-native-background-timer: 1f7d560647b40e6a60b01c452ba29c54bf581fc4
+  react-native-background-timer: 17ea5e06803401a379ebf1f20505b793ac44d0fe
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-cameraroll: 60ba0068826eab1c8d43146191bafd4363ea58a7
   react-native-cookies: d79e5015a5d3a38e08f5cb39c4948532be7e9c2b
   react-native-document-picker: 825552b827012282baf4b7cbf119d3b37a280c90
   react-native-jitsi-meet: f2407aca85566e031ee7b222e497ee5ecb6623de
   react-native-mmkv-storage: 48729fe90e850ef2fdc9d3714b7030c7c51d82b0
-  react-native-netinfo: 0212ce8604e88edf686f1481b925b17a42a52449
+  react-native-netinfo: 30fb89fa913c342be82a887b56e96be6d71201dd
   react-native-notifications: ee8fd739853e72694f3af8b374c8ccb106b7b227
-  react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
+  react-native-orientation-locker: 47aaa55d59bfc1613804dc22f159e6bb1cca5f30
   react-native-restart: d19a0f8d053d065fe64cd2baebb6487111c77149
   react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
   react-native-simple-crypto: 564740fd8124827d82e9e8ded4a0de8c695c8a4d
-  react-native-slider: 0221b417686c5957f6e77cd9ac22c1478a165355
+  react-native-slider: e99fc201cefe81270fc9d81714a7a0f5e566b168
   react-native-webview: 679b6f400176e2ea8a785acf7ae16cf282e7d1eb
   React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336
   React-RCTAnimation: 1bde3ecc0c104c55df246eda516e0deb03c4e49b
@@ -967,7 +967,7 @@ SPEC CHECKSUMS:
   rn-extensions-share: 8db79372089567cbc5aefe8444869bbc808578d3
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNBootSplash: b3836aa90c5bec690c6cd3c9ab355fcf98d0fe1d
-  RNCAsyncStorage: d059c3ee71738c39834a627476322a5a8cd5bf36
+  RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNConfigReader: 396da6a6444182a76e8ae0930b9436c7575045cb
   RNCPicker: 914b557e20b3b8317b084aca9ff4b4edb95f61e4
@@ -983,7 +983,7 @@ SPEC CHECKSUMS:
   RNReanimated: b5ccb50650ba06f6e749c7c329a1bc3ae0c88b43
   RNRootView: 895a4813dedeaca82db2fa868ca1c333d790e494
   RNScreens: 45c457af3d2ee9e08fc01e70da87e653d46b1198
-  RNVectorIcons: da6fe858f5a65d7bbc3379540a889b0b12aa5976
+  RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
   SDWebImage: cf6922231e95550934da2ada0f20f2becf2ceba9
   SDWebImageWebPCoder: 36f8f47bd9879a8aea6044765c1351120fd8e3a8
   TOCropViewController: 20a14b6a7a098308bf369e7c8d700dc983a974e6
