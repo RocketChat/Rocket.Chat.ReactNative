@@ -1,0 +1,31 @@
+diff --git a/node_modules/react-native-screens/ios/RNSScreen.m b/node_modules/react-native-screens/ios/RNSScreen.m
+index 9ac4ce4..ea7b585 100644
+--- a/node_modules/react-native-screens/ios/RNSScreen.m
++++ b/node_modules/react-native-screens/ios/RNSScreen.m
+@@ -36,8 +36,8 @@ - (instancetype)initWithBridge:(RCTBridge *)bridge
+ 
+ - (void)reactSetFrame:(CGRect)frame
+ {
+-  UIViewController *parentVC = self.reactViewController.parentViewController;
+-  if (parentVC != nil && ![parentVC isKindOfClass:[UINavigationController class]]) {
++  if (![self.reactViewController.parentViewController
++    isKindOfClass:[UINavigationController class]]) {
+     [super reactSetFrame:frame];
+   }
+   // when screen is mounted under UINavigationController it's size is controller
+@@ -387,14 +387,7 @@ - (void)viewDidLayoutSubviews
+ {
+   [super viewDidLayoutSubviews];
+ 
+-  // The below code makes the screen view adapt dimensions provided by the system. We take these
+-  // into account only when the view is mounted under UINavigationController in which case system
+-  // provides additional padding to account for possible header, and in the case when screen is
+-  // shown as a native modal, as the final dimensions of the modal on iOS 12+ are shorter than the
+-  // screen size
+-  BOOL isDisplayedWithinUINavController = [self.parentViewController isKindOfClass:[UINavigationController class]];
+-  BOOL isPresentedAsNativeModal = self.parentViewController == nil && self.presentingViewController != nil;
+-  if ((isDisplayedWithinUINavController || isPresentedAsNativeModal) && !CGRectEqualToRect(_lastViewFrame, self.view.frame)) {
++  if (!CGRectEqualToRect(_lastViewFrame, self.view.frame)) {
+     _lastViewFrame = self.view.frame;
+     [((RNSScreenView *)self.viewIfLoaded) updateBounds];
+   }
