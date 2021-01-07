@@ -1,27 +1,80 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Banner from './Banner';
+import { withTheme } from '../../../theme';
+import I18n from '../../../i18n';
+import { Item } from '../../../containers/List';
+import { E2E_BANNER_TYPE } from '../../../lib/encryption/constants';
+import { CustomIcon } from '../../../lib/Icons';
+import { themes } from '../../../constants/colors';
 
 import OmnichannelStatus from '../../../ee/omnichannel/containers/OmnichannelStatus';
 
-const ListHeader = React.memo(({
-	searching,
-	sortBy,
-	toggleSort,
-	goEncryption,
-	goQueue,
-	queueSize,
-	inquiryEnabled,
-	encryptionBanner,
-	user
-}) => (
-	<>
-		<Banner searching={searching} goEncryption={goEncryption} encryptionBanner={encryptionBanner} />
-		<Banner searching={searching} sortBy={sortBy} toggleSort={toggleSort} isSort={true}/>
-		<OmnichannelStatus searching={searching} goQueue={goQueue} inquiryEnabled={inquiryEnabled} queueSize={queueSize} user={user} />
-	</>
-));
+const ListHeader = React.memo(
+	({
+		searching,
+		sortBy,
+		toggleSort,
+		goEncryption,
+		goQueue,
+		queueSize,
+		inquiryEnabled,
+		encryptionBanner,
+		user,
+		theme
+	}) => {
+		const sortTitle = I18n.t('Sorting_by', { key: I18n.t(sortBy === 'alphabetical' ? 'name' : 'activity') });
+
+		if (searching) { return null; }
+
+		return (
+			<>
+				{encryptionBanner && (
+					<Item
+						title={
+							encryptionBanner === E2E_BANNER_TYPE.REQUEST_PASSWORD
+								? 'Enter_Your_E2E_Password'
+								: 'Save_Your_Encryption_Password'
+						}
+						left={() => (
+							<CustomIcon
+								name='encrypted'
+								color={themes[theme].buttonText}
+								size={22}
+							/>
+						)}
+						backgroundColor={themes[theme].actionTintColor}
+						color={themes[theme].buttonText}
+						onPress={goEncryption}
+						translateTitle
+						testId='listheader-encryption'
+					/>
+				)}
+				<Item
+					title={sortTitle}
+					left={() => (
+						<CustomIcon
+							name='sort'
+							color={themes[theme].auxiliaryText}
+							size={22}
+						/>
+					)}
+					color={themes[theme].auxiliaryText}
+					onPress={toggleSort}
+					translateTitle={false}
+					testId='listheader-encryption'
+				/>
+				<OmnichannelStatus
+					searching={searching}
+					goQueue={goQueue}
+					inquiryEnabled={inquiryEnabled}
+					queueSize={queueSize}
+					user={user}
+				/>
+			</>
+		);
+	}
+);
 
 ListHeader.propTypes = {
 	searching: PropTypes.bool,
@@ -32,7 +85,8 @@ ListHeader.propTypes = {
 	queueSize: PropTypes.number,
 	inquiryEnabled: PropTypes.bool,
 	encryptionBanner: PropTypes.string,
-	user: PropTypes.object
+	user: PropTypes.object,
+	theme: PropTypes.string
 };
 
-export default ListHeader;
+export default withTheme(ListHeader);

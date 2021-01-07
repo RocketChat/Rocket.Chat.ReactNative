@@ -57,7 +57,7 @@ export default StyleSheet.create({
 		marginHorizontal: 12,
 		flex: 1
 	},
-	bannerIcon: {
+	sortIcon: {
 		marginHorizontal: 12
 	},
 	queueIcon: {
