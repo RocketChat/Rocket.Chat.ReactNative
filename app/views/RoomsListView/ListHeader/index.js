@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { withTheme } from '../../../theme';
 import I18n from '../../../i18n';
-import { Item } from '../../../containers/List';
+import * as List from '../../../containers/List';
 import { E2E_BANNER_TYPE } from '../../../lib/encryption/constants';
 import { CustomIcon } from '../../../lib/Icons';
 import { themes } from '../../../constants/colors';
@@ -30,7 +30,7 @@ const ListHeader = React.memo(
 		return (
 			<>
 				{encryptionBanner && (
-					<Item
+					<List.Item
 						title={
 							encryptionBanner === E2E_BANNER_TYPE.REQUEST_PASSWORD
 								? 'Enter_Your_E2E_Password'
@@ -46,11 +46,10 @@ const ListHeader = React.memo(
 						backgroundColor={themes[theme].actionTintColor}
 						color={themes[theme].buttonText}
 						onPress={goEncryption}
-						translateTitle
 						testId='listheader-encryption'
 					/>
 				)}
-				<Item
+				<List.Item
 					title={sortTitle}
 					left={() => (
 						<CustomIcon
@@ -62,7 +61,6 @@ const ListHeader = React.memo(
 					color={themes[theme].auxiliaryText}
 					onPress={toggleSort}
 					translateTitle={false}
-					testId='listheader-encryption'
 				/>
 				<OmnichannelStatus
 					searching={searching}

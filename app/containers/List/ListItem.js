@@ -82,11 +82,11 @@ const Content = React.memo(({
 ));
 
 const Button = React.memo(({
-	onPress, ...props
+	onPress, backgroundColor, ...props
 }) => (
 	<Touch
 		onPress={() => onPress(props.title)}
-		style={{ backgroundColor: props.backgroundColor || themes[props.theme].backgroundColor }}
+		style={{ backgroundColor: backgroundColor || themes[props.theme].backgroundColor }}
 		enabled={!props.disabled}
 		theme={props.theme}
 	>
@@ -94,12 +94,12 @@ const Button = React.memo(({
 	</Touch>
 ));
 
-const ListItem = React.memo(({ ...props }) => {
+const ListItem = React.memo(({ backgroundColor, ...props }) => {
 	if (props.onPress) {
 		return <Button {...props} />;
 	}
 	return (
-		<View style={{ backgroundColor: props.backgroundColor || themes[props.theme].backgroundColor }}>
+		<View style={{ backgroundColor: backgroundColor || themes[props.theme].backgroundColor }}>
 			<Content {...props} />
 		</View>
 	);
