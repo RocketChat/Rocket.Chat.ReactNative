@@ -1,9 +1,6 @@
 import React from 'react';
 import {
-	View,
-	Text,
-	StyleSheet,
-	I18nManager
+	View, Text, StyleSheet, I18nManager
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -46,47 +43,68 @@ const styles = StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	actionIndicator: {
-		...I18nManager.isRTL
-			? { transform: [{ rotate: '180deg' }] }
-			: {}
+		...(I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : {})
 	}
 });
 
-const Content = React.memo(({
-	title, subtitle, disabled, testID, left, right, color, theme, translateTitle, translateSubtitle, showActionIndicator, fontScale
-}) => (
-	<View style={[styles.container, disabled && styles.disabled, { height: BASE_HEIGHT * fontScale }]} testID={testID}>
-		{left
-			? (
-				<View style={styles.leftContainer}>
-					{left()}
-				</View>
-			)
-			: null}
-		<View style={styles.textContainer}>
-			<Text style={[styles.title, { color: color || themes[theme].titleText }]} numberOfLines={1}>{translateTitle ? I18n.t(title) : title}</Text>
-			{subtitle
-				? <Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{translateSubtitle ? I18n.t(subtitle) : subtitle}</Text>
-				: null
-			}
-		</View>
-		{right || showActionIndicator
-			? (
+const Content = React.memo(
+	({
+		title,
+		subtitle,
+		disabled,
+		testID,
+		left,
+		right,
+		color,
+		theme,
+		translateTitle,
+		translateSubtitle,
+		showActionIndicator,
+		fontScale
+	}) => (
+		<View
+			style={[
+				styles.container,
+				disabled && styles.disabled,
+				{ height: BASE_HEIGHT * fontScale }
+			]}
+			testID={testID}
+		>
+			{left ? <View style={styles.leftContainer}>{left()}</View> : null}
+			<View style={styles.textContainer}>
+				<Text
+					style={[styles.title, { color: color || themes[theme].titleText }]}
+					numberOfLines={1}
+				>
+					{translateTitle ? I18n.t(title) : title}
+				</Text>
+				{subtitle ? (
+					<Text
+						style={[styles.subtitle, { color: themes[theme].auxiliaryText }]}
+						numberOfLines={1}
+					>
+						{translateSubtitle ? I18n.t(subtitle) : subtitle}
+					</Text>
+				) : null}
+			</View>
+			{right || showActionIndicator ? (
 				<View style={styles.rightContainer}>
 					{right ? right() : null}
-					{showActionIndicator ? <Icon name='chevron-right' style={styles.actionIndicator} /> : null}
+					{showActionIndicator ? (
+						<Icon name='chevron-right' style={styles.actionIndicator} />
+					) : null}
 				</View>
-			)
-			: null}
-	</View>
-));
+			) : null}
+		</View>
+	)
+);
 
-const Button = React.memo(({
-	onPress, backgroundColor, ...props
-}) => (
+const Button = React.memo(({ onPress, backgroundColor, ...props }) => (
 	<Touch
 		onPress={() => onPress(props.title)}
-		style={{ backgroundColor: backgroundColor || themes[props.theme].backgroundColor }}
+		style={{
+			backgroundColor: backgroundColor || themes[props.theme].backgroundColor
+		}}
 		enabled={!props.disabled}
 		theme={props.theme}
 	>
@@ -94,12 +112,17 @@ const Button = React.memo(({
 	</Touch>
 ));
 
-const ListItem = React.memo(({ backgroundColor, ...props }) => {
+const ListItem = React.memo(({ ...props }) => {
 	if (props.onPress) {
 		return <Button {...props} />;
 	}
 	return (
-		<View style={{ backgroundColor: backgroundColor || themes[props.theme].backgroundColor }}>
+		<View
+			style={{
+				backgroundColor:
+          props.backgroundColor || themes[props.theme].backgroundColor
+			}}
+		>
 			<Content {...props} />
 		</View>
 	);
