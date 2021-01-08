@@ -11,13 +11,16 @@ export default StyleSheet.create({
 	},
 	serverItemContainer: {
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		height: 68
 	},
 	serverIcon: {
 		width: 44,
 		height: 44,
-		marginHorizontal: 15,
-		borderRadius: 4
+		marginHorizontal: 12,
+		marginVertical: 13,
+		borderRadius: 4,
+		resizeMode: 'contain'
 	},
 	serverTextContainer: {
 		flex: 1,
@@ -29,7 +32,7 @@ export default StyleSheet.create({
 		...sharedStyles.textSemibold
 	},
 	serverUrl: {
-		fontSize: 15,
+		fontSize: 16,
 		...sharedStyles.textRegular
 	}
 });
