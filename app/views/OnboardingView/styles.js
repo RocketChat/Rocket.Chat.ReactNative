@@ -11,8 +11,8 @@ export default StyleSheet.create({
 		marginBottom: verticalScale(50),
 		maxHeight: verticalScale(150),
 		resizeMode: 'contain',
-		width: 80,
-		height: 70
+		width: 100,
+		height: 90
 	},
 	title: {
 		...sharedStyles.textBold,

@@ -89,7 +89,7 @@ class OnboardingView extends React.Component {
 		return (
 			<FormContainer theme={theme} testID='onboarding-view'>
 				<FormContainerInner>
-					<Image style={styles.onboarding} source={{ uri: 'logo' }} fadeDuration={0} />
+					<Image style={styles.onboarding} source={require('../../static/images/logo.png')} fadeDuration={0} />
 					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Onboarding_title')}</Text>
 					<Text style={[styles.subtitle, { color: themes[theme].controlText }]}>{I18n.t('Onboarding_subtitle')}</Text>
 					<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Onboarding_description')}</Text>

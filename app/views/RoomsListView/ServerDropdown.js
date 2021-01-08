@@ -220,14 +220,14 @@ class ServerDropdown extends Component {
 						? (
 							<Image
 								source={{ uri: item.iconURL }}
-								defaultSource={require('../../static/images/logoPlaceholder.png')}
+								defaultSource={require('../../static/images/logo.png')}
 								style={styles.serverIcon}
 								onError={() => console.warn('error loading serverIcon')}
 							/>
 						)
 						: (
 							<Image
-								source={require('../../static/images/logoPlaceholder.png')}
+								source={require('../../static/images/logo.png')}
 								style={styles.serverIcon}
 							/>
 						)
