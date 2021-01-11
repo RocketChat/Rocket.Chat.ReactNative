@@ -47,8 +47,8 @@ const ServerItem = React.memo(({
 				)
 			}
 			<View style={styles.serverTextContainer}>
-				<Text style={[styles.serverName, { color: themes[theme].titleText }]}>{item.name || item.id}</Text>
-				<Text style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]}>{item.id}</Text>
+				<Text numberOfLines={1} style={[styles.serverName, { color: themes[theme].titleText }]}>{item.name || item.id}</Text>
+				<Text numberOfLines={1} style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]}>{item.id}</Text>
 			</View>
 			{hasCheck ? <Check theme={theme} /> : null}
 		</View>

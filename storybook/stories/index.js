@@ -5,6 +5,7 @@ import { createStore, combineReducers } from 'redux';
 import { storiesOf } from '@storybook/react-native';
 
 import RoomItem from './RoomItem';
+import ServerItem from './ServerItem';
 import './List';
 import Message from './Message';
 import UiKitMessage from './UiKitMessage';
@@ -74,6 +75,8 @@ const messageDecorator = story => (
 storiesOf('RoomItem', module)
 	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
 	.add('list roomitem', () => <RoomItem theme={theme} />);
+storiesOf('ServerItem', module)
+	.add('list serveritem', () => <ServerItem theme={theme} />);
 storiesOf('Message', module)
 	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
 	.addDecorator(messageDecorator)
