@@ -34,8 +34,8 @@ const Item = ({
 }) => (
 	<Touch style={styles.container} onPress={() => onPress(item.url)} theme={theme} testID={`server-history-${ item.url }`}>
 		<View style={styles.content}>
-			<Text style={[styles.server, { color: themes[theme].bodyText }]}>{item.url}</Text>
-			<Text style={[styles.username, { color: themes[theme].auxiliaryText }]}>{item.username}</Text>
+			<Text numberOfLines={1} style={[styles.server, { color: themes[theme].bodyText }]}>{item.url}</Text>
+			<Text numberOfLines={1} style={[styles.username, { color: themes[theme].auxiliaryText }]}>{item.username}</Text>
 		</View>
 		<BorderlessButton onPress={() => onDelete(item)} testID={`server-history-delete-${ item.url }`}>
 			<CustomIcon name='delete' size={24} color={themes[theme].auxiliaryText} />
