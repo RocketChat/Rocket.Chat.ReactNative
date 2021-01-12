@@ -82,7 +82,7 @@ export const themes = {
 		auxiliaryText: '#9297a2',
 		infoText: '#6D6D72',
 		tintColor: '#1d74f5',
-		auxiliaryTintColor: '#f9f9f9',
+		auxiliaryTintColor: '#9297a2',
 		actionTintColor: '#1d74f5',
 		separatorColor: '#2b2b2d',
 		navbarBackground: '#0b182c',
