@@ -205,7 +205,7 @@ class Encryption {
 		const publicKey = await UserPreferences.getStringAsync(`${ server }-${ E2E_PUBLIC_KEY }`);
 
 		// Send the new keys to the server
-		await RocketChat.e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
+		await RocketChat.e2eSetUserPublicAndPrivateKeys(publicKey, encodedPrivateKey);
 	}
 
 	// get a encryption room instance
