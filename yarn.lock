@@ -13189,7 +13189,7 @@ react-native-windows@^0.62.0-0:
     uuid "^3.3.2"
     xml-parser "^1.2.1"
 
-react-native@RocketChat/react-native#0.63.4:
+react-native@RocketChat/react-native#0.63.4, react-native@^0.63.1:
   version "0.63.4"
   resolved "https://codeload.github.com/RocketChat/react-native/tar.gz/616299bbc01eeb56cb7d5b52e543051e1ad2d136"
   dependencies:
@@ -13829,10 +13829,11 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-rn-extensions-share@^2.4.0:
+rn-extensions-share@RocketChat/rn-extensions-share#fix.ios-swipe-dismiss:
   version "2.4.0"
-  resolved "https://registry.yarnpkg.com/rn-extensions-share/-/rn-extensions-share-2.4.0.tgz#a614f6bf6cdd3948fbd7e0f2519592d4bb5f551f"
-  integrity sha512-zX3HcOhib805fVHR7TMYfFXrVBJWYgcrLYNB89RxbKqmSjaqUyWlHYuF61SKOs/dXXeic91e/L8d1YJa6TdzGA==
+  resolved "https://codeload.github.com/RocketChat/rn-extensions-share/tar.gz/e9ae652451ca12ed6eb1546f34cb3c93cd8b1a57"
+  dependencies:
+    react-native "^0.63.1"
 
 rn-fetch-blob@0.12.0:
   version "0.12.0"
