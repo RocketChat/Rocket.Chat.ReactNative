@@ -82,12 +82,12 @@ const ThreadDetails = ({
 		<View style={[styles.container, style]}>
 			<View style={styles.detailsContainer}>
 				<View style={styles.detailContainer}>
-					<CustomIcon name='threads' size={20} color={themes[theme].auxiliaryText} />
+					<CustomIcon name='threads' size={24} color={themes[theme].auxiliaryText} />
 					<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{tcount}</Text>
 				</View>
 
 				<View style={styles.detailContainer}>
-					<CustomIcon name='user' size={20} color={themes[theme].auxiliaryText} />
+					<CustomIcon name='user' size={24} color={themes[theme].auxiliaryText} />
 					<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{replies}</Text>
 				</View>
 
