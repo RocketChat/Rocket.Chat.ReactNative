@@ -202,8 +202,13 @@ class ServerDropdown extends Component {
 		const { server, theme } = this.props;
 
 		return (
-			<ServerItem item={item} onPress={() => this.select(item.id)} onLongPress={() => (item.id === server || this.remove(item.id))} hasCheck={item.id === server} theme={theme} />
-
+			<ServerItem
+				item={item}
+				onPress={() => this.select(item.id)}
+				onLongPress={() => (item.id === server || this.remove(item.id))}
+				hasCheck={item.id === server}
+				theme={theme}
+			/>
 		);
 	}
 
