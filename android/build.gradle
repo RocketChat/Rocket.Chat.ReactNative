@@ -17,7 +17,7 @@ buildscript {
         supportLibVersion = "28.0.0"
         libre_build = !(isPlay.toBoolean())
         jitsi_url = isPlay ? "https://github.com/RocketChat/jitsi-maven-repository/raw/master/releases" : "https://github.com/RocketChat/jitsi-maven-repository/raw/libre/releases"
-        jitsi_version = isPlay ? "2.10.2-rc" : "2.10.0-libre"
+        jitsi_version = isPlay ? "2.10.2" : "2.10.0-libre"
     }
 
     repositories {
@@ -51,13 +51,13 @@ allprojects {
             // Android JSC is installed from npm
             url("$rootDir/../node_modules/jsc-android/dist")
         }
+
         maven {
-            url safeExtGet("jitsi_url", "https://github.com/RocketChat/jitsi-maven-repository/raw/master/releases")
+            url jitsi_url
         }
 
         google()
         jcenter()
-
         maven { url 'https://maven.google.com' }
         maven { url 'https://www.jitpack.io' }
     }

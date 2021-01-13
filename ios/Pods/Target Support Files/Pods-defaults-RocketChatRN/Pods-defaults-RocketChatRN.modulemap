@@ -1,0 +1,6 @@
+module Pods_defaults_RocketChatRN {
+  umbrella header "Pods-defaults-RocketChatRN-umbrella.h"
+
+  export *
+  module * { export * }
+}

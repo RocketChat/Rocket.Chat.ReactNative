@@ -39,7 +39,6 @@ const RoomItem = ({
 	tunread,
 	tunreadUser,
 	tunreadGroup,
-	roomUpdatedAt,
 	testID,
 	swipeEnabled,
 	onPress,
@@ -88,7 +87,6 @@ const RoomItem = ({
 								alert={alert}
 							/>
 							<UpdatedAt
-								roomUpdatedAt={roomUpdatedAt}
 								date={date}
 								theme={theme}
 								hideUnreadStatus={hideUnreadStatus}
@@ -175,7 +173,6 @@ RoomItem.propTypes = {
 	tunread: PropTypes.array,
 	tunreadUser: PropTypes.array,
 	tunreadGroup: PropTypes.array,
-	roomUpdatedAt: PropTypes.instanceOf(Date),
 	swipeEnabled: PropTypes.bool,
 	toggleFav: PropTypes.func,
 	toggleRead: PropTypes.func,

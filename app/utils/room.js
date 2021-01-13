@@ -50,13 +50,13 @@ export const formatDate = (date) => {
 
 export const getBadgeColor = ({ subscription, messageId, theme }) => {
 	if (subscription?.tunreadUser?.includes(messageId)) {
-		return themes[theme].mentionMeBackground;
+		return themes[theme].mentionMeColor;
 	}
 	if (subscription?.tunreadGroup?.includes(messageId)) {
-		return themes[theme].mentionGroupBackground;
+		return themes[theme].mentionGroupColor;
 	}
 	if (subscription?.tunread?.includes(messageId)) {
-		return themes[theme].tunreadBackground;
+		return themes[theme].tunreadColor;
 	}
 };
 
