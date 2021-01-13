@@ -927,12 +927,12 @@ class MessageBox extends Component {
 				/>
 				<TextInput
 					ref={component => this.component = component}
-					style={styles.textBoxInput}
+					style={{...styles.textBoxInput, color: themes[theme].bodyText}}
 					returnKeyType='default'
 					keyboardType='twitter'
 					blurOnSubmit={false}
 					placeholder={I18n.t('New_Message')}
-					placeholderTextColor={themes[theme].bodyText}
+					placeholderTextColor={themes[theme].auxiliaryTintColor}
 					onChangeText={this.onChangeText}
 					onSelectionChange={this.onSelectionChange}
 					underlineColorAndroid='transparent'
