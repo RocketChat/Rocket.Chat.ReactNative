@@ -29,10 +29,12 @@ export default StyleSheet.create({
 	},
 	serverName: {
 		fontSize: 18,
+		marginRight: 16,
 		...sharedStyles.textSemibold
 	},
 	serverUrl: {
 		fontSize: 16,
+		marginRight: 18,
 		...sharedStyles.textRegular
 	}
 });
