@@ -13829,9 +13829,9 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-rn-extensions-share@RocketChat/rn-extensions-share#fix.ios-swipe-dismiss:
-  version "2.4.0"
-  resolved "https://codeload.github.com/RocketChat/rn-extensions-share/tar.gz/e9ae652451ca12ed6eb1546f34cb3c93cd8b1a57"
+rn-extensions-share@RocketChat/rn-extensions-share:
+  version "2.4.1"
+  resolved "https://codeload.github.com/RocketChat/rn-extensions-share/tar.gz/7823d2ca3d2b765abca0e7420b4eeb31d4e3ecf4"
   dependencies:
     react-native "^0.63.1"
 
