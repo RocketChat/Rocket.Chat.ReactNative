@@ -8,7 +8,7 @@ import Avatar from '../../containers/Avatar';
 import sharedStyles from '../Styles';
 import { themes } from '../../constants/colors';
 import Markdown from '../../containers/markdown';
-import { formatDate, makeThreadName } from '../../utils/room';
+import { formatDateThreads, makeThreadName } from '../../utils/room';
 import ThreadDetails from './ThreadDetails';
 
 const styles = StyleSheet.create({
@@ -49,7 +49,7 @@ const Item = ({
 	const username = (useRealName && item?.u?.name) || item?.u?.username;
 	let time;
 	if (item?.ts) {
-		time = formatDate(item.ts);
+		time = formatDateThreads(item.ts);
 	}
 
 	return (

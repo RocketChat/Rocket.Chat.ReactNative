@@ -5,7 +5,6 @@ import Touchable from 'react-native-platform-touchable';
 
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
-import { formatDate } from '../../utils/room';
 import sharedStyles from '../Styles';
 
 const styles = StyleSheet.create({
@@ -25,10 +24,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		marginRight: 8,
 		maxWidth: '32%'
-	},
-	timeDetailContainer: {
-		flex: 1,
-		maxWidth: '50%'
 	},
 	detailText: {
 		fontSize: 10,
@@ -57,11 +52,6 @@ const ThreadDetails = ({
 	style,
 	theme
 }) => {
-	let tlm;
-	if (item?.tlm) {
-		tlm = formatDate(item.tlm);
-	}
-
 	let { tcount } = item;
 	if (tcount >= 1000) {
 		tcount = '+999';
@@ -89,11 +79,6 @@ const ThreadDetails = ({
 				<View style={styles.detailContainer}>
 					<CustomIcon name='user' size={24} color={themes[theme].auxiliaryText} />
 					<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{replies}</Text>
-				</View>
-
-				<View style={[styles.detailContainer, styles.timeDetailContainer]}>
-					<CustomIcon name='clock' size={20} color={themes[theme].auxiliaryText} />
-					<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{tlm}</Text>
 				</View>
 			</View>
 

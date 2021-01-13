@@ -10,14 +10,14 @@ import { CustomIcon } from '../../lib/Icons';
 import { DISCUSSION } from './constants';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
-import { formatDate } from '../../utils/room';
+import { formatDateThreads } from '../../utils/room';
 
 const Discussion = React.memo(({
 	msg, dcount, dlm, theme
 }) => {
 	let time;
 	if (dlm) {
-		time = formatDate(dlm);
+		time = formatDateThreads(dlm);
 	}
 	const buttonText = formatMessageCount(dcount, DISCUSSION);
 	const { onDiscussionPress } = useContext(MessageContext);
