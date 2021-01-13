@@ -1,13 +1,13 @@
 import React, { PureComponent } from 'react';
 import {
-	View, Text, Animated, Easing, TouchableWithoutFeedback
+	View, Animated, Easing, TouchableWithoutFeedback
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import styles from '../styles';
-import Touch from '../../../utils/touch';
+import * as List from '../../../containers/List';
 import RocketChat from '../../../lib/rocketchat';
 import { setPreference } from '../../../actions/sortPreferences';
 import log, { logEvent, events } from '../../../utils/log';
@@ -150,17 +150,17 @@ class Sort extends PureComponent {
 						}
 					]}
 				>
-					<Touch
+					<List.Item
+						title={I18n.t('Sorting_by', { key: I18n.t(sortBy === 'alphabetical' ? 'name' : 'activity') })}
+						left={() => (
+							<CustomIcon style={{ color: themes[theme].auxiliaryText }} size={22} name='sort' />
+						)}
+						color={themes[theme].auxiliaryText}
 						onPress={this.close}
 						theme={theme}
-					>
-						<View style={[styles.dropdownContainerHeader, { borderColor: themes[theme].separatorColor }]}>
-							<View style={styles.sortItemContainer}>
-								<CustomIcon style={[styles.sortIcon, { color: themes[theme].auxiliaryText }]} size={22} name='sort' />
-								<Text style={[styles.sortToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Sorting_by', { key: I18n.t(sortBy === 'alphabetical' ? 'name' : 'activity') })}</Text>
-							</View>
-						</View>
-					</Touch>
+						translateTitle={false}
+					/>
+
 					<SortItemButton onPress={this.sortByName} theme={theme}>
 						<SortItemContent
 							icon='sort-az'

@@ -119,6 +119,22 @@ stories.add('with custom color', () => (
 	</List.Container>
 ));
 
+stories.add('with background color', () => (
+	<List.Container>
+		<List.Separator />
+		<List.Item title='Some title for banner' color='white' onPress={() => alert('Hi there!')} backgroundColor='red' translateTitle={false} />
+		<List.Separator />
+	</List.Container>
+));
+
+stories.add('with background and underlay color', () => (
+	<List.Container>
+		<List.Separator />
+		<List.Item title='Some title for banner' color='white' onPress={() => alert('Hi there!')} backgroundColor='red' underlayColor='darkred' translateTitle={false} />
+		<List.Separator />
+	</List.Container>
+));
+
 const ListItemFull = ({ ...props }) => (
 	<List.Item
 		title='Chats'

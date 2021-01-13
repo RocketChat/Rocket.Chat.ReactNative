@@ -43,6 +43,7 @@ const ListHeader = React.memo(
 								size={22}
 							/>
 						)}
+						underlayColor={themes[theme].tintActive}
 						backgroundColor={themes[theme].actionTintColor}
 						color={themes[theme].buttonText}
 						onPress={goEncryption}
@@ -62,6 +63,7 @@ const ListHeader = React.memo(
 					onPress={toggleSort}
 					translateTitle={false}
 				/>
+				<List.Separator />
 				<OmnichannelStatus
 					searching={searching}
 					goQueue={goQueue}
