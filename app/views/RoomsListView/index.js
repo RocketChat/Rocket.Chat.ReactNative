@@ -117,6 +117,7 @@ class RoomsListView extends React.Component {
 		}),
 		server: PropTypes.string,
 		searchText: PropTypes.string,
+		changingServer: PropTypes.bool,
 		loadingServer: PropTypes.bool,
 		showServerDropdown: PropTypes.bool,
 		showSortDropdown: PropTypes.bool,
@@ -150,8 +151,8 @@ class RoomsListView extends React.Component {
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
 
-		this.gotSubscriptions = false;
 		this.animated = false;
+		this.mounted = false;
 		this.count = 0;
 		this.state = {
 			searching: false,
@@ -162,24 +163,14 @@ class RoomsListView extends React.Component {
 			item: {}
 		};
 		this.setHeader();
+		this.getSubscriptions();
 	}
 
 	componentDidMount() {
 		const {
-			navigation, closeServerDropdown, appState
+			navigation, closeServerDropdown
 		} = this.props;
-
-		/**
-		 * - When didMount is triggered and appState is foreground,
-		 * it means the user is logging in and selectServer has ran, so we can getSubscriptions
-		 *
-		 * - When didMount is triggered and appState is background,
-		 * it means the user has resumed the app, so selectServer needs to be triggered,
-		 * which is going to change server and getSubscriptions will be triggered by componentWillReceiveProps
-		 */
-		if (appState === 'foreground') {
-			this.getSubscriptions();
-		}
+		this.mounted = true;
 
 		if (isTablet) {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
@@ -206,17 +197,17 @@ class RoomsListView extends React.Component {
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
-		const { loadingServer, searchText, server } = this.props;
+		const {
+			loadingServer, searchText, server, changingServer
+		} = this.props;
 
-		if (nextProps.server && loadingServer !== nextProps.loadingServer) {
-			if (nextProps.loadingServer) {
-				this.setState({ loading: true });
-			} else {
-				this.getSubscriptions();
-			}
+		// when the server is changed
+		if (server !== nextProps.server && loadingServer !== nextProps.loadingServer && nextProps.loadingServer) {
+			this.setState({ loading: true });
 		}
-		if (server && server !== nextProps.server) {
-			this.gotSubscriptions = false;
+		// when the server is changing and stopped loading
+		if (changingServer && loadingServer !== nextProps.loadingServer && !nextProps.loadingServer) {
+			this.getSubscriptions();
 		}
 		if (searchText !== nextProps.searchText) {
 			this.search(nextProps.searchText);
@@ -508,11 +499,17 @@ class RoomsListView extends React.Component {
 				tempChats = chats;
 			}
 
-			this.internalSetState({
-				chats: tempChats,
-				chatsUpdate,
-				loading: false
-			});
+			if (this.mounted) {
+				this.internalSetState({
+					chats: tempChats,
+					chatsUpdate,
+					loading: false
+				});
+			} else {
+				this.state.chats = tempChats;
+				this.state.chatsUpdate = chatsUpdate;
+				this.state.loading = false;
+			}
 		});
 	}
 
@@ -1023,6 +1020,7 @@ const mapStateToProps = state => ({
 	user: getUserSelector(state),
 	isMasterDetail: state.app.isMasterDetail,
 	server: state.server.server,
+	changingServer: state.server.changingServer,
 	connected: state.server.connected,
 	searchText: state.rooms.searchText,
 	loadingServer: state.server.loading,
