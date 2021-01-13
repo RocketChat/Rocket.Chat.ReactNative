@@ -195,7 +195,7 @@ class ShareListView extends React.Component {
 			Q.where('archived', false),
 			Q.where('open', true),
 			Q.experimentalSkip(0),
-			Q.experimentalTake(50),
+			Q.experimentalTake(20),
 			Q.experimentalSortBy('room_updated_at', Q.desc)
 		];
 		if (text) {
@@ -451,11 +451,9 @@ class ShareListView extends React.Component {
 				ListFooterComponent={!searching && this.renderBorderBottom}
 				ListHeaderComponentStyle={!searching ? { ...styles.borderBottom, borderColor: themes[theme].separatorColor } : {}}
 				ListEmptyComponent={searching && searchText ? this.renderEmptyComponent : null}
-				enableEmptySections
 				removeClippedSubviews
 				keyboardShouldPersistTaps='always'
 				initialNumToRender={12}
-				windowSize={20}
 			/>
 		);
 	}
