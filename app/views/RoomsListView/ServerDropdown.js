@@ -278,7 +278,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	toggleServerDropdown: () => dispatch(toggleServerDropdownAction()),
-	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
+	selectServerRequest: server => dispatch(selectServerRequestAction(server, null, null, true)),
 	appStart: params => dispatch(appStartAction(params)),
 	initAdd: previousServer => dispatch(serverInitAddAction(previousServer))
 });
