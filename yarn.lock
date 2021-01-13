@@ -13829,9 +13829,9 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-rn-extensions-share@RocketChat/rn-extensions-share#fix.ios-swipe:
+rn-extensions-share@RocketChat/rn-extensions-share:
   version "2.4.1"
-  resolved "https://codeload.github.com/RocketChat/rn-extensions-share/tar.gz/f4a17f77f617b8153fd21c64bd10700004a7160e"
+  resolved "https://codeload.github.com/RocketChat/rn-extensions-share/tar.gz/4d7c0e4c2f300e4fb116af7b7cc0dbbc8169150c"
 
 rn-fetch-blob@0.12.0:
   version "0.12.0"
