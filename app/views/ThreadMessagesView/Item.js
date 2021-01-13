@@ -77,7 +77,6 @@ const Item = ({
 						badgeColor={badgeColor}
 						toggleFollowThread={toggleFollowThread}
 						style={styles.threadDetails}
-						theme={theme}
 					/>
 				</View>
 			</View>

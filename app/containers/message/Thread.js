@@ -37,7 +37,6 @@ const Thread = React.memo(({
 				badgeColor={threadBadgeColor}
 				toggleFollowThread={toggleFollowThread}
 				style={styles.threadDetails}
-				theme={theme}
 			/>
 		</View>
 	);
