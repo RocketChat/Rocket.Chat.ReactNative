@@ -1,8 +1,26 @@
-# Flipper [![Build Status](https://travis-ci.org/facebook/flipper.svg?branch=master)](https://travis-ci.org/facebook/flipper) [![Android Maven Badge](https://img.shields.io/maven-metadata/v/https/jcenter.bintray.com/com/facebook/flipper/flipper/maven-metadata.xml.svg?color=green&label=android)](https://bintray.com/facebook/maven/com.facebook.flipper%3Aflipper) [![iOS](https://img.shields.io/cocoapods/v/FlipperKit.svg?label=iOS&color=blue)](https://cocoapods.org/pods/Flipper) [![Greenkeeper badge](https://badges.greenkeeper.io/facebook/flipper.svg)](https://greenkeeper.io/)
+<p align="center">
+  <img src="https://fbflipper.com/img/icon.png" alt="logo" width="20%"/>
+</p>
+<h1 align="center">
+  Flipper 
+</h1>
+<p align="center">
+  <a href="https://travis-ci.org/facebook/flipper">
+    <img src="https://travis-ci.org/facebook/flipper.svg?branch=master" alt="Build Status" />
+  </a>
+  <a href="https://bintray.com/facebook/maven/com.facebook.flipper%3Aflipper">
+    <img src="https://img.shields.io/maven-metadata/v/https/jcenter.bintray.com/com/facebook/flipper/flipper/maven-metadata.xml.svg?color=green&label=android" alt="Android Maven Badge" />
+  </a>
+  <a href="https://cocoapods.org/pods/Flipper">
+    <img src="https://img.shields.io/cocoapods/v/FlipperKit.svg?label=iOS&color=blue" alt="iOS" />
+  </a>
+</p>
 
-Flipper (formerly Sonar) is a platform for debugging mobile apps on iOS and Android. Visualize, inspect, and control your apps from a simple desktop interface. Use Flipper as is or extend it using the plugin API.
+<p align="center">
+  Flipper (formerly Sonar) is a platform for debugging mobile apps on iOS and Android. Visualize, inspect, and control your apps from a simple desktop interface. Use Flipper as is or extend it using the plugin API.
+</p>
 
-![Flipper](/docs/assets/layout.png)
+![Flipper](/website/static/img/layout.png)
 
 ## Table of Contents
 
@@ -32,25 +50,25 @@ Flipper is built as a platform. In addition to using the tools already included,
 
 ## Contributing to Flipper
 
-Both Flipper's desktop app and native mobile SDKs are open-source and MIT licensed. This enables you to see and understand how we are building plugins, and of course, join the community and help improve Flipper. We are excited to see what you will build on this platform.
+Both Flipper's desktop app and native mobile SDKs are open-source and MIT licensed. This enables you to see and understand how we are building plugins, and of course, join the community and help to improve Flipper. We are excited to see what you will build on this platform.
 
 # In this repo
 
 This repository includes all parts of Flipper. This includes:
 
-* Flipper's desktop app built using [Electron](https://electronjs.org) (`/src`)
+* Flipper's desktop app built using [Electron](https://electronjs.org) (`/desktop`)
 * native Flipper SDKs for iOS (`/iOS`)
 * native Flipper SDKs for Android (`/android`)
 * Plugins:
-  * Logs (`/src/device-plugins/logs`)
-  * Layout inspector (`/src/plugins/layout`)
-  * Network inspector (`/src/plugins/network`)
-  * Shared Preferences/NSUserDefaults inspector (`/src/plugins/shared_preferences`)
+  * Logs (`/desktop/src/device-plugins/logs`)
+  * Layout inspector (`/desktop/plugins/layout`)
+  * Network inspector (`/desktop/plugins/network`)
+  * Shared Preferences/NSUserDefaults inspector (`/desktop/plugins/shared_preferences`)
 * website and documentation (`/website` / `/docs`)
 
 # Getting started
 
-Please refer to our [Getting Started guide](https://fbflipper.com/docs/getting-started.html) to set up Flipper.
+Please refer to our [Getting Started guide](https://fbflipper.com/docs/getting-started/index) to set up Flipper.
 
 ## Requirements
 
@@ -66,7 +84,7 @@ Please refer to our [Getting Started guide](https://fbflipper.com/docs/getting-s
 
 ```
 git clone https://github.com/facebook/flipper.git
-cd flipper
+cd flipper/desktop
 yarn
 yarn start
 ```
@@ -119,9 +137,9 @@ Alternatively, the app can be started on `iOS` by running `yarn ios`.
 
 Older yarn versions might show an error / hang with the message 'Waiting for the other yarn instance to finish'. If that happens, run the command `yarn` first separately in the directory `react-native/react-native-flipper`.
 
-## Documentation
+# Documentation
 
-Find the full documentation for this project at [fbflipper.com](https://fbflipper.com/docs).
+Find the full documentation for this project at [fbflipper.com](https://fbflipper.com/).
 
 Our documentation is built with [Docusaurus](https://docusaurus.io/). You can build
 it locally by running this:

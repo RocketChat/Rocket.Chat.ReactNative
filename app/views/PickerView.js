@@ -5,21 +5,16 @@ import {
 } from 'react-native';
 
 import I18n from '../i18n';
-import { themedHeader } from '../utils/navigation';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import debounce from '../utils/debounce';
 import sharedStyles from './Styles';
 
-import ListItem from '../containers/ListItem';
-import Check from '../containers/Check';
-import Separator from '../containers/Separator';
+import * as List from '../containers/List';
 import SearchBox from '../containers/SearchBox';
+import SafeAreaView from '../containers/SafeAreaView';
 
 const styles = StyleSheet.create({
-	check: {
-		marginHorizontal: 0
-	},
 	search: {
 		width: '100%',
 		height: 56
@@ -27,12 +22,8 @@ const styles = StyleSheet.create({
 	noResult: {
 		fontSize: 16,
 		paddingVertical: 56,
-		...sharedStyles.textAlignCenter,
-		...sharedStyles.textSemibold
-	},
-	withoutBorder: {
-		borderBottomWidth: 0,
-		borderTopWidth: 0
+		...sharedStyles.textSemibold,
+		...sharedStyles.textAlignCenter
 	}
 });
 
@@ -42,11 +33,11 @@ const Item = React.memo(({
 	onItemPress,
 	theme
 }) => (
-	<ListItem
-		title={item.label}
-		right={selected && (() => <Check theme={theme} style={styles.check} />)}
+	<List.Item
+		title={I18n.t(item.label, { defaultValue: item.label, second: item?.second })}
+		right={selected && (() => <List.Icon name='check' color={themes[theme].tintColor} />)}
 		onPress={onItemPress}
-		theme={theme}
+		translateTitle={false}
 	/>
 ));
 Item.propTypes = {
@@ -57,29 +48,29 @@ Item.propTypes = {
 };
 
 class PickerView extends React.PureComponent {
-	static navigationOptions = ({ navigation, screenProps }) => ({
-		title: navigation.getParam('title', I18n.t('Select_an_option')),
-		...themedHeader(screenProps.theme)
+	static navigationOptions = ({ route }) => ({
+		title: route.params?.title ?? I18n.t('Select_an_option')
 	})
 
 	static propTypes = {
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		theme: PropTypes.string
 	}
 
 	constructor(props) {
 		super(props);
-		const data = props.navigation.getParam('data', []);
-		const value = props.navigation.getParam('value');
+		const data = props.route.params?.data ?? [];
+		const value = props.route.params?.value;
 		this.state = { data, value };
 
-		this.onSearch = props.navigation.getParam('onChangeText');
+		this.onSearch = props.route.params?.onChangeText;
 	}
 
 	onChangeValue = (value) => {
-		const { navigation } = this.props;
-		const goBack = navigation.getParam('goBack', true);
-		const onChange = navigation.getParam('onChangeValue', () => {});
+		const { navigation, route } = this.props;
+		const goBack = route.params?.goBack ?? true;
+		const onChange = route.params?.onChangeValue ?? (() => {});
 		onChange(value);
 		if (goBack) {
 			navigation.goBack();
@@ -110,7 +101,7 @@ class PickerView extends React.PureComponent {
 		const { theme } = this.props;
 
 		return (
-			<>
+			<SafeAreaView>
 				{this.renderSearch()}
 				<FlatList
 					data={data}
@@ -123,19 +114,13 @@ class PickerView extends React.PureComponent {
 							onItemPress={() => this.onChangeValue(item.value)}
 						/>
 					)}
-					ItemSeparatorComponent={() => <Separator theme={theme} />}
+					ItemSeparatorComponent={List.Separator}
+					ListHeaderComponent={List.Separator}
+					ListFooterComponent={List.Separator}
 					ListEmptyComponent={() => <Text style={[styles.noResult, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>}
-					contentContainerStyle={[
-						sharedStyles.listContentContainer,
-						{
-							backgroundColor: themes[theme].auxiliaryBackground,
-							borderColor: themes[theme].separatorColor
-						},
-						!data.length && styles.withoutBorder
-					]}
-					style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+					contentContainerStyle={[List.styles.contentContainerStyleFlatList]}
 				/>
-			</>
+			</SafeAreaView>
 		);
 	}
 }

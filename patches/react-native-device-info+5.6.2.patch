@@ -1,0 +1,28 @@
+diff --git a/node_modules/react-native-device-info/android/build.gradle b/node_modules/react-native-device-info/android/build.gradle
+index ac1a9d4..ab9aef8 100644
+--- a/node_modules/react-native-device-info/android/build.gradle
++++ b/node_modules/react-native-device-info/android/build.gradle
+@@ -49,14 +49,16 @@ repositories {
+ dependencies {
+     implementation "com.facebook.react:react-native:${safeExtGet('reactNativeVersion', '+')}"
+     implementation "com.android.installreferrer:installreferrer:${safeExtGet('installReferrerVersion', '1.1.2')}"
+-    def firebaseIidVersion = safeExtGet('firebaseIidVersion', null)
+-    if(firebaseIidVersion){
+-        implementation "com.google.firebase:firebase-iid:$firebaseIidVersion"
+-    }else{
+-        def iidVersion = safeExtGet('googlePlayServicesIidVersion', safeExtGet('googlePlayServicesVersion', '17.0.0'))
+-        implementation "com.google.android.gms:play-services-iid:$iidVersion"
++    def libreBuild = safeExtGet('libre_build', false)
++    if (!libreBuild) {
++        def firebaseIidVersion = safeExtGet('firebaseIidVersion', null)
++        if(firebaseIidVersion){
++            implementation "com.google.firebase:firebase-iid:$firebaseIidVersion"
++        }else{
++            def iidVersion = safeExtGet('googlePlayServicesIidVersion', safeExtGet('googlePlayServicesVersion', '17.0.0'))
++            implementation "com.google.android.gms:play-services-iid:$iidVersion"
++        }
+     }
+-
+     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'
+     testImplementation "org.mockito:mockito-core:3.3.3"
+ }

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import FastImage from '@rocket.chat/react-native-fast-image';
 
 import Touch from '../../utils/touch';
 import Check from '../../containers/Check';
@@ -27,14 +27,14 @@ const ServerItem = React.memo(({
 							uri: item.iconURL,
 							priority: FastImage.priority.high
 						}}
-						defaultSource={{ uri: 'logo' }}
+						defaultSource={require('../../static/images/logo.png')}
 						style={styles.serverIcon}
 						onError={() => console.log('err_loading_server_icon')}
 					/>
 				)
 				: (
 					<FastImage
-						source={{ uri: 'logo' }}
+						source={require('../../static/images/logo.png')}
 						style={styles.serverIcon}
 					/>
 				)

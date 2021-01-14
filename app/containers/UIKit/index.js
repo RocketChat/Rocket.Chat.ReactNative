@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import React, { useContext } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import {
 	uiKitMessage,
 	UiKitParserMessage,
@@ -13,8 +13,9 @@ import Markdown from '../markdown';
 import Button from '../Button';
 import TextInput from '../TextInput';
 
-import { useBlockContext } from './utils';
+import { useBlockContext, textParser } from './utils';
 import { themes } from '../../constants/colors';
+import sharedStyles from '../../views/Styles';
 
 import { Divider } from './Divider';
 import { Section } from './Section';
@@ -37,6 +38,12 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		marginBottom: 16
+	},
+	text: {
+		fontSize: 16,
+		lineHeight: 22,
+		textAlignVertical: 'center',
+		...sharedStyles.textRegular
 	}
 });
 
@@ -46,7 +53,7 @@ class MessageParser extends UiKitParserMessage {
 	text({ text, type } = { text: '' }, context) {
 		const { theme } = useContext(ThemeContext);
 		if (type !== 'mrkdwn') {
-			return text;
+			return <Text style={[styles.text, { color: themes[theme].bodyText }]}>{text}</Text>;
 		}
 
 		const isContext = context === BLOCK_CONTEXT.CONTEXT;
@@ -70,7 +77,7 @@ class MessageParser extends UiKitParserMessage {
 			<Button
 				key={actionId}
 				type={style}
-				title={this.text(text)}
+				title={textParser([text])}
 				loading={loading}
 				onPress={() => action({ value })}
 				style={styles.button}

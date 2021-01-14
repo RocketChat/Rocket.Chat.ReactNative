@@ -1,4 +1,3 @@
-import { InteractionManager } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
@@ -10,9 +9,18 @@ import log from '../../utils/log';
 import database from '../database';
 import protectedFunction from './helpers/protectedFunction';
 import fetch from '../../utils/fetch';
-import { DEFAULT_AUTO_LOCK, DEFAULT_AUTO_LOCK_OPTIONS } from '../../constants/localAuthentication';
+import { DEFAULT_AUTO_LOCK } from '../../constants/localAuthentication';
 
-const serverInfoKeys = ['Site_Name', 'UI_Use_Real_Name', 'FileUpload_MediaTypeWhiteList', 'FileUpload_MaxFileSize', 'Force_Screen_Lock', 'Force_Screen_Lock_After'];
+const serverInfoKeys = [
+	'Site_Name',
+	'UI_Use_Real_Name',
+	'FileUpload_MediaTypeWhiteList',
+	'FileUpload_MaxFileSize',
+	'Force_Screen_Lock',
+	'Force_Screen_Lock_After',
+	'uniqueID',
+	'E2E_Enable'
+];
 
 // these settings are used only on onboarding process
 const loginSettings = [
@@ -27,7 +35,10 @@ const loginSettings = [
 	'Accounts_RegistrationForm_LinkReplacementText',
 	'Accounts_EmailOrUsernamePlaceholder',
 	'Accounts_PasswordPlaceholder',
-	'Accounts_PasswordReset'
+	'Accounts_PasswordReset',
+	'Accounts_iframe_enabled',
+	'Accounts_Iframe_api_url',
+	'Accounts_Iframe_api_method'
 ];
 
 const serverInfoUpdate = async(serverInfo, iconSetting) => {
@@ -55,27 +66,22 @@ const serverInfoUpdate = async(serverInfo, iconSetting) => {
 			return { ...allSettings, autoLock };
 		}
 		if (setting._id === 'Force_Screen_Lock_After') {
-			// Force_Screen_Lock from server
-			const forceScreenLock = serverInfo.find(item => item._id === 'Force_Screen_Lock')?.valueAsBoolean;
-
-			// if Force_Screen_Lock is disabled on server and Screen Lock is enabled on app
-			if (!forceScreenLock && server.autoLock) {
-				// if the current autoLockTime is one of our default options, we'll keep this value
-				if (DEFAULT_AUTO_LOCK_OPTIONS.find(option => option.value === server.autoLockTime)) {
-					return { ...allSettings, autoLockTime: server.autoLockTime };
-				}
-				// if the current autoLockTime is a value that isn't in our default options, we'll reset
-				return { ...allSettings, autoLockTime: DEFAULT_AUTO_LOCK };
-			}
+			const forceScreenLock = serverInfo.find(s => s._id === 'Force_Screen_Lock')?.valueAsBoolean;
 
 			// if Force_Screen_Lock_After === 0 and autoLockTime is null, set app's default value
 			if (setting.valueAsNumber === 0 && !server.autoLockTime) {
 				return { ...allSettings, autoLockTime: DEFAULT_AUTO_LOCK };
 			}
-			// if Force_Screen_Lock_After > 0, use it
-			if (setting.valueAsNumber > 0) {
+			// if Force_Screen_Lock_After > 0 and forceScreenLock is enabled, use it
+			if (setting.valueAsNumber > 0 && forceScreenLock) {
 				return { ...allSettings, autoLockTime: setting.valueAsNumber };
 			}
+		}
+		if (setting._id === 'uniqueID') {
+			return { ...allSettings, uniqueID: setting.valueAsString };
+		}
+		if (setting._id === 'E2E_Enable') {
+			return { ...allSettings, E2E_Enable: setting.valueAsBoolean };
 		}
 		return allSettings;
 	}, {});
@@ -140,48 +146,51 @@ export default async function() {
 		const filteredSettingsIds = filteredSettings.map(s => s._id);
 
 		reduxStore.dispatch(addSettings(this.parseSettings(filteredSettings)));
-		InteractionManager.runAfterInteractions(async() => {
-			// filter server info
-			const serverInfo = filteredSettings.filter(i1 => serverInfoKeys.includes(i1._id));
-			const iconSetting = data.find(item => item._id === 'Assets_favicon_512');
+
+		// filter server info
+		const serverInfo = filteredSettings.filter(i1 => serverInfoKeys.includes(i1._id));
+		const iconSetting = data.find(item => item._id === 'Assets_favicon_512');
+		try {
 			await serverInfoUpdate(serverInfo, iconSetting);
+		} catch {
+			// Server not found
+		}
 
-			await db.action(async() => {
-				const settingsCollection = db.collections.get('settings');
-				const allSettingsRecords = await settingsCollection
-					.query(Q.where('id', Q.oneOf(filteredSettingsIds)))
-					.fetch();
+		await db.action(async() => {
+			const settingsCollection = db.collections.get('settings');
+			const allSettingsRecords = await settingsCollection
+				.query(Q.where('id', Q.oneOf(filteredSettingsIds)))
+				.fetch();
 
-				// filter settings
-				let settingsToCreate = filteredSettings.filter(i1 => !allSettingsRecords.find(i2 => i1._id === i2.id));
-				let settingsToUpdate = allSettingsRecords.filter(i1 => filteredSettings.find(i2 => i1.id === i2._id));
+			// filter settings
+			let settingsToCreate = filteredSettings.filter(i1 => !allSettingsRecords.find(i2 => i1._id === i2.id));
+			let settingsToUpdate = allSettingsRecords.filter(i1 => filteredSettings.find(i2 => i1.id === i2._id));
 
-				// Create
-				settingsToCreate = settingsToCreate.map(setting => settingsCollection.prepareCreate(protectedFunction((s) => {
-					s._raw = sanitizedRaw({ id: setting._id }, settingsCollection.schema);
-					Object.assign(s, setting);
-				})));
+			// Create
+			settingsToCreate = settingsToCreate.map(setting => settingsCollection.prepareCreate(protectedFunction((s) => {
+				s._raw = sanitizedRaw({ id: setting._id }, settingsCollection.schema);
+				Object.assign(s, setting);
+			})));
 
-				// Update
-				settingsToUpdate = settingsToUpdate.map((setting) => {
-					const newSetting = filteredSettings.find(s => s._id === setting.id);
-					return setting.prepareUpdate(protectedFunction((s) => {
-						Object.assign(s, newSetting);
-					}));
-				});
-
-				const allRecords = [
-					...settingsToCreate,
-					...settingsToUpdate
-				];
-
-				try {
-					await db.batch(...allRecords);
-				} catch (e) {
-					log(e);
-				}
-				return allRecords.length;
+			// Update
+			settingsToUpdate = settingsToUpdate.map((setting) => {
+				const newSetting = filteredSettings.find(s => s._id === setting.id);
+				return setting.prepareUpdate(protectedFunction((s) => {
+					Object.assign(s, newSetting);
+				}));
 			});
+
+			const allRecords = [
+				...settingsToCreate,
+				...settingsToUpdate
+			];
+
+			try {
+				await db.batch(...allRecords);
+			} catch (e) {
+				log(e);
+			}
+			return allRecords.length;
 		});
 	} catch (e) {
 		log(e);

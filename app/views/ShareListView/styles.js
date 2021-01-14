@@ -53,5 +53,17 @@ export default StyleSheet.create({
 	title: {
 		fontSize: 14,
 		...sharedStyles.textBold
+	},
+	permissionTitle: {
+		fontSize: 16,
+		marginHorizontal: 30,
+		...sharedStyles.textMedium,
+		...sharedStyles.textAlignCenter
+	},
+	permissionMessage: {
+		fontSize: 14,
+		marginHorizontal: 30,
+		...sharedStyles.textRegular,
+		...sharedStyles.textAlignCenter
 	}
 });

@@ -20,6 +20,7 @@
 #import <UMCore/UMModuleRegistry.h>
 #import <UMReactNativeAdapter/UMNativeModulesProxy.h>
 #import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
+#import <MMKV/MMKV.h>
 
 #if DEBUG
 #import <FlipperKit/FlipperClient.h>
@@ -49,7 +50,9 @@ static void InitializeFlipper(UIApplication *application) {
 
     self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegistryProvider:[[UMModuleRegistryProvider alloc] init]];
     RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
-    [FIRApp configure];
+    if(![FIRApp defaultApp]){
+      [FIRApp configure];
+    }
     RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                 moduleName:@"RocketChatRN"
                                                 initialProperties:nil];
@@ -61,6 +64,32 @@ static void InitializeFlipper(UIApplication *application) {
     self.window.rootViewController = rootViewController;
     [self.window makeKeyAndVisible];
     [RNNotifications startMonitorNotifications];
+    [ReplyNotification configure];
+  
+    // AppGroup MMKV
+    NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
+    [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
+  
+    // Start the MMKV container
+    MMKV *defaultMMKV = [MMKV mmkvWithID:@"migration" mode:MMKVMultiProcess];
+    BOOL alreadyMigrated = [defaultMMKV getBoolForKey:@"alreadyMigrated"];
+
+    if (!alreadyMigrated) {
+      // MMKV Instance that will be used by JS
+      MMKV *mmkv = [MMKV mmkvWithID:@"default" mode:MMKVMultiProcess];
+
+      // NSUserDefaults -> MMKV (Migration)
+      NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]];
+      [mmkv migrateFromUserDefaults:userDefaults];
+
+      // Remove our own keys of NSUserDefaults
+      for (NSString *key in [userDefaults dictionaryRepresentation].keyEnumerator) {
+        [userDefaults removeObjectForKey:key];
+      }
+
+      // Mark migration complete
+      [defaultMMKV setBool:YES forKey:@"alreadyMigrated"];
+    }
 
     return YES;
 }

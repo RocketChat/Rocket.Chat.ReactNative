@@ -1,23 +1,3 @@
-# Rocket.Chat
-
-### What we have changed
-`ios/sdk/src/callkit/JMCallKitProxy.swift`
-```Swift
-@objc public static var enabled: Bool = true {
-    didSet {
-        let regionCode = Locale.current.regionCode as String?
-        provider.invalidate()
-        if enabled && !regionCode!.contains("CN") && !regionCode!.contains("CHN") {
-            guard isProviderConfigured() else  { return; }
-            provider = CXProvider(configuration: providerConfiguration!)
-            provider.setDelegate(emitter, queue: nil)
-        } else {
-            provider.setDelegate(nil, queue: nil)
-        }
-    }
-}
-```
-
 # Jitsi Meet iOS SDK releases
 
 This repository contains the binaries for the **[Jitsi Meet]() iOS SDK**. Each
@@ -76,7 +56,7 @@ you may want to set `UIViewControllerBasedStatusBarAppearance` to `NO` in your
 
 ## API
 
-The API is documented [here]().
+The API is documented [here](https://jitsi.github.io/handbook/docs/dev-guide/dev-guide-ios-sdk).
 
 ## Issues
 
@@ -84,5 +64,3 @@ Please report all issues related to this SDK to the [Jitsi Meet]() repository.
 
 [CocoaPods]: https://cocoapods.org
 [Jitsi Meet]: https://github.com/jitsi/jitsi-meet
-[here]: https://github.com/jitsi/jitsi-meet/blob/master/ios/README.md
-

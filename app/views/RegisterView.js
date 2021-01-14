@@ -6,14 +6,13 @@ import {
 import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
 
-import log from '../utils/log';
+import log, { logEvent, events } from '../utils/log';
 import sharedStyles from './Styles';
 import Button from '../containers/Button';
 import I18n from '../i18n';
-import { LegalButton } from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/HeaderButton';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
-import { themedHeader } from '../utils/navigation';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import TextInput from '../containers/TextInput';
 import isValidEmail from '../utils/isValidEmail';
@@ -53,14 +52,10 @@ const styles = StyleSheet.create({
 });
 
 class RegisterView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const title = navigation.getParam('title', 'Rocket.Chat');
-		return {
-			...themedHeader(screenProps.theme),
-			title,
-			headerRight: <LegalButton navigation={navigation} />
-		};
-	}
+	static navigationOptions = ({ route, navigation }) => ({
+		title: route.params?.title ?? 'Rocket.Chat',
+		headerRight: () => <HeaderButton.Legal testID='register-view-more' navigation={navigation} />
+	});
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -119,6 +114,7 @@ class RegisterView extends React.Component {
 	}
 
 	submit = async() => {
+		logEvent(events.REGISTER_DEFAULT_SIGN_UP);
 		if (!this.valid()) {
 			return;
 		}
@@ -150,10 +146,13 @@ class RegisterView extends React.Component {
 				await loginRequest({ user: email, password });
 			}
 		} catch (e) {
-			if (e.data && e.data.errorType === 'username-invalid') {
+			if (e.data?.errorType === 'username-invalid') {
 				return loginRequest({ user: email, password });
 			}
-			showErrorAlert(e.data.error, I18n.t('Oops'));
+			if (e.data?.error) {
+				logEvent(events.REGISTER_DEFAULT_SIGN_UP_F);
+				showErrorAlert(e.data.error, I18n.t('Oops'));
+			}
 		}
 		this.setState({ saving: false });
 	}
@@ -228,11 +227,11 @@ class RegisterView extends React.Component {
 
 	render() {
 		const { saving } = this.state;
-		const { theme, showLoginButton } = this.props;
+		const { theme, showLoginButton, navigation } = this.props;
 		return (
-			<FormContainer theme={theme}>
+			<FormContainer theme={theme} testID='register-view'>
 				<FormContainerInner>
-					<LoginServices />
+					<LoginServices navigation={navigation} />
 					<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Sign_Up')}</Text>
 					<TextInput
 						label='Name'

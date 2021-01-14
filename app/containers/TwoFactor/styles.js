@@ -14,9 +14,10 @@ export default StyleSheet.create({
 		borderRadius: 4
 	},
 	title: {
-		fontSize: 14,
+		fontSize: 16,
 		paddingBottom: 8,
-		...sharedStyles.textBold
+		...sharedStyles.textBold,
+		...sharedStyles.textAlignCenter
 	},
 	subtitle: {
 		fontSize: 14,
@@ -37,5 +38,8 @@ export default StyleSheet.create({
 	buttonContainer: {
 		flexDirection: 'row',
 		justifyContent: 'space-between'
+	},
+	tablet: {
+		height: undefined
 	}
 });

@@ -1,0 +1,35 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Upload App to Play Store Internal"
+  lane :beta do |options|
+    if options[:official]
+      upload_to_play_store(
+        package_name: 'chat.rocket.android',
+        track: 'internal',
+        aab: 'android/app/build/outputs/bundle/officialPlayRelease/app-official-play-release.aab'
+      )
+    else
+      upload_to_play_store(
+        package_name: 'chat.rocket.reactnative',
+        track: 'internal',
+        aab: 'android/app/build/outputs/bundle/experimentalPlayRelease/app-experimental-play-release.aab'
+      )
+    end
+  end
+end

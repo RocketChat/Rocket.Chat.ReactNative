@@ -4,25 +4,20 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { SafeAreaView } from 'react-navigation';
 
 import I18n from '../i18n';
 import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
-import Navigation from '../lib/ShareNavigation';
 import ServerItem, { ROW_HEIGHT } from '../presentation/ServerItem';
 import sharedStyles from './Styles';
 import RocketChat from '../lib/rocketchat';
 import { withTheme } from '../theme';
-import { themedHeader } from '../utils/navigation';
+import SafeAreaView from '../containers/SafeAreaView';
 
 const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.id;
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1
-	},
 	list: {
 		marginVertical: 32,
 		...sharedStyles.separatorVertical
@@ -34,21 +29,21 @@ const styles = StyleSheet.create({
 });
 
 class SelectServerView extends React.Component {
-	static navigationOptions = ({ screenProps }) => ({
-		...themedHeader(screenProps.theme),
+	static navigationOptions = () => ({
 		title: I18n.t('Select_Server')
 	})
 
 	static propTypes = {
 		server: PropTypes.string,
+		route: PropTypes.object,
 		navigation: PropTypes.object,
 		theme: PropTypes.string
 	}
 
 	constructor(props) {
 		super(props);
-		const { navigation } = this.props;
-		const servers = navigation.getParam('servers', []);
+		const { route } = this.props;
+		const servers = route.params?.servers ?? [];
 		const filteredServers = servers.filter(server => server.roomsUpdatedAt);
 		this.state = {
 			servers: filteredServers
@@ -57,10 +52,10 @@ class SelectServerView extends React.Component {
 
 	select = async(server) => {
 		const {
-			server: currentServer
+			server: currentServer, navigation
 		} = this.props;
 
-		Navigation.navigate('ShareListView');
+		navigation.navigate('ShareListView');
 		if (currentServer !== server) {
 			await RocketChat.shareExtensionInit(server);
 		}
@@ -88,11 +83,8 @@ class SelectServerView extends React.Component {
 		const { servers } = this.state;
 		const { theme } = this.props;
 		return (
-			<SafeAreaView
-				style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
-				forceInset={{ vertical: 'never' }}
-			>
-				<StatusBar theme={theme} />
+			<SafeAreaView>
+				<StatusBar />
 				<View style={[styles.list, { borderColor: themes[theme].separatorColor }]}>
 					<FlatList
 						data={servers}
@@ -114,7 +106,7 @@ class SelectServerView extends React.Component {
 }
 
 const mapStateToProps = (({ share }) => ({
-	server: share.server
+	server: share.server.server
 }));
 
 export default connect(mapStateToProps)(withTheme(SelectServerView));

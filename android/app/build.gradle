@@ -1,8 +1,13 @@
+def taskRequests = getGradle().getStartParameter().getTaskRequests().toString().toLowerCase()
+def isFoss = taskRequests.contains("foss")
+
 apply plugin: "com.android.application"
 apply plugin: 'kotlin-android'
-apply plugin: "io.fabric"
-apply plugin: "com.google.firebase.firebase-perf"
-apply plugin: 'com.bugsnag.android.gradle'
+
+if (!isFoss) {
+    apply plugin: 'com.google.firebase.crashlytics'
+    apply plugin: 'com.bugsnag.android.gradle'
+}
 
 import com.android.build.OutputFile
 
@@ -135,14 +140,17 @@ android {
     }
 
     defaultConfig {
-        applicationId "chat.rocket.reactnative"
+        applicationId APPLICATION_ID
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode VERSIONCODE as Integer
-        versionName "4.7.0"
+        versionName "4.13.1"
         vectorDrawables.useSupportLibrary = true
-        manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
-        missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
+        if (!isFoss) {
+            manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
+            missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
+        }
+        resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
     }
 
     signingConfigs {
@@ -168,17 +176,62 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'])
             signingConfig signingConfigs.release
+            if (!isFoss) {
+                firebaseCrashlytics {
+                    nativeSymbolUploadEnabled true
+                }
+            }
         }
     }
 
-    packagingOptions {
-        pickFirst '**/armeabi-v7a/libc++_shared.so'
-        pickFirst '**/x86/libc++_shared.so'
-        pickFirst '**/arm64-v8a/libc++_shared.so'
-        pickFirst '**/x86_64/libc++_shared.so'
-    }
+    // packagingOptions {
+    //     pickFirst '**/armeabi-v7a/libc++_shared.so'
+    //     pickFirst '**/x86/libc++_shared.so'
+    //     pickFirst '**/arm64-v8a/libc++_shared.so'
+    //     pickFirst '**/x86_64/libc++_shared.so'
+    // }
 
     // applicationVariants are e.g. debug, release
+
+    flavorDimensions "app", "type"
+    productFlavors {
+        official {
+            dimension = "app"
+            buildConfigField "boolean", "IS_OFFICIAL", "true"
+        }
+        experimental {
+            dimension = "app"
+            buildConfigField "boolean", "IS_OFFICIAL", "false"
+        }
+        foss {
+            dimension = "type"
+            buildConfigField "boolean", "FDROID_BUILD", "true"
+        }
+        play {
+            dimension = "type"
+            buildConfigField "boolean", "FDROID_BUILD", "false"
+        }
+    }
+    sourceSets {
+        // TODO: refactor making sure notifications are working properly both on debug and release
+        experimentalPlayDebug {
+            java.srcDirs = ['src/main/java', 'src/play/java']
+            manifest.srcFile 'src/play/AndroidManifest.xml'
+        }
+        experimentalPlayRelease {
+            java.srcDirs = ['src/main/java', 'src/play/java']
+            manifest.srcFile 'src/play/AndroidManifest.xml'
+        }
+        officialPlayDebug {
+            java.srcDirs = ['src/main/java', 'src/play/java']
+            manifest.srcFile 'src/play/AndroidManifest.xml'
+        }
+        officialPlayRelease {
+            java.srcDirs = ['src/main/java', 'src/play/java']
+            manifest.srcFile 'src/play/AndroidManifest.xml'
+        }
+    }
+
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             // For each separate APK per architecture, set a unique version code as described here:
@@ -208,18 +261,15 @@ android {
 dependencies {
     addUnimodulesDependencies()
     implementation project(':watermelondb')
-    implementation project(':reactnativenotifications')
-    implementation project(":reactnativekeyboardinput")
     implementation project(':@react-native-community_viewpager')
+    playImplementation project(':reactnativenotifications')
+    playImplementation project(':@react-native-firebase_app')
+    playImplementation project(':@react-native-firebase_analytics')
+    playImplementation project(':@react-native-firebase_crashlytics')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
-    implementation "com.google.firebase:firebase-messaging:18.0.0"
-    implementation "com.google.firebase:firebase-core:16.0.9"
-    implementation "com.google.firebase:firebase-perf:17.0.2"
-    implementation('com.crashlytics.sdk.android:crashlytics:2.9.9@aar') {
-        transitive = true
-    }
+    playImplementation "com.google.firebase:firebase-messaging:18.0.0"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
@@ -242,6 +292,7 @@ dependencies {
     implementation "com.google.code.gson:gson:2.8.5"
     implementation "com.github.bumptech.glide:glide:4.9.0"
     annotationProcessor "com.github.bumptech.glide:compiler:4.9.0"
+    implementation "com.tencent:mmkv-static:1.2.1"
 }
 
 // Run this once to be able to run the application with BUCK
@@ -251,5 +302,7 @@ task copyDownloadableDepsToLibs(type: Copy) {
     into 'libs'
 }
 
-apply plugin: 'com.google.gms.google-services'
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+if (!isFoss) {
+    apply plugin: 'com.google.gms.google-services'
+}

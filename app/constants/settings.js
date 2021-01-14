@@ -20,6 +20,9 @@ export default {
 	Accounts_AllowUsernameChange: {
 		type: 'valueAsBoolean'
 	},
+	Accounts_AvatarBlockUnauthenticatedAccess: {
+		type: 'valueAsBoolean'
+	},
 	Accounts_CustomFields: {
 		type: 'valueAsString'
 	},
@@ -50,11 +53,26 @@ export default {
 	Accounts_ManuallyApproveNewUsers: {
 		type: 'valueAsBoolean'
 	},
+	API_Use_REST_For_DDP_Calls: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_iframe_enabled: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_Iframe_api_url: {
+		type: 'valueAsString'
+	},
+	Accounts_Iframe_api_method: {
+		type: 'valueAsString'
+	},
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
 	},
 	DirectMesssage_maxUsers: {
 		type: 'valueAsNumber'
+	},
+	E2E_Enable: {
+		type: 'valueAsBoolean'
 	},
 	Accounts_Directory_DefaultView: {
 		type: 'valueAsString'
@@ -169,5 +187,8 @@ export default {
 	},
 	Force_Screen_Lock_After: {
 		type: 'valueAsNumber'
+	},
+	Allow_Save_Media_to_Gallery: {
+		type: 'valueAsBoolean'
 	}
 };

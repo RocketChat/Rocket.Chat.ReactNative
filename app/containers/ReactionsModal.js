@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, Text, FlatList, StyleSheet, SafeAreaView
+	View, Text, FlatList, StyleSheet
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
@@ -12,16 +12,20 @@ import { CustomIcon } from '../lib/Icons';
 import sharedStyles from '../views/Styles';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
+import SafeAreaView from './SafeAreaView';
 
 const styles = StyleSheet.create({
+	safeArea: {
+		backgroundColor: 'transparent'
+	},
 	titleContainer: {
 		alignItems: 'center',
 		paddingVertical: 10
 	},
 	title: {
-		textAlign: 'center',
 		fontSize: 16,
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
+		...sharedStyles.textAlignCenter
 	},
 	reactCount: {
 		fontSize: 13,
@@ -95,12 +99,12 @@ const ModalContent = React.memo(({
 }) => {
 	if (message && message.reactions) {
 		return (
-			<SafeAreaView style={{ flex: 1 }}>
+			<SafeAreaView style={styles.safeArea}>
 				<Touchable onPress={onClose}>
 					<View style={styles.titleContainer}>
 						<CustomIcon
 							style={[styles.closeButton, { color: themes[props.theme].buttonText }]}
-							name='cross'
+							name='close'
 							size={20}
 						/>
 						<Text style={[styles.title, { color: themes[props.theme].buttonText }]}>{I18n.t('Reactions')}</Text>

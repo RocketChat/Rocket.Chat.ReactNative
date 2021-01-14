@@ -1,6 +1,6 @@
 import { StyleSheet, Platform } from 'react-native';
 
-import { MAX_SCREEN_CONTENT_WIDTH, MAX_CONTENT_WIDTH } from '../constants/tablet';
+import { MAX_SCREEN_CONTENT_WIDTH } from '../constants/tablet';
 
 export default StyleSheet.create({
 	container: {
@@ -11,32 +11,18 @@ export default StyleSheet.create({
 		padding: 15,
 		paddingBottom: 30
 	},
-	containerSplitView: {
-		flex: 1,
-		flexDirection: 'row'
-	},
-	tabletContent: {
-		maxWidth: MAX_CONTENT_WIDTH
-	},
 	tabletScreenContent: {
 		justifyContent: 'center',
 		alignSelf: 'center',
 		width: MAX_SCREEN_CONTENT_WIDTH
 	},
-	modal: {
-		alignSelf: 'center',
-		borderRadius: 10,
-		overflow: 'hidden'
-	},
 	modalFormSheet: {
 		// Following UIModalPresentationFormSheet size
 		// this not change on different iPad sizes
 		width: 540,
-		height: 620
-	},
-	modalPageSheet: {
-		width: '100%',
-		height: '100%'
+		height: 620,
+		overflow: 'hidden',
+		borderRadius: 10
 	},
 	status: {
 		position: 'absolute',
@@ -77,6 +63,7 @@ export default StyleSheet.create({
 		borderLeftWidth: StyleSheet.hairlineWidth
 	},
 	textRegular: {
+		textAlign: 'left',
 		backgroundColor: 'transparent',
 		...Platform.select({
 			ios: {
@@ -91,6 +78,7 @@ export default StyleSheet.create({
 		})
 	},
 	textMedium: {
+		textAlign: 'left',
 		backgroundColor: 'transparent',
 		...Platform.select({
 			ios: {
@@ -105,6 +93,7 @@ export default StyleSheet.create({
 		})
 	},
 	textSemibold: {
+		textAlign: 'left',
 		backgroundColor: 'transparent',
 		...Platform.select({
 			ios: {
@@ -119,6 +108,7 @@ export default StyleSheet.create({
 		})
 	},
 	textBold: {
+		textAlign: 'left',
 		backgroundColor: 'transparent',
 		...Platform.select({
 			ios: {
@@ -134,11 +124,6 @@ export default StyleSheet.create({
 	},
 	inputLastChild: {
 		marginBottom: 15
-	},
-	listContentContainer: {
-		borderTopWidth: StyleSheet.hairlineWidth,
-		borderBottomWidth: StyleSheet.hairlineWidth,
-		marginVertical: 36
 	},
 	notchLandscapeContainer: {
 		marginTop: -34,

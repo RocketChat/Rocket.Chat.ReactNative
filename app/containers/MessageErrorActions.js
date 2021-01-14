@@ -1,41 +1,22 @@
-import React from 'react';
+import { useImperativeHandle, forwardRef } from 'react';
 import PropTypes from 'prop-types';
-import ActionSheet from 'react-native-action-sheet';
 
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
+import { useActionSheet } from './ActionSheet';
 import I18n from '../i18n';
 import log from '../utils/log';
 
-class MessageErrorActions extends React.Component {
-	static propTypes = {
-		actionsHide: PropTypes.func.isRequired,
-		message: PropTypes.object,
-		tmid: PropTypes.string
-	};
+const MessageErrorActions = forwardRef(({ tmid }, ref) => {
+	const { showActionSheet } = useActionSheet();
 
-	// eslint-disable-next-line react/sort-comp
-	constructor(props) {
-		super(props);
-		this.handleActionPress = this.handleActionPress.bind(this);
-		this.options = [I18n.t('Cancel'), I18n.t('Delete'), I18n.t('Resend')];
-		this.CANCEL_INDEX = 0;
-		this.DELETE_INDEX = 1;
-		this.RESEND_INDEX = 2;
-		setTimeout(() => {
-			this.showActionSheet();
-		});
-	}
-
-	handleResend = protectedFunction(async() => {
-		const { message, tmid } = this.props;
+	const handleResend = protectedFunction(async(message) => {
 		await RocketChat.resendMessage(message, tmid);
 	});
 
-	handleDelete = async() => {
+	const handleDelete = async(message) => {
 		try {
-			const { message, tmid } = this.props;
 			const db = database.active;
 			const deleteBatch = [];
 			const msgCollection = db.collections.get('messages');
@@ -49,7 +30,7 @@ class MessageErrorActions extends React.Component {
 				try {
 					const msg = await msgCollection.find(message.id);
 					deleteBatch.push(msg.prepareDestroyPermanently());
-				} catch (error) {
+				} catch {
 					// Do nothing: message not found
 				}
 
@@ -68,7 +49,7 @@ class MessageErrorActions extends React.Component {
 							// If the whole thread was removed, delete the thread
 							const thread = await threadCollection.find(tmid);
 							deleteBatch.push(thread.prepareDestroyPermanently());
-						} catch (error) {
+						} catch {
 							// Do nothing: thread not found
 						}
 					} else {
@@ -78,7 +59,7 @@ class MessageErrorActions extends React.Component {
 							})
 						);
 					}
-				} catch (error) {
+				} catch {
 					// Do nothing: message not found
 				}
 			}
@@ -88,39 +69,34 @@ class MessageErrorActions extends React.Component {
 		} catch (e) {
 			log(e);
 		}
-	}
+	};
 
-	showActionSheet = () => {
-		ActionSheet.showActionSheetWithOptions({
-			options: this.options,
-			cancelButtonIndex: this.CANCEL_INDEX,
-			destructiveButtonIndex: this.DELETE_INDEX,
-			title: I18n.t('Message_actions')
-		}, (actionIndex) => {
-			this.handleActionPress(actionIndex);
+	const showMessageErrorActions = (message) => {
+		showActionSheet({
+			options: [
+				{
+					title: I18n.t('Resend'),
+					icon: 'send',
+					onPress: () => handleResend(message)
+				},
+				{
+					title: I18n.t('Delete'),
+					icon: 'delete',
+					danger: true,
+					onPress: () => handleDelete(message)
+				}
+			],
+			hasCancel: true
 		});
-	}
+	};
 
-	handleActionPress = (actionIndex) => {
-		const { actionsHide } = this.props;
-		switch (actionIndex) {
-			case this.RESEND_INDEX:
-				this.handleResend();
-				break;
-			case this.DELETE_INDEX:
-				this.handleDelete();
-				break;
-			default:
-				break;
-		}
-		actionsHide();
-	}
-
-	render() {
-		return (
-			null
-		);
-	}
-}
+	useImperativeHandle(ref, () => ({
+		showMessageErrorActions
+	}));
+});
+MessageErrorActions.propTypes = {
+	message: PropTypes.object,
+	tmid: PropTypes.string
+};
 
 export default MessageErrorActions;

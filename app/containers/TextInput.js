@@ -11,7 +11,7 @@ import ActivityIndicator from './ActivityIndicator';
 
 const styles = StyleSheet.create({
 	error: {
-		textAlign: 'center',
+		...sharedStyles.textAlignCenter,
 		paddingTop: 5
 	},
 	inputContainer: {
@@ -26,8 +26,7 @@ const styles = StyleSheet.create({
 		...sharedStyles.textRegular,
 		height: 48,
 		fontSize: 16,
-		paddingLeft: 14,
-		paddingRight: 14,
+		paddingHorizontal: 14,
 		borderWidth: StyleSheet.hairlineWidth,
 		borderRadius: 2
 	},
@@ -111,7 +110,7 @@ export default class RCTextInput extends React.PureComponent {
 		return (
 			<BorderlessButton onPress={this.tooglePassword} style={[styles.iconContainer, styles.iconRight]}>
 				<CustomIcon
-					name={showPassword ? 'Eye' : 'eye-off'}
+					name={showPassword ? 'unread-on-top' : 'unread-on-top-disabled'}
 					testID={testID ? `${ testID }-icon-right` : null}
 					style={{ color: themes[theme].auxiliaryText }}
 					size={20}

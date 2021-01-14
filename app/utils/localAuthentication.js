@@ -2,9 +2,10 @@ import * as LocalAuthentication from 'expo-local-authentication';
 import moment from 'moment';
 import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-community/async-storage';
-import RNUserDefaults from 'rn-user-defaults';
 import { sha256 } from 'js-sha256';
 
+import UserPreferences from '../lib/userPreferences';
+import store from '../lib/createStore';
 import database from '../lib/database';
 import { isIOS } from './deviceInfo';
 import EventEmitter from './events';
@@ -12,6 +13,7 @@ import {
 	LOCAL_AUTHENTICATE_EMITTER, LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY, PASSCODE_KEY, CHANGE_PASSCODE_EMITTER
 } from '../constants/localAuthentication';
 import I18n from '../i18n';
+import { setLocalAuthenticated } from '../actions/login';
 
 export const saveLastLocalAuthenticationSession = async(server, serverRecord) => {
 	const serversDB = database.servers;
@@ -49,7 +51,7 @@ const openChangePasscodeModal = ({ force }) => new Promise((resolve, reject) => 
 
 export const changePasscode = async({ force = false }) => {
 	const passcode = await openChangePasscodeModal({ force });
-	await RNUserDefaults.set(PASSCODE_KEY, sha256(passcode));
+	await UserPreferences.setStringAsync(PASSCODE_KEY, sha256(passcode));
 };
 
 export const biometryAuth = force => LocalAuthentication.authenticateAsync({
@@ -78,7 +80,7 @@ const checkBiometry = async(serverRecord) => {
 };
 
 export const checkHasPasscode = async({ force = true, serverRecord }) => {
-	const storedPasscode = await RNUserDefaults.get(PASSCODE_KEY);
+	const storedPasscode = await UserPreferences.getStringAsync(PASSCODE_KEY);
 	if (!storedPasscode) {
 		await changePasscode({ force });
 		await checkBiometry(serverRecord);
@@ -100,6 +102,9 @@ export const localAuthenticate = async(server) => {
 
 	// if screen lock is enabled
 	if (serverRecord?.autoLock) {
+		// set isLocalAuthenticated to false
+		store.dispatch(setLocalAuthenticated(false));
+
 		// Make sure splash screen has been hidden
 		RNBootSplash.hide();
 
@@ -123,6 +128,9 @@ export const localAuthenticate = async(server) => {
 
 				// Authenticate
 				await openModal(hasBiometry);
+
+				// set isLocalAuthenticated to true
+				store.dispatch(setLocalAuthenticated(true));
 			}
 		}
 

@@ -1,311 +1,353 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Image } from 'react-native';
+import { View, Text, NativeModules } from 'react-native';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
+import * as VideoThumbnails from 'expo-video-thumbnails';
 
 import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
-import RocketChat from '../../lib/rocketchat';
-import { CustomIcon } from '../../lib/Icons';
-import log from '../../utils/log';
 import styles from './styles';
-import TextInput from '../../containers/TextInput';
-import ActivityIndicator from '../../containers/ActivityIndicator';
-import { CustomHeaderButtons, Item } from '../../containers/HeaderButton';
+import Loading from '../../containers/Loading';
+import * as HeaderButton from '../../containers/HeaderButton';
 import { isBlocked } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { withTheme } from '../../theme';
-import { themedHeader } from '../../utils/navigation';
+import Header from './Header';
+import RocketChat from '../../lib/rocketchat';
+import TextInput from '../../containers/TextInput';
+import Preview from './Preview';
+import Thumbs from './Thumbs';
+import MessageBox from '../../containers/MessageBox';
+import SafeAreaView from '../../containers/SafeAreaView';
+import { getUserSelector } from '../../selectors/login';
+import StatusBar from '../../containers/StatusBar';
+import database from '../../lib/database';
+import { canUploadFile } from '../../utils/media';
 
-class ShareView extends React.Component {
-	static navigationOptions = ({ navigation, screenProps }) => {
-		const canSend = navigation.getParam('canSend', true);
-
-		return ({
-			title: I18n.t('Share'),
-			...themedHeader(screenProps.theme),
-			headerRight:
-				canSend
-					? (
-						<CustomHeaderButtons>
-							<Item
-								title={I18n.t('Send')}
-								onPress={navigation.getParam('sendMessage')}
-								testID='send-message-share-view'
-								buttonStyle={styles.send}
-							/>
-						</CustomHeaderButtons>
-					)
-					: null
-		});
-	}
-
-	static propTypes = {
-		navigation: PropTypes.object,
-		theme: PropTypes.string,
-		user: PropTypes.shape({
-			id: PropTypes.string.isRequired,
-			username: PropTypes.string.isRequired,
-			token: PropTypes.string.isRequired
-		}),
-		server: PropTypes.string
-	};
-
+class ShareView extends Component {
 	constructor(props) {
 		super(props);
-		const { navigation } = this.props;
-		const rid = navigation.getParam('rid', '');
-		const name = navigation.getParam('name', '');
-		const value = navigation.getParam('value', '');
-		const isMedia = navigation.getParam('isMedia', false);
-		const fileInfo = navigation.getParam('fileInfo', {});
-		const room = navigation.getParam('room', { rid });
+		this.messagebox = React.createRef();
+		this.files = props.route.params?.attachments ?? [];
+		this.isShareExtension = props.route.params?.isShareExtension;
+		this.serverInfo = props.route.params?.serverInfo ?? {};
 
 		this.state = {
-			rid,
-			value,
-			isMedia,
-			name,
-			fileInfo,
-			room,
+			selected: {},
 			loading: false,
 			readOnly: false,
-			file: {
-				name: fileInfo ? fileInfo.name : '',
-				description: ''
-			}
+			attachments: [],
+			text: props.route.params?.text ?? '',
+			room: props.route.params?.room ?? {},
+			thread: props.route.params?.thread ?? {},
+			maxFileSize: this.isShareExtension ? this.serverInfo?.FileUpload_MaxFileSize : props.FileUpload_MaxFileSize,
+			mediaAllowList: this.isShareExtension ? this.serverInfo?.FileUpload_MediaTypeWhiteList : props.FileUpload_MediaTypeWhiteList
+		};
+		this.getServerInfo();
+	}
+
+	componentDidMount = async() => {
+		const readOnly = await this.getReadOnly();
+		const { attachments, selected } = await this.getAttachments();
+		this.setState({ readOnly, attachments, selected }, () => this.setHeader());
+	}
+
+	componentWillUnmount = () => {
+		console.countReset(`${ this.constructor.name }.render calls`);
+	}
+
+	setHeader = () => {
+		const {
+			room, thread, readOnly, attachments
+		} = this.state;
+		const { navigation, theme } = this.props;
+
+		const options = {
+			headerTitle: () => <Header room={room} thread={thread} />,
+			headerTitleAlign: 'left',
+			headerTintColor: themes[theme].previewTintColor
 		};
 
-		this.setReadOnly();
+		// if is share extension show default back button
+		if (!this.isShareExtension) {
+			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} buttonStyle={{ color: themes[theme].previewTintColor }} />;
+		}
+
+		if (!attachments.length && !readOnly) {
+			options.headerRight = () => (
+				<HeaderButton.Container>
+					<HeaderButton.Item
+						title={I18n.t('Send')}
+						onPress={this.send}
+						buttonStyle={[styles.send, { color: themes[theme].previewTintColor }]}
+					/>
+				</HeaderButton.Container>
+			);
+		}
+
+		options.headerBackground = () => <View style={[styles.container, { backgroundColor: themes[theme].previewBackground }]} />;
+
+		navigation.setOptions(options);
 	}
 
-	componentDidMount() {
-		const { navigation } = this.props;
-		navigation.setParams({ sendMessage: this._sendMessage });
+	// fetch server info
+	getServerInfo = async() => {
+		const { server } = this.props;
+		const serversDB = database.servers;
+		const serversCollection = serversDB.collections.get('servers');
+		try {
+			this.serverInfo = await serversCollection.find(server);
+		} catch (error) {
+			// Do nothing
+		}
 	}
 
-	setReadOnly = async() => {
+	getReadOnly = async() => {
 		const { room } = this.state;
-		const { navigation, user } = this.props;
-		const { username } = user;
-		const readOnly = await isReadOnly(room, { username });
-
-		this.setState({ readOnly });
-		navigation.setParams({ canSend: !(readOnly || isBlocked(room)) });
+		const { user } = this.props;
+		const readOnly = await isReadOnly(room, user);
+		return readOnly;
 	}
 
-	bytesToSize = bytes => `${ (bytes / 1048576).toFixed(2) }MB`;
+	getAttachments = async() => {
+		const { mediaAllowList, maxFileSize } = this.state;
+		const items = await Promise.all(this.files.map(async(item) => {
+			// Check server settings
+			const { success: canUpload, error } = canUploadFile(item, mediaAllowList, maxFileSize);
+			item.canUpload = canUpload;
+			item.error = error;
 
-	_sendMessage = async() => {
-		const { isMedia, loading } = this.state;
+			// get video thumbnails
+			if (item.mime?.match?.(/video/)) {
+				try {
+					const { uri } = await VideoThumbnails.getThumbnailAsync(item.path);
+					item.uri = uri;
+				} catch {
+					// Do nothing
+				}
+			}
+
+			// Set a filename, if there isn't any
+			if (!item.filename) {
+				item.filename = new Date().toISOString();
+			}
+			return item;
+		}));
+		return {
+			attachments: items,
+			selected: items[0]
+		};
+	}
+
+	send = async() => {
+		const { loading, selected } = this.state;
 		if (loading) {
 			return;
 		}
 
-		this.setState({ loading: true });
-		if (isMedia) {
-			await this.sendMediaMessage();
+		// update state
+		await this.selectFile(selected);
+
+		const {
+			attachments, room, text, thread
+		} = this.state;
+		const { navigation, server, user } = this.props;
+
+		// if it's share extension this should show loading
+		if (this.isShareExtension) {
+			this.setState({ loading: true });
+
+		// if it's not share extension this can close
 		} else {
-			await this.sendTextMessage();
+			navigation.pop();
 		}
 
-		this.setState({ loading: false });
-		ShareExtension.close();
-	}
+		try {
+			// Send attachment
+			if (attachments.length) {
+				await Promise.all(attachments.map(({
+					filename: name,
+					mime: type,
+					description,
+					size,
+					path,
+					canUpload
+				}) => {
+					if (canUpload) {
+						return RocketChat.sendFileMessage(
+							room.rid,
+							{
+								name,
+								description,
+								size,
+								type,
+								path,
+								store: 'Uploads'
+							},
+							thread?.id,
+							server,
+							{ id: user.id, token: user.token }
+						);
+					}
+					return Promise.resolve();
+				}));
 
-	sendMediaMessage = async() => {
-		const { rid, fileInfo, file } = this.state;
-		const { server, user } = this.props;
-		const { name, description } = file;
-		const fileMessage = {
-			name,
-			description,
-			size: fileInfo.size,
-			type: fileInfo.mime,
-			store: 'Uploads',
-			path: fileInfo.path
-		};
-		if (fileInfo && rid !== '') {
-			try {
-				await RocketChat.sendFileMessage(rid, fileMessage, undefined, server, user);
-			} catch (e) {
-				log(e);
+			// Send text message
+			} else if (text.length) {
+				await RocketChat.sendMessage(room.rid, text, thread?.id, { id: user.id, token: user.token });
 			}
+		} catch {
+			// Do nothing
 		}
-	}
 
-	sendTextMessage = async() => {
-		const { value, rid } = this.state;
-		const { user } = this.props;
-		if (value !== '' && rid !== '') {
-			try {
-				await RocketChat.sendMessage(rid, value, undefined, user);
-			} catch (e) {
-				log(e);
-			}
+		// if it's share extension this should close
+		if (this.isShareExtension) {
+			ShareExtension.close();
 		}
 	};
 
-	renderPreview = () => {
-		const { fileInfo } = this.state;
-		const { theme } = this.props;
+	selectFile = (item) => {
+		const { attachments, selected } = this.state;
+		if (attachments.length > 0) {
+			const { text } = this.messagebox.current;
+			const newAttachments = attachments.map((att) => {
+				if (att.path === selected.path) {
+					att.description = text;
+				}
+				return att;
+			});
+			return this.setState({ attachments: newAttachments, selected: item });
+		}
+	}
 
-		const icon = fileInfo.mime.match(/image/)
-			? <Image source={{ isStatic: true, uri: fileInfo.path }} style={styles.mediaImage} />
-			: (
-				<View style={styles.mediaIconContainer}>
-					<CustomIcon name='file-generic' style={styles.mediaIcon} />
+	removeFile = (item) => {
+		const { selected, attachments } = this.state;
+		let newSelected;
+		if (item.path === selected.path) {
+			const selectedIndex = attachments.findIndex(att => att.path === selected.path);
+			// Selects the next one, if available
+			if (attachments[selectedIndex + 1]?.path) {
+				newSelected = attachments[selectedIndex + 1];
+			// If it's the last thumb, selects the previous one
+			} else {
+				newSelected = attachments[selectedIndex - 1] || {};
+			}
+		}
+		this.setState({ attachments: attachments.filter(att => att.path !== item.path), selected: newSelected ?? selected });
+	}
+
+	onChangeText = (text) => {
+		this.setState({ text });
+	}
+
+	renderContent = () => {
+		const {
+			attachments, selected, room, text
+		} = this.state;
+		const { theme, navigation } = this.props;
+
+		if (attachments.length) {
+			return (
+				<View style={styles.container}>
+					<Preview
+						// using key just to reset zoom/move after change selected
+						key={selected?.path}
+						item={selected}
+						length={attachments.length}
+						theme={theme}
+						isShareExtension={this.isShareExtension}
+					/>
+					<MessageBox
+						showSend
+						sharing
+						ref={this.messagebox}
+						rid={room.rid}
+						roomType={room.t}
+						theme={theme}
+						onSubmit={this.send}
+						message={{ msg: selected?.description ?? '' }}
+						navigation={navigation}
+						isFocused={navigation.isFocused}
+						iOSScrollBehavior={NativeModules.KeyboardTrackingViewManager?.KeyboardTrackingScrollBehaviorNone}
+						isActionsEnabled={false}
+					>
+						<Thumbs
+							attachments={attachments}
+							theme={theme}
+							isShareExtension={this.isShareExtension}
+							onPress={this.selectFile}
+							onRemove={this.removeFile}
+						/>
+					</MessageBox>
 				</View>
 			);
+		}
 
-		return (
-			<View
-				style={[
-					styles.mediaContent,
-					{
-						borderColor: themes[theme].separatorColor,
-						backgroundColor: themes[theme].auxiliaryBackground
-					}
-				]}
-			>
-				{icon}
-				<View style={styles.mediaInfo}>
-					<Text style={[styles.mediaText, { color: themes[theme].titleText }]} numberOfLines={1}>{fileInfo.name}</Text>
-					<Text style={[styles.mediaText, { color: themes[theme].titleText }]}>{this.bytesToSize(fileInfo.size)}</Text>
-				</View>
-			</View>
-		);
-	};
-
-	renderMediaContent = () => {
-		const { fileInfo, file } = this.state;
-		const { theme } = this.props;
-		const inputStyle = {
-			backgroundColor: themes[theme].focusedBackground,
-			borderColor: themes[theme].separatorColor
-		};
-		return fileInfo ? (
-			<View style={styles.mediaContainer}>
-				{this.renderPreview()}
-				<View style={styles.mediaInputContent}>
-					<TextInput
-						inputStyle={[
-							styles.mediaNameInput,
-							styles.input,
-							styles.firstInput,
-							inputStyle
-						]}
-						placeholder={I18n.t('File_name')}
-						onChangeText={name => this.setState({ file: { ...file, name } })}
-						defaultValue={file.name}
-						containerStyle={styles.inputContainer}
-						theme={theme}
-					/>
-					<TextInput
-						inputStyle={[
-							styles.mediaDescriptionInput,
-							styles.input,
-							inputStyle
-						]}
-						placeholder={I18n.t('File_description')}
-						onChangeText={description => this.setState({ file: { ...file, description } })}
-						defaultValue={file.description}
-						multiline
-						textAlignVertical='top'
-						autoFocus
-						containerStyle={styles.inputContainer}
-						theme={theme}
-					/>
-				</View>
-			</View>
-		) : null;
-	};
-
-	renderInput = () => {
-		const { value } = this.state;
-		const { theme } = this.props;
 		return (
 			<TextInput
-				containerStyle={[styles.content, styles.inputContainer]}
+				containerStyle={styles.inputContainer}
 				inputStyle={[
 					styles.input,
 					styles.textInput,
-					{
-						borderColor: themes[theme].separatorColor,
-						backgroundColor: themes[theme].focusedBackground
-					}
+					{ backgroundColor: themes[theme].focusedBackground }
 				]}
 				placeholder=''
-				onChangeText={handleText => this.setState({ value: handleText })}
-				defaultValue={value}
+				onChangeText={this.onChangeText}
+				defaultValue=''
 				multiline
 				textAlignVertical='top'
 				autoFocus
 				theme={theme}
+				value={text}
 			/>
 		);
-	}
-
-	renderError = () => {
-		const { room } = this.state;
-		const { theme } = this.props;
-		return (
-			<View style={[styles.container, styles.centered, { backgroundColor: themes[theme].backgroundColor }]}>
-				<Text style={styles.title}>
-					{
-						isBlocked(room) ? I18n.t('This_room_is_blocked') : I18n.t('This_room_is_read_only')
-					}
-				</Text>
-			</View>
-		);
-	}
+	};
 
 	render() {
+		console.count(`${ this.constructor.name }.render calls`);
+		const { readOnly, room, loading } = this.state;
 		const { theme } = this.props;
-		const {
-			name, loading, isMedia, room, readOnly
-		} = this.state;
-
 		if (readOnly || isBlocked(room)) {
-			return this.renderError();
-		}
-
-		return (
-			<View style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-				<View
-					style={[
-						isMedia
-							? styles.toContent
-							: styles.toContentText,
-						{
-							backgroundColor: isMedia
-								? themes[theme].focusedBackground
-								: themes[theme].auxiliaryBackground
-						}
-					]}
-				>
-					<Text style={styles.text} numberOfLines={1}>
-						<Text style={[styles.to, { color: themes[theme].auxiliaryText }]}>{`${ I18n.t('To') }: `}</Text>
-						<Text style={[styles.name, { color: themes[theme].titleText }]}>{`${ name }`}</Text>
+			return (
+				<View style={[styles.container, styles.centered, { backgroundColor: themes[theme].backgroundColor }]}>
+					<Text style={[styles.title, { color: themes[theme].titleText }]}>
+						{isBlocked(room) ? I18n.t('This_room_is_blocked') : I18n.t('This_room_is_read_only')}
 					</Text>
 				</View>
-				<View style={[styles.content, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-					{isMedia ? this.renderMediaContent() : this.renderInput()}
-				</View>
-				{ loading ? <ActivityIndicator size='large' theme={theme} absolute /> : null }
-			</View>
+			);
+		}
+		return (
+			<SafeAreaView
+				style={{ backgroundColor: themes[theme].backgroundColor }}
+			>
+				<StatusBar barStyle='light-content' backgroundColor={themes[theme].previewBackground} />
+				{this.renderContent()}
+				<Loading visible={loading} />
+			</SafeAreaView>
 		);
 	}
 }
 
-const mapStateToProps = (({ share }) => ({
-	user: {
-		id: share.user && share.user.id,
-		username: share.user && share.user.username,
-		token: share.user && share.user.token
-	},
-	server: share.server
-}));
+ShareView.propTypes = {
+	navigation: PropTypes.object,
+	route: PropTypes.object,
+	theme: PropTypes.string,
+	user: PropTypes.shape({
+		id: PropTypes.string.isRequired,
+		username: PropTypes.string.isRequired,
+		token: PropTypes.string.isRequired
+	}),
+	server: PropTypes.string,
+	FileUpload_MediaTypeWhiteList: PropTypes.string,
+	FileUpload_MaxFileSize: PropTypes.string
+};
+
+const mapStateToProps = state => ({
+	user: getUserSelector(state),
+	server: state.share.server.server || state.server.server,
+	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
+	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize
+});
 
 export default connect(mapStateToProps)(withTheme(ShareView));

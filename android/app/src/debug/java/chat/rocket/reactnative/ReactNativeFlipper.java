@@ -4,7 +4,7 @@
  * <p>This source code is licensed under the MIT license found in the LICENSE file in the root
  * directory of this source tree.
  */
-package com.rndiffapp;
+package chat.rocket.reactnative;
 import android.content.Context;
 import com.facebook.flipper.android.AndroidFlipperClient;
 import com.facebook.flipper.android.utils.FlipperUtils;
@@ -21,6 +21,7 @@ import com.facebook.flipper.plugins.sharedpreferences.SharedPreferencesFlipperPl
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.modules.network.NetworkingModule;
+import com.facebook.react.modules.network.CustomClientBuilder;
 import okhttp3.OkHttpClient;
 public class ReactNativeFlipper {
   public static void initializeFlipper(Context context, ReactInstanceManager reactInstanceManager) {
@@ -33,7 +34,7 @@ public class ReactNativeFlipper {
       client.addPlugin(CrashReporterPlugin.getInstance());
       NetworkFlipperPlugin networkFlipperPlugin = new NetworkFlipperPlugin();
       NetworkingModule.setCustomClientBuilder(
-          new NetworkingModule.CustomClientBuilder() {
+          new CustomClientBuilder() {
             @Override
             public void apply(OkHttpClient.Builder builder) {
               builder.addNetworkInterceptor(new FlipperOkhttpInterceptor(networkFlipperPlugin));

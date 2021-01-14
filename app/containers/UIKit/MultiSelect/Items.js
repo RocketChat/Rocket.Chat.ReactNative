@@ -2,11 +2,10 @@ import React from 'react';
 import { Text, FlatList } from 'react-native';
 import PropTypes from 'prop-types';
 import Touchable from 'react-native-platform-touchable';
-import FastImage from 'react-native-fast-image';
+import FastImage from '@rocket.chat/react-native-fast-image';
 
-import Separator from '../../Separator';
 import Check from '../../Check';
-
+import * as List from '../../List';
 import { textParser } from '../utils';
 import { themes } from '../../../constants/colors';
 
@@ -48,7 +47,7 @@ const Items = ({
 		style={[styles.items, { backgroundColor: themes[theme].backgroundColor }]}
 		contentContainerStyle={[styles.itemContent, { backgroundColor: themes[theme].backgroundColor }]}
 		keyboardShouldPersistTaps='always'
-		ItemSeparatorComponent={() => <Separator theme={theme} />}
+		ItemSeparatorComponent={List.Separator}
 		keyExtractor={keyExtractor}
 		renderItem={({ item }) => <Item item={item} onSelect={onSelect} theme={theme} selected={selected.find(s => s === item.value)} />}
 	/>

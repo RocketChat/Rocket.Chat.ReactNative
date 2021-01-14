@@ -1,12 +1,11 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import { Alert } from 'react-native';
-import RNUserDefaults from 'rn-user-defaults';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { Q } from '@nozbe/watermelondb';
 import semver from 'semver';
 
 import Navigation from '../lib/Navigation';
 import { SERVER } from '../actions/actionsTypes';
-import * as actions from '../actions';
 import {
 	serverFailure, selectServerRequest, selectServerSuccess, selectServerFailure
 } from '../actions/server';
@@ -15,10 +14,14 @@ import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
 import log, { logServerVersion } from '../utils/log';
-import { extractHostname } from '../utils/server';
 import I18n from '../i18n';
-import { SERVERS, TOKEN, SERVER_URL } from '../constants/userDefaults';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../utils/fetch';
+import { appStart, ROOT_INSIDE, ROOT_OUTSIDE } from '../actions/app';
+import UserPreferences from '../lib/userPreferences';
+import { encryptionStop } from '../actions/encryption';
+import SSLPinning from '../utils/sslPinning';
+
+import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
@@ -30,7 +33,7 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 		if (!serverInfo.success || !websocketInfo.success) {
 			if (raiseError) {
 				const info = serverInfo.success ? websocketInfo : serverInfo;
-				Alert.alert(I18n.t('Oops'), I18n.t(info.message, info.messageOptions));
+				Alert.alert(I18n.t('Oops'), info.message);
 			}
 			yield put(serverFailure());
 			return;
@@ -65,13 +68,20 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }) {
 	try {
+		// SSL Pinning - Read certificate alias and set it to be used by network requests
+		const certificate = yield UserPreferences.getStringAsync(`${ RocketChat.CERTIFICATE_KEY }-${ server }`);
+		yield SSLPinning.setCertificate(certificate, server);
+
+		yield put(inquiryReset());
+		yield put(encryptionStop());
 		const serversDB = database.servers;
-		yield RNUserDefaults.set('currentServer', server);
-		const userId = yield RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
+		yield UserPreferences.setStringAsync(RocketChat.CURRENT_SERVER, server);
+		const userId = yield UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
 		const userCollections = serversDB.collections.get('users');
 		let user = null;
 		if (userId) {
 			try {
+				// search credentials on database
 				const userRecord = yield userCollections.find(userId);
 				user = {
 					id: userRecord.id,
@@ -81,19 +91,19 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 					language: userRecord.language,
 					status: userRecord.status,
 					statusText: userRecord.statusText,
-					roles: userRecord.roles
+					roles: userRecord.roles,
+					avatarETag: userRecord.avatarETag
 				};
-			} catch (e) {
-				// We only run it if not has user on DB
-				const servers = yield RNUserDefaults.objectForKey(SERVERS);
-				const userCredentials = servers && servers.find(srv => srv[SERVER_URL] === server);
-				user = userCredentials && {
-					token: userCredentials[TOKEN]
-				};
+			} catch {
+				// search credentials on shared credentials (Experimental/Official)
+				const token = yield UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ userId }`);
+				if (token) {
+					user = { token };
+				}
 			}
 		}
 
-		const basicAuth = yield RNUserDefaults.get(`${ BASIC_AUTH_KEY }-${ server }`);
+		const basicAuth = yield UserPreferences.getStringAsync(`${ BASIC_AUTH_KEY }-${ server }`);
 		setBasicAuth(basicAuth);
 
 		// Check for running requests and abort them before connecting to the server
@@ -103,16 +113,17 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			yield put(clearSettings());
 			yield RocketChat.connect({ server, user, logoutOnError: true });
 			yield put(setUser(user));
-			yield put(actions.appStart('inside'));
+			yield put(appStart({ root: ROOT_INSIDE }));
 		} else {
 			yield RocketChat.connect({ server });
-			yield put(actions.appStart('outside'));
+			yield put(appStart({ root: ROOT_OUTSIDE }));
 		}
 
 		// We can't use yield here because fetch of Settings & Custom Emojis is slower
 		// and block the selectServerSuccess raising multiples errors
 		RocketChat.setSettings();
 		RocketChat.setCustomEmojis();
+		RocketChat.setEnterpriseModules();
 
 		let serverInfo;
 		if (fetchVersion) {
@@ -131,18 +142,37 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 	}
 };
 
-const handleServerRequest = function* handleServerRequest({ server, certificate }) {
+const handleServerRequest = function* handleServerRequest({ server, username, fromServerHistory }) {
 	try {
-		if (certificate) {
-			yield RNUserDefaults.setObjectForKey(extractHostname(server), certificate);
-		}
+		// SSL Pinning - Read certificate alias and set it to be used by network requests
+		const certificate = yield UserPreferences.getStringAsync(`${ RocketChat.CERTIFICATE_KEY }-${ server }`);
+		yield SSLPinning.setCertificate(certificate, server);
 
 		const serverInfo = yield getServerInfo({ server });
+		const serversDB = database.servers;
+		const serversHistoryCollection = serversDB.collections.get('servers_history');
 
 		if (serverInfo) {
 			yield RocketChat.getLoginServices(server);
 			yield RocketChat.getLoginSettings({ server });
 			Navigation.navigate('WorkspaceView');
+
+			if (fromServerHistory) {
+				Navigation.navigate('LoginView', { username });
+			}
+
+			yield serversDB.action(async() => {
+				try {
+					const serversHistory = await serversHistoryCollection.query(Q.where('url', server)).fetch();
+					if (!serversHistory?.length) {
+						await serversHistoryCollection.create((s) => {
+							s.url = server;
+						});
+					}
+				} catch (e) {
+					log(e);
+				}
+			});
 			yield put(selectServerRequest(server, serverInfo.version, false));
 		}
 	} catch (e) {

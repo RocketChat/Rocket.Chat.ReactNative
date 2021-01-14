@@ -24,9 +24,8 @@
   NSMapTable<NSString*, id>* _trackedObjects;
   NSString* _lastHighlightedNode;
   NSMutableSet* _invalidObjects;
-  Boolean _invalidateMessageQueued;
-  NSDate* _lastInvalidateMessage;
-  std::mutex invalidObjectsMutex;
+  BOOL _invalidateMessageQueued;
+  std::mutex _invalidObjectsMutex;
 
   id<NSObject> _rootNode;
   id<SKTapListener> _tapListener;
@@ -49,10 +48,7 @@
   if (self = [super init]) {
     _descriptorMapper = mapper;
     _trackedObjects = [NSMapTable strongToWeakObjectsMapTable];
-    _lastHighlightedNode = nil;
     _invalidObjects = [NSMutableSet new];
-    _invalidateMessageQueued = false;
-    _lastInvalidateMessage = [NSDate date];
     _rootNode = rootNode;
     _tapListener = tapListener;
 
@@ -91,15 +87,6 @@
               FlipperPerformBlockOnMainThread(
                   ^{
                     [weakSelf onCallGetRoot:responder];
-                  },
-                  responder);
-            }];
-
-  [connection receive:@"getAllNodes"
-            withBlock:^(NSDictionary* params, id<FlipperResponder> responder) {
-              FlipperPerformBlockOnMainThread(
-                  ^{
-                    [weakSelf onCallGetAllNodesWithResponder:responder];
                   },
                   responder);
             }];
@@ -177,29 +164,21 @@
 }
 
 - (void)didDisconnect {
-  // Clear the last highlight if there is any
-  [self onCallSetHighlighted:nil withResponder:nil];
-  // Disable search if it is active
-  [self onCallSetSearchActive:NO withConnection:nil];
+  // removeFromSuperlayer (SKHighlightOverlay) needs to be called on main thread
+  FlipperPerformBlockOnMainThread(
+      ^{
+        // Clear the last highlight if there is any
+        [self onCallSetHighlighted:nil withResponder:nil];
+        // Disable search if it is active
+        [self onCallSetSearchActive:NO withConnection:nil];
+      },
+      nil);
 }
 
 - (void)onCallGetRoot:(id<FlipperResponder>)responder {
   const auto rootNode = [self getNode:[self trackObject:_rootNode]];
 
   [responder success:rootNode];
-}
-
-- (void)populateAllNodesFromNode:(nonnull NSString*)identifier
-                    inDictionary:
-                        (nonnull NSMutableDictionary<NSString*, NSDictionary*>*)
-                            mutableDict {
-  NSDictionary* nodeDict = [self getNode:identifier];
-  mutableDict[identifier] = nodeDict;
-  NSArray* arr = nodeDict[@"children"];
-  for (NSString* childIdentifier in arr) {
-    [self populateAllNodesFromNode:childIdentifier inDictionary:mutableDict];
-  }
-  return;
 }
 
 - (void)populateAllNodesFromNode:(nonnull NSString*)identifier
@@ -214,26 +193,6 @@
   for (NSString* childIdentifier in children) {
     [self populateAllNodesFromNode:childIdentifier inArray:mutableArray];
   }
-}
-
-- (void)onCallGetAllNodesWithResponder:(nonnull id<FlipperResponder>)responder {
-  NSMutableArray<NSDictionary*>* allNodes = @[].mutableCopy;
-  NSString* identifier = [self trackObject:_rootNode];
-  NSDictionary* rootNode = [self getNode:identifier];
-  if (!rootNode) {
-    return [responder error:@{
-      @"error" : [NSString
-          stringWithFormat:
-              @"getNode returned nil for the rootNode %@, while getting all the nodes",
-              identifier]
-    }];
-  }
-  [allNodes addObject:rootNode];
-  NSMutableDictionary* allNodesDict = @{}.mutableCopy;
-  [self populateAllNodesFromNode:identifier inDictionary:allNodesDict];
-  [responder success:@{
-    @"allNodes" : @{@"rootElement" : identifier, @"elements" : allNodesDict}
-  }];
 }
 
 - (NSMutableArray*)getChildrenForNode:(id)node
@@ -262,7 +221,10 @@
     [elements addObject:node];
   }
 
-  [responder success:@{@"elements" : elements}];
+  // Converting to folly::dynamic is expensive, do it on a bg queue:
+  dispatch_async(SKLayoutPluginSerialBackgroundQueue(), ^{
+    [responder success:@{@"elements" : elements}];
+  });
 }
 
 - (void)onCallSetData:(NSString*)objectId
@@ -364,17 +326,30 @@
     __block id<NSObject> rootNode = _rootNode;
 
     [_tapListener listenForTapWithBlock:^(CGPoint touchPoint) {
-      SKTouch* touch = [[SKTouch alloc]
-            initWithTouchPoint:touchPoint
-                  withRootNode:rootNode
-          withDescriptorMapper:self->_descriptorMapper
-               finishWithBlock:^(NSArray<NSString*>* path) {
-                 [connection send:@"select" withParams:@{@"path" : path}];
-               }];
+      SKTouch* touch =
+          [[SKTouch alloc] initWithTouchPoint:touchPoint
+                                 withRootNode:rootNode
+                         withDescriptorMapper:self->_descriptorMapper
+                              finishWithBlock:^(id<NSObject> node) {
+                                [self updateNodeReference:node];
+                              }];
 
       SKNodeDescriptor* descriptor =
           [self->_descriptorMapper descriptorForClass:[rootNode class]];
       [descriptor hitTest:touch forNode:rootNode];
+      [touch retrieveSelectTree:^(NSDictionary* tree) {
+        NSMutableArray* path = [NSMutableArray new];
+        NSDictionary* subtree = tree;
+        NSEnumerator* enumerator = [tree keyEnumerator];
+        id nodeId;
+        while ((nodeId = [enumerator nextObject])) {
+          subtree = subtree[nodeId];
+          [path addObject:nodeId];
+          enumerator = [subtree keyEnumerator];
+        }
+        [connection send:@"select"
+              withParams:@{@"path" : path, @"tree" : tree}];
+      }];
     }];
   } else {
     [_tapListener unmount];
@@ -399,36 +374,33 @@
   [descriptor invalidateNode:node];
 
   // Collect invalidate messages before sending in a batch
-  std::lock_guard<std::mutex> lock(invalidObjectsMutex);
+  std::lock_guard<std::mutex> lock(_invalidObjectsMutex);
   [_invalidObjects addObject:nodeId];
   if (_invalidateMessageQueued) {
     return;
   }
-  _invalidateMessageQueued = true;
+  _invalidateMessageQueued = YES;
 
-  if (_lastInvalidateMessage.timeIntervalSinceNow < -1) {
-    dispatch_after(
-        dispatch_time(DISPATCH_TIME_NOW, 500 * NSEC_PER_MSEC),
-        dispatch_get_main_queue(),
-        ^{
-          [self reportInvalidatedObjects];
-        });
-  }
+  dispatch_after(
+      dispatch_time(DISPATCH_TIME_NOW, 500 * NSEC_PER_MSEC),
+      dispatch_get_main_queue(),
+      ^{
+        [self _reportInvalidatedObjects];
+      });
 }
 
-- (void)reportInvalidatedObjects {
-  std::lock_guard<std::mutex> lock(invalidObjectsMutex);
+- (void)_reportInvalidatedObjects {
   NSMutableArray* nodes = [NSMutableArray new];
-  for (NSString* nodeId in self->_invalidObjects) {
-    [nodes addObject:[NSDictionary dictionaryWithObject:nodeId forKey:@"id"]];
-  }
-  [self->_connection send:@"invalidate"
-               withParams:[NSDictionary dictionaryWithObject:nodes
-                                                      forKey:@"nodes"]];
-  self->_lastInvalidateMessage = [NSDate date];
-  self->_invalidObjects = [NSMutableSet new];
-  self->_invalidateMessageQueued = false;
-  return;
+  { // scope mutex acquisition
+    std::lock_guard<std::mutex> lock(_invalidObjectsMutex);
+    for (NSString* nodeId in _invalidObjects) {
+      [nodes addObject:@{@"id" : nodeId}];
+    }
+    _invalidObjects = [NSMutableSet new];
+    _invalidateMessageQueued = NO;
+  } // release mutex before calling out to other code
+
+  [_connection send:@"invalidate" withParams:@{@"nodes" : nodes}];
 }
 
 - (void)updateNodeReference:(id<NSObject>)node {
@@ -512,6 +484,7 @@
 
   NSMutableArray* attributes = [NSMutableArray new];
   NSMutableDictionary* data = [NSMutableDictionary new];
+  NSMutableDictionary* extraInfo = [NSMutableDictionary new];
 
   const auto* nodeAttributes = [nodeDescriptor attributesForNode:node];
   for (const SKNamed<NSString*>* namedPair in nodeAttributes) {
@@ -530,6 +503,11 @@
     data[namedPair.name] = namedPair.value;
   }
 
+  const auto* nodeExtraInfo = [nodeDescriptor extraInfoForNode:node];
+  for (const SKNamed<NSDictionary*>* namedPair in nodeExtraInfo) {
+    extraInfo[namedPair.name] = namedPair.value;
+  }
+
   NSMutableArray* children = [self getChildrenForNode:node
                                        withDescriptor:nodeDescriptor];
 
@@ -542,6 +520,7 @@
     @"attributes" : attributes,
     @"data" : data,
     @"decoration" : [nodeDescriptor decorationForNode:node] ?: @"(unknown)",
+    @"extraInfo" : extraInfo,
   };
 
   return nodeDic;
@@ -566,5 +545,23 @@
 }
 
 @end
+
+/**
+ Operations like converting NSDictionary to folly::dynamic can be expensive.
+ Do them on this serial background queue to avoid blocking the main thread.
+ (Of course, ideally we wouldn't bother with building NSDictionary objects
+ in the first place, in favor of just using folly::dynamic directly...)
+ */
+dispatch_queue_t SKLayoutPluginSerialBackgroundQueue(void) {
+  static dispatch_queue_t queue;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    queue = dispatch_queue_create("flipper.layout.bg", DISPATCH_QUEUE_SERIAL);
+    // This should be relatively high priority, to prevent Flipper lag.
+    dispatch_set_target_queue(
+        queue, dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0));
+  });
+  return queue;
+}
 
 #endif

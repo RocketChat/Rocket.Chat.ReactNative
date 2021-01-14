@@ -16,13 +16,17 @@ import protectedFunction from '../lib/methods/helpers/protectedFunction';
 const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 	const serversDB = database.servers;
 	const serversCollection = serversDB.collections.get('servers');
-	const serverRecord = yield serversCollection.find(server);
+	try {
+		const serverRecord = yield serversCollection.find(server);
 
-	return serversDB.action(async() => {
-		await serverRecord.update((record) => {
-			record.roomsUpdatedAt = newRoomsUpdatedAt;
+		return serversDB.action(async() => {
+			await serverRecord.update((record) => {
+				record.roomsUpdatedAt = newRoomsUpdatedAt;
+			});
 		});
-	});
+	} catch {
+		// Server not found
+	}
 };
 
 const handleRoomsRequest = function* handleRoomsRequest({ params }) {
@@ -36,8 +40,12 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 			yield put(roomsRefresh());
 		} else {
 			const serversCollection = serversDB.collections.get('servers');
-			const serverRecord = yield serversCollection.find(server);
-			({ roomsUpdatedAt } = serverRecord);
+			try {
+				const serverRecord = yield serversCollection.find(server);
+				({ roomsUpdatedAt } = serverRecord);
+			} catch {
+				// Server not found
+			}
 		}
 		const [subscriptionsResult, roomsResult] = yield RocketChat.getRooms(roomsUpdatedAt);
 		const { subscriptions } = yield mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
@@ -53,10 +61,16 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 			const subsToCreate = subscriptions.filter(i1 => !existingSubs.find(i2 => i1._id === i2._id));
 			const subsToDelete = existingSubs.filter(i1 => !subscriptions.find(i2 => i1._id === i2._id));
 
+			const openedRooms = yield select(state => state.room.rooms);
 			const lastMessages = subscriptions
+				/** Checks for opened rooms and filter them out.
+				 * It prevents this process to try persisting the same last message on the room messages fetch.
+				 * This race condition is easy to reproduce on push notification tap.
+				 */
+				.filter(sub => !openedRooms.includes(sub.rid))
 				.map(sub => sub.lastMessage && buildMessage(sub.lastMessage))
 				.filter(lm => lm);
-			const lastMessagesIds = lastMessages.map(lm => lm._id);
+			const lastMessagesIds = lastMessages.map(lm => lm._id).filter(lm => lm);
 			const existingMessages = yield messagesCollection.query(Q.where('id', Q.oneOf(lastMessagesIds))).fetch();
 			const messagesToUpdate = existingMessages.filter(i1 => lastMessages.find(i2 => i1.id === i2._id));
 			const messagesToCreate = lastMessages.filter(i1 => !existingMessages.find(i2 => i1._id === i2.id));

@@ -3,12 +3,10 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
-import { responsive } from 'react-native-responsive-ui';
 
 import EmojiPicker from '../../containers/EmojiPicker';
 import styles from './styles';
 import { isAndroid } from '../../utils/deviceInfo';
-import { withSplit } from '../../split';
 
 const margin = isAndroid ? 40 : 20;
 const maxSize = 400;
@@ -16,17 +14,18 @@ const maxSize = 400;
 class ReactionPicker extends React.Component {
 	static propTypes = {
 		baseUrl: PropTypes.string.isRequired,
-		window: PropTypes.any,
 		message: PropTypes.object,
 		show: PropTypes.bool,
+		isMasterDetail: PropTypes.bool,
 		reactionClose: PropTypes.func,
 		onEmojiSelected: PropTypes.func,
-		split: PropTypes.bool
+		width: PropTypes.number,
+		height: PropTypes.number
 	};
 
 	shouldComponentUpdate(nextProps) {
-		const { show, window, split } = this.props;
-		return nextProps.show !== show || window.width !== nextProps.window.width || nextProps.split !== split;
+		const { show, width, height } = this.props;
+		return nextProps.show !== show || width !== nextProps.width || height !== nextProps.height;
 	}
 
 	onEmojiSelected = (emoji, shortname) => {
@@ -39,12 +38,13 @@ class ReactionPicker extends React.Component {
 
 	render() {
 		const {
-			window: { width, height }, show, baseUrl, reactionClose, split
+			width, height, show, baseUrl, reactionClose, isMasterDetail
 		} = this.props;
 
 		let widthStyle = width - margin;
 		let heightStyle = Math.min(width, height) - (margin * 2);
-		if (split) {
+
+		if (isMasterDetail) {
 			widthStyle = maxSize;
 			heightStyle = maxSize;
 		}
@@ -83,7 +83,8 @@ class ReactionPicker extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.server.server
+	baseUrl: state.server.server,
+	isMasterDetail: state.app.isMasterDetail
 });
 
-export default responsive(connect(mapStateToProps)(withSplit(ReactionPicker)));
+export default connect(mapStateToProps)(ReactionPicker);

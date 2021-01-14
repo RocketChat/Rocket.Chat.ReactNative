@@ -9,7 +9,6 @@ import Markdown from '../markdown';
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
-import { withSplit } from '../../split';
 import MessageContext from './Context';
 
 const styles = StyleSheet.create({
@@ -63,6 +62,9 @@ const styles = StyleSheet.create({
 	},
 	marginTop: {
 		marginTop: 4
+	},
+	marginBottom: {
+		marginBottom: 4
 	}
 });
 
@@ -126,7 +128,7 @@ const Fields = React.memo(({ attachment, theme }) => {
 }, (prevProps, nextProps) => isEqual(prevProps.attachment.fields, nextProps.attachment.fields) && prevProps.theme === nextProps.theme);
 
 const Reply = React.memo(({
-	attachment, timeFormat, index, getCustomEmoji, split, theme
+	attachment, timeFormat, index, getCustomEmoji, theme
 }) => {
 	if (!attachment) {
 		return null;
@@ -148,40 +150,52 @@ const Reply = React.memo(({
 	};
 
 	return (
-		<Touchable
-			onPress={onPress}
-			style={[
-				styles.button,
-				index > 0 && styles.marginTop,
-				{
-					backgroundColor: themes[theme].chatComponentBackground,
-					borderColor: themes[theme].borderColor
-				},
-				split && sharedStyles.tabletContent
-			]}
-			background={Touchable.Ripple(themes[theme].bannerBackground)}
-		>
-			<View style={styles.attachmentContainer}>
-				<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
-				<Description
-					attachment={attachment}
-					timeFormat={timeFormat}
-					getCustomEmoji={getCustomEmoji}
-					theme={theme}
-				/>
-				<Fields attachment={attachment} theme={theme} />
-			</View>
-		</Touchable>
+		<>
+			<Touchable
+				onPress={onPress}
+				style={[
+					styles.button,
+					index > 0 && styles.marginTop,
+					attachment.description && styles.marginBottom,
+					{
+						backgroundColor: themes[theme].chatComponentBackground,
+						borderColor: themes[theme].borderColor
+					}
+				]}
+				background={Touchable.Ripple(themes[theme].bannerBackground)}
+			>
+				<View style={styles.attachmentContainer}>
+					<Title
+						attachment={attachment}
+						timeFormat={timeFormat}
+						theme={theme}
+					/>
+					<Description
+						attachment={attachment}
+						timeFormat={timeFormat}
+						getCustomEmoji={getCustomEmoji}
+						theme={theme}
+					/>
+					<Fields attachment={attachment} theme={theme} />
+				</View>
+			</Touchable>
+			<Markdown
+				msg={attachment.description}
+				baseUrl={baseUrl}
+				username={user.username}
+				getCustomEmoji={getCustomEmoji}
+				theme={theme}
+			/>
+		</>
 	);
-}, (prevProps, nextProps) => isEqual(prevProps.attachment, nextProps.attachment) && prevProps.split === nextProps.split && prevProps.theme === nextProps.theme);
+}, (prevProps, nextProps) => isEqual(prevProps.attachment, nextProps.attachment) && prevProps.theme === nextProps.theme);
 
 Reply.propTypes = {
 	attachment: PropTypes.object,
 	timeFormat: PropTypes.string,
 	index: PropTypes.number,
 	theme: PropTypes.string,
-	getCustomEmoji: PropTypes.func,
-	split: PropTypes.bool
+	getCustomEmoji: PropTypes.func
 };
 Reply.displayName = 'MessageReply';
 
@@ -205,4 +219,4 @@ Fields.propTypes = {
 };
 Fields.displayName = 'MessageReplyFields';
 
-export default withSplit(Reply);
+export default Reply;
