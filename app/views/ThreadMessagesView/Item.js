@@ -48,6 +48,9 @@ const styles = StyleSheet.create({
 		marginHorizontal: 8,
 		alignSelf: 'center'
 	},
+	messageContainer: {
+		flexDirection: 'row'
+	},
 	markdown: {
 		flex: 1
 	}
@@ -80,7 +83,7 @@ const Item = ({
 						<Text style={[styles.title, { color: themes[theme].titleText }]} numberOfLines={1}>{username}</Text>
 						<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 					</View>
-					<View style={{ flexDirection: 'row' }}>
+					<View style={styles.messageContainer}>
 						<Markdown msg={makeThreadName(item)} baseUrl={baseUrl} username={username} theme={theme} numberOfLines={2} style={[styles.markdown]} preview />
 						{badgeColor ? <View style={[styles.badge, { backgroundColor: badgeColor }]} /> : null }
 					</View>
