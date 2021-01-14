@@ -153,11 +153,10 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
 		const server = yield select(getServer);
 		const adding = yield select(state => state.server.adding);
-		yield UserPreferences.setStringAsync(RocketChat.TOKEN_KEY, user.token);
+		yield UserPreferences.setStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`, user.id);
 
 		RocketChat.getUserPresence(user.id);
 
-		const server = yield select(getServer);
 		yield fork(fetchRooms, { server });
 		yield fork(fetchPermissions);
 		yield fork(fetchCustomEmojis);
@@ -201,7 +200,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			}
 		});
 
-		yield UserPreferences.setStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`, user.id);
+
 		yield UserPreferences.setStringAsync(`${ RocketChat.TOKEN_KEY }-${ user.id }`, user.token);
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
