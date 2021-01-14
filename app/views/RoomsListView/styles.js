@@ -36,19 +36,6 @@ export default StyleSheet.create({
 		top: 0,
 		borderBottomWidth: StyleSheet.hairlineWidth
 	},
-	sortItemButton: {
-		height: 57,
-		justifyContent: 'center'
-	},
-	sortItemContainer: {
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
-	sortItemText: {
-		fontSize: 18,
-		flex: 1,
-		...sharedStyles.textRegular
-	},
 	backdrop: {
 		...StyleSheet.absoluteFill
 	},
