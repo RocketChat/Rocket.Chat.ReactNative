@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import styles from './styles';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
-import ThreadDetails from '../../views/ThreadMessagesView/ThreadDetails';
+import ThreadDetails from '../ThreadDetails';
 import I18n from '../../i18n';
 
 const Thread = React.memo(({

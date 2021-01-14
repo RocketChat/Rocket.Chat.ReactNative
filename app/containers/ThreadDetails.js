@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
-import { CustomIcon } from '../../lib/Icons';
-import { themes } from '../../constants/colors';
-import sharedStyles from '../Styles';
-import { withTheme } from '../../theme';
+import { CustomIcon } from '../lib/Icons';
+import { themes } from '../constants/colors';
+import sharedStyles from '../views/Styles';
+import { withTheme } from '../theme';
 
 const styles = StyleSheet.create({
 	container: {
