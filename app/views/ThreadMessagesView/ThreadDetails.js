@@ -11,20 +11,17 @@ import { withTheme } from '../../theme';
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		width: '100%',
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
 	detailsContainer: {
 		flex: 1,
-		marginRight: 48,
 		flexDirection: 'row'
 	},
 	detailContainer: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginRight: 8,
-		maxWidth: '32%'
+		marginRight: 8
 	},
 	detailText: {
 		fontSize: 10,
@@ -32,8 +29,6 @@ const styles = StyleSheet.create({
 		...sharedStyles.textSemibold
 	},
 	badgeContainer: {
-		right: 0,
-		position: 'absolute',
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
@@ -83,16 +78,16 @@ const ThreadDetails = ({
 				</View>
 			</View>
 
-			<Touchable style={styles.badgeContainer} onPress={() => toggleFollowThread?.(isFollowing, item.id)}>
-				<>
-					{badgeColor ? <View style={[styles.badge, { backgroundColor: badgeColor }]} /> : null }
+			<View style={styles.badgeContainer}>
+				{badgeColor ? <View style={[styles.badge, { backgroundColor: badgeColor }]} /> : null }
+				<Touchable onPress={() => toggleFollowThread?.(isFollowing, item.id)}>
 					<CustomIcon
 						size={24}
 						name={isFollowing ? 'notification' : 'notification-disabled'}
 						color={themes[theme].auxiliaryTintColor}
 					/>
-				</>
-			</Touchable>
+				</Touchable>
+			</View>
 		</View>
 	);
 };
