@@ -520,7 +520,6 @@ export default ({ theme }) => {
 			<Message
 				msg='How are you?'
 				tcount={1}
-				replies={[1]}
 				tlm={date}
 			/>
 			<Message
