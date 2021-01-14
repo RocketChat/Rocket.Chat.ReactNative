@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	Linking, Share, Clipboard
+	Linking, Share, Clipboard, NativeModules
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -149,6 +149,11 @@ class SettingsView extends React.Component {
 		Share.share({ message });
 	}
 
+	onStartonBoot = () => {
+		const { StartupModule } = NativeModules;
+		StartupModule.open();
+	}
+
 	copyServerVersion = () => {
 		const { server: { version } } = this.props;
 		logEvent(events.SE_COPY_SERVER_VERSION, { serverVersion: version });
@@ -212,6 +217,17 @@ class SettingsView extends React.Component {
 							showActionIndicator
 							testID='settings-view-language'
 						/>
+						<List.Separator />
+						{isAndroid ? (
+							<>
+								<List.Item
+									title='Start_on_boot'
+									showActionIndicator
+									onPress={this.onStartonBoot}
+									testID='settings-view-boot-events'
+								/>
+							</>
+						) : null}
 						<List.Separator />
 						{!isFDroidBuild ? (
 							<>

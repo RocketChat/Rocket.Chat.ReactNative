@@ -1,4 +1,10 @@
-package chat.rocket.reactnative;
+package chat.rocket.reactnative.startup;
+
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
@@ -7,7 +13,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Promise;
 
 public class StartupModule extends ReactContextBaseJavaModule {
-    private final ReactApplicationContext reactContext;
+    private static ReactApplicationContext reactContext;
 
     private final Intent[] AUTO_START_INTENTS = {
     new Intent().setComponent(new ComponentName("com.samsung.android.lool", "com.samsung.android.sm.ui.battery.BatteryActivity")),
@@ -24,14 +30,14 @@ public class StartupModule extends ReactContextBaseJavaModule {
     new Intent().setComponent(new ComponentName("com.asus.mobilemanager", "com.asus.mobilemanager.entry.FunctionActivity")).setData(Uri.parse("mobilemanager://function/entry/AutoStart"))
   };
 
-    StartupModule(ReactApplicationContext reactContext) {
+    public StartupModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
     }
 
     @Override
     public String getName() {
-        return "Startup";
+        return "StartupModule";
     }
 
      @ReactMethod 
@@ -49,10 +55,11 @@ public class StartupModule extends ReactContextBaseJavaModule {
   public void open() {
     for (Intent intent : AUTO_START_INTENTS) {
       if (this.reactContext.getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null) {
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         this.reactContext.startActivity(intent);
         break;
       }
     }
   }
-  
+
 }

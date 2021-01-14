@@ -20,6 +20,7 @@ import java.util.List;
 
 import chat.rocket.reactnative.generated.BasePackageList;
 import chat.rocket.reactnative.networking.SSLPinningPackage;
+import chat.rocket.reactnative.startup.StartupPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -38,6 +39,7 @@ public class MainApplication extends Application implements ReactApplication {
       packages.add(new WatermelonDBPackage());
       packages.add(new RNCViewPagerPackage());
       packages.add(new SSLPinningPackage());
+      packages.add(new StartupPackage());
       List<ReactPackage> unimodules = Arrays.<ReactPackage>asList(
         new ModuleRegistryAdapter(mModuleRegistryProvider)
       );

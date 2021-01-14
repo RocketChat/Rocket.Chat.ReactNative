@@ -510,6 +510,7 @@ export default {
 	Start_a_Discussion: 'Start a Discussion',
 	Started_discussion: 'Started a discussion:',
 	Started_call: 'Call started by {{userBy}}',
+	Start_on_boot: 'Start on boot',
 	Submit: 'Submit',
 	Table: 'Table',
 	Tags: 'Tags',

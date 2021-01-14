@@ -1,4 +1,4 @@
-package chat.rocket.reactnative;
+package chat.rocket.reactnative.startup;
 
 import java.util.Arrays;
 import java.util.Collections;
