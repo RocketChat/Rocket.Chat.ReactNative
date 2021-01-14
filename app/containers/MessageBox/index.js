@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Alert, Keyboard, NativeModules, Text, InteractionManager
+	View, Alert, Keyboard, NativeModules, Text
 } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
@@ -224,12 +224,12 @@ class MessageBox extends Component {
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
 			// didFocus
 			// We should wait pushed views be dismissed
-			InteractionManager.runAfterInteractions(() => {
+			this.trackingTimeout = setTimeout(() => {
 				if (this.tracking && this.tracking.resetTracking) {
 					// Reset messageBox keyboard tracking
 					this.tracking.resetTracking();
 				}
-			});
+			}, 500);
 		});
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			this.component?.blur();
@@ -257,6 +257,10 @@ class MessageBox extends Component {
 			this.focus();
 		} else if (!nextProps.message) {
 			this.clearInput();
+		}
+		if (this.trackingTimeout) {
+			clearTimeout(this.trackingTimeout);
+			this.trackingTimeout = false;
 		}
 	}
 
