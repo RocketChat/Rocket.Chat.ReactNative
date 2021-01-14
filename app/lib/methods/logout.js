@@ -61,7 +61,7 @@ async function removeServerData({ server }) {
 
 async function removeCurrentServer() {
 	await UserPreferences.removeItem(RocketChat.CURRENT_SERVER);
-	await UserPreferences.removeItem(RocketChat.TOKEN_KEY);
+	// await UserPreferences.removeItem(RocketChat.TOKEN_KEY);
 }
 
 async function removeServerDatabase({ server }) {
