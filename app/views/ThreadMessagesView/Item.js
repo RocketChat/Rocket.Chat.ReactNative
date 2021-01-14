@@ -40,6 +40,16 @@ const styles = StyleSheet.create({
 	},
 	threadDetails: {
 		marginTop: 8
+	},
+	badge: {
+		width: 8,
+		height: 8,
+		borderRadius: 4,
+		marginHorizontal: 8,
+		alignSelf: 'center'
+	},
+	markdown: {
+		flex: 1
 	}
 });
 
@@ -70,11 +80,13 @@ const Item = ({
 						<Text style={[styles.title, { color: themes[theme].titleText }]} numberOfLines={1}>{username}</Text>
 						<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 					</View>
-					<Markdown msg={makeThreadName(item)} baseUrl={baseUrl} username={username} theme={theme} numberOfLines={2} preview />
+					<View style={{ flexDirection: 'row' }}>
+						<Markdown msg={makeThreadName(item)} baseUrl={baseUrl} username={username} theme={theme} numberOfLines={2} style={[styles.markdown]} preview />
+						{badgeColor ? <View style={[styles.badge, { backgroundColor: badgeColor }]} /> : null }
+					</View>
 					<ThreadDetails
 						item={item}
 						user={user}
-						badgeColor={badgeColor}
 						toggleFollowThread={toggleFollowThread}
 						style={styles.threadDetails}
 					/>
