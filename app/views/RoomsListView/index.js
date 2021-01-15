@@ -549,12 +549,10 @@ class RoomsListView extends React.Component {
 
 	handleBackPress = () => {
 		const { searching } = this.state;
-		const { appStart } = this.props;
 		if (searching) {
 			this.cancelSearch();
 			return true;
 		}
-		appStart({ root: ROOT_BACKGROUND });
 		return false;
 	};
 
