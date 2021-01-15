@@ -182,11 +182,21 @@ class ProfileView extends React.Component {
 
 		// Name
 		if (user.name !== name) {
+			if (name.length === 0) {
+				EventEmitter.emit(LISTENER, { message: I18n.t('Some_field_is_invalid_or_empty') });
+				this.setState({ saving: false });
+				return;
+			}
 			params.name = name;
 		}
 
 		// Username
 		if (user.username !== username) {
+			if (username.length === 0) {
+				EventEmitter.emit(LISTENER, { message: I18n.t('Some_field_is_invalid_or_empty') });
+				this.setState({ saving: false });
+				return;
+			}
 			params.username = username;
 		}
 
