@@ -1,7 +1,5 @@
 import MMKVStorage from 'react-native-mmkv-storage';
 
-import log from '../utils/log';
-
 const MMKV = new MMKVStorage.Loader()
 	// MODES.MULTI_PROCESS = ACCESSIBLE BY APP GROUP (iOS)
 	.setProcessingMode(MMKVStorage.MODES.MULTI_PROCESS)
@@ -11,25 +9,6 @@ const MMKV = new MMKVStorage.Loader()
 class UserPreferences {
 	constructor() {
 		this.mmkv = MMKV;
-
-		this.encryptMigratedData();
-	}
-
-	// It should run only once
-	async encryptMigratedData() {
-		try {
-			const encryptMigration = await this.getBoolAsync('encryptMigration');
-
-			if (!encryptMigration) {
-				// Encrypt the migrated data
-				await this.mmkv.encryption.encrypt();
-
-				// Mark as completed
-				await this.setBoolAsync('encryptMigration', true);
-			}
-		} catch (e) {
-			log(e);
-		}
 	}
 
 	async getStringAsync(key) {
