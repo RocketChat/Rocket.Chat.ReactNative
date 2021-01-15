@@ -647,13 +647,16 @@ const RocketChat = {
 					new Promise((resolve, reject) => this.oldPromise = reject)
 				]);
 				if (filterUsers) {
-					data = data.concat(users.map(user => ({
-						...user,
-						rid: user.username,
-						name: user.username,
-						t: 'd',
-						search: true
-					})));
+					const usersFiltered = users.filter(user => !data.some(sub => user.username === sub.name));
+					data = data.concat(usersFiltered.map(
+						user => ({
+							...user,
+							rid: user.username,
+							name: user.username,
+							t: 'd',
+							search: true
+						})
+					));
 				}
 				if (filterRooms) {
 					rooms.forEach((room) => {
