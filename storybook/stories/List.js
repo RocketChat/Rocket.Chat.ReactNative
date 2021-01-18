@@ -111,26 +111,26 @@ stories.add('with icon', () => (
 	</List.Container>
 ));
 
-stories.add('with custom color', () => (
+stories.add('with custom colors', () => (
 	<List.Container>
 		<List.Separator />
 		<List.Item title='Chats' color='red' />
 		<List.Separator />
-	</List.Container>
-));
-
-stories.add('with background color', () => (
-	<List.Container>
+		<List.Item
+			title='Some title for banner'
+			color='white'
+			onPress={() => alert('Hi there!')}
+			backgroundColor='red'
+			underlayColor='green'
+			translateTitle={false}
+		/>
 		<List.Separator />
-		<List.Item title='Some title for banner' color='white' onPress={() => alert('Hi there!')} backgroundColor='red' translateTitle={false} />
-		<List.Separator />
-	</List.Container>
-));
-
-stories.add('with background and underlay color', () => (
-	<List.Container>
-		<List.Separator />
-		<List.Item title='Some title for banner' color='white' onPress={() => alert('Hi there!')} backgroundColor='red' underlayColor='darkred' translateTitle={false} />
+		<List.Item
+			title='Some title for banner'
+			color='blue'
+			onPress={() => alert('Hi there!')}
+			translateTitle={false}
+		/>
 		<List.Separator />
 	</List.Container>
 ));
