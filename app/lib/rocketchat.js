@@ -697,11 +697,11 @@ const RocketChat = {
 	},
 
 	createDiscussion({
-		prid, pmid, t_name, reply, users
+		prid, pmid, t_name, reply, users, encrypted
 	}) {
 		// RC 1.0.0
 		return this.post('rooms.createDiscussion', {
-			prid, pmid, t_name, reply, users
+			prid, pmid, t_name, reply, users, encrypted
 		});
 	},
 

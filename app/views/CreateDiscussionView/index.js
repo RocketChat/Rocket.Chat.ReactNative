@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { ScrollView, Text } from 'react-native';
+import { ScrollView, Text, Switch } from 'react-native';
 import isEqual from 'lodash/isEqual';
 
 import Loading from '../../containers/Loading';
@@ -10,7 +10,7 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
-import { themes } from '../../constants/colors';
+import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import TextInput from '../../containers/TextInput';
@@ -54,7 +54,8 @@ class CreateChannelView extends React.Component {
 			message,
 			name: message?.msg || '',
 			users: [],
-			reply: ''
+			reply: '',
+			encrypted: true
 		};
 		this.setHeader();
 	}
@@ -109,13 +110,13 @@ class CreateChannelView extends React.Component {
 
 	submit = () => {
 		const {
-			name: t_name, channel: { prid, rid }, message: { id: pmid }, reply, users
+			name: t_name, channel: { prid, rid }, message: { id: pmid }, reply, users, encrypted
 		} = this.state;
 		const { create } = this.props;
 
 		// create discussion
 		create({
-			prid: prid || rid, pmid, t_name, reply, users
+			prid: prid || rid, pmid, t_name, reply, users, encrypted
 		});
 	};
 
@@ -142,8 +143,13 @@ class CreateChannelView extends React.Component {
 		this.setState({ users: value });
 	}
 
+	onEncryptedChange = (value) => {
+		logEvent(events.CREATE_DISCUSSION_TOGGLE_ENCRY);
+		this.setState({ encrypted: value });
+	}
+
 	render() {
-		const { name, users } = this.state;
+		const { name, users, encrypted } = this.state;
 		const {
 			server, user, loading, blockUnauthenticatedAccess, theme, serverVersion
 		} = this.props;
@@ -185,14 +191,11 @@ class CreateChannelView extends React.Component {
 							serverVersion={serverVersion}
 							theme={theme}
 						/>
-						<TextInput
-							multiline
-							textAlignVertical='top'
-							label={I18n.t('Your_message')}
-							inputStyle={styles.multiline}
-							theme={theme}
-							placeholder={I18n.t('Usually_a_discussion_starts_with_a_question_like_How_do_I_upload_a_picture')}
-							onChangeText={text => this.setState({ reply: text })}
+						<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Encrypted')}</Text>
+						<Switch
+							value={encrypted}
+							onValueChange={this.onEncryptedChange}
+							trackColor={SWITCH_TRACK_COLOR}
 						/>
 						<Loading visible={loading} />
 					</ScrollView>
