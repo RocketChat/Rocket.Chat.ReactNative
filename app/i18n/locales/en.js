@@ -223,7 +223,7 @@ export default {
 	Enter_Your_Encryption_Password_desc1: 'This will allow you to access your encrypted private groups and direct messages.',
 	Enter_Your_Encryption_Password_desc2: 'You need to enter the password to encode/decode messages every place you use the chat.',
 	Encryption_error_title: 'Your encryption password seems wrong',
-	Encryption_error_desc: 'Wasn\'t possible to decode your encryption key to be imported.',
+	Encryption_error_desc: 'It wasn\'t possible to decode your encryption key to be imported.',
 	Everyone_can_access_this_channel: 'Everyone can access this channel',
 	Error_uploading: 'Error uploading',
 	Expiration_Days: 'Expiration (Days)',
