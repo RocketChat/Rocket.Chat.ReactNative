@@ -8,7 +8,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import { Video } from 'expo-av';
 import SHA256 from 'js-sha256';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
-
+import * as FileSystem from 'expo-file-system';
 import { LISTENER } from '../containers/Toast';
 import EventEmitter from '../utils/events';
 import I18n from '../i18n';
@@ -49,12 +49,13 @@ class AttachmentView extends React.Component {
 	constructor(props) {
 		super(props);
 		const attachment = props.route.params?.attachment;
-		this.state = { attachment, loading: true };
+		this.state = { attachment, loading: true, path: null };
 		this.setHeader();
 	}
 
 	componentDidMount() {
 		const { navigation } = this.props;
+		this.checkDocumentDir();
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			if (this.videoRef && this.videoRef.stopAsync) {
 				this.videoRef.stopAsync();
@@ -146,22 +147,57 @@ class AttachmentView extends React.Component {
 		);
 	}
 
-	renderVideo = uri => (
-		<Video
-			source={{ uri }}
-			rate={1.0}
-			volume={1.0}
-			isMuted={false}
-			resizeMode={Video.RESIZE_MODE_CONTAIN}
-			shouldPlay
-			isLooping={false}
-			style={styles.container}
-			useNativeControls
-			onLoad={() => this.setState({ loading: false })}
-			onError={console.log}
-			ref={this.getVideoRef}
-		/>
-	);
+	checkDocumentDir=async() => {
+		const { attachment } = this.state;
+		const {
+			image_url, image_type, video_url, video_type
+		} = attachment;
+		const url = image_url || video_url;
+
+		if (isAndroid) {
+			const rationale = {
+				title: I18n.t('Write_External_Permission'),
+				message: I18n.t('Write_External_Permission_Message')
+			};
+			const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE, rationale);
+			if (!(result || result === PermissionsAndroid.RESULTS.GRANTED)) {
+				return;
+			}
+		}
+
+		try {
+			const extension = image_url ? `.${ mime.extension(image_type) || 'jpg' }` : `.${ mime.extension(video_type) || 'mp4' }`;
+			const fileName = `${ SHA256(url) + extension }`;
+			const files = await FileSystem.readDirectoryAsync(FileSystem.documentDirectory);
+			files.forEach((t) => {
+				if (t === fileName) {
+					this.setState({ path: `${ FileSystem.documentDirectory + fileName }` });
+				}
+			});
+		} catch (e) {
+			EventEmitter.emit(LISTENER, { message: I18n.t(image_url ? 'error-save-image' : 'error-save-video') });
+		}
+	}
+
+	renderVideo = (uri) => {
+		const { path } = this.state;
+		return (
+			<Video
+				source={{ uri: path || uri }}
+				rate={1.0}
+				volume={1.0}
+				isMuted={false}
+				resizeMode={Video.RESIZE_MODE_CONTAIN}
+				shouldPlay
+				isLooping={false}
+				style={styles.container}
+				useNativeControls
+				onLoad={() => this.setState({ loading: false })}
+				onError={console.log}
+				ref={this.getVideoRef}
+			/>
+		);
+	};
 
 	render() {
 		const { loading, attachment } = this.state;
