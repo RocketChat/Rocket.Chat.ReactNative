@@ -596,25 +596,19 @@ const RocketChat = {
 	readMessages,
 	resendMessage,
 
-	async search({ text, filterUsers = true, filterRooms = true }) {
+	async localSearch({ text, filterUsers = true, filterRooms = true }) {
 		const searchText = text.trim();
-
-		if (this.oldPromise) {
-			this.oldPromise('cancel');
-		}
-
 		if (searchText === '') {
-			delete this.oldPromise;
 			return [];
 		}
-
 		const db = database.active;
 		const likeString = sanitizeLikeString(searchText);
 		let data = await db.collections.get('subscriptions').query(
 			Q.or(
 				Q.where('name', Q.like(`%${ likeString }%`)),
 				Q.where('fname', Q.like(`%${ likeString }%`))
-			)
+			),
+			Q.experimentalSortBy('room_updated_at', Q.desc)
 		).fetch();
 
 		if (filterUsers && !filterRooms) {
@@ -625,19 +619,31 @@ const RocketChat = {
 
 		data = data.slice(0, 7);
 
-		data = data.map((sub) => {
-			if (sub.t !== 'd') {
-				return ({
-					rid: sub.rid,
-					name: sub.name,
-					fname: sub.fname,
-					avatarETag: sub.avatarETag,
-					t: sub.t,
-					search: true
-				});
-			}
-			return sub;
-		});
+		data = data.map(sub => ({
+			rid: sub.rid,
+			name: sub.name,
+			fname: sub.fname,
+			avatarETag: sub.avatarETag,
+			t: sub.t,
+			encrypted: sub.encrypted,
+			search: true
+		}));
+
+		return data;
+	},
+
+	async search({ text, filterUsers = true, filterRooms = true }) {
+		const searchText = text.trim();
+
+		if (this.oldPromise) {
+			this.oldPromise('cancel');
+		}
+
+		if (searchText === '') {
+			return [];
+		}
+
+		let data = await this.localSearch({ text, filterUsers, filterRooms });
 
 		const usernames = data.map(sub => sub.name);
 		try {
