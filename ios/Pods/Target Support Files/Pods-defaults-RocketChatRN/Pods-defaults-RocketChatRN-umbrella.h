@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double Pods_RocketChatRNVersionNumber;
-FOUNDATION_EXPORT const unsigned char Pods_RocketChatRNVersionString[];
+FOUNDATION_EXPORT double Pods_defaults_RocketChatRNVersionNumber;
+FOUNDATION_EXPORT const unsigned char Pods_defaults_RocketChatRNVersionString[];
 

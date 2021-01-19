@@ -48,7 +48,7 @@ class Touchable extends React.Component {
 			rowState: 0 // 0: closed, 1: right opened, -1: left opened
 		};
 		this._onGestureEvent = Animated.event(
-			[{ nativeEvent: { translationX: this.dragX } }]
+			[{ nativeEvent: { translationX: this.dragX } }], { useNativeDriver: true }
 		);
 		this._value = 0;
 	}
