@@ -871,14 +871,7 @@ const RocketChat = {
 	methodCallWrapper(method, ...params) {
 		const { API_Use_REST_For_DDP_Calls } = reduxStore.getState().settings;
 		if (API_Use_REST_For_DDP_Calls) {
-			return new Promise(async(resolve, reject) => {
-				const data = await this.post(`method.call/${ method }`, { message: JSON.stringify({ method, params }) });
-				const response = JSON.parse(data.message);
-				if (response?.error) {
-					return reject(response.error);
-				}
-				return resolve(response.result);
-			});
+			return this.post(`method.call/${ method }`, { message: JSON.stringify({ method, params }) });
 		}
 		return this.methodCall(method, ...params);
 	},
@@ -1073,14 +1066,30 @@ const RocketChat = {
 	},
 	post(...args) {
 		return new Promise(async(resolve, reject) => {
+			const isMethodCall = args[0]?.startsWith('method.call/');
 			try {
 				const result = await this.sdk.post(...args);
+
+				/**
+				 * if API_Use_REST_For_DDP_Calls is enabled and it's a method call,
+				 * responses have a different object structure
+				 */
+				if (isMethodCall) {
+					const response = JSON.parse(result.message);
+					if (response?.error) {
+						throw response.error;
+					}
+					return resolve(response.result);
+				}
 				return resolve(result);
 			} catch (e) {
-				if (e.data && (e.data.errorType === 'totp-required' || e.data.errorType === 'totp-invalid')) {
-					const { details } = e.data;
+				const errorType = isMethodCall ? e?.error : e?.data?.errorType;
+				const totpInvalid = 'totp-invalid';
+				const totpRequired = 'totp-required';
+				if ([totpInvalid, totpRequired].includes(errorType)) {
+					const { details } = isMethodCall ? e : e?.data;
 					try {
-						await twoFactor({ method: details?.method, invalid: e.data.errorType === 'totp-invalid' });
+						await twoFactor({ method: details?.method, invalid: errorType === totpInvalid });
 						return resolve(this.post(...args));
 					} catch {
 						// twoFactor was canceled
