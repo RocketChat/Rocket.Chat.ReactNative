@@ -41,7 +41,8 @@ class CreateChannelView extends React.Component {
 		theme: PropTypes.string,
 		isMasterDetail: PropTypes.bool,
 		blockUnauthenticatedAccess: PropTypes.bool,
-		serverVersion: PropTypes.string
+		serverVersion: PropTypes.string,
+		encryptionEnabled: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -55,7 +56,7 @@ class CreateChannelView extends React.Component {
 			name: message?.msg || '',
 			users: [],
 			reply: '',
-			encrypted: true
+			encrypted: props.encryptionEnabled
 		};
 		this.setHeader();
 	}
@@ -151,7 +152,7 @@ class CreateChannelView extends React.Component {
 	render() {
 		const { name, users, encrypted } = this.state;
 		const {
-			server, user, loading, blockUnauthenticatedAccess, theme, serverVersion
+			server, user, loading, blockUnauthenticatedAccess, theme, serverVersion, encryptionEnabled
 		} = this.props;
 		return (
 			<KeyboardView
@@ -191,12 +192,17 @@ class CreateChannelView extends React.Component {
 							serverVersion={serverVersion}
 							theme={theme}
 						/>
-						<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Encrypted')}</Text>
-						<Switch
-							value={encrypted}
-							onValueChange={this.onEncryptedChange}
-							trackColor={SWITCH_TRACK_COLOR}
-						/>
+						{encryptionEnabled
+							? (
+								<>
+									<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Encrypted')}</Text>
+									<Switch
+										value={encrypted}
+										onValueChange={this.onEncryptedChange}
+										trackColor={SWITCH_TRACK_COLOR}
+									/>
+								</>
+							) : null}
 						<Loading visible={loading} />
 					</ScrollView>
 				</SafeAreaView>
@@ -214,7 +220,8 @@ const mapStateToProps = state => ({
 	result: state.createDiscussion.result,
 	blockUnauthenticatedAccess: state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true,
 	serverVersion: state.share.server.version || state.server.version,
-	isMasterDetail: state.app.isMasterDetail
+	isMasterDetail: state.app.isMasterDetail,
+	encryptionEnabled: state.encryption.enabled
 });
 
 const mapDispatchToProps = dispatch => ({
