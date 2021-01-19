@@ -648,15 +648,19 @@ const RocketChat = {
 				]);
 				if (filterUsers) {
 					const usersFiltered = users.filter(user => !data.some(sub => user.username === sub.name));
-					data = data.concat(usersFiltered.map(
-						user => ({
-							...user,
-							rid: user.username,
-							name: user.username,
-							t: 'd',
-							search: true
-						})
-					));
+					usersFiltered.forEach((user) => {
+						// Check if it exists on local database
+						const index = data.findIndex(item => item.rid === user._id);
+						if (index === -1) {
+							data.push({
+								...user,
+								rid: user.username,
+								name: user.username,
+								t: 'd',
+								search: true
+							});
+						}
+					});
 				}
 				if (filterRooms) {
 					rooms.forEach((room) => {
