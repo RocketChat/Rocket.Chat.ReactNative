@@ -31,7 +31,7 @@ import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import database from '../../lib/database';
 import { withDimensions } from '../../dimensions';
 
-class RoomActionsView extends React.PureComponent {
+class RoomActionsView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => {
 		const options = {
 			title: I18n.t('Actions')
