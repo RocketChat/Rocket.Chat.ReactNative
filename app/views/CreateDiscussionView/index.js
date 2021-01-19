@@ -136,7 +136,7 @@ class CreateChannelView extends React.Component {
 
 	selectChannel = ({ value }) => {
 		logEvent(events.CREATE_DISCUSSION_SELECT_CHANNEL);
-		this.setState({ channel: { rid: value } });
+		this.setState({ channel: value, encrypted: value?.encrypted });
 	}
 
 	selectUsers = ({ value }) => {
