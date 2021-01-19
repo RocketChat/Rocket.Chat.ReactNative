@@ -102,9 +102,8 @@ class E2EEncryptionSecurityView extends React.Component {
 
 	renderChangePassword = () => {
 		const { newPassword } = this.state;
-		const { theme } = this.props;
-		const { hasPrivateKey } = Encryption;
-		if (!hasPrivateKey) {
+		const { theme, encryptionEnabled } = this.props;
+		if (!encryptionEnabled) {
 			return null;
 		}
 		return (
@@ -167,7 +166,8 @@ class E2EEncryptionSecurityView extends React.Component {
 
 const mapStateToProps = state => ({
 	server: state.server.server,
-	user: getUserSelector(state)
+	user: getUserSelector(state),
+	encryptionEnabled: state.encryption.enabled
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -185,6 +185,7 @@ E2EEncryptionSecurityView.propTypes = {
 		id: PropTypes.string
 	}),
 	server: PropTypes.string,
+	encryptionEnabled: PropTypes.bool,
 	logout: PropTypes.func
 };
 
