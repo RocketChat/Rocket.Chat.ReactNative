@@ -80,12 +80,18 @@ class E2EEncryptionSecurityView extends React.Component {
 			title: I18n.t('Are_you_sure_question_mark'),
 			message: I18n.t('E2E_encryption_reset_message'),
 			confirmationText: I18n.t('E2E_encryption_reset_confirmation'),
-			onPress: () => {
+			onPress: async() => {
 				logEvent(events.E2E_SEC_RESET_OWN_KEY);
 				try {
-					RocketChat.e2eResetOwnKey();
-					const { logout } = this.props;
-					logout();
+					const res = await RocketChat.e2eResetOwnKey();
+					/**
+					 * It might return an empty object when TOTP is enabled,
+					 * that's why we're using strict equality to boolean
+					 */
+					if (res === true) {
+						const { logout } = this.props;
+						logout();
+					}
 				} catch (e) {
 					log(e);
 					showErrorAlert(I18n.t('E2E_encryption_reset_error'));
