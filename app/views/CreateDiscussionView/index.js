@@ -26,6 +26,7 @@ import styles from './styles';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
 import { logEvent, events } from '../../utils/log';
+import { E2E_ROOM_TYPES } from '../../lib/encryption/constants';
 
 class CreateChannelView extends React.Component {
 	propTypes = {
@@ -150,7 +151,9 @@ class CreateChannelView extends React.Component {
 	}
 
 	render() {
-		const { name, users, encrypted } = this.state;
+		const {
+			name, users, encrypted, channel
+		} = this.state;
 		const {
 			server, user, loading, blockUnauthenticatedAccess, theme, serverVersion, encryptionEnabled
 		} = this.props;
@@ -192,7 +195,7 @@ class CreateChannelView extends React.Component {
 							serverVersion={serverVersion}
 							theme={theme}
 						/>
-						{encryptionEnabled
+						{encryptionEnabled && E2E_ROOM_TYPES[channel?.t]
 							? (
 								<>
 									<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Encrypted')}</Text>
