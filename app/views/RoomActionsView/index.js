@@ -247,13 +247,21 @@ class RoomActionsView extends React.Component {
 	}
 
 	renderEncryptedSwitch = () => {
-		const { room } = this.state;
+		const { room, canToggleEncryption, canEdit } = this.state;
 		const { encrypted } = room;
+		const { serverVersion } = this.props;
+		let hasPermission = false;
+		if (serverVersion && semver.lt(semver.coerce(serverVersion, '3.11.0'))) {
+			hasPermission = canEdit;
+		} else {
+			hasPermission = canToggleEncryption;
+		}
 		return (
 			<Switch
 				value={encrypted}
 				trackColor={SWITCH_TRACK_COLOR}
 				onValueChange={this.toggleEncrypted}
+				disabled={!hasPermission}
 			/>
 		);
 	}
@@ -492,22 +500,12 @@ class RoomActionsView extends React.Component {
 	}
 
 	renderE2EEncryption = () => {
-		const {
-			room, canEdit, canToggleEncryption
-		} = this.state;
-		const { encryptionEnabled, serverVersion } = this.props;
+		const { room } = this.state;
+		const { encryptionEnabled } = this.props;
 
-		let hasPermission = false;
-		if (serverVersion && semver.lt(serverVersion, '3.11.0')) {
-			hasPermission = canEdit;
-		} else {
-			hasPermission = canToggleEncryption;
-		}
-
-		// If user has permission to toggle encryption
 		// If this room type can be encrypted
 		// If e2e is enabled
-		if (hasPermission && E2E_ROOM_TYPES[room?.t] && encryptionEnabled) {
+		if (E2E_ROOM_TYPES[room?.t] && encryptionEnabled) {
 			return (
 				<List.Section>
 					<List.Separator />
