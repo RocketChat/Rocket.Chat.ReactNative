@@ -15,59 +15,68 @@ const themes = {
 };
 
 const item = {
-	name: 'https://open.rocket.chat/',
-	id: 'some.user',
+	name: 'Rocket.Chat',
+	id: 'https://open.rocket.chat/',
 	iconURL: 'https://open.rocket.chat/images/logo/android-chrome-512x512.png'
 };
 
 const item2 = {
-	name: 'https://superlongservername.rocket.chat/',
-	id: 'superlongusername.tologintoasuperlongservername'
+	name: 'Super Long Server Name in Rocket.Chat',
+	id: 'https://superlongservername.tologintoasuperlongservername/'
 };
 
-stories.add('unselected server', () => (
+const item3 = {
+	id: 'https://stable.rocket.chat/'
+};
+
+stories.add('pressable', () => (
 	<ServerItem
 		item={item}
-		onPress={() => alert('Hi')}
-		onLongPress={() => alert('Deleted')}
-		theme={themes.light}
+		onPress={() => alert('Press')}
+		onLongPress={() => alert('Long Press')}
 	/>
 ));
 
-stories.add('selected server', () => (
-	<ServerItem
-		item={item}
-		onPress={() => alert('Hi')}
-		onLongPress={() => alert('Deleted')}
-		hasCheck
-		theme={themes.light}
-	/>
-));
-
-stories.add('with long url and username', () => (
-	<ServerItem
-		item={item2}
-		onPress={() => alert('Hi')}
-		onLongPress={() => alert('Deleted')}
-		theme={themes.light}
-	/>
+stories.add('content', () => (
+	<>
+		<ServerItem
+			item={item}
+			hasCheck
+			onPress={() => alert('Press')}
+			onLongPress={() => alert('Long Press')}
+		/>
+		<ServerItem
+			item={item2}
+			onPress={() => alert('Press')}
+			onLongPress={() => alert('Long Press')}
+		/>
+		<ServerItem
+			item={item3}
+			onPress={() => alert('Press')}
+			onLongPress={() => alert('Long Press')}
+		/>
+	</>
 ));
 
 const ThemeStory = ({ theme }) => (
-	<ThemeContext.Provider value={{ theme }}>
+	<ThemeContext.Provider value={theme}>
 		<ServerItem
 			item={item}
-			onPress={() => alert('Hi')}
-			onLongPress={() => alert('Deleted')}
+			onPress={() => alert('Press')}
+			onLongPress={() => alert('Long Press')}
 			theme={theme}
 			hasCheck
 		/>
 	</ThemeContext.Provider>
 );
 
-stories.add('with dark theme', () => <ThemeStory theme={themes.dark} />);
-
-stories.add('with black theme', () => <ThemeStory theme={themes.black} />);
+stories.add('themes', () => (
+	<>
+		<ThemeStory theme={themes.light} />
+		<ThemeStory theme={themes.dark} />
+		<ThemeStory theme={themes.black} />
+	</>
+));
 
 stories.add('with FlatList', () => (
 	<SafeAreaView>
@@ -76,8 +85,8 @@ stories.add('with FlatList', () => (
 			renderItem={() => (
 				<ServerItem
 					item={item}
-					onPress={() => alert('Hi')}
-					onLongPress={() => alert('Deleted')}
+					onPress={() => alert('Press')}
+					onLongPress={() => alert('Long Press')}
 					theme={themes.light}
 				/>
 			)}
