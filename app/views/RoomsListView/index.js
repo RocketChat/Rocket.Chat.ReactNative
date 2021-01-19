@@ -29,7 +29,6 @@ import {
 	roomsRequest as roomsRequestAction,
 	closeServerDropdown as closeServerDropdownAction
 } from '../../actions/rooms';
-import { appStart as appStartAction, ROOT_BACKGROUND } from '../../actions/app';
 import debounce from '../../utils/debounce';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
 import RoomsListHeaderView from './Header';
@@ -549,12 +548,10 @@ class RoomsListView extends React.Component {
 
 	handleBackPress = () => {
 		const { searching } = this.state;
-		const { appStart } = this.props;
 		if (searching) {
 			this.cancelSearch();
 			return true;
 		}
-		appStart({ root: ROOT_BACKGROUND });
 		return false;
 	};
 
@@ -1044,7 +1041,6 @@ const mapDispatchToProps = dispatch => ({
 	toggleSortDropdown: () => dispatch(toggleSortDropdownAction()),
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
-	appStart: params => dispatch(appStartAction(params)),
 	roomsRequest: params => dispatch(roomsRequestAction(params)),
 	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
 	closeServerDropdown: () => dispatch(closeServerDropdownAction())
