@@ -61195,8 +61195,15 @@ Array [
         }
       >
         <FastImageView
+          defaultSource="test-file-stub"
+          onFastImageError={[Function]}
           resizeMode="cover"
-          source={null}
+          source={
+            Object {
+              "priority": "high",
+              "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
+            }
+          }
           style={
             Object {
               "bottom": 0,
@@ -61368,124 +61375,6 @@ Array [
     </View>
   </View>,
 ]
-`;
-
-exports[`Storyshots ServerItem long press 1`] = `
-<View
-  accessible={true}
-  focusable={true}
-  onBlur={[Function]}
-  onClick={[Function]}
-  onFocus={[Function]}
-  onResponderGrant={[Function]}
-  onResponderMove={[Function]}
-  onResponderRelease={[Function]}
-  onResponderTerminate={[Function]}
-  onResponderTerminationRequest={[Function]}
-  onStartShouldSetResponder={[Function]}
-  style={
-    Object {
-      "backgroundColor": "#ffffff",
-    }
-  }
-  testID="rooms-list-header-server-https://open.rocket.chat/"
->
-  <View
-    style={
-      Object {
-        "alignItems": "center",
-        "flexDirection": "row",
-      }
-    }
-  >
-    <View
-      style={
-        Array [
-          Object {
-            "overflow": "hidden",
-          },
-          Object {
-            "borderRadius": 4,
-            "height": 44,
-            "margin": 12,
-            "resizeMode": "contain",
-            "width": 44,
-          },
-        ]
-      }
-    >
-      <FastImageView
-        defaultSource="test-file-stub"
-        onFastImageError={[Function]}
-        resizeMode="cover"
-        source={
-          Object {
-            "priority": "high",
-            "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
-          }
-        }
-        style={
-          Object {
-            "bottom": 0,
-            "left": 0,
-            "position": "absolute",
-            "right": 0,
-            "top": 0,
-          }
-        }
-      />
-    </View>
-    <View
-      style={
-        Object {
-          "flex": 1,
-          "flexDirection": "column",
-          "justifyContent": "center",
-          "paddingRight": 18,
-        }
-      }
-    >
-      <Text
-        numberOfLines={1}
-        style={
-          Array [
-            Object {
-              "backgroundColor": "transparent",
-              "fontFamily": "System",
-              "fontSize": 18,
-              "fontWeight": "600",
-              "textAlign": "left",
-            },
-            Object {
-              "color": "#0d0e12",
-            },
-          ]
-        }
-      >
-        Rocket.Chat
-      </Text>
-      <Text
-        numberOfLines={1}
-        style={
-          Array [
-            Object {
-              "backgroundColor": "transparent",
-              "fontFamily": "System",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "textAlign": "left",
-            },
-            Object {
-              "color": "#9ca2a8",
-            },
-          ]
-        }
-      >
-        https://open.rocket.chat/
-      </Text>
-    </View>
-  </View>
-</View>
 `;
 
 exports[`Storyshots ServerItem themes 1`] = `
@@ -61919,1268 +61808,354 @@ Array [
 ]
 `;
 
-exports[`Storyshots ServerItem with FlatList 1`] = `
-<RCTSafeAreaView
-  emulateUnlessSupported={true}
->
-  <RCTScrollView
-    data={
-      Array [
-        0,
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17,
-        18,
-        19,
-      ]
+exports[`Storyshots ServerItem touchable 1`] = `
+Array [
+  <View
+    accessible={true}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "backgroundColor": "#ffffff",
+      }
     }
-    disableVirtualization={false}
-    getItem={[Function]}
-    getItemCount={[Function]}
-    horizontal={false}
-    initialNumToRender={10}
-    keyExtractor={[Function]}
-    maxToRenderPerBatch={10}
-    onContentSizeChange={[Function]}
-    onEndReachedThreshold={2}
-    onLayout={[Function]}
-    onMomentumScrollEnd={[Function]}
-    onScroll={[Function]}
-    onScrollBeginDrag={[Function]}
-    onScrollEndDrag={[Function]}
-    removeClippedSubviews={false}
-    renderItem={[Function]}
-    scrollEventThrottle={50}
-    stickyHeaderIndices={Array []}
-    updateCellsBatchingPeriod={50}
-    viewabilityConfigCallbackPairs={Array []}
-    windowSize={21}
+    testID="rooms-list-header-server-https://open.rocket.chat/"
   >
-    <View>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+        }
+      }
+    >
       <View
-        onLayout={[Function]}
-        style={null}
-      >
-        <View
-          accessible={true}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
+        style={
+          Array [
             Object {
-              "backgroundColor": "#ffffff",
+              "overflow": "hidden",
+            },
+            Object {
+              "borderRadius": 4,
+              "height": 44,
+              "margin": 12,
+              "resizeMode": "contain",
+              "width": 44,
+            },
+          ]
+        }
+      >
+        <FastImageView
+          defaultSource="test-file-stub"
+          onFastImageError={[Function]}
+          resizeMode="cover"
+          source={
+            Object {
+              "priority": "high",
+              "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
             }
           }
-          testID="rooms-list-header-server-https://open.rocket.chat/"
-        >
-          <View
-            style={
-              Object {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <View
-              style={
-                Array [
-                  Object {
-                    "overflow": "hidden",
-                  },
-                  Object {
-                    "borderRadius": 4,
-                    "height": 44,
-                    "margin": 12,
-                    "resizeMode": "contain",
-                    "width": 44,
-                  },
-                ]
-              }
-            >
-              <FastImageView
-                defaultSource="test-file-stub"
-                onFastImageError={[Function]}
-                resizeMode="cover"
-                source={
-                  Object {
-                    "priority": "high",
-                    "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
-                  }
-                }
-                style={
-                  Object {
-                    "bottom": 0,
-                    "left": 0,
-                    "position": "absolute",
-                    "right": 0,
-                    "top": 0,
-                  }
-                }
-              />
-            </View>
-            <View
-              style={
-                Object {
-                  "flex": 1,
-                  "flexDirection": "column",
-                  "justifyContent": "center",
-                  "paddingRight": 18,
-                }
-              }
-            >
-              <Text
-                numberOfLines={1}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 18,
-                      "fontWeight": "600",
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#0d0e12",
-                    },
-                  ]
-                }
-              >
-                Rocket.Chat
-              </Text>
-              <Text
-                numberOfLines={1}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 16,
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#9ca2a8",
-                    },
-                  ]
-                }
-              >
-                https://open.rocket.chat/
-              </Text>
-            </View>
-          </View>
-        </View>
-      </View>
-      <View
-        onLayout={[Function]}
-        style={null}
-      >
-        <View
-          accessible={true}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
           style={
             Object {
-              "backgroundColor": "#ffffff",
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
             }
           }
-          testID="rooms-list-header-server-https://open.rocket.chat/"
-        >
-          <View
-            style={
-              Object {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <View
-              style={
-                Array [
-                  Object {
-                    "overflow": "hidden",
-                  },
-                  Object {
-                    "borderRadius": 4,
-                    "height": 44,
-                    "margin": 12,
-                    "resizeMode": "contain",
-                    "width": 44,
-                  },
-                ]
-              }
-            >
-              <FastImageView
-                defaultSource="test-file-stub"
-                onFastImageError={[Function]}
-                resizeMode="cover"
-                source={
-                  Object {
-                    "priority": "high",
-                    "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
-                  }
-                }
-                style={
-                  Object {
-                    "bottom": 0,
-                    "left": 0,
-                    "position": "absolute",
-                    "right": 0,
-                    "top": 0,
-                  }
-                }
-              />
-            </View>
-            <View
-              style={
-                Object {
-                  "flex": 1,
-                  "flexDirection": "column",
-                  "justifyContent": "center",
-                  "paddingRight": 18,
-                }
-              }
-            >
-              <Text
-                numberOfLines={1}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 18,
-                      "fontWeight": "600",
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#0d0e12",
-                    },
-                  ]
-                }
-              >
-                Rocket.Chat
-              </Text>
-              <Text
-                numberOfLines={1}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 16,
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#9ca2a8",
-                    },
-                  ]
-                }
-              >
-                https://open.rocket.chat/
-              </Text>
-            </View>
-          </View>
-        </View>
-      </View>
-      <View
-        onLayout={[Function]}
-        style={null}
-      >
-        <View
-          accessible={true}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
-          }
-          testID="rooms-list-header-server-https://open.rocket.chat/"
-        >
-          <View
-            style={
-              Object {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <View
-              style={
-                Array [
-                  Object {
-                    "overflow": "hidden",
-                  },
-                  Object {
-                    "borderRadius": 4,
-                    "height": 44,
-                    "margin": 12,
-                    "resizeMode": "contain",
-                    "width": 44,
-                  },
-                ]
-              }
-            >
-              <FastImageView
-                defaultSource="test-file-stub"
-                onFastImageError={[Function]}
-                resizeMode="cover"
-                source={
-                  Object {
-                    "priority": "high",
-                    "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
-                  }
-                }
-                style={
-                  Object {
-                    "bottom": 0,
-                    "left": 0,
-                    "position": "absolute",
-                    "right": 0,
-                    "top": 0,
-                  }
-                }
-              />
-            </View>
-            <View
-              style={
-                Object {
-                  "flex": 1,
-                  "flexDirection": "column",
-                  "justifyContent": "center",
-                  "paddingRight": 18,
-                }
-              }
-            >
-              <Text
-                numberOfLines={1}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 18,
-                      "fontWeight": "600",
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#0d0e12",
-                    },
-                  ]
-                }
-              >
-                Rocket.Chat
-              </Text>
-              <Text
-                numberOfLines={1}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 16,
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#9ca2a8",
-                    },
-                  ]
-                }
-              >
-                https://open.rocket.chat/
-              </Text>
-            </View>
-          </View>
-        </View>
-      </View>
-      <View
-        onLayout={[Function]}
-        style={null}
-      >
-        <View
-          accessible={true}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
-          }
-          testID="rooms-list-header-server-https://open.rocket.chat/"
-        >
-          <View
-            style={
-              Object {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <View
-              style={
-                Array [
-                  Object {
-                    "overflow": "hidden",
-                  },
-                  Object {
-                    "borderRadius": 4,
-                    "height": 44,
-                    "margin": 12,
-                    "resizeMode": "contain",
-                    "width": 44,
-                  },
-                ]
-              }
-            >
-              <FastImageView
-                defaultSource="test-file-stub"
-                onFastImageError={[Function]}
-                resizeMode="cover"
-                source={
-                  Object {
-                    "priority": "high",
-                    "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
-                  }
-                }
-                style={
-                  Object {
-                    "bottom": 0,
-                    "left": 0,
-                    "position": "absolute",
-                    "right": 0,
-                    "top": 0,
-                  }
-                }
-              />
-            </View>
-            <View
-              style={
-                Object {
-                  "flex": 1,
-                  "flexDirection": "column",
-                  "justifyContent": "center",
-                  "paddingRight": 18,
-                }
-              }
-            >
-              <Text
-                numberOfLines={1}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 18,
-                      "fontWeight": "600",
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#0d0e12",
-                    },
-                  ]
-                }
-              >
-                Rocket.Chat
-              </Text>
-              <Text
-                numberOfLines={1}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 16,
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#9ca2a8",
-                    },
-                  ]
-                }
-              >
-                https://open.rocket.chat/
-              </Text>
-            </View>
-          </View>
-        </View>
-      </View>
-      <View
-        onLayout={[Function]}
-        style={null}
-      >
-        <View
-          accessible={true}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
-          }
-          testID="rooms-list-header-server-https://open.rocket.chat/"
-        >
-          <View
-            style={
-              Object {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <View
-              style={
-                Array [
-                  Object {
-                    "overflow": "hidden",
-                  },
-                  Object {
-                    "borderRadius": 4,
-                    "height": 44,
-                    "margin": 12,
-                    "resizeMode": "contain",
-                    "width": 44,
-                  },
-                ]
-              }
-            >
-              <FastImageView
-                defaultSource="test-file-stub"
-                onFastImageError={[Function]}
-                resizeMode="cover"
-                source={
-                  Object {
-                    "priority": "high",
-                    "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
-                  }
-                }
-                style={
-                  Object {
-                    "bottom": 0,
-                    "left": 0,
-                    "position": "absolute",
-                    "right": 0,
-                    "top": 0,
-                  }
-                }
-              />
-            </View>
-            <View
-              style={
-                Object {
-                  "flex": 1,
-                  "flexDirection": "column",
-                  "justifyContent": "center",
-                  "paddingRight": 18,
-                }
-              }
-            >
-              <Text
-                numberOfLines={1}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 18,
-                      "fontWeight": "600",
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#0d0e12",
-                    },
-                  ]
-                }
-              >
-                Rocket.Chat
-              </Text>
-              <Text
-                numberOfLines={1}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 16,
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#9ca2a8",
-                    },
-                  ]
-                }
-              >
-                https://open.rocket.chat/
-              </Text>
-            </View>
-          </View>
-        </View>
-      </View>
-      <View
-        onLayout={[Function]}
-        style={null}
-      >
-        <View
-          accessible={true}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
-          }
-          testID="rooms-list-header-server-https://open.rocket.chat/"
-        >
-          <View
-            style={
-              Object {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <View
-              style={
-                Array [
-                  Object {
-                    "overflow": "hidden",
-                  },
-                  Object {
-                    "borderRadius": 4,
-                    "height": 44,
-                    "margin": 12,
-                    "resizeMode": "contain",
-                    "width": 44,
-                  },
-                ]
-              }
-            >
-              <FastImageView
-                defaultSource="test-file-stub"
-                onFastImageError={[Function]}
-                resizeMode="cover"
-                source={
-                  Object {
-                    "priority": "high",
-                    "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
-                  }
-                }
-                style={
-                  Object {
-                    "bottom": 0,
-                    "left": 0,
-                    "position": "absolute",
-                    "right": 0,
-                    "top": 0,
-                  }
-                }
-              />
-            </View>
-            <View
-              style={
-                Object {
-                  "flex": 1,
-                  "flexDirection": "column",
-                  "justifyContent": "center",
-                  "paddingRight": 18,
-                }
-              }
-            >
-              <Text
-                numberOfLines={1}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 18,
-                      "fontWeight": "600",
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#0d0e12",
-                    },
-                  ]
-                }
-              >
-                Rocket.Chat
-              </Text>
-              <Text
-                numberOfLines={1}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 16,
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#9ca2a8",
-                    },
-                  ]
-                }
-              >
-                https://open.rocket.chat/
-              </Text>
-            </View>
-          </View>
-        </View>
-      </View>
-      <View
-        onLayout={[Function]}
-        style={null}
-      >
-        <View
-          accessible={true}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
-          }
-          testID="rooms-list-header-server-https://open.rocket.chat/"
-        >
-          <View
-            style={
-              Object {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <View
-              style={
-                Array [
-                  Object {
-                    "overflow": "hidden",
-                  },
-                  Object {
-                    "borderRadius": 4,
-                    "height": 44,
-                    "margin": 12,
-                    "resizeMode": "contain",
-                    "width": 44,
-                  },
-                ]
-              }
-            >
-              <FastImageView
-                defaultSource="test-file-stub"
-                onFastImageError={[Function]}
-                resizeMode="cover"
-                source={
-                  Object {
-                    "priority": "high",
-                    "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
-                  }
-                }
-                style={
-                  Object {
-                    "bottom": 0,
-                    "left": 0,
-                    "position": "absolute",
-                    "right": 0,
-                    "top": 0,
-                  }
-                }
-              />
-            </View>
-            <View
-              style={
-                Object {
-                  "flex": 1,
-                  "flexDirection": "column",
-                  "justifyContent": "center",
-                  "paddingRight": 18,
-                }
-              }
-            >
-              <Text
-                numberOfLines={1}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 18,
-                      "fontWeight": "600",
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#0d0e12",
-                    },
-                  ]
-                }
-              >
-                Rocket.Chat
-              </Text>
-              <Text
-                numberOfLines={1}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 16,
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#9ca2a8",
-                    },
-                  ]
-                }
-              >
-                https://open.rocket.chat/
-              </Text>
-            </View>
-          </View>
-        </View>
-      </View>
-      <View
-        onLayout={[Function]}
-        style={null}
-      >
-        <View
-          accessible={true}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
-          }
-          testID="rooms-list-header-server-https://open.rocket.chat/"
-        >
-          <View
-            style={
-              Object {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <View
-              style={
-                Array [
-                  Object {
-                    "overflow": "hidden",
-                  },
-                  Object {
-                    "borderRadius": 4,
-                    "height": 44,
-                    "margin": 12,
-                    "resizeMode": "contain",
-                    "width": 44,
-                  },
-                ]
-              }
-            >
-              <FastImageView
-                defaultSource="test-file-stub"
-                onFastImageError={[Function]}
-                resizeMode="cover"
-                source={
-                  Object {
-                    "priority": "high",
-                    "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
-                  }
-                }
-                style={
-                  Object {
-                    "bottom": 0,
-                    "left": 0,
-                    "position": "absolute",
-                    "right": 0,
-                    "top": 0,
-                  }
-                }
-              />
-            </View>
-            <View
-              style={
-                Object {
-                  "flex": 1,
-                  "flexDirection": "column",
-                  "justifyContent": "center",
-                  "paddingRight": 18,
-                }
-              }
-            >
-              <Text
-                numberOfLines={1}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 18,
-                      "fontWeight": "600",
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#0d0e12",
-                    },
-                  ]
-                }
-              >
-                Rocket.Chat
-              </Text>
-              <Text
-                numberOfLines={1}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 16,
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#9ca2a8",
-                    },
-                  ]
-                }
-              >
-                https://open.rocket.chat/
-              </Text>
-            </View>
-          </View>
-        </View>
-      </View>
-      <View
-        onLayout={[Function]}
-        style={null}
-      >
-        <View
-          accessible={true}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
-          }
-          testID="rooms-list-header-server-https://open.rocket.chat/"
-        >
-          <View
-            style={
-              Object {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <View
-              style={
-                Array [
-                  Object {
-                    "overflow": "hidden",
-                  },
-                  Object {
-                    "borderRadius": 4,
-                    "height": 44,
-                    "margin": 12,
-                    "resizeMode": "contain",
-                    "width": 44,
-                  },
-                ]
-              }
-            >
-              <FastImageView
-                defaultSource="test-file-stub"
-                onFastImageError={[Function]}
-                resizeMode="cover"
-                source={
-                  Object {
-                    "priority": "high",
-                    "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
-                  }
-                }
-                style={
-                  Object {
-                    "bottom": 0,
-                    "left": 0,
-                    "position": "absolute",
-                    "right": 0,
-                    "top": 0,
-                  }
-                }
-              />
-            </View>
-            <View
-              style={
-                Object {
-                  "flex": 1,
-                  "flexDirection": "column",
-                  "justifyContent": "center",
-                  "paddingRight": 18,
-                }
-              }
-            >
-              <Text
-                numberOfLines={1}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 18,
-                      "fontWeight": "600",
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#0d0e12",
-                    },
-                  ]
-                }
-              >
-                Rocket.Chat
-              </Text>
-              <Text
-                numberOfLines={1}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 16,
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#9ca2a8",
-                    },
-                  ]
-                }
-              >
-                https://open.rocket.chat/
-              </Text>
-            </View>
-          </View>
-        </View>
-      </View>
-      <View
-        onLayout={[Function]}
-        style={null}
-      >
-        <View
-          accessible={true}
-          focusable={true}
-          onBlur={[Function]}
-          onClick={[Function]}
-          onFocus={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
-          }
-          testID="rooms-list-header-server-https://open.rocket.chat/"
-        >
-          <View
-            style={
-              Object {
-                "alignItems": "center",
-                "flexDirection": "row",
-              }
-            }
-          >
-            <View
-              style={
-                Array [
-                  Object {
-                    "overflow": "hidden",
-                  },
-                  Object {
-                    "borderRadius": 4,
-                    "height": 44,
-                    "margin": 12,
-                    "resizeMode": "contain",
-                    "width": 44,
-                  },
-                ]
-              }
-            >
-              <FastImageView
-                defaultSource="test-file-stub"
-                onFastImageError={[Function]}
-                resizeMode="cover"
-                source={
-                  Object {
-                    "priority": "high",
-                    "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
-                  }
-                }
-                style={
-                  Object {
-                    "bottom": 0,
-                    "left": 0,
-                    "position": "absolute",
-                    "right": 0,
-                    "top": 0,
-                  }
-                }
-              />
-            </View>
-            <View
-              style={
-                Object {
-                  "flex": 1,
-                  "flexDirection": "column",
-                  "justifyContent": "center",
-                  "paddingRight": 18,
-                }
-              }
-            >
-              <Text
-                numberOfLines={1}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 18,
-                      "fontWeight": "600",
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#0d0e12",
-                    },
-                  ]
-                }
-              >
-                Rocket.Chat
-              </Text>
-              <Text
-                numberOfLines={1}
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 16,
-                      "fontWeight": "400",
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#9ca2a8",
-                    },
-                  ]
-                }
-              >
-                https://open.rocket.chat/
-              </Text>
-            </View>
-          </View>
-        </View>
+        />
       </View>
       <View
         style={
           Object {
-            "height": 0,
+            "flex": 1,
+            "flexDirection": "column",
+            "justifyContent": "center",
+            "paddingRight": 18,
           }
         }
-      />
+      >
+        <Text
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 18,
+                "fontWeight": "600",
+                "textAlign": "left",
+              },
+              Object {
+                "color": "#0d0e12",
+              },
+            ]
+          }
+        >
+          Rocket.Chat
+        </Text>
+        <Text
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              Object {
+                "color": "#9ca2a8",
+              },
+            ]
+          }
+        >
+          https://open.rocket.chat/
+        </Text>
+      </View>
     </View>
-  </RCTScrollView>
-</RCTSafeAreaView>
+  </View>,
+  <View
+    accessible={true}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "backgroundColor": "#ffffff",
+      }
+    }
+    testID="rooms-list-header-server-https://open.rocket.chat/"
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "overflow": "hidden",
+            },
+            Object {
+              "borderRadius": 4,
+              "height": 44,
+              "margin": 12,
+              "resizeMode": "contain",
+              "width": 44,
+            },
+          ]
+        }
+      >
+        <FastImageView
+          defaultSource="test-file-stub"
+          onFastImageError={[Function]}
+          resizeMode="cover"
+          source={
+            Object {
+              "priority": "high",
+              "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
+            }
+          }
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "flexDirection": "column",
+            "justifyContent": "center",
+            "paddingRight": 18,
+          }
+        }
+      >
+        <Text
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 18,
+                "fontWeight": "600",
+                "textAlign": "left",
+              },
+              Object {
+                "color": "#0d0e12",
+              },
+            ]
+          }
+        >
+          Rocket.Chat
+        </Text>
+        <Text
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              Object {
+                "color": "#9ca2a8",
+              },
+            ]
+          }
+        >
+          https://open.rocket.chat/
+        </Text>
+      </View>
+    </View>
+  </View>,
+  <View
+    accessible={true}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "backgroundColor": "#ffffff",
+      }
+    }
+    testID="rooms-list-header-server-https://open.rocket.chat/"
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "overflow": "hidden",
+            },
+            Object {
+              "borderRadius": 4,
+              "height": 44,
+              "margin": 12,
+              "resizeMode": "contain",
+              "width": 44,
+            },
+          ]
+        }
+      >
+        <FastImageView
+          defaultSource="test-file-stub"
+          onFastImageError={[Function]}
+          resizeMode="cover"
+          source={
+            Object {
+              "priority": "high",
+              "uri": "https://open.rocket.chat/images/logo/android-chrome-512x512.png",
+            }
+          }
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "flexDirection": "column",
+            "justifyContent": "center",
+            "paddingRight": 18,
+          }
+        }
+      >
+        <Text
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 18,
+                "fontWeight": "600",
+                "textAlign": "left",
+              },
+              Object {
+                "color": "#0d0e12",
+              },
+            ]
+          }
+        >
+          Rocket.Chat
+        </Text>
+        <Text
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              Object {
+                "color": "#9ca2a8",
+              },
+            ]
+          }
+        >
+          https://open.rocket.chat/
+        </Text>
+      </View>
+    </View>
+  </View>,
+]
 `;
 
 exports[`Storyshots Thread Messages.Item badge 1`] = `
