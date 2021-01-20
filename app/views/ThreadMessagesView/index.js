@@ -33,6 +33,8 @@ import { isIOS } from '../../utils/deviceInfo';
 import { getBadgeColor, makeThreadName } from '../../utils/room';
 import { getHeaderTitlePosition } from '../../containers/Header';
 import SearchHeader from './SearchHeader';
+import EventEmitter from '../../utils/events';
+import { LISTENER } from '../../containers/Toast';
 
 const API_FETCH_COUNT = 50;
 
@@ -410,6 +412,15 @@ class ThreadMessagesView extends React.Component {
 		this.setState({ currentFilter: filter, displayingThreads });
 	}
 
+	toggleFollowThread = async(isFollowingThread, tmid) => {
+		try {
+			await RocketChat.toggleFollowMessage(tmid, !isFollowingThread);
+			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
+		} catch (e) {
+			log(e);
+		}
+	}
+
 	renderItem = ({ item }) => {
 		const {
 			user, navigation, baseUrl, useRealName
@@ -426,6 +437,7 @@ class ThreadMessagesView extends React.Component {
 					badgeColor
 				}}
 				onPress={this.onThreadPress}
+				toggleFollowThread={this.toggleFollowThread}
 			/>
 		);
 	}

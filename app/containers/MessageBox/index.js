@@ -222,9 +222,14 @@ class MessageBox extends Component {
 		}
 
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
-			if (this.tracking && this.tracking.resetTracking) {
-				this.tracking.resetTracking();
-			}
+			// didFocus
+			// We should wait pushed views be dismissed
+			this.trackingTimeout = setTimeout(() => {
+				if (this.tracking && this.tracking.resetTracking) {
+					// Reset messageBox keyboard tracking
+					this.tracking.resetTracking();
+				}
+			}, 500);
 		});
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			this.component?.blur();
@@ -252,6 +257,10 @@ class MessageBox extends Component {
 			this.focus();
 		} else if (!nextProps.message) {
 			this.clearInput();
+		}
+		if (this.trackingTimeout) {
+			clearTimeout(this.trackingTimeout);
+			this.trackingTimeout = false;
 		}
 	}
 

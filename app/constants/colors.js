@@ -11,13 +11,11 @@ export const SWITCH_TRACK_COLOR = {
 };
 
 const mentions = {
-	unreadBackground: '#6C727A',
-	tunreadBackground: '#1d74f5',
-	mentionMeColor: '#DB0C27',
-	mentionMeBackground: '#F5455C',
-	mentionGroupColor: '#E26D0E',
-	mentionGroupBackground: '#F38C39',
-	mentionOtherColor: '#DFAC00'
+	unreadColor: '#6C727A',
+	tunreadColor: '#1d74f5',
+	mentionMeColor: '#F5455C',
+	mentionGroupColor: '#F38C39',
+	mentionOtherColor: '#F3BE08'
 };
 
 export const themes = {
