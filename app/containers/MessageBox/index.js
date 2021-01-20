@@ -936,7 +936,7 @@ class MessageBox extends Component {
 				/>
 				<TextInput
 					ref={component => this.component = component}
-					style={styles.textBoxInput}
+					style={[styles.textBoxInput, { color: themes[theme].bodyText }]}
 					returnKeyType='default'
 					keyboardType='twitter'
 					blurOnSubmit={false}
