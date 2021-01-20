@@ -85,7 +85,7 @@ class CreateChannelView extends React.Component {
 		error: PropTypes.object,
 		failure: PropTypes.bool,
 		isFetching: PropTypes.bool,
-		e2eEnabled: PropTypes.bool,
+		encryptionEnabled: PropTypes.bool,
 		users: PropTypes.array.isRequired,
 		user: PropTypes.shape({
 			id: PropTypes.string,
@@ -107,7 +107,7 @@ class CreateChannelView extends React.Component {
 			channelName, type, readOnly, broadcast, encrypted
 		} = this.state;
 		const {
-			users, isFetching, e2eEnabled, theme
+			users, isFetching, encryptionEnabled, theme
 		} = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
@@ -130,7 +130,7 @@ class CreateChannelView extends React.Component {
 		if (nextProps.isFetching !== isFetching) {
 			return true;
 		}
-		if (nextProps.e2eEnabled !== e2eEnabled) {
+		if (nextProps.encryptionEnabled !== encryptionEnabled) {
 			return true;
 		}
 		if (!equal(nextProps.users, users)) {
@@ -230,9 +230,9 @@ class CreateChannelView extends React.Component {
 
 	renderEncrypted() {
 		const { type, encrypted } = this.state;
-		const { e2eEnabled } = this.props;
+		const { encryptionEnabled } = this.props;
 
-		if (!e2eEnabled) {
+		if (!encryptionEnabled) {
 			return null;
 		}
 
@@ -366,7 +366,7 @@ class CreateChannelView extends React.Component {
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	isFetching: state.createChannel.isFetching,
-	e2eEnabled: state.settings.E2E_Enable,
+	encryptionEnabled: state.encryption.enabled,
 	users: state.selectedUsers.users,
 	user: getUserSelector(state)
 });
