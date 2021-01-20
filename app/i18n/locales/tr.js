@@ -704,7 +704,7 @@ export default {
 	The_user_will_be_removed_from_s: 'Kullanıcı, {{s}} alanından kaldırılacak!',
 	Yes_remove_user: 'Evet, kullanıcıyı kaldır!',
 	Direct_message: 'Özel ileti',
-	Message_Ignored: 'İleti yok sayıldı. Görüntülemek için dokunun.',	
+	Message_Ignored: 'İleti yok sayıldı. Görüntülemek için dokunun.',
 	Enter_workspace_URL: 'Çalışma alanı URL\'nizi girin',
 	Workspace_URL_Example: 'Örn. sirketiniz.rocket.chat'
 };
