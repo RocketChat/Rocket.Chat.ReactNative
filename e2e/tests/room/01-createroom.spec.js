@@ -67,12 +67,12 @@ describe('Create room screen', () => {
 
 		it('should select/unselect user', async() => {
 			// Spotlight issues
-			await element(by.id('select-users-view-item-rocket.cat')).atIndex(0).tap();
+			await element(by.id('select-users-view-item-rocket.cat')).tap();
 			await waitFor(element(by.id('selected-user-rocket.cat'))).toBeVisible().withTimeout(10000);
 			await element(by.id('selected-user-rocket.cat')).tap();
 			await waitFor(element(by.id('selected-user-rocket.cat'))).toBeNotVisible().withTimeout(10000);
 			// Spotlight issues
-			await element(by.id('select-users-view-item-rocket.cat')).atIndex(0).tap();
+			await element(by.id('select-users-view-item-rocket.cat')).tap();
 			await waitFor(element(by.id('selected-user-rocket.cat'))).toBeVisible().withTimeout(10000);
 		});
 
