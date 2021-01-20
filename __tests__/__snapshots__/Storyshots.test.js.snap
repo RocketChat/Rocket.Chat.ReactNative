@@ -61023,7 +61023,7 @@ Array [
     onStartShouldSetResponder={[Function]}
     style={
       Object {
-        "backgroundColor": "transparent",
+        "backgroundColor": "#ffffff",
       }
     }
     testID="rooms-list-header-server-https://open.rocket.chat/"
@@ -61165,7 +61165,7 @@ Array [
     onStartShouldSetResponder={[Function]}
     style={
       Object {
-        "backgroundColor": "transparent",
+        "backgroundColor": "#ffffff",
       }
     }
     testID="rooms-list-header-server-https://superlongservername.tologintoasuperlongservername/"
@@ -61273,7 +61273,7 @@ Array [
     onStartShouldSetResponder={[Function]}
     style={
       Object {
-        "backgroundColor": "transparent",
+        "backgroundColor": "#ffffff",
       }
     }
     testID="rooms-list-header-server-https://stable.rocket.chat/"
@@ -61370,7 +61370,7 @@ Array [
 ]
 `;
 
-exports[`Storyshots ServerItem pressable 1`] = `
+exports[`Storyshots ServerItem long press 1`] = `
 <View
   accessible={true}
   focusable={true}
@@ -61385,7 +61385,7 @@ exports[`Storyshots ServerItem pressable 1`] = `
   onStartShouldSetResponder={[Function]}
   style={
     Object {
-      "backgroundColor": "transparent",
+      "backgroundColor": "#ffffff",
     }
   }
   testID="rooms-list-header-server-https://open.rocket.chat/"
@@ -61504,7 +61504,7 @@ Array [
     onStartShouldSetResponder={[Function]}
     style={
       Object {
-        "backgroundColor": "transparent",
+        "backgroundColor": "#ffffff",
       }
     }
     testID="rooms-list-header-server-https://open.rocket.chat/"
@@ -61646,7 +61646,7 @@ Array [
     onStartShouldSetResponder={[Function]}
     style={
       Object {
-        "backgroundColor": "transparent",
+        "backgroundColor": "#030b1b",
       }
     }
     testID="rooms-list-header-server-https://open.rocket.chat/"
@@ -61788,7 +61788,7 @@ Array [
     onStartShouldSetResponder={[Function]}
     style={
       Object {
-        "backgroundColor": "transparent",
+        "backgroundColor": "#000000",
       }
     }
     testID="rooms-list-header-server-https://open.rocket.chat/"
@@ -61989,7 +61989,7 @@ exports[`Storyshots ServerItem with FlatList 1`] = `
           onStartShouldSetResponder={[Function]}
           style={
             Object {
-              "backgroundColor": "transparent",
+              "backgroundColor": "#ffffff",
             }
           }
           testID="rooms-list-header-server-https://open.rocket.chat/"
@@ -62109,7 +62109,7 @@ exports[`Storyshots ServerItem with FlatList 1`] = `
           onStartShouldSetResponder={[Function]}
           style={
             Object {
-              "backgroundColor": "transparent",
+              "backgroundColor": "#ffffff",
             }
           }
           testID="rooms-list-header-server-https://open.rocket.chat/"
@@ -62229,7 +62229,7 @@ exports[`Storyshots ServerItem with FlatList 1`] = `
           onStartShouldSetResponder={[Function]}
           style={
             Object {
-              "backgroundColor": "transparent",
+              "backgroundColor": "#ffffff",
             }
           }
           testID="rooms-list-header-server-https://open.rocket.chat/"
@@ -62349,7 +62349,7 @@ exports[`Storyshots ServerItem with FlatList 1`] = `
           onStartShouldSetResponder={[Function]}
           style={
             Object {
-              "backgroundColor": "transparent",
+              "backgroundColor": "#ffffff",
             }
           }
           testID="rooms-list-header-server-https://open.rocket.chat/"
@@ -62469,7 +62469,7 @@ exports[`Storyshots ServerItem with FlatList 1`] = `
           onStartShouldSetResponder={[Function]}
           style={
             Object {
-              "backgroundColor": "transparent",
+              "backgroundColor": "#ffffff",
             }
           }
           testID="rooms-list-header-server-https://open.rocket.chat/"
@@ -62589,7 +62589,7 @@ exports[`Storyshots ServerItem with FlatList 1`] = `
           onStartShouldSetResponder={[Function]}
           style={
             Object {
-              "backgroundColor": "transparent",
+              "backgroundColor": "#ffffff",
             }
           }
           testID="rooms-list-header-server-https://open.rocket.chat/"
@@ -62709,7 +62709,7 @@ exports[`Storyshots ServerItem with FlatList 1`] = `
           onStartShouldSetResponder={[Function]}
           style={
             Object {
-              "backgroundColor": "transparent",
+              "backgroundColor": "#ffffff",
             }
           }
           testID="rooms-list-header-server-https://open.rocket.chat/"
@@ -62829,7 +62829,7 @@ exports[`Storyshots ServerItem with FlatList 1`] = `
           onStartShouldSetResponder={[Function]}
           style={
             Object {
-              "backgroundColor": "transparent",
+              "backgroundColor": "#ffffff",
             }
           }
           testID="rooms-list-header-server-https://open.rocket.chat/"
@@ -62949,7 +62949,7 @@ exports[`Storyshots ServerItem with FlatList 1`] = `
           onStartShouldSetResponder={[Function]}
           style={
             Object {
-              "backgroundColor": "transparent",
+              "backgroundColor": "#ffffff",
             }
           }
           testID="rooms-list-header-server-https://open.rocket.chat/"
@@ -63069,7 +63069,7 @@ exports[`Storyshots ServerItem with FlatList 1`] = `
           onStartShouldSetResponder={[Function]}
           style={
             Object {
-              "backgroundColor": "transparent",
+              "backgroundColor": "#ffffff",
             }
           }
           testID="rooms-list-header-server-https://open.rocket.chat/"

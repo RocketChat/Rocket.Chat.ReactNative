@@ -26,7 +26,7 @@ const ServerItem = React.memo(({
 		style={({ pressed }) => ({
 			backgroundColor: isIOS && pressed
 				? themes[theme].bannerBackground
-				: 'transparent'
+				: themes[theme].backgroundColor
 		})}
 	>
 		<View style={styles.serverItemContainer}>

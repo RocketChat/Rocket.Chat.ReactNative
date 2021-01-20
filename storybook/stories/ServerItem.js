@@ -3,7 +3,7 @@ import React from 'react';
 import { SafeAreaView, FlatList } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 
-import ServerItem from '../../app/presentation/ServerItem';
+import ServerItemComponent from '../../app/presentation/ServerItem';
 import { ThemeContext } from '../../app/theme';
 
 const stories = storiesOf('ServerItem', module);
@@ -29,9 +29,17 @@ const item3 = {
 	id: 'https://stable.rocket.chat/'
 };
 
-stories.add('pressable', () => (
-	<ServerItem
+const ServerItem = props => (
+	<ServerItemComponent
 		item={item}
+		onPress={() => alert('Press')}
+		hasCheck={false}
+		{...props}
+	/>
+);
+
+stories.add('long press', () => (
+	<ServerItem
 		onPress={() => alert('Press')}
 		onLongPress={() => alert('Long Press')}
 	/>
@@ -40,20 +48,13 @@ stories.add('pressable', () => (
 stories.add('content', () => (
 	<>
 		<ServerItem
-			item={item}
 			hasCheck
-			onPress={() => alert('Press')}
-			onLongPress={() => alert('Long Press')}
 		/>
 		<ServerItem
 			item={item2}
-			onPress={() => alert('Press')}
-			onLongPress={() => alert('Long Press')}
 		/>
 		<ServerItem
 			item={item3}
-			onPress={() => alert('Press')}
-			onLongPress={() => alert('Long Press')}
 		/>
 	</>
 ));
@@ -61,9 +62,6 @@ stories.add('content', () => (
 const ThemeStory = ({ theme }) => (
 	<ThemeContext.Provider value={theme}>
 		<ServerItem
-			item={item}
-			onPress={() => alert('Press')}
-			onLongPress={() => alert('Long Press')}
 			theme={theme}
 			hasCheck
 		/>
@@ -83,12 +81,7 @@ stories.add('with FlatList', () => (
 		<FlatList
 			data={[...Array(20).keys()]}
 			renderItem={() => (
-				<ServerItem
-					item={item}
-					onPress={() => alert('Press')}
-					onLongPress={() => alert('Long Press')}
-					theme={themes.light}
-				/>
+				<ServerItem />
 			)}
 			keyExtractor={index => index}
 		/>
