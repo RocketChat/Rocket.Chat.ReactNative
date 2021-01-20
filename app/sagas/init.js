@@ -4,10 +4,7 @@ import RNBootSplash from 'react-native-bootsplash';
 import UserPreferences from '../lib/userPreferences';
 import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
-import {
-	toggleCrashReport,
-	toggleAnalyticsEvents
-} from '../actions/crashReport';
+import { toggleCrashReport, toggleAnalyticsEvents } from '../actions/crashReport';
 import { APP } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
