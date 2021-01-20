@@ -39,10 +39,7 @@ const ServerItem = props => (
 );
 
 stories.add('long press', () => (
-	<ServerItem
-		onPress={() => alert('Press')}
-		onLongPress={() => alert('Long Press')}
-	/>
+	<ServerItem onLongPress={() => alert('Long Press')} />
 ));
 
 stories.add('content', () => (
