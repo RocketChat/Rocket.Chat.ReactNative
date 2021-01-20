@@ -108,7 +108,7 @@
     "react-native-scrollable-tab-view": "^1.0.0",
     "react-native-simple-crypto": "RocketChat/react-native-simple-crypto",
     "react-native-slowlog": "^1.0.2",
-    "react-native-ui-lib": "RocketChat/react-native-ui-lib",
+    "react-native-ui-lib": "RocketChat/react-native-ui-lib#minor-improvements",
     "react-native-unimodules": "0.10.1",
     "react-native-vector-icons": "7.0.0",
     "react-native-webview": "10.3.2",
@@ -193,7 +193,8 @@
         "build": "xcodebuild -workspace ios/RocketChatRN.xcworkspace -scheme RocketChatRN -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
         "type": "ios.simulator",
         "device": {
-          "type": "iPhone 11 Pro"
+          "type": "iPhone 11 Pro",
+          "os": "13.7"
         }
       },
       "ios.sim.release": {
@@ -201,7 +202,8 @@
         "build": "xcodebuild -workspace ios/RocketChatRN.xcworkspace -scheme RocketChatRN -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
         "type": "ios.simulator",
         "device": {
-          "type": "iPhone 11 Pro"
+          "type": "iPhone 11 Pro",
+          "os": "13.7"
         },
         "artifacts": {
           "plugins": {
