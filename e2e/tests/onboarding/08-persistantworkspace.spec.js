@@ -81,6 +81,7 @@ describe('Persistant workspace', () => {
 			await device.terminateApp();
 			await device.launchApp({ permissions: { notifications: 'YES' } });
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(6000);
+			await expect(element(by.id('rooms-list-header-server-subtitle'))).toHaveLabel(data.alternateServer.substring(8));
 		});
 	});
 });
