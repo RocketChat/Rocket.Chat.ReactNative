@@ -68,10 +68,6 @@ class Encryption {
 		return this.readyPromise;
 	}
 
-	get hasPrivateKey() {
-		return !!this.privateKey;
-	}
-
 	// Stop Encryption client
 	stop = () => {
 		this.userId = null;

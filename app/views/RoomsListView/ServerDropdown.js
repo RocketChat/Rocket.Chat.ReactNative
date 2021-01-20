@@ -220,14 +220,14 @@ class ServerDropdown extends Component {
 						? (
 							<Image
 								source={{ uri: item.iconURL }}
-								defaultSource={{ uri: 'logo' }}
+								defaultSource={require('../../static/images/logo.png')}
 								style={styles.serverIcon}
 								onError={() => console.warn('error loading serverIcon')}
 							/>
 						)
 						: (
 							<Image
-								source={{ uri: 'logo' }}
+								source={require('../../static/images/logo.png')}
 								style={styles.serverIcon}
 							/>
 						)
@@ -313,7 +313,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	toggleServerDropdown: () => dispatch(toggleServerDropdownAction()),
-	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
+	selectServerRequest: server => dispatch(selectServerRequestAction(server, null, null, true)),
 	appStart: params => dispatch(appStartAction(params)),
 	initAdd: previousServer => dispatch(serverInitAddAction(previousServer))
 });
