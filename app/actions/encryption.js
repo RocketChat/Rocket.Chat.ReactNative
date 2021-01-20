@@ -12,6 +12,14 @@ export function encryptionStop() {
 	};
 }
 
+export function encryptionSet(enabled = false, banner = null) {
+	return {
+		type: types.ENCRYPTION.SET,
+		enabled,
+		banner
+	};
+}
+
 export function encryptionSetBanner(banner) {
 	return {
 		type: types.ENCRYPTION.SET_BANNER,
