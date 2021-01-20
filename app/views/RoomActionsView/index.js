@@ -251,7 +251,7 @@ class RoomActionsView extends React.Component {
 		const { encrypted } = room;
 		const { serverVersion } = this.props;
 		let hasPermission = false;
-		if (serverVersion && semver.lt(semver.coerce(serverVersion, '3.11.0'))) {
+		if (serverVersion && semver.lt(semver.coerce(serverVersion), '3.11.0')) {
 			hasPermission = canEdit;
 		} else {
 			hasPermission = canToggleEncryption;
