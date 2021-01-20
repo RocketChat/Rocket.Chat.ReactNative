@@ -619,15 +619,20 @@ const RocketChat = {
 
 		data = data.slice(0, 7);
 
-		data = data.map(sub => ({
-			rid: sub.rid,
-			name: sub.name,
-			fname: sub.fname,
-			avatarETag: sub.avatarETag,
-			t: sub.t,
-			encrypted: sub.encrypted,
-			search: true
-		}));
+		data = data.map((sub) => {
+			if (sub.t !== 'd') {
+				return {
+					rid: sub.rid,
+					name: sub.name,
+					fname: sub.fname,
+					avatarETag: sub.avatarETag,
+					t: sub.t,
+					encrypted: sub.encrypted,
+					search: true
+				};
+			}
+			return sub;
+		});
 
 		return data;
 	},
