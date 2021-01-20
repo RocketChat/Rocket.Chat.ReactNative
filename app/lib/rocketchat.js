@@ -627,8 +627,7 @@ const RocketChat = {
 					fname: sub.fname,
 					avatarETag: sub.avatarETag,
 					t: sub.t,
-					encrypted: sub.encrypted,
-					search: true
+					encrypted: sub.encrypted
 				};
 			}
 			return sub;
@@ -648,7 +647,7 @@ const RocketChat = {
 			return [];
 		}
 
-		let data = await this.localSearch({ text, filterUsers, filterRooms });
+		const data = await this.localSearch({ text, filterUsers, filterRooms });
 
 		const usernames = data.map(sub => sub.name);
 		try {
@@ -658,13 +657,18 @@ const RocketChat = {
 					new Promise((resolve, reject) => this.oldPromise = reject)
 				]);
 				if (filterUsers) {
-					data = data.concat(users.map(user => ({
-						...user,
-						rid: user.username,
-						name: user.username,
-						t: 'd',
-						search: true
-					})));
+					users
+						.filter((item1, index) => users.findIndex(item2 => item2._id === item1._id) === index) // Remove duplicated data from response
+						.filter(user => !data.some(sub => user.username === sub.name)) // Make sure to remove users already on local database
+						.forEach((user) => {
+							data.push({
+								...user,
+								rid: user.username,
+								name: user.username,
+								t: 'd',
+								search: true
+							});
+						});
 				}
 				if (filterRooms) {
 					rooms.forEach((room) => {
