@@ -83,7 +83,7 @@ stories.add('with FlatList', () => (
 			renderItem={() => (
 				<ServerItem />
 			)}
-			keyExtractor={index => index}
+			keyExtractor={index => String(index)}
 		/>
 	</SafeAreaView>
 ));
