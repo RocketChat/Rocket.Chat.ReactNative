@@ -60,7 +60,7 @@ class RoomInfoEditView extends React.Component {
 		route: PropTypes.object,
 		deleteRoom: PropTypes.func,
 		serverVersion: PropTypes.string,
-		e2eEnabled: PropTypes.bool,
+		encryptionEnabled: PropTypes.bool,
 		theme: PropTypes.string
 	};
 
@@ -414,7 +414,7 @@ class RoomInfoEditView extends React.Component {
 		const {
 			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode, saving, permissions, archived, enableSysMes, encrypted, avatar
 		} = this.state;
-		const { serverVersion, e2eEnabled, theme } = this.props;
+		const { serverVersion, encryptionEnabled, theme } = this.props;
 		const { dangerColor } = themes[theme];
 
 		return (
@@ -561,7 +561,7 @@ class RoomInfoEditView extends React.Component {
 								{this.renderSystemMessages()}
 							</SwitchContainer>
 						) : null}
-						{e2eEnabled ? (
+						{encryptionEnabled ? (
 							<SwitchContainer
 								value={encrypted}
 								disabled={!t}
@@ -665,7 +665,7 @@ class RoomInfoEditView extends React.Component {
 
 const mapStateToProps = state => ({
 	serverVersion: state.share.server.version || state.server.version,
-	e2eEnabled: state.settings.E2E_Enable || false
+	encryptionEnabled: state.encryption.enabled
 });
 
 const mapDispatchToProps = dispatch => ({
