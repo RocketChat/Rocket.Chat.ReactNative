@@ -702,5 +702,7 @@ export default {
 	The_user_will_be_removed_from_s: 'The user will be removed from {{s}}',
 	Yes_remove_user: 'Yes, remove user!',
 	Direct_message: 'Direct message',
-	Message_Ignored: 'Message ignored. Tap to display it.'
+	Message_Ignored: 'Message ignored. Tap to display it.',
+	Enter_workspace_URL: 'Enter workspace URL',
+	Workspace_URL_Example: 'Ex. your-company.rocket.chat'
 };
