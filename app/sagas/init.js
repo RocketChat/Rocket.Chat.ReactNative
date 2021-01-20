@@ -28,12 +28,8 @@ export const initLocalSettings = function* initLocalSettings() {
 
 const restore = function* restore() {
 	try {
-		const server = yield UserPreferences.getStringAsync('currentServer');
-		let userId = server
-			? yield UserPreferences.getStringAsync(
-				`${ RocketChat.TOKEN_KEY }-${ server }`
-			)
-			: null;
+		const server = yield UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER);
+		let userId = yield UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
 
 		if (!server) {
 			yield put(appStart({ root: ROOT_OUTSIDE }));

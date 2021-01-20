@@ -126,12 +126,12 @@ const fetchRooms = function* fetchRooms() {
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
 		const adding = yield select(state => state.server.adding);
-
+		yield UserPreferences.setStringAsync(RocketChat.TOKEN_KEY, user.token);
 
 		RocketChat.getUserPresence(user.id);
 
 		const server = yield select(getServer);
-		yield fork(fetchRooms, { server });
+		yield fork(fetchRooms);
 		yield fork(fetchPermissions);
 		yield fork(fetchCustomEmojis);
 		yield fork(fetchRoles);
