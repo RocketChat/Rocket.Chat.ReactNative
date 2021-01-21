@@ -1,7 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
-import {
-	View, Text, StyleSheet, Switch
-} from 'react-native';
+import { View, Switch } from 'react-native';
 import PropTypes from 'prop-types';
 
 import * as List from '../../../containers/List';
