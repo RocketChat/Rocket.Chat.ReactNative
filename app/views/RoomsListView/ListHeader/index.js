@@ -5,7 +5,6 @@ import { withTheme } from '../../../theme';
 import I18n from '../../../i18n';
 import * as List from '../../../containers/List';
 import { E2E_BANNER_TYPE } from '../../../lib/encryption/constants';
-import { CustomIcon } from '../../../lib/Icons';
 import { themes } from '../../../constants/colors';
 
 import OmnichannelStatus from '../../../ee/omnichannel/containers/OmnichannelStatus';
@@ -38,30 +37,17 @@ const ListHeader = React.memo(({
 								? 'Enter_Your_E2E_Password'
 								: 'Save_Your_Encryption_Password'
 						}
-						left={() => (
-							<CustomIcon
-								name='encrypted'
-								color={themes[theme].buttonText}
-								size={22}
-							/>
-						)}
+						left={() => <List.Icon name='encrypted' color={themes[theme].buttonText} />}
 						underlayColor={themes[theme].tintActive}
 						backgroundColor={themes[theme].actionTintColor}
 						color={themes[theme].buttonText}
 						onPress={goEncryption}
-						testId='listheader-encryption'
 					/>
 				)
 				: null}
 			<List.Item
 				title={sortTitle}
-				left={() => (
-					<CustomIcon
-						name='sort'
-						color={themes[theme].auxiliaryText}
-						size={22}
-					/>
-				)}
+				left={() => <List.Icon name='sort' />}
 				color={themes[theme].auxiliaryText}
 				onPress={toggleSort}
 				translateTitle={false}
