@@ -117,18 +117,11 @@ stories.add('with custom colors', () => (
 		<List.Item title='Chats' color='red' />
 		<List.Separator />
 		<List.Item
-			title='Some title for banner'
+			title='Press me!'
 			color='white'
-			onPress={() => alert('Hi there!')}
+			onPress={() => alert('Press')}
 			backgroundColor='red'
 			underlayColor='green'
-			translateTitle={false}
-		/>
-		<List.Separator />
-		<List.Item
-			title='Some title for banner'
-			color='blue'
-			onPress={() => alert('Hi there!')}
 			translateTitle={false}
 		/>
 		<List.Separator />
