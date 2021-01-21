@@ -24,31 +24,35 @@ const ListHeader = React.memo(({
 }) => {
 	const sortTitle = I18n.t('Sorting_by', { key: I18n.t(sortBy === 'alphabetical' ? 'name' : 'activity') });
 
-	if (searching) { return null; }
+	if (searching) {
+		return null;
+	}
 
 	return (
 		<>
-			{encryptionBanner && (
-				<List.Item
-					title={
-						encryptionBanner === E2E_BANNER_TYPE.REQUEST_PASSWORD
-							? 'Enter_Your_E2E_Password'
-							: 'Save_Your_Encryption_Password'
-					}
-					left={() => (
-						<CustomIcon
-							name='encrypted'
-							color={themes[theme].buttonText}
-							size={22}
-						/>
-					)}
-					underlayColor={themes[theme].tintActive}
-					backgroundColor={themes[theme].actionTintColor}
-					color={themes[theme].buttonText}
-					onPress={goEncryption}
-					testId='listheader-encryption'
-				/>
-			)}
+			{encryptionBanner
+				? (
+					<List.Item
+						title={
+							encryptionBanner === E2E_BANNER_TYPE.REQUEST_PASSWORD
+								? 'Enter_Your_E2E_Password'
+								: 'Save_Your_Encryption_Password'
+						}
+						left={() => (
+							<CustomIcon
+								name='encrypted'
+								color={themes[theme].buttonText}
+								size={22}
+							/>
+						)}
+						underlayColor={themes[theme].tintActive}
+						backgroundColor={themes[theme].actionTintColor}
+						color={themes[theme].buttonText}
+						onPress={goEncryption}
+						testId='listheader-encryption'
+					/>
+				)
+				: null}
 			<List.Item
 				title={sortTitle}
 				left={() => (
