@@ -142,7 +142,7 @@ class Root extends React.Component {
 
 	init = async() => {
 		UserPreferences.getMapAsync(THEME_PREFERENCES_KEY).then(this.setTheme);
-		
+
 		const [currentServer, token] = await Promise.all([UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER), UserPreferences.getStringAsync(RocketChat.TOKEN_KEY)]);
 
 		if (currentServer && token) {
