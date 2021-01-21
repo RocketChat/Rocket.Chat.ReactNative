@@ -57,6 +57,10 @@ export const LANGUAGES = [
 		label: 'العربية',
 		value: 'ar',
 		file: require('./locales/ar').default
+	}, {
+		label: 'Türkçe',
+		value: 'tr',
+		file: require('./locales/tr').default
 	}
 ];
 
