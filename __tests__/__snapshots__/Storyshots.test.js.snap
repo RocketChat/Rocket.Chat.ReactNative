@@ -6796,7 +6796,7 @@ exports[`Storyshots List with black theme 1`] = `
 </RNCSafeAreaView>
 `;
 
-exports[`Storyshots List with custom color 1`] = `
+exports[`Storyshots List with custom colors 1`] = `
 <RCTScrollView
   contentContainerStyle={
     Object {
@@ -6878,6 +6878,65 @@ exports[`Storyshots List with custom color 1`] = `
             Chats
           </Text>
         </View>
+      </View>
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "height": 0.5,
+          },
+          undefined,
+          Object {
+            "backgroundColor": "#cbcbcc",
+          },
+        ]
+      }
+    />
+    <View
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "flexDirection": "row",
+            "justifyContent": "center",
+            "paddingHorizontal": 12,
+          },
+          false,
+          Object {
+            "height": 92,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "justifyContent": "center",
+          }
+        }
+      >
+        <Text
+          numberOfLines={1}
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              Object {
+                "color": "white",
+              },
+            ]
+          }
+        >
+          Press me!
+        </Text>
       </View>
     </View>
     <View
