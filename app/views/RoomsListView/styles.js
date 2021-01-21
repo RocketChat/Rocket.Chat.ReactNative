@@ -50,6 +50,10 @@ export default StyleSheet.create({
 	queueIcon: {
 		marginHorizontal: 12
 	},
+	omnichannelRightContainer: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
 	groupTitleContainer: {
 		paddingHorizontal: 12,
 		paddingTop: 17,
@@ -119,8 +123,5 @@ export default StyleSheet.create({
 		flex: 1,
 		fontSize: 16,
 		...sharedStyles.textMedium
-	},
-	omnichannelToggle: {
-		marginRight: 12
 	}
 });
