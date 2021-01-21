@@ -31,18 +31,21 @@ const ListHeader = React.memo(({
 		<>
 			{encryptionBanner
 				? (
-					<List.Item
-						title={
-							encryptionBanner === E2E_BANNER_TYPE.REQUEST_PASSWORD
-								? 'Enter_Your_E2E_Password'
-								: 'Save_Your_Encryption_Password'
-						}
-						left={() => <List.Icon name='encrypted' color={themes[theme].buttonText} />}
-						underlayColor={themes[theme].tintActive}
-						backgroundColor={themes[theme].actionTintColor}
-						color={themes[theme].buttonText}
-						onPress={goEncryption}
-					/>
+					<>
+						<List.Item
+							title={
+								encryptionBanner === E2E_BANNER_TYPE.REQUEST_PASSWORD
+									? 'Enter_Your_E2E_Password'
+									: 'Save_Your_Encryption_Password'
+							}
+							left={() => <List.Icon name='encrypted' color={themes[theme].buttonText} />}
+							underlayColor={themes[theme].tintActive}
+							backgroundColor={themes[theme].actionTintColor}
+							color={themes[theme].buttonText}
+							onPress={goEncryption}
+						/>
+						<List.Separator />
+					</>
 				)
 				: null}
 			<List.Item
