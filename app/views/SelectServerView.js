@@ -65,10 +65,9 @@ class SelectServerView extends React.Component {
 		const { server, theme } = this.props;
 		return (
 			<ServerItem
-				server={server}
 				onPress={() => this.select(item.id)}
 				item={item}
-				hasCheck
+				hasCheck={item.id === server}
 				theme={theme}
 			/>
 		);
