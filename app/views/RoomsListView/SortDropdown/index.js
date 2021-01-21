@@ -8,12 +8,10 @@ import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import styles from '../styles';
 import * as List from '../../../containers/List';
-import Check from '../../../containers/Check';
 import RocketChat from '../../../lib/rocketchat';
 import { setPreference } from '../../../actions/sortPreferences';
 import log, { logEvent, events } from '../../../utils/log';
 import I18n from '../../../i18n';
-import { CustomIcon } from '../../../lib/Icons';
 import { withTheme } from '../../../theme';
 import { themes } from '../../../constants/colors';
 import { headerHeight } from '../../../containers/Header';
@@ -113,6 +111,11 @@ class Sort extends PureComponent {
 		).start(() => close());
 	}
 
+	renderCheck = () => {
+		const { theme } = this.props;
+		return <List.Icon name='check' color={themes[theme].tintColor} />;
+	}
+
 	render() {
 		const { isMasterDetail, insets } = this.props;
 		const statusBarHeight = insets?.top ?? 0;
@@ -152,69 +155,47 @@ class Sort extends PureComponent {
 				>
 					<List.Item
 						title={I18n.t('Sorting_by', { key: I18n.t(sortBy === 'alphabetical' ? 'name' : 'activity') })}
-						left={() => (
-							<CustomIcon style={{ color: themes[theme].auxiliaryText }} size={22} name='sort' />
-						)}
+						left={() => <List.Icon name='sort' />}
 						color={themes[theme].auxiliaryText}
 						onPress={this.close}
-						theme={theme}
-						translateTitle={false}
-					/>
-					<List.Item
-						title={I18n.t('Alphabetical')}
-						left={() => (
-							<CustomIcon style={{ color: themes[theme].controlText }} size={22} name='sort-az' />
-						)}
-						color={themes[theme].controlText}
-						onPress={this.sortByName}
-						right={() => (sortBy === 'alphabetical' ? <Check theme={theme} /> : null)}
-						theme={theme}
-						translateTitle={false}
-					/>
-					<List.Item
-						title={I18n.t('Activity')}
-						left={() => (
-							<CustomIcon style={{ color: themes[theme].controlText }} size={22} name='clock' />
-						)}
-						color={themes[theme].controlText}
-						onPress={this.sortByActivity}
-						right={() => (sortBy === 'activity' ? <Check theme={theme} /> : null)}
-						theme={theme}
 						translateTitle={false}
 					/>
 					<List.Separator style={styles.sortSeparator} />
 					<List.Item
+						title='Alphabetical'
+						left={() => <List.Icon name='sort-az' />}
+						color={themes[theme].auxiliaryText}
+						onPress={this.sortByName}
+						right={() => (sortBy === 'alphabetical' ? this.renderCheck() : null)}
+					/>
+					<List.Item
+						title='Activity'
+						left={() => <List.Icon name='clock' />}
+						color={themes[theme].auxiliaryText}
+						onPress={this.sortByActivity}
+						right={() => (sortBy === 'activity' ? this.renderCheck() : null)}
+					/>
+					<List.Separator style={styles.sortSeparator} />
+					<List.Item
 						title='Group_by_type'
-						left={() => (
-							<CustomIcon style={{ color: themes[theme].controlText }} size={22} name='group-by-type' />
-						)}
-						color={themes[theme].controlText}
+						left={() => <List.Icon name='group-by-type' />}
+						color={themes[theme].auxiliaryText}
 						onPress={this.toggleGroupByType}
-						right={() => (groupByType ? <Check theme={theme} /> : null)}
-						theme={theme}
-						translateTitle
+						right={() => (groupByType ? this.renderCheck() : null)}
 					/>
 					<List.Item
 						title='Group_by_favorites'
-						left={() => (
-							<CustomIcon style={{ color: themes[theme].controlText }} size={22} name='star' />
-						)}
-						color={themes[theme].controlText}
+						left={() => <List.Icon name='star' />}
+						color={themes[theme].auxiliaryText}
 						onPress={this.toggleGroupByFavorites}
-						right={() => (showFavorites ? <Check theme={theme} /> : null)}
-						theme={theme}
-						translateTitle
+						right={() => (showFavorites ? this.renderCheck() : null)}
 					/>
 					<List.Item
 						title='Unread_on_top'
-						left={() => (
-							<CustomIcon style={{ color: themes[theme].controlText }} size={22} name='unread-on-top-disabled' />
-						)}
-						color={themes[theme].controlText}
+						left={() => <List.Icon name='unread-on-top-disabled' />}
+						color={themes[theme].auxiliaryText}
 						onPress={this.toggleUnread}
-						right={() => (showUnread ? <Check theme={theme} /> : null)}
-						theme={theme}
-						translateTitle
+						right={() => (showUnread ? this.renderCheck() : null)}
 					/>
 				</Animated.View>
 			</>
