@@ -143,7 +143,7 @@ class ServerDropdown extends Component {
 		}, ANIMATION_DURATION);
 	}
 
-	select = async(server) => {
+	select = async(server, version) => {
 		const {
 			server: currentServer, selectServerRequest, isMasterDetail
 		} = this.props;
@@ -163,7 +163,7 @@ class ServerDropdown extends Component {
 				}, ANIMATION_DURATION);
 			} else {
 				await localAuthenticate(server);
-				selectServerRequest(server);
+				selectServerRequest(server, version);
 			}
 		}
 	}
@@ -204,7 +204,7 @@ class ServerDropdown extends Component {
 		return (
 			<ServerItem
 				item={item}
-				onPress={() => this.select(item.id)}
+				onPress={() => this.select(item.id, item.version)}
 				onLongPress={() => (item.id === server || this.remove(item.id))}
 				hasCheck={item.id === server}
 				theme={theme}
@@ -283,7 +283,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	toggleServerDropdown: () => dispatch(toggleServerDropdownAction()),
-	selectServerRequest: server => dispatch(selectServerRequestAction(server, null, null, true)),
+	selectServerRequest: (server, version) => dispatch(selectServerRequestAction(server, version, true, true)),
 	appStart: params => dispatch(appStartAction(params)),
 	initAdd: previousServer => dispatch(serverInitAddAction(previousServer))
 });
