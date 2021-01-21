@@ -43,6 +43,7 @@ const ListHeader = React.memo(({
 							backgroundColor={themes[theme].actionTintColor}
 							color={themes[theme].buttonText}
 							onPress={goEncryption}
+							testID='listheader-encryption'
 						/>
 						<List.Separator />
 					</>
