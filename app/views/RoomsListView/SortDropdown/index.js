@@ -160,7 +160,7 @@ class Sort extends PureComponent {
 						onPress={this.close}
 						translateTitle={false}
 					/>
-					<List.Separator style={styles.sortSeparator} />
+					<List.Separator />
 					<List.Item
 						title='Alphabetical'
 						left={() => <List.Icon name='sort-az' />}
@@ -175,7 +175,7 @@ class Sort extends PureComponent {
 						onPress={this.sortByActivity}
 						right={() => (sortBy === 'activity' ? this.renderCheck() : null)}
 					/>
-					<List.Separator style={styles.sortSeparator} />
+					<List.Separator />
 					<List.Item
 						title='Group_by_type'
 						left={() => <List.Icon name='group-by-type' />}
