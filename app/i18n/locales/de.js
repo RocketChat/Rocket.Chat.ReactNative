@@ -702,5 +702,7 @@ export default {
 	The_user_will_be_removed_from_s: 'Der Benutzer wird aus {{s}} entfernt',
 	Yes_remove_user: 'Ja, Benutzer entfernen!',
 	Direct_message: 'Direktnachricht',
-	Message_Ignored: 'Nachricht ignoriert. Antippen um sie zu zeigen.'
+	Message_Ignored: 'Nachricht ignoriert. Antippen um sie zu zeigen.',
+	Enter_workspace_URL: 'Arbeitsbereich-URL',
+	Workspace_URL_Example: 'z.B. https://rocketchat.deine-firma.de'
 };
