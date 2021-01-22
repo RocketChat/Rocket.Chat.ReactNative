@@ -257,7 +257,6 @@ public class CustomPushNotification extends PushNotification {
             Notification.MessagingStyle messageStyle;
 
             Gson gson = new Gson();
-            Ejson ejson = gson.fromJson(bundle.getString("ejson", "{}"), Ejson.class);
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
                 messageStyle = new Notification.MessagingStyle("");
@@ -278,25 +277,19 @@ public class CustomPushNotification extends PushNotification {
 
                     long timestamp = data.getLong("time");
                     String message = data.getString("message");
-                    String username = data.getString("username");
                     String senderId = data.getString("senderId");
                     String avatarUri = data.getString("avatarUri");
-
+                    Ejson ejson = gson.fromJson(data.getString("ejson", "{}"), Ejson.class);
                     String m = extractMessage(message, ejson);
 
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-                        messageStyle.addMessage(m, timestamp, username);
+                        messageStyle.addMessage(m, timestamp, ejson.senderName);
                     } else {
                         Bitmap avatar = getAvatar(avatarUri);
 
-                        String name = username;
-                        if (ejson.senderName != null) {
-                            name = ejson.senderName;
-                        }
-
                         Person.Builder sender = new Person.Builder()
                                 .setKey(senderId)
-                                .setName(name);
+                                .setName(ejson.senderName);
 
                         if (avatar != null) {
                             sender.setIcon(Icon.createWithBitmap(avatar));
