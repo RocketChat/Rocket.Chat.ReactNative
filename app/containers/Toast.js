@@ -1,4 +1,4 @@
-import React, { useRef, useContext, forwardRef } from 'react';
+import React, { useRef, useContext } from 'react';
 import { StyleSheet } from 'react-native';
 import EasyToast from 'react-native-easy-toast';
 import PropTypes from 'prop-types';
