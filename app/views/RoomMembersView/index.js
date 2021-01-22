@@ -9,8 +9,6 @@ import UserItem from '../../presentation/UserItem';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
 import database from '../../lib/database';
-import { LISTENER } from '../../containers/Toast';
-import EventEmitter from '../../utils/events';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
@@ -25,6 +23,7 @@ import { withActionSheet } from '../../containers/ActionSheet';
 import { showConfirmationAlert } from '../../utils/info';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
+import { useToast } from '../../containers/Toast';
 
 const PAGE_SIZE = 25;
 
@@ -297,9 +296,10 @@ class RoomMembersView extends React.Component {
 
 	handleMute = async(user) => {
 		const { rid } = this.state;
+		const { showToast } = useToast();
 		try {
 			await RocketChat.toggleMuteUserInRoom(rid, user?.username, !user?.muted);
-			EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_key', { key: user?.muted ? I18n.t('unmuted') : I18n.t('muted') }) });
+			showToast({ message: I18n.t('User_has_been_key', { key: user?.muted ? I18n.t('unmuted') : I18n.t('muted') }) });
 		} catch (e) {
 			log(e);
 		}
@@ -308,11 +308,12 @@ class RoomMembersView extends React.Component {
 	handleOwner = async(selectedUser, isOwner) => {
 		try {
 			const { room } = this.state;
+			const { showToast } = useToast();
 			await RocketChat.toggleRoomOwner({
 				roomId: room.rid, t: room.t, userId: selectedUser._id, isOwner
 			});
 			const message = isOwner ? 'User__username__is_now_a_owner_of__room_name_' : 'User__username__removed_from__room_name__owners';
-			EventEmitter.emit(LISTENER, {
+			showToast({
 				message: I18n.t(message, {
 					username: this.getUserDisplayName(selectedUser),
 					room_name: RocketChat.getRoomTitle(room)
@@ -327,11 +328,12 @@ class RoomMembersView extends React.Component {
 	handleLeader = async(selectedUser, isLeader) => {
 		try {
 			const { room } = this.state;
+			const { showToast } = useToast();
 			await RocketChat.toggleRoomLeader({
 				roomId: room.rid, t: room.t, userId: selectedUser._id, isLeader
 			});
 			const message = isLeader ? 'User__username__is_now_a_leader_of__room_name_' : 'User__username__removed_from__room_name__leaders';
-			EventEmitter.emit(LISTENER, {
+			showToast({
 				message: I18n.t(message, {
 					username: this.getUserDisplayName(selectedUser),
 					room_name: RocketChat.getRoomTitle(room)
@@ -346,11 +348,12 @@ class RoomMembersView extends React.Component {
 	handleModerator = async(selectedUser, isModerator) => {
 		try {
 			const { room } = this.state;
+			const { showToast } = useToast();
 			await RocketChat.toggleRoomModerator({
 				roomId: room.rid, t: room.t, userId: selectedUser._id, isModerator
 			});
 			const message = isModerator ? 'User__username__is_now_a_moderator_of__room_name_' : 'User__username__removed_from__room_name__moderators';
-			EventEmitter.emit(LISTENER, {
+			showToast({
 				message: I18n.t(message, {
 					username: this.getUserDisplayName(selectedUser),
 					room_name: RocketChat.getRoomTitle(room)
@@ -365,11 +368,12 @@ class RoomMembersView extends React.Component {
 	handleIgnore = async(selectedUser, ignore) => {
 		try {
 			const { room } = this.state;
+			const { showToast } = useToast();
 			await RocketChat.ignoreUser({
 				rid: room.rid, userId: selectedUser._id, ignore
 			});
 			const message = I18n.t(ignore ? 'User_has_been_ignored' : 'User_has_been_unignored');
-			EventEmitter.emit(LISTENER, { message });
+			showToast({ message });
 		} catch (e) {
 			log(e);
 		}
@@ -378,10 +382,11 @@ class RoomMembersView extends React.Component {
 	handleRemoveUserFromRoom = async(selectedUser) => {
 		try {
 			const { room, members, membersFiltered } = this.state;
+			const { showToast } = useToast();
 			const userId = selectedUser._id;
 			await RocketChat.removeUserFromRoom({ roomId: room.rid, t: room.t, userId });
 			const message = I18n.t('User_has_been_removed_from_s', { s: RocketChat.getRoomTitle(room) });
-			EventEmitter.emit(LISTENER, { message });
+			showToast({ message });
 			this.setState({
 				members: members.filter(member => member._id !== userId),
 				membersFiltered: membersFiltered.filter(member => member._id !== userId)

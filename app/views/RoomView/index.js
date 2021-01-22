@@ -35,12 +35,12 @@ import Separator from './Separator';
 import { themes } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import ReactionsModal from '../../containers/ReactionsModal';
-import { LISTENER } from '../../containers/Toast';
 import { getBadgeColor, isBlocked, makeThreadName } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
 import { showErrorAlert } from '../../utils/info';
 import { withTheme } from '../../theme';
+import { useToast } from '../../containers/Toast';
 import {
 	KEY_COMMAND,
 	handleCommandScroll,
@@ -781,9 +781,10 @@ class RoomView extends React.Component {
 	}
 
 	toggleFollowThread = async(isFollowingThread, tmid) => {
+		const { showToast } = useToast();
 		try {
 			await RocketChat.toggleFollowMessage(tmid ?? this.tmid, !isFollowingThread);
-			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
+			showToast({ message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
 		} catch (e) {
 			log(e);
 		}

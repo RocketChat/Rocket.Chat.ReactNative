@@ -9,8 +9,6 @@ import { Video } from 'expo-av';
 import SHA256 from 'js-sha256';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { LISTENER } from '../containers/Toast';
-import EventEmitter from '../utils/events';
 import I18n from '../i18n';
 import { withTheme } from '../theme';
 import { ImageViewer } from '../presentation/ImageViewer';
@@ -23,6 +21,7 @@ import { getUserSelector } from '../selectors/login';
 import { withDimensions } from '../dimensions';
 import { getHeaderHeight } from '../containers/Header';
 import StatusBar from '../containers/StatusBar';
+import { useToast } from '../containers/Toast';
 
 const styles = StyleSheet.create({
 	container: {
@@ -104,6 +103,7 @@ class AttachmentView extends React.Component {
 		} = attachment;
 		const url = image_url || video_url;
 		const mediaAttachment = formatAttachmentUrl(url, user.id, user.token, baseUrl);
+		const { showToast } = useToast();
 
 		if (isAndroid) {
 			const rationale = {
@@ -123,9 +123,9 @@ class AttachmentView extends React.Component {
 			const path = `${ documentDir + SHA256(url) + extension }`;
 			const file = await RNFetchBlob.config({ path }).fetch('GET', mediaAttachment).then(res => res.path());
 			await CameraRoll.save(file, { album: 'Rocket.Chat' });
-			EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
+			showToast({ message: I18n.t('saved_to_gallery') });
 		} catch (e) {
-			EventEmitter.emit(LISTENER, { message: I18n.t(image_url ? 'error-save-image' : 'error-save-video') });
+			showToast({ message: I18n.t(image_url ? 'error-save-image' : 'error-save-video') });
 		}
 		this.setState({ loading: false });
 	};

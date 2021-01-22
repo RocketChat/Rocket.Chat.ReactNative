@@ -17,13 +17,12 @@ import SafeAreaView from '../containers/SafeAreaView';
 import UserPreferences from '../lib/userPreferences';
 import { logEvent, events } from '../utils/log';
 import StatusBar from '../containers/StatusBar';
-import { LISTENER } from '../containers/Toast';
 import { themes } from '../constants/colors';
-import EventEmitter from '../utils/events';
 import Button from '../containers/Button';
 import { withTheme } from '../theme';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
+import { useToast } from '../containers/Toast';
 
 const styles = StyleSheet.create({
 	container: {
@@ -111,8 +110,9 @@ class E2ESaveYourPasswordView extends React.Component {
 	onCopy = () => {
 		logEvent(events.E2E_SAVE_PW_COPY);
 		const { password } = this.state;
+		const { showToast } = useToast();
 		Clipboard.setString(password);
-		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
+		showToast({ message: I18n.t('Copied_to_clipboard') });
 	}
 
 	onHowItWorks = () => {

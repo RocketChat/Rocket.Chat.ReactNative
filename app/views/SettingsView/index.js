@@ -26,14 +26,13 @@ import {
 } from '../../constants/links';
 import { withTheme } from '../../theme';
 import SidebarView from '../SidebarView';
-import { LISTENER } from '../../containers/Toast';
-import EventEmitter from '../../utils/events';
 import { appStart as appStartAction, ROOT_LOADING } from '../../actions/app';
 import { onReviewPress } from '../../utils/review';
 import SafeAreaView from '../../containers/SafeAreaView';
 import database from '../../lib/database';
 import { isFDroidBuild } from '../../constants/environment';
 import { getUserSelector } from '../../selectors/login';
+import { useToast } from '../../containers/Toast';
 
 class SettingsView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => ({
@@ -161,8 +160,9 @@ class SettingsView extends React.Component {
 	}
 
 	saveToClipboard = async(content) => {
+		const { showToast } = useToast();
 		await Clipboard.setString(content);
-		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
+		showToast({ message: I18n.t('Copied_to_clipboard') });
 	}
 
 	onPressLicense = () => {

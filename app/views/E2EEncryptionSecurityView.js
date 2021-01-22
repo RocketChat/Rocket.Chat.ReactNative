@@ -19,9 +19,8 @@ import { Encryption } from '../lib/encryption';
 import RocketChat from '../lib/rocketchat';
 import { logout as logoutAction } from '../actions/login';
 import { showConfirmationAlert, showErrorAlert } from '../utils/info';
-import EventEmitter from '../utils/events';
-import { LISTENER } from '../containers/Toast';
 import debounce from '../utils/debounce';
+import { useToast } from '../containers/Toast';
 
 const styles = StyleSheet.create({
 	container: {
@@ -52,6 +51,7 @@ class E2EEncryptionSecurityView extends React.Component {
 
 	changePassword = () => {
 		const { newPassword } = this.state;
+		const { showToast } = useToast();
 		if (!newPassword.trim()) {
 			return;
 		}
@@ -64,7 +64,7 @@ class E2EEncryptionSecurityView extends React.Component {
 				try {
 					const { server } = this.props;
 					await Encryption.changePassword(server, newPassword);
-					EventEmitter.emit(LISTENER, { message: I18n.t('E2E_encryption_change_password_success') });
+					showToast({ message: I18n.t('E2E_encryption_change_password_success') });
 					this.newPasswordInputRef?.clear();
 					this.newPasswordInputRef?.blur();
 				} catch (e) {

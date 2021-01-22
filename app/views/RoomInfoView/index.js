@@ -21,8 +21,6 @@ import log, { logEvent, events } from '../../utils/log';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import Markdown from '../../containers/markdown';
-import { LISTENER } from '../../containers/Toast';
-import EventEmitter from '../../utils/events';
 
 import Livechat from './Livechat';
 import Channel from './Channel';
@@ -30,6 +28,7 @@ import Direct from './Direct';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
 import Navigation from '../../lib/Navigation';
+import { useToast } from '../../containers/Toast';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 const getRoomTitle = (room, type, name, username, statusText, theme) => (type === 'd'
@@ -297,13 +296,14 @@ class RoomInfoView extends React.Component {
 
 	renderButton = (onPress, iconName, text) => {
 		const { theme } = this.props;
+		const { showToast } = useToast();
 
 		const onActionPress = async() => {
 			try {
 				await this.createDirect();
 				onPress();
 			} catch {
-				EventEmitter.emit(LISTENER, { message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') }) });
+				showToast({ message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') }) });
 			}
 		};
 

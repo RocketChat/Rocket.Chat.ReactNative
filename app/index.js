@@ -32,9 +32,9 @@ import AppContainer from './AppContainer';
 import TwoFactor from './containers/TwoFactor';
 import ScreenLockedView from './views/ScreenLockedView';
 import ChangePasscodeView from './views/ChangePasscodeView';
-import Toast from './containers/Toast';
 import InAppNotification from './containers/InAppNotification';
 import { ActionSheetProvider } from './containers/ActionSheet';
+import { ToastProvider } from './containers/Toast';
 import debounce from './utils/debounce';
 import { isFDroidBuild } from './constants/environment';
 
@@ -212,12 +212,13 @@ export default class Root extends React.Component {
 								}}
 							>
 								<ActionSheetProvider>
-									<AppContainer />
-									<TwoFactor />
-									<ScreenLockedView />
-									<ChangePasscodeView />
-									<InAppNotification />
-									<Toast />
+									<ToastProvider>
+										<AppContainer />
+										<TwoFactor />
+										<ScreenLockedView />
+										<ChangePasscodeView />
+										<InAppNotification />
+									</ToastProvider>
 								</ActionSheetProvider>
 							</DimensionsContext.Provider>
 						</ThemeContext.Provider>

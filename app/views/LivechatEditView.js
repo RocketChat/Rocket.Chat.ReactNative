@@ -11,13 +11,12 @@ import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
 
 import sharedStyles from './Styles';
-import { LISTENER } from '../containers/Toast';
-import EventEmitter from '../utils/events';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import { getUserSelector } from '../selectors/login';
 import Chips from '../containers/UIKit/MultiSelect/Chips';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
+import { useToast } from '../containers/Toast';
 
 const styles = StyleSheet.create({
 	container: {
@@ -41,6 +40,7 @@ const LivechatEditView = ({
 }) => {
 	const [customFields, setCustomFields] = useState({});
 	const [availableUserTags, setAvailableUserTags] = useState([]);
+	const { showToast } = useToast();
 
 	const params = {};
 	const inputs = {};
@@ -130,9 +130,9 @@ const LivechatEditView = ({
 
 		const { error } = await RocketChat.editLivechat(userData, roomData);
 		if (error) {
-			EventEmitter.emit(LISTENER, { message: error });
+			showToast({ message: error });
 		} else {
-			EventEmitter.emit(LISTENER, { message: I18n.t('Saved') });
+			showToast({ message: I18n.t('Saved') });
 			navigation.goBack();
 		}
 	};

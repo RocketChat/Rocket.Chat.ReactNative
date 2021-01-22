@@ -18,8 +18,6 @@ import sharedStyles from '../Styles';
 import styles from './styles';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showErrorAlert } from '../../utils/info';
-import { LISTENER } from '../../containers/Toast';
-import EventEmitter from '../../utils/events';
 import RocketChat from '../../lib/rocketchat';
 import RCTextInput from '../../containers/TextInput';
 import Loading from '../../containers/Loading';
@@ -35,6 +33,7 @@ import { MessageTypeValues } from '../../utils/messageTypes';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Avatar from '../../containers/Avatar';
 import { CustomIcon } from '../../lib/Icons';
+import { useToast } from '../../containers/Toast';
 
 const PERMISSION_SET_READONLY = 'set-readonly';
 const PERMISSION_SET_REACT_WHEN_READONLY = 'set-react-when-readonly';
@@ -190,6 +189,7 @@ class RoomInfoEditView extends React.Component {
 		const {
 			room, name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, systemMessages, encrypted, avatar
 		} = this.state;
+		const { showToast } = useToast();
 
 		this.setState({ saving: true });
 		let error = false;
@@ -267,7 +267,7 @@ class RoomInfoEditView extends React.Component {
 				logEvent(events.RI_EDIT_SAVE_F);
 				showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_settings') }));
 			} else {
-				EventEmitter.emit(LISTENER, { message: I18n.t('Settings_succesfully_changed') });
+				showToast({ message: I18n.t('Settings_succesfully_changed') });
 			}
 		}, 100);
 	}

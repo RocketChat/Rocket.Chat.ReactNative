@@ -7,18 +7,17 @@ import I18n from '../i18n';
 import * as List from '../containers/List';
 import Status from '../containers/Status/Status';
 import TextInput from '../containers/TextInput';
-import EventEmitter from '../utils/events';
 import Loading from '../containers/Loading';
 import RocketChat from '../lib/rocketchat';
 import log, { logEvent, events } from '../utils/log';
 
-import { LISTENER } from '../containers/Toast';
 import { withTheme } from '../theme';
 import { getUserSelector } from '../selectors/login';
 import * as HeaderButton from '../containers/HeaderButton';
 import store from '../lib/createStore';
 import { setUser } from '../actions/login';
 import SafeAreaView from '../containers/SafeAreaView';
+import { useToast } from '../containers/Toast';
 
 const STATUS = [{
 	id: 'online',
@@ -104,6 +103,7 @@ class StatusView extends React.Component {
 	setCustomStatus = async() => {
 		const { statusText } = this.state;
 		const { user } = this.props;
+		const { showToast } = useToast();
 
 		this.setState({ loading: true });
 
@@ -111,14 +111,14 @@ class StatusView extends React.Component {
 			const result = await RocketChat.setUserStatus(user.status, statusText);
 			if (result.success) {
 				logEvent(events.STATUS_CUSTOM);
-				EventEmitter.emit(LISTENER, { message: I18n.t('Status_saved_successfully') });
+				showToast({ message: I18n.t('Status_saved_successfully') });
 			} else {
 				logEvent(events.STATUS_CUSTOM_F);
-				EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
+				showToast({ message: I18n.t('error-could-not-change-status') });
 			}
 		} catch {
 			logEvent(events.STATUS_CUSTOM_F);
-			EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
+			showToast({ message: I18n.t('error-could-not-change-status') });
 		}
 
 		this.setState({ loading: false });
