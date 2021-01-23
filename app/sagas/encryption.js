@@ -2,7 +2,7 @@ import EJSON from 'ejson';
 import { takeLatest, select, put } from 'redux-saga/effects';
 
 import { ENCRYPTION } from '../actions/actionsTypes';
-import { encryptionSetBanner } from '../actions/encryption';
+import { encryptionSet } from '../actions/encryption';
 import { Encryption } from '../lib/encryption';
 import Navigation from '../lib/Navigation';
 import {
@@ -52,14 +52,14 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 		// A private key was received from the server, but it's not saved locally yet
 		// Show the banner asking for the password
 		if (!storedPrivateKey && keys?.privateKey) {
-			yield put(encryptionSetBanner(E2E_BANNER_TYPE.REQUEST_PASSWORD));
+			yield put(encryptionSet(false, E2E_BANNER_TYPE.REQUEST_PASSWORD));
 			return;
 		}
 
 		// If the user has a private key stored, but never entered the password
 		const storedRandomPassword = yield UserPreferences.getStringAsync(`${ server }-${ E2E_RANDOM_PASSWORD_KEY }`);
 		if (storedRandomPassword) {
-			yield put(encryptionSetBanner(E2E_BANNER_TYPE.SAVE_PASSWORD));
+			yield put(encryptionSet(true, E2E_BANNER_TYPE.SAVE_PASSWORD));
 		}
 
 		// Fetch stored public e2e key for this server
@@ -72,10 +72,11 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 		if (storedPublicKey && storedPrivateKey) {
 			// Persist these keys
 			yield Encryption.persistKeys(server, storedPublicKey, storedPrivateKey);
+			yield put(encryptionSet(true));
 		} else {
 			// Create new keys since the user doesn't have any
 			yield Encryption.createKeys(user.id, server);
-			yield put(encryptionSetBanner(E2E_BANNER_TYPE.SAVE_PASSWORD));
+			yield put(encryptionSet(true, E2E_BANNER_TYPE.SAVE_PASSWORD));
 		}
 
 		// Decrypt all pending messages/subscriptions
@@ -87,7 +88,7 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 
 const handleEncryptionStop = function* handleEncryptionStop() {
 	// Hide encryption banner
-	yield put(encryptionSetBanner());
+	yield put(encryptionSet());
 	// Stop Encryption client
 	Encryption.stop();
 };
@@ -112,7 +113,7 @@ const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password
 		Encryption.initialize(user.id);
 
 		// Hide encryption banner
-		yield put(encryptionSetBanner());
+		yield put(encryptionSet(true));
 
 		Navigation.back();
 	} catch {

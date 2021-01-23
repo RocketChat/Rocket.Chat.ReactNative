@@ -470,11 +470,6 @@ export default ({ theme }) => {
 				tlm={date}
 			/>
 			<Message
-				msg='How are you?'
-				tcount={9999}
-				tlm={date}
-			/>
-			<Message
 				msg="I'm fine!"
 				tmid='1'
 				tmsg='How are you?'

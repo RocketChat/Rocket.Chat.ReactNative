@@ -1,12 +1,8 @@
 import React, { memo, useState, useEffect } from 'react';
-import {
-	View, Text, StyleSheet, Switch
-} from 'react-native';
+import { View, Switch } from 'react-native';
 import PropTypes from 'prop-types';
 
-import Touch from '../../../utils/touch';
-import { CustomIcon } from '../../../lib/Icons';
-import I18n from '../../../i18n';
+import * as List from '../../../containers/List';
 import styles from '../../../views/RoomsListView/styles';
 import { themes, SWITCH_TRACK_COLOR } from '../../../constants/colors';
 import { withTheme } from '../../../theme';
@@ -36,35 +32,32 @@ const OmnichannelStatus = memo(({
 	};
 
 	return (
-		<Touch
-			onPress={goQueue}
-			theme={theme}
-			style={{ backgroundColor: themes[theme].headerSecondaryBackground }}
-		>
-			<View
-				style={[
-					styles.dropdownContainerHeader,
-					{ borderBottomWidth: StyleSheet.hairlineWidth, borderColor: themes[theme].separatorColor }
-				]}
-			>
-				<CustomIcon style={[styles.queueIcon, { color: themes[theme].auxiliaryText }]} size={22} name='omnichannel' />
-				<Text style={[styles.queueToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Omnichannel')}</Text>
-				{inquiryEnabled
-					? (
-						<UnreadBadge
-							style={styles.queueIcon}
-							unread={queueSize}
+		<>
+			<List.Item
+				title='Omnichannel'
+				left={() => <List.Icon name='omnichannel' />}
+				color={themes[theme].auxiliaryText}
+				onPress={goQueue}
+				right={() => (
+					<View style={styles.omnichannelRightContainer}>
+						{inquiryEnabled
+							? (
+								<UnreadBadge
+									style={styles.queueIcon}
+									unread={queueSize}
+								/>
+							)
+							: null}
+						<Switch
+							value={status}
+							trackColor={SWITCH_TRACK_COLOR}
+							onValueChange={toggleLivechat}
 						/>
-					)
-					: null}
-				<Switch
-					style={styles.omnichannelToggle}
-					value={status}
-					trackColor={SWITCH_TRACK_COLOR}
-					onValueChange={toggleLivechat}
-				/>
-			</View>
-		</Touch>
+					</View>
+				)}
+			/>
+			<List.Separator />
+		</>
 	);
 });
 

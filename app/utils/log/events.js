@@ -112,6 +112,7 @@ export default {
 	CREATE_DISCUSSION_CREATE_F: 'create_discussion_create_f',
 	CREATE_DISCUSSION_SELECT_CHANNEL: 'create_discussion_select_channel',
 	CREATE_DISCUSSION_SELECT_USERS: 'create_discussion_select_users',
+	CREATE_DISCUSSION_TOGGLE_ENCRY: 'create_discussion_toggle_encry',
 
 	// PROFILE VIEW
 	PROFILE_PICK_AVATAR: 'profile_pick_avatar',

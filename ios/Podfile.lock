@@ -368,7 +368,7 @@ PODS:
     - React
   - react-native-blur (0.8.0):
     - React
-  - react-native-cameraroll (4.0.0):
+  - react-native-cameraroll (4.0.1):
     - React
   - react-native-cookies (4.0.0):
     - React
@@ -461,7 +461,7 @@ PODS:
     - React
   - ReactNativeUiLib (3.0.4):
     - React
-  - rn-extensions-share (2.4.0):
+  - rn-extensions-share (2.4.1):
     - React
   - rn-fetch-blob (0.12.0):
     - React-Core
@@ -939,7 +939,7 @@ SPEC CHECKSUMS:
   react-native-appearance: 0f0e5fc2fcef70e03d48c8fe6b00b9158c2ba8aa
   react-native-background-timer: 1f7d560647b40e6a60b01c452ba29c54bf581fc4
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
-  react-native-cameraroll: ae0a7c0cc8462508855707ff623b1e789b692865
+  react-native-cameraroll: 60ba0068826eab1c8d43146191bafd4363ea58a7
   react-native-cookies: d79e5015a5d3a38e08f5cb39c4948532be7e9c2b
   react-native-document-picker: 825552b827012282baf4b7cbf119d3b37a280c90
   react-native-jitsi-meet: f2407aca85566e031ee7b222e497ee5ecb6623de
@@ -964,7 +964,7 @@ SPEC CHECKSUMS:
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
   ReactNativeART: 78edc68dd4a1e675338cd0cd113319cf3a65f2ab
   ReactNativeUiLib: cde7263a7d308b60161cd286f95c9433e79f2f7d
-  rn-extensions-share: 8db79372089567cbc5aefe8444869bbc808578d3
+  rn-extensions-share: 5fd84a80e6594706f0dfa1884f2d6d591b382cf5
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNBootSplash: b3836aa90c5bec690c6cd3c9ab355fcf98d0fe1d
   RNCAsyncStorage: d059c3ee71738c39834a627476322a5a8cd5bf36
@@ -1003,6 +1003,6 @@ SPEC CHECKSUMS:
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: c38f9a91b5c154453863a4ee1ccc203da58ad2f2
+PODFILE CHECKSUM: 8477bd3277dec7b3190105d922512e3791bc026f
 
 COCOAPODS: 1.9.3

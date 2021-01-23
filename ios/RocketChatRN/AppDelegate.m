@@ -69,27 +69,6 @@ static void InitializeFlipper(UIApplication *application) {
     // AppGroup MMKV
     NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
     [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
-  
-    // Start the MMKV container
-    MMKV *defaultMMKV = [MMKV mmkvWithID:@"migration" mode:MMKVMultiProcess];
-    BOOL alreadyMigrated = [defaultMMKV getBoolForKey:@"alreadyMigrated"];
-
-    if (!alreadyMigrated) {
-      // MMKV Instance that will be used by JS
-      MMKV *mmkv = [MMKV mmkvWithID:@"default" mode:MMKVMultiProcess];
-
-      // NSUserDefaults -> MMKV (Migration)
-      NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]];
-      [mmkv migrateFromUserDefaults:userDefaults];
-
-      // Remove our own keys of NSUserDefaults
-      for (NSString *key in [userDefaults dictionaryRepresentation].keyEnumerator) {
-        [userDefaults removeObjectForKey:key];
-      }
-
-      // Mark migration complete
-      [defaultMMKV setBool:YES forKey:@"alreadyMigrated"];
-    }
 
     return YES;
 }

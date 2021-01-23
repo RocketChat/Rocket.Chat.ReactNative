@@ -111,10 +111,19 @@ stories.add('with icon', () => (
 	</List.Container>
 ));
 
-stories.add('with custom color', () => (
+stories.add('with custom colors', () => (
 	<List.Container>
 		<List.Separator />
 		<List.Item title='Chats' color='red' />
+		<List.Separator />
+		<List.Item
+			title='Press me!'
+			color='white'
+			onPress={() => alert('Press')}
+			backgroundColor='red'
+			underlayColor='green'
+			translateTitle={false}
+		/>
 		<List.Separator />
 	</List.Container>
 ));

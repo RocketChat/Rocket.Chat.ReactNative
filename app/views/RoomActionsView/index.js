@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import semver from 'semver';
 
 import Touch from '../../utils/touch';
 import { setLoading as setLoadingAction } from '../../actions/selectedUsers';
@@ -46,11 +47,12 @@ class RoomActionsView extends React.Component {
 		route: PropTypes.object,
 		leaveRoom: PropTypes.func,
 		jitsiEnabled: PropTypes.bool,
-		e2eEnabled: PropTypes.bool,
+		encryptionEnabled: PropTypes.bool,
 		setLoadingInvite: PropTypes.func,
 		closeRoom: PropTypes.func,
 		theme: PropTypes.string,
-		fontScale: PropTypes.number
+		fontScale: PropTypes.number,
+		serverVersion: PropTypes.string
 	}
 
 	constructor(props) {
@@ -71,7 +73,8 @@ class RoomActionsView extends React.Component {
 			canInviteUser: false,
 			canForwardGuest: false,
 			canReturnQueue: false,
-			canEdit: false
+			canEdit: false,
+			canToggleEncryption: false
 		};
 		if (room && room.observe && room.rid) {
 			this.roomObservable = room.observe();
@@ -120,6 +123,7 @@ class RoomActionsView extends React.Component {
 			this.canAddUser();
 			this.canInviteUser();
 			this.canEdit();
+			this.canToggleEncryption();
 
 			// livechat permissions
 			if (room.t === 'l') {
@@ -152,7 +156,6 @@ class RoomActionsView extends React.Component {
 		}
 	}
 
-	// eslint-disable-next-line react/sort-comp
 	canAddUser = async() => {
 		const { room, joined } = this.state;
 		const { rid, t } = room;
@@ -191,6 +194,15 @@ class RoomActionsView extends React.Component {
 
 		const canEdit = permissions && permissions['edit-room'];
 		this.setState({ canEdit });
+	}
+
+	canToggleEncryption = async() => {
+		const { room } = this.state;
+		const { rid } = room;
+		const permissions = await RocketChat.hasPermission(['toggle-room-e2e-encryption'], rid);
+
+		const canToggleEncryption = permissions && permissions['toggle-room-e2e-encryption'];
+		this.setState({ canToggleEncryption });
 	}
 
 	canViewMembers = async() => {
@@ -235,13 +247,21 @@ class RoomActionsView extends React.Component {
 	}
 
 	renderEncryptedSwitch = () => {
-		const { room } = this.state;
+		const { room, canToggleEncryption, canEdit } = this.state;
 		const { encrypted } = room;
+		const { serverVersion } = this.props;
+		let hasPermission = false;
+		if (serverVersion && semver.lt(semver.coerce(serverVersion), '3.11.0')) {
+			hasPermission = canEdit;
+		} else {
+			hasPermission = canToggleEncryption;
+		}
 		return (
 			<Switch
 				value={encrypted}
 				trackColor={SWITCH_TRACK_COLOR}
 				onValueChange={this.toggleEncrypted}
+				disabled={!hasPermission}
 			/>
 		);
 	}
@@ -480,15 +500,12 @@ class RoomActionsView extends React.Component {
 	}
 
 	renderE2EEncryption = () => {
-		const {
-			room, canEdit
-		} = this.state;
-		const { e2eEnabled } = this.props;
+		const { room } = this.state;
+		const { encryptionEnabled } = this.props;
 
-		// If can edit this room
-		// If this room type can be Encrypted
-		// If e2e is enabled for this server
-		if (canEdit && E2E_ROOM_TYPES[room?.t] && e2eEnabled) {
+		// If this room type can be encrypted
+		// If e2e is enabled
+		if (E2E_ROOM_TYPES[room?.t] && encryptionEnabled) {
 			return (
 				<List.Section>
 					<List.Separator />
@@ -847,7 +864,8 @@ class RoomActionsView extends React.Component {
 
 const mapStateToProps = state => ({
 	jitsiEnabled: state.settings.Jitsi_Enabled || false,
-	e2eEnabled: state.settings.E2E_Enable || false
+	encryptionEnabled: state.encryption.enabled,
+	serverVersion: state.server.version
 });
 
 const mapDispatchToProps = dispatch => ({
