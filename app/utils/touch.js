@@ -15,7 +15,7 @@ class Touch extends React.Component {
 
 	render() {
 		const {
-			children, onPress, theme, ...props
+			children, onPress, theme, underlayColor, ...props
 		} = this.props;
 
 		return (
@@ -23,7 +23,7 @@ class Touch extends React.Component {
 				ref={this.getRef}
 				onPress={onPress}
 				activeOpacity={1}
-				underlayColor={themes[theme].bannerBackground}
+				underlayColor={underlayColor || themes[theme].bannerBackground}
 				rippleColor={themes[theme].bannerBackground}
 				{...props}
 			>
@@ -36,7 +36,8 @@ class Touch extends React.Component {
 Touch.propTypes = {
 	children: PropTypes.node,
 	onPress: PropTypes.func,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	underlayColor: PropTypes.string
 };
 
 export default Touch;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { ScrollView, Text } from 'react-native';
+import { ScrollView, Text, Switch } from 'react-native';
 import isEqual from 'lodash/isEqual';
 
 import Loading from '../../containers/Loading';
@@ -10,7 +10,7 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
-import { themes } from '../../constants/colors';
+import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import TextInput from '../../containers/TextInput';
@@ -26,6 +26,7 @@ import styles from './styles';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
 import { logEvent, events } from '../../utils/log';
+import { E2E_ROOM_TYPES } from '../../lib/encryption/constants';
 
 class CreateChannelView extends React.Component {
 	propTypes = {
@@ -41,7 +42,8 @@ class CreateChannelView extends React.Component {
 		theme: PropTypes.string,
 		isMasterDetail: PropTypes.bool,
 		blockUnauthenticatedAccess: PropTypes.bool,
-		serverVersion: PropTypes.string
+		serverVersion: PropTypes.string,
+		encryptionEnabled: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -54,7 +56,8 @@ class CreateChannelView extends React.Component {
 			message,
 			name: message?.msg || '',
 			users: [],
-			reply: ''
+			reply: '',
+			encrypted: props.encryptionEnabled
 		};
 		this.setHeader();
 	}
@@ -109,13 +112,13 @@ class CreateChannelView extends React.Component {
 
 	submit = () => {
 		const {
-			name: t_name, channel: { prid, rid }, message: { id: pmid }, reply, users
+			name: t_name, channel: { prid, rid }, message: { id: pmid }, reply, users, encrypted
 		} = this.state;
 		const { create } = this.props;
 
 		// create discussion
 		create({
-			prid: prid || rid, pmid, t_name, reply, users
+			prid: prid || rid, pmid, t_name, reply, users, encrypted
 		});
 	};
 
@@ -134,7 +137,7 @@ class CreateChannelView extends React.Component {
 
 	selectChannel = ({ value }) => {
 		logEvent(events.CREATE_DISCUSSION_SELECT_CHANNEL);
-		this.setState({ channel: { rid: value } });
+		this.setState({ channel: value, encrypted: value?.encrypted });
 	}
 
 	selectUsers = ({ value }) => {
@@ -142,10 +145,17 @@ class CreateChannelView extends React.Component {
 		this.setState({ users: value });
 	}
 
+	onEncryptedChange = (value) => {
+		logEvent(events.CREATE_DISCUSSION_TOGGLE_ENCRY);
+		this.setState({ encrypted: value });
+	}
+
 	render() {
-		const { name, users } = this.state;
 		const {
-			server, user, loading, blockUnauthenticatedAccess, theme, serverVersion
+			name, users, encrypted, channel
+		} = this.state;
+		const {
+			server, user, loading, blockUnauthenticatedAccess, theme, serverVersion, encryptionEnabled
 		} = this.props;
 		return (
 			<KeyboardView
@@ -185,15 +195,17 @@ class CreateChannelView extends React.Component {
 							serverVersion={serverVersion}
 							theme={theme}
 						/>
-						<TextInput
-							multiline
-							textAlignVertical='top'
-							label={I18n.t('Your_message')}
-							inputStyle={styles.multiline}
-							theme={theme}
-							placeholder={I18n.t('Usually_a_discussion_starts_with_a_question_like_How_do_I_upload_a_picture')}
-							onChangeText={text => this.setState({ reply: text })}
-						/>
+						{encryptionEnabled && E2E_ROOM_TYPES[channel?.t]
+							? (
+								<>
+									<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Encrypted')}</Text>
+									<Switch
+										value={encrypted}
+										onValueChange={this.onEncryptedChange}
+										trackColor={SWITCH_TRACK_COLOR}
+									/>
+								</>
+							) : null}
 						<Loading visible={loading} />
 					</ScrollView>
 				</SafeAreaView>
@@ -211,7 +223,8 @@ const mapStateToProps = state => ({
 	result: state.createDiscussion.result,
 	blockUnauthenticatedAccess: state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true,
 	serverVersion: state.share.server.version || state.server.version,
-	isMasterDetail: state.app.isMasterDetail
+	isMasterDetail: state.app.isMasterDetail,
+	encryptionEnabled: state.encryption.enabled
 });
 
 const mapDispatchToProps = dispatch => ({
