@@ -461,7 +461,7 @@ PODS:
     - React
   - ReactNativeUiLib (3.0.4):
     - React
-  - rn-extensions-share (2.4.0):
+  - rn-extensions-share (2.4.1):
     - React
   - rn-fetch-blob (0.12.0):
     - React-Core
@@ -964,7 +964,7 @@ SPEC CHECKSUMS:
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
   ReactNativeART: 78edc68dd4a1e675338cd0cd113319cf3a65f2ab
   ReactNativeUiLib: cde7263a7d308b60161cd286f95c9433e79f2f7d
-  rn-extensions-share: 8db79372089567cbc5aefe8444869bbc808578d3
+  rn-extensions-share: 5fd84a80e6594706f0dfa1884f2d6d591b382cf5
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNBootSplash: b3836aa90c5bec690c6cd3c9ab355fcf98d0fe1d
   RNCAsyncStorage: d059c3ee71738c39834a627476322a5a8cd5bf36
