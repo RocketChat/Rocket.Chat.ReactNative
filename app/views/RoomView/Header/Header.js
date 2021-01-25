@@ -74,13 +74,14 @@ const SubTitle = React.memo(({
 	}
 
 	return null;
-});
+},(prevProps, nextProps) => prevProps.headerTitle === nextProps.headerTitle );
 
 SubTitle.propTypes = {
 	usersTyping: PropTypes.array,
 	theme: PropTypes.string,
 	subtitle: PropTypes.string,
-	renderFunc: PropTypes.func
+	renderFunc: PropTypes.func,
+	headerTitle: PropTypes.string
 };
 
 const HeaderTitle = React.memo(({
@@ -168,7 +169,7 @@ const Header = React.memo(({
 					theme={theme}
 				/>
 			</View>
-			<SubTitle usersTyping={usersTyping} subtitle={subtitle} theme={theme} renderFunc={renderFunc} />
+			<SubTitle usersTyping={usersTyping} subtitle={subtitle} theme={theme} renderFunc={renderFunc} headerTitle={title} />
 		</TouchableOpacity>
 	);
 });
