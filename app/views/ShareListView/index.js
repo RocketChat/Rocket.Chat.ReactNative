@@ -47,7 +47,6 @@ class ShareListView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.chats = [];
 		this.state = {
 			searching: false,
 			searchText: '',
@@ -217,7 +216,7 @@ class ShareListView extends React.Component {
 		const serversDB = database.servers;
 
 		if (server) {
-			this.chats = await this.query();
+			const chats = await this.query();
 			const serversCollection = serversDB.collections.get('servers');
 			this.servers = await serversCollection.query().fetch();
 			let serverInfo = {};
@@ -228,7 +227,7 @@ class ShareListView extends React.Component {
 			}
 
 			this.internalSetState({
-				chats: this.chats ?? [],
+				chats: chats ?? [],
 				servers: this.servers ?? [],
 				loading: false,
 				serverInfo
