@@ -399,18 +399,18 @@ class ShareListView extends React.Component {
 	}
 
 	renderHeader = () => {
-		const { searching } = this.state;
+		const { searching, servers } = this.state;
+
+		if (searching) {
+			return null;
+		}
+		if (servers.length > 1) {
+			return this.renderSectionHeader('Chats');
+		}
 		return (
 			<>
-				{ !searching
-					? (
-						<>
-							{this.renderSelectServer()}
-							{this.renderSectionHeader('Chats')}
-						</>
-					)
-					: null
-				}
+				{this.renderSelectServer()}
+				{this.renderSectionHeader('Chats')}
 			</>
 		);
 	}
