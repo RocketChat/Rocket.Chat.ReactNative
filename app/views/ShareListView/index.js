@@ -32,7 +32,7 @@ const permission = {
 	message: I18n.t('Read_External_Permission_Message')
 };
 
-const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
+const getItemLayout = (data, index) => ({ length: data.length, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.rid;
 
 class ShareListView extends React.Component {
@@ -445,7 +445,6 @@ class ShareListView extends React.Component {
 					ListEmptyComponent={searching && searchText ? this.renderEmptyComponent : null}
 					removeClippedSubviews
 					keyboardShouldPersistTaps='always'
-					initialNumToRender={12}
 				/>
 			</SafeAreaView>
 		);
