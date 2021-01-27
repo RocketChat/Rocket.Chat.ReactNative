@@ -52,7 +52,7 @@ class ShareListView extends React.Component {
 			searchText: '',
 			searchResults: [],
 			chats: [],
-			servers: [],
+			serversCount: 0,
 			attachments: [],
 			text: '',
 			loading: true,
@@ -229,7 +229,7 @@ class ShareListView extends React.Component {
 					usernames: item.usernames
 				}));
 			const serversCollection = serversDB.collections.get('servers');
-			this.servers = await serversCollection.query().fetch();
+			const serversCount = await serversCollection.query().fetchCount();
 			let serverInfo = {};
 			try {
 				serverInfo = await serversCollection.find(server);
@@ -239,7 +239,7 @@ class ShareListView extends React.Component {
 
 			this.internalSetState({
 				chats: chats ?? [],
-				servers: this.servers ?? [],
+				serversCount,
 				loading: false,
 				serverInfo
 			});
@@ -374,10 +374,8 @@ class ShareListView extends React.Component {
 	}
 
 	renderSelectServer = () => {
-		const { servers } = this.state;
 		const { server, theme, navigation } = this.props;
-		const currentServer = servers.find(serverFiltered => serverFiltered.id === server);
-		return currentServer ? (
+		return (
 			<>
 				{this.renderSectionHeader('Select_Server')}
 				<View
@@ -390,14 +388,12 @@ class ShareListView extends React.Component {
 					]}
 				>
 					<ServerItem
-						server={server}
-						onPress={() => navigation.navigate('SelectServerView', { servers: this.servers })}
-						item={currentServer}
-						theme={theme}
+						onPress={() => navigation.navigate('SelectServerView', { servers: [] })}
+						item={server}
 					/>
 				</View>
 			</>
-		) : null;
+		);
 	}
 
 	renderEmptyComponent = () => {
@@ -410,12 +406,12 @@ class ShareListView extends React.Component {
 	}
 
 	renderHeader = () => {
-		const { searching, servers } = this.state;
+		const { searching, serversCount } = this.state;
 
 		if (searching) {
 			return null;
 		}
-		if (servers.length > 1) {
+		if (serversCount > 1) {
 			return this.renderSectionHeader('Chats');
 		}
 		return (
