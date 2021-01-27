@@ -14,8 +14,6 @@ export const avatarURL = ({
 		room = `@${ text }`;
 	}
 
-	const uriSize = size > 100 ? size : 100;
-
 	const { id, token } = user;
 	let query = '';
 	if (id && token && blockUnauthenticatedAccess) {
@@ -30,8 +28,8 @@ export const avatarURL = ({
 			return avatar;
 		}
 
-		return formatUrl(`${ server }${ avatar }`, uriSize, query);
+		return formatUrl(`${ server }${ avatar }`, size, query);
 	}
 
-	return formatUrl(`${ server }/avatar/${ room }`, uriSize, query);
+	return formatUrl(`${ server }/avatar/${ room }`, size, query);
 };
