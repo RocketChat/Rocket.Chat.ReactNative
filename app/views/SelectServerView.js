@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Q } from '@nozbe/watermelondb';
 
 import I18n from '../i18n';
 import StatusBar from '../containers/StatusBar';
@@ -11,6 +12,7 @@ import { themes } from '../constants/colors';
 import ServerItem, { ROW_HEIGHT } from '../presentation/ServerItem';
 import sharedStyles from './Styles';
 import RocketChat from '../lib/rocketchat';
+import database from '../lib/database';
 import { withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 
@@ -35,19 +37,17 @@ class SelectServerView extends React.Component {
 
 	static propTypes = {
 		server: PropTypes.string,
-		route: PropTypes.object,
 		navigation: PropTypes.object,
 		theme: PropTypes.string
 	}
 
-	constructor(props) {
-		super(props);
-		const { route } = this.props;
-		const servers = route.params?.servers ?? [];
-		const filteredServers = servers.filter(server => server.roomsUpdatedAt);
-		this.state = {
-			servers: filteredServers
-		};
+	state = { servers: [] };
+
+	async componentDidMount() {
+		const serversDB = database.servers;
+		const serversCollection = serversDB.collections.get('servers');
+		const servers = await serversCollection.query(Q.where('rooms_updated_at', Q.notEq(null))).fetch();
+		this.setState({ servers });
 	}
 
 	select = async(server) => {
@@ -62,13 +62,12 @@ class SelectServerView extends React.Component {
 	}
 
 	renderItem = ({ item }) => {
-		const { server, theme } = this.props;
+		const { server } = this.props;
 		return (
 			<ServerItem
 				onPress={() => this.select(item.id)}
 				item={item}
 				hasCheck={item.id === server}
-				theme={theme}
 			/>
 		);
 	}
@@ -89,13 +88,12 @@ class SelectServerView extends React.Component {
 						data={servers}
 						keyExtractor={keyExtractor}
 						renderItem={this.renderItem}
-						getItemLayout={getItemLayout}
+						getItemLayout={getItemLayout} // Refactor row_height
 						contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
 						ItemSeparatorComponent={this.renderSeparator}
 						enableEmptySections
 						removeClippedSubviews
 						keyboardShouldPersistTaps='always'
-						windowSize={7}
 						bounces={false}
 					/>
 				</View>

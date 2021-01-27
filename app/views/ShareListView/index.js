@@ -229,7 +229,7 @@ class ShareListView extends React.Component {
 					usernames: item.usernames
 				}));
 			const serversCollection = serversDB.collections.get('servers');
-			const serversCount = await serversCollection.query().fetchCount();
+			const serversCount = await serversCollection.query(Q.where('rooms_updated_at', Q.notEq(null))).fetchCount();
 			let serverInfo = {};
 			try {
 				serverInfo = await serversCollection.find(server);
@@ -374,7 +374,8 @@ class ShareListView extends React.Component {
 	}
 
 	renderSelectServer = () => {
-		const { server, theme, navigation } = this.props;
+		const { serverInfo } = this.state;
+		const { theme, navigation } = this.props;
 		return (
 			<>
 				{this.renderSectionHeader('Select_Server')}
@@ -389,7 +390,7 @@ class ShareListView extends React.Component {
 				>
 					<ServerItem
 						onPress={() => navigation.navigate('SelectServerView', { servers: [] })}
-						item={server}
+						item={serverInfo}
 					/>
 				</View>
 			</>
@@ -411,9 +412,11 @@ class ShareListView extends React.Component {
 		if (searching) {
 			return null;
 		}
-		if (serversCount > 1) {
+
+		if (serversCount === 1) {
 			return this.renderSectionHeader('Chats');
 		}
+
 		return (
 			<>
 				{this.renderSelectServer()}
