@@ -153,7 +153,7 @@ class Markdown extends PureComponent {
 		];
 		const linkColor = [
 			context.includes('link') ? { color: themes[theme].tintColor } : {}
-		]
+		];
 		return (
 			<Text
 				accessibilityLabel={literal}
