@@ -184,9 +184,9 @@ PODS:
   - libwebp/mux (1.1.0):
     - libwebp/demux
   - libwebp/webp (1.1.0)
-  - MMKV (1.2.1):
-    - MMKVCore (~> 1.2.1)
-  - MMKVCore (1.2.1)
+  - MMKV (1.2.6):
+    - MMKVCore (~> 1.2.6)
+  - MMKVCore (1.2.6)
   - nanopb (1.30905.0):
     - nanopb/decode (= 1.30905.0)
     - nanopb/encode (= 1.30905.0)
@@ -377,8 +377,8 @@ PODS:
   - react-native-jitsi-meet (2.4.0):
     - JitsiMeetSDK
     - React
-  - react-native-mmkv-storage (0.3.5):
-    - MMKV (= 1.2.1)
+  - react-native-mmkv-storage (0.4.3):
+    - MMKV (= 1.2.6)
     - React
   - react-native-netinfo (5.9.9):
     - React-Core
