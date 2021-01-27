@@ -409,7 +409,7 @@ class ShareListView extends React.Component {
 		);
 	}
 
-	renderContent = () => {
+	render = () => {
 		const {
 			chats, loading, searchResults, searching, searchText, needsPermission
 		} = this.state;
@@ -421,39 +421,35 @@ class ShareListView extends React.Component {
 
 		if (needsPermission) {
 			return (
-				<ScrollView
-					style={{ backgroundColor: themes[theme].auxiliaryBackground }}
-					contentContainerStyle={[styles.container, styles.centered, { backgroundColor: themes[theme].backgroundColor }]}
-				>
-					<Text style={[styles.permissionTitle, { color: themes[theme].titleText }]}>{permission.title}</Text>
-					<Text style={[styles.permissionMessage, { color: themes[theme].bodyText }]}>{permission.message}</Text>
-				</ScrollView>
+				<SafeAreaView>
+					<ScrollView
+						style={{ backgroundColor: themes[theme].backgroundColor }}
+						contentContainerStyle={[styles.container, styles.centered, { backgroundColor: themes[theme].backgroundColor }]}
+					>
+						<Text style={[styles.permissionTitle, { color: themes[theme].titleText }]}>{permission.title}</Text>
+						<Text style={[styles.permissionMessage, { color: themes[theme].bodyText }]}>{permission.message}</Text>
+					</ScrollView>
+				</SafeAreaView>
 			);
 		}
 
 		return (
-			<FlatList
-				data={searching ? searchResults : chats}
-				keyExtractor={keyExtractor}
-				style={[styles.flatlist, { backgroundColor: themes[theme].auxiliaryBackground }]}
-				contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
-				renderItem={this.renderItem}
-				getItemLayout={getItemLayout}
-				ItemSeparatorComponent={List.Separator}
-				ListHeaderComponent={this.renderHeader}
-				ListFooterComponent={!searching || searchResults.length > 0 ? <List.Separator /> : null}
-				ListEmptyComponent={searching && searchText ? this.renderEmptyComponent : null}
-				removeClippedSubviews
-				keyboardShouldPersistTaps='always'
-				initialNumToRender={12}
-			/>
-		);
-	}
-
-	render() {
-		return (
 			<SafeAreaView>
-				{this.renderContent()}
+				<FlatList
+					data={searching ? searchResults : chats}
+					keyExtractor={keyExtractor}
+					style={[styles.flatlist, { backgroundColor: themes[theme].auxiliaryBackground }]}
+					contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
+					renderItem={this.renderItem}
+					getItemLayout={getItemLayout}
+					ItemSeparatorComponent={List.Separator}
+					ListHeaderComponent={this.renderHeader}
+					ListFooterComponent={!searching || searchResults.length > 0 ? <List.Separator /> : null}
+					ListEmptyComponent={searching && searchText ? this.renderEmptyComponent : null}
+					removeClippedSubviews
+					keyboardShouldPersistTaps='always'
+					initialNumToRender={12}
+				/>
 			</SafeAreaView>
 		);
 	}
