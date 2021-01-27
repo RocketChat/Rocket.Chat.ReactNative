@@ -145,16 +145,19 @@ class Markdown extends PureComponent {
 
 	renderText = ({ context, literal }) => {
 		const {
-			numberOfLines, style = []
+			numberOfLines, style = [], theme
 		} = this.props;
 		const defaultStyle = [
 			this.isMessageContainsOnlyEmoji ? styles.textBig : {},
 			...context.map(type => styles[type])
 		];
+		const linkColor = [
+			context.includes('link') ? { color: themes[theme].tintColor } : {}
+		]
 		return (
 			<Text
 				accessibilityLabel={literal}
-				style={[styles.text, defaultStyle, ...style]}
+				style={[styles.text, defaultStyle, ...style, ...linkColor]}
 				numberOfLines={numberOfLines}
 			>
 				{literal}
