@@ -216,7 +216,18 @@ class ShareListView extends React.Component {
 		const serversDB = database.servers;
 
 		if (server) {
-			const chats = await this.query();
+			const chats = (await this.query())
+				.map(item => ({
+					rid: item.rid,
+					t: item.t,
+					name: item.name,
+					fname: item.fname,
+					blocked: item.blocked,
+					blocker: item.blocker,
+					prid: item.prid,
+					uids: item.uids,
+					usernames: item.usernames
+				}));
 			const serversCollection = serversDB.collections.get('servers');
 			this.servers = await serversCollection.query().fetch();
 			let serverInfo = {};
