@@ -18,7 +18,7 @@ import ServerItem from '../../presentation/ServerItem';
 import * as HeaderButton from '../../containers/HeaderButton';
 import ShareListHeader from './Header';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-
+import * as List from '../../containers/List';
 import styles from './styles';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
@@ -316,11 +316,14 @@ class ShareListView extends React.Component {
 		}
 
 		return (
-			<View style={[styles.headerContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-				<Text style={[styles.headerText, { color: themes[theme].titleText }]}>
-					{I18n.t(header)}
-				</Text>
-			</View>
+			<>
+				<View style={[styles.headerContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+					<Text style={[styles.headerText, { color: themes[theme].titleText }]}>
+						{I18n.t(header)}
+					</Text>
+				</View>
+				<List.Separator />
+			</>
 		);
 	}
 
@@ -363,36 +366,17 @@ class ShareListView extends React.Component {
 		);
 	}
 
-	renderSeparator = () => {
-		const { theme } = this.props;
-		return <View style={[styles.separator, { borderColor: themes[theme].separatorColor }]} />;
-	}
-
-	renderBorderBottom = () => {
-		const { theme } = this.props;
-		return <View style={[styles.borderBottom, { borderColor: themes[theme].separatorColor }]} />;
-	}
-
 	renderSelectServer = () => {
 		const { serverInfo } = this.state;
-		const { theme, navigation } = this.props;
+		const { navigation } = this.props;
 		return (
 			<>
 				{this.renderSectionHeader('Select_Server')}
-				<View
-					style={[
-						styles.bordered,
-						{
-							borderColor: themes[theme].separatorColor,
-							backgroundColor: themes[theme].auxiliaryBackground
-						}
-					]}
-				>
-					<ServerItem
-						onPress={() => navigation.navigate('SelectServerView', { servers: [] })}
-						item={serverInfo}
-					/>
-				</View>
+				<ServerItem
+					onPress={() => navigation.navigate('SelectServerView')}
+					item={serverInfo}
+				/>
+				<List.Separator />
 			</>
 		);
 	}
@@ -455,10 +439,9 @@ class ShareListView extends React.Component {
 				contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
 				renderItem={this.renderItem}
 				getItemLayout={getItemLayout}
-				ItemSeparatorComponent={this.renderSeparator}
+				ItemSeparatorComponent={List.Separator}
 				ListHeaderComponent={this.renderHeader}
-				ListFooterComponent={!searching && this.renderBorderBottom}
-				ListHeaderComponentStyle={!searching ? { ...styles.borderBottom, borderColor: themes[theme].separatorColor } : {}}
+				ListFooterComponent={!searching || searchResults.length > 0 ? <List.Separator /> : null}
 				ListEmptyComponent={searching && searchText ? this.renderEmptyComponent : null}
 				removeClippedSubviews
 				keyboardShouldPersistTaps='always'
@@ -470,7 +453,6 @@ class ShareListView extends React.Component {
 	render() {
 		return (
 			<SafeAreaView>
-				<StatusBar />
 				{this.renderContent()}
 			</SafeAreaView>
 		);
