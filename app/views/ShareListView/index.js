@@ -20,7 +20,6 @@ import ShareListHeader from './Header';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as List from '../../containers/List';
 import styles from './styles';
-import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
@@ -60,8 +59,10 @@ class ShareListView extends React.Component {
 			needsPermission: isAndroid || false
 		};
 		this.setHeader();
-		this.unsubscribeFocus = props.navigation.addListener('focus', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
-		this.unsubscribeBlur = props.navigation.addListener('blur', () => BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress));
+		if (isAndroid) {
+			this.unsubscribeFocus = props.navigation.addListener('focus', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
+			this.unsubscribeBlur = props.navigation.addListener('blur', () => BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress));
+		}
 	}
 
 	async componentDidMount() {
@@ -107,20 +108,19 @@ class ShareListView extends React.Component {
 			return true;
 		}
 
-		const { server, theme, userId } = this.props;
+		const { server, userId } = this.props;
 		if (server !== nextProps.server) {
 			return true;
 		}
 		if (userId !== nextProps.userId) {
 			return true;
 		}
-		if (theme !== nextProps.theme) {
-			return true;
-		}
 
 		const { searchResults } = this.state;
-		if (!isEqual(nextState.searchResults, searchResults)) {
-			return true;
+		if (nextState.searching) {
+			if (!isEqual(nextState.searchResults, searchResults)) {
+				return true;
+			}
 		}
 		return false;
 	}
