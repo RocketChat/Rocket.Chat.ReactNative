@@ -188,7 +188,7 @@ class ShareListView extends React.Component {
 		this.setState(...args);
 	}
 
-	query = (text) => {
+	query = async(text) => {
 		const db = database.active;
 		const defaultWhereClause = [
 			Q.where('archived', false),
@@ -199,35 +199,32 @@ class ShareListView extends React.Component {
 		];
 		if (text) {
 			const likeString = sanitizeLikeString(text);
-			return db.collections
-				.get('subscriptions')
-				.query(
-					...defaultWhereClause,
-					Q.or(
-						Q.where('name', Q.like(`%${ likeString }%`)),
-						Q.where('fname', Q.like(`%${ likeString }%`))
-					)
-				).fetch();
+			defaultWhereClause.push(
+				Q.or(
+					Q.where('name', Q.like(`%${ likeString }%`)),
+					Q.where('fname', Q.like(`%${ likeString }%`))
+				)
+			);
 		}
-		return db.collections.get('subscriptions').query(...defaultWhereClause).fetch();
+		const data = await db.collections.get('subscriptions').query(...defaultWhereClause).fetch();
+		return data.map(item => ({
+			rid: item.rid,
+			t: item.t,
+			name: item.name,
+			fname: item.fname,
+			blocked: item.blocked,
+			blocker: item.blocker,
+			prid: item.prid,
+			uids: item.uids,
+			usernames: item.usernames
+		}));
 	}
 
 	getSubscriptions = async(server) => {
 		const serversDB = database.servers;
 
 		if (server) {
-			const chats = (await this.query())
-				.map(item => ({
-					rid: item.rid,
-					t: item.t,
-					name: item.name,
-					fname: item.fname,
-					blocked: item.blocked,
-					blocker: item.blocker,
-					prid: item.prid,
-					uids: item.uids,
-					usernames: item.usernames
-				}));
+			const chats = await this.query();
 			const serversCollection = serversDB.collections.get('servers');
 			const serversCount = await serversCollection.query(Q.where('rooms_updated_at', Q.notEq(null))).fetchCount();
 			let serverInfo = {};
