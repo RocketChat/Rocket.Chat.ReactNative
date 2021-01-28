@@ -4,7 +4,7 @@ import {
 	View, Text, Alert, Share, Switch
 } from 'react-native';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import semver from 'semver';
 
 import Touch from '../../utils/touch';
@@ -113,7 +113,7 @@ class RoomActionsView extends React.Component {
 				} catch (e) {
 					log(e);
 				}
-			} else if (room.t === 'd' && _.isEmpty(member)) {
+			} else if (room.t === 'd' && isEmpty(member)) {
 				this.updateRoomMember();
 			}
 

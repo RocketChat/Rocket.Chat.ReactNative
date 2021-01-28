@@ -1,7 +1,7 @@
 import { InteractionManager } from 'react-native';
 import semver from 'semver';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { orderBy } from 'lodash';
+import orderBy from 'lodash/orderBy';
 
 import database from '../database';
 import log from '../../utils/log';
