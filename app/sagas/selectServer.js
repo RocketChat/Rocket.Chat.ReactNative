@@ -2,7 +2,8 @@ import { put, takeLatest } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
-import semver from 'semver';
+import valid from 'semver/functions/valid';
+import coerce from 'semver/functions/coerce';
 
 import Navigation from '../lib/Navigation';
 import { SERVER } from '../actions/actionsTypes';
@@ -39,9 +40,9 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 			return;
 		}
 
-		let serverVersion = semver.valid(serverInfo.version);
+		let serverVersion = valid(serverInfo.version);
 		if (!serverVersion) {
-			({ version: serverVersion } = semver.coerce(serverInfo.version));
+			({ version: serverVersion } = coerce(serverInfo.version));
 		}
 
 		const serversDB = database.servers;
