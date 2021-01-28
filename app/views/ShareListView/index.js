@@ -216,7 +216,8 @@ class ShareListView extends React.Component {
 			blocker: item.blocker,
 			prid: item.prid,
 			uids: item.uids,
-			usernames: item.usernames
+			usernames: item.usernames,
+			topic: item.topic
 		}));
 	}
 
