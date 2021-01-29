@@ -30,11 +30,11 @@ target 'ShareRocketChatRN' do
   pod 'EXAV', :path=> "../node_modules/expo-av/ios"
   # pod 'EXConstants', :path=> "../node_modules/expo-constants/ios"
   pod 'EXFileSystem', :path=> "../node_modules/expo-file-system/ios"
-  # pod 'EXHaptics', :path=> "../node_modules/expo-haptics/ios"
-  # pod 'EXImageLoader', :path=> "../node_modules/expo-image-loader/ios"
+  pod 'EXHaptics', :path=> "../node_modules/expo-haptics/ios"
+  pod 'EXImageLoader', :path=> "../node_modules/expo-image-loader/ios"
   # pod 'EXKeepAwake', :path=> "../node_modules/expo-keep-awake/ios"
   # pod 'EXPermissions', :path=> "../node_modules/expo-permissions/ios"
-  # pod 'EXVideoThumbnails', :path=> "../node_modules/expo-video-thumbnails/ios"
+  pod 'EXVideoThumbnails', :path=> "../node_modules/expo-video-thumbnails/ios"
   # pod 'EXWebBrowser', :path=> "../node_modules/expo-web-browser/ios"
   # pod 'UMAppLoader', :path=> "../node_modules/unimodules-app-loader/ios"
   # pod 'UMBarCodeScannerInterface', :path=> "../node_modules/unimodules-barcode-scanner-interface/ios"
@@ -44,47 +44,47 @@ target 'ShareRocketChatRN' do
   # pod 'UMFaceDetectorInterface', :path=> "../node_modules/unimodules-face-detector-interface/ios"
   # pod 'UMFileSystemInterface', :path=> "../node_modules/unimodules-file-system-interface/ios"
   # pod 'UMFontInterface', :path=> "../node_modules/unimodules-font-interface/ios"
-  # pod 'UMImageLoaderInterface', :path=> "../node_modules/unimodules-image-loader-interface/ios"
+  pod 'UMImageLoaderInterface', :path=> "../node_modules/unimodules-image-loader-interface/ios"
   # pod 'UMPermissionsInterface', :path=> "../node_modules/unimodules-permissions-interface/ios"
   pod 'UMReactNativeAdapter', :path=> "../node_modules/@unimodules/react-native-adapter/ios"
   # pod 'UMSensorsInterface', :path=> "../node_modules/unimodules-sensors-interface/ios"
   # pod 'UMTaskManagerInterface', :path=> "../node_modules/unimodules-task-manager-interface/ios"
 
-  # use_react_native!(:path => '../node_modules/react-native')
+  use_react_native!(:path => '../node_modules/react-native')
 
-  pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
-  pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
-  pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
-  pod 'RCTTypeSafety', :path => "../node_modules/react-native/Libraries/TypeSafety"
-  pod 'React', :path => "../node_modules/react-native/"
-  pod 'React-Core', :path => "../node_modules/react-native/"
-  pod 'React-CoreModules', :path => "../node_modules/react-native/React/CoreModules"
-  pod 'React-RCTActionSheet', :path => "../node_modules/react-native/Libraries/ActionSheetIOS"
-  pod 'React-RCTAnimation', :path => "../node_modules/react-native/Libraries/NativeAnimation"
-  # pod 'React-RCTBlob', :path => "../node_modules/react-native/Libraries/Blob"
-  pod 'React-RCTImage', :path => "../node_modules/react-native/Libraries/Image"
-  # pod 'React-RCTLinking', :path => "../node_modules/react-native/Libraries/LinkingIOS"
-  pod 'React-RCTNetwork', :path => "../node_modules/react-native/Libraries/Network"
-  # pod 'React-RCTSettings', :path => "../node_modules/react-native/Libraries/Settings"
-  pod 'React-RCTText', :path => "../node_modules/react-native/Libraries/Text"
-  pod 'React-RCTVibration', :path => "../node_modules/react-native/Libraries/Vibration"
-  pod 'React-Core/RCTWebSocket', :path => "../node_modules/react-native/"
-  # unless production
-    # pod 'React-Core/DevSupport', :path => "../node_modules/react-native/"
-  # end
-  pod 'React-cxxreact', :path => "../node_modules/react-native/ReactCommon/cxxreact"
-  pod 'React-jsi', :path => "../node_modules/react-native/ReactCommon/jsi"
-  pod 'React-jsiexecutor', :path => "../node_modules/react-native/ReactCommon/jsiexecutor"
-  pod 'React-jsinspector', :path => "../node_modules/react-native/ReactCommon/jsinspector"
-  pod 'React-callinvoker', :path => "../node_modules/react-native/ReactCommon/callinvoker"
-  pod 'ReactCommon/turbomodule/core', :path => "../node_modules/react-native/ReactCommon"
-  pod 'Yoga', :path => "../node_modules/react-native/ReactCommon/yoga", :modular_headers => true
-  pod 'DoubleConversion', :podspec => "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
-  pod 'glog', :podspec => "../node_modules/react-native/third-party-podspecs/glog.podspec"
-  pod 'Folly', :podspec => "../node_modules/react-native/third-party-podspecs/Folly.podspec"
+  # pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
+  # pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
+  # pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
+  # pod 'RCTTypeSafety', :path => "../node_modules/react-native/Libraries/TypeSafety"
+  # pod 'React', :path => "../node_modules/react-native/"
+  # pod 'React-Core', :path => "../node_modules/react-native/"
+  # pod 'React-CoreModules', :path => "../node_modules/react-native/React/CoreModules"
+  # pod 'React-RCTActionSheet', :path => "../node_modules/react-native/Libraries/ActionSheetIOS"
+  # pod 'React-RCTAnimation', :path => "../node_modules/react-native/Libraries/NativeAnimation"
+  # # pod 'React-RCTBlob', :path => "../node_modules/react-native/Libraries/Blob"
+  # pod 'React-RCTImage', :path => "../node_modules/react-native/Libraries/Image"
+  # # pod 'React-RCTLinking', :path => "../node_modules/react-native/Libraries/LinkingIOS"
+  # pod 'React-RCTNetwork', :path => "../node_modules/react-native/Libraries/Network"
+  # # pod 'React-RCTSettings', :path => "../node_modules/react-native/Libraries/Settings"
+  # pod 'React-RCTText', :path => "../node_modules/react-native/Libraries/Text"
+  # pod 'React-RCTVibration', :path => "../node_modules/react-native/Libraries/Vibration"
+  # pod 'React-Core/RCTWebSocket', :path => "../node_modules/react-native/"
+  # # unless production
+  #   # pod 'React-Core/DevSupport', :path => "../node_modules/react-native/"
+  # # end
+  # pod 'React-cxxreact', :path => "../node_modules/react-native/ReactCommon/cxxreact"
+  # pod 'React-jsi', :path => "../node_modules/react-native/ReactCommon/jsi"
+  # pod 'React-jsiexecutor', :path => "../node_modules/react-native/ReactCommon/jsiexecutor"
+  # pod 'React-jsinspector', :path => "../node_modules/react-native/ReactCommon/jsinspector"
+  # pod 'React-callinvoker', :path => "../node_modules/react-native/ReactCommon/callinvoker"
+  # pod 'ReactCommon/turbomodule/core', :path => "../node_modules/react-native/ReactCommon"
+  # pod 'Yoga', :path => "../node_modules/react-native/ReactCommon/yoga", :modular_headers => true
+  # pod 'DoubleConversion', :podspec => "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  # pod 'glog', :podspec => "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  # pod 'Folly', :podspec => "../node_modules/react-native/third-party-podspecs/Folly.podspec"
 
   # Pod::UI.warn(config)
-  use_flipper!
+  # use_flipper!
 
   pod 'RNFBApp', :path => '../node_modules/@react-native-firebase/app'
   pod 'RNFBAnalytics', :path => '../node_modules/@react-native-firebase/analytics'
