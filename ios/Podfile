@@ -29,7 +29,7 @@ target 'ShareRocketChatRN' do
   pod 'EXAppleAuthentication', :path=> "../node_modules/expo-apple-authentication/ios"
   pod 'EXAV', :path=> "../node_modules/expo-av/ios"
   # pod 'EXConstants', :path=> "../node_modules/expo-constants/ios"
-  # pod 'EXFileSystem', :path=> "../node_modules/expo-file-system/ios"
+  pod 'EXFileSystem', :path=> "../node_modules/expo-file-system/ios"
   # pod 'EXHaptics', :path=> "../node_modules/expo-haptics/ios"
   # pod 'EXImageLoader', :path=> "../node_modules/expo-image-loader/ios"
   # pod 'EXKeepAwake', :path=> "../node_modules/expo-keep-awake/ios"
