@@ -31,7 +31,7 @@ import PickerView from '../views/PickerView';
 import ThreadMessagesView from '../views/ThreadMessagesView';
 import MarkdownTableView from '../views/MarkdownTableView';
 import ReadReceiptsView from '../views/ReadReceiptView';
-
+import ReactionsModal from '../containers/ReactionModalExp'
 // Profile Stack
 import ProfileView from '../views/ProfileView';
 import UserPreferencesView from '../views/UserPreferencesView';
@@ -83,6 +83,11 @@ const ChatsStackNavigator = () => {
 			<ChatsStack.Screen
 				name='RoomView'
 				component={RoomView}
+			/>
+			<ChatsStack.Screen
+				name='ReactionsModal'
+				component={ReactionsModal}
+				options={ReactionsModal.navigationOptions}
 			/>
 			<ChatsStack.Screen
 				name='RoomActionsView'

@@ -585,8 +585,12 @@ class RoomView extends React.Component {
 	};
 
 	onReactionLongPress = (message) => {
-		this.setState({ selectedMessage: message, reactionsModalVisible: true });
+		// this.setState({ selectedMessage: message, reactionsModalVisible: true });
+		const { navigation } = this.props;
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+		this.setState({ selectedMessage: message})
+		const { baseUrl, user, theme } = this.props;
+		navigation.navigate('ReactionsModal', {message : this.state.selectedMessage, baseUrl:baseUrl, getCustomEmoji: this.getCustomEmoji, user: user,theme: theme});
 	}
 
 	onCloseReactionsModal = () => {
