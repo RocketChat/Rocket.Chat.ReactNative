@@ -4,8 +4,9 @@ import {
 	View, Text, Alert, Share, Switch
 } from 'react-native';
 import { connect } from 'react-redux';
-import _ from 'lodash';
-import semver from 'semver';
+import isEmpty from 'lodash/isEmpty';
+import lt from 'semver/functions/lt';
+import coerce from 'semver/functions/coerce';
 
 import Touch from '../../utils/touch';
 import { setLoading as setLoadingAction } from '../../actions/selectedUsers';
@@ -113,7 +114,7 @@ class RoomActionsView extends React.Component {
 				} catch (e) {
 					log(e);
 				}
-			} else if (room.t === 'd' && _.isEmpty(member)) {
+			} else if (room.t === 'd' && isEmpty(member)) {
 				this.updateRoomMember();
 			}
 
@@ -251,7 +252,7 @@ class RoomActionsView extends React.Component {
 		const { encrypted } = room;
 		const { serverVersion } = this.props;
 		let hasPermission = false;
-		if (serverVersion && semver.lt(semver.coerce(serverVersion), '3.11.0')) {
+		if (serverVersion && lt(coerce(serverVersion), '3.11.0')) {
 			hasPermission = canEdit;
 		} else {
 			hasPermission = canToggleEncryption;
