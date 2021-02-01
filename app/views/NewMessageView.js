@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
-import { orderBy } from 'lodash';
+import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
 
 import Touch from '../utils/touch';
