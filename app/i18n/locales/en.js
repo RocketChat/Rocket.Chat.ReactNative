@@ -374,7 +374,6 @@ export default {
 	Open_emoji_selector: 'Open emoji selector',
 	Open_Source_Communication: 'Open Source Communication',
 	Open_your_authentication_app_and_enter_the_code: 'Open your authentication app and enter the code.',
-	OK: 'OK',
 	OR: 'OR',
 	OS: 'OS',
 	Overwrites_the_server_configuration_and_use_room_config: 'Overwrites the server configuration and use room config',
