@@ -18,9 +18,8 @@ import ServerItem from '../../presentation/ServerItem';
 import * as HeaderButton from '../../containers/HeaderButton';
 import ShareListHeader from './Header';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-
+import * as List from '../../containers/List';
 import styles from './styles';
-import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
@@ -33,7 +32,7 @@ const permission = {
 	message: I18n.t('Read_External_Permission_Message')
 };
 
-const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
+const getItemLayout = (data, index) => ({ length: data.length, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.rid;
 
 class ShareListView extends React.Component {
@@ -47,13 +46,12 @@ class ShareListView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.chats = [];
 		this.state = {
 			searching: false,
 			searchText: '',
 			searchResults: [],
 			chats: [],
-			servers: [],
+			serversCount: 0,
 			attachments: [],
 			text: '',
 			loading: true,
@@ -61,8 +59,10 @@ class ShareListView extends React.Component {
 			needsPermission: isAndroid || false
 		};
 		this.setHeader();
-		this.unsubscribeFocus = props.navigation.addListener('focus', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
-		this.unsubscribeBlur = props.navigation.addListener('blur', () => BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress));
+		if (isAndroid) {
+			this.unsubscribeFocus = props.navigation.addListener('focus', () => BackHandler.addEventListener('hardwareBackPress', this.handleBackPress));
+			this.unsubscribeBlur = props.navigation.addListener('blur', () => BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress));
+		}
 	}
 
 	async componentDidMount() {
@@ -108,20 +108,19 @@ class ShareListView extends React.Component {
 			return true;
 		}
 
-		const { server, theme, userId } = this.props;
+		const { server, userId } = this.props;
 		if (server !== nextProps.server) {
 			return true;
 		}
 		if (userId !== nextProps.userId) {
 			return true;
 		}
-		if (theme !== nextProps.theme) {
-			return true;
-		}
 
 		const { searchResults } = this.state;
-		if (!isEqual(nextState.searchResults, searchResults)) {
-			return true;
+		if (nextState.searching) {
+			if (!isEqual(nextState.searchResults, searchResults)) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -189,7 +188,7 @@ class ShareListView extends React.Component {
 		this.setState(...args);
 	}
 
-	query = (text) => {
+	query = async(text) => {
 		const db = database.active;
 		const defaultWhereClause = [
 			Q.where('archived', false),
@@ -200,26 +199,35 @@ class ShareListView extends React.Component {
 		];
 		if (text) {
 			const likeString = sanitizeLikeString(text);
-			return db.collections
-				.get('subscriptions')
-				.query(
-					...defaultWhereClause,
-					Q.or(
-						Q.where('name', Q.like(`%${ likeString }%`)),
-						Q.where('fname', Q.like(`%${ likeString }%`))
-					)
-				).fetch();
+			defaultWhereClause.push(
+				Q.or(
+					Q.where('name', Q.like(`%${ likeString }%`)),
+					Q.where('fname', Q.like(`%${ likeString }%`))
+				)
+			);
 		}
-		return db.collections.get('subscriptions').query(...defaultWhereClause).fetch();
+		const data = await db.collections.get('subscriptions').query(...defaultWhereClause).fetch();
+		return data.map(item => ({
+			rid: item.rid,
+			t: item.t,
+			name: item.name,
+			fname: item.fname,
+			blocked: item.blocked,
+			blocker: item.blocker,
+			prid: item.prid,
+			uids: item.uids,
+			usernames: item.usernames,
+			topic: item.topic
+		}));
 	}
 
 	getSubscriptions = async(server) => {
 		const serversDB = database.servers;
 
 		if (server) {
-			this.chats = await this.query();
+			const chats = await this.query();
 			const serversCollection = serversDB.collections.get('servers');
-			this.servers = await serversCollection.query().fetch();
+			const serversCount = await serversCollection.query(Q.where('rooms_updated_at', Q.notEq(null))).fetchCount();
 			let serverInfo = {};
 			try {
 				serverInfo = await serversCollection.find(server);
@@ -228,8 +236,8 @@ class ShareListView extends React.Component {
 			}
 
 			this.internalSetState({
-				chats: this.chats ?? [],
-				servers: this.servers ?? [],
+				chats: chats ?? [],
+				serversCount,
 				loading: false,
 				serverInfo
 			});
@@ -306,11 +314,14 @@ class ShareListView extends React.Component {
 		}
 
 		return (
-			<View style={[styles.headerContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-				<Text style={[styles.headerText, { color: themes[theme].titleText }]}>
-					{I18n.t(header)}
-				</Text>
-			</View>
+			<>
+				<View style={[styles.headerContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+					<Text style={[styles.headerText, { color: themes[theme].titleText }]}>
+						{I18n.t(header)}
+					</Text>
+				</View>
+				<List.Separator />
+			</>
 		);
 	}
 
@@ -353,41 +364,19 @@ class ShareListView extends React.Component {
 		);
 	}
 
-	renderSeparator = () => {
-		const { theme } = this.props;
-		return <View style={[styles.separator, { borderColor: themes[theme].separatorColor }]} />;
-	}
-
-	renderBorderBottom = () => {
-		const { theme } = this.props;
-		return <View style={[styles.borderBottom, { borderColor: themes[theme].separatorColor }]} />;
-	}
-
 	renderSelectServer = () => {
-		const { servers } = this.state;
-		const { server, theme, navigation } = this.props;
-		const currentServer = servers.find(serverFiltered => serverFiltered.id === server);
-		return currentServer ? (
+		const { serverInfo } = this.state;
+		const { navigation } = this.props;
+		return (
 			<>
 				{this.renderSectionHeader('Select_Server')}
-				<View
-					style={[
-						styles.bordered,
-						{
-							borderColor: themes[theme].separatorColor,
-							backgroundColor: themes[theme].auxiliaryBackground
-						}
-					]}
-				>
-					<ServerItem
-						server={server}
-						onPress={() => navigation.navigate('SelectServerView', { servers: this.servers })}
-						item={currentServer}
-						theme={theme}
-					/>
-				</View>
+				<ServerItem
+					onPress={() => navigation.navigate('SelectServerView')}
+					item={serverInfo}
+				/>
+				<List.Separator />
 			</>
-		) : null;
+		);
 	}
 
 	renderEmptyComponent = () => {
@@ -400,23 +389,25 @@ class ShareListView extends React.Component {
 	}
 
 	renderHeader = () => {
-		const { searching } = this.state;
+		const { searching, serversCount } = this.state;
+
+		if (searching) {
+			return null;
+		}
+
+		if (serversCount === 1) {
+			return this.renderSectionHeader('Chats');
+		}
+
 		return (
 			<>
-				{ !searching
-					? (
-						<>
-							{this.renderSelectServer()}
-							{this.renderSectionHeader('Chats')}
-						</>
-					)
-					: null
-				}
+				{this.renderSelectServer()}
+				{this.renderSectionHeader('Chats')}
 			</>
 		);
 	}
 
-	renderContent = () => {
+	render = () => {
 		const {
 			chats, loading, searchResults, searching, searchText, needsPermission
 		} = this.state;
@@ -428,41 +419,34 @@ class ShareListView extends React.Component {
 
 		if (needsPermission) {
 			return (
-				<ScrollView
-					style={{ backgroundColor: themes[theme].auxiliaryBackground }}
-					contentContainerStyle={[styles.container, styles.centered, { backgroundColor: themes[theme].backgroundColor }]}
-				>
-					<Text style={[styles.permissionTitle, { color: themes[theme].titleText }]}>{permission.title}</Text>
-					<Text style={[styles.permissionMessage, { color: themes[theme].bodyText }]}>{permission.message}</Text>
-				</ScrollView>
+				<SafeAreaView>
+					<ScrollView
+						style={{ backgroundColor: themes[theme].backgroundColor }}
+						contentContainerStyle={[styles.container, styles.centered, { backgroundColor: themes[theme].backgroundColor }]}
+					>
+						<Text style={[styles.permissionTitle, { color: themes[theme].titleText }]}>{permission.title}</Text>
+						<Text style={[styles.permissionMessage, { color: themes[theme].bodyText }]}>{permission.message}</Text>
+					</ScrollView>
+				</SafeAreaView>
 			);
 		}
 
 		return (
-			<FlatList
-				data={searching ? searchResults : chats}
-				keyExtractor={keyExtractor}
-				style={[styles.flatlist, { backgroundColor: themes[theme].auxiliaryBackground }]}
-				contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
-				renderItem={this.renderItem}
-				getItemLayout={getItemLayout}
-				ItemSeparatorComponent={this.renderSeparator}
-				ListHeaderComponent={this.renderHeader}
-				ListFooterComponent={!searching && this.renderBorderBottom}
-				ListHeaderComponentStyle={!searching ? { ...styles.borderBottom, borderColor: themes[theme].separatorColor } : {}}
-				ListEmptyComponent={searching && searchText ? this.renderEmptyComponent : null}
-				removeClippedSubviews
-				keyboardShouldPersistTaps='always'
-				initialNumToRender={12}
-			/>
-		);
-	}
-
-	render() {
-		return (
 			<SafeAreaView>
-				<StatusBar />
-				{this.renderContent()}
+				<FlatList
+					data={searching ? searchResults : chats}
+					keyExtractor={keyExtractor}
+					style={[styles.flatlist, { backgroundColor: themes[theme].auxiliaryBackground }]}
+					contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
+					renderItem={this.renderItem}
+					getItemLayout={getItemLayout}
+					ItemSeparatorComponent={List.Separator}
+					ListHeaderComponent={this.renderHeader}
+					ListFooterComponent={!searching || searchResults.length > 0 ? <List.Separator /> : null}
+					ListEmptyComponent={searching && searchText ? this.renderEmptyComponent : null}
+					removeClippedSubviews
+					keyboardShouldPersistTaps='always'
+				/>
 			</SafeAreaView>
 		);
 	}
