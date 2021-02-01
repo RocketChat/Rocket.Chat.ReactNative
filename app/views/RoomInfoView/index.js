@@ -4,7 +4,7 @@ import { View, Text, ScrollView } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import UAParser from 'ua-parser-js';
-import _ from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 
 import database from '../../lib/database';
 import { CustomIcon } from '../../lib/Icons';
@@ -169,7 +169,7 @@ class RoomInfoView extends React.Component {
 	loadUser = async() => {
 		const { room, roomUser } = this.state;
 
-		if (_.isEmpty(roomUser)) {
+		if (isEmpty(roomUser)) {
 			try {
 				const roomUserId = RocketChat.getUidDirectMessage(room);
 				const result = await RocketChat.getUserInfo(roomUserId);
@@ -224,7 +224,7 @@ class RoomInfoView extends React.Component {
 
 		// We don't need to create a direct
 		const member = route.params?.member;
-		if (!_.isEmpty(member)) {
+		if (!isEmpty(member)) {
 			return resolve();
 		}
 
