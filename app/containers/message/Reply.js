@@ -10,6 +10,7 @@ import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
+import { convertStrToHex } from '../../lib/utils';
 
 const styles = StyleSheet.create({
 	button: {
@@ -158,8 +159,8 @@ const Reply = React.memo(({
 					index > 0 && styles.marginTop,
 					attachment.description && styles.marginBottom,
 					{
-						backgroundColor: themes[theme].chatComponentBackground,
-						borderColor: themes[theme].borderColor
+						backgroundColor: attachment.color ? `${ convertStrToHex(attachment.color) }33` : themes[theme].chatComponentBackground,
+						borderColor: attachment.color || themes[theme].borderColor
 					}
 				]}
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
