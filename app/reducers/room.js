@@ -17,7 +17,7 @@ export default function(state = initialState, action) {
 			return {
 				...state,
 				rooms: state.rooms
-					.filter(rid => rid !== action.rid)
+					.filter((_, index, self) => index !== self.indexOf(action.rid))
 			};
 		case ROOM.LEAVE:
 			return {

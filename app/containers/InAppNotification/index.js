@@ -1,5 +1,8 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import { NotifierRoot, Notifier, Easing } from 'react-native-notifier';
+import { PropTypes } from 'react-native';
+import { connect } from 'react-redux';
+import isEqual from 'deep-equal';
 
 import NotifierComponent from './NotifierComponent';
 import EventEmitter from '../../utils/events';
@@ -8,13 +11,14 @@ import { getActiveRoute } from '../../utils/navigation';
 
 export const INAPP_NOTIFICATION_EMITTER = 'NotificationInApp';
 
-const InAppNotification = memo(() => {
+const InAppNotification = memo(({ rooms }) => {
+	const roomsRef = useRef(rooms);
 	const show = (notification) => {
 		const { payload } = notification;
 		const state = Navigation.navigationRef.current?.getRootState();
 		const route = getActiveRoute(state);
 		if (payload.rid) {
-			if ((route?.name === 'RoomView' && route.params?.rid === payload.rid) || route?.name === 'JitsiMeetView') {
+			if (roomsRef?.current.includes(payload.rid) || route?.name === 'JitsiMeetView') {
 				return;
 			}
 			Notifier.showNotification({
@@ -28,6 +32,12 @@ const InAppNotification = memo(() => {
 	};
 
 	useEffect(() => {
+		if (!isEqual(rooms, roomsRef?.current)) {
+			roomsRef.current = rooms;
+		}
+	}, [rooms]);
+
+	useEffect(() => {
 		EventEmitter.addEventListener(INAPP_NOTIFICATION_EMITTER, show);
 		return () => {
 			EventEmitter.removeListener(INAPP_NOTIFICATION_EMITTER);
@@ -37,4 +47,12 @@ const InAppNotification = memo(() => {
 	return <NotifierRoot />;
 });
 
-export default InAppNotification;
+const mapStateToProps = state => ({
+	rooms: state.room.rooms
+});
+
+InAppNotification.propTypes = {
+	rooms: PropTypes.array
+};
+
+export default connect(mapStateToProps)(InAppNotification);
