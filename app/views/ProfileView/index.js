@@ -437,7 +437,7 @@ class ProfileView extends React.Component {
 		logEvent(events.PROFILE_LOGOUT_OTHER_LOCATIONS);
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_from_other_locations'),
-			callToAction: I18n.t('Logout'),
+			confirmationText: I18n.t('Logout'),
 			onPress: async() => {
 				try {
 					await RocketChat.logoutOtherLocations();
