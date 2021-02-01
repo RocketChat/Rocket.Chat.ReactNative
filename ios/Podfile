@@ -21,76 +21,21 @@ abstract_target 'defaults' do
 end
 
 target 'ShareRocketChatRN' do
-  # all_pods
-  # use_unimodules!
-
-  # production = options[:production] ||= false
-
   pod 'EXAppleAuthentication', :path=> "../node_modules/expo-apple-authentication/ios"
   pod 'EXAV', :path=> "../node_modules/expo-av/ios"
-  # pod 'EXConstants', :path=> "../node_modules/expo-constants/ios"
   pod 'EXFileSystem', :path=> "../node_modules/expo-file-system/ios"
   pod 'EXHaptics', :path=> "../node_modules/expo-haptics/ios"
   pod 'EXImageLoader', :path=> "../node_modules/expo-image-loader/ios"
-  # pod 'EXKeepAwake', :path=> "../node_modules/expo-keep-awake/ios"
-  # pod 'EXPermissions', :path=> "../node_modules/expo-permissions/ios"
-  pod 'EXVideoThumbnails', :path=> "../node_modules/expo-video-thumbnails/ios"
-  # pod 'EXWebBrowser', :path=> "../node_modules/expo-web-browser/ios"
-  # pod 'UMAppLoader', :path=> "../node_modules/unimodules-app-loader/ios"
-  # pod 'UMBarCodeScannerInterface', :path=> "../node_modules/unimodules-barcode-scanner-interface/ios"
-  # pod 'UMCameraInterface', :path=> "../node_modules/unimodules-camera-interface/ios"
-  # pod 'UMConstantsInterface', :path=> "../node_modules/unimodules-constants-interface/ios"
   pod 'UMCore', :path=> "../node_modules/@unimodules/core/ios"
-  # pod 'UMFaceDetectorInterface', :path=> "../node_modules/unimodules-face-detector-interface/ios"
-  # pod 'UMFileSystemInterface', :path=> "../node_modules/unimodules-file-system-interface/ios"
-  # pod 'UMFontInterface', :path=> "../node_modules/unimodules-font-interface/ios"
   pod 'UMImageLoaderInterface', :path=> "../node_modules/unimodules-image-loader-interface/ios"
-  # pod 'UMPermissionsInterface', :path=> "../node_modules/unimodules-permissions-interface/ios"
   pod 'UMReactNativeAdapter', :path=> "../node_modules/@unimodules/react-native-adapter/ios"
-  # pod 'UMSensorsInterface', :path=> "../node_modules/unimodules-sensors-interface/ios"
-  # pod 'UMTaskManagerInterface', :path=> "../node_modules/unimodules-task-manager-interface/ios"
 
   use_react_native!(:path => '../node_modules/react-native')
-
-  # pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
-  # pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
-  # pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
-  # pod 'RCTTypeSafety', :path => "../node_modules/react-native/Libraries/TypeSafety"
-  # pod 'React', :path => "../node_modules/react-native/"
-  # pod 'React-Core', :path => "../node_modules/react-native/"
-  # pod 'React-CoreModules', :path => "../node_modules/react-native/React/CoreModules"
-  # pod 'React-RCTActionSheet', :path => "../node_modules/react-native/Libraries/ActionSheetIOS"
-  # pod 'React-RCTAnimation', :path => "../node_modules/react-native/Libraries/NativeAnimation"
-  # # pod 'React-RCTBlob', :path => "../node_modules/react-native/Libraries/Blob"
-  # pod 'React-RCTImage', :path => "../node_modules/react-native/Libraries/Image"
-  # # pod 'React-RCTLinking', :path => "../node_modules/react-native/Libraries/LinkingIOS"
-  # pod 'React-RCTNetwork', :path => "../node_modules/react-native/Libraries/Network"
-  # # pod 'React-RCTSettings', :path => "../node_modules/react-native/Libraries/Settings"
-  # pod 'React-RCTText', :path => "../node_modules/react-native/Libraries/Text"
-  # pod 'React-RCTVibration', :path => "../node_modules/react-native/Libraries/Vibration"
-  # pod 'React-Core/RCTWebSocket', :path => "../node_modules/react-native/"
-  # # unless production
-  #   # pod 'React-Core/DevSupport', :path => "../node_modules/react-native/"
-  # # end
-  # pod 'React-cxxreact', :path => "../node_modules/react-native/ReactCommon/cxxreact"
-  # pod 'React-jsi', :path => "../node_modules/react-native/ReactCommon/jsi"
-  # pod 'React-jsiexecutor', :path => "../node_modules/react-native/ReactCommon/jsiexecutor"
-  # pod 'React-jsinspector', :path => "../node_modules/react-native/ReactCommon/jsinspector"
-  # pod 'React-callinvoker', :path => "../node_modules/react-native/ReactCommon/callinvoker"
-  # pod 'ReactCommon/turbomodule/core', :path => "../node_modules/react-native/ReactCommon"
-  # pod 'Yoga', :path => "../node_modules/react-native/ReactCommon/yoga", :modular_headers => true
-  # pod 'DoubleConversion', :podspec => "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
-  # pod 'glog', :podspec => "../node_modules/react-native/third-party-podspecs/glog.podspec"
-  # pod 'Folly', :podspec => "../node_modules/react-native/third-party-podspecs/Folly.podspec"
-
-  # Pod::UI.warn(config)
-  # use_flipper!
 
   pod 'RNFBApp', :path => '../node_modules/@react-native-firebase/app'
   pod 'RNFBAnalytics', :path => '../node_modules/@react-native-firebase/analytics'
   pod 'RNFBCrashlytics', :path => '../node_modules/@react-native-firebase/crashlytics'
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
-  # pod 'react-native-cameraroll', :path => '../node_modules/@react-native-community/cameraroll'
   pod 'RNCMaskedView', :path => '../node_modules/@react-native-community/masked-view'
   pod 'RNFastImage', :path => '../node_modules/@rocket.chat/react-native-fast-image'
   pod 'BugsnagReactNative', :path => '../node_modules/bugsnag-react-native'
@@ -110,23 +55,7 @@ target 'ShareRocketChatRN' do
   pod 'rn-extensions-share', :path => '../node_modules/rn-extensions-share'
   pod 'rn-fetch-blob', :path => '../node_modules/rn-fetch-blob'
   pod 'RNRootView', :path => '../node_modules/rn-root-view'
-  
-  # pod 'react-native-webview', :path => '../node_modules/react-native-webview'
-  # pod 'react-native-notifications', :path => '../node_modules/react-native-notifications'
-  # pod 'ReactNativeART', :path => '../node_modules/@react-native-community/art'
-  # pod 'react-native-blur', :path => '../node_modules/@react-native-community/blur'
-  # pod 'react-native-cookies', :path => '../node_modules/@react-native-community/cookies'
-  # pod 'RNDateTimePicker', :path => '../node_modules/@react-native-community/datetimepicker'
-  # pod 'react-native-netinfo', :path => '../node_modules/@react-native-community/netinfo'
-  # pod 'RNCPicker', :path => '../node_modules/@react-native-community/picker'
-  # pod 'react-native-slider', :path => '../node_modules/@react-native-community/slider'
-  # pod 'react-native-background-timer', :path => '../node_modules/react-native-background-timer'
-  # pod 'RNBootSplash', :path => '../node_modules/react-native-bootsplash'
-  # pod 'RNImageCropPicker', :path => '../node_modules/react-native-image-crop-picker'
-  # pod 'react-native-jitsi-meet', :path => '../node_modules/react-native-jitsi-meet'
-  # pod 'KeyCommands', :path => '../node_modules/react-native-keycommands'
   pod 'react-native-orientation-locker', :path => '../node_modules/react-native-orientation-locker'
-  # pod 'react-native-restart', :path => '../node_modules/react-native-restart'
 end
 
 # used to get user credentials
