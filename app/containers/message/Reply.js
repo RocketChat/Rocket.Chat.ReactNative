@@ -10,7 +10,6 @@ import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
-import { convertStrToHex } from '../../lib/utils';
 
 const styles = StyleSheet.create({
 	button: {
@@ -21,6 +20,11 @@ const styles = StyleSheet.create({
 		alignSelf: 'flex-start',
 		borderWidth: 1,
 		borderRadius: 4
+	},
+	attachmentBackground: {
+		position: 'absolute',
+		width: '100%',
+		height: '100%'
 	},
 	attachmentContainer: {
 		flex: 1,
@@ -159,26 +163,29 @@ const Reply = React.memo(({
 					index > 0 && styles.marginTop,
 					attachment.description && styles.marginBottom,
 					{
-						backgroundColor: attachment.color ? `${ convertStrToHex(attachment.color) }33` : themes[theme].chatComponentBackground,
+						backgroundColor: themes[theme].chatComponentBackground,
 						borderColor: attachment.color || themes[theme].borderColor
 					}
 				]}
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
 			>
-				<View style={styles.attachmentContainer}>
-					<Title
-						attachment={attachment}
-						timeFormat={timeFormat}
-						theme={theme}
-					/>
-					<Description
-						attachment={attachment}
-						timeFormat={timeFormat}
-						getCustomEmoji={getCustomEmoji}
-						theme={theme}
-					/>
-					<Fields attachment={attachment} theme={theme} />
-				</View>
+				<>
+					<View style={[{ backgroundColor: attachment.color || 'transparent', opacity: 0.25 }, styles.attachmentBackground]} />
+					<View style={styles.attachmentContainer}>
+						<Title
+							attachment={attachment}
+							timeFormat={timeFormat}
+							theme={theme}
+						/>
+						<Description
+							attachment={attachment}
+							timeFormat={timeFormat}
+							getCustomEmoji={getCustomEmoji}
+							theme={theme}
+						/>
+						<Fields attachment={attachment} theme={theme} />
+					</View>
+				</>
 			</Touchable>
 			<Markdown
 				msg={attachment.description}

@@ -30991,6 +30991,21 @@ exports[`Storyshots Message list message 1`] = `
               >
                 <View
                   style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "opacity": 0.25,
+                      },
+                      Object {
+                        "height": "100%",
+                        "position": "absolute",
+                        "width": "100%",
+                      },
+                    ]
+                  }
+                />
+                <View
+                  style={
                     Object {
                       "borderRadius": 4,
                       "flex": 1,
@@ -31206,6 +31221,21 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 }
               >
+                <View
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "opacity": 0.25,
+                      },
+                      Object {
+                        "height": "100%",
+                        "position": "absolute",
+                        "width": "100%",
+                      },
+                    ]
+                  }
+                />
                 <View
                   style={
                     Object {
@@ -31630,6 +31660,21 @@ exports[`Storyshots Message list message 1`] = `
               >
                 <View
                   style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "opacity": 0.25,
+                      },
+                      Object {
+                        "height": "100%",
+                        "position": "absolute",
+                        "width": "100%",
+                      },
+                    ]
+                  }
+                />
+                <View
+                  style={
                     Object {
                       "borderRadius": 4,
                       "flex": 1,
@@ -31997,6 +32042,21 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 }
               >
+                <View
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "opacity": 0.25,
+                      },
+                      Object {
+                        "height": "100%",
+                        "position": "absolute",
+                        "width": "100%",
+                      },
+                    ]
+                  }
+                />
                 <View
                   style={
                     Object {
@@ -39154,6 +39214,21 @@ exports[`Storyshots Message list message 1`] = `
               >
                 <View
                   style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "opacity": 0.25,
+                      },
+                      Object {
+                        "height": "100%",
+                        "position": "absolute",
+                        "width": "100%",
+                      },
+                    ]
+                  }
+                />
+                <View
+                  style={
                     Object {
                       "borderRadius": 4,
                       "flex": 1,
@@ -39804,6 +39879,21 @@ exports[`Storyshots Message list message 1`] = `
               >
                 <View
                   style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "opacity": 0.25,
+                      },
+                      Object {
+                        "height": "100%",
+                        "position": "absolute",
+                        "width": "100%",
+                      },
+                    ]
+                  }
+                />
+                <View
+                  style={
                     Object {
                       "borderRadius": 4,
                       "flex": 1,
@@ -40042,6 +40132,21 @@ exports[`Storyshots Message list message 1`] = `
                   }
                 }
               >
+                <View
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "opacity": 0.25,
+                      },
+                      Object {
+                        "height": "100%",
+                        "position": "absolute",
+                        "width": "100%",
+                      },
+                    ]
+                  }
+                />
                 <View
                   style={
                     Object {
