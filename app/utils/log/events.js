@@ -6,7 +6,6 @@ export default {
 
 	// NEW SERVER VIEW
 	NS_CONNECT_TO_WORKSPACE: 'ns_connect_to_workspace',
-	NS_CONNECT_TO_WORKSPACE_F: 'ns_connect_to_workspace_f',
 	NS_JOIN_OPEN_WORKSPACE: 'ns_join_open_workspace',
 
 	// LOGIN VIEW
@@ -298,9 +297,6 @@ export default {
 	NP_AUDIONOTIFICATIONS_F: 'np_audio_notifications_f',
 	NP_AUDIONOTIFICATIONVALUE: 'np_audio_notification_value',
 	NP_AUDIONOTIFICATIONVALUE_F: 'np_audio_notification_value_f',
-	// NOTIFICATION PREFERENCES DESKTOP NOTIFICATION
-	NP_DN_DURATION: 'np_ds_duration',
-	NP_DN_DURATION_F: 'np_ds_duration_f',
 	NP_EMAILNOTIFICATIONS: 'np_email_notifications',
 	NP_EMAILNOTIFICATIONS_F: 'np_email_notifications_f',
 
