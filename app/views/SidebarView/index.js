@@ -45,7 +45,8 @@ class Sidebar extends Component {
 		loadingServer: PropTypes.bool,
 		useRealName: PropTypes.bool,
 		allowStatusMessage: PropTypes.bool,
-		isMasterDetail: PropTypes.bool
+		isMasterDetail: PropTypes.bool,
+		isLogin: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -72,6 +73,7 @@ class Sidebar extends Component {
 		const {
 			Site_Name, user, baseUrl, state, isMasterDetail, useRealName, theme
 		} = this.props;
+
 		// Drawer navigation state
 		if (state?.index !== nextProps.state?.index) {
 			return true;
@@ -103,7 +105,14 @@ class Sidebar extends Component {
 		if (nextState.isAdmin !== isAdmin) {
 			return true;
 		}
+		if (nextProps.state !== state) {
+			return true;
+		}
 		return false;
+	}
+
+	componentDidUpdate() {
+		this.setIsAdmin();
 	}
 
 	async setIsAdmin() {
