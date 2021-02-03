@@ -97,7 +97,8 @@ class AvatarContainer extends React.Component {
 
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
-	serverVersion: state.server.version,
+	server: state.share.server.server || state.server.server,
+	serverVersion: state.share.server.version || state.server.version,
 	blockUnauthenticatedAccess:
 		state.share.settings?.Accounts_AvatarBlockUnauthenticatedAccess
 		?? state.settings.Accounts_AvatarBlockUnauthenticatedAccess
