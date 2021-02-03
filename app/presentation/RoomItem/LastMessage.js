@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
+import isEqual from 'lodash/isEqual';
 
 import I18n from '../../i18n';
 import styles from './styles';
@@ -45,7 +45,7 @@ const formatMsg = ({
 	return `${ prefix }${ lastMessage.msg }`;
 };
 
-const arePropsEqual = (oldProps, newProps) => _.isEqual(oldProps, newProps);
+const arePropsEqual = (oldProps, newProps) => isEqual(oldProps, newProps);
 
 const LastMessage = React.memo(({
 	lastMessage, type, showLastMessage, username, alert, useRealName, theme
