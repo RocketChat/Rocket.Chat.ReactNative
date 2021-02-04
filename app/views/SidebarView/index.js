@@ -45,15 +45,15 @@ class Sidebar extends Component {
 		loadingServer: PropTypes.bool,
 		useRealName: PropTypes.bool,
 		allowStatusMessage: PropTypes.bool,
-		isMasterDetail: PropTypes.bool,
-		isLogin: PropTypes.bool
+		isMasterDetail: PropTypes.bool
 	}
 
 	constructor(props) {
 		super(props);
 		this.state = {
 			showStatus: false,
-			isAdmin: false
+			isAdmin: false,
+			isSetAdminNeedCall: true
 		};
 	}
 
@@ -69,7 +69,7 @@ class Sidebar extends Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { showStatus, isAdmin } = this.state;
+		const { showStatus, isAdmin, isSetAdminNeedCall } = this.state;
 		const {
 			Site_Name, user, baseUrl, state, isMasterDetail, useRealName, theme
 		} = this.props;
@@ -105,7 +105,7 @@ class Sidebar extends Component {
 		if (nextState.isAdmin !== isAdmin) {
 			return true;
 		}
-		if (nextProps.state !== state) {
+		if (nextProps.state !== state && isSetAdminNeedCall === true) {
 			return true;
 		}
 		return false;
@@ -123,8 +123,11 @@ class Sidebar extends Component {
 			if	(roles) {
 				const permissionsCollection = db.collections.get('permissions');
 				const permissionsFiltered = await permissionsCollection.query(Q.where('id', Q.oneOf(permissions))).fetch();
-				const isAdmin = permissionsFiltered.reduce((result, permission) => (
-					result || permission.roles.some(r => roles.indexOf(r) !== -1)),
+				const isAdmin = permissionsFiltered.reduce((result, permission) => {
+					this.setState({ isSetAdminNeedCall: false });
+					return (
+						result || permission.roles.some(r => roles.indexOf(r) !== -1));
+				},
 				false);
 				this.setState({ isAdmin });
 			}
