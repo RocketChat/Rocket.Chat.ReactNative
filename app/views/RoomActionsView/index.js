@@ -119,17 +119,23 @@ class RoomActionsView extends React.Component {
 			}
 
 			const canAutoTranslate = await RocketChat.canAutoTranslate();
-			this.setState({ canAutoTranslate });
+			const canAddUser = await this.canAddUser();
+			const canInviteUser = await this.canInviteUser();
+			const canEdit = await this.canEdit();
+			const canToggleEncryption = await this.canToggleEncryption();
+			const canViewMembers = await this.canViewMembers();
 
-			this.canAddUser();
-			this.canInviteUser();
-			this.canEdit();
-			this.canToggleEncryption();
+			this.setState({
+				canAutoTranslate, canAddUser, canInviteUser, canEdit, canToggleEncryption, canViewMembers
+			});
 
 			// livechat permissions
 			if (room.t === 'l') {
-				this.canForwardGuest();
-				this.canReturnQueue();
+				const canForwardGuest = await this.canForwardGuest();
+				// this.setState({ canForwardGuest });
+
+				const canReturnQueue = await this.canReturnQueue();
+				this.setState({ canForwardGuest, canReturnQueue });
 			}
 		}
 	}
@@ -176,7 +182,7 @@ class RoomActionsView extends React.Component {
 				canAdd = true;
 			}
 		}
-		this.setState({ canAddUser: canAdd });
+		return canAdd;
 	}
 
 	canInviteUser = async() => {
@@ -185,7 +191,7 @@ class RoomActionsView extends React.Component {
 		const permissions = await RocketChat.hasPermission(['create-invite-links'], rid);
 
 		const canInviteUser = permissions && permissions['create-invite-links'];
-		this.setState({ canInviteUser });
+		return canInviteUser;
 	}
 
 	canEdit = async() => {
@@ -194,7 +200,7 @@ class RoomActionsView extends React.Component {
 		const permissions = await RocketChat.hasPermission(['edit-room'], rid);
 
 		const canEdit = permissions && permissions['edit-room'];
-		this.setState({ canEdit });
+		return canEdit;
 	}
 
 	canToggleEncryption = async() => {
@@ -203,7 +209,7 @@ class RoomActionsView extends React.Component {
 		const permissions = await RocketChat.hasPermission(['toggle-room-e2e-encryption'], rid);
 
 		const canToggleEncryption = permissions && permissions['toggle-room-e2e-encryption'];
-		this.setState({ canToggleEncryption });
+		return canToggleEncryption;
 	}
 
 	canViewMembers = async() => {
@@ -220,7 +226,6 @@ class RoomActionsView extends React.Component {
 		// This method is executed only in componentDidMount and returns a value
 		// We save the state to read in render
 		const result = (t === 'c' || t === 'p');
-		this.setState({ canViewMembers: result });
 		return result;
 	}
 
@@ -235,13 +240,13 @@ class RoomActionsView extends React.Component {
 			result = false;
 		}
 
-		this.setState({ canForwardGuest: result });
+		return result;
 	}
 
 	canReturnQueue = async() => {
 		try {
 			const { returnQueue } = await RocketChat.getRoutingConfig();
-			this.setState({ canReturnQueue: returnQueue });
+			return returnQueue;
 		} catch {
 			// do nothing
 		}
@@ -579,6 +584,7 @@ class RoomActionsView extends React.Component {
 			rid, t, encrypted
 		} = room;
 		const isGroupChat = RocketChat.isGroupChat(room);
+
 		return (
 			<SafeAreaView testID='room-actions-view'>
 				<StatusBar />
