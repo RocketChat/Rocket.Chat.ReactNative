@@ -115,6 +115,7 @@ class AttachmentView extends React.Component {
 				return;
 			}
 		}
+
 		this.setState({ loading: true });
 		try {
 			const extension = image_url ? `.${ mime.extension(image_type) || 'jpg' }` : `.${ mime.extension(video_type) || 'mp4' }`;
