@@ -531,6 +531,9 @@ class RoomView extends React.Component {
 	}
 
 	onEditInit = (message) => {
+		if (message.attachments.length > 0) {
+			message._raw.msg = message.attachments[0].description;
+		}
 		this.setState({ selectedMessage: message, editing: true });
 	}
 
