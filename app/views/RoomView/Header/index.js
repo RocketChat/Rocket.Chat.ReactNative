@@ -28,8 +28,7 @@ class RoomHeaderView extends Component {
 		goRoomActionsView: PropTypes.func,
 		width: PropTypes.number,
 		height: PropTypes.number,
-		parentTitle: PropTypes.string,
-		isThread: PropTypes.bool.isRequired
+		parentTitle: PropTypes.string
 	};
 
 	shouldComponentUpdate(nextProps) {
@@ -77,7 +76,7 @@ class RoomHeaderView extends Component {
 
 	render() {
 		const {
-			title, subtitle: subtitleProp, type, prid, tmid, widthOffset, status = 'offline', statusText, connecting, connected, usersTyping, goRoomActionsView, roomUserId, theme, width, height, parentTitle, isThread
+			title, subtitle: subtitleProp, type, prid, tmid, widthOffset, status = 'offline', statusText, connecting, connected, usersTyping, goRoomActionsView, roomUserId, theme, width, height, parentTitle
 		} = this.props;
 
 		let subtitle;
@@ -94,7 +93,6 @@ class RoomHeaderView extends Component {
 				prid={prid}
 				tmid={tmid}
 				title={title}
-				isThread={isThread || false}
 				subtitle={type === 'd' ? statusText : subtitle}
 				type={type}
 				status={status}

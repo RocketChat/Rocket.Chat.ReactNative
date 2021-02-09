@@ -119,7 +119,7 @@ HeaderTitle.propTypes = {
 };
 
 const Header = React.memo(({
-	title, subtitle, parentTitle, type, status, usersTyping, width, height, prid, tmid, connecting, goRoomActionsView, roomUserId, theme, isThread
+	title, subtitle, parentTitle, type, status, usersTyping, width, height, prid, tmid, connecting, goRoomActionsView, roomUserId, theme
 }) => {
 	const portrait = height > width;
 	let scale = 1;
@@ -168,14 +168,13 @@ const Header = React.memo(({
 					theme={theme}
 				/>
 			</View>
-			<SubTitle usersTyping={isThread ? 0 : usersTyping} subtitle={subtitle} theme={theme} renderFunc={renderFunc} />
+			<SubTitle usersTyping={tmid ? [] : usersTyping} subtitle={subtitle} theme={theme} renderFunc={renderFunc} />
 		</TouchableOpacity>
 	);
 });
 
 Header.propTypes = {
 	title: PropTypes.string.isRequired,
-	isThread: PropTypes.bool.isRequired,
 	subtitle: PropTypes.string,
 	type: PropTypes.string.isRequired,
 	width: PropTypes.number.isRequired,

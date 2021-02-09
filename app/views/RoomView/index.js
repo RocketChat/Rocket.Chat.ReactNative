@@ -110,7 +110,6 @@ class RoomView extends React.Component {
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;
 		this.tmid = props.route.params?.tmid;
-		this.isThread = props.route.params?.t === 'thread' || false;
 		const selectedMessage = props.route.params?.message;
 		const name = props.route.params?.name;
 		const fname = props.route.params?.fname;
@@ -347,7 +346,6 @@ class RoomView extends React.Component {
 			headerTitle: () => (
 				<RoomHeaderView
 					rid={rid}
-					isThread={this.isThread}
 					prid={prid}
 					tmid={tmid}
 					title={title}
