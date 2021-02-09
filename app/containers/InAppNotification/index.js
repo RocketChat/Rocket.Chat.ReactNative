@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */
 import React, { memo, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { NotifierRoot, Notifier, Easing } from 'react-native-notifier';
 import { connect } from 'react-redux';
 import isEqual from 'deep-equal';
@@ -43,5 +43,9 @@ const InAppNotification = memo(({ rooms }) => {
 const mapStateToProps = state => ({
 	rooms: state.room.rooms
 });
+
+InAppNotification.propTypes = {
+	rooms: PropTypes.array
+};
 
 export default connect(mapStateToProps)(InAppNotification);
