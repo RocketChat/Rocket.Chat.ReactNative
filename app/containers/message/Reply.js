@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import isEqual from 'deep-equal';
+import { transparentize } from 'color2k';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
@@ -20,11 +21,6 @@ const styles = StyleSheet.create({
 		alignSelf: 'flex-start',
 		borderWidth: 1,
 		borderRadius: 4
-	},
-	attachmentBackground: {
-		position: 'absolute',
-		width: '100%',
-		height: '100%'
 	},
 	attachmentContainer: {
 		flex: 1,
@@ -163,29 +159,26 @@ const Reply = React.memo(({
 					index > 0 && styles.marginTop,
 					attachment.description && styles.marginBottom,
 					{
-						backgroundColor: themes[theme].chatComponentBackground,
+						backgroundColor: attachment.color ? transparentize(attachment.color, 0.80) : themes[theme].chatComponentBackground,
 						borderColor: attachment.color || themes[theme].borderColor
 					}
 				]}
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
 			>
-				<>
-					<View style={[{ backgroundColor: attachment.color || 'transparent', opacity: 0.25 }, styles.attachmentBackground]} />
-					<View style={styles.attachmentContainer}>
-						<Title
-							attachment={attachment}
-							timeFormat={timeFormat}
-							theme={theme}
-						/>
-						<Description
-							attachment={attachment}
-							timeFormat={timeFormat}
-							getCustomEmoji={getCustomEmoji}
-							theme={theme}
-						/>
-						<Fields attachment={attachment} theme={theme} />
-					</View>
-				</>
+				<View style={styles.attachmentContainer}>
+					<Title
+						attachment={attachment}
+						timeFormat={timeFormat}
+						theme={theme}
+					/>
+					<Description
+						attachment={attachment}
+						timeFormat={timeFormat}
+						getCustomEmoji={getCustomEmoji}
+						theme={theme}
+					/>
+					<Fields attachment={attachment} theme={theme} />
+				</View>
 			</Touchable>
 			<Markdown
 				msg={attachment.description}
