@@ -531,10 +531,14 @@ class RoomView extends React.Component {
 	}
 
 	onEditInit = (message) => {
-		if (message.attachments.length > 0) {
-			message._raw.msg = message.attachments[0].description;
-		}
-		this.setState({ selectedMessage: message, editing: true });
+		const newMessage = {
+			id: message.id,
+			subscription: {
+				id: message.subscription.id
+			},
+			msg: message?.attachments?.[0]?.description || message.msg
+		};
+		this.setState({ selectedMessage: newMessage, editing: true });
 	}
 
 	onEditCancel = () => {
