@@ -5871,6 +5871,11 @@ dequal@^1.0.0:
   resolved "https://registry.yarnpkg.com/dequal/-/dequal-1.0.0.tgz#41c6065e70de738541c82cdbedea5292277a017e"
   integrity sha512-/Nd1EQbQbI9UbSHrMiKZjFLrXSnU328iQdZKPQf78XQI6C+gutkFUeoHpG5J08Ioa6HeRbRNFpSIclh1xyG0mw==
 
+dequal@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/dequal/-/dequal-2.0.2.tgz#85ca22025e3a87e65ef75a7a437b35284a7e319d"
+  integrity sha512-q9K8BlJVxK7hQYqa6XISGmBZbtQQWVXSrRrWreHC94rMt1QL/Impruc+7p2CYSYuVIUr+YCt6hjrs1kkdJRTug==
+
 des.js@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/des.js/-/des.js-1.0.1.tgz#5382142e1bdc53f85d86d53e5f4aa7deb91e0843"
@@ -13832,8 +13837,6 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
 rn-extensions-share@RocketChat/rn-extensions-share:
   version "2.4.1"
   resolved "https://codeload.github.com/RocketChat/rn-extensions-share/tar.gz/4d7c0e4c2f300e4fb116af7b7cc0dbbc8169150c"
-  dependencies:
-    react-native "^0.63.1"
 
 rn-fetch-blob@0.12.0:
   version "0.12.0"

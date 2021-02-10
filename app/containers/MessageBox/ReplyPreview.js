@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import isEqual from 'lodash/isEqual';
+import isEqual from 'react-fast-compare';
 
 import Markdown from '../markdown';
 import { CustomIcon } from '../../lib/Icons';

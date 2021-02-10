@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
-import isEqual from 'lodash/isEqual';
+import { dequal } from 'dequal';
 import { connect } from 'react-redux';
 import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scroll-view';
 
@@ -95,10 +95,10 @@ class ModalBlockView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		if (!isEqual(nextProps, this.props)) {
+		if (!dequal(nextProps, this.props)) {
 			return true;
 		}
-		if (!isEqual(nextState, this.state)) {
+		if (!dequal(nextState, this.state)) {
 			return true;
 		}
 

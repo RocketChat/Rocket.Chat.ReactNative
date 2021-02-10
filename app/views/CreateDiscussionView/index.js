@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { ScrollView, Text, Switch } from 'react-native';
-import isEqual from 'lodash/isEqual';
+import { dequal } from 'dequal';
 
 import Loading from '../../containers/Loading';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -67,7 +67,7 @@ class CreateChannelView extends React.Component {
 			loading, failure, error, result, isMasterDetail
 		} = this.props;
 
-		if (!isEqual(this.state, prevState)) {
+		if (!dequal(this.state, prevState)) {
 			this.setHeader();
 		}
 
