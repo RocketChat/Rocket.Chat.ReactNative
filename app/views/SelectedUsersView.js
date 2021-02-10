@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import equal from 'deep-equal';
-import { orderBy } from 'lodash';
+import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
 
 import database from '../lib/database';
