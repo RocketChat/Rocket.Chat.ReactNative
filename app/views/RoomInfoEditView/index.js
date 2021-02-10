@@ -9,7 +9,9 @@ import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 import ImagePicker from 'react-native-image-crop-picker';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
-import semver from 'semver';
+import lt from 'semver/functions/lt';
+import coerce from 'semver/functions/coerce';
+
 
 import database from '../../lib/database';
 import { deleteRoom as deleteRoomAction } from '../../actions/room';
@@ -407,7 +409,7 @@ class RoomInfoEditView extends React.Component {
 
 	isServerVersionLowerThan = (version) => {
 		const { serverVersion } = this.props;
-		return serverVersion && semver.lt(semver.coerce(serverVersion), version);
+		return serverVersion && lt(coerce(serverVersion), version);
 	}
 
 	render() {
@@ -547,7 +549,7 @@ class RoomInfoEditView extends React.Component {
 							]
 							: null
 						}
-						{serverVersion && !semver.lt(serverVersion, '3.0.0') ? (
+						{serverVersion && !lt(serverVersion, '3.0.0') ? (
 							<SwitchContainer
 								value={enableSysMes}
 								leftLabelPrimary={I18n.t('Hide_System_Messages')}
