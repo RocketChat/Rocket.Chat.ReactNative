@@ -180,7 +180,11 @@ const RocketChat = {
 	},
 	connect({ server, user, logoutOnError = false }) {
 		return new Promise((resolve) => {
-			if (!this.sdk || this.sdk.client.host !== server) {
+			if (this?.sdk?.client?.host === server) {
+				return resolve();
+			} else {
+				this.sdk?.disconnect?.();
+				this.sdk = null;
 				database.setActiveDB(server);
 			}
 			reduxStore.dispatch(connectRequest());
@@ -208,11 +212,6 @@ const RocketChat = {
 			this.unsubscribeRooms();
 
 			EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
-
-			if (this.sdk) {
-				this.sdk.disconnect();
-				this.sdk = null;
-			}
 
 			if (this.code) {
 				this.code = null;
