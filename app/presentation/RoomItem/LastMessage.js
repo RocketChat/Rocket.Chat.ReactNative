@@ -26,7 +26,8 @@ const formatMsg = ({
 	const isLastMessageSentByMe = lastMessage.u.username === username;
 
 	if (!lastMessage.msg && lastMessage.attachments && Object.keys(lastMessage.attachments).length) {
-		const user = isLastMessageSentByMe ? I18n.t('You') : lastMessage.u.username;
+		const name = useRealName ? lastMessage.u.name : lastMessage.u.username;
+		const user = isLastMessageSentByMe ? I18n.t('You') : name;
 		return I18n.t('User_sent_an_attachment', { user });
 	}
 
