@@ -155,7 +155,9 @@ class RoomView extends React.Component {
 		this.list = React.createRef();
 		this.joinCode = React.createRef();
 		this.mounted = false;
-		if (this.rid) {
+
+		// we don't need to subscribe to threads
+		if (this.rid && !this.tmid) {
 			this.sub = new RoomClass(this.rid);
 		}
 		console.timeEnd(`${ this.constructor.name } init`);
@@ -168,7 +170,7 @@ class RoomView extends React.Component {
 			const { isAuthenticated } = this.props;
 			this.setHeader();
 			if (this.rid) {
-				this.sub.subscribe();
+				this.sub?.subscribe?.();
 				if (isAuthenticated) {
 					this.init();
 				} else {
