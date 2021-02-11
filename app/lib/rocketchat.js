@@ -178,6 +178,9 @@ const RocketChat = {
 		}
 		this.controller = new AbortController();
 	},
+	checkAndReopen() {
+		return this?.sdk?.checkAndReopen();
+	},
 	connect({ server, user, logoutOnError = false }) {
 		return new Promise((resolve) => {
 			if (this?.sdk?.client?.host === server) {

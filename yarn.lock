@@ -2258,7 +2258,7 @@
 
 "@rocket.chat/sdk@RocketChat/Rocket.Chat.js.SDK#mobile-close-code":
   version "1.0.0-mobile"
-  resolved "https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/1789b8b82506084c9a4b233b0def293290c95f7e"
+  resolved "https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/7de290d445d40a28c120289fdec7a78be2ee645b"
   dependencies:
     js-sha256 "^0.9.0"
     lru-cache "^4.1.1"

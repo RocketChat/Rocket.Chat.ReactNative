@@ -12,13 +12,14 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	if (appRoot === ROOT_OUTSIDE) {
 		return;
 	}
-	const auth = yield select(state => state.login.isAuthenticated);
-	if (!auth) {
+	const login = yield select(state => state.login);
+	const server = yield select(state => state.server);
+	if (!login.isAuthenticated || login.isFetching || server.connecting || server.loading || server.changingServer) {
 		return;
 	}
+	RocketChat.checkAndReopen();
 	try {
-		const server = yield select(state => state.server.server);
-		yield localAuthenticate(server);
+		yield localAuthenticate(server.server);
 		setBadgeCount();
 		return yield RocketChat.setUserPresenceOnline();
 	} catch (e) {
