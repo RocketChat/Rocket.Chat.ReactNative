@@ -42,7 +42,8 @@ class SearchMessagesView extends React.Component {
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
 		customEmojis: PropTypes.object,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		useRealName: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -143,7 +144,9 @@ class SearchMessagesView extends React.Component {
 	}
 
 	renderItem = ({ item }) => {
-		const { user, baseUrl, theme } = this.props;
+		const {
+			user, baseUrl, theme, useRealName
+		} = this.props;
 		return (
 			<Message
 				item={item}
@@ -154,6 +157,7 @@ class SearchMessagesView extends React.Component {
 				showAttachment={() => {}}
 				getCustomEmoji={this.getCustomEmoji}
 				navToRoomInfo={this.navToRoomInfo}
+				useRealName={useRealName}
 				theme={theme}
 			/>
 		);
@@ -206,6 +210,7 @@ class SearchMessagesView extends React.Component {
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
+	useRealName: state.settings.UI_Use_Real_Name,
 	customEmojis: state.customEmojis
 });
 
