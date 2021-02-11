@@ -548,8 +548,18 @@ class RoomView extends React.Component {
 	}
 
 	onReplyInit = (message, mention) => {
+		const newMessage = {
+			id: message.id,
+			subscription: {
+				id: message.subscription.id
+			},
+			msg: message?.attachments?.[0]?.description || message.msg,
+			u: {
+				username: message.u.name
+			}
+		};
 		this.setState({
-			selectedMessage: message, replying: true, replyWithMention: mention
+			selectedMessage: newMessage, replying: true, replyWithMention: mention
 		});
 	}
 
@@ -874,6 +884,7 @@ class RoomView extends React.Component {
 	}
 
 	renderItem = (item, previousItem) => {
+		console.log('renderItem', item);
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
 			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme
