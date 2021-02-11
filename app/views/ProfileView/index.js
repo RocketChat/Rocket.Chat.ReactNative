@@ -6,7 +6,8 @@ import prompt from 'react-native-prompt-android';
 import SHA256 from 'js-sha256';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
-import { isEqual, omit } from 'lodash';
+import isEqual from 'lodash/isEqual';
+import omit from 'lodash/omit';
 
 import Touch from '../../utils/touch';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -436,7 +437,7 @@ class ProfileView extends React.Component {
 		logEvent(events.PL_OTHER_LOCATIONS);
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_from_other_locations'),
-			callToAction: I18n.t('Logout'),
+			confirmationText: I18n.t('Logout'),
 			onPress: async() => {
 				try {
 					await RocketChat.logoutOtherLocations();
