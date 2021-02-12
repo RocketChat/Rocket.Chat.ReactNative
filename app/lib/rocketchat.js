@@ -243,6 +243,10 @@ const RocketChat = {
 
 			sdkConnect();
 
+			this.connectedListener = this.sdk.onStreamData('connecting', () => {
+				reduxStore.dispatch(connectRequest());
+			});
+
 			this.connectedListener = this.sdk.onStreamData('connected', () => {
 				reduxStore.dispatch(connectSuccess());
 			});

@@ -407,7 +407,7 @@ export default function subscribeRooms() {
 	};
 
 	connectedListener = this.sdk.onStreamData('connected', handleConnection);
-	disconnectedListener = this.sdk.onStreamData('close', handleConnection);
+	// disconnectedListener = this.sdk.onStreamData('close', handleConnection);
 	streamListener = this.sdk.onStreamData('stream-notify-user', handleStreamMessageReceived);
 
 	try {
