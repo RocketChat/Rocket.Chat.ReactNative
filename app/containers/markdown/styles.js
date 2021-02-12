@@ -51,6 +51,10 @@ export default StyleSheet.create({
 		width: 30,
 		height: 30
 	},
+	customEmojiWrapper: {
+		paddingRight: 3,
+		paddingBottom: 2
+	},
 	temp: { opacity: 0.3 },
 	mention: {
 		fontSize: 16,

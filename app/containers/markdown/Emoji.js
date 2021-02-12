@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
@@ -15,14 +15,16 @@ const Emoji = React.memo(({
 	const emoji = getCustomEmoji && getCustomEmoji(literal.replace(/:/g, ''));
 	if (emoji && customEmojis) {
 		return (
-			<CustomEmoji
-				baseUrl={baseUrl}
-				style={[
-					isMessageContainsOnlyEmoji ? styles.customEmojiBig : styles.customEmoji,
-					style
-				]}
-				emoji={emoji}
-			/>
+			<View style={styles.customEmojiWrapper}>
+				<CustomEmoji
+					baseUrl={baseUrl}
+					style={[
+						isMessageContainsOnlyEmoji ? styles.customEmojiBig : styles.customEmoji,
+						style
+					]}
+					emoji={emoji}
+				/>
+			</View>
 		);
 	}
 	return (
