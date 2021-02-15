@@ -1,4 +1,3 @@
-import { InteractionManager } from 'react-native';
 import lt from 'semver/functions/lt';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import orderBy from 'lodash/orderBy';
@@ -85,10 +84,8 @@ export default function() {
 				if (!result.success) {
 					return resolve();
 				}
-				InteractionManager.runAfterInteractions(async() => {
-					await updatePermissions({ update: result.permissions, allRecords });
-					return resolve();
-				});
+				await updatePermissions({ update: result.permissions, allRecords });
+				return resolve();
 			} else {
 				const params = {};
 				const updatedSince = await getUpdatedSince(allRecords);
@@ -102,10 +99,8 @@ export default function() {
 					return resolve();
 				}
 
-				InteractionManager.runAfterInteractions(async() => {
-					await updatePermissions({ update: result.update, remove: result.delete, allRecords });
-					return resolve();
-				});
+				await updatePermissions({ update: result.update, remove: result.delete, allRecords });
+				return resolve();
 			}
 		} catch (e) {
 			log(e);

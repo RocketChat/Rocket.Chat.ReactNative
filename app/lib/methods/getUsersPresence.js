@@ -1,4 +1,3 @@
-import { InteractionManager } from 'react-native';
 import lt from 'semver/functions/lt';
 import gte from 'semver/functions/gte';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
@@ -66,9 +65,7 @@ export default async function getUsersPresence() {
 					ret[_id] = { status, statusText };
 					return ret;
 				}, {});
-				InteractionManager.runAfterInteractions(() => {
-					reduxStore.dispatch(setActiveUsers(activeUsers));
-				});
+				reduxStore.dispatch(setActiveUsers(activeUsers));
 				ids = [];
 
 				const db = database.active;

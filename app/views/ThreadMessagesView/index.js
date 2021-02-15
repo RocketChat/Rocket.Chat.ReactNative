@@ -330,10 +330,8 @@ class ThreadMessagesView extends React.Component {
 				rid: this.rid, updatedSince: updatedSince.toISOString()
 			});
 			if (result.success && result.threads) {
-				this.syncInteraction = InteractionManager.runAfterInteractions(() => {
-					const { update, remove } = result.threads;
-					this.updateThreads({ update, remove, lastThreadSync: updatedSince });
-				});
+				const { update, remove } = result.threads;
+				this.updateThreads({ update, remove, lastThreadSync: updatedSince });
 			}
 			this.setState({
 				loading: false
