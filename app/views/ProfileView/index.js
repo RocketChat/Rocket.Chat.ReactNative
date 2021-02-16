@@ -434,7 +434,7 @@ class ProfileView extends React.Component {
 	}
 
 	logoutOtherLocations = () => {
-		logEvent(events.PROFILE_LOGOUT_OTHER_LOCATIONS);
+		logEvent(events.PL_OTHER_LOCATIONS);
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_from_other_locations'),
 			confirmationText: I18n.t('Logout'),
@@ -443,7 +443,7 @@ class ProfileView extends React.Component {
 					await RocketChat.logoutOtherLocations();
 					EventEmitter.emit(LISTENER, { message: I18n.t('Logged_out_of_other_clients_successfully') });
 				} catch {
-					logEvent(events.PROFILE_LOGOUT_OTHER_LOCATIONS_F);
+					logEvent(events.PL_OTHER_LOCATIONS_F);
 					EventEmitter.emit(LISTENER, { message: I18n.t('Logout_failed') });
 				}
 			}

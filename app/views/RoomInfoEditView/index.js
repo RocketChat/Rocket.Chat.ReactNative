@@ -666,7 +666,7 @@ class RoomInfoEditView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	serverVersion: state.share.server.version || state.server.version,
+	serverVersion: state.server.version,
 	encryptionEnabled: state.encryption.enabled
 });
 

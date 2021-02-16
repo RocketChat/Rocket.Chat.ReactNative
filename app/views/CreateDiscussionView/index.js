@@ -136,17 +136,17 @@ class CreateChannelView extends React.Component {
 	};
 
 	selectChannel = ({ value }) => {
-		logEvent(events.CREATE_DISCUSSION_SELECT_CHANNEL);
+		logEvent(events.CD_SELECT_CHANNEL);
 		this.setState({ channel: value, encrypted: value?.encrypted });
 	}
 
 	selectUsers = ({ value }) => {
-		logEvent(events.CREATE_DISCUSSION_SELECT_USERS);
+		logEvent(events.CD_SELECT_USERS);
 		this.setState({ users: value });
 	}
 
 	onEncryptedChange = (value) => {
-		logEvent(events.CREATE_DISCUSSION_TOGGLE_ENCRY);
+		logEvent(events.CD_TOGGLE_ENCRY);
 		this.setState({ encrypted: value });
 	}
 
@@ -222,7 +222,7 @@ const mapStateToProps = state => ({
 	loading: state.createDiscussion.isFetching,
 	result: state.createDiscussion.result,
 	blockUnauthenticatedAccess: state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true,
-	serverVersion: state.share.server.version || state.server.version,
+	serverVersion: state.server.version,
 	isMasterDetail: state.app.isMasterDetail,
 	encryptionEnabled: state.encryption.enabled
 });
