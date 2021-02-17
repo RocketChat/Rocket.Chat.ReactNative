@@ -63,7 +63,8 @@ const imagePickerConfig = {
 
 const libraryPickerConfig = {
 	multiple: true,
-	mediaType: 'any'
+	compressVideoPreset: 'Passthrough',
+	mediaType: 'video'
 };
 
 const videoPickerConfig = {
