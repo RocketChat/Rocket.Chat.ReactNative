@@ -15,6 +15,9 @@ import { withTheme } from '../theme';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import TextInput from '../containers/TextInput';
 import { loginRequest as loginRequestAction } from '../actions/login';
+import {
+	permissionsRequest as permissionsRequestAction
+} from '../actions/permissions';
 import LoginServices from '../containers/LoginServices';
 
 const styles = StyleSheet.create({
@@ -69,6 +72,7 @@ class LoginView extends React.Component {
 		failure: PropTypes.bool,
 		theme: PropTypes.string,
 		loginRequest: PropTypes.func,
+		getPermissions: PropTypes.func,
 		inviteLinkToken: PropTypes.string
 	}
 
@@ -118,9 +122,10 @@ class LoginView extends React.Component {
 		}
 
 		const { user, password } = this.state;
-		const { loginRequest } = this.props;
+		const { loginRequest, getPermissions } = this.props;
 		Keyboard.dismiss();
 		loginRequest({ user, password });
+		getPermissions();
 	}
 
 	renderUserForm = () => {
@@ -229,7 +234,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	loginRequest: params => dispatch(loginRequestAction(params))
+	loginRequest: params => dispatch(loginRequestAction(params)),
+	getPermissions: () => dispatch(permissionsRequestAction())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(LoginView));
