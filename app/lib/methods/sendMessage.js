@@ -151,7 +151,8 @@ export default async function(rid, msg, tmid, user, tshow) {
 						tm.status = messagesStatus.TEMP;
 						tm.u = {
 							_id: user.id || '1',
-							username: user.username
+							username: user.username,
+							name: user.name
 						};
 						tm.t = message.t;
 						if (message.t === E2E_MESSAGE_TYPE) {
@@ -175,7 +176,8 @@ export default async function(rid, msg, tmid, user, tshow) {
 				m.status = messagesStatus.TEMP;
 				m.u = {
 					_id: user.id || '1',
-					username: user.username
+					username: user.username,
+					name: user.name
 				};
 				if (tmid && tMessageRecord) {
 					m.tmid = tmid;
