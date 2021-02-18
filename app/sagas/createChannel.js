@@ -42,7 +42,7 @@ const handleRequest = function* handleRequest({ data }) {
 				broadcast,
 				encrypted
 			} = data;
-			logEvent(events.CREATE_CHANNEL_CREATE, {
+			logEvent(events.CR_CREATE, {
 				type: type ? 'private' : 'public',
 				readOnly,
 				broadcast,
@@ -66,7 +66,7 @@ const handleRequest = function* handleRequest({ data }) {
 
 		yield put(createChannelSuccess(sub));
 	} catch (err) {
-		logEvent(events[data.group ? 'SELECTED_USERS_CREATE_GROUP_F' : 'CREATE_CHANNEL_CREATE_F']);
+		logEvent(events[data.group ? 'SELECTED_USERS_CREATE_GROUP_F' : 'CR_CREATE_F']);
 		yield put(createChannelFailure(err));
 	}
 };
