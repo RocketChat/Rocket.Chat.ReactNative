@@ -549,7 +549,7 @@ class RoomInfoEditView extends React.Component {
 							]
 							: null
 						}
-						{serverVersion && !lt(serverVersion, '3.0.0') ? (
+						{serverVersion && !lt(coerce(serverVersion), '3.0.0') ? (
 							<SwitchContainer
 								value={enableSysMes}
 								leftLabelPrimary={I18n.t('Hide_System_Messages')}
