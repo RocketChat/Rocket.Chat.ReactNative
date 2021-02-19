@@ -5,7 +5,11 @@
         <item name="android:navigationBarColor">@color/splashBackground</item>
         <item name="android:forceDarkAllowed">false</item>
     </style>
-    
+
+    <style name="ShareTheme" parent="AppTheme">
+        <item name="android:navigationBarColor">@color/primary_dark</item>
+    </style>
+
     <style name="Share.Window" parent="android:Theme">
         <item name="android:windowEnterAnimation">@null</item>
         <item name="android:windowExitAnimation">@null</item>

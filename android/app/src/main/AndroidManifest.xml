@@ -64,7 +64,7 @@
             android:label="@string/share_extension_name"
             android:noHistory="true"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme">
+            android:theme="@style/ShareTheme">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <action android:name="android.intent.action.SEND_MULTIPLE" />

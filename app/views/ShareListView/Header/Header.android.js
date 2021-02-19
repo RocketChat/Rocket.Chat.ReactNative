@@ -14,13 +14,11 @@ const styles = StyleSheet.create({
 	},
 	search: {
 		fontSize: 20,
-		...sharedStyles.textRegular,
-		marginHorizontal: 14
+		...sharedStyles.textRegular
 	},
 	title: {
 		fontSize: 20,
-		...sharedStyles.textBold,
-		marginHorizontal: 16
+		...sharedStyles.textBold
 	}
 });
 
