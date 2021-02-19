@@ -9,8 +9,7 @@ import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 import ImagePicker from 'react-native-image-crop-picker';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
-import lt from 'semver/functions/lt';
-import coerce from 'semver/functions/coerce';
+import { lt } from '../../lib/utils';
 
 
 import database from '../../lib/database';
@@ -409,7 +408,7 @@ class RoomInfoEditView extends React.Component {
 
 	isServerVersionLowerThan = (version) => {
 		const { serverVersion } = this.props;
-		return serverVersion && lt(coerce(serverVersion), version);
+		return serverVersion && lt(serverVersion, version);
 	}
 
 	render() {
@@ -549,7 +548,7 @@ class RoomInfoEditView extends React.Component {
 							]
 							: null
 						}
-						{serverVersion && !lt(coerce(serverVersion), '3.0.0') ? (
+						{serverVersion && !lt(serverVersion, '3.0.0') ? (
 							<SwitchContainer
 								value={enableSysMes}
 								leftLabelPrimary={I18n.t('Hide_System_Messages')}

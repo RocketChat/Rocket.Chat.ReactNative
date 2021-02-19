@@ -1,7 +1,4 @@
 import { InteractionManager } from 'react-native';
-import lt from 'semver/functions/lt';
-import gte from 'semver/functions/gte';
-import coerce from 'semver/functions/coerce';
 import {
 	Rocketchat as RocketchatClient,
 	settings as RocketChatSettings
@@ -11,6 +8,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import RNFetchBlob from 'rn-fetch-blob';
 
+import { gte, lt } from './utils';
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
 import database from './database';
@@ -467,7 +465,7 @@ const RocketChat = {
 
 						// Force normalized params for 2FA starting RC 3.9.0.
 						const serverVersion = reduxStore.getState().server.version;
-						if (serverVersion && gte(coerce(serverVersion), '3.9.0')) {
+						if (serverVersion && gte(serverVersion, '3.9.0')) {
 							const user = params.user ?? params.username;
 							const password = params.password ?? params.ldapPass ?? params.crowdPassword;
 							params = { user, password };
@@ -1374,7 +1372,7 @@ const RocketChat = {
 	},
 	readThreads(tmid) {
 		const serverVersion = reduxStore.getState().server.version;
-		if (serverVersion && gte(coerce(serverVersion), '3.4.0')) {
+		if (serverVersion && gte(serverVersion, '3.4.0')) {
 			// RC 3.4.0
 			return this.methodCallWrapper('readThreads', tmid);
 		}
