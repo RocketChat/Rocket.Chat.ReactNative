@@ -129,7 +129,7 @@ const ReactionsModal = React.memo(({
 		isVisible={isVisible}
 		onBackdropPress={onClose}
 		onBackButtonPress={onClose}
-		backdropOpacity={0.8}
+		backdropOpacity={themes[theme].backdropOpacity}
 		onSwipeComplete={onClose}
 		swipeDirection={['up', 'left', 'right', 'down']}
 	>
