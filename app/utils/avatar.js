@@ -1,4 +1,4 @@
-import { lt } from '../lib/utils';
+import { isServerVersionLowerThan } from '../lib/utils';
 
 const formatUrl = (url, size, query) => `${ url }?format=png&size=${ size }${ query }`;
 
@@ -8,7 +8,7 @@ export const avatarURL = ({
 	let room;
 	if (type === 'd') {
 		room = text;
-	} else if (rid && !(serverVersion && lt(serverVersion, '3.6.0'))) {
+	} else if (rid && !(serverVersion && isServerVersionLowerThan(serverVersion, '3.6.0'))) {
 		room = `room/${ rid }`;
 	} else {
 		room = `@${ text }`;

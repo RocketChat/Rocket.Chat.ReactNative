@@ -1,4 +1,4 @@
-import { lt as lowerThan, gte as greaterThan, coerce } from 'semver';
+import { lt, gte, coerce } from 'semver';
 
 export const formatAttachmentUrl = (attachmentUrl, userId, token, server) => {
 	if (attachmentUrl.startsWith('http')) {
@@ -10,6 +10,6 @@ export const formatAttachmentUrl = (attachmentUrl, userId, token, server) => {
 	return encodeURI(`${ server }${ attachmentUrl }?rc_uid=${ userId }&rc_token=${ token }`);
 };
 
-export const lt = (currentServerVersion, oldServerVersion) => lowerThan(coerce(currentServerVersion), oldServerVersion);
+export const isServerVersionLowerThan = (currentServerVersion, oldServerVersion) => lt(coerce(currentServerVersion), oldServerVersion);
 
-export const gte = (currentServerVersion, oldServerVersion) => greaterThan(coerce(currentServerVersion), oldServerVersion);
+export const isServerVersionGreaterThan = (currentServerVersion, oldServerVersion) => gte(coerce(currentServerVersion), oldServerVersion);
