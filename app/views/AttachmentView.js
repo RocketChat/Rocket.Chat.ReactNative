@@ -97,7 +97,7 @@ class AttachmentView extends React.Component {
 
 	getVideoRef = ref => this.videoRef = ref;
 
-	handleSave = async() => {
+	getAttachmentMetaData = async() => {
 		const { attachment } = this.state;
 		const { user, baseUrl } = this.props;
 		const {
@@ -116,11 +116,21 @@ class AttachmentView extends React.Component {
 				return;
 			}
 		}
+		const extension = image_url ? `.${ mime.extension(image_type) || 'jpg' }` : `.${ mime.extension(video_type) || 'mp4' }`;
+		const documentDir = `${ RNFetchBlob.fs.dirs.DocumentDir }/`;
+		return {
+			attachment, user, baseUrl, image_url, image_type, video_url, video_type, url, mediaAttachment, extension, documentDir
+		};
+	}
+
+
+	handleSave = async() => {
+		const {
+			image_url, url, mediaAttachment, extension, documentDir
+		} = await this.getAttachmentMetaData();
 
 		this.setState({ loading: true });
 		try {
-			const extension = image_url ? `.${ mime.extension(image_type) || 'jpg' }` : `.${ mime.extension(video_type) || 'mp4' }`;
-			const documentDir = `${ RNFetchBlob.fs.dirs.DocumentDir }/`;
 			const path = `${ documentDir + SHA256(url) + extension }`;
 			const file = await RNFetchBlob.config({ path }).fetch('GET', mediaAttachment).then(res => res.path());
 			await CameraRoll.save(file, { album: 'Rocket.Chat' });
@@ -147,26 +157,12 @@ class AttachmentView extends React.Component {
 		);
 	}
 
-	checkDocumentDir=async() => {
-		const { attachment } = this.state;
+	checkDocumentDir = async() => {
 		const {
-			image_url, image_type, video_url, video_type
-		} = attachment;
-		const url = image_url || video_url;
-
-		if (isAndroid) {
-			const rationale = {
-				title: I18n.t('Write_External_Permission'),
-				message: I18n.t('Write_External_Permission_Message')
-			};
-			const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE, rationale);
-			if (!(result || result === PermissionsAndroid.RESULTS.GRANTED)) {
-				return;
-			}
-		}
+			image_url, url, extension
+		} = await this.getAttachmentMetaData();
 
 		try {
-			const extension = image_url ? `.${ mime.extension(image_type) || 'jpg' }` : `.${ mime.extension(video_type) || 'mp4' }`;
 			const fileName = `${ SHA256(url) + extension }`;
 			const files = await FileSystem.readDirectoryAsync(FileSystem.documentDirectory);
 			files.forEach((t) => {
@@ -175,7 +171,7 @@ class AttachmentView extends React.Component {
 				}
 			});
 		} catch (e) {
-			EventEmitter.emit(LISTENER, { message: I18n.t(image_url ? 'error-save-image' : 'error-save-video') });
+			EventEmitter.emit(LISTENER, { message: I18n.t(image_url ? 'error-loading-image' : 'error-loading-video') });
 		}
 	}
 
