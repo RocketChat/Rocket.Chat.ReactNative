@@ -11,7 +11,7 @@ export function subscribeUsersPresence() {
 	const serverVersion = reduxStore.getState().server.version;
 
 	// if server is lower than 1.1.0
-	if (serverVersion && isServerVersionLowerThan(serverVersion, '1.1.0')) {
+	if (isServerVersionLowerThan(serverVersion, '1.1.0')) {
 		if (this.activeUsersSubTimeout) {
 			clearTimeout(this.activeUsersSubTimeout);
 			this.activeUsersSubTimeout = false;
@@ -36,7 +36,7 @@ export default async function getUsersPresence() {
 	const { user: loggedUser } = reduxStore.getState().login;
 
 	// if server is greather than or equal 1.1.0
-	if (serverVersion && isServerVersionGreaterThan(serverVersion, '1.1.0')) {
+	if (isServerVersionGreaterThan(serverVersion, '1.1.0')) {
 		let params = {};
 
 		// if server is greather than or equal 3.0.0

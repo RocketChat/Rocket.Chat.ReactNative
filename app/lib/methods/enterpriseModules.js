@@ -33,7 +33,7 @@ export function getEnterpriseModules() {
 	return new Promise(async(resolve) => {
 		try {
 			const { version: serverVersion, server: serverId } = reduxStore.getState().server;
-			if (serverVersion && isServerVersionGreaterThan(serverVersion, '3.1.0')) {
+			if (isServerVersionGreaterThan(serverVersion, '3.1.0')) {
 				// RC 3.1.0
 				const enterpriseModules = await this.methodCallWrapper('license:getModules');
 				if (enterpriseModules) {

@@ -465,7 +465,7 @@ const RocketChat = {
 
 						// Force normalized params for 2FA starting RC 3.9.0.
 						const serverVersion = reduxStore.getState().server.version;
-						if (serverVersion && isServerVersionGreaterThan(serverVersion, '3.9.0')) {
+						if (isServerVersionGreaterThan(serverVersion, '3.9.0')) {
 							const user = params.user ?? params.username;
 							const password = params.password ?? params.ldapPass ?? params.crowdPassword;
 							params = { user, password };
@@ -1372,7 +1372,7 @@ const RocketChat = {
 	},
 	readThreads(tmid) {
 		const serverVersion = reduxStore.getState().server.version;
-		if (serverVersion && isServerVersionGreaterThan(serverVersion, '3.4.0')) {
+		if (isServerVersionGreaterThan(serverVersion, '3.4.0')) {
 			// RC 3.4.0
 			return this.methodCallWrapper('readThreads', tmid);
 		}

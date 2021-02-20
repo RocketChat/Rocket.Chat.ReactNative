@@ -79,7 +79,7 @@ export default function() {
 			const allRecords = await permissionsCollection.query().fetch();
 
 			// if server version is lower than 0.73.0, fetches from old api
-			if (serverVersion && isServerVersionLowerThan(serverVersion, '0.73.0')) {
+			if (isServerVersionLowerThan(serverVersion, '0.73.0')) {
 				// RC 0.66.0
 				const result = await this.sdk.get('permissions.list');
 				if (!result.success) {

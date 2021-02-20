@@ -406,11 +406,6 @@ class RoomInfoEditView extends React.Component {
 		this.setState({ encrypted: value });
 	}
 
-	isServerVersionLowerThan = (version) => {
-		const { serverVersion } = this.props;
-		return serverVersion && isServerVersionLowerThan(serverVersion, version);
-	}
-
 	render() {
 		const {
 			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode, saving, permissions, archived, enableSysMes, encrypted, avatar
@@ -437,7 +432,7 @@ class RoomInfoEditView extends React.Component {
 						<TouchableOpacity
 							style={styles.avatarContainer}
 							onPress={this.changeAvatar}
-							disabled={this.isServerVersionLowerThan('3.6.0')}
+							disabled={isServerVersionLowerThan(serverVersion, '3.6.0')}
 						>
 							<Avatar
 								type={room.t}
@@ -447,7 +442,7 @@ class RoomInfoEditView extends React.Component {
 								rid={isEmpty(avatar) && room.rid}
 								size={100}
 							>
-								{this.isServerVersionLowerThan('3.6.0')
+								{isServerVersionLowerThan(serverVersion, '3.6.0')
 									? null
 									: (
 										<TouchableOpacity style={[styles.resetButton, { backgroundColor: themes[theme].dangerColor }]} onPress={this.resetAvatar}>
@@ -548,7 +543,7 @@ class RoomInfoEditView extends React.Component {
 							]
 							: null
 						}
-						{serverVersion && !isServerVersionLowerThan(serverVersion, '3.0.0') ? (
+						{!isServerVersionLowerThan(serverVersion, '3.0.0') ? (
 							<SwitchContainer
 								value={enableSysMes}
 								leftLabelPrimary={I18n.t('Hide_System_Messages')}
