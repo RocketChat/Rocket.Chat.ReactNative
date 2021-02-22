@@ -84,7 +84,7 @@ class SearchMessagesView extends React.Component {
 		// If it's a encrypted, room we'll search only on the local stored messages
 		if (this.encrypted) {
 			const db = database.active;
-			const messagesCollection = db.collections.get('messages');
+			const messagesCollection = db.get('messages');
 			const likeString = sanitizeLikeString(searchText);
 			return messagesCollection
 				.query(

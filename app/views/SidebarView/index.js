@@ -112,7 +112,7 @@ class Sidebar extends Component {
 		const { roles } = user;
 		try {
 			if	(roles) {
-				const permissionsCollection = db.collections.get('permissions');
+				const permissionsCollection = db.get('permissions');
 				const permissionsFiltered = await permissionsCollection.query(Q.where('id', Q.oneOf(permissions))).fetch();
 				const isAdmin = permissionsFiltered.reduce((result, permission) => (
 					result || permission.roles.some(r => roles.indexOf(r) !== -1)),

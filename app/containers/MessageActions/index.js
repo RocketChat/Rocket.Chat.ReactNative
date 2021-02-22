@@ -141,7 +141,7 @@ const MessageActions = React.memo(forwardRef(({
 			const db = database.active;
 			const result = await RocketChat.markAsUnread({ messageId });
 			if (result.success) {
-				const subCollection = db.collections.get('subscriptions');
+				const subCollection = db.get('subscriptions');
 				const subRecord = await subCollection.find(rid);
 				await db.action(async() => {
 					try {

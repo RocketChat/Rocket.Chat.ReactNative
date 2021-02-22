@@ -5,7 +5,7 @@ import updateMessages from './updateMessages';
 const getLastUpdate = async(rid) => {
 	try {
 		const db = database.active;
-		const subsCollection = db.collections.get('subscriptions');
+		const subsCollection = db.get('subscriptions');
 		const sub = await subsCollection.find(rid);
 		return sub.lastOpen.toISOString();
 	} catch (e) {

@@ -249,7 +249,7 @@ class ThreadMessagesView extends React.Component {
 
 		try {
 			const db = database.active;
-			const threadsCollection = db.collections.get('threads');
+			const threadsCollection = db.get('threads');
 			const allThreadsRecords = await subscription.threads.fetch();
 			let threadsToCreate = [];
 			let threadsToUpdate = [];

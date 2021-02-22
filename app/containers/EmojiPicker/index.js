@@ -95,7 +95,7 @@ class EmojiPicker extends Component {
 	// eslint-disable-next-line react/sort-comp
 	_addFrequentlyUsed = protectedFunction(async(emoji) => {
 		const db = database.active;
-		const freqEmojiCollection = db.collections.get('frequently_used_emojis');
+		const freqEmojiCollection = db.get('frequently_used_emojis');
 		let freqEmojiRecord;
 		try {
 			freqEmojiRecord = await freqEmojiCollection.find(emoji.content);
@@ -120,7 +120,7 @@ class EmojiPicker extends Component {
 
 	updateFrequentlyUsed = async() => {
 		const db = database.active;
-		const frequentlyUsedRecords = await db.collections.get('frequently_used_emojis').query().fetch();
+		const frequentlyUsedRecords = await db.get('frequently_used_emojis').query().fetch();
 		let frequentlyUsed = orderBy(frequentlyUsedRecords, ['count'], ['desc']);
 		frequentlyUsed = frequentlyUsed.map((item) => {
 			if (item.isCustom) {

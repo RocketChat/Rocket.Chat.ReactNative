@@ -38,7 +38,7 @@ const restore = function* restore() {
 			yield put(appStart({ root: ROOT_OUTSIDE }));
 		} else {
 			const serversDB = database.servers;
-			const serverCollections = serversDB.collections.get('servers');
+			const serverCollections = serversDB.get('servers');
 
 			let serverObj;
 			try {

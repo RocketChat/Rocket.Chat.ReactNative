@@ -136,7 +136,7 @@ class RoomInfoView extends React.Component {
 	getRoleDescription = async(id) => {
 		const db = database.active;
 		try {
-			const rolesCollection = db.collections.get('roles');
+			const rolesCollection = db.get('roles');
 			const role = await rolesCollection.find(id);
 			if (role) {
 				return role.description;
