@@ -8,7 +8,7 @@ import database from '../database';
 import log from '../../utils/log';
 import reduxStore from '../createStore';
 import protectedFunction from './helpers/protectedFunction';
-import { setPermissions as setPermissionsAction } from '../../actions/permissions';
+import { setPermissions as setPermissionsAction, clearPermissions as clearPermissionsAction } from '../../actions/permissions';
 
 const PERMISSIONS = [
 	'edit-message',
@@ -51,6 +51,7 @@ export async function setPermissions() {
 		roles: item.roles
 	}));
 
+	reduxStore.dispatch(clearPermissionsAction());
 	reduxStore.dispatch(setPermissionsAction(parsed));
 }
 
