@@ -5,6 +5,7 @@ import {
 	View, Text, Switch, ScrollView, StyleSheet, FlatList
 } from 'react-native';
 import equal from 'deep-equal';
+import * as List from '../containers/List';
 
 import TextInput from '../presentation/TextInput';
 import Loading from '../containers/Loading';
@@ -30,9 +31,6 @@ const styles = StyleSheet.create({
 	},
 	list: {
 		width: '100%'
-	},
-	separator: {
-		marginLeft: 60
 	},
 	formSeparator: {
 		marginLeft: 15
@@ -264,8 +262,6 @@ class CreateChannelView extends React.Component {
 		});
 	}
 
-	renderSeparator = () => <View style={[sharedStyles.separator, styles.separator]} />
-
 	renderFormSeparator = () => {
 		const { theme } = this.props;
 		return <View style={[sharedStyles.separator, styles.formSeparator, { backgroundColor: themes[theme].separatorColor }]} />;
@@ -305,7 +301,7 @@ class CreateChannelView extends React.Component {
 					}
 				]}
 				renderItem={this.renderItem}
-				ItemSeparatorComponent={this.renderSeparator}
+				ItemSeparatorComponent={List.Separator}
 				enableEmptySections
 				keyboardShouldPersistTaps='always'
 			/>
