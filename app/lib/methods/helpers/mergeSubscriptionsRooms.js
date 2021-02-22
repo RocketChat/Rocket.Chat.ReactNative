@@ -1,11 +1,14 @@
 import EJSON from 'ejson';
+import { gte, lt, coerce } from 'semver';
 
 import normalizeMessage from './normalizeMessage';
 import findSubscriptionsRooms from './findSubscriptionsRooms';
 import { Encryption } from '../../encryption';
+import reduxStore from '../../createStore';
 // TODO: delete and update
 
 export const merge = (subscription, room) => {
+	const serverVersion = reduxStore.getState().server.version;
 	subscription = EJSON.fromJSONValue(subscription);
 	room = EJSON.fromJSONValue(room);
 
@@ -15,6 +18,11 @@ export const merge = (subscription, room) => {
 	if (room) {
 		if (room._updatedAt) {
 			subscription.lastMessage = normalizeMessage(room.lastMessage);
+			if (serverVersion && lt(coerce(serverVersion), '3.11.0')) {
+				const updatedAt = room?._updatedAt ? new Date(room._updatedAt) : null;
+				const lastMessageTs = subscription?.lastMessage?.ts ? new Date(subscription.lastMessage.ts) : null;
+				subscription.roomUpdatedAt = Math.max(updatedAt, lastMessageTs);
+			}
 			subscription.description = room.description;
 			subscription.topic = room.topic;
 			subscription.announcement = room.announcement;
@@ -25,9 +33,11 @@ export const merge = (subscription, room) => {
 			subscription.usernames = room.usernames;
 			subscription.uids = room.uids;
 		}
-		// https://github.com/RocketChat/Rocket.Chat/blob/develop/app/ui-sidenav/client/roomList.js#L180
-		const lastRoomUpdate = room.lm || subscription.ts || subscription._updatedAt;
-		subscription.roomUpdatedAt = subscription.lr ? Math.max(new Date(subscription.lr), new Date(lastRoomUpdate)) : lastRoomUpdate;
+		if (serverVersion && gte(coerce(serverVersion), '3.11.0')) {
+			// https://github.com/RocketChat/Rocket.Chat/blob/develop/app/ui-sidenav/client/roomList.js#L180
+			const lastRoomUpdate = room.lm || subscription.ts || subscription._updatedAt;
+			subscription.roomUpdatedAt = subscription.lr ? Math.max(new Date(subscription.lr), new Date(lastRoomUpdate)) : lastRoomUpdate;
+		}
 		subscription.ro = room.ro;
 		subscription.broadcast = room.broadcast;
 		subscription.encrypted = room.encrypted;
