@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { View, Text, NativeModules } from 'react-native';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
-import * as VideoThumbnails from 'expo-video-thumbnails';
 
 import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
@@ -24,6 +23,7 @@ import { getUserSelector } from '../../selectors/login';
 import StatusBar from '../../containers/StatusBar';
 import database from '../../lib/database';
 import { canUploadFile } from '../../utils/media';
+import { isAndroid } from '../../utils/deviceInfo';
 
 class ShareView extends Component {
 	constructor(props) {
@@ -119,8 +119,9 @@ class ShareView extends Component {
 			item.error = error;
 
 			// get video thumbnails
-			if (item.mime?.match?.(/video/)) {
+			if (isAndroid && this.files.length > 1 && item.mime?.match?.(/video/)) {
 				try {
+					const VideoThumbnails = require('expo-video-thumbnails');
 					const { uri } = await VideoThumbnails.getThumbnailAsync(item.path);
 					item.uri = uri;
 				} catch {

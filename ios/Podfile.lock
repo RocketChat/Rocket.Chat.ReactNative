@@ -34,7 +34,7 @@ PODS:
   - EXPermissions (9.0.1):
     - UMCore
     - UMPermissionsInterface
-  - EXVideoThumbnails (4.2.1):
+  - EXVideoThumbnails (5.0.0):
     - UMCore
     - UMFileSystemInterface
   - EXWebBrowser (8.3.1):
@@ -895,7 +895,7 @@ SPEC CHECKSUMS:
   EXKeepAwake: 8b0f68242f036b971f9f8976341823cbe6f50812
   EXLocalAuthentication: 985c65e08a6eb84f8f98b51f7435df138b18b9e8
   EXPermissions: 80ac3acbdb145930079810fe5b08c022b3428aa8
-  EXVideoThumbnails: f70bdc5511749f3181028f5000bcb7be203c631d
+  EXVideoThumbnails: 0be939563a5d46ce0d1fa9baea7d454b99475763
   EXWebBrowser: d37a5ffdea1b65947352bc001dd9f732463725d4
   FBLazyVector: 3bb422f41b18121b71783a905c10e58606f7dc3e
   FBReactNativeSpec: f2c97f2529dd79c083355182cc158c9f98f4bd6e
@@ -1003,6 +1003,6 @@ SPEC CHECKSUMS:
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 8477bd3277dec7b3190105d922512e3791bc026f
+PODFILE CHECKSUM: 0351d0973911a397f1cb4e45f0b0f590b14816e3
 
 COCOAPODS: 1.9.3

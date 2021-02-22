@@ -59,7 +59,7 @@ exports[`Storyshots Avatar list Avatar 1`] = `
             Object {
               "headers": undefined,
               "priority": "high",
-              "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=100",
+              "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=56",
             }
           }
           style={
@@ -124,7 +124,7 @@ exports[`Storyshots Avatar list Avatar 1`] = `
             Object {
               "headers": undefined,
               "priority": "high",
-              "uri": "https://open.rocket.chat/avatar/room/devWBbYr7inwupPqK?format=png&size=100",
+              "uri": "https://open.rocket.chat/avatar/room/devWBbYr7inwupPqK?format=png&size=56",
             }
           }
           style={
@@ -254,7 +254,7 @@ exports[`Storyshots Avatar list Avatar 1`] = `
             Object {
               "headers": undefined,
               "priority": "high",
-              "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+              "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=56",
             }
           }
           style={
@@ -319,7 +319,7 @@ exports[`Storyshots Avatar list Avatar 1`] = `
             Object {
               "headers": undefined,
               "priority": "high",
-              "uri": "https://open.rocket.chat/avatar/djorkaeff.alexandre?format=png&size=100&etag=5ag8KffJcZj9m5rCv",
+              "uri": "https://open.rocket.chat/avatar/djorkaeff.alexandre?format=png&size=56&etag=5ag8KffJcZj9m5rCv",
             }
           }
           style={
@@ -384,7 +384,7 @@ exports[`Storyshots Avatar list Avatar 1`] = `
             Object {
               "headers": undefined,
               "priority": "high",
-              "uri": "https://open.rocket.chat/avatar/djorkaeff.alexandre?format=png&size=100",
+              "uri": "https://open.rocket.chat/avatar/djorkaeff.alexandre?format=png&size=56",
             }
           }
           style={
@@ -519,7 +519,7 @@ exports[`Storyshots Avatar list Avatar 1`] = `
             Object {
               "headers": undefined,
               "priority": "high",
-              "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+              "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=56",
             }
           }
           style={
@@ -584,7 +584,7 @@ exports[`Storyshots Avatar list Avatar 1`] = `
             Object {
               "headers": undefined,
               "priority": "high",
-              "uri": "https://open.rocket.chat/avatar/@general?format=png&size=100",
+              "uri": "https://open.rocket.chat/avatar/@general?format=png&size=56",
             }
           }
           style={
@@ -665,7 +665,7 @@ exports[`Storyshots Avatar list Avatar 1`] = `
               Object {
                 "headers": undefined,
                 "priority": "high",
-                "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=100",
+                "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=56",
               }
             }
             style={
@@ -796,7 +796,7 @@ exports[`Storyshots Avatar list Avatar 1`] = `
             Object {
               "headers": undefined,
               "priority": "high",
-              "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=100",
+              "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=56",
             }
           }
           style={
@@ -861,7 +861,7 @@ exports[`Storyshots Avatar list Avatar 1`] = `
             Object {
               "headers": undefined,
               "priority": "high",
-              "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=100",
+              "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=56",
             }
           }
           style={
@@ -952,7 +952,7 @@ exports[`Storyshots Avatar list Avatar 1`] = `
             Object {
               "headers": undefined,
               "priority": "high",
-              "uri": "https://google.com/avatar/Avatar?format=png&size=100",
+              "uri": "https://google.com/avatar/Avatar?format=png&size=56",
             }
           }
           style={
@@ -1019,7 +1019,7 @@ exports[`Storyshots Avatar list Avatar 1`] = `
             Object {
               "headers": undefined,
               "priority": "high",
-              "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=100",
+              "uri": "https://open.rocket.chat/avatar/Avatar?format=png&size=56",
             }
           }
           style={
@@ -14020,7 +14020,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -14280,7 +14280,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -14540,7 +14540,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -14779,7 +14779,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.?format=png&size=36",
                       }
                     }
                     style={
@@ -15222,7 +15222,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -15605,7 +15605,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -15863,7 +15863,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.?format=png&size=36",
                       }
                     }
                     style={
@@ -16142,7 +16142,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -16402,7 +16402,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -16867,7 +16867,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -17606,7 +17606,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -17749,7 +17749,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -18056,7 +18056,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -18341,7 +18341,7 @@ exports[`Storyshots Message list message 1`] = `
                     Object {
                       "headers": undefined,
                       "priority": "high",
-                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                     }
                   }
                   style={
@@ -18688,7 +18688,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -19218,7 +19218,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -19489,7 +19489,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -19828,7 +19828,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -20312,7 +20312,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -20703,7 +20703,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -21409,7 +21409,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -21669,7 +21669,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -22085,7 +22085,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -22550,7 +22550,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -22816,7 +22816,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -23082,7 +23082,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -23487,7 +23487,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -23754,7 +23754,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -24055,7 +24055,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -24378,7 +24378,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -24638,7 +24638,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -25239,7 +25239,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -26284,7 +26284,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=36",
                       }
                     }
                     style={
@@ -26523,7 +26523,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -26762,7 +26762,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=36",
                       }
                     }
                     style={
@@ -27001,7 +27001,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -27261,7 +27261,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=36",
                       }
                     }
                     style={
@@ -27564,7 +27564,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -27951,7 +27951,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=36",
                       }
                     }
                     style={
@@ -28236,7 +28236,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -28496,7 +28496,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -28812,7 +28812,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -29184,7 +29184,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -29499,7 +29499,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -29755,7 +29755,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -30864,7 +30864,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -31456,7 +31456,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -31825,7 +31825,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -32250,7 +32250,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -32591,7 +32591,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -32997,7 +32997,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -33566,7 +33566,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -33806,7 +33806,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -34046,7 +34046,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -34286,7 +34286,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -34526,7 +34526,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -34766,7 +34766,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -35006,7 +35006,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -35168,7 +35168,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -35640,7 +35640,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -35783,7 +35783,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -35926,7 +35926,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -36185,7 +36185,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -36328,7 +36328,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -36471,7 +36471,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -36614,7 +36614,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -36776,7 +36776,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -37103,7 +37103,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -37432,7 +37432,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -37761,7 +37761,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -38111,7 +38111,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -38483,7 +38483,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -38980,7 +38980,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -39630,7 +39630,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -40370,7 +40370,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -40713,7 +40713,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -40957,7 +40957,7 @@ exports[`Storyshots Message list message 1`] = `
                     Object {
                       "headers": undefined,
                       "priority": "high",
-                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                     }
                   }
                   style={
@@ -41464,7 +41464,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -41730,7 +41730,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -41990,7 +41990,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -42175,7 +42175,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -42360,7 +42360,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -42522,7 +42522,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -42707,7 +42707,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -42892,7 +42892,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -43054,7 +43054,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -43216,7 +43216,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -43378,7 +43378,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -43540,7 +43540,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -43702,7 +43702,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -43864,7 +43864,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -44026,7 +44026,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -44188,7 +44188,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -44350,7 +44350,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -44512,7 +44512,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
                     }
                     style={
@@ -44680,7 +44680,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -44940,7 +44940,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -45529,7 +45529,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -45976,7 +45976,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -46442,7 +46442,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -46688,7 +46688,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -47060,7 +47060,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -47352,7 +47352,7 @@ exports[`Storyshots Message list message 1`] = `
                       Object {
                         "headers": undefined,
                         "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
                     style={
@@ -48217,7 +48217,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -48596,7 +48596,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=48",
                   }
                 }
                 style={
@@ -48957,7 +48957,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -49336,7 +49336,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -49697,7 +49697,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/room/abc?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/room/abc?format=png&size=48",
                   }
                 }
                 style={
@@ -50069,7 +50069,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/room/abc?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/room/abc?format=png&size=48",
                   }
                 }
                 style={
@@ -50441,7 +50441,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/room/abc?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/room/abc?format=png&size=48",
                   }
                 }
                 style={
@@ -50813,7 +50813,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/room/abc?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/room/abc?format=png&size=48",
                   }
                 }
                 style={
@@ -51185,7 +51185,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -51557,7 +51557,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/room/abc?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/room/abc?format=png&size=48",
                   }
                 }
                 style={
@@ -51947,7 +51947,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -52308,7 +52308,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -52669,7 +52669,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -53030,7 +53030,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -53391,7 +53391,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -53770,7 +53770,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -54136,7 +54136,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -54543,7 +54543,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -54950,7 +54950,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -55357,7 +55357,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -55764,7 +55764,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -56171,7 +56171,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -56578,7 +56578,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -56985,7 +56985,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -57392,7 +57392,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -57799,7 +57799,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -58224,7 +58224,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -58644,7 +58644,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -59064,7 +59064,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -59484,7 +59484,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -59904,7 +59904,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -60380,7 +60380,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -60856,7 +60856,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   Object {
                     "headers": undefined,
                     "priority": "high",
-                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
                   }
                 }
                 style={
@@ -62293,7 +62293,7 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                 Object {
                   "headers": undefined,
                   "priority": "high",
-                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=36",
                 }
               }
               style={
@@ -62658,7 +62658,7 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                 Object {
                   "headers": undefined,
                   "priority": "high",
-                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=36",
                 }
               }
               style={
@@ -63023,7 +63023,7 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                 Object {
                   "headers": undefined,
                   "priority": "high",
-                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=36",
                 }
               }
               style={
@@ -63375,7 +63375,7 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                 Object {
                   "headers": undefined,
                   "priority": "high",
-                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=36",
                 }
               }
               style={
@@ -63760,7 +63760,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                 Object {
                   "headers": undefined,
                   "priority": "high",
-                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=36",
                 }
               }
               style={
@@ -64109,7 +64109,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                 Object {
                   "headers": undefined,
                   "priority": "high",
-                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=36",
                 }
               }
               style={
@@ -64458,7 +64458,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                 Object {
                   "headers": undefined,
                   "priority": "high",
-                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=36",
                 }
               }
               style={
@@ -64807,7 +64807,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                 Object {
                   "headers": undefined,
                   "priority": "high",
-                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=36",
                 }
               }
               style={
@@ -65156,7 +65156,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                 Object {
                   "headers": undefined,
                   "priority": "high",
-                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=36",
                 }
               }
               style={
@@ -65525,7 +65525,7 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                 Object {
                   "headers": undefined,
                   "priority": "high",
-                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=36",
                 }
               }
               style={
@@ -65877,7 +65877,7 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                 Object {
                   "headers": undefined,
                   "priority": "high",
-                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=36",
                 }
               }
               style={
@@ -66229,7 +66229,7 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                 Object {
                   "headers": undefined,
                   "priority": "high",
-                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=100",
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=36",
                 }
               }
               style={

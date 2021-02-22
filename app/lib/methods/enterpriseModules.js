@@ -1,4 +1,5 @@
-import semver from 'semver';
+import gte from 'semver/functions/gte';
+import coerce from 'semver/functions/coerce';
 
 import reduxStore from '../createStore';
 import database from '../database';
@@ -33,7 +34,7 @@ export function getEnterpriseModules() {
 	return new Promise(async(resolve) => {
 		try {
 			const { version: serverVersion, server: serverId } = reduxStore.getState().server;
-			if (serverVersion && semver.gte(semver.coerce(serverVersion), '3.1.0')) {
+			if (serverVersion && gte(coerce(serverVersion), '3.1.0')) {
 				// RC 3.1.0
 				const enterpriseModules = await this.methodCallWrapper('license:getModules');
 				if (enterpriseModules) {

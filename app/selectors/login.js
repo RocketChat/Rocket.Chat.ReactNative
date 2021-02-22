@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 
 const getUser = (state) => {
 	if (!isEmpty(state.share?.user)) {

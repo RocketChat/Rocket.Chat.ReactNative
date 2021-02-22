@@ -1,5 +1,7 @@
 import { InteractionManager } from 'react-native';
-import semver from 'semver';
+import lt from 'semver/functions/lt';
+import gte from 'semver/functions/gte';
+import coerce from 'semver/functions/coerce';
 import {
 	Rocketchat as RocketchatClient,
 	settings as RocketChatSettings
@@ -132,7 +134,7 @@ const RocketChat = {
 						message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
 					};
 				}
-				if (semver.lt(jsonRes.version, MIN_ROCKETCHAT_VERSION)) {
+				if (lt(jsonRes.version, MIN_ROCKETCHAT_VERSION)) {
 					return {
 						success: false,
 						message: I18n.t('Invalid_server_version', {
@@ -465,7 +467,7 @@ const RocketChat = {
 
 						// Force normalized params for 2FA starting RC 3.9.0.
 						const serverVersion = reduxStore.getState().server.version;
-						if (serverVersion && semver.gte(semver.coerce(serverVersion), '3.9.0')) {
+						if (serverVersion && gte(coerce(serverVersion), '3.9.0')) {
 							const user = params.user ?? params.username;
 							const password = params.password ?? params.ldapPass ?? params.crowdPassword;
 							params = { user, password };
@@ -1372,7 +1374,7 @@ const RocketChat = {
 	},
 	readThreads(tmid) {
 		const serverVersion = reduxStore.getState().server.version;
-		if (serverVersion && semver.gte(semver.coerce(serverVersion), '3.4.0')) {
+		if (serverVersion && gte(coerce(serverVersion), '3.4.0')) {
 			// RC 3.4.0
 			return this.methodCallWrapper('readThreads', tmid);
 		}
