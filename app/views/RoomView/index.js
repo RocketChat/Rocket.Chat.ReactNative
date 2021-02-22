@@ -1084,6 +1084,7 @@ class RoomView extends React.Component {
 					reactionClose={this.onReactionClose}
 					width={width}
 					height={height}
+					theme={theme}
 				/>
 				<UploadProgress rid={this.rid} user={user} baseUrl={baseUrl} width={width} />
 				<ReactionsModal
