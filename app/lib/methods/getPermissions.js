@@ -2,11 +2,57 @@ import { InteractionManager } from 'react-native';
 import lt from 'semver/functions/lt';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import orderBy from 'lodash/orderBy';
+import { Q } from '@nozbe/watermelondb';
 
 import database from '../database';
 import log from '../../utils/log';
 import reduxStore from '../createStore';
 import protectedFunction from './helpers/protectedFunction';
+import { setPermissions as setPermissionsAction } from '../../actions/permissions';
+
+const PERMISSIONS = [
+	'edit-message',
+	'delete-message',
+	'force-delete-message',
+	'pin-message',
+	'post-readonly',
+	'add-user-to-joined-room',
+	'add-user-to-any-c-room',
+	'add-user-to-any-p-room',
+	'create-invite-links',
+	'edit-room',
+	'toggle-room-e2e-encryption',
+	'view-broadcast-member-list',
+	'transfer-livechat-guest',
+	'set-readonly',
+	'set-react-when-readonly',
+	'archive-room',
+	'unarchive-room',
+	'delete-c',
+	'delete-p',
+	'edit-room',
+	'mute-user',
+	'set-leader',
+	'set-owner',
+	'set-moderator',
+	'remove-user',
+	'view-statistics',
+	'view-room-administration',
+	'view-user-administration',
+	'view-privileged-setting'
+];
+
+export async function setPermissions() {
+	const db = database.active;
+	const permissionsCollection = db.collections.get('permissions');
+	const allPermissions = await permissionsCollection.query(Q.where('id', Q.oneOf(PERMISSIONS))).fetch();
+	const parsed = allPermissions.map(item => ({
+		id: item.id,
+		roles: item.roles
+	}));
+
+	reduxStore.dispatch(setPermissionsAction(parsed));
+}
 
 const getUpdatedSince = (allRecords) => {
 	try {
@@ -65,6 +111,7 @@ const updatePermissions = async({ update = [], remove = [], allRecords }) => {
 		await db.action(async() => {
 			await db.batch(...batch);
 		});
+		return true;
 	} catch (e) {
 		log(e);
 	}
@@ -104,6 +151,7 @@ export default function() {
 
 				InteractionManager.runAfterInteractions(async() => {
 					await updatePermissions({ update: result.update, remove: result.delete, allRecords });
+					setPermissions();
 					return resolve();
 				});
 			}

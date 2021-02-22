@@ -14,9 +14,6 @@ import Touch from '../../utils/touch';
 import {
 	replyBroadcast as replyBroadcastAction
 } from '../../actions/messages';
-import {
-	permissionsRequest as permissionsRequestAction
-} from '../../actions/permissions';
 import List from './List';
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
@@ -101,7 +98,6 @@ class RoomView extends React.Component {
 		isMasterDetail: PropTypes.bool,
 		theme: PropTypes.string,
 		replyBroadcast: PropTypes.func,
-		// getPermissions: PropTypes.func,
 		width: PropTypes.number,
 		height: PropTypes.number,
 		insets: PropTypes.object
@@ -1127,8 +1123,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	replyBroadcast: message => dispatch(replyBroadcastAction(message)),
-	getPermissions: () => dispatch(permissionsRequestAction())
+	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomView))));
