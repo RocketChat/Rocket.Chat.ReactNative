@@ -817,7 +817,7 @@ class RoomView extends React.Component {
 		if (jitsiTimeout < Date.now()) {
 			showErrorAlert(I18n.t('Call_already_ended'));
 		} else {
-			RocketChat.callJitsi(this.rid);
+			RocketChat.callJitsi(room);
 		}
 	};
 
@@ -1084,6 +1084,7 @@ class RoomView extends React.Component {
 					reactionClose={this.onReactionClose}
 					width={width}
 					height={height}
+					theme={theme}
 				/>
 				<UploadProgress rid={this.rid} user={user} baseUrl={baseUrl} width={width} />
 				<ReactionsModal

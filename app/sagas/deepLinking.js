@@ -70,7 +70,7 @@ const navigate = function* navigate({ params }) {
 				}
 
 				if (params.isCall) {
-					RocketChat.callJitsi(item.rid);
+					RocketChat.callJitsi(item);
 				}
 			}
 		} else {
