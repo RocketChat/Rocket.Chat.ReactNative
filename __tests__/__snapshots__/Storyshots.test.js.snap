@@ -1087,7 +1087,7 @@ exports[`Storyshots Header Buttons badge 1`] = `
     >
       <View
         accessible={true}
-        focusable={false}
+        focusable={true}
         hitSlop={
           Object {
             "bottom": 5,
@@ -1096,7 +1096,9 @@ exports[`Storyshots Header Buttons badge 1`] = `
             "top": 5,
           }
         }
+        onBlur={[Function]}
         onClick={[Function]}
+        onFocus={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -1106,7 +1108,6 @@ exports[`Storyshots Header Buttons badge 1`] = `
         style={
           Object {
             "marginHorizontal": 6,
-            "opacity": 1,
           }
         }
       >
@@ -1180,7 +1181,7 @@ exports[`Storyshots Header Buttons badge 1`] = `
       </View>
       <View
         accessible={true}
-        focusable={false}
+        focusable={true}
         hitSlop={
           Object {
             "bottom": 5,
@@ -1189,7 +1190,9 @@ exports[`Storyshots Header Buttons badge 1`] = `
             "top": 5,
           }
         }
+        onBlur={[Function]}
         onClick={[Function]}
+        onFocus={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -1199,7 +1202,6 @@ exports[`Storyshots Header Buttons badge 1`] = `
         style={
           Object {
             "marginHorizontal": 6,
-            "opacity": 1,
           }
         }
       >
@@ -1273,7 +1275,7 @@ exports[`Storyshots Header Buttons badge 1`] = `
       </View>
       <View
         accessible={true}
-        focusable={false}
+        focusable={true}
         hitSlop={
           Object {
             "bottom": 5,
@@ -1282,7 +1284,9 @@ exports[`Storyshots Header Buttons badge 1`] = `
             "top": 5,
           }
         }
+        onBlur={[Function]}
         onClick={[Function]}
+        onFocus={[Function]}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -1292,7 +1296,6 @@ exports[`Storyshots Header Buttons badge 1`] = `
         style={
           Object {
             "marginHorizontal": 6,
-            "opacity": 1,
           }
         }
       >
@@ -1435,7 +1438,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -1445,7 +1450,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -1537,7 +1541,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -1547,7 +1553,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -1630,7 +1635,7 @@ Array [
       >
         <View
           accessible={true}
-          focusable={false}
+          focusable={true}
           hitSlop={
             Object {
               "bottom": 5,
@@ -1639,7 +1644,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -1649,7 +1656,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -1737,7 +1743,7 @@ Array [
       >
         <View
           accessible={true}
-          focusable={false}
+          focusable={true}
           hitSlop={
             Object {
               "bottom": 5,
@@ -1746,7 +1752,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -1756,7 +1764,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -1839,7 +1846,7 @@ Array [
       >
         <View
           accessible={true}
-          focusable={false}
+          focusable={true}
           hitSlop={
             Object {
               "bottom": 5,
@@ -1848,7 +1855,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -1858,7 +1867,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -1941,7 +1949,7 @@ Array [
       >
         <View
           accessible={true}
-          focusable={false}
+          focusable={true}
           hitSlop={
             Object {
               "bottom": 5,
@@ -1950,7 +1958,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -1960,7 +1970,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -2052,7 +2061,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -2062,7 +2073,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -2143,7 +2153,7 @@ Array [
       >
         <View
           accessible={true}
-          focusable={false}
+          focusable={true}
           hitSlop={
             Object {
               "bottom": 5,
@@ -2152,7 +2162,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -2162,7 +2174,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -2211,7 +2222,7 @@ Array [
       >
         <View
           accessible={true}
-          focusable={false}
+          focusable={true}
           hitSlop={
             Object {
               "bottom": 5,
@@ -2220,7 +2231,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -2230,7 +2243,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -2306,7 +2318,7 @@ Array [
       >
         <View
           accessible={true}
-          focusable={false}
+          focusable={true}
           hitSlop={
             Object {
               "bottom": 5,
@@ -2315,7 +2327,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -2325,7 +2339,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -2352,7 +2365,7 @@ Array [
         </View>
         <View
           accessible={true}
-          focusable={false}
+          focusable={true}
           hitSlop={
             Object {
               "bottom": 5,
@@ -2361,7 +2374,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -2371,7 +2386,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -2420,7 +2434,7 @@ Array [
       >
         <View
           accessible={true}
-          focusable={false}
+          focusable={true}
           hitSlop={
             Object {
               "bottom": 5,
@@ -2429,7 +2443,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -2439,7 +2455,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -2466,7 +2481,7 @@ Array [
         </View>
         <View
           accessible={true}
-          focusable={false}
+          focusable={true}
           hitSlop={
             Object {
               "bottom": 5,
@@ -2475,7 +2490,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -2485,7 +2502,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -2566,7 +2582,7 @@ Array [
       >
         <View
           accessible={true}
-          focusable={false}
+          focusable={true}
           hitSlop={
             Object {
               "bottom": 5,
@@ -2575,7 +2591,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -2585,7 +2603,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -2634,7 +2651,7 @@ Array [
       >
         <View
           accessible={true}
-          focusable={false}
+          focusable={true}
           hitSlop={
             Object {
               "bottom": 5,
@@ -2643,7 +2660,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -2653,7 +2672,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -2678,7 +2696,7 @@ Array [
         </View>
         <View
           accessible={true}
-          focusable={false}
+          focusable={true}
           hitSlop={
             Object {
               "bottom": 5,
@@ -2687,7 +2705,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -2697,7 +2717,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -2820,7 +2839,7 @@ Array [
       >
         <View
           accessible={true}
-          focusable={false}
+          focusable={true}
           hitSlop={
             Object {
               "bottom": 5,
@@ -2829,7 +2848,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -2839,7 +2860,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -2888,7 +2908,7 @@ Array [
       >
         <View
           accessible={true}
-          focusable={false}
+          focusable={true}
           hitSlop={
             Object {
               "bottom": 5,
@@ -2897,7 +2917,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -2907,7 +2929,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -2932,7 +2953,7 @@ Array [
         </View>
         <View
           accessible={true}
-          focusable={false}
+          focusable={true}
           hitSlop={
             Object {
               "bottom": 5,
@@ -2941,7 +2962,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -2951,7 +2974,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -3074,7 +3096,7 @@ Array [
       >
         <View
           accessible={true}
-          focusable={false}
+          focusable={true}
           hitSlop={
             Object {
               "bottom": 5,
@@ -3083,7 +3105,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -3093,7 +3117,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -3142,7 +3165,7 @@ Array [
       >
         <View
           accessible={true}
-          focusable={false}
+          focusable={true}
           hitSlop={
             Object {
               "bottom": 5,
@@ -3151,7 +3174,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -3161,7 +3186,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -3186,7 +3210,7 @@ Array [
         </View>
         <View
           accessible={true}
-          focusable={false}
+          focusable={true}
           hitSlop={
             Object {
               "bottom": 5,
@@ -3195,7 +3219,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -3205,7 +3231,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -3333,7 +3358,7 @@ Array [
       >
         <View
           accessible={true}
-          focusable={false}
+          focusable={true}
           hitSlop={
             Object {
               "bottom": 5,
@@ -3342,7 +3367,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -3352,7 +3379,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -3399,7 +3425,7 @@ Array [
       >
         <View
           accessible={true}
-          focusable={false}
+          focusable={true}
           hitSlop={
             Object {
               "bottom": 5,
@@ -3408,7 +3434,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -3418,7 +3446,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -3492,7 +3519,7 @@ Array [
       >
         <View
           accessible={true}
-          focusable={false}
+          focusable={true}
           hitSlop={
             Object {
               "bottom": 5,
@@ -3501,7 +3528,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -3511,7 +3540,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -3536,7 +3564,7 @@ Array [
         </View>
         <View
           accessible={true}
-          focusable={false}
+          focusable={true}
           hitSlop={
             Object {
               "bottom": 5,
@@ -3545,7 +3573,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -3555,7 +3585,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -3602,7 +3631,7 @@ Array [
       >
         <View
           accessible={true}
-          focusable={false}
+          focusable={true}
           hitSlop={
             Object {
               "bottom": 5,
@@ -3611,7 +3640,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -3621,7 +3652,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >
@@ -3646,7 +3676,7 @@ Array [
         </View>
         <View
           accessible={true}
-          focusable={false}
+          focusable={true}
           hitSlop={
             Object {
               "bottom": 5,
@@ -3655,7 +3685,9 @@ Array [
               "top": 5,
             }
           }
+          onBlur={[Function]}
           onClick={[Function]}
+          onFocus={[Function]}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -3665,7 +3697,6 @@ Array [
           style={
             Object {
               "marginHorizontal": 6,
-              "opacity": 1,
             }
           }
         >

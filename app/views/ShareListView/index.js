@@ -15,7 +15,6 @@ import { isIOS, isAndroid } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import DirectoryItem, { ROW_HEIGHT } from '../../presentation/DirectoryItem';
 import ServerItem from '../../presentation/ServerItem';
-import * as HeaderButton from '../../containers/HeaderButton';
 import ShareListHeader from './Header';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as List from '../../containers/List';
@@ -138,43 +137,15 @@ class ShareListView extends React.Component {
 		const { searching } = this.state;
 		const { navigation, theme } = this.props;
 
-		if (isIOS) {
-			navigation.setOptions({
-				header: () => (
-					<ShareListHeader
-						searching={searching}
-						initSearch={this.initSearch}
-						cancelSearch={this.cancelSearch}
-						search={this.search}
-						theme={theme}
-					/>
-				)
-			});
-			return;
-		}
-
 		navigation.setOptions({
-			headerLeft: () => (searching
-				? (
-					<HeaderButton.Container left>
-						<HeaderButton.Item title='cancel' iconName='close' onPress={this.cancelSearch} />
-					</HeaderButton.Container>
-				)
-				: (
-					<HeaderButton.CancelModal
-						onPress={ShareExtension.close}
-						testID='share-extension-close'
-					/>
-				)),
-			headerTitle: () => <ShareListHeader searching={searching} search={this.search} theme={theme} />,
-			headerRight: () => (
-				searching
-					? null
-					: (
-						<HeaderButton.Container>
-							<HeaderButton.Item iconName='search' onPress={this.initSearch} />
-						</HeaderButton.Container>
-					)
+			header: () => (
+				<ShareListHeader
+					searching={searching}
+					initSearch={this.initSearch}
+					cancelSearch={isAndroid && !searching ? ShareExtension.close : this.cancelSearch}
+					search={this.search}
+					theme={theme}
+				/>
 			)
 		});
 	}

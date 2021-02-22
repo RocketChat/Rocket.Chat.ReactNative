@@ -9,6 +9,7 @@ import { themes } from '../../../constants/colors';
 
 import sharedStyles from '../../Styles';
 import { animateNextTransition } from '../../../utils/layoutAnimation';
+import { isIOS } from '../../../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	container: {
@@ -45,7 +46,7 @@ const Header = React.memo(({
 				styles.container,
 				{
 					borderColor: themes[theme].separatorColor,
-					backgroundColor: themes[theme].headerBackground
+					backgroundColor: isIOS ? themes[theme].headerBackground : themes[theme].headerSecondaryBackground
 				}
 			]}
 		>
