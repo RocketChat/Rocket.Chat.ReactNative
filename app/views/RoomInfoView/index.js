@@ -276,7 +276,7 @@ class RoomInfoView extends React.Component {
 
 	videoCall = () => {
 		const { room } = this.state;
-		RocketChat.callJitsi(room.rid);
+		RocketChat.callJitsi(room);
 	}
 
 	renderAvatar = (room, roomUser) => {

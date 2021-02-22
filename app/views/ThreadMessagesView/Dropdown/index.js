@@ -68,7 +68,7 @@ class Dropdown extends React.Component {
 		});
 		const backdropOpacity = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [0, 0.3]
+			outputRange: [0, themes[theme].backdropOpacity]
 		});
 		return (
 			<>
