@@ -426,7 +426,8 @@ export default ({ theme }) => {
 					author_name: 'I\'m a very long long title and I\'ll break',
 					ts: date,
 					timeFormat: 'LT',
-					text: 'How are you?'
+					text: 'How are you?',
+					message_link: 'http:///example.com'
 				}]}
 			/>
 			<Message
@@ -435,7 +436,8 @@ export default ({ theme }) => {
 					author_name: 'rocket.cat',
 					ts: date,
 					timeFormat: 'LT',
-					text: 'How are you? :nyan_rocket:'
+					text: 'How are you? :nyan_rocket:',
+					message_link: 'http:///example.com'
 				}]}
 			/>
 
@@ -714,6 +716,7 @@ export default ({ theme }) => {
 					ts: date,
 					timeFormat: 'LT',
 					text: 'Custom fields',
+					message_link: 'http:///example.com',
 					fields: [{
 						title: 'Field 1',
 						value: 'Value 1',
@@ -728,6 +731,7 @@ export default ({ theme }) => {
 					ts: date,
 					timeFormat: 'LT',
 					text: 'Custom fields 2',
+					message_link: 'http:///example.com',
 					fields: [{
 						title: 'Field 1',
 						value: 'Value 1',
@@ -774,6 +778,7 @@ export default ({ theme }) => {
 					author_name: 'rocket.cat',
 					ts: date,
 					timeFormat: 'LT',
+					message_link: 'http:///example.com',
 					text: 'First message'
 				}]}
 			/>
