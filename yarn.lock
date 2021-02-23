@@ -13189,7 +13189,7 @@ react-native-windows@^0.62.0-0:
     uuid "^3.3.2"
     xml-parser "^1.2.1"
 
-react-native@RocketChat/react-native#0.63.4, react-native@^0.63.1:
+react-native@RocketChat/react-native#0.63.4:
   version "0.63.4"
   resolved "https://codeload.github.com/RocketChat/react-native/tar.gz/616299bbc01eeb56cb7d5b52e543051e1ad2d136"
   dependencies:
@@ -13832,8 +13832,6 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
 rn-extensions-share@RocketChat/rn-extensions-share:
   version "2.4.1"
   resolved "https://codeload.github.com/RocketChat/rn-extensions-share/tar.gz/4d7c0e4c2f300e4fb116af7b7cc0dbbc8169150c"
-  dependencies:
-    react-native "^0.63.1"
 
 rn-fetch-blob@0.12.0:
   version "0.12.0"
