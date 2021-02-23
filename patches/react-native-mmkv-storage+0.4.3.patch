@@ -18,7 +18,7 @@ index a2768f7..fed75ae 100644
                      
                  }
 diff --git a/node_modules/react-native-mmkv-storage/ios/SecureStorage.m b/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
-index 24958ae..97bc100 100644
+index 24958ae..9b3e106 100644
 --- a/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
 +++ b/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
 @@ -130,7 +130,8 @@ - (void) removeSecureKey:(NSString *)key
@@ -53,19 +53,20 @@ index 24958ae..97bc100 100644
          [self clearSecureKeyStore];
 -        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"RnSksIsAppInstalled"];
 -        [[NSUserDefaults standardUserDefaults] synchronize];
-+        userDefaults setBool:YES forKey:@"RnSksIsAppInstalled"];
++        [userDefaults setBool:YES forKey:@"RnSksIsAppInstalled"];
 +        [userDefaults synchronize];
      }
  }
  
 diff --git a/node_modules/react-native-mmkv-storage/ios/StorageGetters.m b/node_modules/react-native-mmkv-storage/ios/StorageGetters.m
-index 462fce9..0313e16 100644
+index 462fce9..b842dc2 100644
 --- a/node_modules/react-native-mmkv-storage/ios/StorageGetters.m
 +++ b/node_modules/react-native-mmkv-storage/ios/StorageGetters.m
-@@ -43,7 +43,10 @@ +(void) getItem:(NSString *)ID
+@@ -42,8 +42,10 @@ +(void) getItem:(NSString *)ID
+             switch (type.integerValue) {
                  case 1:
                      string =[kv getObjectOfClass:NSString.class forKey:key];
-                     
+-                    
 -                    callback(@[[NSNull null], string? string : [NSNull null]]);
 +                    if (!string) {
 +                        string = (NSString *)[NSNull null];
