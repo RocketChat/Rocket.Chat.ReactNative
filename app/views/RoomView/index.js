@@ -155,18 +155,20 @@ class RoomView extends React.Component {
 		this.list = React.createRef();
 		this.joinCode = React.createRef();
 		this.mounted = false;
-
+		if (this.rid) {
+			this.sub = new RoomClass(this.rid);
+		}
 		console.timeEnd(`${ this.constructor.name } init`);
 	}
 
 	componentDidMount() {
-		const { navigation } = this.props;
 		this.mounted = true;
 		this.offset = 0;
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
 			const { isAuthenticated } = this.props;
 			this.setHeader();
 			if (this.rid) {
+				this.sub.subscribe();
 				if (isAuthenticated) {
 					this.init();
 				} else {
@@ -182,15 +184,6 @@ class RoomView extends React.Component {
 		}
 		EventEmitter.addEventListener('ROOM_REMOVED', this.handleRoomRemoved);
 		console.timeEnd(`${ this.constructor.name } mount`);
-
-		const unsubscribe = navigation.addListener('focus', () => {
-			if (this.rid) {
-				this.sub = new RoomClass(this.rid);
-				this.sub.subscribe();
-			}
-		});
-
-		return unsubscribe;
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -811,10 +804,8 @@ class RoomView extends React.Component {
 		if (isMasterDetail) {
 			navParam.showCloseModal = true;
 			navigation.navigate('ModalStackNavigator', { screen: 'RoomInfoView', params: navParam });
-			this.unsubscribe();
 		} else {
 			navigation.navigate('RoomInfoView', navParam);
-			this.unsubscribe();
 		}
 	}
 
