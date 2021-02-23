@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, Keyboard } from 'react-native';
+import {
+	View, ScrollView, Keyboard, Alert
+} from 'react-native';
 import { connect } from 'react-redux';
 import prompt from 'react-native-prompt-android';
 import SHA256 from 'js-sha256';
@@ -32,20 +34,8 @@ import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 
-class ProfileView extends React.Component {
-	static navigationOptions = ({ navigation, isMasterDetail }) => {
-		const options = {
-			title: I18n.t('Profile')
-		};
-		if (!isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.Drawer navigation={navigation} />;
-		}
-		options.headerRight = () => (
-			<HeaderButton.Preferences onPress={() => navigation.navigate('UserPreferencesView')} testID='preferences-view-open' />
-		);
-		return options;
-	}
 
+class ProfileView extends React.Component {
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		user: PropTypes.object,
@@ -56,7 +46,14 @@ class ProfileView extends React.Component {
 		Accounts_AllowUsernameChange: PropTypes.bool,
 		Accounts_CustomFields: PropTypes.string,
 		setUser: PropTypes.func,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		navigation: PropTypes.object,
+		isMasterDetail: PropTypes.bool
+	}
+
+	constructor(props) {
+		super(props);
+		this.setHeader();
 	}
 
 	state = {
@@ -71,6 +68,7 @@ class ProfileView extends React.Component {
 		avatarSuggestions: {},
 		customFields: {}
 	}
+
 
 	async componentDidMount() {
 		this.init();
@@ -131,6 +129,43 @@ class ProfileView extends React.Component {
 			avatarUrl: null,
 			avatar: {},
 			customFields: customFields || {}
+		});
+	}
+
+	setHeader = () => {
+		const { navigation, isMasterDetail } = this.props;
+		navigation.setOptions({
+			title: I18n.t('Profile'),
+			headerLeft: !isMasterDetail ? () => (
+				<HeaderButton.Drawer onPress={() => {
+					if (this.formIsChanged()) {
+						Alert.alert(
+							'Unsaved Changes',
+							'Changes will be discarded',
+							[
+								{
+									text: 'Discard',
+									style: 'destructive',
+									onPress: () => {
+										this.init();
+										navigation.toggleDrawer();
+									}
+								},
+								{
+									text: 'Save',
+									onPress: () => this.submit(),
+									style: 'default'
+								}
+							],
+							{ cancelable: false }
+						);
+					} else {
+						navigation.toggleDrawer();
+					}
+				}}
+				/>
+			) : null,
+			headerRight: () => <HeaderButton.Preferences onPress={() => navigation.navigate('UserPreferencesView')} testID='preferences-view-open' />
 		});
 	}
 
