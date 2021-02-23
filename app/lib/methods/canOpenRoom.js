@@ -75,7 +75,8 @@ export default async function canOpenRoom({ rid, path, isCall }) {
 					name: room.name,
 					fname: room.fname,
 					prid: room.prid,
-					uids: room.uids
+					uids: room.uids,
+					usernames: room.usernames
 				};
 			} catch (e) {
 				// Do nothing
