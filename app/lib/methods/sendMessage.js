@@ -175,7 +175,8 @@ export default async function(rid, msg, tmid, user, tshow) {
 				m.status = messagesStatus.TEMP;
 				m.u = {
 					_id: user.id || '1',
-					username: user.username
+					username: user.username,
+					name: user.name
 				};
 				if (tmid && tMessageRecord) {
 					m.tmid = tmid;
