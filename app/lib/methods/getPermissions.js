@@ -1,7 +1,6 @@
-import { InteractionManager } from 'react-native';
-import semver from 'semver';
+import lt from 'semver/functions/lt';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { orderBy } from 'lodash';
+import orderBy from 'lodash/orderBy';
 
 import database from '../database';
 import log from '../../utils/log';
@@ -79,16 +78,14 @@ export default function() {
 			const allRecords = await permissionsCollection.query().fetch();
 
 			// if server version is lower than 0.73.0, fetches from old api
-			if (serverVersion && semver.lt(serverVersion, '0.73.0')) {
+			if (serverVersion && lt(serverVersion, '0.73.0')) {
 				// RC 0.66.0
 				const result = await this.sdk.get('permissions.list');
 				if (!result.success) {
 					return resolve();
 				}
-				InteractionManager.runAfterInteractions(async() => {
-					await updatePermissions({ update: result.permissions, allRecords });
-					return resolve();
-				});
+				await updatePermissions({ update: result.permissions, allRecords });
+				return resolve();
 			} else {
 				const params = {};
 				const updatedSince = await getUpdatedSince(allRecords);
@@ -102,10 +99,8 @@ export default function() {
 					return resolve();
 				}
 
-				InteractionManager.runAfterInteractions(async() => {
-					await updatePermissions({ update: result.update, remove: result.delete, allRecords });
-					return resolve();
-				});
+				await updatePermissions({ update: result.update, remove: result.delete, allRecords });
+				return resolve();
 			}
 		} catch (e) {
 			log(e);

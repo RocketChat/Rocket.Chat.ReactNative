@@ -172,7 +172,6 @@ const Reply = React.memo(({
 					/>
 					<Description
 						attachment={attachment}
-						timeFormat={timeFormat}
 						getCustomEmoji={getCustomEmoji}
 						theme={theme}
 					/>

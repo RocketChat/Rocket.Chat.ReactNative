@@ -2,7 +2,7 @@ import React, {
 	useState, forwardRef, useImperativeHandle, useRef
 } from 'react';
 import { Col, Row, Grid } from 'react-native-easy-grid';
-import _ from 'lodash';
+import range from 'lodash/range';
 import PropTypes from 'prop-types';
 import * as Animatable from 'react-native-animatable';
 import * as Haptics from 'expo-haptics';
@@ -84,21 +84,21 @@ const Base = forwardRef(({
 					</Animatable.View>
 				</Row>
 				<Row style={[styles.row, styles.buttonRow]}>
-					{_.range(1, 4).map(i => (
+					{range(1, 4).map(i => (
 						<Col key={i} style={styles.colButton}>
 							<Button text={i} theme={theme} onPress={onPressNumber} />
 						</Col>
 					))}
 				</Row>
 				<Row style={[styles.row, styles.buttonRow]}>
-					{_.range(4, 7).map(i => (
+					{range(4, 7).map(i => (
 						<Col key={i} style={styles.colButton}>
 							<Button text={i} theme={theme} onPress={onPressNumber} />
 						</Col>
 					))}
 				</Row>
 				<Row style={[styles.row, styles.buttonRow]}>
-					{_.range(7, 10).map(i => (
+					{range(7, 10).map(i => (
 						<Col key={i} style={styles.colButton}>
 							<Button text={i} theme={theme} onPress={onPressNumber} />
 						</Col>

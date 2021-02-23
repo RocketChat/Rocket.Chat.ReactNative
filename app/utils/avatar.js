@@ -1,4 +1,5 @@
-import semver from 'semver';
+import lt from 'semver/functions/lt';
+import coerce from 'semver/functions/coerce';
 
 const formatUrl = (url, size, query) => `${ url }?format=png&size=${ size }${ query }`;
 
@@ -8,13 +9,11 @@ export const avatarURL = ({
 	let room;
 	if (type === 'd') {
 		room = text;
-	} else if (rid && !(serverVersion && semver.lt(semver.coerce(serverVersion), '3.6.0'))) {
+	} else if (rid && !(serverVersion && lt(coerce(serverVersion), '3.6.0'))) {
 		room = `room/${ rid }`;
 	} else {
 		room = `@${ text }`;
 	}
-
-	const uriSize = size > 100 ? size : 100;
 
 	const { id, token } = user;
 	let query = '';
@@ -30,8 +29,8 @@ export const avatarURL = ({
 			return avatar;
 		}
 
-		return formatUrl(`${ server }${ avatar }`, uriSize, query);
+		return formatUrl(`${ server }${ avatar }`, size, query);
 	}
 
-	return formatUrl(`${ server }/avatar/${ room }`, uriSize, query);
+	return formatUrl(`${ server }/avatar/${ room }`, size, query);
 };

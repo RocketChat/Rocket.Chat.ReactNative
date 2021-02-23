@@ -1,5 +1,4 @@
-import { InteractionManager } from 'react-native';
-import semver from 'semver';
+import lt from 'semver/functions/lt';
 import orderBy from 'lodash/orderBy';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
@@ -91,22 +90,20 @@ export function getCustomEmojis() {
 			const updatedSince = await getUpdatedSince(allRecords);
 
 			// if server version is lower than 0.75.0, fetches from old api
-			if (serverVersion && semver.lt(serverVersion, '0.75.0')) {
+			if (serverVersion && lt(serverVersion, '0.75.0')) {
 				// RC 0.61.0
 				const result = await this.sdk.get('emoji-custom');
 
-				InteractionManager.runAfterInteractions(async() => {
-					let { emojis } = result;
-					emojis = emojis.filter(emoji => !updatedSince || emoji._updatedAt > updatedSince);
-					const changedEmojis = await updateEmojis({ update: emojis, allRecords });
+				let { emojis } = result;
+				emojis = emojis.filter(emoji => !updatedSince || emoji._updatedAt > updatedSince);
+				const changedEmojis = await updateEmojis({ update: emojis, allRecords });
 
-					// `setCustomEmojis` is fired on selectServer
-					// We run it again only if emojis were changed
-					if (changedEmojis) {
-						setCustomEmojis();
-					}
-					return resolve();
-				});
+				// `setCustomEmojis` is fired on selectServer
+				// We run it again only if emojis were changed
+				if (changedEmojis) {
+					setCustomEmojis();
+				}
+				return resolve();
 			} else {
 				const params = {};
 				if (updatedSince) {
@@ -120,17 +117,15 @@ export function getCustomEmojis() {
 					return resolve();
 				}
 
-				InteractionManager.runAfterInteractions(async() => {
-					const { emojis } = result;
-					const { update, remove } = emojis;
-					const changedEmojis = await updateEmojis({ update, remove, allRecords });
+				const { emojis } = result;
+				const { update, remove } = emojis;
+				const changedEmojis = await updateEmojis({ update, remove, allRecords });
 
-					// `setCustomEmojis` is fired on selectServer
-					// We run it again only if emojis were changed
-					if (changedEmojis) {
-						setCustomEmojis();
-					}
-				});
+				// `setCustomEmojis` is fired on selectServer
+				// We run it again only if emojis were changed
+				if (changedEmojis) {
+					setCustomEmojis();
+				}
 			}
 		} catch (e) {
 			log(e);
