@@ -533,7 +533,14 @@ class RoomView extends React.Component {
 	}
 
 	onEditInit = (message) => {
-		this.setState({ selectedMessage: message, editing: true });
+		const newMessage = {
+			id: message.id,
+			subscription: {
+				id: message.subscription.id
+			},
+			msg: message?.attachments?.[0]?.description || message.msg
+		};
+		this.setState({ selectedMessage: newMessage, editing: true });
 	}
 
 	onEditCancel = () => {
@@ -817,7 +824,7 @@ class RoomView extends React.Component {
 		if (jitsiTimeout < Date.now()) {
 			showErrorAlert(I18n.t('Call_already_ended'));
 		} else {
-			RocketChat.callJitsi(this.rid);
+			RocketChat.callJitsi(room);
 		}
 	};
 
