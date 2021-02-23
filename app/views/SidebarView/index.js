@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
-import isEqual from 'react-fast-compare';
+import { dequal } from 'dequal';
 
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status/Status';
@@ -91,7 +91,7 @@ class Sidebar extends Component {
 		if (nextProps.theme !== theme) {
 			return true;
 		}
-		if (!isEqual(nextProps.user, user)) {
+		if (!dequal(nextProps.user, user)) {
 			return true;
 		}
 		if (nextProps.isMasterDetail !== isMasterDetail) {
