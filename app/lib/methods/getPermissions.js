@@ -131,8 +131,10 @@ export default function() {
 					return resolve();
 				}
 				InteractionManager.runAfterInteractions(async() => {
-					await updatePermissions({ update: result.permissions, allRecords });
-					setPermissions();
+					const changePermissions = await updatePermissions({ update: result.permissions, allRecords });
+					if (changePermissions) {
+						setPermissions();
+					}
 					return resolve();
 				});
 			} else {
@@ -149,8 +151,10 @@ export default function() {
 				}
 
 				InteractionManager.runAfterInteractions(async() => {
-					await updatePermissions({ update: result.update, remove: result.delete, allRecords });
-					setPermissions();
+					const changePermissions = await updatePermissions({ update: result.update, remove: result.delete, allRecords });
+					if (changePermissions) {
+						setPermissions();
+					}
 					return resolve();
 				});
 			}

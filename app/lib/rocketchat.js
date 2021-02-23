@@ -32,7 +32,7 @@ import readMessages from './methods/readMessages';
 import getSettings, { getLoginSettings, setSettings } from './methods/getSettings';
 
 import getRooms from './methods/getRooms';
-import getPermissions from './methods/getPermissions';
+import getPermissions, { setPermissions } from './methods/getPermissions';
 import { getCustomEmojis, setCustomEmojis } from './methods/getCustomEmojis';
 import {
 	getEnterpriseModules, setEnterpriseModules, hasLicense, isOmnichannelModuleAvailable
@@ -740,6 +740,7 @@ const RocketChat = {
 	getLoginSettings,
 	setSettings,
 	getPermissions,
+	setPermissions,
 	getCustomEmojis,
 	setCustomEmojis,
 	getEnterpriseModules,
