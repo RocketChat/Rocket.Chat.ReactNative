@@ -68,6 +68,7 @@ class RightButtonsContainer extends Component {
 		if (!isEqual(nextState.tunreadGroup, tunreadGroup)) {
 			return true;
 		}
+		return false;
 	}
 
 	componentWillUnmount() {
