@@ -119,7 +119,7 @@ const MessageTouchable = React.memo((props) => {
 		<Touchable
 			onLongPress={onLongPress}
 			onPress={onPress}
-			disabled={props.isInfo || props.archived || props.isTemp}
+			disabled={(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp}
 		>
 			<View>
 				<Message {...props} />
@@ -132,6 +132,7 @@ MessageTouchable.displayName = 'MessageTouchable';
 MessageTouchable.propTypes = {
 	hasError: PropTypes.bool,
 	isInfo: PropTypes.bool,
+	isThreadReply: PropTypes.bool,
 	isTemp: PropTypes.bool,
 	archived: PropTypes.bool
 };

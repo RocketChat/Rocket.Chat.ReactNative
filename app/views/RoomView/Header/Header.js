@@ -168,7 +168,7 @@ const Header = React.memo(({
 					theme={theme}
 				/>
 			</View>
-			<SubTitle usersTyping={usersTyping} subtitle={subtitle} theme={theme} renderFunc={renderFunc} />
+			<SubTitle usersTyping={tmid ? [] : usersTyping} subtitle={subtitle} theme={theme} renderFunc={renderFunc} />
 		</TouchableOpacity>
 	);
 });
