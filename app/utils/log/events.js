@@ -5,9 +5,8 @@ export default {
 	ONBOARD_CREATE_NEW_WORKSPACE_F: 'onboard_create_new_workspace_f',
 
 	// NEW SERVER VIEW
-	NEWSERVER_CONNECT_TO_WORKSPACE: 'newserver_connect_to_workspace',
-	NEWSERVER_CONNECT_TO_WORKSPACE_F: 'newserver_connect_to_workspace_f',
-	NEWSERVER_JOIN_OPEN_WORKSPACE: 'newserver_join_open_workspace',
+	NS_CONNECT_TO_WORKSPACE: 'ns_connect_to_workspace',
+	NS_JOIN_OPEN_WORKSPACE: 'ns_join_open_workspace',
 
 	// LOGIN VIEW
 	LOGIN_DEFAULT_LOGIN: 'login_default_login',
@@ -99,20 +98,20 @@ export default {
 	SELECTED_USERS_CREATE_GROUP_F: 'selected_users_create_group_f',
 
 	// CREATE CHANNEL VIEW
-	CREATE_CHANNEL_CREATE: 'create_channel_create',
-	CREATE_CHANNEL_CREATE_F: 'create_channel_create_f',
-	CREATE_CHANNEL_TOGGLE_TYPE: 'create_channel_toggle_type',
-	CREATE_CHANNEL_TOGGLE_READ_ONLY: 'create_channel_toggle_read_only',
-	CREATE_CHANNEL_TOGGLE_BROADCAST: 'create_channel_toggle_broadcast',
-	CREATE_CHANNEL_TOGGLE_ENCRYPTED: 'create_channel_toggle_encrypted',
-	CREATE_CHANNEL_REMOVE_USER: 'create_channel_remove_user',
+	CR_CREATE: 'cr_create',
+	CR_CREATE_F: 'cr_create_f',
+	CR_TOGGLE_TYPE: 'cr_toggle_type',
+	CR_TOGGLE_READ_ONLY: 'cr_toggle_read_only',
+	CR_TOGGLE_BROADCAST: 'cr_toggle_broadcast',
+	CR_TOGGLE_ENCRYPTED: 'cr_toggle_encrypted',
+	CR_REMOVE_USER: 'cr_remove_user',
 
 	// CREATE DISCUSSION VIEW
-	CREATE_DISCUSSION_CREATE: 'create_discussion_create',
-	CREATE_DISCUSSION_CREATE_F: 'create_discussion_create_f',
-	CREATE_DISCUSSION_SELECT_CHANNEL: 'create_discussion_select_channel',
-	CREATE_DISCUSSION_SELECT_USERS: 'create_discussion_select_users',
-	CREATE_DISCUSSION_TOGGLE_ENCRY: 'create_discussion_toggle_encry',
+	CD_CREATE: 'cd_create',
+	CD_CREATE_F: 'cd_create_f',
+	CD_SELECT_CHANNEL: 'cd_select_channel',
+	CD_SELECT_USERS: 'cd_select_users',
+	CD_TOGGLE_ENCRY: 'cd_toggle_encry',
 
 	// PROFILE VIEW
 	PROFILE_PICK_AVATAR: 'profile_pick_avatar',
@@ -122,8 +121,9 @@ export default {
 	PROFILE_SAVE_AVATAR_F: 'profile_save_avatar_f',
 	PROFILE_SAVE_CHANGES: 'profile_save_changes',
 	PROFILE_SAVE_CHANGES_F: 'profile_save_changes_f',
-	PROFILE_LOGOUT_OTHER_LOCATIONS: 'profile_logout_other_locations',
-	PROFILE_LOGOUT_OTHER_LOCATIONS_F: 'profile_logout_other_locations_f',
+	// PROFILE LOGOUT
+	PL_OTHER_LOCATIONS: 'pl_other_locations',
+	PL_OTHER_LOCATIONS_F: 'pl_other_locations_f',
 
 	// SETTINGS VIEW
 	SE_CONTACT_US: 'se_contact_us',
@@ -297,8 +297,6 @@ export default {
 	NP_AUDIONOTIFICATIONS_F: 'np_audio_notifications_f',
 	NP_AUDIONOTIFICATIONVALUE: 'np_audio_notification_value',
 	NP_AUDIONOTIFICATIONVALUE_F: 'np_audio_notification_value_f',
-	NP_DESKTOPNOTIFICATIONDURATION: 'np_desktopnotificationduration',
-	NP_DESKTOPNOTIFICATIONDURATION_F: 'np_desktopnotificationduration_f',
 	NP_EMAILNOTIFICATIONS: 'np_email_notifications',
 	NP_EMAILNOTIFICATIONS_F: 'np_email_notifications_f',
 
