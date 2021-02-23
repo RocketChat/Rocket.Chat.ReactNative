@@ -131,6 +131,8 @@ export default ({ theme }) => {
 				isThreadReply
 				type='e2e'
 			/>
+			<Message type='room_e2e_disabled' isInfo />
+			<Message type='room_e2e_enabled' isInfo />
 			<Message
 				msg='Temp message encrypted'
 				status={messagesStatus.TEMP}
