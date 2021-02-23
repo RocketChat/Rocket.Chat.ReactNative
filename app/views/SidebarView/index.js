@@ -110,8 +110,14 @@ class Sidebar extends Component {
 		let isAdmin = false;
 
 		if	(roles) {
-			isAdmin = allPermissions.reduce((result, permission) => (
-				result || permission[0]?.roles.some(r => roles.indexOf(r) !== -1)),
+			isAdmin = allPermissions.reduce((result, permission) => {
+				if (permission) {
+					return (
+						result || permission.some(r => roles.indexOf(r) !== -1)
+					);
+				}
+				return result;
+			},
 			false);
 		}
 		return isAdmin;
@@ -269,10 +275,10 @@ const mapStateToProps = state => ({
 	useRealName: state.settings.UI_Use_Real_Name,
 	allowStatusMessage: state.settings.Accounts_AllowUserStatusMessageChange,
 	isMasterDetail: state.app.isMasterDetail,
-	viewStatistics: state.permissions.length > 0 ? state.permissions.filter(item => item.id === 'view-statistics') : [],
-	viewRoomAdministration: state.permissions.length > 0 ? state.permissions.filter(item => item.id === 'view-room-administratios') : [],
-	viewUserAdministration: state.permissions.length > 0 ? state.permissions.filter(item => item.id === 'view-user-administratios') : [],
-	viewPrivilegedSetting: state.permissions.length > 0 ? state.permissions.filter(item => item.id === 'view-privileged-settins') : []
+	viewStatistics: state.permissions['view-statistics'],
+	viewRoomAdministration: state.permissions['view-room-administration'],
+	viewUserAdministration: state.permissions['view-user-administration'],
+	viewPrivilegedSetting: state.permissions['view-privileged-setting']
 });
 
 export default connect(mapStateToProps)(withTheme(Sidebar));

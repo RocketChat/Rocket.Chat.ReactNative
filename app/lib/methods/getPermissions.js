@@ -46,10 +46,7 @@ export async function setPermissions() {
 	const db = database.active;
 	const permissionsCollection = db.collections.get('permissions');
 	const allPermissions = await permissionsCollection.query(Q.where('id', Q.oneOf(PERMISSIONS))).fetch();
-	const parsed = allPermissions.map(item => ({
-		id: item.id,
-		roles: item.roles
-	}));
+	const parsed = allPermissions.reduce((acc, item) => ({ ...acc, [item.id]: item.roles }), {});
 
 	reduxStore.dispatch(clearPermissionsAction());
 	reduxStore.dispatch(setPermissionsAction(parsed));
@@ -135,6 +132,7 @@ export default function() {
 				}
 				InteractionManager.runAfterInteractions(async() => {
 					await updatePermissions({ update: result.permissions, allRecords });
+					setPermissions();
 					return resolve();
 				});
 			} else {

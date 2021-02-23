@@ -1175,7 +1175,6 @@ const RocketChat = {
 	async hasPermission(permissions, rid) {
 		const db = database.active;
 		const subsCollection = db.collections.get('subscriptions');
-		const permissionsCollection = db.collections.get('permissions');
 		let roomRoles = [];
 		try {
 			// get the room from database
@@ -1189,9 +1188,15 @@ const RocketChat = {
 				return result;
 			}, {});
 		}
-		// get permissions from database
+		// get permissions from permissions reducer
 		try {
-			const permissionsFiltered = await permissionsCollection.query(Q.where('id', Q.oneOf(permissions))).fetch();
+			const permissionsRedux = reduxStore.getState().permissions;
+			const permissionsFiltered = permissions.map((permission) => {
+				if (permission in permissionsRedux) {
+					return { id: permission, roles: permissionsRedux[permission] };
+				}
+				return null;
+			});
 			const shareUser = reduxStore.getState().share.user;
 			const loginUser = reduxStore.getState().login.user;
 			// get user roles on the server from redux
