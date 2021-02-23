@@ -63,6 +63,7 @@ export const themes = {
 		passcodeDotFull: '#6C727A',
 		previewBackground: '#1F2329',
 		previewTintColor: '#ffffff',
+		backdropOpacity: 0.3,
 		...mentions
 	},
 	dark: {
@@ -109,6 +110,7 @@ export const themes = {
 		passcodeDotFull: '#6C727A',
 		previewBackground: '#030b1b',
 		previewTintColor: '#ffffff',
+		backdropOpacity: 0.9,
 		...mentions
 	},
 	black: {
@@ -155,6 +157,7 @@ export const themes = {
 		passcodeDotFull: '#6C727A',
 		previewBackground: '#000000',
 		previewTintColor: '#ffffff',
+		backdropOpacity: 0.9,
 		...mentions
 	}
 };
