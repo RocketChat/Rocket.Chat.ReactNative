@@ -13189,7 +13189,7 @@ react-native-windows@^0.62.0-0:
     uuid "^3.3.2"
     xml-parser "^1.2.1"
 
-react-native@RocketChat/react-native#0.63.4:
+react-native@RocketChat/react-native#0.63.4, react-native@^0.63.1:
   version "0.63.4"
   resolved "https://codeload.github.com/RocketChat/react-native/tar.gz/616299bbc01eeb56cb7d5b52e543051e1ad2d136"
   dependencies:
@@ -13832,6 +13832,8 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
 rn-extensions-share@RocketChat/rn-extensions-share:
   version "2.4.1"
   resolved "https://codeload.github.com/RocketChat/rn-extensions-share/tar.gz/4d7c0e4c2f300e4fb116af7b7cc0dbbc8169150c"
+  dependencies:
+    react-native "^0.63.1"
 
 rn-fetch-blob@0.12.0:
   version "0.12.0"
@@ -13846,7 +13848,7 @@ rn-host-detect@1.2.0:
   resolved "https://registry.yarnpkg.com/rn-host-detect/-/rn-host-detect-1.2.0.tgz#8b0396fc05631ec60c1cb8789e5070cdb04d0da0"
   integrity sha512-btNg5kzHcjZZ7t7mvvV/4wNJ9e3MPgrWivkRgWURzXL0JJ0pwWlU4zrbmdlz3HHzHOxhBhHB4D+/dbMFfu4/4A==
 
-rn-root-view@^1.0.3:
+rn-root-view@1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/rn-root-view/-/rn-root-view-1.0.3.tgz#a2cddc717278cb2175fb29b7c006e407b7f0d0e2"
   integrity sha512-BIKm8hY5q8+pxK9B5ugYjqutoI9xn2JfxIZKWoaFmAl1bOIM4oXjwFQrRM1e6lFgzz99MN6Mf2dK3Alsywnvvw==
