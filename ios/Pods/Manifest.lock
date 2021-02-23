@@ -185,7 +185,7 @@ PODS:
     - libwebp/demux
   - libwebp/webp (1.1.0)
   - MMKV (1.2.6):
-    - MMKVCore (~> 1.2.6
+    - MMKVCore (~> 1.2.6)
   - MMKVCore (1.2.6)
   - nanopb (1.30905.0):
     - nanopb/decode (= 1.30905.0)
@@ -379,7 +379,7 @@ PODS:
     - React
   - react-native-mmkv-storage (0.4.3):
     - MMKV (= 1.2.6)
-    - React
+    - React-Core
   - react-native-netinfo (5.9.9):
     - React-Core
   - react-native-notifications (2.1.7):
@@ -921,8 +921,8 @@ SPEC CHECKSUMS:
   JitsiMeetSDK: ef6dd5cfa6d9badf009c7dba1a2c1365bfaae6b0
   KeyCommands: f66c535f698ed14b3d3a4e58859d79a827ea907e
   libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
-  MMKV: 67253edee25a34edf332f91d73fa94a9e038b971
-  MMKVCore: fe398984acac1fa33f92795d1b5fd0a334c944af
+  MMKV: 27f6b9e34849e77e78c5a1cc8f7f513e37f5fa15
+  MMKVCore: c301b04fd2ab9957e6e4d4465b9b60e443b0bb6b
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
   OpenSSL-Universal: 8b48cc0d10c1b2923617dfe5c178aa9ed2689355
   PromisesObjC: b48e0338dbbac2207e611750777895f7a5811b75
@@ -943,7 +943,7 @@ SPEC CHECKSUMS:
   react-native-cookies: d79e5015a5d3a38e08f5cb39c4948532be7e9c2b
   react-native-document-picker: 825552b827012282baf4b7cbf119d3b37a280c90
   react-native-jitsi-meet: f2407aca85566e031ee7b222e497ee5ecb6623de
-  react-native-mmkv-storage: 48729fe90e850ef2fdc9d3714b7030c7c51d82b0
+  react-native-mmkv-storage: e70126c393af50175e5667290eff16faf509a40c
   react-native-netinfo: 0212ce8604e88edf686f1481b925b17a42a52449
   react-native-notifications: ee8fd739853e72694f3af8b374c8ccb106b7b227
   react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
@@ -1005,4 +1005,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 0351d0973911a397f1cb4e45f0b0f590b14816e3
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.0
