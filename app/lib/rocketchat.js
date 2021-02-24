@@ -1201,8 +1201,7 @@ const RocketChat = {
 			// return permissions in object format
 			// e.g. { 'edit-room': true, 'set-readonly': false }
 			return permissions.reduce((result, permission) => {
-				result[permission] = false;
-				result[permission] = permissionsRedux[permissions[permissions.indexOf(permission)]].some(r => mergedRoles.includes(r));
+				result[permission] = permissionsRedux[permissions[permissions.indexOf(permission)]].some(r => mergedRoles.includes(r)) || false;
 				return result;
 			}, {});
 		} catch (e) {
