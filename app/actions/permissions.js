@@ -6,9 +6,3 @@ export function setPermissions(permissions) {
 		permissions
 	};
 }
-
-export function clearPermissions() {
-	return {
-		type: types.PERMISSIONS.CLEAR
-	};
-}

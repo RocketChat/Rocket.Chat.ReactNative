@@ -7,7 +7,7 @@ import database from '../database';
 import log from '../../utils/log';
 import reduxStore from '../createStore';
 import protectedFunction from './helpers/protectedFunction';
-import { setPermissions as setPermissionsAction, clearPermissions as clearPermissionsAction } from '../../actions/permissions';
+import { setPermissions as setPermissionsAction } from '../../actions/permissions';
 
 const PERMISSIONS = [
 	'add-user-to-any-c-room',
@@ -47,7 +47,6 @@ export async function setPermissions() {
 	const allPermissions = await permissionsCollection.query(Q.where('id', Q.oneOf(PERMISSIONS))).fetch();
 	const parsed = allPermissions.reduce((acc, item) => ({ ...acc, [item.id]: item.roles }), {});
 
-	reduxStore.dispatch(clearPermissionsAction());
 	reduxStore.dispatch(setPermissionsAction(parsed));
 }
 
