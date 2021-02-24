@@ -1426,17 +1426,15 @@ const RocketChat = {
 			query, count, offset, sort
 		});
 	},
-	async canAutoTranslate() {
-		const db = database.active;
+	canAutoTranslate() {
 		try {
-			const AutoTranslate_Enabled = reduxStore.getState().settings && reduxStore.getState().settings.AutoTranslate_Enabled;
+			const { AutoTranslate_Enabled } = reduxStore.getState().settings;
 			if (!AutoTranslate_Enabled) {
 				return false;
 			}
-			const permissionsCollection = db.collections.get('permissions');
-			const autoTranslatePermission = await permissionsCollection.find('auto-translate');
-			const userRoles = (reduxStore.getState().login.user && reduxStore.getState().login.user.roles) || [];
-			return autoTranslatePermission.roles.some(role => userRoles.includes(role));
+			const autoTranslatePermission = reduxStore.getState().permissions['auto-translate'];
+			const userRoles = (reduxStore.getState().login?.user?.roles) ?? [];
+			return autoTranslatePermission?.some(role => userRoles.includes(role));
 		} catch (e) {
 			log(e);
 			return false;
