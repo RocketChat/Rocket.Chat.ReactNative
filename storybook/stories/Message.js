@@ -689,6 +689,7 @@ export default ({ theme }) => {
 					ts: date,
 					timeFormat: 'LT',
 					text: 'Custom fields',
+					message_link: 'http:///example.com',
 					fields: [{
 						title: 'Field 1',
 						value: 'Value 1'
