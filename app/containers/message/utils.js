@@ -103,9 +103,9 @@ export const getInfoMessage = ({
 	} else if (type === 'message_snippeted') {
 		return I18n.t('Created_snippet');
 	} else if (type === 'room_e2e_disabled') {
-		return I18n.t('Encryption_disabled', { userBy: username });
+		return I18n.t('This_room_encryption_has_been_disabled_by__username_', { username });
 	} else if (type === 'room_e2e_enabled') {
-		return I18n.t('Encryption_enabled', { userBy: username });
+		return I18n.t('This_room_encryption_has_been_enabled_by__username_', { username });
 	}
 	return '';
 };

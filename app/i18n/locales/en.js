@@ -202,8 +202,6 @@ export default {
 	E2E_How_It_Works_info2: 'This is *end to end encryption* so the key to encode/decode your messages and they will not be saved on the server. For that reason *you need to store this password somewhere safe* which you can access later if you may need.',
 	E2E_How_It_Works_info3: 'If you proceed, it will be auto generated an E2E password.',
 	E2E_How_It_Works_info4: 'You can also setup a new password for your encryption key any time from any browser you have entered the existing E2E password.',
-	Encryption_enabled: 'This room\'s encryption has been enabled by {{userBy}}',
-	Encryption_disabled: 'This room\'s encryption has been disabled by {{userBy}}',
 	edit: 'edit',
 	edited: 'edited',
 	Edit: 'Edit',
@@ -706,5 +704,7 @@ export default {
 	Direct_message: 'Direct message',
 	Message_Ignored: 'Message ignored. Tap to display it.',
 	Enter_workspace_URL: 'Enter workspace URL',
-	Workspace_URL_Example: 'Ex. your-company.rocket.chat'
+	Workspace_URL_Example: 'Ex. your-company.rocket.chat',
+	This_room_encryption_has_been_enabled_by__username_: 'This room\'s encryption has been enabled by {{username}}',
+	This_room_encryption_has_been_disabled_by__username_: 'This room\'s encryption has been disabled by {{username}}'
 };
