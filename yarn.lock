@@ -12956,7 +12956,7 @@ react-native-mime-types@2.3.0:
   dependencies:
     mime-db "~1.37.0"
 
-react-native-mmkv-storage@0.4.3:
+react-native-mmkv-storage@^0.4.3:
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/react-native-mmkv-storage/-/react-native-mmkv-storage-0.4.3.tgz#1e72c455a95f924ce250cb00660e7d111823b498"
   integrity sha512-+ClFN3JETF+ZTHlmKQrKy5a6Xxh7SYeIYeRn2O99FjOr4sxBr0ff4WnPfAsDy7JEpp7NgaasbDtNtgso9yqADA==
@@ -13832,6 +13832,8 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
 rn-extensions-share@RocketChat/rn-extensions-share:
   version "2.4.1"
   resolved "https://codeload.github.com/RocketChat/rn-extensions-share/tar.gz/4d7c0e4c2f300e4fb116af7b7cc0dbbc8169150c"
+  dependencies:
+    react-native "^0.63.1"
 
 rn-fetch-blob@0.12.0:
   version "0.12.0"
