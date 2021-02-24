@@ -142,7 +142,6 @@ class Sidebar extends Component {
 	}
 
 	renderAdmin = () => {
-		// const { isAdmin } = this.state;
 		const { theme, isMasterDetail } = this.props;
 		if (!this.getIsAdmin()) {
 			return null;

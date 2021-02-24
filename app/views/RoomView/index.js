@@ -164,8 +164,6 @@ class RoomView extends React.Component {
 	}
 
 	componentDidMount() {
-		// const { getPermissions } = this.props;
-		// getPermissions();
 		this.mounted = true;
 		this.offset = 0;
 		this.didMountInteraction = InteractionManager.runAfterInteractions(() => {
