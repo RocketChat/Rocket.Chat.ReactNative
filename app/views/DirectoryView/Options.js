@@ -84,13 +84,13 @@ export default class DirectoryOptions extends PureComponent {
 			inputRange: [0, 1],
 			outputRange: [-326, 0]
 		});
-		const backdropOpacity = this.animatedValue.interpolate({
-			inputRange: [0, 1],
-			outputRange: [0, 0.3]
-		});
 		const {
 			globalUsers, toggleWorkspace, isFederationEnabled, theme
 		} = this.props;
+		const backdropOpacity = this.animatedValue.interpolate({
+			inputRange: [0, 1],
+			outputRange: [0, themes[theme].backdropOpacity]
+		});
 		return (
 			<>
 				<TouchableWithoutFeedback onPress={this.close}>

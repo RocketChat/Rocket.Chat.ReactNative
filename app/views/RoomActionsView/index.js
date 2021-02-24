@@ -482,7 +482,7 @@ class RoomActionsView extends React.Component {
 				<List.Separator />
 				<List.Item
 					title='Voice_call'
-					onPress={() => RocketChat.callJitsi(room?.rid, true)}
+					onPress={() => RocketChat.callJitsi(room, true)}
 					testID='room-actions-voice'
 					left={() => <List.Icon name='phone' />}
 					showActionIndicator
@@ -490,7 +490,7 @@ class RoomActionsView extends React.Component {
 				<List.Separator />
 				<List.Item
 					title='Video_call'
-					onPress={() => RocketChat.callJitsi(room?.rid)}
+					onPress={() => RocketChat.callJitsi(room)}
 					testID='room-actions-video'
 					left={() => <List.Icon name='camera' />}
 					showActionIndicator
