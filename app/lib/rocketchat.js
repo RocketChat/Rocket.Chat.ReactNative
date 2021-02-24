@@ -1172,6 +1172,10 @@ const RocketChat = {
 		// RC 0.65.0
 		return this.sdk.get(`${ this.roomTypeToApiType(type) }.roles`, { roomId });
 	},
+	/**
+	 * Permissions: array of permissions' roles from redux. Example: [['owner', 'admin'], ['leader']]
+	 * Returns an array of boolean for each permission from permissions arg
+	 */
 	async hasPermission(permissions, rid) {
 		const db = database.active;
 		const subsCollection = db.collections.get('subscriptions');
@@ -1183,27 +1187,16 @@ const RocketChat = {
 			roomRoles = room.roles || [];
 		} catch (error) {
 			console.log('hasPermission -> Room not found');
-			return permissions.reduce((result, permission) => {
-				result[permission] = false;
-				return result;
-			}, {});
+			return permissions.map(() => false);
 		}
-		// get permissions from permissions reducer
+
 		try {
-			const permissionsRedux = reduxStore.getState().permissions;
 			const shareUser = reduxStore.getState().share.user;
 			const loginUser = reduxStore.getState().login.user;
 			// get user roles on the server from redux
 			const userRoles = (shareUser?.roles || loginUser?.roles) || [];
-			// merge both roles
 			const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
-
-			// return permissions in object format
-			// e.g. { 'edit-room': true, 'set-readonly': false }
-			return permissions.reduce((result, permission) => {
-				result[permission] = permissionsRedux[permissions[permissions.indexOf(permission)]].some(r => mergedRoles.includes(r)) || false;
-				return result;
-			}, {});
+			return permissions.map(permission => permission.some(r => mergedRoles.includes(r) ?? false));
 		} catch (e) {
 			log(e);
 		}
