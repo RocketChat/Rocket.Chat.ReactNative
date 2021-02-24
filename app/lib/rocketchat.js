@@ -70,7 +70,6 @@ const CERTIFICATE_KEY = 'RC_CERTIFICATE_KEY';
 export const THEME_PREFERENCES_KEY = 'RC_THEME_PREFERENCES_KEY';
 export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
 export const ANALYTICS_EVENTS_KEY = 'RC_ANALYTICS_EVENTS_KEY';
-const returnAnArray = obj => obj || [];
 const MIN_ROCKETCHAT_VERSION = '0.70.0';
 
 const STATUSES = ['offline', 'online', 'away', 'busy'];
@@ -1192,12 +1191,6 @@ const RocketChat = {
 		// get permissions from permissions reducer
 		try {
 			const permissionsRedux = reduxStore.getState().permissions;
-			const permissionsFiltered = permissions.map((permission) => {
-				if (permission in permissionsRedux) {
-					return { id: permission, roles: permissionsRedux[permission] };
-				}
-				return null;
-			});
 			const shareUser = reduxStore.getState().share.user;
 			const loginUser = reduxStore.getState().login.user;
 			// get user roles on the server from redux
@@ -1209,10 +1202,7 @@ const RocketChat = {
 			// e.g. { 'edit-room': true, 'set-readonly': false }
 			return permissions.reduce((result, permission) => {
 				result[permission] = false;
-				const permissionFound = permissionsFiltered.find(p => p.id === permission);
-				if (permissionFound) {
-					result[permission] = returnAnArray(permissionFound.roles).some(r => mergedRoles.includes(r));
-				}
+				result[permission] = permissionsRedux[permissions[permissions.indexOf(permission)]].some(r => mergedRoles.includes(r));
 				return result;
 			}, {});
 		} catch (e) {
