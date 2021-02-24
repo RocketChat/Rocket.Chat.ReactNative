@@ -32,9 +32,6 @@ const styles = StyleSheet.create({
 	list: {
 		width: '100%'
 	},
-	formSeparator: {
-		marginLeft: 15
-	},
 	input: {
 		height: 54,
 		paddingHorizontal: 18,
@@ -262,11 +259,6 @@ class CreateChannelView extends React.Component {
 		});
 	}
 
-	renderFormSeparator = () => {
-		const { theme } = this.props;
-		return <View style={[sharedStyles.separator, styles.formSeparator, { backgroundColor: themes[theme].separatorColor }]} />;
-	}
-
 	renderItem = ({ item }) => {
 		const { baseUrl, user, theme } = this.props;
 
@@ -309,6 +301,7 @@ class CreateChannelView extends React.Component {
 	}
 
 	render() {
+		console.log('create channel view');
 		const { channelName } = this.state;
 		const { users, isFetching, theme } = this.props;
 		const userCount = users.length;
@@ -337,13 +330,13 @@ class CreateChannelView extends React.Component {
 								theme={theme}
 								underlineColorAndroid='transparent'
 							/>
-							{this.renderFormSeparator()}
+							{List.Separator()}
 							{this.renderType()}
-							{this.renderFormSeparator()}
+							{List.Separator()}
 							{this.renderReadOnly()}
-							{this.renderFormSeparator()}
+							{List.Separator()}
 							{this.renderEncrypted()}
-							{this.renderFormSeparator()}
+							{List.Separator()}
 							{this.renderBroadcast()}
 						</View>
 						<View style={styles.invitedHeader}>
