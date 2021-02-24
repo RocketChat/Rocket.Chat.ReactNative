@@ -1,6 +1,5 @@
 import lt from 'semver/functions/lt';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
 
 import database from '../database';
@@ -51,12 +50,12 @@ export async function setPermissions() {
 	reduxStore.dispatch(setPermissionsAction(parsed));
 }
 
-const getUpdatedSince = (allRecords) => {
+const getUpdatedSince = async(permissionsCollection) => {
+	const ordered = await permissionsCollection.query(Q.experimentalSortBy('_updated_at', Q.desc)).fetch();
 	try {
-		if (!allRecords.length) {
+		if (!ordered.length) {
 			return null;
 		}
-		const ordered = orderBy(allRecords.filter(item => item._updatedAt !== null), ['_updatedAt'], ['desc']);
 		return ordered && ordered[0]._updatedAt.toISOString();
 	} catch (e) {
 		log(e);
@@ -136,7 +135,8 @@ export default function() {
 				return resolve();
 			} else {
 				const params = {};
-				const updatedSince = await getUpdatedSince(allRecords);
+				const updatedSince = await getUpdatedSince(permissionsCollection);
+				console.log('updatedSince', updatedSince);
 				if (updatedSince) {
 					params.updatedSince = updatedSince;
 				}
