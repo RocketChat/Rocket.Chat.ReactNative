@@ -821,6 +821,10 @@ export default ({ theme }) => {
 			<Separator title='Changed type' theme={theme} />
 			<Message msg='public' type='room_changed_privacy' isInfo />
 
+			<Separator title='Toggle e2e encryption' theme={theme} />
+			<Message type='room_e2e_disabled' isInfo />
+			<Message type='room_e2e_enabled' isInfo />
+
 			<Separator title='Ignored' theme={theme} />
 			<Message isIgnored />
 
