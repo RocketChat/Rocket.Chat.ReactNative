@@ -36,10 +36,10 @@ class Sidebar extends Component {
 		useRealName: PropTypes.bool,
 		allowStatusMessage: PropTypes.bool,
 		isMasterDetail: PropTypes.bool,
-		viewStatistics: PropTypes.object,
-		viewRoomAdministration: PropTypes.object,
-		viewUserAdministration: PropTypes.object,
-		viewPrivilegedSetting: PropTypes.object
+		viewStatisticsPermission: PropTypes.object,
+		viewRoomAdministrationPermission: PropTypes.object,
+		viewUserAdministrationPermission: PropTypes.object,
+		viewPrivilegedSettingPermission: PropTypes.object
 	}
 
 	constructor(props) {
@@ -52,7 +52,7 @@ class Sidebar extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { showStatus, isAdmin } = this.state;
 		const {
-			Site_Name, user, baseUrl, state, isMasterDetail, useRealName, theme, viewStatistics, viewRoomAdministration, viewUserAdministration, viewPrivilegedSetting
+			Site_Name, user, baseUrl, state, isMasterDetail, useRealName, theme, viewStatisticsPermission, viewRoomAdministrationPermission, viewUserAdministrationPermission, viewPrivilegedSettingPermission
 		} = this.props;
 		// Drawer navigation state
 		if (state?.index !== nextProps.state?.index) {
@@ -85,16 +85,16 @@ class Sidebar extends Component {
 		if (nextState.isAdmin !== isAdmin) {
 			return true;
 		}
-		if (!isEqual(nextProps.viewStatistics, viewStatistics)) {
+		if (!isEqual(nextProps.viewStatisticsPermission, viewStatisticsPermission)) {
 			return true;
 		}
-		if (!isEqual(nextProps.viewRoomAdministration, viewRoomAdministration)) {
+		if (!isEqual(nextProps.viewRoomAdministrationPermission, viewRoomAdministrationPermission)) {
 			return true;
 		}
-		if (!isEqual(nextProps.viewUserAdministration, viewUserAdministration)) {
+		if (!isEqual(nextProps.viewUserAdministrationPermission, viewUserAdministrationPermission)) {
 			return true;
 		}
-		if (!isEqual(nextProps.viewPrivilegedSetting, viewPrivilegedSetting)) {
+		if (!isEqual(nextProps.viewPrivilegedSettingPermission, viewPrivilegedSettingPermission)) {
 			return true;
 		}
 		return false;
@@ -103,10 +103,10 @@ class Sidebar extends Component {
 
 	getIsAdmin() {
 		const {
-			user, viewStatistics, viewRoomAdministration, viewUserAdministration, viewPrivilegedSetting
+			user, viewStatisticsPermission, viewRoomAdministrationPermission, viewUserAdministrationPermission, viewPrivilegedSettingPermission
 		} = this.props;
 		const { roles } = user;
-		const allPermissions = [viewStatistics, viewRoomAdministration, viewUserAdministration, viewPrivilegedSetting];
+		const allPermissions = [viewStatisticsPermission, viewRoomAdministrationPermission, viewUserAdministrationPermission, viewPrivilegedSettingPermission];
 		let isAdmin = false;
 
 		if	(roles) {
@@ -274,10 +274,10 @@ const mapStateToProps = state => ({
 	useRealName: state.settings.UI_Use_Real_Name,
 	allowStatusMessage: state.settings.Accounts_AllowUserStatusMessageChange,
 	isMasterDetail: state.app.isMasterDetail,
-	viewStatistics: state.permissions['view-statistics'],
-	viewRoomAdministration: state.permissions['view-room-administration'],
-	viewUserAdministration: state.permissions['view-user-administration'],
-	viewPrivilegedSetting: state.permissions['view-privileged-setting']
+	viewStatisticsPermission: state.permissions['view-statistics'],
+	viewRoomAdministrationPermission: state.permissions['view-room-administration'],
+	viewUserAdministrationPermission: state.permissions['view-user-administration'],
+	viewPrivilegedSettingPermission: state.permissions['view-privileged-setting']
 });
 
 export default connect(mapStateToProps)(withTheme(Sidebar));
