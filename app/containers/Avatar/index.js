@@ -33,7 +33,8 @@ class AvatarContainer extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (prevProps !== this.props) {
+		const { text, type } = this.props;
+		if (prevProps.text !== text || prevProps.type !== type) {
 			this.init();
 		}
 	}
