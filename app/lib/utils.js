@@ -1,4 +1,4 @@
-import { lt, gte, coerce } from 'semver';
+import { lt, lte, gt, gte, coerce } from 'semver';
 
 export const formatAttachmentUrl = (attachmentUrl, userId, token, server) => {
 	if (attachmentUrl.startsWith('http')) {
@@ -10,6 +10,11 @@ export const formatAttachmentUrl = (attachmentUrl, userId, token, server) => {
 	return encodeURI(`${ server }${ attachmentUrl }?rc_uid=${ userId }&rc_token=${ token }`);
 };
 
-export const isServerVersionLowerThan = (currentServerVersion, oldServerVersion) => currentServerVersion && lt(coerce(currentServerVersion), oldServerVersion);
+export const methods = {
+	lowerThan: lt,
+	lowerThanOrEqualTo: lte,
+	greaterThan: gt,
+	greaterThanOrEqualTo: gte
+};
 
-export const isServerVersionGreaterThan = (currentServerVersion, oldServerVersion) => currentServerVersion && gte(coerce(currentServerVersion), oldServerVersion);
+export const compareServerVersion = (currentServerVersion, versionToCompare, func) => currentServerVersion && func(coerce(currentServerVersion), versionToCompare);

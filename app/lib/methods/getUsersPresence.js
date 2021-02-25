@@ -1,7 +1,7 @@
 import { InteractionManager } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import { isServerVersionLowerThan, isServerVersionGreaterThan } from '../utils';
+import { compareServerVersion, methods } from '../utils';
 import reduxStore from '../createStore';
 import { setActiveUsers } from '../../actions/activeUsers';
 import { setUser } from '../../actions/login';
@@ -11,7 +11,7 @@ export function subscribeUsersPresence() {
 	const serverVersion = reduxStore.getState().server.version;
 
 	// if server is lower than 1.1.0
-	if (isServerVersionLowerThan(serverVersion, '1.1.0')) {
+	if (compareServerVersion(serverVersion, '1.1.0', methods.lowerThan)) {
 		if (this.activeUsersSubTimeout) {
 			clearTimeout(this.activeUsersSubTimeout);
 			this.activeUsersSubTimeout = false;
@@ -36,11 +36,11 @@ export default async function getUsersPresence() {
 	const { user: loggedUser } = reduxStore.getState().login;
 
 	// if server is greather than or equal 1.1.0
-	if (isServerVersionGreaterThan(serverVersion, '1.1.0')) {
+	if (compareServerVersion(serverVersion, '1.1.0', methods.greaterThanOrEqualTo)) {
 		let params = {};
 
 		// if server is greather than or equal 3.0.0
-		if (isServerVersionGreaterThan(serverVersion, '3.0.0')) {
+		if (compareServerVersion(serverVersion, '3.0.0', methods.greaterThanOrEqualTo)) {
 			// if not have any id
 			if (!ids.length) {
 				return;

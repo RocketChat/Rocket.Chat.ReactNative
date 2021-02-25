@@ -2,7 +2,7 @@ import { InteractionManager } from 'react-native';
 import orderBy from 'lodash/orderBy';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import { isServerVersionLowerThan } from '../utils';
+import { compareServerVersion, methods } from '../utils';
 import reduxStore from '../createStore';
 import database from '../database';
 import log from '../../utils/log';
@@ -91,7 +91,7 @@ export function getCustomEmojis() {
 			const updatedSince = await getUpdatedSince(allRecords);
 
 			// if server version is lower than 0.75.0, fetches from old api
-			if (isServerVersionLowerThan(serverVersion, '0.75.0')) {
+			if (compareServerVersion(serverVersion, '0.75.0', methods.lowerThan)) {
 				// RC 0.61.0
 				const result = await this.sdk.get('emoji-custom');
 

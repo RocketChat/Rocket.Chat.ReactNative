@@ -9,7 +9,7 @@ import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 import ImagePicker from 'react-native-image-crop-picker';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
-import { isServerVersionLowerThan } from '../../lib/utils';
+import { compareServerVersion, methods } from '../../lib/utils';
 
 
 import database from '../../lib/database';
@@ -432,7 +432,7 @@ class RoomInfoEditView extends React.Component {
 						<TouchableOpacity
 							style={styles.avatarContainer}
 							onPress={this.changeAvatar}
-							disabled={isServerVersionLowerThan(serverVersion, '3.6.0')}
+							disabled={compareServerVersion(serverVersion, '3.6.0', methods.lowerThan)}
 						>
 							<Avatar
 								type={room.t}
@@ -442,7 +442,7 @@ class RoomInfoEditView extends React.Component {
 								rid={isEmpty(avatar) && room.rid}
 								size={100}
 							>
-								{isServerVersionLowerThan(serverVersion, '3.6.0')
+								{compareServerVersion(serverVersion, '3.6.0', methods.lowerThan)
 									? null
 									: (
 										<TouchableOpacity style={[styles.resetButton, { backgroundColor: themes[theme].dangerColor }]} onPress={this.resetAvatar}>
@@ -543,7 +543,7 @@ class RoomInfoEditView extends React.Component {
 							]
 							: null
 						}
-						{!isServerVersionLowerThan(serverVersion, '3.0.0') ? (
+						{!compareServerVersion(serverVersion, '3.0.0', methods.lowerThan) ? (
 							<SwitchContainer
 								value={enableSysMes}
 								leftLabelPrimary={I18n.t('Hide_System_Messages')}
