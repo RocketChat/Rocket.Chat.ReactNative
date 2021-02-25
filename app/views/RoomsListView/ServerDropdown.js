@@ -225,7 +225,7 @@ class ServerDropdown extends Component {
 		});
 		const backdropOpacity = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [0, 0.6]
+			outputRange: [0, themes[theme].backdropOpacity]
 		});
 		return (
 			<>

@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 });
 
 const ReplyPreview = React.memo(({
-	message, Message_TimeFormat, baseUrl, username, replying, getCustomEmoji, close, theme
+	message, Message_TimeFormat, baseUrl, username, replying, getCustomEmoji, close, theme, useRealName
 }) => {
 	if (!replying) {
 		return null;
@@ -58,7 +58,7 @@ const ReplyPreview = React.memo(({
 		>
 			<View style={[styles.messageContainer, { backgroundColor: themes[theme].chatComponentBackground }]}>
 				<View style={styles.header}>
-					<Text style={[styles.username, { color: themes[theme].tintColor }]}>{message.u?.username}</Text>
+					<Text style={[styles.username, { color: themes[theme].tintColor }]}>{useRealName ? message.u?.name : message.u?.username}</Text>
 					<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 				</View>
 				<Markdown
@@ -84,12 +84,14 @@ ReplyPreview.propTypes = {
 	baseUrl: PropTypes.string.isRequired,
 	username: PropTypes.string.isRequired,
 	getCustomEmoji: PropTypes.func,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	useRealName: PropTypes.bool
 };
 
 const mapStateToProps = state => ({
 	Message_TimeFormat: state.settings.Message_TimeFormat,
-	baseUrl: state.server.server
+	baseUrl: state.server.server,
+	useRealName: state.settings.UI_Use_Real_Name
 });
 
 export default connect(mapStateToProps)(ReplyPreview);

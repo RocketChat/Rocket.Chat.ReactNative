@@ -171,7 +171,7 @@ const MessageActions = React.memo(forwardRef(({
 
 	const handleCopy = async(message) => {
 		logEvent(events.ROOM_MSG_ACTION_COPY);
-		await Clipboard.setString(message.msg);
+		await Clipboard.setString(message?.attachments?.[0]?.description || message.msg);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 	};
 
