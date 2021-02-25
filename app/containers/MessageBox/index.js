@@ -271,7 +271,7 @@ class MessageBox extends Component {
 		} = this.state;
 
 		const {
-			roomType, replying, editing, isFocused, message, theme, children
+			roomType, replying, editing, isFocused, message, theme
 		} = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
@@ -306,10 +306,7 @@ class MessageBox extends Component {
 		if (!dequal(nextState.commandPreview, commandPreview)) {
 			return true;
 		}
-		if (!dequal(nextProps.message.id, message.id)) {
-			return true;
-		}
-		if (!dequal(nextProps.children, children)) {
+		if (!dequal(nextProps.message?.id, message?.id)) {
 			return true;
 		}
 		return false;
