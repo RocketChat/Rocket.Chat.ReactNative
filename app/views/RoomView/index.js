@@ -436,10 +436,7 @@ class RoomView extends React.Component {
 				}
 			}
 
-			// We run `canAutoTranslate` again in order to refetch auto translate permission
-			// in case of a missing connection or poor connection on room open
-			const canAutoTranslate = await RocketChat.canAutoTranslate();
-
+			const canAutoTranslate = RocketChat.canAutoTranslate();
 			const member = await this.getRoomMember();
 
 			this.setState({ canAutoTranslate, member, loading: false });
