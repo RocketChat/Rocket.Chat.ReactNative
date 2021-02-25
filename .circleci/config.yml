@@ -417,7 +417,6 @@ workflows:
 
       # iOS Experimental
       - ios-build-experimental:
-          type: approval
           requires:
             - lint-testunit
       - ios-hold-testflight-experimental:
@@ -445,10 +444,13 @@ workflows:
             - ios-hold-testflight-official
 
       # Android Experimental
-      - android-build-experimental:
+      - android-hold-build-experimental:
           type: approval
           requires:
-            - lint-testunit
+              - lint-testunit
+      - android-build-experimental:
+          requires:
+            - android-hold-build-experimental
       - android-hold-google-play-beta-experimental:
           type: approval
           requires:
