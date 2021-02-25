@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { connect } from 'react-redux';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
 import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
 
@@ -79,13 +79,13 @@ class SelectedUsersView extends React.Component {
 		if (nextProps.loading !== loading) {
 			return true;
 		}
-		if (!equal(nextProps.users, users)) {
+		if (!dequal(nextProps.users, users)) {
 			return true;
 		}
-		if (!equal(nextState.search, search)) {
+		if (!dequal(nextState.search, search)) {
 			return true;
 		}
-		if (!equal(nextState.chats, chats)) {
+		if (!dequal(nextState.chats, chats)) {
 			return true;
 		}
 		return false;

@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect, batch } from 'react-redux';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
@@ -87,7 +87,7 @@ class ServerDropdown extends Component {
 		if (nextProps.server !== server) {
 			return true;
 		}
-		if (!equal(nextState.servers, servers)) {
+		if (!dequal(nextState.servers, servers)) {
 			return true;
 		}
 		return false;

@@ -6,7 +6,7 @@ import {
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import ImagePicker from 'react-native-image-crop-picker';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
 import DocumentPicker from 'react-native-document-picker';
 import { Q } from '@nozbe/watermelondb';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
@@ -299,16 +299,16 @@ class MessageBox extends Component {
 		if (nextState.tshow !== tshow) {
 			return true;
 		}
-		if (!equal(nextState.mentions, mentions)) {
+		if (!dequal(nextState.mentions, mentions)) {
 			return true;
 		}
-		if (!equal(nextState.commandPreview, commandPreview)) {
+		if (!dequal(nextState.commandPreview, commandPreview)) {
 			return true;
 		}
-		if (!equal(nextProps.message, message)) {
+		if (!dequal(nextProps.message.id, message.id)) {
 			return true;
 		}
-		if (!equal(nextProps.children, children)) {
+		if (!dequal(nextProps.children, children)) {
 			return true;
 		}
 		return false;

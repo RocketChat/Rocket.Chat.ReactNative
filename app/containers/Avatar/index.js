@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
-import { dequal } from 'dequal';
 
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
@@ -34,7 +33,7 @@ class AvatarContainer extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (!dequal(prevProps, this.props)) {
+		if (prevProps !== this.props) {
 			this.init();
 		}
 	}

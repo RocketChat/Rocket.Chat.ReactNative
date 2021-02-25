@@ -4,7 +4,7 @@ import {
 	Text, View, StyleSheet, Keyboard, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
 
 import sharedStyles from './Styles';
 import Button from '../containers/Button';
@@ -82,7 +82,7 @@ class LoginView extends React.Component {
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		const { error } = this.props;
-		if (nextProps.failure && !equal(error, nextProps.error)) {
+		if (nextProps.failure && !dequal(error, nextProps.error)) {
 			Alert.alert(I18n.t('Oops'), I18n.t('Login_error'));
 		}
 	}

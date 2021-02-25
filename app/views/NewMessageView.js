@@ -4,7 +4,7 @@ import {
 	View, StyleSheet, FlatList, Text
 } from 'react-native';
 import { connect } from 'react-redux';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
 import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
 
@@ -83,10 +83,10 @@ class NewMessageView extends React.Component {
 		if (nextProps.theme !== theme) {
 			return true;
 		}
-		if (!equal(nextState.search, search)) {
+		if (!dequal(nextState.search, search)) {
 			return true;
 		}
-		if (!equal(nextState.chats, chats)) {
+		if (!dequal(nextState.chats, chats)) {
 			return true;
 		}
 		return false;
