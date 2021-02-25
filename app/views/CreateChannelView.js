@@ -301,7 +301,6 @@ class CreateChannelView extends React.Component {
 	}
 
 	render() {
-		console.log('create channel view');
 		const { channelName } = this.state;
 		const { users, isFetching, theme } = this.props;
 		const userCount = users.length;
@@ -330,13 +329,13 @@ class CreateChannelView extends React.Component {
 								theme={theme}
 								underlineColorAndroid='transparent'
 							/>
-							{List.Separator()}
+							<List.Separator />
 							{this.renderType()}
-							{List.Separator()}
+							<List.Separator />
 							{this.renderReadOnly()}
-							{List.Separator()}
+							<List.Separator />
 							{this.renderEncrypted()}
-							{List.Separator()}
+							<List.Separator />
 							{this.renderBroadcast()}
 						</View>
 						<View style={styles.invitedHeader}>
