@@ -31,7 +31,6 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
 import Navigation from '../../lib/Navigation';
 
-const PERMISSION_EDIT_ROOM = 'edit-room';
 const getRoomTitle = (room, type, name, username, statusText, theme) => (type === 'd'
 	? (
 		<>
@@ -55,7 +54,8 @@ class RoomInfoView extends React.Component {
 		rooms: PropTypes.array,
 		theme: PropTypes.string,
 		isMasterDetail: PropTypes.bool,
-		jitsiEnabled: PropTypes.bool
+		jitsiEnabled: PropTypes.bool,
+		editRoomPermission: PropTypes.array
 	}
 
 	constructor(props) {
@@ -193,7 +193,7 @@ class RoomInfoView extends React.Component {
 
 	loadRoom = async() => {
 		const { room: roomState } = this.state;
-		const { route } = this.props;
+		const { route, editRoomPermission } = this.props;
 		let room = route.params?.room;
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
@@ -213,8 +213,8 @@ class RoomInfoView extends React.Component {
 			}
 		}
 
-		const permissions = await RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
-		if (permissions[PERMISSION_EDIT_ROOM] && !room.prid) {
+		const permissions = await RocketChat.hasPermission([editRoomPermission], room.rid);
+		if (permissions[0] && !room.prid) {
 			this.setState({ showEdit: true }, () => this.setHeader());
 		}
 	}
@@ -369,7 +369,8 @@ class RoomInfoView extends React.Component {
 const mapStateToProps = state => ({
 	rooms: state.room.rooms,
 	isMasterDetail: state.app.isMasterDetail,
-	jitsiEnabled: state.settings.Jitsi_Enabled || false
+	jitsiEnabled: state.settings.Jitsi_Enabled || false,
+	editRoomPermission: state.permissions['edit-room']
 });
 
 export default connect(mapStateToProps)(withTheme(RoomInfoView));
