@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import FastImage from '@rocket.chat/react-native-fast-image';
-import isEqual from 'lodash/isEqual';
+import { dequal } from 'dequal';
 
 import Touchable from './Touchable';
 import openLink from '../../utils/openLink';
@@ -112,7 +112,7 @@ const Url = React.memo(({ url, index, theme }) => {
 			</>
 		</Touchable>
 	);
-}, (oldProps, newProps) => isEqual(oldProps.url, newProps.url) && oldProps.theme === newProps.theme);
+}, (oldProps, newProps) => dequal(oldProps.url, newProps.url) && oldProps.theme === newProps.theme);
 
 const Urls = React.memo(({ urls, theme }) => {
 	if (!urls || urls.length === 0) {
@@ -122,7 +122,7 @@ const Urls = React.memo(({ urls, theme }) => {
 	return urls.map((url, index) => (
 		<Url url={url} key={url.url} index={index} theme={theme} />
 	));
-}, (oldProps, newProps) => isEqual(oldProps.urls, newProps.urls) && oldProps.theme === newProps.theme);
+}, (oldProps, newProps) => dequal(oldProps.urls, newProps.urls) && oldProps.theme === newProps.theme);
 
 UrlImage.propTypes = {
 	image: PropTypes.string
