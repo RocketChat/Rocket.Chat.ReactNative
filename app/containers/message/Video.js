@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
-import isEqual from 'deep-equal';
+import { dequal } from 'dequal';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
@@ -57,7 +57,7 @@ const Video = React.memo(({
 			<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 		</>
 	);
-}, (prevProps, nextProps) => isEqual(prevProps.file, nextProps.file) && prevProps.theme === nextProps.theme);
+}, (prevProps, nextProps) => dequal(prevProps.file, nextProps.file) && prevProps.theme === nextProps.theme);
 
 Video.propTypes = {
 	file: PropTypes.object,

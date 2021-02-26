@@ -2,7 +2,7 @@ import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { NotifierRoot, Notifier, Easing } from 'react-native-notifier';
 import { connect } from 'react-redux';
-import isEqual from 'deep-equal';
+import { dequal } from 'dequal';
 
 import NotifierComponent from './NotifierComponent';
 import EventEmitter from '../../utils/events';
@@ -38,7 +38,7 @@ const InAppNotification = memo(({ rooms }) => {
 	}, [rooms]);
 
 	return <NotifierRoot />;
-}, (prevProps, nextProps) => isEqual(prevProps.rooms, nextProps.rooms));
+}, (prevProps, nextProps) => dequal(prevProps.rooms, nextProps.rooms));
 
 const mapStateToProps = state => ({
 	rooms: state.room.rooms

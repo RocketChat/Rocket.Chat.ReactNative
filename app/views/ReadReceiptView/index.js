@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList, View, Text } from 'react-native';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
@@ -55,7 +55,7 @@ class ReadReceiptView extends React.Component {
 		if (nextState.loading !== loading) {
 			return true;
 		}
-		if (!equal(nextState.receipts, receipts)) {
+		if (!dequal(nextState.receipts, receipts)) {
 			return true;
 		}
 		return false;

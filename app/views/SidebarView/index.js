@@ -4,7 +4,7 @@ import {
 	ScrollView, Text, View, TouchableWithoutFeedback
 } from 'react-native';
 import { connect } from 'react-redux';
-import isEqual from 'react-fast-compare';
+import { dequal } from 'dequal';
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status/Status';
 import { logEvent, events } from '../../utils/log';
@@ -73,7 +73,7 @@ class Sidebar extends Component {
 		if (nextProps.theme !== theme) {
 			return true;
 		}
-		if (!isEqual(nextProps.user, user)) {
+		if (!dequal(nextProps.user, user)) {
 			return true;
 		}
 		if (nextProps.isMasterDetail !== isMasterDetail) {
@@ -85,16 +85,16 @@ class Sidebar extends Component {
 		if (nextState.isAdmin !== isAdmin) {
 			return true;
 		}
-		if (!isEqual(nextProps.viewStatisticsPermission, viewStatisticsPermission)) {
+		if (!dequal(nextProps.viewStatisticsPermission, viewStatisticsPermission)) {
 			return true;
 		}
-		if (!isEqual(nextProps.viewRoomAdministrationPermission, viewRoomAdministrationPermission)) {
+		if (!dequal(nextProps.viewRoomAdministrationPermission, viewRoomAdministrationPermission)) {
 			return true;
 		}
-		if (!isEqual(nextProps.viewUserAdministrationPermission, viewUserAdministrationPermission)) {
+		if (!dequal(nextProps.viewUserAdministrationPermission, viewUserAdministrationPermission)) {
 			return true;
 		}
-		if (!isEqual(nextProps.viewPrivilegedSettingPermission, viewPrivilegedSettingPermission)) {
+		if (!dequal(nextProps.viewPrivilegedSettingPermission, viewPrivilegedSettingPermission)) {
 			return true;
 		}
 		return false;

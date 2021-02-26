@@ -235,7 +235,9 @@ class ShareView extends Component {
 				newSelected = attachments[selectedIndex - 1] || {};
 			}
 		}
-		this.setState({ attachments: attachments.filter(att => att.path !== item.path), selected: newSelected ?? selected });
+		this.setState({ attachments: attachments.filter(att => att.path !== item.path), selected: newSelected ?? selected }, () => {
+			this.messagebox?.current?.forceUpdate?.();
+		});
 	}
 
 	onChangeText = (text) => {
