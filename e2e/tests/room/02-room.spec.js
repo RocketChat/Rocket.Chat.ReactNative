@@ -14,6 +14,13 @@ async function navigateToRoom(roomName) {
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 }
 
+async function navigateToRoomWithOutLogin(roomName) {
+	await searchRoom(`${ roomName }`);
+	await waitFor(element(by.id(`rooms-list-view-item-${ roomName }`))).toExist().withTimeout(60000);
+	await element(by.id(`rooms-list-view-item-${ roomName }`)).tap();
+	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
+}
+
 describe('Room screen', () => {
 	const mainRoom = data.groups.private.name;
 
@@ -65,10 +72,21 @@ describe('Room screen', () => {
 	});
 
 	describe('Usage', async() => {
+		const mainRoom = data.groups.private.name;
+
 		describe('Messagebox', async() => {
 			it('should send message', async() => {
 				await mockMessage('message')
 				await expect(element(by.label(`${ data.random }message`)).atIndex(0)).toExist();
+			});
+
+			it('should has draft', async() => {
+				const message = 'this is draft'
+				await element(by.id('messagebox-input')).atIndex(0).tap();
+				await element(by.id('messagebox-input')).atIndex(0).typeText(message);
+				await tapBack();
+				await navigateToRoomWithOutLogin(mainRoom);
+				await expect(element(by.id('messagebox-input'))).toHaveText(message);
 			});
 
 
