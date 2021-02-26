@@ -5,6 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import { connect, batch } from 'react-redux';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import * as List from '../../containers/List';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction, serverInitAdd as serverInitAddAction } from '../../actions/server';
@@ -174,11 +175,6 @@ class ServerDropdown extends Component {
 		}
 	}
 
-	renderSeparator = () => {
-		const { theme } = this.props;
-		return <View style={[styles.serverSeparator, { backgroundColor: themes[theme].separatorColor }]} />;
-	}
-
 	renderServer = ({ item }) => {
 		const { server, theme } = this.props;
 
@@ -247,7 +243,7 @@ class ServerDropdown extends Component {
 						data={servers}
 						keyExtractor={item => item.id}
 						renderItem={this.renderServer}
-						ItemSeparatorComponent={this.renderSeparator}
+						ItemSeparatorComponent={List.Separator}
 						keyboardShouldPersistTaps='always'
 					/>
 				</Animated.View>

@@ -6,6 +6,7 @@ import {
 import { connect } from 'react-redux';
 import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
+import * as List from '../containers/List';
 
 import Touch from '../utils/touch';
 import database from '../lib/database';
@@ -27,9 +28,6 @@ import { goRoom } from '../utils/goRoom';
 import SafeAreaView from '../containers/SafeAreaView';
 
 const styles = StyleSheet.create({
-	separator: {
-		marginLeft: 60
-	},
 	button: {
 		height: 46,
 		flexDirection: 'row',
@@ -195,10 +193,6 @@ class NewMessageView extends React.Component {
 		);
 	}
 
-	renderSeparator = () => {
-		const { theme } = this.props;
-		return <View style={[sharedStyles.separator, styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
-	}
 
 	renderItem = ({ item, index }) => {
 		const { search, chats } = this.state;
@@ -238,7 +232,7 @@ class NewMessageView extends React.Component {
 				keyExtractor={item => item._id}
 				ListHeaderComponent={this.renderHeader}
 				renderItem={this.renderItem}
-				ItemSeparatorComponent={this.renderSeparator}
+				ItemSeparatorComponent={List.Separator}
 				contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
 				keyboardShouldPersistTaps='always'
 			/>
