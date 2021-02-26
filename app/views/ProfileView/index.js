@@ -96,16 +96,6 @@ class ProfileView extends React.Component {
 		}
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		if (!dequal(nextState, this.state)) {
-			return true;
-		}
-		if (!dequal(nextProps, this.props)) {
-			return true;
-		}
-		return false;
-	}
-
 	setAvatar = (avatar) => {
 		const { Accounts_AllowUserAvatarChange } = this.props;
 
