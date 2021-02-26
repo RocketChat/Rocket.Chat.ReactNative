@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View } from 'react-native';
+import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
+import * as List from '../../containers/List';
 
 import styles from './styles';
 import UserItem from '../../presentation/UserItem';
@@ -419,11 +420,6 @@ class RoomMembersView extends React.Component {
 		<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='room-members-view-search' />
 	)
 
-	renderSeparator = () => {
-		const { theme } = this.props;
-		return <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
-	}
-
 	renderItem = ({ item }) => {
 		const { baseUrl, user, theme } = this.props;
 
@@ -453,7 +449,7 @@ class RoomMembersView extends React.Component {
 					renderItem={this.renderItem}
 					style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 					keyExtractor={item => item._id}
-					ItemSeparatorComponent={this.renderSeparator}
+					ItemSeparatorComponent={List.Separator}
 					ListHeaderComponent={this.renderSearchBar}
 					ListFooterComponent={() => {
 						if (isLoading) {
