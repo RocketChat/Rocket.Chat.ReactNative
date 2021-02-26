@@ -3,7 +3,7 @@ import { FlatList, RefreshControl } from 'react-native';
 import PropTypes from 'prop-types';
 import { Q } from '@nozbe/watermelondb';
 import moment from 'moment';
-import isEqual from 'lodash/isEqual';
+import { dequal } from 'dequal';
 
 import styles from './styles';
 import database from '../../lib/database';
@@ -89,13 +89,13 @@ class List extends React.Component {
 		if (refreshing !== nextState.refreshing) {
 			return true;
 		}
-		if (!isEqual(hideSystemMessages, nextProps.hideSystemMessages)) {
+		if (!dequal(hideSystemMessages, nextProps.hideSystemMessages)) {
 			return true;
 		}
-		if (!isEqual(tunread, nextProps.tunread)) {
+		if (!dequal(tunread, nextProps.tunread)) {
 			return true;
 		}
-		if (!isEqual(ignored, nextProps.ignored)) {
+		if (!dequal(ignored, nextProps.ignored)) {
 			return true;
 		}
 		return false;
@@ -103,7 +103,7 @@ class List extends React.Component {
 
 	componentDidUpdate(prevProps) {
 		const { hideSystemMessages } = this.props;
-		if (!isEqual(hideSystemMessages, prevProps.hideSystemMessages)) {
+		if (!dequal(hideSystemMessages, prevProps.hideSystemMessages)) {
 			this.reload();
 		}
 	}
