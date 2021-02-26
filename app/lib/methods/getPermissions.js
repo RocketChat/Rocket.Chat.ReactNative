@@ -1,6 +1,5 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
-import coerce from 'semver/functions/coerce';
 import orderBy from 'lodash/orderBy';
 
 import { compareServerVersion, methods } from '../utils';
