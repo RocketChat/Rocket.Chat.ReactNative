@@ -2,6 +2,8 @@ import i18n from 'i18n-js';
 import { I18nManager } from 'react-native';
 import * as RNLocalize from 'react-native-localize';
 
+export * from './isRTL';
+
 export const LANGUAGES = [
 	{
 		label: 'English',
@@ -51,6 +53,14 @@ export const LANGUAGES = [
 		label: '日本語',
 		value: 'ja',
 		file: require('./locales/ja').default
+	}, {
+		label: 'العربية',
+		value: 'ar',
+		file: require('./locales/ar').default
+	}, {
+		label: 'Türkçe',
+		value: 'tr',
+		file: require('./locales/tr').default
 	}
 ];
 
@@ -67,6 +77,8 @@ const availableLanguages = Object.keys(i18n.translations);
 const { languageTag, isRTL } = RNLocalize.findBestAvailableLanguage(availableLanguages) || defaultLanguage;
 
 I18nManager.forceRTL(isRTL);
+I18nManager.swapLeftAndRightInRTL(isRTL);
 i18n.locale = languageTag;
+i18n.isRTL = I18nManager.isRTL;
 
 export default i18n;

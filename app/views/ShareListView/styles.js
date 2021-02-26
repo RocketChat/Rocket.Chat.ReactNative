@@ -56,14 +56,14 @@ export default StyleSheet.create({
 	},
 	permissionTitle: {
 		fontSize: 16,
-		textAlign: 'center',
 		marginHorizontal: 30,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		...sharedStyles.textAlignCenter
 	},
 	permissionMessage: {
 		fontSize: 14,
-		textAlign: 'center',
 		marginHorizontal: 30,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		...sharedStyles.textAlignCenter
 	}
 });

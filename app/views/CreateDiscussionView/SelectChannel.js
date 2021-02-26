@@ -18,7 +18,7 @@ const SelectChannel = ({
 
 	const getChannels = debounce(async(keyword = '') => {
 		try {
-			const res = await RocketChat.search({ text: keyword, filterUsers: false });
+			const res = await RocketChat.localSearch({ text: keyword });
 			setChannels(res);
 		} catch {
 			// do nothing
@@ -47,7 +47,7 @@ const SelectChannel = ({
 				value={initial && [initial]}
 				disabled={initial}
 				options={channels.map(channel => ({
-					value: channel.rid,
+					value: channel,
 					text: { text: RocketChat.getRoomTitle(channel) },
 					imageUrl: getAvatar(channel)
 				}))}

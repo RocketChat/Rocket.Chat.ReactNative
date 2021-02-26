@@ -1,3 +1,106 @@
+diff --git a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewManager.java b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewManager.java
+index ab869cf..08ce7ce 100644
+--- a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewManager.java
++++ b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewManager.java
+@@ -84,6 +84,12 @@ import java.util.Map;
+ 
+ import javax.annotation.Nullable;
+ 
++import java.security.cert.X509Certificate;
++import java.security.PrivateKey;
++import android.webkit.ClientCertRequest;
++import android.os.AsyncTask;
++import android.security.KeyChain;
++
+ /**
+  * Manages instances of {@link WebView}
+  * <p>
+@@ -140,6 +146,8 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
+   protected @Nullable String mUserAgent = null;
+   protected @Nullable String mUserAgentWithApplicationName = null;
+ 
++  private static String certificateAlias = null;
++
+   public RNCWebViewManager() {
+     mWebViewConfig = new WebViewConfig() {
+       public void configWebView(WebView webView) {
+@@ -151,6 +159,10 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
+     mWebViewConfig = webViewConfig;
+   }
+ 
++  public static void setCertificateAlias(String alias) {
++    certificateAlias = alias;
++  }
++
+   protected static void dispatchEvent(WebView webView, Event event) {
+     ReactContext reactContext = (ReactContext) webView.getContext();
+     EventDispatcher eventDispatcher =
+@@ -562,7 +574,7 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
+   @Override
+   protected void addEventEmitters(ThemedReactContext reactContext, WebView view) {
+     // Do not register default touch emitter and let WebView implementation handle touches
+-    view.setWebViewClient(new RNCWebViewClient());
++    view.setWebViewClient(new RNCWebViewClient(reactContext));
+   }
+ 
+   @Override
+@@ -742,12 +754,56 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
+ 
+   protected static class RNCWebViewClient extends WebViewClient {
+ 
++    protected ReactContext reactContext;
+     protected boolean mLastLoadFailed = false;
+     protected @Nullable
+     ReadableArray mUrlPrefixesForDefaultIntent;
+     protected RNCWebView.ProgressChangedFilter progressChangedFilter = null;
+     protected @Nullable String ignoreErrFailedForThisURL = null;
+ 
++    public RNCWebViewClient(ReactContext reactContext) {
++      this.reactContext = reactContext;
++    }
++
++    @Override
++    public void onReceivedClientCertRequest(WebView view, ClientCertRequest request) {
++      class SslStuff {
++        PrivateKey privKey;
++        X509Certificate[] certChain;
++
++        public SslStuff(PrivateKey privKey, X509Certificate[] certChain) {
++          this.privKey = privKey;
++          this.certChain = certChain;
++        }
++      }
++
++      if (certificateAlias != null) {
++        AsyncTask<Void, Void, SslStuff> task = new AsyncTask<Void, Void, SslStuff>() {
++          @Override
++          protected SslStuff doInBackground(Void... params) {
++            try {
++              PrivateKey privKey = KeyChain.getPrivateKey(reactContext, certificateAlias);
++              X509Certificate[] certChain = KeyChain.getCertificateChain(reactContext, certificateAlias);
++
++              return new SslStuff(privKey, certChain);
++            } catch (Exception e) {
++              return null;
++            }
++          }
++
++          @Override
++          protected void onPostExecute(SslStuff sslStuff) {
++            if (sslStuff != null) {
++              request.proceed(sslStuff.privKey, sslStuff.certChain);
++            }
++          }
++        };
++        task.execute();
++      } else {
++        super.onReceivedClientCertRequest(view, request);
++      }
++    }
++
+     public void setIgnoreErrFailedForThisURL(@Nullable String url) {
+       ignoreErrFailedForThisURL = url;
+     }
 diff --git a/node_modules/react-native-webview/apple/RNCWebView.m b/node_modules/react-native-webview/apple/RNCWebView.m
 index 02b4238..04bad05 100644
 --- a/node_modules/react-native-webview/apple/RNCWebView.m

@@ -4,7 +4,9 @@ import {
 	View, Text, Alert, Share, Switch
 } from 'react-native';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import isEmpty from 'lodash/isEmpty';
+import lt from 'semver/functions/lt';
+import coerce from 'semver/functions/coerce';
 
 import Touch from '../../utils/touch';
 import { setLoading as setLoadingAction } from '../../actions/selectedUsers';
@@ -46,11 +48,20 @@ class RoomActionsView extends React.Component {
 		route: PropTypes.object,
 		leaveRoom: PropTypes.func,
 		jitsiEnabled: PropTypes.bool,
-		e2eEnabled: PropTypes.bool,
+		encryptionEnabled: PropTypes.bool,
 		setLoadingInvite: PropTypes.func,
 		closeRoom: PropTypes.func,
 		theme: PropTypes.string,
-		fontScale: PropTypes.number
+		fontScale: PropTypes.number,
+		serverVersion: PropTypes.string,
+		addUserToJoinedRoomPermission: PropTypes.array,
+		addUserToAnyCRoomPermission: PropTypes.array,
+		addUserToAnyPRoomPermission: PropTypes.array,
+		createInviteLinksPermission: PropTypes.array,
+		editRoomPermission: PropTypes.array,
+		toggleRoomE2EEncryptionPermission: PropTypes.array,
+		viewBroadcastMemberListPermission: PropTypes.array,
+		transferLivechatGuestPermission: PropTypes.array
 	}
 
 	constructor(props) {
@@ -71,7 +82,8 @@ class RoomActionsView extends React.Component {
 			canInviteUser: false,
 			canForwardGuest: false,
 			canReturnQueue: false,
-			canEdit: false
+			canEdit: false,
+			canToggleEncryption: false
 		};
 		if (room && room.observe && room.rid) {
 			this.roomObservable = room.observe();
@@ -110,16 +122,17 @@ class RoomActionsView extends React.Component {
 				} catch (e) {
 					log(e);
 				}
-			} else if (room.t === 'd' && _.isEmpty(member)) {
+			} else if (room.t === 'd' && isEmpty(member)) {
 				this.updateRoomMember();
 			}
 
-			const canAutoTranslate = await RocketChat.canAutoTranslate();
+			const canAutoTranslate = RocketChat.canAutoTranslate();
 			this.setState({ canAutoTranslate });
 
 			this.canAddUser();
 			this.canInviteUser();
 			this.canEdit();
+			this.canToggleEncryption();
 
 			// livechat permissions
 			if (room.t === 'l') {
@@ -152,54 +165,64 @@ class RoomActionsView extends React.Component {
 		}
 	}
 
-	// eslint-disable-next-line react/sort-comp
 	canAddUser = async() => {
 		const { room, joined } = this.state;
+		const { addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission } = this.props;
 		const { rid, t } = room;
-		let canAdd = false;
+		let canAddUser = false;
 
 		const userInRoom = joined;
-		const permissions = await RocketChat.hasPermission(['add-user-to-joined-room', 'add-user-to-any-c-room', 'add-user-to-any-p-room'], rid);
+		const permissions = await RocketChat.hasPermission([addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission], rid);
 
-		if (permissions) {
-			if (userInRoom && permissions['add-user-to-joined-room']) {
-				canAdd = true;
-			}
-			if (t === 'c' && permissions['add-user-to-any-c-room']) {
-				canAdd = true;
-			}
-			if (t === 'p' && permissions['add-user-to-any-p-room']) {
-				canAdd = true;
-			}
+		if (userInRoom && permissions[0]) {
+			canAddUser = true;
 		}
-		this.setState({ canAddUser: canAdd });
+		if (t === 'c' && permissions[1]) {
+			canAddUser = true;
+		}
+		if (t === 'p' && permissions[2]) {
+			canAddUser = true;
+		}
+		this.setState({ canAddUser });
 	}
 
 	canInviteUser = async() => {
 		const { room } = this.state;
+		const { createInviteLinksPermission } = this.props;
 		const { rid } = room;
-		const permissions = await RocketChat.hasPermission(['create-invite-links'], rid);
+		const permissions = await RocketChat.hasPermission([createInviteLinksPermission], rid);
 
-		const canInviteUser = permissions && permissions['create-invite-links'];
+		const canInviteUser = permissions[0];
 		this.setState({ canInviteUser });
 	}
 
 	canEdit = async() => {
 		const { room } = this.state;
+		const { editRoomPermission } = this.props;
 		const { rid } = room;
-		const permissions = await RocketChat.hasPermission(['edit-room'], rid);
+		const permissions = await RocketChat.hasPermission([editRoomPermission], rid);
 
-		const canEdit = permissions && permissions['edit-room'];
+		const canEdit = permissions[0];
 		this.setState({ canEdit });
+	}
+
+	canToggleEncryption = async() => {
+		const { room } = this.state;
+		const { toggleRoomE2EEncryptionPermission } = this.props;
+		const { rid } = room;
+		const permissions = await RocketChat.hasPermission([toggleRoomE2EEncryptionPermission], rid);
+
+		const canToggleEncryption = permissions[0];
+		this.setState({ canToggleEncryption });
 	}
 
 	canViewMembers = async() => {
 		const { room } = this.state;
+		const { viewBroadcastMemberListPermission } = this.props;
 		const { rid, t, broadcast } = room;
 		if (broadcast) {
-			const viewBroadcastMemberListPermission = 'view-broadcast-member-list';
 			const permissions = await RocketChat.hasPermission([viewBroadcastMemberListPermission], rid);
-			if (!permissions[viewBroadcastMemberListPermission]) {
+			if (!permissions[0]) {
 				return false;
 			}
 		}
@@ -213,16 +236,10 @@ class RoomActionsView extends React.Component {
 
 	canForwardGuest = async() => {
 		const { room } = this.state;
+		const { transferLivechatGuestPermission } = this.props;
 		const { rid } = room;
-		let result = true;
-
-		const transferLivechatGuest = 'transfer-livechat-guest';
-		const permissions = await RocketChat.hasPermission([transferLivechatGuest], rid);
-		if (!permissions[transferLivechatGuest]) {
-			result = false;
-		}
-
-		this.setState({ canForwardGuest: result });
+		const permissions = await RocketChat.hasPermission([transferLivechatGuestPermission], rid);
+		this.setState({ canForwardGuest: permissions[0] });
 	}
 
 	canReturnQueue = async() => {
@@ -235,13 +252,21 @@ class RoomActionsView extends React.Component {
 	}
 
 	renderEncryptedSwitch = () => {
-		const { room } = this.state;
+		const { room, canToggleEncryption, canEdit } = this.state;
 		const { encrypted } = room;
+		const { serverVersion } = this.props;
+		let hasPermission = false;
+		if (serverVersion && lt(coerce(serverVersion), '3.11.0')) {
+			hasPermission = canEdit;
+		} else {
+			hasPermission = canToggleEncryption;
+		}
 		return (
 			<Switch
 				value={encrypted}
 				trackColor={SWITCH_TRACK_COLOR}
 				onValueChange={this.toggleEncrypted}
+				disabled={!hasPermission}
 			/>
 		);
 	}
@@ -442,7 +467,7 @@ class RoomActionsView extends React.Component {
 							/>
 							{room.t === 'd' && <Markdown msg={member.statusText} style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]} preview theme={theme} numberOfLines={1} />}
 						</View>
-						{isGroupChat ? null : <List.Icon name='chevron-right' />}
+						{isGroupChat ? null : <List.Icon name='chevron-right' style={styles.actionIndicator} />}
 					</View>
 				</Touch>
 				<List.Separator />
@@ -461,7 +486,7 @@ class RoomActionsView extends React.Component {
 				<List.Separator />
 				<List.Item
 					title='Voice_call'
-					onPress={() => RocketChat.callJitsi(room?.rid, true)}
+					onPress={() => RocketChat.callJitsi(room, true)}
 					testID='room-actions-voice'
 					left={() => <List.Icon name='phone' />}
 					showActionIndicator
@@ -469,7 +494,7 @@ class RoomActionsView extends React.Component {
 				<List.Separator />
 				<List.Item
 					title='Video_call'
-					onPress={() => RocketChat.callJitsi(room?.rid)}
+					onPress={() => RocketChat.callJitsi(room)}
 					testID='room-actions-video'
 					left={() => <List.Icon name='camera' />}
 					showActionIndicator
@@ -480,15 +505,12 @@ class RoomActionsView extends React.Component {
 	}
 
 	renderE2EEncryption = () => {
-		const {
-			room, canEdit
-		} = this.state;
-		const { e2eEnabled } = this.props;
+		const { room } = this.state;
+		const { encryptionEnabled } = this.props;
 
-		// If can edit this room
-		// If this room type can be Encrypted
-		// If e2e is enabled for this server
-		if (canEdit && E2E_ROOM_TYPES[room?.t] && e2eEnabled) {
+		// If this room type can be encrypted
+		// If e2e is enabled
+		if (E2E_ROOM_TYPES[room?.t] && encryptionEnabled) {
 			return (
 				<List.Section>
 					<List.Separator />
@@ -524,7 +546,7 @@ class RoomActionsView extends React.Component {
 							event: this.toggleBlockUser
 						})}
 						testID='room-actions-block-user'
-						left={() => <List.Icon name='ban' color={themes[theme].dangerColor} />}
+						left={() => <List.Icon name='ignore' color={themes[theme].dangerColor} />}
 						showActionIndicator
 						color={themes[theme].dangerColor}
 					/>
@@ -847,7 +869,16 @@ class RoomActionsView extends React.Component {
 
 const mapStateToProps = state => ({
 	jitsiEnabled: state.settings.Jitsi_Enabled || false,
-	e2eEnabled: state.settings.E2E_Enable || false
+	encryptionEnabled: state.encryption.enabled,
+	serverVersion: state.server.version,
+	addUserToJoinedRoomPermission: state.permissions['add-user-to-joined-room'],
+	addUserToAnyCRoomPermission: state.permissions['add-user-to-any-c-room'],
+	addUserToAnyPRoomPermission: state.permissions['add-user-to-any-p-room'],
+	createInviteLinksPermission: state.permissions['create-invite-links'],
+	editRoomPermission: state.permissions['edit-room'],
+	toggleRoomE2EEncryptionPermission: state.permissions['toggle-room-e2e-encryption'],
+	viewBroadcastMemberListPermission: state.permissions['view-broadcast-member-list'],
+	transferLivechatGuestPermission: state.permissions['transfer-livechat-guest']
 });
 
 const mapDispatchToProps = dispatch => ({

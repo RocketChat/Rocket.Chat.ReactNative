@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 11,
+	version: 12,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -37,6 +37,7 @@ export default appSchema({
 				{ name: 'archived', type: 'boolean' },
 				{ name: 'join_code_required', type: 'boolean', isOptional: true },
 				{ name: 'muted', type: 'string', isOptional: true },
+				{ name: 'ignored', type: 'string', isOptional: true },
 				{ name: 'broadcast', type: 'boolean', isOptional: true },
 				{ name: 'prid', type: 'string', isOptional: true },
 				{ name: 'draft_message', type: 'string', isOptional: true },

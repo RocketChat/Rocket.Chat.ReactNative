@@ -14,6 +14,7 @@ import { THUMBS_HEIGHT } from './constants';
 import sharedStyles from '../Styles';
 import { allowPreview } from './utils';
 import I18n from '../../i18n';
+import { isAndroid } from '../../utils/deviceInfo';
 
 const MESSAGEBOX_HEIGHT = 56;
 
@@ -24,9 +25,9 @@ const styles = StyleSheet.create({
 	},
 	fileName: {
 		fontSize: 16,
-		textAlign: 'center',
 		marginHorizontal: 10,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		...sharedStyles.textAlignCenter
 	},
 	fileSize: {
 		fontSize: 14,
@@ -63,7 +64,8 @@ const Preview = React.memo(({
 	const calculatedHeight = height - insets.top - insets.bottom - MESSAGEBOX_HEIGHT - thumbsHeight - headerHeight;
 
 	if (item?.canUpload) {
-		if (type?.match(/video/)) {
+		// Disable video preview on iOS to save memory
+		if (isAndroid && type?.match(/video/)) {
 			return (
 				<ScrollView style={{ height: calculatedHeight }}>
 					<Video
@@ -81,8 +83,8 @@ const Preview = React.memo(({
 		}
 
 		// Disallow preview of images too big in order to prevent memory issues on iOS share extension
-		if (allowPreview(isShareExtension, item?.size)) {
-			if (type?.match(/image/)) {
+		if (type?.match(/image/)) {
+			if (allowPreview(isShareExtension, item?.size)) {
 				return (
 					<ImageViewer
 						uri={item.path}

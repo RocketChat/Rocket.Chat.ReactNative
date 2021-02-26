@@ -23,9 +23,9 @@ const styles = StyleSheet.create({
 		paddingVertical: 10
 	},
 	title: {
-		textAlign: 'center',
 		fontSize: 16,
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
+		...sharedStyles.textAlignCenter
 	},
 	reactCount: {
 		fontSize: 13,
@@ -129,7 +129,7 @@ const ReactionsModal = React.memo(({
 		isVisible={isVisible}
 		onBackdropPress={onClose}
 		onBackButtonPress={onClose}
-		backdropOpacity={0.8}
+		backdropOpacity={themes[theme].backdropOpacity}
 		onSwipeComplete={onClose}
 		swipeDirection={['up', 'left', 'right', 'down']}
 	>

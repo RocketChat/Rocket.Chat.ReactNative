@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { KeyboardUtils } from 'react-native-keyboard-input';
+import { Keyboard } from 'react-native';
 
 import Message from './Message';
 import MessageContext from './Context';
@@ -32,6 +32,7 @@ class MessageContainer extends React.Component {
 		autoTranslateRoom: PropTypes.bool,
 		autoTranslateLanguage: PropTypes.string,
 		status: PropTypes.number,
+		isIgnored: PropTypes.bool,
 		getCustomEmoji: PropTypes.func,
 		onLongPress: PropTypes.func,
 		onReactionPress: PropTypes.func,
@@ -48,7 +49,7 @@ class MessageContainer extends React.Component {
 		callJitsi: PropTypes.func,
 		blockAction: PropTypes.func,
 		theme: PropTypes.string,
-		getBadgeColor: PropTypes.func,
+		threadBadgeColor: PropTypes.string,
 		toggleFollowThread: PropTypes.func
 	}
 
@@ -70,8 +71,11 @@ class MessageContainer extends React.Component {
 		blockAction: () => {},
 		archived: false,
 		broadcast: false,
+		isIgnored: false,
 		theme: 'light'
 	}
+
+	state = { isManualUnignored: false };
 
 	componentDidMount() {
 		const { item } = this.props;
@@ -83,9 +87,19 @@ class MessageContainer extends React.Component {
 		}
 	}
 
-	shouldComponentUpdate(nextProps) {
-		const { theme } = this.props;
+	shouldComponentUpdate(nextProps, nextState) {
+		const { isManualUnignored } = this.state;
+		const { theme, threadBadgeColor, isIgnored } = this.props;
 		if (nextProps.theme !== theme) {
+			return true;
+		}
+		if (nextProps.threadBadgeColor !== threadBadgeColor) {
+			return true;
+		}
+		if (nextProps.isIgnored !== isIgnored) {
+			return true;
+		}
+		if (nextState.isManualUnignored !== isManualUnignored) {
 			return true;
 		}
 		return false;
@@ -98,8 +112,12 @@ class MessageContainer extends React.Component {
 	}
 
 	onPress = debounce(() => {
+		if (this.isIgnored) {
+			return this.onIgnoredMessagePress();
+		}
+
 		const { item, isThreadRoom } = this.props;
-		KeyboardUtils.dismiss();
+		Keyboard.dismiss();
 
 		if (((item.tlm || item.tmid) && !isThreadRoom)) {
 			this.onThreadPress();
@@ -158,6 +176,10 @@ class MessageContainer extends React.Component {
 		}
 	}
 
+	onIgnoredMessagePress = () => {
+		this.setState({ isManualUnignored: true });
+	}
+
 	get isHeader() {
 		const {
 			item, previousItem, broadcast, Message_GroupingPeriod
@@ -195,16 +217,11 @@ class MessageContainer extends React.Component {
 	}
 
 	get isThreadSequential() {
-		const {
-			item, previousItem, isThreadRoom
-		} = this.props;
+		const { item, isThreadRoom } = this.props;
 		if (isThreadRoom) {
 			return false;
 		}
-		if (previousItem && item.tmid && ((previousItem.tmid === item.tmid) || (previousItem.id === item.tmid))) {
-			return true;
-		}
-		return false;
+		return item.tmid;
 	}
 
 	get isEncrypted() {
@@ -221,6 +238,12 @@ class MessageContainer extends React.Component {
 	get isTemp() {
 		const { item } = this.props;
 		return item.status === messagesStatus.TEMP || item.status === messagesStatus.ERROR;
+	}
+
+	get isIgnored() {
+		const { isManualUnignored } = this.state;
+		const { isIgnored } = this.props;
+		return isManualUnignored ? false : isIgnored;
 	}
 
 	get hasError() {
@@ -244,7 +267,7 @@ class MessageContainer extends React.Component {
 
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, showAttachment, timeFormat, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme, getBadgeColor, toggleFollowThread
+			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, showAttachment, timeFormat, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme, threadBadgeColor, toggleFollowThread
 		} = this.props;
 		const {
 			id, msg, ts, attachments, urls, reactions, t, avatar, emoji, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, blocks, autoTranslate: autoTranslateMessage, replies
@@ -271,7 +294,7 @@ class MessageContainer extends React.Component {
 					onEncryptedPress: this.onEncryptedPress,
 					onDiscussionPress: this.onDiscussionPress,
 					onReactionLongPress: this.onReactionLongPress,
-					getBadgeColor,
+					threadBadgeColor,
 					toggleFollowThread,
 					replies
 				}}
@@ -308,6 +331,7 @@ class MessageContainer extends React.Component {
 					fetchThreadName={fetchThreadName}
 					mentions={mentions}
 					channels={channels}
+					isIgnored={this.isIgnored}
 					isEdited={editedBy && !!editedBy.username}
 					isHeader={this.isHeader}
 					isThreadReply={this.isThreadReply}

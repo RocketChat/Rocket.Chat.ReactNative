@@ -1,11 +1,12 @@
 import { SERVER } from './actionsTypes';
 
-export function selectServerRequest(server, version, fetchVersion = true) {
+export function selectServerRequest(server, version, fetchVersion = true, changeServer = false) {
 	return {
 		type: SERVER.SELECT_REQUEST,
 		server,
 		version,
-		fetchVersion
+		fetchVersion,
+		changeServer
 	};
 }
 
@@ -23,11 +24,10 @@ export function selectServerFailure() {
 	};
 }
 
-export function serverRequest(server, certificate = null, username = null, fromServerHistory = false) {
+export function serverRequest(server, username = null, fromServerHistory = false) {
 	return {
 		type: SERVER.REQUEST,
 		server,
-		certificate,
 		username,
 		fromServerHistory
 	};

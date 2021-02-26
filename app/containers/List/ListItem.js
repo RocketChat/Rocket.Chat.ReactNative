@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+	View, Text, StyleSheet, I18nManager
+} from 'react-native';
 import PropTypes from 'prop-types';
 
 import Touch from '../../utils/touch';
@@ -39,6 +41,11 @@ const styles = StyleSheet.create({
 	subtitle: {
 		fontSize: 14,
 		...sharedStyles.textRegular
+	},
+	actionIndicator: {
+		...I18nManager.isRTL
+			? { transform: [{ rotate: '180deg' }] }
+			: {}
 	}
 });
 
@@ -64,7 +71,7 @@ const Content = React.memo(({
 			? (
 				<View style={styles.rightContainer}>
 					{right ? right() : null}
-					{showActionIndicator ? <Icon name='chevron-right' /> : null}
+					{showActionIndicator ? <Icon name='chevron-right' style={styles.actionIndicator} /> : null}
 				</View>
 			)
 			: null}
@@ -72,11 +79,12 @@ const Content = React.memo(({
 ));
 
 const Button = React.memo(({
-	onPress, ...props
+	onPress, backgroundColor, underlayColor, ...props
 }) => (
 	<Touch
 		onPress={() => onPress(props.title)}
-		style={{ backgroundColor: themes[props.theme].backgroundColor }}
+		style={{ backgroundColor: backgroundColor || themes[props.theme].backgroundColor }}
+		underlayColor={underlayColor}
 		enabled={!props.disabled}
 		theme={props.theme}
 	>
@@ -89,7 +97,7 @@ const ListItem = React.memo(({ ...props }) => {
 		return <Button {...props} />;
 	}
 	return (
-		<View style={{ backgroundColor: themes[props.theme].backgroundColor }}>
+		<View style={{ backgroundColor: props.backgroundColor || themes[props.theme].backgroundColor }}>
 			<Content {...props} />
 		</View>
 	);
@@ -97,7 +105,8 @@ const ListItem = React.memo(({ ...props }) => {
 
 ListItem.propTypes = {
 	onPress: PropTypes.func,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	backgroundColor: PropTypes.string
 };
 
 ListItem.displayName = 'List.Item';
@@ -127,7 +136,9 @@ Button.propTypes = {
 	title: PropTypes.string,
 	onPress: PropTypes.func,
 	disabled: PropTypes.bool,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	backgroundColor: PropTypes.string,
+	underlayColor: PropTypes.string
 };
 
 Button.defaultProps = {

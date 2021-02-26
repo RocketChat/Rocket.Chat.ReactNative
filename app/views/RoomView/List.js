@@ -30,6 +30,8 @@ class List extends React.Component {
 		loading: PropTypes.bool,
 		listRef: PropTypes.func,
 		hideSystemMessages: PropTypes.array,
+		tunread: PropTypes.array,
+		ignored: PropTypes.array,
 		navigation: PropTypes.object,
 		showMessageInMainThread: PropTypes.bool
 	};
@@ -51,20 +53,16 @@ class List extends React.Component {
 		this.count = 0;
 		this.needsFetch = false;
 		this.mounted = false;
+		this.animated = false;
 		this.state = {
 			loading: true,
 			end: false,
 			messages: [],
-			refreshing: false,
-			animated: false
+			refreshing: false
 		};
 		this.query();
 		this.unsubscribeFocus = props.navigation.addListener('focus', () => {
-			if (this.mounted) {
-				this.setState({ animated: true });
-			} else {
-				this.state.animated = true;
-			}
+			this.animated = true;
 		});
 		console.timeEnd(`${ this.constructor.name } init`);
 	}
@@ -76,7 +74,9 @@ class List extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { loading, end, refreshing } = this.state;
-		const { hideSystemMessages, theme } = this.props;
+		const {
+			hideSystemMessages, theme, tunread, ignored
+		} = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
 		}
@@ -90,6 +90,12 @@ class List extends React.Component {
 			return true;
 		}
 		if (!isEqual(hideSystemMessages, nextProps.hideSystemMessages)) {
+			return true;
+		}
+		if (!isEqual(tunread, nextProps.tunread)) {
+			return true;
+		}
+		if (!isEqual(ignored, nextProps.ignored)) {
 			return true;
 		}
 		return false;
@@ -280,8 +286,7 @@ class List extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	update = () => {
-		const { animated } = this.state;
-		if (animated) {
+		if (this.animated) {
 			animateNextTransition();
 		}
 		this.forceUpdate();

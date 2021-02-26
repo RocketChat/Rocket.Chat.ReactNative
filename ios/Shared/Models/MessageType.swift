@@ -10,4 +10,14 @@ import Foundation
 
 enum MessageType: String, Codable {
   case e2e
+  case unknown
+
+  public init(from decoder: Decoder) throws {
+    guard let rawValue = try? decoder.singleValueContainer().decode(String.self) else {
+      self = .unknown
+      return
+    }
+    
+    self = MessageType(rawValue: rawValue) ?? .unknown
+  }
 }

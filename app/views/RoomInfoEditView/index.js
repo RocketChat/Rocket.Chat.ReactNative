@@ -9,7 +9,9 @@ import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 import ImagePicker from 'react-native-image-crop-picker';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
-import semver from 'semver';
+import lt from 'semver/functions/lt';
+import coerce from 'semver/functions/coerce';
+
 
 import database from '../../lib/database';
 import { deleteRoom as deleteRoomAction } from '../../actions/room';
@@ -42,14 +44,6 @@ const PERMISSION_ARCHIVE = 'archive-room';
 const PERMISSION_UNARCHIVE = 'unarchive-room';
 const PERMISSION_DELETE_C = 'delete-c';
 const PERMISSION_DELETE_P = 'delete-p';
-const PERMISSIONS_ARRAY = [
-	PERMISSION_SET_READONLY,
-	PERMISSION_SET_REACT_WHEN_READONLY,
-	PERMISSION_ARCHIVE,
-	PERMISSION_UNARCHIVE,
-	PERMISSION_DELETE_C,
-	PERMISSION_DELETE_P
-];
 
 class RoomInfoEditView extends React.Component {
 	static navigationOptions = () => ({
@@ -60,8 +54,14 @@ class RoomInfoEditView extends React.Component {
 		route: PropTypes.object,
 		deleteRoom: PropTypes.func,
 		serverVersion: PropTypes.string,
-		e2eEnabled: PropTypes.bool,
-		theme: PropTypes.string
+		encryptionEnabled: PropTypes.bool,
+		theme: PropTypes.string,
+		setReadOnlyPermission: PropTypes.array,
+		setReactWhenReadOnlyPermission: PropTypes.array,
+		archiveRoomPermission: PropTypes.array,
+		unarchiveRoomPermission: PropTypes.array,
+		deleteCPermission: PropTypes.array,
+		deletePPermission: PropTypes.array
 	};
 
 	constructor(props) {
@@ -106,7 +106,15 @@ class RoomInfoEditView extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	loadRoom = async() => {
-		const { route } = this.props;
+		const {
+			route,
+			setReadOnlyPermission,
+			setReactWhenReadOnlyPermission,
+			archiveRoomPermission,
+			unarchiveRoomPermission,
+			deleteCPermission,
+			deletePPermission
+		} = this.props;
 		const rid = route.params?.rid;
 		if (!rid) {
 			return;
@@ -121,8 +129,25 @@ class RoomInfoEditView extends React.Component {
 				this.init(this.room);
 			});
 
-			const permissions = await RocketChat.hasPermission(PERMISSIONS_ARRAY, rid);
-			this.setState({ permissions });
+			const result = await RocketChat.hasPermission([
+				setReadOnlyPermission,
+				setReactWhenReadOnlyPermission,
+				archiveRoomPermission,
+				unarchiveRoomPermission,
+				deleteCPermission,
+				deletePPermission
+			], rid);
+
+			this.setState({
+				permissions: {
+					[PERMISSION_SET_READONLY]: result[0],
+					[PERMISSION_SET_REACT_WHEN_READONLY]: result[1],
+					[PERMISSION_ARCHIVE]: result[2],
+					[PERMISSION_UNARCHIVE]: result[3],
+					[PERMISSION_DELETE_C]: result[4],
+					[PERMISSION_DELETE_P]: result[5]
+				}
+			});
 		} catch (e) {
 			log(e);
 		}
@@ -407,14 +432,14 @@ class RoomInfoEditView extends React.Component {
 
 	isServerVersionLowerThan = (version) => {
 		const { serverVersion } = this.props;
-		return serverVersion && semver.lt(semver.coerce(serverVersion), version);
+		return serverVersion && lt(coerce(serverVersion), version);
 	}
 
 	render() {
 		const {
 			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode, saving, permissions, archived, enableSysMes, encrypted, avatar
 		} = this.state;
-		const { serverVersion, e2eEnabled, theme } = this.props;
+		const { serverVersion, encryptionEnabled, theme } = this.props;
 		const { dangerColor } = themes[theme];
 
 		return (
@@ -547,7 +572,7 @@ class RoomInfoEditView extends React.Component {
 							]
 							: null
 						}
-						{serverVersion && !semver.lt(serverVersion, '3.0.0') ? (
+						{serverVersion && !lt(serverVersion, '3.0.0') ? (
 							<SwitchContainer
 								value={enableSysMes}
 								leftLabelPrimary={I18n.t('Hide_System_Messages')}
@@ -561,7 +586,7 @@ class RoomInfoEditView extends React.Component {
 								{this.renderSystemMessages()}
 							</SwitchContainer>
 						) : null}
-						{e2eEnabled ? (
+						{encryptionEnabled ? (
 							<SwitchContainer
 								value={encrypted}
 								disabled={!t}
@@ -664,8 +689,14 @@ class RoomInfoEditView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	serverVersion: state.share.server.version || state.server.version,
-	e2eEnabled: state.settings.E2E_Enable || false
+	serverVersion: state.server.version,
+	encryptionEnabled: state.encryption.enabled,
+	setReadOnlyPermission: state.permissions[PERMISSION_SET_READONLY],
+	setReactWhenReadOnlyPermission: state.permissions[PERMISSION_SET_REACT_WHEN_READONLY],
+	archiveRoomPermission: state.permissions[PERMISSION_ARCHIVE],
+	unarchiveRoomPermission: state.permissions[PERMISSION_UNARCHIVE],
+	deleteCPermission: state.permissions[PERMISSION_DELETE_C],
+	deletePPermission: state.permissions[PERMISSION_DELETE_P]
 });
 
 const mapDispatchToProps = dispatch => ({

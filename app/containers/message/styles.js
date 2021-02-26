@@ -26,9 +26,6 @@ export default StyleSheet.create({
 	messageContentWithError: {
 		marginLeft: 0
 	},
-	center: {
-		alignItems: 'center'
-	},
 	flex: {
 		flexDirection: 'row'
 		// flex: 1
@@ -140,7 +137,7 @@ export default StyleSheet.create({
 	},
 	time: {
 		fontSize: 12,
-		paddingLeft: 8,
+		marginLeft: 8,
 		...sharedStyles.textRegular
 	},
 	repliedThread: {
@@ -179,5 +176,9 @@ export default StyleSheet.create({
 	},
 	encrypted: {
 		justifyContent: 'center'
+	},
+	threadDetails: {
+		flex: 1,
+		marginLeft: 12
 	}
 });

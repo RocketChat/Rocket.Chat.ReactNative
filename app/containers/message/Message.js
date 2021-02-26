@@ -63,12 +63,12 @@ const MessageInner = React.memo((props) => {
 MessageInner.displayName = 'MessageInner';
 
 const Message = React.memo((props) => {
-	if (props.isThreadReply || props.isThreadSequential || props.isInfo) {
+	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
 		return (
 			<View style={[styles.container, props.style]}>
 				{thread}
-				<View style={[styles.flex, styles.center]}>
+				<View style={styles.flex}>
 					<MessageAvatar small {...props} />
 					<View
 						style={[
@@ -82,6 +82,7 @@ const Message = React.memo((props) => {
 			</View>
 		);
 	}
+
 	return (
 		<View style={[styles.container, props.style]}>
 			<View style={styles.flex}>
@@ -118,7 +119,7 @@ const MessageTouchable = React.memo((props) => {
 		<Touchable
 			onLongPress={onLongPress}
 			onPress={onPress}
-			disabled={props.isInfo || props.archived || props.isTemp}
+			disabled={(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp}
 		>
 			<View>
 				<Message {...props} />
@@ -131,6 +132,7 @@ MessageTouchable.displayName = 'MessageTouchable';
 MessageTouchable.propTypes = {
 	hasError: PropTypes.bool,
 	isInfo: PropTypes.bool,
+	isThreadReply: PropTypes.bool,
 	isTemp: PropTypes.bool,
 	archived: PropTypes.bool
 };
@@ -146,7 +148,8 @@ Message.propTypes = {
 	onLongPress: PropTypes.func,
 	isReadReceiptEnabled: PropTypes.bool,
 	unread: PropTypes.bool,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	isIgnored: PropTypes.bool
 };
 
 MessageInner.propTypes = {

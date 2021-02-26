@@ -470,11 +470,6 @@ export default ({ theme }) => {
 				tlm={date}
 			/>
 			<Message
-				msg='How are you?'
-				tcount={9999}
-				tlm={date}
-			/>
-			<Message
 				msg="I'm fine!"
 				tmid='1'
 				tmsg='How are you?'
@@ -825,6 +820,13 @@ export default ({ theme }) => {
 
 			<Separator title='Changed type' theme={theme} />
 			<Message msg='public' type='room_changed_privacy' isInfo />
+
+			<Separator title='Toggle e2e encryption' theme={theme} />
+			<Message type='room_e2e_disabled' isInfo />
+			<Message type='room_e2e_enabled' isInfo />
+
+			<Separator title='Ignored' theme={theme} />
+			<Message isIgnored />
 
 			<Separator title='Custom style' theme={theme} />
 			<Message msg='Message' style={[styles.normalize, { backgroundColor: '#ddd' }]} />

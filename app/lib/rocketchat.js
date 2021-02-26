@@ -1,5 +1,7 @@
 import { InteractionManager } from 'react-native';
-import semver from 'semver';
+import lt from 'semver/functions/lt';
+import gte from 'semver/functions/gte';
+import coerce from 'semver/functions/coerce';
 import {
 	Rocketchat as RocketchatClient,
 	settings as RocketChatSettings
@@ -15,6 +17,7 @@ import database from './database';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
 import fetch from '../utils/fetch';
+import SSLPinning from '../utils/sslPinning';
 
 import { encryptionInit } from '../actions/encryption';
 import { setUser, setLoginServices, loginRequest } from '../actions/login';
@@ -29,7 +32,7 @@ import readMessages from './methods/readMessages';
 import getSettings, { getLoginSettings, setSettings } from './methods/getSettings';
 
 import getRooms from './methods/getRooms';
-import getPermissions from './methods/getPermissions';
+import { setPermissions, getPermissions } from './methods/getPermissions';
 import { getCustomEmojis, setCustomEmojis } from './methods/getCustomEmojis';
 import {
 	getEnterpriseModules, setEnterpriseModules, hasLicense, isOmnichannelModuleAvailable
@@ -63,10 +66,10 @@ import { sanitizeLikeString } from './database/utils';
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
+const CERTIFICATE_KEY = 'RC_CERTIFICATE_KEY';
 export const THEME_PREFERENCES_KEY = 'RC_THEME_PREFERENCES_KEY';
 export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
 export const ANALYTICS_EVENTS_KEY = 'RC_ANALYTICS_EVENTS_KEY';
-const returnAnArray = obj => obj || [];
 const MIN_ROCKETCHAT_VERSION = '0.70.0';
 
 const STATUSES = ['offline', 'online', 'away', 'busy'];
@@ -74,6 +77,7 @@ const STATUSES = ['offline', 'online', 'away', 'busy'];
 const RocketChat = {
 	TOKEN_KEY,
 	CURRENT_SERVER,
+	CERTIFICATE_KEY,
 	callJitsi,
 	async subscribeRooms() {
 		if (!this.roomsSub) {
@@ -129,7 +133,7 @@ const RocketChat = {
 						message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
 					};
 				}
-				if (semver.lt(jsonRes.version, MIN_ROCKETCHAT_VERSION)) {
+				if (lt(jsonRes.version, MIN_ROCKETCHAT_VERSION)) {
 					return {
 						success: false,
 						message: I18n.t('Invalid_server_version', {
@@ -312,6 +316,13 @@ const RocketChat = {
 	async shareExtensionInit(server) {
 		database.setShareDB(server);
 
+		try {
+			const certificate = await UserPreferences.getStringAsync(`${ RocketChat.CERTIFICATE_KEY }-${ server }`);
+			await SSLPinning.setCertificate(certificate, server);
+		} catch {
+			// Do nothing
+		}
+
 		if (this.shareSDK) {
 			this.shareSDK.disconnect();
 			this.shareSDK = null;
@@ -452,6 +463,15 @@ const RocketChat = {
 					try {
 						reduxStore.dispatch(setUser({ username: params.user || params.username }));
 						const code = await twoFactor({ method: details?.method || 'totp', invalid: e.data.error === 'totp-invalid' });
+
+						// Force normalized params for 2FA starting RC 3.9.0.
+						const serverVersion = reduxStore.getState().server.version;
+						if (serverVersion && gte(coerce(serverVersion), '3.9.0')) {
+							const user = params.user ?? params.username;
+							const password = params.password ?? params.ldapPass ?? params.crowdPassword;
+							params = { user, password };
+						}
+
 						return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
 					} catch {
 						// twoFactor was canceled
@@ -577,25 +597,19 @@ const RocketChat = {
 	readMessages,
 	resendMessage,
 
-	async search({ text, filterUsers = true, filterRooms = true }) {
+	async localSearch({ text, filterUsers = true, filterRooms = true }) {
 		const searchText = text.trim();
-
-		if (this.oldPromise) {
-			this.oldPromise('cancel');
-		}
-
 		if (searchText === '') {
-			delete this.oldPromise;
 			return [];
 		}
-
 		const db = database.active;
 		const likeString = sanitizeLikeString(searchText);
 		let data = await db.collections.get('subscriptions').query(
 			Q.or(
 				Q.where('name', Q.like(`%${ likeString }%`)),
 				Q.where('fname', Q.like(`%${ likeString }%`))
-			)
+			),
+			Q.experimentalSortBy('room_updated_at', Q.desc)
 		).fetch();
 
 		if (filterUsers && !filterRooms) {
@@ -608,17 +622,33 @@ const RocketChat = {
 
 		data = data.map((sub) => {
 			if (sub.t !== 'd') {
-				return ({
+				return {
 					rid: sub.rid,
 					name: sub.name,
 					fname: sub.fname,
 					avatarETag: sub.avatarETag,
 					t: sub.t,
-					search: true
-				});
+					encrypted: sub.encrypted
+				};
 			}
 			return sub;
 		});
+
+		return data;
+	},
+
+	async search({ text, filterUsers = true, filterRooms = true }) {
+		const searchText = text.trim();
+
+		if (this.oldPromise) {
+			this.oldPromise('cancel');
+		}
+
+		if (searchText === '') {
+			return [];
+		}
+
+		const data = await this.localSearch({ text, filterUsers, filterRooms });
 
 		const usernames = data.map(sub => sub.name);
 		try {
@@ -628,13 +658,18 @@ const RocketChat = {
 					new Promise((resolve, reject) => this.oldPromise = reject)
 				]);
 				if (filterUsers) {
-					data = data.concat(users.map(user => ({
-						...user,
-						rid: user.username,
-						name: user.username,
-						t: 'd',
-						search: true
-					})));
+					users
+						.filter((item1, index) => users.findIndex(item2 => item2._id === item1._id) === index) // Remove duplicated data from response
+						.filter(user => !data.some(sub => user.username === sub.name)) // Make sure to remove users already on local database
+						.forEach((user) => {
+							data.push({
+								...user,
+								rid: user.username,
+								name: user.username,
+								t: 'd',
+								search: true
+							});
+						});
 				}
 				if (filterRooms) {
 					rooms.forEach((room) => {
@@ -678,21 +713,21 @@ const RocketChat = {
 	},
 
 	createDiscussion({
-		prid, pmid, t_name, reply, users
+		prid, pmid, t_name, reply, users, encrypted
 	}) {
 		// RC 1.0.0
 		return this.post('rooms.createDiscussion', {
-			prid, pmid, t_name, reply, users
+			prid, pmid, t_name, reply, users, encrypted
 		});
 	},
 
-	joinRoom(roomId, type) {
+	joinRoom(roomId, joinCode, type) {
 		// TODO: join code
 		// RC 0.48.0
 		if (type === 'p') {
 			return this.methodCallWrapper('joinRoom', roomId);
 		}
-		return this.post('channels.join', { roomId });
+		return this.post('channels.join', { roomId, joinCode });
 	},
 	triggerBlockAction,
 	triggerSubmitView,
@@ -704,6 +739,7 @@ const RocketChat = {
 	getLoginSettings,
 	setSettings,
 	getPermissions,
+	setPermissions,
 	getCustomEmojis,
 	setCustomEmojis,
 	getEnterpriseModules,
@@ -846,14 +882,7 @@ const RocketChat = {
 	methodCallWrapper(method, ...params) {
 		const { API_Use_REST_For_DDP_Calls } = reduxStore.getState().settings;
 		if (API_Use_REST_For_DDP_Calls) {
-			return new Promise(async(resolve, reject) => {
-				const data = await this.post(`method.call/${ method }`, { message: JSON.stringify({ method, params }) });
-				const response = JSON.parse(data.message);
-				if (response?.error) {
-					return reject(response.error);
-				}
-				return resolve(response.result);
-			});
+			return this.post(`method.call/${ method }`, { message: JSON.stringify({ method, params }) });
 		}
 		return this.methodCall(method, ...params);
 	},
@@ -992,6 +1021,45 @@ const RocketChat = {
 		// RC 0.51.0
 		return this.methodCallWrapper('unmuteUserInRoom', { rid, username });
 	},
+	toggleRoomOwner({
+		roomId, t, userId, isOwner
+	}) {
+		if (isOwner) {
+			// RC 0.49.4
+			return this.post(`${ this.roomTypeToApiType(t) }.addOwner`, { roomId, userId });
+		}
+		// RC 0.49.4
+		return this.post(`${ this.roomTypeToApiType(t) }.removeOwner`, { roomId, userId });
+	},
+	toggleRoomLeader({
+		roomId, t, userId, isLeader
+	}) {
+		if (isLeader) {
+			// RC 0.58.0
+			return this.post(`${ this.roomTypeToApiType(t) }.addLeader`, { roomId, userId });
+		}
+		// RC 0.58.0
+		return this.post(`${ this.roomTypeToApiType(t) }.removeLeader`, { roomId, userId });
+	},
+	toggleRoomModerator({
+		roomId, t, userId, isModerator
+	}) {
+		if (isModerator) {
+			// RC 0.49.4
+			return this.post(`${ this.roomTypeToApiType(t) }.addModerator`, { roomId, userId });
+		}
+		// RC 0.49.4
+		return this.post(`${ this.roomTypeToApiType(t) }.removeModerator`, { roomId, userId });
+	},
+	removeUserFromRoom({
+		roomId, t, userId
+	}) {
+		// RC 0.48.0
+		return this.post(`${ this.roomTypeToApiType(t) }.kick`, { roomId, userId });
+	},
+	ignoreUser({ rid, userId, ignore }) {
+		return this.sdk.get('chat.ignoreUser', { rid, userId, ignore });
+	},
 	toggleArchiveRoom(roomId, t, archive) {
 		if (archive) {
 			// RC 0.48.0
@@ -1009,14 +1077,30 @@ const RocketChat = {
 	},
 	post(...args) {
 		return new Promise(async(resolve, reject) => {
+			const isMethodCall = args[0]?.startsWith('method.call/');
 			try {
 				const result = await this.sdk.post(...args);
+
+				/**
+				 * if API_Use_REST_For_DDP_Calls is enabled and it's a method call,
+				 * responses have a different object structure
+				 */
+				if (isMethodCall) {
+					const response = JSON.parse(result.message);
+					if (response?.error) {
+						throw response.error;
+					}
+					return resolve(response.result);
+				}
 				return resolve(result);
 			} catch (e) {
-				if (e.data && (e.data.errorType === 'totp-required' || e.data.errorType === 'totp-invalid')) {
-					const { details } = e.data;
+				const errorType = isMethodCall ? e?.error : e?.data?.errorType;
+				const totpInvalid = 'totp-invalid';
+				const totpRequired = 'totp-required';
+				if ([totpInvalid, totpRequired].includes(errorType)) {
+					const { details } = isMethodCall ? e : e?.data;
 					try {
-						await twoFactor({ method: details?.method, invalid: e.data.errorType === 'totp-invalid' });
+						await twoFactor({ method: details?.method, invalid: errorType === totpInvalid });
 						return resolve(this.post(...args));
 					} catch {
 						// twoFactor was canceled
@@ -1084,10 +1168,17 @@ const RocketChat = {
 
 		return userRoles.indexOf(r => r === role) > -1;
 	},
+	getRoomRoles(roomId, type) {
+		// RC 0.65.0
+		return this.sdk.get(`${ this.roomTypeToApiType(type) }.roles`, { roomId });
+	},
+	/**
+	 * Permissions: array of permissions' roles from redux. Example: [['owner', 'admin'], ['leader']]
+	 * Returns an array of boolean for each permission from permissions arg
+	 */
 	async hasPermission(permissions, rid) {
 		const db = database.active;
 		const subsCollection = db.collections.get('subscriptions');
-		const permissionsCollection = db.collections.get('permissions');
 		let roomRoles = [];
 		try {
 			// get the room from database
@@ -1096,31 +1187,16 @@ const RocketChat = {
 			roomRoles = room.roles || [];
 		} catch (error) {
 			console.log('hasPermission -> Room not found');
-			return permissions.reduce((result, permission) => {
-				result[permission] = false;
-				return result;
-			}, {});
+			return permissions.map(() => false);
 		}
-		// get permissions from database
+
 		try {
-			const permissionsFiltered = await permissionsCollection.query(Q.where('id', Q.oneOf(permissions))).fetch();
 			const shareUser = reduxStore.getState().share.user;
 			const loginUser = reduxStore.getState().login.user;
 			// get user roles on the server from redux
 			const userRoles = (shareUser?.roles || loginUser?.roles) || [];
-			// merge both roles
 			const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
-
-			// return permissions in object format
-			// e.g. { 'edit-room': true, 'set-readonly': false }
-			return permissions.reduce((result, permission) => {
-				result[permission] = false;
-				const permissionFound = permissionsFiltered.find(p => p.id === permission);
-				if (permissionFound) {
-					result[permission] = returnAnArray(permissionFound.roles).some(r => mergedRoles.includes(r));
-				}
-				return result;
-			}, {});
+			return permissions.map(permission => permission.some(r => mergedRoles.includes(r) ?? false));
 		} catch (e) {
 			log(e);
 		}
@@ -1286,7 +1362,7 @@ const RocketChat = {
 	},
 	readThreads(tmid) {
 		const serverVersion = reduxStore.getState().server.version;
-		if (serverVersion && semver.gte(semver.coerce(serverVersion), '3.4.0')) {
+		if (serverVersion && gte(coerce(serverVersion), '3.4.0')) {
 			// RC 3.4.0
 			return this.methodCallWrapper('readThreads', tmid);
 		}
@@ -1350,17 +1426,15 @@ const RocketChat = {
 			query, count, offset, sort
 		});
 	},
-	async canAutoTranslate() {
-		const db = database.active;
+	canAutoTranslate() {
 		try {
-			const AutoTranslate_Enabled = reduxStore.getState().settings && reduxStore.getState().settings.AutoTranslate_Enabled;
+			const { AutoTranslate_Enabled } = reduxStore.getState().settings;
 			if (!AutoTranslate_Enabled) {
 				return false;
 			}
-			const permissionsCollection = db.collections.get('permissions');
-			const autoTranslatePermission = await permissionsCollection.find('auto-translate');
-			const userRoles = (reduxStore.getState().login.user && reduxStore.getState().login.user.roles) || [];
-			return autoTranslatePermission.roles.some(role => userRoles.includes(role));
+			const autoTranslatePermission = reduxStore.getState().permissions['auto-translate'];
+			const userRoles = (reduxStore.getState().login?.user?.roles) ?? [];
+			return autoTranslatePermission?.some(role => userRoles.includes(role));
 		} catch (e) {
 			log(e);
 			return false;

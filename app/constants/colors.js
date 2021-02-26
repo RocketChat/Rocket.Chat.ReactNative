@@ -11,13 +11,11 @@ export const SWITCH_TRACK_COLOR = {
 };
 
 const mentions = {
-	unreadBackground: '#6C727A',
-	tunreadBackground: '#1d74f5',
-	mentionMeColor: '#DB0C27',
-	mentionMeBackground: '#F5455C',
-	mentionGroupColor: '#E26D0E',
-	mentionGroupBackground: '#F38C39',
-	mentionOtherColor: '#DFAC00'
+	unreadColor: '#6C727A',
+	tunreadColor: '#1d74f5',
+	mentionMeColor: '#F5455C',
+	mentionGroupColor: '#F38C39',
+	mentionOtherColor: '#F3BE08'
 };
 
 export const themes = {
@@ -37,6 +35,7 @@ export const themes = {
 		auxiliaryText: '#9ca2a8',
 		infoText: '#6d6d72',
 		tintColor: '#1d74f5',
+		tintActive: '#549df9',
 		auxiliaryTintColor: '#6C727A',
 		actionTintColor: '#1d74f5',
 		separatorColor: '#cbcbcc',
@@ -64,6 +63,7 @@ export const themes = {
 		passcodeDotFull: '#6C727A',
 		previewBackground: '#1F2329',
 		previewTintColor: '#ffffff',
+		backdropOpacity: 0.3,
 		...mentions
 	},
 	dark: {
@@ -82,6 +82,7 @@ export const themes = {
 		auxiliaryText: '#9297a2',
 		infoText: '#6D6D72',
 		tintColor: '#1d74f5',
+		tintActive: '#549df9',
 		auxiliaryTintColor: '#f9f9f9',
 		actionTintColor: '#1d74f5',
 		separatorColor: '#2b2b2d',
@@ -109,6 +110,7 @@ export const themes = {
 		passcodeDotFull: '#6C727A',
 		previewBackground: '#030b1b',
 		previewTintColor: '#ffffff',
+		backdropOpacity: 0.9,
 		...mentions
 	},
 	black: {
@@ -127,6 +129,7 @@ export const themes = {
 		auxiliaryText: '#b2b8c6',
 		infoText: '#6d6d72',
 		tintColor: '#1e9bfe',
+		tintActive: '#76b7fc',
 		auxiliaryTintColor: '#f9f9f9',
 		actionTintColor: '#1e9bfe',
 		separatorColor: '#272728',
@@ -154,6 +157,7 @@ export const themes = {
 		passcodeDotFull: '#6C727A',
 		previewBackground: '#000000',
 		previewTintColor: '#ffffff',
+		backdropOpacity: 0.9,
 		...mentions
 	}
 };

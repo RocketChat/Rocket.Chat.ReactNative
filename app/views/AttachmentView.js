@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import CameraRoll from '@react-native-community/cameraroll';
 import * as mime from 'react-native-mime-types';
-import { FileSystem } from 'react-native-unimodules';
+import RNFetchBlob from 'rn-fetch-blob';
 import { Video } from 'expo-av';
 import SHA256 from 'js-sha256';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
@@ -119,9 +119,11 @@ class AttachmentView extends React.Component {
 		this.setState({ loading: true });
 		try {
 			const extension = image_url ? `.${ mime.extension(image_type) || 'jpg' }` : `.${ mime.extension(video_type) || 'mp4' }`;
-			const file = `${ FileSystem.documentDirectory + SHA256(url) + extension }`;
-			const { uri } = await FileSystem.downloadAsync(mediaAttachment, file);
-			await CameraRoll.save(uri, { album: 'Rocket.Chat' });
+			const documentDir = `${ RNFetchBlob.fs.dirs.DocumentDir }/`;
+			const path = `${ documentDir + SHA256(url) + extension }`;
+			const file = await RNFetchBlob.config({ path }).fetch('GET', mediaAttachment);
+			await CameraRoll.save(path, { album: 'Rocket.Chat' });
+			await file.flush();
 			EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
 		} catch (e) {
 			EventEmitter.emit(LISTENER, { message: I18n.t(image_url ? 'error-save-image' : 'error-save-video') });

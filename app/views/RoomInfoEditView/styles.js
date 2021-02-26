@@ -4,8 +4,8 @@ import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	button: {
-		...sharedStyles.textAlignCenter,
-		...sharedStyles.textBold
+		...sharedStyles.textBold,
+		...sharedStyles.textAlignCenter
 	},
 	buttonInverted: {
 		borderWidth: 2,
@@ -61,8 +61,8 @@ export default StyleSheet.create({
 		marginVertical: 20
 	},
 	broadcast: {
-		...sharedStyles.textAlignCenter,
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
+		...sharedStyles.textAlignCenter
 	},
 	hideSystemMessages: {
 		alignItems: 'flex-start'

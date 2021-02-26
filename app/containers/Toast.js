@@ -14,9 +14,9 @@ const styles = StyleSheet.create({
 		padding: 10
 	},
 	text: {
-		...sharedStyles.textRegular,
 		fontSize: 14,
-		textAlign: 'center'
+		...sharedStyles.textRegular,
+		...sharedStyles.textAlignCenter
 	}
 });
 
@@ -28,7 +28,7 @@ class Toast extends React.Component {
 	}
 
 	componentDidMount() {
-		EventEmitter.addEventListener(LISTENER, this.showToast);
+		this.listener = EventEmitter.addEventListener(LISTENER, this.showToast);
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -40,7 +40,7 @@ class Toast extends React.Component {
 	}
 
 	componentWillUnmount() {
-		EventEmitter.removeListener(LISTENER);
+		EventEmitter.removeListener(LISTENER, this.listener);
 	}
 
 	getToastRef = toast => this.toast = toast;

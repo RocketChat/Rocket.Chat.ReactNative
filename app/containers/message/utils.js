@@ -37,7 +37,27 @@ export const SYSTEM_MESSAGES = [
 	'room_changed_privacy',
 	'room_changed_avatar',
 	'message_snippeted',
-	'thread-created'
+	'thread-created',
+	'room_e2e_enabled',
+	'room_e2e_disabled'
+];
+
+export const SYSTEM_MESSAGE_TYPES = {
+	MESSAGE_REMOVED: 'rm',
+	MESSAGE_PINNED: 'message_pinned',
+	MESSAGE_SNIPPETED: 'message_snippeted',
+	USER_JOINED_CHANNEL: 'uj',
+	USER_JOINED_DISCUSSION: 'ut',
+	USER_LEFT_CHANNEL: 'ul'
+};
+
+export const SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME = [
+	SYSTEM_MESSAGE_TYPES.MESSAGE_REMOVED,
+	SYSTEM_MESSAGE_TYPES.MESSAGE_PINNED,
+	SYSTEM_MESSAGE_TYPES.MESSAGE_SNIPPETED,
+	SYSTEM_MESSAGE_TYPES.USER_JOINED_CHANNEL,
+	SYSTEM_MESSAGE_TYPES.USER_JOINED_DISCUSSION,
+	SYSTEM_MESSAGE_TYPES.USER_LEFT_CHANNEL
 ];
 
 export const getInfoMessage = ({
@@ -82,6 +102,10 @@ export const getInfoMessage = ({
 		return I18n.t('Room_changed_avatar', { userBy: username });
 	} else if (type === 'message_snippeted') {
 		return I18n.t('Created_snippet');
+	} else if (type === 'room_e2e_disabled') {
+		return I18n.t('This_room_encryption_has_been_disabled_by__username_', { username });
+	} else if (type === 'room_e2e_enabled') {
+		return I18n.t('This_room_encryption_has_been_enabled_by__username_', { username });
 	}
 	return '';
 };

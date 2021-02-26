@@ -22,10 +22,10 @@ const styles = StyleSheet.create({
 		top: 60,
 		left: 0,
 		right: 0,
-		textAlign: 'center',
 		fontSize: 16,
 		paddingHorizontal: 24,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		...sharedStyles.textAlignCenter
 	}
 });
 

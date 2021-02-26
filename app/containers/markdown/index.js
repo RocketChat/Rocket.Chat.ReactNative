@@ -211,7 +211,7 @@ class Markdown extends PureComponent {
 			return null;
 		}
 		return (
-			<Text style={[style, { color: themes[theme].bodyText }]} numberOfLines={numberOfLines}>
+			<Text style={[styles.text, style, { color: themes[theme].bodyText }]} numberOfLines={numberOfLines}>
 				{children}
 			</Text>
 		);
@@ -384,6 +384,8 @@ class Markdown extends PureComponent {
 
 		if (preview) {
 			m = shortnameToUnicode(m);
+			// Removes sequential empty spaces
+			m = m.replace(/\s+/g, ' ');
 			m = removeMarkdown(m);
 			m = m.replace(/\n+/g, ' ');
 			return (

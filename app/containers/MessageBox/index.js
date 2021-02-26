@@ -4,7 +4,7 @@ import {
 	View, Alert, Keyboard, NativeModules, Text
 } from 'react-native';
 import { connect } from 'react-redux';
-import { KeyboardAccessoryView } from 'react-native-keyboard-input';
+import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import ImagePicker from 'react-native-image-crop-picker';
 import equal from 'deep-equal';
 import DocumentPicker from 'react-native-document-picker';
@@ -50,6 +50,10 @@ import { withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../../lib/Icons';
 
+if (isAndroid) {
+	require('./EmojiKeyboard');
+}
+
 const imagePickerConfig = {
 	cropping: true,
 	compressImageQuality: 0.8,
@@ -59,6 +63,7 @@ const imagePickerConfig = {
 
 const libraryPickerConfig = {
 	multiple: true,
+	compressVideoPreset: 'Passthrough',
 	mediaType: 'any'
 };
 
@@ -108,7 +113,7 @@ class MessageBox extends Component {
 			id: ''
 		},
 		sharing: false,
-		iOSScrollBehavior: NativeModules.KeyboardTrackingViewManager?.KeyboardTrackingScrollBehaviorFixedOffset,
+		iOSScrollBehavior: NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset,
 		isActionsEnabled: true,
 		getCustomEmoji: () => {}
 	}
@@ -213,18 +218,19 @@ class MessageBox extends Component {
 			this.setShowSend(true);
 		}
 
-		if (isAndroid) {
-			require('./EmojiKeyboard');
-		}
-
 		if (isTablet) {
 			EventEmiter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
 
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
-			if (this.tracking && this.tracking.resetTracking) {
-				this.tracking.resetTracking();
-			}
+			// didFocus
+			// We should wait pushed views be dismissed
+			this.trackingTimeout = setTimeout(() => {
+				if (this.tracking && this.tracking.resetTracking) {
+					// Reset messageBox keyboard tracking
+					this.tracking.resetTracking();
+				}
+			}, 500);
 		});
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			this.component?.blur();
@@ -252,6 +258,10 @@ class MessageBox extends Component {
 			this.focus();
 		} else if (!nextProps.message) {
 			this.clearInput();
+		}
+		if (this.trackingTimeout) {
+			clearTimeout(this.trackingTimeout);
+			this.trackingTimeout = false;
 		}
 	}
 
@@ -927,7 +937,7 @@ class MessageBox extends Component {
 				/>
 				<TextInput
 					ref={component => this.component = component}
-					style={styles.textBoxInput}
+					style={[styles.textBoxInput, { color: themes[theme].bodyText }]}
 					returnKeyType='default'
 					keyboardType='twitter'
 					blurOnSubmit={false}

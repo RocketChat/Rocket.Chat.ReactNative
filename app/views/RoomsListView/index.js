@@ -29,7 +29,6 @@ import {
 	roomsRequest as roomsRequestAction,
 	closeServerDropdown as closeServerDropdownAction
 } from '../../actions/rooms';
-import { appStart as appStartAction, ROOT_BACKGROUND } from '../../actions/app';
 import debounce from '../../utils/debounce';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
 import RoomsListHeaderView from './Header';
@@ -117,6 +116,7 @@ class RoomsListView extends React.Component {
 		}),
 		server: PropTypes.string,
 		searchText: PropTypes.string,
+		changingServer: PropTypes.bool,
 		loadingServer: PropTypes.bool,
 		showServerDropdown: PropTypes.bool,
 		showSortDropdown: PropTypes.bool,
@@ -150,36 +150,26 @@ class RoomsListView extends React.Component {
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
 
-		this.gotSubscriptions = false;
 		this.animated = false;
+		this.mounted = false;
 		this.count = 0;
 		this.state = {
 			searching: false,
 			search: [],
 			loading: true,
-			chatsOrder: [],
+			chatsUpdate: [],
 			chats: [],
 			item: {}
 		};
 		this.setHeader();
+		this.getSubscriptions();
 	}
 
 	componentDidMount() {
 		const {
-			navigation, closeServerDropdown, appState
+			navigation, closeServerDropdown
 		} = this.props;
-
-		/**
-		 * - When didMount is triggered and appState is foreground,
-		 * it means the user is logging in and selectServer has ran, so we can getSubscriptions
-		 *
-		 * - When didMount is triggered and appState is background,
-		 * it means the user has resumed the app, so selectServer needs to be triggered,
-		 * which is going to change server and getSubscriptions will be triggered by componentWillReceiveProps
-		 */
-		if (appState === 'foreground') {
-			this.getSubscriptions();
-		}
+		this.mounted = true;
 
 		if (isTablet) {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
@@ -206,17 +196,17 @@ class RoomsListView extends React.Component {
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
-		const { loadingServer, searchText, server } = this.props;
+		const {
+			loadingServer, searchText, server, changingServer
+		} = this.props;
 
-		if (nextProps.server && loadingServer !== nextProps.loadingServer) {
-			if (nextProps.loadingServer) {
-				this.setState({ loading: true });
-			} else {
-				this.getSubscriptions();
-			}
+		// when the server is changed
+		if (server !== nextProps.server && loadingServer !== nextProps.loadingServer && nextProps.loadingServer) {
+			this.setState({ loading: true });
 		}
-		if (server && server !== nextProps.server) {
-			this.gotSubscriptions = false;
+		// when the server is changing and stopped loading
+		if (changingServer && loadingServer !== nextProps.loadingServer && !nextProps.loadingServer) {
+			this.getSubscriptions();
 		}
 		if (searchText !== nextProps.searchText) {
 			this.search(nextProps.searchText);
@@ -224,7 +214,7 @@ class RoomsListView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { chatsOrder, searching, item } = this.state;
+		const { chatsUpdate, searching, item } = this.state;
 		// eslint-disable-next-line react/destructuring-assignment
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
@@ -232,7 +222,7 @@ class RoomsListView extends React.Component {
 		}
 
 		// Compare changes only once
-		const chatsNotEqual = !isEqual(nextState.chatsOrder, chatsOrder);
+		const chatsNotEqual = !isEqual(nextState.chatsUpdate, chatsUpdate);
 
 		// If they aren't equal, set to update if focused
 		if (chatsNotEqual) {
@@ -437,7 +427,7 @@ class RoomsListView extends React.Component {
 			observable = await db.collections
 				.get('subscriptions')
 				.query(...defaultWhereClause)
-				.observe();
+				.observeWithColumns(['alert']);
 
 		// When we're NOT grouping
 		} else {
@@ -456,11 +446,20 @@ class RoomsListView extends React.Component {
 			let tempChats = [];
 			let chats = data;
 
-			/**
-			 * We trigger re-render only when chats order changes
-			 * RoomItem handles its own re-render
-			 */
-			const chatsOrder = data.map(item => item.rid);
+			let chatsUpdate = [];
+			if (showUnread) {
+				/**
+				 * If unread on top, we trigger re-render based on order changes and sub.alert
+				 * RoomItem handles its own re-render
+				 */
+				chatsUpdate = data.map(item => ({ rid: item.rid, alert: item.alert }));
+			} else {
+				/**
+				 * Otherwise, we trigger re-render only when chats order changes
+				 * RoomItem handles its own re-render
+				 */
+				chatsUpdate = data.map(item => item.rid);
+			}
 
 			const isOmnichannelAgent = user?.roles?.includes('livechat-agent');
 			if (isOmnichannelAgent) {
@@ -499,11 +498,17 @@ class RoomsListView extends React.Component {
 				tempChats = chats;
 			}
 
-			this.internalSetState({
-				chats: tempChats,
-				chatsOrder,
-				loading: false
-			});
+			if (this.mounted) {
+				this.internalSetState({
+					chats: tempChats,
+					chatsUpdate,
+					loading: false
+				});
+			} else {
+				this.state.chats = tempChats;
+				this.state.chatsUpdate = chatsUpdate;
+				this.state.loading = false;
+			}
 		});
 	}
 
@@ -543,12 +548,10 @@ class RoomsListView extends React.Component {
 
 	handleBackPress = () => {
 		const { searching } = this.state;
-		const { appStart } = this.props;
 		if (searching) {
 			this.cancelSearch();
 			return true;
 		}
-		appStart({ root: ROOT_BACKGROUND });
 		return false;
 	};
 
@@ -1014,6 +1017,7 @@ const mapStateToProps = state => ({
 	user: getUserSelector(state),
 	isMasterDetail: state.app.isMasterDetail,
 	server: state.server.server,
+	changingServer: state.server.changingServer,
 	connected: state.server.connected,
 	searchText: state.rooms.searchText,
 	loadingServer: state.server.loading,
@@ -1037,7 +1041,6 @@ const mapDispatchToProps = dispatch => ({
 	toggleSortDropdown: () => dispatch(toggleSortDropdownAction()),
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
-	appStart: params => dispatch(appStartAction(params)),
 	roomsRequest: params => dispatch(roomsRequestAction(params)),
 	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
 	closeServerDropdown: () => dispatch(closeServerDropdownAction())

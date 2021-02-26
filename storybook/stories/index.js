@@ -6,6 +6,7 @@ import { storiesOf } from '@storybook/react-native';
 
 import RoomItem from './RoomItem';
 import './List';
+import './ServerItem';
 import Message from './Message';
 import UiKitMessage from './UiKitMessage';
 import UiKitModal from './UiKitModal';
@@ -64,7 +65,7 @@ const messageDecorator = story => (
 			onReactionPress: () => {},
 			onDiscussionPress: () => {},
 			onReactionLongPress: () => {},
-			getBadgeColor: () => themes.light.tunreadBackground
+			threadBadgeColor: themes.light.tunreadColor
 		}}
 	>
 		{story()}

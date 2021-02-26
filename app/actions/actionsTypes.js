@@ -69,4 +69,6 @@ export const INVITE_LINKS = createRequestTypes('INVITE_LINKS', [
 export const SETTINGS = createRequestTypes('SETTINGS', ['CLEAR', 'ADD']);
 export const APP_STATE = createRequestTypes('APP_STATE', ['FOREGROUND', 'BACKGROUND']);
 export const ENTERPRISE_MODULES = createRequestTypes('ENTERPRISE_MODULES', ['CLEAR', 'SET']);
-export const ENCRYPTION = createRequestTypes('ENCRYPTION', ['INIT', 'STOP', 'DECODE_KEY', 'SET_BANNER']);
+export const ENCRYPTION = createRequestTypes('ENCRYPTION', ['INIT', 'STOP', 'DECODE_KEY', 'SET', 'SET_BANNER']);
+
+export const PERMISSIONS = createRequestTypes('PERMISSIONS', ['SET']);

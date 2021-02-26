@@ -15,11 +15,6 @@ export const merge = (subscription, room) => {
 	if (room) {
 		if (room._updatedAt) {
 			subscription.lastMessage = normalizeMessage(room.lastMessage);
-			if (subscription.lastMessage) {
-				subscription.roomUpdatedAt = subscription.lastMessage.ts;
-			} else {
-				subscription.roomUpdatedAt = room._updatedAt;
-			}
 			subscription.description = room.description;
 			subscription.topic = room.topic;
 			subscription.announcement = room.announcement;
@@ -30,6 +25,9 @@ export const merge = (subscription, room) => {
 			subscription.usernames = room.usernames;
 			subscription.uids = room.uids;
 		}
+		// https://github.com/RocketChat/Rocket.Chat/blob/develop/app/ui-sidenav/client/roomList.js#L180
+		const lastRoomUpdate = room.lm || subscription.ts || subscription._updatedAt;
+		subscription.roomUpdatedAt = subscription.lr ? Math.max(new Date(subscription.lr), new Date(lastRoomUpdate)) : lastRoomUpdate;
 		subscription.ro = room.ro;
 		subscription.broadcast = room.broadcast;
 		subscription.encrypted = room.encrypted;
@@ -37,6 +35,9 @@ export const merge = (subscription, room) => {
 		subscription.avatarETag = room.avatarETag;
 		if (!subscription.roles || !subscription.roles.length) {
 			subscription.roles = [];
+		}
+		if (!subscription.ignored?.length) {
+			subscription.ignored = [];
 		}
 		if (room.muted && room.muted.length) {
 			subscription.muted = room.muted.filter(muted => !!muted);

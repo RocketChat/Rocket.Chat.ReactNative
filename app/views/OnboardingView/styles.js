@@ -11,8 +11,8 @@ export default StyleSheet.create({
 		marginBottom: verticalScale(50),
 		maxHeight: verticalScale(150),
 		resizeMode: 'contain',
-		width: 80,
-		height: 70
+		width: 100,
+		height: 100
 	},
 	title: {
 		...sharedStyles.textBold,
@@ -29,9 +29,9 @@ export default StyleSheet.create({
 	},
 	description: {
 		...sharedStyles.textRegular,
+		...sharedStyles.textAlignCenter,
 		fontSize: moderateScale(14),
 		alignSelf: 'center',
-		textAlign: 'center',
 		marginHorizontal: 20
 	},
 	buttonsContainer: {

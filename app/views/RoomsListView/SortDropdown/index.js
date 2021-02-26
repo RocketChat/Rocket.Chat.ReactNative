@@ -1,21 +1,19 @@
 import React, { PureComponent } from 'react';
 import {
-	View, Text, Animated, Easing, TouchableWithoutFeedback
+	Animated, Easing, TouchableWithoutFeedback
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import styles from '../styles';
-import Touch from '../../../utils/touch';
+import * as List from '../../../containers/List';
 import RocketChat from '../../../lib/rocketchat';
 import { setPreference } from '../../../actions/sortPreferences';
 import log, { logEvent, events } from '../../../utils/log';
 import I18n from '../../../i18n';
-import { CustomIcon } from '../../../lib/Icons';
 import { withTheme } from '../../../theme';
 import { themes } from '../../../constants/colors';
-import { SortItemButton, SortItemContent } from './Item';
 import { headerHeight } from '../../../containers/Header';
 
 const ANIMATION_DURATION = 200;
@@ -113,6 +111,11 @@ class Sort extends PureComponent {
 		).start(() => close());
 	}
 
+	renderCheck = () => {
+		const { theme } = this.props;
+		return <List.Icon name='check' color={themes[theme].tintColor} />;
+	}
+
 	render() {
 		const { isMasterDetail, insets } = this.props;
 		const statusBarHeight = insets?.top ?? 0;
@@ -121,13 +124,13 @@ class Sort extends PureComponent {
 			inputRange: [0, 1],
 			outputRange: [-326, heightDestination]
 		});
-		const backdropOpacity = this.animatedValue.interpolate({
-			inputRange: [0, 1],
-			outputRange: [0, 0.3]
-		});
 		const {
 			sortBy, groupByType, showFavorites, showUnread, theme
 		} = this.props;
+		const backdropOpacity = this.animatedValue.interpolate({
+			inputRange: [0, 1],
+			outputRange: [0, themes[theme].backdropOpacity]
+		});
 
 		return (
 			<>
@@ -150,58 +153,50 @@ class Sort extends PureComponent {
 						}
 					]}
 				>
-					<Touch
+					<List.Item
+						title={I18n.t('Sorting_by', { key: I18n.t(sortBy === 'alphabetical' ? 'name' : 'activity') })}
+						left={() => <List.Icon name='sort' />}
+						color={themes[theme].auxiliaryText}
 						onPress={this.close}
-						theme={theme}
-					>
-						<View style={[styles.dropdownContainerHeader, { borderColor: themes[theme].separatorColor }]}>
-							<View style={styles.sortItemContainer}>
-								<CustomIcon style={[styles.sortIcon, { color: themes[theme].auxiliaryText }]} size={22} name='sort' />
-								<Text style={[styles.sortToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Sorting_by', { key: I18n.t(sortBy === 'alphabetical' ? 'name' : 'activity') })}</Text>
-							</View>
-						</View>
-					</Touch>
-					<SortItemButton onPress={this.sortByName} theme={theme}>
-						<SortItemContent
-							icon='sort-az'
-							label='Alphabetical'
-							checked={sortBy === 'alphabetical'}
-							theme={theme}
-						/>
-					</SortItemButton>
-					<SortItemButton onPress={this.sortByActivity} theme={theme}>
-						<SortItemContent
-							icon='clock'
-							label='Activity'
-							checked={sortBy === 'activity'}
-							theme={theme}
-						/>
-					</SortItemButton>
-					<View style={[styles.sortSeparator, { backgroundColor: themes[theme].separatorColor }]} />
-					<SortItemButton onPress={this.toggleGroupByType} theme={theme}>
-						<SortItemContent
-							icon='group-by-type'
-							label='Group_by_type'
-							checked={groupByType}
-							theme={theme}
-						/>
-					</SortItemButton>
-					<SortItemButton onPress={this.toggleGroupByFavorites} theme={theme}>
-						<SortItemContent
-							icon='star'
-							label='Group_by_favorites'
-							checked={showFavorites}
-							theme={theme}
-						/>
-					</SortItemButton>
-					<SortItemButton onPress={this.toggleUnread} theme={theme}>
-						<SortItemContent
-							icon='unread-on-top-disabled'
-							label='Unread_on_top'
-							checked={showUnread}
-							theme={theme}
-						/>
-					</SortItemButton>
+						translateTitle={false}
+					/>
+					<List.Separator />
+					<List.Item
+						title='Alphabetical'
+						left={() => <List.Icon name='sort-az' />}
+						color={themes[theme].auxiliaryText}
+						onPress={this.sortByName}
+						right={() => (sortBy === 'alphabetical' ? this.renderCheck() : null)}
+					/>
+					<List.Item
+						title='Activity'
+						left={() => <List.Icon name='clock' />}
+						color={themes[theme].auxiliaryText}
+						onPress={this.sortByActivity}
+						right={() => (sortBy === 'activity' ? this.renderCheck() : null)}
+					/>
+					<List.Separator />
+					<List.Item
+						title='Group_by_type'
+						left={() => <List.Icon name='group-by-type' />}
+						color={themes[theme].auxiliaryText}
+						onPress={this.toggleGroupByType}
+						right={() => (groupByType ? this.renderCheck() : null)}
+					/>
+					<List.Item
+						title='Group_by_favorites'
+						left={() => <List.Icon name='star' />}
+						color={themes[theme].auxiliaryText}
+						onPress={this.toggleGroupByFavorites}
+						right={() => (showFavorites ? this.renderCheck() : null)}
+					/>
+					<List.Item
+						title='Unread_on_top'
+						left={() => <List.Icon name='unread-on-top-disabled' />}
+						color={themes[theme].auxiliaryText}
+						onPress={this.toggleUnread}
+						right={() => (showUnread ? this.renderCheck() : null)}
+					/>
 				</Animated.View>
 			</>
 		);
