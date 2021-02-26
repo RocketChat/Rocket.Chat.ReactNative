@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { connect } from 'react-redux';
-import { dequal } from 'dequal';
 import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
 
@@ -68,27 +67,6 @@ class SelectedUsersView extends React.Component {
 			props.addUser({ _id: user.id, name: user.username, fname: user.name });
 		}
 		this.setHeader(props.route.params?.showButton);
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		const { search, chats } = this.state;
-		const { users, loading, theme } = this.props;
-		if (nextProps.theme !== theme) {
-			return true;
-		}
-		if (nextProps.loading !== loading) {
-			return true;
-		}
-		if (!dequal(nextProps.users, users)) {
-			return true;
-		}
-		if (!dequal(nextState.search, search)) {
-			return true;
-		}
-		if (!dequal(nextState.chats, chats)) {
-			return true;
-		}
-		return false;
 	}
 
 	componentDidUpdate(prevProps) {
