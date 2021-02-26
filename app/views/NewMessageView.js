@@ -27,6 +27,8 @@ import { createChannelRequest } from '../actions/createChannel';
 import { goRoom } from '../utils/goRoom';
 import SafeAreaView from '../containers/SafeAreaView';
 
+const QUERY_SIZE = 50;
+
 const styles = StyleSheet.create({
 	button: {
 		height: 46,
@@ -86,11 +88,14 @@ class NewMessageView extends React.Component {
 			const db = database.active;
 			const observable = await db.collections
 				.get('subscriptions')
-				.query(Q.where('t', 'd'))
-				.observeWithColumns(['room_updated_at']);
+				.query(
+					Q.where('t', 'd'),
+					Q.experimentalTake(QUERY_SIZE),
+					Q.experimentalSortBy('room_updated_at', Q.desc)
+				)
+				.observe();
 
-			this.querySubscription = observable.subscribe((data) => {
-				const chats = orderBy(data, ['roomUpdatedAt'], ['desc']);
+			this.querySubscription = observable.subscribe((chats) => {
 				this.setState({ chats });
 			});
 		} catch (e) {
