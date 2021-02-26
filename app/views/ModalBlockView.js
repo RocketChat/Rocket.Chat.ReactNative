@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { dequal } from 'dequal';
 import { connect } from 'react-redux';
 import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scroll-view';
 
@@ -92,17 +91,6 @@ class ModalBlockView extends React.Component {
 		const { data } = this.state;
 		const { viewId } = data;
 		EventEmitter.addEventListener(viewId, this.handleUpdate);
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		if (!dequal(nextProps, this.props)) {
-			return true;
-		}
-		if (!dequal(nextState, this.state)) {
-			return true;
-		}
-
-		return false;
 	}
 
 	componentDidUpdate(prevProps) {
