@@ -20,7 +20,7 @@ const updateEmojis = async({ update = [], remove = [], allRecords }) => {
 		return;
 	}
 	const db = database.active;
-	const emojisCollection = db.collections.get('custom_emojis');
+	const emojisCollection = db.get('custom_emojis');
 	let emojisToCreate = [];
 	let emojisToUpdate = [];
 	let emojisToDelete = [];
@@ -62,7 +62,7 @@ const updateEmojis = async({ update = [], remove = [], allRecords }) => {
 
 export async function setCustomEmojis() {
 	const db = database.active;
-	const emojisCollection = db.collections.get('custom_emojis');
+	const emojisCollection = db.get('custom_emojis');
 	const allEmojis = await emojisCollection.query().fetch();
 	const parsed = allEmojis.reduce((ret, item) => {
 		ret[item.name] = {
@@ -85,7 +85,7 @@ export function getCustomEmojis() {
 		try {
 			const serverVersion = reduxStore.getState().server.version;
 			const db = database.active;
-			const emojisCollection = db.collections.get('custom_emojis');
+			const emojisCollection = db.get('custom_emojis');
 			const allRecords = await emojisCollection.query().fetch();
 			const updatedSince = await getUpdatedSince(allRecords);
 

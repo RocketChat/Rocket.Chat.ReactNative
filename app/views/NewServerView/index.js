@@ -132,7 +132,7 @@ class NewServerView extends React.Component {
 	queryServerHistory = async(text) => {
 		const db = database.servers;
 		try {
-			const serversHistoryCollection = db.collections.get('servers_history');
+			const serversHistoryCollection = db.get('servers_history');
 			let whereClause = [
 				Q.where('username', Q.notEq(null)),
 				Q.experimentalSortBy('updated_at', Q.desc),
