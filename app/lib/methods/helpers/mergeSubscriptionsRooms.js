@@ -28,7 +28,7 @@ export const merge = (subscription, room) => {
 			subscription.usernames = room.usernames;
 			subscription.uids = room.uids;
 		}
-		if (serverVersion && compareServerVersion(serverVersion, '3.7.0', methods.lowerThan)) {
+		if (compareServerVersion(serverVersion, '3.7.0', methods.lowerThan)) {
 			const updatedAt = room?._updatedAt ? new Date(room._updatedAt) : null;
 			const lastMessageTs = subscription?.lastMessage?.ts ? new Date(subscription.lastMessage.ts) : null;
 			subscription.roomUpdatedAt = Math.max(updatedAt, lastMessageTs);
