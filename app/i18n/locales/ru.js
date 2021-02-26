@@ -699,7 +699,7 @@ export default {
 	User__username__removed_from__room_name__owners: 'Пользователь {{username}} удален из {{room_name}} владельцев',
 	The_user_will_be_removed_from_s: 'Пользователь будет удален из {{s}}',
 	Yes_remove_user: 'Да, удалить пользователя!',
-	Direct_message: 'Личная беседа',
+	Direct_message: 'Личное сообщение',
 	Message_Ignored: 'Сообщение игнорируется. Тапните по нему, чтобы отобразить его.',
 	Enter_workspace_URL: 'Введите URL вашего рабочего пространства',
 	Workspace_URL_Example: 'Например, your-company.rocket.chat',
