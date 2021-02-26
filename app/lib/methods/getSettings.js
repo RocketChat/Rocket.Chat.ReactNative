@@ -44,7 +44,7 @@ const loginSettings = [
 const serverInfoUpdate = async(serverInfo, iconSetting) => {
 	const serversDB = database.servers;
 	const serverId = reduxStore.getState().server.server;
-	const serversCollection = serversDB.collections.get('servers');
+	const serversCollection = serversDB.get('servers');
 	const server = await serversCollection.find(serverId);
 
 	let info = serverInfo.reduce((allSettings, setting) => {
@@ -118,7 +118,7 @@ export async function getLoginSettings({ server }) {
 
 export async function setSettings() {
 	const db = database.active;
-	const settingsCollection = db.collections.get('settings');
+	const settingsCollection = db.get('settings');
 	const settingsRecords = await settingsCollection.query().fetch();
 	const parsed = Object.values(settingsRecords).map(item => ({
 		_id: item.id,
@@ -157,7 +157,7 @@ export default async function() {
 		}
 
 		await db.action(async() => {
-			const settingsCollection = db.collections.get('settings');
+			const settingsCollection = db.get('settings');
 			const allSettingsRecords = await settingsCollection
 				.query(Q.where('id', Q.oneOf(filteredSettingsIds)))
 				.fetch();
