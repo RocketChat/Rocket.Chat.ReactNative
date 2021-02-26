@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import isEqual from 'react-fast-compare';
+import { dequal } from 'dequal';
 
 import * as HeaderButton from '../../../containers/HeaderButton';
 import database from '../../../lib/database';
@@ -59,13 +59,13 @@ class RightButtonsContainer extends Component {
 		if (nextState.isFollowingThread !== isFollowingThread) {
 			return true;
 		}
-		if (!isEqual(nextState.tunread, tunread)) {
+		if (!dequal(nextState.tunread, tunread)) {
 			return true;
 		}
-		if (!isEqual(nextState.tunreadUser, tunreadUser)) {
+		if (!dequal(nextState.tunreadUser, tunreadUser)) {
 			return true;
 		}
-		if (!isEqual(nextState.tunreadGroup, tunreadGroup)) {
+		if (!dequal(nextState.tunreadGroup, tunreadGroup)) {
 			return true;
 		}
 		return false;

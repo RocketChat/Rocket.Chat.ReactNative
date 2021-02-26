@@ -3,7 +3,6 @@ import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import isEqual from 'lodash/isEqual';
 
 import Markdown from '../markdown';
 import { CustomIcon } from '../../lib/Icons';
@@ -75,7 +74,7 @@ const ReplyPreview = React.memo(({
 			<CustomIcon name='close' color={themes[theme].auxiliaryText} size={20} style={styles.close} onPress={close} />
 		</View>
 	);
-}, (prevProps, nextProps) => prevProps.replying === nextProps.replying && prevProps.theme === nextProps.theme && isEqual(prevProps.message, nextProps.message));
+}, (prevProps, nextProps) => prevProps.replying === nextProps.replying && prevProps.theme === nextProps.theme && prevProps.message.id === nextProps.message.id);
 
 ReplyPreview.propTypes = {
 	replying: PropTypes.bool,

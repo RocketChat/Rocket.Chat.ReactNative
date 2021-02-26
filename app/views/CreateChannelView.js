@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {
 	View, Text, Switch, ScrollView, StyleSheet, FlatList
 } from 'react-native';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
 import * as List from '../containers/List';
 
 import TextInput from '../presentation/TextInput';
@@ -128,7 +128,7 @@ class CreateChannelView extends React.Component {
 		if (nextProps.encryptionEnabled !== encryptionEnabled) {
 			return true;
 		}
-		if (!equal(nextProps.users, users)) {
+		if (!dequal(nextProps.users, users)) {
 			return true;
 		}
 		return false;

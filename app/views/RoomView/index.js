@@ -7,7 +7,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
 import * as Haptics from 'expo-haptics';
 import { Q } from '@nozbe/watermelondb';
-import isEqual from 'lodash/isEqual';
+import { dequal } from 'dequal';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Touch from '../../utils/touch';
@@ -205,10 +205,10 @@ class RoomView extends React.Component {
 		if (stateUpdated) {
 			return true;
 		}
-		if (!isEqual(nextProps.insets, insets)) {
+		if (!dequal(nextProps.insets, insets)) {
 			return true;
 		}
-		return roomAttrsUpdate.some(key => !isEqual(nextState.roomUpdate[key], roomUpdate[key]));
+		return roomAttrsUpdate.some(key => !dequal(nextState.roomUpdate[key], roomUpdate[key]));
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -229,7 +229,7 @@ class RoomView extends React.Component {
 		}
 		// If it's a livechat room
 		if (this.t === 'l') {
-			if (!isEqual(prevState.roomUpdate.visitor, roomUpdate.visitor)) {
+			if (!dequal(prevState.roomUpdate.visitor, roomUpdate.visitor)) {
 				this.setHeader();
 			}
 		}
@@ -436,10 +436,7 @@ class RoomView extends React.Component {
 				}
 			}
 
-			// We run `canAutoTranslate` again in order to refetch auto translate permission
-			// in case of a missing connection or poor connection on room open
-			const canAutoTranslate = await RocketChat.canAutoTranslate();
-
+			const canAutoTranslate = RocketChat.canAutoTranslate();
 			const member = await this.getRoomMember();
 
 			this.setState({ canAutoTranslate, member, loading: false });
