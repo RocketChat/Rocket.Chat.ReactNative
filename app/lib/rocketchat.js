@@ -30,7 +30,7 @@ import readMessages from './methods/readMessages';
 import getSettings, { getLoginSettings, setSettings } from './methods/getSettings';
 
 import getRooms from './methods/getRooms';
-import getPermissions from './methods/getPermissions';
+import { setPermissions, getPermissions } from './methods/getPermissions';
 import { getCustomEmojis, setCustomEmojis } from './methods/getCustomEmojis';
 import {
 	getEnterpriseModules, setEnterpriseModules, hasLicense, isOmnichannelModuleAvailable
@@ -68,7 +68,6 @@ const CERTIFICATE_KEY = 'RC_CERTIFICATE_KEY';
 export const THEME_PREFERENCES_KEY = 'RC_THEME_PREFERENCES_KEY';
 export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
 export const ANALYTICS_EVENTS_KEY = 'RC_ANALYTICS_EVENTS_KEY';
-const returnAnArray = obj => obj || [];
 const MIN_ROCKETCHAT_VERSION = '0.70.0';
 
 const STATUSES = ['offline', 'online', 'away', 'busy'];
@@ -274,7 +273,7 @@ const RocketChat = {
 				} else if (/updateAvatar/.test(eventName)) {
 					const { username, etag } = ddpMessage.fields.args[0];
 					const db = database.active;
-					const userCollection = db.collections.get('users');
+					const userCollection = db.get('users');
 					try {
 						const [userRecord] = await userCollection.query(Q.where('username', Q.eq(username))).fetch();
 						await db.action(async() => {
@@ -288,7 +287,7 @@ const RocketChat = {
 				} else if (/Users:NameChanged/.test(eventName)) {
 					const userNameChanged = ddpMessage.fields.args[0];
 					const db = database.active;
-					const userCollection = db.collections.get('users');
+					const userCollection = db.get('users');
 					try {
 						const userRecord = await userCollection.find(userNameChanged._id);
 						await db.action(async() => {
@@ -332,7 +331,7 @@ const RocketChat = {
 		// set Server
 		const currentServer = { server };
 		const serversDB = database.servers;
-		const serversCollection = serversDB.collections.get('servers');
+		const serversCollection = serversDB.get('servers');
 		try {
 			const serverRecord = await serversCollection.find(server);
 			currentServer.version = serverRecord.version;
@@ -347,7 +346,7 @@ const RocketChat = {
 			// set Settings
 			const settings = ['Accounts_AvatarBlockUnauthenticatedAccess'];
 			const db = database.active;
-			const settingsCollection = db.collections.get('settings');
+			const settingsCollection = db.get('settings');
 			const settingsRecords = await settingsCollection.query(Q.where('id', Q.oneOf(settings))).fetch();
 			const parsed = Object.values(settingsRecords).map(item => ({
 				_id: item.id,
@@ -361,7 +360,7 @@ const RocketChat = {
 
 			// set User info
 			const userId = await UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
-			const userCollections = serversDB.collections.get('users');
+			const userCollections = serversDB.get('users');
 			let user = null;
 			if (userId) {
 				const userRecord = await userCollections.find(userId);
@@ -543,7 +542,7 @@ const RocketChat = {
 		try {
 			const serversDB = database.servers;
 			await serversDB.action(async() => {
-				const serverCollection = serversDB.collections.get('servers');
+				const serverCollection = serversDB.get('servers');
 				const serverRecord = await serverCollection.find(server);
 				await serverRecord.update((s) => {
 					s.roomsUpdatedAt = null;
@@ -603,7 +602,7 @@ const RocketChat = {
 		}
 		const db = database.active;
 		const likeString = sanitizeLikeString(searchText);
-		let data = await db.collections.get('subscriptions').query(
+		let data = await db.get('subscriptions').query(
 			Q.or(
 				Q.where('name', Q.like(`%${ likeString }%`)),
 				Q.where('fname', Q.like(`%${ likeString }%`))
@@ -619,19 +618,15 @@ const RocketChat = {
 
 		data = data.slice(0, 7);
 
-		data = data.map((sub) => {
-			if (sub.t !== 'd') {
-				return {
-					rid: sub.rid,
-					name: sub.name,
-					fname: sub.fname,
-					avatarETag: sub.avatarETag,
-					t: sub.t,
-					encrypted: sub.encrypted
-				};
-			}
-			return sub;
-		});
+		data = data.map(sub => ({
+			rid: sub.rid,
+			name: sub.name,
+			fname: sub.fname,
+			avatarETag: sub.avatarETag,
+			t: sub.t,
+			encrypted: sub.encrypted,
+			lastMessage: sub.lastMessage
+		}));
 
 		return data;
 	},
@@ -738,6 +733,7 @@ const RocketChat = {
 	getLoginSettings,
 	setSettings,
 	getPermissions,
+	setPermissions,
 	getCustomEmojis,
 	setCustomEmojis,
 	getEnterpriseModules,
@@ -794,7 +790,7 @@ const RocketChat = {
 	async getRoom(rid) {
 		try {
 			const db = database.active;
-			const room = await db.collections.get('subscriptions').find(rid);
+			const room = await db.get('subscriptions').find(rid);
 			return Promise.resolve(room);
 		} catch (error) {
 			return Promise.reject(new Error('Room not found'));
@@ -1170,10 +1166,13 @@ const RocketChat = {
 		// RC 0.65.0
 		return this.sdk.get(`${ this.roomTypeToApiType(type) }.roles`, { roomId });
 	},
+	/**
+	 * Permissions: array of permissions' roles from redux. Example: [['owner', 'admin'], ['leader']]
+	 * Returns an array of boolean for each permission from permissions arg
+	 */
 	async hasPermission(permissions, rid) {
 		const db = database.active;
-		const subsCollection = db.collections.get('subscriptions');
-		const permissionsCollection = db.collections.get('permissions');
+		const subsCollection = db.get('subscriptions');
 		let roomRoles = [];
 		try {
 			// get the room from database
@@ -1182,31 +1181,16 @@ const RocketChat = {
 			roomRoles = room.roles || [];
 		} catch (error) {
 			console.log('hasPermission -> Room not found');
-			return permissions.reduce((result, permission) => {
-				result[permission] = false;
-				return result;
-			}, {});
+			return permissions.map(() => false);
 		}
-		// get permissions from database
+
 		try {
-			const permissionsFiltered = await permissionsCollection.query(Q.where('id', Q.oneOf(permissions))).fetch();
 			const shareUser = reduxStore.getState().share.user;
 			const loginUser = reduxStore.getState().login.user;
 			// get user roles on the server from redux
 			const userRoles = (shareUser?.roles || loginUser?.roles) || [];
-			// merge both roles
 			const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
-
-			// return permissions in object format
-			// e.g. { 'edit-room': true, 'set-readonly': false }
-			return permissions.reduce((result, permission) => {
-				result[permission] = false;
-				const permissionFound = permissionsFiltered.find(p => p.id === permission);
-				if (permissionFound) {
-					result[permission] = returnAnArray(permissionFound.roles).some(r => mergedRoles.includes(r));
-				}
-				return result;
-			}, {});
+			return permissions.map(permission => permission.some(r => mergedRoles.includes(r) ?? false));
 		} catch (e) {
 			log(e);
 		}
@@ -1436,17 +1420,15 @@ const RocketChat = {
 			query, count, offset, sort
 		});
 	},
-	async canAutoTranslate() {
-		const db = database.active;
+	canAutoTranslate() {
 		try {
-			const AutoTranslate_Enabled = reduxStore.getState().settings && reduxStore.getState().settings.AutoTranslate_Enabled;
+			const { AutoTranslate_Enabled } = reduxStore.getState().settings;
 			if (!AutoTranslate_Enabled) {
 				return false;
 			}
-			const permissionsCollection = db.collections.get('permissions');
-			const autoTranslatePermission = await permissionsCollection.find('auto-translate');
-			const userRoles = (reduxStore.getState().login.user && reduxStore.getState().login.user.roles) || [];
-			return autoTranslatePermission.roles.some(role => userRoles.includes(role));
+			const autoTranslatePermission = reduxStore.getState().permissions['auto-translate'];
+			const userRoles = (reduxStore.getState().login?.user?.roles) ?? [];
+			return autoTranslatePermission?.some(role => userRoles.includes(role));
 		} catch (e) {
 			log(e);
 			return false;

@@ -17,7 +17,7 @@ import { setLocalAuthenticated } from '../actions/login';
 
 export const saveLastLocalAuthenticationSession = async(server, serverRecord) => {
 	const serversDB = database.servers;
-	const serversCollection = serversDB.collections.get('servers');
+	const serversCollection = serversDB.get('servers');
 	await serversDB.action(async() => {
 		try {
 			if (!serverRecord) {
@@ -91,7 +91,7 @@ export const checkHasPasscode = async({ force = true, serverRecord }) => {
 
 export const localAuthenticate = async(server) => {
 	const serversDB = database.servers;
-	const serversCollection = serversDB.collections.get('servers');
+	const serversCollection = serversDB.get('servers');
 
 	let serverRecord;
 	try {

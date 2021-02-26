@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, FlatList, Text } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
 
 import RCTextInput from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -69,7 +69,7 @@ class SearchMessagesView extends React.Component {
 		if (nextState.searchText !== searchText) {
 			return true;
 		}
-		if (!equal(nextState.messages, messages)) {
+		if (!dequal(nextState.messages, messages)) {
 			return true;
 		}
 		return false;
@@ -84,7 +84,7 @@ class SearchMessagesView extends React.Component {
 		// If it's a encrypted, room we'll search only on the local stored messages
 		if (this.encrypted) {
 			const db = database.active;
-			const messagesCollection = db.collections.get('messages');
+			const messagesCollection = db.get('messages');
 			const likeString = sanitizeLikeString(searchText);
 			return messagesCollection
 				.query(

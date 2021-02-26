@@ -16,7 +16,7 @@ export default function updateMessages({ rid, update = [], remove = [] }) {
 		return db.action(async() => {
 			// Decrypt these messages
 			update = await Encryption.decryptMessages(update);
-			const subCollection = db.collections.get('subscriptions');
+			const subCollection = db.get('subscriptions');
 			let sub;
 			try {
 				sub = await subCollection.find(rid);
@@ -26,9 +26,9 @@ export default function updateMessages({ rid, update = [], remove = [] }) {
 			}
 
 			const messagesIds = [...update.map(m => m._id), ...remove.map(m => m._id)];
-			const msgCollection = db.collections.get('messages');
-			const threadCollection = db.collections.get('threads');
-			const threadMessagesCollection = db.collections.get('thread_messages');
+			const msgCollection = db.get('messages');
+			const threadCollection = db.get('threads');
+			const threadMessagesCollection = db.get('thread_messages');
 			const allMessagesRecords = await msgCollection
 				.query(Q.where('rid', rid), Q.where('id', Q.oneOf(messagesIds)))
 				.fetch();
