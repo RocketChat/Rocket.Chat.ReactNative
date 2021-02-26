@@ -4,7 +4,6 @@ import {
 	View, StyleSheet, FlatList, Text
 } from 'react-native';
 import { connect } from 'react-redux';
-import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
 import * as List from '../containers/List';
 
@@ -76,28 +75,20 @@ class NewMessageView extends React.Component {
 		};
 	}
 
-	componentWillUnmount() {
-		if (this.querySubscription && this.querySubscription.unsubscribe) {
-			this.querySubscription.unsubscribe();
-		}
-	}
-
 	// eslint-disable-next-line react/sort-comp
 	init = async() => {
 		try {
 			const db = database.active;
-			const observable = await db.collections
+			const chats = await db.collections
 				.get('subscriptions')
 				.query(
 					Q.where('t', 'd'),
 					Q.experimentalTake(QUERY_SIZE),
 					Q.experimentalSortBy('room_updated_at', Q.desc)
 				)
-				.observe();
+				.fetch();
 
-			this.querySubscription = observable.subscribe((chats) => {
-				this.setState({ chats });
-			});
+			this.setState({ chats });
 		} catch (e) {
 			log(e);
 		}
