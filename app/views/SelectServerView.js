@@ -29,7 +29,7 @@ class SelectServerView extends React.Component {
 
 	async componentDidMount() {
 		const serversDB = database.servers;
-		const serversCollection = serversDB.collections.get('servers');
+		const serversCollection = serversDB.get('servers');
 		const servers = await serversCollection.query(Q.where('rooms_updated_at', Q.notEq(null))).fetch();
 		this.setState({ servers });
 	}

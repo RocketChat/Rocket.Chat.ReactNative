@@ -35,7 +35,7 @@ class RightButtonsContainer extends Component {
 		const db = database.active;
 		if (tmid) {
 			try {
-				const threadRecord = await db.collections.get('messages').find(tmid);
+				const threadRecord = await db.get('messages').find(tmid);
 				this.observeThread(threadRecord);
 			} catch (e) {
 				console.log('Can\'t find message to observe.');
@@ -43,7 +43,7 @@ class RightButtonsContainer extends Component {
 		}
 		if (rid) {
 			try {
-				const subCollection = db.collections.get('subscriptions');
+				const subCollection = db.get('subscriptions');
 				const subRecord = await subCollection.find(rid);
 				this.observeSubscription(subRecord);
 			} catch (e) {

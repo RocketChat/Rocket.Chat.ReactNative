@@ -72,7 +72,7 @@ export default async function getUsersPresence() {
 				ids = [];
 
 				const db = database.active;
-				const userCollection = db.collections.get('users');
+				const userCollection = db.get('users');
 				users.forEach(async(user) => {
 					try {
 						const userRecord = await userCollection.find(user._id);

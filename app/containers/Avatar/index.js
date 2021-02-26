@@ -52,8 +52,8 @@ class AvatarContainer extends React.Component {
 
 	init = async() => {
 		const db = database.active;
-		const usersCollection = db.collections.get('users');
-		const subsCollection = db.collections.get('subscriptions');
+		const usersCollection = db.get('users');
+		const subsCollection = db.get('subscriptions');
 
 		let record;
 		try {

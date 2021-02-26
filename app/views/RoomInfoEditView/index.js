@@ -109,7 +109,7 @@ class RoomInfoEditView extends React.Component {
 		}
 		try {
 			const db = database.active;
-			const sub = await db.collections.get('subscriptions').find(rid);
+			const sub = await db.get('subscriptions').find(rid);
 			const observable = sub.observe();
 
 			this.querySubscription = observable.subscribe((data) => {

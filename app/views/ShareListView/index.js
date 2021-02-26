@@ -206,7 +206,7 @@ class ShareListView extends React.Component {
 				)
 			);
 		}
-		const data = await db.collections.get('subscriptions').query(...defaultWhereClause).fetch();
+		const data = await db.get('subscriptions').query(...defaultWhereClause).fetch();
 		return data.map(item => ({
 			rid: item.rid,
 			t: item.t,
@@ -226,7 +226,7 @@ class ShareListView extends React.Component {
 
 		if (server) {
 			const chats = await this.query();
-			const serversCollection = serversDB.collections.get('servers');
+			const serversCollection = serversDB.get('servers');
 			const serversCount = await serversCollection.query(Q.where('rooms_updated_at', Q.notEq(null))).fetchCount();
 			let serverInfo = {};
 			try {

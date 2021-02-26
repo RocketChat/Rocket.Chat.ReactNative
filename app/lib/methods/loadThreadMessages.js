@@ -33,7 +33,7 @@ export default function loadThreadMessages({ tmid, rid, offset = 0 }) {
 					data = data.map(m => buildMessage(m));
 					data = await Encryption.decryptMessages(data);
 					const db = database.active;
-					const threadMessagesCollection = db.collections.get('thread_messages');
+					const threadMessagesCollection = db.get('thread_messages');
 					const allThreadMessagesRecords = await threadMessagesCollection.query(Q.where('rid', tmid)).fetch();
 					let threadMessagesToCreate = data.filter(i1 => !allThreadMessagesRecords.find(i2 => i1._id === i2.id));
 					let threadMessagesToUpdate = allThreadMessagesRecords.filter(i1 => data.find(i2 => i1.id === i2._id));
