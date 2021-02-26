@@ -11,7 +11,6 @@ import isEmpty from 'lodash/isEmpty';
 import lt from 'semver/functions/lt';
 import coerce from 'semver/functions/coerce';
 
-
 import database from '../../lib/database';
 import { deleteRoom as deleteRoomAction } from '../../actions/room';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -85,62 +84,6 @@ class RoomInfoEditView extends React.Component {
 			encrypted: false
 		};
 		this.loadRoom();
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		const {
-			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, joinCode, saving, permissions, archived, enableSysMes, encrypted, avatar
-		} = this.state;
-
-		if (nextState.name !== name) {
-			return true;
-		}
-		if (nextState.nameError !== nameError) {
-			return true;
-		}
-		if (nextState.description !== description) {
-			return true;
-		}
-		if (nextState.topic !== topic) {
-			return true;
-		}
-		if (nextState.announcement !== announcement) {
-			return true;
-		}
-		if (nextState.t !== t) {
-			return true;
-		}
-		if (nextState.ro !== ro) {
-			return true;
-		}
-		if (nextState.reactWhenReadOnly !== reactWhenReadOnly) {
-			return true;
-		}
-		if (nextState.joinCode !== joinCode) {
-			return true;
-		}
-		if (nextState.saving !== saving) {
-			return true;
-		}
-		if (nextState.permissions !== permissions) {
-			return true;
-		}
-		if (nextState.archived !== archived) {
-			return true;
-		}
-		if (nextState.enableSysMes !== enableSysMes) {
-			return true;
-		}
-		if (nextState.encrypted !== encrypted) {
-			return true;
-		}
-		if (nextState.avatar !== avatar) {
-			return true;
-		}
-		if (!dequal(nextProps, this.props)) {
-			return true;
-		}
-		return false;
 	}
 
 	componentWillUnmount() {
