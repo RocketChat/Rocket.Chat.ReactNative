@@ -19,7 +19,7 @@ export default function() {
 
 			if (roles && roles.length) {
 				await db.action(async() => {
-					const rolesCollections = db.collections.get('roles');
+					const rolesCollections = db.get('roles');
 					const allRolesRecords = await rolesCollections.query().fetch();
 
 					// filter roles

@@ -95,7 +95,7 @@ class ShareView extends Component {
 	getServerInfo = async() => {
 		const { server } = this.props;
 		const serversDB = database.servers;
-		const serversCollection = serversDB.collections.get('servers');
+		const serversCollection = serversDB.get('servers');
 		try {
 			this.serverInfo = await serversCollection.find(server);
 		} catch (error) {

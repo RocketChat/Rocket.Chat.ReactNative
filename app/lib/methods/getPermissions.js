@@ -69,7 +69,7 @@ const updatePermissions = async({ update = [], remove = [], allRecords }) => {
 		return;
 	}
 	const db = database.active;
-	const permissionsCollection = db.collections.get('permissions');
+	const permissionsCollection = db.get('permissions');
 
 	// filter permissions
 	let permissionsToCreate = [];
@@ -119,7 +119,7 @@ export function getPermissions() {
 		try {
 			const serverVersion = reduxStore.getState().server.version;
 			const db = database.active;
-			const permissionsCollection = db.collections.get('permissions');
+			const permissionsCollection = db.get('permissions');
 			const allRecords = await permissionsCollection.query().fetch();
 
 			// if server version is lower than 0.73.0, fetches from old api

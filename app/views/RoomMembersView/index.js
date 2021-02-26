@@ -146,7 +146,7 @@ class RoomMembersView extends React.Component {
 	navToDirectMessage = async(item) => {
 		try {
 			const db = database.active;
-			const subsCollection = db.collections.get('subscriptions');
+			const subsCollection = db.get('subscriptions');
 			const query = await subsCollection.query(Q.where('name', item.username)).fetch();
 			if (query.length) {
 				const [room] = query;

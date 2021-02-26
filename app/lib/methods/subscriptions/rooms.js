@@ -32,8 +32,8 @@ const WINDOW_TIME = 500;
 const createOrUpdateSubscription = async(subscription, room) => {
 	try {
 		const db = database.active;
-		const subCollection = db.collections.get('subscriptions');
-		const roomsCollection = db.collections.get('rooms');
+		const subCollection = db.get('subscriptions');
+		const roomsCollection = db.get('rooms');
 
 		if (!subscription) {
 			try {
@@ -185,7 +185,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 		const { rooms } = store.getState().room;
 		if (tmp.lastMessage && !rooms.includes(tmp.rid)) {
 			const lastMessage = buildMessage(tmp.lastMessage);
-			const messagesCollection = db.collections.get('messages');
+			const messagesCollection = db.get('messages');
 			let messageRecord;
 			try {
 				messageRecord = await messagesCollection.find(lastMessage._id);
@@ -281,7 +281,7 @@ export default function subscribeRooms() {
 		if (/subscriptions/.test(ev)) {
 			if (type === 'removed') {
 				try {
-					const subCollection = db.collections.get('subscriptions');
+					const subCollection = db.get('subscriptions');
 					const sub = await subCollection.find(data.rid);
 					const messages = await sub.messages.fetch();
 					const threads = await sub.threads.fetch();
@@ -335,7 +335,7 @@ export default function subscribeRooms() {
 				}
 			};
 			try {
-				const msgCollection = db.collections.get('messages');
+				const msgCollection = db.get('messages');
 				await db.action(async() => {
 					await msgCollection.create(protectedFunction((m) => {
 						m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);

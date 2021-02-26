@@ -251,7 +251,7 @@ class RoomView extends React.Component {
 			let obj;
 			if (this.tmid) {
 				try {
-					const threadsCollection = db.collections.get('threads');
+					const threadsCollection = db.get('threads');
 					obj = await threadsCollection.find(this.tmid);
 				} catch (e) {
 					// Do nothing
@@ -400,7 +400,7 @@ class RoomView extends React.Component {
 		const db = database.active;
 
 		try {
-			const subCollection = db.collections.get('subscriptions');
+			const subCollection = db.get('subscriptions');
 			const sub = await subCollection.find(this.rid);
 
 			const { room } = await RocketChat.getRoomInfo(this.rid);
@@ -475,7 +475,7 @@ class RoomView extends React.Component {
 	findAndObserveRoom = async(rid) => {
 		try {
 			const db = database.active;
-			const subCollection = await db.collections.get('subscriptions');
+			const subCollection = await db.get('subscriptions');
 			const room = await subCollection.find(rid);
 			this.setState({ room });
 			if (!this.tmid) {
@@ -750,8 +750,8 @@ class RoomView extends React.Component {
 	fetchThreadName = async(tmid, messageId) => {
 		try {
 			const db = database.active;
-			const threadCollection = db.collections.get('threads');
-			const messageCollection = db.collections.get('messages');
+			const threadCollection = db.get('threads');
+			const messageCollection = db.get('messages');
 			const messageRecord = await messageCollection.find(messageId);
 			let threadRecord;
 			try {

@@ -275,7 +275,7 @@ const RocketChat = {
 				} else if (/updateAvatar/.test(eventName)) {
 					const { username, etag } = ddpMessage.fields.args[0];
 					const db = database.active;
-					const userCollection = db.collections.get('users');
+					const userCollection = db.get('users');
 					try {
 						const [userRecord] = await userCollection.query(Q.where('username', Q.eq(username))).fetch();
 						await db.action(async() => {
@@ -289,7 +289,7 @@ const RocketChat = {
 				} else if (/Users:NameChanged/.test(eventName)) {
 					const userNameChanged = ddpMessage.fields.args[0];
 					const db = database.active;
-					const userCollection = db.collections.get('users');
+					const userCollection = db.get('users');
 					try {
 						const userRecord = await userCollection.find(userNameChanged._id);
 						await db.action(async() => {
@@ -333,7 +333,7 @@ const RocketChat = {
 		// set Server
 		const currentServer = { server };
 		const serversDB = database.servers;
-		const serversCollection = serversDB.collections.get('servers');
+		const serversCollection = serversDB.get('servers');
 		try {
 			const serverRecord = await serversCollection.find(server);
 			currentServer.version = serverRecord.version;
@@ -348,7 +348,7 @@ const RocketChat = {
 			// set Settings
 			const settings = ['Accounts_AvatarBlockUnauthenticatedAccess'];
 			const db = database.active;
-			const settingsCollection = db.collections.get('settings');
+			const settingsCollection = db.get('settings');
 			const settingsRecords = await settingsCollection.query(Q.where('id', Q.oneOf(settings))).fetch();
 			const parsed = Object.values(settingsRecords).map(item => ({
 				_id: item.id,
@@ -362,7 +362,7 @@ const RocketChat = {
 
 			// set User info
 			const userId = await UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
-			const userCollections = serversDB.collections.get('users');
+			const userCollections = serversDB.get('users');
 			let user = null;
 			if (userId) {
 				const userRecord = await userCollections.find(userId);
@@ -544,7 +544,7 @@ const RocketChat = {
 		try {
 			const serversDB = database.servers;
 			await serversDB.action(async() => {
-				const serverCollection = serversDB.collections.get('servers');
+				const serverCollection = serversDB.get('servers');
 				const serverRecord = await serverCollection.find(server);
 				await serverRecord.update((s) => {
 					s.roomsUpdatedAt = null;
@@ -604,7 +604,7 @@ const RocketChat = {
 		}
 		const db = database.active;
 		const likeString = sanitizeLikeString(searchText);
-		let data = await db.collections.get('subscriptions').query(
+		let data = await db.get('subscriptions').query(
 			Q.or(
 				Q.where('name', Q.like(`%${ likeString }%`)),
 				Q.where('fname', Q.like(`%${ likeString }%`))
@@ -792,7 +792,7 @@ const RocketChat = {
 	async getRoom(rid) {
 		try {
 			const db = database.active;
-			const room = await db.collections.get('subscriptions').find(rid);
+			const room = await db.get('subscriptions').find(rid);
 			return Promise.resolve(room);
 		} catch (error) {
 			return Promise.reject(new Error('Room not found'));
@@ -1174,7 +1174,7 @@ const RocketChat = {
 	 */
 	async hasPermission(permissions, rid) {
 		const db = database.active;
-		const subsCollection = db.collections.get('subscriptions');
+		const subsCollection = db.get('subscriptions');
 		let roomRoles = [];
 		try {
 			// get the room from database
