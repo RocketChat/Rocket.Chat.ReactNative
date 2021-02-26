@@ -651,5 +651,7 @@ export default {
 	Direct_message: 'Mensagem direta',
 	Message_Ignored: 'Mensagem ignorada. Toque para mostrar.',
 	Enter_workspace_URL: 'Digite a URL da sua workspace',
-	Workspace_URL_Example: 'Ex. sua-empresa.rocket.chat'
+	Workspace_URL_Example: 'Ex. sua-empresa.rocket.chat',
+	This_room_encryption_has_been_enabled_by__username_: 'A criptografia para essa sala foi habilitada por {{username}}',
+	This_room_encryption_has_been_disabled_by__username_: 'A criptografia para essa sala foi desabilitada por {{username}}'
 };

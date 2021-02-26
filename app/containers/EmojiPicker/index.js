@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
 import { connect } from 'react-redux';
 import orderBy from 'lodash/orderBy';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
@@ -67,7 +67,7 @@ class EmojiPicker extends Component {
 		if (nextState.width !== width) {
 			return true;
 		}
-		if (!equal(nextState.frequentlyUsed, frequentlyUsed)) {
+		if (!dequal(nextState.frequentlyUsed, frequentlyUsed)) {
 			return true;
 		}
 		return false;

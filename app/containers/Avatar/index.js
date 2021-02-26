@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
-import isEqual from 'react-fast-compare';
 
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
@@ -34,7 +33,8 @@ class AvatarContainer extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (!isEqual(prevProps, this.props)) {
+		const { text, type } = this.props;
+		if (prevProps.text !== text || prevProps.type !== type) {
 			this.init();
 		}
 	}

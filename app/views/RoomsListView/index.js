@@ -9,7 +9,7 @@ import {
 	RefreshControl
 } from 'react-native';
 import { connect } from 'react-redux';
-import isEqual from 'react-fast-compare';
+import { dequal } from 'dequal';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
@@ -222,7 +222,7 @@ class RoomsListView extends React.Component {
 		}
 
 		// Compare changes only once
-		const chatsNotEqual = !isEqual(nextState.chatsUpdate, chatsUpdate);
+		const chatsNotEqual = !dequal(nextState.chatsUpdate, chatsUpdate);
 
 		// If they aren't equal, set to update if focused
 		if (chatsNotEqual) {
@@ -253,13 +253,13 @@ class RoomsListView extends React.Component {
 		if (nextProps.width !== width) {
 			return true;
 		}
-		if (!isEqual(nextState.search, search)) {
+		if (!dequal(nextState.search, search)) {
 			return true;
 		}
-		if (!isEqual(nextProps.rooms, rooms)) {
+		if (!dequal(nextProps.rooms, rooms)) {
 			return true;
 		}
-		if (!isEqual(nextProps.insets, insets)) {
+		if (!dequal(nextProps.insets, insets)) {
 			return true;
 		}
 		// If it's focused and there are changes, update
@@ -302,7 +302,7 @@ class RoomsListView extends React.Component {
 			roomsRequest();
 		}
 		// Update current item in case of another action triggers an update on rooms reducer
-		if (isMasterDetail && item?.rid !== rooms[0] && !isEqual(rooms, prevProps.rooms)) {
+		if (isMasterDetail && item?.rid !== rooms[0] && !dequal(rooms, prevProps.rooms)) {
 			// eslint-disable-next-line react/no-did-update-set-state
 			this.setState({ item: { rid: rooms[0] } });
 		}

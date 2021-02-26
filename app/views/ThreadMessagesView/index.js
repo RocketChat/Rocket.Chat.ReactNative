@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, InteractionManager } from 'react-native';
+import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
@@ -73,9 +73,7 @@ class ThreadMessagesView extends React.Component {
 
 	componentDidMount() {
 		this.mounted = true;
-		this.mountInteraction = InteractionManager.runAfterInteractions(() => {
-			this.init();
-		});
+		this.init();
 	}
 
 	componentDidUpdate(prevProps) {
@@ -89,12 +87,6 @@ class ThreadMessagesView extends React.Component {
 
 	componentWillUnmount() {
 		console.countReset(`${ this.constructor.name }.render calls`);
-		if (this.mountInteraction && this.mountInteraction.cancel) {
-			this.mountInteraction.cancel();
-		}
-		if (this.syncInteraction && this.syncInteraction.cancel) {
-			this.syncInteraction.cancel();
-		}
 		if (this.subSubscription && this.subSubscription.unsubscribe) {
 			this.subSubscription.unsubscribe();
 		}
@@ -330,10 +322,8 @@ class ThreadMessagesView extends React.Component {
 				rid: this.rid, updatedSince: updatedSince.toISOString()
 			});
 			if (result.success && result.threads) {
-				this.syncInteraction = InteractionManager.runAfterInteractions(() => {
-					const { update, remove } = result.threads;
-					this.updateThreads({ update, remove, lastThreadSync: updatedSince });
-				});
+				const { update, remove } = result.threads;
+				this.updateThreads({ update, remove, lastThreadSync: updatedSince });
 			}
 			this.setState({
 				loading: false

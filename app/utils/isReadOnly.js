@@ -1,13 +1,11 @@
 import RocketChat from '../lib/rocketchat';
+import reduxStore from '../lib/createStore';
 
-const canPost = async({ rid }) => {
-	try {
-		const permission = await RocketChat.hasPermission(['post-readonly'], rid);
-		return permission && permission['post-readonly'];
-	} catch {
-		// do nothing
-	}
-	return false;
+const canPostReadOnly = async({ rid }) => {
+	// TODO: this is not reactive. If this permission changes, the component won't be updated
+	const postReadOnlyPermission = reduxStore.getState().permissions['post-readonly'];
+	const permission = await RocketChat.hasPermission([postReadOnlyPermission], rid);
+	return permission[0];
 };
 
 const isMuted = (room, user) => room && room.muted && room.muted.find && !!room.muted.find(m => m === user.username);
@@ -20,7 +18,7 @@ export const isReadOnly = async(room, user) => {
 		return true;
 	}
 	if (room?.ro) {
-		const allowPost = await canPost(room);
+		const allowPost = await canPostReadOnly(room);
 		if (allowPost) {
 			return false;
 		}

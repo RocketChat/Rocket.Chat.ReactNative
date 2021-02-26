@@ -7,7 +7,7 @@ import ShareExtension from 'rn-extensions-share';
 import * as FileSystem from 'expo-file-system';
 import { connect } from 'react-redux';
 import * as mime from 'react-native-mime-types';
-import isEqual from 'react-fast-compare';
+import { dequal } from 'dequal';
 import { Q } from '@nozbe/watermelondb';
 
 import database from '../../lib/database';
@@ -118,7 +118,7 @@ class ShareListView extends React.Component {
 
 		const { searchResults } = this.state;
 		if (nextState.searching) {
-			if (!isEqual(nextState.searchResults, searchResults)) {
+			if (!dequal(nextState.searchResults, searchResults)) {
 				return true;
 			}
 		}

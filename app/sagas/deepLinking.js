@@ -53,7 +53,7 @@ const navigate = function* navigate({ params }) {
 				yield goRoom({ item, isMasterDetail });
 
 				if (params.isCall) {
-					RocketChat.callJitsi(item.rid);
+					RocketChat.callJitsi(item);
 				}
 			}
 		} else {

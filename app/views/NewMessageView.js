@@ -4,7 +4,6 @@ import {
 	View, StyleSheet, FlatList, Text
 } from 'react-native';
 import { connect } from 'react-redux';
-import equal from 'deep-equal';
 import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
 
@@ -75,21 +74,6 @@ class NewMessageView extends React.Component {
 			search: [],
 			chats: []
 		};
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		const { search, chats } = this.state;
-		const { theme } = this.props;
-		if (nextProps.theme !== theme) {
-			return true;
-		}
-		if (!equal(nextState.search, search)) {
-			return true;
-		}
-		if (!equal(nextState.chats, chats)) {
-			return true;
-		}
-		return false;
 	}
 
 	componentWillUnmount() {
