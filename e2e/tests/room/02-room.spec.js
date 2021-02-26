@@ -8,13 +8,10 @@ async function navigateToRoom(roomName) {
 	await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 	await navigateToLogin();
 	await login(data.users.regular.username, data.users.regular.password);
-	await searchRoom(`${ roomName }`);
-	await waitFor(element(by.id(`rooms-list-view-item-${ roomName }`))).toExist().withTimeout(60000);
-	await element(by.id(`rooms-list-view-item-${ roomName }`)).tap();
-	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
+	navigateToSpecificRoom(roomName)
 }
 
-async function navigateToRoomWithOutLogin(roomName) {
+async function navigateToSpecificRoom(roomName) {
 	await searchRoom(`${ roomName }`);
 	await waitFor(element(by.id(`rooms-list-view-item-${ roomName }`))).toExist().withTimeout(60000);
 	await element(by.id(`rooms-list-view-item-${ roomName }`)).tap();
@@ -85,7 +82,7 @@ describe('Room screen', () => {
 				await element(by.id('messagebox-input')).atIndex(0).tap();
 				await element(by.id('messagebox-input')).atIndex(0).typeText(message);
 				await tapBack();
-				await navigateToRoomWithOutLogin(mainRoom);
+				await navigateToSpecificRoom(mainRoom);
 				await expect(element(by.id('messagebox-input'))).toHaveText(message);
 			});
 
