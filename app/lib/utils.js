@@ -1,4 +1,6 @@
-import { lt, lte, gt, gte, coerce } from 'semver';
+import { 
+	lt, lte, gt, gte, coerce 
+} from 'semver';
 
 export const formatAttachmentUrl = (attachmentUrl, userId, token, server) => {
 	if (attachmentUrl.startsWith('http')) {
