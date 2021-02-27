@@ -1,4 +1,3 @@
-import lt from 'semver/functions/lt';
 import orderBy from 'lodash/orderBy';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
