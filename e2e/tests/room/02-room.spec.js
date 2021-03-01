@@ -139,6 +139,14 @@ describe('Room screen', () => {
 				// TODO: test clipboard
 			});
 
+			it('should mark message as unread', async() => {
+				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await element(by.label('Mark Unread')).tap();
+			});
+
 			it('should copy message', async() => {
 				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
