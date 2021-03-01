@@ -34,20 +34,24 @@ const MessageActions = React.memo(forwardRef(({
 	Message_AllowPinning,
 	Message_AllowStarring,
 	Message_Read_Receipt_Store_Users,
-	isMasterDetail
+	isMasterDetail,
+	editMessagePermission,
+	deleteMessagePermission,
+	forceDeleteMessagePermission,
+	pinMessagePermission
 }, ref) => {
 	let permissions = {};
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 
 	const getPermissions = async() => {
 		try {
-			const permission = ['edit-message', 'delete-message', 'force-delete-message', 'pin-message'];
+			const permission = [editMessagePermission, deleteMessagePermission, forceDeleteMessagePermission, pinMessagePermission];
 			const result = await RocketChat.hasPermission(permission, room.rid);
 			permissions = {
-				hasEditPermission: result[permission[0]],
-				hasDeletePermission: result[permission[1]],
-				hasForceDeletePermission: result[permission[2]],
-				hasPinPermission: result[permission[3]]
+				hasEditPermission: result[0],
+				hasDeletePermission: result[1],
+				hasForceDeletePermission: result[2],
+				hasPinPermission: result[3]
 			};
 		} catch {
 			// Do nothing
@@ -141,7 +145,7 @@ const MessageActions = React.memo(forwardRef(({
 			const db = database.active;
 			const result = await RocketChat.markAsUnread({ messageId });
 			if (result.success) {
-				const subCollection = db.collections.get('subscriptions');
+				const subCollection = db.get('subscriptions');
 				const subRecord = await subCollection.find(rid);
 				await db.action(async() => {
 					try {
@@ -171,7 +175,7 @@ const MessageActions = React.memo(forwardRef(({
 
 	const handleCopy = async(message) => {
 		logEvent(events.ROOM_MSG_ACTION_COPY);
-		await Clipboard.setString(message.msg);
+		await Clipboard.setString(message?.attachments?.[0]?.description || message.msg);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 	};
 
@@ -440,7 +444,11 @@ MessageActions.propTypes = {
 	Message_AllowPinning: PropTypes.bool,
 	Message_AllowStarring: PropTypes.bool,
 	Message_Read_Receipt_Store_Users: PropTypes.bool,
-	server: PropTypes.string
+	server: PropTypes.string,
+	editMessagePermission: PropTypes.array,
+	deleteMessagePermission: PropTypes.array,
+	forceDeleteMessagePermission: PropTypes.array,
+	pinMessagePermission: PropTypes.array
 };
 
 const mapStateToProps = state => ({
@@ -452,7 +460,11 @@ const mapStateToProps = state => ({
 	Message_AllowPinning: state.settings.Message_AllowPinning,
 	Message_AllowStarring: state.settings.Message_AllowStarring,
 	Message_Read_Receipt_Store_Users: state.settings.Message_Read_Receipt_Store_Users,
-	isMasterDetail: state.app.isMasterDetail
+	isMasterDetail: state.app.isMasterDetail,
+	editMessagePermission: state.permissions['edit-message'],
+	deleteMessagePermission: state.permissions['delete-message'],
+	forceDeleteMessagePermission: state.permissions['force-delete-message'],
+	pinMessagePermission: state.permissions['pin-message']
 });
 
 export default connect(mapStateToProps, null, null, { forwardRef: true })(MessageActions);
