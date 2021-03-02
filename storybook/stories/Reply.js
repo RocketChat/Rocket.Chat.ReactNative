@@ -30,15 +30,15 @@ const item = {
 	]
 };
 
-const Reply = props => (
+const Reply = ({ theme, ...props }) => (
 	<MessageContext.Provider
 		value={{
 			user,
 			baseUrl
 		}}
 	>
-		<ThemeContext.Provider value={props.theme}>
-			<ReplyComponent theme={props.theme || 'light'} attachment={item} timeFormat='LT' {...props} />
+		<ThemeContext.Provider value={theme}>
+			<ReplyComponent theme={theme || 'light'} attachment={item} timeFormat='LT' {...props} />
 		</ThemeContext.Provider>
 	</MessageContext.Provider>
 );
