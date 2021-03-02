@@ -23,22 +23,22 @@ const item = {
 	author_name: 'John Doe',
 	fields: [
 		{
-		  title: 'Attachment\'s title:',
-		  value: 'Lorem ipsum dolor sit amet',
-		  short: false
+			title: 'Attachment\'s title:',
+			value: 'Lorem ipsum dolor sit amet',
+			short: false
 		}
 	]
 };
 
-const Reply = theme => (
+const Reply = props => (
 	<MessageContext.Provider
 		value={{
 			user,
 			baseUrl
 		}}
 	>
-		<ThemeContext.Provider value={theme}>
-			<ReplyComponent theme={theme || 'light'} attachment={item} timeFormat='LT' />
+		<ThemeContext.Provider value={props.theme}>
+			<ReplyComponent theme={props.theme || 'light'} attachment={item} timeFormat='LT' {...props} />
 		</ThemeContext.Provider>
 	</MessageContext.Provider>
 );
@@ -63,24 +63,23 @@ stories.add('content', () => (
 			}}
 		/>
 		<Reply attachment={{
-				...item,
-				title: 'Name',
-				fields: 
-				[
-					{
-						title: 'Attachment\'s title:',
-						value: 'Lorem ipsum dolor sit amet',
-						short: true
-					},
-					{
-						title: 'Attachment\'s title:',
-						value: 'Lorem ipsum dolor sit amet',
-						short: true
-					}
-				]
-			}}
+			...item,
+			title: 'Name',
+			fields:
+			[
+				{
+					title: 'Attachment\'s title:',
+					value: 'Lorem ipsum dolor sit amet',
+					short: true
+				},
+				{
+					title: 'Attachment\'s title:',
+					value: 'Lorem ipsum dolor sit amet',
+					short: true
+				}
+			]
+		}}
 		/>
-		<Reply />
 	</ScrollView>
 ));
 
