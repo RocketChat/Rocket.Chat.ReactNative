@@ -2,7 +2,7 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const data = require('../../data');
-const { navigateToLogin, login, mockMessage, tapBack, sleep, searchRoom, starMessage, pinMessage, dismissReviewNag, tryTapping } = require('../../helpers/app');
+const { navigateToLogin, login, mockMessage, tapBack, sleep, searchRoom, starMessage, pinMessage, dismissReviewNag, tryTapping, logout } = require('../../helpers/app');
 
 async function navigateToRoom(roomName) {
 	await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
@@ -11,6 +11,13 @@ async function navigateToRoom(roomName) {
 	await searchRoom(`${ roomName }`);
 	await waitFor(element(by.id(`rooms-list-view-item-${ roomName }`))).toExist().withTimeout(60000);
 	await element(by.id(`rooms-list-view-item-${ roomName }`)).tap();
+	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
+}
+
+async function navigateToUser(user) {
+    await searchRoom(`${ user }`);
+	await waitFor(element(by.id(`rooms-list-view-item-${ user }`))).toExist().withTimeout(60000);
+	await element(by.id(`rooms-list-view-item-${ user }`)).tap();
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 }
 
@@ -137,14 +144,6 @@ describe('Room screen', () => {
 				await element(by.label('Permalink')).tap();
 
 				// TODO: test clipboard
-			});
-
-			it('should mark message as unread', async() => {
-				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
-				await expect(element(by.id('action-sheet'))).toExist();
-				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by.label('Mark Unread')).tap();
 			});
 
 			it('should copy message', async() => {
@@ -360,6 +359,26 @@ describe('Room screen', () => {
 				await expect(element(by.id('thread-messages-view'))).toExist();
 				await tapBack();
 			});
+		});
+
+		describe('Draft', async() => {
+			it('should draft message', async() => {
+				await tapBack();
+				await navigateToUser(data.users.alternate.username);
+				await mockMessage('message')
+				await expect(element(by.label(`${ data.random }message`)).atIndex(0)).toExist();
+				await tapBack();
+				await logout();
+				await navigateToLogin();
+				await login(data.users.alternate.username, data.users.alternate.password);
+				await navigateToUser(data.users.regular.username);
+				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
+				await expect(element(by.id('action-sheet'))).toExist();
+				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await element(by.label('Mark Unread')).tap();
+			});
+	
 		});
 
 		// after(async() => {
