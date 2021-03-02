@@ -361,8 +361,8 @@ describe('Room screen', () => {
 			});
 		});
 
-		describe('Draft', async() => {
-			it('should draft message', async() => {
+		describe('Mark message as unread', async() => {
+			it('should mark message as unread', async() => {
 				await tapBack();
 				await navigateToUser(data.users.alternate.username);
 				await mockMessage('message')
