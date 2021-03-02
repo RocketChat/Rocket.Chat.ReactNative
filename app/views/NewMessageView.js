@@ -4,9 +4,8 @@ import {
 	View, StyleSheet, FlatList, Text
 } from 'react-native';
 import { connect } from 'react-redux';
-import equal from 'deep-equal';
-import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
+import * as List from '../containers/List';
 
 import Touch from '../utils/touch';
 import database from '../lib/database';
@@ -27,10 +26,9 @@ import { createChannelRequest } from '../actions/createChannel';
 import { goRoom } from '../utils/goRoom';
 import SafeAreaView from '../containers/SafeAreaView';
 
+const QUERY_SIZE = 50;
+
 const styles = StyleSheet.create({
-	separator: {
-		marginLeft: 60
-	},
 	button: {
 		height: 46,
 		flexDirection: 'row',
@@ -77,40 +75,20 @@ class NewMessageView extends React.Component {
 		};
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const { search, chats } = this.state;
-		const { theme } = this.props;
-		if (nextProps.theme !== theme) {
-			return true;
-		}
-		if (!equal(nextState.search, search)) {
-			return true;
-		}
-		if (!equal(nextState.chats, chats)) {
-			return true;
-		}
-		return false;
-	}
-
-	componentWillUnmount() {
-		if (this.querySubscription && this.querySubscription.unsubscribe) {
-			this.querySubscription.unsubscribe();
-		}
-	}
-
 	// eslint-disable-next-line react/sort-comp
 	init = async() => {
 		try {
 			const db = database.active;
-			const observable = await db.collections
+			const chats = await db.collections
 				.get('subscriptions')
-				.query(Q.where('t', 'd'))
-				.observeWithColumns(['room_updated_at']);
+				.query(
+					Q.where('t', 'd'),
+					Q.experimentalTake(QUERY_SIZE),
+					Q.experimentalSortBy('room_updated_at', Q.desc)
+				)
+				.fetch();
 
-			this.querySubscription = observable.subscribe((data) => {
-				const chats = orderBy(data, ['roomUpdatedAt'], ['desc']);
-				this.setState({ chats });
-			});
+			this.setState({ chats });
 		} catch (e) {
 			log(e);
 		}
@@ -211,10 +189,6 @@ class NewMessageView extends React.Component {
 		);
 	}
 
-	renderSeparator = () => {
-		const { theme } = this.props;
-		return <View style={[sharedStyles.separator, styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
-	}
 
 	renderItem = ({ item, index }) => {
 		const { search, chats } = this.state;
@@ -254,7 +228,7 @@ class NewMessageView extends React.Component {
 				keyExtractor={item => item._id}
 				ListHeaderComponent={this.renderHeader}
 				renderItem={this.renderItem}
-				ItemSeparatorComponent={this.renderSeparator}
+				ItemSeparatorComponent={List.Separator}
 				contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
 				keyboardShouldPersistTaps='always'
 			/>

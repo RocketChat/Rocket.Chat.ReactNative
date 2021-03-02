@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View } from 'react-native';
+import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
+import * as List from '../../containers/List';
 
 import styles from './styles';
 import UserItem from '../../presentation/UserItem';
@@ -28,6 +29,12 @@ import { goRoom } from '../../utils/goRoom';
 
 const PAGE_SIZE = 25;
 
+const PERMISSION_MUTE_USER = 'mute-user';
+const PERMISSION_SET_LEADER = 'set-leader';
+const PERMISSION_SET_OWNER = 'set-owner';
+const PERMISSION_SET_MODERATOR = 'set-moderator';
+const PERMISSION_REMOVE_USER = 'remove-user';
+
 class RoomMembersView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -43,7 +50,12 @@ class RoomMembersView extends React.Component {
 		showActionSheet: PropTypes.func,
 		theme: PropTypes.string,
 		isMasterDetail: PropTypes.bool,
-		useRealName: PropTypes.bool
+		useRealName: PropTypes.bool,
+		muteUserPermission: PropTypes.array,
+		setLeaderPermission: PropTypes.array,
+		setOwnerPermission: PropTypes.array,
+		setModeratorPermission: PropTypes.array,
+		removeUserPermission: PropTypes.array
 	}
 
 	constructor(props) {
@@ -81,7 +93,20 @@ class RoomMembersView extends React.Component {
 		this.fetchMembers();
 
 		const { room } = this.state;
-		this.permissions = await RocketChat.hasPermission(['mute-user', 'set-leader', 'set-owner', 'set-moderator', 'remove-user'], room.rid);
+		const {
+			muteUserPermission, setLeaderPermission, setOwnerPermission, setModeratorPermission, removeUserPermission
+		} = this.props;
+		const result = await RocketChat.hasPermission([
+			muteUserPermission, setLeaderPermission, setOwnerPermission, setModeratorPermission, removeUserPermission
+		], room.rid);
+
+		this.permissions = {
+			[PERMISSION_MUTE_USER]: result[0],
+			[PERMISSION_SET_LEADER]: result[1],
+			[PERMISSION_SET_OWNER]: result[2],
+			[PERMISSION_SET_MODERATOR]: result[3],
+			[PERMISSION_REMOVE_USER]: result[4]
+		};
 
 		const hasSinglePermission = Object.values(this.permissions).some(p => !!p);
 		if (hasSinglePermission) {
@@ -122,7 +147,7 @@ class RoomMembersView extends React.Component {
 	navToDirectMessage = async(item) => {
 		try {
 			const db = database.active;
-			const subsCollection = db.collections.get('subscriptions');
+			const subsCollection = db.get('subscriptions');
 			const query = await subsCollection.query(Q.where('name', item.username)).fetch();
 			if (query.length) {
 				const [room] = query;
@@ -395,11 +420,6 @@ class RoomMembersView extends React.Component {
 		<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='room-members-view-search' />
 	)
 
-	renderSeparator = () => {
-		const { theme } = this.props;
-		return <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
-	}
-
 	renderItem = ({ item }) => {
 		const { baseUrl, user, theme } = this.props;
 
@@ -429,7 +449,7 @@ class RoomMembersView extends React.Component {
 					renderItem={this.renderItem}
 					style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 					keyExtractor={item => item._id}
-					ItemSeparatorComponent={this.renderSeparator}
+					ItemSeparatorComponent={List.Separator}
 					ListHeaderComponent={this.renderSearchBar}
 					ListFooterComponent={() => {
 						if (isLoading) {
@@ -452,7 +472,12 @@ const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	isMasterDetail: state.app.isMasterDetail,
-	useRealName: state.settings.UI_Use_Real_Name
+	useRealName: state.settings.UI_Use_Real_Name,
+	muteUserPermission: state.permissions[PERMISSION_MUTE_USER],
+	setLeaderPermission: state.permissions[PERMISSION_SET_LEADER],
+	setOwnerPermission: state.permissions[PERMISSION_SET_OWNER],
+	setModeratorPermission: state.permissions[PERMISSION_SET_MODERATOR],
+	removeUserPermission: state.permissions[PERMISSION_REMOVE_USER]
 });
 
 export default connect(mapStateToProps)(withActionSheet(withTheme(RoomMembersView)));

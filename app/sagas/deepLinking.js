@@ -53,7 +53,7 @@ const navigate = function* navigate({ params }) {
 				yield goRoom({ item, isMasterDetail });
 
 				if (params.isCall) {
-					RocketChat.callJitsi(item.rid);
+					RocketChat.callJitsi(item);
 				}
 			}
 		} else {
@@ -72,7 +72,7 @@ const fallbackNavigation = function* fallbackNavigation() {
 
 const handleOpen = function* handleOpen({ params }) {
 	const serversDB = database.servers;
-	const serversCollection = serversDB.collections.get('servers');
+	const serversCollection = serversDB.get('servers');
 
 	let { host } = params;
 	if (params.isCall && !host) {
