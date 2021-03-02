@@ -1,5 +1,5 @@
-import { 
-	lt, lte, gt, gte, coerce 
+import {
+	lt, lte, gt, gte, coerce
 } from 'semver';
 
 export const formatAttachmentUrl = (attachmentUrl, userId, token, server) => {
