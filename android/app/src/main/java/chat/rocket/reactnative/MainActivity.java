@@ -38,8 +38,8 @@ public class MainActivity extends ReactFragmentActivity {
     }
 
     @Override
-    public void invokeDefaultOnBackPressed() {
-        moveTaskToBack(true);
+    public void onBackPressed() {
+      moveTaskToBack(true);
     }
 
     /**
