@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
 
 import styles from './styles';
 import Message from '../../containers/message';
@@ -57,7 +57,7 @@ class MessagesView extends React.Component {
 		if (nextState.loading !== loading) {
 			return true;
 		}
-		if (!equal(nextState.messages, messages)) {
+		if (!dequal(nextState.messages, messages)) {
 			return true;
 		}
 		if (fileLoading !== nextState.fileLoading) {

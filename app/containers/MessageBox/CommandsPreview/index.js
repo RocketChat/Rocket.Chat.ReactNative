@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList } from 'react-native';
 import PropTypes from 'prop-types';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
 
 import Item from './Item';
 import styles from '../styles';
@@ -31,7 +31,7 @@ const CommandsPreview = React.memo(({ theme, commandPreview, showCommandPreview 
 	if (prevProps.showCommandPreview !== nextProps.showCommandPreview) {
 		return false;
 	}
-	if (!equal(prevProps.commandPreview, nextProps.commandPreview)) {
+	if (!dequal(prevProps.commandPreview, nextProps.commandPreview)) {
 		return false;
 	}
 	return true;
