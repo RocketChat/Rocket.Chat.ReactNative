@@ -307,6 +307,9 @@ class RoomsListView extends React.Component {
 		if (this.unsubscribeBlur) {
 			this.unsubscribeBlur();
 		}
+		if (this.backHandler && this.backHandler.remove) {
+			this.backHandler.remove();
+		}
 		if (isTablet) {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
