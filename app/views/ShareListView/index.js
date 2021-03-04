@@ -183,7 +183,8 @@ class ShareListView extends React.Component {
 						<HeaderButton.Container>
 							<HeaderButton.Item iconName='search' onPress={this.initSearch} />
 						</HeaderButton.Container>
-					))
+					)
+			)
 		});
 	}
 
