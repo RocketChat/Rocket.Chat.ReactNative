@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
 		marginLeft: isTablet ? 10 : 0
 	},
 	title: {
-		fontSize: 16,
+		fontSize: 20,
 		...sharedStyles.textSemibold
 	}
 });
