@@ -4,14 +4,12 @@ import {
 	Text, View, ScrollView, TouchableOpacity, Keyboard, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
-import equal from 'deep-equal';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 import ImagePicker from 'react-native-image-crop-picker';
-import isEqual from 'lodash/isEqual';
+import { dequal } from 'dequal';
 import isEmpty from 'lodash/isEmpty';
 import lt from 'semver/functions/lt';
 import coerce from 'semver/functions/coerce';
-
 
 import database from '../../lib/database';
 import { deleteRoom as deleteRoomAction } from '../../actions/room';
@@ -88,16 +86,6 @@ class RoomInfoEditView extends React.Component {
 		this.loadRoom();
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		if (!equal(nextState, this.state)) {
-			return true;
-		}
-		if (!equal(nextProps, this.props)) {
-			return true;
-		}
-		return false;
-	}
-
 	componentWillUnmount() {
 		if (this.querySubscription && this.querySubscription.unsubscribe) {
 			this.querySubscription.unsubscribe();
@@ -121,7 +109,7 @@ class RoomInfoEditView extends React.Component {
 		}
 		try {
 			const db = database.active;
-			const sub = await db.collections.get('subscriptions').find(rid);
+			const sub = await db.get('subscriptions').find(rid);
 			const observable = sub.observe();
 
 			this.querySubscription = observable.subscribe((data) => {
@@ -202,7 +190,7 @@ class RoomInfoEditView extends React.Component {
 			&& room.t === 'p' === t
 			&& room.ro === ro
 			&& room.reactWhenReadOnly === reactWhenReadOnly
-			&& isEqual(room.sysMes, systemMessages)
+			&& dequal(room.sysMes, systemMessages)
 			&& enableSysMes === (room.sysMes && room.sysMes.length > 0)
 			&& room.encrypted === encrypted
 			&& isEmpty(avatar)
@@ -262,7 +250,7 @@ class RoomInfoEditView extends React.Component {
 			params.reactWhenReadOnly = reactWhenReadOnly;
 		}
 
-		if (!isEqual(room.sysMes, systemMessages)) {
+		if (!dequal(room.sysMes, systemMessages)) {
 			params.systemMessages = systemMessages;
 		}
 

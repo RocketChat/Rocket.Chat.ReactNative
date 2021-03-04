@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import {
 	View, Text, Switch, ScrollView, StyleSheet, FlatList
 } from 'react-native';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
+import * as List from '../containers/List';
 
 import TextInput from '../presentation/TextInput';
 import Loading from '../containers/Loading';
@@ -30,12 +31,6 @@ const styles = StyleSheet.create({
 	},
 	list: {
 		width: '100%'
-	},
-	separator: {
-		marginLeft: 60
-	},
-	formSeparator: {
-		marginLeft: 15
 	},
 	input: {
 		height: 54,
@@ -133,7 +128,7 @@ class CreateChannelView extends React.Component {
 		if (nextProps.encryptionEnabled !== encryptionEnabled) {
 			return true;
 		}
-		if (!equal(nextProps.users, users)) {
+		if (!dequal(nextProps.users, users)) {
 			return true;
 		}
 		return false;
@@ -264,13 +259,6 @@ class CreateChannelView extends React.Component {
 		});
 	}
 
-	renderSeparator = () => <View style={[sharedStyles.separator, styles.separator]} />
-
-	renderFormSeparator = () => {
-		const { theme } = this.props;
-		return <View style={[sharedStyles.separator, styles.formSeparator, { backgroundColor: themes[theme].separatorColor }]} />;
-	}
-
 	renderItem = ({ item }) => {
 		const { baseUrl, user, theme } = this.props;
 
@@ -305,7 +293,7 @@ class CreateChannelView extends React.Component {
 					}
 				]}
 				renderItem={this.renderItem}
-				ItemSeparatorComponent={this.renderSeparator}
+				ItemSeparatorComponent={List.Separator}
 				enableEmptySections
 				keyboardShouldPersistTaps='always'
 			/>
@@ -341,13 +329,13 @@ class CreateChannelView extends React.Component {
 								theme={theme}
 								underlineColorAndroid='transparent'
 							/>
-							{this.renderFormSeparator()}
+							<List.Separator />
 							{this.renderType()}
-							{this.renderFormSeparator()}
+							<List.Separator />
 							{this.renderReadOnly()}
-							{this.renderFormSeparator()}
+							<List.Separator />
 							{this.renderEncrypted()}
-							{this.renderFormSeparator()}
+							<List.Separator />
 							{this.renderBroadcast()}
 						</View>
 						<View style={styles.invitedHeader}>
