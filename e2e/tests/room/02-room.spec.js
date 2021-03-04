@@ -14,8 +14,8 @@ async function navigateToRoom(roomName) {
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 }
 
+const mainRoom = data.groups.private.name;
 describe('Room screen', () => {
-	const mainRoom = data.groups.private.name;
 
 	before(async() => {
 		await navigateToRoom(mainRoom);
@@ -126,6 +126,17 @@ describe('Room screen', () => {
 				await expect(element(by.id('messagebox-input'))).toHaveText('#general ');
 				await element(by.id('messagebox-input')).clearText();
 			});
+
+			it('should draft message', async () => {
+				await element(by.id('messagebox-input')).atIndex(0).tap();
+				await element(by.id('messagebox-input')).atIndex(0).typeText(`${ data.random }draft`);
+				await tapBack();
+				await element(by.id(`rooms-list-view-item-${ mainRoom }`)).tap();
+				await expect(element(by.id('messagebox-input'))).toHaveText(`${ data.random }draft`);
+				await element(by.id('messagebox-input')).clearText();
+			});
+
+			
 		});
 
 		describe('Message', async() => {
@@ -280,11 +291,18 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 				await waitFor(element(by.id(`room-view-title-${ thread }`))).toExist().withTimeout(5000);
 				await expect(element(by.id(`room-view-title-${ thread }`))).toExist();
+			});
+
+			it('should draft thread message', async () => {
+				await element(by.id('messagebox-input')).atIndex(0).tap();
+				await element(by.id('messagebox-input')).atIndex(0).typeText(`${ thread }draft`);
 				await tapBack();
+				await element(by.id(`message-thread-button-${ thread }`)).tap();
+				await expect(element(by.id('messagebox-input')).atIndex(0)).toHaveText(`${ thread }draft`);
+				await element(by.id('messagebox-input')).atIndex(0).clearText();
 			});
 
 			it('should toggle follow thread', async() => {
-				await element(by.id(`message-thread-button-${ thread }`)).tap();
 				await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 				await waitFor(element(by.id(`room-view-title-${ thread }`))).toExist().withTimeout(5000);
 				await expect(element(by.id(`room-view-title-${ thread }`))).toExist();
