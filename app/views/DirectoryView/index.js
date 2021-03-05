@@ -199,7 +199,7 @@ class DirectoryView extends React.Component {
 			title: item.name,
 			onPress: () => this.onPressItem(item),
 			baseUrl,
-			testID: `federation-view-item-${ item.name }`,
+			testID: `federation-view-item-${ item.name }`.toLowerCase(),
 			style,
 			user,
 			theme,
