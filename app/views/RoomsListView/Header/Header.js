@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 
-import TextInput from '../../../presentation/TextInput';
+import SearchHeader from '../../ShareListView/Header/Header';
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
 import { themes } from '../../../constants/colors';
@@ -37,7 +37,6 @@ const Header = React.memo(({
 	connecting, connected, isFetching, serverName, server, showServerDropdown, showSearchHeader, theme, onSearchChangeText, onPress
 }) => {
 	const titleColorStyle = { color: themes[theme].headerTitleColor };
-	const isLight = theme === 'light';
 	const { isLandscape } = useOrientation();
 	const scale = isIOS && isLandscape && !isTablet ? 0.8 : 1;
 	const titleFontSize = 16 * scale;
@@ -45,16 +44,12 @@ const Header = React.memo(({
 
 	if (showSearchHeader) {
 		return (
-			<View style={styles.container}>
-				<TextInput
-					autoFocus
-					style={[styles.title, isLight && titleColorStyle, { fontSize: titleFontSize }]}
-					placeholder='Search'
-					onChangeText={onSearchChangeText}
-					theme={theme}
-					testID='rooms-list-view-search-input'
-				/>
-			</View>
+			<SearchHeader
+				theme={theme}
+				searching={showSearchHeader}
+				onChangeSearchText={onSearchChangeText}
+				testID='rooms-list-view-search-input'
+			/>
 		);
 	}
 	let subtitle;

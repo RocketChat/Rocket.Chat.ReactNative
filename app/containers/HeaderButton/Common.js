@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { isIOS } from '../../utils/deviceInfo';
-import I18n from '../../i18n';
 import Container from './HeaderButtonContainer';
 import Item from './HeaderButtonItem';
 
@@ -23,10 +21,7 @@ export const CloseModal = React.memo(({
 
 export const CancelModal = React.memo(({ onPress, testID }) => (
 	<Container left>
-		{isIOS
-			? <Item title={I18n.t('Cancel')} onPress={onPress} testID={testID} />
-			: <Item iconName='close' onPress={onPress} testID={testID} />
-		}
+		<Item iconName='close' onPress={onPress} testID={testID} />
 	</Container>
 ));
 

@@ -15,12 +15,14 @@ const styles = StyleSheet.create({
 		marginLeft: isTablet ? 10 : 0
 	},
 	title: {
-		fontSize: 20,
+		fontSize: 16,
 		...sharedStyles.textSemibold
 	}
 });
 
-const Header = React.memo(({ searching, onChangeSearchText, theme }) => {
+const Header = React.memo(({
+	searching, onChangeSearchText, testID, theme
+}) => {
 	const titleColorStyle = { color: themes[theme].headerTintColor };
 	const searchPlaceholderStyle = { color: themes[theme].headerTitleColor };
 	const isLight = theme === 'light';
@@ -34,7 +36,7 @@ const Header = React.memo(({ searching, onChangeSearchText, theme }) => {
 					onChangeText={onChangeSearchText}
 					theme={theme}
 					autoFocus
-					testID='share-list-view-search-input'
+					testID={testID}
 				/>
 			</View>
 		);
@@ -45,7 +47,8 @@ const Header = React.memo(({ searching, onChangeSearchText, theme }) => {
 Header.propTypes = {
 	searching: PropTypes.bool,
 	onChangeSearchText: PropTypes.func,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	testID: PropTypes.string
 };
 
 export default Header;

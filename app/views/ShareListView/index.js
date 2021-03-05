@@ -142,21 +142,6 @@ class ShareListView extends React.Component {
 		const { navigation, theme, insets } = this.props;
 		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: 3 });
 
-		if (isIOS) {
-			navigation.setOptions({
-				header: () => (
-					<ShareListHeader
-						searching={searching}
-						initSearch={this.initSearch}
-						cancelSearch={this.cancelSearch}
-						search={this.search}
-						theme={theme}
-					/>
-				)
-			});
-			return;
-		}
-
 		navigation.setOptions({
 			headerTitleAlign: 'left',
 			headerLeft: () => (searching
