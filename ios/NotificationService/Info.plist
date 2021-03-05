@@ -4,6 +4,8 @@
 <dict>
 	<key>AppGroup</key>
 	<string>group.ios.chat.rocket</string>
+	<key>IS_OFFICIAL</key>
+	<false/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
