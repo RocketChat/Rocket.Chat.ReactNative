@@ -1192,7 +1192,7 @@ const RocketChat = {
 			// get user roles on the server from redux
 			const userRoles = (shareUser?.roles || loginUser?.roles) || [];
 			const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
-			return permissions.map(permission => permission.some(r => mergedRoles.includes(r) ?? false));
+			return permissions.map(permission => permission?.some(r => mergedRoles.includes(r) ?? false));
 		} catch (e) {
 			log(e);
 		}
