@@ -31,6 +31,14 @@ const handleInviteLink = function* handleInviteLink({ params, requireLogin = fal
 	}
 };
 
+const popToRoot = function popToRoot({ isMasterDetail }) {
+	if (isMasterDetail) {
+		Navigation.navigate('DrawerNavigator');
+	} else {
+		Navigation.navigate('RoomsListView');
+	}
+};
+
 const navigate = function* navigate({ params }) {
 	yield put(appStart({ root: ROOT_INSIDE }));
 	if (params.path) {
@@ -38,19 +46,28 @@ const navigate = function* navigate({ params }) {
 		if (type !== 'invite') {
 			const room = yield RocketChat.canOpenRoom(params);
 			if (room) {
-				const isMasterDetail = yield select(state => state.app.isMasterDetail);
-				if (isMasterDetail) {
-					Navigation.navigate('DrawerNavigator');
-				} else {
-					Navigation.navigate('RoomsListView');
-				}
 				const item = {
 					name,
 					t: roomTypes[type],
 					roomUserId: RocketChat.getUidDirectMessage(room),
 					...room
 				};
-				yield goRoom({ item, isMasterDetail });
+
+				const isMasterDetail = yield select(state => state.app.isMasterDetail);
+				const focusedRooms = yield select(state => state.room.rooms);
+
+				if (focusedRooms.includes(room.rid)) {
+					// if there's one room on the list or last room is the one
+					if (focusedRooms.length === 1 || focusedRooms[0] === room.rid) {
+						yield goRoom({ item, isMasterDetail });
+					} else {
+						popToRoot({ isMasterDetail });
+						yield goRoom({ item, isMasterDetail });
+					}
+				} else {
+					popToRoot({ isMasterDetail });
+					yield goRoom({ item, isMasterDetail });
+				}
 
 				if (params.isCall) {
 					RocketChat.callJitsi(item);
@@ -121,10 +138,10 @@ const handleOpen = function* handleOpen({ params }) {
 	} else {
 		// search if deep link's server already exists
 		try {
-			const servers = yield serversCollection.find(host);
-			if (servers && user) {
+			const hostServerRecord = yield serversCollection.find(host);
+			if (hostServerRecord && user) {
 				yield localAuthenticate(host);
-				yield put(selectServerRequest(host));
+				yield put(selectServerRequest(host, hostServerRecord.version, true, true));
 				yield take(types.LOGIN.SUCCESS);
 				yield navigate({ params });
 				return;
