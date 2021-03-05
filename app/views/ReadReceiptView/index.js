@@ -4,6 +4,7 @@ import { FlatList, View, Text } from 'react-native';
 import { dequal } from 'dequal';
 import moment from 'moment';
 import { connect } from 'react-redux';
+import * as List from '../../containers/List';
 
 import Avatar from '../../containers/Avatar';
 import styles from './styles';
@@ -121,11 +122,6 @@ class ReadReceiptView extends React.Component {
 		);
 	}
 
-	renderSeparator = () => {
-		const { theme } = this.props;
-		return <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
-	}
-
 	render() {
 		const { receipts, loading } = this.state;
 		const { theme } = this.props;
@@ -143,7 +139,7 @@ class ReadReceiptView extends React.Component {
 						<FlatList
 							data={receipts}
 							renderItem={this.renderItem}
-							ItemSeparatorComponent={this.renderSeparator}
+							ItemSeparatorComponent={List.Separator}
 							style={[
 								styles.list,
 								{

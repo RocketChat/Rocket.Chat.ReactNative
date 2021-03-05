@@ -13,7 +13,7 @@ export async function setEnterpriseModules() {
 	try {
 		const { server: serverId } = reduxStore.getState().server;
 		const serversDB = database.servers;
-		const serversCollection = serversDB.collections.get('servers');
+		const serversCollection = serversDB.get('servers');
 		let server;
 		try {
 			server = await serversCollection.find(serverId);
@@ -39,7 +39,7 @@ export function getEnterpriseModules() {
 				const enterpriseModules = await this.methodCallWrapper('license:getModules');
 				if (enterpriseModules) {
 					const serversDB = database.servers;
-					const serversCollection = serversDB.collections.get('servers');
+					const serversCollection = serversDB.get('servers');
 					const server = await serversCollection.find(serverId);
 					await serversDB.action(async() => {
 						await server.update((s) => {

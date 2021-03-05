@@ -190,8 +190,8 @@ class MessageBox extends Component {
 		} = this.props;
 		let msg;
 		try {
-			const threadsCollection = db.collections.get('threads');
-			const subsCollection = db.collections.get('subscriptions');
+			const threadsCollection = db.get('threads');
+			const subsCollection = db.get('subscriptions');
 			try {
 				this.room = await subsCollection.find(rid);
 			} catch (error) {
@@ -364,7 +364,7 @@ class MessageBox extends Component {
 			const slashCommand = text.match(/^\/([a-z0-9._-]+) (.+)/im);
 			if (slashCommand) {
 				const [, name, params] = slashCommand;
-				const commandsCollection = db.collections.get('slash_commands');
+				const commandsCollection = db.get('slash_commands');
 				try {
 					const command = await commandsCollection.find(name);
 					if (command.providesPreview) {
@@ -505,7 +505,7 @@ class MessageBox extends Component {
 	getEmojis = debounce(async(keyword) => {
 		const db = database.active;
 		if (keyword) {
-			const customEmojisCollection = db.collections.get('custom_emojis');
+			const customEmojisCollection = db.get('custom_emojis');
 			const likeString = sanitizeLikeString(keyword);
 			let customEmojis = await customEmojisCollection.query(
 				Q.where('name', Q.like(`${ likeString }%`))
@@ -519,7 +519,7 @@ class MessageBox extends Component {
 
 	getSlashCommands = debounce(async(keyword) => {
 		const db = database.active;
-		const commandsCollection = db.collections.get('slash_commands');
+		const commandsCollection = db.get('slash_commands');
 		const likeString = sanitizeLikeString(keyword);
 		const commands = await commandsCollection.query(
 			Q.where('id', Q.like(`${ likeString }%`))
@@ -751,7 +751,7 @@ class MessageBox extends Component {
 		// Slash command
 		if (message[0] === MENTIONS_TRACKING_TYPE_COMMANDS) {
 			const db = database.active;
-			const commandsCollection = db.collections.get('slash_commands');
+			const commandsCollection = db.get('slash_commands');
 			const command = message.replace(/ .*/, '').slice(1);
 			const likeString = sanitizeLikeString(command);
 			const slashCommand = await commandsCollection.query(
