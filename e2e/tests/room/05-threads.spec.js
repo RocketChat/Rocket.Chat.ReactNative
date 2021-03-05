@@ -14,7 +14,7 @@ async function navigateToRoom(roomName) {
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 }
 
-describe('Room screen', () => {
+describe('Threads', () => {
 	const mainRoom = data.groups.private.name;
 
 	before(async() => {
