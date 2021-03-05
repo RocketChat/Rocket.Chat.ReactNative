@@ -26,7 +26,6 @@ const Header = React.memo(({
 	const titleColorStyle = { color: themes[theme].headerTintColor };
 	const searchPlaceholderStyle = { color: themes[theme].headerTitleColor };
 	const isLight = theme === 'light';
-
 	if (searching) {
 		return (
 			<View style={styles.container}>
