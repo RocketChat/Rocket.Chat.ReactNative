@@ -89,7 +89,6 @@ const shouldUpdateProps = [
 	'showUnread',
 	'useRealName',
 	'StoreLastMessage',
-	'appState',
 	'theme',
 	'isMasterDetail',
 	'refreshing',
@@ -126,7 +125,6 @@ class RoomsListView extends React.Component {
 		showUnread: PropTypes.bool,
 		refreshing: PropTypes.bool,
 		StoreLastMessage: PropTypes.bool,
-		appState: PropTypes.string,
 		theme: PropTypes.string,
 		toggleSortDropdown: PropTypes.func,
 		openSearchHeader: PropTypes.func,
@@ -135,7 +133,6 @@ class RoomsListView extends React.Component {
 		roomsRequest: PropTypes.func,
 		closeServerDropdown: PropTypes.func,
 		useRealName: PropTypes.bool,
-		connected: PropTypes.bool,
 		isMasterDetail: PropTypes.bool,
 		rooms: PropTypes.array,
 		width: PropTypes.number,
@@ -276,9 +273,6 @@ class RoomsListView extends React.Component {
 			groupByType,
 			showFavorites,
 			showUnread,
-			appState,
-			connected,
-			roomsRequest,
 			rooms,
 			isMasterDetail,
 			insets
@@ -294,12 +288,6 @@ class RoomsListView extends React.Component {
 			)
 		) {
 			this.getSubscriptions();
-		} else if (
-			appState === 'foreground'
-			&& appState !== prevProps.appState
-			&& connected
-		) {
-			roomsRequest();
 		}
 		// Update current item in case of another action triggers an update on rooms reducer
 		if (isMasterDetail && item?.rid !== rooms[0] && !dequal(rooms, prevProps.rooms)) {
@@ -318,6 +306,9 @@ class RoomsListView extends React.Component {
 		}
 		if (this.unsubscribeBlur) {
 			this.unsubscribeBlur();
+		}
+		if (this.backHandler && this.backHandler.remove) {
+			this.backHandler.remove();
 		}
 		if (isTablet) {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
@@ -1018,7 +1009,6 @@ const mapStateToProps = state => ({
 	isMasterDetail: state.app.isMasterDetail,
 	server: state.server.server,
 	changingServer: state.server.changingServer,
-	connected: state.server.connected,
 	searchText: state.rooms.searchText,
 	loadingServer: state.server.loading,
 	showServerDropdown: state.rooms.showServerDropdown,
@@ -1029,7 +1019,6 @@ const mapStateToProps = state => ({
 	showFavorites: state.sortPreferences.showFavorites,
 	showUnread: state.sortPreferences.showUnread,
 	useRealName: state.settings.UI_Use_Real_Name,
-	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	StoreLastMessage: state.settings.Store_Last_Message,
 	rooms: state.room.rooms,
 	queueSize: getInquiryQueueSelector(state).length,
