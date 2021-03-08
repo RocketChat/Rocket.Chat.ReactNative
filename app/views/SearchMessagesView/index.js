@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, FlatList, Text } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
 
 import RCTextInput from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -42,7 +42,8 @@ class SearchMessagesView extends React.Component {
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
 		customEmojis: PropTypes.object,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		useRealName: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -68,7 +69,7 @@ class SearchMessagesView extends React.Component {
 		if (nextState.searchText !== searchText) {
 			return true;
 		}
-		if (!equal(nextState.messages, messages)) {
+		if (!dequal(nextState.messages, messages)) {
 			return true;
 		}
 		return false;
@@ -83,7 +84,7 @@ class SearchMessagesView extends React.Component {
 		// If it's a encrypted, room we'll search only on the local stored messages
 		if (this.encrypted) {
 			const db = database.active;
-			const messagesCollection = db.collections.get('messages');
+			const messagesCollection = db.get('messages');
 			const likeString = sanitizeLikeString(searchText);
 			return messagesCollection
 				.query(
@@ -143,7 +144,9 @@ class SearchMessagesView extends React.Component {
 	}
 
 	renderItem = ({ item }) => {
-		const { user, baseUrl, theme } = this.props;
+		const {
+			user, baseUrl, theme, useRealName
+		} = this.props;
 		return (
 			<Message
 				item={item}
@@ -154,6 +157,7 @@ class SearchMessagesView extends React.Component {
 				showAttachment={() => {}}
 				getCustomEmoji={this.getCustomEmoji}
 				navToRoomInfo={this.navToRoomInfo}
+				useRealName={useRealName}
 				theme={theme}
 			/>
 		);
@@ -206,6 +210,7 @@ class SearchMessagesView extends React.Component {
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
+	useRealName: state.settings.UI_Use_Real_Name,
 	customEmojis: state.customEmojis
 });
 

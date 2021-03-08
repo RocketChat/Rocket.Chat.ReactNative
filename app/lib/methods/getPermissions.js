@@ -1,12 +1,55 @@
-import { InteractionManager } from 'react-native';
 import lt from 'semver/functions/lt';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { Q } from '@nozbe/watermelondb';
+import coerce from 'semver/functions/coerce';
 import orderBy from 'lodash/orderBy';
 
 import database from '../database';
 import log from '../../utils/log';
 import reduxStore from '../createStore';
 import protectedFunction from './helpers/protectedFunction';
+import { setPermissions as setPermissionsAction } from '../../actions/permissions';
+
+const PERMISSIONS = [
+	'add-user-to-any-c-room',
+	'add-user-to-any-p-room',
+	'add-user-to-joined-room',
+	'archive-room',
+	'auto-translate',
+	'create-invite-links',
+	'delete-c',
+	'delete-message',
+	'delete-p',
+	'edit-message',
+	'edit-room',
+	'force-delete-message',
+	'mute-user',
+	'pin-message',
+	'post-readonly',
+	'remove-user',
+	'set-leader',
+	'set-moderator',
+	'set-owner',
+	'set-react-when-readonly',
+	'set-readonly',
+	'toggle-room-e2e-encryption',
+	'transfer-livechat-guest',
+	'unarchive-room',
+	'view-broadcast-member-list',
+	'view-privileged-setting',
+	'view-room-administration',
+	'view-statistics',
+	'view-user-administration'
+];
+
+export async function setPermissions() {
+	const db = database.active;
+	const permissionsCollection = db.collections.get('permissions');
+	const allPermissions = await permissionsCollection.query(Q.where('id', Q.oneOf(PERMISSIONS))).fetch();
+	const parsed = allPermissions.reduce((acc, item) => ({ ...acc, [item.id]: item.roles }), {});
+
+	reduxStore.dispatch(setPermissionsAction(parsed));
+}
 
 const getUpdatedSince = (allRecords) => {
 	try {
@@ -26,7 +69,7 @@ const updatePermissions = async({ update = [], remove = [], allRecords }) => {
 		return;
 	}
 	const db = database.active;
-	const permissionsCollection = db.collections.get('permissions');
+	const permissionsCollection = db.get('permissions');
 
 	// filter permissions
 	let permissionsToCreate = [];
@@ -65,33 +108,35 @@ const updatePermissions = async({ update = [], remove = [], allRecords }) => {
 		await db.action(async() => {
 			await db.batch(...batch);
 		});
+		return true;
 	} catch (e) {
 		log(e);
 	}
 };
 
-export default function() {
+export function getPermissions() {
 	return new Promise(async(resolve) => {
 		try {
 			const serverVersion = reduxStore.getState().server.version;
 			const db = database.active;
-			const permissionsCollection = db.collections.get('permissions');
+			const permissionsCollection = db.get('permissions');
 			const allRecords = await permissionsCollection.query().fetch();
 
 			// if server version is lower than 0.73.0, fetches from old api
-			if (serverVersion && lt(serverVersion, '0.73.0')) {
+			if (serverVersion && lt(coerce(serverVersion), '0.73.0')) {
 				// RC 0.66.0
 				const result = await this.sdk.get('permissions.list');
 				if (!result.success) {
 					return resolve();
 				}
-				InteractionManager.runAfterInteractions(async() => {
-					await updatePermissions({ update: result.permissions, allRecords });
-					return resolve();
-				});
+				const changePermissions = await updatePermissions({ update: result.permissions, allRecords });
+				if (changePermissions) {
+					setPermissions();
+				}
+				return resolve();
 			} else {
 				const params = {};
-				const updatedSince = await getUpdatedSince(allRecords);
+				const updatedSince = getUpdatedSince(allRecords);
 				if (updatedSince) {
 					params.updatedSince = updatedSince;
 				}
@@ -102,10 +147,11 @@ export default function() {
 					return resolve();
 				}
 
-				InteractionManager.runAfterInteractions(async() => {
-					await updatePermissions({ update: result.update, remove: result.delete, allRecords });
-					return resolve();
-				});
+				const changePermissions = await updatePermissions({ update: result.update, remove: result.delete, allRecords });
+				if (changePermissions) {
+					setPermissions();
+				}
+				return resolve();
 			}
 		} catch (e) {
 			log(e);

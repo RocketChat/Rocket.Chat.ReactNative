@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import isEqual from 'react-fast-compare';
+import { dequal } from 'dequal';
 
 import * as HeaderButton from '../../../containers/HeaderButton';
 import database from '../../../lib/database';
@@ -35,7 +35,7 @@ class RightButtonsContainer extends Component {
 		const db = database.active;
 		if (tmid) {
 			try {
-				const threadRecord = await db.collections.get('messages').find(tmid);
+				const threadRecord = await db.get('messages').find(tmid);
 				this.observeThread(threadRecord);
 			} catch (e) {
 				console.log('Can\'t find message to observe.');
@@ -43,7 +43,7 @@ class RightButtonsContainer extends Component {
 		}
 		if (rid) {
 			try {
-				const subCollection = db.collections.get('subscriptions');
+				const subCollection = db.get('subscriptions');
 				const subRecord = await subCollection.find(rid);
 				this.observeSubscription(subRecord);
 			} catch (e) {
@@ -59,15 +59,16 @@ class RightButtonsContainer extends Component {
 		if (nextState.isFollowingThread !== isFollowingThread) {
 			return true;
 		}
-		if (!isEqual(nextState.tunread, tunread)) {
+		if (!dequal(nextState.tunread, tunread)) {
 			return true;
 		}
-		if (!isEqual(nextState.tunreadUser, tunreadUser)) {
+		if (!dequal(nextState.tunreadUser, tunreadUser)) {
 			return true;
 		}
-		if (!isEqual(nextState.tunreadGroup, tunreadGroup)) {
+		if (!dequal(nextState.tunreadGroup, tunreadGroup)) {
 			return true;
 		}
+		return false;
 	}
 
 	componentWillUnmount() {
