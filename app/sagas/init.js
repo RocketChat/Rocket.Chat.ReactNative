@@ -32,7 +32,7 @@ const restore = function* restore() {
 			yield put(appStart({ root: ROOT_OUTSIDE }));
 		} else if (!userId) {
 			const serversDB = database.servers;
-			const serversCollection = serversDB.collections.get('servers');
+			const serversCollection = serversDB.get('servers');
 			const servers = yield serversCollection.query().fetch();
 
 			// Check if there're other logged in servers and picks first one
