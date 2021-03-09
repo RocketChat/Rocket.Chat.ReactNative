@@ -4,6 +4,8 @@
 <dict>
 	<key>AppGroup</key>
 	<string>group.ios.chat.rocket</string>
+	<key>IS_OFFICIAL</key>
+	<false/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -19,7 +21,7 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>4.14.1</string>
+	<string>4.15.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>KeychainGroup</key>
