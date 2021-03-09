@@ -908,7 +908,6 @@ class RoomsListView extends React.Component {
 				username={username}
 				showLastMessage={StoreLastMessage}
 				onPress={this.onPressItem}
-				testID={`rooms-list-view-item-${ item.name }`}
 				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
 				toggleFav={this.toggleFav}
 				toggleRead={this.toggleRead}
