@@ -7,7 +7,6 @@ import { storiesOf } from '@storybook/react-native';
 import RoomItem from './RoomItem';
 import './List';
 import './ServerItem';
-import './Reply';
 import Message from './Message';
 import UiKitMessage from './UiKitMessage';
 import UiKitModal from './UiKitModal';
