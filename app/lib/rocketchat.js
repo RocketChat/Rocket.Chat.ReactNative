@@ -177,9 +177,16 @@ const RocketChat = {
 		}
 		this.controller = new AbortController();
 	},
+	checkAndReopen() {
+		return this?.sdk?.checkAndReopen();
+	},
 	connect({ server, user, logoutOnError = false }) {
 		return new Promise((resolve) => {
-			if (!this.sdk || this.sdk.client.host !== server) {
+			if (this?.sdk?.client?.host === server) {
+				return resolve();
+			} else {
+				this.sdk?.disconnect?.();
+				this.sdk = null;
 				database.setActiveDB(server);
 			}
 			reduxStore.dispatch(connectRequest());
@@ -208,11 +215,6 @@ const RocketChat = {
 
 			EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
 
-			if (this.sdk) {
-				this.sdk.disconnect();
-				this.sdk = null;
-			}
-
 			if (this.code) {
 				this.code = null;
 			}
@@ -239,6 +241,10 @@ const RocketChat = {
 				});
 
 			sdkConnect();
+
+			this.connectedListener = this.sdk.onStreamData('connecting', () => {
+				reduxStore.dispatch(connectRequest());
+			});
 
 			this.connectedListener = this.sdk.onStreamData('connected', () => {
 				reduxStore.dispatch(connectSuccess());
@@ -1192,7 +1198,7 @@ const RocketChat = {
 			// get user roles on the server from redux
 			const userRoles = (shareUser?.roles || loginUser?.roles) || [];
 			const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
-			return permissions.map(permission => permission.some(r => mergedRoles.includes(r) ?? false));
+			return permissions.map(permission => permission?.some(r => mergedRoles.includes(r) ?? false));
 		} catch (e) {
 			log(e);
 		}

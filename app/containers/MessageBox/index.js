@@ -939,7 +939,7 @@ class MessageBox extends Component {
 					keyboardType='twitter'
 					blurOnSubmit={false}
 					placeholder={I18n.t('New_Message')}
-					placeholderTextColor={themes[theme].auxiliaryTintColor}
+					placeholderTextColor={themes[theme].auxiliaryText}
 					onChangeText={this.onChangeText}
 					onSelectionChange={this.onSelectionChange}
 					underlineColorAndroid='transparent'
