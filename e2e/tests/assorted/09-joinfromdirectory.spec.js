@@ -2,15 +2,17 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const data = require('../../data');
-const { navigateToLogin, login, tapBack } = require('../../helpers/app');
+const { navigateToLogin, login, tapBack, sleep } = require('../../helpers/app');
 
 const testuser = data.users.regular
 
 async function navigateToRoom(search) {
-	await element(by.id('federation-view-search')).replaceText(search);	
-	await waitFor(element(by.id(`federation-view-item-${ search }`))).toBeVisible().withTimeout(10000);
-	await expect(element(by.id(`federation-view-item-${ search }`))).toExist();
-	await element(by.id(`federation-view-item-${ search }`)).tap();
+	await element(by.id('directory-view-search')).replaceText(search);	
+	await waitFor(element(by.id(`directory-view-item-${ search }`))).toBeVisible().withTimeout(10000);
+	await sleep(300); // app takes some time to animate
+	await element(by.id(`directory-view-item-${ search }`)).tap();
+	await waitFor(element(by.id('room-view'))).toExist().withTimeout(5000);
+	await waitFor(element(by.id(`room-view-title-${ search }`))).toExist().withTimeout(5000);
 }
 
 describe('Join room from directory', () => {
@@ -23,10 +25,11 @@ describe('Join room from directory', () => {
 	describe('Usage', async() => {
 		it('should tap directory', async() => {
 			await element(by.id('rooms-list-view-directory')).tap();	
+			await waitFor(element(by.id('directory-view'))).toExist().withTimeout(2000);
 		})
 
-		it('should search and navigate', async() => {
-			await navigateToRoom('general');
+		it('should search public channel and navigate', async() => {
+			await navigateToRoom(data.channels.detoxpublic.name);
 		})
 
 		it('should back and tap directory', async() => {
@@ -34,12 +37,11 @@ describe('Join room from directory', () => {
 			await element(by.id('rooms-list-view-directory')).tap();	
 		})
 
-		it('should tap dropdown and search user', async() => {
-			await element(by.id('federation-view-create-channel')).tap();	
-			await element(by.label('Users')).tap();	
+		it('should search user and navigate', async() => {
+			await element(by.id('directory-view-dropdown')).tap();	
+			await element(by.label('Users')).tap();
 			await element(by.label('Search by')).tap();	
-			await navigateToRoom('rocket.cat');
+			await navigateToRoom(data.users.alternate.username);
 		})
-		
 	});
 });
