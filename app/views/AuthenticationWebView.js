@@ -11,6 +11,7 @@ import ActivityIndicator from '../containers/ActivityIndicator';
 import { withTheme } from '../theme';
 import debounce from '../utils/debounce';
 import * as HeaderButton from '../containers/HeaderButton';
+import { twoFactor } from '../utils/twoFactor';
 
 const userAgent = isIOS
 	? 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1'
@@ -83,6 +84,11 @@ class AuthenticationWebView extends React.PureComponent {
 			await RocketChat.loginOAuthOrSso(params);
 		} catch (e) {
 			console.warn(e);
+			if (e.data?.error === 'totp-required') {
+				const { details } = e.data;
+				const code = await twoFactor({ method: details?.method || 'totp', invalid: details?.error === 'totp-required' });
+				await RocketChat.loginOAuthOrSso({ ...params, code: code?.twoFactorCode });
+			}
 		}
 		this.setState({ logging: false });
 		this.dismiss();
