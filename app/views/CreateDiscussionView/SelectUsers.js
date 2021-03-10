@@ -22,7 +22,7 @@ const SelectUsers = ({
 	const getUsers = debounce(async(keyword = '') => {
 		try {
 			const db = database.active;
-			const usersCollection = db.collections.get('users');
+			const usersCollection = db.get('users');
 			const res = await RocketChat.search({ text: keyword, filterRooms: false });
 			let items = [...users.filter(u => selected.includes(u.name)), ...res.filter(r => !users.find(u => u.name === r.name))];
 			const records = await usersCollection.query(Q.where('username', Q.oneOf(items.map(u => u.name)))).fetch();

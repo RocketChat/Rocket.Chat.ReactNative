@@ -71,7 +71,7 @@ class ScreenLockConfigView extends React.Component {
 	init = async() => {
 		const { server } = this.props;
 		const serversDB = database.servers;
-		const serversCollection = serversDB.collections.get('servers');
+		const serversCollection = serversDB.get('servers');
 		try {
 			this.serverRecord = await serversCollection.find(server);
 			this.setState({

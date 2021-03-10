@@ -30,7 +30,7 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 
 		// Fetch server info to check E2E enable
 		const serversDB = database.servers;
-		const serversCollection = serversDB.collections.get('servers');
+		const serversCollection = serversDB.get('servers');
 		let serverInfo;
 		try {
 			serverInfo = yield serversCollection.find(server);

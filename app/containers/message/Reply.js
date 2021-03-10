@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import isEqual from 'deep-equal';
+import { dequal } from 'dequal';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
@@ -133,7 +133,7 @@ const Fields = React.memo(({ attachment, theme, getCustomEmoji }) => {
 			))}
 		</View>
 	);
-}, (prevProps, nextProps) => isEqual(prevProps.attachment.fields, nextProps.attachment.fields) && prevProps.theme === nextProps.theme);
+}, (prevProps, nextProps) => dequal(prevProps.attachment.fields, nextProps.attachment.fields) && prevProps.theme === nextProps.theme);
 
 const Reply = React.memo(({
 	attachment, timeFormat, index, getCustomEmoji, theme
@@ -199,7 +199,7 @@ const Reply = React.memo(({
 			/>
 		</>
 	);
-}, (prevProps, nextProps) => isEqual(prevProps.attachment, nextProps.attachment) && prevProps.theme === nextProps.theme);
+}, (prevProps, nextProps) => dequal(prevProps.attachment, nextProps.attachment) && prevProps.theme === nextProps.theme);
 
 Reply.propTypes = {
 	attachment: PropTypes.object,

@@ -6,7 +6,7 @@ import prompt from 'react-native-prompt-android';
 import SHA256 from 'js-sha256';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
-import isEqual from 'lodash/isEqual';
+import { dequal } from 'dequal';
 import omit from 'lodash/omit';
 
 import Touch from '../../utils/touch';
@@ -91,19 +91,9 @@ class ProfileView extends React.Component {
 		 * it's resetting the avatar right after
 		 * select some image from gallery.
 		 */
-		if (!isEqual(omit(user, ['status']), omit(nextProps.user, ['status']))) {
+		if (!dequal(omit(user, ['status']), omit(nextProps.user, ['status']))) {
 			this.init(nextProps.user);
 		}
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		if (!isEqual(nextState, this.state)) {
-			return true;
-		}
-		if (!isEqual(nextProps, this.props)) {
-			return true;
-		}
-		return false;
 	}
 
 	setAvatar = (avatar) => {

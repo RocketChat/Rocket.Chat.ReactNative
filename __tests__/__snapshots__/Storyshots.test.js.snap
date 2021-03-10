@@ -44423,6 +44423,309 @@ exports[`Storyshots Message list message 1`] = `
         ]
       }
     >
+      Toggle e2e encryption
+    </Text>
+    <View
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <View>
+        <View
+          style={
+            Array [
+              Object {
+                "flexDirection": "column",
+                "paddingHorizontal": 14,
+                "paddingVertical": 4,
+                "width": "100%",
+              },
+              undefined,
+            ]
+          }
+        >
+          <View
+            style={
+              Object {
+                "flexDirection": "row",
+              }
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "borderRadius": 2,
+                    "height": 20,
+                    "width": 20,
+                  },
+                  Object {
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              <View
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <View
+                  style={
+                    Array [
+                      Object {
+                        "overflow": "hidden",
+                      },
+                      Object {
+                        "borderRadius": 2,
+                        "height": 20,
+                        "width": 20,
+                      },
+                    ]
+                  }
+                >
+                  <FastImageView
+                    resizeMode="cover"
+                    source={
+                      Object {
+                        "headers": undefined,
+                        "priority": "high",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
+                      }
+                    }
+                    style={
+                      Object {
+                        "bottom": 0,
+                        "left": 0,
+                        "position": "absolute",
+                        "right": 0,
+                        "top": 0,
+                      }
+                    }
+                  />
+                </View>
+              </View>
+            </View>
+            <View
+              style={
+                Array [
+                  Object {
+                    "flex": 1,
+                    "marginLeft": 46,
+                  },
+                  Object {
+                    "marginLeft": 10,
+                  },
+                ]
+              }
+            >
+              <Text
+                accessibilityLabel="This room's encryption has been disabled by diego.mello"
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontStyle": "italic",
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#9ca2a8",
+                    },
+                  ]
+                }
+              >
+                This room's encryption has been disabled by diego.mello
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <View>
+        <View
+          style={
+            Array [
+              Object {
+                "flexDirection": "column",
+                "paddingHorizontal": 14,
+                "paddingVertical": 4,
+                "width": "100%",
+              },
+              undefined,
+            ]
+          }
+        >
+          <View
+            style={
+              Object {
+                "flexDirection": "row",
+              }
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "borderRadius": 2,
+                    "height": 20,
+                    "width": 20,
+                  },
+                  Object {
+                    "marginLeft": 16,
+                  },
+                ]
+              }
+            >
+              <View
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <View
+                  style={
+                    Array [
+                      Object {
+                        "overflow": "hidden",
+                      },
+                      Object {
+                        "borderRadius": 2,
+                        "height": 20,
+                        "width": 20,
+                      },
+                    ]
+                  }
+                >
+                  <FastImageView
+                    resizeMode="cover"
+                    source={
+                      Object {
+                        "headers": undefined,
+                        "priority": "high",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
+                      }
+                    }
+                    style={
+                      Object {
+                        "bottom": 0,
+                        "left": 0,
+                        "position": "absolute",
+                        "right": 0,
+                        "top": 0,
+                      }
+                    }
+                  />
+                </View>
+              </View>
+            </View>
+            <View
+              style={
+                Array [
+                  Object {
+                    "flex": 1,
+                    "marginLeft": 46,
+                  },
+                  Object {
+                    "marginLeft": 10,
+                  },
+                ]
+              }
+            >
+              <Text
+                accessibilityLabel="This room's encryption has been enabled by diego.mello"
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontStyle": "italic",
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#9ca2a8",
+                    },
+                  ]
+                }
+              >
+                This room's encryption has been enabled by diego.mello
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <Text
+      style={
+        Array [
+          Object {
+            "fontSize": 20,
+            "fontWeight": "300",
+            "marginLeft": 10,
+            "marginVertical": 30,
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          Object {
+            "marginBottom": 0,
+            "marginTop": 30,
+          },
+        ]
+      }
+    >
       Ignored
     </Text>
     <View
