@@ -4,14 +4,12 @@ import {
 	Text, View, ScrollView, TouchableOpacity, Keyboard, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
-import equal from 'deep-equal';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 import ImagePicker from 'react-native-image-crop-picker';
-import isEqual from 'lodash/isEqual';
+import { dequal } from 'dequal';
 import isEmpty from 'lodash/isEmpty';
 import lt from 'semver/functions/lt';
 import coerce from 'semver/functions/coerce';
-
 
 import database from '../../lib/database';
 import { deleteRoom as deleteRoomAction } from '../../actions/room';
@@ -44,14 +42,6 @@ const PERMISSION_ARCHIVE = 'archive-room';
 const PERMISSION_UNARCHIVE = 'unarchive-room';
 const PERMISSION_DELETE_C = 'delete-c';
 const PERMISSION_DELETE_P = 'delete-p';
-const PERMISSIONS_ARRAY = [
-	PERMISSION_SET_READONLY,
-	PERMISSION_SET_REACT_WHEN_READONLY,
-	PERMISSION_ARCHIVE,
-	PERMISSION_UNARCHIVE,
-	PERMISSION_DELETE_C,
-	PERMISSION_DELETE_P
-];
 
 class RoomInfoEditView extends React.Component {
 	static navigationOptions = () => ({
@@ -63,7 +53,13 @@ class RoomInfoEditView extends React.Component {
 		deleteRoom: PropTypes.func,
 		serverVersion: PropTypes.string,
 		encryptionEnabled: PropTypes.bool,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		setReadOnlyPermission: PropTypes.array,
+		setReactWhenReadOnlyPermission: PropTypes.array,
+		archiveRoomPermission: PropTypes.array,
+		unarchiveRoomPermission: PropTypes.array,
+		deleteCPermission: PropTypes.array,
+		deletePPermission: PropTypes.array
 	};
 
 	constructor(props) {
@@ -90,16 +86,6 @@ class RoomInfoEditView extends React.Component {
 		this.loadRoom();
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		if (!equal(nextState, this.state)) {
-			return true;
-		}
-		if (!equal(nextProps, this.props)) {
-			return true;
-		}
-		return false;
-	}
-
 	componentWillUnmount() {
 		if (this.querySubscription && this.querySubscription.unsubscribe) {
 			this.querySubscription.unsubscribe();
@@ -108,14 +94,22 @@ class RoomInfoEditView extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	loadRoom = async() => {
-		const { route } = this.props;
+		const {
+			route,
+			setReadOnlyPermission,
+			setReactWhenReadOnlyPermission,
+			archiveRoomPermission,
+			unarchiveRoomPermission,
+			deleteCPermission,
+			deletePPermission
+		} = this.props;
 		const rid = route.params?.rid;
 		if (!rid) {
 			return;
 		}
 		try {
 			const db = database.active;
-			const sub = await db.collections.get('subscriptions').find(rid);
+			const sub = await db.get('subscriptions').find(rid);
 			const observable = sub.observe();
 
 			this.querySubscription = observable.subscribe((data) => {
@@ -123,8 +117,25 @@ class RoomInfoEditView extends React.Component {
 				this.init(this.room);
 			});
 
-			const permissions = await RocketChat.hasPermission(PERMISSIONS_ARRAY, rid);
-			this.setState({ permissions });
+			const result = await RocketChat.hasPermission([
+				setReadOnlyPermission,
+				setReactWhenReadOnlyPermission,
+				archiveRoomPermission,
+				unarchiveRoomPermission,
+				deleteCPermission,
+				deletePPermission
+			], rid);
+
+			this.setState({
+				permissions: {
+					[PERMISSION_SET_READONLY]: result[0],
+					[PERMISSION_SET_REACT_WHEN_READONLY]: result[1],
+					[PERMISSION_ARCHIVE]: result[2],
+					[PERMISSION_UNARCHIVE]: result[3],
+					[PERMISSION_DELETE_C]: result[4],
+					[PERMISSION_DELETE_P]: result[5]
+				}
+			});
 		} catch (e) {
 			log(e);
 		}
@@ -179,7 +190,7 @@ class RoomInfoEditView extends React.Component {
 			&& room.t === 'p' === t
 			&& room.ro === ro
 			&& room.reactWhenReadOnly === reactWhenReadOnly
-			&& isEqual(room.sysMes, systemMessages)
+			&& dequal(room.sysMes, systemMessages)
 			&& enableSysMes === (room.sysMes && room.sysMes.length > 0)
 			&& room.encrypted === encrypted
 			&& isEmpty(avatar)
@@ -239,7 +250,7 @@ class RoomInfoEditView extends React.Component {
 			params.reactWhenReadOnly = reactWhenReadOnly;
 		}
 
-		if (!isEqual(room.sysMes, systemMessages)) {
+		if (!dequal(room.sysMes, systemMessages)) {
 			params.systemMessages = systemMessages;
 		}
 
@@ -666,8 +677,14 @@ class RoomInfoEditView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	serverVersion: state.share.server.version || state.server.version,
-	encryptionEnabled: state.encryption.enabled
+	serverVersion: state.server.version,
+	encryptionEnabled: state.encryption.enabled,
+	setReadOnlyPermission: state.permissions[PERMISSION_SET_READONLY],
+	setReactWhenReadOnlyPermission: state.permissions[PERMISSION_SET_REACT_WHEN_READONLY],
+	archiveRoomPermission: state.permissions[PERMISSION_ARCHIVE],
+	unarchiveRoomPermission: state.permissions[PERMISSION_UNARCHIVE],
+	deleteCPermission: state.permissions[PERMISSION_DELETE_C],
+	deletePPermission: state.permissions[PERMISSION_DELETE_P]
 });
 
 const mapDispatchToProps = dispatch => ({
