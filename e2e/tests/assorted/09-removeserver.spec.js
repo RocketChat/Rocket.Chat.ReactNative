@@ -1,5 +1,5 @@
 const {
-	device, expect, element, by, waitFor
+	device, element, by, waitFor
 } = require('detox');
 const data = require('../../data');
 const { sleep, navigateToLogin, login } = require('../../helpers/app');
@@ -46,16 +46,6 @@ describe('Delete server', () => {
 		await element(by.id('register-view-submit')).tap();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
 
-		// Need run this instead of register the user
-		// await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
-		// await element(by.id('new-server-view-input')).replaceText(data.alternateServer);
-		// await element(by.id('new-server-view-button')).tap();
-		// await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(60000);
-		// await element(by.id('workspace-view-login')).tap();
-    	// await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
-  	  	// await expect(element(by.id('login-view'))).toBeVisible();
-		// await login(data.users.existing.username, data.users.existing.password);
-
 		// For a sanity test, to make sure roomslist is showing correct rooms
 		// app CANNOT show public room created on previous tests
 		// await waitFor(element(by.id(`rooms-list-view-item-public${ data.random }`))).toBeNotVisible().withTimeout(60000);
@@ -68,5 +58,8 @@ describe('Delete server', () => {
 		await waitFor(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible().withTimeout(5000);
 		await element(by.id(`rooms-list-header-server-${ data.server }`)).longPress(1500);
     	await element(by.label('Delete').and(by.type('_UIAlertControllerActionView'))).tap(); 
+		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
+		await waitFor(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible().withTimeout(5000);
+		await waitFor(element(by.id(`rooms-list-header-server-${ data.server }`))).toBeNotVisible().withTimeout(10000);
 	});
 });
