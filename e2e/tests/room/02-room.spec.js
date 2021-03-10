@@ -14,13 +14,6 @@ async function navigateToRoom(roomName) {
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 }
 
-async function navigateToUser(user) {
-    await searchRoom(`${ user }`);
-	await waitFor(element(by.id(`rooms-list-view-item-${ user }`))).toExist().withTimeout(60000);
-	await element(by.id(`rooms-list-view-item-${ user }`)).tap();
-	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
-}
-
 describe('Room screen', () => {
 	const mainRoom = data.groups.private.name;
 
@@ -359,26 +352,6 @@ describe('Room screen', () => {
 				await expect(element(by.id('thread-messages-view'))).toExist();
 				await tapBack();
 			});
-		});
-
-		describe('Mark message as unread', async() => {
-			it('should mark message as unread', async() => {
-				await tapBack();
-				await navigateToUser(data.users.alternate.username);
-				await mockMessage('message')
-				await expect(element(by.label(`${ data.random }message`)).atIndex(0)).toExist();
-				await tapBack();
-				await logout();
-				await navigateToLogin();
-				await login(data.users.alternate.username, data.users.alternate.password);
-				await navigateToUser(data.users.regular.username);
-				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
-				await expect(element(by.id('action-sheet'))).toExist();
-				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by.label('Mark Unread')).tap();
-			});
-	
 		});
 
 		// after(async() => {
