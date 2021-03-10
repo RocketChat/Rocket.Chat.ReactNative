@@ -24,6 +24,7 @@ import Button from '../containers/Button';
 import { withTheme } from '../theme';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
+import { Encryption } from '../lib/encryption';
 
 const styles = StyleSheet.create({
 	container: {
@@ -103,6 +104,7 @@ class E2ESaveYourPasswordView extends React.Component {
 		const { navigation, server, encryptionSetBanner } = this.props;
 		// Remove stored password
 		await UserPreferences.removeItem(`${ server }-${ E2E_RANDOM_PASSWORD_KEY }`);
+		await Encryption.persistKeysSave(server, true);
 		// Hide encryption banner
 		encryptionSetBanner();
 		navigation.pop();

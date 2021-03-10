@@ -69,9 +69,11 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 			storedPublicKey = EJSON.parse(storedPublicKey);
 		}
 
-		if (storedPublicKey && storedPrivateKey) {
+		const isSave = yield UserPreferences.getStringAsync(`${ server }-${ E2E_PUBLIC_KEY }-isSave`);
+
+		if (storedPublicKey && storedPrivateKey && isSave === 'true') {
 			// Persist these keys
-			yield Encryption.persistKeys(server, storedPublicKey, storedPrivateKey);
+			yield Encryption.persistKeys(server, storedPublicKey, storedPrivateKey, isSave);
 			yield put(encryptionSet(true));
 		} else {
 			// Create new keys since the user doesn't have any

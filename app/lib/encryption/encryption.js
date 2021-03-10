@@ -106,10 +106,15 @@ class Encryption {
 	}
 
 	// Persist keys on UserPreferences
-	persistKeys = async(server, publicKey, privateKey) => {
+	persistKeys = async(server, publicKey, privateKey, isSave = false) => {
 		this.privateKey = await SimpleCrypto.RSA.importKey(EJSON.parse(privateKey));
 		await UserPreferences.setStringAsync(`${ server }-${ E2E_PUBLIC_KEY }`, EJSON.stringify(publicKey));
 		await UserPreferences.setStringAsync(`${ server }-${ E2E_PRIVATE_KEY }`, privateKey);
+		this.persistKeysSave(server, isSave);
+	}
+
+	persistKeysSave = async(server, isSave) => {
+		await UserPreferences.setStringAsync(`${ server }-${ E2E_PUBLIC_KEY }-isSave`, isSave.toString());
 	}
 
 	// Could not obtain public-private keypair from server.
