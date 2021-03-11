@@ -12,7 +12,8 @@ const { width } = Dimensions.get('window');
 let _theme = 'light';
 const lastMessage = {
 	u: {
-		username: 'diego.mello'
+		username: 'diego.mello',
+		name: 'Diego Mello'
 	},
 	msg: longText
 };
@@ -88,7 +89,8 @@ export default ({ theme }) => {
 				showLastMessage
 				lastMessage={{
 					u: {
-						username: 'rocket.chat'
+						username: 'rocket.chat',
+						name: 'Rocket Chat'
 					},
 					msg: '2'
 				}}
@@ -97,7 +99,8 @@ export default ({ theme }) => {
 				showLastMessage
 				lastMessage={{
 					u: {
-						username: 'diego.mello'
+						username: 'diego.mello',
+						name: 'Diego Mello'
 					},
 					msg: '1'
 				}}
@@ -123,6 +126,39 @@ export default ({ theme }) => {
 				showLastMessage
 				alert
 				tunread={[1]}
+				lastMessage={lastMessage}
+			/>
+			<RoomItem
+				showLastMessage
+				useRealName
+				lastMessage={{
+					attachments: [1],
+					u: {
+						username: 'diego.mello',
+						name: 'Diego Mello'
+					}
+				}}
+			/>
+			<RoomItem
+				showLastMessage
+				lastMessage={{
+					attachments: [1],
+					u: {
+						username: 'diego.mello',
+						name: 'Diego Mello'
+					}
+				}}
+				useRealName={false}
+			/>
+			<RoomItem
+				showLastMessage
+				useRealName
+				type='c'
+				lastMessage={lastMessage}
+			/>
+			<RoomItem
+				showLastMessage
+				type='c'
 				lastMessage={lastMessage}
 			/>
 		</ScrollView>

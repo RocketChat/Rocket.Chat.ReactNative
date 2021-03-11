@@ -24,9 +24,9 @@ const formatMsg = ({
 
 	let prefix = '';
 	const isLastMessageSentByMe = lastMessage.u.username === username;
+	const name = useRealName ? lastMessage.u.name : lastMessage.u.username;
 
 	if (!lastMessage.msg && lastMessage.attachments && Object.keys(lastMessage.attachments).length) {
-		const name = useRealName ? lastMessage.u.name : lastMessage.u.username;
 		const user = isLastMessageSentByMe ? I18n.t('You') : name;
 		return I18n.t('User_sent_an_attachment', { user });
 	}
@@ -39,8 +39,7 @@ const formatMsg = ({
 	if (isLastMessageSentByMe) {
 		prefix = I18n.t('You_colon');
 	}	else if (type !== 'd') {
-		const { u: { name } } = lastMessage;
-		prefix = `${ useRealName ? name : lastMessage.u.username }: `;
+		prefix = `${ name }: `;
 	}
 
 	return `${ prefix }${ lastMessage.msg }`;
