@@ -463,10 +463,6 @@ const RocketChat = {
 			try {
 				const result = await this.login(params, loginEmailPassword);
 
-				if (!loginEmailPassword && result.token) {
-					reduxStore.dispatch(loginRequest({ resume: result.token }));
-				}
-
 				return resolve(result);
 			} catch (e) {
 				if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
@@ -485,19 +481,17 @@ const RocketChat = {
 								params = { user, password };
 							}
 
-							return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
+							return resolve(this.login({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
 						}
 
-						const result = this.loginTOTP({
+						return resolve(this.login({
 							totp: {
 								login: {
 									...params
 								},
 								code: code?.twoFactorCode
 							}
-						}, loginEmailPassword);
-
-						return resolve(result);
+						}, loginEmailPassword));
 					} catch {
 						// twoFactor was canceled
 						return reject();
@@ -531,8 +525,9 @@ const RocketChat = {
 		return this.loginTOTP(params, true);
 	},
 
-	loginOAuthOrSso(params) {
-		return this.loginTOTP(params, false);
+	async loginOAuthOrSso(params) {
+		const result = await this.loginTOTP(params, false);
+		reduxStore.dispatch(loginRequest({ resume: result.token }));
 	},
 
 	async login(params, loginEmailPassword) {
