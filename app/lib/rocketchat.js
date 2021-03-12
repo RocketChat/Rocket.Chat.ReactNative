@@ -486,18 +486,18 @@ const RocketChat = {
 							}
 
 							return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
-						} else {
-							const result = this.loginTOTP({
-								totp: {
-									login: {
-										...params
-									},
-									code: code?.twoFactorCode
-								}
-							}, loginEmailPassword);
-
-							return resolve(result);
 						}
+
+						const result = this.loginTOTP({
+							totp: {
+								login: {
+									...params
+								},
+								code: code?.twoFactorCode
+							}
+						}, loginEmailPassword);
+
+						return resolve(result);
 					} catch {
 						// twoFactor was canceled
 						return reject();
