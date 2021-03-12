@@ -483,17 +483,20 @@ const RocketChat = {
 								const password = params.password ?? params.ldapPass ?? params.crowdPassword;
 								params = { user, password };
 							}
-						}
-						const result = this.loginTOTP({
-							totp: {
-								login: {
-									...params
-								},
-								code: code?.twoFactorCode
-							}
-						}, loginEmailPassword);
 
-						return resolve(result);
+							return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
+						} else {
+							const result = this.loginTOTP({
+								totp: {
+									login: {
+										...params
+									},
+									code: code?.twoFactorCode
+								}
+							}, loginEmailPassword);
+
+							return resolve(result);
+						}
 					} catch {
 						// twoFactor was canceled
 						return reject();
