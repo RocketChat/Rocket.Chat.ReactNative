@@ -462,23 +462,38 @@ const RocketChat = {
 		return new Promise(async(resolve, reject) => {
 			try {
 				const result = await this.login(params, loginEmailPassword);
+
+				if (!loginEmailPassword && result.token) {
+					reduxStore.dispatch(loginRequest({ resume: result.token }));
+				}
+
 				return resolve(result);
 			} catch (e) {
 				if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
 					const { details } = e.data;
 					try {
-						reduxStore.dispatch(setUser({ username: params.user || params.username }));
-						const code = await twoFactor({ method: details?.method || 'totp', invalid: e.data.error === 'totp-invalid' });
-
+						const code = await twoFactor({ method: details?.method || 'totp', invalid: details?.error === 'totp-invalid' });
 						// Force normalized params for 2FA starting RC 3.9.0.
-						const serverVersion = reduxStore.getState().server.version;
-						if (serverVersion && gte(coerce(serverVersion), '3.9.0')) {
-							const user = params.user ?? params.username;
-							const password = params.password ?? params.ldapPass ?? params.crowdPassword;
-							params = { user, password };
-						}
+						if (loginEmailPassword) {
+							reduxStore.dispatch(setUser({ username: params.user || params.username }));
 
-						return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
+							const serverVersion = reduxStore.getState().server.version;
+							if (serverVersion && gte(coerce(serverVersion), '3.9.0')) {
+								const user = params.user ?? params.username;
+								const password = params.password ?? params.ldapPass ?? params.crowdPassword;
+								params = { user, password };
+							}
+						}
+						const result = this.loginTOTP({
+							totp: {
+								login: {
+									...params
+								},
+								code: code?.twoFactorCode
+							}
+						}, loginEmailPassword);
+
+						return resolve(result);
 					} catch {
 						// twoFactor was canceled
 						return reject();
@@ -512,9 +527,8 @@ const RocketChat = {
 		return this.loginTOTP(params, true);
 	},
 
-	async loginOAuthOrSso(params) {
-		const result = await this.login(params);
-		reduxStore.dispatch(loginRequest({ resume: result.token }));
+	loginOAuthOrSso(params) {
+		return this.loginTOTP(params, false);
 	},
 
 	async login(params, loginEmailPassword) {
