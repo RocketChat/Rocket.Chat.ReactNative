@@ -462,7 +462,6 @@ const RocketChat = {
 		return new Promise(async(resolve, reject) => {
 			try {
 				const result = await this.login(params, loginEmailPassword);
-
 				return resolve(result);
 			} catch (e) {
 				if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
@@ -481,7 +480,7 @@ const RocketChat = {
 								params = { user, password };
 							}
 
-							return resolve(this.login({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
+							return resolve(this.login({ ...params, code: code?.twoFactorCode }));
 						}
 
 						return resolve(this.login({
@@ -526,7 +525,7 @@ const RocketChat = {
 	},
 
 	async loginOAuthOrSso(params) {
-		const result = await this.loginTOTP(params, false);
+		const result = await this.loginTOTP(params);
 		reduxStore.dispatch(loginRequest({ resume: result.token }));
 	},
 
