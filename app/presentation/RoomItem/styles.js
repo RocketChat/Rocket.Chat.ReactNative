@@ -60,7 +60,8 @@ export default StyleSheet.create({
 		flex: 1,
 		fontSize: 14,
 		lineHeight: 17,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		marginTop: 7
 	},
 	avatar: {
 		marginRight: 10
