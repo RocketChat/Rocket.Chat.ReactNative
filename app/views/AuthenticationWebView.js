@@ -169,7 +169,6 @@ class AuthenticationWebView extends React.PureComponent {
 					onLoadEnd={() => {
 						this.setState({ loading: false });
 					}}
-					incognito
 				/>
 				{ loading ? <ActivityIndicator size='large' theme={theme} absolute /> : null }
 			</>
