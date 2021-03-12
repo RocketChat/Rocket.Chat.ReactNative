@@ -473,10 +473,11 @@ const RocketChat = {
 					const { details } = e.data;
 					try {
 						const code = await twoFactor({ method: details?.method || 'totp', invalid: details?.error === 'totp-invalid' });
-						// Force normalized params for 2FA starting RC 3.9.0.
+
 						if (loginEmailPassword) {
 							reduxStore.dispatch(setUser({ username: params.user || params.username }));
 
+							// Force normalized params for 2FA starting RC 3.9.0.
 							const serverVersion = reduxStore.getState().server.version;
 							if (serverVersion && gte(coerce(serverVersion), '3.9.0')) {
 								const user = params.user ?? params.username;
