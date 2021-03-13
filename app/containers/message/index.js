@@ -347,6 +347,7 @@ class MessageContainer extends React.Component {
 					callJitsi={callJitsi}
 					blockAction={blockAction}
 					theme={theme}
+					user={user}
 				/>
 			</MessageContext.Provider>
 		);
