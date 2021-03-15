@@ -704,5 +704,7 @@ export default {
 	Direct_message: 'Direct message',
 	Message_Ignored: 'Message ignored. Tap to display it.',
 	Enter_workspace_URL: 'Enter workspace URL',
-	Workspace_URL_Example: 'Ex. your-company.rocket.chat'
+	Workspace_URL_Example: 'Ex. your-company.rocket.chat',
+	This_room_encryption_has_been_enabled_by__username_: 'This room\'s encryption has been enabled by {{username}}',
+	This_room_encryption_has_been_disabled_by__username_: 'This room\'s encryption has been disabled by {{username}}'
 };

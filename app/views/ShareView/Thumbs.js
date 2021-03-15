@@ -179,6 +179,7 @@ const Thumbs = React.memo(({
 			/>
 		);
 	}
+	return null;
 });
 Thumbs.propTypes = {
 	attachments: PropTypes.array,

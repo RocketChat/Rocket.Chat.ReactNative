@@ -60,7 +60,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 
 			// Saves username on server history
 			const serversDB = database.servers;
-			const serversHistoryCollection = serversDB.collections.get('servers_history');
+			const serversHistoryCollection = serversDB.get('servers_history');
 			yield serversDB.action(async() => {
 				try {
 					const serversHistory = await serversHistoryCollection.query(Q.where('url', server)).fetch();
@@ -148,7 +148,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		moment.locale(toMomentLocale(user.language));
 
 		const serversDB = database.servers;
-		const usersCollection = serversDB.collections.get('users');
+		const usersCollection = serversDB.get('users');
 		const u = {
 			token: user.token,
 			username: user.username,
@@ -224,10 +224,9 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 				// EventEmitter.emit('NewServer', { server });
 				yield put(serverRequest(appConfig.server));
 			} else {
-				yield put(serverRequest(appConfig.server));
 				// const serversDB = database.servers;
 				// // all servers
-				// const serversCollection = serversDB.collections.get('servers');
+				// const serversCollection = serversDB.get('servers');
 				// const servers = yield serversCollection.query().fetch();
 
 				// // see if there're other logged in servers and selects first one
@@ -241,8 +240,8 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 				// 		}
 				// 	}
 				// }
-				// // if there's no servers, go outside
-				// yield put(appStart({ root: ROOT_OUTSIDE }));
+				// if there's no servers, go outside
+				yield put(appStart({ root: ROOT_OUTSIDE }));
 			}
 		} catch (e) {
 			yield put(appStart({ root: ROOT_OUTSIDE }));

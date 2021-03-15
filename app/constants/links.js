@@ -1,6 +1,6 @@
 import { getBundleId, isIOS } from '../utils/deviceInfo';
 
-import { appStoreID as APP_STORE_ID } from '../../app.json';
+const APP_STORE_ID = '1148741252';
 
 export const PLAY_MARKET_LINK = `https://play.google.com/store/apps/details?id=${ getBundleId }`;
 export const FDROID_MARKET_LINK = 'https://f-droid.org/en/packages/chat.rocket.android';

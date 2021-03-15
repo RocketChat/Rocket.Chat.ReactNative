@@ -40,7 +40,7 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 			fileInfo.rid = rid;
 
 			const db = database.active;
-			const uploadsCollection = db.collections.get('uploads');
+			const uploadsCollection = db.get('uploads');
 			let uploadRecord;
 			try {
 				uploadRecord = await uploadsCollection.find(fileInfo.path);

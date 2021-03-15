@@ -7,7 +7,7 @@ import ShareExtension from 'rn-extensions-share';
 import * as FileSystem from 'expo-file-system';
 import { connect } from 'react-redux';
 import * as mime from 'react-native-mime-types';
-import isEqual from 'react-fast-compare';
+import { dequal } from 'dequal';
 import { Q } from '@nozbe/watermelondb';
 
 import database from '../../lib/database';
@@ -118,7 +118,7 @@ class ShareListView extends React.Component {
 
 		const { searchResults } = this.state;
 		if (nextState.searching) {
-			if (!isEqual(nextState.searchResults, searchResults)) {
+			if (!dequal(nextState.searchResults, searchResults)) {
 				return true;
 			}
 		}
@@ -206,7 +206,7 @@ class ShareListView extends React.Component {
 				)
 			);
 		}
-		const data = await db.collections.get('subscriptions').query(...defaultWhereClause).fetch();
+		const data = await db.get('subscriptions').query(...defaultWhereClause).fetch();
 		return data.map(item => ({
 			rid: item.rid,
 			t: item.t,
@@ -226,7 +226,7 @@ class ShareListView extends React.Component {
 
 		if (server) {
 			const chats = await this.query();
-			const serversCollection = serversDB.collections.get('servers');
+			const serversCollection = serversDB.get('servers');
 			const serversCount = await serversCollection.query(Q.where('rooms_updated_at', Q.notEq(null))).fetchCount();
 			let serverInfo = {};
 			try {
@@ -441,7 +441,7 @@ class ShareListView extends React.Component {
 					renderItem={this.renderItem}
 					getItemLayout={getItemLayout}
 					ItemSeparatorComponent={List.Separator}
-					// ListHeaderComponent={this.renderHeader}
+					ListHeaderComponent={this.renderHeader}
 					ListFooterComponent={!searching || searchResults.length > 0 ? <List.Separator /> : null}
 					ListEmptyComponent={searching && searchText ? this.renderEmptyComponent : null}
 					removeClippedSubviews
