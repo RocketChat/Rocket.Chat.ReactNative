@@ -2,17 +2,21 @@ import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
-import TextInput from '../../../presentation/TextInput';
-import I18n from '../../../i18n';
-import { themes } from '../../../constants/colors';
-import sharedStyles from '../../Styles';
-import { isTablet } from '../../../utils/deviceInfo';
+import TextInput from './TextInput';
+import I18n from '../i18n';
+import { themes } from '../constants/colors';
+import sharedStyles from '../views/Styles';
+import { isTablet, isIOS } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
+		height: '100%',
 		justifyContent: 'center',
-		marginLeft: isTablet ? 10 : 0
+		marginLeft: isTablet ? 10 : 2
+	},
+	search: {
+		paddingHorizontal: 0,
+		marginBottom: isIOS ? 2 : -1
 	},
 	title: {
 		fontSize: 16,
@@ -30,7 +34,8 @@ const Header = React.memo(({
 		return (
 			<View style={styles.container}>
 				<TextInput
-					style={[styles.title, isLight && searchPlaceholderStyle]}
+					style={[styles.title, styles.search, isLight && searchPlaceholderStyle]}
+					placeholderColor={themes[theme].headerTitleColor}
 					placeholder={I18n.t('Search')}
 					onChangeText={onChangeSearchText}
 					theme={theme}
@@ -40,7 +45,11 @@ const Header = React.memo(({
 			</View>
 		);
 	}
-	return <Text style={[styles.title, titleColorStyle]}>{I18n.t('Send_to')}</Text>;
+	return (
+		<View style={styles.container}>
+			<Text style={[styles.title, titleColorStyle]}>{I18n.t('Send_to')}</Text>
+		</View>
+	);
 });
 
 Header.propTypes = {

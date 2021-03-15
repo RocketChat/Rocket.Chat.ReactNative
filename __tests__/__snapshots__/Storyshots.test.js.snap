@@ -1654,24 +1654,22 @@ Array [
           }
         >
           <Text
-            allowFontScaling={false}
             style={
               Array [
                 Object {
-                  "color": "#6C727A",
-                  "fontSize": 24,
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontSize": 17,
+                  "fontWeight": "400",
+                  "textAlign": "left",
                 },
-                undefined,
                 Object {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
+                  "color": "#6C727A",
                 },
-                Object {},
               ]
             }
           >
-            
+            Cancel
           </Text>
         </View>
       </View>

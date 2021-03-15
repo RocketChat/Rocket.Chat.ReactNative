@@ -9,7 +9,6 @@ import { connect } from 'react-redux';
 import * as mime from 'react-native-mime-types';
 import { dequal } from 'dequal';
 import { Q } from '@nozbe/watermelondb';
-import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import database from '../../lib/database';
 import { isIOS, isAndroid } from '../../utils/deviceInfo';
@@ -27,7 +26,6 @@ import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import RocketChat from '../../lib/rocketchat';
 import { sanitizeLikeString } from '../../lib/database/utils';
-import { getHeaderTitlePosition } from '../../containers/Header';
 
 const permission = {
 	title: I18n.t('Read_External_Permission'),
@@ -43,8 +41,7 @@ class ShareListView extends React.Component {
 		server: PropTypes.string,
 		token: PropTypes.string,
 		userId: PropTypes.string,
-		theme: PropTypes.string,
-		insets: PropTypes.object
+		theme: PropTypes.string
 	}
 
 	constructor(props) {
@@ -139,28 +136,16 @@ class ShareListView extends React.Component {
 
 	setHeader = () => {
 		const { searching } = this.state;
-		const { navigation, theme, insets } = this.props;
-		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: 3 });
+		const { navigation, theme } = this.props;
 
 		navigation.setOptions({
 			headerTitleAlign: 'left',
-			headerLeft: () => (searching
-				? (
-					<HeaderButton.Container left>
-						<HeaderButton.Item title='cancel' iconName='close' onPress={this.cancelSearch} />
-					</HeaderButton.Container>
-				)
-				: (
-					<HeaderButton.CancelModal
-						onPress={ShareExtension.close}
-						testID='share-extension-close'
-					/>
-				)),
+			headerLeft: () => (
+				<HeaderButton.Container left>
+					<HeaderButton.Item title='cancel' iconName='close' onPress={searching ? this.cancelSearch : ShareExtension.close} />
+				</HeaderButton.Container>
+			),
 			headerTitle: () => <ShareListHeader searching={searching} search={this.search} theme={theme} />,
-			headerTitleContainerStyle: {
-				left: headerTitlePosition.left,
-				right: headerTitlePosition.right
-			},
 			headerRight: () => (
 				searching
 					? null
@@ -452,4 +437,4 @@ const mapStateToProps = (({ share }) => ({
 	server: share.server.server
 }));
 
-export default connect(mapStateToProps)(withTheme(withSafeAreaInsets(ShareListView)));
+export default connect(mapStateToProps)(withTheme(ShareListView));
