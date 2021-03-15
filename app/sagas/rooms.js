@@ -15,7 +15,7 @@ import protectedFunction from '../lib/methods/helpers/protectedFunction';
 
 const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 	const serversDB = database.servers;
-	const serversCollection = serversDB.collections.get('servers');
+	const serversCollection = serversDB.get('servers');
 	try {
 		const serverRecord = yield serversCollection.find(server);
 
@@ -39,7 +39,7 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 		if (params.allData) {
 			yield put(roomsRefresh());
 		} else {
-			const serversCollection = serversDB.collections.get('servers');
+			const serversCollection = serversDB.get('servers');
 			try {
 				const serverRecord = yield serversCollection.find(server);
 				({ roomsUpdatedAt } = serverRecord);
@@ -51,8 +51,8 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 		const { subscriptions } = yield mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
 
 		const db = database.active;
-		const subCollection = db.collections.get('subscriptions');
-		const messagesCollection = db.collections.get('messages');
+		const subCollection = db.get('subscriptions');
+		const messagesCollection = db.get('messages');
 
 		const subsIds = subscriptions.map(sub => sub.rid).concat(roomsResult.remove.map(room => room._id));
 		if (subsIds.length) {

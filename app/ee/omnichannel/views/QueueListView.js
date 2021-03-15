@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
-import isEqual from 'react-fast-compare';
+import { dequal } from 'dequal';
 
 import I18n from '../../../i18n';
 import RoomItem, { ROW_HEIGHT } from '../../../presentation/RoomItem';
@@ -56,7 +56,7 @@ class QueueListView extends React.Component {
 
 	shouldComponentUpdate(nextProps) {
 		const { queued } = this.props;
-		if (!isEqual(nextProps.queued, queued)) {
+		if (!dequal(nextProps.queued, queued)) {
 			return true;
 		}
 

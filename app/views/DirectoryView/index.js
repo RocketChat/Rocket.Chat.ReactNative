@@ -4,6 +4,7 @@ import {
 	View, FlatList, Text
 } from 'react-native';
 import { connect } from 'react-redux';
+import * as List from '../../containers/List';
 
 import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
@@ -182,11 +183,6 @@ class DirectoryView extends React.Component {
 		);
 	}
 
-	renderSeparator = () => {
-		const { theme } = this.props;
-		return <View style={[sharedStyles.separator, styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
-	}
-
 	renderItem = ({ item, index }) => {
 		const { data, type } = this.state;
 		const { baseUrl, user, theme } = this.props;
@@ -251,7 +247,7 @@ class DirectoryView extends React.Component {
 					keyExtractor={item => item._id}
 					ListHeaderComponent={this.renderHeader}
 					renderItem={this.renderItem}
-					ItemSeparatorComponent={this.renderSeparator}
+					ItemSeparatorComponent={List.Separator}
 					keyboardShouldPersistTaps='always'
 					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 					onEndReached={() => this.load({})}

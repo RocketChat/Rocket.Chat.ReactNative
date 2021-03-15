@@ -6,7 +6,7 @@ import {
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import ImagePicker from 'react-native-image-crop-picker';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
 import DocumentPicker from 'react-native-document-picker';
 import { Q } from '@nozbe/watermelondb';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
@@ -63,6 +63,7 @@ const imagePickerConfig = {
 
 const libraryPickerConfig = {
 	multiple: true,
+	compressVideoPreset: 'Passthrough',
 	mediaType: 'any'
 };
 
@@ -189,8 +190,8 @@ class MessageBox extends Component {
 		} = this.props;
 		let msg;
 		try {
-			const threadsCollection = db.collections.get('threads');
-			const subsCollection = db.collections.get('subscriptions');
+			const threadsCollection = db.get('threads');
+			const subsCollection = db.get('subscriptions');
 			try {
 				this.room = await subsCollection.find(rid);
 			} catch (error) {
@@ -270,7 +271,7 @@ class MessageBox extends Component {
 		} = this.state;
 
 		const {
-			roomType, replying, editing, isFocused, message, theme, children
+			roomType, replying, editing, isFocused, message, theme
 		} = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
@@ -299,16 +300,13 @@ class MessageBox extends Component {
 		if (nextState.tshow !== tshow) {
 			return true;
 		}
-		if (!equal(nextState.mentions, mentions)) {
+		if (!dequal(nextState.mentions, mentions)) {
 			return true;
 		}
-		if (!equal(nextState.commandPreview, commandPreview)) {
+		if (!dequal(nextState.commandPreview, commandPreview)) {
 			return true;
 		}
-		if (!equal(nextProps.message, message)) {
-			return true;
-		}
-		if (!equal(nextProps.children, children)) {
+		if (!dequal(nextProps.message?.id, message?.id)) {
 			return true;
 		}
 		return false;
@@ -366,7 +364,7 @@ class MessageBox extends Component {
 			const slashCommand = text.match(/^\/([a-z0-9._-]+) (.+)/im);
 			if (slashCommand) {
 				const [, name, params] = slashCommand;
-				const commandsCollection = db.collections.get('slash_commands');
+				const commandsCollection = db.get('slash_commands');
 				try {
 					const command = await commandsCollection.find(name);
 					if (command.providesPreview) {
@@ -507,7 +505,7 @@ class MessageBox extends Component {
 	getEmojis = debounce(async(keyword) => {
 		const db = database.active;
 		if (keyword) {
-			const customEmojisCollection = db.collections.get('custom_emojis');
+			const customEmojisCollection = db.get('custom_emojis');
 			const likeString = sanitizeLikeString(keyword);
 			let customEmojis = await customEmojisCollection.query(
 				Q.where('name', Q.like(`${ likeString }%`))
@@ -521,7 +519,7 @@ class MessageBox extends Component {
 
 	getSlashCommands = debounce(async(keyword) => {
 		const db = database.active;
-		const commandsCollection = db.collections.get('slash_commands');
+		const commandsCollection = db.get('slash_commands');
 		const likeString = sanitizeLikeString(keyword);
 		const commands = await commandsCollection.query(
 			Q.where('id', Q.like(`${ likeString }%`))
@@ -753,7 +751,7 @@ class MessageBox extends Component {
 		// Slash command
 		if (message[0] === MENTIONS_TRACKING_TYPE_COMMANDS) {
 			const db = database.active;
-			const commandsCollection = db.collections.get('slash_commands');
+			const commandsCollection = db.get('slash_commands');
 			const command = message.replace(/ .*/, '').slice(1);
 			const likeString = sanitizeLikeString(command);
 			const slashCommand = await commandsCollection.query(
@@ -941,7 +939,7 @@ class MessageBox extends Component {
 					keyboardType='twitter'
 					blurOnSubmit={false}
 					placeholder={I18n.t('New_Message')}
-					placeholderTextColor={themes[theme].auxiliaryTintColor}
+					placeholderTextColor={themes[theme].auxiliaryText}
 					onChangeText={this.onChangeText}
 					onSelectionChange={this.onSelectionChange}
 					underlineColorAndroid='transparent'
