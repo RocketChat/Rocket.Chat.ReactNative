@@ -37,7 +37,7 @@ const Video = React.memo(({
 		if (isTypeSupported(file.video_type)) {
 			return showAttachment(file);
 		}
-		const uri = formatAttachmentUrl(file.video_url, user.id, user.token, baseUrl);
+		const uri = formatAttachmentUrl(file.title_link || file.video_url, user.id, user.token, baseUrl);
 		openLink(uri, theme);
 	};
 
