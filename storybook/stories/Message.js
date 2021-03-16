@@ -40,6 +40,8 @@ const getCustomEmoji = (content) => {
 	return customEmoji;
 };
 
+const imageDummy = 'https://528977-1685022-raikfcquaxqncofqfm.stackpathdns.com/wp-content/uploads/2021/02/Security-Bundle-Ilustra.jpg';
+
 const Message = props => (
 	<MessageComponent
 		baseUrl={baseUrl}
@@ -357,6 +359,13 @@ export default ({ theme }) => {
 				}]}
 			/>
 
+			<Message
+				attachments={[{
+					title: 'This is a title',
+					image_url: imageDummy
+				}]}
+			/>
+
 			<Separator title='With video' theme={theme} />
 			<Message
 				attachments={[{
@@ -369,6 +378,13 @@ export default ({ theme }) => {
 				attachments={[{
 					title: 'This is a title',
 					video_url: '/dummypath'
+				}]}
+			/>
+			<Message
+				attachments={[{
+					title: 'This is a title',
+					video_url: '/dummypath',
+					image_preview: imageDummy
 				}]}
 			/>
 
