@@ -43,7 +43,7 @@ const ImageContainer = React.memo(({
 	file, imageUrl, showAttachment, getCustomEmoji, theme
 }) => {
 	const { baseUrl, user } = useContext(MessageContext);
-	const img = imageUrl || formatAttachmentUrl(file.title_link || file.image_url, user.id, user.token, baseUrl);
+	const img = imageUrl || formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
 	if (!img) {
 		return null;
 	}

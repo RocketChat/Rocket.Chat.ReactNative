@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { dequal } from 'dequal';
 
 import Touchable from './Touchable';
@@ -11,6 +11,8 @@ import { CustomIcon } from '../../lib/Icons';
 import { formatAttachmentUrl } from '../../lib/utils';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
+import { MessageImage } from './Image';
+
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = type => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -19,9 +21,17 @@ const styles = StyleSheet.create({
 	button: {
 		flex: 1,
 		borderRadius: 4,
-		height: 150,
+		minHeight: 150,
 		marginBottom: 6,
 		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	play: {
+		position: 'absolute',
+		alignSelf: 'center'
+	},
+	containerVideo: {
+		width: '100%',
 		justifyContent: 'center'
 	}
 });
@@ -30,6 +40,10 @@ const Video = React.memo(({
 	file, showAttachment, getCustomEmoji, theme
 }) => {
 	const { baseUrl, user } = useContext(MessageContext);
+	let img;
+	if (file.image_preview) {
+		img = formatAttachmentUrl(file.image_preview, user.id, user.token, baseUrl);
+	}
 	if (!baseUrl) {
 		return null;
 	}
@@ -37,9 +51,10 @@ const Video = React.memo(({
 		if (isTypeSupported(file.video_type)) {
 			return showAttachment(file);
 		}
-		const uri = formatAttachmentUrl(file.title_link || file.video_url, user.id, user.token, baseUrl);
+		const uri = formatAttachmentUrl(file.video_url, user.id, user.token, baseUrl);
 		openLink(uri, theme);
 	};
+
 
 	return (
 		<>
@@ -48,11 +63,15 @@ const Video = React.memo(({
 				style={[styles.button, { backgroundColor: themes[theme].videoBackground }]}
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
 			>
-				<CustomIcon
-					name='play-filled'
-					size={54}
-					color={themes[theme].buttonText}
-				/>
+				<View style={styles.containerVideo}>
+					<MessageImage img={img} theme={theme} />
+					<CustomIcon
+						style={styles.play}
+						name='play-filled'
+						size={54}
+						color={themes[theme].buttonText}
+					/>
+				</View>
 			</Touchable>
 			<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 		</>

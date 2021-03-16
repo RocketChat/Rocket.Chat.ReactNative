@@ -29299,33 +29299,104 @@ exports[`Storyshots Message list message 1`] = `
                     "backgroundColor": "#1f2329",
                     "borderRadius": 4,
                     "flex": 1,
-                    "height": 150,
                     "justifyContent": "center",
                     "marginBottom": 6,
+                    "minHeight": 150,
                     "opacity": 1,
                   }
                 }
               >
-                <Text
-                  allowFontScaling={false}
+                <View
                   style={
-                    Array [
-                      Object {
-                        "color": "#ffffff",
-                        "fontSize": 54,
-                      },
-                      undefined,
-                      Object {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      Object {},
-                    ]
+                    Object {
+                      "justifyContent": "center",
+                      "width": "100%",
+                    }
                   }
                 >
-                  
-                </Text>
+                  <View
+                    style={
+                      Array [
+                        Object {
+                          "borderRadius": 4,
+                          "borderWidth": 1,
+                          "minHeight": 200,
+                          "overflow": "hidden",
+                          "width": "100%",
+                        },
+                        Object {
+                          "borderColor": "#e1e5e8",
+                        },
+                      ]
+                    }
+                  >
+                    <View
+                      style={
+                        Array [
+                          Object {
+                            "overflow": "hidden",
+                          },
+                          Array [
+                            Object {
+                              "bottom": 0,
+                              "left": 0,
+                              "position": "absolute",
+                              "right": 0,
+                              "top": 0,
+                            },
+                            undefined,
+                          ],
+                        ]
+                      }
+                    >
+                      <FastImageView
+                        onFastImageError={[Function]}
+                        onFastImageLoad={[Function]}
+                        onFastImageLoadEnd={[Function]}
+                        onFastImageLoadStart={[Function]}
+                        onFastImageProgress={[Function]}
+                        resizeMode="cover"
+                        source={
+                          Object {
+                            "uri": "undefined",
+                          }
+                        }
+                        style={
+                          Object {
+                            "bottom": 0,
+                            "left": 0,
+                            "position": "absolute",
+                            "right": 0,
+                            "top": 0,
+                          }
+                        }
+                      />
+                    </View>
+                  </View>
+                  <Text
+                    allowFontScaling={false}
+                    style={
+                      Array [
+                        Object {
+                          "color": "#ffffff",
+                          "fontSize": 54,
+                        },
+                        Object {
+                          "alignSelf": "center",
+                          "position": "absolute",
+                        },
+                        Object {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        Object {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
               <Text
                 style={
@@ -29614,33 +29685,104 @@ exports[`Storyshots Message list message 1`] = `
                     "backgroundColor": "#1f2329",
                     "borderRadius": 4,
                     "flex": 1,
-                    "height": 150,
                     "justifyContent": "center",
                     "marginBottom": 6,
+                    "minHeight": 150,
                     "opacity": 1,
                   }
                 }
               >
-                <Text
-                  allowFontScaling={false}
+                <View
                   style={
-                    Array [
-                      Object {
-                        "color": "#ffffff",
-                        "fontSize": 54,
-                      },
-                      undefined,
-                      Object {
-                        "fontFamily": "custom",
-                        "fontStyle": "normal",
-                        "fontWeight": "normal",
-                      },
-                      Object {},
-                    ]
+                    Object {
+                      "justifyContent": "center",
+                      "width": "100%",
+                    }
                   }
                 >
-                  
-                </Text>
+                  <View
+                    style={
+                      Array [
+                        Object {
+                          "borderRadius": 4,
+                          "borderWidth": 1,
+                          "minHeight": 200,
+                          "overflow": "hidden",
+                          "width": "100%",
+                        },
+                        Object {
+                          "borderColor": "#e1e5e8",
+                        },
+                      ]
+                    }
+                  >
+                    <View
+                      style={
+                        Array [
+                          Object {
+                            "overflow": "hidden",
+                          },
+                          Array [
+                            Object {
+                              "bottom": 0,
+                              "left": 0,
+                              "position": "absolute",
+                              "right": 0,
+                              "top": 0,
+                            },
+                            undefined,
+                          ],
+                        ]
+                      }
+                    >
+                      <FastImageView
+                        onFastImageError={[Function]}
+                        onFastImageLoad={[Function]}
+                        onFastImageLoadEnd={[Function]}
+                        onFastImageLoadStart={[Function]}
+                        onFastImageProgress={[Function]}
+                        resizeMode="cover"
+                        source={
+                          Object {
+                            "uri": "undefined",
+                          }
+                        }
+                        style={
+                          Object {
+                            "bottom": 0,
+                            "left": 0,
+                            "position": "absolute",
+                            "right": 0,
+                            "top": 0,
+                          }
+                        }
+                      />
+                    </View>
+                  </View>
+                  <Text
+                    allowFontScaling={false}
+                    style={
+                      Array [
+                        Object {
+                          "color": "#ffffff",
+                          "fontSize": 54,
+                        },
+                        Object {
+                          "alignSelf": "center",
+                          "position": "absolute",
+                        },
+                        Object {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        Object {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
           </View>

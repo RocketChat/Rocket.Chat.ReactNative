@@ -100,9 +100,11 @@ class AttachmentView extends React.Component {
 		const { attachment } = this.state;
 		const { user, baseUrl } = this.props;
 		const {
-			image_url, image_type, video_url, video_type
+			image_url, image_type, video_url, video_type, title_link
 		} = attachment;
-		const url = image_url || video_url;
+		const image = title_link || image_url;
+
+		const url = image || video_url;
 		const mediaAttachment = formatAttachmentUrl(url, user.id, user.token, baseUrl);
 
 		if (isAndroid) {
@@ -118,7 +120,7 @@ class AttachmentView extends React.Component {
 
 		this.setState({ loading: true });
 		try {
-			const extension = image_url ? `.${ mime.extension(image_type) || 'jpg' }` : `.${ mime.extension(video_type) || 'mp4' }`;
+			const extension = image ? `.${ mime.extension(image_type) || 'jpg' }` : `.${ mime.extension(video_type) || 'mp4' }`;
 			const documentDir = `${ RNFetchBlob.fs.dirs.DocumentDir }/`;
 			const path = `${ documentDir + SHA256(url) + extension }`;
 			const file = await RNFetchBlob.config({ path }).fetch('GET', mediaAttachment);
@@ -126,7 +128,7 @@ class AttachmentView extends React.Component {
 			await file.flush();
 			EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
 		} catch (e) {
-			EventEmitter.emit(LISTENER, { message: I18n.t(image_url ? 'error-save-image' : 'error-save-video') });
+			EventEmitter.emit(LISTENER, { message: I18n.t(image ? 'error-save-image' : 'error-save-video') });
 		}
 		this.setState({ loading: false });
 	};
@@ -167,10 +169,11 @@ class AttachmentView extends React.Component {
 	render() {
 		const { loading, attachment } = this.state;
 		const { theme, user, baseUrl } = this.props;
+		const image = attachment.title_link || attachment.image_url;
 		let content = null;
 
-		if (attachment && attachment.image_url) {
-			const uri = formatAttachmentUrl(attachment.image_url, user.id, user.token, baseUrl);
+		if (attachment && image) {
+			const uri = formatAttachmentUrl(image, user.id, user.token, baseUrl);
 			content = this.renderImage(encodeURI(uri));
 		} else if (attachment && attachment.video_url) {
 			const uri = formatAttachmentUrl(attachment.video_url, user.id, user.token, baseUrl);
