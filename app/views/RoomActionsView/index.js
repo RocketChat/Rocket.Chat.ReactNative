@@ -446,7 +446,13 @@ class RoomActionsView extends React.Component {
 							type={t}
 							rid={rid}
 						>
-							{t === 'd' && member._id ? <Status style={sharedStyles.status} id={member._id} /> : null }
+							{t === 'd' && member._id
+								? (
+									<View style={[sharedStyles.status, { backgroundColor: themes[theme].backgroundColor }]}>
+										<Status size={24} id={member._id} />
+									</View>
+								) : null
+							}
 						</Avatar>
 						<View style={styles.roomTitleContainer}>
 							{room.t === 'd'

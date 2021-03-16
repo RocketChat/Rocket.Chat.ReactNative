@@ -14,7 +14,7 @@ class StatusContainer extends React.PureComponent {
 	};
 
 	static defaultProps = {
-		size: 16
+		size: 32
 	}
 
 	render() {

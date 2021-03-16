@@ -9,7 +9,7 @@ const TypeIcon = React.memo(({
 	theme, type, prid, status, isGroupChat
 }) => {
 	if (type === 'd' && !isGroupChat) {
-		return <Status style={styles.status} size={10} status={status} />;
+		return <Status style={styles.status} size={20} status={status} />;
 	}
 	return <RoomTypeIcon theme={theme} type={prid ? 'discussion' : type} isGroupChat={isGroupChat} status={status} />;
 });

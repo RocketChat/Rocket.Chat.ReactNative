@@ -1,36 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
-import { STATUS_COLORS, themes } from '../../constants/colors';
+import { CustomIcon } from '../../lib/Icons';
+import { STATUS_COLORS } from '../../constants/colors';
 
 const Status = React.memo(({
-	status, size, style, theme, ...props
-}) => (
-	<View
-		style={
-			[
-				style,
-				{
-					borderRadius: size,
-					width: size,
-					height: size,
-					backgroundColor: STATUS_COLORS[status] ?? STATUS_COLORS.offline,
-					borderColor: themes[theme].backgroundColor
-				}
-			]}
-		{...props}
-	/>
-));
+	status, size, style, ...props
+}) => {
+	const name = `status-${ status }`;
+	const isNameValid = CustomIcon.hasIcon(name);
+	const iconName = isNameValid ? name : 'status-offline';
+
+	return (
+		<CustomIcon
+			style={style}
+			size={size}
+			name={iconName}
+			color={STATUS_COLORS[status] ?? STATUS_COLORS.offline}
+			{...props}
+		/>
+	);
+});
 Status.propTypes = {
 	status: PropTypes.string,
 	size: PropTypes.number,
-	style: PropTypes.any,
-	theme: PropTypes.string
+	style: PropTypes.any
 };
 Status.defaultProps = {
 	status: 'offline',
-	size: 16,
-	theme: 'light'
+	size: 32
 };
 
 export default Status;
