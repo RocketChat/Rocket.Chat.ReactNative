@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import FastImage from '@rocket.chat/react-native-fast-image';
 import { dequal } from 'dequal';
@@ -12,8 +12,20 @@ import styles from './styles';
 import { formatAttachmentUrl } from '../../lib/utils';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
+import { isIOS } from '../../utils/deviceInfo';
+import openLink from '../../utils/openLink';
 
 const ImageProgress = createImageProgress(FastImage);
+const SUPPORTED_TYPES = ['videao/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
+const isTypeSupported = type => SUPPORTED_TYPES.indexOf(type) !== -1;
+
+
+const style = StyleSheet.create({
+	containerVideo: {
+		width: '100%',
+		justifyContent: 'center'
+	}
+});
 
 const Button = React.memo(({
 	children, onPress, theme
@@ -40,21 +52,38 @@ export const MessageImage = React.memo(({ img, theme }) => (
 ));
 
 const ImageContainer = React.memo(({
-	file, imageUrl, showAttachment, getCustomEmoji, theme
+	file, imageUrl, showAttachment, getCustomEmoji, theme, children
 }) => {
 	const { baseUrl, user } = useContext(MessageContext);
-	const img = imageUrl || formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
-	if (!img) {
+	let img = imageUrl;
+
+	if (file.image_url) {
+		img = formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
+	}
+
+	if (!img && !file.video_type) {
 		return null;
 	}
 
-	const onPress = () => showAttachment(file);
+	const onPress = () => {
+		if (file.video_type) {
+			if (isTypeSupported(file.video_type)) {
+				return showAttachment(file);
+			}
+			const uri = formatAttachmentUrl(file.video_url, user.id, user.token, baseUrl);
+			return openLink(uri, theme);
+		}
+		return showAttachment(file);
+	};
 
 	if (file.description) {
 		return (
 			<Button theme={theme} onPress={onPress}>
 				<View>
-					<MessageImage img={img} theme={theme} />
+					<View style={style.containerVideo}>
+						<MessageImage img={img} theme={theme} />
+						{children}
+					</View>
 					<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 				</View>
 			</Button>
@@ -63,7 +92,10 @@ const ImageContainer = React.memo(({
 
 	return (
 		<Button theme={theme} onPress={onPress}>
-			<MessageImage img={img} theme={theme} />
+			<View style={style.containerVideo}>
+				<MessageImage img={img} theme={theme} />
+				{children}
+			</View>
 		</Button>
 	);
 }, (prevProps, nextProps) => dequal(prevProps.file, nextProps.file) && prevProps.theme === nextProps.theme);
@@ -73,7 +105,8 @@ ImageContainer.propTypes = {
 	imageUrl: PropTypes.string,
 	showAttachment: PropTypes.func,
 	theme: PropTypes.string,
-	getCustomEmoji: PropTypes.func
+	getCustomEmoji: PropTypes.func,
+	children: PropTypes.node
 };
 ImageContainer.displayName = 'MessageImageContainer';
 

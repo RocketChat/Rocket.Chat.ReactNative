@@ -169,11 +169,10 @@ class AttachmentView extends React.Component {
 	render() {
 		const { loading, attachment } = this.state;
 		const { theme, user, baseUrl } = this.props;
-		const image = attachment.title_link || attachment.image_url;
 		let content = null;
 
 		if (attachment && attachment.image_url) {
-			const uri = formatAttachmentUrl(image, user.id, user.token, baseUrl);
+			const uri = formatAttachmentUrl(attachment.title_link, user.id, user.token, baseUrl);
 			content = this.renderImage(encodeURI(uri));
 		} else if (attachment && attachment.video_url) {
 			const uri = formatAttachmentUrl(attachment.video_url, user.id, user.token, baseUrl);
