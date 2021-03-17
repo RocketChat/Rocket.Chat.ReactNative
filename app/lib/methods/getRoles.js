@@ -2,9 +2,20 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import database from '../database';
 import log from '../../utils/log';
+import reduxStore from '../createStore';
 import protectedFunction from './helpers/protectedFunction';
+import { setRoles as setRolessAction } from '../../actions/roles';
 
-export default function() {
+export async function setRoles() {
+	const db = database.active;
+	const rolesCollection = db.collections.get('roles');
+	const allRoles = await rolesCollection.query().fetch();
+	const parsed = allRoles.reduce((acc, item) => ({ ...acc, [item.id]: item.description }), {});
+
+	reduxStore.dispatch(setRolessAction(parsed));
+}
+
+export function getRoles() {
 	const db = database.active;
 	return new Promise(async(resolve) => {
 		try {
@@ -50,6 +61,7 @@ export default function() {
 					} catch (e) {
 						log(e);
 					}
+					setRoles();
 					return allRecords.length;
 				});
 				return resolve();

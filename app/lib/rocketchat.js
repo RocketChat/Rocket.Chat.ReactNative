@@ -38,7 +38,7 @@ import {
 	getEnterpriseModules, setEnterpriseModules, hasLicense, isOmnichannelModuleAvailable
 } from './methods/enterpriseModules';
 import getSlashCommands from './methods/getSlashCommands';
-import getRoles from './methods/getRoles';
+import { getRoles, setRoles } from './methods/getRoles';
 import canOpenRoom from './methods/canOpenRoom';
 import triggerBlockAction, { triggerSubmitView, triggerCancel } from './methods/actions';
 
@@ -750,6 +750,7 @@ const RocketChat = {
 	isOmnichannelModuleAvailable,
 	getSlashCommands,
 	getRoles,
+	setRoles,
 	parseSettings: settings => settings.reduce((ret, item) => {
 		ret[item._id] = defaultSettings[item._id] && item[defaultSettings[item._id].type];
 		if (item._id === 'Hide_System_Messages') {
