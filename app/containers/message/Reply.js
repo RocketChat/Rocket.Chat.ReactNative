@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { transparentize } from 'color2k';
 import { dequal } from 'dequal';
 
 import Touchable from './Touchable';
@@ -158,8 +159,8 @@ const Reply = React.memo(({
 					index > 0 && styles.marginTop,
 					attachment.description && styles.marginBottom,
 					{
-						backgroundColor: themes[theme].chatComponentBackground,
-						borderColor: themes[theme].borderColor
+						backgroundColor: attachment.color ? transparentize(attachment.color, 0.80) : themes[theme].chatComponentBackground,
+						borderColor: attachment.color || themes[theme].borderColor
 					}
 				]}
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
