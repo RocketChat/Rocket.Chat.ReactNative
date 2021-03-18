@@ -48,6 +48,7 @@
     "@rocket.chat/ui-kit": "0.13.0",
     "bugsnag-react-native": "2.23.10",
     "bytebuffer": "^5.0.1",
+    "color2k": "^1.2.2",
     "commonmark": "git+https://github.com/RocketChat/commonmark.js.git",
     "commonmark-react-renderer": "git+https://github.com/RocketChat/commonmark-react-renderer.git",
     "dequal": "^2.0.2",
