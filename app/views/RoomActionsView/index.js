@@ -5,8 +5,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
-import lt from 'semver/functions/lt';
-import coerce from 'semver/functions/coerce';
+import { compareServerVersion, methods } from '../../lib/utils';
 
 import Touch from '../../utils/touch';
 import { setLoading as setLoadingAction } from '../../actions/selectedUsers';
@@ -256,7 +255,7 @@ class RoomActionsView extends React.Component {
 		const { encrypted } = room;
 		const { serverVersion } = this.props;
 		let hasPermission = false;
-		if (serverVersion && lt(coerce(serverVersion), '3.11.0')) {
+		if (compareServerVersion(serverVersion, '3.11.0', methods.lowerThan)) {
 			hasPermission = canEdit;
 		} else {
 			hasPermission = canToggleEncryption;
