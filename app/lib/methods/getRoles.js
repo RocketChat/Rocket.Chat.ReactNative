@@ -21,7 +21,6 @@ export function getRoles() {
 		try {
 			// RC 0.70.0
 			const result = await this.sdk.get('roles.list');
-			this.sdk.subscribe('stream-notify-logged', 'roles-change');
 
 			if (!result.success) {
 				return resolve();

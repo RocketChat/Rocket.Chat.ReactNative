@@ -95,6 +95,7 @@ const fetchCustomEmojis = function* fetchCustomEmojis() {
 };
 
 const fetchRoles = function* fetchRoles() {
+	RocketChat.subscribe('stream-roles', 'roles');
 	yield RocketChat.getRoles();
 };
 
