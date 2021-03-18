@@ -87,6 +87,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 };
 
 const fetchPermissions = function* fetchPermissions() {
+	RocketChat.subscribe('stream-notify-logged', 'permissions-changed');
 	yield RocketChat.getPermissions();
 };
 

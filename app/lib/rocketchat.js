@@ -292,6 +292,21 @@ const RocketChat = {
 					} catch {
 						// We can't create a new record since we don't receive the user._id
 					}
+				} else if (/permissions-changed/.test(eventName)) {
+					const { _id, roles } = ddpMessage.fields.args[1];
+					const db = database.active;
+					const permissionsCollection = db.get('permissions');
+					try {
+						const permissionsRecord = await permissionsCollection.find(_id);
+						await db.action(async() => {
+							await permissionsRecord.update((u) => {
+								u.roles = roles;
+							});
+						});
+						setPermissions();
+					} catch (err) {
+						//
+					}
 				} else if (/Users:NameChanged/.test(eventName)) {
 					const userNameChanged = ddpMessage.fields.args[0];
 					const db = database.active;
