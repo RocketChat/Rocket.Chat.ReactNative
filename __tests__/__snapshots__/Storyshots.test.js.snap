@@ -40793,6 +40793,15 @@ exports[`Storyshots Message list message 1`] = `
                   <View
                     style={
                       Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
+                    }
+                  />
+                  <View
+                    style={
+                      Object {
                         "flex": 1,
                         "flexDirection": "row",
                         "flexWrap": "wrap",
@@ -40994,6 +41003,15 @@ exports[`Storyshots Message list message 1`] = `
                   <View
                     style={
                       Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
+                    }
+                  />
+                  <View
+                    style={
+                      Object {
                         "flex": 1,
                         "flexDirection": "row",
                         "flexWrap": "wrap",
@@ -41192,6 +41210,15 @@ exports[`Storyshots Message list message 1`] = `
                     }
                   }
                 >
+                  <View
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                      }
+                    }
+                  />
                   <View
                     style={
                       Object {
@@ -49589,8 +49616,8 @@ exports[`Storyshots Message list message 1`] = `
                   Object {
                     "alignItems": "center",
                     "alignSelf": "flex-start",
-                    "backgroundColor": "#f3f4f5",
-                    "borderColor": "#e1e5e8",
+                    "backgroundColor": "rgba(255, 215, 0, 0.2)",
+                    "borderColor": "#FFD700",
                     "borderRadius": 4,
                     "borderWidth": 1,
                     "flex": 1,
