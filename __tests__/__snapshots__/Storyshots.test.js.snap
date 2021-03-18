@@ -40818,17 +40818,44 @@ exports[`Storyshots Message list message 1`] = `
                             Object {
                               "backgroundColor": "transparent",
                               "fontFamily": "System",
-                              "fontSize": 14,
+                              "fontSize": 16,
                               "fontWeight": "400",
                               "textAlign": "left",
                             },
+                            undefined,
                             Object {
                               "color": "#2f343d",
                             },
                           ]
                         }
                       >
-                        Value 1
+                        <Text
+                          accessibilityLabel="Value 1"
+                          style={
+                            Array [
+                              Object {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "System",
+                                "fontSize": 16,
+                                "fontWeight": "400",
+                                "textAlign": "left",
+                              },
+                              Array [
+                                Object {},
+                                Object {
+                                  "alignItems": "flex-start",
+                                  "flexDirection": "row",
+                                  "flexWrap": "wrap",
+                                  "justifyContent": "flex-start",
+                                  "marginBottom": 0,
+                                  "marginTop": 0,
+                                },
+                              ],
+                            ]
+                          }
+                        >
+                          Value 1
+                        </Text>
                       </Text>
                     </View>
                     <View
@@ -40868,17 +40895,44 @@ exports[`Storyshots Message list message 1`] = `
                             Object {
                               "backgroundColor": "transparent",
                               "fontFamily": "System",
-                              "fontSize": 14,
+                              "fontSize": 16,
                               "fontWeight": "400",
                               "textAlign": "left",
                             },
+                            undefined,
                             Object {
                               "color": "#2f343d",
                             },
                           ]
                         }
                       >
-                        Value 2
+                        <Text
+                          accessibilityLabel="Value 2"
+                          style={
+                            Array [
+                              Object {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "System",
+                                "fontSize": 16,
+                                "fontWeight": "400",
+                                "textAlign": "left",
+                              },
+                              Array [
+                                Object {},
+                                Object {
+                                  "alignItems": "flex-start",
+                                  "flexDirection": "row",
+                                  "flexWrap": "wrap",
+                                  "justifyContent": "flex-start",
+                                  "marginBottom": 0,
+                                  "marginTop": 0,
+                                },
+                              ],
+                            ]
+                          }
+                        >
+                          Value 2
+                        </Text>
                       </Text>
                     </View>
                   </View>
@@ -40965,17 +41019,44 @@ exports[`Storyshots Message list message 1`] = `
                             Object {
                               "backgroundColor": "transparent",
                               "fontFamily": "System",
-                              "fontSize": 14,
+                              "fontSize": 16,
                               "fontWeight": "400",
                               "textAlign": "left",
                             },
+                            undefined,
                             Object {
                               "color": "#2f343d",
                             },
                           ]
                         }
                       >
-                        Value 1
+                        <Text
+                          accessibilityLabel="Value 1"
+                          style={
+                            Array [
+                              Object {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "System",
+                                "fontSize": 16,
+                                "fontWeight": "400",
+                                "textAlign": "left",
+                              },
+                              Array [
+                                Object {},
+                                Object {
+                                  "alignItems": "flex-start",
+                                  "flexDirection": "row",
+                                  "flexWrap": "wrap",
+                                  "justifyContent": "flex-start",
+                                  "marginBottom": 0,
+                                  "marginTop": 0,
+                                },
+                              ],
+                            ]
+                          }
+                        >
+                          Value 1
+                        </Text>
                       </Text>
                     </View>
                     <View
@@ -41015,17 +41096,44 @@ exports[`Storyshots Message list message 1`] = `
                             Object {
                               "backgroundColor": "transparent",
                               "fontFamily": "System",
-                              "fontSize": 14,
+                              "fontSize": 16,
                               "fontWeight": "400",
                               "textAlign": "left",
                             },
+                            undefined,
                             Object {
                               "color": "#2f343d",
                             },
                           ]
                         }
                       >
-                        Value 2
+                        <Text
+                          accessibilityLabel="Value 2"
+                          style={
+                            Array [
+                              Object {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "System",
+                                "fontSize": 16,
+                                "fontWeight": "400",
+                                "textAlign": "left",
+                              },
+                              Array [
+                                Object {},
+                                Object {
+                                  "alignItems": "flex-start",
+                                  "flexDirection": "row",
+                                  "flexWrap": "wrap",
+                                  "justifyContent": "flex-start",
+                                  "marginBottom": 0,
+                                  "marginTop": 0,
+                                },
+                              ],
+                            ]
+                          }
+                        >
+                          Value 2
+                        </Text>
                       </Text>
                     </View>
                   </View>
@@ -41112,17 +41220,44 @@ exports[`Storyshots Message list message 1`] = `
                             Object {
                               "backgroundColor": "transparent",
                               "fontFamily": "System",
-                              "fontSize": 14,
+                              "fontSize": 16,
                               "fontWeight": "400",
                               "textAlign": "left",
                             },
+                            undefined,
                             Object {
                               "color": "#2f343d",
                             },
                           ]
                         }
                       >
-                        Value 1
+                        <Text
+                          accessibilityLabel="Value 1"
+                          style={
+                            Array [
+                              Object {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "System",
+                                "fontSize": 16,
+                                "fontWeight": "400",
+                                "textAlign": "left",
+                              },
+                              Array [
+                                Object {},
+                                Object {
+                                  "alignItems": "flex-start",
+                                  "flexDirection": "row",
+                                  "flexWrap": "wrap",
+                                  "justifyContent": "flex-start",
+                                  "marginBottom": 0,
+                                  "marginTop": 0,
+                                },
+                              ],
+                            ]
+                          }
+                        >
+                          Value 1
+                        </Text>
                       </Text>
                     </View>
                     <View
@@ -41162,17 +41297,44 @@ exports[`Storyshots Message list message 1`] = `
                             Object {
                               "backgroundColor": "transparent",
                               "fontFamily": "System",
-                              "fontSize": 14,
+                              "fontSize": 16,
                               "fontWeight": "400",
                               "textAlign": "left",
                             },
+                            undefined,
                             Object {
                               "color": "#2f343d",
                             },
                           ]
                         }
                       >
-                        Value 2
+                        <Text
+                          accessibilityLabel="Value 2"
+                          style={
+                            Array [
+                              Object {
+                                "backgroundColor": "transparent",
+                                "fontFamily": "System",
+                                "fontSize": 16,
+                                "fontWeight": "400",
+                                "textAlign": "left",
+                              },
+                              Array [
+                                Object {},
+                                Object {
+                                  "alignItems": "flex-start",
+                                  "flexDirection": "row",
+                                  "flexWrap": "wrap",
+                                  "justifyContent": "flex-start",
+                                  "marginBottom": 0,
+                                  "marginTop": 0,
+                                },
+                              ],
+                            ]
+                          }
+                        >
+                          Value 2
+                        </Text>
                       </Text>
                     </View>
                   </View>
