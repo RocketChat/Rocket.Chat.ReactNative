@@ -1,6 +1,6 @@
 {
   "name": "rocket-chat-reactnative",
-  "version": "0.0.1",
+  "version": "4.15.0",
   "private": true,
   "scripts": {
     "start": "react-native start",
@@ -48,6 +48,7 @@
     "@rocket.chat/ui-kit": "0.13.0",
     "bugsnag-react-native": "2.23.10",
     "bytebuffer": "^5.0.1",
+    "color2k": "^1.2.2",
     "commonmark": "git+https://github.com/RocketChat/commonmark.js.git",
     "commonmark-react-renderer": "git+https://github.com/RocketChat/commonmark-react-renderer.git",
     "dequal": "^2.0.2",
@@ -120,7 +121,7 @@
     "reselect": "4.0.0",
     "rn-extensions-share": "RocketChat/rn-extensions-share",
     "rn-fetch-blob": "0.12.0",
-    "rn-root-view": "^1.0.3",
+    "rn-root-view": "1.0.3",
     "semver": "7.3.2",
     "ua-parser-js": "^0.7.21",
     "url-parse": "^1.4.7",

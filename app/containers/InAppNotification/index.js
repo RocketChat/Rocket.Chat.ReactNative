@@ -11,8 +11,12 @@ import { getActiveRoute } from '../../utils/navigation';
 
 export const INAPP_NOTIFICATION_EMITTER = 'NotificationInApp';
 
-const InAppNotification = memo(({ rooms }) => {
+const InAppNotification = memo(({ rooms, appState }) => {
 	const show = (notification) => {
+		if (appState !== 'foreground') {
+			return;
+		}
+
 		const { payload } = notification;
 		const state = Navigation.navigationRef.current?.getRootState();
 		const route = getActiveRoute(state);
@@ -41,11 +45,13 @@ const InAppNotification = memo(({ rooms }) => {
 }, (prevProps, nextProps) => dequal(prevProps.rooms, nextProps.rooms));
 
 const mapStateToProps = state => ({
-	rooms: state.room.rooms
+	rooms: state.room.rooms,
+	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background'
 });
 
 InAppNotification.propTypes = {
-	rooms: PropTypes.array
+	rooms: PropTypes.array,
+	appState: PropTypes.string
 };
 
 export default connect(mapStateToProps)(InAppNotification);

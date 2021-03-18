@@ -1,7 +1,4 @@
 import { InteractionManager } from 'react-native';
-import lt from 'semver/functions/lt';
-import gte from 'semver/functions/gte';
-import coerce from 'semver/functions/coerce';
 import {
 	Rocketchat as RocketchatClient,
 	settings as RocketChatSettings
@@ -11,6 +8,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import RNFetchBlob from 'rn-fetch-blob';
 
+import { compareServerVersion, methods } from './utils';
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
 import database from './database';
@@ -133,7 +131,7 @@ const RocketChat = {
 						message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
 					};
 				}
-				if (lt(jsonRes.version, MIN_ROCKETCHAT_VERSION)) {
+				if (compareServerVersion(jsonRes.version, MIN_ROCKETCHAT_VERSION, methods.lowerThan)) {
 					return {
 						success: false,
 						message: I18n.t('Invalid_server_version', {
@@ -177,9 +175,16 @@ const RocketChat = {
 		}
 		this.controller = new AbortController();
 	},
+	checkAndReopen() {
+		return this?.sdk?.checkAndReopen();
+	},
 	connect({ server, user, logoutOnError = false }) {
 		return new Promise((resolve) => {
-			if (!this.sdk || this.sdk.client.host !== server) {
+			if (this?.sdk?.client?.host === server) {
+				return resolve();
+			} else {
+				this.sdk?.disconnect?.();
+				this.sdk = null;
 				database.setActiveDB(server);
 			}
 			reduxStore.dispatch(connectRequest());
@@ -208,11 +213,6 @@ const RocketChat = {
 
 			EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
 
-			if (this.sdk) {
-				this.sdk.disconnect();
-				this.sdk = null;
-			}
-
 			if (this.code) {
 				this.code = null;
 			}
@@ -239,6 +239,10 @@ const RocketChat = {
 				});
 
 			sdkConnect();
+
+			this.connectedListener = this.sdk.onStreamData('connecting', () => {
+				reduxStore.dispatch(connectRequest());
+			});
 
 			this.connectedListener = this.sdk.onStreamData('connected', () => {
 				reduxStore.dispatch(connectSuccess());
@@ -466,7 +470,7 @@ const RocketChat = {
 
 						// Force normalized params for 2FA starting RC 3.9.0.
 						const serverVersion = reduxStore.getState().server.version;
-						if (serverVersion && gte(coerce(serverVersion), '3.9.0')) {
+						if (compareServerVersion(serverVersion, '3.9.0', methods.greaterThanOrEqualTo)) {
 							const user = params.user ?? params.username;
 							const password = params.password ?? params.ldapPass ?? params.crowdPassword;
 							params = { user, password };
@@ -1192,7 +1196,7 @@ const RocketChat = {
 			// get user roles on the server from redux
 			const userRoles = (shareUser?.roles || loginUser?.roles) || [];
 			const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
-			return permissions.map(permission => permission.some(r => mergedRoles.includes(r) ?? false));
+			return permissions.map(permission => permission?.some(r => mergedRoles.includes(r) ?? false));
 		} catch (e) {
 			log(e);
 		}
@@ -1358,7 +1362,7 @@ const RocketChat = {
 	},
 	readThreads(tmid) {
 		const serverVersion = reduxStore.getState().server.version;
-		if (serverVersion && gte(coerce(serverVersion), '3.4.0')) {
+		if (compareServerVersion(serverVersion, '3.4.0', methods.greaterThanOrEqualTo)) {
 			// RC 3.4.0
 			return this.methodCallWrapper('readThreads', tmid);
 		}
