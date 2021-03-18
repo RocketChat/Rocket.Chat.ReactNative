@@ -5140,6 +5140,11 @@ color-support@^1.1.3:
   resolved "https://registry.yarnpkg.com/color-support/-/color-support-1.1.3.tgz#93834379a1cc9a0c61f82f52f0d04322251bd5a2"
   integrity sha512-qiBjkpbMLO/HL68y+lh4q0/O1MZFj2RX6X/KmMa3+gJD3z+WwI1ZzDHysvqHGS3mP6mznPckpXmw1nI9cJjyRg==
 
+color2k@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/color2k/-/color2k-1.2.2.tgz#468b98ae35141c802dcfa1fb594d396baaa052d3"
+  integrity sha512-uxfa7byLts8cg2EGGZB6ZJTcUOvQt9V6sNbaVf5luAFLFfVqfl1srPL88NMwVFrO/vpZnAUxRdBkiuVQ99lnHg==
+
 color@^3.1.0:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/color/-/color-3.1.3.tgz#ca67fb4e7b97d611dcde39eceed422067d91596e"

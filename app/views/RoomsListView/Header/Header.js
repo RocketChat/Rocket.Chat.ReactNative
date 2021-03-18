@@ -82,7 +82,7 @@ const Header = React.memo(({
 						size={18}
 					/>
 				</View>
-				{subtitle ? <Text style={[styles.subtitle, { color: themes[theme].auxiliaryText, fontSize: subTitleFontSize }]} numberOfLines={1}>{subtitle}</Text> : null}
+				{subtitle ? <Text testID='rooms-list-header-server-subtitle' style={[styles.subtitle, { color: themes[theme].auxiliaryText, fontSize: subTitleFontSize }]} numberOfLines={1}>{subtitle}</Text> : null}
 			</TouchableOpacity>
 		</View>
 	);
