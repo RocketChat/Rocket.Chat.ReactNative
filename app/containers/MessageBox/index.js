@@ -41,7 +41,8 @@ import {
 	MENTIONS_TRACKING_TYPE_EMOJIS,
 	MENTIONS_TRACKING_TYPE_COMMANDS,
 	MENTIONS_COUNT_TO_DISPLAY,
-	MENTIONS_TRACKING_TYPE_USERS
+	MENTIONS_TRACKING_TYPE_USERS,
+	MENTIONS_TRACKING_TYPE_ROOMS
 } from './constants';
 import CommandsPreview from './CommandsPreview';
 import { getUserSelector } from '../../selectors/login';
@@ -352,60 +353,33 @@ class MessageBox extends Component {
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	debouncedOnChangeText = debounce(async(text) => {
-		const { sharing } = this.props;
-		const db = database.active;
+	debouncedOnChangeText = debounce((text) => {
 		const isTextEmpty = text.length === 0;
-		// this.setShowSend(!isTextEmpty);
+		if (isTextEmpty) {
+			this.stopTrackingMention();
+			return;
+		}
 		this.handleTyping(!isTextEmpty);
 
-		if (!sharing) {
-			// matches if their is text that stats with '/' and group the command and params so we can use it "/command params"
-			const slashCommand = text.match(/^\/([a-z0-9._-]+) (.+)/im);
-			if (slashCommand) {
-				const [, name, params] = slashCommand;
-				const commandsCollection = db.get('slash_commands');
-				try {
-					const command = await commandsCollection.find(name);
-					if (command.providesPreview) {
-						return this.setCommandPreview(command, name, params);
-					}
-				} catch (e) {
-					console.log('Slash command not found');
-				}
-			}
-		}
+		const txt = text.split(' ');
+		const lastWord = txt[txt.length - 1];
+		const result = lastWord.substring(1);
 
-		if (!isTextEmpty) {
-			try {
-				const { start, end } = this.selection;
-				const cursor = Math.max(start, end);
-				const lastNativeText = this.text;
-				// matches if text either starts with '/' or have (@,#,:) then it groups whatever comes next of mention type
-				let regexp = /(#|@|:|^\/)([a-z0-9._-]+)$/im;
+		const commandMention = lastWord.match(/^\//);
+		const channelMention = lastWord.match(/^#/);
+		const userMention = lastWord.match(/^@/);
+		const emojiMention = lastWord.match(/^:/);
 
-				// if sharing, track #|@|:
-				if (sharing) {
-					regexp = /(#|@|:)([a-z0-9._-]+)$/im;
-				}
-
-				const result = lastNativeText.substr(0, cursor).match(regexp);
-				if (!result) {
-					if (!sharing) {
-						const slash = lastNativeText.match(/^\/$/); // matches only '/' in input
-						if (slash) {
-							return this.identifyMentionKeyword('', MENTIONS_TRACKING_TYPE_COMMANDS);
-						}
-					}
-					return this.stopTrackingMention();
-				}
-				const [, lastChar, name] = result;
-				this.identifyMentionKeyword(name, lastChar);
-			} catch (e) {
-				log(e);
-			}
+		if (commandMention) {
+			return this.identifyMentionKeyword(result, MENTIONS_TRACKING_TYPE_COMMANDS);
+		} else if (channelMention) {
+			return this.identifyMentionKeyword(result, MENTIONS_TRACKING_TYPE_ROOMS);
+		} else if (userMention) {
+			return this.identifyMentionKeyword(result, MENTIONS_TRACKING_TYPE_USERS);
+		} else if (emojiMention) {
+			return this.identifyMentionKeyword(result, MENTIONS_TRACKING_TYPE_EMOJIS);
 		} else {
-			this.stopTrackingMention();
+			return this.stopTrackingMention();
 		}
 	}, 100)
 
