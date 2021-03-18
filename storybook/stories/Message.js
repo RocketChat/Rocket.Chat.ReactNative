@@ -740,6 +740,44 @@ export default ({ theme }) => {
 				}]}
 			/>
 
+			<Separator title='Colored attachments' theme={theme} />
+			<Message
+				attachments={[{
+					color: 'red',
+					fields: [{
+						title: 'Field 1',
+						value: 'Value 1',
+						short: true
+					}, {
+						title: 'Field 2',
+						value: 'Value 2',
+						short: true
+					}]
+				}, {
+					color: 'green',
+					fields: [{
+						title: 'Field 1',
+						value: 'Value 1',
+						short: true
+					}, {
+						title: 'Field 2',
+						value: 'Value 2',
+						short: true
+					}]
+				}, {
+					color: 'blue',
+					fields: [{
+						title: 'Field 1',
+						value: 'Value 1',
+						short: true
+					}, {
+						title: 'Field 2',
+						value: 'Value 2',
+						short: true
+					}]
+				}]}
+			/>
+
 			<Separator title='Broadcast' theme={theme} />
 			<Message msg='Broadcasted message' broadcast replyBroadcast={() => alert('broadcast!')} />
 
