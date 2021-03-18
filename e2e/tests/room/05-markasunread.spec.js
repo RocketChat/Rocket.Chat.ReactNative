@@ -11,7 +11,6 @@ async function navigateToRoom(user) {
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 }
 
-
 describe('Mark as unread', () => {
 	const user = data.users.alternate.username
 
@@ -20,49 +19,6 @@ describe('Mark as unread', () => {
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 		await navigateToRoom(user);
-	});
-
-	describe('Render', async() => {
-		it('should have room screen', async() => {
-			await expect(element(by.id('room-view'))).toExist();
-			await waitFor(element(by.id(`room-view-title-${ user }`))).toExist().withTimeout(5000);
-		});
-
-		// Render - Header
-		describe('Header', async() => {
-			it('should have actions button ', async() => {
-				await expect(element(by.id('room-view-header-actions'))).toExist();
-			});
-
-			it('should have threads button ', async() => {
-				await expect(element(by.id('room-view-header-threads'))).toExist();
-			});
-		});
-
-		// Render - Messagebox
-		describe('Messagebox', async() => {
-			it('should have messagebox', async() => {
-				await expect(element(by.id('messagebox'))).toExist();
-			});
-
-			it('should have open emoji button', async() => {
-				if (device.getPlatform() === 'android') {
-					await expect(element(by.id('messagebox-open-emoji'))).toExist();
-				}
-			});
-
-			it('should have message input', async() => {
-				await expect(element(by.id('messagebox-input'))).toExist();
-			});
-
-			it('should have audio button', async() => {
-				await expect(element(by.id('messagebox-send-audio'))).toExist();
-			});
-
-			it('should have actions button', async() => {
-				await expect(element(by.id('messagebox-actions'))).toExist();
-			});
-		});
 	});
 
 	describe('Usage', async() => {
@@ -83,7 +39,6 @@ describe('Mark as unread', () => {
 				await waitFor(element(by.id('rooms-list-view'))).toExist().withTimeout(5000);
 				await expect(element(by.id(`rooms-list-view-item-${data.users.regular.username}`))).toExist();
 			});
-	
 		});
 	});
 });
