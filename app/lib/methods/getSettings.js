@@ -41,6 +41,11 @@ const loginSettings = [
 	'Accounts_Iframe_api_method'
 ];
 
+export function subscribeSettings() {
+	this.sdk.subscribe('stream-notify-all', 'public-settings-changed');
+	this.sdk.subscribe('stream-notify-logged', 'private-settings-changed');
+}
+
 const serverInfoUpdate = async(serverInfo, iconSetting) => {
 	const serversDB = database.servers;
 	const serverId = reduxStore.getState().server.server;
@@ -192,6 +197,7 @@ export default async function() {
 			}
 			return allRecords.length;
 		});
+		subscribeSettings();
 	} catch (e) {
 		log(e);
 	}

@@ -111,6 +111,10 @@ const fetchUsersPresence = function* fetchUserPresence() {
 	RocketChat.subscribeUsersPresence();
 };
 
+const subscribeSettings = function* subscribeSetting() {
+	yield RocketChat.subscribeSettings();
+};
+
 const fetchEnterpriseModules = function* fetchEnterpriseModules({ user }) {
 	yield RocketChat.getEnterpriseModules();
 
@@ -138,6 +142,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchSlashCommands);
 		yield fork(registerPushToken);
 		yield fork(fetchUsersPresence);
+		yield fork(subscribeSettings);
 		yield fork(fetchEnterpriseModules, { user });
 		yield put(encryptionInit());
 
