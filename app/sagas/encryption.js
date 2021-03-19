@@ -62,8 +62,6 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 			yield put(encryptionSet(true, E2E_BANNER_TYPE.SAVE_PASSWORD));
 		}
 
-		console.log('storeRandom', storedRandomPassword);
-
 		// Fetch stored public e2e key for this server
 		let storedPublicKey = yield UserPreferences.getStringAsync(`${ server }-${ E2E_PUBLIC_KEY }`);
 		// Prevent parse undefined
