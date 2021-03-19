@@ -62,6 +62,7 @@ import UserPreferences from './userPreferences';
 import { Encryption } from './encryption';
 import EventEmitter from '../utils/events';
 import { sanitizeLikeString } from './database/utils';
+import { updatePermissions } from '../actions/permissions';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
@@ -303,7 +304,7 @@ const RocketChat = {
 								u.roles = roles;
 							});
 						});
-						setPermissions();
+						reduxStore.dispatch(updatePermissions(_id, roles));
 					} catch (err) {
 						//
 					}
