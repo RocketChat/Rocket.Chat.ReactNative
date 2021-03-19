@@ -196,7 +196,6 @@ class DirectoryView extends React.Component {
 		}
 
 		const commonProps = {
-			title: item.name,
 			onPress: () => this.onPressItem(item),
 			baseUrl,
 			testID: `directory-view-item-${ item.name }`.toLowerCase(),
@@ -209,6 +208,7 @@ class DirectoryView extends React.Component {
 		if (type === 'users') {
 			return (
 				<DirectoryItem
+					title={item.name}
 					avatar={item.username}
 					description={item.username}
 					rightLabel={item.federation && item.federation.peer}
@@ -219,6 +219,7 @@ class DirectoryView extends React.Component {
 		}
 		return (
 			<DirectoryItem
+				title={item._id === 'GENERAL' ? item.name : item.fname}
 				avatar={item.name}
 				description={item.topic}
 				rightLabel={I18n.t('N_users', { n: item.usersCount })}
