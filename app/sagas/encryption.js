@@ -62,6 +62,8 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 			yield put(encryptionSet(true, E2E_BANNER_TYPE.SAVE_PASSWORD));
 		}
 
+		console.log('storeRandom', storedRandomPassword);
+
 		// Fetch stored public e2e key for this server
 		let storedPublicKey = yield UserPreferences.getStringAsync(`${ server }-${ E2E_PUBLIC_KEY }`);
 		// Prevent parse undefined
@@ -69,11 +71,10 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 			storedPublicKey = EJSON.parse(storedPublicKey);
 		}
 
-		const isSave = yield UserPreferences.getStringAsync(`${ server }-${ E2E_PUBLIC_KEY }-isSave`);
 
-		if (storedPublicKey && storedPrivateKey && isSave === 'true') {
+		if (storedPublicKey && storedPrivateKey && !storedRandomPassword) {
 			// Persist these keys
-			yield Encryption.persistKeys(server, storedPublicKey, storedPrivateKey, isSave);
+			yield Encryption.persistKeys(server, storedPublicKey, storedPrivateKey);
 			yield put(encryptionSet(true));
 		} else {
 			// Create new keys since the user doesn't have any
