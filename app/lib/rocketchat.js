@@ -38,7 +38,7 @@ import {
 	getEnterpriseModules, setEnterpriseModules, hasLicense, isOmnichannelModuleAvailable
 } from './methods/enterpriseModules';
 import getSlashCommands from './methods/getSlashCommands';
-import { getRoles, setRoles } from './methods/getRoles';
+import { getRoles, setRoles, subscribeRoles } from './methods/getRoles';
 import canOpenRoom from './methods/canOpenRoom';
 import triggerBlockAction, { triggerSubmitView, triggerCancel } from './methods/actions';
 
@@ -256,40 +256,7 @@ const RocketChat = {
 
 			this.usersListener = this.sdk.onStreamData('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
 
-			this.rolesListener = this.sdk.onStreamData('stream-roles', protectedFunction(async(ddpMessage) => {
-				const { type, _id, description } = ddpMessage.fields.args[0];
-				if (/changed/.test(type)) {
-					const db = database.active;
-					const rolesCollection = db.get('roles');
-					try {
-						const rolesRecord = await rolesCollection.find(_id);
-						await db.action(async() => {
-							await rolesRecord.update((u) => {
-								u.description = description;
-							});
-						});
-					} catch (err) {
-						await db.action(async() => {
-							await rolesCollection.create((post) => {
-								post._raw = sanitizedRaw({ id: _id, description }, rolesCollection.schema);
-							});
-						});
-					}
-				}
-				if (/removed/.test(type)) {
-					const db = database.active;
-					const rolesCollection = db.get('roles');
-					try {
-						const rolesRecord = await rolesCollection.find(_id);
-						await db.action(async() => {
-							await rolesRecord.destroyPermanently();
-						});
-					} catch (err) {
-						console.log(err);
-					}
-				}
-				setRoles();
-			}));
+			this.rolesListener = this.sdk.onStreamData('stream-roles', protectedFunction(ddpMessage => subscribeRoles(ddpMessage)));
 
 			this.notifyLoggedListener = this.sdk.onStreamData('stream-notify-logged', protectedFunction(async(ddpMessage) => {
 				const { eventName } = ddpMessage.fields;

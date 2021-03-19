@@ -135,15 +135,7 @@ class RoomInfoView extends React.Component {
 
 	getRoleDescription = (id) => {
 		const { roles } = this.props;
-		try {
-			const role = roles[id];
-			if (role) {
-				return role;
-			}
-			return null;
-		} catch (e) {
-			return null;
-		}
+		return roles[id];
 	};
 
 	loadVisitor = async() => {
