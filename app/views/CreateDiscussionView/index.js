@@ -179,6 +179,7 @@ class CreateChannelView extends React.Component {
 						/>
 						<TextInput
 							label={I18n.t('Discussion_name')}
+							testID='multi-select-discussion-name'
 							placeholder={I18n.t('A_meaningful_name_for_the_discussion_room')}
 							containerStyle={styles.inputStyle}
 							defaultValue={name}

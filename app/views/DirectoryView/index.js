@@ -165,12 +165,12 @@ class DirectoryView extends React.Component {
 				<SearchBox
 					onChangeText={this.onSearchChangeText}
 					onSubmitEditing={this.search}
-					testID='federation-view-search'
+					testID='directory-view-search'
 				/>
 				<Touch
 					onPress={this.toggleDropdown}
 					style={styles.dropdownItemButton}
-					testID='federation-view-create-channel'
+					testID='directory-view-dropdown'
 					theme={theme}
 				>
 					<View style={[sharedStyles.separatorVertical, styles.toggleDropdownContainer, { borderColor: themes[theme].separatorColor }]}>
@@ -199,7 +199,7 @@ class DirectoryView extends React.Component {
 			title: item.name,
 			onPress: () => this.onPressItem(item),
 			baseUrl,
-			testID: `federation-view-item-${ item.name }`,
+			testID: `directory-view-item-${ item.name }`.toLowerCase(),
 			style,
 			user,
 			theme,
