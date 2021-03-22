@@ -103,6 +103,14 @@ describe('Room screen', () => {
 				await element(by.id('messagebox-input')).clearText();
 			});
 
+			it('should not show emoji autocomplete on semicolon in middle of a string', async() => {
+				await element(by.id('messagebox-input')).tap();
+				// await element(by.id('messagebox-input')).replaceText(':');
+				await element(by.id('messagebox-input')).typeText('name:is'); 
+				await waitFor(element(by.id('messagebox-container'))).toNotExist().withTimeout(20000);
+				await element(by.id('messagebox-input')).clearText();
+			});
+
 			it('should show and tap on user autocomplete and send mention', async() => {
 				const username = data.users.regular.username
 				await element(by.id('messagebox-input')).tap();
@@ -117,6 +125,14 @@ describe('Room screen', () => {
 				// await waitFor(element(by.label(`@${ data.user } ${ data.random }mention`)).atIndex(0)).toExist().withTimeout(60000);
 			});
 
+			it('should not show user autocomplete on @ in the middle of a string', async() => {
+				const username = data.users.regular.username
+				await element(by.id('messagebox-input')).tap();
+				await element(by.id('messagebox-input')).typeText(`email@gmail`);
+				await waitFor(element(by.id('messagebox-container'))).toNotExist().withTimeout(4000);
+				await element(by.id('messagebox-input')).clearText();
+			});
+
 			it('should show and tap on room autocomplete', async() => {
 				await element(by.id('messagebox-input')).tap();
 				await element(by.id('messagebox-input')).typeText('#general');
@@ -124,6 +140,13 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('mention-item-general'))).toBeVisible().withTimeout(4000);
 				await tryTapping(element(by.id('mention-item-general')), 2000, true)
 				await expect(element(by.id('messagebox-input'))).toHaveText('#general ');
+				await element(by.id('messagebox-input')).clearText();
+			});
+
+			it('should not show room autocomplete on # in middle of a string', async() => {
+				await element(by.id('messagebox-input')).tap();
+				await element(by.id('messagebox-input')).typeText('te#gen');
+				await waitFor(element(by.id('messagebox-container'))).toNotExist().withTimeout(4000);
 				await element(by.id('messagebox-input')).clearText();
 			});
 		});
