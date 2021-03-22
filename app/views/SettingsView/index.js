@@ -109,7 +109,8 @@ class SettingsView extends React.Component {
 				await RocketChat.clearCache({ server });
 				await FastImage.clearMemoryCache();
 				await FastImage.clearDiskCache();
-				selectServerRequest(server, null, true);
+				RocketChat.disconnect();
+				selectServerRequest(server);
 			}
 		});
 	}
