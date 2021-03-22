@@ -3,7 +3,7 @@ import { DefaultTheme, DarkTheme } from '@react-navigation/native';
 
 import { themes } from '../../constants/colors';
 
-export * from './animations';
+export * from './animations.js';
 
 export const defaultHeader = {
 	headerBackTitleVisible: false,
