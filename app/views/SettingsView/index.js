@@ -286,7 +286,7 @@ class SettingsView extends React.Component {
 						<List.Separator />
 						<List.Item
 							title='Clear_cache'
-							testID='settings-clear-cache'
+							testID='settings-view-clear-cache'
 							onPress={this.handleClearCache}
 							showActionIndicator
 							color={themes[theme].dangerColor}
