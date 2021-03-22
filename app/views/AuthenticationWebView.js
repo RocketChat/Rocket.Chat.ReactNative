@@ -89,7 +89,7 @@ class AuthenticationWebView extends React.PureComponent {
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	debouncedLogin = debounce(params => this.login(params), 3000);
+	debouncedLogin = debounce(params => this.login(params), 3000, true);
 
 	tryLogin = debounce(async() => {
 		const { Accounts_Iframe_api_url, Accounts_Iframe_api_method } = this.props;
