@@ -193,6 +193,10 @@ const RocketChat = {
 				clearTimeout(this.connectTimeout);
 			}
 
+			if (this.connectingListener) {
+				this.connectingListener.then(this.stopListener);
+			}
+
 			if (this.connectedListener) {
 				this.connectedListener.then(this.stopListener);
 			}
@@ -240,7 +244,7 @@ const RocketChat = {
 
 			sdkConnect();
 
-			this.connectedListener = this.sdk.onStreamData('connecting', () => {
+			this.connectingListener = this.sdk.onStreamData('connecting', () => {
 				reduxStore.dispatch(connectRequest());
 			});
 
