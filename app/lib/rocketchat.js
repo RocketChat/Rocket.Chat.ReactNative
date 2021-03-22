@@ -1,7 +1,4 @@
 import { InteractionManager } from 'react-native';
-import lt from 'semver/functions/lt';
-import gte from 'semver/functions/gte';
-import coerce from 'semver/functions/coerce';
 import {
 	Rocketchat as RocketchatClient,
 	settings as RocketChatSettings
@@ -11,6 +8,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import RNFetchBlob from 'rn-fetch-blob';
 
+import { compareServerVersion, methods } from './utils';
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
 import database from './database';
@@ -133,7 +131,7 @@ const RocketChat = {
 						message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
 					};
 				}
-				if (lt(jsonRes.version, MIN_ROCKETCHAT_VERSION)) {
+				if (compareServerVersion(jsonRes.version, MIN_ROCKETCHAT_VERSION, methods.lowerThan)) {
 					return {
 						success: false,
 						message: I18n.t('Invalid_server_version', {
@@ -472,7 +470,7 @@ const RocketChat = {
 
 						// Force normalized params for 2FA starting RC 3.9.0.
 						const serverVersion = reduxStore.getState().server.version;
-						if (serverVersion && gte(coerce(serverVersion), '3.9.0')) {
+						if (compareServerVersion(serverVersion, '3.9.0', methods.greaterThanOrEqualTo)) {
 							const user = params.user ?? params.username;
 							const password = params.password ?? params.ldapPass ?? params.crowdPassword;
 							params = { user, password };
@@ -1364,7 +1362,7 @@ const RocketChat = {
 	},
 	readThreads(tmid) {
 		const serverVersion = reduxStore.getState().server.version;
-		if (serverVersion && gte(coerce(serverVersion), '3.4.0')) {
+		if (compareServerVersion(serverVersion, '3.4.0', methods.greaterThanOrEqualTo)) {
 			// RC 3.4.0
 			return this.methodCallWrapper('readThreads', tmid);
 		}
