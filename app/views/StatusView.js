@@ -64,8 +64,8 @@ class StatusView extends React.Component {
 	constructor(props) {
 		super(props);
 
-		const { statusText } = props.user;
-		this.state = { statusText, loading: false };
+		const { statusText, status } = props.user;
+		this.state = { statusText, loading: false, status };
 		this.setHeader();
 	}
 
@@ -88,12 +88,29 @@ class StatusView extends React.Component {
 
 	submit = async() => {
 		logEvent(events.STATUS_DONE);
-		const { statusText } = this.state;
+		const { statusText, status } = this.state;
 		const { user } = this.props;
 		if (statusText !== user.statusText) {
 			await this.setCustomStatus();
 		}
+		if (status !== user.status) {
+			await this.setUserStatus();
+		}
 		this.close();
+	}
+
+	setUserStatus = async() => {
+		const { status, statusText } = this.state;
+		logEvent(events[`STATUS_${ status.toUpperCase() }`]);
+		try {
+			const result = await RocketChat.setUserStatus(status, statusText);
+			if (result.success) {
+				store.dispatch(setUser({ status }));
+			}
+		} catch (e) {
+			logEvent(events.SET_STATUS_FAIL);
+			log(e);
+		}
 	}
 
 	close = () => {
@@ -125,7 +142,7 @@ class StatusView extends React.Component {
 	}
 
 	renderHeader = () => {
-		const { statusText } = this.state;
+		const { statusText, status } = this.state;
 		const { user, theme } = this.props;
 
 		return (
@@ -139,7 +156,7 @@ class StatusView extends React.Component {
 						<Status
 							testID={`status-view-current-${ user.status }`}
 							style={styles.inputLeft}
-							status={user.status}
+							status={status}
 							size={12}
 						/>
 					)}
@@ -153,26 +170,11 @@ class StatusView extends React.Component {
 	}
 
 	renderItem = ({ item }) => {
-		const { statusText } = this.state;
-		const { user } = this.props;
 		const { id, name } = item;
 		return (
 			<List.Item
 				title={name}
-				onPress={async() => {
-					logEvent(events[`STATUS_${ item.id.toUpperCase() }`]);
-					if (user.status !== item.id) {
-						try {
-							const result = await RocketChat.setUserStatus(item.id, statusText);
-							if (result.success) {
-								store.dispatch(setUser({ status: item.id }));
-							}
-						} catch (e) {
-							logEvent(events.SET_STATUS_FAIL);
-							log(e);
-						}
-					}
-				}}
+				onPress={() => this.setState({ status: item.id })}
 				testID={`status-view-${ id }`}
 				left={() => <Status size={12} status={item.id} />}
 			/>
