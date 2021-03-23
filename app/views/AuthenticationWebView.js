@@ -71,7 +71,7 @@ class AuthenticationWebView extends React.PureComponent {
 		navigation.pop();
 	}
 
-	login = async(params) => {
+	login = (params) => {
 		const { logging } = this.state;
 		if (logging) {
 			return;
@@ -80,7 +80,7 @@ class AuthenticationWebView extends React.PureComponent {
 		this.setState({ logging: true });
 
 		try {
-			await RocketChat.loginOAuthOrSso(params);
+			RocketChat.loginOAuthOrSso(params);
 		} catch (e) {
 			console.warn(e);
 		}
@@ -89,7 +89,7 @@ class AuthenticationWebView extends React.PureComponent {
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	debouncedLogin = debounce(params => this.login(params), 3000);
+	debouncedLogin = debounce(params => this.login(params), 3000, true);
 
 	tryLogin = debounce(async() => {
 		const { Accounts_Iframe_api_url, Accounts_Iframe_api_method } = this.props;

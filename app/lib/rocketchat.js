@@ -465,18 +465,30 @@ const RocketChat = {
 				if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
 					const { details } = e.data;
 					try {
-						reduxStore.dispatch(setUser({ username: params.user || params.username }));
-						const code = await twoFactor({ method: details?.method || 'totp', invalid: e.data.error === 'totp-invalid' });
+						const code = await twoFactor({ method: details?.method || 'totp', invalid: details?.error === 'totp-invalid' });
 
-						// Force normalized params for 2FA starting RC 3.9.0.
-						const serverVersion = reduxStore.getState().server.version;
-						if (compareServerVersion(serverVersion, '3.9.0', methods.greaterThanOrEqualTo)) {
-							const user = params.user ?? params.username;
-							const password = params.password ?? params.ldapPass ?? params.crowdPassword;
-							params = { user, password };
+						if (loginEmailPassword) {
+							reduxStore.dispatch(setUser({ username: params.user || params.username }));
+
+							// Force normalized params for 2FA starting RC 3.9.0.
+							const serverVersion = reduxStore.getState().server.version;
+							if (compareServerVersion(serverVersion, '3.9.0', methods.greaterThanOrEqualTo)) {
+								const user = params.user ?? params.username;
+								const password = params.password ?? params.ldapPass ?? params.crowdPassword;
+								params = { user, password };
+							}
+
+							return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
 						}
 
-						return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
+						return resolve(this.loginTOTP({
+							totp: {
+								login: {
+									...params
+								},
+								code: code?.twoFactorCode
+							}
+						}));
 					} catch {
 						// twoFactor was canceled
 						return reject();
@@ -511,7 +523,7 @@ const RocketChat = {
 	},
 
 	async loginOAuthOrSso(params) {
-		const result = await this.login(params);
+		const result = await this.loginTOTP(params);
 		reduxStore.dispatch(loginRequest({ resume: result.token }));
 	},
 
