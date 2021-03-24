@@ -17,6 +17,7 @@ class RoomHeaderView extends Component {
 		type: PropTypes.string,
 		prid: PropTypes.string,
 		tmid: PropTypes.string,
+		teamMain: PropTypes.bool,
 		usersTyping: PropTypes.string,
 		status: PropTypes.string,
 		statusText: PropTypes.string,
@@ -76,7 +77,24 @@ class RoomHeaderView extends Component {
 
 	render() {
 		const {
-			title, subtitle: subtitleProp, type, prid, tmid, widthOffset, status = 'offline', statusText, connecting, connected, usersTyping, goRoomActionsView, roomUserId, theme, width, height, parentTitle
+			title,
+			subtitle: subtitleProp,
+			type,
+			teamMain,
+			prid,
+			tmid,
+			widthOffset,
+			status = 'offline',
+			statusText,
+			connecting,
+			connected,
+			usersTyping,
+			goRoomActionsView,
+			roomUserId,
+			theme,
+			width,
+			height,
+			parentTitle
 		} = this.props;
 
 		let subtitle;
@@ -95,6 +113,7 @@ class RoomHeaderView extends Component {
 				title={title}
 				subtitle={type === 'd' ? statusText : subtitle}
 				type={type}
+				teamMain={teamMain}
 				status={status}
 				width={width}
 				height={height}

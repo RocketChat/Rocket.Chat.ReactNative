@@ -316,6 +316,7 @@ class RoomView extends React.Component {
 		}
 		const subtitle = room?.topic;
 		const t = room?.t;
+		const teamMain = room?.teamMain;
 		const { id: userId, token } = user;
 		const avatar = room?.name;
 		const visitor = room?.visitor;
@@ -351,6 +352,7 @@ class RoomView extends React.Component {
 					prid={prid}
 					tmid={tmid}
 					title={title}
+					teamMain={teamMain}
 					parentTitle={parentTitle}
 					subtitle={subtitle}
 					type={t}

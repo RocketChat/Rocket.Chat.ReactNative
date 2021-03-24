@@ -29,7 +29,7 @@ const RoomTypeIcon = React.memo(({
 		icon = 'channel-public';
 	} else if (type === 'd') {
 		if (isGroupChat) {
-			icon = 'team';
+			icon = 'message';
 		} else {
 			icon = 'mention';
 		}
@@ -54,6 +54,7 @@ RoomTypeIcon.propTypes = {
 	theme: PropTypes.string,
 	type: PropTypes.string,
 	isGroupChat: PropTypes.bool,
+	teamMain: PropTypes.bool,
 	status: PropTypes.string,
 	size: PropTypes.number,
 	style: PropTypes.object
