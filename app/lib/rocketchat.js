@@ -183,9 +183,9 @@ const RocketChat = {
 			if (this?.sdk?.client?.host === server) {
 				return resolve();
 			} else {
+				database.setActiveDB(server);
 				this.sdk?.disconnect?.();
 				this.sdk = null;
-				database.setActiveDB(server);
 			}
 			reduxStore.dispatch(connectRequest());
 
