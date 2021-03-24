@@ -6,12 +6,20 @@ import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import styles from './styles';
 
 const TypeIcon = React.memo(({
-	theme, type, prid, status, isGroupChat
+	theme, type, prid, status, isGroupChat, teamMain
 }) => {
 	if (type === 'd' && !isGroupChat) {
 		return <Status style={styles.status} size={10} status={status} />;
 	}
-	return <RoomTypeIcon theme={theme} type={prid ? 'discussion' : type} isGroupChat={isGroupChat} status={status} />;
+	return (
+		<RoomTypeIcon
+			theme={theme}
+			type={prid ? 'discussion' : type}
+			isGroupChat={isGroupChat}
+			status={status}
+			teamMain={teamMain}
+		/>
+	);
 });
 
 TypeIcon.propTypes = {

@@ -44,7 +44,8 @@ const RoomItem = ({
 	onPress,
 	toggleFav,
 	toggleRead,
-	hideChannel
+	hideChannel,
+	teamMain
 }) => (
 	<Touchable
 		onPress={onPress}
@@ -79,6 +80,7 @@ const RoomItem = ({
 								status={status}
 								isGroupChat={isGroupChat}
 								theme={theme}
+								teamMain={teamMain}
 							/>
 							<Title
 								name={name}
@@ -122,6 +124,7 @@ const RoomItem = ({
 							status={status}
 							isGroupChat={isGroupChat}
 							theme={theme}
+							teamMain={teamMain}
 						/>
 						<Title
 							name={name}

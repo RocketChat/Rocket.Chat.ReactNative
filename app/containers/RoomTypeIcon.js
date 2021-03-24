@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 });
 
 const RoomTypeIcon = React.memo(({
-	type, size, isGroupChat, status, style, theme
+	type, size, isGroupChat, status, style, theme, teamMain
 }) => {
 	if (!type) {
 		return null;
@@ -21,7 +21,9 @@ const RoomTypeIcon = React.memo(({
 	const color = themes[theme].auxiliaryText;
 
 	let icon = 'channel-private';
-	if (type === 'discussion') {
+	if (teamMain) {
+		icon = `teams${ type === 'p' ? '-private' : '' }`;
+	} else if (type === 'discussion') {
 		icon = 'discussions';
 	} else if (type === 'c') {
 		icon = 'channel-public';

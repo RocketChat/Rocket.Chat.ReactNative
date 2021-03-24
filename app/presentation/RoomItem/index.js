@@ -188,6 +188,7 @@ class RoomItemContainer extends React.Component {
 				tunreadUser={item.tunreadUser}
 				tunreadGroup={item.tunreadGroup}
 				swipeEnabled={swipeEnabled}
+				teamMain={item.teamMain}
 			/>
 		);
 	}
