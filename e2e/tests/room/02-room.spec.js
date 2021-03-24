@@ -127,6 +127,17 @@ describe('Room screen', () => {
 				await element(by.id('messagebox-input')).clearText();
 			});
 
+			it('should show and tap on slash command autocomplete and send', async() => {
+				await element(by.id('messagebox-input')).tap();
+				await element(by.id('messagebox-input')).typeText('/g');
+				await waitFor(element(by.id('messagebox-container'))).toExist().withTimeout(4000);
+				await element(by.id('mention-item-gimme')).tap();
+				await expect(element(by.id('messagebox-input'))).toHaveText('/gimme ');
+				await element(by.id('messagebox-send-message')).tap();
+				await waitFor(element(by.label('༼ つ ◕_◕ ༽つ')).atIndex(0)).toExist().withTimeout(60000);
+				await expect(element(by.label('༼ つ ◕_◕ ༽つ')).atIndex(0)).toExist();
+			});
+
 			it('should draft message', async () => {
 				await element(by.id('messagebox-input')).atIndex(0).tap();
 				await element(by.id('messagebox-input')).atIndex(0).typeText(`${ data.random }draft`);
