@@ -374,6 +374,7 @@ class RoomView extends React.Component {
 				<RightButtons
 					rid={rid}
 					tmid={tmid}
+					teamId={teamId}
 					t={t}
 					navigation={navigation}
 					toggleFollowThread={this.toggleFollowThread}
