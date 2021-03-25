@@ -317,13 +317,22 @@ class RoomView extends React.Component {
 		const subtitle = room?.topic;
 		const t = room?.t;
 		const teamMain = room?.teamMain;
+		const teamId = room?.teamId;
 		const { id: userId, token } = user;
 		const avatar = room?.name;
 		const visitor = room?.visitor;
 		if (!room?.rid) {
 			return;
 		}
-		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: tmid ? 1 : 2 });
+
+		let numIconsRight = 2;
+		if (tmid) {
+			numIconsRight = 1;
+		} else if (teamId) {
+			numIconsRight = 3;
+		}
+		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight });
+
 		navigation.setOptions({
 			headerShown: true,
 			headerTitleAlign: 'left',

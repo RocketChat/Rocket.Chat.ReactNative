@@ -6,14 +6,14 @@ import { STATUS_COLORS, themes } from '../../../constants/colors';
 import { CustomIcon } from '../../../lib/Icons';
 import Status from '../../../containers/Status/Status';
 
-const ICON_SIZE = 15;
+const ICON_SIZE = 20;
 
 const styles = StyleSheet.create({
 	type: {
 		width: ICON_SIZE,
 		height: ICON_SIZE,
-		marginRight: 4,
-		marginLeft: -4
+		marginRight: 2,
+		marginLeft: -2
 	},
 	status: {
 		marginRight: 8
@@ -31,7 +31,7 @@ const Icon = React.memo(({
 	if (type === 'l') {
 		colorStyle = { color: STATUS_COLORS[status] };
 	} else {
-		colorStyle = { color: themes[theme].auxiliaryText };
+		colorStyle = { color: themes[theme].headerTintColor };
 	}
 
 	let icon;

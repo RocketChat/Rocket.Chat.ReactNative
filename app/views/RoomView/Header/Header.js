@@ -14,6 +14,10 @@ const HIT_SLOP = {
 	top: 5, right: 5, bottom: 5, left: 5
 };
 const TITLE_SIZE = 16;
+const SUBTITLE_SIZE = 12;
+
+const getSubTitleSize = scale => SUBTITLE_SIZE * scale;
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -24,12 +28,10 @@ const styles = StyleSheet.create({
 		flexDirection: 'row'
 	},
 	title: {
-		...sharedStyles.textSemibold,
-		fontSize: TITLE_SIZE
+		...sharedStyles.textSemibold
 	},
 	subtitle: {
-		...sharedStyles.textRegular,
-		fontSize: 12
+		...sharedStyles.textRegular
 	},
 	typingUsers: {
 		...sharedStyles.textSemibold
@@ -37,8 +39,9 @@ const styles = StyleSheet.create({
 });
 
 const SubTitle = React.memo(({
-	usersTyping, subtitle, renderFunc, theme
+	usersTyping, subtitle, renderFunc, theme, scale
 }) => {
+	const fontSize = getSubTitleSize(scale);
 	// typing
 	if (usersTyping.length) {
 		let usersText;
@@ -48,7 +51,7 @@ const SubTitle = React.memo(({
 			usersText = usersTyping.join(', ');
 		}
 		return (
-			<Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
+			<Text style={[styles.subtitle, { fontSize, color: themes[theme].auxiliaryText }]} numberOfLines={1}>
 				<Text style={styles.typingUsers}>{usersText} </Text>
 				{ usersTyping.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing') }...
 			</Text>
@@ -66,7 +69,7 @@ const SubTitle = React.memo(({
 			<Markdown
 				preview
 				msg={subtitle}
-				style={[styles.subtitle, { color: themes[theme].auxiliaryText }]}
+				style={[styles.subtitle, { fontSize, color: themes[theme].auxiliaryText }]}
 				numberOfLines={1}
 				theme={theme}
 			/>
@@ -80,16 +83,18 @@ SubTitle.propTypes = {
 	usersTyping: PropTypes.array,
 	theme: PropTypes.string,
 	subtitle: PropTypes.string,
-	renderFunc: PropTypes.func
+	renderFunc: PropTypes.func,
+	scale: PropTypes.number
 };
 
 const HeaderTitle = React.memo(({
 	title, tmid, prid, scale, theme
 }) => {
+	const titleStyle = { fontSize: TITLE_SIZE * scale, color: themes[theme].headerTitleColor };
 	if (!tmid && !prid) {
 		return (
 			<Text
-				style={[styles.title, { fontSize: TITLE_SIZE * scale, color: themes[theme].headerTitleColor }]}
+				style={[styles.title, titleStyle]}
 				numberOfLines={1}
 				testID={`room-view-title-${ title }`}
 			>
@@ -102,7 +107,7 @@ const HeaderTitle = React.memo(({
 		<Markdown
 			preview
 			msg={title}
-			style={[styles.title, { fontSize: TITLE_SIZE * scale, color: themes[theme].headerTitleColor }]}
+			style={[styles.title, titleStyle]}
 			numberOfLines={1}
 			theme={theme}
 			testID={`room-view-title-${ title }`}
@@ -144,7 +149,7 @@ const Header = React.memo(({
 					theme={theme}
 					teamMain={teamMain}
 				/>
-				<Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{parentTitle}</Text>
+				<Text style={[styles.subtitle, { fontSize: getSubTitleSize(scale), color: themes[theme].auxiliaryText }]} numberOfLines={1}>{parentTitle}</Text>
 			</View>
 		);
 	}
@@ -179,7 +184,13 @@ const Header = React.memo(({
 					theme={theme}
 				/>
 			</View>
-			<SubTitle usersTyping={tmid ? [] : usersTyping} subtitle={subtitle} theme={theme} renderFunc={renderFunc} />
+			<SubTitle
+				usersTyping={tmid ? [] : usersTyping}
+				subtitle={subtitle}
+				theme={theme}
+				renderFunc={renderFunc}
+				scale={scale}
+			/>
 		</TouchableOpacity>
 	);
 });
