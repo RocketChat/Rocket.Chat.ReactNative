@@ -174,7 +174,7 @@ class NewServerView extends React.Component<IProps, IState> {
 		selectServer(previousServer);
 	}
 
-	handleNewServerEvent = (event) => {
+	handleNewServerEvent = (event: any) => {
 		let { server } = event;
 		if (!server) {
 			return;
@@ -386,8 +386,8 @@ const mapStateToProps = (state: IStateReducer) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-	connectServer: (...params) => dispatch(serverRequest(...params)),
-	selectServer: server => dispatch(selectServerRequest(server)),
+	connectServer: (...params: any) => dispatch(serverRequest(...params)),
+	selectServer: (server: any) => dispatch(selectServerRequest(server)),
 	inviteLinksClear: () => dispatch(inviteLinksClearAction())
 });
 
