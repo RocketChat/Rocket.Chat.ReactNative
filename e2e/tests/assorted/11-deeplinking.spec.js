@@ -19,7 +19,7 @@ describe('Deep linking authentication', () => {
         await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
         await device.launchApp({
             newInstance: true,
-            url: 'https://go.rocket.chat/auth?host=open.rocket.chat&token=VGLsN6KCiAkw4zk_y1o0fXZwrw8gJsd3ikEf_ehFlLb&userId=k5cHht7557znqbM32',
+            url: 'https://go.rocket.chat/auth',
             sourceApp: 'com.apple.mobilesafari',
             permissions: { notifications: 'YES' }
           });
@@ -33,6 +33,6 @@ describe('Deep linking authentication', () => {
 		await element(by.id('login-view-submit')).tap();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
         await navigateToRoom();
-        await mockMessage('https://go.rocket.chat/auth?host=open.rocket.chat&token=VGLsN6KCiAkw4zk_y1o0fXZwrw8gJsd3ikEf_ehFlLb&userId=k5cHht7557znqbM32');
+        await mockMessage('https://go.rocket.chat/auth');
 	});
 });
