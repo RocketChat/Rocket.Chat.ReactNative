@@ -28,7 +28,7 @@ import * as List from '../../containers/List';
 import Dropdown from './Dropdown';
 import DropdownItemHeader from './Dropdown/DropdownItemHeader';
 import { FILTER } from './filters';
-import NoDataFound from './NoDataFound';
+import NoDataFound from '../../containers/NoDataFound';
 import { isIOS } from '../../utils/deviceInfo';
 import { getBadgeColor, makeThreadName } from '../../utils/room';
 import { getHeaderTitlePosition } from '../../containers/Header';
