@@ -110,6 +110,18 @@ class RightButtonsContainer extends Component {
 		});
 	}
 
+	goTeamChannels = () => {
+		// logEvent(events.ROOM_GO_THREADS); TODO: log event
+		const {
+			rid, t, navigation, isMasterDetail
+		} = this.props;
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', { screen: 'TeamChannelsView', params: { rid, t } });
+		} else {
+			navigation.navigate('TeamChannelsView', { rid, t });
+		}
+	}
+
 	goThreadsView = () => {
 		logEvent(events.ROOM_GO_THREADS);
 		const {
@@ -169,7 +181,7 @@ class RightButtonsContainer extends Component {
 				{teamId ? (
 					<HeaderButton.Item
 						iconName='channel-public'
-						onPress={this.goThreadsView}
+						onPress={this.goTeamChannels}
 						testID='room-view-header-team-channels'
 					/>
 				) : null}
