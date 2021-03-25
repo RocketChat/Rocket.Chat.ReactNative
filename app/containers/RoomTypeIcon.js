@@ -6,8 +6,7 @@ import { STATUS_COLORS, themes } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	icon: {
-		marginTop: 3,
-		marginRight: 4
+		marginRight: 2
 	}
 });
 
@@ -18,7 +17,7 @@ const RoomTypeIcon = React.memo(({
 		return null;
 	}
 
-	const color = themes[theme].auxiliaryText;
+	const color = themes[theme].titleText;
 
 	let icon = 'channel-private';
 	if (teamMain) {
