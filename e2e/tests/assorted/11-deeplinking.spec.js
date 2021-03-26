@@ -2,8 +2,8 @@ const {
 	device, element, by, waitFor
 } = require('detox');
 const data = require('../../data');
-const { tapBack, checkServer, navigateToRegister } = require('../../helpers/app');
-const { post } = require('../../helpers/data_setup');
+const { tapBack, checkServer, navigateToRegister, login } = require('../../helpers/app');
+const { post, get } = require('../../helpers/data_setup');
 
 describe('Deep linking', () => {
 	let userId;
@@ -57,6 +57,56 @@ describe('Deep linking', () => {
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 			await authAndNavigate();
+		});
+	});
+
+	describe('Room', () => {
+		describe('While logged in', async() => {
+			const baseDeepLinking = `rocketchat://room?host=${ data.server.replace(/^(http:\/\/|https:\/\/)/, '') }`;
+			it('should navigate to the room using path', async() => {
+				await device.launchApp({
+					permissions: { notifications: 'YES' },
+					newInstance: true,
+					url: `${ baseDeepLinking }&path=group/${ data.groups.private.name }`,
+					sourceApp: 'com.apple.mobilesafari'
+				});
+				await waitFor(element(by.id(`room-view-title-${ data.groups.private.name }`))).toExist().withTimeout(10000);
+			});
+
+			it('should navigate to the room using rid', async() => {
+				const roomResult = await get(`groups.info?roomName=${ data.groups.private.name }`)
+				await device.launchApp({
+					permissions: { notifications: 'YES' },
+					newInstance: true,
+					url: `${ baseDeepLinking }&rid=${ roomResult.data.group._id }`,
+					sourceApp: 'com.apple.mobilesafari'
+				});
+				await waitFor(element(by.id(`room-view-title-${ data.groups.private.name }`))).toExist().withTimeout(10000);
+				await tapBack();
+			});
+		});
+
+		describe('Others', async() => {
+			const baseDeepLinking = `rocketchat://room?host=${ data.server.replace(/^(http:\/\/|https:\/\/)/, '') }`;
+			it('should change server', async() => {
+				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
+				await element(by.id('rooms-list-header-server-dropdown-button')).tap();
+				await waitFor(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible().withTimeout(5000);
+				await element(by.id(`rooms-list-header-server-${ data.alternateServer }`)).tap();
+				await checkServer(data.alternateServer);
+
+				await device.launchApp({
+					permissions: { notifications: 'YES' },
+					newInstance: true,
+					url: `${ baseDeepLinking }&path=group/${ data.groups.private.name }`,
+					sourceApp: 'com.apple.mobilesafari'
+				});
+				await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(10000);
+				await element(by.id('workspace-view-login')).tap();
+				await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
+				await login(data.users.regular.username, data.users.regular.password);
+				await waitFor(element(by.id(`room-view-title-${ data.groups.private.name }`))).toExist().withTimeout(10000);
+			});
 		});
 	});
 });

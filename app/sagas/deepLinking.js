@@ -42,9 +42,13 @@ const popToRoot = function popToRoot({ isMasterDetail }) {
 
 const navigate = function* navigate({ params }) {
 	yield put(appStart({ root: ROOT_INSIDE }));
-	if (params.path) {
-		const [type, name] = params.path.split('/');
-		if (type !== 'invite') {
+	if (params.path || params.rid) {
+		let type;
+		let name;
+		if (params.path) {
+			[type, name] = params.path.split('/');
+		}
+		if (type !== 'invite' || params.rid) {
 			const room = yield RocketChat.canOpenRoom(params);
 			if (room) {
 				const item = {
