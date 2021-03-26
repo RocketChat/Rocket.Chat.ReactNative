@@ -107,6 +107,17 @@ describe('Deep linking', () => {
 				});
 				await waitFor(element(by.id(`room-view-title-${ data.groups.private.name }`))).toExist().withTimeout(10000);
 			});
+
+			it('should add a not existing server and fallback to the previous one', async() => {
+				await device.launchApp({
+					permissions: { notifications: 'YES' },
+					newInstance: true,
+					url: getDeepLink(DEEPLINK_METHODS.ROOM, 'https://google.com'),
+					sourceApp: 'com.apple.mobilesafari'
+				});
+				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
+				await checkServer(data.server);
+			});
 		});
 	});
 });
