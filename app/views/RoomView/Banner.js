@@ -49,7 +49,16 @@ const Banner = React.memo(({
 					animationOut='fadeOut'
 				>
 					<View style={[styles.modalView, { backgroundColor: themes[theme].bannerBackground }]}>
-						<Text style={[styles.bannerModalTitle, { color: themes[theme].auxiliaryText }]}>{title}</Text>
+						<View style={styles.bannerModalTitle}>
+							<Text style={[styles.bannerModalTitleText, { color: themes[theme].auxiliaryText }]}>{title}</Text>
+							<BorderlessButton onPress={closeBanner}>
+								<CustomIcon
+									color={themes[theme].auxiliaryText}
+									name='close'
+									size={20}
+								/>
+							</BorderlessButton>
+						</View>
 						<ScrollView style={styles.modalScrollView}>
 							<Markdown
 								msg={text}
