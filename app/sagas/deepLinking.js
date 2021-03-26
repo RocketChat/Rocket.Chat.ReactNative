@@ -15,6 +15,7 @@ import {
 } from '../actions/app';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { goRoom } from '../utils/goRoom';
+import { loginRequest } from '../actions/login';
 
 const roomTypes = {
 	channel: 'c', direct: 'd', group: 'p', channels: 'l'
@@ -163,7 +164,7 @@ const handleOpen = function* handleOpen({ params }) {
 
 		if (params.token) {
 			yield take(types.SERVER.SELECT_SUCCESS);
-			yield RocketChat.connect({ server: host, user: { token: params.token } });
+			yield put(loginRequest({ resume: params.token }, true));
 			yield take(types.LOGIN.SUCCESS);
 			yield navigate({ params });
 		} else {
