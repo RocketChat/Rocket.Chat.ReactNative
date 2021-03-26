@@ -38,7 +38,16 @@ const loginSettings = [
 	'Accounts_PasswordReset',
 	'Accounts_iframe_enabled',
 	'Accounts_Iframe_api_url',
-	'Accounts_Iframe_api_method'
+	'Accounts_Iframe_api_method',
+	'Accounts_Password_Policy_Enabled',
+	'Accounts_Password_Policy_MinLength',
+	'Accounts_Password_Policy_MaxLength',
+	'Accounts_Password_Policy_ForbidRepeatingCharacters',
+	'Accounts_Password_Policy_ForbidRepeatingCharactersCount',
+	'Accounts_Password_Policy_AtLeastOneLowercase',
+	'Accounts_Password_Policy_AtLeastOneUppercase',
+	'Accounts_Password_Policy_AtLeastOneNumber',
+	'Accounts_Password_Policy_AtLeastOneSpecialCharacter'
 ];
 
 const serverInfoUpdate = async(serverInfo, iconSetting) => {

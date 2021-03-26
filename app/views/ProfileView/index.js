@@ -140,6 +140,13 @@ class ProfileView extends React.Component {
 			});
 		}
 
+		if (newPassword?.length > 0) {
+			// Password matching expression. Password must be at least 4 characters, no more than 8 characters, and must include at least one upper case letter, one lower case letter, and one numeric digit.
+			if (newPassword.trim().search(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$/) === -1) {
+				return false;
+			}
+		}
+
 		return !(user.name === name
 			&& user.username === username
 			&& !newPassword

@@ -110,6 +110,11 @@ class RegisterView extends React.Component {
 				requiredCheck = requiredCheck && customFields[key] && Boolean(customFields[key].trim());
 			}
 		});
+
+		// Password matching expression. Password must be at least 4 characters, no more than 8 characters, and must include at least one upper case letter, one lower case letter, and one numeric digit.
+		if (password.trim().search(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$/) === -1) {
+			return false;
+		}
 		return name.trim() && email.trim() && password.trim() && username.trim() && isValidEmail(email) && requiredCheck;
 	}
 
