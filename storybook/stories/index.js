@@ -1,14 +1,13 @@
 /* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions */
 import React from 'react';
-import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
 import { storiesOf } from '@storybook/react-native';
 
-import RoomItem from './RoomItem';
+import './RoomItem';
 import './List';
 import './ServerItem';
-import Message from './Message';
-import UiKitMessage from './UiKitMessage';
+import './Message';
+import './UiKitMessage';
 import UiKitModal from './UiKitModal';
 import Markdown from './Markdown';
 import './HeaderButtons';
@@ -29,7 +28,7 @@ const user = {
 };
 
 // Change here to see themed storybook
-const theme = 'light';
+export const theme = 'light';
 
 const reducers = combineReducers({
 	settings: () => ({}),
@@ -50,9 +49,9 @@ const reducers = combineReducers({
 	meteor: () => ({ connected: true }),
 	activeUsers: () => ({ abc: { status: 'online', statusText: 'dog' } })
 });
-const store = createStore(reducers);
+export const store = createStore(reducers);
 
-const messageDecorator = story => (
+export const messageDecorator = story => (
 	<MessageContext.Provider
 		value={{
 			user,
@@ -72,17 +71,9 @@ const messageDecorator = story => (
 	</MessageContext.Provider>
 );
 
-storiesOf('RoomItem', module)
-	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
-	.add('list roomitem', () => <RoomItem theme={theme} />);
-storiesOf('Message', module)
-	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
-	.addDecorator(messageDecorator)
-	.add('list message', () => <Message theme={theme} />);
-
-storiesOf('UiKitMessage', module)
-	.addDecorator(messageDecorator)
-	.add('list uikitmessage', () => <UiKitMessage theme={theme} />);
+// storiesOf('UiKitMessage', module)
+// 	.addDecorator(messageDecorator)
+// 	.add('list uikitmessage', () => <UiKitMessage theme={theme} />);
 storiesOf('UiKitModal', module)
 	.addDecorator(messageDecorator)
 	.add('list UiKitModal', () => <UiKitModal theme={theme} />);
