@@ -880,9 +880,9 @@ exports[`Storyshots Avatar list Avatar 1`] = `
           Array [
             Object {
               "borderRadius": 10,
-              "bottom": -3,
+              "bottom": -2,
               "position": "absolute",
-              "right": -3,
+              "right": -2,
             },
             Object {
               "backgroundColor": "#ffffff",
@@ -898,7 +898,14 @@ exports[`Storyshots Avatar list Avatar 1`] = `
                 "color": "#2de0a5",
                 "fontSize": 20,
               },
-              undefined,
+              Array [
+                Object {
+                  "height": 20,
+                  "textAlignVertical": "center",
+                  "width": 20,
+                },
+                undefined,
+              ],
               Object {
                 "fontFamily": "custom",
                 "fontStyle": "normal",
@@ -49667,18 +49674,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#cbced1",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -50061,18 +50075,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#cbced1",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -50437,18 +50458,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#cbced1",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -50831,18 +50859,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#cbced1",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -53451,18 +53486,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#2de0a5",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#2de0a5",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -53827,18 +53869,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#ffd21f",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#ffd21f",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -54203,18 +54252,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#f5455c",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#f5455c",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -54579,18 +54635,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#cbced1",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -54955,18 +55018,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#9ea2a8",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#9ea2a8",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -55331,18 +55401,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": undefined,
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -55725,18 +55802,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#cbced1",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -56106,18 +56190,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#cbced1",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -56528,18 +56619,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#cbced1",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -56950,18 +57048,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#cbced1",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -57372,18 +57477,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#cbced1",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -57794,18 +57906,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#cbced1",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -58216,18 +58335,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#cbced1",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -58638,18 +58764,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#cbced1",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -59060,18 +59193,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#cbced1",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -59482,18 +59622,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#cbced1",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -59904,18 +60051,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#cbced1",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -60339,18 +60493,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#cbced1",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -60774,18 +60935,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#cbced1",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -61209,18 +61377,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#cbced1",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -61644,18 +61819,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#cbced1",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -62079,18 +62261,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#cbced1",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -62570,18 +62759,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#cbced1",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",
@@ -63061,18 +63257,25 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                       "fontSize": 16,
                     },
                     Array [
-                      Array [
-                        Object {
-                          "marginRight": 4,
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                        undefined,
-                      ],
                       Object {
-                        "color": "#cbced1",
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
                       },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
                     ],
                     Object {
                       "fontFamily": "custom",

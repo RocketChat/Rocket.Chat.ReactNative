@@ -27,7 +27,7 @@ const RoomTypeIcon = React.memo(({
 	];
 
 	if (type === 'd' && !isGroupChat) {
-		return <Status style={[iconStyle, { color: STATUS_COLORS[status] }]} size={size} status={status} />;
+		return <Status style={[iconStyle, { color: STATUS_COLORS[status] ?? STATUS_COLORS.offline }]} size={size} status={status} />;
 	}
 
 	let icon = 'channel-private';
