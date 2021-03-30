@@ -8,12 +8,12 @@ import './List';
 import './ServerItem';
 import './Message';
 import './UiKitMessage';
-import UiKitModal from './UiKitModal';
+import './UiKitModal';
 import Markdown from './Markdown';
 import './HeaderButtons';
 import './UnreadBadge';
 import '../../app/views/ThreadMessagesView/Item.stories.js';
-import Avatar from './Avatar';
+import './Avatar';
 // import RoomViewHeader from './RoomViewHeader';
 
 import MessageContext from '../../app/containers/message/Context';
@@ -74,13 +74,13 @@ export const messageDecorator = story => (
 // storiesOf('UiKitMessage', module)
 // 	.addDecorator(messageDecorator)
 // 	.add('list uikitmessage', () => <UiKitMessage theme={theme} />);
-storiesOf('UiKitModal', module)
-	.addDecorator(messageDecorator)
-	.add('list UiKitModal', () => <UiKitModal theme={theme} />);
+// storiesOf('UiKitModal', module)
+// 	.addDecorator(messageDecorator)
+// 	.add('list UiKitModal', () => <UiKitModal theme={theme} />);
 storiesOf('Markdown', module)
 	.add('list Markdown', () => <Markdown theme={theme} />);
-storiesOf('Avatar', module)
-	.add('list Avatar', () => <Avatar theme={theme} />);
+// storiesOf('Avatar', module)
+// 	.add('list Avatar', () => <Avatar theme={theme} />);
 
 // FIXME: I couldn't make these pass on jest :(
 // storiesOf('RoomViewHeader', module)
