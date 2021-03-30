@@ -300,7 +300,9 @@ class RoomInfoView extends React.Component {
 
 		const onActionPress = async() => {
 			try {
-				await this.createDirect();
+				if (this.isDirect) {
+					await this.createDirect();
+				}
 				onPress();
 			} catch {
 				EventEmitter.emit(LISTENER, { message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') }) });
@@ -357,7 +359,7 @@ class RoomInfoView extends React.Component {
 					<View style={[styles.avatarContainer, this.isDirect && styles.avatarContainerDirectRoom, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 						{this.renderAvatar(room, roomUser)}
 						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser?.name, roomUser?.username, roomUser?.statusText, theme) }</View>
-						{this.isDirect ? this.renderButtons() : null}
+						{this.renderButtons()}
 					</View>
 					{this.renderContent()}
 				</SafeAreaView>
