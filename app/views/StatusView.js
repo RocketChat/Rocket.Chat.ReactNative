@@ -45,10 +45,7 @@ const styles = StyleSheet.create({
 		left: 12
 	},
 	inputStyle: {
-		paddingLeft: 44
-	},
-	status: {
-		marginRight: -4
+		paddingLeft: 48
 	}
 });
 
@@ -177,7 +174,7 @@ class StatusView extends React.Component {
 					}
 				}}
 				testID={`status-view-${ id }`}
-				left={() => <Status size={24} status={item.id} style={styles.status} />}
+				left={() => <Status size={24} status={item.id} />}
 			/>
 		);
 	}

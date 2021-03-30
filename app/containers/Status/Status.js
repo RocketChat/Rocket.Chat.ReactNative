@@ -9,10 +9,13 @@ const Status = React.memo(({
 	const name = `status-${ status }`;
 	const isNameValid = CustomIcon.hasIcon(name);
 	const iconName = isNameValid ? name : 'status-offline';
+	const calculatedStyle = [{
+		width: size, height: size, textAlignVertical: 'center'
+	}, style];
 
 	return (
 		<CustomIcon
-			style={style}
+			style={calculatedStyle}
 			size={size}
 			name={iconName}
 			color={STATUS_COLORS[status] ?? STATUS_COLORS.offline}
@@ -20,6 +23,7 @@ const Status = React.memo(({
 		/>
 	);
 });
+
 Status.propTypes = {
 	status: PropTypes.string,
 	size: PropTypes.number,
