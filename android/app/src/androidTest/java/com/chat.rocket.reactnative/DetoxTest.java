@@ -1,7 +1,6 @@
 package chat.rocket.reactnative;
 
 import com.wix.detox.Detox;
-import com.wix.detox.config.DetoxConfig;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,11 +20,10 @@ public class DetoxTest {
 
     @Test
     public void runDetoxTests() {
-        DetoxConfig detoxConfig = new DetoxConfig();
-        detoxConfig.idlePolicyConfig.masterTimeoutSec = 90;
-        detoxConfig.idlePolicyConfig.idleResourceTimeoutSec = 60;
-        detoxConfig.rnContextLoadTimeoutSec = (chat.rocket.reactnative.BuildConfig.DEBUG ? 180 : 60);
+        Detox.DetoxIdlePolicyConfig idlePolicyConfig = new Detox.DetoxIdlePolicyConfig();
+        idlePolicyConfig.masterTimeoutSec = 60;
+        idlePolicyConfig.idleResourceTimeoutSec = 30;
 
-        Detox.runTests(mActivityRule, detoxConfig);
+        Detox.runTests(mActivityRule, idlePolicyConfig);
     }
 }
