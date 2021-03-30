@@ -194,7 +194,7 @@ class RoomItemContainer extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-	let status = 'loading';
+	let status = '';
 	const { id, type, visitor = {} } = ownProps;
 	if (state.meteor.connected) {
 		if (type === 'd') {

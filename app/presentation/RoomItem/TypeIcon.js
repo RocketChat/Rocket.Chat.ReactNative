@@ -8,10 +8,10 @@ import styles from './styles';
 const TypeIcon = React.memo(({
 	theme, type, prid, status, isGroupChat
 }) => {
-	if (type === 'd' && !isGroupChat) {
-		return <Status style={styles.status} size={20} status={status} />;
-	}
-	return <RoomTypeIcon theme={theme} type={prid ? 'discussion' : type} isGroupChat={isGroupChat} status={status} />;
+	// if (type === 'd' && !isGroupChat) {
+	// 	return <Status style={styles.status} size={20} status={status} />;
+	// }
+	return <RoomTypeIcon type={prid ? 'discussion' : type} isGroupChat={isGroupChat} status={status} />;
 });
 
 TypeIcon.propTypes = {
