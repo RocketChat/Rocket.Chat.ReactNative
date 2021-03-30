@@ -146,6 +146,8 @@ android {
         versionCode VERSIONCODE as Integer
         versionName "4.15.0"
         vectorDrawables.useSupportLibrary = true
+        testBuildType System.getProperty('testBuildType', 'debug')  // This will later be used to control the test apk build type
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         if (!isFoss) {
             manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
             missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
@@ -267,6 +269,7 @@ dependencies {
     playImplementation project(':@react-native-firebase_analytics')
     playImplementation project(':@react-native-firebase_crashlytics')
     implementation fileTree(dir: "libs", include: ["*.jar"])
+    androidTestImplementation('com.wix:detox:+')
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
     playImplementation "com.google.firebase:firebase-messaging:18.0.0"

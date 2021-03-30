@@ -55,8 +55,11 @@ allprojects {
         maven {
             url jitsi_url
         }
-
         google()
+        maven {
+            // All of Detox' artifacts are provided via the npm module
+            url "$rootDir/../node_modules/detox/Detox-android"
+        }
         jcenter()
         maven { url 'https://maven.google.com' }
         maven { url 'https://www.jitpack.io' }
@@ -71,6 +74,10 @@ subprojects { subproject ->
                 buildToolsVersion "29.0.2"
                 defaultConfig {
                     targetSdkVersion 29
+                }
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_1_8
+                    targetCompatibility JavaVersion.VERSION_1_8
                 }
                 variantFilter { variant ->
                     def names = variant.flavors*.name
