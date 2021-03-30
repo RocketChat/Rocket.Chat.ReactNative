@@ -114,7 +114,7 @@ const AvatarStories = ({ theme }) => (
 		>
 			<View style={[sharedStyles.status, { backgroundColor: themes[theme].backgroundColor }]}>
 				<Status
-					size={24}
+					size={20}
 					status='online'
 				/>
 			</View>

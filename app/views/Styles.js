@@ -26,9 +26,9 @@ export default StyleSheet.create({
 	},
 	status: {
 		position: 'absolute',
-		bottom: -6,
-		right: -6,
-		borderRadius: 12
+		bottom: -3,
+		right: -3,
+		borderRadius: 10
 	},
 	textAlignCenter: {
 		textAlign: 'center'

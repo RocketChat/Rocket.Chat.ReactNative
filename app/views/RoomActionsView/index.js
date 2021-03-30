@@ -451,7 +451,7 @@ class RoomActionsView extends React.Component {
 							{t === 'd' && member._id
 								? (
 									<View style={[sharedStyles.status, { backgroundColor: themes[theme].backgroundColor }]}>
-										<Status size={24} id={member._id} />
+										<Status size={16} id={member._id} />
 									</View>
 								) : null
 							}
