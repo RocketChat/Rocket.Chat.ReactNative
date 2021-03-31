@@ -16,17 +16,6 @@ import '../../app/views/ThreadMessagesView/Item.stories.js';
 import './Avatar';
 // import RoomViewHeader from './RoomViewHeader';
 
-import MessageContext from '../../app/containers/message/Context';
-import { themes } from '../../app/constants/colors';
-
-// MessageProvider
-const baseUrl = 'https://open.rocket.chat';
-const user = {
-	id: '',
-	username: 'diego.mello',
-	token: ''
-};
-
 // Change here to see themed storybook
 export const theme = 'light';
 
@@ -50,26 +39,6 @@ const reducers = combineReducers({
 	activeUsers: () => ({ abc: { status: 'online', statusText: 'dog' } })
 });
 export const store = createStore(reducers);
-
-export const messageDecorator = story => (
-	<MessageContext.Provider
-		value={{
-			user,
-			baseUrl,
-			onPress: () => {},
-			onLongPress: () => {},
-			reactionInit: () => {},
-			onErrorPress: () => {},
-			replyBroadcast: () => {},
-			onReactionPress: () => {},
-			onDiscussionPress: () => {},
-			onReactionLongPress: () => {},
-			threadBadgeColor: themes.light.tunreadColor
-		}}
-	>
-		{story()}
-	</MessageContext.Provider>
-);
 
 // storiesOf('UiKitMessage', module)
 // 	.addDecorator(messageDecorator)

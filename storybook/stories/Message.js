@@ -8,9 +8,10 @@ import { storiesOf } from '@storybook/react-native';
 import MessageComponent from '../../app/containers/message/Message';
 import messagesStatus from '../../app/constants/messagesStatus';
 import MessageSeparator from '../../app/views/RoomView/Separator';
+import MessageContext from '../../app/containers/message/Context';
 
 import { themes } from '../../app/constants/colors';
-import { store, messageDecorator } from './index';
+import { store } from './index';
 
 const _theme = 'light';
 
@@ -38,6 +39,26 @@ const getCustomEmoji = (content) => {
 	}[content];
 	return customEmoji;
 };
+
+const messageDecorator = story => (
+	<MessageContext.Provider
+		value={{
+			user,
+			baseUrl,
+			onPress: () => {},
+			onLongPress: () => {},
+			reactionInit: () => {},
+			onErrorPress: () => {},
+			replyBroadcast: () => {},
+			onReactionPress: () => {},
+			onDiscussionPress: () => {},
+			onReactionLongPress: () => {},
+			threadBadgeColor: themes.light.tunreadColor
+		}}
+	>
+		{story()}
+	</MessageContext.Provider>
+);
 
 const Message = props => (
 	<MessageComponent

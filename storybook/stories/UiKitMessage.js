@@ -2,9 +2,10 @@
 import React from 'react';
 import { ScrollView, StyleSheet, SafeAreaView } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
+import MessageContext from '../../app/containers/message/Context';
 
 import { UiKitMessage } from '../../app/containers/UIKit';
-import { messageDecorator } from './index';
+import { themes } from '../../app/constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
@@ -15,6 +16,34 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16
 	}
 });
+
+const user = {
+	id: 'y8bd77ptZswPj3EW8',
+	username: 'diego.mello',
+	token: '79q6lH40W4ZRGLOshDiDiVlQaCc4f_lU9HNdHLAzuHz'
+};
+
+const baseUrl = 'https://open.rocket.chat';
+
+const messageDecorator = story => (
+	<MessageContext.Provider
+		value={{
+			user,
+			baseUrl,
+			onPress: () => {},
+			onLongPress: () => {},
+			reactionInit: () => {},
+			onErrorPress: () => {},
+			replyBroadcast: () => {},
+			onReactionPress: () => {},
+			onDiscussionPress: () => {},
+			onReactionLongPress: () => {},
+			threadBadgeColor: themes.light.tunreadColor
+		}}
+	>
+		{story()}
+	</MessageContext.Provider>
+);
 
 const stories = storiesOf('UiKitMessage', module)
 	.addDecorator(story => <SafeAreaView style={styles.container}>{story()}</SafeAreaView>)
