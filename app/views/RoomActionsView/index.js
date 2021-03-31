@@ -448,14 +448,20 @@ class RoomActionsView extends React.Component {
 							type={t}
 							rid={rid}
 						>
-							{t === 'd' && member._id ? <Status style={sharedStyles.status} id={member._id} /> : null }
+							{t === 'd' && member._id
+								? (
+									<View style={[sharedStyles.status, { backgroundColor: themes[theme].backgroundColor }]}>
+										<Status size={16} id={member._id} />
+									</View>
+								) : null
+							}
 						</Avatar>
 						<View style={styles.roomTitleContainer}>
 							{room.t === 'd'
 								? <Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{room.fname}</Text>
 								: (
 									<View style={styles.roomTitleRow}>
-										<RoomTypeIcon type={room.prid ? 'discussion' : room.t} status={room.visitor?.status} theme={theme} />
+										<RoomTypeIcon type={room.prid ? 'discussion' : room.t} status={room.visitor?.status} />
 										<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{RocketChat.getRoomTitle(room)}</Text>
 									</View>
 								)
