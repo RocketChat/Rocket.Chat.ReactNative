@@ -41,11 +41,11 @@ const styles = StyleSheet.create({
 	},
 	inputLeft: {
 		position: 'absolute',
-		top: 18,
-		left: 14
+		top: 12,
+		left: 12
 	},
 	inputStyle: {
-		paddingLeft: 40
+		paddingLeft: 48
 	}
 });
 
@@ -140,7 +140,7 @@ class StatusView extends React.Component {
 							testID={`status-view-current-${ user.status }`}
 							style={styles.inputLeft}
 							status={user.status}
-							size={12}
+							size={24}
 						/>
 					)}
 					inputStyle={styles.inputStyle}
@@ -174,7 +174,7 @@ class StatusView extends React.Component {
 					}
 				}}
 				testID={`status-view-${ id }`}
-				left={() => <Status size={12} status={item.id} />}
+				left={() => <Status size={24} status={item.id} />}
 			/>
 		);
 	}
