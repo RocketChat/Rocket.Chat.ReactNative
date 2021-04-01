@@ -319,7 +319,7 @@ class RoomsListView extends React.Component {
 	getHeader = () => {
 		const { searching } = this.state;
 		const { navigation, isMasterDetail, insets } = this.props;
-		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: 3 });
+		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: searching ? 0 : 3 });
 		return {
 			headerTitleAlign: 'left',
 			headerLeft: () => (searching ? (
@@ -341,7 +341,7 @@ class RoomsListView extends React.Component {
 			headerTitle: () => <RoomsListHeaderView />,
 			headerTitleContainerStyle: {
 				left: headerTitlePosition.left,
-				right: searching ? 20 : headerTitlePosition.right
+				right: headerTitlePosition.right
 			},
 			headerRight: () => (searching ? null : (
 				<HeaderButton.Container>
