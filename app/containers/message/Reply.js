@@ -73,7 +73,7 @@ const Title = React.memo(({ attachment, timeFormat, theme }) => {
 	if (!attachment.author_name) {
 		return null;
 	}
-	const time = attachment.ts ? moment(attachment.ts).format(timeFormat) : null;
+	const time = attachment.message_link && attachment.ts ? moment(attachment.ts).format(timeFormat) : null;
 	return (
 		<View style={styles.authorContainer}>
 			{attachment.author_name ? <Text style={[styles.author, { color: themes[theme].bodyText }]}>{attachment.author_name}</Text> : null}
