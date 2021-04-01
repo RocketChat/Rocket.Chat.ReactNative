@@ -346,13 +346,21 @@ export default ({ theme }) => {
 				attachments={[{
 					title: 'This is a title',
 					description: 'This is a description',
-					image_url: '/dummypath'
+					image_url: '/dummypath',
+					type: 'file'
 				}]}
 			/>
 			<Message
 				attachments={[{
 					title: 'This is a title',
 					description: 'This is a description :nyan_rocket:',
+					image_url: '/dummypath',
+					type: 'file'
+				}]}
+			/>
+			<Message
+				msg='Image should not render'
+				attachments={[{
 					image_url: '/dummypath'
 				}]}
 			/>
@@ -362,13 +370,15 @@ export default ({ theme }) => {
 				attachments={[{
 					title: 'This is a title',
 					description: 'This is a description :nyan_rocket:',
-					video_url: '/dummypath'
+					video_url: '/dummypath',
+					type: 'file'
 				}]}
 			/>
 			<Message
 				attachments={[{
 					title: 'This is a title',
-					video_url: '/dummypath'
+					video_url: '/dummypath',
+					type: 'file'
 				}]}
 			/>
 
@@ -377,7 +387,8 @@ export default ({ theme }) => {
 				attachments={[{
 					title: 'This is a title',
 					description: 'This is a description :nyan_rocket:',
-					audio_url: '/dummypath'
+					audio_url: '/dummypath',
+					type: 'file'
 				}]}
 			/>
 			<Message msg='First message' isHeader={false} />
@@ -385,21 +396,24 @@ export default ({ theme }) => {
 				attachments={[{
 					title: 'This is a title',
 					description: 'This is a description',
-					audio_url: '/dummypath'
+					audio_url: '/dummypath',
+					type: 'file'
 				}]}
 				isHeader={false}
 			/>
 			<Message
 				attachments={[{
 					title: 'This is a title',
-					audio_url: '/dummypath'
+					audio_url: '/dummypath',
+					type: 'file'
 				}]}
 				isHeader={false}
 			/>
 			<Message
 				attachments={[{
 					title: 'This is a title',
-					audio_url: '/dummypath'
+					audio_url: '/dummypath',
+					type: 'file'
 				}]}
 				isHeader={false}
 			/>
@@ -426,7 +440,8 @@ export default ({ theme }) => {
 					author_name: 'I\'m a very long long title and I\'ll break',
 					ts: date,
 					timeFormat: 'LT',
-					text: 'How are you?'
+					text: 'How are you?',
+					message_link: 'http:///example.com'
 				}]}
 			/>
 			<Message
@@ -435,7 +450,8 @@ export default ({ theme }) => {
 					author_name: 'rocket.cat',
 					ts: date,
 					timeFormat: 'LT',
-					text: 'How are you? :nyan_rocket:'
+					text: 'How are you? :nyan_rocket:',
+					message_link: 'http:///example.com'
 				}]}
 			/>
 
@@ -563,7 +579,8 @@ export default ({ theme }) => {
 				attachments={[{
 					title: 'This is a title',
 					description: 'This is a description',
-					audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
+					audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac',
+					type: 'file'
 				}]}
 				tmid='1'
 				isThreadSequential
@@ -687,6 +704,7 @@ export default ({ theme }) => {
 					ts: date,
 					timeFormat: 'LT',
 					text: 'Custom fields',
+					message_link: 'http:///example.com',
 					fields: [{
 						title: 'Field 1',
 						value: 'Value 1'
@@ -714,6 +732,7 @@ export default ({ theme }) => {
 					ts: date,
 					timeFormat: 'LT',
 					text: 'Custom fields',
+					message_link: 'http:///example.com',
 					fields: [{
 						title: 'Field 1',
 						value: 'Value 1',
@@ -728,6 +747,7 @@ export default ({ theme }) => {
 					ts: date,
 					timeFormat: 'LT',
 					text: 'Custom fields 2',
+					message_link: 'http:///example.com',
 					fields: [{
 						title: 'Field 1',
 						value: 'Value 1',
@@ -818,6 +838,7 @@ export default ({ theme }) => {
 					author_name: 'rocket.cat',
 					ts: date,
 					timeFormat: 'LT',
+					message_link: 'http:///example.com',
 					text: 'First message'
 				}]}
 			/>
@@ -890,6 +911,9 @@ export default ({ theme }) => {
 
 			<Separator title='Markdown links' theme={theme} />
 			<Message msg='Support <http://google.com|Google> [I`m an inline-style link](https://www.google.com) https://google.com' />
+
+			<Separator title='Starting with empty link' theme={theme} />
+			<Message msg='[  ](https://www.google.com)    <- No link should render' />
 
 			<Separator title='Markdown image' theme={theme} />
 			<Message msg='![alt text](https://play.google.com/intl/en_us/badges/images/badge_new.png)' />
