@@ -8,7 +8,7 @@ import styles, { ACTION_WIDTH, LONG_SWIPE } from './styles';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 
-const reverse = new Animated.Value(isRTL ? -1 : 1);
+const reverse = new Animated.Value(isRTL() ? -1 : 1);
 
 export const LeftActions = React.memo(({
 	theme, transX, isRead, width, onToggleReadPress
