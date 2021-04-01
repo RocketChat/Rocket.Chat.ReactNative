@@ -65,7 +65,7 @@ class StatusView extends React.Component {
 		super(props);
 
 		const { statusText } = props.user;
-		this.state = { statusText, loading: false };
+		this.state = { statusText: statusText || '', loading: false };
 		this.setHeader();
 	}
 
