@@ -2,15 +2,7 @@ const {
 	device, element, by, waitFor
 } = require('detox');
 const data = require('../../data');
-const { sleep, navigateToLogin, login } = require('../../helpers/app');
-
-const checkServer = async(server) => {
-	const label = `Connected to ${ server }`;
-	await element(by.id('rooms-list-view-sidebar')).tap();
-	await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
-	await waitFor(element(by.label(label))).toBeVisible().withTimeout(10000);
-	await element(by.id('sidebar-close-drawer')).tap();
-}
+const { sleep, navigateToLogin, login, checkServer } = require('../../helpers/app');
 
 describe('Delete server', () => {
 	before(async() => {

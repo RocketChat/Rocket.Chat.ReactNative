@@ -775,6 +775,12 @@ export default ({ theme }) => {
 						value: 'Value 2',
 						short: true
 					}]
+				}, {
+					color: 'ASDASD',
+					fields: [{
+						title: 'Invalid color',
+						short: true
+					}]
 				}]}
 			/>
 
