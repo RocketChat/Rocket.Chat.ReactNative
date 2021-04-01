@@ -102,7 +102,7 @@ class InviteUsersView extends React.Component {
 			theme, invite
 		} = this.props;
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
+			<SafeAreaView testID="invite-users-view" style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<ScrollView
 					{...scrollPersistTaps}
 					style={{ backgroundColor: themes[theme].auxiliaryBackground }}
@@ -116,16 +116,19 @@ class InviteUsersView extends React.Component {
 							theme={theme}
 							value={invite && invite.url}
 							editable={false}
+							testID="invite-link-text"
 						/>
 						{this.renderExpiration()}
 						<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />
 						<Button
+							testID='share-link-button'
 							title={I18n.t('Share_Link')}
 							type='primary'
 							onPress={this.share}
 							theme={theme}
 						/>
 						<Button
+							testID='edit-invite-button'
 							title={I18n.t('Edit_Invite')}
 							type='secondary'
 							onPress={this.edit}

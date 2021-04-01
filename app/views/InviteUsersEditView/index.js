@@ -85,7 +85,7 @@ class InviteUsersView extends React.Component {
 		navigation.pop();
 	}
 
-	renderPicker = (key, first) => {
+	renderPicker = (key, first, testID) => {
 		const { props } = this;
 		const { theme } = props;
 		const firstEl = [{
@@ -93,6 +93,7 @@ class InviteUsersView extends React.Component {
 		}];
 		return (
 			<RNPickerSelect
+				testID={testID}
 				style={{ viewContainer: styles.viewContainer }}
 				value={props[key]}
 				textInputProps={{ style: { ...styles.pickerText, color: themes[theme].actionTintColor } }}
@@ -114,17 +115,18 @@ class InviteUsersView extends React.Component {
 						<List.Separator />
 						<List.Item
 							title='Expiration_Days'
-							right={() => this.renderPicker('days', 'Never')}
+							right={() => this.renderPicker('days', 'Never', 'expiration-days-picker')}
 						/>
 						<List.Separator />
 						<List.Item
 							title='Max_number_of_uses'
-							right={() => this.renderPicker('maxUses', 'No_limit')}
+							right={() => this.renderPicker('maxUses', 'No_limit', 'max-number-uses-picker')}
 						/>
 						<List.Separator />
 					</List.Section>
 					<View style={styles.innerContainer}>
 						<Button
+							testID='generate-new-link-button'
 							title={I18n.t('Generate_New_Link')}
 							type='primary'
 							onPress={this.createInviteLink}
