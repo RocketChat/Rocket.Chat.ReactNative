@@ -208,7 +208,7 @@ describe('E2E Encryption', () => {
 		});
 	});
 
-	describe('E2EE Banner', () => {
+	describe('Persist Banner', () => {
 		it('check save banner', async() => {
 			await checkServer(data.server);
 			await checkBanner();
@@ -245,6 +245,15 @@ describe('E2E Encryption', () => {
 			await element(by.id(`rooms-list-header-server-${ data.server }`)).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 			await checkServer(data.server);
+			await checkBanner();
+		});
+
+		it('should reopen the app and have banner', async() => {
+			await device.launchApp({
+				permissions: { notifications: 'YES' },
+				newInstance: true
+			});
+			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 			await checkBanner();
 		});
 	});
