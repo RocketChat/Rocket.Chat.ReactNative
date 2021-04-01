@@ -3,30 +3,29 @@ const {
 } = require('detox');
 const data = require('../data');
 
-async function navigateToWorkspace() {
+async function navigateToWorkspace(server = data.server) {
     await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(10000);
 	await element(by.id('join-workspace')).tap();
 	await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
-	await element(by.id('new-server-view-input')).replaceText(data.server);
+	await element(by.id('new-server-view-input')).replaceText(server);
 	await element(by.id('new-server-view-button')).tap();
 	await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(60000);
 	await expect(element(by.id('workspace-view'))).toBeVisible();
 }
 
-async function navigateToLogin() {
+async function navigateToLogin(server) {
     await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
-    await navigateToWorkspace();
+    await navigateToWorkspace(server);
 	await element(by.id('workspace-view-login')).tap();
     await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
     await expect(element(by.id('login-view'))).toBeVisible();
 }
 
-async function navigateToRegister() {
+async function navigateToRegister(server) {
     await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
-    await navigateToWorkspace();
+    await navigateToWorkspace(server);
 	await element(by.id('workspace-view-register')).tap();
     await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
-    await expect(element(by.id('register-view'))).toBeVisible();
 }
 
 async function login(username, password) {
@@ -120,6 +119,14 @@ async function tryTapping(theElement, timeout, longtap = false){
 	}
 }
 
+const checkServer = async(server) => {
+	const label = `Connected to ${ server }`;
+	await element(by.id('rooms-list-view-sidebar')).tap();
+	await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
+	await waitFor(element(by.label(label))).toBeVisible().withTimeout(10000);
+	await element(by.id('sidebar-close-drawer')).tap();
+}
+
 module.exports = {
     navigateToWorkspace,
     navigateToLogin,
@@ -133,5 +140,6 @@ module.exports = {
     tapBack,
     sleep,
     searchRoom,
-    tryTapping
+    tryTapping,
+    checkServer
 };
