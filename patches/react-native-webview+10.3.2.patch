@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewManager.java b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewManager.java
-index ab869cf..2aa7a9e 100644
+index ab869cf..08ce7ce 100644
 --- a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewManager.java
 +++ b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewManager.java
 @@ -84,6 +84,12 @@ import java.util.Map;
@@ -44,7 +44,7 @@ index ab869cf..2aa7a9e 100644
    }
  
    @Override
-@@ -742,12 +754,54 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
+@@ -742,12 +754,56 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
  
    protected static class RNCWebViewClient extends WebViewClient {
  
@@ -93,6 +93,8 @@ index ab869cf..2aa7a9e 100644
 +          }
 +        };
 +        task.execute();
++      } else {
++        super.onReceivedClientCertRequest(view, request);
 +      }
 +    }
 +

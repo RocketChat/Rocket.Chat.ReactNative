@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, View } from 'react-native';
 import PropTypes from 'prop-types';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
 
 import styles from '../styles';
 import MentionItem from './MentionItem';
@@ -30,7 +30,7 @@ const Mentions = React.memo(({ mentions, trackingType, theme }) => {
 	if (prevProps.trackingType !== nextProps.trackingType) {
 		return false;
 	}
-	if (!equal(prevProps.mentions, nextProps.mentions)) {
+	if (!dequal(prevProps.mentions, nextProps.mentions)) {
 		return false;
 	}
 	return true;

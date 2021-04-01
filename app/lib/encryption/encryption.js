@@ -229,9 +229,9 @@ class Encryption {
 	decryptPendingMessages = async(roomId) => {
 		const db = database.active;
 
-		const messagesCollection = db.collections.get('messages');
-		const threadsCollection = db.collections.get('threads');
-		const threadMessagesCollection = db.collections.get('thread_messages');
+		const messagesCollection = db.get('messages');
+		const threadsCollection = db.get('threads');
+		const threadMessagesCollection = db.get('thread_messages');
 
 		// e2e status is null or 'pending' and message type is 'e2e'
 		const whereClause = [
@@ -286,7 +286,7 @@ class Encryption {
 	// after initialize the encryption client
 	decryptPendingSubscriptions = async() => {
 		const db = database.active;
-		const subCollection = db.collections.get('subscriptions');
+		const subCollection = db.get('subscriptions');
 		try {
 			// Find all rooms that can have a lastMessage encrypted
 			// If we select only encrypted rooms we can miss some room that changed their encrypted status
@@ -347,7 +347,7 @@ class Encryption {
 
 		const { rid } = subscription;
 		const db = database.active;
-		const subCollection = db.collections.get('subscriptions');
+		const subCollection = db.get('subscriptions');
 
 		let subRecord;
 		try {
@@ -400,7 +400,7 @@ class Encryption {
 	encryptMessage = async(message) => {
 		const { rid } = message;
 		const db = database.active;
-		const subCollection = db.collections.get('subscriptions');
+		const subCollection = db.get('subscriptions');
 
 		try {
 			// Find the subscription

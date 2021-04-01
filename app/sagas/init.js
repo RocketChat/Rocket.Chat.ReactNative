@@ -1,4 +1,4 @@
-import { put, takeLatest, all } from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
 import RNBootSplash from 'react-native-bootsplash';
 
 import UserPreferences from '../lib/userPreferences';
@@ -25,20 +25,30 @@ export const initLocalSettings = function* initLocalSettings() {
 
 const restore = function* restore() {
 	try {
-		const { token, server } = yield all({
-			token: UserPreferences.getStringAsync(RocketChat.TOKEN_KEY),
-			server: UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER)
-		});
+		const server = yield UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER);
+		let userId = yield UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
 
-		if (!token || !server) {
-			yield all([
-				UserPreferences.removeItem(RocketChat.TOKEN_KEY),
-				UserPreferences.removeItem(RocketChat.CURRENT_SERVER)
-			]);
+		if (!server) {
+			yield put(appStart({ root: ROOT_OUTSIDE }));
+		} else if (!userId) {
+			const serversDB = database.servers;
+			const serversCollection = serversDB.get('servers');
+			const servers = yield serversCollection.query().fetch();
+
+			// Check if there're other logged in servers and picks first one
+			if (servers.length > 0) {
+				for (let i = 0; i < servers.length; i += 1) {
+					const newServer = servers[i].id;
+					userId = yield UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
+					if (userId) {
+						return yield put(selectServerRequest(newServer));
+					}
+				}
+			}
 			yield put(appStart({ root: ROOT_OUTSIDE }));
 		} else {
 			const serversDB = database.servers;
-			const serverCollections = serversDB.collections.get('servers');
+			const serverCollections = serversDB.get('servers');
 
 			let serverObj;
 			try {
