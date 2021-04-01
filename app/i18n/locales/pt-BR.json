@@ -653,5 +653,8 @@
   "Enter_workspace_URL": "Digite a URL da sua workspace",
   "Workspace_URL_Example": "Ex. sua-empresa.rocket.chat",
   "This_room_encryption_has_been_enabled_by__username_": "A criptografia para essa sala foi habilitada por {{username}}",
-  "This_room_encryption_has_been_disabled_by__username_": "A criptografia para essa sala foi desabilitada por {{username}}"
+  "This_room_encryption_has_been_disabled_by__username_": "A criptografia para essa sala foi desabilitada por {{username}}",
+  "Apply_Your_Certificate": "Aplicar certificado",
+  "Do_you_have_a_certificate": "Você tem um certificado?",
+  "Your_certificate": "Seu certificado"
 }
