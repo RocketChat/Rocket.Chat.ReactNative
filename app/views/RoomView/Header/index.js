@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
 
 import Header from './Header';
 import LeftButtons from './LeftButtons';
@@ -28,7 +28,8 @@ class RoomHeaderView extends Component {
 		goRoomActionsView: PropTypes.func,
 		width: PropTypes.number,
 		height: PropTypes.number,
-		parentTitle: PropTypes.string
+		parentTitle: PropTypes.string,
+		isGroupChat: PropTypes.bool
 	};
 
 	shouldComponentUpdate(nextProps) {
@@ -65,7 +66,7 @@ class RoomHeaderView extends Component {
 		if (nextProps.height !== height) {
 			return true;
 		}
-		if (!equal(nextProps.usersTyping, usersTyping)) {
+		if (!dequal(nextProps.usersTyping, usersTyping)) {
 			return true;
 		}
 		if (nextProps.goRoomActionsView !== goRoomActionsView) {
@@ -76,7 +77,24 @@ class RoomHeaderView extends Component {
 
 	render() {
 		const {
-			title, subtitle: subtitleProp, type, prid, tmid, widthOffset, status = 'offline', statusText, connecting, connected, usersTyping, goRoomActionsView, roomUserId, theme, width, height, parentTitle
+			title,
+			subtitle: subtitleProp,
+			type,
+			prid,
+			tmid,
+			widthOffset,
+			status = 'offline',
+			statusText,
+			connecting,
+			connected,
+			usersTyping,
+			goRoomActionsView,
+			roomUserId,
+			theme,
+			width,
+			height,
+			parentTitle,
+			isGroupChat
 		} = this.props;
 
 		let subtitle;
@@ -105,6 +123,7 @@ class RoomHeaderView extends Component {
 				goRoomActionsView={goRoomActionsView}
 				connecting={connecting}
 				parentTitle={parentTitle}
+				isGroupChat={isGroupChat}
 			/>
 		);
 	}

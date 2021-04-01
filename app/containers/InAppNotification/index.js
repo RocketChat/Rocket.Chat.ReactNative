@@ -2,7 +2,7 @@ import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { NotifierRoot, Notifier, Easing } from 'react-native-notifier';
 import { connect } from 'react-redux';
-import isEqual from 'deep-equal';
+import { dequal } from 'dequal';
 
 import NotifierComponent from './NotifierComponent';
 import EventEmitter from '../../utils/events';
@@ -11,8 +11,12 @@ import { getActiveRoute } from '../../utils/navigation';
 
 export const INAPP_NOTIFICATION_EMITTER = 'NotificationInApp';
 
-const InAppNotification = memo(({ rooms }) => {
+const InAppNotification = memo(({ rooms, appState }) => {
 	const show = (notification) => {
+		if (appState !== 'foreground') {
+			return;
+		}
+
 		const { payload } = notification;
 		const state = Navigation.navigationRef.current?.getRootState();
 		const route = getActiveRoute(state);
@@ -38,14 +42,16 @@ const InAppNotification = memo(({ rooms }) => {
 	}, [rooms]);
 
 	return <NotifierRoot />;
-}, (prevProps, nextProps) => isEqual(prevProps.rooms, nextProps.rooms));
+}, (prevProps, nextProps) => dequal(prevProps.rooms, nextProps.rooms));
 
 const mapStateToProps = state => ({
-	rooms: state.room.rooms
+	rooms: state.room.rooms,
+	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background'
 });
 
 InAppNotification.propTypes = {
-	rooms: PropTypes.array
+	rooms: PropTypes.array,
+	appState: PropTypes.string
 };
 
 export default connect(mapStateToProps)(InAppNotification);
