@@ -706,7 +706,7 @@ export default ({ theme }) => {
 				}]}
 			/>
 
-			<Separator title='Two short custom fields' theme={theme} />
+			<Separator title='Two short custom fields with markdown' theme={theme} />
 			<Message
 				msg='Message'
 				attachments={[{
@@ -720,7 +720,7 @@ export default ({ theme }) => {
 						short: true
 					}, {
 						title: 'Field 2',
-						value: 'Value 2',
+						value: '[Value 2](https://google.com/)',
 						short: true
 					}]
 				}, {
@@ -734,7 +734,51 @@ export default ({ theme }) => {
 						short: true
 					}, {
 						title: 'Field 2',
+						value: '**Value 2**',
+						short: true
+					}]
+				}]}
+			/>
+
+			<Separator title='Colored attachments' theme={theme} />
+			<Message
+				attachments={[{
+					color: 'red',
+					fields: [{
+						title: 'Field 1',
+						value: 'Value 1',
+						short: true
+					}, {
+						title: 'Field 2',
 						value: 'Value 2',
+						short: true
+					}]
+				}, {
+					color: 'green',
+					fields: [{
+						title: 'Field 1',
+						value: 'Value 1',
+						short: true
+					}, {
+						title: 'Field 2',
+						value: 'Value 2',
+						short: true
+					}]
+				}, {
+					color: 'blue',
+					fields: [{
+						title: 'Field 1',
+						value: 'Value 1',
+						short: true
+					}, {
+						title: 'Field 2',
+						value: 'Value 2',
+						short: true
+					}]
+				}, {
+					color: 'ASDASD',
+					fields: [{
+						title: 'Invalid color',
 						short: true
 					}]
 				}]}
