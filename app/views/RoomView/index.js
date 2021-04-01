@@ -306,6 +306,7 @@ class RoomView extends React.Component {
 		} = this.props;
 		const { rid, tmid } = this;
 		const prid = room?.prid;
+		const isGroupChat = RocketChat.isGroupChat(room);
 		let title = route.params?.name;
 		let parentTitle;
 		if ((room.id || room.rid) && !tmid) {
@@ -356,6 +357,7 @@ class RoomView extends React.Component {
 					type={t}
 					roomUserId={roomUserId}
 					visitor={visitor}
+					isGroupChat={isGroupChat}
 					goRoomActionsView={this.goRoomActionsView}
 				/>
 			),

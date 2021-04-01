@@ -878,29 +878,46 @@ exports[`Storyshots Avatar list Avatar 1`] = `
       <View
         style={
           Array [
-            Array [
-              Object {
-                "borderWidth": 3,
-                "bottom": -3,
-                "position": "absolute",
-                "right": -3,
-              },
-              Object {
-                "borderWidth": 4,
-                "bottom": -4,
-                "right": -4,
-              },
-            ],
             Object {
-              "backgroundColor": "#cbced1",
-              "borderColor": "#ffffff",
-              "borderRadius": 24,
-              "height": 24,
-              "width": 24,
+              "borderRadius": 10,
+              "bottom": -2,
+              "position": "absolute",
+              "right": -2,
+            },
+            Object {
+              "backgroundColor": "#ffffff",
             },
           ]
         }
-      />
+      >
+        <Text
+          allowFontScaling={false}
+          style={
+            Array [
+              Object {
+                "color": "#2de0a5",
+                "fontSize": 20,
+              },
+              Array [
+                Object {
+                  "height": 20,
+                  "textAlignVertical": "center",
+                  "width": 20,
+                },
+                undefined,
+              ],
+              Object {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              Object {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
     </View>
     <Text
       style={
@@ -41340,6 +41357,85 @@ exports[`Storyshots Message list message 1`] = `
                   </View>
                 </View>
               </View>
+              <View
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "alignSelf": "flex-start",
+                    "backgroundColor": "#f3f4f5",
+                    "borderColor": "#e1e5e8",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "flex": 1,
+                    "flexDirection": "row",
+                    "marginTop": 4,
+                    "opacity": 1,
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "borderRadius": 4,
+                      "flex": 1,
+                      "flexDirection": "column",
+                      "padding": 15,
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      Object {
+                        "flex": 1,
+                        "flexDirection": "row",
+                        "flexWrap": "wrap",
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Array [
+                          Object {
+                            "flexDirection": "column",
+                            "padding": 10,
+                          },
+                          Object {
+                            "width": "50%",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        style={
+                          Array [
+                            Object {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "System",
+                              "fontSize": 14,
+                              "fontWeight": "600",
+                              "textAlign": "left",
+                            },
+                            Object {
+                              "color": "#2f343d",
+                            },
+                          ]
+                        }
+                      >
+                        Invalid color
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              </View>
             </View>
           </View>
         </View>
@@ -49648,24 +49744,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 ]
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#cbced1",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#cbced1",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -50027,24 +50145,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 ]
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#cbced1",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#cbced1",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -50388,24 +50528,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 ]
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#cbced1",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#cbced1",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -50767,24 +50929,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 ]
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#cbced1",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#cbced1",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -51138,11 +51322,10 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                     },
                     Array [
                       Object {
-                        "color": "#9ca2a8",
+                        "marginRight": 4,
                       },
                       Object {
-                        "marginRight": 4,
-                        "marginTop": 3,
+                        "color": "#0d0e12",
                       },
                       undefined,
                     ],
@@ -51510,11 +51693,10 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                     },
                     Array [
                       Object {
-                        "color": "#9ca2a8",
+                        "marginRight": 4,
                       },
                       Object {
-                        "marginRight": 4,
-                        "marginTop": 3,
+                        "color": "#0d0e12",
                       },
                       undefined,
                     ],
@@ -51882,11 +52064,10 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                     },
                     Array [
                       Object {
-                        "color": "#cbced1",
+                        "marginRight": 4,
                       },
                       Object {
-                        "marginRight": 4,
-                        "marginTop": 3,
+                        "color": "#0d0e12",
                       },
                       undefined,
                     ],
@@ -52254,11 +52435,10 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                     },
                     Array [
                       Object {
-                        "color": "#9ca2a8",
+                        "marginRight": 4,
                       },
                       Object {
-                        "marginRight": 4,
-                        "marginTop": 3,
+                        "color": "#0d0e12",
                       },
                       undefined,
                     ],
@@ -52626,11 +52806,10 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                     },
                     Array [
                       Object {
-                        "color": "#9ca2a8",
+                        "marginRight": 4,
                       },
                       Object {
-                        "marginRight": 4,
-                        "marginTop": 3,
+                        "color": "#0d0e12",
                       },
                       undefined,
                     ],
@@ -52643,7 +52822,7 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                   ]
                 }
               >
-                
+                
               </Text>
               <Text
                 ellipsizeMode="tail"
@@ -52998,11 +53177,10 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                     },
                     Array [
                       Object {
-                        "color": "#9ca2a8",
+                        "marginRight": 4,
                       },
                       Object {
-                        "marginRight": 4,
-                        "marginTop": 3,
+                        "color": "#0d0e12",
                       },
                       undefined,
                     ],
@@ -53378,24 +53556,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 ]
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#2de0a5",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#2de0a5",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#2de0a5",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -53739,24 +53939,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 ]
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#ffd21f",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#ffd21f",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#ffd21f",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -54100,24 +54322,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 ]
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#f5455c",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#f5455c",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#f5455c",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -54461,24 +54705,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 ]
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#cbced1",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#cbced1",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -54822,24 +55088,429 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 ]
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#9ea2a8",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#9ea2a8",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#cbced1",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                
+              </Text>
+              <Text
+                ellipsizeMode="tail"
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "flex": 1,
+                      "fontFamily": "System",
+                      "fontSize": 17,
+                      "fontWeight": "500",
+                      "lineHeight": 20,
+                      "textAlign": "left",
+                    },
+                    undefined,
+                    Object {
+                      "color": "#0d0e12",
                     },
                   ]
                 }
+              >
+                rocket.cat
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View>
+      <View
+        pointerEvents="box-none"
+        style={
+          Array [
+            Object {
+              "height": 150,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+            },
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "backgroundColor": "#1d74f5",
+              "height": 150,
+              "justifyContent": "center",
+              "position": "absolute",
+              "right": 670,
+              "top": 0,
+              "transform": Array [
+                Object {
+                  "translateX": -80,
+                },
+              ],
+              "width": 750,
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": "white",
+                    "fontSize": 20,
+                  },
+                  undefined,
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 15,
+                    "fontWeight": "600",
+                    "justifyContent": "center",
+                    "marginTop": 4,
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#ffffff",
+                  },
+                ]
+              }
+            >
+              Read
+            </Text>
+          </View>
+        </View>
+      </View>
+      <View
+        pointerEvents="box-none"
+        style={
+          Object {
+            "flexDirection": "row",
+            "height": 75,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "backgroundColor": "#54585e",
+              "height": 150,
+              "justifyContent": "center",
+              "position": "absolute",
+              "top": 0,
+              "transform": Array [
+                Object {
+                  "translateX": 750,
+                },
+              ],
+              "width": 750,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            style={
+              Array [
+                Object {
+                  "color": "#ffffff",
+                  "fontSize": 20,
+                },
+                undefined,
+                Object {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                Object {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontSize": 15,
+                  "fontWeight": "600",
+                  "justifyContent": "center",
+                  "marginTop": 4,
+                  "textAlign": "left",
+                },
+                Object {
+                  "color": "#ffffff",
+                },
+              ]
+            }
+          >
+            Favorite
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "height": 150,
+              "justifyContent": "center",
+              "position": "absolute",
+              "top": 0,
+              "transform": Array [
+                Object {
+                  "translateX": 750,
+                },
+              ],
+              "width": 750,
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            style={
+              Array [
+                Object {
+                  "color": "#ffffff",
+                  "fontSize": 20,
+                },
+                undefined,
+                Object {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                Object {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontSize": 15,
+                  "fontWeight": "600",
+                  "justifyContent": "center",
+                  "marginTop": 4,
+                  "textAlign": "left",
+                },
+                Object {
+                  "color": "#ffffff",
+                },
+              ]
+            }
+          >
+            Hide
+          </Text>
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "transform": Array [
+              Object {
+                "translateX": 0,
+              },
+            ],
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "height": 150,
+              "paddingLeft": 14,
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 4,
+                  "height": 48,
+                  "width": 48,
+                },
+                Object {
+                  "marginRight": 10,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "overflow": "hidden",
+                  },
+                  Object {
+                    "borderRadius": 4,
+                    "height": 48,
+                    "width": 48,
+                  },
+                ]
+              }
+            >
+              <FastImageView
+                resizeMode="cover"
+                source={
+                  Object {
+                    "headers": undefined,
+                    "priority": "high",
+                    "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=48",
+                  }
+                }
+                style={
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  }
+                }
               />
+            </View>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "borderBottomWidth": 0.5,
+                  "flex": 1,
+                  "paddingRight": 14,
+                  "paddingVertical": 10,
+                },
+                Object {
+                  "borderColor": "#cbcbcc",
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "justifyContent": "center",
+                    "width": "100%",
+                  },
+                  Object {
+                    "flex": 1,
+                  },
+                ]
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                style={
+                  Array [
+                    Object {
+                      "color": "#cbced1",
+                      "fontSize": 16,
+                    },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
+                    ],
+                    Object {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -55201,24 +55872,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 ]
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#cbced1",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#cbced1",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -55567,24 +56260,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 ]
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#cbced1",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#cbced1",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -55974,24 +56689,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 ]
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#cbced1",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#cbced1",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -56381,24 +57118,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 ]
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#cbced1",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#cbced1",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -56788,24 +57547,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 ]
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#cbced1",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#cbced1",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -57195,24 +57976,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 ]
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#cbced1",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#cbced1",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -57602,24 +58405,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 ]
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#cbced1",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#cbced1",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -58009,24 +58834,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 ]
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#cbced1",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#cbced1",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -58416,24 +59263,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 ]
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#cbced1",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#cbced1",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -58823,24 +59692,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 ]
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#cbced1",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#cbced1",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -59230,24 +60121,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 ]
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#cbced1",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#cbced1",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -59650,24 +60563,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 }
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#cbced1",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#cbced1",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -60070,24 +61005,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 }
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#cbced1",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#cbced1",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -60490,24 +61447,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 }
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#cbced1",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#cbced1",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -60910,24 +61889,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 }
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#cbced1",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#cbced1",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -61330,24 +62331,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 }
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#cbced1",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#cbced1",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -61806,24 +62829,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 }
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#cbced1",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#cbced1",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
@@ -62282,24 +63327,46 @@ exports[`Storyshots RoomItem list roomitem 1`] = `
                 }
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
-                      "marginLeft": 4,
-                      "marginRight": 7,
-                      "marginTop": 3,
+                      "color": "#cbced1",
+                      "fontSize": 16,
                     },
+                    Array [
+                      Object {
+                        "height": 16,
+                        "textAlignVertical": "center",
+                        "width": 16,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          undefined,
+                        ],
+                        Object {
+                          "color": "#cbced1",
+                        },
+                      ],
+                    ],
                     Object {
-                      "backgroundColor": "#cbced1",
-                      "borderColor": "#ffffff",
-                      "borderRadius": 10,
-                      "height": 10,
-                      "width": 10,
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
                     },
+                    Object {},
                   ]
                 }
-              />
+              >
+                
+              </Text>
               <Text
                 ellipsizeMode="tail"
                 numberOfLines={1}
