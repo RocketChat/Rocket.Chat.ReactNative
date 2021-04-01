@@ -891,6 +891,9 @@ export default ({ theme }) => {
 			<Separator title='Markdown links' theme={theme} />
 			<Message msg='Support <http://google.com|Google> [I`m an inline-style link](https://www.google.com) https://google.com' />
 
+			<Separator title='Starting with empty link' theme={theme} />
+			<Message msg='[  ](https://www.google.com)    <- No link should render' />
+
 			<Separator title='Markdown image' theme={theme} />
 			<Message msg='![alt text](https://play.google.com/intl/en_us/badges/images/badge_new.png)' />
 
