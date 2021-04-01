@@ -48,11 +48,6 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
-	status: {
-		borderWidth: 4,
-		bottom: -4,
-		right: -4
-	},
 	itemLabel: {
 		marginBottom: 10,
 		fontSize: 14,
