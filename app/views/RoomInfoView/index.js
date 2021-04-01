@@ -41,7 +41,7 @@ const getRoomTitle = (room, type, name, username, statusText, theme) => (type ==
 	)
 	: (
 		<View style={styles.roomTitleRow}>
-			<RoomTypeIcon type={room.prid ? 'discussion' : room.t} key='room-info-type' status={room.visitor?.status} theme={theme} />
+			<RoomTypeIcon type={room.prid ? 'discussion' : room.t} key='room-info-type' status={room.visitor?.status} />
 			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]} key='room-info-name'>{RocketChat.getRoomTitle(room)}</Text>
 		</View>
 	)
@@ -290,7 +290,13 @@ class RoomInfoView extends React.Component {
 				size={100}
 				rid={room?.rid}
 			>
-				{this.t === 'd' && roomUser._id ? <Status style={[sharedStyles.status, styles.status]} theme={theme} size={24} id={roomUser._id} /> : null}
+				{this.t === 'd' && roomUser._id
+					? (
+						<View style={[sharedStyles.status, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+							<Status size={20} id={roomUser._id} />
+						</View>
+					)
+					: null}
 			</Avatar>
 		);
 	}
