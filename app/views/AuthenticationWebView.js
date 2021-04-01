@@ -125,7 +125,7 @@ class AuthenticationWebView extends React.PureComponent {
 			if (this.oauthRedirectRegex.test(url)) {
 				const parts = url.split('#');
 				const credentials = JSON.parse(parts[1]);
-				this.login({ oauth: { ...credentials } });
+				this.debouncedLogin({ oauth: { ...credentials } });
 			}
 		}
 
@@ -138,7 +138,7 @@ class AuthenticationWebView extends React.PureComponent {
 						this.tryLogin();
 						break;
 					case 'login-with-token':
-						this.login({ resume: credentials.token || credentials.loginToken });
+						this.debouncedLogin({ resume: credentials.token || credentials.loginToken });
 						break;
 					default:
 						// Do nothing
