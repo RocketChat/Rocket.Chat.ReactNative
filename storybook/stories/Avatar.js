@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { themes } from '../../app/constants/colors';
@@ -9,11 +9,6 @@ import StoriesSeparator from './StoriesSeparator';
 import sharedStyles from '../../app/views/Styles';
 
 const styles = StyleSheet.create({
-	status: {
-		borderWidth: 4,
-		bottom: -4,
-		right: -4
-	},
 	custom: {
 		padding: 16
 	}
@@ -117,11 +112,12 @@ const AvatarStories = ({ theme }) => (
 			server={server}
 			size={56}
 		>
-			<Status
-				size={24}
-				style={[sharedStyles.status, styles.status]}
-				theme={theme}
-			/>
+			<View style={[sharedStyles.status, { backgroundColor: themes[theme].backgroundColor }]}>
+				<Status
+					size={20}
+					status='online'
+				/>
+			</View>
 		</Avatar>
 		<Separator title='Wrong server' theme={theme} />
 		<Avatar

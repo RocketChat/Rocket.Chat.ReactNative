@@ -346,13 +346,21 @@ export default ({ theme }) => {
 				attachments={[{
 					title: 'This is a title',
 					description: 'This is a description',
-					image_url: '/dummypath'
+					image_url: '/dummypath',
+					type: 'file'
 				}]}
 			/>
 			<Message
 				attachments={[{
 					title: 'This is a title',
 					description: 'This is a description :nyan_rocket:',
+					image_url: '/dummypath',
+					type: 'file'
+				}]}
+			/>
+			<Message
+				msg='Image should not render'
+				attachments={[{
 					image_url: '/dummypath'
 				}]}
 			/>
@@ -362,13 +370,15 @@ export default ({ theme }) => {
 				attachments={[{
 					title: 'This is a title',
 					description: 'This is a description :nyan_rocket:',
-					video_url: '/dummypath'
+					video_url: '/dummypath',
+					type: 'file'
 				}]}
 			/>
 			<Message
 				attachments={[{
 					title: 'This is a title',
-					video_url: '/dummypath'
+					video_url: '/dummypath',
+					type: 'file'
 				}]}
 			/>
 
@@ -377,7 +387,8 @@ export default ({ theme }) => {
 				attachments={[{
 					title: 'This is a title',
 					description: 'This is a description :nyan_rocket:',
-					audio_url: '/dummypath'
+					audio_url: '/dummypath',
+					type: 'file'
 				}]}
 			/>
 			<Message msg='First message' isHeader={false} />
@@ -385,21 +396,24 @@ export default ({ theme }) => {
 				attachments={[{
 					title: 'This is a title',
 					description: 'This is a description',
-					audio_url: '/dummypath'
+					audio_url: '/dummypath',
+					type: 'file'
 				}]}
 				isHeader={false}
 			/>
 			<Message
 				attachments={[{
 					title: 'This is a title',
-					audio_url: '/dummypath'
+					audio_url: '/dummypath',
+					type: 'file'
 				}]}
 				isHeader={false}
 			/>
 			<Message
 				attachments={[{
 					title: 'This is a title',
-					audio_url: '/dummypath'
+					audio_url: '/dummypath',
+					type: 'file'
 				}]}
 				isHeader={false}
 			/>
@@ -565,7 +579,8 @@ export default ({ theme }) => {
 				attachments={[{
 					title: 'This is a title',
 					description: 'This is a description',
-					audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
+					audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac',
+					type: 'file'
 				}]}
 				tmid='1'
 				isThreadSequential
@@ -709,7 +724,7 @@ export default ({ theme }) => {
 				}]}
 			/>
 
-			<Separator title='Two short custom fields' theme={theme} />
+			<Separator title='Two short custom fields with markdown' theme={theme} />
 			<Message
 				msg='Message'
 				attachments={[{
@@ -724,7 +739,7 @@ export default ({ theme }) => {
 						short: true
 					}, {
 						title: 'Field 2',
-						value: 'Value 2',
+						value: '[Value 2](https://google.com/)',
 						short: true
 					}]
 				}, {
@@ -739,7 +754,51 @@ export default ({ theme }) => {
 						short: true
 					}, {
 						title: 'Field 2',
+						value: '**Value 2**',
+						short: true
+					}]
+				}]}
+			/>
+
+			<Separator title='Colored attachments' theme={theme} />
+			<Message
+				attachments={[{
+					color: 'red',
+					fields: [{
+						title: 'Field 1',
+						value: 'Value 1',
+						short: true
+					}, {
+						title: 'Field 2',
 						value: 'Value 2',
+						short: true
+					}]
+				}, {
+					color: 'green',
+					fields: [{
+						title: 'Field 1',
+						value: 'Value 1',
+						short: true
+					}, {
+						title: 'Field 2',
+						value: 'Value 2',
+						short: true
+					}]
+				}, {
+					color: 'blue',
+					fields: [{
+						title: 'Field 1',
+						value: 'Value 1',
+						short: true
+					}, {
+						title: 'Field 2',
+						value: 'Value 2',
+						short: true
+					}]
+				}, {
+					color: 'ASDASD',
+					fields: [{
+						title: 'Invalid color',
 						short: true
 					}]
 				}]}
@@ -827,6 +886,10 @@ export default ({ theme }) => {
 			<Separator title='Changed type' theme={theme} />
 			<Message msg='public' type='room_changed_privacy' isInfo />
 
+			<Separator title='Toggle e2e encryption' theme={theme} />
+			<Message type='room_e2e_disabled' isInfo />
+			<Message type='room_e2e_enabled' isInfo />
+
 			<Separator title='Ignored' theme={theme} />
 			<Message isIgnored />
 
@@ -848,6 +911,9 @@ export default ({ theme }) => {
 
 			<Separator title='Markdown links' theme={theme} />
 			<Message msg='Support <http://google.com|Google> [I`m an inline-style link](https://www.google.com) https://google.com' />
+
+			<Separator title='Starting with empty link' theme={theme} />
+			<Message msg='[  ](https://www.google.com)    <- No link should render' />
 
 			<Separator title='Markdown image' theme={theme} />
 			<Message msg='![alt text](https://play.google.com/intl/en_us/badges/images/badge_new.png)' />
