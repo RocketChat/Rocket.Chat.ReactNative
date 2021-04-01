@@ -172,7 +172,7 @@ const ChatsStackNavigator = () => {
 			<ChatsStack.Screen
 				name='TeamChannelsView'
 				component={TeamChannelsView}
-				// options={TeamChannelsView.navigationOptions}
+				options={TeamChannelsView.navigationOptions}
 			/>
 			<ChatsStack.Screen
 				name='MarkdownTableView'
