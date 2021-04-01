@@ -158,6 +158,27 @@ describe('Threads', () => {
 				await expect(element(by.id('thread-messages-view'))).toExist();
 				await tapBack();
 			});
+
+			it('should draft thread message', async () => {
+				await element(by.id(`message-thread-button-${ thread }`)).tap();
+				await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
+				await waitFor(element(by.id(`room-view-title-${ thread }`))).toExist().withTimeout(5000);
+				await element(by.id('messagebox-input')).atIndex(0).tap();
+				await element(by.id('messagebox-input')).atIndex(0).typeText(`${ thread }draft`);
+				await tapBack();
+
+				await element(by.id(`message-thread-button-${ thread }`)).tap();
+				await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
+				await waitFor(element(by.id(`room-view-title-${ thread }`))).toExist().withTimeout(5000);
+				await expect(element(by.id('messagebox-input')).atIndex(0)).toHaveText(`${ thread }draft`);
+				await element(by.id('messagebox-input')).atIndex(0).clearText();
+				await tapBack();
+
+				await element(by.id(`message-thread-button-${ thread }`)).tap();
+				await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
+				await waitFor(element(by.id(`room-view-title-${ thread }`))).toExist().withTimeout(5000);
+				await expect(element(by.id('messagebox-input')).atIndex(0)).toHaveText('');
+			});
 		});
 
 		// after(async() => {

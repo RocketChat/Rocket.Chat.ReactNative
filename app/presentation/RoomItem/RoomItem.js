@@ -78,7 +78,6 @@ const RoomItem = ({
 								prid={prid}
 								status={status}
 								isGroupChat={isGroupChat}
-								theme={theme}
 							/>
 							<Title
 								name={name}
@@ -121,7 +120,6 @@ const RoomItem = ({
 							prid={prid}
 							status={status}
 							isGroupChat={isGroupChat}
-							theme={theme}
 						/>
 						<Title
 							name={name}

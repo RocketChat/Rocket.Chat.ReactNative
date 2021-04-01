@@ -2,12 +2,9 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const data = require('../../data');
-const { navigateToLogin, login, mockMessage, tapBack, sleep, searchRoom, starMessage, pinMessage, dismissReviewNag, tryTapping } = require('../../helpers/app');
+const { navigateToLogin, login, mockMessage, tapBack, sleep, searchRoom, starMessage, pinMessage, dismissReviewNag, tryTapping, logout } = require('../../helpers/app');
 
 async function navigateToRoom(roomName) {
-	await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-	await navigateToLogin();
-	await login(data.users.regular.username, data.users.regular.password);
 	await searchRoom(`${ roomName }`);
 	await waitFor(element(by.id(`rooms-list-view-item-${ roomName }`))).toExist().withTimeout(60000);
 	await element(by.id(`rooms-list-view-item-${ roomName }`)).tap();
@@ -18,6 +15,9 @@ describe('Room screen', () => {
 	const mainRoom = data.groups.private.name;
 
 	before(async() => {
+		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		await navigateToLogin();
+		await login(data.users.regular.username, data.users.regular.password);
 		await navigateToRoom(mainRoom);
 	});
 
@@ -126,6 +126,20 @@ describe('Room screen', () => {
 				await expect(element(by.id('messagebox-input'))).toHaveText('#general ');
 				await element(by.id('messagebox-input')).clearText();
 			});
+
+			it('should draft message', async () => {
+				await element(by.id('messagebox-input')).atIndex(0).tap();
+				await element(by.id('messagebox-input')).atIndex(0).typeText(`${ data.random }draft`);
+				await tapBack();
+
+				await navigateToRoom(mainRoom);
+				await expect(element(by.id('messagebox-input'))).toHaveText(`${ data.random }draft`);
+				await element(by.id('messagebox-input')).clearText();
+				await tapBack();
+
+				await navigateToRoom(mainRoom);
+				await expect(element(by.id('messagebox-input'))).toHaveText('');
+			});			
 		});
 
 		describe('Message', async() => {

@@ -97,7 +97,6 @@ const sendMessage = async (user, groupname, msg) => {
         await login(user.username, user.password);
         await rocketchat.post('chat.postMessage', { channel: `#${groupname}`, msg });
     } catch (infoError) {
-        console.log(JSON.stringify(createError))
         console.log(JSON.stringify(infoError))
         throw "Failed to find or create private group"
     }
@@ -136,6 +135,16 @@ const setup = async () => {
     return
 }
 
+const get = (endpoint) => {
+    console.log(`GET /${ endpoint }`)
+    return rocketchat.get(endpoint);
+}
+
+const post = (endpoint, body) => {
+    console.log(`POST /${ endpoint } ${ JSON.stringify(body) }`)
+    return rocketchat.post(endpoint, body);
+}
+
 module.exports = {
-    setup, sendMessage
+    setup, sendMessage, get, post
 }
