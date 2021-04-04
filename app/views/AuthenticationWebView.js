@@ -71,7 +71,7 @@ class AuthenticationWebView extends React.PureComponent {
 		navigation.pop();
 	}
 
-	login = async(params) => {
+	login = (params) => {
 		const { logging } = this.state;
 		if (logging) {
 			return;
@@ -80,7 +80,7 @@ class AuthenticationWebView extends React.PureComponent {
 		this.setState({ logging: true });
 
 		try {
-			await RocketChat.loginOAuthOrSso(params);
+			RocketChat.loginOAuthOrSso(params);
 		} catch (e) {
 			console.warn(e);
 		}
@@ -89,7 +89,7 @@ class AuthenticationWebView extends React.PureComponent {
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	debouncedLogin = debounce(params => this.login(params), 3000);
+	debouncedLogin = debounce(params => this.login(params), 3000, true);
 
 	tryLogin = debounce(async() => {
 		const { Accounts_Iframe_api_url, Accounts_Iframe_api_method } = this.props;
@@ -125,7 +125,7 @@ class AuthenticationWebView extends React.PureComponent {
 			if (this.oauthRedirectRegex.test(url)) {
 				const parts = url.split('#');
 				const credentials = JSON.parse(parts[1]);
-				this.login({ oauth: { ...credentials } });
+				this.debouncedLogin({ oauth: { ...credentials } });
 			}
 		}
 
@@ -138,7 +138,7 @@ class AuthenticationWebView extends React.PureComponent {
 						this.tryLogin();
 						break;
 					case 'login-with-token':
-						this.login({ resume: credentials.token || credentials.loginToken });
+						this.debouncedLogin({ resume: credentials.token || credentials.loginToken });
 						break;
 					default:
 						// Do nothing

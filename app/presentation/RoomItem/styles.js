@@ -52,9 +52,7 @@ export default StyleSheet.create({
 		...sharedStyles.textSemibold
 	},
 	status: {
-		marginLeft: 4,
-		marginRight: 7,
-		marginTop: 3
+		marginRight: 2
 	},
 	markdownText: {
 		flex: 1,

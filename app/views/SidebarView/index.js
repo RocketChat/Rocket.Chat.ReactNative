@@ -196,7 +196,7 @@ class Sidebar extends Component {
 		return (
 			<SidebarItem
 				text={user.statusText || I18n.t('Edit_Status')}
-				left={<Status style={styles.status} size={12} status={user && user.status} />}
+				left={<Status size={24} status={user?.status} />}
 				right={<CustomIcon name='edit' size={20} color={themes[theme].titleText} />}
 				onPress={() => this.sidebarNavigate('StatusView')}
 				testID='sidebar-custom-status'
