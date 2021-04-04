@@ -353,7 +353,8 @@ class MessageBox extends Component {
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	debouncedOnChangeText = debounce((text) => {
+	debouncedOnChangeText = debounce(async(text) => {
+		const { sharing } = this.props;
 		const isTextEmpty = text.length === 0;
 		if (isTextEmpty) {
 			this.stopTrackingMention();
@@ -365,13 +366,28 @@ class MessageBox extends Component {
 		const lastWord = txt[txt.length - 1];
 		const result = lastWord.substring(1);
 
-		const commandMention = lastWord.match(/^\//);
+		const commandMention = text.match(/^\//); // match only if message begins with /
 		const channelMention = lastWord.match(/^#/);
 		const userMention = lastWord.match(/^@/);
 		const emojiMention = lastWord.match(/^:/);
 
-		if (commandMention) {
-			return this.identifyMentionKeyword(result, MENTIONS_TRACKING_TYPE_COMMANDS);
+		if (commandMention && !sharing) {
+			const command = text.substr(1);
+			const commandParameter = text.match(/^\/([a-z0-9._-]+) (.+)/im);
+			if (commandParameter) {
+				const db = database.active;
+				const [, name, params] = commandParameter;
+				const commandsCollection = db.get('slash_commands');
+				try {
+					const commands = await commandsCollection.find(name);
+					if (commands.providesPreview) {
+						return this.setCommandPreview(commands, name, params);
+					}
+				} catch (e) {
+					// do nothing
+				}
+			}
+			return this.identifyMentionKeyword(command, MENTIONS_TRACKING_TYPE_COMMANDS);
 		} else if (channelMention) {
 			return this.identifyMentionKeyword(result, MENTIONS_TRACKING_TYPE_ROOMS);
 		} else if (userMention) {
