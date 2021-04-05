@@ -219,7 +219,7 @@ export default schemaMigrations({
 				addColumns({
 					table: 'subscriptions',
 					columns: [
-						{ name: 'team_id', type: 'string', isOptional: true },
+						{ name: 'team_id', type: 'string', isIndexed: true },
 						{ name: 'team_main', type: 'boolean', isOptional: true }
 					]
 				})

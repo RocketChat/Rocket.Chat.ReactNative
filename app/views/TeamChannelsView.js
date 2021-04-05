@@ -1,16 +1,18 @@
 import React from 'react';
 import { PropTypes, RefreshControl, Keyboard } from 'react-native';
-
+import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import { connect } from 'react-redux';
+import { FlatList } from 'react-native-gesture-handler';
+import { dequal } from 'dequal';
+
 import StatusBar from '../containers/StatusBar';
-import RoomHeaderView, { LeftButtons } from './RoomView/Header';
+import RoomHeaderView from './RoomView/Header';
 import { withTheme } from '../theme';
 import SearchHeader from './ThreadMessagesView/SearchHeader';
 import log, { logEvent } from '../utils/log';
 import database from '../lib/database';
-import { Q } from '@nozbe/watermelondb';
 import { FILTER } from './ThreadMessagesView/filters';
-import { connect } from 'react-redux';
 import { getUserSelector } from '../selectors/login';
 import { getHeaderTitlePosition } from '../containers/Header';
 import * as HeaderButton from '../containers/HeaderButton';
@@ -21,10 +23,9 @@ import RoomItem, { ROW_HEIGHT } from '../presentation/RoomItem';
 import RocketChat from '../lib/rocketchat';
 import { withDimensions } from '../dimensions';
 import { isIOS, isTablet } from '../utils/deviceInfo';
-import { FlatList } from 'react-native-gesture-handler';
-import { debounce } from '@rocket.chat/sdk/lib/util';
 import { themes } from '../constants/colors';
-import { dequal } from 'dequal';
+import debounce from '../utils/debounce';
+import { showErrorAlert } from '../utils/info';
 
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
@@ -38,7 +39,6 @@ const getItemLayout = (data, index) => ({
 const keyExtractor = item => item.rid;
 
 class TeamChannelsView extends React.Component {
-
 	constructor(props) {
 		super(props);
 		this.rid = props.route.params?.rid;
@@ -56,19 +56,36 @@ class TeamChannelsView extends React.Component {
 			search: [],
 			refreshing: false
 		};
-		this.setHeader();
+		this.loadTeam();
 	}
 
 	componentDidMount() {
 		this.load({});
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const { data } = this.state
-		if (!dequal(nextProps.data, data)) {
-			return true;
+	loadTeam = async() => {
+		const db = database.active;
+		try {
+			const subCollection = db.get('subscriptions');
+			[this.team] = await subCollection.query(
+				Q.where('team_id', Q.eq(this.teamId)),
+				Q.where('team_main', Q.eq(true))
+			);
+			this.setHeader();
+		} catch {
+			// TODO: test me
+			const { navigation } = this.props;
+			navigation.pop();
+			showErrorAlert('Couldn\'t find team');
 		}
 	}
+
+	// shouldComponentUpdate(nextProps, nextState) {
+	// 	const { data } = this.state
+	// 	if (!dequal(nextProps.data, data)) {
+	// 		return true;
+	// 	}
+	// }
 
 	getHeader = () => {
 		const { isSearching } = this.state;
@@ -76,10 +93,10 @@ class TeamChannelsView extends React.Component {
 			navigation, isMasterDetail, insets, route, theme
 		} = this.props;
 
-		const {
-			tmid, t, title, subtitle, teamMain, parentTitle, unreadsCount
-		} = route?.params;
-
+		const { team } = this;
+		if (!team) {
+			return;
+		}
 
 		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: 1 });
 
@@ -110,29 +127,15 @@ class TeamChannelsView extends React.Component {
 				left: headerTitlePosition.left,
 				right: headerTitlePosition.right
 			},
-			headerLeft: () => (
-				<LeftButtons
-					tmid={tmid}
-					unreadsCount={unreadsCount}
-					navigation={navigation}
-					theme={theme}
-					t={t}
-					goRoomActionsView={this.goRoomActionsView}
-					isMasterDetail={isMasterDetail}
-				/>
-			),
 			headerTitle: () => (
 				<RoomHeaderView
-					title={title}
-					teamMain={teamMain}
-					parentTitle={parentTitle}
-					subtitle={subtitle}
-					type={t}
-					// roomUserId={roomUserId}
+					title={RocketChat.getRoomTitle(team)}
+					subtitle={team.topic}
+					type={team.t}
 					goRoomActionsView={this.goRoomActionsView}
+					teamMain
 				/>
 			)
-
 		};
 
 		options.headerRight = () => (
@@ -181,7 +184,7 @@ class TeamChannelsView extends React.Component {
 	// 		});
 	// 	}
 	// }
-	
+
 	load = debounce(async({ newSearch = false }) => {
 		if (newSearch) {
 			this.setState({ data: [], total: -1, loading: false });
@@ -295,7 +298,7 @@ class TeamChannelsView extends React.Component {
 		} = this.state;
 		const { theme, refreshing } = this.props;
 
-		console.log({searching, data, loading})
+		// console.log({searching, data, loading})
 
 		if (loading) {
 			return <ActivityIndicator theme={theme} />;
