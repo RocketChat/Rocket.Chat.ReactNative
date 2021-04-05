@@ -151,6 +151,8 @@ android {
             missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
         }
         resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
+        testBuildType System.getProperty('testBuildType', 'debug')  // This will later be used to control the test apk build type
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
     signingConfigs {
@@ -175,6 +177,7 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'])
+            proguardFile "${rootProject.projectDir}/../node_modules/detox/android/detox/proguard-rules-app.pro"
             signingConfig signingConfigs.release
             if (!isFoss) {
                 firebaseCrashlytics {
@@ -231,6 +234,9 @@ android {
             manifest.srcFile 'src/play/AndroidManifest.xml'
         }
     }
+
+    testBuildType "release"
+    testBuildType "debug"
 
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
@@ -293,6 +299,8 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:4.9.0"
     annotationProcessor "com.github.bumptech.glide:compiler:4.9.0"
     implementation "com.tencent:mmkv-static:1.2.1"
+    androidTestImplementation('com.wix:detox:+') { transitive = true }
+    androidTestImplementation 'junit:junit:4.12'
 }
 
 // Run this once to be able to run the application with BUCK

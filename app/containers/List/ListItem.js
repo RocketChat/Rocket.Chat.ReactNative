@@ -61,7 +61,7 @@ const Content = React.memo(({
 			)
 			: null}
 		<View style={styles.textContainer}>
-			<Text style={[styles.title, { color: color || themes[theme].titleText }]} numberOfLines={1}>{translateTitle ? I18n.t(title) : title}</Text>
+			<Text style={[styles.title, { color: color || themes[theme].titleText }]} accessibilityLabel={title} numberOfLines={1}>{translateTitle ? I18n.t(title) : title}</Text>
 			{subtitle
 				? <Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{translateSubtitle ? I18n.t(subtitle) : subtitle}</Text>
 				: null
