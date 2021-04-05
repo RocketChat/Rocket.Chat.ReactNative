@@ -271,7 +271,7 @@
         }
       },
       "android.experimental.play.emu.debug": {
-        "device": "Pixel_API_28_AOSP",
+        "device": "emu",
         "type": "android.emulator",
         "binaryPath": "android/app/build/outputs/apk/experimentalPlay/debug/app-experimental-play-debug.apk",
         "build": "cd android && ./gradlew app:assembleExperimentalPlayDebug app:assembleAndroidTest -DtestBuildType=debug && cd .."
