@@ -379,9 +379,9 @@ class MessageBox extends Component {
 				const [, name, params] = commandParameter;
 				const commandsCollection = db.get('slash_commands');
 				try {
-					const commands = await commandsCollection.find(name);
-					if (commands.providesPreview) {
-						return this.setCommandPreview(commands, name, params);
+					const commandRecord = await commandsCollection.find(name);
+					if (commandRecord.providesPreview) {
+						return this.setCommandPreview(commandRecord, name, params);
 					}
 				} catch (e) {
 					// do nothing
