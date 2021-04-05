@@ -8,7 +8,6 @@ const channel = data.groups.private.name;
 
 const navigateToRoom = async() => {
 	await searchRoom(channel);
-	await waitFor(element(by.id(`rooms-list-view-item-${ channel }`))).toExist().withTimeout(60000);
 	await element(by.id(`rooms-list-view-item-${ channel }`)).tap();
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 }
