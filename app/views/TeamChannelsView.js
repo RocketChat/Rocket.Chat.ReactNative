@@ -1,5 +1,5 @@
 import React from 'react';
-import { PropTypes } from 'react-native';
+import { PropTypes, RefreshControl, Keyboard } from 'react-native';
 
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import StatusBar from '../containers/StatusBar';
@@ -16,14 +16,15 @@ import { getHeaderTitlePosition } from '../containers/Header';
 import * as HeaderButton from '../containers/HeaderButton';
 import NoDataFound from '../containers/NoDataFound';
 import SafeAreaView from '../containers/SafeAreaView';
-import RoomItem from '../presentation/RoomItem/RoomItem';
+import ActivityIndicator from '../containers/ActivityIndicator';
+import RoomItem, { ROW_HEIGHT } from '../presentation/RoomItem';
 import RocketChat from '../lib/rocketchat';
 import { withDimensions } from '../dimensions';
-import { isIOS } from '../utils/deviceInfo';
-import { Keyboard } from 'react-native';
-import { ActivityIndicator } from 'react-native';
-import { RefreshControl } from 'react-native';
+import { isIOS, isTablet } from '../utils/deviceInfo';
 import { FlatList } from 'react-native-gesture-handler';
+import { debounce } from '@rocket.chat/sdk/lib/util';
+import { themes } from '../constants/colors';
+import { dequal } from 'dequal';
 
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
@@ -40,14 +41,14 @@ class TeamChannelsView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.mounted = false;
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;
 		this.teamId = props.route.params?.teamId;
 		this.state = {
 			loading: false,
 			end: false,
-			chats: [],
+			data: [],
+			total: -1,
 			subscription: {},
 			isSearching: false,
 			searchText: '',
@@ -56,21 +57,16 @@ class TeamChannelsView extends React.Component {
 			refreshing: false
 		};
 		this.setHeader();
-		this.initSubscription();
-		this.subscribeChats();
 	}
 
 	componentDidMount() {
-		this.mounted = true;
+		this.load({});
 	}
 
-	componentWillUnmount() {
-		console.countReset(`${ this.constructor.name }.render calls`);
-		if (this.subSubscription && this.subSubscription.unsubscribe) {
-			this.subSubscription.unsubscribe();
-		}
-		if (this.chatSubscription && this.chatSubscription.unsubscribe) {
-			this.chatSubscription.unsubscribe();
+	shouldComponentUpdate(nextProps, nextState) {
+		const { data } = this.state
+		if (!dequal(nextProps.data, data)) {
+			return true;
 		}
 	}
 
@@ -157,11 +153,13 @@ class TeamChannelsView extends React.Component {
 		this.setState({ isSearching: true }, () => this.setHeader());
 	}
 
+	onSearchChangeText = debounce((searchText) => {
+		this.setState({ searchText }, () => this.load(searchText));
+	}, 300)
+
 	onCancelSearchPress = () => {
 		this.setState({ isSearching: false, searchText: '' }, () => {
-			const { subscription } = this.state;
 			this.setHeader();
-			// this.subscribeMessages(subscription);
 		});
 	}
 
@@ -183,60 +181,44 @@ class TeamChannelsView extends React.Component {
 	// 		});
 	// 	}
 	// }
+	
+	load = debounce(async({ newSearch = false }) => {
+		if (newSearch) {
+			this.setState({ data: [], total: -1, loading: false });
+		}
 
-	initSubscription = async() => {
+		const {
+			loading, total, data
+		} = this.state;
+
+		if (loading || data.length === total) {
+			return;
+		}
+
+		this.setState({ loading: true });
+
 		try {
-			const db = database.active;
+			const result = await RocketChat.getTeamListRoom({
+				teamId: this.teamId,
+				offset: data.length,
+				count: 20,
+				type: 'all'
+			});
 
-			// subscription query
-			const subscription = await db.collections
-				.get('subscriptions')
-				.find(this.teamId);
-			const observable = subscription.observe();
-			this.subSubscription = observable
-				.subscribe((data) => {
-					this.setState({ subscription: data });
+			if (result.success) {
+				this.setState({
+					data: [...data, ...result.rooms],
+					loading: false,
+					total: result.total
 				});
-
-			this.subscribeChats();
+			} else {
+				this.setState({ loading: false });
+			}
 		} catch (e) {
 			log(e);
+			this.setState({ loading: false });
 		}
-	}
-
-	subscribeChats = (searchText) => {
-		try {
-			const db = database.active;
-
-			if (this.chatSubscription && this.chatSubscription.unsubscribe) {
-				this.chatSubscription.unsubscribe();
-			}
-
-			const whereClause = [
-				Q.where('team_id', this.teamId),
-				Q.where('rid', Q.notEq(this.rid)),
-			];
-
-			if (searchText?.trim()) {
-				whereClause.push(Q.where('fname', Q.like(`%${ sanitizeLikeString(searchText.trim()) }%`)));
-			}
-
-			this.chatsObservable = db.collections
-				.get('subscriptions')
-				.query(...whereClause)
-				.observeWithColumns(['room_updated_at']);
-			this.chatSubscription = this.chatsObservable
-				.subscribe((chats) => {
-					if (this.mounted) {
-						this.setState({ chats });
-					} else {
-						this.state.chats = chats;
-					}
-				});
-		} catch (e) {
-			log(e);
-		}
-	}
+	}, 200)
 	
 	getRoomTitle = item => RocketChat.getRoomTitle(item)
 
@@ -248,56 +230,18 @@ class TeamChannelsView extends React.Component {
 
 	getUidDirectMessage = room => RocketChat.getUidDirectMessage(room);
 
-	onPressItem = (item = {}) => {
-		const { navigation, isMasterDetail } = this.props;
-		if (!navigation.isFocused()) {
-			return;
-		}
+	// onPressItem = (item = {}) => {
+	// 	const { navigation, isMasterDetail } = this.props;
+	// 	if (!navigation.isFocused()) {
+	// 		return;
+	// 	}
 
-		this.cancelSearch();
-		this.goRoom({ item, isMasterDetail });
-	};
-
-	onEndReached = () => {
-		this.getSubscriptions();
-	}
-
-	toggleFav = async(rid, favorite) => {
-		// logEvent(favorite ? events.RL_UNFAVORITE_CHANNEL : events.RL_FAVORITE_CHANNEL);
-		try {
-			const db = database.active;
-			const result = await RocketChat.toggleFavorite(rid, !favorite);
-			if (result.success) {
-				const subCollection = db.get('subscriptions');
-				await db.action(async() => {
-					try {
-						const subRecord = await subCollection.find(rid);
-						await subRecord.update((sub) => {
-							sub.f = !favorite;
-						});
-					} catch (e) {
-						log(e);
-					}
-				});
-			}
-		} catch (e) {
-			// logEvent(events.RL_TOGGLE_FAVORITE_FAIL);
-			log(e);
-		}
-	};
-
-	onRefresh = () => {
-		const { searching } = this.state;
-		const { roomsRequest } = this.props;
-		if (searching) {
-			return;
-		}
-		roomsRequest({ allData: true });
-	}
+	// 	this.cancelSearch();
+	// 	this.goRoom({ item, isMasterDetail });
+	// };
 
 	cancelSearch = () => {
 		const { searching } = this.state;
-		const { closeSearchHeader } = this.props;
 
 		if (!searching) {
 			return;
@@ -307,74 +251,69 @@ class TeamChannelsView extends React.Component {
 
 		this.setState({ searching: false, search: [] }, () => {
 			this.setHeader();
-			closeSearchHeader();
-			setTimeout(() => {
-				this.scrollToTop();
-			}, 200);
 		});
 	};
-	z
+
 
 	renderItem = ({ item }) => {
-		if (item.separator) {
-			return this.renderSectionHeader(item.rid);
-		}
-
-		const { item: currentItem } = this.state;
 		const {
-			user: { username },
-			StoreLastMessage,
+			// user: { username },
+			// StoreLastMessage,
 			useRealName,
 			theme,
 			isMasterDetail,
 			width
 		} = this.props;
-
-		// const id = this.getUidDirectMessage(item);
+		const id = this.getUidDirectMessage(item);
 
 		return (
 			<RoomItem
 				item={item}
 				theme={theme}
-				id={this.rid}
+				id={id}
 				type={item.t}
-				showLastMessage={StoreLastMessage}
+				// username={username}
+				// showLastMessage={StoreLastMessage}
 				onPress={this.onPressItem}
 				width={width}
-				// toggleFav={this.toggleFav}
-				// toggleRead={this.toggleRead}
-				// hideChannel={this.hideChannel}
+				useRealName={useRealName}
+				getUserPresence={this.getUserPresence}
 				getRoomTitle={this.getRoomTitle}
 				getRoomAvatar={this.getRoomAvatar}
 				// getIsRead={this.isRead}
 				// visitor={item.visitor}
-				isFocused={currentItem?.rid === item.rid}
+				// isFocused={item?._id === item._id}
 			/>
 		);
 	};
 
+	getScrollRef = ref => (this.scroll = ref);
+
 	renderScroll = () => {
 		const {
-			loading, chats, search, searching
+			loading, data, search, searching
 		} = this.state;
 		const { theme, refreshing } = this.props;
+
+		console.log({searching, data, loading})
 
 		if (loading) {
 			return <ActivityIndicator theme={theme} />;
 		}
 
-		if(!chats.length){
+		if(!data.length) {
 			return  <NoDataFound text='There are no channels' /> 
 		}
 
 		return (
 			<FlatList
 				ref={this.getScrollRef}
-				data={searching ? search : chats}
-				extraData={searching ? search : chats}
+				data={searching ? search : data}
+				extraData={searching ? search : data}
 				keyExtractor={keyExtractor}
-				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
+				// style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 				renderItem={this.renderItem}
+				// ListHeaderComponent={this.renderListHeader}
 				getItemLayout={getItemLayout}
 				removeClippedSubviews={isIOS}
 				keyboardShouldPersistTaps='always'
@@ -387,7 +326,7 @@ class TeamChannelsView extends React.Component {
 				// 	/>
 				// )}
 				windowSize={9}
-				onEndReached={this.onEndReached}
+				onEndReached={this.load({})}
 				onEndReachedThreshold={0.5}
 			/>
 		);
@@ -395,14 +334,11 @@ class TeamChannelsView extends React.Component {
 
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
-		const { chats } = this.state;
-
-		console.log({chats});
 
 		return (
 			<SafeAreaView testID='team-channels-view'>
 				<StatusBar />
-				{this.renderScroll}
+				{this.renderScroll()}
 			</SafeAreaView>
 		);
 	}

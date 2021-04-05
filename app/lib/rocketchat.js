@@ -928,6 +928,17 @@ const RocketChat = {
 		// RC 2.3.0
 		return this.sdk.get('livechat/visitors.info', { visitorId });
 	},
+	getTeamListRoom({ teamId, count, offset, type, filter }){
+		const params = {
+			teamId, count, offset, type
+		};
+
+		if (filter){
+			params.filter = filter;
+		}
+		// RC 3.16.0
+		return this.sdk.get('teams.listRooms', params);
+	},
 	closeLivechat(rid, comment) {
 		// RC 0.29.0
 		return this.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true });
