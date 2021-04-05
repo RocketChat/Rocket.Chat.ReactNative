@@ -29,7 +29,8 @@ class RoomHeaderView extends Component {
 		goRoomActionsView: PropTypes.func,
 		width: PropTypes.number,
 		height: PropTypes.number,
-		parentTitle: PropTypes.string
+		parentTitle: PropTypes.string,
+		isGroupChat: PropTypes.bool
 	};
 
 	shouldComponentUpdate(nextProps) {
@@ -94,7 +95,8 @@ class RoomHeaderView extends Component {
 			theme,
 			width,
 			height,
-			parentTitle
+			parentTitle,
+			isGroupChat
 		} = this.props;
 
 		let subtitle;
@@ -124,6 +126,7 @@ class RoomHeaderView extends Component {
 				goRoomActionsView={goRoomActionsView}
 				connecting={connecting}
 				parentTitle={parentTitle}
+				isGroupChat={isGroupChat}
 			/>
 		);
 	}

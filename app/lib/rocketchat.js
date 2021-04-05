@@ -178,13 +178,16 @@ const RocketChat = {
 	checkAndReopen() {
 		return this?.sdk?.checkAndReopen();
 	},
+	disconnect() {
+		this.sdk?.disconnect?.();
+		this.sdk = null;
+	},
 	connect({ server, user, logoutOnError = false }) {
 		return new Promise((resolve) => {
 			if (this?.sdk?.client?.host === server) {
 				return resolve();
 			} else {
-				this.sdk?.disconnect?.();
-				this.sdk = null;
+				this.disconnect();
 				database.setActiveDB(server);
 			}
 			reduxStore.dispatch(connectRequest());

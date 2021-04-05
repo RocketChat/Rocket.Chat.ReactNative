@@ -164,6 +164,7 @@ RoomItem.propTypes = {
 	isFocused: PropTypes.bool,
 	isGroupChat: PropTypes.bool,
 	isRead: PropTypes.bool,
+	teamMain: PropTypes.bool,
 	date: PropTypes.string,
 	accessibilityLabel: PropTypes.string,
 	lastMessage: PropTypes.object,

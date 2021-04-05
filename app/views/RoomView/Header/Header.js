@@ -6,9 +6,9 @@ import {
 
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
-import Icon from './Icon';
 import { themes } from '../../../constants/colors';
 import Markdown from '../../../containers/markdown';
+import RoomTypeIcon from '../../../containers/RoomTypeIcon';
 
 const HIT_SLOP = {
 	top: 5, right: 5, bottom: 5, left: 5
@@ -124,7 +124,7 @@ HeaderTitle.propTypes = {
 };
 
 const Header = React.memo(({
-	title, subtitle, parentTitle, type, status, usersTyping, width, height, prid, tmid, connecting, goRoomActionsView, roomUserId, theme, teamMain
+	title, subtitle, parentTitle, type, status, usersTyping, width, height, prid, tmid, connecting, goRoomActionsView, theme, isGroupChat, teamMain
 }) => {
 	const portrait = height > width;
 	let scale = 1;
@@ -141,15 +141,8 @@ const Header = React.memo(({
 	if (tmid) {
 		renderFunc = () => (
 			<View style={styles.titleContainer}>
-				<Icon
-					type={prid ? 'discussion' : type}
-					tmid={tmid}
-					status={status}
-					roomUserId={roomUserId}
-					theme={theme}
-					teamMain={teamMain}
-				/>
-				<Text style={[styles.subtitle, { fontSize: getSubTitleSize(scale), color: themes[theme].auxiliaryText }]} numberOfLines={1}>{parentTitle}</Text>
+				<RoomTypeIcon type={prid ? 'discussion' : type} isGroupChat={isGroupChat} status={status} teamMain={teamMain} />
+				<Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{parentTitle}</Text>
 			</View>
 		);
 	}
@@ -164,17 +157,7 @@ const Header = React.memo(({
 			hitSlop={HIT_SLOP}
 		>
 			<View style={styles.titleContainer}>
-				{tmid
-					? null
-					: (
-						<Icon
-							type={prid ? 'discussion' : type}
-							status={status}
-							roomUserId={roomUserId}
-							theme={theme}
-							teamMain={teamMain}
-						/>
-					)}
+				{tmid ? null : <RoomTypeIcon type={prid ? 'discussion' : type} isGroupChat={isGroupChat} status={status} teamMain={teamMain} />}
 				<HeaderTitle
 					title={title}
 					tmid={tmid}
@@ -208,7 +191,7 @@ Header.propTypes = {
 	theme: PropTypes.string,
 	usersTyping: PropTypes.array,
 	connecting: PropTypes.bool,
-	roomUserId: PropTypes.string,
+	isGroupChat: PropTypes.bool,
 	parentTitle: PropTypes.string,
 	goRoomActionsView: PropTypes.func
 };
