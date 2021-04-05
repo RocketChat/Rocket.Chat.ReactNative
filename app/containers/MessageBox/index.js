@@ -473,10 +473,10 @@ class MessageBox extends Component {
 	getFixedMentions = (keyword) => {
 		let result = [];
 		if ('all'.indexOf(keyword) !== -1) {
-			result = [{ id: -1, username: 'all' }];
+			result = [{ rid: -1, username: 'all' }];
 		}
 		if ('here'.indexOf(keyword) !== -1) {
-			result = [{ id: -2, username: 'here' }, ...result];
+			result = [{ rid: -2, username: 'here' }, ...result];
 		}
 		return result;
 	}
@@ -494,17 +494,17 @@ class MessageBox extends Component {
 
 	getEmojis = debounce(async(keyword) => {
 		const db = database.active;
-		if (keyword) {
-			const customEmojisCollection = db.get('custom_emojis');
-			const likeString = sanitizeLikeString(keyword);
-			let customEmojis = await customEmojisCollection.query(
-				Q.where('name', Q.like(`${ likeString }%`))
-			).fetch();
-			customEmojis = customEmojis.slice(0, MENTIONS_COUNT_TO_DISPLAY);
-			const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
-			const mergedEmojis = [...customEmojis, ...filteredEmojis].slice(0, MENTIONS_COUNT_TO_DISPLAY);
-			this.setState({ mentions: mergedEmojis || [] });
+		const customEmojisCollection = db.get('custom_emojis');
+		const likeString = sanitizeLikeString(keyword);
+		const whereClause = [];
+		if (likeString) {
+			whereClause.push(Q.where('name', Q.like(`${ likeString }%`)));
 		}
+		let customEmojis = await customEmojisCollection.query(...whereClause).fetch();
+		customEmojis = customEmojis.slice(0, MENTIONS_COUNT_TO_DISPLAY);
+		const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
+		const mergedEmojis = [...customEmojis, ...filteredEmojis].slice(0, MENTIONS_COUNT_TO_DISPLAY);
+		this.setState({ mentions: mergedEmojis || [] });
 	}, 300)
 
 	getSlashCommands = debounce(async(keyword) => {
