@@ -30,7 +30,7 @@ jobs:
 
     - name: Install node_modules
       run: |
-        yarn install --frozen-lockfile
+        yarn --frozen-lockfile --network-timeout 100000
     
     - name: Build for detox
       run: |
