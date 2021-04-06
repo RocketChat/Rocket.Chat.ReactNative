@@ -72,17 +72,64 @@ class TeamChannelsView extends React.Component {
 		const db = database.active;
 		try {
 			const subCollection = db.get('subscriptions');
-			[this.team] = await subCollection.query(
-				Q.where('team_id', Q.eq(this.teamId)),
-				Q.where('team_main', Q.eq(true))
+			this.teams = await subCollection.query(
+				Q.where('team_id', Q.eq(this.teamId))
 			);
+			this.team = this.teams.find(team => team.teamMain);
 			this.setHeader();
+
+			if (!this.team) {
+				throw new Error();
+			}
 		} catch {
 			const { navigation } = this.props;
 			navigation.pop();
 			showErrorAlert(I18n.t('Team_not_found'));
 		}
 	}
+
+
+	load = debounce(async() => {
+		const {
+			loadingMore, total, data, search, isSearching, searchText
+		} = this.state;
+
+		const length = isSearching ? search.length : data.length;
+		if (loadingMore || length === total) {
+			return;
+		}
+
+		this.setState({ loadingMore: true });
+		try {
+			const result = await RocketChat.getTeamListRoom({
+				teamId: this.teamId,
+				offset: length,
+				count: API_FETCH_COUNT,
+				type: 'all',
+				filter: searchText
+			});
+
+			if (result.success) {
+				const newState = {
+					loading: false,
+					loadingMore: false,
+					total: result.total
+				};
+				if (isSearching) {
+					newState.search = [...search, ...result.rooms];
+				} else {
+					newState.data = [...data, ...result.rooms];
+				}
+
+				this.setState(newState);
+			} else {
+				this.setState({ loading: false, loadingMore: false });
+			}
+		} catch (e) {
+			log(e);
+			this.setState({ loading: false, loadingMore: false });
+		}
+	}, 300)
 
 	getHeader = () => {
 		const { isSearching } = this.state;
@@ -207,48 +254,6 @@ class TeamChannelsView extends React.Component {
 			});
 		}
 	}
-
-	load = debounce(async() => {
-		const {
-			loadingMore, total, data, search, isSearching, searchText
-		} = this.state;
-
-		const length = isSearching ? search.length : data.length;
-		if (loadingMore || length === total) {
-			return;
-		}
-
-		this.setState({ loadingMore: true });
-		try {
-			const result = await RocketChat.getTeamListRoom({
-				teamId: this.teamId,
-				offset: length,
-				count: API_FETCH_COUNT,
-				type: 'all',
-				filter: searchText
-			});
-
-			if (result.success) {
-				const newState = {
-					loading: false,
-					loadingMore: false,
-					total: result.total
-				};
-				if (isSearching) {
-					newState.search = [...search, ...result.rooms];
-				} else {
-					newState.data = [...data, ...result.rooms];
-				}
-
-				this.setState(newState);
-			} else {
-				this.setState({ loading: false, loadingMore: false });
-			}
-		} catch (e) {
-			log(e);
-			this.setState({ loading: false, loadingMore: false });
-		}
-	}, 300)
 
 	getRoomTitle = item => RocketChat.getRoomTitle(item)
 
