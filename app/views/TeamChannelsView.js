@@ -46,7 +46,8 @@ class TeamChannelsView extends React.Component {
 		insets: PropTypes.object,
 		theme: PropTypes.string,
 		useRealName: PropTypes.bool,
-		width: PropTypes.number
+		width: PropTypes.number,
+		StoreLastMessage: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -286,7 +287,7 @@ class TeamChannelsView extends React.Component {
 
 	renderItem = ({ item }) => {
 		const {
-			// StoreLastMessage,
+			StoreLastMessage,
 			useRealName,
 			theme,
 			width
@@ -296,7 +297,7 @@ class TeamChannelsView extends React.Component {
 				item={item}
 				theme={theme}
 				type={item.t}
-				// showLastMessage={StoreLastMessage}
+				showLastMessage={StoreLastMessage}
 				onPress={this.onPressItem}
 				width={width}
 				useRealName={useRealName}
