@@ -1,5 +1,5 @@
 import React from 'react';
-import { PropTypes, RefreshControl, Keyboard } from 'react-native';
+import { PropTypes, Keyboard } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
@@ -13,11 +13,10 @@ import { withTheme } from '../theme';
 import SearchHeader from './ThreadMessagesView/SearchHeader';
 import log, { logEvent } from '../utils/log';
 import database from '../lib/database';
-import { FILTER } from './ThreadMessagesView/filters';
 import { getUserSelector } from '../selectors/login';
 import { getHeaderTitlePosition } from '../containers/Header';
 import * as HeaderButton from '../containers/HeaderButton';
-import NoDataFound from '../containers/NoDataFound';
+import BackgroundContainer from '../containers/BackgroundContainer';
 import SafeAreaView from '../containers/SafeAreaView';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import RoomItem, { ROW_HEIGHT } from '../presentation/RoomItem';
@@ -301,11 +300,13 @@ class TeamChannelsView extends React.Component {
 		const { theme } = this.props;
 
 		if (loading) {
-			return <ActivityIndicator theme={theme} />;
+			return <BackgroundContainer loading />;
 		}
-
-		if ((isSearching && searchText && !search.length) || (!isSearching && !data.length)) {
-			return <NoDataFound text='There are no channels' />;
+		if (isSearching && !search.length) {
+			return <BackgroundContainer text={searchText ? 'There are no channels' : ''} />;
+		}
+		if (!data.length) {
+			return <BackgroundContainer text='There are no channels' />;
 		}
 
 		return (
