@@ -116,7 +116,7 @@ class RightButtonsContainer extends Component {
 	}
 
 	goTeamChannels = () => {
-		logEvent(events.TEAM_GO_CHANNELS);
+		logEvent(events.ROOM_GO_TEAM_CHANNELS);
 		// TODO: Reduce amount of params sent to view
 		const {
 			rid, t, navigation, isMasterDetail, roomUserId, prid, teamMain, teamId, tmid, title, subtitle, parentTitle, member, unreadsCount

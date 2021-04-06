@@ -105,7 +105,7 @@ class TeamChannelsView extends React.Component {
 					<HeaderButton.Container left>
 						<HeaderButton.Item
 							iconName='close'
-							onPress={this.cancelSearch}
+							onPress={this.onCancelSearchPress}
 						/>
 					</HeaderButton.Container>
 				),
@@ -163,6 +163,7 @@ class TeamChannelsView extends React.Component {
 	}
 
 	onSearchPress = () => {
+		logEvent(events.TC_SEARCH);
 		this.setState({ isSearching: true }, () => this.setHeader());
 	}
 
@@ -176,7 +177,8 @@ class TeamChannelsView extends React.Component {
 		});
 	}, 300)
 
-	cancelSearch = () => {
+	onCancelSearchPress = () => {
+		logEvent(events.TC_CANCEL_SEARCH);
 		const { isSearching } = this.state;
 		if (!isSearching) {
 			return;
@@ -188,7 +190,7 @@ class TeamChannelsView extends React.Component {
 	};
 
 	goRoomActionsView = (screen) => {
-		// logEvent(events.TEAM_GO_RA);
+		logEvent(events.TC_GO_ACTIONS);
 		const { team } = this;
 		const {
 			navigation, isMasterDetail
@@ -254,7 +256,7 @@ class TeamChannelsView extends React.Component {
 	getRoomAvatar = item => RocketChat.getRoomAvatar(item)
 
 	onPressItem = async(item) => {
-		// logEvent(events.); TODO: event
+		logEvent(events.TC_GO_ROOM);
 		const { navigation } = this.props;
 		try {
 			const { room } = await RocketChat.getRoomInfo(item._id);
