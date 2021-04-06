@@ -27,6 +27,7 @@ import { themes } from '../constants/colors';
 import debounce from '../utils/debounce';
 import { showErrorAlert } from '../utils/info';
 import { goRoom } from '../utils/goRoom';
+import I18n from '../i18n';
 
 const API_FETCH_COUNT = 50;
 
@@ -77,10 +78,9 @@ class TeamChannelsView extends React.Component {
 			);
 			this.setHeader();
 		} catch {
-			// TODO: test me
 			const { navigation } = this.props;
 			navigation.pop();
-			showErrorAlert('Couldn\'t find team');
+			showErrorAlert(I18n.t('Team_not_found'));
 		}
 	}
 
@@ -313,10 +313,10 @@ class TeamChannelsView extends React.Component {
 			return <BackgroundContainer loading />;
 		}
 		if (isSearching && !search.length) {
-			return <BackgroundContainer text={searchText ? 'There are no channels' : ''} />;
+			return <BackgroundContainer text={searchText ? I18n.t('No_team_channels_found') : ''} />;
 		}
 		if (!isSearching && !data.length) {
-			return <BackgroundContainer text='There are no channels' />;
+			return <BackgroundContainer text={I18n.t('No_team_channels_found')} />;
 		}
 
 		return (
