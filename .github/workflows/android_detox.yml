@@ -5,7 +5,7 @@ on: [pull_request]
 jobs:
   build-android-experimental-play-debug:
     runs-on: macos-latest
-    timeout-minutes: 15
+    timeout-minutes: 60
 
     steps:
     - name: Checkout
