@@ -5,6 +5,7 @@ import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { FlatList } from 'react-native-gesture-handler';
 import { dequal } from 'dequal';
+import { HeaderBackButton } from '@react-navigation/stack';
 
 import StatusBar from '../containers/StatusBar';
 import RoomHeaderView from './RoomView/Header';
@@ -46,20 +47,17 @@ class TeamChannelsView extends React.Component {
 		this.state = {
 			loading: true,
 			loadingMore: false,
-			end: false,
 			data: [],
 			total: -1,
-			subscription: {},
 			isSearching: false,
 			searchText: '',
-			searching: false,
 			search: []
 		};
 		this.loadTeam();
 	}
 
 	componentDidMount() {
-		this.load({});
+		this.load();
 	}
 
 	loadTeam = async() => {
@@ -106,7 +104,7 @@ class TeamChannelsView extends React.Component {
 					<HeaderButton.Container left>
 						<HeaderButton.Item
 							iconName='close'
-							onPress={this.onCancelSearchPress}
+							onPress={this.cancelSearch}
 						/>
 					</HeaderButton.Container>
 				),
@@ -137,6 +135,18 @@ class TeamChannelsView extends React.Component {
 			)
 		};
 
+		if (isMasterDetail) {
+			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
+		} else {
+			options.headerLeft = () => (
+				<HeaderBackButton
+					labelVisible={false}
+					onPress={() => navigation.pop()}
+					tintColor={themes[theme].headerTintColor}
+				/>
+			);
+		}
+
 		options.headerRight = () => (
 			<HeaderButton.Container>
 				<HeaderButton.Item iconName='search' onPress={this.onSearchPress} />
@@ -156,14 +166,25 @@ class TeamChannelsView extends React.Component {
 	}
 
 	onSearchChangeText = debounce((searchText) => {
-		this.setState({ searchText }, () => this.load(searchText));
+		this.setState({
+			searchText, search: [], loading: !!searchText, loadingMore: false, total: -1
+		}, () => {
+			if (searchText) {
+				this.load();
+			}
+		});
 	}, 300)
 
-	onCancelSearchPress = () => {
-		this.setState({ isSearching: false, searchText: '' }, () => {
+	cancelSearch = () => {
+		const { isSearching } = this.state;
+		if (!isSearching) {
+			return;
+		}
+		Keyboard.dismiss();
+		this.setState({ isSearching: false, search: [] }, () => {
 			this.setHeader();
 		});
-	}
+	};
 
 	// goRoomActionsView = (screen) => {
 	// 	logEvent(events.TEAM_GO_RA);
@@ -184,36 +205,39 @@ class TeamChannelsView extends React.Component {
 	// 	}
 	// }
 
-	load = debounce(async({ newSearch = false }) => {
-		// if (newSearch) {
-		// 	this.setState({ data: [], total: -1, loading: false });
-		// }
-
+	load = debounce(async() => {
 		const {
-			loadingMore, total, data
+			loadingMore, total, data, search, isSearching, searchText
 		} = this.state;
 
-		if (loadingMore || data.length === total) {
+		const length = isSearching ? search.length : data.length;
+		if (loadingMore || length === total) {
 			return;
 		}
 
 		this.setState({ loadingMore: true });
-
 		try {
 			const result = await RocketChat.getTeamListRoom({
 				teamId: this.teamId,
-				offset: data.length,
+				offset: length,
 				count: API_FETCH_COUNT,
-				type: 'all'
+				type: 'all',
+				filter: searchText
 			});
 
 			if (result.success) {
-				this.setState({
-					data: [...data, ...result.rooms],
+				const newState = {
 					loading: false,
 					loadingMore: false,
 					total: result.total
-				});
+				};
+				if (isSearching) {
+					newState.search = [...search, ...result.rooms];
+				} else {
+					newState.data = [...data, ...result.rooms];
+				}
+
+				this.setState(newState);
 			} else {
 				this.setState({ loading: false, loadingMore: false });
 			}
@@ -227,12 +251,6 @@ class TeamChannelsView extends React.Component {
 
 	getRoomAvatar = item => RocketChat.getRoomAvatar(item)
 
-	isRead = item => RocketChat.isRead(item)
-
-	getUserPresence = uid => RocketChat.getUserPresence(uid)
-
-	getUidDirectMessage = room => RocketChat.getUidDirectMessage(room);
-
 	// onPressItem = (item = {}) => {
 	// 	const { navigation, isMasterDetail } = this.props;
 	// 	if (!navigation.isFocused()) {
@@ -242,21 +260,6 @@ class TeamChannelsView extends React.Component {
 	// 	this.cancelSearch();
 	// 	this.goRoom({ item, isMasterDetail });
 	// };
-
-	cancelSearch = () => {
-		const { searching } = this.state;
-
-		if (!searching) {
-			return;
-		}
-
-		Keyboard.dismiss();
-
-		this.setState({ searching: false, search: [] }, () => {
-			this.setHeader();
-		});
-	};
-
 
 	renderItem = ({ item }) => {
 		const {
@@ -293,7 +296,7 @@ class TeamChannelsView extends React.Component {
 
 	renderScroll = () => {
 		const {
-			loading, data, search, searching
+			loading, data, search, isSearching, searchText
 		} = this.state;
 		const { theme } = this.props;
 
@@ -301,14 +304,14 @@ class TeamChannelsView extends React.Component {
 			return <ActivityIndicator theme={theme} />;
 		}
 
-		if (!data.length) {
+		if ((isSearching && searchText && !search.length) || (!isSearching && !data.length)) {
 			return <NoDataFound text='There are no channels' />;
 		}
 
 		return (
 			<FlatList
-				data={searching ? search : data}
-				extraData={searching ? search : data}
+				data={isSearching ? search : data}
+				extraData={isSearching ? search : data}
 				keyExtractor={keyExtractor}
 				renderItem={this.renderItem}
 				getItemLayout={getItemLayout}
@@ -316,7 +319,7 @@ class TeamChannelsView extends React.Component {
 				keyboardShouldPersistTaps='always'
 				// initialNumToRender={INITIAL_NUM_TO_RENDER}
 				// windowSize={9}
-				onEndReached={() => this.load({})}
+				onEndReached={() => this.load()}
 				onEndReachedThreshold={0.5}
 				ListFooterComponent={this.renderFooter}
 			/>
