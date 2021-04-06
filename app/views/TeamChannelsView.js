@@ -72,10 +72,10 @@ class TeamChannelsView extends React.Component {
 		const db = database.active;
 		try {
 			const subCollection = db.get('subscriptions');
-			this.teams = await subCollection.query(
+			this.teamChannels = await subCollection.query(
 				Q.where('team_id', Q.eq(this.teamId))
 			);
-			this.team = this.teams.find(team => team.teamMain);
+			this.team = this.teamChannels?.find(channel => channel.teamMain);
 			this.setHeader();
 
 			if (!this.team) {
@@ -87,7 +87,6 @@ class TeamChannelsView extends React.Component {
 			showErrorAlert(I18n.t('Team_not_found'));
 		}
 	}
-
 
 	load = debounce(async() => {
 		const {
@@ -115,10 +114,14 @@ class TeamChannelsView extends React.Component {
 					loadingMore: false,
 					total: result.total
 				};
+				const rooms = result.rooms.map((room) => {
+					const record = this.teamChannels?.find(c => c.rid === room._id);
+					return record ?? room;
+				});
 				if (isSearching) {
-					newState.search = [...search, ...result.rooms];
+					newState.search = [...search, ...rooms];
 				} else {
-					newState.data = [...data, ...result.rooms];
+					newState.data = [...data, ...rooms];
 				}
 
 				this.setState(newState);
@@ -263,16 +266,19 @@ class TeamChannelsView extends React.Component {
 		logEvent(events.TC_GO_ROOM);
 		const { navigation, isMasterDetail } = this.props;
 		try {
-			const { room } = await RocketChat.getRoomInfo(item._id);
-			const params = {
-				rid: item._id, name: RocketChat.getRoomTitle(room), joinCodeRequired: room.joinCodeRequired, t: room.t, search: true
-			};
+			let params = {};
+			if (item.rid) {
+				params = item;
+			} else {
+				const { room } = await RocketChat.getRoomInfo(item._id);
+				params = {
+					rid: item._id, name: RocketChat.getRoomTitle(room), joinCodeRequired: room.joinCodeRequired, t: room.t, teamId: room.teamId
+				};
+			}
 			if (isMasterDetail) {
 				navigation.pop();
-				goRoom({ item: params, isMasterDetail });
-			} else {
-				navigation.push('RoomView', params);
 			}
+			goRoom({ item: params, isMasterDetail, navigationMethod: navigation.push });
 		} catch (e) {
 			// do nothing
 		}
