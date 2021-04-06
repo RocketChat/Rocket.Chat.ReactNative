@@ -32,7 +32,7 @@ import I18n from '../i18n';
 const API_FETCH_COUNT = 50;
 
 const getItemLayout = (data, index) => ({
-	length: ROW_HEIGHT,
+	length: data.length,
 	offset: ROW_HEIGHT * index,
 	index
 });
