@@ -44,7 +44,8 @@ class TeamChannelsView extends React.Component {
 		this.t = props.route.params?.t;
 		this.teamId = props.route.params?.teamId;
 		this.state = {
-			loading: false,
+			loading: true,
+			loadingMore: false,
 			end: false,
 			data: [],
 			total: -1,
@@ -52,8 +53,7 @@ class TeamChannelsView extends React.Component {
 			isSearching: false,
 			searchText: '',
 			searching: false,
-			search: [],
-			refreshing: false
+			search: []
 		};
 		this.loadTeam();
 	}
@@ -190,14 +190,14 @@ class TeamChannelsView extends React.Component {
 		// }
 
 		const {
-			loading, total, data
+			loadingMore, total, data
 		} = this.state;
 
-		if (loading || data.length === total) {
+		if (loadingMore || data.length === total) {
 			return;
 		}
 
-		this.setState({ loading: true });
+		this.setState({ loadingMore: true });
 
 		try {
 			const result = await RocketChat.getTeamListRoom({
@@ -211,14 +211,15 @@ class TeamChannelsView extends React.Component {
 				this.setState({
 					data: [...data, ...result.rooms],
 					loading: false,
+					loadingMore: false,
 					total: result.total
 				});
 			} else {
-				this.setState({ loading: false });
+				this.setState({ loading: false, loadingMore: false });
 			}
 		} catch (e) {
 			log(e);
-			this.setState({ loading: false });
+			this.setState({ loading: false, loadingMore: false });
 		}
 	}, 200)
 
@@ -259,41 +260,32 @@ class TeamChannelsView extends React.Component {
 
 	renderItem = ({ item }) => {
 		const {
-			// user: { username },
 			// StoreLastMessage,
 			useRealName,
 			theme,
 			isMasterDetail,
 			width
 		} = this.props;
-		const id = this.getUidDirectMessage(item);
-
 		return (
 			<RoomItem
 				item={item}
 				theme={theme}
-				id={id}
 				type={item.t}
-				// username={username}
 				// showLastMessage={StoreLastMessage}
 				onPress={this.onPressItem}
 				width={width}
 				useRealName={useRealName}
-				getUserPresence={this.getUserPresence}
 				getRoomTitle={this.getRoomTitle}
 				getRoomAvatar={this.getRoomAvatar}
 				swipeEnabled={false}
-				// getIsRead={this.isRead}
-				// visitor={item.visitor}
-				// isFocused={item?._id === item._id}
 			/>
 		);
 	};
 
 	renderFooter = () => {
-		const { loading } = this.state;
+		const { loadingMore } = this.state;
 		const { theme } = this.props;
-		if (loading) {
+		if (loadingMore) {
 			return <ActivityIndicator theme={theme} />;
 		}
 		return null;
@@ -303,13 +295,11 @@ class TeamChannelsView extends React.Component {
 		const {
 			loading, data, search, searching
 		} = this.state;
-		const { theme, refreshing } = this.props;
+		const { theme } = this.props;
 
-		// console.log({searching, data, loading})
-
-		// if (loading) {
-		// 	return <ActivityIndicator theme={theme} />;
-		// }
+		if (loading) {
+			return <ActivityIndicator theme={theme} />;
+		}
 
 		if (!data.length) {
 			return <NoDataFound text='There are no channels' />;
