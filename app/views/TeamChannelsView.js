@@ -283,6 +283,7 @@ class TeamChannelsView extends React.Component {
 				getUserPresence={this.getUserPresence}
 				getRoomTitle={this.getRoomTitle}
 				getRoomAvatar={this.getRoomAvatar}
+				swipeEnabled={false}
 				// getIsRead={this.isRead}
 				// visitor={item.visitor}
 				// isFocused={item?._id === item._id}
@@ -304,8 +305,8 @@ class TeamChannelsView extends React.Component {
 			return <ActivityIndicator theme={theme} />;
 		}
 
-		if(!data.length) {
-			return  <NoDataFound text='There are no channels' /> 
+		if (!data.length) {
+			return <NoDataFound text='There are no channels' />;
 		}
 
 		return (
@@ -337,7 +338,6 @@ class TeamChannelsView extends React.Component {
 
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
-
 		return (
 			<SafeAreaView testID='team-channels-view'>
 				<StatusBar />
