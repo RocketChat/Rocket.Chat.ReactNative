@@ -27,7 +27,7 @@ import { themes } from '../constants/colors';
 import debounce from '../utils/debounce';
 import { showErrorAlert } from '../utils/info';
 
-
+const API_FETCH_COUNT = 10; // FIXME: 50
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
 const getItemLayout = (data, index) => ({
@@ -35,8 +35,7 @@ const getItemLayout = (data, index) => ({
 	offset: ROW_HEIGHT * index,
 	index
 });
-
-const keyExtractor = item => item.rid;
+const keyExtractor = item => item._id;
 
 class TeamChannelsView extends React.Component {
 	constructor(props) {
@@ -186,9 +185,9 @@ class TeamChannelsView extends React.Component {
 	// }
 
 	load = debounce(async({ newSearch = false }) => {
-		if (newSearch) {
-			this.setState({ data: [], total: -1, loading: false });
-		}
+		// if (newSearch) {
+		// 	this.setState({ data: [], total: -1, loading: false });
+		// }
 
 		const {
 			loading, total, data
@@ -204,7 +203,7 @@ class TeamChannelsView extends React.Component {
 			const result = await RocketChat.getTeamListRoom({
 				teamId: this.teamId,
 				offset: data.length,
-				count: 20,
+				count: API_FETCH_COUNT,
 				type: 'all'
 			});
 
@@ -222,7 +221,7 @@ class TeamChannelsView extends React.Component {
 			this.setState({ loading: false });
 		}
 	}, 200)
-	
+
 	getRoomTitle = item => RocketChat.getRoomTitle(item)
 
 	getRoomAvatar = item => RocketChat.getRoomAvatar(item)
@@ -291,7 +290,14 @@ class TeamChannelsView extends React.Component {
 		);
 	};
 
-	getScrollRef = ref => (this.scroll = ref);
+	renderFooter = () => {
+		const { loading } = this.state;
+		const { theme } = this.props;
+		if (loading) {
+			return <ActivityIndicator theme={theme} />;
+		}
+		return null;
+	}
 
 	renderScroll = () => {
 		const {
@@ -301,9 +307,9 @@ class TeamChannelsView extends React.Component {
 
 		// console.log({searching, data, loading})
 
-		if (loading) {
-			return <ActivityIndicator theme={theme} />;
-		}
+		// if (loading) {
+		// 	return <ActivityIndicator theme={theme} />;
+		// }
 
 		if (!data.length) {
 			return <NoDataFound text='There are no channels' />;
@@ -311,27 +317,18 @@ class TeamChannelsView extends React.Component {
 
 		return (
 			<FlatList
-				ref={this.getScrollRef}
 				data={searching ? search : data}
 				extraData={searching ? search : data}
 				keyExtractor={keyExtractor}
-				// style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 				renderItem={this.renderItem}
-				// ListHeaderComponent={this.renderListHeader}
 				getItemLayout={getItemLayout}
 				removeClippedSubviews={isIOS}
 				keyboardShouldPersistTaps='always'
-				initialNumToRender={INITIAL_NUM_TO_RENDER}
-				// refreshControl={(
-				// 	<RefreshControl
-				// 		refreshing={refreshing}
-				// 		onRefresh={this.onRefresh}
-				// 		tintColor={themes[theme].auxiliaryText}
-				// 	/>
-				// )}
-				windowSize={9}
-				onEndReached={this.load({})}
+				// initialNumToRender={INITIAL_NUM_TO_RENDER}
+				// windowSize={9}
+				onEndReached={() => this.load({})}
 				onEndReachedThreshold={0.5}
+				ListFooterComponent={this.renderFooter}
 			/>
 		);
 	};
@@ -352,7 +349,7 @@ const mapStateToProps = state => ({
 	user: getUserSelector(state),
 	useRealName: state.settings.UI_Use_Real_Name,
 	isMasterDetail: state.app.isMasterDetail,
-	StoreLastMessage: state.settings.Store_Last_Message,
+	StoreLastMessage: state.settings.Store_Last_Message
 });
 
 export default connect(mapStateToProps)(withDimensions(withSafeAreaInsets(withTheme(TeamChannelsView))));
