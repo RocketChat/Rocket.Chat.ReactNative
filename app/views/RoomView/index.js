@@ -299,7 +299,7 @@ class RoomView extends React.Component {
 
 	setHeader = () => {
 		const {
-			room, unreadsCount, roomUserId, member
+			room, unreadsCount, roomUserId
 		} = this.state;
 		const {
 			navigation, isMasterDetail, theme, baseUrl, user, insets, route
@@ -377,15 +377,6 @@ class RoomView extends React.Component {
 					rid={rid}
 					tmid={tmid}
 					teamId={teamId}
-					room={room}
-					parentTitle={parentTitle}
-					title={title}
-					subtitle={subtitle}
-					teamMain={teamMain}
-					user={user}
-					teamId={teamId}
-					member={member}
-					unreadsCount={unreadsCount}
 					t={t}
 					navigation={navigation}
 					toggleFollowThread={this.toggleFollowThread}

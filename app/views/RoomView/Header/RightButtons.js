@@ -15,11 +15,6 @@ class RightButtonsContainer extends Component {
 		rid: PropTypes.string,
 		t: PropTypes.string,
 		tmid: PropTypes.string,
-		title: PropTypes.string,
-		subtitle: PropTypes.string,
-		room: PropTypes.object,
-		parentTitle: PropTypes.string,
-		prid: PropTypes.string,
 		teamId: PropTypes.bool,
 		navigation: PropTypes.object,
 		isMasterDetail: PropTypes.bool,
@@ -117,21 +112,16 @@ class RightButtonsContainer extends Component {
 
 	goTeamChannels = () => {
 		logEvent(events.ROOM_GO_TEAM_CHANNELS);
-		// TODO: Reduce amount of params sent to view
 		const {
-			rid, t, navigation, isMasterDetail, roomUserId, prid, teamMain, teamId, tmid, title, subtitle, parentTitle, member, unreadsCount
+			navigation, isMasterDetail, teamId
 		} = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', {
 				screen: 'TeamChannelsView',
-				params: {
-					rid, t, title, subtitle, parentTitle, roomUserId, prid, teamMain, tmid, member, unreadsCount
-				}
+				params: { teamId }
 			});
 		} else {
-			navigation.navigate('TeamChannelsView', {
-				rid, t, title, subtitle, parentTitle, roomUserId, prid, teamMain, teamId, tmid, member, unreadsCount
-			});
+			navigation.navigate('TeamChannelsView', { teamId });
 		}
 	}
 

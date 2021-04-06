@@ -49,8 +49,6 @@ class TeamChannelsView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.rid = props.route.params?.rid;
-		this.t = props.route.params?.t;
 		this.teamId = props.route.params?.teamId;
 		this.state = {
 			loading: true,

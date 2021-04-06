@@ -931,12 +931,14 @@ const RocketChat = {
 		// RC 2.3.0
 		return this.sdk.get('livechat/visitors.info', { visitorId });
 	},
-	getTeamListRoom({ teamId, count, offset, type, filter }){
+	getTeamListRoom({
+		teamId, count, offset, type, filter
+	}) {
 		const params = {
 			teamId, count, offset, type
 		};
 
-		if (filter){
+		if (filter) {
 			params.filter = filter;
 		}
 		// RC 3.16.0
