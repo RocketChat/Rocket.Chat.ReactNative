@@ -31,6 +31,11 @@ jobs:
     - name: Install node_modules
       run: |
         yarn --frozen-lockfile --network-timeout 100000
+
+    - name: Decode google-services.json
+      env:
+        FIREBASE_SECRET: ${{ secrets.GOOGLE_KEY }}
+      run: echo $FIREBASE_SECRET > android/app/google-services.json
     
     - name: Build for detox
       run: |
