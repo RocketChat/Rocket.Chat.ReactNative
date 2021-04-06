@@ -5,6 +5,7 @@ on: [pull_request]
 jobs:
   build-android-experimental-play-debug:
     runs-on: macos-latest
+    environment: SecretStore
     timeout-minutes: 240
 
     steps:
