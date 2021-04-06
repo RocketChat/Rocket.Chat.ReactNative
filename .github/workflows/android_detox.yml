@@ -34,7 +34,7 @@ jobs:
     
     - name: Build for detox
       run: |
-        yarn detox build e2e --configuration android.experimental.play.emu.debug
+        yarn detox build e2e --configuration android.experimental.play.emu.release
 
     - name: Android Emulator
       timeout-minutes: 10
@@ -47,4 +47,4 @@ jobs:
         echo "Emulator started"
 
     - name: Android Detox
-      run: yarn start & yarn detox test --configuration android.experimental.play.emu.debug
+      run: yarn start & yarn detox test --configuration android.experimental.play.emu.release
