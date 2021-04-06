@@ -26,6 +26,7 @@ import { isIOS } from '../utils/deviceInfo';
 import { themes } from '../constants/colors';
 import debounce from '../utils/debounce';
 import { showErrorAlert } from '../utils/info';
+import { goRoom } from '../utils/goRoom';
 
 const API_FETCH_COUNT = 50;
 
@@ -255,13 +256,18 @@ class TeamChannelsView extends React.Component {
 
 	onPressItem = debounce(async(item) => {
 		logEvent(events.TC_GO_ROOM);
-		const { navigation } = this.props;
+		const { navigation, isMasterDetail } = this.props;
 		try {
 			const { room } = await RocketChat.getRoomInfo(item._id);
-			navigation.push('RoomView', {
+			const params = {
 				rid: item._id, name: RocketChat.getRoomTitle(room), joinCodeRequired: room.joinCodeRequired, t: room.t, search: true
-				// isMasterDetail TODO: tablet
-			});
+			};
+			if (isMasterDetail) {
+				navigation.pop();
+				goRoom({ item: params, isMasterDetail });
+			} else {
+				navigation.push('RoomView', params);
+			}
 		} catch (e) {
 			// do nothing
 		}
