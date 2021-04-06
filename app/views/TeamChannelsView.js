@@ -247,13 +247,13 @@ class TeamChannelsView extends React.Component {
 			log(e);
 			this.setState({ loading: false, loadingMore: false });
 		}
-	}, 200)
+	}, 300)
 
 	getRoomTitle = item => RocketChat.getRoomTitle(item)
 
 	getRoomAvatar = item => RocketChat.getRoomAvatar(item)
 
-	onPressItem = async(item) => {
+	onPressItem = debounce(async(item) => {
 		logEvent(events.TC_GO_ROOM);
 		const { navigation } = this.props;
 		try {
@@ -265,7 +265,7 @@ class TeamChannelsView extends React.Component {
 		} catch (e) {
 			// do nothing
 		}
-	};
+	}, 1000, true);
 
 	renderItem = ({ item }) => {
 		const {
