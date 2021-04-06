@@ -1,10 +1,10 @@
 import React from 'react';
-import { PropTypes, Keyboard } from 'react-native';
+import { Keyboard } from 'react-native';
+import PropTypes from 'prop-types';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { FlatList } from 'react-native-gesture-handler';
-import { dequal } from 'dequal';
 import { HeaderBackButton } from '@react-navigation/stack';
 
 import StatusBar from '../containers/StatusBar';
@@ -22,13 +22,12 @@ import ActivityIndicator from '../containers/ActivityIndicator';
 import RoomItem, { ROW_HEIGHT } from '../presentation/RoomItem';
 import RocketChat from '../lib/rocketchat';
 import { withDimensions } from '../dimensions';
-import { isIOS, isTablet } from '../utils/deviceInfo';
+import { isIOS } from '../utils/deviceInfo';
 import { themes } from '../constants/colors';
 import debounce from '../utils/debounce';
 import { showErrorAlert } from '../utils/info';
 
 const API_FETCH_COUNT = 50;
-const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
 const getItemLayout = (data, index) => ({
 	length: ROW_HEIGHT,
@@ -38,6 +37,16 @@ const getItemLayout = (data, index) => ({
 const keyExtractor = item => item._id;
 
 class TeamChannelsView extends React.Component {
+	static propTypes = {
+		route: PropTypes.object,
+		navigation: PropTypes.object,
+		isMasterDetail: PropTypes.bool,
+		insets: PropTypes.object,
+		theme: PropTypes.string,
+		useRealName: PropTypes.bool,
+		width: PropTypes.number
+	}
+
 	constructor(props) {
 		super(props);
 		this.rid = props.route.params?.rid;
@@ -76,17 +85,10 @@ class TeamChannelsView extends React.Component {
 		}
 	}
 
-	// shouldComponentUpdate(nextProps, nextState) {
-	// 	const { data } = this.state
-	// 	if (!dequal(nextProps.data, data)) {
-	// 		return true;
-	// 	}
-	// }
-
 	getHeader = () => {
 		const { isSearching } = this.state;
 		const {
-			navigation, isMasterDetail, insets, route, theme
+			navigation, isMasterDetail, insets, theme
 		} = this.props;
 
 		const { team } = this;
@@ -252,7 +254,7 @@ class TeamChannelsView extends React.Component {
 
 	onPressItem = async(item) => {
 		// logEvent(events.); TODO: event
-		const { navigation, isMasterDetail } = this.props;
+		const { navigation } = this.props;
 		try {
 			const { room } = await RocketChat.getRoomInfo(item._id);
 			navigation.push('RoomView', {
@@ -269,7 +271,6 @@ class TeamChannelsView extends React.Component {
 			// StoreLastMessage,
 			useRealName,
 			theme,
-			isMasterDetail,
 			width
 		} = this.props;
 		return (
@@ -301,8 +302,6 @@ class TeamChannelsView extends React.Component {
 		const {
 			loading, data, search, isSearching, searchText
 		} = this.state;
-		const { theme } = this.props;
-
 		if (loading) {
 			return <BackgroundContainer loading />;
 		}
@@ -322,8 +321,6 @@ class TeamChannelsView extends React.Component {
 				getItemLayout={getItemLayout}
 				removeClippedSubviews={isIOS}
 				keyboardShouldPersistTaps='always'
-				// initialNumToRender={INITIAL_NUM_TO_RENDER}
-				// windowSize={9}
 				onEndReached={() => this.load()}
 				onEndReachedThreshold={0.5}
 				ListFooterComponent={this.renderFooter}
