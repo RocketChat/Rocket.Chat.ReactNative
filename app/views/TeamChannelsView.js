@@ -187,24 +187,25 @@ class TeamChannelsView extends React.Component {
 		});
 	};
 
-	// goRoomActionsView = (screen) => {
-	// 	logEvent(events.TEAM_GO_RA);
-	// 	const {
-	// 		navigation, isMasterDetail, room, rid, t, member
-	// 	} = this.props;
-	// 	if (isMasterDetail) {
-	// 		navigation.navigate('ModalStackNavigator', {
-	// 			screen: screen ?? 'RoomActionsView',
-	// 			params: {
-	// 				rid, t, room, member, showCloseModal: !!screen
-	// 			}
-	// 		});
-	// 	} else {
-	// 		navigation.navigate('RoomActionsView', {
-	// 			rid, t, room, member
-	// 		});
-	// 	}
-	// }
+	goRoomActionsView = (screen) => {
+		// logEvent(events.TEAM_GO_RA);
+		const { team } = this;
+		const {
+			navigation, isMasterDetail
+		} = this.props;
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', {
+				screen: screen ?? 'RoomActionsView',
+				params: {
+					rid: team.rid, t: team.t, room: team, showCloseModal: false
+				}
+			});
+		} else {
+			navigation.navigate('RoomActionsView', {
+				rid: team.rid, t: team.t, room: team
+			});
+		}
+	}
 
 	load = debounce(async() => {
 		const {
