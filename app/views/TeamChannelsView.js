@@ -11,7 +11,7 @@ import StatusBar from '../containers/StatusBar';
 import RoomHeaderView from './RoomView/Header';
 import { withTheme } from '../theme';
 import SearchHeader from './ThreadMessagesView/SearchHeader';
-import log, { logEvent } from '../utils/log';
+import log, { events, logEvent } from '../utils/log';
 import database from '../lib/database';
 import { getUserSelector } from '../selectors/login';
 import { getHeaderTitlePosition } from '../containers/Header';
@@ -27,7 +27,7 @@ import { themes } from '../constants/colors';
 import debounce from '../utils/debounce';
 import { showErrorAlert } from '../utils/info';
 
-const API_FETCH_COUNT = 10; // FIXME: 50
+const API_FETCH_COUNT = 50;
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
 const getItemLayout = (data, index) => ({
@@ -250,15 +250,19 @@ class TeamChannelsView extends React.Component {
 
 	getRoomAvatar = item => RocketChat.getRoomAvatar(item)
 
-	// onPressItem = (item = {}) => {
-	// 	const { navigation, isMasterDetail } = this.props;
-	// 	if (!navigation.isFocused()) {
-	// 		return;
-	// 	}
-
-	// 	this.cancelSearch();
-	// 	this.goRoom({ item, isMasterDetail });
-	// };
+	onPressItem = async(item) => {
+		// logEvent(events.); TODO: event
+		const { navigation, isMasterDetail } = this.props;
+		try {
+			const { room } = await RocketChat.getRoomInfo(item._id);
+			navigation.push('RoomView', {
+				rid: item._id, name: RocketChat.getRoomTitle(room), joinCodeRequired: room.joinCodeRequired, t: room.t, search: true
+				// isMasterDetail TODO: tablet
+			});
+		} catch (e) {
+			// do nothing
+		}
+	};
 
 	renderItem = ({ item }) => {
 		const {
@@ -305,7 +309,7 @@ class TeamChannelsView extends React.Component {
 		if (isSearching && !search.length) {
 			return <BackgroundContainer text={searchText ? 'There are no channels' : ''} />;
 		}
-		if (!data.length) {
+		if (!isSearching && !data.length) {
 			return <BackgroundContainer text='There are no channels' />;
 		}
 
