@@ -519,6 +519,7 @@ class RoomsListView extends React.Component {
 		const { openSearchHeader } = this.props;
 		this.internalSetState({ searching: true }, () => {
 			openSearchHeader();
+			this.search('');
 			this.setHeader();
 		});
 	};

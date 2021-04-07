@@ -61,7 +61,6 @@ describe('Broadcast room', () => {
 		//await element(by.id('two-factor-send')).tap();
 
 		await searchRoom(`broadcast${ data.random }`);
-		await waitFor(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toExist().withTimeout(60000);
 		await element(by.id(`rooms-list-view-item-broadcast${ data.random }`)).tap();
 		await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 		await waitFor(element(by.id(`room-view-title-broadcast${ data.random }`))).toBeVisible().withTimeout(60000);
