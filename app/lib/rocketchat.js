@@ -941,7 +941,7 @@ const RocketChat = {
 		if (filter) {
 			params.filter = filter;
 		}
-		// RC 3.16.0
+		// RC 3.13.0
 		return this.sdk.get('teams.listRooms', params);
 	},
 	closeLivechat(rid, comment) {
