@@ -4,11 +4,11 @@ import {
 	View, Text, StyleSheet, TouchableOpacity
 } from 'react-native';
 
-import I18n from '../../../i18n';
-import sharedStyles from '../../Styles';
-import { themes } from '../../../constants/colors';
-import Markdown from '../../../containers/markdown';
-import RoomTypeIcon from '../../../containers/RoomTypeIcon';
+import I18n from '../../i18n';
+import sharedStyles from '../../views/Styles';
+import { themes } from '../../constants/colors';
+import Markdown from '../markdown';
+import RoomTypeIcon from '../RoomTypeIcon';
 
 const HIT_SLOP = {
 	top: 5, right: 5, bottom: 5, left: 5
@@ -124,7 +124,7 @@ HeaderTitle.propTypes = {
 };
 
 const Header = React.memo(({
-	title, subtitle, parentTitle, type, status, usersTyping, width, height, prid, tmid, connecting, goRoomActionsView, theme, isGroupChat, teamMain
+	title, subtitle, parentTitle, type, status, usersTyping, width, height, prid, tmid, connecting, onPress, theme, isGroupChat, teamMain
 }) => {
 	const portrait = height > width;
 	let scale = 1;
@@ -134,8 +134,6 @@ const Header = React.memo(({
 			scale = 0.8;
 		}
 	}
-
-	const onPress = () => goRoomActionsView();
 
 	let renderFunc;
 	if (tmid) {
@@ -193,7 +191,7 @@ Header.propTypes = {
 	connecting: PropTypes.bool,
 	isGroupChat: PropTypes.bool,
 	parentTitle: PropTypes.string,
-	goRoomActionsView: PropTypes.func
+	onPress: PropTypes.func
 };
 
 Header.defaultProps = {

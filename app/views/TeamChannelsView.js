@@ -8,7 +8,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { HeaderBackButton } from '@react-navigation/stack';
 
 import StatusBar from '../containers/StatusBar';
-import RoomHeaderView from './RoomView/Header';
+import RoomHeader from '../containers/RoomHeader';
 import { withTheme } from '../theme';
 import SearchHeader from './ThreadMessagesView/SearchHeader';
 import log, { events, logEvent } from '../utils/log';
@@ -176,11 +176,11 @@ class TeamChannelsView extends React.Component {
 				right: headerTitlePosition.right
 			},
 			headerTitle: () => (
-				<RoomHeaderView
+				<RoomHeader
 					title={RocketChat.getRoomTitle(team)}
 					subtitle={team.topic}
 					type={team.t}
-					goRoomActionsView={this.goRoomActionsView}
+					onPress={this.goRoomActionsView}
 					teamMain
 				/>
 			)

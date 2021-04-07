@@ -29,7 +29,9 @@ import styles from './styles';
 import log, { logEvent, events } from '../../utils/log';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
-import RoomHeaderView, { RightButtons, LeftButtons } from './Header';
+import RoomHeader from '../../containers/RoomHeader';
+import LeftButtons from './LeftButtons';
+import RightButtons from './RightButtons';
 import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
 import { themes } from '../../constants/colors';
@@ -357,7 +359,7 @@ class RoomView extends React.Component {
 				/>
 			),
 			headerTitle: () => (
-				<RoomHeaderView
+				<RoomHeader
 					rid={rid}
 					prid={prid}
 					tmid={tmid}
@@ -369,7 +371,7 @@ class RoomView extends React.Component {
 					roomUserId={roomUserId}
 					visitor={visitor}
 					isGroupChat={isGroupChat}
-					goRoomActionsView={this.goRoomActionsView}
+					onPress={this.goRoomActionsView}
 				/>
 			),
 			headerRight: () => (

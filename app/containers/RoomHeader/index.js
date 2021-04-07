@@ -4,13 +4,11 @@ import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 
 import Header from './Header';
-import LeftButtons from './LeftButtons';
-import RightButtons from './RightButtons';
-import { withTheme } from '../../../theme';
-import { withDimensions } from '../../../dimensions';
-import I18n from '../../../i18n';
+import { withTheme } from '../../theme';
+import { withDimensions } from '../../dimensions';
+import I18n from '../../i18n';
 
-class RoomHeaderView extends Component {
+class RoomHeader extends Component {
 	static propTypes = {
 		title: PropTypes.string,
 		subtitle: PropTypes.string,
@@ -26,7 +24,7 @@ class RoomHeaderView extends Component {
 		theme: PropTypes.string,
 		roomUserId: PropTypes.string,
 		widthOffset: PropTypes.number,
-		goRoomActionsView: PropTypes.func,
+		onPress: PropTypes.func,
 		width: PropTypes.number,
 		height: PropTypes.number,
 		parentTitle: PropTypes.string,
@@ -35,7 +33,7 @@ class RoomHeaderView extends Component {
 
 	shouldComponentUpdate(nextProps) {
 		const {
-			type, title, subtitle, status, statusText, connecting, connected, goRoomActionsView, usersTyping, theme, width, height
+			type, title, subtitle, status, statusText, connecting, connected, onPress, usersTyping, theme, width, height
 		} = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
@@ -70,7 +68,7 @@ class RoomHeaderView extends Component {
 		if (!dequal(nextProps.usersTyping, usersTyping)) {
 			return true;
 		}
-		if (nextProps.goRoomActionsView !== goRoomActionsView) {
+		if (nextProps.onPress !== onPress) {
 			return true;
 		}
 		return false;
@@ -90,7 +88,7 @@ class RoomHeaderView extends Component {
 			connecting,
 			connected,
 			usersTyping,
-			goRoomActionsView,
+			onPress,
 			roomUserId,
 			theme,
 			width,
@@ -123,10 +121,10 @@ class RoomHeaderView extends Component {
 				usersTyping={usersTyping}
 				widthOffset={widthOffset}
 				roomUserId={roomUserId}
-				goRoomActionsView={goRoomActionsView}
 				connecting={connecting}
 				parentTitle={parentTitle}
 				isGroupChat={isGroupChat}
+				onPress={onPress}
 			/>
 		);
 	}
@@ -156,6 +154,4 @@ const mapStateToProps = (state, ownProps) => {
 	};
 };
 
-export default connect(mapStateToProps)(withDimensions(withTheme(RoomHeaderView)));
-
-export { RightButtons, LeftButtons };
+export default connect(mapStateToProps)(withDimensions(withTheme(RoomHeader)));

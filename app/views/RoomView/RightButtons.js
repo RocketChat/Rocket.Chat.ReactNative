@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 
-import * as HeaderButton from '../../../containers/HeaderButton';
-import database from '../../../lib/database';
-import { getUserSelector } from '../../../selectors/login';
-import { logEvent, events } from '../../../utils/log';
+import * as HeaderButton from '../../containers/HeaderButton';
+import database from '../../lib/database';
+import { getUserSelector } from '../../selectors/login';
+import { logEvent, events } from '../../utils/log';
 
 class RightButtonsContainer extends Component {
 	static propTypes = {
