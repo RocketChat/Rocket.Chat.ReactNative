@@ -12,6 +12,7 @@ import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRo
 import RocketChat from '../lib/rocketchat';
 import buildMessage from '../lib/methods/helpers/buildMessage';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
+import UserPreferences from '../lib/userPreferences';
 
 const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 	const serversDB = database.servers;
@@ -47,6 +48,16 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 				// Server not found
 			}
 		}
+
+		// Force fetch all subscriptions to update columns related to Teams feature
+		// TODO: remove it a couple of releases
+		const teamsMigrationKey = `${ server }_TEAMS_MIGRATION`;
+		const teamsMigration = yield UserPreferences.getBoolAsync(teamsMigrationKey);
+		if (!teamsMigration) {
+			roomsUpdatedAt = null;
+			UserPreferences.setBoolAsync(teamsMigrationKey, true);
+		}
+
 		const [subscriptionsResult, roomsResult] = yield RocketChat.getRooms(roomsUpdatedAt);
 		const { subscriptions } = yield mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
 

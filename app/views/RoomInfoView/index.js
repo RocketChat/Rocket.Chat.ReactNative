@@ -41,7 +41,7 @@ const getRoomTitle = (room, type, name, username, statusText, theme) => (type ==
 	)
 	: (
 		<View style={styles.roomTitleRow}>
-			<RoomTypeIcon type={room.prid ? 'discussion' : room.t} key='room-info-type' status={room.visitor?.status} />
+			<RoomTypeIcon type={room.prid ? 'discussion' : room.t} teamMain={room.teamMain} key='room-info-type' status={room.visitor?.status} />
 			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]} key='room-info-name'>{RocketChat.getRoomTitle(room)}</Text>
 		</View>
 	)

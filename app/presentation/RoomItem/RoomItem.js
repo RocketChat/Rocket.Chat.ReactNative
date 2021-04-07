@@ -44,7 +44,8 @@ const RoomItem = ({
 	onPress,
 	toggleFav,
 	toggleRead,
-	hideChannel
+	hideChannel,
+	teamMain
 }) => (
 	<Touchable
 		onPress={onPress}
@@ -78,6 +79,8 @@ const RoomItem = ({
 								prid={prid}
 								status={status}
 								isGroupChat={isGroupChat}
+								theme={theme}
+								teamMain={teamMain}
 							/>
 							<Title
 								name={name}
@@ -120,6 +123,8 @@ const RoomItem = ({
 							prid={prid}
 							status={status}
 							isGroupChat={isGroupChat}
+							theme={theme}
+							teamMain={teamMain}
 						/>
 						<Title
 							name={name}
@@ -159,6 +164,7 @@ RoomItem.propTypes = {
 	isFocused: PropTypes.bool,
 	isGroupChat: PropTypes.bool,
 	isRead: PropTypes.bool,
+	teamMain: PropTypes.bool,
 	date: PropTypes.string,
 	accessibilityLabel: PropTypes.string,
 	lastMessage: PropTypes.object,

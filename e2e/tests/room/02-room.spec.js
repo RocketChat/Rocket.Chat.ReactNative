@@ -30,7 +30,7 @@ describe('Room screen', () => {
 		// Render - Header
 		describe('Header', async() => {
 			it('should have actions button ', async() => {
-				await expect(element(by.id('room-view-header-actions'))).toExist();
+				await expect(element(by.id('room-header'))).toExist();
 			});
 
 			it('should have threads button ', async() => {

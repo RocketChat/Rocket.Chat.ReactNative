@@ -461,7 +461,7 @@ class RoomActionsView extends React.Component {
 								? <Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{room.fname}</Text>
 								: (
 									<View style={styles.roomTitleRow}>
-										<RoomTypeIcon type={room.prid ? 'discussion' : room.t} status={room.visitor?.status} />
+										<RoomTypeIcon type={room.prid ? 'discussion' : room.t} teamMain={room.teamMain} status={room.visitor?.status} />
 										<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{RocketChat.getRoomTitle(room)}</Text>
 									</View>
 								)
