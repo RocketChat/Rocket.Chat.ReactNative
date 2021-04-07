@@ -29,7 +29,9 @@ import styles from './styles';
 import log, { logEvent, events } from '../../utils/log';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
-import RoomHeaderView, { RightButtons, LeftButtons } from './Header';
+import RoomHeader from '../../containers/RoomHeader';
+import LeftButtons from './LeftButtons';
+import RightButtons from './RightButtons';
 import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
 import { themes } from '../../constants/colors';
@@ -317,13 +319,23 @@ class RoomView extends React.Component {
 		}
 		const subtitle = room?.topic;
 		const t = room?.t;
+		const teamMain = room?.teamMain;
+		const teamId = room?.teamId;
 		const { id: userId, token } = user;
 		const avatar = room?.name;
 		const visitor = room?.visitor;
 		if (!room?.rid) {
 			return;
 		}
-		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: tmid ? 1 : 2 });
+
+		let numIconsRight = 2;
+		if (tmid) {
+			numIconsRight = 1;
+		} else if (teamId) {
+			numIconsRight = 3;
+		}
+		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight });
+
 		navigation.setOptions({
 			headerShown: true,
 			headerTitleAlign: 'left',
@@ -347,24 +359,27 @@ class RoomView extends React.Component {
 				/>
 			),
 			headerTitle: () => (
-				<RoomHeaderView
+				<RoomHeader
 					rid={rid}
 					prid={prid}
 					tmid={tmid}
 					title={title}
+					teamMain={teamMain}
 					parentTitle={parentTitle}
 					subtitle={subtitle}
 					type={t}
 					roomUserId={roomUserId}
 					visitor={visitor}
 					isGroupChat={isGroupChat}
-					goRoomActionsView={this.goRoomActionsView}
+					onPress={this.goRoomActionsView}
+					testID={`room-view-title-${ title }`}
 				/>
 			),
 			headerRight: () => (
 				<RightButtons
 					rid={rid}
 					tmid={tmid}
+					teamId={teamId}
 					t={t}
 					navigation={navigation}
 					toggleFollowThread={this.toggleFollowThread}

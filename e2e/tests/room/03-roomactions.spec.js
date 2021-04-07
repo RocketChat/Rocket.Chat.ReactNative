@@ -15,7 +15,7 @@ async function navigateToRoomActions(type) {
 	await searchRoom(room);
 	await element(by.id(`rooms-list-view-item-${ room }`)).tap();
 	await waitFor(element(by.id('room-view'))).toExist().withTimeout(2000);
-	await element(by.id('room-view-header-actions')).tap();
+	await element(by.id('room-header')).tap();
 	await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
 }
 
@@ -217,7 +217,7 @@ describe('Room actions screen', () => {
 				await starMessage('messageToStar')
 
 				//Back into Room Actions
-				await element(by.id('room-view-header-actions')).tap();
+				await element(by.id('room-header')).tap();
 				await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
 
 				//Go to starred messages
@@ -245,7 +245,7 @@ describe('Room actions screen', () => {
 				await pinMessage('messageToPin')
 
 				//Back into Room Actions
-				await element(by.id('room-view-header-actions')).tap();
+				await element(by.id('room-header')).tap();
 				await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
 				await element(by.type('UIScrollView')).atIndex(1).scrollTo('bottom');
 				await waitFor(element(by.id('room-actions-pinned'))).toExist();
@@ -269,7 +269,7 @@ describe('Room actions screen', () => {
 				await mockMessage('messageToFind');
 
 				//Back into Room Actions
-				await element(by.id('room-view-header-actions')).tap();
+				await element(by.id('room-header')).tap();
 				await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
 
 				await element(by.id('room-actions-search')).tap();
@@ -498,7 +498,7 @@ describe('Room actions screen', () => {
 				});
 
 				it('should navigate to direct message', async() => {
-					await element(by.id('room-view-header-actions')).tap();
+					await element(by.id('room-header')).tap();
 					await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
 					await element(by.id('room-actions-members')).tap();
 					await waitFor(element(by.id('room-members-view'))).toExist().withTimeout(2000);

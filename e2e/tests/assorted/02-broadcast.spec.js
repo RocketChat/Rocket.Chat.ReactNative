@@ -32,7 +32,7 @@ describe('Broadcast room', () => {
 		await element(by.id('create-channel-submit')).tap();
 		await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(60000);
 		await waitFor(element(by.id(`room-view-title-broadcast${ data.random }`))).toBeVisible().withTimeout(60000);
-		await element(by.id('room-view-header-actions')).tap();
+		await element(by.id('room-header')).tap();
 		await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(5000);
 		await element(by.id('room-actions-info')).tap();
 		await waitFor(element(by.id('room-info-view'))).toBeVisible().withTimeout(2000);

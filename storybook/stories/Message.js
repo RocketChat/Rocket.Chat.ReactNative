@@ -346,21 +346,13 @@ export default ({ theme }) => {
 				attachments={[{
 					title: 'This is a title',
 					description: 'This is a description',
-					image_url: '/dummypath',
-					type: 'file'
+					image_url: '/dummypath'
 				}]}
 			/>
 			<Message
 				attachments={[{
 					title: 'This is a title',
 					description: 'This is a description :nyan_rocket:',
-					image_url: '/dummypath',
-					type: 'file'
-				}]}
-			/>
-			<Message
-				msg='Image should not render'
-				attachments={[{
 					image_url: '/dummypath'
 				}]}
 			/>
@@ -370,15 +362,13 @@ export default ({ theme }) => {
 				attachments={[{
 					title: 'This is a title',
 					description: 'This is a description :nyan_rocket:',
-					video_url: '/dummypath',
-					type: 'file'
+					video_url: '/dummypath'
 				}]}
 			/>
 			<Message
 				attachments={[{
 					title: 'This is a title',
-					video_url: '/dummypath',
-					type: 'file'
+					video_url: '/dummypath'
 				}]}
 			/>
 
@@ -387,8 +377,7 @@ export default ({ theme }) => {
 				attachments={[{
 					title: 'This is a title',
 					description: 'This is a description :nyan_rocket:',
-					audio_url: '/dummypath',
-					type: 'file'
+					audio_url: '/dummypath'
 				}]}
 			/>
 			<Message msg='First message' isHeader={false} />
@@ -396,24 +385,21 @@ export default ({ theme }) => {
 				attachments={[{
 					title: 'This is a title',
 					description: 'This is a description',
-					audio_url: '/dummypath',
-					type: 'file'
+					audio_url: '/dummypath'
 				}]}
 				isHeader={false}
 			/>
 			<Message
 				attachments={[{
 					title: 'This is a title',
-					audio_url: '/dummypath',
-					type: 'file'
+					audio_url: '/dummypath'
 				}]}
 				isHeader={false}
 			/>
 			<Message
 				attachments={[{
 					title: 'This is a title',
-					audio_url: '/dummypath',
-					type: 'file'
+					audio_url: '/dummypath'
 				}]}
 				isHeader={false}
 			/>
@@ -579,8 +565,7 @@ export default ({ theme }) => {
 				attachments={[{
 					title: 'This is a title',
 					description: 'This is a description',
-					audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac',
-					type: 'file'
+					audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
 				}]}
 				tmid='1'
 				isThreadSequential
