@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 
 import RoomHeader from './RoomHeader';
-import { withTheme } from '../../theme';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 
@@ -21,7 +20,6 @@ class RoomHeaderContainer extends Component {
 		statusText: PropTypes.string,
 		connecting: PropTypes.bool,
 		connected: PropTypes.bool,
-		theme: PropTypes.string,
 		roomUserId: PropTypes.string,
 		widthOffset: PropTypes.number,
 		onPress: PropTypes.func,
@@ -34,11 +32,8 @@ class RoomHeaderContainer extends Component {
 
 	shouldComponentUpdate(nextProps) {
 		const {
-			type, title, subtitle, status, statusText, connecting, connected, onPress, usersTyping, theme, width, height
+			type, title, subtitle, status, statusText, connecting, connected, onPress, usersTyping, width, height
 		} = this.props;
-		if (nextProps.theme !== theme) {
-			return true;
-		}
 		if (nextProps.type !== type) {
 			return true;
 		}
@@ -91,7 +86,6 @@ class RoomHeaderContainer extends Component {
 			usersTyping,
 			onPress,
 			roomUserId,
-			theme,
 			width,
 			height,
 			parentTitle,
@@ -119,7 +113,6 @@ class RoomHeaderContainer extends Component {
 				status={status}
 				width={width}
 				height={height}
-				theme={theme}
 				usersTyping={usersTyping}
 				widthOffset={widthOffset}
 				roomUserId={roomUserId}
@@ -157,4 +150,4 @@ const mapStateToProps = (state, ownProps) => {
 	};
 };
 
-export default connect(mapStateToProps)(withDimensions(withTheme(RoomHeaderContainer)));
+export default connect(mapStateToProps)(withDimensions(RoomHeaderContainer));

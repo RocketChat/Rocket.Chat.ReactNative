@@ -9,6 +9,7 @@ import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import Markdown from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
+import { withTheme } from '../../theme';
 
 const HIT_SLOP = {
 	top: 5, right: 5, bottom: 5, left: 5
@@ -28,9 +29,11 @@ const styles = StyleSheet.create({
 		flexDirection: 'row'
 	},
 	title: {
+		flexShrink: 1,
 		...sharedStyles.textSemibold
 	},
 	subtitle: {
+		flexShrink: 1,
 		...sharedStyles.textRegular
 	},
 	typingUsers: {
@@ -125,7 +128,7 @@ HeaderTitle.propTypes = {
 };
 
 const Header = React.memo(({
-	title, subtitle, parentTitle, type, status, usersTyping, width, height, prid, tmid, connecting, onPress, theme, isGroupChat, teamMain, testID
+	title, subtitle, parentTitle, type, status, usersTyping, width, height, prid, tmid, onPress, theme, isGroupChat, teamMain, testID
 }) => {
 	const portrait = height > width;
 	let scale = 1;
@@ -162,7 +165,6 @@ const Header = React.memo(({
 					tmid={tmid}
 					prid={prid}
 					scale={scale}
-					connecting={connecting}
 					theme={theme}
 					testID={testID}
 				/>
@@ -190,7 +192,6 @@ Header.propTypes = {
 	status: PropTypes.string,
 	theme: PropTypes.string,
 	usersTyping: PropTypes.array,
-	connecting: PropTypes.bool,
 	isGroupChat: PropTypes.bool,
 	parentTitle: PropTypes.string,
 	onPress: PropTypes.func,
@@ -201,4 +202,4 @@ Header.defaultProps = {
 	usersTyping: []
 };
 
-export default Header;
+export default withTheme(Header);
