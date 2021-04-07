@@ -29,7 +29,7 @@ import { showErrorAlert } from '../utils/info';
 import { goRoom } from '../utils/goRoom';
 import I18n from '../i18n';
 
-const API_FETCH_COUNT = 50;
+const API_FETCH_COUNT = 25;
 
 const getItemLayout = (data, index) => ({
 	length: data.length,
@@ -57,10 +57,10 @@ class TeamChannelsView extends React.Component {
 			loading: true,
 			loadingMore: false,
 			data: [],
-			total: -1,
 			isSearching: false,
 			searchText: '',
-			search: []
+			search: [],
+			end: false
 		};
 		this.loadTeam();
 	}
@@ -91,11 +91,11 @@ class TeamChannelsView extends React.Component {
 
 	load = debounce(async() => {
 		const {
-			loadingMore, total, data, search, isSearching, searchText
+			loadingMore, data, search, isSearching, searchText, end
 		} = this.state;
 
 		const length = isSearching ? search.length : data.length;
-		if (loadingMore || length === total) {
+		if (loadingMore || end) {
 			return;
 		}
 
@@ -113,7 +113,7 @@ class TeamChannelsView extends React.Component {
 				const newState = {
 					loading: false,
 					loadingMore: false,
-					total: result.total
+					end: result.rooms.length < API_FETCH_COUNT
 				};
 				const rooms = result.rooms.map((room) => {
 					const record = this.teamChannels?.find(c => c.rid === room._id);
@@ -219,7 +219,7 @@ class TeamChannelsView extends React.Component {
 
 	onSearchChangeText = debounce((searchText) => {
 		this.setState({
-			searchText, search: [], loading: !!searchText, loadingMore: false, total: -1
+			searchText, search: [], loading: !!searchText, loadingMore: false, end: false
 		}, () => {
 			if (searchText) {
 				this.load();
@@ -234,7 +234,9 @@ class TeamChannelsView extends React.Component {
 			return;
 		}
 		Keyboard.dismiss();
-		this.setState({ isSearching: false, search: [] }, () => {
+		this.setState({
+			searchText: null, isSearching: false, search: [], loadingMore: false, end: false
+		}, () => {
 			this.setHeader();
 		});
 	};
