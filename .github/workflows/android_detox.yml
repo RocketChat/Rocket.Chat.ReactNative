@@ -40,6 +40,13 @@ jobs:
     
     - name: Generate Temporary Keystore
       run: |
+        cd android
+        echo -e "" > ./gradle.properties
+        echo -e "KEYSTORE=debug.keystore" >> ./gradle.properties
+        echo -e "KEYSTORE_PASSWORD=android" >> ./gradle.properties
+        echo -e "KEY_ALIAS=androiddebugkey" >> ./gradle.properties
+        echo -e "KEY_PASSWORD=android" >> ./gradle.properties
+        cd ..
         keytool -genkey -noprompt -dname "CN=Unknown, OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown" -keystore android/app/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000
 
     - name: Build for detox
