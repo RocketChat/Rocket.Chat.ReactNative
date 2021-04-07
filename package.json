@@ -204,7 +204,7 @@
       "android.experimental.play.release": {
         "type": "android.apk",
         "binaryPath": "android/app/build/outputs/apk/release/app-Experimental-Play-release.apk",
-        "build": "cd android && ./gradlew assembleExperimentalPlayRelease assembleExperimentalPlayAndroidTest -DtestBuildType=release && cd .."
+        "build": "cd android && ./gradlew assembleExperimentalPlayRelease assembleExperimentalPlayAndroidTest -DtestBuildType=release -DKEYSTORE=debug.keystore -DKEYSTORE_PASSWORD=android -DKEYSTORE_ALIAS=androiddebugkey && cd .."
       },
       "android.official.play.debug": {
         "type": "android.apk",

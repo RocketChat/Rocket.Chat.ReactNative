@@ -233,6 +233,10 @@ android {
             java.srcDirs = ['src/main/java', 'src/play/java']
             manifest.srcFile 'src/play/AndroidManifest.xml'
         }
+        playE2E {
+            java.srcDirs = ['src/main/java', 'src/play/java']
+            manifest.srcFile 'src/androidTest/AndroidManifest.xml'
+        }
     }
 
     testBuildType "release"
