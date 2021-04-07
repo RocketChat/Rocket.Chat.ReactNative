@@ -113,11 +113,6 @@ export default {
 	CD_SELECT_USERS: 'cd_select_users',
 	CD_TOGGLE_ENCRY: 'cd_toggle_encry',
 
-	// TEAM CHANNELS VIEW
-	TEAM_GO_CHANNELS: 'team_go_channels',
-	TEAM_GO_RA: 'team_go_ra',
-	TEAM_GO_ROOM: 'team_go_room',
-
 	// PROFILE VIEW
 	PROFILE_PICK_AVATAR: 'profile_pick_avatar',
 	PROFILE_PICK_AVATAR_F: 'profile_pick_avatar_f',
