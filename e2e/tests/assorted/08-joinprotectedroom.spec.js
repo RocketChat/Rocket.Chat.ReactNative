@@ -16,7 +16,7 @@ async function navigateToRoom() {
 }
 
 async function navigateToRoomActions() {
-	await element(by.id('room-view-header-actions')).tap();
+	await element(by.id('room-header')).tap();
 	await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(5000);
 }
 

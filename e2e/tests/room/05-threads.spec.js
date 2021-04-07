@@ -30,7 +30,7 @@ describe('Threads', () => {
 		// Render - Header
 		describe('Header', async() => {
 			it('should have actions button ', async() => {
-				await expect(element(by.id('room-view-header-actions'))).toExist();
+				await expect(element(by.id('room-header'))).toExist();
 			});
 
 			it('should have threads button ', async() => {
@@ -105,8 +105,8 @@ describe('Threads', () => {
 				const messageText = 'threadonly';
 				await mockMessage(messageText);
 				await tapBack();
-				await waitFor(element(by.id('room-view-header-actions').and(by.label(`${ mainRoom }`)))).toBeVisible().withTimeout(2000);	
-				await waitFor(element(by.id('room-view-header-actions').and(by.label(`${ data.random }thread`)))).toBeNotVisible().withTimeout(2000);	
+				await waitFor(element(by.id('room-header').and(by.label(`${ mainRoom }`)))).toBeVisible().withTimeout(2000);	
+				await waitFor(element(by.id('room-header').and(by.label(`${ data.random }thread`)))).toBeNotVisible().withTimeout(2000);	
 				await sleep(500) //TODO: Find a better way to wait for the animation to finish and the messagebox-input to be available and usable :(
 				await waitFor(element(by.label(`${ data.random }${ messageText }`)).atIndex(0)).toNotExist().withTimeout(2000);
 			});
@@ -118,8 +118,8 @@ describe('Threads', () => {
 				await element(by.id('messagebox-send-to-channel')).tap();
 				await element(by.id('messagebox-send-message')).tap();
 				await tapBack();
-				await waitFor(element(by.id('room-view-header-actions').and(by.label(`${ mainRoom }`)))).toBeVisible().withTimeout(2000);	
-				await waitFor(element(by.id('room-view-header-actions').and(by.label(`${ data.random }thread`)))).toBeNotVisible().withTimeout(2000);	
+				await waitFor(element(by.id('room-header').and(by.label(`${ mainRoom }`)))).toBeVisible().withTimeout(2000);	
+				await waitFor(element(by.id('room-header').and(by.label(`${ data.random }thread`)))).toBeNotVisible().withTimeout(2000);	
 				await sleep(500) //TODO: Find a better way to wait for the animation to finish and the messagebox-input to be available and usable :(
 				await waitFor(element(by.label(messageText)).atIndex(0)).toExist().withTimeout(2000);
 			});
@@ -133,8 +133,8 @@ describe('Threads', () => {
 				await element(by.id('messagebox-send-to-channel')).tap();
 				await element(by.id('messagebox-send-message')).tap();
 				await tapBack();
-				await waitFor(element(by.id('room-view-header-actions').and(by.label(`${ mainRoom }`)))).toBeVisible().withTimeout(2000);	
-				await waitFor(element(by.id('room-view-header-actions').and(by.label(`${ data.random }thread`)))).toBeNotVisible().withTimeout(2000);	
+				await waitFor(element(by.id('room-header').and(by.label(`${ mainRoom }`)))).toBeVisible().withTimeout(2000);	
+				await waitFor(element(by.id('room-header').and(by.label(`${ data.random }thread`)))).toBeNotVisible().withTimeout(2000);	
 				await sleep(500) //TODO: Find a better way to wait for the animation to finish and the messagebox-input to be available and usable :(
 
 				await element(by.id(`message-thread-replied-on-${ thread }`)).tap();
