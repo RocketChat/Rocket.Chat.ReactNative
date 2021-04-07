@@ -618,9 +618,6 @@ const RocketChat = {
 
 	async localSearch({ text, filterUsers = true, filterRooms = true }) {
 		const searchText = text.trim();
-		if (searchText === '') {
-			return [];
-		}
 		const db = database.active;
 		const likeString = sanitizeLikeString(searchText);
 		let data = await db.get('subscriptions').query(
@@ -657,10 +654,6 @@ const RocketChat = {
 
 		if (this.oldPromise) {
 			this.oldPromise('cancel');
-		}
-
-		if (searchText === '') {
-			return [];
 		}
 
 		const data = await this.localSearch({ text, filterUsers, filterRooms });

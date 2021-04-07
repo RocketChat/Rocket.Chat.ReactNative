@@ -22,7 +22,6 @@ const checkBanner = async() => {
 
 async function navigateToRoom(roomName) {
 	await searchRoom(`${ roomName }`);
-	await waitFor(element(by.id(`rooms-list-view-item-${ roomName }`))).toExist().withTimeout(60000);
 	await element(by.id(`rooms-list-view-item-${ roomName }`)).tap();
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 }

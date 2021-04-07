@@ -9,7 +9,6 @@ async function navigateToRoom(roomName) {
 	await navigateToLogin();
 	await login(data.users.regular.username, data.users.regular.password);
 	await searchRoom(`${ roomName }`);
-	await waitFor(element(by.id(`rooms-list-view-item-${ roomName }`))).toExist().withTimeout(60000);
 	await element(by.id(`rooms-list-view-item-${ roomName }`)).tap();
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 }
