@@ -101,6 +101,8 @@ async function searchRoom(room) {
 	await expect(element(by.id('rooms-list-view-search-input'))).toExist();
 	await waitFor(element(by.id('rooms-list-view-search-input'))).toExist().withTimeout(5000);
     await element(by.id('rooms-list-view-search-input')).typeText(room);
+    await sleep(300);
+	await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible().withTimeout(60000);
 }
 
 async function tryTapping(theElement, timeout, longtap = false){

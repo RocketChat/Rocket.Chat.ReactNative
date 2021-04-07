@@ -2,7 +2,7 @@ import Navigation from '../lib/Navigation';
 import RocketChat from '../lib/rocketchat';
 
 const navigate = ({ item, isMasterDetail, ...props }) => {
-	let navigationMethod = Navigation.navigate;
+	let navigationMethod = props.navigationMethod ?? Navigation.navigate;
 
 	if (isMasterDetail) {
 		navigationMethod = Navigation.replace;
