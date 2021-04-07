@@ -14,6 +14,7 @@ import Markdown from './Markdown';
 import './HeaderButtons';
 import './UnreadBadge';
 import '../../app/views/ThreadMessagesView/Item.stories.js';
+import '../../app/containers/BackgroundContainer/index.stories.js';
 import Avatar from './Avatar';
 // import RoomViewHeader from './RoomViewHeader';
 
