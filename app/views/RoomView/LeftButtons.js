@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
 import { HeaderBackButton } from '@react-navigation/stack';
 
-import { themes } from '../../../constants/colors';
-import Avatar from '../../../containers/Avatar';
+import { themes } from '../../constants/colors';
+import Avatar from '../../containers/Avatar';
 
 const styles = StyleSheet.create({
 	avatar: {

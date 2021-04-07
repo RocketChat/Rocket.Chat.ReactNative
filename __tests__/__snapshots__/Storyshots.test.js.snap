@@ -1055,6 +1055,533 @@ exports[`Storyshots Avatar list Avatar 1`] = `
 </RCTScrollView>
 `;
 
+exports[`Storyshots BackgroundContainer basic 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    accessibilityIgnoresInvertColors={true}
+    style={
+      Object {
+        "height": "100%",
+        "position": "absolute",
+        "width": "100%",
+      }
+    }
+  >
+    <Image
+      source={
+        Object {
+          "uri": "message_empty_light",
+        }
+      }
+      style={
+        Array [
+          Object {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+          Object {
+            "height": "100%",
+            "width": "100%",
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+</View>
+`;
+
+exports[`Storyshots BackgroundContainer black theme - loading 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    accessibilityIgnoresInvertColors={true}
+    style={
+      Object {
+        "height": "100%",
+        "position": "absolute",
+        "width": "100%",
+      }
+    }
+  >
+    <Image
+      source={
+        Object {
+          "uri": "message_empty_black",
+        }
+      }
+      style={
+        Array [
+          Object {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+          Object {
+            "height": "100%",
+            "width": "100%",
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <ActivityIndicator
+    animating={true}
+    color="#999999"
+    hidesWhenStopped={true}
+    size="small"
+    style={
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+          "fontFamily": "System",
+          "fontSize": 16,
+          "fontWeight": "400",
+          "left": 0,
+          "paddingHorizontal": 24,
+          "position": "absolute",
+          "right": 0,
+          "textAlign": "center",
+          "top": 60,
+        },
+        Object {
+          "color": "#f9f9f9",
+        },
+      ]
+    }
+  />
+</View>
+`;
+
+exports[`Storyshots BackgroundContainer black theme - text 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    accessibilityIgnoresInvertColors={true}
+    style={
+      Object {
+        "height": "100%",
+        "position": "absolute",
+        "width": "100%",
+      }
+    }
+  >
+    <Image
+      source={
+        Object {
+          "uri": "message_empty_black",
+        }
+      }
+      style={
+        Array [
+          Object {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+          Object {
+            "height": "100%",
+            "width": "100%",
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <Text
+    style={
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+          "fontFamily": "System",
+          "fontSize": 16,
+          "fontWeight": "400",
+          "left": 0,
+          "paddingHorizontal": 24,
+          "position": "absolute",
+          "right": 0,
+          "textAlign": "center",
+          "top": 60,
+        },
+        Object {
+          "color": "#f9f9f9",
+        },
+      ]
+    }
+  >
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+  </Text>
+</View>
+`;
+
+exports[`Storyshots BackgroundContainer dark theme - loading 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    accessibilityIgnoresInvertColors={true}
+    style={
+      Object {
+        "height": "100%",
+        "position": "absolute",
+        "width": "100%",
+      }
+    }
+  >
+    <Image
+      source={
+        Object {
+          "uri": "message_empty_dark",
+        }
+      }
+      style={
+        Array [
+          Object {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+          Object {
+            "height": "100%",
+            "width": "100%",
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <ActivityIndicator
+    animating={true}
+    color="#999999"
+    hidesWhenStopped={true}
+    size="small"
+    style={
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+          "fontFamily": "System",
+          "fontSize": 16,
+          "fontWeight": "400",
+          "left": 0,
+          "paddingHorizontal": 24,
+          "position": "absolute",
+          "right": 0,
+          "textAlign": "center",
+          "top": 60,
+        },
+        Object {
+          "color": "#f9f9f9",
+        },
+      ]
+    }
+  />
+</View>
+`;
+
+exports[`Storyshots BackgroundContainer dark theme - text 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    accessibilityIgnoresInvertColors={true}
+    style={
+      Object {
+        "height": "100%",
+        "position": "absolute",
+        "width": "100%",
+      }
+    }
+  >
+    <Image
+      source={
+        Object {
+          "uri": "message_empty_dark",
+        }
+      }
+      style={
+        Array [
+          Object {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+          Object {
+            "height": "100%",
+            "width": "100%",
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <Text
+    style={
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+          "fontFamily": "System",
+          "fontSize": 16,
+          "fontWeight": "400",
+          "left": 0,
+          "paddingHorizontal": 24,
+          "position": "absolute",
+          "right": 0,
+          "textAlign": "center",
+          "top": 60,
+        },
+        Object {
+          "color": "#f9f9f9",
+        },
+      ]
+    }
+  >
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+  </Text>
+</View>
+`;
+
+exports[`Storyshots BackgroundContainer loading 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    accessibilityIgnoresInvertColors={true}
+    style={
+      Object {
+        "height": "100%",
+        "position": "absolute",
+        "width": "100%",
+      }
+    }
+  >
+    <Image
+      source={
+        Object {
+          "uri": "message_empty_light",
+        }
+      }
+      style={
+        Array [
+          Object {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+          Object {
+            "height": "100%",
+            "width": "100%",
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <ActivityIndicator
+    animating={true}
+    color="#999999"
+    hidesWhenStopped={true}
+    size="small"
+    style={
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+          "fontFamily": "System",
+          "fontSize": 16,
+          "fontWeight": "400",
+          "left": 0,
+          "paddingHorizontal": 24,
+          "position": "absolute",
+          "right": 0,
+          "textAlign": "center",
+          "top": 60,
+        },
+        Object {
+          "color": "#6C727A",
+        },
+      ]
+    }
+  />
+</View>
+`;
+
+exports[`Storyshots BackgroundContainer long text 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    accessibilityIgnoresInvertColors={true}
+    style={
+      Object {
+        "height": "100%",
+        "position": "absolute",
+        "width": "100%",
+      }
+    }
+  >
+    <Image
+      source={
+        Object {
+          "uri": "message_empty_light",
+        }
+      }
+      style={
+        Array [
+          Object {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+          Object {
+            "height": "100%",
+            "width": "100%",
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <Text
+    style={
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+          "fontFamily": "System",
+          "fontSize": 16,
+          "fontWeight": "400",
+          "left": 0,
+          "paddingHorizontal": 24,
+          "position": "absolute",
+          "right": 0,
+          "textAlign": "center",
+          "top": 60,
+        },
+        Object {
+          "color": "#6C727A",
+        },
+      ]
+    }
+  >
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+  </Text>
+</View>
+`;
+
+exports[`Storyshots BackgroundContainer text 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    accessibilityIgnoresInvertColors={true}
+    style={
+      Object {
+        "height": "100%",
+        "position": "absolute",
+        "width": "100%",
+      }
+    }
+  >
+    <Image
+      source={
+        Object {
+          "uri": "message_empty_light",
+        }
+      }
+      style={
+        Array [
+          Object {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+          Object {
+            "height": "100%",
+            "width": "100%",
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <Text
+    style={
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+          "fontFamily": "System",
+          "fontSize": 16,
+          "fontWeight": "400",
+          "left": 0,
+          "paddingHorizontal": 24,
+          "position": "absolute",
+          "right": 0,
+          "textAlign": "center",
+          "top": 60,
+        },
+        Object {
+          "color": "#6C727A",
+        },
+      ]
+    }
+  >
+    Text here
+  </Text>
+</View>
+`;
+
 exports[`Storyshots Header Buttons badge 1`] = `
 <RNCSafeAreaView
   edges={
@@ -49660,6 +50187,4172 @@ exports[`Storyshots Message list message 1`] = `
     </View>
   </View>
 </RCTScrollView>
+`;
+
+exports[`Storyshots RoomHeader icons 1`] = `
+Array [
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="private channel"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "marginRight": 4,
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="private channel"
+            >
+              private channel
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="public channel"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "marginRight": 4,
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="public channel"
+            >
+              public channel
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="discussion"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "marginRight": 4,
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              accessibilityLabel="discussion"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="discussion"
+            >
+              discussion
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="omnichannel"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "marginRight": 4,
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="omnichannel"
+            >
+              omnichannel
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="private team"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "marginRight": 4,
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="private team"
+            >
+              private team
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="public team"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "marginRight": 4,
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="public team"
+            >
+              public team
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="group dm"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "marginRight": 4,
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="group dm"
+            >
+              group dm
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="online dm"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": "#2de0a5",
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "height": 16,
+                      "textAlignVertical": "center",
+                      "width": 16,
+                    },
+                    Array [
+                      Array [
+                        Object {
+                          "marginRight": 4,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                        undefined,
+                      ],
+                      Object {
+                        "color": "#2de0a5",
+                      },
+                    ],
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="online dm"
+            >
+              online dm
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="away dm"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": "#ffd21f",
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "height": 16,
+                      "textAlignVertical": "center",
+                      "width": 16,
+                    },
+                    Array [
+                      Array [
+                        Object {
+                          "marginRight": 4,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                        undefined,
+                      ],
+                      Object {
+                        "color": "#ffd21f",
+                      },
+                    ],
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="away dm"
+            >
+              away dm
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="busy dm"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": "#f5455c",
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "height": 16,
+                      "textAlignVertical": "center",
+                      "width": 16,
+                    },
+                    Array [
+                      Array [
+                        Object {
+                          "marginRight": 4,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                        undefined,
+                      ],
+                      Object {
+                        "color": "#f5455c",
+                      },
+                    ],
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="busy dm"
+            >
+              busy dm
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="loading dm"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": "#9ea2a8",
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "height": 16,
+                      "textAlignVertical": "center",
+                      "width": 16,
+                    },
+                    Array [
+                      Array [
+                        Object {
+                          "marginRight": 4,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                        undefined,
+                      ],
+                      Object {
+                        "color": "#9ea2a8",
+                      },
+                    ],
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="loading dm"
+            >
+              loading dm
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="offline dm"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": "#cbced1",
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "height": 16,
+                      "textAlignVertical": "center",
+                      "width": 16,
+                    },
+                    Array [
+                      Array [
+                        Object {
+                          "marginRight": 4,
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                        undefined,
+                      ],
+                      Object {
+                        "color": "#cbced1",
+                      },
+                    ],
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="offline dm"
+            >
+              offline dm
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+]
+`;
+
+exports[`Storyshots RoomHeader landscape 1`] = `
+Array [
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="title"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "marginRight": 4,
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+            >
+              title
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="title"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "marginRight": 4,
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 12.8,
+                  },
+                ]
+              }
+            >
+              title
+            </Text>
+          </View>
+          <Text
+            accessibilityLabel="subtitle"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                Object {
+                  "color": "#2f343d",
+                },
+                Object {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "System",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                Object {
+                  "color": "#9ca2a8",
+                  "fontSize": 9.600000000000001,
+                },
+              ]
+            }
+          >
+            subtitle
+          </Text>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "marginRight": 4,
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 12.8,
+                  },
+                ]
+              }
+              testID="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+            >
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+            </Text>
+          </View>
+          <Text
+            accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                Object {
+                  "color": "#2f343d",
+                },
+                Object {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "System",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                Object {
+                  "color": "#9ca2a8",
+                  "fontSize": 9.600000000000001,
+                },
+              ]
+            }
+          >
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+          </Text>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+]
+`;
+
+exports[`Storyshots RoomHeader themes 1`] = `
+Array [
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="title"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "marginRight": 4,
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+            >
+              title
+            </Text>
+          </View>
+          <Text
+            accessibilityLabel="subtitle"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                Object {
+                  "color": "#2f343d",
+                },
+                Object {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "System",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                Object {
+                  "color": "#9ca2a8",
+                  "fontSize": 12,
+                },
+              ]
+            }
+          >
+            subtitle
+          </Text>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#0b182c",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#0b182c",
+            "borderBottomColor": "#2F3A4B",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="title"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "marginRight": 4,
+                    },
+                    Object {
+                      "color": "#f9f9f9",
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#f9f9f9",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+            >
+              title
+            </Text>
+          </View>
+          <Text
+            accessibilityLabel="subtitle"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                Object {
+                  "color": "#e8ebed",
+                },
+                Object {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "System",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                Object {
+                  "color": "#9297a2",
+                  "fontSize": 12,
+                },
+              ]
+            }
+          >
+            subtitle
+          </Text>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#0d0d0d",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#0d0d0d",
+            "borderBottomColor": "#323232",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="title"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "marginRight": 4,
+                    },
+                    Object {
+                      "color": "#f9f9f9",
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#f9f9f9",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+            >
+              title
+            </Text>
+          </View>
+          <Text
+            accessibilityLabel="subtitle"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                Object {
+                  "color": "#e8ebed",
+                },
+                Object {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "System",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                Object {
+                  "color": "#b2b8c6",
+                  "fontSize": 12,
+                },
+              ]
+            }
+          >
+            subtitle
+          </Text>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+]
+`;
+
+exports[`Storyshots RoomHeader thread 1`] = `
+Array [
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="title"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="title"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+            >
+              title
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "marginRight": 4,
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#9ca2a8",
+                  },
+                ]
+              }
+            >
+              parent title
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="markdown
+preview
+#3
+4
+5"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="markdown preview #3 4 5"
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="markdown
+preview
+#3
+4
+5"
+            >
+              markdown preview #3 4 5
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "marginRight": 4,
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#9ca2a8",
+                  },
+                ]
+              }
+            >
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+]
+`;
+
+exports[`Storyshots RoomHeader title and subtitle 1`] = `
+Array [
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="title"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "marginRight": 4,
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="title"
+            >
+              title
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "marginRight": 4,
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+            >
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="title"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "marginRight": 4,
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+            >
+              title
+            </Text>
+          </View>
+          <Text
+            accessibilityLabel="subtitle"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                Object {
+                  "color": "#2f343d",
+                },
+                Object {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "System",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                Object {
+                  "color": "#9ca2a8",
+                  "fontSize": 12,
+                },
+              ]
+            }
+          >
+            subtitle
+          </Text>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="title"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "marginRight": 4,
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+            >
+              title
+            </Text>
+          </View>
+          <Text
+            accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                Object {
+                  "color": "#2f343d",
+                },
+                Object {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "System",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                Object {
+                  "color": "#9ca2a8",
+                  "fontSize": 12,
+                },
+              ]
+            }
+          >
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+          </Text>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "marginRight": 4,
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+              testID="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+            >
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+            </Text>
+          </View>
+          <Text
+            accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                Object {
+                  "color": "#2f343d",
+                },
+                Object {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "System",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                Object {
+                  "color": "#9ca2a8",
+                  "fontSize": 12,
+                },
+              ]
+            }
+          >
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+          </Text>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+]
+`;
+
+exports[`Storyshots RoomHeader typing 1`] = `
+Array [
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="title"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "marginRight": 4,
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+            >
+              title
+            </Text>
+          </View>
+          <Text
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "System",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                Object {
+                  "color": "#9ca2a8",
+                  "fontSize": 12,
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                }
+              }
+            >
+              user 1
+               
+            </Text>
+            is typing
+            ...
+          </Text>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="title"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "marginRight": 4,
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+            >
+              title
+            </Text>
+          </View>
+          <Text
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "System",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                Object {
+                  "color": "#9ca2a8",
+                  "fontSize": 12,
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                }
+              }
+            >
+              user 1 and user 2
+               
+            </Text>
+            are typing
+            ...
+          </Text>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+  <RNCSafeAreaView
+    edges={
+      Array [
+        "top",
+        "left",
+        "right",
+      ]
+    }
+    style={
+      Object {
+        "backgroundColor": "#EEEFF1",
+      }
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "elevation": 4,
+            "flexDirection": "row",
+            "height": 44,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#EEEFF1",
+            "borderBottomColor": "#B2B2B2",
+            "borderBottomWidth": 0.5,
+            "elevation": 0,
+          },
+        ]
+      }
+    >
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "paddingHorizontal": 12,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="title"
+          accessible={true}
+          focusable={true}
+          hitSlop={
+            Object {
+              "bottom": 5,
+              "left": 5,
+              "right": 5,
+              "top": 5,
+            }
+          }
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID="room-header"
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 16,
+                  },
+                  Array [
+                    Object {
+                      "marginRight": 4,
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontWeight": "600",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0C0D0F",
+                    "fontSize": 16,
+                  },
+                ]
+              }
+            >
+              title
+            </Text>
+          </View>
+          <Text
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "System",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                Object {
+                  "color": "#9ca2a8",
+                  "fontSize": 12,
+                },
+              ]
+            }
+          >
+            <Text
+              style={
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                }
+              }
+            >
+              user 1, user 2, user 3, user 4, user 5
+               
+            </Text>
+            are typing
+            ...
+          </Text>
+        </View>
+      </View>
+    </View>
+  </RNCSafeAreaView>,
+]
 `;
 
 exports[`Storyshots RoomItem list roomitem 1`] = `
