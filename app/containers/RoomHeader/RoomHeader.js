@@ -88,7 +88,7 @@ SubTitle.propTypes = {
 };
 
 const HeaderTitle = React.memo(({
-	title, tmid, prid, scale, theme
+	title, tmid, prid, scale, theme, testID
 }) => {
 	const titleStyle = { fontSize: TITLE_SIZE * scale, color: themes[theme].headerTitleColor };
 	if (!tmid && !prid) {
@@ -96,7 +96,7 @@ const HeaderTitle = React.memo(({
 			<Text
 				style={[styles.title, titleStyle]}
 				numberOfLines={1}
-				testID={`room-view-title-${ title }`}
+				testID={testID}
 			>
 				{title}
 			</Text>
@@ -110,7 +110,7 @@ const HeaderTitle = React.memo(({
 			style={[styles.title, titleStyle]}
 			numberOfLines={1}
 			theme={theme}
-			testID={`room-view-title-${ title }`}
+			testID={testID}
 		/>
 	);
 });
@@ -120,11 +120,12 @@ HeaderTitle.propTypes = {
 	tmid: PropTypes.string,
 	prid: PropTypes.string,
 	scale: PropTypes.number,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	testID: PropTypes.string
 };
 
 const Header = React.memo(({
-	title, subtitle, parentTitle, type, status, usersTyping, width, height, prid, tmid, connecting, onPress, theme, isGroupChat, teamMain
+	title, subtitle, parentTitle, type, status, usersTyping, width, height, prid, tmid, connecting, onPress, theme, isGroupChat, teamMain, testID
 }) => {
 	const portrait = height > width;
 	let scale = 1;
@@ -147,7 +148,7 @@ const Header = React.memo(({
 
 	return (
 		<TouchableOpacity
-			testID='room-view-header-actions'
+			testID='room-header'
 			accessibilityLabel={title}
 			onPress={onPress}
 			style={styles.container}
@@ -163,6 +164,7 @@ const Header = React.memo(({
 					scale={scale}
 					connecting={connecting}
 					theme={theme}
+					testID={testID}
 				/>
 			</View>
 			<SubTitle
@@ -191,7 +193,8 @@ Header.propTypes = {
 	connecting: PropTypes.bool,
 	isGroupChat: PropTypes.bool,
 	parentTitle: PropTypes.string,
-	onPress: PropTypes.func
+	onPress: PropTypes.func,
+	testID: PropTypes.string
 };
 
 Header.defaultProps = {

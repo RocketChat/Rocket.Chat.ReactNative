@@ -17,7 +17,7 @@ async function navigateToRoomInfo(type) {
 	await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toExist().withTimeout(60000);
 	await element(by.id(`rooms-list-view-item-${ room }`)).tap();
 	await waitFor(element(by.id('room-view'))).toExist().withTimeout(2000);
-	await element(by.id('room-view-header-actions')).tap();
+	await element(by.id('room-header')).tap();
 	await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
 	await element(by.id('room-actions-info')).tap();
 	await waitFor(element(by.id('room-info-view'))).toExist().withTimeout(2000);

@@ -74,8 +74,8 @@ describe('Discussion', () => {
 	
 	describe('Check RoomActionsView render', async() => {
 		it('should navigete to RoomActionsView', async() => {
-			await waitFor(element(by.id('room-view-header-actions'))).toBeVisible().withTimeout(5000);
-			await element(by.id('room-view-header-actions')).tap();
+			await waitFor(element(by.id('room-header'))).toBeVisible().withTimeout(5000);
+			await element(by.id('room-header')).tap();
 			await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(5000);
 		});
 

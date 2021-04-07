@@ -2,11 +2,11 @@ import React from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { HeaderBackButton } from '@react-navigation/stack';
 
-import HeaderComponent from '../../app/containers/RoomHeader/Header';
+import HeaderComponent from './RoomHeader';
 // import { CustomHeaderButtons, Item } from '../../app/containers/HeaderButton';
-import StoriesSeparator from './StoriesSeparator';
-import { isIOS } from '../../app/utils/deviceInfo';
-import { themes } from '../../app/constants/colors';
+import StoriesSeparator from '../../../storybook/stories/StoriesSeparator';
+import { isIOS } from '../../utils/deviceInfo';
+import { themes } from '../../constants/colors';
 
 let _theme = 'light';
 

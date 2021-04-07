@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 
-import Header from './Header';
+import RoomHeader from './RoomHeader';
 import { withTheme } from '../../theme';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 
-class RoomHeader extends Component {
+class RoomHeaderContainer extends Component {
 	static propTypes = {
 		title: PropTypes.string,
 		subtitle: PropTypes.string,
@@ -28,7 +28,8 @@ class RoomHeader extends Component {
 		width: PropTypes.number,
 		height: PropTypes.number,
 		parentTitle: PropTypes.string,
-		isGroupChat: PropTypes.bool
+		isGroupChat: PropTypes.bool,
+		testID: PropTypes.string
 	};
 
 	shouldComponentUpdate(nextProps) {
@@ -94,7 +95,8 @@ class RoomHeader extends Component {
 			width,
 			height,
 			parentTitle,
-			isGroupChat
+			isGroupChat,
+			testID
 		} = this.props;
 
 		let subtitle;
@@ -107,7 +109,7 @@ class RoomHeader extends Component {
 		}
 
 		return (
-			<Header
+			<RoomHeader
 				prid={prid}
 				tmid={tmid}
 				title={title}
@@ -124,6 +126,7 @@ class RoomHeader extends Component {
 				connecting={connecting}
 				parentTitle={parentTitle}
 				isGroupChat={isGroupChat}
+				testID={testID}
 				onPress={onPress}
 			/>
 		);
@@ -154,4 +157,4 @@ const mapStateToProps = (state, ownProps) => {
 	};
 };
 
-export default connect(mapStateToProps)(withDimensions(withTheme(RoomHeader)));
+export default connect(mapStateToProps)(withDimensions(withTheme(RoomHeaderContainer)));

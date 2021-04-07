@@ -372,6 +372,7 @@ class RoomView extends React.Component {
 					visitor={visitor}
 					isGroupChat={isGroupChat}
 					onPress={this.goRoomActionsView}
+					testID={`room-view-title-${ title }`}
 				/>
 			),
 			headerRight: () => (
