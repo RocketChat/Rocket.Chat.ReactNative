@@ -92,7 +92,6 @@ class StatusView extends React.Component {
 		const { user } = this.props;
 		if (statusText !== user.statusText) {
 			await this.setCustomStatus();
-			store.dispatch(setUser({ statusText }));
 		}
 		this.close();
 	}
@@ -112,6 +111,7 @@ class StatusView extends React.Component {
 			const result = await RocketChat.setUserStatus(user.status, statusText);
 			if (result.success) {
 				logEvent(events.STATUS_CUSTOM);
+				store.dispatch(setUser({ statusText }));
 				EventEmitter.emit(LISTENER, { message: I18n.t('Status_saved_successfully') });
 			} else {
 				logEvent(events.STATUS_CUSTOM_F);
