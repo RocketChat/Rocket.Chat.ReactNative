@@ -656,5 +656,8 @@
   "This_room_encryption_has_been_disabled_by__username_": "A criptografia para essa sala foi desabilitada por {{username}}",
   "Apply_Your_Certificate": "Aplicar certificado",
   "Do_you_have_a_certificate": "Você tem um certificado?",
-  "Your_certificate": "Seu certificado"
+  "Your_certificate": "Seu certificado",
+  "Teams": "Times",
+  "No_team_channels_found": "Nenhum canal encontrado",
+  "Team_not_found": "Time não encontrado"
 }
