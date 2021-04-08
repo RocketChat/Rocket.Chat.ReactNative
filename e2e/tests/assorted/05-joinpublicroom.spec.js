@@ -63,7 +63,7 @@ describe('Join public room', () => {
 
 		describe('Room Actions', async() => {
 			before(async() => {
-				await navigateToRoomActions('c');
+				await navigateToRoomActions();
 			});
 
 			it('should have room actions screen', async() => {
@@ -103,7 +103,6 @@ describe('Join public room', () => {
 			});
 
 			it('should have share', async() => {
-				await element(by.type('UIScrollView')).atIndex(1).swipe('down');
 				await expect(element(by.id('room-actions-share'))).toBeVisible();
 			});
 
@@ -142,7 +141,7 @@ describe('Join public room', () => {
 		});
 
 		it('should have disable notifications and leave channel', async() => {
-			await navigateToRoomActions('c');
+			await navigateToRoomActions();
 			await expect(element(by.id('room-actions-view'))).toBeVisible();
 			await expect(element(by.id('room-actions-info'))).toBeVisible();
 			// await expect(element(by.id('room-actions-voice'))).toBeVisible();

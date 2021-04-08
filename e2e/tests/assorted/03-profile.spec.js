@@ -76,11 +76,8 @@ describe('Profile screen', () => {
 
 	describe('Usage', async() => {
 		it('should change name and username', async() => {
-			await element(by.type('UIScrollView')).atIndex(1).swipe('down');
 			await element(by.id('profile-view-name')).replaceText(`${ profileChangeUser.username }new`);
-			await element(by.id('profile-view-username')).replaceText(`${ profileChangeUser.username }new`);
-			await element(by.type('UIScrollView')).atIndex(1).swipe('up');
-			await element(by.id('profile-view-submit')).tap();
+			await element(by.id('profile-view-username')).typeText(`${ profileChangeUser.username }new\n\n\n\n\n`);
 			await waitForToast();
 		});
 
@@ -88,9 +85,7 @@ describe('Profile screen', () => {
 			await element(by.id('profile-view-email')).replaceText(`mobile+profileChangesNew${ data.random }@rocket.chat`);
 			await element(by.id('profile-view-new-password')).replaceText(`${ profileChangeUser.password }new`);
 			await element(by.id('profile-view-submit')).tap();
-			await element(by.type('_UIAlertControllerTextField')).replaceText(`${ profileChangeUser.password }`)
-			// For some reason, replaceText does some type of submit, which submits the alert for us
-			// await element(by.label('Save').and(by.type('_UIAlertControllerActionView'))).tap();
+			await element(by.type('_UIAlertControllerTextField')).typeText(`${ profileChangeUser.password }\n`)
 			await waitForToast();
 		});
 

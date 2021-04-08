@@ -7,8 +7,7 @@ async function navigateToWorkspace(server = data.server) {
     await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(10000);
 	await element(by.id('join-workspace')).tap();
 	await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
-	await element(by.id('new-server-view-input')).replaceText(server);
-	await element(by.id('new-server-view-button')).tap();
+	await element(by.id('new-server-view-input')).typeText(`${server}\n`);
 	await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(60000);
 	await expect(element(by.id('workspace-view'))).toBeVisible();
 }
@@ -69,7 +68,7 @@ async function starMessage(message){
     await expect(element(by.id('action-sheet-handle'))).toBeVisible();
     await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
     await element(by.label('Star')).tap();
-    await waitFor(element(by.id('action-sheet'))).toNotExist().withTimeout(5000);
+    await waitFor(element(by.id('action-sheet'))).not.toExist().withTimeout(5000);
 };
 
 async function pinMessage(message){
@@ -80,7 +79,7 @@ async function pinMessage(message){
     await expect(element(by.id('action-sheet-handle'))).toBeVisible();
     await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
     await element(by.label('Pin')).tap();
-    await waitFor(element(by.id('action-sheet'))).toNotExist().withTimeout(5000);
+    await waitFor(element(by.id('action-sheet'))).not.toExist().withTimeout(5000);
 }
 
 async function dismissReviewNag(){
