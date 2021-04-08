@@ -14599,6 +14599,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -14615,8 +14616,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -14859,6 +14860,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -14875,8 +14877,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -15119,6 +15121,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -15135,8 +15138,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -15358,6 +15361,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -15374,8 +15378,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -15801,6 +15805,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -15817,8 +15822,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -16184,6 +16189,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -16200,8 +16206,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -16442,6 +16448,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -16458,8 +16465,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -16721,6 +16728,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -16737,8 +16745,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -16981,6 +16989,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -16997,8 +17006,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -17446,6 +17455,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -17462,8 +17472,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -18328,6 +18338,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -18344,8 +18355,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -18635,6 +18646,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -18651,8 +18663,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -18920,6 +18932,7 @@ exports[`Storyshots Message list message 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
+                  "justifyContent": "space-between",
                 }
               }
             >
@@ -18936,8 +18949,8 @@ exports[`Storyshots Message list message 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
+                    "flexShrink": 1,
                     "opacity": 1,
                   }
                 }
@@ -19267,6 +19280,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -19283,8 +19297,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -19797,6 +19811,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -19813,8 +19828,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -20068,6 +20083,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -20084,8 +20100,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -20407,6 +20423,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -20423,8 +20440,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -20891,6 +20908,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -20907,8 +20925,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -21282,6 +21300,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -21298,8 +21317,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -21728,6 +21747,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -21744,8 +21764,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -21988,6 +22008,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -22004,8 +22025,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -22248,6 +22269,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -22264,8 +22286,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -22664,6 +22686,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -22680,8 +22703,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -23129,6 +23152,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -23145,8 +23169,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -23395,6 +23419,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -23411,8 +23436,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -23661,6 +23686,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -23677,8 +23703,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -24066,6 +24092,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -24082,8 +24109,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -24333,6 +24360,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -24349,8 +24377,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -24634,6 +24662,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -24650,8 +24679,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -24957,6 +24986,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -24973,8 +25003,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -25217,6 +25247,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -25233,8 +25264,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -25818,6 +25849,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -25834,8 +25866,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -26863,6 +26895,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -26879,8 +26912,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -27102,6 +27135,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -27118,8 +27152,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -27341,6 +27375,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -27357,8 +27392,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -27580,6 +27615,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -27596,8 +27632,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -27840,6 +27876,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -27856,8 +27893,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -28143,6 +28180,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -28159,8 +28197,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -28530,6 +28568,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -28546,8 +28585,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -28815,6 +28854,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -28831,8 +28871,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -29075,6 +29115,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -29091,8 +29132,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -29391,6 +29432,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -29407,8 +29449,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -29763,6 +29805,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -29779,8 +29822,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -30078,6 +30121,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -30094,8 +30138,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -30334,6 +30378,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -30350,8 +30395,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -31443,6 +31488,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -31459,8 +31505,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -32035,6 +32081,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -32051,8 +32098,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -32404,6 +32451,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -32420,8 +32468,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -32829,6 +32877,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -32845,8 +32894,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -33170,6 +33219,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -33186,8 +33236,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -33576,6 +33626,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -33592,8 +33643,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -35747,6 +35798,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -35763,8 +35815,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -37355,6 +37407,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -37371,8 +37424,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -37682,6 +37735,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -37698,8 +37752,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -38011,6 +38065,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -38027,8 +38082,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -38340,6 +38395,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -38356,8 +38412,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -38690,6 +38746,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -38706,8 +38763,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -39062,6 +39119,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -39078,8 +39136,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -39559,6 +39617,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -39575,8 +39634,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -40344,6 +40403,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -40360,8 +40420,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -41217,6 +41277,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -41233,8 +41294,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -42111,6 +42172,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -42127,8 +42189,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -42454,6 +42516,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -42470,8 +42533,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -42698,6 +42761,7 @@ exports[`Storyshots Message list message 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
+                  "justifyContent": "space-between",
                 }
               }
             >
@@ -42714,8 +42778,8 @@ exports[`Storyshots Message list message 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
+                    "flexShrink": 1,
                     "opacity": 1,
                   }
                 }
@@ -42899,6 +42963,7 @@ exports[`Storyshots Message list message 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
+                  "justifyContent": "space-between",
                 }
               }
             >
@@ -42915,8 +42980,8 @@ exports[`Storyshots Message list message 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
+                    "flexShrink": 1,
                     "opacity": 1,
                   }
                 }
@@ -43205,6 +43270,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -43221,8 +43287,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -43471,6 +43537,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -43487,8 +43554,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -46724,6 +46791,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -46740,8 +46808,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -46984,6 +47052,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -47000,8 +47069,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -47573,6 +47642,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -47589,8 +47659,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -48020,6 +48090,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -48036,8 +48107,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -48486,6 +48557,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -48502,8 +48574,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -48746,6 +48818,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -48762,8 +48835,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -48992,6 +49065,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -49008,8 +49082,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -49364,6 +49438,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -49380,8 +49455,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
@@ -49656,6 +49731,7 @@ exports[`Storyshots Message list message 1`] = `
                     "alignItems": "center",
                     "flex": 1,
                     "flexDirection": "row",
+                    "justifyContent": "space-between",
                   }
                 }
               >
@@ -49672,8 +49748,8 @@ exports[`Storyshots Message list message 1`] = `
                   style={
                     Object {
                       "alignItems": "center",
-                      "flex": 1,
                       "flexDirection": "row",
+                      "flexShrink": 1,
                       "opacity": 1,
                     }
                   }
