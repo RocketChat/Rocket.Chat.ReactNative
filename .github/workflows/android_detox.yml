@@ -46,7 +46,7 @@ jobs:
         echo -e "android.enableJetifier=true" >> ./gradle.properties
         echo -e "FLIPPER_VERSION=0.51.0" >> ./gradle.properties
         echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
-        echo -e "VERSIONCODE=999999999" >> ./gradle.
+        echo -e "VERSIONCODE=99999" >> ./gradle.
         echo -e "BugsnagAPIKey=\"\"" >> ./gradle.properties
         echo -e "KEYSTORE=debug.keystore" >> ./gradle.properties
         echo -e "KEYSTORE_PASSWORD=android" >> ./gradle.properties
