@@ -2,15 +2,7 @@ const {
 	device, element, by, waitFor
 } = require('detox');
 const data = require('../../data');
-const { sleep, navigateToLogin, login } = require('../../helpers/app');
-
-const checkServer = async(server) => {
-	const label = `Connected to ${ server }`;
-	await element(by.id('rooms-list-view-sidebar')).tap();
-	await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
-	await waitFor(element(by.label(label))).toBeVisible().withTimeout(10000);
-	await element(by.id('sidebar-close-drawer')).tap();
-}
+const { sleep, navigateToLogin, login, checkServer } = require('../../helpers/app');
 
 describe('Delete server', () => {
 	before(async() => {
@@ -37,10 +29,10 @@ describe('Delete server', () => {
 		await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
 
 		// Register new user
-		await element(by.id('register-view-name')).replaceText(data.registeringUser.username);
-		await element(by.id('register-view-username')).replaceText(data.registeringUser.username);
-		await element(by.id('register-view-email')).replaceText(data.registeringUser.email);
-		await element(by.id('register-view-password')).replaceText(data.registeringUser.password);
+		await element(by.id('register-view-name')).replaceText(data.registeringUser3.username);
+		await element(by.id('register-view-username')).replaceText(data.registeringUser3.username);
+		await element(by.id('register-view-email')).replaceText(data.registeringUser3.email);
+		await element(by.id('register-view-password')).replaceText(data.registeringUser3.password);
 		await element(by.id('register-view-submit')).tap();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
 
