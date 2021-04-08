@@ -1,23 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Touch from '../../../utils/touch';
 
-import styles from './styles';
-import { themes } from '../../../constants/colors';
+import { Container } from './styles';
 
 const AvatarButton = ({
 	key, child, onPress, disabled = false, theme
 }) => (
-	<Touch
+	<Container
 		key={key}
 		testID={key}
 		onPress={onPress}
-		style={[styles.avatarButton, { opacity: disabled ? 0.5 : 1 }, { backgroundColor: themes[theme].borderColor }]}
+		disabled={disabled}
 		enabled={!disabled}
 		theme={theme}
 	>
 		{child}
-	</Touch>
+	</Container>
 );
 
 AvatarButton.propTypes = {
