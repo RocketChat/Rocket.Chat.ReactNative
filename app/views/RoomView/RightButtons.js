@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import isEqual from 'react-fast-compare';
+import { dequal } from 'dequal';
 
-import * as HeaderButton from '../../../containers/HeaderButton';
-import database from '../../../lib/database';
-import { getUserSelector } from '../../../selectors/login';
-import { logEvent, events } from '../../../utils/log';
+import * as HeaderButton from '../../containers/HeaderButton';
+import database from '../../lib/database';
+import { getUserSelector } from '../../selectors/login';
+import { logEvent, events } from '../../utils/log';
 
 class RightButtonsContainer extends Component {
 	static propTypes = {
@@ -15,6 +15,7 @@ class RightButtonsContainer extends Component {
 		rid: PropTypes.string,
 		t: PropTypes.string,
 		tmid: PropTypes.string,
+		teamId: PropTypes.bool,
 		navigation: PropTypes.object,
 		isMasterDetail: PropTypes.bool,
 		toggleFollowThread: PropTypes.func
@@ -35,7 +36,7 @@ class RightButtonsContainer extends Component {
 		const db = database.active;
 		if (tmid) {
 			try {
-				const threadRecord = await db.collections.get('messages').find(tmid);
+				const threadRecord = await db.get('messages').find(tmid);
 				this.observeThread(threadRecord);
 			} catch (e) {
 				console.log('Can\'t find message to observe.');
@@ -43,7 +44,7 @@ class RightButtonsContainer extends Component {
 		}
 		if (rid) {
 			try {
-				const subCollection = db.collections.get('subscriptions');
+				const subCollection = db.get('subscriptions');
 				const subRecord = await subCollection.find(rid);
 				this.observeSubscription(subRecord);
 			} catch (e) {
@@ -59,15 +60,16 @@ class RightButtonsContainer extends Component {
 		if (nextState.isFollowingThread !== isFollowingThread) {
 			return true;
 		}
-		if (!isEqual(nextState.tunread, tunread)) {
+		if (!dequal(nextState.tunread, tunread)) {
 			return true;
 		}
-		if (!isEqual(nextState.tunreadUser, tunreadUser)) {
+		if (!dequal(nextState.tunreadUser, tunreadUser)) {
 			return true;
 		}
-		if (!isEqual(nextState.tunreadGroup, tunreadGroup)) {
+		if (!dequal(nextState.tunreadGroup, tunreadGroup)) {
 			return true;
 		}
+		return false;
 	}
 
 	componentWillUnmount() {
@@ -108,6 +110,21 @@ class RightButtonsContainer extends Component {
 		});
 	}
 
+	goTeamChannels = () => {
+		logEvent(events.ROOM_GO_TEAM_CHANNELS);
+		const {
+			navigation, isMasterDetail, teamId
+		} = this.props;
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', {
+				screen: 'TeamChannelsView',
+				params: { teamId }
+			});
+		} else {
+			navigation.navigate('TeamChannelsView', { teamId });
+		}
+	}
+
 	goThreadsView = () => {
 		logEvent(events.ROOM_GO_THREADS);
 		const {
@@ -145,7 +162,9 @@ class RightButtonsContainer extends Component {
 		const {
 			isFollowingThread, tunread, tunreadUser, tunreadGroup
 		} = this.state;
-		const { t, tmid, threadsEnabled } = this.props;
+		const {
+			t, tmid, threadsEnabled, teamId
+		} = this.props;
 		if (t === 'l') {
 			return null;
 		}
@@ -162,6 +181,13 @@ class RightButtonsContainer extends Component {
 		}
 		return (
 			<HeaderButton.Container>
+				{teamId ? (
+					<HeaderButton.Item
+						iconName='channel-public'
+						onPress={this.goTeamChannels}
+						testID='room-view-header-team-channels'
+					/>
+				) : null}
 				{threadsEnabled ? (
 					<HeaderButton.Item
 						iconName='threads'

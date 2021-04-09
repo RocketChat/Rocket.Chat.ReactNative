@@ -7,7 +7,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
 import * as Haptics from 'expo-haptics';
 import { Q } from '@nozbe/watermelondb';
-import isEqual from 'lodash/isEqual';
+import { dequal } from 'dequal';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Touch from '../../utils/touch';
@@ -29,7 +29,9 @@ import styles from './styles';
 import log, { logEvent, events } from '../../utils/log';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
-import RoomHeaderView, { RightButtons, LeftButtons } from './Header';
+import RoomHeader from '../../containers/RoomHeader';
+import LeftButtons from './LeftButtons';
+import RightButtons from './RightButtons';
 import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
 import { themes } from '../../constants/colors';
@@ -205,10 +207,10 @@ class RoomView extends React.Component {
 		if (stateUpdated) {
 			return true;
 		}
-		if (!isEqual(nextProps.insets, insets)) {
+		if (!dequal(nextProps.insets, insets)) {
 			return true;
 		}
-		return roomAttrsUpdate.some(key => !isEqual(nextState.roomUpdate[key], roomUpdate[key]));
+		return roomAttrsUpdate.some(key => !dequal(nextState.roomUpdate[key], roomUpdate[key]));
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -229,7 +231,7 @@ class RoomView extends React.Component {
 		}
 		// If it's a livechat room
 		if (this.t === 'l') {
-			if (!isEqual(prevState.roomUpdate.visitor, roomUpdate.visitor)) {
+			if (!dequal(prevState.roomUpdate.visitor, roomUpdate.visitor)) {
 				this.setHeader();
 			}
 		}
@@ -251,7 +253,7 @@ class RoomView extends React.Component {
 			let obj;
 			if (this.tmid) {
 				try {
-					const threadsCollection = db.collections.get('threads');
+					const threadsCollection = db.get('threads');
 					obj = await threadsCollection.find(this.tmid);
 				} catch (e) {
 					// Do nothing
@@ -306,6 +308,7 @@ class RoomView extends React.Component {
 		} = this.props;
 		const { rid, tmid } = this;
 		const prid = room?.prid;
+		const isGroupChat = RocketChat.isGroupChat(room);
 		let title = route.params?.name;
 		let parentTitle;
 		if ((room.id || room.rid) && !tmid) {
@@ -316,13 +319,23 @@ class RoomView extends React.Component {
 		}
 		const subtitle = room?.topic;
 		const t = room?.t;
+		const teamMain = room?.teamMain;
+		const teamId = room?.teamId;
 		const { id: userId, token } = user;
 		const avatar = room?.name;
 		const visitor = room?.visitor;
 		if (!room?.rid) {
 			return;
 		}
-		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: tmid ? 1 : 2 });
+
+		let numIconsRight = 2;
+		if (tmid) {
+			numIconsRight = 1;
+		} else if (teamId) {
+			numIconsRight = 3;
+		}
+		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight });
+
 		navigation.setOptions({
 			headerShown: true,
 			headerTitleAlign: 'left',
@@ -346,23 +359,27 @@ class RoomView extends React.Component {
 				/>
 			),
 			headerTitle: () => (
-				<RoomHeaderView
+				<RoomHeader
 					rid={rid}
 					prid={prid}
 					tmid={tmid}
 					title={title}
+					teamMain={teamMain}
 					parentTitle={parentTitle}
 					subtitle={subtitle}
 					type={t}
 					roomUserId={roomUserId}
 					visitor={visitor}
-					goRoomActionsView={this.goRoomActionsView}
+					isGroupChat={isGroupChat}
+					onPress={this.goRoomActionsView}
+					testID={`room-view-title-${ title }`}
 				/>
 			),
 			headerRight: () => (
 				<RightButtons
 					rid={rid}
 					tmid={tmid}
+					teamId={teamId}
 					t={t}
 					navigation={navigation}
 					toggleFollowThread={this.toggleFollowThread}
@@ -400,7 +417,7 @@ class RoomView extends React.Component {
 		const db = database.active;
 
 		try {
-			const subCollection = db.collections.get('subscriptions');
+			const subCollection = db.get('subscriptions');
 			const sub = await subCollection.find(this.rid);
 
 			const { room } = await RocketChat.getRoomInfo(this.rid);
@@ -436,10 +453,7 @@ class RoomView extends React.Component {
 				}
 			}
 
-			// We run `canAutoTranslate` again in order to refetch auto translate permission
-			// in case of a missing connection or poor connection on room open
-			const canAutoTranslate = await RocketChat.canAutoTranslate();
-
+			const canAutoTranslate = RocketChat.canAutoTranslate();
 			const member = await this.getRoomMember();
 
 			this.setState({ canAutoTranslate, member, loading: false });
@@ -478,7 +492,7 @@ class RoomView extends React.Component {
 	findAndObserveRoom = async(rid) => {
 		try {
 			const db = database.active;
-			const subCollection = await db.collections.get('subscriptions');
+			const subCollection = await db.get('subscriptions');
 			const room = await subCollection.find(rid);
 			this.setState({ room });
 			if (!this.tmid) {
@@ -533,7 +547,14 @@ class RoomView extends React.Component {
 	}
 
 	onEditInit = (message) => {
-		this.setState({ selectedMessage: message, editing: true });
+		const newMessage = {
+			id: message.id,
+			subscription: {
+				id: message.subscription.id
+			},
+			msg: message?.attachments?.[0]?.description || message.msg
+		};
+		this.setState({ selectedMessage: newMessage, editing: true });
 	}
 
 	onEditCancel = () => {
@@ -746,8 +767,8 @@ class RoomView extends React.Component {
 	fetchThreadName = async(tmid, messageId) => {
 		try {
 			const db = database.active;
-			const threadCollection = db.collections.get('threads');
-			const messageCollection = db.collections.get('messages');
+			const threadCollection = db.get('threads');
+			const messageCollection = db.get('messages');
 			const messageRecord = await messageCollection.find(messageId);
 			let threadRecord;
 			try {
@@ -817,7 +838,7 @@ class RoomView extends React.Component {
 		if (jitsiTimeout < Date.now()) {
 			showErrorAlert(I18n.t('Call_already_ended'));
 		} else {
-			RocketChat.callJitsi(this.rid);
+			RocketChat.callJitsi(room);
 		}
 	};
 
@@ -1084,6 +1105,7 @@ class RoomView extends React.Component {
 					reactionClose={this.onReactionClose}
 					width={width}
 					height={height}
+					theme={theme}
 				/>
 				<UploadProgress rid={this.rid} user={user} baseUrl={baseUrl} width={width} />
 				<ReactionsModal

@@ -29,8 +29,10 @@ import ForwardLivechatView from '../views/ForwardLivechatView';
 import LivechatEditView from '../views/LivechatEditView';
 import PickerView from '../views/PickerView';
 import ThreadMessagesView from '../views/ThreadMessagesView';
+import TeamChannelsView from '../views/TeamChannelsView';
 import MarkdownTableView from '../views/MarkdownTableView';
 import ReadReceiptsView from '../views/ReadReceiptView';
+import { themes } from '../constants/colors';
 
 // Profile Stack
 import ProfileView from '../views/ProfileView';
@@ -168,6 +170,11 @@ const ChatsStackNavigator = () => {
 				options={ThreadMessagesView.navigationOptions}
 			/>
 			<ChatsStack.Screen
+				name='TeamChannelsView'
+				component={TeamChannelsView}
+				options={TeamChannelsView.navigationOptions}
+			/>
+			<ChatsStack.Screen
 				name='MarkdownTableView'
 				component={MarkdownTableView}
 				options={MarkdownTableView.navigationOptions}
@@ -280,19 +287,24 @@ const AdminPanelStackNavigator = () => {
 
 // DrawerNavigator
 const Drawer = createDrawerNavigator();
-const DrawerNavigator = () => (
-	<Drawer.Navigator
-		drawerContent={({ navigation, state }) => <Sidebar navigation={navigation} state={state} />}
-		drawerPosition={I18nManager.isRTL ? 'right' : 'left'}
-		screenOptions={{ swipeEnabled: false }}
-		drawerType='back'
-	>
-		<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
-		<Drawer.Screen name='ProfileStackNavigator' component={ProfileStackNavigator} />
-		<Drawer.Screen name='SettingsStackNavigator' component={SettingsStackNavigator} />
-		<Drawer.Screen name='AdminPanelStackNavigator' component={AdminPanelStackNavigator} />
-	</Drawer.Navigator>
-);
+const DrawerNavigator = () => {
+	const { theme } = React.useContext(ThemeContext);
+
+	return (
+		<Drawer.Navigator
+			drawerContent={({ navigation, state }) => <Sidebar navigation={navigation} state={state} />}
+			drawerPosition={I18nManager.isRTL ? 'right' : 'left'}
+			screenOptions={{ swipeEnabled: false }}
+			drawerType='back'
+			overlayColor={`rgba(0,0,0,${ themes[theme].backdropOpacity })`}
+		>
+			<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
+			<Drawer.Screen name='ProfileStackNavigator' component={ProfileStackNavigator} />
+			<Drawer.Screen name='SettingsStackNavigator' component={SettingsStackNavigator} />
+			<Drawer.Screen name='AdminPanelStackNavigator' component={AdminPanelStackNavigator} />
+		</Drawer.Navigator>
+	);
+};
 
 // NewMessageStackNavigator
 const NewMessageStack = createStackNavigator();

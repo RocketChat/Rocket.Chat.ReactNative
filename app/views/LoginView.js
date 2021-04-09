@@ -4,7 +4,7 @@ import {
 	Text, View, StyleSheet, Keyboard, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
 
 import sharedStyles from './Styles';
 import Button from '../containers/Button';
@@ -82,7 +82,7 @@ class LoginView extends React.Component {
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		const { error } = this.props;
-		if (nextProps.failure && !equal(error, nextProps.error)) {
+		if (nextProps.failure && !dequal(error, nextProps.error)) {
 			Alert.alert(I18n.t('Oops'), I18n.t('Login_error'));
 		}
 	}
@@ -137,7 +137,7 @@ class LoginView extends React.Component {
 			<>
 				<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Login')}</Text>
 				<TextInput
-					label='Email or username'
+					label={I18n.t('Username_or_email')}
 					containerStyle={styles.inputContainer}
 					placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Username_or_email')}
 					keyboardType='email-address'
@@ -151,7 +151,7 @@ class LoginView extends React.Component {
 					value={user}
 				/>
 				<TextInput
-					label='Password'
+					label={I18n.t('Password')}
 					containerStyle={styles.inputContainer}
 					inputRef={(e) => { this.passwordInput = e; }}
 					placeholder={Accounts_PasswordPlaceholder || I18n.t('Password')}

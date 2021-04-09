@@ -27,7 +27,6 @@ class RoomItemContainer extends React.Component {
 		onPress: PropTypes.func,
 		username: PropTypes.string,
 		avatarSize: PropTypes.number,
-		testID: PropTypes.string,
 		width: PropTypes.number,
 		status: PropTypes.string,
 		toggleFav: PropTypes.func,
@@ -123,7 +122,6 @@ class RoomItemContainer extends React.Component {
 			toggleFav,
 			toggleRead,
 			hideChannel,
-			testID,
 			theme,
 			isFocused,
 			avatarSize,
@@ -134,6 +132,7 @@ class RoomItemContainer extends React.Component {
 			swipeEnabled
 		} = this.props;
 		const name = getRoomTitle(item);
+		const testID = `rooms-list-view-item-${ name }`;
 		const avatar = getRoomAvatar(item);
 		const isRead = getIsRead(item);
 		const date = item.roomUpdatedAt && formatDate(item.roomUpdatedAt);
@@ -189,17 +188,18 @@ class RoomItemContainer extends React.Component {
 				tunreadUser={item.tunreadUser}
 				tunreadGroup={item.tunreadGroup}
 				swipeEnabled={swipeEnabled}
+				teamMain={item.teamMain}
 			/>
 		);
 	}
 }
 
 const mapStateToProps = (state, ownProps) => {
-	let status = 'offline';
+	let status = 'loading';
 	const { id, type, visitor = {} } = ownProps;
 	if (state.meteor.connected) {
 		if (type === 'd') {
-			status = state.activeUsers[id]?.status || 'offline';
+			status = state.activeUsers[id]?.status || 'loading';
 		} else if (type === 'l' && visitor?.status) {
 			({ status } = visitor);
 		}

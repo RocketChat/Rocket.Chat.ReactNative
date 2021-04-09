@@ -19,8 +19,8 @@ const MessageErrorActions = forwardRef(({ tmid }, ref) => {
 		try {
 			const db = database.active;
 			const deleteBatch = [];
-			const msgCollection = db.collections.get('messages');
-			const threadCollection = db.collections.get('threads');
+			const msgCollection = db.get('messages');
+			const threadCollection = db.get('threads');
 
 			// Delete the object (it can be Message or ThreadMessage instance)
 			deleteBatch.push(message.prepareDestroyPermanently());
