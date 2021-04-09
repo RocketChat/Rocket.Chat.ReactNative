@@ -200,41 +200,6 @@
         "type": "android.apk",
         "binaryPath": "android/app/build/outputs/apk/debug/app-Experimental-Play-debug.apk",
         "build": "cd android && ./gradlew assembleExperimentalPlayDebug assembleExperimentalPlayAndroidTest -DtestBuildType=debug && cd .."
-      },
-      "android.experimental.play.release": {
-        "type": "android.apk",
-        "binaryPath": "android/app/build/outputs/apk/release/app-Experimental-Play-release.apk",
-        "build": "cd android && ./gradlew assembleExperimentalPlayRelease assembleExperimentalPlayAndroidTest -DtestBuildType=release -DKEYSTORE=debug.keystore -DKEYSTORE_PASSWORD=android -DKEYSTORE_ALIAS=androiddebugkey && cd .."
-      },
-      "android.official.play.debug": {
-        "type": "android.apk",
-        "binaryPath": "android/app/build/outputs/apk/debug/app-Official-Play-debug.apk",
-        "build": "cd android && ./gradlew assembleOfficialPlayDebug assembleOfficialPlayAndroidTest -DtestBuildType=debug && cd .."
-      },
-      "android.official.play.release": {
-        "type": "android.apk",
-        "binaryPath": "android/app/build/outputs/apk/release/app-Official-Play-release.apk",
-        "build": "cd android && ./gradlew assembleOfficialPlayRelease assembleOfficialPlayAndroidTest -DtestBuildType=release && cd .."
-      },
-      "android.experimental.foss.debug": {
-        "type": "android.apk",
-        "binaryPath": "android/app/build/outputs/apk/debug/app-Experimental-Foss-debug.apk",
-        "build": "cd android && ./gradlew assembleExperimentalFossDebug assembleExperimentalFossAndroidTest -DtestBuildType=debug && cd .."
-      },
-      "android.experimental.foss.release": {
-        "type": "android.apk",
-        "binaryPath": "android/app/build/outputs/apk/release/app-Experimental-Foss-release.apk",
-        "build": "cd android && ./gradlew assembleExperimentalFossRelease assembleExperimentalFossAndroidTest -DtestBuildType=release && cd .."
-      },
-      "android.official.foss.debug": {
-        "type": "android.apk",
-        "binaryPath": "android/app/build/outputs/apk/debug/app-Official-Foss-debug.apk",
-        "build": "cd android && ./gradlew assembleOfficialFossDebug assembleOfficialFossAndroidTest -DtestBuildType=debug && cd .."
-      },
-      "android.official.foss.release": {
-        "type": "android.apk",
-        "binaryPath": "android/app/build/outputs/apk/release/app-Official-Foss-release.apk",
-        "build": "cd android && ./gradlew assembleOfficialFossRelease assembleOfficialFossAndroidTest -DtestBuildType=release && cd .."
       }
     },
     "configurations": {
@@ -281,36 +246,6 @@
         "type": "android.emulator",
         "binaryPath": "android/app/build/outputs/apk/experimentalPlay/debug/app-experimental-play-release.apk",
         "build": "cd android && ./gradlew app:assembleExperimentalPlayRelease app:assembleAndroidTest -DtestBuildType=release && cd .."
-      },
-      "android.experimental.foss.emu.release": {
-        "device": "Pixel_API_28_AOSP",
-        "type": "android.emulator",
-        "app": "android.experimental.foss.release"
-      },
-      "android.experimental.foss.emu.debug": {
-        "device": "Pixel_API_28_AOSP",
-        "type": "android.emulator",
-        "app": "android.experimental.foss.debug"
-      },
-      "android.official.play.emu.debug": {
-        "device": "Pixel_API_28_AOSP",
-        "type": "android.emulator",
-        "app": "android.official.play.debug"
-      },
-      "android.official.play.emu.release": {
-        "device": "Pixel_API_28_AOSP",
-        "type": "android.emulator",
-        "app": "android.official.play.release"
-      },
-      "android.official.foss.emu.release": {
-        "device": "Pixel_API_28_AOSP",
-        "type": "android.emulator",
-        "app": "android.official.foss.release"
-      },
-      "android.official.foss.emu.debug": {
-        "device": "Pixel_API_28_AOSP",
-        "type": "android.emulator",
-        "app": "android.official.foss.debug"
       }
     }
   }
