@@ -865,6 +865,7 @@ const RocketChat = {
 		return this.sdk.post('users.setPreferences', { userId, data });
 	},
 	setUserStatus(status, message) {
+		reduxStore.dispatch(setUser({ status, statusText: message }));
 		// RC 1.2.0
 		return this.post('users.setStatus', { status, message });
 	},

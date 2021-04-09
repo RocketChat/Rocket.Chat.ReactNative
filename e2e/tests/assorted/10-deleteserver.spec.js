@@ -22,8 +22,7 @@ describe('Delete server', () => {
 		await element(by.id('rooms-list-header-server-add')).tap();
 
 		await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(10000);
-		await element(by.id('new-server-view-input')).replaceText(data.alternateServer);
-		await element(by.id('new-server-view-button')).tap();
+		await element(by.id('new-server-view-input')).typeText(`${data.alternateServer}\n`);
 		await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(10000);
 		await element(by.id('workspace-view-register')).tap();
 		await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
