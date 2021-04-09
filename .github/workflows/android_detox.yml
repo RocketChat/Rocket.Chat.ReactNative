@@ -33,31 +33,10 @@ jobs:
       run: |
         yarn --frozen-lockfile --network-timeout 100000
 
-    - name: Decode google-services.json
-      env:
-        FIREBASE_SECRET: ${{ secrets.GOOGLE_KEY }}
-      run: echo $FIREBASE_SECRET > android/app/google-services.json
     
-    - name: Generate Temporary Keystore
-      run: |
-        cd android
-        echo -e "" > ./gradle.properties
-        echo -e "android.useAndroidX=true" >> ./gradle.properties
-        echo -e "android.enableJetifier=true" >> ./gradle.properties
-        echo -e "FLIPPER_VERSION=0.51.0" >> ./gradle.properties
-        echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
-        echo -e "VERSIONCODE=99999" >> ./gradle.
-        echo -e "BugsnagAPIKey=\"\"" >> ./gradle.properties
-        echo -e "KEYSTORE=debug.keystore" >> ./gradle.properties
-        echo -e "KEYSTORE_PASSWORD=android" >> ./gradle.properties
-        echo -e "KEY_ALIAS=androiddebugkey" >> ./gradle.properties
-        echo -e "KEY_PASSWORD=android" >> ./gradle.properties
-        cd ..
-        keytool -genkey -noprompt -dname "CN=Unknown, OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown" -keystore android/app/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000
-
     - name: Build for detox
       run: |
-        yarn detox build e2e --configuration android.experimental.play.emu.release
+        yarn detox build e2e/tests --configuration android.experimental.play.emu.debug
 
     - name: Android Emulator
       timeout-minutes: 10
@@ -70,4 +49,4 @@ jobs:
         echo "Emulator started"
 
     - name: Android Detox
-      run: yarn start & yarn detox test --configuration android.experimental.play.emu.release
+      run: yarn start & yarn detox test e2e/tests --configuration android.experimental.play.emu.debug

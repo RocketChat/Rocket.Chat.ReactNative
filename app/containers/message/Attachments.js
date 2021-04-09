@@ -1,5 +1,5 @@
 import React from 'react';
-import isEqual from 'lodash/isEqual';
+import { dequal } from 'dequal';
 import PropTypes from 'prop-types';
 
 import Image from './Image';
@@ -15,20 +15,20 @@ const Attachments = React.memo(({
 	}
 
 	return attachments.map((file, index) => {
-		if (file.type === 'file' && file.image_url) {
+		if (file.image_url) {
 			return <Image key={file.image_url} file={file} showAttachment={showAttachment} getCustomEmoji={getCustomEmoji} theme={theme} />;
 		}
-		if (file.type === 'file' && file.audio_url) {
+		if (file.audio_url) {
 			return <Audio key={file.audio_url} file={file} getCustomEmoji={getCustomEmoji} theme={theme} />;
 		}
-		if (file.type === 'file' && file.video_url) {
+		if (file.video_url) {
 			return <Video key={file.video_url} file={file} showAttachment={showAttachment} getCustomEmoji={getCustomEmoji} theme={theme} />;
 		}
 
 		// eslint-disable-next-line react/no-array-index-key
 		return <Reply key={index} index={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} theme={theme} />;
 	});
-}, (prevProps, nextProps) => isEqual(prevProps.attachments, nextProps.attachments) && prevProps.theme === nextProps.theme);
+}, (prevProps, nextProps) => dequal(prevProps.attachments, nextProps.attachments) && prevProps.theme === nextProps.theme);
 
 Attachments.propTypes = {
 	attachments: PropTypes.array,
