@@ -59,7 +59,7 @@ describe('Deep linking', () => {
 			await element(by.id('register-view-name')).replaceText(data.registeringUser.username);
 			await element(by.id('register-view-username')).replaceText(data.registeringUser.username);
 			await element(by.id('register-view-email')).replaceText(data.registeringUser.email);
-			await element(by.id('register-view-password')).replaceText(data.registeringUser.password);
+			await element(by.id('register-view-password')).typeText(data.registeringUser.password);
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 			await authAndNavigate();

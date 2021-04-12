@@ -9,10 +9,10 @@ const profileChangeUser = data.users.profileChanges
 const scrollDown = 200;
 
 async function waitForToast() {
-	// await waitFor(element(by.id('toast'))).toBeVisible().withTimeout(10000);
+	// await waitFor(element(by.id('toast'))).toBeVisible().withTimeout(1000);
 	// await expect(element(by.id('toast'))).toBeVisible();
-	// await waitFor(element(by.id('toast'))).toBeNotVisible().withTimeout(10000);
-	// await expect(element(by.id('toast'))).toBeNotVisible();
+	// await waitFor(element(by.id('toast'))).not.toBeNotVisible().withTimeout(1000);
+	// await expect(element(by.id('toast'))).not.toBeVisible();
 	await sleep(300);
 }
 
@@ -77,7 +77,9 @@ describe('Profile screen', () => {
 	describe('Usage', async() => {
 		it('should change name and username', async() => {
 			await element(by.id('profile-view-name')).replaceText(`${ profileChangeUser.username }new`);
-			await element(by.id('profile-view-username')).typeText(`${ profileChangeUser.username }new\n\n\n\n\n`);
+			await element(by.id('profile-view-username')).typeText(`${ profileChangeUser.username }new`);
+			await element(by.type('UIScrollView')).atIndex(1).swipe('up');
+			await element(by.id('profile-view-submit')).tap();
 			await waitForToast();
 		});
 
