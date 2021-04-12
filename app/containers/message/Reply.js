@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { transparentize } from 'color2k';
 import { dequal } from 'dequal';
 
 import Touchable from './Touchable';
@@ -72,7 +73,7 @@ const Title = React.memo(({ attachment, timeFormat, theme }) => {
 	if (!attachment.author_name) {
 		return null;
 	}
-	const time = attachment.ts ? moment(attachment.ts).format(timeFormat) : null;
+	const time = attachment.message_link && attachment.ts ? moment(attachment.ts).format(timeFormat) : null;
 	return (
 		<View style={styles.authorContainer}>
 			{attachment.author_name ? <Text style={[styles.author, { color: themes[theme].bodyText }]}>{attachment.author_name}</Text> : null}
@@ -111,16 +112,24 @@ const Description = React.memo(({
 	return true;
 });
 
-const Fields = React.memo(({ attachment, theme }) => {
+const Fields = React.memo(({ attachment, theme, getCustomEmoji }) => {
 	if (!attachment.fields) {
 		return null;
 	}
+
+	const { baseUrl, user } = useContext(MessageContext);
 	return (
 		<View style={styles.fieldsContainer}>
 			{attachment.fields.map(field => (
 				<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
 					<Text style={[styles.fieldTitle, { color: themes[theme].bodyText }]}>{field.title}</Text>
-					<Text style={[styles.fieldValue, { color: themes[theme].bodyText }]}>{field.value}</Text>
+					<Markdown
+						msg={field.value}
+						baseUrl={baseUrl}
+						username={user.username}
+						getCustomEmoji={getCustomEmoji}
+						theme={theme}
+					/>
 				</View>
 			))}
 		</View>
@@ -149,6 +158,16 @@ const Reply = React.memo(({
 		openLink(url, theme);
 	};
 
+	let { borderColor, chatComponentBackground: backgroundColor } = themes[theme];
+	try {
+		if (attachment.color) {
+			backgroundColor = transparentize(attachment.color, 0.80);
+			borderColor = attachment.color;
+		}
+	} catch (e) {
+		// fallback to default
+	}
+
 	return (
 		<>
 			<Touchable
@@ -158,8 +177,7 @@ const Reply = React.memo(({
 					index > 0 && styles.marginTop,
 					attachment.description && styles.marginBottom,
 					{
-						backgroundColor: themes[theme].chatComponentBackground,
-						borderColor: themes[theme].borderColor
+						backgroundColor, borderColor
 					}
 				]}
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
@@ -175,7 +193,11 @@ const Reply = React.memo(({
 						getCustomEmoji={getCustomEmoji}
 						theme={theme}
 					/>
-					<Fields attachment={attachment} theme={theme} />
+					<Fields
+						attachment={attachment}
+						getCustomEmoji={getCustomEmoji}
+						theme={theme}
+					/>
 				</View>
 			</Touchable>
 			<Markdown
@@ -214,7 +236,8 @@ Description.displayName = 'MessageReplyDescription';
 
 Fields.propTypes = {
 	attachment: PropTypes.object,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	getCustomEmoji: PropTypes.func
 };
 Fields.displayName = 'MessageReplyFields';
 

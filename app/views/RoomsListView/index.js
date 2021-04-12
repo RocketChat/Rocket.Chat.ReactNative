@@ -68,6 +68,7 @@ const CHATS_HEADER = 'Chats';
 const UNREAD_HEADER = 'Unread';
 const FAVORITES_HEADER = 'Favorites';
 const DISCUSSIONS_HEADER = 'Discussions';
+const TEAMS_HEADER = 'Teams';
 const CHANNELS_HEADER = 'Channels';
 const DM_HEADER = 'Direct_Messages';
 const GROUPS_HEADER = 'Private_Groups';
@@ -77,6 +78,8 @@ const QUERY_SIZE = 20;
 const filterIsUnread = s => (s.unread > 0 || s.tunread?.length > 0 || s.alert) && !s.hideUnreadStatus;
 const filterIsFavorite = s => s.f;
 const filterIsOmnichannel = s => s.t === 'l';
+const filterIsTeam = s => s.teamMain;
+const filterIsDiscussion = s => s.prid;
 
 const shouldUpdateProps = [
 	'searchText',
@@ -319,7 +322,7 @@ class RoomsListView extends React.Component {
 	getHeader = () => {
 		const { searching } = this.state;
 		const { navigation, isMasterDetail, insets } = this.props;
-		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: 3 });
+		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: searching ? 0 : 3 });
 		return {
 			headerTitleAlign: 'left',
 			headerLeft: () => (searching ? (
@@ -475,10 +478,12 @@ class RoomsListView extends React.Component {
 
 			// type
 			if (groupByType) {
-				const discussions = chats.filter(s => s.prid);
-				const channels = chats.filter(s => s.t === 'c' && !s.prid);
-				const privateGroup = chats.filter(s => s.t === 'p' && !s.prid);
-				const direct = chats.filter(s => s.t === 'd' && !s.prid);
+				const teams = chats.filter(s => filterIsTeam(s));
+				const discussions = chats.filter(s => filterIsDiscussion(s));
+				const channels = chats.filter(s => s.t === 'c' && !filterIsDiscussion(s) && !filterIsTeam(s));
+				const privateGroup = chats.filter(s => s.t === 'p' && !filterIsDiscussion(s) && !filterIsTeam(s));
+				const direct = chats.filter(s => s.t === 'd' && !filterIsDiscussion(s) && !filterIsTeam(s));
+				tempChats = this.addRoomsGroup(teams, TEAMS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(discussions, DISCUSSIONS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(channels, CHANNELS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(privateGroup, GROUPS_HEADER, tempChats);
@@ -514,6 +519,7 @@ class RoomsListView extends React.Component {
 		const { openSearchHeader } = this.props;
 		this.internalSetState({ searching: true }, () => {
 			openSearchHeader();
+			this.search('');
 			this.setHeader();
 		});
 	};
@@ -908,7 +914,6 @@ class RoomsListView extends React.Component {
 				username={username}
 				showLastMessage={StoreLastMessage}
 				onPress={this.onPressItem}
-				testID={`rooms-list-view-item-${ item.name }`}
 				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
 				toggleFav={this.toggleFav}
 				toggleRead={this.toggleRead}
