@@ -704,5 +704,10 @@
   "Direct_message": "Direktnachricht",
   "Message_Ignored": "Nachricht ignoriert. Antippen um sie zu zeigen.",
   "Enter_workspace_URL": "Arbeitsbereich-URL",
-  "Workspace_URL_Example": "z.B. https://rocketchat.deine-firma.de"
+  "Workspace_URL_Example": "z.B. https://rocketchat.deine-firma.de",
+  "This_room_encryption_has_been_enabled_by__username_": "Die Verschlüsselung für diesen Raum wurde durch {{username}} aktiviert",
+  "This_room_encryption_has_been_disabled_by__username_": "Die Verschlüsselung für diesen Raum wurde durch {{username}} deaktiviert",
+  "Teams": "Teams",
+  "No_team_channels_found": "Kein Kanal gefunden",
+  "Team_not_found": "Team nicht gefunden"
 }
