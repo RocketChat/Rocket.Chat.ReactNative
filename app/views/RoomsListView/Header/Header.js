@@ -1,14 +1,11 @@
 import React from 'react';
-import {
-	Text, View, TouchableOpacity, StyleSheet
-} from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 import TextInput from '../../../presentation/TextInput';
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
 import { themes } from '../../../constants/colors';
-import { CustomIcon } from '../../../lib/Icons';
 import { isTablet, isIOS } from '../../../utils/deviceInfo';
 import { useOrientation } from '../../../dimensions';
 
@@ -34,7 +31,7 @@ const styles = StyleSheet.create({
 });
 
 const Header = React.memo(({
-	connecting, connected, isFetching, serverName, server, showServerDropdown, showSearchHeader, theme, onSearchChangeText, onPress
+	connecting, connected, isFetching, serverName, server, showSearchHeader, theme, onSearchChangeText
 }) => {
 	const titleColorStyle = { color: themes[theme].headerTitleColor };
 	const isLight = theme === 'light';
@@ -69,29 +66,16 @@ const Header = React.memo(({
 	}
 	return (
 		<View style={styles.container}>
-			<TouchableOpacity
-				onPress={onPress}
-				testID='rooms-list-header-server-dropdown-button'
-			>
-				<View style={styles.button}>
-					<Text style={[styles.title, isFetching && styles.serverSmall, titleColorStyle, { fontSize: titleFontSize }]} numberOfLines={1}>{serverName}</Text>
-					<CustomIcon
-						name='chevron-down'
-						color={themes[theme].headerTintColor}
-						style={[showServerDropdown && styles.upsideDown]}
-						size={18}
-					/>
-				</View>
-				{subtitle ? <Text testID='rooms-list-header-server-subtitle' style={[styles.subtitle, { color: themes[theme].auxiliaryText, fontSize: subTitleFontSize }]} numberOfLines={1}>{subtitle}</Text> : null}
-			</TouchableOpacity>
+			<View style={styles.button}>
+				<Text style={[styles.title, isFetching && styles.serverSmall, titleColorStyle, { fontSize: titleFontSize }]} numberOfLines={1}>{serverName}</Text>
+			</View>
+			{subtitle ? <Text testID='rooms-list-header-server-subtitle' style={[styles.subtitle, { color: themes[theme].auxiliaryText, fontSize: subTitleFontSize }]} numberOfLines={1}>{subtitle}</Text> : null}
 		</View>
 	);
 });
 
 Header.propTypes = {
-	showServerDropdown: PropTypes.bool.isRequired,
 	showSearchHeader: PropTypes.bool.isRequired,
-	onPress: PropTypes.func.isRequired,
 	onSearchChangeText: PropTypes.func.isRequired,
 	connecting: PropTypes.bool,
 	connected: PropTypes.bool,
