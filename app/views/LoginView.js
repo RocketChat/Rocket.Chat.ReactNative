@@ -137,7 +137,7 @@ class LoginView extends React.Component {
 			<>
 				<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Login')}</Text>
 				<TextInput
-					label='Email or username'
+					label={I18n.t('Username_or_email')}
 					containerStyle={styles.inputContainer}
 					placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Username_or_email')}
 					keyboardType='email-address'
@@ -151,7 +151,7 @@ class LoginView extends React.Component {
 					value={user}
 				/>
 				<TextInput
-					label='Password'
+					label={I18n.t('Password')}
 					containerStyle={styles.inputContainer}
 					inputRef={(e) => { this.passwordInput = e; }}
 					placeholder={Accounts_PasswordPlaceholder || I18n.t('Password')}
