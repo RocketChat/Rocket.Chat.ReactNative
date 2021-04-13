@@ -56,10 +56,10 @@ describe('Deep linking', () => {
 		it('should authenticate while logged in another server', async() => {
 			await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 			await navigateToRegister(data.alternateServer);
-			await element(by.id('register-view-name')).replaceText(data.registeringUser.username);
-			await element(by.id('register-view-username')).replaceText(data.registeringUser.username);
-			await element(by.id('register-view-email')).replaceText(data.registeringUser.email);
-			await element(by.id('register-view-password')).typeText(data.registeringUser.password);
+			await element(by.id('register-view-name')).replaceText(data.registeringUser4.username);
+			await element(by.id('register-view-username')).replaceText(data.registeringUser4.username);
+			await element(by.id('register-view-email')).replaceText(data.registeringUser4.email);
+			await element(by.id('register-view-password')).typeText(data.registeringUser4.password);
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 			await authAndNavigate();
@@ -86,7 +86,7 @@ describe('Deep linking', () => {
 					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `rid=${ roomResult.data.group._id }`),
 					sourceApp: 'com.apple.mobilesafari'
 				});
-				await waitFor(element(by.id(`room-view-title-${ data.groups.private.name }`))).toExist().withTimeout(10000);
+				await waitFor(element(by.id(`room-view-title-${ data.groups.private.name }`))).toExist().withTimeout(15000);
 				await tapBack();
 			});
 		});

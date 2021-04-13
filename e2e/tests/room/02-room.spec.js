@@ -193,7 +193,7 @@ describe('Room screen', () => {
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await waitFor(element(by.label('Unstar'))).toBeVisible().withTimeout(2000);
-				await element(by.id('action-sheet-backdrop')).tap();
+				await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0);
 			});
 
 			it('should react to message', async() => {

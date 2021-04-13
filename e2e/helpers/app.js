@@ -62,7 +62,6 @@ async function mockMessage(message) {
 
 async function starMessage(message){
     const messageLabel = `${ data.random }${ message }`
-    await waitFor(element(by.label(messageLabel))).toBeVisible().withTimeout(5000);
     await element(by.label(messageLabel)).atIndex(0).longPress();
     await expect(element(by.id('action-sheet'))).toExist();
     await expect(element(by.id('action-sheet-handle'))).toBeVisible();
