@@ -17,7 +17,7 @@ const checkServer = async(server) => {
 }
 
 const checkBanner = async() => {
-	await waitFor(element(by.id('listheader-encryption').withDescendant(by.label('Save Your Encryption Password')))).toBeVisible().withTimeout(10000);
+	await waitFor(element(by.id('listheader-encryption').withDescendant(by.text('Save Your Encryption Password')))).toBeVisible().withTimeout(10000);
 }
 
 async function navigateToRoom(roomName) {
