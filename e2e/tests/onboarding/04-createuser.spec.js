@@ -6,7 +6,7 @@ const data = require('../../data');
 
 describe('Create user screen', () => {
 	before(async() => {
-		await device.launchApp({ newInstance: true });
+		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
 		await navigateToRegister();
 	});
 
