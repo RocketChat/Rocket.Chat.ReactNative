@@ -74,6 +74,7 @@ stories.add('User status', () => (
 		<RoomItem status='away' />
 		<RoomItem status='busy' />
 		<RoomItem status='offline' />
+		<RoomItem status='loading' />
 		<RoomItem status='wrong' />
 	</>
 ));

@@ -940,7 +940,10 @@ stories.add('Markdown headers', () => (
 ));
 
 stories.add('Markdown links', () => (
-	<Message msg='Support <http://google.com|Google> [I`m an inline-style link](https://www.google.com) https://google.com' />
+	<>
+		<Message msg='Support <http://google.com|Google> [I`m an inline-style link](https://www.google.com) https://google.com' />
+		<Message msg='[  ](https://www.google.com)    <- No link should render' />
+	</>
 ));
 
 stories.add('Markdown image', () => (

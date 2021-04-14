@@ -212,6 +212,7 @@ export default {
 	ROOM_JOIN: 'room_join',
 	ROOM_GO_RA: 'room_go_ra',
 	ROOM_TOGGLE_FOLLOW_THREADS: 'room_toggle_follow_threads',
+	ROOM_GO_TEAM_CHANNELS: 'room_go_team_channels',
 	ROOM_GO_SEARCH: 'room_go_search',
 	ROOM_GO_THREADS: 'room_go_threads',
 	ROOM_GO_ROOM_INFO: 'room_go_room_info',
@@ -310,5 +311,11 @@ export default {
 
 	// E2E ENCRYPTION SECURITY VIEW
 	E2E_SEC_CHANGE_PASSWORD: 'e2e_sec_change_password',
-	E2E_SEC_RESET_OWN_KEY: 'e2e_sec_reset_own_key'
+	E2E_SEC_RESET_OWN_KEY: 'e2e_sec_reset_own_key',
+
+	// TEAM CHANNELS VIEW
+	TC_SEARCH: 'tc_search',
+	TC_CANCEL_SEARCH: 'tc_cancel_search',
+	TC_GO_ACTIONS: 'tc_go_actions',
+	TC_GO_ROOM: 'tc_go_room'
 };

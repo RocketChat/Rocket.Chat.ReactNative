@@ -8,11 +8,6 @@ import Status from '../../app/containers/Status/Status';
 import sharedStyles from '../../app/views/Styles';
 
 const styles = StyleSheet.create({
-	status: {
-		borderWidth: 4,
-		bottom: -4,
-		right: -4
-	},
 	custom: {
 		padding: 16
 	}

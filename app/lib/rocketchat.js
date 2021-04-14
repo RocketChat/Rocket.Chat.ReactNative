@@ -178,13 +178,16 @@ const RocketChat = {
 	checkAndReopen() {
 		return this?.sdk?.checkAndReopen();
 	},
+	disconnect() {
+		this.sdk?.disconnect?.();
+		this.sdk = null;
+	},
 	connect({ server, user, logoutOnError = false }) {
 		return new Promise((resolve) => {
 			if (this?.sdk?.client?.host === server) {
 				return resolve();
 			} else {
-				this.sdk?.disconnect?.();
-				this.sdk = null;
+				this.disconnect();
 				database.setActiveDB(server);
 			}
 			reduxStore.dispatch(connectRequest());
@@ -615,9 +618,6 @@ const RocketChat = {
 
 	async localSearch({ text, filterUsers = true, filterRooms = true }) {
 		const searchText = text.trim();
-		if (searchText === '') {
-			return [];
-		}
 		const db = database.active;
 		const likeString = sanitizeLikeString(searchText);
 		let data = await db.get('subscriptions').query(
@@ -654,10 +654,6 @@ const RocketChat = {
 
 		if (this.oldPromise) {
 			this.oldPromise('cancel');
-		}
-
-		if (searchText === '') {
-			return [];
 		}
 
 		const data = await this.localSearch({ text, filterUsers, filterRooms });
@@ -927,6 +923,19 @@ const RocketChat = {
 	getVisitorInfo(visitorId) {
 		// RC 2.3.0
 		return this.sdk.get('livechat/visitors.info', { visitorId });
+	},
+	getTeamListRoom({
+		teamId, count, offset, type, filter
+	}) {
+		const params = {
+			teamId, count, offset, type
+		};
+
+		if (filter) {
+			params.filter = filter;
+		}
+		// RC 3.13.0
+		return this.sdk.get('teams.listRooms', params);
 	},
 	closeLivechat(rid, comment) {
 		// RC 0.29.0

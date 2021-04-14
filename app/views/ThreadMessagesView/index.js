@@ -28,7 +28,7 @@ import * as List from '../../containers/List';
 import Dropdown from './Dropdown';
 import DropdownItemHeader from './Dropdown/DropdownItemHeader';
 import { FILTER } from './filters';
-import NoDataFound from './NoDataFound';
+import BackgroundContainer from '../../containers/BackgroundContainer';
 import { isIOS } from '../../utils/deviceInfo';
 import { getBadgeColor, makeThreadName } from '../../utils/room';
 import { getHeaderTitlePosition } from '../../containers/Header';
@@ -463,7 +463,7 @@ class ThreadMessagesView extends React.Component {
 			return (
 				<>
 					{this.renderHeader()}
-					<NoDataFound text={text} />
+					<BackgroundContainer text={text} />
 				</>
 			);
 		}
