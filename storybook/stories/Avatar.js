@@ -164,14 +164,3 @@ stories.add('Custom style', () => (
 		style={styles.custom}
 	/>
 ));
-
-// const AvatarStories = ({ theme }) => (
-// 	<ScrollView style={{ backgroundColor: themes[theme].backgroundColor }}>
-
-
-// 	</ScrollView>
-// );
-// AvatarStories.propTypes = {
-// 	theme: PropTypes.string
-// };
-// export default AvatarStories;
