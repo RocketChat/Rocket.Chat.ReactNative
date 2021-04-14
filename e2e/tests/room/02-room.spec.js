@@ -191,9 +191,9 @@ describe('Room screen', () => {
 				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await waitFor(element(by.label('Unstar'))).toBeVisible().withTimeout(2000);
-				await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0);
+				await element(by.id('action-sheet-handle')).swipe('up', 'slow', 0.5);
+				await waitFor(element(by.label('Unstar'))).toBeVisible().withTimeout(6000);
+				await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.8);
 			});
 
 			it('should react to message', async() => {
@@ -267,14 +267,14 @@ describe('Room screen', () => {
 				await mockMessage('pin')
 				await pinMessage('pin')
 
-				await waitFor(element(by.label(`${ data.random }pin`)).atIndex(0)).toBeVisible().withTimeout(2000);
-				await waitFor(element(by.label(`${ data.users.regular.username } Message pinned`)).atIndex(0)).toBeVisible().withTimeout(2000);
+				await waitFor(element(by.label(`${ data.random }pin`)).atIndex(0)).toExist().withTimeout(5000);
+				await waitFor(element(by.label(`${ data.users.regular.username } Message pinned`)).atIndex(0)).toExist().withTimeout(5000);
 				await element(by.label(`${ data.random }pin`)).atIndex(0).longPress();
 				await waitFor(element(by.id('action-sheet'))).toExist().withTimeout(1000);
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await waitFor(element(by.label('Unpin'))).toBeVisible().withTimeout(2000);
-				await element(by.id('action-sheet-backdrop')).tap();
+				await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.8);
 			});
 
 			it('should delete message', async() => {
@@ -285,6 +285,7 @@ describe('Room screen', () => {
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await waitFor(element(by.label('Delete'))).toExist().withTimeout(1000);
 				await element(by.label('Delete')).tap();
 
 				const deleteAlertMessage = 'You will not be able to recover this message!';

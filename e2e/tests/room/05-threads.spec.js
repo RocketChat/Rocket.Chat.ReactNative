@@ -81,7 +81,7 @@ describe('Threads', () => {
 
 			it('should navigate to thread from button', async() => {
 				await element(by.id(`message-thread-button-${ thread }`)).tap();
-				await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
+				await waitFor(element(by.id('room-view'))).toExist().withTimeout(5000);
 				await waitFor(element(by.id(`room-view-title-${ thread }`))).toExist().withTimeout(5000);
 				await expect(element(by.id(`room-view-title-${ thread }`))).toExist();
 				await tapBack();
@@ -89,7 +89,7 @@ describe('Threads', () => {
 
 			it('should toggle follow thread', async() => {
 				await element(by.id(`message-thread-button-${ thread }`)).tap();
-				await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
+				await waitFor(element(by.id('room-view'))).toExist().withTimeout(5000);
 				await waitFor(element(by.id(`room-view-title-${ thread }`))).toExist().withTimeout(5000);
 				await expect(element(by.id(`room-view-title-${ thread }`))).toExist();
 				await element(by.id('room-view-header-unfollow')).tap();

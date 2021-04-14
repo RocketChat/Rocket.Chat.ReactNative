@@ -595,7 +595,7 @@ class RoomActionsView extends React.Component {
 		return (
 			<SafeAreaView testID='room-actions-view'>
 				<StatusBar />
-				<List.Container>
+				<List.Container testID='room-actions-scrollview'>
 					{this.renderRoomInfo()}
 					{this.renderJitsi()}
 					{this.renderE2EEncryption()}
