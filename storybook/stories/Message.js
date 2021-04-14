@@ -543,12 +543,6 @@ stories.add('Message with thread', () => (
 		<Message
 			msg="I'm fine!"
 			tmid='1'
-			tmsg='Markdown: [link](http://www.google.com/) ```block code```'
-			isThreadReply
-		/>
-		<Message
-			msg="I'm fine!"
-			tmid='1'
 			tmsg={longText}
 			isThreadReply
 		/>
@@ -922,52 +916,4 @@ stories.add('Ignored', () => (
 
 stories.add('Custom style', () => (
 	<Message msg='Message' style={[styles.normalize, { backgroundColor: '#ddd' }]} />
-));
-
-stories.add('Markdown emphasis', () => (
-	<Message msg='Italic with single _underscore_ or double __underscores__. Bold with single *asterisk* or double **asterisks**. Strikethrough with single ~Strikethrough~ or double ~~Strikethrough~~' />
-));
-
-stories.add('Markdown headers', () => (
-	<Message
-		msg='# H1
-## H2
-### H3
-#### H4
-##### H5
-###### H6'
-	/>
-));
-
-stories.add('Markdown links', () => (
-	<>
-		<Message msg='Support <http://google.com|Google> [I`m an inline-style link](https://www.google.com) https://google.com' />
-		<Message msg='[  ](https://www.google.com)    <- No link should render' />
-	</>
-));
-
-stories.add('Markdown image', () => (
-	<Message msg='![alt text](https://play.google.com/intl/en_us/badges/images/badge_new.png)' />
-));
-
-stories.add('Markdown code', () => (
-	<Message
-		msg='Inline `code` has `back-ticks around` it.
-```
-Code block
-```'
-	/>
-));
-
-stories.add('Markdown quote', () => (
-	<Message msg='> Quote' />
-));
-
-stories.add('Markdown table', () => (
-	<Message
-		msg='First Header | Second Header
------------- | -------------
-Content from cell 1 | Content from cell 2
-Content in the first column | Content in the second column'
-	/>
 ));
