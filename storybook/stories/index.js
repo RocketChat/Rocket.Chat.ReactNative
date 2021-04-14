@@ -40,16 +40,8 @@ const reducers = combineReducers({
 });
 export const store = createStore(reducers);
 
-// storiesOf('UiKitMessage', module)
-// 	.addDecorator(messageDecorator)
-// 	.add('list uikitmessage', () => <UiKitMessage theme={theme} />);
-// storiesOf('UiKitModal', module)
-// 	.addDecorator(messageDecorator)
-// 	.add('list UiKitModal', () => <UiKitModal theme={theme} />);
 storiesOf('Markdown', module)
 	.add('list Markdown', () => <Markdown theme={theme} />);
-// storiesOf('Avatar', module)
-// 	.add('list Avatar', () => <Avatar theme={theme} />);
 
 // FIXME: I couldn't make these pass on jest :(
 // storiesOf('RoomViewHeader', module)
