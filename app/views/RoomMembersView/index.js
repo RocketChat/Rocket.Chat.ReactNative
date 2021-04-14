@@ -139,7 +139,7 @@ class RoomMembersView extends React.Component {
 		let membersFiltered = [];
 
 		if (members && members.length > 0 && text) {
-			membersFiltered = members.filter(m => m.username.toLowerCase().match(text.toLowerCase()));
+			membersFiltered = members.filter(m => m.username.toLowerCase().match(text.toLowerCase()) || m.name.toLowerCase().match(text.toLowerCase()));
 		}
 		this.setState({ filtering: !!text, membersFiltered });
 	})

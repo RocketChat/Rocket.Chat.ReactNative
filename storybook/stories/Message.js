@@ -442,7 +442,8 @@ export default ({ theme }) => {
 					author_name: 'I\'m a very long long title and I\'ll break',
 					ts: date,
 					timeFormat: 'LT',
-					text: 'How are you?'
+					text: 'How are you?',
+					message_link: 'http:///example.com'
 				}]}
 			/>
 			<Message
@@ -451,7 +452,8 @@ export default ({ theme }) => {
 					author_name: 'rocket.cat',
 					ts: date,
 					timeFormat: 'LT',
-					text: 'How are you? :nyan_rocket:'
+					text: 'How are you? :nyan_rocket:',
+					message_link: 'http:///example.com'
 				}]}
 			/>
 
@@ -703,6 +705,7 @@ export default ({ theme }) => {
 					ts: date,
 					timeFormat: 'LT',
 					text: 'Custom fields',
+					message_link: 'http:///example.com',
 					fields: [{
 						title: 'Field 1',
 						value: 'Value 1'
@@ -722,7 +725,7 @@ export default ({ theme }) => {
 				}]}
 			/>
 
-			<Separator title='Two short custom fields' theme={theme} />
+			<Separator title='Two short custom fields with markdown' theme={theme} />
 			<Message
 				msg='Message'
 				attachments={[{
@@ -730,6 +733,38 @@ export default ({ theme }) => {
 					ts: date,
 					timeFormat: 'LT',
 					text: 'Custom fields',
+					message_link: 'http:///example.com',
+					fields: [{
+						title: 'Field 1',
+						value: 'Value 1',
+						short: true
+					}, {
+						title: 'Field 2',
+						value: '[Value 2](https://google.com/)',
+						short: true
+					}]
+				}, {
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					text: 'Custom fields 2',
+					message_link: 'http:///example.com',
+					fields: [{
+						title: 'Field 1',
+						value: 'Value 1',
+						short: true
+					}, {
+						title: 'Field 2',
+						value: '**Value 2**',
+						short: true
+					}]
+				}]}
+			/>
+
+			<Separator title='Colored attachments' theme={theme} />
+			<Message
+				attachments={[{
+					color: 'red',
 					fields: [{
 						title: 'Field 1',
 						value: 'Value 1',
@@ -740,10 +775,7 @@ export default ({ theme }) => {
 						short: true
 					}]
 				}, {
-					author_name: 'rocket.cat',
-					ts: date,
-					timeFormat: 'LT',
-					text: 'Custom fields 2',
+					color: 'green',
 					fields: [{
 						title: 'Field 1',
 						value: 'Value 1',
@@ -751,6 +783,23 @@ export default ({ theme }) => {
 					}, {
 						title: 'Field 2',
 						value: 'Value 2',
+						short: true
+					}]
+				}, {
+					color: 'blue',
+					fields: [{
+						title: 'Field 1',
+						value: 'Value 1',
+						short: true
+					}, {
+						title: 'Field 2',
+						value: 'Value 2',
+						short: true
+					}]
+				}, {
+					color: 'ASDASD',
+					fields: [{
+						title: 'Invalid color',
 						short: true
 					}]
 				}]}
@@ -790,6 +839,7 @@ export default ({ theme }) => {
 					author_name: 'rocket.cat',
 					ts: date,
 					timeFormat: 'LT',
+					message_link: 'http:///example.com',
 					text: 'First message'
 				}]}
 			/>
@@ -862,6 +912,9 @@ export default ({ theme }) => {
 
 			<Separator title='Markdown links' theme={theme} />
 			<Message msg='Support <http://google.com|Google> [I`m an inline-style link](https://www.google.com) https://google.com' />
+
+			<Separator title='Starting with empty link' theme={theme} />
+			<Message msg='[  ](https://www.google.com)    <- No link should render' />
 
 			<Separator title='Markdown image' theme={theme} />
 			<Message msg='![alt text](https://play.google.com/intl/en_us/badges/images/badge_new.png)' />

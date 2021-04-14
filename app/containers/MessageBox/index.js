@@ -41,7 +41,8 @@ import {
 	MENTIONS_TRACKING_TYPE_EMOJIS,
 	MENTIONS_TRACKING_TYPE_COMMANDS,
 	MENTIONS_COUNT_TO_DISPLAY,
-	MENTIONS_TRACKING_TYPE_USERS
+	MENTIONS_TRACKING_TYPE_USERS,
+	MENTIONS_TRACKING_TYPE_ROOMS
 } from './constants';
 import CommandsPreview from './CommandsPreview';
 import { getUserSelector } from '../../selectors/login';
@@ -354,58 +355,48 @@ class MessageBox extends Component {
 	// eslint-disable-next-line react/sort-comp
 	debouncedOnChangeText = debounce(async(text) => {
 		const { sharing } = this.props;
-		const db = database.active;
 		const isTextEmpty = text.length === 0;
-		// this.setShowSend(!isTextEmpty);
+		if (isTextEmpty) {
+			this.stopTrackingMention();
+			return;
+		}
 		this.handleTyping(!isTextEmpty);
+		const { start, end } = this.selection;
+		const cursor = Math.max(start, end);
+		const txt = cursor < text.length ? text.substr(0, cursor).split(' ') : text.split(' ');
+		const lastWord = txt[txt.length - 1];
+		const result = lastWord.substring(1);
 
-		if (!sharing) {
-			// matches if their is text that stats with '/' and group the command and params so we can use it "/command params"
-			const slashCommand = text.match(/^\/([a-z0-9._-]+) (.+)/im);
-			if (slashCommand) {
-				const [, name, params] = slashCommand;
+		const commandMention = text.match(/^\//); // match only if message begins with /
+		const channelMention = lastWord.match(/^#/);
+		const userMention = lastWord.match(/^@/);
+		const emojiMention = lastWord.match(/^:/);
+
+		if (commandMention && !sharing) {
+			const command = text.substr(1);
+			const commandParameter = text.match(/^\/([a-z0-9._-]+) (.+)/im);
+			if (commandParameter) {
+				const db = database.active;
+				const [, name, params] = commandParameter;
 				const commandsCollection = db.get('slash_commands');
 				try {
-					const command = await commandsCollection.find(name);
-					if (command.providesPreview) {
-						return this.setCommandPreview(command, name, params);
+					const commandRecord = await commandsCollection.find(name);
+					if (commandRecord.providesPreview) {
+						return this.setCommandPreview(commandRecord, name, params);
 					}
 				} catch (e) {
-					console.log('Slash command not found');
+					// do nothing
 				}
 			}
-		}
-
-		if (!isTextEmpty) {
-			try {
-				const { start, end } = this.selection;
-				const cursor = Math.max(start, end);
-				const lastNativeText = this.text;
-				// matches if text either starts with '/' or have (@,#,:) then it groups whatever comes next of mention type
-				let regexp = /(#|@|:|^\/)([a-z0-9._-]+)$/im;
-
-				// if sharing, track #|@|:
-				if (sharing) {
-					regexp = /(#|@|:)([a-z0-9._-]+)$/im;
-				}
-
-				const result = lastNativeText.substr(0, cursor).match(regexp);
-				if (!result) {
-					if (!sharing) {
-						const slash = lastNativeText.match(/^\/$/); // matches only '/' in input
-						if (slash) {
-							return this.identifyMentionKeyword('', MENTIONS_TRACKING_TYPE_COMMANDS);
-						}
-					}
-					return this.stopTrackingMention();
-				}
-				const [, lastChar, name] = result;
-				this.identifyMentionKeyword(name, lastChar);
-			} catch (e) {
-				log(e);
-			}
+			return this.identifyMentionKeyword(command, MENTIONS_TRACKING_TYPE_COMMANDS);
+		} else if (channelMention) {
+			return this.identifyMentionKeyword(result, MENTIONS_TRACKING_TYPE_ROOMS);
+		} else if (userMention) {
+			return this.identifyMentionKeyword(result, MENTIONS_TRACKING_TYPE_USERS);
+		} else if (emojiMention) {
+			return this.identifyMentionKeyword(result, MENTIONS_TRACKING_TYPE_EMOJIS);
 		} else {
-			this.stopTrackingMention();
+			return this.stopTrackingMention();
 		}
 	}, 100)
 
@@ -483,10 +474,10 @@ class MessageBox extends Component {
 	getFixedMentions = (keyword) => {
 		let result = [];
 		if ('all'.indexOf(keyword) !== -1) {
-			result = [{ id: -1, username: 'all' }];
+			result = [{ rid: -1, username: 'all' }];
 		}
 		if ('here'.indexOf(keyword) !== -1) {
-			result = [{ id: -2, username: 'here' }, ...result];
+			result = [{ rid: -2, username: 'here' }, ...result];
 		}
 		return result;
 	}
@@ -504,17 +495,17 @@ class MessageBox extends Component {
 
 	getEmojis = debounce(async(keyword) => {
 		const db = database.active;
-		if (keyword) {
-			const customEmojisCollection = db.get('custom_emojis');
-			const likeString = sanitizeLikeString(keyword);
-			let customEmojis = await customEmojisCollection.query(
-				Q.where('name', Q.like(`${ likeString }%`))
-			).fetch();
-			customEmojis = customEmojis.slice(0, MENTIONS_COUNT_TO_DISPLAY);
-			const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
-			const mergedEmojis = [...customEmojis, ...filteredEmojis].slice(0, MENTIONS_COUNT_TO_DISPLAY);
-			this.setState({ mentions: mergedEmojis || [] });
+		const customEmojisCollection = db.get('custom_emojis');
+		const likeString = sanitizeLikeString(keyword);
+		const whereClause = [];
+		if (likeString) {
+			whereClause.push(Q.where('name', Q.like(`${ likeString }%`)));
 		}
+		let customEmojis = await customEmojisCollection.query(...whereClause).fetch();
+		customEmojis = customEmojis.slice(0, MENTIONS_COUNT_TO_DISPLAY);
+		const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
+		const mergedEmojis = [...customEmojis, ...filteredEmojis].slice(0, MENTIONS_COUNT_TO_DISPLAY);
+		this.setState({ mentions: mergedEmojis || [] });
 	}, 300)
 
 	getSlashCommands = debounce(async(keyword) => {
