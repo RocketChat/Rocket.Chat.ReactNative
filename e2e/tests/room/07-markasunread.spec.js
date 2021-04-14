@@ -6,7 +6,6 @@ const { navigateToLogin, login, mockMessage, tapBack, searchRoom, logout } = req
 
 async function navigateToRoom(user) {
 	await searchRoom(`${ user }`);
-	await waitFor(element(by.id(`rooms-list-view-item-${ user }`))).toExist().withTimeout(60000);
 	await element(by.id(`rooms-list-view-item-${ user }`)).tap();
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 }

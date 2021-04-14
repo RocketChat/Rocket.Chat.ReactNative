@@ -8,7 +8,6 @@ const channel = data.groups.private.name;
 
 const navigateToRoom = async() => {
 	await searchRoom(channel);
-	await waitFor(element(by.id(`rooms-list-view-item-${ channel }`))).toExist().withTimeout(60000);
 	await element(by.id(`rooms-list-view-item-${ channel }`)).tap();
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 }
@@ -74,8 +73,8 @@ describe('Discussion', () => {
 	
 	describe('Check RoomActionsView render', async() => {
 		it('should navigete to RoomActionsView', async() => {
-			await waitFor(element(by.id('room-view-header-actions'))).toBeVisible().withTimeout(5000);
-			await element(by.id('room-view-header-actions')).tap();
+			await waitFor(element(by.id('room-header'))).toBeVisible().withTimeout(5000);
+			await element(by.id('room-header')).tap();
 			await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(5000);
 		});
 

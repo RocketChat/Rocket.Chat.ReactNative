@@ -188,17 +188,18 @@ class RoomItemContainer extends React.Component {
 				tunreadUser={item.tunreadUser}
 				tunreadGroup={item.tunreadGroup}
 				swipeEnabled={swipeEnabled}
+				teamMain={item.teamMain}
 			/>
 		);
 	}
 }
 
 const mapStateToProps = (state, ownProps) => {
-	let status = 'offline';
+	let status = 'loading';
 	const { id, type, visitor = {} } = ownProps;
 	if (state.meteor.connected) {
 		if (type === 'd') {
-			status = state.activeUsers[id]?.status || 'offline';
+			status = state.activeUsers[id]?.status || 'loading';
 		} else if (type === 'l' && visitor?.status) {
 			({ status } = visitor);
 		}

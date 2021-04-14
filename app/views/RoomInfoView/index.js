@@ -40,7 +40,7 @@ const getRoomTitle = (room, type, name, username, statusText, theme) => (type ==
 	)
 	: (
 		<View style={styles.roomTitleRow}>
-			<RoomTypeIcon type={room.prid ? 'discussion' : room.t} key='room-info-type' status={room.visitor?.status} theme={theme} />
+			<RoomTypeIcon type={room.prid ? 'discussion' : room.t} teamMain={room.teamMain} key='room-info-type' status={room.visitor?.status} />
 			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]} key='room-info-name'>{RocketChat.getRoomTitle(room)}</Text>
 		</View>
 	)
@@ -281,7 +281,13 @@ class RoomInfoView extends React.Component {
 				size={100}
 				rid={room?.rid}
 			>
-				{this.t === 'd' && roomUser._id ? <Status style={[sharedStyles.status, styles.status]} theme={theme} size={24} id={roomUser._id} /> : null}
+				{this.t === 'd' && roomUser._id
+					? (
+						<View style={[sharedStyles.status, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+							<Status size={20} id={roomUser._id} />
+						</View>
+					)
+					: null}
 			</Avatar>
 		);
 	}
@@ -291,7 +297,9 @@ class RoomInfoView extends React.Component {
 
 		const onActionPress = async() => {
 			try {
-				await this.createDirect();
+				if (this.isDirect) {
+					await this.createDirect();
+				}
 				onPress();
 			} catch {
 				EventEmitter.emit(LISTENER, { message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') }) });
@@ -318,7 +326,7 @@ class RoomInfoView extends React.Component {
 		return (
 			<View style={styles.roomButtonsContainer}>
 				{this.renderButton(this.goRoom, 'message', I18n.t('Message'))}
-				{jitsiEnabled ? this.renderButton(this.videoCall, 'camera', I18n.t('Video_call')) : null}
+				{jitsiEnabled && this.isDirect ? this.renderButton(this.videoCall, 'camera', I18n.t('Video_call')) : null}
 			</View>
 		);
 	}
@@ -345,10 +353,10 @@ class RoomInfoView extends React.Component {
 					style={{ backgroundColor: themes[theme].backgroundColor }}
 					testID='room-info-view'
 				>
-					<View style={[styles.avatarContainer, this.isDirect && styles.avatarContainerDirectRoom, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+					<View style={[styles.avatarContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 						{this.renderAvatar(room, roomUser)}
 						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser?.name, roomUser?.username, roomUser?.statusText, theme) }</View>
-						{this.isDirect ? this.renderButtons() : null}
+						{this.renderButtons()}
 					</View>
 					{this.renderContent()}
 				</SafeAreaView>

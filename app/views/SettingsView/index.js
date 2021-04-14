@@ -109,7 +109,8 @@ class SettingsView extends React.Component {
 				await RocketChat.clearCache({ server });
 				await FastImage.clearMemoryCache();
 				await FastImage.clearDiskCache();
-				selectServerRequest(server, null, true);
+				RocketChat.disconnect();
+				selectServerRequest(server);
 			}
 		});
 	}
@@ -285,7 +286,7 @@ class SettingsView extends React.Component {
 						<List.Separator />
 						<List.Item
 							title='Clear_cache'
-							testID='settings-clear-cache'
+							testID='settings-view-clear-cache'
 							onPress={this.handleClearCache}
 							showActionIndicator
 							color={themes[theme].dangerColor}
