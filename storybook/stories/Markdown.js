@@ -44,34 +44,23 @@ const getCustomEmoji = (content) => {
 
 const stories = storiesOf('Markdown', module);
 
-stories.add('Short text', () => (
+stories.add('Text', () => (
 	<View style={styles.container}>
 		<Markdown msg='This is Rocket.Chat' theme={theme} />
-	</View>
-));
-
-stories.add('Long text', () => (
-	<View style={styles.container}>
 		<Markdown
 			msg={longText}
 			theme={theme}
 		/>
-	</View>
-));
-
-stories.add('Line break text', () => (
-	<View style={styles.container}>
 		<Markdown
 			msg={lineBreakText}
 			theme={theme}
 		/>
-	</View>
-));
-
-stories.add('Sequential empty spaces', () => (
-	<View style={styles.container}>
 		<Markdown
 			msg={sequentialEmptySpacesText}
+			theme={theme}
+		/>
+		<Markdown
+			msg='Strong emphasis, aka bold, with **asterisks** or __underscores__'
 			theme={theme}
 		/>
 	</View>
@@ -144,11 +133,6 @@ stories.add('Mentions', () => (
 			]}
 			username='rocket.cat'
 		/>
-	</ScrollView>
-));
-
-stories.add('Mentions with real name', () => (
-	<View style={styles.container}>
 		<Markdown
 			msg='@rocket.cat @name1 @all @here @unknown'
 			theme={theme}
@@ -161,7 +145,7 @@ stories.add('Mentions with real name', () => (
 			username='rocket.cat'
 			useRealName
 		/>
-	</View>
+	</ScrollView>
 ));
 
 stories.add('Hashtag', () => (
@@ -246,17 +230,12 @@ stories.add('Headers', () => (
 	</View>
 ));
 
-stories.add('Inline code', () => (
+stories.add('Code', () => (
 	<View style={styles.container}>
 		<Markdown
 			msg='This is `inline code`'
 			theme={theme}
 		/>
-	</View>
-));
-
-stories.add('Code block', () => (
-	<View style={styles.container}>
 		<Markdown
 			msg='Inline `code` has `back-ticks around` it.
 ```
@@ -267,28 +246,14 @@ Code block
 	</View>
 ));
 
-stories.add('List', () => (
+stories.add('Lists', () => (
 	<View style={styles.container}>
 		<Markdown
 			msg={'* Open Source\n* Rocket.Chat\n  - nodejs\n  - ReactNative'}
 			theme={theme}
 		/>
-	</View>
-));
-
-stories.add('Numbered list', () => (
-	<View style={styles.container}>
 		<Markdown
 			msg={'1. Open Source\n2. Rocket.Chat'}
-			theme={theme}
-		/>
-	</View>
-));
-
-stories.add('Emphasis', () => (
-	<View style={styles.container}>
-		<Markdown
-			msg='Strong emphasis, aka bold, with **asterisks** or __underscores__'
 			theme={theme}
 		/>
 	</View>
