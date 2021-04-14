@@ -125,7 +125,6 @@ describe('Room screen', () => {
 			});
 
 			it('should not show user autocomplete on @ in the middle of a string', async() => {
-				const username = data.users.regular.username
 				await element(by.id('messagebox-input')).tap();
 				await element(by.id('messagebox-input')).typeText(`email@gmail`);
 				await waitFor(element(by.id('messagebox-container'))).toNotExist().withTimeout(4000);
