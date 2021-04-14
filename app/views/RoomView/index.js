@@ -156,6 +156,7 @@ class RoomView extends React.Component {
 		this.messagebox = React.createRef();
 		this.list = React.createRef();
 		this.joinCode = React.createRef();
+		this.flatList = React.createRef();
 		this.mounted = false;
 
 		// we don't need to subscribe to threads
@@ -657,25 +658,32 @@ class RoomView extends React.Component {
 	};
 
 	onThreadPress = debounce(async(item) => {
-		const { roomUserId } = this.state;
-		const { navigation } = this.props;
-		if (item.tmid) {
-			if (!item.tmsg) {
-				await this.fetchThreadName(item.tmid, item.id);
-			}
-			let name = item.tmsg;
-			if (item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
-				name = I18n.t('Encrypted_message');
-			}
-			navigation.push('RoomView', {
-				rid: item.subscription.id, tmid: item.tmid, name, t: 'thread', roomUserId
-			});
-		} else if (item.tlm) {
-			navigation.push('RoomView', {
-				rid: item.subscription.id, tmid: item.id, name: makeThreadName(item), t: 'thread', roomUserId
-			});
-		}
+		// const { roomUserId } = this.state;
+		// const { navigation } = this.props;
+		// if (item.tmid) {
+		// 	if (!item.tmsg) {
+		// 		await this.fetchThreadName(item.tmid, item.id);
+		// 	}
+		// 	let name = item.tmsg;
+		// 	if (item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
+		// 		name = I18n.t('Encrypted_message');
+		// 	}
+		// 	navigation.push('RoomView', {
+		// 		rid: item.subscription.id, tmid: item.tmid, name, t: 'thread', roomUserId
+		// 	});
+		// } else if (item.tlm) {
+		// 	navigation.push('RoomView', {
+		// 		rid: item.subscription.id, tmid: item.id, name: makeThreadName(item), t: 'thread', roomUserId
+		// 	});
+		// }
+		this.flatList.current.scrollToIndex({ index: 49, viewPosition: 0.5 });
+		// this.offset += 100;
+		// this.flatList?.scrollToOffset({ offset: this.offset });
 	}, 1000, true)
+
+	// scrollTo = () => {
+	// 	this.flatList.scrollToIndex({ index: 49, viewPosition: 0.5 });
+	// }
 
 	replyBroadcast = (message) => {
 		const { replyBroadcast } = this.props;
@@ -1053,7 +1061,7 @@ class RoomView extends React.Component {
 		);
 	}
 
-	setListRef = ref => this.flatList = ref;
+	// setListRef = ref => this.flatList = ref;
 
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
@@ -1083,7 +1091,7 @@ class RoomView extends React.Component {
 				/>
 				<List
 					ref={this.list}
-					listRef={this.setListRef}
+					listRef={this.flatList}
 					rid={rid}
 					t={t}
 					tmid={this.tmid}

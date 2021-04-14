@@ -17,6 +17,11 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import { themes } from '../../constants/colors';
 
 const QUERY_SIZE = 50;
+const getItemLayout = (data, index) => ({
+	length: 50,
+	offset: 50 * index,
+	index
+});
 
 class List extends React.Component {
 	static propTypes = {
@@ -306,6 +311,13 @@ class List extends React.Component {
 		return null;
 	}
 
+	handleScrollToIndexFailed = (params) => {
+  	console.log('🚀 ~ file: List.js ~ line 315 ~ List ~ params', params);
+		const { listRef } = this.props;
+		// console.log('🚀 ~ file: List.js ~ line 324 ~ List ~ listRef.current', listRef);
+		listRef.current.scrollToIndex({ index: params.highestMeasuredFrameIndex });
+	}
+
 	renderFooter = () => {
 		const { loading } = this.state;
 		const { rid, theme } = this.props;
@@ -340,6 +352,8 @@ class List extends React.Component {
 					style={styles.list}
 					inverted
 					removeClippedSubviews={isIOS}
+					// getItemLayout={getItemLayout}
+					onScrollToIndexFailed={this.handleScrollToIndexFailed}
 					initialNumToRender={7}
 					onEndReached={this.onEndReached}
 					onEndReachedThreshold={0.5}

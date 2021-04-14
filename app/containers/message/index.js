@@ -112,16 +112,17 @@ class MessageContainer extends React.Component {
 	}
 
 	onPress = debounce(() => {
-		if (this.isIgnored) {
-			return this.onIgnoredMessagePress();
-		}
+		// if (this.isIgnored) {
+		// 	return this.onIgnoredMessagePress();
+		// }
 
-		const { item, isThreadRoom } = this.props;
-		Keyboard.dismiss();
+		// const { item, isThreadRoom } = this.props;
+		// Keyboard.dismiss();
 
-		if (((item.tlm || item.tmid) && !isThreadRoom)) {
-			this.onThreadPress();
-		}
+		// if (((item.tlm || item.tmid) && !isThreadRoom)) {
+		// 	this.onThreadPress();
+		// }
+		this.onThreadPress()
 	}, 300, true);
 
 	onLongPress = () => {
