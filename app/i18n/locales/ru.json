@@ -704,5 +704,8 @@
   "Enter_workspace_URL": "Введите URL вашего рабочего пространства",
   "Workspace_URL_Example": "Например, your-company.rocket.chat",
   "This_room_encryption_has_been_enabled_by__username_": "Шифрование для этого чата включено {{username}}",
-  "This_room_encryption_has_been_disabled_by__username_": "Шифрование для этого чата выключено {{username}}"
+  "This_room_encryption_has_been_disabled_by__username_": "Шифрование для этого чата выключено {{username}}",
+  "Teams": "Команды",
+  "No_team_channels_found": "Чаты команды не найдены",
+  "Team_not_found": "Команда не найдена"
 }
