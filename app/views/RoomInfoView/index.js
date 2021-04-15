@@ -55,7 +55,7 @@ class RoomInfoView extends React.Component {
 		isMasterDetail: PropTypes.bool,
 		jitsiEnabled: PropTypes.bool,
 		editRoomPermission: PropTypes.array,
-		roles: PropTypes.object
+		roles: PropTypes.array
 	}
 
 	constructor(props) {

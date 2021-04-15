@@ -114,6 +114,13 @@ class RoomMembersView extends React.Component {
 		}
 	}
 
+	componentDidUpdate(_, prevState) {
+		const { room } = this.state;
+		if (prevState.room.roles !== room.roles) {
+			this.fetchRoomMembersRoles();
+		}
+	}
+
 	componentWillUnmount() {
 		if (this.subscription && this.subscription.unsubscribe) {
 			this.subscription.unsubscribe();
