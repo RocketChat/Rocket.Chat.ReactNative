@@ -79,13 +79,16 @@ export const setLanguage = (l) => {
 		return;
 	}
 	// server uses lowercase pattern (pt-br), but we're forced to use standard pattern (pt-BR)
-	const locale = LANGUAGES.find(ll => ll.value.toLowerCase() === l.toLowerCase())?.value;
+	let locale = LANGUAGES.find(ll => ll.value.toLowerCase() === l.toLowerCase())?.value;
+	if (!locale) {
+		locale = 'en';
+	}
 	// don't go forward if it's the same language and default language (en) was setup already
 	if (i18n.locale === locale && i18n.translations?.en) {
 		return;
 	}
 	i18n.locale = locale;
-	i18n.translations = { ...i18n.translations, [locale]: translations[locale]() };
+	i18n.translations = { ...i18n.translations, [locale]: translations[locale]?.() };
 	I18nManager.forceRTL(isRTL(locale));
 	I18nManager.swapLeftAndRightInRTL(isRTL(locale));
 	i18n.isRTL = I18nManager.isRTL;
