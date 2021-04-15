@@ -51,12 +51,13 @@ async function logout() {
     await expect(element(by.id('onboarding-view'))).toBeVisible();
 }
 
-async function mockMessage(message) {
-	await element(by.id('messagebox-input')).atIndex(0).tap();
-	await element(by.id('messagebox-input')).atIndex(0).typeText(`${ data.random }${ message }`);
-	await element(by.id('messagebox-send-message')).atIndex(0).tap();
-	await waitFor(element(by.label(`${ data.random }${ message }`)).atIndex(0)).toExist().withTimeout(60000);
-    await expect(element(by.label(`${ data.random }${ message }`)).atIndex(0)).toExist();
+async function mockMessage(message, isThread = false) {
+    let input = isThread ? 'messagebox-input-thread' : 'messagebox-input';
+	await element(by.id(input)).tap();
+	await element(by.id(input)).typeText(`${ data.random }${ message }`);
+	await element(by.id('messagebox-send-message')).tap();
+	await waitFor(element(by.label(`${ data.random }${ message }`))).toExist().withTimeout(60000);
+    await expect(element(by.label(`${ data.random }${ message }`))).toExist();
     await element(by.label(`${ data.random }${ message }`)).atIndex(0).tap();
 };
 

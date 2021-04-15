@@ -41,7 +41,7 @@ async function navigateSecurityPrivacy() {
 	await waitFor(element(by.id('security-privacy-view'))).toBeVisible().withTimeout(2000);
 }
 
-describe('E2E Encryption', () => {
+describe.skip('E2E Encryption', () => {
 	const room = `encrypted${ data.random }`;
 	const newPassword = 'abc';
 

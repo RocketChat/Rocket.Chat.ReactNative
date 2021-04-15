@@ -25,7 +25,7 @@ describe('Change server', () => {
 
 		await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(6000);
 		await element(by.id('new-server-view-input')).typeText(`${data.alternateServer}\n`);
-		await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(2000);
+		await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(10000);
 		await reopenAndCheckServer(data.server);
 	});
 

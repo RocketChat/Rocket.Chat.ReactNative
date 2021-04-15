@@ -18,7 +18,7 @@ async function navigateToRoomActions() {
 	await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(5000);
 }
 
-describe('Join public room', () => {
+describe.skip('Join public room', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();

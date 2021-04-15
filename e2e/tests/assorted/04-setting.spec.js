@@ -7,7 +7,7 @@ const data = require('../../data');
 
 const testuser = data.users.regular
 
-describe('Settings screen', () => {
+describe.skip('Settings screen', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();

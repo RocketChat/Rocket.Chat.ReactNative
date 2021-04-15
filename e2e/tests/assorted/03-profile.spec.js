@@ -16,7 +16,7 @@ async function waitForToast() {
 	await sleep(300);
 }
 
-describe('Profile screen', () => {
+describe.skip('Profile screen', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();

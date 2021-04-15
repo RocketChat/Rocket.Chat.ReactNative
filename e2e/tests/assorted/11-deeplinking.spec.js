@@ -32,7 +32,7 @@ describe('Deep linking', () => {
 				url: getDeepLink(DEEPLINK_METHODS.AUTH, data.server, 'userId=123&token=abc'),
 				sourceApp: 'com.apple.mobilesafari'
 			});
-			await waitFor(element(by.text('You\'ve been logged out by the server. Please log in again.'))).toExist().withTimeout(5000); // TODO: we need to improve this message
+			await waitFor(element(by.text('You\'ve been logged out by the server. Please log in again.'))).toExist().withTimeout(10000); // TODO: we need to improve this message
 		});
 
 		const authAndNavigate = async() => {

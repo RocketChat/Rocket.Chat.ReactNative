@@ -148,8 +148,8 @@ describe('Room screen', () => {
 				await element(by.id('messagebox-input')).clearText();
 			});
 			it('should draft message', async () => {
-				await element(by.id('messagebox-input')).atIndex(0).tap();
-				await element(by.id('messagebox-input')).atIndex(0).typeText(`${ data.random }draft`);
+				await element(by.id('messagebox-input')).tap();
+				await element(by.id('messagebox-input')).typeText(`${ data.random }draft`);
 				await tapBack();
 
 				await navigateToRoom(mainRoom);
@@ -294,12 +294,5 @@ describe('Room screen', () => {
 				await waitFor(element(by.label(`${ data.random }delete`)).atIndex(0)).toNotExist().withTimeout(2000);
 			});
 		});
-
-		// after(async() => {
-		// 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
-		// 	await tapBack();
-		// 	await waitFor(element(by.id('rooms-list-view'))).toExist().withTimeout(2000);
-		// 	await expect(element(by.id('rooms-list-view'))).toExist();
-		// });
 	});
 });
