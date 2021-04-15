@@ -102,9 +102,6 @@ export const localAuthenticate = async(server) => {
 
 	// if screen lock is enabled
 	if (serverRecord?.autoLock) {
-		// set isLocalAuthenticated to false
-		store.dispatch(setLocalAuthenticated(false));
-
 		// Make sure splash screen has been hidden
 		RNBootSplash.hide();
 
@@ -118,6 +115,9 @@ export const localAuthenticate = async(server) => {
 
 			// if last authenticated session is older than configured auto lock time, authentication is required
 			if (diffToLastSession >= serverRecord?.autoLockTime) {
+				// set isLocalAuthenticated to false
+				store.dispatch(setLocalAuthenticated(false));
+
 				let hasBiometry = false;
 
 				// if biometry is enabled on the app

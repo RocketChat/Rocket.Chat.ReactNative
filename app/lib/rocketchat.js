@@ -1,7 +1,4 @@
 import { InteractionManager } from 'react-native';
-import lt from 'semver/functions/lt';
-import gte from 'semver/functions/gte';
-import coerce from 'semver/functions/coerce';
 import {
 	Rocketchat as RocketchatClient,
 	settings as RocketChatSettings
@@ -11,6 +8,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import RNFetchBlob from 'rn-fetch-blob';
 
+import { compareServerVersion, methods } from './utils';
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
 import database from './database';
@@ -133,7 +131,7 @@ const RocketChat = {
 						message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
 					};
 				}
-				if (lt(jsonRes.version, MIN_ROCKETCHAT_VERSION)) {
+				if (compareServerVersion(jsonRes.version, MIN_ROCKETCHAT_VERSION, methods.lowerThan)) {
 					return {
 						success: false,
 						message: I18n.t('Invalid_server_version', {
@@ -177,9 +175,19 @@ const RocketChat = {
 		}
 		this.controller = new AbortController();
 	},
+	checkAndReopen() {
+		return this?.sdk?.checkAndReopen();
+	},
+	disconnect() {
+		this.sdk?.disconnect?.();
+		this.sdk = null;
+	},
 	connect({ server, user, logoutOnError = false }) {
 		return new Promise((resolve) => {
-			if (!this.sdk || this.sdk.client.host !== server) {
+			if (this?.sdk?.client?.host === server) {
+				return resolve();
+			} else {
+				this.disconnect();
 				database.setActiveDB(server);
 			}
 			reduxStore.dispatch(connectRequest());
@@ -208,11 +216,6 @@ const RocketChat = {
 
 			EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
 
-			if (this.sdk) {
-				this.sdk.disconnect();
-				this.sdk = null;
-			}
-
 			if (this.code) {
 				this.code = null;
 			}
@@ -239,6 +242,10 @@ const RocketChat = {
 				});
 
 			sdkConnect();
+
+			this.connectedListener = this.sdk.onStreamData('connecting', () => {
+				reduxStore.dispatch(connectRequest());
+			});
 
 			this.connectedListener = this.sdk.onStreamData('connected', () => {
 				reduxStore.dispatch(connectSuccess());
@@ -461,18 +468,30 @@ const RocketChat = {
 				if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
 					const { details } = e.data;
 					try {
-						reduxStore.dispatch(setUser({ username: params.user || params.username }));
-						const code = await twoFactor({ method: details?.method || 'totp', invalid: e.data.error === 'totp-invalid' });
+						const code = await twoFactor({ method: details?.method || 'totp', invalid: details?.error === 'totp-invalid' });
 
-						// Force normalized params for 2FA starting RC 3.9.0.
-						const serverVersion = reduxStore.getState().server.version;
-						if (serverVersion && gte(coerce(serverVersion), '3.9.0')) {
-							const user = params.user ?? params.username;
-							const password = params.password ?? params.ldapPass ?? params.crowdPassword;
-							params = { user, password };
+						if (loginEmailPassword) {
+							reduxStore.dispatch(setUser({ username: params.user || params.username }));
+
+							// Force normalized params for 2FA starting RC 3.9.0.
+							const serverVersion = reduxStore.getState().server.version;
+							if (compareServerVersion(serverVersion, '3.9.0', methods.greaterThanOrEqualTo)) {
+								const user = params.user ?? params.username;
+								const password = params.password ?? params.ldapPass ?? params.crowdPassword;
+								params = { user, password };
+							}
+
+							return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
 						}
 
-						return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
+						return resolve(this.loginTOTP({
+							totp: {
+								login: {
+									...params
+								},
+								code: code?.twoFactorCode
+							}
+						}));
 					} catch {
 						// twoFactor was canceled
 						return reject();
@@ -507,7 +526,7 @@ const RocketChat = {
 	},
 
 	async loginOAuthOrSso(params) {
-		const result = await this.login(params);
+		const result = await this.loginTOTP(params);
 		reduxStore.dispatch(loginRequest({ resume: result.token }));
 	},
 
@@ -599,9 +618,6 @@ const RocketChat = {
 
 	async localSearch({ text, filterUsers = true, filterRooms = true }) {
 		const searchText = text.trim();
-		if (searchText === '') {
-			return [];
-		}
 		const db = database.active;
 		const likeString = sanitizeLikeString(searchText);
 		let data = await db.get('subscriptions').query(
@@ -638,10 +654,6 @@ const RocketChat = {
 
 		if (this.oldPromise) {
 			this.oldPromise('cancel');
-		}
-
-		if (searchText === '') {
-			return [];
 		}
 
 		const data = await this.localSearch({ text, filterUsers, filterRooms });
@@ -911,6 +923,19 @@ const RocketChat = {
 	getVisitorInfo(visitorId) {
 		// RC 2.3.0
 		return this.sdk.get('livechat/visitors.info', { visitorId });
+	},
+	getTeamListRoom({
+		teamId, count, offset, type, filter
+	}) {
+		const params = {
+			teamId, count, offset, type
+		};
+
+		if (filter) {
+			params.filter = filter;
+		}
+		// RC 3.13.0
+		return this.sdk.get('teams.listRooms', params);
 	},
 	closeLivechat(rid, comment) {
 		// RC 0.29.0
@@ -1192,7 +1217,7 @@ const RocketChat = {
 			// get user roles on the server from redux
 			const userRoles = (shareUser?.roles || loginUser?.roles) || [];
 			const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
-			return permissions.map(permission => permission.some(r => mergedRoles.includes(r) ?? false));
+			return permissions.map(permission => permission?.some(r => mergedRoles.includes(r) ?? false));
 		} catch (e) {
 			log(e);
 		}
@@ -1358,7 +1383,7 @@ const RocketChat = {
 	},
 	readThreads(tmid) {
 		const serverVersion = reduxStore.getState().server.version;
-		if (serverVersion && gte(coerce(serverVersion), '3.4.0')) {
+		if (compareServerVersion(serverVersion, '3.4.0', methods.greaterThanOrEqualTo)) {
 			// RC 3.4.0
 			return this.methodCallWrapper('readThreads', tmid);
 		}

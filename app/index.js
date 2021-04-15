@@ -112,16 +112,25 @@ export default class Root extends React.Component {
 
 	init = async() => {
 		UserPreferences.getMapAsync(THEME_PREFERENCES_KEY).then(this.setTheme);
-		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
-		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
 		store.dispatch(appInitLocalSettings());
+
+		// Open app from push notification
+		const notification = await initializePushNotifications();
 		if (notification) {
 			onNotification(notification);
-		} else if (parsedDeepLinkingURL) {
-			store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
-		} else {
-			store.dispatch(appInit());
+			return;
 		}
+
+		// Open app from deep linking
+		const deepLinking = await Linking.getInitialURL();
+		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
+		if (parsedDeepLinkingURL) {
+			store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
+			return;
+		}
+
+		// Open app from app icon
+		store.dispatch(appInit());
 	}
 
 	getMasterDetail = (width) => {

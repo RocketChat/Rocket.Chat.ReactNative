@@ -1,9 +1,8 @@
-import lt from 'semver/functions/lt';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
-import coerce from 'semver/functions/coerce';
 import orderBy from 'lodash/orderBy';
 
+import { compareServerVersion, methods } from '../utils';
 import database from '../database';
 import log from '../../utils/log';
 import reduxStore from '../createStore';
@@ -123,7 +122,7 @@ export function getPermissions() {
 			const allRecords = await permissionsCollection.query().fetch();
 
 			// if server version is lower than 0.73.0, fetches from old api
-			if (serverVersion && lt(coerce(serverVersion), '0.73.0')) {
+			if (compareServerVersion(serverVersion, '0.73.0', methods.lowerThan)) {
 				// RC 0.66.0
 				const result = await this.sdk.get('permissions.list');
 				if (!result.success) {
