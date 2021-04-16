@@ -483,7 +483,7 @@ describe('Room actions screen', () => {
 
 				it('should ignore user', async() => {
 					const message = `${ data.random }ignoredmessagecontent`;
-					const channelName = data.groups.private.name;
+					const channelName = `#${ data.groups.private.name }`;
 					await sendMessage(user, channelName, message);
 					await openActionSheet(user.username);
 					await element(by.label('Ignore')).tap();
