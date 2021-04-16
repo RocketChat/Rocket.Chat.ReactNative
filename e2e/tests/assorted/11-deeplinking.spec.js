@@ -28,7 +28,7 @@ describe('Deep linking', () => {
 		it('should run a deep link to an invalid account and raise error', async() => {
 			await device.launchApp({
 				permissions: { notifications: 'YES' },
-				newInstance: true,
+				delete: true,
 				url: getDeepLink(DEEPLINK_METHODS.AUTH, data.server, 'userId=123&token=abc'),
 				sourceApp: 'com.apple.mobilesafari'
 			});
@@ -42,7 +42,7 @@ describe('Deep linking', () => {
 				url: getDeepLink(DEEPLINK_METHODS.AUTH, data.server, `userId=${ userId }&token=${ token }&path=group/${ data.groups.private.name }`),
 				sourceApp: 'com.apple.mobilesafari'
 			});
-			await waitFor(element(by.id(`room-view-title-${ data.groups.private.name }`))).toExist().withTimeout(10000);
+			await waitFor(element(by.id(`room-view-title-${ data.groups.private.name }`))).toExist().withTimeout(30000);
 			await tapBack();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 			await checkServer(data.server);

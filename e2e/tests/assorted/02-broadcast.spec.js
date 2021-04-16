@@ -9,7 +9,7 @@ const data = require('../../data');
 const testuser = data.users.regular
 const otheruser = data.users.alternate
 
-describe.skip('Broadcast room', () => {
+describe('Broadcast room', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();

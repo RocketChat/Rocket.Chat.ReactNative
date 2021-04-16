@@ -18,7 +18,7 @@ async function navigateToRoomActions() {
 	await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(5000);
 }
 
-describe.skip('Join public room', () => {
+describe('Join public room', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
@@ -164,7 +164,6 @@ describe.skip('Join public room', () => {
 			await expect(element(by.text('Yes, leave it!'))).toBeVisible();
 			await element(by.text('Yes, leave it!')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
-			// await element(by.id('rooms-list-view-search')).typeText('');
 			await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible().withTimeout(60000);
 		});
 	});

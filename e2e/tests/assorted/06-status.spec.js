@@ -10,7 +10,7 @@ async function waitForToast() {
 	await sleep(300);
 }
 
-describe.skip('Status screen', () => {
+describe('Status screen', () => {
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
