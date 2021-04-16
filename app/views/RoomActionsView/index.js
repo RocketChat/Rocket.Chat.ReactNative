@@ -219,16 +219,6 @@ class RoomActionsView extends React.Component {
 		return canToggleEncryption;
 	}
 
-	canToggleEncryption = async() => {
-		const { room } = this.state;
-		const { toggleRoomE2EEncryptionPermission } = this.props;
-		const { rid } = room;
-		const permissions = await RocketChat.hasPermission([toggleRoomE2EEncryptionPermission], rid);
-
-		const canToggleEncryption = permissions[0];
-		this.setState({ canToggleEncryption });
-	}
-
 	canViewMembers = async() => {
 		const { room } = this.state;
 		const { viewBroadcastMemberListPermission } = this.props;

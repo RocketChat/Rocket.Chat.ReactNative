@@ -37,7 +37,7 @@ const restore = function* restore() {
 				UserPreferences.removeItem(RocketChat.CURRENT_SERVER)
 			]);
 			yield put(serverRequest(appConfig.server));
-			// yield put(appStart({ root: ROOT_OUTSIDE }));
+			yield put(appStart({ root: ROOT_OUTSIDE }));
 		} else {
 			const serversDB = database.servers;
 			const serverCollections = serversDB.get('servers');
