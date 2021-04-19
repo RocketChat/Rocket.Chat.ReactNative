@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {
 	View, Text, StyleSheet, TouchableOpacity
@@ -149,11 +149,13 @@ const Header = React.memo(({
 		);
 	}
 
+	const handleOnPress = useCallback(() => onPress(), []);
+
 	return (
 		<TouchableOpacity
 			testID='room-header'
 			accessibilityLabel={title}
-			onPress={onPress}
+			onPress={handleOnPress}
 			style={styles.container}
 			disabled={tmid}
 			hitSlop={HIT_SLOP}
