@@ -22,8 +22,7 @@ describe('Delete server', () => {
 		await element(by.id('rooms-list-header-server-add')).tap();
 
 		await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(10000);
-		await element(by.id('new-server-view-input')).replaceText(data.alternateServer);
-		await element(by.id('new-server-view-button')).tap();
+		await element(by.id('new-server-view-input')).typeText(`${data.alternateServer}\n`);
 		await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(10000);
 		await element(by.id('workspace-view-register')).tap();
 		await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
@@ -32,7 +31,7 @@ describe('Delete server', () => {
 		await element(by.id('register-view-name')).replaceText(data.registeringUser3.username);
 		await element(by.id('register-view-username')).replaceText(data.registeringUser3.username);
 		await element(by.id('register-view-email')).replaceText(data.registeringUser3.email);
-		await element(by.id('register-view-password')).replaceText(data.registeringUser3.password);
+		await element(by.id('register-view-password')).typeText(data.registeringUser3.password);
 		await element(by.id('register-view-submit')).tap();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
 
