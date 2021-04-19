@@ -20,6 +20,7 @@ const login = async (username, password) => {
     const authToken = response.data.data.authToken
     rocketchat.defaults.headers.common['X-User-Id'] = userId
     rocketchat.defaults.headers.common['X-Auth-Token'] = authToken
+    return { authToken, userId };
 }
 
 const createUser = async (username, password, name, email) => {
@@ -146,5 +147,5 @@ const post = (endpoint, body) => {
 }
 
 module.exports = {
-    setup, sendMessage, get, post
+    setup, sendMessage, get, post, login
 }

@@ -21,6 +21,7 @@ describe('Mark as unread', () => {
 		await navigateToRoom(user);
 	});
 
+	// TODO: Fix flakiness. If it fails, run it solo.
 	describe('Usage', async() => {
 		describe('Mark message as unread', async() => {
 			it('should mark message as unread', async() => {

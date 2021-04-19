@@ -32,7 +32,7 @@ async function login(username, password) {
     await element(by.id('login-view-email')).replaceText(username);
     await element(by.id('login-view-password')).replaceText(password);
     await element(by.id('login-view-submit')).tap();
-    await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
+    await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(30000);
 }
 
 async function logout() {
