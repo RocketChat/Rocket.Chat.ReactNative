@@ -12,7 +12,6 @@ import './HeaderButtons';
 import './UnreadBadge';
 import '../../app/views/ThreadMessagesView/Item.stories.js';
 import './Avatar';
-// import RoomViewHeader from './RoomViewHeader';
 
 // Change here to see themed storybook
 export const theme = 'light';
@@ -37,7 +36,3 @@ const reducers = combineReducers({
 	activeUsers: () => ({ abc: { status: 'online', statusText: 'dog' } })
 });
 export const store = createStore(reducers);
-
-// FIXME: I couldn't make these pass on jest :(
-// storiesOf('RoomViewHeader', module)
-// 	.add('list', () => <RoomViewHeader theme='black' />);

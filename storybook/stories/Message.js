@@ -81,12 +81,11 @@ const stories = storiesOf('Message', module)
 	.addDecorator(story => <ScrollView style={{ backgroundColor: themes[_theme].backgroundColor }}>{story()}</ScrollView>)
 	.addDecorator(messageDecorator);
 
-stories.add('Simple', () => (
-	<Message msg='Message' />
-));
-
-stories.add('Long message', () => (
-	<Message msg={longText} />
+stories.add('Basic', () => (
+	<>
+		<Message msg='Message' />
+		<Message msg={longText} />
+	</>
 ));
 
 stories.add('Grouped messages', () => (
@@ -142,13 +141,13 @@ stories.add('Encrypted', () => (
 			msg='Message Encrypted with Reactions'
 			reactions={[{
 				emoji: ':joy:',
-				usernames: [{ value: 'username' }]
+				usernames: [user.username]
 			}, {
 				emoji: ':marioparty:',
-				usernames: [{ value: 'username' }]
+				usernames: [user.username]
 			}, {
 				emoji: ':thinking:',
-				usernames: [{ value: 'username' }]
+				usernames: [user.username]
 			}]}
 			onReactionPress={() => {}}
 			type='e2e'
@@ -280,72 +279,53 @@ stories.add('Time format', () => (
 ));
 
 stories.add('Reactions', () => (
-	<Message
-		msg='Reactions'
-		reactions={[{
-			emoji: ':joy:',
-			usernames: [{ value: 'username' }, { value: 'rocket.cat' }, { value: 'diego.mello' }]
-		}, {
-			emoji: ':marioparty:',
-			usernames: [{ value: 'username' }, { value: 'rocket.cat' }, { value: 'diego.mello' }, { value: 'user1' }, { value: 'user1' }, { value: 'user1' }, { value: 'user1' }, { value: 'user1' }, { value: 'user1' }, { value: 'user1' }, { value: 'user1' }, { value: 'user1' }, { value: 'user1' }]
-		}, {
-			emoji: ':thinking:',
-			usernames: [{ value: 'username' }]
-		}]}
-		onReactionPress={() => {}}
-	/>
-));
-
-stories.add('Multiple reactions', () => (
-	<Message
-		msg='Multiple Reactions'
-		reactions={[{
-			emoji: ':marioparty:',
-			usernames: [{ value: 'username' }]
-		}, {
-			emoji: ':react_rocket:',
-			usernames: [{ value: 'username' }]
-		}, {
-			emoji: ':nyan_rocket:',
-			usernames: [{ value: 'username' }]
-		}, {
-			emoji: ':heart:',
-			usernames: [{ value: 'username' }]
-		}, {
-			emoji: ':dog:',
-			usernames: [{ value: 'username' }]
-		}, {
-			emoji: ':grinning:',
-			usernames: [{ value: 'username' }]
-		}, {
-			emoji: ':grimacing:',
-			usernames: [{ value: 'username' }]
-		}, {
-			emoji: ':grin:',
-			usernames: [{ value: 'username' }]
-		}]}
-		onReactionPress={() => {}}
-	/>
-));
-
-stories.add('Intercalated users', () => (
 	<>
 		<Message
-			msg='Fourth message'
-			author={{
-				...author,
-				username: 'rocket.cat'
-			}}
+			msg='Reactions'
+			reactions={[{
+				emoji: ':joy:',
+				usernames: [user.username]
+			}, {
+				emoji: ':marioparty:',
+				usernames: new Array(99)
+			}, {
+				emoji: ':thinking:',
+				usernames: new Array(999)
+			}, {
+				emoji: ':thinking:',
+				usernames: new Array(9999)
+			}]}
+			onReactionPress={() => {}}
 		/>
-		<Message msg='Third message' />
 		<Message
-			msg='Second message'
-			author={{
-				...author,
-				username: 'rocket.cat'
-			}}
+			msg='Multiple Reactions'
+			reactions={[{
+				emoji: ':marioparty:',
+				usernames: [user.username]
+			}, {
+				emoji: ':react_rocket:',
+				usernames: [user.username]
+			}, {
+				emoji: ':nyan_rocket:',
+				usernames: [user.username]
+			}, {
+				emoji: ':heart:',
+				usernames: [user.username]
+			}, {
+				emoji: ':dog:',
+				usernames: [user.username]
+			}, {
+				emoji: ':grinning:',
+				usernames: [user.username]
+			}, {
+				emoji: ':grimacing:',
+				usernames: [user.username]
+			}, {
+				emoji: ':grin:',
+				usernames: [user.username]
+			}]}
+			onReactionPress={() => {}}
 		/>
-		<Message msg='First message' />
 	</>
 ));
 
@@ -823,88 +803,43 @@ stories.add('Editing', () => (
 	<Message msg='Message being edited' editing />
 ));
 
-stories.add('Removed', () => (
-	<Message type='rm' isInfo />
-));
-
-stories.add('Joined', () => (
-	<Message type='uj' isInfo />
-));
-
-stories.add('Room name changed', () => (
-	<Message msg='New name' type='r' isInfo />
-));
-
-stories.add('Message pinned', () => (
-	<Message
-		msg='New name'
-		type='message_pinned'
-		isInfo
-		attachments={[{
-			author_name: 'rocket.cat',
-			ts: date,
-			timeFormat: 'LT',
-			text: 'First message'
-		}]}
-	/>
-));
-
-stories.add('Has left the channel', () => (
-	<Message type='ul' isInfo />
-));
-
-stories.add('User removed', () => (
-	<Message msg='rocket.cat' type='ru' isInfo />
-));
-
-stories.add('User added', () => (
-	<Message msg='rocket.cat' type='au' isInfo />
-));
-
-stories.add('User muted', () => (
-	<Message msg='rocket.cat' type='user-muted' isInfo />
-));
-
-stories.add('User unmuted', () => (
-	<Message msg='rocket.cat' type='user-unmuted' isInfo />
-));
-
-stories.add('Role added', () => (
-	<Message
-		msg='rocket.cat'
-				role='admin' // eslint-disable-line
-		type='subscription-role-added'
-		isInfo
-	/>
-));
-
-stories.add('Role removed', () => (
-	<Message
-		msg='rocket.cat'
-				role='admin' // eslint-disable-line
-		type='subscription-role-removed'
-		isInfo
-	/>
-));
-
-stories.add('Changed description', () => (
-	<Message msg='new description' type='room_changed_description' isInfo />
-));
-
-stories.add('Changed announcement', () => (
-	<Message msg='new announcement' type='room_changed_announcement' isInfo />
-));
-
-stories.add('Changed topic', () => (
-	<Message msg='new topic' type='room_changed_topic' isInfo />
-));
-
-stories.add('Changed type', () => (
-	<Message msg='public' type='room_changed_privacy' isInfo />
-));
-
-stories.add('Toggle e2e encryption', () => (
+stories.add('System messages', () => (
 	<>
+		<Message type='rm' isInfo />
+		<Message type='uj' isInfo />
+		<Message
+			msg='New name'
+			type='message_pinned'
+			isInfo
+			attachments={[{
+				author_name: 'rocket.cat',
+				ts: date,
+				timeFormat: 'LT',
+				text: 'First message'
+			}]}
+		/>
+		<Message type='ul' isInfo />
+		<Message msg='rocket.cat' type='ru' isInfo />
+		<Message msg='rocket.cat' type='au' isInfo />
+		<Message msg='rocket.cat' type='user-muted' isInfo />
+		<Message msg='rocket.cat' type='user-unmuted' isInfo />
+		<Message
+			msg='rocket.cat'
+			role='admin'
+			type='subscription-role-added'
+			isInfo
+		/>
+		<Message
+			msg='rocket.cat'
+			role='admin'
+			type='subscription-role-removed'
+			isInfo
+		/>
+		<Message msg='New name' type='r' isInfo />
+		<Message msg='new description' type='room_changed_description' isInfo />
+		<Message msg='new announcement' type='room_changed_announcement' isInfo />
+		<Message msg='new topic' type='room_changed_topic' isInfo />
+		<Message msg='public' type='room_changed_privacy' isInfo />
 		<Message type='room_e2e_disabled' isInfo />
 		<Message type='room_e2e_enabled' isInfo />
 	</>

@@ -25,7 +25,6 @@ const updatedAt = {
 
 const RoomItem = props => (
 	<RoomItemComponent
-		rid='abc'
 		type='d'
 		name='rocket.cat'
 		avatar='rocket.cat'
