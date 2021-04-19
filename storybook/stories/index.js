@@ -12,6 +12,8 @@ import './HeaderButtons';
 import './UnreadBadge';
 import '../../app/views/ThreadMessagesView/Item.stories.js';
 import './Avatar';
+import '../../app/containers/BackgroundContainer/index.stories.js';
+import '../../app/containers/RoomHeader/RoomHeader.stories.js';
 
 // Change here to see themed storybook
 export const theme = 'light';
