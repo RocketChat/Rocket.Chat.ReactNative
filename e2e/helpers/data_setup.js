@@ -20,6 +20,7 @@ const login = async (username, password) => {
     const authToken = response.data.data.authToken
     rocketchat.defaults.headers.common['X-User-Id'] = userId
     rocketchat.defaults.headers.common['X-Auth-Token'] = authToken
+    return { authToken, userId };
 }
 
 const createUser = async (username, password, name, email) => {
@@ -91,11 +92,11 @@ const changeChannelJoinCode = async (roomId, joinCode) => {
     }
 }
 
-const sendMessage = async (user, groupname, msg) => {
-    console.log(`Sending message to ${groupname}`)
+const sendMessage = async (user, channel, msg) => {
+    console.log(`Sending message to ${channel}`)
     try {
         await login(user.username, user.password);
-        await rocketchat.post('chat.postMessage', { channel: `#${groupname}`, msg });
+        await rocketchat.post('chat.postMessage', { channel, msg });
     } catch (infoError) {
         console.log(JSON.stringify(infoError))
         throw "Failed to find or create private group"
@@ -146,5 +147,5 @@ const post = (endpoint, body) => {
 }
 
 module.exports = {
-    setup, sendMessage, get, post
+    setup, sendMessage, get, post, login
 }
