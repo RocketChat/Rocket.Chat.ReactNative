@@ -69,11 +69,12 @@ const styles = StyleSheet.create({
 
 class CreateChannelView extends React.Component {
 	static navigationOptions = () => ({
-		title: I18n.t('Create_Channel')
-	});
+		title: this.props?.route?.params?.isTeam ? I18n.t('Create_Team') : I18n.t('Create_Channel')
+	})
 
 	static propTypes = {
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		baseUrl: PropTypes.string,
 		create: PropTypes.func.isRequired,
 		removeUser: PropTypes.func.isRequired,
@@ -302,7 +303,10 @@ class CreateChannelView extends React.Component {
 
 	render() {
 		const { channelName } = this.state;
-		const { users, isFetching, theme } = this.props;
+		const {
+			users, isFetching, route, theme
+		} = this.props;
+		const { isTeam } = route?.params;
 		const userCount = users.length;
 
 		return (
@@ -312,18 +316,18 @@ class CreateChannelView extends React.Component {
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
-				<SafeAreaView testID='create-channel-view'>
+				<SafeAreaView testID={isTeam ? 'create-team-view' : 'create-channel-view'}>
 					<ScrollView {...scrollPersistTaps}>
 						<View style={[sharedStyles.separatorVertical, { borderColor: themes[theme].separatorColor }]}>
 							<TextInput
 								autoFocus
 								style={[styles.input, { backgroundColor: themes[theme].backgroundColor }]}
-								label={I18n.t('Channel_Name')}
+								label={isTeam ? I18n.t('Team_Name') : I18n.t('Channel_Name')}
 								value={channelName}
 								onChangeText={this.onChangeText}
-								placeholder={I18n.t('Channel_Name')}
+								placeholder={isTeam ? I18n.t('Team_Name') : I18n.t('Channel_Name')}
 								returnKeyType='done'
-								testID='create-channel-name'
+								testID={isTeam ? 'create-team-name' : 'create-channel-name'}
 								autoCorrect={false}
 								autoCapitalize='none'
 								theme={theme}
