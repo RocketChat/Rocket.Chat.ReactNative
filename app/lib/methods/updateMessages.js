@@ -8,6 +8,7 @@ import protectedFunction from './helpers/protectedFunction';
 import { Encryption } from '../encryption';
 
 export default function updateMessages({ rid, update = [], remove = [] }) {
+  console.log('🚀 ~ file: updateMessages.js ~ line 11 ~ updateMessages ~ update', update);
 	try {
 		if (!((update && update.length) || (remove && remove.length))) {
 			return;

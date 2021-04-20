@@ -731,6 +731,12 @@ class RoomView extends React.Component {
 		}
 	}
 
+	loadMore = async(item) => {
+  	console.log('🚀 ~ file: index.js ~ line 735 ~ RoomView ~ item', item);
+		const data = await RocketChat.loadMessagesForRoom({ rid: this.rid, t: this.t, latest: item.ts })
+    console.log('🚀 ~ file: index.js ~ line 737 ~ RoomView ~ loadMore=async ~ data', data);
+	}
+
 	getThreadMessages = () => RocketChat.loadThreadMessages({ tmid: this.tmid, rid: this.rid })
 
 	getCustomEmoji = (name) => {
@@ -924,48 +930,61 @@ class RoomView extends React.Component {
 			}
 		}
 
-		const message = (
-			<Message
-				item={item}
-				user={user}
-				rid={room.rid}
-				archived={room.archived}
-				broadcast={room.broadcast}
-				status={item.status}
-				isThreadRoom={!!this.tmid}
-				isIgnored={this.isIgnored(item)}
-				previousItem={previousItem}
-				fetchThreadName={this.fetchThreadName}
-				onReactionPress={this.onReactionPress}
-				onReactionLongPress={this.onReactionLongPress}
-				onLongPress={this.onMessageLongPress}
-				onEncryptedPress={this.onEncryptedPress}
-				onDiscussionPress={this.onDiscussionPress}
-				onThreadPress={this.onThreadPress}
-				showAttachment={this.showAttachment}
-				reactionInit={this.onReactionInit}
-				replyBroadcast={this.replyBroadcast}
-				errorActionsShow={this.errorActionsShow}
-				baseUrl={baseUrl}
-				Message_GroupingPeriod={Message_GroupingPeriod}
-				timeFormat={Message_TimeFormat}
-				useRealName={useRealName}
-				isReadReceiptEnabled={Message_Read_Receipt_Enabled}
-				autoTranslateRoom={canAutoTranslate && room.autoTranslate}
-				autoTranslateLanguage={room.autoTranslateLanguage}
-				navToRoomInfo={this.navToRoomInfo}
-				getCustomEmoji={this.getCustomEmoji}
-				callJitsi={this.callJitsi}
-				blockAction={this.blockAction}
-				threadBadgeColor={this.getBadgeColor(item?.id)}
-				toggleFollowThread={this.toggleFollowThread}
-			/>
-		);
+		let content = null;
+		if (item.t === 'dummy') {
+			content = (
+				<Touch
+					onPress={() => this.loadMore(item)}
+					style={{ height: 50, backgroundColor: themes[theme].actionTintColor, alignItems: 'center', justifyContent: 'center' }}
+					theme={theme}
+				>
+					<Text style={{ color: themes[theme].buttonText, fontSize: 30 }}>+</Text>
+				</Touch>
+			);
+		} else {
+			content = (
+				<Message
+					item={item}
+					user={user}
+					rid={room.rid}
+					archived={room.archived}
+					broadcast={room.broadcast}
+					status={item.status}
+					isThreadRoom={!!this.tmid}
+					isIgnored={this.isIgnored(item)}
+					previousItem={previousItem}
+					fetchThreadName={this.fetchThreadName}
+					onReactionPress={this.onReactionPress}
+					onReactionLongPress={this.onReactionLongPress}
+					onLongPress={this.onMessageLongPress}
+					onEncryptedPress={this.onEncryptedPress}
+					onDiscussionPress={this.onDiscussionPress}
+					onThreadPress={this.onThreadPress}
+					showAttachment={this.showAttachment}
+					reactionInit={this.onReactionInit}
+					replyBroadcast={this.replyBroadcast}
+					errorActionsShow={this.errorActionsShow}
+					baseUrl={baseUrl}
+					Message_GroupingPeriod={Message_GroupingPeriod}
+					timeFormat={Message_TimeFormat}
+					useRealName={useRealName}
+					isReadReceiptEnabled={Message_Read_Receipt_Enabled}
+					autoTranslateRoom={canAutoTranslate && room.autoTranslate}
+					autoTranslateLanguage={room.autoTranslateLanguage}
+					navToRoomInfo={this.navToRoomInfo}
+					getCustomEmoji={this.getCustomEmoji}
+					callJitsi={this.callJitsi}
+					blockAction={this.blockAction}
+					threadBadgeColor={this.getBadgeColor(item?.id)}
+					toggleFollowThread={this.toggleFollowThread}
+				/>
+			);
+		}
 
 		if (showUnreadSeparator || dateSeparator) {
 			return (
 				<>
-					{message}
+					{content}
 					<Separator
 						ts={dateSeparator}
 						unread={showUnreadSeparator}
@@ -975,7 +994,7 @@ class RoomView extends React.Component {
 			);
 		}
 
-		return message;
+		return content;
 	}
 
 	renderFooter = () => {

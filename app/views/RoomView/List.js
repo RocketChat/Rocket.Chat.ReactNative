@@ -239,10 +239,10 @@ class List extends React.Component {
 	}
 
 	onEndReached = async() => {
-		if (this.needsFetch) {
-			this.needsFetch = false;
-			await this.fetchData();
-		}
+		// if (this.needsFetch) {
+		// 	this.needsFetch = false;
+		// 	await this.fetchData();
+		// }
 		this.query();
 	}
 

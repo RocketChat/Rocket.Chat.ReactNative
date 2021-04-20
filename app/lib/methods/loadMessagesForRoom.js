@@ -24,8 +24,15 @@ export default function loadMessagesForRoom(args) {
 	return new Promise(async(resolve, reject) => {
 		try {
 			const data = await load.call(this, args);
-
-			if (data && data.length) {
+			if (data?.length) {
+				const lastMessage = data[data.length - 1];
+				const dummy = {
+					_id: `dummy-${ lastMessage._id }`,
+					rid: lastMessage.rid,
+					ts: lastMessage.ts,
+					t: 'dummy'
+				};
+				data.push(dummy);
 				await updateMessages({ rid: args.rid, update: data });
 				return resolve(data);
 			} else {
