@@ -10,6 +10,7 @@ import * as List from '../containers/List';
 import TextInput from '../presentation/TextInput';
 import Loading from '../containers/Loading';
 import { createChannelRequest as createChannelRequestAction } from '../actions/createChannel';
+import { createTeamRequest as createTeamRequestAction } from '../actions/createTeam';
 import { removeUser as removeUserAction } from '../actions/selectedUsers';
 import sharedStyles from './Styles';
 import KeyboardView from '../presentation/KeyboardView';
@@ -68,15 +69,16 @@ const styles = StyleSheet.create({
 });
 
 class CreateChannelView extends React.Component {
-	static navigationOptions = () => ({
-		title: this.props?.route?.params?.isTeam ? I18n.t('Create_Team') : I18n.t('Create_Channel')
+	static navigationOptions = ({ route }) => ({
+		title: route?.params?.isTeam ? I18n.t('Create_Team') : I18n.t('Create_Channel')
 	})
 
 	static propTypes = {
 		navigation: PropTypes.object,
 		route: PropTypes.object,
 		baseUrl: PropTypes.string,
-		create: PropTypes.func.isRequired,
+		createChannel: PropTypes.func.isRequired,
+		createTeam: PropTypes.func.isRequired,
 		removeUser: PropTypes.func.isRequired,
 		error: PropTypes.object,
 		failure: PropTypes.bool,
@@ -155,7 +157,10 @@ class CreateChannelView extends React.Component {
 		const {
 			channelName, type, readOnly, broadcast, encrypted
 		} = this.state;
-		const { users: usersProps, isFetching, create } = this.props;
+		const {
+			users: usersProps, isFetching, createTeam, createChannel, route
+		} = this.props;
+		const { isTeam } = route?.params;
 
 		if (!channelName.trim() || isFetching) {
 			return;
@@ -164,10 +169,17 @@ class CreateChannelView extends React.Component {
 		// transform users object into array of usernames
 		const users = usersProps.map(user => user.name);
 
-		// create channel
-		create({
-			name: channelName, users, type, readOnly, broadcast, encrypted
-		});
+		if (isTeam) {
+			// create team
+			createTeam({
+				name: channelName, users, type, readOnly, broadcast, encrypted
+			});
+		} else {
+			// create channel
+			createChannel({
+				name: channelName, users, type, readOnly, broadcast, encrypted
+			});
+		}
 
 		Review.pushPositiveEvent();
 	}
@@ -198,10 +210,13 @@ class CreateChannelView extends React.Component {
 
 	renderType() {
 		const { type } = this.state;
+		const { route } = this.props;
+		const { isTeam } = route?.params;
+
 		return this.renderSwitch({
 			id: 'type',
 			value: type,
-			label: 'Private_Channel',
+			label: isTeam ? 'Private_Team' : 'Private_Channel',
 			onValueChange: (value) => {
 				logEvent(events.CR_TOGGLE_TYPE);
 				// If we set the channel as public, encrypted status should be false
@@ -212,10 +227,13 @@ class CreateChannelView extends React.Component {
 
 	renderReadOnly() {
 		const { readOnly, broadcast } = this.state;
+		const { route } = this.props;
+		const { isTeam } = route?.params;
+
 		return this.renderSwitch({
 			id: 'readonly',
 			value: readOnly,
-			label: 'Read_Only_Channel',
+			label: isTeam ? 'Read_Only_Team' : 'Read_Only_Channel',
 			onValueChange: (value) => {
 				logEvent(events.CR_TOGGLE_READ_ONLY);
 				this.setState({ readOnly: value });
@@ -246,10 +264,13 @@ class CreateChannelView extends React.Component {
 
 	renderBroadcast() {
 		const { broadcast, readOnly } = this.state;
+		const { route } = this.props;
+		const { isTeam } = route?.params;
+
 		return this.renderSwitch({
 			id: 'broadcast',
 			value: broadcast,
-			label: 'Broadcast_Channel',
+			label: isTeam ? 'Broadcast_Team' : 'Broadcast_Channel',
 			onValueChange: (value) => {
 				logEvent(events.CR_TOGGLE_BROADCAST);
 				this.setState({
@@ -364,7 +385,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	create: data => dispatch(createChannelRequestAction(data)),
+	createChannel: data => dispatch(createChannelRequestAction(data)),
+	createTeam: data => dispatch(createTeamRequestAction(data)),
 	removeUser: user => dispatch(removeUserAction(user))
 });
 

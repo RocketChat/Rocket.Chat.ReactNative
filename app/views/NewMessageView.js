@@ -23,6 +23,7 @@ import { withTheme } from '../theme';
 import { getUserSelector } from '../selectors/login';
 import Navigation from '../lib/Navigation';
 import { createChannelRequest } from '../actions/createChannel';
+import { createTeamRequest } from '../actions/createTeam';
 import { goRoom } from '../utils/goRoom';
 import SafeAreaView from '../containers/SafeAreaView';
 
@@ -113,7 +114,7 @@ class NewMessageView extends React.Component {
 	createChannel = () => {
 		logEvent(events.NEW_MSG_CREATE_CHANNEL);
 		const { navigation } = this.props;
-		navigation.navigate('SelectedUsersViewCreateChannel', { nextAction: () => navigation.navigate('CreateChannelView') });
+		navigation.navigate('SelectedUsersViewCreateChannel', { nextAction: () => navigation.navigate('CreateChannelView', { isTeam: false }) });
 	}
 
 	createTeam = () => {
@@ -265,7 +266,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	createChannel: params => dispatch(createChannelRequest(params))
+	createChannel: params => dispatch(createChannelRequest(params)),
+	createTeam: params => dispatch(createTeamRequest(params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(NewMessageView));
