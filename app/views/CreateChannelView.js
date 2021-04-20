@@ -376,13 +376,16 @@ class CreateChannelView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
-	baseUrl: state.server.server,
-	isFetching: state.createChannel.isFetching,
-	encryptionEnabled: state.encryption.enabled,
-	users: state.selectedUsers.users,
-	user: getUserSelector(state)
-});
+const mapStateToProps = (state, ownProps) => {
+	const { route } = ownProps;
+	return {
+		baseUrl: state.server.server,
+		isFetching: route?.params?.isTeam ? state.createTeam.isFetching : state.createChannel.isFetching,
+		encryptionEnabled: state.encryption.enabled,
+		users: state.selectedUsers.users,
+		user: getUserSelector(state)
+	};
+};
 
 const mapDispatchToProps = dispatch => ({
 	createChannel: data => dispatch(createChannelRequestAction(data)),

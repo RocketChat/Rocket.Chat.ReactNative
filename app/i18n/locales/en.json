@@ -714,5 +714,6 @@
   "Team_Name": "Team Name",
   "Private_Team": "Private Team",
   "Read_Only_Team": "Read Only Team",
-  "Broadcast_Team": "Broadcast Team"
+  "Broadcast_Team": "Broadcast Team",
+  "creating_team" : "creating team"
 }

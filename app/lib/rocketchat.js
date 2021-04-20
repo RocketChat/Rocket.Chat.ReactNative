@@ -728,9 +728,13 @@ const RocketChat = {
 			prid, pmid, t_name, reply, users, encrypted
 		});
 	},
-	createTeam(name) {
+	createTeam({
+		name, users, type, readOnly, broadcast, encrypted
+	}) {
 		// RC 3.13.0
-		return this.post('teams.create', name);
+		return this.post('teams.create', {
+			name, users, type, readOnly, broadcast, encrypted
+		});
 	},
 	joinRoom(roomId, joinCode, type) {
 		// TODO: join code
