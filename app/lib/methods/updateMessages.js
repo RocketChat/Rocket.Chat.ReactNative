@@ -7,7 +7,7 @@ import database from '../database';
 import protectedFunction from './helpers/protectedFunction';
 import { Encryption } from '../encryption';
 
-export default function updateMessages({ rid, update = [], remove = [] }) {
+export default function updateMessages({ rid, update = [], remove = [], item }) {
   console.log('🚀 ~ file: updateMessages.js ~ line 11 ~ updateMessages ~ update', update);
 	try {
 		if (!((update && update.length) || (remove && remove.length))) {
@@ -122,6 +122,12 @@ export default function updateMessages({ rid, update = [], remove = [] }) {
 				threadMessagesToDelete = threadMessagesToDelete.map(tm => tm.prepareDestroyPermanently());
 			}
 
+			// Delete dummy
+			const deleteDummy = [];
+			if (item) {
+				deleteDummy.push(item.prepareDestroyPermanently());
+			}
+
 			const allRecords = [
 				...msgsToCreate,
 				...msgsToUpdate,
@@ -131,7 +137,8 @@ export default function updateMessages({ rid, update = [], remove = [] }) {
 				...threadsToDelete,
 				...threadMessagesToCreate,
 				...threadMessagesToUpdate,
-				...threadMessagesToDelete
+				...threadMessagesToDelete,
+				...deleteDummy
 			];
 
 			try {

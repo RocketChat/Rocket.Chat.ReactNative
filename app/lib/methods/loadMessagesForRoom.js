@@ -33,7 +33,7 @@ export default function loadMessagesForRoom(args) {
 					t: 'dummy'
 				};
 				data.push(dummy);
-				await updateMessages({ rid: args.rid, update: data });
+				await updateMessages({ rid: args.rid, update: data, item: args.item });
 				return resolve(data);
 			} else {
 				return resolve([]);

@@ -733,7 +733,7 @@ class RoomView extends React.Component {
 
 	loadMore = async(item) => {
   	console.log('🚀 ~ file: index.js ~ line 735 ~ RoomView ~ item', item);
-		const data = await RocketChat.loadMessagesForRoom({ rid: this.rid, t: this.t, latest: item.ts })
+		const data = await RocketChat.loadMessagesForRoom({ rid: this.rid, t: this.t, latest: item.ts, item })
     console.log('🚀 ~ file: index.js ~ line 737 ~ RoomView ~ loadMore=async ~ data', data);
 	}
 
