@@ -159,7 +159,8 @@ class RoomsListView extends React.Component {
 			loading: true,
 			chatsUpdate: [],
 			chats: [],
-			item: {}
+			item: {},
+			toggleFavorite: false
 		};
 		this.setHeader();
 		this.getSubscriptions();
@@ -214,7 +215,9 @@ class RoomsListView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { chatsUpdate, searching, item } = this.state;
+		const {
+			chatsUpdate, searching, item, toggleFavorite
+		} = this.state;
 		// eslint-disable-next-line react/destructuring-assignment
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
@@ -230,6 +233,10 @@ class RoomsListView extends React.Component {
 		}
 
 		if (nextState.searching !== searching) {
+			return true;
+		}
+
+		if (nextState.toggleFavorite !== toggleFavorite) {
 			return true;
 		}
 
@@ -270,7 +277,7 @@ class RoomsListView extends React.Component {
 		return false;
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps, prevState) {
 		const {
 			sortBy,
 			groupByType,
@@ -280,7 +287,7 @@ class RoomsListView extends React.Component {
 			isMasterDetail,
 			insets
 		} = this.props;
-		const { item } = this.state;
+		const { item, toggleFavorite } = this.state;
 
 		if (
 			!(
@@ -288,6 +295,7 @@ class RoomsListView extends React.Component {
 				&& prevProps.groupByType === groupByType
 				&& prevProps.showFavorites === showFavorites
 				&& prevProps.showUnread === showUnread
+        && prevState.toggleFavorite === toggleFavorite
 			)
 		) {
 			this.getSubscriptions();
@@ -498,7 +506,8 @@ class RoomsListView extends React.Component {
 				this.internalSetState({
 					chats: tempChats,
 					chatsUpdate,
-					loading: false
+					loading: false,
+					toggleFavorite: false
 				});
 			} else {
 				this.state.chats = tempChats;
@@ -624,6 +633,10 @@ class RoomsListView extends React.Component {
 						await subRecord.update((sub) => {
 							sub.f = !favorite;
 						});
+						const { showFavorites } = this.props;
+						if (showFavorites) {
+							this.internalSetState({ toggleFavorite: true });
+						}
 					} catch (e) {
 						log(e);
 					}
