@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, View, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
+import parse from 'url-parse';
 
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
@@ -676,10 +677,20 @@ class RoomView extends React.Component {
 		// 		rid: item.subscription.id, tmid: item.id, name: makeThreadName(item), t: 'thread', roomUserId
 		// 	});
 		// }
-		this.flatList.current.scrollToIndex({ index: 49, viewPosition: 0.5 });
 		// this.offset += 100;
+		this.flatList.current.scrollToIndex({ index: 49, viewPosition: 0.5 });
 		// this.flatList?.scrollToOffset({ offset: this.offset });
 	}, 1000, true)
+
+	jumpToMessage = async(message) => {
+		if (!message) {
+			return;
+		}
+		const parsedUrl = parse(message, true);
+  	// console.log('🚀 ~ file: index.js ~ line 685 ~ RoomView ~ message', message, parsedUrl);
+		const result = await RocketChat.loadSurroundingMessages({ messageId: parsedUrl.query.msg, rid: this.rid }); // TODO: messages can come from other rooms
+    console.log('🚀 ~ file: index.js ~ line 692 ~ RoomView ~ jumpToMessage=async ~ result', result);
+	}
 
 	// scrollTo = () => {
 	// 	this.flatList.scrollToIndex({ index: 49, viewPosition: 0.5 });
@@ -977,6 +988,7 @@ class RoomView extends React.Component {
 					blockAction={this.blockAction}
 					threadBadgeColor={this.getBadgeColor(item?.id)}
 					toggleFollowThread={this.toggleFollowThread}
+					jumpToMessage={this.jumpToMessage}
 				/>
 			);
 		}
