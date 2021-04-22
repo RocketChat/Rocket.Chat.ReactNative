@@ -744,8 +744,15 @@ class RoomView extends React.Component {
 
 	loadMore = async(item) => {
   	console.log('🚀 ~ file: index.js ~ line 735 ~ RoomView ~ item', item);
-		const data = await RocketChat.loadMessagesForRoom({ rid: this.rid, t: this.t, latest: item.ts, item })
-    console.log('🚀 ~ file: index.js ~ line 737 ~ RoomView ~ loadMore=async ~ data', data);
+		if (item.t === 'dummy') {
+			const data = await RocketChat.loadMessagesForRoom({ rid: this.rid, t: this.t, latest: item.ts, item })
+			console.log('🚀 ~ file: index.js ~ line 737 ~ RoomView ~ loadMore=async ~ data', data);
+		}
+
+		if (item.t === 'dummy-next') {
+			const data = await RocketChat.loadNextMessages({ rid: this.rid, ts: item.ts, item })
+			console.log('🚀 ~ file: index.js ~ line 737 ~ RoomView ~ loadMore=async ~ data', data);
+		}
 	}
 
 	getThreadMessages = () => RocketChat.loadThreadMessages({ tmid: this.tmid, rid: this.rid })
@@ -942,7 +949,7 @@ class RoomView extends React.Component {
 		}
 
 		let content = null;
-		if (item.t === 'dummy') {
+		if (item.t === 'dummy' || item.t === 'dummy-next') {
 			content = (
 				<Touch
 					onPress={() => this.loadMore(item)}

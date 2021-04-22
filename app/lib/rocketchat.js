@@ -42,6 +42,7 @@ import triggerBlockAction, { triggerSubmitView, triggerCancel } from './methods/
 
 import loadMessagesForRoom from './methods/loadMessagesForRoom';
 import loadSurroundingMessages from './methods/loadSurroundingMessages';
+import loadNextMessages from './methods/loadNextMessages';
 import loadMissedMessages from './methods/loadMissedMessages';
 import loadThreadMessages from './methods/loadThreadMessages';
 
@@ -612,6 +613,7 @@ const RocketChat = {
 	loadMissedMessages,
 	loadMessagesForRoom,
 	loadSurroundingMessages,
+	loadNextMessages,
 	loadThreadMessages,
 	sendMessage,
 	getRooms,

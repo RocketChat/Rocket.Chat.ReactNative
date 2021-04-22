@@ -1,3 +1,6 @@
+import EJSON from 'ejson';
+import moment from 'moment';
+
 import log from '../../utils/log';
 import updateMessages from './updateMessages';
 
@@ -7,30 +10,29 @@ export default function loadSurroundingMessages({ messageId, rid }) {
   console.log('🚀 ~ file: loadSurroundingMessages.js ~ line 7 ~ loadSurroundingMessages ~ messageId, rid', messageId, rid);
 	return new Promise(async(resolve, reject) => {
 		try {
-			const data = await this.methodCallWrapper('loadSurroundingMessages', { _id: messageId, rid });
-      console.log('🚀 ~ file: loadSurroundingMessages.js ~ line 11 ~ returnnewPromise ~ data', data);
-			const messages = data?.messages;
+			// TODO: not working through DDP
+			const data = await this.methodCallWrapper('loadSurroundingMessages', { _id: messageId, rid }, COUNT);
+			const messages = EJSON.fromJSONValue(data?.messages);
 			if (messages?.length) {
 				if (data?.moreBefore) {
-					const lastMessage = messages[messages.length - 1];
+					const firstMessage = messages[0];
 					const dummy = {
-						_id: `dummy-${ lastMessage._id }`,
-						rid: lastMessage.rid,
-						ts: lastMessage.ts,
+						_id: `dummy-${ firstMessage._id }`,
+						rid: firstMessage.rid,
+						ts: moment(firstMessage.ts).subtract(1, 'millisecond'), // TODO: can we do it without subtracting 1ms?
 						t: 'dummy'
 					};
 					messages.push(dummy);
 				}
-
 				if (data?.moreAfter) {
-					const firstMessage = messages[messages.length - 1];
+					const lastMessage = messages[messages.length - 1];
 					const dummy = {
-						_id: `dummy-${ firstMessage._id }`,
-						rid: firstMessage.rid,
-						ts: firstMessage.ts,
-						t: 'dummy'
+						_id: `dummy-${ lastMessage._id }`,
+						rid: lastMessage.rid,
+						ts: moment(lastMessage.ts).add(1, 'millisecond'), // TODO: can we do it without adding 1ms?
+						t: 'dummy-next'
 					};
-					messages.unshift(dummy);
+					messages.push(dummy);
 				}
 				console.log('🚀 ~ file: loadSurroundingMessages.js ~ line 39 ~ returnnewPromise ~ data', messages);
 				await updateMessages({ rid, update: messages });
