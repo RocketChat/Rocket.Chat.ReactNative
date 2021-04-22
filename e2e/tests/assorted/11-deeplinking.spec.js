@@ -2,8 +2,8 @@ const {
 	device, element, by, waitFor
 } = require('detox');
 const data = require('../../data');
-const { tapBack, checkServer, navigateToRegister, login } = require('../../helpers/app');
-const { post, get } = require('../../helpers/data_setup');
+const { tapBack, checkServer, navigateToRegister } = require('../../helpers/app');
+const { post, get, login } = require('../../helpers/data_setup');
 
 const DEEPLINK_METHODS = { AUTH: 'auth', ROOM: 'room' };
 const getDeepLink = (method, server, params) => {
@@ -14,35 +14,31 @@ const getDeepLink = (method, server, params) => {
 
 describe('Deep linking', () => {
 	let userId;
-	let token;
+	let authToken;
 	before(async() => {
-		const loginResult = await post('login', {
-			user: data.users.regular.username,
-			password: data.users.regular.password
-		})
-    userId = loginResult.data.data.userId
-    token = loginResult.data.data.authToken
+		const loginResult = await login(data.users.regular.username, data.users.regular.password);
+		({ userId, authToken } = loginResult);
 	});
 
 	describe('Authentication', () => {
 		it('should run a deep link to an invalid account and raise error', async() => {
 			await device.launchApp({
 				permissions: { notifications: 'YES' },
-				newInstance: true,
+				delete: true,
 				url: getDeepLink(DEEPLINK_METHODS.AUTH, data.server, 'userId=123&token=abc'),
 				sourceApp: 'com.apple.mobilesafari'
 			});
-			await waitFor(element(by.text('You\'ve been logged out by the server. Please log in again.'))).toExist().withTimeout(5000); // TODO: we need to improve this message
+			await waitFor(element(by.text('You\'ve been logged out by the server. Please log in again.'))).toExist().withTimeout(10000); // TODO: we need to improve this message
 		});
 
 		const authAndNavigate = async() => {
 			await device.launchApp({
 				permissions: { notifications: 'YES' },
 				newInstance: true,
-				url: getDeepLink(DEEPLINK_METHODS.AUTH, data.server, `userId=${ userId }&token=${ token }&path=group/${ data.groups.private.name }`),
+				url: getDeepLink(DEEPLINK_METHODS.AUTH, data.server, `userId=${ userId }&token=${ authToken }&path=group/${ data.groups.private.name }`),
 				sourceApp: 'com.apple.mobilesafari'
 			});
-			await waitFor(element(by.id(`room-view-title-${ data.groups.private.name }`))).toExist().withTimeout(10000);
+			await waitFor(element(by.id(`room-view-title-${ data.groups.private.name }`))).toExist().withTimeout(30000);
 			await tapBack();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 			await checkServer(data.server);
@@ -56,10 +52,10 @@ describe('Deep linking', () => {
 		it('should authenticate while logged in another server', async() => {
 			await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 			await navigateToRegister(data.alternateServer);
-			await element(by.id('register-view-name')).replaceText(data.registeringUser.username);
-			await element(by.id('register-view-username')).replaceText(data.registeringUser.username);
-			await element(by.id('register-view-email')).replaceText(data.registeringUser.email);
-			await element(by.id('register-view-password')).replaceText(data.registeringUser.password);
+			await element(by.id('register-view-name')).replaceText(data.registeringUser4.username);
+			await element(by.id('register-view-username')).replaceText(data.registeringUser4.username);
+			await element(by.id('register-view-email')).replaceText(data.registeringUser4.email);
+			await element(by.id('register-view-password')).typeText(data.registeringUser4.password);
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 			await authAndNavigate();
@@ -86,7 +82,7 @@ describe('Deep linking', () => {
 					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `rid=${ roomResult.data.group._id }`),
 					sourceApp: 'com.apple.mobilesafari'
 				});
-				await waitFor(element(by.id(`room-view-title-${ data.groups.private.name }`))).toExist().withTimeout(10000);
+				await waitFor(element(by.id(`room-view-title-${ data.groups.private.name }`))).toExist().withTimeout(15000);
 				await tapBack();
 			});
 		});

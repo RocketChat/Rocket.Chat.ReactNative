@@ -30,6 +30,7 @@ describe('Forgot password screen', () => {
 		it('should reset password and navigate to login', async() => {
 			await element(by.id('forgot-password-view-email')).replaceText(data.users.existing.email);
 			await element(by.id('forgot-password-view-submit')).tap();
+			await waitFor(element(by.text('OK'))).toExist().withTimeout(10000);
 			await element(by.text('OK')).tap();
 			await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(60000);
 		});
