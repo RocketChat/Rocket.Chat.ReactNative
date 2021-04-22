@@ -1,8 +1,10 @@
 import log from '../../utils/log';
 import updateMessages from './updateMessages';
 
+const COUNT = 50;
+
 async function load({ rid: roomId, latest, t }) {
-	let params = { roomId, count: 50 };
+	let params = { roomId, count: COUNT };
 	if (latest) {
 		params = { ...params, latest: new Date(latest).toISOString() };
 	}
@@ -32,7 +34,9 @@ export default function loadMessagesForRoom(args) {
 					ts: lastMessage.ts,
 					t: 'dummy'
 				};
-				data.push(dummy);
+				if (data.length === 50) {
+					data.push(dummy);
+				}
 				await updateMessages({ rid: args.rid, update: data, item: args.item });
 				return resolve(data);
 			} else {
