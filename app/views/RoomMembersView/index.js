@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
+import { dequal } from 'dequal';
 import * as List from '../../containers/List';
 
 import styles from './styles';
@@ -45,7 +46,8 @@ class RoomMembersView extends React.Component {
 		room: PropTypes.object,
 		user: PropTypes.shape({
 			id: PropTypes.string,
-			token: PropTypes.string
+			token: PropTypes.string,
+			roles: PropTypes.array
 		}),
 		showActionSheet: PropTypes.func,
 		theme: PropTypes.string,
@@ -114,9 +116,9 @@ class RoomMembersView extends React.Component {
 		}
 	}
 
-	componentDidUpdate(_, prevState) {
-		const { room } = this.state;
-		if (prevState.room.roles !== room.roles) {
+	componentDidUpdate(prevProps) {
+		const { user } = this.props;
+		if (!dequal(prevProps.user.roles, user.roles)) {
 			this.fetchRoomMembersRoles();
 		}
 	}

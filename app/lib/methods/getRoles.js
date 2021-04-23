@@ -16,7 +16,7 @@ export async function setRoles() {
 	reduxStore.dispatch(setRolesAction(parsed));
 }
 
-export async function subscribeRoles(ddpMessage) {
+export async function onRolesChanged(ddpMessage) {
 	const { type, _id, description } = ddpMessage.fields.args[0];
 	if (/changed/.test(type)) {
 		const db = database.active;
@@ -24,16 +24,24 @@ export async function subscribeRoles(ddpMessage) {
 		try {
 			const rolesRecord = await rolesCollection.find(_id);
 			await db.action(async() => {
-				await rolesRecord.update((u) => {
-					u.description = description;
-				});
+				try {
+					await rolesRecord.update((u) => {
+						u.description = description;
+					});
+				} catch (e) {
+					log(e);
+				}
 			});
 			reduxStore.dispatch(updateRoles(_id, description));
 		} catch (err) {
 			await db.action(async() => {
-				await rolesCollection.create((post) => {
-					post._raw = sanitizedRaw({ id: _id, description }, rolesCollection.schema);
-				});
+				try {
+					await rolesCollection.create((post) => {
+						post._raw = sanitizedRaw({ id: _id, description }, rolesCollection.schema);
+					});
+				} catch (e) {
+					log(e);
+				}
 			});
 			reduxStore.dispatch(addRoles(_id, description || _id));
 		}

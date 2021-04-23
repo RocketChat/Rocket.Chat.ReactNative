@@ -11,17 +11,10 @@ export default function permissions(state = initialState, action) {
 		case ROLES.UPDATE:
 			return {
 				...state,
-				[action.payload.id]: action.payload.desc || action.payload.id
-			};
-		case ROLES.ADD:
-			return {
-				...state,
-				...{ [action.payload.id]: action.payload.desc }
+				[action.payload.id]: action.payload.id || action.payload.desc
 			};
 		case ROLES.REMOVE:
-			delete state[action.payload.id];
-			return state;
-
+			return state.filter(role => role.id !== action.payload.id);
 		default:
 			return state;
 	}
