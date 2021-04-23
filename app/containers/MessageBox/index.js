@@ -876,7 +876,7 @@ class MessageBox extends Component {
 			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview
 		} = this.state;
 		const {
-			editing, message, replying, replyCancel, user, getCustomEmoji, theme, Message_AudioRecorderEnabled, children, isActionsEnabled
+			editing, message, replying, replyCancel, user, getCustomEmoji, theme, Message_AudioRecorderEnabled, children, isActionsEnabled, tmid
 		} = this.props;
 
 		const isAndroidTablet = isTablet && isAndroid ? {
@@ -936,7 +936,7 @@ class MessageBox extends Component {
 					underlineColorAndroid='transparent'
 					defaultValue=''
 					multiline
-					testID='messagebox-input'
+					testID={`messagebox-input${ tmid ? '-thread' : '' }`}
 					theme={theme}
 					{...isAndroidTablet}
 				/>
