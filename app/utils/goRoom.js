@@ -7,18 +7,27 @@ const navigate = ({ item, isMasterDetail, ...props }) => {
 	if (isMasterDetail) {
 		navigationMethod = Navigation.replace;
 	}
-
-	navigationMethod('RoomView', {
-		rid: item.rid,
-		name: RocketChat.getRoomTitle(item),
-		t: item.t,
-		prid: item.prid,
-		room: item,
-		search: item.search,
-		visitor: item.visitor,
-		roomUserId: RocketChat.getUidDirectMessage(item),
-		...props
-	});
+	console.log({ item });
+	if (item.roomId) {
+		navigationMethod('RoomView', {
+			rid: item.roomId || item.rid,
+			name: RocketChat.getRoomTitle(item),
+			roomUserId: RocketChat.getUidDirectMessage(item),
+			...props
+		});
+	} else {
+		navigationMethod('RoomView', {
+			rid: item.rid,
+			name: RocketChat.getRoomTitle(item),
+			t: item.t,
+			prid: item.prid,
+			room: item,
+			search: item.search,
+			visitor: item.visitor,
+			roomUserId: RocketChat.getUidDirectMessage(item),
+			...props
+		});
+	}
 };
 
 export const goRoom = async({ item = {}, isMasterDetail = false, ...props }) => {

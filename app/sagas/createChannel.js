@@ -21,6 +21,10 @@ const createGroupChat = function createGroupChat() {
 	return RocketChat.createGroupChat();
 };
 
+const createTeam = function createTeam(data) {
+	return RocketChat.createTeam(data);
+};
+
 const handleRequest = function* handleRequest({ data }) {
 	try {
 		const auth = yield select(state => state.login.isAuthenticated);
@@ -29,7 +33,21 @@ const handleRequest = function* handleRequest({ data }) {
 		}
 
 		let sub;
-		if (data.group) {
+		if (data.isTeam) {
+			const {
+				type,
+				readOnly,
+				broadcast,
+				encrypted
+			} = data;
+			logEvent(events.CR_CREATE, {
+				type,
+				readOnly,
+				broadcast,
+				encrypted
+			});
+			sub = yield call(createTeam, data);
+		} else if (data.group) {
 			logEvent(events.SELECTED_USERS_CREATE_GROUP);
 			const result = yield call(createGroupChat);
 			if (result.success) {
@@ -76,7 +94,11 @@ const handleSuccess = function* handleSuccess({ data }) {
 	if (isMasterDetail) {
 		Navigation.navigate('DrawerNavigator');
 	}
-	goRoom({ item: data, isMasterDetail });
+	if (data.team) {
+		goRoom({ item: data.team, isMasterDetail });
+	} else {
+		goRoom({ item: data, isMasterDetail });
+	}
 };
 
 const handleFailure = function handleFailure({ err }) {

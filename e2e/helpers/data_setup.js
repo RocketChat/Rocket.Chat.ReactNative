@@ -57,6 +57,26 @@ const createChannelIfNotExists = async (channelname) => {
     }
 }
 
+const createTeamIfNotExists = async (teamname) => {
+    console.log(`Creating private team ${teamname}`)
+    try {
+        const team = await rocketchat.post('teams.create', {
+            "name": teamname,
+            "type": 1
+        })
+        return team
+    } catch (createError) {
+        try { //Maybe it exists already?
+            const team = rocketchat.get(`teams.info?teamName=${teamname}`)
+            return team
+        } catch (infoError) {
+            console.log(JSON.stringify(createError))
+            console.log(JSON.stringify(infoError))
+            throw "Failed to find or create private team"
+        }
+    }
+}
+
 const createGroupIfNotExists = async (groupname) => {
     console.log(`Creating private group ${groupname}`)
     try {
@@ -130,6 +150,13 @@ const setup = async () => {
         if (data.groups.hasOwnProperty(groupKey)) {
             const group = data.groups[groupKey]
             await createGroupIfNotExists(group.name)
+        }
+    }
+
+    for (var teamKey in data.teams) {
+        if (data.teams.hasOwnProperty(teamKey)) {
+            const team = data.teams[teamKey]
+            await createTeamIfNotExists(team.name)
         }
     }
 

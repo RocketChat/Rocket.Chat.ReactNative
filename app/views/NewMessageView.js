@@ -23,7 +23,6 @@ import { withTheme } from '../theme';
 import { getUserSelector } from '../selectors/login';
 import Navigation from '../lib/Navigation';
 import { createChannelRequest } from '../actions/createChannel';
-import { createTeamRequest } from '../actions/createTeam';
 import { goRoom } from '../utils/goRoom';
 import SafeAreaView from '../containers/SafeAreaView';
 
@@ -266,8 +265,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	createChannel: params => dispatch(createChannelRequest(params)),
-	createTeam: params => dispatch(createTeamRequest(params))
+	create: params => dispatch(createChannelRequest(params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(NewMessageView));

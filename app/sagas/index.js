@@ -5,7 +5,6 @@ import room from './room';
 import messages from './messages';
 import selectServer from './selectServer';
 import createChannel from './createChannel';
-import createTeam from './createTeam';
 import init from './init';
 import state from './state';
 import deepLinking from './deepLinking';
@@ -19,7 +18,6 @@ const root = function* root() {
 	yield all([
 		init(),
 		createChannel(),
-		createTeam(),
 		rooms(),
 		room(),
 		login(),

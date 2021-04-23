@@ -731,10 +731,20 @@ const RocketChat = {
 	createTeam({
 		name, users, type, readOnly, broadcast, encrypted
 	}) {
+		const params = {
+			name,
+			users,
+			type: type ? 1 : 0,
+			room: {
+				readOnly,
+				extraData: {
+					broadcast,
+					encrypted
+				}
+			}
+		};
 		// RC 3.13.0
-		return this.post('teams.create', {
-			name, users, type, readOnly, broadcast, encrypted
-		});
+		return this.post('teams.create', params);
 	},
 	joinRoom(roomId, joinCode, type) {
 		// TODO: join code

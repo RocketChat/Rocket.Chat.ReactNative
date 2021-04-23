@@ -10,7 +10,6 @@ import * as List from '../containers/List';
 import TextInput from '../presentation/TextInput';
 import Loading from '../containers/Loading';
 import { createChannelRequest as createChannelRequestAction } from '../actions/createChannel';
-import { createTeamRequest as createTeamRequestAction } from '../actions/createTeam';
 import { removeUser as removeUserAction } from '../actions/selectedUsers';
 import sharedStyles from './Styles';
 import KeyboardView from '../presentation/KeyboardView';
@@ -77,8 +76,7 @@ class CreateChannelView extends React.Component {
 		navigation: PropTypes.object,
 		route: PropTypes.object,
 		baseUrl: PropTypes.string,
-		createChannel: PropTypes.func.isRequired,
-		createTeam: PropTypes.func.isRequired,
+		create: PropTypes.func.isRequired,
 		removeUser: PropTypes.func.isRequired,
 		error: PropTypes.object,
 		failure: PropTypes.bool,
@@ -158,7 +156,7 @@ class CreateChannelView extends React.Component {
 			channelName, type, readOnly, broadcast, encrypted
 		} = this.state;
 		const {
-			users: usersProps, isFetching, createTeam, createChannel, route
+			users: usersProps, isFetching, create, route
 		} = this.props;
 		const { isTeam } = route?.params;
 
@@ -169,17 +167,10 @@ class CreateChannelView extends React.Component {
 		// transform users object into array of usernames
 		const users = usersProps.map(user => user.name);
 
-		if (isTeam) {
-			// create team
-			createTeam({
-				name: channelName, users, type, readOnly, broadcast, encrypted
-			});
-		} else {
-			// create channel
-			createChannel({
-				name: channelName, users, type, readOnly, broadcast, encrypted
-			});
-		}
+		// create channel or team
+		create({
+			name: channelName, users, type, readOnly, broadcast, encrypted, isTeam
+		});
 
 		Review.pushPositiveEvent();
 	}
@@ -376,20 +367,16 @@ class CreateChannelView extends React.Component {
 	}
 }
 
-const mapStateToProps = (state, ownProps) => {
-	const { route } = ownProps;
-	return {
-		baseUrl: state.server.server,
-		isFetching: route?.params?.isTeam ? state.createTeam.isFetching : state.createChannel.isFetching,
-		encryptionEnabled: state.encryption.enabled,
-		users: state.selectedUsers.users,
-		user: getUserSelector(state)
-	};
-};
+const mapStateToProps = state => ({
+	baseUrl: state.server.server,
+	isFetching: state.createChannel.isFetching,
+	encryptionEnabled: state.encryption.enabled,
+	users: state.selectedUsers.users,
+	user: getUserSelector(state)
+});
 
 const mapDispatchToProps = dispatch => ({
-	createChannel: data => dispatch(createChannelRequestAction(data)),
-	createTeam: data => dispatch(createTeamRequestAction(data)),
+	create: data => dispatch(createChannelRequestAction(data)),
 	removeUser: user => dispatch(removeUserAction(user))
 });
 

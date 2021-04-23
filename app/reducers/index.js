@@ -7,7 +7,6 @@ import rooms from './rooms';
 import server from './server';
 import selectedUsers from './selectedUsers';
 import createChannel from './createChannel';
-import createTeam from './createTeam';
 import app from './app';
 import sortPreferences from './sortPreferences';
 import share from './share';
@@ -30,7 +29,6 @@ export default combineReducers({
 	server,
 	selectedUsers,
 	createChannel,
-	createTeam,
 	app,
 	room,
 	rooms,
