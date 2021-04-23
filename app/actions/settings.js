@@ -7,7 +7,7 @@ export function addSettings(settings) {
 	};
 }
 
-export function updateSettings(id, value) {
+export function updateSetting(id, value) {
 	return {
 		type: SETTINGS.UPDATE,
 		payload: { id, value }

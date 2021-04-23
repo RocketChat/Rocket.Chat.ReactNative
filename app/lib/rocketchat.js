@@ -27,7 +27,7 @@ import getUsersPresence, { getUserPresence, subscribeUsersPresence } from './met
 
 import protectedFunction from './methods/helpers/protectedFunction';
 import readMessages from './methods/readMessages';
-import getSettings, { getLoginSettings, setSettings, subscribeSettings } from './methods/getSettings';
+import getSettings, { getLoginSettings, setSettings } from './methods/getSettings';
 
 import getRooms from './methods/getRooms';
 import { setPermissions, getPermissions } from './methods/getPermissions';
@@ -60,7 +60,6 @@ import UserPreferences from './userPreferences';
 import { Encryption } from './encryption';
 import EventEmitter from '../utils/events';
 import { sanitizeLikeString } from './database/utils';
-import { updateSettings } from '../actions/settings';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
@@ -293,21 +292,6 @@ const RocketChat = {
 						});
 					} catch {
 						// We can't create a new record since we don't receive the user._id
-					}
-				} else if (/private-settings-changed/.test(eventName)) {
-					const { _id, value } = ddpMessage.fields.args[1];
-					const db = database.active;
-					const settingsCollection = db.get('settings');
-					try {
-						const settingsRecord = await settingsCollection.find(_id);
-						await db.action(async() => {
-							await settingsRecord.update((u) => {
-								u._raw.value_as_boolean = value;
-							});
-						});
-						reduxStore.dispatch(updateSettings(_id, value));
-					} catch (err) {
-						console.log(err);
 					}
 				} else if (/Users:NameChanged/.test(eventName)) {
 					const userNameChanged = ddpMessage.fields.args[0];
@@ -1455,7 +1439,6 @@ const RocketChat = {
 	getUsersPresence,
 	getUserPresence,
 	subscribeUsersPresence,
-	subscribeSettings,
 	getDirectory({
 		query, count, offset, sort
 	}) {
