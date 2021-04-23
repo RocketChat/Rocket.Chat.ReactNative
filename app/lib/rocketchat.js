@@ -1,4 +1,5 @@
 import { InteractionManager } from 'react-native';
+import EJSON from 'ejson';
 import {
 	Rocketchat as RocketchatClient,
 	settings as RocketChatSettings
@@ -894,7 +895,7 @@ const RocketChat = {
 	methodCallWrapper(method, ...params) {
 		const { API_Use_REST_For_DDP_Calls } = reduxStore.getState().settings;
 		if (API_Use_REST_For_DDP_Calls) {
-			return this.post(`method.call/${ method }`, { message: JSON.stringify({ method, params }) });
+			return this.post(`method.call/${ method }`, { message: EJSON.stringify({ method, params }) });
 		}
 		return this.methodCall(method, ...params);
 	},

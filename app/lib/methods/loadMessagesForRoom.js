@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import log from '../../utils/log';
 import updateMessages from './updateMessages';
 
@@ -31,7 +33,7 @@ export default function loadMessagesForRoom(args) {
 				const dummy = {
 					_id: `dummy-${ lastMessage._id }`,
 					rid: lastMessage.rid,
-					ts: lastMessage.ts,
+					ts: moment(lastMessage.ts).subtract(1, 'millisecond'), // TODO: can we do it without adding 1ms?
 					t: 'dummy'
 				};
 				if (data.length === 50) {
