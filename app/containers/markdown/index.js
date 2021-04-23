@@ -169,7 +169,7 @@ class Markdown extends PureComponent {
 				style={[
 					{
 						...styles.codeInline,
-						color: themes[theme].auxiliaryText,
+						color: themes[theme].bodyText,
 						backgroundColor: themes[theme].bannerBackground,
 						borderColor: themes[theme].bannerBackground
 					},
@@ -188,7 +188,7 @@ class Markdown extends PureComponent {
 				style={[
 					{
 						...styles.codeBlock,
-						color: themes[theme].auxiliaryText,
+						color: themes[theme].bodyText,
 						backgroundColor: themes[theme].bannerBackground,
 						borderColor: themes[theme].bannerBackground
 					},
@@ -211,7 +211,7 @@ class Markdown extends PureComponent {
 			return null;
 		}
 		return (
-			<Text style={[styles.text, style, { color: themes[theme].auxiliaryText }]} numberOfLines={numberOfLines}>
+			<Text style={[styles.text, style, { color: themes[theme].bodyText }]} numberOfLines={numberOfLines}>
 				{children}
 			</Text>
 		);
@@ -300,7 +300,7 @@ class Markdown extends PureComponent {
 		const { numberOfLines, theme } = this.props;
 		const textStyle = styles[`heading${ level }Text`];
 		return (
-			<Text numberOfLines={numberOfLines} style={[textStyle, { color: themes[theme].auxiliaryText }]}>
+			<Text numberOfLines={numberOfLines} style={[textStyle, { color: themes[theme].bodyText }]}>
 				{children}
 			</Text>
 		);
@@ -389,7 +389,7 @@ class Markdown extends PureComponent {
 			m = removeMarkdown(m);
 			m = m.replace(/\n+/g, ' ');
 			return (
-				<Text accessibilityLabel={m} style={[styles.text, { color: themes[theme].auxiliaryText }, ...style]} numberOfLines={numberOfLines} testID={testID}>
+				<Text accessibilityLabel={m} style={[styles.text, { color: themes[theme].bodyText }, ...style]} numberOfLines={numberOfLines} testID={testID}>
 					{m}
 				</Text>
 			);
