@@ -9,7 +9,7 @@ import {
 	SMALL_SWIPE,
 	LONG_SWIPE
 } from './styles';
-import I18n from '../../i18n';
+import { isRTL } from '../../i18n';
 import { themes } from '../../constants/colors';
 import { LeftActions, RightActions } from './Actions';
 
@@ -35,7 +35,7 @@ class Touchable extends React.Component {
 		super(props);
 		this.dragX = new Animated.Value(0);
 		this.rowOffSet = new Animated.Value(0);
-		this.reverse = new Animated.Value(I18n.isRTL ? -1 : 1);
+		this.reverse = new Animated.Value(isRTL() ? -1 : 1);
 		this.transX = Animated.add(
 			this.rowOffSet,
 			this.dragX
@@ -69,7 +69,7 @@ class Touchable extends React.Component {
 			if (rowState === 0) { // if no option is opened
 				if (translationX > 0 && translationX < LONG_SWIPE) {
 					// open leading option if he swipe right but not enough to trigger action
-					if (I18n.isRTL) {
+					if (isRTL()) {
 						toValue = 2 * ACTION_WIDTH;
 					} else {
 						toValue = ACTION_WIDTH;
@@ -77,14 +77,14 @@ class Touchable extends React.Component {
 					this.setState({ rowState: -1 });
 				} else if (translationX >= LONG_SWIPE) {
 					toValue = 0;
-					if (I18n.isRTL) {
+					if (isRTL()) {
 						this.hideChannel();
 					} else {
 						this.toggleRead();
 					}
 				} else if (translationX < 0 && translationX > -LONG_SWIPE) {
 					// open trailing option if he swipe left
-					if (I18n.isRTL) {
+					if (isRTL()) {
 						toValue = -ACTION_WIDTH;
 					} else {
 						toValue = -2 * ACTION_WIDTH;
@@ -93,7 +93,7 @@ class Touchable extends React.Component {
 				} else if (translationX <= -LONG_SWIPE) {
 					toValue = 0;
 					this.setState({ rowState: 0 });
-					if (I18n.isRTL) {
+					if (isRTL()) {
 						this.toggleRead();
 					} else {
 						this.hideChannel();
@@ -110,12 +110,12 @@ class Touchable extends React.Component {
 				} else if (this._value > LONG_SWIPE) {
 					toValue = 0;
 					this.setState({ rowState: 0 });
-					if (I18n.isRTL) {
+					if (isRTL()) {
 						this.hideChannel();
 					} else {
 						this.toggleRead();
 					}
-				} else if (I18n.isRTL) {
+				} else if (isRTL()) {
 					toValue = 2 * ACTION_WIDTH;
 				} else {
 					toValue = ACTION_WIDTH;
@@ -129,12 +129,12 @@ class Touchable extends React.Component {
 				} else if (this._value < -LONG_SWIPE) {
 					toValue = 0;
 					this.setState({ rowState: 0 });
-					if (I18n.isRTL) {
+					if (isRTL()) {
 						this.toggleRead();
 					} else {
 						this.hideChannel();
 					}
-				} else if (I18n.isRTL) {
+				} else if (isRTL()) {
 					toValue = -ACTION_WIDTH;
 				} else {
 					toValue = -2 * ACTION_WIDTH;

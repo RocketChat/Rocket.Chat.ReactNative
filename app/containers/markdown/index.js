@@ -380,7 +380,7 @@ class Markdown extends PureComponent {
 
 		// Ex: '[ ](https://open.rocket.chat/group/test?msg=abcdef)  Test'
 		// Return: 'Test'
-		m = m.replace(/^\[([\s]]*)\]\(([^)]*)\)\s/, '').trim();
+		m = m.replace(/^\[([\s]*)\]\(([^)]*)\)\s/, '').trim();
 
 		if (preview) {
 			m = shortnameToUnicode(m);

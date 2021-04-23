@@ -10,14 +10,8 @@ const joinCode = data.channels.detoxpublicprotected.joinCode
 
 async function navigateToRoom() {
 	await searchRoom(room);
-	await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible().withTimeout(60000);
 	await element(by.id(`rooms-list-view-item-${ room }`)).tap();
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
-}
-
-async function navigateToRoomActions() {
-	await element(by.id('room-view-header-actions')).tap();
-	await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(5000);
 }
 
 async function openJoinCode() {
@@ -25,7 +19,7 @@ async function openJoinCode() {
 	await waitFor(element(by.id('join-code'))).toBeVisible().withTimeout(5000);
 }
 
-describe('Join public room', () => {
+describe('Join protected room', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();

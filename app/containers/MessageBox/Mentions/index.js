@@ -18,7 +18,7 @@ const Mentions = React.memo(({ mentions, trackingType, theme }) => {
 				data={mentions}
 				extraData={mentions}
 				renderItem={({ item }) => <MentionItem item={item} trackingType={trackingType} theme={theme} />}
-				keyExtractor={item => item.id || item.username || item.command || item}
+				keyExtractor={item => item.rid || item.name || item.command || item}
 				keyboardShouldPersistTaps='always'
 			/>
 		</View>

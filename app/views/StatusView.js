@@ -16,8 +16,7 @@ import { LISTENER } from '../containers/Toast';
 import { withTheme } from '../theme';
 import { getUserSelector } from '../selectors/login';
 import * as HeaderButton from '../containers/HeaderButton';
-import store from '../lib/createStore';
-import { setUser } from '../actions/login';
+import { setUser as setUserAction } from '../actions/login';
 import SafeAreaView from '../containers/SafeAreaView';
 
 const STATUS = [{
@@ -41,11 +40,11 @@ const styles = StyleSheet.create({
 	},
 	inputLeft: {
 		position: 'absolute',
-		top: 18,
-		left: 14
+		top: 12,
+		left: 12
 	},
 	inputStyle: {
-		paddingLeft: 40
+		paddingLeft: 48
 	}
 });
 
@@ -58,14 +57,15 @@ class StatusView extends React.Component {
 		}),
 		theme: PropTypes.string,
 		navigation: PropTypes.object,
-		isMasterDetail: PropTypes.bool
+		isMasterDetail: PropTypes.bool,
+		setUser: PropTypes.func
 	}
 
 	constructor(props) {
 		super(props);
 
 		const { statusText } = props.user;
-		this.state = { statusText, loading: false };
+		this.state = { statusText: statusText || '', loading: false };
 		this.setHeader();
 	}
 
@@ -91,7 +91,7 @@ class StatusView extends React.Component {
 		const { statusText } = this.state;
 		const { user } = this.props;
 		if (statusText !== user.statusText) {
-			await this.setCustomStatus();
+			await this.setCustomStatus(statusText);
 		}
 		this.close();
 	}
@@ -101,9 +101,8 @@ class StatusView extends React.Component {
 		navigation.goBack();
 	}
 
-	setCustomStatus = async() => {
-		const { statusText } = this.state;
-		const { user } = this.props;
+	setCustomStatus = async(statusText) => {
+		const { user, setUser } = this.props;
 
 		this.setState({ loading: true });
 
@@ -111,6 +110,7 @@ class StatusView extends React.Component {
 			const result = await RocketChat.setUserStatus(user.status, statusText);
 			if (result.success) {
 				logEvent(events.STATUS_CUSTOM);
+				setUser({ statusText });
 				EventEmitter.emit(LISTENER, { message: I18n.t('Status_saved_successfully') });
 			} else {
 				logEvent(events.STATUS_CUSTOM_F);
@@ -140,7 +140,7 @@ class StatusView extends React.Component {
 							testID={`status-view-current-${ user.status }`}
 							style={styles.inputLeft}
 							status={user.status}
-							size={12}
+							size={24}
 						/>
 					)}
 					inputStyle={styles.inputStyle}
@@ -154,7 +154,7 @@ class StatusView extends React.Component {
 
 	renderItem = ({ item }) => {
 		const { statusText } = this.state;
-		const { user } = this.props;
+		const { user, setUser } = this.props;
 		const { id, name } = item;
 		return (
 			<List.Item
@@ -165,7 +165,7 @@ class StatusView extends React.Component {
 						try {
 							const result = await RocketChat.setUserStatus(item.id, statusText);
 							if (result.success) {
-								store.dispatch(setUser({ status: item.id }));
+								setUser({ status: item.id });
 							}
 						} catch (e) {
 							logEvent(events.SET_STATUS_FAIL);
@@ -174,7 +174,7 @@ class StatusView extends React.Component {
 					}
 				}}
 				testID={`status-view-${ id }`}
-				left={() => <Status size={12} status={item.id} />}
+				left={() => <Status size={24} status={item.id} />}
 			/>
 		);
 	}
@@ -202,4 +202,8 @@ const mapStateToProps = state => ({
 	isMasterDetail: state.app.isMasterDetail
 });
 
-export default connect(mapStateToProps)(withTheme(StatusView));
+const mapDispatchToProps = dispatch => ({
+	setUser: user => dispatch(setUserAction(user))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(StatusView));

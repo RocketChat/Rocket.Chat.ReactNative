@@ -51,9 +51,6 @@ export default StyleSheet.create({
 	avatar: {
 		marginHorizontal: 10
 	},
-	status: {
-		marginRight: 5
-	},
 	currentServerText: {
 		fontSize: 14,
 		...sharedStyles.textSemibold
