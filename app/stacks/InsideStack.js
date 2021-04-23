@@ -29,6 +29,7 @@ import ForwardLivechatView from '../views/ForwardLivechatView';
 import LivechatEditView from '../views/LivechatEditView';
 import PickerView from '../views/PickerView';
 import ThreadMessagesView from '../views/ThreadMessagesView';
+import TeamChannelsView from '../views/TeamChannelsView';
 import MarkdownTableView from '../views/MarkdownTableView';
 import ReadReceiptsView from '../views/ReadReceiptView';
 import { themes } from '../constants/colors';
@@ -167,6 +168,11 @@ const ChatsStackNavigator = () => {
 				name='ThreadMessagesView'
 				component={ThreadMessagesView}
 				options={ThreadMessagesView.navigationOptions}
+			/>
+			<ChatsStack.Screen
+				name='TeamChannelsView'
+				component={TeamChannelsView}
+				options={TeamChannelsView.navigationOptions}
 			/>
 			<ChatsStack.Screen
 				name='MarkdownTableView'

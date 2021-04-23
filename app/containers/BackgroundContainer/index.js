@@ -1,11 +1,11 @@
 import React from 'react';
 import {
-	ImageBackground, StyleSheet, Text, View
+	ImageBackground, StyleSheet, Text, View, ActivityIndicator
 } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { withTheme } from '../../theme';
-import sharedStyles from '../Styles';
+import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 
 const styles = StyleSheet.create({
@@ -29,15 +29,17 @@ const styles = StyleSheet.create({
 	}
 });
 
-const EmptyRoom = ({ theme, text }) => (
+const BackgroundContainer = ({ theme, text, loading }) => (
 	<View style={styles.container}>
 		<ImageBackground source={{ uri: `message_empty_${ theme }` }} style={styles.image} />
-		<Text style={[styles.text, { color: themes[theme].auxiliaryTintColor }]}>{text}</Text>
+		{text ? <Text style={[styles.text, { color: themes[theme].auxiliaryTintColor }]}>{text}</Text> : null}
+		{loading ? <ActivityIndicator style={[styles.text, { color: themes[theme].auxiliaryTintColor }]} /> : null}
 	</View>
 );
 
-EmptyRoom.propTypes = {
+BackgroundContainer.propTypes = {
 	text: PropTypes.string,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	loading: PropTypes.bool
 };
-export default withTheme(EmptyRoom);
+export default withTheme(BackgroundContainer);

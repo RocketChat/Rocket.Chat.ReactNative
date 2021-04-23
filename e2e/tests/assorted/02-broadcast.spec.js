@@ -32,7 +32,7 @@ describe('Broadcast room', () => {
 		await element(by.id('create-channel-submit')).tap();
 		await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(60000);
 		await waitFor(element(by.id(`room-view-title-broadcast${ data.random }`))).toBeVisible().withTimeout(60000);
-		await element(by.id('room-view-header-actions')).tap();
+		await element(by.id('room-header')).tap();
 		await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(5000);
 		await element(by.id('room-actions-info')).tap();
 		await waitFor(element(by.id('room-info-view'))).toBeVisible().withTimeout(2000);
@@ -61,7 +61,6 @@ describe('Broadcast room', () => {
 		//await element(by.id('two-factor-send')).tap();
 
 		await searchRoom(`broadcast${ data.random }`);
-		await waitFor(element(by.id(`rooms-list-view-item-broadcast${ data.random }`))).toExist().withTimeout(60000);
 		await element(by.id(`rooms-list-view-item-broadcast${ data.random }`)).tap();
 		await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 		await waitFor(element(by.id(`room-view-title-broadcast${ data.random }`))).toBeVisible().withTimeout(60000);
@@ -76,7 +75,7 @@ describe('Broadcast room', () => {
 	});
 
 	it('should have the message created earlier', async() => {
-		await waitFor(element(by.label(`${ data.random }message`)).atIndex(0)).toBeVisible().withTimeout(60000);
+		await waitFor(element(by.label(`${ data.random }message`))).toExist().withTimeout(60000);
 	});
 
 	it('should have reply button', async() => {
