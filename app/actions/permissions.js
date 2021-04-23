@@ -7,7 +7,7 @@ export function setPermissions(permissions) {
 	};
 }
 
-export function updatePermissions(id, roles) {
+export function updatePermission(id, roles) {
 	return {
 		type: types.PERMISSIONS.UPDATE,
 		payload: { id, roles }
