@@ -146,7 +146,7 @@ class TeamChannelsView extends React.Component {
 			return;
 		}
 
-		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: 1 });
+		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: 2 });
 
 		if (isSearching) {
 			return {
@@ -201,6 +201,7 @@ class TeamChannelsView extends React.Component {
 		options.headerRight = () => (
 			<HeaderButton.Container>
 				<HeaderButton.Item iconName='search' onPress={this.onSearchPress} />
+				<HeaderButton.Item iconName='create' onPress={() => navigation.navigate('AddChannelTeamView')} />
 			</HeaderButton.Container>
 		);
 		return options;

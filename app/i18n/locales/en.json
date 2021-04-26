@@ -716,5 +716,8 @@
   "Read_Only_Team": "Read Only Team",
   "Broadcast_Team": "Broadcast Team",
   "creating_team" : "creating team",
-  "team-name-already-exists": "A team with that name already exists"
+  "team-name-already-exists": "A team with that name already exists",
+  "Add_Channel_to_Team": "Add Channel to Team",
+  "Create_New": "Create New",
+  "Add_Existing": "Add Existing"
 }
