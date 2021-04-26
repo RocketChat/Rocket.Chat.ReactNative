@@ -1,13 +1,20 @@
 import log from '../../utils/log';
 import updateMessages from './updateMessages';
 
-async function load({ rid: roomId, latest, t }) {
-	let params = { roomId, count: 50 };
+async function load({
+	rid: roomId, latest, t, team
+}) {
+	let params = { roomId: roomId || team.roomId, count: 50 };
+	let apiType;
 	if (latest) {
 		params = { ...params, latest: new Date(latest).toISOString() };
 	}
 
-	const apiType = this.roomTypeToApiType(t);
+	if (team.type) {
+		apiType = this.roomTypeToApiType('p');
+	} else {
+		apiType = this.roomTypeToApiType(t);
+	}
 	if (!apiType) {
 		return [];
 	}

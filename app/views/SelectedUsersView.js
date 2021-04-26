@@ -50,7 +50,7 @@ class SelectedUsersView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.init();
-
+		this.flatlist = React.createRef();
 		const maxUsers = props.route.params?.maxUsers;
 		this.state = {
 			maxUsers,
@@ -190,9 +190,13 @@ class SelectedUsersView extends React.Component {
 		if (users.length === 0) {
 			return null;
 		}
+		const ITEM_WIDTH = 250;
 		return (
 			<FlatList
 				data={users}
+				ref={ref => this.flatlist = ref}
+				onContentSizeChange={() => this.flatlist.scrollToEnd()}
+				getItemLayout={(_, index) => ({ length: ITEM_WIDTH, offset: ITEM_WIDTH * index, index })}
 				keyExtractor={item => item._id}
 				style={[sharedStyles.separatorTop, { borderColor: themes[theme].separatorColor }]}
 				contentContainerStyle={{ marginVertical: 5 }}

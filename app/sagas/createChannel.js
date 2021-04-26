@@ -74,7 +74,7 @@ const handleRequest = function* handleRequest({ data }) {
 			const subCollection = db.get('subscriptions');
 			yield db.action(async() => {
 				await subCollection.create((s) => {
-					s._raw = sanitizedRaw({ id: sub.rid }, subCollection.schema);
+					s._raw = sanitizedRaw({ id: sub.team ? sub.team.roomId : sub.rid }, subCollection.schema);
 					Object.assign(s, sub);
 				});
 			});
@@ -94,16 +94,12 @@ const handleSuccess = function* handleSuccess({ data }) {
 	if (isMasterDetail) {
 		Navigation.navigate('DrawerNavigator');
 	}
-	if (data.team) {
-		goRoom({ item: data.team, isMasterDetail });
-	} else {
-		goRoom({ item: data, isMasterDetail });
-	}
+	goRoom({ item: data.team ? data.team : data, isMasterDetail });
 };
 
 const handleFailure = function handleFailure({ err }) {
 	setTimeout(() => {
-		const msg = err.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_channel') });
+		const msg = err.data ? I18n.t(err.data.error) : err.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_channel') });
 		showErrorAlert(msg);
 	}, 300);
 };
