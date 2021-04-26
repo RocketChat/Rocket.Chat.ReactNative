@@ -301,7 +301,7 @@ class RoomView extends React.Component {
 
 	setHeader = () => {
 		const {
-			room, unreadsCount, roomUserId
+			room, unreadsCount, roomUserId, joined
 		} = this.state;
 		const {
 			navigation, isMasterDetail, theme, baseUrl, user, insets, route
@@ -331,7 +331,7 @@ class RoomView extends React.Component {
 		let numIconsRight = 2;
 		if (tmid) {
 			numIconsRight = 1;
-		} else if (teamId) {
+		} else if (teamId && joined) {
 			numIconsRight = 3;
 		}
 		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight });
@@ -380,6 +380,7 @@ class RoomView extends React.Component {
 					rid={rid}
 					tmid={tmid}
 					teamId={teamId}
+					joined={joined}
 					t={t}
 					navigation={navigation}
 					toggleFollowThread={this.toggleFollowThread}

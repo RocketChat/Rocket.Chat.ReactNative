@@ -18,7 +18,8 @@ class RightButtonsContainer extends Component {
 		teamId: PropTypes.bool,
 		navigation: PropTypes.object,
 		isMasterDetail: PropTypes.bool,
-		toggleFollowThread: PropTypes.func
+		toggleFollowThread: PropTypes.func,
+		joined: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -163,7 +164,7 @@ class RightButtonsContainer extends Component {
 			isFollowingThread, tunread, tunreadUser, tunreadGroup
 		} = this.state;
 		const {
-			t, tmid, threadsEnabled, teamId
+			t, tmid, threadsEnabled, teamId, joined
 		} = this.props;
 		if (t === 'l') {
 			return null;
@@ -181,7 +182,7 @@ class RightButtonsContainer extends Component {
 		}
 		return (
 			<HeaderButton.Container>
-				{teamId ? (
+				{teamId && joined ? (
 					<HeaderButton.Item
 						iconName='channel-public'
 						onPress={this.goTeamChannels}
