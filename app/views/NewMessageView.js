@@ -113,7 +113,7 @@ class NewMessageView extends React.Component {
 	createChannel = () => {
 		logEvent(events.NEW_MSG_CREATE_CHANNEL);
 		const { navigation } = this.props;
-		navigation.navigate('SelectedUsersViewCreateChannel', { nextAction: () => navigation.navigate('CreateChannelView', { isTeam: false }) });
+		navigation.navigate('SelectedUsersViewCreateChannel', { nextAction: () => navigation.navigate('CreateChannelView') });
 	}
 
 	createTeam = () => {
