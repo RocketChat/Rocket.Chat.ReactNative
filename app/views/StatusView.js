@@ -101,7 +101,8 @@ class StatusView extends React.Component {
 		navigation.goBack();
 	}
 
-	setCustomStatus = async(statusText) => {
+	setCustomStatus = async() => {
+		const { statusText } = this.state;
 		const { user, setUser } = this.props;
 
 		this.setState({ loading: true });
