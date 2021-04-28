@@ -5,25 +5,21 @@ import { Q } from '@nozbe/watermelondb';
 import moment from 'moment';
 import { dequal } from 'dequal';
 
-import styles from './styles';
-import database from '../../lib/database';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import RocketChat from '../../lib/rocketchat';
-import log from '../../utils/log';
-import EmptyRoom from './EmptyRoom';
-import { isIOS } from '../../utils/deviceInfo';
-import { animateNextTransition } from '../../utils/layoutAnimation';
-import ActivityIndicator from '../../containers/ActivityIndicator';
-import { themes } from '../../constants/colors';
+import styles from '../styles';
+import database from '../../../lib/database';
+import scrollPersistTaps from '../../../utils/scrollPersistTaps';
+import RocketChat from '../../../lib/rocketchat';
+import log from '../../../utils/log';
+import EmptyRoom from '../EmptyRoom';
+import { isIOS } from '../../../utils/deviceInfo';
+import { animateNextTransition } from '../../../utils/layoutAnimation';
+import ActivityIndicator from '../../../containers/ActivityIndicator';
+import { themes } from '../../../constants/colors';
+import List from './List';
 
 const QUERY_SIZE = 50;
-const getItemLayout = (data, index) => ({
-	length: 50,
-	offset: 50 * index,
-	index
-});
 
-class List extends React.Component {
+class ListContainer extends React.Component {
 	static propTypes = {
 		onEndReached: PropTypes.func,
 		renderFooter: PropTypes.func,
@@ -318,6 +314,16 @@ class List extends React.Component {
 		listRef.current.scrollToIndex({ index: params.highestMeasuredFrameIndex });
 	}
 
+	jumpToMessage = (messageId) => {
+		const { messages } = this.state;
+		const { listRef } = this.props;
+		const index = messages.findIndex(item => item.id === messageId);
+    console.log('🚀 ~ file: index.js ~ line 326 ~ ListContainer ~ index', index);
+		if (index > -1) {
+			listRef.current.scrollToIndex({ index });
+		}
+	}
+
 	renderFooter = () => {
 		const { loading } = this.state;
 		const { rid, theme } = this.props;
@@ -341,25 +347,14 @@ class List extends React.Component {
 		return (
 			<>
 				<EmptyRoom rid={rid} length={messages.length} mounted={this.mounted} theme={theme} />
-				<FlatList
-					testID='room-view-messages'
-					ref={listRef}
-					keyExtractor={item => item.id}
+				<List
+					listRef={listRef}
 					data={messages}
-					extraData={this.state}
+					// extraData={this.state}
 					renderItem={this.renderItem}
-					contentContainerStyle={styles.contentContainer}
-					style={styles.list}
-					inverted
-					removeClippedSubviews={isIOS}
-					// getItemLayout={getItemLayout}
-					onScrollToIndexFailed={this.handleScrollToIndexFailed}
-					initialNumToRender={7}
 					onEndReached={this.onEndReached}
-					onEndReachedThreshold={0.5}
-					maxToRenderPerBatch={5}
-					windowSize={10}
 					ListFooterComponent={this.renderFooter}
+					onScrollToIndexFailed={this.handleScrollToIndexFailed}
 					refreshControl={(
 						<RefreshControl
 							refreshing={refreshing}
@@ -367,11 +362,10 @@ class List extends React.Component {
 							tintColor={themes[theme].auxiliaryText}
 						/>
 					)}
-					{...scrollPersistTaps}
 				/>
 			</>
 		);
 	}
 }
 
-export default List;
+export default ListContainer;
