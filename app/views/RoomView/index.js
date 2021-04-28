@@ -63,6 +63,7 @@ import { getHeaderTitlePosition } from '../../containers/Header';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
 
 import { takeInquiry } from '../../ee/omnichannel/lib';
+import { getMessageById } from '../../lib/database/services/Message';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -686,10 +687,16 @@ class RoomView extends React.Component {
 		if (!message) {
 			return;
 		}
-		const parsedUrl = parse(message, true);
-  	// console.log('🚀 ~ file: index.js ~ line 685 ~ RoomView ~ message', message, parsedUrl);
-		const result = await RocketChat.loadSurroundingMessages({ messageId: parsedUrl.query.msg, rid: this.rid }); // TODO: messages can come from other rooms
-    console.log('🚀 ~ file: index.js ~ line 692 ~ RoomView ~ jumpToMessage=async ~ result', result);
+		try {
+			const parsedUrl = parse(message, true);
+			const messageId = parsedUrl.query.msg;
+			const messageRecord = await getMessageById(messageId);
+			if (!messageRecord) {
+				await RocketChat.loadSurroundingMessages({ messageId, rid: this.rid }); // TODO: messages can come from other rooms
+			}
+		} catch (e) {
+			log(e);
+		}
 	}
 
 	// scrollTo = () => {
