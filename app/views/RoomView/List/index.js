@@ -1,28 +1,24 @@
 import React from 'react';
-import { FlatList, RefreshControl } from 'react-native';
+import { RefreshControl } from 'react-native';
 import PropTypes from 'prop-types';
 import { Q } from '@nozbe/watermelondb';
 import moment from 'moment';
 import { dequal } from 'dequal';
 
-import styles from '../styles';
 import database from '../../../lib/database';
-import scrollPersistTaps from '../../../utils/scrollPersistTaps';
 import RocketChat from '../../../lib/rocketchat';
 import log from '../../../utils/log';
 import EmptyRoom from '../EmptyRoom';
-import { isIOS } from '../../../utils/deviceInfo';
 import { animateNextTransition } from '../../../utils/layoutAnimation';
 import ActivityIndicator from '../../../containers/ActivityIndicator';
 import { themes } from '../../../constants/colors';
 import List from './List';
+import debounce from '../../../utils/debounce';
 
 const QUERY_SIZE = 50;
 
 class ListContainer extends React.Component {
 	static propTypes = {
-		onEndReached: PropTypes.func,
-		renderFooter: PropTypes.func,
 		renderRow: PropTypes.func,
 		rid: PropTypes.string,
 		t: PropTypes.string,
@@ -314,15 +310,17 @@ class ListContainer extends React.Component {
 		listRef.current.scrollToIndex({ index: params.highestMeasuredFrameIndex });
 	}
 
-	jumpToMessage = (messageId) => {
+	jumpToMessage = debounce((messageId) => {
 		const { messages } = this.state;
 		const { listRef } = this.props;
 		const index = messages.findIndex(item => item.id === messageId);
-    console.log('🚀 ~ file: index.js ~ line 326 ~ ListContainer ~ index', index);
 		if (index > -1) {
 			listRef.current.scrollToIndex({ index });
+		} else {
+			listRef.current.scrollToEnd({ animated: false });
+			this.jumpToMessage(messageId);
 		}
-	}
+	}, 300)
 
 	renderFooter = () => {
 		const { loading } = this.state;
