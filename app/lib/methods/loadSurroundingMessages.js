@@ -25,7 +25,8 @@ export default function loadSurroundingMessages({ messageId, rid }) {
 							_id: `dummy-${ firstMessage._id }`,
 							rid: firstMessage.rid,
 							ts: moment(firstMessage.ts).subtract(1, 'millisecond'), // TODO: can we do it without subtracting 1ms?
-							t: 'dummy'
+							t: 'dummy',
+							msg: firstMessage.msg
 						};
 						messages.unshift(dummy);
 					}
@@ -39,7 +40,8 @@ export default function loadSurroundingMessages({ messageId, rid }) {
 							_id: `dummy-${ lastMessage._id }`,
 							rid: lastMessage.rid,
 							ts: moment(lastMessage.ts).add(1, 'millisecond'), // TODO: can we do it without adding 1ms?
-							t: 'dummy-next'
+							t: 'dummy-next',
+							msg: lastMessage.msg
 						};
 						messages.push(dummy);
 					}

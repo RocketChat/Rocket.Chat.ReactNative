@@ -37,7 +37,8 @@ export default function loadMessagesForRoom(args) {
 						_id: `dummy-${ lastMessage._id }`,
 						rid: lastMessage.rid,
 						ts: moment(lastMessage.ts).subtract(1, 'millisecond'), // TODO: can we do it without adding 1ms?
-						t: 'dummy'
+						t: 'dummy',
+						msg: lastMessage.msg
 					};
 					if (data.length === 50) {
 						data.push(dummy);

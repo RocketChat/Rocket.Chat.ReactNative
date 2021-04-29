@@ -4,6 +4,7 @@ import orderBy from 'lodash/orderBy';
 
 import log from '../../utils/log';
 import updateMessages from './updateMessages';
+import { getMessageById } from '../database/services/Message';
 
 const COUNT = 50;
 
@@ -15,14 +16,17 @@ export default function loadNextMessages(args) {
 			messages = orderBy(messages, 'ts');
 			if (messages?.length) {
 				const lastMessage = messages[messages.length - 1];
-				const dummy = {
-					_id: `dummy-${ lastMessage._id }`,
-					rid: lastMessage.rid,
-					ts: moment(lastMessage.ts).add(1, 'millisecond'), // TODO: can we do it without adding 1ms?
-					t: 'dummy-next'
-				};
-				if (messages.length === COUNT) {
-					messages.push(dummy);
+				const lastMessageRecord = await getMessageById(lastMessage._id);
+				if (!lastMessageRecord) {
+					const dummy = {
+						_id: `dummy-${ lastMessage._id }`,
+						rid: lastMessage.rid,
+						ts: moment(lastMessage.ts).add(1, 'millisecond'), // TODO: can we do it without adding 1ms?
+						t: 'dummy-next'
+					};
+					if (messages.length === COUNT) {
+						messages.push(dummy);
+					}
 				}
 				await updateMessages({ rid: args.rid, update: messages, item: args.item });
 				return resolve(messages);
