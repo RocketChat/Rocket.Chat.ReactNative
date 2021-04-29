@@ -695,6 +695,7 @@ class RoomView extends React.Component {
 			if (!messageRecord) {
 				await RocketChat.loadSurroundingMessages({ messageId, rid: this.rid }); // TODO: messages can come from other rooms
 			}
+			// TODO: create a race condition to make sure app doesn't get stuck on jump to message
 			await this.list.current.jumpToMessage(messageId);
 			this.setState({ showingBlockingLoader: false });
 		} catch (e) {

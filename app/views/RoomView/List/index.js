@@ -304,10 +304,8 @@ class ListContainer extends React.Component {
 	}
 
 	handleScrollToIndexFailed = (params) => {
-  	console.log('🚀 ~ file: List.js ~ line 315 ~ List ~ params', params);
 		const { listRef } = this.props;
-		// console.log('🚀 ~ file: List.js ~ line 324 ~ List ~ listRef.current', listRef);
-		listRef.current.scrollToIndex({ index: params.highestMeasuredFrameIndex });
+		listRef.current.scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
 	}
 
 	jumpToMessage = messageId => new Promise(async(resolve) => {
@@ -318,7 +316,7 @@ class ListContainer extends React.Component {
 			listRef.current.scrollToIndex({ index });
 			await setTimeout(() => resolve(), 300);
 		} else {
-			listRef.current.scrollToEnd({ animated: false });
+			listRef.current.scrollToIndex({ index: messages.length - 1, animated: false });
 			await setTimeout(() => resolve(this.jumpToMessage(messageId)), 300);
 		}
 	});
