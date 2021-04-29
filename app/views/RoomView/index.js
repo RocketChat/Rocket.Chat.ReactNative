@@ -64,6 +64,7 @@ import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
 
 import { takeInquiry } from '../../ee/omnichannel/lib';
 import { getMessageById } from '../../lib/database/services/Message';
+import Loading from '../../containers/Loading';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -76,7 +77,8 @@ const stateAttrsUpdate = [
 	'replying',
 	'reacting',
 	'readOnly',
-	'member'
+	'member',
+	'showingBlockingLoader'
 ];
 const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'tunread', 'muted', 'ignored', 'jitsiTimeout', 'announcement', 'sysMes', 'topic', 'name', 'fname', 'roles', 'bannerClosed', 'visitor', 'joinCodeRequired'];
 
@@ -133,6 +135,7 @@ class RoomView extends React.Component {
 			selectedMessage: selectedMessage || {},
 			canAutoTranslate: false,
 			loading: true,
+			showingBlockingLoader: false,
 			editing: false,
 			replying: !!selectedMessage,
 			replyWithMention: false,
@@ -688,14 +691,17 @@ class RoomView extends React.Component {
 			return;
 		}
 		try {
+			this.setState({ showingBlockingLoader: true });
 			const parsedUrl = parse(message, true);
 			const messageId = parsedUrl.query.msg;
 			const messageRecord = await getMessageById(messageId);
 			if (!messageRecord) {
 				await RocketChat.loadSurroundingMessages({ messageId, rid: this.rid }); // TODO: messages can come from other rooms
 			}
-			this.list.current.jumpToMessage(messageId);
+			await this.list.current.jumpToMessage(messageId);
+			this.setState({ showingBlockingLoader: false });
 		} catch (e) {
+			this.setState({ showingBlockingLoader: false });
 			log(e);
 		}
 	}
@@ -1112,7 +1118,7 @@ class RoomView extends React.Component {
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
-			room, reactionsModalVisible, selectedMessage, loading, reacting
+			room, reactionsModalVisible, selectedMessage, loading, reacting, showingBlockingLoader
 		} = this.state;
 		const {
 			user, baseUrl, theme, navigation, Hide_System_Messages, width, height
@@ -1177,6 +1183,7 @@ class RoomView extends React.Component {
 					t={t}
 					theme={theme}
 				/>
+				<Loading visible={showingBlockingLoader} />
 			</SafeAreaView>
 		);
 	}

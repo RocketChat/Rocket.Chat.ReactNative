@@ -310,17 +310,18 @@ class ListContainer extends React.Component {
 		listRef.current.scrollToIndex({ index: params.highestMeasuredFrameIndex });
 	}
 
-	jumpToMessage = debounce((messageId) => {
+	jumpToMessage = messageId => new Promise(async(resolve) => {
 		const { messages } = this.state;
 		const { listRef } = this.props;
 		const index = messages.findIndex(item => item.id === messageId);
 		if (index > -1) {
 			listRef.current.scrollToIndex({ index });
+			await setTimeout(() => resolve(), 300);
 		} else {
 			listRef.current.scrollToEnd({ animated: false });
-			this.jumpToMessage(messageId);
+			await setTimeout(() => resolve(this.jumpToMessage(messageId)), 300);
 		}
-	}, 300)
+	});
 
 	renderFooter = () => {
 		const { loading } = this.state;
