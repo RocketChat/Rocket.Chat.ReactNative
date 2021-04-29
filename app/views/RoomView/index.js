@@ -663,27 +663,24 @@ class RoomView extends React.Component {
 	};
 
 	onThreadPress = debounce(async(item) => {
-		// const { roomUserId } = this.state;
-		// const { navigation } = this.props;
-		// if (item.tmid) {
-		// 	if (!item.tmsg) {
-		// 		await this.fetchThreadName(item.tmid, item.id);
-		// 	}
-		// 	let name = item.tmsg;
-		// 	if (item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
-		// 		name = I18n.t('Encrypted_message');
-		// 	}
-		// 	navigation.push('RoomView', {
-		// 		rid: item.subscription.id, tmid: item.tmid, name, t: 'thread', roomUserId
-		// 	});
-		// } else if (item.tlm) {
-		// 	navigation.push('RoomView', {
-		// 		rid: item.subscription.id, tmid: item.id, name: makeThreadName(item), t: 'thread', roomUserId
-		// 	});
-		// }
-		// this.offset += 100;
-		this.flatList.current.scrollToIndex({ index: 49, viewPosition: 0.5 });
-		// this.flatList?.scrollToOffset({ offset: this.offset });
+		const { roomUserId } = this.state;
+		const { navigation } = this.props;
+		if (item.tmid) {
+			if (!item.tmsg) {
+				await this.fetchThreadName(item.tmid, item.id);
+			}
+			let name = item.tmsg;
+			if (item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
+				name = I18n.t('Encrypted_message');
+			}
+			navigation.push('RoomView', {
+				rid: item.subscription.id, tmid: item.tmid, name, t: 'thread', roomUserId
+			});
+		} else if (item.tlm) {
+			navigation.push('RoomView', {
+				rid: item.subscription.id, tmid: item.id, name: makeThreadName(item), t: 'thread', roomUserId
+			});
+		}
 	}, 1000, true)
 
 	jumpToMessage = async(message) => {
@@ -705,10 +702,6 @@ class RoomView extends React.Component {
 			log(e);
 		}
 	}
-
-	// scrollTo = () => {
-	// 	this.flatList.scrollToIndex({ index: 49, viewPosition: 0.5 });
-	// }
 
 	replyBroadcast = (message) => {
 		const { replyBroadcast } = this.props;
