@@ -55,7 +55,8 @@ class ListContainer extends React.Component {
 			loading: true,
 			end: false,
 			messages: [],
-			refreshing: false
+			refreshing: false,
+			highlightedMessage: null
 		};
 		this.query();
 		this.unsubscribeFocus = props.navigation.addListener('focus', () => {
@@ -70,7 +71,7 @@ class ListContainer extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { loading, end, refreshing } = this.state;
+		const { loading, end, refreshing, highlightedMessage } = this.state;
 		const {
 			hideSystemMessages, theme, tunread, ignored
 		} = this.props;
@@ -78,6 +79,9 @@ class ListContainer extends React.Component {
 			return true;
 		}
 		if (loading !== nextState.loading) {
+			return true;
+		}
+		if (highlightedMessage !== nextState.highlightedMessage) {
 			return true;
 		}
 		if (end !== nextState.end) {
@@ -113,7 +117,15 @@ class ListContainer extends React.Component {
 		if (this.unsubscribeFocus) {
 			this.unsubscribeFocus();
 		}
+		this.clearHighlightedMessageTimeout();
 		console.countReset(`${ this.constructor.name }.render calls`);
+	}
+
+	clearHighlightedMessageTimeout = () => {
+		if (this.highlightedMessageTimeout) {
+			clearTimeout(this.highlightedMessageTimeout);
+			this.highlightedMessageTimeout = false;
+		}
 	}
 
 	fetchData = async() => {
@@ -281,7 +293,6 @@ class ListContainer extends React.Component {
 		this.setState({ refreshing: false });
 	})
 
-	// eslint-disable-next-line react/sort-comp
 	update = () => {
 		if (this.animated) {
 			animateNextTransition();
@@ -314,6 +325,11 @@ class ListContainer extends React.Component {
 		const index = messages.findIndex(item => item.id === messageId);
 		if (index > -1) {
 			listRef.current.scrollToIndex({ index });
+			this.setState({ highlightedMessage: messageId });
+			this.clearHighlightedMessageTimeout();
+			this.highlightedMessageTimeout = setTimeout(() => {
+				this.setState({ highlightedMessage: null });
+			}, 10000);
 			await setTimeout(() => resolve(), 300);
 		} else {
 			listRef.current.scrollToIndex({ index: messages.length - 1, animated: false });
@@ -331,9 +347,9 @@ class ListContainer extends React.Component {
 	}
 
 	renderItem = ({ item, index }) => {
-		const { messages } = this.state;
+		const { messages, highlightedMessage } = this.state;
 		const { renderRow } = this.props;
-		return renderRow(item, messages[index + 1]);
+		return renderRow(item, messages[index + 1], highlightedMessage);
 	}
 
 	render() {
@@ -347,7 +363,6 @@ class ListContainer extends React.Component {
 				<List
 					listRef={listRef}
 					data={messages}
-					// extraData={this.state}
 					renderItem={this.renderItem}
 					onEndReached={this.onEndReached}
 					ListFooterComponent={this.renderFooter}

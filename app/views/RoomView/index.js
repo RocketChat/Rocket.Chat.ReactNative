@@ -936,7 +936,7 @@ class RoomView extends React.Component {
 		return room?.ignored?.includes?.(message?.u?._id) ?? false;
 	}
 
-	renderItem = (item, previousItem) => {
+	renderItem = (item, previousItem, highlightedMessage) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
 			user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme
@@ -1004,6 +1004,7 @@ class RoomView extends React.Component {
 					threadBadgeColor={this.getBadgeColor(item?.id)}
 					toggleFollowThread={this.toggleFollowThread}
 					jumpToMessage={this.jumpToMessage}
+					highlighted={highlightedMessage === item.id}
 				/>
 			);
 		}
