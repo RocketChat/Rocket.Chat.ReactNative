@@ -1,6 +1,7 @@
 import moment from 'moment';
 
 import log from '../../utils/log';
+import { getMessageById } from '../database/services/Message';
 import updateMessages from './updateMessages';
 
 const COUNT = 50;
@@ -30,14 +31,17 @@ export default function loadMessagesForRoom(args) {
 			const data = await load.call(this, args);
 			if (data?.length) {
 				const lastMessage = data[data.length - 1];
-				const dummy = {
-					_id: `dummy-${ lastMessage._id }`,
-					rid: lastMessage.rid,
-					ts: moment(lastMessage.ts).subtract(1, 'millisecond'), // TODO: can we do it without adding 1ms?
-					t: 'dummy'
-				};
-				if (data.length === 50) {
-					data.push(dummy);
+				const lastMessageRecord = await getMessageById(lastMessage._id);
+				if (!lastMessageRecord) {
+					const dummy = {
+						_id: `dummy-${ lastMessage._id }`,
+						rid: lastMessage.rid,
+						ts: moment(lastMessage.ts).subtract(1, 'millisecond'), // TODO: can we do it without adding 1ms?
+						t: 'dummy'
+					};
+					if (data.length === 50) {
+						data.push(dummy);
+					}
 				}
 				await updateMessages({ rid: args.rid, update: data, item: args.item });
 				return resolve(data);

@@ -4,6 +4,7 @@ import orderBy from 'lodash/orderBy';
 
 import log from '../../utils/log';
 import updateMessages from './updateMessages';
+import { getMessageById } from '../database/services/Message';
 
 const COUNT = 50;
 
@@ -18,24 +19,30 @@ export default function loadSurroundingMessages({ messageId, rid }) {
 			if (messages?.length) {
 				if (data?.moreBefore) {
 					const firstMessage = messages[0];
-					const dummy = {
-						_id: `dummy-${ firstMessage._id }`,
-						rid: firstMessage.rid,
-						ts: moment(firstMessage.ts).subtract(1, 'millisecond'), // TODO: can we do it without subtracting 1ms?
-						t: 'dummy'
-					};
-					messages.unshift(dummy);
+					const firstMessageRecord = await getMessageById(firstMessage._id);
+					if (!firstMessageRecord) {
+						const dummy = {
+							_id: `dummy-${ firstMessage._id }`,
+							rid: firstMessage.rid,
+							ts: moment(firstMessage.ts).subtract(1, 'millisecond'), // TODO: can we do it without subtracting 1ms?
+							t: 'dummy'
+						};
+						messages.unshift(dummy);
+					}
 				}
 
 				if (data?.moreAfter) {
 					const lastMessage = messages[messages.length - 1];
-					const dummy = {
-						_id: `dummy-${ lastMessage._id }`,
-						rid: lastMessage.rid,
-						ts: moment(lastMessage.ts).add(1, 'millisecond'), // TODO: can we do it without adding 1ms?
-						t: 'dummy-next'
-					};
-					messages.push(dummy);
+					const lastMessageRecord = await getMessageById(lastMessage._id);
+					if (!lastMessageRecord) {
+						const dummy = {
+							_id: `dummy-${ lastMessage._id }`,
+							rid: lastMessage.rid,
+							ts: moment(lastMessage.ts).add(1, 'millisecond'), // TODO: can we do it without adding 1ms?
+							t: 'dummy-next'
+						};
+						messages.push(dummy);
+					}
 				}
 				await updateMessages({ rid, update: messages });
 				return resolve(messages);
