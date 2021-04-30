@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Animated } from 'react-native';
+import { Animated, Pressable } from 'react-native';
 import { PanGestureHandler, State } from 'react-native-gesture-handler';
 
-import Touch from '../../utils/touch';
 import {
 	ACTION_WIDTH,
 	SMALL_SWIPE,
@@ -17,6 +16,7 @@ class Touchable extends React.Component {
 	static propTypes = {
 		type: PropTypes.string.isRequired,
 		onPress: PropTypes.func,
+		onLongPress: PropTypes.func,
 		testID: PropTypes.string,
 		width: PropTypes.number,
 		favorite: PropTypes.bool,
@@ -203,6 +203,18 @@ class Touchable extends React.Component {
 			}
 		};
 
+		onLongPress = () => {
+			const { rowState } = this.state;
+			if (rowState !== 0) {
+				this.close();
+				return;
+			}
+			const { onLongPress } = this.props;
+			if (onLongPress) {
+				onLongPress();
+			}
+		};
+
 		render() {
 			const {
 				testID, isRead, width, favorite, children, theme, isFocused, swipeEnabled
@@ -237,8 +249,9 @@ class Touchable extends React.Component {
 								transform: [{ translateX: this.transX }]
 							}}
 						>
-							<Touch
+							<Pressable
 								onPress={this.onPress}
+								onLongPress={this.onLongPress}
 								theme={theme}
 								testID={testID}
 								style={{
@@ -246,7 +259,7 @@ class Touchable extends React.Component {
 								}}
 							>
 								{children}
-							</Touch>
+							</Pressable>
 						</Animated.View>
 					</Animated.View>
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Keyboard } from 'react-native';
+import { Keyboard, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
@@ -28,6 +28,8 @@ import debounce from '../utils/debounce';
 import { showErrorAlert } from '../utils/info';
 import { goRoom } from '../utils/goRoom';
 import I18n from '../i18n';
+import { withActionSheet } from '../containers/ActionSheet';
+import { deleteRoom as deleteRoomAction } from '../actions/room';
 
 const API_FETCH_COUNT = 25;
 
@@ -47,12 +49,16 @@ class TeamChannelsView extends React.Component {
 		theme: PropTypes.string,
 		useRealName: PropTypes.bool,
 		width: PropTypes.number,
-		StoreLastMessage: PropTypes.bool
+		StoreLastMessage: PropTypes.bool,
+		addTeamChannelPermission: PropTypes.array,
+		showActionSheet: PropTypes.func,
+		deleteRoom: PropTypes.func
 	}
 
 	constructor(props) {
 		super(props);
 		this.teamId = props.route.params?.teamId;
+		this.rid = props.route.params?.rid;
 		this.state = {
 			loading: true,
 			loadingMore: false,
@@ -60,9 +66,11 @@ class TeamChannelsView extends React.Component {
 			isSearching: false,
 			searchText: '',
 			search: [],
-			end: false
+			end: false,
+			showCreate: false
 		};
 		this.loadTeam();
+		this.setHeader();
 	}
 
 	componentDidMount() {
@@ -70,6 +78,7 @@ class TeamChannelsView extends React.Component {
 	}
 
 	loadTeam = async() => {
+		const { addTeamChannelPermission } = this.props;
 		const db = database.active;
 		try {
 			const subCollection = db.get('subscriptions');
@@ -81,6 +90,11 @@ class TeamChannelsView extends React.Component {
 
 			if (!this.team) {
 				throw new Error();
+			}
+
+			const permissions = await RocketChat.hasPermission([addTeamChannelPermission], this.team.rid);
+			if (permissions[0]) {
+				this.setState({ showCreate: true }, () => this.setHeader());
 			}
 		} catch {
 			const { navigation } = this.props;
@@ -135,8 +149,8 @@ class TeamChannelsView extends React.Component {
 		}
 	}, 300)
 
-	getHeader = () => {
-		const { isSearching } = this.state;
+	setHeader = () => {
+		const { isSearching, showCreate, data } = this.state;
 		const {
 			navigation, isMasterDetail, insets, theme
 		} = this.props;
@@ -201,15 +215,11 @@ class TeamChannelsView extends React.Component {
 		options.headerRight = () => (
 			<HeaderButton.Container>
 				<HeaderButton.Item iconName='search' onPress={this.onSearchPress} />
-				<HeaderButton.Item iconName='create' onPress={() => navigation.navigate('AddChannelTeamView')} />
+				{ showCreate
+					? <HeaderButton.Item iconName='create' onPress={() => navigation.navigate('AddChannelTeamView', { teamId: this.teamId, teamChannels: data })} />
+					: null}
 			</HeaderButton.Container>
 		);
-		return options;
-	}
-
-	setHeader = () => {
-		const { navigation } = this.props;
-		const options = this.getHeader();
 		navigation.setOptions(options);
 	}
 
@@ -288,6 +298,54 @@ class TeamChannelsView extends React.Component {
 		}
 	}, 1000, true);
 
+	options = item => ([
+		{
+			title: I18n.t('Auto-join'),
+			icon: item.t === 'p' ? 'channel-private' : 'channel-public'
+			// onPress: this.autoJoin
+		},
+		{
+			title: I18n.t('Remove_from_Team'),
+			icon: 'close',
+			danger: true,
+			onPress: this.removeFromTeam(item.id, this.teamId)
+		},
+		{
+			title: I18n.t('Delete'),
+			icon: 'delete',
+			danger: true,
+			onPress: this.delete
+		}
+	])
+
+	delete = () => {
+		const { room } = this.state;
+		const { deleteRoom } = this.props;
+
+		Alert.alert(
+			I18n.t('Are_you_sure_question_mark'),
+			I18n.t('Delete_Room_Warning'),
+			[
+				{
+					text: I18n.t('Cancel'),
+					style: 'cancel'
+				},
+				{
+					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
+					style: 'destructive',
+					onPress: () => deleteRoom(room.rid, room.t)
+				}
+			],
+			{ cancelable: false }
+		);
+	}
+
+	showChannelActions = (item) => {
+		logEvent(events.ROOM_SHOW_BOX_ACTIONS);
+		const { showActionSheet } = this.props;
+		showActionSheet({ options: this.options(item) });
+	}
+
 	renderItem = ({ item }) => {
 		const {
 			StoreLastMessage,
@@ -303,6 +361,7 @@ class TeamChannelsView extends React.Component {
 				showLastMessage={StoreLastMessage}
 				onPress={this.onPressItem}
 				width={width}
+				onLongPress={this.showChannelActions}
 				useRealName={useRealName}
 				getRoomTitle={this.getRoomTitle}
 				getRoomAvatar={this.getRoomAvatar}
@@ -366,7 +425,12 @@ const mapStateToProps = state => ({
 	user: getUserSelector(state),
 	useRealName: state.settings.UI_Use_Real_Name,
 	isMasterDetail: state.app.isMasterDetail,
-	StoreLastMessage: state.settings.Store_Last_Message
+	StoreLastMessage: state.settings.Store_Last_Message,
+	addTeamChannelPermission: state.permissions['add-team-channel']
 });
 
-export default connect(mapStateToProps)(withDimensions(withSafeAreaInsets(withTheme(TeamChannelsView))));
+const mapDispatchToProps = dispatch => ({
+	deleteRoom: (rid, t) => dispatch(deleteRoomAction(rid, t))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withSafeAreaInsets(withTheme(withActionSheet(TeamChannelsView)))));

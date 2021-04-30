@@ -25,6 +25,10 @@ const createTeam = function createTeam(data) {
 	return RocketChat.createTeam(data);
 };
 
+const addTeamRoom = function addRoomToTeam(params) {
+	return RocketChat.addTeamRoom(params);
+};
+
 const handleRequest = function* handleRequest({ data }) {
 	try {
 		const auth = yield select(state => state.login.isAuthenticated);
@@ -40,6 +44,7 @@ const handleRequest = function* handleRequest({ data }) {
 				broadcast,
 				encrypted
 			} = data;
+			// TODO: Create event CT_CREATE
 			logEvent(events.CR_CREATE, {
 				type,
 				readOnly,
@@ -67,14 +72,22 @@ const handleRequest = function* handleRequest({ data }) {
 				encrypted
 			});
 			sub = yield call(createChannel, data);
-		}
 
+			if (data.teamId) {
+				// TODO: Log when adding room to team
+				const channels = yield call(addTeamRoom, { rooms: sub.rid, teamId: data.teamId });
+				if (channels.success) {
+					sub.teamId = channels.teamId;
+					sub.isTeamChannel = true;
+				}
+			}
+		}
 		try {
 			const db = database.active;
 			const subCollection = db.get('subscriptions');
 			yield db.action(async() => {
 				await subCollection.create((s) => {
-					s._raw = sanitizedRaw({ id: sub.team ? sub.team.roomId : sub.rid }, subCollection.schema);
+					s._raw = sanitizedRaw({ id: sub.team ? sub.team.roomId : sub.rid, team_id: sub.teamId }, subCollection.schema);
 					Object.assign(s, sub);
 				});
 			});

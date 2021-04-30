@@ -42,6 +42,7 @@ const RoomItem = ({
 	testID,
 	swipeEnabled,
 	onPress,
+	onLongPress,
 	toggleFav,
 	toggleRead,
 	hideChannel,
@@ -49,6 +50,7 @@ const RoomItem = ({
 }) => (
 	<Touchable
 		onPress={onPress}
+		onLongPress={onLongPress}
 		width={width}
 		favorite={favorite}
 		toggleFav={toggleFav}
@@ -181,6 +183,7 @@ RoomItem.propTypes = {
 	toggleFav: PropTypes.func,
 	toggleRead: PropTypes.func,
 	onPress: PropTypes.func,
+	onLongPress: PropTypes.func,
 	hideChannel: PropTypes.func
 };
 

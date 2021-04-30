@@ -734,7 +734,7 @@ const RocketChat = {
 		const params = {
 			name,
 			users,
-			type: type ? 1 : 0,
+			type,
 			room: {
 				readOnly,
 				extraData: {
@@ -745,6 +745,22 @@ const RocketChat = {
 		};
 		// RC 3.13.0
 		return this.post('teams.create', params);
+	},
+	addTeamRooms({ rooms, teamId }) {
+		const params = {
+			rooms: rooms.length ? [...rooms] : [rooms],
+			teamId
+		};
+		// RC 3.13.0
+		return this.post('teams.addRooms', params);
+	},
+	deleteTeamRoom({ rid, teamId }) {
+		const params = {
+			roomId: rid,
+			teamId
+		};
+		// RC 3.13.0
+		return this.post('teams.removeRoom', params);
 	},
 	joinRoom(roomId, joinCode, type) {
 		// TODO: join code

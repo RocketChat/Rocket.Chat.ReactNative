@@ -7,7 +7,6 @@ import sharedStyles from './Styles';
 import { CustomIcon } from '../lib/Icons';
 import Touch from '../utils/touch';
 import StatusBar from '../containers/StatusBar';
-import RoomHeader from '../containers/RoomHeader';
 import { withTheme } from '../theme';
 import * as HeaderButton from '../containers/HeaderButton';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -47,9 +46,7 @@ class AddChannelTeamView extends React.Component {
 		const options = {
 			headerShown: true,
 			headerTitleAlign: 'center',
-			headerTitle: () => (
-				<RoomHeader title={I18n.t('Add_Channel_to_Team')} />
-			)
+			headerTitle: I18n.t('Add_Channel_to_Team')
 		};
 
 		if (isMasterDetail) {
@@ -74,7 +71,7 @@ class AddChannelTeamView extends React.Component {
 
 		return (
 			<Touch
-				onPress={() => onPress()}
+				onPress={onPress}
 				style={{ backgroundColor: themes[theme].backgroundColor }}
 				testID={testID}
 				theme={theme}
@@ -88,21 +85,22 @@ class AddChannelTeamView extends React.Component {
 	}
 
 	render() {
-		const { navigation } = this.props;
+		const { navigation, route } = this.props;
+		const { teamChannels } = route?.params;
 
 		return (
 			<SafeAreaView testID='add-channel-team-view'>
 				<StatusBar />
 				<View style={styles.buttonContainer}>
 					{this.renderButton({
-						onPress: navigation.navigate('NewMessageStackNavigator', { screen: 'CreateChannelView', isTeam: false }),
+						onPress: () => navigation.navigate('NewMessageStackNavigator', { screen: 'SelectedUsersViewCreateChannel', params: { nextAction: () => navigation.navigate('CreateChannelView', { teamId: this.teamId }) } }),
 						title: I18n.t('Create_New'),
 						icon: 'channel-public',
 						testID: 'add-channel-team-view-create-channel',
 						first: true
 					})}
 					{this.renderButton({
-						// onPress: navigation.navigate('AddExistingChannelView'),
+						onPress: () => navigation.navigate('AddExistingChannelView', { teamId: this.teamId, teamChannels }),
 						title: I18n.t('Add_Existing'),
 						icon: 'team',
 						testID: 'add-channel-team-view-create-channel'

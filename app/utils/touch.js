@@ -15,13 +15,14 @@ class Touch extends React.Component {
 
 	render() {
 		const {
-			children, onPress, theme, underlayColor, ...props
+			children, onPress, onLongPress, theme, underlayColor, ...props
 		} = this.props;
 
 		return (
 			<RectButton
 				ref={this.getRef}
 				onPress={onPress}
+				onLongPress={onLongPress}
 				activeOpacity={1}
 				underlayColor={underlayColor || themes[theme].bannerBackground}
 				rippleColor={themes[theme].bannerBackground}
@@ -36,6 +37,7 @@ class Touch extends React.Component {
 Touch.propTypes = {
 	children: PropTypes.node,
 	onPress: PropTypes.func,
+	onLongPress: PropTypes.func,
 	theme: PropTypes.string,
 	underlayColor: PropTypes.string
 };

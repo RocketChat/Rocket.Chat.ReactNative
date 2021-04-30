@@ -87,13 +87,15 @@ class CreateChannelView extends React.Component {
 			id: PropTypes.string,
 			token: PropTypes.string
 		}),
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		teamId: PropTypes.string
 	};
 
 	constructor(props) {
 		super(props);
 		const { route } = this.props;
 		this.isTeam = route?.params?.isTeam || false;
+		this.teamId = route?.params?.teamId;
 		this.state = {
 			channelName: '',
 			type: true,
@@ -173,7 +175,7 @@ class CreateChannelView extends React.Component {
 
 		// create channel or team
 		create({
-			name: channelName, users, type, readOnly, broadcast, encrypted, isTeam: this.isTeam
+			name: channelName, users, type, readOnly, broadcast, encrypted, isTeam: this.isTeam, teamId: this.teamId
 		});
 
 		Review.pushPositiveEvent();

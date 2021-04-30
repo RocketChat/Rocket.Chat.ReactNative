@@ -25,6 +25,7 @@ class RoomItemContainer extends React.Component {
 		showLastMessage: PropTypes.bool,
 		id: PropTypes.string,
 		onPress: PropTypes.func,
+		onLongPress: PropTypes.func,
 		username: PropTypes.string,
 		avatarSize: PropTypes.number,
 		width: PropTypes.number,
@@ -112,6 +113,11 @@ class RoomItemContainer extends React.Component {
 		return onPress(item);
 	}
 
+	onLongPress = () => {
+		const { item, onLongPress } = this.props;
+		return onLongPress(item);
+	}
+
 	render() {
 		const {
 			item,
@@ -160,6 +166,7 @@ class RoomItemContainer extends React.Component {
 				isGroupChat={this.isGroupChat}
 				isRead={isRead}
 				onPress={this.onPress}
+				onLongPress={this.onLongPress}
 				date={date}
 				accessibilityLabel={accessibilityLabel}
 				width={width}
