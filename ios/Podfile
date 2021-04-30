@@ -3,18 +3,31 @@ require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 require_relative '../node_modules/react-native-unimodules/cocoapods.rb'
 
+def find_and_replace(dir, findstr, replacestr)
+  Dir[dir].each do |name|
+      text = File.read(name)
+      replace = text.gsub(findstr,replacestr)
+      if text != replace
+          puts "Fix: " + name
+          File.open(name, "w") { |file| file.puts replace }
+          STDOUT.flush
+      end
+  end
+  Dir[dir + '*/'].each(&method(:find_and_replace))
+end
+
 def all_pods
   config = use_native_modules!
   use_unimodules!
   use_react_native!(:path => config["reactNativePath"])
-  use_flipper!
+  #use_flipper!
 end
 
-target 'RocketChatRN' do
+target :'RocketChatRN' do
   all_pods
 end
 
-target 'ShareRocketChatRN' do
+target :'ShareRocketChatRN' do
   all_pods
 end
 
@@ -24,5 +37,13 @@ post_install do |installer|
       config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'NO'
     end
   end
-  flipper_post_install(installer)
+  #flipper_post_install(installer)
+
+  ## Fix for Flipper-Folly on iOS 14.5
+  find_and_replace("Pods/Flipper-Folly/folly/synchronization/DistributedMutex-inl.h",
+    "atomic_notify_one(state)", "folly::atomic_notify_one(state)")
+
+  find_and_replace("Pods/Flipper-Folly/folly/synchronization/DistributedMutex-inl.h",
+    "atomic_wait_until(&state, previous | data, deadline)", "folly::atomic_wait_until(&state, previous | data, deadline)")
+
 end

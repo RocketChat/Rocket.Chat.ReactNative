@@ -1,8 +1,8 @@
 {
   "name": "RocketChatRN",
   "share": "ShareRocketChatRN",
-  "displayName": "RocketChatRN",
-  "server": "https://reachout.t1dhuddle.com",
+  "displayName": "T1D Reachout",
+  "server": "http://ec2-99-79-46-65.ca-central-1.compute.amazonaws.com:3000",
   "appGroup": "group.ios.chat.rocket",
   "appStoreID": "1272915472"
 }
