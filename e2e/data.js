@@ -57,6 +57,11 @@ const data = {
         password: `passwordthree${ value }`,
         email: `mobile+registeringthree${ value }@rocket.chat`
     },
+    registeringUser4: {
+        username: `newuserfour${ value }`,
+        password: `passwordfour${ value }`,
+        email: `mobile+registeringfour${ value }@rocket.chat`
+    },
     random: value
 }
 module.exports = data;

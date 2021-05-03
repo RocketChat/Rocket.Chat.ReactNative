@@ -91,7 +91,7 @@ class StatusView extends React.Component {
 		const { statusText } = this.state;
 		const { user } = this.props;
 		if (statusText !== user.statusText) {
-			await this.setCustomStatus();
+			await this.setCustomStatus(statusText);
 		}
 		this.close();
 	}
