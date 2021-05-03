@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>AppGroup</key>
-	<string>group.ios.chat.rocket</string>
+	<string>group.com.t1dreachout.app</string>
 	<key>BugsnagAPIKey</key>
 	<string></string>
 	<key>CFBundleDevelopmentRegion</key>
@@ -54,15 +54,15 @@
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
-			<key>localhost</key>
+			<key>compute.amazonaws.com</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
-			</dict>
-			<key>compute.amazonaws.com</key>
-			<dict>
 				<key>NSIncludesSubdomains</key>
 				<true/>
+			</dict>
+			<key>localhost</key>
+			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
 			</dict>
