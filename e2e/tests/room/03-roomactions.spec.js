@@ -223,10 +223,10 @@ describe('Room actions screen', () => {
 				//Go to starred messages
 				await element(by.id('room-actions-starred')).tap();
 				await waitFor(element(by.id('starred-messages-view'))).toExist().withTimeout(2000);
-				await waitFor(element(by.label(`${ data.random }messageToStar`).withAncestor(by.id('starred-messages-view')))).toBeVisible().withTimeout(60000);
+				await waitFor(element(by.label(`${ data.random }messageToStar`).withAncestor(by.id('starred-messages-view')))).toExist().withTimeout(60000);
 				
 				//Unstar message
-				await element(by.label(`${ data.random }messageToStar`).withAncestor(by.id('starred-messages-view'))).longPress();
+				await element(by.label(`${ data.random }messageToStar`)).atIndex(0).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.label('Unstar')).tap();
@@ -247,18 +247,18 @@ describe('Room actions screen', () => {
 				//Back into Room Actions
 				await element(by.id('room-header')).tap();
 				await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
-				await element(by.type('UIScrollView')).atIndex(1).scrollTo('bottom');
+				await element(by.id('room-actions-scrollview')).scrollTo('bottom');
 				await waitFor(element(by.id('room-actions-pinned'))).toExist();
 				await element(by.id('room-actions-pinned')).tap();
 				await waitFor(element(by.id('pinned-messages-view'))).toExist().withTimeout(2000);
-				await waitFor(element(by.label(`${ data.random }messageToPin`).withAncestor(by.id('pinned-messages-view')))).toBeVisible().withTimeout(60000);
-				await element(by.label(`${ data.random }messageToPin`).withAncestor(by.id('pinned-messages-view'))).longPress();
+				await waitFor(element(by.label(`${ data.random }messageToPin`).withAncestor(by.id('pinned-messages-view')))).toExist().withTimeout(6000);
+				await element(by.label(`${ data.random }messageToPin`).withAncestor(by.id('pinned-messages-view'))).atIndex(0).longPress();
 
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.label('Unpin')).tap();
 
-				await waitFor(element(by.label(`${ data.random }messageToPin`).withAncestor(by.id('pinned-messages-view')))).toBeNotVisible().withTimeout(60000);
+				await waitFor(element(by.label(`${ data.random }messageToPin`).withAncestor(by.id('pinned-messages-view')))).not.toExist().withTimeout(6000);
 				await backToActions();
 			});
 
@@ -283,7 +283,7 @@ describe('Room actions screen', () => {
 
 		describe('Notification', async() => {
 			it('should navigate to notification preference view', async() => {
-				await element(by.type('UIScrollView')).atIndex(1).scrollTo('bottom');
+				await element(by.id('room-actions-scrollview')).scrollTo('bottom');
 				await waitFor(element(by.id('room-actions-notifications'))).toExist().withTimeout(2000);
 				await element(by.id('room-actions-notifications')).tap();
 				await waitFor(element(by.id('notification-preference-view'))).toExist().withTimeout(2000);
@@ -311,7 +311,7 @@ describe('Room actions screen', () => {
 
 			it('should have notification sound option', async() => {
 				// Ugly hack to scroll on detox
-				await element(by.type('UIScrollView')).atIndex(1).scrollTo('bottom');
+				await element(by.id('room-actions-scrollview')).scrollTo('bottom');
 				await waitFor(element(by.id('notification-preference-view-sound'))).toExist().withTimeout(4000);
 			});
 
@@ -335,7 +335,7 @@ describe('Room actions screen', () => {
 			const user = data.users.alternate
 
 			it('should tap on leave channel and raise alert', async() => {
-				await element(by.type('UIScrollView')).atIndex(1).scrollTo('bottom');
+				await element(by.id('room-actions-scrollview')).scrollTo('bottom');
 				await waitFor(element(by.id('room-actions-leave-channel'))).toExist().withTimeout(2000);
 				await element(by.id('room-actions-leave-channel')).tap();
 				await waitFor(element(by.text('Yes, leave it!'))).toExist().withTimeout(2000);
@@ -368,7 +368,7 @@ describe('Room actions screen', () => {
 				await element(by.id('room-actions-members')).tap();
 				await element(by.id('room-members-view-toggle-status')).tap();
 				await waitFor(element(by.id(`room-members-view-item-${ user.username }`))).toExist().withTimeout(60000);
-				await backToActions(1);
+				await backToActions();
 			});
 
 			describe('Room Members', async() => {
@@ -414,7 +414,7 @@ describe('Room actions screen', () => {
 				}
 
 				const closeActionSheet = async() => {
-					await element(by.id('action-sheet-backdrop')).tap();
+					await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.6);
 				}
 
 				it('should set/remove as owner', async() => {
@@ -483,7 +483,7 @@ describe('Room actions screen', () => {
 
 				it('should ignore user', async() => {
 					const message = `${ data.random }ignoredmessagecontent`;
-					const channelName = data.groups.private.name;
+					const channelName = `#${ data.groups.private.name }`;
 					await sendMessage(user, channelName, message);
 					await openActionSheet(user.username);
 					await element(by.label('Ignore')).tap();
