@@ -12,7 +12,7 @@ import styles from './styles';
 
 const Roles = ({ roles, theme }) => (roles && roles.length ? (
 	<View style={styles.item}>
-		<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t('Badges')}</Text>
+		<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t('Roles')}</Text>
 		<View style={styles.rolesContainer}>
 			{roles.map(role => (role ? (
 				<View style={[styles.roleBadge, { backgroundColor: themes[theme].auxiliaryBackground }]} key={role}>

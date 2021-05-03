@@ -88,7 +88,7 @@ class ProfileLibraryView extends React.Component {
 
 		try {
 			const { data, type, globalUsers } = this.state;
-			const query = { text, type, workspace: globalUsers ? 'all' : 'local', role: 'Peer Supporter' };
+			const query = { text, type, workspace: globalUsers ? 'all' : 'local' };
 			
 			const directories = await RocketChat.getProfileLibrary({
 				query,
@@ -98,9 +98,7 @@ class ProfileLibraryView extends React.Component {
 			});
 
 			if (directories.success) {
-				const results = directories.result.filter((d) => {
-					return d.roles.includes('Peer Supporter');
-				});
+				const results = directories.result;
 
 				this.setState({
 					data: [...data, ...results],
