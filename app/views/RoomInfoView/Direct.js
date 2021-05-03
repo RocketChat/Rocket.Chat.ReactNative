@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 
 import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
-
+import Item from './Item';
 import Timezone from './Timezone';
 import CustomFields from './CustomFields';
 
 import styles from './styles';
 
-const Roles = ({ roles, theme }) => (roles && roles.length ? (
+const Roles = ({ roles, theme, user }) => (roles && roles.length ? (
 	<View style={styles.item}>
 		<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t('Roles')}</Text>
 		<View style={styles.rolesContainer}>
@@ -24,15 +24,33 @@ const Roles = ({ roles, theme }) => (roles && roles.length ? (
 ) : null);
 Roles.propTypes = {
 	roles: PropTypes.array,
+	theme: PropTypes.string,
+	user: PropTypes.object,
+};
+
+const Bio = ({ bio, theme }) => bio != null ? (
+	<Item
+		label={'Bio'}
+		content={bio}
+		theme={theme}
+	/>
+) 
+: (null);
+Bio.propTypes = {
+	bio: PropTypes.string,
 	theme: PropTypes.string
 };
 
-const Direct = ({ roomUser, theme }) => (
+const Direct = ({ roomUser, theme, user }) => { 
+	const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles.includes(role)) !== undefined;
+
+	return (
 	<>
-		<Roles roles={roomUser.parsedRoles} theme={theme} />
-		<CustomFields customFields={roomUser.customFields} user={roomUser} theme={theme} />
+		<Bio bio={roomUser.bio} theme={theme} />
+		{isAdmin && (<Roles roles={roomUser.parsedRoles} theme={theme} user={user} />)}
+		<CustomFields customFields={roomUser.customFields} user={roomUser} currentUser={user} theme={theme} />
 	</>
-);
+)};
 Direct.propTypes = {
 	roomUser: PropTypes.object,
 	theme: PropTypes.string

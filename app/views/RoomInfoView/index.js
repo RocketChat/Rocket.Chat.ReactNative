@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, ScrollView } from 'react-native';
+import { WebView } from 'react-native-webview';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import UAParser from 'ua-parser-js';
@@ -284,6 +285,36 @@ class RoomInfoView extends React.Component {
 		}
 	}
 
+	connect = async () => {
+		const { user } = this.props;
+		const { roomUser } = this.state;
+		const { username } = roomUser;
+
+		if (user !== null && user.customFields != undefined && user.customFields !== null) {
+			user.customFields.ConnectIds = user.customFields.ConnectIds === undefined || user.customFields.ConnectIds === ''
+			? username 
+			: `${user.customFields.ConnectIds},${username}`;
+		}
+
+		try {
+			const result = await RocketChat.saveUserProfile({}, user.customFields);
+			await this.createDirect();
+			this.goRoom();
+		} catch (e) {
+			showErrorAlert(e.message, I18n.t('Oops'));
+		}
+	}
+
+	message = async () => {
+		try {
+			await this.createDirect();
+			this.goRoom();
+		} catch(error) {
+			alert(error);
+			EventEmitter.emit(LISTENER, { message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') }) });
+		}
+	}
+
 	videoCall = () => {
 		const { room } = this.state;
 		RocketChat.callJitsi(room.rid);
@@ -291,8 +322,41 @@ class RoomInfoView extends React.Component {
 
 	renderAvatar = (room, roomUser) => {
 		const { baseUrl, user, theme } = this.props;
+		var isPeerSupporter = false;
 
-		return (
+		if (roomUser !== null 
+			&& roomUser !== undefined 
+			&& roomUser.parsedRoles !== null 
+			&& roomUser.parsedRoles !== undefined )
+			{
+				isPeerSupporter = roomUser.parsedRoles.indexOf('Peer Supporter') > -1;
+			}
+
+		return isPeerSupporter 
+		? (
+			<View style={{
+				width: 320,
+				height: 240,
+				}} >
+				<WebView
+				style={{
+					width: '100%',
+					height: '100%',
+					padding: 20,
+					marginTop: 20,
+					}}
+					allowsFullscreenVideo
+					allowsInlineMediaPlayback
+					mediaPlaybackRequiresUserAction
+					javaScriptEnabled={true}
+					domStorageEnabled={true}
+					source={{
+						uri: `${roomUser.customFields.VideoUrl}`,
+					}}
+				/>
+			</View>
+		)  
+		: (
 			<Avatar
 				text={room.name || roomUser.username}
 				size={100}
@@ -308,23 +372,51 @@ class RoomInfoView extends React.Component {
 	}
 
 	renderButton = (onPress, iconName, text) => {
-		const { theme } = this.props;
+		const { theme, user } = this.props;
 		const { navigation, route } = this.props;
+		const { saving, roomUser} = this.state;
 		const isPeerSupporter = route.params?.isPeerSupporter;
-		const { saving } = this.state;
+		const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles.includes(role)) !== undefined;
+
+		const peerIds = (user === null 
+			|| user.customFields === null 
+			|| user.customFields === undefined 
+			|| user.customFields.ConnectIds === undefined 
+			|| user.customFields.ConnectIds === '')
+
+		? [] : user.customFields.ConnectIds.split(",");
+
+		const canConnect=  !peerIds.includes(roomUser.username) && peerIds.length < 5 && !isAdmin;
+		const isConnected = peerIds.includes(roomUser.username) && !isAdmin;
 
 			if (isPeerSupporter) {
-				return (
-					<Button
-						title={I18n.t('Connect')}
-						type='primary'
-						onPress={this.submit}
-						disabled={false}
-						testID='profile-library-view-connect'
-						loading={saving}
-						theme={theme}
-					/>
-				);
+				if (canConnect && !isConnected){
+					return (
+						<Button
+							title={I18n.t('Connect')}
+							type='primary'
+							onPress={this.connect}
+							disabled={false}
+							testID='profile-library-view-connect'
+							loading={saving}
+							theme={theme}
+						/>
+					);
+				} else if (isConnected){
+					return (
+						<Button
+							title={'Message'}
+							type='primary'
+							onPress={this.message}
+							disabled={false}
+							testID='profile-library-view-connect'
+							loading={saving}
+							theme={theme}
+						/>
+					);
+				}
+
+				
 			} else {
 				const onActionPress = async() => {
 					try {
@@ -363,10 +455,12 @@ class RoomInfoView extends React.Component {
 
 	renderContent = () => {
 		const { room, roomUser } = this.state;
-		const { theme } = this.props;
+		const { theme, user } = this.props;
+
+		const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles.includes(role)) !== undefined;
 
 		if (this.isDirect) {
-			return <Direct roomUser={roomUser} theme={theme} />;
+			return <Direct roomUser={roomUser} theme={theme} user={user} />;
 		} else if (this.t === 'l') {
 			return <Livechat room={room} roomUser={roomUser} theme={theme} />;
 		}
