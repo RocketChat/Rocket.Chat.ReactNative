@@ -722,5 +722,7 @@
   "Add_Existing": "Add Existing",
   "Add_Existing_Channel": "Add Existing Channel",
   "Remove_from_Team": "Remove from Team",
-  "Auto-join": "Auto-join"
+  "Auto-join": "Auto-join",
+  "Delete_Team_Room_Warning": "Woud you like to remove this channel from the team? The channel will be moved back to the workspace",
+  "Confirmation": "Confirmation"
 }

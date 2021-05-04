@@ -4154,49 +4154,72 @@ exports[`Storyshots List pressable 1`] = `
       }
     />
     <View
+      accessible={true}
+      activeOpacity={1}
+      enabled={true}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         Array [
           Object {
-            "alignItems": "center",
-            "flex": 1,
-            "flexDirection": "row",
-            "justifyContent": "center",
-            "paddingHorizontal": 12,
-          },
-          false,
-          Object {
-            "height": 92,
+            "backgroundColor": "#ffffff",
           },
         ]
       }
     >
       <View
         style={
-          Object {
-            "flex": 1,
-            "justifyContent": "center",
-          }
+          Array [
+            Object {
+              "alignItems": "center",
+              "flex": 1,
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "paddingHorizontal": 12,
+            },
+            false,
+            Object {
+              "height": 92,
+            },
+          ]
         }
       >
-        <Text
-          numberOfLines={1}
+        <View
           style={
-            Array [
-              Object {
-                "backgroundColor": "transparent",
-                "fontFamily": "System",
-                "fontSize": 16,
-                "fontWeight": "400",
-                "textAlign": "left",
-              },
-              Object {
-                "color": "#0d0e12",
-              },
-            ]
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+            }
           }
         >
-          Press me
-        </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                Object {
+                  "color": "#0d0e12",
+                },
+              ]
+            }
+          >
+            Press me
+          </Text>
+        </View>
       </View>
     </View>
     <View
@@ -4213,51 +4236,74 @@ exports[`Storyshots List pressable 1`] = `
       }
     />
     <View
+      accessible={true}
+      activeOpacity={1}
+      enabled={false}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         Array [
           Object {
-            "alignItems": "center",
-            "flex": 1,
-            "flexDirection": "row",
-            "justifyContent": "center",
-            "paddingHorizontal": 12,
-          },
-          Object {
-            "opacity": 0.3,
-          },
-          Object {
-            "height": 92,
+            "backgroundColor": "#ffffff",
           },
         ]
       }
     >
       <View
         style={
-          Object {
-            "flex": 1,
-            "justifyContent": "center",
-          }
+          Array [
+            Object {
+              "alignItems": "center",
+              "flex": 1,
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "paddingHorizontal": 12,
+            },
+            Object {
+              "opacity": 0.3,
+            },
+            Object {
+              "height": 92,
+            },
+          ]
         }
       >
-        <Text
-          numberOfLines={1}
+        <View
           style={
-            Array [
-              Object {
-                "backgroundColor": "transparent",
-                "fontFamily": "System",
-                "fontSize": 16,
-                "fontWeight": "400",
-                "textAlign": "left",
-              },
-              Object {
-                "color": "#0d0e12",
-              },
-            ]
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+            }
           }
         >
-          I'm disabled
-        </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                Object {
+                  "color": "#0d0e12",
+                },
+              ]
+            }
+          >
+            I'm disabled
+          </Text>
+        </View>
       </View>
     </View>
     <View
@@ -5522,147 +5568,170 @@ exports[`Storyshots List with bigger font 1`] = `
           }
         />
         <View
+          accessible={true}
+          activeOpacity={1}
+          enabled={true}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Array [
               Object {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              false,
-              Object {
-                "height": 69,
+                "backgroundColor": "#ffffff",
               },
             ]
           }
         >
           <View
             style={
-              Object {
-                "paddingRight": 12,
-              }
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                  "paddingHorizontal": 12,
+                },
+                false,
+                Object {
+                  "height": 69,
+                },
+              ]
             }
           >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingRight": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#9ca2a8",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                  ]
+                }
+              >
+                Chats
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#9ca2a8",
+                    },
+                  ]
+                }
+              >
+                All
               </Text>
             </View>
-          </View>
-          <View
-            style={
-              Object {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              Chats
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#9ca2a8",
-                  },
-                ]
-              }
-            >
-              All
-            </Text>
-          </View>
-          <View
-            style={
-              Object {
-                "paddingLeft": 12,
-              }
-            }
-          >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingLeft": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#9ca2a8",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -5680,149 +5749,172 @@ exports[`Storyshots List with bigger font 1`] = `
           }
         />
         <View
+          accessible={true}
+          activeOpacity={1}
+          enabled={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Array [
               Object {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              Object {
-                "opacity": 0.3,
-              },
-              Object {
-                "height": 69,
+                "backgroundColor": "#ffffff",
               },
             ]
           }
         >
           <View
             style={
-              Object {
-                "paddingRight": 12,
-              }
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                  "paddingHorizontal": 12,
+                },
+                Object {
+                  "opacity": 0.3,
+                },
+                Object {
+                  "height": 69,
+                },
+              ]
             }
           >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingRight": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#9ca2a8",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                  ]
+                }
+              >
+                Chats
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#9ca2a8",
+                    },
+                  ]
+                }
+              >
+                All
               </Text>
             </View>
-          </View>
-          <View
-            style={
-              Object {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              Chats
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#9ca2a8",
-                  },
-                ]
-              }
-            >
-              All
-            </Text>
-          </View>
-          <View
-            style={
-              Object {
-                "paddingLeft": 12,
-              }
-            }
-          >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingLeft": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#9ca2a8",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -5916,147 +6008,170 @@ exports[`Storyshots List with bigger font 1`] = `
           }
         />
         <View
+          accessible={true}
+          activeOpacity={1}
+          enabled={true}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Array [
               Object {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              false,
-              Object {
-                "height": 69,
+                "backgroundColor": "#ffffff",
               },
             ]
           }
         >
           <View
             style={
-              Object {
-                "paddingRight": 12,
-              }
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                  "paddingHorizontal": 12,
+                },
+                false,
+                Object {
+                  "height": 69,
+                },
+              ]
             }
           >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingRight": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#9ca2a8",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                  ]
+                }
+              >
+                Chats
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#9ca2a8",
+                    },
+                  ]
+                }
+              >
+                All
               </Text>
             </View>
-          </View>
-          <View
-            style={
-              Object {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              Chats
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#9ca2a8",
-                  },
-                ]
-              }
-            >
-              All
-            </Text>
-          </View>
-          <View
-            style={
-              Object {
-                "paddingLeft": 12,
-              }
-            }
-          >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingLeft": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#9ca2a8",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -6074,149 +6189,172 @@ exports[`Storyshots List with bigger font 1`] = `
           }
         />
         <View
+          accessible={true}
+          activeOpacity={1}
+          enabled={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Array [
               Object {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              Object {
-                "opacity": 0.3,
-              },
-              Object {
-                "height": 69,
+                "backgroundColor": "#ffffff",
               },
             ]
           }
         >
           <View
             style={
-              Object {
-                "paddingRight": 12,
-              }
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                  "paddingHorizontal": 12,
+                },
+                Object {
+                  "opacity": 0.3,
+                },
+                Object {
+                  "height": 69,
+                },
+              ]
             }
           >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingRight": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#9ca2a8",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                  ]
+                }
+              >
+                Chats
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#9ca2a8",
+                    },
+                  ]
+                }
+              >
+                All
               </Text>
             </View>
-          </View>
-          <View
-            style={
-              Object {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              Chats
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#9ca2a8",
-                  },
-                ]
-              }
-            >
-              All
-            </Text>
-          </View>
-          <View
-            style={
-              Object {
-                "paddingLeft": 12,
-              }
-            }
-          >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingLeft": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#9ca2a8",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -6351,147 +6489,170 @@ exports[`Storyshots List with black theme 1`] = `
           }
         />
         <View
+          accessible={true}
+          activeOpacity={1}
+          enabled={true}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Array [
               Object {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              false,
-              Object {
-                "height": 92,
+                "backgroundColor": "#000000",
               },
             ]
           }
         >
           <View
             style={
-              Object {
-                "paddingRight": 12,
-              }
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                  "paddingHorizontal": 12,
+                },
+                false,
+                Object {
+                  "height": 92,
+                },
+              ]
             }
           >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingRight": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#b2b8c6",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#b2b8c6",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#f9f9f9",
+                    },
+                  ]
+                }
+              >
+                Chats
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#b2b8c6",
+                    },
+                  ]
+                }
+              >
+                All
               </Text>
             </View>
-          </View>
-          <View
-            style={
-              Object {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#f9f9f9",
-                  },
-                ]
-              }
-            >
-              Chats
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#b2b8c6",
-                  },
-                ]
-              }
-            >
-              All
-            </Text>
-          </View>
-          <View
-            style={
-              Object {
-                "paddingLeft": 12,
-              }
-            }
-          >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingLeft": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#b2b8c6",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#b2b8c6",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -6509,149 +6670,172 @@ exports[`Storyshots List with black theme 1`] = `
           }
         />
         <View
+          accessible={true}
+          activeOpacity={1}
+          enabled={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Array [
               Object {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              Object {
-                "opacity": 0.3,
-              },
-              Object {
-                "height": 92,
+                "backgroundColor": "#000000",
               },
             ]
           }
         >
           <View
             style={
-              Object {
-                "paddingRight": 12,
-              }
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                  "paddingHorizontal": 12,
+                },
+                Object {
+                  "opacity": 0.3,
+                },
+                Object {
+                  "height": 92,
+                },
+              ]
             }
           >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingRight": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#b2b8c6",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#b2b8c6",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#f9f9f9",
+                    },
+                  ]
+                }
+              >
+                Chats
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#b2b8c6",
+                    },
+                  ]
+                }
+              >
+                All
               </Text>
             </View>
-          </View>
-          <View
-            style={
-              Object {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#f9f9f9",
-                  },
-                ]
-              }
-            >
-              Chats
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#b2b8c6",
-                  },
-                ]
-              }
-            >
-              All
-            </Text>
-          </View>
-          <View
-            style={
-              Object {
-                "paddingLeft": 12,
-              }
-            }
-          >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingLeft": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#b2b8c6",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#b2b8c6",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -6745,147 +6929,170 @@ exports[`Storyshots List with black theme 1`] = `
           }
         />
         <View
+          accessible={true}
+          activeOpacity={1}
+          enabled={true}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Array [
               Object {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              false,
-              Object {
-                "height": 92,
+                "backgroundColor": "#000000",
               },
             ]
           }
         >
           <View
             style={
-              Object {
-                "paddingRight": 12,
-              }
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                  "paddingHorizontal": 12,
+                },
+                false,
+                Object {
+                  "height": 92,
+                },
+              ]
             }
           >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingRight": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#b2b8c6",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#b2b8c6",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#f9f9f9",
+                    },
+                  ]
+                }
+              >
+                Chats
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#b2b8c6",
+                    },
+                  ]
+                }
+              >
+                All
               </Text>
             </View>
-          </View>
-          <View
-            style={
-              Object {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#f9f9f9",
-                  },
-                ]
-              }
-            >
-              Chats
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#b2b8c6",
-                  },
-                ]
-              }
-            >
-              All
-            </Text>
-          </View>
-          <View
-            style={
-              Object {
-                "paddingLeft": 12,
-              }
-            }
-          >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingLeft": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#b2b8c6",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#b2b8c6",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -6903,149 +7110,172 @@ exports[`Storyshots List with black theme 1`] = `
           }
         />
         <View
+          accessible={true}
+          activeOpacity={1}
+          enabled={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Array [
               Object {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              Object {
-                "opacity": 0.3,
-              },
-              Object {
-                "height": 92,
+                "backgroundColor": "#000000",
               },
             ]
           }
         >
           <View
             style={
-              Object {
-                "paddingRight": 12,
-              }
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                  "paddingHorizontal": 12,
+                },
+                Object {
+                  "opacity": 0.3,
+                },
+                Object {
+                  "height": 92,
+                },
+              ]
             }
           >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingRight": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#b2b8c6",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#b2b8c6",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#f9f9f9",
+                    },
+                  ]
+                }
+              >
+                Chats
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#b2b8c6",
+                    },
+                  ]
+                }
+              >
+                All
               </Text>
             </View>
-          </View>
-          <View
-            style={
-              Object {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#f9f9f9",
-                  },
-                ]
-              }
-            >
-              Chats
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#b2b8c6",
-                  },
-                ]
-              }
-            >
-              All
-            </Text>
-          </View>
-          <View
-            style={
-              Object {
-                "paddingLeft": 12,
-              }
-            }
-          >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingLeft": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#b2b8c6",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#b2b8c6",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -7193,49 +7423,73 @@ exports[`Storyshots List with custom colors 1`] = `
       }
     />
     <View
+      accessible={true}
+      activeOpacity={1}
+      enabled={true}
+      focusable={true}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         Array [
           Object {
-            "alignItems": "center",
-            "flex": 1,
-            "flexDirection": "row",
-            "justifyContent": "center",
-            "paddingHorizontal": 12,
-          },
-          false,
-          Object {
-            "height": 92,
+            "backgroundColor": "#ffffff",
           },
         ]
       }
+      underlayColor="green"
     >
       <View
         style={
-          Object {
-            "flex": 1,
-            "justifyContent": "center",
-          }
+          Array [
+            Object {
+              "alignItems": "center",
+              "flex": 1,
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "paddingHorizontal": 12,
+            },
+            false,
+            Object {
+              "height": 92,
+            },
+          ]
         }
       >
-        <Text
-          numberOfLines={1}
+        <View
           style={
-            Array [
-              Object {
-                "backgroundColor": "transparent",
-                "fontFamily": "System",
-                "fontSize": 16,
-                "fontWeight": "400",
-                "textAlign": "left",
-              },
-              Object {
-                "color": "white",
-              },
-            ]
+            Object {
+              "flex": 1,
+              "justifyContent": "center",
+            }
           }
         >
-          Press me!
-        </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "System",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                Object {
+                  "color": "white",
+                },
+              ]
+            }
+          >
+            Press me!
+          </Text>
+        </View>
       </View>
     </View>
     <View
@@ -7340,147 +7594,170 @@ exports[`Storyshots List with dark theme 1`] = `
           }
         />
         <View
+          accessible={true}
+          activeOpacity={1}
+          enabled={true}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Array [
               Object {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              false,
-              Object {
-                "height": 92,
+                "backgroundColor": "#030b1b",
               },
             ]
           }
         >
           <View
             style={
-              Object {
-                "paddingRight": 12,
-              }
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                  "paddingHorizontal": 12,
+                },
+                false,
+                Object {
+                  "height": 92,
+                },
+              ]
             }
           >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingRight": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#9297a2",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9297a2",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#f9f9f9",
+                    },
+                  ]
+                }
+              >
+                Chats
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#9297a2",
+                    },
+                  ]
+                }
+              >
+                All
               </Text>
             </View>
-          </View>
-          <View
-            style={
-              Object {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#f9f9f9",
-                  },
-                ]
-              }
-            >
-              Chats
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#9297a2",
-                  },
-                ]
-              }
-            >
-              All
-            </Text>
-          </View>
-          <View
-            style={
-              Object {
-                "paddingLeft": 12,
-              }
-            }
-          >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingLeft": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#9297a2",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9297a2",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -7498,149 +7775,172 @@ exports[`Storyshots List with dark theme 1`] = `
           }
         />
         <View
+          accessible={true}
+          activeOpacity={1}
+          enabled={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Array [
               Object {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              Object {
-                "opacity": 0.3,
-              },
-              Object {
-                "height": 92,
+                "backgroundColor": "#030b1b",
               },
             ]
           }
         >
           <View
             style={
-              Object {
-                "paddingRight": 12,
-              }
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                  "paddingHorizontal": 12,
+                },
+                Object {
+                  "opacity": 0.3,
+                },
+                Object {
+                  "height": 92,
+                },
+              ]
             }
           >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingRight": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#9297a2",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9297a2",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#f9f9f9",
+                    },
+                  ]
+                }
+              >
+                Chats
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#9297a2",
+                    },
+                  ]
+                }
+              >
+                All
               </Text>
             </View>
-          </View>
-          <View
-            style={
-              Object {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#f9f9f9",
-                  },
-                ]
-              }
-            >
-              Chats
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#9297a2",
-                  },
-                ]
-              }
-            >
-              All
-            </Text>
-          </View>
-          <View
-            style={
-              Object {
-                "paddingLeft": 12,
-              }
-            }
-          >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingLeft": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#9297a2",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9297a2",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -7734,147 +8034,170 @@ exports[`Storyshots List with dark theme 1`] = `
           }
         />
         <View
+          accessible={true}
+          activeOpacity={1}
+          enabled={true}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Array [
               Object {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              false,
-              Object {
-                "height": 92,
+                "backgroundColor": "#030b1b",
               },
             ]
           }
         >
           <View
             style={
-              Object {
-                "paddingRight": 12,
-              }
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                  "paddingHorizontal": 12,
+                },
+                false,
+                Object {
+                  "height": 92,
+                },
+              ]
             }
           >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingRight": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#9297a2",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9297a2",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#f9f9f9",
+                    },
+                  ]
+                }
+              >
+                Chats
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#9297a2",
+                    },
+                  ]
+                }
+              >
+                All
               </Text>
             </View>
-          </View>
-          <View
-            style={
-              Object {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#f9f9f9",
-                  },
-                ]
-              }
-            >
-              Chats
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#9297a2",
-                  },
-                ]
-              }
-            >
-              All
-            </Text>
-          </View>
-          <View
-            style={
-              Object {
-                "paddingLeft": 12,
-              }
-            }
-          >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingLeft": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#9297a2",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9297a2",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -7892,149 +8215,172 @@ exports[`Storyshots List with dark theme 1`] = `
           }
         />
         <View
+          accessible={true}
+          activeOpacity={1}
+          enabled={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Array [
               Object {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              Object {
-                "opacity": 0.3,
-              },
-              Object {
-                "height": 92,
+                "backgroundColor": "#030b1b",
               },
             ]
           }
         >
           <View
             style={
-              Object {
-                "paddingRight": 12,
-              }
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                  "paddingHorizontal": 12,
+                },
+                Object {
+                  "opacity": 0.3,
+                },
+                Object {
+                  "height": 92,
+                },
+              ]
             }
           >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingRight": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#9297a2",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9297a2",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#f9f9f9",
+                    },
+                  ]
+                }
+              >
+                Chats
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#9297a2",
+                    },
+                  ]
+                }
+              >
+                All
               </Text>
             </View>
-          </View>
-          <View
-            style={
-              Object {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#f9f9f9",
-                  },
-                ]
-              }
-            >
-              Chats
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#9297a2",
-                  },
-                ]
-              }
-            >
-              All
-            </Text>
-          </View>
-          <View
-            style={
-              Object {
-                "paddingLeft": 12,
-              }
-            }
-          >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingLeft": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#9297a2",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9297a2",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -9461,147 +9807,170 @@ exports[`Storyshots List with small font 1`] = `
           }
         />
         <View
+          accessible={true}
+          activeOpacity={1}
+          enabled={true}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Array [
               Object {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              false,
-              Object {
-                "height": 36.800000000000004,
+                "backgroundColor": "#ffffff",
               },
             ]
           }
         >
           <View
             style={
-              Object {
-                "paddingRight": 12,
-              }
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                  "paddingHorizontal": 12,
+                },
+                false,
+                Object {
+                  "height": 36.800000000000004,
+                },
+              ]
             }
           >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingRight": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#9ca2a8",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                  ]
+                }
+              >
+                Chats
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#9ca2a8",
+                    },
+                  ]
+                }
+              >
+                All
               </Text>
             </View>
-          </View>
-          <View
-            style={
-              Object {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              Chats
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#9ca2a8",
-                  },
-                ]
-              }
-            >
-              All
-            </Text>
-          </View>
-          <View
-            style={
-              Object {
-                "paddingLeft": 12,
-              }
-            }
-          >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingLeft": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#9ca2a8",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -9619,149 +9988,172 @@ exports[`Storyshots List with small font 1`] = `
           }
         />
         <View
+          accessible={true}
+          activeOpacity={1}
+          enabled={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Array [
               Object {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              Object {
-                "opacity": 0.3,
-              },
-              Object {
-                "height": 36.800000000000004,
+                "backgroundColor": "#ffffff",
               },
             ]
           }
         >
           <View
             style={
-              Object {
-                "paddingRight": 12,
-              }
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                  "paddingHorizontal": 12,
+                },
+                Object {
+                  "opacity": 0.3,
+                },
+                Object {
+                  "height": 36.800000000000004,
+                },
+              ]
             }
           >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingRight": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#9ca2a8",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                  ]
+                }
+              >
+                Chats
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#9ca2a8",
+                    },
+                  ]
+                }
+              >
+                All
               </Text>
             </View>
-          </View>
-          <View
-            style={
-              Object {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              Chats
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#9ca2a8",
-                  },
-                ]
-              }
-            >
-              All
-            </Text>
-          </View>
-          <View
-            style={
-              Object {
-                "paddingLeft": 12,
-              }
-            }
-          >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingLeft": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#9ca2a8",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -9855,147 +10247,170 @@ exports[`Storyshots List with small font 1`] = `
           }
         />
         <View
+          accessible={true}
+          activeOpacity={1}
+          enabled={true}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Array [
               Object {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              false,
-              Object {
-                "height": 36.800000000000004,
+                "backgroundColor": "#ffffff",
               },
             ]
           }
         >
           <View
             style={
-              Object {
-                "paddingRight": 12,
-              }
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                  "paddingHorizontal": 12,
+                },
+                false,
+                Object {
+                  "height": 36.800000000000004,
+                },
+              ]
             }
           >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingRight": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#9ca2a8",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                  ]
+                }
+              >
+                Chats
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#9ca2a8",
+                    },
+                  ]
+                }
+              >
+                All
               </Text>
             </View>
-          </View>
-          <View
-            style={
-              Object {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              Chats
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#9ca2a8",
-                  },
-                ]
-              }
-            >
-              All
-            </Text>
-          </View>
-          <View
-            style={
-              Object {
-                "paddingLeft": 12,
-              }
-            }
-          >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingLeft": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#9ca2a8",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -10013,149 +10428,172 @@ exports[`Storyshots List with small font 1`] = `
           }
         />
         <View
+          accessible={true}
+          activeOpacity={1}
+          enabled={false}
+          focusable={true}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onFocus={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Array [
               Object {
-                "alignItems": "center",
-                "flex": 1,
-                "flexDirection": "row",
-                "justifyContent": "center",
-                "paddingHorizontal": 12,
-              },
-              Object {
-                "opacity": 0.3,
-              },
-              Object {
-                "height": 36.800000000000004,
+                "backgroundColor": "#ffffff",
               },
             ]
           }
         >
           <View
             style={
-              Object {
-                "paddingRight": 12,
-              }
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                  "paddingHorizontal": 12,
+                },
+                Object {
+                  "opacity": 0.3,
+                },
+                Object {
+                  "height": 36.800000000000004,
+                },
+              ]
             }
           >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingRight": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#9ca2a8",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#0d0e12",
+                    },
+                  ]
+                }
+              >
+                Chats
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 14,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#9ca2a8",
+                    },
+                  ]
+                }
+              >
+                All
               </Text>
             </View>
-          </View>
-          <View
-            style={
-              Object {
-                "flex": 1,
-                "justifyContent": "center",
-              }
-            }
-          >
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#0d0e12",
-                  },
-                ]
-              }
-            >
-              Chats
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#9ca2a8",
-                  },
-                ]
-              }
-            >
-              All
-            </Text>
-          </View>
-          <View
-            style={
-              Object {
-                "paddingLeft": 12,
-              }
-            }
-          >
             <View
               style={
-                Array [
-                  Object {
-                    "alignItems": "center",
-                    "justifyContent": "center",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "paddingLeft": 12,
+                }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
-                      "color": "#9ca2a8",
-                      "fontSize": 20,
+                      "alignItems": "center",
+                      "justifyContent": "center",
                     },
                     undefined,
-                    Object {
-                      "fontFamily": "custom",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
                   ]
                 }
               >
-                
-              </Text>
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 20,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -44349,6 +44787,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -44360,11 +44799,12 @@ exports[`Storyshots Room Item Alerts 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -44757,6 +45197,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -44768,11 +45209,12 @@ exports[`Storyshots Room Item Alerts 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -45206,6 +45648,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -45217,11 +45660,12 @@ exports[`Storyshots Room Item Alerts 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -45655,6 +46099,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -45666,11 +46111,12 @@ exports[`Storyshots Room Item Alerts 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -46104,6 +46550,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -46115,11 +46562,12 @@ exports[`Storyshots Room Item Alerts 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -46553,6 +47001,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -46564,11 +47013,12 @@ exports[`Storyshots Room Item Alerts 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -47002,6 +47452,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -47013,11 +47464,12 @@ exports[`Storyshots Room Item Alerts 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -47451,6 +47903,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -47462,11 +47915,12 @@ exports[`Storyshots Room Item Alerts 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -47900,6 +48354,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -47911,11 +48366,12 @@ exports[`Storyshots Room Item Alerts 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -48349,6 +48805,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -48360,11 +48817,12 @@ exports[`Storyshots Room Item Alerts 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -48798,6 +49256,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -48809,11 +49268,12 @@ exports[`Storyshots Room Item Alerts 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -49260,6 +49720,7 @@ exports[`Storyshots Room Item Basic 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -49271,11 +49732,12 @@ exports[`Storyshots Room Item Basic 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -49676,6 +50138,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -49687,11 +50150,12 @@ exports[`Storyshots Room Item Last Message 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -50138,6 +50602,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -50149,11 +50614,12 @@ exports[`Storyshots Room Item Last Message 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -50600,6 +51066,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -50611,11 +51078,12 @@ exports[`Storyshots Room Item Last Message 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -51062,6 +51530,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -51073,11 +51542,12 @@ exports[`Storyshots Room Item Last Message 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -51524,6 +51994,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -51535,11 +52006,12 @@ exports[`Storyshots Room Item Last Message 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -52042,6 +52514,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -52053,11 +52526,12 @@ exports[`Storyshots Room Item Last Message 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -52560,6 +53034,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -52571,11 +53046,12 @@ exports[`Storyshots Room Item Last Message 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -53091,6 +53567,7 @@ exports[`Storyshots Room Item Type 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -53102,11 +53579,12 @@ exports[`Storyshots Room Item Type 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -53494,6 +53972,7 @@ exports[`Storyshots Room Item Type 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -53505,11 +53984,12 @@ exports[`Storyshots Room Item Type 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -53885,6 +54365,7 @@ exports[`Storyshots Room Item Type 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -53896,11 +54377,12 @@ exports[`Storyshots Room Item Type 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -54276,6 +54758,7 @@ exports[`Storyshots Room Item Type 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -54287,11 +54770,12 @@ exports[`Storyshots Room Item Type 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -54667,6 +55151,7 @@ exports[`Storyshots Room Item Type 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -54678,11 +55163,12 @@ exports[`Storyshots Room Item Type 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -55058,6 +55544,7 @@ exports[`Storyshots Room Item Type 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -55069,11 +55556,12 @@ exports[`Storyshots Room Item Type 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -55449,6 +55937,7 @@ exports[`Storyshots Room Item Type 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -55460,11 +55949,12 @@ exports[`Storyshots Room Item Type 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -55853,6 +56343,7 @@ exports[`Storyshots Room Item User 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -55864,11 +56355,12 @@ exports[`Storyshots Room Item User 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -56256,6 +56748,7 @@ exports[`Storyshots Room Item User 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -56267,11 +56760,12 @@ exports[`Storyshots Room Item User 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -56672,6 +57166,7 @@ exports[`Storyshots Room Item User status 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -56683,11 +57178,12 @@ exports[`Storyshots Room Item User status 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -57075,6 +57571,7 @@ exports[`Storyshots Room Item User status 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -57086,11 +57583,12 @@ exports[`Storyshots Room Item User status 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -57478,6 +57976,7 @@ exports[`Storyshots Room Item User status 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -57489,11 +57988,12 @@ exports[`Storyshots Room Item User status 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -57881,6 +58381,7 @@ exports[`Storyshots Room Item User status 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -57892,11 +58393,12 @@ exports[`Storyshots Room Item User status 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -58284,6 +58786,7 @@ exports[`Storyshots Room Item User status 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -58295,11 +58798,12 @@ exports[`Storyshots Room Item User status 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={
@@ -58687,6 +59191,7 @@ exports[`Storyshots Room Item User status 1`] = `
       >
         <View
           accessible={true}
+          activeOpacity={1}
           focusable={true}
           onBlur={[Function]}
           onClick={[Function]}
@@ -58698,11 +59203,12 @@ exports[`Storyshots Room Item User status 1`] = `
           onResponderTerminationRequest={[Function]}
           onStartShouldSetResponder={[Function]}
           style={
-            Object {
-              "backgroundColor": "#ffffff",
-            }
+            Array [
+              Object {
+                "backgroundColor": "#ffffff",
+              },
+            ]
           }
-          theme="light"
         >
           <View
             style={

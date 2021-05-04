@@ -754,13 +754,9 @@ const RocketChat = {
 		// RC 3.13.0
 		return this.post('teams.addRooms', params);
 	},
-	deleteTeamRoom({ rid, teamId }) {
-		const params = {
-			roomId: rid,
-			teamId
-		};
+	removeTeamRoom({ roomId, teamId }) {
 		// RC 3.13.0
-		return this.post('teams.removeRoom', params);
+		return this.post('teams.removeRoom', { roomId, teamId });
 	},
 	joinRoom(roomId, joinCode, type) {
 		// TODO: join code

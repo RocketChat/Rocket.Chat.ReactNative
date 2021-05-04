@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { RectButton } from 'react-native-gesture-handler';
 
+import { Pressable } from 'react-native';
 import { themes } from '../constants/colors';
 
 class Touch extends React.Component {
@@ -15,21 +15,23 @@ class Touch extends React.Component {
 
 	render() {
 		const {
-			children, onPress, onLongPress, theme, underlayColor, ...props
+			children, onPress, onLongPress, theme, ...props
 		} = this.props;
 
 		return (
-			<RectButton
+			<Pressable
 				ref={this.getRef}
 				onPress={onPress}
 				onLongPress={onLongPress}
 				activeOpacity={1}
-				underlayColor={underlayColor || themes[theme].bannerBackground}
-				rippleColor={themes[theme].bannerBackground}
+				style={({ pressed }) => [{
+					backgroundColor: pressed ? themes[theme].chatComponentBackground : themes[theme].backgroundColor
+				}]}
+				android_ripple={{ color: themes[theme].bannerBackground }}
 				{...props}
 			>
 				{children}
-			</RectButton>
+			</Pressable>
 		);
 	}
 }

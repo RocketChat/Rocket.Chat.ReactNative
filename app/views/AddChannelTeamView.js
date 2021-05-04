@@ -72,7 +72,6 @@ class AddChannelTeamView extends React.Component {
 		return (
 			<Touch
 				onPress={onPress}
-				style={{ backgroundColor: themes[theme].backgroundColor }}
 				testID={testID}
 				theme={theme}
 			>

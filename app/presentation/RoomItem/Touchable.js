@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Animated, Pressable } from 'react-native';
+import { Animated } from 'react-native';
 import { PanGestureHandler, State } from 'react-native-gesture-handler';
 
 import {
@@ -9,8 +9,8 @@ import {
 	LONG_SWIPE
 } from './styles';
 import { isRTL } from '../../i18n';
-import { themes } from '../../constants/colors';
 import { LeftActions, RightActions } from './Actions';
+import Touch from '../../utils/touch';
 
 class Touchable extends React.Component {
 	static propTypes = {
@@ -27,7 +27,6 @@ class Touchable extends React.Component {
 		hideChannel: PropTypes.func,
 		children: PropTypes.element,
 		theme: PropTypes.string,
-		isFocused: PropTypes.bool,
 		swipeEnabled: PropTypes.bool
 	}
 
@@ -217,7 +216,7 @@ class Touchable extends React.Component {
 
 		render() {
 			const {
-				testID, isRead, width, favorite, children, theme, isFocused, swipeEnabled
+				testID, isRead, width, favorite, children, theme, swipeEnabled
 			} = this.props;
 
 			return (
@@ -249,17 +248,14 @@ class Touchable extends React.Component {
 								transform: [{ translateX: this.transX }]
 							}}
 						>
-							<Pressable
+							<Touch
 								onPress={this.onPress}
 								onLongPress={this.onLongPress}
 								theme={theme}
 								testID={testID}
-								style={{
-									backgroundColor: isFocused ? themes[theme].chatComponentBackground : themes[theme].backgroundColor
-								}}
 							>
 								{children}
-							</Pressable>
+							</Touch>
 						</Animated.View>
 					</Animated.View>
 

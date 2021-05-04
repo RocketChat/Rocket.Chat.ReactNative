@@ -586,10 +586,7 @@ class RoomsListView extends React.Component {
 	}
 
 	onPressItem = (item = {}) => {
-		const { navigation, isMasterDetail } = this.props;
-		if (!navigation.isFocused()) {
-			return;
-		}
+		const { isMasterDetail } = this.props;
 
 		this.cancelSearch();
 		this.goRoom({ item, isMasterDetail });
@@ -894,7 +891,6 @@ class RoomsListView extends React.Component {
 			return this.renderSectionHeader(item.rid);
 		}
 
-		const { item: currentItem } = this.state;
 		const {
 			user: { username },
 			StoreLastMessage,
@@ -925,7 +921,6 @@ class RoomsListView extends React.Component {
 				getIsGroupChat={this.isGroupChat}
 				getIsRead={this.isRead}
 				visitor={item.visitor}
-				isFocused={currentItem?.rid === item.rid}
 			/>
 		);
 	};

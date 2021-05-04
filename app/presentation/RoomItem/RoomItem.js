@@ -24,7 +24,6 @@ const RoomItem = ({
 	status,
 	useRealName,
 	theme,
-	isFocused,
 	isGroupChat,
 	isRead,
 	date,
@@ -61,7 +60,6 @@ const RoomItem = ({
 		testID={testID}
 		type={type}
 		theme={theme}
-		isFocused={isFocused}
 		swipeEnabled={swipeEnabled}
 	>
 		<Wrapper
@@ -163,7 +161,6 @@ RoomItem.propTypes = {
 	status: PropTypes.string,
 	useRealName: PropTypes.bool,
 	theme: PropTypes.string,
-	isFocused: PropTypes.bool,
 	isGroupChat: PropTypes.bool,
 	isRead: PropTypes.bool,
 	teamMain: PropTypes.bool,
