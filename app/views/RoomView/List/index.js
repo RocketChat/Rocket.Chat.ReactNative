@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Q } from '@nozbe/watermelondb';
 import moment from 'moment';
 import { dequal } from 'dequal';
+import { Value, event } from 'react-native-reanimated';
 
 import database from '../../../lib/database';
 import RocketChat from '../../../lib/rocketchat';
@@ -14,8 +15,20 @@ import ActivityIndicator from '../../../containers/ActivityIndicator';
 import { themes } from '../../../constants/colors';
 import List from './List';
 import debounce from '../../../utils/debounce';
+import NavBottomFAB from './NavBottomFAB';
 
 const QUERY_SIZE = 50;
+
+const onScroll = ({ y }) => event(
+	[
+		{
+			nativeEvent: {
+				contentOffset: { y }
+			}
+		}
+	],
+	{ useNativeDriver: true }
+);
 
 class ListContainer extends React.Component {
 	static propTypes = {
@@ -58,6 +71,8 @@ class ListContainer extends React.Component {
 			refreshing: false,
 			highlightedMessage: null
 		};
+		this.y = new Value(0);
+		this.onScroll = onScroll({ y: this.y });
 		this.query();
 		this.unsubscribeFocus = props.navigation.addListener('focus', () => {
 			this.animated = true;
@@ -316,7 +331,7 @@ class ListContainer extends React.Component {
 
 	handleScrollToIndexFailed = (params) => {
 		const { listRef } = this.props;
-		listRef.current.scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
+		listRef.current.getNode().scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
 	}
 
 	jumpToMessage = messageId => new Promise(async(resolve) => {
@@ -324,7 +339,7 @@ class ListContainer extends React.Component {
 		const { listRef } = this.props;
 		const index = messages.findIndex(item => item.id === messageId);
 		if (index > -1) {
-			listRef.current.scrollToIndex({ index });
+			listRef.current.getNode().scrollToIndex({ index });
 			this.setState({ highlightedMessage: messageId });
 			this.clearHighlightedMessageTimeout();
 			this.highlightedMessageTimeout = setTimeout(() => {
@@ -332,10 +347,15 @@ class ListContainer extends React.Component {
 			}, 10000);
 			await setTimeout(() => resolve(), 300);
 		} else {
-			listRef.current.scrollToIndex({ index: messages.length - 1, animated: false });
+			listRef.current.getNode().scrollToIndex({ index: messages.length - 1, animated: false });
 			await setTimeout(() => resolve(this.jumpToMessage(messageId)), 300);
 		}
 	});
+
+	jumpToBottom = () => {
+		const { listRef } = this.props;
+		listRef.current.getNode().scrollToOffset({ offset: -100 });
+	}
 
 	renderFooter = () => {
 		const { loading } = this.state;
@@ -361,6 +381,8 @@ class ListContainer extends React.Component {
 			<>
 				<EmptyRoom rid={rid} length={messages.length} mounted={this.mounted} theme={theme} />
 				<List
+					onScroll={this.onScroll}
+					scrollEventThrottle={16}
 					listRef={listRef}
 					data={messages}
 					renderItem={this.renderItem}
@@ -375,6 +397,7 @@ class ListContainer extends React.Component {
 						/>
 					)}
 				/>
+				<NavBottomFAB y={this.y} onPress={this.jumpToBottom} />
 			</>
 		);
 	}

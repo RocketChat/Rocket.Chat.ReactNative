@@ -1,8 +1,11 @@
 import React from 'react';
 import { FlatList, StyleSheet } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 import { isIOS } from '../../../utils/deviceInfo';
 import scrollPersistTaps from '../../../utils/scrollPersistTaps';
+
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 const styles = StyleSheet.create({
 	list: {
@@ -20,7 +23,7 @@ const getItemLayout = (data, index) => ({
 });
 
 const List = ({ listRef, ...props }) => (
-	<FlatList
+	<AnimatedFlatList
 		testID='room-view-messages'
 		ref={listRef}
 		keyExtractor={item => item.id}
