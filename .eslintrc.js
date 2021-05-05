@@ -46,6 +46,7 @@ module.exports = {
 		"react/forbid-prop-types": 0,
 		"jsx-quotes": [2, "prefer-single"],
 		"jsx-a11y/href-no-hash": 0,
+		"jsx-a11y/aria-role": 0,
 		"import/prefer-default-export": 0,
 		"import/no-cycle": 0,
 		"camelcase": 0,
