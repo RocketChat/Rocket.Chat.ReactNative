@@ -15,7 +15,7 @@ const Item = React.memo(({
 		testID={testID}
 		onPress={onPress}
 		theme={theme}
-		style={[styles.item, current && { backgroundColor: themes[theme].borderColor }]}
+		style={({ pressed }) => [styles.item, current && { backgroundColor: pressed ? themes[theme].borderColor : themes[theme].bannerBackground }]}
 	>
 		<View style={styles.itemHorizontal}>
 			{left}

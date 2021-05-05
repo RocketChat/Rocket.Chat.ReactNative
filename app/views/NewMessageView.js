@@ -148,6 +148,9 @@ class NewMessageView extends React.Component {
 		return (
 			<Touch
 				onPress={onPress}
+				style={({ pressed }) => [{
+					backgroundColor: pressed ? themes[theme].bannerBackground : themes[theme].backgroundColor
+				}]}
 				testID={testID}
 				theme={theme}
 			>

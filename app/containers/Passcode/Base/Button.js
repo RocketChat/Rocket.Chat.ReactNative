@@ -14,7 +14,7 @@ const Button = React.memo(({
 
 	return (
 		<Touch
-			style={[styles.buttonView, { backgroundColor: 'transparent' }]}
+			style={({ pressed }) => [styles.buttonView, { backgroundColor: pressed ? 'transparent' : themes[theme].bannerBackground }]}
 			underlayColor={themes[theme].passcodeButtonActive}
 			rippleColor={themes[theme].passcodeButtonActive}
 			enabled={!disabled}

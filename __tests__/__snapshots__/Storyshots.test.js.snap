@@ -7439,11 +7439,10 @@ exports[`Storyshots List with custom colors 1`] = `
       style={
         Array [
           Object {
-            "backgroundColor": "#ffffff",
+            "backgroundColor": "red",
           },
         ]
       }
-      underlayColor="green"
     >
       <View
         style={

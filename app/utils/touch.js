@@ -15,7 +15,7 @@ class Touch extends React.Component {
 
 	render() {
 		const {
-			children, onPress, onLongPress, theme, ...props
+			children, onPress, onLongPress, theme, style, ...props
 		} = this.props;
 
 		return (
@@ -24,9 +24,7 @@ class Touch extends React.Component {
 				onPress={onPress}
 				onLongPress={onLongPress}
 				activeOpacity={1}
-				style={({ pressed }) => [{
-					backgroundColor: pressed ? themes[theme].chatComponentBackground : themes[theme].backgroundColor
-				}]}
+				style={style}
 				android_ripple={{ color: themes[theme].bannerBackground }}
 				{...props}
 			>
@@ -41,7 +39,8 @@ Touch.propTypes = {
 	onPress: PropTypes.func,
 	onLongPress: PropTypes.func,
 	theme: PropTypes.string,
-	underlayColor: PropTypes.string
+	underlayColor: PropTypes.string,
+	style: PropTypes.object
 };
 
 export default Touch;

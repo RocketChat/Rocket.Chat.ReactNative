@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { Base64 } from 'js-base64';
 import * as AppleAuthentication from 'expo-apple-authentication';
 
+import { transparentize } from 'color2k';
 import { withTheme } from '../theme';
 import sharedStyles from '../views/Styles';
 import { themes } from '../constants/colors';
@@ -344,10 +345,8 @@ class LoginServices extends React.PureComponent {
 			<Touch
 				key={service.name}
 				onPress={onPress}
-				style={[styles.serviceButton, { backgroundColor }]}
+				style={({ pressed }) => [styles.serviceButton, { backgroundColor: pressed ? transparentize(themes[theme].buttonText, 0.5) : backgroundColor }]}
 				theme={theme}
-				activeOpacity={0.5}
-				underlayColor={themes[theme].buttonText}
 			>
 				<View style={styles.serviceButtonContainer}>
 					{service.authType === 'oauth' || service.authType === 'apple' ? <CustomIcon name={icon} size={24} color={themes[theme].titleText} style={styles.serviceIcon} /> : null}

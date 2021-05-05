@@ -10,6 +10,7 @@ import {
 	LONG_SWIPE
 } from './styles';
 import { isRTL } from '../../i18n';
+import { themes } from '../../constants/colors';
 import { LeftActions, RightActions } from './Actions';
 
 class Touchable extends React.Component {
@@ -253,6 +254,7 @@ class Touchable extends React.Component {
 								onLongPress={this.onLongPress}
 								theme={theme}
 								testID={testID}
+								style={({ pressed }) => [{ backgroundColor: pressed ? themes[theme].chatComponentBackground : themes[theme].backgroundColor }]}
 							>
 								{children}
 							</Touch>

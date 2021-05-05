@@ -309,7 +309,7 @@ class ProfileView extends React.Component {
 				key={key}
 				testID={key}
 				onPress={onPress}
-				style={[styles.avatarButton, { opacity: disabled ? 0.5 : 1 }, { backgroundColor: themes[theme].borderColor }]}
+				style={({ pressed }) => [styles.avatarButton, { opacity: disabled ? 0.5 : 1 }, { backgroundColor: pressed ? themes[theme].borderColor : themes[theme].bannerBackground }]}
 				enabled={!disabled}
 				theme={theme}
 			>

@@ -169,7 +169,7 @@ class DirectoryView extends React.Component {
 				/>
 				<Touch
 					onPress={this.toggleDropdown}
-					style={styles.dropdownItemButton}
+					style={({ pressed }) => [{ backgroundColor: pressed ? themes[theme].bannerBackground : themes[theme].backgroundColor }, styles.dropdownItemButton]}
 					testID='directory-view-dropdown'
 					theme={theme}
 				>
