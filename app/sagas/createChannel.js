@@ -77,7 +77,8 @@ const handleRequest = function* handleRequest({ data }) {
 				// TODO: Log when adding room to team
 				const channels = yield call(addTeamRoom, { rooms: sub.rid, teamId: data.teamId });
 				if (channels.success) {
-					sub.teamId = channels.teamId;
+					sub.teamId = channels.rooms[0].teamId;
+					sub.isTeamChannel = true;
 				}
 			}
 		}

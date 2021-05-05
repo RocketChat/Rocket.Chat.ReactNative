@@ -435,6 +435,7 @@
   "Review_app_unable_store": "Unable to open {{store}}",
   "Review_this_app": "Review this app",
   "Remove": "Remove",
+  "remove": "remove",
   "Roles": "Roles",
   "Room_actions": "Room actions",
   "Room_changed_announcement": "Room announcement changed to: {{announcement}} by {{userBy}}",
@@ -724,5 +725,6 @@
   "Remove_from_Team": "Remove from Team",
   "Auto-join": "Auto-join",
   "Delete_Team_Room_Warning": "Woud you like to remove this channel from the team? The channel will be moved back to the workspace",
-  "Confirmation": "Confirmation"
+  "Confirmation": "Confirmation",
+  "invalid-room": "Invalid room"
 }

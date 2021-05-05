@@ -13,7 +13,7 @@ async function load({
 	if (team.type) {
 		apiType = this.roomTypeToApiType('p');
 	} else {
-		apiType = this.roomTypeToApiType(t);
+		apiType = this.roomTypeToApiType(t || 'c');
 	}
 	if (!apiType) {
 		return [];

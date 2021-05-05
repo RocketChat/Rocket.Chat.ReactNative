@@ -334,7 +334,7 @@ class TeamChannelsView extends React.Component {
 					style: 'cancel'
 				},
 				{
-					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
+					text: I18n.t('Yes_action_it', { action: I18n.t('remove') }),
 					style: 'destructive',
 					onPress: () => this.removeRoom(item)
 				}
@@ -348,12 +348,10 @@ class TeamChannelsView extends React.Component {
 			const { data } = this.state;
 			const result = await RocketChat.removeTeamRoom({ roomId: item.rid, teamId: this.team.teamId });
 			if (result.success) {
-				console.log({ result });
 				const newData = data.filter(room => result.room._id !== room.rid);
-				console.log({ newData });
 				this.setState({ loading: true, data: newData }, () => {
-					this.loadTeam();
 					this.load();
+					this.loadTeam();
 				});
 			}
 		} catch (e) {

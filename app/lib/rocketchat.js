@@ -748,7 +748,7 @@ const RocketChat = {
 	},
 	addTeamRooms({ rooms, teamId }) {
 		const params = {
-			rooms: rooms.length ? [...rooms] : [rooms],
+			rooms: Array.isArray(rooms) ? rooms : [rooms],
 			teamId
 		};
 		// RC 3.13.0
