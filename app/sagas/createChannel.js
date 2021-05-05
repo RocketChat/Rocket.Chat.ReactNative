@@ -44,8 +44,7 @@ const handleRequest = function* handleRequest({ data }) {
 				broadcast,
 				encrypted
 			} = data;
-			// TODO: Create event CT_CREATE
-			logEvent(events.CR_CREATE, {
+			logEvent(events.CT_CREATE, {
 				type,
 				readOnly,
 				broadcast,
@@ -74,7 +73,7 @@ const handleRequest = function* handleRequest({ data }) {
 			sub = yield call(createChannel, data);
 
 			if (data.teamId) {
-				// TODO: Log when adding room to team
+				logEvent(events.CT_ADD_ROOM_TO_TEAM);
 				const channels = yield call(addTeamRoom, { rooms: sub.rid, teamId: data.teamId });
 				if (channels.success) {
 					sub.teamId = channels.rooms[0].teamId;

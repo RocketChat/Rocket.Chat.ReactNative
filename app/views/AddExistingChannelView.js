@@ -14,7 +14,7 @@ import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
-import log from '../utils/log';
+import log, { events, logEvent } from '../utils/log';
 import SearchBox from '../containers/SearchBox';
 import { CustomIcon } from '../lib/Icons';
 import * as HeaderButton from '../containers/HeaderButton';
@@ -63,7 +63,8 @@ class AddExistingChannelView extends React.Component {
 			token: PropTypes.string
 		}),
 		theme: PropTypes.string,
-		isMasterDetail: PropTypes.bool
+		isMasterDetail: PropTypes.bool,
+		addTeamChannelPermission: PropTypes.array
 	};
 
 	constructor(props) {
@@ -107,17 +108,24 @@ class AddExistingChannelView extends React.Component {
 	// eslint-disable-next-line react/sort-comp
 	init = async() => {
 		try {
+			const { addTeamChannelPermission } = this.props;
 			const db = database.active;
 			const channels = await db.collections
 				.get('subscriptions')
 				.query(
-					Q.where('t', 'p'),
-					Q.where('team_id', ''),
+					Q.and(Q.where('team_id', ''), Q.or(Q.where('t', 'c'), Q.where('t', 'p'))),
 					Q.experimentalTake(QUERY_SIZE),
 					Q.experimentalSortBy('room_updated_at', Q.desc)
 				)
 				.fetch();
-			this.setState({ channels });
+			const filteredChannels = channels.filter(async(channel) => {
+				const permissions = await RocketChat.hasPermission([addTeamChannelPermission], channel.rid);
+				if (!permissions[0]) {
+					return;
+				}
+				return channel;
+			 });
+			this.setState({ channels: filteredChannels });
 		} catch (e) {
 			log(e);
 		}
@@ -145,14 +153,14 @@ class AddExistingChannelView extends React.Component {
 
 		this.setState({ loading: true });
 		try {
-			// TODO: Log request
+			logEvent(events.CT_ADD_ROOM_TO_TEAM);
 			const result = await RocketChat.addTeamRooms({ rooms: selected, teamId: this.teamId });
 			if (result.success) {
 				this.setState({ loading: false });
 				goRoom({ item: result, isMasterDetail });
 			}
 		} catch (e) {
-			// TODO: Log error
+			logEvent(events.CT_ADD_ROOM_TO_TEAM_F);
 			this.setState({ loading: false });
 		}
 	}
@@ -250,7 +258,8 @@ class AddExistingChannelView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	isMasterDetail: state.app.isMasterDetail
+	isMasterDetail: state.app.isMasterDetail,
+	addTeamChannelPermission: state.permissions['add-team-channel']
 });
 
 export default connect(mapStateToProps, null)(withTheme(AddExistingChannelView));

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Animated } from 'react-native';
 import { PanGestureHandler, State } from 'react-native-gesture-handler';
 
+import Touch from '../../utils/touch';
 import {
 	ACTION_WIDTH,
 	SMALL_SWIPE,
@@ -10,7 +11,6 @@ import {
 } from './styles';
 import { isRTL } from '../../i18n';
 import { LeftActions, RightActions } from './Actions';
-import Touch from '../../utils/touch';
 
 class Touchable extends React.Component {
 	static propTypes = {
