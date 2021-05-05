@@ -8,7 +8,7 @@ const navigate = ({ item, isMasterDetail, ...props }) => {
 		navigationMethod = Navigation.replace;
 	}
 
-	if (item.isTeamChannel) {
+	if (item.rooms && item.teamId) {
 		// TODO: Refactor
 		Navigation.navigate('TeamChannelsView');
 		Navigation.push('RoomView', {

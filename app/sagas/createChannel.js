@@ -26,7 +26,7 @@ const createTeam = function createTeam(data) {
 };
 
 const addTeamRoom = function addRoomToTeam(params) {
-	return RocketChat.addTeamRoom(params);
+	return RocketChat.addTeamRooms(params);
 };
 
 const handleRequest = function* handleRequest({ data }) {
@@ -78,7 +78,6 @@ const handleRequest = function* handleRequest({ data }) {
 				const channels = yield call(addTeamRoom, { rooms: sub.rid, teamId: data.teamId });
 				if (channels.success) {
 					sub.teamId = channels.teamId;
-					sub.isTeamChannel = true;
 				}
 			}
 		}

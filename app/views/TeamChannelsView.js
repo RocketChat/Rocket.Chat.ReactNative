@@ -109,7 +109,7 @@ class TeamChannelsView extends React.Component {
 		}
 	}
 
-	load = async() => {
+	load = debounce(async() => {
 		const {
 			loadingMore, data, search, isSearching, searchText, end
 		} = this.state;
@@ -153,7 +153,7 @@ class TeamChannelsView extends React.Component {
 			log(e);
 			this.setState({ loading: false, loadingMore: false });
 		}
-	}
+	}, 300)
 
 	setHeader = () => {
 		const { isSearching, showCreate, data } = this.state;

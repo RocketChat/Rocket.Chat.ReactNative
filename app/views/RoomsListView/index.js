@@ -586,7 +586,10 @@ class RoomsListView extends React.Component {
 	}
 
 	onPressItem = (item = {}) => {
-		const { isMasterDetail } = this.props;
+		const { navigation, isMasterDetail } = this.props;
+		if (!navigation.isFocused()) {
+			return;
+		}
 
 		this.cancelSearch();
 		this.goRoom({ item, isMasterDetail });
