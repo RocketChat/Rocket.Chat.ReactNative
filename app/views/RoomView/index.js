@@ -752,16 +752,15 @@ class RoomView extends React.Component {
 		}
 	}
 
-	loadMore = async(item) => {
-  	console.log('🚀 ~ file: index.js ~ line 735 ~ RoomView ~ item', item);
+	loadMore = (item) => {
 		if ([MESSAGE_TYPE_LOAD_MORE, MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK].includes(item.t)) {
-			const data = await RocketChat.loadMessagesForRoom({ rid: this.rid, t: this.t, latest: item.ts, item })
-			console.log('🚀 ~ file: index.js ~ line 737 ~ RoomView ~ loadMore=async ~ data', data);
+			return RocketChat.loadMessagesForRoom({
+				rid: this.rid, t: this.t, latest: item.ts, item
+			});
 		}
 
 		if (item.t === MESSAGE_TYPE_LOAD_NEXT_CHUNK) {
-			const data = await RocketChat.loadNextMessages({ rid: this.rid, ts: item.ts, item })
-			console.log('🚀 ~ file: index.js ~ line 737 ~ RoomView ~ loadMore=async ~ data', data);
+			return RocketChat.loadNextMessages({ rid: this.rid, ts: item.ts, item });
 		}
 	}
 

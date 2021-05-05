@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Text, StyleSheet } from 'react-native';
+import React, { useEffect, useCallback, useState } from 'react';
+import { Text, StyleSheet, ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { themes } from '../../../constants/colors';
@@ -22,10 +22,23 @@ const styles = StyleSheet.create({
 
 const LoadMore = ({ load, type, runOnRender }) => {
 	const { theme } = useTheme();
+	const [loading, setLoading] = useState(false);
+
+	const handleLoad = useCallback(async() => {
+		try {
+			if (loading) {
+				return;
+			}
+			setLoading(true);
+			await load();
+		} finally {
+			setLoading(false);
+		}
+	}, [loading]);
 
 	useEffect(() => {
 		if (runOnRender) {
-			load();
+			handleLoad();
 		}
 	}, []);
 
@@ -40,11 +53,16 @@ const LoadMore = ({ load, type, runOnRender }) => {
 
 	return (
 		<Touch
-			onPress={load}
+			onPress={handleLoad}
 			style={styles.button}
 			theme={theme}
+			enabled={!loading}
 		>
-			<Text style={[styles.text, { color: themes[theme].titleText }]}>{text}</Text>
+			{
+				loading
+					? <ActivityIndicator color={themes[theme].auxiliaryText} />
+					: <Text style={[styles.text, { color: themes[theme].titleText }]}>{text}</Text>
+			}
 		</Touch>
 	);
 };
