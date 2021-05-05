@@ -960,7 +960,7 @@ class RoomView extends React.Component {
 
 		let content = null;
 		if (MESSAGE_TYPE_ANY_LOAD.includes(item.t)) {
-			content = <LoadMore item={item} load={this.loadMore} auto={item.t === MESSAGE_TYPE_LOAD_MORE && !previousItem} />;
+			content = <LoadMore load={() => this.loadMore(item)} type={item.t} runOnRender={item.t === MESSAGE_TYPE_LOAD_MORE && !previousItem} />;
 		} else {
 			content = (
 				<Message

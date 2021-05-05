@@ -7,7 +7,7 @@ import LoadMore from './index';
 import { longText } from '../../../../storybook/utils';
 import { ThemeContext } from '../../../theme';
 import {
-	Message, StoryProvider, MessageScrollView, MessageDecorator
+	Message, StoryProvider, MessageDecorator
 } from '../../../../storybook/stories/Message';
 import { themes } from '../../../constants/colors';
 import { MESSAGE_TYPE_LOAD_MORE, MESSAGE_TYPE_LOAD_NEXT_CHUNK, MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK } from '../../../constants/messageTypeLoad';
@@ -23,12 +23,12 @@ const ThemeStory = ({ theme }) => (
 		value={{ theme }}
 	>
 		<ScrollView style={{ backgroundColor: themes[theme].backgroundColor }}>
-			<LoadMore load={() => alert('load!')} item={{ t: MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK }} />
+			<LoadMore load={() => alert('load!')} type={MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK} />
 			<Message msg='Hey!' theme={theme} />
 			<Message msg={longText} theme={theme} isHeader={false} />
 			<Message msg='Older message' theme={theme} isHeader={false} />
-			<LoadMore load={() => alert('load!')} item={{ t: MESSAGE_TYPE_LOAD_NEXT_CHUNK }} />
-			<LoadMore load={() => alert('load!')} item={{ t: MESSAGE_TYPE_LOAD_MORE }} />
+			<LoadMore load={() => alert('load!')} type={MESSAGE_TYPE_LOAD_NEXT_CHUNK} />
+			<LoadMore load={() => alert('load!')} type={MESSAGE_TYPE_LOAD_MORE} />
 			<Message msg={longText} theme={theme} />
 			<Message msg='This is the third message' isHeader={false} theme={theme} />
 			<Message msg='This is the second message' isHeader={false} theme={theme} />
@@ -46,7 +46,6 @@ stories
 
 stories
 	.addDecorator(StoryProvider)
-	.addDecorator(MessageScrollView)
 	.addDecorator(MessageDecorator)
 	.add('dark theme', () => (
 		<>
@@ -56,7 +55,6 @@ stories
 
 stories
 	.addDecorator(StoryProvider)
-	.addDecorator(MessageScrollView)
 	.addDecorator(MessageDecorator)
 	.add('black theme', () => (
 		<>
