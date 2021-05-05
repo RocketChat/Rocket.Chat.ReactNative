@@ -36,6 +36,7 @@ import RightButtons from './RightButtons';
 import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
 import { themes } from '../../constants/colors';
+import { MESSAGE_TYPE_ANY_LOAD, MESSAGE_TYPE_LOAD_MORE, MESSAGE_TYPE_LOAD_NEXT_CHUNK, MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK } from '../../constants/messageTypeLoad';
 import debounce from '../../utils/debounce';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
@@ -65,6 +66,7 @@ import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
 import { takeInquiry } from '../../ee/omnichannel/lib';
 import { getMessageById } from '../../lib/database/services/Message';
 import Loading from '../../containers/Loading';
+import LoadMore from './LoadMore';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -752,12 +754,12 @@ class RoomView extends React.Component {
 
 	loadMore = async(item) => {
   	console.log('🚀 ~ file: index.js ~ line 735 ~ RoomView ~ item', item);
-		if (item.t === 'dummy') {
+		if ([MESSAGE_TYPE_LOAD_MORE, MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK].includes(item.t)) {
 			const data = await RocketChat.loadMessagesForRoom({ rid: this.rid, t: this.t, latest: item.ts, item })
 			console.log('🚀 ~ file: index.js ~ line 737 ~ RoomView ~ loadMore=async ~ data', data);
 		}
 
-		if (item.t === 'dummy-next') {
+		if (item.t === MESSAGE_TYPE_LOAD_NEXT_CHUNK) {
 			const data = await RocketChat.loadNextMessages({ rid: this.rid, ts: item.ts, item })
 			console.log('🚀 ~ file: index.js ~ line 737 ~ RoomView ~ loadMore=async ~ data', data);
 		}
@@ -957,16 +959,8 @@ class RoomView extends React.Component {
 		}
 
 		let content = null;
-		if (item.t === 'dummy' || item.t === 'dummy-next') {
-			content = (
-				<Touch
-					onPress={() => this.loadMore(item)}
-					style={{ height: 50, backgroundColor: themes[theme].actionTintColor, alignItems: 'center', justifyContent: 'center' }}
-					theme={theme}
-				>
-					<Text style={{ color: themes[theme].buttonText, fontSize: 30 }}>+</Text>
-				</Touch>
-			);
+		if (MESSAGE_TYPE_ANY_LOAD.includes(item.t)) {
+			content = <LoadMore item={item} load={this.loadMore} auto={item.t === MESSAGE_TYPE_LOAD_MORE && !previousItem} />;
 		} else {
 			content = (
 				<Message

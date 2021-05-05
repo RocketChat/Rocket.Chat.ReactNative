@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { MESSAGE_TYPE_LOAD_MORE } from '../../constants/messageTypeLoad';
 
 import log from '../../utils/log';
 import { getMessageById } from '../database/services/Message';
@@ -37,7 +38,7 @@ export default function loadMessagesForRoom(args) {
 						_id: `dummy-${ lastMessage._id }`,
 						rid: lastMessage.rid,
 						ts: moment(lastMessage.ts).subtract(1, 'millisecond'), // TODO: can we do it without adding 1ms?
-						t: 'dummy',
+						t: MESSAGE_TYPE_LOAD_MORE,
 						msg: lastMessage.msg
 					};
 					if (data.length === 50) {

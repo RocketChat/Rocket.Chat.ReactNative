@@ -5,6 +5,7 @@ import orderBy from 'lodash/orderBy';
 import log from '../../utils/log';
 import updateMessages from './updateMessages';
 import { getMessageById } from '../database/services/Message';
+import { MESSAGE_TYPE_LOAD_NEXT_CHUNK } from '../../constants/messageTypeLoad';
 
 const COUNT = 50;
 
@@ -22,7 +23,7 @@ export default function loadNextMessages(args) {
 						_id: `dummy-${ lastMessage._id }`,
 						rid: lastMessage.rid,
 						ts: moment(lastMessage.ts).add(1, 'millisecond'), // TODO: can we do it without adding 1ms?
-						t: 'dummy-next'
+						t: MESSAGE_TYPE_LOAD_NEXT_CHUNK
 					};
 					if (messages.length === COUNT) {
 						messages.push(dummy);

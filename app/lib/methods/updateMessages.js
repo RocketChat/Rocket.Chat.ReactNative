@@ -6,6 +6,7 @@ import log from '../../utils/log';
 import database from '../database';
 import protectedFunction from './helpers/protectedFunction';
 import { Encryption } from '../encryption';
+import { MESSAGE_TYPE_ANY_LOAD } from '../../constants/messageTypeLoad';
 
 export default function updateMessages({ rid, update = [], remove = [], item }) {
 	try {
@@ -34,7 +35,7 @@ export default function updateMessages({ rid, update = [], remove = [], item }) 
 					Q.where('rid', rid),
 					Q.or(
 						Q.where('id', Q.oneOf(messagesIds)),
-						Q.where('t', Q.oneOf(['dummy', 'dummy-next']))
+						Q.where('t', Q.oneOf(MESSAGE_TYPE_ANY_LOAD))
 					)
 				)
 				.fetch();

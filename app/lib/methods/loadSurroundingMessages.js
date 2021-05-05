@@ -5,6 +5,7 @@ import orderBy from 'lodash/orderBy';
 import log from '../../utils/log';
 import updateMessages from './updateMessages';
 import { getMessageById } from '../database/services/Message';
+import { MESSAGE_TYPE_LOAD_NEXT_CHUNK, MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK } from '../../constants/messageTypeLoad';
 
 const COUNT = 50;
 
@@ -25,7 +26,7 @@ export default function loadSurroundingMessages({ messageId, rid }) {
 							_id: `dummy-${ firstMessage._id }`,
 							rid: firstMessage.rid,
 							ts: moment(firstMessage.ts).subtract(1, 'millisecond'), // TODO: can we do it without subtracting 1ms?
-							t: 'dummy',
+							t: MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK,
 							msg: firstMessage.msg
 						};
 						messages.unshift(dummy);
@@ -40,7 +41,7 @@ export default function loadSurroundingMessages({ messageId, rid }) {
 							_id: `dummy-${ lastMessage._id }`,
 							rid: lastMessage.rid,
 							ts: moment(lastMessage.ts).add(1, 'millisecond'), // TODO: can we do it without adding 1ms?
-							t: 'dummy-next',
+							t: MESSAGE_TYPE_LOAD_NEXT_CHUNK,
 							msg: lastMessage.msg
 						};
 						messages.push(dummy);
