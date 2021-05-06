@@ -30,7 +30,7 @@ export default function loadNextMessages(args) {
 						messages.push(dummy);
 					}
 				}
-				await updateMessages({ rid: args.rid, update: messages, item: args.item });
+				await updateMessages({ rid: args.rid, update: messages, loaderItem: args.loaderItem });
 				return resolve(messages);
 			} else {
 				return resolve([]);

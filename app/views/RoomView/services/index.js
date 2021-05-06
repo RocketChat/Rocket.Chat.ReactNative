@@ -1,7 +1,8 @@
 import getMessages from './getMessages';
+import getMoreMessages from './getMoreMessages';
 import getThreadMessages from './getThreadMessages';
 import readMessages from './readMessages';
 
 export default {
-	getMessages, getThreadMessages, readMessages
+	getMessages, getMoreMessages, getThreadMessages, readMessages
 };

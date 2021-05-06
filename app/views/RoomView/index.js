@@ -36,7 +36,7 @@ import RightButtons from './RightButtons';
 import StatusBar from '../../containers/StatusBar';
 import Separator from './Separator';
 import { themes } from '../../constants/colors';
-import { MESSAGE_TYPE_ANY_LOAD, MESSAGE_TYPE_LOAD_MORE, MESSAGE_TYPE_LOAD_NEXT_CHUNK, MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK } from '../../constants/messageTypeLoad';
+import { MESSAGE_TYPE_ANY_LOAD, MESSAGE_TYPE_LOAD_MORE } from '../../constants/messageTypeLoad';
 import debounce from '../../utils/debounce';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
@@ -744,18 +744,6 @@ class RoomView extends React.Component {
 		});
 	};
 
-	loadMore = (item) => {
-		if ([MESSAGE_TYPE_LOAD_MORE, MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK].includes(item.t)) {
-			return RocketChat.loadMessagesForRoom({
-				rid: this.rid, t: this.t, latest: item.ts, item
-			});
-		}
-
-		if (item.t === MESSAGE_TYPE_LOAD_NEXT_CHUNK) {
-			return RocketChat.loadNextMessages({ rid: this.rid, tmid: this.tmid, ts: item.ts, item });
-		}
-	}
-
 	getCustomEmoji = (name) => {
 		const { customEmojis } = this.props;
 		const emoji = customEmojis[name];
@@ -927,6 +915,10 @@ class RoomView extends React.Component {
 		return room?.ignored?.includes?.(message?.u?._id) ?? false;
 	}
 
+	onLoadMoreMessages = loaderItem => RoomServices.getMoreMessages({
+		rid: this.rid, tmid: this.tmid, t: this.t, loaderItem
+	})
+
 	renderItem = (item, previousItem, highlightedMessage) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const {
@@ -949,7 +941,7 @@ class RoomView extends React.Component {
 
 		let content = null;
 		if (MESSAGE_TYPE_ANY_LOAD.includes(item.t)) {
-			content = <LoadMore load={() => this.loadMore(item)} type={item.t} runOnRender={item.t === MESSAGE_TYPE_LOAD_MORE && !previousItem} />;
+			content = <LoadMore load={() => this.onLoadMoreMessages(item)} type={item.t} runOnRender={item.t === MESSAGE_TYPE_LOAD_MORE && !previousItem} />;
 		} else {
 			content = (
 				<Message

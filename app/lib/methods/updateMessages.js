@@ -8,7 +8,9 @@ import protectedFunction from './helpers/protectedFunction';
 import { Encryption } from '../encryption';
 import { MESSAGE_TYPE_ANY_LOAD } from '../../constants/messageTypeLoad';
 
-export default function updateMessages({ rid, update = [], remove = [], item }) {
+export default function updateMessages({
+	rid, update = [], remove = [], loaderItem
+}) {
 	try {
 		if (!((update && update.length) || (remove && remove.length))) {
 			return;
@@ -63,7 +65,7 @@ export default function updateMessages({ rid, update = [], remove = [], item }) 
 			let threadMessagesToUpdate = allThreadMessagesRecords.filter(i1 => allThreadMessages.find(i2 => i1.id === i2._id));
 
 			// filter dummies to delete
-			let dummiesToDelete = allMessagesRecords.filter(i1 => update.find(i2 => i1.id === `dummy-${ i2._id }`));
+			let loadersToDelete = allMessagesRecords.filter(i1 => update.find(i2 => i1.id === `dummy-${ i2._id }`));
 
 			// Create
 			msgsToCreate = msgsToCreate.map(message => msgCollection.prepareCreate(protectedFunction((m) => {
@@ -131,10 +133,10 @@ export default function updateMessages({ rid, update = [], remove = [], item }) 
 				threadMessagesToDelete = threadMessagesToDelete.map(tm => tm.prepareDestroyPermanently());
 			}
 
-			// Delete dummy
-			dummiesToDelete = dummiesToDelete.map(m => m.prepareDestroyPermanently());
-			if (item) {
-				dummiesToDelete.push(item.prepareDestroyPermanently());
+			// Delete loaders
+			loadersToDelete = loadersToDelete.map(m => m.prepareDestroyPermanently());
+			if (loaderItem) {
+				loadersToDelete.push(loaderItem.prepareDestroyPermanently());
 			}
 
 			const allRecords = [
@@ -147,7 +149,7 @@ export default function updateMessages({ rid, update = [], remove = [], item }) 
 				...threadMessagesToCreate,
 				...threadMessagesToUpdate,
 				...threadMessagesToDelete,
-				...dummiesToDelete
+				...loadersToDelete
 			];
 
 			try {
