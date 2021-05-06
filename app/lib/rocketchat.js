@@ -762,6 +762,16 @@ const RocketChat = {
 		// RC 3.13.0
 		return this.post('teams.leave', { teamName });
 	},
+	addTeamMember(teamName) {
+		const { users } = reduxStore.getState().selectedUsers;
+		const members = users.map(u => ({ userId: u._id, roles: ['member'] }));
+		// RC 3.13.0
+		return this.post('teams.addMembers', { teamName, members });
+	},
+	removeTeamMember({ teamName, userId }) {
+		// RC 3.13.0
+		return this.post('teams.removeMember', { teamName, userId });
+	},
 	joinRoom(roomId, joinCode, type) {
 		// TODO: join code
 		// RC 0.48.0

@@ -733,5 +733,9 @@
   "Select_Teams": "Select the Team's channels you would like to leave.",
   "Cannot_leave": "Cannot leave",
   "Last_owner_team_room": "You are the last owner of this channel. Once you leave the team, the channel will be kept inside the team but you will be managing it from outside.",
-  "last-owner-can-not-be-removed": "Last owner cannot be removed"
+  "last-owner-can-not-be-removed": "Last owner cannot be removed",
+  "Removing_user_from_this_Team": "You are removing {{user}} from this Team",
+  "Remove_User_Teams": "Select channels you want the user to be removed from.",
+  "Remove_Member": "Remove Member",
+  "Error": "Error"
 }

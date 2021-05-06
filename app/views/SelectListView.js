@@ -21,6 +21,9 @@ import { withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import Loading from '../containers/Loading';
+import { LISTENER } from '../containers/Toast';
+import EventEmitter from '../utils/events';
+import log from '../utils/log';
 
 const styles = StyleSheet.create({
 	button: {
@@ -65,7 +68,9 @@ class SelectListView extends React.Component {
 		super(props);
 		const teamChannels = props.route?.params?.teamChannels;
 		this.title = props.route?.params?.title;
+		this.subtitle = props.route?.params?.subtitle;
 		this.teamName = props.route?.params?.teamName;
+		this.room = props.route?.params?.room;
 		this.state = {
 			data: teamChannels,
 			selected: [],
@@ -170,6 +175,21 @@ class SelectListView extends React.Component {
 				}
 			]
 		);
+	}
+
+	removeFromTeam = async(selectedUser) => {
+		try {
+			const { data, room } = this.state;
+			const userId = selectedUser._id;
+			const result = await RocketChat.removeTeamMember({ teamName: room.name, userId });
+			if (result.success) {
+				const message = I18n.t('User_has_been_removed_from_s', { s: RocketChat.getRoomTitle(room) });
+				EventEmitter.emit(LISTENER, { message });
+				this.setState({ data: data.filter(member => member._id !== userId) });
+			}
+		} catch (e) {
+			log(e);
+		}
 	}
 
 	renderChannel = ({

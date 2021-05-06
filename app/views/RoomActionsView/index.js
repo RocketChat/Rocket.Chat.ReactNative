@@ -61,7 +61,8 @@ class RoomActionsView extends React.Component {
 		editRoomPermission: PropTypes.array,
 		toggleRoomE2EEncryptionPermission: PropTypes.array,
 		viewBroadcastMemberListPermission: PropTypes.array,
-		transferLivechatGuestPermission: PropTypes.array
+		transferLivechatGuestPermission: PropTypes.array,
+		addTeamMemberPermission: PropTypes.array
 	}
 
 	constructor(props) {
@@ -171,12 +172,19 @@ class RoomActionsView extends React.Component {
 
 	canAddUser = async() => {
 		const { room, joined } = this.state;
-		const { addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission } = this.props;
+		const {
+			addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission, addTeamMemberPermission
+		} = this.props;
 		const { rid, t } = room;
 		let canAddUser = false;
+		let permissions;
 
 		const userInRoom = joined;
-		const permissions = await RocketChat.hasPermission([addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission], rid);
+		if (room.teamMain) {
+			permissions = await RocketChat.hasPermission([addTeamMemberPermission], rid);
+		} else {
+			permissions = await RocketChat.hasPermission([addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission], rid);
+		}
 
 		if (userInRoom && permissions[0]) {
 			canAddUser = true;
@@ -323,6 +331,31 @@ class RoomActionsView extends React.Component {
 			navigation.pop();
 		} catch (e) {
 			log(e);
+			Alert.alert(
+				I18n.t('Confirmation'),
+				I18n.t('Removing_user_from_this_Team'),
+				[
+					{
+						text: I18n.t('OK'),
+						style: 'cancel'
+					}
+				],
+				{ cancelable: false }
+			);
+		} finally {
+			setLoadingInvite(false);
+		}
+	}
+
+	addMemberToTeam = async() => {
+		const { room } = this.state;
+		const { setLoadingInvite, navigation } = this.props;
+		try {
+			setLoadingInvite(true);
+			await RocketChat.addTeamMember(room.name);
+			navigation.pop();
+		} catch (e) {
+			log(e);
 		} finally {
 			setLoadingInvite(false);
 		}
@@ -438,7 +471,9 @@ class RoomActionsView extends React.Component {
 			);
 
 			if (teamChannels) {
-				navigation.navigate('SelectListView', { title: 'Leave_Team', teamChannels, teamName: room.name });
+				navigation.navigate('SelectListView', {
+					title: 'Leave_Team', teamChannels, teamName: room.name, subtitle: 'Select_Teams'
+				});
 			} else {
 				Alert.alert(
 					I18n.t('Confirmation'),
@@ -678,7 +713,7 @@ class RoomActionsView extends React.Component {
 											params: {
 												rid,
 												title: I18n.t('Add_users'),
-												nextAction: this.addUser
+												nextAction: room.teamId ? this.addMemberToTeam : this.addUser
 											}
 										})}
 										testID='room-actions-add-user'
@@ -930,6 +965,7 @@ const mapStateToProps = state => ({
 	encryptionEnabled: state.encryption.enabled,
 	serverVersion: state.server.version,
 	addUserToJoinedRoomPermission: state.permissions['add-user-to-joined-room'],
+	addTeamMemberPermission: state.permissions['add-team-member'],
 	addUserToAnyCRoomPermission: state.permissions['add-user-to-any-c-room'],
 	addUserToAnyPRoomPermission: state.permissions['add-user-to-any-p-room'],
 	createInviteLinksPermission: state.permissions['create-invite-links'],
