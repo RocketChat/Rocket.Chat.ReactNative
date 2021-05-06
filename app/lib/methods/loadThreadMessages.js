@@ -1,54 +1,36 @@
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import moment from 'moment';
+import EJSON from 'ejson';
 
 import buildMessage from './helpers/buildMessage';
 import database from '../database';
 import log from '../../utils/log';
 import protectedFunction from './helpers/protectedFunction';
 import { Encryption } from '../encryption';
-import { getMessageById } from '../database/services/Message';
-import { MESSAGE_TYPE_LOAD_MORE } from '../../constants/messageTypeLoad';
 
-const COUNT = 50;
-
-async function load({ tmid, offset }) {
+async function load({ tmid }) {
 	try {
 		// RC 1.0
-		const result = await this.sdk.get('chat.getThreadMessages', {
-			tmid, count: COUNT, offset, sort: { ts: -1 }, query: { _hidden: { $ne: true } }
-		});
-		if (!result || !result.success) {
+		// const result = await this.sdk.get('chat.getThreadMessages', {
+		// 	tmid, count: COUNT, offset, sort: { ts: -1 }, query: { _hidden: { $ne: true } }
+		// });
+		// RC 1.0
+		const result = await this.methodCallWrapper('getThreadMessages', { tmid });
+		if (!result) {
 			return [];
 		}
-		return result.messages;
+		return EJSON.fromJSONValue(result);
 	} catch (error) {
 		console.log(error);
 		return [];
 	}
 }
 
-export default function loadThreadMessages({ tmid, rid, offset = 0 }) {
+export default function loadThreadMessages({ tmid, rid }) {
 	return new Promise(async(resolve, reject) => {
 		try {
-			let data = await load.call(this, { tmid, offset });
-
+			let data = await load.call(this, { tmid });
 			if (data && data.length) {
-				const lastMessage = data[data.length - 1];
-				const lastMessageRecord = await getMessageById(lastMessage._id);
-				if (!lastMessageRecord) {
-					const dummy = {
-						_id: `dummy-${ lastMessage._id }`,
-						rid: lastMessage.rid,
-						tmid,
-						ts: moment(lastMessage.ts).subtract(1, 'millisecond'), // TODO: can we do it without adding 1ms?
-						t: MESSAGE_TYPE_LOAD_MORE,
-						msg: lastMessage.msg
-					};
-					if (data.length === COUNT) {
-						data.push(dummy);
-					}
-				}
 				try {
 					data = data.map(m => buildMessage(m));
 					data = await Encryption.decryptMessages(data);

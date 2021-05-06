@@ -695,8 +695,13 @@ class RoomView extends React.Component {
 			const parsedUrl = parse(message, true);
 			const messageId = parsedUrl.query.msg;
 			const messageRecord = await getMessageById(messageId);
+			let tmid;
 			if (!messageRecord) {
-				await RocketChat.loadSurroundingMessages({ messageId, rid: this.rid }); // TODO: messages can come from other rooms
+				const messageInfo = await RoomServices.getSingleMessage(messageId);
+				({ tmid } = messageInfo);
+				if (!tmid) {
+					await RocketChat.loadSurroundingMessages({ messageId, rid: this.rid }); // TODO: messages can come from other rooms
+				}
 			}
 			// TODO: create a race condition to make sure app doesn't get stuck on jump to message
 			await this.list.current.jumpToMessage(messageId);
@@ -802,7 +807,7 @@ class RoomView extends React.Component {
 					});
 				});
 			} else {
-				let { message: thread } = await RocketChat.getSingleMessage(tmid);
+				let thread = await RoomServices.getSingleMessage(tmid);
 				thread = await Encryption.decryptMessage(thread);
 				await db.action(async() => {
 					await db.batch(
