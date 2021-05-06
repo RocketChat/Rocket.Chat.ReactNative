@@ -472,7 +472,7 @@ class RoomActionsView extends React.Component {
 
 			if (teamChannels) {
 				navigation.navigate('SelectListView', {
-					title: 'Leave_Team', teamChannels, teamName: room.name, subtitle: 'Select_Teams'
+					title: 'Leave_Team', room, teamChannels, teamName: room.name, subtitle: 'Select_Teams'
 				});
 			} else {
 				Alert.alert(
