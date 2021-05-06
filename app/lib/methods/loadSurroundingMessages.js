@@ -17,6 +17,10 @@ export default function loadSurroundingMessages({ messageId, rid }) {
 			const data = await this.methodCallWrapper('loadSurroundingMessages', { _id: messageId, rid }, COUNT);
 			let messages = EJSON.fromJSONValue(data?.messages);
 			messages = orderBy(messages, 'ts');
+
+			const message = messages.find(m => m._id === messageId);
+			const { tmid } = message;
+
 			if (messages?.length) {
 				if (data?.moreBefore) {
 					const firstMessage = messages[0];
@@ -25,6 +29,7 @@ export default function loadSurroundingMessages({ messageId, rid }) {
 						const dummy = {
 							_id: `dummy-${ firstMessage._id }`,
 							rid: firstMessage.rid,
+							tmid,
 							ts: moment(firstMessage.ts).subtract(1, 'millisecond'), // TODO: can we do it without subtracting 1ms?
 							t: MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK,
 							msg: firstMessage.msg
@@ -40,6 +45,7 @@ export default function loadSurroundingMessages({ messageId, rid }) {
 						const dummy = {
 							_id: `dummy-${ lastMessage._id }`,
 							rid: lastMessage.rid,
+							tmid,
 							ts: moment(lastMessage.ts).add(1, 'millisecond'), // TODO: can we do it without adding 1ms?
 							t: MESSAGE_TYPE_LOAD_NEXT_CHUNK,
 							msg: lastMessage.msg

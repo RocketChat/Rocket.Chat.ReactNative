@@ -22,6 +22,7 @@ export default function loadNextMessages(args) {
 					const dummy = {
 						_id: `dummy-${ lastMessage._id }`,
 						rid: lastMessage.rid,
+						tmid: args.tmid,
 						ts: moment(lastMessage.ts).add(1, 'millisecond'), // TODO: can we do it without adding 1ms?
 						t: MESSAGE_TYPE_LOAD_NEXT_CHUNK
 					};

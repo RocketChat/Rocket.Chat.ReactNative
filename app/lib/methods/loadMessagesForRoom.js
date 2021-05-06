@@ -41,7 +41,7 @@ export default function loadMessagesForRoom(args) {
 						t: MESSAGE_TYPE_LOAD_MORE,
 						msg: lastMessage.msg
 					};
-					if (data.length === 50) {
+					if (data.length === COUNT) {
 						data.push(dummy);
 					}
 				}

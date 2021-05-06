@@ -752,7 +752,7 @@ class RoomView extends React.Component {
 		}
 
 		if (item.t === MESSAGE_TYPE_LOAD_NEXT_CHUNK) {
-			return RocketChat.loadNextMessages({ rid: this.rid, ts: item.ts, item });
+			return RocketChat.loadNextMessages({ rid: this.rid, tmid: this.tmid, ts: item.ts, item });
 		}
 	}
 
