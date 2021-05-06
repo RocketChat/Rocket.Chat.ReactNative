@@ -67,6 +67,7 @@ import { takeInquiry } from '../../ee/omnichannel/lib';
 import { getMessageById } from '../../lib/database/services/Message';
 import Loading from '../../containers/Loading';
 import LoadMore from './LoadMore';
+import RoomServices from './services';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -445,10 +446,10 @@ class RoomView extends React.Component {
 			this.setState({ loading: true });
 			const { room, joined } = this.state;
 			if (this.tmid) {
-				await this.getThreadMessages();
+				await RoomServices.getThreadMessages(this.tmid, this.rid);
 			} else {
 				const newLastOpen = new Date();
-				await this.getMessages(room);
+				await RoomServices.getMessages(room);
 
 				// if room is joined
 				if (joined) {
@@ -457,7 +458,7 @@ class RoomView extends React.Component {
 					} else {
 						this.setLastOpen(null);
 					}
-					RocketChat.readMessages(room.rid, newLastOpen, true).catch(e => console.log(e));
+					RoomServices.readMessages(room.rid, newLastOpen, true).catch(e => console.log(e));
 				}
 			}
 
@@ -743,15 +744,6 @@ class RoomView extends React.Component {
 		});
 	};
 
-	getMessages = () => {
-		const { room } = this.state;
-		if (room.lastOpen) {
-			return RocketChat.loadMissedMessages(room);
-		} else {
-			return RocketChat.loadMessagesForRoom(room);
-		}
-	}
-
 	loadMore = (item) => {
 		if ([MESSAGE_TYPE_LOAD_MORE, MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK].includes(item.t)) {
 			return RocketChat.loadMessagesForRoom({
@@ -763,8 +755,6 @@ class RoomView extends React.Component {
 			return RocketChat.loadNextMessages({ rid: this.rid, ts: item.ts, item });
 		}
 	}
-
-	getThreadMessages = () => RocketChat.loadThreadMessages({ tmid: this.tmid, rid: this.rid })
 
 	getCustomEmoji = (name) => {
 		const { customEmojis } = this.props;

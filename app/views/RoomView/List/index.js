@@ -143,31 +143,31 @@ class ListContainer extends React.Component {
 		}
 	}
 
-	fetchData = async() => {
-		const {
-			loading, end, messages, latest = messages[messages.length - 1]?.ts
-		} = this.state;
-		if (loading || end) {
-			return;
-		}
+	// fetchData = async() => {
+	// 	const {
+	// 		loading, end, messages, latest = messages[messages.length - 1]?.ts
+	// 	} = this.state;
+	// 	if (loading || end) {
+	// 		return;
+	// 	}
 
-		this.setState({ loading: true });
-		const { rid, t, tmid } = this.props;
-		try {
-			let result;
-			if (tmid) {
-				// `offset` is `messages.length - 1` because we append thread start to `messages` obj
-				result = await RocketChat.loadThreadMessages({ tmid, rid, offset: messages.length - 1 });
-			} else {
-				result = await RocketChat.loadMessagesForRoom({ rid, t, latest });
-			}
+	// 	this.setState({ loading: true });
+	// 	const { rid, t, tmid } = this.props;
+	// 	try {
+	// 		let result;
+	// 		if (tmid) {
+	// 			// `offset` is `messages.length - 1` because we append thread start to `messages` obj
+	// 			result = await RocketChat.loadThreadMessages({ tmid, rid, offset: messages.length - 1 });
+	// 		} else {
+	// 			result = await RocketChat.loadMessagesForRoom({ rid, t, latest });
+	// 		}
 
-			this.setState({ end: result.length < QUERY_SIZE, loading: false, latest: result[result.length - 1]?.ts }, () => this.loadMoreMessages(result));
-		} catch (e) {
-			this.setState({ loading: false });
-			log(e);
-		}
-	}
+	// 		this.setState({ end: result.length < QUERY_SIZE, loading: false, latest: result[result.length - 1]?.ts }, () => this.loadMoreMessages(result));
+	// 	} catch (e) {
+	// 		this.setState({ loading: false });
+	// 		log(e);
+	// 	}
+	// }
 
 	query = async() => {
 		this.count += QUERY_SIZE;
@@ -265,30 +265,31 @@ class ListContainer extends React.Component {
 		this.query();
 	}
 
-	loadMoreMessages = (result) => {
-		const { end } = this.state;
+	// loadMoreMessages = (result) => {
+	// 	const { end } = this.state;
 
-		if (end) {
-			return;
-		}
+	// 	if (end) {
+	// 		return;
+	// 	}
 
-		// handle servers with version < 3.0.0
-		let { hideSystemMessages = [] } = this.props;
-		if (!Array.isArray(hideSystemMessages)) {
-			hideSystemMessages = [];
-		}
+	// 	// handle servers with version < 3.0.0
+	// 	let { hideSystemMessages = [] } = this.props;
+	// 	if (!Array.isArray(hideSystemMessages)) {
+	// 		hideSystemMessages = [];
+	// 	}
 
-		if (!hideSystemMessages.length) {
-			return;
-		}
+	// 	if (!hideSystemMessages.length) {
+	// 		return;
+	// 	}
 
-		const hasReadableMessages = result.filter(message => !message.t || (message.t && !hideSystemMessages.includes(message.t))).length > 0;
-		// if this batch doesn't contain any messages that will be displayed, we'll request a new batch
-		if (!hasReadableMessages) {
-			this.onEndReached();
-		}
-	}
+	// 	const hasReadableMessages = result.filter(message => !message.t || (message.t && !hideSystemMessages.includes(message.t))).length > 0;
+	// 	// if this batch doesn't contain any messages that will be displayed, we'll request a new batch
+	// 	if (!hasReadableMessages) {
+	// 		this.onEndReached();
+	// 	}
+	// }
 
+	// TODO: move to RoomView
 	onRefresh = () => this.setState({ refreshing: true }, async() => {
 		const { messages } = this.state;
 		const { rid, tmid } = this.props;
