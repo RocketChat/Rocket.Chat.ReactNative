@@ -666,24 +666,17 @@ class RoomView extends React.Component {
 	};
 
 	onThreadPress = debounce(async(item) => {
-		const { roomUserId } = this.state;
-		const { navigation } = this.props;
+		let name;
 		if (item.tmid) {
 			if (!item.tmsg) {
 				await this.fetchThreadName(item.tmid, item.id);
 			}
-			let name = item.tmsg;
+			name = item.tmsg;
 			if (item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
 				name = I18n.t('Encrypted_message');
 			}
-			navigation.push('RoomView', {
-				rid: item.subscription.id, tmid: item.tmid, name, t: 'thread', roomUserId
-			});
-		} else if (item.tlm) {
-			navigation.push('RoomView', {
-				rid: item.subscription.id, tmid: item.id, name: makeThreadName(item), t: 'thread', roomUserId
-			});
 		}
+		this.navToThread(item, name);
 	}, 1000, true)
 
 	jumpToMessage = async(message) => {
@@ -696,15 +689,20 @@ class RoomView extends React.Component {
 			const messageId = parsedUrl.query.msg;
 			const messageRecord = await getMessageById(messageId);
 			let tmid;
+			let messageInfo;
 			if (!messageRecord) {
-				const messageInfo = await RoomServices.getSingleMessage(messageId);
+				messageInfo = await RoomServices.getSingleMessage(messageId);
 				({ tmid } = messageInfo);
 				if (!tmid) {
 					await RocketChat.loadSurroundingMessages({ messageId, rid: this.rid }); // TODO: messages can come from other rooms
 				}
 			}
-			// TODO: create a race condition to make sure app doesn't get stuck on jump to message
-			await this.list.current.jumpToMessage(messageId);
+			if (tmid) {
+				this.navToThread(messageInfo); // TODO: send name?
+			} else {
+				// TODO: create a race condition to make sure app doesn't get stuck on jump to message
+				await this.list.current.jumpToMessage(messageId);
+			}
 			this.setState({ showingBlockingLoader: false });
 		} catch (e) {
 			this.setState({ showingBlockingLoader: false });
@@ -853,6 +851,21 @@ class RoomView extends React.Component {
 			navigation.navigate('ModalStackNavigator', { screen: 'RoomInfoView', params: navParam });
 		} else {
 			navigation.navigate('RoomInfoView', navParam);
+		}
+	}
+
+	navToThread = (item, name) => {
+		const { roomUserId } = this.state;
+		const { navigation } = this.props;
+		if (item.tmid) {
+			navigation.push('RoomView', {
+				rid: this.rid, tmid: item.tmid, name, t: 'thread', roomUserId
+			});
+		}
+		if (item.tlm) {
+			navigation.push('RoomView', {
+				rid: this.rid, tmid: item.id, name: makeThreadName(item), t: 'thread', roomUserId
+			});
 		}
 	}
 
