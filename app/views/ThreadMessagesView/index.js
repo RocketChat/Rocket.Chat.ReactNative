@@ -74,6 +74,8 @@ class ThreadMessagesView extends React.Component {
 	componentDidMount() {
 		this.mounted = true;
 		this.init();
+		const { navigation } = this.props;
+		this.unsubscribeFocus = navigation.addListener('focus', this.filterThreads);
 	}
 
 	componentDidUpdate(prevProps) {
@@ -92,6 +94,9 @@ class ThreadMessagesView extends React.Component {
 		}
 		if (this.messagesSubscription && this.messagesSubscription.unsubscribe) {
 			this.messagesSubscription.unsubscribe();
+		}
+		if (this.unsubscribeFocus) {
+			this.unsubscribeFocus();
 		}
 	}
 
@@ -387,8 +392,8 @@ class ThreadMessagesView extends React.Component {
 
 	// method to update state with filtered threads
 	filterThreads = () => {
-		const { messages, subscription } = this.state;
-		const displayingThreads = this.getFilteredThreads(messages, subscription);
+		const { messages, subscription, currentFilter } = this.state;
+		const displayingThreads = this.getFilteredThreads(messages, subscription, currentFilter);
 		this.setState({ displayingThreads });
 	}
 
