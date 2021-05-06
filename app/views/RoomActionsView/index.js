@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
+import { Q } from '@nozbe/watermelondb';
 import { compareServerVersion, methods } from '../../lib/utils';
 
 import Touch from '../../utils/touch';
@@ -412,6 +413,54 @@ class RoomActionsView extends React.Component {
 		);
 	}
 
+	_leave = async(teamName) => {
+		try {
+			const { navigation } = this.props;
+			const result = await RocketChat.leaveTeam({ teamName });
+			// Add isMasterDetail
+			if (result.success) {
+				navigation.navigate('RoomsListView');
+			}
+		} catch (e) {
+			log(e);
+		}
+	}
+
+	leaveTeam = async() => {
+		const { room } = this.state;
+		const { navigation } = this.props;
+
+		try {
+			const db = database.active;
+			const subCollection = db.get('subscriptions');
+			const teamChannels = await subCollection.query(
+				Q.where('team_id', Q.eq(room.teamId))
+			);
+
+			if (teamChannels) {
+				navigation.navigate('SelectListView', { title: 'Leave_Team', teamChannels, teamName: room.name });
+			} else {
+				Alert.alert(
+					I18n.t('Confirmation'),
+					I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
+					[
+						{
+							text: I18n.t('Cancel'),
+							style: 'cancel'
+						},
+						{
+							text: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
+							style: 'destructive',
+							onPress: () => this._leave(room.name)
+						}
+					]
+				);
+			}
+		} catch (e) {
+			log(e);
+		}
+	}
+
 	renderRoomInfo = () => {
 		const { room, member } = this.state;
 		const {
@@ -568,9 +617,9 @@ class RoomActionsView extends React.Component {
 				<List.Section>
 					<List.Separator />
 					<List.Item
-						title='Leave_channel'
+						title={room.teamId && room.teamMain ? 'Leave' : 'Leave_channel'}
 						onPress={() => this.onPressTouchable({
-							event: this.leaveChannel
+							event: room.teamId && room.teamMain ? this.leaveTeam : this.leaveChannel
 						})}
 						testID='room-actions-leave-channel'
 						left={() => <List.Icon name='logout' color={themes[theme].dangerColor} />}

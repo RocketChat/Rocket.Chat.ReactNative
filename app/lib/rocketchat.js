@@ -758,6 +758,10 @@ const RocketChat = {
 		// RC 3.13.0
 		return this.post('teams.removeRoom', { roomId, teamId });
 	},
+	leaveTeam({ teamName }) {
+		// RC 3.13.0
+		return this.post('teams.leave', { teamName });
+	},
 	joinRoom(roomId, joinCode, type) {
 		// TODO: join code
 		// RC 0.48.0
