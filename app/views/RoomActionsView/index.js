@@ -423,6 +423,16 @@ class RoomActionsView extends React.Component {
 			}
 		} catch (e) {
 			log(e);
+			Alert.alert(
+				I18n.t('Cannot_leave'),
+				I18n.t(e.data.error),
+				[
+					{
+						text: 'OK',
+						style: 'cancel'
+					}
+				]
+			);
 		}
 	}
 
@@ -434,12 +444,12 @@ class RoomActionsView extends React.Component {
 			const db = database.active;
 			const subCollection = db.get('subscriptions');
 			const teamChannels = await subCollection.query(
-				Q.where('team_id', Q.eq(room.teamId))
+				Q.and(Q.where('team_id', Q.eq(room.teamId)), Q.where('name', Q.notEq(room.name)))
 			);
 
-			if (teamChannels) {
+			if (teamChannels.length) {
 				navigation.navigate('SelectListView', {
-					title: 'Leave_Team', room, teamChannels, teamName: room.name
+					title: 'Leave_Team', room, teamChannels, teamName: room.name, subtitle: 'Select_Teams'
 				});
 			} else {
 				Alert.alert(
