@@ -68,6 +68,7 @@ import { getMessageById } from '../../lib/database/services/Message';
 import Loading from '../../containers/Loading';
 import LoadMore from './LoadMore';
 import RoomServices from './services';
+import { getThreadMessageById } from '../../lib/database/services/ThreadMessage';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -127,6 +128,7 @@ class RoomView extends React.Component {
 		const room = props.route.params?.room ?? {
 			rid: this.rid, t: this.t, name, fname, prid
 		};
+		this.jumpToMessageId = props.route.params?.jumpToMessageId;
 		const roomUserId = props.route.params?.roomUserId ?? RocketChat.getUidDirectMessage(room);
 		this.state = {
 			joined: true,
@@ -187,6 +189,9 @@ class RoomView extends React.Component {
 				} else {
 					EventEmitter.addEventListener('connected', this.handleConnected);
 				}
+			}
+			if (this.jumpToMessageId) {
+				this.jumpToMessage({ id: this.jumpToMessageId });
 			}
 			if (isIOS && this.rid) {
 				this.updateUnreadCount();
@@ -665,45 +670,48 @@ class RoomView extends React.Component {
 		});
 	};
 
-	onThreadPress = debounce(async(item) => {
-		let name;
-		if (item.tmid) {
-			if (!item.tmsg) {
-				await this.fetchThreadName(item.tmid, item.id);
-			}
-			name = item.tmsg;
-			if (item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
-				name = I18n.t('Encrypted_message');
-			}
-		}
-		this.navToThread(item, name);
-	}, 1000, true)
+	onThreadPress = debounce(item => this.navToThread(item), 1000, true)
 
-	jumpToMessage = async(message) => {
-		if (!message) {
+	jumpToMessageByUrl = async(messageUrl) => {
+		if (!messageUrl) {
 			return;
 		}
 		try {
 			this.setState({ showingBlockingLoader: true });
-			const parsedUrl = parse(message, true);
+			const parsedUrl = parse(messageUrl, true);
 			const messageId = parsedUrl.query.msg;
-			const messageRecord = await getMessageById(messageId);
+			let message;
+			if (this.tmid) {
+				message = await getThreadMessageById(messageId);
+			} else {
+				message = await getMessageById(messageId);
+			}
 			let tmid;
-			let messageInfo;
-			if (!messageRecord) {
-				messageInfo = await RoomServices.getSingleMessage(messageId);
-				({ tmid } = messageInfo);
+			if (!message) {
+				message = await RoomServices.getSingleMessage(messageId);
+				({ tmid } = message);
 				if (!tmid) {
 					await RocketChat.loadSurroundingMessages({ messageId, rid: this.rid }); // TODO: messages can come from other rooms
 				}
 			}
-			if (tmid) {
-				this.navToThread(messageInfo); // TODO: send name?
+			await this.jumpToMessage(message);
+			this.setState({ showingBlockingLoader: false });
+		} catch (e) {
+			this.setState({ showingBlockingLoader: false });
+			log(e);
+		}
+	}
+
+	jumpToMessage = async(message) => {
+		try {
+			this.setState({ showingBlockingLoader: true });
+			if (message.tmid && message.tmid !== this.tmid) {
+				this.navToThread(message);
 			} else {
 				// TODO: create a race condition to make sure app doesn't get stuck on jump to message
-				await this.list.current.jumpToMessage(messageId);
+				await this.list.current.jumpToMessage(message.id);
+				this.setState({ showingBlockingLoader: false });
 			}
-			this.setState({ showingBlockingLoader: false });
 		} catch (e) {
 			this.setState({ showingBlockingLoader: false });
 			log(e);
@@ -854,15 +862,22 @@ class RoomView extends React.Component {
 		}
 	}
 
-	navToThread = (item, name) => {
+	navToThread = async(item) => {
 		const { roomUserId } = this.state;
 		const { navigation } = this.props;
 		if (item.tmid) {
+			const messageId = item._id || item.id;
+			if (!item.tmsg) {
+				await this.fetchThreadName(item.tmid, messageId);
+			}
+			let name = item.tmsg;
+			if (item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
+				name = I18n.t('Encrypted_message');
+			}
 			navigation.push('RoomView', {
-				rid: this.rid, tmid: item.tmid, name, t: 'thread', roomUserId
+				rid: this.rid, tmid: item.tmid, name, t: 'thread', roomUserId, jumpToMessageId: messageId
 			});
-		}
-		if (item.tlm) {
+		} else if (item.tlm) {
 			navigation.push('RoomView', {
 				rid: this.rid, tmid: item.id, name: makeThreadName(item), t: 'thread', roomUserId
 			});
@@ -996,7 +1011,7 @@ class RoomView extends React.Component {
 					blockAction={this.blockAction}
 					threadBadgeColor={this.getBadgeColor(item?.id)}
 					toggleFollowThread={this.toggleFollowThread}
-					jumpToMessage={this.jumpToMessage}
+					jumpToMessage={this.jumpToMessageByUrl}
 					highlighted={highlightedMessage === item.id}
 				/>
 			);
