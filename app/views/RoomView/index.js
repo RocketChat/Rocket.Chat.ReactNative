@@ -69,6 +69,7 @@ import Loading from '../../containers/Loading';
 import LoadMore from './LoadMore';
 import RoomServices from './services';
 import { getThreadMessageById } from '../../lib/database/services/ThreadMessage';
+import { goRoom } from '../../utils/goRoom';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -191,7 +192,7 @@ class RoomView extends React.Component {
 				}
 			}
 			if (this.jumpToMessageId) {
-				this.jumpToMessage({ id: this.jumpToMessageId });
+				this.jumpToMessage(this.jumpToMessageId);
 			}
 			if (isIOS && this.rid) {
 				this.updateUnreadCount();
@@ -672,6 +673,24 @@ class RoomView extends React.Component {
 
 	onThreadPress = debounce(item => this.navToThread(item), 1000, true)
 
+	isMessageFromSameRoom = (message, origin) => {
+		if (origin === 'server') {
+			if (message.tmid && message.tmid === this.tmid) {
+				return true;
+			}
+			if (!message.tmid && message.rid === this.rid) {
+				return true;
+			}
+			return false;
+		}
+		if (origin === 'message') {
+			return message.rid === this.rid;
+		}
+		if (origin === 'thread_message') {
+			return message.rid === this.tmid;
+		}
+	}
+
 	jumpToMessageByUrl = async(messageUrl) => {
 		if (!messageUrl) {
 			return;
@@ -680,21 +699,7 @@ class RoomView extends React.Component {
 			this.setState({ showingBlockingLoader: true });
 			const parsedUrl = parse(messageUrl, true);
 			const messageId = parsedUrl.query.msg;
-			let message;
-			if (this.tmid) {
-				message = await getThreadMessageById(messageId);
-			} else {
-				message = await getMessageById(messageId);
-			}
-			let tmid;
-			if (!message) {
-				message = await RoomServices.getSingleMessage(messageId);
-				({ tmid } = message);
-				if (!tmid) {
-					await RocketChat.loadSurroundingMessages({ messageId, rid: this.rid }); // TODO: messages can come from other rooms
-				}
-			}
-			await this.jumpToMessage(message);
+			await this.jumpToMessage(messageId);
 			this.setState({ showingBlockingLoader: false });
 		} catch (e) {
 			this.setState({ showingBlockingLoader: false });
@@ -702,19 +707,38 @@ class RoomView extends React.Component {
 		}
 	}
 
-	jumpToMessage = async(message) => {
+	jumpToMessage = async(messageId) => {
 		try {
 			this.setState({ showingBlockingLoader: true });
-			if (message.tmid && message.tmid !== this.tmid) {
+			let message;
+			// TODO: refactor origins into constants
+			let origin = 'message';
+			message = await getMessageById(messageId);
+			if (!message) {
+				message = await getThreadMessageById(messageId);
+				origin = 'thread_message';
+			}
+
+			if (!message) {
+				message = await RoomServices.getSingleMessage(messageId);
+				origin = 'server';
+			}
+
+			const isMessageFromSameRoom = this.isMessageFromSameRoom(message, origin);
+			if (!isMessageFromSameRoom) {
 				this.navToThread(message);
 			} else {
+				if (origin === 'server' && !message.tmid) {
+					await RocketChat.loadSurroundingMessages({ messageId, rid: this.rid });
+				}
 				// TODO: create a race condition to make sure app doesn't get stuck on jump to message
-				await this.list.current.jumpToMessage(message.id);
+				await this.list.current.jumpToMessage(message._id || message.id);
 				this.setState({ showingBlockingLoader: false });
 			}
 		} catch (e) {
 			this.setState({ showingBlockingLoader: false });
 			log(e);
+			alert(e)
 		}
 	}
 
@@ -865,8 +889,9 @@ class RoomView extends React.Component {
 	navToThread = async(item) => {
 		const { roomUserId } = this.state;
 		const { navigation } = this.props;
+		const messageId = item._id || item.id;
+
 		if (item.tmid) {
-			const messageId = item._id || item.id;
 			if (!item.tmsg) {
 				await this.fetchThreadName(item.tmid, messageId);
 			}
@@ -874,12 +899,20 @@ class RoomView extends React.Component {
 			if (item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
 				name = I18n.t('Encrypted_message');
 			}
-			navigation.push('RoomView', {
+			return navigation.push('RoomView', {
 				rid: this.rid, tmid: item.tmid, name, t: 'thread', roomUserId, jumpToMessageId: messageId
 			});
-		} else if (item.tlm) {
-			navigation.push('RoomView', {
+		}
+
+		if (item.tlm) {
+			return navigation.push('RoomView', {
 				rid: this.rid, tmid: item.id, name: makeThreadName(item), t: 'thread', roomUserId
+			});
+		}
+
+		if (item.rid !== this.rid) {
+			return goRoom({
+				item, isMasterDetail: false, navigationMethod: navigation.push, jumpToMessageId: messageId
 			});
 		}
 	}
