@@ -71,6 +71,7 @@ class SelectListView extends React.Component {
 		this.subtitle = props.route?.params?.subtitle;
 		this.teamName = props.route?.params?.teamName;
 		this.room = props.route?.params?.room;
+		this.delete = props.route?.params?.delete;
 		this.state = {
 			data: teamChannels,
 			selected: [],
@@ -96,7 +97,7 @@ class SelectListView extends React.Component {
 
 		options.headerRight = () => (
 			<HeaderButton.Container>
-				<HeaderButton.Item title={I18n.t('Next')} onPress={this.submit} testID='select-list-view-submit' />
+				<HeaderButton.Item title={I18n.t('Next')} onPress={this.delete ? this.delete : this.submit} testID='select-list-view-submit' />
 			</HeaderButton.Container>
 		);
 

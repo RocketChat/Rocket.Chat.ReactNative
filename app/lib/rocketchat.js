@@ -772,6 +772,10 @@ const RocketChat = {
 		// RC 3.13.0
 		return this.post('teams.removeMember', { teamName, userId });
 	},
+	deleteTeam({ teamName }) {
+		// RC 3.13.0
+		return this.post('teams.delete', { teamName });
+	},
 	joinRoom(roomId, joinCode, type) {
 		// TODO: join code
 		// RC 0.48.0
