@@ -450,7 +450,8 @@ const RocketChat = {
 
 	updateJitsiTimeout(roomId, showJoinCallButton = false) {
 		// RC 0.74.0
-		return this.post('video-conference/jitsi.update-timeout', { roomId , showJoinCallButton});
+		var platform = "Mobile App";
+		return this.post('video-conference/jitsi.update-timeout', { roomId , showJoinCallButton, platform});
 	},
 
 	register(credentials) {
