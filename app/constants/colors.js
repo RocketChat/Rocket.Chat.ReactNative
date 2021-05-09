@@ -2,7 +2,8 @@ export const STATUS_COLORS = {
 	online: '#2de0a5',
 	busy: '#f5455c',
 	away: '#ffd21f',
-	offline: '#cbced1'
+	offline: '#cbced1',
+	loading: '#9ea2a8'
 };
 
 export const SWITCH_TRACK_COLOR = {
@@ -63,6 +64,7 @@ export const themes = {
 		passcodeDotFull: '#6C727A',
 		previewBackground: '#1F2329',
 		previewTintColor: '#ffffff',
+		backdropOpacity: 0.3,
 		...mentions
 	},
 	dark: {
@@ -109,6 +111,7 @@ export const themes = {
 		passcodeDotFull: '#6C727A',
 		previewBackground: '#030b1b',
 		previewTintColor: '#ffffff',
+		backdropOpacity: 0.9,
 		...mentions
 	},
 	black: {
@@ -155,6 +158,7 @@ export const themes = {
 		passcodeDotFull: '#6C727A',
 		previewBackground: '#000000',
 		previewTintColor: '#ffffff',
+		backdropOpacity: 0.9,
 		...mentions
 	}
 };

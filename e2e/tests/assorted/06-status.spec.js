@@ -41,10 +41,10 @@ describe('Status screen', () => {
 		});
 
 		it('should change status text', async () => {
-			await element(by.id('status-view-input')).replaceText('status-text-new');
+			await element(by.id('status-view-input')).typeText('status-text-new');
 			await element(by.id('status-view-submit')).tap();
 			await waitForToast();
-			await waitFor(element(by.label('status-text-new').withAncestor(by.id('sidebar-custom-status')))).toBeVisible().withTimeout(2000);
+			await waitFor(element(by.label('status-text-new').withAncestor(by.id('sidebar-custom-status')))).toExist().withTimeout(2000);
 		});
 	});
 });

@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { ScrollView, Text, Switch } from 'react-native';
-import isEqual from 'lodash/isEqual';
 
 import Loading from '../../containers/Loading';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -63,11 +62,12 @@ class CreateChannelView extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
+		const { channel, name } = this.state;
 		const {
 			loading, failure, error, result, isMasterDetail
 		} = this.props;
 
-		if (!isEqual(this.state, prevState)) {
+		if (channel?.rid !== prevState.channel?.rid || name !== prevState.name) {
 			this.setHeader();
 		}
 
@@ -116,10 +116,14 @@ class CreateChannelView extends React.Component {
 		} = this.state;
 		const { create } = this.props;
 
-		// create discussion
-		create({
-			prid: prid || rid, pmid, t_name, reply, users, encrypted
-		});
+		const params = {
+			prid: prid || rid, pmid, t_name, reply, users
+		};
+		if (this.isEncryptionEnabled) {
+			params.encrypted = encrypted ?? false;
+		}
+
+		create(params);
 	};
 
 	valid = () => {
@@ -136,26 +140,32 @@ class CreateChannelView extends React.Component {
 	};
 
 	selectChannel = ({ value }) => {
-		logEvent(events.CREATE_DISCUSSION_SELECT_CHANNEL);
+		logEvent(events.CD_SELECT_CHANNEL);
 		this.setState({ channel: value, encrypted: value?.encrypted });
 	}
 
 	selectUsers = ({ value }) => {
-		logEvent(events.CREATE_DISCUSSION_SELECT_USERS);
+		logEvent(events.CD_SELECT_USERS);
 		this.setState({ users: value });
 	}
 
+	get isEncryptionEnabled() {
+		const { channel } = this.state;
+		const { encryptionEnabled } = this.props;
+		return encryptionEnabled && E2E_ROOM_TYPES[channel?.t];
+	}
+
 	onEncryptedChange = (value) => {
-		logEvent(events.CREATE_DISCUSSION_TOGGLE_ENCRY);
+		logEvent(events.CD_TOGGLE_ENCRY);
 		this.setState({ encrypted: value });
 	}
 
 	render() {
 		const {
-			name, users, encrypted, channel
+			name, users, encrypted
 		} = this.state;
 		const {
-			server, user, loading, blockUnauthenticatedAccess, theme, serverVersion, encryptionEnabled
+			server, user, loading, blockUnauthenticatedAccess, theme, serverVersion
 		} = this.props;
 		return (
 			<KeyboardView
@@ -179,6 +189,7 @@ class CreateChannelView extends React.Component {
 						/>
 						<TextInput
 							label={I18n.t('Discussion_name')}
+							testID='multi-select-discussion-name'
 							placeholder={I18n.t('A_meaningful_name_for_the_discussion_room')}
 							containerStyle={styles.inputStyle}
 							defaultValue={name}
@@ -195,7 +206,7 @@ class CreateChannelView extends React.Component {
 							serverVersion={serverVersion}
 							theme={theme}
 						/>
-						{encryptionEnabled && E2E_ROOM_TYPES[channel?.t]
+						{this.isEncryptionEnabled
 							? (
 								<>
 									<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Encrypted')}</Text>
@@ -222,7 +233,7 @@ const mapStateToProps = state => ({
 	loading: state.createDiscussion.isFetching,
 	result: state.createDiscussion.result,
 	blockUnauthenticatedAccess: state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true,
-	serverVersion: state.share.server.version || state.server.version,
+	serverVersion: state.server.version,
 	isMasterDetail: state.app.isMasterDetail,
 	encryptionEnabled: state.encryption.enabled
 });

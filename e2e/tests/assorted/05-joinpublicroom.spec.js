@@ -9,13 +9,12 @@ const room = data.channels.detoxpublic.name;
 
 async function navigateToRoom() {
 	await searchRoom(room);
-	await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible().withTimeout(60000);
 	await element(by.id(`rooms-list-view-item-${ room }`)).tap();
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 }
 
 async function navigateToRoomActions() {
-	await element(by.id('room-view-header-actions')).tap();
+	await element(by.id('room-header')).tap();
 	await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(5000);
 }
 
@@ -39,7 +38,7 @@ describe('Join public room', () => {
 		// Render - Header
 		describe('Header', async() => {
 			it('should have actions button ', async() => {
-				await expect(element(by.id('room-view-header-actions'))).toBeVisible();
+				await expect(element(by.id('room-header'))).toBeVisible();
 			});
 		});
 
@@ -64,7 +63,7 @@ describe('Join public room', () => {
 
 		describe('Room Actions', async() => {
 			before(async() => {
-				await navigateToRoomActions('c');
+				await navigateToRoomActions();
 			});
 
 			it('should have room actions screen', async() => {
@@ -104,7 +103,6 @@ describe('Join public room', () => {
 			});
 
 			it('should have share', async() => {
-				await element(by.type('UIScrollView')).atIndex(1).swipe('down');
 				await expect(element(by.id('room-actions-share'))).toBeVisible();
 			});
 
@@ -143,7 +141,7 @@ describe('Join public room', () => {
 		});
 
 		it('should have disable notifications and leave channel', async() => {
-			await navigateToRoomActions('c');
+			await navigateToRoomActions();
 			await expect(element(by.id('room-actions-view'))).toBeVisible();
 			await expect(element(by.id('room-actions-info'))).toBeVisible();
 			// await expect(element(by.id('room-actions-voice'))).toBeVisible();
@@ -166,7 +164,6 @@ describe('Join public room', () => {
 			await expect(element(by.text('Yes, leave it!'))).toBeVisible();
 			await element(by.text('Yes, leave it!')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
-			// await element(by.id('rooms-list-view-search')).typeText('');
 			await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible().withTimeout(60000);
 		});
 	});

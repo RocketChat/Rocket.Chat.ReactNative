@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-	View, Text, TouchableWithoutFeedback, Modal, KeyboardAvoidingView, Animated, Easing
+	View, Text, TouchableWithoutFeedback, Modal, KeyboardAvoidingView, Animated, Easing, StyleSheet
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
@@ -112,6 +112,7 @@ export const MultiSelect = React.memo(({
 			<View style={[styles.modal, { backgroundColor: themes[theme].backgroundColor }]}>
 				<View style={[styles.content, { backgroundColor: themes[theme].backgroundColor }]}>
 					<TextInput
+						testID='multi-select-search'
 						onChangeText={onSearch || onSearchChange}
 						placeholder={I18n.t('Search')}
 						theme={theme}
@@ -172,7 +173,7 @@ export const MultiSelect = React.memo(({
 			>
 				<TouchableWithoutFeedback onPress={onHide}>
 					<View style={styles.container}>
-						<View style={[styles.backdrop, { backgroundColor: themes[theme].backdropColor }]} />
+						<View style={{ ...StyleSheet.absoluteFill, opacity: themes[theme].backdropOpacity, backgroundColor: themes[theme].backdropColor }} />
 						<KeyboardAvoidingView style={styles.keyboardView} behavior={behavior}>
 							<Animated.View style={[styles.animatedContent, { transform: [{ translateY }] }]}>
 								{showContent ? renderContent() : null}

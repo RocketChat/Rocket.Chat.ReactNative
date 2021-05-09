@@ -237,9 +237,13 @@ commands:
             if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
               /usr/libexec/PlistBuddy -c "Set BugsnagAPIKey $BUGSNAG_KEY_OFFICIAL" ./RocketChatRN/Info.plist
               /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./RocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./ShareRocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./NotificationService/Info.plist
             else
               /usr/libexec/PlistBuddy -c "Set BugsnagAPIKey $BUGSNAG_KEY" ./RocketChatRN/Info.plist
               /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./RocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./ShareRocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./NotificationService/Info.plist
             fi
 
             if [[ $APP_STORE_CONNECT_API_KEY ]]; then
@@ -284,6 +288,24 @@ commands:
       - run:
           name: Fastlane Play Store Upload
           command: bundle exec fastlane android beta official:<< parameters.official >>
+          working_directory: android
+
+  # EXPERIMENTAL ONLY
+  # No plans to do it for Official
+  upload-to-google-play-production:
+    description: "Upload to Google Play production"
+    steps:
+      - checkout
+      - attach_workspace:
+          at: android
+      - run:
+          name: Store the google service account key
+          command: echo "$FASTLANE_GOOGLE_SERVICE_ACCOUNT" | base64 --decode > service_account.json
+          working_directory: android
+      - run: *update-fastlane-android
+      - run:
+          name: Fastlane Play Store Upload
+          command: bundle exec fastlane android production
           working_directory: android
 
   upload-to-testflight:
@@ -378,6 +400,13 @@ jobs:
       - upload-to-google-play-beta:
           official: false
 
+  android-google-play-production-experimental:
+    <<: *defaults
+    docker:
+      - image: circleci/android:api-28-node
+    steps:
+      - upload-to-google-play-production
+
   android-google-play-beta-official:
     <<: *defaults
     docker:
@@ -416,9 +445,13 @@ workflows:
       - lint-testunit
 
       # iOS Experimental
+      - ios-hold-build-experimental:
+          type: approval
+          requires:
+              - lint-testunit
       - ios-build-experimental:
           requires:
-            - lint-testunit
+            - ios-hold-build-experimental
       - ios-hold-testflight-experimental:
           type: approval
           requires:
@@ -444,9 +477,13 @@ workflows:
             - ios-hold-testflight-official
 
       # Android Experimental
+      - android-hold-build-experimental:
+          type: approval
+          requires:
+              - lint-testunit
       - android-build-experimental:
           requires:
-            - lint-testunit
+            - android-hold-build-experimental
       - android-hold-google-play-beta-experimental:
           type: approval
           requires:
@@ -454,6 +491,13 @@ workflows:
       - android-google-play-beta-experimental:
           requires:
             - android-hold-google-play-beta-experimental
+      - android-hold-google-play-production-experimental:
+          type: approval
+          requires:
+            - android-build-experimental
+      - android-google-play-production-experimental:
+          requires:
+            - android-hold-google-play-production-experimental
       
       # Android Official
       - android-hold-build-official:

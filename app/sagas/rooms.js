@@ -12,10 +12,11 @@ import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRo
 import RocketChat from '../lib/rocketchat';
 import buildMessage from '../lib/methods/helpers/buildMessage';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
+import UserPreferences from '../lib/userPreferences';
 
 const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 	const serversDB = database.servers;
-	const serversCollection = serversDB.collections.get('servers');
+	const serversCollection = serversDB.get('servers');
 	try {
 		const serverRecord = yield serversCollection.find(server);
 
@@ -39,7 +40,7 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 		if (params.allData) {
 			yield put(roomsRefresh());
 		} else {
-			const serversCollection = serversDB.collections.get('servers');
+			const serversCollection = serversDB.get('servers');
 			try {
 				const serverRecord = yield serversCollection.find(server);
 				({ roomsUpdatedAt } = serverRecord);
@@ -47,12 +48,22 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 				// Server not found
 			}
 		}
+
+		// Force fetch all subscriptions to update columns related to Teams feature
+		// TODO: remove it a couple of releases
+		const teamsMigrationKey = `${ server }_TEAMS_MIGRATION`;
+		const teamsMigration = yield UserPreferences.getBoolAsync(teamsMigrationKey);
+		if (!teamsMigration) {
+			roomsUpdatedAt = null;
+			UserPreferences.setBoolAsync(teamsMigrationKey, true);
+		}
+
 		const [subscriptionsResult, roomsResult] = yield RocketChat.getRooms(roomsUpdatedAt);
 		const { subscriptions } = yield mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
 
 		const db = database.active;
-		const subCollection = db.collections.get('subscriptions');
-		const messagesCollection = db.collections.get('messages');
+		const subCollection = db.get('subscriptions');
+		const messagesCollection = db.get('messages');
 
 		const subsIds = subscriptions.map(sub => sub.rid).concat(roomsResult.remove.map(room => room._id));
 		if (subsIds.length) {

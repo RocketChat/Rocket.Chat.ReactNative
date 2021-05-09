@@ -6,7 +6,7 @@ module.exports = {
       }
     }
   },
-	"parser": "babel-eslint",
+	"parser": "@babel/eslint-parser",
 	"extends": "airbnb",
 	"parserOptions": {
 		"sourceType": "module",
@@ -21,7 +21,8 @@ module.exports = {
 		"react",
 		"jsx-a11y",
         "import",
-    	"react-native"
+    	"react-native",
+		"@babel"
 	],
 	"env": {
 		"browser": true,
@@ -45,6 +46,7 @@ module.exports = {
 		"react/forbid-prop-types": 0,
 		"jsx-quotes": [2, "prefer-single"],
 		"jsx-a11y/href-no-hash": 0,
+		"jsx-a11y/aria-role": 0,
 		"import/prefer-default-export": 0,
 		"import/no-cycle": 0,
 		"camelcase": 0,
@@ -148,7 +150,8 @@ module.exports = {
 		"react/jsx-curly-newline": [0],
 		"react/state-in-constructor": [0],
 		"no-async-promise-executor": [0],
-		"max-classes-per-file": [0]
+		"max-classes-per-file": [0],
+		"no-multiple-empty-lines": [0]
 	},
 	"globals": {
 		"__DEV__": true

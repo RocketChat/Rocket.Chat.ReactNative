@@ -1,7 +1,7 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { navigateToLogin, login } = require('../../helpers/app');
+const { navigateToLogin, login, tapBack } = require('../../helpers/app');
 
 const data = require('../../data');
 
@@ -18,7 +18,6 @@ describe('Settings screen', () => {
 		await waitFor(element(by.id('sidebar-settings'))).toBeVisible().withTimeout(2000);
 		await element(by.id('sidebar-settings')).tap();
 		await waitFor(element(by.id('settings-view'))).toBeVisible().withTimeout(2000);
-
 	});
 
 	describe('Render', async() => {
@@ -63,38 +62,14 @@ describe('Settings screen', () => {
 		});
 	});
 
-	describe('Language', async() => {
-		it('should navigate to language view', async() => {
-			await element(by.id('settings-view-language')).tap();
-			await waitFor(element(by.id('language-view'))).toBeVisible().withTimeout(60000);
-			await expect(element(by.id('language-view-zh-CN'))).toExist();
-			await expect(element(by.id('language-view-de'))).toExist();
-			await expect(element(by.id('language-view-en'))).toExist();
-			await expect(element(by.id('language-view-fr'))).toExist();
-			await expect(element(by.id('language-view-pt-BR'))).toExist();
-			await expect(element(by.id('language-view-pt-PT'))).toExist();
-			await expect(element(by.id('language-view-ru'))).toExist();
-		});
-
-		// it('should navigate to change language', async() => {
-		// 	await expect(element(by.id('language-view-zh-CN'))).toExist();
-		// 	await element(by.id('language-view-zh-CN')).tap()
-		// 	await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
-		// 	await expect(element(by.id('rooms-list-view'))).toBeVisible();
-		// 	await element(by.id('rooms-list-view-sidebar')).tap();
-		// 	await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
-		// 	await waitFor(element(by.text('设置'))).toBeVisible().withTimeout(2000);
-		// 	await element(by.text('设置')).tap();
-		// 	await waitFor(element(by.id('settings-view'))).toBeVisible().withTimeout(2000);
-		// 	await element(by.id('settings-view-language')).tap();
-		// 	await element(by.id('language-view-en')).tap();
-		// 	await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
-		// 	await expect(element(by.id('rooms-list-view'))).toBeVisible();
-		// 	await element(by.id('rooms-list-view-sidebar')).tap();
-		// 	await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
-		// 	await expect(element(by.text('Settings'))).toBeVisible();
-		// 	await element(by.text('Settings')).tap();
-		// 	await expect(element(by.id('settings-view'))).toBeVisible();
-		// });
+	describe('Usage', async() => {
+		it('should tap clear cache and navigate to roomslistview', async() => {
+			await waitFor(element(by.id('settings-view'))).toBeVisible().withTimeout(2000);
+			await element(by.id('settings-view-clear-cache')).tap();
+			await waitFor(element(by.text('This will clear all your offline data.'))).toExist().withTimeout(2000);
+			await element(by.label('Clear').and(by.type('_UIAlertControllerActionView'))).tap(); 
+			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(5000);
+			await waitFor(element(by.id(`rooms-list-view-item-${ data.groups.private.name }`))).toExist().withTimeout(10000);
+		})
 	});
 });

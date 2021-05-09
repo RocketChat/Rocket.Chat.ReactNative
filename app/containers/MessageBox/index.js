@@ -6,7 +6,7 @@ import {
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import ImagePicker from 'react-native-image-crop-picker';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
 import DocumentPicker from 'react-native-document-picker';
 import { Q } from '@nozbe/watermelondb';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
@@ -41,7 +41,8 @@ import {
 	MENTIONS_TRACKING_TYPE_EMOJIS,
 	MENTIONS_TRACKING_TYPE_COMMANDS,
 	MENTIONS_COUNT_TO_DISPLAY,
-	MENTIONS_TRACKING_TYPE_USERS
+	MENTIONS_TRACKING_TYPE_USERS,
+	MENTIONS_TRACKING_TYPE_ROOMS
 } from './constants';
 import CommandsPreview from './CommandsPreview';
 import { getUserSelector } from '../../selectors/login';
@@ -63,6 +64,7 @@ const imagePickerConfig = {
 
 const libraryPickerConfig = {
 	multiple: true,
+	compressVideoPreset: 'Passthrough',
 	mediaType: 'any'
 };
 
@@ -189,8 +191,8 @@ class MessageBox extends Component {
 		} = this.props;
 		let msg;
 		try {
-			const threadsCollection = db.collections.get('threads');
-			const subsCollection = db.collections.get('subscriptions');
+			const threadsCollection = db.get('threads');
+			const subsCollection = db.get('subscriptions');
 			try {
 				this.room = await subsCollection.find(rid);
 			} catch (error) {
@@ -270,7 +272,7 @@ class MessageBox extends Component {
 		} = this.state;
 
 		const {
-			roomType, replying, editing, isFocused, message, theme, children
+			roomType, replying, editing, isFocused, message, theme
 		} = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
@@ -299,16 +301,13 @@ class MessageBox extends Component {
 		if (nextState.tshow !== tshow) {
 			return true;
 		}
-		if (!equal(nextState.mentions, mentions)) {
+		if (!dequal(nextState.mentions, mentions)) {
 			return true;
 		}
-		if (!equal(nextState.commandPreview, commandPreview)) {
+		if (!dequal(nextState.commandPreview, commandPreview)) {
 			return true;
 		}
-		if (!equal(nextProps.message, message)) {
-			return true;
-		}
-		if (!equal(nextProps.children, children)) {
+		if (!dequal(nextProps.message?.id, message?.id)) {
 			return true;
 		}
 		return false;
@@ -356,58 +355,48 @@ class MessageBox extends Component {
 	// eslint-disable-next-line react/sort-comp
 	debouncedOnChangeText = debounce(async(text) => {
 		const { sharing } = this.props;
-		const db = database.active;
 		const isTextEmpty = text.length === 0;
-		// this.setShowSend(!isTextEmpty);
+		if (isTextEmpty) {
+			this.stopTrackingMention();
+			return;
+		}
 		this.handleTyping(!isTextEmpty);
+		const { start, end } = this.selection;
+		const cursor = Math.max(start, end);
+		const txt = cursor < text.length ? text.substr(0, cursor).split(' ') : text.split(' ');
+		const lastWord = txt[txt.length - 1];
+		const result = lastWord.substring(1);
 
-		if (!sharing) {
-			// matches if their is text that stats with '/' and group the command and params so we can use it "/command params"
-			const slashCommand = text.match(/^\/([a-z0-9._-]+) (.+)/im);
-			if (slashCommand) {
-				const [, name, params] = slashCommand;
-				const commandsCollection = db.collections.get('slash_commands');
+		const commandMention = text.match(/^\//); // match only if message begins with /
+		const channelMention = lastWord.match(/^#/);
+		const userMention = lastWord.match(/^@/);
+		const emojiMention = lastWord.match(/^:/);
+
+		if (commandMention && !sharing) {
+			const command = text.substr(1);
+			const commandParameter = text.match(/^\/([a-z0-9._-]+) (.+)/im);
+			if (commandParameter) {
+				const db = database.active;
+				const [, name, params] = commandParameter;
+				const commandsCollection = db.get('slash_commands');
 				try {
-					const command = await commandsCollection.find(name);
-					if (command.providesPreview) {
-						return this.setCommandPreview(command, name, params);
+					const commandRecord = await commandsCollection.find(name);
+					if (commandRecord.providesPreview) {
+						return this.setCommandPreview(commandRecord, name, params);
 					}
 				} catch (e) {
-					console.log('Slash command not found');
+					// do nothing
 				}
 			}
-		}
-
-		if (!isTextEmpty) {
-			try {
-				const { start, end } = this.selection;
-				const cursor = Math.max(start, end);
-				const lastNativeText = this.text;
-				// matches if text either starts with '/' or have (@,#,:) then it groups whatever comes next of mention type
-				let regexp = /(#|@|:|^\/)([a-z0-9._-]+)$/im;
-
-				// if sharing, track #|@|:
-				if (sharing) {
-					regexp = /(#|@|:)([a-z0-9._-]+)$/im;
-				}
-
-				const result = lastNativeText.substr(0, cursor).match(regexp);
-				if (!result) {
-					if (!sharing) {
-						const slash = lastNativeText.match(/^\/$/); // matches only '/' in input
-						if (slash) {
-							return this.identifyMentionKeyword('', MENTIONS_TRACKING_TYPE_COMMANDS);
-						}
-					}
-					return this.stopTrackingMention();
-				}
-				const [, lastChar, name] = result;
-				this.identifyMentionKeyword(name, lastChar);
-			} catch (e) {
-				log(e);
-			}
+			return this.identifyMentionKeyword(command, MENTIONS_TRACKING_TYPE_COMMANDS);
+		} else if (channelMention) {
+			return this.identifyMentionKeyword(result, MENTIONS_TRACKING_TYPE_ROOMS);
+		} else if (userMention) {
+			return this.identifyMentionKeyword(result, MENTIONS_TRACKING_TYPE_USERS);
+		} else if (emojiMention) {
+			return this.identifyMentionKeyword(result, MENTIONS_TRACKING_TYPE_EMOJIS);
 		} else {
-			this.stopTrackingMention();
+			return this.stopTrackingMention();
 		}
 	}, 100)
 
@@ -485,10 +474,10 @@ class MessageBox extends Component {
 	getFixedMentions = (keyword) => {
 		let result = [];
 		if ('all'.indexOf(keyword) !== -1) {
-			result = [{ id: -1, username: 'all' }];
+			result = [{ rid: -1, username: 'all' }];
 		}
 		if ('here'.indexOf(keyword) !== -1) {
-			result = [{ id: -2, username: 'here' }, ...result];
+			result = [{ rid: -2, username: 'here' }, ...result];
 		}
 		return result;
 	}
@@ -506,22 +495,22 @@ class MessageBox extends Component {
 
 	getEmojis = debounce(async(keyword) => {
 		const db = database.active;
-		if (keyword) {
-			const customEmojisCollection = db.collections.get('custom_emojis');
-			const likeString = sanitizeLikeString(keyword);
-			let customEmojis = await customEmojisCollection.query(
-				Q.where('name', Q.like(`${ likeString }%`))
-			).fetch();
-			customEmojis = customEmojis.slice(0, MENTIONS_COUNT_TO_DISPLAY);
-			const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
-			const mergedEmojis = [...customEmojis, ...filteredEmojis].slice(0, MENTIONS_COUNT_TO_DISPLAY);
-			this.setState({ mentions: mergedEmojis || [] });
+		const customEmojisCollection = db.get('custom_emojis');
+		const likeString = sanitizeLikeString(keyword);
+		const whereClause = [];
+		if (likeString) {
+			whereClause.push(Q.where('name', Q.like(`${ likeString }%`)));
 		}
+		let customEmojis = await customEmojisCollection.query(...whereClause).fetch();
+		customEmojis = customEmojis.slice(0, MENTIONS_COUNT_TO_DISPLAY);
+		const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
+		const mergedEmojis = [...customEmojis, ...filteredEmojis].slice(0, MENTIONS_COUNT_TO_DISPLAY);
+		this.setState({ mentions: mergedEmojis || [] });
 	}, 300)
 
 	getSlashCommands = debounce(async(keyword) => {
 		const db = database.active;
-		const commandsCollection = db.collections.get('slash_commands');
+		const commandsCollection = db.get('slash_commands');
 		const likeString = sanitizeLikeString(keyword);
 		const commands = await commandsCollection.query(
 			Q.where('id', Q.like(`${ likeString }%`))
@@ -753,7 +742,7 @@ class MessageBox extends Component {
 		// Slash command
 		if (message[0] === MENTIONS_TRACKING_TYPE_COMMANDS) {
 			const db = database.active;
-			const commandsCollection = db.collections.get('slash_commands');
+			const commandsCollection = db.get('slash_commands');
 			const command = message.replace(/ .*/, '').slice(1);
 			const likeString = sanitizeLikeString(command);
 			const slashCommand = await commandsCollection.query(
@@ -887,7 +876,7 @@ class MessageBox extends Component {
 			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview
 		} = this.state;
 		const {
-			editing, message, replying, replyCancel, user, getCustomEmoji, theme, Message_AudioRecorderEnabled, children, isActionsEnabled
+			editing, message, replying, replyCancel, user, getCustomEmoji, theme, Message_AudioRecorderEnabled, children, isActionsEnabled, tmid
 		} = this.props;
 
 		const isAndroidTablet = isTablet && isAndroid ? {
@@ -941,13 +930,13 @@ class MessageBox extends Component {
 					keyboardType='twitter'
 					blurOnSubmit={false}
 					placeholder={I18n.t('New_Message')}
-					placeholderTextColor={themes[theme].auxiliaryTintColor}
+					placeholderTextColor={themes[theme].auxiliaryText}
 					onChangeText={this.onChangeText}
 					onSelectionChange={this.onSelectionChange}
 					underlineColorAndroid='transparent'
 					defaultValue=''
 					multiline
-					testID='messagebox-input'
+					testID={`messagebox-input${ tmid ? '-thread' : '' }`}
 					theme={theme}
 					{...isAndroidTablet}
 				/>

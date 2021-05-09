@@ -42,12 +42,12 @@ async function removeServerData({ server }) {
 		const serversDB = database.servers;
 		const userId = await UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
 
-		const usersCollection = serversDB.collections.get('users');
+		const usersCollection = serversDB.get('users');
 		if (userId) {
 			const userRecord = await usersCollection.find(userId);
 			batch.push(userRecord.prepareDestroyPermanently());
 		}
-		const serverCollection = serversDB.collections.get('servers');
+		const serverCollection = serversDB.get('servers');
 		const serverRecord = await serverCollection.find(server);
 		batch.push(serverRecord.prepareDestroyPermanently());
 
@@ -61,7 +61,6 @@ async function removeServerData({ server }) {
 
 async function removeCurrentServer() {
 	await UserPreferences.removeItem(RocketChat.CURRENT_SERVER);
-	await UserPreferences.removeItem(RocketChat.TOKEN_KEY);
 }
 
 async function removeServerDatabase({ server }) {

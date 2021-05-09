@@ -9,7 +9,7 @@ import {
 	RefreshControl
 } from 'react-native';
 import { connect } from 'react-redux';
-import isEqual from 'react-fast-compare';
+import { dequal } from 'dequal';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
@@ -68,6 +68,7 @@ const CHATS_HEADER = 'Chats';
 const UNREAD_HEADER = 'Unread';
 const FAVORITES_HEADER = 'Favorites';
 const DISCUSSIONS_HEADER = 'Discussions';
+const TEAMS_HEADER = 'Teams';
 const CHANNELS_HEADER = 'Channels';
 const DM_HEADER = 'Direct_Messages';
 const GROUPS_HEADER = 'Private_Groups';
@@ -77,6 +78,8 @@ const QUERY_SIZE = 20;
 const filterIsUnread = s => (s.unread > 0 || s.tunread?.length > 0 || s.alert) && !s.hideUnreadStatus;
 const filterIsFavorite = s => s.f;
 const filterIsOmnichannel = s => s.t === 'l';
+const filterIsTeam = s => s.teamMain;
+const filterIsDiscussion = s => s.prid;
 
 const shouldUpdateProps = [
 	'searchText',
@@ -89,7 +92,6 @@ const shouldUpdateProps = [
 	'showUnread',
 	'useRealName',
 	'StoreLastMessage',
-	'appState',
 	'theme',
 	'isMasterDetail',
 	'refreshing',
@@ -126,7 +128,6 @@ class RoomsListView extends React.Component {
 		showUnread: PropTypes.bool,
 		refreshing: PropTypes.bool,
 		StoreLastMessage: PropTypes.bool,
-		appState: PropTypes.string,
 		theme: PropTypes.string,
 		toggleSortDropdown: PropTypes.func,
 		openSearchHeader: PropTypes.func,
@@ -135,7 +136,6 @@ class RoomsListView extends React.Component {
 		roomsRequest: PropTypes.func,
 		closeServerDropdown: PropTypes.func,
 		useRealName: PropTypes.bool,
-		connected: PropTypes.bool,
 		isMasterDetail: PropTypes.bool,
 		rooms: PropTypes.array,
 		width: PropTypes.number,
@@ -222,7 +222,7 @@ class RoomsListView extends React.Component {
 		}
 
 		// Compare changes only once
-		const chatsNotEqual = !isEqual(nextState.chatsUpdate, chatsUpdate);
+		const chatsNotEqual = !dequal(nextState.chatsUpdate, chatsUpdate);
 
 		// If they aren't equal, set to update if focused
 		if (chatsNotEqual) {
@@ -253,13 +253,13 @@ class RoomsListView extends React.Component {
 		if (nextProps.width !== width) {
 			return true;
 		}
-		if (!isEqual(nextState.search, search)) {
+		if (!dequal(nextState.search, search)) {
 			return true;
 		}
-		if (!isEqual(nextProps.rooms, rooms)) {
+		if (!dequal(nextProps.rooms, rooms)) {
 			return true;
 		}
-		if (!isEqual(nextProps.insets, insets)) {
+		if (!dequal(nextProps.insets, insets)) {
 			return true;
 		}
 		// If it's focused and there are changes, update
@@ -276,9 +276,6 @@ class RoomsListView extends React.Component {
 			groupByType,
 			showFavorites,
 			showUnread,
-			appState,
-			connected,
-			roomsRequest,
 			rooms,
 			isMasterDetail,
 			insets
@@ -294,15 +291,9 @@ class RoomsListView extends React.Component {
 			)
 		) {
 			this.getSubscriptions();
-		} else if (
-			appState === 'foreground'
-			&& appState !== prevProps.appState
-			&& connected
-		) {
-			roomsRequest();
 		}
 		// Update current item in case of another action triggers an update on rooms reducer
-		if (isMasterDetail && item?.rid !== rooms[0] && !isEqual(rooms, prevProps.rooms)) {
+		if (isMasterDetail && item?.rid !== rooms[0] && !dequal(rooms, prevProps.rooms)) {
 			// eslint-disable-next-line react/no-did-update-set-state
 			this.setState({ item: { rid: rooms[0] } });
 		}
@@ -319,6 +310,9 @@ class RoomsListView extends React.Component {
 		if (this.unsubscribeBlur) {
 			this.unsubscribeBlur();
 		}
+		if (this.backHandler && this.backHandler.remove) {
+			this.backHandler.remove();
+		}
 		if (isTablet) {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
@@ -328,7 +322,7 @@ class RoomsListView extends React.Component {
 	getHeader = () => {
 		const { searching } = this.state;
 		const { navigation, isMasterDetail, insets } = this.props;
-		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: 3 });
+		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: searching ? 0 : 3 });
 		return {
 			headerTitleAlign: 'left',
 			headerLeft: () => (searching ? (
@@ -484,10 +478,12 @@ class RoomsListView extends React.Component {
 
 			// type
 			if (groupByType) {
-				const discussions = chats.filter(s => s.prid);
-				const channels = chats.filter(s => s.t === 'c' && !s.prid);
-				const privateGroup = chats.filter(s => s.t === 'p' && !s.prid);
-				const direct = chats.filter(s => s.t === 'd' && !s.prid);
+				const teams = chats.filter(s => filterIsTeam(s));
+				const discussions = chats.filter(s => filterIsDiscussion(s));
+				const channels = chats.filter(s => s.t === 'c' && !filterIsDiscussion(s) && !filterIsTeam(s));
+				const privateGroup = chats.filter(s => s.t === 'p' && !filterIsDiscussion(s) && !filterIsTeam(s));
+				const direct = chats.filter(s => s.t === 'd' && !filterIsDiscussion(s) && !filterIsTeam(s));
+				tempChats = this.addRoomsGroup(teams, TEAMS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(discussions, DISCUSSIONS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(channels, CHANNELS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(privateGroup, GROUPS_HEADER, tempChats);
@@ -523,6 +519,7 @@ class RoomsListView extends React.Component {
 		const { openSearchHeader } = this.props;
 		this.internalSetState({ searching: true }, () => {
 			openSearchHeader();
+			this.search('');
 			this.setHeader();
 		});
 	};
@@ -620,7 +617,7 @@ class RoomsListView extends React.Component {
 			const db = database.active;
 			const result = await RocketChat.toggleFavorite(rid, !favorite);
 			if (result.success) {
-				const subCollection = db.collections.get('subscriptions');
+				const subCollection = db.get('subscriptions');
 				await db.action(async() => {
 					try {
 						const subRecord = await subCollection.find(rid);
@@ -644,7 +641,7 @@ class RoomsListView extends React.Component {
 			const db = database.active;
 			const result = await RocketChat.toggleRead(isRead, rid);
 			if (result.success) {
-				const subCollection = db.collections.get('subscriptions');
+				const subCollection = db.get('subscriptions');
 				await db.action(async() => {
 					try {
 						const subRecord = await subCollection.find(rid);
@@ -668,7 +665,7 @@ class RoomsListView extends React.Component {
 			const db = database.active;
 			const result = await RocketChat.hideRoom(rid, type);
 			if (result.success) {
-				const subCollection = db.collections.get('subscriptions');
+				const subCollection = db.get('subscriptions');
 				await db.action(async() => {
 					try {
 						const subRecord = await subCollection.find(rid);
@@ -917,7 +914,6 @@ class RoomsListView extends React.Component {
 				username={username}
 				showLastMessage={StoreLastMessage}
 				onPress={this.onPressItem}
-				testID={`rooms-list-view-item-${ item.name }`}
 				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
 				toggleFav={this.toggleFav}
 				toggleRead={this.toggleRead}
@@ -1018,7 +1014,6 @@ const mapStateToProps = state => ({
 	isMasterDetail: state.app.isMasterDetail,
 	server: state.server.server,
 	changingServer: state.server.changingServer,
-	connected: state.server.connected,
 	searchText: state.rooms.searchText,
 	loadingServer: state.server.loading,
 	showServerDropdown: state.rooms.showServerDropdown,
@@ -1029,7 +1024,6 @@ const mapStateToProps = state => ({
 	showFavorites: state.sortPreferences.showFavorites,
 	showUnread: state.sortPreferences.showUnread,
 	useRealName: state.settings.UI_Use_Real_Name,
-	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	StoreLastMessage: state.settings.Store_Last_Message,
 	rooms: state.room.rooms,
 	queueSize: getInquiryQueueSelector(state).length,
