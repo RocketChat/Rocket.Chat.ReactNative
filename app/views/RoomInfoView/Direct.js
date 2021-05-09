@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { themes } from '../../constants/colors';
@@ -29,11 +29,30 @@ Roles.propTypes = {
 };
 
 const Bio = ({ bio, theme }) => bio != null ? (
-	<Item
-		label={'Bio'}
-		content={bio}
-		theme={theme}
-	/>
+	<View style={{  padding: 20 }}>
+		<Image 
+			style={{ width: 25, height: 25, left: 40, top: 5, position: 'absolute'}}
+			source={require('../../../app/static/images/quote-left-solid.png')}
+			/>
+		<Text style={
+			{ 
+				color: themes[theme].auxiliaryText, 
+				padding: 20,
+				borderColor: '#ffffff',
+				borderWidth: 1,
+				borderRadius: 10,
+			}
+			}>
+				{bio}
+		</Text>
+		<View>
+		<Image 
+			style={{ width: 25, height: 25, top: -10, right: 20, position: 'absolute', alignSelf: 'flex-end'}}
+			source={require('../../../app/static/images/quote-right-solid.png')}
+			/>
+		</View>
+
+	</View>
 ) 
 : (null);
 Bio.propTypes = {
