@@ -71,12 +71,12 @@ class JitsiMeetView extends React.Component {
 	// call is not ended and is available to web users.
 	onConferenceJoined = () => {
 		logEvent(events.JM_CONFERENCE_JOIN);
-		RocketChat.updateJitsiTimeout(this.rid).catch(e => console.log(e));
+		RocketChat.updateJitsiTimeout(this.rid, true).catch(e => console.log(e));
 		if (this.jitsiTimeout) {
 			BackgroundTimer.clearInterval(this.jitsiTimeout);
 		}
 		this.jitsiTimeout = BackgroundTimer.setInterval(() => {
-			RocketChat.updateJitsiTimeout(this.rid).catch(e => console.log(e));
+			RocketChat.updateJitsiTimeout(this.rid, false).catch(e => console.log(e));
 		}, 10000);
 	}
 

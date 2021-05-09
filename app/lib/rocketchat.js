@@ -448,9 +448,9 @@ const RocketChat = {
 		return this.methodCallWrapper('e2e.resetOwnE2EKey');
 	},
 
-	updateJitsiTimeout(roomId) {
+	updateJitsiTimeout(roomId, showJoinCallButton = false) {
 		// RC 0.74.0
-		return this.post('video-conference/jitsi.update-timeout', { roomId });
+		return this.post('video-conference/jitsi.update-timeout', { roomId , showJoinCallButton});
 	},
 
 	register(credentials) {
