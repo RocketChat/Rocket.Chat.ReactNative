@@ -83,7 +83,8 @@ const Button = React.memo(({
 }) => (
 	<Touch
 		onPress={() => onPress(props.title)}
-		style={({ pressed }) => [{ backgroundColor: pressed ? underlayColor || themes[props.theme].bannerBackground : backgroundColor || themes[props.theme].backgroundColor }]}
+		style={{ backgroundColor: backgroundColor || themes[props.theme].backgroundColor }}
+		underlayColor={underlayColor}
 		enabled={!props.disabled}
 		theme={props.theme}
 	>

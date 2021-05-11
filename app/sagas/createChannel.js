@@ -71,14 +71,9 @@ const handleRequest = function* handleRequest({ data }) {
 				encrypted
 			});
 			sub = yield call(createChannel, data);
-
-			if (data.teamId) {
+			if (sub.teamId) {
 				logEvent(events.CT_ADD_ROOM_TO_TEAM);
-				const channels = yield call(addTeamRoom, { rooms: sub.rid, teamId: data.teamId });
-				if (channels.success) {
-					sub.teamId = channels.rooms[0].teamId;
-					sub.isTeamChannel = true;
-				}
+				yield call(addTeamRoom, { rooms: sub.rid, teamId: sub.teamId });
 			}
 		}
 		try {
@@ -106,7 +101,7 @@ const handleSuccess = function* handleSuccess({ data }) {
 	if (isMasterDetail) {
 		Navigation.navigate('DrawerNavigator');
 	}
-	goRoom({ item: data.team ? data.team : data, isMasterDetail });
+	goRoom({ item: data.success ? data.team : data, isMasterDetail });
 };
 
 const handleFailure = function handleFailure({ err }) {

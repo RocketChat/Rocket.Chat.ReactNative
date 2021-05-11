@@ -220,10 +220,10 @@ class TeamChannelsView extends React.Component {
 
 		options.headerRight = () => (
 			<HeaderButton.Container>
-				<HeaderButton.Item iconName='search' onPress={this.onSearchPress} />
 				{ showCreate
 					? <HeaderButton.Item iconName='create' onPress={() => navigation.navigate('AddChannelTeamView', { teamId: this.teamId, teamChannels: data })} />
 					: null}
+				<HeaderButton.Item iconName='search' onPress={this.onSearchPress} />
 			</HeaderButton.Container>
 		);
 		navigation.setOptions(options);

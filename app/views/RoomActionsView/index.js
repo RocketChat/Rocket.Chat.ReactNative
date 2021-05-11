@@ -494,7 +494,7 @@ class RoomActionsView extends React.Component {
 							rid, t, room, member
 						}
 					})}
-					style={({ pressed }) => [{ backgroundColor: pressed ? themes[theme].bannerBackground : themes[theme].backgroundColor }]}
+					style={{ backgroundColor: themes[theme].backgroundColor }}
 					accessibilityLabel={I18n.t('Room_Info')}
 					accessibilityTraits='button'
 					enabled={!isGroupChat}

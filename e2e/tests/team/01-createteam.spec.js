@@ -20,13 +20,13 @@ describe('Create team screen', () => {
 
 		describe('Render', async() => {
 			it('should have team button', async() => {
-				await waitFor(element(by.id('new-message-view-create-team'))).toBeVisible().withTimeout(2000);
+				await waitFor(element(by.id('new-message-view-create-channel'))).toBeVisible().withTimeout(2000);
 			});
 		})
 
 		describe('Usage', async() => {
 			it('should navigate to select users', async() => {
-				await element(by.id('new-message-view-create-team')).tap();
+				await element(by.id('new-message-view-create-channel')).tap();
 				await waitFor(element(by.id('select-users-view'))).toExist().withTimeout(5000);
 			});
 		})
@@ -51,22 +51,22 @@ describe('Create team screen', () => {
 
 		it('should create team', async() => {
 			await element(by.id('selected-users-view-submit')).tap();
-			await waitFor(element(by.id('create-team-view'))).toExist().withTimeout(10000);
+			await waitFor(element(by.id('create-channel-view'))).toExist().withTimeout(10000);
 		});
 	})
 
 	describe('Create Team', async() => {
 		describe('Usage', async() => {
 			it('should get invalid team name', async() => {
-				await element(by.id('create-team-name')).typeText(`${data.teams.private.name}`);
+				await element(by.id('create-channel-name')).typeText(`${data.teams.private.name}`);
 				await element(by.id('create-channel-submit')).tap();
 				await element(by.text('OK')).tap();
 			});
 
 			it('should create private team', async() => {
 				const room = `private${ data.random }`;
-				await element(by.id('create-team-name')).replaceText('');
-				await element(by.id('create-team-name')).typeText(room);
+				await element(by.id('create-channel-name')).replaceText('');
+				await element(by.id('create-channel-name')).typeText(room);
 				await element(by.id('create-channel-submit')).tap();
 				await waitFor(element(by.id('room-view'))).toExist().withTimeout(20000);
 				await expect(element(by.id('room-view'))).toExist();

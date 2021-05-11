@@ -94,10 +94,19 @@ const RocketChat = {
 	},
 	canOpenRoom,
 	createChannel({
-		name, users, type, readOnly, broadcast, encrypted
+		name, users, type, readOnly, broadcast, encrypted, teamId
 	}) {
-		// RC 0.51.0
-		return this.methodCallWrapper(type ? 'createPrivateGroup' : 'createChannel', name, users, readOnly, {}, { broadcast, encrypted });
+		const params = {
+			name,
+			members: users,
+			readOnly,
+			extraData: {
+				broadcast,
+				encrypted,
+				...(teamId && { teamId })
+			}
+		};
+		return this.post(type ? 'groups.create' : 'channels.create', params);
 	},
 	async getWebsocketInfo({ server }) {
 		const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
@@ -196,6 +205,10 @@ const RocketChat = {
 				clearTimeout(this.connectTimeout);
 			}
 
+			if (this.connectingListener) {
+				this.connectingListener.then(this.stopListener);
+			}
+
 			if (this.connectedListener) {
 				this.connectedListener.then(this.stopListener);
 			}
@@ -243,7 +256,7 @@ const RocketChat = {
 
 			sdkConnect();
 
-			this.connectedListener = this.sdk.onStreamData('connecting', () => {
+			this.connectingListener = this.sdk.onStreamData('connecting', () => {
 				reduxStore.dispatch(connectRequest());
 			});
 
@@ -1169,7 +1182,7 @@ const RocketChat = {
 	methodCall(...args) {
 		return new Promise(async(resolve, reject) => {
 			try {
-				const result = await this.sdk.methodCall(...args, this.code || '');
+				const result = await this.sdk?.methodCall(...args, this.code || '');
 				return resolve(result);
 			} catch (e) {
 				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
