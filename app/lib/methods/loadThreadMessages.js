@@ -32,7 +32,7 @@ export default function loadThreadMessages({ tmid, rid }) {
 			let data = await load.call(this, { tmid });
 			if (data && data.length) {
 				try {
-					data = data.map(m => buildMessage(m));
+					data = data.filter(m => m.tmid).map(m => buildMessage(m));
 					data = await Encryption.decryptMessages(data);
 					const db = database.active;
 					const threadMessagesCollection = db.get('thread_messages');
