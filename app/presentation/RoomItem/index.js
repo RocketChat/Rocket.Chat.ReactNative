@@ -14,6 +14,7 @@ const attrs = [
 	'status',
 	'connected',
 	'theme',
+	'isFocused',
 	'forceUpdate',
 	'showLastMessage'
 ];
@@ -36,6 +37,7 @@ class RoomItemContainer extends React.Component {
 		getUserPresence: PropTypes.func,
 		connected: PropTypes.bool,
 		theme: PropTypes.string,
+		isFocused: PropTypes.bool,
 		getRoomTitle: PropTypes.func,
 		getRoomAvatar: PropTypes.func,
 		getIsGroupChat: PropTypes.func,
@@ -127,6 +129,7 @@ class RoomItemContainer extends React.Component {
 			toggleRead,
 			hideChannel,
 			theme,
+			isFocused,
 			avatarSize,
 			status,
 			showLastMessage,
@@ -176,6 +179,7 @@ class RoomItemContainer extends React.Component {
 				type={item.t}
 				theme={theme}
 				size={avatarSize}
+				isFocused={isFocused}
 				prid={item.prid}
 				status={status}
 				hideUnreadStatus={item.hideUnreadStatus}

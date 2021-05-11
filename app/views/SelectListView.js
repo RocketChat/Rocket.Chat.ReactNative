@@ -70,7 +70,6 @@ class SelectListView extends React.Component {
 		this.title = props.route?.params?.title;
 		this.subtitle = props.route?.params?.subtitle;
 		this.teamName = props.route?.params?.teamName;
-		this.room = props.route?.params?.room;
 		this.state = {
 			data: teamChannels,
 			selected: [],

@@ -331,7 +331,7 @@ class RoomView extends React.Component {
 		let numIconsRight = 2;
 		if (tmid) {
 			numIconsRight = 1;
-		} else if (teamId && joined) {
+		} else if (teamId && teamMain && joined) {
 			numIconsRight = 3;
 		}
 		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight });
@@ -380,6 +380,7 @@ class RoomView extends React.Component {
 					rid={rid}
 					tmid={tmid}
 					teamId={teamId}
+					teamMain={teamMain}
 					joined={joined}
 					t={t}
 					navigation={navigation}
