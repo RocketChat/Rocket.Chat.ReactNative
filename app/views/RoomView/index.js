@@ -673,22 +673,30 @@ class RoomView extends React.Component {
 
 	onThreadPress = debounce(item => this.navToThread(item), 1000, true)
 
-	isMessageFromSameRoom = (message, origin) => {
+	shouldNavigateToRoom = (message, origin) => {
 		if (origin === 'server') {
 			if (message.tmid && message.tmid === this.tmid) {
-				return true;
+				return false;
 			}
 			if (!message.tmid && message.rid === this.rid) {
-				return true;
+				return false;
 			}
-			return false;
+			return true;
 		}
 		if (origin === 'message') {
-			return message.rid === this.rid;
+			return message.rid !== this.rid;
 		}
 		if (origin === 'thread_message') {
-			return message.rid === this.tmid;
+			return message.rid !== this.tmid;
 		}
+	}
+
+	// TODO: remove me when jump to threads from different rooms is implemented :)
+	canNavigateToRoom = (message, origin) => {
+		if (origin === 'thread_message' && message.subscription.id !== this.rid) {
+			return false;
+		}
+		return true;
 	}
 
 	jumpToMessageByUrl = async(messageUrl) => {
@@ -724,9 +732,12 @@ class RoomView extends React.Component {
 				origin = 'server';
 			}
 
-			const isMessageFromSameRoom = this.isMessageFromSameRoom(message, origin);
-			if (!isMessageFromSameRoom) {
-				this.navToThread(message);
+			if (this.shouldNavigateToRoom(message, origin)) {
+				if (this.canNavigateToRoom(message, origin)) {
+					this.navToThread(message);
+				} else {
+					alert('Jump to a thread from a different room is not supported yet. Next PR coming soon! 🤞');
+				}
 			} else {
 				if (origin === 'server' && !message.tmid) {
 					await RocketChat.loadSurroundingMessages({ messageId, rid: this.rid });
