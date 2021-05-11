@@ -5,16 +5,14 @@ async function load({
 	rid: roomId, latest, t, team
 }) {
 	let params = { roomId: roomId || team.roomId, count: 50 };
-	let apiType;
+
 	if (latest) {
 		params = { ...params, latest: new Date(latest).toISOString() };
 	}
 
-	if (team.type) {
-		apiType = this.roomTypeToApiType('p');
-	} else {
-		apiType = this.roomTypeToApiType(t || 'c');
-	}
+	const teamType = team?.type ? 'p' : 'c';
+	const apiType = this.roomTypeToApiType(teamType || t);
+
 	if (!apiType) {
 		return [];
 	}

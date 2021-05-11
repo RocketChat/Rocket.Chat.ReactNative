@@ -8,36 +8,17 @@ const navigate = ({ item, isMasterDetail, ...props }) => {
 		navigationMethod = Navigation.replace;
 	}
 
-	if (item.isTeamChannel) {
-		// TODO: Refactor
-		Navigation.navigate('TeamChannelsView');
-		Navigation.push('RoomView', {
-			rid: item.roomId || item.rid,
-			name: RocketChat.getRoomTitle(item),
-			t: item.type ? 'p' : item.t,
-			prid: item.prid,
-			room: item,
-			search: item.search,
-			visitor: item.visitor,
-			roomUserId: RocketChat.getUidDirectMessage(item),
-			teamId: item.teamId,
-			...props
-		});
-	} else if (item.rooms) {
-		Navigation.navigate('TeamChannelsView');
-	} else {
-		navigationMethod('RoomView', {
-			rid: item.roomId || item.rid,
-			name: RocketChat.getRoomTitle(item),
-			t: item.type ? 'p' : item.t,
-			prid: item.prid,
-			room: item,
-			search: item.search,
-			visitor: item.visitor,
-			roomUserId: RocketChat.getUidDirectMessage(item),
-			...props
-		});
-	}
+	navigationMethod('RoomView', {
+		rid: item.roomId || item.rid,
+		name: RocketChat.getRoomTitle(item),
+		t: item?.type ? 'p' : 'c' || item.t,
+		prid: item.prid,
+		room: item,
+		search: item.search,
+		visitor: item.visitor,
+		roomUserId: RocketChat.getUidDirectMessage(item),
+		...props
+	});
 };
 
 export const goRoom = async({ item = {}, isMasterDetail = false, ...props }) => {
