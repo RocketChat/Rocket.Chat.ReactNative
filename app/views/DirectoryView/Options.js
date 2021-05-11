@@ -67,7 +67,7 @@ export default class DirectoryOptions extends PureComponent {
 		return (
 			<Touch
 				onPress={() => changeType(itemType)}
-				style={({ pressed }) => [{ backgroundColor: pressed ? themes[theme].bannerBackground : themes[theme].backgroundColor }, styles.dropdownItemButton]}
+				style={styles.dropdownItemButton}
 				theme={theme}
 			>
 				<View style={styles.dropdownItemContainer}>

@@ -2,21 +2,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, FlatList, Text
+	View, FlatList
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { HeaderBackButton } from '@react-navigation/stack';
 import * as List from '../containers/List';
 
-import Touch from '../utils/touch';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
-import sharedStyles from './Styles';
 import I18n from '../i18n';
 import log, { events, logEvent } from '../utils/log';
 import SearchBox from '../containers/SearchBox';
-import { CustomIcon } from '../lib/Icons';
 import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
@@ -27,32 +24,6 @@ import { goRoom } from '../utils/goRoom';
 import Loading from '../containers/Loading';
 
 const QUERY_SIZE = 15;
-
-const styles = StyleSheet.create({
-	button: {
-		height: 46,
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
-	buttonIcon: {
-		marginLeft: 18,
-		marginRight: 16
-	},
-	buttonText: {
-		fontSize: 17,
-		...sharedStyles.textRegular
-	},
-	textContainer: {
-		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'center',
-		marginRight: 15
-	},
-	icon: {
-		marginHorizontal: 15,
-		alignSelf: 'center'
-	}
-});
 
 class AddExistingChannelView extends React.Component {
 	static propTypes = {
@@ -170,20 +141,16 @@ class AddExistingChannelView extends React.Component {
 	}) => {
 		const { theme } = this.props;
 		return (
-			<Touch
+			<List.Item
+				title={title}
+				translateTitle={false}
 				onPress={onPress}
-				style={{ backgroundColor: themes[theme].backgroundColor }}
 				testID={testID}
+				left={() => <List.Icon name={icon} />}
+				right={() => (checked ? <List.Icon name={checked} /> : null)}
 				theme={theme}
-			>
-				<View style={[styles.button, { borderColor: themes[theme].separatorColor, marginVertical: 4 }]}>
-					<CustomIcon style={[styles.buttonIcon, { color: themes[theme].controlText }]} size={24} name={icon} />
-					<View style={styles.textContainer}>
-						<Text style={[styles.buttonText, { color: themes[theme].bodyText }]}>{title}</Text>
-					</View>
-					{checked ? <CustomIcon name={checked} size={22} style={[styles.icon, { color: themes[theme].actionTintColor }]} /> : null}
-				</View>
-			</Touch>
+			/>
+
 		);
 	}
 

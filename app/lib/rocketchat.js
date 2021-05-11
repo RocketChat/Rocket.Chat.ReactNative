@@ -94,10 +94,19 @@ const RocketChat = {
 	},
 	canOpenRoom,
 	createChannel({
-		name, users, type, readOnly, broadcast, encrypted
+		name, users, type, readOnly, broadcast, encrypted, teamId
 	}) {
-		// RC 0.51.0
-		return this.methodCallWrapper(type ? 'createPrivateGroup' : 'createChannel', name, users, readOnly, {}, { broadcast, encrypted });
+		const params = {
+			name,
+			members: users,
+			readOnly,
+			extraData: {
+				broadcast,
+				encrypted,
+				...(teamId && { teamId })
+			}
+		};
+		return this.post(type ? 'groups.create' : 'channels.create', params);
 	},
 	async getWebsocketInfo({ server }) {
 		const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
