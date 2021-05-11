@@ -60,15 +60,13 @@ const createChannelIfNotExists = async (channelname) => {
 const createTeamIfNotExists = async (teamname) => {
     console.log(`Creating private team ${teamname}`)
     try {
-        const team = await rocketchat.post('teams.create', {
+        await rocketchat.post('teams.create', {
             "name": teamname,
             "type": 1
         })
-        return team
     } catch (createError) {
         try { //Maybe it exists already?
-            const team = rocketchat.get(`teams.info?teamName=${teamname}`)
-            return team
+            await rocketchat.get(`teams.info?teamName=${teamname}`)
         } catch (infoError) {
             console.log(JSON.stringify(createError))
             console.log(JSON.stringify(infoError))

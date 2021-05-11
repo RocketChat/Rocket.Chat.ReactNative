@@ -68,10 +68,6 @@ const styles = StyleSheet.create({
 });
 
 class CreateChannelView extends React.Component {
-	static navigationOptions = () => ({
-		title: this.isTeam ? I18n.t('Create_Team') : I18n.t('Create_Channel')
-	})
-
 	static propTypes = {
 		navigation: PropTypes.object,
 		route: PropTypes.object,
@@ -93,14 +89,16 @@ class CreateChannelView extends React.Component {
 	constructor(props) {
 		super(props);
 		const { route } = this.props;
-		this.isTeam = route?.params?.isTeam || false;
+		const isTeam = route?.params?.isTeam || false;
 		this.state = {
 			channelName: '',
 			type: true,
 			readOnly: false,
 			encrypted: false,
-			broadcast: false
+			broadcast: false,
+			isTeam
 		};
+		this.setTitle();
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -140,6 +138,15 @@ class CreateChannelView extends React.Component {
 		return false;
 	}
 
+	setTitle = () => {
+		const { navigation } = this.props;
+		const { isTeam } = this.state;
+
+		navigation.setOptions({
+			title: isTeam ? I18n.t('Create_Team') : I18n.t('Create_Channel')
+		});
+	}
+
 	toggleRightButton = (channelName) => {
 		const { navigation } = this.props;
 		navigation.setOptions({
@@ -158,7 +165,7 @@ class CreateChannelView extends React.Component {
 
 	submit = () => {
 		const {
-			channelName, type, readOnly, broadcast, encrypted
+			channelName, type, readOnly, broadcast, encrypted, isTeam
 		} = this.state;
 		const {
 			users: usersProps, isFetching, create
@@ -173,7 +180,7 @@ class CreateChannelView extends React.Component {
 
 		// create channel or team
 		create({
-			name: channelName, users, type, readOnly, broadcast, encrypted, isTeam: this.isTeam
+			name: channelName, users, type, readOnly, broadcast, encrypted, isTeam
 		});
 
 		Review.pushPositiveEvent();
@@ -204,12 +211,12 @@ class CreateChannelView extends React.Component {
 	}
 
 	renderType() {
-		const { type } = this.state;
+		const { type, isTeam } = this.state;
 
 		return this.renderSwitch({
 			id: 'type',
 			value: type,
-			label: this.isTeam ? 'Private_Team' : 'Private_Channel',
+			label: isTeam ? 'Private_Team' : 'Private_Channel',
 			onValueChange: (value) => {
 				logEvent(events.CR_TOGGLE_TYPE);
 				// If we set the channel as public, encrypted status should be false
@@ -219,12 +226,12 @@ class CreateChannelView extends React.Component {
 	}
 
 	renderReadOnly() {
-		const { readOnly, broadcast } = this.state;
+		const { readOnly, broadcast, isTeam } = this.state;
 
 		return this.renderSwitch({
 			id: 'readonly',
 			value: readOnly,
-			label: this.isTeam ? 'Read_Only_Team' : 'Read_Only_Channel',
+			label: isTeam ? 'Read_Only_Team' : 'Read_Only_Channel',
 			onValueChange: (value) => {
 				logEvent(events.CR_TOGGLE_READ_ONLY);
 				this.setState({ readOnly: value });
@@ -254,12 +261,12 @@ class CreateChannelView extends React.Component {
 	}
 
 	renderBroadcast() {
-		const { broadcast, readOnly } = this.state;
+		const { broadcast, readOnly, isTeam } = this.state;
 
 		return this.renderSwitch({
 			id: 'broadcast',
 			value: broadcast,
-			label: this.isTeam ? 'Broadcast_Team' : 'Broadcast_Channel',
+			label: isTeam ? 'Broadcast_Team' : 'Broadcast_Channel',
 			onValueChange: (value) => {
 				logEvent(events.CR_TOGGLE_BROADCAST);
 				this.setState({
@@ -312,7 +319,7 @@ class CreateChannelView extends React.Component {
 	}
 
 	render() {
-		const { channelName } = this.state;
+		const { channelName, isTeam } = this.state;
 		const {
 			users, isFetching, theme
 		} = this.props;
@@ -325,18 +332,18 @@ class CreateChannelView extends React.Component {
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
-				<SafeAreaView testID={this.isTeam ? 'create-team-view' : 'create-channel-view'}>
+				<SafeAreaView testID={isTeam ? 'create-team-view' : 'create-channel-view'}>
 					<ScrollView {...scrollPersistTaps}>
 						<View style={[sharedStyles.separatorVertical, { borderColor: themes[theme].separatorColor }]}>
 							<TextInput
 								autoFocus
 								style={[styles.input, { backgroundColor: themes[theme].backgroundColor }]}
-								label={this.isTeam ? I18n.t('Team_Name') : I18n.t('Channel_Name')}
+								label={isTeam ? I18n.t('Team_Name') : I18n.t('Channel_Name')}
 								value={channelName}
 								onChangeText={this.onChangeText}
-								placeholder={this.isTeam ? I18n.t('Team_Name') : I18n.t('Channel_Name')}
+								placeholder={isTeam ? I18n.t('Team_Name') : I18n.t('Channel_Name')}
 								returnKeyType='done'
-								testID={this.isTeam ? 'create-team-name' : 'create-channel-name'}
+								testID={isTeam ? 'create-team-name' : 'create-channel-name'}
 								autoCorrect={false}
 								autoCapitalize='none'
 								theme={theme}
