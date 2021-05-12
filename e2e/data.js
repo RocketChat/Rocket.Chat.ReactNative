@@ -42,6 +42,11 @@ const data = {
             name: `detox-private-${ value }`
         }
     },
+    teams: {
+        private: {
+            name: `detox-team-${ value }`
+        }
+    },
     registeringUser: {
         username: `newuser${ value }`,
         password: `password${ value }`,
