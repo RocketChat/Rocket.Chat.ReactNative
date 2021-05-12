@@ -20,5 +20,3 @@ export const methods = {
 };
 
 export const compareServerVersion = (currentServerVersion, versionToCompare, func) => currentServerVersion && func(coerce(currentServerVersion), versionToCompare);
-
-export const isTeamRoom = params => params.every(currentValue => currentValue ?? currentValue);

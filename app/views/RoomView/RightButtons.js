@@ -7,7 +7,7 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
 import { logEvent, events } from '../../utils/log';
-import { isTeamRoom } from '../../lib/utils';
+import { isTeamRoom } from '../../utils/room';
 
 class RightButtonsContainer extends Component {
 	static propTypes = {
@@ -183,7 +183,7 @@ class RightButtonsContainer extends Component {
 		}
 		return (
 			<HeaderButton.Container>
-				{isTeamRoom([teamId, joined]) ? (
+				{isTeamRoom({ teamId, joined }) ? (
 					<HeaderButton.Item
 						iconName='channel-public'
 						onPress={this.goTeamChannels}

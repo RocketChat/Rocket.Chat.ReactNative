@@ -38,7 +38,9 @@ import { themes } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
-import { getBadgeColor, isBlocked, makeThreadName } from '../../utils/room';
+import {
+	getBadgeColor, isBlocked, makeThreadName, isTeamRoom
+} from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
 import { showErrorAlert } from '../../utils/info';
@@ -62,7 +64,6 @@ import { getHeaderTitlePosition } from '../../containers/Header';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
 
 import { takeInquiry } from '../../ee/omnichannel/lib';
-import { isTeamRoom } from '../../lib/utils';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -332,7 +333,7 @@ class RoomView extends React.Component {
 		let numIconsRight = 2;
 		if (tmid) {
 			numIconsRight = 1;
-		} else if (isTeamRoom([teamId, joined])) {
+		} else if (isTeamRoom({ teamId, joined })) {
 			numIconsRight = 3;
 		}
 		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight });
