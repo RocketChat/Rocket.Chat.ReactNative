@@ -62,6 +62,7 @@ import { getHeaderTitlePosition } from '../../containers/Header';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
 
 import { takeInquiry } from '../../ee/omnichannel/lib';
+import { isTeamRoom } from '../../lib/utils';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -331,7 +332,7 @@ class RoomView extends React.Component {
 		let numIconsRight = 2;
 		if (tmid) {
 			numIconsRight = 1;
-		} else if (teamId && teamMain && joined) {
+		} else if (isTeamRoom([teamId, joined])) {
 			numIconsRight = 3;
 		}
 		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight });

@@ -28,6 +28,9 @@ import {
 import { showErrorAlert } from '../utils/info';
 import SafeAreaView from '../containers/SafeAreaView';
 
+const ITEM_WIDTH = 250;
+const _getItemLayout = (_, index) => ({ length: ITEM_WIDTH, offset: ITEM_WIDTH * index, index });
+
 class SelectedUsersView extends React.Component {
 	static propTypes = {
 		baseUrl: PropTypes.string,
@@ -184,19 +187,23 @@ class SelectedUsersView extends React.Component {
 		);
 	}
 
+	setFlatListRef = ref => this.flatlist = ref;
+
+	onContentSizeChange = () => this.flatlist.scrollToEnd({ animated: true });
+
 	renderSelected = () => {
 		const { users, theme } = this.props;
 
 		if (users.length === 0) {
 			return null;
 		}
-		const ITEM_WIDTH = 250;
+
 		return (
 			<FlatList
 				data={users}
-				ref={ref => this.flatlist = ref}
-				onContentSizeChange={() => this.flatlist.scrollToEnd()}
-				getItemLayout={(_, index) => ({ length: ITEM_WIDTH, offset: ITEM_WIDTH * index, index })}
+				ref={this.setFlatListRef}
+				onContentSizeChange={this.onContentSizeChange}
+				getItemLayout={_getItemLayout}
 				keyExtractor={item => item._id}
 				style={[sharedStyles.separatorTop, { borderColor: themes[theme].separatorColor }]}
 				contentContainerStyle={{ marginVertical: 5 }}

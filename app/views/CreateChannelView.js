@@ -98,7 +98,7 @@ class CreateChannelView extends React.Component {
 			broadcast: false,
 			isTeam
 		};
-		this.setTitle();
+		this.setHeader();
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -138,7 +138,7 @@ class CreateChannelView extends React.Component {
 		return false;
 	}
 
-	setTitle = () => {
+	setHeader = () => {
 		const { navigation } = this.props;
 		const { isTeam } = this.state;
 

@@ -60,6 +60,7 @@ import UserPreferences from './userPreferences';
 import { Encryption } from './encryption';
 import EventEmitter from '../utils/events';
 import { sanitizeLikeString } from './database/utils';
+import { TEAM_TYPE } from '../definition/ITeam';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
@@ -738,7 +739,7 @@ const RocketChat = {
 		const params = {
 			name,
 			users,
-			type: type ? 1 : 0,
+			type: type ? TEAM_TYPE.PRIVATE : TEAM_TYPE.PUBLIC,
 			room: {
 				readOnly,
 				extraData: {
