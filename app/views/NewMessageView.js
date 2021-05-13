@@ -181,7 +181,7 @@ class NewMessageView extends React.Component {
 					{this.renderButton({
 						onPress: this.createTeam,
 						title: I18n.t('Create_Team'),
-						icon: 'team',
+						icon: 'teams',
 						testID: 'new-message-view-create-team'
 					})}
 					{maxUsers > 2 ? this.renderButton({

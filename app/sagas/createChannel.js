@@ -89,7 +89,17 @@ const handleRequest = function* handleRequest({ data }) {
 			// do nothing
 		}
 
-		yield put(createChannelSuccess(sub));
+		let successParams = {};
+		if (data.isTeam) {
+			successParams = {
+				...sub.team,
+				rid: sub.team.roomId,
+				t: sub.team.type ? 'p' : 'c'
+			};
+		} else {
+			successParams = data;
+		}
+		yield put(createChannelSuccess(successParams));
 	} catch (err) {
 		logEvent(events[data.group ? 'SELECTED_USERS_CREATE_GROUP_F' : 'CR_CREATE_F']);
 		yield put(createChannelFailure(err));
