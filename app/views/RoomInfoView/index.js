@@ -214,7 +214,7 @@ class RoomInfoView extends React.Component {
 		}
 
 		const permissions = await RocketChat.hasPermission([editRoomPermission], room.rid);
-		if (permissions[0] && !room.prid) {
+		if (permissions[0] && (!room.prid || this.t === 'p')) {
 			this.setState({ showEdit: true }, () => this.setHeader());
 		}
 	}
