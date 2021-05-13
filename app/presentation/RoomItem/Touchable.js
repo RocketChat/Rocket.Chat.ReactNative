@@ -220,7 +220,7 @@ class Touchable extends React.Component {
 		onLongPress = () => {
 			const { rowState } = this.state;
 			const { onLongPress } = this.props;
-			if (rowState !== 0 || !onLongPress) {
+			if (rowState !== 0) {
 				this.close();
 				return;
 			}
