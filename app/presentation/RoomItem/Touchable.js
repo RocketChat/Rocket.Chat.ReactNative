@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Animated } from 'react-native';
-import { LongPressGestureHandler, PanGestureHandler, State } from 'react-native-gesture-handler';
+import {
+	LongPressGestureHandler, PanGestureHandler, State
+} from 'react-native-gesture-handler';
 
 import Touch from '../../utils/touch';
 import {
@@ -52,6 +54,7 @@ class Touchable extends React.Component {
 			[{ nativeEvent: { translationX: this.dragX } }], { useNativeDriver: true }
 		);
 		this._value = 0;
+		this.panRef = React.createRef();
 	}
 
 		_onHandlerStateChange = ({ nativeEvent }) => {
@@ -61,6 +64,10 @@ class Touchable extends React.Component {
 		}
 
 		onLongPressHandlerStateChange = ({ nativeEvent }) => {
+			const { onLongPress } = this.props;
+			if (!onLongPress) {
+				return null;
+			}
 			if (nativeEvent.state === State.ACTIVE) {
 				this.onLongPress();
 			}
@@ -212,16 +219,15 @@ class Touchable extends React.Component {
 
 		onLongPress = () => {
 			const { rowState } = this.state;
+			const { onLongPress } = this.props;
 			if (rowState !== 0) {
 				this.close();
 				return;
 			}
-			const { onLongPress, onPress } = this.props;
-			if (!onLongPress) {
-				onPress();
-			}
 
-			onLongPress();
+			if (onLongPress) {
+				onLongPress();
+			}
 		};
 
 		render() {
@@ -230,9 +236,10 @@ class Touchable extends React.Component {
 			} = this.props;
 
 			return (
-				<LongPressGestureHandler onHandlerStateChange={this.onLongPressHandlerStateChange}>
+				<LongPressGestureHandler onHandlerStateChange={(this.onLongPressHandlerStateChange)}>
 					<Animated.View>
 						<PanGestureHandler
+							ref={this.panRef}
 							minDeltaX={20}
 							onGestureEvent={this._onGestureEvent}
 							onHandlerStateChange={this._onHandlerStateChange}

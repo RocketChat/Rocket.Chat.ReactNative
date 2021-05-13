@@ -68,7 +68,8 @@ class TeamChannelsView extends React.Component {
 			searchText: '',
 			search: [],
 			end: false,
-			showCreate: false
+			showCreate: false,
+			autoJoin: []
 		};
 		this.loadTeam();
 		this.setHeader();
@@ -88,7 +89,9 @@ class TeamChannelsView extends React.Component {
 			this.teamChannels = await subCollection.query(
 				Q.where('team_id', Q.eq(this.teamId))
 			);
-			this.team = this.teamChannels?.find(channel => channel.teamMain);
+			this.team = this.teamChannels?.find(channel => channel.teamMain && channel.rid === this.rid);
+			const filterAutoJoin = this.teamChannels.filter(channel => channel.teamMain);
+			this.setState({ autoJoin: filterAutoJoin });
 			this.setHeader();
 
 			if (!this.team) {
@@ -307,8 +310,8 @@ class TeamChannelsView extends React.Component {
 	options = item => ([
 		{
 			title: I18n.t('Auto-join'),
-			icon: item.t === 'p' ? 'channel-private' : 'channel-public'
-			// onPress: this.autoJoin
+			icon: item.t === 'p' ? 'channel-private' : 'channel-public',
+			onPress: () => this.autoJoin(item)
 		},
 		{
 			title: I18n.t('Remove_from_Team'),
@@ -323,6 +326,37 @@ class TeamChannelsView extends React.Component {
 			onPress: () => this.delete(item)
 		}
 	])
+
+	autoJoin = async(item) => {
+		try {
+			const result = await RocketChat.updateTeamRoom({ roomId: item.rid, isDefault: !item.teamMain });
+			if (result.success) {
+				this.toggleAutoJoin(item);
+				this.setState({ loading: true }, () => {
+					this.load();
+					this.loadTeam();
+				});
+			}
+		} catch (e) {
+			log(e);
+		}
+	}
+
+	isAutoJoin = (item) => {
+		const { autoJoin } = this.state;
+		return autoJoin.includes(item);
+	}
+
+	toggleAutoJoin = (item) => {
+		const { autoJoin } = this.state;
+
+		if (!this.isChecked(item)) {
+			this.setState({ autoJoin: [...autoJoin, item] });
+		} else {
+			const filterSelected = autoJoin.filter(el => el.rid !== item.rid);
+			this.setState({ autoJoin: filterSelected });
+		}
+	}
 
 	remove = (item) => {
 		Alert.alert(
@@ -398,6 +432,7 @@ class TeamChannelsView extends React.Component {
 			theme,
 			width
 		} = this.props;
+		const { autoJoin } = this.state;
 		return (
 			<RoomItem
 				item={item}
@@ -411,6 +446,7 @@ class TeamChannelsView extends React.Component {
 				getRoomTitle={this.getRoomTitle}
 				getRoomAvatar={this.getRoomAvatar}
 				swipeEnabled={false}
+				autoJoin={autoJoin.includes(item.rid)}
 			/>
 		);
 	};

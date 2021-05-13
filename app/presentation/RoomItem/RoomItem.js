@@ -10,6 +10,7 @@ import LastMessage from './LastMessage';
 import Title from './Title';
 import UpdatedAt from './UpdatedAt';
 import Touchable from './Touchable';
+import Chip from './Chip';
 
 const RoomItem = ({
 	rid,
@@ -46,7 +47,8 @@ const RoomItem = ({
 	toggleFav,
 	toggleRead,
 	hideChannel,
-	teamMain
+	teamMain,
+	autoJoin
 }) => (
 	<Touchable
 		onPress={onPress}
@@ -90,6 +92,9 @@ const RoomItem = ({
 								hideUnreadStatus={hideUnreadStatus}
 								alert={alert}
 							/>
+							{
+								autoJoin ? <Chip name='Auto-Join' /> : null
+							}
 							<UpdatedAt
 								date={date}
 								theme={theme}
@@ -184,7 +189,8 @@ RoomItem.propTypes = {
 	toggleRead: PropTypes.func,
 	onPress: PropTypes.func,
 	onLongPress: PropTypes.func,
-	hideChannel: PropTypes.func
+	hideChannel: PropTypes.func,
+	autoJoin: PropTypes.bool
 };
 
 RoomItem.defaultProps = {

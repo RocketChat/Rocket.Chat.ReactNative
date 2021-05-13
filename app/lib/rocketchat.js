@@ -760,9 +760,9 @@ const RocketChat = {
 		// RC 3.13.0
 		return this.post('teams.create', params);
 	},
-	addTeamRooms({ rooms, teamId }) {
+	addRoomsToTeam({ rooms, teamId }) {
 		const params = {
-			rooms: Array.isArray(rooms) ? rooms : [rooms],
+			rooms,
 			teamId
 		};
 		// RC 3.13.0
@@ -775,6 +775,10 @@ const RocketChat = {
 	leaveTeam({ teamName }) {
 		// RC 3.13.0
 		return this.post('teams.leave', { teamName });
+	},
+	updateTeamRoom({ roomId, isDefault }) {
+		// RC 3.13.0
+		return this.post('teams.updateRoom', { roomId, isDefault });
 	},
 	joinRoom(roomId, joinCode, type) {
 		// TODO: join code
