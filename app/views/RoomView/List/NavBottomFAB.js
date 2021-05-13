@@ -9,6 +9,7 @@ import { themes } from '../../../constants/colors';
 import { CustomIcon } from '../../../lib/Icons';
 import { useTheme } from '../../../theme';
 import Touch from '../../../utils/touch';
+import { hasNotch } from '../../../utils/deviceInfo';
 
 const SCROLL_LIMIT = 200;
 
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
 	container: {
 		position: 'absolute',
 		right: 15,
-		bottom: 100
+		bottom: hasNotch ? 100 : 60
 	},
 	button: {
 		width: 50,
