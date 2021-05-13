@@ -76,7 +76,6 @@ class AddExistingChannelView extends React.Component {
 		navigation.setOptions(options);
 	}
 
-	// eslint-disable-next-line react/sort-comp
 	init = async() => {
 		try {
 			const { addTeamChannelPermission } = this.props;
@@ -84,7 +83,7 @@ class AddExistingChannelView extends React.Component {
 			const channels = await db.collections
 				.get('subscriptions')
 				.query(
-					Q.and(Q.where('team_id', ''), Q.or(Q.where('t', 'c'), Q.where('t', 'p'))),
+					Q.and(Q.where('team_id', null), Q.or(Q.where('t', 'c'), Q.where('t', 'p'))),
 					Q.experimentalTake(QUERY_SIZE),
 					Q.experimentalSortBy('room_updated_at', Q.desc)
 				)
@@ -173,10 +172,10 @@ class AddExistingChannelView extends React.Component {
 
 		animateNextTransition();
 		if (!this.isChecked(rid)) {
-			// logEvent(events.SELECTED_USERS_ADD_USER);
+			logEvent(events.EXISTING_CHANNEL_ADD_CHANNEL);
 			this.setState({ selected: [...selected, rid] }, () => this.setHeader());
 		} else {
-			// logEvent(events.SELECTED_USERS_REMOVE_USER);
+			logEvent(events.EXISTING_CHANNEL_REMOVE_CHANNEL);
 			const filterSelected = selected.filter(el => el !== rid);
 			this.setState({ selected: filterSelected }, () => this.setHeader());
 		}
