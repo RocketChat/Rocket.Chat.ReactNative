@@ -704,17 +704,5 @@
   "Direct_message": "Direktnachricht",
   "Message_Ignored": "Nachricht ignoriert. Antippen um sie zu zeigen.",
   "Enter_workspace_URL": "Arbeitsbereich-URL",
-  "Workspace_URL_Example": "z.B. https://rocketchat.deine-firma.de",
-  "This_room_encryption_has_been_enabled_by__username_": "",
-  "This_room_encryption_has_been_disabled_by__username_": "",
-  "Teams": "",
-  "No_team_channels_found": "",
-  "Team_not_found": "",
-  "Create_Team": "",
-  "Team_Name": "",
-  "Private_Team": "",
-  "Read_Only_Team": "",
-  "Broadcast_Team": "",
-  "creating_team": "",
-  "team-name-already-exists": ""
+  "Workspace_URL_Example": "z.B. https://rocketchat.deine-firma.de"
 }

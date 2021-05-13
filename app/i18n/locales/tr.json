@@ -440,7 +440,6 @@
   "Room_changed_announcement": "Oda duyurusu, {{userBy}} tarafından {{announcement}} olarak değiştirildi",
   "Room_changed_avatar": "Oda profil fotoğrafı {{userBy}} tarafından değiştirildi",
   "Room_changed_description": "Oda açıklaması, {{userBy}} tarafından {{description}} olarak değiştirildi",
-  "Room_changed_privacy": "",
   "Room_changed_topic": "Oda konusu, {{userBy}} tarafından {{topic}} olarak değiştirildi",
   "Room_Files": "Oda Dosyaları",
   "Room_Info_Edit": "Oda Bilgilerini Düzenle",
@@ -704,17 +703,5 @@
   "Direct_message": "Özel ileti",
   "Message_Ignored": "İleti yok sayıldı. Görüntülemek için dokunun.",
   "Enter_workspace_URL": "Çalışma alanı URL'nizi girin",
-  "Workspace_URL_Example": "Örn. sirketiniz.rocket.chat",
-  "This_room_encryption_has_been_enabled_by__username_": "",
-  "This_room_encryption_has_been_disabled_by__username_": "",
-  "Teams": "",
-  "No_team_channels_found": "",
-  "Team_not_found": "",
-  "Create_Team": "",
-  "Team_Name": "",
-  "Private_Team": "",
-  "Read_Only_Team": "",
-  "Broadcast_Team": "",
-  "creating_team": "",
-  "team-name-already-exists": ""
+  "Workspace_URL_Example": "Örn. sirketiniz.rocket.chat"
 }
