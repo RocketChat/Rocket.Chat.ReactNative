@@ -734,7 +734,13 @@ class RoomView extends React.Component {
 
 			if (this.shouldNavigateToRoom(message, origin)) {
 				if (this.canNavigateToRoom(message, origin)) {
-					this.navToThread(message);
+					const navParams = {
+						id: message._id || message.id,
+						rid: origin === 'thread_message' ? null : message.rid,
+						tmid: origin === 'thread_message' ? message.rid : message.tmid,
+						roomUserId: message.roomUserId
+					};
+					this.navToThread(navParams);
 				} else {
 					alert('Jump to a thread from a different room is not supported yet. Next PR coming soon! 🤞');
 				}
@@ -749,7 +755,6 @@ class RoomView extends React.Component {
 		} catch (e) {
 			this.setState({ showingBlockingLoader: false });
 			log(e);
-			alert(e)
 		}
 	}
 
