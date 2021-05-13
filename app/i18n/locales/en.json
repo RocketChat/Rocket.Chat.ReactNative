@@ -709,5 +709,12 @@
   "This_room_encryption_has_been_disabled_by__username_": "This room's encryption has been disabled by {{username}}",
   "Teams": "Teams",
   "No_team_channels_found": "No channels found",
-  "Team_not_found": "Team not found"
+  "Team_not_found": "Team not found",
+  "Create_Team": "Create Team",
+  "Team_Name": "Team Name",
+  "Private_Team": "Private Team",
+  "Read_Only_Team": "Read Only Team",
+  "Broadcast_Team": "Broadcast Team",
+  "creating_team" : "creating team",
+  "team-name-already-exists": "A team with that name already exists"
 }

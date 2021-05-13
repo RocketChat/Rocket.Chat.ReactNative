@@ -1,5 +1,6 @@
 const axios = require('axios').default;
 const data = require('../data');
+const { TEAM_TYPE } = require('../../app/definition/ITeam');
 
 let server = data.server
 
@@ -53,6 +54,24 @@ const createChannelIfNotExists = async (channelname) => {
             console.log(JSON.stringify(createError))
             console.log(JSON.stringify(infoError))
             throw "Failed to find or create public channel"
+        }
+    }
+}
+
+const createTeamIfNotExists = async (teamname) => {
+    console.log(`Creating private team ${teamname}`)
+    try {
+        await rocketchat.post('teams.create', {
+            "name": teamname,
+            "type": TEAM_TYPE.PRIVATE
+        })
+    } catch (createError) {
+        try { //Maybe it exists already?
+            await rocketchat.get(`teams.info?teamName=${teamname}`)
+        } catch (infoError) {
+            console.log(JSON.stringify(createError))
+            console.log(JSON.stringify(infoError))
+            throw "Failed to find or create private team"
         }
     }
 }
@@ -130,6 +149,13 @@ const setup = async () => {
         if (data.groups.hasOwnProperty(groupKey)) {
             const group = data.groups[groupKey]
             await createGroupIfNotExists(group.name)
+        }
+    }
+
+    for (var teamKey in data.teams) {
+        if (data.teams.hasOwnProperty(teamKey)) {
+            const team = data.teams[teamKey]
+            await createTeamIfNotExists(team.name)
         }
     }
 
