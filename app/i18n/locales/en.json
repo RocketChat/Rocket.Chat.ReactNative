@@ -33,7 +33,7 @@
   "error-invalid-date": "Invalid date provided.",
   "error-invalid-description": "Invalid description",
   "error-invalid-domain": "Invalid domain",
-  "error-invalid-email": "Invalid email {{emai}}",
+  "error-invalid-email": "Invalid email {{email}}",
   "error-invalid-email-address": "Invalid email address",
   "error-invalid-file-height": "Invalid file height",
   "error-invalid-file-type": "Invalid file type",
@@ -715,6 +715,6 @@
   "Private_Team": "Private Team",
   "Read_Only_Team": "Read Only Team",
   "Broadcast_Team": "Broadcast Team",
-  "creating_team" : "creating team",
+  "creating_team": "creating team",
   "team-name-already-exists": "A team with that name already exists"
 }
