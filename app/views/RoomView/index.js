@@ -734,13 +734,18 @@ class RoomView extends React.Component {
 
 			if (this.shouldNavigateToRoom(message, origin)) {
 				if (this.canNavigateToRoom(message, origin)) {
-					const navParams = {
-						id: message._id || message.id,
-						rid: origin === 'thread_message' ? null : message.rid,
-						tmid: origin === 'thread_message' ? message.rid : message.tmid,
-						roomUserId: message.roomUserId
-					};
-					this.navToThread(navParams);
+					if (message.rid !== this.rid && origin !== 'thread_message') {
+						this.navToRoom({
+							id: message._id || message.id,
+							rid: message.rid
+						});
+					} else {
+						this.navToThread({
+							id: message._id || message.id,
+							tmid: origin === 'thread_message' ? message.rid : message.tmid,
+							roomUserId: message.roomUserId
+						});
+					}
 				} else {
 					alert('Jump to a thread from a different room is not supported yet. Next PR coming soon! 🤞');
 				}
@@ -925,7 +930,11 @@ class RoomView extends React.Component {
 				rid: this.rid, tmid: item.id, name: makeThreadName(item), t: 'thread', roomUserId
 			});
 		}
+	}
 
+	navToRoom = (item) => {
+		const { navigation } = this.props;
+		const messageId = item._id || item.id;
 		if (item.rid !== this.rid) {
 			return goRoom({
 				item, isMasterDetail: false, navigationMethod: navigation.push, jumpToMessageId: messageId
