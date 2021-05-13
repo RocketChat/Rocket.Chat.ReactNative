@@ -1,5 +1,6 @@
 const axios = require('axios').default;
 const data = require('../data');
+const { TEAM_TYPE } = require('../../app/definition/ITeam');
 
 let server = data.server
 
@@ -62,7 +63,7 @@ const createTeamIfNotExists = async (teamname) => {
     try {
         await rocketchat.post('teams.create', {
             "name": teamname,
-            "type": 1
+            "type": TEAM_TYPE.PRIVATE
         })
     } catch (createError) {
         try { //Maybe it exists already?
