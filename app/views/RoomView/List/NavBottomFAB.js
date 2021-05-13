@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import Animated, {
 	call, cond, greaterOrEq, useCode
@@ -20,6 +20,9 @@ const styles = StyleSheet.create({
 		bottom: hasNotch ? 100 : 60
 	},
 	button: {
+		borderRadius: 25
+	},
+	content: {
 		width: 50,
 		height: 50,
 		borderRadius: 25,
@@ -53,10 +56,12 @@ const NavBottomFAB = ({ y, onPress }) => {
 		>
 			<Touch
 				onPress={handleOnPress}
-				style={[styles.button, { backgroundColor: themes[theme].backgroundColor, borderColor: themes[theme].borderColor }]}
 				theme={theme}
+				style={[styles.button, { backgroundColor: themes[theme].backgroundColor }]}
 			>
-				<CustomIcon name='chevron-down' color={themes[theme].auxiliaryTintColor} size={36} />
+				<View style={[styles.content, { borderColor: themes[theme].borderColor }]}>
+					<CustomIcon name='chevron-down' color={themes[theme].auxiliaryTintColor} size={36} />
+				</View>
 			</Touch>
 		</Animated.View>
 	);
