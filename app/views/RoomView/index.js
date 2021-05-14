@@ -70,6 +70,7 @@ import LoadMore from './LoadMore';
 import RoomServices from './services';
 import { getThreadMessageById } from '../../lib/database/services/ThreadMessage';
 import { goRoom } from '../../utils/goRoom';
+import { getThreadById } from '../../lib/database/services/Thread';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -838,43 +839,40 @@ class RoomView extends React.Component {
 		}
 	}
 
-	// eslint-disable-next-line react/sort-comp
 	fetchThreadName = async(tmid, messageId) => {
 		try {
 			const db = database.active;
 			const threadCollection = db.get('threads');
-			const messageCollection = db.get('messages');
-			const messageRecord = await messageCollection.find(messageId);
-			let threadRecord;
-			try {
-				threadRecord = await threadCollection.find(tmid);
-			} catch (error) {
-				console.log('Thread not found. We have to search for it.');
-			}
+			const messageRecord = await getMessageById(messageId);
+			const threadRecord = await getThreadById(tmid);
+			let tmsg;
 			if (threadRecord) {
+				tmsg = threadRecord.msg || (threadRecord.attachments && threadRecord.attachments.length && threadRecord.attachments[0].title);
 				await db.action(async() => {
-					await messageRecord.update((m) => {
-						m.tmsg = threadRecord.msg || (threadRecord.attachments && threadRecord.attachments.length && threadRecord.attachments[0].title);
+					await messageRecord?.update((m) => {
+						m.tmsg = tmsg;
 					});
 				});
 			} else {
 				let thread = await RoomServices.getSingleMessage(tmid);
 				thread = await Encryption.decryptMessage(thread);
+				tmsg = thread.msg || (thread.attachments && thread.attachments.length && thread.attachments[0].title);
 				await db.action(async() => {
 					await db.batch(
-						threadCollection.prepareCreate((t) => {
+						threadCollection?.prepareCreate((t) => {
 							t._raw = sanitizedRaw({ id: thread._id }, threadCollection.schema);
 							t.subscription.id = this.rid;
 							Object.assign(t, thread);
 						}),
-						messageRecord.prepareUpdate((m) => {
-							m.tmsg = thread.msg || (thread.attachments && thread.attachments.length && thread.attachments[0].title);
+						messageRecord?.prepareUpdate((m) => {
+							m.tmsg = tmsg;
 						})
 					);
 				});
 			}
+			return tmsg;
 		} catch (e) {
-			// log(e);
+			log(e);
 		}
 	}
 
@@ -913,10 +911,10 @@ class RoomView extends React.Component {
 		const messageId = item._id || item.id;
 
 		if (item.tmid) {
-			if (!item.tmsg) {
-				await this.fetchThreadName(item.tmid, messageId);
-			}
 			let name = item.tmsg;
+			if (!name) {
+				name = await this.fetchThreadName(item.tmid, messageId);
+			}
 			if (item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
 				name = I18n.t('Encrypted_message');
 			}
