@@ -14,7 +14,6 @@ import { animateNextTransition } from '../../../utils/layoutAnimation';
 import ActivityIndicator from '../../../containers/ActivityIndicator';
 import { themes } from '../../../constants/colors';
 import List from './List';
-import debounce from '../../../utils/debounce';
 import NavBottomFAB from './NavBottomFAB';
 
 const QUERY_SIZE = 50;
@@ -34,7 +33,6 @@ class ListContainer extends React.Component {
 	static propTypes = {
 		renderRow: PropTypes.func,
 		rid: PropTypes.string,
-		t: PropTypes.string,
 		tmid: PropTypes.string,
 		theme: PropTypes.string,
 		loading: PropTypes.bool,
@@ -46,27 +44,14 @@ class ListContainer extends React.Component {
 		showMessageInMainThread: PropTypes.bool
 	};
 
-	// this.state.loading works for this.onEndReached and RoomView.init
-	static getDerivedStateFromProps(props, state) {
-		if (props.loading !== state.loading) {
-			return {
-				loading: props.loading
-			};
-		}
-		return null;
-	}
-
 	constructor(props) {
 		super(props);
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
 		this.count = 0;
-		this.needsFetch = false;
 		this.mounted = false;
 		this.animated = false;
 		this.state = {
-			loading: true,
-			end: false,
 			messages: [],
 			refreshing: false,
 			highlightedMessage: null
@@ -86,20 +71,17 @@ class ListContainer extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { loading, end, refreshing, highlightedMessage } = this.state;
+		const { refreshing, highlightedMessage } = this.state;
 		const {
-			hideSystemMessages, theme, tunread, ignored
+			hideSystemMessages, theme, tunread, ignored, loading
 		} = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
 		}
-		if (loading !== nextState.loading) {
+		if (loading !== nextProps.loading) {
 			return true;
 		}
 		if (highlightedMessage !== nextState.highlightedMessage) {
-			return true;
-		}
-		if (end !== nextState.end) {
 			return true;
 		}
 		if (refreshing !== nextState.refreshing) {
@@ -142,32 +124,6 @@ class ListContainer extends React.Component {
 			this.highlightedMessageTimeout = false;
 		}
 	}
-
-	// fetchData = async() => {
-	// 	const {
-	// 		loading, end, messages, latest = messages[messages.length - 1]?.ts
-	// 	} = this.state;
-	// 	if (loading || end) {
-	// 		return;
-	// 	}
-
-	// 	this.setState({ loading: true });
-	// 	const { rid, t, tmid } = this.props;
-	// 	try {
-	// 		let result;
-	// 		if (tmid) {
-	// 			// `offset` is `messages.length - 1` because we append thread start to `messages` obj
-	// 			result = await RocketChat.loadThreadMessages({ tmid, rid, offset: messages.length - 1 });
-	// 		} else {
-	// 			result = await RocketChat.loadMessagesForRoom({ rid, t, latest });
-	// 		}
-
-	// 		this.setState({ end: result.length < QUERY_SIZE, loading: false, latest: result[result.length - 1]?.ts }, () => this.loadMoreMessages(result));
-	// 	} catch (e) {
-	// 		this.setState({ loading: false });
-	// 		log(e);
-	// 	}
-	// }
 
 	query = async() => {
 		this.count += QUERY_SIZE;
@@ -222,9 +178,6 @@ class ListContainer extends React.Component {
 			this.unsubscribeMessages();
 			this.messagesSubscription = this.messagesObservable
 				.subscribe((messages) => {
-					if (messages.length <= this.count) {
-						this.needsFetch = true;
-					}
 					if (tmid && this.thread) {
 						messages = [...messages, this.thread];
 					}
@@ -257,39 +210,8 @@ class ListContainer extends React.Component {
 		}
 	}
 
-	onEndReached = async() => {
-		// if (this.needsFetch) {
-		// 	this.needsFetch = false;
-		// 	await this.fetchData();
-		// }
-		this.query();
-	}
+	onEndReached = () => this.query()
 
-	// loadMoreMessages = (result) => {
-	// 	const { end } = this.state;
-
-	// 	if (end) {
-	// 		return;
-	// 	}
-
-	// 	// handle servers with version < 3.0.0
-	// 	let { hideSystemMessages = [] } = this.props;
-	// 	if (!Array.isArray(hideSystemMessages)) {
-	// 		hideSystemMessages = [];
-	// 	}
-
-	// 	if (!hideSystemMessages.length) {
-	// 		return;
-	// 	}
-
-	// 	const hasReadableMessages = result.filter(message => !message.t || (message.t && !hideSystemMessages.includes(message.t))).length > 0;
-	// 	// if this batch doesn't contain any messages that will be displayed, we'll request a new batch
-	// 	if (!hasReadableMessages) {
-	// 		this.onEndReached();
-	// 	}
-	// }
-
-	// TODO: move to RoomView
 	onRefresh = () => this.setState({ refreshing: true }, async() => {
 		const { messages } = this.state;
 		const { rid, tmid } = this.props;
@@ -359,8 +281,7 @@ class ListContainer extends React.Component {
 	}
 
 	renderFooter = () => {
-		const { loading } = this.state;
-		const { rid, theme } = this.props;
+		const { rid, theme, loading } = this.props;
 		if (loading && rid) {
 			return <ActivityIndicator theme={theme} />;
 		}
