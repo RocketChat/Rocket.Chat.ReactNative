@@ -12,12 +12,12 @@ import Touch from '../../../utils/touch';
 import { hasNotch } from '../../../utils/deviceInfo';
 
 const SCROLL_LIMIT = 200;
+const SEND_TO_CHANNEL_HEIGHT = 40;
 
 const styles = StyleSheet.create({
 	container: {
 		position: 'absolute',
-		right: 15,
-		bottom: hasNotch ? 100 : 60
+		right: 15
 	},
 	button: {
 		borderRadius: 25
@@ -32,14 +32,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-const NavBottomFAB = ({ y, onPress }) => {
+const NavBottomFAB = ({ y, onPress, isThread }) => {
 	const { theme } = useTheme();
 	const [show, setShow] = useState(false);
 	const handleOnPress = useCallback(() => onPress());
-
-	const toggle = (v) => {
-		setShow(v);
-	};
+	const toggle = v => setShow(v);
 
 	useCode(() => cond(greaterOrEq(y, SCROLL_LIMIT),
 		call([y], () => toggle(true)),
@@ -50,10 +47,12 @@ const NavBottomFAB = ({ y, onPress }) => {
 		return null;
 	}
 
+	let bottom = hasNotch ? 100 : 60;
+	if (isThread) {
+		bottom += SEND_TO_CHANNEL_HEIGHT;
+	}
 	return (
-		<Animated.View
-			style={styles.container}
-		>
+		<Animated.View style={[styles.container, { bottom }]}>
 			<Touch
 				onPress={handleOnPress}
 				theme={theme}
@@ -69,7 +68,8 @@ const NavBottomFAB = ({ y, onPress }) => {
 
 NavBottomFAB.propTypes = {
 	y: Animated.Value,
-	onPress: PropTypes.func
+	onPress: PropTypes.func,
+	isThread: PropTypes.bool
 };
 
 export default NavBottomFAB;

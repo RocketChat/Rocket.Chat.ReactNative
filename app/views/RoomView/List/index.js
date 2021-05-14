@@ -375,7 +375,7 @@ class ListContainer extends React.Component {
 
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
-		const { rid, listRef } = this.props;
+		const { rid, tmid, listRef } = this.props;
 		const { messages, refreshing } = this.state;
 		const { theme } = this.props;
 		return (
@@ -398,7 +398,7 @@ class ListContainer extends React.Component {
 						/>
 					)}
 				/>
-				<NavBottomFAB y={this.y} onPress={this.jumpToBottom} />
+				<NavBottomFAB y={this.y} onPress={this.jumpToBottom} isThread={!!tmid} />
 			</>
 		);
 	}
