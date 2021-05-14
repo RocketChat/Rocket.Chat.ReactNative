@@ -1,6 +1,7 @@
 import React from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
+import PropTypes from 'prop-types';
 
 import { isIOS } from '../../../utils/deviceInfo';
 import scrollPersistTaps from '../../../utils/scrollPersistTaps';
@@ -40,5 +41,9 @@ const List = ({ listRef, ...props }) => (
 		{...scrollPersistTaps}
 	/>
 );
+
+List.propTypes = {
+	listRef: PropTypes.object
+};
 
 export default List;

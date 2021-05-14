@@ -136,7 +136,9 @@ MessageTouchable.propTypes = {
 	isInfo: PropTypes.bool,
 	isThreadReply: PropTypes.bool,
 	isTemp: PropTypes.bool,
-	archived: PropTypes.bool
+	archived: PropTypes.bool,
+	highlighted: PropTypes.bool,
+	theme: PropTypes.string
 };
 
 Message.propTypes = {

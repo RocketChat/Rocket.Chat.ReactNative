@@ -10,7 +10,6 @@ import { MESSAGE_TYPE_LOAD_NEXT_CHUNK, MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK } from '
 const COUNT = 50;
 
 export default function loadSurroundingMessages({ messageId, rid }) {
-  console.log('🚀 ~ file: loadSurroundingMessages.js ~ line 7 ~ loadSurroundingMessages ~ messageId, rid', messageId, rid);
 	return new Promise(async(resolve, reject) => {
 		try {
 			// TODO: not working through DDP
