@@ -10,6 +10,7 @@ import './UiKitModal';
 import './Markdown';
 import './HeaderButtons';
 import './UnreadBadge';
+import './Tag';
 import '../../app/views/ThreadMessagesView/Item.stories.js';
 import './Avatar';
 import '../../app/containers/BackgroundContainer/index.stories.js';

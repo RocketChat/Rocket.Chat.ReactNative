@@ -20,7 +20,7 @@ export const Item = React.memo(({ item, hide, theme }) => {
 			theme={theme}
 		>
 			<CustomIcon name={item.icon} size={20} color={item.danger ? themes[theme].dangerColor : themes[theme].bodyText} />
-			<View style={{ flex: 1 }}>
+			<View style={styles.titleContainer}>
 				<Text
 					numberOfLines={1}
 					style={[styles.title, { color: item.danger ? themes[theme].dangerColor : themes[theme].bodyText }]}
@@ -29,7 +29,7 @@ export const Item = React.memo(({ item, hide, theme }) => {
 				</Text>
 			</View>
 			{ item.right ? (
-				<View style={{ paddingLeft: 12 }}>
+				<View style={styles.rightContainer}>
 					{item.right ? item.right() : null}
 				</View>
 			) : null }

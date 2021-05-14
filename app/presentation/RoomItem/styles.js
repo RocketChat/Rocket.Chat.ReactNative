@@ -96,5 +96,15 @@ export default StyleSheet.create({
 		height: '100%',
 		alignItems: 'center',
 		justifyContent: 'center'
+	},
+	tagContainer: {
+		alignSelf: 'center',
+		alignItems: 'center',
+		borderRadius: 4
+	},
+	tagText: {
+		fontSize: 13,
+		paddingHorizontal: 4,
+		...sharedStyles.textSemibold
 	}
 });

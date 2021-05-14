@@ -5,7 +5,6 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
-import { HeaderBackButton } from '@react-navigation/stack';
 
 import * as List from '../containers/List';
 import database from '../lib/database';
@@ -47,7 +46,7 @@ class AddExistingChannelView extends React.Component {
 	}
 
 	setHeader = () => {
-		const { navigation, isMasterDetail, theme } = this.props;
+		const { navigation, isMasterDetail } = this.props;
 		const { selected } = this.state;
 
 		const options = {
@@ -56,8 +55,6 @@ class AddExistingChannelView extends React.Component {
 
 		if (isMasterDetail) {
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
-		} else {
-			options.headerLeft = () => <HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme].headerTintColor} />;
 		}
 
 		options.headerRight = () => selected.length > 0 && (

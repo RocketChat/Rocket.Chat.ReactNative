@@ -4,21 +4,16 @@ import PropTypes from 'prop-types';
 
 import { themes } from '../../constants/colors';
 import { useTheme } from '../../theme';
-import sharedStyles from '../../views/Styles';
+import styles from './styles';
 
 const Tag = React.memo(({ name }) => {
 	const { theme } = useTheme();
 
 	return (
-		<View style={{ backgroundColor: themes[theme].borderColor, alignItems: 'center', borderRadius: 4 }}>
+		<View style={[styles.tagContainer, { backgroundColor: themes[theme].borderColor }]}>
 			<Text
 				style={[
-					{
-						fontSize: 13,
-						color: themes[theme].infoText,
-						paddingHorizontal: 4,
-						...sharedStyles.textSemibold
-					}
+					styles.tagText, { color: themes[theme].infoText }
 				]}
 				numberOfLines={1}
 			>

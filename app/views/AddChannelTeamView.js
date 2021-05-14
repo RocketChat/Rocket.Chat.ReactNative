@@ -28,7 +28,7 @@ const AddChannelTeamView = ({
 	const { theme } = useTheme();
 
 	useEffect(() => {
-		setHeader(navigation, isMasterDetail, theme);
+		setHeader(navigation, isMasterDetail);
 	}, []);
 
 	return (

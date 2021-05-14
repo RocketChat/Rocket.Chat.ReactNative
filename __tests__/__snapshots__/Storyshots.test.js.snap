@@ -63956,6 +63956,123 @@ Array [
 ]
 `;
 
+exports[`Storyshots Tag usage 1`] = `
+<View
+  style={
+    Object {
+      "justifyContent": "space-between",
+      "marginHorizontal": 16,
+    }
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "alignSelf": "center",
+          "borderRadius": 4,
+        },
+        Object {
+          "backgroundColor": "#e1e5e8",
+        },
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "fontFamily": "System",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "paddingHorizontal": 4,
+            "textAlign": "left",
+          },
+          Object {
+            "color": "#6d6d72",
+          },
+        ]
+      }
+    >
+      Short
+    </Text>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "alignSelf": "center",
+          "borderRadius": 4,
+        },
+        Object {
+          "backgroundColor": "#e1e5e8",
+        },
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "fontFamily": "System",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "paddingHorizontal": 4,
+            "textAlign": "left",
+          },
+          Object {
+            "color": "#6d6d72",
+          },
+        ]
+      }
+    >
+      A bit much longer tag
+    </Text>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "alignSelf": "center",
+          "borderRadius": 4,
+        },
+        Object {
+          "backgroundColor": "#e1e5e8",
+        },
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "fontFamily": "System",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "paddingHorizontal": 4,
+            "textAlign": "left",
+          },
+          Object {
+            "color": "#6d6d72",
+          },
+        ]
+      }
+    >
+      This is a looooooooooooooooooooooooooong text in order to test the tag
+    </Text>
+  </View>
+</View>
+`;
+
 exports[`Storyshots Thread Messages.Item badge 1`] = `
 <RCTScrollView>
   <View>
