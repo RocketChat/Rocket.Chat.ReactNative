@@ -52,7 +52,8 @@ class MessageContainer extends React.Component {
 		theme: PropTypes.string,
 		threadBadgeColor: PropTypes.string,
 		toggleFollowThread: PropTypes.func,
-		jumpToMessage: PropTypes.func
+		jumpToMessage: PropTypes.func,
+		onPress: PropTypes.func
 	}
 
 	static defaultProps = {
@@ -119,8 +120,13 @@ class MessageContainer extends React.Component {
 	}
 
 	onPress = debounce(() => {
+		const { onPress } = this.props;
 		if (this.isIgnored) {
 			return this.onIgnoredMessagePress();
+		}
+
+		if (onPress) {
+			onPress();
 		}
 
 		const { item, isThreadRoom } = this.props;

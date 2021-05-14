@@ -134,6 +134,16 @@ class SearchMessagesView extends React.Component {
 		navigation.navigate('RoomInfoView', navParam);
 	}
 
+	jumpToMessage = ({ item }) => {
+		const { navigation } = this.props;
+		const params = {
+			rid: this.rid, jumpToMessageId: item._id
+		};
+		// TODO: can we do it differently?
+		navigation.navigate('RoomsListView');
+		navigation.navigate('RoomView', params);
+	}
+
 	renderEmpty = () => {
 		const { theme } = this.props;
 		return (
@@ -159,6 +169,7 @@ class SearchMessagesView extends React.Component {
 				navToRoomInfo={this.navToRoomInfo}
 				useRealName={useRealName}
 				theme={theme}
+				onPress={() => this.jumpToMessage({ item })}
 			/>
 		);
 	}
