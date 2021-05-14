@@ -136,12 +136,23 @@ class SearchMessagesView extends React.Component {
 
 	jumpToMessage = ({ item }) => {
 		const { navigation } = this.props;
-		const params = {
+		let params = {
 			rid: this.rid, jumpToMessageId: item._id
 		};
 		// TODO: can we do it differently?
-		navigation.navigate('RoomsListView');
-		navigation.navigate('RoomView', params);
+		if (item.tmid) {
+			navigation.pop();
+			params = {
+				...params,
+				tmid: item.tmid,
+				name: 'ttt',
+				t: 'thread'
+			};
+			navigation.push('RoomView', params);
+		} else {
+			navigation.navigate('RoomsListView');
+			navigation.navigate('RoomView', params);
+		}
 	}
 
 	renderEmpty = () => {
@@ -157,6 +168,7 @@ class SearchMessagesView extends React.Component {
 		const {
 			user, baseUrl, theme, useRealName
 		} = this.props;
+		// TODO: use Message component instead of container
 		return (
 			<Message
 				item={item}
@@ -164,6 +176,7 @@ class SearchMessagesView extends React.Component {
 				user={user}
 				timeFormat='LLL'
 				isHeader
+				isThreadRoom
 				showAttachment={() => {}}
 				getCustomEmoji={this.getCustomEmoji}
 				navToRoomInfo={this.navToRoomInfo}

@@ -905,6 +905,7 @@ class RoomView extends React.Component {
 		}
 	}
 
+	// TODO: reuse on SearchMessagesView?
 	navToThread = async(item) => {
 		const { roomUserId } = this.state;
 		const { navigation } = this.props;
