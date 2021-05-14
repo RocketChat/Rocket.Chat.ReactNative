@@ -58,7 +58,6 @@ class TeamChannelsView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.teamId = props.route.params?.teamId;
-		this.rid = props.route.params?.rid;
 		this.state = {
 			loading: true,
 			loadingMore: false,
@@ -79,7 +78,7 @@ class TeamChannelsView extends React.Component {
 
 	loadTeam = async() => {
 		const { addTeamChannelPermission } = this.props;
-		const { loading } = this.state;
+		const { loading, data } = this.state;
 
 		const db = database.active;
 		try {
@@ -98,7 +97,8 @@ class TeamChannelsView extends React.Component {
 			if (permissions[0]) {
 				this.setState({ showCreate: true }, () => this.setHeader());
 			}
-			if (loading) {
+
+			if (loading && data.length) {
 				this.setState({ loading: false });
 			}
 		} catch {

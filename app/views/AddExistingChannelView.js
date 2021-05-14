@@ -1,4 +1,3 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -29,10 +28,6 @@ class AddExistingChannelView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		route: PropTypes.object,
-		user: PropTypes.shape({
-			id: PropTypes.string,
-			token: PropTypes.string
-		}),
 		theme: PropTypes.string,
 		isMasterDetail: PropTypes.bool,
 		addTeamChannelPermission: PropTypes.array
@@ -56,8 +51,6 @@ class AddExistingChannelView extends React.Component {
 		const { selected } = this.state;
 
 		const options = {
-			headerShown: true,
-			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Add_Existing_Channel')
 		};
 
@@ -94,7 +87,7 @@ class AddExistingChannelView extends React.Component {
 					return;
 				}
 				return channel;
-			 });
+			});
 			this.setState({ channels: filteredChannels });
 		} catch (e) {
 			log(e);
@@ -214,7 +207,7 @@ class AddExistingChannelView extends React.Component {
 		const { loading } = this.state;
 
 		return (
-			<SafeAreaView testID='new-message-view'>
+			<SafeAreaView testID='add-existing-channel-view'>
 				<StatusBar />
 				{this.renderList()}
 				<Loading visible={loading} />
@@ -228,4 +221,4 @@ const mapStateToProps = state => ({
 	addTeamChannelPermission: state.permissions['add-team-channel']
 });
 
-export default connect(mapStateToProps, null)(withTheme(AddExistingChannelView));
+export default connect(mapStateToProps)(withTheme(AddExistingChannelView));

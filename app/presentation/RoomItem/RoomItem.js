@@ -11,6 +11,7 @@ import Title from './Title';
 import UpdatedAt from './UpdatedAt';
 import Touchable from './Touchable';
 import Tag from './Tag';
+import I18n from '../../i18n';
 
 const RoomItem = ({
 	rid,
@@ -93,7 +94,7 @@ const RoomItem = ({
 								alert={alert}
 							/>
 							{
-								autoJoin ? <Tag name='Auto-Join' /> : null
+								autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null
 							}
 							<UpdatedAt
 								date={date}

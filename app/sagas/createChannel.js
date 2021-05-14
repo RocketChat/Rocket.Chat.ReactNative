@@ -25,10 +25,6 @@ const createTeam = function createTeam(data) {
 	return RocketChat.createTeam(data);
 };
 
-const addRoomsToTeam = function addRoomsToTeam(params) {
-	return RocketChat.addRoomsToTeam(params);
-};
-
 const handleRequest = function* handleRequest({ data }) {
 	try {
 		const auth = yield select(state => state.login.isAuthenticated);
@@ -71,17 +67,14 @@ const handleRequest = function* handleRequest({ data }) {
 				encrypted
 			});
 			sub = yield call(createChannel, data);
-			if (sub.teamId) {
-				logEvent(events.CT_ADD_ROOM_TO_TEAM);
-				yield call(addRoomsToTeam, { rooms: sub.rid, teamId: sub.teamId });
-			}
 		}
 		try {
 			const db = database.active;
 			const subCollection = db.get('subscriptions');
 			yield db.action(async() => {
 				await subCollection.create((s) => {
-					s._raw = sanitizedRaw({ id: sub.team ? sub.team.roomId : sub.rid, team_id: sub.teamId }, subCollection.schema);
+					// eslint-disable-next-line no-nested-ternary
+					s._raw = sanitizedRaw({ id: sub.team ? sub.team.roomId : sub.channel ? sub.channel._id : sub.group._id }, subCollection.schema);
 					Object.assign(s, sub);
 				});
 			});
@@ -97,7 +90,13 @@ const handleRequest = function* handleRequest({ data }) {
 				t: sub.team.type ? 'p' : 'c'
 			};
 		} else {
-			successParams = data;
+			successParams = sub.channel ? {
+				...sub.channel,
+				rid: sub.channel._id
+			} : {
+				...sub.group,
+				rid: sub.group._id
+			};
 		}
 		yield put(createChannelSuccess(successParams));
 	} catch (err) {
