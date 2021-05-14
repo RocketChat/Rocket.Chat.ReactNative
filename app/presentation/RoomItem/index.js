@@ -180,8 +180,8 @@ class RoomItemContainer extends React.Component {
 				testID={testID}
 				type={item.t}
 				theme={theme}
-				size={avatarSize}
 				isFocused={isFocused}
+				size={avatarSize}
 				prid={item.prid}
 				status={status}
 				hideUnreadStatus={item.hideUnreadStatus}

@@ -44,6 +44,7 @@ stories.add('Basic', () => (
 	<RoomItem />
 ));
 
+
 stories.add('User', () => (
 	<>
 		<RoomItem name='diego.mello' avatar='diego.mello' />

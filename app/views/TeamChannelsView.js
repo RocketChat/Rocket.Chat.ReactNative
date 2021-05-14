@@ -403,7 +403,6 @@ class TeamChannelsView extends React.Component {
 			theme,
 			width
 		} = this.props;
-
 		return (
 			<RoomItem
 				item={item}
