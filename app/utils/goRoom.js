@@ -9,9 +9,9 @@ const navigate = ({ item, isMasterDetail, ...props }) => {
 	}
 
 	navigationMethod('RoomView', {
-		rid: item.roomId || item.rid,
+		rid: item.rid,
 		name: RocketChat.getRoomTitle(item),
-		t: item?.type ? 'p' : 'c' || item.t,
+		t: item.t,
 		prid: item.prid,
 		room: item,
 		search: item.search,

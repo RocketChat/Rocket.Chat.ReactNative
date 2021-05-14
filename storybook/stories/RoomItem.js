@@ -3,7 +3,6 @@ import React from 'react';
 import { ScrollView, Dimensions } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 import { Provider } from 'react-redux';
-// import moment from 'moment';
 
 import { themes } from '../../app/constants/colors';
 import RoomItemComponent from '../../app/presentation/RoomItem/RoomItem';
@@ -45,13 +44,13 @@ stories.add('Basic', () => (
 	<RoomItem />
 ));
 
-
 stories.add('User', () => (
 	<>
 		<RoomItem name='diego.mello' avatar='diego.mello' />
 		<RoomItem
 			name={longText}
 		/>
+		<RoomItem name={longText} autoJoin />
 	</>
 ));
 

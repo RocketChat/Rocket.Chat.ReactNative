@@ -5,7 +5,6 @@ import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { FlatList } from 'react-native-gesture-handler';
-import { HeaderBackButton } from '@react-navigation/stack';
 
 import StatusBar from '../containers/StatusBar';
 import RoomHeader from '../containers/RoomHeader';
@@ -23,13 +22,13 @@ import RoomItem, { ROW_HEIGHT } from '../presentation/RoomItem';
 import RocketChat from '../lib/rocketchat';
 import { withDimensions } from '../dimensions';
 import { isIOS } from '../utils/deviceInfo';
-import { themes } from '../constants/colors';
 import debounce from '../utils/debounce';
 import { showErrorAlert } from '../utils/info';
 import { goRoom } from '../utils/goRoom';
 import I18n from '../i18n';
 import { withActionSheet } from '../containers/ActionSheet';
 import { deleteRoom as deleteRoomAction } from '../actions/room';
+import { CustomIcon } from '../lib/Icons';
 
 const API_FETCH_COUNT = 25;
 
@@ -68,8 +67,7 @@ class TeamChannelsView extends React.Component {
 			searchText: '',
 			search: [],
 			end: false,
-			showCreate: false,
-			autoJoin: []
+			showCreate: false
 		};
 		this.loadTeam();
 		this.setHeader();
@@ -89,9 +87,7 @@ class TeamChannelsView extends React.Component {
 			this.teamChannels = await subCollection.query(
 				Q.where('team_id', Q.eq(this.teamId))
 			);
-			this.team = this.teamChannels?.find(channel => channel.teamMain && channel.rid === this.rid);
-			const filterAutoJoin = this.teamChannels.filter(channel => channel.teamMain);
-			this.setState({ autoJoin: filterAutoJoin });
+			this.team = this.teamChannels?.find(channel => channel.teamMain);
 			this.setHeader();
 
 			if (!this.team) {
@@ -160,9 +156,7 @@ class TeamChannelsView extends React.Component {
 
 	setHeader = () => {
 		const { isSearching, showCreate, data } = this.state;
-		const {
-			navigation, isMasterDetail, insets, theme
-		} = this.props;
+		const { navigation, isMasterDetail, insets } = this.props;
 
 		const { team } = this;
 		if (!team) {
@@ -211,14 +205,6 @@ class TeamChannelsView extends React.Component {
 
 		if (isMasterDetail) {
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
-		} else {
-			options.headerLeft = () => (
-				<HeaderBackButton
-					labelVisible={false}
-					onPress={() => navigation.pop()}
-					tintColor={themes[theme].headerTintColor}
-				/>
-			);
 		}
 
 		options.headerRight = () => (
@@ -311,7 +297,8 @@ class TeamChannelsView extends React.Component {
 		{
 			title: I18n.t('Auto-join'),
 			icon: item.t === 'p' ? 'channel-private' : 'channel-public',
-			onPress: () => this.autoJoin(item)
+			onPress: () => this.autoJoin(item),
+			right: () => (item.teamDefault ? <CustomIcon name='check' size={20} /> : null)
 		},
 		{
 			title: I18n.t('Remove_from_Team'),
@@ -329,9 +316,9 @@ class TeamChannelsView extends React.Component {
 
 	autoJoin = async(item) => {
 		try {
-			const result = await RocketChat.updateTeamRoom({ roomId: item.rid, isDefault: !item.teamMain });
+			const result = await RocketChat.updateTeamRoom({ roomId: item.rid, isDefault: !item.teamDefault });
+
 			if (result.success) {
-				this.toggleAutoJoin(item);
 				this.setState({ loading: true }, () => {
 					this.load();
 					this.loadTeam();
@@ -339,22 +326,6 @@ class TeamChannelsView extends React.Component {
 			}
 		} catch (e) {
 			log(e);
-		}
-	}
-
-	isAutoJoin = (item) => {
-		const { autoJoin } = this.state;
-		return autoJoin.includes(item);
-	}
-
-	toggleAutoJoin = (item) => {
-		const { autoJoin } = this.state;
-
-		if (!this.isChecked(item)) {
-			this.setState({ autoJoin: [...autoJoin, item] });
-		} else {
-			const filterSelected = autoJoin.filter(el => el.rid !== item.rid);
-			this.setState({ autoJoin: filterSelected });
 		}
 	}
 
@@ -432,7 +403,7 @@ class TeamChannelsView extends React.Component {
 			theme,
 			width
 		} = this.props;
-		const { autoJoin } = this.state;
+
 		return (
 			<RoomItem
 				item={item}
@@ -446,7 +417,7 @@ class TeamChannelsView extends React.Component {
 				getRoomTitle={this.getRoomTitle}
 				getRoomAvatar={this.getRoomAvatar}
 				swipeEnabled={false}
-				autoJoin={autoJoin.includes(item.rid)}
+				autoJoin={item.teamDefault}
 			/>
 		);
 	};

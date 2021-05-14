@@ -111,7 +111,7 @@ const handleSuccess = function* handleSuccess({ data }) {
 	if (isMasterDetail) {
 		Navigation.navigate('DrawerNavigator');
 	}
-	goRoom({ item: data.success ? data.team : data, isMasterDetail });
+	goRoom({ item: data, isMasterDetail });
 };
 
 const handleFailure = function handleFailure({ err }) {

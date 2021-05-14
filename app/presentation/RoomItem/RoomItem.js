@@ -10,7 +10,7 @@ import LastMessage from './LastMessage';
 import Title from './Title';
 import UpdatedAt from './UpdatedAt';
 import Touchable from './Touchable';
-import Chip from './Chip';
+import Tag from './Tag';
 
 const RoomItem = ({
 	rid,
@@ -93,7 +93,7 @@ const RoomItem = ({
 								alert={alert}
 							/>
 							{
-								autoJoin ? <Chip name='Auto-Join' /> : null
+								autoJoin ? <Tag name='Auto-Join' /> : null
 							}
 							<UpdatedAt
 								date={date}
