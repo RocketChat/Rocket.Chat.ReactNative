@@ -15,6 +15,7 @@ import ActivityIndicator from '../../../containers/ActivityIndicator';
 import { themes } from '../../../constants/colors';
 import List from './List';
 import NavBottomFAB from './NavBottomFAB';
+import debounce from '../../../utils/debounce';
 
 const QUERY_SIZE = 50;
 
@@ -188,6 +189,7 @@ class ListContainer extends React.Component {
 					} else {
 						this.state.messages = messages;
 					}
+					// TODO: move it away from here
 					this.readThreads();
 				});
 		}
@@ -198,7 +200,7 @@ class ListContainer extends React.Component {
 		this.query();
 	}
 
-	readThreads = async() => {
+	readThreads = debounce(async() => {
 		const { tmid } = this.props;
 
 		if (tmid) {
@@ -208,7 +210,7 @@ class ListContainer extends React.Component {
 				// Do nothing
 			}
 		}
-	}
+	}, 300)
 
 	onEndReached = () => this.query()
 
