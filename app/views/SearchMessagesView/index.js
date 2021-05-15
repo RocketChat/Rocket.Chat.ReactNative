@@ -54,6 +54,7 @@ class SearchMessagesView extends React.Component {
 			searchText: ''
 		};
 		this.rid = props.route.params?.rid;
+		this.t = props.route.params?.t;
 		this.encrypted = props.route.params?.encrypted;
 	}
 
@@ -137,7 +138,9 @@ class SearchMessagesView extends React.Component {
 	jumpToMessage = ({ item }) => {
 		const { navigation } = this.props;
 		let params = {
-			rid: this.rid, jumpToMessageId: item._id
+			rid: this.rid,
+			jumpToMessageId: item._id,
+			t: this.t
 		};
 		// TODO: can we do it differently?
 		if (item.tmid) {
