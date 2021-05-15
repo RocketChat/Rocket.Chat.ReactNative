@@ -63,6 +63,10 @@ class ListContainer extends React.Component {
 		this.unsubscribeFocus = props.navigation.addListener('focus', () => {
 			this.animated = true;
 		});
+		this.viewabilityConfig = {
+			// viewAreaCoveragePercentThreshold: 20
+			itemVisiblePercentThreshold: 100
+		};
 		console.timeEnd(`${ this.constructor.name } init`);
 	}
 
@@ -264,7 +268,12 @@ class ListContainer extends React.Component {
 		const { listRef } = this.props;
 		const index = messages.findIndex(item => item.id === messageId);
 		if (index > -1) {
-			listRef.current.getNode().scrollToIndex({ index });
+			listRef.current.getNode().scrollToIndex({ index, viewPosition: 0.5 });
+			await new Promise(res => setTimeout(res, 300));
+			if (!this.viewableItems.map(vi => vi.key).includes(messageId)) {
+				await setTimeout(() => resolve(this.jumpToMessage(messageId)), 300);
+				return;
+			}
 			this.setState({ highlightedMessage: messageId });
 			this.clearHighlightedMessageTimeout();
 			this.highlightedMessageTimeout = setTimeout(() => {
@@ -296,6 +305,10 @@ class ListContainer extends React.Component {
 		return renderRow(item, messages[index + 1], highlightedMessage);
 	}
 
+	onViewableItemsChanged = ({ viewableItems }) => {
+		this.viewableItems = viewableItems;
+	}
+
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { rid, tmid, listRef } = this.props;
@@ -313,6 +326,8 @@ class ListContainer extends React.Component {
 					onEndReached={this.onEndReached}
 					ListFooterComponent={this.renderFooter}
 					onScrollToIndexFailed={this.handleScrollToIndexFailed}
+					onViewableItemsChanged={this.onViewableItemsChanged}
+					viewabilityConfig={this.viewabilityConfig}
 					refreshControl={(
 						<RefreshControl
 							refreshing={refreshing}
