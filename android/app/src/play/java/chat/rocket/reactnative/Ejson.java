@@ -34,7 +34,7 @@ public class Ejson {
     String senderName;
     String msg;
 
-    private String notifData;
+    private String[] pieces = null;
 
     private MMKV mmkv;
 
@@ -68,19 +68,20 @@ public class Ejson {
     }
 
     private String[] serverInfo() {
-        String[] pieces = null;
-        if(notifData == null) {
+        String notifData = null;
+        if(pieces == null) {
             String serverUrlString = serverURL();
             notifData = mmkv.decodeString(TOKEN_KEY + serverUrlString + "-notif");
+
             if(notifData == null) {
                 String userId = mmkv.decodeString(TOKEN_KEY.concat(serverUrlString));
                 String token = mmkv.decodeString(TOKEN_KEY.concat(userId));
                 String encKey = mmkv.decodeString(TOKEN_KEY.concat("-RC_E2E_PRIVATE_KEY"));
-                notifData = userId + "||||" + token + "||||" + encKey;
+                pieces = new String[]{ userId, token, encKey };
             }
-        }
-        if(notifData != null) {
-            pieces = notifData.split("||||");
+            else {
+                pieces = notifData.split("|");
+            }
         }
         return pieces;
     }
@@ -110,7 +111,7 @@ public class Ejson {
 
     public String privateKey() {
         String[] info = serverInfo();
-        if(info != null && info.length == 3) {
+        if(info != null && info.length == 3 && info[2] != null) {
             return info[2];
         }
         return "";

@@ -112,7 +112,7 @@ class Encryption {
 		await UserPreferences.setStringAsync(`${ server }-${ E2E_PRIVATE_KEY }`, privateKey);
 
 		const notifData = await UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }-notif`);
-		await UserPreferences.setStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }-notif`, `${ notifData }||||${ privateKey }`);
+		await UserPreferences.setStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }-notif`, `${ notifData }|${ privateKey }`);
 	}
 
 	// Could not obtain public-private keypair from server.
