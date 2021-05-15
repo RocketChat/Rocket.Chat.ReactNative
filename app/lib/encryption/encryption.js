@@ -110,6 +110,9 @@ class Encryption {
 		this.privateKey = await SimpleCrypto.RSA.importKey(EJSON.parse(privateKey));
 		await UserPreferences.setStringAsync(`${ server }-${ E2E_PUBLIC_KEY }`, EJSON.stringify(publicKey));
 		await UserPreferences.setStringAsync(`${ server }-${ E2E_PRIVATE_KEY }`, privateKey);
+
+		const notifData = await UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }-notif`);
+		await UserPreferences.setStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }-notif`, `${ notifData }||||${ privateKey }`);
 	}
 
 	// Could not obtain public-private keypair from server.

@@ -167,8 +167,11 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			}
 		});
 
+		const notifData = `${ user.id }||||${ user.token }`;
+
 		yield UserPreferences.setStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`, user.id);
 		yield UserPreferences.setStringAsync(`${ RocketChat.TOKEN_KEY }-${ user.id }`, user.token);
+		yield UserPreferences.setStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }-notif`, notifData);
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
 

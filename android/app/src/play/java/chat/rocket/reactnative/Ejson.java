@@ -34,6 +34,8 @@ public class Ejson {
     String senderName;
     String msg;
 
+    private String notifData;
+
     private MMKV mmkv;
 
     private String TOKEN_KEY = "reactnativemeteor_usertoken-";
@@ -65,6 +67,24 @@ public class Ejson {
         });
     }
 
+    private String[] serverInfo() {
+        String[] pieces = null;
+        if(notifData == null) {
+            String serverUrlString = serverURL();
+            notifData = mmkv.decodeString(TOKEN_KEY + serverUrlString + "-notif");
+            if(notifData == null) {
+                String userId = mmkv.decodeString(TOKEN_KEY.concat(serverUrlString));
+                String token = mmkv.decodeString(TOKEN_KEY.concat(userId));
+                String encKey = mmkv.decodeString(TOKEN_KEY.concat("-RC_E2E_PRIVATE_KEY"));
+                notifData = userId + "||||" + token + "||||" + encKey;
+            }
+        }
+        if(notifData != null) {
+            pieces = notifData.split("||||");
+        }
+        return pieces;
+    }
+
     public String getAvatarUri() {
         if (type == null) {
             return null;
@@ -73,27 +93,27 @@ public class Ejson {
     }
 
     public String token() {
-        String userId = userId();
-        if (mmkv != null && userId != null) {
-            return mmkv.decodeString(TOKEN_KEY.concat(userId));
+        String[] info = serverInfo();
+        if(info != null && info.length >= 2) {
+            return info[1];
         }
         return "";
     }
 
     public String userId() {
-        String serverURL = serverURL();
-        if (mmkv != null && serverURL != null) {
-            return mmkv.decodeString(TOKEN_KEY.concat(serverURL));
+        String[] info = serverInfo();
+        if(info != null && info.length >= 2) {
+            return info[0];
         }
         return "";
     }
 
     public String privateKey() {
-        String serverURL = serverURL();
-        if (mmkv != null && serverURL != null) {
-            return mmkv.decodeString(serverURL.concat("-RC_E2E_PRIVATE_KEY"));
+        String[] info = serverInfo();
+        if(info != null && info.length == 3) {
+            return info[2];
         }
-        return null;
+        return "";
     }
 
     public String serverURL() {
