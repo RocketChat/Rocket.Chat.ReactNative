@@ -134,14 +134,11 @@ class TeamChannelsView extends React.Component {
 					loadingMore: false,
 					end: result.rooms.length < API_FETCH_COUNT
 				};
-				const rooms = result.rooms.map((room) => {
-					const record = this.teamChannels?.find(c => c.rid === room._id);
-					return record ?? room;
-				});
+
 				if (isSearching) {
-					newState.search = [...search, ...rooms];
+					newState.search = [...search, ...result.rooms];
 				} else {
-					newState.data = [...data, ...rooms];
+					newState.data = [...data, ...result.rooms];
 				}
 
 				this.setState(newState);
@@ -316,8 +313,7 @@ class TeamChannelsView extends React.Component {
 
 	autoJoin = async(item) => {
 		try {
-			const result = await RocketChat.updateTeamRoom({ roomId: item.rid, isDefault: !item.teamDefault });
-
+			const result = await RocketChat.updateTeamRoom({ roomId: item._id, isDefault: !item.teamDefault });
 			if (result.success) {
 				this.setState({ loading: true }, () => {
 					this.load();
