@@ -313,12 +313,11 @@ class TeamChannelsView extends React.Component {
 
 	autoJoin = async(item) => {
 		try {
+			const { data } = this.state;
 			const result = await RocketChat.updateTeamRoom({ roomId: item._id, isDefault: !item.teamDefault });
 			if (result.success) {
-				this.setState({ loading: true }, () => {
-					this.load();
-					this.loadTeam();
-				});
+				const newData = data.map(el => (el._id === result.room._id ? result.room : el));
+				this.setState({ loading: true, data: newData }, this.loadTeam);
 			}
 		} catch (e) {
 			log(e);
@@ -347,9 +346,9 @@ class TeamChannelsView extends React.Component {
 	removeRoom = async(item) => {
 		try {
 			const { data } = this.state;
-			const result = await RocketChat.removeTeamRoom({ roomId: item.rid, teamId: this.team.teamId });
+			const result = await RocketChat.removeTeamRoom({ roomId: item._id, teamId: this.team.teamId });
 			if (result.success) {
-				const newData = data.filter(room => result.room._id !== room.rid);
+				const newData = data.filter(room => result.room._id !== room._id);
 				this.setState({ loading: true, data: newData }, () => {
 					this.load();
 					this.loadTeam();
@@ -374,7 +373,7 @@ class TeamChannelsView extends React.Component {
 				{
 					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					style: 'destructive',
-					onPress: () => deleteRoom(item.rid, item.t)
+					onPress: () => deleteRoom(item._id, item.t)
 				}
 			],
 			{ cancelable: false }
