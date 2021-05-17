@@ -148,12 +148,14 @@ class SearchMessagesView extends React.Component {
 			params = {
 				...params,
 				tmid: item.tmid,
-				name: 'ttt',
+				// name: 'ttt',
 				t: 'thread'
 			};
+      // console.log('🚀 ~ file: index.js ~ line 155 ~ SearchMessagesView ~ params', params);
 			navigation.push('RoomView', params);
 		} else {
 			navigation.navigate('RoomsListView');
+      // console.log('🚀 ~ file: index.js ~ line 159 ~ SearchMessagesView ~ params', params);
 			navigation.navigate('RoomView', params);
 		}
 	}
