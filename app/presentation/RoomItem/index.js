@@ -16,7 +16,8 @@ const attrs = [
 	'theme',
 	'isFocused',
 	'forceUpdate',
-	'showLastMessage'
+	'showLastMessage',
+	'autoJoin'
 ];
 
 class RoomItemContainer extends React.Component {

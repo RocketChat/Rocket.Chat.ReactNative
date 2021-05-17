@@ -316,8 +316,13 @@ class TeamChannelsView extends React.Component {
 			const { data } = this.state;
 			const result = await RocketChat.updateTeamRoom({ roomId: item._id, isDefault: !item.teamDefault });
 			if (result.success) {
-				const newData = data.map(el => (el._id === result.room._id ? result.room : el));
-				this.setState({ loading: true, data: newData }, this.loadTeam);
+				const newData = data.map((i) => {
+					if (i._id === item._id) {
+						i.teamDefault = !i.teamDefault;
+					}
+					return i;
+				});
+				this.setState({ data: newData });
 			}
 		} catch (e) {
 			log(e);
