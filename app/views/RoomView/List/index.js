@@ -65,7 +65,7 @@ class ListContainer extends React.Component {
 		});
 		this.viewabilityConfig = {
 			// viewAreaCoveragePercentThreshold: 20
-			itemVisiblePercentThreshold: 100
+			itemVisiblePercentThreshold: 10
 		};
 		console.timeEnd(`${ this.constructor.name } init`);
 	}
