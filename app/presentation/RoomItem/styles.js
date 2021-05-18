@@ -100,7 +100,8 @@ export default StyleSheet.create({
 	tagContainer: {
 		alignSelf: 'center',
 		alignItems: 'center',
-		borderRadius: 4
+		borderRadius: 4,
+		marginHorizontal: 4
 	},
 	tagText: {
 		fontSize: 13,

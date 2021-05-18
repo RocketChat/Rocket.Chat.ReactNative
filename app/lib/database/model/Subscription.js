@@ -129,6 +129,4 @@ export default class Subscription extends Model {
 	@field('team_id') teamId;
 
 	@field('team_main') teamMain;
-
-	@field('team_default') teamDefault;
 }

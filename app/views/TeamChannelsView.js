@@ -29,6 +29,7 @@ import I18n from '../i18n';
 import { withActionSheet } from '../containers/ActionSheet';
 import { deleteRoom as deleteRoomAction } from '../actions/room';
 import { CustomIcon } from '../lib/Icons';
+import { themes } from '../constants/colors';
 
 const API_FETCH_COUNT = 25;
 
@@ -290,28 +291,31 @@ class TeamChannelsView extends React.Component {
 		}
 	}, 1000, true);
 
-	options = item => ([
-		{
-			title: I18n.t('Auto-join'),
-			icon: item.t === 'p' ? 'channel-private' : 'channel-public',
-			onPress: () => this.autoJoin(item),
-			right: () => (item.teamDefault ? <CustomIcon name='check' size={20} /> : null)
-		},
-		{
-			title: I18n.t('Remove_from_Team'),
-			icon: 'close',
-			danger: true,
-			onPress: () => this.remove(item)
-		},
-		{
-			title: I18n.t('Delete'),
-			icon: 'delete',
-			danger: true,
-			onPress: () => this.delete(item)
-		}
-	])
+	options = (item) => {
+		const { theme } = this.props;
+		return ([
+			{
+				title: I18n.t('Auto-join'),
+				icon: item.t === 'p' ? 'channel-private' : 'channel-public',
+				onPress: () => this.toggleAutoJoin(item),
+				right: () => <CustomIcon name={item.teamDefault ? 'checkbox-checked' : 'checkbox-unchecked'} size={20} color={themes[theme].tintActive} />
+			},
+			{
+				title: I18n.t('Remove_from_Team'),
+				icon: 'close',
+				danger: true,
+				onPress: () => this.remove(item)
+			},
+			{
+				title: I18n.t('Delete'),
+				icon: 'delete',
+				danger: true,
+				onPress: () => this.delete(item)
+			}
+		]);
+	}
 
-	autoJoin = async(item) => {
+	toggleAutoJoin = async(item) => {
 		try {
 			const { data } = this.state;
 			const result = await RocketChat.updateTeamRoom({ roomId: item._id, isDefault: !item.teamDefault });
@@ -354,10 +358,7 @@ class TeamChannelsView extends React.Component {
 			const result = await RocketChat.removeTeamRoom({ roomId: item._id, teamId: this.team.teamId });
 			if (result.success) {
 				const newData = data.filter(room => result.room._id !== room._id);
-				this.setState({ loading: true, data: newData }, () => {
-					this.load();
-					this.loadTeam();
-				});
+				this.setState({ data: newData });
 			}
 		} catch (e) {
 			log(e);

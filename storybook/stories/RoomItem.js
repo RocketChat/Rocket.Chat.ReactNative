@@ -94,6 +94,17 @@ stories.add('Alerts', () => (
 	</>
 ));
 
+stories.add('Tag', () => (
+	<>
+		<RoomItem
+			showLastMessage
+			alert
+			tunread={[1]}
+			autoJoin
+		/>
+	</>
+));
+
 stories.add('Last Message', () => (
 	<>
 		<RoomItem
