@@ -17,18 +17,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-// const getItemLayout = (data, index) => ({
-// 	length: 50,
-// 	offset: 50 * index,
-// 	index
-// });
-
 const List = ({ listRef, ...props }) => (
 	<AnimatedFlatList
 		testID='room-view-messages'
 		ref={listRef}
 		keyExtractor={item => item.id}
-		// getItemLayout={getItemLayout} // it's broken for dynamic content
 		contentContainerStyle={styles.contentContainer}
 		style={styles.list}
 		inverted
