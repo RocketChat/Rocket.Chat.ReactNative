@@ -5,7 +5,6 @@ import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { FlatList } from 'react-native-gesture-handler';
-import { HeaderBackButton } from '@react-navigation/stack';
 
 import StatusBar from '../containers/StatusBar';
 import RoomHeader from '../containers/RoomHeader';
@@ -23,13 +22,14 @@ import RoomItem, { ROW_HEIGHT } from '../presentation/RoomItem';
 import RocketChat from '../lib/rocketchat';
 import { withDimensions } from '../dimensions';
 import { isIOS } from '../utils/deviceInfo';
-import { themes } from '../constants/colors';
 import debounce from '../utils/debounce';
 import { showErrorAlert } from '../utils/info';
 import { goRoom } from '../utils/goRoom';
 import I18n from '../i18n';
 import { withActionSheet } from '../containers/ActionSheet';
 import { deleteRoom as deleteRoomAction } from '../actions/room';
+import { CustomIcon } from '../lib/Icons';
+import { themes } from '../constants/colors';
 
 const API_FETCH_COUNT = 25;
 
@@ -59,7 +59,6 @@ class TeamChannelsView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.teamId = props.route.params?.teamId;
-		this.rid = props.route.params?.rid;
 		this.state = {
 			loading: true,
 			loadingMore: false,
@@ -68,8 +67,7 @@ class TeamChannelsView extends React.Component {
 			searchText: '',
 			search: [],
 			end: false,
-			showCreate: false,
-			autoJoin: []
+			showCreate: false
 		};
 		this.loadTeam();
 		this.setHeader();
@@ -81,7 +79,7 @@ class TeamChannelsView extends React.Component {
 
 	loadTeam = async() => {
 		const { addTeamChannelPermission } = this.props;
-		const { loading } = this.state;
+		const { loading, data } = this.state;
 
 		const db = database.active;
 		try {
@@ -89,9 +87,7 @@ class TeamChannelsView extends React.Component {
 			this.teamChannels = await subCollection.query(
 				Q.where('team_id', Q.eq(this.teamId))
 			);
-			this.team = this.teamChannels?.find(channel => channel.teamMain && channel.rid === this.rid);
-			const filterAutoJoin = this.teamChannels.filter(channel => channel.teamMain);
-			this.setState({ autoJoin: filterAutoJoin });
+			this.team = this.teamChannels?.find(channel => channel.teamMain);
 			this.setHeader();
 
 			if (!this.team) {
@@ -102,7 +98,8 @@ class TeamChannelsView extends React.Component {
 			if (permissions[0]) {
 				this.setState({ showCreate: true }, () => this.setHeader());
 			}
-			if (loading) {
+
+			if (loading && data.length) {
 				this.setState({ loading: false });
 			}
 		} catch {
@@ -138,14 +135,11 @@ class TeamChannelsView extends React.Component {
 					loadingMore: false,
 					end: result.rooms.length < API_FETCH_COUNT
 				};
-				const rooms = result.rooms.map((room) => {
-					const record = this.teamChannels?.find(c => c.rid === room._id);
-					return record ?? room;
-				});
+
 				if (isSearching) {
-					newState.search = [...search, ...rooms];
+					newState.search = [...search, ...result.rooms];
 				} else {
-					newState.data = [...data, ...rooms];
+					newState.data = [...data, ...result.rooms];
 				}
 
 				this.setState(newState);
@@ -160,9 +154,7 @@ class TeamChannelsView extends React.Component {
 
 	setHeader = () => {
 		const { isSearching, showCreate, data } = this.state;
-		const {
-			navigation, isMasterDetail, insets, theme
-		} = this.props;
+		const { navigation, isMasterDetail, insets } = this.props;
 
 		const { team } = this;
 		if (!team) {
@@ -211,14 +203,6 @@ class TeamChannelsView extends React.Component {
 
 		if (isMasterDetail) {
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
-		} else {
-			options.headerLeft = () => (
-				<HeaderBackButton
-					labelVisible={false}
-					onPress={() => navigation.pop()}
-					tintColor={themes[theme].headerTintColor}
-				/>
-			);
 		}
 
 		options.headerRight = () => (
@@ -307,54 +291,45 @@ class TeamChannelsView extends React.Component {
 		}
 	}, 1000, true);
 
-	options = item => ([
-		{
-			title: I18n.t('Auto-join'),
-			icon: item.t === 'p' ? 'channel-private' : 'channel-public',
-			onPress: () => this.autoJoin(item)
-		},
-		{
-			title: I18n.t('Remove_from_Team'),
-			icon: 'close',
-			danger: true,
-			onPress: () => this.remove(item)
-		},
-		{
-			title: I18n.t('Delete'),
-			icon: 'delete',
-			danger: true,
-			onPress: () => this.delete(item)
-		}
-	])
+	options = (item) => {
+		const { theme } = this.props;
+		return ([
+			{
+				title: I18n.t('Auto-join'),
+				icon: item.t === 'p' ? 'channel-private' : 'channel-public',
+				onPress: () => this.toggleAutoJoin(item),
+				right: () => <CustomIcon name={item.teamDefault ? 'checkbox-checked' : 'checkbox-unchecked'} size={20} color={themes[theme].tintActive} />
+			},
+			{
+				title: I18n.t('Remove_from_Team'),
+				icon: 'close',
+				danger: true,
+				onPress: () => this.remove(item)
+			},
+			{
+				title: I18n.t('Delete'),
+				icon: 'delete',
+				danger: true,
+				onPress: () => this.delete(item)
+			}
+		]);
+	}
 
-	autoJoin = async(item) => {
+	toggleAutoJoin = async(item) => {
 		try {
-			const result = await RocketChat.updateTeamRoom({ roomId: item.rid, isDefault: !item.teamMain });
+			const { data } = this.state;
+			const result = await RocketChat.updateTeamRoom({ roomId: item._id, isDefault: !item.teamDefault });
 			if (result.success) {
-				this.toggleAutoJoin(item);
-				this.setState({ loading: true }, () => {
-					this.load();
-					this.loadTeam();
+				const newData = data.map((i) => {
+					if (i._id === item._id) {
+						i.teamDefault = !i.teamDefault;
+					}
+					return i;
 				});
+				this.setState({ data: newData });
 			}
 		} catch (e) {
 			log(e);
-		}
-	}
-
-	isAutoJoin = (item) => {
-		const { autoJoin } = this.state;
-		return autoJoin.includes(item);
-	}
-
-	toggleAutoJoin = (item) => {
-		const { autoJoin } = this.state;
-
-		if (!this.isChecked(item)) {
-			this.setState({ autoJoin: [...autoJoin, item] });
-		} else {
-			const filterSelected = autoJoin.filter(el => el.rid !== item.rid);
-			this.setState({ autoJoin: filterSelected });
 		}
 	}
 
@@ -380,13 +355,10 @@ class TeamChannelsView extends React.Component {
 	removeRoom = async(item) => {
 		try {
 			const { data } = this.state;
-			const result = await RocketChat.removeTeamRoom({ roomId: item.rid, teamId: this.team.teamId });
+			const result = await RocketChat.removeTeamRoom({ roomId: item._id, teamId: this.team.teamId });
 			if (result.success) {
-				const newData = data.filter(room => result.room._id !== room.rid);
-				this.setState({ loading: true, data: newData }, () => {
-					this.load();
-					this.loadTeam();
-				});
+				const newData = data.filter(room => result.room._id !== room._id);
+				this.setState({ data: newData });
 			}
 		} catch (e) {
 			log(e);
@@ -407,7 +379,7 @@ class TeamChannelsView extends React.Component {
 				{
 					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					style: 'destructive',
-					onPress: () => deleteRoom(item.rid, item.t)
+					onPress: () => deleteRoom(item._id, item.t)
 				}
 			],
 			{ cancelable: false }
@@ -432,7 +404,6 @@ class TeamChannelsView extends React.Component {
 			theme,
 			width
 		} = this.props;
-		const { autoJoin } = this.state;
 		return (
 			<RoomItem
 				item={item}
@@ -446,7 +417,7 @@ class TeamChannelsView extends React.Component {
 				getRoomTitle={this.getRoomTitle}
 				getRoomAvatar={this.getRoomAvatar}
 				swipeEnabled={false}
-				autoJoin={autoJoin.includes(item.rid)}
+				autoJoin={item.teamDefault}
 			/>
 		);
 	};

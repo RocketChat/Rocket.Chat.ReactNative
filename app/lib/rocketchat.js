@@ -657,7 +657,8 @@ const RocketChat = {
 			avatarETag: sub.avatarETag,
 			t: sub.t,
 			encrypted: sub.encrypted,
-			lastMessage: sub.lastMessage
+			lastMessage: sub.lastMessage,
+			...(sub.teamId && { teamId: sub.teamId })
 		}));
 
 		return data;

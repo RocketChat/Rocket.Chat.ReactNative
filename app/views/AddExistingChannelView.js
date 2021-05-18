@@ -1,4 +1,3 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -6,9 +5,8 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
-import { HeaderBackButton } from '@react-navigation/stack';
-import * as List from '../containers/List';
 
+import * as List from '../containers/List';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
@@ -23,16 +21,12 @@ import { animateNextTransition } from '../utils/layoutAnimation';
 import { goRoom } from '../utils/goRoom';
 import Loading from '../containers/Loading';
 
-const QUERY_SIZE = 15;
+const QUERY_SIZE = 50;
 
 class AddExistingChannelView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		route: PropTypes.object,
-		user: PropTypes.shape({
-			id: PropTypes.string,
-			token: PropTypes.string
-		}),
 		theme: PropTypes.string,
 		isMasterDetail: PropTypes.bool,
 		addTeamChannelPermission: PropTypes.array
@@ -52,19 +46,15 @@ class AddExistingChannelView extends React.Component {
 	}
 
 	setHeader = () => {
-		const { navigation, isMasterDetail, theme } = this.props;
+		const { navigation, isMasterDetail } = this.props;
 		const { selected } = this.state;
 
 		const options = {
-			headerShown: true,
-			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Add_Existing_Channel')
 		};
 
 		if (isMasterDetail) {
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
-		} else {
-			options.headerLeft = () => <HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme].headerTintColor} />;
 		}
 
 		options.headerRight = () => selected.length > 0 && (
@@ -83,7 +73,7 @@ class AddExistingChannelView extends React.Component {
 			const channels = await db.collections
 				.get('subscriptions')
 				.query(
-					Q.and(Q.where('team_id', null), Q.or(Q.where('t', 'c'), Q.where('t', 'p'))),
+					Q.and(Q.where('team_id', ''), Q.or(Q.where('t', 'c'), Q.where('t', 'p'))),
 					Q.experimentalTake(QUERY_SIZE),
 					Q.experimentalSortBy('room_updated_at', Q.desc)
 				)
@@ -94,7 +84,7 @@ class AddExistingChannelView extends React.Component {
 					return;
 				}
 				return channel;
-			 });
+			});
 			this.setState({ channels: filteredChannels });
 		} catch (e) {
 			log(e);
@@ -214,7 +204,7 @@ class AddExistingChannelView extends React.Component {
 		const { loading } = this.state;
 
 		return (
-			<SafeAreaView testID='new-message-view'>
+			<SafeAreaView testID='add-existing-channel-view'>
 				<StatusBar />
 				{this.renderList()}
 				<Loading visible={loading} />
@@ -228,4 +218,4 @@ const mapStateToProps = state => ({
 	addTeamChannelPermission: state.permissions['add-team-channel']
 });
 
-export default connect(mapStateToProps, null)(withTheme(AddExistingChannelView));
+export default connect(mapStateToProps)(withTheme(AddExistingChannelView));

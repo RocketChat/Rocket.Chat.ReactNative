@@ -23,7 +23,6 @@ class Touch extends React.Component {
 				ref={this.getRef}
 				onPress={onPress}
 				activeOpacity={1}
-				android_ripple={{ color: themes[theme].bannerBackground }}
 				underlayColor={underlayColor || themes[theme].bannerBackground}
 				rippleColor={themes[theme].bannerBackground}
 				{...props}
