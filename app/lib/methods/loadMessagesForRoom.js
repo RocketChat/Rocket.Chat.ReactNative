@@ -1,9 +1,10 @@
 import moment from 'moment';
-import { MESSAGE_TYPE_LOAD_MORE } from '../../constants/messageTypeLoad';
 
+import { MESSAGE_TYPE_LOAD_MORE } from '../../constants/messageTypeLoad';
 import log from '../../utils/log';
 import { getMessageById } from '../database/services/Message';
 import updateMessages from './updateMessages';
+import { generateLoadMoreId } from '../utils';
 
 const COUNT = 50;
 
@@ -34,15 +35,15 @@ export default function loadMessagesForRoom(args) {
 				const lastMessage = data[data.length - 1];
 				const lastMessageRecord = await getMessageById(lastMessage._id);
 				if (!lastMessageRecord) {
-					const dummy = {
-						_id: `dummy-${ lastMessage._id }`,
+					const loadMoreItem = {
+						_id: generateLoadMoreId(lastMessage._id),
 						rid: lastMessage.rid,
 						ts: moment(lastMessage.ts).subtract(1, 'millisecond'), // TODO: can we do it without adding 1ms?
 						t: MESSAGE_TYPE_LOAD_MORE,
 						msg: lastMessage.msg
 					};
 					if (data.length === COUNT) {
-						data.push(dummy);
+						data.push(loadMoreItem);
 					}
 				}
 				await updateMessages({ rid: args.rid, update: data, loaderItem: args.loaderItem });

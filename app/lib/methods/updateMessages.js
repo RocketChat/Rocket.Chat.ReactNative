@@ -7,6 +7,7 @@ import database from '../database';
 import protectedFunction from './helpers/protectedFunction';
 import { Encryption } from '../encryption';
 import { MESSAGE_TYPE_ANY_LOAD } from '../../constants/messageTypeLoad';
+import { generateLoadMoreId } from '../utils';
 
 export default function updateMessages({
 	rid, update = [], remove = [], loaderItem
@@ -65,7 +66,7 @@ export default function updateMessages({
 			let threadMessagesToUpdate = allThreadMessagesRecords.filter(i1 => allThreadMessages.find(i2 => i1.id === i2._id));
 
 			// filter dummies to delete
-			let loadersToDelete = allMessagesRecords.filter(i1 => update.find(i2 => i1.id === `dummy-${ i2._id }`));
+			let loadersToDelete = allMessagesRecords.filter(i1 => update.find(i2 => i1.id === generateLoadMoreId(i2._id)));
 
 			// Create
 			msgsToCreate = msgsToCreate.map(message => msgCollection.prepareCreate(protectedFunction((m) => {
