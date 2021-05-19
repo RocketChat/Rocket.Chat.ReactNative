@@ -140,6 +140,9 @@ const RoomItem = ({
 							hideUnreadStatus={hideUnreadStatus}
 							alert={alert}
 						/>
+						{
+							autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null
+						}
 						<UnreadBadge
 							unread={unread}
 							userMentions={userMentions}
