@@ -30,6 +30,7 @@ const RoomTypeIcon = React.memo(({
 		return <Status style={[iconStyle, { color: STATUS_COLORS[status] ?? STATUS_COLORS.offline }]} size={size} status={status} />;
 	}
 
+	// TODO: move this to a separate function
 	let icon = 'channel-private';
 	if (teamMain) {
 		icon = `teams${ type === 'p' ? '-private' : '' }`;
