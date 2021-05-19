@@ -33,7 +33,6 @@ const handleRequest = function* handleRequest({ data }) {
 		}
 
 		let sub;
-		let subId;
 		if (data.isTeam) {
 			const {
 				type,
@@ -47,14 +46,20 @@ const handleRequest = function* handleRequest({ data }) {
 				broadcast,
 				encrypted
 			});
-			sub = yield call(createTeam, data);
-			subId = sub?.team?.roomId;
+			const result = yield call(createTeam, data);
+			sub = {
+				rid: result?.team?.roomId,
+				...result.team,
+				t: result.team.type ? 'p' : 'c'
+			};
 		} else if (data.group) {
 			logEvent(events.SELECTED_USERS_CREATE_GROUP);
 			const result = yield call(createGroupChat);
 			if (result.success) {
-				({ room: sub } = result);
-				subId = sub?.group?._id;
+				sub = {
+					rid: result.room?._id,
+					...result.room
+				};
 			}
 		} else {
 			const {
@@ -69,42 +74,26 @@ const handleRequest = function* handleRequest({ data }) {
 				broadcast,
 				encrypted
 			});
-			sub = yield call(createChannel, data);
-			subId = sub.channel._id;
+			const result = yield call(createChannel, data);
+			sub = {
+				rid: result?.channel?._id || result?.group?._id,
+				...result?.channel,
+				...result?.group
+			};
 		}
 		try {
 			const db = database.active;
 			const subCollection = db.get('subscriptions');
 			yield db.action(async() => {
 				await subCollection.create((s) => {
-					s._raw = sanitizedRaw({ id: subId }, subCollection.schema);
+					s._raw = sanitizedRaw({ id: sub.rid }, subCollection.schema);
 					Object.assign(s, sub);
 				});
 			});
 		} catch {
 			// do nothing
 		}
-
-		let successParams = { rid: subId };
-		if (data.isTeam) {
-			successParams = {
-				...successParams,
-				...sub.team,
-				t: sub.team.type ? 'p' : 'c'
-			};
-		}
-		if (data.group) {
-			successParams = {
-				...successParams,
-				...sub.group
-			};
-		} else {
-			successParams = {
-				...successParams,
-				...sub.channel
-			};
-		}
-		yield put(createChannelSuccess(successParams));
+		yield put(createChannelSuccess(sub));
 	} catch (err) {
 		logEvent(events[data.group ? 'SELECTED_USERS_CREATE_GROUP_F' : 'CR_CREATE_F']);
 		yield put(createChannelFailure(err));
