@@ -761,13 +761,9 @@ const RocketChat = {
 		// RC 3.13.0
 		return this.post('teams.create', params);
 	},
-	addRoomsToTeam({ rooms, teamId }) {
-		const params = {
-			rooms,
-			teamId
-		};
+	addRoomsToTeam({ teamId, rooms }) {
 		// RC 3.13.0
-		return this.post('teams.addRooms', params);
+		return this.post('teams.addRooms', { teamId, rooms });
 	},
 	removeTeamRoom({ roomId, teamId }) {
 		// RC 3.13.0

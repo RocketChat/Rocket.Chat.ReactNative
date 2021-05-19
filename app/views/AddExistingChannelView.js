@@ -115,7 +115,7 @@ class AddExistingChannelView extends React.Component {
 		this.setState({ loading: true });
 		try {
 			logEvent(events.CT_ADD_ROOM_TO_TEAM);
-			const result = await RocketChat.addTeamRooms({ rooms: selected, teamId: this.teamId });
+			const result = await RocketChat.addRoomsToTeam({ rooms: selected, teamId: this.teamId });
 			if (result.success) {
 				this.setState({ loading: false });
 				goRoom({ item: result, isMasterDetail });
