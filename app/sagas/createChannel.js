@@ -33,6 +33,7 @@ const handleRequest = function* handleRequest({ data }) {
 		}
 
 		let sub;
+		let subId;
 		if (data.isTeam) {
 			const {
 				type,
@@ -47,11 +48,13 @@ const handleRequest = function* handleRequest({ data }) {
 				encrypted
 			});
 			sub = yield call(createTeam, data);
+			subId = sub?.team?.roomId;
 		} else if (data.group) {
 			logEvent(events.SELECTED_USERS_CREATE_GROUP);
 			const result = yield call(createGroupChat);
 			if (result.success) {
 				({ room: sub } = result);
+				subId = sub?.group?._id;
 			}
 		} else {
 			const {
@@ -67,14 +70,14 @@ const handleRequest = function* handleRequest({ data }) {
 				encrypted
 			});
 			sub = yield call(createChannel, data);
+			subId = sub.channel._id;
 		}
 		try {
 			const db = database.active;
 			const subCollection = db.get('subscriptions');
 			yield db.action(async() => {
 				await subCollection.create((s) => {
-					// eslint-disable-next-line no-nested-ternary
-					s._raw = sanitizedRaw({ id: sub.team ? sub.team.roomId : sub.channel ? sub.channel._id : sub.group._id }, subCollection.schema);
+					s._raw = sanitizedRaw({ id: subId }, subCollection.schema);
 					Object.assign(s, sub);
 				});
 			});
@@ -82,20 +85,23 @@ const handleRequest = function* handleRequest({ data }) {
 			// do nothing
 		}
 
-		let successParams = {};
+		let successParams = { rid: subId };
 		if (data.isTeam) {
 			successParams = {
+				...successParams,
 				...sub.team,
-				rid: sub.team.roomId,
 				t: sub.team.type ? 'p' : 'c'
 			};
+		}
+		if (data.group) {
+			successParams = {
+				...successParams,
+				...sub.group
+			};
 		} else {
-			successParams = sub.channel ? {
-				...sub.channel,
-				rid: sub.channel._id
-			} : {
-				...sub.group,
-				rid: sub.group._id
+			successParams = {
+				...successParams,
+				...sub.channel
 			};
 		}
 		yield put(createChannelSuccess(successParams));
