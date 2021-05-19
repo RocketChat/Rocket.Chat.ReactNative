@@ -1,5 +1,6 @@
 const axios = require('axios').default;
 const data = require('../data');
+const { TEAM_TYPE } = require('../../app/definition/ITeam');
 
 let server = data.server
 
@@ -20,6 +21,7 @@ const login = async (username, password) => {
     const authToken = response.data.data.authToken
     rocketchat.defaults.headers.common['X-User-Id'] = userId
     rocketchat.defaults.headers.common['X-Auth-Token'] = authToken
+    return { authToken, userId };
 }
 
 const createUser = async (username, password, name, email) => {
@@ -52,6 +54,24 @@ const createChannelIfNotExists = async (channelname) => {
             console.log(JSON.stringify(createError))
             console.log(JSON.stringify(infoError))
             throw "Failed to find or create public channel"
+        }
+    }
+}
+
+const createTeamIfNotExists = async (teamname) => {
+    console.log(`Creating private team ${teamname}`)
+    try {
+        await rocketchat.post('teams.create', {
+            "name": teamname,
+            "type": TEAM_TYPE.PRIVATE
+        })
+    } catch (createError) {
+        try { //Maybe it exists already?
+            await rocketchat.get(`teams.info?teamName=${teamname}`)
+        } catch (infoError) {
+            console.log(JSON.stringify(createError))
+            console.log(JSON.stringify(infoError))
+            throw "Failed to find or create private team"
         }
     }
 }
@@ -91,11 +111,11 @@ const changeChannelJoinCode = async (roomId, joinCode) => {
     }
 }
 
-const sendMessage = async (user, groupname, msg) => {
-    console.log(`Sending message to ${groupname}`)
+const sendMessage = async (user, channel, msg) => {
+    console.log(`Sending message to ${channel}`)
     try {
         await login(user.username, user.password);
-        await rocketchat.post('chat.postMessage', { channel: `#${groupname}`, msg });
+        await rocketchat.post('chat.postMessage', { channel, msg });
     } catch (infoError) {
         console.log(JSON.stringify(infoError))
         throw "Failed to find or create private group"
@@ -132,6 +152,13 @@ const setup = async () => {
         }
     }
 
+    for (var teamKey in data.teams) {
+        if (data.teams.hasOwnProperty(teamKey)) {
+            const team = data.teams[teamKey]
+            await createTeamIfNotExists(team.name)
+        }
+    }
+
     return
 }
 
@@ -146,5 +173,5 @@ const post = (endpoint, body) => {
 }
 
 module.exports = {
-    setup, sendMessage, get, post
+    setup, sendMessage, get, post, login
 }

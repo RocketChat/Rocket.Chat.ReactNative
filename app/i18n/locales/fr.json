@@ -33,7 +33,7 @@
   "error-invalid-date": "Date fournie invalide.",
   "error-invalid-description": "Description invalide",
   "error-invalid-domain": "Domaine invalide",
-  "error-invalid-email": "Adresse e-mail non valide {{emai}}",
+  "error-invalid-email": "Adresse e-mail non valide {{email}}",
   "error-invalid-email-address": "Adresse e-mail invalide",
   "error-invalid-file-height": "Hauteur de fichier non valide",
   "error-invalid-file-type": "Type de fichier invalide",

@@ -51,6 +51,7 @@ export default {
 	STATUS_F: 'status_f',
 	STATUS_CUSTOM: 'status_custom',
 	STATUS_CUSTOM_F: 'status_custom_f',
+	SET_STATUS_FAIL: 'set_status_fail',
 
 	// ROOMS LIST VIEW
 	RL_TOGGLE_SERVER_DROPDOWN: 'rl_toggle_server_dropdown',
@@ -87,6 +88,7 @@ export default {
 
 	// NEW MESSAGE VIEW
 	NEW_MSG_CREATE_CHANNEL: 'new_msg_create_channel',
+	NEW_MSG_CREATE_TEAM: 'new_msg_create_team',
 	NEW_MSG_CREATE_GROUP_CHAT: 'new_msg_create_group_chat',
 	NEW_MSG_CREATE_DISCUSSION: 'new_msg_create_discussion',
 	NEW_MSG_CHAT_WITH_USER: 'new_msg_chat_with_user',

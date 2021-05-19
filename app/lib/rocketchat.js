@@ -60,6 +60,7 @@ import UserPreferences from './userPreferences';
 import { Encryption } from './encryption';
 import EventEmitter from '../utils/events';
 import { sanitizeLikeString } from './database/utils';
+import { TEAM_TYPE } from '../definition/ITeam';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
@@ -196,6 +197,10 @@ const RocketChat = {
 				clearTimeout(this.connectTimeout);
 			}
 
+			if (this.connectingListener) {
+				this.connectingListener.then(this.stopListener);
+			}
+
 			if (this.connectedListener) {
 				this.connectedListener.then(this.stopListener);
 			}
@@ -243,7 +248,7 @@ const RocketChat = {
 
 			sdkConnect();
 
-			this.connectedListener = this.sdk.onStreamData('connecting', () => {
+			this.connectingListener = this.sdk.onStreamData('connecting', () => {
 				reduxStore.dispatch(connectRequest());
 			});
 
@@ -728,7 +733,24 @@ const RocketChat = {
 			prid, pmid, t_name, reply, users, encrypted
 		});
 	},
-
+	createTeam({
+		name, users, type, readOnly, broadcast, encrypted
+	}) {
+		const params = {
+			name,
+			users,
+			type: type ? TEAM_TYPE.PRIVATE : TEAM_TYPE.PUBLIC,
+			room: {
+				readOnly,
+				extraData: {
+					broadcast,
+					encrypted
+				}
+			}
+		};
+		// RC 3.13.0
+		return this.post('teams.create', params);
+	},
 	joinRoom(roomId, joinCode, type) {
 		// TODO: join code
 		// RC 0.48.0
@@ -1136,7 +1158,7 @@ const RocketChat = {
 	methodCall(...args) {
 		return new Promise(async(resolve, reject) => {
 			try {
-				const result = await this.sdk.methodCall(...args, this.code || '');
+				const result = await this.sdk?.methodCall(...args, this.code || '');
 				return resolve(result);
 			} catch (e) {
 				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {

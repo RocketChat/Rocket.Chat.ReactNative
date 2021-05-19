@@ -25,7 +25,7 @@ describe('Server history', () => {
 
 		it('should tap on a server history and navigate to login', async() => {
 			await element(by.id(`server-history-${ data.server }`)).tap();
-			await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
+			await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(5000);
 			await expect(element(by.id('login-view-email'))).toHaveText(data.users.regular.username);
 		});
 

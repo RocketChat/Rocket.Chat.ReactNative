@@ -75,7 +75,7 @@ describe('Broadcast room', () => {
 	});
 
 	it('should have the message created earlier', async() => {
-		await waitFor(element(by.label(`${ data.random }message`)).atIndex(0)).toBeVisible().withTimeout(60000);
+		await waitFor(element(by.label(`${ data.random }message`))).toExist().withTimeout(60000);
 	});
 
 	it('should have reply button', async() => {

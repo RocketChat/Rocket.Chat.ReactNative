@@ -166,7 +166,7 @@ describe('E2E Encryption', () => {
 				await navigateToLogin();
 				await login(testuser.username, testuser.password);
 				await navigateToRoom(room);
-				await waitFor(element(by.label(`${ data.random }message`)).atIndex(0)).toNotExist().withTimeout(2000);
+				await waitFor(element(by.label(`${ data.random }message`)).atIndex(0)).not.toExist().withTimeout(2000);
 				await expect(element(by.label('Encrypted message')).atIndex(0)).toExist();
 			});
 
@@ -178,7 +178,7 @@ describe('E2E Encryption', () => {
 				await waitFor(element(by.id('e2e-enter-your-password-view'))).toBeVisible().withTimeout(2000);
 				await element(by.id('e2e-enter-your-password-view-password')).typeText(newPassword);
 				await element(by.id('e2e-enter-your-password-view-confirm')).tap();
-				await waitFor(element(by.id('listheader-encryption'))).toNotExist().withTimeout(10000);
+				await waitFor(element(by.id('listheader-encryption'))).not.toExist().withTimeout(10000);
 				await navigateToRoom(room);
 				await waitFor(element(by.label(`${ data.random }message`)).atIndex(0)).toExist().withTimeout(2000);
 			});
@@ -221,8 +221,7 @@ describe('E2E Encryption', () => {
 	
 			// TODO: refactor
 			await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
-			await element(by.id('new-server-view-input')).replaceText(data.alternateServer);
-			await element(by.id('new-server-view-button')).tap();
+			await element(by.id('new-server-view-input')).typeText(`${data.alternateServer}\n`);
 			await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(60000);
 			await element(by.id('workspace-view-register')).tap();
 			await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
@@ -231,7 +230,7 @@ describe('E2E Encryption', () => {
 			await element(by.id('register-view-name')).replaceText(data.registeringUser.username);
 			await element(by.id('register-view-username')).replaceText(data.registeringUser.username);
 			await element(by.id('register-view-email')).replaceText(data.registeringUser.email);
-			await element(by.id('register-view-password')).replaceText(data.registeringUser.password);
+			await element(by.id('register-view-password')).typeText(data.registeringUser.password);
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
 	

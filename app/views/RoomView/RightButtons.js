@@ -7,6 +7,7 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
 import { logEvent, events } from '../../utils/log';
+import { isTeamRoom } from '../../utils/room';
 
 class RightButtonsContainer extends Component {
 	static propTypes = {
@@ -15,10 +16,11 @@ class RightButtonsContainer extends Component {
 		rid: PropTypes.string,
 		t: PropTypes.string,
 		tmid: PropTypes.string,
-		teamId: PropTypes.bool,
+		teamId: PropTypes.string,
 		navigation: PropTypes.object,
 		isMasterDetail: PropTypes.bool,
-		toggleFollowThread: PropTypes.func
+		toggleFollowThread: PropTypes.func,
+		joined: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -163,7 +165,7 @@ class RightButtonsContainer extends Component {
 			isFollowingThread, tunread, tunreadUser, tunreadGroup
 		} = this.state;
 		const {
-			t, tmid, threadsEnabled, teamId
+			t, tmid, threadsEnabled, teamId, joined
 		} = this.props;
 		if (t === 'l') {
 			return null;
@@ -181,7 +183,7 @@ class RightButtonsContainer extends Component {
 		}
 		return (
 			<HeaderButton.Container>
-				{teamId ? (
+				{isTeamRoom({ teamId, joined }) ? (
 					<HeaderButton.Item
 						iconName='channel-public'
 						onPress={this.goTeamChannels}

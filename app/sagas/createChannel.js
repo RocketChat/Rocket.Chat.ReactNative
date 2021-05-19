@@ -21,6 +21,10 @@ const createGroupChat = function createGroupChat() {
 	return RocketChat.createGroupChat();
 };
 
+const createTeam = function createTeam(data) {
+	return RocketChat.createTeam(data);
+};
+
 const handleRequest = function* handleRequest({ data }) {
 	try {
 		const auth = yield select(state => state.login.isAuthenticated);
@@ -29,7 +33,21 @@ const handleRequest = function* handleRequest({ data }) {
 		}
 
 		let sub;
-		if (data.group) {
+		if (data.isTeam) {
+			const {
+				type,
+				readOnly,
+				broadcast,
+				encrypted
+			} = data;
+			logEvent(events.CR_CREATE, {
+				type,
+				readOnly,
+				broadcast,
+				encrypted
+			});
+			sub = yield call(createTeam, data);
+		} else if (data.group) {
 			logEvent(events.SELECTED_USERS_CREATE_GROUP);
 			const result = yield call(createGroupChat);
 			if (result.success) {
@@ -56,7 +74,7 @@ const handleRequest = function* handleRequest({ data }) {
 			const subCollection = db.get('subscriptions');
 			yield db.action(async() => {
 				await subCollection.create((s) => {
-					s._raw = sanitizedRaw({ id: sub.rid }, subCollection.schema);
+					s._raw = sanitizedRaw({ id: sub.team ? sub.team.roomId : sub.rid }, subCollection.schema);
 					Object.assign(s, sub);
 				});
 			});
@@ -64,7 +82,17 @@ const handleRequest = function* handleRequest({ data }) {
 			// do nothing
 		}
 
-		yield put(createChannelSuccess(sub));
+		let successParams = {};
+		if (data.isTeam) {
+			successParams = {
+				...sub.team,
+				rid: sub.team.roomId,
+				t: sub.team.type ? 'p' : 'c'
+			};
+		} else {
+			successParams = data;
+		}
+		yield put(createChannelSuccess(successParams));
 	} catch (err) {
 		logEvent(events[data.group ? 'SELECTED_USERS_CREATE_GROUP_F' : 'CR_CREATE_F']);
 		yield put(createChannelFailure(err));
@@ -81,7 +109,7 @@ const handleSuccess = function* handleSuccess({ data }) {
 
 const handleFailure = function handleFailure({ err }) {
 	setTimeout(() => {
-		const msg = err.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_channel') });
+		const msg = err.data ? I18n.t(err.data.error) : err.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_channel') });
 		showErrorAlert(msg);
 	}, 300);
 };
