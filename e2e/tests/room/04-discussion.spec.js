@@ -135,4 +135,24 @@ describe('Discussion', () => {
 			await expect(element(by.id('room-info-view-edit-button'))).toBeNotVisible();
 		});
 	});
+
+	describe('should enter in discussion room by tap the discussionButton in RoomView', async () => {
+		it(' and when back the discussionButton has to be updated', async () => {
+			// need to back to RoomListView
+			await tapBack();
+			await tapBack();
+			await tapBack();
+			await searchRoom(channel);
+			await element(by.id(`rooms-list-view-item-${channel}`)).tap();
+			await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
+			await element(by.label('1 message')).atIndex(0).tap();
+			await element(by.label('No messages yet')).atIndex(1).tap();
+			await element(by.id('messagebox-input')).atIndex(2).tap();
+			await element(by.id('messagebox-input')).atIndex(2).typeText(`${data.random}discussion`);
+			await element(by.id('messagebox-send-message')).tap();
+			// back to previous room with Discussion Button
+			await tapBack();
+			await waitFor(element(by.label('1 message')).atIndex(1)).toExist().withTimeout(2000);
+		})
+	})
 });
