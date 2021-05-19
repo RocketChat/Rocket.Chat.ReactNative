@@ -61,6 +61,8 @@ import { setKeyCommands, deleteKeyCommands } from '../../commands';
 import ShareView from '../../views/ShareView';
 
 import QueueListView from '../../ee/omnichannel/views/QueueListView';
+import AddChannelTeamView from '../../views/AddChannelTeamView';
+import AddExistingChannelView from '../../views/AddExistingChannelView';
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator();
@@ -140,6 +142,16 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 					name='InviteUsersView'
 					component={InviteUsersView}
 					options={InviteUsersView.navigationOptions}
+				/>
+				<ModalStack.Screen
+					name='AddChannelTeamView'
+					component={AddChannelTeamView}
+					options={AddChannelTeamView.navigationOptions}
+				/>
+				<ModalStack.Screen
+					name='AddExistingChannelView'
+					component={AddExistingChannelView}
+					options={AddExistingChannelView.navigationOptions}
 				/>
 				<ModalStack.Screen
 					name='InviteUsersEditView'

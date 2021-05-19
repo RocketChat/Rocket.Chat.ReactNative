@@ -71,6 +71,8 @@ import ShareView from '../views/ShareView';
 import CreateDiscussionView from '../views/CreateDiscussionView';
 
 import QueueListView from '../ee/omnichannel/views/QueueListView';
+import AddChannelTeamView from '../views/AddChannelTeamView';
+import AddExistingChannelView from '../views/AddExistingChannelView';
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator();
@@ -173,6 +175,16 @@ const ChatsStackNavigator = () => {
 				name='TeamChannelsView'
 				component={TeamChannelsView}
 				options={TeamChannelsView.navigationOptions}
+			/>
+			<ChatsStack.Screen
+				name='AddChannelTeamView'
+				component={AddChannelTeamView}
+				options={AddChannelTeamView.navigationOptions}
+			/>
+			<ChatsStack.Screen
+				name='AddExistingChannelView'
+				component={AddExistingChannelView}
+				options={AddExistingChannelView.navigationOptions}
 			/>
 			<ChatsStack.Screen
 				name='MarkdownTableView'

@@ -95,10 +95,19 @@ const RocketChat = {
 	},
 	canOpenRoom,
 	createChannel({
-		name, users, type, readOnly, broadcast, encrypted
+		name, users, type, readOnly, broadcast, encrypted, teamId
 	}) {
-		// RC 0.51.0
-		return this.methodCallWrapper(type ? 'createPrivateGroup' : 'createChannel', name, users, readOnly, {}, { broadcast, encrypted });
+		const params = {
+			name,
+			members: users,
+			readOnly,
+			extraData: {
+				broadcast,
+				encrypted,
+				...(teamId && { teamId })
+			}
+		};
+		return this.post(type ? 'groups.create' : 'channels.create', params);
 	},
 	async getWebsocketInfo({ server }) {
 		const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
@@ -648,7 +657,8 @@ const RocketChat = {
 			avatarETag: sub.avatarETag,
 			t: sub.t,
 			encrypted: sub.encrypted,
-			lastMessage: sub.lastMessage
+			lastMessage: sub.lastMessage,
+			...(sub.teamId && { teamId: sub.teamId })
 		}));
 
 		return data;
@@ -750,6 +760,18 @@ const RocketChat = {
 		};
 		// RC 3.13.0
 		return this.post('teams.create', params);
+	},
+	addRoomsToTeam({ teamId, rooms }) {
+		// RC 3.13.0
+		return this.post('teams.addRooms', { teamId, rooms });
+	},
+	removeTeamRoom({ roomId, teamId }) {
+		// RC 3.13.0
+		return this.post('teams.removeRoom', { roomId, teamId });
+	},
+	updateTeamRoom({ roomId, isDefault }) {
+		// RC 3.13.0
+		return this.post('teams.updateRoom', { roomId, isDefault });
 	},
 	joinRoom(roomId, joinCode, type) {
 		// TODO: join code
