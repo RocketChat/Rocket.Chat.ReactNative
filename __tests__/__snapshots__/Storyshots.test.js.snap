@@ -18788,6 +18788,7 @@ exports[`Storyshots Message Discussion 1`] = `
                       "paddingVertical": 8,
                     }
                   }
+                  testID="discussion-button-This is a discussion"
                 >
                   <Text
                     allowFontScaling={false}
@@ -19116,6 +19117,7 @@ exports[`Storyshots Message Discussion 1`] = `
                       "paddingVertical": 8,
                     }
                   }
+                  testID="discussion-button-This is a discussion"
                 >
                   <Text
                     allowFontScaling={false}
@@ -19446,6 +19448,7 @@ exports[`Storyshots Message Discussion 1`] = `
                       "paddingVertical": 8,
                     }
                   }
+                  testID="discussion-button-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                 >
                   <Text
                     allowFontScaling={false}
@@ -19776,6 +19779,7 @@ exports[`Storyshots Message Discussion 1`] = `
                       "paddingVertical": 8,
                     }
                   }
+                  testID="discussion-button-This is a discussion"
                 >
                   <Text
                     allowFontScaling={false}

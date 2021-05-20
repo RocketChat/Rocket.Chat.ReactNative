@@ -135,7 +135,7 @@ const sendMessageDiscussion = async (user, channel, msg, username) => {
         await rocketchat.post('chat.postMessage', { roomId: _id, msg });
     } catch (infoError) {
         console.log(JSON.stringify(infoError))
-        throw "Failed to find or create private group"
+        throw "Failed to find discussion"
     }
 }
 
