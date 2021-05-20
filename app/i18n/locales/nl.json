@@ -1,7 +1,7 @@
 {
   "1_person_reacted": "1 persoon heeft gereageerd",
   "1_user": "1 gebruiker",
-  "error-action-not-allowed": "{{actie}} is niet toegestaan",
+  "error-action-not-allowed": "{{action}} is niet toegestaan",
   "error-application-not-found": "Applicatie niet gevonden",
   "error-archived-duplicate-name": "Er is een gearchiveerd kanaal met de naam {{room_name}}",
   "error-avatar-invalid-url": "Foutieve avatar URL: {{url}}",
@@ -31,7 +31,7 @@
   "error-invalid-date": "Ongeldige datum opgegeven.",
   "error-invalid-description": "Ongeldige beschrijving",
   "error-invalid-domain": "Ongeldig domein",
-  "error-invalid-email": "Ongeldige email {{emai}}",
+  "error-invalid-email": "Ongeldige email {{email}}",
   "error-invalid-email-address": "Ongeldig emailadres",
   "error-invalid-file-height": "Ongeldige file height",
   "error-invalid-file-type": "Ongeldig bestandstype",

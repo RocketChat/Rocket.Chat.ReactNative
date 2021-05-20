@@ -33,7 +33,7 @@
   "error-invalid-date": "Invalid date provided.",
   "error-invalid-description": "Invalid description",
   "error-invalid-domain": "Invalid domain",
-  "error-invalid-email": "Invalid email {{emai}}",
+  "error-invalid-email": "Invalid email {{email}}",
   "error-invalid-email-address": "Invalid email address",
   "error-invalid-file-height": "Invalid file height",
   "error-invalid-file-type": "Invalid file type",

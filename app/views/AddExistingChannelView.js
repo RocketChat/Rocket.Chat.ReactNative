@@ -73,7 +73,8 @@ class AddExistingChannelView extends React.Component {
 			const channels = await db.collections
 				.get('subscriptions')
 				.query(
-					Q.and(Q.where('team_id', ''), Q.or(Q.where('t', 'c'), Q.where('t', 'p'))),
+					Q.where('team_id', ''),
+					Q.where('t', Q.oneOf(['c', 'p'])),
 					Q.experimentalTake(QUERY_SIZE),
 					Q.experimentalSortBy('room_updated_at', Q.desc)
 				)
@@ -114,7 +115,7 @@ class AddExistingChannelView extends React.Component {
 		this.setState({ loading: true });
 		try {
 			logEvent(events.CT_ADD_ROOM_TO_TEAM);
-			const result = await RocketChat.addTeamRooms({ rooms: selected, teamId: this.teamId });
+			const result = await RocketChat.addRoomsToTeam({ rooms: selected, teamId: this.teamId });
 			if (result.success) {
 				this.setState({ loading: false });
 				goRoom({ item: result, isMasterDetail });
@@ -123,24 +124,6 @@ class AddExistingChannelView extends React.Component {
 			logEvent(events.CT_ADD_ROOM_TO_TEAM_F);
 			this.setState({ loading: false });
 		}
-	}
-
-	renderChannel = ({
-		onPress, testID, title, icon, checked
-	}) => {
-		const { theme } = this.props;
-		return (
-			<List.Item
-				title={title}
-				translateTitle={false}
-				onPress={onPress}
-				testID={testID}
-				left={() => <List.Icon name={icon} />}
-				right={() => (checked ? <List.Icon name={checked} /> : null)}
-				theme={theme}
-			/>
-
-		);
 	}
 
 	renderHeader = () => {
@@ -171,17 +154,22 @@ class AddExistingChannelView extends React.Component {
 		}
 	}
 
-	renderItem = ({ item }) => (
-		<>
-			{this.renderChannel({
-				onPress: () => this.toggleChannel(item.rid),
-				title: item.name,
-				icon: item.t === 'p' && !item.teamId ? 'channel-private' : 'channel-public',
-				checked: this.isChecked(item.rid) ? 'check' : null,
-				testID: 'add-existing-channel-view-item'
-			})}
-		</>
-	)
+	renderItem = ({ item }) => {
+		const isChecked = this.isChecked(item.rid);
+		// TODO: reuse logic inside RoomTypeIcon
+		const icon = item.t === 'p' && !item.teamId ? 'channel-private' : 'channel-public';
+		return (
+			<List.Item
+				title={RocketChat.getRoomTitle(item)}
+				translateTitle={false}
+				onPress={() => this.toggleChannel(item.rid)}
+				testID='add-existing-channel-view-item'
+				left={() => <List.Icon name={icon} />}
+				right={() => (isChecked ? <List.Icon name='check' /> : null)}
+			/>
+
+		);
+	}
 
 	renderList = () => {
 		const { search, channels } = this.state;

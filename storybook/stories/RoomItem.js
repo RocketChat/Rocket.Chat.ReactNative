@@ -96,12 +96,10 @@ stories.add('Alerts', () => (
 
 stories.add('Tag', () => (
 	<>
-		<RoomItem
-			showLastMessage
-			alert
-			tunread={[1]}
-			autoJoin
-		/>
+		<RoomItem autoJoin />
+		<RoomItem showLastMessage autoJoin />
+		<RoomItem name={longText} autoJoin />
+		<RoomItem name={longText} autoJoin showLastMessage />
 	</>
 ));
 

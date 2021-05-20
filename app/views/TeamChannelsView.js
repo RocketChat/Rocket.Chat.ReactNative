@@ -293,12 +293,15 @@ class TeamChannelsView extends React.Component {
 
 	options = (item) => {
 		const { theme } = this.props;
+		const isAutoJoinChecked = item.teamDefault;
+		const autoJoinIcon = isAutoJoinChecked ? 'checkbox-checked' : 'checkbox-unchecked';
+		const autoJoinIconColor = isAutoJoinChecked ? themes[theme].tintActive : themes[theme].auxiliaryTintColor;
 		return ([
 			{
 				title: I18n.t('Auto-join'),
 				icon: item.t === 'p' ? 'channel-private' : 'channel-public',
 				onPress: () => this.toggleAutoJoin(item),
-				right: () => <CustomIcon name={item.teamDefault ? 'checkbox-checked' : 'checkbox-unchecked'} size={20} color={themes[theme].tintActive} />
+				right: () => <CustomIcon name={autoJoinIcon} size={20} color={autoJoinIconColor} />
 			},
 			{
 				title: I18n.t('Remove_from_Team'),
