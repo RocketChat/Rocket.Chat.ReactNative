@@ -676,7 +676,6 @@ class RoomView extends React.Component {
 	onThreadPress = debounce(item => this.navToThread(item), 1000, true)
 
 	shouldNavigateToRoom = (message) => {
-		// if (origin === 'server') {
 		if (message.tmid && message.tmid === this.tmid) {
 			return false;
 		}
@@ -684,13 +683,6 @@ class RoomView extends React.Component {
 			return false;
 		}
 		return true;
-		// }
-		// if (origin === 'message') {
-		// 	return message.rid !== this.rid;
-		// }
-		// if (origin === 'thread_message') {
-		// 	return message.rid !== this.tmid;
-		// }
 	}
 
 	// TODO: remove me when jump to threads from different rooms is implemented :)
@@ -727,33 +719,26 @@ class RoomView extends React.Component {
 			}
 
 			if (this.shouldNavigateToRoom(message)) {
-				if (this.canNavigateToRoom(message)) {
-					if (message.rid !== this.rid) {
-						this.navToRoom({
-							id: message.id,
-							rid: message.rid
-						});
-					} else {
-						this.navToThread({
-							id: message.id,
-							tmid: message.tmid,
-							roomUserId: message.roomUserId
-						});
-					}
+				if (message.rid !== this.rid) {
+					this.navToRoom(message);
 				} else {
-					alert('Jump to a thread from a different room is not supported yet. Next PR coming soon! 🤞');
+					this.navToThread(message);
 				}
 			} else {
+				/**
+				 * if it's from server, we don't have it saved locally and so we fetch surroundings
+				 * we test if it's not from threads because we're fetching from threads currently with `getThreadMessages`
+				 */
 				if (message.fromServer && !message.tmid) {
 					await RocketChat.loadSurroundingMessages({ messageId, rid: this.rid });
 				}
 				// TODO: create a race condition to make sure app doesn't get stuck on jump to message
 				await this.list.current.jumpToMessage(message.id);
-				this.setState({ showingBlockingLoader: false });
 			}
 		} catch (e) {
-			this.setState({ showingBlockingLoader: false });
 			log(e);
+		} finally {
+			this.setState({ showingBlockingLoader: false });
 		}
 	}
 
@@ -925,11 +910,9 @@ class RoomView extends React.Component {
 
 	navToRoom = (item) => {
 		const { navigation } = this.props;
-		if (item.rid !== this.rid) {
-			return goRoom({
-				item, isMasterDetail: false, navigationMethod: navigation.push, jumpToMessageId: item.id
-			});
-		}
+		return goRoom({
+			item, isMasterDetail: false, navigationMethod: navigation.push, jumpToMessageId: item.id
+		});
 	}
 
 	callJitsi = () => {
@@ -1163,8 +1146,6 @@ class RoomView extends React.Component {
 			</>
 		);
 	}
-
-	// setListRef = ref => this.flatList = ref;
 
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
