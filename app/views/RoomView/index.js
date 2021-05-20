@@ -68,9 +68,10 @@ import { getMessageById } from '../../lib/database/services/Message';
 import Loading from '../../containers/Loading';
 import LoadMore from './LoadMore';
 import RoomServices from './services';
-import { getThreadMessageById } from '../../lib/database/services/ThreadMessage';
 import { goRoom } from '../../utils/goRoom';
 import { getThreadById } from '../../lib/database/services/Thread';
+import getSingleMessage from '../../lib/methods/getSingleMessage';
+import getMessageInfo from '../../lib/methods/getMessageInfo';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -719,52 +720,14 @@ class RoomView extends React.Component {
 	jumpToMessage = async(messageId) => {
 		try {
 			this.setState({ showingBlockingLoader: true });
-			let message;
-			let messageResult;
-			// TODO: remove origins
-			let origin = 'message';
-			messageResult = await getMessageById(messageId);
-			if (messageResult) {
-				message = {
-					id: messageResult.id,
-					rid: messageResult.subscription.id,
-					tmid: messageResult.tmid,
-					msg: messageResult.msg
-				};
-			}
-
-			if (!messageResult) {
-				messageResult = await getThreadMessageById(messageId);
-				if (messageResult) {
-					message = {
-						id: messageResult.id,
-						rid: messageResult.subscription.id,
-						tmid: messageResult.rid,
-						msg: messageResult.msg
-					};
-				}
-				origin = 'thread_message';
-			}
-
-			if (!messageResult) {
-				messageResult = await RoomServices.getSingleMessage(messageId);
-				if (messageResult) {
-					message = {
-						id: messageResult._id,
-						rid: messageResult.rid,
-						tmid: messageResult.tmid,
-						msg: messageResult.msg
-					};
-				}
-				origin = 'server';
-			}
+			const message = await getMessageInfo(messageId);
 
 			if (!message) {
 				return;
 			}
 
-			if (this.shouldNavigateToRoom(message, origin)) {
-				if (this.canNavigateToRoom(message, origin)) {
+			if (this.shouldNavigateToRoom(message)) {
+				if (this.canNavigateToRoom(message)) {
 					if (message.rid !== this.rid) {
 						this.navToRoom({
 							id: message.id,
@@ -781,7 +744,7 @@ class RoomView extends React.Component {
 					alert('Jump to a thread from a different room is not supported yet. Next PR coming soon! 🤞');
 				}
 			} else {
-				if (origin === 'server' && !message.tmid) {
+				if (message.fromServer && !message.tmid) {
 					await RocketChat.loadSurroundingMessages({ messageId, rid: this.rid });
 				}
 				// TODO: create a race condition to make sure app doesn't get stuck on jump to message
@@ -884,7 +847,7 @@ class RoomView extends React.Component {
 					});
 				});
 			} else {
-				let thread = await RoomServices.getSingleMessage(tmid);
+				let thread = await getSingleMessage(tmid);
 				thread = await Encryption.decryptMessage(thread);
 				tmsg = thread.msg || (thread.attachments && thread.attachments.length && thread.attachments[0].title);
 				await db.action(async() => {
