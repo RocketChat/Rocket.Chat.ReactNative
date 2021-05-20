@@ -851,10 +851,11 @@ class RoomView extends React.Component {
 		}
 	}
 
-	navToRoom = (item) => {
+	navToRoom = async(message) => {
 		const { navigation } = this.props;
+		const roomInfo = await RoomServices.getRoomInfo(message.rid);
 		return goRoom({
-			item, isMasterDetail: false, navigationMethod: navigation.push, jumpToMessageId: item.id
+			item: roomInfo, isMasterDetail: false, navigationMethod: navigation.push, jumpToMessageId: message.id
 		});
 	}
 
