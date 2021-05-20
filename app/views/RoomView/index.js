@@ -72,6 +72,7 @@ import { goRoom } from '../../utils/goRoom';
 import { getThreadById } from '../../lib/database/services/Thread';
 import getSingleMessage from '../../lib/methods/getSingleMessage';
 import getMessageInfo from '../../lib/methods/getMessageInfo';
+import getThreadName from '../../lib/methods/getThreadName';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -817,42 +818,7 @@ class RoomView extends React.Component {
 		}
 	}
 
-	fetchThreadName = async(tmid, messageId) => {
-		try {
-			const db = database.active;
-			const threadCollection = db.get('threads');
-			const messageRecord = await getMessageById(messageId);
-			const threadRecord = await getThreadById(tmid);
-			let tmsg;
-			if (threadRecord) {
-				tmsg = threadRecord.msg || (threadRecord.attachments && threadRecord.attachments.length && threadRecord.attachments[0].title);
-				await db.action(async() => {
-					await messageRecord?.update((m) => {
-						m.tmsg = tmsg;
-					});
-				});
-			} else {
-				let thread = await getSingleMessage(tmid);
-				thread = await Encryption.decryptMessage(thread);
-				tmsg = thread.msg || (thread.attachments && thread.attachments.length && thread.attachments[0].title);
-				await db.action(async() => {
-					await db.batch(
-						threadCollection?.prepareCreate((t) => {
-							t._raw = sanitizedRaw({ id: thread._id }, threadCollection.schema);
-							t.subscription.id = this.rid;
-							Object.assign(t, thread);
-						}),
-						messageRecord?.prepareUpdate((m) => {
-							m.tmsg = tmsg;
-						})
-					);
-				});
-			}
-			return tmsg;
-		} catch (e) {
-			log(e);
-		}
-	}
+	getThreadName = (tmid, messageId) => getThreadName(this.rid, tmid, messageId)
 
 	toggleFollowThread = async(isFollowingThread, tmid) => {
 		try {
@@ -891,7 +857,7 @@ class RoomView extends React.Component {
 		if (item.tmid) {
 			let name = item.tmsg;
 			if (!name) {
-				name = await this.fetchThreadName(item.tmid, item.id);
+				name = await this.getThreadName(item.tmid, item.id);
 			}
 			if (item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
 				name = I18n.t('Encrypted_message');
@@ -1018,7 +984,7 @@ class RoomView extends React.Component {
 					isThreadRoom={!!this.tmid}
 					isIgnored={this.isIgnored(item)}
 					previousItem={previousItem}
-					fetchThreadName={this.fetchThreadName}
+					fetchThreadName={this.getThreadName}
 					onReactionPress={this.onReactionPress}
 					onReactionLongPress={this.onReactionLongPress}
 					onLongPress={this.onMessageLongPress}

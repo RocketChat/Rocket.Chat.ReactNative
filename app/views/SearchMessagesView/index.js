@@ -23,6 +23,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/HeaderButton';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
+import getThreadName from '../../lib/methods/getThreadName';
 
 class SearchMessagesView extends React.Component {
 	static navigationOptions = ({ navigation, route }) => {
@@ -135,24 +136,24 @@ class SearchMessagesView extends React.Component {
 		navigation.navigate('RoomInfoView', navParam);
 	}
 
-	jumpToMessage = ({ item }) => {
+	jumpToMessage = async({ item }) => {
 		const { navigation } = this.props;
 		let params = {
 			rid: this.rid,
 			jumpToMessageId: item._id,
 			t: this.t
 		};
-		// TODO: can we do it differently?
 		if (item.tmid) {
 			navigation.pop();
 			params = {
 				...params,
 				tmid: item.tmid,
-				name: 'Thread', // TODO: reuse RoomView.navToThread logic
+				name: await getThreadName(this.rid, item.tmid, item._id),
 				t: 'thread'
 			};
 			navigation.push('RoomView', params);
 		} else {
+			// TODO: tablets
 			navigation.navigate('RoomsListView');
 			navigation.navigate('RoomView', params);
 		}
