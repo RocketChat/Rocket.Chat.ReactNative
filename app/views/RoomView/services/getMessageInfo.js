@@ -1,6 +1,6 @@
-import { getMessageById } from '../database/services/Message';
-import { getThreadMessageById } from '../database/services/ThreadMessage';
-import getSingleMessage from './getSingleMessage';
+import { getMessageById } from '../../../lib/database/services/Message';
+import { getThreadMessageById } from '../../../lib/database/services/ThreadMessage';
+import getSingleMessage from '../../../lib/methods/getSingleMessage';
 
 const getMessageInfo = async(messageId) => {
 	let result;

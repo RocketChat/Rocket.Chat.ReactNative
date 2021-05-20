@@ -71,7 +71,6 @@ import RoomServices from './services';
 import { goRoom } from '../../utils/goRoom';
 import { getThreadById } from '../../lib/database/services/Thread';
 import getSingleMessage from '../../lib/methods/getSingleMessage';
-import getMessageInfo from '../../lib/methods/getMessageInfo';
 import getThreadName from '../../lib/methods/getThreadName';
 
 const stateAttrsUpdate = [
@@ -690,7 +689,7 @@ class RoomView extends React.Component {
 	jumpToMessage = async(messageId) => {
 		try {
 			this.setState({ showingBlockingLoader: true });
-			const message = await getMessageInfo(messageId);
+			const message = await RoomServices.getMessageInfo(messageId);
 
 			if (!message) {
 				return;
