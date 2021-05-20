@@ -1,6 +1,9 @@
 const axios = require('axios').default;
 const data = require('../data');
-const { TEAM_TYPE } = require('../../app/definition/ITeam');
+const TEAM_TYPE = {
+    PUBLIC: 0,
+    PRIVATE: 1
+};
 
 let server = data.server
 
@@ -122,6 +125,20 @@ const sendMessage = async (user, channel, msg) => {
     }
 }
 
+const sendMessageDiscussion = async (user, channel, msg, username) => {
+    try {
+        await login(user.username, user.password);
+        const { data } = await rocketchat.get(`rooms.getDiscussions?roomId=${channel}`);
+        const { discussions } = data;
+        const { _id } = discussions.filter(t => t.u.username === username)[0];
+        console.log(`Sending message to Discussion ${_id}`)
+        await rocketchat.post('chat.postMessage', { roomId: _id, msg });
+    } catch (infoError) {
+        console.log(JSON.stringify(infoError))
+        throw "Failed to find or create private group"
+    }
+}
+
 const setup = async () => {
     await login(data.adminUser, data.adminPassword)
     
@@ -173,5 +190,5 @@ const post = (endpoint, body) => {
 }
 
 module.exports = {
-    setup, sendMessage, get, post, login
+    setup, sendMessage, get, post, login, sendMessageDiscussion
 }

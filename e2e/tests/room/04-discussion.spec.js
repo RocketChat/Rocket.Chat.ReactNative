@@ -1,8 +1,9 @@
 const {
 	expect, element, by, waitFor
 } = require('detox');
-const { navigateToLogin, login, mockMessage, tapBack, searchRoom } = require('../../helpers/app');
+const { navigateToLogin, login, mockMessage, tapBack, searchRoom, sleep } = require('../../helpers/app');
 const data = require('../../data');
+const { sendMessageDiscussion } = require('../../helpers/data_setup')
 
 const channel = data.groups.private.name;
 
@@ -142,7 +143,6 @@ describe('Discussion', () => {
 			await tapBack();
 			await tapBack();
 			await tapBack();
-			await searchRoom(channel);
 			await element(by.id(`rooms-list-view-item-${channel}`)).tap();
 			await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 			await element(by.label('1 message')).atIndex(0).tap();
@@ -154,5 +154,52 @@ describe('Discussion', () => {
 			await tapBack();
 			await waitFor(element(by.label('1 message')).atIndex(1)).toExist().withTimeout(2000);
 		})
+
+		it('receive a message while still into the discussion', async () => {
+			const userAlternate = data.users.alternate;
+			const discussionName = `${data.random}Discussion`;
+			const message = `${data.random}message`;
+			// need to back to RoomListView
+			await tapBack();
+			await tapBack();
+			await element(by.label('general')).tap();
+
+			// Create a discussion in general channel
+			await element(by.id('messagebox-actions')).tap();
+			await waitFor(element(by.id('action-sheet'))).toExist().withTimeout(2000);
+			await element(by.label('Create Discussion')).tap();
+			await waitFor(element(by.id('create-discussion-view'))).toExist().withTimeout(2000);
+			await element(by.id('multi-select-discussion-name')).replaceText(discussionName);
+			await waitFor(element(by.id(`create-discussion-submit`))).toExist().withTimeout(10000);
+			await element(by.id('create-discussion-submit')).tap();
+
+			// back to Room List View and join in general channel again to join in new discussion
+			await tapBack();
+			await element(by.label('general')).tap();
+			await waitFor(element(by.id(`discussion-button-${discussionName}`))).toBeVisible().withTimeout(5000);
+			await element(by.id(`discussion-button-${discussionName}`)).tap();
+
+			// // Add user.alternate to discussion - actually don't need to receive the message
+			// await element(by.id('room-header')).atIndex(1).tap();
+			// await element(by.id('room-actions-add-user')).tap();
+			// await waitFor(element(by.id('select-users-view-search'))).toExist().withTimeout(4000);
+			// await element(by.id('select-users-view-search')).tap();
+			// await element(by.id('select-users-view-search')).replaceText(userAlternate.username);
+			// // Searching the users
+			// await waitFor(element(by.id(`select-users-view-item-${userAlternate.username}`))).toExist().withTimeout(10000);
+			// await element(by.id(`select-users-view-item-${userAlternate.username}`)).tap();
+			// await waitFor(element(by.id(`selected-user-${userAlternate.username}`))).toExist().withTimeout(5000);
+			// await element(by.id('selected-users-view-submit')).tap();
+			// await waitFor(element(by.id('room-actions-members'))).toExist().withTimeout(10000);
+			// await tapBack()
+
+			// User.alternate -> login, getDiscussions from GENERAL channel and search the ID from last discussion
+			await sendMessageDiscussion(userAlternate, 'GENERAL', message, data.users.regular.username);
+
+			// Check if the message list is update
+			await sleep(300);
+			await waitFor(element(by.label(message))).toExist().withTimeout(5000);
+		});
 	})
+
 });

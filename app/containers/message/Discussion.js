@@ -31,6 +31,7 @@ const Discussion = React.memo(({
 					background={Touchable.Ripple(themes[theme].bannerBackground)}
 					style={[styles.button, { backgroundColor: themes[theme].tintColor }]}
 					hitSlop={BUTTON_HIT_SLOP}
+					testID={`discussion-button-${msg}`}
 				>
 					<>
 						<CustomIcon name='discussions' size={16} style={styles.buttonIcon} color={themes[theme].buttonText} />
