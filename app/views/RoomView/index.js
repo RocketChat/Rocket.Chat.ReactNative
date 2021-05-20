@@ -4,7 +4,6 @@ import { Text, View, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
 
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import moment from 'moment';
 import * as Haptics from 'expo-haptics';
 import { Q } from '@nozbe/watermelondb';
@@ -18,7 +17,6 @@ import {
 import List from './List';
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
-import { Encryption } from '../../lib/encryption';
 import Message from '../../containers/message';
 import MessageActions from '../../containers/MessageActions';
 import MessageErrorActions from '../../containers/MessageErrorActions';
@@ -64,13 +62,10 @@ import { getHeaderTitlePosition } from '../../containers/Header';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
 
 import { takeInquiry } from '../../ee/omnichannel/lib';
-import { getMessageById } from '../../lib/database/services/Message';
 import Loading from '../../containers/Loading';
 import LoadMore from './LoadMore';
 import RoomServices from './services';
 import { goRoom } from '../../utils/goRoom';
-import { getThreadById } from '../../lib/database/services/Thread';
-import getSingleMessage from '../../lib/methods/getSingleMessage';
 import getThreadName from '../../lib/methods/getThreadName';
 
 const stateAttrsUpdate = [
@@ -126,7 +121,6 @@ class RoomView extends React.Component {
 		const selectedMessage = props.route.params?.message;
 		const name = props.route.params?.name;
 		const fname = props.route.params?.fname;
-		const search = props.route.params?.search;
 		const prid = props.route.params?.prid;
 		const room = props.route.params?.room ?? {
 			rid: this.rid, t: this.t, name, fname, prid
