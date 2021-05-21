@@ -67,6 +67,7 @@ import LoadMore from './LoadMore';
 import RoomServices from './services';
 import { goRoom } from '../../utils/goRoom';
 import getThreadName from '../../lib/methods/getThreadName';
+import getRoomInfo from '../../lib/methods/getRoomInfo';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -846,7 +847,7 @@ class RoomView extends React.Component {
 
 	navToRoom = async(message) => {
 		const { navigation } = this.props;
-		const roomInfo = await RoomServices.getRoomInfo(message.rid);
+		const roomInfo = await getRoomInfo(message.rid);
 		return goRoom({
 			item: roomInfo, isMasterDetail: false, navigationMethod: navigation.push, jumpToMessageId: message.id
 		});

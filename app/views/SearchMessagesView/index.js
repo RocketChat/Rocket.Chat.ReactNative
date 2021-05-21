@@ -24,6 +24,7 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import getThreadName from '../../lib/methods/getThreadName';
+import getRoomInfo from '../../lib/methods/getRoomInfo';
 
 class SearchMessagesView extends React.Component {
 	static navigationOptions = ({ navigation, route }) => {
@@ -57,6 +58,10 @@ class SearchMessagesView extends React.Component {
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;
 		this.encrypted = props.route.params?.encrypted;
+	}
+
+	async componentDidMount() {
+		this.room = await getRoomInfo(this.rid);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -141,7 +146,8 @@ class SearchMessagesView extends React.Component {
 		let params = {
 			rid: this.rid,
 			jumpToMessageId: item._id,
-			t: this.t
+			t: this.t,
+			room: this.room
 		};
 		if (item.tmid) {
 			navigation.pop();

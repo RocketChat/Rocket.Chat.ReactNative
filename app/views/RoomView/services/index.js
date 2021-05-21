@@ -3,7 +3,6 @@ import getMessages from './getMessages';
 import getMoreMessages from './getMoreMessages';
 import getThreadMessages from './getThreadMessages';
 import readMessages from './readMessages';
-import getRoomInfo from './getRoomInfo';
 import getMessageInfo from './getMessageInfo';
 
 export default {
@@ -11,6 +10,5 @@ export default {
 	getMoreMessages,
 	getThreadMessages,
 	readMessages,
-	getRoomInfo,
 	getMessageInfo
 };
