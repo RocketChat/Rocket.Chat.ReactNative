@@ -79,14 +79,21 @@ class AddExistingChannelView extends React.Component {
 					Q.experimentalSortBy('room_updated_at', Q.desc)
 				)
 				.fetch();
-			const filteredChannels = channels.filter(async(channel) => {
-				const permissions = await RocketChat.hasPermission([addTeamChannelPermission], channel.rid);
-				if (!permissions[0]) {
-					return;
-				}
-				return channel;
-			});
-			this.setState({ channels: filteredChannels });
+
+			const asyncFilter = async(channelsArray) => {
+				const results = await Promise.all(channelsArray.map(async(channel) => {
+					const permissions = await RocketChat.hasPermission([addTeamChannelPermission], channel.rid);
+					if (!permissions[0]) {
+						return false;
+					}
+					return true;
+				}));
+
+				return channelsArray.filter((channel, index) => results[index] && !channel.prid);
+			};
+			const asyncFiltered = await asyncFilter(channels);
+			console.log('🚀😍😒 ~ file: AddExistingChannelView.js ~ line 96 ~ AddExistingChannelView ~ init=async ~ asyncFiltered', asyncFiltered);
+			this.setState({ channels: asyncFiltered });
 		} catch (e) {
 			log(e);
 		}
