@@ -948,6 +948,7 @@ class RoomsListView extends React.Component {
 		if (loading) {
 			return <ActivityIndicator theme={theme} />;
 		}
+
 		return (
 			<FlatList
 				ref={this.getScrollRef}
