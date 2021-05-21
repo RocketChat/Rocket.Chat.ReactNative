@@ -9,7 +9,6 @@ import { HeaderBackButton } from '@react-navigation/stack';
 import * as List from '../containers/List';
 
 import { leaveRoom as leaveRoomAction } from '../actions/room';
-import RocketChat from '../lib/rocketchat';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
 import * as HeaderButton from '../containers/HeaderButton';
@@ -37,8 +36,7 @@ class SelectListView extends React.Component {
 			token: PropTypes.string
 		}),
 		theme: PropTypes.string,
-		isMasterDetail: PropTypes.bool,
-		leaveRoom: PropTypes.func
+		isMasterDetail: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -97,27 +95,6 @@ class SelectListView extends React.Component {
 				{
 					text: 'OK',
 					style: 'cancel'
-				}
-			]
-		);
-	}
-
-	leaveChannel = () => {
-		const { room } = this.state;
-		const { leaveRoom } = this.props;
-
-		Alert.alert(
-			I18n.t('Are_you_sure_question_mark'),
-			I18n.t('Are_you_sure_you_want_to_leave_the_room', { room: RocketChat.getRoomTitle(room) }),
-			[
-				{
-					text: I18n.t('Cancel'),
-					style: 'cancel'
-				},
-				{
-					text: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-					style: 'destructive',
-					onPress: () => leaveRoom(room.rid, room.t)
 				}
 			]
 		);

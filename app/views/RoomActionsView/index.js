@@ -415,12 +415,14 @@ class RoomActionsView extends React.Component {
 	}
 
 	handleLeaveTeam = async(selected) => {
+		const { room } = this.state;
 		try {
 			const { navigation, isMasterDetail } = this.props;
-			const result = await RocketChat.leaveTeam({ teamName: this.teamName });
+			const result = await RocketChat.leaveTeam({ teamName: room.name });
+
 			if (selected) {
 				try {
-					selected.map(room => RocketChat.leaveRoom(room.rid, room.t));
+					selected.map(item => RocketChat.leaveRoom(item.rid, item.t));
 				} catch (e) {
 					log(e);
 				}
@@ -436,7 +438,7 @@ class RoomActionsView extends React.Component {
 			log(e);
 			Alert.alert(
 				I18n.t('Cannot_leave'),
-				e.data.error ? I18n.t(e.data.error) : I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_team') }),
+				e.data?.error ? I18n.t(e.data.error) : I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_team') }),
 				[
 					{
 						text: 'OK',

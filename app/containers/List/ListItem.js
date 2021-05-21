@@ -37,12 +37,11 @@ const styles = StyleSheet.create({
 	},
 	textAlertContainer: {
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		marginRight: 14
 	},
 	alertIcon: {
-		transform: [{ rotateY: '180deg' }],
-		marginLeft: 16,
-		marginRight: 18
+		marginLeft: 2
 	},
 	title: {
 		fontSize: 16,
