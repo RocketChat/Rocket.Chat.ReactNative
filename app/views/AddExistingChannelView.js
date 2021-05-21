@@ -20,6 +20,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { goRoom } from '../utils/goRoom';
 import Loading from '../containers/Loading';
+import { showErrorAlert } from '../utils/info';
 
 const QUERY_SIZE = 50;
 
@@ -121,6 +122,7 @@ class AddExistingChannelView extends React.Component {
 				goRoom({ item: result, isMasterDetail });
 			}
 		} catch (e) {
+			showErrorAlert(I18n.t(e.data.error), I18n.t('Add_Existing_Channel'), () => {});
 			logEvent(events.CT_ADD_ROOM_TO_TEAM_F);
 			this.setState({ loading: false });
 		}
