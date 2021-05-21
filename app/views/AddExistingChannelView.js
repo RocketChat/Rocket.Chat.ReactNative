@@ -20,6 +20,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { goRoom } from '../utils/goRoom';
 import Loading from '../containers/Loading';
+import asyncFilter from '../utils/asyncFilter';
 
 const QUERY_SIZE = 50;
 
@@ -80,20 +81,15 @@ class AddExistingChannelView extends React.Component {
 				)
 				.fetch();
 
-			const asyncFilter = async(channelsArray) => {
-				const results = await Promise.all(channelsArray.map(async(channel) => {
-					const permissions = await RocketChat.hasPermission([addTeamChannelPermission], channel.rid);
-					if (!permissions[0]) {
-						return false;
-					}
-					return true;
-				}));
-
-				return channelsArray.filter((channel, index) => results[index] && !channel.prid);
-			};
-			const asyncFiltered = await asyncFilter(channels);
-			console.log('🚀😍😒 ~ file: AddExistingChannelView.js ~ line 96 ~ AddExistingChannelView ~ init=async ~ asyncFiltered', asyncFiltered);
-			this.setState({ channels: asyncFiltered });
+			const filteredChannels = await asyncFilter(channels, async(channel) => {
+				const permissions = await RocketChat.hasPermission([addTeamChannelPermission], channel.rid);
+				if (!permissions[0] || channel.prid) {
+					return false;
+				}
+				return true;
+			});
+			console.log('🚀😍😒 ~ file: AddExistingChannelView.js ~ line 96 ~ AddExistingChannelView ~ init=async ~ asyncFiltered', filteredChannels);
+			this.setState({ channels: filteredChannels });
 		} catch (e) {
 			log(e);
 		}
