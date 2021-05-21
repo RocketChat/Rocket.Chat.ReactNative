@@ -23,6 +23,7 @@ import Loading from '../containers/Loading';
 const styles = StyleSheet.create({
 	buttonText: {
 		fontSize: 17,
+		margin: 16,
 		...sharedStyles.textRegular
 	}
 });
@@ -45,6 +46,7 @@ class SelectListView extends React.Component {
 		const data = props.route?.params?.data;
 		this.title = props.route?.params?.title;
 		this.teamName = props.route?.params?.teamName;
+		this.nextAction = props.route?.params?.nextAction;
 		this.state = {
 			data,
 			selected: [],
@@ -55,6 +57,7 @@ class SelectListView extends React.Component {
 
 	setHeader = () => {
 		const { navigation, isMasterDetail, theme } = this.props;
+		const { selected } = this.state;
 
 		const options = {
 			headerShown: true,
@@ -70,49 +73,18 @@ class SelectListView extends React.Component {
 
 		options.headerRight = () => (
 			<HeaderButton.Container>
-				<HeaderButton.Item title={I18n.t('Next')} onPress={this.submit} testID='select-list-view-submit' />
+				<HeaderButton.Item title={I18n.t('Next')} onPress={() => this.nextAction(selected)} testID='select-list-view-submit' />
 			</HeaderButton.Container>
 		);
 
 		navigation.setOptions(options);
 	}
 
-	submit = async() => {
-		const { selected } = this.state;
-		const { navigation, leaveRoom } = this.props;
-
-		this.setState({ loading: true });
-		try {
-			// logEvent(events.CT_ADD_ROOM_TO_TEAM);
-			const result = await RocketChat.leaveTeam({ teamName: this.teamName });
-			if (selected) {
-				selected.map(room => leaveRoom(room.rid, room.t));
-			}
-			if (result.success) {
-				this.setState({ loading: false });
-				navigation.navigate('RoomsListView');
-			}
-		} catch (e) {
-			// logEvent(events.CT_ADD_ROOM_TO_TEAM_F);
-			this.setState({ loading: false });
-			Alert.alert(
-				I18n.t('Cannot_leave'),
-				I18n.t(e.data.error),
-				[
-					{
-						text: 'OK',
-						style: 'cancel'
-					}
-				]
-			);
-		}
-	}
-
 	renderHeader = () => {
 		const { theme } = this.props;
 		return (
 			<View style={{ backgroundColor: themes[theme].backgroundColor }}>
-				<Text style={[styles.buttonText, { color: themes[theme].bodyText, margin: 16 }]}>{I18n.t('Select_Teams')}</Text>
+				<Text style={[styles.buttonText, { color: themes[theme].bodyText }]}>{I18n.t('Select_Teams')}</Text>
 			</View>
 		);
 	}
