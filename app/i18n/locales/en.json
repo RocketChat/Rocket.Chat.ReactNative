@@ -717,7 +717,7 @@
   "Private_Team": "Private Team",
   "Read_Only_Team": "Read Only Team",
   "Broadcast_Team": "Broadcast Team",
-  "creating_team" : "creating team",
+  "creating_team": "creating team",
   "team-name-already-exists": "A team with that name already exists",
   "Add_Channel_to_Team": "Add Channel to Team",
   "Create_New": "Create New",
@@ -733,5 +733,6 @@
   "Select_Teams": "Select the Team's channels you would like to leave.",
   "Cannot_leave": "Cannot leave",
   "Last_owner_team_room": "You are the last owner of this channel. Once you leave the team, the channel will be kept inside the team but you will be managing it from outside.",
-  "last-owner-can-not-be-removed": "Last owner cannot be removed"
+  "last-owner-can-not-be-removed": "Last owner cannot be removed",
+  "leaving_team": "leaving team"
 }

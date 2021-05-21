@@ -51,7 +51,6 @@ stories.add('User', () => (
 		<RoomItem
 			name={longText}
 		/>
-		<RoomItem name={longText} autoJoin />
 	</>
 ));
 

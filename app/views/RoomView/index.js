@@ -1036,7 +1036,7 @@ class RoomView extends React.Component {
 	renderActions = () => {
 		const { room, readOnly } = this.state;
 		const { user } = this.props;
-		console.log({ room });
+
 		return (
 			<>
 				<MessageActions

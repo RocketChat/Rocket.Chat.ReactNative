@@ -54,6 +54,7 @@ class RoomActionsView extends React.Component {
 		theme: PropTypes.string,
 		fontScale: PropTypes.number,
 		serverVersion: PropTypes.string,
+		isMasterDetail: PropTypes.bool,
 		addUserToJoinedRoomPermission: PropTypes.array,
 		addUserToAnyCRoomPermission: PropTypes.array,
 		addUserToAnyPRoomPermission: PropTypes.array,
@@ -413,19 +414,29 @@ class RoomActionsView extends React.Component {
 		);
 	}
 
-	_leave = async(teamName) => {
+	handleLeaveTeam = async(selected) => {
 		try {
-			const { navigation } = this.props;
-			const result = await RocketChat.leaveTeam({ teamName });
-			// Add isMasterDetail
+			const { navigation, isMasterDetail } = this.props;
+			const result = await RocketChat.leaveTeam({ teamName: this.teamName });
+			if (selected) {
+				try {
+					selected.map(room => RocketChat.leaveRoom(room.rid, room.t));
+				} catch (e) {
+					log(e);
+				}
+			}
 			if (result.success) {
-				navigation.navigate('RoomsListView');
+				if (isMasterDetail) {
+					navigation.popToTop();
+				} else {
+					navigation.navigate('RoomsListView');
+				}
 			}
 		} catch (e) {
 			log(e);
 			Alert.alert(
 				I18n.t('Cannot_leave'),
-				I18n.t(e.data.error),
+				e.data.error ? I18n.t(e.data.error) : I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_team') }),
 				[
 					{
 						text: 'OK',
@@ -444,12 +455,13 @@ class RoomActionsView extends React.Component {
 			const db = database.active;
 			const subCollection = db.get('subscriptions');
 			const teamChannels = await subCollection.query(
-				Q.and(Q.where('team_id', Q.eq(room.teamId)), Q.where('name', Q.notEq(room.name)))
+				Q.where('team_id', room.teamId),
+				Q.where('team_main', null)
 			);
 
 			if (teamChannels.length) {
 				navigation.navigate('SelectListView', {
-					title: 'Leave_Team', room, teamChannels, teamName: room.name, subtitle: 'Select_Teams'
+					title: 'Leave_Team', room, data: teamChannels, subtitle: 'Select_Teams', nextAction: data => this.handleLeaveTeam(data)
 				});
 			} else {
 				Alert.alert(
@@ -463,7 +475,7 @@ class RoomActionsView extends React.Component {
 						{
 							text: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
 							style: 'destructive',
-							onPress: () => this._leave(room.name)
+							onPress: () => this.handleLeaveTeam(room.name)
 						}
 					]
 				);
@@ -941,6 +953,7 @@ const mapStateToProps = state => ({
 	jitsiEnabled: state.settings.Jitsi_Enabled || false,
 	encryptionEnabled: state.encryption.enabled,
 	serverVersion: state.server.version,
+	isMasterDetail: state.app.isMasterDetail,
 	addUserToJoinedRoomPermission: state.permissions['add-user-to-joined-room'],
 	addUserToAnyCRoomPermission: state.permissions['add-user-to-any-c-room'],
 	addUserToAnyPRoomPermission: state.permissions['add-user-to-any-p-room'],

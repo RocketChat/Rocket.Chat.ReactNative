@@ -2,18 +2,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, FlatList, Text, Alert, Pressable
+	View, StyleSheet, FlatList, Text, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
 import { HeaderBackButton } from '@react-navigation/stack';
 import * as List from '../containers/List';
 
-import Touch from '../utils/touch';
 import { leaveRoom as leaveRoomAction } from '../actions/room';
 import RocketChat from '../lib/rocketchat';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
-import { CustomIcon } from '../lib/Icons';
 import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
@@ -23,28 +21,9 @@ import { animateNextTransition } from '../utils/layoutAnimation';
 import Loading from '../containers/Loading';
 
 const styles = StyleSheet.create({
-	button: {
-		height: 46,
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
-	buttonIcon: {
-		marginLeft: 18,
-		marginRight: 16
-	},
 	buttonText: {
 		fontSize: 17,
 		...sharedStyles.textRegular
-	},
-	textContainer: {
-		flex: 1,
-		flexDirection: 'row',
-		alignItems: 'center',
-		marginRight: 15
-	},
-	icon: {
-		marginHorizontal: 15,
-		alignSelf: 'center'
 	}
 });
 
@@ -63,11 +42,11 @@ class SelectListView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		const teamChannels = props.route?.params?.teamChannels;
+		const data = props.route?.params?.data;
 		this.title = props.route?.params?.title;
 		this.teamName = props.route?.params?.teamName;
 		this.state = {
-			data: teamChannels,
+			data,
 			selected: [],
 			loading: false
 		};
@@ -172,35 +151,6 @@ class SelectListView extends React.Component {
 		);
 	}
 
-	renderChannel = ({
-		onPress, testID, title, icon, checked, alert
-	}) => {
-		const { theme } = this.props;
-
-		return (
-			<Touch
-				onPress={onPress}
-				style={{ backgroundColor: themes[theme].backgroundColor }}
-				testID={testID}
-				theme={theme}
-			>
-				<View style={[styles.button, { borderColor: themes[theme].separatorColor, marginVertical: 4 }]}>
-					<CustomIcon style={[styles.buttonIcon, { color: themes[theme].controlText }]} size={24} name={icon} />
-					<View style={styles.textContainer}>
-						<Text style={[styles.buttonText, { color: themes[theme].bodyText }]}>{title}</Text>
-						{ alert
-							? (
-								<Pressable onPress={() => this.showAlert()}>
-									<CustomIcon style={[styles.buttonIcon, { color: themes[theme].dangerColor, transform: [{ rotateY: '180deg' }] }]} size={24} name={alert} />
-								</Pressable>
-							) : null}
-					</View>
-					{checked ? <CustomIcon name={checked} size={22} style={[styles.icon, { color: themes[theme].actionTintColor }]} /> : null}
-				</View>
-			</Touch>
-		);
-	}
-
 	isChecked = (rid) => {
 		const { selected } = this.state;
 		return selected.includes(rid);
@@ -223,18 +173,26 @@ class SelectListView extends React.Component {
 		}
 	}
 
-	renderItem = ({ item }) => (
-		<>
-			{this.renderChannel({
-				onPress: () => this.toggleChannel(item.rid, item.roles),
-				title: item.name,
-				icon: item.t === 'p' ? 'channel-private' : 'channel-public',
-				checked: this.isChecked(item.rid, item.roles) ? 'check' : null,
-				testID: 'select-list-view-item',
-				alert: item.roles ? 'info' : null
-			})}
-		</>
-	)
+	renderItem = ({ item }) => {
+		const { theme } = this.props;
+		const alert = item.roles ? 'info' : null;
+		const icon = item.t === 'p' ? 'channel-private' : 'channel-public';
+		const checked = this.isChecked(item.rid, item.roles) ? 'check' : null;
+
+		return (
+			<>
+				<List.Item
+					title={item.name}
+					translateTitle={false}
+					testID={`select-list-view-item-${ item.name }`}
+					onPress={() => (alert ? this.showAlert() : this.toggleChannel(item.rid, item.roles))}
+					alert={alert}
+					left={() => <List.Icon name={icon} color={themes[theme].controlText} />}
+					right={() => (checked ? <List.Icon name={checked} color={themes[theme].actionTintColor} /> : null)}
+				/>
+			</>
+		);
+	}
 
 	renderList = () => {
 		const { data } = this.state;
