@@ -22,6 +22,8 @@ stories.add('title and subtitle', () => (
 		<List.Separator />
 		<List.Item title={longText} subtitle={longText} translateTitle={false} translateSubtitle={false} testID='test-id' alert='info' />
 		<List.Separator />
+		<List.Item title={longText} subtitle={longText} translateTitle={false} translateSubtitle={false} testID='test-id' alert='info' right={() => <List.Icon name='emoji' />} />
+		<List.Separator />
 	</List.Container>
 ));
 

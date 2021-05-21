@@ -124,7 +124,7 @@ class SelectListView extends React.Component {
 
 	renderItem = ({ item }) => {
 		const { theme } = this.props;
-		const alert = item.roles ? 'info' : null;
+		const alert = !!item.roles;
 		const icon = item.t === 'p' ? 'channel-private' : 'channel-public';
 		const checked = this.isChecked(item.rid, item.roles) ? 'check' : null;
 
