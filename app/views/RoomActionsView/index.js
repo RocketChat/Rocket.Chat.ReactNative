@@ -448,18 +448,11 @@ class RoomActionsView extends React.Component {
 	}
 
 	handleLeaveTeam = async(selected) => {
-		const { room } = this.state;
 		try {
+			const { room } = this.state;
 			const { navigation, isMasterDetail } = this.props;
-			const result = await RocketChat.leaveTeam({ teamName: room.name });
+			const result = await RocketChat.leaveTeam({ teamName: room.name, ...(selected && { rooms: selected }) });
 
-			if (selected) {
-				try {
-					selected.map(item => RocketChat.leaveRoom(item.rid, item.t));
-				} catch (e) {
-					log(e);
-				}
-			}
 			if (result.success) {
 				if (isMasterDetail) {
 					navigation.popToTop();
@@ -482,6 +475,19 @@ class RoomActionsView extends React.Component {
 		}
 	}
 
+	showNoLeaveTeamAlert = () => {
+		Alert.alert(
+			I18n.t('Cannot_leave'),
+			I18n.t('Last_owner_team_room'),
+			[
+				{
+					text: 'OK',
+					style: 'cancel'
+				}
+			]
+		);
+	}
+
 	leaveTeam = async() => {
 		const { room } = this.state;
 		const { navigation } = this.props;
@@ -496,7 +502,7 @@ class RoomActionsView extends React.Component {
 
 			if (teamChannels.length) {
 				navigation.navigate('SelectListView', {
-					title: 'Leave_Team', room, data: teamChannels, subtitle: 'Select_Teams', nextAction: data => this.handleLeaveTeam(data)
+					title: 'Leave_Team', room, data: teamChannels, infoText: 'Select_Team_Channels', nextAction: data => this.handleLeaveTeam(data), showAlert: () => this.showNoLeaveTeamAlert()
 				});
 			} else {
 				Alert.alert(
@@ -510,7 +516,7 @@ class RoomActionsView extends React.Component {
 						{
 							text: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
 							style: 'destructive',
-							onPress: () => this.handleLeaveTeam(room.name)
+							onPress: () => this.handleLeaveTeam()
 						}
 					]
 				);
