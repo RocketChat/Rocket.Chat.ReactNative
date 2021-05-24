@@ -415,8 +415,8 @@ class RoomActionsView extends React.Component {
 	}
 
 	handleLeaveTeam = async(selected) => {
-		const { room } = this.state;
 		try {
+			const { room } = this.state;
 			const { navigation, isMasterDetail } = this.props;
 			const result = await RocketChat.leaveTeam({ teamName: room.name, ...(selected && { rooms: selected }) });
 
