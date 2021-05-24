@@ -10,6 +10,8 @@ import LastMessage from './LastMessage';
 import Title from './Title';
 import UpdatedAt from './UpdatedAt';
 import Touchable from './Touchable';
+import Tag from './Tag';
+import I18n from '../../i18n';
 
 const RoomItem = ({
 	rid,
@@ -24,6 +26,7 @@ const RoomItem = ({
 	status,
 	useRealName,
 	theme,
+	isFocused,
 	isGroupChat,
 	isRead,
 	date,
@@ -45,7 +48,8 @@ const RoomItem = ({
 	toggleFav,
 	toggleRead,
 	hideChannel,
-	teamMain
+	teamMain,
+	autoJoin
 }) => (
 	<Touchable
 		onPress={onPress}
@@ -60,6 +64,7 @@ const RoomItem = ({
 		testID={testID}
 		type={type}
 		theme={theme}
+		isFocused={isFocused}
 		swipeEnabled={swipeEnabled}
 	>
 		<Wrapper
@@ -88,6 +93,9 @@ const RoomItem = ({
 								hideUnreadStatus={hideUnreadStatus}
 								alert={alert}
 							/>
+							{
+								autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null
+							}
 							<UpdatedAt
 								date={date}
 								theme={theme}
@@ -132,6 +140,9 @@ const RoomItem = ({
 							hideUnreadStatus={hideUnreadStatus}
 							alert={alert}
 						/>
+						{
+							autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null
+						}
 						<UnreadBadge
 							unread={unread}
 							userMentions={userMentions}
@@ -161,6 +172,7 @@ RoomItem.propTypes = {
 	status: PropTypes.string,
 	useRealName: PropTypes.bool,
 	theme: PropTypes.string,
+	isFocused: PropTypes.bool,
 	isGroupChat: PropTypes.bool,
 	isRead: PropTypes.bool,
 	teamMain: PropTypes.bool,
@@ -181,7 +193,8 @@ RoomItem.propTypes = {
 	toggleRead: PropTypes.func,
 	onPress: PropTypes.func,
 	onLongPress: PropTypes.func,
-	hideChannel: PropTypes.func
+	hideChannel: PropTypes.func,
+	autoJoin: PropTypes.bool
 };
 
 RoomItem.defaultProps = {

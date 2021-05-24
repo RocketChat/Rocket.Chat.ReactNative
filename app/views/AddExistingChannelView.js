@@ -1,22 +1,17 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, FlatList, Text
+	View, FlatList
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
-import { HeaderBackButton } from '@react-navigation/stack';
-import * as List from '../containers/List';
 
-import Touch from '../utils/touch';
+import * as List from '../containers/List';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
-import sharedStyles from './Styles';
 import I18n from '../i18n';
 import log, { events, logEvent } from '../utils/log';
 import SearchBox from '../containers/SearchBox';
-import { CustomIcon } from '../lib/Icons';
 import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
@@ -26,42 +21,12 @@ import { animateNextTransition } from '../utils/layoutAnimation';
 import { goRoom } from '../utils/goRoom';
 import Loading from '../containers/Loading';
 
-const QUERY_SIZE = 15;
-
-const styles = StyleSheet.create({
-	button: {
-		height: 46,
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
-	buttonIcon: {
-		marginLeft: 18,
-		marginRight: 16
-	},
-	buttonText: {
-		fontSize: 17,
-		...sharedStyles.textRegular
-	},
-	textContainer: {
-		flex: 1,
-		flexDirection: 'column',
-		justifyContent: 'center',
-		marginRight: 15
-	},
-	icon: {
-		marginHorizontal: 15,
-		alignSelf: 'center'
-	}
-});
+const QUERY_SIZE = 50;
 
 class AddExistingChannelView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		route: PropTypes.object,
-		user: PropTypes.shape({
-			id: PropTypes.string,
-			token: PropTypes.string
-		}),
 		theme: PropTypes.string,
 		isMasterDetail: PropTypes.bool,
 		addTeamChannelPermission: PropTypes.array
@@ -81,19 +46,15 @@ class AddExistingChannelView extends React.Component {
 	}
 
 	setHeader = () => {
-		const { navigation, isMasterDetail, theme } = this.props;
+		const { navigation, isMasterDetail } = this.props;
 		const { selected } = this.state;
 
 		const options = {
-			headerShown: true,
-			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Add_Existing_Channel')
 		};
 
 		if (isMasterDetail) {
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
-		} else {
-			options.headerLeft = () => <HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme].headerTintColor} />;
 		}
 
 		options.headerRight = () => selected.length > 0 && (
@@ -105,7 +66,6 @@ class AddExistingChannelView extends React.Component {
 		navigation.setOptions(options);
 	}
 
-	// eslint-disable-next-line react/sort-comp
 	init = async() => {
 		try {
 			const { addTeamChannelPermission } = this.props;
@@ -113,7 +73,8 @@ class AddExistingChannelView extends React.Component {
 			const channels = await db.collections
 				.get('subscriptions')
 				.query(
-					Q.and(Q.where('team_id', ''), Q.or(Q.where('t', 'c'), Q.where('t', 'p'))),
+					Q.where('team_id', ''),
+					Q.where('t', Q.oneOf(['c', 'p'])),
 					Q.experimentalTake(QUERY_SIZE),
 					Q.experimentalSortBy('room_updated_at', Q.desc)
 				)
@@ -124,7 +85,7 @@ class AddExistingChannelView extends React.Component {
 					return;
 				}
 				return channel;
-			 });
+			});
 			this.setState({ channels: filteredChannels });
 		} catch (e) {
 			log(e);
@@ -154,7 +115,7 @@ class AddExistingChannelView extends React.Component {
 		this.setState({ loading: true });
 		try {
 			logEvent(events.CT_ADD_ROOM_TO_TEAM);
-			const result = await RocketChat.addTeamRooms({ rooms: selected, teamId: this.teamId });
+			const result = await RocketChat.addRoomsToTeam({ rooms: selected, teamId: this.teamId });
 			if (result.success) {
 				this.setState({ loading: false });
 				goRoom({ item: result, isMasterDetail });
@@ -163,28 +124,6 @@ class AddExistingChannelView extends React.Component {
 			logEvent(events.CT_ADD_ROOM_TO_TEAM_F);
 			this.setState({ loading: false });
 		}
-	}
-
-	renderChannel = ({
-		onPress, testID, title, icon, checked
-	}) => {
-		const { theme } = this.props;
-		return (
-			<Touch
-				onPress={onPress}
-				style={{ backgroundColor: themes[theme].backgroundColor }}
-				testID={testID}
-				theme={theme}
-			>
-				<View style={[styles.button, { borderColor: themes[theme].separatorColor, marginVertical: 4 }]}>
-					<CustomIcon style={[styles.buttonIcon, { color: themes[theme].controlText }]} size={24} name={icon} />
-					<View style={styles.textContainer}>
-						<Text style={[styles.buttonText, { color: themes[theme].bodyText }]}>{title}</Text>
-					</View>
-					{checked ? <CustomIcon name={checked} size={22} style={[styles.icon, { color: themes[theme].actionTintColor }]} /> : null}
-				</View>
-			</Touch>
-		);
 	}
 
 	renderHeader = () => {
@@ -206,26 +145,31 @@ class AddExistingChannelView extends React.Component {
 
 		animateNextTransition();
 		if (!this.isChecked(rid)) {
-			// logEvent(events.SELECTED_USERS_ADD_USER);
+			logEvent(events.EXISTING_CHANNEL_ADD_CHANNEL);
 			this.setState({ selected: [...selected, rid] }, () => this.setHeader());
 		} else {
-			// logEvent(events.SELECTED_USERS_REMOVE_USER);
+			logEvent(events.EXISTING_CHANNEL_REMOVE_CHANNEL);
 			const filterSelected = selected.filter(el => el !== rid);
 			this.setState({ selected: filterSelected }, () => this.setHeader());
 		}
 	}
 
-	renderItem = ({ item }) => (
-		<>
-			{this.renderChannel({
-				onPress: () => this.toggleChannel(item.rid),
-				title: item.name,
-				icon: item.t === 'p' && !item.teamId ? 'channel-private' : 'channel-public',
-				checked: this.isChecked(item.rid) ? 'check' : null,
-				testID: 'add-existing-channel-view-item'
-			})}
-		</>
-	)
+	renderItem = ({ item }) => {
+		const isChecked = this.isChecked(item.rid);
+		// TODO: reuse logic inside RoomTypeIcon
+		const icon = item.t === 'p' && !item.teamId ? 'channel-private' : 'channel-public';
+		return (
+			<List.Item
+				title={RocketChat.getRoomTitle(item)}
+				translateTitle={false}
+				onPress={() => this.toggleChannel(item.rid)}
+				testID='add-existing-channel-view-item'
+				left={() => <List.Icon name={icon} />}
+				right={() => (isChecked ? <List.Icon name='check' /> : null)}
+			/>
+
+		);
+	}
 
 	renderList = () => {
 		const { search, channels } = this.state;
@@ -248,7 +192,7 @@ class AddExistingChannelView extends React.Component {
 		const { loading } = this.state;
 
 		return (
-			<SafeAreaView testID='new-message-view'>
+			<SafeAreaView testID='add-existing-channel-view'>
 				<StatusBar />
 				{this.renderList()}
 				<Loading visible={loading} />
@@ -262,4 +206,4 @@ const mapStateToProps = state => ({
 	addTeamChannelPermission: state.permissions['add-team-channel']
 });
 
-export default connect(mapStateToProps, null)(withTheme(AddExistingChannelView));
+export default connect(mapStateToProps)(withTheme(AddExistingChannelView));

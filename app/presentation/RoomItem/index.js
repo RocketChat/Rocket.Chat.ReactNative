@@ -14,8 +14,10 @@ const attrs = [
 	'status',
 	'connected',
 	'theme',
+	'isFocused',
 	'forceUpdate',
-	'showLastMessage'
+	'showLastMessage',
+	'autoJoin'
 ];
 
 class RoomItemContainer extends React.Component {
@@ -36,11 +38,13 @@ class RoomItemContainer extends React.Component {
 		getUserPresence: PropTypes.func,
 		connected: PropTypes.bool,
 		theme: PropTypes.string,
+		isFocused: PropTypes.bool,
 		getRoomTitle: PropTypes.func,
 		getRoomAvatar: PropTypes.func,
 		getIsGroupChat: PropTypes.func,
 		getIsRead: PropTypes.func,
-		swipeEnabled: PropTypes.bool
+		swipeEnabled: PropTypes.bool,
+		autoJoin: PropTypes.bool
 	};
 
 	static defaultProps = {
@@ -127,12 +131,14 @@ class RoomItemContainer extends React.Component {
 			toggleRead,
 			hideChannel,
 			theme,
+			isFocused,
 			avatarSize,
 			status,
 			showLastMessage,
 			username,
 			useRealName,
-			swipeEnabled
+			swipeEnabled,
+			autoJoin
 		} = this.props;
 		const name = getRoomTitle(item);
 		const testID = `rooms-list-view-item-${ name }`;
@@ -175,6 +181,7 @@ class RoomItemContainer extends React.Component {
 				testID={testID}
 				type={item.t}
 				theme={theme}
+				isFocused={isFocused}
 				size={avatarSize}
 				prid={item.prid}
 				status={status}
@@ -192,6 +199,7 @@ class RoomItemContainer extends React.Component {
 				tunreadGroup={item.tunreadGroup}
 				swipeEnabled={swipeEnabled}
 				teamMain={item.teamMain}
+				autoJoin={autoJoin}
 			/>
 		);
 	}

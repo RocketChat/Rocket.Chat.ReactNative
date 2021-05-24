@@ -54,6 +54,7 @@ class RoomActionsView extends React.Component {
 		theme: PropTypes.string,
 		fontScale: PropTypes.number,
 		serverVersion: PropTypes.string,
+		isMasterDetail: PropTypes.bool,
 		addUserToJoinedRoomPermission: PropTypes.array,
 		addUserToAnyCRoomPermission: PropTypes.array,
 		addUserToAnyPRoomPermission: PropTypes.array,
@@ -446,16 +447,38 @@ class RoomActionsView extends React.Component {
 		);
 	}
 
-	_leave = async(teamName) => {
+	handleLeaveTeam = async(selected) => {
+		const { room } = this.state;
 		try {
-			const { navigation } = this.props;
-			const result = await RocketChat.leaveTeam({ teamName });
-			// Add isMasterDetail
+			const { navigation, isMasterDetail } = this.props;
+			const result = await RocketChat.leaveTeam({ teamName: room.name });
+
+			if (selected) {
+				try {
+					selected.map(item => RocketChat.leaveRoom(item.rid, item.t));
+				} catch (e) {
+					log(e);
+				}
+			}
 			if (result.success) {
-				navigation.navigate('RoomsListView');
+				if (isMasterDetail) {
+					navigation.popToTop();
+				} else {
+					navigation.navigate('RoomsListView');
+				}
 			}
 		} catch (e) {
 			log(e);
+			Alert.alert(
+				I18n.t('Cannot_leave'),
+				e.data?.error ? I18n.t(e.data.error) : I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_team') }),
+				[
+					{
+						text: 'OK',
+						style: 'cancel'
+					}
+				]
+			);
 		}
 	}
 
@@ -467,12 +490,13 @@ class RoomActionsView extends React.Component {
 			const db = database.active;
 			const subCollection = db.get('subscriptions');
 			const teamChannels = await subCollection.query(
-				Q.where('team_id', Q.eq(room.teamId))
+				Q.where('team_id', room.teamId),
+				Q.where('team_main', null)
 			);
 
-			if (teamChannels) {
+			if (teamChannels.length) {
 				navigation.navigate('SelectListView', {
-					title: 'Leave_Team', room, teamChannels, teamName: room.name, subtitle: 'Select_Teams'
+					title: 'Leave_Team', room, data: teamChannels, subtitle: 'Select_Teams', nextAction: data => this.handleLeaveTeam(data)
 				});
 			} else {
 				Alert.alert(
@@ -486,7 +510,7 @@ class RoomActionsView extends React.Component {
 						{
 							text: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
 							style: 'destructive',
-							onPress: () => this._leave(room.name)
+							onPress: () => this.handleLeaveTeam(room.name)
 						}
 					]
 				);
@@ -517,7 +541,7 @@ class RoomActionsView extends React.Component {
 							rid, t, room, member
 						}
 					})}
-					style={({ pressed }) => [{ backgroundColor: pressed ? themes[theme].bannerBackground : themes[theme].backgroundColor }]}
+					style={{ backgroundColor: themes[theme].backgroundColor }}
 					accessibilityLabel={I18n.t('Room_Info')}
 					accessibilityTraits='button'
 					enabled={!isGroupChat}
@@ -652,9 +676,9 @@ class RoomActionsView extends React.Component {
 				<List.Section>
 					<List.Separator />
 					<List.Item
-						title={room.teamId && room.teamMain ? 'Leave' : 'Leave_channel'}
+						title={room.teamMain ? 'Leave' : 'Leave_channel'}
 						onPress={() => this.onPressTouchable({
-							event: room.teamId && room.teamMain ? this.leaveTeam : this.leaveChannel
+							event: room.teamMain ? this.leaveTeam : this.leaveChannel
 						})}
 						testID='room-actions-leave-channel'
 						left={() => <List.Icon name='logout' color={themes[theme].dangerColor} />}
@@ -964,6 +988,7 @@ const mapStateToProps = state => ({
 	jitsiEnabled: state.settings.Jitsi_Enabled || false,
 	encryptionEnabled: state.encryption.enabled,
 	serverVersion: state.server.version,
+	isMasterDetail: state.app.isMasterDetail,
 	addUserToJoinedRoomPermission: state.permissions['add-user-to-joined-room'],
 	addTeamMemberPermission: state.permissions['add-team-member'],
 	addUserToAnyCRoomPermission: state.permissions['add-user-to-any-c-room'],

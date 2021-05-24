@@ -60,7 +60,7 @@ class NewMessageView extends React.Component {
 			id: PropTypes.string,
 			token: PropTypes.string
 		}),
-		createChannel: PropTypes.func,
+		create: PropTypes.func,
 		maxUsers: PropTypes.number,
 		theme: PropTypes.string,
 		isMasterDetail: PropTypes.bool
@@ -124,9 +124,9 @@ class NewMessageView extends React.Component {
 
 	createGroupChat = () => {
 		logEvent(events.NEW_MSG_CREATE_GROUP_CHAT);
-		const { createChannel, maxUsers, navigation } = this.props;
+		const { create, maxUsers, navigation } = this.props;
 		navigation.navigate('SelectedUsersViewCreateChannel', {
-			nextAction: () => createChannel({ group: true }),
+			nextAction: () => create({ group: true }),
 			buttonText: I18n.t('Create'),
 			maxUsers
 		});
@@ -148,9 +148,7 @@ class NewMessageView extends React.Component {
 		return (
 			<Touch
 				onPress={onPress}
-				style={({ pressed }) => [{
-					backgroundColor: pressed ? themes[theme].bannerBackground : themes[theme].backgroundColor
-				}]}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
 				testID={testID}
 				theme={theme}
 			>
@@ -183,7 +181,7 @@ class NewMessageView extends React.Component {
 					{this.renderButton({
 						onPress: this.createTeam,
 						title: I18n.t('Create_Team'),
-						icon: 'team',
+						icon: 'teams',
 						testID: 'new-message-view-create-team'
 					})}
 					{maxUsers > 2 ? this.renderButton({

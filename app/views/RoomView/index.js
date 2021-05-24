@@ -38,7 +38,9 @@ import { themes } from '../../constants/colors';
 import debounce from '../../utils/debounce';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
-import { getBadgeColor, isBlocked, makeThreadName } from '../../utils/room';
+import {
+	getBadgeColor, isBlocked, makeThreadName, isTeamRoom
+} from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
 import { showErrorAlert } from '../../utils/info';
@@ -331,7 +333,7 @@ class RoomView extends React.Component {
 		let numIconsRight = 2;
 		if (tmid) {
 			numIconsRight = 1;
-		} else if (teamId && joined) {
+		} else if (isTeamRoom({ teamId, joined })) {
 			numIconsRight = 3;
 		}
 		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight });
@@ -380,6 +382,7 @@ class RoomView extends React.Component {
 					rid={rid}
 					tmid={tmid}
 					teamId={teamId}
+					teamMain={teamMain}
 					joined={joined}
 					t={t}
 					navigation={navigation}
@@ -1033,7 +1036,6 @@ class RoomView extends React.Component {
 	renderActions = () => {
 		const { room, readOnly } = this.state;
 		const { user } = this.props;
-
 		return (
 			<>
 				<MessageActions

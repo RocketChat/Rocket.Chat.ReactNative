@@ -1,123 +1,72 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { HeaderBackButton } from '@react-navigation/stack';
+import { connect } from 'react-redux';
 
-import sharedStyles from './Styles';
-import { CustomIcon } from '../lib/Icons';
-import Touch from '../utils/touch';
+import * as List from '../containers/List';
 import StatusBar from '../containers/StatusBar';
-import { withTheme } from '../theme';
+import { useTheme } from '../theme';
 import * as HeaderButton from '../containers/HeaderButton';
 import SafeAreaView from '../containers/SafeAreaView';
-import { withDimensions } from '../dimensions';
-import { themes } from '../constants/colors';
 import I18n from '../i18n';
 
-const styles = StyleSheet.create({
-	button: {
-		height: 46,
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
-	buttonIcon: {
-		marginLeft: 18,
-		marginRight: 16
-	},
-	buttonText: {
-		fontSize: 17,
-		...sharedStyles.textRegular
-	},
-	buttonContainer: {
-		paddingVertical: 25
-	}
-});
+const setHeader = (navigation, isMasterDetail) => {
+	const options = {
+		headerTitle: I18n.t('Add_Channel_to_Team')
+	};
 
-class AddChannelTeamView extends React.Component {
-	constructor(props) {
-		super(props);
-		this.teamId = props.route.params?.teamId;
-		this.setHeader();
+	if (isMasterDetail) {
+		options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
 	}
 
-	setHeader = () => {
-		const { navigation, isMasterDetail, theme } = this.props;
+	navigation.setOptions(options);
+};
 
-		const options = {
-			headerShown: true,
-			headerTitleAlign: 'center',
-			headerTitle: I18n.t('Add_Channel_to_Team')
-		};
+const AddChannelTeamView = ({
+	navigation, route, isMasterDetail
+}) => {
+	const { teamId, teamChannels } = route.params;
+	const { theme } = useTheme();
 
-		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
-		} else {
-			options.headerLeft = () => (
-				<HeaderBackButton
-					labelVisible={false}
-					onPress={() => navigation.pop()}
-					tintColor={themes[theme].headerTintColor}
+	useEffect(() => {
+		setHeader(navigation, isMasterDetail);
+	}, []);
+
+	return (
+		<SafeAreaView testID='add-channel-team-view'>
+			<StatusBar />
+			<List.Container>
+				<List.Separator />
+				<List.Item
+					title='Create_New'
+					onPress={() => navigation.navigate('NewMessageStackNavigator', { screen: 'SelectedUsersViewCreateChannel', params: { nextAction: () => navigation.navigate('CreateChannelView', { teamId }) } })}
+					testID='add-channel-team-view-create-channel'
+					left={() => <List.Icon name='team' />}
+					right={() => <List.Icon name='chevron-right' />}
+					theme={theme}
 				/>
-			);
-		}
-
-		navigation.setOptions(options);
-	}
-
-	renderButton = ({
-		onPress, testID, title, icon, first
-	}) => {
-		const { theme } = this.props;
-
-		return (
-			<Touch
-				onPress={onPress}
-				style={({ pressed }) => [{
-					backgroundColor: pressed ? themes[theme].chatComponentBackground : themes[theme].backgroundColor
-				}]}
-				testID={testID}
-				theme={theme}
-			>
-				<View style={[first ? sharedStyles.separatorVertical : sharedStyles.separatorBottom, styles.button, { borderColor: themes[theme].separatorColor }]}>
-					<CustomIcon style={[styles.buttonIcon, { color: themes[theme].tintColor }]} size={24} name={icon} />
-					<Text style={[styles.buttonText, { color: themes[theme].tintColor }]}>{title}</Text>
-				</View>
-			</Touch>
-		);
-	}
-
-	render() {
-		const { navigation, route } = this.props;
-		const { teamChannels } = route?.params;
-
-		return (
-			<SafeAreaView testID='add-channel-team-view'>
-				<StatusBar />
-				<View style={styles.buttonContainer}>
-					{this.renderButton({
-						onPress: () => navigation.navigate('NewMessageStackNavigator', { screen: 'SelectedUsersViewCreateChannel', params: { nextAction: () => navigation.navigate('CreateChannelView', { teamId: this.teamId }) } }),
-						title: I18n.t('Create_New'),
-						icon: 'channel-public',
-						testID: 'add-channel-team-view-create-channel',
-						first: true
-					})}
-					{this.renderButton({
-						onPress: () => navigation.navigate('AddExistingChannelView', { teamId: this.teamId, teamChannels }),
-						title: I18n.t('Add_Existing'),
-						icon: 'team',
-						testID: 'add-channel-team-view-create-channel'
-					})}
-				</View>
-			</SafeAreaView>
-		);
-	}
-}
+				<List.Separator />
+				<List.Item
+					title='Add_Existing'
+					onPress={() => navigation.navigate('AddExistingChannelView', { teamId, teamChannels })}
+					testID='add-channel-team-view-create-channel'
+					left={() => <List.Icon name='channel-public' />}
+					right={() => <List.Icon name='chevron-right' />}
+					theme={theme}
+				/>
+				<List.Separator />
+			</List.Container>
+		</SafeAreaView>
+	);
+};
 
 AddChannelTeamView.propTypes = {
 	route: PropTypes.object,
 	navigation: PropTypes.object,
-	isMasterDetail: PropTypes.bool,
-	theme: PropTypes.string
+	isMasterDetail: PropTypes.bool
 };
 
-export default withDimensions(withTheme(AddChannelTeamView));
+const mapStateToProps = state => ({
+	isMasterDetail: state.app.isMasterDetail
+});
+
+export default connect(mapStateToProps)(AddChannelTeamView);
