@@ -1,11 +1,9 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, FlatList, Text, Alert
+	View, StyleSheet, FlatList, Text
 } from 'react-native';
 import { connect } from 'react-redux';
-import { HeaderBackButton } from '@react-navigation/stack';
 import * as List from '../containers/List';
 
 import { leaveRoom as leaveRoomAction } from '../actions/room';
@@ -21,7 +19,7 @@ import Loading from '../containers/Loading';
 
 const styles = StyleSheet.create({
 	buttonText: {
-		fontSize: 17,
+		fontSize: 16,
 		margin: 16,
 		...sharedStyles.textRegular
 	}
@@ -31,10 +29,6 @@ class SelectListView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		route: PropTypes.object,
-		user: PropTypes.shape({
-			id: PropTypes.string,
-			token: PropTypes.string
-		}),
 		theme: PropTypes.string,
 		isMasterDetail: PropTypes.bool
 	};
@@ -43,8 +37,9 @@ class SelectListView extends React.Component {
 		super(props);
 		const data = props.route?.params?.data;
 		this.title = props.route?.params?.title;
-		this.teamName = props.route?.params?.teamName;
+		this.infoText = props.route?.params?.infoText;
 		this.nextAction = props.route?.params?.nextAction;
+		this.showAlert = props.route?.params?.showAlert;
 		this.state = {
 			data,
 			selected: [],
@@ -54,19 +49,15 @@ class SelectListView extends React.Component {
 	}
 
 	setHeader = () => {
-		const { navigation, isMasterDetail, theme } = this.props;
+		const { navigation, isMasterDetail } = this.props;
 		const { selected } = this.state;
 
 		const options = {
-			headerShown: true,
-			headerTitleAlign: 'center',
 			headerTitle: I18n.t(this.title)
 		};
 
 		if (isMasterDetail) {
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
-		} else {
-			options.headerLeft = () => <HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme].headerTintColor} />;
 		}
 
 		options.headerRight = () => (
@@ -78,25 +69,12 @@ class SelectListView extends React.Component {
 		navigation.setOptions(options);
 	}
 
-	renderHeader = () => {
+	renderInfoText = () => {
 		const { theme } = this.props;
 		return (
 			<View style={{ backgroundColor: themes[theme].backgroundColor }}>
-				<Text style={[styles.buttonText, { color: themes[theme].bodyText }]}>{I18n.t('Select_Teams')}</Text>
+				<Text style={[styles.buttonText, { color: themes[theme].bodyText }]}>{I18n.t(this.infoText)}</Text>
 			</View>
-		);
-	}
-
-	showAlert = () => {
-		Alert.alert(
-			I18n.t('Cannot_leave'),
-			I18n.t('Last_owner_team_room'),
-			[
-				{
-					text: 'OK',
-					style: 'cancel'
-				}
-			]
 		);
 	}
 
@@ -105,7 +83,7 @@ class SelectListView extends React.Component {
 		return selected.includes(rid);
 	}
 
-	toggleChannel = (rid, roles) => {
+	toggleItem = (rid, roles) => {
 		const { selected } = this.state;
 
 		if (roles) {
@@ -130,11 +108,12 @@ class SelectListView extends React.Component {
 
 		return (
 			<>
+				<List.Separator />
 				<List.Item
 					title={item.name}
 					translateTitle={false}
 					testID={`select-list-view-item-${ item.name }`}
-					onPress={() => (alert ? this.showAlert() : this.toggleChannel(item.rid, item.roles))}
+					onPress={() => (alert ? this.showAlert() : this.toggleItem(item.rid, item.roles))}
 					alert={alert}
 					left={() => <List.Icon name={icon} color={themes[theme].controlText} />}
 					right={() => (checked ? <List.Icon name={checked} color={themes[theme].actionTintColor} /> : null)}
@@ -143,31 +122,22 @@ class SelectListView extends React.Component {
 		);
 	}
 
-	renderList = () => {
-		const { data } = this.state;
+	render() {
+		const { loading, data } = this.state;
 		const { theme } = this.props;
 
 		return (
-			<FlatList
-				data={data}
-				extraData={this.state}
-				keyExtractor={item => item._id}
-				renderItem={this.renderItem}
-				ListHeaderComponent={this.renderHeader}
-				ItemSeparatorComponent={List.Separator}
-				contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
-				keyboardShouldPersistTaps='always'
-			/>
-		);
-	}
-
-	render() {
-		const { loading } = this.state;
-
-		return (
-			<SafeAreaView testID='new-message-view'>
+			<SafeAreaView testID='select-list-view'>
 				<StatusBar />
-				{this.renderList()}
+				<FlatList
+					data={data}
+					extraData={this.state}
+					keyExtractor={item => item.rid}
+					renderItem={this.renderItem}
+					ListHeaderComponent={this.renderInfoText}
+					contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
+					keyboardShouldPersistTaps='always'
+				/>
 				<Loading visible={loading} />
 			</SafeAreaView>
 		);
