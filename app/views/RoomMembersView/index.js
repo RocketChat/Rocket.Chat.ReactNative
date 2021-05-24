@@ -98,34 +98,19 @@ class RoomMembersView extends React.Component {
 		const {
 			muteUserPermission, setLeaderPermission, setOwnerPermission, setModeratorPermission, removeUserPermission, editTeamMemberPermission
 		} = this.props;
-		let result;
 
-		if (room.teamId) {
-			result = await RocketChat.hasPermission([
-				muteUserPermission, setLeaderPermission, setOwnerPermission, setModeratorPermission, removeUserPermission, editTeamMemberPermission
-			], room.rid);
+		const result = await RocketChat.hasPermission([
+			muteUserPermission, setLeaderPermission, setOwnerPermission, setModeratorPermission, removeUserPermission, ...(room.TeamId && [editTeamMemberPermission])
+		], room.rid);
 
-			this.permissions = {
-				[PERMISSION_MUTE_USER]: result[0],
-				[PERMISSION_SET_LEADER]: result[1],
-				[PERMISSION_SET_OWNER]: result[2],
-				[PERMISSION_SET_MODERATOR]: result[3],
-				[PERMISSION_REMOVE_USER]: result[4],
-				[PERMISSION_EDIT_TEAM_MEMBER]: result[5]
-			};
-		} else {
-			result = await RocketChat.hasPermission([
-				muteUserPermission, setLeaderPermission, setOwnerPermission, setModeratorPermission, removeUserPermission
-			], room.rid);
-
-			this.permissions = {
-				[PERMISSION_MUTE_USER]: result[0],
-				[PERMISSION_SET_LEADER]: result[1],
-				[PERMISSION_SET_OWNER]: result[2],
-				[PERMISSION_SET_MODERATOR]: result[3],
-				[PERMISSION_REMOVE_USER]: result[4]
-			};
-		}
+		this.permissions = {
+			[PERMISSION_MUTE_USER]: result[0],
+			[PERMISSION_SET_LEADER]: result[1],
+			[PERMISSION_SET_OWNER]: result[2],
+			[PERMISSION_SET_MODERATOR]: result[3],
+			[PERMISSION_REMOVE_USER]: result[4],
+			...(room.teamId && { [PERMISSION_EDIT_TEAM_MEMBER]: result[5] })
+		};
 
 		const hasSinglePermission = Object.values(this.permissions).some(p => !!p);
 		if (hasSinglePermission) {
@@ -373,7 +358,7 @@ class RoomMembersView extends React.Component {
 		this.setState({ isLoading: true });
 		try {
 			const membersResult = await RocketChat.getRoomMembers(rid, allUsers, members.length, PAGE_SIZE);
-			console.log({ membersResult });
+
 			const newMembers = membersResult.records;
 			this.setState({
 				members: members.concat(newMembers || []),

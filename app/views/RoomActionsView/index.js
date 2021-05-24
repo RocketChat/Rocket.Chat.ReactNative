@@ -332,17 +332,6 @@ class RoomActionsView extends React.Component {
 			navigation.pop();
 		} catch (e) {
 			log(e);
-			Alert.alert(
-				I18n.t('Confirmation'),
-				I18n.t('Removing_user_from_this_Team'),
-				[
-					{
-						text: I18n.t('OK'),
-						style: 'cancel'
-					}
-				],
-				{ cancelable: false }
-			);
 		} finally {
 			setLoadingInvite(false);
 		}
