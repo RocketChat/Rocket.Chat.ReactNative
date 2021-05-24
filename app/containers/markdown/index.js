@@ -218,11 +218,12 @@ class Markdown extends PureComponent {
 	};
 
 	renderLink = ({ children, href }) => {
-		const { theme } = this.props;
+		const { theme, onLinkPress } = this.props;
 		return (
 			<MarkdownLink
 				link={href}
 				theme={theme}
+				onLinkPress={onLinkPress}
 			>
 				{children}
 			</MarkdownLink>
