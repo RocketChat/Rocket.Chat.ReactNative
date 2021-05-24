@@ -17,9 +17,6 @@ import { withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import Loading from '../containers/Loading';
-import { LISTENER } from '../containers/Toast';
-import EventEmitter from '../utils/events';
-import log from '../utils/log';
 
 const styles = StyleSheet.create({
 	buttonText: {
