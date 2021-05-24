@@ -4,9 +4,8 @@ import {
 	View, StyleSheet, FlatList, Text
 } from 'react-native';
 import { connect } from 'react-redux';
-import * as List from '../containers/List';
 
-import { leaveRoom as leaveRoomAction } from '../actions/room';
+import * as List from '../containers/List';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
 import * as HeaderButton from '../containers/HeaderButton';
@@ -148,8 +147,4 @@ const mapStateToProps = state => ({
 	isMasterDetail: state.app.isMasterDetail
 });
 
-const mapDispatchToProps = dispatch => ({
-	leaveRoom: (rid, t) => dispatch(leaveRoomAction(rid, t))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(SelectListView));
+export default connect(mapStateToProps)(withTheme(SelectListView));
