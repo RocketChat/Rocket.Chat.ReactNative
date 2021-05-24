@@ -82,13 +82,8 @@ class SelectListView extends React.Component {
 		return selected.includes(rid);
 	}
 
-	toggleItem = (rid, roles) => {
+	toggleItem = (rid) => {
 		const { selected } = this.state;
-
-		if (roles) {
-			this.showAlert();
-			return;
-		}
 
 		animateNextTransition();
 		if (!this.isChecked(rid)) {
@@ -101,7 +96,8 @@ class SelectListView extends React.Component {
 
 	renderItem = ({ item }) => {
 		const { theme } = this.props;
-		const alert = !!item.roles;
+		const alert = item.roles.length;
+
 		const icon = item.t === 'p' ? 'channel-private' : 'channel-public';
 		const checked = this.isChecked(item.rid, item.roles) ? 'check' : null;
 
