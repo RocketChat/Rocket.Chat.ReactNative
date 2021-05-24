@@ -1,19 +1,15 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, FlatList, Text, Alert, Pressable
+	View, StyleSheet, FlatList, Text, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
 import { HeaderBackButton } from '@react-navigation/stack';
 import * as List from '../containers/List';
 
-import Touch from '../utils/touch';
 import { leaveRoom as leaveRoomAction } from '../actions/room';
-import RocketChat from '../lib/rocketchat';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
-import { CustomIcon } from '../lib/Icons';
 import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
@@ -26,28 +22,10 @@ import EventEmitter from '../utils/events';
 import log from '../utils/log';
 
 const styles = StyleSheet.create({
-	button: {
-		height: 46,
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
-	buttonIcon: {
-		marginLeft: 18,
-		marginRight: 16
-	},
 	buttonText: {
 		fontSize: 17,
+		margin: 16,
 		...sharedStyles.textRegular
-	},
-	textContainer: {
-		flex: 1,
-		flexDirection: 'row',
-		alignItems: 'center',
-		marginRight: 15
-	},
-	icon: {
-		marginHorizontal: 15,
-		alignSelf: 'center'
 	}
 });
 
@@ -60,18 +38,18 @@ class SelectListView extends React.Component {
 			token: PropTypes.string
 		}),
 		theme: PropTypes.string,
-		isMasterDetail: PropTypes.bool,
-		leaveRoom: PropTypes.func
+		isMasterDetail: PropTypes.bool
 	};
 
 	constructor(props) {
 		super(props);
-		const teamChannels = props.route?.params?.teamChannels;
+		const data = props.route?.params?.data;
 		this.title = props.route?.params?.title;
 		this.subtitle = props.route?.params?.subtitle;
 		this.teamName = props.route?.params?.teamName;
+		this.nextAction = props.route?.params?.nextAction;
 		this.state = {
-			data: teamChannels,
+			data,
 			selected: [],
 			loading: false
 		};
@@ -80,6 +58,7 @@ class SelectListView extends React.Component {
 
 	setHeader = () => {
 		const { navigation, isMasterDetail, theme } = this.props;
+		const { selected } = this.state;
 
 		const options = {
 			headerShown: true,
@@ -95,49 +74,18 @@ class SelectListView extends React.Component {
 
 		options.headerRight = () => (
 			<HeaderButton.Container>
-				<HeaderButton.Item title={I18n.t('Next')} onPress={this.submit} testID='select-list-view-submit' />
+				<HeaderButton.Item title={I18n.t('Next')} onPress={() => this.nextAction(selected)} testID='select-list-view-submit' />
 			</HeaderButton.Container>
 		);
 
 		navigation.setOptions(options);
 	}
 
-	submit = async() => {
-		const { selected } = this.state;
-		const { navigation, leaveRoom } = this.props;
-
-		this.setState({ loading: true });
-		try {
-			// logEvent(events.CT_ADD_ROOM_TO_TEAM);
-			const result = await RocketChat.leaveTeam({ teamName: this.teamName });
-			if (selected) {
-				selected.map(room => leaveRoom(room.rid, room.t));
-			}
-			if (result.success) {
-				this.setState({ loading: false });
-				navigation.navigate('RoomsListView');
-			}
-		} catch (e) {
-			// logEvent(events.CT_ADD_ROOM_TO_TEAM_F);
-			this.setState({ loading: false });
-			Alert.alert(
-				I18n.t('Cannot_leave'),
-				I18n.t(e.data.error),
-				[
-					{
-						text: 'OK',
-						style: 'cancel'
-					}
-				]
-			);
-		}
-	}
-
 	renderHeader = () => {
 		const { theme } = this.props;
 		return (
 			<View style={{ backgroundColor: themes[theme].backgroundColor }}>
-				<Text style={[styles.buttonText, { color: themes[theme].bodyText, margin: 16 }]}>{I18n.t('Select_Teams')}</Text>
+				<Text style={[styles.buttonText, { color: themes[theme].bodyText }]}>{I18n.t('Select_Teams')}</Text>
 			</View>
 		);
 	}
@@ -152,71 +100,6 @@ class SelectListView extends React.Component {
 					style: 'cancel'
 				}
 			]
-		);
-	}
-
-	leaveChannel = () => {
-		const { room } = this.state;
-		const { leaveRoom } = this.props;
-
-		Alert.alert(
-			I18n.t('Are_you_sure_question_mark'),
-			I18n.t('Are_you_sure_you_want_to_leave_the_room', { room: RocketChat.getRoomTitle(room) }),
-			[
-				{
-					text: I18n.t('Cancel'),
-					style: 'cancel'
-				},
-				{
-					text: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-					style: 'destructive',
-					onPress: () => leaveRoom(room.rid, room.t)
-				}
-			]
-		);
-	}
-
-	removeFromTeam = async(selectedUser) => {
-		try {
-			const { data, room } = this.state;
-			const userId = selectedUser._id;
-			const result = await RocketChat.removeTeamMember({ teamName: room.name, userId });
-			if (result.success) {
-				const message = I18n.t('User_has_been_removed_from_s', { s: RocketChat.getRoomTitle(room) });
-				EventEmitter.emit(LISTENER, { message });
-				this.setState({ data: data.filter(member => member._id !== userId) });
-			}
-		} catch (e) {
-			log(e);
-		}
-	}
-
-	renderChannel = ({
-		onPress, testID, title, icon, checked, alert
-	}) => {
-		const { theme } = this.props;
-
-		return (
-			<Touch
-				onPress={onPress}
-				style={{ backgroundColor: themes[theme].backgroundColor }}
-				testID={testID}
-				theme={theme}
-			>
-				<View style={[styles.button, { borderColor: themes[theme].separatorColor, marginVertical: 4 }]}>
-					<CustomIcon style={[styles.buttonIcon, { color: themes[theme].controlText }]} size={24} name={icon} />
-					<View style={styles.textContainer}>
-						<Text style={[styles.buttonText, { color: themes[theme].bodyText }]}>{title}</Text>
-						{ alert
-							? (
-								<Pressable onPress={() => this.showAlert()}>
-									<CustomIcon style={[styles.buttonIcon, { color: themes[theme].dangerColor, transform: [{ rotateY: '180deg' }] }]} size={24} name={alert} />
-								</Pressable>
-							) : null}
-					</View>
-					{checked ? <CustomIcon name={checked} size={22} style={[styles.icon, { color: themes[theme].actionTintColor }]} /> : null}
-				</View>
-			</Touch>
 		);
 	}
 
@@ -242,18 +125,26 @@ class SelectListView extends React.Component {
 		}
 	}
 
-	renderItem = ({ item }) => (
-		<>
-			{this.renderChannel({
-				onPress: () => this.toggleChannel(item.rid, item.roles),
-				title: item.name,
-				icon: item.t === 'p' ? 'channel-private' : 'channel-public',
-				checked: this.isChecked(item.rid, item.roles) ? 'check' : null,
-				testID: 'select-list-view-item',
-				alert: item.roles ? 'info' : null
-			})}
-		</>
-	)
+	renderItem = ({ item }) => {
+		const { theme } = this.props;
+		const alert = !!item.roles;
+		const icon = item.t === 'p' ? 'channel-private' : 'channel-public';
+		const checked = this.isChecked(item.rid, item.roles) ? 'check' : null;
+
+		return (
+			<>
+				<List.Item
+					title={item.name}
+					translateTitle={false}
+					testID={`select-list-view-item-${ item.name }`}
+					onPress={() => (alert ? this.showAlert() : this.toggleChannel(item.rid, item.roles))}
+					alert={alert}
+					left={() => <List.Icon name={icon} color={themes[theme].controlText} />}
+					right={() => (checked ? <List.Icon name={checked} color={themes[theme].actionTintColor} /> : null)}
+				/>
+			</>
+		);
+	}
 
 	renderList = () => {
 		const { data } = this.state;

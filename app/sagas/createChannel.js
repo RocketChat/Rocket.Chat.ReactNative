@@ -25,10 +25,6 @@ const createTeam = function createTeam(data) {
 	return RocketChat.createTeam(data);
 };
 
-const addTeamRoom = function addRoomToTeam(params) {
-	return RocketChat.addTeamRooms(params);
-};
-
 const handleRequest = function* handleRequest({ data }) {
 	try {
 		const auth = yield select(state => state.login.isAuthenticated);
@@ -50,12 +46,20 @@ const handleRequest = function* handleRequest({ data }) {
 				broadcast,
 				encrypted
 			});
-			sub = yield call(createTeam, data);
+			const result = yield call(createTeam, data);
+			sub = {
+				rid: result?.team?.roomId,
+				...result.team,
+				t: result.team.type ? 'p' : 'c'
+			};
 		} else if (data.group) {
 			logEvent(events.SELECTED_USERS_CREATE_GROUP);
 			const result = yield call(createGroupChat);
 			if (result.success) {
-				({ room: sub } = result);
+				sub = {
+					rid: result.room?._id,
+					...result.room
+				};
 			}
 		} else {
 			const {
@@ -70,25 +74,25 @@ const handleRequest = function* handleRequest({ data }) {
 				broadcast,
 				encrypted
 			});
-			sub = yield call(createChannel, data);
-			if (sub.teamId) {
-				logEvent(events.CT_ADD_ROOM_TO_TEAM);
-				yield call(addTeamRoom, { rooms: sub.rid, teamId: sub.teamId });
-			}
+			const result = yield call(createChannel, data);
+			sub = {
+				rid: result?.channel?._id || result?.group?._id,
+				...result?.channel,
+				...result?.group
+			};
 		}
 		try {
 			const db = database.active;
 			const subCollection = db.get('subscriptions');
 			yield db.action(async() => {
 				await subCollection.create((s) => {
-					s._raw = sanitizedRaw({ id: sub.team ? sub.team.roomId : sub.rid, team_id: sub.teamId }, subCollection.schema);
+					s._raw = sanitizedRaw({ id: sub.rid }, subCollection.schema);
 					Object.assign(s, sub);
 				});
 			});
 		} catch {
 			// do nothing
 		}
-
 		yield put(createChannelSuccess(sub));
 	} catch (err) {
 		logEvent(events[data.group ? 'SELECTED_USERS_CREATE_GROUP_F' : 'CR_CREATE_F']);
@@ -101,7 +105,7 @@ const handleSuccess = function* handleSuccess({ data }) {
 	if (isMasterDetail) {
 		Navigation.navigate('DrawerNavigator');
 	}
-	goRoom({ item: data.success ? data.team : data, isMasterDetail });
+	goRoom({ item: data, isMasterDetail });
 };
 
 const handleFailure = function handleFailure({ err }) {

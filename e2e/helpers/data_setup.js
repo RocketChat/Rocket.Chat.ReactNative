@@ -1,6 +1,11 @@
 const axios = require('axios').default;
 const data = require('../data');
 
+const TEAM_TYPE = {
+	PUBLIC: 0,
+	PRIVATE: 1
+};
+
 let server = data.server
 
 const rocketchat = axios.create({
@@ -62,7 +67,7 @@ const createTeamIfNotExists = async (teamname) => {
     try {
         await rocketchat.post('teams.create', {
             "name": teamname,
-            "type": 1
+            "type": TEAM_TYPE.PRIVATE
         })
     } catch (createError) {
         try { //Maybe it exists already?

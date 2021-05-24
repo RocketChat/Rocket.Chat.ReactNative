@@ -894,6 +894,7 @@ class RoomsListView extends React.Component {
 			return this.renderSectionHeader(item.rid);
 		}
 
+		const { item: currentItem } = this.state;
 		const {
 			user: { username },
 			StoreLastMessage,
@@ -924,6 +925,7 @@ class RoomsListView extends React.Component {
 				getIsGroupChat={this.isGroupChat}
 				getIsRead={this.isRead}
 				visitor={item.visitor}
+				isFocused={currentItem?.rid === item.rid}
 			/>
 		);
 	};
@@ -946,6 +948,7 @@ class RoomsListView extends React.Component {
 		if (loading) {
 			return <ActivityIndicator theme={theme} />;
 		}
+
 		return (
 			<FlatList
 				ref={this.getScrollRef}

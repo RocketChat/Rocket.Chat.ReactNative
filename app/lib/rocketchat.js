@@ -60,6 +60,7 @@ import UserPreferences from './userPreferences';
 import { Encryption } from './encryption';
 import EventEmitter from '../utils/events';
 import { sanitizeLikeString } from './database/utils';
+import { TEAM_TYPE } from '../definition/ITeam';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
@@ -656,7 +657,8 @@ const RocketChat = {
 			avatarETag: sub.avatarETag,
 			t: sub.t,
 			encrypted: sub.encrypted,
-			lastMessage: sub.lastMessage
+			lastMessage: sub.lastMessage,
+			...(sub.teamId && { teamId: sub.teamId })
 		}));
 
 		return data;
@@ -747,7 +749,7 @@ const RocketChat = {
 		const params = {
 			name,
 			users,
-			type,
+			type: type ? TEAM_TYPE.PRIVATE : TEAM_TYPE.PUBLIC,
 			room: {
 				readOnly,
 				extraData: {
@@ -759,13 +761,9 @@ const RocketChat = {
 		// RC 3.13.0
 		return this.post('teams.create', params);
 	},
-	addTeamRooms({ rooms, teamId }) {
-		const params = {
-			rooms: Array.isArray(rooms) ? rooms : [rooms],
-			teamId
-		};
+	addRoomsToTeam({ teamId, rooms }) {
 		// RC 3.13.0
-		return this.post('teams.addRooms', params);
+		return this.post('teams.addRooms', { teamId, rooms });
 	},
 	removeTeamRoom({ roomId, teamId }) {
 		// RC 3.13.0
@@ -784,6 +782,10 @@ const RocketChat = {
 	removeTeamMember({ teamName, userId }) {
 		// RC 3.13.0
 		return this.post('teams.removeMember', { teamName, userId });
+	},
+	updateTeamRoom({ roomId, isDefault }) {
+		// RC 3.13.0
+		return this.post('teams.updateRoom', { roomId, isDefault });
 	},
 	joinRoom(roomId, joinCode, type) {
 		// TODO: join code

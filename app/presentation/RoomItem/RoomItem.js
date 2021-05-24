@@ -10,6 +10,8 @@ import LastMessage from './LastMessage';
 import Title from './Title';
 import UpdatedAt from './UpdatedAt';
 import Touchable from './Touchable';
+import Tag from './Tag';
+import I18n from '../../i18n';
 
 const RoomItem = ({
 	rid,
@@ -46,7 +48,8 @@ const RoomItem = ({
 	toggleFav,
 	toggleRead,
 	hideChannel,
-	teamMain
+	teamMain,
+	autoJoin
 }) => (
 	<Touchable
 		onPress={onPress}
@@ -90,6 +93,9 @@ const RoomItem = ({
 								hideUnreadStatus={hideUnreadStatus}
 								alert={alert}
 							/>
+							{
+								autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null
+							}
 							<UpdatedAt
 								date={date}
 								theme={theme}
@@ -134,6 +140,9 @@ const RoomItem = ({
 							hideUnreadStatus={hideUnreadStatus}
 							alert={alert}
 						/>
+						{
+							autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null
+						}
 						<UnreadBadge
 							unread={unread}
 							userMentions={userMentions}
@@ -184,7 +193,8 @@ RoomItem.propTypes = {
 	toggleRead: PropTypes.func,
 	onPress: PropTypes.func,
 	onLongPress: PropTypes.func,
-	hideChannel: PropTypes.func
+	hideChannel: PropTypes.func,
+	autoJoin: PropTypes.bool
 };
 
 RoomItem.defaultProps = {

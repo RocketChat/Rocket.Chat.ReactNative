@@ -99,6 +99,10 @@ export default {
 	SELECTED_USERS_CREATE_GROUP: 'selected_users_create_group',
 	SELECTED_USERS_CREATE_GROUP_F: 'selected_users_create_group_f',
 
+	// ADD EXISTING CHANNEL VIEW
+	EXISTING_CHANNEL_ADD_CHANNEL: 'existing_channel_add_channel',
+	EXISTING_CHANNEL_REMOVE_CHANNEL: 'existing_channel_remove_channel',
+
 	// CREATE CHANNEL VIEW
 	CR_CREATE: 'cr_create',
 	CT_CREATE: 'ct_create',
