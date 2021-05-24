@@ -52,6 +52,7 @@ class TeamChannelsView extends React.Component {
 		StoreLastMessage: PropTypes.bool,
 		addTeamChannelPermission: PropTypes.array,
 		removeTeamChannelPermission: PropTypes.array,
+		editRoomPermission: PropTypes.array,
 		showActionSheet: PropTypes.func,
 		deleteRoom: PropTypes.func
 	}
@@ -291,31 +292,37 @@ class TeamChannelsView extends React.Component {
 		}
 	}, 1000, true);
 
-	options = (item) => {
+	options = (item, options) => {
 		const { theme } = this.props;
 		const isAutoJoinChecked = item.teamDefault;
 		const autoJoinIcon = isAutoJoinChecked ? 'checkbox-checked' : 'checkbox-unchecked';
 		const autoJoinIconColor = isAutoJoinChecked ? themes[theme].tintActive : themes[theme].auxiliaryTintColor;
-		return ([
+		const optionsToShow = [
 			{
+				name: 'Auto-join',
 				title: I18n.t('Auto-join'),
 				icon: item.t === 'p' ? 'channel-private' : 'channel-public',
 				onPress: () => this.toggleAutoJoin(item),
 				right: () => <CustomIcon name={autoJoinIcon} size={20} color={autoJoinIconColor} />
 			},
 			{
+				name: 'Remove_from_Team',
 				title: I18n.t('Remove_from_Team'),
 				icon: 'close',
 				danger: true,
 				onPress: () => this.remove(item)
 			},
 			{
+				name: 'Delete',
 				title: I18n.t('Delete'),
 				icon: 'delete',
 				danger: true,
 				onPress: () => this.delete(item)
 			}
-		]);
+		];
+
+		// options.has because "options" is an object type Set
+		return (optionsToShow.filter(opt => options.has(opt.name)));
 	}
 
 	toggleAutoJoin = async(item) => {
@@ -391,13 +398,23 @@ class TeamChannelsView extends React.Component {
 
 	showChannelActions = async(item) => {
 		logEvent(events.ROOM_SHOW_BOX_ACTIONS);
-		const { showActionSheet, removeTeamChannelPermission } = this.props;
+		const { showActionSheet, removeTeamChannelPermission, editRoomPermission } = this.props;
 
-		const permissions = await RocketChat.hasPermission([removeTeamChannelPermission], this.team.rid);
-		if (!permissions[0]) {
+		const options = new Set();
+		const permissionsTeam = await RocketChat.hasPermission([removeTeamChannelPermission], this.team.rid);
+		if (permissionsTeam[0]) {
+			options.add('Auto-join');
+			options.add('Remove_from_Team');
+		}
+		const permissionsChannel = await RocketChat.hasPermission([editRoomPermission], item._id);
+		if (permissionsChannel[0]) {
+			options.add('Delete');
+		}
+
+		if (options.size === 0) {
 			return;
 		}
-		showActionSheet({ options: this.options(item) });
+		showActionSheet({ options: this.options(item, options) });
 	}
 
 	renderItem = ({ item }) => {
@@ -482,7 +499,8 @@ const mapStateToProps = state => ({
 	isMasterDetail: state.app.isMasterDetail,
 	StoreLastMessage: state.settings.Store_Last_Message,
 	addTeamChannelPermission: state.permissions['add-team-channel'],
-	removeTeamChannelPermission: state.permissions['remove-team-channel']
+	removeTeamChannelPermission: state.permissions['remove-team-channel'],
+	editRoomPermission: state.permissions['edit-room']
 });
 
 const mapDispatchToProps = dispatch => ({
