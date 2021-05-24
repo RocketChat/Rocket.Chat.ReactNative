@@ -704,5 +704,7 @@
   "Direct_message": "Direktnachricht",
   "Message_Ignored": "Nachricht ignoriert. Antippen um sie zu zeigen.",
   "Enter_workspace_URL": "Arbeitsbereich-URL",
-  "Workspace_URL_Example": "z.B. https://rocketchat.deine-firma.de"
+  "Workspace_URL_Example": "z.B. https://rocketchat.deine-firma.de",
+  "Confirmation": "Bestätigung",
+  "invalid-room": "Ungültiger Raum"
 }

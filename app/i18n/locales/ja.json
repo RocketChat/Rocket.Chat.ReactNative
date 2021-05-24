@@ -487,5 +487,6 @@
   "New_line": "新しい行",
   "You_will_be_logged_out_of_this_application": "アプリからログアウトします。",
   "Clear": "クリア",
-  "This_will_clear_all_your_offline_data": "オフラインデータをすべて削除します。"
+  "This_will_clear_all_your_offline_data": "オフラインデータをすべて削除します。",
+  "invalid-room": "無効なルーム"
 }

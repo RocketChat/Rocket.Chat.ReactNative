@@ -678,5 +678,7 @@
   "No_threads": "當前沒有討論串",
   "No_threads_following": "當前沒有正在追蹤的討論",
   "No_threads_unread": "當前沒有未讀的討論",
-  "Messagebox_Send_to_channel": "發送至頻道"
+  "Messagebox_Send_to_channel": "發送至頻道",
+  "Confirmation": "確認",
+  "invalid-room": "無效的房間"
 }

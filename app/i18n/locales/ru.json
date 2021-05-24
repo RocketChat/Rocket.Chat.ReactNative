@@ -435,6 +435,7 @@
   "Review_app_unable_store": "Невозможно открыть {{store}}",
   "Review_this_app": "Оценить это приложение",
   "Remove": "Удалить",
+  "remove": "удалить",
   "Roles": "Роли",
   "Room_actions": "Действия с чатом",
   "Room_changed_announcement": "Объявление чата было изменено на: {{announcement}} пользователем {{userBy}}",
@@ -716,5 +717,14 @@
   "Read_Only_Team": "Команда только для чтения",
   "Broadcast_Team": "Широковещательная Команда",
   "creating_team": "создание Команды",
-  "team-name-already-exists": "Команда с таким названием уже существует"
+  "team-name-already-exists": "Команда с таким названием уже существует",
+  "Add_Channel_to_Team": "Добавить канал в Команду",
+  "Create_New": "Создать",
+  "Add_Existing": "Добавить существующее",
+  "Add_Existing_Channel": "Добавить существующий канал",
+  "Remove_from_Team": "Удалить из Команды",
+  "Auto-join": "Автодобавление",
+  "Delete_Team_Room_Warning": "Хотите ли вы удалить этот канал из Команды? Канал будет перемещен обратно в рабочее пространство",
+  "Confirmation": "Подтверждение",
+  "invalid-room": "Такого канала не существует"
 }

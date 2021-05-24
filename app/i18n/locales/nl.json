@@ -478,5 +478,9 @@
   "Server_selection": "Server selectie",
   "Server_selection_numbers": "Server selectie 1...9",
   "Add_server": "Voeg Server Toe",
-  "New_line": "Nieuwe Regel"
+  "New_line": "Nieuwe Regel",
+  "Add_Existing": "Voeg bestaande",
+  "Auto-join": "Automatisch deelnemen",
+  "Confirmation": "Bevestiging",
+  "invalid-room": "Ongeldige kamer"
 }

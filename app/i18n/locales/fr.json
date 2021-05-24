@@ -619,5 +619,9 @@
   "After_seconds_set_by_admin": "Après {{seconds}} secondes (défini par l'administrateur)",
   "Dont_activate": "Ne pas activer maintenant",
   "Queued_chats": "Discussions en file d'attente",
-  "Queue_is_empty": "La file d'attente est vide"
+  "Queue_is_empty": "La file d'attente est vide",
+  "Add_Existing": "Ajouter existant",
+  "Auto-join": "Rejoindre automatiquement",
+  "Confirmation": "Confirmation",
+  "invalid-room": "Salon invalide"
 }
