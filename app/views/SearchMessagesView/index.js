@@ -133,6 +133,11 @@ class SearchMessagesView extends React.Component {
 		return null;
 	}
 
+	showAttachment = (attachment) => {
+		const { navigation } = this.props;
+		navigation.navigate('AttachmentView', { attachment });
+	}
+
 	navToRoomInfo = (navParam) => {
 		const { navigation, user } = this.props;
 		if (navParam.rid === user.id) {
@@ -182,10 +187,10 @@ class SearchMessagesView extends React.Component {
 				item={item}
 				baseUrl={baseUrl}
 				user={user}
-				timeFormat='LLL'
+				timeFormat='MMM Do YYYY, h:mm:ss a'
 				isHeader
 				isThreadRoom
-				showAttachment={() => {}}
+				showAttachment={this.showAttachment}
 				getCustomEmoji={this.getCustomEmoji}
 				navToRoomInfo={this.navToRoomInfo}
 				useRealName={useRealName}
