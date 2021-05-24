@@ -10,7 +10,7 @@ import sharedStyles from '../../views/Styles';
 import { withTheme } from '../../theme';
 import I18n from '../../i18n';
 import { Icon } from '.';
-import { BASE_HEIGHT, PADDING_HORIZONTAL } from './constants';
+import { BASE_HEIGHT, ICON_SIZE, PADDING_HORIZONTAL } from './constants';
 import { withDimensions } from '../../dimensions';
 import { CustomIcon } from '../../lib/Icons';
 
@@ -36,14 +36,15 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	textAlertContainer: {
+		flex: 1,
 		flexDirection: 'row',
-		alignItems: 'center',
-		marginRight: 14
+		alignItems: 'center'
 	},
 	alertIcon: {
-		marginLeft: 2
+		paddingLeft: 4
 	},
 	title: {
+		flexShrink: 1,
 		fontSize: 16,
 		...sharedStyles.textRegular
 	},
@@ -73,7 +74,7 @@ const Content = React.memo(({
 			<View style={styles.textAlertContainer}>
 				<Text style={[styles.title, { color: color || themes[theme].titleText }]} numberOfLines={1}>{translateTitle ? I18n.t(title) : title}</Text>
 				{alert ? (
-					<CustomIcon style={[styles.alertIcon, { color: themes[theme].dangerColor }]} size={24} name='info' />
+					<CustomIcon style={[styles.alertIcon, { color: themes[theme].dangerColor }]} size={ICON_SIZE} name='info' />
 				) : null}
 			</View>
 			{subtitle
@@ -138,7 +139,7 @@ Content.propTypes = {
 	translateSubtitle: PropTypes.bool,
 	showActionIndicator: PropTypes.bool,
 	fontScale: PropTypes.number,
-	alert: PropTypes.string
+	alert: PropTypes.bool
 };
 
 Content.defaultProps = {
