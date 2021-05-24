@@ -108,7 +108,7 @@ class SelectListView extends React.Component {
 					title={item.name}
 					translateTitle={false}
 					testID={`select-list-view-item-${ item.name }`}
-					onPress={() => (alert ? this.showAlert() : this.toggleItem(item.rid, item.roles))}
+					onPress={() => (alert ? this.showAlert() : this.toggleItem(item.rid))}
 					alert={alert}
 					left={() => <List.Icon name={icon} color={themes[theme].controlText} />}
 					right={() => (checked ? <List.Icon name={checked} color={themes[theme].actionTintColor} /> : null)}
