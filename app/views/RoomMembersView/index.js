@@ -127,15 +127,6 @@ class RoomMembersView extends React.Component {
 			};
 		}
 
-		this.permissions = {
-			[PERMISSION_MUTE_USER]: result[0],
-			[PERMISSION_SET_LEADER]: result[1],
-			[PERMISSION_SET_OWNER]: result[2],
-			[PERMISSION_SET_MODERATOR]: result[3],
-			[PERMISSION_REMOVE_USER]: result[4],
-			[PERMISSION_EDIT_TEAM_MEMBER]: result[5]
-		};
-
 		const hasSinglePermission = Object.values(this.permissions).some(p => !!p);
 		if (hasSinglePermission) {
 			this.fetchRoomMembersRoles();
@@ -231,9 +222,11 @@ class RoomMembersView extends React.Component {
 			if (result.success) {
 				const message = I18n.t('User_has_been_removed_from_s', { s: RocketChat.getRoomTitle(room) });
 				EventEmitter.emit(LISTENER, { message });
+				const newMembers = members.filter(member => member._id !== userId);
+				const newMembersFiltered = membersFiltered.filter(member => member._id !== userId);
 				this.setState({
-					members: members.filter(member => member._id !== userId),
-					membersFiltered: membersFiltered.filter(member => member._id !== userId)
+					members: newMembers,
+					membersFiltered: newMembersFiltered
 				});
 			}
 		} catch (e) {
