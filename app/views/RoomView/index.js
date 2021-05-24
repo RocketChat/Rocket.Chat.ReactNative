@@ -201,7 +201,9 @@ class RoomView extends React.Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { state } = this;
 		const { roomUpdate, member } = state;
-		const { appState, theme, insets } = this.props;
+		const {
+			appState, theme, insets, route
+		} = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
 		}
@@ -218,12 +220,19 @@ class RoomView extends React.Component {
 		if (!dequal(nextProps.insets, insets)) {
 			return true;
 		}
+		if (!dequal(nextProps.route?.params, route?.params)) {
+			return true;
+		}
 		return roomAttrsUpdate.some(key => !dequal(nextState.roomUpdate[key], roomUpdate[key]));
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		const { roomUpdate } = this.state;
-		const { appState, insets } = this.props;
+		const { appState, insets, route } = this.props;
+
+		if (route?.params?.jumpToMessageId !== prevProps.route?.params?.jumpToMessageId) {
+			this.jumpToMessage(route?.params?.jumpToMessageId);
+		}
 
 		if (appState === 'foreground' && appState !== prevProps.appState && this.rid) {
 			// Fire List.query() just to keep observables working
@@ -846,10 +855,10 @@ class RoomView extends React.Component {
 	}
 
 	navToRoom = async(message) => {
-		const { navigation } = this.props;
+		const { navigation, isMasterDetail } = this.props;
 		const roomInfo = await getRoomInfo(message.rid);
 		return goRoom({
-			item: roomInfo, isMasterDetail: false, navigationMethod: navigation.push, jumpToMessageId: message.id
+			item: roomInfo, isMasterDetail, navigationMethod: navigation.push, jumpToMessageId: message.id
 		});
 	}
 

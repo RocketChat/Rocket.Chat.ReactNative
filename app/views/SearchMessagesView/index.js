@@ -159,8 +159,6 @@ class SearchMessagesView extends React.Component {
 			};
 			navigation.push('RoomView', params);
 		} else {
-			// TODO: tablets
-			navigation.navigate('RoomsListView');
 			navigation.navigate('RoomView', params);
 		}
 	}
