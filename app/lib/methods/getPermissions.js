@@ -13,7 +13,6 @@ const PERMISSIONS = [
 	'add-user-to-any-c-room',
 	'add-user-to-any-p-room',
 	'add-user-to-joined-room',
-	'add-team-member',
 	'add-team-channel',
 	'archive-room',
 	'auto-translate',

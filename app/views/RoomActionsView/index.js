@@ -172,9 +172,7 @@ class RoomActionsView extends React.Component {
 
 	canAddUser = async() => {
 		const { room, joined } = this.state;
-		const {
-			addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission
-		} = this.props;
+		const { addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission } = this.props;
 		const { rid, t } = room;
 		let canAddUser = false;
 

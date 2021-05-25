@@ -353,7 +353,6 @@ class RoomMembersView extends React.Component {
 		this.setState({ isLoading: true });
 		try {
 			const membersResult = await RocketChat.getRoomMembers(rid, allUsers, members.length, PAGE_SIZE);
-
 			const newMembers = membersResult.records;
 			this.setState({
 				members: members.concat(newMembers || []),
