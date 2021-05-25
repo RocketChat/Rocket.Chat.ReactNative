@@ -4059,7 +4059,6 @@ exports[`Storyshots List alert 1`] = `
             style={
               Object {
                 "alignItems": "center",
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -4164,7 +4163,6 @@ exports[`Storyshots List alert 1`] = `
             style={
               Object {
                 "alignItems": "center",
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -4269,7 +4267,6 @@ exports[`Storyshots List alert 1`] = `
             style={
               Object {
                 "alignItems": "center",
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -4414,7 +4411,6 @@ exports[`Storyshots List alert 1`] = `
             style={
               Object {
                 "alignItems": "center",
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -4716,7 +4712,6 @@ exports[`Storyshots List pressable 1`] = `
           style={
             Object {
               "alignItems": "center",
-              "flex": 1,
               "flexDirection": "row",
             }
           }
@@ -4788,7 +4783,6 @@ exports[`Storyshots List pressable 1`] = `
           style={
             Object {
               "alignItems": "center",
-              "flex": 1,
               "flexDirection": "row",
             }
           }
@@ -4933,7 +4927,6 @@ exports[`Storyshots List title and subtitle 1`] = `
             style={
               Object {
                 "alignItems": "center",
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -5011,7 +5004,6 @@ exports[`Storyshots List title and subtitle 1`] = `
             style={
               Object {
                 "alignItems": "center",
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -5109,7 +5101,6 @@ exports[`Storyshots List title and subtitle 1`] = `
             style={
               Object {
                 "alignItems": "center",
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -5317,7 +5308,6 @@ exports[`Storyshots List with FlatList 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
                   }
                 }
@@ -5400,7 +5390,6 @@ exports[`Storyshots List with FlatList 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
                   }
                 }
@@ -5483,7 +5472,6 @@ exports[`Storyshots List with FlatList 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
                   }
                 }
@@ -5566,7 +5554,6 @@ exports[`Storyshots List with FlatList 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
                   }
                 }
@@ -5649,7 +5636,6 @@ exports[`Storyshots List with FlatList 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
                   }
                 }
@@ -5732,7 +5718,6 @@ exports[`Storyshots List with FlatList 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
                   }
                 }
@@ -5815,7 +5800,6 @@ exports[`Storyshots List with FlatList 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
                   }
                 }
@@ -5898,7 +5882,6 @@ exports[`Storyshots List with FlatList 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
                   }
                 }
@@ -5981,7 +5964,6 @@ exports[`Storyshots List with FlatList 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
                   }
                 }
@@ -6064,7 +6046,6 @@ exports[`Storyshots List with FlatList 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
                   }
                 }
@@ -6289,7 +6270,6 @@ exports[`Storyshots List with bigger font 1`] = `
               style={
                 Object {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                 }
               }
@@ -6460,7 +6440,6 @@ exports[`Storyshots List with bigger font 1`] = `
               style={
                 Object {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                 }
               }
@@ -6705,7 +6684,6 @@ exports[`Storyshots List with bigger font 1`] = `
               style={
                 Object {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                 }
               }
@@ -6876,7 +6854,6 @@ exports[`Storyshots List with bigger font 1`] = `
               style={
                 Object {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                 }
               }
@@ -7162,7 +7139,6 @@ exports[`Storyshots List with black theme 1`] = `
               style={
                 Object {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                 }
               }
@@ -7333,7 +7309,6 @@ exports[`Storyshots List with black theme 1`] = `
               style={
                 Object {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                 }
               }
@@ -7578,7 +7553,6 @@ exports[`Storyshots List with black theme 1`] = `
               style={
                 Object {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                 }
               }
@@ -7749,7 +7723,6 @@ exports[`Storyshots List with black theme 1`] = `
               style={
                 Object {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                 }
               }
@@ -7948,7 +7921,6 @@ exports[`Storyshots List with custom colors 1`] = `
             style={
               Object {
                 "alignItems": "center",
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -8019,7 +7991,6 @@ exports[`Storyshots List with custom colors 1`] = `
           style={
             Object {
               "alignItems": "center",
-              "flex": 1,
               "flexDirection": "row",
             }
           }
@@ -8217,7 +8188,6 @@ exports[`Storyshots List with dark theme 1`] = `
               style={
                 Object {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                 }
               }
@@ -8388,7 +8358,6 @@ exports[`Storyshots List with dark theme 1`] = `
               style={
                 Object {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                 }
               }
@@ -8633,7 +8602,6 @@ exports[`Storyshots List with dark theme 1`] = `
               style={
                 Object {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                 }
               }
@@ -8804,7 +8772,6 @@ exports[`Storyshots List with dark theme 1`] = `
               style={
                 Object {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                 }
               }
@@ -9043,7 +9010,6 @@ exports[`Storyshots List with icon 1`] = `
             style={
               Object {
                 "alignItems": "center",
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -9121,7 +9087,6 @@ exports[`Storyshots List with icon 1`] = `
             style={
               Object {
                 "alignItems": "center",
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -9279,7 +9244,6 @@ exports[`Storyshots List with icon 1`] = `
             style={
               Object {
                 "alignItems": "center",
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -9416,7 +9380,6 @@ exports[`Storyshots List with icon 1`] = `
             style={
               Object {
                 "alignItems": "center",
-                "flex": 1,
                 "flexDirection": "row",
               }
             }
@@ -9594,7 +9557,6 @@ exports[`Storyshots List with section and info 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
                   }
                 }
@@ -9672,7 +9634,6 @@ exports[`Storyshots List with section and info 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
                   }
                 }
@@ -9771,7 +9732,6 @@ exports[`Storyshots List with section and info 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
                   }
                 }
@@ -9849,7 +9809,6 @@ exports[`Storyshots List with section and info 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
                   }
                 }
@@ -9976,7 +9935,6 @@ exports[`Storyshots List with section and info 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
                   }
                 }
@@ -10054,7 +10012,6 @@ exports[`Storyshots List with section and info 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
                   }
                 }
@@ -10208,7 +10165,6 @@ exports[`Storyshots List with section and info 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
                   }
                 }
@@ -10286,7 +10242,6 @@ exports[`Storyshots List with section and info 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
                   }
                 }
@@ -10514,7 +10469,6 @@ exports[`Storyshots List with small font 1`] = `
               style={
                 Object {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                 }
               }
@@ -10685,7 +10639,6 @@ exports[`Storyshots List with small font 1`] = `
               style={
                 Object {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                 }
               }
@@ -10930,7 +10883,6 @@ exports[`Storyshots List with small font 1`] = `
               style={
                 Object {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                 }
               }
@@ -11101,7 +11053,6 @@ exports[`Storyshots List with small font 1`] = `
               style={
                 Object {
                   "alignItems": "center",
-                  "flex": 1,
                   "flexDirection": "row",
                 }
               }

@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	textAlertContainer: {
-		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
