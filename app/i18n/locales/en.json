@@ -290,6 +290,7 @@
   "last_message": "last message",
   "Leave_channel": "Leave channel",
   "leaving_room": "leaving room",
+  "Leave": "Leave",
   "leave": "leave",
   "Legal": "Legal",
   "Light": "Light",
@@ -726,5 +727,13 @@
   "Auto-join": "Auto-join",
   "Delete_Team_Room_Warning": "Woud you like to remove this channel from the team? The channel will be moved back to the workspace",
   "Confirmation": "Confirmation",
-  "invalid-room": "Invalid room"
+  "invalid-room": "Invalid room",
+  "You_are_leaving_the_team": "You are leaving the team '{{team}}'",
+  "Leave_Team": "Leave Team",
+  "Select_Team_Channels": "Select the Team's channels you would like to leave.",
+  "Cannot_leave": "Cannot leave",
+  "Last_owner_team_room": "You are the last owner of this channel. Once you leave the team, the channel will be kept inside the team but you will be managing it from outside.",
+  "last-owner-can-not-be-removed": "Last owner cannot be removed",
+  "leaving_team": "leaving team",
+  "member-does-not-exist": "Member does not exist"
 }
