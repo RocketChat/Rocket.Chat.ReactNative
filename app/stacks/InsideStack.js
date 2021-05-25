@@ -316,16 +316,6 @@ const NewMessageStackNavigator = () => {
 	return (
 		<NewMessageStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
 			<NewMessageStack.Screen
-				name='AddChannelTeamView'
-				component={AddChannelTeamView}
-				options={AddChannelTeamView.navigationOptions}
-			/>
-			<NewMessageStack.Screen
-				name='AddExistingChannelView'
-				component={AddExistingChannelView}
-				options={AddExistingChannelView.navigationOptions}
-			/>
-			<NewMessageStack.Screen
 				name='NewMessageView'
 				component={NewMessageView}
 				options={NewMessageView.navigationOptions}
@@ -342,6 +332,16 @@ const NewMessageStackNavigator = () => {
 			<NewMessageStack.Screen
 				name='CreateDiscussionView'
 				component={CreateDiscussionView}
+			/>
+			<NewMessageStack.Screen
+				name='AddChannelTeamView'
+				component={AddChannelTeamView}
+				options={AddChannelTeamView.navigationOptions}
+			/>
+			<NewMessageStack.Screen
+				name='AddExistingChannelView'
+				component={AddExistingChannelView}
+				options={AddExistingChannelView.navigationOptions}
 			/>
 		</NewMessageStack.Navigator>
 	);
