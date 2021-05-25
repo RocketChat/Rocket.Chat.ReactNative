@@ -419,21 +419,11 @@ class RoomActionsView extends React.Component {
 		const { room } = this.state;
 		const { leaveRoom } = this.props;
 
-		Alert.alert(
-			I18n.t('Are_you_sure_question_mark'),
-			I18n.t('Are_you_sure_you_want_to_leave_the_room', { room: RocketChat.getRoomTitle(room) }),
-			[
-				{
-					text: I18n.t('Cancel'),
-					style: 'cancel'
-				},
-				{
-					text: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-					style: 'destructive',
-					onPress: () => leaveRoom(room.rid, room.t)
-				}
-			]
-		);
+		showConfirmationAlert({
+			message: I18n.t('Are_you_sure_you_want_to_leave_the_room', { room: RocketChat.getRoomTitle(room) }),
+			confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
+			onPress: () => leaveRoom(room.rid, room.t)
+		});
 	}
 
 	handleLeaveTeam = async(selected) => {
@@ -451,49 +441,13 @@ class RoomActionsView extends React.Component {
 			}
 		} catch (e) {
 			log(e);
-			Alert.alert(
-				I18n.t('Cannot_leave'),
-				e.data?.error ? I18n.t(e.data.error) : I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_team') }),
-				[
-					{
-						text: 'OK',
-						style: 'cancel'
-					}
-				]
+			showErrorAlert(
+				e.data.error
+					? I18n.t(e.data.error)
+					: I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_team') }),
+				I18n.t('Cannot_leave')
 			);
 		}
-	}
-
-	showErrorAlert = () => {
-		Alert.alert(
-			I18n.t('Cannot_leave'),
-			I18n.t('Last_owner_team_room'),
-			[
-				{
-					text: 'OK',
-					style: 'cancel'
-				}
-			]
-		);
-	}
-
-	showConfirmationAlert = () => {
-		const { room } = this.state;
-		Alert.alert(
-			I18n.t('Confirmation'),
-			I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
-			[
-				{
-					text: I18n.t('Cancel'),
-					style: 'cancel'
-				},
-				{
-					text: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-					style: 'destructive',
-					onPress: () => this.handleLeaveTeam()
-				}
-			]
-		);
 	}
 
 	leaveTeam = async() => {
@@ -510,10 +464,18 @@ class RoomActionsView extends React.Component {
 
 			if (teamChannels.length) {
 				navigation.navigate('SelectListView', {
-					title: 'Leave_Team', data: teamChannels, infoText: 'Select_Team_Channels', nextAction: data => this.handleLeaveTeam(data), showAlert: () => this.showErrorAlert()
+					title: 'Leave_Team',
+					data: teamChannels,
+					infoText: 'Select_Team_Channels',
+					nextAction: data => this.handleLeaveTeam(data),
+					showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_leave'))
 				});
 			} else {
-				this.showConfirmationAlert();
+				showConfirmationAlert({
+					message: I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
+					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
+					onPress: () => this.handleLeaveTeam()
+				});
 			}
 		} catch (e) {
 			log(e);
