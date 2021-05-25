@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, Alert } from 'react-native';
+import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import * as List from '../../containers/List';
@@ -180,22 +180,11 @@ class RoomMembersView extends React.Component {
 				title: 'Remove_Member', infoText: 'Remove_User_Teams', data: teamChannels, nextAction: (selectedChannels = {}) => this.removeFromTeam({ selectedUser, selectedChannels })
 			});
 		} else {
-			Alert.alert(
-				I18n.t('Confirmation'),
-				I18n.t('Removing_user_from_this_Team', { user: selectedUser.username }),
-				[
-					{
-						text: I18n.t('Cancel'),
-						style: 'cancel'
-					},
-					{
-						text: I18n.t('Yes_action_it', { action: I18n.t('remove') }),
-						style: 'destructive',
-						onPress: () => this.removeFromTeam(selectedUser)
-					}
-				],
-				{ cancelable: false }
-			);
+			showConfirmationAlert({
+				message: I18n.t('Removing_user_from_this_Team', { user: selectedUser.username }),
+				confirmationText: I18n.t('Yes_action_it', { action: I18n.t('remove') }),
+				onPress: () => this.removeFromTeam({ selectedUser })
+			});
 		}
 	}
 
