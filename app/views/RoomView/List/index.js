@@ -52,6 +52,7 @@ class ListContainer extends React.Component {
 		this.count = 0;
 		this.mounted = false;
 		this.animated = false;
+		this.jumping = false;
 		this.state = {
 			messages: [],
 			refreshing: false,
@@ -64,7 +65,6 @@ class ListContainer extends React.Component {
 			this.animated = true;
 		});
 		this.viewabilityConfig = {
-			// viewAreaCoveragePercentThreshold: 20
 			itemVisiblePercentThreshold: 10
 		};
 		console.timeEnd(`${ this.constructor.name } init`);
@@ -264,6 +264,7 @@ class ListContainer extends React.Component {
 	}
 
 	jumpToMessage = messageId => new Promise(async(resolve) => {
+		this.jumping = true;
 		const { messages } = this.state;
 		const { listRef } = this.props;
 		const index = messages.findIndex(item => item.id === messageId);
@@ -271,6 +272,9 @@ class ListContainer extends React.Component {
 			listRef.current.getNode().scrollToIndex({ index, viewPosition: 0.5 });
 			await new Promise(res => setTimeout(res, 300));
 			if (!this.viewableItems.map(vi => vi.key).includes(messageId)) {
+				if (!this.jumping) {
+					return resolve();
+				}
 				await setTimeout(() => resolve(this.jumpToMessage(messageId)), 300);
 				return;
 			}
@@ -282,9 +286,17 @@ class ListContainer extends React.Component {
 			await setTimeout(() => resolve(), 300);
 		} else {
 			listRef.current.getNode().scrollToIndex({ index: messages.length - 1, animated: false });
+			if (!this.jumping) {
+				return resolve();
+			}
 			await setTimeout(() => resolve(this.jumpToMessage(messageId)), 300);
 		}
 	});
+
+	// this.jumping is checked in between operations to make sure we're not stuck
+	cancelJumpToMessage = () => {
+		this.jumping = false;
+	}
 
 	jumpToBottom = () => {
 		const { listRef } = this.props;
