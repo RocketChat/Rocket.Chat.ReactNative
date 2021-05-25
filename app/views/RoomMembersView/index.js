@@ -177,7 +177,10 @@ class RoomMembersView extends React.Component {
 		);
 		if (teamChannels) {
 			navigation.navigate('SelectListView', {
-				title: 'Remove_Member', infoText: 'Remove_User_Teams', data: teamChannels, nextAction: (selectedChannels = {}) => this.removeFromTeam({ selectedUser, selectedChannels })
+				title: 'Remove_Member',
+				infoText: 'Remove_User_Teams',
+				data: teamChannels,
+				nextAction: (selectedChannels = {}) => this.removeFromTeam({ selectedUser, selectedChannels })
 			});
 		} else {
 			showConfirmationAlert({
