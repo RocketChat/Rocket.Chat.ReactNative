@@ -62,8 +62,7 @@ class RoomActionsView extends React.Component {
 		editRoomPermission: PropTypes.array,
 		toggleRoomE2EEncryptionPermission: PropTypes.array,
 		viewBroadcastMemberListPermission: PropTypes.array,
-		transferLivechatGuestPermission: PropTypes.array,
-		addTeamMemberPermission: PropTypes.array
+		transferLivechatGuestPermission: PropTypes.array
 	}
 
 	constructor(props) {
@@ -174,18 +173,13 @@ class RoomActionsView extends React.Component {
 	canAddUser = async() => {
 		const { room, joined } = this.state;
 		const {
-			addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission, addTeamMemberPermission
+			addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission
 		} = this.props;
 		const { rid, t } = room;
 		let canAddUser = false;
-		let permissions;
 
 		const userInRoom = joined;
-		if (room.teamMain) {
-			permissions = await RocketChat.hasPermission([addTeamMemberPermission], rid);
-		} else {
-			permissions = await RocketChat.hasPermission([addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission], rid);
-		}
+		const permissions = await RocketChat.hasPermission([addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission], rid);
 
 		if (userInRoom && permissions[0]) {
 			canAddUser = true;
@@ -329,20 +323,6 @@ class RoomActionsView extends React.Component {
 		try {
 			setLoadingInvite(true);
 			await RocketChat.addUsersToRoom(rid);
-			navigation.pop();
-		} catch (e) {
-			log(e);
-		} finally {
-			setLoadingInvite(false);
-		}
-	}
-
-	addMemberToTeam = async() => {
-		const { room } = this.state;
-		const { setLoadingInvite, navigation } = this.props;
-		try {
-			setLoadingInvite(true);
-			await RocketChat.addTeamMember(room.name);
 			navigation.pop();
 		} catch (e) {
 			log(e);
@@ -699,7 +679,7 @@ class RoomActionsView extends React.Component {
 											params: {
 												rid,
 												title: I18n.t('Add_users'),
-												nextAction: room.teamId ? this.addMemberToTeam : this.addUser
+												nextAction: this.addUser
 											}
 										})}
 										testID='room-actions-add-user'
@@ -952,7 +932,6 @@ const mapStateToProps = state => ({
 	serverVersion: state.server.version,
 	isMasterDetail: state.app.isMasterDetail,
 	addUserToJoinedRoomPermission: state.permissions['add-user-to-joined-room'],
-	addTeamMemberPermission: state.permissions['add-team-member'],
 	addUserToAnyCRoomPermission: state.permissions['add-user-to-any-c-room'],
 	addUserToAnyPRoomPermission: state.permissions['add-user-to-any-p-room'],
 	createInviteLinksPermission: state.permissions['create-invite-links'],

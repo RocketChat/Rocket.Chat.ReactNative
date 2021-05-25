@@ -773,15 +773,13 @@ const RocketChat = {
 		// RC 3.13.0
 		return this.post('teams.leave', { teamName, rooms });
 	},
-	addTeamMember(teamName) {
-		const { users } = reduxStore.getState().selectedUsers;
-		const members = users.map(u => ({ userId: u._id, roles: ['member'] }));
+	removeTeamMember({
+		teamId, teamName, userId, rooms
+	}) {
 		// RC 3.13.0
-		return this.post('teams.addMembers', { teamName, members });
-	},
-	removeTeamMember({ teamName, userId }) {
-		// RC 3.13.0
-		return this.post('teams.removeMember', { teamName, userId });
+		return this.post('teams.removeMember', {
+			teamId, teamName, userId, rooms
+		});
 	},
 	updateTeamRoom({ roomId, isDefault }) {
 		// RC 3.13.0

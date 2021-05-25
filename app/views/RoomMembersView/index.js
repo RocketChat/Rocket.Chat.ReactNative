@@ -177,7 +177,7 @@ class RoomMembersView extends React.Component {
 		);
 		if (teamChannels) {
 			navigation.navigate('SelectListView', {
-				title: 'Remove_Member', subtitle: 'Remove_User_Teams', teamChannels, selectedUser
+				title: 'Remove_Member', infoText: 'Remove_User_Teams', data: teamChannels, nextAction: (selectedChannels = {}) => this.removeFromTeam({ selectedUser, selectedChannels })
 			});
 		} else {
 			Alert.alert(
@@ -199,11 +199,17 @@ class RoomMembersView extends React.Component {
 		}
 	}
 
-	removeFromTeam = async(selectedUser) => {
+	removeFromTeam = async(params) => {
 		try {
 			const { members, membersFiltered, room } = this.state;
+			const { selectedUser, selected } = params;
 			const userId = selectedUser._id;
-			const result = await RocketChat.removeTeamMember({ teamName: room.name, userId });
+			const result = await RocketChat.removeTeamMember({
+				teamId: room.teamId,
+				teamName: room.name,
+				userId,
+				...(selected && { rooms: selected })
+			});
 			if (result.success) {
 				const message = I18n.t('User_has_been_removed_from_s', { s: RocketChat.getRoomTitle(room) });
 				EventEmitter.emit(LISTENER, { message });
