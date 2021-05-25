@@ -431,7 +431,7 @@ class RoomActionsView extends React.Component {
 			log(e);
 			Alert.alert(
 				I18n.t('Cannot_leave'),
-				e.data.error ? I18n.t(e.data.error) : I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_team') }),
+				e.data?.error ? I18n.t(e.data.error) : I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_team') }),
 				[
 					{
 						text: 'OK',
