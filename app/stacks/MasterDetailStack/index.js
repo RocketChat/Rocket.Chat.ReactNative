@@ -63,6 +63,7 @@ import ShareView from '../../views/ShareView';
 import QueueListView from '../../ee/omnichannel/views/QueueListView';
 import AddChannelTeamView from '../../views/AddChannelTeamView';
 import AddExistingChannelView from '../../views/AddExistingChannelView';
+import SelectListView from '../../views/SelectListView';
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator();
@@ -118,6 +119,11 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 					name='RoomInfoView'
 					component={RoomInfoView}
 					options={RoomInfoView.navigationOptions}
+				/>
+				<ModalStack.Screen
+					name='SelectListView'
+					component={SelectListView}
+					options={SelectListView.navigationOptions}
 				/>
 				<ModalStack.Screen
 					name='RoomInfoEditView'

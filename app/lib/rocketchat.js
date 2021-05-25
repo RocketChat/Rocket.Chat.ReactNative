@@ -769,6 +769,10 @@ const RocketChat = {
 		// RC 3.13.0
 		return this.post('teams.removeRoom', { roomId, teamId });
 	},
+	leaveTeam({ teamName, rooms }) {
+		// RC 3.13.0
+		return this.post('teams.leave', { teamName, rooms });
+	},
 	updateTeamRoom({ roomId, isDefault }) {
 		// RC 3.13.0
 		return this.post('teams.updateRoom', { roomId, isDefault });
