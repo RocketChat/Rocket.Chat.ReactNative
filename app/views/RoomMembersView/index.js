@@ -26,6 +26,7 @@ import { withActionSheet } from '../../containers/ActionSheet';
 import { showConfirmationAlert } from '../../utils/info';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
+import { CustomIcon } from '../../lib/Icons';
 
 const PAGE_SIZE = 25;
 
@@ -221,7 +222,7 @@ class RoomMembersView extends React.Component {
 
 	onPressUser = (selectedUser) => {
 		const { room } = this.state;
-		const { showActionSheet, user } = this.props;
+		const { showActionSheet, user, theme } = this.props;
 
 		const options = [{
 			icon: 'message',
@@ -275,8 +276,9 @@ class RoomMembersView extends React.Component {
 			const isOwner = userRoleResult?.roles.includes('owner');
 			options.push({
 				icon: 'shield-check',
-				title: I18n.t(isOwner ? 'Remove_as_owner' : 'Set_as_owner'),
-				onPress: () => this.handleOwner(selectedUser, !isOwner)
+				title: I18n.t('Owner'),
+				onPress: () => this.handleOwner(selectedUser, !isOwner),
+				right: () => <CustomIcon name={isOwner ? 'checkbox-checked' : 'checkbox-unchecked'} size={20} color={isOwner ? themes[theme].tintActive : themes[theme].auxiliaryTintColor} />
 			});
 		}
 
@@ -286,8 +288,9 @@ class RoomMembersView extends React.Component {
 			const isLeader = userRoleResult?.roles.includes('leader');
 			options.push({
 				icon: 'shield-alt',
-				title: I18n.t(isLeader ? 'Remove_as_leader' : 'Set_as_leader'),
-				onPress: () => this.handleLeader(selectedUser, !isLeader)
+				title: I18n.t('Leader'),
+				onPress: () => this.handleLeader(selectedUser, !isLeader),
+				right: () => <CustomIcon name={isLeader ? 'checkbox-checked' : 'checkbox-unchecked'} size={20} color={isLeader ? themes[theme].tintActive : themes[theme].auxiliaryTintColor} />
 			});
 		}
 
@@ -297,8 +300,9 @@ class RoomMembersView extends React.Component {
 			const isModerator = userRoleResult?.roles.includes('moderator');
 			options.push({
 				icon: 'shield',
-				title: I18n.t(isModerator ? 'Remove_as_moderator' : 'Set_as_moderator'),
-				onPress: () => this.handleModerator(selectedUser, !isModerator)
+				title: I18n.t('Moderator'),
+				onPress: () => this.handleModerator(selectedUser, !isModerator),
+				right: () => <CustomIcon name={isModerator ? 'checkbox-checked' : 'checkbox-unchecked'} size={20} color={isModerator ? themes[theme].tintActive : themes[theme].auxiliaryTintColor} />
 			});
 		}
 
