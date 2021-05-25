@@ -444,7 +444,7 @@ class RoomActionsView extends React.Component {
 
 			if (result.success) {
 				if (isMasterDetail) {
-					navigation.popToTop();
+					navigation.navigate('DrawerNavigator');
 				} else {
 					navigation.navigate('RoomsListView');
 				}
@@ -464,7 +464,7 @@ class RoomActionsView extends React.Component {
 		}
 	}
 
-	showNoLeaveTeamAlert = () => {
+	showErrorAlert = () => {
 		Alert.alert(
 			I18n.t('Cannot_leave'),
 			I18n.t('Last_owner_team_room'),
@@ -472,6 +472,25 @@ class RoomActionsView extends React.Component {
 				{
 					text: 'OK',
 					style: 'cancel'
+				}
+			]
+		);
+	}
+
+	showConfirmationAlert = () => {
+		const { room } = this.state;
+		Alert.alert(
+			I18n.t('Confirmation'),
+			I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
+			[
+				{
+					text: I18n.t('Cancel'),
+					style: 'cancel'
+				},
+				{
+					text: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
+					style: 'destructive',
+					onPress: () => this.handleLeaveTeam()
 				}
 			]
 		);
@@ -491,24 +510,10 @@ class RoomActionsView extends React.Component {
 
 			if (teamChannels.length) {
 				navigation.navigate('SelectListView', {
-					title: 'Leave_Team', room, data: teamChannels, infoText: 'Select_Team_Channels', nextAction: data => this.handleLeaveTeam(data), showAlert: () => this.showNoLeaveTeamAlert()
+					title: 'Leave_Team', data: teamChannels, infoText: 'Select_Team_Channels', nextAction: data => this.handleLeaveTeam(data), showAlert: () => this.showErrorAlert()
 				});
 			} else {
-				Alert.alert(
-					I18n.t('Confirmation'),
-					I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
-					[
-						{
-							text: I18n.t('Cancel'),
-							style: 'cancel'
-						},
-						{
-							text: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-							style: 'destructive',
-							onPress: () => this.handleLeaveTeam()
-						}
-					]
-				);
+				this.showConfirmationAlert();
 			}
 		} catch (e) {
 			log(e);
@@ -671,7 +676,7 @@ class RoomActionsView extends React.Component {
 				<List.Section>
 					<List.Separator />
 					<List.Item
-						title={room.teamMain ? 'Leave' : 'Leave_channel'}
+						title='Leave'
 						onPress={() => this.onPressTouchable({
 							event: room.teamMain ? this.leaveTeam : this.leaveChannel
 						})}
