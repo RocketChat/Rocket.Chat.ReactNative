@@ -35,6 +35,7 @@ const API_FETCH_COUNT = 25;
 const PERMISSION_DELETE_C = 'delete-c';
 const PERMISSION_DELETE_P = 'delete-p';
 const PERMISSION_EDIT_TEAM_CHANNEL = 'edit-team-channel';
+const PERMISSION_REMOVE_TEAM_CHANNEL = 'remove-team-channel';
 const PERMISSION_ADD_TEAM_CHANNEL = 'add-team-channel';
 
 
@@ -57,6 +58,7 @@ class TeamChannelsView extends React.Component {
 		StoreLastMessage: PropTypes.bool,
 		addTeamChannelPermission: PropTypes.array,
 		editTeamChannelPermission: PropTypes.array,
+		removeTeamChannelPermission: PropTypes.array,
 		deleteCPermission: PropTypes.array,
 		deletePPermission: PropTypes.array,
 		showActionSheet: PropTypes.func,
@@ -372,14 +374,14 @@ class TeamChannelsView extends React.Component {
 	showChannelActions = async(item) => {
 		logEvent(events.ROOM_SHOW_BOX_ACTIONS);
 		const {
-			showActionSheet, editTeamChannelPermission, deleteCPermission,
-			deletePPermission, theme
+			showActionSheet, editTeamChannelPermission, deleteCPermission, deletePPermission, theme, removeTeamChannelPermission
 		} = this.props;
 		const isAutoJoinChecked = item.teamDefault;
 		const autoJoinIcon = isAutoJoinChecked ? 'checkbox-checked' : 'checkbox-unchecked';
 		const autoJoinIconColor = isAutoJoinChecked ? themes[theme].tintActive : themes[theme].auxiliaryTintColor;
 
 		const options = [];
+
 		const permissionsTeam = await RocketChat.hasPermission([editTeamChannelPermission], this.team.rid);
 		if (permissionsTeam[0]) {
 			options.push({
@@ -388,8 +390,12 @@ class TeamChannelsView extends React.Component {
 				icon: item.t === 'p' ? 'channel-private' : 'channel-public',
 				onPress: () => this.toggleAutoJoin(item),
 				right: () => <CustomIcon name={autoJoinIcon} size={20} color={autoJoinIconColor} />
-			},
-			{
+			});
+		}
+
+		const permissionsRemoveTeam = await RocketChat.hasPermission([removeTeamChannelPermission], this.team.rid);
+		if (permissionsRemoveTeam[0]) {
+			options.push({
 				name: 'Remove_from_Team',
 				title: I18n.t('Remove_from_Team'),
 				icon: 'close',
@@ -397,6 +403,7 @@ class TeamChannelsView extends React.Component {
 				onPress: () => this.remove(item)
 			});
 		}
+
 		const permissionsChannel = await RocketChat.hasPermission([item.t === 'c' ? deleteCPermission : deletePPermission], item._id);
 		if (permissionsChannel[0]) {
 			options.push({
@@ -497,6 +504,7 @@ const mapStateToProps = state => ({
 	StoreLastMessage: state.settings.Store_Last_Message,
 	addTeamChannelPermission: state.permissions[PERMISSION_ADD_TEAM_CHANNEL],
 	editTeamChannelPermission: state.permissions[PERMISSION_EDIT_TEAM_CHANNEL],
+	removeTeamChannelPermission: state.permissions[PERMISSION_REMOVE_TEAM_CHANNEL],
 	deleteCPermission: state.permissions[PERMISSION_DELETE_C],
 	deletePPermission: state.permissions[PERMISSION_DELETE_P]
 });
