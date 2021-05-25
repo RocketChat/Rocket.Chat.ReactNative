@@ -430,54 +430,33 @@ class RoomActionsView extends React.Component {
 		const { room } = this.state;
 		const { leaveRoom } = this.props;
 
-		Alert.alert(
-			I18n.t('Are_you_sure_question_mark'),
-			I18n.t('Are_you_sure_you_want_to_leave_the_room', { room: RocketChat.getRoomTitle(room) }),
-			[
-				{
-					text: I18n.t('Cancel'),
-					style: 'cancel'
-				},
-				{
-					text: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-					style: 'destructive',
-					onPress: () => leaveRoom(room.rid, room.t)
-				}
-			]
-		);
+		showConfirmationAlert({
+			message: I18n.t('Are_you_sure_you_want_to_leave_the_room', { room: RocketChat.getRoomTitle(room) }),
+			confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
+			onPress: () => leaveRoom(room.rid, room.t)
+		});
 	}
 
 	handleLeaveTeam = async(selected) => {
-		const { room } = this.state;
 		try {
+			const { room } = this.state;
 			const { navigation, isMasterDetail } = this.props;
-			const result = await RocketChat.leaveTeam({ teamName: room.name });
+			const result = await RocketChat.leaveTeam({ teamName: room.name, ...(selected && { rooms: selected }) });
 
-			if (selected) {
-				try {
-					selected.map(item => RocketChat.leaveRoom(item.rid, item.t));
-				} catch (e) {
-					log(e);
-				}
-			}
 			if (result.success) {
 				if (isMasterDetail) {
-					navigation.popToTop();
+					navigation.navigate('DrawerNavigator');
 				} else {
 					navigation.navigate('RoomsListView');
 				}
 			}
 		} catch (e) {
 			log(e);
-			Alert.alert(
-				I18n.t('Cannot_leave'),
-				e.data?.error ? I18n.t(e.data.error) : I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_team') }),
-				[
-					{
-						text: 'OK',
-						style: 'cancel'
-					}
-				]
+			showErrorAlert(
+				e.data.error
+					? I18n.t(e.data.error)
+					: I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_team') }),
+				I18n.t('Cannot_leave')
 			);
 		}
 	}
@@ -496,24 +475,18 @@ class RoomActionsView extends React.Component {
 
 			if (teamChannels.length) {
 				navigation.navigate('SelectListView', {
-					title: 'Leave_Team', room, data: teamChannels, subtitle: 'Select_Teams', nextAction: data => this.handleLeaveTeam(data)
+					title: 'Leave_Team',
+					data: teamChannels,
+					infoText: 'Select_Team_Channels',
+					nextAction: data => this.handleLeaveTeam(data),
+					showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_leave'))
 				});
 			} else {
-				Alert.alert(
-					I18n.t('Confirmation'),
-					I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
-					[
-						{
-							text: I18n.t('Cancel'),
-							style: 'cancel'
-						},
-						{
-							text: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-							style: 'destructive',
-							onPress: () => this.handleLeaveTeam(room.name)
-						}
-					]
-				);
+				showConfirmationAlert({
+					message: I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
+					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
+					onPress: () => this.handleLeaveTeam()
+				});
 			}
 		} catch (e) {
 			log(e);
@@ -676,7 +649,7 @@ class RoomActionsView extends React.Component {
 				<List.Section>
 					<List.Separator />
 					<List.Item
-						title={room.teamMain ? 'Leave' : 'Leave_channel'}
+						title='Leave'
 						onPress={() => this.onPressTouchable({
 							event: room.teamMain ? this.leaveTeam : this.leaveChannel
 						})}

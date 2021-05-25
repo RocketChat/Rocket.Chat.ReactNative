@@ -20,9 +20,19 @@ stories.add('title and subtitle', () => (
 		<List.Separator />
 		<List.Item title={longText} subtitle={longText} translateTitle={false} translateSubtitle={false} testID='test-id' />
 		<List.Separator />
-		<List.Item title={longText} subtitle={longText} translateTitle={false} translateSubtitle={false} testID='test-id' alert='info' />
+	</List.Container>
+));
+
+stories.add('alert', () => (
+	<List.Container>
 		<List.Separator />
-		<List.Item title={longText} subtitle={longText} translateTitle={false} translateSubtitle={false} testID='test-id' alert='info' right={() => <List.Icon name='emoji' />} />
+		<List.Item title='Chats' alert />
+		<List.Separator />
+		<List.Item title={longText} translateTitle={false} translateSubtitle={false} alert />
+		<List.Separator />
+		<List.Item title='Chats' right={() => <List.Icon name='emoji' />} alert />
+		<List.Separator />
+		<List.Item title={longText} translateTitle={false} translateSubtitle={false} right={() => <List.Icon name='emoji' />} alert />
 		<List.Separator />
 	</List.Container>
 ));
