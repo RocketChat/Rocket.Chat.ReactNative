@@ -100,7 +100,7 @@ class RoomMembersView extends React.Component {
 		} = this.props;
 
 		const result = await RocketChat.hasPermission([
-			muteUserPermission, setLeaderPermission, setOwnerPermission, setModeratorPermission, removeUserPermission, ...(room.TeamId && [editTeamMemberPermission])
+			muteUserPermission, setLeaderPermission, setOwnerPermission, setModeratorPermission, removeUserPermission, ...(room.teamMain ? [editTeamMemberPermission] : [])
 		], room.rid);
 
 		this.permissions = {
@@ -109,7 +109,7 @@ class RoomMembersView extends React.Component {
 			[PERMISSION_SET_OWNER]: result[2],
 			[PERMISSION_SET_MODERATOR]: result[3],
 			[PERMISSION_REMOVE_USER]: result[4],
-			...(room.teamId && { [PERMISSION_EDIT_TEAM_MEMBER]: result[5] })
+			...(room.teamMain ? { [PERMISSION_EDIT_TEAM_MEMBER]: result[5] } : {})
 		};
 
 		const hasSinglePermission = Object.values(this.permissions).some(p => !!p);
@@ -191,6 +191,7 @@ class RoomMembersView extends React.Component {
 	removeFromTeam = async(params) => {
 		try {
 			const { members, membersFiltered, room } = this.state;
+			const { navigation } = this.props;
 			const { selectedUser, selected } = params;
 			const userId = selectedUser._id;
 			const result = await RocketChat.removeTeamMember({
@@ -208,6 +209,7 @@ class RoomMembersView extends React.Component {
 					members: newMembers,
 					membersFiltered: newMembersFiltered
 				});
+				navigation.goBack();
 			}
 		} catch (e) {
 			log(e);
@@ -298,7 +300,7 @@ class RoomMembersView extends React.Component {
 		}
 
 		// Remove from room
-		if (this.permissions['remove-user']) {
+		if (this.permissions['remove-user'] && !room.teamMain) {
 			options.push({
 				icon: 'logout',
 				title: I18n.t('Remove_from_room'),
@@ -539,7 +541,7 @@ const mapStateToProps = state => ({
 	setOwnerPermission: state.permissions[PERMISSION_SET_OWNER],
 	setModeratorPermission: state.permissions[PERMISSION_SET_MODERATOR],
 	removeUserPermission: state.permissions[PERMISSION_REMOVE_USER],
-	editTeamMemberPermission: state.permissions['edit-team-member']
+	editTeamMemberPermission: state.permissions[PERMISSION_EDIT_TEAM_MEMBER]
 });
 
 export default connect(mapStateToProps)(withActionSheet(withTheme(RoomMembersView)));
