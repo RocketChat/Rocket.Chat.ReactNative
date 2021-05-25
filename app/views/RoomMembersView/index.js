@@ -174,7 +174,8 @@ class RoomMembersView extends React.Component {
 		const db = database.active;
 		const subCollection = db.get('subscriptions');
 		const teamChannels = await subCollection.query(
-			Q.where('team_id', Q.eq(room.teamId))
+			Q.where('team_id', room.teamId),
+			Q.where('team_main', null)
 		);
 		if (teamChannels) {
 			navigation.navigate('SelectListView', {
@@ -260,16 +261,6 @@ class RoomMembersView extends React.Component {
 			});
 		}
 
-		// Remove from team
-		if (this.permissions['edit-team-member']) {
-			options.push({
-				icon: 'close',
-				danger: true,
-				title: I18n.t('Remove_from_Team'),
-				onPress: () => this.handleRemoveFromTeam(selectedUser)
-			});
-		}
-
 		// Owner
 		if (this.permissions['set-owner']) {
 			const userRoleResult = this.roomRoles.find(r => r.u._id === selectedUser._id);
@@ -303,6 +294,16 @@ class RoomMembersView extends React.Component {
 				title: I18n.t('Moderator'),
 				onPress: () => this.handleModerator(selectedUser, !isModerator),
 				right: () => <CustomIcon name={isModerator ? 'checkbox-checked' : 'checkbox-unchecked'} size={20} color={isModerator ? themes[theme].tintActive : themes[theme].auxiliaryTintColor} />
+			});
+		}
+
+		// Remove from team
+		if (this.permissions['edit-team-member']) {
+			options.push({
+				icon: 'logout',
+				danger: true,
+				title: I18n.t('Remove_from_Team'),
+				onPress: () => this.handleRemoveFromTeam(selectedUser)
 			});
 		}
 
