@@ -945,7 +945,13 @@ const RocketChat = {
 		if (API_Use_REST_For_DDP_Calls) {
 			return this.post(`method.call/${ method }`, { message: EJSON.stringify({ method, params }) });
 		}
-		return this.methodCall(method, ...params);
+		const parsedParams = params.map((param) => {
+			if (param instanceof Date) {
+				return { $date: new Date(param).getTime() };
+			}
+			return param;
+		});
+		return this.methodCall(method, ...parsedParams);
 	},
 
 	getUserRoles() {
