@@ -3,7 +3,6 @@ import React from 'react';
 import { ScrollView, Dimensions } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 import { Provider } from 'react-redux';
-// import moment from 'moment';
 
 import { themes } from '../../app/constants/colors';
 import RoomItemComponent from '../../app/presentation/RoomItem/RoomItem';
@@ -91,6 +90,15 @@ stories.add('Alerts', () => (
 		<RoomItem name='user mentions priority 1' alert unread={1} userMentions={1} groupMentions={1} tunread={[1]} />
 		<RoomItem name='group mentions priority 2' alert unread={1} groupMentions={1} tunread={[1]} />
 		<RoomItem name='thread unread priority 3' alert unread={1} tunread={[1]} />
+	</>
+));
+
+stories.add('Tag', () => (
+	<>
+		<RoomItem autoJoin />
+		<RoomItem showLastMessage autoJoin />
+		<RoomItem name={longText} autoJoin />
+		<RoomItem name={longText} autoJoin showLastMessage />
 	</>
 ));
 

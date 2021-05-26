@@ -60,7 +60,7 @@ class NewMessageView extends React.Component {
 			id: PropTypes.string,
 			token: PropTypes.string
 		}),
-		createChannel: PropTypes.func,
+		create: PropTypes.func,
 		maxUsers: PropTypes.number,
 		theme: PropTypes.string,
 		isMasterDetail: PropTypes.bool
@@ -116,11 +116,17 @@ class NewMessageView extends React.Component {
 		navigation.navigate('SelectedUsersViewCreateChannel', { nextAction: () => navigation.navigate('CreateChannelView') });
 	}
 
+	createTeam = () => {
+		logEvent(events.NEW_MSG_CREATE_TEAM);
+		const { navigation } = this.props;
+		navigation.navigate('SelectedUsersViewCreateChannel', { nextAction: () => navigation.navigate('CreateChannelView', { isTeam: true }) });
+	}
+
 	createGroupChat = () => {
 		logEvent(events.NEW_MSG_CREATE_GROUP_CHAT);
-		const { createChannel, maxUsers, navigation } = this.props;
+		const { create, maxUsers, navigation } = this.props;
 		navigation.navigate('SelectedUsersViewCreateChannel', {
-			nextAction: () => createChannel({ group: true }),
+			nextAction: () => create({ group: true }),
 			buttonText: I18n.t('Create'),
 			maxUsers
 		});
@@ -171,6 +177,12 @@ class NewMessageView extends React.Component {
 						icon: 'channel-public',
 						testID: 'new-message-view-create-channel',
 						first: true
+					})}
+					{this.renderButton({
+						onPress: this.createTeam,
+						title: I18n.t('Create_Team'),
+						icon: 'teams',
+						testID: 'new-message-view-create-team'
 					})}
 					{maxUsers > 2 ? this.renderButton({
 						onPress: this.createGroupChat,
@@ -253,7 +265,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	createChannel: params => dispatch(createChannelRequest(params))
+	create: params => dispatch(createChannelRequest(params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(NewMessageView));
