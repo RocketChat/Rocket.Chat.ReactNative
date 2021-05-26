@@ -176,15 +176,6 @@ class RoomMembersView extends React.Component {
 		}
 	}
 
-	fetchChannelsRoles = async(room) => {
-		try {
-			const result = await RocketChat.getRoomRoles(room.rid, room.t);
-			return result.roles;
-		} catch (e) {
-			log(e);
-		}
-	}
-
 	handleRemoveFromTeam = async(selectedUser) => {
 		try {
 			const { navigation } = this.props;
