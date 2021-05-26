@@ -38,7 +38,9 @@ import { MESSAGE_TYPE_ANY_LOAD, MESSAGE_TYPE_LOAD_MORE } from '../../constants/m
 import debounce from '../../utils/debounce';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
-import { getBadgeColor, isBlocked, makeThreadName } from '../../utils/room';
+import {
+	getBadgeColor, isBlocked, makeThreadName, isTeamRoom
+} from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
 import { showErrorAlert } from '../../utils/info';
@@ -318,7 +320,7 @@ class RoomView extends React.Component {
 
 	setHeader = () => {
 		const {
-			room, unreadsCount, roomUserId
+			room, unreadsCount, roomUserId, joined
 		} = this.state;
 		const {
 			navigation, isMasterDetail, theme, baseUrl, user, insets, route
@@ -348,7 +350,7 @@ class RoomView extends React.Component {
 		let numIconsRight = 2;
 		if (tmid) {
 			numIconsRight = 1;
-		} else if (teamId) {
+		} else if (isTeamRoom({ teamId, joined })) {
 			numIconsRight = 3;
 		}
 		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight });
@@ -397,6 +399,8 @@ class RoomView extends React.Component {
 					rid={rid}
 					tmid={tmid}
 					teamId={teamId}
+					teamMain={teamMain}
+					joined={joined}
 					t={t}
 					navigation={navigation}
 					toggleFollowThread={this.toggleFollowThread}
