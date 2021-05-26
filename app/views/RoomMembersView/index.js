@@ -205,20 +205,18 @@ class RoomMembersView extends React.Component {
 				});
 			}
 		} catch (e) {
-			log(e);
-			showErrorAlert(
-				e.data.error
-					? I18n.t(e.data.error)
-					: I18n.t('There_was_an_error_while_action', { action: I18n.t('removing_team') }),
-				I18n.t('Cannot_remove')
-			);
+			showConfirmationAlert({
+				message: I18n.t('Removing_user_from_this_team', { user: selectedUser.username }),
+				confirmationText: I18n.t('Yes_action_it', { action: I18n.t('remove') }),
+				onPress: () => this.removeFromTeam(selectedUser)
+			});
 		}
 	}
 
 	removeFromTeam = async(selectedUser, selected) => {
 		try {
 			const { members, membersFiltered, room } = this.state;
-			const { navigation, isMasterDetail } = this.props;
+			const { navigation } = this.props;
 
 			const userId = selectedUser._id;
 			const result = await RocketChat.removeTeamMember({
@@ -236,11 +234,7 @@ class RoomMembersView extends React.Component {
 					members: newMembers,
 					membersFiltered: newMembersFiltered
 				});
-				if (isMasterDetail) {
-					navigation.navigate('RoomMembersView');
-				} else {
-					navigation.goBack();
-				}
+				navigation.navigate('RoomMembersView');
 			}
 		} catch (e) {
 			log(e);

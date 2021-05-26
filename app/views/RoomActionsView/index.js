@@ -456,7 +456,11 @@ class RoomActionsView extends React.Component {
 				});
 			}
 		} catch (e) {
-			log(e);
+			showConfirmationAlert({
+				message: I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
+				confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
+				onPress: () => this.handleLeaveTeam()
+			});
 		}
 	}
 
