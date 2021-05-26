@@ -225,7 +225,7 @@ class ListContainer extends React.Component {
 		if (messages.length) {
 			try {
 				if (tmid) {
-					await RocketChat.loadThreadMessages({ tmid, rid, offset: messages.length - 1 });
+					await RocketChat.loadThreadMessages({ tmid, rid });
 				} else {
 					await RocketChat.loadMissedMessages({ rid, lastOpen: moment().subtract(7, 'days').toDate() });
 				}

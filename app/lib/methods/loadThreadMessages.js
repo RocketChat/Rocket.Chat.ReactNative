@@ -11,10 +11,6 @@ import { Encryption } from '../encryption';
 async function load({ tmid }) {
 	try {
 		// RC 1.0
-		// const result = await this.sdk.get('chat.getThreadMessages', {
-		// 	tmid, count: COUNT, offset, sort: { ts: -1 }, query: { _hidden: { $ne: true } }
-		// });
-		// RC 1.0
 		const result = await this.methodCallWrapper('getThreadMessages', { tmid });
 		if (!result) {
 			return [];
