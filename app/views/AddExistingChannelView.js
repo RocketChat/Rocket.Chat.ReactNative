@@ -17,9 +17,10 @@ import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
+import Loading from '../containers/Loading';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { goRoom } from '../utils/goRoom';
-import Loading from '../containers/Loading';
+import debounce from '../utils/debounce';
 
 const QUERY_SIZE = 50;
 
@@ -34,7 +35,7 @@ class AddExistingChannelView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.init();
+		this.query();
 		this.teamId = props.route?.params?.teamId;
 		this.state = {
 			search: [],
@@ -66,7 +67,7 @@ class AddExistingChannelView extends React.Component {
 		navigation.setOptions(options);
 	}
 
-	init = async() => {
+	query = async(stringToSearch = '') => {
 		try {
 			const { addTeamChannelPermission } = this.props;
 			const db = database.active;
@@ -75,37 +76,40 @@ class AddExistingChannelView extends React.Component {
 				.query(
 					Q.where('team_id', ''),
 					Q.where('t', Q.oneOf(['c', 'p'])),
+					Q.where('name', Q.like(`%${ stringToSearch }%`)),
 					Q.experimentalTake(QUERY_SIZE),
 					Q.experimentalSortBy('room_updated_at', Q.desc)
 				)
 				.fetch();
-			const filteredChannels = channels.filter(async(channel) => {
-				const permissions = await RocketChat.hasPermission([addTeamChannelPermission], channel.rid);
-				if (!permissions[0]) {
-					return;
-				}
-				return channel;
-			});
-			this.setState({ channels: filteredChannels });
+
+			const asyncFilter = async(channelsArray) => {
+				const results = await Promise.all(channelsArray.map(async(channel) => {
+					if (channel.prid) {
+						return false;
+					}
+					const permissions = await RocketChat.hasPermission([addTeamChannelPermission], channel.rid);
+					if (!permissions[0]) {
+						return false;
+					}
+					return true;
+				}));
+
+				return channelsArray.filter((_v, index) => results[index]);
+			};
+			const channelFiltered = await asyncFilter(channels);
+			this.setState({ channels: channelFiltered });
 		} catch (e) {
 			log(e);
 		}
 	}
 
-	onSearchChangeText(text) {
-		this.search(text);
-	}
+	onSearchChangeText = debounce((text) => {
+		this.query(text);
+	}, 300)
 
 	dismiss = () => {
 		const { navigation } = this.props;
 		return navigation.pop();
-	}
-
-	search = async(text) => {
-		const result = await RocketChat.search({ text, filterUsers: false });
-		this.setState({
-			search: result
-		});
 	}
 
 	submit = async() => {
