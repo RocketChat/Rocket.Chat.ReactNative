@@ -14,9 +14,6 @@ import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import { animateNextTransition } from '../utils/layoutAnimation';
-import Loading from '../containers/Loading';
-import RocketChat from '../lib/rocketchat';
-import log from '../utils/log';
 
 const styles = StyleSheet.create({
 	buttonText: {
@@ -41,11 +38,9 @@ class SelectListView extends React.Component {
 		this.infoText = props.route?.params?.infoText;
 		this.nextAction = props.route?.params?.nextAction;
 		this.showAlert = props.route?.params?.showAlert;
-		this.extraData = props.route?.params?.extraData;
 		this.state = {
 			data,
-			selected: [],
-			loading: true
+			selected: []
 		};
 		this.setHeader();
 	}
@@ -97,21 +92,9 @@ class SelectListView extends React.Component {
 		}
 	}
 
-	fetchUserRoles = async(room, user) => {
-		try {
-			const result = await RocketChat.getRoomRoles(room.rid, room.t);
-			const userRoles = result.roles.find(r => r.u._id === user._id);
-			this.setState({ loading: false });
-			return userRoles;
-		} catch (e) {
-			log(e);
-		}
-	}
-
 	renderItem = ({ item }) => {
 		const { theme } = this.props;
-		const hasRoles = this.fetchUserRoles(item, this.extraData);
-		const alert = this.extraData ? hasRoles : item.roles.length;
+		const alert = item.roles?.length;
 		const icon = item.t === 'p' ? 'channel-private' : 'channel-public';
 		const checked = this.isChecked(item.rid) ? 'check' : null;
 
@@ -132,7 +115,7 @@ class SelectListView extends React.Component {
 	}
 
 	render() {
-		const { loading, data } = this.state;
+		const { data } = this.state;
 		const { theme } = this.props;
 
 		return (
@@ -147,7 +130,6 @@ class SelectListView extends React.Component {
 					contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
 					keyboardShouldPersistTaps='always'
 				/>
-				<Loading visible={loading} />
 			</SafeAreaView>
 		);
 	}

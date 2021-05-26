@@ -168,6 +168,15 @@ class RoomMembersView extends React.Component {
 		}
 	}
 
+	fetchChannelsRoles = async(room) => {
+		try {
+			const result = await RocketChat.getRoomRoles(room.rid, room.t);
+			return result.roles;
+		} catch (e) {
+			log(e);
+		}
+	}
+
 	handleRemoveFromTeam = async(selectedUser) => {
 		const { navigation } = this.props;
 		const { room } = this.state;
@@ -177,12 +186,21 @@ class RoomMembersView extends React.Component {
 			Q.where('team_id', room.teamId),
 			Q.where('team_main', null)
 		);
+		const channels = await Promise.all(teamChannels.map(async(channel) => {
+			const roles = await this.fetchChannelsRoles(channel);
+			const userRoles = roles.find(r => r.u._id === selectedUser._id);
+			return ({
+				rid: channel.rid,
+				name: channel.name,
+				roles: userRoles
+			});
+		}));
+
 		if (teamChannels) {
 			navigation.navigate('SelectListView', {
 				title: 'Remove_Member',
-				infoText: 'Remove_User_Teams',
-				data: teamChannels,
-				extraData: selectedUser,
+				infoText: 'Remove_User_Team_Channels',
+				data: channels,
 				nextAction: selected => this.removeFromTeam(selectedUser, selected),
 				showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_leave'))
 			});
@@ -198,7 +216,7 @@ class RoomMembersView extends React.Component {
 	removeFromTeam = async(selectedUser, selected) => {
 		try {
 			const { members, membersFiltered, room } = this.state;
-			const { navigation } = this.props;
+			const { navigation, isMasterDetail } = this.props;
 
 			const userId = selectedUser._id;
 			const result = await RocketChat.removeTeamMember({
@@ -216,10 +234,20 @@ class RoomMembersView extends React.Component {
 					members: newMembers,
 					membersFiltered: newMembersFiltered
 				});
-				navigation.goBack();
+				if (isMasterDetail) {
+					navigation.navigate('RoomMembersView');
+				} else {
+					navigation.goBack();
+				}
 			}
 		} catch (e) {
 			log(e);
+			showErrorAlert(
+				e.data.error
+					? I18n.t(e.data.error)
+					: I18n.t('There_was_an_error_while_action', { action: I18n.t('removing_team') }),
+				I18n.t('Cannot_remove')
+			);
 		}
 	}
 
