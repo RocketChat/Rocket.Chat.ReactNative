@@ -192,7 +192,7 @@ class RoomMembersView extends React.Component {
 
 			const result = await RocketChat.teamListRoomsOfUser({ teamId: room.teamId, userId: selectedUser._id });
 
-			if (result.success) {
+			if (result.rooms?.length) {
 				const teamChannels = result.rooms.map(r => ({
 					rid: r._id,
 					name: r.name,
