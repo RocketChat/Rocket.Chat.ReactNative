@@ -127,7 +127,7 @@ class MessageContainer extends React.Component {
 		}
 
 		if (onPress) {
-			onPress();
+			return onPress();
 		}
 
 		const { item, isThreadRoom } = this.props;

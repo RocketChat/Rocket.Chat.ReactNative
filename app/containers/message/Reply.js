@@ -147,7 +147,7 @@ const Reply = React.memo(({
 	const onPress = () => {
 		let url = attachment.title_link || attachment.author_link;
 		if (attachment.message_link) {
-			jumpToMessage(attachment.message_link);
+			return jumpToMessage(attachment.message_link);
 		}
 		if (!url) {
 			return;
