@@ -7,6 +7,7 @@ import { MESSAGE_TYPE_LOAD_NEXT_CHUNK, MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK } from '
 import { useTheme } from '../../../theme';
 import Touch from '../../../utils/touch';
 import sharedStyles from '../../Styles';
+import I18n from '../../../i18n';
 
 const styles = StyleSheet.create({
 	button: {
@@ -42,13 +43,12 @@ const LoadMore = ({ load, type, runOnRender }) => {
 		}
 	}, []);
 
-	// I18n
-	let text = 'Load More';
+	let text = 'Load_More';
 	if (type === MESSAGE_TYPE_LOAD_NEXT_CHUNK) {
-		text = 'Load Newer';
+		text = 'Load_Newer';
 	}
 	if (type === MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK) {
-		text = 'Load Older';
+		text = 'Load_Older';
 	}
 
 	return (
@@ -61,7 +61,7 @@ const LoadMore = ({ load, type, runOnRender }) => {
 			{
 				loading
 					? <ActivityIndicator color={themes[theme].auxiliaryText} />
-					: <Text style={[styles.text, { color: themes[theme].titleText }]}>{text}</Text>
+					: <Text style={[styles.text, { color: themes[theme].titleText }]}>{I18n.t(text)}</Text>
 			}
 		</Touch>
 	);

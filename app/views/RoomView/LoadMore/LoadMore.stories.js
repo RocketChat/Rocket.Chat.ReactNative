@@ -48,25 +48,15 @@ const ThemeStory = ({ theme }) => (
 stories
 	.addDecorator(StoryProvider)
 	.addDecorator(MessageDecorator)
-	.add('light theme', () => (
-		<ThemeStory theme='light' />
-	));
+	.add('light theme', () => <ThemeStory theme='light' />);
 
 stories
 	.addDecorator(StoryProvider)
 	.addDecorator(MessageDecorator)
-	.add('dark theme', () => (
-		<>
-			<ThemeStory theme='dark' />
-		</>
-	));
+	.add('dark theme', () => <ThemeStory theme='dark' />);
 
 stories
 	.addDecorator(StoryProvider)
 	.addDecorator(MessageDecorator)
-	.add('black theme', () => (
-		<>
-			<ThemeStory theme='black' />
-		</>
-	));
+	.add('black theme', () => <ThemeStory theme='black' />);
 
