@@ -22,6 +22,7 @@ const PERMISSIONS = [
 	'delete-p',
 	'edit-message',
 	'edit-room',
+	'edit-team-member',
 	'edit-team-channel',
 	'force-delete-message',
 	'mute-user',
