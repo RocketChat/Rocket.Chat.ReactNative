@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, Alert, Share, Switch
+	View, Text, Share, Switch
 } from 'react-native';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
@@ -62,8 +62,7 @@ class RoomActionsView extends React.Component {
 		editRoomPermission: PropTypes.array,
 		toggleRoomE2EEncryptionPermission: PropTypes.array,
 		viewBroadcastMemberListPermission: PropTypes.array,
-		transferLivechatGuestPermission: PropTypes.array,
-		addTeamMemberPermission: PropTypes.array
+		transferLivechatGuestPermission: PropTypes.array
 	}
 
 	constructor(props) {
@@ -173,19 +172,12 @@ class RoomActionsView extends React.Component {
 
 	canAddUser = async() => {
 		const { room, joined } = this.state;
-		const {
-			addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission, addTeamMemberPermission
-		} = this.props;
+		const { addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission } = this.props;
 		const { rid, t } = room;
 		let canAddUser = false;
-		let permissions;
 
 		const userInRoom = joined;
-		if (room.teamMain) {
-			permissions = await RocketChat.hasPermission([addTeamMemberPermission], rid);
-		} else {
-			permissions = await RocketChat.hasPermission([addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission], rid);
-		}
+		const permissions = await RocketChat.hasPermission([addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission], rid);
 
 		if (userInRoom && permissions[0]) {
 			canAddUser = true;
@@ -329,31 +321,6 @@ class RoomActionsView extends React.Component {
 		try {
 			setLoadingInvite(true);
 			await RocketChat.addUsersToRoom(rid);
-			navigation.pop();
-		} catch (e) {
-			log(e);
-			Alert.alert(
-				I18n.t('Confirmation'),
-				I18n.t('Removing_user_from_this_Team'),
-				[
-					{
-						text: I18n.t('OK'),
-						style: 'cancel'
-					}
-				],
-				{ cancelable: false }
-			);
-		} finally {
-			setLoadingInvite(false);
-		}
-	}
-
-	addMemberToTeam = async() => {
-		const { room } = this.state;
-		const { setLoadingInvite, navigation } = this.props;
-		try {
-			setLoadingInvite(true);
-			await RocketChat.addTeamMember(room.name);
 			navigation.pop();
 		} catch (e) {
 			log(e);
@@ -669,7 +636,7 @@ class RoomActionsView extends React.Component {
 			room, membersCount, canViewMembers, canAddUser, canInviteUser, joined, canAutoTranslate, canForwardGuest, canReturnQueue
 		} = this.state;
 		const {
-			rid, t, encrypted
+			rid, t
 		} = room;
 		const isGroupChat = RocketChat.isGroupChat(room);
 
@@ -710,7 +677,7 @@ class RoomActionsView extends React.Component {
 											params: {
 												rid,
 												title: I18n.t('Add_users'),
-												nextAction: room.teamId ? this.addMemberToTeam : this.addUser
+												nextAction: this.addUser
 											}
 										})}
 										testID='room-actions-add-user'
@@ -787,24 +754,6 @@ class RoomActionsView extends React.Component {
 										})}
 										testID='room-actions-starred'
 										left={() => <List.Icon name='star' />}
-										showActionIndicator
-									/>
-									<List.Separator />
-								</>
-							)
-							: null}
-
-						{['c', 'p', 'd'].includes(t)
-							? (
-								<>
-									<List.Item
-										title='Search'
-										onPress={() => this.onPressTouchable({
-											route: 'SearchMessagesView',
-											params: { rid, encrypted }
-										})}
-										testID='room-actions-search'
-										left={() => <List.Icon name='search' />}
 										showActionIndicator
 									/>
 									<List.Separator />
@@ -963,7 +912,6 @@ const mapStateToProps = state => ({
 	serverVersion: state.server.version,
 	isMasterDetail: state.app.isMasterDetail,
 	addUserToJoinedRoomPermission: state.permissions['add-user-to-joined-room'],
-	addTeamMemberPermission: state.permissions['add-team-member'],
 	addUserToAnyCRoomPermission: state.permissions['add-user-to-any-c-room'],
 	addUserToAnyPRoomPermission: state.permissions['add-user-to-any-p-room'],
 	createInviteLinksPermission: state.permissions['create-invite-links'],

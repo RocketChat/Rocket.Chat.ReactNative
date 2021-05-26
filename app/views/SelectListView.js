@@ -14,7 +14,6 @@ import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import { animateNextTransition } from '../utils/layoutAnimation';
-import Loading from '../containers/Loading';
 
 const styles = StyleSheet.create({
 	buttonText: {
@@ -41,8 +40,7 @@ class SelectListView extends React.Component {
 		this.showAlert = props.route?.params?.showAlert;
 		this.state = {
 			data,
-			selected: [],
-			loading: false
+			selected: []
 		};
 		this.setHeader();
 	}
@@ -96,10 +94,9 @@ class SelectListView extends React.Component {
 
 	renderItem = ({ item }) => {
 		const { theme } = this.props;
-		const alert = item.roles.length;
-
+		const alert = item.roles?.length;
 		const icon = item.t === 'p' ? 'channel-private' : 'channel-public';
-		const checked = this.isChecked(item.rid, item.roles) ? 'check' : null;
+		const checked = this.isChecked(item.rid) ? 'check' : null;
 
 		return (
 			<>
@@ -118,7 +115,7 @@ class SelectListView extends React.Component {
 	}
 
 	render() {
-		const { loading, data } = this.state;
+		const { data } = this.state;
 		const { theme } = this.props;
 
 		return (
@@ -133,7 +130,6 @@ class SelectListView extends React.Component {
 					contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
 					keyboardShouldPersistTaps='always'
 				/>
-				<Loading visible={loading} />
 			</SafeAreaView>
 		);
 	}
