@@ -1,5 +1,6 @@
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import EJSON from 'ejson';
 
 import buildMessage from './helpers/buildMessage';
 import database from '../database';
@@ -7,30 +8,27 @@ import log from '../../utils/log';
 import protectedFunction from './helpers/protectedFunction';
 import { Encryption } from '../encryption';
 
-async function load({ tmid, offset }) {
+async function load({ tmid }) {
 	try {
 		// RC 1.0
-		const result = await this.sdk.get('chat.getThreadMessages', {
-			tmid, count: 50, offset, sort: { ts: -1 }, query: { _hidden: { $ne: true } }
-		});
-		if (!result || !result.success) {
+		const result = await this.methodCallWrapper('getThreadMessages', { tmid });
+		if (!result) {
 			return [];
 		}
-		return result.messages;
+		return EJSON.fromJSONValue(result);
 	} catch (error) {
 		console.log(error);
 		return [];
 	}
 }
 
-export default function loadThreadMessages({ tmid, rid, offset = 0 }) {
+export default function loadThreadMessages({ tmid, rid }) {
 	return new Promise(async(resolve, reject) => {
 		try {
-			let data = await load.call(this, { tmid, offset });
-
+			let data = await load.call(this, { tmid });
 			if (data && data.length) {
 				try {
-					data = data.map(m => buildMessage(m));
+					data = data.filter(m => m.tmid).map(m => buildMessage(m));
 					data = await Encryption.decryptMessages(data);
 					const db = database.active;
 					const threadMessagesCollection = db.get('thread_messages');

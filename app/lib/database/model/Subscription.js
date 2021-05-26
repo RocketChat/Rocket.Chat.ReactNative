@@ -4,8 +4,10 @@ import {
 } from '@nozbe/watermelondb/decorators';
 import { sanitizer } from '../utils';
 
+export const TABLE_NAME = 'subscriptions';
+
 export default class Subscription extends Model {
-	static table = 'subscriptions';
+	static table = TABLE_NAME;
 
 	static associations = {
 		messages: { type: 'has_many', foreignKey: 'rid' },
