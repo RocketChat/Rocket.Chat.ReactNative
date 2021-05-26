@@ -23,7 +23,7 @@ import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
 import { getUserSelector } from '../../selectors/login';
 import { withActionSheet } from '../../containers/ActionSheet';
-import { showConfirmationAlert } from '../../utils/info';
+import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
 import { CustomIcon } from '../../lib/Icons';
@@ -182,22 +182,24 @@ class RoomMembersView extends React.Component {
 				title: 'Remove_Member',
 				infoText: 'Remove_User_Teams',
 				data: teamChannels,
-				nextAction: (selectedChannels = {}) => this.removeFromTeam({ selectedUser, selectedChannels })
+				extraData: selectedUser,
+				nextAction: selected => this.removeFromTeam(selectedUser, selected),
+				showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_leave'))
 			});
 		} else {
 			showConfirmationAlert({
-				message: I18n.t('Removing_user_from_this_Team', { user: selectedUser.username }),
+				message: I18n.t('Removing_user_from_this_team', { user: selectedUser.username }),
 				confirmationText: I18n.t('Yes_action_it', { action: I18n.t('remove') }),
-				onPress: () => this.removeFromTeam({ selectedUser })
+				onPress: () => this.removeFromTeam(selectedUser)
 			});
 		}
 	}
 
-	removeFromTeam = async(params) => {
+	removeFromTeam = async(selectedUser, selected) => {
 		try {
 			const { members, membersFiltered, room } = this.state;
 			const { navigation } = this.props;
-			const { selectedUser, selected } = params;
+
 			const userId = selectedUser._id;
 			const result = await RocketChat.removeTeamMember({
 				teamId: room.teamId,
