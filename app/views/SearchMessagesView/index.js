@@ -181,7 +181,6 @@ class SearchMessagesView extends React.Component {
 		const {
 			user, baseUrl, theme, useRealName
 		} = this.props;
-		// TODO: use Message component instead of container
 		return (
 			<Message
 				item={item}
@@ -196,6 +195,7 @@ class SearchMessagesView extends React.Component {
 				useRealName={useRealName}
 				theme={theme}
 				onPress={() => this.jumpToMessage({ item })}
+				jumpToMessage={() => this.jumpToMessage({ item })}
 			/>
 		);
 	}
