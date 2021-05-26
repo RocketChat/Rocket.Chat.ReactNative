@@ -5,7 +5,6 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
-import { Q } from '@nozbe/watermelondb';
 import { compareServerVersion, methods } from '../../lib/utils';
 
 import Touch from '../../utils/touch';
@@ -429,18 +428,19 @@ class RoomActionsView extends React.Component {
 	}
 
 	leaveTeam = async() => {
-		const { room } = this.state;
-		const { navigation } = this.props;
-
 		try {
-			const db = database.active;
-			const subCollection = db.get('subscriptions');
-			const teamChannels = await subCollection.query(
-				Q.where('team_id', room.teamId),
-				Q.where('team_main', null)
-			);
+			const { room } = this.state;
+			const { navigation } = this.props;
 
-			if (teamChannels.length) {
+			const result = await RocketChat.teamListRoomsOfUser({ teamId: room.teamId, userId: room.u._id });
+
+			if (result.rooms?.length) {
+				const teamChannels = result.rooms.map(r => ({
+					rid: r._id,
+					name: r.name,
+					teamId: r.teamId,
+					alert: r.isLastOwner
+				}));
 				navigation.navigate('SelectListView', {
 					title: 'Leave_Team',
 					data: teamChannels,
