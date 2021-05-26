@@ -778,9 +778,21 @@ const RocketChat = {
 		// RC 3.13.0
 		return this.post('teams.leave', { teamName, rooms });
 	},
+	removeTeamMember({
+		teamId, teamName, userId, rooms
+	}) {
+		// RC 3.13.0
+		return this.post('teams.removeMember', {
+			teamId, teamName, userId, rooms
+		});
+	},
 	updateTeamRoom({ roomId, isDefault }) {
 		// RC 3.13.0
 		return this.post('teams.updateRoom', { roomId, isDefault });
+	},
+	teamListRoomsOfUser({ teamId, userId }) {
+		// RC 3.13.0
+		return this.sdk.get('teams.listRoomsOfUser', { teamId, userId });
 	},
 	joinRoom(roomId, joinCode, type) {
 		// TODO: join code

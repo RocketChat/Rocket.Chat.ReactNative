@@ -23,9 +23,10 @@ import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
 import { getUserSelector } from '../../selectors/login';
 import { withActionSheet } from '../../containers/ActionSheet';
-import { showConfirmationAlert } from '../../utils/info';
+import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
+import { CustomIcon } from '../../lib/Icons';
 
 const PAGE_SIZE = 25;
 
@@ -34,6 +35,9 @@ const PERMISSION_SET_LEADER = 'set-leader';
 const PERMISSION_SET_OWNER = 'set-owner';
 const PERMISSION_SET_MODERATOR = 'set-moderator';
 const PERMISSION_REMOVE_USER = 'remove-user';
+const PERMISSION_EDIT_TEAM_MEMBER = 'edit-team-member';
+const PERMISION_VIEW_ALL_TEAMS = 'view-all-teams';
+const PERMISSION_VIEW_ALL_TEAM_CHANNELS = 'view-all-team-channels';
 
 class RoomMembersView extends React.Component {
 	static propTypes = {
@@ -55,7 +59,10 @@ class RoomMembersView extends React.Component {
 		setLeaderPermission: PropTypes.array,
 		setOwnerPermission: PropTypes.array,
 		setModeratorPermission: PropTypes.array,
-		removeUserPermission: PropTypes.array
+		removeUserPermission: PropTypes.array,
+		editTeamMemberPermission: PropTypes.array,
+		viewAllTeamChannelsPermission: PropTypes.array,
+		viewAllTeamsPermission: PropTypes.array
 	}
 
 	constructor(props) {
@@ -94,10 +101,11 @@ class RoomMembersView extends React.Component {
 
 		const { room } = this.state;
 		const {
-			muteUserPermission, setLeaderPermission, setOwnerPermission, setModeratorPermission, removeUserPermission
+			muteUserPermission, setLeaderPermission, setOwnerPermission, setModeratorPermission, removeUserPermission, editTeamMemberPermission, viewAllTeamChannelsPermission, viewAllTeamsPermission
 		} = this.props;
+
 		const result = await RocketChat.hasPermission([
-			muteUserPermission, setLeaderPermission, setOwnerPermission, setModeratorPermission, removeUserPermission
+			muteUserPermission, setLeaderPermission, setOwnerPermission, setModeratorPermission, removeUserPermission, ...(room.teamMain ? [editTeamMemberPermission, viewAllTeamChannelsPermission, viewAllTeamsPermission] : [])
 		], room.rid);
 
 		this.permissions = {
@@ -105,7 +113,12 @@ class RoomMembersView extends React.Component {
 			[PERMISSION_SET_LEADER]: result[1],
 			[PERMISSION_SET_OWNER]: result[2],
 			[PERMISSION_SET_MODERATOR]: result[3],
-			[PERMISSION_REMOVE_USER]: result[4]
+			[PERMISSION_REMOVE_USER]: result[4],
+			...(room.teamMain ? {
+				[PERMISSION_EDIT_TEAM_MEMBER]: result[5],
+				[PERMISSION_VIEW_ALL_TEAM_CHANNELS]: result[6],
+				[PERMISION_VIEW_ALL_TEAMS]: result[7]
+			} : {})
 		};
 
 		const hasSinglePermission = Object.values(this.permissions).some(p => !!p);
@@ -163,48 +176,86 @@ class RoomMembersView extends React.Component {
 		}
 	}
 
+	handleRemoveFromTeam = async(selectedUser) => {
+		try {
+			const { navigation } = this.props;
+			const { room } = this.state;
+
+			const result = await RocketChat.teamListRoomsOfUser({ teamId: room.teamId, userId: selectedUser._id });
+
+			if (result.rooms?.length) {
+				const teamChannels = result.rooms.map(r => ({
+					rid: r._id,
+					name: r.name,
+					teamId: r.teamId,
+					alert: r.isLastOwner
+				}));
+				navigation.navigate('SelectListView', {
+					title: 'Remove_Member',
+					infoText: 'Remove_User_Team_Channels',
+					data: teamChannels,
+					nextAction: selected => this.removeFromTeam(selectedUser, selected),
+					showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_remove'))
+				});
+			} else {
+				showConfirmationAlert({
+					message: I18n.t('Removing_user_from_this_team', { user: selectedUser.username }),
+					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('remove') }),
+					onPress: () => this.removeFromTeam(selectedUser)
+				});
+			}
+		} catch (e) {
+			showConfirmationAlert({
+				message: I18n.t('Removing_user_from_this_team', { user: selectedUser.username }),
+				confirmationText: I18n.t('Yes_action_it', { action: I18n.t('remove') }),
+				onPress: () => this.removeFromTeam(selectedUser)
+			});
+		}
+	}
+
+	removeFromTeam = async(selectedUser, selected) => {
+		try {
+			const { members, membersFiltered, room } = this.state;
+			const { navigation } = this.props;
+
+			const userId = selectedUser._id;
+			const result = await RocketChat.removeTeamMember({
+				teamId: room.teamId,
+				teamName: room.name,
+				userId,
+				...(selected && { rooms: selected })
+			});
+			if (result.success) {
+				const message = I18n.t('User_has_been_removed_from_s', { s: RocketChat.getRoomTitle(room) });
+				EventEmitter.emit(LISTENER, { message });
+				const newMembers = members.filter(member => member._id !== userId);
+				const newMembersFiltered = membersFiltered.filter(member => member._id !== userId);
+				this.setState({
+					members: newMembers,
+					membersFiltered: newMembersFiltered
+				});
+				navigation.navigate('RoomMembersView');
+			}
+		} catch (e) {
+			log(e);
+			showErrorAlert(
+				e.data.error
+					? I18n.t(e.data.error)
+					: I18n.t('There_was_an_error_while_action', { action: I18n.t('removing_team') }),
+				I18n.t('Cannot_remove')
+			);
+		}
+	}
+
 	onPressUser = (selectedUser) => {
 		const { room } = this.state;
-		const { showActionSheet, user } = this.props;
+		const { showActionSheet, user, theme } = this.props;
 
 		const options = [{
 			icon: 'message',
 			title: I18n.t('Direct_message'),
 			onPress: () => this.navToDirectMessage(selectedUser)
 		}];
-
-		// Owner
-		if (this.permissions['set-owner']) {
-			const userRoleResult = this.roomRoles.find(r => r.u._id === selectedUser._id);
-			const isOwner = userRoleResult?.roles.includes('owner');
-			options.push({
-				icon: 'shield-check',
-				title: I18n.t(isOwner ? 'Remove_as_owner' : 'Set_as_owner'),
-				onPress: () => this.handleOwner(selectedUser, !isOwner)
-			});
-		}
-
-		// Leader
-		if (this.permissions['set-leader']) {
-			const userRoleResult = this.roomRoles.find(r => r.u._id === selectedUser._id);
-			const isLeader = userRoleResult?.roles.includes('leader');
-			options.push({
-				icon: 'shield-alt',
-				title: I18n.t(isLeader ? 'Remove_as_leader' : 'Set_as_leader'),
-				onPress: () => this.handleLeader(selectedUser, !isLeader)
-			});
-		}
-
-		// Moderator
-		if (this.permissions['set-moderator']) {
-			const userRoleResult = this.roomRoles.find(r => r.u._id === selectedUser._id);
-			const isModerator = userRoleResult?.roles.includes('moderator');
-			options.push({
-				icon: 'shield',
-				title: I18n.t(isModerator ? 'Remove_as_moderator' : 'Set_as_moderator'),
-				onPress: () => this.handleModerator(selectedUser, !isModerator)
-			});
-		}
 
 		// Ignore
 		if (selectedUser._id !== user.id) {
@@ -236,8 +287,54 @@ class RoomMembersView extends React.Component {
 			});
 		}
 
+		// Owner
+		if (this.permissions['set-owner']) {
+			const userRoleResult = this.roomRoles.find(r => r.u._id === selectedUser._id);
+			const isOwner = userRoleResult?.roles.includes('owner');
+			options.push({
+				icon: 'shield-check',
+				title: I18n.t('Owner'),
+				onPress: () => this.handleOwner(selectedUser, !isOwner),
+				right: () => <CustomIcon name={isOwner ? 'checkbox-checked' : 'checkbox-unchecked'} size={20} color={isOwner ? themes[theme].tintActive : themes[theme].auxiliaryTintColor} />
+			});
+		}
+
+		// Leader
+		if (this.permissions['set-leader']) {
+			const userRoleResult = this.roomRoles.find(r => r.u._id === selectedUser._id);
+			const isLeader = userRoleResult?.roles.includes('leader');
+			options.push({
+				icon: 'shield-alt',
+				title: I18n.t('Leader'),
+				onPress: () => this.handleLeader(selectedUser, !isLeader),
+				right: () => <CustomIcon name={isLeader ? 'checkbox-checked' : 'checkbox-unchecked'} size={20} color={isLeader ? themes[theme].tintActive : themes[theme].auxiliaryTintColor} />
+			});
+		}
+
+		// Moderator
+		if (this.permissions['set-moderator']) {
+			const userRoleResult = this.roomRoles.find(r => r.u._id === selectedUser._id);
+			const isModerator = userRoleResult?.roles.includes('moderator');
+			options.push({
+				icon: 'shield',
+				title: I18n.t('Moderator'),
+				onPress: () => this.handleModerator(selectedUser, !isModerator),
+				right: () => <CustomIcon name={isModerator ? 'checkbox-checked' : 'checkbox-unchecked'} size={20} color={isModerator ? themes[theme].tintActive : themes[theme].auxiliaryTintColor} />
+			});
+		}
+
+		// Remove from team
+		if (this.permissions['edit-team-member']) {
+			options.push({
+				icon: 'logout',
+				danger: true,
+				title: I18n.t('Remove_from_Team'),
+				onPress: () => this.handleRemoveFromTeam(selectedUser)
+			});
+		}
+
 		// Remove from room
-		if (this.permissions['remove-user']) {
+		if (this.permissions['remove-user'] && !room.teamMain) {
 			options.push({
 				icon: 'logout',
 				title: I18n.t('Remove_from_room'),
@@ -477,7 +574,10 @@ const mapStateToProps = state => ({
 	setLeaderPermission: state.permissions[PERMISSION_SET_LEADER],
 	setOwnerPermission: state.permissions[PERMISSION_SET_OWNER],
 	setModeratorPermission: state.permissions[PERMISSION_SET_MODERATOR],
-	removeUserPermission: state.permissions[PERMISSION_REMOVE_USER]
+	removeUserPermission: state.permissions[PERMISSION_REMOVE_USER],
+	editTeamMemberPermission: state.permissions[PERMISSION_EDIT_TEAM_MEMBER],
+	viewAllTeamChannelsPermission: state.permissions[PERMISSION_VIEW_ALL_TEAM_CHANNELS],
+	viewAllTeamsPermission: state.permissions[PERMISION_VIEW_ALL_TEAMS]
 });
 
 export default connect(mapStateToProps)(withActionSheet(withTheme(RoomMembersView)));
