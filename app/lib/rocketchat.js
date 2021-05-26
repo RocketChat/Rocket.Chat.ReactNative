@@ -794,10 +794,6 @@ const RocketChat = {
 		// RC 3.13.0
 		return this.post('teams.delete', { teamName });
 	},
-	updateTeamRoom({ roomId, isDefault }) {
-		// RC 3.13.0
-		return this.post('teams.updateRoom', { roomId, isDefault });
-	},
 	joinRoom(roomId, joinCode, type) {
 		// TODO: join code
 		// RC 0.48.0
