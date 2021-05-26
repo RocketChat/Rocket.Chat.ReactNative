@@ -82,7 +82,8 @@ class Markdown extends PureComponent {
 		preview: PropTypes.bool,
 		theme: PropTypes.string,
 		testID: PropTypes.string,
-		style: PropTypes.array
+		style: PropTypes.array,
+		onLinkPress: PropTypes.func
 	};
 
 	constructor(props) {
