@@ -13,7 +13,6 @@ const COUNT = 50;
 export default function loadSurroundingMessages({ messageId, rid }) {
 	return new Promise(async(resolve, reject) => {
 		try {
-			// TODO: not working through DDP
 			const data = await this.methodCallWrapper('loadSurroundingMessages', { _id: messageId, rid }, COUNT);
 			let messages = EJSON.fromJSONValue(data?.messages);
 			messages = orderBy(messages, 'ts');
@@ -30,7 +29,7 @@ export default function loadSurroundingMessages({ messageId, rid }) {
 							_id: generateLoadMoreId(firstMessage._id),
 							rid: firstMessage.rid,
 							tmid,
-							ts: moment(firstMessage.ts).subtract(1, 'millisecond'), // TODO: can we do it without subtracting 1ms?
+							ts: moment(firstMessage.ts).subtract(1, 'millisecond'),
 							t: MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK,
 							msg: firstMessage.msg
 						};
@@ -46,7 +45,7 @@ export default function loadSurroundingMessages({ messageId, rid }) {
 							_id: generateLoadMoreId(lastMessage._id),
 							rid: lastMessage.rid,
 							tmid,
-							ts: moment(lastMessage.ts).add(1, 'millisecond'), // TODO: can we do it without adding 1ms?
+							ts: moment(lastMessage.ts).add(1, 'millisecond'),
 							t: MESSAGE_TYPE_LOAD_NEXT_CHUNK,
 							msg: lastMessage.msg
 						};

@@ -34,17 +34,15 @@ export default function loadMessagesForRoom(args) {
 			if (data?.length) {
 				const lastMessage = data[data.length - 1];
 				const lastMessageRecord = await getMessageById(lastMessage._id);
-				if (!lastMessageRecord) {
+				if (!lastMessageRecord && data.length === COUNT) {
 					const loadMoreItem = {
 						_id: generateLoadMoreId(lastMessage._id),
 						rid: lastMessage.rid,
-						ts: moment(lastMessage.ts).subtract(1, 'millisecond'), // TODO: can we do it without adding 1ms?
+						ts: moment(lastMessage.ts).subtract(1, 'millisecond'),
 						t: MESSAGE_TYPE_LOAD_MORE,
 						msg: lastMessage.msg
 					};
-					if (data.length === COUNT) {
-						data.push(loadMoreItem);
-					}
+					data.push(loadMoreItem);
 				}
 				await updateMessages({ rid: args.rid, update: data, loaderItem: args.loaderItem });
 				return resolve(data);

@@ -19,17 +19,15 @@ export default function loadNextMessages(args) {
 			if (messages?.length) {
 				const lastMessage = messages[messages.length - 1];
 				const lastMessageRecord = await getMessageById(lastMessage._id);
-				if (!lastMessageRecord) {
+				if (!lastMessageRecord && messages.length === COUNT) {
 					const loadMoreItem = {
 						_id: generateLoadMoreId(lastMessage._id),
 						rid: lastMessage.rid,
 						tmid: args.tmid,
-						ts: moment(lastMessage.ts).add(1, 'millisecond'), // TODO: can we do it without adding 1ms?
+						ts: moment(lastMessage.ts).add(1, 'millisecond'),
 						t: MESSAGE_TYPE_LOAD_NEXT_CHUNK
 					};
-					if (messages.length === COUNT) {
-						messages.push(loadMoreItem);
-					}
+					messages.push(loadMoreItem);
 				}
 				await updateMessages({ rid: args.rid, update: messages, loaderItem: args.loaderItem });
 				return resolve(messages);
