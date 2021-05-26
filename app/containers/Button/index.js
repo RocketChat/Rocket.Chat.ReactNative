@@ -70,6 +70,7 @@ export default class Button extends React.PureComponent {
 					disabled && styles.disabled,
 					style
 				]}
+				accessibilityLabel={title}
 				{...otherProps}
 			>
 				{

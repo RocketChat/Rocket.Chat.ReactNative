@@ -65,13 +65,13 @@ describe('E2E Encryption', () => {
 			});
 	
 			it('should tap "How it works" and navigate', async() => {
-				await element(by.id('e2e-save-password-view-how-it-works').and(by.text('How It Works'))).tap();
+				await element(by.id('e2e-save-password-view-how-it-works').and(by.label('How It Works'))).tap();
 				await waitFor(element(by.id('e2e-how-it-works-view'))).toBeVisible().withTimeout(2000);
 				await tapBack();
 			});
 			
 			it('should tap "Save my password" and close modal', async() => {
-				await element(by.id('e2e-save-password-view-saved-password').and(by.text('I Saved My E2E Password'))).tap();
+				await element(by.id('e2e-save-password-view-saved-password').and(by.label('I Saved My E2E Password'))).tap();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			});
 	
