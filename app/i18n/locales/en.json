@@ -737,5 +737,8 @@
   "Remove_Member": "Remove Member",
   "leaving_team": "leaving team",
   "removing_team": "removing from team",
-  "member-does-not-exist": "Member does not exist"
+  "member-does-not-exist": "Member does not exist",
+  "Load_More": "Load More",
+  "Load_Newer": "Load Newer",
+  "Load_Older": "Load Older"
 }

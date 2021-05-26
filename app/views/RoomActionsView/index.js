@@ -636,7 +636,7 @@ class RoomActionsView extends React.Component {
 			room, membersCount, canViewMembers, canAddUser, canInviteUser, joined, canAutoTranslate, canForwardGuest, canReturnQueue
 		} = this.state;
 		const {
-			rid, t, encrypted
+			rid, t
 		} = room;
 		const isGroupChat = RocketChat.isGroupChat(room);
 
@@ -754,24 +754,6 @@ class RoomActionsView extends React.Component {
 										})}
 										testID='room-actions-starred'
 										left={() => <List.Icon name='star' />}
-										showActionIndicator
-									/>
-									<List.Separator />
-								</>
-							)
-							: null}
-
-						{['c', 'p', 'd'].includes(t)
-							? (
-								<>
-									<List.Item
-										title='Search'
-										onPress={() => this.onPressTouchable({
-											route: 'SearchMessagesView',
-											params: { rid, encrypted }
-										})}
-										testID='room-actions-search'
-										left={() => <List.Icon name='search' />}
 										showActionIndicator
 									/>
 									<List.Separator />
