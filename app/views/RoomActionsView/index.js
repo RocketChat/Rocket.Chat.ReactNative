@@ -428,10 +428,10 @@ class RoomActionsView extends React.Component {
 	}
 
 	leaveTeam = async() => {
-		try {
-			const { room } = this.state;
-			const { navigation } = this.props;
+		const { room } = this.state;
+		const { navigation } = this.props;
 
+		try {
 			const result = await RocketChat.teamListRoomsOfUser({ teamId: room.teamId, userId: room.u._id });
 
 			if (result.rooms?.length) {
@@ -456,7 +456,11 @@ class RoomActionsView extends React.Component {
 				});
 			}
 		} catch (e) {
-			log(e);
+			showConfirmationAlert({
+				message: I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
+				confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
+				onPress: () => this.handleLeaveTeam()
+			});
 		}
 	}
 
