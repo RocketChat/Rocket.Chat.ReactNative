@@ -428,10 +428,10 @@ class RoomActionsView extends React.Component {
 	}
 
 	leaveTeam = async() => {
-		try {
-			const { room } = this.state;
-			const { navigation } = this.props;
+		const { room } = this.state;
+		const { navigation } = this.props;
 
+		try {
 			const result = await RocketChat.teamListRoomsOfUser({ teamId: room.teamId, userId: room.u._id });
 
 			if (result.rooms?.length) {
