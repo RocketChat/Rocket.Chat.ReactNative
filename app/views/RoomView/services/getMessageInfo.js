@@ -11,7 +11,6 @@ const getMessageInfo = async(messageId) => {
 			rid: result.subscription.id,
 			tmid: result.tmid,
 			msg: result.msg
-			// TODO: do we need extra info, like roomUserId or threads header stuff?
 		};
 	}
 

@@ -1,7 +1,6 @@
 import { MESSAGE_TYPE_LOAD_MORE, MESSAGE_TYPE_LOAD_NEXT_CHUNK, MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK } from '../../../constants/messageTypeLoad';
 import RocketChat from '../../../lib/rocketchat';
 
-// TODO: rename this to getMessages and the other one to syncMessages?
 const getMoreMessages = ({
 	rid, t, tmid, loaderItem
 }) => {

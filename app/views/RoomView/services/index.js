@@ -1,4 +1,3 @@
-// TODO: move everything to lib/methods?
 import getMessages from './getMessages';
 import getMoreMessages from './getMoreMessages';
 import getThreadMessages from './getThreadMessages';

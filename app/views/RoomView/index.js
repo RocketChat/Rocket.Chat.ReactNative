@@ -670,14 +670,6 @@ class RoomView extends React.Component {
 		return true;
 	}
 
-	// TODO: remove me when jump to threads from different rooms is implemented :)
-	canNavigateToRoom = (message) => {
-		if (message.rid !== this.rid && message.tmid) {
-			return false;
-		}
-		return true;
-	}
-
 	jumpToMessageByUrl = async(messageUrl) => {
 		if (!messageUrl) {
 			return;
@@ -836,7 +828,6 @@ class RoomView extends React.Component {
 		}
 	}
 
-	// TODO: reuse on SearchMessagesView?
 	navToThread = async(item) => {
 		const { roomUserId } = this.state;
 		const { navigation } = this.props;
