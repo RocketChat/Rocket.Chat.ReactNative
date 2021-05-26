@@ -735,5 +735,8 @@
   "Last_owner_team_room": "You are the last owner of this channel. Once you leave the team, the channel will be kept inside the team but you will be managing it from outside.",
   "last-owner-can-not-be-removed": "Last owner cannot be removed",
   "leaving_team": "leaving team",
-  "member-does-not-exist": "Member does not exist"
+  "member-does-not-exist": "Member does not exist",
+  "Load_More": "Load More",
+  "Load_Newer": "Load Newer",
+  "Load_Older": "Load Older"
 }

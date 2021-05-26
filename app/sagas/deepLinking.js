@@ -60,18 +60,19 @@ const navigate = function* navigate({ params }) {
 
 				const isMasterDetail = yield select(state => state.app.isMasterDetail);
 				const focusedRooms = yield select(state => state.room.rooms);
+				const jumpToMessageId = params.messageId;
 
 				if (focusedRooms.includes(room.rid)) {
 					// if there's one room on the list or last room is the one
 					if (focusedRooms.length === 1 || focusedRooms[0] === room.rid) {
-						yield goRoom({ item, isMasterDetail });
+						yield goRoom({ item, isMasterDetail, jumpToMessageId });
 					} else {
 						popToRoot({ isMasterDetail });
-						yield goRoom({ item, isMasterDetail });
+						yield goRoom({ item, isMasterDetail, jumpToMessageId });
 					}
 				} else {
 					popToRoot({ isMasterDetail });
-					yield goRoom({ item, isMasterDetail });
+					yield goRoom({ item, isMasterDetail, jumpToMessageId });
 				}
 
 				if (params.isCall) {
