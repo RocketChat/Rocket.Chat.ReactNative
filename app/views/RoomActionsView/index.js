@@ -423,7 +423,7 @@ class RoomActionsView extends React.Component {
 					title: 'Leave_Team',
 					data: teamChannels,
 					infoText: 'Select_Team_Channels',
-					nextAction: () => leaveTeam(room, teamChannels),
+					nextAction: data => leaveTeam(room, data),
 					showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_leave'))
 				});
 			} else {
