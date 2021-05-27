@@ -759,7 +759,7 @@ const mapStateToProps = state => ({
 	archiveRoomPermission: state.permissions[PERMISSION_ARCHIVE],
 	unarchiveRoomPermission: state.permissions[PERMISSION_UNARCHIVE],
 	deleteCPermission: state.permissions[PERMISSION_DELETE_C],
-	deletePermission: state.permissions[PERMISSION_DELETE_P],
+	deletePPermission: state.permissions[PERMISSION_DELETE_P],
 	deleteTeamPermission: state.permissions[PERMISSION_DELETE_TEAM],
 	isMasterDetail: state.app.isMasterDetail
 });
