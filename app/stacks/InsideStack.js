@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { I18nManager } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -183,12 +182,17 @@ const ChatsStackNavigator = () => {
 				component={TeamChannelsView}
 				options={TeamChannelsView.navigationOptions}
 			/>
-			<NewMessageStack.Screen
+			<ChatsStack.Screen
+				name='CreateChannelView'
+				component={CreateChannelView}
+				options={CreateChannelView.navigationOptions}
+			/>
+			<ChatsStack.Screen
 				name='AddChannelTeamView'
 				component={AddChannelTeamView}
 				options={AddChannelTeamView.navigationOptions}
 			/>
-			<NewMessageStack.Screen
+			<ChatsStack.Screen
 				name='AddExistingChannelView'
 				component={AddExistingChannelView}
 				options={AddExistingChannelView.navigationOptions}
@@ -340,7 +344,6 @@ const NewMessageStackNavigator = () => {
 			<NewMessageStack.Screen
 				name='SelectedUsersViewCreateChannel'
 				component={SelectedUsersView}
-				options={SelectedUsersView.navigationOptions}
 			/>
 			<NewMessageStack.Screen
 				name='CreateChannelView'
@@ -394,14 +397,7 @@ const E2EEnterYourPasswordStackNavigator = () => {
 
 // InsideStackNavigator
 const InsideStack = createStackNavigator();
-const InsideStackNavigator = ({ route }) => {
-	const routes = route?.state?.routes;
-	let hasParamInsideNewMessage = false;
-	if (routes) {
-		const filterRoutes = routes.filter(r => r.name === 'NewMessageStackNavigator' && !!r.params);
-		hasParamInsideNewMessage = !!filterRoutes.length;
-	}
-
+const InsideStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
@@ -414,7 +410,7 @@ const InsideStackNavigator = ({ route }) => {
 			<InsideStack.Screen
 				name='NewMessageStackNavigator'
 				component={NewMessageStackNavigator}
-				options={hasParamInsideNewMessage ? { ...StackAnimation, headerShown: false } : { headerShown: false }}
+				options={{ headerShown: false }}
 			/>
 			<InsideStack.Screen
 				name='E2ESaveYourPasswordStackNavigator'
@@ -450,10 +446,6 @@ const InsideStackNavigator = ({ route }) => {
 			/>
 		</InsideStack.Navigator>
 	);
-};
-
-InsideStackNavigator.propTypes = {
-	route: PropTypes.object
 };
 
 export default InsideStackNavigator;
