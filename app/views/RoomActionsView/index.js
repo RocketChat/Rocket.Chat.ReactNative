@@ -528,25 +528,58 @@ class RoomActionsView extends React.Component {
 		}
 	}
 
+	searchTeam = async(onChangeText) => {
+		try {
+			const { addTeamChannelPermission, createTeamPermission } = this.props;
+			const QUERY_SIZE = 50;
+			const db = database.active;
+			const teams = await db.collections
+				.get('subscriptions')
+				.query(
+					Q.where('team_main', Q.notEq(null)),
+					Q.where('name', Q.like(`%${ onChangeText }%`)),
+					Q.experimentalTake(QUERY_SIZE),
+					Q.experimentalSortBy('room_updated_at', Q.desc)
+				);
+
+			const asyncFilter = async(teamArray) => {
+				const results = await Promise.all(teamArray.map(async(team) => {
+					const permissions = await RocketChat.hasPermission([addTeamChannelPermission, createTeamPermission], team.rid);
+					if (!permissions[0]) {
+						return false;
+					}
+					return true;
+				}));
+
+				return teamArray.filter((_v, index) => results[index]);
+			};
+			const teamsFiltered = await asyncFilter(teams);
+			return teamsFiltered;
+		} catch (e) {
+			log(e);
+		}
+	}
+
 	moveToTeam = async() => {
 		try {
 			const { navigation } = this.props;
 			const db = database.active;
 			const subCollection = db.get('subscriptions');
-			const teamChannels = await subCollection.query(
+			const teamRooms = await subCollection.query(
 				Q.where('team_main', Q.notEq(null))
 			);
 
-			if (teamChannels.length) {
+			if (teamRooms.length) {
 				navigation.navigate('SelectListView', {
 					title: 'Move_to_Team',
 					infoText: 'Move_Channel_Paragraph',
 					nextAction: () => {
 						navigation.push('SelectListView', {
 							title: 'Select_Team',
-							data: teamChannels,
+							data: teamRooms,
 							isRadio: true,
-							search: true,
+							isSearch: true,
+							onSearch: onChangeText => this.searchTeam(onChangeText),
 							nextAction: selected => showConfirmationAlert({
 								title: I18n.t('Confirmation'),
 								message: I18n.t('Move_to_Team_Warning'),

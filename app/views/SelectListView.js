@@ -6,6 +6,7 @@ import {
 import { connect } from 'react-redux';
 import { RadioButton } from 'react-native-ui-lib';
 
+import { log } from 'react-native-reanimated';
 import * as List from '../containers/List';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
@@ -16,6 +17,8 @@ import { withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { ICON_SIZE } from '../containers/List/constants';
+import SearchBox from '../containers/SearchBox';
+
 
 const styles = StyleSheet.create({
 	buttonText: {
@@ -40,10 +43,13 @@ class SelectListView extends React.Component {
 		this.infoText = props.route?.params?.infoText;
 		this.nextAction = props.route?.params?.nextAction;
 		this.showAlert = props.route?.params?.showAlert;
-		this.search = props.route?.params?.search;
+		this.isSearch = props.route?.params?.isSearch;
+		this.onSearch = props.route?.params?.onSearch;
 		this.isRadio = props.route?.params?.isRadio;
 		this.state = {
 			data,
+			dataFiltered: [],
+			isSearching: false,
 			selected: []
 		};
 		this.setHeader();
@@ -72,12 +78,30 @@ class SelectListView extends React.Component {
 
 	renderInfoText = () => {
 		const { theme } = this.props;
-
 		return (
 			<View style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<Text style={[styles.buttonText, { color: themes[theme].bodyText }]}>{I18n.t(this.infoText)}</Text>
 			</View>
 		);
+	}
+
+	renderSearch = () => {
+		const { theme } = this.props;
+		return (
+			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
+				<SearchBox onChangeText={text => this.search(text)} testID='select-list-view-search' onCancelPress={() => this.setState({ isSearching: false })} />
+			</View>
+		);
+	}
+
+	search = async(text) => {
+		try {
+			this.setState({ isSearching: true });
+			const result = await this.onSearch(text);
+			this.setState({ dataFiltered: result });
+		} catch (e) {
+			log(e);
+		}
 	}
 
 	isChecked = (rid) => {
@@ -109,8 +133,10 @@ class SelectListView extends React.Component {
 		const teamIcon = item.t === 'p' ? 'teams-private' : 'teams';
 		const icon = item.teamMain ? teamIcon : channelIcon;
 		const checked = this.isChecked(item.rid) ? 'check' : null;
+
 		const showRadio = () => <RadioButton selected={selected.includes(item.rid)} color={themes[theme].actionTintColor} size={ICON_SIZE} />;
 		const showCheck = () => <List.Icon name={checked} color={themes[theme].actionTintColor} />;
+
 		return (
 			<>
 				<List.Separator />
@@ -118,8 +144,8 @@ class SelectListView extends React.Component {
 					title={item.name}
 					translateTitle={false}
 					testID={`select-list-view-item-${ item.name }`}
-					onPress={() => (item?.alert ? this.showAlert() : this.toggleItem(item.rid))}
-					alert={item?.alert}
+					onPress={() => (item.alert ? this.showAlert() : this.toggleItem(item.rid))}
+					alert={item.alert}
 					left={() => <List.Icon name={icon} color={themes[theme].controlText} />}
 					right={() => (this.isRadio ? showRadio() : showCheck())}
 				/>
@@ -128,17 +154,17 @@ class SelectListView extends React.Component {
 	}
 
 	render() {
-		const { data } = this.state;
+		const { data, isSearching, dataFiltered } = this.state;
 		const { theme } = this.props;
 		return (
 			<SafeAreaView testID='select-list-view'>
 				<StatusBar />
 				<FlatList
-					data={data}
+					data={!isSearching ? data : dataFiltered}
 					extraData={this.state}
 					keyExtractor={item => item.rid}
 					renderItem={this.renderItem}
-					ListHeaderComponent={this.infoText ? this.renderInfoText : null}
+					ListHeaderComponent={this.isSearch ? this.renderSearch : this.renderInfoText}
 					contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
 					keyboardShouldPersistTaps='always'
 				/>
