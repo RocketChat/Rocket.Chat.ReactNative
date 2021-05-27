@@ -20,3 +20,5 @@ export const methods = {
 };
 
 export const compareServerVersion = (currentServerVersion, versionToCompare, func) => currentServerVersion && func(coerce(currentServerVersion), versionToCompare);
+
+export const generateLoadMoreId = id => `load-more-${ id }`;

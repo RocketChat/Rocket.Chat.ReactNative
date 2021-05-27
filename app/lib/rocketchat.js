@@ -1,4 +1,5 @@
 import { InteractionManager } from 'react-native';
+import EJSON from 'ejson';
 import {
 	Rocketchat as RocketchatClient,
 	settings as RocketChatSettings
@@ -41,6 +42,8 @@ import canOpenRoom from './methods/canOpenRoom';
 import triggerBlockAction, { triggerSubmitView, triggerCancel } from './methods/actions';
 
 import loadMessagesForRoom from './methods/loadMessagesForRoom';
+import loadSurroundingMessages from './methods/loadSurroundingMessages';
+import loadNextMessages from './methods/loadNextMessages';
 import loadMissedMessages from './methods/loadMissedMessages';
 import loadThreadMessages from './methods/loadThreadMessages';
 
@@ -624,6 +627,8 @@ const RocketChat = {
 	},
 	loadMissedMessages,
 	loadMessagesForRoom,
+	loadSurroundingMessages,
+	loadNextMessages,
 	loadThreadMessages,
 	sendMessage,
 	getRooms,
@@ -769,9 +774,25 @@ const RocketChat = {
 		// RC 3.13.0
 		return this.post('teams.removeRoom', { roomId, teamId });
 	},
+	leaveTeam({ teamName, rooms }) {
+		// RC 3.13.0
+		return this.post('teams.leave', { teamName, rooms });
+	},
+	removeTeamMember({
+		teamId, teamName, userId, rooms
+	}) {
+		// RC 3.13.0
+		return this.post('teams.removeMember', {
+			teamId, teamName, userId, rooms
+		});
+	},
 	updateTeamRoom({ roomId, isDefault }) {
 		// RC 3.13.0
 		return this.post('teams.updateRoom', { roomId, isDefault });
+	},
+	teamListRoomsOfUser({ teamId, userId }) {
+		// RC 3.13.0
+		return this.sdk.get('teams.listRoomsOfUser', { teamId, userId });
 	},
 	joinRoom(roomId, joinCode, type) {
 		// TODO: join code
@@ -934,9 +955,15 @@ const RocketChat = {
 	methodCallWrapper(method, ...params) {
 		const { API_Use_REST_For_DDP_Calls } = reduxStore.getState().settings;
 		if (API_Use_REST_For_DDP_Calls) {
-			return this.post(`method.call/${ method }`, { message: JSON.stringify({ method, params }) });
+			return this.post(`method.call/${ method }`, { message: EJSON.stringify({ method, params }) });
 		}
-		return this.methodCall(method, ...params);
+		const parsedParams = params.map((param) => {
+			if (param instanceof Date) {
+				return { $date: new Date(param).getTime() };
+			}
+			return param;
+		});
+		return this.methodCall(method, ...parsedParams);
 	},
 
 	getUserRoles() {

@@ -10,7 +10,7 @@ export const onNotification = (notification) => {
 		if (data) {
 			try {
 				const {
-					rid, name, sender, type, host, messageType
+					rid, name, sender, type, host, messageType, messageId
 				} = EJSON.parse(data.ejson);
 
 				const types = {
@@ -24,6 +24,7 @@ export const onNotification = (notification) => {
 				const params = {
 					host,
 					rid,
+					messageId,
 					path: `${ types[type] }/${ roomName }`,
 					isCall: messageType === 'jitsi_call_started'
 				};

@@ -142,12 +142,12 @@ class RightButtonsContainer extends Component {
 	goSearchView = () => {
 		logEvent(events.ROOM_GO_SEARCH);
 		const {
-			rid, navigation, isMasterDetail
+			rid, t, navigation, isMasterDetail
 		} = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', { screen: 'SearchMessagesView', params: { rid, showCloseModal: true } });
 		} else {
-			navigation.navigate('SearchMessagesView', { rid });
+			navigation.navigate('SearchMessagesView', { rid, t });
 		}
 	}
 
