@@ -64,6 +64,23 @@ const handleLeaveRoom = function* handleLeaveRoom({ rid, t }) {
 	}
 };
 
+const handleLeaveTeam = function* handleLeaveTeam({ room, selected }) {
+	// insert LogEvent
+	try {
+		const result = yield RocketChat.leaveTeam({ teamName: room.name, ...(selected && { rooms: selected }) });
+		if (result.success) {
+			yield handleRemovedRoom();
+		}
+	} catch (e) {
+	// insert LogEvent
+		if (e.data && e.data.errorType === 'error-you-are-last-owner') {
+			Alert.alert(I18n.t('Oops'), I18n.t(e.data.errorType));
+		} else {
+			Alert.alert(I18n.t('Oops'), I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_room') }));
+		}
+	}
+};
+
 const handleDeleteRoom = function* handleDeleteRoom({ rid, t }) {
 	logEvent(events.RI_EDIT_DELETE);
 	try {
@@ -136,6 +153,7 @@ const handleForwardRoom = function* handleForwardRoom({ transferData }) {
 const root = function* root() {
 	yield takeLatest(types.ROOM.USER_TYPING, watchUserTyping);
 	yield takeLatest(types.ROOM.LEAVE, handleLeaveRoom);
+	yield takeLatest(types.ROOM.LEAVE_TEAM, handleLeaveTeam);
 	yield takeLatest(types.ROOM.DELETE, handleDeleteRoom);
 	yield takeLatest(types.ROOM.CLOSE, handleCloseRoom);
 	yield takeLatest(types.ROOM.FORWARD, handleForwardRoom);

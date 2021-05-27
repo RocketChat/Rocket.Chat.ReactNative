@@ -10,7 +10,9 @@ import { compareServerVersion, methods } from '../../lib/utils';
 
 import Touch from '../../utils/touch';
 import { setLoading as setLoadingAction } from '../../actions/selectedUsers';
-import { leaveRoom as leaveRoomAction, closeRoom as closeRoomAction } from '../../actions/room';
+import {
+	leaveRoom as leaveRoomAction, closeRoom as closeRoomAction, leaveTeam as leaveTeamAction
+} from '../../actions/room';
 import styles from './styles';
 import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
@@ -47,6 +49,7 @@ class RoomActionsView extends React.Component {
 		navigation: PropTypes.object,
 		route: PropTypes.object,
 		leaveRoom: PropTypes.func,
+		leaveTeam: PropTypes.func,
 		jitsiEnabled: PropTypes.bool,
 		encryptionEnabled: PropTypes.bool,
 		setLoadingInvite: PropTypes.func,
@@ -54,7 +57,6 @@ class RoomActionsView extends React.Component {
 		theme: PropTypes.string,
 		fontScale: PropTypes.number,
 		serverVersion: PropTypes.string,
-		isMasterDetail: PropTypes.bool,
 		addUserToJoinedRoomPermission: PropTypes.array,
 		addUserToAnyCRoomPermission: PropTypes.array,
 		addUserToAnyPRoomPermission: PropTypes.array,
@@ -404,33 +406,9 @@ class RoomActionsView extends React.Component {
 		});
 	}
 
-	handleLeaveTeam = async(selected) => {
-		try {
-			const { room } = this.state;
-			const { navigation, isMasterDetail } = this.props;
-			const result = await RocketChat.leaveTeam({ teamName: room.name, ...(selected && { rooms: selected }) });
-
-			if (result.success) {
-				if (isMasterDetail) {
-					navigation.navigate('DrawerNavigator');
-				} else {
-					navigation.navigate('RoomsListView');
-				}
-			}
-		} catch (e) {
-			log(e);
-			showErrorAlert(
-				e.data.error
-					? I18n.t(e.data.error)
-					: I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_team') }),
-				I18n.t('Cannot_leave')
-			);
-		}
-	}
-
-	leaveTeam = async() => {
+	leaveTeamRoom = async() => {
 		const { room } = this.state;
-		const { navigation } = this.props;
+		const { navigation, leaveTeam } = this.props;
 
 		try {
 			const db = database.active;
@@ -445,14 +423,14 @@ class RoomActionsView extends React.Component {
 					title: 'Leave_Team',
 					data: teamChannels,
 					infoText: 'Select_Team_Channels',
-					nextAction: data => this.handleLeaveTeam(data),
+					nextAction: () => leaveTeam(room, teamChannels),
 					showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_leave'))
 				});
 			} else {
 				showConfirmationAlert({
 					message: I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
 					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-					onPress: () => this.handleLeaveTeam()
+					onPress: () => leaveTeam(room)
 				});
 			}
 		} catch (e) {
@@ -618,7 +596,7 @@ class RoomActionsView extends React.Component {
 					<List.Item
 						title='Leave'
 						onPress={() => this.onPressTouchable({
-							event: room.teamMain ? this.leaveTeam : this.leaveChannel
+							event: room.teamMain ? this.leaveTeamRoom : this.leaveChannel
 						})}
 						testID='room-actions-leave-channel'
 						left={() => <List.Icon name='logout' color={themes[theme].dangerColor} />}
@@ -942,7 +920,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	leaveRoom: (rid, t) => dispatch(leaveRoomAction(rid, t)),
 	closeRoom: rid => dispatch(closeRoomAction(rid)),
-	setLoadingInvite: loading => dispatch(setLoadingAction(loading))
+	setLoadingInvite: loading => dispatch(setLoadingAction(loading)),
+	leaveTeam: (room, selected) => dispatch(leaveTeamAction(room, selected))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(withDimensions(RoomActionsView)));

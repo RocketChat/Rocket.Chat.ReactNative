@@ -25,6 +25,12 @@ export default function(state = initialState, action) {
 				rid: action.rid,
 				isDeleting: true
 			};
+		case ROOM.LEAVE_TEAM:
+			return {
+				...state,
+				rid: action.room.rid,
+				isDeleting: true
+			};
 		case ROOM.DELETE:
 			return {
 				...state,

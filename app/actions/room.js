@@ -22,6 +22,14 @@ export function leaveRoom(rid, t) {
 	};
 }
 
+export function leaveTeam(room, selected) {
+	return {
+		type: types.ROOM.LEAVE_TEAM,
+		room,
+		selected
+	};
+}
+
 export function deleteRoom(rid, t) {
 	return {
 		type: types.ROOM.DELETE,
