@@ -40,18 +40,26 @@ const handleRequest = function* handleRequest({ data }) {
 				broadcast,
 				encrypted
 			} = data;
-			logEvent(events.CR_CREATE, {
+			logEvent(events.CT_CREATE, {
 				type,
 				readOnly,
 				broadcast,
 				encrypted
 			});
-			sub = yield call(createTeam, data);
+			const result = yield call(createTeam, data);
+			sub = {
+				rid: result?.team?.roomId,
+				...result.team,
+				t: result.team.type ? 'p' : 'c'
+			};
 		} else if (data.group) {
 			logEvent(events.SELECTED_USERS_CREATE_GROUP);
 			const result = yield call(createGroupChat);
 			if (result.success) {
-				({ room: sub } = result);
+				sub = {
+					rid: result.room?._id,
+					...result.room
+				};
 			}
 		} else {
 			const {
@@ -66,36 +74,29 @@ const handleRequest = function* handleRequest({ data }) {
 				broadcast,
 				encrypted
 			});
-			sub = yield call(createChannel, data);
+			const result = yield call(createChannel, data);
+			sub = {
+				rid: result?.channel?._id || result?.group?._id,
+				...result?.channel,
+				...result?.group
+			};
 		}
-
 		try {
 			const db = database.active;
 			const subCollection = db.get('subscriptions');
 			yield db.action(async() => {
 				await subCollection.create((s) => {
-					s._raw = sanitizedRaw({ id: sub.team ? sub.team.roomId : sub.rid }, subCollection.schema);
+					s._raw = sanitizedRaw({ id: sub.rid }, subCollection.schema);
 					Object.assign(s, sub);
 				});
 			});
 		} catch {
 			// do nothing
 		}
-
-		let successParams = {};
-		if (data.isTeam) {
-			successParams = {
-				...sub.team,
-				rid: sub.team.roomId,
-				t: sub.team.type ? 'p' : 'c'
-			};
-		} else {
-			successParams = data;
-		}
-		yield put(createChannelSuccess(successParams));
+		yield put(createChannelSuccess(sub));
 	} catch (err) {
 		logEvent(events[data.group ? 'SELECTED_USERS_CREATE_GROUP_F' : 'CR_CREATE_F']);
-		yield put(createChannelFailure(err));
+		yield put(createChannelFailure(err, data.isTeam));
 	}
 };
 
@@ -107,10 +108,10 @@ const handleSuccess = function* handleSuccess({ data }) {
 	goRoom({ item: data, isMasterDetail });
 };
 
-const handleFailure = function handleFailure({ err }) {
+const handleFailure = function handleFailure({ err, isTeam }) {
 	setTimeout(() => {
-		const msg = err.data ? I18n.t(err.data.error) : err.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_channel') });
-		showErrorAlert(msg);
+		const msg = err.data.errorType ? I18n.t(err.data.errorType, { room_name: err.data.details.channel_name }) : err.reason || I18n.t('There_was_an_error_while_action', { action: isTeam ? I18n.t('creating_team') : I18n.t('creating_channel') });
+		showErrorAlert(msg, isTeam ? I18n.t('Create_Team') : I18n.t('Create_Channel'));
 	}, 300);
 };
 
