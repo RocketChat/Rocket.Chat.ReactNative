@@ -26,4 +26,12 @@
         <item name="colorPrimaryDark">@color/splashBackground</item>
         <item name="android:navigationBarColor">@color/splashBackground</item>
     </style>
+
+    <style name="Theme.FullScreenDialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@color/modalBackground</item>
+        <item name="android:statusBarColor">@color/modalBackground</item>
+        <item name="android:navigationBarColor">@color/modalBackground</item>
+    </style>
 </resources>
