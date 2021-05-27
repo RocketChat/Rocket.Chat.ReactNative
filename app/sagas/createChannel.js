@@ -96,7 +96,7 @@ const handleRequest = function* handleRequest({ data }) {
 		yield put(createChannelSuccess(sub));
 	} catch (err) {
 		logEvent(events[data.group ? 'SELECTED_USERS_CREATE_GROUP_F' : 'CR_CREATE_F']);
-		yield put(createChannelFailure(err));
+		yield put(createChannelFailure(err, data.isTeam));
 	}
 };
 
@@ -108,10 +108,10 @@ const handleSuccess = function* handleSuccess({ data }) {
 	goRoom({ item: data, isMasterDetail });
 };
 
-const handleFailure = function handleFailure({ err }) {
+const handleFailure = function handleFailure({ err, isTeam }) {
 	setTimeout(() => {
-		const msg = err.data ? I18n.t(err.data.error) : err.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_channel') });
-		showErrorAlert(msg);
+		const msg = err.data.errorType ? I18n.t(err.data.errorType, { room_name: err.data.details.channel_name }) : err.reason || I18n.t('There_was_an_error_while_action', { action: isTeam ? I18n.t('creating_team') : I18n.t('creating_channel') });
+		showErrorAlert(msg, isTeam ? I18n.t('Create_Team') : I18n.t('Create_Channel'));
 	}, 300);
 };
 

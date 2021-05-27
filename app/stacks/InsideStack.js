@@ -183,6 +183,11 @@ const ChatsStackNavigator = () => {
 				options={TeamChannelsView.navigationOptions}
 			/>
 			<ChatsStack.Screen
+				name='CreateChannelView'
+				component={CreateChannelView}
+				options={CreateChannelView.navigationOptions}
+			/>
+			<ChatsStack.Screen
 				name='AddChannelTeamView'
 				component={AddChannelTeamView}
 				options={AddChannelTeamView.navigationOptions}

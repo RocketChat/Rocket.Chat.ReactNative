@@ -667,5 +667,6 @@
   "Teams": "Times",
   "No_team_channels_found": "Nenhum canal encontrado",
   "Team_not_found": "Time não encontrado",
-  "Private_Team": "Equipe Privada"
+  "Private_Team": "Equipe Privada",
+  "Add_Existing_Channel": "Adicionar Canal Existente"
 }
