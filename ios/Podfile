@@ -7,7 +7,7 @@ def all_pods
   config = use_native_modules!
   use_unimodules!
   use_react_native!(:path => config["reactNativePath"])
-  use_flipper!
+  use_flipper!({ 'Flipper-Folly' => '2.2.0' }) 
 end
 
 abstract_target 'defaults' do
