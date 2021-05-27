@@ -594,9 +594,9 @@ class RoomInfoEditView extends React.Component {
 						<SwitchContainer
 							value={t}
 							leftLabelPrimary={I18n.t('Public')}
-							leftLabelSecondary={I18n.t('Everyone_can_access_this_channel')}
+							leftLabelSecondary={room.teamMain ? I18n.t('Everyone_can_access_this_team') : I18n.t('Everyone_can_access_this_channel')}
 							rightLabelPrimary={I18n.t('Private')}
-							rightLabelSecondary={I18n.t('Just_invited_people_can_access_this_channel')}
+							rightLabelSecondary={room.teamMain ? I18n.t('Just_invited_people_can_access_this_team') : I18n.t('Just_invited_people_can_access_this_channel')}
 							onValueChange={this.toggleRoomType}
 							theme={theme}
 							testID='room-info-edit-view-t'
@@ -604,7 +604,7 @@ class RoomInfoEditView extends React.Component {
 						<SwitchContainer
 							value={ro}
 							leftLabelPrimary={I18n.t('Collaborative')}
-							leftLabelSecondary={I18n.t('All_users_in_the_channel_can_write_new_messages')}
+							leftLabelSecondary={room.teamMain ? I18n.t('All_users_in_the_team_can_write_new_messages') : I18n.t('All_users_in_the_channel_can_write_new_messages')}
 							rightLabelPrimary={I18n.t('Read_Only')}
 							rightLabelSecondary={I18n.t('Only_authorized_users_can_write_new_messages')}
 							onValueChange={this.toggleReadOnly}
