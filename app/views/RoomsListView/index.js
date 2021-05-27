@@ -421,7 +421,7 @@ class RoomsListView extends React.Component {
 			observable = await db.collections
 				.get('subscriptions')
 				.query(...defaultWhereClause)
-				.observeWithColumns(['alert']);
+				.observeWithColumns(['alert', 'f']);
 
 		// When we're NOT grouping
 		} else {
@@ -441,12 +441,12 @@ class RoomsListView extends React.Component {
 			let chats = data;
 
 			let chatsUpdate = [];
-			if (showUnread) {
+			if (this.isGrouping) {
 				/**
 				 * If unread on top, we trigger re-render based on order changes and sub.alert
 				 * RoomItem handles its own re-render
 				 */
-				chatsUpdate = data.map(item => ({ rid: item.rid, alert: item.alert }));
+				chatsUpdate = data.map(item => ({ rid: item.rid, alert: item.alert, f: item.f }));
 			} else {
 				/**
 				 * Otherwise, we trigger re-render only when chats order changes
