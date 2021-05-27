@@ -547,11 +547,11 @@ class RoomActionsView extends React.Component {
 							data: teamChannels,
 							isRadio: true,
 							search: true,
-							nextAction: () => showConfirmationAlert({
+							nextAction: selected => showConfirmationAlert({
 								title: I18n.t('Confirmation'),
 								message: I18n.t('Move_to_Team_Warning'),
 								confirmationText: I18n.t('Yes_action_it', { action: I18n.t('move') }),
-								onPress: selected => this.handleMoveToTeam(selected)
+								onPress: () => this.handleMoveToTeam(selected)
 							})
 
 						});
