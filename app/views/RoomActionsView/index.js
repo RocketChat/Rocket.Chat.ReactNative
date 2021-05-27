@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, Alert, Share, Switch
+	View, Text, Share, Switch
 } from 'react-native';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
@@ -53,6 +53,7 @@ class RoomActionsView extends React.Component {
 		theme: PropTypes.string,
 		fontScale: PropTypes.number,
 		serverVersion: PropTypes.string,
+		isMasterDetail: PropTypes.bool,
 		addUserToJoinedRoomPermission: PropTypes.array,
 		addUserToAnyCRoomPermission: PropTypes.array,
 		addUserToAnyPRoomPermission: PropTypes.array,
@@ -395,21 +396,72 @@ class RoomActionsView extends React.Component {
 		const { room } = this.state;
 		const { leaveRoom } = this.props;
 
-		Alert.alert(
-			I18n.t('Are_you_sure_question_mark'),
-			I18n.t('Are_you_sure_you_want_to_leave_the_room', { room: RocketChat.getRoomTitle(room) }),
-			[
-				{
-					text: I18n.t('Cancel'),
-					style: 'cancel'
-				},
-				{
-					text: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-					style: 'destructive',
-					onPress: () => leaveRoom(room.rid, room.t)
+		showConfirmationAlert({
+			message: I18n.t('Are_you_sure_you_want_to_leave_the_room', { room: RocketChat.getRoomTitle(room) }),
+			confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
+			onPress: () => leaveRoom(room.rid, room.t)
+		});
+	}
+
+	handleLeaveTeam = async(selected) => {
+		try {
+			const { room } = this.state;
+			const { navigation, isMasterDetail } = this.props;
+			const result = await RocketChat.leaveTeam({ teamName: room.name, ...(selected && { rooms: selected }) });
+
+			if (result.success) {
+				if (isMasterDetail) {
+					navigation.navigate('DrawerNavigator');
+				} else {
+					navigation.navigate('RoomsListView');
 				}
-			]
-		);
+			}
+		} catch (e) {
+			log(e);
+			showErrorAlert(
+				e.data.error
+					? I18n.t(e.data.error)
+					: I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_team') }),
+				I18n.t('Cannot_leave')
+			);
+		}
+	}
+
+	leaveTeam = async() => {
+		const { room } = this.state;
+		const { navigation } = this.props;
+
+		try {
+			const result = await RocketChat.teamListRoomsOfUser({ teamId: room.teamId, userId: room.u._id });
+
+			if (result.rooms?.length) {
+				const teamChannels = result.rooms.map(r => ({
+					rid: r._id,
+					name: r.name,
+					teamId: r.teamId,
+					alert: r.isLastOwner
+				}));
+				navigation.navigate('SelectListView', {
+					title: 'Leave_Team',
+					data: teamChannels,
+					infoText: 'Select_Team_Channels',
+					nextAction: data => this.handleLeaveTeam(data),
+					showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_leave'))
+				});
+			} else {
+				showConfirmationAlert({
+					message: I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
+					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
+					onPress: () => this.handleLeaveTeam()
+				});
+			}
+		} catch (e) {
+			showConfirmationAlert({
+				message: I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
+				confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
+				onPress: () => this.handleLeaveTeam()
+			});
+		}
 	}
 
 	renderRoomInfo = () => {
@@ -568,9 +620,9 @@ class RoomActionsView extends React.Component {
 				<List.Section>
 					<List.Separator />
 					<List.Item
-						title='Leave_channel'
+						title='Leave'
 						onPress={() => this.onPressTouchable({
-							event: this.leaveChannel
+							event: room.teamMain ? this.leaveTeam : this.leaveChannel
 						})}
 						testID='room-actions-leave-channel'
 						left={() => <List.Icon name='logout' color={themes[theme].dangerColor} />}
@@ -588,7 +640,7 @@ class RoomActionsView extends React.Component {
 			room, membersCount, canViewMembers, canAddUser, canInviteUser, joined, canAutoTranslate, canForwardGuest, canReturnQueue
 		} = this.state;
 		const {
-			rid, t, encrypted
+			rid, t
 		} = room;
 		const isGroupChat = RocketChat.isGroupChat(room);
 
@@ -706,24 +758,6 @@ class RoomActionsView extends React.Component {
 										})}
 										testID='room-actions-starred'
 										left={() => <List.Icon name='star' />}
-										showActionIndicator
-									/>
-									<List.Separator />
-								</>
-							)
-							: null}
-
-						{['c', 'p', 'd'].includes(t)
-							? (
-								<>
-									<List.Item
-										title='Search'
-										onPress={() => this.onPressTouchable({
-											route: 'SearchMessagesView',
-											params: { rid, encrypted }
-										})}
-										testID='room-actions-search'
-										left={() => <List.Icon name='search' />}
 										showActionIndicator
 									/>
 									<List.Separator />
@@ -880,6 +914,7 @@ const mapStateToProps = state => ({
 	jitsiEnabled: state.settings.Jitsi_Enabled || false,
 	encryptionEnabled: state.encryption.enabled,
 	serverVersion: state.server.version,
+	isMasterDetail: state.app.isMasterDetail,
 	addUserToJoinedRoomPermission: state.permissions['add-user-to-joined-room'],
 	addUserToAnyCRoomPermission: state.permissions['add-user-to-any-c-room'],
 	addUserToAnyPRoomPermission: state.permissions['add-user-to-any-p-room'],
