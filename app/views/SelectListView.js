@@ -38,6 +38,8 @@ class SelectListView extends React.Component {
 		this.infoText = props.route?.params?.infoText;
 		this.nextAction = props.route?.params?.nextAction;
 		this.showAlert = props.route?.params?.showAlert;
+		this.search = props.route?.params?.search;
+		this.isRadio = props.route?.params?.isRadio;
 		this.state = {
 			data,
 			selected: []
@@ -94,8 +96,16 @@ class SelectListView extends React.Component {
 
 	renderItem = ({ item }) => {
 		const { theme } = this.props;
-		const icon = item.t === 'p' ? 'channel-private' : 'channel-public';
+		const { selected } = this.state;
+
+		const channelIcon = item.t === 'p' ? 'channel-private' : 'channel-public';
+		const icon = item.teamMain ? 'team' : channelIcon;
 		const checked = this.isChecked(item.rid) ? 'check' : null;
+
+		const toggle = () => (this.isRadio ? this.toggleRadioItem(item.rid) : this.toggleItem(item.rid));
+		const showCheck = () => (checked ? <List.Icon name={checked} color={themes[theme].actionTintColor} /> : null);
+		// not sure about the icon name, prob doesn't even exist, maybe i'll have to create a component for this
+		const showRadio = () => (this.isRadio ? <List.Icon name={selected === item.rid ? 'radio-selected' : 'radio'} color={themes[theme].actionTintColor} /> : null);
 
 		return (
 			<>
@@ -104,10 +114,10 @@ class SelectListView extends React.Component {
 					title={item.name}
 					translateTitle={false}
 					testID={`select-list-view-item-${ item.name }`}
-					onPress={() => (item.alert ? this.showAlert() : this.toggleItem(item.rid))}
+					onPress={() => (item.alert ? this.showAlert() : toggle())}
 					alert={item.alert}
 					left={() => <List.Icon name={icon} color={themes[theme].controlText} />}
-					right={() => (checked ? <List.Icon name={checked} color={themes[theme].actionTintColor} /> : null)}
+					right={() => (this.isRadio ? showRadio() : showCheck())}
 				/>
 			</>
 		);

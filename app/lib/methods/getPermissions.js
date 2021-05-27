@@ -17,6 +17,7 @@ const PERMISSIONS = [
 	'archive-room',
 	'auto-translate',
 	'create-invite-links',
+	'create-team',
 	'delete-c',
 	'delete-message',
 	'delete-p',
