@@ -95,7 +95,6 @@ class SelectListView extends React.Component {
 	renderItem = ({ item }) => {
 		const { theme } = this.props;
 		const icon = item.t === 'p' ? 'channel-private' : 'channel-public';
-		const alert = item.alert || item.roles.length;
 		const checked = this.isChecked(item.rid) ? 'check' : null;
 
 		return (
@@ -105,8 +104,8 @@ class SelectListView extends React.Component {
 					title={item.name}
 					translateTitle={false}
 					testID={`select-list-view-item-${ item.name }`}
-					onPress={() => (alert ? this.showAlert() : this.toggleItem(item.rid))}
-					alert={alert}
+					onPress={() => (item.alert ? this.showAlert() : this.toggleItem(item.rid))}
+					alert={item.alert}
 					left={() => <List.Icon name={icon} color={themes[theme].controlText} />}
 					right={() => (checked ? <List.Icon name={checked} color={themes[theme].actionTintColor} /> : null)}
 				/>

@@ -332,11 +332,18 @@ class RoomInfoEditView extends React.Component {
 					title: 'Delete_Team',
 					data: teamChannels,
 					infoText: 'Select_channels_to_delete',
-					nextAction: data => this.handleDeleteTeam(data),
-					showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_delete'))
+					nextAction: () => {
+						showConfirmationAlert({
+							title: I18n.t('Confirmation'),
+							message: I18n.t('You_are_deleting_the_team', { team: RocketChat.getRoomTitle(room) }),
+							confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
+							onPress: data => this.handleDeleteTeam(data)
+						});
+					}
 				});
 			} else {
 				showConfirmationAlert({
+					title: I18n.t('Confirmation'),
 					message: I18n.t('You_are_deleting_the_team', { team: RocketChat.getRoomTitle(room) }),
 					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					onPress: () => this.handleDeleteTeam()
