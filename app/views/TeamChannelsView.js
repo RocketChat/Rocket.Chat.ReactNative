@@ -32,6 +32,12 @@ import { CustomIcon } from '../lib/Icons';
 import { themes } from '../constants/colors';
 
 const API_FETCH_COUNT = 25;
+const PERMISSION_DELETE_C = 'delete-c';
+const PERMISSION_DELETE_P = 'delete-p';
+const PERMISSION_EDIT_TEAM_CHANNEL = 'edit-team-channel';
+const PERMISSION_REMOVE_TEAM_CHANNEL = 'remove-team-channel';
+const PERMISSION_ADD_TEAM_CHANNEL = 'add-team-channel';
+
 
 const getItemLayout = (data, index) => ({
 	length: data.length,
@@ -51,7 +57,10 @@ class TeamChannelsView extends React.Component {
 		width: PropTypes.number,
 		StoreLastMessage: PropTypes.bool,
 		addTeamChannelPermission: PropTypes.array,
+		editTeamChannelPermission: PropTypes.array,
 		removeTeamChannelPermission: PropTypes.array,
+		deleteCPermission: PropTypes.array,
+		deletePPermission: PropTypes.array,
 		showActionSheet: PropTypes.func,
 		deleteRoom: PropTypes.func
 	}
@@ -291,33 +300,6 @@ class TeamChannelsView extends React.Component {
 		}
 	}, 1000, true);
 
-	options = (item) => {
-		const { theme } = this.props;
-		const isAutoJoinChecked = item.teamDefault;
-		const autoJoinIcon = isAutoJoinChecked ? 'checkbox-checked' : 'checkbox-unchecked';
-		const autoJoinIconColor = isAutoJoinChecked ? themes[theme].tintActive : themes[theme].auxiliaryTintColor;
-		return ([
-			{
-				title: I18n.t('Auto-join'),
-				icon: item.t === 'p' ? 'channel-private' : 'channel-public',
-				onPress: () => this.toggleAutoJoin(item),
-				right: () => <CustomIcon name={autoJoinIcon} size={20} color={autoJoinIconColor} />
-			},
-			{
-				title: I18n.t('Remove_from_Team'),
-				icon: 'close',
-				danger: true,
-				onPress: () => this.remove(item)
-			},
-			{
-				title: I18n.t('Delete'),
-				icon: 'delete',
-				danger: true,
-				onPress: () => this.delete(item)
-			}
-		]);
-	}
-
 	toggleAutoJoin = async(item) => {
 		try {
 			const { data } = this.state;
@@ -391,13 +373,49 @@ class TeamChannelsView extends React.Component {
 
 	showChannelActions = async(item) => {
 		logEvent(events.ROOM_SHOW_BOX_ACTIONS);
-		const { showActionSheet, removeTeamChannelPermission } = this.props;
+		const {
+			showActionSheet, editTeamChannelPermission, deleteCPermission, deletePPermission, theme, removeTeamChannelPermission
+		} = this.props;
+		const isAutoJoinChecked = item.teamDefault;
+		const autoJoinIcon = isAutoJoinChecked ? 'checkbox-checked' : 'checkbox-unchecked';
+		const autoJoinIconColor = isAutoJoinChecked ? themes[theme].tintActive : themes[theme].auxiliaryTintColor;
 
-		const permissions = await RocketChat.hasPermission([removeTeamChannelPermission], this.team.rid);
-		if (!permissions[0]) {
+		const options = [];
+
+		const permissionsTeam = await RocketChat.hasPermission([editTeamChannelPermission], this.team.rid);
+		if (permissionsTeam[0]) {
+			options.push({
+				title: I18n.t('Auto-join'),
+				icon: item.t === 'p' ? 'channel-private' : 'channel-public',
+				onPress: () => this.toggleAutoJoin(item),
+				right: () => <CustomIcon name={autoJoinIcon} size={20} color={autoJoinIconColor} />
+			});
+		}
+
+		const permissionsRemoveTeam = await RocketChat.hasPermission([removeTeamChannelPermission], this.team.rid);
+		if (permissionsRemoveTeam[0]) {
+			options.push({
+				title: I18n.t('Remove_from_Team'),
+				icon: 'close',
+				danger: true,
+				onPress: () => this.remove(item)
+			});
+		}
+
+		const permissionsChannel = await RocketChat.hasPermission([item.t === 'c' ? deleteCPermission : deletePPermission], item._id);
+		if (permissionsChannel[0]) {
+			options.push({
+				title: I18n.t('Delete'),
+				icon: 'delete',
+				danger: true,
+				onPress: () => this.delete(item)
+			});
+		}
+
+		if (options.length === 0) {
 			return;
 		}
-		showActionSheet({ options: this.options(item) });
+		showActionSheet({ options });
 	}
 
 	renderItem = ({ item }) => {
@@ -481,8 +499,11 @@ const mapStateToProps = state => ({
 	useRealName: state.settings.UI_Use_Real_Name,
 	isMasterDetail: state.app.isMasterDetail,
 	StoreLastMessage: state.settings.Store_Last_Message,
-	addTeamChannelPermission: state.permissions['add-team-channel'],
-	removeTeamChannelPermission: state.permissions['remove-team-channel']
+	addTeamChannelPermission: state.permissions[PERMISSION_ADD_TEAM_CHANNEL],
+	editTeamChannelPermission: state.permissions[PERMISSION_EDIT_TEAM_CHANNEL],
+	removeTeamChannelPermission: state.permissions[PERMISSION_REMOVE_TEAM_CHANNEL],
+	deleteCPermission: state.permissions[PERMISSION_DELETE_C],
+	deletePPermission: state.permissions[PERMISSION_DELETE_P]
 });
 
 const mapDispatchToProps = dispatch => ({
