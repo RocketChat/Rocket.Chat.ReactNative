@@ -61,6 +61,7 @@
   "error-message-editing-blocked": "Message editing is blocked",
   "error-message-size-exceeded": "Message size exceeds Message_MaxAllowedSize",
   "error-missing-unsubscribe-link": "You must provide the [unsubscribe] link.",
+  "error-no-owner-channel":"You don't own the channel",
   "error-no-tokens-for-this-user": "There are no tokens for this user",
   "error-not-allowed": "Not allowed",
   "error-not-authorized": "Not authorized",
