@@ -385,7 +385,6 @@ class TeamChannelsView extends React.Component {
 		const permissionsTeam = await RocketChat.hasPermission([editTeamChannelPermission], this.team.rid);
 		if (permissionsTeam[0]) {
 			options.push({
-				name: 'Auto-join',
 				title: I18n.t('Auto-join'),
 				icon: item.t === 'p' ? 'channel-private' : 'channel-public',
 				onPress: () => this.toggleAutoJoin(item),
@@ -396,7 +395,6 @@ class TeamChannelsView extends React.Component {
 		const permissionsRemoveTeam = await RocketChat.hasPermission([removeTeamChannelPermission], this.team.rid);
 		if (permissionsRemoveTeam[0]) {
 			options.push({
-				name: 'Remove_from_Team',
 				title: I18n.t('Remove_from_Team'),
 				icon: 'close',
 				danger: true,
@@ -407,7 +405,6 @@ class TeamChannelsView extends React.Component {
 		const permissionsChannel = await RocketChat.hasPermission([item.t === 'c' ? deleteCPermission : deletePPermission], item._id);
 		if (permissionsChannel[0]) {
 			options.push({
-				name: 'Delete',
 				title: I18n.t('Delete'),
 				icon: 'delete',
 				danger: true,
