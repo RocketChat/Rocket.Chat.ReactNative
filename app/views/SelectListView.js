@@ -4,6 +4,7 @@ import {
 	View, StyleSheet, FlatList, Text
 } from 'react-native';
 import { connect } from 'react-redux';
+import { RadioButton } from 'react-native-ui-lib';
 
 import * as List from '../containers/List';
 import sharedStyles from './Styles';
@@ -14,6 +15,7 @@ import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import { animateNextTransition } from '../utils/layoutAnimation';
+import { ICON_SIZE } from '../containers/List/constants';
 
 const styles = StyleSheet.create({
 	buttonText: {
@@ -70,6 +72,7 @@ class SelectListView extends React.Component {
 
 	renderInfoText = () => {
 		const { theme } = this.props;
+
 		return (
 			<View style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<Text style={[styles.buttonText, { color: themes[theme].bodyText }]}>{I18n.t(this.infoText)}</Text>
@@ -86,7 +89,11 @@ class SelectListView extends React.Component {
 		const { selected } = this.state;
 
 		animateNextTransition();
-		if (!this.isChecked(rid)) {
+		if (this.isRadio) {
+			if (!this.isChecked(rid)) {
+				this.setState({ selected: [rid] }, () => this.setHeader());
+			}
+		} else if (!this.isChecked(rid)) {
 			this.setState({ selected: [...selected, rid] }, () => this.setHeader());
 		} else {
 			const filterSelected = selected.filter(el => el !== rid);
@@ -99,14 +106,11 @@ class SelectListView extends React.Component {
 		const { selected } = this.state;
 
 		const channelIcon = item.t === 'p' ? 'channel-private' : 'channel-public';
-		const icon = item.teamMain ? 'team' : channelIcon;
+		const teamIcon = item.t === 'p' ? 'teams-private' : 'teams';
+		const icon = item.teamMain ? teamIcon : channelIcon;
 		const checked = this.isChecked(item.rid) ? 'check' : null;
-
-		const toggle = () => (this.isRadio ? this.toggleRadioItem(item.rid) : this.toggleItem(item.rid));
-		const showCheck = () => (checked ? <List.Icon name={checked} color={themes[theme].actionTintColor} /> : null);
-		// not sure about the icon name, prob doesn't even exist, maybe i'll have to create a component for this
-		const showRadio = () => (this.isRadio ? <List.Icon name={selected === item.rid ? 'radio-selected' : 'radio'} color={themes[theme].actionTintColor} /> : null);
-
+		const showRadio = () => <RadioButton selected={selected.includes(item.rid)} color={themes[theme].actionTintColor} size={ICON_SIZE} />;
+		const showCheck = () => <List.Icon name={checked} color={themes[theme].actionTintColor} />;
 		return (
 			<>
 				<List.Separator />
@@ -114,8 +118,8 @@ class SelectListView extends React.Component {
 					title={item.name}
 					translateTitle={false}
 					testID={`select-list-view-item-${ item.name }`}
-					onPress={() => (item.alert ? this.showAlert() : toggle())}
-					alert={item.alert}
+					onPress={() => (item?.alert ? this.showAlert() : this.toggleItem(item.rid))}
+					alert={item?.alert}
 					left={() => <List.Icon name={icon} color={themes[theme].controlText} />}
 					right={() => (this.isRadio ? showRadio() : showCheck())}
 				/>
@@ -126,7 +130,6 @@ class SelectListView extends React.Component {
 	render() {
 		const { data } = this.state;
 		const { theme } = this.props;
-
 		return (
 			<SafeAreaView testID='select-list-view'>
 				<StatusBar />
@@ -135,7 +138,7 @@ class SelectListView extends React.Component {
 					extraData={this.state}
 					keyExtractor={item => item.rid}
 					renderItem={this.renderItem}
-					ListHeaderComponent={this.renderInfoText}
+					ListHeaderComponent={this.infoText ? this.renderInfoText : null}
 					contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
 					keyboardShouldPersistTaps='always'
 				/>

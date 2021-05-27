@@ -536,24 +536,28 @@ class RoomActionsView extends React.Component {
 			const teamChannels = await subCollection.query(
 				Q.where('team_main', Q.notEq(null))
 			);
-			navigation.navigate('SelectListView', {
-				title: 'Move_to_Team',
-				infoText: 'Move_Channel_Paragraph',
-				nextAction: () => navigation.push('SelectListView', {
-					title: 'Select_Team',
-					data: teamChannels,
-					isRadio: true,
-					search: true,
+
+			if (teamChannels.length) {
+				navigation.navigate('SelectListView', {
+					title: 'Move_to_Team',
+					infoText: 'Move_Channel_Paragraph',
 					nextAction: () => {
-						showConfirmationAlert({
-							title: I18n.t('Confirmation'),
-							message: I18n.t('Convert_to_Team_Warning'),
-							confirmationText: I18n.t('Yes_action_it', { action: I18n.t('move') }),
-							onPress: selected => this.handleConvertToTeam(selected)
+						navigation.push('SelectListView', {
+							title: 'Select_Team',
+							data: teamChannels,
+							isRadio: true,
+							search: true,
+							nextAction: () => showConfirmationAlert({
+								title: I18n.t('Confirmation'),
+								message: I18n.t('Move_to_Team_Warning'),
+								confirmationText: I18n.t('Yes_action_it', { action: I18n.t('move') }),
+								onPress: selected => this.handleMoveToTeam(selected)
+							})
+
 						});
 					}
-				})
-			});
+				});
+			}
 		} catch (e) {
 			log(e);
 		}
