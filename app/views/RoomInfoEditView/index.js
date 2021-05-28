@@ -310,7 +310,7 @@ class RoomInfoEditView extends React.Component {
 				e.data.error
 					? I18n.t(e.data.error)
 					: I18n.t('There_was_an_error_while_action', { action: I18n.t('deleting_team') }),
-				I18n.t('Cannot_leave')
+				I18n.t('Cannot_delete')
 			);
 		}
 	}
@@ -332,29 +332,29 @@ class RoomInfoEditView extends React.Component {
 					title: 'Delete_Team',
 					data: teamChannels,
 					infoText: 'Select_channels_to_delete',
-					nextAction: () => {
+					nextAction: (selected) => {
 						showConfirmationAlert({
-							title: I18n.t('Confirmation'),
 							message: I18n.t('You_are_deleting_the_team', { team: RocketChat.getRoomTitle(room) }),
 							confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
-							onPress: data => this.handleDeleteTeam(data)
+							onPress: () => this.handleDeleteTeam(selected)
 						});
 					}
 				});
 			} else {
 				showConfirmationAlert({
-					title: I18n.t('Confirmation'),
 					message: I18n.t('You_are_deleting_the_team', { team: RocketChat.getRoomTitle(room) }),
 					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					onPress: () => this.handleDeleteTeam()
 				});
 			}
 		} catch (e) {
-			showConfirmationAlert({
-				message: I18n.t('You_are_deleting_the_team', { team: RocketChat.getRoomTitle(room) }),
-				confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
-				onPress: () => this.handleDeleteTeam()
-			});
+			log(e);
+			showErrorAlert(
+				e.data.error
+					? I18n.t(e.data.error)
+					: I18n.t('There_was_an_error_while_action', { action: I18n.t('deleting_team') }),
+				I18n.t('Cannot_delete')
+			);
 		}
 	}
 

@@ -321,7 +321,7 @@ class TeamChannelsView extends React.Component {
 	remove = (item) => {
 		Alert.alert(
 			I18n.t('Confirmation'),
-			I18n.t('Delete_Team_Room_Warning'),
+			I18n.t('Remove_Team_Room_Warning'),
 			[
 				{
 					text: I18n.t('Cancel'),
