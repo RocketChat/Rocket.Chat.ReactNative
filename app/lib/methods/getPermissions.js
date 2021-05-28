@@ -20,6 +20,7 @@ const PERMISSIONS = [
 	'delete-c',
 	'delete-message',
 	'delete-p',
+	'delete-team',
 	'edit-message',
 	'edit-room',
 	'edit-team-member',
