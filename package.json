@@ -227,14 +227,14 @@
         }
       },
       "android.experimental.play.emu.debug": {
-        "device": "CVH7N15C14003503",
-        "type": "android.attached",
+        "device": "Pixel_API_28_AOSP",
+        "type": "android.emulator",
         "binaryPath": "android/app/build/outputs/apk/experimentalPlay/debug/app-experimental-play-debug.apk",
         "build": "cd android && ./gradlew app:assembleExperimentalPlayDebug app:assembleAndroidTest -DtestBuildType=debug && cd .."
       },
       "android.experimental.play.emu.release": {
-        "device": "CVH7N15C14003503",
-        "type": "android.attached",
+        "device": "Pixel_API_28_AOSP",
+        "type": "android.emulator",
         "binaryPath": "android/app/build/outputs/apk/experimentalPlay/release/app-experimental-play-release.apk",
         "build": "cd android && ./gradlew app:assembleExperimentalPlayRelease app:assembleAndroidTest -DtestBuildType=release && cd .."
       }

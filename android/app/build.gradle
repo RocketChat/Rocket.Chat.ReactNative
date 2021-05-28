@@ -263,6 +263,8 @@ android {
     }
 }
 
+testBuildType "debug"
+
 dependencies {
     addUnimodulesDependencies()
     implementation project(':watermelondb')
