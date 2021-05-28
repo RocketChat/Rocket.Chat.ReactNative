@@ -3,5 +3,4 @@
 	<color name="primary_dark">#660B0B0B</color>
 	<item name="splashBackground" type="color">#1D74F5</item>
 	<item name="notification_text" type="color">#1D74F5</item>
-	<item name="modalBackground" type="color">#66000000</item>
 </resources>
