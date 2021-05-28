@@ -159,7 +159,7 @@ export default class RoomSubscription {
 	updateMessage = message => (
 		new Promise(async(resolve) => {
 			if (this.rid !== message.rid) {
-				return;
+				return resolve();
 			}
 
 			const db = database.active;
