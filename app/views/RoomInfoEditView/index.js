@@ -8,15 +8,16 @@ import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 import ImagePicker from 'react-native-image-crop-picker';
 import { dequal } from 'dequal';
 import isEmpty from 'lodash/isEmpty';
-import { compareServerVersion, methods } from '../../lib/utils';
+import { Q } from '@nozbe/watermelondb';
 
+import { compareServerVersion, methods } from '../../lib/utils';
 import database from '../../lib/database';
 import { deleteRoom as deleteRoomAction } from '../../actions/room';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { showErrorAlert } from '../../utils/info';
+import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import RocketChat from '../../lib/rocketchat';
@@ -41,6 +42,7 @@ const PERMISSION_ARCHIVE = 'archive-room';
 const PERMISSION_UNARCHIVE = 'unarchive-room';
 const PERMISSION_DELETE_C = 'delete-c';
 const PERMISSION_DELETE_P = 'delete-p';
+const PERMISSION_DELETE_TEAM = 'delete-team';
 
 class RoomInfoEditView extends React.Component {
 	static navigationOptions = () => ({
@@ -48,6 +50,7 @@ class RoomInfoEditView extends React.Component {
 	})
 
 	static propTypes = {
+		navigation: PropTypes.object,
 		route: PropTypes.object,
 		deleteRoom: PropTypes.func,
 		serverVersion: PropTypes.string,
@@ -58,7 +61,9 @@ class RoomInfoEditView extends React.Component {
 		archiveRoomPermission: PropTypes.array,
 		unarchiveRoomPermission: PropTypes.array,
 		deleteCPermission: PropTypes.array,
-		deletePPermission: PropTypes.array
+		deletePPermission: PropTypes.array,
+		deleteTeamPermission: PropTypes.array,
+		isMasterDetail: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -100,7 +105,8 @@ class RoomInfoEditView extends React.Component {
 			archiveRoomPermission,
 			unarchiveRoomPermission,
 			deleteCPermission,
-			deletePPermission
+			deletePPermission,
+			deleteTeamPermission
 		} = this.props;
 		const rid = route.params?.rid;
 		if (!rid) {
@@ -122,7 +128,8 @@ class RoomInfoEditView extends React.Component {
 				archiveRoomPermission,
 				unarchiveRoomPermission,
 				deleteCPermission,
-				deletePPermission
+				deletePPermission,
+				...(this.room.teamMain ? [deleteTeamPermission] : [])
 			], rid);
 
 			this.setState({
@@ -132,7 +139,8 @@ class RoomInfoEditView extends React.Component {
 					[PERMISSION_ARCHIVE]: result[2],
 					[PERMISSION_UNARCHIVE]: result[3],
 					[PERMISSION_DELETE_C]: result[4],
-					[PERMISSION_DELETE_P]: result[5]
+					[PERMISSION_DELETE_P]: result[5],
+					...(this.room.teamMain && { [PERMISSION_DELETE_TEAM]: result[6] })
 				}
 			});
 		} catch (e) {
@@ -284,6 +292,72 @@ class RoomInfoEditView extends React.Component {
 		}, 100);
 	}
 
+	handleDeleteTeam = async(selected) => {
+		const { navigation, isMasterDetail } = this.props;
+		const { room } = this.state;
+		try {
+			const result = await RocketChat.deleteTeam({ teamId: room.teamId, ...(selected && { roomsToRemove: selected }) });
+			if (result.success) {
+				if (isMasterDetail) {
+					navigation.navigate('DrawerNavigator');
+				} else {
+					navigation.navigate('RoomsListView');
+				}
+			}
+		} catch (e) {
+			log(e);
+			showErrorAlert(
+				e.data.error
+					? I18n.t(e.data.error)
+					: I18n.t('There_was_an_error_while_action', { action: I18n.t('deleting_team') }),
+				I18n.t('Cannot_delete')
+			);
+		}
+	}
+
+	deleteTeam = async() => {
+		const { room } = this.state;
+		const { navigation } = this.props;
+
+		try {
+			const db = database.active;
+			const subCollection = db.get('subscriptions');
+			const teamChannels = await subCollection.query(
+				Q.where('team_id', room.teamId),
+				Q.where('team_main', null)
+			);
+
+			if (teamChannels.length) {
+				navigation.navigate('SelectListView', {
+					title: 'Delete_Team',
+					data: teamChannels,
+					infoText: 'Select_channels_to_delete',
+					nextAction: (selected) => {
+						showConfirmationAlert({
+							message: I18n.t('You_are_deleting_the_team', { team: RocketChat.getRoomTitle(room) }),
+							confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
+							onPress: () => this.handleDeleteTeam(selected)
+						});
+					}
+				});
+			} else {
+				showConfirmationAlert({
+					message: I18n.t('You_are_deleting_the_team', { team: RocketChat.getRoomTitle(room) }),
+					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
+					onPress: () => this.handleDeleteTeam()
+				});
+			}
+		} catch (e) {
+			log(e);
+			showErrorAlert(
+				e.data.error
+					? I18n.t(e.data.error)
+					: I18n.t('There_was_an_error_while_action', { action: I18n.t('deleting_team') }),
+				I18n.t('Cannot_delete')
+			);
+		}
+	}
+
 	delete = () => {
 		const { room } = this.state;
 		const { deleteRoom } = this.props;
@@ -339,9 +413,16 @@ class RoomInfoEditView extends React.Component {
 
 	hasDeletePermission = () => {
 		const { room, permissions } = this.state;
-		return (
-			room.t === 'p' ? permissions[PERMISSION_DELETE_P] : permissions[PERMISSION_DELETE_C]
-		);
+
+		if (room.teamMain) {
+			return permissions[PERMISSION_DELETE_TEAM];
+		}
+
+		if (room.t === 'p') {
+			return permissions[PERMISSION_DELETE_P];
+		}
+
+		return permissions[PERMISSION_DELETE_C];
 	}
 
 	hasArchivePermission = () => {
@@ -513,9 +594,9 @@ class RoomInfoEditView extends React.Component {
 						<SwitchContainer
 							value={t}
 							leftLabelPrimary={I18n.t('Public')}
-							leftLabelSecondary={I18n.t('Everyone_can_access_this_channel')}
+							leftLabelSecondary={room.teamMain ? I18n.t('Everyone_can_access_this_team') : I18n.t('Everyone_can_access_this_channel')}
 							rightLabelPrimary={I18n.t('Private')}
-							rightLabelSecondary={I18n.t('Just_invited_people_can_access_this_channel')}
+							rightLabelSecondary={room.teamMain ? I18n.t('Just_invited_people_can_access_this_team') : I18n.t('Just_invited_people_can_access_this_channel')}
 							onValueChange={this.toggleRoomType}
 							theme={theme}
 							testID='room-info-edit-view-t'
@@ -523,7 +604,7 @@ class RoomInfoEditView extends React.Component {
 						<SwitchContainer
 							value={ro}
 							leftLabelPrimary={I18n.t('Collaborative')}
-							leftLabelSecondary={I18n.t('All_users_in_the_channel_can_write_new_messages')}
+							leftLabelSecondary={room.teamMain ? I18n.t('All_users_in_the_team_can_write_new_messages') : I18n.t('All_users_in_the_channel_can_write_new_messages')}
 							rightLabelPrimary={I18n.t('Read_Only')}
 							rightLabelSecondary={I18n.t('Only_authorized_users_can_write_new_messages')}
 							onValueChange={this.toggleReadOnly}
@@ -647,7 +728,7 @@ class RoomInfoEditView extends React.Component {
 								{ borderColor: dangerColor },
 								!this.hasDeletePermission() && sharedStyles.opacity5
 							]}
-							onPress={this.delete}
+							onPress={room.teamMain ? this.deleteTeam : this.delete}
 							disabled={!this.hasDeletePermission()}
 							testID='room-info-edit-view-delete'
 						>
@@ -678,7 +759,9 @@ const mapStateToProps = state => ({
 	archiveRoomPermission: state.permissions[PERMISSION_ARCHIVE],
 	unarchiveRoomPermission: state.permissions[PERMISSION_UNARCHIVE],
 	deleteCPermission: state.permissions[PERMISSION_DELETE_C],
-	deletePPermission: state.permissions[PERMISSION_DELETE_P]
+	deletePPermission: state.permissions[PERMISSION_DELETE_P],
+	deleteTeamPermission: state.permissions[PERMISSION_DELETE_TEAM],
+	isMasterDetail: state.app.isMasterDetail
 });
 
 const mapDispatchToProps = dispatch => ({

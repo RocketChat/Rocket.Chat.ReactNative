@@ -99,14 +99,22 @@ export default {
 	SELECTED_USERS_CREATE_GROUP: 'selected_users_create_group',
 	SELECTED_USERS_CREATE_GROUP_F: 'selected_users_create_group_f',
 
+	// ADD EXISTING CHANNEL VIEW
+	EXISTING_CHANNEL_ADD_CHANNEL: 'existing_channel_add_channel',
+	EXISTING_CHANNEL_REMOVE_CHANNEL: 'existing_channel_remove_channel',
+
 	// CREATE CHANNEL VIEW
 	CR_CREATE: 'cr_create',
+	CT_CREATE: 'ct_create',
 	CR_CREATE_F: 'cr_create_f',
+	CT_CREATE_F: 'ct_create_f',
 	CR_TOGGLE_TYPE: 'cr_toggle_type',
 	CR_TOGGLE_READ_ONLY: 'cr_toggle_read_only',
 	CR_TOGGLE_BROADCAST: 'cr_toggle_broadcast',
 	CR_TOGGLE_ENCRYPTED: 'cr_toggle_encrypted',
 	CR_REMOVE_USER: 'cr_remove_user',
+	CT_ADD_ROOM_TO_TEAM: 'ct_add_room_to_team',
+	CT_ADD_ROOM_TO_TEAM_F: 'ct_add_room_to_team_f',
 
 	// CREATE DISCUSSION VIEW
 	CD_CREATE: 'cd_create',
