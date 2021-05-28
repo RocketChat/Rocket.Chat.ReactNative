@@ -131,8 +131,8 @@ describe('Discussion', () => {
 			await expect(element(by.id('room-info-view'))).toExist();
 		});
 
-		it('should not have edit button', async() => {
-			await expect(element(by.id('room-info-view-edit-button'))).toBeNotVisible();
+		it('should have edit button', async() => {
+			await expect(element(by.id('room-info-view-edit-button'))).toBeVisible();
 		});
 	});
 });

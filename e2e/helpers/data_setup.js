@@ -1,6 +1,10 @@
 const axios = require('axios').default;
 const data = require('../data');
-const { TEAM_TYPE } = require('../../app/definition/ITeam');
+
+const TEAM_TYPE = {
+	PUBLIC: 0,
+	PRIVATE: 1
+};
 
 let server = data.server
 
