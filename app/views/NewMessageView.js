@@ -25,6 +25,7 @@ import Navigation from '../lib/Navigation';
 import { createChannelRequest } from '../actions/createChannel';
 import { goRoom } from '../utils/goRoom';
 import SafeAreaView from '../containers/SafeAreaView';
+import { compareServerVersion, methods } from '../lib/utils';
 
 const QUERY_SIZE = 50;
 
@@ -63,7 +64,8 @@ class NewMessageView extends React.Component {
 		create: PropTypes.func,
 		maxUsers: PropTypes.number,
 		theme: PropTypes.string,
-		isMasterDetail: PropTypes.bool
+		isMasterDetail: PropTypes.bool,
+		serverVersion: PropTypes.string
 	};
 
 	constructor(props) {
@@ -166,7 +168,7 @@ class NewMessageView extends React.Component {
 	}
 
 	renderHeader = () => {
-		const { maxUsers, theme } = this.props;
+		const { maxUsers, theme, serverVersion } = this.props;
 		return (
 			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
 				<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='new-message-view-search' />
@@ -178,12 +180,13 @@ class NewMessageView extends React.Component {
 						testID: 'new-message-view-create-channel',
 						first: true
 					})}
-					{this.renderButton({
-						onPress: this.createTeam,
-						title: I18n.t('Create_Team'),
-						icon: 'teams',
-						testID: 'new-message-view-create-team'
-					})}
+					{compareServerVersion(serverVersion, '3.13.0', methods.greaterThanOrEqualTo)
+						? (this.renderButton({
+							onPress: this.createTeam,
+							title: I18n.t('Create_Team'),
+							icon: 'teams',
+							testID: 'new-message-view-create-team'
+						})) : null}
 					{maxUsers > 2 ? this.renderButton({
 						onPress: this.createGroupChat,
 						title: I18n.t('Create_Direct_Messages'),
@@ -258,6 +261,7 @@ class NewMessageView extends React.Component {
 }
 
 const mapStateToProps = state => ({
+	serverVersion: state.server.version,
 	isMasterDetail: state.app.isMasterDetail,
 	baseUrl: state.server.server,
 	maxUsers: state.settings.DirectMesssage_maxUsers || 1,
