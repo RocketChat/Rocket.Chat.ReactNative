@@ -16,7 +16,9 @@
     "precommit": "eslint . && jest",
     "generate-source-maps-ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios-release.bundle --sourcemap-output ios-release.bundle.map",
     "generate-source-maps-android": "bugsnag-sourcemaps",
-    "postinstall": "patch-package && jetify"
+    "postinstall": "patch-package && jetify",
+    "detoxAD": "cd android && ./gradlew assembleExperimentalPlayDebugAndroidTest && cd .. && detox test -c android.experimental.play.emu.debug",
+    "detoxAR": "cd android && ./gradlew assembleExperimentalPlayReleaseAndroidTest && cd .. && detox test -c android.experimental.play.emu.release"
   },
   "husky": {
     "hooks": {

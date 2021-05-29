@@ -151,7 +151,6 @@ android {
             missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
         }
         resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
-        testBuildType System.getProperty('testBuildType', 'release')  // This will later be used to control the test apk build type
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
@@ -235,8 +234,6 @@ android {
         }
     }
 
-    testBuildType "release"
-
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             // For each separate APK per architecture, set a unique version code as described here:
@@ -262,8 +259,6 @@ android {
         }
     }
 }
-
-testBuildType "debug"
 
 dependencies {
     addUnimodulesDependencies()
