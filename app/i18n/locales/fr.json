@@ -264,6 +264,7 @@
   "last_message": "Dernier message",
   "Leave_channel": "Quitter le canal",
   "leaving_room": "En quittent le canal",
+  "Leave": "Quitter",
   "leave": "quitter",
   "Legal": "Légale",
   "Light": "Lumière",
@@ -619,5 +620,10 @@
   "After_seconds_set_by_admin": "Après {{seconds}} secondes (défini par l'administrateur)",
   "Dont_activate": "Ne pas activer maintenant",
   "Queued_chats": "Discussions en file d'attente",
-  "Queue_is_empty": "La file d'attente est vide"
+  "Queue_is_empty": "La file d'attente est vide",
+  "Add_Existing": "Ajouter existant",
+  "Auto-join": "Rejoindre automatiquement",
+  "Confirmation": "Confirmation",
+  "invalid-room": "Salon invalide",
+  "Leave_Team": "Quitter l'équipe"
 }

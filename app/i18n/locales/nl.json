@@ -216,6 +216,7 @@
   "last_message": "laatste bericht",
   "Leave_channel": "Verlaat kanaal",
   "leaving_room": "ruimte verlaten",
+  "Leave": "Verlaten",
   "leave": "verlaten",
   "Legal": "Legaal",
   "Light": "Light",
@@ -478,5 +479,10 @@
   "Server_selection": "Server selectie",
   "Server_selection_numbers": "Server selectie 1...9",
   "Add_server": "Voeg Server Toe",
-  "New_line": "Nieuwe Regel"
+  "New_line": "Nieuwe Regel",
+  "Add_Existing": "Voeg bestaande",
+  "Auto-join": "Automatisch deelnemen",
+  "Confirmation": "Bevestiging",
+  "invalid-room": "Ongeldige kamer",
+  "Leave_Team": "Team verlaten"
 }

@@ -290,6 +290,7 @@
   "last_message": "letzte Nachricht",
   "Leave_channel": "Kanal verlassen",
   "leaving_room": "Raum verlassen",
+  "Leave": "Raum verlassen",
   "leave": "verlassen",
   "Legal": "Rechtliches",
   "Light": "Hell",
@@ -681,12 +682,6 @@
   "No_threads_following": "Du folgst keinen Threads",
   "No_threads_unread": "Es gibt keine ungelesenen Threads",
   "Messagebox_Send_to_channel": "an Kanal senden",
-  "Set_as_leader": "Zum Diskussionsleiter ernennen",
-  "Set_as_moderator": "Zum Moderator ernennen",
-  "Set_as_owner": "Zum Besitzer machen",
-  "Remove_as_leader": "Als Diskussionsleiter entfernen",
-  "Remove_as_moderator": "Moderatorenrechte entfernen",
-  "Remove_as_owner": "Als Eigentümer entfernen",
   "Remove_from_room": "Aus dem Raum entfernen",
   "Ignore": "Ignorieren",
   "Unignore": "Nicht mehr ignorieren",
@@ -704,5 +699,8 @@
   "Direct_message": "Direktnachricht",
   "Message_Ignored": "Nachricht ignoriert. Antippen um sie zu zeigen.",
   "Enter_workspace_URL": "Arbeitsbereich-URL",
-  "Workspace_URL_Example": "z.B. https://rocketchat.deine-firma.de"
+  "Workspace_URL_Example": "z.B. https://rocketchat.deine-firma.de",
+  "Confirmation": "Bestätigung",
+  "invalid-room": "Ungültiger Raum",
+  "Leave_Team": "Team verlassen"
 }
