@@ -528,38 +528,6 @@ class RoomActionsView extends React.Component {
 		}
 	}
 
-	searchTeam = async(onChangeText) => {
-		try {
-			const { addTeamChannelPermission, createTeamPermission } = this.props;
-			const QUERY_SIZE = 50;
-			const db = database.active;
-			const teams = await db.collections
-				.get('subscriptions')
-				.query(
-					Q.where('team_main', Q.notEq(null)),
-					Q.where('name', Q.like(`%${ onChangeText }%`)),
-					Q.experimentalTake(QUERY_SIZE),
-					Q.experimentalSortBy('room_updated_at', Q.desc)
-				);
-
-			const asyncFilter = async(teamArray) => {
-				const results = await Promise.all(teamArray.map(async(team) => {
-					const permissions = await RocketChat.hasPermission([addTeamChannelPermission, createTeamPermission], team.rid);
-					if (!permissions[0]) {
-						return false;
-					}
-					return true;
-				}));
-
-				return teamArray.filter((_v, index) => results[index]);
-			};
-			const teamsFiltered = await asyncFilter(teams);
-			return teamsFiltered;
-		} catch (e) {
-			log(e);
-		}
-	}
-
 	moveToTeam = async() => {
 		try {
 			const { navigation } = this.props;
@@ -591,6 +559,38 @@ class RoomActionsView extends React.Component {
 					}
 				});
 			}
+		} catch (e) {
+			log(e);
+		}
+	}
+
+	searchTeam = async(onChangeText) => {
+		try {
+			const { addTeamChannelPermission, createTeamPermission } = this.props;
+			const QUERY_SIZE = 50;
+			const db = database.active;
+			const teams = await db.collections
+				.get('subscriptions')
+				.query(
+					Q.where('team_main', Q.notEq(null)),
+					Q.where('name', Q.like(`%${ onChangeText }%`)),
+					Q.experimentalTake(QUERY_SIZE),
+					Q.experimentalSortBy('room_updated_at', Q.desc)
+				);
+
+			const asyncFilter = async(teamArray) => {
+				const results = await Promise.all(teamArray.map(async(team) => {
+					const permissions = await RocketChat.hasPermission([addTeamChannelPermission, createTeamPermission], team.rid);
+					if (!permissions[0]) {
+						return false;
+					}
+					return true;
+				}));
+
+				return teamArray.filter((_v, index) => results[index]);
+			};
+			const teamsFiltered = await asyncFilter(teams);
+			return teamsFiltered;
 		} catch (e) {
 			log(e);
 		}

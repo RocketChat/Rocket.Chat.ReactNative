@@ -6,7 +6,7 @@ import {
 import { connect } from 'react-redux';
 import { RadioButton } from 'react-native-ui-lib';
 
-import { log } from 'react-native-reanimated';
+import log from '../utils/log';
 import * as List from '../containers/List';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
