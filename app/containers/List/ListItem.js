@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
 const Content = React.memo(({
 	title, subtitle, disabled, testID, left, right, color, theme, translateTitle, translateSubtitle, showActionIndicator, fontScale, alert
 }) => (
-	<View style={[styles.container, disabled && styles.disabled, { height: BASE_HEIGHT * fontScale }]} testID={testID}>
+	<View style={[styles.container, disabled && styles.disabled, { height: BASE_HEIGHT * fontScale }]} testID={testID} accessibilityLabel={title}>
 		{left
 			? (
 				<View style={styles.leftContainer}>

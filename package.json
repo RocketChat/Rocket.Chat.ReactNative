@@ -17,8 +17,10 @@
     "generate-source-maps-ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios-release.bundle --sourcemap-output ios-release.bundle.map",
     "generate-source-maps-android": "bugsnag-sourcemaps",
     "postinstall": "patch-package && jetify",
-    "detoxAD": "cd android && ./gradlew assembleExperimentalPlayDebugAndroidTest && cd .. && detox test -c android.experimental.play.emu.debug",
-    "detoxAR": "cd android && ./gradlew assembleExperimentalPlayReleaseAndroidTest && cd .. && detox test -c android.experimental.play.emu.release"
+    "detoxAD": "detox build -c android.experimental.play.dev.debug  && detox test -c android.experimental.play.dev.debug",
+    "detoxAR": "detox build -c android.experimental.play.dev.release && cd .. && detox test -c android.experimental.play.dev.release",
+    "detoxADEmu": "detox build -c android.experimental.play.emu.debug  && detox test -c android.experimental.play.emu.debug",
+    "detoxAREmu": "detox build -c android.experimental.play.emu.release && cd .. && detox test -c android.experimental.play.emu.release"
   },
   "husky": {
     "hooks": {
@@ -232,13 +234,25 @@
         "device": "Pixel_API_28_AOSP",
         "type": "android.emulator",
         "binaryPath": "android/app/build/outputs/apk/experimentalPlay/debug/app-experimental-play-debug.apk",
-        "build": "cd android && ./gradlew app:assembleExperimentalPlayDebug app:assembleAndroidTest -DtestBuildType=debug && cd .."
+        "build": "cd android && ./gradlew app:assembleExperimentalPlayDebug app:assembleExperimentalPlayDebugAndroidTest -DtestBuildType=debug && cd .."
       },
       "android.experimental.play.emu.release": {
         "device": "Pixel_API_28_AOSP",
         "type": "android.emulator",
         "binaryPath": "android/app/build/outputs/apk/experimentalPlay/release/app-experimental-play-release.apk",
-        "build": "cd android && ./gradlew app:assembleExperimentalPlayRelease app:assembleAndroidTest -DtestBuildType=release && cd .."
+        "build": "cd android && ./gradlew app:assembleExperimentalPlayRelease app:assembleExperimentalPlayReleaseAndroidTest -DtestBuildType=release && cd .."
+      },
+      "android.experimental.play.dev.debug": {
+        "device": "CVH7N15C14003503",
+        "type": "android.attached",
+        "binaryPath": "android/app/build/outputs/apk/experimentalPlay/debug/app-experimental-play-debug.apk",
+        "build": "cd android && ./gradlew app:assembleExperimentalPlayDebug app:assembleExperimentalPlayDebugAndroidTest -DtestBuildType=debug && cd .."
+      },
+      "android.experimental.play.dev.release": {
+        "device": "CVH7N15C14003503",
+        "type": "android.attached",
+        "binaryPath": "android/app/build/outputs/apk/experimentalPlay/release/app-experimental-play-release.apk",
+        "build": "cd android && ./gradlew app:assembleExperimentalPlayRelease app:assembleExperimentalPlayReleaseAndroidTest -DtestBuildType=release && cd .."
       }
     }
   }

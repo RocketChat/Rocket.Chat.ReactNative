@@ -151,6 +151,7 @@ android {
             missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
         }
         resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
+        testBuildType System.getProperty('testBuildType', 'debug')
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 

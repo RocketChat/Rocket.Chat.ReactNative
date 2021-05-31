@@ -78,7 +78,8 @@ describe('Profile screen', () => {
 		it('should change name and username', async() => {
 			await element(by.id('profile-view-name')).replaceText(`${ profileChangeUser.username }new`);
 			await element(by.id('profile-view-username')).typeText(`${ profileChangeUser.username }new`);
-			await element(by.type('UIScrollView')).atIndex(1).swipe('up');
+			await device.pressBack();
+			await element(by.type('android.widget.ScrollView')).atIndex(1).swipe('up');
 			await element(by.id('profile-view-submit')).tap();
 			await waitForToast();
 		});
@@ -87,12 +88,13 @@ describe('Profile screen', () => {
 			await element(by.id('profile-view-email')).replaceText(`mobile+profileChangesNew${ data.random }@rocket.chat`);
 			await element(by.id('profile-view-new-password')).replaceText(`${ profileChangeUser.password }new`);
 			await element(by.id('profile-view-submit')).tap();
-			await element(by.type('_UIAlertControllerTextField')).typeText(`${ profileChangeUser.password }\n`)
+			await element(by.type('android.widget.EditText')).typeText(`${ profileChangeUser.password }\n`);
+			await element(by.label('SAVE')).tap();
 			await waitForToast();
 		});
 
 		it('should reset avatar', async() => {
-			await element(by.type('UIScrollView')).atIndex(1).swipe('up');
+			await element(by.type('android.widget.ScrollView')).atIndex(1).swipe('up');
 			await element(by.id('profile-view-reset-avatar')).tap();
 			await waitForToast();
 		});

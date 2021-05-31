@@ -16,7 +16,7 @@ async function navigateToLogin(server) {
     await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
     await navigateToWorkspace(server);
 	await element(by.id('workspace-view-login')).tap();
-    await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
+    await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(4000);
     await expect(element(by.id('login-view'))).toBeVisible();
 }
 
@@ -41,7 +41,7 @@ async function logout() {
 	await waitFor(element(by.id('sidebar-settings'))).toBeVisible().withTimeout(2000);
     await element(by.id('sidebar-settings')).tap();
     await waitFor(element(by.id('settings-view'))).toBeVisible().withTimeout(2000);
-    await element(by.type('UIScrollView')).atIndex(1).scrollTo('bottom');
+    await element(by.type('android.widget.ScrollView')).atIndex(1).scrollTo('bottom');
     await element(by.id('settings-logout')).tap();
     const logoutAlertMessage = 'You will be logged out of this application.';
     await waitFor(element(by.text(logoutAlertMessage)).atIndex(0)).toExist().withTimeout(10000);
@@ -56,9 +56,9 @@ async function mockMessage(message, isThread = false) {
 	await element(by.id(input)).tap();
 	await element(by.id(input)).typeText(`${ data.random }${ message }`);
 	await element(by.id('messagebox-send-message')).tap();
-	await waitFor(element(by.label(`${ data.random }${ message }`))).toExist().withTimeout(60000);
-    await expect(element(by.label(`${ data.random }${ message }`))).toExist();
-    await element(by.label(`${ data.random }${ message }`)).atIndex(0).tap();
+	await waitFor(element(by.text(`${ data.random }${ message }`))).toExist().withTimeout(60000);
+    await expect(element(by.text(`${ data.random }${ message }`))).toExist();
+    await element(by.text(`${ data.random }${ message }`)).atIndex(0).tap();
 };
 
 async function starMessage(message){
