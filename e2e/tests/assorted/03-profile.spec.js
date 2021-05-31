@@ -89,7 +89,7 @@ describe('Profile screen', () => {
 			await element(by.id('profile-view-new-password')).replaceText(`${ profileChangeUser.password }new`);
 			await element(by.id('profile-view-submit')).tap();
 			await element(by.type('android.widget.EditText')).typeText(`${ profileChangeUser.password }\n`);
-			await element(by.label('SAVE')).tap();
+			await element(by.text('SAVE')).tap();
 			await waitForToast();
 		});
 
