@@ -1,7 +1,7 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
 
-import I18n from 'i18n-js';
+import I18n from '../../../i18n';
 import database from '../../database';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
 import protectedFunction from '../helpers/protectedFunction';
@@ -303,11 +303,11 @@ export default function subscribeRooms() {
 					const roomState = store.getState().room;
 					// Delete and remove events come from this stream
 					// Here we identify which one was triggered
-					if (sub._raw.team_main && data.rid === roomState.rid && roomState.isDeleting) {
+					if (data.rid === roomState.rid && roomState.isDeleting) {
 						store.dispatch(removedRoom());
-						EventEmitter.emit(LISTENER, { message: I18n.t('Left_The_Team_Successfully') });
-					} else if (data.rid === roomState.rid && roomState.isDeleting) {
-						store.dispatch(removedRoom());
+						if (sub.team_main) {
+							EventEmitter.emit(LISTENER, { message: I18n.t('Left_The_Team_Successfully') });
+						}
 					} else {
 						EventEmitter.emit('ROOM_REMOVED', { rid: data.rid });
 					}
