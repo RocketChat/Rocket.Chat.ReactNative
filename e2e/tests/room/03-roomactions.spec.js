@@ -419,46 +419,46 @@ describe('Room actions screen', () => {
 
 				it('should set/remove as owner', async() => {
 					await openActionSheet(user.username);
-					await element(by.label('Set as owner')).tap();
+					await element(by.id('action-sheet-set-owner')).tap();
 					await waitForToast();
 
 					await openActionSheet(user.username);
-					await element(by.label('Remove as owner')).tap();
+					await waitFor(element(by.id('action-sheet-set-owner-checked'))).toBeVisible().withTimeout(6000);
+					await element(by.id('action-sheet-set-owner')).tap();
 					await waitForToast();
 
 					await openActionSheet(user.username);
-					// Tests if Remove as owner worked
-					await waitFor(element(by.label('Set as owner'))).toExist().withTimeout(5000);
+					await waitFor(element(by.id('action-sheet-set-owner-unchecked'))).toBeVisible().withTimeout(60000);
 					await closeActionSheet();
 				});
 
 				it('should set/remove as leader', async() => {
 					await openActionSheet(user.username);
-					await element(by.label('Set as leader')).tap();
+					await element(by.id('action-sheet-set-leader')).tap();
 					await waitForToast();
 
 					await openActionSheet(user.username);
-					await element(by.label('Remove as leader')).tap();
+					await waitFor(element(by.id('action-sheet-set-leader-checked'))).toBeVisible().withTimeout(6000);
+					await element(by.id('action-sheet-set-leader')).tap();
 					await waitForToast();
 
 					await openActionSheet(user.username);
-					// Tests if Remove as leader worked
-					await waitFor(element(by.label('Set as leader'))).toExist().withTimeout(5000);
+					await waitFor(element(by.id('action-sheet-set-owner-unchecked'))).toBeVisible().withTimeout(60000);
 					await closeActionSheet();
 				});
 
 				it('should set/remove as moderator', async() => {
 					await openActionSheet(user.username);
-					await element(by.label('Set as moderator')).tap();
+					await element(by.id('action-sheet-set-moderator')).tap();
 					await waitForToast();
 
 					await openActionSheet(user.username);
-					await element(by.label('Remove as moderator')).tap();
+					await waitFor(element(by.id('action-sheet-set-moderator-checked'))).toBeVisible().withTimeout(6000);
+					await element(by.id('action-sheet-set-moderator')).tap();
 					await waitForToast();
 
 					await openActionSheet(user.username);
-					// Tests if Remove as moderator worked
-					await waitFor(element(by.label('Set as moderator'))).toExist().withTimeout(5000);
+					await waitFor(element(by.id('action-sheet-set-moderator-unchecked'))).toBeVisible().withTimeout(60000);
 					await closeActionSheet();
 				});
 

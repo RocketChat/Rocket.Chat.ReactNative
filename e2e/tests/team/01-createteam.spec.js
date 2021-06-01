@@ -2,7 +2,7 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const data = require('../../data');
-const { tapBack, sleep, navigateToLogin, login, tryTapping } = require('../../helpers/app');
+const { navigateToLogin, login, tapBack, searchRoom } = require('../../helpers/app');
 
 
 
@@ -20,13 +20,13 @@ describe('Create team screen', () => {
 
 		describe('Render', async() => {
 			it('should have team button', async() => {
-				await waitFor(element(by.id('new-message-view-create-channel'))).toBeVisible().withTimeout(2000);
+				await waitFor(element(by.id('new-message-view-create-team'))).toBeVisible().withTimeout(2000);
 			});
 		})
 
 		describe('Usage', async() => {
 			it('should navigate to select users', async() => {
-				await element(by.id('new-message-view-create-channel')).tap();
+				await element(by.id('new-message-view-create-team')).tap();
 				await waitFor(element(by.id('select-users-view'))).toExist().withTimeout(5000);
 			});
 		})
@@ -72,11 +72,27 @@ describe('Create team screen', () => {
 				await expect(element(by.id('room-view'))).toExist();
 				await waitFor(element(by.id(`room-view-title-${ room }`))).toExist().withTimeout(6000);
 				await expect(element(by.id(`room-view-title-${ room }`))).toExist();
-				await tapBack();
-				await waitFor(element(by.id('rooms-list-view'))).toExist().withTimeout(10000);
-				await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toExist().withTimeout(6000);
-				await expect(element(by.id(`rooms-list-view-item-${ room }`))).toExist();
 			});
 		})
+	});
+
+	describe('Delete Team', async() => {
+		it('should navigate to room info edit view', async() => {
+			await element(by.id('room-header')).tap();
+			await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
+			await element(by.id('room-actions-info')).tap();
+			await waitFor(element(by.id('room-info-view'))).toExist().withTimeout(2000);
+		});
+
+		it('should delete team', async() => {
+			const room = `private${ data.random }`;
+			await element(by.id('room-info-view-edit-button')).tap();
+			await element(by.id('room-info-edit-view-list')).swipe('up', 'fast', 0.5);
+			await element(by.id('room-info-edit-view-delete')).tap();
+			await waitFor(element(by.text('Yes, delete it!'))).toExist().withTimeout(5000);
+			await element(by.text('Yes, delete it!')).tap();
+			await waitFor(element(by.id('rooms-list-view'))).toExist().withTimeout(10000);
+			await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible().withTimeout(60000);
+		});
 	});
 });

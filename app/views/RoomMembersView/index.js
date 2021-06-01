@@ -265,7 +265,8 @@ class RoomMembersView extends React.Component {
 			options.push({
 				icon: 'ignore',
 				title: I18n.t(isIgnored ? 'Unignore' : 'Ignore'),
-				onPress: () => this.handleIgnore(selectedUser, !isIgnored)
+				onPress: () => this.handleIgnore(selectedUser, !isIgnored),
+				testID: 'action-sheet-ignore-user'
 			});
 		}
 
@@ -284,7 +285,8 @@ class RoomMembersView extends React.Component {
 						confirmationText: I18n.t(userIsMuted ? 'Unmute' : 'Mute'),
 						onPress: () => this.handleMute(selectedUser)
 					});
-				}
+				},
+				testID: 'action-sheet-mute-user'
 			});
 		}
 
@@ -296,7 +298,8 @@ class RoomMembersView extends React.Component {
 				icon: 'shield-check',
 				title: I18n.t('Owner'),
 				onPress: () => this.handleOwner(selectedUser, !isOwner),
-				right: () => <CustomIcon name={isOwner ? 'checkbox-checked' : 'checkbox-unchecked'} size={20} color={isOwner ? themes[theme].tintActive : themes[theme].auxiliaryTintColor} />
+				right: () => <CustomIcon testID={isOwner ? 'action-sheet-set-owner-checked' : 'action-sheet-set-owner-unchecked'} name={isOwner ? 'checkbox-checked' : 'checkbox-unchecked'} size={20} color={isOwner ? themes[theme].tintActive : themes[theme].auxiliaryTintColor} />,
+				testID: 'action-sheet-set-owner'
 			});
 		}
 
@@ -308,7 +311,8 @@ class RoomMembersView extends React.Component {
 				icon: 'shield-alt',
 				title: I18n.t('Leader'),
 				onPress: () => this.handleLeader(selectedUser, !isLeader),
-				right: () => <CustomIcon name={isLeader ? 'checkbox-checked' : 'checkbox-unchecked'} size={20} color={isLeader ? themes[theme].tintActive : themes[theme].auxiliaryTintColor} />
+				right: () => <CustomIcon testID={isLeader ? 'action-sheet-set-leader-checked' : 'action-sheet-set-leader-unchecked'} name={isLeader ? 'checkbox-checked' : 'checkbox-unchecked'} size={20} color={isLeader ? themes[theme].tintActive : themes[theme].auxiliaryTintColor} />,
+				testID: 'action-sheet-set-leader'
 			});
 		}
 
@@ -320,7 +324,8 @@ class RoomMembersView extends React.Component {
 				icon: 'shield',
 				title: I18n.t('Moderator'),
 				onPress: () => this.handleModerator(selectedUser, !isModerator),
-				right: () => <CustomIcon name={isModerator ? 'checkbox-checked' : 'checkbox-unchecked'} size={20} color={isModerator ? themes[theme].tintActive : themes[theme].auxiliaryTintColor} />
+				right: () => <CustomIcon testID={isModerator ? 'action-sheet-set-moderator-checked' : 'action-sheet-set-moderator-unchecked'} name={isModerator ? 'checkbox-checked' : 'checkbox-unchecked'} size={20} color={isModerator ? themes[theme].tintActive : themes[theme].auxiliaryTintColor} />,
+				testID: 'action-sheet-set-moderator'
 			});
 		}
 
@@ -330,7 +335,8 @@ class RoomMembersView extends React.Component {
 				icon: 'logout',
 				danger: true,
 				title: I18n.t('Remove_from_Team'),
-				onPress: () => this.handleRemoveFromTeam(selectedUser)
+				onPress: () => this.handleRemoveFromTeam(selectedUser),
+				testID: 'action-sheet-remove-from-team'
 			});
 		}
 
@@ -346,7 +352,8 @@ class RoomMembersView extends React.Component {
 						confirmationText: I18n.t('Yes_remove_user'),
 						onPress: () => this.handleRemoveUserFromRoom(selectedUser)
 					});
-				}
+				},
+				testID: 'action-sheet-remove-from-room'
 			});
 		}
 

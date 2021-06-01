@@ -94,7 +94,7 @@ const RoomItem = ({
 								alert={alert}
 							/>
 							{
-								autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null
+								autoJoin ? <Tag testID='auto-join-tag' name={I18n.t('Auto-join')} /> : null
 							}
 							<UpdatedAt
 								date={date}
