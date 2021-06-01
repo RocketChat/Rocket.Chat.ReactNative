@@ -18,9 +18,9 @@
     "generate-source-maps-android": "bugsnag-sourcemaps",
     "postinstall": "patch-package && jetify",
     "detoxAD": "detox build -c android.experimental.play.dev.debug  && detox test -c android.experimental.play.dev.debug",
-    "detoxAR": "detox build -c android.experimental.play.dev.release && cd .. && detox test -c android.experimental.play.dev.release",
+    "detoxAR": "detox build -c android.experimental.play.dev.release && detox test -c android.experimental.play.dev.release",
     "detoxADEmu": "detox build -c android.experimental.play.emu.debug  && detox test -c android.experimental.play.emu.debug",
-    "detoxAREmu": "detox build -c android.experimental.play.emu.release && cd .. && detox test -c android.experimental.play.emu.release"
+    "detoxAREmu": "detox build -c android.experimental.play.emu.release && detox test -c android.experimental.play.emu.release"
   },
   "husky": {
     "hooks": {

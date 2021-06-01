@@ -5,6 +5,7 @@ const data = require('../../data');
 const { navigateToLogin, login, checkServer } = require('../../helpers/app');
 
 const reopenAndCheckServer = async(server) => {
+	await device.terminateApp();
 	await device.launchApp({ permissions: { notifications: 'YES' } });
 	await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(6000);
 	await checkServer(server);

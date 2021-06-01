@@ -32,6 +32,7 @@ describe('Delete server', () => {
 		await element(by.id('register-view-username')).replaceText(data.registeringUser3.username);
 		await element(by.id('register-view-email')).replaceText(data.registeringUser3.email);
 		await element(by.id('register-view-password')).typeText(data.registeringUser3.password);
+		await element(by.type('android.widget.ScrollView')).atIndex(0).swipe('up');
 		await element(by.id('register-view-submit')).tap();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
 
