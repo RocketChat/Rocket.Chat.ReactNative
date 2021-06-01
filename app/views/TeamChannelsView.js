@@ -62,7 +62,10 @@ class TeamChannelsView extends React.Component {
 		deleteCPermission: PropTypes.array,
 		deletePPermission: PropTypes.array,
 		showActionSheet: PropTypes.func,
-		deleteRoom: PropTypes.func
+		deleteRoom: PropTypes.func,
+		user: {
+			id: PropTypes.string
+		}
 	}
 
 	constructor(props) {
@@ -123,6 +126,8 @@ class TeamChannelsView extends React.Component {
 			loadingMore, data, search, isSearching, searchText, end
 		} = this.state;
 
+		const { user } = this.props;
+
 		const length = isSearching ? search.length : data.length;
 		if (loadingMore || end) {
 			return;
@@ -130,25 +135,43 @@ class TeamChannelsView extends React.Component {
 
 		this.setState({ loadingMore: true });
 		try {
-			const result = await RocketChat.getTeamListRoom({
-				teamId: this.teamId,
-				offset: length,
-				count: API_FETCH_COUNT,
-				type: 'all',
-				filter: searchText
-			});
+			const result = await Promise.all([
+				RocketChat.getTeamListRoom({
+					teamId: this.teamId,
+					offset: length,
+					count: API_FETCH_COUNT,
+					type: 'all',
+					filter: searchText
+				}),
+				RocketChat.teamListRoomsOfUser({
+					teamId: this.teamId,
+					offset: length,
+					count: API_FETCH_COUNT,
+					type: 'all',
+					filter: searchText,
+					userId: user.id
+				})
+			]);
 
-			if (result.success) {
+			if (result[0].success && result[1].success) {
 				const newState = {
 					loading: false,
 					loadingMore: false,
-					end: result.rooms.length < API_FETCH_COUNT
+					end: result[0].rooms.length < API_FETCH_COUNT
 				};
 
+				const rooms = result[0].rooms.filter((r) => {
+					if (r.t === 'c') {
+						return true;
+					}
+
+					return result[1].rooms.some(rm => rm._id === r._id);
+				});
+
 				if (isSearching) {
-					newState.search = [...search, ...result.rooms];
+					newState.search = [...search, ...rooms];
 				} else {
-					newState.data = [...data, ...result.rooms];
+					newState.data = [...data, ...rooms];
 				}
 
 				this.setState(newState);
