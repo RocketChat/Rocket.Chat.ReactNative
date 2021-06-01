@@ -107,7 +107,7 @@ describe('Discussion', () => {
 		});
 
 		it('should have share', async() => {
-			await element(by.type('UIScrollView')).atIndex(1).swipe('up');
+			await element(by.type('android.widget.ScrollView')).atIndex(1).swipe('up');
 			await expect(element(by.id('room-actions-share'))).toBeVisible();
 		});
 
@@ -124,7 +124,7 @@ describe('Discussion', () => {
 		});
 
 		it('should navigate to RoomActionView', async() => {
-			await element(by.type('UIScrollView')).atIndex(1).swipe('down');
+			await element(by.type('android.widget.ScrollView')).atIndex(1).swipe('down');
 			await expect(element(by.id('room-actions-info'))).toBeVisible();
 			await element(by.id('room-actions-info')).tap();
 			await waitFor(element(by.id('room-info-view'))).toExist().withTimeout(60000);

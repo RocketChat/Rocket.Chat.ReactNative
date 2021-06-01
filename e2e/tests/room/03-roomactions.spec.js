@@ -395,7 +395,7 @@ describe('Room actions screen', () => {
 					await openActionSheet('rocket.cat');
 					await element(by.label('Remove from room')).tap();
 					await waitFor(element(by.label('Are you sure?'))).toExist().withTimeout(5000);
-					await element(by.label('Yes, remove user!').and(by.type('_UIAlertControllerActionView'))).tap();
+					await element(by.text('Yes, remove user!').and(by.type('android.widget.Button'))).tap();
 					await waitFor(element(by.id('room-members-view-item-rocket.cat'))).toBeNotVisible().withTimeout(60000);
 				});
 
@@ -466,13 +466,13 @@ describe('Room actions screen', () => {
 					await openActionSheet(user.username);
 					await element(by.label('Mute')).tap();
 					await waitFor(element(by.label('Are you sure?'))).toExist().withTimeout(5000);
-					await element(by.label('Mute').and(by.type('_UIAlertControllerActionView'))).tap();
+					await element(by.text('Mute').and(by.type('android.widget.Button'))).tap();
 					await waitForToast();
 
 					await openActionSheet(user.username);
 					await element(by.label('Unmute')).tap();
 					await waitFor(element(by.label('Are you sure?'))).toExist().withTimeout(5000);
-					await element(by.label('Unmute').and(by.type('_UIAlertControllerActionView'))).tap();
+					await element(by.text('Unmute').and(by.type('android.widget.Button'))).tap();
 					await waitForToast();
 
 					await openActionSheet(user.username);

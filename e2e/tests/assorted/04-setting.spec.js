@@ -67,7 +67,7 @@ describe('Settings screen', () => {
 			await waitFor(element(by.id('settings-view'))).toBeVisible().withTimeout(2000);
 			await element(by.id('settings-view-clear-cache')).tap();
 			await waitFor(element(by.text('This will clear all your offline data.'))).toExist().withTimeout(2000);
-			await element(by.label('Clear').and(by.type('_UIAlertControllerActionView'))).tap(); 
+			await element(by.text('Clear').and(by.type('android.widget.Button'))).tap(); 
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(5000);
 			await waitFor(element(by.id(`rooms-list-view-item-${ data.groups.private.name }`))).toExist().withTimeout(10000);
 		})

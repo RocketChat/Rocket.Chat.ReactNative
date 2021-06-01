@@ -84,7 +84,7 @@ async function pinMessage(message){
 
 async function dismissReviewNag(){
     await waitFor(element(by.text('Are you enjoying this app?'))).toExist().withTimeout(60000);
-    await element(by.label('No').and(by.type('_UIAlertControllerActionView'))).tap(); // Tap `no` on ask for review alert
+    await element(by.text('No').and(by.type('android.widget.Button'))).tap(); // Tap `no` on ask for review alert
 }
 
 async function tapBack() {

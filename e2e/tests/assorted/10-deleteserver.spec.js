@@ -42,7 +42,7 @@ describe('Delete server', () => {
 		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
 		await waitFor(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible().withTimeout(5000);
 		await element(by.id(`rooms-list-header-server-${ data.server }`)).longPress(1500);
-		await element(by.label('Delete').and(by.type('_UIAlertControllerActionView'))).tap(); 
+		await element(by.text('Delete').and(by.type('android.widget.Button'))).tap(); 
 		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
 		await waitFor(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible().withTimeout(5000);
 		await waitFor(element(by.id(`rooms-list-header-server-${ data.server }`))).toBeNotVisible().withTimeout(10000);

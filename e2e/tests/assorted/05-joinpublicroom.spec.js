@@ -98,9 +98,9 @@ describe('Join public room', () => {
 				await expect(element(by.id('room-actions-starred'))).toBeVisible();
 			});
 
-			it('should have search', async() => {
-				await expect(element(by.id('room-actions-search'))).toBeVisible();
-			});
+			// it('should have search', async() => {
+			// 	await expect(element(by.id('room-actions-search'))).toBeVisible();
+			// });
 
 			it('should have share', async() => {
 				await expect(element(by.id('room-actions-share'))).toBeVisible();
@@ -150,11 +150,12 @@ describe('Join public room', () => {
 			await expect(element(by.id('room-actions-files'))).toBeVisible();
 			await expect(element(by.id('room-actions-mentioned'))).toBeVisible();
 			await expect(element(by.id('room-actions-starred'))).toBeVisible();
-			await expect(element(by.id('room-actions-search'))).toBeVisible();
-			await element(by.type('UIScrollView')).atIndex(1).swipe('down');
+			// await expect(element(by.id('room-actions-search'))).toBeVisible();
+			await element(by.type('android.widget.ScrollView')).atIndex(1).swipe('down');
 			await expect(element(by.id('room-actions-share'))).toBeVisible();
 			await expect(element(by.id('room-actions-pinned'))).toBeVisible();
 			await expect(element(by.id('room-actions-notifications'))).toBeVisible();
+			await element(by.type('android.widget.ScrollView')).atIndex(0).swipe('up');
 			await expect(element(by.id('room-actions-leave-channel'))).toBeVisible();
 		});
 
