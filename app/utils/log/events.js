@@ -100,8 +100,8 @@ export default {
 	SELECTED_USERS_CREATE_GROUP_F: 'selected_users_create_group_f',
 
 	// ADD EXISTING CHANNEL VIEW
-	EXISTING_CHANNEL_ADD_CHANNEL: 'existing_channel_add_channel',
-	EXISTING_CHANNEL_REMOVE_CHANNEL: 'existing_channel_remove_channel',
+	AEC_ADD_CHANNEL: 'aec_add_channel',
+	AEC_REMOVE_CHANNEL: 'aec_remove_channel',
 
 	// CREATE CHANNEL VIEW
 	CR_CREATE: 'cr_create',
@@ -327,5 +327,9 @@ export default {
 	TC_SEARCH: 'tc_search',
 	TC_CANCEL_SEARCH: 'tc_cancel_search',
 	TC_GO_ACTIONS: 'tc_go_actions',
-	TC_GO_ROOM: 'tc_go_room'
+	TC_GO_ROOM: 'tc_go_room',
+	TC_DELETE_ROOM: 'tc_delete_room',
+	TC_DELETE_ROOM_F: 'tc_delete_room_f',
+	TC_TOGGLE_AUTOJOIN: 'tc_toggle_autojoin',
+	TC_TOGGLE_AUTOJOIN_F: 'tc_toggle_autojoin_f'
 };

@@ -301,6 +301,7 @@ class TeamChannelsView extends React.Component {
 	}, 1000, true);
 
 	toggleAutoJoin = async(item) => {
+		logEvent(events.TC_TOGGLE_AUTOJOIN);
 		try {
 			const { data } = this.state;
 			const result = await RocketChat.updateTeamRoom({ roomId: item._id, isDefault: !item.teamDefault });
@@ -314,6 +315,7 @@ class TeamChannelsView extends React.Component {
 				this.setState({ data: newData });
 			}
 		} catch (e) {
+			logEvent(events.TC_TOGGLE_AUTOJOIN_F);
 			log(e);
 		}
 	}
@@ -338,6 +340,7 @@ class TeamChannelsView extends React.Component {
 	}
 
 	removeRoom = async(item) => {
+		logEvent(events.TC_DELETE_ROOM);
 		try {
 			const { data } = this.state;
 			const result = await RocketChat.removeTeamRoom({ roomId: item._id, teamId: this.team.teamId });
@@ -346,11 +349,13 @@ class TeamChannelsView extends React.Component {
 				this.setState({ data: newData });
 			}
 		} catch (e) {
+			logEvent(events.TC_DELETE_ROOM_F);
 			log(e);
 		}
 	}
 
 	delete = (item) => {
+		logEvent(events.TC_DELETE_ROOM);
 		const { deleteRoom } = this.props;
 
 		Alert.alert(
