@@ -55,7 +55,7 @@ describe('Team', () => {
 				await expect(element(by.id('room-header'))).toExist();
 			});
                
-               it('should have team channels button ', async() => {
+      it('should have team channels button ', async() => {
 				await expect(element(by.id('room-view-header-team-channels'))).toExist();
 			});
 
@@ -176,8 +176,7 @@ describe('Team', () => {
 			});
 		})
 
-		describe('Team actions', () => {
-			
+		describe('Team actions', () => {	
 			before(async() => {
 				await tapBack();
 				await navigateToRoomActions();
