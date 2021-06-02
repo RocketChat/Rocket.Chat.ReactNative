@@ -244,7 +244,8 @@ class DirectoryView extends React.Component {
 					avatar={item.name}
 					description={item.name}
 					rightLabel={I18n.t('N_users', { n: item.usersCount })}
-					type='teams'
+					type={item.t}
+					teamMain={item.teamMain}
 					{...commonProps}
 				/>
 			);
@@ -254,7 +255,7 @@ class DirectoryView extends React.Component {
 				avatar={item.name}
 				description={item.topic}
 				rightLabel={I18n.t('N_users', { n: item.usersCount })}
-				type='c'
+				type={item.t}
 				{...commonProps}
 			/>
 		);
