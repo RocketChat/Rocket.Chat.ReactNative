@@ -10,7 +10,7 @@ import { compareServerVersion, methods } from '../../lib/utils';
 import Touch from '../../utils/touch';
 import { setLoading as setLoadingAction } from '../../actions/selectedUsers';
 import {
-	leaveRoom as leaveRoomAction, closeRoom as closeRoomAction, leaveTeam as leaveTeamAction
+	leaveRoom as leaveRoomAction, closeRoom as closeRoomAction
 } from '../../actions/room';
 import styles from './styles';
 import sharedStyles from '../Styles';
@@ -48,7 +48,6 @@ class RoomActionsView extends React.Component {
 		navigation: PropTypes.object,
 		route: PropTypes.object,
 		leaveRoom: PropTypes.func,
-		leaveTeam: PropTypes.func,
 		jitsiEnabled: PropTypes.bool,
 		encryptionEnabled: PropTypes.bool,
 		setLoadingInvite: PropTypes.func,
@@ -401,13 +400,13 @@ class RoomActionsView extends React.Component {
 		showConfirmationAlert({
 			message: I18n.t('Are_you_sure_you_want_to_leave_the_room', { room: RocketChat.getRoomTitle(room) }),
 			confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-			onPress: () => leaveRoom(room.rid, room.t)
+			onPress: () => leaveRoom('channel', room)
 		});
 	}
 
 	leaveTeamRoom = async() => {
 		const { room } = this.state;
-		const { navigation, leaveTeam } = this.props;
+		const { navigation, leaveRoom } = this.props;
 
 		try {
 			const result = await RocketChat.teamListRoomsOfUser({ teamId: room.teamId, userId: room.u._id });
@@ -423,21 +422,21 @@ class RoomActionsView extends React.Component {
 					title: 'Leave_Team',
 					data: teamChannels,
 					infoText: 'Select_Team_Channels',
-					nextAction: data => leaveTeam(room, data),
+					nextAction: data => leaveRoom('team', room, data),
 					showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_leave'))
 				});
 			} else {
 				showConfirmationAlert({
 					message: I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
 					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-					onPress: () => leaveTeam(room)
+					onPress: () => leaveRoom('team', room)
 				});
 			}
 		} catch (e) {
 			showConfirmationAlert({
 				message: I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
 				confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-				onPress: () => this.handleLeaveTeam()
+				onPress: () => leaveRoom('team', room)
 			});
 		}
 	}
@@ -906,8 +905,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	leaveRoom: (rid, t) => dispatch(leaveRoomAction(rid, t)),
 	closeRoom: rid => dispatch(closeRoomAction(rid)),
-	setLoadingInvite: loading => dispatch(setLoadingAction(loading)),
-	leaveTeam: (room, selected) => dispatch(leaveTeamAction(room, selected))
+	setLoadingInvite: loading => dispatch(setLoadingAction(loading))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(withDimensions(RoomActionsView)));

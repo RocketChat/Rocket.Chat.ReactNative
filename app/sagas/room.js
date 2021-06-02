@@ -4,6 +4,7 @@ import {
 	takeLatest, take, select, delay, race, put
 } from 'redux-saga/effects';
 
+import EventEmitter from '../utils/events';
 import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
 import { removedRoom } from '../actions/room';
@@ -11,6 +12,7 @@ import RocketChat from '../lib/rocketchat';
 import log, { logEvent, events } from '../utils/log';
 import I18n from '../i18n';
 import { showErrorAlert } from '../utils/info';
+import { LISTENER } from '../containers/Toast';
 
 const watchUserTyping = function* watchUserTyping({ rid, status }) {
 	const auth = yield select(state => state.login.isAuthenticated);
@@ -30,13 +32,18 @@ const watchUserTyping = function* watchUserTyping({ rid, status }) {
 	}
 };
 
-const handleRemovedRoom = function* handleRemovedRoom() {
+const handleRemovedRoom = function* handleRemovedRoom(roomType) {
 	const isMasterDetail = yield select(state => state.app.isMasterDetail);
 	if (isMasterDetail) {
 		yield Navigation.navigate('DrawerNavigator');
 	} else {
 		yield Navigation.navigate('RoomsListView');
 	}
+
+	if (roomType === 'team') {
+		EventEmitter.emit(LISTENER, { message: I18n.t('Left_The_Team_Successfully') });
+	}
+
 	// types.ROOM.REMOVE is triggered by `subscriptions-changed` with `removed` arg
 	const { timeout } = yield race({
 		deleteFinished: take(types.ROOM.REMOVED),
@@ -47,32 +54,22 @@ const handleRemovedRoom = function* handleRemovedRoom() {
 	}
 };
 
-const handleLeaveRoom = function* handleLeaveRoom({ rid, t }) {
+const handleLeaveRoom = function* handleLeaveRoom({ room, roomType, selected }) {
 	logEvent(events.RA_LEAVE);
 	try {
-		const result = yield RocketChat.leaveRoom(rid, t);
-		if (result.success) {
-			yield handleRemovedRoom();
+		let result = {};
+
+		if (roomType === 'channel') {
+			result = yield RocketChat.leaveRoom(room.rid, room.t);
+		} else if (roomType === 'team') {
+			result = yield RocketChat.leaveTeam({ teamName: room.name, ...(selected && { rooms: selected }) });
+		}
+
+		if (result?.success) {
+			yield handleRemovedRoom(roomType);
 		}
 	} catch (e) {
 		logEvent(events.RA_LEAVE_F);
-		if (e.data && e.data.errorType === 'error-you-are-last-owner') {
-			Alert.alert(I18n.t('Oops'), I18n.t(e.data.errorType));
-		} else {
-			Alert.alert(I18n.t('Oops'), I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_room') }));
-		}
-	}
-};
-
-const handleLeaveTeam = function* handleLeaveTeam({ room, selected }) {
-	// insert LogEvent
-	try {
-		const result = yield RocketChat.leaveTeam({ teamName: room.name, ...(selected && { rooms: selected }) });
-		if (result.success) {
-			yield handleRemovedRoom();
-		}
-	} catch (e) {
-	// insert LogEvent
 		if (e.data && e.data.errorType === 'error-you-are-last-owner') {
 			Alert.alert(I18n.t('Oops'), I18n.t(e.data.errorType));
 		} else {
@@ -153,7 +150,6 @@ const handleForwardRoom = function* handleForwardRoom({ transferData }) {
 const root = function* root() {
 	yield takeLatest(types.ROOM.USER_TYPING, watchUserTyping);
 	yield takeLatest(types.ROOM.LEAVE, handleLeaveRoom);
-	yield takeLatest(types.ROOM.LEAVE_TEAM, handleLeaveTeam);
 	yield takeLatest(types.ROOM.DELETE, handleDeleteRoom);
 	yield takeLatest(types.ROOM.CLOSE, handleCloseRoom);
 	yield takeLatest(types.ROOM.FORWARD, handleForwardRoom);

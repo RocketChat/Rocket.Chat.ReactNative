@@ -1,7 +1,6 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
 
-import I18n from '../../../i18n';
 import database from '../../database';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
 import protectedFunction from '../helpers/protectedFunction';
@@ -19,7 +18,6 @@ import { setUser } from '../../../actions/login';
 import { INAPP_NOTIFICATION_EMITTER } from '../../../containers/InAppNotification';
 import { Encryption } from '../../encryption';
 import { E2E_MESSAGE_TYPE } from '../../encryption/constants';
-import { LISTENER } from '../../../containers/Toast';
 
 const removeListener = listener => listener.stop();
 
@@ -305,9 +303,6 @@ export default function subscribeRooms() {
 					// Here we identify which one was triggered
 					if (data.rid === roomState.rid && roomState.isDeleting) {
 						store.dispatch(removedRoom());
-						if (sub.team_main) {
-							EventEmitter.emit(LISTENER, { message: I18n.t('Left_The_Team_Successfully') });
-						}
 					} else {
 						EventEmitter.emit('ROOM_REMOVED', { rid: data.rid });
 					}
