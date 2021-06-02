@@ -4,8 +4,6 @@ const {
 const data = require('../../data');
 const { navigateToLogin, login, tapBack, searchRoom } = require('../../helpers/app');
 
-
-
 describe('Create team screen', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
@@ -18,37 +16,17 @@ describe('Create team screen', () => {
 			await element(by.id('rooms-list-view-create-channel')).tap();
 		});
 
-		describe('Render', async() => {
-			it('should have team button', async() => {
-				await waitFor(element(by.id('new-message-view-create-team'))).toBeVisible().withTimeout(2000);
-			});
-		})
+		it('should have team button', async() => {
+			await waitFor(element(by.id('new-message-view-create-team'))).toBeVisible().withTimeout(2000);
+		});
 
-		describe('Usage', async() => {
-			it('should navigate to select users', async() => {
-				await element(by.id('new-message-view-create-team')).tap();
-				await waitFor(element(by.id('select-users-view'))).toExist().withTimeout(5000);
-			});
-		})
+		it('should navigate to select users', async() => {
+			await element(by.id('new-message-view-create-team')).tap();
+			await waitFor(element(by.id('select-users-view'))).toExist().withTimeout(5000);
+		});
 	});
 
 	describe('Select Users', async() => {
-		it('should search users', async() => {
-			await element(by.id('select-users-view-search')).replaceText('rocket.cat');
-			await waitFor(element(by.id(`select-users-view-item-rocket.cat`))).toBeVisible().withTimeout(10000);
-		});
-
-		it('should select/unselect user', async() => {
-			// Spotlight issues
-			await element(by.id('select-users-view-item-rocket.cat')).tap();
-			await waitFor(element(by.id('selected-user-rocket.cat'))).toBeVisible().withTimeout(10000);
-			await element(by.id('selected-user-rocket.cat')).tap();
-			await waitFor(element(by.id('selected-user-rocket.cat'))).toBeNotVisible().withTimeout(10000);
-			// Spotlight issues
-			await element(by.id('select-users-view-item-rocket.cat')).tap();
-			await waitFor(element(by.id('selected-user-rocket.cat'))).toBeVisible().withTimeout(10000);
-		});
-
 		it('should create team', async() => {
 			await element(by.id('selected-users-view-submit')).tap();
 			await waitFor(element(by.id('create-channel-view'))).toExist().withTimeout(10000);
