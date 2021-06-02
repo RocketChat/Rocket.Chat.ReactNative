@@ -802,6 +802,20 @@ const RocketChat = {
 		// RC 3.13.0
 		return this.sdk.get('teams.info', { teamId });
 	},
+	convertChannelToTeam({ rid, name, type }) {
+		const params = {
+			...(type === 'c'
+				? {
+					channelId: rid,
+					channelName: name
+				}
+				: {
+					roomId: rid,
+					roomName: name
+				})
+		};
+		return this.sdk.post(type === 'c' ? 'channels.convertToTeam' : 'groups.convertToTeam', params);
+	},
 	joinRoom(roomId, joinCode, type) {
 		// TODO: join code
 		// RC 0.48.0
