@@ -255,6 +255,13 @@ export default {
 	RA_TOGGLE_BLOCK_USER_F: 'ra_toggle_block_user_f',
 	RA_TOGGLE_ENCRYPTED: 'ra_toggle_encrypted',
 	RA_TOGGLE_ENCRYPTED_F: 'ra_toggle_encrypted_f',
+	RA_LEAVE_TEAM: 'ra_leave_team',
+	RA_LEAVE_TEAM_F: 'ra_leave_team_f',
+	RA_CONVERT_TO_TEAM: 'ra_convert_to_team',
+	RA_CONVERT_TO_TEAM_F: 'ra_convert_to_team_f',
+	RA_MOVE_TO_TEAM: 'ra_move_to_team',
+	RA_MOVE_TO_TEAM_F: 'ra_move_to_team_f',
+	RA_SEARCH_TEAM: 'ra_search_team',
 
 	// ROOM INFO VIEW
 	RI_GO_RI_EDIT: 'ri_go_ri_edit',
@@ -274,6 +281,8 @@ export default {
 	RI_EDIT_TOGGLE_ARCHIVE_F: 'ri_edit_toggle_archive_f',
 	RI_EDIT_DELETE: 'ri_edit_delete',
 	RI_EDIT_DELETE_F: 'ri_edit_delete_f',
+	RI_EDIT_DELETE_TEAM: 'ri_edit_delete_team',
+	RI_EDIT_DELETE_TEAM_F: 'ri_edit_delete_team_f',
 
 	// JITSI MEET VIEW
 	JM_CONFERENCE_JOIN: 'jm_conference_join',
