@@ -151,15 +151,14 @@ class DirectoryView extends React.Component {
 			if (result.success) {
 				this.goRoom({ rid: result.room._id, name: item.username, t: 'd' });
 			}
-		} else if (['p', 'c'].includes(item.t)) {
+		} else if (['p', 'c'].includes(item.t) && !item.teamMain) {
 			const { room } = await RocketChat.getRoomInfo(item._id);
 			this.goRoom({
 				rid: item._id, name: item.name, joinCodeRequired: room.joinCodeRequired, t: 'c', search: true
 			});
 		} else {
-			const { team } = await RocketChat.getTeamInfo(item._id);
 			this.goRoom({
-				rid: item._id, name: item.name, joinCodeRequired: team.joinCodeRequired, t: 'c', search: true
+				rid: item._id, name: item.name, t: item.t, search: true, teamMain: item.teamMain, teamId: item.teamId
 			});
 		}
 	}
@@ -243,7 +242,7 @@ class DirectoryView extends React.Component {
 				<DirectoryItem
 					avatar={item.name}
 					description={item.name}
-					rightLabel={I18n.t('N_users', { n: item.usersCount })}
+					rightLabel={I18n.t('N_channels', { n: item.roomsCount })}
 					type={item.t}
 					teamMain={item.teamMain}
 					{...commonProps}
