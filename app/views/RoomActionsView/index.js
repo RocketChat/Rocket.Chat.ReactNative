@@ -903,7 +903,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	leaveRoom: (rid, t) => dispatch(leaveRoomAction(rid, t)),
+	leaveRoom: (roomType, room, selected) => dispatch(leaveRoomAction(roomType, room, selected)),
 	closeRoom: rid => dispatch(closeRoomAction(rid)),
 	setLoadingInvite: loading => dispatch(setLoadingAction(loading))
 });
