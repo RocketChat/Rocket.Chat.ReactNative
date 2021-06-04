@@ -42,6 +42,11 @@ const data = {
             name: `detox-private-${ value }`
         }
     },
+    teams: {
+        private: {
+            name: `detox-team-${ value }`
+        }
+    },
     registeringUser: {
         username: `newuser${ value }`,
         password: `password${ value }`,
@@ -56,6 +61,11 @@ const data = {
         username: `newuserthree${ value }`,
         password: `passwordthree${ value }`,
         email: `mobile+registeringthree${ value }@rocket.chat`
+    },
+    registeringUser4: {
+        username: `newuserfour${ value }`,
+        password: `passwordfour${ value }`,
+        email: `mobile+registeringfour${ value }@rocket.chat`
     },
     random: value
 }

@@ -100,8 +100,8 @@ export default {
 	SELECTED_USERS_CREATE_GROUP_F: 'selected_users_create_group_f',
 
 	// ADD EXISTING CHANNEL VIEW
-	EXISTING_CHANNEL_ADD_CHANNEL: 'existing_channel_add_channel',
-	EXISTING_CHANNEL_REMOVE_CHANNEL: 'existing_channel_remove_channel',
+	AEC_ADD_CHANNEL: 'aec_add_channel',
+	AEC_REMOVE_CHANNEL: 'aec_remove_channel',
 
 	// CREATE CHANNEL VIEW
 	CR_CREATE: 'cr_create',
@@ -255,6 +255,13 @@ export default {
 	RA_TOGGLE_BLOCK_USER_F: 'ra_toggle_block_user_f',
 	RA_TOGGLE_ENCRYPTED: 'ra_toggle_encrypted',
 	RA_TOGGLE_ENCRYPTED_F: 'ra_toggle_encrypted_f',
+	RA_LEAVE_TEAM: 'ra_leave_team',
+	RA_LEAVE_TEAM_F: 'ra_leave_team_f',
+	RA_CONVERT_TO_TEAM: 'ra_convert_to_team',
+	RA_CONVERT_TO_TEAM_F: 'ra_convert_to_team_f',
+	RA_MOVE_TO_TEAM: 'ra_move_to_team',
+	RA_MOVE_TO_TEAM_F: 'ra_move_to_team_f',
+	RA_SEARCH_TEAM: 'ra_search_team',
 
 	// ROOM INFO VIEW
 	RI_GO_RI_EDIT: 'ri_go_ri_edit',
@@ -274,6 +281,8 @@ export default {
 	RI_EDIT_TOGGLE_ARCHIVE_F: 'ri_edit_toggle_archive_f',
 	RI_EDIT_DELETE: 'ri_edit_delete',
 	RI_EDIT_DELETE_F: 'ri_edit_delete_f',
+	RI_EDIT_DELETE_TEAM: 'ri_edit_delete_team',
+	RI_EDIT_DELETE_TEAM_F: 'ri_edit_delete_team_f',
 
 	// JITSI MEET VIEW
 	JM_CONFERENCE_JOIN: 'jm_conference_join',
@@ -327,5 +336,9 @@ export default {
 	TC_SEARCH: 'tc_search',
 	TC_CANCEL_SEARCH: 'tc_cancel_search',
 	TC_GO_ACTIONS: 'tc_go_actions',
-	TC_GO_ROOM: 'tc_go_room'
+	TC_GO_ROOM: 'tc_go_room',
+	TC_DELETE_ROOM: 'tc_delete_room',
+	TC_DELETE_ROOM_F: 'tc_delete_room_f',
+	TC_TOGGLE_AUTOJOIN: 'tc_toggle_autojoin',
+	TC_TOGGLE_AUTOJOIN_F: 'tc_toggle_autojoin_f'
 };

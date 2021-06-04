@@ -134,8 +134,8 @@ class SelectListView extends React.Component {
 		const icon = item.teamMain ? teamIcon : channelIcon;
 		const checked = this.isChecked(item.rid) ? 'check' : null;
 
-		const showRadio = () => <RadioButton selected={selected.includes(item.rid)} color={themes[theme].actionTintColor} size={ICON_SIZE} />;
-		const showCheck = () => <List.Icon name={checked} color={themes[theme].actionTintColor} />;
+		const showRadio = () => <RadioButton testID={selected ? `radio-button-selected-${ item.name }` : `radio-button-unselected-${ item.name }`} selected={selected.includes(item.rid)} color={themes[theme].actionTintColor} size={ICON_SIZE} />;
+		const showCheck = () => <List.Icon testID={checked ? `${ item.name }-checked` : `${ item.name }-unchecked`} name={checked} color={themes[theme].actionTintColor} />;
 
 		return (
 			<>
