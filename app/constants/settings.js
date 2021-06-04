@@ -193,5 +193,8 @@ export default {
 	},
 	Allow_Save_Media_to_Gallery: {
 		type: 'valueAsBoolean'
+	},
+	Accounts_AllowInvisibleStatusOption: {
+		type: 'valueAsString'
 	}
 };
