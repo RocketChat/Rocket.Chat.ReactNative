@@ -32,6 +32,12 @@ import { CustomIcon } from '../lib/Icons';
 import { themes } from '../constants/colors';
 
 const API_FETCH_COUNT = 25;
+const PERMISSION_DELETE_C = 'delete-c';
+const PERMISSION_DELETE_P = 'delete-p';
+const PERMISSION_EDIT_TEAM_CHANNEL = 'edit-team-channel';
+const PERMISSION_REMOVE_TEAM_CHANNEL = 'remove-team-channel';
+const PERMISSION_ADD_TEAM_CHANNEL = 'add-team-channel';
+
 
 const getItemLayout = (data, index) => ({
 	length: data.length,
@@ -51,7 +57,10 @@ class TeamChannelsView extends React.Component {
 		width: PropTypes.number,
 		StoreLastMessage: PropTypes.bool,
 		addTeamChannelPermission: PropTypes.array,
+		editTeamChannelPermission: PropTypes.array,
 		removeTeamChannelPermission: PropTypes.array,
+		deleteCPermission: PropTypes.array,
+		deletePPermission: PropTypes.array,
 		showActionSheet: PropTypes.func,
 		deleteRoom: PropTypes.func
 	}
@@ -208,9 +217,9 @@ class TeamChannelsView extends React.Component {
 		options.headerRight = () => (
 			<HeaderButton.Container>
 				{ showCreate
-					? <HeaderButton.Item iconName='create' onPress={() => navigation.navigate('AddChannelTeamView', { teamId: this.teamId, teamChannels: data })} />
+					? <HeaderButton.Item iconName='create' testID='team-channels-view-create' onPress={() => navigation.navigate('AddChannelTeamView', { teamId: this.teamId, teamChannels: data })} />
 					: null}
-				<HeaderButton.Item iconName='search' onPress={this.onSearchPress} />
+				<HeaderButton.Item iconName='search' testID='team-channels-view-search' onPress={this.onSearchPress} />
 			</HeaderButton.Container>
 		);
 		navigation.setOptions(options);
@@ -273,52 +282,25 @@ class TeamChannelsView extends React.Component {
 		logEvent(events.TC_GO_ROOM);
 		const { navigation, isMasterDetail } = this.props;
 		try {
-			let params = {};
-			if (item.rid) {
-				params = item;
-			} else {
-				const { room } = await RocketChat.getRoomInfo(item._id);
-				params = {
-					rid: item._id, name: RocketChat.getRoomTitle(room), joinCodeRequired: room.joinCodeRequired, t: room.t, teamId: room.teamId
-				};
-			}
+			const { room } = await RocketChat.getRoomInfo(item._id);
+			const params = {
+				rid: item._id, name: RocketChat.getRoomTitle(room), joinCodeRequired: room.joinCodeRequired, t: room.t, teamId: room.teamId
+			};
 			if (isMasterDetail) {
 				navigation.pop();
 			}
 			goRoom({ item: params, isMasterDetail, navigationMethod: navigation.push });
 		} catch (e) {
-			// do nothing
+			if (e.data.error === 'not-allowed') {
+				showErrorAlert(I18n.t('error-not-allowed'));
+			} else {
+				showErrorAlert(e.data.error);
+			}
 		}
 	}, 1000, true);
 
-	options = (item) => {
-		const { theme } = this.props;
-		const isAutoJoinChecked = item.teamDefault;
-		const autoJoinIcon = isAutoJoinChecked ? 'checkbox-checked' : 'checkbox-unchecked';
-		const autoJoinIconColor = isAutoJoinChecked ? themes[theme].tintActive : themes[theme].auxiliaryTintColor;
-		return ([
-			{
-				title: I18n.t('Auto-join'),
-				icon: item.t === 'p' ? 'channel-private' : 'channel-public',
-				onPress: () => this.toggleAutoJoin(item),
-				right: () => <CustomIcon name={autoJoinIcon} size={20} color={autoJoinIconColor} />
-			},
-			{
-				title: I18n.t('Remove_from_Team'),
-				icon: 'close',
-				danger: true,
-				onPress: () => this.remove(item)
-			},
-			{
-				title: I18n.t('Delete'),
-				icon: 'delete',
-				danger: true,
-				onPress: () => this.delete(item)
-			}
-		]);
-	}
-
 	toggleAutoJoin = async(item) => {
+		logEvent(events.TC_TOGGLE_AUTOJOIN);
 		try {
 			const { data } = this.state;
 			const result = await RocketChat.updateTeamRoom({ roomId: item._id, isDefault: !item.teamDefault });
@@ -332,6 +314,7 @@ class TeamChannelsView extends React.Component {
 				this.setState({ data: newData });
 			}
 		} catch (e) {
+			logEvent(events.TC_TOGGLE_AUTOJOIN_F);
 			log(e);
 		}
 	}
@@ -339,7 +322,7 @@ class TeamChannelsView extends React.Component {
 	remove = (item) => {
 		Alert.alert(
 			I18n.t('Confirmation'),
-			I18n.t('Delete_Team_Room_Warning'),
+			I18n.t('Remove_Team_Room_Warning'),
 			[
 				{
 					text: I18n.t('Cancel'),
@@ -356,6 +339,7 @@ class TeamChannelsView extends React.Component {
 	}
 
 	removeRoom = async(item) => {
+		logEvent(events.TC_DELETE_ROOM);
 		try {
 			const { data } = this.state;
 			const result = await RocketChat.removeTeamRoom({ roomId: item._id, teamId: this.team.teamId });
@@ -364,11 +348,13 @@ class TeamChannelsView extends React.Component {
 				this.setState({ data: newData });
 			}
 		} catch (e) {
+			logEvent(events.TC_DELETE_ROOM_F);
 			log(e);
 		}
 	}
 
 	delete = (item) => {
+		logEvent(events.TC_DELETE_ROOM);
 		const { deleteRoom } = this.props;
 
 		Alert.alert(
@@ -391,13 +377,52 @@ class TeamChannelsView extends React.Component {
 
 	showChannelActions = async(item) => {
 		logEvent(events.ROOM_SHOW_BOX_ACTIONS);
-		const { showActionSheet, removeTeamChannelPermission } = this.props;
+		const {
+			showActionSheet, editTeamChannelPermission, deleteCPermission, deletePPermission, theme, removeTeamChannelPermission
+		} = this.props;
+		const isAutoJoinChecked = item.teamDefault;
+		const autoJoinIcon = isAutoJoinChecked ? 'checkbox-checked' : 'checkbox-unchecked';
+		const autoJoinIconColor = isAutoJoinChecked ? themes[theme].tintActive : themes[theme].auxiliaryTintColor;
 
-		const permissions = await RocketChat.hasPermission([removeTeamChannelPermission], this.team.rid);
-		if (!permissions[0]) {
+		const options = [];
+
+		const permissionsTeam = await RocketChat.hasPermission([editTeamChannelPermission], this.team.rid);
+		if (permissionsTeam[0]) {
+			options.push({
+				title: I18n.t('Auto-join'),
+				icon: item.t === 'p' ? 'channel-private' : 'channel-public',
+				onPress: () => this.toggleAutoJoin(item),
+				right: () => <CustomIcon testID={isAutoJoinChecked ? 'auto-join-checked' : 'auto-join-unchecked'} name={autoJoinIcon} size={20} color={autoJoinIconColor} />,
+				testID: 'action-sheet-auto-join'
+			});
+		}
+
+		const permissionsRemoveTeam = await RocketChat.hasPermission([removeTeamChannelPermission], this.team.rid);
+		if (permissionsRemoveTeam[0]) {
+			options.push({
+				title: I18n.t('Remove_from_Team'),
+				icon: 'close',
+				danger: true,
+				onPress: () => this.remove(item),
+				testID: 'action-sheet-remove-from-team'
+			});
+		}
+
+		const permissionsChannel = await RocketChat.hasPermission([item.t === 'c' ? deleteCPermission : deletePPermission], item._id);
+		if (permissionsChannel[0]) {
+			options.push({
+				title: I18n.t('Delete'),
+				icon: 'delete',
+				danger: true,
+				onPress: () => this.delete(item),
+				testID: 'action-sheet-delete'
+			});
+		}
+
+		if (options.length === 0) {
 			return;
 		}
-		showActionSheet({ options: this.options(item) });
+		showActionSheet({ options });
 	}
 
 	renderItem = ({ item }) => {
@@ -481,8 +506,11 @@ const mapStateToProps = state => ({
 	useRealName: state.settings.UI_Use_Real_Name,
 	isMasterDetail: state.app.isMasterDetail,
 	StoreLastMessage: state.settings.Store_Last_Message,
-	addTeamChannelPermission: state.permissions['add-team-channel'],
-	removeTeamChannelPermission: state.permissions['remove-team-channel']
+	addTeamChannelPermission: state.permissions[PERMISSION_ADD_TEAM_CHANNEL],
+	editTeamChannelPermission: state.permissions[PERMISSION_EDIT_TEAM_CHANNEL],
+	removeTeamChannelPermission: state.permissions[PERMISSION_REMOVE_TEAM_CHANNEL],
+	deleteCPermission: state.permissions[PERMISSION_DELETE_C],
+	deletePPermission: state.permissions[PERMISSION_DELETE_P]
 });
 
 const mapDispatchToProps = dispatch => ({

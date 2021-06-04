@@ -17,9 +17,11 @@ import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
+import Loading from '../containers/Loading';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { goRoom } from '../utils/goRoom';
-import Loading from '../containers/Loading';
+import { showErrorAlert } from '../utils/info';
+import debounce from '../utils/debounce';
 
 const QUERY_SIZE = 50;
 
@@ -34,7 +36,7 @@ class AddExistingChannelView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.init();
+		this.query();
 		this.teamId = props.route?.params?.teamId;
 		this.state = {
 			search: [],
@@ -59,14 +61,14 @@ class AddExistingChannelView extends React.Component {
 
 		options.headerRight = () => selected.length > 0 && (
 			<HeaderButton.Container>
-				<HeaderButton.Item title={I18n.t('Create')} onPress={this.submit} testID='add-existing-channel-view-submit' />
+				<HeaderButton.Item title={I18n.t('Next')} onPress={this.submit} testID='add-existing-channel-view-submit' />
 			</HeaderButton.Container>
 		);
 
 		navigation.setOptions(options);
 	}
 
-	init = async() => {
+	query = async(stringToSearch = '') => {
 		try {
 			const { addTeamChannelPermission } = this.props;
 			const db = database.active;
@@ -75,37 +77,40 @@ class AddExistingChannelView extends React.Component {
 				.query(
 					Q.where('team_id', ''),
 					Q.where('t', Q.oneOf(['c', 'p'])),
+					Q.where('name', Q.like(`%${ stringToSearch }%`)),
 					Q.experimentalTake(QUERY_SIZE),
 					Q.experimentalSortBy('room_updated_at', Q.desc)
 				)
 				.fetch();
-			const filteredChannels = channels.filter(async(channel) => {
-				const permissions = await RocketChat.hasPermission([addTeamChannelPermission], channel.rid);
-				if (!permissions[0]) {
-					return;
-				}
-				return channel;
-			});
-			this.setState({ channels: filteredChannels });
+
+			const asyncFilter = async(channelsArray) => {
+				const results = await Promise.all(channelsArray.map(async(channel) => {
+					if (channel.prid) {
+						return false;
+					}
+					const permissions = await RocketChat.hasPermission([addTeamChannelPermission], channel.rid);
+					if (!permissions[0]) {
+						return false;
+					}
+					return true;
+				}));
+
+				return channelsArray.filter((_v, index) => results[index]);
+			};
+			const channelFiltered = await asyncFilter(channels);
+			this.setState({ channels: channelFiltered });
 		} catch (e) {
 			log(e);
 		}
 	}
 
-	onSearchChangeText(text) {
-		this.search(text);
-	}
+	onSearchChangeText = debounce((text) => {
+		this.query(text);
+	}, 300)
 
 	dismiss = () => {
 		const { navigation } = this.props;
 		return navigation.pop();
-	}
-
-	search = async(text) => {
-		const result = await RocketChat.search({ text, filterUsers: false });
-		this.setState({
-			search: result
-		});
 	}
 
 	submit = async() => {
@@ -122,6 +127,7 @@ class AddExistingChannelView extends React.Component {
 			}
 		} catch (e) {
 			logEvent(events.CT_ADD_ROOM_TO_TEAM_F);
+			showErrorAlert(I18n.t(e.data.error), I18n.t('Add_Existing_Channel'), () => {});
 			this.setState({ loading: false });
 		}
 	}
@@ -145,10 +151,10 @@ class AddExistingChannelView extends React.Component {
 
 		animateNextTransition();
 		if (!this.isChecked(rid)) {
-			logEvent(events.EXISTING_CHANNEL_ADD_CHANNEL);
+			logEvent(events.AEC_ADD_CHANNEL);
 			this.setState({ selected: [...selected, rid] }, () => this.setHeader());
 		} else {
-			logEvent(events.EXISTING_CHANNEL_REMOVE_CHANNEL);
+			logEvent(events.AEC_REMOVE_CHANNEL);
 			const filterSelected = selected.filter(el => el !== rid);
 			this.setState({ selected: filterSelected }, () => this.setHeader());
 		}
@@ -163,7 +169,7 @@ class AddExistingChannelView extends React.Component {
 				title={RocketChat.getRoomTitle(item)}
 				translateTitle={false}
 				onPress={() => this.toggleChannel(item.rid)}
-				testID='add-existing-channel-view-item'
+				testID={`add-existing-channel-view-item-${ item.name }`}
 				left={() => <List.Icon name={icon} />}
 				right={() => (isChecked ? <List.Icon name='check' /> : null)}
 			/>

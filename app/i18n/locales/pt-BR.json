@@ -75,6 +75,7 @@
   "error-user-registration-disabled": "O registro do usuário está desativado",
   "error-user-registration-secret": "O registro de usuário é permitido somente via URL secreta",
   "error-you-are-last-owner": "Você é o último proprietário da sala. Por favor defina um novo proprietário antes de sair.",
+  "error-status-not-allowed": "O status invisível está desativado",
   "Actions": "Ações",
   "activity": "atividade",
   "Activity": "Atividade",
@@ -667,5 +668,6 @@
   "Teams": "Times",
   "No_team_channels_found": "Nenhum canal encontrado",
   "Team_not_found": "Time não encontrado",
-  "Private_Team": "Equipe Privada"
+  "Private_Team": "Equipe Privada",
+  "Add_Existing_Channel": "Adicionar Canal Existente"
 }

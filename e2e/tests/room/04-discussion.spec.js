@@ -102,10 +102,6 @@ describe('Discussion', () => {
 			await expect(element(by.id('room-actions-starred'))).toBeVisible();
 		});
 
-		it('should have search', async() => {
-			await expect(element(by.id('room-actions-search'))).toBeVisible();
-		});
-
 		it('should have share', async() => {
 			await element(by.type('UIScrollView')).atIndex(1).swipe('up');
 			await expect(element(by.id('room-actions-share'))).toBeVisible();
@@ -131,8 +127,8 @@ describe('Discussion', () => {
 			await expect(element(by.id('room-info-view'))).toExist();
 		});
 
-		it('should not have edit button', async() => {
-			await expect(element(by.id('room-info-view-edit-button'))).toBeNotVisible();
+		it('should have edit button', async() => {
+			await expect(element(by.id('room-info-view-edit-button'))).toBeVisible();
 		});
 	});
 });
