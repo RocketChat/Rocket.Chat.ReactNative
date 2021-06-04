@@ -61,7 +61,7 @@ class AddExistingChannelView extends React.Component {
 
 		options.headerRight = () => selected.length > 0 && (
 			<HeaderButton.Container>
-				<HeaderButton.Item title={I18n.t('Create')} onPress={this.submit} testID='add-existing-channel-view-submit' />
+				<HeaderButton.Item title={I18n.t('Next')} onPress={this.submit} testID='add-existing-channel-view-submit' />
 			</HeaderButton.Container>
 		);
 
@@ -169,7 +169,7 @@ class AddExistingChannelView extends React.Component {
 				title={RocketChat.getRoomTitle(item)}
 				translateTitle={false}
 				onPress={() => this.toggleChannel(item.rid)}
-				testID='add-existing-channel-view-item'
+				testID={`add-existing-channel-view-item-${ item.name }`}
 				left={() => <List.Icon name={icon} />}
 				right={() => (isChecked ? <List.Icon name='check' /> : null)}
 			/>

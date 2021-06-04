@@ -523,7 +523,7 @@ class RoomActionsView extends React.Component {
 		try {
 			const { room } = this.state;
 			const { navigation } = this.props;
-			const result = await RocketChat.addRoomsToTeam({ teamId: selected.teamId, rooms: [room.rid] });
+			const result = await RocketChat.addRoomsToTeam({ teamId: selected?.[0], rooms: [room.rid] });
 			if (result.success) {
 				navigation.navigate('RoomView');
 			}
@@ -544,13 +544,18 @@ class RoomActionsView extends React.Component {
 			);
 
 			if (teamRooms.length) {
+				const data = teamRooms.map(team => ({
+					rid: team.teamId,
+					t: team.t,
+					name: team.name
+				}));
 				navigation.navigate('SelectListView', {
 					title: 'Move_to_Team',
 					infoText: 'Move_Channel_Paragraph',
 					nextAction: () => {
 						navigation.push('SelectListView', {
 							title: 'Select_Team',
-							data: teamRooms,
+							data,
 							isRadio: true,
 							isSearch: true,
 							onSearch: onChangeText => this.searchTeam(onChangeText),
@@ -560,7 +565,6 @@ class RoomActionsView extends React.Component {
 								confirmationText: I18n.t('Yes_action_it', { action: I18n.t('move') }),
 								onPress: () => this.handleMoveToTeam(selected)
 							})
-
 						});
 					}
 				});
@@ -802,11 +806,11 @@ class RoomActionsView extends React.Component {
 					? (
 						<>
 							<List.Item
-								title='Move_Channel_to_Team'
+								title='Move_to_Team'
 								onPress={() => this.onPressTouchable({
 									event: this.moveToTeam
 								})}
-								testID='room-actions-convert-to-team'
+								testID='room-actions-move-to-team'
 								left={() => <List.Icon name='channel-move-to-team' />}
 								showActionIndicator
 							/>
