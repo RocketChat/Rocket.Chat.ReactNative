@@ -79,6 +79,7 @@
   "error-user-registration-disabled": "User registration is disabled",
   "error-user-registration-secret": "User registration is only allowed via Secret URL",
   "error-you-are-last-owner": "You are the last owner. Please set new owner before leaving the room.",
+  "error-status-not-allowed": "Invisible status is disabled",
   "Actions": "Actions",
   "activity": "activity",
   "Activity": "Activity",
