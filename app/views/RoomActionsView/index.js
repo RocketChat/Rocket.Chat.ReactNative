@@ -431,6 +431,7 @@ class RoomActionsView extends React.Component {
 	}
 
 	handleLeaveTeam = async(selected) => {
+		logEvent(events.RA_LEAVE_TEAM);
 		try {
 			const { room } = this.state;
 			const { navigation, isMasterDetail } = this.props;
@@ -444,6 +445,7 @@ class RoomActionsView extends React.Component {
 				}
 			}
 		} catch (e) {
+			logEvent(events.RA_LEAVE_TEAM_F);
 			log(e);
 			showErrorAlert(
 				e.data.error
@@ -492,6 +494,7 @@ class RoomActionsView extends React.Component {
 	}
 
 	handleConvertToTeam = async() => {
+		logEvent(events.RA_CONVERT_TO_TEAM);
 		try {
 			const { room } = this.state;
 			const { navigation } = this.props;
@@ -501,6 +504,7 @@ class RoomActionsView extends React.Component {
 				navigation.navigate('RoomView');
 			}
 		} catch (e) {
+			logEvent(events.RA_CONVERT_TO_TEAM_F);
 			log(e);
 		}
 	}
@@ -515,14 +519,16 @@ class RoomActionsView extends React.Component {
 	}
 
 	handleMoveToTeam = async(selected) => {
+		logEvent(events.RA_MOVE_TO_TEAM);
 		try {
 			const { room } = this.state;
 			const { navigation } = this.props;
-			const result = await RocketChat.addRoomsToTeam({ teamId: selected.teamId, rooms: [room.rid] });
+			const result = await RocketChat.addRoomsToTeam({ teamId: selected?.[0], rooms: [room.rid] });
 			if (result.success) {
 				navigation.navigate('RoomView');
 			}
 		} catch (e) {
+			logEvent(events.RA_MOVE_TO_TEAM_F);
 			log(e);
 			showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('moving_channel_to_team') }));
 		}
@@ -538,13 +544,18 @@ class RoomActionsView extends React.Component {
 			);
 
 			if (teamRooms.length) {
+				const data = teamRooms.map(team => ({
+					rid: team.teamId,
+					t: team.t,
+					name: team.name
+				}));
 				navigation.navigate('SelectListView', {
 					title: 'Move_to_Team',
 					infoText: 'Move_Channel_Paragraph',
 					nextAction: () => {
 						navigation.push('SelectListView', {
 							title: 'Select_Team',
-							data: teamRooms,
+							data,
 							isRadio: true,
 							isSearch: true,
 							onSearch: onChangeText => this.searchTeam(onChangeText),
@@ -554,7 +565,6 @@ class RoomActionsView extends React.Component {
 								confirmationText: I18n.t('Yes_action_it', { action: I18n.t('move') }),
 								onPress: () => this.handleMoveToTeam(selected)
 							})
-
 						});
 					}
 				});
@@ -565,6 +575,7 @@ class RoomActionsView extends React.Component {
 	}
 
 	searchTeam = async(onChangeText) => {
+		logEvent(events.RA_SEARCH_TEAM);
 		try {
 			const { addTeamChannelPermission, createTeamPermission } = this.props;
 			const QUERY_SIZE = 50;
@@ -795,11 +806,11 @@ class RoomActionsView extends React.Component {
 					? (
 						<>
 							<List.Item
-								title='Move_Channel_to_Team'
+								title='Move_to_Team'
 								onPress={() => this.onPressTouchable({
 									event: this.moveToTeam
 								})}
-								testID='room-actions-convert-to-team'
+								testID='room-actions-move-to-team'
 								left={() => <List.Icon name='channel-move-to-team' />}
 								showActionIndicator
 							/>

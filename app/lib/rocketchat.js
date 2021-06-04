@@ -798,6 +798,10 @@ const RocketChat = {
 		// RC 3.13.0
 		return this.sdk.get('teams.listRoomsOfUser', { teamId, userId });
 	},
+	getTeamInfo({ teamId }) {
+		// RC 3.13.0
+		return this.sdk.get('teams.info', { teamId });
+	},
 	convertChannelToTeam({ rid, name, type }) {
 		const params = {
 			...(type === 'c'
