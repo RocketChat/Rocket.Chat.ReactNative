@@ -77,10 +77,6 @@ describe('Room actions screen', () => {
 				await expect(element(by.id('room-actions-starred'))).toExist();
 			});
 	
-			it('should have search', async() => {
-				await expect(element(by.id('room-actions-search'))).toExist();
-			});
-	
 			it('should have share', async() => {
 				await waitFor(element(by.id('room-actions-share'))).toExist();
 				await expect(element(by.id('room-actions-share'))).toExist();
@@ -145,10 +141,6 @@ describe('Room actions screen', () => {
 	
 			it('should have starred', async() => {
 				await expect(element(by.id('room-actions-starred'))).toExist();
-			});
-	
-			it('should have search', async() => {
-				await expect(element(by.id('room-actions-search'))).toExist();
 			});
 	
 			it('should have share', async() => {
@@ -229,7 +221,7 @@ describe('Room actions screen', () => {
 				await element(by.label(`${ data.random }messageToStar`)).atIndex(0).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-				await element(by.label('Unstar')).tap();
+				await element(by.label('Unstar')).atIndex(0).tap();
 
 				await waitFor(element(by.label(`${ data.random }messageToStar`).withAncestor(by.id('starred-messages-view')))).toBeNotVisible().withTimeout(60000);
 				await backToActions();
@@ -256,29 +248,29 @@ describe('Room actions screen', () => {
 
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-				await element(by.label('Unpin')).tap();
+				await element(by.label('Unpin')).atIndex(0).tap();
 
 				await waitFor(element(by.label(`${ data.random }messageToPin`).withAncestor(by.id('pinned-messages-view')))).not.toExist().withTimeout(6000);
 				await backToActions();
 			});
 
-			it('should search and find a message', async() => {
+			// it('should search and find a message', async() => {
 
-				//Go back to room and send a message
-				await tapBack();
-				await mockMessage('messageToFind');
+			// 	//Go back to room and send a message
+			// 	await tapBack();
+			// 	await mockMessage('messageToFind');
 
-				//Back into Room Actions
-				await element(by.id('room-header')).tap();
-				await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
+			// 	//Back into Room Actions
+			// 	await element(by.id('room-header')).tap();
+			// 	await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
 
-				await element(by.id('room-actions-search')).tap();
-				await waitFor(element(by.id('search-messages-view'))).toExist().withTimeout(2000);
-				await expect(element(by.id('search-message-view-input'))).toExist();
-				await element(by.id('search-message-view-input')).replaceText(`/${ data.random }messageToFind/`);
-				await waitFor(element(by.label(`${ data.random }messageToFind`).withAncestor(by.id('search-messages-view')))).toExist().withTimeout(60000);
-				await backToActions();
-			});
+			// 	await element(by.id('room-actions-search')).tap();
+			// 	await waitFor(element(by.id('search-messages-view'))).toExist().withTimeout(2000);
+			// 	await expect(element(by.id('search-message-view-input'))).toExist();
+			// 	await element(by.id('search-message-view-input')).replaceText(`/${ data.random }messageToFind/`);
+			// 	await waitFor(element(by.label(`${ data.random }messageToFind`).withAncestor(by.id('search-messages-view')))).toExist().withTimeout(60000);
+			// 	await backToActions();
+			// });
 		});
 
 		describe('Notification', async() => {
@@ -419,46 +411,46 @@ describe('Room actions screen', () => {
 
 				it('should set/remove as owner', async() => {
 					await openActionSheet(user.username);
-					await element(by.label('Set as owner')).tap();
+					await element(by.id('action-sheet-set-owner')).tap();
 					await waitForToast();
 
 					await openActionSheet(user.username);
-					await element(by.label('Remove as owner')).tap();
+					await waitFor(element(by.id('action-sheet-set-owner-checked'))).toBeVisible().withTimeout(6000);
+					await element(by.id('action-sheet-set-owner')).tap();
 					await waitForToast();
 
 					await openActionSheet(user.username);
-					// Tests if Remove as owner worked
-					await waitFor(element(by.label('Set as owner'))).toExist().withTimeout(5000);
+					await waitFor(element(by.id('action-sheet-set-owner-unchecked'))).toBeVisible().withTimeout(60000);
 					await closeActionSheet();
 				});
 
 				it('should set/remove as leader', async() => {
 					await openActionSheet(user.username);
-					await element(by.label('Set as leader')).tap();
+					await element(by.id('action-sheet-set-leader')).tap();
 					await waitForToast();
 
 					await openActionSheet(user.username);
-					await element(by.label('Remove as leader')).tap();
+					await waitFor(element(by.id('action-sheet-set-leader-checked'))).toBeVisible().withTimeout(6000);
+					await element(by.id('action-sheet-set-leader')).tap();
 					await waitForToast();
 
 					await openActionSheet(user.username);
-					// Tests if Remove as leader worked
-					await waitFor(element(by.label('Set as leader'))).toExist().withTimeout(5000);
+					await waitFor(element(by.id('action-sheet-set-owner-unchecked'))).toBeVisible().withTimeout(60000);
 					await closeActionSheet();
 				});
 
 				it('should set/remove as moderator', async() => {
 					await openActionSheet(user.username);
-					await element(by.label('Set as moderator')).tap();
+					await element(by.id('action-sheet-set-moderator')).tap();
 					await waitForToast();
 
 					await openActionSheet(user.username);
-					await element(by.label('Remove as moderator')).tap();
+					await waitFor(element(by.id('action-sheet-set-moderator-checked'))).toBeVisible().withTimeout(6000);
+					await element(by.id('action-sheet-set-moderator')).tap();
 					await waitForToast();
 
 					await openActionSheet(user.username);
-					// Tests if Remove as moderator worked
-					await waitFor(element(by.label('Set as moderator'))).toExist().withTimeout(5000);
+					await waitFor(element(by.id('action-sheet-set-moderator-unchecked'))).toBeVisible().withTimeout(60000);
 					await closeActionSheet();
 				});
 

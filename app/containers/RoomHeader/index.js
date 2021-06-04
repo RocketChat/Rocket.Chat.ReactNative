@@ -32,7 +32,7 @@ class RoomHeaderContainer extends Component {
 
 	shouldComponentUpdate(nextProps) {
 		const {
-			type, title, subtitle, status, statusText, connecting, connected, onPress, usersTyping, width, height
+			type, title, subtitle, status, statusText, connecting, connected, onPress, usersTyping, width, height, teamMain
 		} = this.props;
 		if (nextProps.type !== type) {
 			return true;
@@ -65,6 +65,9 @@ class RoomHeaderContainer extends Component {
 			return true;
 		}
 		if (nextProps.onPress !== onPress) {
+			return true;
+		}
+		if (nextProps.teamMain !== teamMain) {
 			return true;
 		}
 		return false;
