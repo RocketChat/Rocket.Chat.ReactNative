@@ -463,13 +463,13 @@ class RoomActionsView extends React.Component {
 		try {
 			const db = database.active;
 			const subCollection = db.get('subscriptions');
-			const teamListRoomsOfUserLocal = await subCollection.query(
+			const rooms = await subCollection.query(
 				Q.where('team_id', Q.eq(room.teamId)),
 				Q.where('team_main', Q.notEq(true))
 			);
 
-			if (teamListRoomsOfUserLocal.length) {
-				const teamChannels = teamListRoomsOfUserLocal.map(r => ({
+			if (rooms.length) {
+				const teamChannels = rooms.map(r => ({
 					rid: r.id,
 					name: r.name,
 					teamId: r.teamId,
