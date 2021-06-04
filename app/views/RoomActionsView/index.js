@@ -431,6 +431,7 @@ class RoomActionsView extends React.Component {
 	}
 
 	handleLeaveTeam = async(selected) => {
+		logEvent(events.RA_LEAVE_TEAM);
 		try {
 			const { room } = this.state;
 			const { navigation, isMasterDetail } = this.props;
@@ -444,6 +445,7 @@ class RoomActionsView extends React.Component {
 				}
 			}
 		} catch (e) {
+			logEvent(events.RA_LEAVE_TEAM_F);
 			log(e);
 			showErrorAlert(
 				e.data.error
@@ -492,6 +494,7 @@ class RoomActionsView extends React.Component {
 	}
 
 	handleConvertToTeam = async() => {
+		logEvent(events.RA_CONVERT_TO_TEAM);
 		try {
 			const { room } = this.state;
 			const { navigation } = this.props;
@@ -501,6 +504,7 @@ class RoomActionsView extends React.Component {
 				navigation.navigate('RoomView');
 			}
 		} catch (e) {
+			logEvent(events.RA_CONVERT_TO_TEAM_F);
 			log(e);
 		}
 	}
@@ -515,6 +519,7 @@ class RoomActionsView extends React.Component {
 	}
 
 	handleMoveToTeam = async(selected) => {
+		logEvent(events.RA_MOVE_TO_TEAM);
 		try {
 			const { room } = this.state;
 			const { navigation } = this.props;
@@ -523,6 +528,7 @@ class RoomActionsView extends React.Component {
 				navigation.navigate('RoomView');
 			}
 		} catch (e) {
+			logEvent(events.RA_MOVE_TO_TEAM_F);
 			log(e);
 			showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('moving_channel_to_team') }));
 		}
@@ -569,6 +575,7 @@ class RoomActionsView extends React.Component {
 	}
 
 	searchTeam = async(onChangeText) => {
+		logEvent(events.RA_SEARCH_TEAM);
 		try {
 			const { addTeamChannelPermission, createTeamPermission } = this.props;
 			const QUERY_SIZE = 50;
