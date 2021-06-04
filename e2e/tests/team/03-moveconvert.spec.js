@@ -83,7 +83,7 @@ describe('Move/Convert Team', () => {
 			await element(by.id('select-list-view-submit')).atIndex(0).tap();
 			await waitFor(element(by.label('After reading the previous intructions about this behavior, do you still want to move this channel to the selected team?'))).toExist().withTimeout(2000);
 			await element(by.text('Yes, move it!')).tap();
-			// TODO: check if navigated to the right place
+			await waitFor(element(by.id('room-view-header-team-channels'))).toExist().withTimeout(10000);
 		});
 	})
 });

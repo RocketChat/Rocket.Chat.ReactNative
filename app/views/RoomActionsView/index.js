@@ -538,13 +538,18 @@ class RoomActionsView extends React.Component {
 			);
 
 			if (teamRooms.length) {
+				const data = teamRooms.map(team => ({
+					rid: team.teamId,
+					t: team.t,
+					name: team.name
+				}));
 				navigation.navigate('SelectListView', {
 					title: 'Move_to_Team',
 					infoText: 'Move_Channel_Paragraph',
 					nextAction: () => {
 						navigation.push('SelectListView', {
 							title: 'Select_Team',
-							data: teamRooms,
+							data,
 							isRadio: true,
 							isSearch: true,
 							onSearch: onChangeText => this.searchTeam(onChangeText),
