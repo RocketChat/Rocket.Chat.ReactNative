@@ -278,19 +278,24 @@ class TeamChannelsView extends React.Component {
 
 	getRoomAvatar = item => RocketChat.getRoomAvatar(item)
 
-	onPressItem = debounce((item) => {
+	onPressItem = debounce(async(item) => {
 		logEvent(events.TC_GO_ROOM);
 		const { navigation, isMasterDetail } = this.props;
 		try {
+			const { room } = await RocketChat.getRoomInfo(item._id);
 			const params = {
-				rid: item._id, name: RocketChat.getRoomTitle(item), joinCodeRequired: item.joinCodeRequired, t: item.t, teamId: item.teamId
+				rid: item._id, name: RocketChat.getRoomTitle(room), joinCodeRequired: room.joinCodeRequired, t: room.t, teamId: room.teamId
 			};
 			if (isMasterDetail) {
 				navigation.pop();
 			}
 			goRoom({ item: params, isMasterDetail, navigationMethod: navigation.push });
 		} catch (e) {
-			// do nothing
+			if (e.data.error === 'not-allowed') {
+				showErrorAlert(I18n.t('error-not-allowed'));
+			} else {
+				showErrorAlert(e.data.error);
+			}
 		}
 	}, 1000, true);
 
