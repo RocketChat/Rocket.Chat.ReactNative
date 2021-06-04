@@ -19,8 +19,11 @@ async function navigateToRoomActions() {
 }
 
 describe('Join public room', () => {
+	let scrollViewType;
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		const deviceType = device.getPlatform();
+		scrollViewType = platformTypes[deviceType].scrollViewType;
 		await navigateToLogin();
 		await login(testuser.username, testuser.password);
 		await navigateToRoom();
@@ -151,11 +154,11 @@ describe('Join public room', () => {
 			await expect(element(by.id('room-actions-mentioned'))).toBeVisible();
 			await expect(element(by.id('room-actions-starred'))).toBeVisible();
 			// await expect(element(by.id('room-actions-search'))).toBeVisible();
-			await element(by.type('android.widget.ScrollView')).atIndex(1).swipe('down');
+			await element(by.type(scrollViewType)).atIndex(1).swipe('down');
 			await expect(element(by.id('room-actions-share'))).toBeVisible();
 			await expect(element(by.id('room-actions-pinned'))).toBeVisible();
 			await expect(element(by.id('room-actions-notifications'))).toBeVisible();
-			await element(by.type('android.widget.ScrollView')).atIndex(0).swipe('up');
+			await element(by.type(scrollViewType)).atIndex(0).swipe('up');
 			await expect(element(by.id('room-actions-leave-channel'))).toBeVisible();
 		});
 

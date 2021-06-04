@@ -2,6 +2,7 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const data = require('../data');
+const platformTypes = require('./platformTypes');
 
 async function navigateToWorkspace(server = data.server) {
     await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(10000);
@@ -36,12 +37,14 @@ async function login(username, password) {
 }
 
 async function logout() {
+    const deviceType = device.getPlatform();
+    const scrollViewType = platformTypes[deviceType].scrollViewType;
     await element(by.id('rooms-list-view-sidebar')).tap();
     await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
 	await waitFor(element(by.id('sidebar-settings'))).toBeVisible().withTimeout(2000);
     await element(by.id('sidebar-settings')).tap();
     await waitFor(element(by.id('settings-view'))).toBeVisible().withTimeout(2000);
-    await element(by.type('android.widget.ScrollView')).atIndex(1).scrollTo('bottom');
+    await element(by.type(scrollViewType)).atIndex(1).scrollTo('bottom');
     await element(by.id('settings-logout')).tap();
     const logoutAlertMessage = 'You will be logged out of this application.';
     await waitFor(element(by.text(logoutAlertMessage)).atIndex(0)).toExist().withTimeout(10000);
@@ -83,8 +86,10 @@ async function pinMessage(message){
 }
 
 async function dismissReviewNag(){
+    const deviceType = device.getPlatform();
+    const alertButtonType = platformTypes[deviceType].alertButtonType;
     await waitFor(element(by.text('Are you enjoying this app?'))).toExist().withTimeout(60000);
-    await element(by.text('No').and(by.type('android.widget.Button'))).tap(); // Tap `no` on ask for review alert
+    await element(by.text('No').and(by.type(alertButtonType))).tap(); // Tap `no` on ask for review alert
 }
 
 async function tapBack() {

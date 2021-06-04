@@ -5,8 +5,12 @@ const data = require('../../data');
 const { sleep, navigateToLogin, login, checkServer } = require('../../helpers/app');
 
 describe('Delete server', () => {
+	let scrollViewType, alertButtonType;
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		const deviceType = device.getPlatform();
+		alertButtonType = platformTypes[deviceType].alertButtonType;
+		scrollViewType = platformTypes[deviceType].scrollViewType;
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 	});
@@ -32,7 +36,7 @@ describe('Delete server', () => {
 		await element(by.id('register-view-username')).replaceText(data.registeringUser3.username);
 		await element(by.id('register-view-email')).replaceText(data.registeringUser3.email);
 		await element(by.id('register-view-password')).typeText(data.registeringUser3.password);
-		await element(by.type('android.widget.ScrollView')).atIndex(0).swipe('up');
+		await element(by.type(scrollViewType)).atIndex(0).swipe('up');
 		await element(by.id('register-view-submit')).tap();
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
 
@@ -43,7 +47,7 @@ describe('Delete server', () => {
 		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
 		await waitFor(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible().withTimeout(5000);
 		await element(by.id(`rooms-list-header-server-${ data.server }`)).longPress(1500);
-		await element(by.text('Delete').and(by.type('android.widget.Button'))).tap(); 
+		await element(by.text('Delete').and(by.type(alertButtonType))).tap(); 
 		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
 		await waitFor(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible().withTimeout(5000);
 		await waitFor(element(by.id(`rooms-list-header-server-${ data.server }`))).toBeNotVisible().withTimeout(10000);

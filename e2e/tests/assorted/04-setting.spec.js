@@ -8,8 +8,11 @@ const data = require('../../data');
 const testuser = data.users.regular
 
 describe('Settings screen', () => {
+	let alertButtonType;
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		const deviceType = device.getPlatform();
+		alertButtonType = platformTypes[deviceType].alertButtonType;
 		await navigateToLogin();
 		await login(testuser.username, testuser.password);
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
@@ -67,7 +70,7 @@ describe('Settings screen', () => {
 			await waitFor(element(by.id('settings-view'))).toBeVisible().withTimeout(2000);
 			await element(by.id('settings-view-clear-cache')).tap();
 			await waitFor(element(by.text('This will clear all your offline data.'))).toExist().withTimeout(2000);
-			await element(by.text('Clear').and(by.type('android.widget.Button'))).tap(); 
+			await element(by.text('Clear').and(by.type(alertButtonType))).tap(); 
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(5000);
 			await waitFor(element(by.id(`rooms-list-view-item-${ data.groups.private.name }`))).toExist().withTimeout(10000);
 		})

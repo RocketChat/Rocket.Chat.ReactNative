@@ -3,6 +3,8 @@ const {
 } = require('detox');
 const { navigateToLogin, login, sleep, tapBack, mockMessage, searchRoom, logout } = require('../../helpers/app');
 
+const platformTypes = require('../../helpers/platformTypes');
+
 const data = require('../../data');
 
 const testuser = data.users.regular
@@ -44,9 +46,13 @@ async function navigateSecurityPrivacy() {
 describe('E2E Encryption', () => {
 	const room = `encrypted${ data.random }`;
 	const newPassword = 'abc';
+	let alertButtonType, scrollViewType;
 
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		const deviceType = device.getPlatform();
+		alertButtonType = platformTypes[deviceType].alertButtonType;
+		scrollViewType = platformTypes[deviceType].scrollViewType;
 		await navigateToLogin();
 		await login(testuser.username, testuser.password);
 	});
@@ -141,7 +147,7 @@ describe('E2E Encryption', () => {
 				await element(by.id('e2e-encryption-security-view-change-password')).tap();
 				await waitFor(element(by.text('Are you sure?'))).toExist().withTimeout(2000);
 				await expect(element(by.text('Make sure you\'ve saved it carefully somewhere else.'))).toExist();
-				await element(by.text('Yes, change it').and(by.type('android.widget.Button'))).tap();
+				await element(by.text('Yes, change it').and(by.type(alertButtonType))).tap();
 				await waitForToast();
 			});
 
@@ -194,10 +200,10 @@ describe('E2E Encryption', () => {
 				await element(by.id('e2e-encryption-security-view-reset-key').and(by.label('Reset E2E Key'))).tap();
 				await waitFor(element(by.text('Are you sure?'))).toExist().withTimeout(2000);
 				await expect(element(by.text('You\'re going to be logged out.'))).toExist();
-				await element(by.text('Yes, reset it').and(by.type('android.widget.Button'))).tap();
+				await element(by.text('Yes, reset it').and(by.type(alertButtonType))).tap();
 				await sleep(2000)
-				await waitFor(element(by.text('OK').and(by.type('android.widget.Button')))).toExist().withTimeout(2000);
-				await element(by.text('OK').and(by.type('android.widget.Button'))).tap();
+				await waitFor(element(by.text('OK').and(by.type(alertButtonType)))).toExist().withTimeout(2000);
+				await element(by.text('OK').and(by.type(alertButtonType))).tap();
 				await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(10000);
 				await element(by.id('workspace-view-login')).tap();
 				await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
@@ -231,7 +237,7 @@ describe('E2E Encryption', () => {
 			await element(by.id('register-view-username')).replaceText(data.registeringUser.username);
 			await element(by.id('register-view-email')).replaceText(data.registeringUser.email);
 			await element(by.id('register-view-password')).typeText(data.registeringUser.password);
-			element(by.type('android.widget.ScrollView')).atIndex(1).scrollTo('bottom');
+			element(by.type(scrollViewType)).atIndex(1).scrollTo('bottom');
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
 	

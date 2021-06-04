@@ -17,8 +17,13 @@ async function waitForToast() {
 }
 
 describe('Profile screen', () => {
+	let textInputType, scrollViewType;
+
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		const deviceType = device.getPlatform();
+		textInputType = platformTypes[deviceType].textInputType;
+		scrollViewType = platformTypes[deviceType].scrollViewType;
 		await navigateToLogin();
 		await login(profileChangeUser.username, profileChangeUser.password);
 		await element(by.id('rooms-list-view-sidebar')).tap();
@@ -79,7 +84,7 @@ describe('Profile screen', () => {
 			await element(by.id('profile-view-name')).replaceText(`${ profileChangeUser.username }new`);
 			await element(by.id('profile-view-username')).typeText(`${ profileChangeUser.username }new`);
 			await device.pressBack();
-			await element(by.type('android.widget.ScrollView')).atIndex(1).swipe('up');
+			await element(by.type(scrollViewType)).atIndex(1).swipe('up');
 			await element(by.id('profile-view-submit')).tap();
 			await waitForToast();
 		});
@@ -88,13 +93,13 @@ describe('Profile screen', () => {
 			await element(by.id('profile-view-email')).replaceText(`mobile+profileChangesNew${ data.random }@rocket.chat`);
 			await element(by.id('profile-view-new-password')).replaceText(`${ profileChangeUser.password }new`);
 			await element(by.id('profile-view-submit')).tap();
-			await element(by.type('android.widget.EditText')).typeText(`${ profileChangeUser.password }\n`);
+			await element(by.type(textInputType)).typeText(`${ profileChangeUser.password }\n`);
 			await element(by.text('SAVE')).tap();
 			await waitForToast();
 		});
 
 		it('should reset avatar', async() => {
-			await element(by.type('android.widget.ScrollView')).atIndex(1).swipe('up');
+			await element(by.type(scrollViewType)).atIndex(1).swipe('up');
 			await element(by.id('profile-view-reset-avatar')).tap();
 			await waitForToast();
 		});
