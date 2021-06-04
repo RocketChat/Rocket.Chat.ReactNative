@@ -6,7 +6,7 @@ import { themes } from '../../constants/colors';
 import { useTheme } from '../../theme';
 import styles from './styles';
 
-const Tag = React.memo(({ name }) => {
+const Tag = React.memo(({ name, testID }) => {
 	const { theme } = useTheme();
 
 	return (
@@ -16,6 +16,7 @@ const Tag = React.memo(({ name }) => {
 					styles.tagText, { color: themes[theme].infoText }
 				]}
 				numberOfLines={1}
+				testID={testID}
 			>
 				{name}
 			</Text>
@@ -24,7 +25,8 @@ const Tag = React.memo(({ name }) => {
 });
 
 Tag.propTypes = {
-	name: PropTypes.string
+	name: PropTypes.string,
+	testID: PropTypes.string
 };
 
 export default Tag;
