@@ -217,9 +217,9 @@ class TeamChannelsView extends React.Component {
 		options.headerRight = () => (
 			<HeaderButton.Container>
 				{ showCreate
-					? <HeaderButton.Item iconName='create' onPress={() => navigation.navigate('AddChannelTeamView', { teamId: this.teamId, teamChannels: data })} />
+					? <HeaderButton.Item iconName='create' testID='team-channels-view-create' onPress={() => navigation.navigate('AddChannelTeamView', { teamId: this.teamId, teamChannels: data })} />
 					: null}
-				<HeaderButton.Item iconName='search' onPress={this.onSearchPress} />
+				<HeaderButton.Item iconName='search' testID='team-channels-view-search' onPress={this.onSearchPress} />
 			</HeaderButton.Container>
 		);
 		navigation.setOptions(options);
@@ -388,7 +388,8 @@ class TeamChannelsView extends React.Component {
 				title: I18n.t('Auto-join'),
 				icon: item.t === 'p' ? 'channel-private' : 'channel-public',
 				onPress: () => this.toggleAutoJoin(item),
-				right: () => <CustomIcon name={autoJoinIcon} size={20} color={autoJoinIconColor} />
+				right: () => <CustomIcon testID={isAutoJoinChecked ? 'auto-join-checked' : 'auto-join-unchecked'} name={autoJoinIcon} size={20} color={autoJoinIconColor} />,
+				testID: 'action-sheet-auto-join'
 			});
 		}
 
@@ -398,7 +399,8 @@ class TeamChannelsView extends React.Component {
 				title: I18n.t('Remove_from_Team'),
 				icon: 'close',
 				danger: true,
-				onPress: () => this.remove(item)
+				onPress: () => this.remove(item),
+				testID: 'action-sheet-remove-from-team'
 			});
 		}
 
@@ -408,7 +410,8 @@ class TeamChannelsView extends React.Component {
 				title: I18n.t('Delete'),
 				icon: 'delete',
 				danger: true,
-				onPress: () => this.delete(item)
+				onPress: () => this.delete(item),
+				testID: 'action-sheet-delete'
 			});
 		}
 
