@@ -58119,6 +58119,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                         },
                       ]
                     }
+                    testID="auto-join-tag"
                   >
                     Auto-join
                   </Text>
@@ -59020,6 +59021,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                         },
                       ]
                     }
+                    testID="auto-join-tag"
                   >
                     Auto-join
                   </Text>

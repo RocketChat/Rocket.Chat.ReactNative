@@ -168,7 +168,7 @@ describe('Room screen', () => {
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by.label('Permalink')).tap();
+				await element(by.label('Permalink')).atIndex(0).tap();
 
 				// TODO: test clipboard
 			});
@@ -178,7 +178,7 @@ describe('Room screen', () => {
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by.label('Copy')).tap();
+				await element(by.label('Copy')).atIndex(0).tap();
 
 				// TODO: test clipboard
 			});
@@ -191,7 +191,7 @@ describe('Room screen', () => {
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'slow', 0.5);
-				await waitFor(element(by.label('Unstar'))).toBeVisible().withTimeout(6000);
+				await waitFor(element(by.label('Unstar')).atIndex(0)).toBeVisible().withTimeout(6000);
 				await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.8);
 			});
 
@@ -243,7 +243,7 @@ describe('Room screen', () => {
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by.label('Edit')).tap();
+				await element(by.label('Edit')).atIndex(0).tap();
 				await element(by.id('messagebox-input')).typeText('ed');
 				await element(by.id('messagebox-send-message')).tap();
 				await waitFor(element(by.label(`${ data.random }edited (edited)`)).atIndex(0)).toExist().withTimeout(60000);
@@ -255,7 +255,7 @@ describe('Room screen', () => {
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by.label('Quote')).tap();
+				await element(by.label('Quote')).atIndex(0).tap();
 				await element(by.id('messagebox-input')).typeText(`${ data.random }quoted`);
 				await element(by.id('messagebox-send-message')).tap();
 
@@ -285,7 +285,7 @@ describe('Room screen', () => {
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await waitFor(element(by.label('Delete'))).toExist().withTimeout(1000);
-				await element(by.label('Delete')).tap();
+				await element(by.label('Delete')).atIndex(0).tap();
 
 				const deleteAlertMessage = 'You will not be able to recover this message!';
 				await waitFor(element(by.text(deleteAlertMessage)).atIndex(0)).toExist().withTimeout(10000);
