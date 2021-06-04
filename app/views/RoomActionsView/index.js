@@ -681,7 +681,7 @@ class RoomActionsView extends React.Component {
 	renderJitsi = () => {
 		const { room } = this.state;
 		const { jitsiEnabled } = this.props;
-		if (!jitsiEnabled) {
+		if (!jitsiEnabled || room.teamMain) {
 			return null;
 		}
 		return (
