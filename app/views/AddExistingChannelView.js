@@ -126,8 +126,8 @@ class AddExistingChannelView extends React.Component {
 				goRoom({ item: result, isMasterDetail });
 			}
 		} catch (e) {
-			showErrorAlert(I18n.t(e.data.error), I18n.t('Add_Existing_Channel'), () => {});
 			logEvent(events.CT_ADD_ROOM_TO_TEAM_F);
+			showErrorAlert(I18n.t(e.data.error), I18n.t('Add_Existing_Channel'), () => {});
 			this.setState({ loading: false });
 		}
 	}
@@ -151,10 +151,10 @@ class AddExistingChannelView extends React.Component {
 
 		animateNextTransition();
 		if (!this.isChecked(rid)) {
-			logEvent(events.EXISTING_CHANNEL_ADD_CHANNEL);
+			logEvent(events.AEC_ADD_CHANNEL);
 			this.setState({ selected: [...selected, rid] }, () => this.setHeader());
 		} else {
-			logEvent(events.EXISTING_CHANNEL_REMOVE_CHANNEL);
+			logEvent(events.AEC_REMOVE_CHANNEL);
 			const filterSelected = selected.filter(el => el !== rid);
 			this.setState({ selected: filterSelected }, () => this.setHeader());
 		}
