@@ -59,6 +59,10 @@ class RightButtonsContainer extends Component {
 		const {
 			isFollowingThread, tunread, tunreadUser, tunreadGroup
 		} = this.state;
+		const { teamId } = this.props;
+		if (nextProps.teamId !== teamId) {
+			return true;
+		}
 		if (nextState.isFollowingThread !== isFollowingThread) {
 			return true;
 		}
