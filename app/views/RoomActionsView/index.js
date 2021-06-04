@@ -459,11 +459,16 @@ class RoomActionsView extends React.Component {
 		const { navigation } = this.props;
 
 		try {
-			const result = await RocketChat.teamListRoomsOfUser({ teamId: room.teamId, userId: room.u._id });
+			const db = database.active;
+			const subCollection = db.get('subscriptions');
+			const teamListRoomsOfUserLocal = await subCollection.query(
+				Q.where('team_id', Q.eq(room.teamId)),
+				Q.where('team_main', Q.notEq(true))
+			);
 
-			if (result.rooms?.length) {
-				const teamChannels = result.rooms.map(r => ({
-					rid: r._id,
+			if (teamListRoomsOfUserLocal.length) {
+				const teamChannels = teamListRoomsOfUserLocal.map(r => ({
+					rid: r.id,
 					name: r.name,
 					teamId: r.teamId,
 					alert: r.isLastOwner
