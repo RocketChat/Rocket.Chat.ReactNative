@@ -4,6 +4,8 @@ const {
 const { navigateToLogin, login, sleep } = require('../../helpers/app');
 const data = require('../../data');
 
+const platformTypes = require('../../helpers/platformTypes');
+
 const profileChangeUser = data.users.profileChanges
 
 const scrollDown = 200;

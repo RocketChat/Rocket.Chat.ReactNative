@@ -4,6 +4,8 @@ const {
 const data = require('../../data');
 const { sleep, navigateToLogin, login, checkServer } = require('../../helpers/app');
 
+const platformTypes = require('../../helpers/platformTypes');
+
 describe('Delete server', () => {
 	let scrollViewType, alertButtonType;
 	before(async() => {

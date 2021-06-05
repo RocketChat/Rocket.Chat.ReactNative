@@ -4,6 +4,8 @@ const {
 const data = require('../../data');
 const { navigateToLogin, login, mockMessage, tapBack, sleep, searchRoom } = require('../../helpers/app');
 
+const platformTypes = require('../../helpers/platformTypes');
+
 const testuser = data.users.regular
 const room = data.channels.detoxpublic.name;
 

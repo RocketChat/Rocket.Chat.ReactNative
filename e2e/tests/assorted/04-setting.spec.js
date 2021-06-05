@@ -3,6 +3,8 @@ const {
 } = require('detox');
 const { navigateToLogin, login, tapBack } = require('../../helpers/app');
 
+const platformTypes = require('../../helpers/platformTypes');
+
 const data = require('../../data');
 
 const testuser = data.users.regular
