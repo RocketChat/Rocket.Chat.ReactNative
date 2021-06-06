@@ -51,7 +51,7 @@ const AddChannelTeamView = ({
 				<List.Item
 					title='Add_Existing'
 					onPress={() => navigation.navigate('AddExistingChannelView', { teamId, teamChannels })}
-					testID='add-channel-team-view-create-channel'
+					testID='add-channel-team-view-add-existing'
 					left={() => <List.Icon name='channel-public' />}
 					right={() => <List.Icon name='chevron-right' />}
 					theme={theme}

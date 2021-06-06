@@ -217,9 +217,9 @@ class TeamChannelsView extends React.Component {
 		options.headerRight = () => (
 			<HeaderButton.Container>
 				{ showCreate
-					? <HeaderButton.Item iconName='create' onPress={() => navigation.navigate('AddChannelTeamView', { teamId: this.teamId, teamChannels: data })} />
+					? <HeaderButton.Item iconName='create' testID='team-channels-view-create' onPress={() => navigation.navigate('AddChannelTeamView', { teamId: this.teamId, teamChannels: data })} />
 					: null}
-				<HeaderButton.Item iconName='search' onPress={this.onSearchPress} />
+				<HeaderButton.Item iconName='search' testID='team-channels-view-search' onPress={this.onSearchPress} />
 			</HeaderButton.Container>
 		);
 		navigation.setOptions(options);
@@ -282,25 +282,25 @@ class TeamChannelsView extends React.Component {
 		logEvent(events.TC_GO_ROOM);
 		const { navigation, isMasterDetail } = this.props;
 		try {
-			let params = {};
-			if (item.rid) {
-				params = item;
-			} else {
-				const { room } = await RocketChat.getRoomInfo(item._id);
-				params = {
-					rid: item._id, name: RocketChat.getRoomTitle(room), joinCodeRequired: room.joinCodeRequired, t: room.t, teamId: room.teamId
-				};
-			}
+			const { room } = await RocketChat.getRoomInfo(item._id);
+			const params = {
+				rid: item._id, name: RocketChat.getRoomTitle(room), joinCodeRequired: room.joinCodeRequired, t: room.t, teamId: room.teamId
+			};
 			if (isMasterDetail) {
 				navigation.pop();
 			}
 			goRoom({ item: params, isMasterDetail, navigationMethod: navigation.push });
 		} catch (e) {
-			// do nothing
+			if (e.data.error === 'not-allowed') {
+				showErrorAlert(I18n.t('error-not-allowed'));
+			} else {
+				showErrorAlert(e.data.error);
+			}
 		}
 	}, 1000, true);
 
 	toggleAutoJoin = async(item) => {
+		logEvent(events.TC_TOGGLE_AUTOJOIN);
 		try {
 			const { data } = this.state;
 			const result = await RocketChat.updateTeamRoom({ roomId: item._id, isDefault: !item.teamDefault });
@@ -314,6 +314,7 @@ class TeamChannelsView extends React.Component {
 				this.setState({ data: newData });
 			}
 		} catch (e) {
+			logEvent(events.TC_TOGGLE_AUTOJOIN_F);
 			log(e);
 		}
 	}
@@ -338,6 +339,7 @@ class TeamChannelsView extends React.Component {
 	}
 
 	removeRoom = async(item) => {
+		logEvent(events.TC_DELETE_ROOM);
 		try {
 			const { data } = this.state;
 			const result = await RocketChat.removeTeamRoom({ roomId: item._id, teamId: this.team.teamId });
@@ -346,11 +348,13 @@ class TeamChannelsView extends React.Component {
 				this.setState({ data: newData });
 			}
 		} catch (e) {
+			logEvent(events.TC_DELETE_ROOM_F);
 			log(e);
 		}
 	}
 
 	delete = (item) => {
+		logEvent(events.TC_DELETE_ROOM);
 		const { deleteRoom } = this.props;
 
 		Alert.alert(
@@ -388,7 +392,8 @@ class TeamChannelsView extends React.Component {
 				title: I18n.t('Auto-join'),
 				icon: item.t === 'p' ? 'channel-private' : 'channel-public',
 				onPress: () => this.toggleAutoJoin(item),
-				right: () => <CustomIcon name={autoJoinIcon} size={20} color={autoJoinIconColor} />
+				right: () => <CustomIcon testID={isAutoJoinChecked ? 'auto-join-checked' : 'auto-join-unchecked'} name={autoJoinIcon} size={20} color={autoJoinIconColor} />,
+				testID: 'action-sheet-auto-join'
 			});
 		}
 
@@ -398,7 +403,8 @@ class TeamChannelsView extends React.Component {
 				title: I18n.t('Remove_from_Team'),
 				icon: 'close',
 				danger: true,
-				onPress: () => this.remove(item)
+				onPress: () => this.remove(item),
+				testID: 'action-sheet-remove-from-team'
 			});
 		}
 
@@ -408,7 +414,8 @@ class TeamChannelsView extends React.Component {
 				title: I18n.t('Delete'),
 				icon: 'delete',
 				danger: true,
-				onPress: () => this.delete(item)
+				onPress: () => this.delete(item),
+				testID: 'action-sheet-delete'
 			});
 		}
 
