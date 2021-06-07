@@ -72,6 +72,8 @@ const handleLeaveRoom = function* handleLeaveRoom({ room, roomType, selected }) 
 		logEvent(events.RA_LEAVE_F);
 		if (e.data && e.data.errorType === 'error-you-are-last-owner') {
 			Alert.alert(I18n.t('Oops'), I18n.t(e.data.errorType));
+		} else if (e?.data?.error === 'last-owner-can-not-be-removed') {
+			Alert.alert(I18n.t('Oops'), I18n.t(e.data.error));
 		} else {
 			Alert.alert(I18n.t('Oops'), I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_room') }));
 		}

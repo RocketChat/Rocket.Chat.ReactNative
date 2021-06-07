@@ -515,7 +515,7 @@ class RoomActionsView extends React.Component {
 			const db = database.active;
 			const subCollection = db.get('subscriptions');
 			const teamRooms = await subCollection.query(
-				Q.where('team_main', Q.notEq(null))
+				Q.where('team_main', true)
 			);
 
 			if (teamRooms.length) {
@@ -558,7 +558,7 @@ class RoomActionsView extends React.Component {
 			const teams = await db.collections
 				.get('subscriptions')
 				.query(
-					Q.where('team_main', Q.notEq(null)),
+					Q.where('team_main', true),
 					Q.where('name', Q.like(`%${ onChangeText }%`)),
 					Q.experimentalTake(QUERY_SIZE),
 					Q.experimentalSortBy('room_updated_at', Q.desc)
