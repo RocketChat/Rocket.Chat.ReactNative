@@ -85,7 +85,7 @@ const stateAttrsUpdate = [
 	'member',
 	'showingBlockingLoader'
 ];
-const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'tunread', 'muted', 'ignored', 'jitsiTimeout', 'announcement', 'sysMes', 'topic', 'name', 'fname', 'roles', 'bannerClosed', 'visitor', 'joinCodeRequired'];
+const roomAttrsUpdate = ['f', 'ro', 'blocked', 'blocker', 'archived', 'tunread', 'muted', 'ignored', 'jitsiTimeout', 'announcement', 'sysMes', 'topic', 'name', 'fname', 'roles', 'bannerClosed', 'visitor', 'joinCodeRequired', 'teamMain', 'teamId'];
 
 class RoomView extends React.Component {
 	static propTypes = {
@@ -254,7 +254,10 @@ class RoomView extends React.Component {
 				this.setHeader();
 			}
 		}
-		if (((roomUpdate.fname !== prevState.roomUpdate.fname) || (roomUpdate.name !== prevState.roomUpdate.name)) && !this.tmid) {
+		if ((roomUpdate.teamMain !== prevState.roomUpdate.teamMain) || (roomUpdate.teamId !== prevState.roomUpdate.teamId)) {
+			this.setHeader();
+		}
+		if (((roomUpdate.fname !== prevState.roomUpdate.fname) || (roomUpdate.name !== prevState.roomUpdate.name) || (roomUpdate.teamMain !== prevState.roomUpdate.teamMain) || (roomUpdate.teamId !== prevState.roomUpdate.teamId)) && !this.tmid) {
 			this.setHeader();
 		}
 		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {

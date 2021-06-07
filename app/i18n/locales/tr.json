@@ -290,6 +290,7 @@
   "last_message": "son ileti",
   "Leave_channel": "Kanaldan ayrıl",
   "leaving_room": "odadan ayrılıyor",
+  "Leave": "Odadan ayrıl",
   "leave": "ayrıl",
   "Legal": "Yasal",
   "Light": "Açık",
@@ -680,12 +681,6 @@
   "No_threads_following": "Herhangi bir konuyu takip etmiyorsunuz",
   "No_threads_unread": "Okunmamış konu yok",
   "Messagebox_Send_to_channel": "Kanala gönder",
-  "Set_as_leader": "Lider olarak ayarla",
-  "Set_as_moderator": "Moderatör olarak ayarla",
-  "Set_as_owner": "Sahip olarak ayarla",
-  "Remove_as_leader": "Lider olarak kaldır",
-  "Remove_as_moderator": "Moderatör olarak kaldır",
-  "Remove_as_owner": "Sahip olarak kaldır",
   "Remove_from_room": "Odadan çıkar",
   "Ignore": "Yok say",
   "Unignore": "Yok sayma",
@@ -703,5 +698,6 @@
   "Direct_message": "Özel ileti",
   "Message_Ignored": "İleti yok sayıldı. Görüntülemek için dokunun.",
   "Enter_workspace_URL": "Çalışma alanı URL'nizi girin",
-  "Workspace_URL_Example": "Örn. sirketiniz.rocket.chat"
+  "Workspace_URL_Example": "Örn. sirketiniz.rocket.chat",
+  "invalid-room": "Geçersiz oda"
 }

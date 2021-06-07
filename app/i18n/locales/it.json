@@ -290,11 +290,11 @@
   "last_message": "ultimo messaggio",
   "Leave_channel": "Abbandona canale",
   "leaving_room": "abbandonando stanza",
+  "Leave": "Lasciare il canale",
   "leave": "abbandona",
   "Legal": "Informazioni",
   "Light": "Chiaro",
   "License": "Licenza",
-  "Livechat": "Livechat",
   "Livechat_edit": "Modifica Livechat",
   "Login": "Accedi",
   "Login_error": "Le tue credenziali sono state rifiutate! Prova di nuovo.",
@@ -681,12 +681,6 @@
   "No_threads_following": "Non stai seguendo alcun thread",
   "No_threads_unread": "Non ci sono thread non letti",
   "Messagebox_Send_to_channel": "Invia sul canale",
-  "Set_as_leader": "Rendi leader",
-  "Set_as_moderator": "Rendi moderatore",
-  "Set_as_owner": "Rendi proprietario",
-  "Remove_as_leader": "Rimuovi come leader",
-  "Remove_as_moderator": "Rimuovi come moderatore",
-  "Remove_as_owner": "Rimuovi come proprietario",
   "Remove_from_room": "Rimuovi dalla stanza",
   "Ignore": "Ignora",
   "Unignore": "Non ignorare",
@@ -704,5 +698,6 @@
   "Direct_message": "Messaggio diretto",
   "Message_Ignored": "Messaggio ignorato. Tocca per visualizzarlo.",
   "Enter_workspace_URL": "Inserisci la url del workspace",
-  "Workspace_URL_Example": "Es. tua-azienda.rocket.chat"
+  "Workspace_URL_Example": "Es. tua-azienda.rocket.chat",
+  "invalid-room": "Canale non valido"
 }

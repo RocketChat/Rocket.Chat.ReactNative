@@ -18,6 +18,7 @@ export const Item = React.memo(({ item, hide, theme }) => {
 			onPress={onPress}
 			style={[styles.item, { backgroundColor: themes[theme].focusedBackground }]}
 			theme={theme}
+			testID={item.testID}
 		>
 			<CustomIcon name={item.icon} size={20} color={item.danger ? themes[theme].dangerColor : themes[theme].bodyText} />
 			<View style={styles.titleContainer}>
@@ -42,7 +43,8 @@ Item.propTypes = {
 		icon: PropTypes.string,
 		danger: PropTypes.bool,
 		onPress: PropTypes.func,
-		right: PropTypes.func
+		right: PropTypes.func,
+		testID: PropTypes.string
 	}),
 	hide: PropTypes.func,
 	theme: PropTypes.string
