@@ -713,13 +713,13 @@ class RoomActionsView extends React.Component {
 	renderLastSection = () => {
 		const { room, joined } = this.state;
 		const { theme } = this.props;
-		const { t, blocker } = room;
+		const { t, blocker, usernames } = room;
 
 		if (!joined || t === 'l') {
 			return null;
 		}
 
-		if (t === 'd') {
+		if (t === 'd' && usernames.length === 2) {
 			return (
 				<List.Section>
 					<List.Separator />
