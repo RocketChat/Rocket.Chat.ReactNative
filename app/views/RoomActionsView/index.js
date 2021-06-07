@@ -745,7 +745,7 @@ class RoomActionsView extends React.Component {
 					<List.Item
 						title='Leave'
 						onPress={() => this.onPressTouchable({
-							event: room.teamMain ? this.leaveTeamRoom : this.leaveChannel
+							event: room.teamMain ? this.leaveTeam : this.leaveChannel
 						})}
 						testID='room-actions-leave-channel'
 						left={() => <List.Icon name='logout' color={themes[theme].dangerColor} />}
