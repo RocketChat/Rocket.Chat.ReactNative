@@ -326,7 +326,7 @@ class RoomInfoEditView extends React.Component {
 			const subCollection = db.get('subscriptions');
 			const teamChannels = await subCollection.query(
 				Q.where('team_id', room.teamId),
-				Q.where('team_main', null)
+				Q.where('team_main', false)
 			);
 
 			if (teamChannels.length) {
