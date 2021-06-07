@@ -284,6 +284,7 @@
   "last_message": "الرسالة الأخيرة",
   "Leave_channel": "مغادرة القناة",
   "leaving_room": "مغادرة الغرفة",
+  "Leave": "مغادرة الغرفة",
   "leave": "مغادرة",
   "Legal": "قانوني",
   "Light": "ساطع",
@@ -651,5 +652,6 @@
   "You_will_be_logged_out_from_other_locations": "سيتم تسجيل خروج من الأماكن الأخرى",
   "Logged_out_of_other_clients_successfully": "تم تسجيل الخروج من الأماكن الأخرى بنجاح",
   "Logout_failed": "فشل تسجيل الخروج!",
-  "Log_analytics_events": "تحليلات سجل الأحداث"
+  "Log_analytics_events": "تحليلات سجل الأحداث",
+  "invalid-room": "غرفة غير صالحة"
 }
