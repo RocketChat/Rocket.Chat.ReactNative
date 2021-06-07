@@ -8,6 +8,7 @@ import * as List from '../containers/List';
 import Status from '../containers/Status/Status';
 import TextInput from '../containers/TextInput';
 import EventEmitter from '../utils/events';
+import { showErrorAlert } from '../utils/info';
 import Loading from '../containers/Loading';
 import RocketChat from '../lib/rocketchat';
 import log, { logEvent, events } from '../utils/log';
@@ -58,7 +59,8 @@ class StatusView extends React.Component {
 		theme: PropTypes.string,
 		navigation: PropTypes.object,
 		isMasterDetail: PropTypes.bool,
-		setUser: PropTypes.func
+		setUser: PropTypes.func,
+		Accounts_AllowInvisibleStatusOption: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -168,6 +170,7 @@ class StatusView extends React.Component {
 								setUser({ status: item.id });
 							}
 						} catch (e) {
+							showErrorAlert(I18n.t(e.data.errorType));
 							logEvent(events.SET_STATUS_FAIL);
 							log(e);
 						}
@@ -181,10 +184,14 @@ class StatusView extends React.Component {
 
 	render() {
 		const { loading } = this.state;
+		const { Accounts_AllowInvisibleStatusOption } = this.props;
+
+		const status = Accounts_AllowInvisibleStatusOption ? STATUS : STATUS.filter(s => s.id !== 'offline');
+
 		return (
 			<SafeAreaView testID='status-view'>
 				<FlatList
-					data={STATUS}
+					data={status}
 					keyExtractor={item => item.id}
 					renderItem={this.renderItem}
 					ListHeaderComponent={this.renderHeader}
@@ -199,7 +206,8 @@ class StatusView extends React.Component {
 
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
-	isMasterDetail: state.app.isMasterDetail
+	isMasterDetail: state.app.isMasterDetail,
+	Accounts_AllowInvisibleStatusOption: state.settings.Accounts_AllowInvisibleStatusOption ?? true
 });
 
 const mapDispatchToProps = dispatch => ({
