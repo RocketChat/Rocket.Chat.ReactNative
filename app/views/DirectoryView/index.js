@@ -154,7 +154,7 @@ class DirectoryView extends React.Component {
 		} else if (['p', 'c'].includes(item.t) && !item.teamMain) {
 			const { room } = await RocketChat.getRoomInfo(item._id);
 			this.goRoom({
-				rid: item._id, name: item.name, joinCodeRequired: room.joinCodeRequired, t: 'c', search: true
+				rid: item._id, name: item.name, joinCodeRequired: room.joinCodeRequired, t: item.t, search: true
 			});
 		} else {
 			this.goRoom({

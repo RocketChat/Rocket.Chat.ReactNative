@@ -1,10 +1,9 @@
 import React from 'react';
-import { Keyboard, Alert } from 'react-native';
+import { Keyboard, Alert, FlatList } from 'react-native';
 import PropTypes from 'prop-types';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
-import { FlatList } from 'react-native-gesture-handler';
 
 import StatusBar from '../containers/StatusBar';
 import RoomHeader from '../containers/RoomHeader';

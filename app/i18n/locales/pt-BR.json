@@ -277,6 +277,7 @@
   "last_message": "última mensagem",
   "Leave_channel": "Sair do canal",
   "leaving_room": "saindo do canal",
+  "Leave": "Sair da sala",
   "leave": "sair",
   "Legal": "Legal",
   "Light": "Claro",
@@ -639,12 +640,6 @@
   "No_threads_following": "Você não está seguindo tópicos",
   "No_threads_unread": "Não há tópicos não lidos",
   "Messagebox_Send_to_channel": "Mostrar no canal",
-  "Set_as_leader": "Definir como líder",
-  "Set_as_moderator": "Definir como moderador",
-  "Set_as_owner": "Definir como proprietário",
-  "Remove_as_leader": "Remover como líder",
-  "Remove_as_moderator": "Remover como moderador",
-  "Remove_as_owner": "Remover como owner",
   "Remove_from_room": "Remover do canal",
   "Ignore": "Ignorar",
   "Unignore": "Deixar de ignorar",
@@ -669,5 +664,6 @@
   "No_team_channels_found": "Nenhum canal encontrado",
   "Team_not_found": "Time não encontrado",
   "Private_Team": "Equipe Privada",
-  "Add_Existing_Channel": "Adicionar Canal Existente"
+  "Add_Existing_Channel": "Adicionar Canal Existente",
+  "invalid-room": "Sala inválida"
 }
