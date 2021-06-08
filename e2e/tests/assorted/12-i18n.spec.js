@@ -61,8 +61,8 @@ describe('i18n', () => {
 				}
 			});
 			await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
-			await expect(element(by.id('join-workspace').and(by.label('Join a workspace')))).toBeVisible(); // Missing nl translation
-			await expect(element(by.id('create-workspace-button').and(by.label('Een nieuwe workspace maken')))).toBeVisible();
+			await expect(element(by.id('join-workspace').and(by.label('Word lid van een werkruimte')))).toBeVisible();
+			await expect(element(by.id('create-workspace-button').and(by.label('Een nieuwe werkruimte aanmaken')))).toBeVisible();
 		});
 	});
 
