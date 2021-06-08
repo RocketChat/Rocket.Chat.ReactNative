@@ -191,7 +191,7 @@ describe('Room screen', () => {
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'slow', 0.5);
-				await waitFor(element(by.label('Unstar')).atIndex(0)).toBeVisible().withTimeout(6000);
+				await waitFor(element(by.label('Unstar')).atIndex(0)).toExist().withTimeout(6000);
 				await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.8);
 			});
 
@@ -272,7 +272,7 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('action-sheet'))).toExist().withTimeout(1000);
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await waitFor(element(by.label('Unpin'))).toBeVisible().withTimeout(2000);
+				await waitFor(element(by.label('Unpin')).atIndex(0)).toExist().withTimeout(2000);
 				await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.8);
 			});
 
