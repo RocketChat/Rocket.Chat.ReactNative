@@ -1,30 +1,39 @@
 import React from 'react';
-import { FlatList, RefreshControl } from 'react-native';
+import { RefreshControl } from 'react-native';
 import PropTypes from 'prop-types';
 import { Q } from '@nozbe/watermelondb';
 import moment from 'moment';
 import { dequal } from 'dequal';
+import { Value, event } from 'react-native-reanimated';
 
-import styles from './styles';
-import database from '../../lib/database';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import RocketChat from '../../lib/rocketchat';
-import log from '../../utils/log';
-import EmptyRoom from './EmptyRoom';
-import { isIOS } from '../../utils/deviceInfo';
-import { animateNextTransition } from '../../utils/layoutAnimation';
-import ActivityIndicator from '../../containers/ActivityIndicator';
-import { themes } from '../../constants/colors';
+import database from '../../../lib/database';
+import RocketChat from '../../../lib/rocketchat';
+import log from '../../../utils/log';
+import EmptyRoom from '../EmptyRoom';
+import { animateNextTransition } from '../../../utils/layoutAnimation';
+import ActivityIndicator from '../../../containers/ActivityIndicator';
+import { themes } from '../../../constants/colors';
+import List from './List';
+import NavBottomFAB from './NavBottomFAB';
+import debounce from '../../../utils/debounce';
 
 const QUERY_SIZE = 50;
 
-class List extends React.Component {
+const onScroll = ({ y }) => event(
+	[
+		{
+			nativeEvent: {
+				contentOffset: { y }
+			}
+		}
+	],
+	{ useNativeDriver: true }
+);
+
+class ListContainer extends React.Component {
 	static propTypes = {
-		onEndReached: PropTypes.func,
-		renderFooter: PropTypes.func,
 		renderRow: PropTypes.func,
 		rid: PropTypes.string,
-		t: PropTypes.string,
 		tmid: PropTypes.string,
 		theme: PropTypes.string,
 		loading: PropTypes.bool,
@@ -36,34 +45,28 @@ class List extends React.Component {
 		showMessageInMainThread: PropTypes.bool
 	};
 
-	// this.state.loading works for this.onEndReached and RoomView.init
-	static getDerivedStateFromProps(props, state) {
-		if (props.loading !== state.loading) {
-			return {
-				loading: props.loading
-			};
-		}
-		return null;
-	}
-
 	constructor(props) {
 		super(props);
 		console.time(`${ this.constructor.name } init`);
 		console.time(`${ this.constructor.name } mount`);
 		this.count = 0;
-		this.needsFetch = false;
 		this.mounted = false;
 		this.animated = false;
+		this.jumping = false;
 		this.state = {
-			loading: true,
-			end: false,
 			messages: [],
-			refreshing: false
+			refreshing: false,
+			highlightedMessage: null
 		};
+		this.y = new Value(0);
+		this.onScroll = onScroll({ y: this.y });
 		this.query();
 		this.unsubscribeFocus = props.navigation.addListener('focus', () => {
 			this.animated = true;
 		});
+		this.viewabilityConfig = {
+			itemVisiblePercentThreshold: 10
+		};
 		console.timeEnd(`${ this.constructor.name } init`);
 	}
 
@@ -73,17 +76,17 @@ class List extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { loading, end, refreshing } = this.state;
+		const { refreshing, highlightedMessage } = this.state;
 		const {
-			hideSystemMessages, theme, tunread, ignored
+			hideSystemMessages, theme, tunread, ignored, loading
 		} = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
 		}
-		if (loading !== nextState.loading) {
+		if (loading !== nextProps.loading) {
 			return true;
 		}
-		if (end !== nextState.end) {
+		if (highlightedMessage !== nextState.highlightedMessage) {
 			return true;
 		}
 		if (refreshing !== nextState.refreshing) {
@@ -116,32 +119,14 @@ class List extends React.Component {
 		if (this.unsubscribeFocus) {
 			this.unsubscribeFocus();
 		}
+		this.clearHighlightedMessageTimeout();
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
-	fetchData = async() => {
-		const {
-			loading, end, messages, latest = messages[messages.length - 1]?.ts
-		} = this.state;
-		if (loading || end) {
-			return;
-		}
-
-		this.setState({ loading: true });
-		const { rid, t, tmid } = this.props;
-		try {
-			let result;
-			if (tmid) {
-				// `offset` is `messages.length - 1` because we append thread start to `messages` obj
-				result = await RocketChat.loadThreadMessages({ tmid, rid, offset: messages.length - 1 });
-			} else {
-				result = await RocketChat.loadMessagesForRoom({ rid, t, latest });
-			}
-
-			this.setState({ end: result.length < QUERY_SIZE, loading: false, latest: result[result.length - 1]?.ts }, () => this.loadMoreMessages(result));
-		} catch (e) {
-			this.setState({ loading: false });
-			log(e);
+	clearHighlightedMessageTimeout = () => {
+		if (this.highlightedMessageTimeout) {
+			clearTimeout(this.highlightedMessageTimeout);
+			this.highlightedMessageTimeout = false;
 		}
 	}
 
@@ -198,9 +183,6 @@ class List extends React.Component {
 			this.unsubscribeMessages();
 			this.messagesSubscription = this.messagesObservable
 				.subscribe((messages) => {
-					if (messages.length <= this.count) {
-						this.needsFetch = true;
-					}
 					if (tmid && this.thread) {
 						messages = [...messages, this.thread];
 					}
@@ -211,6 +193,7 @@ class List extends React.Component {
 					} else {
 						this.state.messages = messages;
 					}
+					// TODO: move it away from here
 					this.readThreads();
 				});
 		}
@@ -221,7 +204,7 @@ class List extends React.Component {
 		this.query();
 	}
 
-	readThreads = async() => {
+	readThreads = debounce(async() => {
 		const { tmid } = this.props;
 
 		if (tmid) {
@@ -231,39 +214,9 @@ class List extends React.Component {
 				// Do nothing
 			}
 		}
-	}
+	}, 300)
 
-	onEndReached = async() => {
-		if (this.needsFetch) {
-			this.needsFetch = false;
-			await this.fetchData();
-		}
-		this.query();
-	}
-
-	loadMoreMessages = (result) => {
-		const { end } = this.state;
-
-		if (end) {
-			return;
-		}
-
-		// handle servers with version < 3.0.0
-		let { hideSystemMessages = [] } = this.props;
-		if (!Array.isArray(hideSystemMessages)) {
-			hideSystemMessages = [];
-		}
-
-		if (!hideSystemMessages.length) {
-			return;
-		}
-
-		const hasReadableMessages = result.filter(message => !message.t || (message.t && !hideSystemMessages.includes(message.t))).length > 0;
-		// if this batch doesn't contain any messages that will be displayed, we'll request a new batch
-		if (!hasReadableMessages) {
-			this.onEndReached();
-		}
-	}
+	onEndReached = () => this.query()
 
 	onRefresh = () => this.setState({ refreshing: true }, async() => {
 		const { messages } = this.state;
@@ -272,7 +225,7 @@ class List extends React.Component {
 		if (messages.length) {
 			try {
 				if (tmid) {
-					await RocketChat.loadThreadMessages({ tmid, rid, offset: messages.length - 1 });
+					await RocketChat.loadThreadMessages({ tmid, rid });
 				} else {
 					await RocketChat.loadMissedMessages({ rid, lastOpen: moment().subtract(7, 'days').toDate() });
 				}
@@ -284,7 +237,6 @@ class List extends React.Component {
 		this.setState({ refreshing: false });
 	})
 
-	// eslint-disable-next-line react/sort-comp
 	update = () => {
 		if (this.animated) {
 			animateNextTransition();
@@ -306,9 +258,53 @@ class List extends React.Component {
 		return null;
 	}
 
+	handleScrollToIndexFailed = (params) => {
+		const { listRef } = this.props;
+		listRef.current.getNode().scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
+	}
+
+	jumpToMessage = messageId => new Promise(async(resolve) => {
+		this.jumping = true;
+		const { messages } = this.state;
+		const { listRef } = this.props;
+		const index = messages.findIndex(item => item.id === messageId);
+		if (index > -1) {
+			listRef.current.getNode().scrollToIndex({ index, viewPosition: 0.5 });
+			await new Promise(res => setTimeout(res, 300));
+			if (!this.viewableItems.map(vi => vi.key).includes(messageId)) {
+				if (!this.jumping) {
+					return resolve();
+				}
+				await setTimeout(() => resolve(this.jumpToMessage(messageId)), 300);
+				return;
+			}
+			this.setState({ highlightedMessage: messageId });
+			this.clearHighlightedMessageTimeout();
+			this.highlightedMessageTimeout = setTimeout(() => {
+				this.setState({ highlightedMessage: null });
+			}, 10000);
+			await setTimeout(() => resolve(), 300);
+		} else {
+			listRef.current.getNode().scrollToIndex({ index: messages.length - 1, animated: false });
+			if (!this.jumping) {
+				return resolve();
+			}
+			await setTimeout(() => resolve(this.jumpToMessage(messageId)), 300);
+		}
+	});
+
+	// this.jumping is checked in between operations to make sure we're not stuck
+	cancelJumpToMessage = () => {
+		this.jumping = false;
+	}
+
+	jumpToBottom = () => {
+		const { listRef } = this.props;
+		listRef.current.getNode().scrollToOffset({ offset: -100 });
+	}
+
 	renderFooter = () => {
-		const { loading } = this.state;
-		const { rid, theme } = this.props;
+		const { rid, theme, loading } = this.props;
 		if (loading && rid) {
 			return <ActivityIndicator theme={theme} />;
 		}
@@ -316,36 +312,34 @@ class List extends React.Component {
 	}
 
 	renderItem = ({ item, index }) => {
-		const { messages } = this.state;
+		const { messages, highlightedMessage } = this.state;
 		const { renderRow } = this.props;
-		return renderRow(item, messages[index + 1]);
+		return renderRow(item, messages[index + 1], highlightedMessage);
+	}
+
+	onViewableItemsChanged = ({ viewableItems }) => {
+		this.viewableItems = viewableItems;
 	}
 
 	render() {
 		console.count(`${ this.constructor.name }.render calls`);
-		const { rid, listRef } = this.props;
+		const { rid, tmid, listRef } = this.props;
 		const { messages, refreshing } = this.state;
 		const { theme } = this.props;
 		return (
 			<>
 				<EmptyRoom rid={rid} length={messages.length} mounted={this.mounted} theme={theme} />
-				<FlatList
-					testID='room-view-messages'
-					ref={listRef}
-					keyExtractor={item => item.id}
+				<List
+					onScroll={this.onScroll}
+					scrollEventThrottle={16}
+					listRef={listRef}
 					data={messages}
-					extraData={this.state}
 					renderItem={this.renderItem}
-					contentContainerStyle={styles.contentContainer}
-					style={styles.list}
-					inverted
-					removeClippedSubviews={isIOS}
-					initialNumToRender={7}
 					onEndReached={this.onEndReached}
-					onEndReachedThreshold={0.5}
-					maxToRenderPerBatch={5}
-					windowSize={10}
 					ListFooterComponent={this.renderFooter}
+					onScrollToIndexFailed={this.handleScrollToIndexFailed}
+					onViewableItemsChanged={this.onViewableItemsChanged}
+					viewabilityConfig={this.viewabilityConfig}
 					refreshControl={(
 						<RefreshControl
 							refreshing={refreshing}
@@ -353,11 +347,11 @@ class List extends React.Component {
 							tintColor={themes[theme].auxiliaryText}
 						/>
 					)}
-					{...scrollPersistTaps}
 				/>
+				<NavBottomFAB y={this.y} onPress={this.jumpToBottom} isThread={!!tmid} />
 			</>
 		);
 	}
 }
 
-export default List;
+export default ListContainer;

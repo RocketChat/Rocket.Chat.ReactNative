@@ -13,19 +13,25 @@ const PERMISSIONS = [
 	'add-user-to-any-c-room',
 	'add-user-to-any-p-room',
 	'add-user-to-joined-room',
+	'add-team-channel',
 	'archive-room',
 	'auto-translate',
 	'create-invite-links',
+	'create-team',
 	'delete-c',
 	'delete-message',
 	'delete-p',
+	'delete-team',
 	'edit-message',
 	'edit-room',
+	'edit-team-member',
+	'edit-team-channel',
 	'force-delete-message',
 	'mute-user',
 	'pin-message',
 	'post-readonly',
 	'remove-user',
+	'remove-team-channel',
 	'set-leader',
 	'set-moderator',
 	'set-owner',
@@ -38,7 +44,9 @@ const PERMISSIONS = [
 	'view-privileged-setting',
 	'view-room-administration',
 	'view-statistics',
-	'view-user-administration'
+	'view-user-administration',
+	'view-all-teams',
+	'view-all-team-channels'
 ];
 
 export async function setPermissions() {

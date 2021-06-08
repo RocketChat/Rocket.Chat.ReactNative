@@ -67,7 +67,7 @@ async function starMessage(message){
     await expect(element(by.id('action-sheet'))).toExist();
     await expect(element(by.id('action-sheet-handle'))).toBeVisible();
     await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-    await element(by.label('Star')).tap();
+    await element(by.label('Star')).atIndex(0).tap();
     await waitFor(element(by.id('action-sheet'))).not.toExist().withTimeout(5000);
 };
 
@@ -78,7 +78,7 @@ async function pinMessage(message){
     await expect(element(by.id('action-sheet'))).toExist();
     await expect(element(by.id('action-sheet-handle'))).toBeVisible();
     await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-    await element(by.label('Pin')).tap();
+    await element(by.label('Pin')).atIndex(0).tap();
     await waitFor(element(by.id('action-sheet'))).not.toExist().withTimeout(5000);
 }
 

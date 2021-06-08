@@ -45,3 +45,5 @@ export const getBadgeColor = ({ subscription, messageId, theme }) => {
 };
 
 export const makeThreadName = messageRecord => messageRecord.msg || messageRecord?.attachments[0]?.title;
+
+export const isTeamRoom = ({ teamId, joined }) => teamId && joined;

@@ -14,6 +14,7 @@ import '../../app/views/ThreadMessagesView/Item.stories.js';
 import './Avatar';
 import '../../app/containers/BackgroundContainer/index.stories.js';
 import '../../app/containers/RoomHeader/RoomHeader.stories.js';
+import '../../app/views/RoomView/LoadMore/LoadMore.stories';
 
 // Change here to see themed storybook
 export const theme = 'light';
