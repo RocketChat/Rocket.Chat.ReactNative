@@ -33,7 +33,7 @@ describe('Mark as unread', () => {
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by.label('Mark Unread')).tap();
+				await element(by.label('Mark Unread')).atIndex(0).tap();
 				await waitFor(element(by.id('rooms-list-view'))).toExist().withTimeout(5000);
 				await expect(element(by.id(`rooms-list-view-item-${data.users.alternate.username}`))).toExist();
 			});
