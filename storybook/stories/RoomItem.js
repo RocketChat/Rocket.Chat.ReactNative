@@ -44,6 +44,9 @@ stories.add('Basic', () => (
 	<RoomItem />
 ));
 
+stories.add('Touch', () => (
+	<RoomItem onPress={() => alert('on press')} onLongPress={() => alert('on long press')} />
+));
 
 stories.add('User', () => (
 	<>
