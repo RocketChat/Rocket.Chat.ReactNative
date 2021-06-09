@@ -1,5 +1,5 @@
 const {
-	device, expect, element, by, waitFor
+	expect, element, by, waitFor
 } = require('detox');
 const data = require('../data');
 const platformTypes = require('./platformTypes');
@@ -66,22 +66,22 @@ async function mockMessage(message, isThread = false) {
 
 async function starMessage(message){
     const messageLabel = `${ data.random }${ message }`
-    await element(by.label(messageLabel)).atIndex(0).longPress();
+    await element(by.text(messageLabel)).atIndex(0).longPress();
     await expect(element(by.id('action-sheet'))).toExist();
     await expect(element(by.id('action-sheet-handle'))).toBeVisible();
     await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-    await element(by.label('Star')).atIndex(0).tap();
+    await element(by.text('Star')).atIndex(0).tap();
     await waitFor(element(by.id('action-sheet'))).not.toExist().withTimeout(5000);
 };
 
 async function pinMessage(message){
     const messageLabel = `${ data.random }${ message }`
-    await waitFor(element(by.label(messageLabel)).atIndex(0)).toExist();
-    await element(by.label(messageLabel)).atIndex(0).longPress();
+    await waitFor(element(by.text(messageLabel)).atIndex(0)).toExist();
+    await element(by.text(messageLabel)).atIndex(0).longPress();
     await expect(element(by.id('action-sheet'))).toExist();
     await expect(element(by.id('action-sheet-handle'))).toBeVisible();
     await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-    await element(by.label('Pin')).atIndex(0).tap();
+    await element(by.text('Pin')).atIndex(0).tap();
     await waitFor(element(by.id('action-sheet'))).not.toExist().withTimeout(5000);
 }
 
@@ -89,7 +89,7 @@ async function dismissReviewNag(){
     const deviceType = device.getPlatform();
     const alertButtonType = platformTypes[deviceType].alertButtonType;
     await waitFor(element(by.text('Are you enjoying this app?'))).toExist().withTimeout(60000);
-    await element(by.text('No').and(by.type(alertButtonType))).tap(); // Tap `no` on ask for review alert
+    await element(by.text('NO').and(by.type(alertButtonType))).tap(); // Tap `no` on ask for review alert
 }
 
 async function tapBack() {
@@ -133,6 +133,11 @@ const checkServer = async(server) => {
 	await element(by.id('sidebar-close-drawer')).tap();
 }
 
+async function closeKeyboard() {
+    if(device.getPlatform() === 'android')
+    await device.goBack();
+}
+
 module.exports = {
     navigateToWorkspace,
     navigateToLogin,
@@ -147,5 +152,6 @@ module.exports = {
     sleep,
     searchRoom,
     tryTapping,
-    checkServer
+    checkServer,
+    closeKeyboard
 };
