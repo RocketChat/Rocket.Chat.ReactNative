@@ -32,7 +32,9 @@ const styles = StyleSheet.create({
 	}
 });
 
-const NavBottomFAB = ({ y, onPress, isThread }) => {
+const NavBottomFAB = ({
+	y, onPress, isThread, testID
+}) => {
 	const { theme } = useTheme();
 	const [show, setShow] = useState(false);
 	const handleOnPress = useCallback(() => onPress());
@@ -52,7 +54,7 @@ const NavBottomFAB = ({ y, onPress, isThread }) => {
 		bottom += SEND_TO_CHANNEL_HEIGHT;
 	}
 	return (
-		<Animated.View style={[styles.container, { bottom }]}>
+		<Animated.View style={[styles.container, { bottom }]} testID={testID}>
 			<Touch
 				onPress={handleOnPress}
 				theme={theme}
@@ -69,7 +71,8 @@ const NavBottomFAB = ({ y, onPress, isThread }) => {
 NavBottomFAB.propTypes = {
 	y: Animated.Value,
 	onPress: PropTypes.func,
-	isThread: PropTypes.bool
+	isThread: PropTypes.bool,
+	testID: PropTypes.string
 };
 
 export default NavBottomFAB;
