@@ -16,6 +16,7 @@ import {
 import { localAuthenticate } from '../utils/localAuthentication';
 import { goRoom } from '../utils/goRoom';
 import { loginRequest } from '../actions/login';
+import log from '../utils/log';
 
 const roomTypes = {
 	channel: 'c', direct: 'd', group: 'p', channels: 'l'
@@ -93,6 +94,15 @@ const fallbackNavigation = function* fallbackNavigation() {
 	yield put(appInit());
 };
 
+const handleOAuth = function* handleOAuth({ params }) {
+	const { credentialToken, credentialSecret } = params;
+	try {
+		yield RocketChat.loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } });
+	} catch (e) {
+		log(e);
+	}
+};
+
 const handleOpen = function* handleOpen({ params }) {
 	const serversDB = database.servers;
 	const serversCollection = serversDB.get('servers');
@@ -106,6 +116,11 @@ const handleOpen = function* handleOpen({ params }) {
 				host = id;
 			}
 		});
+	}
+
+	if (params.type === 'oauth') {
+		yield handleOAuth({ params });
+		return;
 	}
 
 	// If there's no host on the deep link params and the app is opened, just call appInit()

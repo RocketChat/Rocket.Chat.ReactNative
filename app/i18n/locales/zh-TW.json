@@ -288,6 +288,7 @@
   "last_message": "最後一則訊息",
   "Leave_channel": "離開頻道",
   "leaving_room": "離開聊天室",
+  "Leave": "離開",
   "leave": "離開",
   "Legal": "合法",
   "Light": "淺色",
@@ -678,5 +679,7 @@
   "No_threads": "當前沒有討論串",
   "No_threads_following": "當前沒有正在追蹤的討論",
   "No_threads_unread": "當前沒有未讀的討論",
-  "Messagebox_Send_to_channel": "發送至頻道"
+  "Messagebox_Send_to_channel": "發送至頻道",
+  "Confirmation": "確認",
+  "invalid-room": "無效的房間"
 }

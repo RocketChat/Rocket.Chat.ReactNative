@@ -22,7 +22,7 @@ export default function(state = initialState, action) {
 		case ROOM.LEAVE:
 			return {
 				...state,
-				rid: action.rid,
+				rid: action.room.rid,
 				isDeleting: true
 			};
 		case ROOM.DELETE:
