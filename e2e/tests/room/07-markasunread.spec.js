@@ -25,7 +25,7 @@ describe('Mark as unread', () => {
 	describe('Usage', async() => {
 		describe('Mark message as unread', async() => {
 			it('should mark message as unread', async() => {
-				const message = `${ data.random }message`;
+				const message = `${ data.random }message-mark-as-unread`;
 				const channelName = `@${ data.users.regular.username }`;
 				await sendMessage(data.users.alternate, channelName, message);
 				await waitFor(element(by.label(message)).atIndex(0)).toExist().withTimeout(30000);
