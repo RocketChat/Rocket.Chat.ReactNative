@@ -286,9 +286,7 @@ describe('Team', () => {
 					await element(by.text('OK')).tap();
 					await waitFor(element(by.id('select-list-view-submit'))).toExist().withTimeout(2000);
 					await element(by.id('select-list-view-submit')).tap();
-					await waitFor(element(by.text(`You were removed from ${ team }`))).toExist().withTimeout(8000);
-					await element(by.text('OK')).tap();
-					await waitFor(element(by.id('rooms-list-view'))).toExist().withTimeout(5000);
+					await waitFor(element(by.id(`rooms-list-view-item-${ team }`))).toBeNotVisible().withTimeout(60000);
 				});
 			});
 		});
