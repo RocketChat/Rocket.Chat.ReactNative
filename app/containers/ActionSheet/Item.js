@@ -19,6 +19,7 @@ export const Item = React.memo(({ item, hide, theme }) => {
 			style={[styles.item, { backgroundColor: themes[theme].focusedBackground }]}
 			theme={theme}
 			testID={item.testID}
+			accessibilityLabel={item.title}
 		>
 			<CustomIcon name={item.icon} size={20} color={item.danger ? themes[theme].dangerColor : themes[theme].bodyText} />
 			<View style={styles.titleContainer}>

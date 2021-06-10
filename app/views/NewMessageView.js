@@ -153,6 +153,7 @@ class NewMessageView extends React.Component {
 				style={{ backgroundColor: themes[theme].backgroundColor }}
 				testID={testID}
 				theme={theme}
+				accessibilityLabel={title}
 			>
 				<View style={[first ? sharedStyles.separatorVertical : sharedStyles.separatorBottom, styles.button, { borderColor: themes[theme].separatorColor }]}>
 					<CustomIcon style={[styles.buttonIcon, { color: themes[theme].tintColor }]} size={24} name={icon} />

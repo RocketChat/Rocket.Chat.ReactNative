@@ -92,6 +92,17 @@ async function dismissReviewNag(){
     await element(by.text('NO').and(by.type(alertButtonType))).tap(); // Tap `no` on ask for review alert
 }
 
+async function mockMessageWithNag(message, isThread = false) {
+    let input = isThread ? 'messagebox-input-thread' : 'messagebox-input';
+	await element(by.id(input)).tap();
+	await element(by.id(input)).typeText(`${ data.random }${ message }`);
+	await element(by.id('messagebox-send-message')).tap();
+    await dismissReviewNag();
+	await waitFor(element(by.text(`${ data.random }${ message }`))).toExist().withTimeout(60000);
+    await expect(element(by.text(`${ data.random }${ message }`))).toExist();
+    await element(by.text(`${ data.random }${ message }`)).atIndex(0).tap();
+};
+
 async function tapBack() {
     await element(by.id('header-back')).atIndex(0).tap();
 }
@@ -153,5 +164,6 @@ module.exports = {
     searchRoom,
     tryTapping,
     checkServer,
-    closeKeyboard
+    closeKeyboard,
+    mockMessageWithNag
 };
