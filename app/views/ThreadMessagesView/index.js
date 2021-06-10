@@ -470,6 +470,7 @@ class ThreadMessagesView extends React.Component {
 
 		return (
 			<FlatList
+				testID='thread-messages'
 				data={displayingThreads}
 				extraData={this.state}
 				renderItem={this.renderItem}
