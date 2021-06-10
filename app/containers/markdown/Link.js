@@ -12,7 +12,7 @@ const Link = React.memo(({
 	children, link, theme, onLinkPress
 }) => {
 	const handlePress = () => {
-		if (!link) {
+		if (!link || !onLinkPress) {
 			return;
 		}
 		onLinkPress(link);
