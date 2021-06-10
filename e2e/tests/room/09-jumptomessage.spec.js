@@ -65,11 +65,11 @@ describe('Room', () => {
 			await waitFor(element(by.label('29'))).toExist().withTimeout(5000);
 			await waitFor(element(by.label('31'))).toExist().withTimeout(5000);
 			await sleep(3000);
-			await waitFor(element(by.id('nav-jump-to-bottom'))).toExist().withTimeout(5000);
-			await element(by.id('nav-jump-to-bottom')).tap();
 		});
 
 		it('should load messages on scroll', async() => {
+			await waitFor(element(by.id('nav-jump-to-bottom'))).toExist().withTimeout(5000);
+			await element(by.id('nav-jump-to-bottom')).tap();
 			await waitFor(element(by.id('room-view-messages'))).toExist().withTimeout(5000);
 			await sleep(5000);
 			await element(by.id('room-view-messages')).atIndex(0).swipe('down', 'fast', 0.8);
@@ -217,11 +217,11 @@ describe('Threads', async() => {
 			await waitFor(element(by.label('29'))).toExist().withTimeout(8000);
 			await waitFor(element(by.label('31'))).toExist().withTimeout(8000);
 			await sleep(3000);
-			await waitFor(element(by.id('nav-jump-to-bottom'))).toExist().withTimeout(5000);
-			await element(by.id('nav-jump-to-bottom')).tap();
 		});
 
 		it('should load messages on scroll', async() => {
+			await waitFor(element(by.id('nav-jump-to-bottom'))).toExist().withTimeout(5000);
+			await element(by.id('nav-jump-to-bottom')).tap();
 			await waitFor(element(by.id('room-view'))).toExist().withTimeout(5000);
 			await sleep(5000);
 			await element(by.id('room-view-messages')).atIndex(1).swipe('down', 'fast', 0.8);
