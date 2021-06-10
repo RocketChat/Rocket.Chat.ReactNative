@@ -62,26 +62,6 @@ const createChannelIfNotExists = async (channelname) => {
     }
 }
 
-const createChannelWithMessagesIfNotExists = async (channelname) => {
-    console.log(`Creating private channel ${channelname}`)
-    try {
-        const room = await rocketchat.post('channels.create', {
-            "name": channelname
-        })
-
-        return room
-    } catch (createError) {
-        try { //Maybe it exists already?
-            const room = rocketchat.get(`channels.info?roomName=${channelname}`)
-            return room
-        } catch (infoError) {
-            console.log(JSON.stringify(createError))
-            console.log(JSON.stringify(infoError))
-            throw "Failed to find or create public channel"
-        }
-    }
-} 
-
 const createTeamIfNotExists = async (teamname) => {
     console.log(`Creating private team ${teamname}`)
     try {
@@ -169,8 +149,8 @@ const setup = async () => {
 
     await login(data.users.regular.username, data.users.regular.password)
 
-    await createChannelWithMessagesIfNotExists(`jumpToMessageChat${data.random}`);
-    await createChannelWithMessagesIfNotExists(`jumpToMessageThreads${data.random}`);
+    await createChannelIfNotExists(`jumpToMessageChat${data.random}`);
+    await createChannelIfNotExists(`jumpToMessageThreads${data.random}`);
 
 
     for (var groupKey in data.groups) {
