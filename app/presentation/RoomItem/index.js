@@ -117,7 +117,9 @@ class RoomItemContainer extends React.Component {
 
 	onLongPress = () => {
 		const { item, onLongPress } = this.props;
-		return onLongPress(item);
+		if (onLongPress) {
+			return onLongPress(item);
+		}
 	}
 
 	render() {
