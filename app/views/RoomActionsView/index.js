@@ -713,13 +713,13 @@ class RoomActionsView extends React.Component {
 	renderLastSection = () => {
 		const { room, joined } = this.state;
 		const { theme } = this.props;
-		const { t, blocker, usernames } = room;
+		const { t, blocker } = room;
 
 		if (!joined || t === 'l') {
 			return null;
 		}
 
-		if (t === 'd' && usernames.length === 2) {
+		if (t === 'd' && !RocketChat.isGroupChat(room)) {
 			return (
 				<List.Section>
 					<List.Separator />
