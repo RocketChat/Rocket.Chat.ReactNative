@@ -756,6 +756,8 @@ class RoomActionsView extends React.Component {
 				</List.Section>
 			);
 		}
+
+		return null;
 	}
 
 	teamChannelActions = (t, room) => {
