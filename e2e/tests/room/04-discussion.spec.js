@@ -3,6 +3,7 @@ const {
 } = require('detox');
 const { navigateToLogin, login, mockMessage, tapBack, searchRoom } = require('../../helpers/app');
 const data = require('../../data');
+const platformTypes = require('../../helpers/platformTypes');
 
 const channel = data.groups.private.name;
 
@@ -13,20 +14,23 @@ const navigateToRoom = async() => {
 }
 
 describe('Discussion', () => {
+	let scrollViewType;
+	
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
 		await navigateToLogin();
-		await login(data.users.regular.username, data.users.regular.password)
+		await login(data.users.regular.username, data.users.regular.password);
+		({ scrollViewType } = platformTypes[device.getPlatform()]);
 	});
 
 	it('should create discussion from NewMessageView', async() => {
 		const discussionName = `${data.random} Discussion NewMessageView`;
 		await element(by.id('rooms-list-view-create-channel')).tap();
 		await waitFor(element(by.id('new-message-view'))).toExist().withTimeout(2000);
-		await element(by.label('Create Discussion')).tap();
+		await element(by.text('Create Discussion')).tap();
 		await waitFor(element(by.id('create-discussion-view'))).toExist().withTimeout(60000);
 		await expect(element(by.id('create-discussion-view'))).toExist();
-		await element(by.label('Select a Channel...')).tap();
+		await element(by.text('Select a Channel...')).tap();
 		await element(by.id('multi-select-search')).replaceText(`${channel}`);
 		await waitFor(element(by.id(`multi-select-item-${channel}`))).toExist().withTimeout(10000);
 		await element(by.id(`multi-select-item-${channel}`)).tap();
@@ -44,7 +48,7 @@ describe('Discussion', () => {
 		await navigateToRoom();
 		await element(by.id('messagebox-actions')).tap();
 		await waitFor(element(by.id('action-sheet'))).toExist().withTimeout(2000);
-		await element(by.label('Create Discussion')).tap();
+		await element(by.text('Create Discussion')).tap();
 		await waitFor(element(by.id('create-discussion-view'))).toExist().withTimeout(2000);
 		await element(by.id('multi-select-discussion-name')).replaceText(discussionName);
 		await waitFor(element(by.id(`create-discussion-submit`))).toExist().withTimeout(10000);
@@ -61,9 +65,9 @@ describe('Discussion', () => {
 
 		it('should create discussion', async() => {
 			const discussionName = `${ data.random }message`;
-			await element(by.label(discussionName)).atIndex(0).longPress();
+			await element(by.text(discussionName)).atIndex(0).longPress();
 			await waitFor(element(by.id('action-sheet'))).toExist().withTimeout(2000);
-			await element(by.label(`Start a Discussion`)).atIndex(0).tap();
+			await element(by.text(`Start a Discussion`)).atIndex(0).tap();
 			await waitFor(element(by.id('create-discussion-view'))).toExist().withTimeout(2000);
 			await element(by.id('create-discussion-submit')).tap();
 			await waitFor(element(by.id('room-view'))).toExist().withTimeout(10000);
@@ -99,11 +103,11 @@ describe('Discussion', () => {
 		});
 
 		it('should have starred', async() => {
+			await element(by.id('room-actions-view')).swipe('up');
 			await expect(element(by.id('room-actions-starred'))).toBeVisible();
 		});
 
 		it('should have share', async() => {
-			await element(by.type('android.widget.ScrollView')).atIndex(1).swipe('up');
 			await expect(element(by.id('room-actions-share'))).toBeVisible();
 		});
 
@@ -120,7 +124,7 @@ describe('Discussion', () => {
 		});
 
 		it('should navigate to RoomActionView', async() => {
-			await element(by.type('android.widget.ScrollView')).atIndex(1).swipe('down');
+			await element(by.type(scrollViewType)).atIndex(1).swipe('down');
 			await expect(element(by.id('room-actions-info'))).toBeVisible();
 			await element(by.id('room-actions-info')).tap();
 			await waitFor(element(by.id('room-info-view'))).toExist().withTimeout(60000);
