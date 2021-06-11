@@ -60,7 +60,6 @@ static void InitializeFlipper(UIApplication *application) {
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     UIViewController *rootViewController = [UIViewController new];
     rootViewController.view = rootView;
-    [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:rootView];
     self.window.rootViewController = rootViewController;
     [self.window makeKeyAndVisible];
     [RNNotifications startMonitorNotifications];
@@ -69,6 +68,8 @@ static void InitializeFlipper(UIApplication *application) {
     // AppGroup MMKV
     NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
     [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
+  
+    [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:rootView];
 
     return YES;
 }

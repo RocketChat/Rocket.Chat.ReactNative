@@ -380,7 +380,7 @@ PODS:
   - react-native-mmkv-storage (0.3.5):
     - MMKV (= 1.2.1)
     - React
-  - react-native-netinfo (5.9.9):
+  - react-native-netinfo (6.0.0):
     - React-Core
   - react-native-notifications (2.1.7):
     - React
@@ -465,8 +465,8 @@ PODS:
     - React
   - rn-fetch-blob (0.12.0):
     - React-Core
-  - RNBootSplash (2.2.5):
-    - React
+  - RNBootSplash (3.2.3):
+    - React-Core
   - RNCAsyncStorage (1.12.1):
     - React-Core
   - RNCMaskedView (0.1.11):
@@ -475,8 +475,8 @@ PODS:
     - React
   - RNCPicker (1.8.1):
     - React-Core
-  - RNDateTimePicker (2.6.0):
-    - React
+  - RNDateTimePicker (3.5.2):
+    - React-Core
   - RNDeviceInfo (5.6.2):
     - React
   - RNFastImage (8.2.0):
@@ -944,7 +944,7 @@ SPEC CHECKSUMS:
   react-native-document-picker: 825552b827012282baf4b7cbf119d3b37a280c90
   react-native-jitsi-meet: f2407aca85566e031ee7b222e497ee5ecb6623de
   react-native-mmkv-storage: 48729fe90e850ef2fdc9d3714b7030c7c51d82b0
-  react-native-netinfo: 0212ce8604e88edf686f1481b925b17a42a52449
+  react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
   react-native-notifications: ee8fd739853e72694f3af8b374c8ccb106b7b227
   react-native-orientation-locker: 998c0744e26624407dac068c04c605b4af7304a2
   react-native-restart: 733a51ad137f15b0f8dc34c4082e55af7da00979
@@ -966,12 +966,12 @@ SPEC CHECKSUMS:
   ReactNativeUiLib: cde7263a7d308b60161cd286f95c9433e79f2f7d
   rn-extensions-share: 5fd84a80e6594706f0dfa1884f2d6d591b382cf5
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
-  RNBootSplash: b3836aa90c5bec690c6cd3c9ab355fcf98d0fe1d
+  RNBootSplash: 8ef5ffa03dadd35f66510b42960ce40f397c98bf
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNConfigReader: 396da6a6444182a76e8ae0930b9436c7575045cb
   RNCPicker: 914b557e20b3b8317b084aca9ff4b4edb95f61e4
-  RNDateTimePicker: e386ff4ef3300964ed0cad97ce6f206e0effbfdb
+  RNDateTimePicker: 7658208086d86d09e1627b5c34ba0cf237c60140
   RNDeviceInfo: ed8557a8bd6443cbc0ab5d375e6808a38a279744
   RNFastImage: f40d202ea2367239f71bc7cf11315f4bebab85b4
   RNFBAnalytics: dae6d7b280ba61c96e1bbdd34aca3154388f025e

@@ -3344,7 +3344,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 MIT License
 
-Copyright (c) 2019 Mathieu Acthernoene
+Copyright (c) 2020 Mathieu Acthernoene
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
