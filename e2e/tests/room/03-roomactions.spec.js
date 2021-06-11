@@ -385,7 +385,7 @@ describe('Room actions screen', () => {
 
 				it('should remove user from room', async() => {
 					await openActionSheet('rocket.cat');
-					await element(by.label('Remove from room')).tap();
+					await element(by.label('Remove from room')).atIndex(0).tap();
 					await waitFor(element(by.label('Are you sure?'))).toExist().withTimeout(5000);
 					await element(by.label('Yes, remove user!').and(by.type('_UIAlertControllerActionView'))).tap();
 					await waitFor(element(by.id('room-members-view-item-rocket.cat'))).toBeNotVisible().withTimeout(60000);
@@ -456,13 +456,13 @@ describe('Room actions screen', () => {
 
 				it('should set/remove as mute', async() => {
 					await openActionSheet(user.username);
-					await element(by.label('Mute')).tap();
+					await element(by.label('Mute')).atIndex(0).tap();
 					await waitFor(element(by.label('Are you sure?'))).toExist().withTimeout(5000);
 					await element(by.label('Mute').and(by.type('_UIAlertControllerActionView'))).tap();
 					await waitForToast();
 
 					await openActionSheet(user.username);
-					await element(by.label('Unmute')).tap();
+					await element(by.label('Unmute')).atIndex(0).tap();
 					await waitFor(element(by.label('Are you sure?'))).toExist().withTimeout(5000);
 					await element(by.label('Unmute').and(by.type('_UIAlertControllerActionView'))).tap();
 					await waitForToast();
@@ -478,7 +478,7 @@ describe('Room actions screen', () => {
 					const channelName = `#${ data.groups.private.name }`;
 					await sendMessage(user, channelName, message);
 					await openActionSheet(user.username);
-					await element(by.label('Ignore')).tap();
+					await element(by.label('Ignore')).atIndex(0).tap();
 					await waitForToast();
 					await backToActions();
 					await tapBack();
@@ -497,7 +497,7 @@ describe('Room actions screen', () => {
 					await element(by.id('room-members-view-toggle-status')).tap();
 					await waitFor(element(by.id(`room-members-view-item-${ user.username }`))).toExist().withTimeout(60000);
 					await openActionSheet(user.username);
-					await element(by.label('Direct message')).tap();
+					await element(by.label('Direct message')).atIndex(0).tap();
 					await waitFor(element(by.id('room-view'))).toExist().withTimeout(60000);
 					await waitFor(element(by.id(`room-view-title-${ user.username }`))).toExist().withTimeout(60000);
 					await tapBack();

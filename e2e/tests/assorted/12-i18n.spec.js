@@ -52,18 +52,18 @@ describe('i18n', () => {
 		 * This test might become outdated as soon as we support the language
 		 * Although this seems to be a bad approach, that's the intention for having fallback enabled
 		 */
-		it('OS set to available language and fallback to \'en\' on strings missing translation', async() => {
-			await device.launchApp({
-				...defaultLaunchArgs,
-				languageAndLocale: {
-					language: "nl",
-					locale: "nl"
-				}
-			});
-			await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
-			await expect(element(by.id('join-workspace').and(by.label('Join a workspace')))).toBeVisible(); // Missing nl translation
-			await expect(element(by.id('create-workspace-button').and(by.label('Een nieuwe workspace maken')))).toBeVisible();
-		});
+		// it('OS set to available language and fallback to \'en\' on strings missing translation', async() => {
+		// 	await device.launchApp({
+		// 		...defaultLaunchArgs,
+		// 		languageAndLocale: {
+		// 			language: "nl",
+		// 			locale: "nl"
+		// 		}
+		// 	});
+		// 	await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
+		// 	await expect(element(by.id('join-workspace').and(by.label('Word lid van een werkruimte')))).toBeVisible();
+		// 	await expect(element(by.id('create-workspace-button').and(by.label('Een nieuwe werkruimte aanmaken')))).toBeVisible();
+		// });
 	});
 
 	describe('Rocket.Chat language', () => {
