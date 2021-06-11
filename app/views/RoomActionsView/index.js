@@ -714,7 +714,7 @@ class RoomActionsView extends React.Component {
 			return null;
 		}
 
-		if (t === 'd') {
+		if (t === 'd' && !RocketChat.isGroupChat(room)) {
 			return (
 				<List.Section>
 					<List.Separator />
@@ -751,6 +751,8 @@ class RoomActionsView extends React.Component {
 				</List.Section>
 			);
 		}
+
+		return null;
 	}
 
 	teamChannelActions = (t, room) => {
