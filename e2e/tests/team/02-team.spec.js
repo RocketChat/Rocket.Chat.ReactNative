@@ -39,8 +39,8 @@ async function waitForToast() {
 describe('Team', () => {
 	const team = data.teams.private.name;
 	const user = data.users.alternate;
-	const room = `private${ data.random }`;
-	const existingRoom = data.groups.private.name;
+	const room = `private${ data.random }-channel-team`;
+	const existingRoom = data.groups.alternate.name;
 
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });

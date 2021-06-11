@@ -40,6 +40,9 @@ const data = {
     groups: {
         private: {
             name: `detox-private-${ value }`
+        },
+        alternate: {
+            name: `detox-alternate-${ value }`
         }
     },
     teams: {
