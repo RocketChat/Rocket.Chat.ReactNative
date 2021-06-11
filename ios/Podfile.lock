@@ -370,8 +370,8 @@ PODS:
     - React
   - react-native-cameraroll (4.0.4):
     - React-Core
-  - react-native-cookies (4.0.0):
-    - React
+  - react-native-cookies (6.0.7):
+    - React-Core
   - react-native-document-picker (3.5.3):
     - React
   - react-native-jitsi-meet (2.4.0):
@@ -599,7 +599,7 @@ DEPENDENCIES:
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
-  - "react-native-cookies (from `../node_modules/@react-native-community/cookies`)"
+  - "react-native-cookies (from `../node_modules/@react-native-cookies/cookies`)"
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-jitsi-meet (from `../node_modules/react-native-jitsi-meet`)
   - react-native-mmkv-storage (from `../node_modules/react-native-mmkv-storage`)
@@ -759,7 +759,7 @@ EXTERNAL SOURCES:
   react-native-cameraroll:
     :path: "../node_modules/@react-native-community/cameraroll"
   react-native-cookies:
-    :path: "../node_modules/@react-native-community/cookies"
+    :path: "../node_modules/@react-native-cookies/cookies"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
   react-native-jitsi-meet:
@@ -940,7 +940,7 @@ SPEC CHECKSUMS:
   react-native-background-timer: 17ea5e06803401a379ebf1f20505b793ac44d0fe
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-cameraroll: 88f4e62d9ecd0e1f253abe4f685474f2ea14bfa2
-  react-native-cookies: d79e5015a5d3a38e08f5cb39c4948532be7e9c2b
+  react-native-cookies: 6004d512ffc6f2c498c5b70cda0bc040350c0585
   react-native-document-picker: 825552b827012282baf4b7cbf119d3b37a280c90
   react-native-jitsi-meet: f2407aca85566e031ee7b222e497ee5ecb6623de
   react-native-mmkv-storage: 48729fe90e850ef2fdc9d3714b7030c7c51d82b0
