@@ -481,7 +481,7 @@ describe('Room actions screen', () => {
 					const channelName = `#${ data.groups.private.name }`;
 					await sendMessage(user, channelName, message);
 					await openActionSheet(user.username);
-					await element(by.text('Ignore')).tap();
+					await element(by.label('Ignore')).atIndex(0).tap();
 					await waitForToast();
 					await backToActions();
 					await tapBack();
@@ -500,7 +500,7 @@ describe('Room actions screen', () => {
 					await element(by.id('room-members-view-toggle-status')).tap();
 					await waitFor(element(by.id(`room-members-view-item-${ user.username }`))).toExist().withTimeout(60000);
 					await openActionSheet(user.username);
-					await element(by.text('Direct message')).tap();
+					await element(by.label('Direct message')).atIndex(0).tap();
 					await waitFor(element(by.id('room-view'))).toExist().withTimeout(60000);
 					await waitFor(element(by.id(`room-view-title-${ user.username }`))).toExist().withTimeout(60000);
 					await tapBack();
