@@ -5,12 +5,11 @@ import { dequal } from 'dequal';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
-import openLink from '../../utils/openLink';
 import { isIOS } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
-import { formatAttachmentUrl } from '../../lib/utils';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
+import Navigation from '../../lib/Navigation';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = type => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -37,8 +36,16 @@ const Video = React.memo(({
 		if (isTypeSupported(file.video_type)) {
 			return showAttachment(file);
 		}
-		const uri = formatAttachmentUrl(file.video_url, user.id, user.token, baseUrl);
-		openLink(uri, theme);
+
+		let url = file.title_link || file.video_url;
+		if (!url) {
+			return;
+		}
+		if (!url.startsWith('http')) {
+			url = `${ baseUrl }${ url }`;
+		}
+
+		Navigation.navigate('GenericWebView', { uri: url, headers: { 'x-user-id': user.id, 'x-auth-token': user.token }, title: file.title });
 	};
 
 	return (
