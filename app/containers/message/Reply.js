@@ -7,10 +7,10 @@ import { dequal } from 'dequal';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
-import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
+import Navigation from '../../lib/Navigation';
 
 const styles = StyleSheet.create({
 	button: {
@@ -156,9 +156,8 @@ const Reply = React.memo(({
 			if (!url.startsWith('http')) {
 				url = `${ baseUrl }${ url }`;
 			}
-			url = `${ url }?rc_uid=${ user.id }&rc_token=${ user.token }`;
 		}
-		openLink(url, theme);
+		Navigation.navigate('GenericWebView', { uri: url, headers: { 'x-user-id': user.id, 'x-auth-token': user.token, title: attachment.title } });
 	};
 
 	let { borderColor, chatComponentBackground: backgroundColor } = themes[theme];
