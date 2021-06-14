@@ -32,9 +32,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const NavBottomFAB = ({
-	y, onPress, isThread, testID
-}) => {
+const NavBottomFAB = ({ y, onPress, isThread }) => {
 	const { theme } = useTheme();
 	const [show, setShow] = useState(false);
 	const handleOnPress = useCallback(() => onPress());
@@ -71,8 +69,7 @@ const NavBottomFAB = ({
 NavBottomFAB.propTypes = {
 	y: Animated.Value,
 	onPress: PropTypes.func,
-	isThread: PropTypes.bool,
-	testID: PropTypes.string
+	isThread: PropTypes.bool
 };
 
 export default NavBottomFAB;

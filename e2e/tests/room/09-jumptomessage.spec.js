@@ -101,8 +101,6 @@ describe('Threads', async() => {
 	it('should tap on thread on main channel and go to thread', async() => {
 		await waitFor(element(by.id('nav-jump-to-bottom'))).toExist().withTimeout(5000);
 		await element(by.id('nav-jump-to-bottom')).tap();
-		await waitFor(element(by.id('nav-jump-to-bottom'))).toExist().withTimeout(5000);
-		await waitFor(element(by.label('Go to a thread from another room'))).toExist().withTimeout(5000);
 		await waitFor(element(by.label('1')).atIndex(0)).toExist().withTimeout(5000);
 		await element(by.label('1')).atIndex(0).tap();
 		await waitFor(element(by.label(`thread 1`))).toExist().withTimeout(5000);
