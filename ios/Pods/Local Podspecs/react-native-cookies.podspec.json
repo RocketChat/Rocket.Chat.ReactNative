@@ -1,6 +1,6 @@
 {
   "name": "react-native-cookies",
-  "version": "6.0.7",
+  "version": "6.0.8",
   "summary": "Cookie Manager for React Native",
   "homepage": "https://github.com/react-native-cookies/cookies#readme",
   "license": "MIT",
@@ -9,7 +9,7 @@
   },
   "source": {
     "git": "git@github.com:react-native-community/cookies.git",
-    "tag": "v6.0.7"
+    "tag": "v6.0.8"
   },
   "requires_arc": true,
   "platforms": {

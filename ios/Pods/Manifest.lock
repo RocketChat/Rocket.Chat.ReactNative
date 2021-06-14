@@ -370,7 +370,7 @@ PODS:
     - React
   - react-native-cameraroll (4.0.4):
     - React-Core
-  - react-native-cookies (6.0.7):
+  - react-native-cookies (6.0.8):
     - React-Core
   - react-native-document-picker (3.5.3):
     - React
@@ -477,8 +477,8 @@ PODS:
     - React-Core
   - RNDateTimePicker (3.5.2):
     - React-Core
-  - RNDeviceInfo (5.6.2):
-    - React
+  - RNDeviceInfo (8.1.3):
+    - React-Core
   - RNFastImage (8.2.0):
     - React
     - SDWebImage (~> 5.0)
@@ -940,7 +940,7 @@ SPEC CHECKSUMS:
   react-native-background-timer: 17ea5e06803401a379ebf1f20505b793ac44d0fe
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-cameraroll: 88f4e62d9ecd0e1f253abe4f685474f2ea14bfa2
-  react-native-cookies: 6004d512ffc6f2c498c5b70cda0bc040350c0585
+  react-native-cookies: 2cb6ef472da68610dfcf0eaee68464c244943abd
   react-native-document-picker: 825552b827012282baf4b7cbf119d3b37a280c90
   react-native-jitsi-meet: f2407aca85566e031ee7b222e497ee5ecb6623de
   react-native-mmkv-storage: 48729fe90e850ef2fdc9d3714b7030c7c51d82b0
@@ -972,7 +972,7 @@ SPEC CHECKSUMS:
   RNConfigReader: 396da6a6444182a76e8ae0930b9436c7575045cb
   RNCPicker: 914b557e20b3b8317b084aca9ff4b4edb95f61e4
   RNDateTimePicker: 7658208086d86d09e1627b5c34ba0cf237c60140
-  RNDeviceInfo: ed8557a8bd6443cbc0ab5d375e6808a38a279744
+  RNDeviceInfo: 8d3a29207835f972bce883723882980143270d55
   RNFastImage: f40d202ea2367239f71bc7cf11315f4bebab85b4
   RNFBAnalytics: dae6d7b280ba61c96e1bbdd34aca3154388f025e
   RNFBApp: 6fd8a7e757135d4168bf033a8812c241af7363a0
