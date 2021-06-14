@@ -123,9 +123,9 @@ class Sidebar extends Component {
 		return isAdmin;
 	}
 
-	sidebarNavigate = (route) => {
+	sidebarNavigate = (route, params) => {
 		logEvent(events[`SIDEBAR_GO_${ route.replace('StackNavigator', '').replace('View', '').toUpperCase() }`]);
-		Navigation.navigate(route);
+		Navigation.navigate(route, params);
 	}
 
 	get currentItemKey() {
@@ -142,18 +142,23 @@ class Sidebar extends Component {
 	}
 
 	renderAdmin = () => {
-		const { theme, isMasterDetail } = this.props;
+		const {
+			theme, isMasterDetail, baseUrl, user
+		} = this.props;
 		if (!this.getIsAdmin()) {
 			return null;
 		}
 		const routeName = isMasterDetail ? 'AdminPanelView' : 'AdminPanelStackNavigator';
+		const params = { uri: `${ baseUrl }/admin/info?layout=embedded`, injectedJavaScript: `Meteor.loginWithToken('${ user.token }', function() { })`, title: I18n.t('Admin_Panel') };
+		const navigationParams = isMasterDetail ? params : { screen: 'AdminPanelView', params };
+
 		return (
 			<>
 				<Separator theme={theme} />
 				<SidebarItem
 					text={I18n.t('Admin_Panel')}
 					left={<CustomIcon name='settings' size={20} color={themes[theme].titleText} />}
-					onPress={() => this.sidebarNavigate(routeName)}
+					onPress={() => this.sidebarNavigate(routeName, navigationParams)}
 					testID='sidebar-settings'
 					current={this.currentItemKey === routeName}
 				/>

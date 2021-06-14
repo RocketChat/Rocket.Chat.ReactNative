@@ -3,26 +3,35 @@ import PropTypes from 'prop-types';
 import { WebView } from 'react-native-webview';
 import { connect } from 'react-redux';
 
-import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import * as HeaderButton from '../../containers/HeaderButton';
 import { withTheme } from '../../theme';
-import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 
 class AdminPanelView extends React.Component {
-	static navigationOptions = ({ navigation, isMasterDetail }) => ({
+	static navigationOptions = ({ navigation, isMasterDetail, route }) => ({
 		headerLeft: isMasterDetail ? undefined : () => <HeaderButton.Drawer navigation={navigation} />,
-		title: I18n.t('Admin_Panel')
+		title: route.params?.title
 	})
 
 	static propTypes = {
 		baseUrl: PropTypes.string,
-		token: PropTypes.string
+		route: PropTypes.object
 	}
 
+	constructor(props) {
+		super(props);
+		const { route } = this.props;
+		this.uri = route.params?.uri;
+		this.headers = route.params?.headers;
+		this.injectedJavaScript = route.params?.injectedJavaScript;
+	}
+
+
 	render() {
-		const { baseUrl, token } = this.props;
+		const { baseUrl } = this.props;
+
+
 		if (!baseUrl) {
 			return null;
 		}
@@ -32,8 +41,9 @@ class AdminPanelView extends React.Component {
 				<WebView
 					// https://github.com/react-native-community/react-native-webview/issues/1311
 					onMessage={() => {}}
-					source={{ uri: `${ baseUrl }/admin/info?layout=embedded` }}
-					injectedJavaScript={`Meteor.loginWithToken('${ token }', function() { })`}
+					source={{ uri: this.uri, headers: this.headers }}
+					// source={{ uri: 'http://localhost:3000/file-upload/8nYcnYZeJfNZAicg7/Video%2520record.webm', headers: { 'x-user-id': user.id, 'x-auth-token': user.token } }}
+					injectedJavaScript={this.injectedJavaScript}
 				/>
 			</SafeAreaView>
 		);
@@ -41,8 +51,7 @@ class AdminPanelView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.server.server,
-	token: getUserSelector(state).token
+	baseUrl: state.server.server
 });
 
 export default connect(mapStateToProps)(withTheme(AdminPanelView));
