@@ -49,7 +49,7 @@ import DefaultBrowserView from '../views/DefaultBrowserView';
 import ScreenLockConfigView from '../views/ScreenLockConfigView';
 
 // Admin Stack
-import AdminPanelView from '../views/AdminPanelView';
+import GenericWebView from '../views/GenericWebView';
 
 // NewMessage Stack
 import NewMessageView from '../views/NewMessageView';
@@ -212,6 +212,11 @@ const ChatsStackNavigator = () => {
 				component={QueueListView}
 				options={QueueListView.navigationOptions}
 			/>
+			<ChatsStack.Screen
+				name='GenericWebView'
+				component={GenericWebView}
+				options={GenericWebView.navigationOptions}
+			/>
 		</ChatsStack.Navigator>
 	);
 };
@@ -301,8 +306,8 @@ const AdminPanelStackNavigator = () => {
 		<AdminPanelStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
 			<AdminPanelStack.Screen
 				name='AdminPanelView'
-				component={AdminPanelView}
-				options={AdminPanelView.navigationOptions}
+				component={GenericWebView}
+				options={GenericWebView.navigationOptions}
 			/>
 		</AdminPanelStack.Navigator>
 	);

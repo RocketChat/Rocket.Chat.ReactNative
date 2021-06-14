@@ -39,7 +39,7 @@ import LanguageView from '../../views/LanguageView';
 import ThemeView from '../../views/ThemeView';
 import DefaultBrowserView from '../../views/DefaultBrowserView';
 import ScreenLockConfigView from '../../views/ScreenLockConfigView';
-import AdminPanelView from '../../views/AdminPanelView';
+import GenericWebView from '../../views/GenericWebView';
 import NewMessageView from '../../views/NewMessageView';
 import CreateChannelView from '../../views/CreateChannelView';
 import UserPreferencesView from '../../views/UserPreferencesView';
@@ -263,8 +263,8 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 				/>
 				<ModalStack.Screen
 					name='AdminPanelView'
-					component={AdminPanelView}
-					options={props => AdminPanelView.navigationOptions({ ...props, isMasterDetail: true })}
+					component={GenericWebView}
+					options={props => GenericWebView.navigationOptions({ ...props, isMasterDetail: true })}
 				/>
 				<ModalStack.Screen
 					name='NewMessageView'

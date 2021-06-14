@@ -8,7 +8,7 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 
-class AdminPanelView extends React.Component {
+class GenericWebView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail, route }) => ({
 		headerLeft: isMasterDetail ? undefined : () => <HeaderButton.Drawer navigation={navigation} />,
 		title: route.params?.title
@@ -54,4 +54,4 @@ const mapStateToProps = state => ({
 	baseUrl: state.server.server
 });
 
-export default connect(mapStateToProps)(withTheme(AdminPanelView));
+export default connect(mapStateToProps)(withTheme(GenericWebView));
