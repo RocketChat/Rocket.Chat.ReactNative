@@ -14,11 +14,12 @@ export function unsubscribeRoom(rid) {
 	};
 }
 
-export function leaveRoom(rid, t) {
+export function leaveRoom(roomType, room, selected) {
 	return {
 		type: types.ROOM.LEAVE,
-		rid,
-		t
+		room,
+		roomType,
+		selected
 	};
 }
 

@@ -23,7 +23,7 @@ describe('Discussion', () => {
 		const discussionName = `${data.random} Discussion NewMessageView`;
 		await element(by.id('rooms-list-view-create-channel')).tap();
 		await waitFor(element(by.id('new-message-view'))).toExist().withTimeout(2000);
-		await element(by.label('Create Discussion')).tap();
+		await element(by.label('Create Discussion')).atIndex(0).tap();
 		await waitFor(element(by.id('create-discussion-view'))).toExist().withTimeout(60000);
 		await expect(element(by.id('create-discussion-view'))).toExist();
 		await element(by.label('Select a Channel...')).tap();
@@ -44,7 +44,7 @@ describe('Discussion', () => {
 		await navigateToRoom();
 		await element(by.id('messagebox-actions')).tap();
 		await waitFor(element(by.id('action-sheet'))).toExist().withTimeout(2000);
-		await element(by.label('Create Discussion')).tap();
+		await element(by.label('Create Discussion')).atIndex(0).tap();
 		await waitFor(element(by.id('create-discussion-view'))).toExist().withTimeout(2000);
 		await element(by.id('multi-select-discussion-name')).replaceText(discussionName);
 		await waitFor(element(by.id(`create-discussion-submit`))).toExist().withTimeout(10000);
@@ -102,10 +102,6 @@ describe('Discussion', () => {
 			await expect(element(by.id('room-actions-starred'))).toBeVisible();
 		});
 
-		it('should have search', async() => {
-			await expect(element(by.id('room-actions-search'))).toBeVisible();
-		});
-
 		it('should have share', async() => {
 			await element(by.type('UIScrollView')).atIndex(1).swipe('up');
 			await expect(element(by.id('room-actions-share'))).toBeVisible();
@@ -131,8 +127,8 @@ describe('Discussion', () => {
 			await expect(element(by.id('room-info-view'))).toExist();
 		});
 
-		it('should not have edit button', async() => {
-			await expect(element(by.id('room-info-view-edit-button'))).toBeNotVisible();
+		it('should have edit button', async() => {
+			await expect(element(by.id('room-info-view-edit-button'))).toBeVisible();
 		});
 	});
 });
