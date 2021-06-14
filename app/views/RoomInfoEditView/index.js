@@ -293,6 +293,7 @@ class RoomInfoEditView extends React.Component {
 	}
 
 	handleDeleteTeam = async(selected) => {
+		logEvent(events.RI_EDIT_DELETE_TEAM);
 		const { navigation, isMasterDetail } = this.props;
 		const { room } = this.state;
 		try {
@@ -305,6 +306,7 @@ class RoomInfoEditView extends React.Component {
 				}
 			}
 		} catch (e) {
+			logEvent(events.RI_EDIT_DELETE_TEAM_F);
 			log(e);
 			showErrorAlert(
 				e.data.error
@@ -324,7 +326,7 @@ class RoomInfoEditView extends React.Component {
 			const subCollection = db.get('subscriptions');
 			const teamChannels = await subCollection.query(
 				Q.where('team_id', room.teamId),
-				Q.where('team_main', null)
+				Q.where('team_main', Q.notEq(true))
 			);
 
 			if (teamChannels.length) {

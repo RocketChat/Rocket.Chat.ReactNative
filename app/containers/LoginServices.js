@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, StyleSheet, Text, Animated, Easing
+	View, StyleSheet, Text, Animated, Easing, Linking
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -23,6 +23,9 @@ const BUTTON_HEIGHT = 48;
 const SERVICE_HEIGHT = 58;
 const BORDER_RADIUS = 2;
 const SERVICES_COLLAPSED_HEIGHT = 174;
+
+const LOGIN_STYPE_POPUP = 'popup';
+const LOGIN_STYPE_REDIRECT = 'redirect';
 
 const styles = StyleSheet.create({
 	serviceButton: {
@@ -122,9 +125,9 @@ class LoginServices extends React.PureComponent {
 		const endpoint = 'https://accounts.google.com/o/oauth2/auth';
 		const redirect_uri = `${ server }/_oauth/google?close`;
 		const scope = 'email';
-		const state = this.getOAuthState();
+		const state = this.getOAuthState(LOGIN_STYPE_REDIRECT);
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&response_type=code`;
-		this.openOAuth({ url: `${ endpoint }${ params }` });
+		Linking.openURL(`${ endpoint }${ params }`);
 	}
 
 	onPressLinkedin = () => {
@@ -219,9 +222,16 @@ class LoginServices extends React.PureComponent {
 		}
 	}
 
-	getOAuthState = () => {
+	getOAuthState = (loginStyle = LOGIN_STYPE_POPUP) => {
 		const credentialToken = random(43);
-		return Base64.encodeURI(JSON.stringify({ loginStyle: 'popup', credentialToken, isCordova: true }));
+		let obj = { loginStyle, credentialToken, isCordova: true };
+		if (loginStyle === LOGIN_STYPE_REDIRECT) {
+			obj = {
+				...obj,
+				redirectUrl: 'rocketchat://auth'
+			};
+		}
+		return Base64.encodeURI(JSON.stringify(obj));
 	}
 
 	openOAuth = ({ url, ssoToken, authType = 'oauth' }) => {

@@ -219,6 +219,7 @@
   "last_message": "最後のメッセージ",
   "Leave_channel": "チャンネルを退出",
   "leaving_room": "チャンネルを退出",
+  "Leave": "ルームを退出",
   "leave": "退出",
   "Legal": "法的項目",
   "Light": "ライト",
@@ -487,5 +488,6 @@
   "New_line": "新しい行",
   "You_will_be_logged_out_of_this_application": "アプリからログアウトします。",
   "Clear": "クリア",
-  "This_will_clear_all_your_offline_data": "オフラインデータをすべて削除します。"
+  "This_will_clear_all_your_offline_data": "オフラインデータをすべて削除します。",
+  "invalid-room": "無効なルーム"
 }

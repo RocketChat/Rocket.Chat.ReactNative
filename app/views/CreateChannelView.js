@@ -334,7 +334,7 @@ class CreateChannelView extends React.Component {
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
-				<SafeAreaView testID={isTeam ? 'create-team-view' : 'create-channel-view'}>
+				<SafeAreaView testID='create-channel-view'>
 					<ScrollView {...scrollPersistTaps}>
 						<View style={[sharedStyles.separatorVertical, { borderColor: themes[theme].separatorColor }]}>
 							<TextInput
@@ -345,7 +345,7 @@ class CreateChannelView extends React.Component {
 								onChangeText={this.onChangeText}
 								placeholder={isTeam ? I18n.t('Team_Name') : I18n.t('Channel_Name')}
 								returnKeyType='done'
-								testID={isTeam ? 'create-team-name' : 'create-channel-name'}
+								testID='create-channel-name'
 								autoCorrect={false}
 								autoCapitalize='none'
 								theme={theme}

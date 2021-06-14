@@ -10,7 +10,9 @@ import { Q } from '@nozbe/watermelondb';
 import { compareServerVersion, methods } from '../../lib/utils';
 import Touch from '../../utils/touch';
 import { setLoading as setLoadingAction } from '../../actions/selectedUsers';
-import { leaveRoom as leaveRoomAction, closeRoom as closeRoomAction } from '../../actions/room';
+import {
+	leaveRoom as leaveRoomAction, closeRoom as closeRoomAction
+} from '../../actions/room';
 import styles from './styles';
 import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
@@ -54,7 +56,6 @@ class RoomActionsView extends React.Component {
 		theme: PropTypes.string,
 		fontScale: PropTypes.number,
 		serverVersion: PropTypes.string,
-		isMasterDetail: PropTypes.bool,
 		addUserToJoinedRoomPermission: PropTypes.array,
 		addUserToAnyCRoomPermission: PropTypes.array,
 		addUserToAnyPRoomPermission: PropTypes.array,
@@ -426,37 +427,13 @@ class RoomActionsView extends React.Component {
 		showConfirmationAlert({
 			message: I18n.t('Are_you_sure_you_want_to_leave_the_room', { room: RocketChat.getRoomTitle(room) }),
 			confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-			onPress: () => leaveRoom(room.rid, room.t)
+			onPress: () => leaveRoom('channel', room)
 		});
-	}
-
-	handleLeaveTeam = async(selected) => {
-		try {
-			const { room } = this.state;
-			const { navigation, isMasterDetail } = this.props;
-			const result = await RocketChat.leaveTeam({ teamName: room.name, ...(selected && { rooms: selected }) });
-
-			if (result.success) {
-				if (isMasterDetail) {
-					navigation.navigate('DrawerNavigator');
-				} else {
-					navigation.navigate('RoomsListView');
-				}
-			}
-		} catch (e) {
-			log(e);
-			showErrorAlert(
-				e.data.error
-					? I18n.t(e.data.error)
-					: I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_team') }),
-				I18n.t('Cannot_leave')
-			);
-		}
 	}
 
 	leaveTeam = async() => {
 		const { room } = this.state;
-		const { navigation } = this.props;
+		const { navigation, leaveRoom } = this.props;
 
 		try {
 			const result = await RocketChat.teamListRoomsOfUser({ teamId: room.teamId, userId: room.u._id });
@@ -472,26 +449,27 @@ class RoomActionsView extends React.Component {
 					title: 'Leave_Team',
 					data: teamChannels,
 					infoText: 'Select_Team_Channels',
-					nextAction: data => this.handleLeaveTeam(data),
+					nextAction: data => leaveRoom('team', room, data),
 					showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_leave'))
 				});
 			} else {
 				showConfirmationAlert({
 					message: I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
 					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-					onPress: () => this.handleLeaveTeam()
+					onPress: () => leaveRoom('team', room)
 				});
 			}
 		} catch (e) {
 			showConfirmationAlert({
 				message: I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
 				confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-				onPress: () => this.handleLeaveTeam()
+				onPress: () => leaveRoom('team', room)
 			});
 		}
 	}
 
 	handleConvertToTeam = async() => {
+		logEvent(events.RA_CONVERT_TO_TEAM);
 		try {
 			const { room } = this.state;
 			const { navigation } = this.props;
@@ -501,6 +479,7 @@ class RoomActionsView extends React.Component {
 				navigation.navigate('RoomView');
 			}
 		} catch (e) {
+			logEvent(events.RA_CONVERT_TO_TEAM_F);
 			log(e);
 		}
 	}
@@ -515,14 +494,16 @@ class RoomActionsView extends React.Component {
 	}
 
 	handleMoveToTeam = async(selected) => {
+		logEvent(events.RA_MOVE_TO_TEAM);
 		try {
 			const { room } = this.state;
 			const { navigation } = this.props;
-			const result = await RocketChat.addRoomsToTeam({ teamId: selected.teamId, rooms: [room.rid] });
+			const result = await RocketChat.addRoomsToTeam({ teamId: selected?.[0], rooms: [room.rid] });
 			if (result.success) {
 				navigation.navigate('RoomView');
 			}
 		} catch (e) {
+			logEvent(events.RA_MOVE_TO_TEAM_F);
 			log(e);
 			showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('moving_channel_to_team') }));
 		}
@@ -534,17 +515,22 @@ class RoomActionsView extends React.Component {
 			const db = database.active;
 			const subCollection = db.get('subscriptions');
 			const teamRooms = await subCollection.query(
-				Q.where('team_main', Q.notEq(null))
+				Q.where('team_main', true)
 			);
 
 			if (teamRooms.length) {
+				const data = teamRooms.map(team => ({
+					rid: team.teamId,
+					t: team.t,
+					name: team.name
+				}));
 				navigation.navigate('SelectListView', {
 					title: 'Move_to_Team',
 					infoText: 'Move_Channel_Paragraph',
 					nextAction: () => {
 						navigation.push('SelectListView', {
 							title: 'Select_Team',
-							data: teamRooms,
+							data,
 							isRadio: true,
 							isSearch: true,
 							onSearch: onChangeText => this.searchTeam(onChangeText),
@@ -554,7 +540,6 @@ class RoomActionsView extends React.Component {
 								confirmationText: I18n.t('Yes_action_it', { action: I18n.t('move') }),
 								onPress: () => this.handleMoveToTeam(selected)
 							})
-
 						});
 					}
 				});
@@ -565,6 +550,7 @@ class RoomActionsView extends React.Component {
 	}
 
 	searchTeam = async(onChangeText) => {
+		logEvent(events.RA_SEARCH_TEAM);
 		try {
 			const { addTeamChannelPermission, createTeamPermission } = this.props;
 			const QUERY_SIZE = 50;
@@ -572,7 +558,7 @@ class RoomActionsView extends React.Component {
 			const teams = await db.collections
 				.get('subscriptions')
 				.query(
-					Q.where('team_main', Q.notEq(null)),
+					Q.where('team_main', true),
 					Q.where('name', Q.like(`%${ onChangeText }%`)),
 					Q.experimentalTake(QUERY_SIZE),
 					Q.experimentalSortBy('room_updated_at', Q.desc)
@@ -670,7 +656,7 @@ class RoomActionsView extends React.Component {
 	renderJitsi = () => {
 		const { room } = this.state;
 		const { jitsiEnabled } = this.props;
-		if (!jitsiEnabled) {
+		if (!jitsiEnabled || room.teamMain) {
 			return null;
 		}
 		return (
@@ -728,7 +714,7 @@ class RoomActionsView extends React.Component {
 			return null;
 		}
 
-		if (t === 'd') {
+		if (t === 'd' && !RocketChat.isGroupChat(room)) {
 			return (
 				<List.Section>
 					<List.Separator />
@@ -765,6 +751,8 @@ class RoomActionsView extends React.Component {
 				</List.Section>
 			);
 		}
+
+		return null;
 	}
 
 	teamChannelActions = (t, room) => {
@@ -795,11 +783,11 @@ class RoomActionsView extends React.Component {
 					? (
 						<>
 							<List.Item
-								title='Move_Channel_to_Team'
+								title='Move_to_Team'
 								onPress={() => this.onPressTouchable({
 									event: this.moveToTeam
 								})}
-								testID='room-actions-convert-to-team'
+								testID='room-actions-move-to-team'
 								left={() => <List.Icon name='channel-move-to-team' />}
 								showActionIndicator
 							/>
@@ -1106,7 +1094,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	leaveRoom: (rid, t) => dispatch(leaveRoomAction(rid, t)),
+	leaveRoom: (roomType, room, selected) => dispatch(leaveRoomAction(roomType, room, selected)),
 	closeRoom: rid => dispatch(closeRoomAction(rid)),
 	setLoadingInvite: loading => dispatch(setLoadingAction(loading))
 });
