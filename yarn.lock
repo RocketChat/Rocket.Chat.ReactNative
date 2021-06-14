@@ -2370,10 +2370,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/viewpager/-/viewpager-2.0.2.tgz#622b190294b1310c4825c98daeaee1c8443f7124"
   integrity sha512-CKVhIZdX/Cmb80muog8sKpi5vM8npwFp4tx4Dj1IvTBidZweuO22+VH2rDOj7E0LzdV9IYRJ4FGBwcPBD2qUrQ==
 
-"@react-native-cookies/cookies@^6.0.7":
-  version "6.0.7"
-  resolved "https://registry.yarnpkg.com/@react-native-cookies/cookies/-/cookies-6.0.7.tgz#8afc479cc81c8be7bca6aa843438a04e55417eae"
-  integrity sha512-XKhSAexFfSJJSON9JQqiA23LsZbFWS0If29AxeQSVpzrlnUJoTq/Feenf9e8piMT9Q4VhkDVrLw+AKhDRsbsPQ==
+"@react-native-cookies/cookies@6.0.8":
+  version "6.0.8"
+  resolved "https://registry.yarnpkg.com/@react-native-cookies/cookies/-/cookies-6.0.8.tgz#efa1b7b3e10e5e6ca7a4b55963f9fde7e60b1894"
+  integrity sha512-srQ9XM/IgvakwiZ7Ck9AOAyPYkcFsAVBEfz5Ct3iHWapoA9fYU25hCWrJWl4dd5993cEMm10XDx7sn7b6pzVxw==
   dependencies:
     invariant "^2.2.4"
 
