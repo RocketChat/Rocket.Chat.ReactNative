@@ -157,7 +157,7 @@ const Reply = React.memo(({
 				url = `${ baseUrl }${ url }`;
 			}
 		}
-		Navigation.navigate('GenericWebView', { uri: url, headers: { 'x-user-id': user.id, 'x-auth-token': user.token, title: attachment.title } });
+		Navigation.navigate('GenericWebView', { uri: url, headers: { 'x-user-id': user.id, 'x-auth-token': user.token }, title: attachment.title });
 	};
 
 	let { borderColor, chatComponentBackground: backgroundColor } = themes[theme];

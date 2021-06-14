@@ -349,6 +349,11 @@ const InsideStackNavigator = React.memo(() => {
 				component={AttachmentView}
 			/>
 			<InsideStack.Screen
+				name='GenericWebView'
+				component={GenericWebView}
+				options={props => GenericWebView.navigationOptions({ ...props, isMasterDetail: true })}
+			/>
+			<InsideStack.Screen
 				name='ModalBlockView'
 				component={ModalBlockView}
 				options={ModalBlockView.navigationOptions}
