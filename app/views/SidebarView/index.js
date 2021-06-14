@@ -18,6 +18,8 @@ import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Navigation from '../../lib/Navigation';
+import * as HeaderButton from '../../containers/HeaderButton';
+
 
 const Separator = React.memo(({ theme }) => <View style={[styles.separator, { borderColor: themes[theme].separatorColor }]} />);
 Separator.propTypes = {
@@ -143,13 +145,15 @@ class Sidebar extends Component {
 
 	renderAdmin = () => {
 		const {
-			theme, isMasterDetail, baseUrl, user
+			theme, isMasterDetail, baseUrl, user, navigation
 		} = this.props;
 		if (!this.getIsAdmin()) {
 			return null;
 		}
 		const routeName = isMasterDetail ? 'AdminPanelView' : 'AdminPanelStackNavigator';
-		const params = { uri: `${ baseUrl }/admin/info?layout=embedded`, injectedJavaScript: `Meteor.loginWithToken('${ user.token }', function() { })`, title: I18n.t('Admin_Panel') };
+		const params = {
+			uri: `${ baseUrl }/admin/info?layout=embedded`, injectedJavaScript: `Meteor.loginWithToken('${ user.token }', function() { })`, title: I18n.t('Admin_Panel'), leftHeaderButton: () => <HeaderButton.Drawer navigation={navigation} />
+		};
 		const navigationParams = isMasterDetail ? params : { screen: 'AdminPanelView', params };
 
 		return (
