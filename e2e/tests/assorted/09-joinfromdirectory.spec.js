@@ -32,16 +32,24 @@ describe('Join room from directory', () => {
 			await navigateToRoom(data.channels.detoxpublic.name);
 		})
 
-		it('should back and tap directory', async() => {
+		it('should search user and navigate', async() => {
 			await tapBack();
 			await element(by.id('rooms-list-view-directory')).tap();	
-		})
-
-		it('should search user and navigate', async() => {
+			await waitFor(element(by.id('directory-view'))).toExist().withTimeout(2000);
 			await element(by.id('directory-view-dropdown')).tap();	
 			await element(by.label('Users')).tap();
 			await element(by.label('Search by')).tap();	
 			await navigateToRoom(data.users.alternate.username);
+		})
+
+		it('should search user and navigate', async() => {
+			await tapBack();
+			await element(by.id('rooms-list-view-directory')).tap();
+			await waitFor(element(by.id('directory-view'))).toExist().withTimeout(2000);
+			await element(by.id('directory-view-dropdown')).tap();	
+			await element(by.label('Teams')).tap();
+			await element(by.label('Search by')).tap();	
+			await navigateToRoom(data.teams.private.name);
 		})
 	});
 });

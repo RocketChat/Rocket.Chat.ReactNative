@@ -142,10 +142,13 @@ const Reply = React.memo(({
 	if (!attachment) {
 		return null;
 	}
-	const { baseUrl, user } = useContext(MessageContext);
+	const { baseUrl, user, jumpToMessage } = useContext(MessageContext);
 
 	const onPress = () => {
 		let url = attachment.title_link || attachment.author_link;
+		if (attachment.message_link) {
+			return jumpToMessage(attachment.message_link);
+		}
 		if (!url) {
 			return;
 		}
