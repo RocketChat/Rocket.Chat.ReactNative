@@ -149,10 +149,6 @@ const setup = async () => {
 
     await login(data.users.regular.username, data.users.regular.password)
 
-    await createChannelIfNotExists(`jumpToMessageChat${data.random}`);
-    await createChannelIfNotExists(`jumpToMessageThreads${data.random}`);
-
-
     for (var groupKey in data.groups) {
         if (data.groups.hasOwnProperty(groupKey)) {
             const group = data.groups[groupKey]

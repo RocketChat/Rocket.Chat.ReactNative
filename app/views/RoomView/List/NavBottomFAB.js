@@ -54,7 +54,7 @@ const NavBottomFAB = ({
 		bottom += SEND_TO_CHANNEL_HEIGHT;
 	}
 	return (
-		<Animated.View style={[styles.container, { bottom }]} testID={testID}>
+		<Animated.View style={[styles.container, { bottom }]} testID='nav-jump-to-bottom'>
 			<Touch
 				onPress={handleOnPress}
 				theme={theme}

@@ -348,7 +348,7 @@ class ListContainer extends React.Component {
 						/>
 					)}
 				/>
-				<NavBottomFAB y={this.y} testID='nav-jump-to-bottom' onPress={this.jumpToBottom} isThread={!!tmid} />
+				<NavBottomFAB y={this.y} onPress={this.jumpToBottom} isThread={!!tmid} />
 			</>
 		);
 	}
