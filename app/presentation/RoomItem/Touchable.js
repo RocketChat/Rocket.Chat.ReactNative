@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Animated } from 'react-native';
-import { PanGestureHandler, State } from 'react-native-gesture-handler';
+import {
+	LongPressGestureHandler, PanGestureHandler, State
+} from 'react-native-gesture-handler';
 
 import Touch from '../../utils/touch';
 import {
@@ -17,6 +19,7 @@ class Touchable extends React.Component {
 	static propTypes = {
 		type: PropTypes.string.isRequired,
 		onPress: PropTypes.func,
+		onLongPress: PropTypes.func,
 		testID: PropTypes.string,
 		width: PropTypes.number,
 		favorite: PropTypes.bool,
@@ -56,6 +59,12 @@ class Touchable extends React.Component {
 		_onHandlerStateChange = ({ nativeEvent }) => {
 			if (nativeEvent.oldState === State.ACTIVE) {
 				this._handleRelease(nativeEvent);
+			}
+		}
+
+		onLongPressHandlerStateChange = ({ nativeEvent }) => {
+			if (nativeEvent.state === State.ACTIVE) {
+				this.onLongPress();
 			}
 		}
 
@@ -203,54 +212,70 @@ class Touchable extends React.Component {
 			}
 		};
 
+		onLongPress = () => {
+			const { rowState } = this.state;
+			const { onLongPress } = this.props;
+			if (rowState !== 0) {
+				this.close();
+				return;
+			}
+
+			if (onLongPress) {
+				onLongPress();
+			}
+		};
+
 		render() {
 			const {
 				testID, isRead, width, favorite, children, theme, isFocused, swipeEnabled
 			} = this.props;
 
 			return (
-
-				<PanGestureHandler
-					minDeltaX={20}
-					onGestureEvent={this._onGestureEvent}
-					onHandlerStateChange={this._onHandlerStateChange}
-					enabled={swipeEnabled}
-				>
+				<LongPressGestureHandler onHandlerStateChange={this.onLongPressHandlerStateChange}>
 					<Animated.View>
-						<LeftActions
-							transX={this.transXReverse}
-							isRead={isRead}
-							width={width}
-							onToggleReadPress={this.onToggleReadPress}
-							theme={theme}
-						/>
-						<RightActions
-							transX={this.transXReverse}
-							favorite={favorite}
-							width={width}
-							toggleFav={this.toggleFav}
-							onHidePress={this.onHidePress}
-							theme={theme}
-						/>
-						<Animated.View
-							style={{
-								transform: [{ translateX: this.transX }]
-							}}
+						<PanGestureHandler
+							minDeltaX={20}
+							onGestureEvent={this._onGestureEvent}
+							onHandlerStateChange={this._onHandlerStateChange}
+							enabled={swipeEnabled}
 						>
-							<Touch
-								onPress={this.onPress}
-								theme={theme}
-								testID={testID}
-								style={{
-									backgroundColor: isFocused ? themes[theme].chatComponentBackground : themes[theme].backgroundColor
-								}}
-							>
-								{children}
-							</Touch>
-						</Animated.View>
-					</Animated.View>
+							<Animated.View>
+								<LeftActions
+									transX={this.transXReverse}
+									isRead={isRead}
+									width={width}
+									onToggleReadPress={this.onToggleReadPress}
+									theme={theme}
+								/>
+								<RightActions
+									transX={this.transXReverse}
+									favorite={favorite}
+									width={width}
+									toggleFav={this.toggleFav}
+									onHidePress={this.onHidePress}
+									theme={theme}
+								/>
+								<Animated.View
+									style={{
+										transform: [{ translateX: this.transX }]
+									}}
+								>
+									<Touch
+										onPress={this.onPress}
+										theme={theme}
+										testID={testID}
+										style={{
+											backgroundColor: isFocused ? themes[theme].chatComponentBackground : themes[theme].backgroundColor
+										}}
+									>
+										{children}
+									</Touch>
+								</Animated.View>
+							</Animated.View>
 
-				</PanGestureHandler>
+						</PanGestureHandler>
+					</Animated.View>
+				</LongPressGestureHandler>
 			);
 		}
 }

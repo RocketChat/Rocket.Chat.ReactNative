@@ -16,6 +16,7 @@ import {
 import { localAuthenticate } from '../utils/localAuthentication';
 import { goRoom } from '../utils/goRoom';
 import { loginRequest } from '../actions/login';
+import log from '../utils/log';
 
 const roomTypes = {
 	channel: 'c', direct: 'd', group: 'p', channels: 'l'
@@ -60,18 +61,19 @@ const navigate = function* navigate({ params }) {
 
 				const isMasterDetail = yield select(state => state.app.isMasterDetail);
 				const focusedRooms = yield select(state => state.room.rooms);
+				const jumpToMessageId = params.messageId;
 
 				if (focusedRooms.includes(room.rid)) {
 					// if there's one room on the list or last room is the one
 					if (focusedRooms.length === 1 || focusedRooms[0] === room.rid) {
-						yield goRoom({ item, isMasterDetail });
+						yield goRoom({ item, isMasterDetail, jumpToMessageId });
 					} else {
 						popToRoot({ isMasterDetail });
-						yield goRoom({ item, isMasterDetail });
+						yield goRoom({ item, isMasterDetail, jumpToMessageId });
 					}
 				} else {
 					popToRoot({ isMasterDetail });
-					yield goRoom({ item, isMasterDetail });
+					yield goRoom({ item, isMasterDetail, jumpToMessageId });
 				}
 
 				if (params.isCall) {
@@ -92,6 +94,15 @@ const fallbackNavigation = function* fallbackNavigation() {
 	yield put(appInit());
 };
 
+const handleOAuth = function* handleOAuth({ params }) {
+	const { credentialToken, credentialSecret } = params;
+	try {
+		yield RocketChat.loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } });
+	} catch (e) {
+		log(e);
+	}
+};
+
 const handleOpen = function* handleOpen({ params }) {
 	const serversDB = database.servers;
 	const serversCollection = serversDB.get('servers');
@@ -105,6 +116,11 @@ const handleOpen = function* handleOpen({ params }) {
 				host = id;
 			}
 		});
+	}
+
+	if (params.type === 'oauth') {
+		yield handleOAuth({ params });
+		return;
 	}
 
 	// If there's no host on the deep link params and the app is opened, just call appInit()
