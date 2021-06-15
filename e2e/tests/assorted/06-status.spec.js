@@ -4,14 +4,15 @@ const {
 const { navigateToLogin, login, sleep } = require('../../helpers/app');
 
 const data = require('../../data');
-const testuser = data.users.regular
+
+const testuser = data.users.regular;
 
 async function waitForToast() {
 	await sleep(300);
 }
 
 describe('Status screen', () => {
-	before(async () => {
+	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
 		await login(testuser.username, testuser.password);
@@ -24,8 +25,8 @@ describe('Status screen', () => {
 		await waitFor(element(by.id('status-view'))).toBeVisible().withTimeout(2000);
 	});
 
-	describe('Render', async () => {
-		it('should have status input', async () => {
+	describe('Render', () => {
+		it('should have status input', async() => {
 			await expect(element(by.id('status-view-input'))).toBeVisible();
 			await expect(element(by.id('status-view-online'))).toExist();
 			await expect(element(by.id('status-view-busy'))).toExist();
@@ -34,13 +35,13 @@ describe('Status screen', () => {
 		});
 	});
 
-	describe('Usage', async () => {
-		it('should change status', async () => {
+	describe('Usage', () => {
+		it('should change status', async() => {
 			await element(by.id('status-view-busy')).tap();
 			await waitFor(element(by.id('status-view-current-busy'))).toExist().withTimeout(2000);
 		});
 
-		it('should change status text', async () => {
+		it('should change status text', async() => {
 			await element(by.id('status-view-input')).typeText('status-text-new');
 			await element(by.id('status-view-submit')).tap();
 			await waitForToast();
