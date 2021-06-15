@@ -72,7 +72,7 @@ describe('Threads', () => {
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by.label('Reply in Thread')).tap();
+				await element(by.label('Reply in Thread')).atIndex(0).tap();
 				await element(by.id('messagebox-input')).typeText('replied');
 				await element(by.id('messagebox-send-message')).tap();
 				await waitFor(element(by.id(`message-thread-button-${ thread }`))).toExist().withTimeout(5000);

@@ -95,6 +95,7 @@ export const setLanguage = (l) => {
 	moment.locale(toMomentLocale(locale));
 };
 
+i18n.translations = { en: translations.en?.() };
 const defaultLanguage = { languageTag: 'en', isRTL: false };
 const availableLanguages = Object.keys(translations);
 const { languageTag } = RNLocalize.findBestAvailableLanguage(availableLanguages) || defaultLanguage;

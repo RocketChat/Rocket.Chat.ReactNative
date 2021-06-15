@@ -63,19 +63,6 @@ describe('Settings screen', () => {
 	});
 
 	describe('Usage', async() => {
-		it('should navigate to language view', async() => {
-			await element(by.id('settings-view-language')).tap();
-			await waitFor(element(by.id('language-view'))).toBeVisible().withTimeout(60000);
-			await expect(element(by.id('language-view-zh-CN'))).toExist();
-			await expect(element(by.id('language-view-de'))).toExist();
-			await expect(element(by.id('language-view-en'))).toExist();
-			await expect(element(by.id('language-view-fr'))).toExist();
-			await expect(element(by.id('language-view-pt-BR'))).toExist();
-			await expect(element(by.id('language-view-pt-PT'))).toExist();
-			await expect(element(by.id('language-view-ru'))).toExist();
-			await tapBack();
-		});
-	
 		it('should tap clear cache and navigate to roomslistview', async() => {
 			await waitFor(element(by.id('settings-view'))).toBeVisible().withTimeout(2000);
 			await element(by.id('settings-view-clear-cache')).tap();
