@@ -25,6 +25,11 @@ import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
+import { isTablet } from '../../utils/deviceInfo';
+
+const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
+const QUERY_SIZE = 20;
+
 
 class SearchMessagesView extends React.Component {
 	static navigationOptions = ({ navigation, route }) => {
@@ -53,8 +58,10 @@ class SearchMessagesView extends React.Component {
 		this.state = {
 			loading: false,
 			messages: [],
+			messagesFromQuery: [],
 			searchText: ''
 		};
+		this.count = 0;
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;
 		this.encrypted = props.route.params?.encrypted;
@@ -110,12 +117,14 @@ class SearchMessagesView extends React.Component {
 	}
 
 	search = debounce(async(searchText) => {
+		this.count = QUERY_SIZE;
 		this.setState({ searchText, loading: true, messages: [] });
 
 		try {
 			const messages = await this.searchMessages(searchText);
 			this.setState({
-				messages: messages || [],
+				messages: messages.slice(0, this.count) || [],
+				messagesFromQuery: messages || [],
 				loading: false
 			});
 		} catch (e) {
@@ -168,6 +177,18 @@ class SearchMessagesView extends React.Component {
 		}
 	}
 
+	onEndReached = () => {
+		this.setState({ loading: true, messages: [] });
+
+		this.count += QUERY_SIZE;
+
+		const { messagesFromQuery } = this.state;
+		this.setState({
+			messages: messagesFromQuery.slice(0, this.count),
+			loading: false
+		});
+	}
+
 	renderEmpty = () => {
 		const { theme } = this.props;
 		return (
@@ -214,8 +235,10 @@ class SearchMessagesView extends React.Component {
 				renderItem={this.renderItem}
 				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 				keyExtractor={item => item._id}
-				onEndReached={this.load}
+				onEndReached={this.onEndReached}
 				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
+				onEndReachedThreshold={0.5}
+				initialNumToRender={INITIAL_NUM_TO_RENDER}
 				{...scrollPersistTaps}
 			/>
 		);
