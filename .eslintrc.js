@@ -22,14 +22,17 @@ module.exports = {
 		"jsx-a11y",
         "import",
     	"react-native",
-		"@babel"
+		"@babel",
+		"detox"
 	],
 	"env": {
 		"browser": true,
 		"commonjs": true,
 		"es6": true,
 		"node": true,
-		"jquery": true
+		"jquery": true,
+		"detox/detox": true,
+		"mocha": true
 	},
 	"rules": {
 		"react/jsx-filename-extension": [1, {
