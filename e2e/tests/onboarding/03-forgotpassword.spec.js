@@ -12,7 +12,7 @@ describe('Forgot password screen', () => {
 		await waitFor(element(by.id('forgot-password-view'))).toExist().withTimeout(2000);
 	});
 
-	describe('Render', async() => {
+	describe('Render', () => {
 		it('should have forgot password screen', async() => {
 			await expect(element(by.id('forgot-password-view'))).toExist();
 		});
@@ -26,7 +26,7 @@ describe('Forgot password screen', () => {
 		});
 	});
 
-	describe('Usage', async() => {
+	describe('Usage', () => {
 		it('should reset password and navigate to login', async() => {
 			await element(by.id('forgot-password-view-email')).replaceText(data.users.existing.email);
 			await element(by.id('forgot-password-view-submit')).tap();

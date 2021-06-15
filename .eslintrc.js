@@ -154,7 +154,8 @@ module.exports = {
 		"react/state-in-constructor": [0],
 		"no-async-promise-executor": [0],
 		"max-classes-per-file": [0],
-		"no-multiple-empty-lines": [0]
+		"no-multiple-empty-lines": [0],
+		"import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.test.js", "**/*.spec.js", "./e2e/**/**.js"]}]
 	},
 	"globals": {
 		"__DEV__": true
