@@ -14,9 +14,10 @@ export function createChannelSuccess(data) {
 	};
 }
 
-export function createChannelFailure(err) {
+export function createChannelFailure(err, isTeam) {
 	return {
 		type: types.CREATE_CHANNEL.FAILURE,
-		err
+		err,
+		isTeam
 	};
 }

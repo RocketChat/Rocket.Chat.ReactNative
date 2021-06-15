@@ -1,6 +1,6 @@
 {
   "name": "rocket-chat-reactnative",
-  "version": "4.16.2",
+  "version": "4.17.0",
   "private": true,
   "scripts": {
     "start": "react-native start",
@@ -194,8 +194,7 @@
         "build": "xcodebuild -workspace ios/RocketChatRN.xcworkspace -scheme RocketChatRN -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
         "type": "ios.simulator",
         "device": {
-          "type": "iPhone 11 Pro",
-          "os": "13.7"
+          "type": "iPhone 11 Pro"
         }
       },
       "ios.sim.release": {
@@ -203,8 +202,7 @@
         "build": "xcodebuild -workspace ios/RocketChatRN.xcworkspace -scheme RocketChatRN -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
         "type": "ios.simulator",
         "device": {
-          "type": "iPhone 11 Pro",
-          "os": "13.7"
+          "type": "iPhone 11 Pro"
         },
         "artifacts": {
           "plugins": {

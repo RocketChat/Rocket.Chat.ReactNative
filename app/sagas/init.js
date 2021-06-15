@@ -28,10 +28,10 @@ export const initLocalSettings = function* initLocalSettings() {
 
 const restore = function* restore() {
 	try {
-		const server = yield UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER);
+		const { server } = appConfig;
 		const userId = yield UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
 
-		if (!userId || !server) {
+		if (!userId) {
 			yield all([
 				UserPreferences.removeItem(RocketChat.TOKEN_KEY),
 				UserPreferences.removeItem(RocketChat.CURRENT_SERVER)
