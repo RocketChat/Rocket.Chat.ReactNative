@@ -40,7 +40,7 @@ const getCustomEmoji = (content) => {
 	return customEmoji;
 };
 
-const messageDecorator = story => (
+export const MessageDecorator = story => (
 	<MessageContext.Provider
 		value={{
 			user,
@@ -60,7 +60,7 @@ const messageDecorator = story => (
 	</MessageContext.Provider>
 );
 
-const Message = props => (
+export const Message = props => (
 	<MessageComponent
 		baseUrl={baseUrl}
 		user={user}
@@ -74,12 +74,14 @@ const Message = props => (
 	/>
 );
 
+export const StoryProvider = story => <Provider store={store}>{story()}</Provider>;
 
+const MessageScrollView = story => <ScrollView style={{ backgroundColor: themes[_theme].backgroundColor }}>{story()}</ScrollView>;
 
 const stories = storiesOf('Message', module)
-	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
-	.addDecorator(story => <ScrollView style={{ backgroundColor: themes[_theme].backgroundColor }}>{story()}</ScrollView>)
-	.addDecorator(messageDecorator);
+	.addDecorator(StoryProvider)
+	.addDecorator(MessageScrollView)
+	.addDecorator(MessageDecorator);
 
 stories.add('Basic', () => (
 	<>
