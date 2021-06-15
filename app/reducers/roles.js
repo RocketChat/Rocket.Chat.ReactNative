@@ -11,7 +11,7 @@ export default function permissions(state = initialState, action) {
 		case ROLES.UPDATE:
 			return {
 				...state,
-				[action.payload.id]: action.payload.id || action.payload.desc
+				[action.payload.id]: action.payload.desc || action.payload.id
 			};
 		case ROLES.REMOVE:
 			return state.filter(role => role.id !== action.payload.id);
