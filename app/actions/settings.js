@@ -7,6 +7,13 @@ export function addSettings(settings) {
 	};
 }
 
+export function updateSetting(id, value) {
+	return {
+		type: SETTINGS.UPDATE,
+		payload: { id, value }
+	};
+}
+
 export function clearSettings() {
 	return {
 		type: SETTINGS.CLEAR
