@@ -32,7 +32,7 @@ const watchUserTyping = function* watchUserTyping({ rid, status }) {
 	}
 };
 
-const handleRemovedRoom = function* handleRemovedRoom(roomType) {
+const handleRemovedRoom = function* handleRemovedRoom(roomType, actionType) {
 	const isMasterDetail = yield select(state => state.app.isMasterDetail);
 	if (isMasterDetail) {
 		yield Navigation.navigate('DrawerNavigator');
@@ -40,9 +40,13 @@ const handleRemovedRoom = function* handleRemovedRoom(roomType) {
 		yield Navigation.navigate('RoomsListView');
 	}
 
-	if (roomType === 'team') {
-		EventEmitter.emit(LISTENER, { message: I18n.t('Left_The_Team_Successfully') });
+	if (actionType === 'leave') {
+		EventEmitter.emit(LISTENER, { message: roomType === 'team' ? I18n.t('Left_The_Team_Successfully') : I18n.t('Left_The_Room_Successfully') });
 	}
+	if (actionType === 'delete') {
+		EventEmitter.emit(LISTENER, { message: roomType === 'team' ? I18n.t('Deleted_The_Team_Successfully') : I18n.t('Deleted_The_Room_Successfully') });
+	}
+
 
 	// types.ROOM.REMOVE is triggered by `subscriptions-changed` with `removed` arg
 	const { timeout } = yield race({
@@ -66,7 +70,7 @@ const handleLeaveRoom = function* handleLeaveRoom({ room, roomType, selected }) 
 		}
 
 		if (result?.success) {
-			yield handleRemovedRoom(roomType);
+			yield handleRemovedRoom(roomType, 'leave');
 		}
 	} catch (e) {
 		logEvent(events.RA_LEAVE_F);
@@ -92,7 +96,7 @@ const handleDeleteRoom = function* handleDeleteRoom({ room, roomType, selected }
 		}
 
 		if (result?.success) {
-			yield handleRemovedRoom(roomType);
+			yield handleRemovedRoom(roomType, 'delete');
 		}
 	} catch (e) {
 		logEvent(events.RI_EDIT_DELETE_F);
