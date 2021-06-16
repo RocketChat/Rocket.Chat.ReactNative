@@ -122,7 +122,7 @@ describe('Threads', async() => {
 		await waitFor(element(by.label('Go to jumping-thread\'s thread')).atIndex(0)).toExist().withTimeout(5000);
 		await element(by.label('Go to jumping-thread\'s thread')).atIndex(0).tap();
 		await waitForLoading();
-		await expectThreadMessages('thread message sent to main room');
+		await expectThreadMessages('Go to jumping-thread\'s thread');
 		await tapBack();
 	});
 
