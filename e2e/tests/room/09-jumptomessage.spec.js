@@ -10,7 +10,8 @@ async function navigateToRoom(roomName) {
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 }
 
-async function goCleanCache() {
+async function clearCache() {
+	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 	await tapBack();
 	await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 	await element(by.id('rooms-list-view-sidebar')).tap();
@@ -29,44 +30,50 @@ describe('Room', () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
 		await login(data.adminUser, data.adminPassword);
-		await navigateToRoom('jumping');
 	});
 
 	it('should jump to an old message and load its surroundings', async() => {
+		await navigateToRoom('jumping');
 		await waitFor(element(by.label('Quote first message'))).toExist().withTimeout(5000);
 		await element(by.label('1')).atIndex(0).tap();
 		await waitFor(element(by.id('loading'))).toBeVisible().withTimeout(5000);
 		await waitFor(element(by.id('loading'))).toBeNotVisible().withTimeout(5000);
 		await expect(element(by.label('1')).atIndex(0)).toExist();
 		await expect(element(by.label('2'))).toExist();
-		await expect(element(by.label('3'))).toExist();
+		await clearCache();
 	});
 
 	it('should load messages on scroll', async() => {
-		await goCleanCache();
 		await navigateToRoom('jumping');
 		await waitFor(element(by.id('room-view-messages'))).toExist().withTimeout(5000);
 		await waitFor(element(by.label('300'))).toExist().withTimeout(5000);
-		await waitFor(element(by.label('296'))).toExist().withTimeout(5000);
-		await element(by.id('room-view-messages')).atIndex(0).swipe('down', 'fast', 0.8);
-		await waitFor(element(by.label('275'))).toExist().withTimeout(5000);
+		let found = false;
+		while (!found) {
+			await element(by.id('room-view-messages')).atIndex(0).scroll(500, 'up');
+			try {
+				await expect(element(by.label('249'))).toExist();
+				found = true;
+			} catch {
+			}
+		}
+		await clearCache();
 	});
 
 	it('should search for old message and load its surroundings', async() => {
+		await navigateToRoom('jumping');
 		await element(by.id('room-view-search')).tap();
 		await waitFor(element(by.id('search-messages-view'))).toExist().withTimeout(5000);
 		await element(by.id('search-message-view-input')).typeText('30\n');
-		await waitFor(element(by.label('30')).atIndex(1)).toExist().withTimeout(5000);
-		await element(by.label('30')).atIndex(1).tap();
-		await waitFor(element(by.label('30'))).toExist().withTimeout(6000);
-		await waitFor(element(by.label('32'))).toExist().withTimeout(6000);
-		await waitFor(element(by.label('31'))).toExist().withTimeout(6000);
-		await waitFor(element(by.label('29'))).toExist().withTimeout(6000);
-		await waitFor(element(by.label('28'))).toExist().withTimeout(6000);
+		await waitFor(element(by.label('30')).atIndex(0)).toExist().withTimeout(5000);
+		await element(by.label('30')).atIndex(0).tap();
+		await waitFor(element(by.id('loading'))).toBeVisible().withTimeout(5000);
+		await waitFor(element(by.id('loading'))).toBeNotVisible().withTimeout(5000);
+		await expect(element(by.label('30'))).toExist();
+		await expect(element(by.label('31'))).toExist();
+		await expect(element(by.label('32'))).toExist();
 	})
 
 	it('should load newer and older messages', async() => {
-		await sleep(3000);
 		await element(by.id('room-view-messages')).atIndex(0).swipe('down', 'fast', 0.8);
 		await waitFor(element(by.label('5'))).toExist().withTimeout(5000);
 		await waitFor(element(by.label('Load Older'))).toExist().withTimeout(5000);
