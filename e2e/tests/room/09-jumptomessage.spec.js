@@ -111,39 +111,32 @@ describe('Room', () => {
 	});
 });
 
-const expectThreadMessages = async() => {
-	await waitFor(element(by.label('Go to jumping-thread\'s thread')).atIndex(0)).toExist().withTimeout(5000);
-	await expect(element(by.label('1'))).toExist();
-	await expect(element(by.label('2'))).toExist();
-	await expect(element(by.label('3'))).toExist();
+const expectThreadMessages = async(message) => {
+	await waitFor(element(by.id('room-view-title-jumping-thread'))).toExist().withTimeout(5000);
+	await expect(element(by.label(message))).toExist();
 }
 
-describe.only('Threads', async() => {
-	before(async() => {
-		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		await navigateToLogin();
-		await login(data.adminUser, data.adminPassword);
-	});
-	it('should tap on thread on main channel and go to thread', async() => {
+describe('Threads', async() => {
+	it('should navigate to a thread from another room', async() => {
 		await navigateToRoom('jumping');
 		await waitFor(element(by.label('Go to jumping-thread\'s thread')).atIndex(0)).toExist().withTimeout(5000);
 		await element(by.label('Go to jumping-thread\'s thread')).atIndex(0).tap();
 		await waitForLoading();
-		await expectThreadMessages();
+		await expectThreadMessages('thread message sent to main room');
 		await tapBack();
 	});
 
 	it('should tap on thread message from main room', async() => {
-		await waitFor(element(by.label('thread message sent to main channel')).atIndex(0)).toExist().withTimeout(5000);
-		await element(by.label('thread message sent to main channel')).atIndex(0).tap();
-		await expectThreadMessages();
+		await waitFor(element(by.label('thread message sent to main room')).atIndex(0)).toExist().withTimeout(5000);
+		await element(by.label('thread message sent to main room')).atIndex(0).tap();
+		await expectThreadMessages('thread message sent to main room');
 		await tapBack();
 	});
 
 	it('should tap on quote', async() => {
-		await waitFor(element(by.label('1'))).toExist().withTimeout(5000);
-		await element(by.label('1')).atIndex(0).tap();
-		await expectThreadMessages();
+		await waitFor(element(by.label('quoted'))).toExist().withTimeout(5000);
+		await element(by.label('quoted')).atIndex(0).tap();
+		await expectThreadMessages('quoted');
 		await tapBack();
 	});
 
@@ -154,8 +147,7 @@ describe.only('Threads', async() => {
 		await element(by.id('search-message-view-input')).typeText('to be searched\n');
 		await waitFor(element(by.label('to be searched'))).toExist().withTimeout(5000);
 		await element(by.label('to be searched')).atIndex(1).tap();
-		await expectThreadMessages();
-		await expect(element(by.label('to be searched')).atIndex(0)).toExist();
+		await expectThreadMessages('to be searched');
 	});
 
 	//TODO: Threads pagination
