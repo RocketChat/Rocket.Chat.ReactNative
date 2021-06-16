@@ -104,7 +104,9 @@ describe('Room', () => {
 		await waitFor(element(by.label('Load Newer'))).toExist().withTimeout(5000);
 		await element(by.label('Load Newer')).atIndex(0).tap();
 		await waitFor(element(by.label('Load Newer'))).toNotExist().withTimeout(5000);
-		await waitFor(element(by.label('Load More'))).toNotExist().withTimeout(5000);
+		await expect(element(by.label('Load More'))).toNotExist();
+		await expect(element(by.label('201'))).toExist();
+		await expect(element(by.label('202'))).toExist();
 		await tapBack();
 	});
 });
