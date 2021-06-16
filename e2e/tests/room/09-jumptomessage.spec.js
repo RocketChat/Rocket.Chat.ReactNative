@@ -34,13 +34,12 @@ describe('Room', () => {
 
 	it('should jump to an old message and load its surroundings', async() => {
 		await waitFor(element(by.label('Quote first message'))).toExist().withTimeout(5000);
-		await waitFor(element(by.label('300'))).toExist().withTimeout(5000);
-		await waitFor(element(by.label('1')).atIndex(1)).toExist().withTimeout(5000);
-		await element(by.label('1')).atIndex(1).tap();
-		await waitFor(element(by.id('Loading'))).toBeNotVisible().withTimeout(5000);
-		await waitFor(element(by.label('2'))).toExist().withTimeout(5000);
-		await waitFor(element(by.label('3'))).toExist().withTimeout(5000);
-		await sleep(3000);
+		await element(by.label('1')).atIndex(0).tap();
+		await waitFor(element(by.id('loading'))).toBeVisible().withTimeout(5000);
+		await waitFor(element(by.id('loading'))).toBeNotVisible().withTimeout(5000);
+		await expect(element(by.label('1')).atIndex(0)).toExist();
+		await expect(element(by.label('2'))).toExist();
+		await expect(element(by.label('3'))).toExist();
 	});
 
 	it('should load messages on scroll', async() => {
