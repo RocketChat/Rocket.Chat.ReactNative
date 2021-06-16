@@ -25,6 +25,11 @@ async function clearCache() {
 	await waitFor(element(by.id(`rooms-list-view-item-jumping`))).toExist().withTimeout(10000);
 }
 
+async function waitForLoading() {
+	await waitFor(element(by.id('loading'))).toBeVisible().withTimeout(5000);
+	await waitFor(element(by.id('loading'))).toBeNotVisible().withTimeout(5000);
+}
+
 describe('Room', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
@@ -36,12 +41,17 @@ describe('Room', () => {
 		await navigateToRoom('jumping');
 		await waitFor(element(by.label('Quote first message'))).toExist().withTimeout(5000);
 		await element(by.label('1')).atIndex(0).tap();
-		await waitFor(element(by.id('loading'))).toBeVisible().withTimeout(5000);
-		await waitFor(element(by.id('loading'))).toBeNotVisible().withTimeout(5000);
+		await waitForLoading();
 		await expect(element(by.label('1')).atIndex(0)).toExist();
 		await expect(element(by.label('2'))).toExist();
-		await clearCache();
 	});
+
+	it('should tap FAB and scroll to bottom', async() => {
+		await waitFor(element(by.id('nav-jump-to-bottom'))).toExist().withTimeout(5000);
+		await element(by.id('nav-jump-to-bottom')).tap();
+		await waitFor(element(by.label('Quote first message'))).toExist().withTimeout(5000);
+		await clearCache();
+	})
 
 	it('should load messages on scroll', async() => {
 		await navigateToRoom('jumping');
@@ -66,8 +76,7 @@ describe('Room', () => {
 		await element(by.id('search-message-view-input')).typeText('30\n');
 		await waitFor(element(by.label('30')).atIndex(0)).toExist().withTimeout(5000);
 		await element(by.label('30')).atIndex(0).tap();
-		await waitFor(element(by.id('loading'))).toBeVisible().withTimeout(5000);
-		await waitFor(element(by.id('loading'))).toBeNotVisible().withTimeout(5000);
+		await waitForLoading();
 		await expect(element(by.label('30'))).toExist();
 		await expect(element(by.label('31'))).toExist();
 		await expect(element(by.label('32'))).toExist();
@@ -96,30 +105,30 @@ describe('Room', () => {
 		await element(by.label('Load Newer')).atIndex(0).tap();
 		await waitFor(element(by.label('Load Newer'))).toNotExist().withTimeout(5000);
 		await waitFor(element(by.label('Load More'))).toNotExist().withTimeout(5000);
+		await tapBack();
 	});
 });
 
 describe('Threads', async() => {
 	it('should tap on thread on main channel and go to thread', async() => {
-		await waitFor(element(by.id('nav-jump-to-bottom'))).toExist().withTimeout(5000);
-		await element(by.id('nav-jump-to-bottom')).tap();
-		await waitFor(element(by.label('1')).atIndex(0)).toExist().withTimeout(5000);
-		await element(by.label('1')).atIndex(0).tap();
-		await waitFor(element(by.label(`thread 1`))).toExist().withTimeout(5000);
+		await navigateToRoom('jumping');
+		await waitFor(element(by.label('Go to jumping-thread\'s thread')).atIndex(0)).toExist().withTimeout(5000);
+		await element(by.label('Go to jumping-thread\'s thread')).atIndex(0).tap();
+		await waitFor(element(by.label('thread 1'))).toExist().withTimeout(5000);
 	});
 
 	it('should tap on thread message from main room', async() => {
 		await tapBack();
 		await waitFor(element(by.label('1')).atIndex(0)).toExist().withTimeout(5000);
 		await element(by.label('1')).atIndex(0).tap();
-		await waitFor(element(by.label(`thread 1`))).toExist().withTimeout(5000);
+		await waitFor(element(by.label('thread 1'))).toExist().withTimeout(5000);
 	});
 
 	it('should tap on quote', async() => {
 		await tapBack();
 		await waitFor(element(by.label('Go to 1'))).toExist().gwithTimeout(5000);
 		await element(by.label('1')).atIndex(1).tap();
-		await waitFor(element(by.label(`thread 1`))).toExist().withTimeout(5000);
+		await waitFor(element(by.label('thread 1'))).toExist().withTimeout(5000);
 		
 	});
 
@@ -130,7 +139,7 @@ describe('Threads', async() => {
 		await element(by.id('search-message-view-input')).typeText('2\n');
 		await sleep(1000);
 		await waitFor(element(by.label('2')).atIndex(0)).toExist().withTimeout(10000);
-		await waitFor(element(by.label(`thread 1`))).toExist().withTimeout(5000);
+		await waitFor(element(by.label('thread 1'))).toExist().withTimeout(5000);
 	});
 
 	//TODO: Threads pagination
