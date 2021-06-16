@@ -80,16 +80,23 @@ const handleLeaveRoom = function* handleLeaveRoom({ room, roomType, selected }) 
 	}
 };
 
-const handleDeleteRoom = function* handleDeleteRoom({ rid, t }) {
+const handleDeleteRoom = function* handleDeleteRoom({ room, roomType, selected }) {
 	logEvent(events.RI_EDIT_DELETE);
 	try {
-		const result = yield RocketChat.deleteRoom(rid, t);
-		if (result.success) {
-			yield handleRemovedRoom();
+		let result = {};
+
+		if (roomType === 'channel') {
+			result = yield RocketChat.deleteRoom(room.rid, room.t);
+		} else if (roomType === 'team') {
+			result = yield RocketChat.deleteTeam({ teamId: room.teamId, ...(selected && { roomsToRemove: selected }) });
+		}
+
+		if (result?.success) {
+			yield handleRemovedRoom(roomType);
 		}
 	} catch (e) {
 		logEvent(events.RI_EDIT_DELETE_F);
-		Alert.alert(I18n.t('Oops'), I18n.t('There_was_an_error_while_action', { action: I18n.t('deleting_room') }));
+		Alert.alert(I18n.t('Oops'), I18n.t('There_was_an_error_while_action', { action: roomType === 'team' ? I18n.t('deleting_team') : I18n.t('deleting_room') }));
 	}
 };
 
