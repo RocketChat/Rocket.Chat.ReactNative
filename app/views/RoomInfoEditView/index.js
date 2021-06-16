@@ -319,7 +319,9 @@ class RoomInfoEditView extends React.Component {
 
 	deleteTeam = async() => {
 		const { room } = this.state;
-		const { navigation } = this.props;
+		const {
+			navigation, deleteCPermission, deletePPermission
+		} = this.props;
 
 		try {
 			const db = database.active;
@@ -329,10 +331,21 @@ class RoomInfoEditView extends React.Component {
 				Q.where('team_main', Q.notEq(true))
 			);
 
-			if (teamChannels.length) {
+			const teamChannelOwner = [];
+			for (let i = 0; i < teamChannels.length; i += 1) {
+				const permissionType = teamChannels[i].t === 'c' ? deleteCPermission : deletePPermission;
+				// eslint-disable-next-line no-await-in-loop
+				const permissions = await RocketChat.hasPermission([
+					permissionType
+				], teamChannels[i].rid);
+
+				if (permissions[0]) { teamChannelOwner.push(teamChannels[i]); }
+			}
+
+			if (teamChannelOwner.length) {
 				navigation.navigate('SelectListView', {
 					title: 'Delete_Team',
-					data: teamChannels,
+					data: teamChannelOwner,
 					infoText: 'Select_channels_to_delete',
 					nextAction: (selected) => {
 						showConfirmationAlert({
