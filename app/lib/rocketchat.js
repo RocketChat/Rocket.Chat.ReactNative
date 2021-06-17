@@ -226,6 +226,10 @@ const RocketChat = {
 				this.usersListener.then(this.stopListener);
 			}
 
+			if (this.notifyAllListener) {
+				this.notifyAllListener.then(this.stopListener);
+			}
+
 			if (this.notifyLoggedListener) {
 				this.notifyLoggedListener.then(this.stopListener);
 			}
