@@ -196,5 +196,8 @@ export default {
 	},
 	Accounts_AllowInvisibleStatusOption: {
 		type: 'valueAsString'
+	},
+	Jitsi_Enable_Teams: {
+		type: 'valueAsBoolean'
 	}
 };
