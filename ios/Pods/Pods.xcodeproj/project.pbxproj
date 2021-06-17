@@ -1117,6 +1117,7 @@
 		447E6F3EBC166B3BD428BA1FD823B985 /* Subscriber.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FD1A6013BE26CF0DF77977974AF20E0 /* Subscriber.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		4499F682B7B571AD8CFFC9346B2BC24E /* BSG_RFC3339DateTool.m in Sources */ = {isa = PBXBuildFile; fileRef = E47D88210895FAD3A56E40908CE93EDE /* BSG_RFC3339DateTool.m */; };
 		44A1E719092F8C5711620A3CE598E2B4 /* RSocketStateMachine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ED12E7077B274BE0BC4E830189C39F /* RSocketStateMachine.cpp */; settings = {COMPILER_FLAGS = "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -DFOLLY_HAVE_LIBGFLAGS=0 -DFOLLY_HAVE_LIBJEMALLOC=0 -DFOLLY_HAVE_PREADV=0 -DFOLLY_HAVE_PWRITEV=0 -DFOLLY_HAVE_TFO=0 -DFOLLY_USE_SYMBOLIZER=0  -frtti\n    -fexceptions\n    -std=c++14\n    -Wno-error\n    -Wno-unused-local-typedefs\n    -Wno-unused-variable\n    -Wno-sign-compare\n    -Wno-comment\n    -Wno-return-type\n    -Wno-global-constructors"; }; };
+		44A2C2B77D6697AF9C075067D181128F /* RNDocumentPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = B84AAB78BC33F569CA338F94B7208C43 /* RNDocumentPicker.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		44A55B55195CCA47C609CA869F41E968 /* FBLPromise+Timeout.h in Headers */ = {isa = PBXBuildFile; fileRef = 75FAB4B2A9D6C1EE005C3C69A279E67D /* FBLPromise+Timeout.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		44A5C07FD2E0EE420C679ACA385898CF /* Fcntl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045F8404AFFDA6C19E7C43669B4F12E9 /* Fcntl.cpp */; settings = {COMPILER_FLAGS = "-DFOLLY_HAVE_PTHREAD=1 -DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -DFOLLY_HAVE_LIBGFLAGS=0 -DFOLLY_HAVE_LIBJEMALLOC=0 -DFOLLY_HAVE_PREADV=0 -DFOLLY_HAVE_PWRITEV=0 -DFOLLY_HAVE_TFO=0 -DFOLLY_USE_SYMBOLIZER=0\n    -frtti\n    -fexceptions\n    -std=c++14\n    -Wno-error\n    -Wno-unused-local-typedefs\n    -Wno-unused-variable\n    -Wno-sign-compare\n    -Wno-comment\n    -Wno-return-type\n    -Wno-global-constructors"; }; };
 		44C22F04C50F3EFC94A631A1BA9A2161 /* RCTDivisionAnimatedNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 7499AE1CD6FA7917C23F8264BF6D1615 /* RCTDivisionAnimatedNode.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1230,6 +1231,7 @@
 		4CD6251A4A3890CC821288EAAB6423C9 /* fi.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 5E6929DF44F768671E142897ED8025C9 /* fi.lproj */; };
 		4CEC7888DC4843F90A1B5B5690EFD428 /* BugsnagSessionTrackingApiClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 016A7933334987C24C2C71CF3A45D38C /* BugsnagSessionTrackingApiClient.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		4CFBDF1ABF9C57834E40AF5F853F6D41 /* GDTCCTCompressionHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 33C75BD5F057C9EBD1F79AC01CD1EB9D /* GDTCCTCompressionHelper.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		4CFF2BBA882ED477A9E4345DDF73ED77 /* RNDocumentPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = F26B1C082DD4EEC193B7FA7CFD8196DD /* RNDocumentPicker.m */; };
 		4D374A92E006A2548230086D6EAFA9AC /* LongLivedObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2EA10F1C8ECE1F7E3461D17EC0B448E0 /* LongLivedObject.cpp */; settings = {COMPILER_FLAGS = "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32 -Wno-documentation"; }; };
 		4D6E71C34060136615DF09DE28F76442 /* TypeList.h in Headers */ = {isa = PBXBuildFile; fileRef = EDEE1E377EE914E8675DBD7DEA1970A9 /* TypeList.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		4D7B566FA54B4ECF749EEF6600979FFC /* RNFBRCTEventEmitter.h in Headers */ = {isa = PBXBuildFile; fileRef = 54A3114EBE642307B624002F75677F89 /* RNFBRCTEventEmitter.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1973,7 +1975,6 @@
 		89569EC4029E7DA38498C2C498233F15 /* RCTJSStackFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = E56ECB9056F1EFEE79BD9D221DD47684 /* RCTJSStackFrame.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		896D483B57185E6C062455C5C247D9A7 /* GlobalExecutor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CC628C18D877309B49DDC77037C3EE08 /* GlobalExecutor.cpp */; settings = {COMPILER_FLAGS = "-DFOLLY_HAVE_PTHREAD=1 -DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -DFOLLY_HAVE_LIBGFLAGS=0 -DFOLLY_HAVE_LIBJEMALLOC=0 -DFOLLY_HAVE_PREADV=0 -DFOLLY_HAVE_PWRITEV=0 -DFOLLY_HAVE_TFO=0 -DFOLLY_USE_SYMBOLIZER=0\n    -frtti\n    -fexceptions\n    -std=c++14\n    -Wno-error\n    -Wno-unused-local-typedefs\n    -Wno-unused-variable\n    -Wno-sign-compare\n    -Wno-comment\n    -Wno-return-type\n    -Wno-global-constructors"; }; };
 		8993C4EFE5410B6FC2FED13F386DEB91 /* UMErrorCodes.m in Sources */ = {isa = PBXBuildFile; fileRef = E4DA18B7793FF207ABB4D77CC6256B8D /* UMErrorCodes.m */; };
-		89942EF843F9E957897E407785F5EBEB /* RNDocumentPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = F26B1C082DD4EEC193B7FA7CFD8196DD /* RNDocumentPicker.m */; };
 		89962038722B977646E734E6721E5D8B /* RCTSRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = EFCB0C390BC727840992A96B9B2BB830 /* RCTSRWebSocket.m */; settings = {COMPILER_FLAGS = "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32 -Wno-documentation"; }; };
 		899FFCA3B165C5CD1981DB5BCCAD5239 /* EXAudioSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA0B7DE44C1908CAE127188924717FA /* EXAudioSessionManager.m */; };
 		89B4D9853434312C263DA9C63905FB5B /* small_vector.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B9E15C047CA81F078F50403C4544769 /* small_vector.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -2178,7 +2179,6 @@
 		99A007EAE06F3B5BC99BC1DAFBBDC8FC /* StreamRequester.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A42B29DA8DCC509D2967F364F45C6DB /* StreamRequester.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		99AEF020AD403D33E3547834F98A6BB1 /* RNFBCrashlyticsInitProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = D28850D1E95D6F27209F77B2AC1BDD10 /* RNFBCrashlyticsInitProvider.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		99BE0D8D64FC6BB0AE3C08C484F60565 /* ModuleRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 395473F21F297CDA63A7CEF44F0B6EEE /* ModuleRegistry.cpp */; settings = {COMPILER_FLAGS = "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32 -Wno-documentation"; }; };
-		99C59D6ECE898E69CFD008329BB16CBE /* react-native-document-picker-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BC84C16D83F95A0157AEA5424A09F8E /* react-native-document-picker-dummy.m */; };
 		99EA072406AFDC6171C6D22EC0C9DD05 /* StreamFragmentAccumulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E13F08F3FC80CB63641CD83E6F9B1954 /* StreamFragmentAccumulator.cpp */; settings = {COMPILER_FLAGS = "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -DFOLLY_HAVE_LIBGFLAGS=0 -DFOLLY_HAVE_LIBJEMALLOC=0 -DFOLLY_HAVE_PREADV=0 -DFOLLY_HAVE_PWRITEV=0 -DFOLLY_HAVE_TFO=0 -DFOLLY_USE_SYMBOLIZER=0  -frtti\n    -fexceptions\n    -std=c++14\n    -Wno-error\n    -Wno-unused-local-typedefs\n    -Wno-unused-variable\n    -Wno-sign-compare\n    -Wno-comment\n    -Wno-return-type\n    -Wno-global-constructors"; }; };
 		9A2A7128EB69942C9C61F37DEFAFAD99 /* FIRCLSMachOBinary.m in Sources */ = {isa = PBXBuildFile; fileRef = A2C0FE182CCFD918BBC16E8588ED77A2 /* FIRCLSMachOBinary.m */; };
 		9A4764272B17E0B5E1B5872BD4975C9E /* react-native-restart-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = EEB995B2D730D162A54F93D035725392 /* react-native-restart-dummy.m */; };
@@ -2430,6 +2430,7 @@
 		AD5B4615C07C7F4A5BF1C6AB86BC4BE1 /* FIRHeartbeatInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 2412740D8B5C699F1DA6D7FF2E5B0326 /* FIRHeartbeatInfo.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		AD62627C39B5BAF324061B71ECAA46F9 /* VibrancyView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB5083709AC11651261360021B88DE51 /* VibrancyView.m */; };
 		AD7EBAD74008845B57FBF391AA29E4CC /* RNFBMeta.h in Headers */ = {isa = PBXBuildFile; fileRef = 15436CBB674FC9C3C4B44FCADD90A35D /* RNFBMeta.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		AD811EE43CC60A940768EEA939DCFBA4 /* react-native-document-picker-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BC84C16D83F95A0157AEA5424A09F8E /* react-native-document-picker-dummy.m */; };
 		AD91D024AD639FACF7D9F42AF6129707 /* RNNotificationCenterMulticast.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D7346CAF21F91D83105D5120265D77E /* RNNotificationCenterMulticast.m */; };
 		ADA81D6992C86DCEB87920B0325900BF /* UIView+React.m in Sources */ = {isa = PBXBuildFile; fileRef = 85072152FDFD745E109E8479F91EC007 /* UIView+React.m */; settings = {COMPILER_FLAGS = "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32 -Wno-documentation"; }; };
 		ADC7CA1A1742F65CE1C474A41F2F1999 /* RCTView.h in Headers */ = {isa = PBXBuildFile; fileRef = B7D05EA74A85451A510B688295FD30EB /* RCTView.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -3441,7 +3442,6 @@
 		FB030E0B40723163A8A5CC37778237DB /* QBCheckmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A66C5AB55C404EFAA02BD07F9A6B12C /* QBCheckmarkView.m */; };
 		FB05C807C47916A23C9DFF3161A07413 /* ScheduledSingleSubscription.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C1DD3CF6BEC61F49EB5A5BEA5652EDC6 /* ScheduledSingleSubscription.cpp */; settings = {COMPILER_FLAGS = "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -DFOLLY_HAVE_LIBGFLAGS=0 -DFOLLY_HAVE_LIBJEMALLOC=0 -DFOLLY_HAVE_PREADV=0 -DFOLLY_HAVE_PWRITEV=0 -DFOLLY_HAVE_TFO=0 -DFOLLY_USE_SYMBOLIZER=0  -frtti\n    -fexceptions\n    -std=c++14\n    -Wno-error\n    -Wno-unused-local-typedefs\n    -Wno-unused-variable\n    -Wno-sign-compare\n    -Wno-comment\n    -Wno-return-type\n    -Wno-global-constructors"; }; };
 		FB13683FEEC61CA6568704C5039EDC4F /* ARTShapeManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 3A647A4A5C0B5DEAFF810E0A1C0E8DA8 /* ARTShapeManager.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		FB159782175B039F0676803224BB815B /* RNDocumentPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = B84AAB78BC33F569CA338F94B7208C43 /* RNDocumentPicker.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		FB15E26025B05A5740C1D84E482902ED /* RCTTurboModuleManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5D7F017A6BB0A3FAA89EF3DCCE6515CF /* RCTTurboModuleManager.mm */; settings = {COMPILER_FLAGS = "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32 -Wno-documentation"; }; };
 		FB220A41995F2E4052B0ECDF54E5B121 /* SDImageCodersManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B2BF8371001520ECBD5BAD785DC017E6 /* SDImageCodersManager.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		FB24A19A33840EA04FA9D8FA75476A69 /* BugsnagSessionTrackingPayload.h in Headers */ = {isa = PBXBuildFile; fileRef = 1652F768E1CB796E44E98D5AA3B0E08F /* BugsnagSessionTrackingPayload.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -4026,6 +4026,13 @@
 			remoteGlobalIDString = 7ACAA9BE580DD31A5CB9D97C45D9492D;
 			remoteInfo = "React-Core";
 		};
+		1DD062D7B80FF6AE845543CE23E1D88C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7ACAA9BE580DD31A5CB9D97C45D9492D;
+			remoteInfo = "React-Core";
+		};
 		1DD84FFDAF4C1BACF20D021770B1483E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
@@ -4431,13 +4438,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = FA877ADC442CB19CF61793D234C8B131;
 			remoteInfo = "React-jsi";
-		};
-		326D1B86E7D8E62B492165FDED512464 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 1BEE828C124E6416179B904A9F66D794;
-			remoteInfo = React;
 		};
 		329343E8FFB3CD33563B0778527F37D8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -12289,13 +12289,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		09486777E9396F4D278AB038372EC234 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		0A39A480C8681DBACD5FFF8127DB1027 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -12605,6 +12598,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		6D226EF8E64FBD813303F6B1A3ACE52C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6D3F3F360FA5C616E90D10D7023B96E8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -22699,6 +22699,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A0EFFC20925522D435B46CAB914B4B6F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				44A2C2B77D6697AF9C075067D181128F /* RNDocumentPicker.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A15953B3F55B6C99E50BB014DDA93EEA /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -22776,14 +22784,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				40B5FD30347255E3BCE18EB7A331BF5B /* EXLocalAuthentication.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B83E600B9610A5F4E06D56C0091665DB /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FB159782175B039F0676803224BB815B /* RNDocumentPicker.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -25438,16 +25438,16 @@
 		};
 		D11E74324175FE5B0E78DB046527F233 /* react-native-document-picker */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CB8244AC71E28487A3DD03053E27592D /* Build configuration list for PBXNativeTarget "react-native-document-picker" */;
+			buildConfigurationList = 7E873EBA929ED2AB7EC53D1F91DB09B5 /* Build configuration list for PBXNativeTarget "react-native-document-picker" */;
 			buildPhases = (
-				B83E600B9610A5F4E06D56C0091665DB /* Headers */,
-				1061637EF85D273CE1EEE202284D74C0 /* Sources */,
-				09486777E9396F4D278AB038372EC234 /* Frameworks */,
+				A0EFFC20925522D435B46CAB914B4B6F /* Headers */,
+				E77E7992CBE562A712485A193A2D90C5 /* Sources */,
+				6D3F3F360FA5C616E90D10D7023B96E8 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				2FA058C495EF56042CEAC74E35BD0EA0 /* PBXTargetDependency */,
+				0694D76F99EBE685A34FA1097D6A88C5 /* PBXTargetDependency */,
 			);
 			name = "react-native-document-picker";
 			productName = "react-native-document-picker";
@@ -26465,15 +26465,6 @@
 			files = (
 				A0B16A8ED149E376671B47003709E603 /* RNRootView-dummy.m in Sources */,
 				8FC8BE266412278F6A06262CEFC25FE7 /* RootView.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		1061637EF85D273CE1EEE202284D74C0 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				99C59D6ECE898E69CFD008329BB16CBE /* react-native-document-picker-dummy.m in Sources */,
-				89942EF843F9E957897E407785F5EBEB /* RNDocumentPicker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -28137,6 +28128,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E77E7992CBE562A712485A193A2D90C5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AD811EE43CC60A940768EEA939DCFBA4 /* react-native-document-picker-dummy.m in Sources */,
+				4CFF2BBA882ED477A9E4345DDF73ED77 /* RNDocumentPicker.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E855EAA7620F280C830A01CC6E4B5531 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -28710,6 +28710,12 @@
 			target = D20469A9A1E5CFB26045EAEBE3F88E5E /* RCTTypeSafety */;
 			targetProxy = 210CB3A014699225D03E15FB5E136812 /* PBXContainerItemProxy */;
 		};
+		0694D76F99EBE685A34FA1097D6A88C5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "React-Core";
+			target = 7ACAA9BE580DD31A5CB9D97C45D9492D /* React-Core */;
+			targetProxy = 1DD062D7B80FF6AE845543CE23E1D88C /* PBXContainerItemProxy */;
+		};
 		072E381627E0BE8FB18753729F2B3BCB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = FirebaseCore;
@@ -29255,12 +29261,6 @@
 			name = "React-jsi";
 			target = FA877ADC442CB19CF61793D234C8B131 /* React-jsi */;
 			targetProxy = B015D4C9D121E7B69A18A4F5A9877DB7 /* PBXContainerItemProxy */;
-		};
-		2FA058C495EF56042CEAC74E35BD0EA0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = React;
-			target = 1BEE828C124E6416179B904A9F66D794 /* React */;
-			targetProxy = 326D1B86E7D8E62B492165FDED512464 /* PBXContainerItemProxy */;
 		};
 		2FE78A545AF40E3745907C01AC109F2F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -34795,31 +34795,6 @@
 			};
 			name = Debug;
 		};
-		56990154C6CA1092C5581734CAB3DF20 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = D9B0551A03A9169E8731435D764C35DE /* react-native-document-picker.debug.xcconfig */;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/react-native-document-picker/react-native-document-picker-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = react_native_document_picker;
-				PRODUCT_NAME = "react-native-document-picker";
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
 		57B656256E59CE6A3B384FD16049A754 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2D731BF378383620DB3FE06B12D582E8 /* EXImageLoader.release.xcconfig */;
@@ -36542,6 +36517,32 @@
 			};
 			name = Debug;
 		};
+		9D23DAFB91B66D16068F000F5EBC72DF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D9B0551A03A9169E8731435D764C35DE /* react-native-document-picker.debug.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/react-native-document-picker/react-native-document-picker-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = react_native_document_picker;
+				PRODUCT_NAME = "react-native-document-picker";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 		9D3B5E8C5C36D3D34B6E77F7F8655A55 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 19F4744135B4EC0215EEF8F8EA396E5A /* react-native-background-timer.release.xcconfig */;
@@ -38190,6 +38191,33 @@
 			};
 			name = Release;
 		};
+		EA63371836855F183EB482F6D7439350 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 33F3DF7F42A945FE3B27508C5C5C45E5 /* react-native-document-picker.release.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/react-native-document-picker/react-native-document-picker-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = react_native_document_picker;
+				PRODUCT_NAME = "react-native-document-picker";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		EA7F8F12F0A75F98F4A00938197BB82C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1AFC84AA13D2920C0C58887B51153A68 /* React-RCTBlob.debug.xcconfig */;
@@ -38239,32 +38267,6 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
-		};
-		EE587CD034E397D9E18FC41CB6A9DD13 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 33F3DF7F42A945FE3B27508C5C5C45E5 /* react-native-document-picker.release.xcconfig */;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/react-native-document-picker/react-native-document-picker-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = react_native_document_picker;
-				PRODUCT_NAME = "react-native-document-picker";
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
 		};
 		EE6071C9FFCFC60D91242975AD03057B /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -39379,6 +39381,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		7E873EBA929ED2AB7EC53D1F91DB09B5 /* Build configuration list for PBXNativeTarget "react-native-document-picker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9D23DAFB91B66D16068F000F5EBC72DF /* Debug */,
+				EA63371836855F183EB482F6D7439350 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		7FD4B67B6D85C5202A220303DB19967D /* Build configuration list for PBXNativeTarget "Flipper-DoubleConversion" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -39744,15 +39755,6 @@
 			buildConfigurations = (
 				856F5D1DE9373D7F014D1325CDB5986A /* Debug */,
 				D124A7732EA3602924AFD9A7E066FF3C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		CB8244AC71E28487A3DD03053E27592D /* Build configuration list for PBXNativeTarget "react-native-document-picker" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				56990154C6CA1092C5581734CAB3DF20 /* Debug */,
-				EE587CD034E397D9E18FC41CB6A9DD13 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
