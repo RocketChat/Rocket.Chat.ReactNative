@@ -76,20 +76,21 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }) => {
 	const { title = name, avatar = name } = notification;
 
 	const onPress = () => {
-		const { prid } = payload;
+		const { prid, _id } = payload;
 		if (!rid) {
 			return;
 		}
 		const item = {
 			rid, name: title, t: type, prid
 		};
+		const jumpToMessageId = _id;
 
 		if (isMasterDetail) {
 			Navigation.navigate('DrawerNavigator');
 		} else {
 			Navigation.navigate('RoomsListView');
 		}
-		goRoom({ item, isMasterDetail });
+		goRoom({ item, isMasterDetail, jumpToMessageId });
 		hideNotification();
 	};
 
