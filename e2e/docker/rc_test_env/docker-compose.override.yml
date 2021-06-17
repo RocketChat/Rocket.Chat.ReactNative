@@ -2,12 +2,13 @@ version: '2'
 
 services:
   mongo:
-    image: circleci/mongo:4.0
+    # image: circleci/mongo:4.0
     volumes:
       - ${DATAROOT}/data/db:/data/db
       - ${DATAROOT}/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
     environment:
       - MONGO_INITDB_DATABASE=rocketchat
+    command: mongod --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
 
   mongo-init-replica: # No replicas when testing
     image: tianon/true
