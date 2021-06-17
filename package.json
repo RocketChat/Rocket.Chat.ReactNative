@@ -16,12 +16,8 @@
     "precommit": "eslint . && jest",
     "generate-source-maps-ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios-release.bundle --sourcemap-output ios-release.bundle.map",
     "generate-source-maps-android": "bugsnag-sourcemaps",
-    "postinstall": "patch-package && jetify"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run precommit"
-    }
+    "postinstall": "patch-package && jetify",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@codler/react-native-keyboard-aware-scroll-view": "^1.0.1",
@@ -134,7 +130,7 @@
     "@babel/eslint-plugin": "7.14.5",
     "@babel/plugin-proposal-decorators": "7.14.5",
     "@babel/runtime": "7.14.5",
-    "@storybook/addon-storyshots": "5.3.19",
+    "@storybook/addon-storyshots": "6.2.9",
     "@storybook/react-native": "5.3.25",
     "@types/react-native": "^0.62.7",
     "axios": "^0.19.2",
@@ -151,7 +147,7 @@
     "eslint-plugin-jsx-a11y": "6.4.1",
     "eslint-plugin-react": "7.24.0",
     "eslint-plugin-react-native": "3.11.0",
-    "husky": "3.0.9",
+    "husky": "^6.0.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^25.1.0",
     "jest-cli": "^23.6.0",
