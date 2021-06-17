@@ -994,6 +994,7 @@
 		3B1A4ABB3A233C6C406034D4B3961CAE /* FIRComponentContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 000902304BD53E799CCEB806DC22CB37 /* FIRComponentContainer.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		3B1C2375F72D614273A7E20F2B50FA53 /* AESCrypt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 254CBC5E3F119BDEA4ED0006C815D414 /* AESCrypt.cpp */; settings = {COMPILER_FLAGS = "-x objective-c++ -fno-objc-arc"; }; };
 		3B7AA5862F5900A9AC2F08C403B7DDBA /* RCTValueAnimatedNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B56E9BC2C11577B9B00522D19EA4CE7 /* RCTValueAnimatedNode.m */; settings = {COMPILER_FLAGS = "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32 -Wno-nullability-completeness"; }; };
+		3B894FCBE494A56B522B87BECE5D410E /* RNLocalize.h in Headers */ = {isa = PBXBuildFile; fileRef = C280ADAF2D454B2568A0C956F40217E8 /* RNLocalize.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		3BD0882B5D37435DBFAC2ECBB9DFC3D1 /* double-conversion.h in Headers */ = {isa = PBXBuildFile; fileRef = 3517226A63DAF6EA8168A50B0B38522C /* double-conversion.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		3BD2B765DC245C6F0426F60090F210A2 /* Format.h in Headers */ = {isa = PBXBuildFile; fileRef = 599E1258B9568B7CEE685BD128186A64 /* Format.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		3BDE4D9A4E2AE1109347B9234DAED7ED /* openssl_md5_locl.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FDDD9B73E4C490FF760E0DCF300357C /* openssl_md5_locl.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -2007,9 +2008,9 @@
 		8CC0F0CD004FF65F42A36EA181353ACA /* RNCSafeAreaViewManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 57CAE1D04BB2A83386D041BBC7960073 /* RNCSafeAreaViewManager.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		8CC1C6C841AB94CEA8787AF5754571C1 /* UMReactLogHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = C49906100567C76827B0EBBCDC49A6B0 /* UMReactLogHandler.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		8CC7E6E71C2BC3F4C733557F1E7FC300 /* CodedOutputData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0E2428CEA407DD266A033FC1F5231372 /* CodedOutputData.cpp */; settings = {COMPILER_FLAGS = "-x objective-c++ -fno-objc-arc"; }; };
-		8CD76807160CC1482ACD05CE762057ED /* RNLocalize-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BD9B7F46F6CB52CA4159BC14439297E0 /* RNLocalize-dummy.m */; };
 		8CDE0B98668EF6D05F80CF0E07562BDB /* SDAnimatedImagePlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = C46FD25E47E045CA4C193072575AB3BC /* SDAnimatedImagePlayer.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		8D261C51FD8E5585C410A7914D1BCE22 /* utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 5995B483B9AC918FBAEDEF7F604C89F9 /* utils.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		8D27EBDDF0A002BDB9FF045C72FBA1BE /* RNLocalize.m in Sources */ = {isa = PBXBuildFile; fileRef = 14B31094D40F3180A66DDD6DD415DE94 /* RNLocalize.m */; };
 		8D38F9FAEC93C152A875F7EBEE91CAD4 /* FIRCLSReportUploader.h in Headers */ = {isa = PBXBuildFile; fileRef = 8706F46587B792368C3146E54694F612 /* FIRCLSReportUploader.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		8D77643F79FFBF648325E9A351C5C8C1 /* RCTMaskedView.m in Sources */ = {isa = PBXBuildFile; fileRef = C21A1B77E15FEDFF005DA5AA3A043E6E /* RCTMaskedView.m */; settings = {COMPILER_FLAGS = "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32 -Wno-documentation"; }; };
 		8D7C15503C98FAC8A720818659B92809 /* RCTSha.m in Sources */ = {isa = PBXBuildFile; fileRef = B31A938BA57C97018F16609A23751B50 /* RCTSha.m */; };
@@ -2343,6 +2344,7 @@
 		A68342B145274FF238578BA5C2372467 /* SDImageTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = CD878B0411AE7B509018B7E4677A8D9A /* SDImageTransformer.m */; };
 		A68B8FFD225A335FF0BBECB05284CCD5 /* FIRDependency.h in Headers */ = {isa = PBXBuildFile; fileRef = E2AEBDE2BFA6F4BD26C6F1EF52DAB040 /* FIRDependency.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		A691A2C3279D1BC307475576D7838143 /* FIRCLSDwarfUnwind.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E9397A0636933F5CE512BE3684A997E /* FIRCLSDwarfUnwind.c */; };
+		A699D4DEDADFC42D669EE52778F04DD4 /* RNLocalize-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BD9B7F46F6CB52CA4159BC14439297E0 /* RNLocalize-dummy.m */; };
 		A6DA43775DD9A372BB05176BF2166689 /* YogaKit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A521FD27B8E3145D0A2E93916587D9C /* YogaKit-dummy.m */; };
 		A6DCA910E5B7FEDCB7F0E2A23CD1D942 /* SharedMutex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A80B4CFD2DB2A92D5E4670406B4D6D1 /* SharedMutex.cpp */; settings = {COMPILER_FLAGS = "-DFOLLY_HAVE_PTHREAD=1 -DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -DFOLLY_HAVE_LIBGFLAGS=0 -DFOLLY_HAVE_LIBJEMALLOC=0 -DFOLLY_HAVE_PREADV=0 -DFOLLY_HAVE_PWRITEV=0 -DFOLLY_HAVE_TFO=0 -DFOLLY_USE_SYMBOLIZER=0\n    -frtti\n    -fexceptions\n    -std=c++14\n    -Wno-error\n    -Wno-unused-local-typedefs\n    -Wno-unused-variable\n    -Wno-sign-compare\n    -Wno-comment\n    -Wno-return-type\n    -Wno-global-constructors"; }; };
 		A6E5C0B988F2E8CB86F1665CFC4EA48A /* RCTTextAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = C0DC6FC0CDC9DC9BF80FB9318C9D715D /* RCTTextAttributes.m */; };
@@ -3071,7 +3073,6 @@
 		DF2E05597CEC2E08B1F5DBF0F4015049 /* alpha_processing.c in Sources */ = {isa = PBXBuildFile; fileRef = A7BD3B30897587FE277B25EC9B9C31F8 /* alpha_processing.c */; settings = {COMPILER_FLAGS = "-D_THREAD_SAFE -fno-objc-arc"; }; };
 		DF365C2EBC94B800048B8CF31D261D9D /* SingletonStackTrace.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1BB08A0560C4E5A114B94C7F8978196 /* SingletonStackTrace.cpp */; settings = {COMPILER_FLAGS = "-DFOLLY_HAVE_PTHREAD=1 -DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -DFOLLY_HAVE_LIBGFLAGS=0 -DFOLLY_HAVE_LIBJEMALLOC=0 -DFOLLY_HAVE_PREADV=0 -DFOLLY_HAVE_PWRITEV=0 -DFOLLY_HAVE_TFO=0 -DFOLLY_USE_SYMBOLIZER=0\n    -frtti\n    -fexceptions\n    -std=c++14\n    -Wno-error\n    -Wno-unused-local-typedefs\n    -Wno-unused-variable\n    -Wno-sign-compare\n    -Wno-comment\n    -Wno-return-type\n    -Wno-global-constructors"; }; };
 		DF6260BE03F8B14B2BDB07352FE3AEBB /* Format.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E5FA0BDBDDBAF3DFE88E9A0B038D8A72 /* Format.cpp */; settings = {COMPILER_FLAGS = "-DFOLLY_HAVE_PTHREAD=1 -DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -DFOLLY_HAVE_LIBGFLAGS=0 -DFOLLY_HAVE_LIBJEMALLOC=0 -DFOLLY_HAVE_PREADV=0 -DFOLLY_HAVE_PWRITEV=0 -DFOLLY_HAVE_TFO=0 -DFOLLY_USE_SYMBOLIZER=0\n    -frtti\n    -fexceptions\n    -std=c++14\n    -Wno-error\n    -Wno-unused-local-typedefs\n    -Wno-unused-variable\n    -Wno-sign-compare\n    -Wno-comment\n    -Wno-return-type\n    -Wno-global-constructors"; }; };
-		DF6ABEF38237E6CCE019B85C6B32400E /* RNLocalize.h in Headers */ = {isa = PBXBuildFile; fileRef = C280ADAF2D454B2568A0C956F40217E8 /* RNLocalize.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		DF77B1870F0DC8BE940149CECFC059F0 /* FIRCLSUserLogging.h in Headers */ = {isa = PBXBuildFile; fileRef = 0C6E319C60908897ED62DBABEA24A714 /* FIRCLSUserLogging.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		DF9556B84ADFE4CE9EE11C32BE59194F /* REATransitionAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = 9F97AB0D01237B3ACB62A1BB4D0DEA98 /* REATransitionAnimation.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		DF9BF273B3A19D48077F9A2F652E0699 /* RCTAnimatedNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B1F4DB0DE3C68BC8D3845B502352AB49 /* RCTAnimatedNode.m */; settings = {COMPILER_FLAGS = "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32 -Wno-nullability-completeness"; }; };
@@ -3107,7 +3108,6 @@
 		E21CDCA3DA9A017D42C65544EE659537 /* quant_levels_dec_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = 3EE8FE43BC10C7A3290B0511031653BE /* quant_levels_dec_utils.c */; settings = {COMPILER_FLAGS = "-D_THREAD_SAFE -fno-objc-arc"; }; };
 		E231A20A63F48C974C354EA237E5B9E0 /* FIRCLSMachException.c in Sources */ = {isa = PBXBuildFile; fileRef = 1FE7A7FACDDD35547CD57D3797439B72 /* FIRCLSMachException.c */; };
 		E232697AD2A0BBC29515EC23C546E8B6 /* BasicTransportCertificate.h in Headers */ = {isa = PBXBuildFile; fileRef = 3594DF1CD01D964FAA8763E627265CB0 /* BasicTransportCertificate.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		E235F45E4BC8EBF6FC6D6BA73B07903A /* RNLocalize.m in Sources */ = {isa = PBXBuildFile; fileRef = 14B31094D40F3180A66DDD6DD415DE94 /* RNLocalize.m */; };
 		E23B9A3321A28B32A4AACFD5B755877D /* GDTCORRegistrar.h in Headers */ = {isa = PBXBuildFile; fileRef = EF9FFCBF8924E2CDB54727B590DCC4D1 /* GDTCORRegistrar.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E23E3CA4E3F8190534C9146C75ACC3FB /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F718F7B37DD6F239BD9C833E376A6D4 /* UIView+WebCacheOperation.m */; };
 		E240FE4CFF3AAB68DC9FCDFFD745FE17 /* MMKVLog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8509DC6B1B59E8D5D93BFAA30EE12494 /* MMKVLog.cpp */; settings = {COMPILER_FLAGS = "-x objective-c++"; }; };
@@ -4634,13 +4634,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 620E05868772C10B4920DC7E324F2C87;
 			remoteInfo = FirebaseCoreDiagnostics;
-		};
-		3E62A11940F8FB8FE8BC330C4F1A59EB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 1BEE828C124E6416179B904A9F66D794;
-			remoteInfo = React;
 		};
 		3E7032E024D803D0555D6E9ED20DC3CF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -7686,6 +7679,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 2B25F90D819B9ADF2AF2D8733A890333;
 			remoteInfo = Yoga;
+		};
+		E5FF6F874A4521094BE6268B05BB2AA0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7ACAA9BE580DD31A5CB9D97C45D9492D;
+			remoteInfo = "React-Core";
 		};
 		E668DADD34AB1C137E2B442F4E9D52D2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -12555,13 +12555,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		55A10FB765F14F0BC1F0FBFC9ACBD1D9 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		5600FF2636F70E74A5931C35672BC8BB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -12640,6 +12633,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		7E18D3B8801F2B2AAD3B9A91F1B01991 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7E9DBD87767A4B7DB0C15A825D74D560 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -21946,6 +21946,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		731C8723858FAB0DB60F4251E854C097 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B894FCBE494A56B522B87BECE5D410E /* RNLocalize.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		75A1BF79BE349F5BD953C85CA8CF9CD4 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -22874,14 +22882,6 @@
 				7813F8A58A79105FE9C88A5763240744 /* TOCropViewController.h in Headers */,
 				A3AC5F82CFB2235E3D607D10940551AD /* TOCropViewControllerTransitioning.h in Headers */,
 				B95E0FE53DCE714EA39599C5160AA9B2 /* UIImage+CropRotate.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CCD799029A95CAE779842EE85535EFF5 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				DF6ABEF38237E6CCE019B85C6B32400E /* RNLocalize.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -25207,16 +25207,16 @@
 		};
 		B51433D546A38C51AA781F192E8836F8 /* RNLocalize */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D7E1721D4B7669B6397DD19C585B733 /* Build configuration list for PBXNativeTarget "RNLocalize" */;
+			buildConfigurationList = 6AAE551F9AC8FC8758D08EF10FEE7DEE /* Build configuration list for PBXNativeTarget "RNLocalize" */;
 			buildPhases = (
-				CCD799029A95CAE779842EE85535EFF5 /* Headers */,
-				5B6178029FBC2F49AF1D3A2D1E716352 /* Sources */,
-				55A10FB765F14F0BC1F0FBFC9ACBD1D9 /* Frameworks */,
+				731C8723858FAB0DB60F4251E854C097 /* Headers */,
+				1AC1E93F16BE74175B2038796BDC06D6 /* Sources */,
+				7E9DBD87767A4B7DB0C15A825D74D560 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				0ED6E0CD9709BD6C2168F680C802402C /* PBXTargetDependency */,
+				B6882D411BD60DC0C0961B960316DD0C /* PBXTargetDependency */,
 			);
 			name = RNLocalize;
 			productName = RNLocalize;
@@ -26589,6 +26589,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1AC1E93F16BE74175B2038796BDC06D6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A699D4DEDADFC42D669EE52778F04DD4 /* RNLocalize-dummy.m in Sources */,
+				8D27EBDDF0A002BDB9FF045C72FBA1BE /* RNLocalize.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1C8153817F0925DCBBD335B4A8D830EB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -27016,15 +27025,6 @@
 				5B17C07022BB8181DA586246F4E32483 /* RNSScreenContainer.m in Sources */,
 				7FB3CBE5BFDA11CB860B075A35EE3BFE /* RNSScreenStack.m in Sources */,
 				11231378DFABBFD74020590AA4BFDFDF /* RNSScreenStackHeaderConfig.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5B6178029FBC2F49AF1D3A2D1E716352 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8CD76807160CC1482ACD05CE762057ED /* RNLocalize-dummy.m in Sources */,
-				E235F45E4BC8EBF6FC6D6BA73B07903A /* RNLocalize.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -28817,12 +28817,6 @@
 			name = libwebp;
 			target = 47D2E85A78C25869BB13521D8561A638 /* libwebp */;
 			targetProxy = 619ADB8A3E317BFAA3F902B13FA32106 /* PBXContainerItemProxy */;
-		};
-		0ED6E0CD9709BD6C2168F680C802402C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = React;
-			target = 1BEE828C124E6416179B904A9F66D794 /* React */;
-			targetProxy = 3E62A11940F8FB8FE8BC330C4F1A59EB /* PBXContainerItemProxy */;
 		};
 		0EE7338AB4ED545B2E6D827771BB5292 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -31392,6 +31386,12 @@
 			target = 7ACAA9BE580DD31A5CB9D97C45D9492D /* React-Core */;
 			targetProxy = 85322271CB8310113B52A1CB0A259950 /* PBXContainerItemProxy */;
 		};
+		B6882D411BD60DC0C0961B960316DD0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "React-Core";
+			target = 7ACAA9BE580DD31A5CB9D97C45D9492D /* React-Core */;
+			targetProxy = E5FF6F874A4521094BE6268B05BB2AA0 /* PBXContainerItemProxy */;
+		};
 		B80581AFDFD003754102602A6C260D51 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Flipper-Folly";
@@ -32625,6 +32625,32 @@
 			};
 			name = Debug;
 		};
+		01D14AB23FAA5F98813B68B15F47A97E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 674C5AFA6B8658F9E0228FA349267BE7 /* RNLocalize.release.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/RNLocalize/RNLocalize-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = RNLocalize;
+				PRODUCT_NAME = RNLocalize;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		0278AAC31EEE2A8B1F78388E7E895BDB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1805431BA300537A75B6F3008ECABF8E /* FirebaseCoreDiagnostics.debug.xcconfig */;
@@ -33812,6 +33838,31 @@
 				PRIVATE_HEADERS_FOLDER_PATH = "";
 				PRODUCT_MODULE_NAME = RNFastImage;
 				PRODUCT_NAME = RNFastImage;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		351669C9D9B6E760A1FFDA38509E07C3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8E6EFC487486E9E37740026A3857CF15 /* RNLocalize.debug.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/RNLocalize/RNLocalize-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = RNLocalize;
+				PRODUCT_NAME = RNLocalize;
 				PUBLIC_HEADERS_FOLDER_PATH = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -35398,31 +35449,6 @@
 			};
 			name = Release;
 		};
-		7584AA9DE2A25C8B8DA625DEA2124DA6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8E6EFC487486E9E37740026A3857CF15 /* RNLocalize.debug.xcconfig */;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/RNLocalize/RNLocalize-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = RNLocalize;
-				PRODUCT_NAME = RNLocalize;
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
 		75F07EC0626EBC846B90C595F7B0B7BC /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 67243E8672F7F52A57F2E014771277F4 /* EXLocalAuthentication.release.xcconfig */;
@@ -36427,32 +36453,6 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
-		};
-		9A5BCB2C0E239CDCC917DE7A3848083D /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 674C5AFA6B8658F9E0228FA349267BE7 /* RNLocalize.release.xcconfig */;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/RNLocalize/RNLocalize-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = RNLocalize;
-				PRODUCT_NAME = RNLocalize;
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
 		};
 		9ACC1F098337677D14A82329DED6BB91 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -39028,15 +39028,6 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D7E1721D4B7669B6397DD19C585B733 /* Build configuration list for PBXNativeTarget "RNLocalize" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				7584AA9DE2A25C8B8DA625DEA2124DA6 /* Debug */,
-				9A5BCB2C0E239CDCC917DE7A3848083D /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		2DA0B8266EBBEDC766AF2E11AE2CEFB2 /* Build configuration list for PBXAggregateTarget "FirebaseAnalytics" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -39285,6 +39276,15 @@
 			buildConfigurations = (
 				F9C873A329B624ADA330C62F5DE32497 /* Debug */,
 				FED6EBFB2B300FD2EF2F30420E94650B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6AAE551F9AC8FC8758D08EF10FEE7DEE /* Build configuration list for PBXNativeTarget "RNLocalize" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				351669C9D9B6E760A1FFDA38509E07C3 /* Debug */,
+				01D14AB23FAA5F98813B68B15F47A97E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
