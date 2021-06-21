@@ -1,1 +1,1 @@
-../../../FirebaseCrashlytics/Crashlytics/Crashlytics/Public/FIRExceptionModel.h
+../../../FirebaseCrashlytics/Crashlytics/Crashlytics/Public/FirebaseCrashlytics/FIRExceptionModel.h

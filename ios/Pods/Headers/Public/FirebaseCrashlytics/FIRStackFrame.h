@@ -1,1 +1,1 @@
-../../../FirebaseCrashlytics/Crashlytics/Crashlytics/Public/FIRStackFrame.h
+../../../FirebaseCrashlytics/Crashlytics/Crashlytics/Public/FirebaseCrashlytics/FIRStackFrame.h

@@ -1,1 +1,1 @@
-../../../../../node_modules/react-native-notifications/RNNotifications/RNCommandsHandler.h
+../../../../../node_modules/react-native-notifications/lib/ios/RNCommandsHandler.h

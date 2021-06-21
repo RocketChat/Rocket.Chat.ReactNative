@@ -1,1 +1,1 @@
-../../../../../node_modules/react-native-notifications/RNNotifications/RNPushKitEventListener.h
+../../../../../node_modules/react-native-notifications/lib/ios/RNPushKitEventListener.h

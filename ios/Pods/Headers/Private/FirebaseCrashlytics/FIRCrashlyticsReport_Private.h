@@ -1,0 +1,1 @@
+../../../FirebaseCrashlytics/Crashlytics/Crashlytics/Private/FIRCrashlyticsReport_Private.h

@@ -1,1 +1,1 @@
-../../../../../node_modules/react-native-notifications/RNNotifications/RCTConvert+RNNotifications.h
+../../../../../node_modules/react-native-notifications/lib/ios/RCTConvert+RNNotifications.h

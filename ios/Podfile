@@ -35,6 +35,8 @@ target 'ShareRocketChatRN' do
   pod 'RNFBApp', :path => '../node_modules/@react-native-firebase/app'
   pod 'RNFBAnalytics', :path => '../node_modules/@react-native-firebase/analytics'
   pod 'RNFBCrashlytics', :path => '../node_modules/@react-native-firebase/crashlytics'
+  $RNFirebaseAnalyticsWithoutAdIdSupport = true
+
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
   pod 'RNCMaskedView', :path => '../node_modules/@react-native-community/masked-view'
   pod 'RNFastImage', :path => '../node_modules/@rocket.chat/react-native-fast-image'

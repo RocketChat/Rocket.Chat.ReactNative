@@ -12,10 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#import "FIRCLSApplication.h"
+#import "Crashlytics/Crashlytics/Components/FIRCLSApplication.h"
 
-#import "FIRCLSHost.h"
-#import "FIRCLSUtility.h"
+#import "Crashlytics/Crashlytics/Components/FIRCLSHost.h"
+#import "Crashlytics/Crashlytics/Helpers/FIRCLSUtility.h"
+
+#import <GoogleUtilities/GULAppEnvironmentUtil.h>
 
 #if CLS_TARGET_OS_OSX
 #import <AppKit/AppKit.h>
@@ -44,7 +46,27 @@ NSString* FIRCLSApplicationGetPlatform(void) {
   return @"mac";
 #elif TARGET_OS_TV
   return @"tvos";
+#elif TARGET_OS_WATCH
+  return @"ios";  // TODO: temporarily use iOS until Firebase can add watchos to the backend
 #endif
+}
+
+NSString* FIRCLSApplicationGetFirebasePlatform(void) {
+  NSString* firebasePlatform = [GULAppEnvironmentUtil applePlatform];
+
+#if TARGET_OS_IOS
+  if ([firebasePlatform isEqualToString:@"ios"] &&
+      UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+    return @"ipados";
+  }
+  // This check is necessary because iOS-only apps running on iPad
+  // will report UIUserInterfaceIdiomPhone via UI_USER_INTERFACE_IDIOM().
+  if ([[UIDevice currentDevice].model.lowercaseString containsString:@"ipad"]) {
+    return @"ipados";
+  }
+#endif
+
+  return firebasePlatform;
 }
 
 // these defaults match the FIRCLSInfoPlist helper in FIRCLSIDEFoundation

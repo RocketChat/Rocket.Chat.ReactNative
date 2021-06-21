@@ -12,20 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#import "FIRCLSInstallIdentifierModel.h"
+#import "Crashlytics/Crashlytics/Models/FIRCLSInstallIdentifierModel.h"
 
-#import <FirebaseInstallations/FirebaseInstallations.h>
+#import "FirebaseInstallations/Source/Library/Private/FirebaseInstallationsInternal.h"
 
-#import "FIRCLSByteUtility.h"
-#import "FIRCLSLogger.h"
-#import "FIRCLSUUID.h"
-#import "FIRCLSUserDefaults.h"
+#import "Crashlytics/Crashlytics/FIRCLSUserDefaults/FIRCLSUserDefaults.h"
+#import "Crashlytics/Crashlytics/Helpers/FIRCLSLogger.h"
+#import "Crashlytics/Shared/FIRCLSByteUtility.h"
+#import "Crashlytics/Shared/FIRCLSUUID.h"
 
 static NSString *const FIRCLSInstallationUUIDKey = @"com.crashlytics.iuuid";
 static NSString *const FIRCLSInstallationIIDHashKey = @"com.crashlytics.install.iid";
 
 // Legacy key that is automatically removed
 static NSString *const FIRCLSInstallationADIDKey = @"com.crashlytics.install.adid";
+
+static unsigned long long FIRCLSInstallationsWaitTime = 10 * NSEC_PER_SEC;
 
 @interface FIRCLSInstallIdentifierModel ()
 
@@ -96,20 +98,29 @@ static NSString *const FIRCLSInstallationADIDKey = @"com.crashlytics.install.adi
 
 #pragma mark Privacy Shield
 
-/**
- * To support privacy shield we need to regenerate the install id when the IID changes.
- *
- * This is a blocking, slow call that must be called on a background thread.
- */
-- (void)regenerateInstallIDIfNeededWithBlock:(void (^)(BOOL didRotate))callback {
-  // This callback is on the main thread
+- (BOOL)regenerateInstallIDIfNeeded {
+  BOOL __block didRotate = false;
+
+  dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+
+  // This runs Completion async, so wait a reasonable amount of time for it to finish.
   [self.installations
       installationIDWithCompletion:^(NSString *_Nullable currentIID, NSError *_Nullable error) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-          BOOL didRotate = [self rotateCrashlyticsInstallUUIDWithIID:currentIID error:error];
-          callback(didRotate);
-        });
+        didRotate = [self rotateCrashlyticsInstallUUIDWithIID:currentIID error:error];
+
+        if (didRotate) {
+          FIRCLSInfoLog(@"Rotated Crashlytics Install UUID because Firebase Install ID changed");
+        }
+        dispatch_semaphore_signal(semaphore);
       }];
+
+  intptr_t result = dispatch_semaphore_wait(
+      semaphore, dispatch_time(DISPATCH_TIME_NOW, FIRCLSInstallationsWaitTime));
+  if (result != 0) {
+    FIRCLSErrorLog(@"Crashlytics timed out while checking for Firebase Installation ID");
+  }
+
+  return didRotate;
 }
 
 - (BOOL)rotateCrashlyticsInstallUUIDWithIID:(NSString *_Nullable)currentIID

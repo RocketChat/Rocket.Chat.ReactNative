@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Google
+ * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,34 @@
  * limitations under the License.
  */
 
-#import "FIRCLSReportAdapter.h"
-#import "FIRCLSReportAdapter_Private.h"
+#import "Crashlytics/Crashlytics/Models/Record/FIRCLSReportAdapter.h"
+#import "Crashlytics/Crashlytics/Models/Record/FIRCLSReportAdapter_Private.h"
 
-#import "FIRCLSInternalReport.h"
-#import "FIRCLSLogger.h"
+#import "Crashlytics/Crashlytics/Helpers/FIRCLSLogger.h"
+#import "Crashlytics/Crashlytics/Models/FIRCLSInternalReport.h"
 
-#import "FIRCLSUserLogging.h"
+#import "Crashlytics/Crashlytics/Components/FIRCLSUserLogging.h"
 
 #import <nanopb/pb.h>
 #import <nanopb/pb_decode.h>
 #import <nanopb/pb_encode.h>
 
+@interface FIRCLSReportAdapter ()
+
+@property(nonatomic, strong) FIRCLSInstallIdentifierModel *installIDModel;
+
+@end
+
 @implementation FIRCLSReportAdapter
 
-- (instancetype)initWithPath:(NSString *)folderPath googleAppId:(NSString *)googleAppID {
+- (instancetype)initWithPath:(NSString *)folderPath
+                 googleAppId:(NSString *)googleAppID
+              installIDModel:(FIRCLSInstallIdentifierModel *)installIDModel {
   self = [super init];
   if (self) {
     _folderPath = folderPath;
     _googleAppID = googleAppID;
+    _installIDModel = installIDModel;
 
     [self loadMetaDataFile];
 
@@ -141,7 +150,7 @@
   report.sdk_version = FIRCLSEncodeString(self.identity.build_version);
   report.gmp_app_id = FIRCLSEncodeString(self.googleAppID);
   report.platform = [self protoPlatformFromString:self.host.platform];
-  report.installation_uuid = FIRCLSEncodeString(self.identity.install_id);
+  report.installation_uuid = FIRCLSEncodeString(self.installIDModel.installID);
   report.build_version = FIRCLSEncodeString(self.application.build_version);
   report.display_version = FIRCLSEncodeString(self.application.display_version);
   report.apple_payload = [self protoFilesPayload];

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#import "FIRConfiguration.h"
+#import "FirebaseCore/Sources/Public/FirebaseCore/FIRConfiguration.h"
 
 @class FIRAnalyticsConfiguration;
 

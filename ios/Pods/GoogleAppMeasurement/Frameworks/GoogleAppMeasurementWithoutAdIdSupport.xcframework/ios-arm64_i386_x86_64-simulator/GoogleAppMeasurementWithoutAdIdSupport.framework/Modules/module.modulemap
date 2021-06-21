@@ -1,0 +1,10 @@
+framework module GoogleAppMeasurementWithoutAdIdSupport {
+umbrella header "GoogleAppMeasurementWithoutAdIdSupport-umbrella.h"
+export *
+module * { export * }
+  link framework "Security"
+  link framework "SystemConfiguration"
+  link "c++"
+  link "sqlite3"
+  link "z"
+}

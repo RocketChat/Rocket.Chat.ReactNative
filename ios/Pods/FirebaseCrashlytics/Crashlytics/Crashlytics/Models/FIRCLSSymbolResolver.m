@@ -12,14 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#import "FIRCLSSymbolResolver.h"
+#import "Crashlytics/Crashlytics/Models/FIRCLSSymbolResolver.h"
 
 #include <dlfcn.h>
 
-#include "FIRCLSBinaryImage.h"
-#include "FIRCLSFile.h"
-#import "FIRCLSLogger.h"
-#import "FIRStackFrame_Private.h"
+#include "Crashlytics/Crashlytics/Components/FIRCLSBinaryImage.h"
+#include "Crashlytics/Crashlytics/Helpers/FIRCLSFile.h"
+#import "Crashlytics/Crashlytics/Helpers/FIRCLSInternalLogging.h"
+#import "Crashlytics/Crashlytics/Helpers/FIRCLSLogger.h"
+#import "Crashlytics/Crashlytics/Private/FIRStackFrame_Private.h"
 
 @interface FIRCLSSymbolResolver () {
   NSMutableArray* _binaryImages;
@@ -129,7 +130,7 @@
 
   if (![self fillInImageDetails:&imageDetails forUUID:[binaryImage objectForKey:@"uuid"]]) {
 #if DEBUG
-    FIRCLSDebugLog(@"Image not found");
+    FIRCLSSDKLog("Image not found\n");
 #endif
     return NO;
   }
@@ -141,7 +142,7 @@
 
   if (dladdr((void*)addr, &dlInfo) == 0) {
 #if DEBUG
-    FIRCLSDebugLog(@"Could not look up address");
+    FIRCLSSDKLog("Could not look up address\n");
 #endif
     return NO;
   }
@@ -150,7 +151,7 @@
     addr -= 2;
     if (dladdr((void*)addr, &dlInfo) == 0) {
 #if DEBUG
-      FIRCLSDebugLog(@"Could not look up address");
+      FIRCLSSDKLog("Could not look up address after move\n");
 #endif
       return NO;
     }

@@ -17,7 +17,7 @@
 #include <mach/mach.h>
 #include <stdbool.h>
 
-#include "FIRCLSFile.h"
+#include "Crashlytics/Crashlytics/Helpers/FIRCLSFile.h"
 
 typedef struct {
   // task info
@@ -32,7 +32,6 @@ typedef struct {
 } FIRCLSProcess;
 
 bool FIRCLSProcessInit(FIRCLSProcess *process, thread_t crashedThread, void *uapVoid);
-bool FIRCLSProcessDestroy(FIRCLSProcess *process);
 bool FIRCLSProcessDebuggerAttached(void);
 
 bool FIRCLSProcessSuspendAllOtherThreads(FIRCLSProcess *process);

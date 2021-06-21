@@ -15,11 +15,11 @@
 // TODO: Remove this class after the uploading of reports via GoogleDataTransport is no longer an
 // experiment
 
-#import "FIRCLSInternalReport.h"
+#import "Crashlytics/Crashlytics/Models/FIRCLSInternalReport.h"
 
-#import "FIRCLSFile.h"
-#import "FIRCLSFileManager.h"
-#import "FIRCLSLogger.h"
+#import "Crashlytics/Crashlytics/Helpers/FIRCLSFile.h"
+#import "Crashlytics/Crashlytics/Helpers/FIRCLSLogger.h"
+#import "Crashlytics/Crashlytics/Models/FIRCLSFileManager.h"
 
 NSString *const FIRCLSReportBinaryImageFile = @"binary_images.clsrecord";
 NSString *const FIRCLSReportExceptionFile = @"exception.clsrecord";
@@ -105,7 +105,7 @@ NSString *const FIRCLSReportUserCompactedKVFile = @"user_compacted_kv.clsrecord"
 }
 
 #pragma mark - Processing Methods
-- (BOOL)needsToBeSubmitted {
+- (BOOL)hasAnyEvents {
   NSArray *reportFiles = @[
     FIRCLSReportExceptionFile, FIRCLSReportSignalFile, FIRCLSReportCustomExceptionAFile,
     FIRCLSReportCustomExceptionBFile,
@@ -114,7 +114,7 @@ NSString *const FIRCLSReportUserCompactedKVFile = @"user_compacted_kv.clsrecord"
 #endif
     FIRCLSReportErrorAFile, FIRCLSReportErrorBFile
   ];
-  return [self checkExistenceOfAtLeastOnceFileInArray:reportFiles];
+  return [self checkExistenceOfAtLeastOneFileInArray:reportFiles];
 }
 
 // These are purposefully in order of precedence. If duplicate data exists
@@ -140,10 +140,10 @@ NSString *const FIRCLSReportUserCompactedKVFile = @"user_compacted_kv.clsrecord"
 
 - (BOOL)isCrash {
   NSArray *crashFiles = [FIRCLSInternalReport crashFileNames];
-  return [self checkExistenceOfAtLeastOnceFileInArray:crashFiles];
+  return [self checkExistenceOfAtLeastOneFileInArray:crashFiles];
 }
 
-- (BOOL)checkExistenceOfAtLeastOnceFileInArray:(NSArray *)files {
+- (BOOL)checkExistenceOfAtLeastOneFileInArray:(NSArray *)files {
   NSFileManager *manager = [NSFileManager defaultManager];
 
   for (NSString *fileName in files) {

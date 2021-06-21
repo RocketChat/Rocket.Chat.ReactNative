@@ -5,8 +5,9 @@ apply plugin: "com.android.application"
 apply plugin: 'kotlin-android'
 
 if (!isFoss) {
-    apply plugin: 'com.google.firebase.crashlytics'
     apply plugin: 'com.bugsnag.android.gradle'
+    apply plugin: 'com.google.gms.google-services'
+    apply plugin: 'com.google.firebase.crashlytics'
 }
 
 import com.android.build.OutputFile
@@ -262,7 +263,7 @@ dependencies {
     addUnimodulesDependencies()
     implementation project(':watermelondb')
     implementation project(':@react-native-community_viewpager')
-    playImplementation project(':reactnativenotifications')
+    playImplementation project(':react-native-notifications')
     playImplementation project(':@react-native-firebase_app')
     playImplementation project(':@react-native-firebase_analytics')
     playImplementation project(':@react-native-firebase_crashlytics')
@@ -303,6 +304,3 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
-if (!isFoss) {
-    apply plugin: 'com.google.gms.google-services'
-}

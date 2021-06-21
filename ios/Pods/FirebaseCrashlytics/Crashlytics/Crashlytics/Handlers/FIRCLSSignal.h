@@ -14,13 +14,11 @@
 
 #pragma once
 
-#include "FIRCLSFeatures.h"
-#include "FIRCLSFile.h"
+#include "Crashlytics/Crashlytics/Helpers/FIRCLSFeatures.h"
+#include "Crashlytics/Crashlytics/Helpers/FIRCLSFile.h"
 
 #include <signal.h>
 #include <stdbool.h>
-
-#define FIRCLSSignalCount (7)
 
 // per man sigaltstack, MINSIGSTKSZ is the minimum *overhead* needed to support
 // a signal stack.  The actual stack size must be larger.  Let's pick the recommended
@@ -30,6 +28,9 @@
 #else
 #define CLS_SIGNAL_HANDLER_STACK_SIZE 0
 #endif
+
+#if CLS_SIGNAL_SUPPORTED
+#define FIRCLSSignalCount (7)
 
 typedef struct {
   const char* path;
@@ -44,8 +45,12 @@ void FIRCLSSignalInitialize(FIRCLSSignalReadContext* roContext);
 void FIRCLSSignalCheckHandlers(void);
 
 void FIRCLSSignalSafeRemoveHandlers(bool includingAbort);
-bool FIRCLSSignalSafeInstallPreexistingHandlers(FIRCLSSignalReadContext* roContext);
+bool FIRCLSSignalSafeInstallPreexistingHandlers(FIRCLSSignalReadContext* roContext,
+                                                const int signal,
+                                                siginfo_t* info,
+                                                void* uapVoid);
 
 void FIRCLSSignalNameLookup(int number, int code, const char** name, const char** codeName);
 
 void FIRCLSSignalEnumerateHandledSignals(void (^block)(int idx, int signal));
+#endif

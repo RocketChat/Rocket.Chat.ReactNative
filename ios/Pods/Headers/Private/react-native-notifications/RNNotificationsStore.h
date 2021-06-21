@@ -1,1 +1,1 @@
-../../../../../node_modules/react-native-notifications/RNNotifications/RNNotificationsStore.h
+../../../../../node_modules/react-native-notifications/lib/ios/RNNotificationsStore.h

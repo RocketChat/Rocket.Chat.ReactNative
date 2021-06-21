@@ -50,7 +50,7 @@ static void InitializeFlipper(UIApplication *application) {
 
     self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegistryProvider:[[UMModuleRegistryProvider alloc] init]];
     RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
-    if(![FIRApp defaultApp]){
+    if ([FIRApp defaultApp] == nil) {
       [FIRApp configure];
     }
     RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge

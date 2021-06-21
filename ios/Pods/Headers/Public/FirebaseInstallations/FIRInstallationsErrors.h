@@ -1,1 +1,1 @@
-../../../FirebaseInstallations/FirebaseInstallations/Source/Library/Public/FIRInstallationsErrors.h
+../../../FirebaseInstallations/FirebaseInstallations/Source/Library/Public/FirebaseInstallations/FIRInstallationsErrors.h

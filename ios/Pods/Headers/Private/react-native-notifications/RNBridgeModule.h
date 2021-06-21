@@ -1,1 +1,1 @@
-../../../../../node_modules/react-native-notifications/RNNotifications/RNBridgeModule.h
+../../../../../node_modules/react-native-notifications/lib/ios/RNBridgeModule.h

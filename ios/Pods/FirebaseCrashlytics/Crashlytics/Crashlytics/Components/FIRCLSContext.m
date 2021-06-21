@@ -12,23 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "FIRCLSContext.h"
+#include "Crashlytics/Crashlytics/Components/FIRCLSContext.h"
 
 #include <stdlib.h>
 #include <string.h>
 
-#import "FIRCLSFileManager.h"
-#import "FIRCLSInstallIdentifierModel.h"
-#import "FIRCLSInternalReport.h"
-#import "FIRCLSSettings.h"
+#import "Crashlytics/Shared/FIRCLSConstants.h"
 
-#include "FIRCLSApplication.h"
-#include "FIRCLSCrashedMarkerFile.h"
-#include "FIRCLSDefines.h"
-#include "FIRCLSFeatures.h"
-#include "FIRCLSGlobals.h"
-#include "FIRCLSProcess.h"
-#include "FIRCLSUtility.h"
+#import "Crashlytics/Crashlytics/Models/FIRCLSFileManager.h"
+#import "Crashlytics/Crashlytics/Models/FIRCLSInstallIdentifierModel.h"
+#import "Crashlytics/Crashlytics/Models/FIRCLSInternalReport.h"
+#import "Crashlytics/Crashlytics/Models/FIRCLSSettings.h"
+
+#include "Crashlytics/Crashlytics/Components/FIRCLSApplication.h"
+#include "Crashlytics/Crashlytics/Components/FIRCLSCrashedMarkerFile.h"
+#include "Crashlytics/Crashlytics/Components/FIRCLSGlobals.h"
+#include "Crashlytics/Crashlytics/Components/FIRCLSProcess.h"
+#include "Crashlytics/Crashlytics/Helpers/FIRCLSDefines.h"
+#include "Crashlytics/Crashlytics/Helpers/FIRCLSFeatures.h"
+#include "Crashlytics/Crashlytics/Helpers/FIRCLSUtility.h"
 
 // The writable size is our handler stack plus whatever scratch we need.  We have to use this space
 // extremely carefully, however, because thread stacks always needs to be page-aligned.  Only the
@@ -51,7 +53,6 @@ static void FIRCLSContextAllocate(FIRCLSContext* context);
 
 FIRCLSContextInitData FIRCLSContextBuildInitData(FIRCLSInternalReport* report,
                                                  FIRCLSSettings* settings,
-                                                 FIRCLSInstallIdentifierModel* installIDModel,
                                                  FIRCLSFileManager* fileManager) {
   // Because we need to start the crash reporter right away,
   // it starts up either with default settings, or cached settings
@@ -62,7 +63,6 @@ FIRCLSContextInitData FIRCLSContextBuildInitData(FIRCLSInternalReport* report,
   memset(&initData, 0, sizeof(FIRCLSContextInitData));
 
   initData.customBundleId = nil;
-  initData.installId = [installIDModel.installID UTF8String];
   initData.sessionId = [[report identifier] UTF8String];
   initData.rootPath = [[report path] UTF8String];
   initData.previouslyCrashedFileRootPath = [[fileManager rootPath] UTF8String];
@@ -72,6 +72,7 @@ FIRCLSContextInitData FIRCLSContextBuildInitData(FIRCLSInternalReport* report,
   initData.maxErrorLogSize = [settings errorLogBufferSize];
   initData.maxLogSize = [settings logBufferSize];
   initData.maxKeyValues = [settings maxCustomKeys];
+  initData.betaToken = "";
 
   // If this is set, then we could attempt to do a synchronous submission for certain kinds of
   // events (exceptions). This is a very cool feature, but adds complexity to the backend. For now,
@@ -98,10 +99,8 @@ FIRCLSContextInitData FIRCLSContextBuildInitData(FIRCLSInternalReport* report,
 
 bool FIRCLSContextInitialize(FIRCLSInternalReport* report,
                              FIRCLSSettings* settings,
-                             FIRCLSInstallIdentifierModel* installIDModel,
                              FIRCLSFileManager* fileManager) {
-  FIRCLSContextInitData initDataObj =
-      FIRCLSContextBuildInitData(report, settings, installIDModel, fileManager);
+  FIRCLSContextInitData initDataObj = FIRCLSContextBuildInitData(report, settings, fileManager);
   FIRCLSContextInitData* initData = &initDataObj;
 
   if (!initData) {
@@ -194,13 +193,18 @@ bool FIRCLSContextInitialize(FIRCLSInternalReport* report,
         FIRCLSContextAppendToRoot(rootPath, fileName);
   });
 
+  // To initialize Crashlytics handlers even if the Xcode debugger is attached, replace this check
+  // with YES. Note that this is only possible to do on an actual device as it will cause the
+  // simulator to crash.
   if (!_firclsContext.readonly->debuggerAttached) {
+#if CLS_SIGNAL_SUPPORTED
     dispatch_group_async(group, queue, ^{
       _firclsContext.readonly->signal.path =
           FIRCLSContextAppendToRoot(rootPath, FIRCLSReportSignalFile);
 
       FIRCLSSignalInitialize(&_firclsContext.readonly->signal);
     });
+#endif
 
 #if CLS_MACH_EXCEPTION_SUPPORTED
     dispatch_group_async(group, queue, ^{
@@ -253,24 +257,6 @@ bool FIRCLSContextInitialize(FIRCLSInternalReport* report,
   }
 
   return true;
-}
-
-void FIRCLSContextUpdateMetadata(FIRCLSInternalReport* report,
-                                 FIRCLSSettings* settings,
-                                 FIRCLSInstallIdentifierModel* installIDModel,
-                                 FIRCLSFileManager* fileManager) {
-  FIRCLSContextInitData initDataObj =
-      FIRCLSContextBuildInitData(report, settings, installIDModel, fileManager);
-  FIRCLSContextInitData* initData = &initDataObj;
-
-  NSString* rootPath = [NSString stringWithUTF8String:initData->rootPath];
-
-  const char* metaDataPath =
-      [[rootPath stringByAppendingPathComponent:FIRCLSReportMetadataFile] fileSystemRepresentation];
-
-  if (!FIRCLSContextRecordMetadata(metaDataPath, initData)) {
-    FIRCLSErrorLog(@"Unable to update context metadata");
-  }
 }
 
 void FIRCLSContextBaseInit(void) {
@@ -397,13 +383,15 @@ static bool FIRCLSContextRecordIdentity(FIRCLSFile* file, const FIRCLSContextIni
 
   FIRCLSFileWriteHashStart(file);
 
-  FIRCLSFileWriteHashEntryString(file, "generator", CLS_SDK_GENERATOR_NAME);
-  FIRCLSFileWriteHashEntryString(file, "display_version", CLS_SDK_DISPLAY_VERSION);
-  FIRCLSFileWriteHashEntryString(file, "build_version", CLS_SDK_DISPLAY_VERSION);
+  FIRCLSFileWriteHashEntryString(file, "generator", FIRCLSSDKGeneratorName().UTF8String);
+  FIRCLSFileWriteHashEntryString(file, "display_version", FIRCLSSDKVersion().UTF8String);
+  FIRCLSFileWriteHashEntryString(file, "build_version", FIRCLSSDKVersion().UTF8String);
   FIRCLSFileWriteHashEntryUint64(file, "started_at", time(NULL));
 
   FIRCLSFileWriteHashEntryString(file, "session_id", initData->sessionId);
-  FIRCLSFileWriteHashEntryString(file, "install_id", initData->installId);
+  // install_id is written into the proto directly. This is only left here to
+  // support Apple Report Converter.
+  FIRCLSFileWriteHashEntryString(file, "install_id", "");
   FIRCLSFileWriteHashEntryString(file, "beta_token", initData->betaToken);
   FIRCLSFileWriteHashEntryBoolean(file, "absolute_log_timestamps", true);
 

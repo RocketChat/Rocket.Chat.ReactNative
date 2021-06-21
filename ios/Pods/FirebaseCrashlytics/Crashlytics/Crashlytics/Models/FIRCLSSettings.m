@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#import "FIRCLSSettings.h"
+#import "Crashlytics/Crashlytics/Models/FIRCLSSettings.h"
 
 #if __has_include(<FBLPromises/FBLPromises.h>)
 #import <FBLPromises/FBLPromises.h>
@@ -20,11 +20,11 @@
 #import "FBLPromises.h"
 #endif
 
-#import "FIRCLSApplicationIdentifierModel.h"
-#import "FIRCLSConstants.h"
-#import "FIRCLSFileManager.h"
-#import "FIRCLSLogger.h"
-#import "FIRCLSURLBuilder.h"
+#import "Crashlytics/Crashlytics/Helpers/FIRCLSLogger.h"
+#import "Crashlytics/Crashlytics/Models/FIRCLSFileManager.h"
+#import "Crashlytics/Crashlytics/Settings/Models/FIRCLSApplicationIdentifierModel.h"
+#import "Crashlytics/Shared/FIRCLSConstants.h"
+#import "Crashlytics/Shared/FIRCLSNetworking/FIRCLSURLBuilder.h"
 
 NSString *const CreatedAtKey = @"created_at";
 NSString *const GoogleAppIDKey = @"google_app_id";
@@ -251,30 +251,6 @@ NSString *const AppVersion = @"app_version";
   return 60 * 60;
 }
 
-#pragma mark - Identifiers
-
-- (nullable NSString *)orgID {
-  return self.fabricSettings[@"org_id"];
-}
-
-- (nullable NSString *)fetchedBundleID {
-  return self.fabricSettings[@"bundle_id"];
-}
-
-#pragma mark - Onboarding / Update
-
-- (NSString *)appStatus {
-  return self.appSettings[@"status"];
-}
-
-- (BOOL)appNeedsOnboarding {
-  return [self.appStatus isEqualToString:@"new"];
-}
-
-- (BOOL)appUpdateRequired {
-  return [[self.appSettings objectForKey:@"update_required"] boolValue];
-}
-
 #pragma mark - On / Off Switches
 
 - (BOOL)errorReportingEnabled {
@@ -301,21 +277,6 @@ NSString *const AppVersion = @"app_version";
   }
 
   return YES;
-}
-
-- (BOOL)shouldUseNewReportEndpoint {
-  NSNumber *value = [self appSettings][@"report_upload_variant"];
-
-  // Default to use the new endpoint when settings were not successfully fetched
-  // or there's an unexpected issue
-  if (value == nil) {
-    return YES;
-  }
-
-  // 0 - Unknown
-  // 1 - Legacy
-  // 2 - New
-  return value.intValue == 2;
 }
 
 #pragma mark - Optional Limit Overrides

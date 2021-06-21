@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#import "FIRCLSFileManager.h"
+#import "Crashlytics/Crashlytics/Models/FIRCLSFileManager.h"
 
-#import "FIRCLSApplication.h"
-#import "FIRCLSInternalReport.h"
-#import "FIRCLSLogger.h"
+#import "Crashlytics/Crashlytics/Components/FIRCLSApplication.h"
+#import "Crashlytics/Crashlytics/Helpers/FIRCLSLogger.h"
+#import "Crashlytics/Crashlytics/Models/FIRCLSInternalReport.h"
 
 NSString *const FIRCLSCacheDirectoryName = @"com.crashlytics.data";
 NSString *const FIRCLSCacheVersion = @"v5";
@@ -212,20 +212,12 @@ NSString *const FIRCLSCacheVersion = @"v5";
   return [[self structurePath] stringByAppendingPathComponent:@"processing"];
 }
 
-- (NSString *)legacyPreparedPath {
-  return [[self structurePath] stringByAppendingPathComponent:@"prepared-legacy"];
-}
-
 - (NSString *)preparedPath {
   return [[self structurePath] stringByAppendingPathComponent:@"prepared"];
 }
 
 - (NSArray *)activePathContents {
   return [self contentsOfDirectory:[self activePath]];
-}
-
-- (NSArray *)legacyPreparedPathContents {
-  return [self contentsOfDirectory:[self legacyPreparedPath]];
 }
 
 - (NSArray *)preparedPathContents {
@@ -243,10 +235,6 @@ NSString *const FIRCLSCacheVersion = @"v5";
   }
 
   if (![self createDirectoryAtPath:[self processingPath]]) {
-    return NO;
-  }
-
-  if (![self createDirectoryAtPath:[self legacyPreparedPath]]) {
     return NO;
   }
 

@@ -1,5 +1,5 @@
 import EJSON from 'ejson';
-import PushNotification from './push';
+// import PushNotification from './push';
 import store from '../../lib/createStore';
 import { deepLinkingOpen } from '../../actions/deepLinking';
 import { isFDroidBuild } from '../../constants/environment';
@@ -36,13 +36,14 @@ export const onNotification = (notification) => {
 	}
 };
 
-export const getDeviceToken = () => PushNotification.getDeviceToken();
-export const setBadgeCount = count => PushNotification.setBadgeCount(count);
+export const getDeviceToken = () => {} // PushNotification.getDeviceToken();
+export const setBadgeCount = count => {} // PushNotification.setBadgeCount(count);
 export const initializePushNotifications = () => {
 	if (!isFDroidBuild) {
 		setBadgeCount();
-		return PushNotification.configure({
-			onNotification
-		});
+		// return PushNotification.configure({
+		// 	onNotification
+		// });
+		return null;
 	}
 };

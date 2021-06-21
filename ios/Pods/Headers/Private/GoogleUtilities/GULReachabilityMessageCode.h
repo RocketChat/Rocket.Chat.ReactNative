@@ -1,1 +1,1 @@
-../../../GoogleUtilities/GoogleUtilities/Reachability/Private/GULReachabilityMessageCode.h
+../../../GoogleUtilities/GoogleUtilities/Reachability/GULReachabilityMessageCode.h
