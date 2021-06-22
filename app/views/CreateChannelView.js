@@ -81,10 +81,13 @@ class CreateChannelView extends React.Component {
 		users: PropTypes.array.isRequired,
 		user: PropTypes.shape({
 			id: PropTypes.string,
-			token: PropTypes.string
+			token: PropTypes.string,
+			roles: PropTypes.array
 		}),
 		theme: PropTypes.string,
-		teamId: PropTypes.string
+		teamId: PropTypes.string,
+		createPublicChannelPermission: PropTypes.array,
+		createPrivateChannelPermission: PropTypes.array
 	};
 
 	constructor(props) {
@@ -214,10 +217,18 @@ class CreateChannelView extends React.Component {
 
 	renderType() {
 		const { type, isTeam } = this.state;
+		const { createPublicChannelPermission, createPrivateChannelPermission, user } = this.props;
+
+		const hasPermissionToCreatePublicChannel = createPublicChannelPermission.includes(...user.roles);
+		const hasPermissionToCreatePrivateChannel = createPrivateChannelPermission.includes(...user.roles);
+
+		let count = 0;
+		[hasPermissionToCreatePrivateChannel, hasPermissionToCreatePublicChannel].map((val => (val ? count += 1 : null)));
 
 		return this.renderSwitch({
 			id: 'type',
-			value: type,
+			value: hasPermissionToCreatePrivateChannel ? type : false,
+			disabled: count <= 1,
 			label: isTeam ? 'Private_Team' : 'Private_Channel',
 			onValueChange: (value) => {
 				logEvent(events.CR_TOGGLE_TYPE);
@@ -378,7 +389,9 @@ const mapStateToProps = state => ({
 	isFetching: state.createChannel.isFetching,
 	encryptionEnabled: state.encryption.enabled,
 	users: state.selectedUsers.users,
-	user: getUserSelector(state)
+	user: getUserSelector(state),
+	createPublicChannelPermission: state.permissions['create-c'],
+	createPrivateChannelPermission: state.permissions['create-p']
 });
 
 const mapDispatchToProps = dispatch => ({
