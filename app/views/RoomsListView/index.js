@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -97,7 +98,12 @@ const shouldUpdateProps = [
 	'refreshing',
 	'queueSize',
 	'inquiryEnabled',
-	'encryptionBanner'
+	'encryptionBanner',
+	'createTeamPermission',
+	'createDirectMessagePermission',
+	'createPublicChannelPermission',
+	'createPrivateChannelPermission',
+	'createDiscussionPermission'
 ];
 const getItemLayout = (data, index) => ({
 	length: ROW_HEIGHT,
@@ -114,7 +120,7 @@ class RoomsListView extends React.Component {
 			username: PropTypes.string,
 			token: PropTypes.string,
 			statusLivechat: PropTypes.string,
-			roles: PropTypes.object
+			roles: PropTypes.array
 		}),
 		server: PropTypes.string,
 		searchText: PropTypes.string,
@@ -142,7 +148,12 @@ class RoomsListView extends React.Component {
 		insets: PropTypes.object,
 		queueSize: PropTypes.number,
 		inquiryEnabled: PropTypes.bool,
-		encryptionBanner: PropTypes.string
+		encryptionBanner: PropTypes.string,
+		createTeamPermission: PropTypes.array,
+		createDirectMessagePermission: PropTypes.array,
+		createPublicChannelPermission: PropTypes.array,
+		createPrivateChannelPermission: PropTypes.array,
+		createDiscussionPermission: PropTypes.array
 	};
 
 	constructor(props) {
@@ -278,7 +289,12 @@ class RoomsListView extends React.Component {
 			showUnread,
 			rooms,
 			isMasterDetail,
-			insets
+			insets,
+			createTeamPermission,
+			createPublicChannelPermission,
+			createPrivateChannelPermission,
+			createDirectMessagePermission,
+			createDiscussionPermission
 		} = this.props;
 		const { item } = this.state;
 
@@ -298,6 +314,14 @@ class RoomsListView extends React.Component {
 			this.setState({ item: { rid: rooms[0] } });
 		}
 		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
+			this.setHeader();
+		}
+
+		if ((createTeamPermission !== prevProps.createTeamPermission
+			|| createPublicChannelPermission !== prevProps.createPublicChannelPermission
+			|| createPrivateChannelPermission !== prevProps.createPrivateChannelPermission
+			|| createDirectMessagePermission !== prevProps.createDirectMessagePermission
+			|| createDiscussionPermission !== prevProps.createDiscussionPermission)) {
 			this.setHeader();
 		}
 	}
@@ -321,8 +345,22 @@ class RoomsListView extends React.Component {
 
 	getHeader = () => {
 		const { searching } = this.state;
-		const { navigation, isMasterDetail, insets } = this.props;
+		const {
+			navigation, isMasterDetail, insets, createTeamPermission, user, createDirectMessagePermission, createPublicChannelPermission, createPrivateChannelPermission, createDiscussionPermission
+		} = this.props;
 		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: searching ? 0 : 3 });
+
+		let count = 0;
+
+		const hasPermissionToCreateTeam = createTeamPermission?.includes(...user.roles);
+		const hasPermissionToCreateDirectMessage = createDirectMessagePermission?.includes(...user.roles);
+		const hasPermissionToCreatePublicChannel = createPublicChannelPermission?.includes(...user.roles);
+		const hasPermissionToCreatePrivateChannel = createPrivateChannelPermission?.includes(...user.roles);
+		const hasPermissionToCreateDiscussion = createDiscussionPermission?.includes(...user.roles);
+
+		[hasPermissionToCreateTeam, hasPermissionToCreateDirectMessage, hasPermissionToCreateDiscussion, hasPermissionToCreatePrivateChannel, hasPermissionToCreatePublicChannel].map((val => (val ? count += 1 : null)));
+
+
 		return {
 			headerTitleAlign: 'left',
 			headerLeft: () => (searching ? (
@@ -348,11 +386,13 @@ class RoomsListView extends React.Component {
 			},
 			headerRight: () => (searching ? null : (
 				<HeaderButton.Container>
-					<HeaderButton.Item
-						iconName='create'
-						onPress={this.goToNewMessage}
-						testID='rooms-list-view-create-channel'
-					/>
+					 {count > 0 ? (
+						<HeaderButton.Item
+							iconName='create'
+							onPress={this.goToNewMessage}
+							testID='rooms-list-view-create-channel'
+						/>
+					) : null}
 					<HeaderButton.Item
 						iconName='search'
 						onPress={this.initSearching}
@@ -1028,7 +1068,12 @@ const mapStateToProps = state => ({
 	rooms: state.room.rooms,
 	queueSize: getInquiryQueueSelector(state).length,
 	inquiryEnabled: state.inquiry.enabled,
-	encryptionBanner: state.encryption.banner
+	encryptionBanner: state.encryption.banner,
+	createTeamPermission: state.permissions['create-team'],
+	createDirectMessagePermission: state.permissions['create-d'],
+	createPublicChannelPermission: state.permissions['create-c'],
+	createPrivateChannelPermission: state.permissions['create-p'],
+	createDiscussionPermission: state.permissions['start-discussion']
 });
 
 const mapDispatchToProps = dispatch => ({
