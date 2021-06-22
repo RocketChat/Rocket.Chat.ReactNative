@@ -3,7 +3,7 @@ defaults: &defaults
 
 macos: &macos
   macos:
-    xcode: "12.1.0"
+    xcode: "12.4.0" # Update to 12.5 after RN is updated
 
 bash-env: &bash-env
   BASH_ENV: "~/.nvm/nvm.sh"
@@ -36,15 +36,6 @@ save-npm-cache-mac: &save-npm-cache-mac
   name: Save NPM cache
   paths:
     - ./node_modules
-
-install-node: &install-node
-  name: Install Node
-  command: |
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
-    source ~/.nvm/nvm.sh
-    INSTALLED_NODE=`nvm which current`
-    echo "export PATH=\"${INSTALLED_NODE%%/node}:\$PATH\"" >> ~/.bash_profile
-    source ~/.bash_profile
 
 restore-gems-cache: &restore-gems-cache
   name: Restore gems cache
@@ -87,8 +78,6 @@ commands:
     description: "Build Android app"
     steps:
       - checkout
-
-      - run: *install-node
 
       - restore_cache: *restore-npm-cache-linux
 
@@ -196,7 +185,6 @@ commands:
       - checkout
       - restore_cache: *restore-gems-cache
       - restore_cache: *restore-npm-cache-mac
-      - run: *install-node
       - run: *install-npm-modules
       - run: *update-fastlane-ios
       - run:
@@ -374,7 +362,7 @@ jobs:
   android-build-experimental:
     <<: *defaults
     docker:
-      - image: circleci/android:api-28-node
+      - image: circleci/android:api-29-node
     environment:
       <<: *android-env
       <<: *bash-env
@@ -384,7 +372,7 @@ jobs:
   android-build-official:
     <<: *defaults
     docker:
-      - image: circleci/android:api-28-node
+      - image: circleci/android:api-29-node
     environment:
       <<: *android-env
       <<: *bash-env
@@ -394,7 +382,7 @@ jobs:
   android-google-play-beta-experimental:
     <<: *defaults
     docker:
-      - image: circleci/android:api-28-node
+      - image: circleci/android:api-29-node
 
     steps:
       - upload-to-google-play-beta:
@@ -403,14 +391,14 @@ jobs:
   android-google-play-production-experimental:
     <<: *defaults
     docker:
-      - image: circleci/android:api-28-node
+      - image: circleci/android:api-29-node
     steps:
       - upload-to-google-play-production
 
   android-google-play-beta-official:
     <<: *defaults
     docker:
-      - image: circleci/android:api-28-node
+      - image: circleci/android:api-29-node
 
     steps:
       - upload-to-google-play-beta:
