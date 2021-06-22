@@ -665,5 +665,7 @@
   "Team_not_found": "Time não encontrado",
   "Private_Team": "Equipe Privada",
   "Add_Existing_Channel": "Adicionar Canal Existente",
-  "invalid-room": "Sala inválida"
+  "invalid-room": "Sala inválida",
+  "room-name-already-exists": "Nome da sala já existe",
+  "error-team-creation": "Erro na criação do time"
 }
