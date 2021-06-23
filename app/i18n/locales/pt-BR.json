@@ -667,5 +667,6 @@
   "Add_Existing_Channel": "Adicionar Canal Existente",
   "invalid-room": "Sala inválida",
   "room-name-already-exists": "Nome da sala já existe",
-  "error-team-creation": "Erro na criação do time"
+  "error-team-creation": "Erro na criação do time",
+  "unauthorized": "Não autorizado"
 }

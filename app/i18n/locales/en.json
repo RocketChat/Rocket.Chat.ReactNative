@@ -764,6 +764,7 @@
   "Load_Newer": "Load Newer",
   "Load_Older": "Load Older",
   "room-name-already-exists": "Room name already exists",
-  "error-team-creation": "Error team creation"
+  "error-team-creation": "Error team creation",
+  "unauthorized": "Unauthorized"
 
 }
