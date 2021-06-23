@@ -405,6 +405,7 @@ class RoomInfoEditView extends React.Component {
 						} catch (e) {
 							logEvent(events.RI_EDIT_TOGGLE_ARCHIVE_F);
 							log(e);
+							showErrorAlert(I18n.t(e?.data?.errorType || e?.data?.error));
 						}
 					}
 				}
