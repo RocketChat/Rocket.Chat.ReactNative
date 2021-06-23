@@ -110,7 +110,7 @@ const handleSuccess = function* handleSuccess({ data }) {
 
 const handleFailure = function handleFailure({ err, isTeam }) {
 	setTimeout(() => {
-		const msg = err?.data?.errorType
+		const msg = (err?.data?.errorType && err?.data?.details?.channel_name)
 			? I18n.t(err?.data?.errorType, { room_name: err?.data?.details?.channel_name })
 			: err?.reason || I18n.t(err?.data?.error || 'There_was_an_error_while_action', { action: isTeam ? I18n.t('creating_team') : I18n.t('creating_channel') });
 		showErrorAlert(msg, isTeam ? I18n.t('Create_Team') : I18n.t('Create_Channel'));
