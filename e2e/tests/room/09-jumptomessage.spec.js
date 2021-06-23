@@ -3,6 +3,7 @@ const {
 } = require('detox');
 const data = require('../../data');
 const { navigateToLogin, mockMessage, tapBack, login, sleep, searchRoom } = require('../../helpers/app');
+const { prepareAndroid } = require('../../helpers/platformFunctions');
 
 async function navigateToRoom(roomName) {
 	await searchRoom(`${ roomName }`);
@@ -33,6 +34,7 @@ async function waitForLoading() {
 describe('Room', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		if(device.getPlatform() == 'android') await prepareAndroid();
 		await navigateToLogin();
 		await login(data.adminUser, data.adminPassword);
 	});

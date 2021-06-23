@@ -5,6 +5,7 @@ const { navigateToLogin, login, sleep } = require('../../helpers/app');
 const data = require('../../data');
 
 const platformTypes = require('../../helpers/platformTypes');
+const { closeKeyboardAndroid, prepareAndroid } = require('../../helpers/platformFunctions');
 
 const profileChangeUser = data.users.profileChanges
 
@@ -23,6 +24,7 @@ describe('Profile screen', () => {
 
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		if(device.getPlatform() == 'android') await prepareAndroid();
 		({ textInputType, scrollViewType } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(profileChangeUser.username, profileChangeUser.password);
@@ -83,7 +85,7 @@ describe('Profile screen', () => {
 		it('should change name and username', async() => {
 			await element(by.id('profile-view-name')).replaceText(`${ profileChangeUser.username }new`);
 			await element(by.id('profile-view-username')).typeText(`${ profileChangeUser.username }new`);
-			await device.pressBack();
+			await closeKeyboardAndroid();
 			await element(by.type(scrollViewType)).atIndex(1).swipe('up');
 			await element(by.id('profile-view-submit')).tap();
 			await waitForToast();

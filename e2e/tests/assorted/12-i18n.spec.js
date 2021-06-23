@@ -3,7 +3,7 @@ const {
 } = require('detox');
 const { navigateToLogin, login, sleep } = require('../../helpers/app');
 const { post } = require('../../helpers/data_setup');
-const { launchWithLanguage } = require('../../helpers/platformFunctions');
+const { launchWithLanguage, prepareAndroid } = require('../../helpers/platformFunctions');
 
 const data = require('../../data');
 const testuser = data.users.regular
@@ -27,6 +27,7 @@ describe('i18n', () => {
 				...defaultLaunchArgs,
 				delete: true
 			});
+			if(device.getPlatform() == 'android') await prepareAndroid();
 			await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
 			await expect(element(by.id('join-workspace').and(by.label('Join a workspace')))).toBeVisible();
 			await expect(element(by.id('create-workspace-button').and(by.label('Create a new workspace')))).toBeVisible();

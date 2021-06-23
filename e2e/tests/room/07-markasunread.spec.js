@@ -3,6 +3,7 @@ const {
 } = require('detox');
 const data = require('../../data');
 const { navigateToLogin, login, searchRoom, sleep } = require('../../helpers/app');
+const { prepareAndroid } = require('../../helpers/platformFunctions');
 const { sendMessage } = require('../../helpers/data_setup')
 
 async function navigateToRoom(user) {
@@ -16,6 +17,7 @@ describe('Mark as unread', () => {
 
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		if(device.getPlatform() == 'android') await prepareAndroid();
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 		await navigateToRoom(user);

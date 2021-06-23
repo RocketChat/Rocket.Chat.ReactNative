@@ -2,12 +2,14 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const { login, navigateToLogin, logout, tapBack, sleep, searchRoom } = require('../../helpers/app');
+const { prepareAndroid } = require('../../helpers/platformFunctions');
 const data = require('../../data');
 
 describe('Rooms list screen', () => {
 
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
+		if(device.getPlatform() == 'android') await prepareAndroid();
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password)
 	});

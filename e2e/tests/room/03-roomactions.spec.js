@@ -3,6 +3,7 @@ const {
 } = require('detox');
 const data = require('../../data');
 const { navigateToLogin, login, tapBack, sleep, searchRoom, mockMessage, starMessage, pinMessage } = require('../../helpers/app');
+const { prepareAndroid } = require('../../helpers/platformFunctions');
 const { sendMessage } = require('../../helpers/data_setup')
 
 const platformTypes = require('../../helpers/platformTypes');
@@ -41,6 +42,7 @@ describe('Room actions screen', () => {
 	let alertButtonType;
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		if(device.getPlatform() == 'android') await prepareAndroid();
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 		({ alertButtonType } = platformTypes[device.getPlatform()]);

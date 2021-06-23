@@ -4,6 +4,7 @@ const {
 const { navigateToLogin, login, mockMessage, tapBack, searchRoom } = require('../../helpers/app');
 const data = require('../../data');
 const platformTypes = require('../../helpers/platformTypes');
+const { prepareAndroid } = require('../../helpers/platformFunctions');
 
 const channel = data.groups.private.name;
 
@@ -18,6 +19,7 @@ describe('Discussion', () => {
 	
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
+		if(device.getPlatform() == 'android') await prepareAndroid();
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 		({ scrollViewType } = platformTypes[device.getPlatform()]);

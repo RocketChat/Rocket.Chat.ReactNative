@@ -5,6 +5,7 @@ const OTP = require('otp.js');
 const GA = OTP.googleAuthenticator;
 const { navigateToLogin, login, mockMessage, tapBack, sleep, searchRoom } = require('../../helpers/app');
 const data = require('../../data');
+const { prepareAndroid } = require('../../helpers/platformFunctions');
 
 const testuser = data.users.regular
 const otheruser = data.users.alternate
@@ -12,6 +13,7 @@ const otheruser = data.users.alternate
 describe('Broadcast room', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		if(device.getPlatform() == 'android') await prepareAndroid();
 		await navigateToLogin();
 		await login(testuser.username, testuser.password);
 	});

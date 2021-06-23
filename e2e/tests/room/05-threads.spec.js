@@ -3,9 +3,11 @@ const {
 } = require('detox');
 const data = require('../../data');
 const { navigateToLogin, login, mockMessage, tapBack, sleep, searchRoom, starMessage, pinMessage, dismissReviewNag, tryTapping, mockMessageWithNag } = require('../../helpers/app');
+const { prepareAndroid } = require('../../helpers/platformFunctions');
 
 async function navigateToRoom(roomName) {
 	await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+	if(device.getPlatform() == 'android') await prepareAndroid();
 	await navigateToLogin();
 	await login(data.users.regular.username, data.users.regular.password);
 	await searchRoom(`${ roomName }`);

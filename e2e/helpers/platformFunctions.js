@@ -17,6 +17,11 @@ function runCommand(command) {
     });
 }
 
+exports.prepareAndroid = async () => {
+    await runCommand('adb shell settings put secure spell_checker_enabled 0');
+    await runCommand('adb shell settings put secure autofill_service null');
+}
+
 exports.launchWithLanguage = async (language, countryCode="US", launchArgs=defaultLaunchArgs) => {
     if(device.id === undefined)
     {    
@@ -40,4 +45,8 @@ exports.launchWithLanguage = async (language, countryCode="US", launchArgs=defau
             }
         });
     }
+}
+
+exports.closeKeyboardAndroid = async () => {
+    await device.pressBack(); // Android-only
 }
