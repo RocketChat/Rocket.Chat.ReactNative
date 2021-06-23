@@ -10,6 +10,7 @@ import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { CommonActions } from '@react-navigation/native';
 import Touch from '../../utils/touch';
 import {
 	replyBroadcast as replyBroadcastAction
@@ -67,7 +68,6 @@ import { takeInquiry } from '../../ee/omnichannel/lib';
 import Loading from '../../containers/Loading';
 import LoadMore from './LoadMore';
 import RoomServices from './services';
-import { goRoom } from '../../utils/goRoom';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
 
@@ -843,9 +843,39 @@ class RoomView extends React.Component {
 			if (item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
 				name = I18n.t('Encrypted_message');
 			}
-			return navigation.push('RoomView', {
-				rid: this.rid, tmid: item.tmid, name, t: 'thread', roomUserId, jumpToMessageId: item.id
+
+			const reset = CommonActions.reset({
+				index: 2,
+				routes: [
+					{
+						name: 'RoomsListView'
+					},
+					{
+						name: 'RoomView',
+						params: {
+							rid: this.rid,
+							name: item.name,
+							t: item.t,
+							prid: item.prid,
+							room: item,
+							visitor: item.visitor,
+							roomUserId
+						}
+					},
+					{
+						name: 'RoomView',
+						params: {
+							rid: this.rid,
+							tmid: item.tmid,
+							name,
+							t: 'thread',
+							roomUserId,
+							jumpToMessageId: item.id
+						}
+					}]
 			});
+
+			return navigation.dispatch(reset);
 		}
 
 		if (item.tlm) {
@@ -855,12 +885,32 @@ class RoomView extends React.Component {
 		}
 	}
 
-	navToRoom = async(message) => {
-		const { navigation, isMasterDetail } = this.props;
-		const roomInfo = await getRoomInfo(message.rid);
-		return goRoom({
-			item: roomInfo, isMasterDetail, navigationMethod: navigation.replace, jumpToMessageId: message.id
+	navToRoom = async(item) => {
+		const { navigation } = this.props;
+		const roomInfo = await getRoomInfo(item.rid);
+
+		const reset = CommonActions.reset({
+			index: 1,
+			routes: [
+				{
+					name: 'RoomsListView'
+				},
+				{
+					name: 'RoomView',
+					params: {
+						rid: roomInfo.rid,
+						name: RocketChat.getRoomTitle(roomInfo),
+						t: roomInfo.t,
+						prid: roomInfo.prid,
+						room: roomInfo,
+						visitor: roomInfo.visitor,
+						roomUserId: RocketChat.getUidDirectMessage(roomInfo),
+						jumpToMessageId: item.id
+					}
+				}]
 		});
+
+		return navigation.dispatch(reset);
 	}
 
 	callJitsi = () => {
