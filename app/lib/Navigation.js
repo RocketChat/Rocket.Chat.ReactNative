@@ -16,10 +16,15 @@ function replace(name, params) {
 	navigationRef.current?.dispatch(StackActions.replace(name, params));
 }
 
+function reset({ index, routes }) {
+	navigationRef.current?.dispatch(CommonActions.reset({ index, routes }));
+}
+
 export default {
 	navigationRef,
 	routeNameRef,
 	navigate,
 	back,
-	replace
+	replace,
+	reset
 };

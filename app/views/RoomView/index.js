@@ -10,7 +10,6 @@ import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { CommonActions } from '@react-navigation/native';
 import Touch from '../../utils/touch';
 import {
 	replyBroadcast as replyBroadcastAction
@@ -844,7 +843,7 @@ class RoomView extends React.Component {
 				name = I18n.t('Encrypted_message');
 			}
 
-			const reset = CommonActions.reset({
+			return Navigation.reset({
 				index: 2,
 				routes: [
 					{
@@ -874,8 +873,6 @@ class RoomView extends React.Component {
 						}
 					}]
 			});
-
-			return navigation.dispatch(reset);
 		}
 
 		if (item.tlm) {
@@ -886,10 +883,9 @@ class RoomView extends React.Component {
 	}
 
 	navToRoom = async(item) => {
-		const { navigation } = this.props;
 		const roomInfo = await getRoomInfo(item.rid);
 
-		const reset = CommonActions.reset({
+		return Navigation.reset({
 			index: 1,
 			routes: [
 				{
@@ -909,8 +905,6 @@ class RoomView extends React.Component {
 					}
 				}]
 		});
-
-		return navigation.dispatch(reset);
 	}
 
 	callJitsi = () => {
