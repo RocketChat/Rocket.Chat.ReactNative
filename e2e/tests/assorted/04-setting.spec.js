@@ -13,8 +13,7 @@ describe('Settings screen', () => {
 	let alertButtonType;
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		const deviceType = device.getPlatform();
-		alertButtonType = platformTypes[deviceType].alertButtonType;
+		({ alertButtonType } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(testuser.username, testuser.password);
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
