@@ -1,4 +1,3 @@
-/* eslint-disable require-await */
 /* eslint-disable no-await-in-loop */
 const {
 	device, expect, element, by, waitFor
@@ -121,7 +120,7 @@ const expectThreadMessages = async(message) => {
 	await expect(element(by.label(message))).toExist();
 };
 
-describe('Threads', async() => {
+describe('Threads', () => {
 	it('should navigate to a thread from another room', async() => {
 		await navigateToRoom('jumping');
 		await waitFor(element(by.label('Go to jumping-thread\'s thread')).atIndex(0)).toExist().withTimeout(5000);
