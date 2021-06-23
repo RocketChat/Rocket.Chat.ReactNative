@@ -38,7 +38,7 @@ async function login(username, password) {
 
 async function logout() {
     const deviceType = device.getPlatform();
-    const scrollViewType = platformTypes[deviceType].scrollViewType;
+    const { scrollViewType } = platformTypes[deviceType];
     await element(by.id('rooms-list-view-sidebar')).tap();
     await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
 	await waitFor(element(by.id('sidebar-settings'))).toBeVisible().withTimeout(2000);
@@ -87,7 +87,7 @@ async function pinMessage(message){
 
 async function dismissReviewNag(){
     const deviceType = device.getPlatform();
-    const alertButtonType = platformTypes[deviceType].alertButtonType;
+    const { alertButtonType } = platformTypes[deviceType];
     await waitFor(element(by.text('Are you enjoying this app?'))).toExist().withTimeout(60000);
     await element(by.text('NO').and(by.type(alertButtonType))).tap(); // Tap `no` on ask for review alert
 }

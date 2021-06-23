@@ -24,8 +24,7 @@ describe('Join public room', () => {
 	let scrollViewType;
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		const deviceType = device.getPlatform();
-		scrollViewType = platformTypes[deviceType].scrollViewType;
+		({ scrollViewType } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(testuser.username, testuser.password);
 		await navigateToRoom();

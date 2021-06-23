@@ -23,9 +23,7 @@ describe('Profile screen', () => {
 
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		const deviceType = device.getPlatform();
-		textInputType = platformTypes[deviceType].textInputType;
-		scrollViewType = platformTypes[deviceType].scrollViewType;
+		({ textInputType, scrollViewType } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(profileChangeUser.username, profileChangeUser.password);
 		await element(by.id('rooms-list-view-sidebar')).tap();

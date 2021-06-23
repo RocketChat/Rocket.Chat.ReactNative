@@ -5,6 +5,8 @@ const data = require('../../data');
 const { navigateToLogin, login, tapBack, sleep, searchRoom, mockMessage, starMessage, pinMessage } = require('../../helpers/app');
 const { sendMessage } = require('../../helpers/data_setup')
 
+const platformTypes = require('../../helpers/platformTypes');
+
 async function navigateToRoomActions(type) {
 	let room;
 	if (type === 'd') {
@@ -36,11 +38,12 @@ async function waitForToast() {
 }
 
 describe('Room actions screen', () => {
-
+	let alertButtonType;
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
+		({ alertButtonType } = platformTypes[device.getPlatform()]);
 	});
 	
 	describe('Render', async() => {
@@ -389,7 +392,7 @@ describe('Room actions screen', () => {
 					await openActionSheet('rocket.cat');
 					await element(by.text('Remove from room')).tap();
 					await waitFor(element(by.text('Are you sure?'))).toExist().withTimeout(5000);
-					await element(by.text('Yes, remove user!').and(by.type('android.widget.Button'))).tap();
+					await element(by.text('Yes, remove user!').and(by.type(alertButtonType))).tap();
 					await waitFor(element(by.id('room-members-view-item-rocket.cat'))).toBeNotVisible().withTimeout(60000);
 				});
 
@@ -461,13 +464,13 @@ describe('Room actions screen', () => {
 					await openActionSheet(user.username);
 					await element(by.text('Mute')).tap();
 					await waitFor(element(by.text('Are you sure?'))).toExist().withTimeout(5000);
-					await element(by.text('Mute').and(by.type('android.widget.Button'))).tap();
+					await element(by.text('Mute').and(by.type(alertButtonType))).tap();
 					await waitForToast();
 
 					await openActionSheet(user.username);
 					await element(by.text('Unmute')).tap();
 					await waitFor(element(by.text('Are you sure?'))).toExist().withTimeout(5000);
-					await element(by.text('Unmute').and(by.type('android.widget.Button'))).tap();
+					await element(by.text('Unmute').and(by.type(alertButtonType))).tap();
 					await waitForToast();
 
 					await openActionSheet(user.username);
