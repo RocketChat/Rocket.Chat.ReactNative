@@ -8,7 +8,6 @@ import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 import ImagePicker from 'react-native-image-crop-picker';
 import { dequal } from 'dequal';
 import isEmpty from 'lodash/isEmpty';
-import capitalize from 'lodash/capitalize';
 import { Q } from '@nozbe/watermelondb';
 
 import { compareServerVersion, methods } from '../../lib/utils';
@@ -406,7 +405,7 @@ class RoomInfoEditView extends React.Component {
 						} catch (e) {
 							logEvent(events.RI_EDIT_TOGGLE_ARCHIVE_F);
 							log(e);
-							showErrorAlert(I18n.t(e?.data?.errorType || e?.data?.error), capitalize(action));
+							showErrorAlert(I18n.t(e?.data?.errorType || e?.data?.error), archived ? I18n.t('UNARCHIVE') : I18n.t('ARCHIVE'));
 						}
 					}
 				}
