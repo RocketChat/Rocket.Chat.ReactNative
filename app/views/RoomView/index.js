@@ -67,9 +67,9 @@ import { takeInquiry } from '../../ee/omnichannel/lib';
 import Loading from '../../containers/Loading';
 import LoadMore from './LoadMore';
 import RoomServices from './services';
+import { goRoom } from '../../utils/goRoom';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
-import { goRoom } from '../../utils/goRoom';
 
 const stateAttrsUpdate = [
 	'joined',
